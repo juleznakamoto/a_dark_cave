@@ -1,0 +1,162 @@
+[VERSION] ========================================
+index-D9f9O1pD.js:128 [VERSION] 🆕 NEW VERSION DETECTED!
+index-D9f9O1pD.js:128 [VERSION] Changes:
+index-D9f9O1pD.js:128 [VERSION]   - ETag: 'W/"197a-19ad9746fb0"' -> 'W/"197a-19ad976fc08"'
+index-D9f9O1pD.js:128 [VERSION]   - Last-Modified: 'Mon, 01 Dec 2025 10:27:58 GMT' -> 'Mon, 01 Dec 2025 10:30:45 GMT'
+index-D9f9O1pD.js:128 [VERSION] 📝 Updating sessionStorage with new values...
+index-D9f9O1pD.js:128 [VERSION] ✅ Updated ETag in sessionStorage: W/"197a-19ad976fc08"
+index-D9f9O1pD.js:128 [VERSION] ✅ Updated Last-Modified in sessionStorage: Mon, 01 Dec 2025 10:30:45 GMT
+index-D9f9O1pD.js:128 [VERSION] 📞 Preparing to call callback...
+index-D9f9O1pD.js:128 [VERSION] Callback exists: true
+index-D9f9O1pD.js:128 [VERSION] Callback type: function
+index-D9f9O1pD.js:128 [VERSION] 🔔 Calling versionCheckCallback NOW...
+index-D9f9O1pD.js:128 [VERSION] Version check callback fired!
+index-D9f9O1pD.js:128 [VERSION] Calling toast() to notify user...
+index-D9f9O1pD.js:48 [TOAST] ========================================
+index-D9f9O1pD.js:48 [TOAST] toast() function called
+index-D9f9O1pD.js:48 [TOAST] Props: {title: 'New Version Available', description: 'A new version of the game is available. Please refresh to update.'}
+index-D9f9O1pD.js:48 [TOAST] Action: {label: 'Refresh', onClick: ƒ}
+index-D9f9O1pD.js:48 [TOAST] Generated ID: 1
+index-D9f9O1pD.js:48 [TOAST] Creating action element for action: {label: 'Refresh', onClick: ƒ}
+index-D9f9O1pD.js:48 [TOAST] Action element created: {$$typeof: Symbol(react.element), type: 'button', key: null, ref: null, props: {…}, …}
+index-D9f9O1pD.js:48 [TOAST] Dispatching ADD_TOAST with config: {title: 'New Version Available', description: 'A new version of the game is available. Please refresh to update.', id: '1', open: true, action: {…}, …}
+index-D9f9O1pD.js:48 [TOAST] Current toasts before dispatch: 0
+index-D9f9O1pD.js:48 [TOAST DISPATCH] Dispatching action: ADD_TOAST
+index-D9f9O1pD.js:48 [TOAST DISPATCH] Before reducer - memoryState: {toasts: Array(0)}
+index-D9f9O1pD.js:48 [TOAST DISPATCH] Listeners count: 3
+index-D9f9O1pD.js:48 [TOAST REDUCER] Action received: ADD_TOAST
+index-D9f9O1pD.js:48 [TOAST REDUCER] Current state: {toasts: Array(0)}
+index-D9f9O1pD.js:48 [TOAST REDUCER] Adding toast: {title: 'New Version Available', description: 'A new version of the game is available. Please refresh to update.', id: '1', open: true, action: {…}, …}
+index-D9f9O1pD.js:48 [TOAST REDUCER] New state after ADD_TOAST: {toasts: Array(1)}
+index-D9f9O1pD.js:48 [TOAST DISPATCH] After reducer - memoryState: {toasts: Array(1)}
+index-D9f9O1pD.js:48 [TOAST DISPATCH] Notifying 3 listeners
+index-D9f9O1pD.js:48 [TOAST DISPATCH] Calling listener 0
+index-D9f9O1pD.js:48 [TOAST DISPATCH] Calling listener 1
+index-D9f9O1pD.js:48 [TOAST DISPATCH] Calling listener 2
+index-D9f9O1pD.js:48 [TOAST DISPATCH] All listeners notified
+index-D9f9O1pD.js:48 [TOAST] After dispatch, toasts count: 1
+index-D9f9O1pD.js:48 [TOAST] Current toasts: [{…}]
+index-D9f9O1pD.js:48 [TOAST] Listeners count: 3
+index-D9f9O1pD.js:48 [TOAST] ========================================
+index-D9f9O1pD.js:128 [VERSION] ✅ Toast notification triggered successfully
+index-D9f9O1pD.js:128 [VERSION] ✅ versionCheckCallback executed successfully
+index-D9f9O1pD.js:128 [VERSION] ========================================
+index-D9f9O1pD.js:128 [TOASTER] Rendering Toaster component
+index-D9f9O1pD.js:128 [TOASTER] Number of toasts: 1
+index-D9f9O1pD.js:128 [TOASTER] Toasts: [{…}]
+index-D9f9O1pD.js:128 [TOASTER] Rendering toast: 1 title: New Version Available
+index-D9f9O1pD.js:48 [USE_TOAST] useToast hook unmounting
+index-D9f9O1pD.js:48 [USE_TOAST] Listener removed, remaining count: 2
+index-D9f9O1pD.js:48 [USE_TOAST] useToast hook unmounting
+index-D9f9O1pD.js:48 [USE_TOAST] Listener removed, remaining count: 1
+index-D9f9O1pD.js:48 [USE_TOAST] useToast hook unmounting
+index-D9f9O1pD.js:48 [USE_TOAST] Listener removed, remaining count: 0
+index-D9f9O1pD.js:48 [USE_TOAST] useToast hook mounted
+index-D9f9O1pD.js:48 [USE_TOAST] Initial state: {toasts: Array(1)}
+index-D9f9O1pD.js:48 [USE_TOAST] Adding listener, current count: 0
+index-D9f9O1pD.js:48 [USE_TOAST] Listener added, new count: 1
+index-D9f9O1pD.js:48 [USE_TOAST] useToast hook mounted
+index-D9f9O1pD.js:48 [USE_TOAST] Initial state: {toasts: Array(1)}
+index-D9f9O1pD.js:48 [USE_TOAST] Adding listener, current count: 1
+index-D9f9O1pD.js:48 [USE_TOAST] Listener added, new count: 2
+index-D9f9O1pD.js:48 [USE_TOAST] useToast hook mounted
+index-D9f9O1pD.js:48 [USE_TOAST] Initial state: {toasts: Array(1)}
+index-D9f9O1pD.js:48 [USE_TOAST] Adding listener, current count: 2
+index-D9f9O1pD.js:48 [USE_TOAST] Listener added, new count: 3
+index-D9f9O1pD.js:48 [TOAST] onOpenChange called, open: false
+index-D9f9O1pD.js:48 [TOAST] Dismiss called for toast: 1
+index-D9f9O1pD.js:48 [TOAST DISPATCH] Dispatching action: DISMISS_TOAST
+index-D9f9O1pD.js:48 [TOAST DISPATCH] Before reducer - memoryState: {toasts: Array(1)}
+index-D9f9O1pD.js:48 [TOAST DISPATCH] Listeners count: 3
+index-D9f9O1pD.js:48 [TOAST REDUCER] Action received: DISMISS_TOAST
+index-D9f9O1pD.js:48 [TOAST REDUCER] Current state: {toasts: Array(1)}
+index-D9f9O1pD.js:48 [TOAST DISPATCH] After reducer - memoryState: {toasts: Array(1)}
+index-D9f9O1pD.js:48 [TOAST DISPATCH] Notifying 3 listeners
+index-D9f9O1pD.js:48 [TOAST DISPATCH] Calling listener 0
+index-D9f9O1pD.js:48 [TOAST DISPATCH] Calling listener 1
+index-D9f9O1pD.js:48 [TOAST DISPATCH] Calling listener 2
+index-D9f9O1pD.js:48 [TOAST DISPATCH] All listeners notified
+index-D9f9O1pD.js:128 [TOASTER] Rendering Toaster component
+index-D9f9O1pD.js:128 [TOASTER] Number of toasts: 1
+index-D9f9O1pD.js:128 [TOASTER] Toasts: [{…}]
+index-D9f9O1pD.js:128 [TOASTER] Rendering toast: 1 title: New Version Available
+index-D9f9O1pD.js:48 [USE_TOAST] useToast hook unmounting
+index-D9f9O1pD.js:48 [USE_TOAST] Listener removed, remaining count: 2
+index-D9f9O1pD.js:48 [USE_TOAST] useToast hook unmounting
+index-D9f9O1pD.js:48 [USE_TOAST] Listener removed, remaining count: 1
+index-D9f9O1pD.js:48 [USE_TOAST] useToast hook unmounting
+index-D9f9O1pD.js:48 [USE_TOAST] Listener removed, remaining count: 0
+index-D9f9O1pD.js:48 [USE_TOAST] useToast hook mounted
+index-D9f9O1pD.js:48 [USE_TOAST] Initial state: {toasts: Array(1)}
+index-D9f9O1pD.js:48 [USE_TOAST] Adding listener, current count: 0
+index-D9f9O1pD.js:48 [USE_TOAST] Listener added, new count: 1
+index-D9f9O1pD.js:48 [USE_TOAST] useToast hook mounted
+index-D9f9O1pD.js:48 [USE_TOAST] Initial state: {toasts: Array(1)}
+index-D9f9O1pD.js:48 [USE_TOAST] Adding listener, current count: 1
+index-D9f9O1pD.js:48 [USE_TOAST] Listener added, new count: 2
+index-D9f9O1pD.js:48 [USE_TOAST] useToast hook mounted
+index-D9f9O1pD.js:48 [USE_TOAST] Initial state: {toasts: Array(1)}
+index-D9f9O1pD.js:48 [USE_TOAST] Adding listener, current count: 2
+index-D9f9O1pD.js:48 [USE_TOAST] Listener added, new count: 3
+index-D9f9O1pD.js:128 [VERSION] ========================================
+index-D9f9O1pD.js:128 [VERSION] ⏰ Periodic check triggered
+index-D9f9O1pD.js:128 [VERSION] ========================================
+index-D9f9O1pD.js:128 [VERSION] 🔍 Running version check...
+index-D9f9O1pD.js:128 [VERSION] Check time: 2025-12-01T10:32:17.949Z
+index-D9f9O1pD.js:128 [VERSION] Cache buster value: 1764585137949
+index-D9f9O1pD.js:128 [VERSION] ✅ Fetch completed, status: 200
+index-D9f9O1pD.js:128 [VERSION] 📥 Headers received from server:
+index-D9f9O1pD.js:128 [VERSION]   - ETag: W/"197a-19ad976fc08"
+index-D9f9O1pD.js:128 [VERSION]   - Last-Modified: Mon, 01 Dec 2025 10:30:45 GMT
+index-D9f9O1pD.js:128 [VERSION] 📦 Current sessionStorage values:
+index-D9f9O1pD.js:128 [VERSION]   - Stored ETag: W/"197a-19ad976fc08"
+index-D9f9O1pD.js:128 [VERSION]   - Stored Last-Modified: Mon, 01 Dec 2025 10:30:45 GMT
+index-D9f9O1pD.js:128 [VERSION] ========================================
+index-D9f9O1pD.js:128 [VERSION] 🔍 COMPARING VALUES:
+index-D9f9O1pD.js:128 [VERSION] Checking ETag:
+index-D9f9O1pD.js:128 [VERSION]   - Current: W/"197a-19ad976fc08"
+index-D9f9O1pD.js:128 [VERSION]   - Stored: W/"197a-19ad976fc08"
+index-D9f9O1pD.js:128 [VERSION]   - Match: true
+index-D9f9O1pD.js:128 [VERSION] Checking Last-Modified:
+index-D9f9O1pD.js:128 [VERSION]   - Current: Mon, 01 Dec 2025 10:30:45 GMT
+index-D9f9O1pD.js:128 [VERSION]   - Stored: Mon, 01 Dec 2025 10:30:45 GMT
+index-D9f9O1pD.js:128 [VERSION]   - Match: true
+index-D9f9O1pD.js:128 [VERSION] 📊 Comparison results:
+index-D9f9O1pD.js:128 [VERSION]   - ETag changed: false
+index-D9f9O1pD.js:128 [VERSION]   - Last-Modified changed: false
+index-D9f9O1pD.js:128 [VERSION]   - Has any change: false
+index-D9f9O1pD.js:128 [VERSION] ========================================
+index-D9f9O1pD.js:128 [VERSION] ✅ No version change detected
+index-D9f9O1pD.js:128 [VERSION] Both ETag and Last-Modified match stored values
+index-D9f9O1pD.js:128 [VERSION] ========================================
+index-D9f9O1pD.js:128 [VERSION] ========================================
+index-D9f9O1pD.js:128 [VERSION] ⏰ Periodic check triggered
+index-D9f9O1pD.js:128 [VERSION] ========================================
+index-D9f9O1pD.js:128 [VERSION] 🔍 Running version check...
+index-D9f9O1pD.js:128 [VERSION] Check time: 2025-12-01T10:32:47.949Z
+index-D9f9O1pD.js:128 [VERSION] Cache buster value: 1764585167949
+index-D9f9O1pD.js:128 [VERSION] ✅ Fetch completed, status: 200
+index-D9f9O1pD.js:128 [VERSION] 📥 Headers received from server:
+index-D9f9O1pD.js:128 [VERSION]   - ETag: W/"197a-19ad976fc08"
+index-D9f9O1pD.js:128 [VERSION]   - Last-Modified: Mon, 01 Dec 2025 10:30:45 GMT
+index-D9f9O1pD.js:128 [VERSION] 📦 Current sessionStorage values:
+index-D9f9O1pD.js:128 [VERSION]   - Stored ETag: W/"197a-19ad976fc08"
+index-D9f9O1pD.js:128 [VERSION]   - Stored Last-Modified: Mon, 01 Dec 2025 10:30:45 GMT
+index-D9f9O1pD.js:128 [VERSION] ========================================
+index-D9f9O1pD.js:128 [VERSION] 🔍 COMPARING VALUES:
+index-D9f9O1pD.js:128 [VERSION] Checking ETag:
+index-D9f9O1pD.js:128 [VERSION]   - Current: W/"197a-19ad976fc08"
+index-D9f9O1pD.js:128 [VERSION]   - Stored: W/"197a-19ad976fc08"
+index-D9f9O1pD.js:128 [VERSION]   - Match: true
+index-D9f9O1pD.js:128 [VERSION] Checking Last-Modified:
+index-D9f9O1pD.js:128 [VERSION]   - Current: Mon, 01 Dec 2025 10:30:45 GMT
+index-D9f9O1pD.js:128 [VERSION]   - Stored: Mon, 01 Dec 2025 10:30:45 GMT
+index-D9f9O1pD.js:128 [VERSION]   - Match: true
+index-D9f9O1pD.js:128 [VERSION] 📊 Comparison results:
+index-D9f9O1pD.js:128 [VERSION]   - ETag changed: false
+index-D9f9O1pD.js:128 [VERSION]   - Last-Modified changed: false
+index-D9f9O1pD.js:128 [VERSION]   - Has any change: false
+index-D9f9O1pD.js:128 [VERSION] ========================================
+index-D9f9O1pD.js:128 [VERSION] ✅ No version change detected
+index-D9f9O1pD.js:128 [VERSION] Both ETag and Last-Modified match stored values
+index-D9f9O1pD.js:128 [VERSION] ========================================
