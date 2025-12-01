@@ -65,7 +65,7 @@ interface GameStore extends GameState {
   mysteriousNoteDonateNotificationSeen: boolean;
 
   // Resource highlighting state
-  highlightedResources: Set<string>;
+  highlightedResources: string[]; // Updated to array for serialization
 
   // Auth state
   isUserSignedIn: boolean;
@@ -114,7 +114,7 @@ interface GameStore extends GameState {
   setAuthNotificationVisible: (visible: boolean) => void;
   setMysteriousNoteShopNotificationSeen: (seen: boolean) => void;
   setMysteriousNoteDonateNotificationSeen: (seen: boolean) => void;
-  setHighlightedResources: (resources: Set<string>) => void;
+  setHighlightedResources: (resources: string[]) => void; // Updated type
   setIsUserSignedIn: (signedIn: boolean) => void;
   updateResource: (
     resource: keyof GameState["resources"],
@@ -336,8 +336,8 @@ const defaultGameState: GameState = {
   mysteriousNoteShopNotificationSeen: false,
   mysteriousNoteDonateNotificationSeen: false,
 
-  // Initialize resource highlighting state
-  highlightedResources: new Set<string>(),
+  // Initialize resource highlighting state (array for serialization)
+  highlightedResources: [],
 
   // Auth state
   isUserSignedIn: false,
@@ -450,9 +450,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
   // Initialize mysterious note notification state
   mysteriousNoteShopNotificationSeen: false,
   mysteriousNoteDonateNotificationSeen: false,
-  
+
   // Initialize resource highlighting
-  highlightedResources: new Set<string>(),
+  highlightedResources: [], // Updated to array for serialization
 
   setActiveTab: (tab: string) => set({ activeTab: tab }),
 
@@ -465,8 +465,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
   setAuthNotificationVisible: (visible: boolean) => set({ authNotificationVisible: visible }),
   setMysteriousNoteShopNotificationSeen: (seen: boolean) => set({ mysteriousNoteShopNotificationSeen: seen }),
   setMysteriousNoteDonateNotificationSeen: (seen: boolean) => set({ mysteriousNoteDonateNotificationSeen: seen }),
-  setHighlightedResources: (resources: Set<string>) => {
-    logger.log('[HIGHLIGHT] Setting highlighted resources:', Array.from(resources));
+  setHighlightedResources: (resources: string[]) => { // Updated type
+    logger.log('[HIGHLIGHT] Setting highlighted resources:', resources);
     set({ highlightedResources: resources });
   },
   setIsUserSignedIn: (signedIn: boolean) => set({ isUserSignedIn: signedIn }),
@@ -867,7 +867,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
         referrals: savedState.referrals || [], // Load referrals list
         social_media_rewards: savedState.social_media_rewards || defaultGameState.social_media_rewards, // Load social_media_rewards
         lastResourceSnapshotTime: savedState.lastResourceSnapshotTime !== undefined ? savedState.lastResourceSnapshotTime : 0, // Load lastResourceSnapshotTime
-        
+        highlightedResources: savedState.highlightedResources || [], // Load highlightedResources
+
       };
 
       set(loadedState);
@@ -926,14 +927,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
       EventManager.checkEvents(state);
 
     if (newLogEntries.length > 0) {
-      let logMessage = null;
       let combatData = null;
       const updatedChanges = { ...stateChanges };
-
-      if (updatedChanges._logMessage) {
-        logMessage = updatedChanges._logMessage;
-        delete updatedChanges._logMessage;
-      }
 
       if (updatedChanges._combatData) {
         combatData = updatedChanges._combatData;
@@ -944,41 +939,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
         ...prevState,
         ...updatedChanges,
       }));
-
-      // Show logMessage in dialog if present (with 200ms delay)
-      if (logMessage) {
-        // Add the log message to the game log immediately
-        const logEntry: LogEntry = {
-          id: `event-result-${Date.now()}`,
-          message: logMessage,
-          timestamp: Date.now(),
-          type: "system",
-        };
-
-        set((prevState) => ({
-          ...prevState,
-          log: [...prevState.log, logEntry].slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES),
-        }));
-
-        setTimeout(() => {
-          const messageEntry: LogEntry = {
-            id: `log-message-${Date.now()}`,
-            message: logMessage,
-            timestamp: Date.now(),
-            type: "event",
-            title: newLogEntries[0]?.title, // Use the original event's title
-            choices: [
-              {
-                id: "acknowledge",
-                label: "Continue",
-                effect: () => ({}),
-              },
-            ],
-            skipSound: true, // Don't play sound for log messages
-          };
-          get().setEventDialog(true, messageEntry);
-        }, 500);
-      }
 
       // Handle combat dialog for attack waves
       if (combatData) {

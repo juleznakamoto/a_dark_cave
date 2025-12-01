@@ -65,7 +65,10 @@ export default function SidePanelSection({
   const gameState = useGameStore((state) => state);
   const hoveredTooltips = useGameStore((state) => state.hoveredTooltips || {});
   const setHoveredTooltip = useGameStore((state) => state.setHoveredTooltip);
-  const highlightedResources = useGameStore((state) => state.highlightedResources || new Set());
+  const highlightedResourcesRaw = useGameStore((state) => state.highlightedResources);
+  const highlightedResources = highlightedResourcesRaw instanceof Set 
+    ? highlightedResourcesRaw 
+    : new Set(Array.isArray(highlightedResourcesRaw) ? highlightedResourcesRaw : []);
   const hoverTimersRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
   const mobileTooltip = useMobileTooltip();
 
