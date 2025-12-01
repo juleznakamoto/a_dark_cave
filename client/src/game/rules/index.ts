@@ -46,6 +46,8 @@ import { villageAttackEvents } from "./eventsVillageAttacks";
 import { woodcutterEvents } from "./eventsWoodcutter";
 import { fellowshipEvents } from "./eventsFellowship";
 import { attackWaveEvents } from "./eventsAttackWaves";
+import { knightEvents } from "./eventsKnight"; // Import knightEvents
+import { useGameStore } from "../gameState"; // Assuming this is where useGameStore is defined
 
 // Action handlers map
 const actionHandlers: Record<string, (state: GameState, actionId: string) => Partial<GameState>> = {
@@ -283,39 +285,75 @@ function getAdjustedCost(
 
 // Helper function to extract resource IDs from action cost
 export function getResourcesFromActionCost(actionId: string): string[] {
+  const state = useGameStore.getState();
   const action = gameActions[actionId];
+
   if (!action?.cost) return [];
-  
-  const resources: string[] = [];
-  
-  // Handle different cost structures
-  if (typeof action.cost === 'object' && !Array.isArray(action.cost)) {
-    // Check if it's a tiered cost structure (has numeric keys)
-    const keys = Object.keys(action.cost);
-    const firstKey = keys[0];
-    
-    if (firstKey && !isNaN(Number(firstKey))) {
-      // Tiered cost - use level 1
-      const tier1Cost = action.cost[1] || action.cost[firstKey];
-      if (tier1Cost) {
-        Object.keys(tier1Cost).forEach(key => {
-          if (key.startsWith('resources.')) {
-            const resourceName = key.split('.')[1];
-            resources.push(resourceName);
-          }
-        });
-      }
-    } else {
-      // Simple cost structure
-      Object.keys(action.cost).forEach(key => {
-        if (key.startsWith('resources.')) {
-          const resourceName = key.split('.')[1];
-          resources.push(resourceName);
-        }
-      });
-    }
+
+  // For building actions, determine the next level
+  let level = 1;
+  if (action.building) {
+    level = getNextBuildingLevel(actionId, state);
   }
-  
+
+  // Check if this is a tiered action (like trade actions)
+  const costKeys = Object.keys(action.cost);
+  const hasTieredCost = costKeys.length > 0 && costKeys.every(key => !isNaN(Number(key)));
+
+  let costs;
+  if (hasTieredCost) {
+    // For tiered actions, find the active tier based on show_when conditions
+    if (action.show_when) {
+      const showWhenKeys = Object.keys(action.show_when);
+      let activeTier = 1;
+
+      for (const tierKey of showWhenKeys) {
+        const tierConditions = action.show_when[tierKey as any];
+        const tierSatisfied = Object.entries(tierConditions).every(([key, value]) => {
+          const pathParts = key.split('.');
+          let current: any = state;
+          for (const part of pathParts) {
+            current = current?.[part];
+          }
+
+          if (key.startsWith("buildings.")) {
+            if (value === 0) {
+              return (current || 0) === 0;
+            } else {
+              return (current || 0) >= value;
+            }
+          }
+
+          return (current || 0) >= value;
+        });
+
+        if (tierSatisfied) {
+          activeTier = Number(tierKey);
+        }
+      }
+
+      costs = action.cost[activeTier];
+    } else {
+      costs = action.cost[1];
+    }
+  } else {
+    // For building actions, use the determined level
+    costs = action.building ? action.cost[level] : action.cost;
+  }
+
+  if (!costs) return [];
+
+  const resources: string[] = [];
+
+  Object.keys(costs).forEach((costKey) => {
+    if (costKey.startsWith('resources.')) {
+      const resourceName = costKey.split('.')[1];
+      resources.push(resourceName);
+    }
+  });
+
+  logger.log(`[HIGHLIGHT] getResourcesFromActionCost for ${actionId} level ${level}:`, resources);
+
   return resources;
 }
 
