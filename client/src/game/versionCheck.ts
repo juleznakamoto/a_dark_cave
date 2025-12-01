@@ -7,14 +7,17 @@ export const APP_VERSION = import.meta.env.VITE_APP_VERSION || (typeof __BUILD_T
 // Global variable to track if version check is active
 let isVersionCheckActive = false;
 let versionCheckInterval: NodeJS.Timeout | null = null;
+let versionCheckCallback: (() => void) | null = null;
 
 export function startVersionCheck(onNewVersionDetected: () => void) {
   if (isVersionCheckActive) {
-    logger.log('[VERSION] Version check already active');
+    logger.log('[VERSION] Version check already active, updating callback');
+    versionCheckCallback = onNewVersionDetected;
     return;
   }
 
   isVersionCheckActive = true;
+  versionCheckCallback = onNewVersionDetected;
   logger.log('[VERSION] Starting version check with version:', APP_VERSION);
 
   // Check every 5 minutes
@@ -63,21 +66,21 @@ export function startVersionCheck(onNewVersionDetected: () => void) {
         stopVersionCheck();
         
         logger.log('[VERSION] Preparing to call onNewVersionDetected callback');
-        logger.log('[VERSION] Callback type:', typeof onNewVersionDetected);
-        logger.log('[VERSION] Callback function:', onNewVersionDetected);
+        logger.log('[VERSION] Callback type:', typeof versionCheckCallback);
+        logger.log('[VERSION] Callback function:', versionCheckCallback);
         
         // Safely call the callback after a small delay to ensure cleanup
         setTimeout(() => {
-          if (typeof onNewVersionDetected === 'function') {
+          if (typeof versionCheckCallback === 'function') {
             try {
               logger.log('[VERSION] Calling onNewVersionDetected...');
-              onNewVersionDetected();
+              versionCheckCallback();
               logger.log('[VERSION] ✅ onNewVersionDetected called successfully');
             } catch (callbackError) {
               logger.log('[VERSION] ❌ Error calling version callback:', callbackError);
             }
           } else {
-            logger.log('[VERSION] ⚠️ onNewVersionDetected is not a function:', typeof onNewVersionDetected);
+            logger.log('[VERSION] ⚠️ versionCheckCallback is not a function:', typeof versionCheckCallback);
           }
         }, 100);
       } else {
@@ -102,5 +105,6 @@ export function stopVersionCheck() {
     versionCheckInterval = null;
   }
   isVersionCheckActive = false;
+  versionCheckCallback = null;
   logger.log('[VERSION] Version check stopped');
 }
