@@ -45,8 +45,12 @@ function App() {
         );
         const playlightSDK = module.default;
         
-        // Initialize SDK
-        playlightSDK.init();
+        // Initialize SDK with sidebar always visible
+        playlightSDK.init({
+          sidebar: {
+            forceVisible: true
+          }
+        });
         
         // Import game store
         const { useGameStore } = await import('./game/state');
