@@ -45,6 +45,7 @@ interface SidePanelSectionProps {
   onResourceChange?: (change: ResourceChange) => void;
   titleTooltip?: string;
 }
+import { logger } from "@/lib/logger"
 
 export default function SidePanelSection({
   title,
