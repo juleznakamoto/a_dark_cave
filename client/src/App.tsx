@@ -45,15 +45,11 @@ function App() {
         );
         const playlightSDK = module.default;
         
+        // Initialize SDK
+        playlightSDK.init();
+        
         // Import game store
         const { useGameStore } = await import('./game/state');
-        
-        // Initialize SDK with sidebar initially hidden
-        playlightSDK.init({
-          sidebar: {
-            forceVisible: false
-          }
-        });
         
         // Set up event listeners for game pause/unpause
         playlightSDK.onEvent('discoveryOpen', () => {
@@ -70,19 +66,6 @@ function App() {
           if (state.isPaused) {
             state.togglePause();
           }
-        });
-        
-        // Subscribe to pause state changes to control sidebar
-        useGameStore.subscribe((state) => {
-          const isPaused = state.isPaused;
-          console.log("[PLAYLIGHT] Pause state changed:", isPaused);
-          
-          // Re-initialize SDK with updated sidebar config
-          playlightSDK.init({
-            sidebar: {
-              forceVisible: isPaused
-            }
-          });
         });
         
         console.log("[PLAYLIGHT] SDK initialized with game pause integration");
