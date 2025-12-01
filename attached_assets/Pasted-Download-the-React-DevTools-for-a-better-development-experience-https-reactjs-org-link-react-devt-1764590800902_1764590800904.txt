@@ -1,0 +1,56 @@
+Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+logger.ts:33 v983Z Registering sounds for lazy loading...
+logger.ts:33 v983Z Sound URLs registered for lazy loading
+App.tsx:48 [PLAYLIGHT] SDK initialized successfully
+logger.ts:33 v983Z [LOAD] 💾 Local save retrieved: {hasLocalSave: true, timestamp: '2025-12-01T12:06:19.460Z', playTime: 13284331.000000065, playTimeMinutes: 221, hasCooldowns: true, …}
+logger.ts:33 v983Z [LOAD CLOUD] 📊 Loaded from Supabase: {hasData: true, hasReferrals: true, referralsCount: 6, referrals: Array(6), playTime: 13284331.000000065, …}
+logger.ts:33 v983Z [LOAD] ☁️ Using cloud save (user authenticated)
+logger.ts:33 v983Z [REFERRAL] 🔍 Processing unclaimed referrals... {hasUser: true, hasReferrals: true, referralsCount: 6, referrals: Array(6)}
+logger.ts:33 v983Z [REFERRAL] ℹ️ No unclaimed referrals to process
+logger.ts:33 v983Z [LOAD] ✅ Cloud save loaded and synced locally
+logger.ts:33 v983Z [GAME] Game loaded from save
+logger.ts:33 v983Z [GAME] Detected claimed referrals - saving to cloud
+logger.ts:33 v983Z [IDLE MODE INIT] Dialog open check: {dialogOpen: false, isActive: false, idleModeState: {…}}
+logger.ts:33 v983Z [VERSION] Initializing version check from GameContainer
+CooldownButton.tsx:186 [MOUSE_ENTER_DEBUG] {buttonId: 'button-chop-wood', target: 'HTMLButtonElement', currentTarget: 'HTMLDivElement', relatedTarget: 'HTMLDivElement', eventPhase: 3, …}
+logger.ts:33 v983Z [HIGHLIGHT] Mouse enter on chopWood (disabled: false), resources: []
+logger.ts:33 v983Z [HIGHLIGHT] Setting highlighted resources: {resources: Array(0), resourceCount: 0, stackTrace: '    at setHighlightedResources (https://2682ae70-c…/.vite/deps/chunk-276SZO74.js?v=3490883a:3736:33)'}
+logger.ts:33 v983Z [HIGHLIGHT] Mouse enter on chopWood (disabled: false), resources: []
+logger.ts:33 v983Z [HIGHLIGHT] Setting highlighted resources: {resources: Array(0), resourceCount: 0, stackTrace: '    at setHighlightedResources (https://2682ae70-c…/.vite/deps/chunk-276SZO74.js?v=3490883a:7014:11)'}
+logger.ts:33 v983Z [HIGHLIGHT] Mouse leave on chopWood
+logger.ts:33 v983Z [HIGHLIGHT] Setting highlighted resources: {resources: Array(0), resourceCount: 0, stackTrace: '    at setHighlightedResources (https://2682ae70-c…/.vite/deps/chunk-276SZO74.js?v=3490883a:7014:11)'}
+CooldownButton.tsx:200 [MOUSE_LEAVE_DEBUG] {buttonId: 'button-chop-wood', target: 'HTMLButtonElement', currentTarget: 'HTMLDivElement', relatedTarget: 'HTMLDivElement'}
+logger.ts:33 v983Z [HIGHLIGHT] Mouse leave on chopWood
+logger.ts:33 v983Z [HIGHLIGHT] Setting highlighted resources: {resources: Array(0), resourceCount: 0, stackTrace: '    at setHighlightedResources (https://2682ae70-c…/.vite/deps/chunk-276SZO74.js?v=3490883a:3736:33)'}
+logger.ts:33 v983Z [SAVE CLOUD] 🔍 Starting cloud save with OCC... {playTime: 13284331.000000065, isNewGame: false, userId: 'a375ecb5...', diffKeys: Array(1), hasPlayTime: false, …}
+logger.ts:33 v983Z [SAVE CLOUD] 💾 Calling database RPC with OCC validation... {hasClickAnalytics: true, clickAnalyticsKeys: Array(4), hasResourceAnalytics: false, resourceAnalyticsKeys: Array(0), diffSize: 27, …}
+logger.ts:33 v983Z [SAVE CLOUD] ✅ Cloud save completed successfully - OCC check passed in database
+logger.ts:33 v983Z [SAVE] ✅ Updated lastCloudState after successful cloud save
+logger.ts:33 v983Z [GAME] Successfully saved claimed referrals to cloud
+CooldownButton.tsx:186 [MOUSE_ENTER_DEBUG] {buttonId: 'button-collapsed-tower', target: 'HTMLButtonElement', currentTarget: 'HTMLDivElement', relatedTarget: 'HTMLDivElement', eventPhase: 3, …}
+logger.ts:33 v983Z [HIGHLIGHT] Mouse enter on collapsedTower (disabled: false), resources: ['food']
+logger.ts:33 v983Z [HIGHLIGHT] Setting highlighted resources: {resources: Array(1), resourceCount: 1, stackTrace: '    at setHighlightedResources (https://2682ae70-c…/.vite/deps/chunk-276SZO74.js?v=3490883a:3736:33)'}
+logger.ts:33 v983Z [HIGHLIGHT] Mouse enter on collapsedTower (disabled: false), resources: ['food']
+logger.ts:33 v983Z [HIGHLIGHT] Setting highlighted resources: {resources: Array(1), resourceCount: 1, stackTrace: '    at setHighlightedResources (https://2682ae70-c…/.vite/deps/chunk-276SZO74.js?v=3490883a:7014:11)'}
+logger.ts:33 v983Z [HIGHLIGHT] Resource food is highlighted {highlightedResourcesRaw: Array(1), highlightedResourcesSet: Array(1), itemId: 'food', renderTimestamp: 1764590792621, stackTrace: '    at renderItemWithTooltip (https://2682ae70-ce4….vite/deps/chunk-276SZO74.js?v=3490883a:15924:22)'}
+logger.ts:33 v983Z [HIGHLIGHT] Resource food is highlighted {highlightedResourcesRaw: Array(1), highlightedResourcesSet: Array(1), itemId: 'food', renderTimestamp: 1764590792804, stackTrace: '    at renderItemWithTooltip (https://2682ae70-ce4….vite/deps/chunk-276SZO74.js?v=3490883a:15924:22)'}
+logger.ts:33 v983Z [HIGHLIGHT] Resource food is highlighted {highlightedResourcesRaw: Array(1), highlightedResourcesSet: Array(1), itemId: 'food', renderTimestamp: 1764590793054, stackTrace: '    at renderItemWithTooltip (https://2682ae70-ce4….vite/deps/chunk-276SZO74.js?v=3490883a:15924:22)'}
+logger.ts:33 v983Z [HIGHLIGHT] Mouse leave on collapsedTower
+logger.ts:33 v983Z [HIGHLIGHT] Setting highlighted resources: {resources: Array(0), resourceCount: 0, stackTrace: '    at setHighlightedResources (https://2682ae70-c…/.vite/deps/chunk-276SZO74.js?v=3490883a:7014:11)'}
+CooldownButton.tsx:200 [MOUSE_LEAVE_DEBUG] {buttonId: 'button-collapsed-tower', target: 'HTMLButtonElement', currentTarget: 'HTMLDivElement', relatedTarget: 'HTMLDivElement'}
+logger.ts:33 v983Z [HIGHLIGHT] Mouse leave on collapsedTower
+logger.ts:33 v983Z [HIGHLIGHT] Setting highlighted resources: {resources: Array(0), resourceCount: 0, stackTrace: '    at setHighlightedResources (https://2682ae70-c…/.vite/deps/chunk-276SZO74.js?v=3490883a:3736:33)'}
+CooldownButton.tsx:186 [MOUSE_ENTER_DEBUG] {buttonId: 'button-hill-grave', target: 'HTMLButtonElement', currentTarget: 'HTMLDivElement', relatedTarget: 'HTMLDivElement', eventPhase: 3, …}
+logger.ts:33 v983Z [HIGHLIGHT] Mouse enter on hillGrave (disabled: false), resources: ['food']
+logger.ts:33 v983Z [HIGHLIGHT] Setting highlighted resources: {resources: Array(1), resourceCount: 1, stackTrace: '    at setHighlightedResources (https://2682ae70-c…/.vite/deps/chunk-276SZO74.js?v=3490883a:3736:33)'}
+logger.ts:33 v983Z [HIGHLIGHT] Mouse enter on hillGrave (disabled: false), resources: ['food']
+logger.ts:33 v983Z [HIGHLIGHT] Setting highlighted resources: {resources: Array(1), resourceCount: 1, stackTrace: '    at setHighlightedResources (https://2682ae70-c…/.vite/deps/chunk-276SZO74.js?v=3490883a:7014:11)'}
+logger.ts:33 v983Z [HIGHLIGHT] Resource food is highlighted {highlightedResourcesRaw: Array(1), highlightedResourcesSet: Array(1), itemId: 'food', renderTimestamp: 1764590793878, stackTrace: '    at renderItemWithTooltip (https://2682ae70-ce4….vite/deps/chunk-276SZO74.js?v=3490883a:15924:22)'}
+logger.ts:33 v983Z [HIGHLIGHT] Resource food is highlighted {highlightedResourcesRaw: Array(1), highlightedResourcesSet: Array(1), itemId: 'food', renderTimestamp: 1764590794061, stackTrace: '    at renderItemWithTooltip (https://2682ae70-ce4….vite/deps/chunk-276SZO74.js?v=3490883a:15924:22)'}
+logger.ts:33 v983Z [HIGHLIGHT] Resource food is highlighted {highlightedResourcesRaw: Array(1), highlightedResourcesSet: Array(1), itemId: 'food', renderTimestamp: 1764590794311, stackTrace: '    at renderItemWithTooltip (https://2682ae70-ce4….vite/deps/chunk-276SZO74.js?v=3490883a:15924:22)'}
+logger.ts:33 v983Z [HIGHLIGHT] Resource food is highlighted {highlightedResourcesRaw: Array(1), highlightedResourcesSet: Array(1), itemId: 'food', renderTimestamp: 1764590794562, stackTrace: '    at renderItemWithTooltip (https://2682ae70-ce4….vite/deps/chunk-276SZO74.js?v=3490883a:15924:22)'}
+logger.ts:33 v983Z [HIGHLIGHT] Mouse leave on hillGrave
+logger.ts:33 v983Z [HIGHLIGHT] Setting highlighted resources: {resources: Array(0), resourceCount: 0, stackTrace: '    at setHighlightedResources (https://2682ae70-c…/.vite/deps/chunk-276SZO74.js?v=3490883a:7014:11)'}
+CooldownButton.tsx:200 [MOUSE_LEAVE_DEBUG] {buttonId: 'button-hill-grave', target: 'HTMLSpanElement', currentTarget: 'HTMLDivElement', relatedTarget: 'HTMLDivElement'}
+logger.ts:33 v983Z [HIGHLIGHT] Mouse leave on hillGrave
+logger.ts:33 v983Z [HIGHLIGHT] Setting highlighted resources: {resources: Array(0), resourceCount: 0, stackTrace: '    at setHighlightedResources (https://2682ae70-c…/.vite/deps/chunk-276SZO74.js?v=3490883a:3736:33)'}
