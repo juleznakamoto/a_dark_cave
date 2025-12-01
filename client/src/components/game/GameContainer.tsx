@@ -93,11 +93,14 @@ export default function GameContainer() {
   useEffect(() => {
     logger.log('[VERSION] Initializing version check from GameContainer');
 
+    // Capture toast in closure to ensure it's available when callback fires
+    const showUpdateToast = toast;
+    
     startVersionCheck(() => {
       logger.log('[VERSION] Version check callback fired!');
       try {
         logger.log('[VERSION] Calling toast() to notify user...');
-        toast({
+        showUpdateToast({
           title: "New Version Available",
           description: "A new version of the game is available. Please refresh to update.",
           action: {
