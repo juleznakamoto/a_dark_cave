@@ -50,6 +50,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
   const { cooldowns, cooldownDurations } = useGameStore();
   const isFirstRenderRef = useRef<boolean>(true);
   const mobileTooltip = useMobileButtonTooltip();
+  const isMouseOverRef = useRef<boolean>(false);
 
   // Get the action ID from the test ID or generate one
   const actionId =
@@ -182,7 +183,8 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
         mobileTooltip.handleTouchEnd(tooltipId, isButtonDisabled, onClick, e);
       } : undefined}
       onMouseEnter={(e) => {
-        if (props.onMouseEnter) {
+        if (props.onMouseEnter && !isMouseOverRef.current) {
+          isMouseOverRef.current = true;
           console.log('[MOUSE_ENTER_DEBUG]', {
             buttonId,
             target: e.target?.constructor?.name,
@@ -196,7 +198,8 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
         }
       }}
       onMouseLeave={(e) => {
-        if (props.onMouseLeave) {
+        if (props.onMouseLeave && isMouseOverRef.current) {
+          isMouseOverRef.current = false;
           console.log('[MOUSE_LEAVE_DEBUG]', {
             buttonId,
             target: e.target?.constructor?.name,
