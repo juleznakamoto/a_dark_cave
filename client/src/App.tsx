@@ -48,7 +48,8 @@ function App() {
         // Initialize SDK with sidebar always visible
         playlightSDK.init({
           sidebar: {
-            forceVisible: true
+            forceVisible: true,
+            hasFrameworkRoot: true
           }
         });
         
