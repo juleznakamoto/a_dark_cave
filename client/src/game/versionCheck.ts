@@ -9,6 +9,7 @@ export const APP_VERSION =
 let isVersionCheckActive = false;
 let versionCheckInterval: NodeJS.Timeout | null = null;
 let versionCheckCallback: (() => void) | null = null;
+let hasRunFirstCheck = false; // Flag to track if we've run the first check on this page load
 
 export function startVersionCheck(onNewVersionDetected: () => void) {
   logger.log("[VERSION] ========================================");
@@ -29,6 +30,7 @@ export function startVersionCheck(onNewVersionDetected: () => void) {
 
   isVersionCheckActive = true;
   versionCheckCallback = onNewVersionDetected;
+  hasRunFirstCheck = false; // Reset for this page load
   logger.log("[VERSION] ✅ Version check activated");
   logger.log("[VERSION] App version:", APP_VERSION);
   logger.log("[VERSION] Callback set:", typeof versionCheckCallback);
@@ -82,24 +84,26 @@ export function startVersionCheck(onNewVersionDetected: () => void) {
         storedLastModified || "null",
       );
 
-      // Store initial values on first check (when nothing is stored)
-      if (!storedEtag && !storedLastModified) {
+      // On first check after page load, update sessionStorage with current values
+      // This happens once per page load (tracked by a flag in memory, not storage)
+      // We need to do this because sessionStorage persists across refreshes,
+      // but the actual deployed version might have changed while the page was loaded
+      if (!hasRunFirstCheck) {
         logger.log("[VERSION] ========================================");
-        logger.log("[VERSION] 📝 FIRST CHECK - No stored values found");
-        logger.log(
-          "[VERSION] This is the initial version check after page load",
-        );
+        logger.log("[VERSION] 📝 FIRST CHECK - Initializing version tracking");
+        logger.log("[VERSION] This is the initial version check after page load");
+        logger.log("[VERSION] Updating sessionStorage with current deployed version");
+        
         if (etag) {
           sessionStorage.setItem("app_etag", etag);
           logger.log("[VERSION] ✅ Initial ETag stored:", etag);
         }
         if (lastModified) {
           sessionStorage.setItem("app_last_modified", lastModified);
-          logger.log(
-            "[VERSION] ✅ Initial Last-Modified stored:",
-            lastModified,
-          );
+          logger.log("[VERSION] ✅ Initial Last-Modified stored:", lastModified);
         }
+        
+        hasRunFirstCheck = true;
         logger.log("[VERSION] First check complete - no comparison needed");
         logger.log("[VERSION] ========================================");
         return;
