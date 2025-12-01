@@ -1,8 +1,9 @@
-
-import { logger } from '@/lib/logger';
+import { logger } from "@/lib/logger";
 
 // Version is set at build time
-export const APP_VERSION = import.meta.env.VITE_APP_VERSION || (typeof __BUILD_TIME__ !== 'undefined' ? __BUILD_TIME__ : 'dev');
+export const APP_VERSION =
+  import.meta.env.VITE_APP_VERSION ||
+  (typeof __BUILD_TIME__ !== "undefined" ? __BUILD_TIME__ : "dev");
 
 // Global variable to track if version check is active
 let isVersionCheckActive = false;
@@ -11,94 +12,97 @@ let versionCheckCallback: (() => void) | null = null;
 
 export function startVersionCheck(onNewVersionDetected: () => void) {
   if (isVersionCheckActive) {
-    logger.log('[VERSION] Version check already active, updating callback');
+    logger.log("[VERSION] Version check already active, updating callback");
     versionCheckCallback = onNewVersionDetected;
     return;
   }
 
   isVersionCheckActive = true;
   versionCheckCallback = onNewVersionDetected;
-  logger.log('[VERSION] Starting version check with version:', APP_VERSION);
+  logger.log("[VERSION] Starting version check with version:", APP_VERSION);
 
   // Check every 5 minutes
-  const CHECK_INTERVAL = 0.1 * 60 * 1000;
+  const CHECK_INTERVAL = 5 * 60 * 1000;
 
   const checkVersion = async () => {
     try {
       // Fetch the index.html with cache-busting query param
       const response = await fetch(`/?v=${Date.now()}`, {
-        method: 'HEAD',
-        cache: 'no-cache',
+        method: "HEAD",
+        cache: "no-cache",
       });
 
       // Check ETag or Last-Modified header to detect changes
-      const etag = response.headers.get('etag');
-      const lastModified = response.headers.get('last-modified');
+      const etag = response.headers.get("etag");
+      const lastModified = response.headers.get("last-modified");
 
       // Store initial values on first check
-      if (!sessionStorage.getItem('app_etag') && etag) {
-        sessionStorage.setItem('app_etag', etag);
-        logger.log('[VERSION] Initial ETag stored:', etag);
+      if (!sessionStorage.getItem("app_etag") && etag) {
+        sessionStorage.setItem("app_etag", etag);
+        logger.log("[VERSION] Initial ETag stored:", etag);
         return;
       }
 
-      if (!sessionStorage.getItem('app_last_modified') && lastModified) {
-        sessionStorage.setItem('app_last_modified', lastModified);
-        logger.log('[VERSION] Initial Last-Modified stored:', lastModified);
+      if (!sessionStorage.getItem("app_last_modified") && lastModified) {
+        sessionStorage.setItem("app_last_modified", lastModified);
+        logger.log("[VERSION] Initial Last-Modified stored:", lastModified);
         return;
       }
 
       // Compare with stored values
-      const storedEtag = sessionStorage.getItem('app_etag');
-      const storedLastModified = sessionStorage.getItem('app_last_modified');
+      const storedEtag = sessionStorage.getItem("app_etag");
+      const storedLastModified = sessionStorage.getItem("app_last_modified");
 
-      const hasChanged = (etag && etag !== storedEtag) || 
-                        (lastModified && lastModified !== storedLastModified);
+      const hasChanged =
+        (etag && etag !== storedEtag) ||
+        (lastModified && lastModified !== storedLastModified);
 
       if (hasChanged) {
-        logger.log('[VERSION] 🆕 New version detected!', {
+        logger.log("[VERSION] 🆕 New version detected!", {
           oldETag: storedEtag,
           newETag: etag,
           oldLastModified: storedLastModified,
           newLastModified: lastModified,
         });
-        
+
         // Update sessionStorage with new values so refresh doesn't trigger dialog again
         if (etag) {
-          sessionStorage.setItem('app_etag', etag);
+          sessionStorage.setItem("app_etag", etag);
         }
         if (lastModified) {
-          sessionStorage.setItem('app_last_modified', lastModified);
+          sessionStorage.setItem("app_last_modified", lastModified);
         }
-        
-        // Store callback before stopping (which sets it to null)
-        const callbackToExecute = versionCheckCallback;
-        
-        stopVersionCheck();
-        
-        logger.log('[VERSION] Preparing to call onNewVersionDetected callback');
-        logger.log('[VERSION] Callback type:', typeof callbackToExecute);
-        logger.log('[VERSION] Callback function:', callbackToExecute);
-        
-        // Safely call the callback after a small delay to ensure cleanup
-        setTimeout(() => {
-          if (typeof callbackToExecute === 'function') {
-            try {
-              logger.log('[VERSION] Calling onNewVersionDetected...');
-              callbackToExecute();
-              logger.log('[VERSION] ✅ onNewVersionDetected called successfully');
-            } catch (callbackError) {
-              logger.log('[VERSION] ❌ Error calling version callback:', callbackError);
-            }
-          } else {
-            logger.log('[VERSION] ⚠️ callbackToExecute is not a function:', typeof callbackToExecute);
+
+        logger.log("[VERSION] Preparing to call onNewVersionDetected callback");
+        logger.log("[VERSION] Callback type:", typeof versionCheckCallback);
+
+        // Call the callback using the current reference (not a stored copy)
+        // This ensures we always use the latest callback that was set
+        if (typeof versionCheckCallback === "function") {
+          try {
+            logger.log("[VERSION] Calling onNewVersionDetected...");
+            versionCheckCallback();
+            logger.log("[VERSION] ✅ onNewVersionDetected called successfully");
+          } catch (callbackError) {
+            logger.log(
+              "[VERSION] ❌ Error calling version callback:",
+              callbackError,
+            );
           }
-        }, 100);
+        } else {
+          logger.log(
+            "[VERSION] ⚠️ versionCheckCallback is not a function:",
+            typeof versionCheckCallback,
+          );
+        }
+
+        // Stop version check after detecting new version
+        stopVersionCheck();
       } else {
-        logger.log('[VERSION] ✅ Version is current');
+        logger.log("[VERSION] ✅ Version is current");
       }
     } catch (error) {
-      logger.log('[VERSION] ❌ Error checking version:', error);
+      logger.log("[VERSION] ❌ Error checking version:", error);
     }
   };
 
@@ -107,7 +111,11 @@ export function startVersionCheck(onNewVersionDetected: () => void) {
 
   // Then check periodically
   versionCheckInterval = setInterval(checkVersion, CHECK_INTERVAL);
-  logger.log('[VERSION] Version check scheduled every', CHECK_INTERVAL / 1000, 'seconds');
+  logger.log(
+    "[VERSION] Version check scheduled every",
+    CHECK_INTERVAL / 1000,
+    "seconds",
+  );
 }
 
 export function stopVersionCheck() {
@@ -117,5 +125,5 @@ export function stopVersionCheck() {
   }
   isVersionCheckActive = false;
   versionCheckCallback = null;
-  logger.log('[VERSION] Version check stopped');
+  logger.log("[VERSION] Version check stopped");
 }
