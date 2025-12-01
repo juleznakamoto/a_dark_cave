@@ -46,16 +46,7 @@ function App() {
         const playlightSDK = module.default;
         
         // Initialize SDK
-        playlightSDK.init({
-          exitIntent: {
-            enabled: true,
-            immediate: false
-          },
-          sidebar: {
-            hasFrameworkRoot: true,
-            forceVisible: false
-          }
-        });
+        playlightSDK.init();
         
         // Import game store
         const { useGameStore } = await import('./game/state');
