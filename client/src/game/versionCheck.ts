@@ -21,10 +21,6 @@ export function startVersionCheck(onNewVersionDetected: () => void) {
   versionCheckCallback = onNewVersionDetected;
   hasRunFirstCheck = false; // Reset for this page load
 
-  // Check existing sessionStorage values
-  const existingEtag = sessionStorage.getItem("app_etag");
-  const existingLastModified = sessionStorage.getItem("app_last_modified");
-
   // Check every 15 minutes
   const CHECK_INTERVAL = 15 * 60 * 1000;
 
