@@ -10,7 +10,7 @@ export const caveMineActions: Record<string, Action> = {
       "tools.stone_pickaxe": true,
     },
     cost: {
-      "resources.food": 5,
+      "resources.food": 10,
       "resources.torch": 1,
     },
     effects: {
@@ -28,7 +28,7 @@ export const caveMineActions: Record<string, Action> = {
       "tools.stone_pickaxe": true,
     },
     cost: {
-      "resources.food": 5,
+      "resources.food": 10,
       "resources.torch": 1,
     },
     effects: {
@@ -46,7 +46,7 @@ export const caveMineActions: Record<string, Action> = {
       "tools.iron_pickaxe": true,
     },
     cost: {
-      "resources.food": 5,
+      "resources.food": 10,
       "resources.torch": 1,
     },
     effects: {
@@ -65,7 +65,7 @@ export const caveMineActions: Record<string, Action> = {
       "buildings.foundry": 1,
     },
     cost: {
-      "resources.food": 15,
+      "resources.food": 30,
       "resources.torch": 2,
     },
     effects: {
@@ -83,7 +83,7 @@ export const caveMineActions: Record<string, Action> = {
       "tools.steel_pickaxe": true,
     },
     cost: {
-      "resources.food": 25,
+      "resources.food": 50,
       "resources.torch": 5,
     },
     effects: {
@@ -101,7 +101,7 @@ export const caveMineActions: Record<string, Action> = {
       "tools.obsidian_pickaxe": true,
     },
     cost: {
-      "resources.food": 50,
+      "resources.food": 100,
       "resources.torch": 10,
     },
     effects: {

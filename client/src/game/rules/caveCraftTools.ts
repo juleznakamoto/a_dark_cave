@@ -546,7 +546,7 @@ export function handleCraftStoneAxe(state: GameState, result: ActionResult): Act
   if (!state.flags.villageUnlocked) {
     result.logEntries!.push({
       id: `village-unlocked-${Date.now()}`,
-      message: "Outside the cave a clearing opens. This could be the start of something great.",
+      message: "Outside the cave a clearing opens. This looks like a good place to build a shelter.",
       timestamp: Date.now(),
       type: 'system',
     });

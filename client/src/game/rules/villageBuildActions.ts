@@ -1582,7 +1582,7 @@ export function handleBuildWoodenHut(
     result.logEntries!.push({
       id: `first-hut-built-${Date.now()}`,
       message:
-        "The first wooden hut stands complete, the village begins to take shape.",
+        "The first wooden hut stands complete, this could be the start of something great.",
       timestamp: Date.now(),
       type: "system",
     });
