@@ -45,8 +45,8 @@ export function startVersionCheck(onNewVersionDetected: () => void) {
     existingLastModified || "null",
   );
 
-  // Check every 30 seconds for testing
-  const CHECK_INTERVAL = 15 * 1000;
+  // Check every 15 minutes
+  const CHECK_INTERVAL = 15 * 60* 1000;
 
   const checkVersion = async () => {
     try {
