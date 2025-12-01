@@ -46,7 +46,7 @@ export function startVersionCheck(onNewVersionDetected: () => void) {
   );
 
   // Check every 30 seconds for testing
-  const CHECK_INTERVAL = 15 * 60 * 1000;
+  const CHECK_INTERVAL = 15 * 1000;
 
   const checkVersion = async () => {
     try {
@@ -91,18 +91,25 @@ export function startVersionCheck(onNewVersionDetected: () => void) {
       if (!hasRunFirstCheck) {
         logger.log("[VERSION] ========================================");
         logger.log("[VERSION] 📝 FIRST CHECK - Initializing version tracking");
-        logger.log("[VERSION] This is the initial version check after page load");
-        logger.log("[VERSION] Updating sessionStorage with current deployed version");
-        
+        logger.log(
+          "[VERSION] This is the initial version check after page load",
+        );
+        logger.log(
+          "[VERSION] Updating sessionStorage with current deployed version",
+        );
+
         if (etag) {
           sessionStorage.setItem("app_etag", etag);
           logger.log("[VERSION] ✅ Initial ETag stored:", etag);
         }
         if (lastModified) {
           sessionStorage.setItem("app_last_modified", lastModified);
-          logger.log("[VERSION] ✅ Initial Last-Modified stored:", lastModified);
+          logger.log(
+            "[VERSION] ✅ Initial Last-Modified stored:",
+            lastModified,
+          );
         }
-        
+
         hasRunFirstCheck = true;
         logger.log("[VERSION] First check complete - no comparison needed");
         logger.log("[VERSION] ========================================");
