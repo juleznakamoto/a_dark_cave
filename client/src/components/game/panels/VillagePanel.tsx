@@ -11,6 +11,7 @@ import {
   feastTooltip,
   curseTooltip,
   miningBoostTooltip,
+  frostfallTooltip,
 } from "@/game/rules/tooltips";
 import CooldownButton from "@/components/CooldownButton";
 import { Button } from "@/components/ui/button";
@@ -613,8 +614,8 @@ export default function VillagePanel() {
                             </div>
                           </TooltipTrigger>
                           <TooltipContent>
-                            <div className="text-xs whitespace-pre-line">
-                              Frostfall is active! All village production is reduced by 25% for {Math.round((frostfallState.endTime - Date.now()) / 1000 / 60)} minutes.
+                            <div className="text-xs">
+                              {frostfallTooltip.getContent(state)}
                             </div>
                           </TooltipContent>
                         </Tooltip>

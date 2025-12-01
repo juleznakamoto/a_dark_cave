@@ -318,6 +318,27 @@ export const miningBoostTooltip: TooltipConfig = {
   },
 };
 
+export const frostfallTooltip: TooltipConfig = {
+  getContent: (state: GameState) => {
+    const frostfallState = state.frostfallState;
+    const isFrostfall = frostfallState?.isActive && frostfallState.endTime > Date.now();
+
+    if (isFrostfall) {
+      const remainingMs = frostfallState.endTime - Date.now();
+      const remainingMinutes = Math.ceil(remainingMs / 60000);
+      return (
+        <>
+          <div className="font-bold">Frostfall</div>
+          <div>Production Bonus: -25%</div>
+          <div>{remainingMinutes} min remaining</div>
+        </>
+      );
+    }
+
+    return null;
+  },
+};
+
 // Combat item tooltips
 export const combatItemTooltips: Record<string, TooltipConfig> = {
   ember_bomb: {
