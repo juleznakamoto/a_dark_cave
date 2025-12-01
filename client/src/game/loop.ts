@@ -10,6 +10,7 @@ import {
 } from "./rules/effectsCalculation";
 import { GAME_CONSTANTS } from "./constants";
 import { logger } from "@/lib/logger";
+import { startVersionCheck, stopVersionCheck } from "./versionCheck";
 
 let gameLoopId: number | null = null;
 let lastFrameTime = 0;
@@ -190,6 +191,8 @@ export function startGameLoop() {
   };
   sessionCheckInterval = setInterval(checkSession, SESSION_CHECK_INTERVAL);
 
+  // Start version check
+  startVersionCheck();
 
   // Check if idle mode needs to be displayed (user left during idle mode)
   const state = useGameStore.getState();
@@ -449,6 +452,9 @@ function handleInactivity() {
     logger.log("[INACTIVITY] Session checker stopped");
   }
 
+  // Stop version check
+  stopVersionCheck();
+
   // Set game loop to inactive
   useGameStore.setState({
     isGameLoopActive: false,
@@ -497,6 +503,9 @@ export function stopGameLoop() {
     sessionCheckInterval = null;
     logger.log("[LOOP] Session checker cleared");
   }
+
+  // Clean up version check
+  stopVersionCheck();
 
   // Remove activity listeners
   const activityEvents = [

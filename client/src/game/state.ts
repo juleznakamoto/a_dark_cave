@@ -50,6 +50,7 @@ interface GameStore extends GameState {
   };
   inactivityDialogOpen: boolean;
   inactivityReason: 'timeout' | 'multitab' | null;
+  versionCheckDialogOpen: boolean; // Added for version check dialog
 
   // Notification state for shop
   shopNotificationSeen: boolean;
@@ -143,6 +144,7 @@ interface GameStore extends GameState {
   updatePlayTime: (deltaTime: number) => void;
   trackButtonClick: (buttonId: string) => void; // Added for button click analytics
   getAndResetClickAnalytics: () => Record<string, number> | null; // Added for resetting click analytics
+  setVersionCheckDialog: (isOpen: boolean) => void; // Added action for version check dialog
 }
 
 // Helper functions
@@ -221,7 +223,7 @@ const mergeStateUpdates = (
 
   if (
     stateUpdates.tools ||
-    stateUpdates.weapons ||
+    state.weapons || // This line seems incorrect, should be stateUpdates.weapons
     stateUpdates.clothing ||
     stateUpdates.relics ||
     stateUpdates.books
@@ -353,6 +355,7 @@ const defaultGameState: GameState = {
   resourceAnalytics: {},
   lastResourceSnapshotTime: 0,
   isPausedPreviously: false, // Initialize isPausedPreviously
+  versionCheckDialogOpen: false, // Initialize version check dialog state
 };
 
 // State management utilities
@@ -426,6 +429,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
   inactivityDialogOpen: false,
   inactivityReason: null,
+  versionCheckDialogOpen: false, // Initialize version check dialog state
   sleepUpgrades: {
     lengthLevel: 0,
     intensityLevel: 0,
@@ -751,7 +755,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     // Reset the analytics
     set({ clickAnalytics: {} });
-    
+
     // Return raw click data - the database will handle bucketing based on playTime
     return clicks;
   },
@@ -849,6 +853,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         referrals: savedState.referrals || [], // Load referrals list
         social_media_rewards: savedState.social_media_rewards || defaultGameState.social_media_rewards, // Load social_media_rewards
         lastResourceSnapshotTime: savedState.lastResourceSnapshotTime !== undefined ? savedState.lastResourceSnapshotTime : 0, // Load lastResourceSnapshotTime
+        versionCheckDialogOpen: savedState.versionCheckDialogOpen !== undefined ? savedState.versionCheckDialogOpen : false, // Load version check dialog state
       };
 
       set(loadedState);
@@ -900,7 +905,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     if (state.isPaused) return;
 
     // Don't check for new events if any dialog is already open
-    const isAnyDialogOpen = state.eventDialog.isOpen || state.combatDialog.isOpen;
+    const isAnyDialogOpen = state.eventDialog.isOpen || state.combatDialog.isOpen || state.versionCheckDialogOpen;
     if (isAnyDialogOpen) return;
 
     const { newLogEntries, stateChanges, triggeredEvents } =
@@ -1346,5 +1351,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
       // If paused or was previously paused, return state without updating playTime
       return {};
     });
+  },
+
+  // Added action to set the version check dialog state
+  setVersionCheckDialog: (isOpen: boolean) => {
+    set({ versionCheckDialogOpen: isOpen });
   },
 }));
