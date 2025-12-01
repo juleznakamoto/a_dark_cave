@@ -51,6 +51,14 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
   const isFirstRenderRef = useRef<boolean>(true);
   const mobileTooltip = useMobileButtonTooltip();
   const isMouseOverRef = useRef<boolean>(false);
+  const onMouseEnterRef = useRef(props.onMouseEnter);
+  const onMouseLeaveRef = useRef(props.onMouseLeave);
+
+  // Update refs when props change (but don't trigger re-renders)
+  useEffect(() => {
+    onMouseEnterRef.current = props.onMouseEnter;
+    onMouseLeaveRef.current = props.onMouseLeave;
+  }, [props.onMouseEnter, props.onMouseLeave]);
 
   // Get the action ID from the test ID or generate one
   const actionId =
@@ -183,7 +191,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
         mobileTooltip.handleTouchEnd(tooltipId, isButtonDisabled, onClick, e);
       } : undefined}
       onMouseEnter={(e) => {
-        if (props.onMouseEnter && !isMouseOverRef.current) {
+        if (onMouseEnterRef.current && !isMouseOverRef.current) {
           isMouseOverRef.current = true;
           console.log('[MOUSE_ENTER_DEBUG]', {
             buttonId,
@@ -194,11 +202,11 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
             bubbles: e.bubbles,
             stackTrace: new Error().stack?.split('\n').slice(1, 4).join('\n')
           });
-          props.onMouseEnter();
+          onMouseEnterRef.current();
         }
       }}
       onMouseLeave={(e) => {
-        if (props.onMouseLeave && isMouseOverRef.current) {
+        if (onMouseLeaveRef.current && isMouseOverRef.current) {
           isMouseOverRef.current = false;
           console.log('[MOUSE_LEAVE_DEBUG]', {
             buttonId,
@@ -206,7 +214,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
             currentTarget: e.currentTarget?.constructor?.name,
             relatedTarget: e.relatedTarget?.constructor?.name
           });
-          props.onMouseLeave();
+          onMouseLeaveRef.current();
         }
       }}
     >
