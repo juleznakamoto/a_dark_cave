@@ -62,11 +62,17 @@ export function startVersionCheck(onNewVersionDetected: () => void) {
         
         stopVersionCheck();
         
+        logger.log('[VERSION] Preparing to call onNewVersionDetected callback');
+        logger.log('[VERSION] Callback type:', typeof onNewVersionDetected);
+        logger.log('[VERSION] Callback function:', onNewVersionDetected);
+        
         // Safely call the callback after a small delay to ensure cleanup
         setTimeout(() => {
           if (typeof onNewVersionDetected === 'function') {
             try {
+              logger.log('[VERSION] Calling onNewVersionDetected...');
               onNewVersionDetected();
+              logger.log('[VERSION] ✅ onNewVersionDetected called successfully');
             } catch (callbackError) {
               logger.log('[VERSION] ❌ Error calling version callback:', callbackError);
             }
