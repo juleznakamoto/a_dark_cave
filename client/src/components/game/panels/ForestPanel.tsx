@@ -234,13 +234,14 @@ export default function ForestPanel() {
           tooltip={tooltipContent}
           onMouseEnter={() => {
             const resources = getResourcesFromActionCost(actionId, state);
-            logger.log(`[HIGHLIGHT] Mouse enter on ${actionId}, resources:`, resources);
+            logger.log(`[HIGHLIGHT] Mouse enter on ${actionId} (disabled: ${!canExecute}), resources:`, resources);
             setHighlightedResources(new Set(resources));
           }}
           onMouseLeave={() => {
             logger.log(`[HIGHLIGHT] Mouse leave on ${actionId}`);
             setHighlightedResources(new Set());
           }}
+          style={{ pointerEvents: 'auto' }}
         >
           {displayLabel}
         </CooldownButton>
@@ -269,13 +270,14 @@ export default function ForestPanel() {
         className={`hover:bg-transparent hover:text-foreground ${isTradeButton ? "w-fit" : ""}`}
         onMouseEnter={() => {
           const resources = getResourcesFromActionCost(actionId, state);
-          logger.log(`[HIGHLIGHT] Mouse enter on ${actionId}, resources:`, resources);
+          logger.log(`[HIGHLIGHT] Mouse enter on ${actionId} (disabled: ${!canExecute}), resources:`, resources);
           setHighlightedResources(new Set(resources));
         }}
         onMouseLeave={() => {
           logger.log(`[HIGHLIGHT] Mouse leave on ${actionId}`);
           setHighlightedResources(new Set());
         }}
+        style={{ pointerEvents: 'auto' }}
       >
         {displayLabel}
       </CooldownButton>

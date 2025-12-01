@@ -8,6 +8,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils"; // Assuming cn is imported from a utils file
 
 interface CooldownButtonProps {
   children: React.ReactNode;
@@ -86,9 +87,9 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
     if (disabled && !isCoolingDown) return;
     if (!isCoolingDown) {
       actionExecutedRef.current = true;
-      
+
       // Note: Button component now handles tracking via button_id
-      
+
       onClick();
       // Reset the flag after a short delay
       setTimeout(() => {
@@ -115,6 +116,10 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       button_id={props.button_id || actionId}
       onMouseEnter={props.onMouseEnter}
       onMouseLeave={props.onMouseLeave}
+      style={{ 
+        ...props.style,
+        pointerEvents: isButtonDisabled ? 'auto' : undefined 
+      }}
       {...props}
     >
       {/* Button content */}
@@ -139,6 +144,8 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
     return <div className="relative inline-block">{button}</div>;
   }
 
+  const tooltipId = buttonId; // Use buttonId for tooltip identification
+
   return (
     <div
       className="relative inline-block"
@@ -149,12 +156,12 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
         // Only show tooltip if button is disabled
         if (isButtonDisabled) {
           e.stopPropagation();
-          mobileTooltip.handleWrapperClick(buttonId, isButtonDisabled, isCoolingDown, e);
+          mobileTooltip.handleWrapperClick(tooltipId, isButtonDisabled, isCoolingDown, e);
         }
       } : undefined}
       onMouseDown={mobileTooltip.isMobile ? (e) => {
         // Start hold timer for tooltip (will show for both active and inactive buttons if held)
-        mobileTooltip.handleMouseDown(buttonId, isButtonDisabled, isCoolingDown, e);
+        mobileTooltip.handleMouseDown(tooltipId, isButtonDisabled, isCoolingDown, e);
       } : undefined}
       onMouseUp={mobileTooltip.isMobile ? (e) => {
         // Don't show tooltip if action was just executed
@@ -164,11 +171,11 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
           return;
         }
 
-        mobileTooltip.handleMouseUp(buttonId, isButtonDisabled, onClick, e);
+        mobileTooltip.handleMouseUp(tooltipId, isButtonDisabled, onClick, e);
       } : undefined}
       onTouchStart={mobileTooltip.isMobile ? (e) => {
         // Start hold timer for tooltip (will show for both active and inactive buttons if held)
-        mobileTooltip.handleTouchStart(buttonId, isButtonDisabled, isCoolingDown, e);
+        mobileTooltip.handleTouchStart(tooltipId, isButtonDisabled, isCoolingDown, e);
       } : undefined}
       onTouchEnd={mobileTooltip.isMobile ? (e) => {
         // Don't show tooltip if action was just executed
@@ -178,11 +185,11 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
           return;
         }
 
-        mobileTooltip.handleTouchEnd(buttonId, isButtonDisabled, onClick, e);
+        mobileTooltip.handleTouchEnd(tooltipId, isButtonDisabled, onClick, e);
       } : undefined}
     >
       <TooltipProvider>
-        <Tooltip open={mobileTooltip.isMobile ? mobileTooltip.isTooltipOpen(buttonId) : undefined} delayDuration={300}>
+        <Tooltip open={mobileTooltip.isMobile ? mobileTooltip.isTooltipOpen(tooltipId) : undefined} delayDuration={300}>
           <TooltipTrigger asChild>
             <span className="inline-block">
               {button}

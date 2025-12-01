@@ -240,13 +240,14 @@ export default function VillagePanel() {
         tooltip={tooltipContent}
         onMouseEnter={() => {
           const resources = getResourcesFromActionCost(actionId, state);
-          logger.log(`[HIGHLIGHT] Mouse enter on ${actionId}, resources:`, resources);
+          logger.log(`[HIGHLIGHT] Mouse enter on ${actionId} (disabled: ${!canExecute}), resources:`, resources);
           setHighlightedResources(resources);
         }}
         onMouseLeave={() => {
           logger.log(`[HIGHLIGHT] Mouse leave on ${actionId}`);
           setHighlightedResources([]);
         }}
+        style={{ pointerEvents: 'auto' }}
       >
         {displayLabel}
       </CooldownButton>
