@@ -21,17 +21,21 @@ export function startVersionCheck(onNewVersionDetected: () => void) {
   versionCheckCallback = onNewVersionDetected;
   logger.log("[VERSION] Starting version check with version:", APP_VERSION);
   
-  // Clear any stale sessionStorage values on initial load to prevent false positives
-  // This ensures we start fresh after a page reload
-  sessionStorage.removeItem("app_etag");
-  sessionStorage.removeItem("app_last_modified");
-  logger.log("[VERSION] Cleared sessionStorage to start fresh");
+  // Check existing sessionStorage values
+  const existingEtag = sessionStorage.getItem("app_etag");
+  const existingLastModified = sessionStorage.getItem("app_last_modified");
+  logger.log("[VERSION] Existing sessionStorage values:", {
+    etag: existingEtag,
+    lastModified: existingLastModified,
+  });
 
   // Check every 5 minutes
   const CHECK_INTERVAL = 5 * 60 * 1000;
 
   const checkVersion = async () => {
     try {
+      logger.log("[VERSION] 🔍 Running version check...");
+      
       // Fetch the index.html with cache-busting query param
       const response = await fetch(`/?v=${Date.now()}`, {
         method: "HEAD",
@@ -41,27 +45,45 @@ export function startVersionCheck(onNewVersionDetected: () => void) {
       // Check ETag or Last-Modified header to detect changes
       const etag = response.headers.get("etag");
       const lastModified = response.headers.get("last-modified");
+      
+      logger.log("[VERSION] Received headers from server:", {
+        etag,
+        lastModified,
+      });
 
-      // Store initial values on first check
-      if (!sessionStorage.getItem("app_etag") && etag) {
-        sessionStorage.setItem("app_etag", etag);
-        logger.log("[VERSION] Initial ETag stored:", etag);
-        return;
-      }
+      // Get stored values
+      const storedEtag = sessionStorage.getItem("app_etag");
+      const storedLastModified = sessionStorage.getItem("app_last_modified");
+      
+      logger.log("[VERSION] Current sessionStorage values:", {
+        storedEtag,
+        storedLastModified,
+      });
 
-      if (!sessionStorage.getItem("app_last_modified") && lastModified) {
-        sessionStorage.setItem("app_last_modified", lastModified);
-        logger.log("[VERSION] Initial Last-Modified stored:", lastModified);
+      // Store initial values on first check (when nothing is stored)
+      if (!storedEtag && !storedLastModified) {
+        logger.log("[VERSION] 📝 First check - storing initial values");
+        if (etag) {
+          sessionStorage.setItem("app_etag", etag);
+          logger.log("[VERSION] Initial ETag stored:", etag);
+        }
+        if (lastModified) {
+          sessionStorage.setItem("app_last_modified", lastModified);
+          logger.log("[VERSION] Initial Last-Modified stored:", lastModified);
+        }
         return;
       }
 
       // Compare with stored values
-      const storedEtag = sessionStorage.getItem("app_etag");
-      const storedLastModified = sessionStorage.getItem("app_last_modified");
-
       const hasChanged =
-        (etag && etag !== storedEtag) ||
-        (lastModified && lastModified !== storedLastModified);
+        (etag && storedEtag && etag !== storedEtag) ||
+        (lastModified && storedLastModified && lastModified !== storedLastModified);
+
+      logger.log("[VERSION] Comparison result:", {
+        hasChanged,
+        etagMatch: etag === storedEtag,
+        lastModifiedMatch: lastModified === storedLastModified,
+      });
 
       if (hasChanged) {
         logger.log("[VERSION] 🆕 New version detected!", {
@@ -74,9 +96,11 @@ export function startVersionCheck(onNewVersionDetected: () => void) {
         // Update sessionStorage with new values so refresh doesn't trigger dialog again
         if (etag) {
           sessionStorage.setItem("app_etag", etag);
+          logger.log("[VERSION] Updated ETag in sessionStorage:", etag);
         }
         if (lastModified) {
           sessionStorage.setItem("app_last_modified", lastModified);
+          logger.log("[VERSION] Updated Last-Modified in sessionStorage:", lastModified);
         }
 
         logger.log("[VERSION] Preparing to call onNewVersionDetected callback");
@@ -105,7 +129,7 @@ export function startVersionCheck(onNewVersionDetected: () => void) {
         // Stop version check after detecting new version
         stopVersionCheck();
       } else {
-        logger.log("[VERSION] ✅ Version is current");
+        logger.log("[VERSION] ✅ No version change detected");
       }
     } catch (error) {
       logger.log("[VERSION] ❌ Error checking version:", error);
@@ -113,7 +137,10 @@ export function startVersionCheck(onNewVersionDetected: () => void) {
   };
 
   // Run initial check after 30 seconds
-  setTimeout(checkVersion, 30000);
+  setTimeout(() => {
+    logger.log("[VERSION] Running initial check after 30s delay");
+    checkVersion();
+  }, 30000);
 
   // Then check periodically
   versionCheckInterval = setInterval(checkVersion, CHECK_INTERVAL);
