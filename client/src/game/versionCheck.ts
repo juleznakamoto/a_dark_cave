@@ -124,17 +124,10 @@ export function startVersionCheck(onNewVersionDetected: () => void) {
           logger.log("[VERSION]   - Last-Modified: '%s' -> '%s'", storedLastModified, lastModified);
         }
 
-        // Update sessionStorage with new values so refresh doesn't trigger dialog again
-        logger.log("[VERSION] 📝 Updating sessionStorage with new values...");
-        if (etag) {
-          sessionStorage.setItem("app_etag", etag);
-          logger.log("[VERSION] ✅ Updated ETag in sessionStorage:", etag);
-        }
-        if (lastModified) {
-          sessionStorage.setItem("app_last_modified", lastModified);
-          logger.log("[VERSION] ✅ Updated Last-Modified in sessionStorage:", lastModified);
-        }
-
+        // DO NOT update sessionStorage here - we want the toast to keep appearing
+        // until the user actually refreshes. SessionStorage will be updated
+        // automatically when the page reloads.
+        
         logger.log("[VERSION] 📞 Preparing to call callback...");
         logger.log("[VERSION] Callback exists:", versionCheckCallback !== null);
         logger.log("[VERSION] Callback type:", typeof versionCheckCallback);
