@@ -241,11 +241,11 @@ export default function VillagePanel() {
         onMouseEnter={() => {
           const resources = getResourcesFromActionCost(actionId);
           logger.log(`[HIGHLIGHT] Mouse enter on ${actionId}, resources:`, resources);
-          setHighlightedResources(new Set(resources));
+          setHighlightedResources(resources);
         }}
         onMouseLeave={() => {
           logger.log(`[HIGHLIGHT] Mouse leave on ${actionId}`);
-          setHighlightedResources(new Set());
+          setHighlightedResources([]);
         }}
       >
         {displayLabel}

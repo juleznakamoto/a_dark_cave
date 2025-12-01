@@ -1102,6 +1102,46 @@ export function getActionCostBreakdown(
   return breakdown;
 }
 
+// Extract resource keys from action cost
+export function getResourcesFromActionCost(actionId: string): string[] {
+  const state = useGameStore.getState();
+  const action = gameActions[actionId];
+  
+  if (!action?.cost) return [];
+
+  // Get the current level for this action
+  let level = 1;
+  
+  // Handle multi-level building actions
+  if (actionId === 'buildWatchtower') {
+    level = (state.buildings.watchtower || 0) + 1;
+  } else if (actionId === 'buildPalisades') {
+    level = (state.buildings.palisades || 0) + 1;
+  } else if (actionId === 'buildWoodenHut') {
+    level = (state.buildings.woodenHut || 0) + 1;
+  } else if (actionId === 'buildStoneHut') {
+    level = (state.buildings.stoneHut || 0) + 1;
+  } else if (actionId === 'buildLonghouse') {
+    level = (state.buildings.longhouse || 0) + 1;
+  }
+
+  const levelCosts = action.cost[level];
+  if (!levelCosts) return [];
+
+  const resources: string[] = [];
+  
+  Object.keys(levelCosts).forEach((costKey) => {
+    if (costKey.startsWith('resources.')) {
+      const resourceName = costKey.split('.')[1];
+      resources.push(resourceName);
+    }
+  });
+
+  logger.log(`[HIGHLIGHT] getResourcesFromActionCost for ${actionId} level ${level}:`, resources);
+  
+  return resources;
+}
+
 // Combine all event types
 export const allEvents: Record<string, GameEvent> = {
   ...caveEvents,
