@@ -14,7 +14,7 @@ export function startVersionCheck(onNewVersionDetected: () => void) {
   logger.log("[VERSION] ========================================");
   logger.log("[VERSION] startVersionCheck() called");
   logger.log("[VERSION] Current timestamp:", new Date().toISOString());
-  
+
   if (isVersionCheckActive) {
     logger.log("[VERSION] ⚠️ Version check already active, updating callback");
     logger.log("[VERSION] Previous callback type:", typeof versionCheckCallback);
@@ -29,7 +29,7 @@ export function startVersionCheck(onNewVersionDetected: () => void) {
   logger.log("[VERSION] ✅ Version check activated");
   logger.log("[VERSION] App version:", APP_VERSION);
   logger.log("[VERSION] Callback set:", typeof versionCheckCallback);
-  
+
   // Check existing sessionStorage values
   const existingEtag = sessionStorage.getItem("app_etag");
   const existingLastModified = sessionStorage.getItem("app_last_modified");
@@ -45,11 +45,11 @@ export function startVersionCheck(onNewVersionDetected: () => void) {
       logger.log("[VERSION] ========================================");
       logger.log("[VERSION] 🔍 Running version check...");
       logger.log("[VERSION] Check time:", new Date().toISOString());
-      
+
       // Fetch the index.html with cache-busting query param
       const cacheBuster = Date.now();
       logger.log("[VERSION] Cache buster value:", cacheBuster);
-      
+
       const response = await fetch(`/?v=${cacheBuster}`, {
         method: "HEAD",
         cache: "no-cache",
@@ -60,7 +60,7 @@ export function startVersionCheck(onNewVersionDetected: () => void) {
       // Check ETag or Last-Modified header to detect changes
       const etag = response.headers.get("etag");
       const lastModified = response.headers.get("last-modified");
-      
+
       logger.log("[VERSION] 📥 Headers received from server:");
       logger.log("[VERSION]   - ETag:", etag || "null");
       logger.log("[VERSION]   - Last-Modified:", lastModified || "null");
@@ -68,7 +68,7 @@ export function startVersionCheck(onNewVersionDetected: () => void) {
       // Get stored values
       const storedEtag = sessionStorage.getItem("app_etag");
       const storedLastModified = sessionStorage.getItem("app_last_modified");
-      
+
       logger.log("[VERSION] 📦 Current sessionStorage values:");
       logger.log("[VERSION]   - Stored ETag:", storedEtag || "null");
       logger.log("[VERSION]   - Stored Last-Modified:", storedLastModified || "null");
@@ -159,9 +159,6 @@ export function startVersionCheck(onNewVersionDetected: () => void) {
           logger.log("[VERSION] Value:", versionCheckCallback);
         }
 
-        // Stop version check after detecting new version
-        logger.log("[VERSION] 🛑 Stopping version check...");
-        stopVersionCheck();
         logger.log("[VERSION] ========================================");
       } else {
         logger.log("[VERSION] ✅ No version change detected");
