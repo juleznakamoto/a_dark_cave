@@ -1324,33 +1324,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   togglePause: () => {
     set((state) => {
-      const newIsPaused = !state.isPaused;
       const newState = {
-        isPaused: newIsPaused,
+        isPaused: !state.isPaused,
         loopProgress: 0, // Always reset loop progress when toggling pause
       };
       // Update isPausedPreviously to reflect the state *before* toggling
       // This is crucial for the game loop to know when to resume playTime updates
       newState.isPausedPreviously = state.isPaused;
-      
-      // Show/hide Playlight sidebar based on pause state
-      (async () => {
-        try {
-          const module = await import('https://sdk.playlight.dev/playlight-sdk.es.js');
-          const playlightSDK = module.default;
-          
-          if (newIsPaused) {
-            // Show sidebar when pausing
-            playlightSDK.setSidebarConfig({ forceVisible: true });
-          } else {
-            // Hide sidebar when unpausing
-            playlightSDK.setSidebarConfig({ forceVisible: false });
-          }
-        } catch (error) {
-          console.error('[PLAYLIGHT] Error toggling sidebar:', error);
-        }
-      })();
-      
       return newState;
     });
   },
