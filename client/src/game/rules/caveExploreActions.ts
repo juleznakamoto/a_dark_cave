@@ -293,7 +293,7 @@ export const caveExploreActions: Record<string, Action> = {
     effects: {
       "resources.obsidian": "random(1,6)",
       "resources.adamant": "random(1,4)",
-      "resources.moonstone": "random(1,2)",
+      "resources.moonstone": "random(0,1)",
       "resources.silver": "random(5,15)",
       "resources.gold": "random(1,10)",
       ...getInheritedItems("exploreTemple"),
@@ -316,7 +316,7 @@ export const caveExploreActions: Record<string, Action> = {
     effects: {
       "resources.obsidian": "random(1,8)",
       "resources.adamant": "random(1,6)",
-      "resources.moonstone": "random(1,3)",
+      "resources.moonstone": "random(0,2)",
       "resources.silver": "random(10,20)",
       "resources.gold": "random(5,10)",
       ...getInheritedItems("exploreCitadel"),
