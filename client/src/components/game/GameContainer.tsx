@@ -15,7 +15,6 @@ import IdleModeDialog from "./IdleModeDialog";
 import MerchantDialog from "./MerchantDialog";
 import CubeDialog from "./CubeDialog";
 import InactivityDialog from "./InactivityDialog";
-import VersionCheckDialog from "./VersionCheckDialog";
 import { useState, useEffect, useMemo, useRef } from "react";
 import { LimelightNav, NavItem } from "@/components/ui/limelight-nav";
 import { Mountain, Trees, Castle, Landmark } from "lucide-react";
@@ -43,8 +42,6 @@ export default function GameContainer() {
     authDialogOpen, // Added authDialogOpen to state
     shopDialogOpen, // Added shopDialogOpen to state
     inactivityDialogOpen, // Added inactivityDialogOpen to state
-    versionCheckDialogOpen,
-    setVersionCheckDialogOpen,
   } = useGameStore();
 
   // Estate unlocks when Dark Estate is built
@@ -339,14 +336,6 @@ export default function GameContainer() {
       <MerchantDialog />
       <CubeDialog />
       {inactivityDialogOpen && <InactivityDialog />}
-      <VersionCheckDialog 
-        isOpen={versionCheckDialogOpen} 
-        onReload={() => {
-          // Reload immediately - autosave will have already saved the current state
-          logger.log('[VERSION] 🔄 Reloading page to apply new version...');
-          window.location.reload();
-        }}
-      />
       <ProfileMenu />
     </div>
   );
