@@ -59,6 +59,9 @@ export default function SidePanel() {
     return () => clearTimeout(cleanupTimer);
   }, [resourceChanges]);
 
+  // Get game state once for the entire component (needed early for stat calculations)
+  const gameState = useGameStore();
+
   // Calculate total stats including bonuses from relics/clothing (needed early for seenStatsRef)
   const totalLuck = getTotalLuck(gameState);
   const totalStrength = getTotalStrength(gameState);
@@ -95,9 +98,6 @@ export default function SidePanel() {
       testId: `resource-${key}`,
       visible: true,
     }));
-
-  // Get game state once for the entire component
-  const gameState = useGameStore();
 
   // Dynamically generate tool items from state (only show best tools, no weapons)
   const displayTools = getDisplayTools(gameState);
