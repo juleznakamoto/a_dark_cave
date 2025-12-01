@@ -45,16 +45,27 @@ function App() {
         );
         const playlightSDK = module.default;
         
-        // Initialize SDK with sidebar always visible
+        // Initialize SDK
         playlightSDK.init({
           sidebar: {
-            forceVisible: true,
             hasFrameworkRoot: true
           }
         });
         
         // Import game store
         const { useGameStore } = await import('./game/state');
+        
+        // Subscribe to pause state changes to show/hide sidebar
+        useGameStore.subscribe(
+          (state) => state.isPaused,
+          (isPaused) => {
+            if (isPaused) {
+              playlightSDK.showSidebar();
+            } else {
+              playlightSDK.hideSidebar();
+            }
+          }
+        );
         
         // Set up event listeners for game pause/unpause
         playlightSDK.onEvent('discoveryOpen', () => {
@@ -73,7 +84,7 @@ function App() {
           }
         });
         
-        console.log("[PLAYLIGHT] SDK initialized with game pause integration");
+        console.log("[PLAYLIGHT] SDK initialized with pause-triggered sidebar");
       } catch (error) {
         console.error("Error loading the Playlight SDK:", error);
       }
