@@ -445,6 +445,16 @@ function processTick() {
     });
   }
 
+  // Check if frostfall has expired
+  if (state.frostfallState?.isActive && state.frostfallState.endTime <= Date.now()) {
+    useGameStore.setState({
+      frostfallState: {
+        ...state.frostfallState,
+        isActive: false,
+      },
+    });
+  }
+
   // Check if mining boost has expired
   if (
     state.miningBoostState?.isActive &&

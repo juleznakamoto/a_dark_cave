@@ -187,6 +187,7 @@ const mergeStateUpdates = (
     feastState: stateUpdates.feastState || prevState.feastState,
     greatFeastState: stateUpdates.greatFeastState || prevState.greatFeastState,
     curseState: stateUpdates.curseState || prevState.curseState,
+    frostfallState: stateUpdates.frostfallState || prevState.frostfallState,
     sleepUpgrades: stateUpdates.sleepUpgrades || prevState.sleepUpgrades,
     combatSkills: stateUpdates.combatSkills || prevState.combatSkills,
     clickAnalytics: { ...prevState.clickAnalytics, ...stateUpdates.clickAnalytics },
@@ -307,6 +308,10 @@ const defaultGameState: GameState = {
     endTime: 0,
   },
   curseState: {
+    isActive: false,
+    endTime: 0,
+  },
+  frostfallState: {
     isActive: false,
     endTime: 0,
   },
@@ -883,6 +888,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
         social_media_rewards: savedState.social_media_rewards || defaultGameState.social_media_rewards, // Load social_media_rewards
         lastResourceSnapshotTime: savedState.lastResourceSnapshotTime !== undefined ? savedState.lastResourceSnapshotTime : 0, // Load lastResourceSnapshotTime
         highlightedResources: savedState.highlightedResources || [], // Load highlightedResources
+        curseState: savedState.curseState || defaultGameState.curseState, // Load curseState
+        frostfallState: savedState.frostfallState || defaultGameState.frostfallState, // Load frostfallState
 
       };
 
