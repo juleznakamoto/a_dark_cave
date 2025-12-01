@@ -61,7 +61,15 @@ export function startVersionCheck(onNewVersionDetected: () => void) {
         });
         
         stopVersionCheck();
-        onNewVersionDetected();
+        
+        // Safely call the callback
+        if (typeof onNewVersionDetected === 'function') {
+          try {
+            onNewVersionDetected();
+          } catch (callbackError) {
+            logger.log('[VERSION] ❌ Error calling version callback:', callbackError);
+          }
+        }
       } else {
         logger.log('[VERSION] ✅ Version is current');
       }
