@@ -53,10 +53,7 @@ export default function CombatDialog({
   onVictory,
   onDefeat,
 }: CombatDialogProps) {
-  const { combatDialog, setCombatDialog, executeAction } = useGameStore();
   const gameState = useGameStore.getState();
-  const weapons = useGameStore((state) => state.weapons);
-  const clothing = useGameStore((state) => state.clothing);
   const crushingStrikeLevel = useGameStore(
     (state) => state.combatSkills.crushingStrikeLevel,
   );

@@ -69,7 +69,7 @@ export const storyEvents: Record<string, GameEvent> = {
     timeProbability: 5,
     title: "A Mysterious Note",
     message:
-      "As dusk settles, you find a slip of paper on the doorstep of your estate. Someone has written a message in a careful, strangely elegant hand: \n \"I hope you're enjoying your time here. If you do, please consider supporting the journey ahead, either by visiting the shop or donating. Your help keeps this world alive and free to enjoy. Thank you!\"",
+      "As dusk settles, you find a piece of paper on the doorstep of your estate. Someone left a note in a careful, elegant handwriting: \n \"I hope you're enjoying your time here. If you do, please consider supporting the journey ahead, either by visiting the shop or donating. Your help keeps this world alive and free to enjoy. Thank you!\"",
     triggered: false,
     priority: 5,
     repeatable: false,
