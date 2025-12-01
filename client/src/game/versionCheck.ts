@@ -37,8 +37,8 @@ export function startVersionCheck(onNewVersionDetected: () => void) {
   logger.log("[VERSION]   - app_etag:", existingEtag || "null");
   logger.log("[VERSION]   - app_last_modified:", existingLastModified || "null");
 
-  // Check every 5 minutes
-  const CHECK_INTERVAL = 5 * 60 * 1000;
+  // Check every 1 minutes
+  const CHECK_INTERVAL = 1 * 60 * 1000;
 
   const checkVersion = async () => {
     try {
