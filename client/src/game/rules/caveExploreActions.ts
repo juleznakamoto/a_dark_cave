@@ -247,7 +247,7 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.stone": "random(5,10)",
       "resources.coal": "random(5,10)",
       "resources.iron": "random(5,10)",
-      "resources.obsidian": "random(1,2)",
+      "resources.obsidian": "random(0,2)",
       "resources.silver": "random(1,4)",
       ...getInheritedItems("descendFurther"),
       "flags.descendedFurther": true,
@@ -269,7 +269,7 @@ export const caveExploreActions: Record<string, Action> = {
     },
     effects: {
       "resources.obsidian": "random(1,4)",
-      "resources.adamant": "random(1,2)",
+      "resources.adamant": "random(0,2)",
       "resources.silver": "random(1,10)",
       "resources.gold": "random(1,5)",
       ...getInheritedItems("exploreRuins"),
