@@ -474,22 +474,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
   setMysteriousNoteShopNotificationSeen: (seen: boolean) => set({ mysteriousNoteShopNotificationSeen: seen }),
   setMysteriousNoteDonateNotificationSeen: (seen: boolean) => set({ mysteriousNoteDonateNotificationSeen: seen }),
   setHighlightedResources: (resources: string[]) => { // Updated type
-    const currentState = get();
-    const currentResources = currentState.highlightedResources || [];
-    
-    // Only log if the state is actually changing
-    const hasChanged = 
-      resources.length !== currentResources.length ||
-      !resources.every((r, i) => r === currentResources[i]);
-    
-    if (hasChanged) {
-      logger.log('[HIGHLIGHT] State change:', {
-        from: currentResources,
-        to: resources,
-        stackTrace: new Error().stack?.split('\n').slice(2, 5).join('\n')
-      });
-    }
-    
     set({ highlightedResources: resources });
   },
   setIsUserSignedIn: (signedIn: boolean) => set({ isUserSignedIn: signedIn }),
