@@ -88,20 +88,25 @@ export const CAVE_EXPLORE_UPGRADE_LEVELS: UpgradeLevel[] = [
 
 // Get the appropriate upgrade levels for a given key
 export function getUpgradeLevelsForKey(key: UpgradeKey): UpgradeLevel[] {
+  // Map the key to the actual upgrade key (e.g., exploreCave -> caveExplore)
+  const mappedKey = ACTION_TO_UPGRADE_KEY[key] || key;
+  
   const mineKeys: UpgradeKey[] = ["mineStone", "mineIron", "mineCoal", "mineSulfur", "mineObsidian", "mineAdamant"];
 
-  if (mineKeys.includes(key)) {
+  if (mineKeys.includes(mappedKey)) {
     return MINE_UPGRADE_LEVELS;
   }
-  if (key === "hunt") {
+  if (mappedKey === "hunt") {
     return HUNT_UPGRADE_LEVELS;
   }
-  if (key === "chopWood") {
+  if (mappedKey === "chopWood") {
     return CHOP_WOOD_UPGRADE_LEVELS;
   }
-  if (key === "caveExplore") {
+  if (mappedKey === "caveExplore") {
     return CAVE_EXPLORE_UPGRADE_LEVELS;
   }
+  
+  return [];
 }
 
 export const UPGRADE_LABELS: Record<UpgradeKey, string> = {
