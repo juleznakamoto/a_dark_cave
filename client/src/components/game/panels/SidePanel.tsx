@@ -70,7 +70,7 @@ export default function SidePanel() {
 
   // Track which resources have ever been seen (using a ref to persist across renders)
   const seenResourcesRef = useRef<Set<string>>(new Set());
-  
+
   // Update seen resources
   resourceOrder.forEach((key) => {
     if ((resources[key as keyof typeof resources] ?? 0) > 0) {
@@ -80,12 +80,12 @@ export default function SidePanel() {
 
   // Track which stats have ever been seen
   const seenStatsRef = useRef<Set<string>>(new Set());
-  
+
   // Update seen stats
-  if (totalLuck > 0) seenStatsRef.current.add('luck');
-  if (totalStrength > 0) seenStatsRef.current.add('strength');
-  if (totalKnowledge > 0) seenStatsRef.current.add('knowledge');
-  if (totalMadness > 0) seenStatsRef.current.add('madness');
+  if (totalLuck > 0) seenStatsRef.current.add("luck");
+  if (totalStrength > 0) seenStatsRef.current.add("strength");
+  if (totalKnowledge > 0) seenStatsRef.current.add("knowledge");
+  if (totalMadness > 0) seenStatsRef.current.add("madness");
 
   // Dynamically generate resource items from state (in schema order)
   // Show resource if it has ever been > 0, even if currently 0
@@ -569,7 +569,7 @@ export default function SidePanel() {
   const hasClerksHut = buildings.clerksHut > 0;
 
   // Show luck if it has ever been > 0
-  if (seenStatsRef.current.has('luck')) {
+  if (seenStatsRef.current.has("luck")) {
     statsItems.push({
       id: "luck",
       label: "Luck",
@@ -585,7 +585,7 @@ export default function SidePanel() {
   }
 
   // Show strength if it has ever been > 0
-  if (seenStatsRef.current.has('strength')) {
+  if (seenStatsRef.current.has("strength")) {
     statsItems.push({
       id: "strength",
       label: "Strength",
@@ -603,7 +603,7 @@ export default function SidePanel() {
   }
 
   // Show knowledge if it has ever been > 0
-  if (seenStatsRef.current.has('knowledge')) {
+  if (seenStatsRef.current.has("knowledge")) {
     statsItems.push({
       id: "knowledge",
       label: "Knowledge",
@@ -620,41 +620,32 @@ export default function SidePanel() {
     });
   }
 
-  // Show madness if it has ever been > 0 (display 0 if below 0)
-  if (seenStatsRef.current.has('madness')) {
-    const displayMadness = Math.max(0, totalMadness);
+  // Build combined madness tooltip
+  let madnessTooltipContent: React.ReactNode = undefined;
+  const itemMadness = totalMadness - (gameState.stats.madnessFromEvents || 0);
+  const eventMadness = gameState.stats.madnessFromEvents || 0;
+  madnessTooltipContent = (
+    <>
+      <div className="text-gray-400">Leads thoughts into dangerous paths</div>
+      {totalMadness > 0 && (
+        <div className="text-gray-400 mt-1 pt-1 border-t border-border">
+          <div>{itemMadness} from Items/Buildings</div>
+          <div>{eventMadness} from Events</div>
+        </div>
+      )}
+    </>
+  );
 
-    // Build combined madness tooltip
-    let madnessTooltipContent: React.ReactNode = undefined;
-    if (hasClerksHut) {
-      const itemMadness =
-        totalMadness - (gameState.stats.madnessFromEvents || 0);
-      const eventMadness = gameState.stats.madnessFromEvents || 0;
-
-      madnessTooltipContent = (
-        <>
-          <div className="text-gray-400">
-            Leads thoughts into dangerous paths
-          </div>
-          {totalMadness > 0 && (
-            <div className="text-gray-400 mt-1 pt-1 border-t border-border">
-              <div>{itemMadness} from Items/Buildings</div>
-              <div>{eventMadness} from Events</div>
-            </div>
-          )}
-        </>
-      );
-    }
-
+  if (seenStatsRef.current.has("madness")) {
     statsItems.push({
       id: "madness",
       label: "Madness",
-      value: displayMadness,
+      value: totalMadness,
       testId: "stat-madness",
       visible: true,
       icon: hasScriptorium ? "✺" : undefined,
       iconColor: hasScriptorium ? "text-violet-300/80" : undefined,
-      tooltip: madnessTooltipContent,
+      tooltip: hasClerksHut ? madnessTooltipContent : undefined,
     });
   }
 
@@ -933,7 +924,12 @@ export default function SidePanel() {
       case "estate":
         return ["resources", "books"].includes(sectionName);
       case "bastion":
-        return ["resources", "fortifications", "bastion", "fellowship"].includes(sectionName);
+        return [
+          "resources",
+          "fortifications",
+          "bastion",
+          "fellowship",
+        ].includes(sectionName);
 
       default:
         return true; // Show all sections by default
