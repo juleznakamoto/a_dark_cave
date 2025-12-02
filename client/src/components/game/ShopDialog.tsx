@@ -802,7 +802,10 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                         >
                           {item.id === 'gold_100_free' && 
                            (Date.now() - (gameState.lastFreeGoldClaim || 0)) / (1000 * 60 * 60) < 24
-                            ? `Available in ${Math.ceil(24 - (Date.now() - (gameState.lastFreeGoldClaim || 0)) / (1000 * 60 * 60))}h`
+                            ? (() => {
+                                const hoursRemaining = Math.ceil(24 - (Date.now() - (gameState.lastFreeGoldClaim || 0)) / (1000 * 60 * 60));
+                                return hoursRemaining === 1 ? "Available in 1 hour" : `Available in ${hoursRemaining} hours`;
+                              })()
                             : !item.canPurchaseMultipleTimes &&
                               purchasedItems.some(pid => {
                                 if (!pid.startsWith('purchase-')) return false;
