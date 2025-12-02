@@ -171,56 +171,6 @@ export default function AdminDashboard() {
     });
   };
 
-  // Process clicks data for the chart - moved here before any early returns
-  const buttonClicksChartData = useMemo(() => {
-    if (!clickData) return [];
-
-    // Filter by time range (except for Overview tab)
-    let filteredClicks = filterByTimeRange(clickData, 'timestamp');
-
-    // Filter by selected user
-    if (selectedUser !== 'all') {
-      filteredClicks = filteredClicks.filter(d => d.user_id === selectedUser);
-    }
-
-    // Filter by completed players if toggle is on
-    if (showCompletedOnly) {
-      const completedUserIds = new Set(
-        gameSaves
-          .filter(save => 
-            save.game_state?.events?.cube15a || 
-            save.game_state?.events?.cube15b ||
-            save.game_state?.events?.cube13 ||
-            save.game_state?.events?.cube14a ||
-            save.game_state?.events?.cube14b ||
-            save.game_state?.events?.cube14c ||
-            save.game_state?.events?.cube14d
-          )
-          .map(save => save.user_id)
-      );
-      filteredClicks = filteredClicks.filter(d => completedUserIds.has(d.user_id));
-    }
-
-    // Aggregate total clicks per button
-    const totalClicks: Record<string, number> = {};
-
-    filteredClicks.forEach(record => {
-      // Format: { "button": count } - assuming direct mapping from button to count within record.clicks
-      Object.entries(record.clicks).forEach(([button, count]) => {
-        const cleanButton = cleanButtonName(button);
-        totalClicks[cleanButton] = (totalClicks[cleanButton] || 0) + (count as number);
-      });
-    });
-
-    // Convert to array format for the chart
-    return Object.entries(totalClicks)
-      .map(([button, clicks]) => ({
-        button,
-        clicks
-      }))
-      .sort((a, b) => b.clicks - a.clicks); // Sort by most clicked
-  }, [clickData, selectedUser]);
-
   useEffect(() => {
     checkAdminAccess();
   }, []);
@@ -293,6 +243,56 @@ export default function AdminDashboard() {
       logger.error('Failed to load admin data:', error);
     }
   };
+
+  // Process clicks data for the chart
+  const buttonClicksChartData = useMemo(() => {
+    if (!clickData) return [];
+
+    // Filter by time range (except for Overview tab)
+    let filteredClicks = filterByTimeRange(clickData, 'timestamp');
+
+    // Filter by selected user
+    if (selectedUser !== 'all') {
+      filteredClicks = filteredClicks.filter(d => d.user_id === selectedUser);
+    }
+
+    // Filter by completed players if toggle is on
+    if (showCompletedOnly) {
+      const completedUserIds = new Set(
+        gameSaves
+          .filter(save => 
+            save.game_state?.events?.cube15a || 
+            save.game_state?.events?.cube15b ||
+            save.game_state?.events?.cube13 ||
+            save.game_state?.events?.cube14a ||
+            save.game_state?.events?.cube14b ||
+            save.game_state?.events?.cube14c ||
+            save.game_state?.events?.cube14d
+          )
+          .map(save => save.user_id)
+      );
+      filteredClicks = filteredClicks.filter(d => completedUserIds.has(d.user_id));
+    }
+
+    // Aggregate total clicks per button
+    const totalClicks: Record<string, number> = {};
+
+    filteredClicks.forEach(record => {
+      // Format: { "button": count } - assuming direct mapping from button to count within record.clicks
+      Object.entries(record.clicks).forEach(([button, count]) => {
+        const cleanButton = cleanButtonName(button);
+        totalClicks[cleanButton] = (totalClicks[cleanButton] || 0) + (count as number);
+      });
+    });
+
+    // Convert to array format for the chart
+    return Object.entries(totalClicks)
+      .map(([button, clicks]) => ({
+        button,
+        clicks
+      }))
+      .sort((a, b) => b.clicks - a.clicks); // Sort by most clicked
+  }, [clickData, selectedUser, showCompletedOnly, gameSaves, timeRange]);
 
   // Active Users Calculations
   const getActiveUsers = (days: number) => {
