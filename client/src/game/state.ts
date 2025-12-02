@@ -718,7 +718,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const preserved = {
       // Purchases and boosts that persist
       boostMode: state.boostMode,
-      activatedPurchases: state.activatedPurchases || {},
+      // Only preserve cruel_mode activation, reset everything else
+      activatedPurchases: {
+        cruel_mode: state.activatedPurchases?.['cruel_mode'] || false,
+      },
       // Feast activations are reset (cleared) on new game
       feastActivations: {},
 

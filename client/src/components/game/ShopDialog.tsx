@@ -242,7 +242,8 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
           const item = SHOP_ITEMS[purchase.item_id];
 
           // If this item has feast activations and doesn't already have them set up in state
-          if (item?.rewards.feastActivations && !currentFeastActivations[purchaseId]) {
+          // BUT skip bundles - only track activations for bundle components
+          if (item?.rewards.feastActivations && !item.bundleComponents && !currentFeastActivations[purchaseId]) {
             newFeastActivations[purchaseId] = item.rewards.feastActivations;
             hasNewActivations = true;
 
@@ -438,50 +439,8 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
       useGameStore.setState({ hasMadeNonFreePurchase: true });
     }
 
-    // If this is a bundle with components, create individual purchases for each component
-    if (item.bundleComponents && item.bundleComponents.length > 0) {
-      try {
-        const user = await getCurrentUser();
-        if (user) {
-          const client = await getSupabaseClient();
-
-          // First, create the bundle purchase itself
-          const { error: bundleError } = await client.from("purchases").insert({
-            user_id: user.id,
-            item_id: selectedItem!,
-            item_name: item.name,
-            price_paid: item.price,
-            bundle_id: null, // Bundle itself has no parent bundle
-            purchased_at: new Date().toISOString(),
-          });
-
-          if (bundleError) {
-            logger.error("Error saving bundle purchase to Supabase:", bundleError);
-          }
-
-          // Then create purchase records for each component
-          for (const componentId of item.bundleComponents) {
-            const componentItem = SHOP_ITEMS[componentId];
-            if (componentItem) {
-              const { error } = await client.from("purchases").insert({
-                user_id: user.id,
-                item_id: componentId,
-                item_name: componentItem.name,
-                price_paid: 0, // Components from bundle are "free"
-                bundle_id: selectedItem!, // Reference to parent bundle
-                purchased_at: new Date().toISOString(),
-              });
-
-              if (error) {
-                logger.error("Error saving component purchase to Supabase:", error);
-              }
-            }
-          }
-        }
-      } catch (error) {
-        logger.error("Exception saving bundle component purchases:", error);
-      }
-    }
+    // NOTE: Bundle purchases are already created by the server in the payment verification
+    // We don't need to create them again here
 
     // Reload purchases from database to get the correct IDs
     await loadPurchasedItems();
@@ -519,7 +478,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
       return purchaseIds;
     })();
 
-    // If this is a single item with feast activations, set activations from item definition
+    // If this is a single item (NOT a bundle) with feast activations, set activations from item definition
     if (item.rewards.feastActivations && !item.bundleComponents) {
       logger.log('[SHOP] Processing single feast item', {
         itemId: selectedItem,
@@ -933,7 +892,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                       can be activated once per game.
                     </p>
                     <div className="space-y-2">
-                      {/* Show individual feast activations and bundles */}
+                      {/* Show individual feast activations (but not bundles themselves) */}
                       {Object.entries(gameState.feastActivations || {}).map( // Changed feastPurchases to feastActivations
                         ([purchaseId, activationsRemaining]) => { // Changed purchase to activationsRemaining
                           // Find the corresponding item to get its name and description
@@ -960,6 +919,11 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                               purchaseId,
                               itemId,
                             });
+                            return null;
+                          }
+
+                          // Skip bundles - only show bundle components
+                          if (item.bundleComponents) {
                             return null;
                           }
 
