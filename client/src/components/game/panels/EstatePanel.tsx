@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import React, { useRef } from "react";
 import { useGameStore } from "@/game/state";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { cubeEvents } from "@/game/rules/eventsCube";
@@ -15,6 +16,10 @@ import { useMobileButtonTooltip } from "@/hooks/useMobileTooltip";
 import { getTotalPopulationEffects } from "@/game/population";
 import { Progress } from "@/components/ui/progress";
 import { logger } from "@/lib/logger";
+import { 
+  CRUSHING_STRIKE_UPGRADES, 
+  BLOODFLAME_SPHERE_UPGRADES 
+} from "./BastionPanel";
 
 // Sleep upgrade configurations
 const SLEEP_LENGTH_UPGRADES = [
@@ -60,6 +65,7 @@ export default function EstatePanel() {
     setIdleModeDialog,
     sleepUpgrades,
     huntingSkills,
+    combatSkills,
     fellowship,
     resources,
     setHighlightedResources,
@@ -181,6 +187,54 @@ export default function EstatePanel() {
         resources: {
           ...state.resources,
           gold: state.resources.gold - nextUpgrade.cost,
+        },
+      };
+    });
+  };
+
+  const handleCrushingStrikeUpgrade = () => {
+    useGameStore.setState((state) => {
+      const currentLevel = state.combatSkills.crushingStrikeLevel;
+      if (currentLevel >= 5) return state;
+
+      const nextUpgrade = CRUSHING_STRIKE_UPGRADES[currentLevel + 1];
+      const currency = "gold" as const;
+
+      if (state.resources[currency] < nextUpgrade.cost) return state;
+
+      return {
+        ...state,
+        combatSkills: {
+          ...state.combatSkills,
+          crushingStrikeLevel: currentLevel + 1,
+        },
+        resources: {
+          ...state.resources,
+          [currency]: state.resources[currency] - nextUpgrade.cost,
+        },
+      };
+    });
+  };
+
+  const handleBloodflameSphereUpgrade = () => {
+    useGameStore.setState((state) => {
+      const currentLevel = state.combatSkills.bloodflameSphereLevel;
+      if (currentLevel >= 5) return state;
+
+      const nextUpgrade = BLOODFLAME_SPHERE_UPGRADES[currentLevel + 1];
+      const currency = "gold" as const;
+
+      if (state.resources[currency] < nextUpgrade.cost) return state;
+
+      return {
+        ...state,
+        combatSkills: {
+          ...state.combatSkills,
+          bloodflameSphereLevel: currentLevel + 1,
+        },
+        resources: {
+          ...state.resources,
+          [currency]: state.resources[currency] - nextUpgrade.cost,
         },
       };
     });
@@ -408,14 +462,17 @@ export default function EstatePanel() {
         </div>
 
         {/* Skills Section */}
-        {fellowship.ashwraith_huntress && (
+        {(fellowship.ashwraith_huntress || fellowship.restless_knight || fellowship.elder_wizard) && (
           <div className="space-y-2 pt-1">
             <h3 className="text-xs font-bold text-foreground">Skills</h3>
-            <div className="w-80 space-y-1">
-              <div className="flex items-center justify-between">
-                <span className="pb-1 text-xs font-medium text-foreground">
-                  Huntress Training
-                </span>
+            
+            {/* Huntress Training */}
+            {fellowship.ashwraith_huntress && (
+              <div className="w-80 space-y-1">
+                <div className="flex items-center justify-between">
+                  <span className="pb-1 text-xs font-medium text-foreground">
+                    Huntress Training
+                  </span>
                 {huntingSkills.level < 5 ? (
                   <TooltipProvider>
                     <Tooltip open={mobileTooltip.isTooltipOpen("upgrade-hunting-button")}>
@@ -500,7 +557,180 @@ export default function EstatePanel() {
                   ].filter(Boolean).join(', ')}
                 </span>
               </div>
-            </div>
+              </div>
+            )}
+
+            {/* Crushing Strike */}
+            {fellowship.restless_knight && (
+              <div className="w-80 space-y-1">
+                <div className="flex items-center justify-between">
+                  <span className="pb-1 text-xs font-medium text-foreground">
+                    Crushing Strike
+                  </span>
+                  {combatSkills.crushingStrikeLevel < 5 ? (
+                    <TooltipProvider>
+                      <Tooltip open={mobileTooltip.isTooltipOpen("upgrade-crushing-strike-button")}>
+                        <TooltipTrigger asChild>
+                          <div
+                            className="inline-block"
+                            onClick={mobileTooltip.isMobile ? (e) => {
+                              mobileTooltip.handleWrapperClick("upgrade-crushing-strike-button", resources.gold < CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel + 1].cost, false, e);
+                            } : undefined}
+                            onTouchStart={mobileTooltip.isMobile ? (e) => {
+                              mobileTooltip.handleTouchStart("upgrade-crushing-strike-button", resources.gold < CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel + 1].cost, false, e);
+                            } : undefined}
+                            onTouchEnd={mobileTooltip.isMobile ? (e) => {
+                              mobileTooltip.handleTouchEnd("upgrade-crushing-strike-button", resources.gold < CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel + 1].cost, handleCrushingStrikeUpgrade, e);
+                            } : undefined}
+                            onMouseDown={mobileTooltip.isMobile ? (e) => {
+                              mobileTooltip.handleMouseDown("upgrade-crushing-strike-button", resources.gold < CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel + 1].cost, false, e);
+                            } : undefined}
+                            onMouseUp={mobileTooltip.isMobile ? (e) => {
+                              mobileTooltip.handleMouseUp("upgrade-crushing-strike-button", resources.gold < CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel + 1].cost, handleCrushingStrikeUpgrade, e);
+                            } : undefined}
+                            onMouseEnter={() => {
+                              logger.log('[HIGHLIGHT] EstatePanel crushing strike mouse enter');
+                              setHighlightedResources(['gold']);
+                            }}
+                            onMouseLeave={() => {
+                              logger.log('[HIGHLIGHT] EstatePanel crushing strike mouse leave');
+                              setHighlightedResources([]);
+                            }}
+                          >
+                            <Button
+                              onClick={mobileTooltip.isMobile && mobileTooltip.isTooltipOpen("upgrade-crushing-strike-button") ? (e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                              } : handleCrushingStrikeUpgrade}
+                              disabled={resources.gold < CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel + 1].cost}
+                              size="xs"
+                              variant="outline"
+                              className="hover:bg-transparent hover:text-foreground"
+                              button_id="upgrade-crushing-strike"
+                            >
+                              Improve
+                            </Button>
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <div className="text-xs whitespace-nowrap">
+                            {CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel + 1].damage > CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel].damage && (
+                              <div>+{CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel + 1].damage - CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel].damage} damage</div>
+                            )}
+                            {CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel + 1].stunRounds > CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel].stunRounds && (
+                              <div>+{CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel + 1].stunRounds - CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel].stunRounds} stun round</div>
+                            )}
+                            <div className="border-t border-border my-1" />
+                            <div className={resources.gold >= CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel + 1].cost ? "" : "text-muted-foreground"}>
+                              -{CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel + 1].cost} Gold
+                            </div>
+                          </div>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  ) : null}
+                </div>
+                <Progress
+                  value={(combatSkills.crushingStrikeLevel / 5) * 100}
+                  className="h-2"
+                  segments={5}
+                />
+                <div className="flex justify-between text-xs text-muted-foreground">
+                  <span>
+                    {CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel].damage} damage, {CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel].stunRounds} round{CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel].stunRounds > 1 ? 's' : ''} stun
+                  </span>
+                </div>
+              </div>
+            )}
+
+            {/* Bloodflame Sphere */}
+            {fellowship.elder_wizard && (
+              <div className="w-80 space-y-1">
+                <div className="flex items-center justify-between">
+                  <span className="pb-1 text-xs font-medium text-foreground">
+                    Bloodflame Sphere
+                  </span>
+                  {combatSkills.bloodflameSphereLevel < 5 ? (
+                    <TooltipProvider>
+                      <Tooltip open={mobileTooltip.isTooltipOpen("upgrade-bloodflame-sphere-button")}>
+                        <TooltipTrigger asChild>
+                          <div
+                            className="inline-block"
+                            onClick={mobileTooltip.isMobile ? (e) => {
+                              mobileTooltip.handleWrapperClick("upgrade-bloodflame-sphere-button", resources.gold < BLOODFLAME_SPHERE_UPGRADES[combatSkills.bloodflameSphereLevel + 1].cost, false, e);
+                            } : undefined}
+                            onTouchStart={mobileTooltip.isMobile ? (e) => {
+                              mobileTooltip.handleTouchStart("upgrade-bloodflame-sphere-button", resources.gold < BLOODFLAME_SPHERE_UPGRADES[combatSkills.bloodflameSphereLevel + 1].cost, false, e);
+                            } : undefined}
+                            onTouchEnd={mobileTooltip.isMobile ? (e) => {
+                              mobileTooltip.handleTouchEnd("upgrade-bloodflame-sphere-button", resources.gold < BLOODFLAME_SPHERE_UPGRADES[combatSkills.bloodflameSphereLevel + 1].cost, handleBloodflameSphereUpgrade, e);
+                            } : undefined}
+                            onMouseDown={mobileTooltip.isMobile ? (e) => {
+                              mobileTooltip.handleMouseDown("upgrade-bloodflame-sphere-button", resources.gold < BLOODFLAME_SPHERE_UPGRADES[combatSkills.bloodflameSphereLevel + 1].cost, false, e);
+                            } : undefined}
+                            onMouseUp={mobileTooltip.isMobile ? (e) => {
+                              mobileTooltip.handleMouseUp("upgrade-bloodflame-sphere-button", resources.gold < BLOODFLAME_SPHERE_UPGRADES[combatSkills.bloodflameSphereLevel + 1].cost, handleBloodflameSphereUpgrade, e);
+                            } : undefined}
+                            onMouseEnter={() => {
+                              logger.log('[HIGHLIGHT] EstatePanel bloodflame sphere mouse enter');
+                              setHighlightedResources(['gold']);
+                            }}
+                            onMouseLeave={() => {
+                              logger.log('[HIGHLIGHT] EstatePanel bloodflame sphere mouse leave');
+                              setHighlightedResources([]);
+                            }}
+                          >
+                            <Button
+                              onClick={mobileTooltip.isMobile && mobileTooltip.isTooltipOpen("upgrade-bloodflame-sphere-button") ? (e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                              } : handleBloodflameSphereUpgrade}
+                              disabled={resources.gold < BLOODFLAME_SPHERE_UPGRADES[combatSkills.bloodflameSphereLevel + 1].cost}
+                              size="xs"
+                              variant="outline"
+                              className="hover:bg-transparent hover:text-foreground"
+                              button_id="upgrade-bloodflame-sphere"
+                            >
+                              Improve
+                            </Button>
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <div className="text-xs whitespace-nowrap">
+                            {BLOODFLAME_SPHERE_UPGRADES[combatSkills.bloodflameSphereLevel + 1].damage > BLOODFLAME_SPHERE_UPGRADES[combatSkills.bloodflameSphereLevel].damage && (
+                              <div>+{BLOODFLAME_SPHERE_UPGRADES[combatSkills.bloodflameSphereLevel + 1].damage - BLOODFLAME_SPHERE_UPGRADES[combatSkills.bloodflameSphereLevel].damage} damage</div>
+                            )}
+                            {BLOODFLAME_SPHERE_UPGRADES[combatSkills.bloodflameSphereLevel + 1].burnDamage > BLOODFLAME_SPHERE_UPGRADES[combatSkills.bloodflameSphereLevel].burnDamage && (
+                              <div>+{BLOODFLAME_SPHERE_UPGRADES[combatSkills.bloodflameSphereLevel + 1].burnDamage - BLOODFLAME_SPHERE_UPGRADES[combatSkills.bloodflameSphereLevel].burnDamage} burn damage</div>
+                            )}
+                            {BLOODFLAME_SPHERE_UPGRADES[combatSkills.bloodflameSphereLevel + 1].burnRounds > BLOODFLAME_SPHERE_UPGRADES[combatSkills.bloodflameSphereLevel].burnRounds && (
+                              <div>+{BLOODFLAME_SPHERE_UPGRADES[combatSkills.bloodflameSphereLevel + 1].burnRounds - BLOODFLAME_SPHERE_UPGRADES[combatSkills.bloodflameSphereLevel].burnRounds} burn round</div>
+                            )}
+                            {BLOODFLAME_SPHERE_UPGRADES[combatSkills.bloodflameSphereLevel + 1].healthCost > BLOODFLAME_SPHERE_UPGRADES[combatSkills.bloodflameSphereLevel].healthCost && (
+                              <div>+{BLOODFLAME_SPHERE_UPGRADES[combatSkills.bloodflameSphereLevel + 1].healthCost - BLOODFLAME_SPHERE_UPGRADES[combatSkills.bloodflameSphereLevel].healthCost} health cost</div>
+                            )}
+                            <div className="border-t border-border my-1" />
+                            <div className={resources.gold >= BLOODFLAME_SPHERE_UPGRADES[combatSkills.bloodflameSphereLevel + 1].cost ? "" : "text-muted-foreground"}>
+                              -{BLOODFLAME_SPHERE_UPGRADES[combatSkills.bloodflameSphereLevel + 1].cost} Gold
+                            </div>
+                          </div>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  ) : null}
+                </div>
+                <Progress
+                  value={(combatSkills.bloodflameSphereLevel / 5) * 100}
+                  className="h-2"
+                  segments={5}
+                />
+                <div className="flex justify-between text-xs text-muted-foreground">
+                  <span>
+                    {BLOODFLAME_SPHERE_UPGRADES[combatSkills.bloodflameSphereLevel].damage} damage, {BLOODFLAME_SPHERE_UPGRADES[combatSkills.bloodflameSphereLevel].burnDamage} burn x {BLOODFLAME_SPHERE_UPGRADES[combatSkills.bloodflameSphereLevel].burnRounds} round{BLOODFLAME_SPHERE_UPGRADES[combatSkills.bloodflameSphereLevel].burnRounds > 1 ? 's' : ''}, {BLOODFLAME_SPHERE_UPGRADES[combatSkills.bloodflameSphereLevel].healthCost} health cost
+                  </span>
+                </div>
+              </div>
+            )}
           </div>
         )}
 
