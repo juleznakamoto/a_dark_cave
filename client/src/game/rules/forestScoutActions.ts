@@ -636,7 +636,7 @@ export function handleForestCave(
     result.logEntries!.push({
       id: `forest-cave-success-${Date.now()}`,
       message:
-        "As the villagers descend into the cave brutal hounds attack in packs, their eyes gleaming with savage hunger. After a fierce battle, the beasts are slain. The forest tribe is saved.",
+        "As the villagers descend the cave, savage hounds erupt from darkness in relentless packs. Screams echo as claws tear and teeth snap. When the last creature falls, all villagers survive, but hollowed by what they’ve endured.",
       timestamp: Date.now(),
       type: "system",
       visualEffect: {
@@ -645,13 +645,13 @@ export function handleForestCave(
       },
     });
   } else {
-    const villagerDeaths = Math.min(state.current_population, Math.floor(Math.random() * 8) + 3 + state.CM * 4);
+    const villagerDeaths = Math.min(state.current_population, Math.floor(Math.random() * 6) + 2 + state.CM * 3);
     const deathResult = killVillagers(state, villagerDeaths);
     Object.assign(result.stateUpdates, deathResult);
 
     result.logEntries!.push({
       id: `forest-cave-failure-${Date.now()}`,
-      message: `Your expedition enters the cave but is overwhelmed by a pack of brutal hounds. The beasts are more ferocious than expected. ${villagerDeaths} villagers are torn apart by savage jaws before the survivors retreat in terror.`,
+      message: `As the expedition enters the cave it is overwhelmed by a pack of brutal hounds. ${villagerDeaths} villagers are torn apart by savage jaws before the survivors manage to retreat.`,
       timestamp: Date.now(),
       type: "system",
       visualEffect: {
