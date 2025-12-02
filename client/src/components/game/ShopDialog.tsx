@@ -272,7 +272,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
           throw new Error("User not authenticated");
         }
 
-        // Special handling for daily free gold - claim immediately
+        // Special handling for daily free gold - claim immediately without saving to DB
         if (itemId === 'gold_100_free') {
           const lastClaim = gameState.lastFreeGoldClaim || 0;
           const now = Date.now();
@@ -311,6 +311,8 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
             title: "Success!",
             description: `100 Gold has been added to your resources!`,
           });
+          
+          // Return early - don't save to database
           return;
         }
 
@@ -343,7 +345,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
           }
         }
 
-        // Save purchase to Supabase for non-daily-gold free items
+        // Save purchase to Supabase for other free items (non-daily gold)
         const client = await getSupabaseClient();
 
         // If this is a bundle with components, create individual purchases for each component
