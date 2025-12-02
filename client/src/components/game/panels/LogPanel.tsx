@@ -41,6 +41,18 @@ export default function LogPanel() {
         
         timersRef.current.set(entry.id, timerId);
       }
+
+      // Remove new villager entries after exactly 60 seconds
+      if (entry.id.startsWith('stranger-approaches-') && !timersRef.current.has(`remove-${entry.id}`)) {
+        const removeTimerId = setTimeout(() => {
+          const currentLog = useGameStore.getState().log;
+          const filteredLog = currentLog.filter((logEntry) => logEntry.id !== entry.id);
+          useGameStore.setState({ log: filteredLog });
+          timersRef.current.delete(`remove-${entry.id}`);
+        }, 60000); // Exactly 60 seconds
+        
+        timersRef.current.set(`remove-${entry.id}`, removeTimerId);
+      }
     });
 
     // Cleanup function: clear all active timers
