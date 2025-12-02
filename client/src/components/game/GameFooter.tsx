@@ -122,7 +122,7 @@ export default function GameFooter() {
             >
               Donate
               {true && (
-                  <span className="absolute -top-[-4px] -right-[-0px] w-1 h-1 bg-red-600 rounded-full border-radius: 100% shop-notification-pulse" />
+                  <span className="absolute -top-[-4px] -right-[-0px] w-1 h-1 bg-red-600 rounded-full shop-notification-pulse" />
                 )}
             </Button>
             {/* Added button to trigger end screen */}
