@@ -45,36 +45,13 @@ function App() {
         );
         const playlightSDK = module.default;
         
-        // Initialize SDK with exit intent
-        playlightSDK.init({
-          exitIntent: {
-            enabled: true,
-            immediate: false
-          },
-          sidebar: {
-            hasFrameworkRoot: true
-          }
-        });
+        // Initialize SDK
+        playlightSDK.init();
         
         // Import game store
         const { useGameStore } = await import('./game/state');
         
-        // Subscribe to pause state to control sidebar visibility
-        let previousPauseState = useGameStore.getState().isPaused;
-        useGameStore.subscribe((state) => {
-          if (state.isPaused !== previousPauseState) {
-            previousPauseState = state.isPaused;
-            if (state.isPaused) {
-              console.log("[PLAYLIGHT] Game paused - showing sidebar");
-              playlightSDK.show();
-            } else {
-              console.log("[PLAYLIGHT] Game unpaused - hiding sidebar");
-              playlightSDK.hide();
-            }
-          }
-        });
-        
-        // Set up event listeners for game pause/unpause when sidebar opens
+        // Set up event listeners for game pause/unpause
         playlightSDK.onEvent('discoveryOpen', () => {
           console.log("[PLAYLIGHT] Discovery opened - pausing game");
           const state = useGameStore.getState();
@@ -91,7 +68,7 @@ function App() {
           }
         });
         
-        console.log("[PLAYLIGHT] SDK initialized with exit intent detection");
+        console.log("[PLAYLIGHT] SDK initialized with game pause integration");
       } catch (error) {
         console.error("Error loading the Playlight SDK:", error);
       }

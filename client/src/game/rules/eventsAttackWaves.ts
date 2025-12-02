@@ -33,7 +33,7 @@ function calculateEnemyStats(params: {
 const WAVE_PARAMS = {
   firstWave: {
     attack: { base: 20, random: 10, options: [20, 25, 30],cmBonus: 5 },
-    health: { base: 250, cmBonus: 50 },
+    health: { base: 300, cmBonus: 50 },
     silverReward: 200,
     initialDuration: 10 * 60 * 1000, // 10 minutes
     defeatDuration: 20 * 60 * 1000, // 20 minutes
@@ -43,7 +43,7 @@ const WAVE_PARAMS = {
   },
   secondWave: {
     attack: { base: 30, random: 10, options: [30, 35, 40], cmBonus: 5 },
-    health: { base: 350, cmBonus: 50 },
+    health: { base: 400, cmBonus: 50 },
     silverReward: 300,
     initialDuration: 10 * 60 * 1000,
     defeatDuration: 20 * 60 * 1000,
@@ -53,7 +53,7 @@ const WAVE_PARAMS = {
   },
   thirdWave: {
     attack: { base: 40, random: 10, options: [40, 45, 50], cmBonus: 10 },
-    health: { base: 400, cmBonus: 100 },
+    health: { base: 500, cmBonus: 100 },
     silverReward: 400,
     initialDuration: 10 * 60 * 1000,
     defeatDuration: 20 * 60 * 1000,
@@ -63,7 +63,7 @@ const WAVE_PARAMS = {
   },
   fourthWave: {
     attack: { base: 50, random: 15, options: [50, 55, 60, 65], cmBonus: 15 },
-    health: { base: 450, cmBonus: 150 },
+    health: { base: 600, cmBonus: 150 },
     silverReward: 500,
     initialDuration: 10 * 60 * 1000,
     defeatDuration: 20 * 60 * 1000,
@@ -73,7 +73,7 @@ const WAVE_PARAMS = {
   },
   fifthWave: {
     attack: { base: 65, random: 20, options: [65, 70, 75, 80, 85], cmBonus: 20 },
-    health: { base: 700, cmBonus: 200 },
+    health: { base: 800, cmBonus: 200 },
     silverReward: 1000,
     initialDuration: 10 * 60 * 1000,
     defeatDuration: 20 * 60 * 1000,
