@@ -492,10 +492,12 @@ export default function EstatePanel() {
               />
               <div className="flex justify-between text-xs text-muted-foreground">
                 <span>
-                  +{HUNTING_SKILL_UPGRADES[huntingSkills.level].huntBonus}% hunt, 
-                  +{HUNTING_SKILL_UPGRADES[huntingSkills.level].food} food, 
-                  +{HUNTING_SKILL_UPGRADES[huntingSkills.level].fur} fur, 
-                  +{HUNTING_SKILL_UPGRADES[huntingSkills.level].bones} bones
+                  {[
+                    `+${HUNTING_SKILL_UPGRADES[huntingSkills.level].huntBonus}% hunt`,
+                    HUNTING_SKILL_UPGRADES[huntingSkills.level].food > 0 && `+${HUNTING_SKILL_UPGRADES[huntingSkills.level].food} food`,
+                    HUNTING_SKILL_UPGRADES[huntingSkills.level].fur > 0 && `+${HUNTING_SKILL_UPGRADES[huntingSkills.level].fur} fur`,
+                    HUNTING_SKILL_UPGRADES[huntingSkills.level].bones > 0 && `+${HUNTING_SKILL_UPGRADES[huntingSkills.level].bones} bones`
+                  ].filter(Boolean).join(', ')}
                 </span>
               </div>
             </div>
