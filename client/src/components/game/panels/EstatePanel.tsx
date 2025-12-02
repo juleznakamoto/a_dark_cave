@@ -35,7 +35,7 @@ const SLEEP_INTENSITY_UPGRADES = [
   { level: 5, percentage: 25, cost: 2500, currency: "gold" },
 ];
 
-const HUNTING_SKILL_UPGRADES = [
+export const HUNTING_SKILL_UPGRADES = [
   { level: 0, huntBonus: 25, food: 0, fur: 0, bones: 0, cost: 0 },
   { level: 1, huntBonus: 25, food: 5, fur: 0, bones: 0, cost: 500 },
   { level: 2, huntBonus: 50, food: 5, fur: 1, bones: 1, cost: 1000 },
@@ -43,6 +43,15 @@ const HUNTING_SKILL_UPGRADES = [
   { level: 4, huntBonus: 75, food: 15, fur: 2, bones: 2, cost: 2000 },
   { level: 5, huntBonus: 75, food: 30, fur: 2, bones: 2, cost: 2500 },
 ];
+
+// Extract bonuses for use in other modules
+export const HUNTING_SKILL_BONUSES = HUNTING_SKILL_UPGRADES.map(u => ({
+  food: u.food,
+  fur: u.fur,
+  bones: u.bones
+}));
+
+export const HUNT_BONUSES = HUNTING_SKILL_UPGRADES.map(u => u.huntBonus);
 
 export default function EstatePanel() {
   const {

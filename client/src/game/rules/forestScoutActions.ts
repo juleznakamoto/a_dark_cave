@@ -3,6 +3,7 @@ import { ActionResult } from "@/game/actions";
 import { applyActionEffects } from "@/game/rules";
 import { killVillagers } from "@/game/stateHelpers";
 import { calculateSuccessChance } from "./events";
+import { HUNT_BONUSES } from "@/components/game/panels/EstatePanel";
 
 export const forestScoutActions: Record<string, Action> = {
   hunt: {
@@ -15,21 +16,18 @@ export const forestScoutActions: Record<string, Action> = {
     effects: {
       "resources.food": (state: GameState) => {
         const huntingSkillLevel = state.huntingSkills?.level || 0;
-        const HUNT_BONUSES = [25, 25, 50, 50, 75, 75];
         const bonus = HUNT_BONUSES[huntingSkillLevel];
         const baseFood = Math.floor(Math.random() * 7) + 6;
         return Math.floor(baseFood * (1 + bonus / 100));
       },
       "resources.fur": (state: GameState) => {
         const huntingSkillLevel = state.huntingSkills?.level || 0;
-        const HUNT_BONUSES = [25, 25, 50, 50, 75, 75];
         const bonus = HUNT_BONUSES[huntingSkillLevel];
         const baseFur = Math.floor(Math.random() * 4) + 3;
         return Math.floor(baseFur * (1 + bonus / 100));
       },
       "resources.bones": (state: GameState) => {
         const huntingSkillLevel = state.huntingSkills?.level || 0;
-        const HUNT_BONUSES = [25, 25, 50, 50, 75, 75];
         const bonus = HUNT_BONUSES[huntingSkillLevel];
         const baseBones = Math.floor(Math.random() * 4) + 3;
         return Math.floor(baseBones * (1 + bonus / 100));

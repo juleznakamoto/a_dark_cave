@@ -1,5 +1,6 @@
 import { villageBuildActions } from "@/game/rules/villageBuildActions";
 import { GameState } from "@shared/schema"; // Assuming GameState is defined elsewhere
+import { HUNTING_SKILL_BONUSES } from "@/components/game/panels/EstatePanel";
 
 export interface PopulationJobConfig {
   id: string;
@@ -307,14 +308,6 @@ export const getTotalPopulationEffects = (
   // Apply hunting skills bonus to hunters
   if (state.villagers.hunter > 0) {
     const huntingSkillLevel = state.huntingSkills?.level || 0;
-    const HUNTING_SKILL_BONUSES = [
-      { food: 0, fur: 0, bones: 0 },
-      { food: 5, fur: 0, bones: 0 },
-      { food: 5, fur: 1, bones: 1 },
-      { food: 15, fur: 1, bones: 1 },
-      { food: 15, fur: 2, bones: 2 },
-      { food: 30, fur: 2, bones: 2 },
-    ];
     const bonus = HUNTING_SKILL_BONUSES[huntingSkillLevel];
 
     totalEffects.food = (totalEffects.food || 0) + state.villagers.hunter * (10 + bonus.food);
