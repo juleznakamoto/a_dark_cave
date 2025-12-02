@@ -9,13 +9,17 @@ import { logger } from "@/lib/logger";
 
 export default function Game() {
   const initialize = useGameStore((state) => state.initialize);
-  const { eventDialog, setEventDialog, combatDialog, setCombatDialog } =
+  const { eventDialog, setEventDialog, combatDialog, setCombatDialog, setShopDialogOpen } =
     useGameStore();
   const [isInitialized, setIsInitialized] = useState(false);
   const [shouldStartMusic, setShouldStartMusic] = useState(false);
 
   useEffect(() => {
     const initializeGame = async () => {
+      // Check for openShop query parameter
+      const urlParams = new URLSearchParams(window.location.search);
+      const openShop = urlParams.get('openShop') === 'true';
+      
       // Wait for auth to be ready first
       const { getCurrentUser } = await import('@/game/auth');
       const user = await getCurrentUser();
@@ -48,6 +52,13 @@ export default function Game() {
 
       // Mark as initialized
       setIsInitialized(true);
+
+      // Open shop if requested
+      if (openShop) {
+        setTimeout(() => {
+          setShopDialogOpen(true);
+        }, 500);
+      }
 
       // Start game loop
       startGameLoop();

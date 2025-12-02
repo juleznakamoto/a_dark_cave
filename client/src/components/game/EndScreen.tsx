@@ -1,53 +1,10 @@
-import Hero from "@/components/ui/animated-shader-hero";
-import { deleteSave } from "@/game/save";
-import { useGameStore } from "@/game/state";
+import { useEffect } from "react";
 
 export default function EndScreen() {
-  const { setShopDialogOpen, setShowEndScreen } = useGameStore();
+  useEffect(() => {
+    // Navigate to the dedicated end screen page
+    window.location.href = "/end-screen";
+  }, []);
 
-  const handlePlayAgain = () => {
-    // Delete save and reload the page to start fresh
-    deleteSave();
-    window.location.reload();
-  };
-
-  const handleMainMenu = () => {
-    // Navigate to main menu (or home page)
-    window.location.href = "/";
-  };
-
-  const handleCruelMode = () => {
-    // Close end screen and open shop
-    setShowEndScreen(false);
-    setShopDialogOpen(true);
-  };
-
-  return (
-    <div className="fixed inset-0 z-[99999]">
-      <Hero
-        trustBadge={{
-          text: "Well Done!",
-        }}
-        headline={{
-          line1: "Your Journey",
-          line2: "Ends Here",
-        }}
-        subtitle1="At least for now..."
-        subtitle2="Try Cruel Mode for an even bigger challenge with an extended gameplay."
-        subtitle3=""
-        buttons={{
-          primary: {
-            text: "⛤ Cruel Mode",
-            onClick: handleCruelMode,
-            buttonId: "end-screen-cruel-mode",
-          },
-          secondary: {
-            text: "Close",
-            onClick: handleMainMenu,
-            buttonId: "end-screen-close",
-          },
-        }}
-      />
-    </div>
-  );
+  return null;
 }

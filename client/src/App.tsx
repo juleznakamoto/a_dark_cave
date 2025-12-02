@@ -5,6 +5,7 @@ import { queryClient } from "./lib/queryClient";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Game from "@/pages/game";
+import EndScreenPage from "@/pages/end-screen";
 import HeroTest from "@/pages/hero-test";
 import NotFound from "@/pages/not-found";
 import ResetPassword from "@/pages/reset-password";
@@ -21,15 +22,16 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={Game} />
-      <Route path="/boost" component={Game} />
-      <Route path="/hero-test" component={HeroTest} />
-      <Route path="/reset-password" component={ResetPassword} />
+      <Route path="/game" component={Game} />
+      <Route path="/end-screen" component={EndScreenPage} />
       <Route path="/imprint" component={Imprint} />
       <Route path="/privacy" component={Privacy} />
       <Route path="/terms" component={Terms} />
       <Route path="/withdrawal" component={Withdrawal} />
+      <Route path="/reset-password" component={ResetPassword} />
+      <Route path="/explosion-test" component={ExplosionTest} />
+      <Route path="/hero-test" component={HeroTest} />
       <Route path="/admin/dashboard" component={AdminDashboard} />
-      {isDev && <Route path="/explosion-test" component={ExplosionTest} />}
       <Route component={NotFound} />
     </Switch>
   );
@@ -44,13 +46,13 @@ function App() {
           "https://sdk.playlight.dev/playlight-sdk.es.js"
         );
         const playlightSDK = module.default;
-        
+
         // Initialize SDK
         playlightSDK.init();
-        
+
         // Import game store
         const { useGameStore } = await import('./game/state');
-        
+
         // Set up event listeners for game pause/unpause
         playlightSDK.onEvent('discoveryOpen', () => {
           console.log("[PLAYLIGHT] Discovery opened - pausing game");
@@ -59,7 +61,7 @@ function App() {
             state.togglePause();
           }
         });
-        
+
         playlightSDK.onEvent('discoveryClose', () => {
           console.log("[PLAYLIGHT] Discovery closed - resuming game");
           const state = useGameStore.getState();
@@ -67,7 +69,7 @@ function App() {
             state.togglePause();
           }
         });
-        
+
         console.log("[PLAYLIGHT] SDK initialized with game pause integration");
       } catch (error) {
         console.error("Error loading the Playlight SDK:", error);
