@@ -1110,7 +1110,7 @@ export const fellowshipEffects: Record<string, EffectDefinition> = {
     id: "restless_knight",
     name: "Restless Knight",
     description:
-      "Veteran of combat who has seen the remnants of the old world. Unlocks Crushing Strike: a combat skill that deals 10 damage and stuns enemies for one round.",
+      "Veteran of combat who has seen the remnants of the old world. Unlocks combat skill Crushing Strike.",
     bonuses: {
       generalBonuses: {},
     },
@@ -1119,7 +1119,7 @@ export const fellowshipEffects: Record<string, EffectDefinition> = {
     id: "elder_wizard",
     name: "Elder Wizard",
     description:
-      "Old wizard who mastered arcane fire. Unlocks Bloodflame Sphere: a combat skill dealing initial damage and burning damage over multiple rounds, but consumes the caster's health.",
+      "Old wizard who mastered arcane fire. Unlocks combat skill Bloodflame Sphere.",
     bonuses: {
       generalBonuses: {},
     },
