@@ -11,9 +11,12 @@ const mockStripe = {
 } as unknown as Stripe;
 
 vi.mock('stripe', () => {
-  const MockStripe = vi.fn(() => mockStripe);
   return {
-    default: MockStripe,
+    default: class MockStripe {
+      constructor() {
+        return mockStripe;
+      }
+    },
   };
 });
 
