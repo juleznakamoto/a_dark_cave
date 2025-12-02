@@ -711,12 +711,23 @@ export const useGameStore = create<GameStore>((set, get) => ({
   restartGame: () => {
     const state = get();
 
+    // Reset feast activations for new game
+    const resetFeastPurchases: Record<string, any> = {};
+    if (state.feastPurchases) {
+      Object.entries(state.feastPurchases).forEach(([purchaseId, purchase]) => {
+        resetFeastPurchases[purchaseId] = {
+          ...purchase,
+          activationsRemaining: purchase.totalActivations,
+        };
+      });
+    }
+
     // Preserve these across game restarts
     const preserved = {
       // Purchases and boosts that persist
       boostMode: state.boostMode,
       activatedPurchases: state.activatedPurchases || {},
-      feastPurchases: state.feastPurchases || {},
+      feastPurchases: resetFeastPurchases,
 
       // Referral system (persists forever)
       referrals: state.referrals || [],
