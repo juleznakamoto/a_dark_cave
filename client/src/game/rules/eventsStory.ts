@@ -399,7 +399,7 @@ export const storyEvents: Record<string, GameEvent> = {
       state.story.seen.forestTribeHelpRejected ? 60 : 30,
     title: "A Desperate Plea",
     message:
-      "A wildling emerges from the forest, his body covered in tribal markings and scars. 'I come from a tribe in the woods,' he says urgently. 'Brutal beasts living in a cave in the woods attack us relentlessly. We face extinction. Please, help us survive.'",
+      "A wildling emerges from the forest, her pale body covered in tribal markings and scars. 'I come from a tribe in the woods,' she says urgently. 'Brutal beasts living in a cave in the woods attack us relentlessly. We face extinction. Please, help us survive.'",
     triggered: false,
     priority: 5,
     visualEffect: {
@@ -422,7 +422,7 @@ export const storyEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "The wildling's eyes light up with hope. 'You are our only chance,' he says. 'The cave of the beasts lies deep in the forest. May the gods protect you.'",
+              "The wildling's eyes light up with hope. 'You are our only chance,' she says. 'The cave of the beasts lies deep in the forest. May the gods protect you.'",
           };
         },
       },

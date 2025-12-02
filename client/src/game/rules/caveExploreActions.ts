@@ -218,7 +218,7 @@ export const caveExploreActions: Record<string, Action> = {
     },
     cost: {
       "resources.torch": 5,
-      "resources.food": 10,
+      "resources.food": 25,
     },
     effects: {
       "resources.stone": "random(4,8)",
@@ -241,7 +241,7 @@ export const caveExploreActions: Record<string, Action> = {
       "tools.steel_lantern": false,
     },
     cost: {
-      "resources.food": 25,
+      "resources.food": 50,
     },
     effects: {
       "resources.stone": "random(5,10)",
@@ -265,7 +265,7 @@ export const caveExploreActions: Record<string, Action> = {
       "tools.obsidian_lantern": false,
     },
     cost: {
-      "resources.food": 50,
+      "resources.food": 100,
     },
     effects: {
       "resources.obsidian": "random(1,4)",
@@ -288,7 +288,7 @@ export const caveExploreActions: Record<string, Action> = {
       "tools.adamant_lantern": false,
     },
     cost: {
-      "resources.food": 250,
+      "resources.food": 500,
     },
     effects: {
       "resources.obsidian": "random(1,6)",
@@ -311,7 +311,7 @@ export const caveExploreActions: Record<string, Action> = {
       "tools.adamant_lantern": true,
     },
     cost: {
-      "resources.food": 500,
+      "resources.food": 750,
     },
     effects: {
       "resources.obsidian": "random(1,8)",
