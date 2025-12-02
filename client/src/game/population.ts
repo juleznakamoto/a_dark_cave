@@ -319,14 +319,10 @@ export const getTotalPopulationEffects = (
   if (state.villagers.hunter > 0) {
     const huntingSkillLevel = state.huntingSkills?.level || 0;
     const bonus = HUNTING_SKILL_BONUSES[huntingSkillLevel];
-
-    const huntingSkillLevel = state.huntingSkills?.level || 0;
-    const { HUNTING_SKILL_BONUSES } = require("@/components/game/panels/EstatePanel");
-    const skillBonus = HUNTING_SKILL_BONUSES[huntingSkillLevel];
     
-    totalEffects.food = (totalEffects.food || 0) + state.villagers.hunter * (10 + bonus.food + skillBonus.food);
-    totalEffects.fur = (totalEffects.fur || 0) + state.villagers.hunter * (5 + bonus.fur + skillBonus.fur);
-    totalEffects.bones = (totalEffects.bones || 0) + state.villagers.hunter * (5 + bonus.bones + skillBonus.bones);
+    totalEffects.food = (totalEffects.food || 0) + state.villagers.hunter * bonus.food;
+    totalEffects.fur = (totalEffects.fur || 0) + state.villagers.hunter * bonus.fur;
+    totalEffects.bones = (totalEffects.bones || 0) + state.villagers.hunter * bonus.bones;
   }
 
 
