@@ -125,7 +125,7 @@ export default function AdminDashboard() {
   const [users, setUsers] = useState<Array<{ id: string; email: string }>>([]);
 
   // Filter states
-  const [timeRange, setTimeRange] = useState<'7d' | '30d' | 'all'>('30d');
+  const [timeRange, setTimeRange] = useState<'1d' | '7d' | '30d' | 'all'>('30d');
   const [selectedUser, setSelectedUser] = useState<string>('all');
   const [selectedButtons, setSelectedButtons] = useState<Set<string>>(new Set(['mine', 'hunt', 'chopWood', 'caveExplore'])); // Initialize with all buttons
   const [selectedClickTypes, setSelectedClickTypes] = useState<Set<string>>(new Set()); // For individual click type chart
@@ -1725,11 +1725,12 @@ export default function AdminDashboard() {
                 ))}
               </SelectContent>
             </Select>
-            <Select value={timeRange} onValueChange={(value: '7d' | '30d' | 'all') => setTimeRange(value)}>
+            <Select value={timeRange} onValueChange={(value: '1d' | '7d' | '30d' | 'all') => setTimeRange(value)}>
               <SelectTrigger className="w-[120px]">
                 <SelectValue placeholder="Time Range" />
               </SelectTrigger>
               <SelectContent>
+                <SelectItem value="1d">Last 24 Hours</SelectItem>
                 <SelectItem value="7d">Last 7 Days</SelectItem>
                 <SelectItem value="30d">Last 30 Days</SelectItem>
                 <SelectItem value="all">All Time</SelectItem>
