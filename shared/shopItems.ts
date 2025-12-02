@@ -153,8 +153,8 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "champion_bundle",
     name: "Champion Bundle",
     description: "A powerful pack with 5000 Gold and 1 Great Feast",
-    originalPrice: 1299,
-    price: 649, // 6.49 €
+    originalPrice: 1298, // 999 + 299
+    price: 599, // 5.99 € (discounted from 648)
     rewards: {
       resources: { gold: 5000 },
       feastActivations: 1,
