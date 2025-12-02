@@ -2998,30 +2998,6 @@ export default function AdminDashboard() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="mb-4 flex gap-4 flex-wrap">
-                  {['exploreCave', 'mineStone', 'caveExplore'].map((miningType) => (
-                    <label key={miningType} className="flex items-center gap-2 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        defaultChecked={true}
-                        onChange={(e) => {
-                          const checkbox = e.target;
-                          const lines = document.querySelectorAll(`[data-mining-type="${miningType}"]`);
-                          lines.forEach(line => {
-                            const element = line as HTMLElement;
-                            element.style.display = checkbox.checked ? '' : 'none';
-                          });
-                        }}
-                        className="cursor-pointer"
-                      />
-                      <span className="text-sm">
-                        {miningType === 'exploreCave' ? 'Cave Exploring' : 
-                         miningType === 'mineStone' ? 'Stone Mining' : 
-                         'General Cave Explore'}
-                      </span>
-                    </label>
-                  ))}
-                </div>
                 <ResponsiveContainer width="100%" height={400}>
                   <LineChart data={getButtonUpgradesOverPlaytime()}>
                     <CartesianGrid strokeDasharray="3 3" />
@@ -3029,33 +3005,7 @@ export default function AdminDashboard() {
                     <YAxis label={{ value: 'Average Level', angle: -90, position: 'insideLeft' }} />
                     <Tooltip />
                     <Legend />
-                    <Line 
-                      type="monotone" 
-                      dataKey="exploreCave" 
-                      stroke="#8884d8" 
-                      strokeWidth={2} 
-                      dot={{ r: 3 }} 
-                      name="Cave Exploring"
-                      data-mining-type="exploreCave"
-                    />
-                    <Line 
-                      type="monotone" 
-                      dataKey="mineStone" 
-                      stroke="#82ca9d" 
-                      strokeWidth={2} 
-                      dot={{ r: 3 }} 
-                      name="Stone Mining"
-                      data-mining-type="mineStone"
-                    />
-                    <Line 
-                      type="monotone" 
-                      dataKey="caveExplore" 
-                      stroke="#0088FE" 
-                      strokeWidth={2} 
-                      dot={{ r: 3 }} 
-                      name="General Cave Explore"
-                      data-mining-type="caveExplore"
-                    />
+                    <Line type="monotone" dataKey="mineStone" stroke="#82ca9d" strokeWidth={2} dot={{ r: 3 }} name="Stone Mining" />
                   </LineChart>
                 </ResponsiveContainer>
               </CardContent>
