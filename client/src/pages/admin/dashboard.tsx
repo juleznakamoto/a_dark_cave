@@ -1352,7 +1352,7 @@ export default function AdminDashboard() {
     const playtimeBuckets = new Map<number, Record<string, { total: number; count: number }>>();
     let maxBucket = 0;
 
-    const upgradeTypes = ['exploreCave', 'mineStone', 'hunt', 'chopWood', 'caveExplore'];
+    const upgradeTypes = ['exploreCave', 'mineStone', 'mineIron', 'mineCoal', 'mineSulfur', 'mineObsidian', 'mineAdamant', 'hunt', 'chopWood', 'caveExplore'];
 
     filteredSaves.forEach(save => {
       const playTimeMinutes = save.game_state?.playTime ? Math.round(save.game_state.playTime / 1000 / 60) : 0;
@@ -2998,6 +2998,35 @@ export default function AdminDashboard() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
+                <div className="mb-4 flex gap-4 flex-wrap">
+                  {[
+                    { key: 'mineStone', label: 'Stone Mining', color: '#82ca9d' },
+                    { key: 'mineIron', label: 'Iron Mining', color: '#8884d8' },
+                    { key: 'mineCoal', label: 'Coal Mining', color: '#ffc658' },
+                    { key: 'mineSulfur', label: 'Sulfur Mining', color: '#ff8042' },
+                    { key: 'mineObsidian', label: 'Obsidian Mining', color: '#0088FE' },
+                    { key: 'mineAdamant', label: 'Adamant Mining', color: '#00C49F' }
+                  ].map((miningType) => (
+                    <label key={miningType.key} className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        defaultChecked={true}
+                        onChange={(e) => {
+                          const checkbox = e.target;
+                          const lines = document.querySelectorAll(`[data-mining-type="${miningType.key}"]`);
+                          lines.forEach(line => {
+                            const element = line as HTMLElement;
+                            element.style.display = checkbox.checked ? '' : 'none';
+                          });
+                        }}
+                        className="cursor-pointer"
+                      />
+                      <span className="text-sm" style={{ color: miningType.color }}>
+                        {miningType.label}
+                      </span>
+                    </label>
+                  ))}
+                </div>
                 <ResponsiveContainer width="100%" height={400}>
                   <LineChart data={getButtonUpgradesOverPlaytime()}>
                     <CartesianGrid strokeDasharray="3 3" />
@@ -3005,7 +3034,60 @@ export default function AdminDashboard() {
                     <YAxis label={{ value: 'Average Level', angle: -90, position: 'insideLeft' }} />
                     <Tooltip />
                     <Legend />
-                    <Line type="monotone" dataKey="mineStone" stroke="#82ca9d" strokeWidth={2} dot={{ r: 3 }} name="Stone Mining" />
+                    <Line 
+                      type="monotone" 
+                      dataKey="mineStone" 
+                      stroke="#82ca9d" 
+                      strokeWidth={2} 
+                      dot={{ r: 3 }} 
+                      name="Stone Mining"
+                      data-mining-type="mineStone"
+                    />
+                    <Line 
+                      type="monotone" 
+                      dataKey="mineIron" 
+                      stroke="#8884d8" 
+                      strokeWidth={2} 
+                      dot={{ r: 3 }} 
+                      name="Iron Mining"
+                      data-mining-type="mineIron"
+                    />
+                    <Line 
+                      type="monotone" 
+                      dataKey="mineCoal" 
+                      stroke="#ffc658" 
+                      strokeWidth={2} 
+                      dot={{ r: 3 }} 
+                      name="Coal Mining"
+                      data-mining-type="mineCoal"
+                    />
+                    <Line 
+                      type="monotone" 
+                      dataKey="mineSulfur" 
+                      stroke="#ff8042" 
+                      strokeWidth={2} 
+                      dot={{ r: 3 }} 
+                      name="Sulfur Mining"
+                      data-mining-type="mineSulfur"
+                    />
+                    <Line 
+                      type="monotone" 
+                      dataKey="mineObsidian" 
+                      stroke="#0088FE" 
+                      strokeWidth={2} 
+                      dot={{ r: 3 }} 
+                      name="Obsidian Mining"
+                      data-mining-type="mineObsidian"
+                    />
+                    <Line 
+                      type="monotone" 
+                      dataKey="mineAdamant" 
+                      stroke="#00C49F" 
+                      strokeWidth={2} 
+                      dot={{ r: 3 }} 
+                      name="Adamant Mining"
+                      data-mining-type="mineAdamant"
+                    />
                   </LineChart>
                 </ResponsiveContainer>
               </CardContent>
