@@ -416,7 +416,7 @@ export const getAllActionBonuses = (
   }
 
   // Convert to array and format
-  return Array.from(bonusMap.entries())
+  const actionBonuses = Array.from(bonusMap.entries())
     .filter(([actionId]) => actionId !== "steelForger" && actionId !== "hunter") // Exclude forge and hunter from bonus display
     .map(([actionId, bonus]) => {
       const percentBonus = Math.round((bonus.multiplier - 1) * 100);
@@ -449,6 +449,26 @@ export const getAllActionBonuses = (
     })
     .filter((item) => item.multiplier - 1 > 0 || item.flatBonus > 0)
     .sort((a, b) => a.label.localeCompare(b.label));
+
+  // Add hunt bonus from hunting skills
+  if (state.huntingSkills?.level > 0) {
+    const { HUNT_BONUSES } = require("@/components/game/panels/EstatePanel");
+    const huntBonus = HUNT_BONUSES[state.huntingSkills.level];
+    if (huntBonus > 0) {
+      return [
+        ...actionBonuses,
+        {
+          id: "huntBonus",
+          label: "Hunt Bonus",
+          displayValue: `+${huntBonus}%`,
+          multiplier: 1,
+          flatBonus: 0,
+        }
+      ];
+    }
+  }
+
+  return actionBonuses;
 };
 
 // Helper function to calculate total luck
