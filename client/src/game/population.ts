@@ -219,7 +219,6 @@ export const getPopulationProduction = (
   // Apply hunting skills bonuses to hunter production
   if (state && jobId === "hunter") {
     const huntingSkillLevel = state.huntingSkills?.level || 0;
-    const { HUNTING_SKILL_BONUSES } = require("@/components/game/panels/EstatePanel");
     const skillBonus = HUNTING_SKILL_BONUSES[huntingSkillLevel];
     
     baseProduction.forEach((prod) => {
