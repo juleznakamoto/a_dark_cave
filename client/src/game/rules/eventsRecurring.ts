@@ -77,6 +77,30 @@ export const recurringEvents: Record<string, GameEvent> = {
     },
   },
 
+  stoneGift: {
+    id: "stoneGift",
+    condition: (state: GameState) =>
+      state.buildings.woodenHut >= 2 && state.buildings.woodenHut < 8,
+    triggerType: "resource",
+    timeProbability: 30,
+    repeatable: true,
+    message: [
+      "A pile of stone has been found near the village.",
+      "Stone has been left at the edge of the settlement.",
+    ],
+    triggered: false,
+    priority: 2,
+    effect: (state: GameState) => {
+      const multiplier = Math.random() < 0.5 ? 25 : 50;
+      return {
+        resources: {
+          ...state.resources,
+          stone: state.resources.stone + multiplier * state.buildings.woodenHut,
+        },
+      };
+    },
+  },
+
   ironGift: {
     id: "ironGift",
     condition: (state: GameState) =>
