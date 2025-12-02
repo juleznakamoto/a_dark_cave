@@ -651,7 +651,7 @@ export const calculateTotalEffects = (state: GameState) => {
 
   // Apply knowledge bonus from highest tier building only
   // Order by priority: scriptorium > clerksHut
-  const knowledgePriority = ["scriptorium", "clerksHut"];
+  const knowledgePriority = ["inkwardenAcademy", "scriptorium", "clerksHut"];
   for (const buildingKey of knowledgePriority) {
     if (knowledgeBonusBuildings.includes(buildingKey)) {
       const actionId = getBuildActionId(buildingKey);
