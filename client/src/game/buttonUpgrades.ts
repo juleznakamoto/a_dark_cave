@@ -52,7 +52,7 @@ export const MINE_UPGRADE_LEVELS: UpgradeLevel[] = [
   { level: 6, clicksRequired: 135, bonus: 150},
   { level: 7, clicksRequired: 175, bonus: 175},
   { level: 8, clicksRequired: 220, bonus: 200},
-  { level: 9, clicksRequired: 270, bonus: 90},
+  { level: 9, clicksRequired: 270, bonus: 225},
   { level: 10, clicksRequired: 325, bonus: 100},
 ];
 
