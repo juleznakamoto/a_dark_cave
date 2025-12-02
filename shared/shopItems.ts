@@ -30,7 +30,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     rewards: {
       resources: { gold: 100 },
     },
-    canPurchaseMultipleTimes: true, // Can claim daily
+    canPurchaseMultipleTimes: false, // Not stored as purchase, claimed immediately
     category: "resource",
     activationMessage: "100 Gold have been added to your inventory as a gift!",
     symbol: "⚵",

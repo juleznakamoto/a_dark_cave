@@ -264,7 +264,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
   const handlePurchaseClick = async (itemId: string) => {
     const item = SHOP_ITEMS[itemId];
 
-    // For free items, skip payment but save to Supabase
+    // For free items, handle them directly
     if (item.price === 0) {
       try {
         const user = await getCurrentUser();
@@ -272,7 +272,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
           throw new Error("User not authenticated");
         }
 
-        // Special handling for daily free gold
+        // Special handling for daily free gold - claim immediately
         if (itemId === 'gold_100_free') {
           const lastClaim = gameState.lastFreeGoldClaim || 0;
           const now = Date.now();
@@ -288,10 +288,34 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
             });
             return;
           }
+
+          // Grant the gold immediately
+          if (item.rewards.resources) {
+            Object.entries(item.rewards.resources).forEach(([resource, amount]) => {
+              gameState.updateResource(resource as any, amount);
+            });
+          }
+
+          // Update lastFreeGoldClaim timestamp
+          useGameStore.setState({ lastFreeGoldClaim: Date.now() });
+
+          // Show success message
+          gameState.addLogEntry({
+            id: `free-gold-claimed-${Date.now()}`,
+            message: `You claimed 100 Gold! Come back tomorrow for more.`,
+            timestamp: Date.now(),
+            type: "system",
+          });
+
+          toast({
+            title: "Success!",
+            description: `100 Gold has been added to your resources!`,
+          });
+          return;
         }
 
-        // Check if already purchased (for non-repeatable items)
-        if (!item.canPurchaseMultipleTimes && itemId !== 'gold_100_free') {
+        // For other free items (non-daily gold), check if already purchased
+        if (!item.canPurchaseMultipleTimes) {
           const alreadyPurchased = purchasedItems.some(pid => {
             // Extract item ID from purchase ID
             // Format: purchase-{itemId}-{uuid} or purchase-{itemId}-temp-{timestamp}
@@ -319,7 +343,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
           }
         }
 
-        // Save purchase to Supabase
+        // Save purchase to Supabase for non-daily-gold free items
         const client = await getSupabaseClient();
 
         // If this is a bundle with components, create individual purchases for each component
@@ -380,11 +404,6 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
 
         // Reload purchases from database to get the correct ID
         await loadPurchasedItems();
-
-        // Update lastFreeGoldClaim timestamp if this is the daily free gold
-        if (itemId === 'gold_100_free') {
-          useGameStore.setState({ lastFreeGoldClaim: Date.now() });
-        }
 
         // Set hasMadeNonFreePurchase flag if this is a paid item (even if price is 0, we don't set it)
         if (item.price > 0) {

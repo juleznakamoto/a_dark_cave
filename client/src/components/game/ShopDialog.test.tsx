@@ -65,46 +65,47 @@ describe('ShopDialog', () => {
   });
 
   describe('Free Items', () => {
-    it('should allow claiming a free item', async () => {
+    it('should allow claiming daily free gold and add it immediately', async () => {
       const user = userEvent.setup();
       const onClose = vi.fn();
+      const updateResource = vi.fn();
+
+      useGameStore.setState({
+        updateResource,
+        resources: { gold: 0 },
+        lastFreeGoldClaim: 0,
+      });
 
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        expect(screen.getByText('100 Gold (Free Gift)')).toBeInTheDocument();
+        expect(screen.getByText('100 Gold (Daily Free Gift)')).toBeInTheDocument();
       });
 
       const claimButton = screen.getByRole('button', { name: /claim/i });
       await user.click(claimButton);
 
       await waitFor(() => {
-        expect(mockSupabaseClient.from).toHaveBeenCalledWith('purchases');
+        expect(updateResource).toHaveBeenCalledWith('gold', 100);
       });
+
+      // Should NOT create a purchase record for daily free gold
+      expect(mockSupabaseClient.from).not.toHaveBeenCalledWith('purchases');
     });
 
-    it('should prevent claiming the same free item twice', async () => {
+    it('should prevent claiming daily free gold within 24 hours', async () => {
       const user = userEvent.setup();
       const onClose = vi.fn();
 
-      // Mock existing purchase
-      mockSupabaseClient.from = vi.fn(() => ({
-        select: vi.fn(() => ({
-          eq: vi.fn(() => ({
-            data: [{ id: 1, item_id: 'gold_100_free' }],
-            error: null,
-          })),
-        })),
-        insert: vi.fn(() => ({
-          data: null,
-          error: null,
-        })),
-      }));
+      // Set last claim to 1 hour ago
+      useGameStore.setState({
+        lastFreeGoldClaim: Date.now() - (1 * 60 * 60 * 1000),
+      });
 
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        const claimButton = screen.getByRole('button', { name: /already claimed/i });
+        const claimButton = screen.getByRole('button', { name: /available in/i });
         expect(claimButton).toBeDisabled();
       });
     });
