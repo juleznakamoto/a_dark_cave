@@ -143,10 +143,12 @@ export default function AdminDashboard() {
   const buttonClicksChartData = useMemo(() => {
     if (!clickData) return [];
 
+    // Filter by time range (except for Overview tab)
+    let filteredClicks = filterByTimeRange(clickData, 'timestamp');
+
     // Filter by selected user
-    let filteredClicks = clickData;
     if (selectedUser !== 'all') {
-      filteredClicks = clickData.filter(d => d.user_id === selectedUser);
+      filteredClicks = filteredClicks.filter(d => d.user_id === selectedUser);
     }
 
     // Filter by completed players if toggle is on
@@ -258,6 +260,38 @@ export default function AdminDashboard() {
     } catch (error) {
       logger.error('Failed to load admin data:', error);
     }
+  };
+
+  // Helper function to filter data by time range
+  const filterByTimeRange = <T extends { timestamp?: string; updated_at?: string; purchased_at?: string; created_at?: string }>(
+    data: T[],
+    dateField: keyof T
+  ): T[] => {
+    if (timeRange === 'all') return data;
+
+    const now = new Date();
+    let cutoffDate: Date;
+
+    switch (timeRange) {
+      case '1d':
+        cutoffDate = subDays(now, 1);
+        break;
+      case '7d':
+        cutoffDate = subDays(now, 7);
+        break;
+      case '30d':
+        cutoffDate = subDays(now, 30);
+        break;
+      default:
+        return data;
+    }
+
+    return data.filter(item => {
+      const dateValue = item[dateField];
+      if (!dateValue || typeof dateValue !== 'string') return false;
+      const itemDate = parseISO(dateValue);
+      return itemDate >= cutoffDate;
+    });
   };
 
   // Active Users Calculations
@@ -519,10 +553,11 @@ export default function AdminDashboard() {
 
   // Process data for charts
   const getButtonClicksOverTime = () => {
-    let filteredClicks = clickData;
+    // Filter by time range
+    let filteredClicks = filterByTimeRange(clickData, 'timestamp');
 
     if (selectedUser !== 'all') {
-      filteredClicks = clickData.filter(d => d.user_id === selectedUser);
+      filteredClicks = filteredClicks.filter(d => d.user_id === selectedUser);
     }
 
     // Filter by completed players if toggle is on
@@ -597,10 +632,11 @@ export default function AdminDashboard() {
   };
 
   const getClickTypesByTimestamp = () => {
-    let filteredClicks = clickData;
+    // Filter by time range
+    let filteredClicks = filterByTimeRange(clickData, 'timestamp');
 
     if (selectedUser !== 'all') {
-      filteredClicks = clickData.filter(d => d.user_id === selectedUser);
+      filteredClicks = filteredClicks.filter(d => d.user_id === selectedUser);
     }
 
     // Filter by completed players if toggle is on
@@ -728,9 +764,12 @@ export default function AdminDashboard() {
 
 
   const getTotalClicksByButton = () => {
-    let filtered = selectedUser === 'all'
-      ? clickData
-      : clickData.filter(d => d.user_id === selectedUser);
+    // Filter by time range
+    let filtered = filterByTimeRange(clickData, 'timestamp');
+    
+    if (selectedUser !== 'all') {
+      filtered = filtered.filter(d => d.user_id === selectedUser);
+    }
 
     // Filter by completed players if toggle is on
     if (showCompletedOnly) {
@@ -769,9 +808,12 @@ export default function AdminDashboard() {
   };
 
   const getAverageClicksByButton = () => {
-    let filtered = selectedUser === 'all'
-      ? clickData
-      : clickData.filter(d => d.user_id === selectedUser);
+    // Filter by time range
+    let filtered = filterByTimeRange(clickData, 'timestamp');
+    
+    if (selectedUser !== 'all') {
+      filtered = filtered.filter(d => d.user_id === selectedUser);
+    }
 
     // Filter by completed players if toggle is on
     if (showCompletedOnly) {
@@ -1324,10 +1366,11 @@ export default function AdminDashboard() {
 
   // Get button upgrades over playtime
   const getButtonUpgradesOverPlaytime = () => {
-    let filteredSaves = gameSaves;
+    // Filter by time range
+    let filteredSaves = filterByTimeRange(gameSaves, 'updated_at');
 
     if (selectedUser !== 'all') {
-      filteredSaves = gameSaves.filter(s => s.user_id === selectedUser);
+      filteredSaves = filteredSaves.filter(s => s.user_id === selectedUser);
     }
 
     // Filter by completed players if toggle is on
@@ -1475,10 +1518,11 @@ export default function AdminDashboard() {
 
   // Get sleep upgrade levels distribution
   const getSleepUpgradesDistribution = () => {
-    let filteredSaves = gameSaves;
+    // Filter by time range
+    let filteredSaves = filterByTimeRange(gameSaves, 'updated_at');
 
     if (selectedUser !== 'all') {
-      filteredSaves = gameSaves.filter(s => s.user_id === selectedUser);
+      filteredSaves = filteredSaves.filter(s => s.user_id === selectedUser);
     }
 
     // Filter by completed players if toggle is on
@@ -1589,10 +1633,12 @@ export default function AdminDashboard() {
     // If no click data is available, return empty array
     if (!clickData || clickData.length === 0) return [];
 
-    // Filter data based on selected user and completion status
-    let filteredClicks = clickData;
+    // Filter by time range
+    let filteredClicks = filterByTimeRange(clickData, 'timestamp');
+    
+    // Filter data based on selected user
     if (selectedUser !== 'all') {
-      filteredClicks = clickData.filter(record => record.user_id === selectedUser);
+      filteredClicks = filteredClicks.filter(record => record.user_id === selectedUser);
     }
     if (showCompletedOnly) {
       const completedUserIds = new Set(
@@ -2982,7 +3028,7 @@ export default function AdminDashboard() {
                   <LineChart data={getButtonUpgradesOverPlaytime()}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="time" label={{ value: 'Playtime', position: 'insideBottom', offset: -5 }} />
-                    <YAxis label={{ value: 'Average Level', angle: -90, position: 'insideLeft' }} />
+                    <YAxis label={{ value: 'Average Level', angle: -90, position: 'insideLeft' }} domain={[1, 10]} />
                     <Tooltip />
                     <Legend />
                     <Line type="monotone" dataKey="exploreCave" stroke="#8884d8" strokeWidth={2} dot={{ r: 3 }} name="Cave Exploring" />
@@ -3032,7 +3078,7 @@ export default function AdminDashboard() {
                   <LineChart data={getButtonUpgradesOverPlaytime()}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="time" label={{ value: 'Playtime', position: 'insideBottom', offset: -5 }} />
-                    <YAxis label={{ value: 'Average Level', angle: -90, position: 'insideLeft' }} />
+                    <YAxis label={{ value: 'Average Level', angle: -90, position: 'insideLeft' }} domain={[1, 10]} />
                     <Tooltip />
                     <Legend />
                     <Line 
@@ -3106,7 +3152,7 @@ export default function AdminDashboard() {
                   <LineChart data={getButtonUpgradesOverPlaytime()}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="time" label={{ value: 'Playtime', position: 'insideBottom', offset: -5 }} />
-                    <YAxis label={{ value: 'Average Level', angle: -90, position: 'insideLeft' }} />
+                    <YAxis label={{ value: 'Average Level', angle: -90, position: 'insideLeft' }} domain={[1, 10]} />
                     <Tooltip />
                     <Legend />
                     <Line type="monotone" dataKey="hunt" stroke="#ffc658" strokeWidth={2} dot={{ r: 3 }} name="Hunting" />
@@ -3127,7 +3173,7 @@ export default function AdminDashboard() {
                   <LineChart data={getButtonUpgradesOverPlaytime()}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="time" label={{ value: 'Playtime', position: 'insideBottom', offset: -5 }} />
-                    <YAxis label={{ value: 'Average Level', angle: -90, position: 'insideLeft' }} />
+                    <YAxis label={{ value: 'Average Level', angle: -90, position: 'insideLeft' }} domain={[1, 10]} />
                     <Tooltip />
                     <Legend />
                     <Line type="monotone" dataKey="chopWood" stroke="#ff8042" strokeWidth={2} dot={{ r: 3 }} name="Woodcutting" />
@@ -3148,7 +3194,7 @@ export default function AdminDashboard() {
                   <LineChart data={getButtonUpgradesOverPlaytime()}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="time" label={{ value: 'Playtime', position: 'insideBottom', offset: -5 }} />
-                    <YAxis label={{ value: 'Average Level', angle: -90, position: 'insideLeft' }} />
+                    <YAxis label={{ value: 'Average Level', angle: -90, position: 'insideLeft' }} domain={[1, 10]} />
                     <Tooltip />
                     <Legend />
                     <Line type="monotone" dataKey="exploreCave" stroke="#8884d8" strokeWidth={2} dot={{ r: 3 }} name="Cave Exploring" />
