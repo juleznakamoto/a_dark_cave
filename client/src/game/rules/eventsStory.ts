@@ -445,4 +445,46 @@ export const storyEvents: Record<string, GameEvent> = {
       },
     ],
   },
+
+  wildlingBloodOath: {
+    id: "wildlingBloodOath",
+    condition: (state: GameState) =>
+      state.story.seen.forestCaveExplored &&
+      !state.story.seen.wildlingBloodOath,
+    triggerType: "time",
+    timeProbability: 2,
+    title: "The Blood Oath",
+    message:
+      "The wildling huntress returns from the forest depths. 'You saved my tribe from extinction,' she says, drawing a bone knife across her palm. Blood drips to the earth. 'By the old ways of my people, I offer you a blood oath. I will stand in your debt forever.'",
+    triggered: false,
+    priority: 5,
+    visualEffect: {
+      type: "glow",
+      duration: 3,
+    },
+    repeatable: false,
+    choices: [
+      {
+        id: "accept_oath",
+        label: "Accept Oath",
+        effect: (state: GameState) => {
+          return {
+            fellowship: {
+              ...state.fellowship,
+              ashwraith_huntress: true,
+            },
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                wildlingBloodOath: true,
+              },
+            },
+            _logMessage:
+              "You accept the blood oath. The huntress cuts your palm and presses it against hers, binding the oath in blood. 'In my tribe, I am called Ashwraith Huntress,' she says. 'I will teach your hunters the ways of the wild.' The Ashwraith Huntress has joined your fellowship.",
+          };
+        },
+      },
+    ],
+  },
 };

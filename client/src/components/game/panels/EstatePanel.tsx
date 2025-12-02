@@ -35,12 +35,23 @@ const SLEEP_INTENSITY_UPGRADES = [
   { level: 5, percentage: 25, cost: 2500, currency: "gold" },
 ];
 
+const HUNTING_SKILL_UPGRADES = [
+  { level: 0, huntBonus: 25, food: 0, fur: 0, bones: 0, cost: 0 },
+  { level: 1, huntBonus: 25, food: 5, fur: 0, bones: 0, cost: 500 },
+  { level: 2, huntBonus: 50, food: 5, fur: 1, bones: 1, cost: 1000 },
+  { level: 3, huntBonus: 50, food: 15, fur: 1, bones: 1, cost: 1500 },
+  { level: 4, huntBonus: 75, food: 15, fur: 2, bones: 2, cost: 2000 },
+  { level: 5, huntBonus: 75, food: 30, fur: 2, bones: 2, cost: 2500 },
+];
+
 export default function EstatePanel() {
   const {
     events,
     setEventDialog,
     setIdleModeDialog,
     sleepUpgrades,
+    huntingSkills,
+    fellowship,
     resources,
     setHighlightedResources,
   } = useGameStore();
@@ -142,6 +153,29 @@ export default function EstatePanel() {
 
   const handleSleepIntensityUpgrade = () => 
     handleUpgrade('intensity', SLEEP_INTENSITY_UPGRADES, 'intensityLevel');
+
+  const handleHuntingSkillUpgrade = () => {
+    useGameStore.setState((state) => {
+      const currentLevel = state.huntingSkills.level;
+      if (currentLevel >= 5) return state;
+
+      const nextUpgrade = HUNTING_SKILL_UPGRADES[currentLevel + 1];
+
+      if (state.resources.gold < nextUpgrade.cost) return state;
+
+      return {
+        ...state,
+        huntingSkills: {
+          ...state.huntingSkills,
+          level: currentLevel + 1,
+        },
+        resources: {
+          ...state.resources,
+          gold: state.resources.gold - nextUpgrade.cost,
+        },
+      };
+    });
+  };
 
   const currentLengthUpgrade = SLEEP_LENGTH_UPGRADES[sleepUpgrades.lengthLevel];
   const nextLengthUpgrade =
@@ -363,6 +397,96 @@ export default function EstatePanel() {
             </div>
           </div>
         </div>
+
+        {/* Hunting Skills Section */}
+        {fellowship.ashwraith_huntress && (
+          <div className="space-y-2 pt-1">
+            <h3 className="text-xs font-bold text-foreground">Hunting Skills</h3>
+            <div className="w-64 space-y-1">
+              <div className="flex items-center justify-between">
+                <span className="pb-1 text-xs font-medium text-foreground">
+                  Huntress Training
+                </span>
+                {huntingSkills.level < 5 ? (
+                  <TooltipProvider>
+                    <Tooltip open={mobileTooltip.isTooltipOpen("upgrade-hunting-button")}>
+                      <TooltipTrigger asChild>
+                        <div
+                          className="inline-block"
+                          onClick={mobileTooltip.isMobile ? (e) => {
+                            mobileTooltip.handleWrapperClick("upgrade-hunting-button", resources.gold < HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].cost, false, e);
+                          } : undefined}
+                          onTouchStart={mobileTooltip.isMobile ? (e) => {
+                            mobileTooltip.handleTouchStart("upgrade-hunting-button", resources.gold < HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].cost, false, e);
+                          } : undefined}
+                          onTouchEnd={mobileTooltip.isMobile ? (e) => {
+                            mobileTooltip.handleTouchEnd("upgrade-hunting-button", resources.gold < HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].cost, handleHuntingSkillUpgrade, e);
+                          } : undefined}
+                          onMouseDown={mobileTooltip.isMobile ? (e) => {
+                            mobileTooltip.handleMouseDown("upgrade-hunting-button", resources.gold < HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].cost, false, e);
+                          } : undefined}
+                          onMouseUp={mobileTooltip.isMobile ? (e) => {
+                            mobileTooltip.handleMouseUp("upgrade-hunting-button", resources.gold < HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].cost, handleHuntingSkillUpgrade, e);
+                          } : undefined}
+                          onMouseEnter={() => {
+                            logger.log('[HIGHLIGHT] EstatePanel hunting skills mouse enter');
+                            setHighlightedResources(['gold']);
+                          }}
+                          onMouseLeave={() => {
+                            logger.log('[HIGHLIGHT] EstatePanel hunting skills mouse leave');
+                            setHighlightedResources([]);
+                          }}
+                        >
+                          <Button
+                            onClick={mobileTooltip.isMobile && mobileTooltip.isTooltipOpen("upgrade-hunting-button") ? (e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                            } : handleHuntingSkillUpgrade}
+                            disabled={resources.gold < HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].cost}
+                            size="xs"
+                            variant="outline"
+                            className="hover:bg-transparent hover:text-foreground"
+                            button_id="upgrade-hunting-skills"
+                          >
+                            Improve
+                          </Button>
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <div className="text-xs whitespace-nowrap">
+                          {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].food > 0 && (
+                            <div>+{HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].food} Food per hunter</div>
+                          )}
+                          {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].fur > 0 && (
+                            <div>+{HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].fur} Fur per hunter</div>
+                          )}
+                          {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].bones > 0 && (
+                            <div>+{HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].bones} Bones per hunter</div>
+                          )}
+                          {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].huntBonus > HUNTING_SKILL_UPGRADES[huntingSkills.level].huntBonus && (
+                            <div>+{HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].huntBonus - HUNTING_SKILL_UPGRADES[huntingSkills.level].huntBonus}% Hunt bonus</div>
+                          )}
+                          <div className="border-t border-border my-1" />
+                          <div className={resources.gold >= HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].cost ? "" : "text-muted-foreground"}>
+                            -{HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].cost} Gold
+                          </div>
+                        </div>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                ) : null}
+              </div>
+              <Progress
+                value={(huntingSkills.level / 5) * 100}
+                className="h-2"
+                segments={5}
+              />
+              <div className="flex justify-between text-xs text-muted-foreground">
+                <span>Level {huntingSkills.level}</span>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Cube Section */}
         <div className="space-y-2 pt-1">

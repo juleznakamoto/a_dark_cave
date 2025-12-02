@@ -172,6 +172,7 @@ export const gameStateSchema = z.object({
     .object({
       restless_knight: z.boolean().default(false),
       elder_wizard: z.boolean().default(false),
+      ashwraith_huntress: z.boolean().default(false),
     })
     .default({}),
   blessings: z
@@ -445,10 +446,12 @@ export const gameStateSchema = z.object({
       lengthLevel: z.number().default(0), // 0-5
       intensityLevel: z.number().default(0), // 0-5
     })
-    .default({
-      lengthLevel: 0,
-      intensityLevel: 0,
-    }),
+    .default({ lengthLevel: 0, intensityLevel: 0 }),
+
+  huntingSkills: z.object({
+    level: z.number().default(0),
+  }).default({ level: 0 }),
+
   buttonUpgrades: z
     .object({
       caveExplore: z
