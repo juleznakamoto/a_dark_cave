@@ -491,7 +491,12 @@ export default function EstatePanel() {
                 segments={5}
               />
               <div className="flex justify-between text-xs text-muted-foreground">
-                <span>Level {huntingSkills.level}</span>
+                <span>
+                  +{HUNTING_SKILL_UPGRADES[huntingSkills.level].huntBonus}% hunt, 
+                  +{HUNTING_SKILL_UPGRADES[huntingSkills.level].food} food, 
+                  +{HUNTING_SKILL_UPGRADES[huntingSkills.level].fur} fur, 
+                  +{HUNTING_SKILL_UPGRADES[huntingSkills.level].bones} bones
+                </span>
               </div>
             </div>
           </div>
