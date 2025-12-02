@@ -56,9 +56,9 @@ export const recurringEvents: Record<string, GameEvent> = {
   findWood: {
     id: "woodGift",
     condition: (state: GameState) =>
-      state.buildings.woodenHut >= 1 && state.buildings.woodenHut < 8,
+      state.buildings.woodenHut >= 2 && state.buildings.woodenHut < 6,
     triggerType: "resource",
-    timeProbability: 12,
+    timeProbability: 30,
     repeatable: true,
     message: [
       "A pile of wood has been found near the village.",
@@ -67,7 +67,7 @@ export const recurringEvents: Record<string, GameEvent> = {
     triggered: false,
     priority: 2,
     effect: (state: GameState) => {
-      const multiplier = Math.random() < 0.5 ? 25 : 50;
+      const multiplier = Math.random() < 0.5 ? 50 : 100;
       return {
         resources: {
           ...state.resources,
@@ -80,7 +80,7 @@ export const recurringEvents: Record<string, GameEvent> = {
   stoneGift: {
     id: "stoneGift",
     condition: (state: GameState) =>
-      state.buildings.woodenHut >= 2 && state.buildings.woodenHut < 8,
+      state.buildings.woodenHut >= 4 && state.buildings.woodenHut < 8,
     triggerType: "resource",
     timeProbability: 30,
     repeatable: true,
@@ -91,7 +91,7 @@ export const recurringEvents: Record<string, GameEvent> = {
     triggered: false,
     priority: 2,
     effect: (state: GameState) => {
-      const multiplier = Math.random() < 0.5 ? 25 : 50;
+      const multiplier = Math.random() < 0.5 ? 50 : 100;
       return {
         resources: {
           ...state.resources,
@@ -127,17 +127,17 @@ export const recurringEvents: Record<string, GameEvent> = {
   steelGift: {
     id: "steelGift",
     condition: (state: GameState) =>
-      state.buildings.woodenHut >= 2 && state.buildings.stoneHut <= 10,
+      state.buildings.woodenHut >= 4 && state.buildings.stoneHut <= 10,
     triggerType: "resource",
     timeProbability: 30,
     message: [
       "Villagers found steel bars at the village's edge.",
-      "Someone has left gleaming steel ingots at the edge of the village.",
+      "Someone has left steel at the edge of the village.",
     ],
     triggered: false,
     priority: 2,
     effect: (state: GameState) => {
-      const multiplier = Math.random() < 0.5 ? 10 : 20;
+      const multiplier = Math.random() < 0.5 ? 25 : 50;
       return {
         resources: {
           ...state.resources,
@@ -150,17 +150,17 @@ export const recurringEvents: Record<string, GameEvent> = {
   obsidianGift: {
     id: "obsidianGift",
     condition: (state: GameState) =>
-      state.buildings.woodenHut >= 6 && state.buildings.stoneHut <= 10,
+      state.buildings.woodenHut >= 6 && state.buildings.stoneHut <= 4,
     triggerType: "resource",
     timeProbability: 35,
     message: [
-      "By dawn, obsidian shards have been found around the village.",
-      "In the morning, villagers find obsidian shards nearby the village.",
+      "By dawn, obsidian has been found around the village.",
+      "In the morning, villagers find obsidian nearby the village.",
     ],
     triggered: false,
     priority: 2,
     effect: (state: GameState) => {
-      const multiplier = Math.random() < 0.5 ? 10 : 20;
+      const multiplier = Math.random() < 0.5 ? 50 : 100;
       return {
         resources: {
           ...state.resources,
@@ -174,17 +174,17 @@ export const recurringEvents: Record<string, GameEvent> = {
   adamantGift: {
     id: "adamantGift",
     condition: (state: GameState) =>
-      state.buildings.woodenHut >= 8 && state.buildings.stoneHut <= 10,
+      state.buildings.woodenHut >= 8 && state.buildings.stoneHut <= 8,
     triggerType: "resource",
     timeProbability: 35,
     message: [
-      "By morning, adamant lies behind one of the huts of the village.",
-      "When dawn breaks, a pile of adamant is found close to the village.",
+      "By morning, adamant lies behind one of the huts.",
+      "When dawn breaks, a pile of adamant is found nearby the village.",
     ],
     triggered: false,
     priority: 2,
     effect: (state: GameState) => {
-      const multiplier = Math.random() < 0.5 ? 10 : 20;
+      const multiplier = Math.random() < 0.5 ? 50 : 100;
       return {
         resources: {
           ...state.resources,
