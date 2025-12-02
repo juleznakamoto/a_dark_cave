@@ -1,8 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import Stripe from 'stripe';
-import { createPaymentIntent, verifyPayment } from './stripe';
 
-// Mock Stripe
+// Mock Stripe - must be defined before the mock
 const mockStripe = {
   paymentIntents: {
     create: vi.fn(),
@@ -12,13 +11,12 @@ const mockStripe = {
 
 vi.mock('stripe', () => {
   return {
-    default: class MockStripe {
-      constructor() {
-        return mockStripe;
-      }
-    },
+    default: vi.fn().mockImplementation(() => mockStripe),
   };
 });
+
+// Import after mocking
+import { createPaymentIntent, verifyPayment } from './stripe';
 
 // Mock Supabase
 const mockSupabase = {
