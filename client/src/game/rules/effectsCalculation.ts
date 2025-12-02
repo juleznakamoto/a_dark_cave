@@ -456,7 +456,7 @@ export const getAllActionBonuses = (
     const huntBonus = HUNT_BONUSES[state.huntingSkills.level];
     if (huntBonus > 0) {
       actionBonuses.push({
-        id: "huntBonus",
+        id: "hunt",
         label: "Hunt Bonus",
         displayValue: `+${huntBonus}%`,
         multiplier: 1,
