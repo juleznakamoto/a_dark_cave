@@ -121,6 +121,7 @@ import {
   handleHillGrave,
   handleSunkenTemple,
   handlecollapsedTower,
+  handleForestCave,
 } from "@/game/rules/forestScoutActions";
 
 import {
