@@ -1023,8 +1023,9 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                           const item = SHOP_ITEMS[itemId];
 
                           // Don't show items with feast activations here (they're shown above)
+                          // Don't show bundles (their components are shown individually)
                           // But do check if the item exists
-                          return item && !item.rewards.feastActivations;
+                          return item && !item.rewards.feastActivations && !item.bundleComponents;
                         })
                         .map((purchaseId) => {
                           // Extract itemId from purchaseId (format: purchase-{itemId}-{uuid})
