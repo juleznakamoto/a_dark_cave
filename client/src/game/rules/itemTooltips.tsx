@@ -49,9 +49,6 @@ export function renderItemTooltip(
             <div>
               {effect.bonuses.generalBonuses.madness > 0 ? "+" : ""}
               {effect.bonuses.generalBonuses.madness} Madness
-              {effect.bonuses.generalBonuses.madness >= 4 && (
-                <span className="text-red-400"> (+1 Cruel Mode)</span>
-              )}
             </div>
           )}
           {effect.bonuses.generalBonuses.madnessReduction && (
