@@ -118,7 +118,7 @@ export const loreEvents: Record<string, GameEvent> = {
       !state.story.seen.restlessKnightMountains,
     triggerType: "resource",
     timeProbability: (state: GameState) =>
-      state.story.seen.restlessKnightMountainsFailed ? 60 : 30,
+      state.story.seen.restlessKnightMountainsFailed ? 60 : 0.30,
     title: "Return from the Mountains",
     message:
       "The knight returns, his armor scratched and weathered. 'I found something extraordinary in the mountains,' he says. I will tell you about it, for a price'",
@@ -191,7 +191,7 @@ export const loreEvents: Record<string, GameEvent> = {
               ...state.story,
               seen: {
                 ...state.story.seen,
-                restlessKnightMountains: true,
+                  restlessKnightMountainsFailed: true,
               },
             },
             _logMessage:
@@ -210,7 +210,7 @@ export const loreEvents: Record<string, GameEvent> = {
       !state.story.seen.restlessKnightCoast,
     triggerType: "resource",
     timeProbability: (state: GameState) =>
-      state.story.seen.restlessKnightCoastFailed ? 60 : 30,
+      state.story.seen.restlessKnightCoastFailed ? 60 : 0.030,
     title: "Tales from the Shore",
     message:
       "The knight appears once more, 'I have traveled to a city on the shore of an ocean,' he says. 'What I found there defies belief. I will share this knowledge, for a price.'",
@@ -326,7 +326,7 @@ export const loreEvents: Record<string, GameEvent> = {
               ...state.story,
               seen: {
                 ...state.story.seen,
-                restlessKnightCoast: true,
+                  restlessKnightCoastFailed: true,
               },
             },
             _logMessage:

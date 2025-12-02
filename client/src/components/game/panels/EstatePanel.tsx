@@ -258,7 +258,7 @@ export default function EstatePanel() {
     <ScrollArea className="h-full w-full">
       <div className="space-y-2 mt-2">
         {/* Sleep Mode Section */}
-        <div className="space-y-2">
+        <div className="space-y-">
           <h3 className="text-xs font-bold text-foreground">Sleep</h3>
           <TooltipProvider>
             <Tooltip open={mobileTooltip.isTooltipOpen("sleep-button")}>
@@ -386,7 +386,7 @@ export default function EstatePanel() {
           </div>
 
           {/* Sleep Intensity Upgrade */}
-          <div className="space-y-1">
+          <div className="space-y-1 pt-1">
             <div className="flex items-center justify-between">
               <span className="pb-1 text-xs font-medium text-foreground">
                 Sleep Intensity
@@ -467,7 +467,7 @@ export default function EstatePanel() {
             
             {/* Huntress Training */}
             {fellowship.ashwraith_huntress && (
-              <div className="w-80 space-y-1">
+              <div className="w-80 space-y-1 pt-1">
                 <div className="flex items-center justify-between">
                   <span className="pb-1 text-xs font-medium text-foreground">
                     Huntress Training
@@ -520,13 +520,13 @@ export default function EstatePanel() {
                       <TooltipContent>
                         <div className="text-xs whitespace-nowrap">
                           {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].food > HUNTING_SKILL_UPGRADES[huntingSkills.level].food && (
-                            <div>+{HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].food - HUNTING_SKILL_UPGRADES[huntingSkills.level].food} Food per hunter</div>
+                            <div>+{HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].food - HUNTING_SKILL_UPGRADES[huntingSkills.level].food} Food per Hunter</div>
                           )}
                           {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].fur > HUNTING_SKILL_UPGRADES[huntingSkills.level].fur && (
-                            <div>+{HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].fur - HUNTING_SKILL_UPGRADES[huntingSkills.level].fur} Fur per hunter</div>
+                            <div>+{HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].fur - HUNTING_SKILL_UPGRADES[huntingSkills.level].fur} Fur per Hunter</div>
                           )}
                           {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].bones > HUNTING_SKILL_UPGRADES[huntingSkills.level].bones && (
-                            <div>+{HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].bones - HUNTING_SKILL_UPGRADES[huntingSkills.level].bones} Bones per hunter</div>
+                            <div>+{HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].bones - HUNTING_SKILL_UPGRADES[huntingSkills.level].bones} Bones per Hunter</div>
                           )}
                           {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].huntBonus > HUNTING_SKILL_UPGRADES[huntingSkills.level].huntBonus && (
                             <div>+{HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].huntBonus - HUNTING_SKILL_UPGRADES[huntingSkills.level].huntBonus}% Hunt bonus</div>
@@ -561,7 +561,7 @@ export default function EstatePanel() {
 
             {/* Crushing Strike */}
             {fellowship.restless_knight && (
-              <div className="w-80 space-y-1">
+              <div className="w-80 space-y-1 pt-1">
                 <div className="flex items-center justify-between">
                   <span className="pb-1 text-xs font-medium text-foreground">
                     Crushing Strike
@@ -644,7 +644,7 @@ export default function EstatePanel() {
 
             {/* Bloodflame Sphere */}
             {fellowship.elder_wizard && (
-              <div className="w-80 space-y-1">
+              <div className="w-80 space-y-1 pt-1">
                 <div className="flex items-center justify-between">
                   <span className="pb-1 text-xs font-medium text-foreground">
                     Bloodflame Sphere
