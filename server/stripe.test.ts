@@ -11,8 +11,9 @@ const mockStripe = {
 } as unknown as Stripe;
 
 vi.mock('stripe', () => {
+  const MockStripe = vi.fn(() => mockStripe);
   return {
-    default: vi.fn(() => mockStripe),
+    default: MockStripe,
   };
 });
 
@@ -20,8 +21,12 @@ vi.mock('stripe', () => {
 const mockSupabase = {
   from: vi.fn(() => ({
     insert: vi.fn(() => ({
-      data: { id: 'purchase123' },
-      error: null,
+      select: vi.fn(() => ({
+        single: vi.fn(() => ({
+          data: { id: 'purchase123', item_id: 'gold_250', user_id: 'user123' },
+          error: null,
+        })),
+      })),
     })),
   })),
 };
@@ -106,7 +111,7 @@ describe('Stripe Shop Integration', () => {
 
       mockStripe.paymentIntents.retrieve.mockResolvedValue(mockIntent);
 
-      const result = await verifyPayment('pi_test', 'user123');
+      const result = await verifyPayment('pi_test', 'user123', mockSupabase);
 
       expect(result.success).toBe(true);
       expect(result.itemId).toBe('gold_250');
@@ -123,7 +128,7 @@ describe('Stripe Shop Integration', () => {
 
       mockStripe.paymentIntents.retrieve.mockResolvedValue(mockIntent);
 
-      const result = await verifyPayment('test_payment_intent', 'user123');
+      const result = await verifyPayment('test_payment_intent', 'user123', mockSupabase);
 
       expect(result.success).toBe(false);
       expect(result.error).toBe('Payment amount verification failed');
@@ -139,7 +144,7 @@ describe('Stripe Shop Integration', () => {
 
       mockStripe.paymentIntents.retrieve.mockResolvedValue(mockIntent);
 
-      const result = await verifyPayment('test_payment_intent', 'user123');
+      const result = await verifyPayment('test_payment_intent', 'user123', mockSupabase);
 
       expect(result.success).toBe(false);
     });
