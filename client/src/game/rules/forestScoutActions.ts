@@ -14,24 +14,9 @@ export const forestScoutActions: Record<string, Action> = {
     },
     cost: {},
     effects: {
-      "resources.food": (state: GameState) => {
-        const huntingSkillLevel = state.huntingSkills?.level || 0;
-        const bonus = HUNT_BONUSES[huntingSkillLevel];
-        const baseFood = Math.floor(Math.random() * 7) + 6;
-        return Math.floor(baseFood * (1 + bonus / 100));
-      },
-      "resources.fur": (state: GameState) => {
-        const huntingSkillLevel = state.huntingSkills?.level || 0;
-        const bonus = HUNT_BONUSES[huntingSkillLevel];
-        const baseFur = Math.floor(Math.random() * 4) + 3;
-        return Math.floor(baseFur * (1 + bonus / 100));
-      },
-      "resources.bones": (state: GameState) => {
-        const huntingSkillLevel = state.huntingSkills?.level || 0;
-        const bonus = HUNT_BONUSES[huntingSkillLevel];
-        const baseBones = Math.floor(Math.random() * 4) + 3;
-        return Math.floor(baseBones * (1 + bonus / 100));
-      },
+      "resources.food": "random(6,12)",
+      "resources.fur": "random(3,6)",
+      "resources.bones": "random(3,6)",
       "story.seen.hasHunted": true,
       "tools.blacksmith_hammer": {
         probability: (state: any) => {

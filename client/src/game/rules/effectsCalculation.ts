@@ -455,13 +455,25 @@ export const getAllActionBonuses = (
   if (state.huntingSkills?.level > 0) {
     const huntBonus = HUNT_BONUSES[state.huntingSkills.level];
     if (huntBonus > 0) {
-      actionBonuses.push({
-        id: "hunt",
-        label: "Hunt Bonus",
-        displayValue: `+${huntBonus}%`,
-        multiplier: 1,
-        flatBonus: 0,
-      });
+      // Find existing hunt bonus if any
+      const existingHuntIndex = actionBonuses.findIndex(b => b.id === "hunt");
+
+      if (existingHuntIndex >= 0) {
+        // Merge with existing hunt bonus
+        const existing = actionBonuses[existingHuntIndex];
+        existing.multiplier += huntBonus / 100;
+        const percentBonus = Math.round((existing.multiplier - 1) * 100);
+        existing.displayValue = `+${percentBonus}%`;
+      } else {
+        // Add new hunt bonus
+        actionBonuses.push({
+          id: "hunt",
+          label: "Hunt",
+          displayValue: `+${huntBonus}%`,
+          multiplier: 1 + huntBonus / 100,
+          flatBonus: 0,
+        });
+      }
     }
   }
 
