@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS purchases (
   item_id TEXT NOT NULL,
   item_name TEXT NOT NULL,
   price_paid INTEGER NOT NULL,
+  bundle_id TEXT, -- If this item was purchased as part of a bundle, stores the bundle item_id
   purchased_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );

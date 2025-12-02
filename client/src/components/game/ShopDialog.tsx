@@ -223,13 +223,13 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
         // Use numeric database ID as the unique purchase identifier
         // Format: purchase-{itemId}-{numericDbId}
         const purchaseIds = data.map((p) => `purchase-${p.item_id}-${p.id}`);
-        
+
         logger.log('[SHOP] loadPurchasedItems - Loaded purchases', {
           count: data.length,
           rawData: data,
           purchaseIds: purchaseIds,
         });
-        
+
         setPurchasedItems(purchaseIds);
 
         // Initialize feast activations for any feast purchases that don't have them yet
@@ -240,12 +240,12 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
         data.forEach((purchase) => {
           const purchaseId = `purchase-${purchase.item_id}-${purchase.id}`;
           const item = SHOP_ITEMS[purchase.item_id];
-          
+
           // If this item has feast activations and doesn't already have them set up in state
           if (item?.rewards.feastActivations && !currentFeastActivations[purchaseId]) {
             newFeastActivations[purchaseId] = item.rewards.feastActivations;
             hasNewActivations = true;
-            
+
             logger.log('[SHOP] Initializing feast activations for existing purchase', {
               purchaseId,
               itemId: purchase.item_id,
@@ -257,7 +257,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
         // Update state if we added any new activations
         if (hasNewActivations) {
           useGameStore.setState({ feastActivations: newFeastActivations });
-          
+
           logger.log('[SHOP] Updated feastActivations state', {
             newFeastActivations,
           });
@@ -332,19 +332,46 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
 
         // If this is a bundle with components, create individual purchases for each component
         if (item.bundleComponents && item.bundleComponents.length > 0) {
-          for (const componentId of item.bundleComponents) {
-            const componentItem = SHOP_ITEMS[componentId];
-            if (componentItem) {
-              const { error: compError } = await client.from("purchases").insert({
+          try {
+            const user = await getCurrentUser();
+            if (user) {
+              const client = await getSupabaseClient();
+
+              // First, create the bundle purchase itself
+              const { error: bundleError } = await client.from("purchases").insert({
                 user_id: user.id,
-                item_id: componentId,
-                item_name: componentItem.name,
-                price_paid: 0,
+                item_id: itemId,
+                item_name: item.name,
+                price_paid: item.price,
+                bundle_id: null, // Bundle itself has no parent bundle
                 purchased_at: new Date().toISOString(),
               });
 
-              if (compError) throw compError;
+              if (bundleError) {
+                logger.error("Error saving bundle purchase to Supabase:", bundleError);
+              }
+
+              // Then create purchase records for each component
+              for (const componentId of item.bundleComponents) {
+                const componentItem = SHOP_ITEMS[componentId];
+                if (componentItem) {
+                  const { error } = await client.from("purchases").insert({
+                    user_id: user.id,
+                    item_id: componentId,
+                    item_name: componentItem.name,
+                    price_paid: 0, // Components from bundle are "free"
+                    bundle_id: itemId, // Reference to parent bundle
+                    purchased_at: new Date().toISOString(),
+                  });
+
+                  if (error) {
+                    logger.error("Error saving component purchase to Supabase:", error);
+                  }
+                }
+              }
             }
+          } catch (error) {
+            logger.error("Exception saving bundle component purchases:", error);
           }
         } else {
           // Single item purchase
@@ -418,7 +445,21 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
         if (user) {
           const client = await getSupabaseClient();
 
-          // Create purchase records for each component
+          // First, create the bundle purchase itself
+          const { error: bundleError } = await client.from("purchases").insert({
+            user_id: user.id,
+            item_id: selectedItem!,
+            item_name: item.name,
+            price_paid: item.price,
+            bundle_id: null, // Bundle itself has no parent bundle
+            purchased_at: new Date().toISOString(),
+          });
+
+          if (bundleError) {
+            logger.error("Error saving bundle purchase to Supabase:", bundleError);
+          }
+
+          // Then create purchase records for each component
           for (const componentId of item.bundleComponents) {
             const componentItem = SHOP_ITEMS[componentId];
             if (componentItem) {
@@ -427,6 +468,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                 item_id: componentId,
                 item_name: componentItem.name,
                 price_paid: 0, // Components from bundle are "free"
+                bundle_id: selectedItem!, // Reference to parent bundle
                 purchased_at: new Date().toISOString(),
               });
 
@@ -465,15 +507,15 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
         .eq("user_id", user.id);
 
       if (error) throw error;
-      
+
       const purchaseIds = data ? data.map((p) => `purchase-${p.item_id}-${p.id}`) : [];
-      
+
       logger.log('[SHOP] Fetched updated purchases from DB', {
         count: purchaseIds.length,
         purchaseIds: purchaseIds,
         rawData: data,
       });
-      
+
       return purchaseIds;
     })();
 
@@ -483,7 +525,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
         itemId: selectedItem,
         feastActivations: item.rewards.feastActivations,
       });
-      
+
       // Get the latest purchase for this item (the one just created)
       const latestPurchaseId = updatedPurchasedItems
         .filter(pid => {
@@ -511,7 +553,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
             [latestPurchaseId]: item.rewards.feastActivations!,
           },
         }));
-        
+
         logger.log('[SHOP] Set feast activations for single item', {
           purchaseId: latestPurchaseId,
           activations: item.rewards.feastActivations,
@@ -525,18 +567,18 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
         components: item.bundleComponents,
         allPurchases: updatedPurchasedItems,
       });
-      
+
       // After reload, find the newly created component purchases
       item.bundleComponents.forEach(componentId => {
         const componentItem = SHOP_ITEMS[componentId];
-        
+
         logger.log('[SHOP] Checking component', {
           componentId,
           componentExists: !!componentItem,
           hasFeastActivations: !!componentItem?.rewards.feastActivations,
           feastActivations: componentItem?.rewards.feastActivations,
         });
-        
+
         if (componentItem?.rewards.feastActivations) {
           // Find the latest purchase for this component
           const allMatchingPurchases = updatedPurchasedItems.filter(pid => {
@@ -545,7 +587,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
               : pid;
             return itemId === componentId;
           });
-          
+
           const componentPurchaseId = allMatchingPurchases.pop();
 
           logger.log('[SHOP] Found purchases for component', {
@@ -560,7 +602,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                 ...state.feastActivations,
                 [componentPurchaseId]: componentItem.rewards.feastActivations!,
               };
-              
+
               logger.log('[SHOP] Setting feast activations for component', {
                 componentId,
                 purchaseId: componentPurchaseId,
@@ -568,7 +610,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                 previousState: state.feastActivations,
                 newState: newFeastActivations,
               });
-              
+
               return {
                 feastActivations: newFeastActivations,
               };
@@ -576,7 +618,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
           }
         }
       });
-      
+
       // Log final state
       setTimeout(() => {
         const finalState = useGameStore.getState();
@@ -975,6 +1017,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                           if (purchaseId.startsWith('purchase-')) {
                             const withoutPrefix = purchaseId.substring('purchase-'.length);
                             const parts = withoutPrefix.split('-');
+                            // Extract itemId by removing the UUID parts
                             itemId = parts.slice(0, -5).join('-');
                           }
                           const item = SHOP_ITEMS[itemId];
