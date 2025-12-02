@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/dialog";
 import { logger } from "@/lib/logger";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 import {
   Card,
   CardContent,
@@ -194,7 +195,6 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [purchasedItems, setPurchasedItems] = useState<string[]>([]);
-  const [showSuccess, setShowSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState<{
     id: string;
@@ -202,6 +202,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
   } | null>(null);
   const gameState = useGameStore();
   const activatedPurchases = gameState.activatedPurchases || {};
+  const { toast } = useToast();
 
   const loadPurchasedItems = async () => {
     try {
@@ -332,8 +333,10 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
           type: "system",
         });
 
-        setShowSuccess(true);
-        setTimeout(() => setShowSuccess(false), 10000);
+        toast({
+          title: "Success!",
+          description: `${item.name} has been added to your purchases. Check the Purchases tab to activate it.`,
+        });
       } catch (error) {
         logger.error("Error claiming free item:", error);
         gameState.addLogEntry({
@@ -469,8 +472,12 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     });
 
     // Show success message
-    setShowSuccess(true);
-    setTimeout(() => setShowSuccess(false), 10000);
+    toast({
+      title: "Purchase Successful!",
+      description: item.bundleComponents 
+        ? `${item.name} components have been added to your purchases. Check the Purchases tab to activate them.`
+        : `${item.name} has been added to your purchases. Check the Purchases tab to activate it.`,
+    });
 
     setClientSecret(null);
     setSelectedItem(null);
@@ -612,12 +619,6 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
         {isLoading && (
           <div className="flex justify-center py-8">
             <div className="text-muted-foreground">Loading...</div>
-          </div>
-        )}
-
-        {!isLoading && showSuccess && (
-          <div className="bg-green-800 text-gray-100 px-4 py-3 rounded-md mb-4">
-            Purchase successful! Check the Purchases tab to activate your items.
           </div>
         )}
 
