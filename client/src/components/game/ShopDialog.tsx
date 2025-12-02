@@ -216,7 +216,6 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
 
       if (error) throw error;
       if (data) {
-        logger.log("[SHOP] Loaded purchases from DB:", data);
         // Use numeric database ID as the unique purchase identifier
         // Format: purchase-{itemId}-{numericDbId}
         setPurchasedItems(data.map((p) => `purchase-${p.item_id}-${p.id}`));
@@ -840,14 +839,6 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                           }
                           const item = SHOP_ITEMS[itemId];
 
-                          logger.log("[SHOP] Filtering purchase:", {
-                            purchaseId,
-                            extractedItemId: itemId,
-                            itemExists: !!item,
-                            hasFeastActivations: item?.rewards?.feastActivations,
-                            willShow: item && !item.rewards.feastActivations
-                          });
-
                           // Don't show items with feast activations here (they're shown above)
                           // But do check if the item exists
                           return item && !item.rewards.feastActivations;
@@ -862,12 +853,6 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                             itemId = parts.slice(0, -5).join('-');
                           }
                           const item = SHOP_ITEMS[itemId];
-
-                          logger.log("[SHOP] Rendering purchase:", {
-                            purchaseId,
-                            itemId,
-                            itemName: item?.name
-                          });
 
                           if (!item) return null;
 
