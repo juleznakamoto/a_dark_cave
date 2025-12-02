@@ -689,7 +689,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   muttering_amulet: {
     id: "muttering_amulet",
     name: "Muttering Amulet",
-    description: "Mysterious amulet that whispers ancient secrets",
+    description: "Mysterious amulet making strange sounds",
     bonuses: {
       generalBonuses: {
         luck: 3,
