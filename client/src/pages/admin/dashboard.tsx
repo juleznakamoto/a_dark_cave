@@ -1516,6 +1516,56 @@ export default function AdminDashboard() {
     return topFirstTimeClicks;
   };
 
+  // Get churn rate over time (last 30 days)
+  const getChurnRateOverTime = () => {
+    const data: { day: string; churnRate: number }[] = [];
+
+    for (let i = 30; i >= 0; i--) {
+      const date = subDays(new Date(), i);
+      const dayStart = startOfDay(date);
+
+      // Get users with click data
+      const usersWithClicks = new Set<string>();
+      clickData.forEach(entry => usersWithClicks.add(entry.user_id));
+
+      // Count churned users as of this date
+      let churnedCount = 0;
+      let totalCount = 0;
+
+      gameSaves.forEach(save => {
+        // Only count users who were created before this date
+        const createdDate = parseISO(save.created_at);
+        if (createdDate > dayStart) return;
+
+        totalCount++;
+
+        // Check if they were churned as of this date (inactive for churnDays before this date)
+        const cutoffDate = subDays(dayStart, churnDays);
+        const activityDate = parseISO(save.updated_at);
+        const hasCompletedGame = save.game_state?.events?.cube15a || 
+                                 save.game_state?.events?.cube15b ||
+                                 save.game_state?.events?.cube13 ||
+                                 save.game_state?.events?.cube14a ||
+                                 save.game_state?.events?.cube14b ||
+                                 save.game_state?.events?.cube14c ||
+                                 save.game_state?.events?.cube14d;
+
+        if (activityDate < cutoffDate && !hasCompletedGame && usersWithClicks.has(save.user_id)) {
+          churnedCount++;
+        }
+      });
+
+      const churnRate = totalCount > 0 ? Math.round((churnedCount / totalCount) * 100) : 0;
+
+      data.push({
+        day: format(date, 'MMM dd'),
+        churnRate,
+      });
+    }
+
+    return data;
+  };
+
   // Get sleep upgrade levels distribution
   const getSleepUpgradesDistribution = () => {
     // Filter by time range
@@ -2823,6 +2873,25 @@ export default function AdminDashboard() {
                     <Tooltip />
                     <Legend />
                     <Line type="monotone" dataKey="count" stroke="#ff8042" strokeWidth={2} dot={{ r: 4 }} />
+                  </LineChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Churn Rate Over Time (Last 30 Days)</CardTitle>
+                <CardDescription>Percentage of churned players over time (inactive for {churnDays}+ days, excluding completed games)</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={400}>
+                  <LineChart data={getChurnRateOverTime()}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="day" />
+                    <YAxis label={{ value: 'Churn Rate (%)', angle: -90, position: 'insideLeft' }} />
+                    <Tooltip />
+                    <Legend />
+                    <Line type="monotone" dataKey="churnRate" stroke="#dc2626" strokeWidth={2} dot={{ r: 4 }} name="Churn Rate (%)" />
                   </LineChart>
                 </ResponsiveContainer>
               </CardContent>
