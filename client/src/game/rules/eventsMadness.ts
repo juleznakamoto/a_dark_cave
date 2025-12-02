@@ -224,7 +224,7 @@ export const madnessEvents: Record<string, GameEvent> = {
     triggerType: "resource",
     timeProbability: 30,
     message:
-      "You count your villagers and there are three more than there should be. The extra ones look exactly like villagers who died months ago. They work, eat, and sleep normally, but their eyes hold depths of ancient malice. (+2 Madness)",
+      "You count the villagers and there are three more than there should be. The extra ones look exactly like villagers who died months ago. They work, eat, and sleep normally, but their eyes hold depths of ancient malice. (+2 Madness)",
     triggered: false,
     priority: 2,
     repeatable: false,
@@ -439,7 +439,7 @@ export const madnessEvents: Record<string, GameEvent> = {
     timeProbability: 30,
     title: "Skyward Gaze",
     message:
-      "All your villagers have stopped their work and stand motionless, staring at the empty sky. They remain like this for hours, unblinking, while tears of black liquid stream down their faces. When you follow their gaze, you see only ordinary clouds, but something feels terribly wrong.",
+      "All the villagers have stopped their work and stand motionless, staring at the empty sky. They remain like this for hours, unblinking, while tears of black liquid stream down their faces. When you follow their gaze, you see only ordinary clouds, but something feels terribly wrong.",
     triggered: false,
     priority: 2,
     repeatable: false,

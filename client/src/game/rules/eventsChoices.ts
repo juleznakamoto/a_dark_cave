@@ -52,7 +52,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 ravenfeather_mantle: true,
               },
               _logMessage:
-                "As your men near, the pale figure vanishes. In its place lies a raven-feather mantle, shimmering with otherworldly power.",
+                "As the men near, the pale figure vanishes. In its place lies a raven-feather mantle, shimmering with otherworldly power.",
             };
           } else if (rand < 0.6) {
             return {
@@ -288,7 +288,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 ebony_ring: true,
               },
               _logMessage:
-                "The forest gods accept your sacrifice. The figures vanish, and an ebony ring is found on the altar where the villagers were offered. Peace returns to the woods.",
+                "The forest gods accept the sacrifice. The figures vanish, and an ebony ring is found on the altar where the villagers were offered. Peace returns to the woods.",
             };
           } else {
             // Failure: additional suicides
@@ -308,7 +308,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 ...state.clothing,
                 ebony_ring: true,
               },
-              _logMessage: `The forest accepts your sacrifice. The figures vanish, and an ebony ring is found on the altar where the villagers were offered. But the horror of the sacrifice drives ${additionalDeaths} villagers to take their own lives.`,
+              _logMessage: `The forest accepts the sacrifice. The figures vanish, and an ebony ring is found on the altar where the villagers were offered. But the horror of the sacrifice drives ${additionalDeaths} villagers to take their own lives.`,
             };
           }
         },
@@ -473,12 +473,12 @@ export const choiceEvents: Record<string, GameEvent> = {
                 cracked_crown: true,
               },
               _logMessage:
-                "As the men approach the lake a creature emerges from the depths and strikes with fury, but your villagers' strength prevails. At the bottom of the lake they find countless human bones and a golden crown.",
+                "As the men approach the lake a creature emerges from the depths and strikes with fury, but the villagers' strength prevails. At the bottom of the lake they find countless human bones and a golden crown.",
             };
           } else if (rand < successChance + fleeChance) {
             return {
               _logMessage:
-                "Your men wade into the waters, but the creature bursts forth with inhuman speed. Her beauty twists into rows of teeth and glowing eyes. Terrified, your villagers flee to save their lives.",
+                "The men wade into the waters, but the creature bursts forth with inhuman speed. Her beauty twists into rows of teeth and glowing eyes. Terrified, the villagers flee to save their lives.",
             };
           } else {
             const drownedCount =
@@ -686,7 +686,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "You pay the builder. He teaches your villagers the ancient nordic techniques for constructing longhouses.",
+              "You pay the builder. He teaches the villagers the ancient nordic techniques for constructing longhouses.",
           };
         },
       },
@@ -745,7 +745,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                   vikingBuilderEvent: true,
                 },
               },
-              _logMessage: `The builder proves stronger than expected! He fights back fiercely, killing ${casualties} of your men before escaping into the wilderness.`,
+              _logMessage: `The builder proves stronger than expected! He fights back fiercely, killing ${casualties} men before escaping into the wilderness.`,
             };
           }
         },
@@ -1066,7 +1066,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "You hand over two of your villagers. The trader tosses you a bag of steel and rides off with his new captives. When the remaining villagers see what you've done,  they abandon the village in disgust.",
+              "You hand over two of the villagers. The trader tosses you a bag of steel and rides off with his new captives. When the remaining villagers see what you've done,  they abandon the village in disgust.",
           };
         },
       },
@@ -1127,7 +1127,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                   slaveTraderEvent: true,
                 },
               },
-              _logMessage: `Your men attack the slaver, but he's prepared! He fights back viciously. ${deaths} of your villagers ${deaths === 1 ? "falls" : "fall"} in the struggle. The trader escapes with his captives, leaving only death behind.`,
+              _logMessage: `Your men attack the slaver, but he's prepared! He fights back viciously. ${deaths} of the villagers ${deaths === 1 ? "falls" : "fall"} in the struggle. The trader escapes with his captives, leaving only death behind.`,
             };
           }
         },

@@ -141,7 +141,7 @@ const WAVE_CONFIG = {
 } as const;
 
 const VICTORY_MESSAGE = (silverReward: number) =>
-  `Your defenses hold! The pale creatures crash against your walls but cannot break through. Victory is yours! You claim ${silverReward} silver from the fallen creatures.`;
+  `The defenses hold! The pale creatures crash against the walls but cannot break through. You claim ${silverReward} silver from the fallen creatures.`;
 
 const FIFTH_WAVE_VICTORY_MESSAGE = (silverReward: number) =>
   `The final wave has been defeated! The path beyond the shattered portal now lies open. You can venture deeper into the depths to discover what lies beyond. You claim ${silverReward} silver from the fallen creatures.`;
@@ -163,7 +163,7 @@ function createDefeatMessage(
   }
 
   if (damagedBuildings.length > 0) {
-    msg += ` Your ${damagedBuildings.join(" and ")} ${damagedBuildings.length === 1 ? "is" : "are"} damaged in the assault.`;
+    msg += ` The ${damagedBuildings.join(" and ")} ${damagedBuildings.length === 1 ? "is" : "are"} damaged in the assault.`;
   }
 
   if (woundedFellows.length > 0) {

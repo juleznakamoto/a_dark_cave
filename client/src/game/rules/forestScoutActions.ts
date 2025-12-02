@@ -481,7 +481,7 @@ export function handleSunkenTemple(
     result.logEntries!.push({
       id: `sunken-temple-success-${Date.now()}`,
       message:
-        "Your expedition wades through the swamp waters to reach the ancient half-sunken temple. Despite the dangers lurking in the dark waters, your villagers navigate carefully through the submerged halls and find the bloodstone gems in the temple's inner sanctum.",
+        "Your expedition wades through the swamp waters to reach the ancient half-sunken temple. Despite the dangers lurking in the dark waters, the villagers navigate carefully through the submerged halls and find the bloodstone gems in the temple's inner sanctum.",
       timestamp: Date.now(),
       type: "system",
       visualEffect: {

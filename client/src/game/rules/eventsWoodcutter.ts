@@ -13,7 +13,7 @@ export const woodcutterEvents: Record<string, GameEvent> = {
     timeProbability: 7,
     title: "The Woodcutter",
     message:
-      "A muscular man with a large axe approaches your village. He flexes his arms 'I can cut trees like no other,' he boasts. 'Give me food, and I'll bring wood.'",
+      "A muscular man with a large axe approaches the village. He flexes his arms 'I can cut trees like no other,' he boasts. 'Give me food, and I'll bring wood.'",
     triggered: false,
     priority: 3,
     repeatable: true,
@@ -321,7 +321,7 @@ export const woodcutterEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "The woodcutter takes the food and within the same day he delivers a massive stockpile of 2500 wood to your village.",
+              "The woodcutter takes the food and within the same day he delivers a massive stockpile of 2500 wood to the village.",
           };
         },
       },

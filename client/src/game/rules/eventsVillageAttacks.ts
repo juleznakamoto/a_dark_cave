@@ -115,12 +115,12 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           }
 
           if (foodLoss > 0) {
-            message += ` The wolves also devour ${foodLoss} food from your stores.`;
+            message += ` The wolves also devour ${foodLoss} food from the stores.`;
           }
 
           if (hutDestroyed) {
             message +=
-              " In their rampage, the wolves destroy one of your huts, leaving only splintered wood.";
+              " In their rampage, the wolves destroy one of the huts, leaving only splintered wood.";
           }
 
           if (!state.story.seen.firstWolfAttack)
