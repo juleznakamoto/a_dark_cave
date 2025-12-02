@@ -1,13 +1,15 @@
+
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import Stripe from 'stripe';
 
-// Create mock inside the factory function
-const mockPaymentIntents = {
-  create: vi.fn(),
-  retrieve: vi.fn(),
-};
-
+// Mock Stripe with factory function
 vi.mock('stripe', () => {
+  // Create mock inside factory to avoid hoisting issues
+  const mockPaymentIntents = {
+    create: vi.fn(),
+    retrieve: vi.fn(),
+  };
+
   return {
     default: class MockStripe {
       paymentIntents = mockPaymentIntents;
@@ -17,6 +19,13 @@ vi.mock('stripe', () => {
 
 // Import after mocking
 import { createPaymentIntent, verifyPayment } from './stripe';
+
+// Get reference to the mocked methods for test assertions
+// We need to access the actual mock instance
+const getMockPaymentIntents = () => {
+  const mockStripe = new Stripe('', { apiVersion: '2024-12-18.acacia' });
+  return mockStripe.paymentIntents;
+};
 
 // Mock Supabase
 const mockSupabase = {
@@ -37,15 +46,18 @@ vi.mock('@/lib/supabase', () => ({
 }));
 
 describe('Stripe Shop Integration', () => {
+  let mockPaymentIntents: ReturnType<typeof getMockPaymentIntents>;
+
   beforeEach(() => {
     vi.clearAllMocks();
+    mockPaymentIntents = getMockPaymentIntents();
   });
 
   describe('createPaymentIntent', () => {
     it('should create payment intent with correct amount', async () => {
       mockPaymentIntents.create.mockResolvedValue({
         client_secret: 'test_secret',
-      });
+      } as any);
 
       const result = await createPaymentIntent('gold_250');
 
@@ -69,7 +81,7 @@ describe('Stripe Shop Integration', () => {
     it('should always use server-side price, never client price', async () => {
       mockPaymentIntents.create.mockResolvedValue({
         client_secret: 'test_secret',
-      });
+      } as any);
 
       // Attempt to pass a different client price (attack simulation)
       const result = await createPaymentIntent('gold_250', 1); // Try to pay only 1 cent
@@ -85,7 +97,7 @@ describe('Stripe Shop Integration', () => {
     it('should handle great feast items correctly', async () => {
       mockPaymentIntents.create.mockResolvedValue({
         client_secret: 'test_secret',
-      });
+      } as any);
 
       const result = await createPaymentIntent('great_feast_1');
 
@@ -162,8 +174,14 @@ const SHOP_ITEMS = {
   great_feast_1: { canPurchaseMultipleTimes: true },
 };
 
-
 describe('Purchase Restrictions', () => {
+  let mockPaymentIntents: ReturnType<typeof getMockPaymentIntents>;
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockPaymentIntents = getMockPaymentIntents();
+  });
+
   it('should track which items can be purchased multiple times', () => {
     // Verify shop items configuration
     expect(SHOP_ITEMS.gold_100_free.canPurchaseMultipleTimes).toBe(false);
@@ -175,7 +193,7 @@ describe('Purchase Restrictions', () => {
   it('should allow payment intent creation for any item (enforcement happens at purchase verification)', async () => {
     mockPaymentIntents.create.mockResolvedValue({
       client_secret: 'test_secret',
-    });
+    } as any);
 
     // Should allow creating payment intent even for non-repeatable items
     // (the enforcement of "already purchased" should happen client-side and during purchase verification)
