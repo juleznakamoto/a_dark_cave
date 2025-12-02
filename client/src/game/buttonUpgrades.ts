@@ -141,13 +141,14 @@ export const UPGRADE_LABELS: Record<UpgradeKey, string> = {
 };
 
 // Map action IDs to upgrade keys
+// All cave explore actions share the same "caveExplore" key to carry over progress
 export const ACTION_TO_UPGRADE_KEY: Record<string, UpgradeKey | undefined> = {
-  exploreCave: "exploreCave",
-  ventureDeeper: "ventureDeeper",
-  descendFurther: "descendFurther",
-  exploreRuins: "exploreRuins",
-  exploreTemple: "exploreTemple",
-  exploreCitadel: "exploreCitadel",
+  exploreCave: "caveExplore",
+  ventureDeeper: "caveExplore",
+  descendFurther: "caveExplore",
+  exploreRuins: "caveExplore",
+  exploreTemple: "caveExplore",
+  exploreCitadel: "caveExplore",
   mineStone: "mineStone",
   mineIron: "mineIron",
   mineCoal: "mineCoal",
