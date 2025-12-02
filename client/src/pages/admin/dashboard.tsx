@@ -147,7 +147,15 @@ export default function AdminDashboard() {
     if (showCompletedOnly) {
       const completedUserIds = new Set(
         gameSaves
-          .filter(save => save.game_state?.events?.cube15a || save.game_state?.events?.cube15b)
+          .filter(save => 
+            save.game_state?.events?.cube15a || 
+            save.game_state?.events?.cube15b ||
+            save.game_state?.events?.cube13 ||
+            save.game_state?.events?.cube14a ||
+            save.game_state?.events?.cube14b ||
+            save.game_state?.events?.cube14c ||
+            save.game_state?.events?.cube14d
+          )
           .map(save => save.user_id)
       );
       filteredClicks = filteredClicks.filter(d => completedUserIds.has(d.user_id));
@@ -291,7 +299,13 @@ export default function AdminDashboard() {
 
   const getAveragePlaytimeToCompletion = () => {
     const completedGames = gameSaves.filter(save => 
-      save.game_state?.events?.cube15a || save.game_state?.events?.cube15b
+      save.game_state?.events?.cube15a || 
+      save.game_state?.events?.cube15b ||
+      save.game_state?.events?.cube13 ||
+      save.game_state?.events?.cube14a ||
+      save.game_state?.events?.cube14b ||
+      save.game_state?.events?.cube14c ||
+      save.game_state?.events?.cube14d
     );
 
     if (completedGames.length === 0) return 0;
@@ -508,7 +522,15 @@ export default function AdminDashboard() {
     if (showCompletedOnly) {
       const completedUserIds = new Set(
         gameSaves
-          .filter(save => save.game_state?.events?.cube15a || save.game_state?.events?.cube15b)
+          .filter(save => 
+            save.game_state?.events?.cube15a || 
+            save.game_state?.events?.cube15b ||
+            save.game_state?.events?.cube13 ||
+            save.game_state?.events?.cube14a ||
+            save.game_state?.events?.cube14b ||
+            save.game_state?.events?.cube14c ||
+            save.game_state?.events?.cube14d
+          )
           .map(save => save.user_id)
       );
       filteredClicks = filteredClicks.filter(d => completedUserIds.has(d.user_id));
@@ -578,7 +600,15 @@ export default function AdminDashboard() {
     if (showCompletedOnly) {
       const completedUserIds = new Set(
         gameSaves
-          .filter(save => save.game_state?.events?.cube15a || save.game_state?.events?.cube15b)
+          .filter(save => 
+            save.game_state?.events?.cube15a || 
+            save.game_state?.events?.cube15b ||
+            save.game_state?.events?.cube13 ||
+            save.game_state?.events?.cube14a ||
+            save.game_state?.events?.cube14b ||
+            save.game_state?.events?.cube14c ||
+            save.game_state?.events?.cube14d
+          )
           .map(save => save.user_id)
       );
       filteredClicks = filteredClicks.filter(d => completedUserIds.has(d.user_id));
@@ -699,7 +729,15 @@ export default function AdminDashboard() {
     if (showCompletedOnly) {
       const completedUserIds = new Set(
         gameSaves
-          .filter(save => save.game_state?.events?.cube15a || save.game_state?.events?.cube15b)
+          .filter(save => 
+            save.game_state?.events?.cube15a || 
+            save.game_state?.events?.cube15b ||
+            save.game_state?.events?.cube13 ||
+            save.game_state?.events?.cube14a ||
+            save.game_state?.events?.cube14b ||
+            save.game_state?.events?.cube14c ||
+            save.game_state?.events?.cube14d
+          )
           .map(save => save.user_id)
       );
       filtered = filtered.filter(d => completedUserIds.has(d.user_id));
@@ -732,7 +770,15 @@ export default function AdminDashboard() {
     if (showCompletedOnly) {
       const completedUserIds = new Set(
         gameSaves
-          .filter(save => save.game_state?.events?.cube15a || save.game_state?.events?.cube15b)
+          .filter(save => 
+            save.game_state?.events?.cube15a || 
+            save.game_state?.events?.cube15b ||
+            save.game_state?.events?.cube13 ||
+            save.game_state?.events?.cube14a ||
+            save.game_state?.events?.cube14b ||
+            save.game_state?.events?.cube14c ||
+            save.game_state?.events?.cube14d
+          )
           .map(save => save.user_id)
       );
       filtered = filtered.filter(d => completedUserIds.has(d.user_id));
@@ -765,7 +811,13 @@ export default function AdminDashboard() {
 
   const getGameCompletionStats = () => {
     const completed = gameSaves.filter(save =>
-      save.game_state?.events?.cube15a || save.game_state?.events?.cube15b
+      save.game_state?.events?.cube15a || 
+      save.game_state?.events?.cube15b ||
+      save.game_state?.events?.cube13 ||
+      save.game_state?.events?.cube14a ||
+      save.game_state?.events?.cube14b ||
+      save.game_state?.events?.cube14c ||
+      save.game_state?.events?.cube14d
     ).length;
 
     const total = gameSaves.length;
@@ -948,7 +1000,13 @@ export default function AdminDashboard() {
 
       // Check if they completed the game
       const save = gameSaves.find(s => s.user_id === userId);
-      const hasCompletedGame = save?.game_state?.events?.cube15a || save?.game_state?.events?.cube15b;
+      const hasCompletedGame = save?.game_state?.events?.cube15a || 
+                               save?.game_state?.events?.cube15b ||
+                               save?.game_state?.events?.cube13 ||
+                               save?.game_state?.events?.cube14a ||
+                               save?.game_state?.events?.cube14b ||
+                               save?.game_state?.events?.cube14c ||
+                               save?.game_state?.events?.cube14d;
 
       // Log first 5 checks to see what's happening
       if (churnedCount + notChurnedCount < 5) {
@@ -1016,7 +1074,13 @@ export default function AdminDashboard() {
         userLastActivity.set(save.user_id, activityDate);
       }
       // Check completion status
-      const hasCompletedGame = save.game_state?.events?.cube15a || save.game_state?.events?.cube15b;
+      const hasCompletedGame = save.game_state?.events?.cube15a || 
+                               save.game_state?.events?.cube15b ||
+                               save.game_state?.events?.cube13 ||
+                               save.game_state?.events?.cube14a ||
+                               save.game_state?.events?.cube14b ||
+                               save.game_state?.events?.cube14c ||
+                               save.game_state?.events?.cube14d;
       if (activityDate < cutoffDate && !hasCompletedGame && usersWithClicks.has(save.user_id)) {
         churnedUserIds.add(save.user_id);
       }
@@ -1198,7 +1262,13 @@ export default function AdminDashboard() {
       if (!existing || activityDate > existing) {
         userLastActivity.set(save.user_id, activityDate);
       }
-      const hasCompletedGame = save.game_state?.events?.cube15a || save.game_state?.events?.cube15b;
+      const hasCompletedGame = save.game_state?.events?.cube15a || 
+                               save.game_state?.events?.cube15b ||
+                               save.game_state?.events?.cube13 ||
+                               save.game_state?.events?.cube14a ||
+                               save.game_state?.events?.cube14b ||
+                               save.game_state?.events?.cube14c ||
+                               save.game_state?.events?.cube14d;
       if (activityDate < cutoffDate && !hasCompletedGame) {
         churnedUserIds.add(save.user_id);
       }
@@ -1270,7 +1340,13 @@ export default function AdminDashboard() {
         userLastActivity.set(save.user_id, activityDate);
       }
       // Check completion status
-      const hasCompletedGame = save.game_state?.events?.cube15a || save.game_state?.events?.cube15b;
+      const hasCompletedGame = save.game_state?.events?.cube15a || 
+                               save.game_state?.events?.cube15b ||
+                               save.game_state?.events?.cube13 ||
+                               save.game_state?.events?.cube14a ||
+                               save.game_state?.events?.cube14b ||
+                               save.game_state?.events?.cube14c ||
+                               save.game_state?.events?.cube14d;
       if (activityDate < cutoffDate && !hasCompletedGame && usersWithClicks.has(save.user_id)) {
         churnedUserIds.add(save.user_id);
       }
@@ -1320,7 +1396,15 @@ export default function AdminDashboard() {
     if (showCompletedOnly) {
       const completedUserIds = new Set(
         gameSaves
-          .filter(save => save.game_state?.events?.cube15a || save.game_state?.events?.cube15b)
+          .filter(save => 
+            save.game_state?.events?.cube15a || 
+            save.game_state?.events?.cube15b ||
+            save.game_state?.events?.cube13 ||
+            save.game_state?.events?.cube14a ||
+            save.game_state?.events?.cube14b ||
+            save.game_state?.events?.cube14c ||
+            save.game_state?.events?.cube14d
+          )
           .map(save => save.user_id)
       );
       filteredSaves = filteredSaves.filter(s => completedUserIds.has(s.user_id));
@@ -1385,7 +1469,15 @@ export default function AdminDashboard() {
     if (showCompletedOnly) {
       const completedUserIds = new Set(
         gameSaves
-          .filter(save => save.game_state?.events?.cube15a || save.game_state?.events?.cube15b)
+          .filter(save => 
+            save.game_state?.events?.cube15a || 
+            save.game_state?.events?.cube15b ||
+            save.game_state?.events?.cube13 ||
+            save.game_state?.events?.cube14a ||
+            save.game_state?.events?.cube14b ||
+            save.game_state?.events?.cube14c ||
+            save.game_state?.events?.cube14d
+          )
           .map(save => save.user_id)
       );
       filteredClicks = filteredClicks.filter(record => completedUserIds.has(record.user_id));
@@ -1398,7 +1490,7 @@ export default function AdminDashboard() {
     filteredClicks.forEach(record => {
       // Resources are stored in the 'resources' field with playtime snapshots
       const resourceSnapshots = record.resources || {};
-      
+
       // Iterate over playtime entries in resources
       Object.entries(resourceSnapshots).forEach(([playtimeKey, resourcesAtTime]: [string, any]) => {
         try {
@@ -1418,7 +1510,7 @@ export default function AdminDashboard() {
             Object.entries(resourcesAtTime).forEach(([resourceName, resourceValue]: [string, any]) => {
               // Resource value should be a number
               const amount = typeof resourceValue === 'number' ? resourceValue : 0;
-              
+
               if (amount > 0) {
                 if (!bucketData[resourceName]) {
                   bucketData[resourceName] = { total: 0, count: 0 };
@@ -1603,7 +1695,15 @@ export default function AdminDashboard() {
                 <CardContent>
                   <p className="text-4xl font-bold">
                     {gameSaves.length > 0
-                      ? Math.round((gameSaves.filter(s => s.game_state?.events?.cube15a || s.game_state?.events?.cube15b).length / gameSaves.length) * 100)
+                      ? Math.round((gameSaves.filter(s => 
+                          s.game_state?.events?.cube15a || 
+                          s.game_state?.events?.cube15b ||
+                          s.game_state?.events?.cube13 ||
+                          s.game_state?.events?.cube14a ||
+                          s.game_state?.events?.cube14b ||
+                          s.game_state?.events?.cube14c ||
+                          s.game_state?.events?.cube14d
+                        ).length / gameSaves.length) * 100)
                       : 0}%
                   </p>
                 </CardContent>
@@ -1784,7 +1884,15 @@ export default function AdminDashboard() {
                   className="cursor-pointer w-4 h-4"
                 />
                 <span className="text-sm font-medium">
-                  Show only players who completed the game ({gameSaves.filter(save => save.game_state?.events?.cube15a || save.game_state?.events?.cube15b).length} players)
+                  Show only players who completed the game ({gameSaves.filter(save => 
+                    save.game_state?.events?.cube15a || 
+                    save.game_state?.events?.cube15b ||
+                    save.game_state?.events?.cube13 ||
+                    save.game_state?.events?.cube14a ||
+                    save.game_state?.events?.cube14b ||
+                    save.game_state?.events?.cube14c ||
+                    save.game_state?.events?.cube14d
+                  ).length} players)
                 </span>
               </label>
             </div>
@@ -2016,7 +2124,15 @@ export default function AdminDashboard() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-4xl font-bold">
-                    {gameSaves.filter(s => s.game_state?.events?.cube15a || s.game_state?.events?.cube15b).length}
+                    {gameSaves.filter(s => 
+                      s.game_state?.events?.cube15a || 
+                      s.game_state?.events?.cube15b ||
+                      s.game_state?.events?.cube13 ||
+                      s.game_state?.events?.cube14a ||
+                      s.game_state?.events?.cube14b ||
+                      s.game_state?.events?.cube14c ||
+                      s.game_state?.events?.cube14d
+                    ).length}
                   </p>
                 </CardContent>
               </Card>
@@ -2028,7 +2144,15 @@ export default function AdminDashboard() {
                 <CardContent>
                   <p className="text-4xl font-bold">
                     {gameSaves.length > 0
-                      ? Math.round((gameSaves.filter(s => s.game_state?.events?.cube15a || s.game_state?.events?.cube15b).length / gameSaves.length) * 100)
+                      ? Math.round((gameSaves.filter(s => 
+                          s.game_state?.events?.cube15a || 
+                          s.game_state?.events?.cube15b ||
+                          s.game_state?.events?.cube13 ||
+                          s.game_state?.events?.cube14a ||
+                          s.game_state?.events?.cube14b ||
+                          s.game_state?.events?.cube14c ||
+                          s.game_state?.events?.cube14d
+                        ).length / gameSaves.length) * 100)
                       : 0}%
                   </p>
                 </CardContent>
@@ -2466,7 +2590,13 @@ export default function AdminDashboard() {
                         userLastActivity.set(save.user_id, activityDate);
                       }
                       // Check completion status
-                      const hasCompletedGame = save.game_state?.events?.cube15a || save.game_state?.events?.cube15b;
+                      const hasCompletedGame = save.game_state?.events?.cube15a || 
+                                               save.game_state?.events?.cube15b ||
+                                               save.game_state?.events?.cube13 ||
+                                               save.game_state?.events?.cube14a ||
+                                               save.game_state?.events?.cube14b ||
+                                               save.game_state?.events?.cube14c ||
+                                               save.game_state?.events?.cube14d;
                       if (activityDate < cutoffDate && !hasCompletedGame && usersWithClicks.has(save.user_id)) {
                         churnedUserIds.add(save.user_id);
                       }
@@ -2532,7 +2662,15 @@ export default function AdminDashboard() {
                   className="cursor-pointer w-4 h-4"
                 />
                 <span className="text-sm font-medium">
-                  Show only players who completed the game ({gameSaves.filter(save => save.game_state?.events?.cube15a || save.game_state?.events?.cube15b).length} players)
+                  Show only players who completed the game ({gameSaves.filter(save => 
+                    save.game_state?.events?.cube15a || 
+                    save.game_state?.events?.cube15b ||
+                    save.game_state?.events?.cube13 ||
+                    save.game_state?.events?.cube14a ||
+                    save.game_state?.events?.cube14b ||
+                    save.game_state?.events?.cube14c ||
+                    save.game_state?.events?.cube14d
+                  ).length} players)
                 </span>
               </label>
             </div>
@@ -2623,7 +2761,15 @@ export default function AdminDashboard() {
                   className="cursor-pointer w-4 h-4"
                 />
                 <span className="text-sm font-medium">
-                  Show only players who completed the game ({gameSaves.filter(save => save.game_state?.events?.cube15a || save.game_state?.events?.cube15b).length} players)
+                  Show only players who completed the game ({gameSaves.filter(save => 
+                    save.game_state?.events?.cube15a || 
+                    save.game_state?.events?.cube15b ||
+                    save.game_state?.events?.cube13 ||
+                    save.game_state?.events?.cube14a ||
+                    save.game_state?.events?.cube14b ||
+                    save.game_state?.events?.cube14c ||
+                    save.game_state?.events?.cube14d
+                  ).length} players)
                 </span>
               </label>
             </div>
