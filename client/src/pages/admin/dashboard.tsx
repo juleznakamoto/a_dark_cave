@@ -1322,6 +1322,87 @@ export default function AdminDashboard() {
     return result;
   };
 
+  // Get button upgrades over playtime
+  const getButtonUpgradesOverPlaytime = () => {
+    let filteredSaves = gameSaves;
+
+    if (selectedUser !== 'all') {
+      filteredSaves = gameSaves.filter(s => s.user_id === selectedUser);
+    }
+
+    // Filter by completed players if toggle is on
+    if (showCompletedOnly) {
+      const completedUserIds = new Set(
+        gameSaves
+          .filter(save => 
+            save.game_state?.events?.cube15a || 
+            save.game_state?.events?.cube15b ||
+            save.game_state?.events?.cube13 ||
+            save.game_state?.events?.cube14a ||
+            save.game_state?.events?.cube14b ||
+            save.game_state?.events?.cube14c ||
+            save.game_state?.events?.cube14d
+          )
+          .map(save => save.user_id)
+      );
+      filteredSaves = filteredSaves.filter(s => completedUserIds.has(s.user_id));
+    }
+
+    // Group upgrades by playtime buckets (1-hour intervals)
+    const playtimeBuckets = new Map<number, Record<string, { total: number; count: number }>>();
+    let maxBucket = 0;
+
+    const upgradeTypes = ['exploreCave', 'mineStone', 'hunt', 'chopWood', 'caveExplore'];
+
+    filteredSaves.forEach(save => {
+      const playTimeMinutes = save.game_state?.playTime ? Math.round(save.game_state.playTime / 1000 / 60) : 0;
+      const bucket = Math.floor(playTimeMinutes / 60) * 60; // 1-hour buckets
+      maxBucket = Math.max(maxBucket, bucket);
+
+      if (!playtimeBuckets.has(bucket)) {
+        playtimeBuckets.set(bucket, {});
+      }
+
+      const bucketData = playtimeBuckets.get(bucket)!;
+      const buttonUpgrades = save.game_state?.buttonUpgrades || {};
+
+      upgradeTypes.forEach(upgradeType => {
+        const upgrade = buttonUpgrades[upgradeType];
+        if (upgrade && upgrade.level > 0) {
+          if (!bucketData[upgradeType]) {
+            bucketData[upgradeType] = { total: 0, count: 0 };
+          }
+          bucketData[upgradeType].total += upgrade.level;
+          bucketData[upgradeType].count += 1;
+        }
+      });
+    });
+
+    // Convert to array format for chart
+    const result: Array<{ time: string; [key: string]: any }> = [];
+
+    for (let bucket = 0; bucket <= maxBucket; bucket += 60) {
+      const hours = bucket / 60;
+      const dataPoint: { time: string; [key: string]: any } = {
+        time: hours === 0 ? '0h' : `${hours}h`,
+      };
+
+      const bucketData = playtimeBuckets.get(bucket);
+      if (bucketData) {
+        upgradeTypes.forEach(upgradeType => {
+          const stats = bucketData[upgradeType];
+          if (stats && stats.count > 0) {
+            dataPoint[upgradeType] = Math.round((stats.total / stats.count) * 10) / 10; // Average level
+          }
+        });
+      }
+
+      result.push(dataPoint);
+    }
+
+    return result;
+  };
+
   // Get the top 20 buttons clicked exactly once (first-time clicks) by churned players
   const getChurnedPlayersFirstTimeClicks = () => {
     logger.log('🔍 Getting churned players first-time clicks START:', {
@@ -1668,6 +1749,7 @@ export default function AdminDashboard() {
             <TabsTrigger value="churn">Churn</TabsTrigger>
             <TabsTrigger value="sleep">Sleep Upgrades</TabsTrigger>
             <TabsTrigger value="resources">Resources</TabsTrigger>
+            <TabsTrigger value="upgrades">Button Upgrades</TabsTrigger>
             <TabsTrigger value="lookup">User Lookup</TabsTrigger>
           </TabsList>
 
@@ -2858,6 +2940,139 @@ export default function AdminDashboard() {
                         />
                       ));
                     })()}
+                  </LineChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="upgrades" className="space-y-4">
+            <div className="flex items-center gap-4 mb-4">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={showCompletedOnly}
+                  onChange={(e) => setShowCompletedOnly(e.target.checked)}
+                  className="cursor-pointer w-4 h-4"
+                />
+                <span className="text-sm font-medium">
+                  Show only players who completed the game ({gameSaves.filter(save => 
+                    save.game_state?.events?.cube15a || 
+                    save.game_state?.events?.cube15b ||
+                    save.game_state?.events?.cube13 ||
+                    save.game_state?.events?.cube14a ||
+                    save.game_state?.events?.cube14b ||
+                    save.game_state?.events?.cube14c ||
+                    save.game_state?.events?.cube14d
+                  ).length} players)
+                </span>
+              </label>
+            </div>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Cave Exploring Upgrades Over Playtime</CardTitle>
+                <CardDescription>
+                  Average upgrade level over time (1-hour intervals) {selectedUser !== 'all' ? 'for selected user' : showCompletedOnly ? 'for completed players only' : 'across all users'}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={400}>
+                  <LineChart data={getButtonUpgradesOverPlaytime()}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="time" label={{ value: 'Playtime', position: 'insideBottom', offset: -5 }} />
+                    <YAxis label={{ value: 'Average Level', angle: -90, position: 'insideLeft' }} />
+                    <Tooltip />
+                    <Legend />
+                    <Line type="monotone" dataKey="exploreCave" stroke="#8884d8" strokeWidth={2} dot={{ r: 3 }} name="Cave Exploring" />
+                  </LineChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Mining Upgrades Over Playtime</CardTitle>
+                <CardDescription>
+                  Average upgrade level over time (1-hour intervals) {selectedUser !== 'all' ? 'for selected user' : showCompletedOnly ? 'for completed players only' : 'across all users'}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={400}>
+                  <LineChart data={getButtonUpgradesOverPlaytime()}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="time" label={{ value: 'Playtime', position: 'insideBottom', offset: -5 }} />
+                    <YAxis label={{ value: 'Average Level', angle: -90, position: 'insideLeft' }} />
+                    <Tooltip />
+                    <Legend />
+                    <Line type="monotone" dataKey="mineStone" stroke="#82ca9d" strokeWidth={2} dot={{ r: 3 }} name="Stone Mining" />
+                  </LineChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Hunting Upgrades Over Playtime</CardTitle>
+                <CardDescription>
+                  Average upgrade level over time (1-hour intervals) {selectedUser !== 'all' ? 'for selected user' : showCompletedOnly ? 'for completed players only' : 'across all users'}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={400}>
+                  <LineChart data={getButtonUpgradesOverPlaytime()}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="time" label={{ value: 'Playtime', position: 'insideBottom', offset: -5 }} />
+                    <YAxis label={{ value: 'Average Level', angle: -90, position: 'insideLeft' }} />
+                    <Tooltip />
+                    <Legend />
+                    <Line type="monotone" dataKey="hunt" stroke="#ffc658" strokeWidth={2} dot={{ r: 3 }} name="Hunting" />
+                  </LineChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Woodcutting Upgrades Over Playtime</CardTitle>
+                <CardDescription>
+                  Average upgrade level over time (1-hour intervals) {selectedUser !== 'all' ? 'for selected user' : showCompletedOnly ? 'for completed players only' : 'across all users'}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={400}>
+                  <LineChart data={getButtonUpgradesOverPlaytime()}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="time" label={{ value: 'Playtime', position: 'insideBottom', offset: -5 }} />
+                    <YAxis label={{ value: 'Average Level', angle: -90, position: 'insideLeft' }} />
+                    <Tooltip />
+                    <Legend />
+                    <Line type="monotone" dataKey="chopWood" stroke="#ff8042" strokeWidth={2} dot={{ r: 3 }} name="Woodcutting" />
+                  </LineChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>All Button Upgrades Over Playtime (Combined)</CardTitle>
+                <CardDescription>
+                  Average upgrade levels over time (1-hour intervals) {selectedUser !== 'all' ? 'for selected user' : showCompletedOnly ? 'for completed players only' : 'across all users'}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={400}>
+                  <LineChart data={getButtonUpgradesOverPlaytime()}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="time" label={{ value: 'Playtime', position: 'insideBottom', offset: -5 }} />
+                    <YAxis label={{ value: 'Average Level', angle: -90, position: 'insideLeft' }} />
+                    <Tooltip />
+                    <Legend />
+                    <Line type="monotone" dataKey="exploreCave" stroke="#8884d8" strokeWidth={2} dot={{ r: 3 }} name="Cave Exploring" />
+                    <Line type="monotone" dataKey="mineStone" stroke="#82ca9d" strokeWidth={2} dot={{ r: 3 }} name="Stone Mining" />
+                    <Line type="monotone" dataKey="hunt" stroke="#ffc658" strokeWidth={2} dot={{ r: 3 }} name="Hunting" />
+                    <Line type="monotone" dataKey="chopWood" stroke="#ff8042" strokeWidth={2} dot={{ r: 3 }} name="Woodcutting" />
+                    <Line type="monotone" dataKey="caveExplore" stroke="#0088FE" strokeWidth={2} dot={{ r: 3 }} name="General Cave Explore" />
                   </LineChart>
                 </ResponsiveContainer>
               </CardContent>
