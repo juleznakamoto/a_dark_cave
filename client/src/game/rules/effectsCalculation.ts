@@ -455,16 +455,13 @@ export const getAllActionBonuses = (
   if (state.huntingSkills?.level > 0) {
     const huntBonus = HUNT_BONUSES[state.huntingSkills.level];
     if (huntBonus > 0) {
-      return [
-        ...actionBonuses,
-        {
-          id: "huntBonus",
-          label: "Hunt Bonus",
-          displayValue: `+${huntBonus}%`,
-          multiplier: 1,
-          flatBonus: 0,
-        }
-      ];
+      actionBonuses.push({
+        id: "huntBonus",
+        label: "Hunt Bonus",
+        displayValue: `+${huntBonus}%`,
+        multiplier: 1,
+        flatBonus: 0,
+      });
     }
   }
 
