@@ -149,19 +149,19 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     symbolColor: "text-orange-600",
   },
 
-  champion_bundle: {
-    id: "champion_bundle",
-    name: "Champion Bundle",
-    description: "A powerful pack with 5000 Gold and 1 Great Feast",
-    originalPrice: 1298, // 999 + 299
-    price: 599, // 5.99 € (discounted from 648)
+  a_good_start_bundle: {
+    id: "a_good_start_bundle",
+    name: "A Good Start Bundle",
+    description: "A bundle with 5000 Gold and 1 Great Feast",
+    originalPrice: 1199, // 11.99 €
+    price: 599, // 5.99 €
     rewards: {
       resources: { gold: 5000 },
       feastActivations: 1,
     },
     canPurchaseMultipleTimes: true,
     category: "bundle",
-    activationMessage: "Champion Bundle components have been added to your purchases!",
+    activationMessage: "A Good Start Bundle components have been added to your purchases!",
     symbol: "◈",
     symbolColor: "text-purple-600",
     bundleComponents: ["gold_5000", "great_feast_1"], // Component items

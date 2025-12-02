@@ -1287,7 +1287,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 },
               },
               _logMessage:
-                "Your men attack, but the witch is too quick. With a final cackle, she curses the village before vanishing inthe woods. An intense weakness falls over your people, sapping their strength and will.",
+                "The men attack, but the witch is too quick. With a final cackle, she curses the village before vanishing into the woods. An intense weakness falls over your people, sapping their strength and will.",
             };
           }
         },
