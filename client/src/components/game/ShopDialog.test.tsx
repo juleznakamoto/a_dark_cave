@@ -109,6 +109,121 @@ describe('ShopDialog', () => {
         expect(claimButton).toBeDisabled();
       });
     });
+
+    it('should update lastFreeGoldClaim timestamp when claiming', async () => {
+      const user = userEvent.setup();
+      const onClose = vi.fn();
+      const updateResource = vi.fn();
+
+      const initialTime = Date.now() - (25 * 60 * 60 * 1000); // 25 hours ago
+
+      useGameStore.setState({
+        updateResource,
+        resources: { gold: 0 },
+        lastFreeGoldClaim: initialTime,
+      });
+
+      render(<ShopDialog isOpen={true} onClose={onClose} />);
+
+      await waitFor(() => {
+        expect(screen.getByText('100 Gold (Daily Free Gift)')).toBeInTheDocument();
+      });
+
+      const claimButton = screen.getByRole('button', { name: /claim/i });
+      await user.click(claimButton);
+
+      await waitFor(() => {
+        const state = useGameStore.getState();
+        expect(state.lastFreeGoldClaim).toBeGreaterThan(initialTime);
+        expect(state.lastFreeGoldClaim).toBeCloseTo(Date.now(), -2); // Within 100ms
+      });
+    });
+
+    it('should allow claiming again after exactly 24 hours have passed', async () => {
+      const user = userEvent.setup();
+      const onClose = vi.fn();
+      const updateResource = vi.fn();
+
+      // Set last claim to exactly 24 hours ago
+      useGameStore.setState({
+        updateResource,
+        resources: { gold: 0 },
+        lastFreeGoldClaim: Date.now() - (24 * 60 * 60 * 1000),
+      });
+
+      render(<ShopDialog isOpen={true} onClose={onClose} />);
+
+      await waitFor(() => {
+        const claimButton = screen.getByRole('button', { name: /claim/i });
+        expect(claimButton).not.toBeDisabled();
+      });
+
+      const claimButton = screen.getByRole('button', { name: /claim/i });
+      await user.click(claimButton);
+
+      await waitFor(() => {
+        expect(updateResource).toHaveBeenCalledWith('gold', 100);
+      });
+    });
+
+    it('should not allow claiming twice in quick succession', async () => {
+      const user = userEvent.setup();
+      const onClose = vi.fn();
+      const updateResource = vi.fn();
+
+      useGameStore.setState({
+        updateResource,
+        resources: { gold: 0 },
+        lastFreeGoldClaim: 0, // Never claimed
+      });
+
+      render(<ShopDialog isOpen={true} onClose={onClose} />);
+
+      await waitFor(() => {
+        expect(screen.getByText('100 Gold (Daily Free Gift)')).toBeInTheDocument();
+      });
+
+      const claimButton = screen.getByRole('button', { name: /claim/i });
+      
+      // First claim
+      await user.click(claimButton);
+
+      await waitFor(() => {
+        expect(updateResource).toHaveBeenCalledTimes(1);
+      });
+
+      // Try to claim again immediately - button should now be disabled
+      await waitFor(() => {
+        const disabledButton = screen.getByRole('button', { name: /available in 24h/i });
+        expect(disabledButton).toBeDisabled();
+      });
+    });
+
+    it('should show correct remaining hours for different time intervals', async () => {
+      const testCases = [
+        { hoursAgo: 1, expectedText: /available in 23h/i },
+        { hoursAgo: 12, expectedText: /available in 12h/i },
+        { hoursAgo: 23, expectedText: /available in 1h/i },
+        { hoursAgo: 23.5, expectedText: /available in 0h/i },
+      ];
+
+      for (const testCase of testCases) {
+        const onClose = vi.fn();
+
+        useGameStore.setState({
+          lastFreeGoldClaim: Date.now() - (testCase.hoursAgo * 60 * 60 * 1000),
+        });
+
+        const { unmount } = render(<ShopDialog isOpen={true} onClose={onClose} />);
+
+        await waitFor(() => {
+          const button = screen.getByRole('button', { name: testCase.expectedText });
+          expect(button).toBeDisabled();
+        });
+
+        unmount();
+      }
+    });
   });
 
   describe('Paid Items', () => {
