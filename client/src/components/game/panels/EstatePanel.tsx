@@ -354,7 +354,7 @@ export default function EstatePanel() {
                           } : handleSleepLengthUpgrade}
                           disabled={!canUpgradeLength}
                           size="xs"
-                          variant="outline"
+                          variant="ghost"
                           className="hover:bg-transparent hover:text-foreground"
                           button_id="upgrade-sleep-length"
                         >
@@ -428,7 +428,7 @@ export default function EstatePanel() {
                           } : handleSleepIntensityUpgrade}
                           disabled={!canUpgradeIntensity}
                           size="xs"
-                          variant="outline"
+                          variant="ghost"
                           className="hover:bg-transparent hover:text-foreground"
                           button_id="upgrade-sleep-intensity"
                         >
@@ -509,7 +509,7 @@ export default function EstatePanel() {
                             } : handleHuntingSkillUpgrade}
                             disabled={resources.gold < HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].cost}
                             size="xs"
-                            variant="outline"
+                            variant="ghost"
                             className="hover:bg-transparent hover:text-foreground"
                             button_id="upgrade-hunting-skills"
                           >
@@ -603,7 +603,7 @@ export default function EstatePanel() {
                               } : handleCrushingStrikeUpgrade}
                               disabled={resources.gold < CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel + 1].cost}
                               size="xs"
-                              variant="outline"
+                              variant="ghost"
                               className="hover:bg-transparent hover:text-foreground"
                               button_id="upgrade-crushing-strike"
                             >
@@ -686,7 +686,7 @@ export default function EstatePanel() {
                               } : handleBloodflameSphereUpgrade}
                               disabled={resources.gold < BLOODFLAME_SPHERE_UPGRADES[combatSkills.bloodflameSphereLevel + 1].cost}
                               size="xs"
-                              variant="outline"
+                              variant="ghost"
                               className="hover:bg-transparent hover:text-foreground"
                               button_id="upgrade-bloodflame-sphere"
                             >
