@@ -440,7 +440,7 @@ export const choiceEvents: Record<string, GameEvent> = {
       state.buildings.woodenHut >= 4 &&
       !state.clothing.cracked_crown,
     triggerType: "resource",
-    timeProbability: 35,
+    timeProbability: 40,
     title: "The Hidden Lake",
     message:
       "While gathering wood in the forest, the villagers discover a lake hidden among trees. One villager swears he saw a woman-like figure surface briefly, her gaze beautiful yet inhuman. What do you do?",

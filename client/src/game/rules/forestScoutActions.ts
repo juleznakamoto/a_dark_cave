@@ -177,7 +177,7 @@ export const forestScoutActions: Record<string, Action> = {
     success_chance: (state: GameState) => {
       return calculateSuccessChance(
         state,
-        0.15,
+        0.2,
         { type: "strength", multiplier: 0.005 },
         { type: "knowledge", multiplier: 0.005 },
       );
@@ -618,10 +618,10 @@ export function handleForestCave(
     // Success: Defeat the hounds
     result.stateUpdates.resources = {
       ...state.resources,
-      silver: (state.resources.silver || 0) + 300,
-      gold: (state.resources.gold || 0) + 150,
+      silver: (state.resources.silver || 0) + 250,
+      gold: (state.resources.gold || 0) + 100,
+      fur: (state.resources.fur || 0) + 250,
       food: (state.resources.food || 0) - 1000,
-      fur: (state.resources.fur || 0) + 50,
     };
 
     // Set flag to mark cave as explored
@@ -636,7 +636,7 @@ export function handleForestCave(
     result.logEntries!.push({
       id: `forest-cave-success-${Date.now()}`,
       message:
-        "Your warriors descend into the dark cave. The brutal hounds attack in packs, their eyes gleaming with savage hunger. After a fierce battle, the beasts are slain. The forest tribe is saved. They reward you with treasures and the pelts of the fallen hounds.",
+        "As the villagers descend into the cave brutal hounds attack in packs, their eyes gleaming with savage hunger. After a fierce battle, the beasts are slain. The forest tribe is saved.",
       timestamp: Date.now(),
       type: "system",
       visualEffect: {
