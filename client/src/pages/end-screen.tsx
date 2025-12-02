@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import Hero from "@/components/ui/animated-shader-hero";
 import { deleteSave } from "@/game/save";
-import { useGameStore } from "@/game/state";
 
 export default function EndScreenPage() {
   const [sdkInitialized, setSdkInitialized] = useState(false);
