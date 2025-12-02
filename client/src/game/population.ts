@@ -216,15 +216,25 @@ export const getPopulationProduction = (
     });
   }
 
-  // Apply Sharp Aim blessing bonus to hunter production
+  // Apply hunting skills bonuses to hunter production
   if (state && jobId === "hunter") {
+    const huntingSkillLevel = state.huntingSkills?.level || 0;
+    const { HUNTING_SKILL_BONUSES } = require("@/components/game/panels/EstatePanel");
+    const skillBonus = HUNTING_SKILL_BONUSES[huntingSkillLevel];
+    
     baseProduction.forEach((prod) => {
       if (prod.resource === "food" && prod.baseAmount > 0) {
-        let bonusFood = 0;
+        let bonusFood = skillBonus.food;
         if (state.blessings?.sharp_aim) {
-          bonusFood = 5; // +5 food per hunter
+          bonusFood += 5; // +5 food per hunter from Sharp Aim blessing
         }
         prod.totalAmount += bonusFood * count;
+      }
+      if (prod.resource === "fur" && prod.baseAmount > 0) {
+        prod.totalAmount += skillBonus.fur * count;
+      }
+      if (prod.resource === "bones" && prod.baseAmount > 0) {
+        prod.totalAmount += skillBonus.bones * count;
       }
     });
   }
@@ -310,9 +320,13 @@ export const getTotalPopulationEffects = (
     const huntingSkillLevel = state.huntingSkills?.level || 0;
     const bonus = HUNTING_SKILL_BONUSES[huntingSkillLevel];
 
-    totalEffects.food = (totalEffects.food || 0) + state.villagers.hunter * (10 + bonus.food);
-    totalEffects.fur = (totalEffects.fur || 0) + state.villagers.hunter * (5 + bonus.fur);
-    totalEffects.bones = (totalEffects.bones || 0) + state.villagers.hunter * (5 + bonus.bones);
+    const huntingSkillLevel = state.huntingSkills?.level || 0;
+    const { HUNTING_SKILL_BONUSES } = require("@/components/game/panels/EstatePanel");
+    const skillBonus = HUNTING_SKILL_BONUSES[huntingSkillLevel];
+    
+    totalEffects.food = (totalEffects.food || 0) + state.villagers.hunter * (10 + bonus.food + skillBonus.food);
+    totalEffects.fur = (totalEffects.fur || 0) + state.villagers.hunter * (5 + bonus.fur + skillBonus.fur);
+    totalEffects.bones = (totalEffects.bones || 0) + state.villagers.hunter * (5 + bonus.bones + skillBonus.bones);
   }
 
 
