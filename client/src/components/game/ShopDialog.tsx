@@ -85,40 +85,30 @@ function CheckoutForm({ itemId, onSuccess }: CheckoutFormProps) {
       setErrorMessage(error.message || "Payment failed");
       setIsProcessing(false);
     } else if (paymentIntent && paymentIntent.status === "succeeded") {
-      // Verify payment on backend and grant rewards
+      // Verify payment on backend - server creates all purchases
+      const user = await getCurrentUser();
+      if (!user) {
+        setErrorMessage("User not authenticated");
+        setIsProcessing(false);
+        return;
+      }
+
       const response = await fetch("/api/payment/verify", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ paymentIntentId: paymentIntent.id }),
+        body: JSON.stringify({
+          paymentIntentId: paymentIntent.id,
+          userId: user.id,
+        }),
       });
 
       const result = await response.json();
       if (result.success) {
-        // Save purchase to Supabase (same as free items)
-        try {
-          const user = await getCurrentUser();
-          if (user) {
-            const item = SHOP_ITEMS[result.itemId];
-            const client = await getSupabaseClient();
-            const { error } = await client.from("purchases").insert({
-              user_id: user.id,
-              item_id: result.itemId,
-              item_name: item.name,
-              price_paid: item.price,
-              purchased_at: new Date().toISOString(),
-            });
+        const item = SHOP_ITEMS[result.itemId];
 
-            if (error) {
-              logger.error("Error saving purchase to Supabase:", error);
-            }
-
-            // Set hasMadeNonFreePurchase flag if this is a paid item
-            if (item.price > 0) {
-              useGameStore.setState({ hasMadeNonFreePurchase: true });
-            }
-          }
-        } catch (error) {
-          logger.error("Exception saving purchase to Supabase:", error);
+        // Set hasMadeNonFreePurchase flag if this is a paid item
+        if (item.price > 0) {
+          useGameStore.setState({ hasMadeNonFreePurchase: true });
         }
 
         onSuccess();
@@ -488,7 +478,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
       // Get the latest purchase for this item (the one just created)
       const latestPurchaseId = updatedPurchasedItems
         .filter(pid => {
-          const itemId = pid.startsWith('purchase-') 
+          const itemId = pid.startsWith('purchase-')
             ? pid.substring('purchase-'.length, pid.lastIndexOf('-'))
             : pid;
           return itemId === selectedItem;
@@ -498,7 +488,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
       logger.log('[SHOP] Found latest purchase for single feast', {
         latestPurchaseId,
         allMatchingPurchases: updatedPurchasedItems.filter(pid => {
-          const itemId = pid.startsWith('purchase-') 
+          const itemId = pid.startsWith('purchase-')
             ? pid.substring('purchase-'.length, pid.lastIndexOf('-'))
             : pid;
           return itemId === selectedItem;
@@ -541,7 +531,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
         if (componentItem?.rewards.feastActivations) {
           // Find the latest purchase for this component
           const allMatchingPurchases = updatedPurchasedItems.filter(pid => {
-            const itemId = pid.startsWith('purchase-') 
+            const itemId = pid.startsWith('purchase-')
               ? pid.substring('purchase-'.length, pid.lastIndexOf('-'))
               : pid;
             return itemId === componentId;
@@ -589,7 +579,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
 
     gameState.addLogEntry({
       id: `purchase-${Date.now()}`,
-      message: item.bundleComponents 
+      message: item.bundleComponents
         ? `Purchase successful! ${item.name} components have been added to your purchases. You can activate them from the Purchases section.`
         : `Purchase successful! ${item.name} has been added to your purchases. You can activate it from the Purchases section.`,
       timestamp: Date.now(),
@@ -599,7 +589,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     // Show success message
     toast({
       title: "Purchase Successful!",
-      description: item.bundleComponents 
+      description: item.bundleComponents
         ? `${item.name} components have been added to your purchases. Check the Purchases tab to activate them.`
         : `${item.name} has been added to your purchases. Check the Purchases tab to activate it.`,
     });
