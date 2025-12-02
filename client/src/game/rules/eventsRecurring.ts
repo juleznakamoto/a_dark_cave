@@ -206,7 +206,7 @@ export const recurringEvents: Record<string, GameEvent> = {
              fireStormCount < maxOccurrences;
     },
     triggerType: "resource",
-    timeProbability: 90,
+    timeProbability: 99999,
     repeatable: true,
     message:
       "A fire sweeps through the village in the night, destroying one wooden hut and its occupants.",
