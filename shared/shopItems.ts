@@ -24,13 +24,13 @@ export interface ShopItem {
 export const SHOP_ITEMS: Record<string, ShopItem> = {
   gold_100_free: {
     id: "gold_100_free",
-    name: "100 Gold (Free Gift)",
-    description: "A generous gift to get you started (one-time only)",
-    price: 0, // Free!
+    name: "100 Gold (Daily Free Gift)",
+    description: "Claim 100 gold once every 24 hours to help you on your journey.",
+    price: 0,
     rewards: {
       resources: { gold: 100 },
     },
-    canPurchaseMultipleTimes: false,
+    canPurchaseMultipleTimes: true, // Can claim daily
     category: "resource",
     activationMessage: "100 Gold have been added to your inventory as a gift!",
     symbol: "⚵",
@@ -80,7 +80,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     },
     canPurchaseMultipleTimes: true,
     category: "resource",
-    activationMessage: "1000 Gold have been added to your inventory.",
+    activationMessage: "100 Gold have been added to your inventory.",
     symbol: "◉◉",
     symbolColor: "text-yellow-600",
   },

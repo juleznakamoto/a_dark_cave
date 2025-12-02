@@ -83,6 +83,9 @@ interface GameStore extends GameState {
   referredUsers: string[];
   referrals: GameState["referrals"]; // Added to store referral details
 
+  // Free gold claim tracking
+  lastFreeGoldClaim: number; // timestamp of last claim
+
   // Cooldown management
   cooldowns: Record<string, number>;
   cooldownDurations: Record<string, number>; // Track initial duration for each cooldown
@@ -361,6 +364,9 @@ const defaultGameState: GameState = {
   referrals: [], // Initialize referrals array
   social_media_rewards: {}, // Initialize social_media_rewards
 
+  // Free gold claim tracking
+  lastFreeGoldClaim: 0,
+
   // Cooldown management
   cooldowns: {},
   cooldownDurations: {}, // Initialize cooldownDurations
@@ -461,6 +467,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   // Initialize resource highlighting
   highlightedResources: [], // Updated to array for serialization
+
+  // Initialize free gold claim tracking
+  lastFreeGoldClaim: 0,
 
   setActiveTab: (tab: string) => set({ activeTab: tab }),
 
@@ -897,6 +906,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         highlightedResources: savedState.highlightedResources || [], // Load highlightedResources
         curseState: savedState.curseState || defaultGameState.curseState, // Load curseState
         frostfallState: savedState.frostfallState || defaultGameState.frostfallState, // Load frostfallState
+        lastFreeGoldClaim: savedState.lastFreeGoldClaim || 0, // Load lastFreeGoldClaim
 
       };
 

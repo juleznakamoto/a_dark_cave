@@ -272,8 +272,26 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
           throw new Error("User not authenticated");
         }
 
+        // Special handling for daily free gold
+        if (itemId === 'gold_100_free') {
+          const lastClaim = gameState.lastFreeGoldClaim || 0;
+          const now = Date.now();
+          const hoursSinceLastClaim = (now - lastClaim) / (1000 * 60 * 60);
+
+          if (hoursSinceLastClaim < 24) {
+            const hoursRemaining = Math.ceil(24 - hoursSinceLastClaim);
+            gameState.addLogEntry({
+              id: `free-gold-cooldown-${Date.now()}`,
+              message: `You can claim free gold again in ${hoursRemaining} hour${hoursRemaining !== 1 ? 's' : ''}.`,
+              timestamp: Date.now(),
+              type: "system",
+            });
+            return;
+          }
+        }
+
         // Check if already purchased (for non-repeatable items)
-        if (!item.canPurchaseMultipleTimes) {
+        if (!item.canPurchaseMultipleTimes && itemId !== 'gold_100_free') {
           const alreadyPurchased = purchasedItems.some(pid => {
             // Extract item ID from purchase ID
             // Format: purchase-{itemId}-{uuid} or purchase-{itemId}-temp-{timestamp}
@@ -362,6 +380,11 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
 
         // Reload purchases from database to get the correct ID
         await loadPurchasedItems();
+
+        // Update lastFreeGoldClaim timestamp if this is the daily free gold
+        if (itemId === 'gold_100_free') {
+          useGameStore.setState({ lastFreeGoldClaim: Date.now() });
+        }
 
         // Set hasMadeNonFreePurchase flag if this is a paid item (even if price is 0, we don't set it)
         if (item.price > 0) {
@@ -749,21 +772,26 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                                 }
                                 const parts = withoutPrefix.split('-');
                                 return parts.slice(0, -5).join('-') === item.id;
-                              }))
+                              })) ||
+                            (item.id === 'gold_100_free' && 
+                              (Date.now() - (gameState.lastFreeGoldClaim || 0)) / (1000 * 60 * 60) < 24)
                           }
                           className="w-full"
                           button_id={`shop-purchase-${item.id}`}
                         >
-                          {!item.canPurchaseMultipleTimes &&
-                          purchasedItems.some(pid => {
-                            if (!pid.startsWith('purchase-')) return false;
-                            const withoutPrefix = pid.substring('purchase-'.length);
-                            if (withoutPrefix.includes('-temp-')) {
-                              return withoutPrefix.substring(0, withoutPrefix.indexOf('-temp-')) === item.id;
-                            }
-                            const parts = withoutPrefix.split('-');
-                            return parts.slice(0, -5).join('-') === item.id;
-                          })
+                          {item.id === 'gold_100_free' && 
+                           (Date.now() - (gameState.lastFreeGoldClaim || 0)) / (1000 * 60 * 60) < 24
+                            ? `Available in ${Math.ceil(24 - (Date.now() - (gameState.lastFreeGoldClaim || 0)) / (1000 * 60 * 60))}h`
+                            : !item.canPurchaseMultipleTimes &&
+                              purchasedItems.some(pid => {
+                                if (!pid.startsWith('purchase-')) return false;
+                                const withoutPrefix = pid.substring('purchase-'.length);
+                                if (withoutPrefix.includes('-temp-')) {
+                                  return withoutPrefix.substring(0, withoutPrefix.indexOf('-temp-')) === item.id;
+                                }
+                                const parts = withoutPrefix.split('-');
+                                return parts.slice(0, -5).join('-') === item.id;
+                              })
                             ? item.price === 0 ? "Already Claimed" : "Already Purchased"
                             : item.price === 0 ? "Claim" : "Purchase"}
                         </Button>
