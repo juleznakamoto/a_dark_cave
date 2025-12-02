@@ -58,17 +58,17 @@ export const MINE_UPGRADE_LEVELS: UpgradeLevel[] = [
 
 // Hunt upgrade levels
 export const HUNT_UPGRADE_LEVELS: UpgradeLevel[] = [
-  { level: 0, clicksRequired: 0, bonus: 0},
-  { level: 1, clicksRequired: 15, bonus: 10},
-  { level: 2, clicksRequired: 30, bonus: 20},
-  { level: 3, clicksRequired: 60, bonus: 30},
-  { level: 4, clicksRequired: 105, bonus: 40},
-  { level: 5, clicksRequired: 165, bonus: 50},
-  { level: 6, clicksRequired: 230, bonus: 60},
-  { level: 7, clicksRequired: 320, bonus: 70},
-  { level: 8, clicksRequired: 425, bonus: 80},
-  { level: 9, clicksRequired: 530, bonus: 90},
-  { level: 10, clicksRequired: 650, bonus: 100},
+  { level: 0, clicksRequired: 0, bonus: 0 },
+  { level: 1, clicksRequired: 20, bonus: 10 },
+  { level: 2, clicksRequired: 60, bonus: 20 },
+  { level: 3, clicksRequired: 120, bonus: 30 },
+  { level: 4, clicksRequired: 200, bonus: 40 },
+  { level: 5, clicksRequired: 300, bonus: 50 },
+  { level: 6, clicksRequired: 420, bonus: 60 },
+  { level: 7, clicksRequired: 560, bonus: 70 },
+  { level: 8, clicksRequired: 720, bonus: 80 },
+  { level: 9, clicksRequired: 900, bonus: 90 },
+  { level: 10, clicksRequired: 1100, bonus: 100 },
 ];
 
 // Chop wood upgrade levels
