@@ -407,10 +407,10 @@ export default function EstatePanel() {
           </div>
         </div>
 
-        {/* Hunting Skills Section */}
+        {/* Skills Section */}
         {fellowship.ashwraith_huntress && (
           <div className="space-y-2 pt-1">
-            <h3 className="text-xs font-bold text-foreground">Hunting Skills</h3>
+            <h3 className="text-xs font-bold text-foreground">Skills</h3>
             <div className="w-64 space-y-1">
               <div className="flex items-center justify-between">
                 <span className="pb-1 text-xs font-medium text-foreground">
