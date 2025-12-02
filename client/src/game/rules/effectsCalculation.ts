@@ -10,6 +10,7 @@ import {
 } from "./effects";
 import { villageBuildActions } from "./villageBuildActions";
 import { ACTION_TO_UPGRADE_KEY, getUpgradeBonus } from "../buttonUpgrades";
+import { HUNT_BONUSES } from "@/components/game/panels/EstatePanel";
 
 // Tool hierarchy definitions
 const AXE_HIERARCHY = [
@@ -452,7 +453,6 @@ export const getAllActionBonuses = (
 
   // Add hunt bonus from hunting skills
   if (state.huntingSkills?.level > 0) {
-    const { HUNT_BONUSES } = require("@/components/game/panels/EstatePanel");
     const huntBonus = HUNT_BONUSES[state.huntingSkills.level];
     if (huntBonus > 0) {
       return [
