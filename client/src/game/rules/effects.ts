@@ -1128,7 +1128,7 @@ export const fellowshipEffects: Record<string, EffectDefinition> = {
     id: "ashwraith_huntress",
     name: "Ashwraith Huntress",
     description:
-      "Wildling warrior bound by blood oath. Teaches hunters the ways of the wild, unlocking hunting skill upgrades that improve food, fur, and bone yields.",
+      "Wildling huntress from a forest tribe bound by blood oath. Unlocking hunting skill upgrades and hunter production upgrades.",
     bonuses: {
       generalBonuses: {},
     },
