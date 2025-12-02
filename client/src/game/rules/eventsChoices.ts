@@ -1812,4 +1812,76 @@ export const choiceEvents: Record<string, GameEvent> = {
       },
     ],
   },
+
+  whispererInTheDark: {
+    id: "whispererInTheDark",
+    condition: (state: GameState) =>
+      state.buildings.estate >= 1,
+    triggerType: "resource",
+    timeProbability: 30,
+    title: "Whisperer in the Dark",
+    message:
+      "At night, a soft knock echoes from the estate door. A figure completely hulled in dark robes stands in the shadows outside. Its voice whispers:\n\n'Voiceless it cries,\nWingless flutters,\nToothless bites,\nMouthless mutters.'\n\nWhat is the answer?",
+    triggered: false,
+    priority: 4,
+    repeatable: true,
+    isTimedChoice: true,
+    baseDecisionTime: 30,
+    choices: [
+      {
+        id: "answerFire",
+        label: "Fire",
+        effect: (state: GameState) => {
+          return {
+            ...killVillagers(state, 10 + 5 * state.CM),
+            _logMessage: `Wrong answer. In the morning, ${10 + 5 * state.CM} villagers are found in their beds with slit throats. The figure has vanished without a trace.`,
+          };
+        },
+      },
+      {
+        id: "answerTree",
+        label: "Tree",
+        effect: (state: GameState) => {
+          return {
+            ...killVillagers(state, 10 + 5 * state.CM),
+            _logMessage: `Wrong answer. In the morning, ${10 + 5 * state.CM} villagers are found in their beds with slit throats. The figure has vanished without a trace.`,
+          };
+        },
+      },
+      {
+        id: "answerWind",
+        label: "Wind",
+        effect: (state: GameState) => {
+          return {
+            resources: {
+              ...state.resources,
+              gold: state.resources.gold + 250,
+            },
+            _logMessage:
+              "Correct! The figure nods slowly and melts into the shadows. In the morning, you find a bag with 250 gold on the doorsteps of the estate.",
+          };
+        },
+      },
+      {
+        id: "answerBones",
+        label: "Bones",
+        effect: (state: GameState) => {
+          return {
+            ...killVillagers(state, 10 + 5 * state.CM),
+            _logMessage: `Wrong answer. In the morning, ${10 + 5 * state.CM} villagers are found in their beds with slit throats. The figure has vanished without a trace.`,
+          };
+        },
+      },
+    ],
+    fallbackChoice: {
+      id: "timeout",
+      label: "No answer given",
+      effect: (state: GameState) => {
+        return {
+          ...killVillagers(state, 10 + 5 * state.CM),
+          _logMessage: `You hesitated too long. In the morning, ${10 + 5 * state.CM} villagers are found in their beds with slit throats. The figure has vanished without a trace.`,
+        };
+      },
+    },
+  },
 };
