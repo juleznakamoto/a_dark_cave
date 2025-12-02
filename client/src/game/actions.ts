@@ -414,6 +414,8 @@ export function executeGameAction(
       return handleSunkenTemple(state, result);
     case "collapsedTower":
       return handlecollapsedTower(state, result);
+    case "forestCave":
+      return handleForestCave(state, result);
 
     // Forest Sacrifice Actions
     case "boneTotems":

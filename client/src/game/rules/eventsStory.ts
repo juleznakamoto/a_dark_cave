@@ -388,4 +388,61 @@ export const storyEvents: Record<string, GameEvent> = {
       },
     ],
   },
+
+  forestTribeHelpRequest: {
+    id: "forestTribeHelpRequest",
+    condition: (state: GameState) =>
+      state.buildings.darkEstate >= 1 &&
+      !state.story.seen.forestTribeHelpAccepted,
+    triggerType: "time",
+    timeProbability: (state: GameState) =>
+      state.story.seen.forestTribeHelpRejected ? 60 : 30,
+    title: "A Desperate Plea",
+    message:
+      "A wild man emerges from the forest, his body covered in tribal markings and scars. 'I come from a tribe deep in the woods,' he says urgently. 'Brutal hounds from a cave attack us relentlessly. We face extinction. Please, help us survive.'",
+    triggered: false,
+    priority: 5,
+    visualEffect: {
+      type: "glow",
+      duration: 3,
+    },
+    repeatable: true,
+    choices: [
+      {
+        id: "accept_help",
+        label: "Accept to help",
+        effect: (state: GameState) => {
+          return {
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                forestTribeHelpAccepted: true,
+                forestTribeHelpRejected: false,
+              },
+            },
+            _logMessage:
+              "The wild man's eyes light up with hope. 'You are our only chance,' he says. 'The cave of the hounds lies deep in the forest. May the gods protect you.'",
+          };
+        },
+      },
+      {
+        id: "reject_help",
+        label: "Reject",
+        effect: (state: GameState) => {
+          return {
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                forestTribeHelpRejected: true,
+              },
+            },
+            _logMessage:
+              "The wild man's face falls in despair. He turns away silently and disappears back into the forest.",
+          };
+        },
+      },
+    ],
+  },
 };

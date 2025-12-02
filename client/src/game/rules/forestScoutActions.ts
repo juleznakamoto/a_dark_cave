@@ -162,6 +162,29 @@ export const forestScoutActions: Record<string, Action> = {
     relevant_stats: ["strength", "knowledge"],
     cooldown: 90,
   },
+
+  forestCave: {
+    id: "forestCave",
+    label: "Forest Cave",
+    show_when: {
+      "story.seen.forestTribeHelpAccepted": true,
+      "!story.seen.forestCaveExplored": true,
+    },
+    cost: {
+      "resources.food": 1000,
+    },
+    effects: {},
+    success_chance: (state: GameState) => {
+      return calculateSuccessChance(
+        state,
+        0.15,
+        { type: "strength", multiplier: 0.005 },
+        { type: "knowledge", multiplier: 0.005 },
+      );
+    },
+    relevant_stats: ["strength", "knowledge"],
+    cooldown: 30,
+  },
 };
 
 // Action handlers
@@ -574,5 +597,69 @@ export function handlecollapsedTower(
       },
     });
   }
+  return result;
+}
+
+export function handleForestCave(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("forestCave", state);
+  Object.assign(result.stateUpdates, effectUpdates);
+
+  // Get success chance from action definition
+  const action = forestScoutActions.forestCave;
+  const successChance = action.success_chance
+    ? action.success_chance(state)
+    : 0;
+  const rand = Math.random();
+
+  if (rand < successChance) {
+    // Success: Defeat the hounds
+    result.stateUpdates.resources = {
+      ...state.resources,
+      silver: (state.resources.silver || 0) + 300,
+      gold: (state.resources.gold || 0) + 150,
+      food: (state.resources.food || 0) - 1000,
+      fur: (state.resources.fur || 0) + 50,
+    };
+
+    // Set flag to mark cave as explored
+    result.stateUpdates.story = {
+      ...state.story,
+      seen: {
+        ...state.story.seen,
+        forestCaveExplored: true,
+      },
+    };
+
+    result.logEntries!.push({
+      id: `forest-cave-success-${Date.now()}`,
+      message:
+        "Your warriors descend into the dark cave. The brutal hounds attack in packs, their eyes gleaming with savage hunger. After a fierce battle, the beasts are slain. The forest tribe is saved. They reward you with treasures and the pelts of the fallen hounds.",
+      timestamp: Date.now(),
+      type: "system",
+      visualEffect: {
+        type: "glow",
+        duration: 3,
+      },
+    });
+  } else {
+    const villagerDeaths = Math.min(state.current_population, Math.floor(Math.random() * 8) + 3 + state.CM * 4);
+    const deathResult = killVillagers(state, villagerDeaths);
+    Object.assign(result.stateUpdates, deathResult);
+
+    result.logEntries!.push({
+      id: `forest-cave-failure-${Date.now()}`,
+      message: `Your expedition enters the cave but is overwhelmed by a pack of brutal hounds. The beasts are more ferocious than expected. ${villagerDeaths} villagers are torn apart by savage jaws before the survivors retreat in terror.`,
+      timestamp: Date.now(),
+      type: "system",
+      visualEffect: {
+        type: "glow",
+        duration: 3,
+      },
+    });
+  }
+
   return result;
 }
