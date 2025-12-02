@@ -145,13 +145,13 @@ export const forestTradeActions: Record<string, Action> = {
     },
     cost: {
       1: {
-        "resources.gold": 15,
+        "resources.gold": 25,
       },
       2: {
-        "resources.gold": 30,
+        "resources.gold": 50,
       },
       3: {
-        "resources.gold": 45,
+        "resources.gold": 75,
       },
     },
     effects: {
@@ -188,13 +188,13 @@ export const forestTradeActions: Record<string, Action> = {
     },
     cost: {
       1: {
-        "resources.gold": 20,
+        "resources.gold": 30,
       },
       2: {
-        "resources.gold": 100,
+        "resources.gold": 150,
       },
       3: {
-        "resources.gold": 200,
+        "resources.gold": 300,
       },
     },
     effects: {

@@ -329,10 +329,10 @@ html, body {
   }
   100% {
     opacity: 0.7;
-    box-shadow: 0 0 0 10px rgba(220, 38, 38, 0);
+    box-shadow: 0 0 0 6px rgba(220, 38, 38, 0);
   }
 }
 
 .shop-notification-pulse {
-  animation: shop-notification-pulse 1s ease-in-out infinite;
+  animation: shop-notification-pulse 0.8s ease-in-out infinite;
 }
