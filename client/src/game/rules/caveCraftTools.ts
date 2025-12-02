@@ -8,7 +8,7 @@ export const caveCraftTools: Record<string, Action> = {
     label: "Torch",
     show_when: {
       "story.seen.hasWood": true,
-      // "tools.stone_axe": false,
+      "tools.stone_axe": false,
     },
     cost: {
       "resources.wood": 10,
