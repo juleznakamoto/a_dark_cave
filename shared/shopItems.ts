@@ -149,9 +149,9 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     symbolColor: "text-orange-600",
   },
 
-  a_good_start_bundle: {
-    id: "a_good_start_bundle",
-    name: "A Good Start Bundle",
+  basic_survival_bundle: {
+    id: "basic_survival_bundle",
+    name: "Basic Survival Bundle",
     description: "A bundle with 5000 Gold and 1 Great Feast",
     originalPrice: 1199, // 11.99 €
     price: 599, // 5.99 €
@@ -161,7 +161,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     },
     canPurchaseMultipleTimes: true,
     category: "bundle",
-    activationMessage: "A Good Start Bundle components have been added to your purchases!",
+    activationMessage: "Basic Survival Bundle components have been added to your purchases!",
     symbol: "◈",
     symbolColor: "text-purple-600",
     bundleComponents: ["gold_5000", "great_feast_1"], // Component items
