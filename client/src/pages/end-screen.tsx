@@ -8,37 +8,13 @@ export default function EndScreenPage() {
   const [sdkInitialized, setSdkInitialized] = useState(false);
 
   useEffect(() => {
-    // Initialize sidebar immediately, then show it after 5 seconds
-    (async () => {
-      try {
-        const module = await import(
-          "https://sdk.playlight.dev/playlight-sdk.es.js"
-        );
-        const playlightSDK = module.default;
-        
-        // Re-initialize SDK with sidebar forced visible
-        playlightSDK.init({
-          exitIntent: {
-            enabled: true,
-            immediate: false
-          },
-          sidebar: {
-            hasFrameworkRoot: true,
-            forceVisible: true
-          }
-        });
-        
-        console.log("[PLAYLIGHT] SDK re-initialized on end screen with sidebar");
-        
-        // Wait 5 seconds then mark as initialized for UI update
-        setTimeout(() => {
-          setSdkInitialized(true);
-          console.log("[PLAYLIGHT] Sidebar should now be visible");
-        }, 5000);
-      } catch (error) {
-        console.error("Error loading the Playlight SDK:", error);
-      }
-    })();
+    // SDK is already initialized in App.tsx, just wait 5 seconds before showing message
+    const timer = setTimeout(() => {
+      setSdkInitialized(true);
+      console.log("[PLAYLIGHT] End screen loaded, sidebar should be visible");
+    }, 5000);
+
+    return () => clearTimeout(timer);
   }, []);
 
   const handlePlayAgain = () => {
