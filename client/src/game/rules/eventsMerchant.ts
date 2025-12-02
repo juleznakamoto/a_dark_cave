@@ -1676,7 +1676,7 @@ export const merchantEvents: Record<string, GameEvent> = {
       0 + 2 * state.buildings.merchantsGuild ||
       0,
 
-    title: "The Traveling Merchant",
+    title: "Traveling Merchant",
     message:
       "A weathered merchant arrives, his cart overflowing with wares. His eyes glint with avarice as he murmurs 'I have rare items for sale'.",
     triggered: false,

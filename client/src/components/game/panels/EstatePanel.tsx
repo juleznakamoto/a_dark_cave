@@ -259,7 +259,7 @@ export default function EstatePanel() {
       <div className="space-y-2 mt-2">
         {/* Sleep Mode Section */}
         <div className="space-y-">
-          <h3 className="text-xs font-bold text-foreground">Sleep</h3>
+          <h3 className="text-xs font-bold text-foreground pb-2">Sleep</h3>
           <TooltipProvider>
             <Tooltip open={mobileTooltip.isTooltipOpen("sleep-button")}>
               <TooltipTrigger asChild>
