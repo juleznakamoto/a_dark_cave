@@ -784,7 +784,9 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                           onClick={() => handlePurchaseClick(item.id)}
                           disabled={
                             !currentUser ||
-                            (!item.canPurchaseMultipleTimes &&
+                            (item.id === 'gold_100_free' && 
+                              (Date.now() - (gameState.lastFreeGoldClaim || 0)) / (1000 * 60 * 60) < 24) ||
+                            (item.id !== 'gold_100_free' && !item.canPurchaseMultipleTimes &&
                               purchasedItems.some(pid => {
                                 if (!pid.startsWith('purchase-')) return false;
                                 const withoutPrefix = pid.substring('purchase-'.length);
@@ -793,19 +795,18 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                                 }
                                 const parts = withoutPrefix.split('-');
                                 return parts.slice(0, -5).join('-') === item.id;
-                              })) ||
-                            (item.id === 'gold_100_free' && 
-                              (Date.now() - (gameState.lastFreeGoldClaim || 0)) / (1000 * 60 * 60) < 24)
+                              }))
                           }
                           className="w-full"
                           button_id={`shop-purchase-${item.id}`}
                         >
-                          {item.id === 'gold_100_free' && 
-                           (Date.now() - (gameState.lastFreeGoldClaim || 0)) / (1000 * 60 * 60) < 24
-                            ? (() => {
-                                const hoursRemaining = Math.ceil(24 - (Date.now() - (gameState.lastFreeGoldClaim || 0)) / (1000 * 60 * 60));
-                                return hoursRemaining === 1 ? "Available in 1 hour" : `Available in ${hoursRemaining} hours`;
-                              })()
+                          {item.id === 'gold_100_free'
+                            ? (Date.now() - (gameState.lastFreeGoldClaim || 0)) / (1000 * 60 * 60) < 24
+                              ? (() => {
+                                  const hoursRemaining = Math.ceil(24 - (Date.now() - (gameState.lastFreeGoldClaim || 0)) / (1000 * 60 * 60));
+                                  return hoursRemaining === 1 ? "Available in 1 hour" : `Available in ${hoursRemaining} hours`;
+                                })()
+                              : "Claim"
                             : !item.canPurchaseMultipleTimes &&
                               purchasedItems.some(pid => {
                                 if (!pid.startsWith('purchase-')) return false;
