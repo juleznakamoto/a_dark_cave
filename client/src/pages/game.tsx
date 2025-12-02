@@ -28,7 +28,10 @@ export default function Game() {
       const savedState = await loadGame();
       if (savedState) {
         // Set the loaded state using useGameStore.setState
-        useGameStore.setState(savedState);
+        useGameStore.setState({
+          ...savedState,
+          activeTab: 'cave', // Always start on cave tab
+        });
         logger.log('[GAME] Game loaded from save');
 
         // If user is logged in and has claimed referrals, save to cloud
