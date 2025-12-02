@@ -463,14 +463,14 @@ export default function EstatePanel() {
                       </TooltipTrigger>
                       <TooltipContent>
                         <div className="text-xs whitespace-nowrap">
-                          {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].food > 0 && (
-                            <div>+{HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].food} Food per hunter</div>
+                          {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].food > HUNTING_SKILL_UPGRADES[huntingSkills.level].food && (
+                            <div>+{HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].food - HUNTING_SKILL_UPGRADES[huntingSkills.level].food} Food per hunter</div>
                           )}
-                          {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].fur > 0 && (
-                            <div>+{HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].fur} Fur per hunter</div>
+                          {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].fur > HUNTING_SKILL_UPGRADES[huntingSkills.level].fur && (
+                            <div>+{HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].fur - HUNTING_SKILL_UPGRADES[huntingSkills.level].fur} Fur per hunter</div>
                           )}
-                          {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].bones > 0 && (
-                            <div>+{HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].bones} Bones per hunter</div>
+                          {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].bones > HUNTING_SKILL_UPGRADES[huntingSkills.level].bones && (
+                            <div>+{HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].bones - HUNTING_SKILL_UPGRADES[huntingSkills.level].bones} Bones per hunter</div>
                           )}
                           {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].huntBonus > HUNTING_SKILL_UPGRADES[huntingSkills.level].huntBonus && (
                             <div>+{HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].huntBonus - HUNTING_SKILL_UPGRADES[huntingSkills.level].huntBonus}% Hunt bonus</div>
