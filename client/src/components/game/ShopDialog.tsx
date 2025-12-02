@@ -302,7 +302,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
           // Show success message
           gameState.addLogEntry({
             id: `free-gold-claimed-${Date.now()}`,
-            message: `You claimed 100 Gold! Come back tomorrow for more.`,
+            message: `You claimed 100 Gold. Come back tomorrow if you endure the night.`,
             timestamp: Date.now(),
             type: "system",
           });
