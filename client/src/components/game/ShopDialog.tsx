@@ -207,7 +207,10 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
   const loadPurchasedItems = async () => {
     try {
       const user = await getCurrentUser();
-      if (!user) return;
+      if (!user) {
+        logger.log('[SHOP] loadPurchasedItems - No user logged in');
+        return;
+      }
 
       const client = await getSupabaseClient();
       const { data, error } = await client
@@ -219,7 +222,15 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
       if (data) {
         // Use numeric database ID as the unique purchase identifier
         // Format: purchase-{itemId}-{numericDbId}
-        setPurchasedItems(data.map((p) => `purchase-${p.item_id}-${p.id}`));
+        const purchaseIds = data.map((p) => `purchase-${p.item_id}-${p.id}`);
+        
+        logger.log('[SHOP] loadPurchasedItems - Loaded purchases', {
+          count: data.length,
+          rawData: data,
+          purchaseIds: purchaseIds,
+        });
+        
+        setPurchasedItems(purchaseIds);
       }
     } catch (error) {
       logger.error("Error loading purchased items:", error);
@@ -402,6 +413,14 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     // Reload purchases from database to get the correct IDs
     await loadPurchasedItems();
 
+    logger.log('[SHOP] handlePurchaseSuccess - Starting feast activation setup', {
+      itemId: selectedItem,
+      itemName: item.name,
+      isBundle: !!item.bundleComponents,
+      bundleComponents: item.bundleComponents,
+      hasFeastActivations: !!item.rewards.feastActivations,
+    });
+
     // IMPORTANT: After loadPurchasedItems completes, purchasedItems state is updated
     // We need to access the updated state, not the stale closure variable
     const updatedPurchasedItems = await (async () => {
@@ -415,11 +434,25 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
         .eq("user_id", user.id);
 
       if (error) throw error;
-      return data ? data.map((p) => `purchase-${p.item_id}-${p.id}`) : [];
+      
+      const purchaseIds = data ? data.map((p) => `purchase-${p.item_id}-${p.id}`) : [];
+      
+      logger.log('[SHOP] Fetched updated purchases from DB', {
+        count: purchaseIds.length,
+        purchaseIds: purchaseIds,
+        rawData: data,
+      });
+      
+      return purchaseIds;
     })();
 
     // If this is a single item with feast activations, set activations from item definition
     if (item.rewards.feastActivations && !item.bundleComponents) {
+      logger.log('[SHOP] Processing single feast item', {
+        itemId: selectedItem,
+        feastActivations: item.rewards.feastActivations,
+      });
+      
       // Get the latest purchase for this item (the one just created)
       const latestPurchaseId = updatedPurchasedItems
         .filter(pid => {
@@ -430,6 +463,16 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
         })
         .pop(); // Get the last one (newest)
 
+      logger.log('[SHOP] Found latest purchase for single feast', {
+        latestPurchaseId,
+        allMatchingPurchases: updatedPurchasedItems.filter(pid => {
+          const itemId = pid.startsWith('purchase-') 
+            ? pid.substring('purchase-'.length, pid.lastIndexOf('-'))
+            : pid;
+          return itemId === selectedItem;
+        }),
+      });
+
       if (latestPurchaseId) {
         useGameStore.setState((state) => ({
           feastActivations: {
@@ -437,35 +480,79 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
             [latestPurchaseId]: item.rewards.feastActivations!,
           },
         }));
+        
+        logger.log('[SHOP] Set feast activations for single item', {
+          purchaseId: latestPurchaseId,
+          activations: item.rewards.feastActivations,
+        });
       }
     }
 
     // Handle bundle component feast purchases
     if (item.bundleComponents) {
+      logger.log('[SHOP] Processing bundle components', {
+        components: item.bundleComponents,
+        allPurchases: updatedPurchasedItems,
+      });
+      
       // After reload, find the newly created component purchases
       item.bundleComponents.forEach(componentId => {
         const componentItem = SHOP_ITEMS[componentId];
+        
+        logger.log('[SHOP] Checking component', {
+          componentId,
+          componentExists: !!componentItem,
+          hasFeastActivations: !!componentItem?.rewards.feastActivations,
+          feastActivations: componentItem?.rewards.feastActivations,
+        });
+        
         if (componentItem?.rewards.feastActivations) {
           // Find the latest purchase for this component
-          const componentPurchaseId = updatedPurchasedItems
-            .filter(pid => {
-              const itemId = pid.startsWith('purchase-') 
-                ? pid.substring('purchase-'.length, pid.lastIndexOf('-'))
-                : pid;
-              return itemId === componentId;
-            })
-            .pop();
+          const allMatchingPurchases = updatedPurchasedItems.filter(pid => {
+            const itemId = pid.startsWith('purchase-') 
+              ? pid.substring('purchase-'.length, pid.lastIndexOf('-'))
+              : pid;
+            return itemId === componentId;
+          });
+          
+          const componentPurchaseId = allMatchingPurchases.pop();
+
+          logger.log('[SHOP] Found purchases for component', {
+            componentId,
+            allMatchingPurchases,
+            latestPurchaseId: componentPurchaseId,
+          });
 
           if (componentPurchaseId) {
-            useGameStore.setState((state) => ({
-              feastActivations: {
+            useGameStore.setState((state) => {
+              const newFeastActivations = {
                 ...state.feastActivations,
                 [componentPurchaseId]: componentItem.rewards.feastActivations!,
-              },
-            }));
+              };
+              
+              logger.log('[SHOP] Setting feast activations for component', {
+                componentId,
+                purchaseId: componentPurchaseId,
+                activations: componentItem.rewards.feastActivations,
+                previousState: state.feastActivations,
+                newState: newFeastActivations,
+              });
+              
+              return {
+                feastActivations: newFeastActivations,
+              };
+            });
           }
         }
       });
+      
+      // Log final state
+      setTimeout(() => {
+        const finalState = useGameStore.getState();
+        logger.log('[SHOP] Final feastActivations state after bundle', {
+          feastActivations: finalState.feastActivations,
+        });
+      }, 100);
     }
 
     gameState.addLogEntry({
@@ -787,9 +874,21 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                             itemId = parts.slice(0, -5).join('-');
                           }
 
+                          logger.log('[SHOP] Rendering feast activation', {
+                            purchaseId,
+                            extractedItemId: itemId,
+                            activationsRemaining,
+                          });
+
                           const item = itemId ? SHOP_ITEMS[itemId] : null;
 
-                          if (!item) return null;
+                          if (!item) {
+                            logger.log('[SHOP] No item found for feast activation', {
+                              purchaseId,
+                              itemId,
+                            });
+                            return null;
+                          }
 
                           const isGreatFeastActive =
                             gameState.greatFeastState?.isActive &&
