@@ -1,4 +1,3 @@
-
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -893,7 +892,7 @@ describe('ShopDialog', () => {
       // The bundle component creation happens in handlePurchaseSuccess
     });
 
-    it('should show correct bundle symbol and color', async () => {
+    it('should show bundle symbol and color', async () => {
       const onClose = vi.fn();
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
@@ -935,6 +934,453 @@ describe('ShopDialog', () => {
       // Bundle should still be purchasable (it's repeatable)
       const purchaseButton = screen.getAllByRole('button', { name: /purchase/i });
       expect(purchaseButton.length).toBeGreaterThan(0);
+    });
+  });
+
+  it('should have bundle with reasonable discount percentage', () => {
+    const bundle = SHOP_ITEMS.basic_survival_bundle;
+    const discountPercent = ((bundle.originalPrice! - bundle.price) / bundle.originalPrice!) * 100;
+
+    // Should have at least 40% discount to make bundle attractive
+    expect(discountPercent).toBeGreaterThanOrEqual(40);
+    // But not more than 60% (too generous)
+    expect(discountPercent).toBeLessThanOrEqual(60);
+  });
+
+  it('should ensure bundle components exist and are not other bundles', () => {
+    Object.values(SHOP_ITEMS).forEach(item => {
+      if (item.category === 'bundle' && item.bundleComponents) {
+        item.bundleComponents.forEach(componentId => {
+          const component = SHOP_ITEMS[componentId];
+          expect(component).toBeDefined();
+          expect(component.category).not.toBe('bundle'); // No nested bundles
+        });
+      }
+    });
+  });
+
+  it('should have unique bundle components (no duplicates)', () => {
+    Object.values(SHOP_ITEMS).forEach(item => {
+      if (item.category === 'bundle' && item.bundleComponents) {
+        const uniqueComponents = new Set(item.bundleComponents);
+        expect(uniqueComponents.size).toBe(item.bundleComponents.length);
+      }
+    });
+  });
+
+  it('should have bundle name indicating it is a bundle', () => {
+    Object.values(SHOP_ITEMS).forEach(item => {
+      if (item.category === 'bundle') {
+        expect(item.name.toLowerCase()).toContain('bundle');
+      }
+    });
+  });
+
+  it('should not show bundles in purchases tab, only components', async () => {
+    const user = userEvent.setup();
+    const onClose = vi.fn();
+
+    // Mock bundle purchase with its components
+    mockSupabaseClient.from = vi.fn(() => ({
+      select: vi.fn(() => ({
+        eq: vi.fn(() => ({
+          data: [
+            { id: 1, item_id: 'basic_survival_bundle' },
+            { id: 2, item_id: 'gold_5000' },
+            { id: 3, item_id: 'great_feast_1' },
+          ],
+          error: null,
+        })),
+      })),
+      insert: vi.fn(() => ({
+        data: null,
+        error: null,
+      })),
+    }));
+
+    useGameStore.setState({
+      feastActivations: {
+        'purchase-great_feast_1-3': 1,
+      },
+    });
+
+    render(<ShopDialog isOpen={true} onClose={onClose} />);
+
+    const purchasesTab = screen.getByRole('tab', { name: /purchases/i });
+    await user.click(purchasesTab);
+
+    await waitFor(() => {
+      // Should show component items
+      expect(screen.getByText('5000 Gold')).toBeInTheDocument();
+      expect(screen.getByText(/1 Great Feast/i)).toBeInTheDocument();
+
+      // Should NOT show the bundle itself
+      expect(screen.queryByText('Basic Survival Bundle')).not.toBeInTheDocument();
+    });
+  });
+
+  it('should handle activating multiple bundle components from different bundles', async () => {
+    const user = userEvent.setup();
+    const onClose = vi.fn();
+    const updateResource = vi.fn();
+
+    useGameStore.setState({
+      updateResource,
+      resources: { gold: 0 },
+      feastActivations: {
+        'purchase-great_feast_1-3': 1,
+        'purchase-great_feast_1-5': 1,
+      },
+    });
+
+    // Mock multiple bundle component purchases
+    mockSupabaseClient.from = vi.fn(() => ({
+      select: vi.fn(() => ({
+        eq: vi.fn(() => ({
+          data: [
+            { id: 2, item_id: 'gold_5000' },
+            { id: 3, item_id: 'great_feast_1' },
+            { id: 4, item_id: 'gold_5000' },
+            { id: 5, item_id: 'great_feast_1' },
+          ],
+          error: null,
+        })),
+      })),
+      insert: vi.fn(() => ({
+        data: null,
+        error: null,
+      })),
+    }));
+
+    render(<ShopDialog isOpen={true} onClose={onClose} />);
+
+    const purchasesTab = screen.getByRole('tab', { name: /purchases/i });
+    await user.click(purchasesTab);
+
+    await waitFor(() => {
+      const activateButtons = screen.getAllByRole('button', { name: /activate/i });
+      expect(activateButtons.length).toBeGreaterThan(0);
+    });
+
+    // Activate first gold component
+    const activateButtons = screen.getAllByRole('button', { name: /activate/i });
+    await user.click(activateButtons[0]);
+
+    await waitFor(() => {
+      expect(updateResource).toHaveBeenCalledWith('gold', 5000);
+    });
+  });
+
+  it('should track feast activations separately for each bundle component purchase', async () => {
+    const user = userEvent.setup();
+    const onClose = vi.fn();
+
+    useGameStore.setState({
+      feastActivations: {
+        'purchase-great_feast_1-101': 1,
+        'purchase-great_feast_1-102': 1,
+      },
+      greatFeastState: { isActive: false, endTime: 0 },
+    });
+
+    mockSupabaseClient.from = vi.fn(() => ({
+      select: vi.fn(() => ({
+        eq: vi.fn(() => ({
+          data: [
+            { id: 101, item_id: 'great_feast_1' },
+            { id: 102, item_id: 'great_feast_1' },
+          ],
+          error: null,
+        })),
+      })),
+      insert: vi.fn(() => ({
+        data: null,
+        error: null,
+      })),
+    }));
+
+    render(<ShopDialog isOpen={true} onClose={onClose} />);
+
+    const purchasesTab = screen.getByRole('tab', { name: /purchases/i });
+    await user.click(purchasesTab);
+
+    await waitFor(() => {
+      // Should show both feast purchases separately
+      const feastItems = screen.getAllByText(/1 Great Feast/i);
+      expect(feastItems.length).toBe(2);
+    });
+
+    // Activate first feast
+    const activateButtons = screen.getAllByRole('button', { name: /activate/i });
+    await user.click(activateButtons[0]);
+
+    await waitFor(() => {
+      const state = useGameStore.getState();
+      expect(state.feastActivations?.['purchase-great_feast_1-101']).toBe(0);
+      expect(state.feastActivations?.['purchase-great_feast_1-102']).toBe(1); // Still available
+      expect(state.greatFeastState?.isActive).toBe(true);
+    });
+  });
+
+  it('should prevent activating feast when another feast is already active', async () => {
+    const user = userEvent.setup();
+    const onClose = vi.fn();
+
+    useGameStore.setState({
+      feastActivations: {
+        'purchase-great_feast_1-101': 1,
+        'purchase-great_feast_1-102': 1,
+      },
+      greatFeastState: {
+        isActive: true,
+        endTime: Date.now() + 1000000
+      },
+    });
+
+    mockSupabaseClient.from = vi.fn(() => ({
+      select: vi.fn(() => ({
+        eq: vi.fn(() => ({
+          data: [
+            { id: 101, item_id: 'great_feast_1' },
+            { id: 102, item_id: 'great_feast_1' },
+          ],
+          error: null,
+        })),
+      })),
+      insert: vi.fn(() => ({
+        data: null,
+        error: null,
+      })),
+    }));
+
+    render(<ShopDialog isOpen={true} onClose={onClose} />);
+
+    const purchasesTab = screen.getByRole('tab', { name: /purchases/i });
+    await user.click(purchasesTab);
+
+    await waitFor(() => {
+      // All activate buttons should be disabled and show "Active"
+      const activeButtons = screen.getAllByRole('button', { name: /active/i });
+      expect(activeButtons.length).toBe(2);
+      activeButtons.forEach(button => {
+        expect(button).toBeDisabled();
+      });
+    });
+  });
+
+  it('should handle bundle with only resource components (no feast)', async () => {
+    const user = userEvent.setup();
+    const onClose = vi.fn();
+    const updateResource = vi.fn();
+
+    useGameStore.setState({
+      updateResource,
+      resources: { gold: 0 },
+    });
+
+    // Create a hypothetical bundle with only gold items
+    mockSupabaseClient.from = vi.fn(() => ({
+      select: vi.fn(() => ({
+        eq: vi.fn(() => ({
+          data: [
+            { id: 100, item_id: 'gold_250' },
+            { id: 101, item_id: 'gold_1000' },
+          ],
+          error: null,
+        })),
+      })),
+      insert: vi.fn(() => ({
+        data: null,
+        error: null,
+      })),
+    }));
+
+    render(<ShopDialog isOpen={true} onClose={onClose} />);
+
+    const purchasesTab = screen.getByRole('tab', { name: /purchases/i });
+    await user.click(purchasesTab);
+
+    await waitFor(() => {
+      expect(screen.getByText('250 Gold')).toBeInTheDocument();
+      expect(screen.getByText('1000 Gold')).toBeInTheDocument();
+    });
+
+    // Activate both components
+    const activateButtons = screen.getAllByRole('button', { name: /activate/i });
+    await user.click(activateButtons[0]);
+
+    await waitFor(() => {
+      expect(updateResource).toHaveBeenCalled();
+    });
+  });
+
+  describe('Edge Cases and Error Handling', () => {
+    it('should handle missing user gracefully', async () => {
+      vi.mocked(getCurrentUser).mockResolvedValue(null);
+      const onClose = vi.fn();
+
+      render(<ShopDialog isOpen={true} onClose={onClose} />);
+
+      await waitFor(() => {
+        expect(screen.getByText(/sign in or create an account/i)).toBeInTheDocument();
+      });
+    });
+
+    it('should handle database errors when loading purchases', async () => {
+      const onClose = vi.fn();
+
+      mockSupabaseClient.from = vi.fn(() => ({
+        select: vi.fn(() => ({
+          eq: vi.fn(() => ({
+            data: null,
+            error: { message: 'Database error' },
+          })),
+        })),
+        insert: vi.fn(() => ({
+          data: null,
+          error: null,
+        })),
+      }));
+
+      render(<ShopDialog isOpen={true} onClose={onClose} />);
+
+      await waitFor(() => {
+        // Should not crash, purchases should be empty
+        const purchasesTab = screen.getByRole('tab', { name: /purchases/i });
+        expect(purchasesTab).toBeInTheDocument();
+      });
+    });
+
+    it('should handle malformed purchase IDs', async () => {
+      const onClose = vi.fn();
+
+      useGameStore.setState({
+        activatedPurchases: {
+          'invalid-format': true,
+          'purchase-': true,
+          'purchase-only-prefix': true,
+        },
+      });
+
+      mockSupabaseClient.from = vi.fn(() => ({
+        select: vi.fn(() => ({
+          eq: vi.fn(() => ({
+            data: [{ id: 1, item_id: 'gold_250' }],
+            error: null,
+          })),
+        })),
+        insert: vi.fn(() => ({
+          data: null,
+          error: null,
+        })),
+      }));
+
+      render(<ShopDialog isOpen={true} onClose={onClose} />);
+
+      // Should render without crashing
+      await waitFor(() => {
+        expect(screen.getByText('Shop')).toBeInTheDocument();
+      });
+    });
+
+    it('should handle feast activations for non-existent items', async () => {
+      const onClose = vi.fn();
+
+      useGameStore.setState({
+        feastActivations: {
+          'purchase-nonexistent_item-999': 5,
+        },
+      });
+
+      render(<ShopDialog isOpen={true} onClose={onClose} />);
+
+      const purchasesTab = screen.getByRole('tab', { name: /purchases/i });
+      await userEvent.setup().click(purchasesTab);
+
+      // Should not crash or show invalid items
+      await waitFor(() => {
+        expect(screen.queryByText('nonexistent_item')).not.toBeInTheDocument();
+      });
+    });
+
+    it('should handle concurrent feast activations correctly', async () => {
+      const user = userEvent.setup();
+      const onClose = vi.fn();
+
+      useGameStore.setState({
+        feastActivations: {
+          'purchase-great_feast_3-1': 2,
+        },
+        greatFeastState: { isActive: false, endTime: 0 },
+      });
+
+      mockSupabaseClient.from = vi.fn(() => ({
+        select: vi.fn(() => ({
+          eq: vi.fn(() => ({
+            data: [{ id: 1, item_id: 'great_feast_3' }],
+            error: null,
+          })),
+        })),
+        insert: vi.fn(() => ({
+          data: null,
+          error: null,
+        })),
+      }));
+
+      render(<ShopDialog isOpen={true} onClose={onClose} />);
+
+      const purchasesTab = screen.getByRole('tab', { name: /purchases/i });
+      await user.click(purchasesTab);
+
+      // Activate first feast
+      const activateButton = screen.getByRole('button', { name: /activate/i });
+      await user.click(activateButton);
+
+      await waitFor(() => {
+        const state = useGameStore.getState();
+        expect(state.feastActivations?.['purchase-great_feast_3-1']).toBe(1);
+        expect(state.greatFeastState?.isActive).toBe(true);
+      });
+
+      // Button should now show "Active" and be disabled
+      await waitFor(() => {
+        const activeButton = screen.getByRole('button', { name: /active/i });
+        expect(activeButton).toBeDisabled();
+      });
+    });
+
+    it('should handle zero activations remaining correctly', async () => {
+      const onClose = vi.fn();
+
+      useGameStore.setState({
+        feastActivations: {
+          'purchase-great_feast_1-1': 0,
+        },
+      });
+
+      mockSupabaseClient.from = vi.fn(() => ({
+        select: vi.fn(() => ({
+          eq: vi.fn(() => ({
+            data: [{ id: 1, item_id: 'great_feast_1' }],
+            error: null,
+          })),
+        })),
+        insert: vi.fn(() => ({
+          data: null,
+          error: null,
+        })),
+      }));
+
+      render(<ShopDialog isOpen={true} onClose={onClose} />);
+
+      const purchasesTab = screen.getByRole('tab', { name: /purchases/i });
+      await userEvent.setup().click(purchasesTab);
+
+      await waitFor(() => {
+        expect(screen.getByText(/0\/1 available/i)).toBeInTheDocument();
+        const activateButton = screen.getByRole('button', { name: /activate/i });
+        expect(activateButton).toBeDisabled();
+      });
     });
   });
 });
