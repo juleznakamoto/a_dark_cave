@@ -37,11 +37,11 @@ const SLEEP_INTENSITY_UPGRADES = [
 
 export const HUNTING_SKILL_UPGRADES = [
   { level: 0, huntBonus: 25, food: 0, fur: 0, bones: 0, cost: 0 },
-  { level: 1, huntBonus: 25, food: 5, fur: 0, bones: 0, cost: 500 },
-  { level: 2, huntBonus: 50, food: 5, fur: 1, bones: 1, cost: 1000 },
-  { level: 3, huntBonus: 50, food: 15, fur: 1, bones: 1, cost: 1500 },
-  { level: 4, huntBonus: 75, food: 15, fur: 2, bones: 2, cost: 2000 },
-  { level: 5, huntBonus: 75, food: 20, fur: 2, bones: 2, cost: 2500 },
+  { level: 1, huntBonus: 50, food: 5, fur: 0, bones: 0, cost: 500 },
+  { level: 2, huntBonus: 75, food: 5, fur: 1, bones: 1, cost: 1000 },
+  { level: 3, huntBonus: 100, food: 15, fur: 1, bones: 1, cost: 1500 },
+  { level: 4, huntBonus: 125, food: 15, fur: 2, bones: 2, cost: 2000 },
+  { level: 5, huntBonus: 150, food: 20, fur: 2, bones: 2, cost: 2500 },
 ];
 
 // Extract bonuses for use in other modules
@@ -257,7 +257,7 @@ export default function EstatePanel() {
         </div>
 
         {/* Sleep Upgrades Section */}
-        <div className="w-64 space-y-3 pt-2">
+        <div className="w-80 space-y-3 pt-2">
           {/* Sleep Length Upgrade */}
           <div className="space-y-1">
             <div className="flex items-center justify-between">
@@ -411,7 +411,7 @@ export default function EstatePanel() {
         {fellowship.ashwraith_huntress && (
           <div className="space-y-2 pt-1">
             <h3 className="text-xs font-bold text-foreground">Skills</h3>
-            <div className="w-64 space-y-1">
+            <div className="w-80 space-y-1">
               <div className="flex items-center justify-between">
                 <span className="pb-1 text-xs font-medium text-foreground">
                   Huntress Training
@@ -493,8 +493,8 @@ export default function EstatePanel() {
               <div className="flex justify-between text-xs text-muted-foreground">
                 <span>
                   {[
-                    `+${HUNTING_SKILL_UPGRADES[huntingSkills.level].huntBonus}% hunt`,
-                    HUNTING_SKILL_UPGRADES[huntingSkills.level].food > 0 && `+${HUNTING_SKILL_UPGRADES[huntingSkills.level].food} food`,
+                    `+${HUNTING_SKILL_UPGRADES[huntingSkills.level].huntBonus}% hunt bonus`,
+                    HUNTING_SKILL_UPGRADES[huntingSkills.level].food > 0 && `hunter: +${HUNTING_SKILL_UPGRADES[huntingSkills.level].food} food`,
                     HUNTING_SKILL_UPGRADES[huntingSkills.level].fur > 0 && `+${HUNTING_SKILL_UPGRADES[huntingSkills.level].fur} fur`,
                     HUNTING_SKILL_UPGRADES[huntingSkills.level].bones > 0 && `+${HUNTING_SKILL_UPGRADES[huntingSkills.level].bones} bones`
                   ].filter(Boolean).join(', ')}

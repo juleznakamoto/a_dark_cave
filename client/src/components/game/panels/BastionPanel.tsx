@@ -323,13 +323,13 @@ export default function BastionPanel() {
   };
 
   return (
-    <div className="space-y-4 mt-2 pr-4 w-64">
+    <div className="w-80 space-y-4 mt-2 pr-4">
       {/* Attack Waves Chart */}
       <AttackWavesChart />
 
       {/* Combat Skills Section - only show if any fellowship member is unlocked */}
       {(HAS_RESTLESS_KNIGHT || HAS_ELDER_WIZARD) && (
-        <div className="w-64 space-y-3 pt-2">
+        <div className="w-80 space-y-3 pt-2">
           <h3 className="text-xs font-bold text-foreground">Combat Skills</h3>
 
           {/* Crushing Strike Upgrade */}
