@@ -714,14 +714,26 @@ export const useGameStore = create<GameStore>((set, get) => ({
   restartGame: () => {
     const state = get();
 
+    // Check if cruel mode is activated (support both old and new purchase ID formats)
+    const isCruelModeActive = Object.keys(state.activatedPurchases || {}).some(
+      key => key === 'cruel_mode' || key.startsWith('purchase-cruel_mode-')
+    ) && Object.entries(state.activatedPurchases || {}).some(
+      ([key, value]) => (key === 'cruel_mode' || key.startsWith('purchase-cruel_mode-')) && value === true
+    );
+
+    // Find the cruel mode purchase key to preserve
+    const cruelModePurchaseKey = Object.keys(state.activatedPurchases || {}).find(
+      key => key === 'cruel_mode' || key.startsWith('purchase-cruel_mode-')
+    );
+
     // Preserve these across game restarts
     const preserved = {
       // Purchases and boosts that persist
       boostMode: state.boostMode,
       // Only preserve cruel_mode activation, reset everything else
-      activatedPurchases: {
-        cruel_mode: state.activatedPurchases?.['cruel_mode'] || false,
-      },
+      activatedPurchases: cruelModePurchaseKey ? {
+        [cruelModePurchaseKey]: state.activatedPurchases?.[cruelModePurchaseKey] || false,
+      } : {},
       // Feast activations are reset (cleared) on new game
       feastActivations: {},
 
@@ -734,8 +746,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
       social_media_rewards: state.social_media_rewards || {},
 
       // Cruel mode status
-      cruelMode: state.activatedPurchases?.['cruel_mode'] || false,
-      CM: (state.activatedPurchases?.['cruel_mode'] || false) ? 1 : 0,
+      cruelMode: isCruelModeActive,
+      CM: isCruelModeActive ? 1 : 0,
     };
 
     // Reset everything else to default
