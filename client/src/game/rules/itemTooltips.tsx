@@ -5,6 +5,7 @@ import {
   bookEffects,
 } from "./effects";
 import { capitalizeWords } from "@/lib/utils";
+import { useGameStore } from "../state";
 
 export function renderItemTooltip(
   itemId: string,
@@ -20,6 +21,15 @@ export function renderItemTooltip(
           : clothingEffects[itemId];
 
   if (!effect) return null;
+
+  // Get cruel mode state
+  const cruelMode = useGameStore.getState().cruelMode;
+
+  // Calculate madness value with cruel mode bonus
+  let madnessValue = effect.bonuses?.generalBonuses?.madness;
+  if (madnessValue && cruelMode && madnessValue >= 4) {
+    madnessValue += 1;
+  }
 
   return (
     <div className="text-xs">
@@ -45,10 +55,10 @@ export function renderItemTooltip(
           {effect.bonuses.generalBonuses.knowledge && (
             <div>+{effect.bonuses.generalBonuses.knowledge} Knowledge</div>
           )}
-          {effect.bonuses.generalBonuses.madness && (
+          {madnessValue && (
             <div>
-              {effect.bonuses.generalBonuses.madness > 0 ? "+" : ""}
-              {effect.bonuses.generalBonuses.madness} Madness
+              {madnessValue > 0 ? "+" : ""}
+              {madnessValue} Madness
             </div>
           )}
           {effect.bonuses.generalBonuses.madnessReduction && (
