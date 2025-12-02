@@ -1493,6 +1493,17 @@ export default function AdminDashboard() {
     }
   };
 
+  // Get clicks and purchases for looked up user
+  const getLookupUserClicks = () => {
+    if (!lookupResult) return [];
+    return clickData.filter(c => c.user_id === lookupResult.user_id);
+  };
+
+  const getLookupUserPurchases = () => {
+    if (!lookupResult) return [];
+    return purchases.filter(p => p.user_id === lookupResult.user_id);
+  };
+
   const getResourceStatsOverPlaytime = () => {
     // If no click data is available, return empty array
     if (!clickData || clickData.length === 0) return [];
@@ -2915,6 +2926,69 @@ export default function AdminDashboard() {
                         </CardContent>
                       </Card>
                     </div>
+
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>Button Clicks</CardTitle>
+                        <CardDescription>All button click records for this user</CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        {getLookupUserClicks().length > 0 ? (
+                          <div className="space-y-2 max-h-[400px] overflow-auto">
+                            {getLookupUserClicks().map((click, index) => (
+                              <div key={index} className="p-3 bg-muted rounded-md">
+                                <div className="flex justify-between items-start mb-2">
+                                  <span className="text-sm font-medium">
+                                    {new Date(click.timestamp).toLocaleString()}
+                                  </span>
+                                </div>
+                                <pre className="text-xs overflow-auto">
+                                  {JSON.stringify(click.clicks, null, 2)}
+                                </pre>
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <p className="text-sm text-muted-foreground">No button clicks recorded</p>
+                        )}
+                      </CardContent>
+                    </Card>
+
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>Purchases</CardTitle>
+                        <CardDescription>All purchases made by this user</CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        {getLookupUserPurchases().length > 0 ? (
+                          <div className="space-y-2 max-h-[400px] overflow-auto">
+                            {getLookupUserPurchases().map((purchase, index) => (
+                              <div key={index} className="flex justify-between items-center border-b pb-2">
+                                <div>
+                                  <p className="font-medium">{purchase.item_name}</p>
+                                  <p className="text-sm text-muted-foreground">
+                                    {new Date(purchase.purchased_at).toLocaleString()}
+                                  </p>
+                                  <p className="text-xs text-muted-foreground">
+                                    Item ID: {purchase.item_id}
+                                  </p>
+                                  {purchase.bundle_id && (
+                                    <p className="text-xs text-muted-foreground">
+                                      Bundle: {purchase.bundle_id}
+                                    </p>
+                                  )}
+                                </div>
+                                <p className="font-bold">
+                                  {purchase.price_paid === 0 ? 'Free' : `€${(purchase.price_paid / 100).toFixed(2)}`}
+                                </p>
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <p className="text-sm text-muted-foreground">No purchases recorded</p>
+                        )}
+                      </CardContent>
+                    </Card>
 
                     <Card>
                       <CardHeader>
