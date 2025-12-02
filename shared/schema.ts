@@ -366,16 +366,7 @@ export const gameStateSchema = z.object({
     }),
 
   activatedPurchases: z.record(z.boolean()).default({}),
-  feastPurchases: z
-    .record(
-      z.object({
-        itemId: z.string(),
-        activationsRemaining: z.number(),
-        totalActivations: z.number(),
-        purchasedAt: z.number(),
-      }),
-    )
-    .default({}),
+  feastActivations: z.record(z.number()).default({}), // purchaseId -> activations remaining
   cruelMode: z.boolean().default(false),
   CM: z.number().default(0),
   attackWaveTimers: z

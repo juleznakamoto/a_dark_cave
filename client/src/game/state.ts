@@ -75,6 +75,9 @@ interface GameStore extends GameState {
   isNewGame: boolean; // Track if this is a newly started game
   startTime: number; // Timestamp when the current game was started
 
+  // Feast activation tracking (not purchases - those are in DB)
+  feastActivations: Record<string, number>; // purchaseId -> activations remaining
+
   // Referral tracking
   referralCount: number;
   referredUsers: string[];
@@ -320,7 +323,7 @@ const defaultGameState: GameState = {
     bloodflameSphereLevel: 0,
   },
   activatedPurchases: {},
-  feastPurchases: {}, // Track individual feast purchases: { purchaseId: { itemId, activationsRemaining, totalActivations } }
+  feastActivations: {}, // Track only activations remaining per purchase: { purchaseId: number }
   cruelMode: false,
   CM: 0,
   attackWaveTimers: {},
@@ -711,23 +714,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
   restartGame: () => {
     const state = get();
 
-    // Reset feast activations for new game
-    const resetFeastPurchases: Record<string, any> = {};
-    if (state.feastPurchases) {
-      Object.entries(state.feastPurchases).forEach(([purchaseId, purchase]) => {
-        resetFeastPurchases[purchaseId] = {
-          ...purchase,
-          activationsRemaining: purchase.totalActivations,
-        };
-      });
-    }
-
     // Preserve these across game restarts
     const preserved = {
       // Purchases and boosts that persist
       boostMode: state.boostMode,
       activatedPurchases: state.activatedPurchases || {},
-      feastPurchases: resetFeastPurchases,
+      // Feast activations are reset (cleared) on new game
+      feastActivations: {},
 
       // Referral system (persists forever)
       referrals: state.referrals || [],

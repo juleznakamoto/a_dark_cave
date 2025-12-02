@@ -262,7 +262,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
             // Extract item ID from purchase ID
             // Format: purchase-{itemId}-{uuid} or purchase-{itemId}-temp-{timestamp}
             if (!pid.startsWith('purchase-')) return false;
-            
+
             const withoutPrefix = pid.substring('purchase-'.length);
             // Check if it's a temp ID
             if (withoutPrefix.includes('-temp-')) {
@@ -287,7 +287,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
 
         // Save purchase to Supabase
         const client = await getSupabaseClient();
-        
+
         // If this is a bundle with components, create individual purchases for each component
         if (item.bundleComponents && item.bundleComponents.length > 0) {
           for (const componentId of item.bundleComponents) {
@@ -375,7 +375,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
         const user = await getCurrentUser();
         if (user) {
           const client = await getSupabaseClient();
-          
+
           // Create purchase records for each component
           for (const componentId of item.bundleComponents) {
             const componentItem = SHOP_ITEMS[componentId];
@@ -402,10 +402,26 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     // Reload purchases from database to get the correct IDs
     await loadPurchasedItems();
 
-    // If this is a single item with feast activations, track it individually
+    // IMPORTANT: After loadPurchasedItems completes, purchasedItems state is updated
+    // We need to access the updated state, not the stale closure variable
+    const updatedPurchasedItems = await (async () => {
+      const user = await getCurrentUser();
+      if (!user) return [];
+
+      const client = await getSupabaseClient();
+      const { data, error } = await client
+        .from("purchases")
+        .select("id, item_id")
+        .eq("user_id", user.id);
+
+      if (error) throw error;
+      return data ? data.map((p) => `purchase-${p.item_id}-${p.id}`) : [];
+    })();
+
+    // If this is a single item with feast activations, set activations from item definition
     if (item.rewards.feastActivations && !item.bundleComponents) {
       // Get the latest purchase for this item (the one just created)
-      const latestPurchaseId = purchasedItems
+      const latestPurchaseId = updatedPurchasedItems
         .filter(pid => {
           const itemId = pid.startsWith('purchase-') 
             ? pid.substring('purchase-'.length, pid.lastIndexOf('-'))
@@ -416,14 +432,9 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
 
       if (latestPurchaseId) {
         useGameStore.setState((state) => ({
-          feastPurchases: {
-            ...state.feastPurchases,
-            [latestPurchaseId]: {
-              itemId: selectedItem!,
-              activationsRemaining: item.rewards.feastActivations!,
-              totalActivations: item.rewards.feastActivations!,
-              purchasedAt: Date.now(),
-            },
+          feastActivations: {
+            ...state.feastActivations,
+            [latestPurchaseId]: item.rewards.feastActivations!,
           },
         }));
       }
@@ -436,7 +447,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
         const componentItem = SHOP_ITEMS[componentId];
         if (componentItem?.rewards.feastActivations) {
           // Find the latest purchase for this component
-          const componentPurchaseId = purchasedItems
+          const componentPurchaseId = updatedPurchasedItems
             .filter(pid => {
               const itemId = pid.startsWith('purchase-') 
                 ? pid.substring('purchase-'.length, pid.lastIndexOf('-'))
@@ -447,14 +458,9 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
 
           if (componentPurchaseId) {
             useGameStore.setState((state) => ({
-              feastPurchases: {
-                ...state.feastPurchases,
-                [componentPurchaseId]: {
-                  itemId: componentId,
-                  activationsRemaining: componentItem.rewards.feastActivations!,
-                  totalActivations: componentItem.rewards.feastActivations!,
-                  purchasedAt: Date.now(),
-                },
+              feastActivations: {
+                ...state.feastActivations,
+                [componentPurchaseId]: componentItem.rewards.feastActivations!,
               },
             }));
           }
@@ -514,8 +520,8 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
 
     // For items with feast activations (feast or bundle), use individual purchase tracking
     if (item.rewards.feastActivations) {
-      const purchase = gameState.feastPurchases?.[purchaseId];
-      if (!purchase || purchase.activationsRemaining <= 0) return;
+      const purchase = gameState.feastActivations?.[purchaseId]; // Changed from feastPurchases to feastActivations
+      if (!purchase || purchase <= 0) return; // Check if purchase exists and activationsRemaining > 0
 
       // Grant resources if this is a bundle
       if (item.rewards.resources) {
@@ -529,12 +535,9 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
       const endTime = Date.now() + feastDuration;
 
       useGameStore.setState((state) => ({
-        feastPurchases: {
-          ...state.feastPurchases,
-          [purchaseId]: {
-            ...purchase,
-            activationsRemaining: purchase.activationsRemaining - 1,
-          },
+        feastActivations: { // Changed from feastPurchases to feastActivations
+          ...state.feastActivations,
+          [purchaseId]: purchase - 1, // Decrement activationsRemaining
         },
         greatFeastState: {
           isActive: true,
@@ -759,7 +762,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                 }
               >
                 {purchasedItems.length === 0 &&
-                Object.keys(gameState.feastPurchases || {}).length === 0 ? (
+                Object.keys(gameState.feastActivations || {}).length === 0 ? ( // Changed feastPurchases to feastActivations
                   <div className="text-center py-8 text-muted-foreground">
                     No purchases yet. Visit the For Sale tab to buy items.
                   </div>
@@ -770,10 +773,22 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                       can be activated once per game.
                     </p>
                     <div className="space-y-2">
-                      {/* Show individual feast purchases and bundles */}
-                      {Object.entries(gameState.feastPurchases || {}).map(
-                        ([purchaseId, purchase]) => {
-                          const item = SHOP_ITEMS[purchase.itemId];
+                      {/* Show individual feast activations and bundles */}
+                      {Object.entries(gameState.feastActivations || {}).map( // Changed feastPurchases to feastActivations
+                        ([purchaseId, activationsRemaining]) => { // Changed purchase to activationsRemaining
+                          // Find the corresponding item to get its name and description
+                          // We need to search through all SHOP_ITEMS to find the one that matches this purchaseId
+                          // This is because purchaseId is in the format 'purchase-{itemId}-{uuid}'
+                          let itemId = null;
+                          if (purchaseId.startsWith('purchase-')) {
+                            const withoutPrefix = purchaseId.substring('purchase-'.length);
+                            const parts = withoutPrefix.split('-');
+                            // Extract itemId by removing the UUID parts
+                            itemId = parts.slice(0, -5).join('-');
+                          }
+
+                          const item = itemId ? SHOP_ITEMS[itemId] : null;
+
                           if (!item) return null;
 
                           const isGreatFeastActive =
@@ -787,8 +802,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                             >
                               <div className="flex flex-col">
                                 <span className="text-sm font-medium">
-                                  {item.name} ({purchase.activationsRemaining}/
-                                  {purchase.totalActivations} available)
+                                  {item.name} ({activationsRemaining}/{item.rewards.feastActivations!} available) {/* Display remaining activations */}
                                 </span>
                                 <span className="text-xs text-muted-foreground">
                                   {item.description}
@@ -798,25 +812,25 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                                 onClick={() =>
                                   handleActivatePurchase(
                                     purchaseId,
-                                    purchase.itemId,
+                                    item.id, // Use item.id for the itemId argument
                                   )
                                 }
                                 disabled={
-                                  purchase.activationsRemaining <= 0 ||
+                                  activationsRemaining <= 0 || // Check remaining activations
                                   isGreatFeastActive
                                 }
                                 size="sm"
                                 variant={
-                                  isGreatFeastActive || purchase.activationsRemaining <= 0 ? "outline" : "default"
+                                  isGreatFeastActive || activationsRemaining <= 0 ? "outline" : "default"
                                 }
                                 className={
                                   isGreatFeastActive
                                     ? "bg-green-900/50 text-white border-green-600"
                                     : ""
                                 }
-                                button_id={`shop-activate-${purchase.itemId}`}
+                                button_id={`shop-activate-${item.id}`}
                               >
-                                {isGreatFeastActive ? "Active" : purchase.activationsRemaining <= 0 ? "Activated" : "Activate"}
+                                {isGreatFeastActive ? "Active" : activationsRemaining <= 0 ? "Activated" : "Activate"}
                               </Button>
                             </div>
                           );
@@ -827,15 +841,10 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                       {purchasedItems
                         .filter((purchaseId) => {
                           // Extract itemId from purchaseId (format: purchase-{itemId}-{uuid})
-                          // The UUID has 5 dash-separated segments, so we need to remove them
                           let itemId = purchaseId;
                           if (purchaseId.startsWith('purchase-')) {
-                            // Remove 'purchase-' prefix
                             const withoutPrefix = purchaseId.substring('purchase-'.length);
-                            // UUID format is: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx (5 segments)
-                            // Split by dash and remove the last 5 segments (the UUID parts)
                             const parts = withoutPrefix.split('-');
-                            // The itemId is everything except the last 5 parts (UUID)
                             itemId = parts.slice(0, -5).join('-');
                           }
                           const item = SHOP_ITEMS[itemId];
