@@ -26,21 +26,6 @@ export interface UpgradeLevel {
 
 export const MAX_UPGRADE_LEVEL =   10;
 
-// Default upgrade levels (for most actions)
-export const UPGRADE_LEVELS: UpgradeLevel[] = [
-  { level: 0, clicksRequired: 0, bonus: 0},
-  { level: 1, clicksRequired: 25, bonus: 10},
-  { level: 2, clicksRequired: 50, bonus: 25},
-  { level: 3, clicksRequired: 100, bonus: 50},
-  { level: 4, clicksRequired: 250, bonus: 75},
-  { level: 5, clicksRequired: 450, bonus: 100},
-  { level: 6, clicksRequired: 700, bonus: 125},
-  { level: 7, clicksRequired: 1000, bonus: 150},
-  { level: 8, clicksRequired: 1350, bonus: 175},
-  { level: 9, clicksRequired: 1750, bonus: 200},
-  { level: 10, clicksRequired: 2200, bonus: 250},
-];
-
 // Mining upgrade levels (faster progression)
 export const MINE_UPGRADE_LEVELS: UpgradeLevel[] = [
   { level: 0, clicksRequired: 0, bonus: 0},
@@ -118,8 +103,6 @@ export function getUpgradeLevelsForKey(key: UpgradeKey): UpgradeLevel[] {
   if (caveExploreKeys.includes(key)) {
     return CAVE_EXPLORE_UPGRADE_LEVELS;
   }
-
-  return UPGRADE_LEVELS;
 }
 
 export const UPGRADE_LABELS: Record<UpgradeKey, string> = {
