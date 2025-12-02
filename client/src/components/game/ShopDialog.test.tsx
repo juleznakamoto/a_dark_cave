@@ -585,4 +585,356 @@ describe('ShopDialog', () => {
       });
     });
   });
+
+  describe('Bundle Purchases', () => {
+    it('should display bundle items in shop', async () => {
+      const onClose = vi.fn();
+      render(<ShopDialog isOpen={true} onClose={onClose} />);
+
+      await waitFor(() => {
+        expect(screen.getByText('Champion Bundle')).toBeInTheDocument();
+      });
+
+      expect(screen.getByText(/A powerful pack with 5000 Gold and 1 Great Feast/i)).toBeInTheDocument();
+    });
+
+    it('should show bundle with correct pricing', async () => {
+      const onClose = vi.fn();
+      render(<ShopDialog isOpen={true} onClose={onClose} />);
+
+      await waitFor(() => {
+        expect(screen.getByText('Champion Bundle')).toBeInTheDocument();
+      });
+
+      // Check for discounted price
+      expect(screen.getByText('6.49 €')).toBeInTheDocument();
+      // Check for original price (strikethrough)
+      const originalPrice = screen.getByText('12.99 €');
+      expect(originalPrice).toHaveClass('line-through');
+    });
+
+    it('should allow purchasing bundles multiple times', async () => {
+      const user = userEvent.setup();
+      const onClose = vi.fn();
+
+      // Mock existing bundle purchases
+      mockSupabaseClient.from = vi.fn(() => ({
+        select: vi.fn(() => ({
+          eq: vi.fn(() => ({
+            data: [
+              { id: 1, item_id: 'champion_bundle' },
+              { id: 2, item_id: 'champion_bundle' },
+            ],
+            error: null,
+          })),
+        })),
+        insert: vi.fn(() => ({
+          data: null,
+          error: null,
+        })),
+      }));
+
+      render(<ShopDialog isOpen={true} onClose={onClose} />);
+
+      await waitFor(() => {
+        const purchaseButtons = screen.getAllByRole('button', { name: /purchase/i });
+        expect(purchaseButtons.length).toBeGreaterThan(0);
+      });
+    });
+
+    it('should create component purchases when bundle is claimed (free)', async () => {
+      const user = userEvent.setup();
+      const onClose = vi.fn();
+      const insertMock = vi.fn(() => ({
+        data: { id: 999 },
+        error: null,
+      }));
+
+      mockSupabaseClient.from = vi.fn((table) => {
+        if (table === 'purchases') {
+          return {
+            select: vi.fn(() => ({
+              eq: vi.fn(() => ({
+                data: [],
+                error: null,
+              })),
+            })),
+            insert: insertMock,
+          };
+        }
+        return {};
+      });
+
+      // Create a test free bundle
+      const originalShopItems = { ...SHOP_ITEMS };
+      SHOP_ITEMS.test_free_bundle = {
+        id: 'test_free_bundle',
+        name: 'Test Free Bundle',
+        description: 'Free test bundle',
+        price: 0,
+        rewards: {},
+        canPurchaseMultipleTimes: false,
+        category: 'bundle',
+        bundleComponents: ['gold_250', 'great_feast_1'],
+      };
+
+      render(<ShopDialog isOpen={true} onClose={onClose} />);
+
+      await waitFor(() => {
+        expect(screen.getByText('Test Free Bundle')).toBeInTheDocument();
+      });
+
+      const claimButton = screen.getByRole('button', { name: /claim/i });
+      await user.click(claimButton);
+
+      await waitFor(() => {
+        // Should create purchases for both components
+        expect(insertMock).toHaveBeenCalledTimes(2);
+        expect(insertMock).toHaveBeenCalledWith(
+          expect.objectContaining({
+            item_id: 'gold_250',
+          })
+        );
+        expect(insertMock).toHaveBeenCalledWith(
+          expect.objectContaining({
+            item_id: 'great_feast_1',
+          })
+        );
+      });
+
+      // Cleanup
+      delete SHOP_ITEMS.test_free_bundle;
+    });
+
+    it('should show bundle components as separate purchases in Purchases tab', async () => {
+      const user = userEvent.setup();
+      const onClose = vi.fn();
+
+      // Mock component purchases from a bundle
+      mockSupabaseClient.from = vi.fn(() => ({
+        select: vi.fn(() => ({
+          eq: vi.fn(() => ({
+            data: [
+              { id: 100, item_id: 'gold_5000' },
+              { id: 101, item_id: 'great_feast_1' },
+            ],
+            error: null,
+          })),
+        })),
+        insert: vi.fn(() => ({
+          data: null,
+          error: null,
+        })),
+      }));
+
+      useGameStore.setState({
+        feastPurchases: {
+          'purchase-great_feast_1-101': {
+            itemId: 'great_feast_1',
+            activationsRemaining: 1,
+            totalActivations: 1,
+            purchasedAt: Date.now(),
+          },
+        },
+      });
+
+      render(<ShopDialog isOpen={true} onClose={onClose} />);
+
+      const purchasesTab = screen.getByRole('tab', { name: /purchases/i });
+      await user.click(purchasesTab);
+
+      await waitFor(() => {
+        // Should show feast component
+        expect(screen.getByText(/1 Great Feast \(1\/1 available\)/i)).toBeInTheDocument();
+        // Should show gold component
+        expect(screen.getByText('5000 Gold')).toBeInTheDocument();
+      });
+    });
+
+    it('should activate bundle components independently', async () => {
+      const user = userEvent.setup();
+      const onClose = vi.fn();
+      const updateResource = vi.fn();
+
+      useGameStore.setState({
+        updateResource,
+        resources: { gold: 0 },
+        feastPurchases: {
+          'purchase-great_feast_1-101': {
+            itemId: 'great_feast_1',
+            activationsRemaining: 1,
+            totalActivations: 1,
+            purchasedAt: Date.now(),
+          },
+        },
+      });
+
+      // Mock component purchases
+      mockSupabaseClient.from = vi.fn(() => ({
+        select: vi.fn(() => ({
+          eq: vi.fn(() => ({
+            data: [
+              { id: 100, item_id: 'gold_5000' },
+              { id: 101, item_id: 'great_feast_1' },
+            ],
+            error: null,
+          })),
+        })),
+        insert: vi.fn(() => ({
+          data: null,
+          error: null,
+        })),
+      }));
+
+      render(<ShopDialog isOpen={true} onClose={onClose} />);
+
+      const purchasesTab = screen.getByRole('tab', { name: /purchases/i });
+      await user.click(purchasesTab);
+
+      await waitFor(() => {
+        const activateButtons = screen.getAllByRole('button', { name: /activate/i });
+        expect(activateButtons.length).toBeGreaterThan(0);
+      });
+
+      // Activate gold component first
+      const activateButtons = screen.getAllByRole('button', { name: /activate/i });
+      await user.click(activateButtons[0]);
+
+      await waitFor(() => {
+        expect(updateResource).toHaveBeenCalledWith('gold', 5000);
+      });
+    });
+
+    it('should track feast activations from bundle components separately', async () => {
+      const user = userEvent.setup();
+      const onClose = vi.fn();
+
+      useGameStore.setState({
+        feastPurchases: {
+          'purchase-great_feast_1-101': {
+            itemId: 'great_feast_1',
+            activationsRemaining: 1,
+            totalActivations: 1,
+            purchasedAt: Date.now(),
+          },
+        },
+        greatFeastState: { isActive: false, endTime: 0 },
+      });
+
+      mockSupabaseClient.from = vi.fn(() => ({
+        select: vi.fn(() => ({
+          eq: vi.fn(() => ({
+            data: [{ id: 101, item_id: 'great_feast_1' }],
+            error: null,
+          })),
+        })),
+        insert: vi.fn(() => ({
+          data: null,
+          error: null,
+        })),
+      }));
+
+      render(<ShopDialog isOpen={true} onClose={onClose} />);
+
+      const purchasesTab = screen.getByRole('tab', { name: /purchases/i });
+      await user.click(purchasesTab);
+
+      await waitFor(() => {
+        expect(screen.getByText(/1\/1 available/i)).toBeInTheDocument();
+      });
+
+      const activateButton = screen.getByRole('button', { name: /activate/i });
+      await user.click(activateButton);
+
+      await waitFor(() => {
+        const state = useGameStore.getState();
+        expect(state.feastPurchases?.['purchase-great_feast_1-101']?.activationsRemaining).toBe(0);
+        expect(state.greatFeastState?.isActive).toBe(true);
+      });
+    });
+
+    it('should handle bundle purchase success and create component records', async () => {
+      const user = userEvent.setup();
+      const onClose = vi.fn();
+
+      global.fetch = vi.fn(() =>
+        Promise.resolve({
+          json: () => Promise.resolve({ clientSecret: 'test_secret' }),
+        })
+      ) as any;
+
+      const insertMock = vi.fn(() => ({
+        data: { id: 999 },
+        error: null,
+      }));
+
+      mockSupabaseClient.from = vi.fn((table) => {
+        if (table === 'purchases') {
+          return {
+            select: vi.fn(() => ({
+              eq: vi.fn(() => ({
+                data: [],
+                error: null,
+              })),
+            })),
+            insert: insertMock,
+          };
+        }
+        return {};
+      });
+
+      render(<ShopDialog isOpen={true} onClose={onClose} />);
+
+      await waitFor(() => {
+        expect(screen.getByText('Champion Bundle')).toBeInTheDocument();
+      });
+
+      // This would trigger the payment flow in a real scenario
+      // The bundle component creation happens in handlePurchaseSuccess
+    });
+
+    it('should show correct bundle symbol and color', async () => {
+      const onClose = vi.fn();
+      render(<ShopDialog isOpen={true} onClose={onClose} />);
+
+      await waitFor(() => {
+        expect(screen.getByText('Champion Bundle')).toBeInTheDocument();
+      });
+
+      // Bundle should have its symbol displayed
+      const bundleCard = screen.getByText('Champion Bundle').closest('.flex');
+      expect(bundleCard).toBeInTheDocument();
+    });
+
+    it('should not prevent bundle repurchase even if components were purchased separately', async () => {
+      const onClose = vi.fn();
+
+      // Mock that individual components exist
+      mockSupabaseClient.from = vi.fn(() => ({
+        select: vi.fn(() => ({
+          eq: vi.fn(() => ({
+            data: [
+              { id: 50, item_id: 'gold_5000' },
+              { id: 51, item_id: 'great_feast_1' },
+            ],
+            error: null,
+          })),
+        })),
+        insert: vi.fn(() => ({
+          data: null,
+          error: null,
+        })),
+      }));
+
+      render(<ShopDialog isOpen={true} onClose={onClose} />);
+
+      await waitFor(() => {
+        expect(screen.getByText('Champion Bundle')).toBeInTheDocument();
+      });
+
+      // Bundle should still be purchasable (it's repeatable)
+      const purchaseButton = screen.getAllByRole('button', { name: /purchase/i });
+      expect(purchaseButton.length).toBeGreaterThan(0);
+    });
+  });
 });

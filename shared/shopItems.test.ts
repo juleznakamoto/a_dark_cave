@@ -96,4 +96,146 @@ describe('Shop Items Configuration', () => {
       });
     });
   });
+
+  describe('Bundle Configuration', () => {
+    it('should have bundle items in shop', () => {
+      expect(SHOP_ITEMS.champion_bundle).toBeDefined();
+      expect(SHOP_ITEMS.champion_bundle.category).toBe('bundle');
+    });
+
+    it('should have valid bundle structure', () => {
+      const bundle = SHOP_ITEMS.champion_bundle;
+      expect(bundle.bundleComponents).toBeDefined();
+      expect(Array.isArray(bundle.bundleComponents)).toBe(true);
+      expect(bundle.bundleComponents!.length).toBeGreaterThan(0);
+    });
+
+    it('should reference valid component items', () => {
+      const bundle = SHOP_ITEMS.champion_bundle;
+      bundle.bundleComponents!.forEach(componentId => {
+        expect(SHOP_ITEMS[componentId]).toBeDefined();
+      });
+    });
+
+    it('should have champion bundle with correct components', () => {
+      const bundle = SHOP_ITEMS.champion_bundle;
+      expect(bundle.bundleComponents).toContain('gold_5000');
+      expect(bundle.bundleComponents).toContain('great_feast_1');
+    });
+
+    it('should have discounted bundle pricing', () => {
+      const bundle = SHOP_ITEMS.champion_bundle;
+      expect(bundle.originalPrice).toBeDefined();
+      expect(bundle.originalPrice).toBeGreaterThan(bundle.price);
+      
+      // Check that bundle is cheaper than buying components separately
+      const componentsCost = bundle.bundleComponents!.reduce((total, componentId) => {
+        return total + SHOP_ITEMS[componentId].price;
+      }, 0);
+      
+      expect(bundle.price).toBeLessThan(componentsCost);
+    });
+
+    it('should allow bundle to be purchased multiple times', () => {
+      expect(SHOP_ITEMS.champion_bundle.canPurchaseMultipleTimes).toBe(true);
+    });
+
+    it('should have bundle rewards that match components', () => {
+      const bundle = SHOP_ITEMS.champion_bundle;
+      
+      // Bundle should have combined rewards
+      expect(bundle.rewards.resources?.gold).toBe(5000);
+      expect(bundle.rewards.feastActivations).toBe(1);
+    });
+
+    it('should have appropriate activation message', () => {
+      const bundle = SHOP_ITEMS.champion_bundle;
+      expect(bundle.activationMessage).toBeDefined();
+      expect(bundle.activationMessage).toContain('Bundle');
+    });
+
+    it('should have bundle symbol and color', () => {
+      const bundle = SHOP_ITEMS.champion_bundle;
+      expect(bundle.symbol).toBeTruthy();
+      expect(bundle.symbolColor).toBeTruthy();
+    });
+
+    it('should not have conflicting reward types in bundle', () => {
+      const bundle = SHOP_ITEMS.champion_bundle;
+      
+      // Bundles should not grant tools/weapons/blessings directly
+      // since components are granted individually
+      expect(bundle.rewards.tools).toBeUndefined();
+      expect(bundle.rewards.weapons).toBeUndefined();
+      expect(bundle.rewards.blessings).toBeUndefined();
+    });
+
+    it('should have component items that can be purchased individually', () => {
+      const bundle = SHOP_ITEMS.champion_bundle;
+      
+      bundle.bundleComponents!.forEach(componentId => {
+        const component = SHOP_ITEMS[componentId];
+        expect(component.canPurchaseMultipleTimes).toBe(true);
+      });
+    });
+
+    it('should have bundle description mentioning components', () => {
+      const bundle = SHOP_ITEMS.champion_bundle;
+      expect(bundle.description.toLowerCase()).toContain('gold');
+      expect(bundle.description.toLowerCase()).toContain('feast');
+    });
+
+    it('should validate bundle pricing formula', () => {
+      const bundle = SHOP_ITEMS.champion_bundle;
+      
+      // Original price should be sum of component original/current prices
+      const gold5000 = SHOP_ITEMS.gold_5000;
+      const feast1 = SHOP_ITEMS.great_feast_1;
+      
+      const expectedOriginalPrice = 
+        (gold5000.originalPrice || gold5000.price) + 
+        (feast1.originalPrice || feast1.price);
+      
+      expect(bundle.originalPrice).toBe(expectedOriginalPrice);
+    });
+
+    it('should have bundle with reasonable discount percentage', () => {
+      const bundle = SHOP_ITEMS.champion_bundle;
+      const discountPercent = ((bundle.originalPrice! - bundle.price) / bundle.originalPrice!) * 100;
+      
+      // Should have at least 40% discount to make bundle attractive
+      expect(discountPercent).toBeGreaterThanOrEqual(40);
+      // But not more than 60% (too generous)
+      expect(discountPercent).toBeLessThanOrEqual(60);
+    });
+
+    it('should ensure bundle components exist and are not other bundles', () => {
+      Object.values(SHOP_ITEMS).forEach(item => {
+        if (item.category === 'bundle' && item.bundleComponents) {
+          item.bundleComponents.forEach(componentId => {
+            const component = SHOP_ITEMS[componentId];
+            expect(component).toBeDefined();
+            expect(component.category).not.toBe('bundle'); // No nested bundles
+          });
+        }
+      });
+    });
+
+    it('should have unique bundle components (no duplicates)', () => {
+      Object.values(SHOP_ITEMS).forEach(item => {
+        if (item.category === 'bundle' && item.bundleComponents) {
+          const uniqueComponents = new Set(item.bundleComponents);
+          expect(uniqueComponents.size).toBe(item.bundleComponents.length);
+        }
+      });
+    });
+
+    it('should have bundle name indicating it is a bundle', () => {
+      Object.values(SHOP_ITEMS).forEach(item => {
+        if (item.category === 'bundle') {
+          expect(item.name.toLowerCase()).toContain('bundle');
+        }
+      });
+    });
+  });
 });
