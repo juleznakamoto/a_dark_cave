@@ -25,7 +25,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
   gold_100_free: {
     id: "gold_100_free",
     name: "100 Gold (Daily Free Gift)",
-    description: "Claim 100 Gold every 24 hours",
+    description: "A small daily relief in a cold world.",
     price: 0,
     rewards: {
       resources: { gold: 100 },
