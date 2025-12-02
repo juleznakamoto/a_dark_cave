@@ -121,7 +121,8 @@ export default function GameFooter() {
               className="px-1 py-1 text-xs hover relative"
             >
               Donate
-              {true && (
+              {story.seen.mysteriousNoteReceived &&
+                !mysteriousNoteDonateNotificationSeen && (
                   <span className="absolute -top-[-4px] -right-[-0px] w-1 h-1 bg-red-600 rounded-full shop-notification-pulse" />
                 )}
             </Button>
