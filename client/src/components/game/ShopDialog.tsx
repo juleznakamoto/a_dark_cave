@@ -287,15 +287,35 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
 
         // Save purchase to Supabase
         const client = await getSupabaseClient();
-        const { error } = await client.from("purchases").insert({
-          user_id: user.id,
-          item_id: itemId,
-          item_name: item.name,
-          price_paid: item.price,
-          purchased_at: new Date().toISOString(),
-        });
+        
+        // If this is a bundle with components, create individual purchases for each component
+        if (item.bundleComponents && item.bundleComponents.length > 0) {
+          for (const componentId of item.bundleComponents) {
+            const componentItem = SHOP_ITEMS[componentId];
+            if (componentItem) {
+              const { error: compError } = await client.from("purchases").insert({
+                user_id: user.id,
+                item_id: componentId,
+                item_name: componentItem.name,
+                price_paid: 0,
+                purchased_at: new Date().toISOString(),
+              });
 
-        if (error) throw error;
+              if (compError) throw compError;
+            }
+          }
+        } else {
+          // Single item purchase
+          const { error } = await client.from("purchases").insert({
+            user_id: user.id,
+            item_id: itemId,
+            item_name: item.name,
+            price_paid: item.price,
+            purchased_at: new Date().toISOString(),
+          });
+
+          if (error) throw error;
+        }
 
         // Reload purchases from database to get the correct ID
         await loadPurchasedItems();
@@ -342,17 +362,46 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
   const handlePurchaseSuccess = async () => {
     const item = SHOP_ITEMS[selectedItem!];
 
-    // Reload purchases from database to get the correct ID
-    await loadPurchasedItems();
-
     // Set hasMadeNonFreePurchase flag if this is a paid item
     if (item.price > 0) {
       useGameStore.setState({ hasMadeNonFreePurchase: true });
     }
 
-    // If this item has feast activations (feast or bundle), track it individually
-    // We need to find the newly created purchase ID from the reloaded list
-    if (item.rewards.feastActivations) {
+    // If this is a bundle with components, create individual purchases for each component
+    if (item.bundleComponents && item.bundleComponents.length > 0) {
+      try {
+        const user = await getCurrentUser();
+        if (user) {
+          const client = await getSupabaseClient();
+          
+          // Create purchase records for each component
+          for (const componentId of item.bundleComponents) {
+            const componentItem = SHOP_ITEMS[componentId];
+            if (componentItem) {
+              const { error } = await client.from("purchases").insert({
+                user_id: user.id,
+                item_id: componentId,
+                item_name: componentItem.name,
+                price_paid: 0, // Components from bundle are "free"
+                purchased_at: new Date().toISOString(),
+              });
+
+              if (error) {
+                logger.error("Error saving component purchase to Supabase:", error);
+              }
+            }
+          }
+        }
+      } catch (error) {
+        logger.error("Exception saving bundle component purchases:", error);
+      }
+    }
+
+    // Reload purchases from database to get the correct IDs
+    await loadPurchasedItems();
+
+    // If this is a single item with feast activations, track it individually
+    if (item.rewards.feastActivations && !item.bundleComponents) {
       // Get the latest purchase for this item (the one just created)
       const latestPurchaseId = purchasedItems
         .filter(pid => {
@@ -378,9 +427,44 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
       }
     }
 
+    // Handle bundle component feast purchases
+    if (item.bundleComponents) {
+      // After reload, find the newly created component purchases
+      item.bundleComponents.forEach(componentId => {
+        const componentItem = SHOP_ITEMS[componentId];
+        if (componentItem?.rewards.feastActivations) {
+          // Find the latest purchase for this component
+          const componentPurchaseId = purchasedItems
+            .filter(pid => {
+              const itemId = pid.startsWith('purchase-') 
+                ? pid.substring('purchase-'.length, pid.lastIndexOf('-'))
+                : pid;
+              return itemId === componentId;
+            })
+            .pop();
+
+          if (componentPurchaseId) {
+            useGameStore.setState((state) => ({
+              feastPurchases: {
+                ...state.feastPurchases,
+                [componentPurchaseId]: {
+                  itemId: componentId,
+                  activationsRemaining: componentItem.rewards.feastActivations!,
+                  totalActivations: componentItem.rewards.feastActivations!,
+                  purchasedAt: Date.now(),
+                },
+              },
+            }));
+          }
+        }
+      });
+    }
+
     gameState.addLogEntry({
       id: `purchase-${Date.now()}`,
-      message: `Purchase successful! ${item.name} has been added to your purchases. You can activate it from the Purchases section.`,
+      message: item.bundleComponents 
+        ? `Purchase successful! ${item.name} components have been added to your purchases. You can activate them from the Purchases section.`
+        : `Purchase successful! ${item.name} has been added to your purchases. You can activate it from the Purchases section.`,
       timestamp: Date.now(),
       type: "system",
     });

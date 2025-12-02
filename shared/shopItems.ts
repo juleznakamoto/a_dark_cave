@@ -18,6 +18,7 @@ export interface ShopItem {
   activationMessage?: string;
   symbol?: string;
   symbolColor?: string;
+  bundleComponents?: string[]; // IDs of component items for bundles
 }
 
 export const SHOP_ITEMS: Record<string, ShopItem> = {
@@ -148,22 +149,23 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     symbolColor: "text-orange-600",
   },
 
-  // basic_bundle: {
-  //   id: "basic_bundle",
-  //   name: "Basic Bundle",
-  //   description: "A great starter pack with 1000 Gold and 1 Great Feast",
-  //   originalPrice: 699,
-  //   price: 349, // 3.49 €
-  //   rewards: {
-  //     resources: { gold: 1000 },
-  //     feastActivations: 1,
-  //   },
-  //   canPurchaseMultipleTimes: true,
-  //   category: "bundle",
-  //   activationMessage: "Basic Bundle has been used!",
-  //   symbol: "◻",
-  //   symbolColor: "text-purple-600",
-  // },
+  champion_bundle: {
+    id: "champion_bundle",
+    name: "Champion Bundle",
+    description: "A powerful pack with 5000 Gold and 1 Great Feast",
+    originalPrice: 1299,
+    price: 649, // 6.49 €
+    rewards: {
+      resources: { gold: 5000 },
+      feastActivations: 1,
+    },
+    canPurchaseMultipleTimes: true,
+    category: "bundle",
+    activationMessage: "Champion Bundle components have been added to your purchases!",
+    symbol: "◈",
+    symbolColor: "text-purple-600",
+    bundleComponents: ["gold_5000", "great_feast_1"], // Component items
+  },
 
   // dwarven_hammer: {
   //   id: 'dwarven_hammer',
