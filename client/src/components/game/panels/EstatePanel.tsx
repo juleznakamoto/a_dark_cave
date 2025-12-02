@@ -41,7 +41,7 @@ export const HUNTING_SKILL_UPGRADES = [
   { level: 2, huntBonus: 50, food: 5, fur: 1, bones: 1, cost: 1000 },
   { level: 3, huntBonus: 50, food: 15, fur: 1, bones: 1, cost: 1500 },
   { level: 4, huntBonus: 75, food: 15, fur: 2, bones: 2, cost: 2000 },
-  { level: 5, huntBonus: 75, food: 30, fur: 2, bones: 2, cost: 2500 },
+  { level: 5, huntBonus: 75, food: 20, fur: 2, bones: 2, cost: 2500 },
 ];
 
 // Extract bonuses for use in other modules
