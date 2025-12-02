@@ -231,6 +231,37 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
         });
         
         setPurchasedItems(purchaseIds);
+
+        // Initialize feast activations for any feast purchases that don't have them yet
+        const currentFeastActivations = gameState.feastActivations || {};
+        const newFeastActivations = { ...currentFeastActivations };
+        let hasNewActivations = false;
+
+        data.forEach((purchase) => {
+          const purchaseId = `purchase-${purchase.item_id}-${purchase.id}`;
+          const item = SHOP_ITEMS[purchase.item_id];
+          
+          // If this item has feast activations and doesn't already have them set up in state
+          if (item?.rewards.feastActivations && !currentFeastActivations[purchaseId]) {
+            newFeastActivations[purchaseId] = item.rewards.feastActivations;
+            hasNewActivations = true;
+            
+            logger.log('[SHOP] Initializing feast activations for existing purchase', {
+              purchaseId,
+              itemId: purchase.item_id,
+              activations: item.rewards.feastActivations,
+            });
+          }
+        });
+
+        // Update state if we added any new activations
+        if (hasNewActivations) {
+          useGameStore.setState({ feastActivations: newFeastActivations });
+          
+          logger.log('[SHOP] Updated feastActivations state', {
+            newFeastActivations,
+          });
+        }
       }
     } catch (error) {
       logger.error("Error loading purchased items:", error);
