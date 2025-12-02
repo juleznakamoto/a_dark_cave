@@ -29,7 +29,7 @@ export default function EndScreenPage() {
       } catch (error) {
         console.error("Error enabling Playlight SDK sidebar:", error);
       }
-    }, 6000);
+    }, 5000);
 
     // Cleanup: hide sidebar when leaving the page
     return () => {
