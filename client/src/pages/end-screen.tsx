@@ -16,8 +16,13 @@ export default function EndScreenPage() {
         );
         const playlightSDK = module.default;
         
-        // Enable sidebar visibility
-        playlightSDK.setSidebarVisibility(true);
+        // Reconfigure SDK to enable sidebar
+        playlightSDK.setConfig({
+          sidebar: {
+            hasFrameworkRoot: true,
+            forceVisible: true
+          }
+        });
         
         setSdkInitialized(true);
         console.log("[PLAYLIGHT] Sidebar enabled on end screen");
@@ -35,7 +40,14 @@ export default function EndScreenPage() {
             "https://sdk.playlight.dev/playlight-sdk.es.js"
           );
           const playlightSDK = module.default;
-          playlightSDK.setSidebarVisibility(false);
+          
+          // Reconfigure SDK to disable sidebar
+          playlightSDK.setConfig({
+            sidebar: {
+              hasFrameworkRoot: true,
+              forceVisible: false
+            }
+          });
         } catch (error) {
           console.error("Error hiding sidebar:", error);
         }
