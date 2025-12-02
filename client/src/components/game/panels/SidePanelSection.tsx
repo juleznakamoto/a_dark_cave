@@ -280,7 +280,6 @@ export default function SidePanelSection({
           title === "Schematics" ||
           title === "Blessings")) ||
       (hasTooltip && (title === "Fortifications" || title === "Buildings")) ||
-      isMadnessTooltip ||
       item.tooltip;
 
     const newItemPulseClass =
