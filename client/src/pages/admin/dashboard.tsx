@@ -443,7 +443,8 @@ export default function AdminDashboard() {
 
       const purchasesCount = purchases.filter(purchase => {
         const purchaseDate = parseISO(purchase.purchased_at);
-        return purchase.price_paid > 0 && isWithinInterval(purchaseDate, { start: dayStart, end: dayEnd });
+        // Only count bundle purchases, not individual components
+        return purchase.price_paid > 0 && !purchase.bundle_id && isWithinInterval(purchaseDate, { start: dayStart, end: dayEnd });
       }).length;
 
       data.push({
@@ -457,8 +458,8 @@ export default function AdminDashboard() {
 
   // Purchases by playtime
   const getPurchasesByPlaytime = () => {
-    // Filter out free purchases
-    const paidPurchases = purchases.filter(p => p.price_paid > 0);
+    // Filter out free purchases and component purchases (only show bundles)
+    const paidPurchases = purchases.filter(p => p.price_paid > 0 && !p.bundle_id);
 
     // Get playtime for each purchase by matching user_id to game saves
     const purchasesWithPlaytime = paidPurchases.map(purchase => {
@@ -497,11 +498,11 @@ export default function AdminDashboard() {
     const totalUsers = gameSaves.length;
     if (totalUsers === 0) return 0;
 
-    // Get unique users who made non-free purchases
+    // Get unique users who made non-free purchases (exclude component purchases)
     const buyersSet = new Set<string>();
     purchases.forEach(purchase => {
-      // Assuming non-free items have price > 0
-      if (purchase.price_paid > 0) {
+      // Only count bundle purchases, not individual components
+      if (purchase.price_paid > 0 && !purchase.bundle_id) {
         buyersSet.add(purchase.user_id);
       }
     });
@@ -830,7 +831,7 @@ export default function AdminDashboard() {
 
   const getPurchaseStats = () => {
     const stats = purchases
-      .filter(purchase => purchase.item_name !== '100 Gold (Free Gift)')
+      .filter(purchase => purchase.item_name !== '100 Gold (Free Gift)' && !purchase.bundle_id)
       .reduce((acc, purchase) => {
         acc[purchase.item_name] = (acc[purchase.item_name] || 0) + 1;
         return acc;
@@ -840,7 +841,8 @@ export default function AdminDashboard() {
   };
 
   const getTotalRevenue = () => {
-    return purchases.filter(p => p.price_paid > 0).reduce((sum, p) => sum + p.price_paid, 0);
+    // Only count bundle purchases, not individual components
+    return purchases.filter(p => p.price_paid > 0 && !p.bundle_id).reduce((sum, p) => sum + p.price_paid, 0);
   };
 
   // Referral stats
@@ -901,9 +903,9 @@ export default function AdminDashboard() {
 
   const getConversionRate = () => {
     const totalUsers = gameSaves.length;
-    // Only count users who made non-free purchases (price_paid > 0)
+    // Only count users who made non-free purchases (price_paid > 0 and not a component)
     const payingUsers = new Set(
-      purchases.filter(p => p.price_paid > 0).map(p => p.user_id)
+      purchases.filter(p => p.price_paid > 0 && !p.bundle_id).map(p => p.user_id)
     ).size;
 
     if (totalUsers === 0) return 0;
@@ -2201,10 +2203,10 @@ export default function AdminDashboard() {
               <Card>
                 <CardHeader>
                   <CardTitle>Total Purchases</CardTitle>
-                  <CardDescription>Excluding free items</CardDescription>
+                  <CardDescription>Excluding free items and components</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-4xl font-bold">{purchases.filter(p => p.price_paid > 0).length}</p>
+                  <p className="text-4xl font-bold">{purchases.filter(p => p.price_paid > 0 && !p.bundle_id).length}</p>
                 </CardContent>
               </Card>
             </div>
@@ -2269,7 +2271,7 @@ export default function AdminDashboard() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
-                  {purchases.slice(0, 10).map((purchase, index) => (
+                  {purchases.filter(p => !p.bundle_id).slice(0, 10).map((purchase, index) => (
                     <div key={index} className="flex justify-between items-center border-b pb-2">
                       <div>
                         <p className="font-medium">{purchase.item_name}</p>
