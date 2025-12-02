@@ -281,7 +281,7 @@ export default function SidePanelSection({
           title === "Blessings")) ||
       (hasTooltip && (title === "Fortifications" || title === "Buildings")) ||
       isMadnessTooltip ||
-      (item.tooltip && title !== "Stats");
+      item.tooltip;
 
     const newItemPulseClass =
       shouldPulse && !hoveredTooltips[item.id] ? "new-item-pulse" : "";
