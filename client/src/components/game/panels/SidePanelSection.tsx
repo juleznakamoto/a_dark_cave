@@ -484,22 +484,26 @@ export default function SidePanelSection({
     return <div key={item.id}>{itemContent}</div>;
   };
 
+  // Extract base title without dynamic values for consistent tooltip key
+  const baseTitleForKey = title.split(' ')[0]; // Gets "Population" from "Population 5/10"
+  const tooltipKey = `section-title-${baseTitleForKey}`;
+
   return (
     <div className={`py-1.5 border-border ${className}`}>
       {titleTooltip ? (
         <TooltipProvider>
-          <Tooltip open={mobileTooltip.isTooltipOpen(`section-title-${title}`)}>
+          <Tooltip open={mobileTooltip.isTooltipOpen(tooltipKey)}>
             <TooltipTrigger asChild>
               <h3
                 className={cn(
                   "text-xs font-medium tracking-wide mb-0.5 cursor-pointer",
-                  !hoveredTooltips[`section-title-${title}`] && "new-item-pulse"
+                  !hoveredTooltips[tooltipKey] && "new-item-pulse"
                 )}
                 onClick={(e) => {
-                  mobileTooltip.handleTooltipClick(`section-title-${title}`, e);
-                  setHoveredTooltip(`section-title-${title}`, true);
+                  mobileTooltip.handleTooltipClick(tooltipKey, e);
+                  setHoveredTooltip(tooltipKey, true);
                 }}
-                onMouseEnter={() => setHoveredTooltip(`section-title-${title}`, true)}
+                onMouseEnter={() => setHoveredTooltip(tooltipKey, true)}
               >
                 {title}
               </h3>
