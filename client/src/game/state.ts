@@ -751,6 +751,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
       effects: calculateTotalEffects({ ...defaultGameState, ...preserved }),
       bastion_stats: calculateBastionStats(defaultGameState),
 
+      // Reset population counters explicitly
+      current_population: 0,
+      total_population: 0,
+
       // Mark as new game and allow overwriting cloud playTime once
       isNewGame: true,
       startTime: Date.now(),
