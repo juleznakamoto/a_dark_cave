@@ -98,6 +98,42 @@ app.get('/api/admin/data', async (req, res) => {
   }
 });
 
+// API endpoint to lookup a specific user's save game
+app.get('/api/admin/user-lookup', async (req, res) => {
+  try {
+    const userId = req.query.userId as string;
+    const env = req.query.env as 'dev' | 'prod' || 'dev';
+
+    if (!userId) {
+      return res.status(400).json({ error: 'User ID is required' });
+    }
+
+    log(`🔍 User lookup request for ID: ${userId} in ${env.toUpperCase()} environment`);
+    const adminClient = getAdminClient(env);
+
+    const { data, error } = await adminClient
+      .from('game_saves')
+      .select('user_id, game_state, updated_at, created_at')
+      .eq('user_id', userId)
+      .single();
+
+    if (error) {
+      if (error.code === 'PGRST116') {
+        log(`⚠️ No save found for user ID: ${userId}`);
+        return res.json({ save: null });
+      }
+      log('❌ Error fetching user save:', error);
+      throw error;
+    }
+
+    log(`✅ Found save for user ID: ${userId}`);
+    res.json({ save: data });
+  } catch (error: any) {
+    log('❌ User lookup failed:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 app.use((req, res, next) => {
   const start = Date.now();
   const path = req.path;

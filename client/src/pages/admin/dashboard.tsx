@@ -132,6 +132,12 @@ export default function AdminDashboard() {
   const [environment, setEnvironment] = useState<'dev' | 'prod'>('prod');
   const [showCompletedOnly, setShowCompletedOnly] = useState<boolean>(false);
   const [churnDays, setChurnDays] = useState<1 | 3 | 5 | 7>(3);
+  
+  // User lookup states
+  const [lookupUserId, setLookupUserId] = useState<string>('');
+  const [lookupResult, setLookupResult] = useState<GameSaveData | null>(null);
+  const [lookupLoading, setLookupLoading] = useState<boolean>(false);
+  const [lookupError, setLookupError] = useState<string>('');
 
   // Process clicks data for the chart - moved here before any early returns
   const buttonClicksChartData = useMemo(() => {
@@ -1459,6 +1465,34 @@ export default function AdminDashboard() {
   };
 
   // NEW FUNCTION FOR RESOURCE STATS OVER PLAYTIME
+  const handleLookupUser = async () => {
+    setLookupLoading(true);
+    setLookupError('');
+    setLookupResult(null);
+
+    try {
+      const response = await fetch(`/api/admin/user-lookup?userId=${encodeURIComponent(lookupUserId)}&env=${environment}`);
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to fetch user data');
+      }
+
+      const data = await response.json();
+      
+      if (!data.save) {
+        setLookupError('No save game found for this user ID');
+      } else {
+        setLookupResult(data.save);
+      }
+    } catch (error: any) {
+      logger.error('User lookup failed:', error);
+      setLookupError(error.message || 'Failed to lookup user');
+    } finally {
+      setLookupLoading(false);
+    }
+  };
+
   const getResourceStatsOverPlaytime = () => {
     // If no click data is available, return empty array
     if (!clickData || clickData.length === 0) return [];
@@ -1623,6 +1657,7 @@ export default function AdminDashboard() {
             <TabsTrigger value="churn">Churn</TabsTrigger>
             <TabsTrigger value="sleep">Sleep Upgrades</TabsTrigger>
             <TabsTrigger value="resources">Resources</TabsTrigger>
+            <TabsTrigger value="lookup">User Lookup</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-4">
@@ -2814,6 +2849,86 @@ export default function AdminDashboard() {
                     })()}
                   </LineChart>
                 </ResponsiveContainer>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="lookup" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle>User Save Game Lookup</CardTitle>
+                <CardDescription>Enter a user ID to view their save game data</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex gap-4">
+                  <input
+                    type="text"
+                    placeholder="Enter user ID (UUID)"
+                    value={lookupUserId}
+                    onChange={(e) => setLookupUserId(e.target.value)}
+                    className="flex-1 px-3 py-2 border rounded-md"
+                  />
+                  <button
+                    onClick={handleLookupUser}
+                    disabled={!lookupUserId.trim() || lookupLoading}
+                    className="px-4 py-2 bg-primary text-primary-foreground rounded-md disabled:opacity-50"
+                  >
+                    {lookupLoading ? 'Loading...' : 'Lookup'}
+                  </button>
+                </div>
+
+                {lookupError && (
+                  <div className="p-4 bg-destructive/10 text-destructive rounded-md">
+                    {lookupError}
+                  </div>
+                )}
+
+                {lookupResult && (
+                  <div className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <Card>
+                        <CardHeader>
+                          <CardTitle>User ID</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <p className="text-sm break-all">{lookupResult.user_id}</p>
+                        </CardContent>
+                      </Card>
+                      <Card>
+                        <CardHeader>
+                          <CardTitle>Last Updated</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <p className="text-sm">{new Date(lookupResult.updated_at).toLocaleString()}</p>
+                        </CardContent>
+                      </Card>
+                      <Card>
+                        <CardHeader>
+                          <CardTitle>Playtime</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <p className="text-sm">
+                            {lookupResult.game_state?.playTime 
+                              ? formatTime(Math.round(lookupResult.game_state.playTime / 1000 / 60))
+                              : '0m'}
+                          </p>
+                        </CardContent>
+                      </Card>
+                    </div>
+
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>Game State (JSON)</CardTitle>
+                        <CardDescription>Complete save game data</CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <pre className="p-4 bg-muted rounded-md overflow-auto max-h-[600px] text-xs">
+                          {JSON.stringify(lookupResult.game_state, null, 2)}
+                        </pre>
+                      </CardContent>
+                    </Card>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </TabsContent>
