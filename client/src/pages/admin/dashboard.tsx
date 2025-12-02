@@ -139,6 +139,38 @@ export default function AdminDashboard() {
   const [lookupLoading, setLookupLoading] = useState<boolean>(false);
   const [lookupError, setLookupError] = useState<string>('');
 
+  // Helper function to filter data by time range
+  const filterByTimeRange = <T extends { timestamp?: string; updated_at?: string; purchased_at?: string; created_at?: string }>(
+    data: T[],
+    dateField: keyof T
+  ): T[] => {
+    if (timeRange === 'all') return data;
+
+    const now = new Date();
+    let cutoffDate: Date;
+
+    switch (timeRange) {
+      case '1d':
+        cutoffDate = subDays(now, 1);
+        break;
+      case '7d':
+        cutoffDate = subDays(now, 7);
+        break;
+      case '30d':
+        cutoffDate = subDays(now, 30);
+        break;
+      default:
+        return data;
+    }
+
+    return data.filter(item => {
+      const dateValue = item[dateField];
+      if (!dateValue || typeof dateValue !== 'string') return false;
+      const itemDate = parseISO(dateValue);
+      return itemDate >= cutoffDate;
+    });
+  };
+
   // Process clicks data for the chart - moved here before any early returns
   const buttonClicksChartData = useMemo(() => {
     if (!clickData) return [];
@@ -260,38 +292,6 @@ export default function AdminDashboard() {
     } catch (error) {
       logger.error('Failed to load admin data:', error);
     }
-  };
-
-  // Helper function to filter data by time range
-  const filterByTimeRange = <T extends { timestamp?: string; updated_at?: string; purchased_at?: string; created_at?: string }>(
-    data: T[],
-    dateField: keyof T
-  ): T[] => {
-    if (timeRange === 'all') return data;
-
-    const now = new Date();
-    let cutoffDate: Date;
-
-    switch (timeRange) {
-      case '1d':
-        cutoffDate = subDays(now, 1);
-        break;
-      case '7d':
-        cutoffDate = subDays(now, 7);
-        break;
-      case '30d':
-        cutoffDate = subDays(now, 30);
-        break;
-      default:
-        return data;
-    }
-
-    return data.filter(item => {
-      const dateValue = item[dateField];
-      if (!dateValue || typeof dateValue !== 'string') return false;
-      const itemDate = parseISO(dateValue);
-      return itemDate >= cutoffDate;
-    });
   };
 
   // Active Users Calculations
