@@ -926,13 +926,12 @@ export default function SidePanel() {
           sectionName,
         );
       case "estate":
-        return ["resources", "books"].includes(sectionName);
+        return ["resources", "books", "fellowship"].includes(sectionName);
       case "bastion":
         return [
           "resources",
           "fortifications",
           "bastion",
-          "fellowship",
         ].includes(sectionName);
 
       default:
