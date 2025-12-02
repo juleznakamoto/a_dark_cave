@@ -176,57 +176,16 @@ import { createServer } from "http";
         return res.status(400).json({ error: 'User ID required' });
       }
 
-      const result = await verifyPayment(paymentIntentId);
-      
-      if (!result.success) {
-        return res.json(result);
-      }
-
-      // Create purchases in database (bundle + components if applicable)
+      // Get supabase admin client
       const env = process.env.NODE_ENV === 'production' ? 'prod' : 'dev';
       const adminClient = getAdminClient(env);
-      const item = (await import('../shared/shopItems')).SHOP_ITEMS[result.itemId];
 
-      // Create main bundle purchase
-      const { data: purchaseData, error: purchaseError } = await adminClient
-        .from('purchases')
-        .insert({
-          user_id: userId,
-          item_id: result.itemId,
-          item_name: item.name,
-          price_paid: item.price,
-          bundle_id: null,
-          purchased_at: new Date().toISOString()
-        })
-        .select()
-        .single();
+      // Verify payment and create all purchases (bundle + components)
+      const result = await verifyPayment(paymentIntentId, userId, adminClient);
 
-      if (purchaseError) {
-        log('❌ Failed to save purchase:', purchaseError);
-        return res.status(500).json({ error: 'Failed to save purchase' });
-      }
-
-      // Create component purchases for bundles
-      if (item.bundleComponents && item.bundleComponents.length > 0) {
-        log(`📦 Creating ${item.bundleComponents.length} component purchases`);
-
-        for (const componentId of item.bundleComponents) {
-          const componentItem = (await import('../shared/shopItems')).SHOP_ITEMS[componentId];
-          if (componentItem) {
-            await adminClient.from('purchases').insert({
-              user_id: userId,
-              item_id: componentId,
-              item_name: componentItem.name,
-              price_paid: 0,
-              bundle_id: result.itemId,
-              purchased_at: new Date().toISOString()
-            });
-          }
-        }
-      }
-
-      res.json({ ...result, purchase: purchaseData });
+      res.json(result);
     } catch (error: any) {
+      log('❌ Payment verification error:', error);
       res.status(400).json({ error: error.message });
     }
   });
