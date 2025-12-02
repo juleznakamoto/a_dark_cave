@@ -1,0 +1,36 @@
+chunk-276SZO74.js?v=3490883a:521 Warning: Received `true` for a non-boolean attribute `jsx`.
+
+If you want to write it to the DOM, pass a string instead: jsx="true" or jsx={value.toString()}.
+    at style
+    at div
+    at Hero (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/components/ui/animated-shader-hero.tsx:280:3)
+    at div
+    at EndScreenPage (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/pages/end-screen.tsx?t=1764659278589:23:47)
+    at Route (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=3490883a:265:16)
+    at Switch (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=3490883a:321:17)
+    at Router
+    at Provider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…unner/workspace/node_modules/.vite/deps/chunk-3RXG37ZK.js?v=3490883a:38:15)
+    at TooltipProvider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…kspace/node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=3490883a:294:5)
+    at TooltipProvider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/components/ui/tooltip.tsx:22:3)
+    at QueryClientProvider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…rkspace/node_modules/.vite/deps/@tanstack_react-query.js?v=3490883a:2805:3)
+    at App (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/App.tsx?t=1764659278589&v=5pEnG-BqWUST4lF_2oCAw:107:3)
+
+App.tsx:73 [PLAYLIGHT] SDK initialized with game pause integration
+override-css.js:111 Playlight cannot process stylesheet https://fonts.googleapis.com/css2?family=Architects+Daughter&family=DM+Sans…@300..700&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap due to CORS restrictions.
+end-screen.tsx:28 [PLAYLIGHT] Sidebar enabled on end screen
+api.js:20 
+ GET https://api.playlight.dev/platform/game-by-domain/2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev 404 (Not Found)
+api.js:39 Playlight game not found. This is normal in a test / local environment, but should not appear in production.
+override-css.js:111 Playlight cannot process stylesheet https://fonts.googleapis.com/css2?family=Architects+Daughter&family=DM+Sans…@300..700&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap due to CORS restrictions.
+replaceStylesheet	@	override-css.js:111
+(anonymous)	@	override-css.js:113
+update	@	override-css.js:15
+(anonymous)	@	override-css.js:25
+requestAnimationFrame		
+scheduleUpdate	@	override-css.js:23
+setTimeout		
+(anonymous)	@	override-css.js:35
+api.js:20 
+ GET https://api.playlight.dev/platform/game-by-domain/2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev 404 (Not Found)
+api.js:39 Playlight game not found. This is normal in a test / local environment, but should not appear in production.
+﻿
