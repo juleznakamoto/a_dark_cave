@@ -65,7 +65,7 @@ describe('ShopDialog', () => {
   });
 
   describe('Free Items', () => {
-    it('should allow claiming daily free gold and add it immediately', async () => {
+    it('should allow claiming daily free gold and add it immediately without saving to DB', async () => {
       const user = userEvent.setup();
       const onClose = vi.fn();
       const updateResource = vi.fn();
@@ -90,10 +90,10 @@ describe('ShopDialog', () => {
       });
 
       // Should NOT create a purchase record for daily free gold
-      expect(mockSupabaseClient.from).not.toHaveBeenCalledWith('purchases');
+      expect(mockSupabaseClient.from).not.toHaveBeenCalled();
     });
 
-    it('should prevent claiming daily free gold within 24 hours', async () => {
+    it('should prevent claiming daily free gold within 24 hours and show remaining time', async () => {
       const user = userEvent.setup();
       const onClose = vi.fn();
 
@@ -105,7 +105,7 @@ describe('ShopDialog', () => {
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        const claimButton = screen.getByRole('button', { name: /available in/i });
+        const claimButton = screen.getByRole('button', { name: /available in 23h/i });
         expect(claimButton).toBeDisabled();
       });
     });
@@ -498,7 +498,7 @@ describe('ShopDialog', () => {
   });
 
   describe('Purchase Persistence', () => {
-    it('should reload purchases from database after claiming', async () => {
+    it('should reload purchases from database after claiming other free items', async () => {
       const user = userEvent.setup();
       const onClose = vi.fn();
 
@@ -506,6 +506,18 @@ describe('ShopDialog', () => {
         data: { id: 999 },
         error: null,
       }));
+
+      // Create a test non-daily free item
+      const originalShopItems = { ...SHOP_ITEMS };
+      SHOP_ITEMS.test_free_item = {
+        id: 'test_free_item',
+        name: 'Test Free Item',
+        description: 'Test free item',
+        price: 0,
+        rewards: { resources: { gold: 50 } },
+        canPurchaseMultipleTimes: false,
+        category: 'resource',
+      };
 
       mockSupabaseClient.from = vi.fn((table) => {
         if (table === 'purchases') {
@@ -525,20 +537,26 @@ describe('ShopDialog', () => {
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        expect(screen.getByText('100 Gold (Free Gift)')).toBeInTheDocument();
+        expect(screen.getByText('Test Free Item')).toBeInTheDocument();
       });
 
-      const claimButton = screen.getByRole('button', { name: /claim/i });
+      const claimButton = screen.getAllByRole('button', { name: /claim/i }).find(
+        btn => btn.closest('[data-testid]')?.textContent?.includes('Test Free Item')
+      ) || screen.getAllByRole('button', { name: /claim/i })[1];
+      
       await user.click(claimButton);
 
       await waitFor(() => {
         expect(insertMock).toHaveBeenCalledWith(
           expect.objectContaining({
             user_id: mockUser.id,
-            item_id: 'gold_100_free',
+            item_id: 'test_free_item',
           })
         );
       });
+
+      // Cleanup
+      delete SHOP_ITEMS.test_free_item;
     });
   });
 

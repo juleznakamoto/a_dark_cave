@@ -39,7 +39,7 @@ describe('Shop Items Configuration', () => {
       expect(SHOP_ITEMS.great_feast_3.canPurchaseMultipleTimes).toBe(true);
     });
 
-    it('should not store daily free gold as a purchase', () => {
+    it('should mark daily free gold as non-repeatable (tracked separately via timestamp)', () => {
       expect(SHOP_ITEMS.gold_100_free.canPurchaseMultipleTimes).toBe(false);
     });
   });
