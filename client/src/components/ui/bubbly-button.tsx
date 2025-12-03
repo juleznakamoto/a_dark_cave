@@ -24,17 +24,17 @@ interface Bubble {
 
 // Bubble animation component rendered via portal
 function BubbleAnimation({ bubble, colors }: { bubble: Bubble; colors: string[] }) {
-  const bubbles = [
-    { size: 10, angle: Math.random() * Math.PI * 2, distance: 50 + Math.random() * 30, color: colors[Math.floor(Math.random() * colors.length)] },
-    { size: 20, angle: Math.random() * Math.PI * 2, distance: 40 + Math.random() * 40, color: colors[Math.floor(Math.random() * colors.length)] },
-    { size: 15, angle: Math.random() * Math.PI * 2, distance: 60 + Math.random() * 20, color: colors[Math.floor(Math.random() * colors.length)] },
-    { size: 20, angle: Math.random() * Math.PI * 2, distance: 45 + Math.random() * 35, color: colors[Math.floor(Math.random() * colors.length)] },
-    { size: 18, angle: Math.random() * Math.PI * 2, distance: 55 + Math.random() * 25, color: colors[Math.floor(Math.random() * colors.length)] },
-    { size: 10, angle: Math.random() * Math.PI * 2, distance: 50 + Math.random() * 30, color: colors[Math.floor(Math.random() * colors.length)] },
-    { size: 15, angle: Math.random() * Math.PI * 2, distance: 60 + Math.random() * 20, color: colors[Math.floor(Math.random() * colors.length)] },
-    { size: 10, angle: Math.random() * Math.PI * 2, distance: 50 + Math.random() * 30, color: colors[Math.floor(Math.random() * colors.length)] },
-    { size: 18, angle: Math.random() * Math.PI * 2, distance: 55 + Math.random() * 25, color: colors[Math.floor(Math.random() * colors.length)] },
-  ];
+  // Generate 30-40 bubbles for maximum satisfaction!
+  const bubbleCount = 35 + Math.floor(Math.random() * 6);
+  const bubbles = Array.from({ length: bubbleCount }).map(() => {
+    const angle = Math.random() * Math.PI * 2;
+    const distance = 40 + Math.random() * 80; // Vary distance more
+    const size = 5 + Math.random() * 20; // Wider size range
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    const duration = 0.6 + Math.random() * 0.8; // Varied animation speeds
+    
+    return { size, angle, distance, color, duration };
+  });
 
   return (
     <>
@@ -44,6 +44,9 @@ function BubbleAnimation({ bubble, colors }: { bubble: Bubble; colors: string[] 
           ? bubble.startY - Math.abs(Math.sin(b.angle) * b.distance)
           : bubble.startY + Math.abs(Math.sin(b.angle) * b.distance);
 
+        // Add some rotation variation for extra visual appeal
+        const rotation = Math.random() * 360;
+        
         return (
           <motion.div
             key={`${bubble.id}-${index}`}
@@ -56,20 +59,23 @@ function BubbleAnimation({ bubble, colors }: { bubble: Bubble; colors: string[] 
               top: bubble.startY,
               zIndex: 9999,
               pointerEvents: "none",
+              boxShadow: `0 0 ${b.size * 0.8}px ${b.color}aa, 0 0 ${b.size * 1.5}px ${b.color}55`,
             }}
             initial={{
               opacity: 1,
               scale: 1,
+              rotate: 0,
             }}
             animate={{
               opacity: 0,
               scale: 0.1,
               x: endX - bubble.startX,
               y: endY - bubble.startY,
+              rotate: rotation,
             }}
             transition={{
-              duration: 1.75,
-              ease: "easeOut",
+              duration: b.duration,
+              ease: [0.16, 1, 0.3, 1], // Custom easing for smoother feel
             }}
           />
         );
@@ -100,7 +106,7 @@ const BubblyButton = forwardRef<HTMLButtonElement, BubblyButtonProps>(
       const centerX = rect.left + rect.width / 2;
       const centerY = rect.top + rect.height / 2;
 
-      // Create bubble animations
+      // Create multiple bubble bursts for extra satisfaction
       const newBubbles: Bubble[] = [
         {
           id: `bubble-top-${bubbleIdCounter.current++}`,
@@ -116,16 +122,30 @@ const BubblyButton = forwardRef<HTMLButtonElement, BubblyButtonProps>(
           color: bubbleColor,
           isTop: false,
         },
+        {
+          id: `bubble-left-${bubbleIdCounter.current++}`,
+          startX: centerX,
+          startY: centerY,
+          color: bubbleColor,
+          isTop: true,
+        },
+        {
+          id: `bubble-right-${bubbleIdCounter.current++}`,
+          startX: centerX,
+          startY: centerY,
+          color: bubbleColor,
+          isTop: false,
+        },
       ];
 
       setBubbles((prev) => [...prev, ...newBubbles]);
 
-      // Remove bubbles after animation completes
+      // Remove bubbles after animation completes (longer to account for varied durations)
       setTimeout(() => {
         setBubbles((prev) =>
           prev.filter((b) => !newBubbles.find((nb) => nb.id === b.id))
         );
-      }, 800);
+      }, 1500);
 
       // Trigger glow effect for 1 second
       setIsGlowing(true);
@@ -174,9 +194,10 @@ const BubblyButton = forwardRef<HTMLButtonElement, BubblyButtonProps>(
             {
               "--bubble-color": bubbleColor,
               boxShadow: isGlowing 
-                ? `0 0 15px ${bubbleColor}80, 0 0 30px ${bubbleColor}40` 
+                ? `0 0 20px ${bubbleColor}99, 0 0 40px ${bubbleColor}66, 0 0 60px ${bubbleColor}33` 
                 : undefined,
-              transition: "box-shadow 0.1s ease-in-out",
+              transition: "box-shadow 0.15s ease-out",
+              filter: isGlowing ? "brightness(1.2)" : undefined,
             } as React.CSSProperties
           }
           {...props}

@@ -6,13 +6,18 @@ import { motion } from "framer-motion";
 // Shared Bubble Animation Component
 // ============================================================
 function BubbleSet({ x, y, color }: { x: number; y: number; color: string }) {
-  // Create varied colors for dust/debris theme
+  // Create varied colors for dust/debris theme with more vibrant variations
   const colors = [
     "#8b7355", // brown
     "#a0826d", // lighter brown
     "#6b5d51", // darker brown
     "#d4c5b9", // dust/beige
     "#9c8677", // medium brown
+    "#c9a86a", // golden dust
+    "#7a6652", // rich earth
+    "#e6d5c3", // light sand
+    "#b89968", // warm tan
+    "#8a7355", // deep brown
   ];
   
   const bubbles = Array.from({ length: 9 }).map(() => ({
