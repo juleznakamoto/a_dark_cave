@@ -332,7 +332,7 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildPrimeFoundry",
     label: "Prime Foundry",
     description: "Advanced foundry with improved steel production",
-    tooltipEffects: ["Unlocks Steel Forgers", "+1 Steel (Steel Forger)"],
+    tooltipEffects: ["Unlocks Steel Forgers", "Steel Forger: +1 Steel"],
     building: true,
     show_when: {
       1: {
@@ -366,7 +366,7 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildMasterworkFoundry",
     label: "Masterwork Foundry",
     description: "Masterwork foundry with superior steel production",
-    tooltipEffects: ["Unlocks Steel Forgers", "+2 Steel (Steel Forger)"],
+    tooltipEffects: ["Unlocks Steel Forgers", "Steel Forger: +2 Steel"],
     building: true,
     show_when: {
       1: {
@@ -400,14 +400,12 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildGreatCabin",
     label: "Great Cabin",
     description: "Expanded hunting lodge increasing hunter output",
-    tooltipEffects: (state: GameState) => {
-      return [
-        "Unlocks Hunters",
-        "+5 Food (Hunter)",
-        `+1 Fur (Hunter)`,
-        `+1 Bones (Hunter)`,
-      ];
-    },
+    tooltipEffects: [
+      "Unlocks Hunters",
+      "Hunter: +5 Food",
+      `Hunter: +1 Fur`,
+      `Hunter: +1 Bones`,
+    ],
     building: true,
     show_when: {
       1: {
@@ -442,7 +440,7 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildTimberMill",
     label: "Timber Mill",
     description: "Mill helping processes wood more efficiently",
-    tooltipEffects: ["+5 Wood (Gatherer)"],
+    tooltipEffects: ["Gatherer: +5 Wood"],
     building: true,
     show_when: {
       1: {
@@ -475,7 +473,7 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildQuarry",
     label: "Quarry",
     description: "Stone quarry increasing gatherer stone output",
-    tooltipEffects: ["+5 Stone (Gatherer)"],
+    tooltipEffects: ["Gatherer: +5 Stone"],
     building: true,
     show_when: {
       1: {
@@ -568,7 +566,8 @@ export const villageBuildActions: Record<string, Action> = {
   buildInkwardenAcademy: {
     id: "buildInkwardenAcademy",
     label: "Inkwarden Academy",
-    description: "Grand academy of scholars providing supreme knowledge and resource tracking",
+    description:
+      "Grand academy of scholars providing supreme knowledge and resource tracking",
     tooltipEffects: ["+10 Knowledge", "Greatly improved resource tracking"],
     building: true,
     show_when: {
@@ -628,7 +627,7 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildMasterTannery",
     label: "Master Tannery",
     description: "Advanced tannery improving leather production",
-    tooltipEffects: ["Unlocks Tanners", "+1 Leather (Tanner)"],
+    tooltipEffects: ["Unlocks Tanners", "Tanner: +1 Leather"],
     building: true,
     show_when: {
       1: {
