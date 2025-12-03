@@ -126,48 +126,44 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
                 return { size, angle, distance, color, duration };
               });
 
-              return (
-                <React.Fragment key={bubble.id}>
-                  {particleBubbles.map((b, index) => {
-                    const endX = Math.cos(b.angle) * b.distance;
-                    const endY = Math.sin(b.angle) * b.distance;
+              return particleBubbles.map((b, index) => {
+                const endX = Math.cos(b.angle) * b.distance;
+                const endY = Math.sin(b.angle) * b.distance;
 
-                    return (
-                      <motion.div
-                        key={`${bubble.id}-${index}`}
-                        className="absolute rounded-full"
-                        style={{
-                          width: `${b.size}px`,
-                          height: `${b.size}px`,
-                          backgroundColor: b.color,
-                          left: bubble.x,
-                          top: bubble.y,
-                          boxShadow: `0 0 ${b.size * 0.8}px ${b.color}aa, 0 0 ${b.size * 1.5}px ${b.color}55`,
-                        }}
-                        initial={{
-                          opacity: 0.8,
-                          scale: 1,
-                          x: 0,
-                          y: 0,
-                        }}
-                        animate={{
-                          opacity: 0,
-                          scale: 0.1,
-                          x: endX,
-                          y: endY,
-                        }}
-                        exit={{
-                          opacity: 0,
-                        }}
-                        transition={{
-                          duration: b.duration,
-                          ease: [0.16, 1, 0.3, 1],
-                        }}
-                      />
-                    );
-                  })}
-                </React.Fragment>
-              );
+                return (
+                  <motion.div
+                    key={`${bubble.id}-${index}`}
+                    className="absolute rounded-full"
+                    style={{
+                      width: `${b.size}px`,
+                      height: `${b.size}px`,
+                      backgroundColor: b.color,
+                      left: bubble.x,
+                      top: bubble.y,
+                      boxShadow: `0 0 ${b.size * 0.8}px ${b.color}aa, 0 0 ${b.size * 1.5}px ${b.color}55`,
+                    }}
+                    initial={{
+                      opacity: 0.8,
+                      scale: 1,
+                      x: 0,
+                      y: 0,
+                    }}
+                    animate={{
+                      opacity: 0,
+                      scale: 0.1,
+                      x: endX,
+                      y: endY,
+                    }}
+                    exit={{
+                      opacity: 0,
+                    }}
+                    transition={{
+                      duration: b.duration,
+                      ease: [0.16, 1, 0.3, 1],
+                    }}
+                  />
+                );
+              });
             })}
           </AnimatePresence>
         </div>
