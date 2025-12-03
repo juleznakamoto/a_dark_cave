@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { BubblyButton } from "@/components/ui/bubbly-button";
 
@@ -45,7 +46,7 @@ export default function ButtonTest() {
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-8 p-8">
       <h1 className="text-2xl font-bold text-foreground mb-4">
-        Button Animation Test - BubblyButton Component
+        Button Animation Test - State Hoisting Pattern
       </h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl w-full">
@@ -69,9 +70,10 @@ export default function ButtonTest() {
       </div>
 
       <div className="mt-8 text-xs text-muted-foreground max-w-2xl text-center space-y-2">
-        <p className="font-semibold">BubblyButton Component</p>
+        <p className="font-semibold">State Hoisting Pattern</p>
         <p>
-          Using the BubblyButton component with gray-toned bubble effects and glow animation.
+          Parent component manages visibility state, child button only handles click effects.
+          Animations persist even when button is removed from DOM.
         </p>
       </div>
     </div>
