@@ -9,23 +9,42 @@ export const villageBuildActions: Record<string, Action> = {
     description: "Repair a destroyed wooden hut",
     tooltipEffects: ["Repair destroyed hut"],
     building: true,
-    show_when: (state: GameState) => {
-      const currentLevel = state.buildings.woodenHut || 0;
-      return state.flags.woodenHutDamaged === true && currentLevel > 0;
+    show_when: {
+      1: {
+        "flags.woodenHutDamaged": true,
+      },
     },
-    cost: (state: GameState) => {
-      const currentLevel = state.buildings.woodenHut || 1;
-      const buildAction = villageBuildActions.buildWoodenHut;
-      const buildCost = buildAction.cost?.[currentLevel];
-      
-      if (!buildCost) return {};
-      
-      // Return 50% of the current level's build cost
-      const repairCost: Record<string, number> = {};
-      for (const [key, value] of Object.entries(buildCost)) {
-        repairCost[key] = Math.floor((value as number) * 0.5);
-      }
-      return repairCost;
+    cost: {
+      1: {
+        "resources.wood": 50, // 50% of level 1 cost (100)
+      },
+      2: {
+        "resources.wood": 125, // 50% of level 2 cost (250)
+      },
+      3: {
+        "resources.wood": 250, // 50% of level 3 cost (500)
+      },
+      4: {
+        "resources.wood": 375, // 50% of level 4 cost (750)
+      },
+      5: {
+        "resources.wood": 500, // 50% of level 5 cost (1000)
+      },
+      6: {
+        "resources.wood": 750, // 50% of level 6 cost (1500)
+      },
+      7: {
+        "resources.wood": 1000, // 50% of level 7 cost (2000)
+      },
+      8: {
+        "resources.wood": 1500, // 50% of level 8 cost (3000)
+      },
+      9: {
+        "resources.wood": 2000, // 50% of level 9 cost (4000)
+      },
+      10: {
+        "resources.wood": 2500, // 50% of level 10 cost (5000)
+      },
     },
     effects: {
       1: {
@@ -74,43 +93,49 @@ export const villageBuildActions: Record<string, Action> = {
         : ["+2 Max Population"];
     },
     building: true,
-    show_when: (state: GameState) => {
-      // Block building if a hut is damaged
-      if (state.flags.woodenHutDamaged) {
-        return false;
-      }
-      
-      const currentLevel = (state.buildings.woodenHut || 0) + 1;
-      
-      // Level-specific requirements
-      if (currentLevel === 1) {
-        return state.flags.villageUnlocked === true;
-      }
-      if (currentLevel === 2) {
-        return state.buildings.cabin >= 1;
-      }
-      if (currentLevel === 3) {
-        return state.buildings.blacksmith >= 1;
-      }
-      if (currentLevel === 4) {
-        return state.buildings.shallowPit >= 1;
-      }
-      if (currentLevel >= 5 && currentLevel <= 7) {
-        return state.buildings.foundry >= 1;
-      }
-      if (currentLevel === 8) {
-        return state.buildings.altar >= 1;
-      }
-      if (currentLevel === 9) {
-        return state.buildings.greatCabin >= 1 && 
-               state.buildings.timberMill >= 1 && 
-               state.buildings.quarry >= 1;
-      }
-      if (currentLevel === 10) {
-        return state.buildings.woodenHut >= 9;
-      }
-      
-      return false;
+    show_when: {
+      1: {
+        "flags.villageUnlocked": true,
+        "flags.woodenHutDamaged": false,
+      },
+      2: {
+        "buildings.cabin": 1,
+        "flags.woodenHutDamaged": false,
+      },
+      3: {
+        "buildings.blacksmith": 1,
+        "flags.woodenHutDamaged": false,
+      },
+      4: {
+        "buildings.shallowPit": 1,
+        "flags.woodenHutDamaged": false,
+      },
+      5: {
+        "buildings.foundry": 1,
+        "flags.woodenHutDamaged": false,
+      },
+      6: {
+        "buildings.foundry": 1,
+        "flags.woodenHutDamaged": false,
+      },
+      7: {
+        "buildings.foundry": 1,
+        "flags.woodenHutDamaged": false,
+      },
+      8: {
+        "buildings.altar": 1,
+        "flags.woodenHutDamaged": false,
+      },
+      9: {
+        "buildings.greatCabin": 1,
+        "buildings.timberMill": 1,
+        "buildings.quarry": 1,
+        "flags.woodenHutDamaged": false,
+      },
+      10: {
+        "buildings.woodenHut": 9,
+        "flags.woodenHutDamaged": false,
+      },
     },
     cost: {
       1: {
@@ -1612,16 +1637,12 @@ export function handleRepairWoodenHut(
   state: GameState,
   result: ActionResult,
 ): ActionResult {
-  const currentLevel = state.buildings.woodenHut || 1;
+  const level = state.buildings.woodenHut;
   const action = villageBuildActions.repairWoodenHut;
-  
-  // Get dynamic cost based on current level
-  const actionCosts = typeof action.cost === 'function' 
-    ? action.cost(state) 
-    : action.cost?.[currentLevel];
+  const actionCosts = action?.cost?.[level];
 
-  if (!actionCosts || Object.keys(actionCosts).length === 0) {
-    logger.warn(`No costs found for repairWoodenHut at level ${currentLevel}`);
+  if (!actionCosts) {
+    logger.warn(`No costs found for repairWoodenHut at level ${level}`);
     return result;
   }
 
