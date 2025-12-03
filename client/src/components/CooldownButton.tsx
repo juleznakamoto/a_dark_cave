@@ -9,29 +9,24 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils"; // Assuming cn is imported from a utils file
-import { CircularProgress } from "@/components/ui/circular-progress"; // Assuming CircularProgress is imported
 
-// Define ButtonProps from the Button component or a shared types file
-// For demonstration, let's assume ButtonProps is defined elsewhere or we can infer it.
-// If ButtonProps is not directly available, we might need to define a similar structure.
-// Assuming ButtonProps is something like:
-interface ButtonProps {
-  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  className?: string;
-  variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link";
-  size?: "default" | "sm" | "xs" | "lg" | "icon";
-  disabled?: boolean;
-  children?: React.ReactNode;
-  "data-testid"?: string;
-  button_id?: string; // This might be redundant if actionId is used consistently
-}
-
-interface CooldownButtonProps extends ButtonProps {
+interface CooldownButtonProps {
+  children: React.ReactNode;
+  onClick: () => void;
   cooldownMs: number;
-  button_id?: string; // Made optional as actionId is used
+  disabled?: boolean;
+  className?: string;
+  variant?:
+    | "default"
+    | "destructive"
+    | "outline"
+    | "secondary"
+    | "ghost"
+    | "link";
+  size?: "default" | "sm" | "xs" | "lg" | "icon";
+  "data-testid"?: string;
+  button_id?: string;
   tooltip?: React.ReactNode;
-  ButtonComponent?: React.ComponentType<any>;
-  bubbleColor?: string;
   onMouseEnter?: (e?: React.MouseEvent<HTMLDivElement>) => void;
   onMouseLeave?: (e?: React.MouseEvent<HTMLDivElement>) => void;
 }
@@ -48,8 +43,6 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       size = "default",
       "data-testid": testId,
       tooltip,
-      ButtonComponent = Button,
-      bubbleColor,
       ...props
     },
     ref
@@ -107,36 +100,29 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
 
   const isButtonDisabled = disabled || isCoolingDown;
 
-  const buttonId = props.button_id || testId || `button-${Math.random()}`; // Use provided button_id, then testId, then generate
-
-  // Calculate progress for CircularProgress
-  const progress =
-    isCoolingDown && initialCooldown > 0
-      ? 100 - (currentCooldown / initialCooldown) * 100
-      : 0;
+  const buttonId = testId || `button-${Math.random()}`;
 
   const button = (
-    <ButtonComponent
+    <Button
       ref={ref}
       onClick={handleClick}
       disabled={isButtonDisabled}
       variant={variant}
       size={size}
       className={`relative overflow-hidden transition-all duration-200 select-none ${
-        isButtonDisabled ? "opacity-60 cursor-not-allowed" : ""
+        isCoolingDown ? "opacity-60 cursor-not-allowed" : ""
       } ${className}`}
       data-testid={testId}
-      button_id={props.button_id || actionId} // Pass button_id or actionId
-      bubbleColor={bubbleColor}
+      button_id={props.button_id || actionId}
       {...props}
     >
       {/* Button content */}
-      <span className="relative z-10">{children}</span>
+      <span className="relative">{children}</span>
 
       {/* Cooldown progress overlay */}
       {isCoolingDown && (
         <div
-          className="absolute inset-0 bg-white/15 z-0" // z-index for overlay
+          className="absolute inset-0 bg-white/15"
           style={{
             width: `${overlayWidth}%`,
             left: 0,
@@ -144,7 +130,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
           }}
         />
       )}
-    </ButtonComponent>
+    </Button>
   );
 
   // If no tooltip, return button without tooltip

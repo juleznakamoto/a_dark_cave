@@ -15,7 +15,6 @@ import {
 } from "@/game/rules/tooltips";
 import CooldownButton from "@/components/CooldownButton";
 import { Button } from "@/components/ui/button";
-import { BubblyButton } from "@/components/ui/bubbly-button";
 import {
   getPopulationProduction,
   getTotalPopulationEffects,
@@ -254,8 +253,6 @@ export default function VillagePanel() {
           }
         }}
         style={{ pointerEvents: "auto" }}
-        ButtonComponent={BubblyButton}
-        bubbleColor="#dc143c"
       >
         {displayLabel}
       </CooldownButton>
