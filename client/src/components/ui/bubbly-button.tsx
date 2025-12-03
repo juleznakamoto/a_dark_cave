@@ -131,12 +131,10 @@ const BubblyButton = forwardRef<HTMLButtonElement, BubblyButtonProps>(
       }
     };
 
-    // Cleanup bubbles on unmount
-    useEffect(() => {
-      return () => {
-        setBubbles([]);
-      };
-    }, []);
+    // Note: We don't clean up bubbles on unmount because:
+    // 1. They're rendered via portal to document.body (not in this component's tree)
+    // 2. They have their own timeout-based cleanup that removes them after animation
+    // 3. This allows animations to complete even when the button is removed from DOM
 
     return (
       <>
