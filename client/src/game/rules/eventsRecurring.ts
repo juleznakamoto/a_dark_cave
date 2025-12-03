@@ -124,6 +124,36 @@ export const recurringEvents: Record<string, GameEvent> = {
     },
   },
 
+  silverSackDiscovery: {
+    id: "silverSackDiscovery",
+    condition: (state: GameState) => {
+      const woodGatherCount = state.stats?.woodGathered || 0;
+      const hasTriggered = state.story?.seen?.silverSackFound || false;
+      return woodGatherCount >= 10 && !hasTriggered;
+    },
+    triggerType: "resource",
+    timeProbability: 1,
+    message: "You find a small sack containing silver close to the cave's entrance.",
+    triggered: false,
+    priority: 3,
+    repeatable: false,
+    effect: (state: GameState) => {
+      return {
+        resources: {
+          ...state.resources,
+          silver: state.resources.silver + 50,
+        },
+        story: {
+          ...state.story,
+          seen: {
+            ...state.story.seen,
+            silverSackFound: true,
+          },
+        },
+      };
+    },
+  },
+
   steelGift: {
     id: "steelGift",
     condition: (state: GameState) =>
