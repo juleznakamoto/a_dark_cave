@@ -181,6 +181,9 @@ export default function CavePanel() {
       } else if (showCost) {
         // Other actions with costs
         const costBreakdown = getActionCostBreakdown(actionId, state);
+        const bonuses = state.activeEffects?.actionBonuses?.[actionId];
+        const cooldownReduction = bonuses?.cooldownReduction || 0;
+        
         tooltipContent = (
           <div className="text-xs whitespace-nowrap">
             {costBreakdown.map((costItem, index) => (
@@ -188,6 +191,9 @@ export default function CavePanel() {
                 {costItem.text}
               </div>
             ))}
+            {cooldownReduction > 0 && (
+              <div>-{cooldownReduction}s Cooldown</div>
+            )}
           </div>
         );
       }
