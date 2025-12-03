@@ -82,3 +82,5 @@ Preferred communication style: Simple, everyday language.
 
 ### Dev and Prod Environment
 - There is a dev and a prod environment. Secrets end with either _DEV or _PROD.
+
+### Coding
