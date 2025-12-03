@@ -95,7 +95,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
 
           // If 2+ villagers die and there's a hut, 25% chance to destroy it
           if (villagerDeaths >= 2 && state.buildings.woodenHut > 0) {
-            if (Math.random() < 0.25 - traps * 0.05 + state.CM * 0.1) {
+            if (Math.random() < state.CM * 0.25 - traps * 0.05) {
               hutDestroyed = true;
             }
           }
@@ -139,12 +139,6 @@ export const villageAttackEvents: Record<string, GameEvent> = {
                   woodenHut: Math.max(0, state.buildings.woodenHut - 1),
                 }
               : state.buildings,
-            flags: hutDestroyed
-              ? {
-                  ...state.flags,
-                  woodenHutDamaged: true,
-                }
-              : state.flags,
             story: {
               ...state.story,
               seen: {

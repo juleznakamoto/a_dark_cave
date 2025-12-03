@@ -199,16 +199,14 @@ export const recurringEvents: Record<string, GameEvent> = {
     id: "fireStorm",
     condition: (state: GameState) => {
       const fireStormCount = (state.story.seen.fireStormCount as number) || 0;
-      const maxOccurrences = state.cruelMode ? 8 : 1;
-
-      return (
-        state.buildings.woodenHut >= 6 &&
-        state.buildings.stoneHut <= 15 &&
-        fireStormCount < maxOccurrences
-      );
+      const maxOccurrences = state.cruelMode ? 3 : 0;
+      
+      return state.buildings.woodenHut >= 4 && 
+             state.buildings.stoneHut <= 5 && 
+             fireStormCount < maxOccurrences;
     },
     triggerType: "resource",
-    timeProbability: 0.099999,
+    timeProbability: 120,
     repeatable: true,
     message:
       "A fire sweeps through the village in the night, destroying one wooden hut and its occupants.",
@@ -217,7 +215,7 @@ export const recurringEvents: Record<string, GameEvent> = {
     effect: (state: GameState) => {
       // Use the centralized killVillagers function
       const deathResult = killVillagers(state, 2);
-
+      
       const currentCount = (state.story.seen.fireStormCount as number) || 0;
 
       return {
@@ -225,10 +223,6 @@ export const recurringEvents: Record<string, GameEvent> = {
         buildings: {
           ...state.buildings,
           woodenHut: Math.max(0, state.buildings.woodenHut - 1),
-        },
-        flags: {
-          ...state.flags,
-          woodenHutDamaged: true,
         },
         story: {
           ...state.story,

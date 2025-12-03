@@ -6,6 +6,7 @@ import { killVillagers, buildGameState } from "@/game/stateHelpers";
 import { audioManager } from "@/lib/audio";
 import {
   getTotalMadness,
+  getAllActionBonuses,
 } from "./rules/effectsCalculation";
 import { GAME_CONSTANTS } from "./constants";
 import { logger } from "@/lib/logger";
@@ -16,7 +17,7 @@ let lastFrameTime = 0;
 const TICK_INTERVAL = GAME_CONSTANTS.TICK_INTERVAL;
 const AUTO_SAVE_INTERVAL = 15000; // Auto-save every 15 seconds
 const PRODUCTION_INTERVAL = 15000; // All production and checks happen every 15 seconds
-const SHOP_NOTIFICATION_INITIAL_DELAY = 60 * 60 * 1000; // 60 minutes in milliseconds
+const SHOP_NOTIFICATION_INITIAL_DELAY = 30 * 60 * 1000; // 30 minutes in milliseconds
 const SHOP_NOTIFICATION_REPEAT_INTERVAL = 60 * 60 * 1000; // 60 minutes in milliseconds
 const AUTH_NOTIFICATION_INITIAL_DELAY = 15 * 60 * 1000; // 15 minutes in milliseconds
 const AUTH_NOTIFICATION_REPEAT_INTERVAL = 60 * 60 * 1000; // 60 minutes in milliseconds

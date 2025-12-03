@@ -325,8 +325,6 @@ export function executeGameAction(
       return handleMineAdamant(state, result);
 
     // Village Build Actions
-    case "repairWoodenHut":
-      return handleRepairWoodenHut(state, result);
     case "buildWoodenHut":
       return handleBuildWoodenHut(state, result);
     case "buildCabin":

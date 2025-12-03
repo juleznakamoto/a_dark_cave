@@ -383,7 +383,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     timeProbability: 35,
     title: "The Mad Beduine",
     message:
-      "In the evening, a robed man approaches from the wilderness. His eyes burn with madness as he mutters in a foreign tongue, gestures sharp and unsettling. The villagers grow uneasy. Do you allow this Beduine to stay the night?",
+      "In the evening, a robed figure approaches from the wilderness. His eyes burn with madness as he mutters in a foreign tongue, gestures sharp and unsettling. The villagers grow uneasy. Do you allow this Beduine to stay the night?",
     triggered: false,
     priority: 3,
     repeatable: false,
@@ -411,8 +411,10 @@ export const choiceEvents: Record<string, GameEvent> = {
             Math.random() * state.buildings.woodenHut +
               2 -
               traps * 2 +
-              state.CM * 4,
+              state.CM * 2,
           );
+          const hutDestruction = state.CM * 1;
+
           const deathResult = killVillagers(state, villagerDeaths);
 
           return {
@@ -421,14 +423,10 @@ export const choiceEvents: Record<string, GameEvent> = {
               ...state.buildings,
               woodenHut: Math.max(
                 0,
-                state.buildings.woodenHut - 1,
+                state.buildings.woodenHut - hutDestruction,
               ),
             },
-            flags: {
-              ...state.flags,
-              woodenHutDamaged: true,
-            },
-            _logMessage: `You refuse the stranger entry. He leaves screaming curses in his alien tongue, echoing through the night. Before dawn, a barbarian tribe attacks as if summoned by his cries, killing ${villagerDeaths} villagers and destroying one wooden hut before vanishing into the wilds.`,
+            _logMessage: `You refuse the stranger entry. He leaves screaming curses in his alien tongue, echoing through the night. Before dawn, a barbarian tribe attacks as if summoned by his cries, killing ${villagerDeaths} villagers ${hutDestruction > 0 ? " and destroying one wooden hut " : ""}before vanishing into the wilds.`,
           };
         },
       },

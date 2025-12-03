@@ -3,65 +3,6 @@ import { ActionResult } from "../actions";
 import { logger } from "@/lib/logger";
 
 export const villageBuildActions: Record<string, Action> = {
-  repairWoodenHut: {
-    id: "repairWoodenHut",
-    label: "Wooden Hut",
-    description: "Repair a destroyed wooden hut",
-    tooltipEffects: ["Repair destroyed hut"],
-    building: true,
-    show_when: (state: GameState) => {
-      const currentLevel = state.buildings.woodenHut || 0;
-      return state.flags.woodenHutDamaged === true && currentLevel > 0;
-    },
-    cost: (state: GameState) => {
-      const currentLevel = state.buildings.woodenHut || 1;
-      const buildAction = villageBuildActions.buildWoodenHut;
-      const buildCost = buildAction.cost?.[currentLevel];
-      
-      if (!buildCost) return {};
-      
-      // Return 50% of the current level's build cost
-      const repairCost: Record<string, number> = {};
-      for (const [key, value] of Object.entries(buildCost)) {
-        repairCost[key] = Math.floor((value as number) * 0.5);
-      }
-      return repairCost;
-    },
-    effects: {
-      1: {
-        "flags.woodenHutDamaged": false,
-      },
-      2: {
-        "flags.woodenHutDamaged": false,
-      },
-      3: {
-        "flags.woodenHutDamaged": false,
-      },
-      4: {
-        "flags.woodenHutDamaged": false,
-      },
-      5: {
-        "flags.woodenHutDamaged": false,
-      },
-      6: {
-        "flags.woodenHutDamaged": false,
-      },
-      7: {
-        "flags.woodenHutDamaged": false,
-      },
-      8: {
-        "flags.woodenHutDamaged": false,
-      },
-      9: {
-        "flags.woodenHutDamaged": false,
-      },
-      10: {
-        "flags.woodenHutDamaged": false,
-      },
-    },
-    cooldown: 5,
-  },
-
   buildWoodenHut: {
     id: "buildWoodenHut",
     label: "Wooden Hut",
@@ -74,43 +15,39 @@ export const villageBuildActions: Record<string, Action> = {
         : ["+2 Max Population"];
     },
     building: true,
-    show_when: (state: GameState) => {
-      // Block building if a hut is damaged
-      if (state.flags.woodenHutDamaged) {
-        return false;
-      }
-      
-      const currentLevel = (state.buildings.woodenHut || 0) + 1;
-      
-      // Level-specific requirements
-      if (currentLevel === 1) {
-        return state.flags.villageUnlocked === true;
-      }
-      if (currentLevel === 2) {
-        return state.buildings.cabin >= 1;
-      }
-      if (currentLevel === 3) {
-        return state.buildings.blacksmith >= 1;
-      }
-      if (currentLevel === 4) {
-        return state.buildings.shallowPit >= 1;
-      }
-      if (currentLevel >= 5 && currentLevel <= 7) {
-        return state.buildings.foundry >= 1;
-      }
-      if (currentLevel === 8) {
-        return state.buildings.altar >= 1;
-      }
-      if (currentLevel === 9) {
-        return state.buildings.greatCabin >= 1 && 
-               state.buildings.timberMill >= 1 && 
-               state.buildings.quarry >= 1;
-      }
-      if (currentLevel === 10) {
-        return state.buildings.woodenHut >= 9;
-      }
-      
-      return false;
+    show_when: {
+      1: {
+        "flags.villageUnlocked": true,
+      },
+      2: {
+        "buildings.cabin": 1,
+      },
+      3: {
+        "buildings.blacksmith": 1,
+      },
+      4: {
+        "buildings.shallowPit": 1,
+      },
+      5: {
+        "buildings.foundry": 1,
+      },
+      6: {
+        "buildings.foundry": 1,
+      },
+      7: {
+        "buildings.foundry": 1,
+      },
+      8: {
+        "buildings.altar": 1,
+      },
+      9: {
+        "buildings.greatCabin": 1,
+        "buildings.timberMill": 1,
+        "buildings.quarry": 1,
+      },
+      10: {
+        "buildings.woodenHut": 9,
+      },
     },
     cost: {
       1: {
@@ -1604,50 +1541,6 @@ function handleBuildingConstruction(
       result.stateUpdates.stats[stat] = newStatValue;
     }
   }
-
-  return result;
-}
-
-export function handleRepairWoodenHut(
-  state: GameState,
-  result: ActionResult,
-): ActionResult {
-  const currentLevel = state.buildings.woodenHut || 1;
-  const action = villageBuildActions.repairWoodenHut;
-  
-  // Get dynamic cost based on current level
-  const actionCosts = typeof action.cost === 'function' 
-    ? action.cost(state) 
-    : action.cost?.[currentLevel];
-
-  if (!actionCosts || Object.keys(actionCosts).length === 0) {
-    logger.warn(`No costs found for repairWoodenHut at level ${currentLevel}`);
-    return result;
-  }
-
-  // Apply resource costs
-  const newResources = { ...state.resources };
-  for (const [path, cost] of Object.entries(actionCosts)) {
-    if (path.startsWith("resources.")) {
-      const resource = path.split(".")[1] as keyof typeof newResources;
-      newResources[resource] -= cost;
-    }
-  }
-  result.stateUpdates.resources = newResources;
-
-  // Clear the damaged flag
-  result.stateUpdates.flags = {
-    ...state.flags,
-    woodenHutDamaged: false,
-  };
-
-  // Add completion message
-  result.logEntries!.push({
-    id: `wooden-hut-repaired-${Date.now()}`,
-    message: "The damaged wooden hut has been repaired and is ready for use again.",
-    timestamp: Date.now(),
-    type: "system",
-  });
 
   return result;
 }
