@@ -380,7 +380,7 @@ export const choiceEvents: Record<string, GameEvent> = {
       state.current_population > 12 &&
       !state.relics.unnamed_book,
     triggerType: "resource",
-    timeProbability: 35,
+    timeProbability: 0.035,
     title: "The Mad Beduine",
     message:
       "In the evening, a robed man approaches from the wilderness. His eyes burn with madness as he mutters in a foreign tongue, gestures sharp and unsettling. The villagers grow uneasy. Do you allow this Beduine to stay the night?",
@@ -413,8 +413,6 @@ export const choiceEvents: Record<string, GameEvent> = {
               traps * 2 +
               state.CM * 4,
           );
-          const hutDestruction = 1 + state.CM * 1;
-
           const deathResult = killVillagers(state, villagerDeaths);
 
           return {
@@ -423,16 +421,14 @@ export const choiceEvents: Record<string, GameEvent> = {
               ...state.buildings,
               woodenHut: Math.max(
                 0,
-                state.buildings.woodenHut - hutDestruction,
+                state.buildings.woodenHut - 1,
               ),
             },
-            flags: hutDestruction > 0
-              ? {
-                  ...state.flags,
-                  woodenHutDamaged: true,
-                }
-              : state.flags,
-            _logMessage: `You refuse the stranger entry. He leaves screaming curses in his alien tongue, echoing through the night. Before dawn, a barbarian tribe attacks as if summoned by his cries, killing ${villagerDeaths} villagers and destroying ${hutDestruction} wooden hut${hutDestruction > 1 ? "s" : ""} before vanishing into the wilds.`,
+            flags: {
+              ...state.flags,
+              woodenHutDamaged: true,
+            },
+            _logMessage: `You refuse the stranger entry. He leaves screaming curses in his alien tongue, echoing through the night. Before dawn, a barbarian tribe attacks as if summoned by his cries, killing ${villagerDeaths} villagers and destroying one wooden hut before vanishing into the wilds.`,
           };
         },
       },
