@@ -40,10 +40,18 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
     const bubbleIdCounter = useRef(0);
 
     const triggerAnimation = (x: number, y: number) => {
+      // Always use center of button for animation
+      const button = buttonRef.current;
+      if (!button) return;
+
+      const rect = button.getBoundingClientRect();
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+
       const newBubble: Bubble = {
         id: `bubble-${bubbleIdCounter.current++}`,
-        x,
-        y,
+        x: centerX,
+        y: centerY,
       };
 
       setBubbles((prev) => [...prev, newBubble]);
@@ -51,7 +59,7 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
       // Remove bubble after animation completes (longer to account for varied durations)
       setTimeout(() => {
         setBubbles((prev) => prev.filter((b) => b.id !== newBubble.id));
-      }, 2500);
+      }, 3500);
 
       // Trigger glow effect for 1 second
       setIsGlowing(true);
@@ -70,15 +78,14 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
       if (!button) return;
 
       const rect = button.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
 
-      // Trigger animation locally
-      triggerAnimation(x, y);
+      // Trigger animation locally (always from center)
+      triggerAnimation(0, 0);
 
       // Notify parent if callback provided (for lifted state pattern)
+      // Pass the absolute center position to parent
       if (onAnimationTrigger) {
-        onAnimationTrigger(e.clientX, e.clientY);
+        onAnimationTrigger(rect.left + rect.width / 2, rect.top + rect.height / 2);
       }
 
       // Call original onClick
@@ -104,22 +111,29 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
               : undefined,
             transition: "box-shadow 0.15s ease-out",
             filter: isGlowing ? "brightness(1.2)" : undefined,
-            zIndex: 1,
+            transform: "translateZ(10px)",
+            transformStyle: "preserve-3d",
           } as React.CSSProperties
         }
         {...props}
       >
-        {/* Bubble animations container - behind button */}
-        <div className="absolute inset-0 pointer-events-none overflow-visible" style={{ zIndex: -1 }}>
+        {/* Bubble animations container - behind button using translateZ */}
+        <div 
+          className="absolute inset-0 pointer-events-none overflow-visible" 
+          style={{ 
+            transform: "translateZ(-1px)",
+            transformStyle: "preserve-3d",
+          }}
+        >
           <AnimatePresence>
             {bubbles.map((bubble) => {
               // Generate 100 bubbles
               const particleBubbles = Array.from({ length: 100 }).map(() => {
                 const angle = Math.random() * Math.PI * 2;
-                const distance = 30 + Math.random() * 70;
-                const size = 2 + Math.random() * 20;
+                const distance = 30 + Math.random() * 120;
+                const size = 3 + Math.random() * 25;
                 const color = NEUTRAL_TONES[Math.floor(Math.random() * NEUTRAL_TONES.length)];
-                const duration = 2.0 + Math.random() * 1.0;
+                const duration = 2.5 + Math.random() * 1.2;
 
                 return { size, angle, distance, color, duration };
               });
@@ -141,7 +155,6 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
                           left: bubble.x,
                           top: bubble.y,
                           boxShadow: `0 0 ${b.size * 0.8}px ${b.color}aa, 0 0 ${b.size * 1.5}px ${b.color}55`,
-                          zIndex: -1,
                         }}
                         initial={{
                           opacity: 0.8,
@@ -172,7 +185,7 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
         </div>
 
         {/* Button content */}
-        <span style={{ position: 'relative', zIndex: 2 }}>
+        <span style={{ position: 'relative', transform: "translateZ(1px)" }}>
           {children}
         </span>
       </Button>
@@ -193,8 +206,11 @@ export const BubblyButtonGlobalPortal = ({ bubbles }: { bubbles: Array<{ id: str
               const angle = Math.random() * Math.PI * 2;
               const distance = 30 + Math.random() * 120;
               const size = 3 + Math.random() * 25;
-              const gray = Math.floor(Math.random() * 8);
-              const duration = 0.5 + Math.random() * 1.2;
+              const color = NEUTRAL_TONES[Math.floor(Math.random() * NEUTRAL_TONES.length)];
+              const duration = 2.5 + Math.random() * 1.2;
+              
+              const endX = Math.cos(angle) * distance;
+              const endY = Math.sin(angle) * distance;
 
               return (
                 <motion.div
@@ -203,18 +219,18 @@ export const BubblyButtonGlobalPortal = ({ bubbles }: { bubbles: Array<{ id: str
                   style={{
                     width: `${size}px`,
                     height: `${size}px`,
-                    backgroundColor: NEUTRAL_TONES[gray],
+                    backgroundColor: color,
                     left: bubble.x,
                     top: bubble.y,
                     zIndex: 9998,
-                    boxShadow: `0 0 ${size * 0.8}px ${NEUTRAL_TONES[gray]}aa, 0 0 ${size * 1.5}px ${NEUTRAL_TONES[gray]}55`,
+                    boxShadow: `0 0 ${size * 0.8}px ${color}aa, 0 0 ${size * 1.5}px ${color}55`,
                   }}
-                  initial={{ opacity: 1, scale: 1, x: 0, y: 0 }}
+                  initial={{ opacity: 0.8, scale: 1, x: 0, y: 0 }}
                   animate={{
                     opacity: 0,
                     scale: 0.1,
-                    x: Math.cos(angle) * distance,
-                    y: Math.sin(angle) * distance,
+                    x: endX,
+                    y: endY,
                   }}
                   exit={{ opacity: 0 }}
                   transition={{ duration, ease: [0.16, 1, 0.3, 1] }}
