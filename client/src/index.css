@@ -351,6 +351,31 @@ html, body {
 }
 
 /* Bubbly button animations */
+.bubbly-button {
+  position: relative;
+}
+
+.bubbly-button::before,
+.bubbly-button::after {
+  position: absolute;
+  content: '';
+  display: block;
+  width: 140%;
+  height: 100%;
+  left: -20%;
+  z-index: -1;
+  transition: all 0.5s;
+  background-repeat: no-repeat;
+}
+
+.bubbly-button.animate::before {
+  animation: bubbly-top 0.75s ease-in-out forwards;
+}
+
+.bubbly-button.animate::after {
+  animation: bubbly-bottom 0.75s ease-in-out forwards;
+}
+
 @keyframes bubbly-top {
   0% {
     top: -75%;
@@ -395,12 +420,4 @@ html, body {
     background-position: 0% 90%, 20% 90%, 45% 70%, 60% 110%, 75% 80%, 95% 70%, 110% 10%;
     background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
   }
-}
-
-.animate-bubbly-top {
-  animation: bubbly-top 0.75s ease-in-out forwards;
-}
-
-.animate-bubbly-bottom {
-  animation: bubbly-bottom 0.75s ease-in-out forwards;
 }
