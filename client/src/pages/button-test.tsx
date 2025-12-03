@@ -1,19 +1,6 @@
 
-import { useState, useRef } from "react";
-import { BubblyButton } from "@/components/ui/bubbly-button";
-import { motion, AnimatePresence } from "framer-motion";
-
-// 8 gray tones from light to dark
-const GRAY_TONES = [
-  "#f5f5f5",
-  "#e0e0e0",
-  "#bdbdbd",
-  "#9e9e9e",
-  "#757575",
-  "#616161",
-  "#424242",
-  "#212121",
-];
+import { useState } from "react";
+import { BubblyButton, BubblyButtonGlobalPortal } from "@/components/ui/bubbly-button";
 
 // ============================================================
 // Approach 3: Animation State in Parent (Lifted State)
@@ -21,22 +8,17 @@ const GRAY_TONES = [
 function Approach3_LiftedState() {
   const [show, setShow] = useState(true);
   const [bubbles, setBubbles] = useState<Array<{ id: string; x: number; y: number }>>([]);
-  const buttonRef = useRef<HTMLButtonElement>(null);
 
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const button = buttonRef.current;
-    if (!button) return;
-
-    const x = e.clientX;
-    const y = e.clientY;
+  const handleAnimationTrigger = (x: number, y: number) => {
     const id = `bubble-${Date.now()}`;
-
     setBubbles(prev => [...prev, { id, x, y }]);
 
     setTimeout(() => {
       setBubbles(prev => prev.filter(b => b.id !== id));
     }, 2000);
+  };
 
+  const handleClick = () => {
     setShow(false);
     setTimeout(() => setShow(true), 4000);
   };
@@ -45,7 +27,11 @@ function Approach3_LiftedState() {
     <div className="relative">
       <div className="relative z-10">
         {show && (
-          <BubblyButton ref={buttonRef} variant="outline" onClick={handleClick}>
+          <BubblyButton 
+            variant="outline" 
+            onClick={handleClick}
+            onAnimationTrigger={handleAnimationTrigger}
+          >
             Disappearing Button
           </BubblyButton>
         )}
@@ -56,46 +42,7 @@ function Approach3_LiftedState() {
         )}
       </div>
 
-      <div className="fixed inset-0 pointer-events-none z-[9998]">
-        <AnimatePresence>
-          {bubbles.map(bubble => (
-            <div key={bubble.id}>
-              {Array.from({ length: 100 }).map((_, i) => {
-                const angle = Math.random() * Math.PI * 2;
-                const distance = 30 + Math.random() * 120;
-                const size = 3 + Math.random() * 25;
-                const gray = Math.floor(Math.random() * 8);
-                const duration = 0.5 + Math.random() * 1.2;
-
-                return (
-                  <motion.div
-                    key={`${bubble.id}-${i}`}
-                    className="fixed rounded-full"
-                    style={{
-                      width: `${size}px`,
-                      height: `${size}px`,
-                      backgroundColor: GRAY_TONES[gray],
-                      left: bubble.x,
-                      top: bubble.y,
-                      zIndex: 9998,
-                      boxShadow: `0 0 ${size * 0.8}px ${GRAY_TONES[gray]}aa, 0 0 ${size * 1.5}px ${GRAY_TONES[gray]}55`,
-                    }}
-                    initial={{ opacity: 1, scale: 1, x: 0, y: 0 }}
-                    animate={{
-                      opacity: 0,
-                      scale: 0.1,
-                      x: Math.cos(angle) * distance,
-                      y: Math.sin(angle) * distance,
-                    }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration, ease: [0.16, 1, 0.3, 1] }}
-                  />
-                );
-              })}
-            </div>
-          ))}
-        </AnimatePresence>
-      </div>
+      <BubblyButtonGlobalPortal bubbles={bubbles} />
     </div>
   );
 }
