@@ -321,6 +321,19 @@ html, body {
   animation: log-pulse var(--effect-duration, 3s) ease-in-out;
 }
 
+@keyframes log-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.log-fade-out {
+  animation: log-fade-out 1s ease-out forwards;
+}
+
 /* Notification dot pulsating animation */
 @keyframes notification-pulse {
   0% {
