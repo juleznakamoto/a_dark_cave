@@ -181,7 +181,7 @@ export const caveExploreActions: Record<string, Action> = {
           "While chopping wood, you find an old trinket with glowing amber liquid inside. After some hesitation, you drink it. It burns as it goes down, but you feel stronger than before.",
       },
     },
-    cooldown: 5,
+    cooldown: 4,
     upgrade_key: "chopWood",
   },
 

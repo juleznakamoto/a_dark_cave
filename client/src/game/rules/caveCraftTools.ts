@@ -18,7 +18,7 @@ export const caveCraftTools: Record<string, Action> = {
       "story.seen.actionCraftTorch": true,
     },
     unlocks: ["exploreDeeper"],
-    cooldown: 2.5,
+    cooldown: 2,
   },
 
   craftTorches: {

@@ -352,6 +352,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         hunt: {
           resourceMultiplier: 1.25,
+          cooldownReduction: 0.5,
         },
       },
       generalBonuses: {
@@ -368,6 +369,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         hunt: {
           resourceMultiplier: 1.5,
+          cooldownReduction: 1.0,
         },
       },
       generalBonuses: {
@@ -384,6 +386,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         hunt: {
           resourceMultiplier: 1.75,
+          cooldownReduction: 1.5,
         },
       },
       generalBonuses: {
@@ -400,6 +403,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         hunt: {
           resourceMultiplier: 2.0,
+          cooldownReduction: 2.0,
         },
       },
       generalBonuses: {
@@ -416,6 +420,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         hunt: {
           resourceMultiplier: 2.5,
+          cooldownReduction: 2.5,
         },
       },
       generalBonuses: {

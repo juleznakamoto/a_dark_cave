@@ -3,7 +3,6 @@ import { ActionResult } from "@/game/actions";
 import { applyActionEffects } from "@/game/rules";
 import { killVillagers } from "@/game/stateHelpers";
 import { calculateSuccessChance } from "./events";
-import { HUNT_BONUSES } from "./skillUpgrades";
 
 export const forestScoutActions: Record<string, Action> = {
   hunt: {
@@ -44,7 +43,7 @@ export const forestScoutActions: Record<string, Action> = {
         eventId: "redMaskChoice",
       },
     },
-    cooldown: 10,
+    cooldown: 8,
   },
 
   layTrap: {
