@@ -199,7 +199,7 @@ export const recurringEvents: Record<string, GameEvent> = {
     id: "fireStorm",
     condition: (state: GameState) => {
       const fireStormCount = (state.story.seen.fireStormCount as number) || 0;
-      const maxOccurrences = state.cruelMode ? 9 : 1;
+      const maxOccurrences = state.cruelMode ? 8 : 1;
 
       return (
         state.buildings.woodenHut >= 6 &&
