@@ -1,3 +1,4 @@
+
 "use client";
 
 import * as React from "react";
@@ -8,8 +9,8 @@ import { cn } from "@/lib/utils";
 import type { ButtonProps } from "@/components/ui/button";
 
 interface BubblyButtonProps extends ButtonProps {
-  bubbleColor?: string;
-  bubbleColors?: string[];
+  disappears?: boolean;
+  disappearDuration?: number;
 }
 
 interface Bubble {
@@ -31,18 +32,12 @@ const GRAY_TONES = [
 ];
 
 const BubblyButton = forwardRef<HTMLButtonElement, BubblyButtonProps>(
-  ({ className, onClick, children, bubbleColor = "#8b7355", bubbleColors, ...props }, ref) => {
+  ({ className, onClick, children, disappears = false, disappearDuration = 4000, ...props }, ref) => {
     const [bubbles, setBubbles] = useState<Bubble[]>([]);
     const [isGlowing, setIsGlowing] = useState(false);
+    const [isVisible, setIsVisible] = useState(true);
     const buttonRef = useRef<HTMLButtonElement>(null);
     const bubbleIdCounter = useRef(0);
-
-    // Use provided colors or fall back to single color variations - not used in the edited version but keeping it for potential future use or as part of original code
-    const colors = bubbleColors || [
-      bubbleColor,
-      bubbleColor + "dd", // slightly transparent
-      bubbleColor + "bb",
-    ];
 
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
       const button = buttonRef.current;
@@ -60,7 +55,7 @@ const BubblyButton = forwardRef<HTMLButtonElement, BubblyButtonProps>(
 
       setBubbles((prev) => [...prev, newBubble]);
 
-      // Remove bubble after animation completes (longer to account for varied durations)
+      // Remove bubble after animation completes
       setTimeout(() => {
         setBubbles((prev) => prev.filter((b) => b.id !== newBubble.id));
       }, 2000);
@@ -71,45 +66,99 @@ const BubblyButton = forwardRef<HTMLButtonElement, BubblyButtonProps>(
         setIsGlowing(false);
       }, 1000);
 
+      // Handle disappearing behavior
+      if (disappears) {
+        setIsVisible(false);
+        setTimeout(() => {
+          setIsVisible(true);
+        }, disappearDuration);
+      }
+
       // Call original onClick
       if (onClick) {
         onClick(e);
       }
     };
 
+    if (!isVisible) {
+      return (
+        <>
+          {/* Render bubbles even when button is invisible */}
+          <div className="absolute inset-0 pointer-events-none overflow-visible">
+            <AnimatePresence>
+              {bubbles.map((bubble) => {
+                const bubbleCount = 80 + Math.floor(Math.random() * 41);
+                const particleBubbles = Array.from({ length: bubbleCount }).map(() => {
+                  const angle = Math.random() * Math.PI * 2;
+                  const distance = 30 + Math.random() * 120;
+                  const size = 3 + Math.random() * 25;
+                  const color = GRAY_TONES[Math.floor(Math.random() * GRAY_TONES.length)];
+                  const duration = 0.5 + Math.random() * 1.2;
+                  const rotation = Math.random() * 360;
+
+                  return { size, angle, distance, color, duration, rotation };
+                });
+
+                return (
+                  <React.Fragment key={bubble.id}>
+                    {particleBubbles.map((b, index) => {
+                      const endX = Math.cos(b.angle) * b.distance;
+                      const endY = Math.sin(b.angle) * b.distance;
+
+                      return (
+                        <motion.div
+                          key={`${bubble.id}-${index}`}
+                          className="absolute rounded-full"
+                          style={{
+                            width: `${b.size}px`,
+                            height: `${b.size}px`,
+                            backgroundColor: b.color,
+                            left: bubble.x,
+                            top: bubble.y,
+                            boxShadow: `0 0 ${b.size * 0.8}px ${b.color}aa, 0 0 ${b.size * 1.5}px ${b.color}55`,
+                          }}
+                          initial={{
+                            opacity: 1,
+                            scale: 1,
+                            rotate: 0,
+                            x: 0,
+                            y: 0,
+                          }}
+                          animate={{
+                            opacity: 0,
+                            scale: 0.1,
+                            x: endX,
+                            y: endY,
+                            rotate: b.rotation,
+                          }}
+                          exit={{
+                            opacity: 0,
+                          }}
+                          transition={{
+                            duration: b.duration,
+                            ease: [0.16, 1, 0.3, 1],
+                          }}
+                        />
+                      );
+                    })}
+                  </React.Fragment>
+                );
+              })}
+            </AnimatePresence>
+          </div>
+          <div className="h-10 flex items-center justify-center text-muted-foreground text-xs">
+            Reappearing in {disappearDuration / 1000} seconds...
+          </div>
+        </>
+      );
+    }
+
     return (
-      <Button
-        ref={(node) => {
-          buttonRef.current = node;
-          if (typeof ref === "function") {
-            ref(node);
-          } else if (ref) {
-            ref.current = node;
-          }
-        }}
-        onClick={handleClick}
-        className={cn(
-          "relative transition-all duration-100 ease-in overflow-visible",
-          "active:scale-90",
-          className
-        )}
-        style={
-          {
-            // Using the middle gray tone for the glow effect as per intention
-            boxShadow: isGlowing
-              ? `0 0 20px ${GRAY_TONES[4]}99, 0 0 40px ${GRAY_TONES[5]}66, 0 0 60px ${GRAY_TONES[6]}33`
-              : undefined,
-            transition: "box-shadow 0.15s ease-out",
-            filter: isGlowing ? "brightness(1.2)" : undefined,
-          } as React.CSSProperties
-        }
-        {...props}
-      >
-        {/* Bubble animations container */}
-        <div className="absolute inset-0 pointer-events-none overflow-visible">
+      <>
+        {/* Bubble animations container - rendered behind button */}
+        <div className="absolute inset-0 pointer-events-none overflow-visible" style={{ zIndex: -1 }}>
           <AnimatePresence>
             {bubbles.map((bubble) => {
-              // Generate 80-120 bubbles
               const bubbleCount = 80 + Math.floor(Math.random() * 41);
               const particleBubbles = Array.from({ length: bubbleCount }).map(() => {
                 const angle = Math.random() * Math.PI * 2;
@@ -170,9 +219,35 @@ const BubblyButton = forwardRef<HTMLButtonElement, BubblyButtonProps>(
           </AnimatePresence>
         </div>
 
-        {/* Button content */}
-        <span className="relative z-10">{children}</span>
-      </Button>
+        <Button
+          ref={(node) => {
+            buttonRef.current = node;
+            if (typeof ref === "function") {
+              ref(node);
+            } else if (ref) {
+              ref.current = node;
+            }
+          }}
+          onClick={handleClick}
+          className={cn(
+            "relative transition-all duration-100 ease-in overflow-visible",
+            "active:scale-90",
+            className
+          )}
+          style={
+            {
+              boxShadow: isGlowing
+                ? `0 0 20px ${GRAY_TONES[4]}99, 0 0 40px ${GRAY_TONES[5]}66, 0 0 60px ${GRAY_TONES[6]}33`
+                : undefined,
+              transition: "box-shadow 0.15s ease-out",
+              filter: isGlowing ? "brightness(1.2)" : undefined,
+            } as React.CSSProperties
+          }
+          {...props}
+        >
+          <span className="relative z-10">{children}</span>
+        </Button>
+      </>
     );
   }
 );
