@@ -364,9 +364,9 @@ export default function ProfileMenu() {
           variant="ghost"
           size="xs"
           onClick={handleDiscovery}
-          className="px-2 py-1 text-xs hover bg-background/80 text-neutral-300 backdrop-blur-sm border border-border"
+          className="p-0 w-8 h-8 hover bg-background/80 backdrop-blur-sm border border-border flex items-center justify-center"
         >
-          <img src="/flashlight.png" alt="Discovery" className="w-4 h-4" />
+          <img src="/flashlight.png" alt="Discovery" className="w-full h-full object-contain p-1" />
         </Button>
       )}
     </div>
