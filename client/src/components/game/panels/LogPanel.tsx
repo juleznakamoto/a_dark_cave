@@ -12,9 +12,8 @@ function LogPanel() {
   const prevLogLengthRef = useRef(log.length);
 
   // Get only the last entries and reverse them so latest is at top
-  // Filter out any undefined or null entries that may have been removed
   const recentEntries = useMemo(
-    () => log.slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES).filter(entry => entry != null).reverse(),
+    () => log.slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES).reverse(),
     [log]
   );
 
@@ -60,7 +59,7 @@ function LogPanel() {
         <div className="px-3 relative ">
           <div ref={topRef} />
           <div className="space-y-1 text-xs">
-            {recentEntries.filter(entry => entry != null).map((entry: LogEntry, index: number) => {
+            {recentEntries.map((entry: LogEntry, index: number) => {
               let opacity = "";
               if (recentEntries.length >= GAME_CONSTANTS.LOG_MAX_ENTRIES) {
                 if (index === recentEntries.length - 1) {
