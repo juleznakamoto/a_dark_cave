@@ -162,7 +162,7 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
                         }}
                         transition={{
                           duration: b.duration,
-                          ease: [0.16, 1, 0.3, 1],
+                          ease: "linear",
                         }}
                       />
                     );
