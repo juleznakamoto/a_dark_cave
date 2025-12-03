@@ -380,7 +380,7 @@ export const choiceEvents: Record<string, GameEvent> = {
       state.current_population > 12 &&
       !state.relics.unnamed_book,
     triggerType: "resource",
-    timeProbability: 0.035,
+    timeProbability: 35,
     title: "The Mad Beduine",
     message:
       "In the evening, a robed man approaches from the wilderness. His eyes burn with madness as he mutters in a foreign tongue, gestures sharp and unsettling. The villagers grow uneasy. Do you allow this Beduine to stay the night?",

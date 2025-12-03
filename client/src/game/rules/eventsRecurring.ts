@@ -199,14 +199,14 @@ export const recurringEvents: Record<string, GameEvent> = {
     id: "fireStorm",
     condition: (state: GameState) => {
       const fireStormCount = (state.story.seen.fireStormCount as number) || 0;
-      const maxOccurrences = state.cruelMode ? 3 : 1;
+      const maxOccurrences = state.cruelMode ? 5 : 1;
       
       return state.buildings.woodenHut >= 6 && 
-             state.buildings.stoneHut <= 5 && 
+             state.buildings.stoneHut <= 15 && 
              fireStormCount < maxOccurrences;
     },
     triggerType: "resource",
-    timeProbability: 99999,
+    timeProbability: 0.099999,
     repeatable: true,
     message:
       "A fire sweeps through the village in the night, destroying one wooden hut and its occupants.",
