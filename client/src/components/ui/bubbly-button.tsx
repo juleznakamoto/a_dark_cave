@@ -89,7 +89,7 @@ const BubblyButton = forwardRef<HTMLButtonElement, BubblyButtonProps>(
         }}
         onClick={handleClick}
         className={cn(
-          "relative transition-all duration-100 ease-in overflow-visible",
+          "relative transition-all duration-100 ease-in overflow-visible isolate",
           "active:scale-90",
           className
         )}
@@ -105,8 +105,8 @@ const BubblyButton = forwardRef<HTMLButtonElement, BubblyButtonProps>(
         }
         {...props}
       >
-        {/* Bubble animations container */}
-        <div className="absolute inset-0 pointer-events-none overflow-visible">
+        {/* Bubble animations container - behind content */}
+        <div className="absolute inset-0 pointer-events-none overflow-visible -z-10">
           <AnimatePresence>
             {bubbles.map((bubble) => {
               // Generate 80-120 bubbles
@@ -171,7 +171,7 @@ const BubblyButton = forwardRef<HTMLButtonElement, BubblyButtonProps>(
         </div>
 
         {/* Button content */}
-        <span className="relative z-10">{children}</span>
+        {children}
       </Button>
     );
   }
