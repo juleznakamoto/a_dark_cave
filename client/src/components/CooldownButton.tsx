@@ -10,10 +10,25 @@ import {
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils"; // Assuming cn is imported from a utils file
 
-interface CooldownButtonProps extends ButtonProps {
+interface CooldownButtonProps {
+  children: React.ReactNode;
+  onClick: () => void;
   cooldownMs: number;
-  button_id: string;
+  disabled?: boolean;
+  className?: string;
+  variant?:
+    | "default"
+    | "destructive"
+    | "outline"
+    | "secondary"
+    | "ghost"
+    | "link";
+  size?: "default" | "sm" | "xs" | "lg" | "icon";
+  "data-testid"?: string;
+  button_id?: string;
   tooltip?: React.ReactNode;
+  onMouseEnter?: (e?: React.MouseEvent<HTMLDivElement>) => void;
+  onMouseLeave?: (e?: React.MouseEvent<HTMLDivElement>) => void;
 }
 
 const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
@@ -87,11 +102,11 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
 
   const buttonId = testId || `button-${Math.random()}`;
 
-  const buttonContent = (
+  const button = (
     <Button
       ref={ref}
       onClick={handleClick}
-      disabled={props.disabled || isCoolingDown}
+      disabled={isButtonDisabled}
       variant={variant}
       size={size}
       className={`relative overflow-hidden transition-all duration-200 select-none ${
@@ -118,10 +133,9 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
     </Button>
   );
 
-
   // If no tooltip, return button without tooltip
   if (!tooltip) {
-    return <div className="relative inline-block">{buttonContent}</div>;
+    return <div className="relative inline-block">{button}</div>;
   }
 
   const tooltipId = buttonId; // Use buttonId for tooltip identification
@@ -186,7 +200,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
         <Tooltip open={mobileTooltip.isMobile ? mobileTooltip.isTooltipOpen(tooltipId) : undefined} delayDuration={300}>
           <TooltipTrigger asChild>
             <span className="inline-block">
-              {buttonContent}
+              {button}
             </span>
           </TooltipTrigger>
           <TooltipContent>{tooltip}</TooltipContent>

@@ -15,7 +15,6 @@ import {
 } from "@/game/rules/tooltips";
 import CooldownButton from "@/components/CooldownButton";
 import { Button } from "@/components/ui/button";
-import { BubblyButton } from "@/components/ui/bubbly-button";
 import {
   getPopulationProduction,
   getTotalPopulationEffects,
@@ -415,45 +414,6 @@ export default function VillagePanel() {
             </div>
           );
         })}
-
-        {/* Test Page Section */}
-        <div className="space-y-2">
-          <h3 className="text-xs font-semibold text-foreground">Test Page</h3>
-          <div className="flex flex-wrap gap-2">
-            {/* Button that does not disappear */}
-            <Button
-              onClick={() => alert("Button 1 clicked!")}
-              size="xs"
-              variant="outline"
-              className="hover:bg-transparent hover:text-foreground"
-            >
-              Non-Disappearing Button
-            </Button>
-
-            {/* Button that disappears and reappears */}
-            <BubblyButton
-              onClick={() => {
-                alert("Button 2 clicked!");
-                // Logic to hide and then reappear after 4 seconds
-                const button2 = document.querySelector('[data-testid="button-test-disappearing"]');
-                if (button2) {
-                  button2.style.display = 'none';
-                  setTimeout(() => {
-                    button2.style.display = 'block'; // Or 'flex', 'inline-block' depending on its original display
-                  }, 4000);
-                }
-              }}
-              size="xs"
-              variant="outline"
-              className="hover:bg-transparent hover:text-foreground"
-              bubbleColor="#dc143c"
-              data-testid="button-test-disappearing"
-            >
-              Disappearing Button
-            </BubblyButton>
-          </div>
-        </div>
-
 
         {/* Rule Section */}
         {story.seen?.hasVillagers && visiblePopulationJobs.length > 0 && (

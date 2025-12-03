@@ -14,20 +14,13 @@ interface BubblyButtonProps extends ButtonProps {
 const BubblyButton = forwardRef<HTMLButtonElement, BubblyButtonProps>(
   ({ className, onClick, children, bubbleColor = "#dc143c", ...props }, ref) => {
     const [isAnimating, setIsAnimating] = useState(false);
-    const [isGlowing, setIsGlowing] = useState(false);
 
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-      // Trigger bubble animation
+      // Trigger animation
       setIsAnimating(true);
       setTimeout(() => {
         setIsAnimating(false);
       }, 700);
-
-      // Trigger glow effect for 1 second
-      setIsGlowing(true);
-      setTimeout(() => {
-        setIsGlowing(false);
-      }, 1000);
 
       // Call original onClick
       if (onClick) {
@@ -41,9 +34,8 @@ const BubblyButton = forwardRef<HTMLButtonElement, BubblyButtonProps>(
         onClick={handleClick}
         className={cn(
           "relative transition-all duration-100 ease-in overflow-visible",
-          isGlowing && "shadow-[0_2px_25px_rgba(220,20,60,0.5)]",
-          "active:scale-90",
-          isGlowing && "active:shadow-[0_2px_25px_rgba(220,20,60,0.2)]",
+          "shadow-[0_2px_25px_rgba(220,20,60,0.5)]",
+          "active:scale-90 active:shadow-[0_2px_25px_rgba(220,20,60,0.2)]",
           "before:absolute before:content-[''] before:block before:w-[140%] before:h-full before:left-[-20%] before:-z-10",
           "before:transition-all before:duration-500 before:ease-in-out before:bg-no-repeat",
           "after:absolute after:content-[''] after:block after:w-[140%] after:h-full after:left-[-20%] after:-z-10",
