@@ -1,10 +1,10 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useMemo } from "react";
 import { useGameStore } from "@/game/state";
 import { LogEntry } from "@/game/rules/events";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { GAME_CONSTANTS } from "@/game/constants";
 
-export default function LogPanel() {
+const LogPanel = React.memo(() => {
   const { log } = useGameStore();
   const [activeEffects, setActiveEffects] = useState<Set<string>>(new Set());
   const timersRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
@@ -13,7 +13,10 @@ export default function LogPanel() {
   const prevLogLengthRef = useRef(log.length);
 
   // Get only the last entries and reverse them so latest is at top
-  const recentEntries = log.slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES).reverse();
+  const recentEntries = useMemo(
+    () => log.slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES).reverse(),
+    [log]
+  );
 
   // Log when stranger events appear
   useEffect(() => {
@@ -153,4 +156,8 @@ export default function LogPanel() {
       </ScrollArea>
     </div>
   );
-}
+});
+
+LogPanel.displayName = 'LogPanel';
+
+export default LogPanel;
