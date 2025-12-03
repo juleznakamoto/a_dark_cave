@@ -122,7 +122,7 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
                 const distance = 30 + Math.random() * 120;
                 const size = 3 + Math.random() * 25;
                 const color = NEUTRAL_TONES[Math.floor(Math.random() * NEUTRAL_TONES.length)];
-                const duration = 2.5 + Math.random() * 1.0;
+                const duration = 1.5 + Math.random() * 1.0;
 
                 return { size, angle, distance, color, duration };
               });
