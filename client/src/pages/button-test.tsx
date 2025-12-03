@@ -6,10 +6,20 @@ import { motion } from "framer-motion";
 // Shared Bubble Animation Component
 // ============================================================
 function BubbleSet({ x, y, color }: { x: number; y: number; color: string }) {
+  // Create varied colors for dust/debris theme
+  const colors = [
+    "#8b7355", // brown
+    "#a0826d", // lighter brown
+    "#6b5d51", // darker brown
+    "#d4c5b9", // dust/beige
+    "#9c8677", // medium brown
+  ];
+  
   const bubbles = Array.from({ length: 9 }).map(() => ({
     size: 10 + Math.random() * 10,
     angle: Math.random() * Math.PI * 2,
     distance: 50 + Math.random() * 30,
+    color: colors[Math.floor(Math.random() * colors.length)],
   }));
 
   return (
@@ -25,7 +35,7 @@ function BubbleSet({ x, y, color }: { x: number; y: number; color: string }) {
             style={{
               width: `${b.size}px`,
               height: `${b.size}px`,
-              backgroundColor: color,
+              backgroundColor: b.color,
               left: x,
               top: y,
               zIndex: 9999,
@@ -77,16 +87,31 @@ function RegularButton({
   onClick: (x: number, y: number) => void;
 }) {
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const [isGlowing, setIsGlowing] = useState(false);
 
   const handleClick = () => {
     const rect = buttonRef.current?.getBoundingClientRect();
     if (rect) {
       onClick(rect.left + rect.width / 2, rect.top + rect.height / 2);
+      
+      // Trigger glow for 1 second
+      setIsGlowing(true);
+      setTimeout(() => setIsGlowing(false), 1000);
     }
   };
 
   return (
-    <Button ref={buttonRef} onClick={handleClick} variant="outline">
+    <Button 
+      ref={buttonRef} 
+      onClick={handleClick} 
+      variant="outline"
+      style={{
+        boxShadow: isGlowing 
+          ? "0 0 15px #8b735580, 0 0 30px #8b735540" 
+          : undefined,
+        transition: "box-shadow 0.1s ease-in-out",
+      }}
+    >
       Regular Button (Stays Visible)
     </Button>
   );
@@ -133,16 +158,31 @@ function DisappearingButton({
   onClick: (x: number, y: number) => void;
 }) {
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const [isGlowing, setIsGlowing] = useState(false);
 
   const handleClick = () => {
     const rect = buttonRef.current?.getBoundingClientRect();
     if (rect) {
       onClick(rect.left + rect.width / 2, rect.top + rect.height / 2);
+      
+      // Trigger glow for 1 second
+      setIsGlowing(true);
+      setTimeout(() => setIsGlowing(false), 1000);
     }
   };
 
   return (
-    <Button ref={buttonRef} onClick={handleClick} variant="outline">
+    <Button 
+      ref={buttonRef} 
+      onClick={handleClick} 
+      variant="outline"
+      style={{
+        boxShadow: isGlowing 
+          ? "0 0 15px #8b735580, 0 0 30px #8b735540" 
+          : undefined,
+        transition: "box-shadow 0.1s ease-in-out",
+      }}
+    >
       Disappearing Button
     </Button>
   );

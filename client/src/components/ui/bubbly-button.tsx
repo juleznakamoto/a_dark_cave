@@ -11,6 +11,7 @@ import type { ButtonProps } from "@/components/ui/button";
 
 interface BubblyButtonProps extends ButtonProps {
   bubbleColor?: string;
+  bubbleColors?: string[]; // Array of colors for varied bubbles
 }
 
 interface Bubble {
@@ -22,17 +23,17 @@ interface Bubble {
 }
 
 // Bubble animation component rendered via portal
-function BubbleAnimation({ bubble }: { bubble: Bubble }) {
+function BubbleAnimation({ bubble, colors }: { bubble: Bubble; colors: string[] }) {
   const bubbles = [
-    { size: 10, angle: Math.random() * Math.PI * 2, distance: 50 + Math.random() * 30 },
-    { size: 20, angle: Math.random() * Math.PI * 2, distance: 40 + Math.random() * 40 },
-    { size: 15, angle: Math.random() * Math.PI * 2, distance: 60 + Math.random() * 20 },
-    { size: 20, angle: Math.random() * Math.PI * 2, distance: 45 + Math.random() * 35 },
-    { size: 18, angle: Math.random() * Math.PI * 2, distance: 55 + Math.random() * 25 },
-    { size: 10, angle: Math.random() * Math.PI * 2, distance: 50 + Math.random() * 30 },
-    { size: 15, angle: Math.random() * Math.PI * 2, distance: 60 + Math.random() * 20 },
-    { size: 10, angle: Math.random() * Math.PI * 2, distance: 50 + Math.random() * 30 },
-    { size: 18, angle: Math.random() * Math.PI * 2, distance: 55 + Math.random() * 25 },
+    { size: 10, angle: Math.random() * Math.PI * 2, distance: 50 + Math.random() * 30, color: colors[Math.floor(Math.random() * colors.length)] },
+    { size: 20, angle: Math.random() * Math.PI * 2, distance: 40 + Math.random() * 40, color: colors[Math.floor(Math.random() * colors.length)] },
+    { size: 15, angle: Math.random() * Math.PI * 2, distance: 60 + Math.random() * 20, color: colors[Math.floor(Math.random() * colors.length)] },
+    { size: 20, angle: Math.random() * Math.PI * 2, distance: 45 + Math.random() * 35, color: colors[Math.floor(Math.random() * colors.length)] },
+    { size: 18, angle: Math.random() * Math.PI * 2, distance: 55 + Math.random() * 25, color: colors[Math.floor(Math.random() * colors.length)] },
+    { size: 10, angle: Math.random() * Math.PI * 2, distance: 50 + Math.random() * 30, color: colors[Math.floor(Math.random() * colors.length)] },
+    { size: 15, angle: Math.random() * Math.PI * 2, distance: 60 + Math.random() * 20, color: colors[Math.floor(Math.random() * colors.length)] },
+    { size: 10, angle: Math.random() * Math.PI * 2, distance: 50 + Math.random() * 30, color: colors[Math.floor(Math.random() * colors.length)] },
+    { size: 18, angle: Math.random() * Math.PI * 2, distance: 55 + Math.random() * 25, color: colors[Math.floor(Math.random() * colors.length)] },
   ];
 
   return (
@@ -50,7 +51,7 @@ function BubbleAnimation({ bubble }: { bubble: Bubble }) {
             style={{
               width: `${b.size}px`,
               height: `${b.size}px`,
-              backgroundColor: bubble.color,
+              backgroundColor: b.color,
               left: bubble.startX,
               top: bubble.startY,
               zIndex: 9999,
@@ -78,11 +79,18 @@ function BubbleAnimation({ bubble }: { bubble: Bubble }) {
 }
 
 const BubblyButton = forwardRef<HTMLButtonElement, BubblyButtonProps>(
-  ({ className, onClick, children, bubbleColor = "#8b7355", ...props }, ref) => {
+  ({ className, onClick, children, bubbleColor = "#8b7355", bubbleColors, ...props }, ref) => {
     const [bubbles, setBubbles] = useState<Bubble[]>([]);
     const [isGlowing, setIsGlowing] = useState(false);
     const buttonRef = useRef<HTMLButtonElement>(null);
     const bubbleIdCounter = useRef(0);
+    
+    // Use provided colors or fall back to single color variations
+    const colors = bubbleColors || [
+      bubbleColor,
+      bubbleColor + "dd", // slightly transparent
+      bubbleColor + "bb",
+    ];
 
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
       const button = buttonRef.current;
@@ -142,7 +150,7 @@ const BubblyButton = forwardRef<HTMLButtonElement, BubblyButtonProps>(
         {typeof document !== "undefined" &&
           bubbles.map((bubble) =>
             ReactDOM.createPortal(
-              <BubbleAnimation key={bubble.id} bubble={bubble} />,
+              <BubbleAnimation key={bubble.id} bubble={bubble} colors={colors} />,
               document.body
             )
           )}
@@ -159,14 +167,16 @@ const BubblyButton = forwardRef<HTMLButtonElement, BubblyButtonProps>(
           onClick={handleClick}
           className={cn(
             "relative transition-all duration-100 ease-in overflow-visible",
-            isGlowing && "shadow-[0_2px_25px_rgba(139,115,85,0.5)]",
             "active:scale-90",
-            isGlowing && "active:shadow-[0_2px_25px_rgba(139,115,85,0.2)]",
             className
           )}
           style={
             {
               "--bubble-color": bubbleColor,
+              boxShadow: isGlowing 
+                ? `0 0 15px ${bubbleColor}80, 0 0 30px ${bubbleColor}40` 
+                : undefined,
+              transition: "box-shadow 0.1s ease-in-out",
             } as React.CSSProperties
           }
           {...props}
