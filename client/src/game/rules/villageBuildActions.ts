@@ -1540,9 +1540,6 @@ export const villageBuildActions: Record<string, Action> = {
   },
 };
 
-// Export repair handler
-export { handleRepairWoodenHut };
-
 // Action handlers
 function handleBuildingConstruction(
   state: GameState,
