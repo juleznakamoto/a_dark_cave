@@ -78,7 +78,7 @@ function BubbleAnimation({ bubble }: { bubble: Bubble }) {
 }
 
 const BubblyButton = forwardRef<HTMLButtonElement, BubblyButtonProps>(
-  ({ className, onClick, children, bubbleColor = "#dc143c", ...props }, ref) => {
+  ({ className, onClick, children, bubbleColor = "#8b7355", ...props }, ref) => {
     const [bubbles, setBubbles] = useState<Bubble[]>([]);
     const [isGlowing, setIsGlowing] = useState(false);
     const buttonRef = useRef<HTMLButtonElement>(null);
@@ -159,9 +159,9 @@ const BubblyButton = forwardRef<HTMLButtonElement, BubblyButtonProps>(
           onClick={handleClick}
           className={cn(
             "relative transition-all duration-100 ease-in overflow-visible",
-            isGlowing && "shadow-[0_2px_25px_rgba(220,20,60,0.5)]",
+            isGlowing && "shadow-[0_2px_25px_rgba(139,115,85,0.5)]",
             "active:scale-90",
-            isGlowing && "active:shadow-[0_2px_25px_rgba(220,20,60,0.2)]",
+            isGlowing && "active:shadow-[0_2px_25px_rgba(139,115,85,0.2)]",
             className
           )}
           style={

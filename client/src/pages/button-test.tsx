@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from "react";
 import { BubblyButton } from "@/components/ui/bubbly-button";
 import { Button } from "@/components/ui/button";
@@ -69,7 +68,7 @@ function Pattern1Button({ onDisappear }: { onDisappear: () => void }) {
       GlobalAnimationManager.getInstance().addAnimation(
         rect.left + rect.width / 2,
         rect.top + rect.height / 2,
-        "#dc143c"
+        "#8b7355"
       );
     }
     onDisappear();
@@ -145,7 +144,7 @@ function Pattern2Button({ onDisappear }: { onDisappear: () => void }) {
       {typeof document !== "undefined" &&
         bubbles.map((bubble) =>
           ReactDOM.createPortal(
-            <BubbleSet key={bubble.id} x={bubble.x} y={bubble.y} color="#dc143c" />,
+            <BubbleSet key={bubble.id} x={bubble.x} y={bubble.y} color="#8b7355" />,
             document.body
           )
         )}
@@ -178,7 +177,7 @@ function Pattern3Container() {
   return (
     <>
       {bubbles.map((bubble) => (
-        <BubbleSet key={bubble.id} x={bubble.x} y={bubble.y} color="#dc143c" />
+        <BubbleSet key={bubble.id} x={bubble.x} y={bubble.y} color="#8b7355" />
       ))}
       {show ? (
         <Pattern3Button onClick={handleButtonClick} />
@@ -259,7 +258,7 @@ function Pattern4Button({ onDisappear }: { onDisappear: () => void }) {
         bubble.style.width = `${size}px`;
         bubble.style.height = `${size}px`;
         bubble.style.borderRadius = "50%";
-        bubble.style.backgroundColor = "#dc143c";
+        bubble.style.backgroundColor = "#8b7355";
         bubble.style.left = `${x}px`;
         bubble.style.top = `${y}px`;
         bubble.style.transition = "all 0.75s ease-out";
@@ -420,16 +419,16 @@ export default function ButtonTest() {
           left: var(--anim-x);
           top: var(--anim-y);
         }
-        
+
         .pattern5-bubble {
           position: absolute;
           width: 15px;
           height: 15px;
           border-radius: 50%;
-          background-color: #dc143c;
+          background-color: #8b7355;
           animation: pattern5-bubble-anim 0.75s ease-out forwards;
         }
-        
+
         .pattern5-bubble:nth-child(1) { animation-delay: 0s; --bubble-angle: 0deg; }
         .pattern5-bubble:nth-child(2) { animation-delay: 0s; --bubble-angle: 45deg; }
         .pattern5-bubble:nth-child(3) { animation-delay: 0s; --bubble-angle: 90deg; }
@@ -439,7 +438,7 @@ export default function ButtonTest() {
         .pattern5-bubble:nth-child(7) { animation-delay: 0s; --bubble-angle: 270deg; }
         .pattern5-bubble:nth-child(8) { animation-delay: 0s; --bubble-angle: 315deg; }
         .pattern5-bubble:nth-child(9) { animation-delay: 0s; --bubble-angle: 360deg; }
-        
+
         @keyframes pattern5-bubble-anim {
           0% {
             opacity: 1;
