@@ -217,9 +217,12 @@ export const BubblyButtonGlobalPortal = ({ bubbles }: { bubbles: Array<{ id: str
               const size = 3 + Math.random() * 25;
               const color = NEUTRAL_TONES[Math.floor(Math.random() * NEUTRAL_TONES.length)];
               const duration = 2.5 + Math.random() * 1.2;
-              
-              const endX = Math.cos(angle) * distance;
-              const endY = Math.sin(angle) * distance;
+
+              // Add spiral rotation - bubbles will rotate as they move outward
+              const spiralRotation = (Math.random() - 0.5) * Math.PI * 2; // Random rotation amount (-180° to 180°)
+              const finalAngle = angle + spiralRotation;
+              const endX = Math.cos(finalAngle) * distance;
+              const endY = Math.sin(finalAngle) * distance;
 
               return (
                 <motion.div
