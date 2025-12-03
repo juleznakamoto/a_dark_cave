@@ -169,11 +169,19 @@ function Approach2_SeparateLayer() {
 // ============================================================
 function Approach3_LiftedState() {
   const [show, setShow] = useState(true);
-  const [bubbles, setBubbles] = useState<Array<{ id: string; timestamp: number }>>([]);
+  const [bubbles, setBubbles] = useState<Array<{ id: string; x: number; y: number }>>([]);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
-  const handleClick = () => {
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const button = buttonRef.current;
+    if (!button) return;
+
+    const rect = button.getBoundingClientRect();
+    const x = e.clientX;
+    const y = e.clientY;
     const id = `bubble-${Date.now()}`;
-    setBubbles(prev => [...prev, { id, timestamp: Date.now() }]);
+
+    setBubbles(prev => [...prev, { id, x, y }]);
 
     setTimeout(() => {
       setBubbles(prev => prev.filter(b => b.id !== id));
@@ -187,7 +195,7 @@ function Approach3_LiftedState() {
     <div className="relative">
       <div className="relative z-10">
         {show && (
-          <BubblyButton variant="outline" onClick={handleClick}>
+          <BubblyButton ref={buttonRef} variant="outline" onClick={handleClick}>
             Approach 3: Lifted
           </BubblyButton>
         )}
@@ -218,9 +226,10 @@ function Approach3_LiftedState() {
                       width: `${size}px`,
                       height: `${size}px`,
                       backgroundColor: grayTones[gray],
-                      left: "50%",
-                      top: "50%",
+                      left: bubble.x,
+                      top: bubble.y,
                       zIndex: 9998,
+                      boxShadow: `0 0 ${size * 0.8}px ${grayTones[gray]}aa, 0 0 ${size * 1.5}px ${grayTones[gray]}55`,
                     }}
                     initial={{ opacity: 1, scale: 1, x: 0, y: 0 }}
                     animate={{
