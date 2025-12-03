@@ -24,16 +24,12 @@ export interface BubblyButtonHandle {
   triggerAnimation: (x: number, y: number) => void;
 }
 
-// 8 gray tones from light to dark using Tailwind colors
-const GRAY_TONES = [
-  tailwindToHex("gray-100"),
-  tailwindToHex("gray-200"),
-  tailwindToHex("gray-300"),
-  tailwindToHex("gray-400"),
-  tailwindToHex("gray-500"),
-  tailwindToHex("gray-600"),
-  tailwindToHex("gray-700"),
-  tailwindToHex("gray-950"),
+// 4 gray tones from light to dark using Tailwind colors
+const NEUTRAL_TONES = [
+  tailwindToHex("neutral-700"),
+  tailwindToHex("neutral-800"),
+  tailwindToHex("neutral-900"),
+  tailwindToHex("neutral-950"),
 ];
 
 const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
@@ -55,7 +51,7 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
       // Remove bubble after animation completes (longer to account for varied durations)
       setTimeout(() => {
         setBubbles((prev) => prev.filter((b) => b.id !== newBubble.id));
-      }, 2000);
+      }, 2500);
 
       // Trigger glow effect for 1 second
       setIsGlowing(true);
@@ -104,7 +100,7 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
           {
             // Using the middle gray tone for the glow effect as per intention
             boxShadow: isGlowing
-              ? `0 0 15px ${GRAY_TONES[5]}99, 0 0 30px ${GRAY_TONES[6]}66, 0 0 40px ${GRAY_TONES[7]}33`
+              ? `0 0 15px ${NEUTRAL_TONES[2]}99, 0 0 30px ${NEUTRAL_TONES[3]}66, 0 0 40px ${NEUTRAL_TONES[4]}33`
               : undefined,
             transition: "box-shadow 0.15s ease-out",
             filter: isGlowing ? "brightness(1.2)" : undefined,
@@ -122,8 +118,8 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
                 const angle = Math.random() * Math.PI * 2;
                 const distance = 30 + Math.random() * 70;
                 const size = 2 + Math.random() * 20;
-                const color = GRAY_TONES[Math.floor(Math.random() * GRAY_TONES.length)];
-                const duration = 0.5 + Math.random() * 1.5;
+                const color = NEUTRAL_TONES[Math.floor(Math.random() * NEUTRAL_TONES.length)];
+                const duration = 2.0 + Math.random() * 1.0;
 
                 return { size, angle, distance, color, duration };
               });
@@ -148,7 +144,7 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
                           zIndex: -1,
                         }}
                         initial={{
-                          opacity: 0.7,
+                          opacity: 0.8,
                           scale: 1,
                           x: 0,
                           y: 0,
@@ -207,11 +203,11 @@ export const BubblyButtonGlobalPortal = ({ bubbles }: { bubbles: Array<{ id: str
                   style={{
                     width: `${size}px`,
                     height: `${size}px`,
-                    backgroundColor: GRAY_TONES[gray],
+                    backgroundColor: NEUTRAL_TONES[gray],
                     left: bubble.x,
                     top: bubble.y,
                     zIndex: 9998,
-                    boxShadow: `0 0 ${size * 0.8}px ${GRAY_TONES[gray]}aa, 0 0 ${size * 1.5}px ${GRAY_TONES[gray]}55`,
+                    boxShadow: `0 0 ${size * 0.8}px ${NEUTRAL_TONES[gray]}aa, 0 0 ${size * 1.5}px ${NEUTRAL_TONES[gray]}55`,
                   }}
                   initial={{ opacity: 1, scale: 1, x: 0, y: 0 }}
                   animate={{
