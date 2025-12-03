@@ -42,13 +42,6 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
     const buttonRef = useRef<HTMLButtonElement>(null);
     const bubbleIdCounter = useRef(0);
 
-    // Use provided colors or fall back to single color variations - not used in the edited version but keeping it for potential future use or as part of original code
-    const colors = bubbleColors || [
-      bubbleColor,
-      bubbleColor + "dd", // slightly transparent
-      bubbleColor + "bb",
-    ];
-
     const triggerAnimation = (x: number, y: number) => {
       const newBubble: Bubble = {
         id: `bubble-${bubbleIdCounter.current++}`,
@@ -61,7 +54,7 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
       // Remove bubble after animation completes (longer to account for varied durations)
       setTimeout(() => {
         setBubbles((prev) => prev.filter((b) => b.id !== newBubble.id));
-      }, 2000);
+      }, 5000);
 
       // Trigger glow effect for 1 second
       setIsGlowing(true);
@@ -129,7 +122,7 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
                 const distance = 30 + Math.random() * 120;
                 const size = 3 + Math.random() * 25;
                 const color = GRAY_TONES[Math.floor(Math.random() * GRAY_TONES.length)];
-                const duration = 0.5 + Math.random() * 1.2;
+                const duration = 2.5 + Math.random() * 1.2;
                 const rotation = Math.random() * 360;
 
                 return { size, angle, distance, color, duration, rotation };
