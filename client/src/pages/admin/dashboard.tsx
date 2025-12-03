@@ -1331,6 +1331,7 @@ export default function AdminDashboard() {
 
     // Find highest cube event for each churned player
     const cubeEventCounts = new Map<number, number>();
+    let playersWithNoCubeEvents = 0;
 
     gameSaves.forEach(save => {
       if (churnedUserIds.has(save.user_id)) {
@@ -1348,12 +1349,23 @@ export default function AdminDashboard() {
 
         if (highestCube > 0) {
           cubeEventCounts.set(highestCube, (cubeEventCounts.get(highestCube) || 0) + 1);
+        } else {
+          playersWithNoCubeEvents++;
         }
       }
     });
 
     // Convert to array format for chart
     const result: Array<{ cubeEvent: string; players: number }> = [];
+    
+    // Add "No Cube Events" entry first if there are players with no cube events
+    if (playersWithNoCubeEvents > 0) {
+      result.push({
+        cubeEvent: 'No Cube Events',
+        players: playersWithNoCubeEvents,
+      });
+    }
+    
     const sortedEntries = Array.from(cubeEventCounts.entries()).sort((a, b) => b[1] - a[1]);
 
     sortedEntries.forEach(([cubeNum, count]) => {
@@ -1363,7 +1375,7 @@ export default function AdminDashboard() {
       });
     });
 
-    logger.log('📊 Last cube events for churned players:', result.length, 'events');
+    logger.log('📊 Last cube events for churned players:', result.length, 'events', 'No events:', playersWithNoCubeEvents);
     return result;
   };
 
