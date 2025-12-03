@@ -152,7 +152,7 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
                           y: 0,
                         }}
                         animate={{
-                          opacity: 0,
+                          opacity: 1,
                           scale: 0.1,
                           x: endX,
                           y: endY,
