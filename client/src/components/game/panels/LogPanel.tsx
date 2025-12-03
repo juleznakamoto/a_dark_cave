@@ -4,7 +4,7 @@ import { LogEntry } from "@/game/rules/events";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { GAME_CONSTANTS } from "@/game/constants";
 
-const LogPanel = React.memo(() => {
+function LogPanel() {
   const { log } = useGameStore();
   const [activeEffects, setActiveEffects] = useState<Set<string>>(new Set());
   const timersRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
@@ -156,8 +156,6 @@ const LogPanel = React.memo(() => {
       </ScrollArea>
     </div>
   );
-});
+}
 
-LogPanel.displayName = 'LogPanel';
-
-export default LogPanel;
+export default React.memo(LogPanel);
