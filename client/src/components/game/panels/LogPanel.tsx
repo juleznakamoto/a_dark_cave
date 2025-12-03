@@ -14,6 +14,14 @@ export default function LogPanel() {
   // Get only the last entries and reverse them so latest is at top
   const recentEntries = log.slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES).reverse();
 
+  // Log when stranger events appear
+  useEffect(() => {
+    const strangerEntries = recentEntries.filter(e => e.id.startsWith('stranger-approaches-'));
+    if (strangerEntries.length > 0) {
+      console.log('[LogPanel] Current stranger entries:', strangerEntries.map(e => e.id));
+    }
+  }, [recentEntries]);
+
   // Auto-scroll to top when new entries are added
   useEffect(() => {
     if (log.length > prevLogLengthRef.current && topRef.current) {
@@ -44,19 +52,39 @@ export default function LogPanel() {
 
       // Remove new villager entries after 60 seconds
       if (entry.id.startsWith('stranger-approaches-') && !timersRef.current.has(`remove-${entry.id}`)) {
+        console.log('[LogPanel] Setting up deletion timer for:', entry.id, 'at', Date.now());
+        console.log('[LogPanel] Timer will fire in 6000ms (6 seconds for testing)');
+        
         const removeTimerId = setTimeout(() => {
+          console.log('[LogPanel] Timer fired for:', entry.id, 'at', Date.now());
           const currentLog = useGameStore.getState().log;
-          const filteredLog = currentLog.filter((logEntry) => logEntry.id !== entry.id);
+          console.log('[LogPanel] Current log length before filter:', currentLog.length);
+          console.log('[LogPanel] Looking for entry with id:', entry.id);
+          
+          const filteredLog = currentLog.filter((logEntry) => {
+            const shouldKeep = logEntry.id !== entry.id;
+            if (!shouldKeep) {
+              console.log('[LogPanel] Filtering out entry:', logEntry.id);
+            }
+            return shouldKeep;
+          });
+          
+          console.log('[LogPanel] Log length after filter:', filteredLog.length);
+          console.log('[LogPanel] Removed', currentLog.length - filteredLog.length, 'entries');
+          
           useGameStore.setState({ log: filteredLog });
           timersRef.current.delete(`remove-${entry.id}`);
+          console.log('[LogPanel] Cleanup complete for:', entry.id);
         }, 6000); // 60 seconds
         
         timersRef.current.set(`remove-${entry.id}`, removeTimerId);
+        console.log('[LogPanel] Timer registered in timersRef, total active timers:', timersRef.current.size);
       }
     });
 
     // Cleanup function: clear all active timers
     return () => {
+      console.log('[LogPanel] Cleanup: clearing', timersRef.current.size, 'active timers');
       timersRef.current.forEach((timerId) => clearTimeout(timerId));
       timersRef.current.clear();
     };

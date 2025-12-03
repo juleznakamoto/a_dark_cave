@@ -933,8 +933,10 @@ function handleStrangerApproach() {
     });
 
     // Add log entry
+    const entryId = `stranger-approaches-${Date.now()}`;
+    console.log('[GameLoop] Creating stranger approach event:', entryId, 'at', Date.now());
     state.addLogEntry({
-      id: `stranger-approaches-${Date.now()}`,
+      id: entryId,
       message: randomMessage,
       timestamp: Date.now(),
       type: "system",
