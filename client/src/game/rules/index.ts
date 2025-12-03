@@ -654,11 +654,10 @@ export const applyActionEffects = (
         // Handle random effects like "random(1,3)"
         const match = effect.match(/random\((\d+),(\d+)\)/);
         if (match) {
-          const min = parseInt(match[1]);
-          const max = parseInt(match[2]);
-          let baseAmount = Math.floor(Math.random() * (max - min + 1)) + min;
+          let min = parseInt(match[1]);
+          let max = parseInt(match[2]);
 
-          // Apply action bonuses from the centralized effects system
+          // Apply action bonuses from the centralized effects system BEFORE random generation
           const actionBonuses = getActionBonusesCalc(actionId, state);
           if (
             actionBonuses?.resourceBonus?.[
@@ -669,8 +668,12 @@ export const applyActionEffects = (
               actionBonuses.resourceBonus[
                 finalKey as keyof typeof actionBonuses.resourceBonus
               ];
-            baseAmount += bonus;
+            min += bonus;
+            max += bonus;
           }
+
+          // Now generate random number from the adjusted range
+          const baseAmount = Math.floor(Math.random() * (max - min + 1)) + min;
 
           const originalAmount =
             state.resources[finalKey as keyof typeof state.resources] || 0;
@@ -763,8 +766,25 @@ export const applyActionEffects = (
               /random\((\d+),(\d+)\)/,
             );
             if (match) {
-              const min = parseInt(match[1]);
-              const max = parseInt(match[2]);
+              let min = parseInt(match[1]);
+              let max = parseInt(match[2]);
+
+              // Apply action bonuses BEFORE random generation
+              const actionBonuses = getActionBonusesCalc(actionId, state);
+              if (
+                actionBonuses?.resourceBonus?.[
+                  finalKey as keyof typeof actionBonuses.resourceBonus
+                ]
+              ) {
+                const bonus =
+                  actionBonuses.resourceBonus[
+                    finalKey as keyof typeof actionBonuses.resourceBonus
+                  ];
+                min += bonus;
+                max += bonus;
+              }
+
+              // Generate random from adjusted range
               const randomAmount =
                 Math.floor(Math.random() * (max - min + 1)) + min;
 
