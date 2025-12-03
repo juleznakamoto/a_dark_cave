@@ -57,7 +57,7 @@ function BubbleAnimation({ bubble, colors }: { bubble: Bubble; colors: string[] 
               backgroundColor: b.color,
               left: bubble.startX,
               top: bubble.startY,
-              zIndex: 1,
+              zIndex: -1,
               pointerEvents: "none",
               boxShadow: `0 0 ${b.size * 0.8}px ${b.color}aa, 0 0 ${b.size * 1.5}px ${b.color}55`,
             }}
@@ -214,7 +214,7 @@ const BubblyButton = forwardRef<HTMLButtonElement, BubblyButtonProps>(
           }}
           onClick={handleClick}
           className={cn(
-            "relative transition-all duration-100 ease-in overflow-visible z-10",
+            "relative transition-all duration-100 ease-in overflow-visible",
             "active:scale-90",
             className
           )}
