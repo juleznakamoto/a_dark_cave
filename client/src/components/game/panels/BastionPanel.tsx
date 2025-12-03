@@ -269,11 +269,9 @@ export default function BastionPanel() {
                         mobileTooltip.handleTooltipClick("heal-restless-knight", e)
                       }
                       onMouseEnter={() => {
-                        logger.log('[HIGHLIGHT] BastionPanel heal restless knight mouse enter');
                         setHighlightedResources(['food']);
                       }}
                       onMouseLeave={() => {
-                        logger.log('[HIGHLIGHT] BastionPanel heal restless knight mouse leave');
                         setHighlightedResources([]);
                       }}
                     >
