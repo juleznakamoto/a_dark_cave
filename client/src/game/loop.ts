@@ -409,8 +409,6 @@ export function stopGameLoop() {
 function processTick() {
   const state = useGameStore.getState();
 
-  // Stranger approach log entries now fade out via CSS instead of being removed
-
   // Check for timed event choices and apply fallback if time expires
   state.log.forEach((entry) => {
     // Check if the entry is a timed event choice and if its time has expired
