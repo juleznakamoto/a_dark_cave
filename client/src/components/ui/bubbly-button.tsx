@@ -130,8 +130,8 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
               return (
                 <React.Fragment key={bubble.id}>
                   {particleBubbles.map((b, index) => {
-                    const endX = Math.cos(b.angle) * b.distance;
-                    const endY = Math.sin(b.angle) * b.distance;
+                    const endX = Math.cos(0.45) * b.distance;
+                    const endY = Math.sin(0.45) * b.distance;
 
                     return (
                       <motion.div
