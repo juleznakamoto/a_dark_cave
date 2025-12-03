@@ -859,7 +859,10 @@ export default function AdminDashboard() {
   };
 
   const getGameCompletionStats = () => {
-    const completed = gameSaves.filter(save =>
+    // Filter by time range
+    const filteredSaves = filterByTimeRange(gameSaves, 'updated_at');
+
+    const completed = filteredSaves.filter(save =>
       save.game_state?.events?.cube15a || 
       save.game_state?.events?.cube15b ||
       save.game_state?.events?.cube13 ||
@@ -869,7 +872,7 @@ export default function AdminDashboard() {
       save.game_state?.events?.cube14d
     ).length;
 
-    const total = gameSaves.length;
+    const total = filteredSaves.length;
 
     return [
       { name: 'Completed', value: completed },
@@ -2341,7 +2344,7 @@ export default function AdminDashboard() {
                   <CardTitle>Total Players</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-4xl font-bold">{gameSaves.length}</p>
+                  <p className="text-4xl font-bold">{filterByTimeRange(gameSaves, 'updated_at').length}</p>
                 </CardContent>
               </Card>
 
@@ -2351,7 +2354,7 @@ export default function AdminDashboard() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-4xl font-bold">
-                    {gameSaves.filter(s => 
+                    {filterByTimeRange(gameSaves, 'updated_at').filter(s => 
                       s.game_state?.events?.cube15a || 
                       s.game_state?.events?.cube15b ||
                       s.game_state?.events?.cube13 ||
@@ -2370,17 +2373,20 @@ export default function AdminDashboard() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-4xl font-bold">
-                    {gameSaves.length > 0
-                      ? Math.round((gameSaves.filter(s => 
-                          s.game_state?.events?.cube15a || 
-                          s.game_state?.events?.cube15b ||
-                          s.game_state?.events?.cube13 ||
-                          s.game_state?.events?.cube14a ||
-                          s.game_state?.events?.cube14b ||
-                          s.game_state?.events?.cube14c ||
-                          s.game_state?.events?.cube14d
-                        ).length / gameSaves.length) * 100)
-                      : 0}%
+                    {(() => {
+                      const filtered = filterByTimeRange(gameSaves, 'updated_at');
+                      return filtered.length > 0
+                        ? Math.round((filtered.filter(s => 
+                            s.game_state?.events?.cube15a || 
+                            s.game_state?.events?.cube15b ||
+                            s.game_state?.events?.cube13 ||
+                            s.game_state?.events?.cube14a ||
+                            s.game_state?.events?.cube14b ||
+                            s.game_state?.events?.cube14c ||
+                            s.game_state?.events?.cube14d
+                          ).length / filtered.length) * 100)
+                        : 0;
+                    })()}%
                   </p>
                 </CardContent>
               </Card>
