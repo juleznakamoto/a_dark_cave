@@ -1,6 +1,6 @@
 import { villageBuildActions } from "@/game/rules/villageBuildActions";
 import { GameState } from "@shared/schema"; // Assuming GameState is defined elsewhere
-import { HUNTING_SKILL_BONUSES } from "@/components/game/panels/EstatePanel";
+import { HUNTING_SKILL_BONUSES } from "@/game/rules/skillUpgrades";
 
 export interface PopulationJobConfig {
   id: string;

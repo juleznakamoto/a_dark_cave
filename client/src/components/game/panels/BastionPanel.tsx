@@ -13,74 +13,10 @@ import { useMobileButtonTooltip } from "@/hooks/useMobileTooltip";
 import { Progress } from "@/components/ui/progress";
 import AttackWavesChart from "./AttackWavesChart";
 import { logger } from "@/lib/logger";
-
-// Crushing Strike upgrade configurations
-export const CRUSHING_STRIKE_UPGRADES = [
-  { level: 0, damage: 10, stunRounds: 1, cost: 0, currency: null },
-  { level: 1, damage: 20, stunRounds: 1, cost: 500, currency: "gold" },
-  { level: 2, damage: 30, stunRounds: 1, cost: 1000, currency: "gold" },
-  { level: 3, damage: 40, stunRounds: 2, cost: 1500, currency: "gold" },
-  { level: 4, damage: 50, stunRounds: 2, cost: 2000, currency: "gold" },
-  { level: 5, damage: 60, stunRounds: 3, cost: 2500, currency: "gold" },
-];
-
-// Bloodflame Sphere upgrade configurations
-export const BLOODFLAME_SPHERE_UPGRADES = [
-  {
-    level: 0,
-    damage: 10,
-    burnDamage: 10,
-    burnRounds: 1,
-    healthCost: 10,
-    cost: 0,
-    currency: null,
-  },
-  {
-    level: 1,
-    damage: 15,
-    burnDamage: 15,
-    burnRounds: 1,
-    healthCost: 10,
-    cost: 500,
-    currency: "gold",
-  },
-  {
-    level: 2,
-    damage: 20,
-    burnDamage: 20,
-    burnRounds: 1,
-    healthCost: 10,
-    cost: 1000,
-    currency: "gold",
-  },
-  {
-    level: 3,
-    damage: 25,
-    burnDamage: 25,
-    burnRounds: 2,
-    healthCost: 20,
-    cost: 1500,
-    currency: "gold",
-  },
-  {
-    level: 4,
-    damage: 30,
-    burnDamage: 30,
-    burnRounds: 2,
-    healthCost: 20,
-    cost: 2000,
-    currency: "gold",
-  },
-  {
-    level: 5,
-    damage: 35,
-    burnDamage: 35,
-    burnRounds: 3,
-    healthCost: 20,
-    cost: 2500,
-    currency: "gold",
-  },
-];
+import {
+  CRUSHING_STRIKE_UPGRADES,
+  BLOODFLAME_SPHERE_UPGRADES,
+} from "@/game/rules/skillUpgrades";
 
 // Helper to get building label based on level
 const getBuildingLabel = (

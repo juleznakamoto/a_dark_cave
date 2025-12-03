@@ -376,30 +376,16 @@ export const combatItemTooltips: Record<string, TooltipConfig> = {
   crushing_strike: {
     getContent: (state) => {
       const level = state.combatSkills.crushingStrikeLevel ?? 0;
-      const configs = [
-        { damage: 10, stunRounds: 1 },
-        { damage: 20, stunRounds: 1 },
-        { damage: 30, stunRounds: 1 },
-        { damage: 40, stunRounds: 2 },
-        { damage: 50, stunRounds: 2 },
-        { damage: 60, stunRounds: 3 },
-      ];
-      const config = configs[level];
+      const { CRUSHING_STRIKE_UPGRADES } = require("@/game/rules/skillUpgrades");
+      const config = CRUSHING_STRIKE_UPGRADES[level];
       return `Damage: ${config.damage}\nStun Duration: ${config.stunRounds} round${config.stunRounds > 1 ? 's' : ''}`;
     },
   },
   bloodflame_sphere: {
     getContent: (state) => {
       const level = state.combatSkills.bloodflameSphereLevel ?? 0;
-      const configs = [
-        { damage: 10, burnDamage: 10, burnRounds: 1, healthCost: 10 },
-        { damage: 15, burnDamage: 15, burnRounds: 1, healthCost: 10 },
-        { damage: 20, burnDamage: 20, burnRounds: 1, healthCost: 10 },
-        { damage: 25, burnDamage: 25, burnRounds: 2, healthCost: 20 },
-        { damage: 30, burnDamage: 30, burnRounds: 2, healthCost: 20 },
-        { damage: 35, burnDamage: 35, burnRounds: 3, healthCost: 20 },
-      ];
-      const config = configs[level];
+      const { BLOODFLAME_SPHERE_UPGRADES } = require("@/game/rules/skillUpgrades");
+      const config = BLOODFLAME_SPHERE_UPGRADES[level];
       return `Damage: ${config.damage}\nBurn: ${config.burnDamage}×${config.burnRounds} round${config.burnRounds > 1 ? "s" : ""}\nHealth Cost: ${config.healthCost}`;
     },
   },
