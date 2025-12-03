@@ -32,7 +32,6 @@ function LogPanel() {
         setActiveEffects((prev) => new Set(prev).add(entry.id));
 
         // Remove effect after duration
-        const duration = entry.visualEffect.duration * 1000;
         const timerId = setTimeout(() => {
           setActiveEffects((prev) => {
             const newSet = new Set(prev);
@@ -40,7 +39,7 @@ function LogPanel() {
             return newSet;
           });
           timersRef.current.delete(entry.id);
-        }, duration);
+        }, 0);
 
         timersRef.current.set(entry.id, timerId);
       }

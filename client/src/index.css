@@ -331,7 +331,7 @@ html, body {
 }
 
 .log-fade-out {
-  animation: log-fade-out 1s ease-out forwards;
+  animation: log-fade-out 4.5s ease-out forwards;
 }
 
 /* Notification dot pulsating animation */
