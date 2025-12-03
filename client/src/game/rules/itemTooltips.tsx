@@ -112,6 +112,11 @@ export function renderItemTooltip(
                     </div>
                   ),
                 )}
+              {bonus.cooldownReduction && bonus.cooldownReduction !== 1 && (
+                <div>
+                  {capitalizeWords(actionId)}: -{Math.round((1 - bonus.cooldownReduction) * 100)}% Cooldown
+                </div>
+              )}
             </div>
           ),
         )}
