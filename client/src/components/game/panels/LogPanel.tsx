@@ -53,14 +53,17 @@ export default function LogPanel() {
 
       // Remove new villager entries after 60 seconds
       if (entry.id.startsWith('stranger-approaches-') && !processedStrangersRef.current.has(entry.id)) {
+        const timerKey = `remove-${entry.id}`;
         console.log('[LogPanel] Setting up deletion timer for:', entry.id, 'at', Date.now());
         console.log('[LogPanel] Timer will fire in 60000ms (60 seconds)');
+        console.log('[LogPanel] Expected fire time:', new Date(Date.now() + 60000).toLocaleTimeString());
         
         // Mark this stranger as processed
         processedStrangersRef.current.add(entry.id);
         
         const removeTimerId = setTimeout(() => {
-          console.log('[LogPanel] Timer fired for:', entry.id, 'at', Date.now());
+          console.log('[LogPanel] ⏰ TIMER FIRED for:', entry.id, 'at', Date.now());
+          console.log('[LogPanel] Current time:', new Date().toLocaleTimeString());
           const currentLog = useGameStore.getState().log;
           console.log('[LogPanel] Current log length before filter:', currentLog.length);
           console.log('[LogPanel] Looking for entry with id:', entry.id);
@@ -68,7 +71,7 @@ export default function LogPanel() {
           const filteredLog = currentLog.filter((logEntry) => {
             const shouldKeep = logEntry.id !== entry.id;
             if (!shouldKeep) {
-              console.log('[LogPanel] Filtering out entry:', logEntry.id);
+              console.log('[LogPanel] ✂️ Filtering out entry:', logEntry.id);
             }
             return shouldKeep;
           });
@@ -77,24 +80,26 @@ export default function LogPanel() {
           console.log('[LogPanel] Removed', currentLog.length - filteredLog.length, 'entries');
           
           useGameStore.setState({ log: filteredLog });
-          timersRef.current.delete(`remove-${entry.id}`);
+          timersRef.current.delete(timerKey);
           processedStrangersRef.current.delete(entry.id);
-          console.log('[LogPanel] Cleanup complete for:', entry.id);
+          console.log('[LogPanel] ✅ Cleanup complete for:', entry.id);
         }, 60000); // 60 seconds
         
-        timersRef.current.set(`remove-${entry.id}`, removeTimerId);
-        console.log('[LogPanel] Timer registered in timersRef, total active timers:', timersRef.current.size);
+        timersRef.current.set(timerKey, removeTimerId);
+        console.log('[LogPanel] Timer registered in timersRef with key:', timerKey, 'total active timers:', timersRef.current.size);
       }
     });
+  }, [log]); // Changed dependency to log instead of recentEntries
 
-    // Cleanup function: only clear timers on unmount, not on every re-render
+  // Cleanup only on unmount
+  useEffect(() => {
     return () => {
       console.log('[LogPanel] Component unmounting, clearing', timersRef.current.size, 'active timers');
       timersRef.current.forEach((timerId) => clearTimeout(timerId));
       timersRef.current.clear();
       processedStrangersRef.current.clear();
     };
-  }, [log]); // Changed dependency to log instead of recentEntries
+  }, []);
 
   return (
     <div className="h-[18vh] min-h-[6rem] pt-2 overflow-hidden">
