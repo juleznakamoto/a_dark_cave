@@ -1,88 +1,34 @@
-
 "use client";
 
 import * as React from "react";
-import { useState, useRef, useEffect, forwardRef } from "react";
-import ReactDOM from "react-dom";
-import { motion } from "framer-motion";
+import { useState, useRef, forwardRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { ButtonProps } from "@/components/ui/button";
 
 interface BubblyButtonProps extends ButtonProps {
   bubbleColor?: string;
-  bubbleColors?: string[]; // Array of colors for varied bubbles
+  bubbleColors?: string[];
 }
 
 interface Bubble {
   id: string;
-  startX: number;
-  startY: number;
-  color: string;
-  isTop: boolean;
+  x: number;
+  y: number;
 }
 
-// Bubble animation component rendered via portal
-function BubbleAnimation({ bubble, colors }: { bubble: Bubble; colors: string[] }) {
-  // Generate 80-120 bubbles for MAXIMUM satisfaction!
-  const bubbleCount = 80 + Math.floor(Math.random() * 41);
-  const bubbles = Array.from({ length: bubbleCount }).map(() => {
-    const angle = Math.random() * Math.PI * 2;
-    const distance = 30 + Math.random() * 120; // Much wider distance range
-    const size = 3 + Math.random() * 25; // Even more size variety
-    const color = colors[Math.floor(Math.random() * colors.length)];
-    const duration = 0.5 + Math.random() * 1.2; // More varied animation speeds
-    
-    return { size, angle, distance, color, duration };
-  });
-
-  return (
-    <>
-      {bubbles.map((b, index) => {
-        const endX = bubble.startX + Math.cos(b.angle) * b.distance;
-        const endY = bubble.isTop
-          ? bubble.startY - Math.abs(Math.sin(b.angle) * b.distance)
-          : bubble.startY + Math.abs(Math.sin(b.angle) * b.distance);
-
-        // Add some rotation variation for extra visual appeal
-        const rotation = Math.random() * 360;
-        
-        return (
-          <motion.div
-            key={`${bubble.id}-${index}`}
-            className="fixed rounded-full"
-            style={{
-              width: `${b.size}px`,
-              height: `${b.size}px`,
-              backgroundColor: b.color,
-              left: bubble.startX,
-              top: bubble.startY,
-              zIndex: -1,
-              pointerEvents: "none",
-              boxShadow: `0 0 ${b.size * 0.8}px ${b.color}aa, 0 0 ${b.size * 1.5}px ${b.color}55`,
-            }}
-            initial={{
-              opacity: 1,
-              scale: 1,
-              rotate: 0,
-            }}
-            animate={{
-              opacity: 0,
-              scale: 0.1,
-              x: endX - bubble.startX,
-              y: endY - bubble.startY,
-              rotate: rotation,
-            }}
-            transition={{
-              duration: b.duration,
-              ease: [0.16, 1, 0.3, 1], // Custom easing for smoother feel
-            }}
-          />
-        );
-      })}
-    </>
-  );
-}
+// 8 gray tones from light to dark
+const GRAY_TONES = [
+  "#f5f5f5",
+  "#e0e0e0",
+  "#bdbdbd",
+  "#9e9e9e",
+  "#757575",
+  "#616161",
+  "#424242",
+  "#212121",
+];
 
 const BubblyButton = forwardRef<HTMLButtonElement, BubblyButtonProps>(
   ({ className, onClick, children, bubbleColor = "#8b7355", bubbleColors, ...props }, ref) => {
@@ -90,8 +36,8 @@ const BubblyButton = forwardRef<HTMLButtonElement, BubblyButtonProps>(
     const [isGlowing, setIsGlowing] = useState(false);
     const buttonRef = useRef<HTMLButtonElement>(null);
     const bubbleIdCounter = useRef(0);
-    
-    // Use provided colors or fall back to single color variations
+
+    // Use provided colors or fall back to single color variations - not used in the edited version but keeping it for potential future use or as part of original code
     const colors = bubbleColors || [
       bubbleColor,
       bubbleColor + "dd", // slightly transparent
@@ -103,76 +49,20 @@ const BubblyButton = forwardRef<HTMLButtonElement, BubblyButtonProps>(
       if (!button) return;
 
       const rect = button.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
 
-      // Create MANY bubble bursts for maximum endorphin release!
-      const newBubbles: Bubble[] = [
-        {
-          id: `bubble-top-${bubbleIdCounter.current++}`,
-          startX: centerX,
-          startY: centerY,
-          color: bubbleColor,
-          isTop: true,
-        },
-        {
-          id: `bubble-bottom-${bubbleIdCounter.current++}`,
-          startX: centerX,
-          startY: centerY,
-          color: bubbleColor,
-          isTop: false,
-        },
-        {
-          id: `bubble-left-${bubbleIdCounter.current++}`,
-          startX: centerX,
-          startY: centerY,
-          color: bubbleColor,
-          isTop: true,
-        },
-        {
-          id: `bubble-right-${bubbleIdCounter.current++}`,
-          startX: centerX,
-          startY: centerY,
-          color: bubbleColor,
-          isTop: false,
-        },
-        {
-          id: `bubble-topleft-${bubbleIdCounter.current++}`,
-          startX: centerX,
-          startY: centerY,
-          color: bubbleColor,
-          isTop: true,
-        },
-        {
-          id: `bubble-topright-${bubbleIdCounter.current++}`,
-          startX: centerX,
-          startY: centerY,
-          color: bubbleColor,
-          isTop: true,
-        },
-        {
-          id: `bubble-bottomleft-${bubbleIdCounter.current++}`,
-          startX: centerX,
-          startY: centerY,
-          color: bubbleColor,
-          isTop: false,
-        },
-        {
-          id: `bubble-bottomright-${bubbleIdCounter.current++}`,
-          startX: centerX,
-          startY: centerY,
-          color: bubbleColor,
-          isTop: false,
-        },
-      ];
+      const newBubble: Bubble = {
+        id: `bubble-${bubbleIdCounter.current++}`,
+        x,
+        y,
+      };
 
-      setBubbles((prev) => [...prev, ...newBubbles]);
+      setBubbles((prev) => [...prev, newBubble]);
 
-      // Remove bubbles after animation completes (longer to account for varied durations)
+      // Remove bubble after animation completes (longer to account for varied durations)
       setTimeout(() => {
-        setBubbles((prev) =>
-          prev.filter((b) => !newBubbles.find((nb) => nb.id === b.id))
-        );
+        setBubbles((prev) => prev.filter((b) => b.id !== newBubble.id));
       }, 2000);
 
       // Trigger glow effect for 1 second
@@ -187,52 +77,102 @@ const BubblyButton = forwardRef<HTMLButtonElement, BubblyButtonProps>(
       }
     };
 
-    // Note: We don't clean up bubbles on unmount because:
-    // 1. They're rendered via portal to document.body (not in this component's tree)
-    // 2. They have their own timeout-based cleanup that removes them after animation
-    // 3. This allows animations to complete even when the button is removed from DOM
-
     return (
-      <>
-        {/* Render bubbles via portal to document.body */}
-        {typeof document !== "undefined" &&
-          bubbles.map((bubble) =>
-            ReactDOM.createPortal(
-              <BubbleAnimation key={bubble.id} bubble={bubble} colors={colors} />,
-              document.body
-            )
-          )}
-
-        <Button
-          ref={(node) => {
-            buttonRef.current = node;
-            if (typeof ref === "function") {
-              ref(node);
-            } else if (ref) {
-              ref.current = node;
-            }
-          }}
-          onClick={handleClick}
-          className={cn(
-            "relative transition-all duration-100 ease-in overflow-visible",
-            "active:scale-90",
-            className
-          )}
-          style={
-            {
-              "--bubble-color": bubbleColor,
-              boxShadow: isGlowing 
-                ? `0 0 20px ${bubbleColor}99, 0 0 40px ${bubbleColor}66, 0 0 60px ${bubbleColor}33` 
-                : undefined,
-              transition: "box-shadow 0.15s ease-out",
-              filter: isGlowing ? "brightness(1.2)" : undefined,
-            } as React.CSSProperties
+      <Button
+        ref={(node) => {
+          buttonRef.current = node;
+          if (typeof ref === "function") {
+            ref(node);
+          } else if (ref) {
+            ref.current = node;
           }
-          {...props}
-        >
-          {children}
-        </Button>
-      </>
+        }}
+        onClick={handleClick}
+        className={cn(
+          "relative transition-all duration-100 ease-in overflow-visible",
+          "active:scale-90",
+          className
+        )}
+        style={
+          {
+            // Using the middle gray tone for the glow effect as per intention
+            boxShadow: isGlowing
+              ? `0 0 20px ${GRAY_TONES[4]}99, 0 0 40px ${GRAY_TONES[5]}66, 0 0 60px ${GRAY_TONES[6]}33`
+              : undefined,
+            transition: "box-shadow 0.15s ease-out",
+            filter: isGlowing ? "brightness(1.2)" : undefined,
+          } as React.CSSProperties
+        }
+        {...props}
+      >
+        {/* Bubble animations container */}
+        <div className="absolute inset-0 pointer-events-none overflow-visible">
+          <AnimatePresence>
+            {bubbles.map((bubble) => {
+              // Generate 80-120 bubbles
+              const bubbleCount = 80 + Math.floor(Math.random() * 41);
+              const particleBubbles = Array.from({ length: bubbleCount }).map(() => {
+                const angle = Math.random() * Math.PI * 2;
+                const distance = 30 + Math.random() * 120;
+                const size = 3 + Math.random() * 25;
+                const color = GRAY_TONES[Math.floor(Math.random() * GRAY_TONES.length)];
+                const duration = 0.5 + Math.random() * 1.2;
+                const rotation = Math.random() * 360;
+
+                return { size, angle, distance, color, duration, rotation };
+              });
+
+              return (
+                <React.Fragment key={bubble.id}>
+                  {particleBubbles.map((b, index) => {
+                    const endX = Math.cos(b.angle) * b.distance;
+                    const endY = Math.sin(b.angle) * b.distance;
+
+                    return (
+                      <motion.div
+                        key={`${bubble.id}-${index}`}
+                        className="absolute rounded-full"
+                        style={{
+                          width: `${b.size}px`,
+                          height: `${b.size}px`,
+                          backgroundColor: b.color,
+                          left: bubble.x,
+                          top: bubble.y,
+                          boxShadow: `0 0 ${b.size * 0.8}px ${b.color}aa, 0 0 ${b.size * 1.5}px ${b.color}55`,
+                        }}
+                        initial={{
+                          opacity: 1,
+                          scale: 1,
+                          rotate: 0,
+                          x: 0,
+                          y: 0,
+                        }}
+                        animate={{
+                          opacity: 0,
+                          scale: 0.1,
+                          x: endX,
+                          y: endY,
+                          rotate: b.rotation,
+                        }}
+                        exit={{
+                          opacity: 0,
+                        }}
+                        transition={{
+                          duration: b.duration,
+                          ease: [0.16, 1, 0.3, 1],
+                        }}
+                      />
+                    );
+                  })}
+                </React.Fragment>
+              );
+            })}
+          </AnimatePresence>
+        </div>
+
+        {/* Button content */}
+        <span className="relative z-10">{children}</span>
+      </Button>
     );
   }
 );
