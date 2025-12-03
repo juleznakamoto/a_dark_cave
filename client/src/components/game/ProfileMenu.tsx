@@ -364,7 +364,7 @@ export default function ProfileMenu() {
         variant="ghost"
         size="xs"
         onClick={handleDiscovery}
-        className="p-0 w-7 h-7 bg-background/80 backdrop-blur-sm border border-border flex items-center justify-center group"
+        className="p-0 w-7 h-7 bg-background/80 backdrop-blur-sm border border-border flex items-center justify-center group shop-notification-pulse"
       >
         <img
           src="/flashlight.png"
