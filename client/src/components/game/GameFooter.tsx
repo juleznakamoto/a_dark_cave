@@ -59,9 +59,19 @@ export default function GameFooter() {
             <Button
               variant="ghost"
               size="xs"
-              onClick={togglePause}
-              data-testid="button-pause-game"
-              className={`px-1 py-1 text-xs hover`}
+              onClick={async () => {
+                togglePause();
+                try {
+                  const module = await import(
+                    "https://sdk.playlight.dev/playlight-sdk.es.js"
+                  );
+                  const playlightSDK = module.default;
+                  playlightSDK.setDiscovery(true);
+                } catch (error) {
+                  console.error("Error opening Playlight discovery:", error);
+                }
+              }}
+              className="px-1 py-1 text-xs hover"
             >
               {isPaused ? "▶" : "❚❚"}
             </Button>
