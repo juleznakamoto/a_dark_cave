@@ -3,6 +3,84 @@ import { ActionResult } from "../actions";
 import { logger } from "@/lib/logger";
 
 export const villageBuildActions: Record<string, Action> = {
+  repairWoodenHut: {
+    id: "repairWoodenHut",
+    label: "Wooden Hut",
+    description: "Repair a destroyed wooden hut",
+    tooltipEffects: ["Repair destroyed hut"],
+    building: true,
+    show_when: {
+      1: {
+        "flags.woodenHutDamaged": true,
+      },
+    },
+    cost: {
+      1: {
+        "resources.wood": 50, // 50% of level 1 cost (100)
+      },
+      2: {
+        "resources.wood": 125, // 50% of level 2 cost (250)
+      },
+      3: {
+        "resources.wood": 250, // 50% of level 3 cost (500)
+      },
+      4: {
+        "resources.wood": 375, // 50% of level 4 cost (750)
+      },
+      5: {
+        "resources.wood": 500, // 50% of level 5 cost (1000)
+      },
+      6: {
+        "resources.wood": 750, // 50% of level 6 cost (1500)
+      },
+      7: {
+        "resources.wood": 1000, // 50% of level 7 cost (2000)
+      },
+      8: {
+        "resources.wood": 1500, // 50% of level 8 cost (3000)
+      },
+      9: {
+        "resources.wood": 2000, // 50% of level 9 cost (4000)
+      },
+      10: {
+        "resources.wood": 2500, // 50% of level 10 cost (5000)
+      },
+    },
+    effects: {
+      1: {
+        "flags.woodenHutDamaged": false,
+      },
+      2: {
+        "flags.woodenHutDamaged": false,
+      },
+      3: {
+        "flags.woodenHutDamaged": false,
+      },
+      4: {
+        "flags.woodenHutDamaged": false,
+      },
+      5: {
+        "flags.woodenHutDamaged": false,
+      },
+      6: {
+        "flags.woodenHutDamaged": false,
+      },
+      7: {
+        "flags.woodenHutDamaged": false,
+      },
+      8: {
+        "flags.woodenHutDamaged": false,
+      },
+      9: {
+        "flags.woodenHutDamaged": false,
+      },
+      10: {
+        "flags.woodenHutDamaged": false,
+      },
+    },
+    cooldown: 5,
+  },
+
   buildWoodenHut: {
     id: "buildWoodenHut",
     label: "Wooden Hut",
@@ -18,35 +96,45 @@ export const villageBuildActions: Record<string, Action> = {
     show_when: {
       1: {
         "flags.villageUnlocked": true,
+        "flags.woodenHutDamaged": false,
       },
       2: {
         "buildings.cabin": 1,
+        "flags.woodenHutDamaged": false,
       },
       3: {
         "buildings.blacksmith": 1,
+        "flags.woodenHutDamaged": false,
       },
       4: {
         "buildings.shallowPit": 1,
+        "flags.woodenHutDamaged": false,
       },
       5: {
         "buildings.foundry": 1,
+        "flags.woodenHutDamaged": false,
       },
       6: {
         "buildings.foundry": 1,
+        "flags.woodenHutDamaged": false,
       },
       7: {
         "buildings.foundry": 1,
+        "flags.woodenHutDamaged": false,
       },
       8: {
         "buildings.altar": 1,
+        "flags.woodenHutDamaged": false,
       },
       9: {
         "buildings.greatCabin": 1,
         "buildings.timberMill": 1,
         "buildings.quarry": 1,
+        "flags.woodenHutDamaged": false,
       },
       10: {
         "buildings.woodenHut": 9,
+        "flags.woodenHutDamaged": false,
       },
     },
     cost: {
@@ -1452,6 +1540,9 @@ export const villageBuildActions: Record<string, Action> = {
   },
 };
 
+// Export repair handler
+export { handleRepairWoodenHut };
+
 // Action handlers
 function handleBuildingConstruction(
   state: GameState,
@@ -1541,6 +1632,46 @@ function handleBuildingConstruction(
       result.stateUpdates.stats[stat] = newStatValue;
     }
   }
+
+  return result;
+}
+
+export function handleRepairWoodenHut(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const level = state.buildings.woodenHut;
+  const action = villageBuildActions.repairWoodenHut;
+  const actionCosts = action?.cost?.[level];
+
+  if (!actionCosts) {
+    logger.warn(`No costs found for repairWoodenHut at level ${level}`);
+    return result;
+  }
+
+  // Apply resource costs
+  const newResources = { ...state.resources };
+  for (const [path, cost] of Object.entries(actionCosts)) {
+    if (path.startsWith("resources.")) {
+      const resource = path.split(".")[1] as keyof typeof newResources;
+      newResources[resource] -= cost;
+    }
+  }
+  result.stateUpdates.resources = newResources;
+
+  // Clear the damaged flag
+  result.stateUpdates.flags = {
+    ...state.flags,
+    woodenHutDamaged: false,
+  };
+
+  // Add completion message
+  result.logEntries!.push({
+    id: `wooden-hut-repaired-${Date.now()}`,
+    message: "The damaged wooden hut has been repaired and is ready for use again.",
+    timestamp: Date.now(),
+    type: "system",
+  });
 
   return result;
 }

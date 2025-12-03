@@ -139,6 +139,12 @@ export const villageAttackEvents: Record<string, GameEvent> = {
                   woodenHut: Math.max(0, state.buildings.woodenHut - 1),
                 }
               : state.buildings,
+            flags: hutDestroyed
+              ? {
+                  ...state.flags,
+                  woodenHutDamaged: true,
+                }
+              : state.flags,
             story: {
               ...state.story,
               seen: {

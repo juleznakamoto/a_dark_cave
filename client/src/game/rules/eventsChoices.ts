@@ -426,6 +426,12 @@ export const choiceEvents: Record<string, GameEvent> = {
                 state.buildings.woodenHut - hutDestruction,
               ),
             },
+            flags: hutDestruction > 0
+              ? {
+                  ...state.flags,
+                  woodenHutDamaged: true,
+                }
+              : state.flags,
             _logMessage: `You refuse the stranger entry. He leaves screaming curses in his alien tongue, echoing through the night. Before dawn, a barbarian tribe attacks as if summoned by his cries, killing ${villagerDeaths} villagers and destroying ${hutDestruction} wooden hut${hutDestruction > 1 ? "s" : ""} before vanishing into the wilds.`,
           };
         },

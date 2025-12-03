@@ -80,6 +80,12 @@ export default function VillagePanel() {
   // Define action groups with their actions
   const actionGroups = [
     {
+      title: "Repair",
+      actions: [
+        { id: "repairWoodenHut", label: "Wooden Hut" },
+      ],
+    },
+    {
       title: "Build",
       actions: [
         { id: "buildWoodenHut", label: "Wooden Hut" },
