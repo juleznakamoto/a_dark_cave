@@ -127,7 +127,7 @@ export const recurringEvents: Record<string, GameEvent> = {
   silverSackDiscovery: {
     id: "silverSackDiscovery",
     condition: (state: GameState) =>
-      state.tools.stone_axe && !state.story?.seen?.silverSackFound,
+      state.tools?.stone_axe && !state.story?.seen?.silverSackFound,
     triggerType: "resource",
     timeProbability: 2,
     message:
