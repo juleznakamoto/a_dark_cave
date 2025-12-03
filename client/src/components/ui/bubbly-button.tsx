@@ -102,7 +102,7 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
         ref={buttonRef}
         onClick={handleClick}
         className={cn(
-          "relative transition-all duration-100 ease-in overflow-visible isolate",
+          "relative transition-all duration-100 ease-in overflow-visible",
           "active:scale-90",
           className
         )}
@@ -114,12 +114,13 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
               : undefined,
             transition: "box-shadow 0.15s ease-out",
             filter: isGlowing ? "brightness(1.2)" : undefined,
+            zIndex: 1,
           } as React.CSSProperties
         }
         {...props}
       >
-        {/* Bubble animations container - behind content */}
-        <div className="absolute inset-0 pointer-events-none overflow-visible -z-10">
+        {/* Bubble animations container - behind button */}
+        <div className="absolute inset-0 pointer-events-none overflow-visible" style={{ zIndex: -1 }}>
           <AnimatePresence>
             {bubbles.map((bubble) => {
               // Generate 100 bubbles
@@ -151,6 +152,7 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
                           left: bubble.x,
                           top: bubble.y,
                           boxShadow: `0 0 ${b.size * 0.8}px ${b.color}aa, 0 0 ${b.size * 1.5}px ${b.color}55`,
+                          zIndex: -1,
                         }}
                         initial={{
                           opacity: 1,
@@ -183,7 +185,9 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
         </div>
 
         {/* Button content */}
-        {children}
+        <span style={{ position: 'relative', zIndex: 2 }}>
+          {children}
+        </span>
       </Button>
     );
   }
