@@ -1,0 +1,48 @@
+
+vdev Sound URLs registered for lazy loading
+
+ ❯ client/src/game/rules/events.test.ts (3 tests | 2 failed) 18ms
+     × should trigger events based on conditions 11ms
+     × should not trigger events with unmet conditions 2ms
+     ✓ should apply event choice effects correctly 1ms
+ ✓ server/referral.test.ts (6 tests) 90ms
+ ✓ server/referral.e2e.test.ts (2 tests) 8ms
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  client/src/game/rules/events.test.ts > Event System > should trigger events based on conditions
+TypeError: Cannot read properties of undefined (reading 'stone_axe')
+ ❯ Object.condition client/src/game/rules/eventsRecurring.ts:130:19
+    128|     id: "silverSackDiscovery",
+    129|     condition: (state: GameState) =>
+    130|       state.tools.stone_axe && !state.story?.seen?.silverSackFound,
+       |                   ^
+    131|     triggerType: "resource",
+    132|     timeProbability: 2,
+ ❯ Function.checkEvents client/src/game/rules/events.ts:183:33
+ ❯ client/src/game/rules/events.test.ts:28:58
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  client/src/game/rules/events.test.ts > Event System > should not trigger events with unmet conditions
+TypeError: Cannot read properties of undefined (reading 'stone_axe')
+ ❯ Object.condition client/src/game/rules/eventsRecurring.ts:130:19
+    128|     id: "silverSackDiscovery",
+    129|     condition: (state: GameState) =>
+    130|       state.tools.stone_axe && !state.story?.seen?.silverSackFound,
+       |                   ^
+    131|     triggerType: "resource",
+    132|     timeProbability: 2,
+ ❯ Function.checkEvents client/src/game/rules/events.ts:183:33
+ ❯ client/src/game/rules/events.test.ts:37:44
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed | 8 passed (9)
+      Tests  2 failed | 58 passed (60)
+   Start at  10:55:24
+   Duration  3.10s (transform 1.28s, setup 0ms, import 1.66s, tests 2.02s, environment 2ms)
+
+ FAIL  Tests failed. Watching for file changes...
+       press h to show help, press q to quit

@@ -29,7 +29,6 @@ export interface EffectDefinition {
 
     // General bonuses
     generalBonuses?: {
-      explorationBonus?: number; // Bonus resources when exploring
       luck?: number; // Luck bonus
       strength?: number; // Strength bonus
       knowledge?: number; // Knowledge bonus

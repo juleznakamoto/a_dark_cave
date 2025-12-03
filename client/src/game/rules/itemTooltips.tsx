@@ -40,25 +40,18 @@ export function renderItemTooltip(
       {effect.bonuses?.generalBonuses && (
         <div className="mt-1 space-y-0.5">
           {effect.bonuses.generalBonuses.luck && (
-            <div>+{effect.bonuses.generalBonuses.luck} Luck</div>
+            <div>Luck: +{effect.bonuses.generalBonuses.luck}</div>
           )}
           {effect.bonuses.generalBonuses.strength && (
-            <div>+{effect.bonuses.generalBonuses.strength} Strength</div>
-          )}
-
-          {effect.bonuses.generalBonuses.explorationBonus && (
-            <div>
-              +{effect.bonuses.generalBonuses.explorationBonus} Exploration
-              Bonus
-            </div>
+            <div>Strength: +{effect.bonuses.generalBonuses.strength}</div>
           )}
           {effect.bonuses.generalBonuses.knowledge && (
-            <div>+{effect.bonuses.generalBonuses.knowledge} Knowledge</div>
+            <div>Knowledge: +{effect.bonuses.generalBonuses.knowledge}</div>
           )}
           {madnessValue && (
-            <div>
-              {madnessValue > 0 ? "+" : ""}
-              {madnessValue} Madness
+            <div>Madness: 
+              {madnessValue > 0 ? " +" : " "}
+              {madnessValue}
             </div>
           )}
           {effect.bonuses.generalBonuses.madnessReduction && (
@@ -66,29 +59,31 @@ export function renderItemTooltip(
           )}
           {effect.bonuses.generalBonuses.craftingCostReduction && (
             <div>
+              Craft Discount: -
               {Math.floor(
                 effect.bonuses.generalBonuses.craftingCostReduction * 100,
               )}
-              % Craft Discount
+              %
             </div>
           )}
           {effect.bonuses.generalBonuses.buildingCostReduction && (
             <div>
+              Build Discount: -
               {Math.floor(
                 effect.bonuses.generalBonuses.buildingCostReduction * 100,
               )}
-              % Build Discount
+              %
             </div>
           )}
           {effect.bonuses.generalBonuses.caveExploreMultiplier &&
             effect.bonuses.generalBonuses.caveExploreMultiplier !== 1 && (
               <div>
-                +
+                Cave Explore: +
                 {Math.round(
                   (effect.bonuses.generalBonuses.caveExploreMultiplier - 1) *
                     100,
                 )}
-                % Cave Explore Bonus
+                % Bonus
               </div>
             )}
         </div>
@@ -99,7 +94,8 @@ export function renderItemTooltip(
             <div key={actionId}>
               {bonus.resourceMultiplier && bonus.resourceMultiplier !== 1 && (
                 <div>
-                  {capitalizeWords(actionId)}: +{Math.round((bonus.resourceMultiplier - 1) * 100)}% Bonus
+                  {capitalizeWords(actionId)}: +
+                  {Math.round((bonus.resourceMultiplier - 1) * 100)}% Bonus
                 </div>
               )}
               {bonus.resourceBonus &&
@@ -113,7 +109,8 @@ export function renderItemTooltip(
                 )}
               {bonus.cooldownReduction && bonus.cooldownReduction !== 0 && (
                 <div>
-                  {capitalizeWords(actionId)}: -{bonus.cooldownReduction}s Cooldown
+                  {capitalizeWords(actionId)}: -{bonus.cooldownReduction}s
+                  Cooldown
                 </div>
               )}
             </div>
