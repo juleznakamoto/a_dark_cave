@@ -185,6 +185,18 @@ export default function ProfileMenu() {
     await checkAuth();
   };
 
+  const handleDiscovery = async () => {
+    try {
+      const module = await import(
+        "https://sdk.playlight.dev/playlight-sdk.es.js"
+      );
+      const playlightSDK = module.default;
+      playlightSDK.setDiscovery();
+    } catch (error) {
+      console.error("Error opening Playlight discovery:", error);
+    }
+  };
+
   return (
     <div className="fixed top-2 right-2 z-50 pointer-events-auto">
       <AuthDialog
@@ -192,6 +204,16 @@ export default function ProfileMenu() {
         onClose={() => handleSetAuthDialogOpen(false)}
         onAuthSuccess={handleAuthSuccess}
       />
+      {isMobile && (
+        <Button
+          variant="ghost"
+          size="xs"
+          onClick={handleDiscovery}
+          className="px-2 py-1 text-xs hover bg-background/80 text-neutral-300 backdrop-blur-sm border border-border mr-2"
+        >
+          +
+        </Button>
+      )}
       <DropdownMenu
         open={accountDropdownOpen}
         onOpenChange={(open) => {
