@@ -95,34 +95,23 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
     };
 
     return (
-      <Button
-        ref={buttonRef}
-        onClick={handleClick}
-        className={cn(
-          "relative transition-all duration-100 ease-in overflow-visible",
-          "active:scale-90",
-          className
-        )}
-        style={
-          {
-            // Using the middle gray tone for the glow effect as per intention
-            boxShadow: isGlowing
-              ? `0 0 15px ${NEUTRAL_TONES[2]}99, 0 0 30px ${NEUTRAL_TONES[3]}66, 0 0 40px ${NEUTRAL_TONES[4]}33`
-              : undefined,
-            transition: "box-shadow 0.15s ease-out",
-            filter: isGlowing ? "brightness(1.2)" : undefined,
-            transform: "translateZ(10px)",
-            transformStyle: "preserve-3d",
-          } as React.CSSProperties
-        }
-        {...props}
+      <div
+        style={{
+          display: "inline-block",
+          transformStyle: "preserve-3d",
+          perspective: "1000px",
+        }}
       >
-        {/* Bubble animations container - behind button using translateZ */}
-        <div 
-          className="absolute inset-0 pointer-events-none overflow-visible" 
-          style={{ 
+        {/* Bubble animations container - behind button using translateZ(-1px) */}
+        <div
+          className="absolute pointer-events-none overflow-visible"
+          style={{
             transform: "translateZ(-1px)",
             transformStyle: "preserve-3d",
+            left: 0,
+            top: 0,
+            width: "100%",
+            height: "100%",
           }}
         >
           <AnimatePresence>
@@ -133,7 +122,7 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
                 const distance = 30 + Math.random() * 120;
                 const size = 3 + Math.random() * 25;
                 const color = NEUTRAL_TONES[Math.floor(Math.random() * NEUTRAL_TONES.length)];
-                const duration = 2.5 + Math.random() * 1.2;
+                const duration = 2.5 + Math.random() * 1.0;
 
                 return { size, angle, distance, color, duration };
               });
@@ -184,11 +173,31 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
           </AnimatePresence>
         </div>
 
-        {/* Button content */}
-        <span style={{ position: 'relative', transform: "translateZ(1px)" }}>
+        {/* Button - in front using translateZ(0) */}
+        <Button
+          ref={buttonRef}
+          onClick={handleClick}
+          className={cn(
+            "relative transition-all duration-100 ease-in overflow-visible",
+            "active:scale-90",
+            className
+          )}
+          style={
+            {
+              boxShadow: isGlowing
+                ? `0 0 15px ${NEUTRAL_TONES[2]}99, 0 0 30px ${NEUTRAL_TONES[3]}66, 0 0 40px ${NEUTRAL_TONES[4]}33`
+                : undefined,
+              transition: "box-shadow 0.15s ease-out",
+              filter: isGlowing ? "brightness(1.2)" : undefined,
+              transform: "translateZ(0)",
+              transformStyle: "preserve-3d",
+            } as React.CSSProperties
+          }
+          {...props}
+        >
           {children}
-        </span>
-      </Button>
+        </Button>
+      </div>
     );
   }
 );
