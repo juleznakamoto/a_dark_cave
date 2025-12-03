@@ -14,8 +14,6 @@ interface CooldownButtonProps extends ButtonProps {
   cooldownMs: number;
   button_id: string;
   tooltip?: React.ReactNode;
-  useCustomButton?: React.ComponentType<any>;
-  bubbleColor?: string;
 }
 
 const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
@@ -30,8 +28,6 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       size = "default",
       "data-testid": testId,
       tooltip,
-      useCustomButton,
-      bubbleColor,
       ...props
     },
     ref
@@ -91,13 +87,11 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
 
   const buttonId = testId || `button-${Math.random()}`;
 
-  const ButtonComponent = useCustomButton || Button;
   const buttonContent = (
-    <ButtonComponent
+    <Button
       ref={ref}
       onClick={handleClick}
       disabled={props.disabled || isCoolingDown}
-      bubbleColor={bubbleColor}
       variant={variant}
       size={size}
       className={`relative overflow-hidden transition-all duration-200 select-none ${
@@ -121,7 +115,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
           }}
         />
       )}
-    </ButtonComponent>
+    </Button>
   );
 
 

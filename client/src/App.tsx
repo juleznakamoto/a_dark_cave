@@ -7,6 +7,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import Game from "@/pages/game";
 import EndScreenPage from "@/pages/end-screen";
 import HeroTest from "@/pages/hero-test";
+import ButtonTest from "@/pages/button-test";
 import NotFound from "@/pages/not-found";
 import ResetPassword from "@/pages/reset-password";
 import Imprint from "@/pages/imprint";
@@ -31,6 +32,7 @@ function Router() {
       <Route path="/reset-password" component={ResetPassword} />
       <Route path="/explosion-test" component={ExplosionTest} />
       <Route path="/hero-test" component={HeroTest} />
+      <Route path="/button-test" component={ButtonTest} />
       <Route path="/admin/dashboard" component={AdminDashboard} />
       <Route component={NotFound} />
     </Switch>
