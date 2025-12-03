@@ -178,7 +178,6 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
           onClick={handleClick}
           className={cn(
             "relative transition-all duration-100 ease-in overflow-visible",
-            "active:scale-90",
             className
           )}
           style={
