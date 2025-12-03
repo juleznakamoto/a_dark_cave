@@ -41,7 +41,7 @@ function LogPanel() {
           });
           timersRef.current.delete(entry.id);
         }, duration);
-        
+
         timersRef.current.set(entry.id, timerId);
       }
     });
@@ -80,10 +80,16 @@ function LogPanel() {
                   ? `log-${entry.visualEffect.type}`
                   : "";
 
+              // Apply fade-out to stranger entries that are 5+ seconds old
+              const currentTime = Date.now();
+              const entryAge = currentTime - entry.timestamp;
+              const isFadingOut = entry.id.startsWith('stranger-approaches-') && entryAge >= 5000;
+              const fadeOutClass = isFadingOut ? "log-fade-out" : "";
+
               return (
                 <div key={entry.id}>
                   <p
-                    className={`text-foreground leading-relaxed ${opacity} ${effectClass}`}
+                    className={`text-foreground leading-relaxed ${opacity} ${effectClass} ${fadeOutClass}`}
                     style={
                       hasActiveEffect && entry.visualEffect
                         ? ({
@@ -100,7 +106,7 @@ function LogPanel() {
               );
             })}
           </div>
-          
+
         </div >{/* Gradient overlay at bottom of content area */}
         <div className="absolute bottom-0 left-0 right-0 h-12 pointer-events-none bg-gradient-to-t from-background to-transparent"></div>
         <ScrollBar orientation="vertical" />
