@@ -1,0 +1,32 @@
+LogPanel.tsx:62 [LogPanel] Expected fire time: 09:31:35
+LogPanel.tsx:92 [LogPanel] Timer registered in timersRef with key: remove-stranger-approaches-1764750386732 total active timers: 6
+LogPanel.tsx:98 [LogPanel] Component unmounting, clearing 6 active timers
+LogPanel.tsx:25 [LogPanel] Current stranger entries: (6) ['stranger-approaches-1764750596116', 'stranger-approaches-1764750565764', 'stranger-approaches-1764750535498', 'stranger-approaches-1764750520298', 'stranger-approaches-1764750401932', 'stranger-approaches-1764750386732']
+LogPanel.tsx:60 [LogPanel] Setting up deletion timer for: stranger-approaches-1764750596116 at 1764750703496
+LogPanel.tsx:61 [LogPanel] Timer will fire in 60000ms (60 seconds)
+LogPanel.tsx:62 [LogPanel] Expected fire time: 09:31:49
+LogPanel.tsx:92 [LogPanel] Timer registered in timersRef with key: remove-stranger-approaches-1764750596116 total active timers: 1
+LogPanel.tsx:60 [LogPanel] Setting up deletion timer for: stranger-approaches-1764750565764 at 1764750703497
+LogPanel.tsx:61 [LogPanel] Timer will fire in 60000ms (60 seconds)
+LogPanel.tsx:62 [LogPanel] Expected fire time: 09:31:49
+LogPanel.tsx:92 [LogPanel] Timer registered in timersRef with key: remove-stranger-approaches-1764750565764 total active timers: 2
+LogPanel.tsx:60 [LogPanel] Setting up deletion timer for: stranger-approaches-1764750535498 at 1764750703497
+LogPanel.tsx:61 [LogPanel] Timer will fire in 60000ms (60 seconds)
+LogPanel.tsx:62 [LogPanel] Expected fire time: 09:31:49
+LogPanel.tsx:92 [LogPanel] Timer registered in timersRef with key: remove-stranger-approaches-1764750535498 total active timers: 3
+LogPanel.tsx:60 [LogPanel] Setting up deletion timer for: stranger-approaches-1764750520298 at 1764750703497
+LogPanel.tsx:61 [LogPanel] Timer will fire in 60000ms (60 seconds)
+LogPanel.tsx:62 [LogPanel] Expected fire time: 09:31:49
+LogPanel.tsx:92 [LogPanel] Timer registered in timersRef with key: remove-stranger-approaches-1764750520298 total active timers: 4
+LogPanel.tsx:60 [LogPanel] Setting up deletion timer for: stranger-approaches-1764750401932 at 1764750703497
+LogPanel.tsx:61 [LogPanel] Timer will fire in 60000ms (60 seconds)
+LogPanel.tsx:62 [LogPanel] Expected fire time: 09:31:49
+LogPanel.tsx:92 [LogPanel] Timer registered in timersRef with key: remove-stranger-approaches-1764750401932 total active timers: 5
+LogPanel.tsx:60 [LogPanel] Setting up deletion timer for: stranger-approaches-1764750386732 at 1764750703497
+LogPanel.tsx:61 [LogPanel] Timer will fire in 60000ms (60 seconds)
+LogPanel.tsx:62 [LogPanel] Expected fire time: 09:31:49
+LogPanel.tsx:92 [LogPanel] Timer registered in timersRef with key: remove-stranger-approaches-1764750386732 total active timers: 6
+logger.ts:33 v551Z [SAVE CLOUD] 🔍 Starting cloud save with OCC... {playTime: 16786359.05799676, isNewGame: false, userId: 'a375ecb5...', diffKeys: Array(12), hasPlayTime: true, …}
+logger.ts:33 v551Z [SAVE CLOUD] 💾 Calling database RPC with OCC validation... {hasClickAnalytics: true, clickAnalyticsKeys: Array(3), hasResourceAnalytics: false, resourceAnalyticsKeys: Array(0), diffSize: 5928, …}
+logger.ts:33 v551Z [SAVE CLOUD] ✅ Cloud save completed successfully - OCC check passed in database
+logger.ts:33 v551Z [SAVE] ✅ Updated lastCloudState after successful cloud save
