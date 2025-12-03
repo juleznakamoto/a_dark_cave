@@ -187,6 +187,12 @@ export default function ProfileMenu() {
 
   const handleDiscovery = async () => {
     try {
+      // Pause the game
+      const currentState = useGameStore.getState();
+      if (!currentState.isPaused) {
+        currentState.togglePause();
+      }
+      
       const module = await import(
         "https://sdk.playlight.dev/playlight-sdk.es.js"
       );
