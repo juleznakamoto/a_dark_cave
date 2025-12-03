@@ -383,7 +383,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     timeProbability: 35,
     title: "The Mad Beduine",
     message:
-      "In the evening, a robed figure approaches from the wilderness. His eyes burn with madness as he mutters in a foreign tongue, gestures sharp and unsettling. The villagers grow uneasy. Do you allow this Beduine to stay the night?",
+      "In the evening, a robed man approaches from the wilderness. His eyes burn with madness as he mutters in a foreign tongue, gestures sharp and unsettling. The villagers grow uneasy. Do you allow this Beduine to stay the night?",
     triggered: false,
     priority: 3,
     repeatable: false,
@@ -409,11 +409,11 @@ export const choiceEvents: Record<string, GameEvent> = {
           const traps = state.buildings.traps;
           const villagerDeaths = Math.floor(
             Math.random() * state.buildings.woodenHut +
-              1 -
+              2 -
               traps * 2 +
-              state.CM * 2,
+              state.CM * 4,
           );
-          const hutDestruction = Math.ceil(Math.random() * 2) + state.CM * 1;
+          const hutDestruction = 1 + state.CM * 1;
 
           const deathResult = killVillagers(state, villagerDeaths);
 
@@ -426,7 +426,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 state.buildings.woodenHut - hutDestruction,
               ),
             },
-            _logMessage: `You refuse the stranger entry. He leaves screaming curses in his alien tongue, echoing through the night. Before dawn, a barbarian tribe attacks as if summoned by his cries, killing ${villagerDeaths} villagers and destroying ${hutDestruction} hut${hutDestruction > 1 ? "s" : ""} before vanishing into the wilds.`,
+            _logMessage: `You refuse the stranger entry. He leaves screaming curses in his alien tongue, echoing through the night. Before dawn, a barbarian tribe attacks as if summoned by his cries, killing ${villagerDeaths} villagers and destroying ${hutDestruction} wooden hut${hutDestruction > 1 ? "s" : ""} before vanishing into the wilds.`,
           };
         },
       },
