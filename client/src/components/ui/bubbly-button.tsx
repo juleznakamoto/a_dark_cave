@@ -5,6 +5,7 @@ import { useState, useRef, forwardRef, useImperativeHandle } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { tailwindToHex } from "@/lib/tailwindColors";
 import type { ButtonProps } from "@/components/ui/button";
 
 interface BubblyButtonProps extends ButtonProps {
@@ -23,16 +24,16 @@ export interface BubblyButtonHandle {
   triggerAnimation: (x: number, y: number) => void;
 }
 
-// 8 gray tones from light to dark
+// 8 gray tones from light to dark using Tailwind colors
 const GRAY_TONES = [
-  "#f5f5f5",
-  "#e0e0e0",
-  "#bdbdbd",
-  "#9e9e9e",
-  "#757575",
-  "#616161",
-  "#424242",
-  "#212121",
+  tailwindToHex("gray-100"),
+  tailwindToHex("gray-200"),
+  tailwindToHex("gray-300"),
+  tailwindToHex("gray-400"),
+  tailwindToHex("gray-500"),
+  tailwindToHex("gray-600"),
+  tailwindToHex("gray-700"),
+  tailwindToHex("gray-950"),
 ];
 
 const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
