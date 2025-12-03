@@ -3,7 +3,7 @@ import { useGameStore } from "@/game/state";
 import { calculateBastionStats } from "@/game/bastionStats";
 import { getTotalKnowledge } from "@/game/rules/effectsCalculation";
 import { combatItemTooltips } from "@/game/rules/tooltips";
-import { BLOODFLAME_SPHERE_UPGRADES, CRUSHING_STRIKE_UPGRADES } from "@/components/game/panels/BastionPanel";
+import { BLOODFLAME_SPHERE_UPGRADES, CRUSHING_STRIKE_UPGRADES } from "@/game/rules/skillUpgrades";
 import {
   Dialog,
   DialogContent,
