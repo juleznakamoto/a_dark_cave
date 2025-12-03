@@ -97,21 +97,20 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
     return (
       <div
         style={{
+          position: "relative",
           display: "inline-block",
-          transformStyle: "preserve-3d",
-          perspective: "1000px",
+          isolation: "isolate",
         }}
       >
-        {/* Bubble animations container - behind button using translateZ(-1px) */}
+        {/* Bubble animations container - behind button using isolation */}
         <div
           className="absolute pointer-events-none overflow-visible"
           style={{
-            transform: "translateZ(-1px)",
-            transformStyle: "preserve-3d",
             left: 0,
             top: 0,
             width: "100%",
             height: "100%",
+            zIndex: -1,
           }}
         >
           <AnimatePresence>
@@ -173,7 +172,7 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
           </AnimatePresence>
         </div>
 
-        {/* Button - in front using translateZ(0) */}
+        {/* Button - in front using isolation context */}
         <Button
           ref={buttonRef}
           onClick={handleClick}
@@ -189,8 +188,7 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
                 : undefined,
               transition: "box-shadow 0.15s ease-out",
               filter: isGlowing ? "brightness(1.2)" : undefined,
-              transform: "translateZ(0)",
-              transformStyle: "preserve-3d",
+              zIndex: 0,
             } as React.CSSProperties
           }
           {...props}
