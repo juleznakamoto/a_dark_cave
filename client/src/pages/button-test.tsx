@@ -20,10 +20,11 @@ function BubbleSet({ x, y, color }: { x: number; y: number; color: string }) {
     "#8a7355", // deep brown
   ];
   
-  const bubbles = Array.from({ length: 9 }).map(() => ({
-    size: 10 + Math.random() * 10,
+  // 90-110 bubbles for maximum satisfaction
+  const bubbles = Array.from({ length: 90 + Math.floor(Math.random() * 21) }).map(() => ({
+    size: 3 + Math.random() * 22,
     angle: Math.random() * Math.PI * 2,
-    distance: 50 + Math.random() * 30,
+    distance: 30 + Math.random() * 100,
     color: colors[Math.floor(Math.random() * colors.length)],
   }));
 

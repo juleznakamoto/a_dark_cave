@@ -24,14 +24,14 @@ interface Bubble {
 
 // Bubble animation component rendered via portal
 function BubbleAnimation({ bubble, colors }: { bubble: Bubble; colors: string[] }) {
-  // Generate 30-40 bubbles for maximum satisfaction!
-  const bubbleCount = 35 + Math.floor(Math.random() * 6);
+  // Generate 80-120 bubbles for MAXIMUM satisfaction!
+  const bubbleCount = 80 + Math.floor(Math.random() * 41);
   const bubbles = Array.from({ length: bubbleCount }).map(() => {
     const angle = Math.random() * Math.PI * 2;
-    const distance = 40 + Math.random() * 80; // Vary distance more
-    const size = 5 + Math.random() * 20; // Wider size range
+    const distance = 30 + Math.random() * 120; // Much wider distance range
+    const size = 3 + Math.random() * 25; // Even more size variety
     const color = colors[Math.floor(Math.random() * colors.length)];
-    const duration = 0.6 + Math.random() * 0.8; // Varied animation speeds
+    const duration = 0.5 + Math.random() * 1.2; // More varied animation speeds
     
     return { size, angle, distance, color, duration };
   });
@@ -106,7 +106,7 @@ const BubblyButton = forwardRef<HTMLButtonElement, BubblyButtonProps>(
       const centerX = rect.left + rect.width / 2;
       const centerY = rect.top + rect.height / 2;
 
-      // Create multiple bubble bursts for extra satisfaction
+      // Create MANY bubble bursts for maximum endorphin release!
       const newBubbles: Bubble[] = [
         {
           id: `bubble-top-${bubbleIdCounter.current++}`,
@@ -136,6 +136,34 @@ const BubblyButton = forwardRef<HTMLButtonElement, BubblyButtonProps>(
           color: bubbleColor,
           isTop: false,
         },
+        {
+          id: `bubble-topleft-${bubbleIdCounter.current++}`,
+          startX: centerX,
+          startY: centerY,
+          color: bubbleColor,
+          isTop: true,
+        },
+        {
+          id: `bubble-topright-${bubbleIdCounter.current++}`,
+          startX: centerX,
+          startY: centerY,
+          color: bubbleColor,
+          isTop: true,
+        },
+        {
+          id: `bubble-bottomleft-${bubbleIdCounter.current++}`,
+          startX: centerX,
+          startY: centerY,
+          color: bubbleColor,
+          isTop: false,
+        },
+        {
+          id: `bubble-bottomright-${bubbleIdCounter.current++}`,
+          startX: centerX,
+          startY: centerY,
+          color: bubbleColor,
+          isTop: false,
+        },
       ];
 
       setBubbles((prev) => [...prev, ...newBubbles]);
@@ -145,7 +173,7 @@ const BubblyButton = forwardRef<HTMLButtonElement, BubblyButtonProps>(
         setBubbles((prev) =>
           prev.filter((b) => !newBubbles.find((nb) => nb.id === b.id))
         );
-      }, 1500);
+      }, 2000);
 
       // Trigger glow effect for 1 second
       setIsGlowing(true);
