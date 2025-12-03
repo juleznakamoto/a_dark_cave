@@ -67,7 +67,7 @@ function BubbleAnimation({ bubble }: { bubble: Bubble }) {
               y: endY - bubble.startY,
             }}
             transition={{
-              duration: 0.75,
+              duration: 1.75,
               ease: "easeOut",
             }}
           />
