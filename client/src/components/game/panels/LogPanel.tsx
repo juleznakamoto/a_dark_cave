@@ -56,7 +56,7 @@ export default function LogPanel() {
         const timerKey = `remove-${entry.id}`;
         console.log('[LogPanel] Setting up deletion timer for:', entry.id, 'at', Date.now());
         console.log('[LogPanel] Timer will fire in 60000ms (60 seconds)');
-        console.log('[LogPanel] Expected fire time:', new Date(Date.now() + 60000).toLocaleTimeString());
+        console.log('[LogPanel] Expected fire time:', new Date(Date.now() + 6000).toLocaleTimeString());
         
         // Mark this stranger as processed
         processedStrangersRef.current.add(entry.id);
