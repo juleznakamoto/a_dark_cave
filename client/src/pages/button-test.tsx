@@ -1,6 +1,19 @@
+
 import { useState, useRef } from "react";
 import { BubblyButton } from "@/components/ui/bubbly-button";
 import { motion, AnimatePresence } from "framer-motion";
+
+// 8 gray tones from light to dark
+const GRAY_TONES = [
+  "#f5f5f5",
+  "#e0e0e0",
+  "#bdbdbd",
+  "#9e9e9e",
+  "#757575",
+  "#616161",
+  "#424242",
+  "#212121",
+];
 
 // ============================================================
 // Approach 3: Animation State in Parent (Lifted State)
@@ -14,7 +27,6 @@ function Approach3_LiftedState() {
     const button = buttonRef.current;
     if (!button) return;
 
-    const rect = button.getBoundingClientRect();
     const x = e.clientX;
     const y = e.clientY;
     const id = `bubble-${Date.now()}`;
@@ -28,8 +40,6 @@ function Approach3_LiftedState() {
     setShow(false);
     setTimeout(() => setShow(true), 4000);
   };
-
-  const grayTones = ["#f5f5f5", "#e0e0e0", "#bdbdbd", "#9e9e9e", "#757575", "#616161", "#424242", "#212121"];
 
   return (
     <div className="relative">
@@ -64,11 +74,11 @@ function Approach3_LiftedState() {
                     style={{
                       width: `${size}px`,
                       height: `${size}px`,
-                      backgroundColor: grayTones[gray],
+                      backgroundColor: GRAY_TONES[gray],
                       left: bubble.x,
                       top: bubble.y,
                       zIndex: 9998,
-                      boxShadow: `0 0 ${size * 0.8}px ${grayTones[gray]}aa, 0 0 ${size * 1.5}px ${grayTones[gray]}55`,
+                      boxShadow: `0 0 ${size * 0.8}px ${GRAY_TONES[gray]}aa, 0 0 ${size * 1.5}px ${GRAY_TONES[gray]}55`,
                     }}
                     initial={{ opacity: 1, scale: 1, x: 0, y: 0 }}
                     animate={{
