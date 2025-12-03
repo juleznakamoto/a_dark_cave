@@ -84,3 +84,8 @@ Preferred communication style: Simple, everyday language.
 - There is a dev and a prod environment. Secrets end with either _DEV or _PROD.
 
 ### Coding
+- **DRY**: Consolidate duplicate patterns into reusable functions after the 2nd occurrence
+- **Clean**: Delete dead code immediately (unused imports, functions, variables, commented code)
+- **Leverage**: Use battle-tested packages over custom implementations
+- **Readable**: Maintain comments and clear naming—don't sacrifice clarity for LoC
+- **Fast Refresh**: Adhere to the rules of Fast Refresh
