@@ -123,9 +123,8 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
                 const size = 3 + Math.random() * 25;
                 const color = GRAY_TONES[Math.floor(Math.random() * GRAY_TONES.length)];
                 const duration = 2.5 + Math.random() * 1.2;
-                const rotation = Math.random() * 360;
 
-                return { size, angle, distance, color, duration, rotation };
+                return { size, angle, distance, color, duration };
               });
 
               return (
@@ -150,7 +149,6 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
                         initial={{
                           opacity: 1,
                           scale: 1,
-                          rotate: 0,
                           x: 0,
                           y: 0,
                         }}
@@ -159,7 +157,6 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
                           scale: 0.1,
                           x: endX,
                           y: endY,
-                          rotate: b.rotation,
                         }}
                         exit={{
                           opacity: 0,
