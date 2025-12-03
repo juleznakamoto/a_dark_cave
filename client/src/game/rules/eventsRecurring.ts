@@ -225,10 +225,10 @@ export const recurringEvents: Record<string, GameEvent> = {
         buildings: {
           ...state.buildings,
           woodenHut: Math.max(0, state.buildings.woodenHut - 1),
-          flags: {
-            ...state.flags,
-            woodenHutDamaged: true,
-          },
+        },
+        flags: {
+          ...state.flags,
+          woodenHutDamaged: true,
         },
         story: {
           ...state.story,
