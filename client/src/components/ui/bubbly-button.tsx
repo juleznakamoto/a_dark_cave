@@ -54,13 +54,13 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
       // Remove bubble after animation completes (longer to account for varied durations)
       setTimeout(() => {
         setBubbles((prev) => prev.filter((b) => b.id !== newBubble.id));
-      }, 5000);
+      }, 2000);
 
       // Trigger glow effect for 1 second
       setIsGlowing(true);
       setTimeout(() => {
         setIsGlowing(false);
-      }, 1000);
+      }, 700);
     };
 
     // Expose triggerAnimation method via ref
@@ -103,7 +103,7 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
           {
             // Using the middle gray tone for the glow effect as per intention
             boxShadow: isGlowing
-              ? `0 0 20px ${GRAY_TONES[4]}99, 0 0 40px ${GRAY_TONES[5]}66, 0 0 60px ${GRAY_TONES[6]}33`
+              ? `0 0 15px ${GRAY_TONES[5]}99, 0 0 30px ${GRAY_TONES[6]}66, 0 0 40px ${GRAY_TONES[7]}33`
               : undefined,
             transition: "box-shadow 0.15s ease-out",
             filter: isGlowing ? "brightness(1.2)" : undefined,
@@ -119,10 +119,10 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
               // Generate 100 bubbles
               const particleBubbles = Array.from({ length: 100 }).map(() => {
                 const angle = Math.random() * Math.PI * 2;
-                const distance = 30 + Math.random() * 120;
-                const size = 3 + Math.random() * 25;
+                const distance = 30 + Math.random() * 70;
+                const size = 2 + Math.random() * 20;
                 const color = GRAY_TONES[Math.floor(Math.random() * GRAY_TONES.length)];
-                const duration = 2.5 + Math.random() * 1.2;
+                const duration = 0.5 + Math.random() * 1.5;
 
                 return { size, angle, distance, color, duration };
               });
@@ -147,7 +147,7 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
                           zIndex: -1,
                         }}
                         initial={{
-                          opacity: 1,
+                          opacity: 0.7,
                           scale: 1,
                           x: 0,
                           y: 0,
