@@ -80,11 +80,15 @@ function LogPanel() {
                   ? `log-${entry.visualEffect.type}`
                   : "";
 
-              // Apply fade-out to stranger entries that are 5+ seconds old
+              // Apply fade-out to stranger entries that are 55+ seconds old (fade for 5s, then hide)
               const currentTime = Date.now();
               const entryAge = currentTime - entry.timestamp;
-              const isFadingOut = entry.id.startsWith('stranger-approaches-') && entryAge >= 5000;
+              const isFadingOut = entry.id.startsWith('stranger-approaches-') && entryAge >= 55000;
+              const isHidden = entry.id.startsWith('stranger-approaches-') && entryAge >= 60000;
               const fadeOutClass = isFadingOut ? "log-fade-out" : "";
+              
+              // Don't render entries that should be hidden
+              if (isHidden) return null;
 
               return (
                 <p
