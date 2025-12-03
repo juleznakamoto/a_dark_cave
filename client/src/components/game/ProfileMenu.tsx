@@ -198,22 +198,12 @@ export default function ProfileMenu() {
   };
 
   return (
-    <div className="fixed top-2 right-2 z-50 pointer-events-auto">
+    <div className="fixed top-2 right-2 z-50 pointer-events-auto flex flex-col items-end gap-2">
       <AuthDialog
         isOpen={authDialogOpen}
         onClose={() => handleSetAuthDialogOpen(false)}
         onAuthSuccess={handleAuthSuccess}
       />
-      {isMobile && (
-        <Button
-          variant="ghost"
-          size="xs"
-          onClick={handleDiscovery}
-          className="px-2 py-1 text-xs hover bg-background/80 text-neutral-300 backdrop-blur-sm border border-border mr-2"
-        >
-          +
-        </Button>
-      )}
       <DropdownMenu
         open={accountDropdownOpen}
         onOpenChange={(open) => {
@@ -363,6 +353,16 @@ export default function ProfileMenu() {
           })}
         </DropdownMenuContent>
       </DropdownMenu>
+      {isMobile && (
+        <Button
+          variant="ghost"
+          size="xs"
+          onClick={handleDiscovery}
+          className="px-2 py-1 text-xs hover bg-background/80 text-neutral-300 backdrop-blur-sm border border-border"
+        >
+          +
+        </Button>
+      )}
     </div>
   );
 }
