@@ -40,11 +40,16 @@ const BubblyButton = forwardRef<HTMLButtonElement, BubblyButtonProps>(
         ref={ref}
         onClick={handleClick}
         className={cn(
-          "relative transition-all duration-100 ease-in overflow-visible bubbly-button",
+          "relative transition-all duration-100 ease-in overflow-visible",
           isGlowing && "shadow-[0_2px_25px_rgba(220,20,60,0.5)]",
           "active:scale-90",
           isGlowing && "active:shadow-[0_2px_25px_rgba(220,20,60,0.2)]",
-          isAnimating && "animate",
+          "before:absolute before:content-[''] before:block before:w-[140%] before:h-full before:left-[-20%] before:-z-10",
+          "before:transition-all before:duration-500 before:ease-in-out before:bg-no-repeat",
+          "after:absolute after:content-[''] after:block after:w-[140%] after:h-full after:left-[-20%] after:-z-10",
+          "after:transition-all after:duration-500 after:ease-in-out after:bg-no-repeat",
+          isAnimating && "before:block before:animate-bubbly-top",
+          isAnimating && "after:block after:animate-bubbly-bottom",
           className
         )}
         style={
