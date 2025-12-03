@@ -409,24 +409,6 @@ export function stopGameLoop() {
 function processTick() {
   const state = useGameStore.getState();
 
-  // Check for timed event choices and apply fallback if time expires
-  state.log.forEach((entry) => {
-    // Check if the entry is a timed event choice and if its time has expired
-    if (entry.type === "eventChoice" && entry.expiresAt && currentTime > entry.expiresAt) {
-      // Find the fallback action for this event choice
-      const fallbackAction = entry.options.find(option => option.isFallback);
-      if (fallbackAction) {
-        // Apply the fallback action
-        fallbackAction.action();
-        // Remove the expired event choice from the log
-        useGameStore.setState({
-          log: state.log.filter(logEntry => logEntry.id !== entry.id)
-        });
-      }
-    }
-  });
-
-
   // Tick down cooldowns
   state.tickCooldowns();
 
