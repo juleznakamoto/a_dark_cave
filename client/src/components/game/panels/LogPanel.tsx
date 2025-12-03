@@ -87,22 +87,21 @@ function LogPanel() {
               const fadeOutClass = isFadingOut ? "log-fade-out" : "";
 
               return (
-                <div key={entry.id}>
-                  <p
-                    className={`text-foreground leading-relaxed ${opacity} ${effectClass} ${fadeOutClass}`}
-                    style={
-                      hasActiveEffect && entry.visualEffect
-                        ? ({
-                            "--effect-duration": `${entry.visualEffect.duration}s`,
-                          } as React.CSSProperties)
-                        : undefined
-                    }
-                  >
-                    {typeof entry.message === "string"
-                      ? entry.message
-                      : JSON.stringify(entry.message)}
-                  </p>
-                </div>
+                <p
+                  key={entry.id}
+                  className={`text-foreground leading-relaxed ${opacity} ${effectClass} ${fadeOutClass}`}
+                  style={
+                    hasActiveEffect && entry.visualEffect
+                      ? ({
+                          "--effect-duration": `${entry.visualEffect.duration}s`,
+                        } as React.CSSProperties)
+                      : undefined
+                  }
+                >
+                  {typeof entry.message === "string"
+                    ? entry.message
+                    : JSON.stringify(entry.message)}
+                </p>
               );
             })}
           </div>
