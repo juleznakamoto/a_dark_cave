@@ -59,7 +59,7 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
       // Remove bubble after animation completes (longer to account for varied durations)
       setTimeout(() => {
         setBubbles((prev) => prev.filter((b) => b.id !== newBubble.id));
-      }, 3500);
+      }, 2500);
 
       // Trigger glow effect for 1 second
       setIsGlowing(true);
@@ -118,7 +118,7 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
               // Generate 100 bubbles
               const particleBubbles = Array.from({ length: 100 }).map(() => {
                 const angle = Math.random() * Math.PI * 2;
-                const distance = 30 + Math.random() * 120;
+                const distance = 20 + Math.random() * 100;
                 const size = 3 + Math.random() * 25;
                 const color = NEUTRAL_TONES[Math.floor(Math.random() * NEUTRAL_TONES.length)];
                 const duration = 1.5 + Math.random() * 1.0;
