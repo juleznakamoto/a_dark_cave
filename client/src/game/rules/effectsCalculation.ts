@@ -10,7 +10,7 @@ import {
 } from "./effects";
 import { villageBuildActions } from "./villageBuildActions";
 import { ACTION_TO_UPGRADE_KEY, getUpgradeBonus } from "../buttonUpgrades";
-import { HUNT_BONUSES } from "@/components/game/panels/EstatePanel";
+import { HUNT_BONUSES } from "./skillUpgrades";
 
 // Tool hierarchy definitions
 const AXE_HIERARCHY = [

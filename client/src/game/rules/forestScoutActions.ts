@@ -3,7 +3,7 @@ import { ActionResult } from "@/game/actions";
 import { applyActionEffects } from "@/game/rules";
 import { killVillagers } from "@/game/stateHelpers";
 import { calculateSuccessChance } from "./events";
-import { HUNT_BONUSES } from "@/components/game/panels/EstatePanel";
+import { HUNT_BONUSES } from "./skillUpgrades";
 
 export const forestScoutActions: Record<string, Action> = {
   hunt: {
