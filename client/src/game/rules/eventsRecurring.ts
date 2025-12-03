@@ -126,14 +126,12 @@ export const recurringEvents: Record<string, GameEvent> = {
 
   silverSackDiscovery: {
     id: "silverSackDiscovery",
-    condition: (state: GameState) => {
-      const woodGatherCount = state.stats?.woodGathered || 0;
-      const hasTriggered = state.story?.seen?.silverSackFound || false;
-      return woodGatherCount >= 10 && !hasTriggered;
-    },
+    condition: (state: GameState) =>
+      state.tools.stone_axe && !state.story?.seen?.silverSackFound,
     triggerType: "resource",
-    timeProbability: 1,
-    message: "You find a small sack containing silver close to the cave's entrance.",
+    timeProbability: 2,
+    message:
+      "You find a small leather sack containing silver close to the cave's entrance.",
     triggered: false,
     priority: 3,
     repeatable: false,
@@ -230,10 +228,12 @@ export const recurringEvents: Record<string, GameEvent> = {
     condition: (state: GameState) => {
       const fireStormCount = (state.story.seen.fireStormCount as number) || 0;
       const maxOccurrences = state.cruelMode ? 3 : 0;
-      
-      return state.buildings.woodenHut >= 4 && 
-             state.buildings.stoneHut <= 5 && 
-             fireStormCount < maxOccurrences;
+
+      return (
+        state.buildings.woodenHut >= 4 &&
+        state.buildings.stoneHut <= 5 &&
+        fireStormCount < maxOccurrences
+      );
     },
     triggerType: "resource",
     timeProbability: 120,
@@ -245,7 +245,7 @@ export const recurringEvents: Record<string, GameEvent> = {
     effect: (state: GameState) => {
       // Use the centralized killVillagers function
       const deathResult = killVillagers(state, 2);
-      
+
       const currentCount = (state.story.seen.fireStormCount as number) || 0;
 
       return {
