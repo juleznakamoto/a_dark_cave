@@ -2,6 +2,7 @@ import { GameState } from "@shared/schema";
 import { getTotalKnowledge, getActionBonuses, getTotalCraftingCostReduction } from "./effectsCalculation";
 import { gameActions } from "./index";
 import { getTotalMadness } from "./effectsCalculation";
+import { CRUSHING_STRIKE_UPGRADES, BLOODFLAME_SPHERE_UPGRADES } from "./skillUpgrades";
 
 export interface TooltipConfig {
   getContent: (state: GameState) => React.ReactNode | string;
@@ -376,7 +377,6 @@ export const combatItemTooltips: Record<string, TooltipConfig> = {
   crushing_strike: {
     getContent: (state) => {
       const level = state.combatSkills.crushingStrikeLevel ?? 0;
-      const { CRUSHING_STRIKE_UPGRADES } = require("@/game/rules/skillUpgrades");
       const config = CRUSHING_STRIKE_UPGRADES[level];
       return `Damage: ${config.damage}\nStun Duration: ${config.stunRounds} round${config.stunRounds > 1 ? 's' : ''}`;
     },
@@ -384,7 +384,6 @@ export const combatItemTooltips: Record<string, TooltipConfig> = {
   bloodflame_sphere: {
     getContent: (state) => {
       const level = state.combatSkills.bloodflameSphereLevel ?? 0;
-      const { BLOODFLAME_SPHERE_UPGRADES } = require("@/game/rules/skillUpgrades");
       const config = BLOODFLAME_SPHERE_UPGRADES[level];
       return `Damage: ${config.damage}\nBurn: ${config.burnDamage}×${config.burnRounds} round${config.burnRounds > 1 ? "s" : ""}\nHealth Cost: ${config.healthCost}`;
     },
