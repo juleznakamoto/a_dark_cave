@@ -53,7 +53,7 @@ export default function LogPanel() {
       // Remove new villager entries after 60 seconds
       if (entry.id.startsWith('stranger-approaches-') && !timersRef.current.has(`remove-${entry.id}`)) {
         console.log('[LogPanel] Setting up deletion timer for:', entry.id, 'at', Date.now());
-        console.log('[LogPanel] Timer will fire in 6000ms (6 seconds for testing)');
+        console.log('[LogPanel] Timer will fire in 60000ms (60 seconds)');
         
         const removeTimerId = setTimeout(() => {
           console.log('[LogPanel] Timer fired for:', entry.id, 'at', Date.now());
@@ -75,20 +75,20 @@ export default function LogPanel() {
           useGameStore.setState({ log: filteredLog });
           timersRef.current.delete(`remove-${entry.id}`);
           console.log('[LogPanel] Cleanup complete for:', entry.id);
-        }, 6000); // 60 seconds
+        }, 60000); // 60 seconds
         
         timersRef.current.set(`remove-${entry.id}`, removeTimerId);
         console.log('[LogPanel] Timer registered in timersRef, total active timers:', timersRef.current.size);
       }
     });
 
-    // Cleanup function: clear all active timers
+    // Cleanup function: only clear timers on unmount, not on every re-render
     return () => {
-      console.log('[LogPanel] Cleanup: clearing', timersRef.current.size, 'active timers');
+      console.log('[LogPanel] Component unmounting, clearing', timersRef.current.size, 'active timers');
       timersRef.current.forEach((timerId) => clearTimeout(timerId));
       timersRef.current.clear();
     };
-  }, [recentEntries]);
+  }, [log]); // Changed dependency to log instead of recentEntries
 
   return (
     <div className="h-[18vh] min-h-[6rem] pt-2 overflow-hidden">
