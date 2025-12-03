@@ -244,17 +244,15 @@ export default function VillagePanel() {
           // Only highlight resources if Inkwarden Academy is built
           if (buildings.inkwardenAcademy > 0) {
             const resources = getResourcesFromActionCost(actionId, state);
-            logger.log(`[HIGHLIGHT] VillagePanel mouse enter on ${actionId} (disabled: ${!canExecute}), resources:`, resources);
             setHighlightedResources(resources);
           }
         }}
         onMouseLeave={() => {
           if (buildings.inkwardenAcademy > 0) {
-            logger.log(`[HIGHLIGHT] VillagePanel mouse leave on ${actionId}`);
             setHighlightedResources([]);
           }
         }}
-        style={{ pointerEvents: 'auto' }}
+        style={{ pointerEvents: "auto" }}
       >
         {displayLabel}
       </CooldownButton>
@@ -441,8 +439,8 @@ export default function VillagePanel() {
                   miningBoostState?.isActive &&
                   miningBoostState.endTime > Date.now();
                 const isFrostfall =
-                  frostfallState?.isActive && frostfallState.endTime > Date.now();
-
+                  frostfallState?.isActive &&
+                  frostfallState.endTime > Date.now();
 
                 return (
                   <>
@@ -509,10 +507,18 @@ export default function VillagePanel() {
                               <div className="relative inline-flex items-center gap-1 mt-[0px]">
                                 <CircularProgress
                                   value={(() => {
-                                    const timeRemaining = Math.max(0, curseState.endTime - Date.now());
-                                    const totalDuration = (10 + 5 * state.CM) * 60 * 1000;
-                                    const elapsed = totalDuration - timeRemaining;
-                                    return Math.min(100, (elapsed / totalDuration) * 100);
+                                    const timeRemaining = Math.max(
+                                      0,
+                                      curseState.endTime - Date.now(),
+                                    );
+                                    const totalDuration =
+                                      (10 + 5 * state.CM) * 60 * 1000;
+                                    const elapsed =
+                                      totalDuration - timeRemaining;
+                                    return Math.min(
+                                      100,
+                                      (elapsed / totalDuration) * 100,
+                                    );
                                   })()}
                                   size={18}
                                   strokeWidth={2}
@@ -583,7 +589,9 @@ export default function VillagePanel() {
                     {isFrostfall && (
                       <TooltipProvider>
                         <Tooltip
-                          open={mobileTooltip.isTooltipOpen("frostfall-progress")}
+                          open={mobileTooltip.isTooltipOpen(
+                            "frostfall-progress",
+                          )}
                         >
                           <TooltipTrigger asChild>
                             <div
@@ -598,10 +606,18 @@ export default function VillagePanel() {
                               <div className="relative inline-flex items-center gap-1 mt-[0px]">
                                 <CircularProgress
                                   value={(() => {
-                                    const frostfallDuration = (10 + 5 * state.CM) * 60 * 1000; // Same duration as curse, adjust if needed
-                                    const timeRemaining = Math.max(0, frostfallState.endTime - Date.now());
-                                    const elapsed = frostfallDuration - timeRemaining;
-                                    return Math.min(100, (elapsed / frostfallDuration) * 100);
+                                    const frostfallDuration =
+                                      (10 + 5 * state.CM) * 60 * 1000; // Same duration as curse, adjust if needed
+                                    const timeRemaining = Math.max(
+                                      0,
+                                      frostfallState.endTime - Date.now(),
+                                    );
+                                    const elapsed =
+                                      frostfallDuration - timeRemaining;
+                                    return Math.min(
+                                      100,
+                                      (elapsed / frostfallDuration) * 100,
+                                    );
                                   })()}
                                   size={18}
                                   strokeWidth={2}

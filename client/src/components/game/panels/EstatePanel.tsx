@@ -436,15 +436,11 @@ export default function EstatePanel() {
                             : undefined
                         }
                         onMouseEnter={() => {
-                          logger.log(
-                            "[HIGHLIGHT] EstatePanel sleep length mouse enter",
-                          );
+                          
                           setHighlightedResources(["gold"]);
                         }}
                         onMouseLeave={() => {
-                          logger.log(
-                            "[HIGHLIGHT] EstatePanel sleep length mouse leave",
-                          );
+                          
                           setHighlightedResources([]);
                         }}
                       >
@@ -578,15 +574,11 @@ export default function EstatePanel() {
                             : undefined
                         }
                         onMouseEnter={() => {
-                          logger.log(
-                            "[HIGHLIGHT] EstatePanel sleep intensity mouse enter",
-                          );
+                          
                           setHighlightedResources(["gold"]);
                         }}
                         onMouseLeave={() => {
-                          logger.log(
-                            "[HIGHLIGHT] EstatePanel sleep intensity mouse leave",
-                          );
+                          
                           setHighlightedResources([]);
                         }}
                       >
@@ -747,15 +739,11 @@ export default function EstatePanel() {
                                 : undefined
                             }
                             onMouseEnter={() => {
-                              logger.log(
-                                "[HIGHLIGHT] EstatePanel hunting skills mouse enter",
-                              );
+                              
                               setHighlightedResources(["gold"]);
                             }}
                             onMouseLeave={() => {
-                              logger.log(
-                                "[HIGHLIGHT] EstatePanel hunting skills mouse leave",
-                              );
+                              
                               setHighlightedResources([]);
                             }}
                           >
@@ -978,15 +966,11 @@ export default function EstatePanel() {
                                 : undefined
                             }
                             onMouseEnter={() => {
-                              logger.log(
-                                "[HIGHLIGHT] EstatePanel crushing strike mouse enter",
-                              );
+                              
                               setHighlightedResources(["gold"]);
                             }}
                             onMouseLeave={() => {
-                              logger.log(
-                                "[HIGHLIGHT] EstatePanel crushing strike mouse leave",
-                              );
+                              
                               setHighlightedResources([]);
                             }}
                           >
@@ -1198,15 +1182,11 @@ export default function EstatePanel() {
                                 : undefined
                             }
                             onMouseEnter={() => {
-                              logger.log(
-                                "[HIGHLIGHT] EstatePanel bloodflame sphere mouse enter",
-                              );
+                             
                               setHighlightedResources(["gold"]);
                             }}
                             onMouseLeave={() => {
-                              logger.log(
-                                "[HIGHLIGHT] EstatePanel bloodflame sphere mouse leave",
-                              );
+                             
                               setHighlightedResources([]);
                             }}
                           >

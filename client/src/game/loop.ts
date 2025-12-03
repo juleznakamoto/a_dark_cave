@@ -409,12 +409,12 @@ export function stopGameLoop() {
 function processTick() {
   const state = useGameStore.getState();
 
-  // Auto-remove old stranger log entries after 60 seconds
+  // Auto-remove old stranger log entries after 6 seconds
   const currentTime = Date.now();
   const strangerEntriesToRemove = state.log.filter((entry) => {
     if (entry.id.startsWith('stranger-approaches-')) {
       const entryAge = currentTime - entry.timestamp;
-      return entryAge >= 60000; // 60 seconds
+      return entryAge >= 6000; // 6 seconds
     }
     return false;
   });
