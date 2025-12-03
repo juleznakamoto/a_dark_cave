@@ -99,8 +99,7 @@ export function renderItemTooltip(
             <div key={actionId}>
               {bonus.resourceMultiplier && bonus.resourceMultiplier !== 1 && (
                 <div>
-                  +{Math.round((bonus.resourceMultiplier - 1) * 100)}%{" "}
-                  {capitalizeWords(actionId)} Bonus
+                  {capitalizeWords(actionId)}: +{Math.round((bonus.resourceMultiplier - 1) * 100)}% Bonus
                 </div>
               )}
               {bonus.resourceBonus &&
@@ -112,7 +111,7 @@ export function renderItemTooltip(
                     </div>
                   ),
                 )}
-              {bonus.cooldownReduction && bonus.cooldownReduction !== 1 && (
+              {bonus.cooldownReduction && bonus.cooldownReduction !== 0 && (
                 <div>
                   {capitalizeWords(actionId)}: -{bonus.cooldownReduction}s Cooldown
                 </div>
