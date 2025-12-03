@@ -409,11 +409,11 @@ export function stopGameLoop() {
 function processTick() {
   const state = useGameStore.getState();
 
-  // Auto-remove old stranger log entries after 6 seconds
+  // Auto-remove old stranger log entries after 60 seconds
   const currentTime = Date.now();
   const filteredLog = state.log.filter((entry) => {
     if (entry.id.startsWith('stranger-approaches-')) {
-      return (currentTime - entry.timestamp) < 6000;
+      return (currentTime - entry.timestamp) < 60000;
     }
     return true;
   });
