@@ -360,14 +360,19 @@ export default function ProfileMenu() {
         </DropdownMenuContent>
       </DropdownMenu>
       {isMobile && (
-        <Button
-          variant="ghost"
-          size="xs"
-          onClick={handleDiscovery}
-          className="p-0 w-8 h-8 hover bg-background/80 backdrop-blur-sm border border-border flex items-center justify-center"
-        >
-          <img src="/flashlight.png" alt="Discovery" className="w-full h-full object-contain p-1" />
-        </Button>
+      <Button
+        variant="ghost"
+        size="xs"
+        onClick={handleDiscovery}
+        className="p-0 w-7 h-7 bg-background/80 backdrop-blur-sm border border-border flex items-center justify-center group"
+      >
+        <img
+          src="/flashlight.png"
+          alt="Discovery"
+          className="w-full h-full object-contain rounded-md transition-all duration-200 invert opacity-80 group-hover:invert-0 group-hover:opacity-100"
+        />
+      </Button>
+
       )}
     </div>
   );
