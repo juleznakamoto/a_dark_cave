@@ -411,19 +411,44 @@ function processTick() {
 
   // Auto-remove old stranger log entries after 6 seconds
   const currentTime = Date.now();
+  
+  // Find all stranger entries first
+  const allStrangerEntries = state.log.filter((entry) => entry.id.startsWith('stranger-approaches-'));
+  if (allStrangerEntries.length > 0) {
+    logger.log('[GameLoop] Found stranger entries:', allStrangerEntries.map(e => ({
+      id: e.id,
+      timestamp: e.timestamp,
+      age: currentTime - e.timestamp,
+      shouldRemove: (currentTime - e.timestamp) >= 6000
+    })));
+  }
+  
   const strangerEntriesToRemove = state.log.filter((entry) => {
     if (entry.id.startsWith('stranger-approaches-')) {
       const entryAge = currentTime - entry.timestamp;
-      return entryAge >= 6000; // 6 seconds
+      const shouldRemove = entryAge >= 6000; // 6 seconds
+      if (shouldRemove) {
+        logger.log('[GameLoop] Marking for removal:', entry.id, 'age:', entryAge, 'ms');
+      }
+      return shouldRemove;
     }
     return false;
   });
 
   if (strangerEntriesToRemove.length > 0) {
+    logger.log('[GameLoop] Removing', strangerEntriesToRemove.length, 'stranger entries');
     const idsToRemove = new Set(strangerEntriesToRemove.map(e => e.id));
+    const beforeCount = state.log.length;
+    const filteredLog = state.log.filter(entry => !idsToRemove.has(entry.id));
+    const afterCount = filteredLog.length;
+    
+    logger.log('[GameLoop] Log count before:', beforeCount, 'after:', afterCount, 'removed:', beforeCount - afterCount);
+    
     useGameStore.setState({
-      log: state.log.filter(entry => !idsToRemove.has(entry.id))
+      log: filteredLog
     });
+    
+    logger.log('[GameLoop] ✅ Stranger entries removed successfully');
   }
 
   // Check for timed event choices and apply fallback if time expires
