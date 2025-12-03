@@ -1,0 +1,249 @@
+[LogPanel] Timer registered in timersRef, total active timers: 4
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748642311 at 1764749741405
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 5
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748560877 at 1764749741405
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 6
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748288709 at 1764749741405
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 7
+LogPanel.tsx:87 [LogPanel] Cleanup: clearing 7 active timers
+LogPanel.tsx:21 [LogPanel] Current stranger entries: (7) ['stranger-approaches-1764748814643', 'stranger-approaches-1764748784115', 'stranger-approaches-1764748769102', 'stranger-approaches-1764748754170', 'stranger-approaches-1764748642311', 'stranger-approaches-1764748560877', 'stranger-approaches-1764748288709']
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748814643 at 1764749741682
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 1
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748784115 at 1764749741682
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 2
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748769102 at 1764749741682
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 3
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748754170 at 1764749741682
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 4
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748642311 at 1764749741683
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 5
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748560877 at 1764749741683
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 6
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748288709 at 1764749741683
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 7
+LogPanel.tsx:87 [LogPanel] Cleanup: clearing 7 active timers
+LogPanel.tsx:21 [LogPanel] Current stranger entries: (7) ['stranger-approaches-1764748814643', 'stranger-approaches-1764748784115', 'stranger-approaches-1764748769102', 'stranger-approaches-1764748754170', 'stranger-approaches-1764748642311', 'stranger-approaches-1764748560877', 'stranger-approaches-1764748288709']
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748814643 at 1764749741930
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 1
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748784115 at 1764749741930
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 2
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748769102 at 1764749741930
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 3
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748754170 at 1764749741930
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 4
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748642311 at 1764749741931
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 5
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748560877 at 1764749741931
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 6
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748288709 at 1764749741931
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 7
+LogPanel.tsx:87 [LogPanel] Cleanup: clearing 7 active timers
+LogPanel.tsx:21 [LogPanel] Current stranger entries: (7) ['stranger-approaches-1764748814643', 'stranger-approaches-1764748784115', 'stranger-approaches-1764748769102', 'stranger-approaches-1764748754170', 'stranger-approaches-1764748642311', 'stranger-approaches-1764748560877', 'stranger-approaches-1764748288709']
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748814643 at 1764749742197
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 1
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748784115 at 1764749742197
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 2
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748769102 at 1764749742197
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 3
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748754170 at 1764749742197
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 4
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748642311 at 1764749742197
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 5
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748560877 at 1764749742198
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 6
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748288709 at 1764749742198
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 7
+LogPanel.tsx:87 [LogPanel] Cleanup: clearing 7 active timers
+LogPanel.tsx:21 [LogPanel] Current stranger entries: (7) ['stranger-approaches-1764748814643', 'stranger-approaches-1764748784115', 'stranger-approaches-1764748769102', 'stranger-approaches-1764748754170', 'stranger-approaches-1764748642311', 'stranger-approaches-1764748560877', 'stranger-approaches-1764748288709']
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748814643 at 1764749742464
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 1
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748784115 at 1764749742464
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 2
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748769102 at 1764749742464
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 3
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748754170 at 1764749742464
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 4
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748642311 at 1764749742464
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 5
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748560877 at 1764749742464
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 6
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748288709 at 1764749742464
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 7
+LogPanel.tsx:87 [LogPanel] Cleanup: clearing 7 active timers
+LogPanel.tsx:21 [LogPanel] Current stranger entries: (7) ['stranger-approaches-1764748814643', 'stranger-approaches-1764748784115', 'stranger-approaches-1764748769102', 'stranger-approaches-1764748754170', 'stranger-approaches-1764748642311', 'stranger-approaches-1764748560877', 'stranger-approaches-1764748288709']
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748814643 at 1764749742748
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 1
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748784115 at 1764749742748
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 2
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748769102 at 1764749742748
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 3
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748754170 at 1764749742748
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 4
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748642311 at 1764749742748
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 5
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748560877 at 1764749742749
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 6
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748288709 at 1764749742749
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 7
+LogPanel.tsx:87 [LogPanel] Cleanup: clearing 7 active timers
+LogPanel.tsx:21 [LogPanel] Current stranger entries: (7) ['stranger-approaches-1764748814643', 'stranger-approaches-1764748784115', 'stranger-approaches-1764748769102', 'stranger-approaches-1764748754170', 'stranger-approaches-1764748642311', 'stranger-approaches-1764748560877', 'stranger-approaches-1764748288709']
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748814643 at 1764749743003
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 1
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748784115 at 1764749743003
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 2
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748769102 at 1764749743003
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 3
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748754170 at 1764749743004
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 4
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748642311 at 1764749743004
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 5
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748560877 at 1764749743004
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 6
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748288709 at 1764749743004
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 7
+LogPanel.tsx:87 [LogPanel] Cleanup: clearing 7 active timers
+LogPanel.tsx:21 [LogPanel] Current stranger entries: (7) ['stranger-approaches-1764748814643', 'stranger-approaches-1764748784115', 'stranger-approaches-1764748769102', 'stranger-approaches-1764748754170', 'stranger-approaches-1764748642311', 'stranger-approaches-1764748560877', 'stranger-approaches-1764748288709']
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748814643 at 1764749743262
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 1
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748784115 at 1764749743263
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 2
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748769102 at 1764749743263
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 3
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748754170 at 1764749743263
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 4
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748642311 at 1764749743263
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 5
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748560877 at 1764749743263
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 6
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748288709 at 1764749743263
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 7
+LogPanel.tsx:87 [LogPanel] Cleanup: clearing 7 active timers
+LogPanel.tsx:21 [LogPanel] Current stranger entries: (7) ['stranger-approaches-1764748814643', 'stranger-approaches-1764748784115', 'stranger-approaches-1764748769102', 'stranger-approaches-1764748754170', 'stranger-approaches-1764748642311', 'stranger-approaches-1764748560877', 'stranger-approaches-1764748288709']
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748814643 at 1764749743535
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 1
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748784115 at 1764749743535
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 2
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748769102 at 1764749743535
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 3
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748754170 at 1764749743535
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 4
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748642311 at 1764749743536
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 5
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748560877 at 1764749743536
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 6
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748288709 at 1764749743536
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 7
+loop.ts:937 [GameLoop] Creating stranger approach event: stranger-approaches-1764749743767 at 1764749743767
+LogPanel.tsx:87 [LogPanel] Cleanup: clearing 7 active timers
+LogPanel.tsx:21 [LogPanel] Current stranger entries: (8) ['stranger-approaches-1764749743767', 'stranger-approaches-1764748814643', 'stranger-approaches-1764748784115', 'stranger-approaches-1764748769102', 'stranger-approaches-1764748754170', 'stranger-approaches-1764748642311', 'stranger-approaches-1764748560877', 'stranger-approaches-1764748288709']
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764749743767 at 1764749743795
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 1
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748814643 at 1764749743796
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 2
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748784115 at 1764749743796
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 3
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748769102 at 1764749743796
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 4
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748754170 at 1764749743796
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 5
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748642311 at 1764749743796
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 6
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748560877 at 1764749743796
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 7
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748288709 at 1764749743796
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 8
+LogPanel.tsx:87 [LogPanel] Cleanup: clearing 8 active timers
+LogPanel.tsx:21 [LogPanel] Current stranger entries: (8) ['stranger-approaches-1764749743767', 'stranger-approaches-1764748814643', 'stranger-approaches-1764748784115', 'stranger-approaches-1764748769102', 'stranger-approaches-1764748754170', 'stranger-approaches-1764748642311', 'stranger-approaches-1764748560877', 'stranger-approaches-1764748288709']
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764749743767 at 1764749743825
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 1
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748814643 at 1764749743825
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 2
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748784115 at 1764749743825
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 3
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748769102 at 1764749743825
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 4
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748754170 at 1764749743826
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 5
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748642311 at 1764749743826
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 6
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748560877 at 1764749743826
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 7
+LogPanel.tsx:55 [LogPanel] Setting up deletion timer for: stranger-approaches-1764748288709 at 1764749743826
+LogPanel.tsx:56 [LogPanel] Timer will fire in 6000ms (6 seconds for testing)
+LogPanel.tsx:81 [LogPanel] Timer registered in timersRef, total active timers: 8
+LogPanel.tsx:87 [LogPanel] Cleanup: clearing 8 active timers
+LogPanel.tsx:21 [LogPanel] Current stranger entries: 
