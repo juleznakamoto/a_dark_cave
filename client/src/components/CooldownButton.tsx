@@ -10,25 +10,12 @@ import {
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils"; // Assuming cn is imported from a utils file
 
-interface CooldownButtonProps {
-  children: React.ReactNode;
-  onClick: () => void;
+interface CooldownButtonProps extends ButtonProps {
   cooldownMs: number;
-  disabled?: boolean;
-  className?: string;
-  variant?:
-    | "default"
-    | "destructive"
-    | "outline"
-    | "secondary"
-    | "ghost"
-    | "link";
-  size?: "default" | "sm" | "xs" | "lg" | "icon";
-  "data-testid"?: string;
-  button_id?: string;
+  button_id: string;
   tooltip?: React.ReactNode;
-  onMouseEnter?: (e?: React.MouseEvent<HTMLDivElement>) => void;
-  onMouseLeave?: (e?: React.MouseEvent<HTMLDivElement>) => void;
+  useCustomButton?: React.ComponentType<any>;
+  bubbleColor?: string;
 }
 
 const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
@@ -43,6 +30,8 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       size = "default",
       "data-testid": testId,
       tooltip,
+      useCustomButton,
+      bubbleColor,
       ...props
     },
     ref
@@ -102,11 +91,13 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
 
   const buttonId = testId || `button-${Math.random()}`;
 
-  const button = (
-    <Button
+  const ButtonComponent = useCustomButton || Button;
+  const buttonContent = (
+    <ButtonComponent
       ref={ref}
       onClick={handleClick}
-      disabled={isButtonDisabled}
+      disabled={props.disabled || isCoolingDown}
+      bubbleColor={bubbleColor}
       variant={variant}
       size={size}
       className={`relative overflow-hidden transition-all duration-200 select-none ${
@@ -130,12 +121,13 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
           }}
         />
       )}
-    </Button>
+    </ButtonComponent>
   );
+
 
   // If no tooltip, return button without tooltip
   if (!tooltip) {
-    return <div className="relative inline-block">{button}</div>;
+    return <div className="relative inline-block">{buttonContent}</div>;
   }
 
   const tooltipId = buttonId; // Use buttonId for tooltip identification
@@ -200,7 +192,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
         <Tooltip open={mobileTooltip.isMobile ? mobileTooltip.isTooltipOpen(tooltipId) : undefined} delayDuration={300}>
           <TooltipTrigger asChild>
             <span className="inline-block">
-              {button}
+              {buttonContent}
             </span>
           </TooltipTrigger>
           <TooltipContent>{tooltip}</TooltipContent>
