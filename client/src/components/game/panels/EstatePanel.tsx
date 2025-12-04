@@ -305,7 +305,7 @@ export default function EstatePanel() {
                     disabled={!canActivateIdle}
                     size="xs"
                     variant="outline"
-                    className="h-5 pb-1  hover:bg-transparent hover:text-foreground"
+                    className="h-7 hover:bg-transparent hover:text-foreground"
                     button_id="activate-sleep-mode"
                   >
                     Sleep
@@ -402,11 +402,9 @@ export default function EstatePanel() {
                             : undefined
                         }
                         onMouseEnter={() => {
-                          
                           setHighlightedResources(["gold"]);
                         }}
                         onMouseLeave={() => {
-                          
                           setHighlightedResources([]);
                         }}
                       >
@@ -540,11 +538,9 @@ export default function EstatePanel() {
                             : undefined
                         }
                         onMouseEnter={() => {
-                          
                           setHighlightedResources(["gold"]);
                         }}
                         onMouseLeave={() => {
-                          
                           setHighlightedResources([]);
                         }}
                       >
@@ -705,11 +701,9 @@ export default function EstatePanel() {
                                 : undefined
                             }
                             onMouseEnter={() => {
-                              
                               setHighlightedResources(["gold"]);
                             }}
                             onMouseLeave={() => {
-                              
                               setHighlightedResources([]);
                             }}
                           >
@@ -932,11 +926,9 @@ export default function EstatePanel() {
                                 : undefined
                             }
                             onMouseEnter={() => {
-                              
                               setHighlightedResources(["gold"]);
                             }}
                             onMouseLeave={() => {
-                              
                               setHighlightedResources([]);
                             }}
                           >
@@ -1148,11 +1140,9 @@ export default function EstatePanel() {
                                 : undefined
                             }
                             onMouseEnter={() => {
-                             
                               setHighlightedResources(["gold"]);
                             }}
                             onMouseLeave={() => {
-                             
                               setHighlightedResources([]);
                             }}
                           >

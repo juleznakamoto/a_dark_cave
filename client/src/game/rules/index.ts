@@ -433,7 +433,7 @@ export function canExecuteAction(actionId: string, state: GameState): boolean {
         true,
         state,
       );
-      if ((current || 0) < adjustedAmount) {
+      if ((current || 0) < adjustedCost) {
         return false;
       }
     } else {
