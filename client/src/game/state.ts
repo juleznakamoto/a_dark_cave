@@ -837,8 +837,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }
 
     // Add stats to snapshot (luck, strength, knowledge, madness)
+    // Include stats even if they're 0, as long as they're numbers
     for (const [key, value] of Object.entries(stats)) {
-      if (typeof value === 'number' && value > 0) {
+      if (typeof value === 'number') {
         snapshot[key] = value;
       }
     }
