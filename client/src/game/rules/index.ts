@@ -663,6 +663,17 @@ export const applyActionEffects = (
           let min = parseInt(match[1]);
           let max = parseInt(match[2]);
 
+          // For sacrifice actions, apply usage count bonus first
+          if (actionId === 'boneTotems' || actionId === 'leatherTotems') {
+            const usageCountKey = actionId === 'boneTotems' 
+              ? 'boneTotemsUsageCount' 
+              : 'leatherTotemsUsageCount';
+            const usageCount = Number(state.story?.seen?.[usageCountKey]) || 0;
+            const cappedUsageCount = Math.min(usageCount, 20);
+            min += cappedUsageCount;
+            max += cappedUsageCount;
+          }
+
           // Apply action bonuses from the centralized effects system
           const actionBonuses = getActionBonusesCalc(actionId, state);
           if (

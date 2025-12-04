@@ -68,16 +68,19 @@ export const getResourceGainTooltip = (
             min = min + cappedUsageCount;
             max = max + cappedUsageCount;
 
-            // Apply Bone Temple bonus (25% increase to gold/silver)
+            // Calculate total multiplier (Bone Temple + items)
+            let totalMultiplier = 1;
             if (state.buildings.boneTemple >= 1) {
-              min = Math.ceil(min * 1.25);
-              max = Math.ceil(max * 1.25);
+              totalMultiplier *= 1.25;
+            }
+            if (bonuses.resourceMultiplier > 1) {
+              totalMultiplier *= bonuses.resourceMultiplier;
             }
 
-            // Apply item bonuses (like ebony ring 20% multiplier)
-            if (bonuses.resourceMultiplier > 1) {
-              min = Math.floor(min * bonuses.resourceMultiplier);
-              max = Math.floor(max * bonuses.resourceMultiplier);
+            // Apply combined multiplier
+            if (totalMultiplier > 1) {
+              min = Math.floor(min * totalMultiplier);
+              max = Math.floor(max * totalMultiplier);
             }
 
             gains.push({ resource, min, max });

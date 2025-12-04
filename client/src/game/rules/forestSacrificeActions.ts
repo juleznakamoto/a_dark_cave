@@ -167,23 +167,6 @@ function handleTotemSacrifice(
     effectUpdates.resources = { ...state.resources };
   }
 
-  // Apply fixed +1 bonus per usage to gold and silver rewards
-  if (effectUpdates.resources.gold !== undefined) {
-    const baseGold = effectUpdates.resources.gold - (state.resources.gold || 0);
-    if (baseGold > 0) {
-      effectUpdates.resources.gold =
-        (state.resources.gold || 0) + baseGold + usageCount;
-    }
-  }
-  if (effectUpdates.resources.silver !== undefined) {
-    const baseSilver =
-      effectUpdates.resources.silver - (state.resources.silver || 0);
-    if (baseSilver > 0) {
-      effectUpdates.resources.silver =
-        (state.resources.silver || 0) + baseSilver + usageCount;
-    }
-  }
-
   // Override the cost with dynamic pricing
   effectUpdates.resources[totemResource] =
     (state.resources[totemResource] || 0) - currentCost;
@@ -196,48 +179,6 @@ function handleTotemSacrifice(
     effectUpdates.story.seen = { ...state.story.seen };
   }
   (effectUpdates.story.seen as any)[usageCountKey] = usageCount + 1;
-
-  // Apply sacrifice bonuses and multipliers from relics/items
-  const actionBonuses = getActionBonuses(actionId, state);
-
-  // Apply Bone Temple bonus (25% increase to gold/silver)
-  let boneTempleMultiplier = 1.0;
-  if (state.buildings.boneTemple >= 1) {
-    boneTempleMultiplier = 1.25;
-  }
-
-  // Apply Bone Temple multiplier to gold/silver rewards
-  if (effectUpdates.resources && boneTempleMultiplier > 1) {
-    ["gold", "silver"].forEach((resource) => {
-      const currentAmount =
-        effectUpdates.resources![resource] || state.resources[resource] || 0;
-      const baseAmount = currentAmount - (state.resources[resource] || 0);
-      if (baseAmount > 0) {
-        const bonusAmount = Math.ceil(baseAmount * (boneTempleMultiplier - 1));
-        effectUpdates.resources![resource] = currentAmount + bonusAmount;
-      }
-    });
-  }
-
-  // Apply resource multipliers (like 20% bonus from ebony ring)
-  if (
-    actionBonuses.resourceMultiplier &&
-    actionBonuses.resourceMultiplier !== 1 &&
-    effectUpdates.resources
-  ) {
-    ["gold", "silver"].forEach((resource) => {
-      const currentAmount =
-        effectUpdates.resources![resource] || state.resources[resource] || 0;
-      const baseAmount = currentAmount - (state.resources[resource] || 0);
-      if (baseAmount > 0) {
-        // Only apply multiplier to positive gains
-        const bonusAmount = Math.ceil(
-          baseAmount * (actionBonuses.resourceMultiplier - 1),
-        );
-        effectUpdates.resources![resource] = currentAmount + bonusAmount;
-      }
-    });
-  }
 
   // Check for item discovery if configured
   if (discoveryConfig && !state.clothing[discoveryConfig.itemKey]) {
