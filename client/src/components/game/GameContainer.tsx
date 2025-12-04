@@ -263,7 +263,6 @@ export default function GameContainer() {
                     className={`py-2 text-sm bg-transparent ${
                       animatingTabs.has("village") ? "tab-fade-in" : activeTab === "village" ? "font-bold opacity-100" : "opacity-60"
                     }`}
-                    style={animatingTabs.has("village") ? { opacity: 0 } : undefined}
                     onClick={() => setActiveTab("village")}
                     data-testid="tab-village"
                   >
@@ -277,7 +276,6 @@ export default function GameContainer() {
                     className={`py-2 text-sm bg-transparent ${
                       animatingTabs.has("estate") ? "tab-fade-in" : activeTab === "estate" ? "font-bold opacity-100" : "opacity-60"
                     }`}
-                    style={animatingTabs.has("estate") ? { opacity: 0 } : undefined}
                     onClick={() => setActiveTab("estate")}
                     data-testid="tab-estate"
                   >
@@ -290,7 +288,6 @@ export default function GameContainer() {
                     className={`py-2 text-sm bg-transparent ${
                       animatingTabs.has("forest") ? "tab-fade-in" : activeTab === "forest" ? "font-bold opacity-100" : "opacity-60"
                     }`}
-                    style={animatingTabs.has("forest") ? { opacity: 0 } : undefined}
                     onClick={() => setActiveTab("forest")}
                     data-testid="tab-forest"
                   >
@@ -303,7 +300,6 @@ export default function GameContainer() {
                     className={`py-2 text-sm bg-transparent ${
                       animatingTabs.has("bastion") ? "tab-fade-in" : activeTab === "bastion" ? "font-bold opacity-100" : "opacity-60"
                     }`}
-                    style={animatingTabs.has("bastion") ? { opacity: 0 } : undefined}
                     onClick={() => setActiveTab("bastion")}
                     data-testid="tab-bastion"
                   >
