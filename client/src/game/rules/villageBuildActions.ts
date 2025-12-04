@@ -1453,7 +1453,7 @@ export const villageBuildActions: Record<string, Action> = {
       } else if (state.flags?.humanSacrificeUnlocked) {
         effects.push("-2 Madness per Human sacrifice (max -20)");
       }
-      effects.push("Bone/Leather Totem Sacrifices: +25% Gold/Silver");
+      effects.push("Totem Sacrifices: +25% Bonus");
       return effects;
     },
     building: true,
