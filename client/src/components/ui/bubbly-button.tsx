@@ -25,15 +25,30 @@ export interface BubblyButtonHandle {
 }
 
 // 4 gray tones from light to dark using Tailwind colors
-const NEUTRAL_TONES = [
-  tailwindToHex("neutral-700"),
+const TONES = [
   tailwindToHex("neutral-800"),
   tailwindToHex("neutral-900"),
+  tailwindToHex("neutral-950/90"),
   tailwindToHex("neutral-950"),
+  tailwindToHex("stone-800"),
+  tailwindToHex("stone-900"),
+  tailwindToHex("stone-950/90"),
+  tailwindToHex("stone-950"),
 ];
 
 const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
-  ({ className, onClick, children, bubbleColor = "#8b7355", bubbleColors, onAnimationTrigger, ...props }, ref) => {
+  (
+    {
+      className,
+      onClick,
+      children,
+      bubbleColor = "#8b7355",
+      bubbleColors,
+      onAnimationTrigger,
+      ...props
+    },
+    ref,
+  ) => {
     const [bubbles, setBubbles] = useState<Bubble[]>([]);
     const [isGlowing, setIsGlowing] = useState(false);
     const buttonRef = useRef<HTMLButtonElement>(null);
@@ -59,7 +74,7 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
       // Remove bubble after animation completes (longer to account for varied durations)
       setTimeout(() => {
         setBubbles((prev) => prev.filter((b) => b.id !== newBubble.id));
-      }, 2500);
+      }, 3000);
 
       // Trigger glow effect for 1 second
       setIsGlowing(true);
@@ -85,7 +100,10 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
       // Notify parent if callback provided (for lifted state pattern)
       // Pass the absolute center position to parent
       if (onAnimationTrigger) {
-        onAnimationTrigger(rect.left + rect.width / 2, rect.top + rect.height / 2);
+        onAnimationTrigger(
+          rect.left + rect.width / 2,
+          rect.top + rect.height / 2,
+        );
       }
 
       // Call original onClick
@@ -118,17 +136,21 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
               // Generate 100 bubbles
               const particleBubbles = Array.from({ length: 100 }).map(() => {
                 const angle = Math.random() * Math.PI * 2;
-                const distance = 20 + Math.random() * 100;
+                const distanceX = 20 + Math.random() * 120;
+                const distanceY = 20 + Math.random() * 80;
                 const size = 3 + Math.random() * 25;
-                const color = NEUTRAL_TONES[Math.floor(Math.random() * NEUTRAL_TONES.length)];
-                const duration = 1.5 + Math.random() * 1.0;
+                const color =
+                  TONES[
+                    Math.floor(Math.random() * TONES.length)
+                  ];
+                const duration = 2.0 + Math.random() * 1.0;
 
-                return { size, angle, distance, color, duration };
+                return { size, angle, distanceX, distanceY, color, duration };
               });
 
               return particleBubbles.map((b, index) => {
-                const endX = Math.cos(b.angle) * b.distance;
-                const endY = Math.sin(b.angle) * b.distance;
+                const endX = Math.cos(b.angle) * b.distanceX;
+                const endY = Math.sin(b.angle) * b.distanceY;
 
                 return (
                   <motion.div
@@ -143,14 +165,14 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
                       boxShadow: `0 0 ${b.size * 0.8}px ${b.color}aa, 0 0 ${b.size * 1.5}px ${b.color}55`,
                     }}
                     initial={{
-                      opacity: 0.8,
+                      opacity: 1,
                       scale: 1,
                       x: 0,
                       y: 0,
                     }}
                     animate={{
-                      opacity: 0,
-                      scale: 0.1,
+                      opacity: 0.0,
+                      scale: 0.0,
                       x: endX,
                       y: endY,
                     }}
@@ -174,12 +196,12 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
           onClick={handleClick}
           className={cn(
             "relative transition-all duration-100 ease-in overflow-visible",
-            className
+            className,
           )}
           style={
             {
               boxShadow: isGlowing
-                ? `0 0 15px ${NEUTRAL_TONES[2]}99, 0 0 30px ${NEUTRAL_TONES[3]}66, 0 0 40px ${NEUTRAL_TONES[4]}33`
+                ? `0 0 15px ${TONES[2]}99, 0 0 30px ${TONES[3]}66, 0 0 40px ${TONES[4]}33`
                 : undefined,
               transition: "box-shadow 0.15s ease-out",
               filter: isGlowing ? "brightness(1.2)" : undefined,
@@ -192,27 +214,32 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
         </Button>
       </div>
     );
-  }
+  },
 );
 
 BubblyButton.displayName = "BubblyButton";
 
 // Global bubble portal component for lifted state pattern
-export const BubblyButtonGlobalPortal = ({ bubbles }: { bubbles: Array<{ id: string; x: number; y: number }> }) => {
+export const BubblyButtonGlobalPortal = ({
+  bubbles,
+}: {
+  bubbles: Array<{ id: string; x: number; y: number }>;
+}) => {
   return (
     <div className="fixed inset-0 pointer-events-none z-[9998]">
       <AnimatePresence>
-        {bubbles.map(bubble => (
+        {bubbles.map((bubble) => (
           <div key={bubble.id}>
             {Array.from({ length: 100 }).map((_, i) => {
               const angle = Math.random() * Math.PI * 2;
-              const distance = 30 + Math.random() * 120;
+              const distanceX = 20 + Math.random() * 120;
+              const distanceY = 20 + Math.random() * 80;
               const size = 3 + Math.random() * 25;
-              const color = NEUTRAL_TONES[Math.floor(Math.random() * NEUTRAL_TONES.length)];
-              const duration = 2.5 + Math.random() * 1.2;
-              
-              const endX = Math.cos(angle) * distance;
-              const endY = Math.sin(angle) * distance;
+              const color =
+                TONES[Math.floor(Math.random() * TONES.length)];
+              const duration = 2.0 + Math.random() * 1.0;
+              const endX = Math.cos(angle) * distanceX;
+              const endY = Math.sin(angle) * distanceY;
 
               return (
                 <motion.div
@@ -227,10 +254,10 @@ export const BubblyButtonGlobalPortal = ({ bubbles }: { bubbles: Array<{ id: str
                     zIndex: 9998,
                     boxShadow: `0 0 ${size * 0.8}px ${color}aa, 0 0 ${size * 1.5}px ${color}55`,
                   }}
-                  initial={{ opacity: 0.8, scale: 1, x: 0, y: 0 }}
+                  initial={{ opacity: 1, scale: 1, x: 0, y: 0 }}
                   animate={{
                     opacity: 0,
-                    scale: 0.1,
+                    scale: 0.0,
                     x: endX,
                     y: endY,
                   }}

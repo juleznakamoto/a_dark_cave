@@ -4,11 +4,11 @@
 // Crushing Strike upgrade configurations (Combat skill from Restless Knight)
 export const CRUSHING_STRIKE_UPGRADES = [
   { level: 0, damage: 10, stunRounds: 1, cost: 0, currency: null },
-  { level: 1, damage: 20, stunRounds: 1, cost: 500, currency: "gold" },
-  { level: 2, damage: 30, stunRounds: 1, cost: 1000, currency: "gold" },
-  { level: 3, damage: 40, stunRounds: 2, cost: 1500, currency: "gold" },
-  { level: 4, damage: 50, stunRounds: 2, cost: 2000, currency: "gold" },
-  { level: 5, damage: 60, stunRounds: 3, cost: 2500, currency: "gold" },
+  { level: 1, damage: 20, stunRounds: 1, cost: 250, currency: "gold" },
+  { level: 2, damage: 30, stunRounds: 1, cost: 500, currency: "gold" },
+  { level: 3, damage: 40, stunRounds: 2, cost: 1000, currency: "gold" },
+  { level: 4, damage: 50, stunRounds: 2, cost: 1500, currency: "gold" },
+  { level: 5, damage: 60, stunRounds: 3, cost: 2000, currency: "gold" },
 ];
 
 // Bloodflame Sphere upgrade configurations (Combat skill from Elder Wizard)
@@ -28,7 +28,7 @@ export const BLOODFLAME_SPHERE_UPGRADES = [
     burnDamage: 15,
     burnRounds: 1,
     healthCost: 10,
-    cost: 500,
+    cost: 250,
     currency: "gold",
   },
   {
@@ -37,7 +37,7 @@ export const BLOODFLAME_SPHERE_UPGRADES = [
     burnDamage: 20,
     burnRounds: 1,
     healthCost: 10,
-    cost: 1000,
+    cost: 500,
     currency: "gold",
   },
   {
@@ -46,7 +46,7 @@ export const BLOODFLAME_SPHERE_UPGRADES = [
     burnDamage: 25,
     burnRounds: 2,
     healthCost: 20,
-    cost: 1500,
+    cost: 1000,
     currency: "gold",
   },
   {
@@ -55,7 +55,7 @@ export const BLOODFLAME_SPHERE_UPGRADES = [
     burnDamage: 30,
     burnRounds: 2,
     healthCost: 20,
-    cost: 2000,
+    cost: 1500,
     currency: "gold",
   },
   {
@@ -64,7 +64,7 @@ export const BLOODFLAME_SPHERE_UPGRADES = [
     burnDamage: 35,
     burnRounds: 3,
     healthCost: 20,
-    cost: 2500,
+    cost: 2000,
     currency: "gold",
   },
 ];
@@ -100,9 +100,9 @@ export const SLEEP_LENGTH_UPGRADES = [
 
 export const SLEEP_INTENSITY_UPGRADES = [
   { level: 0, percentage: 10, cost: 0, currency: null },
-  { level: 1, percentage: 12.5, cost: 250, currency: "gold" },
-  { level: 2, percentage: 15, cost: 500, currency: "gold" },
-  { level: 3, percentage: 17.5, cost: 1000, currency: "gold" },
-  { level: 4, percentage: 20, cost: 1500, currency: "gold" },
+  { level: 1, percentage: 12.5, cost: 500, currency: "gold" },
+  { level: 2, percentage: 15, cost: 1000, currency: "gold" },
+  { level: 3, percentage: 17.5, cost: 1500, currency: "gold" },
+  { level: 4, percentage: 20, cost: 2000, currency: "gold" },
   { level: 5, percentage: 25, cost: 2500, currency: "gold" },
 ];
