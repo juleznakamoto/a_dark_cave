@@ -3252,7 +3252,7 @@ export default function AdminDashboard() {
                     <CardDescription>
                       Buttons clicked exactly once (count = 1) - what did
                       churned players try just once?
-                    </Description>
+                    </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <ResponsiveContainer width="100%" height={400}>
