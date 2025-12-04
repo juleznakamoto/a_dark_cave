@@ -575,6 +575,7 @@ export const actionSchema = z.object({
     cooldownReduction: z.number().optional(),
     probabilityBonus: z.record(z.string(), z.number()).optional(),
   })).optional(),
+  upgrade_key: z.string().optional(),
 });
 
 export type Action = z.infer<typeof actionSchema>;
