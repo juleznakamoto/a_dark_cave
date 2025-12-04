@@ -148,6 +148,7 @@ interface GameStore extends GameState {
   setIdleModeDialog: (isOpen: boolean) => void;
   updateEffects: () => void;
   updateBastionStats: () => void;
+  updateStats: () => void;
   updateLoopProgress: (progress: number) => void;
   setGameLoopActive: (isActive: boolean) => void;
   togglePause: () => void;
@@ -390,6 +391,7 @@ export class StateManager {
       const state = store();
       state.updateEffects();
       state.updateBastionStats();
+      state.updateStats();
       this.updateTimer = null;
     }, 0);
   }
@@ -1368,6 +1370,22 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set((state) => ({
       bastion_stats: calculateBastionStats(state),
     }));
+  },
+
+  updateStats: () => {
+    set((state) => {
+      const { getTotalLuck, getTotalStrength, getTotalKnowledge, getTotalMadness } = require('./rules/effectsCalculation');
+      
+      return {
+        stats: {
+          ...state.stats,
+          luck: getTotalLuck(state),
+          strength: getTotalStrength(state),
+          knowledge: getTotalKnowledge(state),
+          madness: getTotalMadness(state),
+        },
+      };
+    });
   },
 
   updateLoopProgress: (progress: number) => {
