@@ -930,13 +930,6 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     bonuses: {},
   },
 
-  sacrificial_tunic: {
-    id: "sacrificial_tunic",
-    name: "Sacrificial Tunic",
-    description: "Dark ceremonial garment worn during ritual sacrifices",
-    bonuses: {},
-  },
-
   ancient_scrolls: {
     id: "ancient_scrolls",
     name: "Ancient Scrolls",
