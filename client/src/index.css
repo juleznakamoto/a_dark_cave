@@ -6,10 +6,12 @@
   }
 }
 
-html, body {
+html,
+body {
   /* Ensure full viewport height on mobile */
   height: 100vh;
-  height: 100dvh; /* Dynamic viewport height for mobile browsers */
+  height: 100dvh;
+  /* Dynamic viewport height for mobile browsers */
   overflow: hidden;
 }
 
@@ -27,6 +29,7 @@ html, body {
     background-color: rgba(0, 0, 0, 0.5);
   }
 }
+
 .dark {
   --background: hsl(0, 0%, 5%);
   --foreground: hsl(0, 6.6667%, 91.1765%);
@@ -134,7 +137,8 @@ html, body {
 }
 
 .tab-fade-in {
-  animation: tab-fade-in 1s ease-out forwards;
+  animation: tab-fade-in 1s ease-out 0s forwards;
+  opacity: 0;
 }
 
 @keyframes flame-text {
@@ -179,9 +183,12 @@ html, body {
 }
 
 @keyframes new-item-pulse {
-  0%, 100% {
+
+  0%,
+  100% {
     text-shadow: 0 0 2px rgba(255, 255, 255, 0.4), 0 0 4px rgba(255, 255, 255, 0.2);
   }
+
   50% {
     text-shadow: 0 0 6px rgba(255, 255, 255, 0.8), 0 0 10px rgba(255, 255, 255, 0.4);
   }
@@ -331,6 +338,7 @@ html, body {
   from {
     opacity: 1;
   }
+
   to {
     opacity: 0;
   }
@@ -346,6 +354,7 @@ html, body {
     opacity: 1;
     box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7);
   }
+
   100% {
     opacity: 0.7;
     box-shadow: 0 0 0 6px rgba(220, 38, 38, 0);
@@ -372,9 +381,11 @@ html, body {
     background-size: 10% 10%, 20% 20%, 15% 15%, 20% 20%, 18% 18%, 10% 10%, 15% 15%, 10% 10%, 18% 18%;
     background-position: 5% 90%, 10% 90%, 10% 90%, 15% 90%, 25% 90%, 25% 90%, 40% 90%, 55% 90%, 70% 90%;
   }
+
   50% {
     background-position: 0% 80%, 0% 20%, 10% 40%, 20% 0%, 30% 30%, 22% 50%, 50% 50%, 65% 20%, 90% 30%;
   }
+
   100% {
     background-position: 0% 70%, 0% 10%, 10% 30%, 20% -10%, 30% 20%, 22% 40%, 50% 40%, 65% 10%, 90% 20%;
     background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
@@ -394,9 +405,11 @@ html, body {
     background-size: 15% 15%, 20% 20%, 18% 18%, 20% 20%, 15% 15%, 10% 10%, 20% 20%;
     background-position: 10% -10%, 30% 10%, 55% -10%, 70% -10%, 85% -10%, 70% -10%, 70% 0%;
   }
+
   50% {
     background-position: 0% 80%, 20% 80%, 45% 60%, 60% 100%, 75% 70%, 95% 60%, 105% 0%;
   }
+
   100% {
     background-position: 0% 90%, 20% 90%, 45% 70%, 60% 110%, 75% 80%, 95% 70%, 110% 10%;
     background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
