@@ -50,7 +50,6 @@ import { attackWaveEvents } from "./eventsAttackWaves";
 // Action handlers map
 const actionHandlers: Record<string, (state: GameState, actionId: string) => Partial<GameState>> = {
   ...villageBuildActions.handlers,
-  ...(caveExploreActions?.handlers || {}),
   ...caveMineActions.handlers,
   ...caveCraftTools.handlers,
   ...caveCraftResources.handlers,
