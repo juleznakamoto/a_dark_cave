@@ -1,7 +1,6 @@
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 import { getTotalKnowledge } from "./effectsCalculation";
-import { logger } from "@/lib/logger";
 
 // Resource prices in gold per unit
 const PRICES = {

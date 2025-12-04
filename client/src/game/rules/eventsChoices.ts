@@ -1659,19 +1659,19 @@ export const choiceEvents: Record<string, GameEvent> = {
       (state.story?.seen?.humansSacrificeLevel || 0) >= 10 &&
       !state.story?.seen?.boneTempleProposalEvent &&
       state.buildings.blackMonolith >= 1 &&
-      state.buildings.boneTemple === 0,
+      (state.buildings.boneTemple || 0) === 0 ,
     triggerType: "resource",
     timeProbability: 1,
     title: "The Elder's Demand",
     message:
-      "An elder woman steps forward from the crowd, her face grave. 'The human sacrifices must end,' she declares. 'We have reached the limit of what the gods will accept. Now, we must build a great monument in their honor - the Bone Temple. Only then will the gods grant us their continued favor.'",
+      "An elder woman with clouded eyes approaches you, 'We must end the spillng of human blood,' she declares. 'The old gods demand a great monument in their honor. Only then will the gods grant us their continued favor.'",
     triggered: false,
     priority: 5,
-    repeatable: false,
+    repeatable: true,
     choices: [
       {
         id: "acceptBoneTemple",
-        label: "Accept the elder's wisdom",
+        label: "Accept proposal",
         effect: (state: GameState) => {
           return {
             story: {
@@ -1683,7 +1683,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "You accept the elder's wisdom. The villagers nod in approval. The path to building the Bone Temple is now open.",
+              "You accept the elder's wisdom. The villagers nod in silent approval. The path to building the ultimate monument to the gods now lies open.",
           };
         },
       },

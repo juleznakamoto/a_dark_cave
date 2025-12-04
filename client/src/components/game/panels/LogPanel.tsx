@@ -82,7 +82,7 @@ function LogPanel() {
               // Apply fade-out to stranger entries that are 55+ seconds old
               const currentTime = Date.now();
               const entryAge = currentTime - entry.timestamp;
-              const isFadingOut = entry.id.startsWith('stranger-approaches-') && entryAge >= 55000;
+              const isFadingOut = entry.id.startsWith('stranger-approaches-') && entryAge >= 55500;
               const fadeOutClass = isFadingOut ? "log-fade-out" : "";
 
               return (
