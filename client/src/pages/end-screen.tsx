@@ -54,12 +54,6 @@ export default function EndScreenPage() {
     };
   }, []);
 
-  const handlePlayAgain = async () => {
-    // Delete save and reload the page to start fresh
-    await deleteSave();
-    window.location.href = "/game";
-  };
-
   const handleMainMenu = async () => {
     // Navigate to main menu (or home page)
     window.location.href = "/";
