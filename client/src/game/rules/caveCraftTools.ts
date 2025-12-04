@@ -680,3 +680,9 @@ export function handleCraftLoggersGloves(state: GameState, result: ActionResult)
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
+
+export function handleCraftSacrificialTunic(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('craftSacrificialTunic', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
