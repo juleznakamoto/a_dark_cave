@@ -125,17 +125,6 @@ export default function GameFooter() {
                   <span className="absolute -top-[-4px] -right-[-0px] w-1 h-1 bg-red-600 rounded-full notification-pulse" />
                 )}
             </Button>
-            {/* Added button to trigger end screen */}
-            {import.meta.env.DEV && (
-              <Button
-                variant="ghost"
-                size="xs"
-                onClick={() => setShowEndScreen(true)}
-                className="px-1 py-1 text-xs hover"
-              >
-                ES
-              </Button>
-            )}
             {cruelMode && (
               <TooltipProvider>
                 <Tooltip

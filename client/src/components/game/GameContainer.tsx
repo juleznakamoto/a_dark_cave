@@ -38,7 +38,6 @@ export default function GameContainer() {
     setCombatDialog,
     setIdleModeDialog,
     isPaused,
-    showEndScreen,
     devMode,
     authDialogOpen, // Added authDialogOpen to state
     shopDialogOpen, // Added shopDialogOpen to state
