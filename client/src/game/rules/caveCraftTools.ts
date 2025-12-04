@@ -449,16 +449,32 @@ export const caveCraftTools: Record<string, Action> = {
     id: "craftGrenadierBag",
     label: "Grenadier's Bag",
     show_when: {
-      "buildings.bastion": 1,
+      "buildings.blacksmith": 1,
       "clothing.grenadier_bag": false,
     },
     cost: {
-      "resources.leather": 750,
+      "resources.leather": 200,
     },
     effects: {
       "clothing.grenadier_bag": true,
-      "story.seen.hasGrenadierBag": true,
-      "story.seen.actionCraftGrenadierBag": true,
+    },
+    cooldown: 30,
+  },
+
+  craftSacrificialTunic: {
+    id: "craftSacrificialTunic",
+    label: "Sacrificial Tunic",
+    show_when: {
+      "buildings.pillarOfClarity": 1,
+      "clothing.sacrificial_tunic": false,
+    },
+    cost: {
+      "resources.leather": 1500,
+    },
+    effects: {
+      "clothing.sacrificial_tunic": true,
+      "bonuses.bone_totem_sacrifice": "+0.25",
+      "bonuses.leather_totem_sacrifice": "+0.25",
     },
     cooldown: 30,
   },
@@ -645,8 +661,20 @@ export function handleCraftHunterCloak(state: GameState, result: ActionResult): 
   return result;
 }
 
-export function handleCraftGrenadierBag(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('craftGrenadierBag', state);
+export function handleCraftGrenadierBag(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("craftGrenadierBag", state);
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+export function handleCraftSacrificialTunic(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("craftSacrificialTunic", state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }

@@ -114,17 +114,17 @@ export const forestSacrificeActions: Record<string, Action> = {
     canExecute: (state: GameState) => {
       const usageCount = Number(state.story?.seen?.humansSacrificeLevel) || 0;
       const maxLevels = 10;
-      
+
       if (usageCount >= maxLevels) {
         return false;
       }
-      
+
       const currentCost = getHumansCost(state);
       const totalVillagers = Object.values(state.villagers).reduce(
         (sum, count) => sum + (count || 0),
         0,
       );
-      
+
       return totalVillagers >= currentCost;
     },
     effects: {},
@@ -239,21 +239,30 @@ export function handleLeatherTotems(
   state: GameState,
   result: ActionResult,
 ): ActionResult {
-  return handleTotemSacrifice(
+  const baseResult = handleTotemSacrifice(
     "leatherTotems",
     "leather_totem",
     "leatherTotemsUsageCount",
     state,
     result,
     {
-      itemKey: "moon_bracelet" as keyof GameState["clothing"],
+      itemKey: "moon_bracelet",
       itemName: "Moon Bracelet",
       discoveryMessage:
-        "Among the sacrifice offerings, you discover a white stone bracelet.",
+        "As the ritual ends, moonlight reveals a hidden white bracelet.",
       baseProbability: 0.02 - state.CM * 0.01, // 2%
       bonusPerUse: 0.01 - state.CM * 0.005, // 1%
     },
   );
+
+  // Apply Sacrificial Tunic bonus
+  if (state.clothing.sacrificial_tunic && baseResult.stateUpdates.resources?.gold) {
+    const currentGold = baseResult.stateUpdates.resources.gold;
+    const bonusGold = Math.floor(currentGold * 0.25);
+    baseResult.stateUpdates.resources.gold = currentGold + bonusGold;
+  }
+
+  return baseResult;
 }
 
 export function handleAnimals(
