@@ -8,7 +8,7 @@ export const villageBuildActions: Record<string, Action> = {
     label: "Wooden Hut",
     description: "Simple wooden hut providing basic shelter",
     tooltipEffects: (state: GameState) => {
-      const count = state.buildings.woodenHut || 0;
+      const ount = state.buildings.woodenHut || 0;
       const totalPopulation = count * 2;
       return count > 0
         ? [`+${totalPopulation} Max Population`]
