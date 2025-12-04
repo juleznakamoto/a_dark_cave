@@ -137,7 +137,7 @@ body {
 }
 
 .tab-fade-in {
-  animation: tab-fade-in 1s ease-out 0s forwards;
+  animation: tab-fade-in 5s ease-out;
   opacity: 0;
 }
 

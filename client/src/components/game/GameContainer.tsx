@@ -262,7 +262,7 @@ export default function GameContainer() {
                   <button
                     className={`py-2 text-sm bg-transparent ${
                       activeTab === "village" ? "font-bold opacity-100" : "opacity-60"
-                    } ${animatingTabs.has("village") ? "tab-fade-in" : ""}`}
+                    } ${animatingTabs.has("village") ? "tab-fade-in opacity-0" : ""}`}
                     onClick={() => setActiveTab("village")}
                     data-testid="tab-village"
                   >
