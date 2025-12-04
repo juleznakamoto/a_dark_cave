@@ -804,6 +804,72 @@ describe('Resource Gain Tests', () => {
       expect(tooltipGold!.min).toBe(expectedMin);
       expect(tooltipGold!.max).toBe(expectedMax);
     });
+
+    it('boneTotems: only tunic (no temple) gives 25% bonus', () => {
+      const stateWithoutTunic = createTestState({
+        buildings: { altar: 1, clerksHut: 1 },
+      });
+      const stateWithTunic = createTestState({
+        buildings: { altar: 1, clerksHut: 1 },
+        clothing: { sacrificial_tunic: true },
+      });
+
+      const { expectedGains: gainsWithout } = testActionGains('boneTotems', stateWithoutTunic, 50);
+      const { expectedGains: gainsWith } = testActionGains('boneTotems', stateWithTunic, 50);
+
+      // Verify tunic gives exactly 25% more
+      expect(gainsWith.silver.min).toBe(Math.floor(gainsWithout.silver.min * 1.25));
+      expect(gainsWith.silver.max).toBe(Math.floor(gainsWithout.silver.max * 1.25));
+    });
+
+    it('boneTotems: only temple (no tunic) gives 25% bonus', () => {
+      const stateWithoutTemple = createTestState({
+        buildings: { altar: 1, clerksHut: 1 },
+      });
+      const stateWithTemple = createTestState({
+        buildings: { altar: 1, clerksHut: 1, boneTemple: 1 },
+      });
+
+      const { expectedGains: gainsWithout } = testActionGains('boneTotems', stateWithoutTemple, 50);
+      const { expectedGains: gainsWith } = testActionGains('boneTotems', stateWithTemple, 50);
+
+      // Verify temple gives exactly 25% more
+      expect(gainsWith.silver.min).toBe(Math.floor(gainsWithout.silver.min * 1.25));
+      expect(gainsWith.silver.max).toBe(Math.floor(gainsWithout.silver.max * 1.25));
+    });
+
+    it('leatherTotems: only tunic (no temple) gives 25% bonus', () => {
+      const stateWithoutTunic = createTestState({
+        buildings: { temple: 1, clerksHut: 1 },
+      });
+      const stateWithTunic = createTestState({
+        buildings: { temple: 1, clerksHut: 1 },
+        clothing: { sacrificial_tunic: true },
+      });
+
+      const { expectedGains: gainsWithout } = testActionGains('leatherTotems', stateWithoutTunic, 50);
+      const { expectedGains: gainsWith } = testActionGains('leatherTotems', stateWithTunic, 50);
+
+      // Verify tunic gives exactly 25% more
+      expect(gainsWith.gold.min).toBe(Math.floor(gainsWithout.gold.min * 1.25));
+      expect(gainsWith.gold.max).toBe(Math.floor(gainsWithout.gold.max * 1.25));
+    });
+
+    it('leatherTotems: only temple (no tunic) gives 25% bonus', () => {
+      const stateWithoutTemple = createTestState({
+        buildings: { temple: 1, clerksHut: 1 },
+      });
+      const stateWithTemple = createTestState({
+        buildings: { temple: 1, clerksHut: 1, boneTemple: 1 },
+      });
+
+      const { expectedGains: gainsWithout } = testActionGains('leatherTotems', stateWithoutTemple, 50);
+      const { expectedGains: gainsWith } = testActionGains('leatherTotems', stateWithTemple, 50);
+
+      // Verify temple gives exactly 25% more
+      expect(gainsWith.gold.min).toBe(Math.floor(gainsWithout.gold.min * 1.25));
+      expect(gainsWith.gold.max).toBe(Math.floor(gainsWithout.gold.max * 1.25));
+    });
   });
 
   describe('Button Upgrades', () => {
