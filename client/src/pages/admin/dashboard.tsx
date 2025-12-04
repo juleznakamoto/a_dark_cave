@@ -1,7 +1,7 @@
-import { useEffect, useState, useMemo } from 'react';
-import { useLocation } from 'wouter';
-import { getSupabaseClient } from '@/lib/supabase';
-import { logger } from '@/lib/logger';
+import { useEffect, useState, useMemo } from "react";
+import { useLocation } from "wouter";
+import { getSupabaseClient } from "@/lib/supabase";
+import { logger } from "@/lib/logger";
 import {
   LineChart,
   Line,
@@ -18,11 +18,23 @@ import {
   Cell,
   AreaChart,
   Area,
-} from 'recharts';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
+} from "recharts";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import {
   subDays,
   subMonths,
@@ -31,8 +43,8 @@ import {
   format,
   differenceInDays,
   isWithinInterval,
-  parseISO
-} from 'date-fns';
+  parseISO,
+} from "date-fns";
 
 // Mock useQuery for standalone execution if not in a React Query context
 const useQuery = (options) => {
@@ -60,7 +72,6 @@ const useQuery = (options) => {
   return { data, error, isLoading };
 };
 
-
 interface ButtonClickData {
   user_id: string;
   clicks: Record<string, number>;
@@ -84,24 +95,11 @@ interface PurchaseData {
 
 // Admin emails from environment variable (comma-separated)
 const getAdminEmails = (): string[] => {
-  const adminEmailsEnv = import.meta.env.VITE_ADMIN_EMAILS || '';
-  return adminEmailsEnv.split(',').map(email => email.trim()).filter(Boolean);
-};
-
-// Dummy ChartContainer, ChartTooltip, ChartLegend, ChartTooltipContent, ChartLegendContent for standalone execution
-const ChartContainer = ({ children, config, className }) => <div className={className}>{children}</div>;
-const ChartTooltip = ({ content }) => <div>{content}</div>;
-const ChartLegend = ({ content }) => <div>{content}</div>;
-const ChartTooltipContent = () => <div>Tooltip Content</div>;
-const ChartLegendContent = () => <div>Legend Content</div>;
-const Button = ({ children, variant, size, onClick }) => <button onClick={onClick}>{children}</button>;
-
-// Dummy buttonClicksChartConfig
-const buttonClicksChartConfig = {
-  mine: { label: 'Mine', color: 'hsl(var(--chart-1))' },
-  hunt: { label: 'Hunt', color: 'hsl(var(--chart-2))' },
-  chopWood: { label: 'Chop Wood', color: 'hsl(var(--chart-3))' },
-  caveExplore: { label: 'Cave Explore', color: 'hsl(var(--chart-4))' },
+  const adminEmailsEnv = import.meta.env.VITE_ADMIN_EMAILS || "";
+  return adminEmailsEnv
+    .split(",")
+    .map((email) => email.trim())
+    .filter(Boolean);
 };
 
 // Helper function to clean button names by removing timestamp suffixes
@@ -109,8 +107,8 @@ const cleanButtonName = (buttonId: string): string => {
   // Remove timestamp suffixes and random number suffixes from merchant trades
   // Patterns: _1764039531673_0.6389963990042614 or _1764039531673 or -1764039531673
   return buttonId
-    .replace(/_\d{13,}_[\d.]+$/, '') // Remove _timestamp_randomNumber
-    .replace(/[-_]\d{13,}$/, '');     // Remove -timestamp or _timestamp
+    .replace(/_\d{13,}_[\d.]+$/, "") // Remove _timestamp_randomNumber
+    .replace(/[-_]\d{13,}$/, ""); // Remove -timestamp or _timestamp
 };
 
 export default function AdminDashboard() {
@@ -125,47 +123,60 @@ export default function AdminDashboard() {
   const [users, setUsers] = useState<Array<{ id: string; email: string }>>([]);
 
   // Filter states
-  const [timeRange, setTimeRange] = useState<'1d' | '7d' | '30d' | 'all'>('30d');
-  const [selectedUser, setSelectedUser] = useState<string>('all');
-  const [selectedButtons, setSelectedButtons] = useState<Set<string>>(new Set(['mine', 'hunt', 'chopWood', 'caveExplore'])); // Initialize with all buttons
-  const [selectedClickTypes, setSelectedClickTypes] = useState<Set<string>>(new Set()); // For individual click type chart
-  const [environment, setEnvironment] = useState<'dev' | 'prod'>('prod');
+  const [timeRange, setTimeRange] = useState<"1d" | "7d" | "30d" | "all">(
+    "30d",
+  );
+  const [selectedUser, setSelectedUser] = useState<string>("all");
+  const [selectedButtons, setSelectedButtons] = useState<Set<string>>(
+    new Set(["mine", "hunt", "chopWood", "caveExplore"]),
+  ); // Initialize with all buttons
+  const [selectedClickTypes, setSelectedClickTypes] = useState<Set<string>>(
+    new Set(),
+  ); // For individual click type chart
+  const [environment, setEnvironment] = useState<"dev" | "prod">("prod");
   const [showCompletedOnly, setShowCompletedOnly] = useState<boolean>(false);
   const [churnDays, setChurnDays] = useState<1 | 3 | 5 | 7>(3);
 
   // User lookup states
-  const [lookupUserId, setLookupUserId] = useState<string>('');
+  const [lookupUserId, setLookupUserId] = useState<string>("");
   const [lookupResult, setLookupResult] = useState<GameSaveData | null>(null);
   const [lookupLoading, setLookupLoading] = useState<boolean>(false);
-  const [lookupError, setLookupError] = useState<string>('');
+  const [lookupError, setLookupError] = useState<string>("");
 
   // Helper function to filter data by time range
-  const filterByTimeRange = <T extends { timestamp?: string; updated_at?: string; purchased_at?: string; created_at?: string }>(
+  const filterByTimeRange = <
+    T extends {
+      timestamp?: string;
+      updated_at?: string;
+      purchased_at?: string;
+      created_at?: string;
+    },
+  >(
     data: T[],
-    dateField: keyof T
+    dateField: keyof T,
   ): T[] => {
-    if (timeRange === 'all') return data;
+    if (timeRange === "all") return data;
 
     const now = new Date();
     let cutoffDate: Date;
 
     switch (timeRange) {
-      case '1d':
+      case "1d":
         cutoffDate = subDays(now, 1);
         break;
-      case '7d':
+      case "7d":
         cutoffDate = subDays(now, 7);
         break;
-      case '30d':
+      case "30d":
         cutoffDate = subDays(now, 30);
         break;
       default:
         return data;
     }
 
-    return data.filter(item => {
+    return data.filter((item) => {
       const dateValue = item[dateField];
-      if (!dateValue || typeof dateValue !== 'string') return false;
+      if (!dateValue || typeof dateValue !== "string") return false;
       const itemDate = parseISO(dateValue);
       return itemDate >= cutoffDate;
     });
@@ -186,12 +197,14 @@ export default function AdminDashboard() {
   const checkAdminAccess = async () => {
     try {
       const supabase = await getSupabaseClient();
-      const { data: { user } } = await supabase.auth.getUser();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
       const adminEmails = getAdminEmails();
 
-      if (!user || !adminEmails.includes(user.email || '')) {
+      if (!user || !adminEmails.includes(user.email || "")) {
         setLoading(false);
-        setLocation('/');
+        setLocation("/");
         return;
       }
 
@@ -199,9 +212,9 @@ export default function AdminDashboard() {
       await loadData();
       setLoading(false);
     } catch (error) {
-      logger.error('Auth check failed:', error);
+      logger.error("Auth check failed:", error);
       setLoading(false);
-      setLocation('/');
+      setLocation("/");
     }
   };
 
@@ -212,7 +225,7 @@ export default function AdminDashboard() {
 
       if (!response.ok) {
         const errorText = await response.text();
-        logger.error('Admin data fetch failed:', response.status, errorText);
+        logger.error("Admin data fetch failed:", response.status, errorText);
         throw new Error(`Failed to fetch admin data: ${response.status}`);
       }
 
@@ -233,14 +246,14 @@ export default function AdminDashboard() {
       const userIdsWithClicks = new Set<string>();
       data.clicks?.forEach((c: any) => userIdsWithClicks.add(c.user_id));
 
-      const userList = Array.from(userIdsWithClicks).map(id => ({
+      const userList = Array.from(userIdsWithClicks).map((id) => ({
         id,
-        email: id.substring(0, 8) + '...',
+        email: id.substring(0, 8) + "...",
       }));
 
       setUsers(userList);
     } catch (error) {
-      logger.error('Failed to load admin data:', error);
+      logger.error("Failed to load admin data:", error);
     }
   };
 
@@ -249,39 +262,43 @@ export default function AdminDashboard() {
     if (!clickData) return [];
 
     // Filter by time range (except for Overview tab)
-    let filteredClicks = filterByTimeRange(clickData, 'timestamp');
+    let filteredClicks = filterByTimeRange(clickData, "timestamp");
 
     // Filter by selected user
-    if (selectedUser !== 'all') {
-      filteredClicks = filteredClicks.filter(d => d.user_id === selectedUser);
+    if (selectedUser !== "all") {
+      filteredClicks = filteredClicks.filter((d) => d.user_id === selectedUser);
     }
 
     // Filter by completed players if toggle is on
     if (showCompletedOnly) {
       const completedUserIds = new Set(
         gameSaves
-          .filter(save => 
-            save.game_state?.events?.cube15a || 
-            save.game_state?.events?.cube15b ||
-            save.game_state?.events?.cube13 ||
-            save.game_state?.events?.cube14a ||
-            save.game_state?.events?.cube14b ||
-            save.game_state?.events?.cube14c ||
-            save.game_state?.events?.cube14d
+          .filter(
+            (save) =>
+              save.game_state?.events?.cube15a ||
+              save.game_state?.events?.cube15b ||
+              save.game_state?.events?.cube13 ||
+              save.game_state?.events?.cube14a ||
+              save.game_state?.events?.cube14b ||
+              save.game_state?.events?.cube14c ||
+              save.game_state?.events?.cube14d,
           )
-          .map(save => save.user_id)
+          .map((save) => save.user_id),
       );
-      filteredClicks = filteredClicks.filter(d => completedUserIds.has(d.user_id));
+      filteredClicks = filteredClicks.filter((d) =>
+        completedUserIds.has(d.user_id),
+      );
     }
 
     // Aggregate total clicks per button
     const totalClicks: Record<string, number> = {};
 
-    filteredClicks.forEach(record => {
+    filteredClicks.forEach((record) => {
       // Format: { "button": count } - assuming direct mapping from button to count within record.clicks
       Object.entries(record.clicks).forEach(([button, count]) => {
         const cleanButton = cleanButtonName(button);
-        totalClicks[cleanButton] = (totalClicks[cleanButton] || 0) + (count as number);
+        totalClicks[cleanButton] =
+          (totalClicks[cleanButton] || 0) + (count as number);
       });
     });
 
@@ -289,7 +306,7 @@ export default function AdminDashboard() {
     return Object.entries(totalClicks)
       .map(([button, clicks]) => ({
         button,
-        clicks
+        clicks,
       }))
       .sort((a, b) => b.clicks - a.clicks); // Sort by most clicked
   }, [clickData, selectedUser, showCompletedOnly, gameSaves, timeRange]);
@@ -302,7 +319,7 @@ export default function AdminDashboard() {
     const activeUserIds = new Set<string>();
 
     // Check button clicks
-    clickData.forEach(entry => {
+    clickData.forEach((entry) => {
       // Assuming timestamp is stored and can be parsed
       const entryDate = parseISO(entry.timestamp);
       if (entryDate >= cutoffDate) {
@@ -311,7 +328,7 @@ export default function AdminDashboard() {
     });
 
     // Check game saves (updated_at indicates activity)
-    gameSaves.forEach(save => {
+    gameSaves.forEach((save) => {
       const saveDate = parseISO(save.updated_at);
       if (saveDate >= cutoffDate) {
         activeUserIds.add(save.user_id);
@@ -328,35 +345,38 @@ export default function AdminDashboard() {
   // Playtime Calculations
   const getAveragePlaytime = () => {
     const playtimes = gameSaves
-      .map(save => save.game_state?.playTime || 0)
-      .filter(time => time > 0);
+      .map((save) => save.game_state?.playTime || 0)
+      .filter((time) => time > 0);
 
     if (playtimes.length === 0) return 0;
 
-    const avgMs = playtimes.reduce((sum, time) => sum + time, 0) / playtimes.length;
+    const avgMs =
+      playtimes.reduce((sum, time) => sum + time, 0) / playtimes.length;
     return Math.round(avgMs / 1000 / 60); // Convert to minutes
   };
 
   const getAveragePlaytimeToCompletion = () => {
-    const completedGames = gameSaves.filter(save => 
-      save.game_state?.events?.cube15a || 
-      save.game_state?.events?.cube15b ||
-      save.game_state?.events?.cube13 ||
-      save.game_state?.events?.cube14a ||
-      save.game_state?.events?.cube14b ||
-      save.game_state?.events?.cube14c ||
-      save.game_state?.events?.cube14d
+    const completedGames = gameSaves.filter(
+      (save) =>
+        save.game_state?.events?.cube15a ||
+        save.game_state?.events?.cube15b ||
+        save.game_state?.events?.cube13 ||
+        save.game_state?.events?.cube14a ||
+        save.game_state?.events?.cube14b ||
+        save.game_state?.events?.cube14c ||
+        save.game_state?.events?.cube14d,
     );
 
     if (completedGames.length === 0) return 0;
 
     const playtimes = completedGames
-      .map(save => save.game_state?.playTime || 0)
-      .filter(time => time > 0);
+      .map((save) => save.game_state?.playTime || 0)
+      .filter((time) => time > 0);
 
     if (playtimes.length === 0) return 0;
 
-    const avgMs = playtimes.reduce((sum, time) => sum + time, 0) / playtimes.length;
+    const avgMs =
+      playtimes.reduce((sum, time) => sum + time, 0) / playtimes.length;
     return Math.round(avgMs / 1000 / 60); // Convert to minutes
   };
 
@@ -371,14 +391,14 @@ export default function AdminDashboard() {
 
       const activeUserIds = new Set<string>();
 
-      clickData.forEach(entry => {
+      clickData.forEach((entry) => {
         const entryDate = parseISO(entry.timestamp);
         if (isWithinInterval(entryDate, { start: dayStart, end: dayEnd })) {
           activeUserIds.add(entry.user_id);
         }
       });
 
-      gameSaves.forEach(save => {
+      gameSaves.forEach((save) => {
         const saveDate = parseISO(save.updated_at);
         if (isWithinInterval(saveDate, { start: dayStart, end: dayEnd })) {
           activeUserIds.add(save.user_id);
@@ -386,7 +406,7 @@ export default function AdminDashboard() {
       });
 
       data.push({
-        day: format(date, 'MMM dd'),
+        day: format(date, "MMM dd"),
         users: activeUserIds.size,
       });
     }
@@ -397,26 +417,26 @@ export default function AdminDashboard() {
   // Session length distribution
   const getSessionLengthDistribution = () => {
     const sessions = gameSaves
-      .map(save => save.game_state?.playTime || 0)
-      .filter(time => time > 0);
+      .map((save) => save.game_state?.playTime || 0)
+      .filter((time) => time > 0);
 
     const distribution = {
-      '0-30 min': 0,
-      '30-60 min': 0,
-      '1-2 hours': 0,
-      '2-5 hours': 0,
-      '5-10 hours': 0,
-      '10+ hours': 0,
+      "0-30 min": 0,
+      "30-60 min": 0,
+      "1-2 hours": 0,
+      "2-5 hours": 0,
+      "5-10 hours": 0,
+      "10+ hours": 0,
     };
 
-    sessions.forEach(timeMs => {
+    sessions.forEach((timeMs) => {
       const minutes = timeMs / 1000 / 60;
-      if (minutes < 30) distribution['0-30 min']++;
-      else if (minutes < 60) distribution['30-60 min']++;
-      else if (minutes < 120) distribution['1-2 hours']++;
-      else if (minutes < 300) distribution['2-5 hours']++;
-      else if (minutes < 600) distribution['5-10 hours']++;
-      else distribution['10+ hours']++;
+      if (minutes < 30) distribution["0-30 min"]++;
+      else if (minutes < 60) distribution["30-60 min"]++;
+      else if (minutes < 120) distribution["1-2 hours"]++;
+      else if (minutes < 300) distribution["2-5 hours"]++;
+      else if (minutes < 600) distribution["5-10 hours"]++;
+      else distribution["10+ hours"]++;
     });
 
     return Object.entries(distribution).map(([range, count]) => ({
@@ -434,13 +454,13 @@ export default function AdminDashboard() {
       const dayStart = startOfDay(date);
       const dayEnd = endOfDay(date);
 
-      const signupsCount = gameSaves.filter(save => {
+      const signupsCount = gameSaves.filter((save) => {
         const createdDate = parseISO(save.created_at);
         return isWithinInterval(createdDate, { start: dayStart, end: dayEnd });
       }).length;
 
       data.push({
-        day: format(date, 'MMM dd'),
+        day: format(date, "MMM dd"),
         signups: signupsCount,
       });
     }
@@ -458,13 +478,16 @@ export default function AdminDashboard() {
       hourStart.setMinutes(0, 0, 0);
       const hourEnd = new Date(hourStart.getTime() + 60 * 60 * 1000 - 1);
 
-      const signupsCount = gameSaves.filter(save => {
+      const signupsCount = gameSaves.filter((save) => {
         const createdDate = parseISO(save.created_at);
-        return isWithinInterval(createdDate, { start: hourStart, end: hourEnd });
+        return isWithinInterval(createdDate, {
+          start: hourStart,
+          end: hourEnd,
+        });
       }).length;
 
       data.push({
-        hour: format(hourStart, 'HH:mm'),
+        hour: format(hourStart, "HH:mm"),
         signups: signupsCount,
       });
     }
@@ -481,14 +504,18 @@ export default function AdminDashboard() {
       const dayStart = startOfDay(date);
       const dayEnd = endOfDay(date);
 
-      const purchasesCount = purchases.filter(purchase => {
+      const purchasesCount = purchases.filter((purchase) => {
         const purchaseDate = parseISO(purchase.purchased_at);
         // Only count bundle purchases, not individual components
-        return purchase.price_paid > 0 && !purchase.bundle_id && isWithinInterval(purchaseDate, { start: dayStart, end: dayEnd });
+        return (
+          purchase.price_paid > 0 &&
+          !purchase.bundle_id &&
+          isWithinInterval(purchaseDate, { start: dayStart, end: dayEnd })
+        );
       }).length;
 
       data.push({
-        day: format(date, 'MMM dd'),
+        day: format(date, "MMM dd"),
         purchases: purchasesCount,
       });
     }
@@ -499,15 +526,21 @@ export default function AdminDashboard() {
   // Purchases by playtime
   const getPurchasesByPlaytime = () => {
     // Filter out free purchases and component purchases (only show bundles)
-    const paidPurchases = purchases.filter(p => p.price_paid > 0 && !p.bundle_id);
+    const paidPurchases = purchases.filter(
+      (p) => p.price_paid > 0 && !p.bundle_id,
+    );
 
     // Get playtime for each purchase by matching user_id to game saves
-    const purchasesWithPlaytime = paidPurchases.map(purchase => {
-      const userSave = gameSaves.find(save => save.user_id === purchase.user_id);
-      const playtimeMinutes = userSave ? Math.round((userSave.game_state?.playTime || 0) / 1000 / 60) : 0;
+    const purchasesWithPlaytime = paidPurchases.map((purchase) => {
+      const userSave = gameSaves.find(
+        (save) => save.user_id === purchase.user_id,
+      );
+      const playtimeMinutes = userSave
+        ? Math.round((userSave.game_state?.playTime || 0) / 1000 / 60)
+        : 0;
       return {
         playtimeMinutes,
-        purchase
+        purchase,
       };
     });
 
@@ -525,7 +558,7 @@ export default function AdminDashboard() {
     const result: Array<{ playtime: string; purchases: number }> = [];
     for (let bucket = 0; bucket <= maxBucket; bucket++) {
       result.push({
-        playtime: bucket === 0 ? '0h' : `${bucket}h`,
+        playtime: bucket === 0 ? "0h" : `${bucket}h`,
         purchases: buckets.get(bucket) || 0,
       });
     }
@@ -540,7 +573,7 @@ export default function AdminDashboard() {
 
     // Get unique users who made non-free purchases (exclude component purchases)
     const buyersSet = new Set<string>();
-    purchases.forEach(purchase => {
+    purchases.forEach((purchase) => {
       // Only count bundle purchases, not individual components
       if (purchase.price_paid > 0 && !purchase.bundle_id) {
         buyersSet.add(purchase.user_id);
@@ -554,51 +587,61 @@ export default function AdminDashboard() {
   // Process data for charts
   const getButtonClicksOverTime = () => {
     // Filter by time range
-    let filteredClicks = filterByTimeRange(clickData, 'timestamp');
+    let filteredClicks = filterByTimeRange(clickData, "timestamp");
 
-    if (selectedUser !== 'all') {
-      filteredClicks = filteredClicks.filter(d => d.user_id === selectedUser);
+    if (selectedUser !== "all") {
+      filteredClicks = filteredClicks.filter((d) => d.user_id === selectedUser);
     }
 
     // Filter by completed players if toggle is on
     if (showCompletedOnly) {
       const completedUserIds = new Set(
         gameSaves
-          .filter(save => 
-            save.game_state?.events?.cube15a || 
-            save.game_state?.events?.cube15b ||
-            save.game_state?.events?.cube13 ||
-            save.game_state?.events?.cube14a ||
-            save.game_state?.events?.cube14b ||
-            save.game_state?.events?.cube14c ||
-            save.game_state?.events?.cube14d
+          .filter(
+            (save) =>
+              save.game_state?.events?.cube15a ||
+              save.game_state?.events?.cube15b ||
+              save.game_state?.events?.cube13 ||
+              save.game_state?.events?.cube14a ||
+              save.game_state?.events?.cube14b ||
+              save.game_state?.events?.cube14c ||
+              save.game_state?.events?.cube14d,
           )
-          .map(save => save.user_id)
+          .map((save) => save.user_id),
       );
-      filteredClicks = filteredClicks.filter(d => completedUserIds.has(d.user_id));
+      filteredClicks = filteredClicks.filter((d) =>
+        completedUserIds.has(d.user_id),
+      );
     }
 
     // Collect all playtime entries with their total clicks
     const playtimeData = new Map<number, number>();
 
-    filteredClicks.forEach(entry => {
+    filteredClicks.forEach((entry) => {
       // Format: { "playtime": { "button": count } }
-      Object.entries(entry.clicks).forEach(([playtimeKey, clicksAtTime]: [string, any]) => {
-        try {
-          // Extract playtime from key like "45m"
-          const playtimeMinutes = parseInt(playtimeKey.replace('m', ''));
-          if (!isNaN(playtimeMinutes)) {
-            // Calculate total clicks at this playtime
-            const totalClicks = Object.values(clicksAtTime as Record<string, number>).reduce((sum, count) => sum + count, 0);
+      Object.entries(entry.clicks).forEach(
+        ([playtimeKey, clicksAtTime]: [string, any]) => {
+          try {
+            // Extract playtime from key like "45m"
+            const playtimeMinutes = parseInt(playtimeKey.replace("m", ""));
+            if (!isNaN(playtimeMinutes)) {
+              // Calculate total clicks at this playtime
+              const totalClicks = Object.values(
+                clicksAtTime as Record<string, number>,
+              ).reduce((sum, count) => sum + count, 0);
 
-            // Aggregate into 1-hour (60-minute) buckets
-            const bucket = Math.floor(playtimeMinutes / 60) * 60;
-            playtimeData.set(bucket, (playtimeData.get(bucket) || 0) + totalClicks);
+              // Aggregate into 1-hour (60-minute) buckets
+              const bucket = Math.floor(playtimeMinutes / 60) * 60;
+              playtimeData.set(
+                bucket,
+                (playtimeData.get(bucket) || 0) + totalClicks,
+              );
+            }
+          } catch (e) {
+            logger.warn("Failed to parse playtime:", playtimeKey, e);
           }
-        } catch (e) {
-          logger.warn('Failed to parse playtime:', playtimeKey, e);
-        }
-      });
+        },
+      );
     });
 
     if (playtimeData.size === 0) return [];
@@ -610,7 +653,7 @@ export default function AdminDashboard() {
     for (let bucket = 0; bucket <= maxBucket; bucket += 60) {
       const hours = bucket / 60;
       result.push({
-        time: hours === 0 ? '0h' : `${hours}h`,
+        time: hours === 0 ? "0h" : `${hours}h`,
         clicks: playtimeData.get(bucket) || 0,
       });
     }
@@ -620,10 +663,10 @@ export default function AdminDashboard() {
 
   const getAllButtonNames = (): string[] => {
     const buttonNames = new Set<string>();
-    clickData.forEach(entry => {
+    clickData.forEach((entry) => {
       // Format: { "playtime": { "button": count } }
       Object.values(entry.clicks).forEach((playtimeClicks: any) => {
-        Object.keys(playtimeClicks).forEach(button => {
+        Object.keys(playtimeClicks).forEach((button) => {
           buttonNames.add(cleanButtonName(button));
         });
       });
@@ -633,28 +676,31 @@ export default function AdminDashboard() {
 
   const getClickTypesByTimestamp = () => {
     // Filter by time range
-    let filteredClicks = filterByTimeRange(clickData, 'timestamp');
+    let filteredClicks = filterByTimeRange(clickData, "timestamp");
 
-    if (selectedUser !== 'all') {
-      filteredClicks = filteredClicks.filter(d => d.user_id === selectedUser);
+    if (selectedUser !== "all") {
+      filteredClicks = filteredClicks.filter((d) => d.user_id === selectedUser);
     }
 
     // Filter by completed players if toggle is on
     if (showCompletedOnly) {
       const completedUserIds = new Set(
         gameSaves
-          .filter(save => 
-            save.game_state?.events?.cube15a || 
-            save.game_state?.events?.cube15b ||
-            save.game_state?.events?.cube13 ||
-            save.game_state?.events?.cube14a ||
-            save.game_state?.events?.cube14b ||
-            save.game_state?.events?.cube14c ||
-            save.game_state?.events?.cube14d
+          .filter(
+            (save) =>
+              save.game_state?.events?.cube15a ||
+              save.game_state?.events?.cube15b ||
+              save.game_state?.events?.cube13 ||
+              save.game_state?.events?.cube14a ||
+              save.game_state?.events?.cube14b ||
+              save.game_state?.events?.cube14c ||
+              save.game_state?.events?.cube14d,
           )
-          .map(save => save.user_id)
+          .map((save) => save.user_id),
       );
-      filteredClicks = filteredClicks.filter(d => completedUserIds.has(d.user_id));
+      filteredClicks = filteredClicks.filter((d) =>
+        completedUserIds.has(d.user_id),
+      );
     }
 
     // Aggregate into 1-hour (60-minute) buckets
@@ -663,32 +709,40 @@ export default function AdminDashboard() {
 
     filteredClicks.forEach((entry) => {
       // Format: { "playtime_minutes": { "button": count } }
-      Object.entries(entry.clicks).forEach(([playtimeKey, clicksAtTime]: [string, any]) => {
-        try {
-          // Extract playtime from key like "45m"
-          const playtimeMinutes = parseInt(playtimeKey.replace('m', ''));
-          if (!isNaN(playtimeMinutes)) {
-            const bucket = Math.floor(playtimeMinutes / 60) * 60; // 1-hour buckets
-            maxBucket = Math.max(maxBucket, bucket);
+      Object.entries(entry.clicks).forEach(
+        ([playtimeKey, clicksAtTime]: [string, any]) => {
+          try {
+            // Extract playtime from key like "45m"
+            const playtimeMinutes = parseInt(playtimeKey.replace("m", ""));
+            if (!isNaN(playtimeMinutes)) {
+              const bucket = Math.floor(playtimeMinutes / 60) * 60; // 1-hour buckets
+              maxBucket = Math.max(maxBucket, bucket);
 
-            if (!buckets.has(bucket)) {
-              buckets.set(bucket, {});
-            }
-
-            const bucketData = buckets.get(bucket)!;
-            Object.entries(clicksAtTime as Record<string, number>).forEach(([button, count]) => {
-              const cleanButton = cleanButtonName(button);
-
-              // Only include if selectedClickTypes is empty (all) or contains this button
-              if (selectedClickTypes.size === 0 || selectedClickTypes.has(cleanButton)) {
-                bucketData[cleanButton] = (bucketData[cleanButton] || 0) + count;
+              if (!buckets.has(bucket)) {
+                buckets.set(bucket, {});
               }
-            });
+
+              const bucketData = buckets.get(bucket)!;
+              Object.entries(clicksAtTime as Record<string, number>).forEach(
+                ([button, count]) => {
+                  const cleanButton = cleanButtonName(button);
+
+                  // Only include if selectedClickTypes is empty (all) or contains this button
+                  if (
+                    selectedClickTypes.size === 0 ||
+                    selectedClickTypes.has(cleanButton)
+                  ) {
+                    bucketData[cleanButton] =
+                      (bucketData[cleanButton] || 0) + count;
+                  }
+                },
+              );
+            }
+          } catch (e) {
+            logger.warn("Failed to parse playtime:", playtimeKey, e);
           }
-        } catch (e) {
-          logger.warn('Failed to parse playtime:', playtimeKey, e);
-        }
-      });
+        },
+      );
     });
 
     if (buckets.size === 0) {
@@ -701,7 +755,7 @@ export default function AdminDashboard() {
     for (let bucket = 0; bucket <= maxBucket; bucket += 60) {
       const hours = bucket / 60;
       const dataPoint = {
-        time: hours === 0 ? '0h' : `${hours}h`,
+        time: hours === 0 ? "0h" : `${hours}h`,
       };
 
       const bucketData = buckets.get(bucket) || {};
@@ -715,40 +769,48 @@ export default function AdminDashboard() {
   const getButtonClicksOverPlaytime = () => {
     let filteredClicks = clickData;
 
-    if (selectedUser !== 'all') {
-      filteredClicks = clickData.filter(d => d.user_id === selectedUser);
+    if (selectedUser !== "all") {
+      filteredClicks = clickData.filter((d) => d.user_id === selectedUser);
     }
 
     // Aggregate clicks by playtime buckets (every 15 minutes)
     const playtimeBuckets = new Map<number, Record<string, number>>();
     let maxBucket = 0;
 
-    filteredClicks.forEach(entry => {
+    filteredClicks.forEach((entry) => {
       // Format: { "playtime": { "button": count } }
-      Object.entries(entry.clicks).forEach(([playtimeKey, clicksAtTime]: [string, any]) => {
-        try {
-          // Extract playtime from key like "45m"
-          const playtimeMinutes = parseInt(playtimeKey.replace('m', ''));
-          if (!isNaN(playtimeMinutes)) {
-            const bucket = Math.floor(playtimeMinutes / 15) * 15; // 15-minute buckets
-            maxBucket = Math.max(maxBucket, bucket);
+      Object.entries(entry.clicks).forEach(
+        ([playtimeKey, clicksAtTime]: [string, any]) => {
+          try {
+            // Extract playtime from key like "45m"
+            const playtimeMinutes = parseInt(playtimeKey.replace("m", ""));
+            if (!isNaN(playtimeMinutes)) {
+              const bucket = Math.floor(playtimeMinutes / 15) * 15; // 15-minute buckets
+              maxBucket = Math.max(maxBucket, bucket);
 
-            if (!playtimeBuckets.has(bucket)) {
-              playtimeBuckets.set(bucket, {});
-            }
-
-            const bucketData = playtimeBuckets.get(bucket)!;
-            Object.entries(clicksAtTime as Record<string, number>).forEach(([button, count]) => {
-              const cleanButton = cleanButtonName(button);
-              if (selectedButtons.size === 0 || selectedButtons.has(cleanButton)) {
-                bucketData[cleanButton] = (bucketData[cleanButton] || 0) + count;
+              if (!playtimeBuckets.has(bucket)) {
+                playtimeBuckets.set(bucket, {});
               }
-            });
+
+              const bucketData = playtimeBuckets.get(bucket)!;
+              Object.entries(clicksAtTime as Record<string, number>).forEach(
+                ([button, count]) => {
+                  const cleanButton = cleanButtonName(button);
+                  if (
+                    selectedButtons.size === 0 ||
+                    selectedButtons.has(cleanButton)
+                  ) {
+                    bucketData[cleanButton] =
+                      (bucketData[cleanButton] || 0) + count;
+                  }
+                },
+              );
+            }
+          } catch (e) {
+            logger.warn("Failed to parse playtime:", playtimeKey, e);
           }
-        } catch (e) {
-          logger.warn('Failed to parse playtime:', playtimeKey, e);
-        }
-      });
+        },
+      );
     });
 
     // Create array with all buckets from 0 to max playtime
@@ -764,36 +826,36 @@ export default function AdminDashboard() {
     return result;
   };
 
-
   const getTotalClicksByButton = () => {
     // Filter by time range
-    let filtered = filterByTimeRange(clickData, 'timestamp');
+    let filtered = filterByTimeRange(clickData, "timestamp");
 
-    if (selectedUser !== 'all') {
-      filtered = filtered.filter(d => d.user_id === selectedUser);
+    if (selectedUser !== "all") {
+      filtered = filtered.filter((d) => d.user_id === selectedUser);
     }
 
     // Filter by completed players if toggle is on
     if (showCompletedOnly) {
       const completedUserIds = new Set(
         gameSaves
-          .filter(save => 
-            save.game_state?.events?.cube15a || 
-            save.game_state?.events?.cube15b ||
-            save.game_state?.events?.cube13 ||
-            save.game_state?.events?.cube14a ||
-            save.game_state?.events?.cube14b ||
-            save.game_state?.events?.cube14c ||
-            save.game_state?.events?.cube14d
+          .filter(
+            (save) =>
+              save.game_state?.events?.cube15a ||
+              save.game_state?.events?.cube15b ||
+              save.game_state?.events?.cube13 ||
+              save.game_state?.events?.cube14a ||
+              save.game_state?.events?.cube14b ||
+              save.game_state?.events?.cube14c ||
+              save.game_state?.events?.cube14d,
           )
-          .map(save => save.user_id)
+          .map((save) => save.user_id),
       );
-      filtered = filtered.filter(d => completedUserIds.has(d.user_id));
+      filtered = filtered.filter((d) => completedUserIds.has(d.user_id));
     }
 
     const totals: Record<string, number> = {};
 
-    filtered.forEach(entry => {
+    filtered.forEach((entry) => {
       // Format: { "playtime": { "button": count } }
       Object.values(entry.clicks).forEach((playtimeClicks: any) => {
         Object.entries(playtimeClicks).forEach(([button, count]) => {
@@ -811,33 +873,35 @@ export default function AdminDashboard() {
 
   const getAverageClicksByButton = () => {
     // Filter by time range
-    let filtered = filterByTimeRange(clickData, 'timestamp');
+    let filtered = filterByTimeRange(clickData, "timestamp");
 
-    if (selectedUser !== 'all') {
-      filtered = filtered.filter(d => d.user_id === selectedUser);
+    if (selectedUser !== "all") {
+      filtered = filtered.filter((d) => d.user_id === selectedUser);
     }
 
     // Filter by completed players if toggle is on
     if (showCompletedOnly) {
       const completedUserIds = new Set(
         gameSaves
-          .filter(save => 
-            save.game_state?.events?.cube15a || 
-            save.game_state?.events?.cube15b ||
-            save.game_state?.events?.cube13 ||
-            save.game_state?.events?.cube14a ||
-            save.game_state?.events?.cube14b ||
-            save.game_state?.events?.cube14c ||
-            save.game_state?.events?.cube14d
+          .filter(
+            (save) =>
+              save.game_state?.events?.cube15a ||
+              save.game_state?.events?.cube15b ||
+              save.game_state?.events?.cube13 ||
+              save.game_state?.events?.cube14a ||
+              save.game_state?.events?.cube14b ||
+              save.game_state?.events?.cube14c ||
+              save.game_state?.events?.cube14d,
           )
-          .map(save => save.user_id)
+          .map((save) => save.user_id),
       );
-      filtered = filtered.filter(d => completedUserIds.has(d.user_id));
+      filtered = filtered.filter((d) => completedUserIds.has(d.user_id));
     }
 
-    const buttonStats: Record<string, { total: number; users: Set<string> }> = {};
+    const buttonStats: Record<string, { total: number; users: Set<string> }> =
+      {};
 
-    filtered.forEach(entry => {
+    filtered.forEach((entry) => {
       // Format: { "playtime": { "button": count } }
       Object.values(entry.clicks).forEach((playtimeClicks: any) => {
         Object.entries(playtimeClicks).forEach(([button, count]) => {
@@ -854,7 +918,7 @@ export default function AdminDashboard() {
     return Object.entries(buttonStats)
       .map(([button, stats]) => ({
         button,
-        average: parseFloat((stats.total / stats.users.size).toFixed(2))
+        average: parseFloat((stats.total / stats.users.size).toFixed(2)),
       }))
       .sort((a, b) => b.average - a.average)
       .slice(0, 15); // Top 15 buttons by average
@@ -862,46 +926,55 @@ export default function AdminDashboard() {
 
   const getGameCompletionStats = () => {
     // Filter by time range
-    const filteredSaves = filterByTimeRange(gameSaves, 'updated_at');
+    const filteredSaves = filterByTimeRange(gameSaves, "updated_at");
 
-    const completed = filteredSaves.filter(save =>
-      save.game_state?.events?.cube15a || 
-      save.game_state?.events?.cube15b ||
-      save.game_state?.events?.cube13 ||
-      save.game_state?.events?.cube14a ||
-      save.game_state?.events?.cube14b ||
-      save.game_state?.events?.cube14c ||
-      save.game_state?.events?.cube14d
+    const completed = filteredSaves.filter(
+      (save) =>
+        save.game_state?.events?.cube15a ||
+        save.game_state?.events?.cube15b ||
+        save.game_state?.events?.cube13 ||
+        save.game_state?.events?.cube14a ||
+        save.game_state?.events?.cube14b ||
+        save.game_state?.events?.cube14c ||
+        save.game_state?.events?.cube14d,
     ).length;
 
     const total = filteredSaves.length;
 
     return [
-      { name: 'Completed', value: completed },
-      { name: 'In Progress', value: total - completed },
+      { name: "Completed", value: completed },
+      { name: "In Progress", value: total - completed },
     ];
   };
 
   const getPurchaseStats = () => {
     const stats = purchases
-      .filter(purchase => purchase.item_name !== '100 Gold (Free Gift)' && !purchase.bundle_id)
-      .reduce((acc, purchase) => {
-        acc[purchase.item_name] = (acc[purchase.item_name] || 0) + 1;
-        return acc;
-      }, {} as Record<string, number>);
+      .filter(
+        (purchase) =>
+          purchase.item_name !== "100 Gold (Free Gift)" && !purchase.bundle_id,
+      )
+      .reduce(
+        (acc, purchase) => {
+          acc[purchase.item_name] = (acc[purchase.item_name] || 0) + 1;
+          return acc;
+        },
+        {} as Record<string, number>,
+      );
 
     return Object.entries(stats).map(([name, count]) => ({ name, count }));
   };
 
   const getTotalRevenue = () => {
     // Only count bundle purchases, not individual components
-    return purchases.filter(p => p.price_paid > 0 && !p.bundle_id).reduce((sum, p) => sum + p.price_paid, 0);
+    return purchases
+      .filter((p) => p.price_paid > 0 && !p.bundle_id)
+      .reduce((sum, p) => sum + p.price_paid, 0);
   };
 
   // Referral stats
   const getTotalReferrals = () => {
     let totalReferrals = 0;
-    gameSaves.forEach(save => {
+    gameSaves.forEach((save) => {
       const referrals = save.game_state?.referrals || [];
       totalReferrals += referrals.length;
     });
@@ -917,12 +990,14 @@ export default function AdminDashboard() {
       const dayEnd = endOfDay(date);
 
       let referralCount = 0;
-      gameSaves.forEach(save => {
+      gameSaves.forEach((save) => {
         const referrals = save.game_state?.referrals || [];
         referrals.forEach((referral: any) => {
           if (referral.timestamp) {
             const referralDate = new Date(referral.timestamp);
-            if (isWithinInterval(referralDate, { start: dayStart, end: dayEnd })) {
+            if (
+              isWithinInterval(referralDate, { start: dayStart, end: dayEnd })
+            ) {
               referralCount++;
             }
           }
@@ -930,7 +1005,7 @@ export default function AdminDashboard() {
       });
 
       data.push({
-        day: format(date, 'MMM dd'),
+        day: format(date, "MMM dd"),
         referrals: referralCount,
       });
     }
@@ -941,11 +1016,11 @@ export default function AdminDashboard() {
   const getTopReferrers = () => {
     const referrerData: { userId: string; count: number }[] = [];
 
-    gameSaves.forEach(save => {
+    gameSaves.forEach((save) => {
       const referrals = save.game_state?.referrals || [];
       if (referrals.length > 0) {
         referrerData.push({
-          userId: save.user_id.substring(0, 8) + '...',
+          userId: save.user_id.substring(0, 8) + "...",
           count: referrals.length,
         });
       }
@@ -958,7 +1033,9 @@ export default function AdminDashboard() {
     const totalUsers = gameSaves.length;
     // Only count users who made non-free purchases (price_paid > 0 and not a component)
     const payingUsers = new Set(
-      purchases.filter(p => p.price_paid > 0 && !p.bundle_id).map(p => p.user_id)
+      purchases
+        .filter((p) => p.price_paid > 0 && !p.bundle_id)
+        .map((p) => p.user_id),
     ).size;
 
     if (totalUsers === 0) return 0;
@@ -967,8 +1044,8 @@ export default function AdminDashboard() {
 
   // Instagram follow tracking
   const getInstagramFollowers = () => {
-    return gameSaves.filter(save => 
-      save.game_state?.social_media_rewards?.instagram?.claimed
+    return gameSaves.filter(
+      (save) => save.game_state?.social_media_rewards?.instagram?.claimed,
     ).length;
   };
 
@@ -983,15 +1060,19 @@ export default function AdminDashboard() {
   const getChurnedPlayers = () => {
     const now = new Date();
     const cutoffDate = subDays(now, churnDays);
-    const churnedPlayers: Array<{ userId: string; lastActivity: Date; daysSinceActivity: number }> = [];
+    const churnedPlayers: Array<{
+      userId: string;
+      lastActivity: Date;
+      daysSinceActivity: number;
+    }> = [];
 
     // Get users with click data
     const usersWithClicks = new Set<string>();
-    clickData.forEach(entry => usersWithClicks.add(entry.user_id));
+    clickData.forEach((entry) => usersWithClicks.add(entry.user_id));
 
     // Get the latest activity for each user from game saves
     const userLastActivity = new Map<string, Date>();
-    gameSaves.forEach(save => {
+    gameSaves.forEach((save) => {
       const activityDate = new Date(save.updated_at);
       const existing = userLastActivity.get(save.user_id);
       if (!existing || activityDate > existing) {
@@ -1010,26 +1091,29 @@ export default function AdminDashboard() {
       const daysSince = differenceInDays(now, lastActivity);
 
       // Check if they completed the game
-      const save = gameSaves.find(s => s.user_id === userId);
-      const hasCompletedGame = save?.game_state?.events?.cube15a || 
-                               save?.game_state?.events?.cube15b ||
-                               save?.game_state?.events?.cube13 ||
-                               save?.game_state?.events?.cube14a ||
-                               save?.game_state?.events?.cube14b ||
-                               save?.game_state?.events?.cube14c ||
-                               save?.game_state?.events?.cube14d;
+      const save = gameSaves.find((s) => s.user_id === userId);
+      const hasCompletedGame =
+        save?.game_state?.events?.cube15a ||
+        save?.game_state?.events?.cube15b ||
+        save?.game_state?.events?.cube13 ||
+        save?.game_state?.events?.cube14a ||
+        save?.game_state?.events?.cube14b ||
+        save?.game_state?.events?.cube14c ||
+        save?.game_state?.events?.cube14d;
 
       // Only consider churned if they haven't completed the game
       if (isBeforeCutoff && !hasCompletedGame) {
         churnedPlayers.push({
-          userId: userId.substring(0, 8) + '...',
+          userId: userId.substring(0, 8) + "...",
           lastActivity,
           daysSinceActivity: daysSince,
         });
       }
     });
 
-    return churnedPlayers.sort((a, b) => b.daysSinceActivity - a.daysSinceActivity);
+    return churnedPlayers.sort(
+      (a, b) => b.daysSinceActivity - a.daysSinceActivity,
+    );
   };
 
   // Get the top 20 most clicked buttons from churned players at their last playtime
@@ -1039,27 +1123,32 @@ export default function AdminDashboard() {
 
     // Get users with click data
     const usersWithClicks = new Set<string>();
-    clickData.forEach(entry => usersWithClicks.add(entry.user_id));
+    clickData.forEach((entry) => usersWithClicks.add(entry.user_id));
 
     // Get churned user IDs based on game save activity AND completion status
     const churnedUserIds = new Set<string>();
     const userLastActivity = new Map<string, Date>();
 
-    gameSaves.forEach(save => {
+    gameSaves.forEach((save) => {
       const activityDate = new Date(save.updated_at);
       const existing = userLastActivity.get(save.user_id);
       if (!existing || activityDate > existing) {
         userLastActivity.set(save.user_id, activityDate);
       }
       // Check completion status
-      const hasCompletedGame = save.game_state?.events?.cube15a || 
-                               save.game_state?.events?.cube15b ||
-                               save.game_state?.events?.cube13 ||
-                               save.game_state?.events?.cube14a ||
-                               save.game_state?.events?.cube14b ||
-                               save.game_state?.events?.cube14c ||
-                               save.game_state?.events?.cube14d;
-      if (activityDate < cutoffDate && !hasCompletedGame && usersWithClicks.has(save.user_id)) {
+      const hasCompletedGame =
+        save.game_state?.events?.cube15a ||
+        save.game_state?.events?.cube15b ||
+        save.game_state?.events?.cube13 ||
+        save.game_state?.events?.cube14a ||
+        save.game_state?.events?.cube14b ||
+        save.game_state?.events?.cube14c ||
+        save.game_state?.events?.cube14d;
+      if (
+        activityDate < cutoffDate &&
+        !hasCompletedGame &&
+        usersWithClicks.has(save.user_id)
+      ) {
         churnedUserIds.add(save.user_id);
       }
     });
@@ -1067,16 +1156,16 @@ export default function AdminDashboard() {
     // Find the maximum playtime for each churned user
     const userMaxPlaytime = new Map<string, string>();
 
-    clickData.forEach(entry => {
+    clickData.forEach((entry) => {
       if (churnedUserIds.has(entry.user_id)) {
-        Object.keys(entry.clicks).forEach(playtimeKey => {
-          const minutes = parseInt(playtimeKey.replace('m', ''));
+        Object.keys(entry.clicks).forEach((playtimeKey) => {
+          const minutes = parseInt(playtimeKey.replace("m", ""));
           if (!isNaN(minutes)) {
             const existingKey = userMaxPlaytime.get(entry.user_id);
             if (!existingKey) {
               userMaxPlaytime.set(entry.user_id, playtimeKey);
             } else {
-              const existingMinutes = parseInt(existingKey.replace('m', ''));
+              const existingMinutes = parseInt(existingKey.replace("m", ""));
               if (minutes > existingMinutes) {
                 userMaxPlaytime.set(entry.user_id, playtimeKey);
               }
@@ -1089,14 +1178,17 @@ export default function AdminDashboard() {
     // Aggregate clicks from churned users at their LAST playtime only
     const buttonTotals: Record<string, number> = {};
 
-    clickData.forEach(entry => {
+    clickData.forEach((entry) => {
       if (churnedUserIds.has(entry.user_id)) {
         const maxPlaytimeKey = userMaxPlaytime.get(entry.user_id);
         if (maxPlaytimeKey && entry.clicks[maxPlaytimeKey]) {
           // Only count clicks at the maximum playtime
-          Object.entries(entry.clicks[maxPlaytimeKey] as Record<string, number>).forEach(([button, count]) => {
+          Object.entries(
+            entry.clicks[maxPlaytimeKey] as Record<string, number>,
+          ).forEach(([button, count]) => {
             const cleanButton = cleanButtonName(button);
-            buttonTotals[cleanButton] = (buttonTotals[cleanButton] || 0) + count;
+            buttonTotals[cleanButton] =
+              (buttonTotals[cleanButton] || 0) + count;
           });
         }
       }
@@ -1116,7 +1208,7 @@ export default function AdminDashboard() {
     const match = eventId.match(/^cube(\d+[a-z]?)$/);
     if (!match) return null;
     // Remove letter suffix if present (e.g., "14a" -> "14")
-    const numStr = match[1].replace(/[a-z]$/, '');
+    const numStr = match[1].replace(/[a-z]$/, "");
     return parseInt(numStr, 10);
   };
 
@@ -1127,8 +1219,10 @@ export default function AdminDashboard() {
     let maxBucket = 0;
     let maxCubeEvent = 0;
 
-    gameSaves.forEach(save => {
-      const playTimeMinutes = save.game_state?.playTime ? Math.round(save.game_state.playTime / 1000 / 60) : 0;
+    gameSaves.forEach((save) => {
+      const playTimeMinutes = save.game_state?.playTime
+        ? Math.round(save.game_state.playTime / 1000 / 60)
+        : 0;
       const bucket = Math.floor(playTimeMinutes / 60) * 60; // 1-hour buckets
       maxBucket = Math.max(maxBucket, bucket);
 
@@ -1140,8 +1234,8 @@ export default function AdminDashboard() {
       const events = save.game_state?.events || {};
 
       // Check each cube event
-      Object.keys(events).forEach(eventKey => {
-        if (eventKey.startsWith('cube') && events[eventKey] === true) {
+      Object.keys(events).forEach((eventKey) => {
+        if (eventKey.startsWith("cube") && events[eventKey] === true) {
           const cubeNum = getCubeEventNumber(eventKey);
           if (cubeNum !== null) {
             maxCubeEvent = Math.max(maxCubeEvent, cubeNum);
@@ -1159,7 +1253,7 @@ export default function AdminDashboard() {
     for (let bucket = 0; bucket <= maxBucket; bucket += 60) {
       const hours = bucket / 60;
       const dataPoint: { time: string; [key: string]: any } = {
-        time: hours === 0 ? '0h' : `${hours}h`,
+        time: hours === 0 ? "0h" : `${hours}h`,
       };
 
       const bucketData = playtimeBuckets.get(bucket);
@@ -1177,12 +1271,12 @@ export default function AdminDashboard() {
   const getHighestCubeEventDistribution = () => {
     const highestCubeByPlayer = new Map<number, number>();
 
-    gameSaves.forEach(save => {
+    gameSaves.forEach((save) => {
       const events = save.game_state?.events || {};
       let highestCube = 0;
 
-      Object.keys(events).forEach(eventKey => {
-        if (eventKey.startsWith('cube') && events[eventKey] === true) {
+      Object.keys(events).forEach((eventKey) => {
+        if (eventKey.startsWith("cube") && events[eventKey] === true) {
           const cubeNum = getCubeEventNumber(eventKey);
           if (cubeNum !== null && cubeNum > highestCube) {
             highestCube = cubeNum;
@@ -1191,7 +1285,10 @@ export default function AdminDashboard() {
       });
 
       if (highestCube > 0) {
-        highestCubeByPlayer.set(highestCube, (highestCubeByPlayer.get(highestCube) || 0) + 1);
+        highestCubeByPlayer.set(
+          highestCube,
+          (highestCubeByPlayer.get(highestCube) || 0) + 1,
+        );
       }
     });
 
@@ -1218,19 +1315,20 @@ export default function AdminDashboard() {
     const churnedUserIds = new Set<string>();
     const userLastActivity = new Map<string, Date>();
 
-    gameSaves.forEach(save => {
+    gameSaves.forEach((save) => {
       const activityDate = new Date(save.updated_at);
       const existing = userLastActivity.get(save.user_id);
       if (!existing || activityDate > existing) {
         userLastActivity.set(save.user_id, activityDate);
       }
-      const hasCompletedGame = save.game_state?.events?.cube15a || 
-                               save.game_state?.events?.cube15b ||
-                               save.game_state?.events?.cube13 ||
-                               save.game_state?.events?.cube14a ||
-                               save.game_state?.events?.cube14b ||
-                               save.game_state?.events?.cube14c ||
-                               save.game_state?.events?.cube14d;
+      const hasCompletedGame =
+        save.game_state?.events?.cube15a ||
+        save.game_state?.events?.cube15b ||
+        save.game_state?.events?.cube13 ||
+        save.game_state?.events?.cube14a ||
+        save.game_state?.events?.cube14b ||
+        save.game_state?.events?.cube14c ||
+        save.game_state?.events?.cube14d;
       if (activityDate < cutoffDate && !hasCompletedGame) {
         churnedUserIds.add(save.user_id);
       }
@@ -1240,13 +1338,13 @@ export default function AdminDashboard() {
     const cubeEventCounts = new Map<number, number>();
     let playersWithNoCubeEvents = 0;
 
-    gameSaves.forEach(save => {
+    gameSaves.forEach((save) => {
       if (churnedUserIds.has(save.user_id)) {
         const events = save.game_state?.events || {};
         let highestCube = 0;
 
-        Object.keys(events).forEach(eventKey => {
-          if (eventKey.startsWith('cube') && events[eventKey] === true) {
+        Object.keys(events).forEach((eventKey) => {
+          if (eventKey.startsWith("cube") && events[eventKey] === true) {
             const cubeNum = getCubeEventNumber(eventKey);
             if (cubeNum !== null && cubeNum > highestCube) {
               highestCube = cubeNum;
@@ -1255,7 +1353,10 @@ export default function AdminDashboard() {
         });
 
         if (highestCube > 0) {
-          cubeEventCounts.set(highestCube, (cubeEventCounts.get(highestCube) || 0) + 1);
+          cubeEventCounts.set(
+            highestCube,
+            (cubeEventCounts.get(highestCube) || 0) + 1,
+          );
         } else {
           playersWithNoCubeEvents++;
         }
@@ -1268,12 +1369,14 @@ export default function AdminDashboard() {
     // Add "No Cube Events" entry first if there are players with no cube events
     if (playersWithNoCubeEvents > 0) {
       result.push({
-        cubeEvent: 'No Cube Events',
+        cubeEvent: "No Cube Events",
         players: playersWithNoCubeEvents,
       });
     }
 
-    const sortedEntries = Array.from(cubeEventCounts.entries()).sort((a, b) => b[1] - a[1]);
+    const sortedEntries = Array.from(cubeEventCounts.entries()).sort(
+      (a, b) => b[1] - a[1],
+    );
 
     sortedEntries.forEach(([cubeNum, count]) => {
       result.push({
@@ -1288,38 +1391,56 @@ export default function AdminDashboard() {
   // Get button upgrades over playtime
   const getButtonUpgradesOverPlaytime = () => {
     // Filter by time range
-    let filteredSaves = filterByTimeRange(gameSaves, 'updated_at');
+    let filteredSaves = filterByTimeRange(gameSaves, "updated_at");
 
-    if (selectedUser !== 'all') {
-      filteredSaves = filteredSaves.filter(s => s.user_id === selectedUser);
+    if (selectedUser !== "all") {
+      filteredSaves = filteredSaves.filter((s) => s.user_id === selectedUser);
     }
 
     // Filter by completed players if toggle is on
     if (showCompletedOnly) {
       const completedUserIds = new Set(
         gameSaves
-          .filter(save => 
-            save.game_state?.events?.cube15a || 
-            save.game_state?.events?.cube15b ||
-            save.game_state?.events?.cube13 ||
-            save.game_state?.events?.cube14a ||
-            save.game_state?.events?.cube14b ||
-            save.game_state?.events?.cube14c ||
-            save.game_state?.events?.cube14d
+          .filter(
+            (save) =>
+              save.game_state?.events?.cube15a ||
+              save.game_state?.events?.cube15b ||
+              save.game_state?.events?.cube13 ||
+              save.game_state?.events?.cube14a ||
+              save.game_state?.events?.cube14b ||
+              save.game_state?.events?.cube14c ||
+              save.game_state?.events?.cube14d,
           )
-          .map(save => save.user_id)
+          .map((save) => save.user_id),
       );
-      filteredSaves = filteredSaves.filter(s => completedUserIds.has(s.user_id));
+      filteredSaves = filteredSaves.filter((s) =>
+        completedUserIds.has(s.user_id),
+      );
     }
 
     // Group upgrades by playtime buckets (1-hour intervals)
-    const playtimeBuckets = new Map<number, Record<string, { total: number; count: number }>>();
+    const playtimeBuckets = new Map<
+      number,
+      Record<string, { total: number; count: number }>
+    >();
     let maxBucket = 0;
 
-    const upgradeTypes = ['exploreCave', 'mineStone', 'mineIron', 'mineCoal', 'mineSulfur', 'mineObsidian', 'mineAdamant', 'hunt', 'chopWood', 'caveExplore'];
+    const upgradeTypes = [
+      "mineStone",
+      "mineIron",
+      "mineCoal",
+      "mineSulfur",
+      "mineObsidian",
+      "mineAdamant",
+      "hunt",
+      "chopWood",
+      "caveExplore",
+    ];
 
-    filteredSaves.forEach(save => {
-      const playTimeMinutes = save.game_state?.playTime ? Math.round(save.game_state.playTime / 1000 / 60) : 0;
+    filteredSaves.forEach((save) => {
+      const playTimeMinutes = save.game_state?.playTime
+        ? Math.round(save.game_state.playTime / 1000 / 60)
+        : 0;
       const bucket = Math.floor(playTimeMinutes / 60) * 60; // 1-hour buckets
       maxBucket = Math.max(maxBucket, bucket);
 
@@ -1332,10 +1453,15 @@ export default function AdminDashboard() {
       // Get button upgrades from the correct location in game state
       const buttonUpgrades = save.game_state?.buttonUpgrades || {};
 
-      upgradeTypes.forEach(upgradeType => {
+      upgradeTypes.forEach((upgradeType) => {
         // Check if upgrade data exists and has a level property
         const upgrade = buttonUpgrades[upgradeType];
-        if (upgrade && typeof upgrade === 'object' && 'level' in upgrade && upgrade.level > 0) {
+        if (
+          upgrade &&
+          typeof upgrade === "object" &&
+          "level" in upgrade &&
+          upgrade.level > 0
+        ) {
           if (!bucketData[upgradeType]) {
             bucketData[upgradeType] = { total: 0, count: 0 };
           }
@@ -1351,15 +1477,16 @@ export default function AdminDashboard() {
     for (let bucket = 0; bucket <= maxBucket; bucket += 60) {
       const hours = bucket / 60;
       const dataPoint: { time: string; [key: string]: any } = {
-        time: hours === 0 ? '0h' : `${hours}h`,
+        time: hours === 0 ? "0h" : `${hours}h`,
       };
 
       const bucketData = playtimeBuckets.get(bucket);
       if (bucketData) {
-        upgradeTypes.forEach(upgradeType => {
+        upgradeTypes.forEach((upgradeType) => {
           const stats = bucketData[upgradeType];
           if (stats && stats.count > 0) {
-            dataPoint[upgradeType] = Math.round((stats.total / stats.count) * 10) / 10; // Average level
+            dataPoint[upgradeType] =
+              Math.round((stats.total / stats.count) * 10) / 10; // Average level
           }
         });
       }
@@ -1377,27 +1504,32 @@ export default function AdminDashboard() {
 
     // Get users with click data
     const usersWithClicks = new Set<string>();
-    clickData.forEach(entry => usersWithClicks.add(entry.user_id));
+    clickData.forEach((entry) => usersWithClicks.add(entry.user_id));
 
     // Get churned user IDs based on game save activity and completion status
     const churnedUserIds = new Set<string>();
     const userLastActivity = new Map<string, Date>();
 
-    gameSaves.forEach(save => {
+    gameSaves.forEach((save) => {
       const activityDate = new Date(save.updated_at);
       const existing = userLastActivity.get(save.user_id);
       if (!existing || activityDate > existing) {
         userLastActivity.set(save.user_id, activityDate);
       }
       // Check completion status
-      const hasCompletedGame = save.game_state?.events?.cube15a || 
-                               save.game_state?.events?.cube15b ||
-                               save.game_state?.events?.cube13 ||
-                               save.game_state?.events?.cube14a ||
-                               save.game_state?.events?.cube14b ||
-                               save.game_state?.events?.cube14c ||
-                               save.game_state?.events?.cube14d;
-      if (activityDate < cutoffDate && !hasCompletedGame && usersWithClicks.has(save.user_id)) {
+      const hasCompletedGame =
+        save.game_state?.events?.cube15a ||
+        save.game_state?.events?.cube15b ||
+        save.game_state?.events?.cube13 ||
+        save.game_state?.events?.cube14a ||
+        save.game_state?.events?.cube14b ||
+        save.game_state?.events?.cube14c ||
+        save.game_state?.events?.cube14d;
+      if (
+        activityDate < cutoffDate &&
+        !hasCompletedGame &&
+        usersWithClicks.has(save.user_id)
+      ) {
         churnedUserIds.add(save.user_id);
       }
     });
@@ -1405,17 +1537,22 @@ export default function AdminDashboard() {
     // Count buttons that were clicked exactly once across all churned players
     const buttonFirstTimeCount: Record<string, number> = {};
 
-    clickData.forEach(entry => {
+    clickData.forEach((entry) => {
       if (churnedUserIds.has(entry.user_id)) {
-        Object.entries(entry.clicks).forEach(([playtimeKey, clicksAtTime]: [string, any]) => {
-          Object.entries(clicksAtTime as Record<string, number>).forEach(([button, count]) => {
-            const cleanButton = cleanButtonName(button);
-            // Only count if this button was clicked exactly once at this playtime
-            if (count === 1) {
-              buttonFirstTimeCount[cleanButton] = (buttonFirstTimeCount[cleanButton] || 0) + 1;
-            }
-          });
-        });
+        Object.entries(entry.clicks).forEach(
+          ([playtimeKey, clicksAtTime]: [string, any]) => {
+            Object.entries(clicksAtTime as Record<string, number>).forEach(
+              ([button, count]) => {
+                const cleanButton = cleanButtonName(button);
+                // Only count if this button was clicked exactly once at this playtime
+                if (count === 1) {
+                  buttonFirstTimeCount[cleanButton] =
+                    (buttonFirstTimeCount[cleanButton] || 0) + 1;
+                }
+              },
+            );
+          },
+        );
       }
     });
 
@@ -1438,13 +1575,13 @@ export default function AdminDashboard() {
 
       // Get users with click data
       const usersWithClicks = new Set<string>();
-      clickData.forEach(entry => usersWithClicks.add(entry.user_id));
+      clickData.forEach((entry) => usersWithClicks.add(entry.user_id));
 
       // Count churned users as of this date
       let churnedCount = 0;
       let totalCount = 0;
 
-      gameSaves.forEach(save => {
+      gameSaves.forEach((save) => {
         // Only count users who were created before this date
         const createdDate = parseISO(save.created_at);
         if (createdDate > dayStart) return;
@@ -1454,23 +1591,29 @@ export default function AdminDashboard() {
         // Check if they were churned as of this date (inactive for churnDays before this date)
         const cutoffDate = subDays(dayStart, churnDays);
         const activityDate = parseISO(save.updated_at);
-        const hasCompletedGame = save.game_state?.events?.cube15a || 
-                                 save.game_state?.events?.cube15b ||
-                                 save.game_state?.events?.cube13 ||
-                                 save.game_state?.events?.cube14a ||
-                                 save.game_state?.events?.cube14b ||
-                                 save.game_state?.events?.cube14c ||
-                                 save.game_state?.events?.cube14d;
+        const hasCompletedGame =
+          save.game_state?.events?.cube15a ||
+          save.game_state?.events?.cube15b ||
+          save.game_state?.events?.cube13 ||
+          save.game_state?.events?.cube14a ||
+          save.game_state?.events?.cube14b ||
+          save.game_state?.events?.cube14c ||
+          save.game_state?.events?.cube14d;
 
-        if (activityDate < cutoffDate && !hasCompletedGame && usersWithClicks.has(save.user_id)) {
+        if (
+          activityDate < cutoffDate &&
+          !hasCompletedGame &&
+          usersWithClicks.has(save.user_id)
+        ) {
           churnedCount++;
         }
       });
 
-      const churnRate = totalCount > 0 ? Math.round((churnedCount / totalCount) * 100) : 0;
+      const churnRate =
+        totalCount > 0 ? Math.round((churnedCount / totalCount) * 100) : 0;
 
       data.push({
-        day: format(date, 'MMM dd'),
+        day: format(date, "MMM dd"),
         churnRate,
       });
     }
@@ -1481,37 +1624,41 @@ export default function AdminDashboard() {
   // Get sleep upgrade levels distribution
   const getSleepUpgradesDistribution = () => {
     // Filter by time range
-    let filteredSaves = filterByTimeRange(gameSaves, 'updated_at');
+    let filteredSaves = filterByTimeRange(gameSaves, "updated_at");
 
-    if (selectedUser !== 'all') {
-      filteredSaves = filteredSaves.filter(s => s.user_id === selectedUser);
+    if (selectedUser !== "all") {
+      filteredSaves = filteredSaves.filter((s) => s.user_id === selectedUser);
     }
 
     // Filter by completed players if toggle is on
     if (showCompletedOnly) {
       const completedUserIds = new Set(
         gameSaves
-          .filter(save => 
-            save.game_state?.events?.cube15a || 
-            save.game_state?.events?.cube15b ||
-            save.game_state?.events?.cube13 ||
-            save.game_state?.events?.cube14a ||
-            save.game_state?.events?.cube14b ||
-            save.game_state?.events?.cube14c ||
-            save.game_state?.events?.cube14d
+          .filter(
+            (save) =>
+              save.game_state?.events?.cube15a ||
+              save.game_state?.events?.cube15b ||
+              save.game_state?.events?.cube13 ||
+              save.game_state?.events?.cube14a ||
+              save.game_state?.events?.cube14b ||
+              save.game_state?.events?.cube14c ||
+              save.game_state?.events?.cube14d,
           )
-          .map(save => save.user_id)
+          .map((save) => save.user_id),
       );
-      filteredSaves = filteredSaves.filter(s => completedUserIds.has(s.user_id));
+      filteredSaves = filteredSaves.filter((s) =>
+        completedUserIds.has(s.user_id),
+      );
     }
 
     // Count users at each level (0-5)
     const lengthLevelCounts = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
     const intensityLevelCounts = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
 
-    filteredSaves.forEach(save => {
+    filteredSaves.forEach((save) => {
       const lengthLevel = save.game_state?.sleepUpgrades?.lengthLevel || 0;
-      const intensityLevel = save.game_state?.sleepUpgrades?.intensityLevel || 0;
+      const intensityLevel =
+        save.game_state?.sleepUpgrades?.intensityLevel || 0;
 
       if (lengthLevel >= 0 && lengthLevel <= 5) {
         lengthLevelCounts[lengthLevel]++;
@@ -1522,7 +1669,11 @@ export default function AdminDashboard() {
     });
 
     // Convert to array format for chart
-    const result: Array<{ level: string; lengthUsers: number; intensityUsers: number }> = [];
+    const result: Array<{
+      level: string;
+      lengthUsers: number;
+      intensityUsers: number;
+    }> = [];
 
     for (let level = 0; level <= 5; level++) {
       result.push({
@@ -1552,35 +1703,41 @@ export default function AdminDashboard() {
   };
 
   // State for selected resources
-  const [selectedResources, setSelectedResources] = useState<Set<string>>(new Set(['food', 'wood', 'stone', 'iron']));
+  const [selectedResources, setSelectedResources] = useState<Set<string>>(
+    new Set(["food", "wood", "stone", "iron"]),
+  );
 
   // State for selected stats
-  const [selectedStats, setSelectedStats] = useState<Set<string>>(new Set(['strength', 'knowledge', 'luck', 'madness']));
+  const [selectedStats, setSelectedStats] = useState<Set<string>>(
+    new Set(["strength", "knowledge", "luck", "madness"]),
+  );
 
   // NEW FUNCTION FOR RESOURCE STATS OVER PLAYTIME
   const handleLookupUser = async () => {
     setLookupLoading(true);
-    setLookupError('');
+    setLookupError("");
     setLookupResult(null);
 
     try {
-      const response = await fetch(`/api/admin/user-lookup?userId=${encodeURIComponent(lookupUserId)}&env=${environment}`);
+      const response = await fetch(
+        `/api/admin/user-lookup?userId=${encodeURIComponent(lookupUserId)}&env=${environment}`,
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to fetch user data');
+        throw new Error(errorData.error || "Failed to fetch user data");
       }
 
       const data = await response.json();
 
       if (!data.save) {
-        setLookupError('No save game found for this user ID');
+        setLookupError("No save game found for this user ID");
       } else {
         setLookupResult(data.save);
       }
     } catch (error: any) {
-      logger.error('User lookup failed:', error);
-      setLookupError(error.message || 'Failed to lookup user');
+      logger.error("User lookup failed:", error);
+      setLookupError(error.message || "Failed to lookup user");
     } finally {
       setLookupLoading(false);
     }
@@ -1589,12 +1746,12 @@ export default function AdminDashboard() {
   // Get clicks and purchases for looked up user
   const getLookupUserClicks = () => {
     if (!lookupResult) return [];
-    return clickData.filter(c => c.user_id === lookupResult.user_id);
+    return clickData.filter((c) => c.user_id === lookupResult.user_id);
   };
 
   const getLookupUserPurchases = () => {
     if (!lookupResult) return [];
-    return purchases.filter(p => p.user_id === lookupResult.user_id);
+    return purchases.filter((p) => p.user_id === lookupResult.user_id);
   };
 
   const getStatsOverPlaytime = () => {
@@ -1602,71 +1759,83 @@ export default function AdminDashboard() {
     if (!clickData || clickData.length === 0) return [];
 
     // Filter by time range
-    let filteredClicks = filterByTimeRange(clickData, 'timestamp');
+    let filteredClicks = filterByTimeRange(clickData, "timestamp");
 
     // Filter data based on selected user
-    if (selectedUser !== 'all') {
-      filteredClicks = filteredClicks.filter(record => record.user_id === selectedUser);
+    if (selectedUser !== "all") {
+      filteredClicks = filteredClicks.filter(
+        (record) => record.user_id === selectedUser,
+      );
     }
     if (showCompletedOnly) {
       const completedUserIds = new Set(
         gameSaves
-          .filter(save => 
-            save.game_state?.events?.cube15a || 
-            save.game_state?.events?.cube15b ||
-            save.game_state?.events?.cube13 ||
-            save.game_state?.events?.cube14a ||
-            save.game_state?.events?.cube14b ||
-            save.game_state?.events?.cube14c ||
-            save.game_state?.events?.cube14d
+          .filter(
+            (save) =>
+              save.game_state?.events?.cube15a ||
+              save.game_state?.events?.cube15b ||
+              save.game_state?.events?.cube13 ||
+              save.game_state?.events?.cube14a ||
+              save.game_state?.events?.cube14b ||
+              save.game_state?.events?.cube14c ||
+              save.game_state?.events?.cube14d,
           )
-          .map(save => save.user_id)
+          .map((save) => save.user_id),
       );
-      filteredClicks = filteredClicks.filter(record => completedUserIds.has(record.user_id));
+      filteredClicks = filteredClicks.filter((record) =>
+        completedUserIds.has(record.user_id),
+      );
     }
 
     // Group stats data by playtime bucket
-    const playtimeBuckets = new Map<number, Record<string, { total: number; count: number }>>();
+    const playtimeBuckets = new Map<
+      number,
+      Record<string, { total: number; count: number }>
+    >();
     let maxBucket = 0;
 
-    filteredClicks.forEach(record => {
+    filteredClicks.forEach((record) => {
       // Stats are stored in the 'stats' field with playtime snapshots
       const statsSnapshots = record.stats || {};
 
       // Iterate over playtime entries in stats
-      Object.entries(statsSnapshots).forEach(([playtimeKey, statsAtTime]: [string, any]) => {
-        try {
-          // Extract playtime in minutes from the key (e.g., "45m" -> 45)
-          const playtimeMinutes = parseInt(playtimeKey.replace('m', ''));
-          if (!isNaN(playtimeMinutes) && typeof statsAtTime === 'object') {
-            const bucket = Math.floor(playtimeMinutes / 60) * 60; // Group into 1-hour buckets
-            maxBucket = Math.max(maxBucket, bucket);
+      Object.entries(statsSnapshots).forEach(
+        ([playtimeKey, statsAtTime]: [string, any]) => {
+          try {
+            // Extract playtime in minutes from the key (e.g., "45m" -> 45)
+            const playtimeMinutes = parseInt(playtimeKey.replace("m", ""));
+            if (!isNaN(playtimeMinutes) && typeof statsAtTime === "object") {
+              const bucket = Math.floor(playtimeMinutes / 60) * 60; // Group into 1-hour buckets
+              maxBucket = Math.max(maxBucket, bucket);
 
-            if (!playtimeBuckets.has(bucket)) {
-              playtimeBuckets.set(bucket, {});
-            }
-
-            const bucketData = playtimeBuckets.get(bucket)!;
-
-            // Iterate over stats at this playtime, only include selected ones
-            Object.entries(statsAtTime).forEach(([statName, statValue]: [string, any]) => {
-              // Only include if selected
-              if (selectedStats.size === 0 || selectedStats.has(statName)) {
-                // Stat value should be a number
-                const value = typeof statValue === 'number' ? statValue : 0;
-
-                if (!bucketData[statName]) {
-                  bucketData[statName] = { total: 0, count: 0 };
-                }
-                bucketData[statName].total += value;
-                bucketData[statName].count += 1;
+              if (!playtimeBuckets.has(bucket)) {
+                playtimeBuckets.set(bucket, {});
               }
-            });
+
+              const bucketData = playtimeBuckets.get(bucket)!;
+
+              // Iterate over stats at this playtime, only include selected ones
+              Object.entries(statsAtTime).forEach(
+                ([statName, statValue]: [string, any]) => {
+                  // Only include if selected
+                  if (selectedStats.size === 0 || selectedStats.has(statName)) {
+                    // Stat value should be a number
+                    const value = typeof statValue === "number" ? statValue : 0;
+
+                    if (!bucketData[statName]) {
+                      bucketData[statName] = { total: 0, count: 0 };
+                    }
+                    bucketData[statName].total += value;
+                    bucketData[statName].count += 1;
+                  }
+                },
+              );
+            }
+          } catch (e) {
+            logger.warn("Failed to process playtime or stats:", playtimeKey, e);
           }
-        } catch (e) {
-          logger.warn('Failed to process playtime or stats:', playtimeKey, e);
-        }
-      });
+        },
+      );
     });
 
     // Convert to array and format for chart display
@@ -1678,17 +1847,22 @@ export default function AdminDashboard() {
     for (let bucket = 0; bucket <= maxDisplayBucket; bucket += 60) {
       const hours = bucket / 60;
       const dataPoint: { time: string; [key: string]: any } = {
-        time: hours === 0 ? '0h' : `${hours}h`,
+        time: hours === 0 ? "0h" : `${hours}h`,
       };
 
       const bucketData = playtimeBuckets.get(bucket);
       if (bucketData) {
-        Object.entries(bucketData).forEach(([statName, stats]: [string, any]) => {
-          // Only include if selected
-          if (selectedStats.size === 0 || selectedStats.has(statName)) {
-            dataPoint[statName] = stats.count > 0 ? Math.round((stats.total / stats.count) * 10) / 10 : 0; // Average per player in this bucket
-          }
-        });
+        Object.entries(bucketData).forEach(
+          ([statName, stats]: [string, any]) => {
+            // Only include if selected
+            if (selectedStats.size === 0 || selectedStats.has(statName)) {
+              dataPoint[statName] =
+                stats.count > 0
+                  ? Math.round((stats.total / stats.count) * 10) / 10
+                  : 0; // Average per player in this bucket
+            }
+          },
+        );
       }
       result.push(dataPoint);
     }
@@ -1701,73 +1875,96 @@ export default function AdminDashboard() {
     if (!clickData || clickData.length === 0) return [];
 
     // Filter by time range
-    let filteredClicks = filterByTimeRange(clickData, 'timestamp');
+    let filteredClicks = filterByTimeRange(clickData, "timestamp");
 
     // Filter data based on selected user
-    if (selectedUser !== 'all') {
-      filteredClicks = filteredClicks.filter(record => record.user_id === selectedUser);
+    if (selectedUser !== "all") {
+      filteredClicks = filteredClicks.filter(
+        (record) => record.user_id === selectedUser,
+      );
     }
     if (showCompletedOnly) {
       const completedUserIds = new Set(
         gameSaves
-          .filter(save => 
-            save.game_state?.events?.cube15a || 
-            save.game_state?.events?.cube15b ||
-            save.game_state?.events?.cube13 ||
-            save.game_state?.events?.cube14a ||
-            save.game_state?.events?.cube14b ||
-            save.game_state?.events?.cube14c ||
-            save.game_state?.events?.cube14d
+          .filter(
+            (save) =>
+              save.game_state?.events?.cube15a ||
+              save.game_state?.events?.cube15b ||
+              save.game_state?.events?.cube13 ||
+              save.game_state?.events?.cube14a ||
+              save.game_state?.events?.cube14b ||
+              save.game_state?.events?.cube14c ||
+              save.game_state?.events?.cube14d,
           )
-          .map(save => save.user_id)
+          .map((save) => save.user_id),
       );
-      filteredClicks = filteredClicks.filter(record => completedUserIds.has(record.user_id));
+      filteredClicks = filteredClicks.filter((record) =>
+        completedUserIds.has(record.user_id),
+      );
     }
 
     // Group resource data by playtime bucket
-    const playtimeBuckets = new Map<number, Record<string, { total: number; count: number }>>();
+    const playtimeBuckets = new Map<
+      number,
+      Record<string, { total: number; count: number }>
+    >();
     let maxBucket = 0;
 
-    filteredClicks.forEach(record => {
+    filteredClicks.forEach((record) => {
       // Resources are stored in the 'resources' field with playtime snapshots
       const resourceSnapshots = record.resources || {};
 
       // Iterate over playtime entries in resources
-      Object.entries(resourceSnapshots).forEach(([playtimeKey, resourcesAtTime]: [string, any]) => {
-        try {
-          // Extract playtime in minutes from the key (e.g., "45m" -> 45)
-          const playtimeMinutes = parseInt(playtimeKey.replace('m', ''));
-          if (!isNaN(playtimeMinutes) && typeof resourcesAtTime === 'object') {
-            const bucket = Math.floor(playtimeMinutes / 60) * 60; // Group into 1-hour buckets
-            maxBucket = Math.max(maxBucket, bucket);
+      Object.entries(resourceSnapshots).forEach(
+        ([playtimeKey, resourcesAtTime]: [string, any]) => {
+          try {
+            // Extract playtime in minutes from the key (e.g., "45m" -> 45)
+            const playtimeMinutes = parseInt(playtimeKey.replace("m", ""));
+            if (
+              !isNaN(playtimeMinutes) &&
+              typeof resourcesAtTime === "object"
+            ) {
+              const bucket = Math.floor(playtimeMinutes / 60) * 60; // Group into 1-hour buckets
+              maxBucket = Math.max(maxBucket, bucket);
 
-            if (!playtimeBuckets.has(bucket)) {
-              playtimeBuckets.set(bucket, {});
-            }
-
-            const bucketData = playtimeBuckets.get(bucket)!;
-
-            // Iterate over resources at this playtime, only include selected ones
-            Object.entries(resourcesAtTime).forEach(([resourceName, resourceValue]: [string, any]) => {
-              // Only include if selected or selectedResources is empty (all)
-              if (selectedResources.size === 0 || selectedResources.has(resourceName)) {
-                // Resource value should be a number
-                const amount = typeof resourceValue === 'number' ? resourceValue : 0;
-
-                if (amount > 0) {
-                  if (!bucketData[resourceName]) {
-                    bucketData[resourceName] = { total: 0, count: 0 };
-                  }
-                  bucketData[resourceName].total += amount;
-                  bucketData[resourceName].count += 1;
-                }
+              if (!playtimeBuckets.has(bucket)) {
+                playtimeBuckets.set(bucket, {});
               }
-            });
+
+              const bucketData = playtimeBuckets.get(bucket)!;
+
+              // Iterate over resources at this playtime, only include selected ones
+              Object.entries(resourcesAtTime).forEach(
+                ([resourceName, resourceValue]: [string, any]) => {
+                  // Only include if selected or selectedResources is empty (all)
+                  if (
+                    selectedResources.size === 0 ||
+                    selectedResources.has(resourceName)
+                  ) {
+                    // Resource value should be a number
+                    const amount =
+                      typeof resourceValue === "number" ? resourceValue : 0;
+
+                    if (amount > 0) {
+                      if (!bucketData[resourceName]) {
+                        bucketData[resourceName] = { total: 0, count: 0 };
+                      }
+                      bucketData[resourceName].total += amount;
+                      bucketData[resourceName].count += 1;
+                    }
+                  }
+                },
+              );
+            }
+          } catch (e) {
+            logger.warn(
+              "Failed to process playtime or resources:",
+              playtimeKey,
+              e,
+            );
           }
-        } catch (e) {
-          logger.warn('Failed to process playtime or resources:', playtimeKey, e);
-        }
-      });
+        },
+      );
     });
 
     // Convert to array and format for chart display
@@ -1779,24 +1976,29 @@ export default function AdminDashboard() {
     for (let bucket = 0; bucket <= maxDisplayBucket; bucket += 60) {
       const hours = bucket / 60;
       const dataPoint: { time: string; [key: string]: any } = {
-        time: hours === 0 ? '0h' : `${hours}h`,
+        time: hours === 0 ? "0h" : `${hours}h`,
       };
 
       const bucketData = playtimeBuckets.get(bucket);
       if (bucketData) {
-        Object.entries(bucketData).forEach(([resourceName, stats]: [string, any]) => {
-          // Only include if selected
-          if (selectedResources.size === 0 || selectedResources.has(resourceName)) {
-            dataPoint[resourceName] = stats.count > 0 ? Math.round(stats.total / stats.count) : 0; // Average per player in this bucket
-          }
-        });
+        Object.entries(bucketData).forEach(
+          ([resourceName, stats]: [string, any]) => {
+            // Only include if selected
+            if (
+              selectedResources.size === 0 ||
+              selectedResources.has(resourceName)
+            ) {
+              dataPoint[resourceName] =
+                stats.count > 0 ? Math.round(stats.total / stats.count) : 0; // Average per player in this bucket
+            }
+          },
+        );
       }
       result.push(dataPoint);
     }
 
     return result;
   };
-
 
   if (loading) {
     return (
@@ -1811,7 +2013,14 @@ export default function AdminDashboard() {
     return null;
   }
 
-  const COLORS = ['#8884d8', '#82ca9d', '#ffc658', '#ff8042', '#0088FE', '#00C49F'];
+  const COLORS = [
+    "#8884d8",
+    "#82ca9d",
+    "#ffc658",
+    "#ff8042",
+    "#0088FE",
+    "#00C49F",
+  ];
   const MAX_LINES_IN_CHART = 5;
 
   return (
@@ -1819,1838 +2028,2638 @@ export default function AdminDashboard() {
       <div className="max-w-7xl mx-auto h-full p-8">
         <ScrollArea className="h-full">
           <div className="space-y-8 pr-4">
-        <div className="flex justify-between items-center">
-          <h1 className="text-4xl font-bold">Admin Dashboard</h1>
-          <div className="flex gap-4">
-            <Select value={environment} onValueChange={(value: 'dev' | 'prod') => setEnvironment(value)}>
-              <SelectTrigger className="w-[140px]">
-                <SelectValue placeholder="Environment" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="dev">Development</SelectItem>
-                <SelectItem value="prod">Production</SelectItem>
-              </SelectContent>
-            </Select>
-            <Select value={selectedUser} onValueChange={setSelectedUser}>
-              <SelectTrigger className="w-[200px]">
-                <SelectValue placeholder="Select user" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Users</SelectItem>
-                {users.map(user => (
-                  <SelectItem key={user.id} value={user.id}>
-                    {user.email}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <Select value={timeRange} onValueChange={(value: '1d' | '7d' | '30d' | 'all') => setTimeRange(value)}>
-              <SelectTrigger className="w-[120px]">
-                <SelectValue placeholder="Time Range" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="1d">Last 24 Hours</SelectItem>
-                <SelectItem value="7d">Last 7 Days</SelectItem>
-                <SelectItem value="30d">Last 30 Days</SelectItem>
-                <SelectItem value="all">All Time</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-
-        <Tabs defaultValue="overview" className="space-y-4">
-          <TabsList>
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="engagement">Engagement</TabsTrigger>
-            <TabsTrigger value="clicks">Button Clicks</TabsTrigger>
-            <TabsTrigger value="completion">Game Progress</TabsTrigger>
-            <TabsTrigger value="purchases">Purchases</TabsTrigger>
-            <TabsTrigger value="referrals">Referrals</TabsTrigger>
-            <TabsTrigger value="churn">Churn</TabsTrigger>
-            <TabsTrigger value="sleep">Sleep Upgrades</TabsTrigger>
-            <TabsTrigger value="resources">Resources</TabsTrigger>
-            <TabsTrigger value="upgrades">Button Upgrades</TabsTrigger>
-            <TabsTrigger value="lookup">User Lookup</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="overview" className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <Card>
-                <CardHeader>
-                  <CardTitle>DAU</CardTitle>
-                  <CardDescription>Daily Active Users</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-4xl font-bold">{getDailyActiveUsers()}</p>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>WAU</CardTitle>
-                  <CardDescription>Weekly Active Users</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-4xl font-bold">{getWeeklyActiveUsers()}</p>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>MAU</CardTitle>
-                  <CardDescription>Monthly Active Users</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-4xl font-bold">{getMonthlyActiveUsers()}</p>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>Total Users</CardTitle>
-                  <CardDescription>All registered players</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-4xl font-bold">{gameSaves.length}</p>
-                </CardContent>
-              </Card>
+            <div className="flex justify-between items-center">
+              <h1 className="text-4xl font-bold">Admin Dashboard</h1>
+              <div className="flex gap-4">
+                <Select
+                  value={environment}
+                  onValueChange={(value: "dev" | "prod") =>
+                    setEnvironment(value)
+                  }
+                >
+                  <SelectTrigger className="w-[140px]">
+                    <SelectValue placeholder="Environment" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="dev">Development</SelectItem>
+                    <SelectItem value="prod">Production</SelectItem>
+                  </SelectContent>
+                </Select>
+                <Select value={selectedUser} onValueChange={setSelectedUser}>
+                  <SelectTrigger className="w-[200px]">
+                    <SelectValue placeholder="Select user" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Users</SelectItem>
+                    {users.map((user) => (
+                      <SelectItem key={user.id} value={user.id}>
+                        {user.email}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <Select
+                  value={timeRange}
+                  onValueChange={(value: "1d" | "7d" | "30d" | "all") =>
+                    setTimeRange(value)
+                  }
+                >
+                  <SelectTrigger className="w-[120px]">
+                    <SelectValue placeholder="Time Range" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="1d">Last 24 Hours</SelectItem>
+                    <SelectItem value="7d">Last 7 Days</SelectItem>
+                    <SelectItem value="30d">Last 30 Days</SelectItem>
+                    <SelectItem value="all">All Time</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Avg Playtime</CardTitle>
-                  <CardDescription>All players</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-4xl font-bold">{formatTime(getAveragePlaytime())}</p>
-                </CardContent>
-              </Card>
+            <Tabs defaultValue="overview" className="space-y-4">
+              <TabsList>
+                <TabsTrigger value="overview">Overview</TabsTrigger>
+                <TabsTrigger value="engagement">Engagement</TabsTrigger>
+                <TabsTrigger value="clicks">Button Clicks</TabsTrigger>
+                <TabsTrigger value="completion">Game Progress</TabsTrigger>
+                <TabsTrigger value="purchases">Purchases</TabsTrigger>
+                <TabsTrigger value="referrals">Referrals</TabsTrigger>
+                <TabsTrigger value="churn">Churn</TabsTrigger>
+                <TabsTrigger value="sleep">Sleep Upgrades</TabsTrigger>
+                <TabsTrigger value="resources">Resources</TabsTrigger>
+                <TabsTrigger value="upgrades">Button Upgrades</TabsTrigger>
+                <TabsTrigger value="lookup">User Lookup</TabsTrigger>
+              </TabsList>
 
-              <Card>
-                <CardHeader>
-                  <CardTitle>Avg Time to Complete</CardTitle>
-                  <CardDescription>Completed games only</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-4xl font-bold">{formatTime(getAveragePlaytimeToCompletion())}</p>
-                </CardContent>
-              </Card>
+              <TabsContent value="overview" className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>DAU</CardTitle>
+                      <CardDescription>Daily Active Users</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-4xl font-bold">
+                        {getDailyActiveUsers()}
+                      </p>
+                    </CardContent>
+                  </Card>
 
-              <Card>
-                <CardHeader>
-                  <CardTitle>Completion Rate</CardTitle>
-                  <CardDescription>% of players who finished</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-4xl font-bold">
-                    {gameSaves.length > 0
-                      ? Math.round((gameSaves.filter(s => 
-                          s.game_state?.events?.cube15a || 
-                          s.game_state?.events?.cube15b ||
-                          s.game_state?.events?.cube13 ||
-                          s.game_state?.events?.cube14a ||
-                          s.game_state?.events?.cube14b ||
-                          s.game_state?.events?.cube14c ||
-                          s.game_state?.events?.cube14d
-                        ).length / gameSaves.length) * 100)
-                      : 0}%
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>WAU</CardTitle>
+                      <CardDescription>Weekly Active Users</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-4xl font-bold">
+                        {getWeeklyActiveUsers()}
+                      </p>
+                    </CardContent>
+                  </Card>
 
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Conversion Rate</CardTitle>
-                  <CardDescription>% who made a purchase</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-4xl font-bold">{getConversionRate()}%</p>
-                </CardContent>
-              </Card>
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>MAU</CardTitle>
+                      <CardDescription>Monthly Active Users</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-4xl font-bold">
+                        {getMonthlyActiveUsers()}
+                      </p>
+                    </CardContent>
+                  </Card>
 
-              <Card>
-                <CardHeader>
-                  <CardTitle>Buyers per 100</CardTitle>
-                  <CardDescription>Non-free purchases</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-4xl font-bold">{getBuyersPerHundred()}</p>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>ARPU</CardTitle>
-                  <CardDescription>Average Revenue Per User</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-4xl font-bold">€{getARPU()}</p>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>Total Revenue</CardTitle>
-                  <CardDescription>All time</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-4xl font-bold">€{(getTotalRevenue() / 100).toFixed(2)}</p>
-                </CardContent>
-              </Card>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Instagram Followers</CardTitle>
-                  <CardDescription>Users who clicked follow button</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-4xl font-bold">{getInstagramFollowers()}</p>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>Instagram Follow Rate</CardTitle>
-                  <CardDescription>% of total users</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-4xl font-bold">{getInstagramFollowRate()}%</p>
-                </CardContent>
-              </Card>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Daily Active Users (Last 30 Days)</CardTitle>
-                  <CardDescription>User activity over time</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <ResponsiveContainer width="100%" height={300}>
-                    <AreaChart data={getUserRetention()}>
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="day" />
-                      <YAxis />
-                      <Tooltip />
-                      <Area type="monotone" dataKey="users" stroke="#8884d8" fill="#8884d8" />
-                    </AreaChart>
-                  </ResponsiveContainer>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>Daily Sign-ups (Last 30 Days)</CardTitle>
-                  <CardDescription>New user registrations</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <ResponsiveContainer width="100%" height={300}>
-                    <AreaChart data={getDailySignups()}>
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="day" />
-                      <YAxis />
-                      <Tooltip />
-                      <Area type="monotone" dataKey="signups" stroke="#82ca9d" fill="#82ca9d" />
-                    </AreaChart>
-                  </ResponsiveContainer>
-                </CardContent>
-              </Card>
-            </div>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Hourly Sign-ups (Last 24 Hours)</CardTitle>
-                <CardDescription>New user registrations by hour</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={300}>
-                  <LineChart data={getHourlySignups()}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="hour" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Line type="monotone" dataKey="signups" stroke="#ffc658" strokeWidth={2} />
-                  </LineChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="engagement" className="space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle>Session Length Distribution</CardTitle>
-                <CardDescription>How long players engage with the game</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={400}>
-                  <BarChart data={getSessionLengthDistribution()}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="range" />
-                    <YAxis />
-                    <Tooltip />
-                    <Bar dataKey="count" fill="#8884d8" />
-                  </BarChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Average Playtime</CardTitle>
-                  <CardDescription>All players</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-6xl font-bold text-center py-8">{formatTime(getAveragePlaytime())}</p>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>Average Time to Complete</CardTitle>
-                  <CardDescription>Completed games only</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-6xl font-bold text-center py-8">{formatTime(getAveragePlaytimeToCompletion())}</p>
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="clicks" className="space-y-4">
-            <div className="flex items-center gap-4 mb-4">
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={showCompletedOnly}
-                  onChange={(e) => setShowCompletedOnly(e.target.checked)}
-                  className="cursor-pointer w-4 h-4"
-                />
-                <span className="text-sm font-medium">
-                  Show only players who completed the game ({gameSaves.filter(save => 
-                    save.game_state?.events?.cube15a || 
-                    save.game_state?.events?.cube15b ||
-                    save.game_state?.events?.cube13 ||
-                    save.game_state?.events?.cube14a ||
-                    save.game_state?.events?.cube14b ||
-                    save.game_state?.events?.cube14c ||
-                    save.game_state?.events?.cube14d
-                  ).length} players)
-                </span>
-              </label>
-            </div>
-            <Card>
-              <CardHeader>
-                <CardTitle>Button Clicks Over Time</CardTitle>
-                <CardDescription>
-                  Total button clicks in 15-minute intervals (time elapsed since first click) {selectedUser !== 'all' ? 'for selected user' : showCompletedOnly ? 'for completed players only' : 'across all users'}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={400}>
-                  <LineChart data={getButtonClicksOverTime()}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="time" label={{ value: 'Playtime', position: 'insideBottom', offset: -5 }} />
-                    <YAxis label={{ value: 'Clicks', angle: -90, position: 'insideLeft' }} />
-                    <Tooltip />
-                    <Legend />
-                    <Line
-                      type="monotone"
-                      dataKey="clicks"
-                      stroke="#8884d8"
-                      strokeWidth={2}
-                      dot={{ r: 4 }}
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Individual Click Types Over Playtime</CardTitle>
-                <CardDescription>
-                  Click counts by type in 15-minute intervals (time elapsed since first click) {selectedUser !== 'all' ? 'for selected user' : showCompletedOnly ? 'for completed players only' : 'across all users'}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="mb-4 space-y-2">
-                  <div className="flex gap-2 mb-2">
-                    <button
-                      onClick={() => {
-                        const allButtons = getAllButtonNames().filter(buttonName => {
-                          if (selectedClickTypes.has('filter:cube') && buttonName.startsWith('cube-')) return false;
-                          if (selectedClickTypes.has('filter:merchant') && buttonName.startsWith('merchant-trade')) return false;
-                          if (selectedClickTypes.has('filter:assign') && (buttonName.startsWith('assign') || buttonName.startsWith('unassign'))) return false;
-                          if (selectedClickTypes.has('filter:choice') && (buttonName.includes('_choice_') || buttonName.includes('-choice-'))) return false;
-                          return true;
-                        });
-                        setSelectedClickTypes(new Set(allButtons));
-                      }}
-                      className="px-3 py-1 text-sm bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
-                    >
-                      Select All
-                    </button>
-                    <button
-                      onClick={() => setSelectedClickTypes(new Set())}
-                      className="px-3 py-1 text-sm bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/90"
-                    >
-                      Deselect All
-                    </button>
-                  </div>
-                  <div className="flex gap-4 flex-wrap">
-                    <label className="flex items-center gap-2 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={!selectedClickTypes.has('filter:cube')}
-                        onChange={(e) => {
-                          const newSet = new Set(selectedClickTypes);
-                          if (!e.target.checked) {
-                            newSet.add('filter:cube');
-                          } else {
-                            newSet.delete('filter:cube');
-                          }
-                          setSelectedClickTypes(newSet);
-                        }}
-                        className="cursor-pointer w-4 h-4"
-                      />
-                      <span className="text-sm font-medium">Show Cube Events</span>
-                    </label>
-                    <label className="flex items-center gap-2 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={!selectedClickTypes.has('filter:merchant')}
-                        onChange={(e) => {
-                          const newSet = new Set(selectedClickTypes);
-                          if (!e.target.checked) {
-                            newSet.add('filter:merchant');
-                          } else {
-                            newSet.delete('filter:merchant');
-                          }
-                          setSelectedClickTypes(newSet);
-                        }}
-                        className="cursor-pointer w-4 h-4"
-                      />
-                      <span className="text-sm font-medium">Show Merchant Trades</span>
-                    </label>
-                    <label className="flex items-center gap-2 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={!selectedClickTypes.has('filter:assign')}
-                        onChange={(e) => {
-                          const newSet = new Set(selectedClickTypes);
-                          if (!e.target.checked) {
-                            newSet.add('filter:assign');
-                          } else {
-                            newSet.delete('filter:assign');
-                          }
-                          setSelectedClickTypes(newSet);
-                        }}
-                        className="cursor-pointer w-4 h-4"
-                      />
-                      <span className="text-sm font-medium">Show Assign/Unassign Events</span>
-                    </label>
-                    <label className="flex items-center gap-2 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={!selectedClickTypes.has('filter:choice')}
-                        onChange={(e) => {
-                          const newSet = new Set(selectedClickTypes);
-                          if (!e.target.checked) {
-                            newSet.add('filter:choice');
-                          } else {
-                            newSet.delete('filter:choice');
-                          }
-                          setSelectedClickTypes(newSet);
-                        }}
-                        className="cursor-pointer w-4 h-4"
-                      />
-                      <span className="text-sm font-medium">Show Event Choices</span>
-                    </label>
-                  </div>
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Total Users</CardTitle>
+                      <CardDescription>All registered players</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-4xl font-bold">{gameSaves.length}</p>
+                    </CardContent>
+                  </Card>
                 </div>
-                <div className="flex gap-4 mb-4 flex-wrap">
-                  {getAllButtonNames()
-                    .filter(buttonName => {
-                      if (selectedClickTypes.has('filter:cube') && buttonName.startsWith('cube-')) return false;
-                      if (selectedClickTypes.has('filter:merchant') && buttonName.startsWith('merchant-trade')) return false;
-                      if (selectedClickTypes.has('filter:assign') && (buttonName.startsWith('assign') || buttonName.startsWith('unassign'))) return false;
-                      if (selectedClickTypes.has('filter:choice') && (buttonName.includes('_choice_') || buttonName.includes('-choice-'))) return false;
-                      return true;
-                    })
-                    .map(buttonName => (
-                    <label key={buttonName} className="flex items-center gap-2 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={selectedClickTypes.has(buttonName)}
-                        onChange={(e) => {
-                          const newSet = new Set(selectedClickTypes);
-                          if (e.target.checked) {
-                            newSet.add(buttonName);
-                          } else {
-                            newSet.delete(buttonName);
-                          }
-                          setSelectedClickTypes(newSet);
-                        }}
-                        className="cursor-pointer"
-                      />
-                      <span className="text-sm">{buttonName}</span>
-                    </label>
-                  ))}
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Avg Playtime</CardTitle>
+                      <CardDescription>All players</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-4xl font-bold">
+                        {formatTime(getAveragePlaytime())}
+                      </p>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Avg Time to Complete</CardTitle>
+                      <CardDescription>Completed games only</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-4xl font-bold">
+                        {formatTime(getAveragePlaytimeToCompletion())}
+                      </p>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Completion Rate</CardTitle>
+                      <CardDescription>
+                        % of players who finished
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-4xl font-bold">
+                        {gameSaves.length > 0
+                          ? Math.round(
+                              (gameSaves.filter(
+                                (s) =>
+                                  s.game_state?.events?.cube15a ||
+                                  s.game_state?.events?.cube15b ||
+                                  s.game_state?.events?.cube13 ||
+                                  s.game_state?.events?.cube14a ||
+                                  s.game_state?.events?.cube14b ||
+                                  s.game_state?.events?.cube14c ||
+                                  s.game_state?.events?.cube14d,
+                              ).length /
+                                gameSaves.length) *
+                                100,
+                            )
+                          : 0}
+                        %
+                      </p>
+                    </CardContent>
+                  </Card>
                 </div>
-                <ResponsiveContainer width="100%" height={400}>
-                  <LineChart data={getClickTypesByTimestamp()}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="time" label={{ value: 'Playtime', position: 'insideBottom', offset: -5 }} />
-                    <YAxis label={{ value: 'Clicks', angle: -90, position: 'insideLeft' }} />
-                    <Tooltip />
-                    <Legend />
-                    {(() => {
-                      const chartData = getClickTypesByTimestamp();
-                      // Collect all unique keys across all data points, not just the first one
-                      const allKeys = new Set<string>();
-                      chartData.forEach(dataPoint => {
-                        Object.keys(dataPoint).forEach(key => {
-                          if (key !== 'time') {
-                            allKeys.add(key);
-                          }
-                        });
-                      });
-                      const dataKeys = Array.from(allKeys);
-                      return dataKeys.map((key, index) => (
+
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Conversion Rate</CardTitle>
+                      <CardDescription>% who made a purchase</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-4xl font-bold">
+                        {getConversionRate()}%
+                      </p>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Buyers per 100</CardTitle>
+                      <CardDescription>Non-free purchases</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-4xl font-bold">
+                        {getBuyersPerHundred()}
+                      </p>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>ARPU</CardTitle>
+                      <CardDescription>
+                        Average Revenue Per User
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-4xl font-bold">€{getARPU()}</p>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Total Revenue</CardTitle>
+                      <CardDescription>All time</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-4xl font-bold">
+                        €{(getTotalRevenue() / 100).toFixed(2)}
+                      </p>
+                    </CardContent>
+                  </Card>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Instagram Followers</CardTitle>
+                      <CardDescription>
+                        Users who clicked follow button
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-4xl font-bold">
+                        {getInstagramFollowers()}
+                      </p>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Instagram Follow Rate</CardTitle>
+                      <CardDescription>% of total users</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-4xl font-bold">
+                        {getInstagramFollowRate()}%
+                      </p>
+                    </CardContent>
+                  </Card>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Daily Active Users (Last 30 Days)</CardTitle>
+                      <CardDescription>User activity over time</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <ResponsiveContainer width="100%" height={300}>
+                        <AreaChart data={getUserRetention()}>
+                          <CartesianGrid strokeDasharray="3 3" />
+                          <XAxis dataKey="day" />
+                          <YAxis />
+                          <Tooltip />
+                          <Area
+                            type="monotone"
+                            dataKey="users"
+                            stroke="#8884d8"
+                            fill="#8884d8"
+                          />
+                        </AreaChart>
+                      </ResponsiveContainer>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Daily Sign-ups (Last 30 Days)</CardTitle>
+                      <CardDescription>New user registrations</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <ResponsiveContainer width="100%" height={300}>
+                        <AreaChart data={getDailySignups()}>
+                          <CartesianGrid strokeDasharray="3 3" />
+                          <XAxis dataKey="day" />
+                          <YAxis />
+                          <Tooltip />
+                          <Area
+                            type="monotone"
+                            dataKey="signups"
+                            stroke="#82ca9d"
+                            fill="#82ca9d"
+                          />
+                        </AreaChart>
+                      </ResponsiveContainer>
+                    </CardContent>
+                  </Card>
+                </div>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Hourly Sign-ups (Last 24 Hours)</CardTitle>
+                    <CardDescription>
+                      New user registrations by hour
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <ResponsiveContainer width="100%" height={300}>
+                      <LineChart data={getHourlySignups()}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="hour" />
+                        <YAxis />
+                        <Tooltip />
+                        <Legend />
                         <Line
-                          key={key}
                           type="monotone"
-                          dataKey={key}
-                          stroke={COLORS[index % COLORS.length]}
+                          dataKey="signups"
+                          stroke="#ffc658"
                           strokeWidth={2}
-                          dot={{ r: 3 }}
                         />
-                      ));
-                    })()}
-                  </LineChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </CardContent>
+                </Card>
+              </TabsContent>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>Top Clicked Buttons</CardTitle>
-                <CardDescription>Total clicks per button (top 15)</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={400}>
-                  <BarChart data={getTotalClicksByButton()}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="button" angle={-45} textAnchor="end" height={100} />
-                    <YAxis />
-                    <Tooltip />
-                    <Bar dataKey="total" fill="#8884d8" />
-                  </BarChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
+              <TabsContent value="engagement" className="space-y-4">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Session Length Distribution</CardTitle>
+                    <CardDescription>
+                      How long players engage with the game
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <ResponsiveContainer width="100%" height={400}>
+                      <BarChart data={getSessionLengthDistribution()}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="range" />
+                        <YAxis />
+                        <Tooltip />
+                        <Bar dataKey="count" fill="#8884d8" />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </CardContent>
+                </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>Average Clicks per Button</CardTitle>
-                <CardDescription>Average clicks per user who clicked each button (top 15)</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={400}>
-                  <BarChart data={getAverageClicksByButton()}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="button" angle={-45} textAnchor="end" height={100} />
-                    <YAxis />
-                    <Tooltip />
-                    <Bar dataKey="average" fill="#82ca9d" />
-                  </BarChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-          </TabsContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Average Playtime</CardTitle>
+                      <CardDescription>All players</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-6xl font-bold text-center py-8">
+                        {formatTime(getAveragePlaytime())}
+                      </p>
+                    </CardContent>
+                  </Card>
 
-          <TabsContent value="completion" className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Total Players</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-4xl font-bold">{filterByTimeRange(gameSaves, 'updated_at').length}</p>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>Completed Game</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-4xl font-bold">
-                    {filterByTimeRange(gameSaves, 'updated_at').filter(s => 
-                      s.game_state?.events?.cube15a || 
-                      s.game_state?.events?.cube15b ||
-                      s.game_state?.events?.cube13 ||
-                      s.game_state?.events?.cube14a ||
-                      s.game_state?.events?.cube14b ||
-                      s.game_state?.events?.cube14c ||
-                      s.game_state?.events?.cube14d
-                    ).length}
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>Completion Rate</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-4xl font-bold">
-                    {(() => {
-                      const filtered = filterByTimeRange(gameSaves, 'updated_at');
-                      return filtered.length > 0
-                        ? Math.round((filtered.filter(s => 
-                            s.game_state?.events?.cube15a || 
-                            s.game_state?.events?.cube15b ||
-                            s.game_state?.events?.cube13 ||
-                            s.game_state?.events?.cube14a ||
-                            s.game_state?.events?.cube14b ||
-                            s.game_state?.events?.cube14c ||
-                            s.game_state?.events?.cube14d
-                          ).length / filtered.length) * 100)
-                        : 0;
-                    })()}%
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Game Completion Distribution</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={300}>
-                  <PieChart>
-                    <Pie
-                      data={getGameCompletionStats()}
-                      cx="50%"
-                      cy="50%"
-                      labelLine={false}
-                      label={({ name, value }) => `${name}: ${value}`}
-                      outerRadius={80}
-                      fill="#8884d8"
-                      dataKey="value"
-                    >
-                      {getGameCompletionStats().map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                      ))}
-                    </Pie>
-                    <Tooltip />
-                  </PieChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="purchases" className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Total Revenue</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-4xl font-bold">€{(getTotalRevenue() / 100).toFixed(2)}</p>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>Total Purchases</CardTitle>
-                  <CardDescription>Excluding free items and components</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-4xl font-bold">{purchases.filter(p => p.price_paid > 0 && !p.bundle_id).length}</p>
-                </CardContent>
-              </Card>
-            </div>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Daily Purchases (Last 30 Days)</CardTitle>
-                <CardDescription>Purchase activity over time</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={400}>
-                  <AreaChart data={getDailyPurchases()}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="day" />
-                    <YAxis />
-                    <Tooltip />
-                    <Area type="monotone" dataKey="purchases" stroke="#82ca9d" fill="#82ca9d" />
-                  </AreaChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Purchases by Playtime</CardTitle>
-                <CardDescription>When do players make purchases? (hourly intervals, excluding free items)</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={400}>
-                  <LineChart data={getPurchasesByPlaytime()}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="playtime" label={{ value: 'Playtime (hours)', position: 'insideBottom', offset: -5 }} />
-                    <YAxis label={{ value: 'Purchases', angle: -90, position: 'insideLeft' }} />
-                    <Tooltip />
-                    <Legend />
-                    <Line type="monotone" dataKey="purchases" stroke="#82ca9d" strokeWidth={2} dot={{ r: 4 }} />
-                  </LineChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Purchases by Item</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={400}>
-                  <BarChart data={getPurchaseStats()}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" angle={-45} textAnchor="end" height={100} />
-                    <YAxis />
-                    <Tooltip />
-                    <Bar dataKey="count" fill="#82ca9d" />
-                  </BarChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Recent Purchases</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2">
-                  {purchases.filter(p => !p.bundle_id).slice(0, 10).map((purchase, index) => (
-                    <div key={index} className="flex justify-between items-center border-b pb-2">
-                      <div>
-                        <p className="font-medium">{purchase.item_name}</p>
-                        <p className="text-sm text-muted-foreground">
-                          {new Date(purchase.purchased_at).toLocaleString()}
-                        </p>
-                      </div>
-                      <p className="font-bold">€{(purchase.price_paid / 100).toFixed(2)}</p>
-                    </div>
-                  ))}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Average Time to Complete</CardTitle>
+                      <CardDescription>Completed games only</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-6xl font-bold text-center py-8">
+                        {formatTime(getAveragePlaytimeToCompletion())}
+                      </p>
+                    </CardContent>
+                  </Card>
                 </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
+              </TabsContent>
 
-          <TabsContent value="referrals" className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Total Referrals</CardTitle>
-                  <CardDescription>All time</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-4xl font-bold">{getTotalReferrals()}</p>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>Users with Referrals</CardTitle>
-                  <CardDescription>Players who referred others</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-4xl font-bold">
-                    {gameSaves.filter(s => (s.game_state?.referrals || []).length > 0).length}
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>Avg Referrals per User</CardTitle>
-                  <CardDescription>Among users with referrals</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-4xl font-bold">
-                    {gameSaves.filter(s => (s.game_state?.referrals || []).length > 0).length > 0
-                      ? (getTotalReferrals() / gameSaves.filter(s => (s.game_state?.referrals || []).length > 0).length).toFixed(1)
-                      : 0}
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Daily Referrals (Last 30 Days)</CardTitle>
-                <CardDescription>New referrals over time</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={400}>
-                  <AreaChart data={getDailyReferrals()}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="day" />
-                    <YAxis />
-                    <Tooltip />
-                    <Area type="monotone" dataKey="referrals" stroke="#8884d8" fill="#8884d8" />
-                  </AreaChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Top Referrers</CardTitle>
-                <CardDescription>Users who referred the most players</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={400}>
-                  <BarChart data={getTopReferrers()}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="userId" />
-                    <YAxis />
-                    <Tooltip />
-                    <Bar dataKey="count" fill="#ffc658" />
-                  </BarChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="churn" className="space-y-4">
-            <div className="flex items-center gap-4 mb-4">
-              <label className="text-sm font-medium">Churn definition (inactive for at least):</label>
-              <Select value={churnDays.toString()} onValueChange={(value) => setChurnDays(parseInt(value) as 1 | 3 | 5 | 7)}>
-                <SelectTrigger className="w-[120px]">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="1">1 day</SelectItem>
-                  <SelectItem value="3">3 days</SelectItem>
-                  <SelectItem value="5">5 days</SelectItem>
-                  <SelectItem value="7">7 days</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Churned Players</CardTitle>
-                  <CardDescription>Players inactive for {churnDays}+ days and did not complete the game</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-4xl font-bold">{getChurnedPlayers().length}</p>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>Churn Rate</CardTitle>
-                  <CardDescription>% of total players</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-4xl font-bold">
-                    {gameSaves.length > 0
-                      ? Math.round((getChurnedPlayers().length / gameSaves.length) * 100)
-                      : 0}%
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Churned Players List</CardTitle>
-                <CardDescription>Players who stopped playing (sorted by inactivity)</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2 max-h-96 overflow-y-auto">
-                  {getChurnedPlayers().map((player, index) => (
-                    <div key={index} className="flex justify-between items-center border-b pb-2">
-                      <div>
-                        <p className="font-medium">{player.userId}</p>
-                        <p className="text-sm text-muted-foreground">
-                          Last activity: {format(player.lastActivity, 'MMM dd, yyyy HH:mm')}
-                        </p>
-                      </div>
-                      <p className="font-bold text-red-500">{player.daysSinceActivity} days ago</p>
-                    </div>
-                  ))}
+              <TabsContent value="clicks" className="space-y-4">
+                <div className="flex items-center gap-4 mb-4">
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={showCompletedOnly}
+                      onChange={(e) => setShowCompletedOnly(e.target.checked)}
+                      className="cursor-pointer w-4 h-4"
+                    />
+                    <span className="text-sm font-medium">
+                      Show only players who completed the game (
+                      {
+                        gameSaves.filter(
+                          (save) =>
+                            save.game_state?.events?.cube15a ||
+                            save.game_state?.events?.cube15b ||
+                            save.game_state?.events?.cube13 ||
+                            save.game_state?.events?.cube14a ||
+                            save.game_state?.events?.cube14b ||
+                            save.game_state?.events?.cube14c ||
+                            save.game_state?.events?.cube14d,
+                        ).length
+                      }{" "}
+                      players)
+                    </span>
+                  </label>
                 </div>
-              </CardContent>
-            </Card>
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Button Clicks Over Time</CardTitle>
+                    <CardDescription>
+                      Total button clicks in 15-minute intervals (time elapsed
+                      since first click){" "}
+                      {selectedUser !== "all"
+                        ? "for selected user"
+                        : showCompletedOnly
+                          ? "for completed players only"
+                          : "across all users"}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <ResponsiveContainer width="100%" height={400}>
+                      <LineChart data={getButtonClicksOverTime()}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis
+                          dataKey="time"
+                          label={{
+                            value: "Playtime",
+                            position: "insideBottom",
+                            offset: -5,
+                          }}
+                        />
+                        <YAxis
+                          label={{
+                            value: "Clicks",
+                            angle: -90,
+                            position: "insideLeft",
+                          }}
+                        />
+                        <Tooltip />
+                        <Legend />
+                        <Line
+                          type="monotone"
+                          dataKey="clicks"
+                          stroke="#8884d8"
+                          strokeWidth={2}
+                          dot={{ r: 4 }}
+                        />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </CardContent>
+                </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>Top 20 Last Buttons Clicked Before Churning</CardTitle>
-                <CardDescription>What were the last actions churned players performed at their final playtime?</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={400}>
-                  <BarChart data={getChurnedPlayersLastClicks()}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="button" angle={-45} textAnchor="end" height={100} />
-                    <YAxis />
-                    <Tooltip />
-                    <Bar dataKey="clicks" fill="#ff8042" />
-                  </BarChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Top 20 First-Time Clicks by Churned Players</CardTitle>
-                <CardDescription>Buttons clicked exactly once (count = 1) - what did churned players try just once?</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={400}>
-                  <BarChart data={getChurnedPlayersFirstTimeClicks()}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="button" angle={-45} textAnchor="end" height={100} />
-                    <YAxis />
-                    <Tooltip />
-                    <Bar dataKey="count" fill="#9333ea" />
-                  </BarChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Cube Events Over Playtime</CardTitle>
-                <CardDescription>Number of players who have seen each cube event at each playtime</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="mb-4 space-y-2">
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => {
-                        const checkboxes = document.querySelectorAll('[data-cube-checkbox]') as NodeListOf<HTMLInputElement>;
-                        checkboxes.forEach(checkbox => {
-                          checkbox.checked = true;
-                          const event = new Event('change', { bubbles: true });
-                          checkbox.dispatchEvent(event);
-                        });
-                      }}
-                      className="px-3 py-1 text-sm bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
-                    >
-                      Select All
-                    </button>
-                    <button
-                      onClick={() => {
-                        const checkboxes = document.querySelectorAll('[data-cube-checkbox]') as NodeListOf<HTMLInputElement>;
-                        checkboxes.forEach(checkbox => {
-                          checkbox.checked = false;
-                          const event = new Event('change', { bubbles: true });
-                          checkbox.dispatchEvent(event);
-                        });
-                      }}
-                      className="px-3 py-1 text-sm bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/90"
-                    >
-                      Deselect All
-                    </button>
-                  </div>
-                  <div className="flex gap-4 flex-wrap">
-                    {(() => {
-                      const chartData = getCubeEventsOverPlaytime();
-                      if (chartData.length === 0) return null;
-
-                      // Get all cube event keys from the first data point
-                      const cubeKeys = Object.keys(chartData[0]).filter(key => key.startsWith('Cube '));
-
-                      return cubeKeys.map((key) => (
-                        <label key={key} className="flex items-center gap-2 cursor-pointer">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Individual Click Types Over Playtime</CardTitle>
+                    <CardDescription>
+                      Click counts by type in 15-minute intervals (time elapsed
+                      since first click){" "}
+                      {selectedUser !== "all"
+                        ? "for selected user"
+                        : showCompletedOnly
+                          ? "for completed players only"
+                          : "across all users"}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="mb-4 space-y-2">
+                      <div className="flex gap-2 mb-2">
+                        <button
+                          onClick={() => {
+                            const allButtons = getAllButtonNames().filter(
+                              (buttonName) => {
+                                if (
+                                  selectedClickTypes.has("filter:cube") &&
+                                  buttonName.startsWith("cube-")
+                                )
+                                  return false;
+                                if (
+                                  selectedClickTypes.has("filter:merchant") &&
+                                  buttonName.startsWith("merchant-trade")
+                                )
+                                  return false;
+                                if (
+                                  selectedClickTypes.has("filter:assign") &&
+                                  (buttonName.startsWith("assign") ||
+                                    buttonName.startsWith("unassign"))
+                                )
+                                  return false;
+                                if (
+                                  selectedClickTypes.has("filter:choice") &&
+                                  (buttonName.includes("_choice_") ||
+                                    buttonName.includes("-choice-"))
+                                )
+                                  return false;
+                                return true;
+                              },
+                            );
+                            setSelectedClickTypes(new Set(allButtons));
+                          }}
+                          className="px-3 py-1 text-sm bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
+                        >
+                          Select All
+                        </button>
+                        <button
+                          onClick={() => setSelectedClickTypes(new Set())}
+                          className="px-3 py-1 text-sm bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/90"
+                        >
+                          Deselect All
+                        </button>
+                      </div>
+                      <div className="flex gap-4 flex-wrap">
+                        <label className="flex items-center gap-2 cursor-pointer">
                           <input
                             type="checkbox"
-                            data-cube-checkbox
-                            defaultChecked={true}
+                            checked={!selectedClickTypes.has("filter:cube")}
                             onChange={(e) => {
-                              const checkbox = e.target;
-                              const lines = document.querySelectorAll(`[data-cube-event="${key}"]`);
-                              lines.forEach(line => {
-                                const element = line as HTMLElement;
-                                element.style.display = checkbox.checked ? '' : 'none';
-                              });
+                              const newSet = new Set(selectedClickTypes);
+                              if (!e.target.checked) {
+                                newSet.add("filter:cube");
+                              } else {
+                                newSet.delete("filter:cube");
+                              }
+                              setSelectedClickTypes(newSet);
                             }}
-                            className="cursor-pointer"
+                            className="cursor-pointer w-4 h-4"
                           />
-                          <span className="text-sm">{key}</span>
+                          <span className="text-sm font-medium">
+                            Show Cube Events
+                          </span>
                         </label>
-                      ));
-                    })()}
-                  </div>
-                </div>
-                <ResponsiveContainer width="100%" height={400}>
-                  <LineChart data={getCubeEventsOverPlaytime()}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="time" label={{ value: 'Playtime', position: 'insideBottom', offset: -5 }} />
-                    <YAxis label={{ value: 'Players', angle: -90, position: 'insideLeft' }} />
-                    <Tooltip />
-                    <Legend />
-                    {(() => {
-                      const chartData = getCubeEventsOverPlaytime();
-                      if (chartData.length === 0) return null;
-
-                      // Get all cube event keys from the first data point
-                      const cubeKeys = Object.keys(chartData[0]).filter(key => key.startsWith('Cube '));
-
-                      return cubeKeys.map((key, index) => (
-                        <Line
-                          key={key}
-                          type="monotone"
-                          dataKey={key}
-                          stroke={COLORS[index % COLORS.length]}
-                          strokeWidth={2}
-                          dot={{ r: 3 }}
-                          data-cube-event={key}
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={!selectedClickTypes.has("filter:merchant")}
+                            onChange={(e) => {
+                              const newSet = new Set(selectedClickTypes);
+                              if (!e.target.checked) {
+                                newSet.add("filter:merchant");
+                              } else {
+                                newSet.delete("filter:merchant");
+                              }
+                              setSelectedClickTypes(newSet);
+                            }}
+                            className="cursor-pointer w-4 h-4"
+                          />
+                          <span className="text-sm font-medium">
+                            Show Merchant Trades
+                          </span>
+                        </label>
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={!selectedClickTypes.has("filter:assign")}
+                            onChange={(e) => {
+                              const newSet = new Set(selectedClickTypes);
+                              if (!e.target.checked) {
+                                newSet.add("filter:assign");
+                              } else {
+                                newSet.delete("filter:assign");
+                              }
+                              setSelectedClickTypes(newSet);
+                            }}
+                            className="cursor-pointer w-4 h-4"
+                          />
+                          <span className="text-sm font-medium">
+                            Show Assign/Unassign Events
+                          </span>
+                        </label>
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={!selectedClickTypes.has("filter:choice")}
+                            onChange={(e) => {
+                              const newSet = new Set(selectedClickTypes);
+                              if (!e.target.checked) {
+                                newSet.add("filter:choice");
+                              } else {
+                                newSet.delete("filter:choice");
+                              }
+                              setSelectedClickTypes(newSet);
+                            }}
+                            className="cursor-pointer w-4 h-4"
+                          />
+                          <span className="text-sm font-medium">
+                            Show Event Choices
+                          </span>
+                        </label>
+                      </div>
+                    </div>
+                    <div className="flex gap-4 mb-4 flex-wrap">
+                      {getAllButtonNames()
+                        .filter((buttonName) => {
+                          if (
+                            selectedClickTypes.has("filter:cube") &&
+                            buttonName.startsWith("cube-")
+                          )
+                            return false;
+                          if (
+                            selectedClickTypes.has("filter:merchant") &&
+                            buttonName.startsWith("merchant-trade")
+                          )
+                            return false;
+                          if (
+                            selectedClickTypes.has("filter:assign") &&
+                            (buttonName.startsWith("assign") ||
+                              buttonName.startsWith("unassign"))
+                          )
+                            return false;
+                          if (
+                            selectedClickTypes.has("filter:choice") &&
+                            (buttonName.includes("_choice_") ||
+                              buttonName.includes("-choice-"))
+                          )
+                            return false;
+                          return true;
+                        })
+                        .map((buttonName) => (
+                          <label
+                            key={buttonName}
+                            className="flex items-center gap-2 cursor-pointer"
+                          >
+                            <input
+                              type="checkbox"
+                              checked={selectedClickTypes.has(buttonName)}
+                              onChange={(e) => {
+                                const newSet = new Set(selectedClickTypes);
+                                if (e.target.checked) {
+                                  newSet.add(buttonName);
+                                } else {
+                                  newSet.delete(buttonName);
+                                }
+                                setSelectedClickTypes(newSet);
+                              }}
+                              className="cursor-pointer"
+                            />
+                            <span className="text-sm">{buttonName}</span>
+                          </label>
+                        ))}
+                    </div>
+                    <ResponsiveContainer width="100%" height={400}>
+                      <LineChart data={getClickTypesByTimestamp()}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis
+                          dataKey="time"
+                          label={{
+                            value: "Playtime",
+                            position: "insideBottom",
+                            offset: -5,
+                          }}
                         />
-                      ));
-                    })()}
-                  </LineChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
+                        <YAxis
+                          label={{
+                            value: "Clicks",
+                            angle: -90,
+                            position: "insideLeft",
+                          }}
+                        />
+                        <Tooltip />
+                        <Legend />
+                        {(() => {
+                          const chartData = getClickTypesByTimestamp();
+                          // Collect all unique keys across all data points, not just the first one
+                          const allKeys = new Set<string>();
+                          chartData.forEach((dataPoint) => {
+                            Object.keys(dataPoint).forEach((key) => {
+                              if (key !== "time") {
+                                allKeys.add(key);
+                              }
+                            });
+                          });
+                          const dataKeys = Array.from(allKeys);
+                          return dataKeys.map((key, index) => (
+                            <Line
+                              key={key}
+                              type="monotone"
+                              dataKey={key}
+                              stroke={COLORS[index % COLORS.length]}
+                              strokeWidth={2}
+                              dot={{ r: 3 }}
+                            />
+                          ));
+                        })()}
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </CardContent>
+                </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>Highest Cube Event Distribution</CardTitle>
-                <CardDescription>What is the highest cube event players have seen?</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={400}>
-                  <LineChart data={getHighestCubeEventDistribution()}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="cubeEvent" label={{ value: 'Cube Event', position: 'insideBottom', offset: -5 }} />
-                    <YAxis label={{ value: 'Players', angle: -90, position: 'insideLeft' }} />
-                    <Tooltip />
-                    <Legend />
-                    <Line type="monotone" dataKey="players" stroke="#82ca9d" strokeWidth={2} dot={{ r: 4 }} />
-                  </LineChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Top Clicked Buttons</CardTitle>
+                    <CardDescription>
+                      Total clicks per button (top 15)
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <ResponsiveContainer width="100%" height={400}>
+                      <BarChart data={getTotalClicksByButton()}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis
+                          dataKey="button"
+                          angle={-45}
+                          textAnchor="end"
+                          height={100}
+                        />
+                        <YAxis />
+                        <Tooltip />
+                        <Bar dataKey="total" fill="#8884d8" />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </CardContent>
+                </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>Last Cube Events for Churned Players</CardTitle>
-                <CardDescription>What was the highest cube event churned players saw before leaving?</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={400}>
-                  <BarChart data={getChurnedPlayersLastCubeEvents()}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="cubeEvent" label={{ value: 'Cube Event', position: 'insideBottom', offset: -5 }} />
-                    <YAxis label={{ value: 'Players', angle: -90, position: 'insideLeft' }} />
-                    <Tooltip />
-                    <Legend />
-                    <Bar dataKey="players" fill="#ffc658" />
-                  </BarChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Average Clicks per Button</CardTitle>
+                    <CardDescription>
+                      Average clicks per user who clicked each button (top 15)
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <ResponsiveContainer width="100%" height={400}>
+                      <BarChart data={getAverageClicksByButton()}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis
+                          dataKey="button"
+                          angle={-45}
+                          textAnchor="end"
+                          height={100}
+                        />
+                        <YAxis />
+                        <Tooltip />
+                        <Bar dataKey="average" fill="#82ca9d" />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </CardContent>
+                </Card>
+              </TabsContent>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>Churn Point Distribution</CardTitle>
-                <CardDescription>At what playtime did churned players stop playing?</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={400}>
-                  <LineChart data={(() => {
-                    const now = new Date();
-                    const cutoffDate = subDays(now, churnDays);
+              <TabsContent value="completion" className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Total Players</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-4xl font-bold">
+                        {filterByTimeRange(gameSaves, "updated_at").length}
+                      </p>
+                    </CardContent>
+                  </Card>
 
-                    // Get users with click data
-                    const usersWithClicks = new Set<string>();
-                    clickData.forEach(entry => usersWithClicks.add(entry.user_id));
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Completed Game</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-4xl font-bold">
+                        {
+                          filterByTimeRange(gameSaves, "updated_at").filter(
+                            (s) =>
+                              s.game_state?.events?.cube15a ||
+                              s.game_state?.events?.cube15b ||
+                              s.game_state?.events?.cube13 ||
+                              s.game_state?.events?.cube14a ||
+                              s.game_state?.events?.cube14b ||
+                              s.game_state?.events?.cube14c ||
+                              s.game_state?.events?.cube14d,
+                          ).length
+                        }
+                      </p>
+                    </CardContent>
+                  </Card>
 
-                    // Get churned user IDs based on game save activity and completion status
-                    const churnedUserIds = new Set<string>();
-                    const userLastActivity = new Map<string, Date>();
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Completion Rate</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-4xl font-bold">
+                        {(() => {
+                          const filtered = filterByTimeRange(
+                            gameSaves,
+                            "updated_at",
+                          );
+                          return filtered.length > 0
+                            ? Math.round(
+                                (filtered.filter(
+                                  (s) =>
+                                    s.game_state?.events?.cube15a ||
+                                    s.game_state?.events?.cube15b ||
+                                    s.game_state?.events?.cube13 ||
+                                    s.game_state?.events?.cube14a ||
+                                    s.game_state?.events?.cube14b ||
+                                    s.game_state?.events?.cube14c ||
+                                    s.game_state?.events?.cube14d,
+                                ).length /
+                                  filtered.length) *
+                                  100,
+                              )
+                            : 0;
+                        })()}
+                        %
+                      </p>
+                    </CardContent>
+                  </Card>
+                </div>
 
-                    gameSaves.forEach(save => {
-                      const activityDate = new Date(save.updated_at);
-                      const existing = userLastActivity.get(save.user_id);
-                      if (!existing || activityDate > existing) {
-                        userLastActivity.set(save.user_id, activityDate);
-                      }
-                      // Check completion status
-                      const hasCompletedGame = save.game_state?.events?.cube15a || 
-                                               save.game_state?.events?.cube15b ||
-                                               save.game_state?.events?.cube13 ||
-                                               save.game_state?.events?.cube14a ||
-                                               save.game_state?.events?.cube14b ||
-                                               save.game_state?.events?.cube14c ||
-                                               save.game_state?.events?.cube14d;
-                      if (activityDate < cutoffDate && !hasCompletedGame && usersWithClicks.has(save.user_id)) {
-                        churnedUserIds.add(save.user_id);
-                      }
-                    });
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Game Completion Distribution</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <ResponsiveContainer width="100%" height={300}>
+                      <PieChart>
+                        <Pie
+                          data={getGameCompletionStats()}
+                          cx="50%"
+                          cy="50%"
+                          labelLine={false}
+                          label={({ name, value }) => `${name}: ${value}`}
+                          outerRadius={80}
+                          fill="#8884d8"
+                          dataKey="value"
+                        >
+                          {getGameCompletionStats().map((entry, index) => (
+                            <Cell
+                              key={`cell-${index}`}
+                              fill={COLORS[index % COLORS.length]}
+                            />
+                          ))}
+                        </Pie>
+                        <Tooltip />
+                      </PieChart>
+                    </ResponsiveContainer>
+                  </CardContent>
+                </Card>
+              </TabsContent>
 
-                    // Get max playtime for each churned user
-                    const userMaxPlaytime = new Map<string, number>();
-                    clickData.forEach(entry => {
-                      if (churnedUserIds.has(entry.user_id)) {
-                        Object.keys(entry.clicks).forEach(playtimeKey => {
-                          const minutes = parseInt(playtimeKey.replace('m', ''));
-                          if (!isNaN(minutes)) {
-                            const existing = userMaxPlaytime.get(entry.user_id) || 0;
-                            if (minutes > existing) {
-                              userMaxPlaytime.set(entry.user_id, minutes);
-                            }
-                          }
-                        });
-                      }
-                    });
+              <TabsContent value="purchases" className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Total Revenue</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-4xl font-bold">
+                        €{(getTotalRevenue() / 100).toFixed(2)}
+                      </p>
+                    </CardContent>
+                  </Card>
 
-                    // Group into 1-hour buckets
-                    const buckets = new Map<number, number>();
-                    let maxBucket = 0;
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Total Purchases</CardTitle>
+                      <CardDescription>
+                        Excluding free items and components
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-4xl font-bold">
+                        {
+                          purchases.filter(
+                            (p) => p.price_paid > 0 && !p.bundle_id,
+                          ).length
+                        }
+                      </p>
+                    </CardContent>
+                  </Card>
+                </div>
 
-                    userMaxPlaytime.forEach((minutes) => {
-                      const bucket = Math.floor(minutes / 60) * 60; // 60-minute buckets
-                      maxBucket = Math.max(maxBucket, bucket);
-                      buckets.set(bucket, (buckets.get(bucket) || 0) + 1);
-                    });
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Daily Purchases (Last 30 Days)</CardTitle>
+                    <CardDescription>
+                      Purchase activity over time
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <ResponsiveContainer width="100%" height={400}>
+                      <AreaChart data={getDailyPurchases()}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="day" />
+                        <YAxis />
+                        <Tooltip />
+                        <Area
+                          type="monotone"
+                          dataKey="purchases"
+                          stroke="#82ca9d"
+                          fill="#82ca9d"
+                        />
+                      </AreaChart>
+                    </ResponsiveContainer>
+                  </CardContent>
+                </Card>
 
-                    // Create array with all buckets from 0 to max
-                    const result: Array<{ time: string; count: number }> = [];
-                    for (let bucket = 0; bucket <= maxBucket; bucket += 60) {
-                      const hours = bucket / 60;
-                      result.push({
-                        time: hours === 0 ? '0h' : `${hours}h`,
-                        count: buckets.get(bucket) || 0,
-                      });
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Purchases by Playtime</CardTitle>
+                    <CardDescription>
+                      When do players make purchases? (hourly intervals,
+                      excluding free items)
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <ResponsiveContainer width="100%" height={400}>
+                      <LineChart data={getPurchasesByPlaytime()}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis
+                          dataKey="playtime"
+                          label={{
+                            value: "Playtime (hours)",
+                            position: "insideBottom",
+                            offset: -5,
+                          }}
+                        />
+                        <YAxis
+                          label={{
+                            value: "Purchases",
+                            angle: -90,
+                            position: "insideLeft",
+                          }}
+                        />
+                        <Tooltip />
+                        <Legend />
+                        <Line
+                          type="monotone"
+                          dataKey="purchases"
+                          stroke="#82ca9d"
+                          strokeWidth={2}
+                          dot={{ r: 4 }}
+                        />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Purchases by Item</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <ResponsiveContainer width="100%" height={400}>
+                      <BarChart data={getPurchaseStats()}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis
+                          dataKey="name"
+                          angle={-45}
+                          textAnchor="end"
+                          height={100}
+                        />
+                        <YAxis />
+                        <Tooltip />
+                        <Bar dataKey="count" fill="#82ca9d" />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Recent Purchases</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-2">
+                      {purchases
+                        .filter((p) => !p.bundle_id)
+                        .slice(0, 10)
+                        .map((purchase, index) => (
+                          <div
+                            key={index}
+                            className="flex justify-between items-center border-b pb-2"
+                          >
+                            <div>
+                              <p className="font-medium">
+                                {purchase.item_name}
+                              </p>
+                              <p className="text-sm text-muted-foreground">
+                                {new Date(
+                                  purchase.purchased_at,
+                                ).toLocaleString()}
+                              </p>
+                            </div>
+                            <p className="font-bold">
+                              €{(purchase.price_paid / 100).toFixed(2)}
+                            </p>
+                          </div>
+                        ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              <TabsContent value="referrals" className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Total Referrals</CardTitle>
+                      <CardDescription>All time</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-4xl font-bold">
+                        {getTotalReferrals()}
+                      </p>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Users with Referrals</CardTitle>
+                      <CardDescription>
+                        Players who referred others
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-4xl font-bold">
+                        {
+                          gameSaves.filter(
+                            (s) => (s.game_state?.referrals || []).length > 0,
+                          ).length
+                        }
+                      </p>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Avg Referrals per User</CardTitle>
+                      <CardDescription>
+                        Among users with referrals
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-4xl font-bold">
+                        {gameSaves.filter(
+                          (s) => (s.game_state?.referrals || []).length > 0,
+                        ).length > 0
+                          ? (
+                              getTotalReferrals() /
+                              gameSaves.filter(
+                                (s) =>
+                                  (s.game_state?.referrals || []).length > 0,
+                              ).length
+                            ).toFixed(1)
+                          : 0}
+                      </p>
+                    </CardContent>
+                  </Card>
+                </div>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Daily Referrals (Last 30 Days)</CardTitle>
+                    <CardDescription>New referrals over time</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <ResponsiveContainer width="100%" height={400}>
+                      <AreaChart data={getDailyReferrals()}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="day" />
+                        <YAxis />
+                        <Tooltip />
+                        <Area
+                          type="monotone"
+                          dataKey="referrals"
+                          stroke="#8884d8"
+                          fill="#8884d8"
+                        />
+                      </AreaChart>
+                    </ResponsiveContainer>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Top Referrers</CardTitle>
+                    <CardDescription>
+                      Users who referred the most players
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <ResponsiveContainer width="100%" height={400}>
+                      <BarChart data={getTopReferrers()}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="userId" />
+                        <YAxis />
+                        <Tooltip />
+                        <Bar dataKey="count" fill="#ffc658" />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              <TabsContent value="churn" className="space-y-4">
+                <div className="flex items-center gap-4 mb-4">
+                  <label className="text-sm font-medium">
+                    Churn definition (inactive for at least):
+                  </label>
+                  <Select
+                    value={churnDays.toString()}
+                    onValueChange={(value) =>
+                      setChurnDays(parseInt(value) as 1 | 3 | 5 | 7)
                     }
-
-                    return result;
-                  })()}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="time" label={{ value: 'Playtime', position: 'insideBottom', offset: -5 }} />
-                    <YAxis label={{ value: 'Players', angle: -90, position: 'insideLeft' }} />
-                    <Tooltip />
-                    <Legend />
-                    <Line type="monotone" dataKey="count" stroke="#ff8042" strokeWidth={2} dot={{ r: 4 }} />
-                  </LineChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Churn Rate Over Time (Last 30 Days)</CardTitle>
-                <CardDescription>Percentage of churned players over time (inactive for {churnDays}+ days, excluding completed games)</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={400}>
-                  <LineChart data={getChurnRateOverTime()}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="day" />
-                    <YAxis label={{ value: 'Churn Rate (%)', angle: -90, position: 'insideLeft' }} />
-                    <Tooltip />
-                    <Legend />
-                    <Line type="monotone" dataKey="churnRate" stroke="#dc2626" strokeWidth={2} dot={{ r: 4 }} name="Churn Rate (%)" />
-                  </LineChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="sleep" className="space-y-4">
-            <div className="flex items-center gap-4 mb-4">
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={showCompletedOnly}
-                  onChange={(e) => setShowCompletedOnly(e.target.checked)}
-                  className="cursor-pointer w-4 h-4"
-                />
-                <span className="text-sm font-medium">
-                  Show only players who completed the game ({gameSaves.filter(save => 
-                    save.game_state?.events?.cube15a || 
-                    save.game_state?.events?.cube15b ||
-                    save.game_state?.events?.cube13 ||
-                    save.game_state?.events?.cube14a ||
-                    save.game_state?.events?.cube14b ||
-                    save.game_state?.events?.cube14c ||
-                    save.game_state?.events?.cube14d
-                  ).length} players)
-                </span>
-              </label>
-            </div>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Sleep Upgrade Levels Distribution</CardTitle>
-                <CardDescription>
-                  Number of users at each SLEEP_LENGTH_UPGRADES and SLEEP_INTENSITY_UPGRADES level {selectedUser !== 'all' ? 'for selected user' : showCompletedOnly ? 'for completed players only' : 'across all users'}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={400}>
-                  <BarChart data={getSleepUpgradesDistribution()}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis 
-                      dataKey="level" 
-                      label={{ value: 'Upgrade Level', position: 'insideBottom', offset: -5 }} 
-                    />
-                    <YAxis 
-                      label={{ value: 'Number of Users', angle: -90, position: 'insideLeft' }}
-                    />
-                    <Tooltip />
-                    <Legend />
-                    <Bar
-                      dataKey="lengthUsers"
-                      fill="#8884d8"
-                      name="Sleep Length Users"
-                    />
-                    <Bar
-                      dataKey="intensityUsers"
-                      fill="#82ca9d"
-                      name="Sleep Intensity Users"
-                    />
-                  </BarChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Average Sleep Length Level</CardTitle>
-                  <CardDescription>All players</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-4xl font-bold text-center py-8">
-                    {gameSaves.length > 0
-                      ? (
-                          gameSaves.reduce(
-                            (sum, save) => sum + (save.game_state?.sleepUpgrades?.lengthLevel || 0),
-                            0
-                          ) / gameSaves.length
-                        ).toFixed(2)
-                      : '0.00'}
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>Average Sleep Intensity Level</CardTitle>
-                  <CardDescription>All players</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-4xl font-bold text-center py-8">
-                    {gameSaves.length > 0
-                      ? (
-                          gameSaves.reduce(
-                            (sum, save) => sum + (save.game_state?.sleepUpgrades?.intensityLevel || 0),
-                            0
-                          ) / gameSaves.length
-                        ).toFixed(2)
-                      : '0.00'}
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="resources" className="space-y-4">
-            <div className="flex items-center gap-4 mb-4">
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={showCompletedOnly}
-                  onChange={(e) => setShowCompletedOnly(e.target.checked)}
-                  className="cursor-pointer w-4 h-4"
-                />
-                <span className="text-sm font-medium">
-                  Show only players who completed the game ({gameSaves.filter(save => 
-                    save.game_state?.events?.cube15a || 
-                    save.game_state?.events?.cube15b ||
-                    save.game_state?.events?.cube13 ||
-                    save.game_state?.events?.cube14a ||
-                    save.game_state?.events?.cube14b ||
-                    save.game_state?.events?.cube14c ||
-                    save.game_state?.events?.cube14d
-                  ).length} players)
-                </span>
-              </label>
-            </div>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Average Stats Over Playtime</CardTitle>
-                <CardDescription>
-                  Average stat values (Strength, Knowledge, Luck, Madness) in 1-hour playtime intervals
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="mb-4 space-y-2">
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => setSelectedStats(new Set(['strength', 'knowledge', 'luck', 'madness']))}
-                      className="px-3 py-1 text-sm bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
-                    >
-                      Select All
-                    </button>
-                    <button
-                      onClick={() => setSelectedStats(new Set())}
-                      className="px-3 py-1 text-sm bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/90"
-                    >
-                      Deselect All
-                    </button>
-                  </div>
-                  <div className="flex gap-4 flex-wrap">
-                    {['strength', 'knowledge', 'luck', 'madness'].map((stat) => (
-                      <label key={stat} className="flex items-center gap-2 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={selectedStats.has(stat)}
-                          onChange={(e) => {
-                            const newSet = new Set(selectedStats);
-                            if (e.target.checked) {
-                              newSet.add(stat);
-                            } else {
-                              newSet.delete(stat);
-                            }
-                            setSelectedStats(newSet);
-                          }}
-                          className="cursor-pointer"
-                        />
-                        <span className="text-sm capitalize">{stat}</span>
-                      </label>
-                    ))}
-                  </div>
+                  >
+                    <SelectTrigger className="w-[120px]">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="1">1 day</SelectItem>
+                      <SelectItem value="3">3 days</SelectItem>
+                      <SelectItem value="5">5 days</SelectItem>
+                      <SelectItem value="7">7 days</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
-                <ResponsiveContainer width="100%" height={400}>
-                  <LineChart data={getStatsOverPlaytime()}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis 
-                      dataKey="time" 
-                      label={{ value: 'Playtime', position: 'insideBottom', offset: -5 }}
-                      interval={0}
-                    />
-                    <YAxis label={{ value: 'Average Value', angle: -90, position: 'insideLeft' }} />
-                    <Tooltip />
-                    <Legend />
-                    {(() => {
-                      const chartData = getStatsOverPlaytime();
-                      if (chartData.length === 0) return null;
 
-                      // Get selected stat keys
-                      const selectedStatsList = Array.from(selectedStats);
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Churned Players</CardTitle>
+                      <CardDescription>
+                        Players inactive for {churnDays}+ days and did not
+                        complete the game
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-4xl font-bold">
+                        {getChurnedPlayers().length}
+                      </p>
+                    </CardContent>
+                  </Card>
 
-                      return selectedStatsList.map((key, index) => (
-                        <Line
-                          key={key}
-                          type="monotone"
-                          dataKey={key}
-                          stroke={COLORS[index % COLORS.length]}
-                          strokeWidth={2}
-                          dot={{ r: 3 }}
-                          name={key.charAt(0).toUpperCase() + key.slice(1)}
-                        />
-                      ));
-                    })()}
-                  </LineChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Average Resources Over Playtime</CardTitle>
-                <CardDescription>
-                  Average amount of each resource in 1-hour playtime intervals. Filterable by completion status.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="mb-4 space-y-2">
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => setSelectedResources(new Set(['food', 'bones', 'fur', 'wood', 'stone', 'iron', 'coal', 'sulfur', 'obsidian', 'adamant', 'moonstone', 'leather', 'steel', 'torch', 'black_powder', 'ember_bomb', 'ashfire_dust', 'ashfire_bomb', 'void_bomb', 'silver', 'gold']))}
-                      className="px-3 py-1 text-sm bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
-                    >
-                      Select All
-                    </button>
-                    <button
-                      onClick={() => setSelectedResources(new Set())}
-                      className="px-3 py-1 text-sm bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/90"
-                    >
-                      Deselect All
-                    </button>
-                  </div>
-                  <div className="flex gap-4 flex-wrap">
-                    {[
-                      'food', 'bones', 'fur', 'wood', 'stone', 'iron', 'coal', 'sulfur', 
-                      'obsidian', 'adamant', 'moonstone', 'leather', 'steel', 'torch', 
-                      'black_powder', 'ember_bomb', 'ashfire_dust', 'ashfire_bomb', 'void_bomb', 
-                      'silver', 'gold'
-                    ].map((resource) => (
-                      <label key={resource} className="flex items-center gap-2 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={selectedResources.has(resource)}
-                          onChange={(e) => {
-                            const newSet = new Set(selectedResources);
-                            if (e.target.checked) {
-                              newSet.add(resource);
-                            } else {
-                              newSet.delete(resource);
-                            }
-                            setSelectedResources(newSet);
-                          }}
-                          className="cursor-pointer"
-                        />
-                        <span className="text-sm">{resource}</span>
-                      </label>
-                    ))}
-                  </div>
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Churn Rate</CardTitle>
+                      <CardDescription>% of total players</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-4xl font-bold">
+                        {gameSaves.length > 0
+                          ? Math.round(
+                              (getChurnedPlayers().length / gameSaves.length) *
+                                100,
+                            )
+                          : 0}
+                        %
+                      </p>
+                    </CardContent>
+                  </Card>
                 </div>
-                <ResponsiveContainer width="100%" height={400}>
-                  <LineChart data={getResourceStatsOverPlaytime()}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis 
-                      dataKey="time" 
-                      label={{ value: 'Playtime', position: 'insideBottom', offset: -5 }}
-                      interval={0}
-                    />
-                    <YAxis label={{ value: 'Average Amount', angle: -90, position: 'insideLeft' }} />
-                    <Tooltip />
-                    <Legend />
-                    {(() => {
-                      const chartData = getResourceStatsOverPlaytime();
-                      if (chartData.length === 0) return null;
 
-                      // Get selected resource keys that exist in the data
-                      const selectedResourcesList = Array.from(selectedResources);
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Churned Players List</CardTitle>
+                    <CardDescription>
+                      Players who stopped playing (sorted by inactivity)
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-2 max-h-96 overflow-y-auto">
+                      {getChurnedPlayers().map((player, index) => (
+                        <div
+                          key={index}
+                          className="flex justify-between items-center border-b pb-2"
+                        >
+                          <div>
+                            <p className="font-medium">{player.userId}</p>
+                            <p className="text-sm text-muted-foreground">
+                              Last activity:{" "}
+                              {format(
+                                player.lastActivity,
+                                "MMM dd, yyyy HH:mm",
+                              )}
+                            </p>
+                          </div>
+                          <p className="font-bold text-red-500">
+                            {player.daysSinceActivity} days ago
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
 
-                      return selectedResourcesList.map((key, index) => (
-                        <Line
-                          key={key}
-                          type="monotone"
-                          dataKey={key}
-                          stroke={COLORS[index % COLORS.length]}
-                          strokeWidth={2}
-                          dot={{ r: 3 }}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>
+                      Top 20 Last Buttons Clicked Before Churning
+                    </CardTitle>
+                    <CardDescription>
+                      What were the last actions churned players performed at
+                      their final playtime?
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <ResponsiveContainer width="100%" height={400}>
+                      <BarChart data={getChurnedPlayersLastClicks()}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis
+                          dataKey="button"
+                          angle={-45}
+                          textAnchor="end"
+                          height={100}
                         />
-                      ));
-                    })()}
-                  </LineChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-          </TabsContent>
+                        <YAxis />
+                        <Tooltip />
+                        <Bar dataKey="clicks" fill="#ff8042" />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </CardContent>
+                </Card>
 
-          <TabsContent value="upgrades" className="space-y-4">
-            <div className="flex items-center gap-4 mb-4">
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={showCompletedOnly}
-                  onChange={(e) => setShowCompletedOnly(e.target.checked)}
-                  className="cursor-pointer w-4 h-4"
-                />
-                <span className="text-sm font-medium">
-                  Show only players who completed the game ({gameSaves.filter(save => 
-                    save.game_state?.events?.cube15a || 
-                    save.game_state?.events?.cube15b ||
-                    save.game_state?.events?.cube13 ||
-                    save.game_state?.events?.cube14a ||
-                    save.game_state?.events?.cube14b ||
-                    save.game_state?.events?.cube14c ||
-                    save.game_state?.events?.cube14d
-                  ).length} players)
-                </span>
-              </label>
-            </div>
+                <Card>
+                  <CardHeader>
+                    <CardTitle>
+                      Top 20 First-Time Clicks by Churned Players
+                    </CardTitle>
+                    <CardDescription>
+                      Buttons clicked exactly once (count = 1) - what did
+                      churned players try just once?
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <ResponsiveContainer width="100%" height={400}>
+                      <BarChart data={getChurnedPlayersFirstTimeClicks()}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis
+                          dataKey="button"
+                          angle={-45}
+                          textAnchor="end"
+                          height={100}
+                        />
+                        <YAxis />
+                        <Tooltip />
+                        <Bar dataKey="count" fill="#9333ea" />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </CardContent>
+                </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>Cave Exploring Upgrades Over Playtime</CardTitle>
-                <CardDescription>
-                  Average upgrade level over time (1-hour intervals) {selectedUser !== 'all' ? 'for selected user' : showCompletedOnly ? 'for completed players only' : 'across all users'}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={400}>
-                  <LineChart data={getButtonUpgradesOverPlaytime()}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="time" label={{ value: 'Playtime', position: 'insideBottom', offset: -5 }} />
-                    <YAxis label={{ value: 'Average Level', angle: -90, position: 'insideLeft' }} domain={[1, 10]} />
-                    <Tooltip />
-                    <Legend />
-                    <Line type="monotone" dataKey="exploreCave" stroke="#8884d8" strokeWidth={2} dot={{ r: 3 }} name="Cave Exploring" />
-                  </LineChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Mining Upgrades Over Playtime</CardTitle>
-                <CardDescription>
-                  Average upgrade level over time (1-hour intervals) {selectedUser !== 'all' ? 'for selected user' : showCompletedOnly ? 'for completed players only' : 'across all users'}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="mb-4 space-y-2">
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => {
-                        const checkboxes = document.querySelectorAll('[data-mining-checkbox]') as NodeListOf<HTMLInputElement>;
-                        checkboxes.forEach(checkbox => {
-                          checkbox.checked = true;
-                          const event = new Event('change', { bubbles: true });
-                          checkbox.dispatchEvent(event);
-                        });
-                      }}
-                      className="px-3 py-1 text-sm bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
-                    >
-                      Select All
-                    </button>
-                    <button
-                      onClick={() => {
-                        const checkboxes = document.querySelectorAll('[data-mining-checkbox]') as NodeListOf<HTMLInputElement>;
-                        checkboxes.forEach(checkbox => {
-                          checkbox.checked = false;
-                          const event = new Event('change', { bubbles: true });
-                          checkbox.dispatchEvent(event);
-                        });
-                      }}
-                      className="px-3 py-1 text-sm bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/90"
-                    >
-                      Deselect All
-                    </button>
-                  </div>
-                  <div className="flex gap-4 flex-wrap">
-                    {[
-                      { key: 'mineStone', label: 'Stone Mining', color: '#82ca9d' },
-                      { key: 'mineIron', label: 'Iron Mining', color: '#8884d8' },
-                      { key: 'mineCoal', label: 'Coal Mining', color: '#ffc658' },
-                      { key: 'mineSulfur', label: 'Sulfur Mining', color: '#ff8042' },
-                      { key: 'mineObsidian', label: 'Obsidian Mining', color: '#0088FE' },
-                      { key: 'mineAdamant', label: 'Adamant Mining', color: '#00C49F' }
-                    ].map((miningType) => (
-                      <label key={miningType.key} className="flex items-center gap-2 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          data-mining-checkbox
-                          defaultChecked={true}
-                          onChange={(e) => {
-                            const checkbox = e.target;
-                            const lines = document.querySelectorAll(`[data-mining-type="${miningType.key}"]`);
-                            lines.forEach(line => {
-                              const element = line as HTMLElement;
-                              element.style.display = checkbox.checked ? '' : 'none';
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Cube Events Over Playtime</CardTitle>
+                    <CardDescription>
+                      Number of players who have seen each cube event at each
+                      playtime
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="mb-4 space-y-2">
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => {
+                            const checkboxes = document.querySelectorAll(
+                              "[data-cube-checkbox]",
+                            ) as NodeListOf<HTMLInputElement>;
+                            checkboxes.forEach((checkbox) => {
+                              checkbox.checked = true;
+                              const event = new Event("change", {
+                                bubbles: true,
+                              });
+                              checkbox.dispatchEvent(event);
                             });
                           }}
-                          className="cursor-pointer"
+                          className="px-3 py-1 text-sm bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
+                        >
+                          Select All
+                        </button>
+                        <button
+                          onClick={() => {
+                            const checkboxes = document.querySelectorAll(
+                              "[data-cube-checkbox]",
+                            ) as NodeListOf<HTMLInputElement>;
+                            checkboxes.forEach((checkbox) => {
+                              checkbox.checked = false;
+                              const event = new Event("change", {
+                                bubbles: true,
+                              });
+                              checkbox.dispatchEvent(event);
+                            });
+                          }}
+                          className="px-3 py-1 text-sm bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/90"
+                        >
+                          Deselect All
+                        </button>
+                      </div>
+                      <div className="flex gap-4 flex-wrap">
+                        {(() => {
+                          const chartData = getCubeEventsOverPlaytime();
+                          if (chartData.length === 0) return null;
+
+                          // Get all cube event keys from the first data point
+                          const cubeKeys = Object.keys(chartData[0]).filter(
+                            (key) => key.startsWith("Cube "),
+                          );
+
+                          return cubeKeys.map((key) => (
+                            <label
+                              key={key}
+                              className="flex items-center gap-2 cursor-pointer"
+                            >
+                              <input
+                                type="checkbox"
+                                data-cube-checkbox
+                                defaultChecked={true}
+                                onChange={(e) => {
+                                  const checkbox = e.target;
+                                  const lines = document.querySelectorAll(
+                                    `[data-cube-event="${key}"]`,
+                                  );
+                                  lines.forEach((line) => {
+                                    const element = line as HTMLElement;
+                                    element.style.display = checkbox.checked
+                                      ? ""
+                                      : "none";
+                                  });
+                                }}
+                                className="cursor-pointer"
+                              />
+                              <span className="text-sm">{key}</span>
+                            </label>
+                          ));
+                        })()}
+                      </div>
+                    </div>
+                    <ResponsiveContainer width="100%" height={400}>
+                      <LineChart data={getCubeEventsOverPlaytime()}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis
+                          dataKey="time"
+                          label={{
+                            value: "Playtime",
+                            position: "insideBottom",
+                            offset: -5,
+                          }}
                         />
-                        <span className="text-sm" style={{ color: miningType.color }}>
-                          {miningType.label}
-                        </span>
-                      </label>
-                    ))}
-                  </div>
+                        <YAxis
+                          label={{
+                            value: "Players",
+                            angle: -90,
+                            position: "insideLeft",
+                          }}
+                        />
+                        <Tooltip />
+                        <Legend />
+                        {(() => {
+                          const chartData = getCubeEventsOverPlaytime();
+                          if (chartData.length === 0) return null;
+
+                          // Get all cube event keys from the first data point
+                          const cubeKeys = Object.keys(chartData[0]).filter(
+                            (key) => key.startsWith("Cube "),
+                          );
+
+                          return cubeKeys.map((key, index) => (
+                            <Line
+                              key={key}
+                              type="monotone"
+                              dataKey={key}
+                              stroke={COLORS[index % COLORS.length]}
+                              strokeWidth={2}
+                              dot={{ r: 3 }}
+                              data-cube-event={key}
+                            />
+                          ));
+                        })()}
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Highest Cube Event Distribution</CardTitle>
+                    <CardDescription>
+                      What is the highest cube event players have seen?
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <ResponsiveContainer width="100%" height={400}>
+                      <LineChart data={getHighestCubeEventDistribution()}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis
+                          dataKey="cubeEvent"
+                          label={{
+                            value: "Cube Event",
+                            position: "insideBottom",
+                            offset: -5,
+                          }}
+                        />
+                        <YAxis
+                          label={{
+                            value: "Players",
+                            angle: -90,
+                            position: "insideLeft",
+                          }}
+                        />
+                        <Tooltip />
+                        <Legend />
+                        <Line
+                          type="monotone"
+                          dataKey="players"
+                          stroke="#82ca9d"
+                          strokeWidth={2}
+                          dot={{ r: 4 }}
+                        />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Last Cube Events for Churned Players</CardTitle>
+                    <CardDescription>
+                      What was the highest cube event churned players saw before
+                      leaving?
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <ResponsiveContainer width="100%" height={400}>
+                      <BarChart data={getChurnedPlayersLastCubeEvents()}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis
+                          dataKey="cubeEvent"
+                          label={{
+                            value: "Cube Event",
+                            position: "insideBottom",
+                            offset: -5,
+                          }}
+                        />
+                        <YAxis
+                          label={{
+                            value: "Players",
+                            angle: -90,
+                            position: "insideLeft",
+                          }}
+                        />
+                        <Tooltip />
+                        <Legend />
+                        <Bar dataKey="players" fill="#ffc658" />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Churn Point Distribution</CardTitle>
+                    <CardDescription>
+                      At what playtime did churned players stop playing?
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <ResponsiveContainer width="100%" height={400}>
+                      <LineChart
+                        data={(() => {
+                          const now = new Date();
+                          const cutoffDate = subDays(now, churnDays);
+
+                          // Get users with click data
+                          const usersWithClicks = new Set<string>();
+                          clickData.forEach((entry) =>
+                            usersWithClicks.add(entry.user_id),
+                          );
+
+                          // Get churned user IDs based on game save activity and completion status
+                          const churnedUserIds = new Set<string>();
+                          const userLastActivity = new Map<string, Date>();
+
+                          gameSaves.forEach((save) => {
+                            const activityDate = new Date(save.updated_at);
+                            const existing = userLastActivity.get(save.user_id);
+                            if (!existing || activityDate > existing) {
+                              userLastActivity.set(save.user_id, activityDate);
+                            }
+                            // Check completion status
+                            const hasCompletedGame =
+                              save.game_state?.events?.cube15a ||
+                              save.game_state?.events?.cube15b ||
+                              save.game_state?.events?.cube13 ||
+                              save.game_state?.events?.cube14a ||
+                              save.game_state?.events?.cube14b ||
+                              save.game_state?.events?.cube14c ||
+                              save.game_state?.events?.cube14d;
+                            if (
+                              activityDate < cutoffDate &&
+                              !hasCompletedGame &&
+                              usersWithClicks.has(save.user_id)
+                            ) {
+                              churnedUserIds.add(save.user_id);
+                            }
+                          });
+
+                          // Get max playtime for each churned user
+                          const userMaxPlaytime = new Map<string, number>();
+                          clickData.forEach((entry) => {
+                            if (churnedUserIds.has(entry.user_id)) {
+                              Object.keys(entry.clicks).forEach(
+                                (playtimeKey) => {
+                                  const minutes = parseInt(
+                                    playtimeKey.replace("m", ""),
+                                  );
+                                  if (!isNaN(minutes)) {
+                                    const existing =
+                                      userMaxPlaytime.get(entry.user_id) || 0;
+                                    if (minutes > existing) {
+                                      userMaxPlaytime.set(
+                                        entry.user_id,
+                                        minutes,
+                                      );
+                                    }
+                                  }
+                                },
+                              );
+                            }
+                          });
+
+                          // Group into 1-hour buckets
+                          const buckets = new Map<number, number>();
+                          let maxBucket = 0;
+
+                          userMaxPlaytime.forEach((minutes) => {
+                            const bucket = Math.floor(minutes / 60) * 60; // 60-minute buckets
+                            maxBucket = Math.max(maxBucket, bucket);
+                            buckets.set(bucket, (buckets.get(bucket) || 0) + 1);
+                          });
+
+                          // Create array with all buckets from 0 to max
+                          const result: Array<{ time: string; count: number }> =
+                            [];
+                          for (
+                            let bucket = 0;
+                            bucket <= maxBucket;
+                            bucket += 60
+                          ) {
+                            const hours = bucket / 60;
+                            result.push({
+                              time: hours === 0 ? "0h" : `${hours}h`,
+                              count: buckets.get(bucket) || 0,
+                            });
+                          }
+
+                          return result;
+                        })()}
+                      >
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis
+                          dataKey="time"
+                          label={{
+                            value: "Playtime",
+                            position: "insideBottom",
+                            offset: -5,
+                          }}
+                        />
+                        <YAxis
+                          label={{
+                            value: "Players",
+                            angle: -90,
+                            position: "insideLeft",
+                          }}
+                        />
+                        <Tooltip />
+                        <Legend />
+                        <Line
+                          type="monotone"
+                          dataKey="count"
+                          stroke="#ff8042"
+                          strokeWidth={2}
+                          dot={{ r: 4 }}
+                        />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Churn Rate Over Time (Last 30 Days)</CardTitle>
+                    <CardDescription>
+                      Percentage of churned players over time (inactive for{" "}
+                      {churnDays}+ days, excluding completed games)
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <ResponsiveContainer width="100%" height={400}>
+                      <LineChart data={getChurnRateOverTime()}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="day" />
+                        <YAxis
+                          label={{
+                            value: "Churn Rate (%)",
+                            angle: -90,
+                            position: "insideLeft",
+                          }}
+                        />
+                        <Tooltip />
+                        <Legend />
+                        <Line
+                          type="monotone"
+                          dataKey="churnRate"
+                          stroke="#dc2626"
+                          strokeWidth={2}
+                          dot={{ r: 4 }}
+                          name="Churn Rate (%)"
+                        />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              <TabsContent value="sleep" className="space-y-4">
+                <div className="flex items-center gap-4 mb-4">
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={showCompletedOnly}
+                      onChange={(e) => setShowCompletedOnly(e.target.checked)}
+                      className="cursor-pointer w-4 h-4"
+                    />
+                    <span className="text-sm font-medium">
+                      Show only players who completed the game (
+                      {
+                        gameSaves.filter(
+                          (save) =>
+                            save.game_state?.events?.cube15a ||
+                            save.game_state?.events?.cube15b ||
+                            save.game_state?.events?.cube13 ||
+                            save.game_state?.events?.cube14a ||
+                            save.game_state?.events?.cube14b ||
+                            save.game_state?.events?.cube14c ||
+                            save.game_state?.events?.cube14d,
+                        ).length
+                      }{" "}
+                      players)
+                    </span>
+                  </label>
                 </div>
-                <ResponsiveContainer width="100%" height={400}>
-                  <LineChart data={getButtonUpgradesOverPlaytime()}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="time" label={{ value: 'Playtime', position: 'insideBottom', offset: -5 }} />
-                    <YAxis label={{ value: 'Average Level', angle: -90, position: 'insideLeft' }} domain={[1, 10]} />
-                    <Tooltip />
-                    <Legend />
-                    <Line 
-                      type="monotone" 
-                      dataKey="mineStone" 
-                      stroke="#82ca9d" 
-                      strokeWidth={2} 
-                      dot={{ r: 3 }} 
-                      name="Stone Mining"
-                      data-mining-type="mineStone"
-                    />
-                    <Line 
-                      type="monotone" 
-                      dataKey="mineIron" 
-                      stroke="#8884d8" 
-                      strokeWidth={2} 
-                      dot={{ r: 3 }} 
-                      name="Iron Mining"
-                      data-mining-type="mineIron"
-                    />
-                    <Line 
-                      type="monotone" 
-                      dataKey="mineCoal" 
-                      stroke="#ffc658" 
-                      strokeWidth={2} 
-                      dot={{ r: 3 }} 
-                      name="Coal Mining"
-                      data-mining-type="mineCoal"
-                    />
-                    <Line 
-                      type="monotone" 
-                      dataKey="mineSulfur" 
-                      stroke="#ff8042" 
-                      strokeWidth={2} 
-                      dot={{ r: 3 }} 
-                      name="Sulfur Mining"
-                      data-mining-type="mineSulfur"
-                    />
-                    <Line 
-                      type="monotone" 
-                      dataKey="mineObsidian" 
-                      stroke="#0088FE" 
-                      strokeWidth={2} 
-                      dot={{ r: 3 }} 
-                      name="Obsidian Mining"
-                      data-mining-type="mineObsidian"
-                    />
-                    <Line 
-                      type="monotone" 
-                      dataKey="mineAdamant" 
-                      stroke="#00C49F" 
-                      strokeWidth={2} 
-                      dot={{ r: 3 }} 
-                      name="Adamant Mining"
-                      data-mining-type="mineAdamant"
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>Hunting Upgrades Over Playtime</CardTitle>
-                <CardDescription>
-                  Average upgrade level over time (1-hour intervals) {selectedUser !== 'all' ? 'for selected user' : showCompletedOnly ? 'for completed players only' : 'across all users'}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={400}>
-                  <LineChart data={getButtonUpgradesOverPlaytime()}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="time" label={{ value: 'Playtime', position: 'insideBottom', offset: -5 }} />
-                    <YAxis label={{ value: 'Average Level', angle: -90, position: 'insideLeft' }} domain={[1, 10]} />
-                    <Tooltip />
-                    <Legend />
-                    <Line type="monotone" dataKey="hunt" stroke="#ffc658" strokeWidth={2} dot={{ r: 3 }} name="Hunting" />
-                  </LineChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Sleep Upgrade Levels Distribution</CardTitle>
+                    <CardDescription>
+                      Number of users at each SLEEP_LENGTH_UPGRADES and
+                      SLEEP_INTENSITY_UPGRADES level{" "}
+                      {selectedUser !== "all"
+                        ? "for selected user"
+                        : showCompletedOnly
+                          ? "for completed players only"
+                          : "across all users"}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <ResponsiveContainer width="100%" height={400}>
+                      <BarChart data={getSleepUpgradesDistribution()}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis
+                          dataKey="level"
+                          label={{
+                            value: "Upgrade Level",
+                            position: "insideBottom",
+                            offset: -5,
+                          }}
+                        />
+                        <YAxis
+                          label={{
+                            value: "Number of Users",
+                            angle: -90,
+                            position: "insideLeft",
+                          }}
+                        />
+                        <Tooltip />
+                        <Legend />
+                        <Bar
+                          dataKey="lengthUsers"
+                          fill="#8884d8"
+                          name="Sleep Length Users"
+                        />
+                        <Bar
+                          dataKey="intensityUsers"
+                          fill="#82ca9d"
+                          name="Sleep Intensity Users"
+                        />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </CardContent>
+                </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>Woodcutting Upgrades Over Playtime</CardTitle>
-                <CardDescription>
-                  Average upgrade level over time (1-hour intervals) {selectedUser !== 'all' ? 'for selected user' : showCompletedOnly ? 'for completed players only' : 'across all users'}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={400}>
-                  <LineChart data={getButtonUpgradesOverPlaytime()}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="time" label={{ value: 'Playtime', position: 'insideBottom', offset: -5 }} />
-                    <YAxis label={{ value: 'Average Level', angle: -90, position: 'insideLeft' }} domain={[1, 10]} />
-                    <Tooltip />
-                    <Legend />
-                    <Line type="monotone" dataKey="chopWood" stroke="#ff8042" strokeWidth={2} dot={{ r: 3 }} name="Woodcutting" />
-                  </LineChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Average Sleep Length Level</CardTitle>
+                      <CardDescription>All players</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-4xl font-bold text-center py-8">
+                        {gameSaves.length > 0
+                          ? (
+                              gameSaves.reduce(
+                                (sum, save) =>
+                                  sum +
+                                  (save.game_state?.sleepUpgrades
+                                    ?.lengthLevel || 0),
+                                0,
+                              ) / gameSaves.length
+                            ).toFixed(2)
+                          : "0.00"}
+                      </p>
+                    </CardContent>
+                  </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>All Button Upgrades Over Playtime (Combined)</CardTitle>
-                <CardDescription>
-                  Average upgrade levels over time (1-hour intervals) {selectedUser !== 'all' ? 'for selected user' : showCompletedOnly ? 'for completed players only' : 'across all users'}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={400}>
-                  <LineChart data={getButtonUpgradesOverPlaytime()}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="time" label={{ value: 'Playtime', position: 'insideBottom', offset: -5 }} />
-                    <YAxis label={{ value: 'Average Level', angle: -90, position: 'insideLeft' }} domain={[1, 10]} />
-                    <Tooltip />
-                    <Legend />
-                    <Line type="monotone" dataKey="exploreCave" stroke="#8884d8" strokeWidth={2} dot={{ r: 3 }} name="Cave Exploring" />
-                    <Line type="monotone" dataKey="mineStone" stroke="#82ca9d" strokeWidth={2} dot={{ r: 3 }} name="Stone Mining" />
-                    <Line type="monotone" dataKey="hunt" stroke="#ffc658" strokeWidth={2} dot={{ r: 3 }} name="Hunting" />
-                    <Line type="monotone" dataKey="chopWood" stroke="#ff8042" strokeWidth={2} dot={{ r: 3 }} name="Woodcutting" />
-                    <Line type="monotone" dataKey="caveExplore" stroke="#0088FE" strokeWidth={2} dot={{ r: 3 }} name="General Cave Explore" />
-                  </LineChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-          </TabsContent>
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Average Sleep Intensity Level</CardTitle>
+                      <CardDescription>All players</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-4xl font-bold text-center py-8">
+                        {gameSaves.length > 0
+                          ? (
+                              gameSaves.reduce(
+                                (sum, save) =>
+                                  sum +
+                                  (save.game_state?.sleepUpgrades
+                                    ?.intensityLevel || 0),
+                                0,
+                              ) / gameSaves.length
+                            ).toFixed(2)
+                          : "0.00"}
+                      </p>
+                    </CardContent>
+                  </Card>
+                </div>
+              </TabsContent>
 
-          <TabsContent value="lookup" className="space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle>User Save Game Lookup</CardTitle>
-                <CardDescription>Enter a user ID to view their save game data</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex gap-4">
-                  <input
-                    type="text"
-                    placeholder="Enter user ID (UUID)"
-                    value={lookupUserId}
-                    onChange={(e) => setLookupUserId(e.target.value)}
-                    className="flex-1 px-3 py-2 border rounded-md"
-                  />
-                  <button
-                    onClick={handleLookupUser}
-                    disabled={!lookupUserId.trim() || lookupLoading}
-                    className="px-4 py-2 bg-primary text-primary-foreground rounded-md disabled:opacity-50"
-                  >
-                    {lookupLoading ? 'Loading...' : 'Lookup'}
-                  </button>
+              <TabsContent value="resources" className="space-y-4">
+                <div className="flex items-center gap-4 mb-4">
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={showCompletedOnly}
+                      onChange={(e) => setShowCompletedOnly(e.target.checked)}
+                      className="cursor-pointer w-4 h-4"
+                    />
+                    <span className="text-sm font-medium">
+                      Show only players who completed the game (
+                      {
+                        gameSaves.filter(
+                          (save) =>
+                            save.game_state?.events?.cube15a ||
+                            save.game_state?.events?.cube15b ||
+                            save.game_state?.events?.cube13 ||
+                            save.game_state?.events?.cube14a ||
+                            save.game_state?.events?.cube14b ||
+                            save.game_state?.events?.cube14c ||
+                            save.game_state?.events?.cube14d,
+                        ).length
+                      }{" "}
+                      players)
+                    </span>
+                  </label>
                 </div>
 
-                {lookupError && (
-                  <div className="p-4 bg-destructive/10 text-destructive rounded-md">
-                    {lookupError}
-                  </div>
-                )}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Average Stats Over Playtime</CardTitle>
+                    <CardDescription>
+                      Average stat values (Strength, Knowledge, Luck, Madness)
+                      in 1-hour playtime intervals
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="mb-4 space-y-2">
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() =>
+                            setSelectedStats(
+                              new Set([
+                                "strength",
+                                "knowledge",
+                                "luck",
+                                "madness",
+                              ]),
+                            )
+                          }
+                          className="px-3 py-1 text-sm bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
+                        >
+                          Select All
+                        </button>
+                        <button
+                          onClick={() => setSelectedStats(new Set())}
+                          className="px-3 py-1 text-sm bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/90"
+                        >
+                          Deselect All
+                        </button>
+                      </div>
+                      <div className="flex gap-4 flex-wrap">
+                        {["strength", "knowledge", "luck", "madness"].map(
+                          (stat) => (
+                            <label
+                              key={stat}
+                              className="flex items-center gap-2 cursor-pointer"
+                            >
+                              <input
+                                type="checkbox"
+                                checked={selectedStats.has(stat)}
+                                onChange={(e) => {
+                                  const newSet = new Set(selectedStats);
+                                  if (e.target.checked) {
+                                    newSet.add(stat);
+                                  } else {
+                                    newSet.delete(stat);
+                                  }
+                                  setSelectedStats(newSet);
+                                }}
+                                className="cursor-pointer"
+                              />
+                              <span className="text-sm capitalize">{stat}</span>
+                            </label>
+                          ),
+                        )}
+                      </div>
+                    </div>
+                    <ResponsiveContainer width="100%" height={400}>
+                      <LineChart data={getStatsOverPlaytime()}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis
+                          dataKey="time"
+                          label={{
+                            value: "Playtime",
+                            position: "insideBottom",
+                            offset: -5,
+                          }}
+                          interval={0}
+                        />
+                        <YAxis
+                          label={{
+                            value: "Average Value",
+                            angle: -90,
+                            position: "insideLeft",
+                          }}
+                        />
+                        <Tooltip />
+                        <Legend />
+                        {(() => {
+                          const chartData = getStatsOverPlaytime();
+                          if (chartData.length === 0) return null;
 
-                {lookupResult && (
-                  <div className="space-y-4">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      <Card>
-                        <CardHeader>
-                          <CardTitle>User ID</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                          <p className="text-sm break-all">{lookupResult.user_id}</p>
-                        </CardContent>
-                      </Card>
-                      <Card>
-                        <CardHeader>
-                          <CardTitle>Last Updated</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                          <p className="text-sm">{new Date(lookupResult.updated_at).toLocaleString()}</p>
-                        </CardContent>
-                      </Card>
-                      <Card>
-                        <CardHeader>
-                          <CardTitle>Playtime</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                          <p className="text-sm">
-                            {lookupResult.game_state?.playTime 
-                              ? formatTime(Math.round(lookupResult.game_state.playTime / 1000 / 60))
-                              : '0m'}
-                          </p>
-                        </CardContent>
-                      </Card>
+                          // Get selected stat keys
+                          const selectedStatsList = Array.from(selectedStats);
+
+                          return selectedStatsList.map((key, index) => (
+                            <Line
+                              key={key}
+                              type="monotone"
+                              dataKey={key}
+                              stroke={COLORS[index % COLORS.length]}
+                              strokeWidth={2}
+                              dot={{ r: 3 }}
+                              name={key.charAt(0).toUpperCase() + key.slice(1)}
+                            />
+                          ));
+                        })()}
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Average Resources Over Playtime</CardTitle>
+                    <CardDescription>
+                      Average amount of each resource in 1-hour playtime
+                      intervals. Filterable by completion status.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="mb-4 space-y-2">
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() =>
+                            setSelectedResources(
+                              new Set([
+                                "food",
+                                "bones",
+                                "fur",
+                                "wood",
+                                "stone",
+                                "iron",
+                                "coal",
+                                "sulfur",
+                                "obsidian",
+                                "adamant",
+                                "moonstone",
+                                "leather",
+                                "steel",
+                                "torch",
+                                "black_powder",
+                                "ember_bomb",
+                                "ashfire_dust",
+                                "ashfire_bomb",
+                                "void_bomb",
+                                "silver",
+                                "gold",
+                              ]),
+                            )
+                          }
+                          className="px-3 py-1 text-sm bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
+                        >
+                          Select All
+                        </button>
+                        <button
+                          onClick={() => setSelectedResources(new Set())}
+                          className="px-3 py-1 text-sm bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/90"
+                        >
+                          Deselect All
+                        </button>
+                      </div>
+                      <div className="flex gap-4 flex-wrap">
+                        {[
+                          "food",
+                          "bones",
+                          "fur",
+                          "wood",
+                          "stone",
+                          "iron",
+                          "coal",
+                          "sulfur",
+                          "obsidian",
+                          "adamant",
+                          "moonstone",
+                          "leather",
+                          "steel",
+                          "torch",
+                          "black_powder",
+                          "ember_bomb",
+                          "ashfire_dust",
+                          "ashfire_bomb",
+                          "void_bomb",
+                          "silver",
+                          "gold",
+                        ].map((resource) => (
+                          <label
+                            key={resource}
+                            className="flex items-center gap-2 cursor-pointer"
+                          >
+                            <input
+                              type="checkbox"
+                              checked={selectedResources.has(resource)}
+                              onChange={(e) => {
+                                const newSet = new Set(selectedResources);
+                                if (e.target.checked) {
+                                  newSet.add(resource);
+                                } else {
+                                  newSet.delete(resource);
+                                }
+                                setSelectedResources(newSet);
+                              }}
+                              className="cursor-pointer"
+                            />
+                            <span className="text-sm">{resource}</span>
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+                    <ResponsiveContainer width="100%" height={400}>
+                      <LineChart data={getResourceStatsOverPlaytime()}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis
+                          dataKey="time"
+                          label={{
+                            value: "Playtime",
+                            position: "insideBottom",
+                            offset: -5,
+                          }}
+                          interval={0}
+                        />
+                        <YAxis
+                          label={{
+                            value: "Average Amount",
+                            angle: -90,
+                            position: "insideLeft",
+                          }}
+                        />
+                        <Tooltip />
+                        <Legend />
+                        {(() => {
+                          const chartData = getResourceStatsOverPlaytime();
+                          if (chartData.length === 0) return null;
+
+                          // Get selected resource keys that exist in the data
+                          const selectedResourcesList =
+                            Array.from(selectedResources);
+
+                          return selectedResourcesList.map((key, index) => (
+                            <Line
+                              key={key}
+                              type="monotone"
+                              dataKey={key}
+                              stroke={COLORS[index % COLORS.length]}
+                              strokeWidth={2}
+                              dot={{ r: 3 }}
+                            />
+                          ));
+                        })()}
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              <TabsContent value="upgrades" className="space-y-4">
+                <div className="flex items-center gap-4 mb-4">
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={showCompletedOnly}
+                      onChange={(e) => setShowCompletedOnly(e.target.checked)}
+                      className="cursor-pointer w-4 h-4"
+                    />
+                    <span className="text-sm font-medium">
+                      Show only players who completed the game (
+                      {
+                        gameSaves.filter(
+                          (save) =>
+                            save.game_state?.events?.cube15a ||
+                            save.game_state?.events?.cube15b ||
+                            save.game_state?.events?.cube13 ||
+                            save.game_state?.events?.cube14a ||
+                            save.game_state?.events?.cube14b ||
+                            save.game_state?.events?.cube14c ||
+                            save.game_state?.events?.cube14d,
+                        ).length
+                      }{" "}
+                      players)
+                    </span>
+                  </label>
+                </div>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Cave Exploring Upgrades Over Playtime</CardTitle>
+                    <CardDescription>
+                      Average upgrade level over time (1-hour intervals){" "}
+                      {selectedUser !== "all"
+                        ? "for selected user"
+                        : showCompletedOnly
+                          ? "for completed players only"
+                          : "across all users"}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <ResponsiveContainer width="100%" height={400}>
+                      <LineChart data={getButtonUpgradesOverPlaytime()}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis
+                          dataKey="time"
+                          label={{
+                            value: "Playtime",
+                            position: "insideBottom",
+                            offset: -5,
+                          }}
+                        />
+                        <YAxis
+                          label={{
+                            value: "Average Level",
+                            angle: -90,
+                            position: "insideLeft",
+                          }}
+                          domain={[1, 10]}
+                        />
+                        <Tooltip />
+                        <Legend />
+                        <Line
+                          type="monotone"
+                          dataKey="caveExplore"
+                          stroke="#8884d8"
+                          strokeWidth={2}
+                          dot={{ r: 3 }}
+                          name="Cave Exploring"
+                        />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Mining Upgrades Over Playtime</CardTitle>
+                    <CardDescription>
+                      Average upgrade level over time (1-hour intervals){" "}
+                      {selectedUser !== "all"
+                        ? "for selected user"
+                        : showCompletedOnly
+                          ? "for completed players only"
+                          : "across all users"}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="mb-4 space-y-2">
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => {
+                            const checkboxes = document.querySelectorAll(
+                              "[data-mining-checkbox]",
+                            ) as NodeListOf<HTMLInputElement>;
+                            checkboxes.forEach((checkbox) => {
+                              checkbox.checked = true;
+                              const event = new Event("change", {
+                                bubbles: true,
+                              });
+                              checkbox.dispatchEvent(event);
+                            });
+                          }}
+                          className="px-3 py-1 text-sm bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
+                        >
+                          Select All
+                        </button>
+                        <button
+                          onClick={() => {
+                            const checkboxes = document.querySelectorAll(
+                              "[data-mining-checkbox]",
+                            ) as NodeListOf<HTMLInputElement>;
+                            checkboxes.forEach((checkbox) => {
+                              checkbox.checked = false;
+                              const event = new Event("change", {
+                                bubbles: true,
+                              });
+                              checkbox.dispatchEvent(event);
+                            });
+                          }}
+                          className="px-3 py-1 text-sm bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/90"
+                        >
+                          Deselect All
+                        </button>
+                      </div>
+                      <div className="flex gap-4 flex-wrap">
+                        {[
+                          {
+                            key: "mineStone",
+                            label: "Stone Mining",
+                            color: "#82ca9d",
+                          },
+                          {
+                            key: "mineIron",
+                            label: "Iron Mining",
+                            color: "#8884d8",
+                          },
+                          {
+                            key: "mineCoal",
+                            label: "Coal Mining",
+                            color: "#ffc658",
+                          },
+                          {
+                            key: "mineSulfur",
+                            label: "Sulfur Mining",
+                            color: "#ff8042",
+                          },
+                          {
+                            key: "mineObsidian",
+                            label: "Obsidian Mining",
+                            color: "#0088FE",
+                          },
+                          {
+                            key: "mineAdamant",
+                            label: "Adamant Mining",
+                            color: "#00C49F",
+                          },
+                        ].map((miningType) => (
+                          <label
+                            key={miningType.key}
+                            className="flex items-center gap-2 cursor-pointer"
+                          >
+                            <input
+                              type="checkbox"
+                              data-mining-checkbox
+                              defaultChecked={true}
+                              onChange={(e) => {
+                                const checkbox = e.target;
+                                const lines = document.querySelectorAll(
+                                  `[data-mining-type="${miningType.key}"]`,
+                                );
+                                lines.forEach((line) => {
+                                  const element = line as HTMLElement;
+                                  element.style.display = checkbox.checked
+                                    ? ""
+                                    : "none";
+                                });
+                              }}
+                              className="cursor-pointer"
+                            />
+                            <span
+                              className="text-sm"
+                              style={{ color: miningType.color }}
+                            >
+                              {miningType.label}
+                            </span>
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+                    <ResponsiveContainer width="100%" height={400}>
+                      <LineChart data={getButtonUpgradesOverPlaytime()}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis
+                          dataKey="time"
+                          label={{
+                            value: "Playtime",
+                            position: "insideBottom",
+                            offset: -5,
+                          }}
+                        />
+                        <YAxis
+                          label={{
+                            value: "Average Level",
+                            angle: -90,
+                            position: "insideLeft",
+                          }}
+                          domain={[1, 10]}
+                        />
+                        <Tooltip />
+                        <Legend />
+                        <Line
+                          type="monotone"
+                          dataKey="mineStone"
+                          stroke="#82ca9d"
+                          strokeWidth={2}
+                          dot={{ r: 3 }}
+                          name="Stone Mining"
+                          data-mining-type="mineStone"
+                        />
+                        <Line
+                          type="monotone"
+                          dataKey="mineIron"
+                          stroke="#8884d8"
+                          strokeWidth={2}
+                          dot={{ r: 3 }}
+                          name="Iron Mining"
+                          data-mining-type="mineIron"
+                        />
+                        <Line
+                          type="monotone"
+                          dataKey="mineCoal"
+                          stroke="#ffc658"
+                          strokeWidth={2}
+                          dot={{ r: 3 }}
+                          name="Coal Mining"
+                          data-mining-type="mineCoal"
+                        />
+                        <Line
+                          type="monotone"
+                          dataKey="mineSulfur"
+                          stroke="#ff8042"
+                          strokeWidth={2}
+                          dot={{ r: 3 }}
+                          name="Sulfur Mining"
+                          data-mining-type="mineSulfur"
+                        />
+                        <Line
+                          type="monotone"
+                          dataKey="mineObsidian"
+                          stroke="#0088FE"
+                          strokeWidth={2}
+                          dot={{ r: 3 }}
+                          name="Obsidian Mining"
+                          data-mining-type="mineObsidian"
+                        />
+                        <Line
+                          type="monotone"
+                          dataKey="mineAdamant"
+                          stroke="#00C49F"
+                          strokeWidth={2}
+                          dot={{ r: 3 }}
+                          name="Adamant Mining"
+                          data-mining-type="mineAdamant"
+                        />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Hunting Upgrades Over Playtime</CardTitle>
+                    <CardDescription>
+                      Average upgrade level over time (1-hour intervals){" "}
+                      {selectedUser !== "all"
+                        ? "for selected user"
+                        : showCompletedOnly
+                          ? "for completed players only"
+                          : "across all users"}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <ResponsiveContainer width="100%" height={400}>
+                      <LineChart data={getButtonUpgradesOverPlaytime()}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis
+                          dataKey="time"
+                          label={{
+                            value: "Playtime",
+                            position: "insideBottom",
+                            offset: -5,
+                          }}
+                        />
+                        <YAxis
+                          label={{
+                            value: "Average Level",
+                            angle: -90,
+                            position: "insideLeft",
+                          }}
+                          domain={[1, 10]}
+                        />
+                        <Tooltip />
+                        <Legend />
+                        <Line
+                          type="monotone"
+                          dataKey="hunt"
+                          stroke="#ffc658"
+                          strokeWidth={2}
+                          dot={{ r: 3 }}
+                          name="Hunting"
+                        />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Woodcutting Upgrades Over Playtime</CardTitle>
+                    <CardDescription>
+                      Average upgrade level over time (1-hour intervals){" "}
+                      {selectedUser !== "all"
+                        ? "for selected user"
+                        : showCompletedOnly
+                          ? "for completed players only"
+                          : "across all users"}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <ResponsiveContainer width="100%" height={400}>
+                      <LineChart data={getButtonUpgradesOverPlaytime()}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis
+                          dataKey="time"
+                          label={{
+                            value: "Playtime",
+                            position: "insideBottom",
+                            offset: -5,
+                          }}
+                        />
+                        <YAxis
+                          label={{
+                            value: "Average Level",
+                            angle: -90,
+                            position: "insideLeft",
+                          }}
+                          domain={[1, 10]}
+                        />
+                        <Tooltip />
+                        <Legend />
+                        <Line
+                          type="monotone"
+                          dataKey="chopWood"
+                          stroke="#ff8042"
+                          strokeWidth={2}
+                          dot={{ r: 3 }}
+                          name="Woodcutting"
+                        />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>
+                      All Button Upgrades Over Playtime (Combined)
+                    </CardTitle>
+                    <CardDescription>
+                      Average upgrade levels over time (1-hour intervals){" "}
+                      {selectedUser !== "all"
+                        ? "for selected user"
+                        : showCompletedOnly
+                          ? "for completed players only"
+                          : "across all users"}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <ResponsiveContainer width="100%" height={400}>
+                      <LineChart data={getButtonUpgradesOverPlaytime()}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis
+                          dataKey="time"
+                          label={{
+                            value: "Playtime",
+                            position: "insideBottom",
+                            offset: -5,
+                          }}
+                        />
+                        <YAxis
+                          label={{
+                            value: "Average Level",
+                            angle: -90,
+                            position: "insideLeft",
+                          }}
+                          domain={[1, 10]}
+                        />
+                        <Tooltip />
+                        <Legend />
+                        <Line
+                          type="monotone"
+                          dataKey="exploreCave"
+                          stroke="#8884d8"
+                          strokeWidth={2}
+                          dot={{ r: 3 }}
+                          name="Cave Exploring"
+                        />
+                        <Line
+                          type="monotone"
+                          dataKey="mineStone"
+                          stroke="#82ca9d"
+                          strokeWidth={2}
+                          dot={{ r: 3 }}
+                          name="Stone Mining"
+                        />
+                        <Line
+                          type="monotone"
+                          dataKey="hunt"
+                          stroke="#ffc658"
+                          strokeWidth={2}
+                          dot={{ r: 3 }}
+                          name="Hunting"
+                        />
+                        <Line
+                          type="monotone"
+                          dataKey="chopWood"
+                          stroke="#ff8042"
+                          strokeWidth={2}
+                          dot={{ r: 3 }}
+                          name="Woodcutting"
+                        />
+                        <Line
+                          type="monotone"
+                          dataKey="caveExplore"
+                          stroke="#0088FE"
+                          strokeWidth={2}
+                          dot={{ r: 3 }}
+                          name="General Cave Explore"
+                        />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+
+              <TabsContent value="lookup" className="space-y-4">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>User Save Game Lookup</CardTitle>
+                    <CardDescription>
+                      Enter a user ID to view their save game data
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="flex gap-4">
+                      <input
+                        type="text"
+                        placeholder="Enter user ID (UUID)"
+                        value={lookupUserId}
+                        onChange={(e) => setLookupUserId(e.target.value)}
+                        className="flex-1 px-3 py-2 border rounded-md"
+                      />
+                      <button
+                        onClick={handleLookupUser}
+                        disabled={!lookupUserId.trim() || lookupLoading}
+                        className="px-4 py-2 bg-primary text-primary-foreground rounded-md disabled:opacity-50"
+                      >
+                        {lookupLoading ? "Loading..." : "Lookup"}
+                      </button>
                     </div>
 
-                    <Card>
-                      <CardHeader>
-                        <CardTitle>Button Clicks</CardTitle>
-                        <CardDescription>All button click records for this user</CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        {getLookupUserClicks().length > 0 ? (
-                          <div className="space-y-2 max-h-[400px] overflow-auto">
-                            {getLookupUserClicks().map((click, index) => (
-                              <div key={index} className="p-3 bg-muted rounded-md">
-                                <div className="flex justify-between items-start mb-2">
-                                  <span className="text-sm font-medium">
-                                    {new Date(click.timestamp).toLocaleString()}
-                                  </span>
-                                </div>
-                                <pre className="text-xs overflow-auto">
-                                  {JSON.stringify(click.clicks, null, 2)}
-                                </pre>
-                              </div>
-                            ))}
-                          </div>
-                        ) : (
-                          <p className="text-sm text-muted-foreground">No button clicks recorded</p>
-                        )}
-                      </CardContent>
-                    </Card>
+                    {lookupError && (
+                      <div className="p-4 bg-destructive/10 text-destructive rounded-md">
+                        {lookupError}
+                      </div>
+                    )}
 
-                    <Card>
-                      <CardHeader>
-                        <CardTitle>Purchases</CardTitle>
-                        <CardDescription>All purchases made by this user</CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        {getLookupUserPurchases().length > 0 ? (
-                          <div className="space-y-2 max-h-[400px] overflow-auto">
-                            {getLookupUserPurchases().map((purchase, index) => (
-                              <div key={index} className="flex justify-between items-center border-b pb-2">
-                                <div>
-                                  <p className="font-medium">{purchase.item_name}</p>
-                                  <p className="text-sm text-muted-foreground">
-                                    {new Date(purchase.purchased_at).toLocaleString()}
-                                  </p>
-                                  <p className="text-xs text-muted-foreground">
-                                    Item ID: {purchase.item_id}
-                                  </p>
-                                  {purchase.bundle_id && (
-                                    <p className="text-xs text-muted-foreground">
-                                      Bundle: {purchase.bundle_id}
-                                    </p>
-                                  )}
-                                </div>
-                                <p className="font-bold">
-                                  {purchase.price_paid === 0 ? 'Free' : `€${(purchase.price_paid / 100).toFixed(2)}`}
-                                </p>
-                              </div>
-                            ))}
-                          </div>
-                        ) : (
-                          <p className="text-sm text-muted-foreground">No purchases recorded</p>
-                        )}
-                      </CardContent>
-                    </Card>
+                    {lookupResult && (
+                      <div className="space-y-4">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                          <Card>
+                            <CardHeader>
+                              <CardTitle>User ID</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                              <p className="text-sm break-all">
+                                {lookupResult.user_id}
+                              </p>
+                            </CardContent>
+                          </Card>
+                          <Card>
+                            <CardHeader>
+                              <CardTitle>Last Updated</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                              <p className="text-sm">
+                                {new Date(
+                                  lookupResult.updated_at,
+                                ).toLocaleString()}
+                              </p>
+                            </CardContent>
+                          </Card>
+                          <Card>
+                            <CardHeader>
+                              <CardTitle>Playtime</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                              <p className="text-sm">
+                                {lookupResult.game_state?.playTime
+                                  ? formatTime(
+                                      Math.round(
+                                        lookupResult.game_state.playTime /
+                                          1000 /
+                                          60,
+                                      ),
+                                    )
+                                  : "0m"}
+                              </p>
+                            </CardContent>
+                          </Card>
+                        </div>
 
-                    <Card>
-                      <CardHeader>
-                        <CardTitle>Game State (JSON)</CardTitle>
-                        <CardDescription>Complete save game data</CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <pre className="p-4 bg-muted rounded-md overflow-auto max-h-[600px] text-xs">
-                          {JSON.stringify(lookupResult.game_state, null, 2)}
-                        </pre>
-                      </CardContent>
-                    </Card>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
+                        <Card>
+                          <CardHeader>
+                            <CardTitle>Button Clicks</CardTitle>
+                            <CardDescription>
+                              All button click records for this user
+                            </CardDescription>
+                          </CardHeader>
+                          <CardContent>
+                            {getLookupUserClicks().length > 0 ? (
+                              <div className="space-y-2 max-h-[400px] overflow-auto">
+                                {getLookupUserClicks().map((click, index) => (
+                                  <div
+                                    key={index}
+                                    className="p-3 bg-muted rounded-md"
+                                  >
+                                    <div className="flex justify-between items-start mb-2">
+                                      <span className="text-sm font-medium">
+                                        {new Date(
+                                          click.timestamp,
+                                        ).toLocaleString()}
+                                      </span>
+                                    </div>
+                                    <pre className="text-xs overflow-auto">
+                                      {JSON.stringify(click.clicks, null, 2)}
+                                    </pre>
+                                  </div>
+                                ))}
+                              </div>
+                            ) : (
+                              <p className="text-sm text-muted-foreground">
+                                No button clicks recorded
+                              </p>
+                            )}
+                          </CardContent>
+                        </Card>
+
+                        <Card>
+                          <CardHeader>
+                            <CardTitle>Purchases</CardTitle>
+                            <CardDescription>
+                              All purchases made by this user
+                            </CardDescription>
+                          </CardHeader>
+                          <CardContent>
+                            {getLookupUserPurchases().length > 0 ? (
+                              <div className="space-y-2 max-h-[400px] overflow-auto">
+                                {getLookupUserPurchases().map(
+                                  (purchase, index) => (
+                                    <div
+                                      key={index}
+                                      className="flex justify-between items-center border-b pb-2"
+                                    >
+                                      <div>
+                                        <p className="font-medium">
+                                          {purchase.item_name}
+                                        </p>
+                                        <p className="text-sm text-muted-foreground">
+                                          {new Date(
+                                            purchase.purchased_at,
+                                          ).toLocaleString()}
+                                        </p>
+                                        <p className="text-xs text-muted-foreground">
+                                          Item ID: {purchase.item_id}
+                                        </p>
+                                        {purchase.bundle_id && (
+                                          <p className="text-xs text-muted-foreground">
+                                            Bundle: {purchase.bundle_id}
+                                          </p>
+                                        )}
+                                      </div>
+                                      <p className="font-bold">
+                                        {purchase.price_paid === 0
+                                          ? "Free"
+                                          : `€${(purchase.price_paid / 100).toFixed(2)}`}
+                                      </p>
+                                    </div>
+                                  ),
+                                )}
+                              </div>
+                            ) : (
+                              <p className="text-sm text-muted-foreground">
+                                No purchases recorded
+                              </p>
+                            )}
+                          </CardContent>
+                        </Card>
+
+                        <Card>
+                          <CardHeader>
+                            <CardTitle>Game State (JSON)</CardTitle>
+                            <CardDescription>
+                              Complete save game data
+                            </CardDescription>
+                          </CardHeader>
+                          <CardContent>
+                            <pre className="p-4 bg-muted rounded-md overflow-auto max-h-[600px] text-xs">
+                              {JSON.stringify(lookupResult.game_state, null, 2)}
+                            </pre>
+                          </CardContent>
+                        </Card>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              </TabsContent>
+            </Tabs>
           </div>
           <ScrollBar orientation="vertical" />
         </ScrollArea>
