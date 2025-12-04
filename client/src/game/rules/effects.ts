@@ -585,7 +585,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
       generalBonuses: {
         luck: 5,
         knowledge: 3,
-        madness: 3,
+        madness: 4,
       },
       actionBonuses: {},
     },
@@ -633,7 +633,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
       generalBonuses: {
         strength: 5,
         luck: 3,
-        madness: 2,
+        madness: 3,
       },
     },
   },
@@ -731,7 +731,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     description: "Six-sided dice carved from ancient bones",
     bonuses: {
       generalBonuses: {
-        luck: 3,
+        luck: 4,
         madness: 2,
       },
     },
@@ -824,9 +824,9 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     description: "Repulsive mask crafted from deep crimson leather",
     bonuses: {
       generalBonuses: {
-        luck: 3,
-        knowledge: 2,
-        madness: 3,
+        luck: 4,
+        knowledge: 3,
+        madness: 4,
       },
     },
   },
@@ -934,7 +934,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     bonuses: {
       generalBonuses: {
         knowledge: 6,
-        madness: 2,
+        madness: 3,
       },
     },
   },
