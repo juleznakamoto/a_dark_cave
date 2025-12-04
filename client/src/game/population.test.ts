@@ -250,10 +250,24 @@ describe('Population Production Display Tests', () => {
       // Get displayed production (what VillagePanel shows)
       const displayedEffects = getTotalPopulationEffects(state, ['gatherer']);
 
-      // Verify each resource matches
+      // Calculate total population for base consumption
+      const totalPop = Object.values(state.villagers).reduce((sum, count) => sum + count, 0);
+
+      // Verify each resource matches (accounting for base consumption)
       actualProduction.forEach(prod => {
-        expect(displayedEffects[prod.resource]).toBe(prod.totalAmount);
+        let expectedAmount = prod.totalAmount;
+        // Base consumption: -1 wood and -1 food per villager
+        if (prod.resource === 'wood') {
+          expectedAmount -= totalPop;
+        } else if (prod.resource === 'food') {
+          expectedAmount -= totalPop;
+        }
+        expect(displayedEffects[prod.resource]).toBe(expectedAmount);
       });
+      
+      // Also verify base consumption shows up in displayed effects
+      expect(displayedEffects.wood).toBe(10 - totalPop); // 10 from gatherer - 5 base consumption
+      expect(displayedEffects.food).toBe(-totalPop); // -5 base consumption
     });
 
     it('multiple gatherers production matches displayed value', () => {
@@ -264,9 +278,14 @@ describe('Population Production Display Tests', () => {
       const actualProduction = getPopulationProduction('gatherer', 5, state);
       const displayedEffects = getTotalPopulationEffects(state, ['gatherer']);
 
-      actualProduction.forEach(prod => {
-        expect(displayedEffects[prod.resource]).toBe(prod.totalAmount);
-      });
+      const totalPop = 5;
+      
+      // Verify wood (50 from gatherers - 5 base consumption = 45)
+      expect(displayedEffects.wood).toBe(50 - totalPop);
+      // Verify stone (25 from gatherers, no base consumption)
+      expect(displayedEffects.stone).toBe(25);
+      // Verify food (base consumption only)
+      expect(displayedEffects.food).toBe(-totalPop);
     });
 
     it('gatherer with timber mill bonus matches display', () => {
@@ -278,9 +297,12 @@ describe('Population Production Display Tests', () => {
       const actualProduction = getPopulationProduction('gatherer', 3, state);
       const displayedEffects = getTotalPopulationEffects(state, ['gatherer']);
 
-      actualProduction.forEach(prod => {
-        expect(displayedEffects[prod.resource]).toBe(prod.totalAmount);
-      });
+      const totalPop = 5;
+      
+      // Timber mill adds +5 wood per gatherer, so 3 gatherers get (10+5)*3 = 45 wood
+      expect(displayedEffects.wood).toBe(45 - totalPop); // 45 - 5 base = 40
+      expect(displayedEffects.stone).toBe(15);
+      expect(displayedEffects.food).toBe(-totalPop);
     });
   });
 
@@ -294,9 +316,13 @@ describe('Population Production Display Tests', () => {
       const actualProduction = getPopulationProduction('hunter', 1, state);
       const displayedEffects = getTotalPopulationEffects(state, ['hunter']);
 
-      actualProduction.forEach(prod => {
-        expect(displayedEffects[prod.resource]).toBe(prod.totalAmount);
-      });
+      const totalPop = 5;
+      
+      // Hunter produces +5 food, +1 fur, +1 bones, but -5 base food consumption
+      expect(displayedEffects.food).toBe(5 - totalPop); // 5 from hunter - 5 base = 0
+      expect(displayedEffects.fur).toBe(1);
+      expect(displayedEffects.bones).toBe(1);
+      expect(displayedEffects.wood).toBe(-totalPop); // base consumption
     });
 
     it('multiple hunters production matches displayed value', () => {
@@ -308,9 +334,13 @@ describe('Population Production Display Tests', () => {
       const actualProduction = getPopulationProduction('hunter', 4, state);
       const displayedEffects = getTotalPopulationEffects(state, ['hunter']);
 
-      actualProduction.forEach(prod => {
-        expect(displayedEffects[prod.resource]).toBe(prod.totalAmount);
-      });
+      const totalPop = 5;
+      
+      // 4 hunters produce +20 food, +4 fur, +4 bones, but -5 base food consumption
+      expect(displayedEffects.food).toBe(20 - totalPop); // 20 from hunters - 5 base = 15
+      expect(displayedEffects.fur).toBe(4);
+      expect(displayedEffects.bones).toBe(4);
+      expect(displayedEffects.wood).toBe(-totalPop);
     });
   });
 
@@ -324,9 +354,12 @@ describe('Population Production Display Tests', () => {
       const actualProduction = getPopulationProduction('iron_miner', 2, state);
       const displayedEffects = getTotalPopulationEffects(state, ['iron_miner']);
 
-      actualProduction.forEach(prod => {
-        expect(displayedEffects[prod.resource]).toBe(prod.totalAmount);
-      });
+      const totalPop = 5;
+      
+      // 2 iron miners produce +10 iron, -10 food (job) - 5 food (base) = -15 total
+      expect(displayedEffects.iron).toBe(10);
+      expect(displayedEffects.food).toBe(-10 - totalPop); // -10 from job - 5 base = -15
+      expect(displayedEffects.wood).toBe(-totalPop);
     });
 
     it('coal miner production matches displayed value', () => {
@@ -338,9 +371,12 @@ describe('Population Production Display Tests', () => {
       const actualProduction = getPopulationProduction('coal_miner', 2, state);
       const displayedEffects = getTotalPopulationEffects(state, ['coal_miner']);
 
-      actualProduction.forEach(prod => {
-        expect(displayedEffects[prod.resource]).toBe(prod.totalAmount);
-      });
+      const totalPop = 5;
+      
+      // 2 coal miners produce +10 coal, -10 food (job) - 5 food (base) = -15 total
+      expect(displayedEffects.coal).toBe(10);
+      expect(displayedEffects.food).toBe(-10 - totalPop);
+      expect(displayedEffects.wood).toBe(-totalPop);
     });
 
     it('steel forger production matches displayed value', () => {
@@ -353,9 +389,14 @@ describe('Population Production Display Tests', () => {
       const actualProduction = getPopulationProduction('steel_forger', 1, state);
       const displayedEffects = getTotalPopulationEffects(state, ['steel_forger']);
 
-      actualProduction.forEach(prod => {
-        expect(displayedEffects[prod.resource]).toBe(prod.totalAmount);
-      });
+      const totalPop = 5;
+      
+      // 1 steel forger produces +1 steel, -5 iron, -5 coal, -5 food (job) - 5 food (base) = -10 total
+      expect(displayedEffects.steel).toBe(1);
+      expect(displayedEffects.iron).toBe(-5);
+      expect(displayedEffects.coal).toBe(-5);
+      expect(displayedEffects.food).toBe(-5 - totalPop); // -5 from job - 5 base = -10
+      expect(displayedEffects.wood).toBe(-totalPop);
     });
   });
 
@@ -380,22 +421,21 @@ describe('Population Production Display Tests', () => {
       const jobIds = ['gatherer', 'hunter', 'iron_miner', 'coal_miner'];
       const displayedEffects = getTotalPopulationEffects(state, jobIds);
 
-      // Calculate actual totals from loop
-      const actualTotals: Record<string, number> = {};
-      jobIds.forEach(jobId => {
-        const count = state.villagers[jobId as keyof typeof state.villagers] || 0;
-        if (count > 0) {
-          const production = getPopulationProduction(jobId, count, state);
-          production.forEach(prod => {
-            actualTotals[prod.resource] = (actualTotals[prod.resource] || 0) + prod.totalAmount;
-          });
-        }
-      });
-
-      // Verify displayed matches actual
-      Object.entries(displayedEffects).forEach(([resource, amount]) => {
-        expect(actualTotals[resource]).toBe(amount);
-      });
+      const totalPop = 5;
+      
+      // 2 gatherers: +20 wood, +10 stone
+      // 1 hunter: +5 food, +1 fur, +1 bones
+      // 1 iron miner: +5 iron, -5 food
+      // 1 coal miner: +5 coal, -5 food
+      // Base consumption: -5 wood, -5 food
+      
+      expect(displayedEffects.wood).toBe(20 - totalPop); // 20 - 5 = 15
+      expect(displayedEffects.stone).toBe(10);
+      expect(displayedEffects.food).toBe(5 - 5 - 5 - totalPop); // 5 - 5 - 5 - 5 = -10
+      expect(displayedEffects.iron).toBe(5);
+      expect(displayedEffects.coal).toBe(5);
+      expect(displayedEffects.fur).toBe(1);
+      expect(displayedEffects.bones).toBe(1);
     });
 
     it('all job types together match displayed totals', () => {
@@ -441,23 +481,33 @@ describe('Population Production Display Tests', () => {
       ];
 
       const displayedEffects = getTotalPopulationEffects(state, jobIds);
-
-      // Calculate actual totals
-      const actualTotals: Record<string, number> = {};
-      jobIds.forEach(jobId => {
-        const count = state.villagers[jobId as keyof typeof state.villagers] || 0;
-        if (count > 0) {
-          const production = getPopulationProduction(jobId, count, state);
-          production.forEach(prod => {
-            actualTotals[prod.resource] = (actualTotals[prod.resource] || 0) + prod.totalAmount;
-          });
-        }
-      });
-
-      // Verify displayed matches actual
-      Object.entries(displayedEffects).forEach(([resource, amount]) => {
-        expect(actualTotals[resource]).toBe(amount);
-      });
+      const totalPop = 12;
+      
+      // Calculate expected totals including base consumption
+      // Base consumption: -12 wood, -12 food
+      
+      expect(displayedEffects.wood).toBe(20 - totalPop); // 2 gatherers: 20 - 12 = 8
+      expect(displayedEffects.stone).toBe(10); // 2 gatherers
+      
+      // Food calculation:
+      // +10 from 2 hunters
+      // -5 from iron miner, -5 from coal miner, -10 from sulfur miner
+      // -30 from obsidian miner, -40 from adamant miner, -50 from moonstone miner
+      // -5 from steel forger, -5 from tanner
+      // -12 base consumption
+      const foodFromJobs = 10 - 5 - 5 - 10 - 30 - 40 - 50 - 5 - 5;
+      expect(displayedEffects.food).toBe(foodFromJobs - totalPop);
+      
+      expect(displayedEffects.fur).toBe(2 - 10); // 2 from hunters, -10 from tanner
+      expect(displayedEffects.bones).toBe(2); // 2 hunters
+      expect(displayedEffects.iron).toBe(5 - 5); // +5 from miner, -5 from forger
+      expect(displayedEffects.coal).toBe(5 - 5); // +5 from miner, -5 from forger
+      expect(displayedEffects.sulfur).toBe(5);
+      expect(displayedEffects.obsidian).toBe(5);
+      expect(displayedEffects.adamant).toBe(5);
+      expect(displayedEffects.moonstone).toBe(1);
+      expect(displayedEffects.steel).toBe(1);
+      expect(displayedEffects.leather).toBe(1);
     });
   });
 
@@ -471,9 +521,12 @@ describe('Population Production Display Tests', () => {
       const actualProduction = getPopulationProduction('gatherer', 3, state);
       const displayedEffects = getTotalPopulationEffects(state, ['gatherer']);
 
-      actualProduction.forEach(prod => {
-        expect(displayedEffects[prod.resource]).toBe(prod.totalAmount);
-      });
+      const totalPop = 5;
+      
+      // Feast doubles production: 3 gatherers produce (10*2)*3 = 60 wood
+      expect(displayedEffects.wood).toBe(60 - totalPop); // 60 - 5 = 55
+      expect(displayedEffects.stone).toBe(30); // (5*2)*3
+      expect(displayedEffects.food).toBe(-totalPop);
     });
 
     it('hunter production with great feast matches display', () => {
@@ -486,9 +539,13 @@ describe('Population Production Display Tests', () => {
       const actualProduction = getPopulationProduction('hunter', 2, state);
       const displayedEffects = getTotalPopulationEffects(state, ['hunter']);
 
-      actualProduction.forEach(prod => {
-        expect(displayedEffects[prod.resource]).toBe(prod.totalAmount);
-      });
+      const totalPop = 5;
+      
+      // Great feast 4x multiplier: 2 hunters produce (5*4)*2 = 40 food
+      expect(displayedEffects.food).toBe(40 - totalPop); // 40 - 5 = 35
+      expect(displayedEffects.fur).toBe(8); // (1*4)*2
+      expect(displayedEffects.bones).toBe(8); // (1*4)*2
+      expect(displayedEffects.wood).toBe(-totalPop);
     });
   });
 
@@ -503,9 +560,13 @@ describe('Population Production Display Tests', () => {
       const actualProduction = getPopulationProduction('iron_miner', 2, state);
       const displayedEffects = getTotalPopulationEffects(state, ['iron_miner']);
 
-      actualProduction.forEach(prod => {
-        expect(displayedEffects[prod.resource]).toBe(prod.totalAmount);
-      });
+      const totalPop = 5;
+      
+      // Mining boost doubles iron production: 2 miners produce (5*2)*2 = 20 iron
+      // Food consumption is also doubled: (5*2)*2 = -20 from job
+      expect(displayedEffects.iron).toBe(20);
+      expect(displayedEffects.food).toBe(-20 - totalPop); // -20 from job - 5 base = -25
+      expect(displayedEffects.wood).toBe(-totalPop);
     });
 
     it('all miners with mining boost match display', () => {
@@ -533,20 +594,21 @@ describe('Population Production Display Tests', () => {
       const jobIds = ['iron_miner', 'coal_miner', 'sulfur_miner', 'obsidian_miner', 'adamant_miner', 'moonstone_miner'];
       const displayedEffects = getTotalPopulationEffects(state, jobIds);
 
-      const actualTotals: Record<string, number> = {};
-      jobIds.forEach(jobId => {
-        const count = state.villagers[jobId as keyof typeof state.villagers] || 0;
-        if (count > 0) {
-          const production = getPopulationProduction(jobId, count, state);
-          production.forEach(prod => {
-            actualTotals[prod.resource] = (actualTotals[prod.resource] || 0) + prod.totalAmount;
-          });
-        }
-      });
-
-      Object.entries(displayedEffects).forEach(([resource, amount]) => {
-        expect(actualTotals[resource]).toBe(amount);
-      });
+      const totalPop = 6;
+      
+      // Mining boost doubles all production (positive and negative)
+      expect(displayedEffects.iron).toBe(10); // 5*2
+      expect(displayedEffects.coal).toBe(10); // 5*2
+      expect(displayedEffects.sulfur).toBe(10); // 5*2
+      expect(displayedEffects.obsidian).toBe(10); // 5*2
+      expect(displayedEffects.adamant).toBe(10); // 5*2
+      expect(displayedEffects.moonstone).toBe(2); // 1*2
+      
+      // Food: -10 (iron) -10 (coal) -20 (sulfur) -60 (obsidian) -80 (adamant) -100 (moonstone) -6 (base)
+      const foodFromJobs = -10 - 10 - 20 - 60 - 80 - 100;
+      expect(displayedEffects.food).toBe(foodFromJobs - totalPop);
+      expect(displayedEffects.wood).toBe(-totalPop);
     });
   });
+});
 });
