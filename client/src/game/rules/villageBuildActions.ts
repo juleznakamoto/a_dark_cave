@@ -1456,6 +1456,14 @@ export const villageBuildActions: Record<string, Action> = {
       effects.push("Totem Sacrifices: +25% Bonus");
       return effects;
     },
+    actionBonuses: {
+      boneTotems: {
+        resourceMultiplier: 1.25,
+      },
+      leatherTotems: {
+        resourceMultiplier: 1.25,
+      },
+    },
     building: true,
     show_when: {
       1: {

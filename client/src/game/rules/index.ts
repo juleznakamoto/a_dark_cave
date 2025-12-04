@@ -675,24 +675,11 @@ export const applyActionEffects = (
             min += cappedUsageCount;
             max += cappedUsageCount;
 
-            // Calculate total multiplier (additive stacking)
-            let totalMultiplier = 1;
-
-            // Add Bone Temple bonus (+25%)
-            if (state.buildings.boneTemple >= 1) {
-              totalMultiplier += 0.25;
-            }
-
-            // Add item bonuses (already calculated additively in getActionBonuses)
+            // Apply bonuses through centralized system (includes Bone Temple + Sacrificial Tunic)
             const actionBonuses = getActionBonusesCalc(actionId, state);
             if (actionBonuses?.resourceMultiplier > 1) {
-              totalMultiplier += (actionBonuses.resourceMultiplier - 1);
-            }
-
-            // Apply combined multiplier
-            if (totalMultiplier > 1) {
-              min = Math.floor(min * totalMultiplier);
-              max = Math.floor(max * totalMultiplier);
+              min = Math.floor(min * actionBonuses.resourceMultiplier);
+              max = Math.floor(max * actionBonuses.resourceMultiplier);
             }
           }
 
