@@ -663,7 +663,7 @@ export const applyActionEffects = (
           let min = parseInt(match[1]);
           let max = parseInt(match[2]);
 
-          // Apply action bonuses from the centralized effects system BEFORE random generation
+          // Apply action bonuses from the centralized effects system
           const actionBonuses = getActionBonusesCalc(actionId, state);
           if (
             actionBonuses?.resourceBonus?.[
@@ -678,7 +678,21 @@ export const applyActionEffects = (
             max += bonus;
           }
 
-          // Now generate random number from the adjusted range
+          // Calculate total multiplier (items/buildings + button upgrades)
+          let totalMultiplier = actionBonuses?.resourceMultiplier || 1;
+          const upgradeKey = ACTION_TO_UPGRADE_KEY[actionId];
+          if (upgradeKey && state.books?.book_of_ascension) {
+            const upgradeMultiplier = getUpgradeBonusMultiplier(upgradeKey, state);
+            totalMultiplier = totalMultiplier * upgradeMultiplier;
+          }
+
+          // Apply multipliers to the range BEFORE generating random number
+          if (totalMultiplier !== 1) {
+            min = Math.floor(min * totalMultiplier);
+            max = Math.floor(max * totalMultiplier);
+          }
+
+          // Now generate random number from the fully adjusted range
           const baseAmount = Math.floor(Math.random() * (max - min + 1)) + min;
 
           const originalAmount =
@@ -775,7 +789,7 @@ export const applyActionEffects = (
               let min = parseInt(match[1]);
               let max = parseInt(match[2]);
 
-              // Apply action bonuses BEFORE random generation
+              // Apply action bonuses
               const actionBonuses = getActionBonusesCalc(actionId, state);
               if (
                 actionBonuses?.resourceBonus?.[
@@ -790,7 +804,21 @@ export const applyActionEffects = (
                 max += bonus;
               }
 
-              // Generate random from adjusted range
+              // Calculate total multiplier (items/buildings + button upgrades)
+              let totalMultiplier = actionBonuses?.resourceMultiplier || 1;
+              const upgradeKey = ACTION_TO_UPGRADE_KEY[actionId];
+              if (upgradeKey && state.books?.book_of_ascension) {
+                const upgradeMultiplier = getUpgradeBonusMultiplier(upgradeKey, state);
+                totalMultiplier = totalMultiplier * upgradeMultiplier;
+              }
+
+              // Apply multipliers to the range BEFORE generating random number
+              if (totalMultiplier !== 1) {
+                min = Math.floor(min * totalMultiplier);
+                max = Math.floor(max * totalMultiplier);
+              }
+
+              // Generate random from fully adjusted range
               const randomAmount =
                 Math.floor(Math.random() * (max - min + 1)) + min;
 
@@ -883,29 +911,8 @@ export const applyActionEffects = (
     // Apply resource multipliers (like 300% bonus from adamant axe)
     let totalMultiplier = actionBonuses.resourceMultiplier || 1;
 
-    // Add button upgrade bonus multiplier (only if book_of_ascension is owned)
-    const upgradeKey = ACTION_TO_UPGRADE_KEY[actionId];
-    if (upgradeKey && state.books?.book_of_ascension) {
-      const upgradeMultiplier = getUpgradeBonusMultiplier(upgradeKey, state);
-      totalMultiplier = totalMultiplier * upgradeMultiplier;
-    }
-
-    if (totalMultiplier !== 1) {
-      Object.keys(updates.resources).forEach((resource) => {
-        const currentAmount = updates.resources![resource] || 0;
-        const originalAmount =
-          state.resources[resource as keyof typeof state.resources] || 0;
-        const baseGain = currentAmount - originalAmount;
-
-        if (baseGain > 0) {
-          const bonusAmount = Math.floor(
-            baseGain * (totalMultiplier - 1),
-          );
-          const finalAmount = currentAmount + bonusAmount;
-          updates.resources![resource] = finalAmount;
-        }
-      });
-    }
+    // Multipliers are now applied before random generation in getActionBonusesCalc
+    // No need for post-processing multipliers here
   }
 
   // Apply dev mode 10x multiplier to resource gains (only the added amount)
