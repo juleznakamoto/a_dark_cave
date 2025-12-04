@@ -1427,7 +1427,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildBoneTemple: {
     id: "buildBoneTemple",
     label: "Bone Temple",
-    description: "Grand temple built from thousands of bones, honoring the old gods",
+    description: "Monstrous structure built of bones, honoring the old gods",
     tooltipEffects: (state: GameState) => {
       const animalSacrificeLevel =
         Number(state.story?.seen?.animalsSacrificeLevel) || 0;
