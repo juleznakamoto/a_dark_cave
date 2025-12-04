@@ -672,35 +672,48 @@ export const applyActionEffects = (
             const cappedUsageCount = Math.min(usageCount, 20);
             min += cappedUsageCount;
             max += cappedUsageCount;
-          }
 
-          // Apply action bonuses from the centralized effects system
-          const actionBonuses = getActionBonusesCalc(actionId, state);
-          if (
-            actionBonuses?.resourceBonus?.[
-              finalKey as keyof typeof actionBonuses.resourceBonus
-            ]
-          ) {
-            const bonus =
-              actionBonuses.resourceBonus[
+            // Apply Bone Temple bonus for sacrifice actions
+            if (state.buildings.boneTemple >= 1) {
+              min = Math.floor(min * 1.25);
+              max = Math.floor(max * 1.25);
+            }
+
+            // Apply item bonuses from the centralized effects system
+            const actionBonuses = getActionBonusesCalc(actionId, state);
+            if (actionBonuses?.resourceMultiplier > 1) {
+              min = Math.floor(min * actionBonuses.resourceMultiplier);
+              max = Math.floor(max * actionBonuses.resourceMultiplier);
+            }
+          } else {
+            // Apply action bonuses from the centralized effects system for non-sacrifice actions
+            const actionBonuses = getActionBonusesCalc(actionId, state);
+            if (
+              actionBonuses?.resourceBonus?.[
                 finalKey as keyof typeof actionBonuses.resourceBonus
-              ];
-            min += bonus;
-            max += bonus;
-          }
+              ]
+            ) {
+              const bonus =
+                actionBonuses.resourceBonus[
+                  finalKey as keyof typeof actionBonuses.resourceBonus
+                ];
+              min += bonus;
+              max += bonus;
+            }
 
-          // Calculate total multiplier (items/buildings + button upgrades)
-          let totalMultiplier = actionBonuses?.resourceMultiplier || 1;
-          const upgradeKey = ACTION_TO_UPGRADE_KEY[actionId];
-          if (upgradeKey && state.books?.book_of_ascension) {
-            const upgradeMultiplier = getUpgradeBonusMultiplier(upgradeKey, state);
-            totalMultiplier = totalMultiplier * upgradeMultiplier;
-          }
+            // Calculate total multiplier (items/buildings + button upgrades)
+            let totalMultiplier = actionBonuses?.resourceMultiplier || 1;
+            const upgradeKey = ACTION_TO_UPGRADE_KEY[actionId];
+            if (upgradeKey && state.books?.book_of_ascension) {
+              const upgradeMultiplier = getUpgradeBonusMultiplier(upgradeKey, state);
+              totalMultiplier = totalMultiplier * upgradeMultiplier;
+            }
 
-          // Apply multipliers to the range BEFORE generating random number
-          if (totalMultiplier !== 1) {
-            min = Math.floor(min * totalMultiplier);
-            max = Math.floor(max * totalMultiplier);
+            // Apply multipliers to the range BEFORE generating random number
+            if (totalMultiplier !== 1) {
+              min = Math.floor(min * totalMultiplier);
+              max = Math.floor(max * totalMultiplier);
+            }
           }
 
           // Now generate random number from the fully adjusted range
