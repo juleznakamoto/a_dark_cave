@@ -91,6 +91,17 @@ body {
     cursor: default !important;
   }
 
+  /* Force end screen to overlay SDK sidebar */
+  [data-end-screen="true"] {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
   html {
     @apply dark;
     color-scheme: dark;
