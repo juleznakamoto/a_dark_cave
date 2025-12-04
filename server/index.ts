@@ -98,36 +98,70 @@ app.get('/api/admin/data', async (req, res) => {
   }
 });
 
-// API endpoint to lookup a specific user's save game
-app.get('/api/admin/user-lookup', async (req, res) => {
+// Admin user lookup endpoint
+app.get("/api/admin/user-lookup", async (req, res) => {
   try {
+    const adminClient = getAdminClient(req.query.env as 'dev' | 'prod' || 'dev');
+
     const userId = req.query.userId as string;
+    const email = req.query.email as string;
     const env = req.query.env as 'dev' | 'prod' || 'dev';
 
-    if (!userId) {
-      return res.status(400).json({ error: 'User ID is required' });
+    if (!userId && !email) {
+      return res.status(400).json({ error: "userId or email is required" });
     }
 
-    log(`🔍 User lookup request for ID: ${userId} in ${env.toUpperCase()} environment`);
-    const adminClient = getAdminClient(env);
+    const tableName = env === "dev" ? "game_saves_dev" : "game_saves";
 
-    const { data, error } = await adminClient
-      .from('game_saves')
-      .select('user_id, game_state, updated_at, created_at')
-      .eq('user_id', userId)
-      .single();
+    let save;
+    let error;
+
+    if (email) {
+      // Lookup by email - need to join with auth.users
+      const { data: authUser, error: authError } = await adminClient.auth.admin.listUsers();
+
+      if (authError) {
+        log('❌ Failed to fetch auth users:', authError);
+        return res.status(500).json({ error: "Failed to lookup user by email" });
+      }
+
+      const matchingUser = authUser.users.find(u => u.email === email);
+
+      if (!matchingUser) {
+        return res.status(404).json({ error: "No user found with this email" });
+      }
+
+      const { data: saveData, error: saveError } = await adminClient
+        .from(tableName)
+        .select('user_id, game_state, updated_at, created_at')
+        .eq("user_id", matchingUser.id)
+        .single();
+
+      save = saveData;
+      error = saveError;
+    } else {
+      // Lookup by user ID
+      const { data: saveData, error: saveError } = await adminClient
+        .from(tableName)
+        .select('user_id, game_state, updated_at, created_at')
+        .eq("user_id", userId)
+        .single();
+
+      save = saveData;
+      error = saveError;
+    }
 
     if (error) {
       if (error.code === 'PGRST116') {
-        log(`⚠️ No save found for user ID: ${userId}`);
+        log(`⚠️ No save found for user ${email || userId}`);
         return res.json({ save: null });
       }
       log('❌ Error fetching user save:', error);
       throw error;
     }
 
-    log(`✅ Found save for user ID: ${userId}`);
-    res.json({ save: data });
+    log(`✅ Found save for user ${email || userId}`);
+    res.json({ save });
   } catch (error: any) {
     log('❌ User lookup failed:', error);
     res.status(500).json({ error: error.message });
@@ -207,7 +241,7 @@ import { createServer } from "http";
   app.post("/api/payment/verify", async (req, res) => {
     try {
       const { paymentIntentId, userId } = req.body;
-      
+
       if (!userId) {
         return res.status(400).json({ error: 'User ID required' });
       }

@@ -142,6 +142,7 @@ export default function AdminDashboard() {
 
   // User lookup states
   const [lookupUserId, setLookupUserId] = useState<string>("");
+  const [lookupType, setLookupType] = useState<"id" | "email">("id");
   const [lookupResult, setLookupResult] = useState<GameSaveData | null>(null);
   const [lookupLoading, setLookupLoading] = useState<boolean>(false);
   const [lookupError, setLookupError] = useState<string>("");
@@ -1715,6 +1716,14 @@ export default function AdminDashboard() {
     new Set(["strength", "knowledge", "luck", "madness"]),
   );
 
+  // State for selected mining types
+  const [selectedMiningTypes, setSelectedMiningTypes] = useState<Set<string>>(
+    new Set(["mineStone", "mineIron", "mineCoal", "mineSulfur", "mineObsidian", "mineAdamant"]),
+  );
+
+  // State for selected cube events
+  const [selectedCubeEvents, setSelectedCubeEvents] = useState<Set<string>>(new Set());
+
   // Helper to get playtime bucket label (e.g., "0-59m", "60-119m")
   const getBucketLabel = (playTimeMinutes: number): string => {
     if (playTimeMinutes < 60) return "0-59m";
@@ -1732,8 +1741,9 @@ export default function AdminDashboard() {
     setLookupResult(null);
 
     try {
+      const queryParam = lookupType === "id" ? "userId" : "email";
       const response = await fetch(
-        `/api/admin/user-lookup?userId=${encodeURIComponent(lookupUserId)}&env=${environment}`,
+        `/api/admin/user-lookup?${queryParam}=${encodeURIComponent(lookupUserId)}&env=${environment}`,
       );
 
       if (!response.ok) {
@@ -1744,7 +1754,7 @@ export default function AdminDashboard() {
       const data = await response.json();
 
       if (!data.save) {
-        setLookupError("No save game found for this user ID");
+        setLookupError(`No save game found for this ${lookupType === "id" ? "user ID" : "email"}`);
       } else {
         setLookupResult(data.save);
       }
@@ -3291,34 +3301,19 @@ export default function AdminDashboard() {
                       <div className="flex gap-2">
                         <button
                           onClick={() => {
-                            const checkboxes = document.querySelectorAll(
-                              "[data-cube-checkbox]",
-                            ) as NodeListOf<HTMLInputElement>;
-                            checkboxes.forEach((checkbox) => {
-                              checkbox.checked = true;
-                              const event = new Event("change", {
-                                bubbles: true,
-                              });
-                              checkbox.dispatchEvent(event);
-                            });
+                            const chartData = getCubeEventsOverPlaytime();
+                            if (chartData.length === 0) return;
+                            const cubeKeys = Object.keys(chartData[0]).filter(
+                              (key) => key.startsWith("Cube "),
+                            );
+                            setSelectedCubeEvents(new Set(cubeKeys));
                           }}
                           className="px-3 py-1 text-sm bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
                         >
                           Select All
                         </button>
                         <button
-                          onClick={() => {
-                            const checkboxes = document.querySelectorAll(
-                              "[data-cube-checkbox]",
-                            ) as NodeListOf<HTMLInputElement>;
-                            checkboxes.forEach((checkbox) => {
-                              checkbox.checked = false;
-                              const event = new Event("change", {
-                                bubbles: true,
-                              });
-                              checkbox.dispatchEvent(event);
-                            });
-                          }}
+                          onClick={() => setSelectedCubeEvents(new Set())}
                           className="px-3 py-1 text-sm bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/90"
                         >
                           Deselect All
@@ -3341,19 +3336,15 @@ export default function AdminDashboard() {
                             >
                               <input
                                 type="checkbox"
-                                data-cube-checkbox
-                                defaultChecked={true}
+                                checked={selectedCubeEvents.has(key)}
                                 onChange={(e) => {
-                                  const checkbox = e.target;
-                                  const lines = document.querySelectorAll(
-                                    `[data-cube-event="${key}"]`,
-                                  );
-                                  lines.forEach((line) => {
-                                    const element = line as HTMLElement;
-                                    element.style.display = checkbox.checked
-                                      ? ""
-                                      : "none";
-                                  });
+                                  const newSet = new Set(selectedCubeEvents);
+                                  if (e.target.checked) {
+                                    newSet.add(key);
+                                  } else {
+                                    newSet.delete(key);
+                                  }
+                                  setSelectedCubeEvents(newSet);
                                 }}
                                 className="cursor-pointer"
                               />
@@ -3392,17 +3383,18 @@ export default function AdminDashboard() {
                             (key) => key.startsWith("Cube "),
                           );
 
-                          return cubeKeys.map((key, index) => (
-                            <Line
-                              key={key}
-                              type="monotone"
-                              dataKey={key}
-                              stroke={COLORS[index % COLORS.length]}
-                              strokeWidth={2}
-                              dot={{ r: 3 }}
-                              data-cube-event={key}
-                            />
-                          ));
+                          return cubeKeys
+                            .filter((key) => selectedCubeEvents.has(key))
+                            .map((key, index) => (
+                              <Line
+                                key={key}
+                                type="monotone"
+                                dataKey={key}
+                                stroke={COLORS[index % COLORS.length]}
+                                strokeWidth={2}
+                                dot={{ r: 3 }}
+                              />
+                            ));
                         })()}
                       </LineChart>
                     </ResponsiveContainer>
@@ -4101,6 +4093,7 @@ export default function AdminDashboard() {
                             position: "insideBottom",
                             offset: -5,
                           }}
+                          interval={0}
                         />
                         <YAxis
                           label={{
@@ -4141,35 +4134,13 @@ export default function AdminDashboard() {
                     <div className="mb-4 space-y-2">
                       <div className="flex gap-2">
                         <button
-                          onClick={() => {
-                            const checkboxes = document.querySelectorAll(
-                              "[data-mining-checkbox]",
-                            ) as NodeListOf<HTMLInputElement>;
-                            checkboxes.forEach((checkbox) => {
-                              checkbox.checked = true;
-                              const event = new Event("change", {
-                                bubbles: true,
-                              });
-                              checkbox.dispatchEvent(event);
-                            });
-                          }}
+                          onClick={() => setSelectedMiningTypes(new Set(["mineStone", "mineIron", "mineCoal", "mineSulfur", "mineObsidian", "mineAdamant"]))}
                           className="px-3 py-1 text-sm bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
                         >
                           Select All
                         </button>
                         <button
-                          onClick={() => {
-                            const checkboxes = document.querySelectorAll(
-                              "[data-mining-checkbox]",
-                            ) as NodeListOf<HTMLInputElement>;
-                            checkboxes.forEach((checkbox) => {
-                              checkbox.checked = false;
-                              const event = new Event("change", {
-                                bubbles: true,
-                              });
-                              checkbox.dispatchEvent(event);
-                            });
-                          }}
+                          onClick={() => setSelectedMiningTypes(new Set())}
                           className="px-3 py-1 text-sm bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/90"
                         >
                           Deselect All
@@ -4214,19 +4185,15 @@ export default function AdminDashboard() {
                           >
                             <input
                               type="checkbox"
-                              data-mining-checkbox
-                              defaultChecked={true}
+                              checked={selectedMiningTypes.has(miningType.key)}
                               onChange={(e) => {
-                                const checkbox = e.target;
-                                const lines = document.querySelectorAll(
-                                  `[data-mining-type="${miningType.key}"]`,
-                                );
-                                lines.forEach((line) => {
-                                  const element = line as HTMLElement;
-                                  element.style.display = checkbox.checked
-                                    ? ""
-                                    : "none";
-                                });
+                                const newSet = new Set(selectedMiningTypes);
+                                if (e.target.checked) {
+                                  newSet.add(miningType.key);
+                                } else {
+                                  newSet.delete(miningType.key);
+                                }
+                                setSelectedMiningTypes(newSet);
                               }}
                               className="cursor-pointer"
                             />
@@ -4250,6 +4217,7 @@ export default function AdminDashboard() {
                             position: "insideBottom",
                             offset: -5,
                           }}
+                          interval={0}
                         />
                         <YAxis
                           label={{
@@ -4261,60 +4229,66 @@ export default function AdminDashboard() {
                         />
                         <Tooltip />
                         <Legend />
-                        <Line
-                          type="monotone"
-                          dataKey="mineStone"
-                          stroke="#82ca9d"
-                          strokeWidth={2}
-                          dot={{ r: 3 }}
-                          name="Stone Mining"
-                          data-mining-type="mineStone"
-                        />
-                        <Line
-                          type="monotone"
-                          dataKey="mineIron"
-                          stroke="#8884d8"
-                          strokeWidth={2}
-                          dot={{ r: 3 }}
-                          name="Iron Mining"
-                          data-mining-type="mineIron"
-                        />
-                        <Line
-                          type="monotone"
-                          dataKey="mineCoal"
-                          stroke="#ffc658"
-                          strokeWidth={2}
-                          dot={{ r: 3 }}
-                          name="Coal Mining"
-                          data-mining-type="mineCoal"
-                        />
-                        <Line
-                          type="monotone"
-                          dataKey="mineSulfur"
-                          stroke="#ff8042"
-                          strokeWidth={2}
-                          dot={{ r: 3 }}
-                          name="Sulfur Mining"
-                          data-mining-type="mineSulfur"
-                        />
-                        <Line
-                          type="monotone"
-                          dataKey="mineObsidian"
-                          stroke="#0088FE"
-                          strokeWidth={2}
-                          dot={{ r: 3 }}
-                          name="Obsidian Mining"
-                          data-mining-type="mineObsidian"
-                        />
-                        <Line
-                          type="monotone"
-                          dataKey="mineAdamant"
-                          stroke="#00C49F"
-                          strokeWidth={2}
-                          dot={{ r: 3 }}
-                          name="Adamant Mining"
-                          data-mining-type="mineAdamant"
-                        />
+                        {selectedMiningTypes.has("mineStone") && (
+                          <Line
+                            type="monotone"
+                            dataKey="mineStone"
+                            stroke="#82ca9d"
+                            strokeWidth={2}
+                            dot={{ r: 3 }}
+                            name="Stone Mining"
+                          />
+                        )}
+                        {selectedMiningTypes.has("mineIron") && (
+                          <Line
+                            type="monotone"
+                            dataKey="mineIron"
+                            stroke="#8884d8"
+                            strokeWidth={2}
+                            dot={{ r: 3 }}
+                            name="Iron Mining"
+                          />
+                        )}
+                        {selectedMiningTypes.has("mineCoal") && (
+                          <Line
+                            type="monotone"
+                            dataKey="mineCoal"
+                            stroke="#ffc658"
+                            strokeWidth={2}
+                            dot={{ r: 3 }}
+                            name="Coal Mining"
+                          />
+                        )}
+                        {selectedMiningTypes.has("mineSulfur") && (
+                          <Line
+                            type="monotone"
+                            dataKey="mineSulfur"
+                            stroke="#ff8042"
+                            strokeWidth={2}
+                            dot={{ r: 3 }}
+                            name="Sulfur Mining"
+                          />
+                        )}
+                        {selectedMiningTypes.has("mineObsidian") && (
+                          <Line
+                            type="monotone"
+                            dataKey="mineObsidian"
+                            stroke="#0088FE"
+                            strokeWidth={2}
+                            dot={{ r: 3 }}
+                            name="Obsidian Mining"
+                          />
+                        )}
+                        {selectedMiningTypes.has("mineAdamant") && (
+                          <Line
+                            type="monotone"
+                            dataKey="mineAdamant"
+                            stroke="#00C49F"
+                            strokeWidth={2}
+                            dot={{ r: 3 }}
+                            name="Adamant Mining"
+                          />
+                        )}
                       </LineChart>
                     </ResponsiveContainer>
                   </CardContent>
@@ -4343,6 +4317,7 @@ export default function AdminDashboard() {
                             position: "insideBottom",
                             offset: -5,
                           }}
+                          interval={0}
                         />
                         <YAxis
                           label={{
@@ -4390,6 +4365,7 @@ export default function AdminDashboard() {
                             position: "insideBottom",
                             offset: -5,
                           }}
+                          interval={0}
                         />
                         <YAxis
                           label={{
@@ -4439,6 +4415,7 @@ export default function AdminDashboard() {
                             position: "insideBottom",
                             offset: -5,
                           }}
+                          interval={0}
                         />
                         <YAxis
                           label={{
@@ -4501,14 +4478,31 @@ export default function AdminDashboard() {
                   <CardHeader>
                     <CardTitle>User Save Game Lookup</CardTitle>
                     <CardDescription>
-                      Enter a user ID to view their save game data
+                      Enter a user ID or email to view their save game data
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    <div className="flex gap-4">
+                    <div className="flex gap-4 items-center">
+                      <Select
+                        value={lookupType}
+                        onValueChange={(value: "id" | "email") => {
+                          setLookupType(value);
+                          setLookupUserId("");
+                          setLookupResult(null);
+                          setLookupError("");
+                        }}
+                      >
+                        <SelectTrigger className="w-[140px]">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="id">User ID</SelectItem>
+                          <SelectItem value="email">Email</SelectItem>
+                        </SelectContent>
+                      </Select>
                       <input
                         type="text"
-                        placeholder="Enter user ID (UUID)"
+                        placeholder={lookupType === "id" ? "Enter user ID (UUID)" : "Enter email address"}
                         value={lookupUserId}
                         onChange={(e) => setLookupUserId(e.target.value)}
                         className="flex-1 px-3 py-2 border rounded-md"
