@@ -245,10 +245,10 @@ export async function saveGame(
 
         // Get and reset click analytics
         const clickData = useGameStore.getState().getAndResetClickAnalytics();
-        
+
         // Get resource snapshot only during autosaves (when game loop is running)
         // This ensures resources are tracked at consistent intervals with proper playTime
-        const resourceData = isAutosave 
+        const resourceData = isAutosave
           ? useGameStore.getState().getAndResetResourceAnalytics()
           : null;
 

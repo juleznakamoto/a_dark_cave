@@ -1657,6 +1657,9 @@ export default function AdminDashboard() {
   // State for selected resources
   const [selectedResources, setSelectedResources] = useState<Set<string>>(new Set(['food', 'wood', 'stone', 'iron']));
 
+  // State for selected stats
+  const [selectedStats, setSelectedStats] = useState<Set<string>>(new Set(['strength', 'knowledge', 'luck', 'madness']));
+
   // NEW FUNCTION FOR RESOURCE STATS OVER PLAYTIME
   const handleLookupUser = async () => {
     setLookupLoading(true);
@@ -1695,6 +1698,105 @@ export default function AdminDashboard() {
   const getLookupUserPurchases = () => {
     if (!lookupResult) return [];
     return purchases.filter(p => p.user_id === lookupResult.user_id);
+  };
+
+  const getStatsOverPlaytime = () => {
+    // If no click data is available, return empty array
+    if (!clickData || clickData.length === 0) return [];
+
+    // Filter by time range
+    let filteredClicks = filterByTimeRange(clickData, 'timestamp');
+    
+    // Filter data based on selected user
+    if (selectedUser !== 'all') {
+      filteredClicks = filteredClicks.filter(record => record.user_id === selectedUser);
+    }
+    if (showCompletedOnly) {
+      const completedUserIds = new Set(
+        gameSaves
+          .filter(save => 
+            save.game_state?.events?.cube15a || 
+            save.game_state?.events?.cube15b ||
+            save.game_state?.events?.cube13 ||
+            save.game_state?.events?.cube14a ||
+            save.game_state?.events?.cube14b ||
+            save.game_state?.events?.cube14c ||
+            save.game_state?.events?.cube14d
+          )
+          .map(save => save.user_id)
+      );
+      filteredClicks = filteredClicks.filter(record => completedUserIds.has(record.user_id));
+    }
+
+    // Group stats data by playtime bucket
+    const playtimeBuckets = new Map<number, Record<string, { total: number; count: number }>>();
+    let maxBucket = 0;
+
+    filteredClicks.forEach(record => {
+      // Stats are stored in the 'stats' field with playtime snapshots
+      const statsSnapshots = record.stats || {};
+
+      // Iterate over playtime entries in stats
+      Object.entries(statsSnapshots).forEach(([playtimeKey, statsAtTime]: [string, any]) => {
+        try {
+          // Extract playtime in minutes from the key (e.g., "45m" -> 45)
+          const playtimeMinutes = parseInt(playtimeKey.replace('m', ''));
+          if (!isNaN(playtimeMinutes) && typeof statsAtTime === 'object') {
+            const bucket = Math.floor(playtimeMinutes / 60) * 60; // Group into 1-hour buckets
+            maxBucket = Math.max(maxBucket, bucket);
+
+            if (!playtimeBuckets.has(bucket)) {
+              playtimeBuckets.set(bucket, {});
+            }
+
+            const bucketData = playtimeBuckets.get(bucket)!;
+
+            // Iterate over stats at this playtime, only include selected ones
+            Object.entries(statsAtTime).forEach(([statName, statValue]: [string, any]) => {
+              // Only include if selected
+              if (selectedStats.size === 0 || selectedStats.has(statName)) {
+                // Stat value should be a number
+                const value = typeof statValue === 'number' ? statValue : 0;
+
+                if (!bucketData[statName]) {
+                  bucketData[statName] = { total: 0, count: 0 };
+                }
+                bucketData[statName].total += value;
+                bucketData[statName].count += 1;
+              }
+            });
+          }
+        } catch (e) {
+          logger.warn('Failed to process playtime or stats:', playtimeKey, e);
+        }
+      });
+    });
+
+    // Convert to array and format for chart display
+    const result: Array<{ time: string; [key: string]: any }> = [];
+
+    // Limit to first 24 hours (1440 minutes = 24 * 60)
+    const maxDisplayBucket = Math.min(maxBucket, 24 * 60);
+
+    for (let bucket = 0; bucket <= maxDisplayBucket; bucket += 60) {
+      const hours = bucket / 60;
+      const dataPoint: { time: string; [key: string]: any } = {
+        time: hours === 0 ? '0h' : `${hours}h`,
+      };
+
+      const bucketData = playtimeBuckets.get(bucket);
+      if (bucketData) {
+        Object.entries(bucketData).forEach(([statName, stats]: [string, any]) => {
+          // Only include if selected
+          if (selectedStats.size === 0 || selectedStats.has(statName)) {
+            dataPoint[statName] = stats.count > 0 ? Math.round((stats.total / stats.count) * 10) / 10 : 0; // Average per player in this bucket
+          }
+        });
+      }
+      result.push(dataPoint);
+    }
+
+    return result;
   };
 
   const getResourceStatsOverPlaytime = () => {
@@ -3100,6 +3202,87 @@ export default function AdminDashboard() {
                 </span>
               </label>
             </div>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Average Stats Over Playtime</CardTitle>
+                <CardDescription>
+                  Average stat values (Strength, Knowledge, Luck, Madness) in 1-hour playtime intervals
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="mb-4 space-y-2">
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => setSelectedStats(new Set(['strength', 'knowledge', 'luck', 'madness']))}
+                      className="px-3 py-1 text-sm bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
+                    >
+                      Select All
+                    </button>
+                    <button
+                      onClick={() => setSelectedStats(new Set())}
+                      className="px-3 py-1 text-sm bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/90"
+                    >
+                      Deselect All
+                    </button>
+                  </div>
+                  <div className="flex gap-4 flex-wrap">
+                    {['strength', 'knowledge', 'luck', 'madness'].map((stat) => (
+                      <label key={stat} className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={selectedStats.has(stat)}
+                          onChange={(e) => {
+                            const newSet = new Set(selectedStats);
+                            if (e.target.checked) {
+                              newSet.add(stat);
+                            } else {
+                              newSet.delete(stat);
+                            }
+                            setSelectedStats(newSet);
+                          }}
+                          className="cursor-pointer"
+                        />
+                        <span className="text-sm capitalize">{stat}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+                <ResponsiveContainer width="100%" height={400}>
+                  <LineChart data={getStatsOverPlaytime()}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis 
+                      dataKey="time" 
+                      label={{ value: 'Playtime', position: 'insideBottom', offset: -5 }}
+                      interval={0}
+                    />
+                    <YAxis label={{ value: 'Average Value', angle: -90, position: 'insideLeft' }} />
+                    <Tooltip />
+                    <Legend />
+                    {(() => {
+                      const chartData = getStatsOverPlaytime();
+                      if (chartData.length === 0) return null;
+
+                      // Get selected stat keys
+                      const selectedStatsList = Array.from(selectedStats);
+                      
+                      return selectedStatsList.map((key, index) => (
+                        <Line
+                          key={key}
+                          type="monotone"
+                          dataKey={key}
+                          stroke={COLORS[index % COLORS.length]}
+                          strokeWidth={2}
+                          dot={{ r: 3 }}
+                          name={key.charAt(0).toUpperCase() + key.slice(1)}
+                        />
+                      ));
+                    })()}
+                  </LineChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+
             <Card>
               <CardHeader>
                 <CardTitle>Average Resources Over Playtime</CardTitle>
