@@ -65,7 +65,7 @@ export default function EndScreenPage() {
   };
 
   return (
-    <div className="fixed inset-0 z-[99999]" data-end-screen="true">
+    <div className="fixed inset-0 z-[99999]">
       <Hero
         trustBadge={{
           text: "Well Done!",
