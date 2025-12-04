@@ -668,8 +668,8 @@ export const applyActionEffects = (
 
           // For sacrifice actions, apply usage count bonus first
           if (isSacrificeAction) {
-            const usageCountKey = actionId === 'boneTotems' 
-              ? 'boneTotemsUsageCount' 
+            const usageCountKey = actionId === 'boneTotems'
+              ? 'boneTotemsUsageCount'
               : 'leatherTotemsUsageCount';
             const usageCount = Number(state.story?.seen?.[usageCountKey]) || 0;
             const cappedUsageCount = Math.min(usageCount, 20);
@@ -692,7 +692,7 @@ export const applyActionEffects = (
 
           // For non-sacrifice actions, apply bonuses and multipliers
           if (!isSacrificeAction) {
-            // Apply action bonuses from the centralized effects system
+            // Apply action bonuses (includes button upgrades already)
             const actionBonuses = getActionBonusesCalc(actionId, state);
             if (
               actionBonuses?.resourceBonus?.[
@@ -707,15 +707,9 @@ export const applyActionEffects = (
               max += bonus;
             }
 
-            // Calculate total multiplier (items/buildings + button upgrades)
-            let totalMultiplier = actionBonuses?.resourceMultiplier || 1;
-            const upgradeKey = ACTION_TO_UPGRADE_KEY[actionId];
-            if (upgradeKey && state.books?.book_of_ascension) {
-              const upgradeMultiplier = getUpgradeBonusMultiplier(upgradeKey, state);
-              totalMultiplier = totalMultiplier * upgradeMultiplier;
-            }
-
             // Apply multipliers to the range BEFORE generating random number
+            // resourceMultiplier already includes button upgrades from getActionBonuses
+            const totalMultiplier = actionBonuses?.resourceMultiplier || 1;
             if (totalMultiplier !== 1) {
               min = Math.floor(min * totalMultiplier);
               max = Math.floor(max * totalMultiplier);
