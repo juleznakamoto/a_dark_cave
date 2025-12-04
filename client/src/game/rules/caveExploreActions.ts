@@ -144,7 +144,7 @@ export const caveExploreActions: Record<string, Action> = {
       "relics.odd_trinket": {
         probability: 0.0075,
         value: true,
-        condition: "!relics.odd_trinket && buildings.cabin >= 1",
+        condition: (state: GameState) => !state.relics?.odd_trinket && (state.buildings?.cabin || 0) >= 1,
         logMessage:
           "While chopping wood, you find a trinket with glowing amber liquid inside. After some hesitation, you drink it. It burns as it goes down, but you feel stronger than before.",
       },
