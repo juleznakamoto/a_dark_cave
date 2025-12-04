@@ -482,7 +482,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
   setActiveTab: (tab: string) => set({ activeTab: tab }),
 
   setBoostMode: (enabled: boolean) => set({ boostMode: enabled }),
-  setShowEndScreen: (showEndScreen: boolean) => set({ showEndScreen }), // Added setShowEndScreen action
   setIsMuted: (isMuted: boolean) => set({ isMuted }),
   setShopNotificationSeen: (seen: boolean) => set({ shopNotificationSeen: seen }),
   setShopNotificationVisible: (visible: boolean) => set({ shopNotificationVisible: visible }),

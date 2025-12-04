@@ -7,7 +7,6 @@ import EstatePanel from "./panels/EstatePanel";
 import BastionPanel from "./panels/BastionPanel";
 import LogPanel from "./panels/LogPanel";
 import StartScreen from "./StartScreen";
-import EndScreen from "./EndScreen";
 import { useGameStore } from "@/game/state";
 import EventDialog from "./EventDialog";
 import CombatDialog from "./CombatDialog";
@@ -127,12 +126,7 @@ export default function GameContainer() {
     };
   }, []);
 
-  // Stop game loop when end screen is shown
-  useEffect(() => {
-    if (showEndScreen) {
-      stopGameLoop();
-    }
-  }, [showEndScreen]);
+  
 
   // Determine whether to use LimelightNav (always call this hook)
   const useLimelightNav = relics.odd_bracelet;

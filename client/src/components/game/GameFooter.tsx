@@ -17,7 +17,6 @@ export default function GameFooter() {
     shopDialogOpen,
     isPaused,
     togglePause,
-    setShowEndScreen,
     isMuted,
     setIsMuted,
     shopNotificationSeen,
