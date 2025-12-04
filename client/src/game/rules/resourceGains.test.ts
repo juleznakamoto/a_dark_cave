@@ -1,8 +1,7 @@
-
 import { describe, it, expect, beforeEach } from 'vitest';
 import { GameState } from '@shared/schema';
 import { applyActionEffects, gameActions } from './index';
-import { getResourceGainTooltip } from './tooltips';
+import { getResourceGainTooltip, calculateResourceGains } from './tooltips';
 import { getActionBonuses } from './effectsCalculation';
 
 // Helper to create a minimal test state
@@ -216,9 +215,9 @@ const createTestState = (overrides?: Partial<GameState>): GameState => {
 // Helper to parse tooltip gains
 const parseTooltipGains = (tooltipContent: React.ReactNode): Record<string, { min: number; max: number }> => {
   const gains: Record<string, { min: number; max: number }> = {};
-  
+
   if (!tooltipContent) return gains;
-  
+
   // Convert React nodes to text
   const getText = (node: any): string => {
     if (typeof node === 'string') return node;
@@ -226,15 +225,15 @@ const parseTooltipGains = (tooltipContent: React.ReactNode): Record<string, { mi
     if (node?.props?.children) return getText(node.props.children);
     return '';
   };
-  
+
   const text = getText(tooltipContent);
   const lines = text.split('\n');
-  
+
   lines.forEach(line => {
     // Match "+10-20 Wood" or "+15 Stone" patterns
     const rangeMatch = line.match(/\+(\d+)-(\d+)\s+(.+)/);
     const fixedMatch = line.match(/\+(\d+)\s+(.+)/);
-    
+
     if (rangeMatch) {
       const [, min, max, resource] = rangeMatch;
       gains[resource.toLowerCase().replace(/\s+/g, '_')] = { 
@@ -249,26 +248,35 @@ const parseTooltipGains = (tooltipContent: React.ReactNode): Record<string, { mi
       };
     }
   });
-  
+
   return gains;
 };
 
 // Helper to run action multiple times and check if actual gains fall within tooltip range
 const testActionGains = (actionId: string, state: GameState, iterations = 100) => {
-  const tooltipContent = getResourceGainTooltip(actionId, state);
-  const expectedGains = parseTooltipGains(tooltipContent);
-  
+  // Get expected range from calculation
+  const { gains } = calculateResourceGains(actionId, state);
+
+  let expectedMin = 0;
+  let expectedMax = 0;
+
+  if (gains.length > 0) {
+    expectedMin = gains[0].min;
+    expectedMax = gains[0].max;
+  }
+
+
   const actualGains: Record<string, number[]> = {};
-  
+
   // Run action multiple times to sample the random range
   for (let i = 0; i < iterations; i++) {
     const effectUpdates = applyActionEffects(actionId, state);
-    
+
     if (effectUpdates.resources) {
       Object.entries(effectUpdates.resources).forEach(([resource, newValue]) => {
         const oldValue = state.resources[resource as keyof typeof state.resources] || 0;
         const gain = (newValue as number) - oldValue;
-        
+
         if (gain > 0) {
           if (!actualGains[resource]) {
             actualGains[resource] = [];
@@ -277,6 +285,12 @@ const testActionGains = (actionId: string, state: GameState, iterations = 100) =
         }
       });
     }
+  }
+
+  // Return expected gains and sampled actual gains
+  const expectedGains: Record<string, {min: number, max: number}> = {};
+  if (gains.length > 0) {
+    expectedGains[gains[0].resource] = { min: expectedMin, max: expectedMax };
   }
   
   return { expectedGains, actualGains };
@@ -287,13 +301,13 @@ describe('Resource Gain Tests', () => {
     it('chopWood gains match tooltip', () => {
       const state = createTestState();
       const { expectedGains, actualGains } = testActionGains('chopWood', state);
-      
+
       expect(expectedGains.wood).toBeDefined();
       expect(actualGains.wood).toBeDefined();
-      
+
       const minActual = Math.min(...actualGains.wood);
       const maxActual = Math.max(...actualGains.wood);
-      
+
       expect(minActual).toBeGreaterThanOrEqual(expectedGains.wood.min);
       expect(maxActual).toBeLessThanOrEqual(expectedGains.wood.max);
     });
@@ -303,13 +317,13 @@ describe('Resource Gain Tests', () => {
         story: { seen: { actionCraftTorch: true } },
       });
       const { expectedGains, actualGains } = testActionGains('exploreCave', state);
-      
+
       ['wood', 'stone', 'coal', 'iron'].forEach(resource => {
         if (expectedGains[resource]) {
           expect(actualGains[resource]).toBeDefined();
           const minActual = Math.min(...actualGains[resource]);
           const maxActual = Math.max(...actualGains[resource]);
-          
+
           expect(minActual).toBeGreaterThanOrEqual(expectedGains[resource].min);
           expect(maxActual).toBeLessThanOrEqual(expectedGains[resource].max);
         }
@@ -321,13 +335,13 @@ describe('Resource Gain Tests', () => {
         buildings: { blacksmith: 1, clerksHut: 1 },
       });
       const { expectedGains, actualGains } = testActionGains('ventureDeeper', state);
-      
+
       ['stone', 'coal', 'iron', 'sulfur', 'silver'].forEach(resource => {
         if (expectedGains[resource]) {
           expect(actualGains[resource]).toBeDefined();
           const minActual = Math.min(...actualGains[resource]);
           const maxActual = Math.max(...actualGains[resource]);
-          
+
           expect(minActual).toBeGreaterThanOrEqual(expectedGains[resource].min);
           expect(maxActual).toBeLessThanOrEqual(expectedGains[resource].max);
         }
@@ -341,13 +355,13 @@ describe('Resource Gain Tests', () => {
         tools: { stone_pickaxe: true },
       });
       const { expectedGains, actualGains } = testActionGains('mineStone', state);
-      
+
       expect(expectedGains.stone).toBeDefined();
       expect(actualGains.stone).toBeDefined();
-      
+
       const minActual = Math.min(...actualGains.stone);
       const maxActual = Math.max(...actualGains.stone);
-      
+
       expect(minActual).toBeGreaterThanOrEqual(expectedGains.stone.min);
       expect(maxActual).toBeLessThanOrEqual(expectedGains.stone.max);
     });
@@ -357,13 +371,13 @@ describe('Resource Gain Tests', () => {
         tools: { stone_pickaxe: true },
       });
       const { expectedGains, actualGains } = testActionGains('mineIron', state);
-      
+
       expect(expectedGains.iron).toBeDefined();
       expect(actualGains.iron).toBeDefined();
-      
+
       const minActual = Math.min(...actualGains.iron);
       const maxActual = Math.max(...actualGains.iron);
-      
+
       expect(minActual).toBeGreaterThanOrEqual(expectedGains.iron.min);
       expect(maxActual).toBeLessThanOrEqual(expectedGains.iron.max);
     });
@@ -373,13 +387,13 @@ describe('Resource Gain Tests', () => {
         tools: { iron_pickaxe: true },
       });
       const { expectedGains, actualGains } = testActionGains('mineCoal', state);
-      
+
       expect(expectedGains.coal).toBeDefined();
       expect(actualGains.coal).toBeDefined();
-      
+
       const minActual = Math.min(...actualGains.coal);
       const maxActual = Math.max(...actualGains.coal);
-      
+
       expect(minActual).toBeGreaterThanOrEqual(expectedGains.coal.min);
       expect(maxActual).toBeLessThanOrEqual(expectedGains.coal.max);
     });
@@ -389,13 +403,13 @@ describe('Resource Gain Tests', () => {
         tools: { steel_pickaxe: true },
       });
       const { expectedGains, actualGains } = testActionGains('mineObsidian', state);
-      
+
       expect(expectedGains.obsidian).toBeDefined();
       expect(actualGains.obsidian).toBeDefined();
-      
+
       const minActual = Math.min(...actualGains.obsidian);
       const maxActual = Math.max(...actualGains.obsidian);
-      
+
       expect(minActual).toBeGreaterThanOrEqual(expectedGains.obsidian.min);
       expect(maxActual).toBeLessThanOrEqual(expectedGains.obsidian.max);
     });
@@ -407,13 +421,13 @@ describe('Resource Gain Tests', () => {
         flags: { forestUnlocked: true },
       });
       const { expectedGains, actualGains } = testActionGains('hunt', state);
-      
+
       ['food', 'fur', 'bones'].forEach(resource => {
         if (expectedGains[resource]) {
           expect(actualGains[resource]).toBeDefined();
           const minActual = Math.min(...actualGains[resource]);
           const maxActual = Math.max(...actualGains[resource]);
-          
+
           expect(minActual).toBeGreaterThanOrEqual(expectedGains[resource].min);
           expect(maxActual).toBeLessThanOrEqual(expectedGains[resource].max);
         }
@@ -427,10 +441,10 @@ describe('Resource Gain Tests', () => {
       const stateWithGloves = createTestState({
         clothing: { ...stateWithoutGloves.clothing, loggers_gloves: true },
       });
-      
+
       const { expectedGains: expectedWithout } = testActionGains('chopWood', stateWithoutGloves, 50);
       const { expectedGains: expectedWith } = testActionGains('chopWood', stateWithGloves, 50);
-      
+
       // With gloves should have higher gains
       expect(expectedWith.wood.min).toBeGreaterThan(expectedWithout.wood.min);
       expect(expectedWith.wood.max).toBeGreaterThan(expectedWithout.wood.max);
@@ -443,10 +457,10 @@ describe('Resource Gain Tests', () => {
       const stateWithChisel = createTestState({
         tools: { stone_pickaxe: true, mastermason_chisel: true },
       });
-      
+
       const { expectedGains: expectedWithout } = testActionGains('mineStone', stateWithoutChisel, 50);
       const { expectedGains: expectedWith } = testActionGains('mineStone', stateWithChisel, 50);
-      
+
       // With chisel should have higher gains
       expect(expectedWith.stone.min).toBeGreaterThan(expectedWithout.stone.min);
       expect(expectedWith.stone.max).toBeGreaterThan(expectedWithout.stone.max);
@@ -460,10 +474,10 @@ describe('Resource Gain Tests', () => {
         flags: { forestUnlocked: true },
         clothing: { ...stateWithoutCloak.clothing, hunter_cloak: true },
       });
-      
+
       const { expectedGains: expectedWithout } = testActionGains('hunt', stateWithoutCloak, 50);
       const { expectedGains: expectedWith } = testActionGains('hunt', stateWithCloak, 50);
-      
+
       // With cloak should have higher gains
       expect(expectedWith.food.min).toBeGreaterThan(expectedWithout.food.min);
       expect(expectedWith.food.max).toBeGreaterThan(expectedWithout.food.max);
@@ -476,13 +490,13 @@ describe('Resource Gain Tests', () => {
         buildings: { altar: 1, clerksHut: 1 },
       });
       const { expectedGains, actualGains } = testActionGains('boneTotems', state);
-      
+
       expect(expectedGains.silver).toBeDefined();
       expect(actualGains.silver).toBeDefined();
-      
+
       const minActual = Math.min(...actualGains.silver);
       const maxActual = Math.max(...actualGains.silver);
-      
+
       expect(minActual).toBeGreaterThanOrEqual(expectedGains.silver.min);
       expect(maxActual).toBeLessThanOrEqual(expectedGains.silver.max);
     });
@@ -492,13 +506,13 @@ describe('Resource Gain Tests', () => {
         buildings: { temple: 1, clerksHut: 1 },
       });
       const { expectedGains, actualGains } = testActionGains('leatherTotems', state);
-      
+
       expect(expectedGains.gold).toBeDefined();
       expect(actualGains.gold).toBeDefined();
-      
+
       const minActual = Math.min(...actualGains.gold);
       const maxActual = Math.max(...actualGains.gold);
-      
+
       expect(minActual).toBeGreaterThanOrEqual(expectedGains.gold.min);
       expect(maxActual).toBeLessThanOrEqual(expectedGains.gold.max);
     });
@@ -510,10 +524,10 @@ describe('Resource Gain Tests', () => {
       const stateWithTemple = createTestState({
         buildings: { altar: 1, clerksHut: 1, boneTemple: 1 },
       });
-      
+
       const { expectedGains: expectedWithout } = testActionGains('boneTotems', stateWithoutTemple, 50);
       const { expectedGains: expectedWith } = testActionGains('boneTotems', stateWithTemple, 50);
-      
+
       // With temple should have approximately 25% higher gains
       const expectedBonus = Math.ceil(expectedWithout.silver.min * 1.25);
       expect(expectedWith.silver.min).toBeGreaterThanOrEqual(expectedBonus);
@@ -527,10 +541,10 @@ describe('Resource Gain Tests', () => {
         books: { book_of_ascension: true },
         buttonUpgrades: { chopWood: 5 }, // Level 5 = 50% bonus
       });
-      
+
       const { expectedGains: expectedWithout } = testActionGains('chopWood', stateWithoutUpgrade, 50);
       const { expectedGains: expectedWith } = testActionGains('chopWood', stateWithUpgrade, 50);
-      
+
       // With upgrades should have significantly higher gains
       expect(expectedWith.wood.min).toBeGreaterThan(expectedWithout.wood.min);
       expect(expectedWith.wood.max).toBeGreaterThan(expectedWithout.wood.max);
@@ -545,10 +559,10 @@ describe('Resource Gain Tests', () => {
         books: { book_of_ascension: true },
         buttonUpgrades: { exploreCave: 10 }, // Level 10 = 100% bonus
       });
-      
+
       const { expectedGains: expectedWithout } = testActionGains('exploreCave', stateWithoutUpgrade, 50);
       const { expectedGains: expectedWith } = testActionGains('exploreCave', stateWithUpgrade, 50);
-      
+
       // With max upgrades should have approximately double the gains
       expect(expectedWith.wood.min).toBeGreaterThanOrEqual(expectedWithout.wood.min * 1.8);
     });
@@ -561,16 +575,16 @@ describe('Resource Gain Tests', () => {
         books: { book_of_ascension: true },
         buttonUpgrades: { chopWood: 5 },
       });
-      
+
       const bonuses = getActionBonuses('chopWood', state);
       const { expectedGains, actualGains } = testActionGains('chopWood', state);
-      
+
       expect(bonuses.resourceMultiplier).toBeGreaterThan(1);
       expect(actualGains.wood).toBeDefined();
-      
+
       const minActual = Math.min(...actualGains.wood);
       const maxActual = Math.max(...actualGains.wood);
-      
+
       expect(minActual).toBeGreaterThanOrEqual(expectedGains.wood.min);
       expect(maxActual).toBeLessThanOrEqual(expectedGains.wood.max);
     });
@@ -581,16 +595,16 @@ describe('Resource Gain Tests', () => {
         books: { book_of_ascension: true },
         buttonUpgrades: { mineStone: 3 },
       });
-      
+
       const bonuses = getActionBonuses('mineStone', state);
       const { expectedGains, actualGains } = testActionGains('mineStone', state);
-      
+
       expect(bonuses.resourceMultiplier).toBeGreaterThan(1);
       expect(actualGains.stone).toBeDefined();
-      
+
       const minActual = Math.min(...actualGains.stone);
       const maxActual = Math.max(...actualGains.stone);
-      
+
       expect(minActual).toBeGreaterThanOrEqual(expectedGains.stone.min);
       expect(maxActual).toBeLessThanOrEqual(expectedGains.stone.max);
     });

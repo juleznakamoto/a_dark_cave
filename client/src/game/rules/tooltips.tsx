@@ -8,18 +8,16 @@ export interface TooltipConfig {
   getContent: (state: GameState) => React.ReactNode | string;
 }
 
-// Helper function to get resource gain range tooltip
-export const getResourceGainTooltip = (
+// Helper function to calculate resource gains and costs (for tests and tooltips)
+export const calculateResourceGains = (
   actionId: string,
   state: GameState,
-): React.ReactNode | null => {
-  // Only show if clerks hut is built
-  if (!state.buildings.clerksHut) {
-    return null;
-  }
-
+): {
+  gains: Array<{ resource: string; min: number; max: number }>;
+  costs: Array<{ resource: string; amount: number; hasEnough: boolean }>;
+} => {
   const action = gameActions[actionId];
-  if (!action?.effects) return null;
+  if (!action?.effects) return { gains: [], costs: [] };
 
   const bonuses = getActionBonuses(actionId, state);
   const gains: Array<{ resource: string; min: number; max: number }> = [];
@@ -174,6 +172,21 @@ export const getResourceGainTooltip = (
       });
     }
   }
+
+  return { gains, costs };
+};
+
+// Helper function to get resource gain range tooltip
+export const getResourceGainTooltip = (
+  actionId: string,
+  state: GameState,
+): React.ReactNode | null => {
+  // Only show if clerks hut is built
+  if (!state.buildings.clerksHut) {
+    return null;
+  }
+
+  const { gains, costs } = calculateResourceGains(actionId, state);
 
   if (gains.length === 0 && costs.length === 0) {
     return null;
