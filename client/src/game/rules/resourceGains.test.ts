@@ -661,9 +661,9 @@ describe('Resource Gain Tests', () => {
       });
       const { expectedGains } = testActionGains('chopWood', state, 50);
 
-      // Stone axe gives 25% bonus: base 6-12 becomes 7-15
-      expect(expectedGains.wood.min).toBe(7);
-      expect(expectedGains.wood.max).toBe(15);
+      // Stone axe gives 50% multiplier: base 6-12 becomes 9-18
+      expect(expectedGains.wood.min).toBe(9);
+      expect(expectedGains.wood.max).toBe(18);
     });
 
     it('chopWood with iron axe shows improved gains', () => {
@@ -672,9 +672,9 @@ describe('Resource Gain Tests', () => {
       });
       const { expectedGains } = testActionGains('chopWood', state, 50);
 
-      // Iron axe gives 50% bonus: base 6-12 becomes 9-18
-      expect(expectedGains.wood.min).toBe(9);
-      expect(expectedGains.wood.max).toBe(18);
+      // Iron axe gives 100% multiplier: base 6-12 becomes 12-24
+      expect(expectedGains.wood.min).toBe(12);
+      expect(expectedGains.wood.max).toBe(24);
     });
 
     it('chopWood with steel axe shows further improved gains', () => {
@@ -683,9 +683,9 @@ describe('Resource Gain Tests', () => {
       });
       const { expectedGains } = testActionGains('chopWood', state, 50);
 
-      // Steel axe gives 100% bonus: base 6-12 becomes 12-24
-      expect(expectedGains.wood.min).toBe(12);
-      expect(expectedGains.wood.max).toBe(24);
+      // Steel axe gives 150% multiplier: base 6-12 becomes 15-30
+      expect(expectedGains.wood.min).toBe(15);
+      expect(expectedGains.wood.max).toBe(30);
     });
   });
 
