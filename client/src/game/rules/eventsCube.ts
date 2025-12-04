@@ -508,7 +508,7 @@ export const cubeEvents: Record<string, GameEvent> = {
     id: "cube15a",
     condition: (state: GameState) =>
       state.events.cube14d &&
-      state.story.seen.slaughteredCreatures &&
+      // state.story.seen.slaughteredCreatures &&
       !state.events.cube15a,
     triggerType: "resource",
     timeProbability: 0.001,

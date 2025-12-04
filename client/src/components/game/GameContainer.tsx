@@ -19,10 +19,10 @@ import { LimelightNav, NavItem } from "@/components/ui/limelight-nav";
 import { Mountain, Trees, Castle, Landmark } from "lucide-react";
 import { stopGameLoop } from "@/game/loop";
 import ProfileMenu from "./ProfileMenu"; // Imported ProfileMenu
-import { startVersionCheck, stopVersionCheck } from '@/game/versionCheck';
-import { logger } from '@/lib/logger';
-import { toast } from '@/hooks/use-toast';
-import { Button } from '@/components/ui/button'; // Import Button component
+import { startVersionCheck, stopVersionCheck } from "@/game/versionCheck";
+import { logger } from "@/lib/logger";
+import { toast } from "@/hooks/use-toast";
+import { Button } from "@/components/ui/button"; // Import Button component
 
 export default function GameContainer() {
   const {
@@ -87,46 +87,49 @@ export default function GameContainer() {
       estateUnlocked: estateUnlocked,
       bastionUnlocked: flags.bastionUnlocked,
     };
-  }, [flags.villageUnlocked, flags.forestUnlocked, estateUnlocked, flags.bastionUnlocked]);
-
+  }, [
+    flags.villageUnlocked,
+    flags.forestUnlocked,
+    estateUnlocked,
+    flags.bastionUnlocked,
+  ]);
 
   // Initialize version check
   useEffect(() => {
-    logger.log('[VERSION] Initializing version check from GameContainer');
+    logger.log("[VERSION] Initializing version check from GameContainer");
 
     // Capture toast in closure to ensure it's available when callback fires
     const showUpdateToast = toast;
 
     startVersionCheck(() => {
-      logger.log('[VERSION] Version check callback fired!');
+      logger.log("[VERSION] Version check callback fired!");
       try {
-        logger.log('[VERSION] Calling toast() to notify user...');
+        logger.log("[VERSION] Calling toast() to notify user...");
         showUpdateToast({
           title: "New Version Available",
-          description: "A new version of the game is available. Please refresh to get the latest updates.",
+          description:
+            "A new version of the game is available. Please refresh to get the latest updates.",
           variant: "default",
           duration: 30000, // 30 seconds
           action: {
             label: "Refresh",
             onClick: () => {
-              logger.log('[VERSION] User clicked refresh button');
+              logger.log("[VERSION] User clicked refresh button");
               window.location.reload();
-            }
+            },
           },
         });
-        logger.log('[VERSION] ✅ Toast notification triggered successfully');
+        logger.log("[VERSION] ✅ Toast notification triggered successfully");
       } catch (error) {
-        logger.log('[VERSION] ❌ Error triggering toast:', error);
+        logger.log("[VERSION] ❌ Error triggering toast:", error);
       }
     });
 
     return () => {
-      logger.log('[VERSION] Cleaning up version check');
+      logger.log("[VERSION] Cleaning up version check");
       stopVersionCheck();
     };
   }, []);
-
-  
 
   // Determine whether to use LimelightNav (always call this hook)
   const useLimelightNav = relics.odd_bracelet;
@@ -170,7 +173,6 @@ export default function GameContainer() {
       });
     }
 
-
     if (flags.bastionUnlocked) {
       tabs.push({
         id: "bastion",
@@ -195,18 +197,13 @@ export default function GameContainer() {
     return <StartScreen />;
   }
 
-  // Show end screen if game has ended
-  if (showEndScreen) {
-    return <EndScreen />;
-  }
-
   return (
     <div className="fixed inset-0 bg-background text-foreground flex flex-col">
       {/* Pause Overlay - covers everything except footer and profile menu */}
       {isPaused && (
         <div
           className="fixed inset-0 bg-black/70 z-40 pointer-events-none"
-          style={{ bottom: '45px' }}
+          style={{ bottom: "45px" }}
         />
       )}
 
@@ -230,7 +227,9 @@ export default function GameContainer() {
               // Alternative LimelightNav design
               <LimelightNav
                 items={limelightNavItems}
-                defaultActiveIndex={limelightNavItems.findIndex(item => item.id === activeTab)}
+                defaultActiveIndex={limelightNavItems.findIndex(
+                  (item) => item.id === activeTab,
+                )}
                 onTabChange={(index) => {
                   const selectedTab = limelightNavItems[index];
                   if (selectedTab && selectedTab.onClick) {
@@ -244,7 +243,9 @@ export default function GameContainer() {
               <div className="flex space-x-4">
                 <button
                   className={`py-2 text-sm bg-transparent ${
-                    activeTab === "cave" ? "font-bold opacity-100" : "opacity-60"
+                    activeTab === "cave"
+                      ? "font-bold opacity-100"
+                      : "opacity-60"
                   } `}
                   onClick={() => setActiveTab("cave")}
                   data-testid="tab-cave"
@@ -255,7 +256,11 @@ export default function GameContainer() {
                 {flags.villageUnlocked && (
                   <button
                     className={`py-2 text-sm bg-transparent ${
-                      animatingTabs.has("village") ? "tab-fade-in" : activeTab === "village" ? "font-bold opacity-100" : "opacity-60"
+                      animatingTabs.has("village")
+                        ? "tab-fade-in"
+                        : activeTab === "village"
+                          ? "font-bold opacity-100"
+                          : "opacity-60"
                     }`}
                     onClick={() => setActiveTab("village")}
                     data-testid="tab-village"
@@ -268,7 +273,11 @@ export default function GameContainer() {
                 {(estateUnlocked || buildings.darkEstate >= 1) && (
                   <button
                     className={`py-2 text-sm bg-transparent ${
-                      animatingTabs.has("estate") ? "tab-fade-in" : activeTab === "estate" ? "font-bold opacity-100" : "opacity-60"
+                      animatingTabs.has("estate")
+                        ? "tab-fade-in"
+                        : activeTab === "estate"
+                          ? "font-bold opacity-100"
+                          : "opacity-60"
                     }`}
                     onClick={() => setActiveTab("estate")}
                     data-testid="tab-estate"
@@ -280,7 +289,11 @@ export default function GameContainer() {
                 {flags.forestUnlocked && (
                   <button
                     className={`py-2 text-sm bg-transparent ${
-                      animatingTabs.has("forest") ? "tab-fade-in" : activeTab === "forest" ? "font-bold opacity-100" : "opacity-60"
+                      animatingTabs.has("forest")
+                        ? "tab-fade-in"
+                        : activeTab === "forest"
+                          ? "font-bold opacity-100"
+                          : "opacity-60"
                     }`}
                     onClick={() => setActiveTab("forest")}
                     data-testid="tab-forest"
@@ -292,7 +305,11 @@ export default function GameContainer() {
                 {flags.bastionUnlocked && (
                   <button
                     className={`py-2 text-sm bg-transparent ${
-                      animatingTabs.has("bastion") ? "tab-fade-in" : activeTab === "bastion" ? "font-bold opacity-100" : "opacity-60"
+                      animatingTabs.has("bastion")
+                        ? "tab-fade-in"
+                        : activeTab === "bastion"
+                          ? "font-bold opacity-100"
+                          : "opacity-60"
                     }`}
                     onClick={() => setActiveTab("bastion")}
                     data-testid="tab-bastion"
@@ -306,7 +323,6 @@ export default function GameContainer() {
 
           {/* Action Panels */}
           <div className="flex-1 overflow-auto pl-2 md:pl-4 min-h-0">
-
             {activeTab === "cave" && <CavePanel />}
             {activeTab === "village" && <VillagePanel />}
             {activeTab === "forest" && <ForestPanel />}
