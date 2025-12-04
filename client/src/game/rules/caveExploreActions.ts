@@ -120,7 +120,6 @@ function getInheritedItems(actionId: string) {
 }
 
 export const caveExploreActions: Record<string, Action> = {
-
   lightFire: {
     id: "lightFire",
     label: "Light Fire",
@@ -142,9 +141,12 @@ export const caveExploreActions: Record<string, Action> = {
       "story.seen.hasWood": true,
       "story.seen.firstWoodGathered": true,
       "relics.odd_trinket": {
-        probability: 0.0075,
+        probability: 0.05,
         value: true,
-        condition: (state: GameState) => !state.relics?.odd_trinket && (state.buildings?.cabin || 0) >= 1,
+        condition: (state: GameState) =>
+          !state.relics?.odd_trinket &&
+          state.weapons.crude_bow &&
+          state.buildings.woodenHut <= 4,
         logMessage:
           "While chopping wood, you find a trinket with glowing amber liquid inside. After some hesitation, you drink it. It burns as it goes down, but you feel stronger than before.",
       },
@@ -307,10 +309,10 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.food": 1000,
     },
     effects: {
-      "resources.silver":  250 ,
-      "resources.gold": 50 ,
-      "resources.obsidian":  50 ,
-      "resources.adamant": 50 ,
+      "resources.silver": 250,
+      "resources.gold": 50,
+      "resources.obsidian": 50,
+      "resources.adamant": 50,
       "tools.mastermason_chisel": true,
       "flags.lowChamberExplored": true,
       "story.seen.lowChamberExplored": true,
@@ -329,10 +331,10 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.food": 1000,
     },
     effects: {
-      "resources.gold":  150 ,
-      "resources.obsidian":  75 ,
-      "resources.adamant":  50 ,
-      "resources.moonstone":  25 ,
+      "resources.gold": 150,
+      "resources.obsidian": 75,
+      "resources.adamant": 50,
+      "resources.moonstone": 25,
       "relics.occultist_grimoire": true,
       "flags.occultistChamberExplored": true,
       "story.seen.occultistChamberExplored": true,
