@@ -33,6 +33,13 @@ export const forestSacrificeActions: Record<string, Action> = {
   boneTotems: {
     id: "boneTotems",
     label: "Bone Totems",
+    tooltipEffects: (state: GameState) => {
+      const effects = ["10-25 Silver"];
+      if (state.buildings.boneTemple >= 1) {
+        effects.push("Bone Temple: +25% Silver");
+      }
+      return effects;
+    },
     show_when: {
       "buildings.altar": 1,
     },
@@ -49,6 +56,13 @@ export const forestSacrificeActions: Record<string, Action> = {
   leatherTotems: {
     id: "leatherTotems",
     label: "Leather Totems",
+    tooltipEffects: (state: GameState) => {
+      const effects = ["10-25 Gold"];
+      if (state.buildings.boneTemple >= 1) {
+        effects.push("Bone Temple: +25% Gold");
+      }
+      return effects;
+    },
     show_when: {
       "buildings.temple": 1,
     },
@@ -168,6 +182,25 @@ function handleTotemSacrifice(
 
   // Apply sacrifice bonuses and multipliers from relics/items
   const actionBonuses = getActionBonuses(actionId, state);
+
+  // Apply Bone Temple bonus (25% increase to gold/silver)
+  let boneTempleMultiplier = 1.0;
+  if (state.buildings.boneTemple >= 1) {
+    boneTempleMultiplier = 1.25;
+  }
+
+  // Apply Bone Temple multiplier to gold/silver rewards
+  if (effectUpdates.resources && boneTempleMultiplier > 1) {
+    ["gold", "silver"].forEach((resource) => {
+      const currentAmount =
+        effectUpdates.resources![resource] || state.resources[resource] || 0;
+      const baseAmount = currentAmount - (state.resources[resource] || 0);
+      if (baseAmount > 0) {
+        const bonusAmount = Math.ceil(baseAmount * (boneTempleMultiplier - 1));
+        effectUpdates.resources![resource] = currentAmount + bonusAmount;
+      }
+    });
+  }
 
   // Apply resource multipliers (like 20% bonus from ebony ring)
   if (

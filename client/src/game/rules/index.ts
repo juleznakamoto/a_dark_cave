@@ -65,6 +65,7 @@ const actionHandlers: Record<string, (state: GameState, actionId: string) => Par
   boneTotems: handleBoneTotems,
   leatherTotems: handleLeatherTotems,
   buildInkwardenAcademy: handleBuildInkwardenAcademy, // Added Inkwarden Academy handler
+  buildBoneTemple: handleBuildBoneTemple, // Added Bone Temple handler
 };
 
 
@@ -83,6 +84,7 @@ export const gameActions: Record<string, Action> = {
   buildBlackMonolith: villageBuildActions.buildBlackMonolith,
   buildMasterworkFoundry: villageBuildActions.buildMasterworkFoundry,
   animals: forestSacrificeActions.animals,
+  buildBoneTemple: villageBuildActions.buildBoneTemple, // Added Bone Temple action
 };
 
 // Utility function to get the next building level
@@ -118,6 +120,7 @@ const getNextBuildingLevel = (actionId: string, state: GameState): number => {
     buildBlackMonolith: "blackMonolith", // Added Black Monolith
     buildScriptorium: "scriptorium", // Added Scriptorium
     buildInkwardenAcademy: "inkwardenAcademy", // Added Inkwarden Academy
+    buildBoneTemple: "boneTemple", // Added Bone Temple
   };
 
   const buildingKey = buildingMap[actionId];
@@ -432,7 +435,7 @@ export function canExecuteAction(actionId: string, state: GameState): boolean {
         true,
         state,
       );
-      if ((current || 0) < adjustedCost) {
+      if ((current || 0) < adjustedAmount) {
         return false;
       }
     } else {

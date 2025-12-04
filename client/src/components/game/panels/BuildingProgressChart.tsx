@@ -159,10 +159,10 @@ export default function BuildingProgressChart() {
       },
       {
         buildingType: "blackMonolith",
-        maxCount: 2,
+        maxCount: 3,
         color: tailwindToHex("gray-400/80"),
         label: "Black Monolith",
-        relatedBuildings: ["pillarOfClarity"]
+        relatedBuildings: ["pillarOfClarity", "boneTemple"]
       },
       {
         buildingType: "darkEstate",

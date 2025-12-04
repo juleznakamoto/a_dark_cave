@@ -1424,6 +1424,63 @@ export const villageBuildActions: Record<string, Action> = {
     cooldown: 60,
   },
 
+  buildBoneTemple: {
+    id: "buildBoneTemple",
+    label: "Bone Temple",
+    description: "Grand temple built from thousands of bones, honoring the old gods",
+    tooltipEffects: (state: GameState) => {
+      const animalSacrificeLevel =
+        Number(state.story?.seen?.animalsSacrificeLevel) || 0;
+      const humanSacrificeLevel =
+        Number(state.story?.seen?.humansSacrificeLevel) || 0;
+      const animalBonusMadnessReduction = Math.min(animalSacrificeLevel, 10);
+      const humanBonusMadnessReduction = Math.min(humanSacrificeLevel * 2, 20);
+
+      const effects = ["-10 Madness", "Bone/Leather Totem Sacrifices: +25% Gold/Silver"];
+
+      if (animalBonusMadnessReduction > 0) {
+        effects.push(
+          `-${animalBonusMadnessReduction} Madness from Animal sacrifices`,
+        );
+      } else {
+        effects.push("-1 Madness per Animal sacrifice (max -10)");
+      }
+
+      if (humanBonusMadnessReduction > 0) {
+        effects.push(
+          `-${humanBonusMadnessReduction} Madness from Human sacrifices`,
+        );
+      } else if (state.flags?.humanSacrificeUnlocked) {
+        effects.push("-2 Madness per Human sacrifice (max -20)");
+      }
+
+      return effects;
+    },
+    building: true,
+    show_when: {
+      1: {
+        "buildings.blackMonolith": 1,
+        "buildings.boneTemple": 0,
+        "story.seen.boneTempleUnlocked": true,
+      },
+    },
+    cost: {
+      1: {
+        "resources.bones": 25000,
+      },
+    },
+    effects: {
+      1: {
+        "buildings.boneTemple": 1,
+        "story.seen.hasBoneTemple": true,
+      },
+    },
+    statsEffects: {
+      madness: -10,
+    },
+    cooldown: 120,
+  },
+
   buildDarkEstate: {
     id: "buildDarkEstate",
     label: "Dark Estate",
@@ -2399,4 +2456,29 @@ export function handleBuildPillarOfClarity(
   }
 
   return pillarOfClarityResult;
+}
+
+export function handleBuildBoneTemple(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const boneTempleResult = handleBuildingConstruction(
+    state,
+    result,
+    "buildBoneTemple",
+    "boneTemple",
+  );
+
+  // Add bone temple completion message
+  if (state.buildings.boneTemple === 0) {
+    boneTempleResult.logEntries!.push({
+      id: `bone-temple-built-${Date.now()}`,
+      message:
+        "The Bone Temple rises from thousands of carefully arranged bones, a monument to the old gods. Its presence emanates dark power, and the villagers approach it with reverence and fear.",
+      timestamp: Date.now(),
+      type: "system",
+    });
+  }
+
+  return boneTempleResult;
 }

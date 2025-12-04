@@ -236,6 +236,7 @@ export const gameStateSchema = z.object({
       blackMonolith: z.number().default(0),
       darkEstate: z.number().default(0),
       pillarOfClarity: z.number().default(0),
+      boneTemple: z.number().default(0),
     })
     .default({}),
   villagers: z

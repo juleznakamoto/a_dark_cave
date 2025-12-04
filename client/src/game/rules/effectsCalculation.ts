@@ -658,6 +658,30 @@ export const calculateTotalEffects = (state: GameState) => {
     }
   }
 
+  // Add Bone Temple madness reduction (applies independently, includes Black Monolith effects)
+  if (state.buildings.boneTemple > 0) {
+    const buildAction = villageBuildActions.buildBoneTemple;
+    if (buildAction?.statsEffects?.madness) {
+      effects.madness_reduction.boneTemple_madness =
+        buildAction.statsEffects.madness;
+    }
+
+    // Bone Temple inherits sacrifice bonuses from Black Monolith
+    const animalUsageCount = Number(state.story?.seen?.animalsSacrificeLevel) || 0;
+    if (animalUsageCount > 0) {
+      const sacrificeMadnessReduction = animalUsageCount * -1;
+      effects.madness_reduction.animals_sacrifice_madness =
+        sacrificeMadnessReduction;
+    }
+
+    const humanUsageCount = Number(state.story?.seen?.humansSacrificeLevel) || 0;
+    if (humanUsageCount > 0) {
+      const humanMadnessReduction = humanUsageCount * -2;
+      effects.madness_reduction.humans_sacrifice_madness =
+        humanMadnessReduction;
+    }
+  }
+
   // Apply knowledge bonus from highest tier building only
   // Order by priority: scriptorium > clerksHut
   const knowledgePriority = ["inkwardenAcademy", "scriptorium", "clerksHut"];
