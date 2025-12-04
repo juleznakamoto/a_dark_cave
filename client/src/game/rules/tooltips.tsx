@@ -109,7 +109,7 @@ export const calculateResourceGains = (
           if (match) {
             let min = parseInt(match[1]);
             let max = parseInt(match[2]);
-            const buttonUpgradeMultiplier = bonuses.buttonUpgradeMultiplier[resource] || 1;
+            const buttonUpgradeMultiplier = bonuses.buttonUpgradeMultiplier?.[resource] || 1;
 
             // Apply flat bonuses (includes both specific action bonuses and general mine bonuses)
             const flatBonus = bonuses.resourceBonus[resource] || 0;
@@ -139,7 +139,7 @@ export const calculateResourceGains = (
         } else if (typeof value === "number") {
           // Fixed value
           let amount = value;
-          const buttonUpgradeMultiplier = bonuses.buttonUpgradeMultiplier[resource] || 1;
+          const buttonUpgradeMultiplier = bonuses.buttonUpgradeMultiplier?.[resource] || 1;
 
           // Apply flat bonuses (includes both specific action bonuses and general mine bonuses)
           const flatBonus = bonuses.resourceBonus[resource] || 0;

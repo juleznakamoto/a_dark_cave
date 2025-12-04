@@ -1,0 +1,1166 @@
+{
+  "CM": 1,
+  "log": [
+    {
+      "id": "ringOfDrownedChoice-1764835792998",
+      "type": "event",
+      "title": "Ring of Drowned",
+      "choices": [
+        {
+          "id": "keepRing",
+          "label": "Keep it"
+        },
+        {
+          "id": "leaveRing",
+          "label": "Leave it"
+        }
+      ],
+      "message": "Deep in the forgotten city, you find a strange ring that drips constantly with water. Do you keep it?",
+      "timestamp": 1764835792998,
+      "isTimedChoice": true,
+      "fallbackChoice": {
+        "id": "leaveRing",
+        "label": "Leave it"
+      },
+      "baseDecisionTime": 15
+    },
+    {
+      "id": "probability-effect-1764835798951-0.9541590250419381",
+      "type": "system",
+      "message": "In the cave you find a leather belt stained with ancient blood.",
+      "timestamp": 1764835798951
+    },
+    {
+      "id": "boneDiceChoice-1764835805732",
+      "type": "event",
+      "title": "The Bone Dice",
+      "choices": [
+        {
+          "id": "keepDice",
+          "label": "Keep them"
+        },
+        {
+          "id": "leaveDice",
+          "label": "Leave them"
+        }
+      ],
+      "message": "As you descend further, you find a set of bone dice carved with ancient runes. These dice have seen much fortune... and much tragedy. Do you keep them?",
+      "timestamp": 1764835805732,
+      "isTimedChoice": true,
+      "fallbackChoice": {
+        "id": "leaveDice",
+        "label": "Leave them"
+      },
+      "baseDecisionTime": 15
+    },
+    {
+      "id": "hollowKingScepterChoice-1764835810747",
+      "type": "event",
+      "title": "The Hollow King Scepter",
+      "choices": [
+        {
+          "id": "keepScepter",
+          "label": "Keep it"
+        },
+        {
+          "id": "leaveScepter",
+          "label": "Leave it"
+        }
+      ],
+      "message": "In the throne room of the citadel, you find a magnificent scepter of obsidian. It must have belonged to the king of this lost city. Dark knowledge flows from it. Do you keep it?",
+      "timestamp": 1764835810747,
+      "isTimedChoice": true,
+      "fallbackChoice": {
+        "id": "leaveScepter",
+        "label": "Leave it"
+      },
+      "baseDecisionTime": 15
+    },
+    {
+      "id": "levelup_caveExplore_1764835810748",
+      "type": "system",
+      "message": "Your mastery of Cave Exploring deepens.",
+      "timestamp": 1764835810748
+    },
+    {
+      "id": "levelup_mineStone_1764835819452",
+      "type": "system",
+      "message": "Your mastery of Stone Mining deepens.",
+      "timestamp": 1764835819452
+    },
+    {
+      "id": "ring_of_clarity-1764835976361",
+      "type": "system",
+      "message": "Among the sacrifice offerings, you discover a crystal-clear ring.",
+      "timestamp": 1764835976361,
+      "visualEffect": {
+        "type": "glow",
+        "duration": 3
+      }
+    },
+    {
+      "id": "moon_bracelet-1764836143100",
+      "type": "system",
+      "message": "Among the sacrifice offerings, you discover a white stone bracelet.",
+      "timestamp": 1764836143100,
+      "visualEffect": {
+        "type": "glow",
+        "duration": 3
+      }
+    },
+    {
+      "id": "villagerMissing-1764836284285",
+      "type": "event",
+      "title": null,
+      "choices": null,
+      "message": "A door of a hut stands ajar. Its occupant is gone.",
+      "timestamp": 1764836284285,
+      "visualEffect": null,
+      "isTimedChoice": null,
+      "fallbackChoice": null,
+      "relevant_stats": null,
+      "baseDecisionTime": null
+    },
+    {
+      "id": "findElderScroll-1764836925554",
+      "type": "event",
+      "title": null,
+      "choices": null,
+      "message": "During the night as you pass a narrow path, something moves at the edge of your vision, like a shadow fleeing the firelight. You follow it, and there, upon the cold stones, lies an ancient scroll.",
+      "timestamp": 1764836925554,
+      "visualEffect": {
+        "type": "glow",
+        "duration": 3
+      },
+      "isTimedChoice": null,
+      "fallbackChoice": null,
+      "relevant_stats": null,
+      "baseDecisionTime": null
+    },
+    {
+      "id": "levelup_caveExplore_1764837380529",
+      "type": "system",
+      "message": "Your mastery of Cave Exploring deepens.",
+      "timestamp": 1764837380529
+    },
+    {
+      "id": "probability-effect-1764837382121-0.6235181684889313",
+      "type": "system",
+      "message": "In the cave's shadows, something glints. You find a tarnished amulet.",
+      "timestamp": 1764837382121
+    },
+    {
+      "id": "shadowFluteChoice-1764837385992",
+      "type": "event",
+      "title": "The Shadow Flute",
+      "choices": [
+        {
+          "id": "keepFlute",
+          "label": "Keep it"
+        },
+        {
+          "id": "leaveFlute",
+          "label": "Leave it"
+        }
+      ],
+      "message": "Deep in the cave you discover a bone flute of disturbing craftsmanship. As you play it, the shadows around you begin to move in unnatural ways, as if dancing to a melody. Do you keep it?",
+      "timestamp": 1764837385992,
+      "isTimedChoice": true,
+      "fallbackChoice": {
+        "id": "leaveFlute",
+        "label": "Leave it",
+        "relevant_stats": [
+          "luck"
+        ]
+      },
+      "baseDecisionTime": 15
+    },
+    {
+      "id": "levelup_mineStone_1764837404625",
+      "type": "system",
+      "message": "Your mastery of Stone Mining deepens.",
+      "timestamp": 1764837404625
+    },
+    {
+      "id": "levelup_caveExplore_1764837408186",
+      "type": "system",
+      "message": "Your mastery of Cave Exploring deepens.",
+      "timestamp": 1764837408186
+    },
+    {
+      "id": "levelup_caveExplore_1764837432750",
+      "type": "system",
+      "message": "Your mastery of Cave Exploring deepens.",
+      "timestamp": 1764837432750
+    },
+    {
+      "id": "levelup_mineStone_1764837453252",
+      "type": "system",
+      "message": "Your mastery of Stone Mining deepens.",
+      "timestamp": 1764837453252
+    },
+    {
+      "id": "levelup_caveExplore_1764837462122",
+      "type": "system",
+      "message": "Your mastery of Cave Exploring deepens.",
+      "timestamp": 1764837462122
+    }
+  ],
+  "books": {
+    "book_of_war": false,
+    "book_of_ascension": true
+  },
+  "flags": {
+    "hasCity": true,
+    "hasTraps": false,
+    "gameStarted": true,
+    "hasFortress": false,
+    "caveExplored": true,
+    "exploredRuins": true,
+    "portalBlasted": false,
+    "exploredTemple": true,
+    "forestUnlocked": true,
+    "venturedDeeper": true,
+    "bastionUnlocked": false,
+    "exploredCitadel": true,
+    "firstWolfAttack": false,
+    "villageUnlocked": true,
+    "descendedFurther": true,
+    "monolithUnlocked": false,
+    "starvationActive": true,
+    "lowChamberExplored": true,
+    "humanSacrificeUnlocked": true,
+    "occultistChamberExplored": true
+  },
+  "stats": {
+    "luck": 32,
+    "madness": 0,
+    "strength": 20,
+    "knowledge": 75,
+    "madnessFromEvents": 0
+  },
+  "story": {
+    "seen": {
+      "fireLit": true,
+      "hasCoal": true,
+      "hasIron": true,
+      "hasWood": true,
+      "hasAltar": true,
+      "hasStone": true,
+      "trapLaid": true,
+      "hasHunted": true,
+      "hasQuarry": true,
+      "hasShrine": true,
+      "hasSulfur": true,
+      "hasTemple": true,
+      "hasAdamant": true,
+      "hasIronAxe": true,
+      "hasTannery": true,
+      "hasObsidian": true,
+      "hasSteelAxe": true,
+      "hasStoneAxe": true,
+      "actionHumans": true,
+      "caveExplored": true,
+      "hasBoneTotem": true,
+      "hasClerksHut": true,
+      "hasTradePost": true,
+      "hasVillagers": true,
+      "exploredRuins": true,
+      "hasAdamantAxe": true,
+      "hasBlacksmith": true,
+      "hasBoneTemple": true,
+      "hasGreatCabin": true,
+      "hasMinedStone": true,
+      "hasTimberMill": true,
+      "redMaskChoice": true,
+      "woodcutterMet": true,
+      "boneDiceChoice": true,
+      "exploredTemple": true,
+      "fireStormCount": 1,
+      "frostfallCount": 1,
+      "hasGrandBazaar": true,
+      "hasHunterCloak": true,
+      "hasIronLantern": true,
+      "hasIronPickaxe": true,
+      "hasObsidianAxe": true,
+      "hasScriptorium": true,
+      "venturedDeeper": true,
+      "woodcutter1Met": true,
+      "woodcutter2Met": true,
+      "woodcutter3Met": true,
+      "exploredCitadel": true,
+      "foundryComplete": true,
+      "hasExplorerPack": true,
+      "hasLeatherTotem": true,
+      "hasSteelLantern": true,
+      "hasSteelPickaxe": true,
+      "hasStonePickaxe": true,
+      "silverSackFound": true,
+      "templeDedicated": true,
+      "actionBoneTotems": true,
+      "actionBuildAltar": true,
+      "actionBuildCabin": true,
+      "actionCraftTorch": true,
+      "descendedFurther": true,
+      "hasAlchemistHall": true,
+      "hasBlackMonolith": true,
+      "hasLoggersGloves": true,
+      "hasMasterTannery": true,
+      "portalDiscovered": true,
+      "slaveTraderEvent": true,
+      "witchsCurseEvent": true,
+      "actionBuildQuarry": true,
+      "actionBuildShrine": true,
+      "actionBuildTemple": true,
+      "firstWoodGathered": true,
+      "hasAdamantLantern": true,
+      "hasAdamantPickaxe": true,
+      "hasHighpriestRobe": true,
+      "hasMerchantsGuild": true,
+      "masterArcherEvent": true,
+      "shadowFluteChoice": true,
+      "actionBuildTannery": true,
+      "actionCraftIronAxe": true,
+      "actionCraftTorches": true,
+      "blindDruidBlessing": true,
+      "boneTempleUnlocked": true,
+      "hasObsidianLantern": true,
+      "hasObsidianPickaxe": true,
+      "lowChamberExplored": true,
+      "villageBecomesCity": true,
+      "woodcutterBetrayed": true,
+      "actionBuildStoneHut": true,
+      "actionCraftCrudeBow": true,
+      "actionCraftSteelAxe": true,
+      "actionCraftStoneAxe": true,
+      "actionCraftTorches3": true,
+      "actionCraftTorches5": true,
+      "actionLeatherTotems": true,
+      "cthulhuFigureChoice": true,
+      "hasInkwardenAcademy": true,
+      "powderMakerUnlocked": true,
+      "ringOfDrownedChoice": true,
+      "woodcutter1Accepted": true,
+      "woodcutter2Accepted": true,
+      "woodcutter3Accepted": true,
+      "actionBuildClerksHut": true,
+      "actionBuildTradePost": true,
+      "actionBuildWoodenHut": true,
+      "actionCraftIronSword": true,
+      "boneTotemsUsageCount": 34,
+      "humansSacrificeLevel": 10,
+      "humansSacrificeMaxed": true,
+      "mysteriousWomanEvent": true,
+      "actionBuildBlacksmith": true,
+      "actionBuildBoneTemple": true,
+      "actionBuildDarkEstate": true,
+      "actionBuildGreatCabin": true,
+      "actionBuildShallowPit": true,
+      "actionBuildTimberMill": true,
+      "actionCraftAdamantAxe": true,
+      "animalsSacrificeLevel": 10,
+      "animalsSacrificeMaxed": true,
+      "restlessKnightSuccess": true,
+      "actionBuildGrandBazaar": true,
+      "actionBuildScriptorium": true,
+      "actionCraftHunterCloak": true,
+      "actionCraftHuntsmanBow": true,
+      "actionCraftIronLantern": true,
+      "actionCraftIronPickaxe": true,
+      "actionCraftObsidianAxe": true,
+      "actionTradeGoldForFood": true,
+      "actionTradeGoldForWood": true,
+      "blacksmithHammerChoice": true,
+      "mysteriousBookReceived": true,
+      "youngWomanProtestEvent": true,
+      "actionBuildDeepeningPit": true,
+      "actionCraftExplorerPack": true,
+      "actionCraftSteelLantern": true,
+      "actionCraftSteelPickaxe": true,
+      "actionCraftStonePickaxe": true,
+      "actionTradeGoldForSteel": true,
+      "actionTradeGoldForStone": true,
+      "actionTradeGoldForTorch": true,
+      "boneTempleProposalEvent": true,
+      "hollowKingScepterChoice": true,
+      "leatherTotemsUsageCount": 35,
+      "villageGrowthSuggestion": true,
+      "actionBuildAlchemistHall": true,
+      "actionBuildBlackMonolith": true,
+      "actionBuildMasterTannery": true,
+      "actionCraftLoggersGloves": true,
+      "actionTradeSilverForGold": true,
+      "occultistChamberExplored": true,
+      "actionBuildMerchantsGuild": true,
+      "actionCraftAdamantLantern": true,
+      "actionCraftAdamantPickaxe": true,
+      "actionCraftHighpriestRobe": true,
+      "actionTradeGoldForAdamant": true,
+      "actionTradeGoldForLeather": true,
+      "actionCraftObsidianLantern": true,
+      "actionCraftObsidianPickaxe": true,
+      "actionTradeGoldForObsidian": true,
+      "actionBuildInkwardenAcademy": true
+    }
+  },
+  "tools": {
+    "lantern": false,
+    "bone_saw": false,
+    "iron_axe": true,
+    "steel_axe": true,
+    "stone_axe": true,
+    "giant_trap": true,
+    "adamant_axe": true,
+    "iron_lantern": true,
+    "iron_pickaxe": true,
+    "obsidian_axe": true,
+    "occultist_map": true,
+    "steel_lantern": true,
+    "steel_pickaxe": true,
+    "stone_pickaxe": true,
+    "adamant_lantern": true,
+    "adamant_pickaxe": true,
+    "reinforced_rope": true,
+    "natharit_pickaxe": false,
+    "obsidian_lantern": true,
+    "obsidian_pickaxe": true,
+    "blacksmith_hammer": true,
+    "mastermason_chisel": true
+  },
+  "events": {
+    "log": [],
+    "active": [],
+    "cube01": true,
+    "cube02": true,
+    "cube03": true,
+    "cube04": true,
+    "cube05": true,
+    "cube06": false,
+    "cube07": false,
+    "cube08": false,
+    "cube09": false,
+    "cube10": false,
+    "cube11": false,
+    "cube13": false,
+    "cube14a": false,
+    "cube14b": false,
+    "cube14c": false,
+    "cube14d": false,
+    "cube15a": false,
+    "cube15b": false,
+    "available": [],
+    "shadowsMove": false,
+    "bloodInWater": false,
+    "facesInWalls": false,
+    "skinCrawling": false,
+    "creatureInHut": false,
+    "monolithDemand": false,
+    "villagerStares": false,
+    "wrongVillagers": false,
+    "whisperingVoices": false,
+    "wrongReflections": false,
+    "elder_scroll_found": true,
+    "villagersStareAtSky": false,
+    "humanSacrificeDemand": true,
+    "slaughteredCreatures": false,
+    "communicatedWithCreatures": false,
+    "encounteredCreaturesChoice": false
+  },
+  "relics": {
+    "bone_dice": true,
+    "bloodstone": false,
+    "frostglass": false,
+    "ravens_orb": true,
+    "elder_scroll": true,
+    "shadow_flute": true,
+    "unnamed_book": true,
+    "wooden_figure": true,
+    "ancient_scrolls": false,
+    "whispering_cube": true,
+    "blackened_mirror": true,
+    "occultist_grimoire": true,
+    "hollow_king_scepter": true
+  },
+  "devMode": true,
+  "effects": {
+    "statBonuses": {
+      "luck": 32,
+      "madness": 29,
+      "strength": 20,
+      "knowledge": 75
+    },
+    "actionBonuses": {
+      "sharp_aim": {
+        "hunter": {
+          "resourceBonus": {
+            "food": 5
+          }
+        }
+      },
+      "giant_trap": {},
+      "adamant_axe": {
+        "chopWood": {
+          "cooldownReduction": 1.5,
+          "resourceMultiplier": 4
+        }
+      },
+      "book_of_war": {},
+      "hunter_cloak": {
+        "hunt": {
+          "resourceMultiplier": 1.25
+        }
+      },
+      "huntsman_bow": {
+        "hunt": {
+          "cooldownReduction": 1,
+          "resourceMultiplier": 1.5
+        }
+      },
+      "forests_grace": {
+        "hunt": {
+          "resourceMultiplier": 1.25
+        }
+      },
+      "occultist_map": {},
+      "black_bear_fur": {
+        "hunt": {
+          "resourceMultiplier": 1.25
+        }
+      },
+      "loggers_gloves": {
+        "chopWood": {
+          "resourceMultiplier": 1.25
+        }
+      },
+      "adamant_lantern": {
+        "mining": {
+          "cooldownReduction": 4,
+          "resourceMultiplier": 2
+        }
+      },
+      "adamant_pickaxe": {
+        "mining": {
+          "cooldownReduction": 6,
+          "resourceMultiplier": 2.5
+        }
+      },
+      "highpriest_robe": {},
+      "reinforced_rope": {},
+      "book_of_ascension": {},
+      "hollow_king_scepter": {
+        "mining": {
+          "resourceMultiplier": 1.25
+        }
+      }
+    },
+    "resource_bonus": {
+      "hunter_food": 5
+    },
+    "madness_reduction": {
+      "temple_madness": -8,
+      "boneTemple_madness": -10,
+      "blackMonolith_madness": -5,
+      "humans_sacrifice_madness": -20,
+      "animals_sacrifice_madness": -10
+    },
+    "probability_bonus": {
+      "newVillager": 0.2
+    },
+    "cooldown_reduction": {
+      "hunt": 1,
+      "mining": 10,
+      "chopWood": 1.5
+    },
+    "resource_multiplier": {
+      "hunt": 2.25,
+      "mining": 3.75,
+      "chopWood": 4.25
+    }
+  },
+  "isMuted": false,
+  "madness": null,
+  "weapons": {
+    "war_bow": false,
+    "arbalest": false,
+    "long_bow": false,
+    "crude_bow": true,
+    "iron_sword": true,
+    "master_bow": false,
+    "steel_sword": false,
+    "ashen_dagger": false,
+    "compound_bow": false,
+    "huntsman_bow": true,
+    "adamant_sword": false,
+    "nightshade_bow": false,
+    "nordic_war_axe": false,
+    "obsidian_sword": false,
+    "bloodstone_staff": false,
+    "frostglass_sword": false
+  },
+  "clothing": {
+    "red_mask": true,
+    "ebony_ring": false,
+    "alphas_hide": false,
+    "hunter_cloak": true,
+    "bone_necklace": false,
+    "cracked_crown": false,
+    "explorer_pack": true,
+    "grenadier_bag": false,
+    "moon_bracelet": true,
+    "black_bear_fur": true,
+    "loggers_gloves": true,
+    "highpriest_robe": true,
+    "ring_of_clarity": true,
+    "ring_of_drowned": true,
+    "muttering_amulet": true,
+    "tarnished_amulet": true,
+    "bloodstained_belt": true,
+    "ravenfeather_mantle": false
+  },
+  "isPaused": false,
+  "playTime": 5951774.200001618,
+  "activeTab": "estate",
+  "blessings": {
+    "sharp_aim": true,
+    "dagons_gift": false,
+    "ravens_mark": true,
+    "flames_touch": false,
+    "ashen_embrace": false,
+    "forests_grace": true,
+    "dagons_gift_enhanced": false,
+    "ravens_mark_enhanced": false,
+    "flames_touch_enhanced": false,
+    "ashen_embrace_enhanced": false
+  },
+  "boostMode": false,
+  "buildings": {
+    "altar": 1,
+    "cabin": 1,
+    "traps": 0,
+    "quarry": 1,
+    "shrine": 1,
+    "temple": 1,
+    "bastion": 0,
+    "deepPit": 0,
+    "foundry": 1,
+    "sanctum": 0,
+    "tannery": 1,
+    "furTents": 1,
+    "stoneHut": 5,
+    "clerksHut": 1,
+    "longhouse": 0,
+    "palisades": 0,
+    "tradePost": 1,
+    "woodenHut": 10,
+    "blacksmith": 1,
+    "boneTemple": 1,
+    "darkEstate": 1,
+    "greatCabin": 1,
+    "shallowPit": 1,
+    "timberMill": 1,
+    "watchtower": 0,
+    "grandBazaar": 1,
+    "scriptorium": 1,
+    "wizardTower": 0,
+    "deepeningPit": 1,
+    "primeFoundry": 0,
+    "alchemistHall": 1,
+    "blackMonolith": 1,
+    "bottomlessPit": 0,
+    "fortifiedMoat": 0,
+    "masterTannery": 1,
+    "merchantsGuild": 1,
+    "grandBlacksmith": 0,
+    "pillarOfClarity": 0,
+    "inkwardenAcademy": 1,
+    "masterworkFoundry": 0
+  },
+  "cooldowns": {
+    "hunt": 0,
+    "humans": 0,
+    "animals": 0,
+    "layTrap": 0,
+    "chopWood": 0,
+    "mineCoal": 0,
+    "mineIron": 0,
+    "lightFire": 0,
+    "mineStone": 0,
+    "boneTotems": 0,
+    "buildAltar": 0,
+    "buildCabin": 0,
+    "craftTorch": 0,
+    "lowChamber": 0,
+    "mineSulfur": 0,
+    "buildQuarry": 0,
+    "buildShrine": 0,
+    "buildTemple": 0,
+    "exploreCave": 0,
+    "mineAdamant": 0,
+    "buildFoundry": 0,
+    "buildTannery": 0,
+    "craftIronAxe": 0,
+    "craftTorches": 0,
+    "exploreRuins": 0,
+    "mineObsidian": 0,
+    "buildStoneHut": 0,
+    "craftCrudeBow": 0,
+    "craftSteelAxe": 0,
+    "craftStoneAxe": 0,
+    "craftTorches3": 0,
+    "craftTorches5": 0,
+    "exploreTemple": 0,
+    "leatherTotems": 0,
+    "ventureDeeper": 0,
+    "buildClerksHut": 0,
+    "buildTradePost": 0,
+    "buildWoodenHut": 0,
+    "craftBoneTotem": 0,
+    "craftIronSword": 0,
+    "descendFurther": 0,
+    "exploreCitadel": 0,
+    "buildBlacksmith": 0,
+    "buildBoneTemple": 0,
+    "buildDarkEstate": 0,
+    "buildGreatCabin": 0,
+    "buildShallowPit": 0,
+    "buildTimberMill": 0,
+    "craftAdamantAxe": 0,
+    "buildGrandBazaar": 0,
+    "buildScriptorium": 0,
+    "craftBoneTotems3": 0,
+    "craftHunterCloak": 0,
+    "craftHuntsmanBow": 0,
+    "craftIronLantern": 0,
+    "craftIronPickaxe": 0,
+    "craftObsidianAxe": 0,
+    "occultistChamber": 0,
+    "tradeGoldForFood": 0,
+    "tradeGoldForWood": 0,
+    "buildDeepeningPit": 0,
+    "craftExplorerPack": 0,
+    "craftLeatherTotem": 0,
+    "craftSteelLantern": 0,
+    "craftSteelPickaxe": 0,
+    "craftStonePickaxe": 0,
+    "tradeGoldForSteel": 0,
+    "tradeGoldForStone": 0,
+    "tradeGoldForTorch": 0,
+    "buildAlchemistHall": 0,
+    "buildBlackMonolith": 0,
+    "buildMasterTannery": 0,
+    "craftLoggersGloves": 0,
+    "tradeSilverForGold": 0,
+    "buildMerchantsGuild": 0,
+    "craftAdamantLantern": 0,
+    "craftAdamantPickaxe": 0,
+    "craftHighpriestRobe": 0,
+    "tradeGoldForAdamant": 0,
+    "tradeGoldForLeather": 0,
+    "craftObsidianLantern": 0,
+    "craftObsidianPickaxe": 0,
+    "tradeGoldForObsidian": 0,
+    "buildInkwardenAcademy": 0
+  },
+  "cruelMode": true,
+  "isNewGame": false,
+  "lastSaved": 1764837515731,
+  "referrals": [
+    {
+      "userId": "eaa2e469-aedc-47a8-8a89-1f7f7b5d756a",
+      "claimed": true,
+      "timestamp": 1764057092669
+    },
+    {
+      "userId": "1bcc9461-a8df-4ce1-8fa6-a484c40469c5",
+      "claimed": true,
+      "timestamp": 1764058896485
+    },
+    {
+      "userId": "d0551f11-d740-4370-85af-2086304ad1ab",
+      "claimed": true,
+      "timestamp": 1764064129374
+    },
+    {
+      "userId": "9de29f08-5c95-4287-93a0-0188231cf94c",
+      "claimed": true,
+      "timestamp": 1764065229612
+    },
+    {
+      "userId": "d10c6bd2-165c-4f9a-aa7a-0d7cdad30cd7",
+      "claimed": true,
+      "timestamp": 1764066616869
+    },
+    {
+      "userId": "5933fcb9-66e4-4faf-9469-2fedca5d02f7",
+      "claimed": true,
+      "timestamp": 1764252687170
+    }
+  ],
+  "resources": {
+    "fur": 26400,
+    "coal": 7825,
+    "food": 224133,
+    "gold": 268005,
+    "iron": 10200,
+    "wood": 755073,
+    "bones": 2910,
+    "steel": 50220,
+    "stone": 1027715,
+    "torch": 10992,
+    "silver": 437813,
+    "sulfur": 3200,
+    "adamant": 101990,
+    "leather": 23670,
+    "obsidian": 156125,
+    "moonstone": 18675,
+    "void_bomb": 0,
+    "bone_totem": 1960,
+    "ember_bomb": 0,
+    "ashfire_bomb": 0,
+    "ashfire_dust": 0,
+    "black_powder": 0,
+    "leather_totem": 535
+  },
+  "startTime": 1764759498579,
+  "villagers": {
+    "free": 50,
+    "hunter": 0,
+    "tanner": 0,
+    "gatherer": 0,
+    "coal_miner": 0,
+    "iron_miner": 0,
+    "powder_maker": 0,
+    "steel_forger": 0,
+    "sulfur_miner": 0,
+    "adamant_miner": 0,
+    "obsidian_miner": 0,
+    "moonstone_miner": 0,
+    "ashfire_dust_maker": 0
+  },
+  "curseState": {
+    "endTime": 1764832122179,
+    "isActive": false
+  },
+  "feastState": {
+    "endTime": 1764831478522,
+    "isActive": false,
+    "lastAcceptedLevel": 1
+  },
+  "fellowship": {},
+  "schematics": {
+    "arbalest_schematic": false,
+    "bloodstone_bow_schematic": false,
+    "nightshade_bow_schematic": false
+  },
+  "_logMessage": "The creatures overwhelm your defenses. 19 villagers fall before the remaining creatures retreat to the depths. The watchtower is damaged in the assault.",
+  "eventDialog": {
+    "isOpen": false,
+    "currentEvent": null
+  },
+  "combatDialog": {
+    "enemy": null,
+    "isOpen": false,
+    "onDefeat": null,
+    "onVictory": null,
+    "eventTitle": "",
+    "eventMessage": ""
+  },
+  "combatSkills": {
+    "crushingStrikeLevel": 0,
+    "bloodflameSphereLevel": 0
+  },
+  "loopProgress": 38.166666666666664,
+  "referralCode": null,
+  "bastion_stats": {
+    "attack": 20,
+    "defense": 0,
+    "integrity": 0,
+    "attackFromStrength": 20,
+    "attackFromFortifications": 0
+  },
+  "huntingSkills": {
+    "level": 0
+  },
+  "idleModeState": {
+    "isActive": false,
+    "startTime": 0,
+    "needsDisplay": false
+  },
+  "referralCount": 6,
+  "referredUsers": [],
+  "showEndScreen": false,
+  "sleepUpgrades": {
+    "lengthLevel": 0,
+    "intensityLevel": 0
+  },
+  "authDialogOpen": false,
+  "buttonUpgrades": {
+    "hunt": {
+      "level": 1,
+      "clicks": 25
+    },
+    "chopWood": {
+      "level": 0,
+      "clicks": 18
+    },
+    "mineCoal": {
+      "level": 0,
+      "clicks": 0
+    },
+    "mineIron": {
+      "level": 0,
+      "clicks": 2
+    },
+    "mineStone": {
+      "level": 3,
+      "clicks": 50
+    },
+    "mineSulfur": {
+      "level": 0,
+      "clicks": 0
+    },
+    "caveExplore": {
+      "level": 5,
+      "clicks": 58
+    },
+    "mineAdamant": {
+      "level": 0,
+      "clicks": 2
+    },
+    "mineObsidian": {
+      "level": 0,
+      "clicks": 0
+    }
+  },
+  "clickAnalytics": {},
+  "eventCooldowns": {
+    "cube01": 1764830289125,
+    "cube02": 1764830787327,
+    "cube03": 1764830896794,
+    "cube04": 1764830992038,
+    "cube05": 1764834574710,
+    "feast1": 1764830876027,
+    "feast2": 1764835657748,
+    "foodGone": 1764835642282,
+    "merchant": 1764833227338,
+    "fireStorm": 1764833716740,
+    "frostfall": 1764835446481,
+    "steelGift": 1764830992029,
+    "stoneGift": 1764759904731,
+    "hiddenLake": 1764831743899,
+    "madBeduine": 1764836420052,
+    "paleFigure": 1764832002799,
+    "adamantGift": 1764832573435,
+    "slaveTrader": 1764759856998,
+    "witchsCurse": 1764831215429,
+    "woodcutter1": 1764830775827,
+    "woodcutter2": 1764830842552,
+    "woodcutter3": 1764832685102,
+    "woodcutter4": 1764832788444,
+    "masterArcher": 1764835222513,
+    "obsidianGift": 1764831284396,
+    "cthulhuFigure": 1764834613445,
+    "cubeDiscovery": 1764759737131,
+    "mysteriousBook": 1764831173595,
+    "restlessKnight": 1764832292366,
+    "wanderingTribe": 1764831655397,
+    "blackenedMirror": 1764837215655,
+    "findElderScroll": 1764836925554,
+    "mysteriousWoman": 1764831505661,
+    "villagerMissing": 1764836284284,
+    "portalDiscovered": 1764834631710,
+    "templeDedication": 1764830999276,
+    "youngWomanProtest": 1764831680165,
+    "blindDruidBlessing": 1764830895194,
+    "boneTempleProposal": 1764834436183,
+    "villageBecomesCity": 1764834574270,
+    "whispersBeneathHut": 1764830278425,
+    "silverSackDiscovery": 1764759545364,
+    "humanSacrificeDemand": 1764831492797,
+    "offerToTheForestGods": 1764831201595
+  },
+  "frostfallState": {
+    "endTime": 1764836348130,
+    "isActive": false
+  },
+  "idleModeDialog": {
+    "isOpen": false
+  },
+  "isUserSignedIn": true,
+  "shopDialogOpen": false,
+  "greatFeastState": {
+    "endTime": 0,
+    "isActive": false
+  },
+  "hoveredTooltips": {
+    "strength": true,
+    "knowledge": true,
+    "boneTemple": true,
+    "blackMonolith": true,
+    "adamant_lantern": true,
+    "adamant_pickaxe": true,
+    "highpriest_robe": true,
+    "blacksmith_hammer": true,
+    "mastermason_chisel": true,
+    "section-title-Population": true
+  },
+  "templeDedicated": false,
+  "triggeredEvents": {
+    "steelGift": true,
+    "madBeduine": true,
+    "adamantGift": true,
+    "slaveTrader": true,
+    "witchsCurse": true,
+    "obsidianGift": true,
+    "cthulhuFigure": true,
+    "mysteriousBook": true,
+    "blackenedMirror": true,
+    "findElderScroll": true,
+    "mysteriousWoman": true,
+    "villagerMissing": true,
+    "portalDiscovered": true,
+    "templeDedication": true,
+    "youngWomanProtest": true,
+    "blindDruidBlessing": true,
+    "villageBecomesCity": true,
+    "whispersBeneathHut": true,
+    "silverSackDiscovery": true,
+    "humanSacrificeDemand": true,
+    "offerToTheForestGods": true
+  },
+  "attackWaveTimers": {},
+  "damagedBuildings": {
+    "bastion": false,
+    "palisades": false,
+    "watchtower": false
+  },
+  "feastActivations": {},
+  "inactivityReason": null,
+  "isGameLoopActive": true,
+  "miningBoostState": {
+    "endTime": 0,
+    "isActive": false
+  },
+  "total_population": 18,
+  "cooldownDurations": {
+    "hunt": 8,
+    "humans": 90,
+    "animals": 90,
+    "layTrap": 30,
+    "chopWood": 4,
+    "mineCoal": 15,
+    "mineIron": 15,
+    "lightFire": 1,
+    "mineStone": 12,
+    "boneTotems": 60,
+    "buildAltar": 5,
+    "buildCabin": 15,
+    "craftTorch": 2,
+    "lowChamber": 1,
+    "mineSulfur": 15,
+    "buildQuarry": 30,
+    "buildShrine": 40,
+    "buildTemple": 60,
+    "exploreCave": 10,
+    "mineAdamant": 25,
+    "buildFoundry": 20,
+    "buildTannery": 20,
+    "craftIronAxe": 10,
+    "craftTorches": 3,
+    "exploreRuins": 40,
+    "mineObsidian": 20,
+    "buildStoneHut": 180,
+    "craftCrudeBow": 10,
+    "craftSteelAxe": 15,
+    "craftStoneAxe": 1,
+    "craftTorches3": 3.5,
+    "craftTorches5": 4.5,
+    "exploreTemple": 50,
+    "leatherTotems": 60,
+    "ventureDeeper": 20,
+    "buildClerksHut": 30,
+    "buildTradePost": 40,
+    "buildWoodenHut": 150,
+    "craftBoneTotem": 20,
+    "craftIronSword": 15,
+    "descendFurther": 30,
+    "exploreCitadel": 35,
+    "buildBlacksmith": 5,
+    "buildBoneTemple": 120,
+    "buildDarkEstate": 60,
+    "buildGreatCabin": 30,
+    "buildShallowPit": 30,
+    "buildTimberMill": 30,
+    "craftAdamantAxe": 25,
+    "buildGrandBazaar": 30,
+    "buildScriptorium": 40,
+    "craftBoneTotems3": 20,
+    "craftHunterCloak": 25,
+    "craftHuntsmanBow": 15,
+    "craftIronLantern": 15,
+    "craftIronPickaxe": 10,
+    "craftObsidianAxe": 20,
+    "occultistChamber": 1,
+    "tradeGoldForFood": 23,
+    "tradeGoldForWood": 15,
+    "buildDeepeningPit": 30,
+    "craftExplorerPack": 20,
+    "craftLeatherTotem": 20,
+    "craftSteelLantern": 20,
+    "craftSteelPickaxe": 15,
+    "craftStonePickaxe": 5,
+    "tradeGoldForSteel": 23,
+    "tradeGoldForStone": 15,
+    "tradeGoldForTorch": 27,
+    "buildAlchemistHall": 30,
+    "buildBlackMonolith": 60,
+    "buildMasterTannery": 40,
+    "craftLoggersGloves": 15,
+    "tradeSilverForGold": 27,
+    "buildMerchantsGuild": 40,
+    "craftAdamantLantern": 30,
+    "craftAdamantPickaxe": 25,
+    "craftHighpriestRobe": 40,
+    "tradeGoldForAdamant": 15,
+    "tradeGoldForLeather": 23,
+    "craftObsidianLantern": 25,
+    "craftObsidianPickaxe": 20,
+    "tradeGoldForObsidian": 15,
+    "buildInkwardenAcademy": 60
+  },
+  "lastFreeGoldClaim": 0,
+  "resourceAnalytics": {
+    "fur": -100,
+    "food": -9417,
+    "gold": -570,
+    "wood": -9417,
+    "steel": -330,
+    "silver": 485
+  },
+  "templeDedicatedTo": "",
+  "activatedPurchases": {
+    "purchase-cruel_mode-63f9e2ca-cec5-4b05-987e-a10916f85443": true
+  },
+  "current_population": 11,
+  "isPausedPreviously": false,
+  "crushingStrikeLevel": 0,
+  "authNotificationSeen": false,
+  "highlightedResources": [],
+  "inactivityDialogOpen": false,
+  "shopNotificationSeen": false,
+  "social_media_rewards": {
+    "instagram": {
+      "claimed": true,
+      "timestamp": 1764534616191
+    }
+  },
+  "greatFeastActivations": 0,
+  "allowPlayTimeOverwrite": false,
+  "hasMadeNonFreePurchase": false,
+  "versionCheckDialogOpen": false,
+  "authNotificationVisible": false,
+  "shopNotificationVisible": false,
+  "lastResourceSnapshotTime": 5891007.500001633,
+  "mysteriousNoteShopNotificationSeen": false,
+  "mysteriousNoteDonateNotificationSeen": false
+}
