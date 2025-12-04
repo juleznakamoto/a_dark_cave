@@ -110,6 +110,23 @@ export const forestSacrificeActions: Record<string, Action> = {
     cost: {
       // Cost is dynamically calculated and checked in handleHumans
     },
+    // Add canExecute to check if there are enough villagers
+    canExecute: (state: GameState) => {
+      const usageCount = Number(state.story?.seen?.humansSacrificeLevel) || 0;
+      const maxLevels = 10;
+      
+      if (usageCount >= maxLevels) {
+        return false;
+      }
+      
+      const currentCost = getHumansCost(state);
+      const totalVillagers = Object.values(state.villagers).reduce(
+        (sum, count) => sum + (count || 0),
+        0,
+      );
+      
+      return totalVillagers >= currentCost;
+    },
     effects: {},
     statsEffects: {
       // This will be dynamically applied

@@ -829,13 +829,23 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const resources = state.resources || {};
     const stats = state.stats || {};
 
-    logger.log('[ANALYTICS] 🔍 Creating resource snapshot:', {
+    logger.log('[ANALYTICS] 🔍 Creating resource snapshot - FULL STATE:', {
       hasResources: !!resources,
       hasStats: !!stats,
       resourceKeys: Object.keys(resources),
       statsKeys: Object.keys(stats),
       statsValues: stats,
       resourcesValues: resources,
+      // Log the entire state.stats to see its structure
+      fullStatsObject: JSON.stringify(state.stats),
+      // Check if stats properties exist directly
+      statLuck: state.stats?.luck,
+      statStrength: state.stats?.strength,
+      statKnowledge: state.stats?.knowledge,
+      statMadness: state.stats?.madness,
+      // Type checks
+      typeOfStats: typeof state.stats,
+      typeOfLuck: typeof state.stats?.luck,
     });
 
     // Add resources to snapshot
