@@ -1667,7 +1667,7 @@ export const choiceEvents: Record<string, GameEvent> = {
       "An elder woman with clouded eyes approaches you, 'We must end the spillng of human blood,' she declares. 'The old gods demand a great monument in their honor. Only then will the gods grant us their continued favor.'",
     triggered: false,
     priority: 5,
-    repeatable: true,
+    repeatable: false,
     choices: [
       {
         id: "acceptBoneTemple",

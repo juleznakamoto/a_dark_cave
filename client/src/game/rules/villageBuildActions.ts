@@ -1436,7 +1436,7 @@ export const villageBuildActions: Record<string, Action> = {
       const animalBonusMadnessReduction = Math.min(animalSacrificeLevel, 10);
       const humanBonusMadnessReduction = Math.min(humanSacrificeLevel * 2, 20);
 
-      const effects = ["-10 Madness", "Bone/Leather Totem Sacrifices: +25% Gold/Silver"];
+      const effects = ["-10 Madness"];
 
       if (animalBonusMadnessReduction > 0) {
         effects.push(
@@ -1453,7 +1453,7 @@ export const villageBuildActions: Record<string, Action> = {
       } else if (state.flags?.humanSacrificeUnlocked) {
         effects.push("-2 Madness per Human sacrifice (max -20)");
       }
-
+      effects.push("Bone/Leather Totem Sacrifices: +25% Gold/Silver");
       return effects;
     },
     building: true,
