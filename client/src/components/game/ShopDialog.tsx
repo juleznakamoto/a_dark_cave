@@ -678,8 +678,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
         <DialogHeader>
           <DialogTitle>Shop</DialogTitle>
           <DialogDescription className="text-muted-foreground text-sm">
-            All in-game purchases are currently 50 % off during the
-            Beta phase.
+            All in-game purchases are currently 50 % off during Beta phase.
           </DialogDescription>
         </DialogHeader>
 
