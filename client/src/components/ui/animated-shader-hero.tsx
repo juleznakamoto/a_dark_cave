@@ -529,26 +529,15 @@ const Hero: React.FC<HeroProps> = ({
           </div>
 
           {/* CTA Buttons with Animation */}
-          {buttons && (
+          {buttons && buttons.primary && (
             <div className="flex-row flex-col space-x-4 gap-4 justify-center mt-10 animate-fade-in-up animation-delay-3000">
-              {buttons.primary && (
-                <button
-                  onClick={buttons.primary.onClick}
-                  button_id={buttons.primary.buttonId}
-                  className="px-6 py-3 bg-gradient-to-r from-red-800 to-red-800 hover:from-red-700 hover:to-red-700 text-slate-200 rounded-md font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25"
-                >
-                  {buttons.primary.text}
-                </button>
-              )}
-              {buttons.secondary && (
-                <button
-                  onClick={buttons.secondary.onClick}
-                  button_id={buttons.secondary.buttonId}
-                  className="px-6 py-3 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-semibold text-lg transition-all duration-300 hover:scale-105 backdrop-blur-sm"
-                >
-                  {buttons.secondary.text}
-                </button>
-              )}
+              <button
+                onClick={buttons.primary.onClick}
+                button_id={buttons.primary.buttonId}
+                className="px-6 py-3 bg-gradient-to-r from-red-800 to-red-800 hover:from-red-700 hover:to-red-700 text-slate-200 rounded-md font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25"
+              >
+                {buttons.primary.text}
+              </button>
             </div>
           )}
 
@@ -572,6 +561,19 @@ const Hero: React.FC<HeroProps> = ({
               <span>Buy Me a Coffee</span>
             </button>
           </div>
+
+          {/* Close Button */}
+          {buttons && buttons.secondary && (
+            <div className="flex justify-center mt-6 animate-fade-in-up animation-delay-4500">
+              <button
+                onClick={buttons.secondary.onClick}
+                button_id={buttons.secondary.buttonId}
+                className="px-6 py-3 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-semibold text-lg transition-all duration-300 hover:scale-105 backdrop-blur-sm"
+              >
+                {buttons.secondary.text}
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>
