@@ -1,0 +1,45 @@
+{hasStats: false, statsKeys: Array(0), snapshotKeys: Array(18)}
+logger.ts:33 v519Z [SAVE CLOUD] 🔍 Starting cloud save with OCC... {playTime: 1820146.4999996654, isNewGame: false, userId: 'a375ecb5...', diffKeys: Array(7), hasPlayTime: true, …}
+logger.ts:33 v519Z [SAVE CLOUD] 💾 Calling database RPC with OCC validation... {hasClickAnalytics: false, clickAnalyticsKeys: Array(0), hasResourceAnalytics: true, resourceAnalyticsKeys: Array(18), diffSize: 4151, …}
+logger.ts:33 v519Z [SAVE CLOUD] ✅ Cloud save completed successfully - OCC check passed in database
+logger.ts:33 v519Z [SAVE] ✅ Updated lastCloudState after successful cloud save
+logger.ts:33 v519Z [SAVE CLOUD] 🔍 Starting cloud save with OCC... {playTime: 1835296.499999666, isNewGame: false, userId: 'a375ecb5...', diffKeys: Array(7), hasPlayTime: true, …}
+logger.ts:33 v519Z [SAVE CLOUD] 💾 Calling database RPC with OCC validation... {hasClickAnalytics: false, clickAnalyticsKeys: Array(0), hasResourceAnalytics: false, resourceAnalyticsKeys: Array(0), diffSize: 3840, …}
+logger.ts:33 v519Z [SAVE CLOUD] ✅ Cloud save completed successfully - OCC check passed in database
+logger.ts:33 v519Z [SAVE] ✅ Updated lastCloudState after successful cloud save
+logger.ts:33 v519Z [SAVE CLOUD] 🔍 Starting cloud save with OCC... {playTime: 1850446.4999996664, isNewGame: false, userId: 'a375ecb5...', diffKeys: Array(6), hasPlayTime: true, …}
+logger.ts:33 v519Z [SAVE CLOUD] 💾 Calling database RPC with OCC validation... {hasClickAnalytics: false, clickAnalyticsKeys: Array(0), hasResourceAnalytics: false, resourceAnalyticsKeys: Array(0), diffSize: 3658, …}
+logger.ts:33 v519Z [SAVE CLOUD] ✅ Cloud save completed successfully - OCC check passed in database
+logger.ts:33 v519Z [SAVE] ✅ Updated lastCloudState after successful cloud save
+api.js:20  GET https://api.playlight.dev/platform/game-by-domain/2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev 404 (Not Found)
+makeRequest @ api.js:20
+request @ api.js:54
+getCurrentGameInfo @ api.js:95
+fetchQuickSuggestions @ quick-suggestions.js:5
+(anonymous) @ ExitIntent.svelte:39
+setTimeout
+handleBarTrigger @ ExitIntent.svelte:32
+on_pointerover @ ExitIntent.svelte:68
+handle_event_propagation @ events.js:263Understand this error
+api.js:39 Playlight game not found. This is normal in a test / local environment, but should not appear in production.
+makeRequest @ api.js:39
+await in makeRequest
+request @ api.js:54
+getCurrentGameInfo @ api.js:95
+fetchQuickSuggestions @ quick-suggestions.js:5
+(anonymous) @ ExitIntent.svelte:39
+setTimeout
+handleBarTrigger @ ExitIntent.svelte:32
+on_pointerover @ ExitIntent.svelte:68
+handle_event_propagation @ events.js:263Understand this warning
+loop.ts:950 [GameLoop] Creating stranger approach event: stranger-approaches-1764831944066 at 1764831944066
+logger.ts:33 v519Z [SAVE CLOUD] 🔍 Starting cloud save with OCC... {playTime: 1865671.4999996666, isNewGame: false, userId: 'a375ecb5...', diffKeys: Array(7), hasPlayTime: true, …}allowPlayTimeOverwrite: falsediffKeys: (7) ['resources', 'villagers', 'log', 'playTime', 'resourceAnalytics', 'loopProgress', 'lastSaved']hasPlayTime: trueisNewGame: falseplayTime: 1865671.4999996666userId: "a375ecb5..."[[Prototype]]: Object
+logger.ts:33 v519Z [SAVE CLOUD] 💾 Calling database RPC with OCC validation... {hasClickAnalytics: false, clickAnalyticsKeys: Array(0), hasResourceAnalytics: false, resourceAnalyticsKeys: Array(0), diffSize: 4032, …}allowOverwrite: falseclickAnalyticsKeys: []diffSize: 4032hasClickAnalytics: falsehasResourceAnalytics: falseisNewGame: falseplayTime: 1865671.4999996666resourceAnalyticsKeys: [][[Prototype]]: Object
+logger.ts:33 v519Z [SAVE CLOUD] ✅ Cloud save completed successfully - OCC check passed in database
+logger.ts:33 v519Z [SAVE] ✅ Updated lastCloudState after successful cloud save
+logger.ts:33 v519Z [SAVE CLOUD] 📊 Resource snapshot includes stats: {hasStats: false, statsKeys: Array(0), snapshotKeys: Array(18)}
+logger.ts:33 v519Z [SAVE CLOUD] 🔍 Starting cloud save with OCC... {playTime: 1880896.599999667, isNewGame: false, userId: 'a375ecb5...', diffKeys: Array(6), hasPlayTime: true, …}
+logger.ts:33 v519Z [SAVE CLOUD] 💾 Calling database RPC with OCC validation... {hasClickAnalytics: false, clickAnalyticsKeys: Array(0), hasResourceAnalytics: true, resourceAnalyticsKeys: Array(18), diffSize: 3661, …}
+logger.ts:33 v519Z [SAVE CLOUD] ✅ Cloud save completed successfully - OCC check passed in database
+logger.ts:33 v519Z [SAVE] ✅ Updated lastCloudState after successful cloud save
+loop.ts:950 [GameLoop] Creating stranger approach event: stranger-approaches-1764831974533 at 1764831974533
