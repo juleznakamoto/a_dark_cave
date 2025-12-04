@@ -156,6 +156,7 @@ export const gameStateSchema = z.object({
   relics: z
     .object({
       whispering_cube: z.boolean().default(false),
+      odd_trinket: z.boolean().default(false),
       wooden_figure: z.boolean().default(false),
       bone_dice: z.boolean().default(false),
       blackened_mirror: z.boolean().default(false),
