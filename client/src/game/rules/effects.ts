@@ -886,6 +886,22 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     },
   },
 
+  sacrificial_tunic: {
+    id: "sacrificial_tunic",
+    name: "Sacrificial Tunic",
+    description: "Sacred garment that amplifies offerings to the old gods",
+    bonuses: {
+      actionBonuses: {
+        boneTotems: {
+          resourceMultiplier: 1.25,
+        },
+        leatherTotems: {
+          resourceMultiplier: 1.25,
+        },
+      },
+    },
+  },
+
   unnamed_book: {
     id: "unnamed_book",
     name: "Unnamed Book",

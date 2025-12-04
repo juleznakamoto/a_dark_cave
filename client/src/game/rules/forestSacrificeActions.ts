@@ -38,6 +38,9 @@ export const forestSacrificeActions: Record<string, Action> = {
       if (state.buildings.boneTemple >= 1) {
         effects.push("Bone Temple: +25% Silver");
       }
+      if (state.clothing.sacrificial_tunic) {
+        effects.push("Sacrificial Tunic: +25% Silver");
+      }
       return effects;
     },
     show_when: {
@@ -60,6 +63,9 @@ export const forestSacrificeActions: Record<string, Action> = {
       const effects = ["10-25 Gold"];
       if (state.buildings.boneTemple >= 1) {
         effects.push("Bone Temple: +25% Gold");
+      }
+      if (state.clothing.sacrificial_tunic) {
+        effects.push("Sacrificial Tunic: +25% Gold");
       }
       return effects;
     },

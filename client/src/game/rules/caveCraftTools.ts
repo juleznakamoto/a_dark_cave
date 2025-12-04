@@ -499,6 +499,24 @@ export const caveCraftTools: Record<string, Action> = {
     },
     cooldown: 15,
   },
+
+  craftSacrificialTunic: {
+    id: "craftSacrificialTunic",
+    label: "Sacrificial Tunic",
+    show_when: {
+      "buildings.pillarOfClarity": 1,
+      "clothing.sacrificial_tunic": false,
+    },
+    cost: {
+      "resources.leather": 1500,
+    },
+    effects: {
+      "clothing.sacrificial_tunic": true,
+      "story.seen.hasSacrificialTunic": true,
+      "story.seen.actionCraftSacrificialTunic": true,
+    },
+    cooldown: 60,
+  },
 };
 
 // Action handlers
