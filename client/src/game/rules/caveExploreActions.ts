@@ -120,6 +120,7 @@ function getInheritedItems(actionId: string) {
 }
 
 export const caveExploreActions: Record<string, Action> = {
+
   lightFire: {
     id: "lightFire",
     label: "Light Fire",
@@ -140,6 +141,13 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.wood": "random(6,12)",
       "story.seen.hasWood": true,
       "story.seen.firstWoodGathered": true,
+      "relics.old_trinket": {
+        probability: 0.0075,
+        value: true,
+        condition: "!relics.old_trinket && buildings.cabin >= 1",
+        logMessage:
+          "While chopping wood, you find an old trinket with glowing amber liquid inside. After some hesitation, you drink it. It burns as it goes down, but you feel stronger than before.",
+      },
     },
     cooldown: 4,
     upgrade_key: "chopWood",
@@ -299,10 +307,10 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.food": 1000,
     },
     effects: {
-      "resources.silver": 250,
-      "resources.gold": 50,
-      "resources.obsidian": 50,
-      "resources.adamant": 50,
+      "resources.silver":  250 ,
+      "resources.gold": 50 ,
+      "resources.obsidian":  50 ,
+      "resources.adamant": 50 ,
       "tools.mastermason_chisel": true,
       "flags.lowChamberExplored": true,
       "story.seen.lowChamberExplored": true,
@@ -321,10 +329,10 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.food": 1000,
     },
     effects: {
-      "resources.gold": 150,
-      "resources.obsidian": 75,
-      "resources.adamant": 50,
-      "resources.moonstone": 25,
+      "resources.gold":  150 ,
+      "resources.obsidian":  75 ,
+      "resources.adamant":  50 ,
+      "resources.moonstone":  25 ,
       "relics.occultist_grimoire": true,
       "flags.occultistChamberExplored": true,
       "story.seen.occultistChamberExplored": true,
