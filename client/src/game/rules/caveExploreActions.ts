@@ -4,47 +4,15 @@ import { applyActionEffects } from "@/game/rules";
 import { getActionBonuses } from "@/game/rules/effectsCalculation";
 
 // Helper function to apply cave explore multiplier to cave exploration probability effects
+// Note: Cave explore multipliers are now applied in applyActionEffects via getActionBonuses
+// This function is kept for backwards compatibility but no longer applies multipliers
 function applyCaveExplorationBonuses(
   state: GameState,
   actionId: string,
   effectUpdates: any,
 ): void {
-  const bonuses = getActionBonuses(actionId, state);
-
-  // Define which resources can benefit from bonuses in cave exploration
-  const caveResources = [
-    "wood",
-    "stone",
-    "coal",
-    "iron",
-    "bones",
-    "sulfur",
-    "silver",
-    "gold",
-    "obsidian",
-    "adamant",
-    "moonstone",
-  ];
-
-  // Apply cave explore multiplier to resource effects
-  if (effectUpdates.resources) {
-    Object.keys(effectUpdates.resources).forEach((resource) => {
-      if (caveResources.includes(resource)) {
-        const totalAmount = effectUpdates.resources[resource] || 0;
-        const existingAmount = state.resources[resource] || 0;
-        let actuallyAddedAmount = totalAmount - existingAmount;
-
-        if (actuallyAddedAmount > 0) {
-          // Apply cave explore multiplier
-          if (bonuses.caveExploreMultiplier > 1) {
-            actuallyAddedAmount = Math.floor(actuallyAddedAmount * bonuses.caveExploreMultiplier);
-          }
-
-          effectUpdates.resources[resource] = existingAmount + actuallyAddedAmount;
-        }
-      }
-    });
-  }
+  // Bonuses are now handled by applyActionEffects through getActionBonuses
+  // No additional processing needed here
 }
 
 // Base items (relics and clothing) for each cave exploration stage
