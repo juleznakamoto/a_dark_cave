@@ -109,14 +109,13 @@ export const calculateResourceGains = (
           if (match) {
             let min = parseInt(match[1]);
             let max = parseInt(match[2]);
-            const buttonUpgradeMultiplier = bonuses.buttonUpgradeMultiplier?.[resource] || 1;
 
             // Apply flat bonuses (includes both specific action bonuses and general mine bonuses)
             const flatBonus = bonuses.resourceBonus[resource] || 0;
             min += flatBonus;
             max += flatBonus;
 
-            // Apply multipliers (this already includes both specific and general mine multipliers from getActionBonuses)
+            // Apply multipliers (this already includes button upgrades, specific bonuses, and general mine multipliers from getActionBonuses)
             if (bonuses.resourceMultiplier > 1) {
               min = Math.floor(min * bonuses.resourceMultiplier);
               max = Math.floor(max * bonuses.resourceMultiplier);
@@ -128,24 +127,17 @@ export const calculateResourceGains = (
               max = Math.floor(max * bonuses.caveExploreMultiplier);
             }
 
-            // Apply button upgrade multiplier separately (not already in bonuses.resourceMultiplier)
-            if (buttonUpgradeMultiplier !== 1) {
-              min = Math.floor(min * buttonUpgradeMultiplier);
-              max = Math.floor(max * buttonUpgradeMultiplier);
-            }
-
             gains.push({ resource, min, max });
           }
         } else if (typeof value === "number") {
           // Fixed value
           let amount = value;
-          const buttonUpgradeMultiplier = bonuses.buttonUpgradeMultiplier?.[resource] || 1;
 
           // Apply flat bonuses (includes both specific action bonuses and general mine bonuses)
           const flatBonus = bonuses.resourceBonus[resource] || 0;
           amount += flatBonus;
 
-          // Apply multipliers (this already includes both specific and general mine multipliers from getActionBonuses)
+          // Apply multipliers (this already includes button upgrades, specific bonuses, and general mine multipliers from getActionBonuses)
           if (bonuses.resourceMultiplier > 1) {
             amount = Math.floor(amount * bonuses.resourceMultiplier);
           }
@@ -153,11 +145,6 @@ export const calculateResourceGains = (
           // Apply cave exploration multiplier for cave explore actions
           if (isCaveExploreAction && bonuses.caveExploreMultiplier > 1) {
             amount = Math.floor(amount * bonuses.caveExploreMultiplier);
-          }
-
-          // Apply button upgrade multiplier separately (not already in bonuses.resourceMultiplier)
-          if (buttonUpgradeMultiplier !== 1) {
-            amount = Math.floor(amount * buttonUpgradeMultiplier);
           }
 
           gains.push({ resource, min: amount, max: amount });
