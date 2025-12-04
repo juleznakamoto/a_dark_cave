@@ -824,17 +824,26 @@ export const useGameStore = create<GameStore>((set, get) => ({
       return null;
     }
 
-    // Create snapshot of current resources
+    // Create snapshot of current resources AND stats
     const snapshot: Record<string, number> = {};
     const resources = state.resources || {};
+    const stats = state.stats || {};
 
+    // Add resources to snapshot
     for (const [key, value] of Object.entries(resources)) {
       if (typeof value === 'number' && value > 0) {
         snapshot[key] = value;
       }
     }
 
-    // If no resources, return null
+    // Add stats to snapshot (luck, strength, knowledge, madness)
+    for (const [key, value] of Object.entries(stats)) {
+      if (typeof value === 'number' && value > 0) {
+        snapshot[key] = value;
+      }
+    }
+
+    // If no resources or stats, return null
     if (Object.keys(snapshot).length === 0) {
       return null;
     }

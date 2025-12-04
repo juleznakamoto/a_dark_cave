@@ -252,6 +252,20 @@ export async function saveGame(
           ? useGameStore.getState().getAndResetResourceAnalytics()
           : null;
 
+        // Log snapshot to verify stats are included
+        if (resourceData) {
+          const hasStats = Object.keys(resourceData).some(key => 
+            ['luck', 'strength', 'knowledge', 'madness'].includes(key)
+          );
+          logger.log('[SAVE CLOUD] 📊 Resource snapshot includes stats:', {
+            hasStats,
+            statsKeys: Object.keys(resourceData).filter(key => 
+              ['luck', 'strength', 'knowledge', 'madness'].includes(key)
+            ),
+            snapshotKeys: Object.keys(resourceData),
+          });
+        }
+
         // Get last cloud state for diff calculation
         const lastCloudState = await db.get(
           "lastCloudState",
