@@ -135,6 +135,7 @@ body {
 
 .tab-fade-in {
   animation: tab-fade-in 5s ease-out 0s forwards;
+  opacity: 0 !important;
 }
 
 @keyframes flame-text {
