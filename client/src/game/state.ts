@@ -10,7 +10,13 @@ import {
   assignVillagerToJob,
   unassignVillagerFromJob,
 } from "@/game/stateHelpers";
-import { calculateTotalEffects } from "@/game/rules/effectsCalculation";
+import { 
+  calculateTotalEffects,
+  getTotalLuck,
+  getTotalStrength,
+  getTotalKnowledge,
+  getTotalMadness,
+} from "@/game/rules/effectsCalculation";
 import { calculateBastionStats } from "@/game/bastionStats";
 import { getMaxPopulation } from "@/game/population";
 import { audioManager } from "@/lib/audio";
@@ -1364,8 +1370,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   updateStats: () => {
     set((state) => {
-      const { getTotalLuck, getTotalStrength, getTotalKnowledge, getTotalMadness } = require('./rules/effectsCalculation');
-      
       const calculatedLuck = getTotalLuck(state);
       const calculatedStrength = getTotalStrength(state);
       const calculatedKnowledge = getTotalKnowledge(state);
