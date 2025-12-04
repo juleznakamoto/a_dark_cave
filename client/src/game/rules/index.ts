@@ -7,7 +7,7 @@ import { caveCraftResources } from "./caveCraftResources";
 import { caveCraftTools } from "./caveCraftTools";
 import { caveCraftWeapons } from "./caveCraftWeapons";
 import { caveMineActions } from "./caveMineActions";
-import { villageBuildActions, handleBuildBlackMonolith, handleBuildPrimeFoundry, handleBuildMasterworkFoundry, handleBuildScriptorium, handleBuildInkwardenAcademy, handleBuildTannery, handleBuildBoneTemple } from "./villageBuildActions";
+import { villageBuildActions, handleBuildBlackMonolith, handleBuildPrimeFoundry, handleBuildMasterworkFoundry, handleBuildScriptorium, handleBuildInkwardenAcademy, handleBuildTannery } from "./villageBuildActions";
 import { forestScoutActions } from "./forestScoutActions";
 import {
   forestSacrificeActions,
@@ -65,7 +65,6 @@ const actionHandlers: Record<string, (state: GameState, actionId: string) => Par
   boneTotems: handleBoneTotems,
   leatherTotems: handleLeatherTotems,
   buildInkwardenAcademy: handleBuildInkwardenAcademy, // Added Inkwarden Academy handler
-  buildBoneTemple: handleBuildBoneTemple, // Added Bone Temple handler
 };
 
 
@@ -84,7 +83,6 @@ export const gameActions: Record<string, Action> = {
   buildBlackMonolith: villageBuildActions.buildBlackMonolith,
   buildMasterworkFoundry: villageBuildActions.buildMasterworkFoundry,
   animals: forestSacrificeActions.animals,
-  buildBoneTemple: villageBuildActions.buildBoneTemple, // Added Bone Temple action
 };
 
 // Utility function to get the next building level
