@@ -530,7 +530,7 @@ const Hero: React.FC<HeroProps> = ({
 
           {/* CTA Buttons with Animation */}
           {buttons && (
-            <div className="flex flex-col flex-row gap-4 justify-center mt-10 animate-fade-in-up animation-delay-3000">
+            <div className="flex-row flex-col space-x-4 gap-4 justify-center mt-10 animate-fade-in-up animation-delay-3000">
               {buttons.primary && (
                 <button
                   onClick={buttons.primary.onClick}
