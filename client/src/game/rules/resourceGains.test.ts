@@ -616,7 +616,10 @@ describe('Resource Gain Tests', () => {
 
   describe('Button Upgrades', () => {
     it('chopWood with button upgrades increases gains', () => {
-      const stateWithoutUpgrade = createTestState();
+      const stateWithoutUpgrade = createTestState({
+        books: { book_of_ascension: true },
+        buttonUpgrades: { chopWood: 0 }, // No upgrades
+      });
       const stateWithUpgrade = createTestState({
         books: { book_of_ascension: true },
         buttonUpgrades: { chopWood: 5 }, // Level 5 = 50% bonus
@@ -633,11 +636,13 @@ describe('Resource Gain Tests', () => {
     it('exploreCave with button upgrades increases gains', () => {
       const stateWithoutUpgrade = createTestState({
         story: { seen: { actionCraftTorch: true } },
+        books: { book_of_ascension: true },
+        buttonUpgrades: { caveExplore: 0 }, // No upgrades
       });
       const stateWithUpgrade = createTestState({
         story: { seen: { actionCraftTorch: true } },
         books: { book_of_ascension: true },
-        buttonUpgrades: { exploreCave: 10 }, // Level 10 = 100% bonus
+        buttonUpgrades: { caveExplore: 10 }, // Level 10 = 100% bonus
       });
 
       const { expectedGains: expectedWithout } = testActionGains('exploreCave', stateWithoutUpgrade, 50);
@@ -646,6 +651,41 @@ describe('Resource Gain Tests', () => {
       // With max upgrades should have significantly higher gains
       expect(expectedWith.wood.min).toBeGreaterThan(expectedWithout.wood.min);
       expect(expectedWith.wood.max).toBeGreaterThan(expectedWithout.wood.max);
+    });
+  });
+
+  describe('Axe Progression', () => {
+    it('chopWood with stone axe shows baseline gains', () => {
+      const state = createTestState({
+        tools: { stone_axe: true },
+      });
+      const { expectedGains } = testActionGains('chopWood', state, 50);
+
+      // Stone axe gives 25% bonus: base 6-12 becomes 7-15
+      expect(expectedGains.wood.min).toBe(7);
+      expect(expectedGains.wood.max).toBe(15);
+    });
+
+    it('chopWood with iron axe shows improved gains', () => {
+      const state = createTestState({
+        tools: { iron_axe: true },
+      });
+      const { expectedGains } = testActionGains('chopWood', state, 50);
+
+      // Iron axe gives 50% bonus: base 6-12 becomes 9-18
+      expect(expectedGains.wood.min).toBe(9);
+      expect(expectedGains.wood.max).toBe(18);
+    });
+
+    it('chopWood with steel axe shows further improved gains', () => {
+      const state = createTestState({
+        tools: { steel_axe: true },
+      });
+      const { expectedGains } = testActionGains('chopWood', state, 50);
+
+      // Steel axe gives 100% bonus: base 6-12 becomes 12-24
+      expect(expectedGains.wood.min).toBe(12);
+      expect(expectedGains.wood.max).toBe(24);
     });
   });
 
