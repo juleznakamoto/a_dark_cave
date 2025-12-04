@@ -688,6 +688,122 @@ describe('Resource Gain Tests', () => {
       expect(expectedWith.gold.min).toBe(expectedBonusMin);
       expect(expectedWith.gold.max).toBe(expectedBonusMax);
     });
+
+    it('boneTotems with sacrificial_tunic: tooltip matches actual gains', () => {
+      const state = createTestState({
+        buildings: { altar: 1, clerksHut: 1 },
+        clothing: { sacrificial_tunic: true },
+      });
+
+      // Get tooltip calculations
+      const { gains: tooltipGains } = calculateResourceGains('boneTotems', state);
+      const tooltipSilver = tooltipGains.find(g => g.resource === 'silver');
+      expect(tooltipSilver).toBeDefined();
+
+      // Get actual gains from executing the action multiple times
+      const { expectedGains, actualGains } = testActionGains('boneTotems', state, 100);
+
+      // Verify tooltip matches expected calculation
+      expect(tooltipSilver!.min).toBe(expectedGains.silver.min);
+      expect(tooltipSilver!.max).toBe(expectedGains.silver.max);
+
+      // Verify actual gains fall within tooltip range
+      const minActual = Math.min(...actualGains.silver);
+      const maxActual = Math.max(...actualGains.silver);
+      expect(minActual).toBeGreaterThanOrEqual(tooltipSilver!.min);
+      expect(maxActual).toBeLessThanOrEqual(tooltipSilver!.max);
+    });
+
+    it('leatherTotems with sacrificial_tunic: tooltip matches actual gains', () => {
+      const state = createTestState({
+        buildings: { temple: 1, clerksHut: 1 },
+        clothing: { sacrificial_tunic: true },
+      });
+
+      // Get tooltip calculations
+      const { gains: tooltipGains } = calculateResourceGains('leatherTotems', state);
+      const tooltipGold = tooltipGains.find(g => g.resource === 'gold');
+      expect(tooltipGold).toBeDefined();
+
+      // Get actual gains from executing the action multiple times
+      const { expectedGains, actualGains } = testActionGains('leatherTotems', state, 100);
+
+      // Verify tooltip matches expected calculation
+      expect(tooltipGold!.min).toBe(expectedGains.gold.min);
+      expect(tooltipGold!.max).toBe(expectedGains.gold.max);
+
+      // Verify actual gains fall within tooltip range
+      const minActual = Math.min(...actualGains.gold);
+      const maxActual = Math.max(...actualGains.gold);
+      expect(minActual).toBeGreaterThanOrEqual(tooltipGold!.min);
+      expect(maxActual).toBeLessThanOrEqual(tooltipGold!.max);
+    });
+
+    it('boneTotems with sacrificial_tunic and boneTemple: tooltip matches actual gains', () => {
+      const state = createTestState({
+        buildings: { altar: 1, clerksHut: 1, boneTemple: 1 },
+        clothing: { sacrificial_tunic: true },
+      });
+
+      // Get tooltip calculations
+      const { gains: tooltipGains } = calculateResourceGains('boneTotems', state);
+      const tooltipSilver = tooltipGains.find(g => g.resource === 'silver');
+      expect(tooltipSilver).toBeDefined();
+
+      // Get actual gains from executing the action multiple times
+      const { expectedGains, actualGains } = testActionGains('boneTotems', state, 100);
+
+      // Verify tooltip matches expected calculation
+      expect(tooltipSilver!.min).toBe(expectedGains.silver.min);
+      expect(tooltipSilver!.max).toBe(expectedGains.silver.max);
+
+      // Verify actual gains fall within tooltip range
+      const minActual = Math.min(...actualGains.silver);
+      const maxActual = Math.max(...actualGains.silver);
+      expect(minActual).toBeGreaterThanOrEqual(tooltipSilver!.min);
+      expect(maxActual).toBeLessThanOrEqual(tooltipSilver!.max);
+
+      // Verify the 50% total bonus (25% from tunic + 25% from temple)
+      const baseMin = 10; // Base min from action definition
+      const baseMax = 25; // Base max from action definition
+      const expectedMin = Math.floor(baseMin * 1.5);
+      const expectedMax = Math.floor(baseMax * 1.5);
+      expect(tooltipSilver!.min).toBe(expectedMin);
+      expect(tooltipSilver!.max).toBe(expectedMax);
+    });
+
+    it('leatherTotems with sacrificial_tunic and boneTemple: tooltip matches actual gains', () => {
+      const state = createTestState({
+        buildings: { temple: 1, clerksHut: 1, boneTemple: 1 },
+        clothing: { sacrificial_tunic: true },
+      });
+
+      // Get tooltip calculations
+      const { gains: tooltipGains } = calculateResourceGains('leatherTotems', state);
+      const tooltipGold = tooltipGains.find(g => g.resource === 'gold');
+      expect(tooltipGold).toBeDefined();
+
+      // Get actual gains from executing the action multiple times
+      const { expectedGains, actualGains } = testActionGains('leatherTotems', state, 100);
+
+      // Verify tooltip matches expected calculation
+      expect(tooltipGold!.min).toBe(expectedGains.gold.min);
+      expect(tooltipGold!.max).toBe(expectedGains.gold.max);
+
+      // Verify actual gains fall within tooltip range
+      const minActual = Math.min(...actualGains.gold);
+      const maxActual = Math.max(...actualGains.gold);
+      expect(minActual).toBeGreaterThanOrEqual(tooltipGold!.min);
+      expect(maxActual).toBeLessThanOrEqual(tooltipGold!.max);
+
+      // Verify the 50% total bonus (25% from tunic + 25% from temple)
+      const baseMin = 10; // Base min from action definition
+      const baseMax = 25; // Base max from action definition
+      const expectedMin = Math.floor(baseMin * 1.5);
+      const expectedMax = Math.floor(baseMax * 1.5);
+      expect(tooltipGold!.min).toBe(expectedMin);
+      expect(tooltipGold!.max).toBe(expectedMax);
+    });
   });
 
   describe('Button Upgrades', () => {
