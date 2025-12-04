@@ -21,14 +21,14 @@ const caveItems = {
   ventureDeeper: [
     {
       key: "tarnished_amulet",
-      probability: 0.01,
+      probability: 0.0075,
       logMessage:
         "In the cave's shadows, something glints. You find a tarnished amulet.",
       category: "clothing",
     },
     {
       key: "bloodstained_belt",
-      probability: 0.015,
+      probability: 0.0125,
       logMessage:
         "In the cave you find a leather belt stained with ancient blood.",
       category: "clothing",
@@ -37,7 +37,7 @@ const caveItems = {
   descendFurther: [
     {
       key: "bone_dice",
-      probability: 0.02,
+      probability: 0.0175,
       isChoice: true,
       eventId: "boneDiceChoice",
       category: "relics",
@@ -46,7 +46,7 @@ const caveItems = {
   exploreRuins: [
     {
       key: "ring_of_drowned",
-      probability: 0.025,
+      probability: 0.0225,
       isChoice: true,
       eventId: "ringOfDrownedChoice",
       category: "clothing",
@@ -55,7 +55,7 @@ const caveItems = {
   exploreTemple: [
     {
       key: "shadow_flute",
-      probability: 0.03,
+      probability: 0.0275,
       isChoice: true,
       eventId: "shadowFluteChoice",
       category: "relics",
@@ -64,7 +64,7 @@ const caveItems = {
   exploreCitadel: [
     {
       key: "hollow_king_scepter",
-      probability: 0.04,
+      probability: 0.0375,
       isChoice: true,
       eventId: "hollowKingScepterChoice",
       category: "relics",
@@ -120,7 +120,6 @@ function getInheritedItems(actionId: string) {
 }
 
 export const caveExploreActions: Record<string, Action> = {
-
   lightFire: {
     id: "lightFire",
     label: "Light Fire",
@@ -141,13 +140,6 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.wood": "random(6,12)",
       "story.seen.hasWood": true,
       "story.seen.firstWoodGathered": true,
-      "relics.old_trinket": {
-        probability: 0.01,
-        value: true,
-        condition: "!relics.old_trinket && buildings.cabin >= 1",
-        logMessage:
-          "While chopping wood, you find an old trinket with glowing amber liquid inside. After some hesitation, you drink it. It burns as it goes down, but you feel stronger than before.",
-      },
     },
     cooldown: 4,
     upgrade_key: "chopWood",
@@ -307,10 +299,10 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.food": 1000,
     },
     effects: {
-      "resources.silver":  250 ,
-      "resources.gold": 50 ,
-      "resources.obsidian":  50 ,
-      "resources.adamant": 50 ,
+      "resources.silver": 250,
+      "resources.gold": 50,
+      "resources.obsidian": 50,
+      "resources.adamant": 50,
       "tools.mastermason_chisel": true,
       "flags.lowChamberExplored": true,
       "story.seen.lowChamberExplored": true,
@@ -329,10 +321,10 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.food": 1000,
     },
     effects: {
-      "resources.gold":  150 ,
-      "resources.obsidian":  75 ,
-      "resources.adamant":  50 ,
-      "resources.moonstone":  25 ,
+      "resources.gold": 150,
+      "resources.obsidian": 75,
+      "resources.adamant": 50,
+      "resources.moonstone": 25,
       "relics.occultist_grimoire": true,
       "flags.occultistChamberExplored": true,
       "story.seen.occultistChamberExplored": true,

@@ -130,7 +130,7 @@ const createTestState = (overrides?: Partial<GameState>): GameState => {
       ebony_ring: false,
     },
     relics: {
-      old_trinket: false,
+      odd_trinket: false,
       bone_dice: false,
       shadow_flute: false,
       hollow_king_scepter: false,
