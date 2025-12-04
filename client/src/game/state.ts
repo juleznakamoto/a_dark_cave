@@ -749,6 +749,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
       // Cruel mode status
       cruelMode: isCruelModeActive,
       CM: isCruelModeActive ? 1 : 0,
+      
+      // Always clear end screen flag on restart
+      showEndScreen: false,
     };
 
     // Reset everything else to default

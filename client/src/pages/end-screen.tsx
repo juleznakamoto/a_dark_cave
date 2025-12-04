@@ -54,18 +54,30 @@ export default function EndScreenPage() {
     };
   }, []);
 
-  const handlePlayAgain = () => {
+  const handlePlayAgain = async () => {
+    // Clear the end screen flag before deleting save
+    const { useGameStore } = await import("@/game/state");
+    useGameStore.setState({ showEndScreen: false });
+    
     // Delete save and reload the page to start fresh
-    deleteSave();
+    await deleteSave();
     window.location.href = "/game";
   };
 
-  const handleMainMenu = () => {
+  const handleMainMenu = async () => {
+    // Clear the end screen flag before navigating
+    const { useGameStore } = await import("@/game/state");
+    useGameStore.setState({ showEndScreen: false });
+    
     // Navigate to main menu (or home page)
     window.location.href = "/";
   };
 
-  const handleCruelMode = () => {
+  const handleCruelMode = async () => {
+    // Clear the end screen flag before navigating
+    const { useGameStore } = await import("@/game/state");
+    useGameStore.setState({ showEndScreen: false });
+    
     // Navigate back to game with shop open
     window.location.href = "/game?openShop=true";
   };
