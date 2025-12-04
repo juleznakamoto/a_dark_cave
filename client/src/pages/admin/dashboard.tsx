@@ -1807,17 +1807,20 @@ export default function AdminDashboard() {
     >();
     let maxBucket = 0;
 
-    filteredClicks.forEach((record) => {
-      // Stats are stored in the 'stats' field with playtime snapshots
-      const statsSnapshots = record.stats || {};
+    // Define which fields are stats (not resources)
+    const statFields = new Set(['strength', 'knowledge', 'luck', 'madness']);
 
-      // Iterate over playtime entries in stats
-      Object.entries(statsSnapshots).forEach(
-        ([playtimeKey, statsAtTime]: [string, any]) => {
+    filteredClicks.forEach((record) => {
+      // Stats are stored in the 'resources' field alongside actual resources
+      const resourceSnapshots = record.resources || {};
+
+      // Iterate over playtime entries in resources
+      Object.entries(resourceSnapshots).forEach(
+        ([playtimeKey, dataAtTime]: [string, any]) => {
           try {
             // Extract playtime in minutes from the key (e.g., "45m" -> 45)
             const playtimeMinutes = parseInt(playtimeKey.replace("m", ""));
-            if (!isNaN(playtimeMinutes) && typeof statsAtTime === "object") {
+            if (!isNaN(playtimeMinutes) && typeof dataAtTime === "object") {
               const bucket = Math.floor(playtimeMinutes / 60) * 60; // Group into 1-hour buckets
               maxBucket = Math.max(maxBucket, bucket);
 
@@ -1827,19 +1830,22 @@ export default function AdminDashboard() {
 
               const bucketData = playtimeBuckets.get(bucket)!;
 
-              // Iterate over stats at this playtime, only include selected ones
-              Object.entries(statsAtTime).forEach(
-                ([statName, statValue]: [string, any]) => {
-                  // Only include if selected
-                  if (selectedStats.size === 0 || selectedStats.has(statName)) {
-                    // Stat value should be a number
-                    const value = typeof statValue === "number" ? statValue : 0;
+              // Iterate over the data at this playtime, filter for stats only
+              Object.entries(dataAtTime).forEach(
+                ([fieldName, fieldValue]: [string, any]) => {
+                  // Only process if this is a stat field
+                  if (statFields.has(fieldName)) {
+                    // Only include if selected
+                    if (selectedStats.size === 0 || selectedStats.has(fieldName)) {
+                      // Stat value should be a number
+                      const value = typeof fieldValue === "number" ? fieldValue : 0;
 
-                    if (!bucketData[statName]) {
-                      bucketData[statName] = { total: 0, count: 0 };
+                      if (!bucketData[fieldName]) {
+                        bucketData[fieldName] = { total: 0, count: 0 };
+                      }
+                      bucketData[fieldName].total += value;
+                      bucketData[fieldName].count += 1;
                     }
-                    bucketData[statName].total += value;
-                    bucketData[statName].count += 1;
                   }
                 },
               );
