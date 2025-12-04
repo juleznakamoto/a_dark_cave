@@ -93,6 +93,9 @@ export default function Privacy() {
             <p>
               We take appropriate technical and organizational measures to protect your data from unauthorized access, loss, or alteration. Communication with our servers is encrypted via SSL/TLS.
             </p>
+            <p>
+              incrementaldb_verification: @FantasticalLevel33
+            </p>
           </CardContent>
         </Card>
         </div>
