@@ -612,6 +612,40 @@ describe('Resource Gain Tests', () => {
       const expectedBonus = Math.floor(expectedWithout.silver.min * 1.25);
       expect(expectedWith.silver.min).toBeGreaterThanOrEqual(expectedBonus);
     });
+
+    it('boneTotems with sacrificial_tunic applies 25% bonus', () => {
+      const stateWithoutTunic = createTestState({
+        buildings: { altar: 1, clerksHut: 1 },
+      });
+      const stateWithTunic = createTestState({
+        buildings: { altar: 1, clerksHut: 1 },
+        clothing: { sacrificial_tunic: true },
+      });
+
+      const { expectedGains: expectedWithout } = testActionGains('boneTotems', stateWithoutTunic, 50);
+      const { expectedGains: expectedWith } = testActionGains('boneTotems', stateWithTunic, 50);
+
+      // With tunic should have approximately 25% higher gains (floor operation may reduce slightly)
+      const expectedBonus = Math.floor(expectedWithout.silver.min * 1.25);
+      expect(expectedWith.silver.min).toBeGreaterThanOrEqual(expectedBonus);
+    });
+
+    it('leatherTotems with sacrificial_tunic applies 25% bonus', () => {
+      const stateWithoutTunic = createTestState({
+        buildings: { temple: 1, clerksHut: 1 },
+      });
+      const stateWithTunic = createTestState({
+        buildings: { temple: 1, clerksHut: 1 },
+        clothing: { sacrificial_tunic: true },
+      });
+
+      const { expectedGains: expectedWithout } = testActionGains('leatherTotems', stateWithoutTunic, 50);
+      const { expectedGains: expectedWith } = testActionGains('leatherTotems', stateWithTunic, 50);
+
+      // With tunic should have approximately 25% higher gains (floor operation may reduce slightly)
+      const expectedBonus = Math.floor(expectedWithout.gold.min * 1.25);
+      expect(expectedWith.gold.min).toBeGreaterThanOrEqual(expectedBonus);
+    });
   });
 
   describe('Button Upgrades', () => {
