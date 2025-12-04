@@ -112,6 +112,7 @@ import {
   handleBuildMasterworkFoundry, // Import the new handler
   handleBuildDarkEstate, // Import the new handler
   handleBuildPillarOfClarity, // Import the new handler
+  handleBuildBoneTemple, // Import the new handler
 } from "./rules/villageBuildActions";
 
 import {
@@ -401,6 +402,8 @@ export function executeGameAction(
       return handleBuildDarkEstate(state, result);
     case "buildPillarOfClarity":
       return handleBuildPillarOfClarity(state, result);
+    case "buildBoneTemple": // New case for Bone Temple
+      return handleBuildBoneTemple(state, result);
 
     // Forest Scout Actions
     case "hunt":

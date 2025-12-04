@@ -7,7 +7,7 @@ import { caveCraftResources } from "./caveCraftResources";
 import { caveCraftTools } from "./caveCraftTools";
 import { caveCraftWeapons } from "./caveCraftWeapons";
 import { caveMineActions } from "./caveMineActions";
-import { villageBuildActions, handleBuildBlackMonolith, handleBuildPrimeFoundry, handleBuildMasterworkFoundry, handleBuildScriptorium, handleBuildInkwardenAcademy, handleBuildTannery } from "./villageBuildActions";
+import { villageBuildActions, handleBuildBlackMonolith, handleBuildPrimeFoundry, handleBuildMasterworkFoundry, handleBuildScriptorium, handleBuildInkwardenAcademy, handleBuildTannery, handleBuildBoneTemple } from "./villageBuildActions";
 import { forestScoutActions } from "./forestScoutActions";
 import {
   forestSacrificeActions,
