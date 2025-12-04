@@ -81,12 +81,18 @@ html, body {
 
   html {
     @apply dark;
+    color-scheme: dark;
   }
 
   body {
-    @apply font-sans antialiased bg-background text-foreground select-none;
-    background-color: hsl(0, 0%, 0%) !important;
-    color: hsl(200, 6.6667%, 91.1765%) !important;
+    @apply font-sans antialiased select-none;
+    background-color: hsl(0, 0%, 5%) !important;
+    color: hsl(0, 6.6667%, 91.1765%) !important;
+  }
+
+  /* Force dark mode for all dialogs and UI elements */
+  * {
+    color-scheme: dark;
   }
 }
 
