@@ -53,22 +53,22 @@ export default function TabAnimationTest() {
   return (
     <div className="min-h-screen bg-background text-foreground p-8">
       <style>{`
-        @keyframes fade-in {
+        @keyframes tab-fade-in {
           0% {
-    opacity: 0;
-    filter: blur(5px);
-    transform: translateY(-2px);
-  }
+            opacity: 0;
+            filter: blur(5px);
+            transform: translateY(-2px);
+          }
 
-  100% {
-    opacity: 1;
-    filter: blur(0px);
-    transform: translateY(0);
-  }
+          100% {
+            opacity: 1;
+            filter: blur(0px);
+            transform: translateY(0);
+          }
         }
 
         .tab-fade-in {
-          animation: fade-in ${animationDuration}ms ease-out ${animationDelay}ms forwards;
+          animation: tab-fade-in ${animationDuration}ms ease-out ${animationDelay}ms forwards;
           opacity: 0;
         }
 
@@ -186,19 +186,21 @@ export default function TabAnimationTest() {
           </CardHeader>
           <CardContent>
             <pre className="bg-muted p-4 rounded-lg overflow-x-auto text-xs">
-              {`@keyframes fade-in {
+              {`@keyframes tab-fade-in {
   0% {
     opacity: 0;
-    transform: translateY(-10px);
+    filter: blur(5px);
+    transform: translateY(-2px);
   }
   100% {
     opacity: 1;
+    filter: blur(0px);
     transform: translateY(0);
   }
 }
 
 .tab-fade-in {
-  animation: fade-in ${animationDuration}ms ease-out ${animationDelay}ms forwards;
+  animation: tab-fade-in ${animationDuration}ms ease-out ${animationDelay}ms forwards;
   opacity: 0;
 }`}
             </pre>
