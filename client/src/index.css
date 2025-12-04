@@ -86,6 +86,11 @@ body {
     cursor: default !important;
   }
 
+  /* Remove pointer cursor from section headers */
+  .side-panel-title {
+    cursor: default !important;
+  }
+
   html {
     @apply dark;
     color-scheme: dark;
