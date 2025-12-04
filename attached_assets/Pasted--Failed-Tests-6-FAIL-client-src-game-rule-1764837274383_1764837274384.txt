@@ -1,0 +1,76 @@
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Actions with Item Bonuses > hunt with hunter_cloak applies correct bonus
+AssertionError: expected 7 to be greater than or equal to 9
+ ❯ client/src/game/rules/resourceGains.test.ts:466:37
+    464| 
+    465|       // With cloak should have higher gains (50% multiplier)
+    466|       expect(expectedWith.food.min).toBeGreaterThanOrEqual(Math.floor(…
+       |                                     ^
+    467|       expect(expectedWith.food.max).toBeGreaterThanOrEqual(Math.floor(…
+    468|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Actions with Item Bonuses > exploreCave with different lanterns shows progression
+TypeError: Cannot read properties of undefined (reading 'min')
+ ❯ client/src/game/rules/resourceGains.test.ts:501:31
+    499|       // Steel lantern should give more resources (50% vs 25% cave exp…
+    500|       expect(steelGains.wood.min).toBeGreaterThan(ironGains.wood.min);
+    501|       expect(steelGains.stone.min).toBeGreaterThan(ironGains.stone.min…
+       |                               ^
+    502|     });
+    503|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Crafting Cost Reductions > blacksmith_hammer reduces crafting costs by 15%
+AssertionError: expected 45 to be 42 // Object.is equality
+
+- Expected
++ Received
+
+- 42
++ 45
+
+ ❯ client/src/game/rules/resourceGains.test.ts:560:26
+    558| 
+    559|       // With hammer should cost 15% less
+    560|       expect(amountWith).toBe(Math.floor(amountWithout * 0.85));
+       |                          ^
+    561|     });
+    562|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Button Upgrades > chopWood with button upgrades increases gains
+AssertionError: expected 6 to be greater than or equal to 8
+ ❯ client/src/game/rules/resourceGains.test.ts:626:37
+    624| 
+    625|       // With upgrades should have significantly higher gains (at leas…
+    626|       expect(expectedWith.wood.min).toBeGreaterThanOrEqual(Math.floor(…
+       |                                     ^
+    627|       expect(expectedWith.wood.max).toBeGreaterThanOrEqual(Math.floor(…
+    628|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Button Upgrades > exploreCave with button upgrades increases gains
+AssertionError: expected 5 to be greater than or equal to 9
+ ❯ client/src/game/rules/resourceGains.test.ts:644:37
+    642| 
+    643|       // With max upgrades should have approximately double the gains …
+    644|       expect(expectedWith.wood.min).toBeGreaterThanOrEqual(Math.floor(…
+       |                                     ^
+    645|     });
+    646|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Additional Cave Exploration > exploreCitadel gains match tooltip
+AssertionError: expected 1 to be greater than or equal to 2
+ ❯ client/src/game/rules/resourceGains.test.ts:705:29
+    703|           const maxActual = Math.max(...actualGains[resource]);
+    704| 
+    705|           expect(minActual).toBeGreaterThanOrEqual(expectedGains[resou…
+       |                             ^
