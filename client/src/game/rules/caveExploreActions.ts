@@ -1,19 +1,6 @@
 import { Action, GameState } from "@shared/schema";
 import { ActionResult } from "@/game/actions";
 import { applyActionEffects } from "@/game/rules";
-import { getActionBonuses } from "@/game/rules/effectsCalculation";
-
-// Helper function to apply cave explore multiplier to cave exploration probability effects
-// Note: Cave explore multipliers are now applied in applyActionEffects via getActionBonuses
-// This function is kept for backwards compatibility but no longer applies multipliers
-function applyCaveExplorationBonuses(
-  state: GameState,
-  actionId: string,
-  effectUpdates: any,
-): void {
-  // Bonuses are now handled by applyActionEffects through getActionBonuses
-  // No additional processing needed here
-}
 
 // Base items (relics and clothing) for each cave exploration stage
 const caveItems = {
@@ -461,8 +448,6 @@ export function handleExploreCave(
 ): ActionResult {
   const effectUpdates = applyActionEffects("exploreCave", state);
 
-  applyCaveExplorationBonuses(state, "exploreCave", effectUpdates);
-
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
     effectUpdates.logMessages.forEach((message: string | any) => {
@@ -500,7 +485,6 @@ export function handleVentureDeeper(
   result: ActionResult,
 ): ActionResult {
   const effectUpdates = applyActionEffects("ventureDeeper", state);
-  applyCaveExplorationBonuses(state, "ventureDeeper", effectUpdates);
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
@@ -539,7 +523,6 @@ export function handleDescendFurther(
   result: ActionResult,
 ): ActionResult {
   const effectUpdates = applyActionEffects("descendFurther", state);
-  applyCaveExplorationBonuses(state, "descendFurther", effectUpdates);
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
@@ -578,7 +561,6 @@ export function handleExploreRuins(
   result: ActionResult,
 ): ActionResult {
   const effectUpdates = applyActionEffects("exploreRuins", state);
-  applyCaveExplorationBonuses(state, "exploreRuins", effectUpdates);
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
@@ -617,7 +599,6 @@ export function handleExploreTemple(
   result: ActionResult,
 ): ActionResult {
   const effectUpdates = applyActionEffects("exploreTemple", state);
-  applyCaveExplorationBonuses(state, "exploreTemple", effectUpdates);
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
@@ -656,8 +637,7 @@ export function handleExploreCitadel(
   result: ActionResult,
 ): ActionResult {
   const effectUpdates = applyActionEffects("exploreCitadel", state);
-  applyCaveExplorationBonuses(state, "exploreCitadel", effectUpdates);
-
+  
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
     effectUpdates.logMessages.forEach((message: string | any) => {
