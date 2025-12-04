@@ -611,4 +611,3 @@ describe('Population Production Display Tests', () => {
     });
   });
 });
-});
