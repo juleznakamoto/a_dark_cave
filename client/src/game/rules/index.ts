@@ -745,7 +745,11 @@ export const applyActionEffects = (
         // Check condition if provided
         let conditionMet = true;
         if (probabilityEffect.condition) {
-          conditionMet = evaluateCondition(probabilityEffect.condition, state);
+          if (typeof probabilityEffect.condition === 'function') {
+            conditionMet = probabilityEffect.condition(state);
+          } else {
+            conditionMet = evaluateCondition(probabilityEffect.condition, state);
+          }
         }
 
         // Evaluate probability (can be a number or a function)
