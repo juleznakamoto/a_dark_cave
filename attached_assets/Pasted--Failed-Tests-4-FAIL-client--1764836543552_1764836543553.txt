@@ -1,0 +1,60 @@
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Actions with Item Bonuses > mineStone with mastermason_chisel applies correct bonus
+AssertionError: expected 5 to be greater than or equal to 6
+ ❯ client/src/game/rules/resourceGains.test.ts:465:38
+    463| 
+    464|       // With chisel should have higher gains (25% multiplier)
+    465|       expect(expectedWith.stone.min).toBeGreaterThanOrEqual(Math.floor…
+       |                                      ^
+    466|       expect(expectedWith.stone.max).toBeGreaterThanOrEqual(Math.floor…
+    467|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Button Upgrades > chopWood with button upgrades increases gains
+AssertionError: expected 6 to be greater than or equal to 8
+ ❯ client/src/game/rules/resourceGains.test.ts:549:37
+    547| 
+    548|       // With upgrades should have significantly higher gains (at leas…
+    549|       expect(expectedWith.wood.min).toBeGreaterThanOrEqual(Math.floor(…
+       |                                     ^
+    550|       expect(expectedWith.wood.max).toBeGreaterThanOrEqual(Math.floor(…
+    551|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Button Upgrades > exploreCave with button upgrades increases gains
+AssertionError: expected 5 to be greater than or equal to 9
+ ❯ client/src/game/rules/resourceGains.test.ts:567:37
+    565| 
+    566|       // With max upgrades should have approximately double the gains …
+    567|       expect(expectedWith.wood.min).toBeGreaterThanOrEqual(Math.floor(…
+       |                                     ^
+    568|     });
+    569|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Additional Cave Exploration > exploreCitadel gains match tooltip
+AssertionError: expected 1 to be greater than or equal to 2
+ ❯ client/src/game/rules/resourceGains.test.ts:626:29
+    624|           const maxActual = Math.max(...actualGains[resource]);
+    625| 
+    626|           expect(minActual).toBeGreaterThanOrEqual(expectedGains[resou…
+       |                             ^
+    627|           expect(maxActual).toBeLessThanOrEqual(expectedGains[resource…
+    628|         }
+ ❯ client/src/game/rules/resourceGains.test.ts:620:62
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  1 failed | 9 passed (10)
+      Tests  4 failed | 85 passed (89)
+   Start at  08:22:10
+   Duration  3.13s (transform 1.24s, setup 0ms, import 2.38s, tests 1.12s, environment 2ms)
+
+ FAIL  Tests failed. Watching for file changes...
+       press h to show help, press q to quit
