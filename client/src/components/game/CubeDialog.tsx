@@ -57,10 +57,9 @@ export default function CubeDialog({
 
     // Check if this is one of the final cube events (cube15a or cube15b)
     if (event?.id?.includes('cube15a') || event?.id?.includes('cube15b')) {
-      // Delay showing end screen slightly to allow dialog to close
+      // Navigate to end screen page
       setTimeout(() => {
-        const { setShowEndScreen } = useGameStore.getState();
-        setShowEndScreen(true);
+        window.location.href = "/end-screen";
       }, 500);
     }
   };

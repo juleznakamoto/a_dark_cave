@@ -45,7 +45,6 @@ interface GameStore extends GameState {
   };
   authDialogOpen: boolean;
   shopDialogOpen: boolean;
-  showEndScreen: boolean; // Added showEndScreen flag
   idleModeDialog: {
     isOpen: boolean;
   };
@@ -118,7 +117,6 @@ interface GameStore extends GameState {
   executeAction: (actionId: string) => void;
   setActiveTab: (tab: string) => void;
   setBoostMode: (enabled: boolean) => void;
-  setShowEndScreen: (showEndScreen: boolean) => void; // Added setShowEndScreen action
   setIsMuted: (isMuted: boolean) => void;
   setShopNotificationSeen: (seen: boolean) => void;
   setShopNotificationVisible: (visible: boolean) => void;
@@ -229,7 +227,6 @@ const mergeStateUpdates = (
     loopProgress: stateUpdates.loopProgress !== undefined ? stateUpdates.loopProgress : prevState.loopProgress,
     isGameLoopActive: stateUpdates.isGameLoopActive !== undefined ? stateUpdates.isGameLoopActive : prevState.isGameLoopActive,
     isPaused: stateUpdates.isPaused !== undefined ? stateUpdates.isPaused : prevState.isPaused, // Merge isPaused
-    showEndScreen: stateUpdates.showEndScreen !== undefined ? stateUpdates.showEndScreen : prevState.showEndScreen, // Merge showEndScreen
     playTime: stateUpdates.playTime !== undefined ? stateUpdates.playTime : prevState.playTime, // Merge playTime
     referralCount: stateUpdates.referralCount !== undefined ? stateUpdates.referralCount : prevState.referralCount, // Merge referralCount
     referredUsers: stateUpdates.referredUsers || prevState.referredUsers, // Merge referredUsers
@@ -340,7 +337,6 @@ const defaultGameState: GameState = {
   loopProgress: 0,
   isGameLoopActive: false,
   isPaused: false,
-  showEndScreen: false, // Initialize showEndScreen to false
   isMuted: false,
   // Initialize shop notification state
   shopNotificationSeen: false,
@@ -446,7 +442,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
   authDialogOpen: false,
   shopDialogOpen: false,
-  showEndScreen: false, // Initialize showEndScreen
   isMuted: false,
   idleModeDialog: {
     isOpen: false,
@@ -928,7 +923,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
         loopProgress: savedState.loopProgress !== undefined ? savedState.loopProgress : 0,
         isGameLoopActive: savedState.isGameLoopActive !== undefined ? savedState.isGameLoopActive : false,
         isPaused: savedState.isPaused !== undefined ? savedState.isPaused : false, // Ensure isPaused is loaded
-        showEndScreen: savedState.showEndScreen !== undefined ? savedState.showEndScreen : false, // Ensure showEndScreen is loaded
         isMuted: savedState.isMuted !== undefined ? savedState.isMuted : false,
         shopNotificationSeen: savedState.shopNotificationSeen !== undefined ? savedState.shopNotificationSeen : false,
         shopNotificationVisible: savedState.shopNotificationVisible !== undefined ? savedState.shopNotificationVisible : false,
