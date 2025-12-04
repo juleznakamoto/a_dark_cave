@@ -311,6 +311,26 @@ export const getActionBonuses = (
     }
   }
 
+  // Add building bonuses
+  Object.entries(state.buildings).forEach(([buildingKey, buildingCount]) => {
+    if (buildingCount > 0) {
+      const actionIdForBuilding = `build${buildingKey.charAt(0).toUpperCase() + buildingKey.slice(1)}`;
+      const buildAction = villageBuildActions[actionIdForBuilding];
+
+      if (buildAction?.actionBonuses?.[actionId]) {
+        const bonus = buildAction.actionBonuses[actionId];
+        if (bonus.resourceMultiplier) {
+          resourceMultiplier += bonus.resourceMultiplier - 1;
+        }
+        if (bonus.resourceBonus) {
+          Object.entries(bonus.resourceBonus).forEach(([resource, amount]) => {
+            resourceBonus[resource] = (resourceBonus[resource] || 0) + amount;
+          });
+        }
+      }
+    }
+  });
+
   return {
     resourceMultiplier,
     resourceBonus,
