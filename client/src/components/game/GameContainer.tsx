@@ -79,7 +79,7 @@ export default function GameContainer() {
 
     if (newAnimations.size > 0) {
       setAnimatingTabs(newAnimations);
-      setTimeout(() => setAnimatingTabs(new Set()), 1000);
+      setTimeout(() => setAnimatingTabs(new Set()), 10000);
     }
 
     prevFlagsRef.current = {
@@ -261,8 +261,8 @@ export default function GameContainer() {
                 {flags.villageUnlocked && (
                   <button
                     className={`py-2 text-sm bg-transparent ${
-                      activeTab === "village" ? "font-bold opacity-100" : "opacity-60"
-                    } ${animatingTabs.has("village") ? "tab-fade-in" : ""}`}
+                      animatingTabs.has("village") ? "tab-fade-in" : activeTab === "village" ? "font-bold opacity-100" : "opacity-60"
+                    }`}
                     onClick={() => setActiveTab("village")}
                     data-testid="tab-village"
                   >
@@ -274,8 +274,8 @@ export default function GameContainer() {
                 {(estateUnlocked || buildings.darkEstate >= 1) && (
                   <button
                     className={`py-2 text-sm bg-transparent ${
-                      activeTab === "estate" ? "font-bold opacity-100" : "opacity-60"
-                    } ${animatingTabs.has("estate") ? "tab-fade-in" : ""}`}
+                      animatingTabs.has("estate") ? "tab-fade-in" : activeTab === "estate" ? "font-bold opacity-100" : "opacity-60"
+                    }`}
                     onClick={() => setActiveTab("estate")}
                     data-testid="tab-estate"
                   >
@@ -286,8 +286,8 @@ export default function GameContainer() {
                 {flags.forestUnlocked && (
                   <button
                     className={`py-2 text-sm bg-transparent ${
-                      activeTab === "forest" ? "font-bold opacity-100" : "opacity-60"
-                    } ${animatingTabs.has("forest") ? "tab-fade-in" : ""}`}
+                      animatingTabs.has("forest") ? "tab-fade-in" : activeTab === "forest" ? "font-bold opacity-100" : "opacity-60"
+                    }`}
                     onClick={() => setActiveTab("forest")}
                     data-testid="tab-forest"
                   >
@@ -298,8 +298,8 @@ export default function GameContainer() {
                 {flags.bastionUnlocked && (
                   <button
                     className={`py-2 text-sm bg-transparent ${
-                      activeTab === "bastion" ? "font-bold opacity-100" : "opacity-60"
-                    } ${animatingTabs.has("bastion") ? "tab-fade-in" : ""}`}
+                      animatingTabs.has("bastion") ? "tab-fade-in" : activeTab === "bastion" ? "font-bold opacity-100" : "opacity-60"
+                    }`}
                     onClick={() => setActiveTab("bastion")}
                     data-testid="tab-bastion"
                   >
