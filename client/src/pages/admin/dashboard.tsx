@@ -2183,6 +2183,29 @@ export default function AdminDashboard() {
               </CardHeader>
               <CardContent>
                 <div className="mb-4 space-y-2">
+                  <div className="flex gap-2 mb-2">
+                    <button
+                      onClick={() => {
+                        const allButtons = getAllButtonNames().filter(buttonName => {
+                          if (selectedClickTypes.has('filter:cube') && buttonName.startsWith('cube-')) return false;
+                          if (selectedClickTypes.has('filter:merchant') && buttonName.startsWith('merchant-trade')) return false;
+                          if (selectedClickTypes.has('filter:assign') && (buttonName.startsWith('assign') || buttonName.startsWith('unassign'))) return false;
+                          if (selectedClickTypes.has('filter:choice') && (buttonName.includes('_choice_') || buttonName.includes('-choice-'))) return false;
+                          return true;
+                        });
+                        setSelectedClickTypes(new Set(allButtons));
+                      }}
+                      className="px-3 py-1 text-sm bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
+                    >
+                      Select All
+                    </button>
+                    <button
+                      onClick={() => setSelectedClickTypes(new Set())}
+                      className="px-3 py-1 text-sm bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/90"
+                    >
+                      Deselect All
+                    </button>
+                  </div>
                   <div className="flex gap-4 flex-wrap">
                     <label className="flex items-center gap-2 cursor-pointer">
                       <input
@@ -2721,33 +2744,64 @@ export default function AdminDashboard() {
                 <CardDescription>Number of players who have seen each cube event at each playtime</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="mb-4 flex gap-4 flex-wrap">
-                  {(() => {
-                    const chartData = getCubeEventsOverPlaytime();
-                    if (chartData.length === 0) return null;
+                <div className="mb-4 space-y-2">
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => {
+                        const checkboxes = document.querySelectorAll('[data-cube-checkbox]') as NodeListOf<HTMLInputElement>;
+                        checkboxes.forEach(checkbox => {
+                          checkbox.checked = true;
+                          const event = new Event('change', { bubbles: true });
+                          checkbox.dispatchEvent(event);
+                        });
+                      }}
+                      className="px-3 py-1 text-sm bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
+                    >
+                      Select All
+                    </button>
+                    <button
+                      onClick={() => {
+                        const checkboxes = document.querySelectorAll('[data-cube-checkbox]') as NodeListOf<HTMLInputElement>;
+                        checkboxes.forEach(checkbox => {
+                          checkbox.checked = false;
+                          const event = new Event('change', { bubbles: true });
+                          checkbox.dispatchEvent(event);
+                        });
+                      }}
+                      className="px-3 py-1 text-sm bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/90"
+                    >
+                      Deselect All
+                    </button>
+                  </div>
+                  <div className="flex gap-4 flex-wrap">
+                    {(() => {
+                      const chartData = getCubeEventsOverPlaytime();
+                      if (chartData.length === 0) return null;
 
-                    // Get all cube event keys from the first data point
-                    const cubeKeys = Object.keys(chartData[0]).filter(key => key.startsWith('Cube '));
+                      // Get all cube event keys from the first data point
+                      const cubeKeys = Object.keys(chartData[0]).filter(key => key.startsWith('Cube '));
 
-                    return cubeKeys.map((key) => (
-                      <label key={key} className="flex items-center gap-2 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          defaultChecked={true}
-                          onChange={(e) => {
-                            const checkbox = e.target;
-                            const lines = document.querySelectorAll(`[data-cube-event="${key}"]`);
-                            lines.forEach(line => {
-                              const element = line as HTMLElement;
-                              element.style.display = checkbox.checked ? '' : 'none';
-                            });
-                          }}
-                          className="cursor-pointer"
-                        />
-                        <span className="text-sm">{key}</span>
-                      </label>
-                    ));
-                  })()}
+                      return cubeKeys.map((key) => (
+                        <label key={key} className="flex items-center gap-2 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            data-cube-checkbox
+                            defaultChecked={true}
+                            onChange={(e) => {
+                              const checkbox = e.target;
+                              const lines = document.querySelectorAll(`[data-cube-event="${key}"]`);
+                              lines.forEach(line => {
+                                const element = line as HTMLElement;
+                                element.style.display = checkbox.checked ? '' : 'none';
+                              });
+                            }}
+                            className="cursor-pointer"
+                          />
+                          <span className="text-sm">{key}</span>
+                        </label>
+                      ));
+                    })()}
+                  </div>
                 </div>
                 <ResponsiveContainer width="100%" height={400}>
                   <LineChart data={getCubeEventsOverPlaytime()}>
@@ -3054,31 +3108,47 @@ export default function AdminDashboard() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="mb-4 flex gap-4 flex-wrap">
-                  {[
-                    'food', 'bones', 'fur', 'wood', 'stone', 'iron', 'coal', 'sulfur', 
-                    'obsidian', 'adamant', 'moonstone', 'leather', 'steel', 'torch', 
-                    'black_powder', 'ember_bomb', 'ashfire_dust', 'ashfire_bomb', 'void_bomb', 
-                    'silver', 'gold'
-                  ].map((resource) => (
-                    <label key={resource} className="flex items-center gap-2 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={selectedResources.has(resource)}
-                        onChange={(e) => {
-                          const newSet = new Set(selectedResources);
-                          if (e.target.checked) {
-                            newSet.add(resource);
-                          } else {
-                            newSet.delete(resource);
-                          }
-                          setSelectedResources(newSet);
-                        }}
-                        className="cursor-pointer"
-                      />
-                      <span className="text-sm">{resource}</span>
-                    </label>
-                  ))}
+                <div className="mb-4 space-y-2">
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => setSelectedResources(new Set(['food', 'bones', 'fur', 'wood', 'stone', 'iron', 'coal', 'sulfur', 'obsidian', 'adamant', 'moonstone', 'leather', 'steel', 'torch', 'black_powder', 'ember_bomb', 'ashfire_dust', 'ashfire_bomb', 'void_bomb', 'silver', 'gold']))}
+                      className="px-3 py-1 text-sm bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
+                    >
+                      Select All
+                    </button>
+                    <button
+                      onClick={() => setSelectedResources(new Set())}
+                      className="px-3 py-1 text-sm bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/90"
+                    >
+                      Deselect All
+                    </button>
+                  </div>
+                  <div className="flex gap-4 flex-wrap">
+                    {[
+                      'food', 'bones', 'fur', 'wood', 'stone', 'iron', 'coal', 'sulfur', 
+                      'obsidian', 'adamant', 'moonstone', 'leather', 'steel', 'torch', 
+                      'black_powder', 'ember_bomb', 'ashfire_dust', 'ashfire_bomb', 'void_bomb', 
+                      'silver', 'gold'
+                    ].map((resource) => (
+                      <label key={resource} className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={selectedResources.has(resource)}
+                          onChange={(e) => {
+                            const newSet = new Set(selectedResources);
+                            if (e.target.checked) {
+                              newSet.add(resource);
+                            } else {
+                              newSet.delete(resource);
+                            }
+                            setSelectedResources(newSet);
+                          }}
+                          className="cursor-pointer"
+                        />
+                        <span className="text-sm">{resource}</span>
+                      </label>
+                    ))}
+                  </div>
                 </div>
                 <ResponsiveContainer width="100%" height={400}>
                   <LineChart data={getResourceStatsOverPlaytime()}>
@@ -3167,34 +3237,65 @@ export default function AdminDashboard() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="mb-4 flex gap-4 flex-wrap">
-                  {[
-                    { key: 'mineStone', label: 'Stone Mining', color: '#82ca9d' },
-                    { key: 'mineIron', label: 'Iron Mining', color: '#8884d8' },
-                    { key: 'mineCoal', label: 'Coal Mining', color: '#ffc658' },
-                    { key: 'mineSulfur', label: 'Sulfur Mining', color: '#ff8042' },
-                    { key: 'mineObsidian', label: 'Obsidian Mining', color: '#0088FE' },
-                    { key: 'mineAdamant', label: 'Adamant Mining', color: '#00C49F' }
-                  ].map((miningType) => (
-                    <label key={miningType.key} className="flex items-center gap-2 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        defaultChecked={true}
-                        onChange={(e) => {
-                          const checkbox = e.target;
-                          const lines = document.querySelectorAll(`[data-mining-type="${miningType.key}"]`);
-                          lines.forEach(line => {
-                            const element = line as HTMLElement;
-                            element.style.display = checkbox.checked ? '' : 'none';
-                          });
-                        }}
-                        className="cursor-pointer"
-                      />
-                      <span className="text-sm" style={{ color: miningType.color }}>
-                        {miningType.label}
-                      </span>
-                    </label>
-                  ))}
+                <div className="mb-4 space-y-2">
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => {
+                        const checkboxes = document.querySelectorAll('[data-mining-checkbox]') as NodeListOf<HTMLInputElement>;
+                        checkboxes.forEach(checkbox => {
+                          checkbox.checked = true;
+                          const event = new Event('change', { bubbles: true });
+                          checkbox.dispatchEvent(event);
+                        });
+                      }}
+                      className="px-3 py-1 text-sm bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
+                    >
+                      Select All
+                    </button>
+                    <button
+                      onClick={() => {
+                        const checkboxes = document.querySelectorAll('[data-mining-checkbox]') as NodeListOf<HTMLInputElement>;
+                        checkboxes.forEach(checkbox => {
+                          checkbox.checked = false;
+                          const event = new Event('change', { bubbles: true });
+                          checkbox.dispatchEvent(event);
+                        });
+                      }}
+                      className="px-3 py-1 text-sm bg-secondary text-secondary-foreground rounded-md hover:bg-secondary/90"
+                    >
+                      Deselect All
+                    </button>
+                  </div>
+                  <div className="flex gap-4 flex-wrap">
+                    {[
+                      { key: 'mineStone', label: 'Stone Mining', color: '#82ca9d' },
+                      { key: 'mineIron', label: 'Iron Mining', color: '#8884d8' },
+                      { key: 'mineCoal', label: 'Coal Mining', color: '#ffc658' },
+                      { key: 'mineSulfur', label: 'Sulfur Mining', color: '#ff8042' },
+                      { key: 'mineObsidian', label: 'Obsidian Mining', color: '#0088FE' },
+                      { key: 'mineAdamant', label: 'Adamant Mining', color: '#00C49F' }
+                    ].map((miningType) => (
+                      <label key={miningType.key} className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          data-mining-checkbox
+                          defaultChecked={true}
+                          onChange={(e) => {
+                            const checkbox = e.target;
+                            const lines = document.querySelectorAll(`[data-mining-type="${miningType.key}"]`);
+                            lines.forEach(line => {
+                              const element = line as HTMLElement;
+                              element.style.display = checkbox.checked ? '' : 'none';
+                            });
+                          }}
+                          className="cursor-pointer"
+                        />
+                        <span className="text-sm" style={{ color: miningType.color }}>
+                          {miningType.label}
+                        </span>
+                      </label>
+                    ))}
+                  </div>
                 </div>
                 <ResponsiveContainer width="100%" height={400}>
                   <LineChart data={getButtonUpgradesOverPlaytime()}>
