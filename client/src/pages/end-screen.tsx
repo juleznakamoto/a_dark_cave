@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import Hero from "@/components/ui/animated-shader-hero";
 import { deleteSave } from "@/game/save";
@@ -14,7 +13,7 @@ export default function EndScreenPage() {
           "https://sdk.playlight.dev/playlight-sdk.es.js"
         );
         const playlightSDK = module.default;
-        
+
         // Reconfigure SDK to enable sidebar
         playlightSDK.setConfig({
           sidebar: {
@@ -22,7 +21,7 @@ export default function EndScreenPage() {
             forceVisible: true
           }
         });
-        
+
         setSdkInitialized(true);
         console.log("[PLAYLIGHT] Sidebar enabled on end screen");
       } catch (error) {
@@ -39,7 +38,7 @@ export default function EndScreenPage() {
             "https://sdk.playlight.dev/playlight-sdk.es.js"
           );
           const playlightSDK = module.default;
-          
+
           // Reconfigure SDK to disable sidebar
           playlightSDK.setConfig({
             sidebar: {
