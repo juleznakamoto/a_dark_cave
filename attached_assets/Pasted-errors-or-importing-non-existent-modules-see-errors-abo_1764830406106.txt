@@ -1,0 +1,37 @@
+errors or importing non-existent modules. (see errors above)
+warnFailedUpdate @ client:176Understand this error
+logger.ts:33 v519Z [STATE] Action: chopWood Object
+index.ts?t=1764830283295:64 Uncaught (in promise) ReferenceError: handleBuildBoneTemple is not defined
+    at index.ts?t=1764830283295:64:20Understand this error
+logger.ts:33 v519Z [SAVE CLOUD] 🔍 Starting cloud save with OCC... Object
+logger.ts:33 v519Z [SAVE CLOUD] 💾 Calling database RPC with OCC validation... Object
+logger.ts:33 v519Z [SAVE CLOUD] ✅ Cloud save completed successfully - OCC check passed in database
+logger.ts:33 v519Z [SAVE] ✅ Updated lastCloudState after successful cloud save
+api.playlight.dev/platform/game-by-domain/2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev:1  Failed to load resource: the server responded with a status of 404 ()Understand this error
+api.js:39 Playlight game not found. This is normal in a test / local environment, but should not appear in production.
+makeRequest @ api.js:39Understand this warning
+logger.ts:33 v519Z [SAVE CLOUD] 🔍 Starting cloud save with OCC... {playTime: 748698.200000021, isNewGame: false, userId: 'a375ecb5...', diffKeys: Array(7), hasPlayTime: true, …}
+logger.ts:33 v519Z [SAVE CLOUD] 💾 Calling database RPC with OCC validation... {hasClickAnalytics: false, clickAnalyticsKeys: Array(0), hasResourceAnalytics: false, resourceAnalyticsKeys: Array(0), diffSize: 517, …}
+logger.ts:33 v519Z [SAVE CLOUD] ✅ Cloud save completed successfully - OCC check passed in database
+logger.ts:33 v519Z [SAVE] ✅ Updated lastCloudState after successful cloud save
+logger.ts:33 v519Z [STATE] Action: hunt {stateUpdates: {…}, logEntries: Array(0), delayedEffects: Array(0)}
+(index):1 Uncaught (in promise) ReferenceError: handleBuildBoneTemple is not defined
+    at index.ts?t=1764830283295:64:20
+Promise.then
+handleClick @ button.tsx:23
+callCallback2 @ chunk-276SZO74.js?v=3490883a:3674
+invokeGuardedCallbackDev @ chunk-276SZO74.js?v=3490883a:3699
+invokeGuardedCallback @ chunk-276SZO74.js?v=3490883a:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-276SZO74.js?v=3490883a:3736
+executeDispatch @ chunk-276SZO74.js?v=3490883a:7014
+processDispatchQueueItemsInOrder @ chunk-276SZO74.js?v=3490883a:7034
+processDispatchQueue @ chunk-276SZO74.js?v=3490883a:7043
+dispatchEventsForPlugins @ chunk-276SZO74.js?v=3490883a:7051
+(anonymous) @ chunk-276SZO74.js?v=3490883a:7174
+batchedUpdates$1 @ chunk-276SZO74.js?v=3490883a:18913
+batchedUpdates @ chunk-276SZO74.js?v=3490883a:3579
+dispatchEventForPluginEventSystem @ chunk-276SZO74.js?v=3490883a:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-276SZO74.js?v=3490883a:5478
+dispatchEvent @ chunk-276SZO74.js?v=3490883a:5472
+dispatchDiscreteEvent @ chunk-276SZO74.js?v=3490883a:5449Understand this error
+logger.ts:33 v519Z [SAVE CLOUD] 🔍 Starting cloud save
