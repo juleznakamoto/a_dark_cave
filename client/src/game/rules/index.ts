@@ -663,8 +663,11 @@ export const applyActionEffects = (
           let min = parseInt(match[1]);
           let max = parseInt(match[2]);
 
+          // Determine if this is a sacrifice action
+          const isSacrificeAction = actionId === 'boneTotems' || actionId === 'leatherTotems';
+
           // For sacrifice actions, apply usage count bonus first
-          if (actionId === 'boneTotems' || actionId === 'leatherTotems') {
+          if (isSacrificeAction) {
             const usageCountKey = actionId === 'boneTotems' 
               ? 'boneTotemsUsageCount' 
               : 'leatherTotemsUsageCount';
