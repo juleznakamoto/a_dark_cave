@@ -831,24 +831,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const resources = state.resources || {};
     const stats = state.stats || {};
 
-    logger.log('[ANALYTICS] 🔍 Creating resource snapshot - DEEP DIVE:', {
-      hasResources: !!resources,
-      hasStats: !!stats,
-      resourceKeys: Object.keys(resources),
-      statsKeys: Object.keys(stats),
-      statsValues: stats,
-      resourcesValues: resources,
-      // Deep inspection of state.stats
-      fullStateStats: state.stats,
-      stateStatsType: typeof state.stats,
-      stateStatsIsNull: state.stats === null,
-      stateStatsIsUndefined: state.stats === undefined,
-      // Check each stat individually
-      luck: state.stats?.luck,
-      strength: state.stats?.strength,
-      knowledge: state.stats?.knowledge,
-      madness: state.stats?.madness,
-      madnessFromEvents: state.stats?.madnessFromEvents,
+    logger.log('[ANALYTICS] 🔍 Creating resource snapshot with stats from state:', {
+      statsFromState: {
+        luck: stats.luck,
+        strength: stats.strength,
+        knowledge: stats.knowledge,
+        madness: stats.madness,
+      },
+      hasNonZeroStats: Object.values(stats).some(v => typeof v === 'number' && v > 0),
     });
 
     // Add resources to snapshot
@@ -1376,14 +1366,33 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set((state) => {
       const { getTotalLuck, getTotalStrength, getTotalKnowledge, getTotalMadness } = require('./rules/effectsCalculation');
       
-      return {
-        stats: {
-          ...state.stats,
-          luck: getTotalLuck(state),
-          strength: getTotalStrength(state),
-          knowledge: getTotalKnowledge(state),
-          madness: getTotalMadness(state),
+      const calculatedLuck = getTotalLuck(state);
+      const calculatedStrength = getTotalStrength(state);
+      const calculatedKnowledge = getTotalKnowledge(state);
+      const calculatedMadness = getTotalMadness(state);
+
+      logger.log('[STATS UPDATE] 📊 Updating stats in state:', {
+        before: state.stats,
+        calculated: {
+          luck: calculatedLuck,
+          strength: calculatedStrength,
+          knowledge: calculatedKnowledge,
+          madness: calculatedMadness,
         },
+      });
+      
+      const newStats = {
+        ...state.stats,
+        luck: calculatedLuck,
+        strength: calculatedStrength,
+        knowledge: calculatedKnowledge,
+        madness: calculatedMadness,
+      };
+
+      logger.log('[STATS UPDATE] ✅ New stats object:', newStats);
+
+      return {
+        stats: newStats,
       };
     });
   },
