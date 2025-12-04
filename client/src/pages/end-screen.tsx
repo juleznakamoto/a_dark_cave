@@ -89,13 +89,17 @@ export default function EndScreenPage() {
             onClick: handleCruelMode,
             buttonId: "end-screen-cruel-mode",
           },
-          secondary: {
-            text: "Close",
-            onClick: handleMainMenu,
-            buttonId: "end-screen-close",
-          },
         }}
       />
+      <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-[100000]">
+        <button
+          onClick={handleMainMenu}
+          className="px-6 py-2 text-sm bg-transparent border border-gray-600 text-gray-300 rounded-md hover:bg-gray-800 hover:border-gray-400 transition-all"
+          data-button-id="end-screen-close"
+        >
+          Close
+        </button>
+      </div>
     </div>
   );
 }
