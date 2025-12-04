@@ -141,12 +141,12 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.wood": "random(6,12)",
       "story.seen.hasWood": true,
       "story.seen.firstWoodGathered": true,
-      "relics.old_trinket": {
+      "relics.odd_trinket": {
         probability: 0.0075,
         value: true,
-        condition: !state.relics.old_trinket && onpopstate.buildings.cabin >= 1,
+        condition: "!relics.odd_trinket && buildings.cabin >= 1",
         logMessage:
-          "While chopping wood, you find an old trinket with glowing amber liquid inside. After some hesitation, you drink it. It burns as it goes down, but you feel stronger than before.",
+          "While chopping wood, you find a trinket with glowing amber liquid inside. After some hesitation, you drink it. It burns as it goes down, but you feel stronger than before.",
       },
     },
     cooldown: 4,
