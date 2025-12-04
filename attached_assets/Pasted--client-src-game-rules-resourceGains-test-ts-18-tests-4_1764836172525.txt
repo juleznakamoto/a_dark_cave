@@ -1,0 +1,70 @@
+
+ ❯ client/src/game/rules/resourceGains.test.ts (18 tests | 4 failed) 194ms
+   ❯ Resource Gain Tests (18)
+     ✓ Cave Exploration Actions (3)
+       ✓ chopWood gains match tooltip 20ms
+       ✓ exploreCave gains match tooltip 10ms
+       ✓ ventureDeeper gains match tooltip 15ms
+     ✓ Mining Actions (4)
+       ✓ mineStone gains match tooltip 5ms
+       ✓ mineIron gains match tooltip 6ms
+       ✓ mineCoal gains match tooltip 4ms
+       ✓ mineObsidian gains match tooltip 3ms
+     ✓ Hunting Actions (1)
+       ✓ hunt gains match tooltip 18ms
+     ❯ Actions with Item Bonuses (3)
+       ✓ chopWood with loggers_gloves applies correct bonus 7ms
+       × mineStone with mastermason_chisel applies correct bonus 10ms
+       ✓ hunt with hunter_cloak applies correct bonus 14ms
+     ❯ Sacrifice Actions (3)
+       ✓ boneTotems gains match tooltip 6ms
+       ✓ leatherTotems gains match tooltip 6ms
+       × boneTotems with boneTemple applies 25% bonus 7ms
+     ❯ Button Upgrades (2)
+       × chopWood with button upgrades increases gains 7ms
+       × exploreCave with button upgrades increases gains 12ms
+     ✓ Multiplier Stacking (2)
+       ✓ multiple bonuses stack correctly for chopWood 22ms
+       ✓ multiple bonuses stack correctly for mining 19ms
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Actions with Item Bonuses > mineStone with mastermason_chisel applies correct bonus
+AssertionError: expected 5 to be greater than 5
+ ❯ client/src/game/rules/resourceGains.test.ts:465:38
+    463| 
+    464|       // With chisel should have higher gains
+    465|       expect(expectedWith.stone.min).toBeGreaterThan(expectedWithout.s…
+       |                                      ^
+    466|       expect(expectedWith.stone.max).toBeGreaterThan(expectedWithout.s…
+    467|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Sacrifice Actions > boneTotems with boneTemple applies 25% bonus
+AssertionError: expected 12 to be greater than or equal to 13
+ ❯ client/src/game/rules/resourceGains.test.ts:533:39
+    531|       // With temple should have approximately 25% higher gains
+    532|       const expectedBonus = Math.ceil(expectedWithout.silver.min * 1.2…
+    533|       expect(expectedWith.silver.min).toBeGreaterThanOrEqual(expectedB…
+       |                                       ^
+    534|     });
+    535|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Button Upgrades > chopWood with button upgrades increases gains
+AssertionError: expected 6 to be greater than 6
+ ❯ client/src/game/rules/resourceGains.test.ts:549:37
+    547| 
+    548|       // With upgrades should have significantly higher gains
+    549|       expect(expectedWith.wood.min).toBeGreaterThan(expectedWithout.wo…
+       |                                     ^
+    550|       expect(expectedWith.wood.max).toBeGreaterThan(expectedWithout.wo…
+    551|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Button Upgrades > exploreCave with button upgrades increases gains
+AssertionError: expected 5 to be greater than or equal to 9
+ ❯ client/src/game/rules/resourceGains.test.ts:567:37
