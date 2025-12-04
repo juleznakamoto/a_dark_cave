@@ -142,7 +142,7 @@ export const caveExploreActions: Record<string, Action> = {
       "story.seen.hasWood": true,
       "story.seen.firstWoodGathered": true,
       "relics.odd_trinket": {
-        probability: 0.75,
+        probability: 0.0075,
         value: true,
         condition: (state: GameState) => !state.relics?.odd_trinket && (state.buildings?.cabin || 0) >= 1,
         logMessage:
