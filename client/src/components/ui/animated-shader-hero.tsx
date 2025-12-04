@@ -534,7 +534,7 @@ const Hero: React.FC<HeroProps> = ({
               <button
                 onClick={buttons.primary.onClick}
                 button_id={buttons.primary.buttonId}
-                className="px-6 py-3 bg-gradient-to-r from-red-800 to-red-800 hover:from-red-700 hover:to-red-700 text-slate-200 rounded-md font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25"
+                className="px-5 py-3 bg-gradient-to-r from-red-800 to-red-700 hover:from-red-700 hover:to-red-600 text-slate-200 rounded-md font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25"
               >
                 {buttons.primary.text}
               </button>
@@ -542,9 +542,9 @@ const Hero: React.FC<HeroProps> = ({
           )}
 
           {/* Support Section */}
-          <div className="py-6 flex flex-col items-center gap-3 mt-16 animate-fade-in-up animation-delay-4000">
-            <p className="text-sm font-medium text-gray-300 text-center max-w-md px-4">
-              If you enjoyed the game, consider supporting me so I can continue
+          <div className="py-3 flex flex-col items-center gap-3 mt-14 animate-fade-in-up animation-delay-4000">
+            <p className="text-md font-medium text-gray-300 text-center max-w-md px-4">
+              If you enjoyed the game, I would be very happy if you support me so I can continue
               to develop it.
             </p>
             <button
@@ -557,18 +557,18 @@ const Hero: React.FC<HeroProps> = ({
               }
               className="px-5 py-3 bg-gradient-to-r from-red-800 to-red-700 hover:from-red-700 hover:to-red-600 text-slate-200 rounded-md font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25"
             >
-              <span>☕</span>
+              <span>☕ </span>
               <span>Buy Me a Coffee</span>
             </button>
           </div>
 
           {/* Close Button */}
           {buttons && buttons.secondary && (
-            <div className="flex justify-center mt-6 animate-fade-in-up animation-delay-4500">
+            <div className="flex justify-center animate-fade-in-up animation-delay-4500">
               <button
                 onClick={buttons.secondary.onClick}
                 button_id={buttons.secondary.buttonId}
-                className="px-6 py-3 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-semibold text-lg transition-all duration-300 hover:scale-105 backdrop-blur-sm"
+                className="px-4 py-2 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-normal text-md transition-all duration-300 hover:scale-105 backdrop-blur-sm"
               >
                 {buttons.secondary.text}
               </button>
