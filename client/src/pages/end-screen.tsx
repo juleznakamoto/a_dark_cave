@@ -82,7 +82,7 @@ export default function EndScreenPage() {
         }}
         subtitle1="At least for now..."
         subtitle2="Try Cruel Mode for an even bigger challenge with an extended gameplay."
-        subtitle3={sdkInitialized ? "Discover more games in the sidebar!" : ""}
+        subtitle3=""
         buttons={{
           primary: {
             text: "⛤ Cruel Mode",
