@@ -10,7 +10,7 @@ import {
   assignVillagerToJob,
   unassignVillagerFromJob,
 } from "@/game/stateHelpers";
-import {
+import { 
   calculateTotalEffects,
   getTotalLuck,
   getTotalStrength,
@@ -21,10 +21,7 @@ import { calculateBastionStats } from "@/game/bastionStats";
 import { getMaxPopulation } from "@/game/population";
 import { audioManager } from "@/lib/audio";
 import { GAME_CONSTANTS } from "@/game/constants";
-import {
-  ACTION_TO_UPGRADE_KEY,
-  incrementButtonUsage,
-} from "@/game/buttonUpgrades";
+import { ACTION_TO_UPGRADE_KEY, incrementButtonUsage } from "@/game/buttonUpgrades";
 import { logger } from "@/lib/logger";
 
 // Types
@@ -58,7 +55,7 @@ interface GameStore extends GameState {
     needsDisplay: boolean; // Track if user needs to see results
   };
   inactivityDialogOpen: boolean;
-  inactivityReason: "timeout" | "multitab" | null;
+  inactivityReason: 'timeout' | 'multitab' | null;
   versionCheckDialogOpen: boolean; // Added for version check dialog
 
   // Notification state for shop
@@ -174,10 +171,8 @@ const mergeStateUpdates = (
 ): Partial<GameState> => {
   // Ensure resources never go negative when merging
   const mergedResources = { ...prevState.resources, ...stateUpdates.resources };
-  Object.keys(mergedResources).forEach((key) => {
-    if (
-      typeof mergedResources[key as keyof typeof mergedResources] === "number"
-    ) {
+  Object.keys(mergedResources).forEach(key => {
+    if (typeof mergedResources[key as keyof typeof mergedResources] === 'number') {
       const value = mergedResources[key as keyof typeof mergedResources];
       if (value < 0) {
         mergedResources[key as keyof typeof mergedResources] = 0;
@@ -200,48 +195,27 @@ const mergeStateUpdates = (
     events: { ...prevState.events, ...stateUpdates.events },
     stats: { ...prevState.stats, ...stateUpdates.stats },
     cooldowns: { ...prevState.cooldowns, ...stateUpdates.cooldowns },
-    cooldownDurations: {
-      ...prevState.cooldownDurations,
-      ...stateUpdates.cooldownDurations,
-    },
-    attackWaveTimers: {
-      ...prevState.attackWaveTimers,
-      ...stateUpdates.attackWaveTimers,
-    },
+    cooldownDurations: { ...prevState.cooldownDurations, ...stateUpdates.cooldownDurations },
+    attackWaveTimers: { ...prevState.attackWaveTimers, ...stateUpdates.attackWaveTimers },
     feastState: stateUpdates.feastState || prevState.feastState,
     greatFeastState: stateUpdates.greatFeastState || prevState.greatFeastState,
     curseState: stateUpdates.curseState || prevState.curseState,
     frostfallState: stateUpdates.frostfallState || prevState.frostfallState,
     sleepUpgrades: stateUpdates.sleepUpgrades || prevState.sleepUpgrades,
     combatSkills: stateUpdates.combatSkills || prevState.combatSkills,
-    clickAnalytics: {
-      ...prevState.clickAnalytics,
-      ...stateUpdates.clickAnalytics,
-    },
-    madness:
-      stateUpdates.madness !== undefined
-        ? stateUpdates.madness
-        : prevState.madness,
-    miningBoostState:
-      stateUpdates.miningBoostState || prevState.miningBoostState,
-    greatFeastActivations:
-      stateUpdates.greatFeastActivations !== undefined
-        ? stateUpdates.greatFeastActivations
-        : prevState.greatFeastActivations,
+    clickAnalytics: { ...prevState.clickAnalytics, ...stateUpdates.clickAnalytics },
+    madness: stateUpdates.madness !== undefined ? stateUpdates.madness : prevState.madness,
+    miningBoostState: stateUpdates.miningBoostState || prevState.miningBoostState,
+    greatFeastActivations: stateUpdates.greatFeastActivations !== undefined ? stateUpdates.greatFeastActivations : prevState.greatFeastActivations,
     buttonUpgrades: stateUpdates.buttonUpgrades
       ? {
           ...prevState.buttonUpgrades,
           ...Object.fromEntries(
             Object.entries(stateUpdates.buttonUpgrades).map(([key, value]) => [
               key,
-              {
-                ...prevState.buttonUpgrades[
-                  key as keyof typeof prevState.buttonUpgrades
-                ],
-                ...value,
-              },
-            ]),
-          ),
+              { ...prevState.buttonUpgrades[key as keyof typeof prevState.buttonUpgrades], ...value }
+            ])
+          )
         }
       : prevState.buttonUpgrades,
     story: stateUpdates.story
@@ -252,42 +226,17 @@ const mergeStateUpdates = (
       : prevState.story,
     effects: stateUpdates.effects || prevState.effects,
     // Merge loop-related states if they are part of stateUpdates
-    loopProgress:
-      stateUpdates.loopProgress !== undefined
-        ? stateUpdates.loopProgress
-        : prevState.loopProgress,
-    isGameLoopActive:
-      stateUpdates.isGameLoopActive !== undefined
-        ? stateUpdates.isGameLoopActive
-        : prevState.isGameLoopActive,
-    isPaused:
-      stateUpdates.isPaused !== undefined
-        ? stateUpdates.isPaused
-        : prevState.isPaused, // Merge isPaused
-    showEndScreen:
-      stateUpdates.showEndScreen !== undefined
-        ? stateUpdates.showEndScreen
-        : prevState.showEndScreen, // Merge showEndScreen
-    playTime:
-      stateUpdates.playTime !== undefined
-        ? stateUpdates.playTime
-        : prevState.playTime, // Merge playTime
-    referralCount:
-      stateUpdates.referralCount !== undefined
-        ? stateUpdates.referralCount
-        : prevState.referralCount, // Merge referralCount
+    loopProgress: stateUpdates.loopProgress !== undefined ? stateUpdates.loopProgress : prevState.loopProgress,
+    isGameLoopActive: stateUpdates.isGameLoopActive !== undefined ? stateUpdates.isGameLoopActive : prevState.isGameLoopActive,
+    isPaused: stateUpdates.isPaused !== undefined ? stateUpdates.isPaused : prevState.isPaused, // Merge isPaused
+    showEndScreen: stateUpdates.showEndScreen !== undefined ? stateUpdates.showEndScreen : prevState.showEndScreen, // Merge showEndScreen
+    playTime: stateUpdates.playTime !== undefined ? stateUpdates.playTime : prevState.playTime, // Merge playTime
+    referralCount: stateUpdates.referralCount !== undefined ? stateUpdates.referralCount : prevState.referralCount, // Merge referralCount
     referredUsers: stateUpdates.referredUsers || prevState.referredUsers, // Merge referredUsers
     referrals: stateUpdates.referrals || prevState.referrals, // Merge referrals
-    social_media_rewards:
-      stateUpdates.social_media_rewards || prevState.social_media_rewards, // Merge social_media_rewards
-    lastResourceSnapshotTime:
-      stateUpdates.lastResourceSnapshotTime !== undefined
-        ? stateUpdates.lastResourceSnapshotTime
-        : prevState.lastResourceSnapshotTime, // Merge lastResourceSnapshotTime
-    isPausedPreviously:
-      stateUpdates.isPausedPreviously !== undefined
-        ? stateUpdates.isPausedPreviously
-        : prevState.isPausedPreviously, // Merge isPausedPreviously
+    social_media_rewards: stateUpdates.social_media_rewards || prevState.social_media_rewards, // Merge social_media_rewards
+    lastResourceSnapshotTime: stateUpdates.lastResourceSnapshotTime !== undefined ? stateUpdates.lastResourceSnapshotTime : prevState.lastResourceSnapshotTime, // Merge lastResourceSnapshotTime
+    isPausedPreviously: stateUpdates.isPausedPreviously !== undefined ? stateUpdates.isPausedPreviously : prevState.isPausedPreviously, // Merge isPausedPreviously
   };
 
   if (
@@ -535,20 +484,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
   setBoostMode: (enabled: boolean) => set({ boostMode: enabled }),
   setShowEndScreen: (showEndScreen: boolean) => set({ showEndScreen }), // Added setShowEndScreen action
   setIsMuted: (isMuted: boolean) => set({ isMuted }),
-  setShopNotificationSeen: (seen: boolean) =>
-    set({ shopNotificationSeen: seen }),
-  setShopNotificationVisible: (visible: boolean) =>
-    set({ shopNotificationVisible: visible }),
-  setAuthNotificationSeen: (seen: boolean) =>
-    set({ authNotificationSeen: seen }),
-  setAuthNotificationVisible: (visible: boolean) =>
-    set({ authNotificationVisible: visible }),
-  setMysteriousNoteShopNotificationSeen: (seen: boolean) =>
-    set({ mysteriousNoteShopNotificationSeen: seen }),
-  setMysteriousNoteDonateNotificationSeen: (seen: boolean) =>
-    set({ mysteriousNoteDonateNotificationSeen: seen }),
-  setHighlightedResources: (resources: string[]) => {
-    // Updated type
+  setShopNotificationSeen: (seen: boolean) => set({ shopNotificationSeen: seen }),
+  setShopNotificationVisible: (visible: boolean) => set({ shopNotificationVisible: visible }),
+  setAuthNotificationSeen: (seen: boolean) => set({ authNotificationSeen: seen }),
+  setAuthNotificationVisible: (visible: boolean) => set({ authNotificationVisible: visible }),
+  setMysteriousNoteShopNotificationSeen: (seen: boolean) => set({ mysteriousNoteShopNotificationSeen: seen }),
+  setMysteriousNoteDonateNotificationSeen: (seen: boolean) => set({ mysteriousNoteDonateNotificationSeen: seen }),
+  setHighlightedResources: (resources: string[]) => { // Updated type
     set({ highlightedResources: resources });
   },
   setIsUserSignedIn: (signedIn: boolean) => set({ isUserSignedIn: signedIn }),
@@ -578,9 +520,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   initialize: (initialState?: Partial<GameState>) => {
-    const stateToSet = initialState
-      ? { ...defaultGameState, ...initialState }
-      : defaultGameState;
+    const stateToSet = initialState ? { ...defaultGameState, ...initialState } : defaultGameState;
 
     set(stateToSet);
     StateManager.scheduleEffectsUpdate(get);
@@ -616,8 +556,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       if (!result.stateUpdates.buttonUpgrades) {
         result.stateUpdates.buttonUpgrades = {} as any;
       }
-      result.stateUpdates.buttonUpgrades[upgradeKey] =
-        upgradeResult.updatedUpgrade;
+      result.stateUpdates.buttonUpgrades[upgradeKey] = upgradeResult.updatedUpgrade;
 
       // Add level up log entry if applicable
       if (upgradeResult.levelUpMessage) {
@@ -636,10 +575,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }
 
     // Store initial cooldown duration if it's a new cooldown
-    if (
-      result.stateUpdates.cooldowns &&
-      result.stateUpdates.cooldowns[actionId]
-    ) {
+    if (result.stateUpdates.cooldowns && result.stateUpdates.cooldowns[actionId]) {
       const initialDuration = result.stateUpdates.cooldowns[actionId];
 
       set((prevState) => ({
@@ -691,9 +627,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         ...prevState,
         ...mergedUpdates,
         log: result.logEntries
-          ? [...prevState.log, ...result.logEntries].slice(
-              -GAME_CONSTANTS.LOG_MAX_ENTRIES,
-            )
+          ? [...prevState.log, ...result.logEntries].slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES)
           : prevState.log,
       };
 
@@ -782,21 +716,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const state = get();
 
     // Check if cruel mode is activated (support both old and new purchase ID formats)
-    const isCruelModeActive =
-      Object.keys(state.activatedPurchases || {}).some(
-        (key) => key === "cruel_mode" || key.startsWith("purchase-cruel_mode-"),
-      ) &&
-      Object.entries(state.activatedPurchases || {}).some(
-        ([key, value]) =>
-          (key === "cruel_mode" || key.startsWith("purchase-cruel_mode-")) &&
-          value === true,
-      );
+    const isCruelModeActive = Object.keys(state.activatedPurchases || {}).some(
+      key => key === 'cruel_mode' || key.startsWith('purchase-cruel_mode-')
+    ) && Object.entries(state.activatedPurchases || {}).some(
+      ([key, value]) => (key === 'cruel_mode' || key.startsWith('purchase-cruel_mode-')) && value === true
+    );
 
     // Find the cruel mode purchase key to preserve
-    const cruelModePurchaseKey = Object.keys(
-      state.activatedPurchases || {},
-    ).find(
-      (key) => key === "cruel_mode" || key.startsWith("purchase-cruel_mode-"),
+    const cruelModePurchaseKey = Object.keys(state.activatedPurchases || {}).find(
+      key => key === 'cruel_mode' || key.startsWith('purchase-cruel_mode-')
     );
 
     // Preserve these across game restarts
@@ -804,12 +732,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
       // Purchases and boosts that persist
       boostMode: state.boostMode,
       // Only preserve cruel_mode activation, reset everything else
-      activatedPurchases: cruelModePurchaseKey
-        ? {
-            [cruelModePurchaseKey]:
-              state.activatedPurchases?.[cruelModePurchaseKey] || false,
-          }
-        : {},
+      activatedPurchases: cruelModePurchaseKey ? {
+        [cruelModePurchaseKey]: state.activatedPurchases?.[cruelModePurchaseKey] || false,
+      } : {},
       // Feast activations are reset (cleared) on new game
       feastActivations: {},
 
@@ -912,20 +837,43 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const resources = state.resources || {};
     const stats = state.stats || {};
 
+    logger.log('[ANALYTICS] 🔍 Creating resource snapshot with stats from state:', {
+      statsFromState: {
+        luck: stats.luck,
+        strength: stats.strength,
+        knowledge: stats.knowledge,
+        madness: stats.madness,
+      },
+      hasNonZeroStats: Object.values(stats).some(v => typeof v === 'number' && v > 0),
+    });
+
     // Add resources to snapshot
     for (const [key, value] of Object.entries(resources)) {
-      if (typeof value === "number" && value > 0) {
+      if (typeof value === 'number' && value > 0) {
         snapshot[key] = value;
+        logger.log(`[ANALYTICS] ✅ Added resource: ${key} = ${value}`);
       }
     }
 
     // Add stats to snapshot (luck, strength, knowledge, madness)
     // Include stats even if they're 0, as long as they're numbers
     for (const [key, value] of Object.entries(stats)) {
-      if (typeof value === "number") {
+      logger.log(`[ANALYTICS] 🔍 Processing stat: ${key}, value: ${value}, type: ${typeof value}`);
+      if (typeof value === 'number') {
         snapshot[key] = value;
+        logger.log(`[ANALYTICS] ✅ Added stat: ${key} = ${value}`);
+      } else {
+        logger.log(`[ANALYTICS] ❌ Skipped stat (not a number): ${key} = ${value}`);
       }
     }
+
+    logger.log('[ANALYTICS] 📊 Final snapshot:', {
+      snapshotKeys: Object.keys(snapshot),
+      snapshot,
+      hasStatsInSnapshot: Object.keys(snapshot).some(key => 
+        ['luck', 'strength', 'knowledge', 'madness'].includes(key)
+      ),
+    });
 
     // If no resources or stats, return null
     if (Object.keys(snapshot).length === 0) {
@@ -940,22 +888,18 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   loadGame: async () => {
-    const { loadGame: loadFromIDB } = await import("@/game/save");
+    const { loadGame: loadFromIDB } = await import('@/game/save');
     const savedState = await loadFromIDB();
 
-    logger.log("[STATE] 📊 loadGame received state from save.ts:", {
+    logger.log('[STATE] 📊 loadGame received state from save.ts:', {
       exists: !!savedState,
       playTime: savedState?.playTime,
-      hasPlayTime: savedState ? "playTime" in savedState : false,
-      allTimeKeys: savedState
-        ? Object.keys(savedState).filter(
-            (k) => k.includes("play") || k.includes("time"),
-          )
-        : [],
+      hasPlayTime: savedState ? 'playTime' in savedState : false,
+      allTimeKeys: savedState ? Object.keys(savedState).filter(k => k.includes('play') || k.includes('time')) : [],
     });
 
     // Notify game loop that we just loaded to skip auto-save for 30 seconds
-    const { setLastGameLoadTime } = await import("@/game/loop");
+    const { setLastGameLoadTime } = await import('@/game/loop');
     setLastGameLoadTime(performance.now());
 
     // Get current boost mode before loading
@@ -963,8 +907,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     if (savedState) {
       // CRITICAL: Extract playTime FIRST before any processing
-      const loadedPlayTime =
-        savedState.playTime !== undefined ? savedState.playTime : 0;
+      const loadedPlayTime = savedState.playTime !== undefined ? savedState.playTime : 0;
 
       const loadedState = {
         ...savedState,
@@ -978,71 +921,34 @@ export const useGameStore = create<GameStore>((set, get) => ({
         boostMode: savedState.boostMode,
         effects: calculateTotalEffects(savedState),
         bastion_stats: calculateBastionStats(savedState),
-        cruelMode:
-          savedState.cruelMode !== undefined ? savedState.cruelMode : false,
+        cruelMode: savedState.cruelMode !== undefined ? savedState.cruelMode : false,
         CM: savedState.CM !== undefined ? savedState.CM : 0,
         activatedPurchases: savedState.activatedPurchases || {},
         feastPurchases: savedState.feastPurchases || {},
         // Ensure loop state is loaded correctly
-        loopProgress:
-          savedState.loopProgress !== undefined ? savedState.loopProgress : 0,
-        isGameLoopActive:
-          savedState.isGameLoopActive !== undefined
-            ? savedState.isGameLoopActive
-            : false,
-        isPaused:
-          savedState.isPaused !== undefined ? savedState.isPaused : false, // Ensure isPaused is loaded
-        showEndScreen:
-          savedState.showEndScreen !== undefined
-            ? savedState.showEndScreen
-            : false, // Ensure showEndScreen is loaded
+        loopProgress: savedState.loopProgress !== undefined ? savedState.loopProgress : 0,
+        isGameLoopActive: savedState.isGameLoopActive !== undefined ? savedState.isGameLoopActive : false,
+        isPaused: savedState.isPaused !== undefined ? savedState.isPaused : false, // Ensure isPaused is loaded
+        showEndScreen: savedState.showEndScreen !== undefined ? savedState.showEndScreen : false, // Ensure showEndScreen is loaded
         isMuted: savedState.isMuted !== undefined ? savedState.isMuted : false,
-        shopNotificationSeen:
-          savedState.shopNotificationSeen !== undefined
-            ? savedState.shopNotificationSeen
-            : false,
-        shopNotificationVisible:
-          savedState.shopNotificationVisible !== undefined
-            ? savedState.shopNotificationVisible
-            : false,
-        authNotificationSeen:
-          savedState.authNotificationSeen !== undefined
-            ? savedState.authNotificationSeen
-            : false,
-        authNotificationVisible:
-          savedState.authNotificationVisible !== undefined
-            ? savedState.authNotificationVisible
-            : false,
-        mysteriousNoteShopNotificationSeen:
-          savedState.mysteriousNoteShopNotificationSeen !== undefined
-            ? savedState.mysteriousNoteShopNotificationSeen
-            : false,
-        mysteriousNoteDonateNotificationSeen:
-          savedState.mysteriousNoteDonateNotificationSeen !== undefined
-            ? savedState.mysteriousNoteDonateNotificationSeen
-            : false,
+        shopNotificationSeen: savedState.shopNotificationSeen !== undefined ? savedState.shopNotificationSeen : false,
+        shopNotificationVisible: savedState.shopNotificationVisible !== undefined ? savedState.shopNotificationVisible : false,
+        authNotificationSeen: savedState.authNotificationSeen !== undefined ? savedState.authNotificationSeen : false,
+        authNotificationVisible: savedState.authNotificationVisible !== undefined ? savedState.authNotificationVisible : false,
+        mysteriousNoteShopNotificationSeen: savedState.mysteriousNoteShopNotificationSeen !== undefined ? savedState.mysteriousNoteShopNotificationSeen : false,
+        mysteriousNoteDonateNotificationSeen: savedState.mysteriousNoteDonateNotificationSeen !== undefined ? savedState.mysteriousNoteDonateNotificationSeen : false,
         playTime: loadedPlayTime, // CRITICAL: Use the extracted playTime value
         isNewGame: false, // Clear the new game flag when loading
-        startTime:
-          savedState.startTime !== undefined ? savedState.startTime : 0, // Ensure startTime is loaded
-        idleModeState: savedState.idleModeState || {
-          isActive: false,
-          startTime: 0,
-          needsDisplay: false,
-        }, // Load idle mode state
+        startTime: savedState.startTime !== undefined ? savedState.startTime : 0, // Ensure startTime is loaded
+        idleModeState: savedState.idleModeState || { isActive: false, startTime: 0, needsDisplay: false }, // Load idle mode state
         referrals: savedState.referrals || [], // Load referrals list
-        social_media_rewards:
-          savedState.social_media_rewards ||
-          defaultGameState.social_media_rewards, // Load social_media_rewards
-        lastResourceSnapshotTime:
-          savedState.lastResourceSnapshotTime !== undefined
-            ? savedState.lastResourceSnapshotTime
-            : 0, // Load lastResourceSnapshotTime
+        social_media_rewards: savedState.social_media_rewards || defaultGameState.social_media_rewards, // Load social_media_rewards
+        lastResourceSnapshotTime: savedState.lastResourceSnapshotTime !== undefined ? savedState.lastResourceSnapshotTime : 0, // Load lastResourceSnapshotTime
         highlightedResources: savedState.highlightedResources || [], // Load highlightedResources
         curseState: savedState.curseState || defaultGameState.curseState, // Load curseState
-        frostfallState:
-          savedState.frostfallState || defaultGameState.frostfallState, // Load frostfallState
+        frostfallState: savedState.frostfallState || defaultGameState.frostfallState, // Load frostfallState
         lastFreeGoldClaim: savedState.lastFreeGoldClaim || 0, // Load lastFreeGoldClaim
+
       };
 
       set(loadedState);
@@ -1094,8 +1000,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     if (state.isPaused) return;
 
     // Don't check for new events if any dialog is already open
-    const isAnyDialogOpen =
-      state.eventDialog.isOpen || state.combatDialog.isOpen;
+    const isAnyDialogOpen = state.eventDialog.isOpen || state.combatDialog.isOpen;
     if (isAnyDialogOpen) return;
 
     const { newLogEntries, stateChanges, triggeredEvents } =
@@ -1253,7 +1158,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         };
 
         // Log blessings after state update
-        logger.log("[STATE] After applying event choice:", {
+        logger.log('[STATE] After applying event choice:', {
           eventId,
           choiceId,
           blessingsInChanges: updatedChanges.blessings,
@@ -1470,7 +1375,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const calculatedKnowledge = getTotalKnowledge(state);
       const calculatedMadness = getTotalMadness(state);
 
-      logger.log("[STATS UPDATE] 📊 Updating stats in state:", {
+      logger.log('[STATS UPDATE] 📊 Updating stats in state:', {
         before: state.stats,
         calculated: {
           luck: calculatedLuck,
@@ -1479,7 +1384,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
           madness: calculatedMadness,
         },
       });
-
+      
       const newStats = {
         ...state.stats,
         luck: calculatedLuck,
@@ -1488,7 +1393,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         madness: calculatedMadness,
       };
 
-      logger.log("[STATS UPDATE] ✅ New stats object:", newStats);
+      logger.log('[STATS UPDATE] ✅ New stats object:', newStats);
 
       return {
         stats: newStats,
