@@ -314,8 +314,8 @@ export default function SidePanel() {
       if (key === "primeFoundry" && buildings.masterworkFoundry > 0) {
         return false;
       }
-      // Hide Black Monolith when Pillar of Clarity is built
-      if (key === "blackMonolith" && buildings.pillarOfClarity > 0) {
+      // Hide Black Monolith when Pillar of Clarity or Bone Temple is built
+      if (key === "blackMonolith" && (buildings.pillarOfClarity > 0 || buildings.boneTemple > 0)) {
         return false;
       }
       return (value ?? 0) > 0;
