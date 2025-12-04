@@ -132,7 +132,7 @@ export default function AdminDashboard() {
   const [environment, setEnvironment] = useState<'dev' | 'prod'>('prod');
   const [showCompletedOnly, setShowCompletedOnly] = useState<boolean>(false);
   const [churnDays, setChurnDays] = useState<1 | 3 | 5 | 7>(3);
-  
+
   // User lookup states
   const [lookupUserId, setLookupUserId] = useState<string>('');
   const [lookupResult, setLookupResult] = useState<GameSaveData | null>(null);
@@ -582,7 +582,7 @@ export default function AdminDashboard() {
     const playtimeData = new Map<number, number>();
 
     filteredClicks.forEach(entry => {
-      // Format: { "playtime_minutes": { "button": count } }
+      // Format: { "playtime": { "button": count } }
       Object.entries(entry.clicks).forEach(([playtimeKey, clicksAtTime]: [string, any]) => {
         try {
           // Extract playtime from key like "45m"
@@ -699,12 +699,14 @@ export default function AdminDashboard() {
     const result: Array<{ time: string; [key: string]: any }> = [];
 
     for (let bucket = 0; bucket <= maxBucket; bucket += 60) {
-      const bucketData = buckets.get(bucket) || {};
       const hours = bucket / 60;
-      result.push({
+      const dataPoint = {
         time: hours === 0 ? '0h' : `${hours}h`,
-        ...bucketData,
-      });
+      };
+
+      const bucketData = buckets.get(bucket) || {};
+      Object.assign(dataPoint, bucketData);
+      result.push(dataPoint);
     }
 
     return result;
@@ -766,7 +768,7 @@ export default function AdminDashboard() {
   const getTotalClicksByButton = () => {
     // Filter by time range
     let filtered = filterByTimeRange(clickData, 'timestamp');
-    
+
     if (selectedUser !== 'all') {
       filtered = filtered.filter(d => d.user_id === selectedUser);
     }
@@ -810,7 +812,7 @@ export default function AdminDashboard() {
   const getAverageClicksByButton = () => {
     // Filter by time range
     let filtered = filterByTimeRange(clickData, 'timestamp');
-    
+
     if (selectedUser !== 'all') {
       filtered = filtered.filter(d => d.user_id === selectedUser);
     }
@@ -979,73 +981,29 @@ export default function AdminDashboard() {
 
   // Get churned players (haven't had activity in X days)
   const getChurnedPlayers = () => {
-    logger.log('🔍 Getting churned players START:', {
-      churnDays,
-      now: new Date().toISOString(),
-      cutoffDate: subDays(new Date(), churnDays).toISOString(),
-      clickDataLength: clickData.length,
-      gameSavesLength: gameSaves.length
-    });
-
     const now = new Date();
     const cutoffDate = subDays(now, churnDays);
     const churnedPlayers: Array<{ userId: string; lastActivity: Date; daysSinceActivity: number }> = [];
 
-    // Get users with click data (full UUIDs)
+    // Get users with click data
     const usersWithClicks = new Set<string>();
     clickData.forEach(entry => usersWithClicks.add(entry.user_id));
 
-    const clickUserSamples = Array.from(usersWithClicks).slice(0, 5);
-    logger.log('📊 Users with clicks:', usersWithClicks.size, 'Sample IDs:', clickUserSamples);
-    logger.log('📊 Click user ID lengths:', clickUserSamples.map(id => id.length));
-    logger.log('📊 Full click user list:', Array.from(usersWithClicks));
-
     // Get the latest activity for each user from game saves
-    // Build a map with FULL user IDs (since clicks have full IDs)
     const userLastActivity = new Map<string, Date>();
-
     gameSaves.forEach(save => {
       const activityDate = new Date(save.updated_at);
-      // Use the full user_id from the save
       const existing = userLastActivity.get(save.user_id);
       if (!existing || activityDate > existing) {
         userLastActivity.set(save.user_id, activityDate);
       }
     });
 
-    const saveSamples = [gameSaves[0], gameSaves[1], gameSaves[2]];
-    logger.log('📊 Sample save:', { user_id: saveSamples[0]?.user_id, updated_at: saveSamples[0]?.updated_at });
-    logger.log('📊 Sample save:', { user_id: saveSamples[1]?.user_id, updated_at: saveSamples[1]?.updated_at });
-    logger.log('📊 Sample save:', { user_id: saveSamples[2]?.user_id, updated_at: saveSamples[2]?.updated_at });
-    logger.log('📊 Game save user ID lengths:', saveSamples.map(s => s?.user_id?.length));
-
-    const allSaveUserIds = gameSaves.map(s => s.user_id);
-    logger.log('📊 First 10 game save user IDs:', allSaveUserIds.slice(0, 10));
-
-    // Check for overlap
-    const clickUsersArray = Array.from(usersWithClicks);
-    const overlappingUsers = clickUsersArray.filter(id => allSaveUserIds.includes(id));
-    logger.log('📊 OVERLAP CHECK - Users in BOTH clicks and saves:', overlappingUsers.length);
-    logger.log('📊 OVERLAP CHECK - Sample overlapping IDs:', overlappingUsers.slice(0, 5));
-
-    logger.log('📊 Total users with activity:', userLastActivity.size);
-    logger.log('📊 Sample activity dates:', Array.from(userLastActivity.entries()).slice(0, 3).map(([id, date]) => ({ id: id.substring(0, 8), date: date.toISOString() })));
-
-    // Find users who haven't been active since cutoff AND have click data
-    // ONLY iterate through users who have clicks
-    let churnedCount = 0;
-    let notChurnedCount = 0;
-
-    logger.log('📊 Starting churn check for', usersWithClicks.size, 'users with clicks');
-
     usersWithClicks.forEach((userId) => {
-      // Get last activity for this user (if they have any game saves)
       const lastActivity = userLastActivity.get(userId);
 
       if (!lastActivity) {
-        // User has clicks but no game save - skip them
-        logger.log('⚠️ User has clicks but no game save:', userId.substring(0, 8));
-        return;
+        return; // User has clicks but no game save
       }
 
       const isBeforeCutoff = lastActivity < cutoffDate;
@@ -1061,39 +1019,14 @@ export default function AdminDashboard() {
                                save?.game_state?.events?.cube14c ||
                                save?.game_state?.events?.cube14d;
 
-      // Log first 5 checks to see what's happening
-      if (churnedCount + notChurnedCount < 5) {
-        logger.log('📊 User check:', {
-          userIdFull: userId,
-          userIdShort: userId.substring(0, 8),
-          lastActivity: lastActivity.toISOString(),
-          hasClicks: true, // We know they have clicks since we're iterating usersWithClicks
-          isBeforeCutoff,
-          daysSince,
-          hasCompletedGame,
-          willBeChurned: isBeforeCutoff && !hasCompletedGame
-        });
-      }
-
       // Only consider churned if they haven't completed the game
       if (isBeforeCutoff && !hasCompletedGame) {
-        churnedCount++;
         churnedPlayers.push({
           userId: userId.substring(0, 8) + '...',
           lastActivity,
           daysSinceActivity: daysSince,
         });
-      } else {
-        notChurnedCount++;
       }
-    });
-
-    logger.log('📊 Churn analysis COMPLETE:', {
-      churnedCount,
-      notChurnedCount,
-      totalChurnedPlayers: churnedPlayers.length,
-      firstChurned: churnedPlayers[0],
-      lastChurned: churnedPlayers[churnedPlayers.length - 1]
     });
 
     return churnedPlayers.sort((a, b) => b.daysSinceActivity - a.daysSinceActivity);
@@ -1101,20 +1034,12 @@ export default function AdminDashboard() {
 
   // Get the top 20 most clicked buttons from churned players at their last playtime
   const getChurnedPlayersLastClicks = () => {
-    logger.log('🔍 Getting churned players last clicks START:', {
-      now: new Date().toISOString(),
-      cutoffDate: subDays(new Date(), churnDays).toISOString(),
-      churnDays
-    });
-
     const now = new Date();
     const cutoffDate = subDays(now, churnDays);
 
     // Get users with click data
     const usersWithClicks = new Set<string>();
     clickData.forEach(entry => usersWithClicks.add(entry.user_id));
-
-    logger.log('📊 Users with clicks:', usersWithClicks.size);
 
     // Get churned user IDs based on game save activity AND completion status
     const churnedUserIds = new Set<string>();
@@ -1139,8 +1064,6 @@ export default function AdminDashboard() {
       }
     });
 
-    logger.log('📊 Churned user IDs for clicks:', churnedUserIds.size, 'Sample:', Array.from(churnedUserIds).slice(0, 3).map(id => id.substring(0, 8)));
-
     // Find the maximum playtime for each churned user
     const userMaxPlaytime = new Map<string, string>();
 
@@ -1163,8 +1086,6 @@ export default function AdminDashboard() {
       }
     });
 
-    logger.log('📊 Found max playtime for', userMaxPlaytime.size, 'churned users');
-
     // Aggregate clicks from churned users at their LAST playtime only
     const buttonTotals: Record<string, number> = {};
 
@@ -1181,15 +1102,11 @@ export default function AdminDashboard() {
       }
     });
 
-    logger.log('📊 Total unique buttons clicked at last playtime by churned users:', Object.keys(buttonTotals).length);
-
     // Convert to array and sort by click count, take top 20
     const topClicks = Object.entries(buttonTotals)
       .map(([button, clicks]) => ({ button, clicks }))
       .sort((a, b) => b.clicks - a.clicks)
       .slice(0, 20);
-
-    logger.log('📊 Returning top 20 last clicked buttons:', topClicks.length);
 
     return topClicks;
   };
@@ -1205,8 +1122,6 @@ export default function AdminDashboard() {
 
   // Get cube events players saw over playtime
   const getCubeEventsOverPlaytime = () => {
-    logger.log('🔍 Getting cube events over playtime');
-
     // Track which cube events each user has seen at each playtime bucket
     const playtimeBuckets = new Map<number, Map<number, Set<string>>>();
     let maxBucket = 0;
@@ -1255,14 +1170,11 @@ export default function AdminDashboard() {
       result.push(dataPoint);
     }
 
-    logger.log('📊 Cube events over playtime:', result.length, 'buckets', maxCubeEvent, 'cube events');
     return result;
   };
 
   // Get distribution of highest cube event seen by all players
   const getHighestCubeEventDistribution = () => {
-    logger.log('🔍 Getting highest cube event distribution');
-
     const highestCubeByPlayer = new Map<number, number>();
 
     gameSaves.forEach(save => {
@@ -1294,14 +1206,11 @@ export default function AdminDashboard() {
       });
     }
 
-    logger.log('📊 Highest cube event distribution:', result.length, 'events');
     return result;
   };
 
   // Get top last cube events seen by churned players
   const getChurnedPlayersLastCubeEvents = () => {
-    logger.log('🔍 Getting churned players last cube events');
-
     const now = new Date();
     const cutoffDate = subDays(now, churnDays);
 
@@ -1326,8 +1235,6 @@ export default function AdminDashboard() {
         churnedUserIds.add(save.user_id);
       }
     });
-
-    logger.log('📊 Found churned users:', churnedUserIds.size);
 
     // Find highest cube event for each churned player
     const cubeEventCounts = new Map<number, number>();
@@ -1357,7 +1264,7 @@ export default function AdminDashboard() {
 
     // Convert to array format for chart
     const result: Array<{ cubeEvent: string; players: number }> = [];
-    
+
     // Add "No Cube Events" entry first if there are players with no cube events
     if (playersWithNoCubeEvents > 0) {
       result.push({
@@ -1365,7 +1272,7 @@ export default function AdminDashboard() {
         players: playersWithNoCubeEvents,
       });
     }
-    
+
     const sortedEntries = Array.from(cubeEventCounts.entries()).sort((a, b) => b[1] - a[1]);
 
     sortedEntries.forEach(([cubeNum, count]) => {
@@ -1375,7 +1282,6 @@ export default function AdminDashboard() {
       });
     });
 
-    logger.log('📊 Last cube events for churned players:', result.length, 'events', 'No events:', playersWithNoCubeEvents);
     return result;
   };
 
@@ -1422,11 +1328,14 @@ export default function AdminDashboard() {
       }
 
       const bucketData = playtimeBuckets.get(bucket)!;
+
+      // Get button upgrades from the correct location in game state
       const buttonUpgrades = save.game_state?.buttonUpgrades || {};
 
       upgradeTypes.forEach(upgradeType => {
+        // Check if upgrade data exists and has a level property
         const upgrade = buttonUpgrades[upgradeType];
-        if (upgrade && upgrade.level > 0) {
+        if (upgrade && typeof upgrade === 'object' && 'level' in upgrade && upgrade.level > 0) {
           if (!bucketData[upgradeType]) {
             bucketData[upgradeType] = { total: 0, count: 0 };
           }
@@ -1463,12 +1372,6 @@ export default function AdminDashboard() {
 
   // Get the top 20 buttons clicked exactly once (first-time clicks) by churned players
   const getChurnedPlayersFirstTimeClicks = () => {
-    logger.log('🔍 Getting churned players first-time clicks START:', {
-      now: new Date().toISOString(),
-      cutoffDate: subDays(new Date(), churnDays).toISOString(),
-      churnDays
-    });
-
     const now = new Date();
     const cutoffDate = subDays(now, churnDays);
 
@@ -1499,8 +1402,6 @@ export default function AdminDashboard() {
       }
     });
 
-    logger.log('📊 Churned user IDs for first-time clicks:', churnedUserIds.size);
-
     // Count buttons that were clicked exactly once across all churned players
     const buttonFirstTimeCount: Record<string, number> = {};
 
@@ -1518,15 +1419,11 @@ export default function AdminDashboard() {
       }
     });
 
-    logger.log('📊 Total buttons with single clicks by churned users:', Object.keys(buttonFirstTimeCount).length);
-
     // Convert to array and sort by count, take top 20
     const topFirstTimeClicks = Object.entries(buttonFirstTimeCount)
       .map(([button, count]) => ({ button, count }))
       .sort((a, b) => b.count - a.count)
       .slice(0, 20);
-
-    logger.log('📊 Returning top 20 first-time clicked buttons:', topFirstTimeClicks.length);
 
     return topFirstTimeClicks;
   };
@@ -1668,14 +1565,14 @@ export default function AdminDashboard() {
 
     try {
       const response = await fetch(`/api/admin/user-lookup?userId=${encodeURIComponent(lookupUserId)}&env=${environment}`);
-      
+
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.error || 'Failed to fetch user data');
       }
 
       const data = await response.json();
-      
+
       if (!data.save) {
         setLookupError('No save game found for this user ID');
       } else {
@@ -1706,7 +1603,7 @@ export default function AdminDashboard() {
 
     // Filter by time range
     let filteredClicks = filterByTimeRange(clickData, 'timestamp');
-    
+
     // Filter data based on selected user
     if (selectedUser !== 'all') {
       filteredClicks = filteredClicks.filter(record => record.user_id === selectedUser);
@@ -1805,7 +1702,7 @@ export default function AdminDashboard() {
 
     // Filter by time range
     let filteredClicks = filterByTimeRange(clickData, 'timestamp');
-    
+
     // Filter data based on selected user
     if (selectedUser !== 'all') {
       filteredClicks = filteredClicks.filter(record => record.user_id === selectedUser);
@@ -2427,9 +2324,6 @@ export default function AdminDashboard() {
                         });
                       });
                       const dataKeys = Array.from(allKeys);
-                      logger.log('📈 Chart rendering with data keys:', dataKeys);
-                      logger.log('📈 Sample data point:', chartData[0]);
-                      logger.log('📈 All data points checked:', chartData.length);
                       return dataKeys.map((key, index) => (
                         <Line
                           key={key}
@@ -3265,7 +3159,7 @@ export default function AdminDashboard() {
 
                       // Get selected stat keys
                       const selectedStatsList = Array.from(selectedStats);
-                      
+
                       return selectedStatsList.map((key, index) => (
                         <Line
                           key={key}
@@ -3350,7 +3244,7 @@ export default function AdminDashboard() {
 
                       // Get selected resource keys that exist in the data
                       const selectedResourcesList = Array.from(selectedResources);
-                      
+
                       return selectedResourcesList.map((key, index) => (
                         <Line
                           key={key}
