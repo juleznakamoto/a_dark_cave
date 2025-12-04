@@ -1654,6 +1654,9 @@ export default function AdminDashboard() {
     return `${hours}h ${mins}m`;
   };
 
+  // State for selected resources
+  const [selectedResources, setSelectedResources] = useState<Set<string>>(new Set(['food', 'wood', 'stone', 'iron']));
+
   // NEW FUNCTION FOR RESOURCE STATS OVER PLAYTIME
   const handleLookupUser = async () => {
     setLookupLoading(true);
@@ -1745,17 +1748,20 @@ export default function AdminDashboard() {
 
             const bucketData = playtimeBuckets.get(bucket)!;
 
-            // Iterate over resources at this playtime
+            // Iterate over resources at this playtime, only include selected ones
             Object.entries(resourcesAtTime).forEach(([resourceName, resourceValue]: [string, any]) => {
-              // Resource value should be a number
-              const amount = typeof resourceValue === 'number' ? resourceValue : 0;
+              // Only include if selected or selectedResources is empty (all)
+              if (selectedResources.size === 0 || selectedResources.has(resourceName)) {
+                // Resource value should be a number
+                const amount = typeof resourceValue === 'number' ? resourceValue : 0;
 
-              if (amount > 0) {
-                if (!bucketData[resourceName]) {
-                  bucketData[resourceName] = { total: 0, count: 0 };
+                if (amount > 0) {
+                  if (!bucketData[resourceName]) {
+                    bucketData[resourceName] = { total: 0, count: 0 };
+                  }
+                  bucketData[resourceName].total += amount;
+                  bucketData[resourceName].count += 1;
                 }
-                bucketData[resourceName].total += amount;
-                bucketData[resourceName].count += 1;
               }
             });
           }
@@ -1780,7 +1786,10 @@ export default function AdminDashboard() {
       const bucketData = playtimeBuckets.get(bucket);
       if (bucketData) {
         Object.entries(bucketData).forEach(([resourceName, stats]: [string, any]) => {
-          dataPoint[resourceName] = stats.count > 0 ? Math.round(stats.total / stats.count) : 0; // Average per player in this bucket
+          // Only include if selected
+          if (selectedResources.size === 0 || selectedResources.has(resourceName)) {
+            dataPoint[resourceName] = stats.count > 0 ? Math.round(stats.total / stats.count) : 0; // Average per player in this bucket
+          }
         });
       }
       result.push(dataPoint);
@@ -3045,6 +3054,32 @@ export default function AdminDashboard() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
+                <div className="mb-4 flex gap-4 flex-wrap">
+                  {[
+                    'food', 'bones', 'fur', 'wood', 'stone', 'iron', 'coal', 'sulfur', 
+                    'obsidian', 'adamant', 'moonstone', 'leather', 'steel', 'torch', 
+                    'black_powder', 'ember_bomb', 'ashfire_dust', 'ashfire_bomb', 'void_bomb', 
+                    'silver', 'gold'
+                  ].map((resource) => (
+                    <label key={resource} className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={selectedResources.has(resource)}
+                        onChange={(e) => {
+                          const newSet = new Set(selectedResources);
+                          if (e.target.checked) {
+                            newSet.add(resource);
+                          } else {
+                            newSet.delete(resource);
+                          }
+                          setSelectedResources(newSet);
+                        }}
+                        className="cursor-pointer"
+                      />
+                      <span className="text-sm">{resource}</span>
+                    </label>
+                  ))}
+                </div>
                 <ResponsiveContainer width="100%" height={400}>
                   <LineChart data={getResourceStatsOverPlaytime()}>
                     <CartesianGrid strokeDasharray="3 3" />
@@ -3060,10 +3095,10 @@ export default function AdminDashboard() {
                       const chartData = getResourceStatsOverPlaytime();
                       if (chartData.length === 0) return null;
 
-                      // Dynamically get resource names from the data keys (excluding 'time')
-                      const resourceKeys = Object.keys(chartData[0]).filter(key => key !== 'time');
-
-                      return resourceKeys.map((key, index) => (
+                      // Get selected resource keys that exist in the data
+                      const selectedResourcesList = Array.from(selectedResources);
+                      
+                      return selectedResourcesList.map((key, index) => (
                         <Line
                           key={key}
                           type="monotone"
