@@ -33,18 +33,9 @@ export const forestSacrificeActions: Record<string, Action> = {
   boneTotems: {
     id: "boneTotems",
     label: "Bone Totems",
-    tooltipEffects: (state: GameState) => {
-      const effects = ["10-25 Silver"];
-      if (state.buildings.boneTemple >= 0) {
-        effects.push("Bone Temple: +25% Silver");
-      }
-      if (state.clothing.sacrificial_tunic) {
-        effects.push("Sacrificial Tunic: +25% Silver");
-      }
-      return effects;
-    },
+    tooltipEffects: ["10-25 Silver"],
     show_when: {
-      "buildings.altar": 0,
+      "buildings.altar": 1,
     },
     cost: {
       "resources.bone_totem": 5,
@@ -59,16 +50,7 @@ export const forestSacrificeActions: Record<string, Action> = {
   leatherTotems: {
     id: "leatherTotems",
     label: "Leather Totems",
-    tooltipEffects: (state: GameState) => {
-      const effects = ["10-25 Gold"];
-      if (state.buildings.boneTemple >= 1) {
-        effects.push("Bone Temple: +25% Gold");
-      }
-      if (state.clothing.sacrificial_tunic) {
-        effects.push("Sacrificial Tunic: +25% Gold");
-      }
-      return effects;
-    },
+    tooltipEffects: ["10-25 Gold"],
     show_when: {
       "buildings.temple": 1,
     },
