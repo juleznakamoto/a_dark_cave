@@ -1,0 +1,94 @@
+
+ ✓ client/src/game/rules/events.test.ts (3 tests) 8ms
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Button Upgrades > chopWood with button upgrades increases gains
+AssertionError: expected 6 to be greater than 6
+ ❯ client/src/game/rules/resourceGains.test.ts:632:37
+    630| 
+    631|       // With upgrades should have higher gains
+    632|       expect(expectedWith.wood.min).toBeGreaterThan(expectedWithout.wo…
+       |                                     ^
+    633|       expect(expectedWith.wood.max).toBeGreaterThan(expectedWithout.wo…
+    634|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Button Upgrades > exploreCave with button upgrades increases gains
+AssertionError: expected 5 to be greater than 5
+ ❯ client/src/game/rules/resourceGains.test.ts:652:37
+    650| 
+    651|       // With max upgrades should have significantly higher gains
+    652|       expect(expectedWith.wood.min).toBeGreaterThan(expectedWithout.wo…
+       |                                     ^
+    653|       expect(expectedWith.wood.max).toBeGreaterThan(expectedWithout.wo…
+    654|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Axe Progression > chopWood with stone axe shows baseline gains
+AssertionError: expected 9 to be 7 // Object.is equality
+
+- Expected
++ Received
+
+- 7
++ 9
+
+ ❯ client/src/game/rules/resourceGains.test.ts:665:38
+    663| 
+    664|       // Stone axe gives 25% bonus: base 6-12 becomes 7-15
+    665|       expect(expectedGains.wood.min).toBe(7);
+       |                                      ^
+    666|       expect(expectedGains.wood.max).toBe(15);
+    667|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Axe Progression > chopWood with iron axe shows improved gains
+AssertionError: expected 12 to be 9 // Object.is equality
+
+- Expected
++ Received
+
+- 9
++ 12
+
+ ❯ client/src/game/rules/resourceGains.test.ts:676:38
+    674| 
+    675|       // Iron axe gives 50% bonus: base 6-12 becomes 9-18
+    676|       expect(expectedGains.wood.min).toBe(9);
+       |                                      ^
+    677|       expect(expectedGains.wood.max).toBe(18);
+    678|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Axe Progression > chopWood with steel axe shows further improved gains
+AssertionError: expected 15 to be 12 // Object.is equality
+
+- Expected
++ Received
+
+- 12
++ 15
+
+ ❯ client/src/game/rules/resourceGains.test.ts:687:38
+    685| 
+    686|       // Steel axe gives 100% bonus: base 6-12 becomes 12-24
+    687|       expect(expectedGains.wood.min).toBe(12);
+       |                                      ^
+    688|       expect(expectedGains.wood.max).toBe(24);
+    689|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯
+
+
+ Test Files  1 failed | 9 passed (10)
+      Tests  5 failed | 90 passed (95)
+   Start at  08:58:42
+   Duration  4.47s (transform 2.18s, setup 0ms, import 3.62s, tests 1.81s, environment 2ms)
+
+ FAIL  Tests failed. Watching for file changes...
+       press h to show help, press q to quit
