@@ -230,7 +230,7 @@ export const caveExploreActions: Record<string, Action> = {
       "flags.venturedDeeper": true,
       "story.seen.venturedDeeper": true,
     },
-    cooldown: 20,
+    cooldown: 15,
     upgrade_key: "ventureDeeper",
   },
 
@@ -254,7 +254,7 @@ export const caveExploreActions: Record<string, Action> = {
       "flags.descendedFurther": true,
       "story.seen.descendedFurther": true,
     },
-    cooldown: 30,
+    cooldown: 20,
     upgrade_key: "descendFurther",
   },
 
@@ -277,7 +277,7 @@ export const caveExploreActions: Record<string, Action> = {
       "flags.exploredRuins": true,
       "story.seen.exploredRuins": true,
     },
-    cooldown: 40,
+    cooldown: 25,
     upgrade_key: "exploreRuins",
   },
 
@@ -301,7 +301,7 @@ export const caveExploreActions: Record<string, Action> = {
       "flags.exploredTemple": true,
       "story.seen.exploredTemple": true,
     },
-    cooldown: 50,
+    cooldown: 30,
     upgrade_key: "exploreTemple",
   },
 
@@ -324,7 +324,7 @@ export const caveExploreActions: Record<string, Action> = {
       "flags.exploredCitadel": true,
       "story.seen.exploredCitadel": true,
     },
-    cooldown: 60,
+    cooldown: 35,
     upgrade_key: "exploreCitadel",
   },
 
