@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { GameState } from '@shared/schema';
-import { applyActionEffects, gameActions } from './index';
+import { applyActionEffects, gameActions, getActionCostBreakdown } from './index';
 import { getResourceGainTooltip, calculateResourceGains } from './tooltips';
 import { getActionBonuses } from './effectsCalculation';
 
@@ -450,22 +450,6 @@ describe('Resource Gain Tests', () => {
       expect(expectedWith.wood.max).toBeGreaterThanOrEqual(Math.floor(expectedWithout.wood.max * 1.3));
     });
 
-    it('mineStone with mastermason_chisel applies correct bonus', () => {
-      const stateWithoutChisel = createTestState({
-        tools: { stone_pickaxe: true },
-      });
-      const stateWithChisel = createTestState({
-        tools: { stone_pickaxe: true, mastermason_chisel: true },
-      });
-
-      const { expectedGains: expectedWithout } = testActionGains('mineStone', stateWithoutChisel, 50);
-      const { expectedGains: expectedWith } = testActionGains('mineStone', stateWithChisel, 50);
-
-      // With chisel should have higher gains (25% multiplier)
-      expect(expectedWith.stone.min).toBeGreaterThanOrEqual(Math.floor(expectedWithout.stone.min * 1.25));
-      expect(expectedWith.stone.max).toBeGreaterThanOrEqual(Math.floor(expectedWithout.stone.max * 1.25));
-    });
-
     it('hunt with hunter_cloak applies correct bonus', () => {
       const stateWithoutCloak = createTestState({
         flags: { forestUnlocked: true },
@@ -478,9 +462,102 @@ describe('Resource Gain Tests', () => {
       const { expectedGains: expectedWithout } = testActionGains('hunt', stateWithoutCloak, 50);
       const { expectedGains: expectedWith } = testActionGains('hunt', stateWithCloak, 50);
 
-      // With cloak should have higher gains
-      expect(expectedWith.food.min).toBeGreaterThan(expectedWithout.food.min);
-      expect(expectedWith.food.max).toBeGreaterThan(expectedWithout.food.max);
+      // With cloak should have higher gains (50% multiplier)
+      expect(expectedWith.food.min).toBeGreaterThanOrEqual(Math.floor(expectedWithout.food.min * 1.5));
+      expect(expectedWith.food.max).toBeGreaterThanOrEqual(Math.floor(expectedWithout.food.max * 1.5));
+    });
+
+    it('mineStone with different pickaxes shows progression', () => {
+      const stateWithStonePickaxe = createTestState({
+        tools: { stone_pickaxe: true },
+      });
+      const stateWithIronPickaxe = createTestState({
+        tools: { iron_pickaxe: true },
+      });
+
+      const { expectedGains: stoneGains } = testActionGains('mineStone', stateWithStonePickaxe, 50);
+      const { expectedGains: ironGains } = testActionGains('mineStone', stateWithIronPickaxe, 50);
+
+      // Iron pickaxe should give more stone (50% vs 25% bonus)
+      expect(ironGains.stone.min).toBeGreaterThan(stoneGains.stone.min);
+      expect(ironGains.stone.max).toBeGreaterThan(stoneGains.stone.max);
+    });
+
+    it('exploreCave with different lanterns shows progression', () => {
+      const stateWithIronLantern = createTestState({
+        tools: { iron_lantern: true },
+        story: { seen: { actionCraftTorch: true } },
+      });
+      const stateWithSteelLantern = createTestState({
+        tools: { steel_lantern: true },
+        story: { seen: { actionCraftTorch: true } },
+      });
+
+      const { expectedGains: ironGains } = testActionGains('exploreCave', stateWithIronLantern, 50);
+      const { expectedGains: steelGains } = testActionGains('exploreCave', stateWithSteelLantern, 50);
+
+      // Steel lantern should give more resources (50% vs 25% cave explore multiplier)
+      expect(steelGains.wood.min).toBeGreaterThan(ironGains.wood.min);
+      expect(steelGains.stone.min).toBeGreaterThan(ironGains.stone.min);
+    });
+  });
+
+  describe('Building Cost Reductions', () => {
+    it('mastermason_chisel reduces building costs by 10%', () => {
+      const stateWithoutChisel = createTestState({
+        buildings: { woodenHut: 1 },
+      });
+      const stateWithChisel = createTestState({
+        buildings: { woodenHut: 1 },
+        tools: { mastermason_chisel: true },
+      });
+
+      const costWithout = getActionCostBreakdown('buildCabin', stateWithoutChisel);
+      const costWith = getActionCostBreakdown('buildCabin', stateWithChisel);
+
+      // Extract wood cost amounts
+      const woodCostWithout = costWithout.find(c => c.text.includes('Wood'));
+      const woodCostWith = costWith.find(c => c.text.includes('Wood'));
+
+      expect(woodCostWithout).toBeDefined();
+      expect(woodCostWith).toBeDefined();
+
+      // Parse the numbers from the cost strings (e.g., "-100 Wood")
+      const amountWithout = parseInt(woodCostWithout!.text.split(' ')[0].replace('-', ''));
+      const amountWith = parseInt(woodCostWith!.text.split(' ')[0].replace('-', ''));
+
+      // With chisel should cost 10% less
+      expect(amountWith).toBe(Math.floor(amountWithout * 0.9));
+    });
+  });
+
+  describe('Crafting Cost Reductions', () => {
+    it('blacksmith_hammer reduces crafting costs by 15%', () => {
+      const stateWithoutHammer = createTestState({
+        buildings: { blacksmith: 1 },
+        tools: { stone_pickaxe: true },
+      });
+      const stateWithHammer = createTestState({
+        buildings: { blacksmith: 1 },
+        tools: { stone_pickaxe: true, blacksmith_hammer: true },
+      });
+
+      const costWithout = getActionCostBreakdown('craftIronAxe', stateWithoutHammer);
+      const costWith = getActionCostBreakdown('craftIronAxe', stateWithHammer);
+
+      // Extract iron cost amounts
+      const ironCostWithout = costWithout.find(c => c.text.includes('Iron'));
+      const ironCostWith = costWith.find(c => c.text.includes('Iron'));
+
+      expect(ironCostWithout).toBeDefined();
+      expect(ironCostWith).toBeDefined();
+
+      // Parse the numbers from the cost strings
+      const amountWithout = parseInt(ironCostWithout!.text.split(' ')[0].replace('-', ''));
+      const amountWith = parseInt(ironCostWith!.text.split(' ')[0].replace('-', ''));
+
+      // With hammer should cost 15% less
+      expect(amountWith).toBe(Math.ceil(amountWithout * 0.85));
     });
   });
 
