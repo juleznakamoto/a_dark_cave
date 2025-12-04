@@ -10,14 +10,14 @@ import {
   assignVillagerToJob,
   unassignVillagerFromJob,
 } from "@/game/stateHelpers";
-import { 
+import {
   calculateTotalEffects,
   getTotalLuck,
   getTotalStrength,
   getTotalKnowledge,
   getTotalMadness,
 } from "@/game/rules/effectsCalculation";
-import { calculateBastionStats } from "@/game/bastionStats";
+import { calculateBastionStats } from "@/game/bastionstats";
 import { getMaxPopulation } from "@/game/population";
 import { audioManager } from "@/lib/audio";
 import { GAME_CONSTANTS } from "@/game/constants";
@@ -209,20 +209,20 @@ const mergeStateUpdates = (
     greatFeastActivations: stateUpdates.greatFeastActivations !== undefined ? stateUpdates.greatFeastActivations : prevState.greatFeastActivations,
     buttonUpgrades: stateUpdates.buttonUpgrades
       ? {
-          ...prevState.buttonUpgrades,
-          ...Object.fromEntries(
-            Object.entries(stateUpdates.buttonUpgrades).map(([key, value]) => [
-              key,
-              { ...prevState.buttonUpgrades[key as keyof typeof prevState.buttonUpgrades], ...value }
-            ])
-          )
-        }
+        ...prevState.buttonUpgrades,
+        ...Object.fromEntries(
+          Object.entries(stateUpdates.buttonUpgrades).map(([key, value]) => [
+            key,
+            { ...prevState.buttonUpgrades[key as keyof typeof prevState.buttonUpgrades], ...value }
+          ])
+        )
+      }
       : prevState.buttonUpgrades,
     story: stateUpdates.story
       ? {
-          ...prevState.story,
-          seen: { ...prevState.story.seen, ...stateUpdates.story.seen },
-        }
+        ...prevState.story,
+        seen: { ...prevState.story.seen, ...stateUpdates.story.seen },
+      }
       : prevState.story,
     effects: stateUpdates.effects || prevState.effects,
     // Merge loop-related states if they are part of stateUpdates
@@ -870,7 +870,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     logger.log('[ANALYTICS] 📊 Final snapshot:', {
       snapshotKeys: Object.keys(snapshot),
       snapshot,
-      hasStatsInSnapshot: Object.keys(snapshot).some(key => 
+      hasStatsInSnapshot: Object.keys(snapshot).some(key =>
         ['luck', 'strength', 'knowledge', 'madness'].includes(key)
       ),
     });
@@ -1034,14 +1034,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
               ...victoryResult,
               log: victoryResult._logMessage
                 ? [
-                    ...prevState.log,
-                    {
-                      id: `combat-victory-${Date.now()}`,
-                      message: victoryResult._logMessage,
-                      timestamp: Date.now(),
-                      type: "system",
-                    },
-                  ].slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES)
+                  ...prevState.log,
+                  {
+                    id: `combat-victory-${Date.now()}`,
+                    message: victoryResult._logMessage,
+                    timestamp: Date.now(),
+                    type: "system",
+                  },
+                ].slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES)
                 : prevState.log,
             }));
             get().setCombatDialog(false);
@@ -1054,14 +1054,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
               ...defeatResult,
               log: defeatResult._logMessage
                 ? [
-                    ...prevState.log,
-                    {
-                      id: `combat-defeat-${Date.now()}`,
-                      message: defeatResult._logMessage,
-                      timestamp: Date.now(),
-                      type: "system",
-                    },
-                  ].slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES)
+                  ...prevState.log,
+                  {
+                    id: `combat-defeat-${Date.now()}`,
+                    message: defeatResult._logMessage,
+                    timestamp: Date.now(),
+                    type: "system",
+                  },
+                ].slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES)
                 : prevState.log,
             }));
             get().setCombatDialog(false);
@@ -1211,14 +1211,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
             ...victoryResult,
             log: victoryResult._logMessage
               ? [
-                  ...prevState.log,
-                  {
-                    id: `combat-victory-${Date.now()}`,
-                    message: victoryResult._logMessage,
-                    timestamp: Date.now(),
-                    type: "system",
-                  },
-                ].slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES)
+                ...prevState.log,
+                {
+                  id: `combat-victory-${Date.now()}`,
+                  message: victoryResult._logMessage,
+                  timestamp: Date.now(),
+                  type: "system",
+                },
+              ].slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES)
               : prevState.log,
           }));
           get().setCombatDialog(false);
@@ -1230,14 +1230,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
             ...defeatResult,
             log: defeatResult._logMessage
               ? [
-                  ...prevState.log,
-                  {
-                    id: `combat-defeat-${Date.now()}`,
-                    message: defeatResult._logMessage,
-                    timestamp: Date.now(),
-                    type: "system",
-                  },
-                ].slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES)
+                ...prevState.log,
+                {
+                  id: `combat-defeat-${Date.now()}`,
+                  message: defeatResult._logMessage,
+                  timestamp: Date.now(),
+                  type: "system",
+                },
+              ].slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES)
               : prevState.log,
           }));
           get().setCombatDialog(false);
@@ -1384,7 +1384,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
           madness: calculatedMadness,
         },
       });
-      
+
       const newStats = {
         ...state.stats,
         luck: calculatedLuck,
