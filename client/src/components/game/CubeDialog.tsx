@@ -51,13 +51,24 @@ export default function CubeDialog({
     };
   }, [isOpen]);
 
-  const handleClose = () => {
+  const handleClose = async () => {
     audioManager.stopLoopingSound('whisperingCube');
     onChoice(eventChoices[0]?.id);
 
     // Check if this is one of the final cube events (cube15a or cube15b)
     if (event?.id?.includes('cube15a') || event?.id?.includes('cube15b')) {
-      // Navigate to end screen page
+      // Save the game state before navigating
+      const { saveGame } = await import('@/game/save');
+      const state = useGameStore.getState();
+      
+      try {
+        await saveGame(state, false); // Force save, not autosave
+        console.log('[CUBE] Game state saved before end screen navigation');
+      } catch (error) {
+        console.error('[CUBE] Failed to save game state before end screen:', error);
+      }
+      
+      // Navigate to end screen page after save completes
       setTimeout(() => {
         window.location.href = "/end-screen";
       }, 500);
