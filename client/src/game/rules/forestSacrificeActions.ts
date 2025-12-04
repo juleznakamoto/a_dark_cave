@@ -35,7 +35,7 @@ export const forestSacrificeActions: Record<string, Action> = {
     label: "Bone Totems",
     tooltipEffects: (state: GameState) => {
       const effects = ["10-25 Silver"];
-      if (state.buildings.boneTemple >= 1) {
+      if (state.buildings.boneTemple >= 0) {
         effects.push("Bone Temple: +25% Silver");
       }
       if (state.clothing.sacrificial_tunic) {
@@ -44,7 +44,7 @@ export const forestSacrificeActions: Record<string, Action> = {
       return effects;
     },
     show_when: {
-      "buildings.altar": 1,
+      "buildings.altar": 0,
     },
     cost: {
       "resources.bone_totem": 5,
