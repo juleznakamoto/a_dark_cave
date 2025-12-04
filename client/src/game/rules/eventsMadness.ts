@@ -534,7 +534,7 @@ export const madnessEvents: Record<string, GameEvent> = {
     id: "humanSacrificeDemand",
     condition: (state: GameState) =>
       state.flags.monolithUnlocked &&
-      getTotalMadness(state) >= 30 &&
+      // getTotalMadness(state) >= 30 &&
       (state.story?.seen?.animalsSacrificeLevel || 0) >= 5 &&
       !state.events.humanSacrificeDemand &&
       state.buildings.blackMonolith > 0,
