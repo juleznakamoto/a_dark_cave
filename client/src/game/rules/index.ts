@@ -142,7 +142,7 @@ const evaluateCondition = (condition: string, state: GameState): boolean => {
   return isNegated ? !current : !!current;
 };
 
-// Helper function to check requirements for both building and non-building actions
+// Helper function to check if requirements are met for both building and non-building actions
 const checkRequirements = (
   requirements: Record<string, any>,
   state: GameState,
@@ -365,6 +365,11 @@ export function canExecuteAction(actionId: string, state: GameState): boolean {
     return false;
   }
 
+  // Check action's custom canExecute function if it exists
+  if (action.canExecute && !action.canExecute(state)) {
+    return false;
+  }
+
   let costs = action.cost;
 
   // For building actions, get the cost for the next level
@@ -557,7 +562,7 @@ export const applyActionEffects = (
           const adjustedCost = getAdjustedCost(
             actionId,
             cost,
-            path.startsWith("resources."),
+            true,
             state,
           );
 

@@ -456,7 +456,7 @@ export const getAllActionBonuses = (
     const huntBonus = HUNT_BONUSES[state.huntingSkills.level];
     if (huntBonus > 0) {
       // Find existing hunt bonus if any
-      const existingHuntIndex = actionBonuses.findIndex(b => b.id === "hunt");
+      const existingHuntIndex = actionBonuses.findIndex((b) => b.id === "hunt");
 
       if (existingHuntIndex >= 0) {
         // Merge with existing hunt bonus
@@ -483,41 +483,36 @@ export const getAllActionBonuses = (
 // Helper function to calculate total luck
 export const getTotalLuck = (state: GameState): number => {
   const effects = calculateTotalEffects(state);
-  const baseLuck = state.stats?.luck || 0;
-  return baseLuck + (effects.statBonuses?.luck || 0);
+
+  return effects.statBonuses?.luck || 0;
 };
 
 // Helper function to calculate total strength
 export const getTotalStrength = (state: GameState): number => {
   const effects = calculateTotalEffects(state);
-  const baseStrength = state.stats?.strength || 0;
-  return baseStrength + (effects.statBonuses?.strength || 0);
+  return effects.statBonuses?.strength || 0;
 };
 
 // Helper function to calculate total knowledge
 export const getTotalKnowledge = (state: GameState): number => {
   const effects = calculateTotalEffects(state);
-  let knowledge = state.stats?.knowledge || 0;
-  return knowledge + (effects.statBonuses?.knowledge || 0);
+  return effects.statBonuses?.knowledge || 0;
 };
 
 // Helper function to calculate total madness
 export const getTotalMadness = (state: GameState): number => {
   const effects = calculateTotalEffects(state);
-  // Base madness already includes madnessFromEvents (they're added together when events trigger)
-  // So we just use the base madness value
-  let totalMadness = state.stats?.madness || 0;
 
   // Add madness from effects
   const effectMadness = effects.statBonuses?.madness || 0;
-  totalMadness += effectMadness;
 
   // Apply madness reduction from effects (includes building madness reductions)
+  let madnessReduction = 0;
   Object.entries(effects.madness_reduction).forEach(([key, reduction]) => {
-    totalMadness += reduction; // Already negative values
+    madnessReduction += reduction; // Already negative values
   });
 
-  const finalMadness = Math.max(0, totalMadness);
+  const finalMadness = Math.max(0, effectMadness + madnessReduction);
   return finalMadness;
 };
 
@@ -642,7 +637,8 @@ export const calculateTotalEffects = (state: GameState) => {
     }
 
     // Add madness reduction from animal sacrifices
-    const animalUsageCount = Number(state.story?.seen?.animalsSacrificeLevel) || 0;
+    const animalUsageCount =
+      Number(state.story?.seen?.animalsSacrificeLevel) || 0;
     if (animalUsageCount > 0) {
       const sacrificeMadnessReduction = animalUsageCount * -1;
       effects.madness_reduction.animals_sacrifice_madness =
@@ -650,7 +646,8 @@ export const calculateTotalEffects = (state: GameState) => {
     }
 
     // Add madness reduction from human sacrifices
-    const humanUsageCount = Number(state.story?.seen?.humansSacrificeLevel) || 0;
+    const humanUsageCount =
+      Number(state.story?.seen?.humansSacrificeLevel) || 0;
     if (humanUsageCount > 0) {
       const humanMadnessReduction = humanUsageCount * -2;
       effects.madness_reduction.humans_sacrifice_madness =
@@ -667,14 +664,16 @@ export const calculateTotalEffects = (state: GameState) => {
     }
 
     // Bone Temple inherits sacrifice bonuses from Black Monolith
-    const animalUsageCount = Number(state.story?.seen?.animalsSacrificeLevel) || 0;
+    const animalUsageCount =
+      Number(state.story?.seen?.animalsSacrificeLevel) || 0;
     if (animalUsageCount > 0) {
       const sacrificeMadnessReduction = animalUsageCount * -1;
       effects.madness_reduction.animals_sacrifice_madness =
         sacrificeMadnessReduction;
     }
 
-    const humanUsageCount = Number(state.story?.seen?.humansSacrificeLevel) || 0;
+    const humanUsageCount =
+      Number(state.story?.seen?.humansSacrificeLevel) || 0;
     if (humanUsageCount > 0) {
       const humanMadnessReduction = humanUsageCount * -2;
       effects.madness_reduction.humans_sacrifice_madness =
@@ -871,7 +870,8 @@ export const calculateTotalEffects = (state: GameState) => {
       // Process general bonuses
       if (effect.bonuses.generalBonuses) {
         if (effect.bonuses.generalBonuses.strength) {
-          effects.statBonuses.strength += effect.bonuses.generalBonuses.strength;
+          effects.statBonuses.strength +=
+            effect.bonuses.generalBonuses.strength;
         }
         if (effect.bonuses.generalBonuses.luck) {
           effects.statBonuses.luck += effect.bonuses.generalBonuses.luck;
