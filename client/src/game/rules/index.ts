@@ -685,8 +685,11 @@ export const applyActionEffects = (
               min = Math.floor(min * actionBonuses.resourceMultiplier);
               max = Math.floor(max * actionBonuses.resourceMultiplier);
             }
-          } else {
-            // Apply action bonuses from the centralized effects system for non-sacrifice actions
+          }
+
+          // For non-sacrifice actions, apply bonuses and multipliers
+          if (!isSacrificeAction) {
+            // Apply action bonuses from the centralized effects system
             const actionBonuses = getActionBonusesCalc(actionId, state);
             if (
               actionBonuses?.resourceBonus?.[

@@ -610,6 +610,100 @@ describe('Resource Gain Tests', () => {
     });
   });
 
+  describe('Mining Actions - Extended', () => {
+    it('mineSulfur gains match tooltip', () => {
+      const state = { ...initialState };
+      const expectedGains = calculateResourceGains('mineSulfur', state);
+
+      const actualGains: Record<string, number[]> = {};
+      for (let i = 0; i < 100; i++) {
+        const result = applyActionEffects('mineSulfur', state);
+        Object.entries(result.stateUpdates.resources || {}).forEach(([resource, amount]) => {
+          if (!actualGains[resource]) actualGains[resource] = [];
+          actualGains[resource].push(amount);
+        });
+      }
+
+      for (const resource in expectedGains) {
+        expect(actualGains[resource]).toBeDefined();
+        const minActual = Math.min(...actualGains[resource]);
+        const maxActual = Math.max(...actualGains[resource]);
+
+        expect(minActual).toBeGreaterThanOrEqual(expectedGains[resource].min);
+        expect(maxActual).toBeLessThanOrEqual(expectedGains[resource].max);
+      }
+    });
+
+    it('mineAdamant gains match tooltip', () => {
+      const state = { ...initialState };
+      const expectedGains = calculateResourceGains('mineAdamant', state);
+
+      const actualGains: Record<string, number[]> = {};
+      for (let i = 0; i < 100; i++) {
+        const result = applyActionEffects('mineAdamant', state);
+        Object.entries(result.stateUpdates.resources || {}).forEach(([resource, amount]) => {
+          if (!actualGains[resource]) actualGains[resource] = [];
+          actualGains[resource].push(amount);
+        });
+      }
+
+      for (const resource in expectedGains) {
+        expect(actualGains[resource]).toBeDefined();
+        const minActual = Math.min(...actualGains[resource]);
+        const maxActual = Math.max(...actualGains[resource]);
+
+        expect(minActual).toBeGreaterThanOrEqual(expectedGains[resource].min);
+        expect(maxActual).toBeLessThanOrEqual(expectedGains[resource].max);
+      }
+    });
+  });
+
+  describe('Forest Trade Actions', () => {
+    it('buy1000Food gains match tooltip', () => {
+      const state = { ...initialState, resources: { ...initialState.resources, gold: 100 } };
+      const expectedGains = calculateResourceGains('buy1000Food', state);
+
+      const result = applyActionEffects('buy1000Food', state);
+      const actualFood = result.stateUpdates.resources?.food || 0;
+
+      expect(actualFood).toBe(expectedGains.food.min);
+      expect(actualFood).toBe(expectedGains.food.max);
+    });
+
+    it('buy1000Stone gains match tooltip', () => {
+      const state = { ...initialState, resources: { ...initialState.resources, gold: 100 } };
+      const expectedGains = calculateResourceGains('buy1000Stone', state);
+
+      const result = applyActionEffects('buy1000Stone', state);
+      const actualStone = result.stateUpdates.resources?.stone || 0;
+
+      expect(actualStone).toBe(expectedGains.stone.min);
+      expect(actualStone).toBe(expectedGains.stone.max);
+    });
+
+    it('buy250Torch gains match tooltip', () => {
+      const state = { ...initialState, resources: { ...initialState.resources, gold: 100 } };
+      const expectedGains = calculateResourceGains('buy250Torch', state);
+
+      const result = applyActionEffects('buy250Torch', state);
+      const actualTorches = result.stateUpdates.resources?.torches || 0;
+
+      expect(actualTorches).toBe(expectedGains.torches.min);
+      expect(actualTorches).toBe(expectedGains.torches.max);
+    });
+
+    it('buy50Gold gains match tooltip', () => {
+      const state = { ...initialState, resources: { ...initialState.resources, food: 10000 } };
+      const expectedGains = calculateResourceGains('buy50Gold', state);
+
+      const result = applyActionEffects('buy50Gold', state);
+      const actualGold = result.stateUpdates.resources?.gold || 0;
+
+      expect(actualGold).toBe(expectedGains.gold.min);
+      expect(actualGold).toBe(expectedGains.gold.max);
+    });
+  });
+
   describe('Additional Cave Exploration', () => {
     it('exploreCitadel gains match tooltip', () => {
       const state = createTestState({
