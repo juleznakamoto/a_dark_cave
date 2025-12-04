@@ -288,7 +288,6 @@ export default function GameContainer() {
                     className={`py-2 text-sm bg-transparent ${
                       activeTab === "forest" ? "font-bold opacity-100" : "opacity-60"
                     } ${animatingTabs.has("forest") ? "tab-fade-in" : ""}`}
-                    style={animatingTabs.has("forest") ? { opacity: 0 } : undefined}
                     onClick={() => setActiveTab("forest")}
                     data-testid="tab-forest"
                   >
@@ -301,7 +300,6 @@ export default function GameContainer() {
                     className={`py-2 text-sm bg-transparent ${
                       activeTab === "bastion" ? "font-bold opacity-100" : "opacity-60"
                     } ${animatingTabs.has("bastion") ? "tab-fade-in" : ""}`}
-                    style={animatingTabs.has("bastion") ? { opacity: 0 } : undefined}
                     onClick={() => setActiveTab("bastion")}
                     data-testid="tab-bastion"
                   >
