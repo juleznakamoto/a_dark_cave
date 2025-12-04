@@ -16,6 +16,7 @@ import Terms from "@/pages/terms";
 import Withdrawal from "@/pages/withdrawal";
 import ExplosionTest from "@/pages/explosion-test";
 import AdminDashboard from "@/pages/admin/dashboard";
+import TabAnimationTest from "@/pages/tab-animation-test";
 
 const isDev = import.meta.env.DEV;
 
@@ -32,6 +33,7 @@ function Router() {
       <Route path="/reset-password" component={ResetPassword} />
       <Route path="/explosion-test" component={ExplosionTest} />
       <Route path="/hero-test" component={HeroTest} />
+      <Route path="/tab-animation-test" component={TabAnimationTest} />
       <Route path="/button-test" component={ButtonTest} />
       <Route path="/admin/dashboard" component={AdminDashboard} />
       <Route component={NotFound} />
