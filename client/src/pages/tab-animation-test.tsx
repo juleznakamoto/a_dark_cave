@@ -1,7 +1,12 @@
-
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 
@@ -20,16 +25,18 @@ export default function TabAnimationTest() {
     { id: "bastion", label: "Bastion", unlocked: false },
   ];
 
-  const [unlockedTabs, setUnlockedTabs] = useState<Set<string>>(new Set(["cave"]));
+  const [unlockedTabs, setUnlockedTabs] = useState<Set<string>>(
+    new Set(["cave"]),
+  );
 
   const unlockTab = (tabId: string) => {
     if (!unlockedTabs.has(tabId)) {
       // Add to unlocked tabs
-      setUnlockedTabs(prev => new Set([...prev, tabId]));
-      
+      setUnlockedTabs((prev) => new Set([...prev, tabId]));
+
       // Trigger animation
       setAnimatingTabs(new Set([tabId]));
-      
+
       // Remove animation class after duration
       setTimeout(() => {
         setAnimatingTabs(new Set());
@@ -48,13 +55,16 @@ export default function TabAnimationTest() {
       <style>{`
         @keyframes fade-in {
           0% {
-            opacity: 0;
-            transform: translateY(-10px);
-          }
-          100% {
-            opacity: 1;
-            transform: translateY(0);
-          }
+    opacity: 0;
+    filter: blur(5px);
+    transform: translateY(-2px);
+  }
+
+  100% {
+    opacity: 1;
+    filter: blur(0px);
+    transform: translateY(0);
+  }
         }
 
         .tab-fade-in {
@@ -80,24 +90,29 @@ export default function TabAnimationTest() {
           <Card>
             <CardHeader>
               <CardTitle>Tab Preview</CardTitle>
-              <CardDescription>This simulates the game's tab navigation</CardDescription>
+              <CardDescription>
+                This simulates the game's tab navigation
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="bg-muted rounded-lg p-4">
                 <div className="flex gap-4 justify-center">
-                  {tabs.map(tab => (
-                    unlockedTabs.has(tab.id) && (
-                      <button
-                        key={tab.id}
-                        className={`tab-button py-2 px-4 text-sm bg-transparent rounded ${
-                          activeTab === tab.id ? "font-bold opacity-100 bg-background" : "opacity-60"
-                        } ${animatingTabs.has(tab.id) ? "tab-fade-in" : ""}`}
-                        onClick={() => setActiveTab(tab.id)}
-                      >
-                        {tab.label}
-                      </button>
-                    )
-                  ))}
+                  {tabs.map(
+                    (tab) =>
+                      unlockedTabs.has(tab.id) && (
+                        <button
+                          key={tab.id}
+                          className={`tab-button py-2 px-4 text-sm bg-transparent rounded ${
+                            activeTab === tab.id
+                              ? "font-bold opacity-100 bg-background"
+                              : "opacity-60"
+                          } ${animatingTabs.has(tab.id) ? "tab-fade-in" : ""}`}
+                          onClick={() => setActiveTab(tab.id)}
+                        >
+                          {tab.label}
+                        </button>
+                      ),
+                  )}
                 </div>
               </div>
             </CardContent>
@@ -135,22 +150,28 @@ export default function TabAnimationTest() {
               <div className="pt-4 border-t">
                 <p className="text-sm font-medium mb-3">Unlock Tabs:</p>
                 <div className="grid grid-cols-2 gap-2">
-                  {tabs.filter(tab => tab.id !== "cave").map(tab => (
-                    <Button
-                      key={tab.id}
-                      onClick={() => unlockTab(tab.id)}
-                      disabled={unlockedTabs.has(tab.id)}
-                      variant="outline"
-                      size="sm"
-                    >
-                      {unlockedTabs.has(tab.id) ? "✓ " : ""}
-                      {tab.label}
-                    </Button>
-                  ))}
+                  {tabs
+                    .filter((tab) => tab.id !== "cave")
+                    .map((tab) => (
+                      <Button
+                        key={tab.id}
+                        onClick={() => unlockTab(tab.id)}
+                        disabled={unlockedTabs.has(tab.id)}
+                        variant="outline"
+                        size="sm"
+                      >
+                        {unlockedTabs.has(tab.id) ? "✓ " : ""}
+                        {tab.label}
+                      </Button>
+                    ))}
                 </div>
               </div>
 
-              <Button onClick={resetAll} variant="destructive" className="w-full">
+              <Button
+                onClick={resetAll}
+                variant="destructive"
+                className="w-full"
+              >
                 Reset All
               </Button>
             </CardContent>
@@ -165,7 +186,7 @@ export default function TabAnimationTest() {
           </CardHeader>
           <CardContent>
             <pre className="bg-muted p-4 rounded-lg overflow-x-auto text-xs">
-{`@keyframes fade-in {
+              {`@keyframes fade-in {
   0% {
     opacity: 0;
     transform: translateY(-10px);
@@ -193,7 +214,10 @@ export default function TabAnimationTest() {
             <p>1. Use the sliders to adjust animation duration and delay</p>
             <p>2. Click the tab buttons to unlock them and see the animation</p>
             <p>3. Click "Reset All" to start over</p>
-            <p>4. Once you're happy with the animation, update the values in GameContainer.tsx</p>
+            <p>
+              4. Once you're happy with the animation, update the values in
+              GameContainer.tsx
+            </p>
             <p className="pt-2 text-muted-foreground">
               Current GameContainer animation timeout: 1000ms (line 52)
             </p>
