@@ -568,6 +568,12 @@ export const actionSchema = z.object({
     .array(z.enum(["strength", "knowledge", "luck", "madness"]))
     .optional(),
   cooldown: z.number().optional(),
+  actionBonuses: z.record(z.string(), z.object({
+    resourceMultiplier: z.number().optional(),
+    resourceBonus: z.record(z.string(), z.number()).optional(),
+    cooldownReduction: z.number().optional(),
+    probabilityBonus: z.record(z.string(), z.number()).optional(),
+  })).optional(),
 });
 
 export type Action = z.infer<typeof actionSchema>;
