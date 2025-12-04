@@ -2,7 +2,7 @@ import { Action, GameState } from "@shared/schema";
 import { ActionResult } from "@/game/actions";
 import { applyActionEffects } from "@/game/rules";
 
-// Base items (relics and clothing) for each cave exploration stage
+// Base items for each cave exploration stage
 const caveItems = {
   exploreCave: [],
   ventureDeeper: [
