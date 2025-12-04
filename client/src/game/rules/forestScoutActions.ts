@@ -65,7 +65,7 @@ export const forestScoutActions: Record<string, Action> = {
         multiplier: 0.01,
       });
     },
-    relevant_stats: ["strength", "luck"],
+    relevant_stats: ["luck"],
     cooldown: 30,
   },
 
