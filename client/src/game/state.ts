@@ -829,23 +829,24 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const resources = state.resources || {};
     const stats = state.stats || {};
 
-    logger.log('[ANALYTICS] 🔍 Creating resource snapshot - FULL STATE:', {
+    logger.log('[ANALYTICS] 🔍 Creating resource snapshot - DEEP DIVE:', {
       hasResources: !!resources,
       hasStats: !!stats,
       resourceKeys: Object.keys(resources),
       statsKeys: Object.keys(stats),
       statsValues: stats,
       resourcesValues: resources,
-      // Log the entire state.stats to see its structure
-      fullStatsObject: JSON.stringify(state.stats),
-      // Check if stats properties exist directly
-      statLuck: state.stats?.luck,
-      statStrength: state.stats?.strength,
-      statKnowledge: state.stats?.knowledge,
-      statMadness: state.stats?.madness,
-      // Type checks
-      typeOfStats: typeof state.stats,
-      typeOfLuck: typeof state.stats?.luck,
+      // Deep inspection of state.stats
+      fullStateStats: state.stats,
+      stateStatsType: typeof state.stats,
+      stateStatsIsNull: state.stats === null,
+      stateStatsIsUndefined: state.stats === undefined,
+      // Check each stat individually
+      luck: state.stats?.luck,
+      strength: state.stats?.strength,
+      knowledge: state.stats?.knowledge,
+      madness: state.stats?.madness,
+      madnessFromEvents: state.stats?.madnessFromEvents,
     });
 
     // Add resources to snapshot
