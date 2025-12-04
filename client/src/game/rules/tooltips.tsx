@@ -66,13 +66,18 @@ export const calculateResourceGains = (
             min = min + cappedUsageCount;
             max = max + cappedUsageCount;
 
-            // Calculate total multiplier (Bone Temple + items)
+            // Calculate total multiplier using additive stacking
+            // Bone Temple gives +25% (1.25x), items also give their bonuses additively
             let totalMultiplier = 1;
+            
+            // Add Bone Temple bonus (hardcoded for now since it's a building effect)
             if (state.buildings.boneTemple >= 1) {
-              totalMultiplier *= 1.25;
+              totalMultiplier += 0.25; // +25%
             }
+            
+            // Add item bonuses (already calculated additively in getActionBonuses)
             if (bonuses.resourceMultiplier > 1) {
-              totalMultiplier *= bonuses.resourceMultiplier;
+              totalMultiplier += (bonuses.resourceMultiplier - 1);
             }
 
             // Apply combined multiplier

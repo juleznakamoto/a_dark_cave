@@ -625,9 +625,11 @@ describe('Resource Gain Tests', () => {
       const { expectedGains: expectedWithout } = testActionGains('boneTotems', stateWithoutTunic, 50);
       const { expectedGains: expectedWith } = testActionGains('boneTotems', stateWithTunic, 50);
 
-      // With tunic should have approximately 25% higher gains
-      expect(expectedWith.silver.min).toBeGreaterThan(expectedWithout.silver.min);
-      expect(expectedWith.silver.max).toBeGreaterThan(expectedWithout.silver.max);
+      // With tunic should have exactly 25% higher gains
+      const expectedBonusMin = Math.floor(expectedWithout.silver.min * 1.25);
+      const expectedBonusMax = Math.floor(expectedWithout.silver.max * 1.25);
+      expect(expectedWith.silver.min).toBe(expectedBonusMin);
+      expect(expectedWith.silver.max).toBe(expectedBonusMax);
     });
 
     it('leatherTotems with sacrificial_tunic applies 25% bonus', () => {
@@ -642,9 +644,49 @@ describe('Resource Gain Tests', () => {
       const { expectedGains: expectedWithout } = testActionGains('leatherTotems', stateWithoutTunic, 50);
       const { expectedGains: expectedWith } = testActionGains('leatherTotems', stateWithTunic, 50);
 
-      // With tunic should have approximately 25% higher gains
-      expect(expectedWith.gold.min).toBeGreaterThan(expectedWithout.gold.min);
-      expect(expectedWith.gold.max).toBeGreaterThan(expectedWithout.gold.max);
+      // With tunic should have exactly 25% higher gains
+      const expectedBonusMin = Math.floor(expectedWithout.gold.min * 1.25);
+      const expectedBonusMax = Math.floor(expectedWithout.gold.max * 1.25);
+      expect(expectedWith.gold.min).toBe(expectedBonusMin);
+      expect(expectedWith.gold.max).toBe(expectedBonusMax);
+    });
+
+    it('boneTotems with both boneTemple and sacrificial_tunic stacks additively (50% total)', () => {
+      const stateWithNeither = createTestState({
+        buildings: { altar: 1, clerksHut: 1 },
+      });
+      const stateWithBoth = createTestState({
+        buildings: { altar: 1, clerksHut: 1, boneTemple: 1 },
+        clothing: { ...stateWithNeither.clothing, sacrificial_tunic: true },
+      });
+
+      const { expectedGains: expectedWithout } = testActionGains('boneTotems', stateWithNeither, 50);
+      const { expectedGains: expectedWith } = testActionGains('boneTotems', stateWithBoth, 50);
+
+      // With both should have 50% total bonus (25% + 25%, additive stacking)
+      const expectedBonusMin = Math.floor(expectedWithout.silver.min * 1.5);
+      const expectedBonusMax = Math.floor(expectedWithout.silver.max * 1.5);
+      expect(expectedWith.silver.min).toBe(expectedBonusMin);
+      expect(expectedWith.silver.max).toBe(expectedBonusMax);
+    });
+
+    it('leatherTotems with both boneTemple and sacrificial_tunic stacks additively (50% total)', () => {
+      const stateWithNeither = createTestState({
+        buildings: { temple: 1, clerksHut: 1 },
+      });
+      const stateWithBoth = createTestState({
+        buildings: { temple: 1, clerksHut: 1, boneTemple: 1 },
+        clothing: { ...stateWithNeither.clothing, sacrificial_tunic: true },
+      });
+
+      const { expectedGains: expectedWithout } = testActionGains('leatherTotems', stateWithNeither, 50);
+      const { expectedGains: expectedWith } = testActionGains('leatherTotems', stateWithBoth, 50);
+
+      // With both should have 50% total bonus (25% + 25%, additive stacking)
+      const expectedBonusMin = Math.floor(expectedWithout.gold.min * 1.5);
+      const expectedBonusMax = Math.floor(expectedWithout.gold.max * 1.5);
+      expect(expectedWith.gold.min).toBe(expectedBonusMin);
+      expect(expectedWith.gold.max).toBe(expectedBonusMax);
     });
   });
 

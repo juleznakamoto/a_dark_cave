@@ -409,6 +409,14 @@ export default function ItemProgressChart() {
         category: "clothing",
         maxCount: 1,
       },
+      {
+        itemType: "sacrificial_tunic",
+        itemKeys: ["sacrificial_tunic"],
+        color: tailwindToHex("gray-400/80"),
+        label: "Sacrificial Tunic",
+        category: "clothing",
+        maxCount: 1,
+      },
     ],
     // Fifth ring: ???
     [],
