@@ -504,8 +504,8 @@ export const caveCraftTools: Record<string, Action> = {
     id: "craftSacrificialTunic",
     label: "Sacrificial Tunic",
     show_when: {
-      "buildings.pillarOfClarity": 1,
-      "clothing.sacrificial_tunic": false,
+      // "buildings.pillarOfClarity": 1,
+      //"clothing.sacrificial_tunic": false,
     },
     cost: {
       "resources.leather": 1500,
