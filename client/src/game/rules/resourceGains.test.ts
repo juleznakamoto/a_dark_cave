@@ -445,9 +445,9 @@ describe('Resource Gain Tests', () => {
       const { expectedGains: expectedWithout } = testActionGains('chopWood', stateWithoutGloves, 50);
       const { expectedGains: expectedWith } = testActionGains('chopWood', stateWithGloves, 50);
 
-      // With gloves should have higher gains
-      expect(expectedWith.wood.min).toBeGreaterThan(expectedWithout.wood.min);
-      expect(expectedWith.wood.max).toBeGreaterThan(expectedWithout.wood.max);
+      // With gloves should have higher gains (30% multiplier)
+      expect(expectedWith.wood.min).toBeGreaterThanOrEqual(Math.floor(expectedWithout.wood.min * 1.3));
+      expect(expectedWith.wood.max).toBeGreaterThanOrEqual(Math.floor(expectedWithout.wood.max * 1.3));
     });
 
     it('mineStone with mastermason_chisel applies correct bonus', () => {
@@ -461,9 +461,9 @@ describe('Resource Gain Tests', () => {
       const { expectedGains: expectedWithout } = testActionGains('mineStone', stateWithoutChisel, 50);
       const { expectedGains: expectedWith } = testActionGains('mineStone', stateWithChisel, 50);
 
-      // With chisel should have higher gains
-      expect(expectedWith.stone.min).toBeGreaterThan(expectedWithout.stone.min);
-      expect(expectedWith.stone.max).toBeGreaterThan(expectedWithout.stone.max);
+      // With chisel should have higher gains (25% multiplier)
+      expect(expectedWith.stone.min).toBeGreaterThanOrEqual(Math.floor(expectedWithout.stone.min * 1.25));
+      expect(expectedWith.stone.max).toBeGreaterThanOrEqual(Math.floor(expectedWithout.stone.max * 1.25));
     });
 
     it('hunt with hunter_cloak applies correct bonus', () => {
@@ -528,8 +528,8 @@ describe('Resource Gain Tests', () => {
       const { expectedGains: expectedWithout } = testActionGains('boneTotems', stateWithoutTemple, 50);
       const { expectedGains: expectedWith } = testActionGains('boneTotems', stateWithTemple, 50);
 
-      // With temple should have approximately 25% higher gains
-      const expectedBonus = Math.ceil(expectedWithout.silver.min * 1.25);
+      // With temple should have approximately 25% higher gains (floor operation may reduce slightly)
+      const expectedBonus = Math.floor(expectedWithout.silver.min * 1.25);
       expect(expectedWith.silver.min).toBeGreaterThanOrEqual(expectedBonus);
     });
   });
@@ -545,9 +545,9 @@ describe('Resource Gain Tests', () => {
       const { expectedGains: expectedWithout } = testActionGains('chopWood', stateWithoutUpgrade, 50);
       const { expectedGains: expectedWith } = testActionGains('chopWood', stateWithUpgrade, 50);
 
-      // With upgrades should have significantly higher gains
-      expect(expectedWith.wood.min).toBeGreaterThan(expectedWithout.wood.min);
-      expect(expectedWith.wood.max).toBeGreaterThan(expectedWithout.wood.max);
+      // With upgrades should have significantly higher gains (at least 40% more accounting for floor rounding)
+      expect(expectedWith.wood.min).toBeGreaterThanOrEqual(Math.floor(expectedWithout.wood.min * 1.4));
+      expect(expectedWith.wood.max).toBeGreaterThanOrEqual(Math.floor(expectedWithout.wood.max * 1.4));
     });
 
     it('exploreCave with button upgrades increases gains', () => {
@@ -563,8 +563,8 @@ describe('Resource Gain Tests', () => {
       const { expectedGains: expectedWithout } = testActionGains('exploreCave', stateWithoutUpgrade, 50);
       const { expectedGains: expectedWith } = testActionGains('exploreCave', stateWithUpgrade, 50);
 
-      // With max upgrades should have approximately double the gains
-      expect(expectedWith.wood.min).toBeGreaterThanOrEqual(expectedWithout.wood.min * 1.8);
+      // With max upgrades should have approximately double the gains (at least 90% more accounting for floor rounding)
+      expect(expectedWith.wood.min).toBeGreaterThanOrEqual(Math.floor(expectedWithout.wood.min * 1.9));
     });
   });
 
@@ -607,6 +607,149 @@ describe('Resource Gain Tests', () => {
 
       expect(minActual).toBeGreaterThanOrEqual(expectedGains.stone.min);
       expect(maxActual).toBeLessThanOrEqual(expectedGains.stone.max);
+    });
+  });
+
+  describe('Additional Cave Exploration', () => {
+    it('exploreCitadel gains match tooltip', () => {
+      const state = createTestState({
+        tools: { adamant_lantern: true },
+      });
+      const { expectedGains, actualGains } = testActionGains('exploreCitadel', state);
+
+      ['obsidian', 'adamant', 'moonstone', 'silver', 'gold'].forEach(resource => {
+        if (expectedGains[resource]) {
+          expect(actualGains[resource]).toBeDefined();
+          const minActual = Math.min(...actualGains[resource]);
+          const maxActual = Math.max(...actualGains[resource]);
+
+          expect(minActual).toBeGreaterThanOrEqual(expectedGains[resource].min);
+          expect(maxActual).toBeLessThanOrEqual(expectedGains[resource].max);
+        }
+      });
+    });
+  });
+
+  describe('Craft Actions', () => {
+    it('craftBoneTotem produces correct amount', () => {
+      const state = createTestState({
+        buildings: { altar: 1 },
+      });
+      const effectUpdates = applyActionEffects('craftBoneTotem', state);
+
+      expect(effectUpdates.resources?.bone_totem).toBe((state.resources.bone_totem || 0) + 1);
+    });
+
+    it('craftBoneTotems5 produces correct amount', () => {
+      const state = createTestState({
+        buildings: { sanctum: 1 },
+      });
+      const effectUpdates = applyActionEffects('craftBoneTotems5', state);
+
+      expect(effectUpdates.resources?.bone_totem).toBe((state.resources.bone_totem || 0) + 5);
+    });
+
+    it('craftLeatherTotem produces correct amount', () => {
+      const state = createTestState({
+        buildings: { temple: 1 },
+      });
+      const effectUpdates = applyActionEffects('craftLeatherTotem', state);
+
+      expect(effectUpdates.resources?.leather_totem).toBe((state.resources.leather_totem || 0) + 1);
+    });
+
+    it('craftLeatherTotems5 produces correct amount', () => {
+      const state = createTestState({
+        buildings: { sanctum: 1 },
+      });
+      const effectUpdates = applyActionEffects('craftLeatherTotems5', state);
+
+      expect(effectUpdates.resources?.leather_totem).toBe((state.resources.leather_totem || 0) + 5);
+    });
+  });
+
+  describe('Advanced Mining Actions', () => {
+    it('mineSulfur gains match tooltip', () => {
+      const state = createTestState({
+        tools: { steel_pickaxe: true },
+        buildings: { foundry: 1 },
+      });
+      const { expectedGains, actualGains } = testActionGains('mineSulfur', state);
+
+      expect(expectedGains.sulfur).toBeDefined();
+      expect(actualGains.sulfur).toBeDefined();
+
+      const minActual = Math.min(...actualGains.sulfur);
+      const maxActual = Math.max(...actualGains.sulfur);
+
+      expect(minActual).toBeGreaterThanOrEqual(expectedGains.sulfur.min);
+      expect(maxActual).toBeLessThanOrEqual(expectedGains.sulfur.max);
+    });
+
+    it('mineAdamant gains match tooltip', () => {
+      const state = createTestState({
+        tools: { obsidian_pickaxe: true },
+      });
+      const { expectedGains, actualGains } = testActionGains('mineAdamant', state);
+
+      expect(expectedGains.adamant).toBeDefined();
+      expect(actualGains.adamant).toBeDefined();
+
+      const minActual = Math.min(...actualGains.adamant);
+      const maxActual = Math.max(...actualGains.adamant);
+
+      expect(minActual).toBeGreaterThanOrEqual(expectedGains.adamant.min);
+      expect(maxActual).toBeLessThanOrEqual(expectedGains.adamant.max);
+    });
+  });
+
+  describe('Trade Actions', () => {
+    it('tradeGoldForFood (tier 3) produces correct amount', () => {
+      const state = createTestState({
+        buildings: { merchantsGuild: 1 },
+      });
+      const effectUpdates = applyActionEffects('tradeGoldForFood', state);
+
+      // Tier 3 gives 1000 food
+      expect(effectUpdates.resources?.food).toBe(state.resources.food + 1000);
+      // Costs 40 gold
+      expect(effectUpdates.resources?.gold).toBe(state.resources.gold - 40);
+    });
+
+    it('tradeGoldForStone (tier 3) produces correct amount', () => {
+      const state = createTestState({
+        buildings: { merchantsGuild: 1 },
+      });
+      const effectUpdates = applyActionEffects('tradeGoldForStone', state);
+
+      // Tier 3 gives 1000 stone
+      expect(effectUpdates.resources?.stone).toBe(state.resources.stone + 1000);
+      // Costs 60 gold
+      expect(effectUpdates.resources?.gold).toBe(state.resources.gold - 60);
+    });
+
+    it('tradeGoldForTorch (tier 3) produces correct amount', () => {
+      const state = createTestState({
+        buildings: { merchantsGuild: 1 },
+      });
+      const effectUpdates = applyActionEffects('tradeGoldForTorch', state);
+
+      // Tier 3 gives 250 torches
+      expect(effectUpdates.resources?.torch).toBe(state.resources.torch + 250);
+      // Costs 75 gold
+      expect(effectUpdates.resources?.gold).toBe(state.resources.gold - 75);
+    });
+
+    it('tradeSilverForGold (tier 3) produces correct amount', () => {
+      const state = createTestState({
+        buildings: { merchantsGuild: 1 },
+      });
+      const effectUpdates = applyActionEffects('tradeSilverForGold', state);
+
+      // Tier 3 gives 50 gold
+      expect(effectUpdates.resources?.gold).toBe(state.resources.gold + 50);
+      // Costs 200 silver
+      expect(effectUpdates.resources?.silver).toBe(state.resources.silver - 200);
     });
   });
 });
