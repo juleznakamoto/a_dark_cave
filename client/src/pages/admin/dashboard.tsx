@@ -76,6 +76,8 @@ interface ButtonClickData {
   user_id: string;
   clicks: Record<string, number>;
   timestamp: string; // Added timestamp for filtering by date
+  stats?: Record<string, any>; // Stats snapshots
+  resources?: Record<string, any>; // Resource snapshots
 }
 
 interface GameSaveData {
@@ -91,6 +93,7 @@ interface PurchaseData {
   item_name: string;
   price_paid: number;
   purchased_at: string;
+  bundle_id?: string; // Added bundle_id field
 }
 
 // Admin emails from environment variable (comma-separated)
@@ -1712,6 +1715,16 @@ export default function AdminDashboard() {
     new Set(["strength", "knowledge", "luck", "madness"]),
   );
 
+  // Helper to get playtime bucket label (e.g., "0-59m", "60-119m")
+  const getBucketLabel = (playTimeMinutes: number): string => {
+    if (playTimeMinutes < 60) return "0-59m";
+    if (playTimeMinutes < 120) return "60-119m";
+    if (playTimeMinutes < 180) return "120-179m";
+    if (playTimeMinutes < 240) return "180-239m";
+    if (playTimeMinutes < 300) return "240-299m";
+    return "300+m"; // For 5+ hours
+  };
+
   // NEW FUNCTION FOR RESOURCE STATS OVER PLAYTIME
   const handleLookupUser = async () => {
     setLookupLoading(true);
@@ -3239,7 +3252,7 @@ export default function AdminDashboard() {
                     <CardDescription>
                       Buttons clicked exactly once (count = 1) - what did
                       churned players try just once?
-                    </CardDescription>
+                    </Description>
                   </CardHeader>
                   <CardContent>
                     <ResponsiveContainer width="100%" height={400}>
