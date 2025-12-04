@@ -26,7 +26,7 @@ export const calculateResourceGains = (
 
   // Check if this is a craft action to apply crafting discount
   const isCraftAction = actionId.startsWith("craft");
-  const craftingDiscount = isCraftAction 
+  const craftingDiscount = isCraftAction
     ? getTotalCraftingCostReduction(state)
     : 0;
 
@@ -109,6 +109,7 @@ export const calculateResourceGains = (
           if (match) {
             let min = parseInt(match[1]);
             let max = parseInt(match[2]);
+            const buttonUpgradeMultiplier = bonuses.buttonUpgradeMultiplier[resource] || 1;
 
             // Apply flat bonuses (includes both specific action bonuses and general mine bonuses)
             const flatBonus = bonuses.resourceBonus[resource] || 0;
@@ -127,11 +128,18 @@ export const calculateResourceGains = (
               max = Math.floor(max * bonuses.caveExploreMultiplier);
             }
 
+            // Apply button upgrade multiplier separately (not already in bonuses.resourceMultiplier)
+            if (buttonUpgradeMultiplier !== 1) {
+              min = Math.floor(min * buttonUpgradeMultiplier);
+              max = Math.floor(max * buttonUpgradeMultiplier);
+            }
+
             gains.push({ resource, min, max });
           }
         } else if (typeof value === "number") {
           // Fixed value
           let amount = value;
+          const buttonUpgradeMultiplier = bonuses.buttonUpgradeMultiplier[resource] || 1;
 
           // Apply flat bonuses (includes both specific action bonuses and general mine bonuses)
           const flatBonus = bonuses.resourceBonus[resource] || 0;
@@ -147,6 +155,11 @@ export const calculateResourceGains = (
             amount = Math.floor(amount * bonuses.caveExploreMultiplier);
           }
 
+          // Apply button upgrade multiplier separately (not already in bonuses.resourceMultiplier)
+          if (buttonUpgradeMultiplier !== 1) {
+            amount = Math.floor(amount * buttonUpgradeMultiplier);
+          }
+
           gains.push({ resource, min: amount, max: amount });
         }
       }
@@ -159,7 +172,7 @@ export const calculateResourceGains = (
           const resource = key.split(".")[1];
           if (typeof value === "number") {
             // Apply crafting discount if applicable
-            const finalCost = isCraftAction 
+            const finalCost = isCraftAction
               ? Math.ceil(value * (1 - craftingDiscount))
               : value;
 
