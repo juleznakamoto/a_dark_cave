@@ -649,16 +649,14 @@ describe('Save Game System - Comprehensive Tests', () => {
       expect(loaded?.cooldownDurations).toBeDefined();
     });
 
-    // Approach 4: Corrupted with cloud save
-    it('v4: should handle corrupted cloud data', async () => {
+    // Approach 4a: Corrupted cloud data - verify defaults are applied
+    it('v4a: should handle corrupted cloud data with defaults', async () => {
       const auth = await import('./auth');
-      const baseState = createMockGameState();
       const corruptedState: any = {
-        ...baseState,
-        cooldownDurations: undefined,
+        resources: { wood: 100, stone: 50, gold: 200, food: 75 },
+        playTime: 1000,
+        // Missing cooldownDurations
       };
-      // Explicitly delete to simulate corruption
-      delete corruptedState.cooldownDurations;
 
       vi.mocked(auth.getCurrentUser).mockResolvedValue({ id: 'user-1', email: 'test@example.com' });
       vi.mocked(auth.loadGameFromSupabase).mockResolvedValue({
@@ -669,10 +667,108 @@ describe('Save Game System - Comprehensive Tests', () => {
 
       const loaded = await loadGame();
       
-      expect(loaded).toBeDefined();
+      // Should still load even with missing fields
+      expect(loaded).not.toBeNull();
+      if (loaded) {
+        // cooldownDurations should exist (even if empty)
+        expect(loaded.cooldownDurations).toBeDefined();
+      }
+    });
+
+    // Approach 4b: Corrupted cloud data - null value
+    it('v4b: should handle cloud data with null cooldownDurations', async () => {
+      const auth = await import('./auth');
+      const corruptedState = createMockGameState();
+      (corruptedState as any).cooldownDurations = null;
+
+      vi.mocked(auth.getCurrentUser).mockResolvedValue({ id: 'user-1', email: 'test@example.com' });
+      vi.mocked(auth.loadGameFromSupabase).mockResolvedValue({
+        gameState: corruptedState,
+        timestamp: Date.now(),
+        playTime: 1000,
+      });
+
+      const loaded = await loadGame();
+      
+      expect(loaded).toBeTruthy();
       if (loaded) {
         expect(loaded.cooldownDurations).toBeDefined();
         expect(typeof loaded.cooldownDurations).toBe('object');
+      }
+    });
+
+    // Approach 4c: Corrupted cloud data - verify it syncs to local properly
+    it('v4c: should sync corrupted cloud data locally with defaults', async () => {
+      const auth = await import('./auth');
+      const corruptedState: any = {
+        resources: { wood: 100, stone: 50, gold: 200, food: 75 },
+        playTime: 1000,
+      };
+
+      vi.mocked(auth.getCurrentUser).mockResolvedValue({ id: 'user-1', email: 'test@example.com' });
+      vi.mocked(auth.loadGameFromSupabase).mockResolvedValue({
+        gameState: corruptedState,
+        timestamp: Date.now(),
+        playTime: 1000,
+      });
+
+      const loaded = await loadGame();
+      
+      expect(loaded).not.toBeNull();
+      // Should have saved to local IndexedDB with defaults applied
+      expect(mockPut).toHaveBeenCalled();
+      const savedData = mockStores.saves.mainSave;
+      expect(savedData?.gameState?.cooldownDurations).toBeDefined();
+    });
+
+    // Approach 4d: Corrupted cloud data - verify minimal required fields
+    it('v4d: should handle cloud data with only resources', async () => {
+      const auth = await import('./auth');
+      const minimalState: any = {
+        resources: { wood: 100, stone: 50, gold: 200, food: 75 },
+        playTime: 1000,
+      };
+
+      vi.mocked(auth.getCurrentUser).mockResolvedValue({ id: 'user-1', email: 'test@example.com' });
+      vi.mocked(auth.loadGameFromSupabase).mockResolvedValue({
+        gameState: minimalState,
+        timestamp: Date.now(),
+        playTime: 1000,
+      });
+
+      const loaded = await loadGame();
+      
+      // Should handle minimal state gracefully
+      expect(loaded).toBeDefined();
+      if (loaded) {
+        expect(loaded.resources).toBeDefined();
+        expect(loaded.cooldownDurations).toBeDefined();
+      }
+    });
+
+    // Approach 4e: Corrupted cloud data - undefined vs missing field
+    it('v4e: should handle cloud data with explicitly undefined cooldownDurations', async () => {
+      const auth = await import('./auth');
+      const baseState = createMockGameState();
+      const corruptedState = {
+        ...baseState,
+        cooldownDurations: undefined as any,
+      };
+
+      vi.mocked(auth.getCurrentUser).mockResolvedValue({ id: 'user-1', email: 'test@example.com' });
+      vi.mocked(auth.loadGameFromSupabase).mockResolvedValue({
+        gameState: corruptedState,
+        timestamp: Date.now(),
+        playTime: 1000,
+      });
+
+      const loaded = await loadGame();
+      
+      expect(loaded).not.toBeNull();
+      // Should have fixed the undefined value
+      if (loaded) {
+        expect(loaded.cooldownDurations).not.toBeUndefined();
+        expect(loaded.cooldownDurations).toBeDefined();
       }
     });
 

@@ -350,8 +350,14 @@ export async function loadGame(): Promise<GameState | null> {
           // Cloud save exists - use it
           logger.log("[LOAD] ☁️ Using cloud save (user authenticated)");
 
+          // Ensure cooldownDurations exists before processing
+          const stateWithDefaults = {
+            ...cloudSave.gameState,
+            cooldownDurations: cloudSave.gameState.cooldownDurations || {},
+          };
+
           const processedState = await processUnclaimedReferrals(
-            cloudSave.gameState,
+            stateWithDefaults,
           );
 
           const stateToReturn = { ...processedState, playTime: cloudSave.playTime };
