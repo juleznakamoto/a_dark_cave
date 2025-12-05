@@ -112,7 +112,6 @@ interface GameStore extends GameState {
   isPausedPreviously: boolean;
 
   // Actions
-  trackResourceChange: (resource: string, amount: number) => void;
   getAndResetResourceAnalytics: () => Record<string, number> | null;
   executeAction: (actionId: string) => void;
   setActiveTab: (tab: string) => void;
@@ -330,7 +329,7 @@ const defaultGameState: GameState = {
     bloodflameSphereLevel: 0,
   },
   activatedPurchases: {},
-  feastActivations: {}, // Track only activations remaining per purchase: { purchaseId: number }
+  feastActivations: {},
   cruelMode: false,
   CM: 0,
   attackWaveTimers: {},
@@ -524,14 +523,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const state = get();
     const action = gameActions[actionId];
 
-    if (actionId === "buildStoneHut") {
-      logger.log("[executeAction] buildStoneHut clicked:", {
-        currentStoneHuts: state.buildings.stoneHut,
-        currentStone: state.resources.stone,
-        cooldown: state.cooldowns[actionId] || 0,
-      });
-    }
-
     if (!action || (state.cooldowns[actionId] || 0) > 0) return;
     if (
       !shouldShowAction(actionId, state) ||
@@ -589,33 +580,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
       result.stateUpdates.cooldowns = updatedCooldowns;
     }
 
-    logger.log(`[STATE] Action: ${actionId}`, {
-      stateUpdates: result.stateUpdates,
-      logEntries: result.logEntries,
-      delayedEffects: result.delayedEffects,
-    });
-
     // Apply state updates
     set((prevState) => {
-      if (actionId === "buildStoneHut") {
-        logger.log("[executeAction] Before merge:", {
-          prevStateStoneHuts: prevState.buildings.stoneHut,
-          prevStateStone: prevState.resources.stone,
-          resultStateUpdates: result.stateUpdates,
-          resultStateUpdatesBuildings: result.stateUpdates.buildings,
-          resultStateUpdatesResources: result.stateUpdates.resources,
-        });
-      }
-
       const mergedUpdates = mergeStateUpdates(prevState, result.stateUpdates);
-
-      if (actionId === "buildStoneHut") {
-        logger.log("[executeAction] After mergeStateUpdates:", {
-          mergedUpdates,
-          mergedBuildings: mergedUpdates.buildings,
-          mergedResources: mergedUpdates.resources,
-        });
-      }
 
       const newState = {
         ...prevState,
@@ -624,15 +591,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
           ? [...prevState.log, ...result.logEntries].slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES)
           : prevState.log,
       };
-
-      if (actionId === "buildStoneHut") {
-        logger.log("[executeAction] Final newState:", {
-          stoneHuts: newState.buildings.stoneHut,
-          stone: newState.resources.stone,
-          buildings: newState.buildings,
-          mergedUpdates,
-        });
-      }
 
       return newState;
     });
@@ -774,7 +732,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const initialLogEntry: LogEntry = {
       id: "initial-narrative",
       message: preserved.cruelMode
-        ? "A dark cave. The air is cold and damp. You barely see the shapes around you."
+        ? "A dark cave. The air is freezing and damp. You barely see the shapes around you."
         : "A dark cave. The air is cold and damp. You barely see the shapes around you.",
       timestamp: Date.now(),
       type: "system",
@@ -810,10 +768,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     // Return raw click data - the database will handle bucketing based on playTime
     return clicks;
-  },
-
-  trackResourceChange: (resource: string, amount: number) => {
-    // This is a no-op since we track snapshots instead
   },
 
   getAndResetResourceAnalytics: () => {
@@ -943,7 +897,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const initialLogEntry: LogEntry = {
         id: "initial-narrative",
         message: currentBoostMode
-          ? "A dark cave. The air is cold and damp. You barely see the shapes around you. Someone left you a gift."
+          ? "A dark cave. The air is freezing and damp. You barely see the shapes around you. Someone left you a gift."
           : "A dark cave. The air is cold and damp. You barely see the shapes around you.",
         timestamp: Date.now(),
         type: "system",
