@@ -120,9 +120,6 @@ describe('Save Game System - Comprehensive Tests', () => {
       }),
       get: mockGet.mockImplementation(async (storeName: string, key: string) => {
         const result = mockStores[storeName]?.[key];
-        if (!result) {
-          console.log(`[TEST] mockGet(${storeName}, ${key}) returned null. Available stores:`, Object.keys(mockStores), 'Available keys:', Object.keys(mockStores[storeName] || {}));
-        }
         return result !== undefined ? result : null;
       }),
       delete: mockDelete.mockImplementation(async (storeName: string, key: string) => {
@@ -220,15 +217,19 @@ describe('Save Game System - Comprehensive Tests', () => {
       const localState = createMockGameState({ playTime: 1000, resources: { wood: 100 } });
       const cloudState = createMockGameState({ playTime: 2000, resources: { wood: 200 } });
 
-      // Save local state first
-      await saveGame(localState, true);
-
-      // Setup auth to return cloud state
+      // Setup auth to return cloud state (which is newer)
       vi.mocked(auth.getCurrentUser).mockResolvedValue({ id: 'user-1', email: 'test@example.com' });
       vi.mocked(auth.loadGameFromSupabase).mockResolvedValue({
         gameState: cloudState,
         timestamp: Date.now(),
         playTime: 2000,
+      });
+
+      // Mock local save to return older state
+      mockGet.mockResolvedValueOnce({
+        gameState: localState,
+        timestamp: Date.now() - 60000,
+        playTime: 1000,
       });
 
       const loaded = await loadGame();
@@ -281,10 +282,17 @@ describe('Save Game System - Comprehensive Tests', () => {
       
       await saveGame(offlineState, true);
 
-      // User logs in - cloud has no save yet
+      // User logs in - cloud has no save yet, but local has data
       vi.mocked(auth.getCurrentUser).mockResolvedValue({ id: 'user-1', email: 'test@example.com' });
       vi.mocked(auth.loadGameFromSupabase).mockResolvedValue(null);
       vi.mocked(auth.saveGameToSupabase).mockResolvedValue(undefined);
+
+      // Mock local DB to return the offline save
+      mockGet.mockResolvedValueOnce({
+        gameState: offlineState,
+        timestamp: Date.now(),
+        playTime: 5000,
+      });
 
       const loaded = await loadGame();
       
@@ -327,6 +335,13 @@ describe('Save Game System - Comprehensive Tests', () => {
       vi.mocked(auth.getCurrentUser).mockResolvedValue(null);
       vi.mocked(auth.loadGameFromSupabase).mockResolvedValue(null);
 
+      // Mock IndexedDB to return the saved state
+      mockGet.mockResolvedValueOnce({
+        gameState: offlineState,
+        timestamp: Date.now(),
+        playTime: 3000,
+      });
+
       const loaded = await loadGame();
       
       expect(loaded?.playTime).toBe(3000);
@@ -341,7 +356,12 @@ describe('Save Game System - Comprehensive Tests', () => {
         cooldownDurations: undefined as any,
       };
 
-      await saveGame(corruptedState as any, true);
+      // Mock the get to return corrupted data
+      mockGet.mockResolvedValueOnce({
+        gameState: corruptedState,
+        timestamp: Date.now(),
+        playTime: 1000,
+      });
 
       const loaded = await loadGame();
       
@@ -464,6 +484,9 @@ describe('Save Game System - Comprehensive Tests', () => {
         playTime: 1000,
       });
 
+      // Mock local DB to return null (cloud save is the source)
+      mockGet.mockResolvedValueOnce(null);
+
       const loaded = await loadGame();
       
       expect(loaded?.resources.gold).toBe(100);
@@ -480,6 +503,13 @@ describe('Save Game System - Comprehensive Tests', () => {
       vi.mocked(auth.loadGameFromSupabase).mockResolvedValue(null);
 
       await saveGame(gameState, true);
+
+      // Mock the get to return the saved state
+      mockGet.mockResolvedValueOnce({
+        gameState,
+        timestamp: Date.now(),
+        playTime: 12345,
+      });
 
       const loaded = await loadGame();
       
