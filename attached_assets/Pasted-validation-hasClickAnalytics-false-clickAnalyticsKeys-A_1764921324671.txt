@@ -1,0 +1,439 @@
+validation... {hasClickAnalytics: false, clickAnalyticsKeys: Array(0), hasResourceAnalytics: true, resourceAnalyticsKeys: Array(12), diffSize: 457, …}
+@supabase_supabase-js.js?v=88ff619d:5633  POST https://epmegaduehlztjqoeqih.supabase.co/rest/v1/rpc/save_game_with_analytics 400 (Bad Request)
+(anonymous) @ @supabase_supabase-js.js?v=88ff619d:5633
+(anonymous) @ @supabase_supabase-js.js?v=88ff619d:5654
+await in (anonymous)
+then @ @supabase_supabase-js.js?v=88ff619d:94Understand this error
+logger.ts:38 v056Z [SAVE CLOUD] ⚠️ OCC REJECTED by database: OCC violation: expected version 3, got 2 (existing: 2)
+warn @ logger.ts:38
+saveGameToSupabase @ auth.ts:340
+await in saveGameToSupabase
+saveGame @ save.ts:296
+await in saveGame
+handleAutoSave @ loop.ts:806
+tick @ loop.ts:224
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:325
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:325Understand this warning
+logger.ts:43 v056Z [SAVE] Cloud save failed: Error: OCC violation: OCC violation: expected version 3, got 2 (existing: 2)
+    at saveGameToSupabase (auth.ts:341:13)
+    at async saveGame (save.ts:296:9)
+    at async handleAutoSave (loop.ts:806:5)
+error @ logger.ts:43
+saveGame @ save.ts:321
+await in saveGame
+handleAutoSave @ loop.ts:806
+tick @ loop.ts:224
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:325
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:325
+requestAnimationFrame
+tick @ loop.ts:159Understand this error
+logger.ts:33 v056Z [SAVE] 💾 Saving with version 2, playTime: 2343552.8000000003
+logger.ts:33 v056Z [SAVE CLOUD] 🔍 Starting cloud save with OCC... {playTime: 2343552.8000000003, isNewGame: false, userId: 'a375ecb5...', diffKeys: Array(6), hasPlayTime: true, …}
+logger.ts:33 v056Z [SAVE CLOUD] 💾 Calling database RPC with OCC validation... {hasClickAnalytics: false, clickAnalyticsKeys: Array(0), hasResourceAnalytics: false, resourceAnalyticsKeys: Array(0), diffSize: 503, …}
+@supabase_supabase-js.js?v=88ff619d:5633  POST https://epmegaduehlztjqoeqih.supabase.co/rest/v1/rpc/save_game_with_analytics 400 (Bad Request)
+(anonymous) @ @supabase_supabase-js.js?v=88ff619d:5633
+(anonymous) @ @supabase_supabase-js.js?v=88ff619d:5654
+await in (anonymous)
+then @ @supabase_supabase-js.js?v=88ff619d:94Understand this error
+logger.ts:38 v056Z [SAVE CLOUD] ⚠️ OCC REJECTED by database: OCC violation: expected version 3, got 2 (existing: 2)
+warn @ logger.ts:38
+saveGameToSupabase @ auth.ts:340
+await in saveGameToSupabase
+saveGame @ save.ts:296
+await in saveGame
+handleAutoSave @ loop.ts:806
+tick @ loop.ts:224
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:325
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159Understand this warning
+logger.ts:43 v056Z [SAVE] Cloud save failed: Error: OCC violation: OCC violation: expected version 3, got 2 (existing: 2)
+    at saveGameToSupabase (auth.ts:341:13)
+    at async saveGame (save.ts:296:9)
+    at async handleAutoSave (loop.ts:806:5)
+error @ logger.ts:43
+saveGame @ save.ts:321
+await in saveGame
+handleAutoSave @ loop.ts:806
+tick @ loop.ts:224
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:325
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:325Understand this error
+logger.ts:33 v056Z [SAVE] 💾 Saving with version 2, playTime: 2358677.9000000013
+logger.ts:33 v056Z [SAVE CLOUD] 🔍 Starting cloud save with OCC... {playTime: 2358677.9000000013, isNewGame: false, userId: 'a375ecb5...', diffKeys: Array(6), hasPlayTime: true, …}
+logger.ts:33 v056Z [SAVE CLOUD] 💾 Calling database RPC with OCC validation... {hasClickAnalytics: false, clickAnalyticsKeys: Array(0), hasResourceAnalytics: false, resourceAnalyticsKeys: Array(0), diffSize: 503, …}
+@supabase_supabase-js.js?v=88ff619d:5633  POST https://epmegaduehlztjqoeqih.supabase.co/rest/v1/rpc/save_game_with_analytics 400 (Bad Request)
+(anonymous) @ @supabase_supabase-js.js?v=88ff619d:5633
+(anonymous) @ @supabase_supabase-js.js?v=88ff619d:5654
+await in (anonymous)
+then @ @supabase_supabase-js.js?v=88ff619d:94Understand this error
+logger.ts:38 v056Z [SAVE CLOUD] ⚠️ OCC REJECTED by database: OCC violation: expected version 3, got 2 (existing: 2)
+warn @ logger.ts:38
+saveGameToSupabase @ auth.ts:340
+await in saveGameToSupabase
+saveGame @ save.ts:296
+await in saveGame
+handleAutoSave @ loop.ts:806
+tick @ loop.ts:224
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:325
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159Understand this warning
+logger.ts:43 v056Z [SAVE] Cloud save failed: Error: OCC violation: OCC violation: expected version 3, got 2 (existing: 2)
+    at saveGameToSupabase (auth.ts:341:13)
+    at async saveGame (save.ts:296:9)
+    at async handleAutoSave (loop.ts:806:5)
+error @ logger.ts:43
+saveGame @ save.ts:321
+await in saveGame
+handleAutoSave @ loop.ts:806
+tick @ loop.ts:224
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:325
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:159
+requestAnimationFrame
+tick @ loop.ts:325Understand this error
