@@ -101,31 +101,33 @@ describe('Save Game System - Comprehensive Tests', () => {
     mockDelete.mockClear();
     mockOpenDB.mockClear();
 
-    // Setup mock database - track separate stores with shared reference
-    // This needs to be accessible across mock function calls
-    let mockStores: Record<string, any> = {
+    // Setup mock database - use closure to share state between mock functions
+    const mockStores: Record<string, Record<string, any>> = {
       saves: {},
       lastCloudState: {},
     };
 
     mockDB = {
       put: mockPut.mockImplementation(async (storeName: string, value: any, key: string) => {
-        mockStores[storeName] = mockStores[storeName] || {};
+        if (!mockStores[storeName]) {
+          mockStores[storeName] = {};
+        }
         mockStores[storeName][key] = value;
+        console.log(`[MOCK DB] PUT ${storeName}/${key}:`, value);
         return undefined;
       }),
       get: mockGet.mockImplementation(async (storeName: string, key: string) => {
         const result = mockStores[storeName]?.[key];
+        console.log(`[MOCK DB] GET ${storeName}/${key}:`, result);
         return result !== undefined ? result : null;
       }),
       delete: mockDelete.mockImplementation(async (storeName: string, key: string) => {
         if (mockStores[storeName]) {
           delete mockStores[storeName][key];
+          console.log(`[MOCK DB] DELETE ${storeName}/${key}`);
         }
         return undefined;
       }),
-      // Store reference for debugging
-      _stores: mockStores,
     };
 
     mockOpenDB.mockResolvedValue(mockDB);
@@ -209,8 +211,18 @@ describe('Save Game System - Comprehensive Tests', () => {
 
   describe('2. Multi-Device Conflicts', () => {
     it('should detect when cloud save is newer than local save', async () => {
+      const auth = await import('./auth');
+      
       const localState = createMockGameState({ playTime: 1000, resources: { wood: 100 } });
       const cloudState = createMockGameState({ playTime: 2000, resources: { wood: 200 } });
+
+      // Setup auth BEFORE saving to ensure consistent state
+      vi.mocked(auth.getCurrentUser).mockResolvedValue({ id: 'user-1', email: 'test@example.com' });
+      vi.mocked(auth.loadGameFromSupabase).mockResolvedValue({
+        gameState: cloudState,
+        timestamp: Date.now(),
+        playTime: 2000,
+      });
 
       // Mock local IndexedDB save
       await mockDB.put('saves', {
@@ -218,14 +230,6 @@ describe('Save Game System - Comprehensive Tests', () => {
         timestamp: Date.now() - 60000,
         playTime: 1000,
       }, 'mainSave');
-
-      const auth = await import('./auth');
-      vi.mocked(auth.getCurrentUser).mockResolvedValue({ id: 'user-1', email: 'test@example.com' });
-      vi.mocked(auth.loadGameFromSupabase).mockResolvedValue({
-        gameState: cloudState,
-        timestamp: Date.now(),
-        playTime: 2000,
-      });
 
       const loaded = await loadGame();
       expect(loaded?.playTime).toBe(2000);
@@ -267,15 +271,19 @@ describe('Save Game System - Comprehensive Tests', () => {
 
   describe('3. Offline Progress Overwrite', () => {
     it('should not lose progress when going from offline to online', async () => {
+      const auth = await import('./auth');
       const offlineState = createMockGameState({ playTime: 5000 });
 
-      const auth = await import('./auth');
+      // Start offline
       vi.mocked(auth.getCurrentUser).mockResolvedValue(null);
+      vi.mocked(auth.loadGameFromSupabase).mockResolvedValue(null);
+      
       await saveGame(offlineState, true);
 
-      // User logs in
+      // User logs in - cloud has no save yet
       vi.mocked(auth.getCurrentUser).mockResolvedValue({ id: 'user-1', email: 'test@example.com' });
       vi.mocked(auth.loadGameFromSupabase).mockResolvedValue(null);
+      vi.mocked(auth.saveGameToSupabase).mockResolvedValue(undefined);
 
       const loaded = await loadGame();
       expect(loaded?.playTime).toBe(5000);
@@ -304,13 +312,19 @@ describe('Save Game System - Comprehensive Tests', () => {
     });
 
     it('should preserve offline progress across browser sessions', async () => {
+      const auth = await import('./auth');
       const offlineState = createMockGameState({ playTime: 3000 });
 
-      const auth = await import('./auth');
+      // Setup offline mode
       vi.mocked(auth.getCurrentUser).mockResolvedValue(null);
+      vi.mocked(auth.loadGameFromSupabase).mockResolvedValue(null);
+      
       await saveGame(offlineState, true);
 
-      // Simulate new session - load from IndexedDB
+      // Simulate new session - still offline, load from IndexedDB
+      vi.mocked(auth.getCurrentUser).mockResolvedValue(null);
+      vi.mocked(auth.loadGameFromSupabase).mockResolvedValue(null);
+
       const loaded = await loadGame();
       expect(loaded?.playTime).toBe(3000);
     });
@@ -417,43 +431,39 @@ describe('Save Game System - Comprehensive Tests', () => {
 
   describe('6. Referral System Integration', () => {
     it('should process unclaimed referrals on load', async () => {
+      const auth = await import('./auth');
       const stateWithReferrals = createMockGameState({
         referrals: [
           { userId: 'ref-1', timestamp: Date.now(), claimed: false },
         ],
       });
 
-      mockGet.mockResolvedValue({
-        gameState: stateWithReferrals,
-        timestamp: Date.now(),
-        playTime: 1000,
-      });
-
-      const auth = await import('./auth');
       vi.mocked(auth.getCurrentUser).mockResolvedValue({ id: 'user-1', email: 'test@example.com' });
       vi.mocked(auth.loadGameFromSupabase).mockResolvedValue({
         gameState: stateWithReferrals,
         timestamp: Date.now(),
         playTime: 1000,
       });
+      vi.mocked(auth.saveGameToSupabase).mockResolvedValue(undefined);
 
       const loaded = await loadGame();
       expect(loaded).toBeDefined();
     });
 
     it('should not process already claimed referrals', async () => {
+      const auth = await import('./auth');
       const stateWithClaimedReferrals = createMockGameState({
         referrals: [{ userId: 'ref-1', timestamp: Date.now(), claimed: true }],
         resources: { gold: 100 },
       });
 
-      const auth = await import('./auth');
       vi.mocked(auth.getCurrentUser).mockResolvedValue({ id: 'user-1', email: 'test@example.com' });
       vi.mocked(auth.loadGameFromSupabase).mockResolvedValue({
         gameState: stateWithClaimedReferrals,
         timestamp: Date.now(),
         playTime: 1000,
       });
+      vi.mocked(auth.saveGameToSupabase).mockResolvedValue(undefined);
 
       const loaded = await loadGame();
       expect(loaded?.resources.gold).toBe(100);
@@ -462,7 +472,12 @@ describe('Save Game System - Comprehensive Tests', () => {
 
   describe('7. PlayTime Tracking', () => {
     it('should preserve playTime through save/load cycle', async () => {
+      const auth = await import('./auth');
       const gameState = createMockGameState({ playTime: 12345 });
+
+      // Setup offline mode
+      vi.mocked(auth.getCurrentUser).mockResolvedValue(null);
+      vi.mocked(auth.loadGameFromSupabase).mockResolvedValue(null);
 
       await saveGame(gameState, true);
 
