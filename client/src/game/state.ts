@@ -831,43 +831,20 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const resources = state.resources || {};
     const stats = state.stats || {};
 
-    logger.log('[ANALYTICS] 🔍 Creating resource snapshot with stats from state:', {
-      statsFromState: {
-        luck: stats.luck,
-        strength: stats.strength,
-        knowledge: stats.knowledge,
-        madness: stats.madness,
-      },
-      hasNonZeroStats: Object.values(stats).some(v => typeof v === 'number' && v > 0),
-    });
-
     // Add resources to snapshot
     for (const [key, value] of Object.entries(resources)) {
       if (typeof value === 'number' && value > 0) {
         snapshot[key] = value;
-        logger.log(`[ANALYTICS] ✅ Added resource: ${key} = ${value}`);
       }
     }
 
     // Add stats to snapshot (luck, strength, knowledge, madness)
     // Include stats even if they're 0, as long as they're numbers
     for (const [key, value] of Object.entries(stats)) {
-      logger.log(`[ANALYTICS] 🔍 Processing stat: ${key}, value: ${value}, type: ${typeof value}`);
       if (typeof value === 'number') {
         snapshot[key] = value;
-        logger.log(`[ANALYTICS] ✅ Added stat: ${key} = ${value}`);
-      } else {
-        logger.log(`[ANALYTICS] ❌ Skipped stat (not a number): ${key} = ${value}`);
       }
     }
-
-    logger.log('[ANALYTICS] 📊 Final snapshot:', {
-      snapshotKeys: Object.keys(snapshot),
-      snapshot,
-      hasStatsInSnapshot: Object.keys(snapshot).some(key => 
-        ['luck', 'strength', 'knowledge', 'madness'].includes(key)
-      ),
-    });
 
     // If no resources or stats, return null
     if (Object.keys(snapshot).length === 0) {
