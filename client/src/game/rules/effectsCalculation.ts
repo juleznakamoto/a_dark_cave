@@ -173,8 +173,8 @@ export const getDisplayTools = (state: GameState): Record<string, boolean> => {
 };
 
 // Helper function to get all active effects for a given state (modified to only use best tools)
-export const getActiveEffects = (state: GameState): EffectDefinition[] => {
-  const activeEffects: EffectDefinition[] = [];
+export const getActiveEffects = (state: GameState): ItemEffect[] => {
+  const activeEffects: ItemEffect[] = [];
 
   // Check clothing effects
   Object.entries(state.clothing || {}).forEach(([key, value]) => {
