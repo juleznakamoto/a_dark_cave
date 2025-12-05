@@ -224,6 +224,10 @@ export async function saveGame(
       sanitizedState.cooldownDurations = {};
     }
 
+    // Increment version for OCC
+    const newVersion = (sanitizedState.version || 0) + 1;
+    sanitizedState.version = newVersion;
+
     // Add timestamp to track save recency
     const now = Date.now();
     sanitizedState.lastSaved = now;
@@ -233,6 +237,8 @@ export async function saveGame(
       timestamp: now,
       playTime: gameState.playTime,
     };
+
+    logger.log(`[SAVE] 💾 Saving with version ${newVersion}, playTime: ${gameState.playTime}`);
 
     // Save locally first (most important)
     await db.put("saves", saveData, SAVE_KEY);
@@ -276,13 +282,14 @@ export async function saveGame(
           sanitizedState,
         );
 
-        // Save diff to Supabase
+        // Save diff to Supabase with version for OCC
         await saveGameToSupabase(
           stateDiff,
           gameState.playTime,
           isNewGame,
           clickData,
           resourceData,
+          newVersion, // Pass new version for OCC validation
         );
 
         // Update lastCloudState after successful cloud save
@@ -350,14 +357,8 @@ export async function loadGame(): Promise<GameState | null> {
           // Cloud save exists - use it
           logger.log("[LOAD] ☁️ Using cloud save (user authenticated)");
 
-          // Ensure cooldownDurations exists before processing
-          const stateWithDefaults = {
-            ...cloudSave.gameState,
-            cooldownDurations: cloudSave.gameState.cooldownDurations || {},
-          };
-
           const processedState = await processUnclaimedReferrals(
-            stateWithDefaults,
+            cloudSave.gameState,
           );
 
           const stateToReturn = { ...processedState, playTime: cloudSave.playTime };

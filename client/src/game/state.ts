@@ -360,6 +360,9 @@ const defaultGameState: GameState = {
   playTime: 0,
   isNewGame: false,
   startTime: 0,
+  
+  // Save version for OCC
+  version: 0,
 
   // Referral tracking
   referralCount: 0,
@@ -766,6 +769,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
       isNewGame: true,
       startTime: Date.now(),
       allowPlayTimeOverwrite: true,
+      
+      // Keep version to maintain save continuity (will increment on next save)
+      version: state.version || 0,
     };
 
     set(resetState);
