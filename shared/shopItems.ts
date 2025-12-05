@@ -140,7 +140,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     originalPrice: 599,
     price: 299, // 2.99 €
     rewards: {
-      feastActivations: 5,
+      feastActivations: 3,
     },
     canPurchaseMultipleTimes: true,
     category: "feast",
@@ -170,18 +170,18 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
   advanced_bundle: {
     id: "advanced_bundle",
     name: "Pale King's Bundle",
-    description: "A powerful pack with 20000 Gold and 3 Great Feasts",
+    description: "Powerful Bundle with 20000 Gold and 3 Great Feasts",
     originalPrice: 2399, // 23.99 €
     price: 1199, // 11.99 €
     rewards: {
       resources: { gold: 20000 },
-      feastActivations: 5,
+      feastActivations: 3,
     },
     canPurchaseMultipleTimes: true,
     category: "bundle",
     activationMessage: "Pale King's Bundle components have been added to your purchases!",
-    symbol: "♔",
-    symbolColor: "text-slate-400",
+    symbol: "♔♛",
+    symbolColor: "text-cyan-600",
     bundleComponents: ["gold_20000", "great_feast_3"], // Component items
   },
 
