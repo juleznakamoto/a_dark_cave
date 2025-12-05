@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useGameStore } from "@/game/state";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { cubeEvents } from "@/game/rules/eventsCube";
@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/tooltip";
 import { useMobileTooltip } from "@/hooks/useMobileTooltip";
 import { Button } from "@/components/ui/button";
+import { BubblyButton, BubblyButtonGlobalPortal } from "@/components/ui/bubbly-button";
 import { useMobileButtonTooltip } from "@/hooks/useMobileTooltip";
 import { getTotalPopulationEffects } from "@/game/population";
 import { Progress } from "@/components/ui/progress";
@@ -41,6 +42,18 @@ export default function EstatePanel() {
   const hoveredTooltips = useGameStore((state) => state.hoveredTooltips || {});
   const setHoveredTooltip = useGameStore((state) => state.setHoveredTooltip);
   const hoverTimersRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
+  
+  // Bubble state for BubblyButton
+  const [bubbles, setBubbles] = useState<Array<{ id: string; x: number; y: number }>>([]);
+
+  const handleAnimationTrigger = (x: number, y: number) => {
+    const id = `bubble-${Date.now()}`;
+    setBubbles(prev => [...prev, { id, x, y }]);
+
+    setTimeout(() => {
+      setBubbles(prev => prev.filter(b => b.id !== id));
+    }, 3000);
+  };
 
   // Get all cube events that have been triggered
   const completedCubeEvents = Object.entries(cubeEvents)
@@ -292,7 +305,7 @@ export default function EstatePanel() {
                       : undefined
                   }
                 >
-                  <Button
+                  <BubblyButton
                     onClick={
                       mobileTooltip.isMobile &&
                       mobileTooltip.isTooltipOpen("sleep-button")
@@ -302,6 +315,7 @@ export default function EstatePanel() {
                           }
                         : handleActivateIdleMode
                     }
+                    onAnimationTrigger={handleAnimationTrigger}
                     disabled={!canActivateIdle}
                     size="xs"
                     variant="outline"
@@ -309,7 +323,7 @@ export default function EstatePanel() {
                     button_id="activate-sleep-mode"
                   >
                     Sleep
-                  </Button>
+                  </BubblyButton>
                 </div>
               </TooltipTrigger>
               <TooltipContent>
@@ -1345,6 +1359,7 @@ export default function EstatePanel() {
         </div>
       </div>
       <ScrollBar orientation="vertical" />
+      <BubblyButtonGlobalPortal bubbles={bubbles} />
     </ScrollArea>
   );
 }
