@@ -4,15 +4,19 @@ import { saveGame, loadGame, deleteSave } from './save';
 import { GameState } from '@shared/schema';
 import type { IDBPDatabase } from 'idb';
 
+// Create mock functions before mocking modules
+const mockOpenDB = vi.fn();
+
 // Mock modules
-vi.mock('idb');
+vi.mock('idb', () => ({
+  openDB: mockOpenDB,
+}));
 vi.mock('./auth');
 vi.mock('./state');
 vi.mock('@/lib/logger');
 
 describe('Save Game System - Comprehensive Tests', () => {
   let mockDB: any;
-  let mockOpenDB: any;
   let mockGetCurrentUser: any;
   let mockSaveGameToSupabase: any;
   let mockLoadGameFromSupabase: any;
@@ -76,8 +80,6 @@ describe('Save Game System - Comprehensive Tests', () => {
       delete: vi.fn().mockResolvedValue(undefined),
     };
 
-    const { openDB } = require('idb');
-    mockOpenDB = vi.mocked(openDB);
     mockOpenDB.mockResolvedValue(mockDB);
 
     // Setup auth mocks
