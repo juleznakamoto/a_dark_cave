@@ -68,13 +68,15 @@ app.get('/api/admin/data', async (req, res) => {
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
     const filterDate = thirtyDaysAgo.toISOString();
 
-    // Get total user count from auth
-    const { data: authUsers, error: authError } = await adminClient.auth.admin.listUsers();
-    if (authError) {
-      log('❌ Error fetching auth users:', authError);
-      throw authError;
+    // Get total user count from game_saves table (all time)
+    const { count: totalUserCount, error: countError } = await adminClient
+      .from('game_saves')
+      .select('user_id', { count: 'exact', head: true });
+    
+    if (countError) {
+      log('❌ Error counting total users:', countError);
+      throw countError;
     }
-    const totalUserCount = authUsers.users.length;
     log(`✅ Total user count: ${totalUserCount}`);
 
     // Fetch data with 30-day filter for saves and clicks
