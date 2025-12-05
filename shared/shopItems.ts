@@ -151,8 +151,8 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
 
   basic_survival_bundle: {
     id: "basic_survival_bundle",
-    name: "Basic Survival Bundle",
-    description: "A bundle with 5000 Gold and 1 Great Feast",
+    name: "Fading Wanderer Bundle",
+    description: "Basic Bundle with 5000 Gold and 1 Great Feast",
     originalPrice: 1199, // 11.99 €
     price: 599, // 5.99 €
     rewards: {
@@ -161,7 +161,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     },
     canPurchaseMultipleTimes: true,
     category: "bundle",
-    activationMessage: "Basic Survival Bundle components have been added to your purchases!",
+    activationMessage: "Fading Wanderer Bundle components have been added to your purchases!",
     symbol: "◈",
     symbolColor: "text-purple-600",
     bundleComponents: ["gold_5000", "great_feast_1"], // Component items
