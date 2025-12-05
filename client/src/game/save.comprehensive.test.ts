@@ -101,11 +101,27 @@ describe('Save Game System - Comprehensive Tests', () => {
     mockDelete.mockClear();
     mockOpenDB.mockClear();
 
-    // Setup mock database
+    // Setup mock database - track separate stores
+    const mockStores: Record<string, any> = {
+      saves: {},
+      lastCloudState: {},
+    };
+
     mockDB = {
-      put: mockPut.mockResolvedValue(undefined),
-      get: mockGet.mockResolvedValue(null),
-      delete: mockDelete.mockResolvedValue(undefined),
+      put: mockPut.mockImplementation(async (storeName: string, value: any, key: string) => {
+        mockStores[storeName] = mockStores[storeName] || {};
+        mockStores[storeName][key] = value;
+        return undefined;
+      }),
+      get: mockGet.mockImplementation(async (storeName: string, key: string) => {
+        return mockStores[storeName]?.[key] || null;
+      }),
+      delete: mockDelete.mockImplementation(async (storeName: string, key: string) => {
+        if (mockStores[storeName]) {
+          delete mockStores[storeName][key];
+        }
+        return undefined;
+      }),
     };
 
     mockOpenDB.mockResolvedValue(mockDB);
@@ -192,11 +208,12 @@ describe('Save Game System - Comprehensive Tests', () => {
       const localState = createMockGameState({ playTime: 1000, resources: { wood: 100 } });
       const cloudState = createMockGameState({ playTime: 2000, resources: { wood: 200 } });
 
-      mockGet.mockResolvedValueOnce({
+      // Mock local IndexedDB save
+      await mockDB.put('saves', {
         gameState: localState,
         timestamp: Date.now() - 60000,
         playTime: 1000,
-      });
+      }, 'mainSave');
 
       const auth = await import('./auth');
       vi.mocked(auth.getCurrentUser).mockResolvedValue({ id: 'user-1', email: 'test@example.com' });
@@ -215,9 +232,10 @@ describe('Save Game System - Comprehensive Tests', () => {
       vi.mocked(auth.getCurrentUser).mockResolvedValue({ id: 'user-1', email: 'test@example.com' });
 
       await saveGame(createMockGameState({ playTime: 1000, resources: { wood: 100 } }), true);
-      await saveGame(createMockGameState({ playTime: 1000, resources: { wood: 150 } }), true);
+      await saveGame(createMockGameState({ playTime: 1500, resources: { wood: 150 } }), true);
 
-      expect(mockPut).toHaveBeenCalledTimes(2);
+      // Each save writes to 'saves' and 'lastCloudState', so expect 4 total calls
+      expect(mockPut).toHaveBeenCalledTimes(4);
     });
 
     it('should preserve higher playTime when loading', async () => {
@@ -251,12 +269,8 @@ describe('Save Game System - Comprehensive Tests', () => {
       vi.mocked(auth.getCurrentUser).mockResolvedValue(null);
       await saveGame(offlineState, true);
 
+      // User logs in
       vi.mocked(auth.getCurrentUser).mockResolvedValue({ id: 'user-1', email: 'test@example.com' });
-      mockGet.mockResolvedValue({
-        gameState: offlineState,
-        timestamp: Date.now(),
-        playTime: 5000,
-      });
       vi.mocked(auth.loadGameFromSupabase).mockResolvedValue(null);
 
       const loaded = await loadGame();
@@ -292,12 +306,7 @@ describe('Save Game System - Comprehensive Tests', () => {
       vi.mocked(auth.getCurrentUser).mockResolvedValue(null);
       await saveGame(offlineState, true);
 
-      mockGet.mockResolvedValue({
-        gameState: offlineState,
-        timestamp: Date.now() - 60000,
-        playTime: 3000,
-      });
-
+      // Simulate new session - load from IndexedDB
       const loaded = await loadGame();
       expect(loaded?.playTime).toBe(3000);
     });
@@ -311,11 +320,11 @@ describe('Save Game System - Comprehensive Tests', () => {
         cooldownDurations: undefined as any,
       };
 
-      mockGet.mockResolvedValue({
+      await mockDB.put('saves', {
         gameState: corruptedState,
         timestamp: Date.now(),
         playTime: 1000,
-      });
+      }, 'mainSave');
 
       const loaded = await loadGame();
       expect(loaded?.cooldownDurations).toBeDefined();
@@ -434,12 +443,6 @@ describe('Save Game System - Comprehensive Tests', () => {
         resources: { gold: 100 },
       });
 
-      mockGet.mockResolvedValue({
-        gameState: stateWithClaimedReferrals,
-        timestamp: Date.now(),
-        playTime: 1000,
-      });
-
       const auth = await import('./auth');
       vi.mocked(auth.getCurrentUser).mockResolvedValue({ id: 'user-1', email: 'test@example.com' });
       vi.mocked(auth.loadGameFromSupabase).mockResolvedValue({
@@ -458,12 +461,6 @@ describe('Save Game System - Comprehensive Tests', () => {
       const gameState = createMockGameState({ playTime: 12345 });
 
       await saveGame(gameState, true);
-
-      mockGet.mockResolvedValue({
-        gameState,
-        timestamp: Date.now(),
-        playTime: 12345,
-      });
 
       const loaded = await loadGame();
       expect(loaded?.playTime).toBe(12345);
@@ -560,18 +557,20 @@ describe('Save Game System - Comprehensive Tests', () => {
       vi.mocked(auth.getCurrentUser).mockResolvedValue({ id: 'user-1', email: 'test@example.com' });
       await saveGame(createMockGameState({ playTime: 3000 }), true);
 
-      expect(mockPut).toHaveBeenCalledTimes(2);
+      // First save: 1 put to 'saves', second save: 1 put to 'saves' + 1 put to 'lastCloudState'
+      expect(mockPut).toHaveBeenCalledTimes(3);
     });
 
     it('should handle user logging out mid-session', async () => {
       const auth = await import('./auth');
       vi.mocked(auth.getCurrentUser).mockResolvedValue({ id: 'user-1', email: 'test@example.com' });
-      await saveGame(createMockGameState(), true);
+      await saveGame(createMockGameState({ playTime: 1000 }), true);
 
       vi.mocked(auth.getCurrentUser).mockResolvedValue(null);
       await saveGame(createMockGameState({ playTime: 2000 }), true);
 
-      expect(mockPut).toHaveBeenCalledTimes(2);
+      // First save: 1 put to 'saves' + 1 put to 'lastCloudState', second save: 1 put to 'saves'
+      expect(mockPut).toHaveBeenCalledTimes(3);
     });
   });
 
