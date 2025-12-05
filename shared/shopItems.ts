@@ -167,8 +167,8 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     bundleComponents: ["gold_5000", "great_feast_1"], // Component items
   },
 
-  pale_kings_bundle: {
-    id: "pale_kings_bundle",
+  advanced_bundle: {
+    id: "advanced_bundle",
     name: "Pale King's Bundle",
     description: "A powerful pack with 20000 Gold and 3 Great Feasts",
     originalPrice: 2399, // 23.99 €
