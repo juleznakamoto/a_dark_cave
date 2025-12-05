@@ -90,7 +90,6 @@ describe('Save Game System - Comprehensive Tests', () => {
     mockLoadGameFromSupabase.mockResolvedValue(null);
 
     // Setup state mock
-    const state = require('./state');
     mockUseGameStore = {
       getState: vi.fn().mockReturnValue({
         inactivityDialogOpen: false,
@@ -99,7 +98,11 @@ describe('Save Game System - Comprehensive Tests', () => {
       }),
       setState: vi.fn(),
     };
-    vi.mocked(state.useGameStore) = mockUseGameStore as any;
+    
+    // Mock the useGameStore import
+    vi.doMock('./state', () => ({
+      useGameStore: mockUseGameStore,
+    }));
   });
 
   afterEach(() => {
