@@ -24,7 +24,6 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={Game} />
-      <Route path="/game" component={Game} />
       <Route path="/end-screen" component={EndScreenPage} />
       <Route path="/imprint" component={Imprint} />
       <Route path="/privacy" component={Privacy} />
@@ -36,6 +35,7 @@ function Router() {
       <Route path="/tab-animation-test" component={TabAnimationTest} />
       <Route path="/button-test" component={ButtonTest} />
       <Route path="/admin/dashboard" component={AdminDashboard} />
+      <Route path="/game" component={Game} />
       <Route component={NotFound} />
     </Switch>
   );

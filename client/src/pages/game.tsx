@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import GameContainer from "@/components/game/GameContainer";
+import StartScreen from "@/components/game/StartScreen";
 import { useGameStore } from "@/game/state";
 import { startGameLoop, stopGameLoop } from "@/game/loop";
 import { loadGame, saveGame } from "@/game/save"; // Import saveGame
@@ -9,13 +10,18 @@ import { logger } from "@/lib/logger";
 
 export default function Game() {
   const initialize = useGameStore((state) => state.initialize);
-  const { eventDialog, setEventDialog, combatDialog, setCombatDialog, setShopDialogOpen } =
+  const { eventDialog, setEventDialog, combatDialog, setCombatDialog, setShopDialogOpen, hasLitFire } =
     useGameStore();
   const [isInitialized, setIsInitialized] = useState(false);
   const [shouldStartMusic, setShouldStartMusic] = useState(false);
+  const [shouldSkipStart, setShouldSkipStart] = useState(false);
 
   useEffect(() => {
     const initializeGame = async () => {
+      // Check if URL is /game to skip start screen
+      const isGamePath = window.location.pathname === '/game';
+      setShouldSkipStart(isGamePath);
+      
       // Check for openShop query parameter
       const urlParams = new URLSearchParams(window.location.search);
       const openShop = urlParams.get('openShop') === 'true';
@@ -118,9 +124,16 @@ export default function Game() {
     return <div className="min-h-screen bg-black"></div>; // Black screen while loading
   }
 
+  // Show start screen if fire hasn't been lit and we're not skipping
+  const showStartScreen = !hasLitFire && !shouldSkipStart;
+
   return (
     <div>
-      <GameContainer />
+      {showStartScreen ? (
+        <StartScreen />
+      ) : (
+        <GameContainer />
+      )}
 
       <EventDialog
         isOpen={eventDialog.isOpen}
