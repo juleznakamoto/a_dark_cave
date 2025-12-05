@@ -23,6 +23,7 @@ import { audioManager } from "@/lib/audio";
 import { GAME_CONSTANTS } from "@/game/constants";
 import { ACTION_TO_UPGRADE_KEY, incrementButtonUsage } from "@/game/buttonUpgrades";
 import { logger } from "@/lib/logger";
+import { madnessEvents } from "@/game/rules/eventsMadness";
 
 // Types
 interface GameStore extends GameState {
@@ -1016,18 +1017,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       StateManager.schedulePopulationUpdate(get);
 
       if (triggeredEvents && triggeredEvents.length > 0) {
-        const madnessEventIds = [
-          "whisperingVoices",
-          "shadowsMove",
-          "villagerStares",
-          "bloodInWater",
-          "facesInWalls",
-          "wrongVillagers",
-          "skinCrawling",
-          "creatureInHut",
-          "wrongReflections",
-          "villagersStareAtSky",
-        ];
+        const madnessEventIds = Object.keys(madnessEvents);
 
         const hasMadnessEvent = triggeredEvents.some((event) =>
           madnessEventIds.includes(event.id.split("-")[0]),
