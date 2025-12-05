@@ -124,7 +124,7 @@ interface GameStore extends GameState {
   setAuthNotificationVisible: (visible: boolean) => void;
   setMysteriousNoteShopNotificationSeen: (seen: boolean) => void;
   setMysteriousNoteDonateNotificationSeen: (seen: boolean) => void;
-  setHighlightedResources: (resources: string[]) => void; // Updated type
+  setHighlightedResources: (resources: string[]) => void;
   setIsUserSignedIn: (signedIn: boolean) => void;
   updateResource: (
     resource: keyof GameState["resources"],
@@ -157,9 +157,9 @@ interface GameStore extends GameState {
   setGameLoopActive: (isActive: boolean) => void;
   togglePause: () => void;
   updatePlayTime: (deltaTime: number) => void;
-  trackButtonClick: (buttonId: string) => void; // Added for button click analytics
-  getAndResetClickAnalytics: () => Record<string, number> | null; // Added for resetting click analytics
-  setVersionCheckDialog: (isOpen: boolean) => void; // Added action for version check dialog
+  trackButtonClick: (buttonId: string) => void;
+  getAndResetClickAnalytics: () => Record<string, number> | null;
+  setVersionCheckDialog: (isOpen: boolean) => void;
 }
 
 // Helper functions
@@ -1222,19 +1222,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     if (isOpen && currentEvent && !currentEvent.skipSound) {
       const eventId = currentEvent.id.split("-")[0];
-      const madnessEventIds = [
-        "whisperingVoices",
-        "shadowsMove",
-        "villagerStares",
-        "bloodInWater",
-        "facesInWalls",
-        "wrongVillagers",
-        "skinCrawling",
-        "creatureInHut",
-        "wrongReflections",
-        "villagersStareAtSky",
-      ];
-
+      const madnessEventIds = Object.keys(madnessEvents);
       const isMadnessEvent = madnessEventIds.includes(eventId);
       audioManager.playSound(isMadnessEvent ? "eventMadness" : "event", 0.02);
     }
@@ -1288,16 +1276,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const calculatedStrength = getTotalStrength(state);
       const calculatedKnowledge = getTotalKnowledge(state);
       const calculatedMadness = getTotalMadness(state);
-
-      logger.log('[STATS UPDATE] 📊 Updating stats in state:', {
-        before: state.stats,
-        calculated: {
-          luck: calculatedLuck,
-          strength: calculatedStrength,
-          knowledge: calculatedKnowledge,
-          madness: calculatedMadness,
-        },
-      });
       
       const newStats = {
         ...state.stats,
@@ -1306,8 +1284,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
         knowledge: calculatedKnowledge,
         madness: calculatedMadness,
       };
-
-      logger.log('[STATS UPDATE] ✅ New stats object:', newStats);
 
       return {
         stats: newStats,
