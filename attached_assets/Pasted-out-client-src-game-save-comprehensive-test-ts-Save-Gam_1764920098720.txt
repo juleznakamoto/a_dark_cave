@@ -1,0 +1,191 @@
+out | client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 1. Cloud Sync Failures > should save locally even when cloud save fails
+[TEST] mockGet(lastCloudState, lastCloudState) returned null. Available stores: [ 'saves', 'lastCloudState' ] Available keys: []
+
+stdout | client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 1. Cloud Sync Failures > should handle multiple consecutive cloud save failures
+[TEST] mockGet(lastCloudState, lastCloudState) returned null. Available stores: [ 'saves', 'lastCloudState' ] Available keys: []
+
+stdout | client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 1. Cloud Sync Failures > should handle multiple consecutive cloud save failures
+[TEST] mockGet(lastCloudState, lastCloudState) returned null. Available stores: [ 'saves', 'lastCloudState' ] Available keys: []
+
+stdout | client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 1. Cloud Sync Failures > should handle multiple consecutive cloud save failures
+[TEST] mockGet(lastCloudState, lastCloudState) returned null. Available stores: [ 'saves', 'lastCloudState' ] Available keys: []
+
+stdout | client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 1. Cloud Sync Failures > should not update lastCloudState when cloud save fails
+[TEST] mockGet(lastCloudState, lastCloudState) returned null. Available stores: [ 'saves', 'lastCloudState' ] Available keys: []
+
+stdout | client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 1. Cloud Sync Failures > should recover from intermittent cloud failures
+[TEST] mockGet(lastCloudState, lastCloudState) returned null. Available stores: [ 'saves', 'lastCloudState' ] Available keys: []
+
+stdout | client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 1. Cloud Sync Failures > should recover from intermittent cloud failures
+[TEST] mockGet(lastCloudState, lastCloudState) returned null. Available stores: [ 'saves', 'lastCloudState' ] Available keys: []
+
+stdout | client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 2. Multi-Device Conflicts > should handle simultaneous saves from different devices
+[TEST] mockGet(lastCloudState, lastCloudState) returned null. Available stores: [ 'saves', 'lastCloudState' ] Available keys: []
+
+stdout | client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 9. Authentication State Changes > should handle user logging in mid-session
+[TEST] mockGet(lastCloudState, lastCloudState) returned null. Available stores: [ 'saves', 'lastCloudState' ] Available keys: []
+
+stdout | client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 9. Authentication State Changes > should handle user logging out mid-session
+[TEST] mockGet(lastCloudState, lastCloudState) returned null. Available stores: [ 'saves', 'lastCloudState' ] Available keys: []
+
+ ❯ client/src/game/save.comprehensive.test.ts (31 tests | 6 failed) 133ms
+   ❯ Save Game System - Comprehensive Tests (31)
+     ✓ 1. Cloud Sync Failures (4)
+       ✓ should save locally even when cloud save fails 9ms
+       ✓ should handle multiple consecutive cloud save failures 3ms
+       ✓ should not update lastCloudState when cloud save fails 1ms
+       ✓ should recover from intermittent cloud failures 1ms
+     ❯ 2. Multi-Device Conflicts (3)
+       × should detect when cloud save is newer than local save 7ms
+       ✓ should handle simultaneous saves from different devices 1ms
+       ✓ should preserve higher playTime when loading 1ms
+     ❯ 3. Offline Progress Overwrite (3)
+       × should not lose progress when going from offline to online 1ms
+       ✓ should handle transition from offline to online with existing cloud save 0ms
+       × should preserve offline progress across browser sessions 1ms
+     ❯ 4. Data Corruption and Validation (4)
+       × should handle corrupted cooldownDurations gracefully 1ms
+       ✓ should handle missing required fields 0ms
+       ✓ should handle non-serializable data in game state 1ms
+       ✓ should preserve data through JSON serialization round-trip 1ms
+     ✓ 5. State Diffing Logic (3)
+       ✓ should calculate diff correctly for changed resources 1ms
+       ✓ should handle first save (no previous state for diff) 0ms
+       ✓ should detect nested object changes 0ms
+     ❯ 6. Referral System Integration (2)
+       ✓ should process unclaimed referrals on load 0ms
+       × should not process already claimed referrals 1ms
+     ❯ 7. PlayTime Tracking (3)
+       × should preserve playTime through save/load cycle 1ms
+       ✓ should handle playTime overflow (very long sessions) 1ms
+       ✓ should reject saves with decreasing playTime 0ms
+     ✓ 8. Edge Cases and Race Conditions (5)
+       ✓ should handle rapid successive saves 93ms
+       ✓ should handle save during active gameplay 0ms
+       ✓ should skip save when inactivity dialog is open 0ms
+       ✓ should handle database connection failures 1ms
+       ✓ should handle concurrent load and save operations 0ms
+     ✓ 9. Authentication State Changes (2)
+       ✓ should handle user logging in mid-session 1ms
+       ✓ should handle user logging out mid-session 1ms
+     ✓ 10. Delete Operations (2)
+       ✓ should delete local save successfully 0ms
+       ✓ should handle delete errors gracefully 0ms
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 2. Multi-Device Conflicts > should detect when cloud save is newer than local save
+AssertionError: expected undefined to be 2000 // Object.is equality
+
+- Expected: 
+2000
+
++ Received: 
+undefined
+
+ ❯ client/src/game/save.comprehensive.test.ts:236:32
+    234|       const loaded = await loadGame();
+    235|       
+    236|       expect(loaded?.playTime).toBe(2000);
+       |                                ^
+    237|     });
+    238| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 3. Offline Progress Overwrite > should not lose progress when going from offline to online
+AssertionError: expected undefined to be 5000 // Object.is equality
+
+- Expected: 
+5000
+
++ Received: 
+undefined
+
+ ❯ client/src/game/save.comprehensive.test.ts:291:32
+    289|       const loaded = await loadGame();
+    290|       
+    291|       expect(loaded?.playTime).toBe(5000);
+       |                                ^
+    292|     });
+    293| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 3. Offline Progress Overwrite > should preserve offline progress across browser sessions
+AssertionError: expected undefined to be 3000 // Object.is equality
+
+- Expected: 
+3000
+
++ Received: 
+undefined
+
+ ❯ client/src/game/save.comprehensive.test.ts:332:32
+    330|       const loaded = await loadGame();
+    331|       
+    332|       expect(loaded?.playTime).toBe(3000);
+       |                                ^
+    333|     });
+    334|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 4. Data Corruption and Validation > should handle corrupted cooldownDurations gracefully
+AssertionError: expected undefined to be defined
+ ❯ client/src/game/save.comprehensive.test.ts:348:41
+    346|       const loaded = await loadGame();
+    347|       
+    348|       expect(loaded?.cooldownDurations).toBeDefined();
+       |                                         ^
+    349|     });
+    350| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯
+
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 6. Referral System Integration > should not process already claimed referrals
+AssertionError: expected undefined to be 100 // Object.is equality
+
+- Expected: 
+100
+
++ Received: 
+undefined
+
+ ❯ client/src/game/save.comprehensive.test.ts:469:38
+    467|       const loaded = await loadGame();
+    468|       
+    469|       expect(loaded?.resources.gold).toBe(100);
+       |                                      ^
+    470|     });
+    471|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯
+
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 7. PlayTime Tracking > should preserve playTime through save/load cycle
+AssertionError: expected undefined to be 12345 // Object.is equality
+
+- Expected: 
+12345
+
++ Received: 
+undefined
+
+ ❯ client/src/game/save.comprehensive.test.ts:486:32
+    484|       const loaded = await loadGame();
+    485|       
+    486|       expect(loaded?.playTime).toBe(12345);
+       |                                ^
+    487|     });
+    488| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/6]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  6 failed | 25 passed (31)
+   Start at  07:34:35
+   Duration  263ms
+
+ FAIL  Tests failed. Watching for file changes...
+       press h to show help, press q to quit
