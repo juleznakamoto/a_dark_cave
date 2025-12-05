@@ -15,7 +15,7 @@ function Approach3_LiftedState() {
 
     setTimeout(() => {
       setBubbles(prev => prev.filter(b => b.id !== id));
-    }, 2000);
+    }, 4000);
   };
 
   const handleClick = () => {

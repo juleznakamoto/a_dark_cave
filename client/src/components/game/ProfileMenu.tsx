@@ -222,14 +222,14 @@ export default function ProfileMenu() {
             >
               <TooltipTrigger asChild>
                 <div
-                  className="w-5 h-5 rounded-full bg-orange-500 flex items-center justify-center cursor-pointer opacity-60 hover:opacity-100 transition-opacity"
+                  className="w-4 h-4 rounded-full border border-orange-500 flex items-center justify-center cursor-pointer opacity-50 hover:opacity-100 transition-opacity"
                   onClick={(e) => {
                     if (isMobile) {
                       mobileTooltip.handleTooltipClick("login-reminder", e);
                     }
                   }}
                 >
-                  <span className="text-white text-xs font-bold">!</span>
+                  <span className="text-orange-500 text-xs font-bold">!</span>
                 </div>
               </TooltipTrigger>
               <TooltipContent>

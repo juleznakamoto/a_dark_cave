@@ -230,14 +230,14 @@ export const BubblyButtonGlobalPortal = ({
       <AnimatePresence>
         {bubbles.map((bubble) => (
           <div key={bubble.id}>
-            {Array.from({ length: 100 }).map((_, i) => {
+            {Array.from({ length: 150 }).map((_, i) => {
               const angle = Math.random() * Math.PI * 2;
-              const distanceX = 20 + Math.random() * 120;
-              const distanceY = 20 + Math.random() * 80;
-              const size = 3 + Math.random() * 25;
+              const distanceX = 40 + Math.random() * 60;
+              const distanceY = 0 + Math.random() * 60;
+              const size = 5 + Math.random() * 20;
               const color =
                 TONES[Math.floor(Math.random() * TONES.length)];
-              const duration = 2.0 + Math.random() * 1.0;
+              const duration = 2 + Math.random() * 1.0;
               const endX = Math.cos(angle) * distanceX;
               const endY = Math.sin(angle) * distanceY;
 
@@ -252,17 +252,17 @@ export const BubblyButtonGlobalPortal = ({
                     left: bubble.x,
                     top: bubble.y,
                     zIndex: 9998,
-                    boxShadow: `0 0 ${size * 0.8}px ${color}aa, 0 0 ${size * 1.5}px ${color}55`,
+                    boxShadow: `0 0 ${size * 0.5}px ${color}aa, 0 0 ${size * 1}px ${color}55`,
                   }}
                   initial={{ opacity: 1, scale: 1, x: 0, y: 0 }}
                   animate={{
-                    opacity: 0,
+                    opacity: 0.8,
                     scale: 0.0,
                     x: endX,
                     y: endY,
                   }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration, ease: [0.16, 1, 0.3, 1] }}
+                  exit={{ opacity: 0.8 }}
+                  transition={{ duration, ease: [0,0,0.5,1] }}
                 />
               );
             })}
