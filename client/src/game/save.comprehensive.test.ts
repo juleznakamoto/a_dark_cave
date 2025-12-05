@@ -4,18 +4,18 @@ import { saveGame, loadGame, deleteSave } from './save';
 import { GameState } from '@shared/schema';
 import type { IDBPDatabase } from 'idb';
 
-// Create mock functions OUTSIDE the factory
-const mockPut = vi.fn();
-const mockGet = vi.fn();
-const mockDelete = vi.fn();
-const mockOpenDB = vi.fn();
+// Use vi.hoisted to ensure mocks are created before module imports
+const { mockPut, mockGet, mockDelete, mockOpenDB } = vi.hoisted(() => ({
+  mockPut: vi.fn(),
+  mockGet: vi.fn(),
+  mockDelete: vi.fn(),
+  mockOpenDB: vi.fn(),
+}));
 
-// Mock idb with factory function
-vi.mock('idb', () => {
-  return {
-    openDB: mockOpenDB,
-  };
-});
+// Mock idb with factory function using hoisted mocks
+vi.mock('idb', () => ({
+  openDB: mockOpenDB,
+}));
 
 // Mock auth module
 vi.mock('./auth', () => ({
