@@ -249,8 +249,8 @@ export const BubblyButtonGlobalPortal = ({
                     width: `${size}px`,
                     height: `${size}px`,
                     backgroundColor: color,
-                    left: bubble.x,
-                    top: bubble.y,
+                    left: bubble.x - size / 2,
+                    top: bubble.y - size / 2,
                     zIndex: 9998,
                     boxShadow: `0 0 ${size * 0.5}px ${color}aa, 0 0 ${size * 1}px ${color}55`,
                   }}
