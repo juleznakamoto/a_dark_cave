@@ -1,0 +1,198 @@
+
+ ❯ client/src/game/save.comprehensive.test.ts (31 tests | 9 failed) 130ms
+   ❯ Save Game System - Comprehensive Tests (31)
+     ✓ 1. Cloud Sync Failures (4)
+       ✓ should save locally even when cloud save fails 6ms
+       ✓ should handle multiple consecutive cloud save failures 1ms
+       ✓ should not update lastCloudState when cloud save fails 1ms
+       ✓ should recover from intermittent cloud failures 1ms
+     ❯ 2. Multi-Device Conflicts (3)
+       × should detect when cloud save is newer than local save 5ms
+       × should handle simultaneous saves from different devices 1ms
+       ✓ should preserve higher playTime when loading 0ms
+     ❯ 3. Offline Progress Overwrite (3)
+       × should not lose progress when going from offline to online 1ms
+       ✓ should handle transition from offline to online with existing cloud save 1ms
+       × should preserve offline progress across browser sessions 1ms
+     ❯ 4. Data Corruption and Validation (4)
+       × should handle corrupted cooldownDurations gracefully 1ms
+       ✓ should handle missing required fields 0ms
+       ✓ should handle non-serializable data in game state 1ms
+       ✓ should preserve data through JSON serialization round-trip 0ms
+     ✓ 5. State Diffing Logic (3)
+       ✓ should calculate diff correctly for changed resources 1ms
+       ✓ should handle first save (no previous state for diff) 1ms
+       ✓ should detect nested object changes 0ms
+     ❯ 6. Referral System Integration (2)
+       ✓ should process unclaimed referrals on load 0ms
+       × should not process already claimed referrals 1ms
+     ❯ 7. PlayTime Tracking (3)
+       × should preserve playTime through save/load cycle 1ms
+       ✓ should handle playTime overflow (very long sessions) 1ms
+       ✓ should reject saves with decreasing playTime 0ms
+     ✓ 8. Edge Cases and Race Conditions (5)
+       ✓ should handle rapid successive saves 97ms
+       ✓ should handle save during active gameplay 0ms
+       ✓ should skip save when inactivity dialog is open 0ms
+       ✓ should handle database connection failures 1ms
+       ✓ should handle concurrent load and save operations 1ms
+     ❯ 9. Authentication State Changes (2)
+       × should handle user logging in mid-session 1ms
+       × should handle user logging out mid-session 1ms
+     ✓ 10. Delete Operations (2)
+       ✓ should delete local save successfully 0ms
+       ✓ should handle delete errors gracefully 0ms
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯ Failed Tests 9 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 2. Multi-Device Conflicts > should detect when cloud save is newer than local save
+AssertionError: expected undefined to be 2000 // Object.is equality
+
+- Expected: 
+2000
+
++ Received: 
+undefined
+
+ ❯ client/src/game/save.comprehensive.test.ts:210:32
+    208| 
+    209|       const loaded = await loadGame();
+    210|       expect(loaded?.playTime).toBe(2000);
+       |                                ^
+    211|     });
+    212| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/9]⎯
+
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 2. Multi-Device Conflicts > should handle simultaneous saves from different devices
+AssertionError: expected "vi.fn()" to be called 2 times, but got 4 times
+ ❯ client/src/game/save.comprehensive.test.ts:220:23
+    218|       await saveGame(createMockGameState({ playTime: 1000, resources: …
+    219| 
+    220|       expect(mockPut).toHaveBeenCalledTimes(2);
+       |                       ^
+    221|     });
+    222| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/9]⎯
+
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 3. Offline Progress Overwrite > should not lose progress when going from offline to online
+AssertionError: expected undefined to be 5000 // Object.is equality
+
+- Expected: 
+5000
+
++ Received: 
+undefined
+
+ ❯ client/src/game/save.comprehensive.test.ts:263:32
+    261| 
+    262|       const loaded = await loadGame();
+    263|       expect(loaded?.playTime).toBe(5000);
+       |                                ^
+    264|     });
+    265| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/9]⎯
+
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 3. Offline Progress Overwrite > should preserve offline progress across browser sessions
+AssertionError: expected undefined to be 3000 // Object.is equality
+
+- Expected: 
+3000
+
++ Received: 
+undefined
+
+ ❯ client/src/game/save.comprehensive.test.ts:302:32
+    300| 
+    301|       const loaded = await loadGame();
+    302|       expect(loaded?.playTime).toBe(3000);
+       |                                ^
+    303|     });
+    304|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/9]⎯
+
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 4. Data Corruption and Validation > should handle corrupted cooldownDurations gracefully
+AssertionError: expected undefined to be defined
+ ❯ client/src/game/save.comprehensive.test.ts:321:41
+    319| 
+    320|       const loaded = await loadGame();
+    321|       expect(loaded?.cooldownDurations).toBeDefined();
+       |                                         ^
+    322|     });
+    323| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/9]⎯
+
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 6. Referral System Integration > should not process already claimed referrals
+AssertionError: expected undefined to be 100 // Object.is equality
+
+- Expected: 
+100
+
++ Received: 
+undefined
+
+ ❯ client/src/game/save.comprehensive.test.ts:452:38
+    450| 
+    451|       const loaded = await loadGame();
+    452|       expect(loaded?.resources.gold).toBe(100);
+       |                                      ^
+    453|     });
+    454|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/9]⎯
+
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 7. PlayTime Tracking > should preserve playTime through save/load cycle
+AssertionError: expected undefined to be 12345 // Object.is equality
+
+- Expected: 
+12345
+
++ Received: 
+undefined
+
+ ❯ client/src/game/save.comprehensive.test.ts:469:32
+    467| 
+    468|       const loaded = await loadGame();
+    469|       expect(loaded?.playTime).toBe(12345);
+       |                                ^
+    470|     });
+    471| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/9]⎯
+
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 9. Authentication State Changes > should handle user logging in mid-session
+AssertionError: expected "vi.fn()" to be called 2 times, but got 3 times
+ ❯ client/src/game/save.comprehensive.test.ts:563:23
+    561|       await saveGame(createMockGameState({ playTime: 3000 }), true);
+    562| 
+    563|       expect(mockPut).toHaveBeenCalledTimes(2);
+       |                       ^
+    564|     });
+    565| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/9]⎯
+
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 9. Authentication State Changes > should handle user logging out mid-session
+AssertionError: expected "vi.fn()" to be called 2 times, but got 3 times
+ ❯ client/src/game/save.comprehensive.test.ts:574:23
+    572|       await saveGame(createMockGameState({ playTime: 2000 }), true);
+    573| 
+    574|       expect(mockPut).toHaveBeenCalledTimes(2);
+       |                       ^
+    575|     });
+    576|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/9]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  9 failed | 22 passed (31)
+   Start at  07:22:20
+   Duration  205ms
+
+ FAIL  Tests failed. Watching for file changes...
+       press h to show help, press q to quit
