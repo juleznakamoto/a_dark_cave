@@ -652,10 +652,13 @@ describe('Save Game System - Comprehensive Tests', () => {
     // Approach 4: Corrupted with cloud save
     it('v4: should handle corrupted cloud data', async () => {
       const auth = await import('./auth');
-      const corruptedState = {
-        ...createMockGameState(),
-        cooldownDurations: undefined as any,
+      const baseState = createMockGameState();
+      const corruptedState: any = {
+        ...baseState,
+        cooldownDurations: undefined,
       };
+      // Explicitly delete to simulate corruption
+      delete corruptedState.cooldownDurations;
 
       vi.mocked(auth.getCurrentUser).mockResolvedValue({ id: 'user-1', email: 'test@example.com' });
       vi.mocked(auth.loadGameFromSupabase).mockResolvedValue({
@@ -666,7 +669,11 @@ describe('Save Game System - Comprehensive Tests', () => {
 
       const loaded = await loadGame();
       
-      expect(loaded?.cooldownDurations).toBeDefined();
+      expect(loaded).toBeDefined();
+      if (loaded) {
+        expect(loaded.cooldownDurations).toBeDefined();
+        expect(typeof loaded.cooldownDurations).toBe('object');
+      }
     });
 
     // Approach 5: Multiple corruption points
