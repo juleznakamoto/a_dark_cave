@@ -1,29 +1,49 @@
+
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { saveGame, loadGame, deleteSave } from './save';
 import { GameState } from '@shared/schema';
+import type { IDBPDatabase } from 'idb';
 
-// Mock idb module with factory function
+// Create mock functions OUTSIDE the factory
+const mockPut = vi.fn();
+const mockGet = vi.fn();
+const mockDelete = vi.fn();
+const mockOpenDB = vi.fn();
+
+// Mock idb with factory function
 vi.mock('idb', () => {
-  const mockOpenDB = vi.fn();
   return {
     openDB: mockOpenDB,
   };
 });
 
-// Mock other modules
-vi.mock('./auth');
-vi.mock('./state');
-vi.mock('@/lib/logger');
+// Mock auth module
+vi.mock('./auth', () => ({
+  getCurrentUser: vi.fn(),
+  saveGameToSupabase: vi.fn(),
+  loadGameFromSupabase: vi.fn(),
+}));
 
-// Get reference to mocked openDB for assertions
-const getMockOpenDB = () => {
-  const idb = require('idb');
-  return idb.openDB;
-};
+// Mock state module
+vi.mock('./state', () => ({
+  useGameStore: {
+    getState: vi.fn(),
+    setState: vi.fn(),
+  },
+}));
+
+// Mock logger
+vi.mock('@/lib/logger', () => ({
+  logger: {
+    log: vi.fn(),
+    warn: vi.fn(),
+    error: vi.fn(),
+    debug: vi.fn(),
+  },
+}));
 
 describe('Save Game System - Comprehensive Tests', () => {
   let mockDB: any;
-  let mockOpenDB: any;
 
   const createMockGameState = (overrides: Partial<GameState> = {}): GameState => ({
     resources: { wood: 100, stone: 50, gold: 200, food: 75 },
@@ -74,21 +94,23 @@ describe('Save Game System - Comprehensive Tests', () => {
   });
 
   beforeEach(async () => {
+    // Clear all mocks
     vi.clearAllMocks();
-
-    // Get reference to the mocked openDB
-    mockOpenDB = getMockOpenDB();
+    mockPut.mockClear();
+    mockGet.mockClear();
+    mockDelete.mockClear();
+    mockOpenDB.mockClear();
 
     // Setup mock database
     mockDB = {
-      put: vi.fn().mockResolvedValue(undefined),
-      get: vi.fn().mockResolvedValue(null),
-      delete: vi.fn().mockResolvedValue(undefined),
+      put: mockPut.mockResolvedValue(undefined),
+      get: mockGet.mockResolvedValue(null),
+      delete: mockDelete.mockResolvedValue(undefined),
     };
 
     mockOpenDB.mockResolvedValue(mockDB);
 
-    // Setup auth mocks
+    // Setup auth mocks - import and mock them
     const auth = await import('./auth');
     vi.mocked(auth.getCurrentUser).mockResolvedValue(null);
     vi.mocked(auth.saveGameToSupabase).mockResolvedValue(undefined);
@@ -96,12 +118,12 @@ describe('Save Game System - Comprehensive Tests', () => {
 
     // Setup state mock
     const state = await import('./state');
-    vi.mocked(state.useGameStore).getState = vi.fn().mockReturnValue({
+    vi.mocked(state.useGameStore.getState).mockReturnValue({
       inactivityDialogOpen: false,
       getAndResetClickAnalytics: vi.fn().mockReturnValue(null),
       getAndResetResourceAnalytics: vi.fn().mockReturnValue(null),
-    });
-    vi.mocked(state.useGameStore).setState = vi.fn();
+    } as any);
+    vi.mocked(state.useGameStore.setState).mockImplementation(() => {});
   });
 
   describe('1. Cloud Sync Failures', () => {
@@ -113,7 +135,7 @@ describe('Save Game System - Comprehensive Tests', () => {
       const gameState = createMockGameState();
       await saveGame(gameState, true);
 
-      expect(mockDB.put).toHaveBeenCalledWith(
+      expect(mockPut).toHaveBeenCalledWith(
         'saves',
         expect.objectContaining({
           timestamp: expect.any(Number),
@@ -132,7 +154,7 @@ describe('Save Game System - Comprehensive Tests', () => {
       await saveGame(createMockGameState({ playTime: 2000 }), true);
       await saveGame(createMockGameState({ playTime: 3000 }), true);
 
-      expect(mockDB.put).toHaveBeenCalledTimes(3);
+      expect(mockPut).toHaveBeenCalledTimes(3);
     });
 
     it('should not update lastCloudState when cloud save fails', async () => {
@@ -142,7 +164,7 @@ describe('Save Game System - Comprehensive Tests', () => {
 
       await saveGame(createMockGameState(), true);
 
-      const lastCloudStateCalls = mockDB.put.mock.calls.filter(
+      const lastCloudStateCalls = mockPut.mock.calls.filter(
         (call: any) => call[2] === 'lastCloudState'
       );
       expect(lastCloudStateCalls.length).toBe(0);
@@ -158,7 +180,7 @@ describe('Save Game System - Comprehensive Tests', () => {
       await saveGame(createMockGameState(), true);
       await saveGame(createMockGameState({ playTime: 2000 }), true);
 
-      const lastCloudStateCalls = mockDB.put.mock.calls.filter(
+      const lastCloudStateCalls = mockPut.mock.calls.filter(
         (call: any) => call[2] === 'lastCloudState'
       );
       expect(lastCloudStateCalls.length).toBeGreaterThan(0);
@@ -170,7 +192,7 @@ describe('Save Game System - Comprehensive Tests', () => {
       const localState = createMockGameState({ playTime: 1000, resources: { wood: 100 } });
       const cloudState = createMockGameState({ playTime: 2000, resources: { wood: 200 } });
 
-      mockDB.get.mockResolvedValueOnce({
+      mockGet.mockResolvedValueOnce({
         gameState: localState,
         timestamp: Date.now() - 60000,
         playTime: 1000,
@@ -195,14 +217,14 @@ describe('Save Game System - Comprehensive Tests', () => {
       await saveGame(createMockGameState({ playTime: 1000, resources: { wood: 100 } }), true);
       await saveGame(createMockGameState({ playTime: 1000, resources: { wood: 150 } }), true);
 
-      expect(mockDB.put).toHaveBeenCalledTimes(2);
+      expect(mockPut).toHaveBeenCalledTimes(2);
     });
 
     it('should preserve higher playTime when loading', async () => {
       const localState = createMockGameState({ playTime: 5000 });
       const cloudState = createMockGameState({ playTime: 3000 });
 
-      mockDB.get.mockResolvedValue({
+      mockGet.mockResolvedValue({
         gameState: localState,
         timestamp: Date.now(),
         playTime: 5000,
@@ -230,7 +252,7 @@ describe('Save Game System - Comprehensive Tests', () => {
       await saveGame(offlineState, true);
 
       vi.mocked(auth.getCurrentUser).mockResolvedValue({ id: 'user-1', email: 'test@example.com' });
-      mockDB.get.mockResolvedValue({
+      mockGet.mockResolvedValue({
         gameState: offlineState,
         timestamp: Date.now(),
         playTime: 5000,
@@ -245,7 +267,7 @@ describe('Save Game System - Comprehensive Tests', () => {
       const offlineState = createMockGameState({ playTime: 5000 });
       const oldCloudState = createMockGameState({ playTime: 2000 });
 
-      mockDB.get.mockResolvedValue({
+      mockGet.mockResolvedValue({
         gameState: offlineState,
         timestamp: Date.now(),
         playTime: 5000,
@@ -270,7 +292,7 @@ describe('Save Game System - Comprehensive Tests', () => {
       vi.mocked(auth.getCurrentUser).mockResolvedValue(null);
       await saveGame(offlineState, true);
 
-      mockDB.get.mockResolvedValue({
+      mockGet.mockResolvedValue({
         gameState: offlineState,
         timestamp: Date.now() - 60000,
         playTime: 3000,
@@ -289,7 +311,7 @@ describe('Save Game System - Comprehensive Tests', () => {
         cooldownDurations: undefined as any,
       };
 
-      mockDB.get.mockResolvedValue({
+      mockGet.mockResolvedValue({
         gameState: corruptedState,
         timestamp: Date.now(),
         playTime: 1000,
@@ -300,7 +322,7 @@ describe('Save Game System - Comprehensive Tests', () => {
     });
 
     it('should handle missing required fields', async () => {
-      mockDB.get.mockResolvedValue({
+      mockGet.mockResolvedValue({
         gameState: { resources: { wood: 100 } },
         timestamp: Date.now(),
         playTime: 1000,
@@ -322,7 +344,7 @@ describe('Save Game System - Comprehensive Tests', () => {
 
       await saveGame(originalState, true);
 
-      const savedData = mockDB.put.mock.calls[0][1];
+      const savedData = mockPut.mock.calls[0][1];
       const serialized = JSON.stringify(savedData);
       const deserialized = JSON.parse(serialized);
 
@@ -335,7 +357,7 @@ describe('Save Game System - Comprehensive Tests', () => {
       const baseState = createMockGameState({ resources: { wood: 100 } });
       const newState = createMockGameState({ resources: { wood: 150 } });
 
-      mockDB.get.mockResolvedValue({
+      mockGet.mockResolvedValue({
         gameState: baseState,
         timestamp: Date.now(),
         playTime: 1000,
@@ -345,17 +367,17 @@ describe('Save Game System - Comprehensive Tests', () => {
       vi.mocked(auth.getCurrentUser).mockResolvedValue({ id: 'user-1', email: 'test@example.com' });
 
       await saveGame(newState, true);
-      expect(mockDB.put).toHaveBeenCalled();
+      expect(mockPut).toHaveBeenCalled();
     });
 
     it('should handle first save (no previous state for diff)', async () => {
-      mockDB.get.mockResolvedValue(null);
+      mockGet.mockResolvedValue(null);
 
       const auth = await import('./auth');
       vi.mocked(auth.getCurrentUser).mockResolvedValue({ id: 'user-1', email: 'test@example.com' });
 
       await saveGame(createMockGameState(), true);
-      expect(mockDB.put).toHaveBeenCalled();
+      expect(mockPut).toHaveBeenCalled();
     });
 
     it('should detect nested object changes', async () => {
@@ -366,7 +388,7 @@ describe('Save Game System - Comprehensive Tests', () => {
         population: { current: 10, max: 20, workers: { woodcutter: 3, miner: 3, farmer: 5 } },
       });
 
-      mockDB.get.mockResolvedValue({
+      mockGet.mockResolvedValue({
         gameState: baseState,
         timestamp: Date.now(),
         playTime: 1000,
@@ -376,7 +398,7 @@ describe('Save Game System - Comprehensive Tests', () => {
       vi.mocked(auth.getCurrentUser).mockResolvedValue({ id: 'user-1', email: 'test@example.com' });
 
       await saveGame(newState, true);
-      expect(mockDB.put).toHaveBeenCalled();
+      expect(mockPut).toHaveBeenCalled();
     });
   });
 
@@ -388,7 +410,7 @@ describe('Save Game System - Comprehensive Tests', () => {
         ],
       });
 
-      mockDB.get.mockResolvedValue({
+      mockGet.mockResolvedValue({
         gameState: stateWithReferrals,
         timestamp: Date.now(),
         playTime: 1000,
@@ -412,7 +434,7 @@ describe('Save Game System - Comprehensive Tests', () => {
         resources: { gold: 100 },
       });
 
-      mockDB.get.mockResolvedValue({
+      mockGet.mockResolvedValue({
         gameState: stateWithClaimedReferrals,
         timestamp: Date.now(),
         playTime: 1000,
@@ -437,7 +459,7 @@ describe('Save Game System - Comprehensive Tests', () => {
 
       await saveGame(gameState, true);
 
-      mockDB.get.mockResolvedValue({
+      mockGet.mockResolvedValue({
         gameState,
         timestamp: Date.now(),
         playTime: 12345,
@@ -452,7 +474,7 @@ describe('Save Game System - Comprehensive Tests', () => {
 
       await saveGame(gameState, true);
 
-      expect(mockDB.put).toHaveBeenCalledWith(
+      expect(mockPut).toHaveBeenCalledWith(
         'saves',
         expect.objectContaining({
           playTime: Number.MAX_SAFE_INTEGER - 1000,
@@ -464,14 +486,14 @@ describe('Save Game System - Comprehensive Tests', () => {
     it('should reject saves with decreasing playTime', async () => {
       await saveGame(createMockGameState({ playTime: 5000 }), true);
 
-      mockDB.get.mockResolvedValue({
+      mockGet.mockResolvedValue({
         gameState: createMockGameState({ playTime: 5000 }),
         timestamp: Date.now(),
         playTime: 5000,
       });
 
       await saveGame(createMockGameState({ playTime: 3000 }), true);
-      expect(mockDB.put).toHaveBeenCalled();
+      expect(mockPut).toHaveBeenCalled();
     });
   });
 
@@ -482,31 +504,31 @@ describe('Save Game System - Comprehensive Tests', () => {
       );
 
       await Promise.all(saves);
-      expect(mockDB.put).toHaveBeenCalledTimes(10);
+      expect(mockPut).toHaveBeenCalledTimes(10);
     });
 
     it('should handle save during active gameplay', async () => {
       const state = await import('./state');
-      vi.mocked(state.useGameStore).getState = vi.fn().mockReturnValue({
+      vi.mocked(state.useGameStore.getState).mockReturnValue({
         inactivityDialogOpen: false,
         getAndResetClickAnalytics: vi.fn().mockReturnValue({ click1: 5 }),
         getAndResetResourceAnalytics: vi.fn().mockReturnValue({ wood: 100 }),
-      });
+      } as any);
 
       await saveGame(createMockGameState({ isGameLoopActive: true }), true);
-      expect(mockDB.put).toHaveBeenCalled();
+      expect(mockPut).toHaveBeenCalled();
     });
 
     it('should skip save when inactivity dialog is open', async () => {
       const state = await import('./state');
-      vi.mocked(state.useGameStore).getState = vi.fn().mockReturnValue({
+      vi.mocked(state.useGameStore.getState).mockReturnValue({
         inactivityDialogOpen: true,
         getAndResetClickAnalytics: vi.fn(),
         getAndResetResourceAnalytics: vi.fn(),
-      });
+      } as any);
 
       await saveGame(createMockGameState(), true);
-      expect(mockDB.put).not.toHaveBeenCalled();
+      expect(mockPut).not.toHaveBeenCalled();
     });
 
     it('should handle database connection failures', async () => {
@@ -518,7 +540,7 @@ describe('Save Game System - Comprehensive Tests', () => {
     it('should handle concurrent load and save operations', async () => {
       const gameState = createMockGameState();
 
-      mockDB.get.mockResolvedValue({
+      mockGet.mockResolvedValue({
         gameState,
         timestamp: Date.now(),
         playTime: 1000,
@@ -538,7 +560,7 @@ describe('Save Game System - Comprehensive Tests', () => {
       vi.mocked(auth.getCurrentUser).mockResolvedValue({ id: 'user-1', email: 'test@example.com' });
       await saveGame(createMockGameState({ playTime: 3000 }), true);
 
-      expect(mockDB.put).toHaveBeenCalledTimes(2);
+      expect(mockPut).toHaveBeenCalledTimes(2);
     });
 
     it('should handle user logging out mid-session', async () => {
@@ -549,18 +571,18 @@ describe('Save Game System - Comprehensive Tests', () => {
       vi.mocked(auth.getCurrentUser).mockResolvedValue(null);
       await saveGame(createMockGameState({ playTime: 2000 }), true);
 
-      expect(mockDB.put).toHaveBeenCalledTimes(2);
+      expect(mockPut).toHaveBeenCalledTimes(2);
     });
   });
 
   describe('10. Delete Operations', () => {
     it('should delete local save successfully', async () => {
       await deleteSave();
-      expect(mockDB.delete).toHaveBeenCalledWith('saves', 'mainSave');
+      expect(mockDelete).toHaveBeenCalledWith('saves', 'mainSave');
     });
 
     it('should handle delete errors gracefully', async () => {
-      mockDB.delete.mockRejectedValue(new Error('Delete failed'));
+      mockDelete.mockRejectedValue(new Error('Delete failed'));
       await expect(deleteSave()).resolves.not.toThrow();
     });
   });
