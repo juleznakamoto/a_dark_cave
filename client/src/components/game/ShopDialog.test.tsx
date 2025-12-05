@@ -1081,6 +1081,149 @@ describe('ShopDialog', () => {
     expect(discountPercent).toBeLessThanOrEqual(60);
   });
 
+  it('should display pale kings bundle in shop', async () => {
+    const onClose = vi.fn();
+    render(<ShopDialog isOpen={true} onClose={onClose} />);
+
+    await waitFor(() => {
+      expect(screen.getByText("Pale King's Bundle")).toBeInTheDocument();
+    });
+
+    expect(screen.getByText(/A powerful pack with 20000 Gold and 3 Great Feasts/i)).toBeInTheDocument();
+  });
+
+  it('should show pale kings bundle with correct pricing', async () => {
+    const onClose = vi.fn();
+    render(<ShopDialog isOpen={true} onClose={onClose} />);
+
+    await waitFor(() => {
+      expect(screen.getByText("Pale King's Bundle")).toBeInTheDocument();
+    });
+
+    // Check for discounted price
+    expect(screen.getByText('11.99 €')).toBeInTheDocument();
+    // Check for original price (strikethrough)
+    const originalPrice = screen.getByText('23.99 €');
+    expect(originalPrice).toHaveClass('line-through');
+  });
+
+  it('should allow purchasing pale kings bundle multiple times', async () => {
+    const onClose = vi.fn();
+
+    // Mock existing bundle purchases
+    mockSupabaseClient.from = vi.fn(() => ({
+      select: vi.fn(() => ({
+        eq: vi.fn(() => ({
+          data: [
+            { id: 1, item_id: 'pale_kings_bundle' },
+            { id: 2, item_id: 'pale_kings_bundle' },
+          ],
+          error: null,
+        })),
+      })),
+      insert: vi.fn(() => ({
+        data: null,
+        error: null,
+      })),
+    }));
+
+    render(<ShopDialog isOpen={true} onClose={onClose} />);
+
+    await waitFor(() => {
+      const purchaseButtons = screen.getAllByRole('button', { name: /purchase/i });
+      expect(purchaseButtons.length).toBeGreaterThan(0);
+    });
+  });
+
+  it('should show pale kings bundle components in purchases tab', async () => {
+    const user = userEvent.setup();
+    const onClose = vi.fn();
+
+    // Mock component purchases from pale kings bundle
+    mockSupabaseClient.from = vi.fn(() => ({
+      select: vi.fn(() => ({
+        eq: vi.fn(() => ({
+          data: [
+            { id: 200, item_id: 'gold_20000' },
+            { id: 201, item_id: 'great_feast_3' },
+          ],
+          error: null,
+        })),
+      })),
+      insert: vi.fn(() => ({
+        data: null,
+        error: null,
+      })),
+    }));
+
+    useGameStore.setState({
+      feastActivations: {
+        'purchase-great_feast_3-201': 5,
+      },
+    });
+
+    render(<ShopDialog isOpen={true} onClose={onClose} />);
+
+    const purchasesTab = screen.getByRole('tab', { name: /purchases/i });
+    await user.click(purchasesTab);
+
+    await waitFor(() => {
+      // Should show feast component
+      expect(screen.getByText(/3 Great Feasts \(5\/5 available\)/i)).toBeInTheDocument();
+      // Should show gold component
+      expect(screen.getByText('20000 Gold')).toBeInTheDocument();
+    });
+  });
+
+  it('should activate pale kings bundle components independently', async () => {
+    const user = userEvent.setup();
+    const onClose = vi.fn();
+    const updateResource = vi.fn();
+
+    useGameStore.setState({
+      updateResource,
+      resources: { gold: 0 },
+      feastActivations: {
+        'purchase-great_feast_3-201': 5,
+      },
+    });
+
+    // Mock component purchases
+    mockSupabaseClient.from = vi.fn(() => ({
+      select: vi.fn(() => ({
+        eq: vi.fn(() => ({
+          data: [
+            { id: 200, item_id: 'gold_20000' },
+            { id: 201, item_id: 'great_feast_3' },
+          ],
+          error: null,
+        })),
+      })),
+      insert: vi.fn(() => ({
+        data: null,
+        error: null,
+      })),
+    }));
+
+    render(<ShopDialog isOpen={true} onClose={onClose} />);
+
+    const purchasesTab = screen.getByRole('tab', { name: /purchases/i });
+    await user.click(purchasesTab);
+
+    await waitFor(() => {
+      const activateButtons = screen.getAllByRole('button', { name: /activate/i });
+      expect(activateButtons.length).toBeGreaterThan(0);
+    });
+
+    // Activate gold component first
+    const activateButtons = screen.getAllByRole('button', { name: /activate/i });
+    await user.click(activateButtons[0]);
+
+    await waitFor(() => {
+      expect(updateResource).toHaveBeenCalledWith('gold', 20000);
+    });
+  });
+
   it('should ensure bundle components exist and are not other bundles', () => {
     Object.values(SHOP_ITEMS).forEach(item => {
       if (item.category === 'bundle' && item.bundleComponents) {

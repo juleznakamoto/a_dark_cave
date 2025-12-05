@@ -167,6 +167,24 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     bundleComponents: ["gold_5000", "great_feast_1"], // Component items
   },
 
+  pale_kings_bundle: {
+    id: "pale_kings_bundle",
+    name: "Pale King's Bundle",
+    description: "A powerful pack with 20000 Gold and 3 Great Feasts",
+    originalPrice: 2399, // 23.99 €
+    price: 1199, // 11.99 €
+    rewards: {
+      resources: { gold: 20000 },
+      feastActivations: 5,
+    },
+    canPurchaseMultipleTimes: true,
+    category: "bundle",
+    activationMessage: "Pale King's Bundle components have been added to your purchases!",
+    symbol: "♔",
+    symbolColor: "text-slate-400",
+    bundleComponents: ["gold_20000", "great_feast_3"], // Component items
+  },
+
   // dwarven_hammer: {
   //   id: 'dwarven_hammer',
   //   name: 'Dwarven Hammer',
