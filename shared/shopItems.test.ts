@@ -62,7 +62,7 @@ describe('Shop Items Configuration', () => {
 
     it('should have valid feast activations', () => {
       expect(SHOP_ITEMS.great_feast_1.rewards.feastActivations).toBe(1);
-      expect(SHOP_ITEMS.great_feast_3.rewards.feastActivations).toBe(5);
+      expect(SHOP_ITEMS.great_feast_3.rewards.feastActivations).toBe(3);
     });
   });
 
@@ -259,7 +259,7 @@ describe('Shop Items Configuration', () => {
     it('should have correct rewards for advanced bundle', () => {
       const bundle = SHOP_ITEMS.advanced_bundle;
       expect(bundle.rewards.resources?.gold).toBe(20000);
-      expect(bundle.rewards.feastActivations).toBe(5);
+      expect(bundle.rewards.feastActivations).toBe(3);
     });
 
     it('should have reasonable discount for advanced bundle', () => {
@@ -278,8 +278,8 @@ describe('Shop Items Configuration', () => {
       const bundle = SHOP_ITEMS.advanced_bundle;
       expect(bundle.symbol).toBeTruthy();
       expect(bundle.symbolColor).toBeTruthy();
-      expect(bundle.symbol).toBe('♔');
-      expect(bundle.symbolColor).toBe('text-slate-400');
+      expect(bundle.symbol).toBe('✣');
+      expect(bundle.symbolColor).toBe('text-rose-600');
     });
 
     it('should have valid component references for advanced bundle', () => {
