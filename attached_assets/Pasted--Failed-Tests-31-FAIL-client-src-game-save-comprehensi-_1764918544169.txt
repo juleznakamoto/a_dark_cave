@@ -1,0 +1,52 @@
+⎯⎯⎯⎯⎯⎯⎯⎯ Failed Tests 31 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 1. Cloud Sync Failures > should save locally even when cloud save fails
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 1. Cloud Sync Failures > should handle multiple consecutive cloud save failures
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 1. Cloud Sync Failures > should not update lastCloudState when cloud save fails
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 1. Cloud Sync Failures > should recover from intermittent cloud failures
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 2. Multi-Device Conflicts > should detect when cloud save is newer than local save
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 2. Multi-Device Conflicts > should handle simultaneous saves from different devices
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 2. Multi-Device Conflicts > should preserve higher playTime when loading
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 3. Offline Progress Overwrite > should not lose progress when going from offline to online
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 3. Offline Progress Overwrite > should handle transition from offline to online with existing cloud save
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 3. Offline Progress Overwrite > should preserve offline progress across browser sessions
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 4. Data Corruption and Validation > should handle corrupted cooldownDurations gracefully
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 4. Data Corruption and Validation > should handle missing required fields
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 4. Data Corruption and Validation > should handle non-serializable data in game state
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 4. Data Corruption and Validation > should preserve data through JSON serialization round-trip
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 5. State Diffing Logic > should calculate diff correctly for changed resources
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 5. State Diffing Logic > should handle first save (no previous state for diff)
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 5. State Diffing Logic > should detect nested object changes
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 6. Referral System Integration > should process unclaimed referrals on load
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 6. Referral System Integration > should not process already claimed referrals
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 7. PlayTime Tracking > should preserve playTime through save/load cycle
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 7. PlayTime Tracking > should handle playTime overflow (very long sessions)
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 7. PlayTime Tracking > should reject saves with decreasing playTime
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 8. Edge Cases and Race Conditions > should handle rapid successive saves
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 8. Edge Cases and Race Conditions > should handle save during active gameplay
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 8. Edge Cases and Race Conditions > should skip save when inactivity dialog is open
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 8. Edge Cases and Race Conditions > should handle database connection failures
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 8. Edge Cases and Race Conditions > should handle concurrent load and save operations
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 9. Authentication State Changes > should handle user logging in mid-session
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 9. Authentication State Changes > should handle user logging out mid-session
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 10. Delete Operations > should delete local save successfully
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 10. Delete Operations > should handle delete errors gracefully
+TypeError: mockOpenDB.mockResolvedValue is not a function
+ ❯ client/src/game/save.comprehensive.test.ts:89:16
+     87|     };
+     88| 
+     89|     mockOpenDB.mockResolvedValue(mockDB);
+       |                ^
+     90| 
+     91|     // Setup auth mocks
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/31]⎯
+
+
+ Test Files  1 failed | 11 passed (12)
+      Tests  31 failed | 121 passed (152)
+   Start at  07:08:48
+   Duration  3.37s (transform 1.22s, setup 0ms, import 2.31s, tests 1.39s, environment 4ms)
+
+ FAIL  Tests failed. Watching for file changes...
+       press h to show help, press q to quit
