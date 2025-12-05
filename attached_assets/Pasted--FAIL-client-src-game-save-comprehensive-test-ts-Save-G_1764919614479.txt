@@ -1,0 +1,117 @@
+
+
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 2. Multi-Device Conflicts > should detect when cloud save is newer than local save
+AssertionError: expected undefined to be 2000 // Object.is equality
+
+- Expected: 
+2000
+
++ Received: 
+undefined
+
+ ❯ client/src/game/save.comprehensive.test.ts:231:32
+    229| 
+    230|       const loaded = await loadGame();
+    231|       expect(loaded?.playTime).toBe(2000);
+       |                                ^
+    232|     });
+    233| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 3. Offline Progress Overwrite > should not lose progress when going from offline to online
+AssertionError: expected undefined to be 5000 // Object.is equality
+
+- Expected: 
+5000
+
++ Received: 
+undefined
+
+ ❯ client/src/game/save.comprehensive.test.ts:281:32
+    279| 
+    280|       const loaded = await loadGame();
+    281|       expect(loaded?.playTime).toBe(5000);
+       |                                ^
+    282|     });
+    283| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 3. Offline Progress Overwrite > should preserve offline progress across browser sessions
+AssertionError: expected undefined to be 3000 // Object.is equality
+
+- Expected: 
+3000
+
++ Received: 
+undefined
+
+ ❯ client/src/game/save.comprehensive.test.ts:315:32
+    313|       // Simulate new session - load from IndexedDB
+    314|       const loaded = await loadGame();
+    315|       expect(loaded?.playTime).toBe(3000);
+       |                                ^
+    316|     });
+    317|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 4. Data Corruption and Validation > should handle corrupted cooldownDurations gracefully
+AssertionError: expected undefined to be defined
+ ❯ client/src/game/save.comprehensive.test.ts:334:41
+    332| 
+    333|       const loaded = await loadGame();
+    334|       expect(loaded?.cooldownDurations).toBeDefined();
+       |                                         ^
+    335|     });
+    336| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯
+
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 6. Referral System Integration > should not process already claimed referrals
+AssertionError: expected undefined to be 100 // Object.is equality
+
+- Expected: 
+100
+
++ Received: 
+undefined
+
+ ❯ client/src/game/save.comprehensive.test.ts:459:38
+    457| 
+    458|       const loaded = await loadGame();
+    459|       expect(loaded?.resources.gold).toBe(100);
+       |                                      ^
+    460|     });
+    461|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯
+
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 7. PlayTime Tracking > should preserve playTime through save/load cycle
+AssertionError: expected undefined to be 12345 // Object.is equality
+
+- Expected: 
+12345
+
++ Received: 
+undefined
+
+ ❯ client/src/game/save.comprehensive.test.ts:470:32
+    468| 
+    469|       const loaded = await loadGame();
+    470|       expect(loaded?.playTime).toBe(12345);
+       |                                ^
+    471|     });
+    472| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/6]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  6 failed | 25 passed (31)
+   Start at  07:26:31
+   Duration  714ms
+
+ FAIL  Tests failed. Watching for file changes...
+       press h to show help, press q to quit
