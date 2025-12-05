@@ -1,5 +1,6 @@
--- Drop the existing function first to allow parameter name change
+-- Drop ALL existing function signatures to prevent overload conflicts
 DROP FUNCTION IF EXISTS save_game_with_analytics(UUID, JSONB, JSONB);
+DROP FUNCTION IF EXISTS save_game_with_analytics(UUID, JSONB, JSONB, JSONB, BOOLEAN, BOOLEAN);
 
 -- Add resources column to button_clicks if it doesn't exist
 DO $$ 
