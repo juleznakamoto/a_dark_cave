@@ -133,19 +133,7 @@ import {
   handleHumans,
 } from "@/game/rules/forestSacrificeActions";
 
-import {
-  handleTradeGoldForFood,
-  handleTradeGoldForWood,
-  handleTradeGoldForStone,
-  handleTradeGoldForLeather,
-  handleTradeGoldForSteel,
-  handleTradeGoldForObsidian,
-  handleTradeGoldForAdamant,
-  handleTradeGoldForTorch,
-  handleTradeSilverForGold,
-  handleTradeGoldForEmberBomb,
-  handleTradeGoldForAshfireBomb,
-} from "@/game/rules/forestTradeActions";
+import { handleTradeAction } from "@/game/rules/forestTradeActions";
 
 import {
   handleMineStone,
@@ -436,27 +424,17 @@ export function executeGameAction(
 
     // Forest Trade Actions
     case "tradeGoldForFood":
-      return handleTradeGoldForFood(state, result);
     case "tradeGoldForWood":
-      return handleTradeGoldForWood(state, result);
     case "tradeGoldForStone":
-      return handleTradeGoldForStone(state, result);
     case "tradeGoldForLeather":
-      return handleTradeGoldForLeather(state, result);
     case "tradeGoldForSteel":
-      return handleTradeGoldForSteel(state, result);
     case "tradeGoldForObsidian":
-      return handleTradeGoldForObsidian(state, result);
     case "tradeGoldForAdamant":
-      return handleTradeGoldForAdamant(state, result);
     case "tradeGoldForTorch":
-      return handleTradeGoldForTorch(state, result);
     case "tradeSilverForGold":
-      return handleTradeSilverForGold(state, result);
     case "tradeGoldForEmberBomb":
-      return handleTradeGoldForEmberBomb(state, result);
     case "tradeGoldForAshfireBomb":
-      return handleTradeGoldForAshfireBomb(state, result);
+      return handleTradeAction(actionId, state, result);
 
     default:
       logger.warn(`No handler found for action: ${actionId}`);

@@ -424,8 +424,8 @@ export const forestTradeActions: Record<string, Action> = {
   },
 };
 
-// Helper function to handle all trade actions with knowledge-based cooldown reduction
-function handleTradeAction(
+// Generic handler for all trade actions with knowledge-based cooldown reduction
+export function handleTradeAction(
   actionId: string,
   state: GameState,
   result: ActionResult,
@@ -443,81 +443,4 @@ function handleTradeAction(
   };
 
   return result;
-}
-
-export function handleTradeGoldForFood(
-  state: GameState,
-  result: ActionResult,
-): ActionResult {
-  return handleTradeAction("tradeGoldForFood", state, result);
-}
-
-export function handleTradeGoldForWood(
-  state: GameState,
-  result: ActionResult,
-): ActionResult {
-  return handleTradeAction("tradeGoldForWood", state, result);
-}
-
-export function handleTradeGoldForStone(
-  state: GameState,
-  result: ActionResult,
-): ActionResult {
-  return handleTradeAction("tradeGoldForStone", state, result);
-}
-
-export function handleTradeGoldForLeather(
-  state: GameState,
-  result: ActionResult,
-): ActionResult {
-  return handleTradeAction("tradeGoldForLeather", state, result);
-}
-
-export function handleTradeGoldForSteel(
-  state: GameState,
-  result: ActionResult,
-): ActionResult {
-  return handleTradeAction("tradeGoldForSteel", state, result);
-}
-
-export function handleTradeGoldForObsidian(
-  state: GameState,
-  result: ActionResult,
-): ActionResult {
-  return handleTradeAction("tradeGoldForObsidian", state, result);
-}
-
-export function handleTradeGoldForAdamant(
-  state: GameState,
-  result: ActionResult,
-): ActionResult {
-  return handleTradeAction("tradeGoldForAdamant", state, result);
-}
-
-export function handleTradeGoldForTorch(
-  state: GameState,
-  result: ActionResult,
-): ActionResult {
-  return handleTradeAction("tradeGoldForTorch", state, result);
-}
-
-export function handleTradeSilverForGold(
-  state: GameState,
-  result: ActionResult,
-): ActionResult {
-  return handleTradeAction("tradeSilverForGold", state, result);
-}
-
-export function handleTradeGoldForEmberBomb(
-  state: GameState,
-  result: ActionResult,
-): ActionResult {
-  return handleTradeAction("tradeGoldForEmberBomb", state, result);
-}
-
-export function handleTradeGoldForAshfireBomb(
-  state: GameState,
-  result: ActionResult,
-): ActionResult {
-  return handleTradeAction("tradeGoldForAshfireBomb", state, result);
 }
