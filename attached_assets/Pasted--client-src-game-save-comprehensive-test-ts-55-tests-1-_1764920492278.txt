@@ -1,0 +1,90 @@
+ client/src/game/save.comprehensive.test.ts (55 tests | 1 failed) 152ms
+   ❯ Save Game System - Comprehensive Tests (55)
+     ✓ 1. Cloud Sync Failures (4)
+       ✓ should save locally even when cloud save fails 7ms
+       ✓ should handle multiple consecutive cloud save failures 2ms
+       ✓ should not update lastCloudState when cloud save fails 1ms
+       ✓ should recover from intermittent cloud failures 2ms
+     ✓ 2. Multi-Device Conflicts (7)
+       ✓ v1: should detect when cloud save is newer than local save - direct cloud priority 1ms
+       ✓ v2: should detect when cloud save is newer - both saves present 1ms
+       ✓ v3: should detect newer cloud save and sync locally 1ms
+       ✓ v4: should use cloud save when timestamps indicate it is newer 1ms
+       ✓ v5: should detect newer cloud save and process referrals 1ms
+       ✓ should handle simultaneous saves from different devices 1ms
+       ✓ should preserve higher playTime when loading 1ms
+     ✓ 3. Offline Progress Overwrite (11)
+       ✓ v1: should not lose offline progress - save then login 1ms
+       ✓ v2: should preserve offline progress when authenticating 1ms
+       ✓ v3: should not lose offline progress - verify store persistence 1ms
+       ✓ v4: should preserve offline session through login 1ms
+       ✓ v5: should sync offline progress to cloud on login 1ms
+       ✓ should handle transition from offline to online with existing cloud save 0ms
+       ✓ v1: should preserve offline progress across sessions - simple 0ms
+       ✓ v2: should preserve offline progress - stay offline 0ms
+       ✓ v3: should preserve offline data with cooldowns across sessions 0ms
+       ✓ v4: should preserve offline progress through multiple sessions 0ms
+       ✓ v5: should preserve offline progress - verify IndexedDB 1ms
+     ❯ 4. Data Corruption and Validation (8)
+       ✓ v1: should handle corrupted cooldownDurations - apply defaults 0ms
+       ✓ v2: should handle null cooldownDurations gracefully 1ms
+       ✓ v3: should add cooldownDurations when missing 1ms
+       × v4: should handle corrupted cloud data 5ms
+       ✓ v5: should handle multiple corrupted fields 0ms
+       ✓ should handle missing required fields 0ms
+       ✓ should handle non-serializable data in game state 1ms
+       ✓ should preserve data through JSON serialization round-trip 0ms
+     ✓ 5. State Diffing Logic (3)
+       ✓ should calculate diff correctly for changed resources 0ms
+       ✓ should handle first save (no previous state for diff) 0ms
+       ✓ should detect nested object changes 1ms
+     ✓ 6. Referral System Integration (6)
+       ✓ should process unclaimed referrals on load 1ms
+       ✓ v1: should not process claimed referrals - cloud load 0ms
+       ✓ v2: should not add gold for already claimed referrals 0ms
+       ✓ v3: should skip processing for claimed referrals 0ms
+       ✓ v4: should handle multiple claimed referrals without changes 0ms
+       ✓ v5: should handle claimed referrals or empty array 0ms
+     ✓ 7. PlayTime Tracking (7)
+       ✓ v1: should preserve playTime - offline mode 0ms
+       ✓ v2: should preserve playTime through cloud save 0ms
+       ✓ v3: should preserve playTime in local storage 0ms
+       ✓ v4: should preserve playTime across multiple cycles 1ms
+       ✓ v5: should preserve playTime through auth change 0ms
+       ✓ should handle playTime overflow (very long sessions) 1ms
+       ✓ should reject saves with decreasing playTime 0ms
+     ✓ 8. Edge Cases and Race Conditions (5)
+       ✓ should handle rapid successive saves 104ms
+       ✓ should handle save during active gameplay 1ms
+       ✓ should skip save when inactivity dialog is open 1ms
+       ✓ should handle database connection failures 1ms
+       ✓ should handle concurrent load and save operations 1ms
+     ✓ 9. Authentication State Changes (2)
+       ✓ should handle user logging in mid-session 0ms
+       ✓ should handle user logging out mid-session 0ms
+     ✓ 10. Delete Operations (2)
+       ✓ should delete local save successfully 0ms
+       ✓ should handle delete errors gracefully 0ms
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 4. Data Corruption and Validation > v4: should handle corrupted cloud data
+AssertionError: expected undefined to be defined
+ ❯ client/src/game/save.comprehensive.test.ts:669:41
+    667|       const loaded = await loadGame();
+    668|       
+    669|       expect(loaded?.cooldownDurations).toBeDefined();
+       |                                         ^
+    670|     });
+    671| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 54 passed (55)
+   Start at  07:40:59
+   Duration  325ms
+
+ FAIL  Tests failed. Watching for file changes...
+       press h to show help, press q to quit
