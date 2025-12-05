@@ -4,10 +4,7 @@ import { GameState } from "@shared/schema";
 import { getPopulationProduction, getMaxPopulation } from "./population";
 import { killVillagers, buildGameState } from "@/game/stateHelpers";
 import { audioManager } from "@/lib/audio";
-import {
-  getTotalMadness,
-  getAllActionBonuses,
-} from "./rules/effectsCalculation";
+import { getTotalMadness } from "./rules/effectsCalculation";
 import { GAME_CONSTANTS } from "./constants";
 import { logger } from "@/lib/logger";
 import { startVersionCheck, stopVersionCheck } from "./versionCheck";
@@ -81,7 +78,7 @@ export function startGameLoop() {
       lastUserActivity = Date.now();
     }
   };
-  document.addEventListener('visibilitychange', handleVisibilityChange);
+  document.addEventListener("visibilitychange", handleVisibilityChange);
 
   // Start inactivity checker (every 30 seconds)
   if (inactivityCheckInterval) {
@@ -92,7 +89,11 @@ export function startGameLoop() {
     const timeSinceActivity = now - lastUserActivity;
 
     // Don't trigger inactivity if the page is currently visible and active
-    if (timeSinceActivity > INACTIVITY_TIMEOUT && !isInactive && !document.hidden) {
+    if (
+      timeSinceActivity > INACTIVITY_TIMEOUT &&
+      !isInactive &&
+      !document.hidden
+    ) {
       handleInactivity();
     }
   }, 30000); // Check every 30 seconds
@@ -113,29 +114,32 @@ export function startGameLoop() {
     try {
       // Use refreshSession() to FORCE a server-side token exchange
       // This is the ONLY way to detect if the session was revoked by single-session enforcement
-      const { getSupabaseClient } = await import('@/lib/supabase');
+      const { getSupabaseClient } = await import("@/lib/supabase");
       const supabase = await getSupabaseClient();
-      const { data: { session }, error } = await supabase.auth.refreshSession();
+      const {
+        data: { session },
+        error,
+      } = await supabase.auth.refreshSession();
 
       // If there's an error or no session, the token was invalidated server-side
       if (error || !session) {
-        logger.log('[SESSION] Session invalidated - another login detected');
+        logger.log("[SESSION] Session invalidated - another login detected");
         // Delete local save when session is invalidated
         try {
-          const { deleteSave } = await import('./save');
+          const { deleteSave } = await import("./save");
           await deleteSave();
         } catch (deleteError) {
-          logger.error('[SESSION] Failed to delete save:', deleteError);
+          logger.error("[SESSION] Failed to delete save:", deleteError);
         }
 
         stopGameLoop();
         useGameStore.setState({
           inactivityDialogOpen: true,
-          inactivityReason: 'multitab',
+          inactivityReason: "multitab",
         });
       }
     } catch (error) {
-      logger.error('[SESSION] Session check failed:', error);
+      logger.error("[SESSION] Session check failed:", error);
     }
   };
   sessionCheckInterval = setInterval(checkSession, SESSION_CHECK_INTERVAL);
@@ -203,7 +207,11 @@ export function startGameLoop() {
 
       // Update play time in state (only when not paused, not in idle mode, and not inactive)
       const currentState = useGameStore.getState();
-      if (!state.isPaused && !currentState.idleModeState?.isActive && !isInactive) {
+      if (
+        !state.isPaused &&
+        !currentState.idleModeState?.isActive &&
+        !isInactive
+      ) {
         currentState.updatePlayTime(deltaTime);
       }
 
@@ -219,7 +227,11 @@ export function startGameLoop() {
       const timeSinceLoad = timestamp - lastGameLoadTime;
       const skipAutoSaveAfterLoad = timeSinceLoad > 0 && timeSinceLoad < 30000; // Skip for 30s after load
 
-      if (timestamp - lastAutoSave >= AUTO_SAVE_INTERVAL && !isInactive && !skipAutoSaveAfterLoad) {
+      if (
+        timestamp - lastAutoSave >= AUTO_SAVE_INTERVAL &&
+        !isInactive &&
+        !skipAutoSaveAfterLoad
+      ) {
         lastAutoSave = timestamp;
         handleAutoSave();
       }
@@ -404,7 +416,7 @@ export function stopGameLoop() {
 
   // Remove visibility listener
   const handleVisibilityChange = () => {};
-  document.removeEventListener('visibilitychange', handleVisibilityChange);
+  document.removeEventListener("visibilitychange", handleVisibilityChange);
 
   StateManager.clearUpdateTimer();
 }
@@ -415,8 +427,8 @@ function processTick() {
   // Auto-remove old stranger log entries after 60 seconds
   const currentTime = Date.now();
   const filteredLog = state.log.filter((entry) => {
-    if (entry.id.startsWith('stranger-approaches-')) {
-      return (currentTime - entry.timestamp) < 60000;
+    if (entry.id.startsWith("stranger-approaches-")) {
+      return currentTime - entry.timestamp < 60000;
     }
     return true;
   });
@@ -462,7 +474,10 @@ function processTick() {
   }
 
   // Check if frostfall has expired
-  if (state.frostfallState?.isActive && state.frostfallState.endTime <= Date.now()) {
+  if (
+    state.frostfallState?.isActive &&
+    state.frostfallState.endTime <= Date.now()
+  ) {
     useGameStore.setState({
       frostfallState: {
         ...state.frostfallState,
@@ -806,8 +821,7 @@ async function handleAutoSave() {
     await saveGame(gameState, playTimeToSave);
     const now = new Date().toLocaleTimeString();
     useGameStore.setState({ lastSaved: now, isNewGame: false });
-  } catch (error) {
-  }
+  } catch (error) {}
 }
 
 function handleStrangerApproach() {
@@ -845,9 +859,9 @@ function handleStrangerApproach() {
   }
 
   if (currentPopulation === 0) {
-    probability = Math.max(0.7-0.1*state.CM, probability);
+    probability = Math.max(0.7 - 0.1 * state.CM, probability);
   } else if (currentPopulation <= 4) {
-    probability = Math.max(0.45-0.05*state.CM, probability);
+    probability = Math.max(0.45 - 0.05 * state.CM, probability);
   }
 
   // Check if stranger(s) approach based on probability
@@ -926,8 +940,6 @@ function handleStrangerApproach() {
         `${strangersCount} wanderers appear and become part of the community.`,
       );
     }
-
-    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
 
     // Add the villager(s) - only the amount that fits
     const actualStrangersToAdd = Math.min(strangersCount, availableRoom);
