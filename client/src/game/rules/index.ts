@@ -1,8 +1,5 @@
 import { Action } from "@shared/schema";
 import { GameState } from "@shared/schema";
-import {
-  caveExploreActions,
-} from "./caveExploreActions";
 import { caveCraftResources } from "./caveCraftResources";
 import { caveCraftTools } from "./caveCraftTools";
 import { caveCraftWeapons } from "./caveCraftWeapons";
@@ -22,6 +19,7 @@ import {
 import { caveEvents } from "./eventsCave";
 import { huntEvents } from "./eventsHunt";
 import { forestTradeActions } from "./forestTradeActions";
+import { caveExploreActions } from "./caveExploreActions";
 import {
   getTotalLuck as getTotalLuckCalc,
   getActionBonuses as getActionBonusesCalc,
