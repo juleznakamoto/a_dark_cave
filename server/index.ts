@@ -63,11 +63,35 @@ app.get('/api/admin/data', async (req, res) => {
 
     log(`📊 Fetching admin dashboard data from ${env.toUpperCase()} environment...`);
 
-    // Fetch all data in parallel
+    // Calculate date 30 days ago for filtering
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    const filterDate = thirtyDaysAgo.toISOString();
+
+    // Get total user count from auth
+    const { data: authUsers, error: authError } = await adminClient.auth.admin.listUsers();
+    if (authError) {
+      log('❌ Error fetching auth users:', authError);
+      throw authError;
+    }
+    const totalUserCount = authUsers.users.length;
+    log(`✅ Total user count: ${totalUserCount}`);
+
+    // Fetch data with 30-day filter for saves and clicks
     const [clicksResult, savesResult, purchasesResult] = await Promise.all([
-      adminClient.from('button_clicks').select('*').order('timestamp', { ascending: true }),
-      adminClient.from('game_saves').select('user_id, game_state, updated_at, created_at'),
-      adminClient.from('purchases').select('*').order('purchased_at', { ascending: false })
+      adminClient
+        .from('button_clicks')
+        .select('*')
+        .gte('timestamp', filterDate)
+        .order('timestamp', { ascending: true }),
+      adminClient
+        .from('game_saves')
+        .select('user_id, game_state, updated_at, created_at')
+        .gte('updated_at', filterDate),
+      adminClient
+        .from('purchases')
+        .select('*')
+        .order('purchased_at', { ascending: false })
     ]);
 
     if (clicksResult.error) {
@@ -83,14 +107,15 @@ app.get('/api/admin/data', async (req, res) => {
       throw purchasesResult.error;
     }
 
-    log(`✅ Fetched ${clicksResult.data.length} click records`);
-    log(`✅ Fetched ${savesResult.data.length} game saves`);
+    log(`✅ Fetched ${clicksResult.data.length} click records (last 30 days)`);
+    log(`✅ Fetched ${savesResult.data.length} game saves (active in last 30 days)`);
     log(`✅ Fetched ${purchasesResult.data.length} purchases`);
 
     res.json({
       clicks: clicksResult.data,
       saves: savesResult.data,
-      purchases: purchasesResult.data
+      purchases: purchasesResult.data,
+      totalUserCount
     });
   } catch (error: any) {
     log('❌ Admin data fetch failed:', error);

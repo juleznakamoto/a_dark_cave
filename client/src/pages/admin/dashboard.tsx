@@ -124,6 +124,7 @@ export default function AdminDashboard() {
   const [gameSaves, setGameSaves] = useState<GameSaveData[]>([]);
   const [purchases, setPurchases] = useState<PurchaseData[]>([]);
   const [users, setUsers] = useState<Array<{ id: string; email: string }>>([]);
+  const [totalUserCount, setTotalUserCount] = useState<number>(0);
 
   // Filter states
   const [timeRange, setTimeRange] = useState<"1d" | "7d" | "30d" | "all">(
@@ -244,6 +245,9 @@ export default function AdminDashboard() {
       }
       if (data.purchases) {
         setPurchases(data.purchases);
+      }
+      if (typeof data.totalUserCount === 'number') {
+        setTotalUserCount(data.totalUserCount);
       }
 
       // Collect unique user IDs only from users who have click data
@@ -2165,7 +2169,10 @@ export default function AdminDashboard() {
                       <CardDescription>All registered players</CardDescription>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-4xl font-bold">{gameSaves.length}</p>
+                      <p className="text-4xl font-bold">{totalUserCount}</p>
+                      <p className="text-sm text-muted-foreground mt-2">
+                        {gameSaves.length} active in last 30 days
+                      </p>
                     </CardContent>
                   </Card>
                 </div>
