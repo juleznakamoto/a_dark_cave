@@ -16,6 +16,9 @@ export default function Game() {
 
   useEffect(() => {
     const initializeGame = async () => {
+      // Check if URL is /game to skip start screen
+      const isGamePath = window.location.pathname === '/game';
+      
       // Check for openShop query parameter
       const urlParams = new URLSearchParams(window.location.search);
       const openShop = urlParams.get('openShop') === 'true';
@@ -31,6 +34,11 @@ export default function Game() {
         useGameStore.setState({
           ...savedState,
           activeTab: 'cave', // Always start on cave tab
+          flags: {
+            ...savedState.flags,
+            gameStarted: isGamePath ? true : savedState.flags.gameStarted, // Force game started if /game path
+            hasLitFire: isGamePath ? true : savedState.flags.hasLitFire, // Force fire lit if /game path
+          }
         });
         logger.log('[GAME] Game loaded from save');
 
@@ -50,6 +58,18 @@ export default function Game() {
       } else {
         // If no saved state, initialize with defaults
         initialize();
+        
+        // If accessing /game directly, also set the game as started
+        if (isGamePath) {
+          useGameStore.setState({
+            flags: {
+              ...useGameStore.getState().flags,
+              gameStarted: true,
+              hasLitFire: true,
+            }
+          });
+        }
+        
         logger.log('[GAME] Game initialized with defaults');
       }
 
