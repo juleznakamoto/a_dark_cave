@@ -4,19 +4,26 @@ import { saveGame, loadGame, deleteSave } from './save';
 import { GameState } from '@shared/schema';
 import type { IDBPDatabase } from 'idb';
 
-// Create mock functions before mocking modules
-const mockOpenDB = vi.fn();
-
-// Mock modules
-vi.mock('idb', () => ({
-  openDB: mockOpenDB,
-}));
+// Create mockOpenDB inside the factory to avoid hoisting issues
+vi.mock('idb', () => {
+  const mockOpenDB = vi.fn();
+  return {
+    openDB: mockOpenDB,
+  };
+});
 vi.mock('./auth');
 vi.mock('./state');
 vi.mock('@/lib/logger');
 
+// Get reference to mockOpenDB after mocking
+const getMockOpenDB = () => {
+  const { openDB } = require('idb');
+  return openDB;
+};
+
 describe('Save Game System - Comprehensive Tests', () => {
   let mockDB: any;
+  let mockOpenDB: any;
   let mockGetCurrentUser: any;
   let mockSaveGameToSupabase: any;
   let mockLoadGameFromSupabase: any;
@@ -72,6 +79,9 @@ describe('Save Game System - Comprehensive Tests', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+
+    // Get reference to the mocked openDB
+    mockOpenDB = getMockOpenDB();
 
     // Setup mock database
     mockDB = {
