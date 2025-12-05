@@ -1081,23 +1081,23 @@ describe('ShopDialog', () => {
     expect(discountPercent).toBeLessThanOrEqual(60);
   });
 
-  it('should display pale kings bundle in shop', async () => {
+  it('should display advanced bundle in shop', async () => {
     const onClose = vi.fn();
     render(<ShopDialog isOpen={true} onClose={onClose} />);
 
     await waitFor(() => {
-      expect(screen.getByText("Pale King's Bundle")).toBeInTheDocument();
+      expect(screen.getByText("Advanced Bundle")).toBeInTheDocument();
     });
 
     expect(screen.getByText(/A powerful pack with 20000 Gold and 3 Great Feasts/i)).toBeInTheDocument();
   });
 
-  it('should show pale kings bundle with correct pricing', async () => {
+  it('should show advanced bundle with correct pricing', async () => {
     const onClose = vi.fn();
     render(<ShopDialog isOpen={true} onClose={onClose} />);
 
     await waitFor(() => {
-      expect(screen.getByText("Pale King's Bundle")).toBeInTheDocument();
+      expect(screen.getByText("Advanced Bundle")).toBeInTheDocument();
     });
 
     // Check for discounted price
@@ -1107,7 +1107,7 @@ describe('ShopDialog', () => {
     expect(originalPrice).toHaveClass('line-through');
   });
 
-  it('should allow purchasing pale kings bundle multiple times', async () => {
+  it('should allow purchasing advanced bundle multiple times', async () => {
     const onClose = vi.fn();
 
     // Mock existing bundle purchases
@@ -1115,8 +1115,8 @@ describe('ShopDialog', () => {
       select: vi.fn(() => ({
         eq: vi.fn(() => ({
           data: [
-            { id: 1, item_id: 'pale_kings_bundle' },
-            { id: 2, item_id: 'pale_kings_bundle' },
+            { id: 1, item_id: 'advanced_bundle' },
+            { id: 2, item_id: 'advanced_bundle' },
           ],
           error: null,
         })),
@@ -1135,11 +1135,11 @@ describe('ShopDialog', () => {
     });
   });
 
-  it('should show pale kings bundle components in purchases tab', async () => {
+  it('should show advanced bundle components in purchases tab', async () => {
     const user = userEvent.setup();
     const onClose = vi.fn();
 
-    // Mock component purchases from pale kings bundle
+    // Mock component purchases from advanced bundle
     mockSupabaseClient.from = vi.fn(() => ({
       select: vi.fn(() => ({
         eq: vi.fn(() => ({
@@ -1175,7 +1175,7 @@ describe('ShopDialog', () => {
     });
   });
 
-  it('should activate pale kings bundle components independently', async () => {
+  it('should activate advanced bundle components independently', async () => {
     const user = userEvent.setup();
     const onClose = vi.fn();
     const updateResource = vi.fn();

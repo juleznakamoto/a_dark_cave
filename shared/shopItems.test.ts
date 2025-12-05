@@ -237,53 +237,53 @@ describe('Shop Items Configuration', () => {
     });
   });
 
-  describe("Pale King's Bundle Configuration", () => {
-    it('should have pale kings bundle defined', () => {
-      expect(SHOP_ITEMS.pale_kings_bundle).toBeDefined();
-      expect(SHOP_ITEMS.pale_kings_bundle.category).toBe('bundle');
+  describe("Advanced Bundle Configuration", () => {
+    it('should have advanced bundle defined', () => {
+      expect(SHOP_ITEMS.advanced_bundle).toBeDefined();
+      expect(SHOP_ITEMS.advanced_bundle.category).toBe('bundle');
     });
 
-    it('should have correct components for pale kings bundle', () => {
-      const bundle = SHOP_ITEMS.pale_kings_bundle;
+    it('should have correct components for advanced bundle', () => {
+      const bundle = SHOP_ITEMS.advanced_bundle;
       expect(bundle.bundleComponents).toContain('gold_20000');
       expect(bundle.bundleComponents).toContain('great_feast_3');
       expect(bundle.bundleComponents?.length).toBe(2);
     });
 
-    it('should have correct pricing for pale kings bundle', () => {
-      const bundle = SHOP_ITEMS.pale_kings_bundle;
+    it('should have correct pricing for advanced bundle', () => {
+      const bundle = SHOP_ITEMS.advanced_bundle;
       expect(bundle.price).toBe(1199); // 11.99 €
       expect(bundle.originalPrice).toBe(2399); // 23.99 €
     });
 
-    it('should have correct rewards for pale kings bundle', () => {
-      const bundle = SHOP_ITEMS.pale_kings_bundle;
+    it('should have correct rewards for advanced bundle', () => {
+      const bundle = SHOP_ITEMS.advanced_bundle;
       expect(bundle.rewards.resources?.gold).toBe(20000);
       expect(bundle.rewards.feastActivations).toBe(5);
     });
 
-    it('should have reasonable discount for pale kings bundle', () => {
-      const bundle = SHOP_ITEMS.pale_kings_bundle;
+    it('should have reasonable discount for advanced bundle', () => {
+      const bundle = SHOP_ITEMS.advanced_bundle;
       const discountPercent = ((bundle.originalPrice! - bundle.price) / bundle.originalPrice!) * 100;
       
       expect(discountPercent).toBeGreaterThanOrEqual(40);
       expect(discountPercent).toBeLessThanOrEqual(60);
     });
 
-    it('should allow pale kings bundle to be purchased multiple times', () => {
-      expect(SHOP_ITEMS.pale_kings_bundle.canPurchaseMultipleTimes).toBe(true);
+    it('should allow advanced bundle to be purchased multiple times', () => {
+      expect(SHOP_ITEMS.advanced_bundle.canPurchaseMultipleTimes).toBe(true);
     });
 
-    it('should have appropriate symbol and color for pale kings bundle', () => {
-      const bundle = SHOP_ITEMS.pale_kings_bundle;
+    it('should have appropriate symbol and color for advanced bundle', () => {
+      const bundle = SHOP_ITEMS.advanced_bundle;
       expect(bundle.symbol).toBeTruthy();
       expect(bundle.symbolColor).toBeTruthy();
       expect(bundle.symbol).toBe('♔');
       expect(bundle.symbolColor).toBe('text-slate-400');
     });
 
-    it('should have valid component references for pale kings bundle', () => {
-      const bundle = SHOP_ITEMS.pale_kings_bundle;
+    it('should have valid component references for advanced bundle', () => {
+      const bundle = SHOP_ITEMS.advanced_bundle;
       bundle.bundleComponents!.forEach(componentId => {
         const component = SHOP_ITEMS[componentId];
         expect(component).toBeDefined();
@@ -292,7 +292,7 @@ describe('Shop Items Configuration', () => {
     });
 
     it('should have bundle price less than sum of individual components', () => {
-      const bundle = SHOP_ITEMS.pale_kings_bundle;
+      const bundle = SHOP_ITEMS.advanced_bundle;
       const gold20000 = SHOP_ITEMS.gold_20000;
       const feast3 = SHOP_ITEMS.great_feast_3;
       
@@ -302,13 +302,13 @@ describe('Shop Items Configuration', () => {
     });
 
     it('should have activation message mentioning bundle', () => {
-      const bundle = SHOP_ITEMS.pale_kings_bundle;
+      const bundle = SHOP_ITEMS.advanced_bundle;
       expect(bundle.activationMessage).toBeDefined();
       expect(bundle.activationMessage?.toLowerCase()).toContain('bundle');
     });
 
     it('should have description mentioning components', () => {
-      const bundle = SHOP_ITEMS.pale_kings_bundle;
+      const bundle = SHOP_ITEMS.advanced_bundle;
       expect(bundle.description.toLowerCase()).toContain('gold');
       expect(bundle.description.toLowerCase()).toContain('feast');
     });
