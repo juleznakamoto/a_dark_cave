@@ -180,8 +180,8 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     canPurchaseMultipleTimes: true,
     category: "bundle",
     activationMessage: "Pale King's Bundle components have been added to your purchases!",
-    symbol: "♔♛",
-    symbolColor: "text-cyan-600",
+    symbol: "✣",
+    symbolColor: "text-rose-600",
     bundleComponents: ["gold_20000", "great_feast_3"], // Component items
   },
 

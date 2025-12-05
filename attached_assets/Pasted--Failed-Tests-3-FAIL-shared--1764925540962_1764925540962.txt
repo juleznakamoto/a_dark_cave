@@ -1,0 +1,65 @@
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  shared/shopItems.test.ts > Shop Items Configuration > Rewards > should have valid feast activations
+AssertionError: expected 3 to be 5 // Object.is equality
+
+- Expected
++ Received
+
+- 5
++ 3
+
+ ❯ shared/shopItems.test.ts:65:65
+     63|     it('should have valid feast activations', () => {
+     64|       expect(SHOP_ITEMS.great_feast_1.rewards.feastActivations).toBe(1…
+     65|       expect(SHOP_ITEMS.great_feast_3.rewards.feastActivations).toBe(5…
+       |                                                                 ^
+     66|     });
+     67|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  shared/shopItems.test.ts > Shop Items Configuration > Advanced Bundle Configuration > should have correct rewards for advanced bundle
+AssertionError: expected 3 to be 5 // Object.is equality
+
+- Expected
++ Received
+
+- 5
++ 3
+
+ ❯ shared/shopItems.test.ts:262:47
+    260|       const bundle = SHOP_ITEMS.advanced_bundle;
+    261|       expect(bundle.rewards.resources?.gold).toBe(20000);
+    262|       expect(bundle.rewards.feastActivations).toBe(5);
+       |                                               ^
+    263|     });
+    264| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  shared/shopItems.test.ts > Shop Items Configuration > Advanced Bundle Configuration > should have appropriate symbol and color for advanced bundle
+AssertionError: expected '✣' to be '♔' // Object.is equality
+
+Expected: "♔"
+Received: "✣"
+
+ ❯ shared/shopItems.test.ts:281:29
+    279|       expect(bundle.symbol).toBeTruthy();
+    280|       expect(bundle.symbolColor).toBeTruthy();
+    281|       expect(bundle.symbol).toBe('♔');
+       |                             ^
+    282|       expect(bundle.symbolColor).toBe('text-slate-400');
+    283|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed | 11 passed (12)
+      Tests  3 failed | 188 passed (191)
+   Start at  09:05:30
+   Duration  2.75s (transform 1.32s, setup 0ms, import 2.14s, tests 1.12s, environment 2ms)
+
+ FAIL  Tests failed. Watching for file changes...
+       press h to show help, press q to quit
