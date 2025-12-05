@@ -101,8 +101,9 @@ describe('Save Game System - Comprehensive Tests', () => {
     mockDelete.mockClear();
     mockOpenDB.mockClear();
 
-    // Setup mock database - track separate stores
-    const mockStores: Record<string, any> = {
+    // Setup mock database - track separate stores with shared reference
+    // This needs to be accessible across mock function calls
+    let mockStores: Record<string, any> = {
       saves: {},
       lastCloudState: {},
     };
@@ -114,7 +115,8 @@ describe('Save Game System - Comprehensive Tests', () => {
         return undefined;
       }),
       get: mockGet.mockImplementation(async (storeName: string, key: string) => {
-        return mockStores[storeName]?.[key] || null;
+        const result = mockStores[storeName]?.[key];
+        return result !== undefined ? result : null;
       }),
       delete: mockDelete.mockImplementation(async (storeName: string, key: string) => {
         if (mockStores[storeName]) {
@@ -122,6 +124,8 @@ describe('Save Game System - Comprehensive Tests', () => {
         }
         return undefined;
       }),
+      // Store reference for debugging
+      _stores: mockStores,
     };
 
     mockOpenDB.mockResolvedValue(mockDB);
