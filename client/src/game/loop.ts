@@ -119,11 +119,13 @@ export function startGameLoop() {
 
       // If there's an error or no session, the token was invalidated server-side
       if (error || !session) {
+        logger.log('[SESSION] Session invalidated - another login detected');
         // Delete local save when session is invalidated
         try {
           const { deleteSave } = await import('./save');
           await deleteSave();
         } catch (deleteError) {
+          logger.error('[SESSION] Failed to delete save:', deleteError);
         }
 
         stopGameLoop();
@@ -133,6 +135,7 @@ export function startGameLoop() {
         });
       }
     } catch (error) {
+      logger.error('[SESSION] Session check failed:', error);
     }
   };
   sessionCheckInterval = setInterval(checkSession, SESSION_CHECK_INTERVAL);
