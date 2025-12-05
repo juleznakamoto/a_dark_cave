@@ -212,9 +212,9 @@ export default function GameContainer() {
       </div>
 
       {/* Main Content Area - Fills remaining space */}
-      <main className="flex-1 pl-2 pr-2 pb-0 flex flex-col md:flex-row min-h-0 overflow-hidden">
+      <main className="flex-1 pb-0 flex flex-col md:flex-row min-h-0 overflow-hidden">
         {/* Left Sidebar for Resources - On top for mobile, left for desktop */}
-        <div className="w-full md:w-[26rem] border-t md:border-r overflow-hidden">
+        <div className="w-full pl-2 pr-2 md:w-[26rem] border-t md:border-r overflow-hidden">
           <GameTabs />
         </div>
 
