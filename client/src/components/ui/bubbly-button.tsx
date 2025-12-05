@@ -139,10 +139,7 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
                 const distanceX = 20 + Math.random() * 120;
                 const distanceY = 20 + Math.random() * 80;
                 const size = 3 + Math.random() * 25;
-                const color =
-                  TONES[
-                    Math.floor(Math.random() * TONES.length)
-                  ];
+                const color = TONES[Math.floor(Math.random() * TONES.length)];
                 const duration = 2.0 + Math.random() * 1.0;
 
                 return { size, angle, distanceX, distanceY, color, duration };
@@ -160,8 +157,8 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
                       width: `${b.size}px`,
                       height: `${b.size}px`,
                       backgroundColor: b.color,
-                      left: bubble.x,
-                      top: bubble.y,
+                      left: bubble.x - b.size / 2,
+                      top: bubble.y - b.size / 2,
                       boxShadow: `0 0 ${b.size * 0.8}px ${b.color}aa, 0 0 ${b.size * 1.5}px ${b.color}55`,
                     }}
                     initial={{
@@ -235,8 +232,7 @@ export const BubblyButtonGlobalPortal = ({
               const distanceX = 40 + Math.random() * 60;
               const distanceY = 0 + Math.random() * 60;
               const size = 5 + Math.random() * 20;
-              const color =
-                TONES[Math.floor(Math.random() * TONES.length)];
+              const color = TONES[Math.floor(Math.random() * TONES.length)];
               const duration = 2 + Math.random() * 1.0;
               const endX = Math.cos(angle) * distanceX;
               const endY = Math.sin(angle) * distanceY;
@@ -262,7 +258,7 @@ export const BubblyButtonGlobalPortal = ({
                     y: endY,
                   }}
                   exit={{ opacity: 0.8 }}
-                  transition={{ duration, ease: [0,0,0.5,1] }}
+                  transition={{ duration, ease: [0, 0, 0.5, 1] }}
                 />
               );
             })}
