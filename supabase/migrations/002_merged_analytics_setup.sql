@@ -74,8 +74,7 @@ CREATE OR REPLACE FUNCTION save_game_with_analytics(
   p_click_analytics JSONB DEFAULT NULL,
   p_resource_analytics JSONB DEFAULT NULL,
   p_clear_clicks BOOLEAN DEFAULT FALSE,
-  p_allow_playtime_overwrite BOOLEAN DEFAULT FALSE,
-  p_version INTEGER DEFAULT NULL
+  p_allow_playtime_overwrite BOOLEAN DEFAULT FALSE
 )
 RETURNS void
 LANGUAGE plpgsql
@@ -92,36 +91,33 @@ DECLARE
   v_playtime_minutes INTEGER;
   v_playtime_bucket INTEGER;
   v_playtime_key TEXT;
-  v_existing_version INTEGER;
-  v_new_version INTEGER;
+  v_existing_playtime NUMERIC;
+  v_new_playtime NUMERIC;
 BEGIN
   -- Get existing game state
   SELECT game_state INTO v_existing_state
   FROM game_saves
   WHERE user_id = p_user_id;
 
-  -- OCC: Validate version if provided
-  IF p_version IS NOT NULL THEN
-    IF v_existing_state IS NOT NULL THEN
-      v_existing_version := COALESCE((v_existing_state->>'version')::INTEGER, 0);
-      v_new_version := p_version;
-      
-      IF p_allow_playtime_overwrite THEN
-        -- Allow overwrite for game restarts (skip version check)
-        RAISE NOTICE 'OCC check SKIPPED: game restart - new version: %, existing: %', 
-          v_new_version, v_existing_version;
-      ELSE
-        -- Strict version check: new must be exactly existing + 1
-        IF v_new_version != v_existing_version + 1 THEN
-          RAISE EXCEPTION 'OCC violation: expected version %, got % (existing: %)', 
-            v_existing_version + 1, v_new_version, v_existing_version;
-        END IF;
-        
-        RAISE NOTICE 'OCC check passed: version % -> %', v_existing_version, v_new_version;
-      END IF;
+  -- OCC: Validate playTime if both states exist (unless overwrite is allowed)
+  IF v_existing_state IS NOT NULL AND p_game_state_diff ? 'playTime' THEN
+    v_existing_playtime := COALESCE((v_existing_state->>'playTime')::NUMERIC, 0);
+    v_new_playtime := COALESCE((p_game_state_diff->>'playTime')::NUMERIC, 0);
+
+    IF p_allow_playtime_overwrite THEN
+      -- Allow overwrite for game restarts
+      RAISE NOTICE 'OCC check SKIPPED: playTime overwrite allowed (game restart) - new: %, existing: %', 
+        v_new_playtime, v_existing_playtime;
     ELSE
-      -- First save, any version is acceptable
-      RAISE NOTICE 'First save, version: %', p_version;
+      -- Reject save if new playTime is not strictly greater than existing
+      IF v_new_playtime <= v_existing_playtime THEN
+        RAISE EXCEPTION 'OCC violation: new playTime (%) must be greater than existing playTime (%)', 
+          v_new_playtime, v_existing_playtime;
+      END IF;
+
+      -- Log successful OCC check (visible in Supabase logs)
+      RAISE NOTICE 'OCC check passed: new playTime (%) > existing playTime (%)', 
+        v_new_playtime, v_existing_playtime;
     END IF;
   END IF;
 

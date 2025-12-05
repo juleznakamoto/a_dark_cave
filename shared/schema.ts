@@ -412,9 +412,6 @@ export const gameStateSchema = z.object({
   isNewGame: z.boolean().default(false), // Track if this is a newly started game
   startTime: z.number().default(0), // Timestamp when the current game was started
   allowPlayTimeOverwrite: z.boolean().default(false), // Allow overwriting higher playTime on next save (used for game restarts)
-
-  // Save version for OCC (Optimistic Concurrency Control)
-  version: z.number().default(0), // Increments with each save, used for conflict detection
   hasMadeNonFreePurchase: z.boolean().default(false), // Track if player has made any non-free shop purchase
   referralCode: z.string().optional(), // Store the referral code used during signup
   referrals: z
