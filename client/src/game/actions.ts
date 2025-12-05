@@ -108,12 +108,12 @@ import {
   handleBuildLonghouse,
   handleBuildGrandBlacksmith,
   handleBuildFortifiedMoat,
-  handleBuildTraps, // Import the new handler
-  handleBuildBlackMonolith, // Import the new handler
-  handleBuildMasterworkFoundry, // Import the new handler
-  handleBuildDarkEstate, // Import the new handler
-  handleBuildPillarOfClarity, // Import the new handler
-  handleBuildBoneTemple, // Import the new handler
+  handleBuildTraps,
+  handleBuildBlackMonolith,
+  handleBuildMasterworkFoundry,
+  handleBuildDarkEstate,
+  handleBuildPillarOfClarity,
+  handleBuildBoneTemple,
 } from "./rules/villageBuildActions";
 
 import {
