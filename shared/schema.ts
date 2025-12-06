@@ -309,6 +309,11 @@ export const gameStateSchema = z.object({
       slaughteredCreatures: z.boolean().default(false),
       communicatedWithCreatures: z.boolean().default(false),
       encounteredCreaturesChoice: z.boolean().default(false),
+      // Riddle Events
+      riddleOfMan: z.boolean().default(false),
+      riddleOfTime: z.boolean().default(false),
+      riddleOfClouds: z.boolean().default(false),
+      riddleOfDarkness: z.boolean().default(false),
     })
     .default({}),
   effects: z
@@ -393,6 +398,15 @@ export const gameStateSchema = z.object({
       endTime: 0,
     }),
   frostfallState: z
+    .object({
+      isActive: z.boolean().default(false),
+      endTime: z.number().default(0),
+    })
+    .default({
+      isActive: false,
+      endTime: 0,
+    }),
+  fogState: z
     .object({
       isActive: z.boolean().default(false),
       endTime: z.number().default(0),
