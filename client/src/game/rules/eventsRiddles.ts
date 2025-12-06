@@ -19,32 +19,41 @@ const RIDDLE_PENALTIES = {
     cmMultiplier: 6,
   },
   second: {
-    fogDuration: 5 * 60 * 1000, // 5 minutes in milliseconds
+    fogDuration: 10 * 60 * 1000, // 5 minutes in milliseconds
   },
   third: {
     baseDeaths: 18,
     cmMultiplier: 6,
   },
   fourth: {
-    fogDuration: 10 * 60 * 1000, // 10 minutes in milliseconds
+    fogDuration: 15 * 60 * 1000, // 10 minutes in milliseconds
   },
   fifth: {
-    fogDuration: 10 * 60 * 1000, // 10 minutes in milliseconds
-    baseDeaths: 22,
+    fogDuration: 15 * 60 * 1000, // 10 minutes in milliseconds
+    baseDeaths: 24,
     cmMultiplier: 6,
   },
 } as const;
 
+// Questions
+const START_MESSAGES = {
+  first: "A knock echoes from the estate door. A figure completely hulled in dark robes stands in the shadows outside. It whispers: 'Voiceless it cries, wingless flutters, toothless bites, mouthless mutters.'",
+  second: "The cloaked figure returns under the pale moonlight. Its voice echoes: 'Goes on four feet in the morning, two feet at noon, and three feet in the evening.'",
+  third: "Once again, the mysterious figure appears at your door. It whispers with a low voice : 'All things it devours, turns bones to dust, slays kings, wears mountains down, erases towns.'",
+  fourth: "The hulled figure appears once more at the estate. Its voice : 'Flies without wings, cries without eyes, darkness follows wherever it goes.'",
+  fifth: "The nightly figure appears one more time. Its voice echoes with through the night: 'Your eyes are open, I am there, your eyes are closed, I am there too.'"
+}
+
 // Success messages
 const SUCCESS_MESSAGES = {
   first: (gold: number) =>
-    `The figure lightly nods and vanishes briefly after you say the word. In the morning, you find a bag with ${gold} gold on the doorsteps of the estate.`,
+    `The figure seems to nod lightly and vanishes briefly after. In the morning, a bag with ${gold} gold lays on the doorsteps of the estate.`,
   second: (gold: number) =>
-    `The figure bows slightly in acknowledgment. 'You have answered wisely,' it whispers before fading into shadow. A leather pouch with ${gold} gold appears at your feet.`,
+    `The figure nods slightly, then disapears in the darkness.A leather pouch with ${gold} gold is laying where it stood.`,
   third: (gold: number) =>
-    `The figure seems to smile beneath its hood. 'You understand the eternal truth,' it whispers. A heavy coin purse containing ${gold} gold materializes before you.`,
+    `The figure tilts its head, as if faintly pleased, then steps back into the dim. While disaperaing a it let's fall a worn coin purse with ${gold} gold.`,
   fourth: (gold: number) =>
-    `The figure nods approvingly. 'Your wisdom grows with each trial,' it intones. A chest containing ${gold} gold appears as the figure fades into the night.`,
+    `The figure nods in approval. A small bag containing ${gold} gold is laying on the ground as the figure fades into the night.`,
   fifth: (gold: number) =>
     `The figure bows deeply. 'You have proven yourself worthy through all trials. This is my final gift to you.' A magnificent chest filled with ${gold} gold appears. The figure then dissolves into the darkness, never to return.`,
 } as const;
@@ -64,18 +73,7 @@ const WRONG_ANSWER_MESSAGES = {
 } as const;
 
 // Timeout messages
-const TIMEOUT_MESSAGES = {
-  first: (deaths: number) =>
-    `The figure vanishes the very moment you say the word. In the morning, ${deaths} villagers are found in their beds with slit throats.`,
-  second: () =>
-    "You remain silent. The figure's disappointment is palpable as it vanishes, leaving behind a dense fog that engulfs the village. Strange shapes move within the mist.",
-  third: (deaths: number) =>
-    `Your silence seals their fate. By morning, ${deaths} villagers lie dead in their beds, their lives claimed by an unseen force.`,
-  fourth: () =>
-    "Your hesitation is met with disapproval. As the figure departs, a thick fog engulfs everything, lasting far longer than before. Fear grips the village.",
-  fifth: (deaths: number) =>
-    `Your silence seals your doom. The figure unleashes both death and fog upon the village. ${deaths} souls are lost, and an impenetrable mist shrouds everything.`,
-} as const;
+const TIMEOUT_MESSAGES = WRONG_ANSWER_MESSAGES
 
 export const riddleEvents: Record<string, GameEvent> = {
   whispererInTheDark: {
@@ -84,8 +82,7 @@ export const riddleEvents: Record<string, GameEvent> = {
     triggerType: "resource",
     timeProbability: 30,
     title: "Whisperer in the Dark",
-    message:
-      "At night, a knock echoes from the estate door. A figure completely hulled in dark robes stands in the shadows outside. It whispers: 'Voiceless it cries, wingless flutters, toothless bites, mouthless mutters.'",
+    message: START_MESSAGES.first,
     triggered: false,
     priority: 4,
     repeatable: false,
@@ -186,8 +183,7 @@ export const riddleEvents: Record<string, GameEvent> = {
     triggerType: "resource",
     timeProbability: 45,
     title: "Riddle of Ages",
-    message:
-      "The cloaked figure returns under the pale moonlight. Its voice echoes with ancient wisdom: 'Goes on four feet in the morning, two feet at noon, and three feet in the evening?'",
+    message: START_MESSAGES.second,
     triggered: false,
     priority: 4,
     repeatable: false,
@@ -288,8 +284,7 @@ export const riddleEvents: Record<string, GameEvent> = {
     triggerType: "resource",
     timeProbability: 45,
     title: "Riddle of the Devourer",
-    message:
-      "Once again, the mysterious figure appears at your door. Its voice reverberates like the toll of a distant bell: 'All things it devours, turns bones to dust, slays kings, wears mountains down, erases towns.'",
+    message: START_MESSAGES.third,
     triggered: false,
     priority: 4,
     repeatable: false,
@@ -390,8 +385,7 @@ export const riddleEvents: Record<string, GameEvent> = {
     triggerType: "resource",
     timeProbability: 45,
     title: "Riddle of Tears",
-    message:
-      "The cloaked figure materializes from the darkness once more. Its voice carries the weight of sorrow: 'Flies without wings, cries without eyes, darkness follows wherever it goes.'",
+    message: START_MESSAGES.fourth,
     triggered: false,
     priority: 4,
     repeatable: false,
@@ -492,8 +486,7 @@ export const riddleEvents: Record<string, GameEvent> = {
     triggerType: "resource",
     timeProbability: 45,
     title: "Final Riddle",
-    message:
-      "The figure appears one last time, its presence more foreboding than ever. Its voice echoes with finality: 'Your eyes are open, I am there, your eyes are closed, I am there too.'",
+    message: START_MESSAGES.fifth,
     triggered: false,
     priority: 4,
     repeatable: false,
