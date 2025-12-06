@@ -18,7 +18,7 @@ const stripe = new Stripe(stripeSecretKey || '', {
 export { SHOP_ITEMS };
 export type { ShopItem };
 
-export async function createPaymentIntent(itemId: string, userEmail?: string, clientPrice?: number) {
+export async function createPaymentIntent(itemId: string, userEmail?: string, userId?: string, clientPrice?: number) {
   const item = SHOP_ITEMS[itemId];
   if (!item) {
     throw new Error('Invalid item');
@@ -46,6 +46,11 @@ export async function createPaymentIntent(itemId: string, userEmail?: string, cl
   // Add customer email if provided - this shows in Stripe dashboard
   if (userEmail) {
     paymentIntentData.receipt_email = userEmail;
+  }
+
+  // Add user ID to metadata - this helps connect Stripe payments to your database
+  if (userId) {
+    paymentIntentData.metadata.userId = userId;
   }
 
   const paymentIntent = await stripe.paymentIntents.create(paymentIntentData);

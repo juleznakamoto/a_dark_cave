@@ -443,7 +443,8 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ 
         itemId,
-        userEmail: user?.email 
+        userEmail: user?.email,
+        userId: user?.id
       }),
     });
 
