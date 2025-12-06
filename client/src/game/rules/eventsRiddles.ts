@@ -1,4 +1,3 @@
-
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
@@ -267,6 +266,7 @@ export const riddleEvents: Record<string, GameEvent> = {
           fogState: {
             isActive: true,
             endTime: Date.now() + RIDDLE_PENALTIES.second.fogDuration,
+            duration: RIDDLE_PENALTIES.second.fogDuration,
           },
           events: {
             ...state.events,
@@ -469,6 +469,7 @@ export const riddleEvents: Record<string, GameEvent> = {
           fogState: {
             isActive: true,
             endTime: Date.now() + RIDDLE_PENALTIES.fourth.fogDuration,
+            duration: RIDDLE_PENALTIES.fourth.fogDuration,
           },
           events: {
             ...state.events,

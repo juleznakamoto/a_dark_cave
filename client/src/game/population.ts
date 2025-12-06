@@ -220,7 +220,7 @@ export const getPopulationProduction = (
   if (state && jobId === "hunter") {
     const huntingSkillLevel = state.huntingSkills?.level || 0;
     const skillBonus = HUNTING_SKILL_BONUSES[huntingSkillLevel];
-    
+
     baseProduction.forEach((prod) => {
       if (prod.resource === "food" && prod.baseAmount > 0) {
         let bonusFood = skillBonus.food;

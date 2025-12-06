@@ -410,11 +410,9 @@ export const gameStateSchema = z.object({
     .object({
       isActive: z.boolean().default(false),
       endTime: z.number().default(0),
+      duration: z.number().default(0),
     })
-    .default({
-      isActive: false,
-      endTime: 0,
-    }),
+    .default({ isActive: false, endTime: 0, duration: 0 }),
   shopNotificationSeen: z.boolean().default(false), // Added new field for shop notification
   authNotificationSeen: z.boolean().default(false), // Added new field for auth notification
   authNotificationVisible: z.boolean().default(false), // Added new field for auth notification visibility

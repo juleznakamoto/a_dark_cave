@@ -486,6 +486,16 @@ function processTick() {
     });
   }
 
+  // Check if fog has expired
+  if (state.fogState?.isActive && state.fogState.endTime <= Date.now()) {
+    useGameStore.setState({
+      fogState: {
+        ...state.fogState,
+        isActive: false,
+      },
+    });
+  }
+
   // Check if mining boost has expired
   if (
     state.miningBoostState?.isActive &&

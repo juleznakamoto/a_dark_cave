@@ -638,6 +638,76 @@ export default function VillagePanel() {
                         </Tooltip>
                       </TooltipProvider>
                     )}
+
+                    {/* Fog Indicator */}
+                    {(() => {
+                      const fogState = useGameStore.getState().fogState;
+                      const isFog =
+                        fogState?.isActive && fogState.endTime > Date.now();
+                      
+                      if (!isFog) return null;
+                      
+                      return (
+                        <TooltipProvider>
+                          <Tooltip
+                            open={mobileTooltip.isTooltipOpen("fog-progress")}
+                          >
+                            <TooltipTrigger asChild>
+                              <div
+                                className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
+                                onClick={(e) =>
+                                  mobileTooltip.handleTooltipClick(
+                                    "fog-progress",
+                                    e,
+                                  )
+                                }
+                              >
+                                <div className="relative inline-flex items-center gap-1 mt-[0px]">
+                                  <CircularProgress
+                                    value={(() => {
+                                      const fogDuration = fogState.duration || 5 * 60 * 1000;
+                                      const timeRemaining = Math.max(
+                                        0,
+                                        fogState.endTime - Date.now(),
+                                      );
+                                      const elapsed = fogDuration - timeRemaining;
+                                      return Math.min(
+                                        100,
+                                        (elapsed / fogDuration) * 100,
+                                      );
+                                    })()}
+                                    size={18}
+                                    strokeWidth={2}
+                                    className="text-gray-500"
+                                  />
+                                  <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[12px] -mt-[0px] text-gray-500">
+                                    ≋
+                                  </span>
+                                </div>
+                              </div>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <div className="text-xs whitespace-pre-line">
+                                {(() => {
+                                  const fogTooltip = {
+                                    getContent: (state: any) => {
+                                      const fogState = state.fogState;
+                                      if (!fogState?.isActive) return "";
+                                      
+                                      const timeRemaining = Math.max(0, fogState.endTime - Date.now());
+                                      const minutesRemaining = Math.ceil(timeRemaining / 60000);
+                                      
+                                      return `Dense Fog\n\nProduction: -50%\nTime remaining: ${minutesRemaining} min`;
+                                    }
+                                  };
+                                  return fogTooltip.getContent(state);
+                                })()}
+                              </div>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      );
+                    })()}
                   </>
                 );
               })()}
