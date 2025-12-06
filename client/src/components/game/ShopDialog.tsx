@@ -437,14 +437,10 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     }
 
     // For paid items, create payment intent for embedded checkout
-    const user = await getCurrentUser();
     const response = await fetch("/api/payment/create-intent", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ 
-        itemId,
-        userEmail: user?.email 
-      }),
+      body: JSON.stringify({ itemId }),
     });
 
     const { clientSecret } = await response.json();

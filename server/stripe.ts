@@ -18,7 +18,7 @@ const stripe = new Stripe(stripeSecretKey || '', {
 export { SHOP_ITEMS };
 export type { ShopItem };
 
-export async function createPaymentIntent(itemId: string, userEmail?: string, clientPrice?: number) {
+export async function createPaymentIntent(itemId: string, clientPrice?: number) {
   const item = SHOP_ITEMS[itemId];
   if (!item) {
     throw new Error('Invalid item');
@@ -33,7 +33,7 @@ export async function createPaymentIntent(itemId: string, userEmail?: string, cl
     logger.warn(`Price manipulation attempt detected for item ${itemId}. Client sent: ${clientPrice}, Server price: ${serverPrice}`);
   }
 
-  const paymentIntentData: Stripe.PaymentIntentCreateParams = {
+  const paymentIntent = await stripe.paymentIntents.create({
     amount: serverPrice, // Always use server-defined price
     currency: 'eur',
     metadata: {
@@ -41,14 +41,7 @@ export async function createPaymentIntent(itemId: string, userEmail?: string, cl
       itemName: item.name,
       priceInCents: serverPrice.toString(),
     },
-  };
-
-  // Add customer email if provided
-  if (userEmail) {
-    paymentIntentData.receipt_email = userEmail;
-  }
-
-  const paymentIntent = await stripe.paymentIntents.create(paymentIntentData);
+  });
 
   return {
     clientSecret: paymentIntent.client_secret,
