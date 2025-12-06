@@ -3,6 +3,80 @@ import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
 
+// Riddle rewards (gold amounts)
+const RIDDLE_REWARDS = {
+  first: 200,
+  second: 300,
+  third: 400,
+  fourth: 500,
+  fifth: 750,
+} as const;
+
+// Riddle penalties
+const RIDDLE_PENALTIES = {
+  first: {
+    baseDeaths: 12,
+    cmMultiplier: 6,
+  },
+  second: {
+    fogDuration: 5 * 60 * 1000, // 5 minutes in milliseconds
+  },
+  third: {
+    baseDeaths: 18,
+    cmMultiplier: 6,
+  },
+  fourth: {
+    fogDuration: 10 * 60 * 1000, // 10 minutes in milliseconds
+  },
+  fifth: {
+    fogDuration: 10 * 60 * 1000, // 10 minutes in milliseconds
+    baseDeaths: 22,
+    cmMultiplier: 6,
+  },
+} as const;
+
+// Success messages
+const SUCCESS_MESSAGES = {
+  first: (gold: number) =>
+    `The figure lightly nods and vanishes briefly after you say the word. In the morning, you find a bag with ${gold} gold on the doorsteps of the estate.`,
+  second: (gold: number) =>
+    `The figure bows slightly in acknowledgment. 'You have answered wisely,' it whispers before fading into shadow. A leather pouch with ${gold} gold appears at your feet.`,
+  third: (gold: number) =>
+    `The figure seems to smile beneath its hood. 'You understand the eternal truth,' it whispers. A heavy coin purse containing ${gold} gold materializes before you.`,
+  fourth: (gold: number) =>
+    `The figure nods approvingly. 'Your wisdom grows with each trial,' it intones. A chest containing ${gold} gold appears as the figure fades into the night.`,
+  fifth: (gold: number) =>
+    `The figure bows deeply. 'You have proven yourself worthy through all trials. This is my final gift to you.' A magnificent chest filled with ${gold} gold appears. The figure then dissolves into the darkness, never to return.`,
+} as const;
+
+// Wrong answer messages
+const WRONG_ANSWER_MESSAGES = {
+  first: (deaths: number) =>
+    `The figure vanishes the very moment you say the word. In the morning, ${deaths} villagers are found in their beds with slit throats.`,
+  second: () =>
+    "The figure shakes its hooded head. As it disappears, a dense fog rolls into the village. Villagers claim to see strange figures moving in the mist, their productivity reduced by fear.",
+  third: (deaths: number) =>
+    `The figure's silence is deafening. When dawn breaks, you discover ${deaths} villagers dead, their bodies cold and lifeless.`,
+  fourth: () =>
+    "An incorrect answer. The figure vanishes as an oppressive fog descends upon the village, thicker than before. The villagers huddle in fear as shadows dance within the mist for what feels like an eternity.",
+  fifth: (deaths: number) =>
+    `Wrong. The figure raises its arms as both fog and death descend upon your village. ${deaths} villagers perish, and a suffocating fog blankets the settlement for a terrible duration.`,
+} as const;
+
+// Timeout messages
+const TIMEOUT_MESSAGES = {
+  first: (deaths: number) =>
+    `The figure vanishes the very moment you say the word. In the morning, ${deaths} villagers are found in their beds with slit throats.`,
+  second: () =>
+    "You remain silent. The figure's disappointment is palpable as it vanishes, leaving behind a dense fog that engulfs the village. Strange shapes move within the mist.",
+  third: (deaths: number) =>
+    `Your silence seals their fate. By morning, ${deaths} villagers lie dead in their beds, their lives claimed by an unseen force.`,
+  fourth: () =>
+    "Your hesitation is met with disapproval. As the figure departs, a thick fog engulfs everything, lasting far longer than before. Fear grips the village.",
+  fifth: (deaths: number) =>
+    `Your silence seals your doom. The figure unleashes both death and fog upon the village. ${deaths} souls are lost, and an impenetrable mist shrouds everything.`,
+} as const;
+
 export const riddleEvents: Record<string, GameEvent> = {
   whispererInTheDark: {
     id: "whispererInTheDark",
@@ -22,13 +96,16 @@ export const riddleEvents: Record<string, GameEvent> = {
         id: "answerFire",
         label: "Fire",
         effect: (state: GameState) => {
+          const deaths =
+            RIDDLE_PENALTIES.first.baseDeaths +
+            RIDDLE_PENALTIES.first.cmMultiplier * state.CM;
           return {
-            ...killVillagers(state, 12 + 6 * state.CM),
+            ...killVillagers(state, deaths),
             events: {
               ...state.events,
               whispererInTheDark: true,
             },
-            _logMessage: `The figure vanishes the very moment you say the word. In the morning, ${12 + 6 * state.CM} villagers are found in their beds with slit throats.`,
+            _logMessage: WRONG_ANSWER_MESSAGES.first(deaths),
           };
         },
       },
@@ -36,13 +113,16 @@ export const riddleEvents: Record<string, GameEvent> = {
         id: "answerTree",
         label: "Tree",
         effect: (state: GameState) => {
+          const deaths =
+            RIDDLE_PENALTIES.first.baseDeaths +
+            RIDDLE_PENALTIES.first.cmMultiplier * state.CM;
           return {
-            ...killVillagers(state, 12 + 6 * state.CM),
+            ...killVillagers(state, deaths),
             events: {
               ...state.events,
               whispererInTheDark: true,
             },
-            _logMessage: `The figure vanishes the very moment you say the word. In the morning, ${12 + 6 * state.CM} villagers are found in their beds with slit throats.`,
+            _logMessage: WRONG_ANSWER_MESSAGES.first(deaths),
           };
         },
       },
@@ -53,14 +133,13 @@ export const riddleEvents: Record<string, GameEvent> = {
           return {
             resources: {
               ...state.resources,
-              gold: state.resources.gold + 200,
+              gold: state.resources.gold + RIDDLE_REWARDS.first,
             },
             events: {
               ...state.events,
               whispererInTheDark: true,
             },
-            _logMessage:
-              "The figure lightly nods and vanishes briefly after you say the word. In the morning, you find a bag with 200 gold on the doorsteps of the estate.",
+            _logMessage: SUCCESS_MESSAGES.first(RIDDLE_REWARDS.first),
           };
         },
       },
@@ -68,13 +147,16 @@ export const riddleEvents: Record<string, GameEvent> = {
         id: "answerBones",
         label: "Bones",
         effect: (state: GameState) => {
+          const deaths =
+            RIDDLE_PENALTIES.first.baseDeaths +
+            RIDDLE_PENALTIES.first.cmMultiplier * state.CM;
           return {
-            ...killVillagers(state, 12 + 6 * state.CM),
+            ...killVillagers(state, deaths),
             events: {
               ...state.events,
               whispererInTheDark: true,
             },
-            _logMessage: `The figure vanishes the very moment you say the word. In the morning, ${12 + 6 * state.CM} villagers are found in their beds with slit throats.`,
+            _logMessage: WRONG_ANSWER_MESSAGES.first(deaths),
           };
         },
       },
@@ -83,13 +165,16 @@ export const riddleEvents: Record<string, GameEvent> = {
       id: "timeout",
       label: "No answer given",
       effect: (state: GameState) => {
+        const deaths =
+          RIDDLE_PENALTIES.first.baseDeaths +
+          RIDDLE_PENALTIES.first.cmMultiplier * state.CM;
         return {
-          ...killVillagers(state, 12 + 6 * state.CM),
+          ...killVillagers(state, deaths),
           events: {
             ...state.events,
             whispererInTheDark: true,
           },
-          _logMessage: `The figure vanishes the very moment you say the word. In the morning, ${12 + 6 * state.CM} villagers are found in their beds with slit throats.`,
+          _logMessage: TIMEOUT_MESSAGES.first(deaths),
         };
       },
     },
@@ -113,18 +198,16 @@ export const riddleEvents: Record<string, GameEvent> = {
         id: "answerEarth",
         label: "Earth",
         effect: (state: GameState) => {
-          const fogDuration = 5 * 60 * 1000; // 5 minutes
           return {
             fogState: {
               isActive: true,
-              endTime: Date.now() + fogDuration,
+              endTime: Date.now() + RIDDLE_PENALTIES.second.fogDuration,
             },
             events: {
               ...state.events,
               riddleOfAges: true,
             },
-            _logMessage:
-              "The figure shakes its hooded head. As it disappears, a dense fog rolls into the village. Villagers claim to see strange figures moving in the mist, their productivity reduced by fear.",
+            _logMessage: WRONG_ANSWER_MESSAGES.second(),
           };
         },
       },
@@ -132,18 +215,16 @@ export const riddleEvents: Record<string, GameEvent> = {
         id: "answerWolf",
         label: "Wolf",
         effect: (state: GameState) => {
-          const fogDuration = 5 * 60 * 1000; // 5 minutes
           return {
             fogState: {
               isActive: true,
-              endTime: Date.now() + fogDuration,
+              endTime: Date.now() + RIDDLE_PENALTIES.second.fogDuration,
             },
             events: {
               ...state.events,
               riddleOfAges: true,
             },
-            _logMessage:
-              "The figure shakes its hooded head. As it disappears, a dense fog rolls into the village. Villagers claim to see strange figures moving in the mist, their productivity reduced by fear.",
+            _logMessage: WRONG_ANSWER_MESSAGES.second(),
           };
         },
       },
@@ -154,14 +235,13 @@ export const riddleEvents: Record<string, GameEvent> = {
           return {
             resources: {
               ...state.resources,
-              gold: state.resources.gold + 300,
+              gold: state.resources.gold + RIDDLE_REWARDS.second,
             },
             events: {
               ...state.events,
               riddleOfAges: true,
             },
-            _logMessage:
-              "The figure bows slightly in acknowledgment. 'You have answered wisely,' it whispers before fading into shadow. A leather pouch with 300 gold appears at your feet.",
+            _logMessage: SUCCESS_MESSAGES.second(RIDDLE_REWARDS.second),
           };
         },
       },
@@ -169,18 +249,16 @@ export const riddleEvents: Record<string, GameEvent> = {
         id: "answerBird",
         label: "Bird",
         effect: (state: GameState) => {
-          const fogDuration = 5 * 60 * 1000; // 5 minutes
           return {
             fogState: {
               isActive: true,
-              endTime: Date.now() + fogDuration,
+              endTime: Date.now() + RIDDLE_PENALTIES.second.fogDuration,
             },
             events: {
               ...state.events,
               riddleOfAges: true,
             },
-            _logMessage:
-              "The figure shakes its hooded head. As it disappears, a dense fog rolls into the village. Villagers claim to see strange figures moving in the mist, their productivity reduced by fear.",
+            _logMessage: WRONG_ANSWER_MESSAGES.second(),
           };
         },
       },
@@ -189,18 +267,16 @@ export const riddleEvents: Record<string, GameEvent> = {
       id: "timeout",
       label: "No answer given",
       effect: (state: GameState) => {
-        const fogDuration = 5 * 60 * 1000; // 5 minutes
         return {
           fogState: {
             isActive: true,
-            endTime: Date.now() + fogDuration,
+            endTime: Date.now() + RIDDLE_PENALTIES.second.fogDuration,
           },
           events: {
             ...state.events,
             riddleOfAges: true,
           },
-          _logMessage:
-            "You remain silent. The figure's disappointment is palpable as it vanishes, leaving behind a dense fog that engulfs the village. Strange shapes move within the mist.",
+          _logMessage: TIMEOUT_MESSAGES.second(),
         };
       },
     },
@@ -224,13 +300,16 @@ export const riddleEvents: Record<string, GameEvent> = {
         id: "answerMan",
         label: "Man",
         effect: (state: GameState) => {
+          const deaths =
+            RIDDLE_PENALTIES.third.baseDeaths +
+            RIDDLE_PENALTIES.third.cmMultiplier * state.CM;
           return {
-            ...killVillagers(state, 18 + 6 * state.CM),
+            ...killVillagers(state, deaths),
             events: {
               ...state.events,
               riddleOfDevourer: true,
             },
-            _logMessage: `The figure's silence is deafening. When dawn breaks, you discover ${18 + 6 * state.CM} villagers dead, their bodies cold and lifeless.`,
+            _logMessage: WRONG_ANSWER_MESSAGES.third(deaths),
           };
         },
       },
@@ -238,13 +317,16 @@ export const riddleEvents: Record<string, GameEvent> = {
         id: "answerWater",
         label: "Water",
         effect: (state: GameState) => {
+          const deaths =
+            RIDDLE_PENALTIES.third.baseDeaths +
+            RIDDLE_PENALTIES.third.cmMultiplier * state.CM;
           return {
-            ...killVillagers(state, 18 + 6 * state.CM),
+            ...killVillagers(state, deaths),
             events: {
               ...state.events,
               riddleOfDevourer: true,
             },
-            _logMessage: `The figure's silence is deafening. When dawn breaks, you discover ${18 + 6 * state.CM} villagers dead, their bodies cold and lifeless.`,
+            _logMessage: WRONG_ANSWER_MESSAGES.third(deaths),
           };
         },
       },
@@ -255,14 +337,13 @@ export const riddleEvents: Record<string, GameEvent> = {
           return {
             resources: {
               ...state.resources,
-              gold: state.resources.gold + 400,
+              gold: state.resources.gold + RIDDLE_REWARDS.third,
             },
             events: {
               ...state.events,
               riddleOfDevourer: true,
             },
-            _logMessage:
-              "The figure seems to smile beneath its hood. 'You understand the eternal truth,' it whispers. A heavy coin purse containing 400 gold materializes before you.",
+            _logMessage: SUCCESS_MESSAGES.third(RIDDLE_REWARDS.third),
           };
         },
       },
@@ -270,13 +351,16 @@ export const riddleEvents: Record<string, GameEvent> = {
         id: "answerFire",
         label: "Fire",
         effect: (state: GameState) => {
+          const deaths =
+            RIDDLE_PENALTIES.third.baseDeaths +
+            RIDDLE_PENALTIES.third.cmMultiplier * state.CM;
           return {
-            ...killVillagers(state, 18 + 6 * state.CM),
+            ...killVillagers(state, deaths),
             events: {
               ...state.events,
               riddleOfDevourer: true,
             },
-            _logMessage: `The figure's silence is deafening. When dawn breaks, you discover ${18 + 6 * state.CM} villagers dead, their bodies cold and lifeless.`,
+            _logMessage: WRONG_ANSWER_MESSAGES.third(deaths),
           };
         },
       },
@@ -285,13 +369,16 @@ export const riddleEvents: Record<string, GameEvent> = {
       id: "timeout",
       label: "No answer given",
       effect: (state: GameState) => {
+        const deaths =
+          RIDDLE_PENALTIES.third.baseDeaths +
+          RIDDLE_PENALTIES.third.cmMultiplier * state.CM;
         return {
-          ...killVillagers(state, 18 + 6 * state.CM),
+          ...killVillagers(state, deaths),
           events: {
             ...state.events,
             riddleOfDevourer: true,
           },
-          _logMessage: `Your silence seals their fate. By morning, ${18 + 6 * state.CM} villagers lie dead in their beds, their lives claimed by an unseen force.`,
+          _logMessage: TIMEOUT_MESSAGES.third(deaths),
         };
       },
     },
@@ -315,18 +402,16 @@ export const riddleEvents: Record<string, GameEvent> = {
         id: "answerNight",
         label: "Night",
         effect: (state: GameState) => {
-          const fogDuration = 10 * 60 * 1000; // 10 minutes
           return {
             fogState: {
               isActive: true,
-              endTime: Date.now() + fogDuration,
+              endTime: Date.now() + RIDDLE_PENALTIES.fourth.fogDuration,
             },
             events: {
               ...state.events,
               riddleOfTears: true,
             },
-            _logMessage:
-              "An incorrect answer. The figure vanishes as an oppressive fog descends upon the village, thicker than before. The villagers huddle in fear as shadows dance within the mist for what feels like an eternity.",
+            _logMessage: WRONG_ANSWER_MESSAGES.fourth(),
           };
         },
       },
@@ -334,18 +419,16 @@ export const riddleEvents: Record<string, GameEvent> = {
         id: "answerWind",
         label: "Wind",
         effect: (state: GameState) => {
-          const fogDuration = 10 * 60 * 1000; // 10 minutes
           return {
             fogState: {
               isActive: true,
-              endTime: Date.now() + fogDuration,
+              endTime: Date.now() + RIDDLE_PENALTIES.fourth.fogDuration,
             },
             events: {
               ...state.events,
               riddleOfTears: true,
             },
-            _logMessage:
-              "An incorrect answer. The figure vanishes as an oppressive fog descends upon the village, thicker than before. The villagers huddle in fear as shadows dance within the mist for what feels like an eternity.",
+            _logMessage: WRONG_ANSWER_MESSAGES.fourth(),
           };
         },
       },
@@ -356,14 +439,13 @@ export const riddleEvents: Record<string, GameEvent> = {
           return {
             resources: {
               ...state.resources,
-              gold: state.resources.gold + 500,
+              gold: state.resources.gold + RIDDLE_REWARDS.fourth,
             },
             events: {
               ...state.events,
               riddleOfTears: true,
             },
-            _logMessage:
-              "The figure nods approvingly. 'Your wisdom grows with each trial,' it intones. A chest containing 500 gold appears as the figure fades into the night.",
+            _logMessage: SUCCESS_MESSAGES.fourth(RIDDLE_REWARDS.fourth),
           };
         },
       },
@@ -371,18 +453,16 @@ export const riddleEvents: Record<string, GameEvent> = {
         id: "answerShadow",
         label: "Shadow",
         effect: (state: GameState) => {
-          const fogDuration = 10 * 60 * 1000; // 10 minutes
           return {
             fogState: {
               isActive: true,
-              endTime: Date.now() + fogDuration,
+              endTime: Date.now() + RIDDLE_PENALTIES.fourth.fogDuration,
             },
             events: {
               ...state.events,
               riddleOfTears: true,
             },
-            _logMessage:
-              "An incorrect answer. The figure vanishes as an oppressive fog descends upon the village, thicker than before. The villagers huddle in fear as shadows dance within the mist for what feels like an eternity.",
+            _logMessage: WRONG_ANSWER_MESSAGES.fourth(),
           };
         },
       },
@@ -391,18 +471,16 @@ export const riddleEvents: Record<string, GameEvent> = {
       id: "timeout",
       label: "No answer given",
       effect: (state: GameState) => {
-        const fogDuration = 10 * 60 * 1000; // 10 minutes
         return {
           fogState: {
             isActive: true,
-            endTime: Date.now() + fogDuration,
+            endTime: Date.now() + RIDDLE_PENALTIES.fourth.fogDuration,
           },
           events: {
             ...state.events,
             riddleOfTears: true,
           },
-          _logMessage:
-            "Your hesitation is met with disapproval. As the figure departs, a thick fog engulfs everything, lasting far longer than before. Fear grips the village.",
+          _logMessage: TIMEOUT_MESSAGES.fourth(),
         };
       },
     },
@@ -426,19 +504,21 @@ export const riddleEvents: Record<string, GameEvent> = {
         id: "answerLight",
         label: "Light",
         effect: (state: GameState) => {
-          const fogDuration = 10 * 60 * 1000; // 10 minutes
-          const deathResult = killVillagers(state, 22 + 6 * state.CM);
+          const deaths =
+            RIDDLE_PENALTIES.fifth.baseDeaths +
+            RIDDLE_PENALTIES.fifth.cmMultiplier * state.CM;
+          const deathResult = killVillagers(state, deaths);
           return {
             ...deathResult,
             fogState: {
               isActive: true,
-              endTime: Date.now() + fogDuration,
+              endTime: Date.now() + RIDDLE_PENALTIES.fifth.fogDuration,
             },
             events: {
               ...state.events,
               riddleOfEternal: true,
             },
-            _logMessage: `Wrong. The figure raises its arms as both fog and death descend upon your village. ${22 + 6 * state.CM} villagers perish, and a suffocating fog blankets the settlement for a terrible duration.`,
+            _logMessage: WRONG_ANSWER_MESSAGES.fifth(deaths),
           };
         },
       },
@@ -446,19 +526,21 @@ export const riddleEvents: Record<string, GameEvent> = {
         id: "answerLife",
         label: "Life",
         effect: (state: GameState) => {
-          const fogDuration = 10 * 60 * 1000; // 10 minutes
-          const deathResult = killVillagers(state, 22 + 6 * state.CM);
+          const deaths =
+            RIDDLE_PENALTIES.fifth.baseDeaths +
+            RIDDLE_PENALTIES.fifth.cmMultiplier * state.CM;
+          const deathResult = killVillagers(state, deaths);
           return {
             ...deathResult,
             fogState: {
               isActive: true,
-              endTime: Date.now() + fogDuration,
+              endTime: Date.now() + RIDDLE_PENALTIES.fifth.fogDuration,
             },
             events: {
               ...state.events,
               riddleOfEternal: true,
             },
-            _logMessage: `Wrong. The figure raises its arms as both fog and death descend upon your village. ${22 + 6 * state.CM} villagers perish, and a suffocating fog blankets the settlement for a terrible duration.`,
+            _logMessage: WRONG_ANSWER_MESSAGES.fifth(deaths),
           };
         },
       },
@@ -469,14 +551,13 @@ export const riddleEvents: Record<string, GameEvent> = {
           return {
             resources: {
               ...state.resources,
-              gold: state.resources.gold + 750,
+              gold: state.resources.gold + RIDDLE_REWARDS.fifth,
             },
             events: {
               ...state.events,
               riddleOfEternal: true,
             },
-            _logMessage:
-              "The figure bows deeply. 'You have proven yourself worthy through all trials. This is my final gift to you.' A magnificent chest filled with 750 gold appears. The figure then dissolves into the darkness, never to return.",
+            _logMessage: SUCCESS_MESSAGES.fifth(RIDDLE_REWARDS.fifth),
           };
         },
       },
@@ -484,19 +565,21 @@ export const riddleEvents: Record<string, GameEvent> = {
         id: "answerDeath",
         label: "Death",
         effect: (state: GameState) => {
-          const fogDuration = 10 * 60 * 1000; // 10 minutes
-          const deathResult = killVillagers(state, 22 + 6 * state.CM);
+          const deaths =
+            RIDDLE_PENALTIES.fifth.baseDeaths +
+            RIDDLE_PENALTIES.fifth.cmMultiplier * state.CM;
+          const deathResult = killVillagers(state, deaths);
           return {
             ...deathResult,
             fogState: {
               isActive: true,
-              endTime: Date.now() + fogDuration,
+              endTime: Date.now() + RIDDLE_PENALTIES.fifth.fogDuration,
             },
             events: {
               ...state.events,
               riddleOfEternal: true,
             },
-            _logMessage: `Wrong. The figure raises its arms as both fog and death descend upon your village. ${22 + 6 * state.CM} villagers perish, and a suffocating fog blankets the settlement for a terrible duration.`,
+            _logMessage: WRONG_ANSWER_MESSAGES.fifth(deaths),
           };
         },
       },
@@ -505,19 +588,21 @@ export const riddleEvents: Record<string, GameEvent> = {
       id: "timeout",
       label: "No answer given",
       effect: (state: GameState) => {
-        const fogDuration = 10 * 60 * 1000; // 10 minutes
-        const deathResult = killVillagers(state, 22 + 6 * state.CM);
+        const deaths =
+          RIDDLE_PENALTIES.fifth.baseDeaths +
+          RIDDLE_PENALTIES.fifth.cmMultiplier * state.CM;
+        const deathResult = killVillagers(state, deaths);
         return {
           ...deathResult,
           fogState: {
             isActive: true,
-            endTime: Date.now() + fogDuration,
+            endTime: Date.now() + RIDDLE_PENALTIES.fifth.fogDuration,
           },
           events: {
             ...state.events,
             riddleOfEternal: true,
           },
-          _logMessage: `Your silence seals your doom. The figure unleashes both death and fog upon the village. ${22 + 6 * state.CM} souls are lost, and an impenetrable mist shrouds everything.`,
+          _logMessage: TIMEOUT_MESSAGES.fifth(deaths),
         };
       },
     },
