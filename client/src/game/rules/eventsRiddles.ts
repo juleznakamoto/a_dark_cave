@@ -23,8 +23,8 @@ export const riddleEvents: Record<string, GameEvent> = {
         label: "Fire",
         effect: (state: GameState) => {
           return {
-            ...killVillagers(state, 10 + 5 * state.CM),
-            _logMessage: `The figure vanishes the very moment you say the word. In the morning, ${10 + 5 * state.CM} villagers are found in their beds with slit throats.`,
+            ...killVillagers(state, 12 + 6 * state.CM),
+            _logMessage: `The figure vanishes the very moment you say the word. In the morning, ${12 + 6 * state.CM} villagers are found in their beds with slit throats.`,
           };
         },
       },
