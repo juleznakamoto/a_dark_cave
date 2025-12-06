@@ -202,6 +202,15 @@ export const getPopulationProduction = (
     });
   }
 
+  // Apply fog penalty if active (0.5x, same as curse)
+  const fogState = state.fogState;
+  const isFog = fogState?.isActive && fogState.endTime > Date.now();
+  if (isFog) {
+    baseProduction.forEach((prod) => {
+      prod.totalAmount = Math.ceil(prod.totalAmount * 0.5);
+    });
+  }
+
   // Apply mining boost multiplier if active (for mining jobs only)
   const miningBoostState = state.miningBoostState;
   const isMiningJob = jobId.endsWith("_miner");
