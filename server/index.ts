@@ -256,9 +256,9 @@ import { createServer } from "http";
   // Payment endpoints
   app.post("/api/payment/create-intent", async (req, res) => {
     try {
-      const { itemId } = req.body;
+      const { itemId, userEmail } = req.body;
       // Never accept price from client - always use server-side price
-      const result = await createPaymentIntent(itemId);
+      const result = await createPaymentIntent(itemId, userEmail);
       res.json(result);
     } catch (error: any) {
       res.status(400).json({ error: error.message });
