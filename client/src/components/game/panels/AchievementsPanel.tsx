@@ -1,5 +1,5 @@
-import BuildingProgressChart from "./BuildingProgressChart";
-import ItemProgressChart from "./ItemProgressChart";
+import BuildingProgressChart from "./BuildingProgressChartAchievements";
+import ItemProgressChart from "./ItemProgressChartAchievements";
 
 export default function AchievementsPanel() {
   return (
