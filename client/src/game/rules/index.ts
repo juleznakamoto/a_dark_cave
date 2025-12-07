@@ -476,7 +476,22 @@ export const applyActionEffects = (
     : 0;
 
   // Get action bonuses from tools, weapons, and relics
-  const actionBonuses = getActionBonusesCalc(actionId, state);
+  const bonuses = getActionBonusesCalc(actionId, state);
+
+  // Check if this is a cave exploration action
+  const caveExploreActions = [
+    "exploreCave",
+    "ventureDeeper",
+    "descendFurther",
+    "exploreRuins",
+    "exploreTemple",
+    "exploreCitadel",
+  ];
+  const isCaveExploreAction = caveExploreActions.includes(actionId);
+
+  // Get cave exploration multiplier
+  const caveExploreMultiplier = isCaveExploreAction ? bonuses.caveExploreMultiplier : 1;
+
 
   // First apply costs (as negative effects)
   if (action.cost) {
