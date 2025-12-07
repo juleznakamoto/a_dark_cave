@@ -25,6 +25,8 @@ export default function BuildingProgressChart() {
     name: string;
     currentCount: number;
     maxCount: number;
+    x: number;
+    y: number;
   } | null>(null);
   const [clickedSegment, setClickedSegment] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -407,13 +409,33 @@ export default function BuildingProgressChart() {
                   key={`overlay-path-${ringIndex}-${segIndex}`}
                   d={pathData}
                   fill="transparent"
-                  onMouseEnter={() => {
-                    setHoveredSegment({
-                      id: segment.segmentId,
-                      name: segment.name,
-                      currentCount: segment.currentCount,
-                      maxCount: segment.maxCount,
-                    });
+                  onMouseEnter={(e) => {
+                    const rect = containerRef.current?.getBoundingClientRect();
+                    if (rect) {
+                      setHoveredSegment({
+                        id: segment.segmentId,
+                        name: segment.name,
+                        currentCount: segment.currentCount,
+                        maxCount: segment.maxCount,
+                        x: e.clientX - rect.left,
+                        y: e.clientY - rect.top,
+                      });
+                    }
+                  }}
+                  onMouseMove={(e) => {
+                    if (hoveredSegment?.id === segment.segmentId) {
+                      const rect = containerRef.current?.getBoundingClientRect();
+                      if (rect) {
+                        setHoveredSegment({
+                          id: segment.segmentId,
+                          name: segment.name,
+                          currentCount: segment.currentCount,
+                          maxCount: segment.maxCount,
+                          x: e.clientX - rect.left,
+                          y: e.clientY - rect.top,
+                        });
+                      }
+                    }
                   }}
                   onMouseLeave={() => {
                     if (clickedSegment !== segment.segmentId) {
@@ -425,12 +447,17 @@ export default function BuildingProgressChart() {
                     const newClickedId = clickedSegment === segment.segmentId ? null : segment.segmentId;
                     setClickedSegment(newClickedId);
                     if (newClickedId) {
-                      setHoveredSegment({
-                        id: segment.segmentId,
-                        name: segment.name,
-                        currentCount: segment.currentCount,
-                        maxCount: segment.maxCount,
-                      });
+                      const rect = containerRef.current?.getBoundingClientRect();
+                      if (rect) {
+                        setHoveredSegment({
+                          id: segment.segmentId,
+                          name: segment.name,
+                          currentCount: segment.currentCount,
+                          maxCount: segment.maxCount,
+                          x: e.clientX - rect.left,
+                          y: e.clientY - rect.top,
+                        });
+                      }
                     } else {
                       setHoveredSegment(null);
                     }
@@ -526,7 +553,14 @@ export default function BuildingProgressChart() {
 
       {/* Tooltip display for hovered segment */}
       {hoveredSegment && (
-        <div className="absolute top-0 left-full ml-2 bg-popover border rounded-md px-2 py-1 text-xs shadow-md z-50 pointer-events-none whitespace-nowrap">
+        <div 
+          className="absolute bg-popover border rounded-md px-2 py-1 text-xs shadow-md z-50 pointer-events-none whitespace-nowrap"
+          style={{
+            left: `${hoveredSegment.x}px`,
+            top: `${hoveredSegment.y - 40}px`,
+            transform: 'translateX(-50%)'
+          }}
+        >
           <div className="font-semibold">{hoveredSegment.name}</div>
           <div className="text-muted-foreground">
             {hoveredSegment.currentCount}/{hoveredSegment.maxCount}
