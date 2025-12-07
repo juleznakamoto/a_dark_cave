@@ -4,11 +4,11 @@ import { killVillagers } from "@/game/stateHelpers";
 
 // Riddle rewards (gold amounts)
 const RIDDLE_REWARDS = {
-  first: 200,
-  second: 300,
-  third: 400,
-  fourth: 500,
-  fifth: 750,
+  first: 150,
+  second: 200,
+  third: 250,
+  fourth: 300,
+  fifth: 350,
 } as const;
 
 // Riddle penalties
@@ -18,17 +18,17 @@ const RIDDLE_PENALTIES = {
     cmMultiplier: 6,
   },
   second: {
-    fogDuration: 10 * 60 * 1000, // 5 minutes in milliseconds
+    fogDuration: 10 * 60 * 1000, // 10 minutes in milliseconds
   },
   third: {
     baseDeaths: 18,
     cmMultiplier: 6,
   },
   fourth: {
-    fogDuration: 15 * 60 * 1000, // 10 minutes in milliseconds
+    fogDuration: 15 * 60 * 1000, // 15 minutes in milliseconds
   },
   fifth: {
-    fogDuration: 15 * 60 * 1000, // 10 minutes in milliseconds
+    fogDuration: 15 * 60 * 1000, // 15 minutes in milliseconds
     baseDeaths: 24,
     cmMultiplier: 6,
   },
@@ -84,14 +84,14 @@ export const riddleEvents: Record<string, GameEvent> = {
     id: "whispererInTheDark",
     condition: (state: GameState) => state.buildings.darkEstate >= 1,
     triggerType: "resource",
-    timeProbability: 0.045,
+    timeProbability: 45,
     title: "Whisperer in the Dark",
     message: START_MESSAGES.first,
     triggered: false,
     priority: 4,
     repeatable: false,
     isTimedChoice: true,
-    baseDecisionTime: 20,
+    baseDecisionTime: 45,
     choices: [
       {
         id: "answerFire",
@@ -185,14 +185,14 @@ export const riddleEvents: Record<string, GameEvent> = {
     id: "riddleOfAges",
     condition: (state: GameState) => state.events.whispererInTheDark === true,
     triggerType: "resource",
-    timeProbability: 0.045,
+    timeProbability: 45,
     title: "Riddle of Ages",
     message: START_MESSAGES.second,
     triggered: false,
     priority: 4,
     repeatable: false,
     isTimedChoice: true,
-    baseDecisionTime: 20,
+    baseDecisionTime: 45,
     choices: [
       {
         id: "answerEarth",
@@ -287,14 +287,14 @@ export const riddleEvents: Record<string, GameEvent> = {
     id: "riddleOfDevourer",
     condition: (state: GameState) => state.events.riddleOfAges === true,
     triggerType: "resource",
-    timeProbability: 0.045,
+    timeProbability: 45,
     title: "Riddle of the Devourer",
     message: START_MESSAGES.third,
     triggered: false,
     priority: 4,
     repeatable: false,
     isTimedChoice: true,
-    baseDecisionTime: 20,
+    baseDecisionTime: 45,
     choices: [
       {
         id: "answerMan",
@@ -388,14 +388,14 @@ export const riddleEvents: Record<string, GameEvent> = {
     id: "riddleOfTears",
     condition: (state: GameState) => state.events.riddleOfDevourer === true,
     triggerType: "resource",
-    timeProbability: 0.045,
+    timeProbability: 45,
     title: "Riddle of Tears",
     message: START_MESSAGES.fourth,
     triggered: false,
     priority: 4,
     repeatable: false,
     isTimedChoice: true,
-    baseDecisionTime: 20,
+    baseDecisionTime: 45,
     choices: [
       {
         id: "answerNight",
@@ -490,14 +490,14 @@ export const riddleEvents: Record<string, GameEvent> = {
     id: "riddleOfEternal",
     condition: (state: GameState) => state.events.riddleOfTears === true,
     triggerType: "resource",
-    timeProbability: 0.045,
+    timeProbability: 45,
     title: "Final Riddle",
     message: START_MESSAGES.fifth,
     triggered: false,
     priority: 4,
     repeatable: false,
     isTimedChoice: true,
-    baseDecisionTime: 20,
+    baseDecisionTime: 45,
     choices: [
       {
         id: "answerLight",
