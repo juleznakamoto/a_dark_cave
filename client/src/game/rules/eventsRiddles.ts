@@ -1,7 +1,6 @@
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
-import { StateManager } from "../state";
 
 // Riddle rewards (gold amounts)
 const RIDDLE_REWARDS = {
@@ -88,7 +87,7 @@ export const riddleEvents: Record<string, GameEvent> = {
     id: "whispererInTheDark",
     condition: (state: GameState) => state.buildings.darkEstate >= 1,
     triggerType: "resource",
-    timeProbability: 45,
+    timeProbability: 30,
     title: "Whisperer in the Dark",
     message: START_MESSAGES.first,
     triggered: false,
