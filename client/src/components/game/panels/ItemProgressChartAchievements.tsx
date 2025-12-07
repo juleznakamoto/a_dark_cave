@@ -2,6 +2,9 @@ import { useGameStore } from "@/game/state";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { GameState } from "@shared/schema";
 import { tailwindToHex } from "@/lib/tailwindColors";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { useMobileTooltip } from "@/hooks/useMobileTooltip";
+import { useState } from "react";
 
 interface ItemSegment {
   itemType: string;
@@ -21,6 +24,7 @@ interface RingConfig {
   segments: ItemSegment[];
   innerRadius: number;
   outerRadius: number;
+  isRingComplete?: boolean; // Added to track if the entire ring is complete
 }
 
 export default function ItemProgressChart() {
@@ -38,6 +42,10 @@ export default function ItemProgressChart() {
 
   const state = useGameStore.getState();
   const isCruelMode = state.cruelMode;
+
+  // State for tooltip interaction
+  const [hoveredSegment, setHoveredSegment] = useState<string | null>(null);
+  const mobileTooltip = useMobileTooltip();
 
   // Define ring segment configurations - each segment represents upgradable progression
   const ringSegments: ItemSegment[][] = [
@@ -490,7 +498,6 @@ export default function ItemProgressChart() {
         fill: "transparent",
       }));
 
-      // Create progress segments with calculated angles
       let currentEndAngle = startAngle;
       const progressSegments = segments.map((seg, index) => {
         const currentCount = getItemCount(seg);
@@ -500,7 +507,6 @@ export default function ItemProgressChart() {
         const segmentEndAngle = segmentStartAngle - segmentDegrees;
         currentEndAngle = segmentEndAngle;
 
-        // Calculate progress within this segment
         const progress = seg.maxCount > 0 ? currentCount / seg.maxCount : 0;
         const progressDegrees = segmentDegrees * progress;
 
@@ -521,8 +527,14 @@ export default function ItemProgressChart() {
           startAngle: adjustedStartAngle,
           endAngle: adjustedProgressAngle,
           isFull: isFull,
+          currentCount: currentCount, // Add currentCount for tooltip
+          maxCount: seg.maxCount, // Add maxCount for tooltip
+          segmentId: `${ringIndex}-${seg.itemType}`, // Unique ID for segment
         };
       });
+
+      // Check if the entire ring is complete
+      const isRingComplete = segments.every((seg) => getItemCount(seg) >= seg.maxCount);
 
       return {
         backgroundSegments,
@@ -532,6 +544,7 @@ export default function ItemProgressChart() {
         outerRadius,
         paddingAngle,
         startAngle,
+        isRingComplete, // Add ring completion status
       };
     })
     .filter((ring) => ring !== null);
@@ -570,26 +583,37 @@ export default function ItemProgressChart() {
             </Pie>,
 
             // Progress segments
-            ...ring.progressSegments.map((segment, segIndex) => (
-              <Pie
-                key={`progress-${ringIndex}-${segIndex}`}
-                data={[{ value: 1 }]}
-                cx="50%"
-                cy="50%"
-                innerRadius={ring.innerRadius}
-                outerRadius={ring.outerRadius}
-                dataKey="value"
-                startAngle={segment.startAngle}
-                endAngle={segment.endAngle}
-                cornerRadius={5}
-                strokeWidth={segment.isFull ? 1 : 0}
-                stroke={segment.isFull ? tailwindToHex("red-900") : undefined}
-                isAnimationActive={false}
-                style={{ outline: "none" }}
-              >
-                <Cell fill={segment.fill} />
-              </Pie>
-            )),
+            ...ring.progressSegments.map((segment, segIndex) => {
+              const segmentColor = ring.isRingComplete && segment.isFull
+                ? tailwindToHex("blue-400") // Changed color for completed segments
+                : segment.fill;
+
+              return (
+                <Pie
+                  key={`progress-${ringIndex}-${segIndex}`}
+                  data={[{ value: 1 }]}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={ring.innerRadius}
+                  outerRadius={ring.outerRadius}
+                  dataKey="value"
+                  startAngle={segment.startAngle}
+                  endAngle={segment.endAngle}
+                  cornerRadius={5}
+                  strokeWidth={segment.isFull ? 1 : 0}
+                  stroke={segment.isFull ? tailwindToHex("red-900") : undefined} // Default stroke for full segments
+                  isAnimationActive={false}
+                  style={{ outline: "none" }}
+                  onMouseEnter={ring.isRingComplete ? () => setHoveredSegment(segment.segmentId) : undefined}
+                  onMouseLeave={ring.isRingComplete ? () => setHoveredSegment(null) : undefined}
+                  onClick={ring.isRingComplete && mobileTooltip.isMobile
+                    ? (e) => mobileTooltip.handleTooltipClick(segment.segmentId, e as any)
+                    : undefined}
+                >
+                  <Cell fill={segmentColor} />
+                </Pie>
+              );
+            }),
 
             // Foreground ring
             <Pie
@@ -608,10 +632,37 @@ export default function ItemProgressChart() {
               stroke={tailwindToHex("neutral-400")}
               isAnimationActive={false}
               style={{ outline: "none" }}
-            ></Pie>
+            >
+            </Pie>
           ])}
         </PieChart>
       </ResponsiveContainer>
+
+      {/* Tooltips for completed ring segments */}
+      {processedRings.map((ring, ringIndex) =>
+        ring.isRingComplete && ring.progressSegments.map((segment, segIndex) => {
+          const isHovered = hoveredSegment === segment.segmentId ||
+                           mobileTooltip.isTooltipOpen(segment.segmentId);
+
+          if (!isHovered) return null;
+
+          return (
+            <TooltipProvider key={segment.segmentId}>
+              <Tooltip open={true}>
+                <TooltipTrigger asChild>
+                  <div className="absolute inset-0 pointer-events-none" />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <div className="text-xs">
+                    <div className="font-semibold">{segment.name}</div>
+                    <div>{segment.currentCount}/{segment.maxCount}</div>
+                  </div>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          );
+        })
+      )}
     </div>
   );
 }

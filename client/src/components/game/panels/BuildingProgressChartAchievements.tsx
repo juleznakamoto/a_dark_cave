@@ -2,6 +2,9 @@ import { useGameStore } from "@/game/state";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { GameState } from "@shared/schema";
 import { tailwindToHex } from "@/lib/tailwindColors";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { useMobileTooltip } from "@/hooks/useMobileTooltip";
+import { useState } from "react";
 
 interface BuildingSegment {
   buildingType: keyof GameState["buildings"];
@@ -19,6 +22,8 @@ interface RingConfig {
 
 export default function BuildingProgressChart() {
   const buildings = useGameStore((state) => state.buildings);
+  const [hoveredSegment, setHoveredSegment] = useState<string | null>(null);
+  const mobileTooltip = useMobileTooltip();
 
   // Ring sizing parameters
   const startRadius = 20; // Inner radius of the first ring
@@ -315,8 +320,14 @@ export default function BuildingProgressChart() {
           startAngle: adjustedStartAngle,
           endAngle: adjustedProgressAngle,
           isFull: isFull,
+          currentCount,
+          maxCount: seg.maxCount,
+          segmentId: `${ringIndex}-${index}`,
         };
       });
+
+      // Check if all segments in this ring are full
+      const isRingComplete = progressSegments.every(seg => seg.isFull);
 
       return {
         backgroundSegments,
@@ -326,6 +337,7 @@ export default function BuildingProgressChart() {
         outerRadius,
         paddingAngle,
         startAngle,
+        isRingComplete,
       };
     })
     .filter((ring) => ring !== null);
@@ -333,8 +345,7 @@ export default function BuildingProgressChart() {
   return (
     <div className="w-full h-48 w-48 flex flex-col items-center justify-center relative">
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
-        <span className="text-xl text-neutral-400">▨
-</span>
+        <span className="text-xl text-neutral-400">▨</span>
       </div>
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
@@ -365,26 +376,37 @@ export default function BuildingProgressChart() {
             </Pie>,
 
             // Progress segments
-            ...ring.progressSegments.map((segment, segIndex) => (
-              <Pie
-                key={`progress-${ringIndex}-${segIndex}`}
-                data={[{ value: 1 }]}
-                cx="50%"
-                cy="50%"
-                innerRadius={ring.innerRadius}
-                outerRadius={ring.outerRadius}
-                dataKey="value"
-                startAngle={segment.startAngle}
-                endAngle={segment.endAngle}
-                cornerRadius={5}
-                strokeWidth={segment.isFull ? 1 : 0}
-                stroke={segment.isFull ? tailwindToHex("blue-900") : undefined}
-                isAnimationActive={false}
-                style={{ outline: 'none' }}
-              >
-                <Cell fill={segment.fill} />
-              </Pie>
-            )),
+            ...ring.progressSegments.map((segment, segIndex) => {
+              const segmentColor = ring.isRingComplete && segment.isFull 
+                ? tailwindToHex("blue-400") 
+                : segment.fill;
+              
+              return (
+                <Pie
+                  key={`progress-${ringIndex}-${segIndex}`}
+                  data={[{ value: 1 }]}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={ring.innerRadius}
+                  outerRadius={ring.outerRadius}
+                  dataKey="value"
+                  startAngle={segment.startAngle}
+                  endAngle={segment.endAngle}
+                  cornerRadius={5}
+                  strokeWidth={segment.isFull ? 1 : 0}
+                  stroke={segment.isFull ? tailwindToHex("blue-900") : undefined}
+                  isAnimationActive={false}
+                  style={{ outline: 'none' }}
+                  onMouseEnter={ring.isRingComplete ? () => setHoveredSegment(segment.segmentId) : undefined}
+                  onMouseLeave={ring.isRingComplete ? () => setHoveredSegment(null) : undefined}
+                  onClick={ring.isRingComplete && mobileTooltip.isMobile 
+                    ? (e) => mobileTooltip.handleTooltipClick(segment.segmentId, e as any) 
+                    : undefined}
+                >
+                  <Cell fill={segmentColor} />
+                </Pie>
+              );
+            }),
 
             // Foreground ring
             <Pie
@@ -408,6 +430,32 @@ export default function BuildingProgressChart() {
           ])}
         </PieChart>
       </ResponsiveContainer>
+      
+      {/* Tooltips for completed ring segments */}
+      {processedRings.map((ring, ringIndex) => 
+        ring.isRingComplete && ring.progressSegments.map((segment, segIndex) => {
+          const isHovered = hoveredSegment === segment.segmentId || 
+                           mobileTooltip.isTooltipOpen(segment.segmentId);
+          
+          if (!isHovered) return null;
+          
+          return (
+            <TooltipProvider key={segment.segmentId}>
+              <Tooltip open={true}>
+                <TooltipTrigger asChild>
+                  <div className="absolute inset-0 pointer-events-none" />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <div className="text-xs">
+                    <div className="font-semibold">{segment.name}</div>
+                    <div>{segment.currentCount}/{segment.maxCount}</div>
+                  </div>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          );
+        })
+      )}
     </div>
   );
 }
