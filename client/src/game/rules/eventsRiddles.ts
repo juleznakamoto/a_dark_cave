@@ -416,11 +416,13 @@ export const riddleEvents: Record<string, GameEvent> = {
         id: "answerNight",
         label: "Night",
         effect: (state: GameState) => {
+          const fogDuration = RIDDLE_PENALTIES.fourth.fogDuration + 
+            (RIDDLE_PENALTIES.fourth.fogDurationCM * state.CM);
           return {
             fogState: {
               isActive: true,
-              endTime: Date.now() + RIDDLE_PENALTIES.fourth.fogDuration,
-              duration: RIDDLE_PENALTIES.fourth.fogDuration,
+              endTime: Date.now() + fogDuration,
+              duration: fogDuration,
             },
             events: {
               ...state.events,
@@ -434,11 +436,13 @@ export const riddleEvents: Record<string, GameEvent> = {
         id: "answerWind",
         label: "Wind",
         effect: (state: GameState) => {
+          const fogDuration = RIDDLE_PENALTIES.fourth.fogDuration + 
+            (RIDDLE_PENALTIES.fourth.fogDurationCM * state.CM);
           return {
             fogState: {
               isActive: true,
-              endTime: Date.now() + RIDDLE_PENALTIES.fourth.fogDuration,
-              duration: RIDDLE_PENALTIES.fourth.fogDuration,
+              endTime: Date.now() + fogDuration,
+              duration: fogDuration,
             },
             events: {
               ...state.events,
@@ -469,11 +473,13 @@ export const riddleEvents: Record<string, GameEvent> = {
         id: "answerShadow",
         label: "Shadow",
         effect: (state: GameState) => {
+          const fogDuration = RIDDLE_PENALTIES.fourth.fogDuration + 
+            (RIDDLE_PENALTIES.fourth.fogDurationCM * state.CM);
           return {
             fogState: {
               isActive: true,
-              endTime: Date.now() + RIDDLE_PENALTIES.fourth.fogDuration,
-              duration: RIDDLE_PENALTIES.fourth.fogDuration,
+              endTime: Date.now() + fogDuration,
+              duration: fogDuration,
             },
             events: {
               ...state.events,
@@ -488,11 +494,13 @@ export const riddleEvents: Record<string, GameEvent> = {
       id: "timeout",
       label: "No answer given",
       effect: (state: GameState) => {
+        const fogDuration = RIDDLE_PENALTIES.fourth.fogDuration + 
+          (RIDDLE_PENALTIES.fourth.fogDurationCM * state.CM);
         return {
           fogState: {
             isActive: true,
-            endTime: Date.now() + RIDDLE_PENALTIES.fourth.fogDuration,
-            duration: RIDDLE_PENALTIES.fourth.fogDuration,
+            endTime: Date.now() + fogDuration,
+            duration: fogDuration,
           },
           events: {
             ...state.events,
@@ -525,12 +533,14 @@ export const riddleEvents: Record<string, GameEvent> = {
             RIDDLE_PENALTIES.fifth.deaths +
             RIDDLE_PENALTIES.fifth.cmMultiplier * state.CM;
           const deathResult = killVillagers(state, deaths);
+          const fogDuration = RIDDLE_PENALTIES.fifth.fogDuration + 
+            (RIDDLE_PENALTIES.fifth.fogDurationCM * state.CM);
           return {
             ...deathResult,
             fogState: {
               isActive: true,
-              endTime: Date.now() + RIDDLE_PENALTIES.fifth.fogDuration,
-              duration: RIDDLE_PENALTIES.fifth.fogDuration,
+              endTime: Date.now() + fogDuration,
+              duration: fogDuration,
             },
             events: {
               ...state.events,
@@ -548,12 +558,14 @@ export const riddleEvents: Record<string, GameEvent> = {
             RIDDLE_PENALTIES.fifth.deaths +
             RIDDLE_PENALTIES.fifth.cmMultiplier * state.CM;
           const deathResult = killVillagers(state, deaths);
+          const fogDuration = RIDDLE_PENALTIES.fifth.fogDuration + 
+            (RIDDLE_PENALTIES.fifth.fogDurationCM * state.CM);
           return {
             ...deathResult,
             fogState: {
               isActive: true,
-              endTime: Date.now() + RIDDLE_PENALTIES.fifth.fogDuration,
-              duration: RIDDLE_PENALTIES.fifth.fogDuration,
+              endTime: Date.now() + fogDuration,
+              duration: fogDuration,
             },
             events: {
               ...state.events,
@@ -588,12 +600,14 @@ export const riddleEvents: Record<string, GameEvent> = {
             RIDDLE_PENALTIES.fifth.deaths +
             RIDDLE_PENALTIES.fifth.cmMultiplier * state.CM;
           const deathResult = killVillagers(state, deaths);
+          const fogDuration = RIDDLE_PENALTIES.fifth.fogDuration + 
+            (RIDDLE_PENALTIES.fifth.fogDurationCM * state.CM);
           return {
             ...deathResult,
             fogState: {
               isActive: true,
-              endTime: Date.now() + RIDDLE_PENALTIES.fifth.fogDuration,
-              duration: RIDDLE_PENALTIES.fifth.fogDuration,
+              endTime: Date.now() + fogDuration,
+              duration: fogDuration,
             },
             events: {
               ...state.events,
@@ -612,12 +626,14 @@ export const riddleEvents: Record<string, GameEvent> = {
           RIDDLE_PENALTIES.fifth.deaths +
           RIDDLE_PENALTIES.fifth.cmMultiplier * state.CM;
         const deathResult = killVillagers(state, deaths);
+        const fogDuration = RIDDLE_PENALTIES.fifth.fogDuration + 
+          (RIDDLE_PENALTIES.fifth.fogDurationCM * state.CM);
         return {
           ...deathResult,
           fogState: {
             isActive: true,
-            endTime: Date.now() + RIDDLE_PENALTIES.fifth.fogDuration,
-            duration: RIDDLE_PENALTIES.fifth.fogDuration,
+            endTime: Date.now() + fogDuration,
+            duration: fogDuration,
           },
           events: {
             ...state.events,
