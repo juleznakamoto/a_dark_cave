@@ -4,7 +4,7 @@ import { GameState } from "@shared/schema";
 import { tailwindToHex } from "@/lib/tailwindColors";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useMobileTooltip } from "@/hooks/useMobileTooltip";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 interface ItemSegment {
   itemType: string;
@@ -549,8 +549,10 @@ export default function ItemProgressChart() {
     })
     .filter((ring) => ring !== null);
 
+  const chartRef = useRef<HTMLDivElement>(null);
+
   return (
-    <div className="w-full h-48 w-48 flex flex-col items-center justify-center relative">
+    <div className="w-full h-48 w-48 flex flex-col items-center justify-center relative" ref={chartRef}>
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
         <span className="text-xl text-neutral-400">❖</span>
       </div>
@@ -585,13 +587,13 @@ export default function ItemProgressChart() {
             // Progress segments
             ...ring.progressSegments.map((segment, segIndex) => {
               const segmentColor = ring.isRingComplete && segment.isFull
-                ? tailwindToHex("blue-400") // Changed color for completed segments
+                ? tailwindToHex("blue-400")
                 : segment.fill;
 
               return (
                 <Pie
                   key={`progress-${ringIndex}-${segIndex}`}
-                  data={[{ value: 1 }]}
+                  data={[{ value: 1, name: segment.name, count: `${segment.currentCount}/${segment.maxCount}` }]}
                   cx="50%"
                   cy="50%"
                   innerRadius={ring.innerRadius}
@@ -601,16 +603,16 @@ export default function ItemProgressChart() {
                   endAngle={segment.endAngle}
                   cornerRadius={5}
                   strokeWidth={segment.isFull ? 1 : 0}
-                  stroke={segment.isFull ? tailwindToHex("red-900") : undefined} // Default stroke for full segments
+                  stroke={segment.isFull ? tailwindToHex("blue-900") : undefined}
                   isAnimationActive={false}
-                  style={{ outline: "none" }}
+                  style={{ outline: "none", cursor: ring.isRingComplete ? 'pointer' : 'default' }}
                   onMouseEnter={ring.isRingComplete ? () => setHoveredSegment(segment.segmentId) : undefined}
                   onMouseLeave={ring.isRingComplete ? () => setHoveredSegment(null) : undefined}
                   onClick={ring.isRingComplete && mobileTooltip.isMobile
                     ? (e) => mobileTooltip.handleTooltipClick(segment.segmentId, e as any)
                     : undefined}
                 >
-                  <Cell fill={segmentColor} />
+                  <Cell fill={segmentColor} title={ring.isRingComplete ? `${segment.name}: ${segment.currentCount}/${segment.maxCount}` : undefined} />
                 </Pie>
               );
             }),
@@ -638,19 +640,18 @@ export default function ItemProgressChart() {
         </PieChart>
       </ResponsiveContainer>
 
-      {/* Tooltips for completed ring segments */}
+      {/* Tooltip for mobile - show when segment is clicked */}
       {processedRings.map((ring, ringIndex) =>
         ring.isRingComplete && ring.progressSegments.map((segment, segIndex) => {
-          const isHovered = hoveredSegment === segment.segmentId ||
-                           mobileTooltip.isTooltipOpen(segment.segmentId);
+          const isOpen = mobileTooltip.isTooltipOpen(segment.segmentId);
 
-          if (!isHovered) return null;
+          if (!isOpen || !mobileTooltip.isMobile) return null;
 
           return (
             <TooltipProvider key={segment.segmentId}>
               <Tooltip open={true}>
                 <TooltipTrigger asChild>
-                  <div className="absolute inset-0 pointer-events-none" />
+                  <div className="absolute top-1/2 left-1/2 w-0 h-0" />
                 </TooltipTrigger>
                 <TooltipContent>
                   <div className="text-xs">
