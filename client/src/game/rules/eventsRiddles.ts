@@ -202,6 +202,7 @@ export const riddleEvents: Record<string, GameEvent> = {
             fogState: {
               isActive: true,
               endTime: Date.now() + RIDDLE_PENALTIES.second.fogDuration,
+              duration: RIDDLE_PENALTIES.second.fogDuration,
             },
             events: {
               ...state.events,
@@ -219,6 +220,7 @@ export const riddleEvents: Record<string, GameEvent> = {
             fogState: {
               isActive: true,
               endTime: Date.now() + RIDDLE_PENALTIES.second.fogDuration,
+              duration: RIDDLE_PENALTIES.second.fogDuration,
             },
             events: {
               ...state.events,
@@ -253,6 +255,7 @@ export const riddleEvents: Record<string, GameEvent> = {
             fogState: {
               isActive: true,
               endTime: Date.now() + RIDDLE_PENALTIES.second.fogDuration,
+              duration: RIDDLE_PENALTIES.second.fogDuration,
             },
             events: {
               ...state.events,
@@ -405,6 +408,7 @@ export const riddleEvents: Record<string, GameEvent> = {
             fogState: {
               isActive: true,
               endTime: Date.now() + RIDDLE_PENALTIES.fourth.fogDuration,
+              duration: RIDDLE_PENALTIES.fourth.fogDuration,
             },
             events: {
               ...state.events,
@@ -422,6 +426,7 @@ export const riddleEvents: Record<string, GameEvent> = {
             fogState: {
               isActive: true,
               endTime: Date.now() + RIDDLE_PENALTIES.fourth.fogDuration,
+              duration: RIDDLE_PENALTIES.fourth.fogDuration,
             },
             events: {
               ...state.events,
@@ -456,6 +461,7 @@ export const riddleEvents: Record<string, GameEvent> = {
             fogState: {
               isActive: true,
               endTime: Date.now() + RIDDLE_PENALTIES.fourth.fogDuration,
+              duration: RIDDLE_PENALTIES.fourth.fogDuration,
             },
             events: {
               ...state.events,
@@ -512,6 +518,7 @@ export const riddleEvents: Record<string, GameEvent> = {
             fogState: {
               isActive: true,
               endTime: Date.now() + RIDDLE_PENALTIES.fifth.fogDuration,
+              duration: RIDDLE_PENALTIES.fifth.fogDuration,
             },
             events: {
               ...state.events,
@@ -534,6 +541,7 @@ export const riddleEvents: Record<string, GameEvent> = {
             fogState: {
               isActive: true,
               endTime: Date.now() + RIDDLE_PENALTIES.fifth.fogDuration,
+              duration: RIDDLE_PENALTIES.fifth.fogDuration,
             },
             events: {
               ...state.events,
@@ -573,6 +581,7 @@ export const riddleEvents: Record<string, GameEvent> = {
             fogState: {
               isActive: true,
               endTime: Date.now() + RIDDLE_PENALTIES.fifth.fogDuration,
+              duration: RIDDLE_PENALTIES.fifth.fogDuration,
             },
             events: {
               ...state.events,
@@ -596,6 +605,7 @@ export const riddleEvents: Record<string, GameEvent> = {
           fogState: {
             isActive: true,
             endTime: Date.now() + RIDDLE_PENALTIES.fifth.fogDuration,
+            duration: RIDDLE_PENALTIES.fifth.fogDuration,
           },
           events: {
             ...state.events,
