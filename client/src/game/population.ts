@@ -186,13 +186,17 @@ export const getPopulationProduction = (
   const isCursed = curseState?.isActive && curseState.endTime > Date.now();
   if (isCursed) {
     baseProduction.forEach((prod) => {
-      prod.totalAmount = Math.ceil(prod.totalAmount * 0.5);
+      // Only reduce positive production (not consumption)
+      if (prod.totalAmount > 0) {
+        prod.totalAmount = Math.floor(prod.totalAmount * 0.5);
+      }
     });
   }
 
   // Apply frostfall penalty if active (0.75x for positive production only)
   const frostfallState = state.frostfallState;
-  const isFrostfall = frostfallState?.isActive && frostfallState.endTime > Date.now();
+  const isFrostfall =
+    frostfallState?.isActive && frostfallState.endTime > Date.now();
   if (isFrostfall) {
     baseProduction.forEach((prod) => {
       // Only reduce positive production (not consumption)
@@ -207,7 +211,10 @@ export const getPopulationProduction = (
   const isFog = fogState?.isActive && fogState.endTime > Date.now();
   if (isFog) {
     baseProduction.forEach((prod) => {
-      prod.totalAmount = Math.ceil(prod.totalAmount * 0.5);
+      // Only reduce positive production (not consumption)
+      if (prod.totalAmount > 0) {
+        prod.totalAmount = Math.floor(prod.totalAmount * 0.75);
+      }
     });
   }
 
@@ -282,10 +289,10 @@ export const getPopulationProduction = (
     });
   }
 
-  // Apply 100x multiplier in dev mode
+  // Apply 10x multiplier in dev mode
   if (state && state.devMode) {
     baseProduction.forEach((prod) => {
-      prod.totalAmount *= 1;
+      prod.totalAmount *= 10;
     });
   }
 
@@ -322,10 +329,6 @@ export const getTotalPopulationEffects = (
       });
     }
   });
-
-  // Hunting skills bonuses are already applied in getPopulationProduction
-  // No need to add them again here
-
   return totalEffects;
 };
 

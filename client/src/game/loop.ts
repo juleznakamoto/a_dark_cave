@@ -849,13 +849,13 @@ function handleStrangerApproach() {
   // Calculate probability based on your specifications
   let probability = 0.1 - state.CM * 0.05; // 10% base probability
 
-  // +2.0% for each wooden hut -> 15 %
-  probability += state.buildings.woodenHut * 0.015;
-  // +2.5% for each stone hut -> 20%
-  probability += state.buildings.stoneHut * 0.02;
-  // +3% for each longhouse -> 5%
-  probability += state.buildings.longhouse * 0.025;
-  // +5% for each fur tent -> 3%
+  // +1.25% for each wooden hut -> 12.5 %
+  probability += state.buildings.woodenHut * 0.0125;
+  // +1.5% for each stone hut -> 15%
+  probability += state.buildings.stoneHut * 0.015;
+  // +2% for each longhouse -> 4%
+  probability += state.buildings.longhouse * 0.02;
+  // +3% for each fur tent -> 3%
   probability += state.buildings.furTents * 0.03;
 
   // Raven's Mark blessing: +15% stranger approach probability
@@ -863,9 +863,9 @@ function handleStrangerApproach() {
     probability += 0.1;
   }
 
-  // Raven's Mark Enhanced blessing: +30% stranger approach probability
+  // Raven's Mark Enhanced blessing: 10% + 20% stranger approach probability
   if (state.blessings?.ravens_mark_enhanced) {
-    probability += 0.25;
+    probability += 0.2;
   }
 
   if (currentPopulation === 0) {
@@ -892,7 +892,11 @@ function handleStrangerApproach() {
       multiStrangerMultiplier += 0.15;
     }
     if (state.blessings?.ravens_mark_enhanced) {
-      multiStrangerMultiplier += 0.15;
+      multiStrangerMultiplier += 0.2;
+    }
+
+    if (state.buildings.woodenHut >= 10) {
+      multiStrangerMultiplier += 0.1;
     }
 
     if (state.buildings.stoneHut >= 10) {
@@ -900,11 +904,15 @@ function handleStrangerApproach() {
     }
 
     if (state.buildings.longhouse >= 2) {
-      moreStrangersProbability += 0.15;
+      multiStrangerMultiplier += 0.15;
     }
 
     if (state.buildings.furTents >= 1) {
-      moreStrangersProbability += 0.15;
+      multiStrangerMultiplier += 0.15;
+    }
+
+    if (state.CM === 1) {
+      multiStrangerMultiplier -= 0.15;
     }
 
     // multiple strangers approach at once
@@ -947,7 +955,7 @@ function handleStrangerApproach() {
       );
       messages.push(`${strangersCount} travelers arrive and decide to stay.`);
       messages.push(
-        `${strangersCount} wanderers appear and become part of the community.`,
+        `${strangersCount} wanderers arrive and become part of the community.`,
       );
     }
 

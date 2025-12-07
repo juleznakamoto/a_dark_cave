@@ -697,7 +697,7 @@ export default function VillagePanel() {
                                       const timeRemaining = Math.max(0, fogState.endTime - Date.now());
                                       const minutesRemaining = Math.ceil(timeRemaining / 60000);
                                       
-                                      return `Dense Fog\n\nProduction: -50%\nTime remaining: ${minutesRemaining} min`;
+                                      return `Dense Fog\n\nProduction: -25%\nTime remaining: ${minutesRemaining} min`;
                                     }
                                   };
                                   return fogTooltip.getContent(state);

@@ -660,7 +660,7 @@ export function handleExploreCitadel(
     result.logEntries!.push({
       id: `explore-citadel-${Date.now()}`,
       message:
-        "At the deepest part of the city, a massive citadel rises before you. Its size suggests it houses something of great power, or something of geat danger.",
+        "At the deepest part of the city, a massive citadel rises before you. Its size suggests it houses something of great power, or something of great danger.",
       timestamp: Date.now(),
       type: "system",
     });
