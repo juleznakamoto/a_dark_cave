@@ -612,7 +612,7 @@ export default function ItemProgressChart() {
                   startAngle={segment.startAngle}
                   endAngle={segment.endAngle}
                   cornerRadius={5}
-                  strokeWidth={segment.isFull ? 1 : 0}
+                  strokeWidth={segment.isFull ? 1.5 : 0}
                   stroke={segment.isFull ? tailwindToHex("red-900") : undefined}
                   isAnimationActive={false}
                   style={{ 

@@ -406,7 +406,7 @@ export default function BuildingProgressChart() {
                   startAngle={segment.startAngle}
                   endAngle={segment.endAngle}
                   cornerRadius={5}
-                  strokeWidth={segment.isFull ? 1 : 0}
+                  strokeWidth={segment.isFull ? 1.5 : 0}
                   stroke={
                     segment.isFull ? tailwindToHex("blue-900") : undefined
                   }
