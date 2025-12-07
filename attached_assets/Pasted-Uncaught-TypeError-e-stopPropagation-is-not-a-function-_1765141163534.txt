@@ -1,0 +1,56 @@
+Uncaught TypeError: e.stopPropagation is not a function
+    at handleSegmentClick (BuildingProgressChartAchievements.tsx:401:21)
+    at recharts.js?v=d02c121a:5007:5
+    at HTMLUnknownElement.callCallback2 (chunk-276SZO74.js?v=d02c121a:3674:22)
+    at Object.invokeGuardedCallbackDev (chunk-276SZO74.js?v=d02c121a:3699:24)
+    at invokeGuardedCallback (chunk-276SZO74.js?v=d02c121a:3733:39)
+    at invokeGuardedCallbackAndCatchFirstError (chunk-276SZO74.js?v=d02c121a:3736:33)
+    at executeDispatch (chunk-276SZO74.js?v=d02c121a:7014:11)
+    at processDispatchQueueItemsInOrder (chunk-276SZO74.js?v=d02c121a:7034:15)
+    at processDispatchQueue (chunk-276SZO74.js?v=d02c121a:7043:13)
+    at dispatchEventsForPlugins (chunk-276SZO74.js?v=d02c121a:7051:11)
+handleSegmentClick @ BuildingProgressChartAchievements.tsx:401
+(anonymous) @ recharts.js?v=d02c121a:5007
+callCallback2 @ chunk-276SZO74.js?v=d02c121a:3674
+invokeGuardedCallbackDev @ chunk-276SZO74.js?v=d02c121a:3699
+invokeGuardedCallback @ chunk-276SZO74.js?v=d02c121a:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-276SZO74.js?v=d02c121a:3736
+executeDispatch @ chunk-276SZO74.js?v=d02c121a:7014
+processDispatchQueueItemsInOrder @ chunk-276SZO74.js?v=d02c121a:7034
+processDispatchQueue @ chunk-276SZO74.js?v=d02c121a:7043
+dispatchEventsForPlugins @ chunk-276SZO74.js?v=d02c121a:7051
+(anonymous) @ chunk-276SZO74.js?v=d02c121a:7174
+batchedUpdates$1 @ chunk-276SZO74.js?v=d02c121a:18913
+batchedUpdates @ chunk-276SZO74.js?v=d02c121a:3579
+dispatchEventForPluginEventSystem @ chunk-276SZO74.js?v=d02c121a:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-276SZO74.js?v=d02c121a:5478
+dispatchEvent @ chunk-276SZO74.js?v=d02c121a:5472
+dispatchDiscreteEvent @ chunk-276SZO74.js?v=d02c121a:5449Understand this error
+chunk-276SZO74.js?v=d02c121a:3750 Uncaught TypeError: e.stopPropagation is not a function
+    at handleSegmentClick (BuildingProgressChartAchievements.tsx:401:21)
+    at recharts.js?v=d02c121a:5007:5
+    at HTMLUnknownElement.callCallback2 (chunk-276SZO74.js?v=d02c121a:3674:22)
+    at Object.invokeGuardedCallbackDev (chunk-276SZO74.js?v=d02c121a:3699:24)
+    at invokeGuardedCallback (chunk-276SZO74.js?v=d02c121a:3733:39)
+    at invokeGuardedCallbackAndCatchFirstError (chunk-276SZO74.js?v=d02c121a:3736:33)
+    at executeDispatch (chunk-276SZO74.js?v=d02c121a:7014:11)
+    at processDispatchQueueItemsInOrder (chunk-276SZO74.js?v=d02c121a:7034:15)
+    at processDispatchQueue (chunk-276SZO74.js?v=d02c121a:7043:13)
+    at dispatchEventsForPlugins (chunk-276SZO74.js?v=d02c121a:7051:11)
+handleSegmentClick @ BuildingProgressChartAchievements.tsx:401
+(anonymous) @ recharts.js?v=d02c121a:5007
+callCallback2 @ chunk-276SZO74.js?v=d02c121a:3674
+invokeGuardedCallbackDev @ chunk-276SZO74.js?v=d02c121a:3699
+invokeGuardedCallback @ chunk-276SZO74.js?v=d02c121a:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-276SZO74.js?v=d02c121a:3736
+executeDispatch @ chunk-276SZO74.js?v=d02c121a:7014
+processDispatchQueueItemsInOrder @ chunk-276SZO74.js?v=d02c121a:7034
+processDispatchQueue @ chunk-276SZO74.js?v=d02c121a:7043
+dispatchEventsForPlugins @ chunk-276SZO74.js?v=d02c121a:7051
+(anonymous) @ chunk-276SZO74.js?v=d02c121a:7174
+batchedUpdates$1 @ chunk-276SZO74.js?v=d02c121a:18913
+batchedUpdates @ chunk-276SZO74.js?v=d02c121a:3579
+dispatchEventForPluginEventSystem @ chunk-276SZO74.js?v=d02c121a:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-276SZO74.js?v=d02c121a:5478
+dispatchEvent @ chunk-276SZO74.js?v=d02c121a:5472
+dispatchDiscreteEvent @ chunk-276SZO74.js?v=d02c121a:5449Understand this error
