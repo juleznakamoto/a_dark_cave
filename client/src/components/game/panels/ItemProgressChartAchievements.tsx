@@ -712,8 +712,8 @@ export default function ItemProgressChart() {
           className="absolute bg-popover border rounded-md px-2 py-1 text-xs shadow-md z-50 pointer-events-none whitespace-nowrap"
           style={{
             left: `${hoveredSegment.x}px`,
-            top: `${hoveredSegment.y - 60}px`,
-            transform: 'translateX(-50%)'
+            top: `${hoveredSegment.y}px`,
+            transform: 'translate(-50%, calc(-100% - 10px))'
           }}
         >
           <div className="font-semibold">{hoveredSegment.name}</div>
