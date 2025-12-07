@@ -360,6 +360,89 @@ export default function BuildingProgressChart() {
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
         <span className="text-xl text-neutral-400">▨</span>
       </div>
+      
+      {/* Invisible overlay for each completed ring to capture mouse events */}
+      {processedRings.map((ring, ringIndex) => {
+        if (!ring.isRingComplete) return null;
+        
+        const centerX = 96; // half of 192px (w-48)
+        const centerY = 96;
+        const innerR = ring.innerRadius;
+        const outerR = ring.outerRadius;
+        
+        return (
+          <svg
+            key={`overlay-${ringIndex}`}
+            className="absolute inset-0 pointer-events-auto"
+            width="192"
+            height="192"
+            style={{ zIndex: 20 }}
+          >
+            {ring.progressSegments.map((segment, segIndex) => {
+              const startAngle = (segment.startAngle - 90) * (Math.PI / 180);
+              const endAngle = (segment.endAngle - 90) * (Math.PI / 180);
+              
+              const x1 = centerX + innerR * Math.cos(startAngle);
+              const y1 = centerY + innerR * Math.sin(startAngle);
+              const x2 = centerX + outerR * Math.cos(startAngle);
+              const y2 = centerY + outerR * Math.sin(startAngle);
+              const x3 = centerX + outerR * Math.cos(endAngle);
+              const y3 = centerY + outerR * Math.sin(endAngle);
+              const x4 = centerX + innerR * Math.cos(endAngle);
+              const y4 = centerY + innerR * Math.sin(endAngle);
+              
+              const largeArc = Math.abs(segment.endAngle - segment.startAngle) > 180 ? 1 : 0;
+              
+              const pathData = [
+                `M ${x1} ${y1}`,
+                `L ${x2} ${y2}`,
+                `A ${outerR} ${outerR} 0 ${largeArc} 0 ${x3} ${y3}`,
+                `L ${x4} ${y4}`,
+                `A ${innerR} ${innerR} 0 ${largeArc} 1 ${x1} ${y1}`,
+                'Z'
+              ].join(' ');
+              
+              return (
+                <path
+                  key={`overlay-path-${ringIndex}-${segIndex}`}
+                  d={pathData}
+                  fill="transparent"
+                  onMouseEnter={() => {
+                    setHoveredSegment({
+                      id: segment.segmentId,
+                      name: segment.name,
+                      currentCount: segment.currentCount,
+                      maxCount: segment.maxCount,
+                    });
+                  }}
+                  onMouseLeave={() => {
+                    if (clickedSegment !== segment.segmentId) {
+                      setHoveredSegment(null);
+                    }
+                  }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    const newClickedId = clickedSegment === segment.segmentId ? null : segment.segmentId;
+                    setClickedSegment(newClickedId);
+                    if (newClickedId) {
+                      setHoveredSegment({
+                        id: segment.segmentId,
+                        name: segment.name,
+                        currentCount: segment.currentCount,
+                        maxCount: segment.maxCount,
+                      });
+                    } else {
+                      setHoveredSegment(null);
+                    }
+                  }}
+                  style={{ cursor: 'pointer' }}
+                />
+              );
+            })}
+          </svg>
+        );
+      })}
+      
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
           {processedRings.map((ring, ringIndex) => [
@@ -412,47 +495,7 @@ export default function BuildingProgressChart() {
                     segment.isFull ? tailwindToHex("blue-900") : undefined
                   }
                   isAnimationActive={false}
-                  style={{ outline: "none" }}
-                  onMouseEnter={
-                    ring.isRingComplete
-                      ? () => {
-                          setHoveredSegment({
-                            id: segment.segmentId,
-                            name: segment.name,
-                            currentCount: segment.currentCount,
-                            maxCount: segment.maxCount,
-                          });
-                        }
-                      : undefined
-                  }
-                  onMouseLeave={
-                    ring.isRingComplete
-                      ? () => {
-                          if (clickedSegment !== segment.segmentId) {
-                            setHoveredSegment(null);
-                          }
-                        }
-                      : undefined
-                  }
-                  onClick={
-                    ring.isRingComplete
-                      ? (e: any) => {
-                          e?.stopPropagation?.();
-                          const newClickedId = clickedSegment === segment.segmentId ? null : segment.segmentId;
-                          setClickedSegment(newClickedId);
-                          if (newClickedId) {
-                            setHoveredSegment({
-                              id: segment.segmentId,
-                              name: segment.name,
-                              currentCount: segment.currentCount,
-                              maxCount: segment.maxCount,
-                            });
-                          } else {
-                            setHoveredSegment(null);
-                          }
-                        }
-                      : undefined
-                  }
+                  style={{ outline: "none", pointerEvents: "none" }}
                 >
                   <Cell fill={segmentColor} />
                 </Pie>
