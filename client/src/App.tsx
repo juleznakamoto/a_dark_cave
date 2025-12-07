@@ -43,8 +43,10 @@ function Router() {
 
 function App() {
   useEffect(() => {
-    // Initialize Playlight SDK with game pause integration
-    (async () => {
+    // Initialize Playlight SDK with game pause integration after 30 minutes
+    const THIRTY_MINUTES = 30 * 60 * 1000; // 30 minutes in milliseconds
+    
+    const initTimeout = setTimeout(async () => {
       try {
         const module = await import(
           "https://sdk.playlight.dev/playlight-sdk.es.js"
@@ -78,7 +80,10 @@ function App() {
       } catch (error) {
         console.error("Error loading the Playlight SDK:", error);
       }
-    })();
+    }, THIRTY_MINUTES);
+
+    // Cleanup timeout on unmount
+    return () => clearTimeout(initTimeout);
   }, []);
 
   return (
