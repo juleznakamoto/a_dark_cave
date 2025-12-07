@@ -27,7 +27,12 @@ interface RingConfig {
 
 export default function BuildingProgressChart() {
   const buildings = useGameStore((state) => state.buildings);
-  const [hoveredSegment, setHoveredSegment] = useState<string | null>(null);
+  const [hoveredSegment, setHoveredSegment] = useState<{
+    id: string;
+    name: string;
+    currentCount: number;
+    maxCount: number;
+  } | null>(null);
   const mobileTooltip = useMobileTooltip();
 
   // Ring sizing parameters
@@ -407,7 +412,12 @@ export default function BuildingProgressChart() {
                   style={{ outline: "none" }}
                   onMouseEnter={
                     ring.isRingComplete
-                      ? () => setHoveredSegment(segment.segmentId)
+                      ? () => setHoveredSegment({
+                          id: segment.segmentId,
+                          name: segment.name,
+                          currentCount: segment.currentCount,
+                          maxCount: segment.maxCount,
+                        })
                       : undefined
                   }
                   onMouseLeave={
@@ -417,11 +427,15 @@ export default function BuildingProgressChart() {
                   }
                   onClick={
                     ring.isRingComplete && mobileTooltip.isMobile
-                      ? (e) =>
-                          mobileTooltip.handleTooltipClick(
-                            segment.segmentId,
-                            e as any,
-                          )
+                      ? (e) => {
+                          mobileTooltip.handleTooltipClick(segment.segmentId, e as any);
+                          setHoveredSegment({
+                            id: segment.segmentId,
+                            name: segment.name,
+                            currentCount: segment.currentCount,
+                            maxCount: segment.maxCount,
+                          });
+                        }
                       : undefined
                   }
                 >
@@ -452,35 +466,14 @@ export default function BuildingProgressChart() {
         </PieChart>
       </ResponsiveContainer>
 
-      {/* Tooltips for completed ring segments */}
-      {processedRings.map(
-        (ring, ringIndex) =>
-          ring.isRingComplete &&
-          ring.progressSegments.map((segment, segIndex) => {
-            const isHovered =
-              hoveredSegment === segment.segmentId ||
-              mobileTooltip.isTooltipOpen(segment.segmentId);
-
-            if (!isHovered) return null;
-
-            return (
-              <TooltipProvider key={segment.segmentId}>
-                <Tooltip open={true}>
-                  <TooltipTrigger asChild>
-                    <div className="absolute inset-0 pointer-events-none" />
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <div className="text-xs">
-                      <div className="font-semibold">{segment.name}</div>
-                      <div>
-                        {segment.currentCount}/{segment.maxCount}
-                      </div>
-                    </div>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            );
-          }),
+      {/* Tooltip display for hovered segment */}
+      {hoveredSegment && (
+        <div className="absolute top-0 left-full ml-2 bg-popover border rounded-md px-2 py-1 text-xs shadow-md z-50 pointer-events-none whitespace-nowrap">
+          <div className="font-semibold">{hoveredSegment.name}</div>
+          <div className="text-muted-foreground">
+            {hoveredSegment.currentCount}/{hoveredSegment.maxCount}
+          </div>
+        </div>
       )}
     </div>
   );
