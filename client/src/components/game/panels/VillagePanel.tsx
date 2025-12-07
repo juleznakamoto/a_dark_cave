@@ -12,6 +12,7 @@ import {
   curseTooltip,
   miningBoostTooltip,
   frostfallTooltip,
+  fogTooltip,
 } from "@/game/rules/tooltips";
 import CooldownButton from "@/components/CooldownButton";
 import { Button } from "@/components/ui/button";
@@ -687,21 +688,8 @@ export default function VillagePanel() {
                               </div>
                             </TooltipTrigger>
                             <TooltipContent>
-                              <div className="text-xs whitespace-pre-line">
-                                {(() => {
-                                  const fogTooltip = {
-                                    getContent: (state: any) => {
-                                      const fogState = state.fogState;
-                                      if (!fogState?.isActive) return "";
-                                      
-                                      const timeRemaining = Math.max(0, fogState.endTime - Date.now());
-                                      const minutesRemaining = Math.ceil(timeRemaining / 60000);
-                                      
-                                      return `Dense Fog\n\nProduction: -25%\nTime remaining: ${minutesRemaining} min`;
-                                    }
-                                  };
-                                  return fogTooltip.getContent(state);
-                                })()}
+                              <div className="text-xs">
+                                {fogTooltip.getContent(state)}
                               </div>
                             </TooltipContent>
                           </Tooltip>

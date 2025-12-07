@@ -359,6 +359,27 @@ export const frostfallTooltip: TooltipConfig = {
   },
 };
 
+export const fogTooltip: TooltipConfig = {
+  getContent: (state: GameState) => {
+    const fogState = state.fogState;
+    const isFog = fogState?.isActive && fogState.endTime > Date.now();
+
+    if (isFog) {
+      const remainingMs = fogState.endTime - Date.now();
+      const remainingMinutes = Math.ceil(remainingMs / 60000);
+      return (
+        <>
+          <div className="font-bold">Dense Fog</div>
+          <div>Production Bonus: -50%</div>
+          <div>{remainingMinutes} min remaining</div>
+        </>
+      );
+    }
+
+    return null;
+  },
+};
+
 // Combat item tooltips
 export const combatItemTooltips: Record<string, TooltipConfig> = {
   ember_bomb: {
