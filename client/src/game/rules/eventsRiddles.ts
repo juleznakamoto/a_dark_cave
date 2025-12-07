@@ -1,6 +1,7 @@
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
+import { StateManager } from "../state";
 
 // Riddle rewards (gold amounts)
 const RIDDLE_REWARDS = {
@@ -14,14 +15,13 @@ const RIDDLE_REWARDS = {
 // Riddle penalties
 const RIDDLE_PENALTIES = {
   first: {
-    baseDeaths: 12,
-    cmMultiplier: 6,
+    deaths: 12 + 6*state.CM,
   },
   second: {
-    fogDuration: 10 * 60 * 1000, // 10 minutes in milliseconds
+    fogDuration: (10+5*StateManager.CM) * 60 * 1000, // 10 minutes in milliseconds
   },
   third: {
-    baseDeaths: 18,
+    deaths: 18,
     cmMultiplier: 6,
   },
   fourth: {
@@ -29,7 +29,7 @@ const RIDDLE_PENALTIES = {
   },
   fifth: {
     fogDuration: 15 * 60 * 1000, // 15 minutes in milliseconds
-    baseDeaths: 24,
+    deaths: 24,
     cmMultiplier: 6,
   },
 } as const;
@@ -98,7 +98,7 @@ export const riddleEvents: Record<string, GameEvent> = {
         label: "Fire",
         effect: (state: GameState) => {
           const deaths =
-            RIDDLE_PENALTIES.first.baseDeaths +
+            RIDDLE_PENALTIES.first.deaths +
             RIDDLE_PENALTIES.first.cmMultiplier * state.CM;
           return {
             ...killVillagers(state, deaths),
@@ -115,7 +115,7 @@ export const riddleEvents: Record<string, GameEvent> = {
         label: "Tree",
         effect: (state: GameState) => {
           const deaths =
-            RIDDLE_PENALTIES.first.baseDeaths +
+            RIDDLE_PENALTIES.first.deaths +
             RIDDLE_PENALTIES.first.cmMultiplier * state.CM;
           return {
             ...killVillagers(state, deaths),
@@ -149,7 +149,7 @@ export const riddleEvents: Record<string, GameEvent> = {
         label: "Bones",
         effect: (state: GameState) => {
           const deaths =
-            RIDDLE_PENALTIES.first.baseDeaths +
+            RIDDLE_PENALTIES.first.deaths +
             RIDDLE_PENALTIES.first.cmMultiplier * state.CM;
           return {
             ...killVillagers(state, deaths),
@@ -167,7 +167,7 @@ export const riddleEvents: Record<string, GameEvent> = {
       label: "No answer given",
       effect: (state: GameState) => {
         const deaths =
-          RIDDLE_PENALTIES.first.baseDeaths +
+          RIDDLE_PENALTIES.first.deaths +
           RIDDLE_PENALTIES.first.cmMultiplier * state.CM;
         return {
           ...killVillagers(state, deaths),
@@ -304,7 +304,7 @@ export const riddleEvents: Record<string, GameEvent> = {
         label: "Man",
         effect: (state: GameState) => {
           const deaths =
-            RIDDLE_PENALTIES.third.baseDeaths +
+            RIDDLE_PENALTIES.third.deaths +
             RIDDLE_PENALTIES.third.cmMultiplier * state.CM;
           return {
             ...killVillagers(state, deaths),
@@ -321,7 +321,7 @@ export const riddleEvents: Record<string, GameEvent> = {
         label: "Water",
         effect: (state: GameState) => {
           const deaths =
-            RIDDLE_PENALTIES.third.baseDeaths +
+            RIDDLE_PENALTIES.third.deaths +
             RIDDLE_PENALTIES.third.cmMultiplier * state.CM;
           return {
             ...killVillagers(state, deaths),
@@ -355,7 +355,7 @@ export const riddleEvents: Record<string, GameEvent> = {
         label: "Fire",
         effect: (state: GameState) => {
           const deaths =
-            RIDDLE_PENALTIES.third.baseDeaths +
+            RIDDLE_PENALTIES.third.deaths +
             RIDDLE_PENALTIES.third.cmMultiplier * state.CM;
           return {
             ...killVillagers(state, deaths),
@@ -373,7 +373,7 @@ export const riddleEvents: Record<string, GameEvent> = {
       label: "No answer given",
       effect: (state: GameState) => {
         const deaths =
-          RIDDLE_PENALTIES.third.baseDeaths +
+          RIDDLE_PENALTIES.third.deaths +
           RIDDLE_PENALTIES.third.cmMultiplier * state.CM;
         return {
           ...killVillagers(state, deaths),
@@ -510,7 +510,7 @@ export const riddleEvents: Record<string, GameEvent> = {
         label: "Light",
         effect: (state: GameState) => {
           const deaths =
-            RIDDLE_PENALTIES.fifth.baseDeaths +
+            RIDDLE_PENALTIES.fifth.deaths +
             RIDDLE_PENALTIES.fifth.cmMultiplier * state.CM;
           const deathResult = killVillagers(state, deaths);
           return {
@@ -533,7 +533,7 @@ export const riddleEvents: Record<string, GameEvent> = {
         label: "Life",
         effect: (state: GameState) => {
           const deaths =
-            RIDDLE_PENALTIES.fifth.baseDeaths +
+            RIDDLE_PENALTIES.fifth.deaths +
             RIDDLE_PENALTIES.fifth.cmMultiplier * state.CM;
           const deathResult = killVillagers(state, deaths);
           return {
@@ -573,7 +573,7 @@ export const riddleEvents: Record<string, GameEvent> = {
         label: "Death",
         effect: (state: GameState) => {
           const deaths =
-            RIDDLE_PENALTIES.fifth.baseDeaths +
+            RIDDLE_PENALTIES.fifth.deaths +
             RIDDLE_PENALTIES.fifth.cmMultiplier * state.CM;
           const deathResult = killVillagers(state, deaths);
           return {
@@ -597,7 +597,7 @@ export const riddleEvents: Record<string, GameEvent> = {
       label: "No answer given",
       effect: (state: GameState) => {
         const deaths =
-          RIDDLE_PENALTIES.fifth.baseDeaths +
+          RIDDLE_PENALTIES.fifth.deaths +
           RIDDLE_PENALTIES.fifth.cmMultiplier * state.CM;
         const deathResult = killVillagers(state, deaths);
         return {

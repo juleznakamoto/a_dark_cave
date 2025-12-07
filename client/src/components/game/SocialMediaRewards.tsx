@@ -81,7 +81,7 @@ export default function SocialMediaRewards() {
     // Add reward message to event log
     const rewardLog: LogEntry = {
       id: `social-reward-claimed-${platformId}-${Date.now()}`,
-      message: `You received ${reward} Gold for following us on ${platformName}!`,
+      message: `You received ${reward} Gold for (maybe) following us on ${platformName}!`,
       timestamp: Date.now(),
       type: "system",
       visualEffect: {
