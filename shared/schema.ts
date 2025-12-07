@@ -310,10 +310,11 @@ export const gameStateSchema = z.object({
       communicatedWithCreatures: z.boolean().default(false),
       encounteredCreaturesChoice: z.boolean().default(false),
       // Riddle Events
-      riddleOfMan: z.boolean().default(false),
-      riddleOfTime: z.boolean().default(false),
-      riddleOfClouds: z.boolean().default(false),
-      riddleOfDarkness: z.boolean().default(false),
+      whispererInTheDark: z.boolean().default(false),
+      riddleOfAges: z.boolean().default(false),
+      riddleOfDevourer: z.boolean().default(false),
+      riddleOfTears: z.boolean().default(false),
+      riddleOfEternal: z.boolean().default(false),
     })
     .default({}),
   effects: z
