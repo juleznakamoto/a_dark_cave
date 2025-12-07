@@ -559,123 +559,10 @@ export default function ItemProgressChart() {
     <div 
       ref={containerRef}
       className="w-48 h-48 flex flex-col items-center justify-center relative"
-      onClick={(e) => {
-        if (e.target === e.currentTarget || e.target === containerRef.current) {
-          setClickedSegment(null);
-          setHoveredSegment(null);
-        }
-      }}
     >
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
         <span className="text-xl text-neutral-400">❖</span>
       </div>
-      
-      {/* Invisible overlay for each completed ring to capture mouse events */}
-      {processedRings.map((ring, ringIndex) => {
-        if (!ring.isRingComplete) return null;
-        
-        const centerX = 96; // half of 192px (w-48)
-        const centerY = 96;
-        const innerR = ring.innerRadius;
-        const outerR = ring.outerRadius;
-        
-        return (
-          <svg
-            key={`overlay-${ringIndex}`}
-            className="absolute inset-0 pointer-events-auto"
-            width="192"
-            height="192"
-            style={{ zIndex: 20 }}
-          >
-            {ring.progressSegments.map((segment, segIndex) => {
-              const startAngle = (segment.startAngle - 90) * (Math.PI / 180);
-              const endAngle = (segment.endAngle - 90) * (Math.PI / 180);
-              
-              const x1 = centerX + innerR * Math.cos(startAngle);
-              const y1 = centerY + innerR * Math.sin(startAngle);
-              const x2 = centerX + outerR * Math.cos(startAngle);
-              const y2 = centerY + outerR * Math.sin(startAngle);
-              const x3 = centerX + outerR * Math.cos(endAngle);
-              const y3 = centerY + outerR * Math.sin(endAngle);
-              const x4 = centerX + innerR * Math.cos(endAngle);
-              const y4 = centerY + innerR * Math.sin(endAngle);
-              
-              const largeArc = Math.abs(segment.endAngle - segment.startAngle) > 180 ? 1 : 0;
-              
-              const pathData = [
-                `M ${x1} ${y1}`,
-                `L ${x2} ${y2}`,
-                `A ${outerR} ${outerR} 0 ${largeArc} 0 ${x3} ${y3}`,
-                `L ${x4} ${y4}`,
-                `A ${innerR} ${innerR} 0 ${largeArc} 1 ${x1} ${y1}`,
-                'Z'
-              ].join(' ');
-              
-              return (
-                <path
-                  key={`overlay-path-${ringIndex}-${segIndex}`}
-                  d={pathData}
-                  fill="transparent"
-                  onMouseEnter={(e) => {
-                    const rect = containerRef.current?.getBoundingClientRect();
-                    if (rect) {
-                      setHoveredSegment({
-                        id: segment.segmentId,
-                        name: segment.name,
-                        currentCount: segment.currentCount,
-                        maxCount: segment.maxCount,
-                        x: e.clientX - rect.left,
-                        y: e.clientY - rect.top,
-                      });
-                    }
-                  }}
-                  onMouseMove={(e) => {
-                    if (hoveredSegment?.id === segment.segmentId) {
-                      const rect = containerRef.current?.getBoundingClientRect();
-                      if (rect) {
-                        setHoveredSegment({
-                          id: segment.segmentId,
-                          name: segment.name,
-                          currentCount: segment.currentCount,
-                          maxCount: segment.maxCount,
-                          x: e.clientX - rect.left,
-                          y: e.clientY - rect.top,
-                        });
-                      }
-                    }
-                  }}
-                  onMouseLeave={() => {
-                    if (clickedSegment !== segment.segmentId) {
-                      setHoveredSegment(null);
-                    }
-                  }}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    const newClickedId = clickedSegment === segment.segmentId ? null : segment.segmentId;
-                    setClickedSegment(newClickedId);
-                    if (newClickedId) {
-                      const rect = containerRef.current?.getBoundingClientRect();
-                      if (rect) {
-                        setHoveredSegment({
-                          id: segment.segmentId,
-                          name: segment.name,
-                          currentCount: segment.currentCount,
-                          maxCount: segment.maxCount,
-                          x: e.clientX - rect.left,
-                          y: e.clientY - rect.top,
-                        });
-                      }
-                    } else {
-                      setHoveredSegment(null);
-                    }
-                  }}
-                  style={{ cursor: 'pointer' }}
-                />
-              );
-            })}
-          </svg>
-        );
-      })}
       
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
@@ -708,8 +595,10 @@ export default function ItemProgressChart() {
             // Progress segments
             ...ring.progressSegments.map((segment, segIndex) => {
               const segmentColor = ring.isRingComplete && segment.isFull
-                ? tailwindToHex("blue-400") // Changed color for completed segments
+                ? tailwindToHex("blue-400")
                 : segment.fill;
+
+              const isInteractive = ring.isRingComplete && segment.isFull;
 
               return (
                 <Pie
@@ -726,7 +615,68 @@ export default function ItemProgressChart() {
                   strokeWidth={segment.isFull ? 1 : 0}
                   stroke={segment.isFull ? tailwindToHex("red-900") : undefined}
                   isAnimationActive={false}
-                  style={{ outline: "none", pointerEvents: "none" }}
+                  style={{ 
+                    outline: "none", 
+                    pointerEvents: isInteractive ? "auto" : "none",
+                    cursor: isInteractive ? "pointer" : "default"
+                  }}
+                  onMouseEnter={(e: any) => {
+                    if (isInteractive) {
+                      const rect = containerRef.current?.getBoundingClientRect();
+                      if (rect) {
+                        setHoveredSegment({
+                          id: segment.segmentId,
+                          name: segment.name,
+                          currentCount: segment.currentCount,
+                          maxCount: segment.maxCount,
+                          x: e.clientX - rect.left,
+                          y: e.clientY - rect.top,
+                        });
+                      }
+                    }
+                  }}
+                  onMouseMove={(e: any) => {
+                    if (isInteractive && hoveredSegment?.id === segment.segmentId) {
+                      const rect = containerRef.current?.getBoundingClientRect();
+                      if (rect) {
+                        setHoveredSegment({
+                          id: segment.segmentId,
+                          name: segment.name,
+                          currentCount: segment.currentCount,
+                          maxCount: segment.maxCount,
+                          x: e.clientX - rect.left,
+                          y: e.clientY - rect.top,
+                        });
+                      }
+                    }
+                  }}
+                  onMouseLeave={() => {
+                    if (isInteractive && clickedSegment !== segment.segmentId) {
+                      setHoveredSegment(null);
+                    }
+                  }}
+                  onClick={(e: any) => {
+                    if (isInteractive) {
+                      e.stopPropagation();
+                      const newClickedId = clickedSegment === segment.segmentId ? null : segment.segmentId;
+                      setClickedSegment(newClickedId);
+                      if (newClickedId) {
+                        const rect = containerRef.current?.getBoundingClientRect();
+                        if (rect) {
+                          setHoveredSegment({
+                            id: segment.segmentId,
+                            name: segment.name,
+                            currentCount: segment.currentCount,
+                            maxCount: segment.maxCount,
+                            x: e.clientX - rect.left,
+                            y: e.clientY - rect.top,
+                          });
+                        }
+                      } else {
+                        setHoveredSegment(null);
+                      }
+                    }
+                  }}
                 >
                   <Cell fill={segmentColor} />
                 </Pie>
