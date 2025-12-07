@@ -15,10 +15,12 @@ const RIDDLE_REWARDS = {
 // Riddle penalties
 const RIDDLE_PENALTIES = {
   first: {
-    deaths: 12 + 6*state.CM,
+    deaths: 12,
+    cmMultiplier: 6,
   },
   second: {
-    fogDuration: (10+5*StateManager.CM) * 60 * 1000, // 10 minutes in milliseconds
+    fogDuration: 10 * 60 * 1000, // 10 minutes in milliseconds
+    fogDurationCM: 5 * 60 * 1000, // Additional 5 minutes per CM
   },
   third: {
     deaths: 18,
@@ -198,11 +200,13 @@ export const riddleEvents: Record<string, GameEvent> = {
         id: "answerEarth",
         label: "Earth",
         effect: (state: GameState) => {
+          const fogDuration = RIDDLE_PENALTIES.second.fogDuration + 
+            (RIDDLE_PENALTIES.second.fogDurationCM * state.CM);
           return {
             fogState: {
               isActive: true,
-              endTime: Date.now() + RIDDLE_PENALTIES.second.fogDuration,
-              duration: RIDDLE_PENALTIES.second.fogDuration,
+              endTime: Date.now() + fogDuration,
+              duration: fogDuration,
             },
             events: {
               ...state.events,
@@ -216,11 +220,13 @@ export const riddleEvents: Record<string, GameEvent> = {
         id: "answerWolf",
         label: "Wolf",
         effect: (state: GameState) => {
+          const fogDuration = RIDDLE_PENALTIES.second.fogDuration + 
+            (RIDDLE_PENALTIES.second.fogDurationCM * state.CM);
           return {
             fogState: {
               isActive: true,
-              endTime: Date.now() + RIDDLE_PENALTIES.second.fogDuration,
-              duration: RIDDLE_PENALTIES.second.fogDuration,
+              endTime: Date.now() + fogDuration,
+              duration: fogDuration,
             },
             events: {
               ...state.events,
@@ -251,11 +257,13 @@ export const riddleEvents: Record<string, GameEvent> = {
         id: "answerBird",
         label: "Bird",
         effect: (state: GameState) => {
+          const fogDuration = RIDDLE_PENALTIES.second.fogDuration + 
+            (RIDDLE_PENALTIES.second.fogDurationCM * state.CM);
           return {
             fogState: {
               isActive: true,
-              endTime: Date.now() + RIDDLE_PENALTIES.second.fogDuration,
-              duration: RIDDLE_PENALTIES.second.fogDuration,
+              endTime: Date.now() + fogDuration,
+              duration: fogDuration,
             },
             events: {
               ...state.events,
@@ -270,11 +278,13 @@ export const riddleEvents: Record<string, GameEvent> = {
       id: "timeout",
       label: "No answer given",
       effect: (state: GameState) => {
+        const fogDuration = RIDDLE_PENALTIES.second.fogDuration + 
+          (RIDDLE_PENALTIES.second.fogDurationCM * state.CM);
         return {
           fogState: {
             isActive: true,
-            endTime: Date.now() + RIDDLE_PENALTIES.second.fogDuration,
-            duration: RIDDLE_PENALTIES.second.fogDuration,
+            endTime: Date.now() + fogDuration,
+            duration: fogDuration,
           },
           events: {
             ...state.events,
