@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { GameState, gameStateSchema } from "@shared/schema";
+import { GameState, gameStateSchema, Referral } from "@shared/schema";
 import { gameActions, shouldShowAction, canExecuteAction } from "@/game/rules";
 import { EventManager, LogEntry } from "@/game/rules/events";
 import { executeGameAction } from "@/game/actions";
@@ -10,7 +10,7 @@ import {
   assignVillagerToJob,
   unassignVillagerFromJob,
 } from "@/game/stateHelpers";
-import { 
+import {
   calculateTotalEffects,
   getTotalLuck,
   getTotalStrength,
@@ -28,7 +28,7 @@ import { madnessEvents } from "@/game/rules/eventsMadness";
 // Types
 interface GameStore extends GameState {
   // UI state
-  activeTab: string;
+  activeTab: "cave" | "village" | "forest" | "bastion" | "estate" | "achievements";
   devMode: boolean;
   boostMode: boolean;
   lastSaved: string;
@@ -87,7 +87,7 @@ interface GameStore extends GameState {
   // Referral tracking
   referralCount: number;
   referredUsers: string[];
-  referrals: GameState["referrals"]; // Added to store referral details
+  referrals: Referral[]; // Added to store referral details
 
   // Free gold claim tracking
   lastFreeGoldClaim: number; // timestamp of last claim
@@ -112,10 +112,14 @@ interface GameStore extends GameState {
   lastResourceSnapshotTime: number;
   isPausedPreviously: boolean;
 
+  // Achievements
+  unlockedAchievements: string[];
+  unlockAchievement: (achievementId: string) => void;
+
   // Actions
   getAndResetResourceAnalytics: () => Record<string, number> | null;
   executeAction: (actionId: string) => void;
-  setActiveTab: (tab: string) => void;
+  setActiveTab: (tab: "cave" | "village" | "forest" | "bastion" | "estate" | "achievements") => void;
   setBoostMode: (enabled: boolean) => void;
   setIsMuted: (isMuted: boolean) => void;
   setShopNotificationSeen: (seen: boolean) => void;
@@ -208,20 +212,20 @@ const mergeStateUpdates = (
     greatFeastActivations: stateUpdates.greatFeastActivations !== undefined ? stateUpdates.greatFeastActivations : prevState.greatFeastActivations,
     buttonUpgrades: stateUpdates.buttonUpgrades
       ? {
-          ...prevState.buttonUpgrades,
-          ...Object.fromEntries(
-            Object.entries(stateUpdates.buttonUpgrades).map(([key, value]) => [
-              key,
-              { ...prevState.buttonUpgrades[key as keyof typeof prevState.buttonUpgrades], ...value }
-            ])
-          )
-        }
+        ...prevState.buttonUpgrades,
+        ...Object.fromEntries(
+          Object.entries(stateUpdates.buttonUpgrades).map(([key, value]) => [
+            key,
+            { ...prevState.buttonUpgrades[key as keyof typeof prevState.buttonUpgrades], ...value }
+          ])
+        )
+      }
       : prevState.buttonUpgrades,
     story: stateUpdates.story
       ? {
-          ...prevState.story,
-          seen: { ...prevState.story.seen, ...stateUpdates.story.seen },
-        }
+        ...prevState.story,
+        seen: { ...prevState.story.seen, ...stateUpdates.story.seen },
+      }
       : prevState.story,
     effects: stateUpdates.effects || prevState.effects,
     // Merge loop-related states if they are part of stateUpdates
@@ -235,6 +239,8 @@ const mergeStateUpdates = (
     social_media_rewards: stateUpdates.social_media_rewards || prevState.social_media_rewards, // Merge social_media_rewards
     lastResourceSnapshotTime: stateUpdates.lastResourceSnapshotTime !== undefined ? stateUpdates.lastResourceSnapshotTime : prevState.lastResourceSnapshotTime, // Merge lastResourceSnapshotTime
     isPausedPreviously: stateUpdates.isPausedPreviously !== undefined ? stateUpdates.isPausedPreviously : prevState.isPausedPreviously, // Merge isPausedPreviously
+    // Achievements state
+    unlockedAchievements: stateUpdates.unlockedAchievements || prevState.unlockedAchievements,
   };
 
   if (
@@ -386,6 +392,9 @@ const defaultGameState: GameState = {
   lastResourceSnapshotTime: 0,
   isPausedPreviously: false, // Initialize isPausedPreviously
   versionCheckDialogOpen: false, // Initialize version check dialog state
+
+  // Achievements
+  unlockedAchievements: [],
 };
 
 // State management utilities
@@ -480,7 +489,16 @@ export const useGameStore = create<GameStore>((set, get) => ({
   // Initialize free gold claim tracking
   lastFreeGoldClaim: 0,
 
-  setActiveTab: (tab: string) => set({ activeTab: tab }),
+  // Achievements
+  unlockedAchievements: [],
+  unlockAchievement: (achievementId) =>
+    set((state) => ({
+      unlockedAchievements: state.unlockedAchievements.includes(achievementId)
+        ? state.unlockedAchievements
+        : [...state.unlockedAchievements, achievementId],
+    })),
+
+  setActiveTab: (tab: "cave" | "village" | "forest" | "bastion" | "estate" | "achievements") => set({ activeTab: tab }),
 
   setBoostMode: (enabled: boolean) => set({ boostMode: enabled }),
   setIsMuted: (isMuted: boolean) => set({ isMuted }),
@@ -880,7 +898,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         frostfallState: savedState.frostfallState || defaultGameState.frostfallState, // Load frostfallState
         fogState: savedState.fogState || defaultGameState.fogState, // Load fogState
         lastFreeGoldClaim: savedState.lastFreeGoldClaim || 0, // Load lastFreeGoldClaim
-
+        unlockedAchievements: savedState.unlockedAchievements || [], // Load unlocked achievements
       };
 
       set(loadedState);
@@ -1283,7 +1301,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const calculatedStrength = getTotalStrength(state);
       const calculatedKnowledge = getTotalKnowledge(state);
       const calculatedMadness = getTotalMadness(state);
-      
+
       const newStats = {
         ...state.stats,
         luck: calculatedLuck,

@@ -5,6 +5,7 @@ import VillagePanel from "./panels/VillagePanel";
 import ForestPanel from "./panels/ForestPanel";
 import EstatePanel from "./panels/EstatePanel";
 import BastionPanel from "./panels/BastionPanel";
+import AchievementsPanel from "./panels/AchievementsPanel";
 import LogPanel from "./panels/LogPanel";
 import StartScreen from "./StartScreen";
 import { useGameStore } from "@/game/state";
@@ -181,6 +182,14 @@ export default function GameContainer() {
       });
     }
 
+    // Add achievements tab
+    tabs.push({
+      id: "achievements",
+      icon: "⚜", // Using the provided symbol for achievements
+      label: "Achievements",
+      onClick: () => setActiveTab("achievements"),
+    });
+
     return tabs;
   }, [
     flags.villageUnlocked,
@@ -316,6 +325,19 @@ export default function GameContainer() {
                     {flags.hasFortress ? "Fortress" : "Bastion"}
                   </button>
                 )}
+
+                {/* Achievements Tab Button */}
+                <button
+                  className={`py-2 text-sm bg-transparent ${
+                    activeTab === "achievements"
+                      ? "font-bold opacity-100"
+                      : "opacity-60"
+                  }`}
+                  onClick={() => setActiveTab("achievements")}
+                  data-testid="tab-achievements"
+                >
+                  Achievements
+                </button>
               </div>
             )}
           </nav>
@@ -327,6 +349,7 @@ export default function GameContainer() {
             {activeTab === "forest" && <ForestPanel />}
             {activeTab === "estate" && <EstatePanel />}
             {activeTab === "bastion" && <BastionPanel />}
+            {activeTab === "achievements" && <AchievementsPanel />}
           </div>
         </section>
       </main>
