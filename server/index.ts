@@ -61,15 +61,11 @@ const getAdminClient = (env: 'dev' | 'prod' = 'dev') => {
 // API endpoint to fetch admin dashboard data (server-side, bypasses RLS)
 app.get('/api/admin/data', async (req, res) => {
   try {
-    const env = req.query.env as 'dev' | 'prod' || 'dev';
-    
     // Cache for 5 minutes to reduce repeated fetches
     res.set('Cache-Control', 'public, max-age=300');
-    // Expose cache headers via CORS so they're accessible to fetch API
-    res.set('Access-Control-Expose-Headers', 'Cache-Control, Age, ETag, Last-Modified');
-    log(`📊 Admin data request received with env parameter: '${req.query.env}' (using: ${env})`);
-    log(`📊 Cache-Control header set to: ${res.get('Cache-Control')}`);
     
+    const env = req.query.env as 'dev' | 'prod' || 'dev';
+    log(`📊 Admin data request received with env parameter: '${req.query.env}' (using: ${env})`);
     const adminClient = getAdminClient(env);
 
     log(`📊 Fetching admin dashboard data from ${env.toUpperCase()} environment...`);
@@ -126,8 +122,6 @@ app.get('/api/admin/data', async (req, res) => {
     log(`✅ Fetched ${clicksResult.data.length} click records (last 30 days)`);
     log(`✅ Fetched ${savesResult.data.length} game saves (active in last 30 days)`);
     log(`✅ Fetched ${purchasesResult.data.length} purchases`);
-    log(`📊 Sending response with Cache-Control: ${res.get('Cache-Control')}`);
-    log(`📊 Response headers: ${JSON.stringify(res.getHeaders())}`);
 
     res.json({
       clicks: clicksResult.data,

@@ -228,13 +228,6 @@ export default function AdminDashboard() {
     try {
       const response = await fetch(`/api/admin/data?env=${environment}`);
 
-      // Log cache headers
-      logger.log("📊 Admin data response received");
-      logger.log(`📊 Cache-Control: ${response.headers.get('Cache-Control')}`);
-      logger.log(`📊 Age: ${response.headers.get('Age')}`);
-      logger.log(`📊 ETag: ${response.headers.get('ETag')}`);
-      logger.log(`📊 Last-Modified: ${response.headers.get('Last-Modified')}`);
-
       if (!response.ok) {
         const errorText = await response.text();
         logger.error("Admin data fetch failed:", response.status, errorText);
