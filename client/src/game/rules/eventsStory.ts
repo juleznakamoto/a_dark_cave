@@ -455,7 +455,7 @@ export const storyEvents: Record<string, GameEvent> = {
     timeProbability: 2,
     title: "The Blood Oath",
     message:
-      "The wildling huntress returns from the forest depths. 'You saved my tribe from extinction,' she says, drawing a bone knife across her palm. Blood drips to the earth. 'By the old ways of my people, I offer you a blood oath. I will stand in your debt forever.'",
+      "The wildling huntress returns from the forest. 'You saved my tribe from extinction,' she says, drawing a bone knife across her palm. Blood drips to the earth. 'By the old ways of my people, I offer you a blood oath. I will stand in your debt forever.'",
     triggered: false,
     priority: 5,
     visualEffect: {
