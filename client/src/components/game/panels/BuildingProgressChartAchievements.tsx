@@ -2,7 +2,12 @@ import { useGameStore } from "@/game/state";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { GameState } from "@shared/schema";
 import { tailwindToHex } from "@/lib/tailwindColors";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { useMobileTooltip } from "@/hooks/useMobileTooltip";
 import { useState } from "react";
 
@@ -167,7 +172,7 @@ export default function BuildingProgressChart() {
         maxCount: 3,
         color: tailwindToHex("gray-400/80"),
         label: "Black Monolith",
-        relatedBuildings: ["pillarOfClarity", "boneTemple"]
+        relatedBuildings: ["pillarOfClarity", "boneTemple"],
       },
       {
         buildingType: "darkEstate",
@@ -327,7 +332,7 @@ export default function BuildingProgressChart() {
       });
 
       // Check if all segments in this ring are full
-      const isRingComplete = progressSegments.every(seg => seg.isFull);
+      const isRingComplete = progressSegments.every((seg) => seg.isFull);
 
       return {
         backgroundSegments,
@@ -365,7 +370,7 @@ export default function BuildingProgressChart() {
               cornerRadius={5}
               strokeWidth={0}
               isAnimationActive={false}
-              style={{ outline: 'none' }}
+              style={{ outline: "none" }}
             >
               {ring.backgroundSegments.map((entry, entryIndex) => (
                 <Cell
@@ -377,10 +382,11 @@ export default function BuildingProgressChart() {
 
             // Progress segments
             ...ring.progressSegments.map((segment, segIndex) => {
-              const segmentColor = ring.isRingComplete && segment.isFull 
-                ? tailwindToHex("blue-400") 
-                : segment.fill;
-              
+              const segmentColor =
+                ring.isRingComplete && segment.isFull
+                  ? tailwindToHex("blue-400")
+                  : segment.fill;
+
               return (
                 <Pie
                   key={`progress-${ringIndex}-${segIndex}`}
@@ -394,14 +400,30 @@ export default function BuildingProgressChart() {
                   endAngle={segment.endAngle}
                   cornerRadius={5}
                   strokeWidth={segment.isFull ? 1 : 0}
-                  stroke={segment.isFull ? tailwindToHex("blue-900") : undefined}
+                  stroke={
+                    segment.isFull ? tailwindToHex("blue-900") : undefined
+                  }
                   isAnimationActive={false}
-                  style={{ outline: 'none' }}
-                  onMouseEnter={ring.isRingComplete ? () => setHoveredSegment(segment.segmentId) : undefined}
-                  onMouseLeave={ring.isRingComplete ? () => setHoveredSegment(null) : undefined}
-                  onClick={ring.isRingComplete && mobileTooltip.isMobile 
-                    ? (e) => mobileTooltip.handleTooltipClick(segment.segmentId, e as any) 
-                    : undefined}
+                  style={{ outline: "none" }}
+                  onMouseEnter={
+                    ring.isRingComplete
+                      ? () => setHoveredSegment(segment.segmentId)
+                      : undefined
+                  }
+                  onMouseLeave={
+                    ring.isRingComplete
+                      ? () => setHoveredSegment(null)
+                      : undefined
+                  }
+                  onClick={
+                    ring.isRingComplete && mobileTooltip.isMobile
+                      ? (e) =>
+                          mobileTooltip.handleTooltipClick(
+                            segment.segmentId,
+                            e as any,
+                          )
+                      : undefined
+                  }
                 >
                   <Cell fill={segmentColor} />
                 </Pie>
@@ -424,37 +446,41 @@ export default function BuildingProgressChart() {
               strokeWidth={0.25}
               stroke={tailwindToHex("neutral-400")}
               isAnimationActive={false}
-              style={{ outline: 'none' }}
-            >
-            </Pie>
+              style={{ outline: "none" }}
+            ></Pie>,
           ])}
         </PieChart>
       </ResponsiveContainer>
-      
+
       {/* Tooltips for completed ring segments */}
-      {processedRings.map((ring, ringIndex) => 
-        ring.isRingComplete && ring.progressSegments.map((segment, segIndex) => {
-          const isHovered = hoveredSegment === segment.segmentId || 
-                           mobileTooltip.isTooltipOpen(segment.segmentId);
-          
-          if (!isHovered) return null;
-          
-          return (
-            <TooltipProvider key={segment.segmentId}>
-              <Tooltip open={true}>
-                <TooltipTrigger asChild>
-                  <div className="absolute inset-0 pointer-events-none" />
-                </TooltipTrigger>
-                <TooltipContent>
-                  <div className="text-xs">
-                    <div className="font-semibold">{segment.name}</div>
-                    <div>{segment.currentCount}/{segment.maxCount}</div>
-                  </div>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          );
-        })
+      {processedRings.map(
+        (ring, ringIndex) =>
+          ring.isRingComplete &&
+          ring.progressSegments.map((segment, segIndex) => {
+            const isHovered =
+              hoveredSegment === segment.segmentId ||
+              mobileTooltip.isTooltipOpen(segment.segmentId);
+
+            if (!isHovered) return null;
+
+            return (
+              <TooltipProvider key={segment.segmentId}>
+                <Tooltip open={true}>
+                  <TooltipTrigger asChild>
+                    <div className="absolute inset-0 pointer-events-none" />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <div className="text-xs">
+                      <div className="font-semibold">{segment.name}</div>
+                      <div>
+                        {segment.currentCount}/{segment.maxCount}
+                      </div>
+                    </div>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            );
+          }),
       )}
     </div>
   );
