@@ -54,9 +54,6 @@ export default function ItemProgressChart() {
   } | null>(null);
   const [clickedSegment, setClickedSegment] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  
-  // Convert claimedAchievements array to Set for efficient lookup
-  const claimedSegments = new Set(claimedAchievements);
 
   // Define ring segment configurations - each segment represents upgradable progression
   const ringSegments: ItemSegment[][] = [
@@ -603,13 +600,12 @@ export default function ItemProgressChart() {
                 ? tailwindToHex("blue-400")
                 : segment.fill;
 
-              const isClaimed = claimedSegments.has(segment.segmentId);
+              const achievementId = `item-${segment.segmentId}`;
+              const isClaimed = claimedAchievements.includes(achievementId);
               const isInteractive = ring.isRingComplete && segment.isFull && !isClaimed;
               
               const handleSegmentClick = () => {
                 if (isInteractive) {
-                  const achievementId = `item-${segment.segmentId}`;
-                  
                   // Calculate silver reward: 100 * maxCount
                   const silverReward = 100 * segment.maxCount;
                   
@@ -736,7 +732,7 @@ export default function ItemProgressChart() {
           <div className="text-muted-foreground">
             {hoveredSegment.currentCount}/{hoveredSegment.maxCount}
           </div>
-          {!claimedSegments.has(hoveredSegment.id) && (
+          {!claimedAchievements.includes(`item-${hoveredSegment.id}`) && (
             <div className="text-yellow-400 mt-1">
               Click: +{100 * hoveredSegment.maxCount} silver
             </div>
