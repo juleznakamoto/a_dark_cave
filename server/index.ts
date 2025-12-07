@@ -1,4 +1,5 @@
 import express, { type Request, Response, NextFunction } from "express";
+import compression from "compression";
 import { setupVite, serveStatic, log } from "./vite";
 import { createPaymentIntent, verifyPayment } from "./stripe";
 import { processReferral } from "./referral";
@@ -17,6 +18,9 @@ const getSupabaseConfig = () => {
 };
 
 const app = express();
+
+// Enable gzip compression for all responses
+app.use(compression());
 
 // API endpoint to provide Supabase config to client in production
 // CRITICAL: Parse JSON bodies BEFORE defining any routes
@@ -57,6 +61,9 @@ const getAdminClient = (env: 'dev' | 'prod' = 'dev') => {
 // API endpoint to fetch admin dashboard data (server-side, bypasses RLS)
 app.get('/api/admin/data', async (req, res) => {
   try {
+    // Cache for 5 minutes to reduce repeated fetches
+    res.set('Cache-Control', 'public, max-age=300');
+    
     const env = req.query.env as 'dev' | 'prod' || 'dev';
     log(`📊 Admin data request received with env parameter: '${req.query.env}' (using: ${env})`);
     const adminClient = getAdminClient(env);
@@ -80,20 +87,24 @@ app.get('/api/admin/data', async (req, res) => {
     log(`✅ Total user count: ${totalUserCount}`);
 
     // Fetch data with 30-day filter for saves and clicks
+    // Limit to 1000 most recent records to reduce transfer
     const [clicksResult, savesResult, purchasesResult] = await Promise.all([
       adminClient
         .from('button_clicks')
         .select('*')
         .gte('timestamp', filterDate)
-        .order('timestamp', { ascending: true }),
+        .order('timestamp', { ascending: false })
+        .limit(1000),
       adminClient
         .from('game_saves')
         .select('user_id, game_state, updated_at, created_at')
-        .gte('updated_at', filterDate),
+        .gte('updated_at', filterDate)
+        .limit(500),
       adminClient
         .from('purchases')
         .select('*')
         .order('purchased_at', { ascending: false })
+        .limit(500)
     ]);
 
     if (clicksResult.error) {
