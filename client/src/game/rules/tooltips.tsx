@@ -369,7 +369,7 @@ export const fogTooltip: TooltipConfig = {
       const remainingMinutes = Math.ceil(remainingMs / 60000);
       return (
         <>
-          <div className="font-bold">Dense Fog</div>
+          <div className="font-bold">Choking Fog</div>
           <div>Production Bonus: -50%</div>
           <div>{remainingMinutes} min remaining</div>
         </>

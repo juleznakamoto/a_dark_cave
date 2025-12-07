@@ -32,7 +32,6 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useMobileTooltip } from "@/hooks/useMobileTooltip";
-import { logger } from "@/lib/logger";
 
 export default function VillagePanel() {
   const {
