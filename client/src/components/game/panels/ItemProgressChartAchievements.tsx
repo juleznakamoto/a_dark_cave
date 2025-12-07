@@ -602,15 +602,26 @@ export default function ItemProgressChart() {
               const isClaimed = claimedSegments.has(segment.segmentId);
               const isInteractive = ring.isRingComplete && segment.isFull && !isClaimed;
               
-              const handleSegmentClick = (e: any) => {
+              const handleSegmentClick = () => {
                 if (isInteractive) {
-                  e.stopPropagation();
-                  
                   // Calculate silver reward: 100 * maxCount
                   const silverReward = 100 * segment.maxCount;
                   
                   // Award silver
                   useGameStore.getState().updateResource("silver", silverReward);
+                  
+                  // Add log entry
+                  useGameStore.setState((state) => ({
+                    log: [
+                      ...state.log,
+                      {
+                        id: `achievement-item-${segment.segmentId}-${Date.now()}`,
+                        message: `Achievement unlocked: ${segment.name} complete! +${silverReward} silver`,
+                        timestamp: Date.now(),
+                        type: "event" as const,
+                      },
+                    ].slice(-100),
+                  }));
                   
                   // Mark segment as claimed
                   setClaimedSegments(prev => new Set(prev).add(segment.segmentId));
