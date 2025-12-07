@@ -1498,13 +1498,13 @@ export const villageBuildActions: Record<string, Action> = {
     show_when: {
       1: {
         "buildings.darkEstate": 0,
-        "buildings.woodenHut": 5,
+        "buildings.woodenHut": 4,
       },
     },
     cost: {
       1: {
-        "resources.wood": 5000,
-        "resources.stone": 5000,
+        "resources.wood": 2500,
+        "resources.stone": 2500,
       },
     },
     effects: {

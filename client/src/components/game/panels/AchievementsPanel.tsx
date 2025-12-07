@@ -76,7 +76,6 @@ export default function AchievementsPanel() {
   return (
     <div className="h-full flex flex-col p-4">
       <div className="mb-6">
-        <h2 className="text-2xl font-bold mb-2">Achievements</h2>
         <div className="flex items-center gap-4 mb-4">
           <div className="flex-1">
             <div className="flex justify-between text-sm mb-1">

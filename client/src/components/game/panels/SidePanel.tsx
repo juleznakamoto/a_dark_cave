@@ -315,7 +315,10 @@ export default function SidePanel() {
         return false;
       }
       // Hide Black Monolith when Pillar of Clarity or Bone Temple is built
-      if (key === "blackMonolith" && (buildings.pillarOfClarity > 0 || buildings.boneTemple > 0)) {
+      if (
+        key === "blackMonolith" &&
+        (buildings.pillarOfClarity > 0 || buildings.boneTemple > 0)
+      ) {
         return false;
       }
       return (value ?? 0) > 0;
@@ -928,11 +931,9 @@ export default function SidePanel() {
       case "estate":
         return ["resources", "books", "fellowship"].includes(sectionName);
       case "bastion":
-        return [
-          "resources",
-          "fortifications",
-          "bastion",
-        ].includes(sectionName);
+        return ["resources", "fortifications", "bastion"].includes(sectionName);
+      case "achievements":
+        return ["resources"].includes(sectionName);
 
       default:
         return true; // Show all sections by default

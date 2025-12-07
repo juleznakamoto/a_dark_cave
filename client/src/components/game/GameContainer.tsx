@@ -167,7 +167,7 @@ export default function GameContainer() {
     if (estateUnlocked) {
       tabs.push({
         id: "estate",
-        icon: <Castle />, // Consider a different icon if needed
+        icon: <Castle />,
         label: "The Estate",
         onClick: () => setActiveTab("estate"),
       });
@@ -182,14 +182,14 @@ export default function GameContainer() {
       });
     }
 
-    // Add achievements tab
-    tabs.push({
-      id: "achievements",
-      icon: "⚜", // Using the provided symbol for achievements
-      label: "Achievements",
-      onClick: () => setActiveTab("achievements"),
-    });
-
+    if (true) {
+      tabs.push({
+        id: "achievements",
+        icon: <Castle />,
+        label: "Achievements",
+        onClick: () => setActiveTab("achievements"),
+      });
+    }
     return tabs;
   }, [
     flags.villageUnlocked,
@@ -330,13 +330,13 @@ export default function GameContainer() {
                 <button
                   className={`py-2 text-sm bg-transparent ${
                     activeTab === "achievements"
-                      ? "font-bold opacity-100"
+                      ? "font-medium opacity-100"
                       : "opacity-60"
                   }`}
                   onClick={() => setActiveTab("achievements")}
                   data-testid="tab-achievements"
                 >
-                  Achievements
+                  ⚜
                 </button>
               </div>
             )}
