@@ -699,7 +699,7 @@ export default function ItemProgressChart() {
               strokeWidth={0.25}
               stroke={tailwindToHex("neutral-400")}
               isAnimationActive={false}
-              style={{ outline: "none" }}
+              style={{ outline: "none", pointerEvents: "none" }}
             >
             </Pie>
           ])}
