@@ -1054,8 +1054,9 @@ describe('Resource Gain Tests', () => {
       const { expectedGains: gainsWith } = testActionGains('exploreCitadel', stateWithBonus, 50);
 
       // Iron lantern provides 25% cave explore multiplier
-      expect(gainsWith.obsidian.min).toBeGreaterThan(gainsWithout.obsidian.min);
+      // Note: min may stay the same due to floor(1 * 1.25) = 1, but max should increase
       expect(gainsWith.obsidian.max).toBeGreaterThan(gainsWithout.obsidian.max);
+      expect(gainsWith.adamant.max).toBeGreaterThan(gainsWithout.adamant.max);
     });
   });
 
