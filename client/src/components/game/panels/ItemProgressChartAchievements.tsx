@@ -2,9 +2,7 @@ import { useGameStore } from "@/game/state";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { GameState } from "@shared/schema";
 import { tailwindToHex } from "@/lib/tailwindColors";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { useMobileTooltip } from "@/hooks/useMobileTooltip";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 interface ItemSegment {
   itemType: string;
@@ -50,7 +48,8 @@ export default function ItemProgressChart() {
     currentCount: number;
     maxCount: number;
   } | null>(null);
-  const mobileTooltip = useMobileTooltip();
+  const [clickedSegment, setClickedSegment] = useState<string | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   // Define ring segment configurations - each segment represents upgradable progression
   const ringSegments: ItemSegment[][] = [
@@ -555,7 +554,16 @@ export default function ItemProgressChart() {
     .filter((ring) => ring !== null);
 
   return (
-    <div className="w-48 h-48 flex flex-col items-center justify-center relative">
+    <div 
+      ref={containerRef}
+      className="w-48 h-48 flex flex-col items-center justify-center relative"
+      onClick={(e) => {
+        if (e.target === e.currentTarget || e.target === containerRef.current) {
+          setClickedSegment(null);
+          setHoveredSegment(null);
+        }
+      }}
+    >
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
         <span className="text-xl text-neutral-400">❖</span>
       </div>
@@ -609,22 +617,34 @@ export default function ItemProgressChart() {
                   stroke={segment.isFull ? tailwindToHex("red-900") : undefined} // Default stroke for full segments
                   isAnimationActive={false}
                   style={{ outline: "none" }}
-                  onMouseEnter={ring.isRingComplete ? () => setHoveredSegment({
-                    id: segment.segmentId,
-                    name: segment.name,
-                    currentCount: segment.currentCount,
-                    maxCount: segment.maxCount,
-                  }) : undefined}
-                  onMouseLeave={ring.isRingComplete ? () => setHoveredSegment(null) : undefined}
-                  onClick={ring.isRingComplete && mobileTooltip.isMobile
-                    ? (e) => {
-                        mobileTooltip.handleTooltipClick(segment.segmentId, e as any);
-                        setHoveredSegment({
-                          id: segment.segmentId,
-                          name: segment.name,
-                          currentCount: segment.currentCount,
-                          maxCount: segment.maxCount,
-                        });
+                  onMouseEnter={ring.isRingComplete ? () => {
+                    setHoveredSegment({
+                      id: segment.segmentId,
+                      name: segment.name,
+                      currentCount: segment.currentCount,
+                      maxCount: segment.maxCount,
+                    });
+                  } : undefined}
+                  onMouseLeave={ring.isRingComplete ? () => {
+                    if (clickedSegment !== segment.segmentId) {
+                      setHoveredSegment(null);
+                    }
+                  } : undefined}
+                  onClick={ring.isRingComplete
+                    ? (e: any) => {
+                        e?.stopPropagation?.();
+                        const newClickedId = clickedSegment === segment.segmentId ? null : segment.segmentId;
+                        setClickedSegment(newClickedId);
+                        if (newClickedId) {
+                          setHoveredSegment({
+                            id: segment.segmentId,
+                            name: segment.name,
+                            currentCount: segment.currentCount,
+                            maxCount: segment.maxCount,
+                          });
+                        } else {
+                          setHoveredSegment(null);
+                        }
                       }
                     : undefined}
                 >
