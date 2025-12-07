@@ -1006,11 +1006,56 @@ describe('Resource Gain Tests', () => {
           const minActual = Math.min(...actualGains[resource]);
           const maxActual = Math.max(...actualGains[resource]);
 
-          // Use more lenient checks due to random variance
-          expect(minActual).toBeGreaterThan(0);
-          expect(maxActual).toBeGreaterThan(minActual);
+          // Verify actual gains fall within expected range
+          expect(minActual).toBeGreaterThanOrEqual(expectedGains[resource].min);
+          expect(maxActual).toBeLessThanOrEqual(expectedGains[resource].max);
         }
       });
+    });
+
+    it('exploreCitadel: tooltip calculation matches actual gains', () => {
+      const state = createTestState({
+        tools: { adamant_lantern: true },
+        buildings: { clerksHut: 1 },
+      });
+
+      // Get tooltip calculations
+      const { gains: tooltipGains } = calculateResourceGains('exploreCitadel', state);
+
+      // Get actual gains from executing the action multiple times
+      const { expectedGains, actualGains } = testActionGains('exploreCitadel', state, 200);
+
+      // Verify tooltip matches expected calculation for each resource
+      tooltipGains.forEach(tooltipGain => {
+        const resource = tooltipGain.resource;
+        expect(expectedGains[resource]).toBeDefined();
+        expect(tooltipGain.min).toBe(expectedGains[resource].min);
+        expect(tooltipGain.max).toBe(expectedGains[resource].max);
+
+        // Verify actual gains fall within tooltip range
+        if (actualGains[resource]) {
+          const minActual = Math.min(...actualGains[resource]);
+          const maxActual = Math.max(...actualGains[resource]);
+          expect(minActual).toBeGreaterThanOrEqual(tooltipGain.min);
+          expect(maxActual).toBeLessThanOrEqual(tooltipGain.max);
+        }
+      });
+    });
+
+    it('exploreCitadel with cave exploration bonuses', () => {
+      const stateWithoutBonus = createTestState({
+        tools: { adamant_lantern: true },
+      });
+      const stateWithBonus = createTestState({
+        tools: { adamant_lantern: true, iron_lantern: true },
+      });
+
+      const { expectedGains: gainsWithout } = testActionGains('exploreCitadel', stateWithoutBonus, 50);
+      const { expectedGains: gainsWith } = testActionGains('exploreCitadel', stateWithBonus, 50);
+
+      // Iron lantern provides 25% cave explore multiplier
+      expect(gainsWith.obsidian.min).toBeGreaterThan(gainsWithout.obsidian.min);
+      expect(gainsWith.obsidian.max).toBeGreaterThan(gainsWithout.obsidian.max);
     });
   });
 
