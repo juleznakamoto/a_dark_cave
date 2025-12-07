@@ -87,24 +87,23 @@ app.get('/api/admin/data', async (req, res) => {
     log(`✅ Total user count: ${totalUserCount}`);
 
     // Fetch data with 30-day filter for saves and clicks
-    // Limit to 1000 most recent records to reduce transfer
     const [clicksResult, savesResult, purchasesResult] = await Promise.all([
       adminClient
         .from('button_clicks')
         .select('*')
         .gte('timestamp', filterDate)
         .order('timestamp', { ascending: false })
-        .limit(1000),
+        ,
       adminClient
         .from('game_saves')
         .select('user_id, game_state, updated_at, created_at')
         .gte('updated_at', filterDate)
-        .limit(500),
+        ,
       adminClient
         .from('purchases')
         .select('*')
         .order('purchased_at', { ascending: false })
-        .limit(500)
+        
     ]);
 
     if (clicksResult.error) {
