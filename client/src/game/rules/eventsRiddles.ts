@@ -95,14 +95,14 @@ export const riddleEvents: Record<string, GameEvent> = {
     triggerType: "resource",
     timeProbability: 5,
     title: "The Whisperer's Gift",
-    message: "The cloaked figure appears one final time at the estate's threshold. Its voice echoes with a hint of satisfaction: 'You have proven your worth through wisdom and cunning. Few have answered all my riddles correctly.' The figure extends a skeletal hand, and a dark mark appears on your palm. 'This is my gift to you - the Whisperer's Mark. May fortune smile upon you and yours.'",
+    message: "The cloaked figure appears again. His whispers drift through the cold night air one last time before he vanishes, 'Your wisdom has been weighed and found worthy. May shadows guard your path, and fortune follow your name.'",
     triggered: false,
     priority: 4,
     repeatable: false,
     choices: [
       {
         id: "accept",
-        label: "Accept the gift",
+        label: "Accept gift",
         effect: (state: GameState) => {
           return {
             blessings: {
@@ -113,7 +113,7 @@ export const riddleEvents: Record<string, GameEvent> = {
               ...state.events,
               whisperersReward: true,
             },
-            _logMessage: "The mark burns cold on your palm before fading into your skin. You feel fortune's favor settle upon you like a cloak.",
+            _logMessage: "As the figure fades into the dark, a faint euphoria washes over you, quiet and fleeting, like a half-remembered memory of a better time.",
           };
         },
       },
