@@ -28,9 +28,11 @@ const RIDDLE_PENALTIES = {
   },
   fourth: {
     fogDuration: 15 * 60 * 1000, // 15 minutes in milliseconds
+    fogDurationCM: 5 * 60 * 1000, // Additional 5 minutes per CM
   },
   fifth: {
     fogDuration: 15 * 60 * 1000, // 15 minutes in milliseconds
+    fogDurationCM: 5 * 60 * 1000, // Additional 5 minutes per CM
     deaths: 24,
     cmMultiplier: 6,
   },
