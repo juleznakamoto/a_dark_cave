@@ -644,14 +644,14 @@ export default function ItemProgressChart() {
                   startAngle={segment.startAngle}
                   endAngle={segment.endAngle}
                   cornerRadius={5}
-                  strokeWidth={segment.isFull ? 1.5 : 0}
+                  strokeWidth={segment.isFull ? (isClaimed ? 1 : 1.5) : 0}
                   stroke={segment.isFull ? tailwindToHex("red-900") : undefined}
                   isAnimationActive={false}
                   style={{ 
                     outline: "none", 
                     pointerEvents: isInteractive ? "auto" : "none",
                     cursor: isInteractive ? "pointer" : "default",
-                    opacity: isClaimed ? 0.6 : 1
+                    opacity: isClaimed ? 0.5 : 1
                   }}
                   onMouseEnter={(e: any) => {
                     if (isInteractive) {

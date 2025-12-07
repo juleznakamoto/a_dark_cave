@@ -438,7 +438,7 @@ export default function BuildingProgressChart() {
                   startAngle={segment.startAngle}
                   endAngle={segment.endAngle}
                   cornerRadius={5}
-                  strokeWidth={segment.isFull ? 1.5 : 0}
+                  strokeWidth={segment.isFull ? (isClaimed ? 1 : 1.5) : 0}
                   stroke={
                     segment.isFull ? tailwindToHex("blue-900") : undefined
                   }
@@ -447,7 +447,7 @@ export default function BuildingProgressChart() {
                     outline: "none", 
                     pointerEvents: isInteractive ? "auto" : "none",
                     cursor: isInteractive ? "pointer" : "default",
-                    opacity: isClaimed ? 0.6 : 1
+                    opacity: isClaimed ? 0.5 : 1
                   }}
                   onMouseEnter={(e: any) => {
                     if (isInteractive) {
