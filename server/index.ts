@@ -65,6 +65,8 @@ app.get('/api/admin/data', async (req, res) => {
     
     // Cache for 5 minutes to reduce repeated fetches
     res.set('Cache-Control', 'public, max-age=300');
+    // Expose cache headers via CORS so they're accessible to fetch API
+    res.set('Access-Control-Expose-Headers', 'Cache-Control, Age, ETag, Last-Modified');
     log(`📊 Admin data request received with env parameter: '${req.query.env}' (using: ${env})`);
     log(`📊 Cache-Control header set to: ${res.get('Cache-Control')}`);
     
