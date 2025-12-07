@@ -12,7 +12,6 @@ import CooldownButton from "@/components/CooldownButton";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { ButtonLevelBadge } from "@/components/game/ButtonLevelBadge";
 import { ACTION_TO_UPGRADE_KEY } from "@/game/buttonUpgrades";
-import { logger } from "@/lib/logger";
 
 export default function ForestPanel() {
   const { executeAction, setHighlightedResources } = useGameStore();
