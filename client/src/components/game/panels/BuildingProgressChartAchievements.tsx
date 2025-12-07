@@ -343,119 +343,110 @@ export default function BuildingProgressChart() {
     .filter((ring) => ring !== null);
 
   return (
-    <div className="w-full h-48 w-48 flex flex-col items-center justify-center relative">
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
-        <span className="text-xl text-neutral-400">▨</span>
+    <TooltipProvider>
+      <div className="w-full h-48 w-48 flex flex-col items-center justify-center relative">
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+          <span className="text-xl text-neutral-400">▨</span>
+        </div>
+        <ResponsiveContainer width="100%" height="100%">
+          <PieChart>
+            {processedRings.map((ring, ringIndex) => [
+              // Background ring
+              <Pie
+                key={`background-${ringIndex}`}
+                data={ring.backgroundSegments}
+                cx="50%"
+                cy="50%"
+                innerRadius={ring.innerRadius}
+                outerRadius={ring.outerRadius}
+                paddingAngle={ring.paddingAngle}
+                dataKey="value"
+                startAngle={ring.startAngle}
+                endAngle={-360 + ring.startAngle}
+                cornerRadius={5}
+                strokeWidth={0}
+                isAnimationActive={false}
+                style={{ outline: 'none' }}
+              >
+                {ring.backgroundSegments.map((entry, entryIndex) => (
+                  <Cell
+                    key={`bg-cell-${ringIndex}-${entryIndex}`}
+                    fill={entry.fill}
+                  />
+                ))}
+              </Pie>,
+
+              // Progress segments with tooltips
+              ...ring.progressSegments.map((segment, segIndex) => {
+                const segmentColor = ring.isRingComplete && segment.isFull 
+                  ? tailwindToHex("blue-400") 
+                  : segment.fill;
+                
+                const isHovered = hoveredSegment === segment.segmentId || 
+                                 mobileTooltip.isTooltipOpen(segment.segmentId);
+                
+                return (
+                  <Tooltip key={`tooltip-${ringIndex}-${segIndex}`} open={ring.isRingComplete && isHovered}>
+                    <TooltipTrigger asChild>
+                      <Pie
+                        key={`progress-${ringIndex}-${segIndex}`}
+                        data={[{ value: 1 }]}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={ring.innerRadius}
+                        outerRadius={ring.outerRadius}
+                        dataKey="value"
+                        startAngle={segment.startAngle}
+                        endAngle={segment.endAngle}
+                        cornerRadius={5}
+                        strokeWidth={segment.isFull ? 1 : 0}
+                        stroke={segment.isFull ? tailwindToHex("blue-900") : undefined}
+                        isAnimationActive={false}
+                        style={{ outline: 'none', cursor: ring.isRingComplete ? 'pointer' : 'default' }}
+                        onMouseEnter={ring.isRingComplete ? () => setHoveredSegment(segment.segmentId) : undefined}
+                        onMouseLeave={ring.isRingComplete ? () => setHoveredSegment(null) : undefined}
+                        onClick={ring.isRingComplete && mobileTooltip.isMobile 
+                          ? (e) => mobileTooltip.handleTooltipClick(segment.segmentId, e as any) 
+                          : undefined}
+                      >
+                        <Cell fill={segmentColor} />
+                      </Pie>
+                    </TooltipTrigger>
+                    {ring.isRingComplete && (
+                      <TooltipContent>
+                        <div className="text-xs">
+                          <div className="font-semibold">{segment.name}</div>
+                          <div>{segment.currentCount}/{segment.maxCount}</div>
+                        </div>
+                      </TooltipContent>
+                    )}
+                  </Tooltip>
+                );
+              }),
+
+              // Foreground ring
+              <Pie
+                key={`foreground-${ringIndex}`}
+                data={ring.foregroundSegments}
+                cx="50%"
+                cy="50%"
+                innerRadius={ring.innerRadius}
+                outerRadius={ring.outerRadius}
+                paddingAngle={ring.paddingAngle}
+                dataKey="value"
+                startAngle={ring.startAngle}
+                endAngle={-360 + ring.startAngle}
+                cornerRadius={5}
+                strokeWidth={0.25}
+                stroke={tailwindToHex("neutral-400")}
+                isAnimationActive={false}
+                style={{ outline: 'none' }}
+              >
+              </Pie>
+            ])}
+          </PieChart>
+        </ResponsiveContainer>
       </div>
-      <ResponsiveContainer width="100%" height="100%">
-        <PieChart>
-          {processedRings.map((ring, ringIndex) => [
-            // Background ring
-            <Pie
-              key={`background-${ringIndex}`}
-              data={ring.backgroundSegments}
-              cx="50%"
-              cy="50%"
-              innerRadius={ring.innerRadius}
-              outerRadius={ring.outerRadius}
-              paddingAngle={ring.paddingAngle}
-              dataKey="value"
-              startAngle={ring.startAngle}
-              endAngle={-360 + ring.startAngle}
-              cornerRadius={5}
-              strokeWidth={0}
-              isAnimationActive={false}
-              style={{ outline: 'none' }}
-            >
-              {ring.backgroundSegments.map((entry, entryIndex) => (
-                <Cell
-                  key={`bg-cell-${ringIndex}-${entryIndex}`}
-                  fill={entry.fill}
-                />
-              ))}
-            </Pie>,
-
-            // Progress segments
-            ...ring.progressSegments.map((segment, segIndex) => {
-              const segmentColor = ring.isRingComplete && segment.isFull 
-                ? tailwindToHex("blue-400") 
-                : segment.fill;
-              
-              return (
-                <Pie
-                  key={`progress-${ringIndex}-${segIndex}`}
-                  data={[{ value: 1 }]}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={ring.innerRadius}
-                  outerRadius={ring.outerRadius}
-                  dataKey="value"
-                  startAngle={segment.startAngle}
-                  endAngle={segment.endAngle}
-                  cornerRadius={5}
-                  strokeWidth={segment.isFull ? 1 : 0}
-                  stroke={segment.isFull ? tailwindToHex("blue-900") : undefined}
-                  isAnimationActive={false}
-                  style={{ outline: 'none' }}
-                  onMouseEnter={ring.isRingComplete ? () => setHoveredSegment(segment.segmentId) : undefined}
-                  onMouseLeave={ring.isRingComplete ? () => setHoveredSegment(null) : undefined}
-                  onClick={ring.isRingComplete && mobileTooltip.isMobile 
-                    ? (e) => mobileTooltip.handleTooltipClick(segment.segmentId, e as any) 
-                    : undefined}
-                >
-                  <Cell fill={segmentColor} />
-                </Pie>
-              );
-            }),
-
-            // Foreground ring
-            <Pie
-              key={`foreground-${ringIndex}`}
-              data={ring.foregroundSegments}
-              cx="50%"
-              cy="50%"
-              innerRadius={ring.innerRadius}
-              outerRadius={ring.outerRadius}
-              paddingAngle={ring.paddingAngle}
-              dataKey="value"
-              startAngle={ring.startAngle}
-              endAngle={-360 + ring.startAngle}
-              cornerRadius={5}
-              strokeWidth={0.25}
-              stroke={tailwindToHex("neutral-400")}
-              isAnimationActive={false}
-              style={{ outline: 'none' }}
-            >
-            </Pie>
-          ])}
-        </PieChart>
-      </ResponsiveContainer>
-      
-      {/* Tooltips for completed ring segments */}
-      {processedRings.map((ring, ringIndex) => 
-        ring.isRingComplete && ring.progressSegments.map((segment, segIndex) => {
-          const isHovered = hoveredSegment === segment.segmentId || 
-                           mobileTooltip.isTooltipOpen(segment.segmentId);
-          
-          if (!isHovered) return null;
-          
-          return (
-            <TooltipProvider key={segment.segmentId}>
-              <Tooltip open={true}>
-                <TooltipTrigger asChild>
-                  <div className="absolute inset-0 pointer-events-none" />
-                </TooltipTrigger>
-                <TooltipContent>
-                  <div className="text-xs">
-                    <div className="font-semibold">{segment.name}</div>
-                    <div>{segment.currentCount}/{segment.maxCount}</div>
-                  </div>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          );
-        })
-      )}
-    </div>
+    </TooltipProvider>
   );
 }
