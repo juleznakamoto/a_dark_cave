@@ -700,7 +700,21 @@ export const applyActionEffects = (
 
             // Apply multipliers to the range BEFORE generating random number
             // resourceMultiplier already includes button upgrades from getActionBonuses
-            const totalMultiplier = actionBonuses?.resourceMultiplier || 1;
+            let totalMultiplier = actionBonuses?.resourceMultiplier || 1;
+
+            // Check if this is a cave exploration action and apply cave exploration multiplier
+            const caveExploreActions = [
+              "exploreCave",
+              "ventureDeeper",
+              "descendFurther",
+              "exploreRuins",
+              "exploreTemple",
+              "exploreCitadel",
+            ];
+            if (caveExploreActions.includes(actionId)) {
+              totalMultiplier *= actionBonuses?.caveExploreMultiplier || 1;
+            }
+
             if (totalMultiplier !== 1) {
               min = Math.floor(min * totalMultiplier);
               max = Math.floor(max * totalMultiplier);
