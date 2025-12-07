@@ -83,6 +83,43 @@ const WRONG_ANSWER_MESSAGES = {
 const TIMEOUT_MESSAGES = WRONG_ANSWER_MESSAGES;
 
 export const riddleEvents: Record<string, GameEvent> = {
+  whisperersReward: {
+    id: "whisperersReward",
+    condition: (state: GameState) => 
+      state.events.whispererInTheDark_correct === true &&
+      state.events.riddleOfAges_correct === true &&
+      state.events.riddleOfDevourer_correct === true &&
+      state.events.riddleOfTears_correct === true &&
+      state.events.riddleOfEternal_correct === true &&
+      !state.events.whisperersReward,
+    triggerType: "resource",
+    timeProbability: 5,
+    title: "The Whisperer's Gift",
+    message: "The cloaked figure appears one final time at the estate's threshold. Its voice echoes with a hint of satisfaction: 'You have proven your worth through wisdom and cunning. Few have answered all my riddles correctly.' The figure extends a skeletal hand, and a dark mark appears on your palm. 'This is my gift to you - the Whisperer's Mark. May fortune smile upon you and yours.'",
+    triggered: false,
+    priority: 4,
+    repeatable: false,
+    choices: [
+      {
+        id: "accept",
+        label: "Accept the gift",
+        effect: (state: GameState) => {
+          return {
+            blessings: {
+              ...state.blessings,
+              whisperers_mark: true,
+            },
+            events: {
+              ...state.events,
+              whisperersReward: true,
+            },
+            _logMessage: "The mark burns cold on your palm before fading into your skin. You feel fortune's favor settle upon you like a cloak.",
+          };
+        },
+      },
+    ],
+  },
+
   whispererInTheDark: {
     id: "whispererInTheDark",
     condition: (state: GameState) => state.buildings.darkEstate >= 1,
@@ -142,6 +179,7 @@ export const riddleEvents: Record<string, GameEvent> = {
             events: {
               ...state.events,
               whispererInTheDark: true,
+              whispererInTheDark_correct: true,
             },
             _logMessage: SUCCESS_MESSAGES.first(RIDDLE_REWARDS.first),
           };
@@ -249,6 +287,7 @@ export const riddleEvents: Record<string, GameEvent> = {
             events: {
               ...state.events,
               riddleOfAges: true,
+              riddleOfAges_correct: true,
             },
             _logMessage: SUCCESS_MESSAGES.second(RIDDLE_REWARDS.second),
           };
@@ -356,6 +395,7 @@ export const riddleEvents: Record<string, GameEvent> = {
             events: {
               ...state.events,
               riddleOfDevourer: true,
+              riddleOfDevourer_correct: true,
             },
             _logMessage: SUCCESS_MESSAGES.third(RIDDLE_REWARDS.third),
           };
@@ -463,6 +503,7 @@ export const riddleEvents: Record<string, GameEvent> = {
             events: {
               ...state.events,
               riddleOfTears: true,
+              riddleOfTears_correct: true,
             },
             _logMessage: SUCCESS_MESSAGES.fourth(RIDDLE_REWARDS.fourth),
           };
@@ -586,6 +627,7 @@ export const riddleEvents: Record<string, GameEvent> = {
             events: {
               ...state.events,
               riddleOfEternal: true,
+              riddleOfEternal_correct: true,
             },
             _logMessage: SUCCESS_MESSAGES.fifth(RIDDLE_REWARDS.fifth),
           };

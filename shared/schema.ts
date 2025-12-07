@@ -311,10 +311,16 @@ export const gameStateSchema = z.object({
       encounteredCreaturesChoice: z.boolean().default(false),
       // Riddle Events
       whispererInTheDark: z.boolean().default(false),
+      whispererInTheDark_correct: z.boolean().default(false),
       riddleOfAges: z.boolean().default(false),
+      riddleOfAges_correct: z.boolean().default(false),
       riddleOfDevourer: z.boolean().default(false),
+      riddleOfDevourer_correct: z.boolean().default(false),
       riddleOfTears: z.boolean().default(false),
+      riddleOfTears_correct: z.boolean().default(false),
       riddleOfEternal: z.boolean().default(false),
+      riddleOfEternal_correct: z.boolean().default(false),
+      whisperersReward: z.boolean().default(false),
     })
     .default({}),
   effects: z

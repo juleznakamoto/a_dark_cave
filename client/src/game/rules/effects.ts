@@ -978,6 +978,11 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   },
 
   // Blessings
+  whisperers_mark: {
+    luck: 10,
+  },
+
+  // Enhanced blessings
   dagons_gift: {
     id: "dagons_gift",
     name: "Dagon's Gift",
