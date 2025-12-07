@@ -29,6 +29,7 @@ export default function BuildingProgressChart() {
     y: number;
   } | null>(null);
   const [clickedSegment, setClickedSegment] = useState<string | null>(null);
+  const [claimedSegments, setClaimedSegments] = useState<Set<string>>(new Set());
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Ring sizing parameters
@@ -392,7 +393,27 @@ export default function BuildingProgressChart() {
                   ? tailwindToHex("blue-400")
                   : segment.fill;
 
-              const isInteractive = ring.isRingComplete && segment.isFull;
+              const isClaimed = claimedSegments.has(segment.segmentId);
+              const isInteractive = ring.isRingComplete && segment.isFull && !isClaimed;
+              
+              const handleSegmentClick = (e: any) => {
+                if (isInteractive) {
+                  e.stopPropagation();
+                  
+                  // Calculate silver reward: 100 * maxCount
+                  const silverReward = 100 * segment.maxCount;
+                  
+                  // Award silver
+                  useGameStore.getState().updateResource("silver", silverReward);
+                  
+                  // Mark segment as claimed
+                  setClaimedSegments(prev => new Set(prev).add(segment.segmentId));
+                  
+                  // Clear hover state
+                  setHoveredSegment(null);
+                  setClickedSegment(null);
+                }
+              };
 
               return (
                 <Pie
@@ -414,7 +435,8 @@ export default function BuildingProgressChart() {
                   style={{ 
                     outline: "none", 
                     pointerEvents: isInteractive ? "auto" : "none",
-                    cursor: isInteractive ? "pointer" : "default"
+                    cursor: isInteractive ? "pointer" : "default",
+                    opacity: isClaimed ? 0.6 : 1
                   }}
                   onMouseEnter={(e: any) => {
                     if (isInteractive) {
@@ -451,28 +473,7 @@ export default function BuildingProgressChart() {
                       setHoveredSegment(null);
                     }
                   }}
-                  onClick={(e: any) => {
-                    if (isInteractive) {
-                      e.stopPropagation();
-                      const newClickedId = clickedSegment === segment.segmentId ? null : segment.segmentId;
-                      setClickedSegment(newClickedId);
-                      if (newClickedId) {
-                        const rect = containerRef.current?.getBoundingClientRect();
-                        if (rect) {
-                          setHoveredSegment({
-                            id: segment.segmentId,
-                            name: segment.name,
-                            currentCount: segment.currentCount,
-                            maxCount: segment.maxCount,
-                            x: e.clientX - rect.left,
-                            y: e.clientY - rect.top,
-                          });
-                        }
-                      } else {
-                        setHoveredSegment(null);
-                      }
-                    }
-                  }}
+                  onClick={handleSegmentClick}
                 >
                   <Cell fill={segmentColor} />
                 </Pie>
@@ -515,6 +516,11 @@ export default function BuildingProgressChart() {
           <div className="text-muted-foreground">
             {hoveredSegment.currentCount}/{hoveredSegment.maxCount}
           </div>
+          {!claimedSegments.has(hoveredSegment.id) && (
+            <div className="text-yellow-400 mt-1">
+              Click: +{100 * hoveredSegment.maxCount} silver
+            </div>
+          )}
         </div>
       )}
     </div>
