@@ -287,11 +287,11 @@ const testActionGains = (actionId: string, state: GameState, iterations = 100) =
     }
   }
 
-  // Return expected gains and sampled actual gains
+  // Return expected gains and sampled actual gains - extract all resources from gains
   const expectedGains: Record<string, {min: number, max: number}> = {};
-  if (gains.length > 0) {
-    expectedGains[gains[0].resource] = { min: expectedMin, max: expectedMax };
-  }
+  gains.forEach(gain => {
+    expectedGains[gain.resource] = { min: gain.min, max: gain.max };
+  });
   
   return { expectedGains, actualGains };
 };
@@ -1044,10 +1044,10 @@ describe('Resource Gain Tests', () => {
 
     it('exploreCitadel with cave exploration bonuses', () => {
       const stateWithoutBonus = createTestState({
-        tools: { adamant_lantern: true },
+        // No lanterns at all
       });
       const stateWithBonus = createTestState({
-        tools: { adamant_lantern: true, iron_lantern: true },
+        tools: { iron_lantern: true },
       });
 
       const { expectedGains: gainsWithout } = testActionGains('exploreCitadel', stateWithoutBonus, 50);
