@@ -114,6 +114,7 @@ interface GameStore extends GameState {
 
   // Achievements
   unlockedAchievements: string[];
+  claimedAchievements: string[];
   unlockAchievement: (achievementId: string) => void;
 
   // Actions
@@ -241,6 +242,7 @@ const mergeStateUpdates = (
     isPausedPreviously: stateUpdates.isPausedPreviously !== undefined ? stateUpdates.isPausedPreviously : prevState.isPausedPreviously, // Merge isPausedPreviously
     // Achievements state
     unlockedAchievements: stateUpdates.unlockedAchievements || prevState.unlockedAchievements,
+    claimedAchievements: stateUpdates.claimedAchievements || prevState.claimedAchievements,
   };
 
   if (
@@ -395,6 +397,7 @@ const defaultGameState: GameState = {
 
   // Achievements
   unlockedAchievements: [],
+  claimedAchievements: [],
 };
 
 // State management utilities
@@ -491,6 +494,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   // Achievements
   unlockedAchievements: [],
+  claimedAchievements: [],
   unlockAchievement: (achievementId) =>
     set((state) => ({
       unlockedAchievements: state.unlockedAchievements.includes(achievementId)
@@ -899,6 +903,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         fogState: savedState.fogState || defaultGameState.fogState, // Load fogState
         lastFreeGoldClaim: savedState.lastFreeGoldClaim || 0, // Load lastFreeGoldClaim
         unlockedAchievements: savedState.unlockedAchievements || [], // Load unlocked achievements
+        claimedAchievements: savedState.claimedAchievements || [], // Load claimed achievements
       };
 
       set(loadedState);

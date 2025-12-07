@@ -545,6 +545,9 @@ export const gameStateSchema = z.object({
   // Analytics: Track button clicks since last save (not persisted to local storage)
   clickAnalytics: z.record(z.number()).default({}), // Track button clicks by button ID
   resourceAnalytics: z.record(z.number()).default({}), // Track resource gains/losses by resource type
+  // Achievements
+  unlockedAchievements: z.array(z.string()).default([]),
+  claimedAchievements: z.array(z.string()).default([]), // Achievement segment IDs that have been claimed for silver
 });
 
 export type GameState = z.infer<typeof gameStateSchema>;

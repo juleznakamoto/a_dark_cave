@@ -41,6 +41,8 @@ export default function ItemProgressChart() {
   const state = useGameStore.getState();
   const isCruelMode = state.cruelMode;
 
+  const claimedAchievements = useGameStore((state) => state.claimedAchievements || []);
+  
   // State for tooltip interaction
   const [hoveredSegment, setHoveredSegment] = useState<{
     id: string;
@@ -51,8 +53,10 @@ export default function ItemProgressChart() {
     y: number;
   } | null>(null);
   const [clickedSegment, setClickedSegment] = useState<string | null>(null);
-  const [claimedSegments, setClaimedSegments] = useState<Set<string>>(new Set());
   const containerRef = useRef<HTMLDivElement>(null);
+  
+  // Convert claimedAchievements array to Set for efficient lookup
+  const claimedSegments = new Set(claimedAchievements);
 
   // Define ring segment configurations - each segment represents upgradable progression
   const ringSegments: ItemSegment[][] = [
@@ -604,27 +608,27 @@ export default function ItemProgressChart() {
               
               const handleSegmentClick = () => {
                 if (isInteractive) {
+                  const achievementId = `item-${segment.segmentId}`;
+                  
                   // Calculate silver reward: 100 * maxCount
                   const silverReward = 100 * segment.maxCount;
                   
                   // Award silver
                   useGameStore.getState().updateResource("silver", silverReward);
                   
-                  // Add log entry
+                  // Add log entry and mark as claimed in one state update
                   useGameStore.setState((state) => ({
                     log: [
                       ...state.log,
                       {
-                        id: `achievement-item-${segment.segmentId}-${Date.now()}`,
+                        id: `achievement-${achievementId}-${Date.now()}`,
                         message: `Achievement unlocked: ${segment.name} complete! +${silverReward} silver`,
                         timestamp: Date.now(),
                         type: "event" as const,
                       },
                     ].slice(-100),
+                    claimedAchievements: [...(state.claimedAchievements || []), achievementId],
                   }));
-                  
-                  // Mark segment as claimed
-                  setClaimedSegments(prev => new Set(prev).add(segment.segmentId));
                   
                   // Clear hover state
                   setHoveredSegment(null);
