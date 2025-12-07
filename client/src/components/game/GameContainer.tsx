@@ -327,7 +327,7 @@ export default function GameContainer() {
                 )}
 
                 {/* Achievements Tab Button */}
-                <button
+                {/* <button
                   className={`py-2 text-sm bg-transparent ${
                     activeTab === "achievements"
                       ? "font-medium opacity-100"
@@ -337,7 +337,7 @@ export default function GameContainer() {
                   data-testid="tab-achievements"
                 >
                   ⚜
-                </button>
+                </button> */}
               </div>
             )}
           </nav>
