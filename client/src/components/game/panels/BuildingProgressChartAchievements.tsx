@@ -35,7 +35,7 @@ export default function BuildingProgressChart() {
   // Ring sizing parameters
   const startRadius = 20; // Inner radius of the first ring
   const ringSize = 5; // Thickness of each ring
-  const spaceBetweenRings = 6; // Gap between rings
+  const spaceBetweenRings = 7; // Gap between rings
 
   // Function to calculate padding angle based on ring index
   const getPaddingAngle = (ringIndex: number) => {
@@ -54,19 +54,19 @@ export default function BuildingProgressChart() {
         buildingType: "woodenHut",
         maxCount: 10,
         color: tailwindToHex("gray-400/80"),
-        label: "Wooden Huts",
+        label: "Basic Shelter",
       },
       {
         buildingType: "stoneHut",
         maxCount: 10,
         color: tailwindToHex("gray-400/80"),
-        label: "Stone Huts",
+        label: "Advanced Shelter",
       },
       {
         buildingType: "longhouse",
         maxCount: 5,
         color: tailwindToHex("gray-400/80"),
-        label: "Longhouses",
+        label: "Nordic Housing",
       },
     ],
     // Second ring: Basic crafting and trade buildings
@@ -75,14 +75,14 @@ export default function BuildingProgressChart() {
         buildingType: "cabin",
         maxCount: 2,
         color: tailwindToHex("gray-400/80"),
-        label: "Cabins",
+        label: "Hunter",
         relatedBuildings: ["greatCabin"],
       },
       {
         buildingType: "tannery",
         maxCount: 2,
         color: tailwindToHex("gray-400/80"),
-        label: "Tanneries",
+        label: "Tanner",
         relatedBuildings: ["masterTannery"],
       },
       {
@@ -120,7 +120,7 @@ export default function BuildingProgressChart() {
         buildingType: "shallowPit",
         maxCount: 4,
         color: tailwindToHex("gray-400/80"),
-        label: "Pits",
+        label: "Pit",
         relatedBuildings: ["deepeningPit", "deepPit", "bottomlessPit"],
       },
     ],
@@ -130,14 +130,14 @@ export default function BuildingProgressChart() {
         buildingType: "altar",
         maxCount: 4,
         color: tailwindToHex("gray-400/80"),
-        label: "Religious",
+        label: "Religion",
         relatedBuildings: ["shrine", "temple", "sanctum"],
       },
       {
         buildingType: "blackMonolith",
         maxCount: 2,
         color: tailwindToHex("gray-400/80"),
-        label: "Black Monolith",
+        label: "Sacrifice",
         relatedBuildings: ["pillarOfClarity", "boneTemple"],
       },
     ],
