@@ -896,6 +896,20 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     },
   },
 
+  feeding_ring: {
+    id: "feeding_ring",
+    name: "Feeding Ring",
+    description: "Cursed ring fused to your flesh, pulsing with dark hunger",
+    bonuses: {
+      generalBonuses: {
+        luck: 5,
+        strength: 5,
+        knowledge: 5,
+        madness: 5,
+      },
+    },
+  },
+
   unnamed_book: {
     id: "unnamed_book",
     name: "Unnamed Book",

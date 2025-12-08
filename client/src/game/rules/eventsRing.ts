@@ -49,4 +49,55 @@ export const ringEvents: Record<string, GameEvent> = {
       },
     ],
   },
+
+  bloodiedAwakening: {
+    id: "bloodiedAwakening",
+    condition: (state: GameState) =>
+      state.buildings.darkEstate >= 1 &&
+      state.buildings.stoneHut >= 5 &&
+      state.clothing.feeding_ring,
+    triggerType: "resource",
+    timeProbability: 15,
+    title: "Bloodied Awakening",
+    message:
+      "You wake as dawn breaks, your clothes soaked in crimson. The blood is fresh but not yours. A villager arrives at the estate, face pale with horror. 'Eight are dead,' they whisper. 'Torn apart in the night.' The ring on your finger throbs with agonizing pain, as if feeding on your dread.",
+    triggered: false,
+    priority: 4,
+    repeatable: false,
+    choices: [
+      {
+        id: "investigateMurders",
+        label: "Follow the trail",
+        effect: (state: GameState) => {
+          const remainingVillagers = state.current_population - 18;
+          const newFreeVillagers = Math.max(0, state.villagers.free - 18);
+          
+          return {
+            current_population: Math.max(0, remainingVillagers),
+            total_population: Math.max(0, remainingVillagers),
+            villagers: {
+              ...state.villagers,
+              free: newFreeVillagers,
+            },
+            _logMessage:
+              "You follow muddy footprints through the village. They lead to each murder scene, one after another. The prints match your own boots. The horror dawns slowly - it was you, possessed by the ring's hunger. When the villagers discover the truth, eighteen flee in terror, unwilling to remain near such a cursed creature.",
+          };
+        },
+      },
+      {
+        id: "severFinger",
+        label: "Sever the cursed finger",
+        effect: (state: GameState) => {
+          return {
+            clothing: {
+              ...state.clothing,
+              feeding_ring: false,
+            },
+            _logMessage:
+              "With trembling hands, you raise the axe. The ring pulses, trying to stop you, but you bring the blade down. Agony explodes through your arm as bone shatters. The severed finger falls, the ring still wrapped tight around it. As blood pools beneath you, the ring's whispers finally cease. You are free, but at a terrible cost.",
+          };
+        },
+      },
+    ],
+  },
 };
