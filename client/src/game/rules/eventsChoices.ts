@@ -764,7 +764,7 @@ export const choiceEvents: Record<string, GameEvent> = {
         id: "buyAxe",
         label: (state: GameState) => {
           const cost = state.story.seen.vikingBuilderEventForced ? 750 : 500;
-          return `Buy for (${cost} gold)`;
+          return `Buy for ${cost} gold`;
         },
         cost: (state: GameState) => {
           const cost = state.story.seen.vikingBuilderEventForced ? 750 : 500;
