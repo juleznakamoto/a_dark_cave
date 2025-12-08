@@ -656,26 +656,32 @@ export default function ItemProgressChart() {
                   }}
                   onMouseEnter={(e: any) => {
                     if (showTooltip) {
-                      setHoveredSegment({
-                        id: segment.segmentId,
-                        name: segment.name,
-                        currentCount: segment.currentCount,
-                        maxCount: segment.maxCount,
-                        x: e.clientX,
-                        y: e.clientY,
-                      });
+                      const rect = containerRef.current?.getBoundingClientRect();
+                      if (rect) {
+                        setHoveredSegment({
+                          id: segment.segmentId,
+                          name: segment.name,
+                          currentCount: segment.currentCount,
+                          maxCount: segment.maxCount,
+                          x: e.clientX - rect.left,
+                          y: e.clientY - rect.top,
+                        });
+                      }
                     }
                   }}
                   onMouseMove={(e: any) => {
                     if (showTooltip && hoveredSegment?.id === segment.segmentId) {
-                      setHoveredSegment({
-                        id: segment.segmentId,
-                        name: segment.name,
-                        currentCount: segment.currentCount,
-                        maxCount: segment.maxCount,
-                        x: e.clientX,
-                        y: e.clientY,
-                      });
+                      const rect = containerRef.current?.getBoundingClientRect();
+                      if (rect) {
+                        setHoveredSegment({
+                          id: segment.segmentId,
+                          name: segment.name,
+                          currentCount: segment.currentCount,
+                          maxCount: segment.maxCount,
+                          x: e.clientX - rect.left,
+                          y: e.clientY - rect.top,
+                        });
+                      }
                     }
                   }}
                   onMouseLeave={() => {
@@ -716,11 +722,11 @@ export default function ItemProgressChart() {
       {/* Tooltip display for hovered segment */}
       {hoveredSegment && (
         <div 
-          className="fixed bg-popover border rounded-md px-2 py-1 text-xs shadow-md z-50 pointer-events-none whitespace-nowrap"
+          className="absolute bg-popover border rounded-md px-2 py-1 text-xs shadow-md z-50 pointer-events-none whitespace-nowrap"
           style={{
             left: `${hoveredSegment.x}px`,
-            top: `${hoveredSegment.y - 10}px`,
-            transform: 'translate(-50%, -100%)'
+            top: `${hoveredSegment.y}px`,
+            transform: 'translate(-50%, calc(-100% - 10px))'
           }}
         >
           <div className="font-semibold">{hoveredSegment.name}</div>
