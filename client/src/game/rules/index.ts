@@ -45,26 +45,6 @@ import { woodcutterEvents } from "./eventsWoodcutter";
 import { fellowshipEvents } from "./eventsFellowship";
 import { attackWaveEvents } from "./eventsAttackWaves";
 
-// Action handlers map
-const actionHandlers: Record<string, (state: GameState, actionId: string) => Partial<GameState>> = {
-  ...villageBuildActions.handlers,
-  ...caveMineActions.handlers,
-  ...caveCraftTools.handlers,
-  ...caveCraftResources.handlers,
-  ...caveCraftWeapons.handlers,
-  ...forestScoutActions.handlers,
-  ...forestSacrificeActions.handlers,
-  ...forestTradeActions.handlers,
-  // Add new handlers here
-  buildBlackMonolith: handleBuildBlackMonolith,
-  buildMasterworkFoundry: handleBuildMasterworkFoundry,
-  animals: handleAnimals,
-  boneTotems: handleBoneTotems,
-  leatherTotems: handleLeatherTotems,
-  buildInkwardenAcademy: handleBuildInkwardenAcademy, // Added Inkwarden Academy handler
-};
-
-
 // Combine all actions
 export const gameActions: Record<string, Action> = {
   ...villageBuildActions,
@@ -435,7 +415,7 @@ export function canExecuteAction(actionId: string, state: GameState): boolean {
         true,
         state,
       );
-      if ((current || 0) < adjustedCost) {
+      if ((current || 0) < adjustedAmount) {
         return false;
       }
     } else {
