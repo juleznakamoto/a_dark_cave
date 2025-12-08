@@ -1,6 +1,7 @@
 import { useGameStore } from "@/game/state";
 import { gameActions } from "@/game/rules";
 import { getTotalBuildingCostReduction } from "@/game/rules/effectsCalculation";
+import { calculateBastionStats } from "@/game/bastionStats";
 import { Button } from "@/components/ui/button";
 import {
   Tooltip,
@@ -111,17 +112,25 @@ export default function BastionPanel() {
   const repairBastion = () => {
     const repairCost = getRepairCost("buildBastion", 1);
     if (canAffordRepair(repairCost)) {
-      useGameStore.setState((state) => ({
-        resources: deductRepairCost(repairCost),
-        story: {
-          ...state.story,
-          seen: {
-            ...state.story.seen,
-            bastionDamaged: false,
+      useGameStore.setState((state) => {
+        const updatedState = {
+          ...state,
+          resources: deductRepairCost(repairCost),
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              bastionDamaged: false,
+            },
           },
-        },
-      }));
-      useGameStore.getState().updateBastionStats();
+        };
+        
+        // Calculate bastion stats with the NEW state immediately
+        return {
+          ...updatedState,
+          bastion_stats: calculateBastionStats(updatedState),
+        };
+      });
     }
   };
 
@@ -130,17 +139,25 @@ export default function BastionPanel() {
     const repairCost = getRepairCost("buildWatchtower", level);
 
     if (canAffordRepair(repairCost)) {
-      useGameStore.setState((state) => ({
-        resources: deductRepairCost(repairCost),
-        story: {
-          ...state.story,
-          seen: {
-            ...state.story.seen,
-            watchtowerDamaged: false,
+      useGameStore.setState((state) => {
+        const updatedState = {
+          ...state,
+          resources: deductRepairCost(repairCost),
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              watchtowerDamaged: false,
+            },
           },
-        },
-      }));
-      useGameStore.getState().updateBastionStats();
+        };
+        
+        // Calculate bastion stats with the NEW state immediately
+        return {
+          ...updatedState,
+          bastion_stats: calculateBastionStats(updatedState),
+        };
+      });
     }
   };
 
@@ -149,17 +166,25 @@ export default function BastionPanel() {
     const repairCost = getRepairCost("buildPalisades", level);
 
     if (canAffordRepair(repairCost)) {
-      useGameStore.setState((state) => ({
-        resources: deductRepairCost(repairCost),
-        story: {
-          ...state.story,
-          seen: {
-            ...state.story.seen,
-            palisadesDamaged: false,
+      useGameStore.setState((state) => {
+        const updatedState = {
+          ...state,
+          resources: deductRepairCost(repairCost),
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              palisadesDamaged: false,
+            },
           },
-        },
-      }));
-      useGameStore.getState().updateBastionStats();
+        };
+        
+        // Calculate bastion stats with the NEW state immediately
+        return {
+          ...updatedState,
+          bastion_stats: calculateBastionStats(updatedState),
+        };
+      });
     }
   };
 
