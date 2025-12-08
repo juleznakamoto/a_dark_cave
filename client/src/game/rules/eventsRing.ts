@@ -2,6 +2,7 @@
 
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
+import { killVillagers } from "@/game/stateHelpers";
 
 export const ringEvents: Record<string, GameEvent> = {
   feedingRing: {
@@ -69,16 +70,10 @@ export const ringEvents: Record<string, GameEvent> = {
         id: "investigateMurders",
         label: "Investigate Murders",
         effect: (state: GameState) => {
-          const remainingVillagers = state.current_population - 18;
-          const newFreeVillagers = Math.max(0, state.villagers.free - 18);
+          const deathResult = killVillagers(state, 18);
           
           return {
-            current_population: Math.max(0, remainingVillagers),
-            total_population: Math.max(0, remainingVillagers),
-            villagers: {
-              ...state.villagers,
-              free: newFreeVillagers,
-            },
+            ...deathResult,
             _logMessage:
               "As you follow muddy footprints through the village, they lead to each murder scene, one after another. The prints match your own boots. The horror dawns slowly - it was you, possessed by the ring's hunger. When the villagers discover the truth, eighteen flee, unwilling to remain near such a cursed creature.",
           };
