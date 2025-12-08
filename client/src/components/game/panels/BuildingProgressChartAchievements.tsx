@@ -26,9 +26,8 @@ export default function BuildingProgressChart() {
     name: string;
     currentCount: number;
     maxCount: number;
-    x: number;
-    y: number;
   } | null>(null);
+  const [mousePosition, setMousePosition] = useState<{ x: number; y: number } | null>(null);
   const [clickedSegment, setClickedSegment] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -299,6 +298,21 @@ export default function BuildingProgressChart() {
     <div 
       ref={containerRef}
       className="w-48 h-48 flex flex-col items-center justify-center relative"
+      onMouseMove={(e) => {
+        if (hoveredSegment) {
+          const rect = containerRef.current?.getBoundingClientRect();
+          if (rect) {
+            setMousePosition({
+              x: e.clientX - rect.left,
+              y: e.clientY - rect.top,
+            });
+          }
+        }
+      }}
+      onMouseLeave={() => {
+        setHoveredSegment(null);
+        setMousePosition(null);
+      }}
     >
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
         <span className="text-xl text-neutral-400">▨</span>
@@ -404,21 +418,8 @@ export default function BuildingProgressChart() {
                           name: segment.name,
                           currentCount: segment.currentCount,
                           maxCount: segment.maxCount,
-                          x: e.clientX - rect.left,
-                          y: e.clientY - rect.top,
                         });
-                      }
-                    }
-                  }}
-                  onMouseMove={(e: any) => {
-                    if (showTooltip && hoveredSegment?.id === segment.segmentId) {
-                      const rect = containerRef.current?.getBoundingClientRect();
-                      if (rect) {
-                        setHoveredSegment({
-                          id: segment.segmentId,
-                          name: segment.name,
-                          currentCount: segment.currentCount,
-                          maxCount: segment.maxCount,
+                        setMousePosition({
                           x: e.clientX - rect.left,
                           y: e.clientY - rect.top,
                         });
@@ -428,6 +429,7 @@ export default function BuildingProgressChart() {
                   onMouseLeave={() => {
                     if (showTooltip && clickedSegment !== segment.segmentId) {
                       setHoveredSegment(null);
+                      setMousePosition(null);
                     }
                   }}
                   onClick={handleSegmentClick}
@@ -460,12 +462,12 @@ export default function BuildingProgressChart() {
       </ResponsiveContainer>
 
       {/* Tooltip display for hovered segment */}
-      {hoveredSegment && (
+      {hoveredSegment && mousePosition && (
         <div 
           className="absolute bg-popover border rounded-md px-2 py-1 text-xs shadow-md z-50 pointer-events-none whitespace-nowrap"
           style={{
-            left: `${hoveredSegment.x}px`,
-            top: `${hoveredSegment.y}px`,
+            left: `${mousePosition.x}px`,
+            top: `${mousePosition.y}px`,
             transform: 'translate(-50%, calc(-100% - 10px))'
           }}
         >
