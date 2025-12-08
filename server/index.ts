@@ -99,7 +99,7 @@ app.get('/api/admin/data', async (req, res) => {
       adminClient
         .from('game_saves')
         .select('user_id, game_state, updated_at, created_at')
-        .gte('updated_at', filterDate)
+        .gte('updated_at', { ascending: false })
         ,
       adminClient
         .from('purchases')
@@ -128,13 +128,7 @@ app.get('/api/admin/data', async (req, res) => {
     log(`✅ Fetched ${purchasesResult.data.length} purchases`);
     
     // Log sample created_at and updated_at timestamps to debug hourly signups
-    if (savesResult.data.length > 0) {
-      const now = new Date();
-      const last24h = new Date(now.getTime() - 24 * 60 * 60 * 1000);
-      const recentSaves = savesResult.data
-        .filter(s => new Date(s.created_at) >= last24h)
-        .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
-      
+    if (savesResult.data.length > 0) {     
       log(`📊 Recent signups (last 24h): ${recentSaves.length} total`);
       if (recentSaves.length > 0) {
         log(`📊 Sample created_at and updated_at timestamps (newest first):`);
