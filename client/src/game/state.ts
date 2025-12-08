@@ -244,8 +244,6 @@ const mergeStateUpdates = (
     // Achievements state
     unlockedAchievements: stateUpdates.unlockedAchievements || prevState.unlockedAchievements,
     claimedAchievements: stateUpdates.claimedAchievements || prevState.claimedAchievements,
-    // Initialize sacrificeStats if they are missing
-    sacrificeStats: stateUpdates.sacrificeStats || prevState.sacrificeStats,
   };
 
   if (
@@ -298,15 +296,7 @@ const extractDefaultsFromSchema = (schema: any): any => {
 };
 
 const generateDefaultGameState = (): GameState => {
-  // Ensure sacrificeStats are included in the default schema extraction
-  const defaultState = extractDefaultsFromSchema(gameStateSchema) as GameState;
-  if (!defaultState.sacrificeStats) {
-    defaultState.sacrificeStats = {
-      boneTotemsCount: 0,
-      leatherTotemsCount: 0,
-    };
-  }
-  return defaultState;
+  return extractDefaultsFromSchema(gameStateSchema) as GameState;
 };
 
 const defaultGameState: GameState = {
@@ -410,12 +400,6 @@ const defaultGameState: GameState = {
   // Achievements
   unlockedAchievements: [],
   claimedAchievements: [],
-
-  // Initialize sacrificeStats
-  sacrificeStats: {
-    boneTotemsCount: 0,
-    leatherTotemsCount: 0,
-  },
 };
 
 // Main store

@@ -5,12 +5,12 @@ import CircularProgress from "@/components/ui/circular-progress";
 export default function SacrificeProgressChartAchievements() {
   const gameState = useGameStore();
   
-  // Sacrifice stats
-  const boneTotemsCount = gameState.sacrificeStats?.boneTotemsCount || 0;
-  const leatherTotemsCount = gameState.sacrificeStats?.leatherTotemsCount || 0;
+  // Sacrifice stats from story.seen (existing tracking)
+  const boneTotemsCount = Number(gameState.story?.seen?.boneTotemsUsageCount) || 0;
+  const leatherTotemsCount = Number(gameState.story?.seen?.leatherTotemsUsageCount) || 0;
   const animalSacrificeLevel = Number(gameState.story?.seen?.animalsSacrificeLevel) || 0;
   
-  // Click levels from buttonUpgrades
+  // Click levels from buttonUpgrades (existing tracking)
   const caveExploreLevel = gameState.buttonUpgrades?.caveExplore?.level || 0;
   const huntLevel = gameState.buttonUpgrades?.hunt?.level || 0;
   const chopWoodLevel = gameState.buttonUpgrades?.chopWood?.level || 0;
