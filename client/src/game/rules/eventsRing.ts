@@ -100,4 +100,36 @@ export const ringEvents: Record<string, GameEvent> = {
       },
     ],
   },
+
+  desperateAmputation: {
+    id: "desperateAmputation",
+    condition: (state: GameState) =>
+      state.buildings.darkEstate >= 1 &&
+      state.clothing.feeding_ring &&
+      state.events.bloodiedAwakening,
+    triggerType: "resource",
+    timeProbability: 5,
+    title: "No Escape",
+    message:
+      "After the horrifying events, you try once more to remove the cursed ring. You pull, twist, and wrench until your finger is raw and bleeding. But the ring will not yield. It has become part of you, feeding on your flesh. There is only one way to be free of it now.",
+    triggered: false,
+    priority: 4,
+    repeatable: false,
+    choices: [
+      {
+        id: "severFinger",
+        label: "Sever the finger",
+        effect: (state: GameState) => {
+          return {
+            clothing: {
+              ...state.clothing,
+              feeding_ring: false,
+            },
+            _logMessage:
+              "With trembling hands, you raise your axe. The ring pulses as the blade falls. Agony tears through your arm as bone shatters. Lifting the severed finger, you see small black threads, like tentacles, sunk deep into its flesh.",
+          };
+        },
+      },
+    ],
+  },
 };
