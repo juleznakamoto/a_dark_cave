@@ -1,23 +1,5 @@
 import { Action } from "@shared/schema";
 import { GameState } from "@shared/schema";
-
-import { caveEvents } from "./eventsCave";
-import { huntEvents } from "./eventsHunt";
-import { choiceEvents } from "./eventsChoices";
-import { cubeEvents } from "./eventsCube";
-import { feastEvents } from "./eventsFeast";
-import { loreEvents } from "./eventsLore";
-import { madnessEvents } from "./eventsMadness";
-import { noChoiceEvents } from "./eventsNoChoices";
-import { recurringEvents } from "./eventsRecurring";
-import { storyEvents } from "./eventsStory";
-import { villageAttackEvents } from "./eventsVillageAttacks";
-import { woodcutterEvents } from "./eventsWoodcutter";
-import { fellowshipEvents } from "./eventsFellowship";
-import { attackWaveEvents } from "./eventsAttackWaves";
-import { merchantEvents } from "./eventsMerchant";
-
-// Import actions after defining helper functions to avoid circular dependencies
 import { caveCraftResources } from "./caveCraftResources";
 import { caveCraftTools } from "./caveCraftTools";
 import { caveCraftWeapons } from "./caveCraftWeapons";
@@ -34,6 +16,8 @@ import {
   getAnimalsCost,
   getHumansCost,
 } from "./forestSacrificeActions";
+import { caveEvents } from "./eventsCave";
+import { huntEvents } from "./eventsHunt";
 import { forestTradeActions } from "./forestTradeActions";
 import { caveExploreActions } from "./caveExploreActions";
 import {
@@ -47,7 +31,19 @@ import {
   getUpgradeBonusMultiplier,
 } from "../buttonUpgrades";
 import { logger } from "@/lib/logger";
-
+import { choiceEvents } from "./eventsChoices";
+import { cubeEvents } from "./eventsCube";
+import { feastEvents } from "./eventsFeast";
+import { loreEvents } from "./eventsLore";
+import { madnessEvents } from "./eventsMadness";
+import { merchantEvents } from "./eventsMerchant";
+import { noChoiceEvents } from "./eventsNoChoices";
+import { recurringEvents } from "./eventsRecurring";
+import { storyEvents } from "./eventsStory";
+import { villageAttackEvents } from "./eventsVillageAttacks";
+import { woodcutterEvents } from "./eventsWoodcutter";
+import { fellowshipEvents } from "./eventsFellowship";
+import { attackWaveEvents } from "./eventsAttackWaves";
 
 // Action handlers map
 const actionHandlers: Record<string, (state: GameState, actionId: string) => Partial<GameState>> = {
