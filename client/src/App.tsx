@@ -43,18 +43,20 @@ function Router() {
 
 function App() {
   useEffect(() => {
-    // Initialize Playlight SDK with game pause integration after 20 minutes
-    const THIRTY_MINUTES = 20 * 60 * 1000; // 20 minutes in milliseconds
-    
-    const initTimeout = setTimeout(async () => {
+    const initPlaylight = async () => {
       try {
         const module = await import(
           "https://sdk.playlight.dev/playlight-sdk.es.js"
         );
         const playlightSDK = module.default;
 
-        // Initialize SDK
-        playlightSDK.init();
+        // Initialize SDK immediately with exit intent disabled
+        playlightSDK.init({
+          exitIntent: {
+            enabled: false,
+            immediate: false
+          }
+        });
 
         // Import game store
         const { useGameStore } = await import('./game/state');
@@ -76,14 +78,26 @@ function App() {
           }
         });
 
-        console.log("[PLAYLIGHT] SDK initialized with game pause integration");
+        console.log("[PLAYLIGHT] SDK initialized immediately with exit intent disabled");
+
+        // Enable exit intent after 20 minutes
+        const TWENTY_MINUTES = 20 * 60 * 1000;
+        setTimeout(() => {
+          playlightSDK.init({
+            exitIntent: {
+              enabled: true,
+              immediate: false
+            }
+          });
+          console.log("[PLAYLIGHT] Exit intent enabled after 20 minutes");
+        }, TWENTY_MINUTES);
+
       } catch (error) {
         console.error("Error loading the Playlight SDK:", error);
       }
-    }, THIRTY_MINUTES);
+    };
 
-    // Cleanup timeout on unmount
-    return () => clearTimeout(initTimeout);
+    initPlaylight();
   }, []);
 
   return (
