@@ -1235,7 +1235,7 @@ export const villageBuildActions: Record<string, Action> = {
       const count = state.buildings.longhouse || 0;
       const totalPopulation = count * 8;
       return count > 0
-        ? [`+${totalPopulation} Max Population (${count} longhouses)`]
+        ? [`+${totalPopulation} Max Population`]
         : ["+8 Max Population"];
     },
     building: true,
@@ -1263,19 +1263,19 @@ export const villageBuildActions: Record<string, Action> = {
         "resources.stone": 5000,
       },
       2: {
-        "resources.wood": 15000,
+        "resources.wood": 12500,
         "resources.stone": 7500,
       },
       3: {
-        "resources.wood": 20000,
+        "resources.wood": 15000,
         "resources.stone": 10000,
       },
       4: {
-        "resources.wood": 25000,
+        "resources.wood": 17500,
         "resources.stone": 12500,
       },
       5: {
-        "resources.wood": 30000,
+        "resources.wood": 20000,
         "resources.stone": 15000,
       },
     },
@@ -1715,7 +1715,7 @@ export function handleBuildWoodenHut(
   ) {
     result.logEntries!.push({
       id: `city-growth-milestone-${Date.now()}`,
-      message: "The settlement has grown into a thriving city. Ten wooden huts, ten stone houses, and five grand longhouses now stand as testament to your people's perseverance and strength.",
+      message: "The city has grown into a bustling metropolis, alive with trade, industry, and the promise of brighter days.",
       timestamp: Date.now(),
       type: "system",
     });
@@ -2083,7 +2083,7 @@ export function handleBuildStoneHut(
   ) {
     stoneHutResult.logEntries!.push({
       id: `city-growth-milestone-${Date.now()}`,
-      message: "The settlement has grown into a thriving city. Ten wooden huts, ten stone houses, and five grand longhouses now stand as testament to your people's perseverance and strength.",
+      message: "The city has grown into a bustling metropolis, alive with trade, industry, and the promise of brighter days.",
       timestamp: Date.now(),
       type: "system",
     });
@@ -2139,7 +2139,7 @@ export function handleBuildLonghouse(
   ) {
     longhouseResult.logEntries!.push({
       id: `city-growth-milestone-${Date.now()}`,
-      message: "The settlement has grown into a thriving city. Ten wooden huts, ten stone houses, and five grand longhouses now stand as testament to your people's perseverance and strength.",
+      message: "The city has grown into a bustling metropolis, alive with trade, industry, and the promise of brighter days.",
       timestamp: Date.now(),
       type: "system",
     });

@@ -650,9 +650,7 @@ export const choiceEvents: Record<string, GameEvent> = {
   vikingBuilder: {
     id: "vikingBuilder",
     condition: (state: GameState) =>
-      state.buildings.palisades >= 1 &&
-      !state.story.seen.vikingBuilderEvent &&
-      state.resources.gold >= 250,
+      state.buildings.stoneHut >= 9 && !state.story.seen.vikingBuilderEvent,
     triggerType: "resource",
     timeProbability: 15,
     title: "The Viking Builder",
@@ -660,7 +658,7 @@ export const choiceEvents: Record<string, GameEvent> = {
       "One day, a strong man wearing thick furs stands at the gates. He says he comes from the far north and is a skilled builder. For a little gold, he will teach you how to build big houses that can hold many villagers.",
     triggered: false,
     priority: 4,
-    repeatable: false,
+    repeatable: true,
     choices: [
       {
         id: "acceptDeal",
@@ -691,27 +689,17 @@ export const choiceEvents: Record<string, GameEvent> = {
         },
       },
       {
-        id: "sendAway",
-        label: "Send away",
-        effect: (state: GameState) => {
-          return {
-            _logMessage:
-              "You refuse the builder's offer and send him away. He shrugs and disappears into the wilderness, taking his knowledge with him.",
-          };
-        },
-      },
-      {
         id: "forceHim",
         label: "Force him",
         relevant_stats: ["strength"],
         success_chance: (state: GameState) => {
-          return calculateSuccessChance(state, 0.15, {
+          return calculateSuccessChance(state, 0.2, {
             type: "strength",
             multiplier: 0.01,
           });
         },
         effect: (state: GameState) => {
-          const successChance = calculateSuccessChance(state, 0.15, {
+          const successChance = calculateSuccessChance(state, 0.2, {
             type: "strength",
             multiplier: 0.01,
           });
@@ -732,22 +720,25 @@ export const choiceEvents: Record<string, GameEvent> = {
                 "Your men overpower the builder and force him to share his knowledge. Reluctantly, he teaches you the secrets of longhouse construction.",
             };
           } else {
-            // Failure: he escapes and villagers are injured
+            // Failure: he escapes and villagers are killed
             const casualties = Math.floor(Math.random() * 5) + 1 + state.CM * 3;
             const deathResult = killVillagers(state, casualties);
 
             return {
               ...deathResult,
-              story: {
-                ...state.story,
-                seen: {
-                  ...state.story.seen,
-                  vikingBuilderEvent: true,
-                },
-              },
               _logMessage: `The builder proves stronger than expected! He fights back fiercely, killing ${casualties} men before escaping into the wilderness.`,
             };
           }
+        },
+      },
+      {
+        id: "sendAway",
+        label: "Send away",
+        effect: (state: GameState) => {
+          return {
+            _logMessage:
+              "You refuse the builder's offer and send him away. He shrugs and disappears into the wilderness, taking his knowledge with him.",
+          };
         },
       },
     ],
@@ -1659,7 +1650,7 @@ export const choiceEvents: Record<string, GameEvent> = {
       (state.story?.seen?.humansSacrificeLevel || 0) >= 10 &&
       !state.story?.seen?.boneTempleProposalEvent &&
       state.buildings.blackMonolith >= 1 &&
-      (state.buildings.boneTemple || 0) === 0 ,
+      (state.buildings.boneTemple || 0) === 0,
     triggerType: "resource",
     timeProbability: 1,
     title: "The Elder's Demand",
