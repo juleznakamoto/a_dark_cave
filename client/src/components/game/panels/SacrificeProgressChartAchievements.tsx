@@ -1,6 +1,6 @@
 
 import { useGameStore } from "@/game/state";
-import CircularProgress from "@/components/ui/circular-progress";
+import { CircularProgress } from "@/components/ui/circular-progress";
 
 export default function SacrificeProgressChartAchievements() {
   const gameState = useGameStore();
