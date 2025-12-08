@@ -125,6 +125,7 @@ export default function AdminDashboard() {
   const [purchases, setPurchases] = useState<PurchaseData[]>([]);
   const [users, setUsers] = useState<Array<{ id: string; email: string }>>([]);
   const [totalUserCount, setTotalUserCount] = useState<number>(0);
+  const [lastUpdated, setLastUpdated] = useState<Date>(new Date()); // State to track last data update
 
   // Filter states
   const [timeRange, setTimeRange] = useState<"1d" | "7d" | "30d" | "all">(
@@ -260,6 +261,21 @@ export default function AdminDashboard() {
       }));
 
       setUsers(userList);
+      setLastUpdated(new Date());
+
+      // Log data summary for debugging
+      logger.log(`📊 [DASHBOARD] Loaded data summary:`);
+      logger.log(`   - Click records: ${data.clicks?.length || 0}`);
+      logger.log(`   - Game saves: ${data.saves?.length || 0}`);
+      logger.log(`   - Purchases: ${data.purchases?.length || 0}`);
+      logger.log(`   - Total user count: ${data.totalUserCount}`);
+
+      if (data.saves && data.saves.length > 0) {
+        const now = new Date();
+        const last24h = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+        const recentCreated = data.saves.filter((s: any) => new Date(s.created_at) >= last24h);
+        logger.log(`   - Saves created in last 24h: ${recentCreated.length}`);
+      }
     } catch (error) {
       logger.error("Failed to load admin data:", error);
     }

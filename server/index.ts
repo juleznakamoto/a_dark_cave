@@ -63,7 +63,7 @@ app.get('/api/admin/data', async (req, res) => {
   try {
     // Cache for 5 minutes to reduce repeated fetches
     res.set('Cache-Control', 'public, max-age=300');
-    
+
     const env = req.query.env as 'dev' | 'prod' || 'dev';
     log(`📊 Admin data request received with env parameter: '${req.query.env}' (using: ${env})`);
     const adminClient = getAdminClient(env);
@@ -79,7 +79,7 @@ app.get('/api/admin/data', async (req, res) => {
     const { count: totalUserCount, error: countError } = await adminClient
       .from('game_saves')
       .select('user_id', { count: 'exact', head: true });
-    
+
     if (countError) {
       log('❌ Error counting total users:', countError);
       throw countError;
@@ -103,7 +103,7 @@ app.get('/api/admin/data', async (req, res) => {
         .from('purchases')
         .select('*')
         .order('purchased_at', { ascending: false })
-        
+
     ]);
 
     if (clicksResult.error) {
