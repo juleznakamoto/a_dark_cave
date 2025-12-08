@@ -94,7 +94,7 @@ export const ringEvents: Record<string, GameEvent> = {
               feeding_ring: false,
             },
             _logMessage:
-              "With trembling hands, you raise your axe. The ring pulses, as you bring the blade down. Agony explodes through your arm as bone shatters. As you pick up the severed finger, you see small black Fäden coming from the ring going into the fingers flesh.",
+              "With trembling hands, you raise your axe. The ring pulses, as you bring the blade down. Agony explodes through your arm as bone shatters. As you pick up the severed finger, you see small black threads like tentacles going from the ring going into the fingers flesh.",
           };
         },
       },
