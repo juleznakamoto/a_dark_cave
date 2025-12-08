@@ -264,6 +264,15 @@ export const gameStateSchema = z.object({
       seen: z.record(z.union([z.boolean(), z.number()])).default({}),
     })
     .default({ seen: {} }),
+  sacrificeStats: z
+    .object({
+      boneTotemsCount: z.number().default(0),
+      leatherTotemsCount: z.number().default(0),
+    })
+    .default({
+      boneTotemsCount: 0,
+      leatherTotemsCount: 0,
+    }),
   hoveredTooltips: z.record(z.boolean()).default({}),
   damagedBuildings: z
     .object({
