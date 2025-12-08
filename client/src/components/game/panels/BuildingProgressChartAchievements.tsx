@@ -335,14 +335,14 @@ export default function BuildingProgressChart() {
             // Progress segments
             ...ring.progressSegments.map((segment, segIndex) => {
               const segmentColor =
-                ring.isRingComplete && segment.isFull
+                segment.isFull
                   ? tailwindToHex("blue-400")
                   : segment.fill;
 
               const achievementId = `building-${segment.segmentId}`;
               const isClaimed = claimedAchievements.includes(achievementId);
-              const isInteractive = ring.isRingComplete && segment.isFull && !isClaimed;
-              const showTooltip = ring.isRingComplete && segment.isFull; // Show tooltip for both claimed and unclaimed
+              const isInteractive = segment.isFull && !isClaimed;
+              const showTooltip = segment.isFull; // Show tooltip for both claimed and unclaimed
               
               const handleSegmentClick = () => {
                 if (isInteractive) {

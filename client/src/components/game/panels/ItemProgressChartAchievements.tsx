@@ -596,14 +596,14 @@ export default function ItemProgressChart() {
 
             // Progress segments
             ...ring.progressSegments.map((segment, segIndex) => {
-              const segmentColor = ring.isRingComplete && segment.isFull
+              const segmentColor = segment.isFull
                 ? tailwindToHex("blue-400")
                 : segment.fill;
 
               const achievementId = `item-${segment.segmentId}`;
               const isClaimed = claimedAchievements.includes(achievementId);
-              const isInteractive = ring.isRingComplete && segment.isFull && !isClaimed;
-              const showTooltip = ring.isRingComplete && segment.isFull; // Show tooltip for both claimed and unclaimed
+              const isInteractive = segment.isFull && !isClaimed;
+              const showTooltip = segment.isFull; // Show tooltip for both claimed and unclaimed
               
               const handleSegmentClick = () => {
                 if (isInteractive) {
