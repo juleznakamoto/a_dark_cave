@@ -41,6 +41,8 @@ function Router() {
 
 function App() {
   useEffect(() => {
+    let exitIntentTimeout: NodeJS.Timeout | null = null;
+
     const initPlaylight = async () => {
       try {
         const module = await import(
@@ -78,10 +80,10 @@ function App() {
 
         console.log("[PLAYLIGHT] SDK initialized immediately with exit intent disabled");
 
-        // Enable exit intent after 20 minutes
-        const TWENTY_MINUTES = 0.1 * 60 * 1000;
-        setTimeout(() => {
-          playlightSDK.init({
+        // Enable exit intent after 20 minutes using setConfig()
+        const TWENTY_MINUTES = 20 * 60 * 1000;
+        exitIntentTimeout = setTimeout(() => {
+          playlightSDK.setConfig({
             exitIntent: {
               enabled: true,
               immediate: false
@@ -96,6 +98,13 @@ function App() {
     };
 
     initPlaylight();
+
+    // Cleanup timeout on unmount
+    return () => {
+      if (exitIntentTimeout) {
+        clearTimeout(exitIntentTimeout);
+      }
+    };
   }, []);
 
   return (
