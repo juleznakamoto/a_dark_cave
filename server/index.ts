@@ -127,7 +127,7 @@ app.get('/api/admin/data', async (req, res) => {
     log(`✅ Fetched ${savesResult.data.length} game saves (active in last 30 days)`);
     log(`✅ Fetched ${purchasesResult.data.length} purchases`);
     
-    // Log sample created_at timestamps to debug hourly signups
+    // Log sample created_at and updated_at timestamps to debug hourly signups
     if (savesResult.data.length > 0) {
       const now = new Date();
       const last24h = new Date(now.getTime() - 24 * 60 * 60 * 1000);
@@ -137,17 +137,21 @@ app.get('/api/admin/data', async (req, res) => {
       
       log(`📊 Recent signups (last 24h): ${recentSaves.length} total`);
       if (recentSaves.length > 0) {
-        log(`📊 Sample created_at timestamps (newest first):`);
+        log(`📊 Sample created_at and updated_at timestamps (newest first):`);
         recentSaves.slice(0, 10).forEach((save, idx) => {
-          log(`   ${idx + 1}. ${save.created_at} (${new Date(save.created_at).toLocaleString()})`);
+          log(`   ${idx + 1}. created: ${save.created_at} | updated: ${save.updated_at}`);
         });
       }
       
-      // Also log the date range of all saves
+      // Also log the date range of all saves by created_at and updated_at
       const allCreatedDates = savesResult.data.map(s => new Date(s.created_at).getTime());
+      const allUpdatedDates = savesResult.data.map(s => new Date(s.updated_at).getTime());
       const oldestCreated = new Date(Math.min(...allCreatedDates));
       const newestCreated = new Date(Math.max(...allCreatedDates));
-      log(`📊 Created_at date range: ${oldestCreated.toISOString()} to ${newestCreated.toISOString()}`);
+      const oldestUpdated = new Date(Math.min(...allUpdatedDates));
+      const newestUpdated = new Date(Math.max(...allUpdatedDates));
+      log(`📊 Created_at range: ${oldestCreated.toISOString()} to ${newestCreated.toISOString()}`);
+      log(`📊 Updated_at range: ${oldestUpdated.toISOString()} to ${newestUpdated.toISOString()}`);
     }
 
     res.json({
