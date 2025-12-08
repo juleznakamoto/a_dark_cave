@@ -18,12 +18,10 @@ import InactivityDialog from "./InactivityDialog";
 import { useState, useEffect, useMemo, useRef } from "react";
 import { LimelightNav, NavItem } from "@/components/ui/limelight-nav";
 import { Mountain, Trees, Castle, Landmark } from "lucide-react";
-import { stopGameLoop } from "@/game/loop";
 import ProfileMenu from "./ProfileMenu"; // Imported ProfileMenu
 import { startVersionCheck, stopVersionCheck } from "@/game/versionCheck";
 import { logger } from "@/lib/logger";
 import { toast } from "@/hooks/use-toast";
-import { Button } from "@/components/ui/button"; // Import Button component
 
 export default function GameContainer() {
   const {
@@ -327,7 +325,7 @@ export default function GameContainer() {
                 )}
 
                 {/* Achievements Tab Button */}
-                {/* <button
+                <button
                   className={`py-2 text-sm bg-transparent ${
                     activeTab === "achievements"
                       ? "font-medium opacity-100"
@@ -337,7 +335,7 @@ export default function GameContainer() {
                   data-testid="tab-achievements"
                 >
                   ⚜
-                </button> */}
+                </button>
               </div>
             )}
           </nav>

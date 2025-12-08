@@ -64,15 +64,9 @@ export default function BuildingProgressChart() {
       },
       {
         buildingType: "longhouse",
-        maxCount: 2,
+        maxCount: 5,
         color: tailwindToHex("gray-400/80"),
         label: "Longhouses",
-      },
-      {
-        buildingType: "furTents",
-        maxCount: 1,
-        color: tailwindToHex("gray-400/80"),
-        label: "Fur Tents",
       },
     ],
     // Second ring: Basic crafting and trade buildings
@@ -83,20 +77,6 @@ export default function BuildingProgressChart() {
         color: tailwindToHex("gray-400/80"),
         label: "Cabin",
         relatedBuildings: ["greatCabin"],
-      },
-      {
-        buildingType: "blacksmith",
-        maxCount: 2,
-        color: tailwindToHex("gray-400/80"),
-        label: "Blacksmith",
-        relatedBuildings: ["grandBlacksmith"],
-      },
-      {
-        buildingType: "foundry",
-        maxCount: 3,
-        color: tailwindToHex("gray-400/80"),
-        label: "Foundry",
-        relatedBuildings: ["primeFoundry", "masterworkFoundry"],
       },
       {
         buildingType: "tannery",
@@ -123,16 +103,18 @@ export default function BuildingProgressChart() {
     // Third ring: Resource buildings and pits
     [
       {
-        buildingType: "timberMill",
-        maxCount: 1,
+        buildingType: "blacksmith",
+        maxCount: 2,
         color: tailwindToHex("gray-400/80"),
-        label: "Timber Mill",
+        label: "Blacksmith",
+        relatedBuildings: ["grandBlacksmith"],
       },
       {
-        buildingType: "quarry",
-        maxCount: 1,
+        buildingType: "foundry",
+        maxCount: 3,
         color: tailwindToHex("gray-400/80"),
-        label: "Quarry",
+        label: "Foundry",
+        relatedBuildings: ["primeFoundry", "masterworkFoundry"],
       },
       {
         buildingType: "shallowPit",
@@ -145,12 +127,6 @@ export default function BuildingProgressChart() {
     // Fourth ring: Advanced buildings
     [
       {
-        buildingType: "traps",
-        maxCount: 1,
-        color: tailwindToHex("gray-400/80"),
-        label: "Traps",
-      },
-      {
         buildingType: "altar",
         maxCount: 4,
         color: tailwindToHex("gray-400/80"),
@@ -158,39 +134,15 @@ export default function BuildingProgressChart() {
         relatedBuildings: ["shrine", "temple", "sanctum"],
       },
       {
-        buildingType: "alchemistHall",
-        maxCount: 1,
-        color: tailwindToHex("gray-400/80"),
-        label: "Alchemist's Hall",
-      },
-      {
-        buildingType: "wizardTower",
-        maxCount: 1,
-        color: tailwindToHex("gray-400/80"),
-        label: "Wizard Tower",
-      },
-      {
         buildingType: "blackMonolith",
-        maxCount: 3,
+        maxCount: 2,
         color: tailwindToHex("gray-400/80"),
         label: "Black Monolith",
         relatedBuildings: ["pillarOfClarity", "boneTemple"],
       },
-      {
-        buildingType: "darkEstate",
-        maxCount: 1,
-        color: tailwindToHex("gray-400/80"),
-        label: "Dark Estate",
-      },
     ],
     // Fifth ring: Fortifications
     [
-      {
-        buildingType: "bastion",
-        maxCount: 1,
-        color: tailwindToHex("gray-400/80"),
-        label: "Bastion",
-      },
       {
         buildingType: "palisades",
         maxCount: 4,
@@ -202,12 +154,6 @@ export default function BuildingProgressChart() {
         maxCount: 4,
         color: tailwindToHex("gray-400/80"),
         label: "Watchtower",
-      },
-      {
-        buildingType: "fortifiedMoat",
-        maxCount: 1,
-        color: tailwindToHex("gray-400/80"),
-        label: "Fortified Moat",
       },
     ],
   ];
