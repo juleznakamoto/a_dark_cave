@@ -129,7 +129,15 @@ app.get('/api/admin/data', async (req, res) => {
     log(`✅ Fetched ${purchasesResult.data.length} purchases`);
     
     // Log sample created_at and updated_at timestamps to debug hourly signups
-    if (savesResult.data.length > 0) {     
+    if (savesResult.data.length > 0) {
+      // Calculate date 24 hours ago for recent saves
+      const last24h = new Date();
+      last24h.setHours(last24h.getHours() - 24);
+      
+      const recentSaves = savesResult.data
+        .filter(s => new Date(s.created_at) >= last24h)
+        .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+      
       log(`📊 Recent signups (last 24h): ${recentSaves.length} total`);
       if (recentSaves.length > 0) {
         log(`📊 Sample created_at and updated_at timestamps (newest first):`);
