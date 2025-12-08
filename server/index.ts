@@ -65,10 +65,7 @@ app.get('/api/admin/data', async (req, res) => {
     res.set('Cache-Control', 'public, max-age=300');
 
     const env = req.query.env as 'dev' | 'prod' || 'dev';
-    log(`📊 Admin data request received with env parameter: '${req.query.env}' (using: ${env})`);
     const adminClient = getAdminClient(env);
-
-    log(`📊 Fetching admin dashboard data from ${env.toUpperCase()} environment...`);
 
     // Calculate date 30 days ago for filtering
     const thirtyDaysAgo = new Date();
@@ -81,80 +78,35 @@ app.get('/api/admin/data', async (req, res) => {
       .select('user_id', { count: 'exact', head: true });
 
     if (countError) {
-      log('❌ Error counting total users:', countError);
       throw countError;
     }
-    log(`✅ Total user count: ${totalUserCount}`);
 
     // Fetch data with 30-day filter for saves and clicks
-    log(`📊 Querying game_saves with filter: updated_at >= ${filterDate}`);
-    
     const [clicksResult, savesResult, purchasesResult] = await Promise.all([
       adminClient
         .from('button_clicks')
         .select('*')
         .gte('timestamp', filterDate)
-        .order('timestamp', { ascending: false })
-        ,
+        .order('timestamp', { ascending: false }),
       adminClient
         .from('game_saves')
         .select('user_id, game_state, updated_at, created_at')
         .gte('updated_at', filterDate)
-        .order('updated_at', { ascending: false })
-        ,
+        .order('updated_at', { ascending: false }),
       adminClient
         .from('purchases')
         .select('*')
         .order('purchased_at', { ascending: false })
-
     ]);
-    
-    log(`📊 Query complete. Checking results...`);
 
     if (clicksResult.error) {
-      log('❌ Error fetching button_clicks:', clicksResult.error);
       throw clicksResult.error;
     }
     if (savesResult.error) {
-      log('❌ Error fetching game_saves:', savesResult.error);
       throw savesResult.error;
     }
     if (purchasesResult.error) {
-      log('❌ Error fetching purchases:', purchasesResult.error);
       throw purchasesResult.error;
-    }
-
-    log(`✅ Fetched ${clicksResult.data.length} click records (last 30 days)`);
-    log(`✅ Fetched ${savesResult.data.length} game saves (active in last 30 days)`);
-    log(`✅ Fetched ${purchasesResult.data.length} purchases`);
-    
-    // Log sample created_at and updated_at timestamps to debug hourly signups
-    if (savesResult.data.length > 0) {
-      // Calculate date 24 hours ago for recent saves
-      const last24h = new Date();
-      last24h.setHours(last24h.getHours() - 24);
-      
-      const recentSaves = savesResult.data
-        .filter(s => new Date(s.created_at) >= last24h)
-        .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
-      
-      log(`📊 Recent signups (last 24h): ${recentSaves.length} total`);
-      if (recentSaves.length > 0) {
-        log(`📊 Sample created_at and updated_at timestamps (newest first):`);
-        recentSaves.forEach((save, idx) => {
-          log(`   ${idx + 1}. created: ${save.created_at} | updated: ${save.updated_at}`);
-        });
-      }
-      
-      // Also log the date range of all saves by created_at and updated_at
-      const allCreatedDates = savesResult.data.map(s => new Date(s.created_at).getTime());
-      const allUpdatedDates = savesResult.data.map(s => new Date(s.updated_at).getTime());
-      const oldestCreated = new Date(Math.min(...allCreatedDates));
-      const newestCreated = new Date(Math.max(...allCreatedDates));
-      const oldestUpdated = new Date(Math.min(...allUpdatedDates));
-      const newestUpdated = new Date(Math.max(...allUpdatedDates));
-      log(`📊 Created_at range: ${oldestCreated.toISOString()} to ${newestCreated.toISOString()}`);
-      log(`📊 Updated_at range: ${oldestUpdated.toISOString()} to ${newestUpdated.toISOString()}`);
     }
 
     res.json({
@@ -192,7 +144,6 @@ app.get("/api/admin/user-lookup", async (req, res) => {
       const { data: authUser, error: authError } = await adminClient.auth.admin.listUsers();
 
       if (authError) {
-        log('❌ Failed to fetch auth users:', authError);
         return res.status(500).json({ error: "Failed to lookup user by email" });
       }
 
@@ -224,17 +175,13 @@ app.get("/api/admin/user-lookup", async (req, res) => {
 
     if (error) {
       if (error.code === 'PGRST116') {
-        log(`⚠️ No save found for user ${email || userId}`);
         return res.json({ save: null });
       }
-      log('❌ Error fetching user save:', error);
       throw error;
     }
 
-    log(`✅ Found save for user ${email || userId}`);
     res.json({ save });
   } catch (error: any) {
-    log('❌ User lookup failed:', error);
     res.status(500).json({ error: error.message });
   }
 });
