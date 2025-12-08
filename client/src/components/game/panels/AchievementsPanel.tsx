@@ -1,6 +1,7 @@
 
 import BuildingProgressChart from "./BuildingProgressChartAchievements";
 import ItemProgressChart from "./ItemProgressChartAchievements";
+import ActionProgressChart from "./ActionProgressChartAchievements";
 
 export default function AchievementsPanel() {
   return (
@@ -11,6 +12,9 @@ export default function AchievementsPanel() {
         </div>
         <div className="flex flex-col items-center">
           <ItemProgressChart />
+        </div>
+        <div className="flex flex-col items-center">
+          <ActionProgressChart />
         </div>
       </div>
     </div>
