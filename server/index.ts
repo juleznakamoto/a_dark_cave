@@ -87,6 +87,8 @@ app.get('/api/admin/data', async (req, res) => {
     log(`✅ Total user count: ${totalUserCount}`);
 
     // Fetch data with 30-day filter for saves and clicks
+    log(`📊 Querying game_saves with filter: updated_at >= ${filterDate}`);
+    
     const [clicksResult, savesResult, purchasesResult] = await Promise.all([
       adminClient
         .from('button_clicks')
@@ -105,6 +107,8 @@ app.get('/api/admin/data', async (req, res) => {
         .order('purchased_at', { ascending: false })
 
     ]);
+    
+    log(`📊 Query complete. Checking results...`);
 
     if (clicksResult.error) {
       log('❌ Error fetching button_clicks:', clicksResult.error);
@@ -122,6 +126,29 @@ app.get('/api/admin/data', async (req, res) => {
     log(`✅ Fetched ${clicksResult.data.length} click records (last 30 days)`);
     log(`✅ Fetched ${savesResult.data.length} game saves (active in last 30 days)`);
     log(`✅ Fetched ${purchasesResult.data.length} purchases`);
+    
+    // Log sample created_at timestamps to debug hourly signups
+    if (savesResult.data.length > 0) {
+      const now = new Date();
+      const last24h = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+      const recentSaves = savesResult.data
+        .filter(s => new Date(s.created_at) >= last24h)
+        .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+      
+      log(`📊 Recent signups (last 24h): ${recentSaves.length} total`);
+      if (recentSaves.length > 0) {
+        log(`📊 Sample created_at timestamps (newest first):`);
+        recentSaves.slice(0, 10).forEach((save, idx) => {
+          log(`   ${idx + 1}. ${save.created_at} (${new Date(save.created_at).toLocaleString()})`);
+        });
+      }
+      
+      // Also log the date range of all saves
+      const allCreatedDates = savesResult.data.map(s => new Date(s.created_at).getTime());
+      const oldestCreated = new Date(Math.min(...allCreatedDates));
+      const newestCreated = new Date(Math.max(...allCreatedDates));
+      log(`📊 Created_at date range: ${oldestCreated.toISOString()} to ${newestCreated.toISOString()}`);
+    }
 
     res.json({
       clicks: clicksResult.data,

@@ -497,24 +497,50 @@ export default function AdminDashboard() {
     const data: { hour: string; signups: number }[] = [];
     const now = new Date();
 
+    logger.log(`📊 [HOURLY SIGNUPS] Starting calculation at: ${now.toISOString()}`);
+    logger.log(`📊 [HOURLY SIGNUPS] Total game saves available: ${gameSaves.length}`);
+
+    // Log sample created_at dates
+    if (gameSaves.length > 0) {
+      const sampleDates = gameSaves.slice(0, 10).map(s => ({
+        created_at: s.created_at,
+        parsed: parseISO(s.created_at).toISOString()
+      }));
+      logger.log(`📊 [HOURLY SIGNUPS] Sample created_at values (first 10):`, sampleDates);
+    }
+
+    let totalSignupsFound = 0;
+
     for (let i = 23; i >= 0; i--) {
       const hourStart = new Date(now.getTime() - i * 60 * 60 * 1000);
       hourStart.setMinutes(0, 0, 0);
       const hourEnd = new Date(hourStart.getTime() + 60 * 60 * 1000 - 1);
 
-      const signupsCount = gameSaves.filter((save) => {
+      const signupsInHour = gameSaves.filter((save) => {
         const createdDate = parseISO(save.created_at);
-        return isWithinInterval(createdDate, {
+        const isInInterval = isWithinInterval(createdDate, {
           start: hourStart,
           end: hourEnd,
         });
-      }).length;
+        return isInInterval;
+      });
+
+      const signupsCount = signupsInHour.length;
+      totalSignupsFound += signupsCount;
+
+      if (signupsCount > 0) {
+        logger.log(`📊 [HOURLY SIGNUPS] Hour ${format(hourStart, "HH:mm")} (${hourStart.toISOString()} to ${hourEnd.toISOString()}): ${signupsCount} signups`);
+        logger.log(`   Sample signup created_at:`, signupsInHour.slice(0, 3).map(s => s.created_at));
+      }
 
       data.push({
         hour: format(hourStart, "HH:mm"),
         signups: signupsCount,
       });
     }
+
+    logger.log(`📊 [HOURLY SIGNUPS] Total signups found across all 24 hours: ${totalSignupsFound}`);
+    logger.log(`📊 [HOURLY SIGNUPS] Chart data points with signups > 0: ${data.filter(d => d.signups > 0).length}`);
 
     return data;
   };
