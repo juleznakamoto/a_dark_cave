@@ -49,7 +49,7 @@ export function renderItemTooltip(
             <div>Knowledge: +{effect.bonuses.generalBonuses.knowledge}</div>
           )}
           {madnessValue && (
-            <div>Madness: 
+            <div>Madness:
               {madnessValue > 0 ? " +" : " "}
               {madnessValue}
             </div>
