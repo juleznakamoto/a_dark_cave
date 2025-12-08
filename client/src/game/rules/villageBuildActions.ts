@@ -1247,6 +1247,15 @@ export const villageBuildActions: Record<string, Action> = {
       2: {
         "buildings.longhouse": 1,
       },
+      3: {
+        "buildings.longhouse": 2,
+      },
+      4: {
+        "buildings.longhouse": 3,
+      },
+      5: {
+        "buildings.longhouse": 4,
+      },
     },
     cost: {
       1: {
@@ -1257,12 +1266,33 @@ export const villageBuildActions: Record<string, Action> = {
         "resources.wood": 15000,
         "resources.stone": 7500,
       },
+      3: {
+        "resources.wood": 20000,
+        "resources.stone": 10000,
+      },
+      4: {
+        "resources.wood": 25000,
+        "resources.stone": 12500,
+      },
+      5: {
+        "resources.wood": 30000,
+        "resources.stone": 15000,
+      },
     },
     effects: {
       1: {
         "buildings.longhouse": 1,
       },
       2: {
+        "buildings.longhouse": 1,
+      },
+      3: {
+        "buildings.longhouse": 1,
+      },
+      4: {
+        "buildings.longhouse": 1,
+      },
+      5: {
         "buildings.longhouse": 1,
       },
     },
@@ -1671,6 +1701,38 @@ export function handleBuildWoodenHut(
     };
   }
 
+  // Check for city growth milestone after building
+  const newWoodenHutCount = state.buildings.woodenHut + 1;
+  const stoneHutCount = state.buildings.stoneHut || 0;
+  const longhouseCount = state.buildings.longhouse || 0;
+
+  // Trigger city growth message when reaching 10 wooden, 10 stone, and 5 longhouses
+  if (
+    newWoodenHutCount === 10 &&
+    stoneHutCount >= 10 &&
+    longhouseCount >= 5 &&
+    !state.story.seen.cityGrowthMilestone
+  ) {
+    result.logEntries!.push({
+      id: `city-growth-milestone-${Date.now()}`,
+      message: "The settlement has grown into a thriving city. Ten wooden huts, ten stone houses, and five grand longhouses now stand as testament to your people's perseverance and strength.",
+      timestamp: Date.now(),
+      type: "system",
+    });
+
+    // Mark milestone as seen
+    if (!result.stateUpdates.story) {
+      result.stateUpdates.story = {
+        ...state.story,
+        seen: { ...state.story.seen },
+      };
+    }
+    if (!result.stateUpdates.story.seen) {
+      result.stateUpdates.story.seen = { ...state.story.seen };
+    }
+    result.stateUpdates.story.seen.cityGrowthMilestone = true;
+  }
+
   return result;
 }
 
@@ -2005,7 +2067,41 @@ export function handleBuildStoneHut(
   state: GameState,
   result: ActionResult,
 ): ActionResult {
-  return handleBuildingConstruction(state, result, "buildStoneHut", "stoneHut");
+  const stoneHutResult = handleBuildingConstruction(state, result, "buildStoneHut", "stoneHut");
+
+  // Check for city growth milestone after building
+  const newStoneHutCount = (state.buildings.stoneHut || 0) + 1;
+  const woodenHutCount = state.buildings.woodenHut || 0;
+  const longhouseCount = state.buildings.longhouse || 0;
+
+  // Trigger city growth message when reaching 10 wooden, 10 stone, and 5 longhouses
+  if (
+    newStoneHutCount === 10 &&
+    woodenHutCount >= 10 &&
+    longhouseCount >= 5 &&
+    !state.story.seen.cityGrowthMilestone
+  ) {
+    stoneHutResult.logEntries!.push({
+      id: `city-growth-milestone-${Date.now()}`,
+      message: "The settlement has grown into a thriving city. Ten wooden huts, ten stone houses, and five grand longhouses now stand as testament to your people's perseverance and strength.",
+      timestamp: Date.now(),
+      type: "system",
+    });
+
+    // Mark milestone as seen
+    if (!stoneHutResult.stateUpdates.story) {
+      stoneHutResult.stateUpdates.story = {
+        ...state.story,
+        seen: { ...state.story.seen },
+      };
+    }
+    if (!stoneHutResult.stateUpdates.story.seen) {
+      stoneHutResult.stateUpdates.story.seen = { ...state.story.seen };
+    }
+    stoneHutResult.stateUpdates.story.seen.cityGrowthMilestone = true;
+  }
+
+  return stoneHutResult;
 }
 
 export function handleBuildLonghouse(
@@ -2019,21 +2115,46 @@ export function handleBuildLonghouse(
     "longhouse",
   );
 
-  // Add longhouse completion message
-  const currentLevel = state.buildings.longhouse || 0;
-  const longhouseLabels = ["First Longhouse", "Second Longhouse"];
-  const longhouseMessages = [
-    "The first longhouse rises, a massive wooden hall with thick timbers and lots of space.",
-    "A second longhouse is completed, expanding your settlement's capacity to house villagers.",
-  ];
-
-  if (currentLevel < longhouseLabels.length) {
+  // Add longhouse completion message only for the first one
+  if (state.buildings.longhouse === 0) {
     longhouseResult.logEntries!.push({
-      id: `longhouse-built-level-${currentLevel + 1}-${Date.now()}`,
-      message: longhouseMessages[currentLevel],
+      id: `longhouse-built-${Date.now()}`,
+      message: "The first longhouse rises, a massive wooden hall with thick timbers and lots of space.",
       timestamp: Date.now(),
       type: "system",
     });
+  }
+
+  // Check for city growth milestone after building
+  const newLonghouseCount = (state.buildings.longhouse || 0) + 1;
+  const woodenHutCount = state.buildings.woodenHut || 0;
+  const stoneHutCount = state.buildings.stoneHut || 0;
+
+  // Trigger city growth message when reaching 10 wooden, 10 stone, and 5 longhouses
+  if (
+    newLonghouseCount === 5 &&
+    woodenHutCount >= 10 &&
+    stoneHutCount >= 10 &&
+    !state.story.seen.cityGrowthMilestone
+  ) {
+    longhouseResult.logEntries!.push({
+      id: `city-growth-milestone-${Date.now()}`,
+      message: "The settlement has grown into a thriving city. Ten wooden huts, ten stone houses, and five grand longhouses now stand as testament to your people's perseverance and strength.",
+      timestamp: Date.now(),
+      type: "system",
+    });
+
+    // Mark milestone as seen
+    if (!longhouseResult.stateUpdates.story) {
+      longhouseResult.stateUpdates.story = {
+        ...state.story,
+        seen: { ...state.story.seen },
+      };
+    }
+    if (!longhouseResult.stateUpdates.story.seen) {
+      longhouseResult.stateUpdates.story.seen = { ...state.story.seen };
+    }
+    longhouseResult.stateUpdates.story.seen.cityGrowthMilestone = true;
   }
 
   return longhouseResult;
