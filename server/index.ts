@@ -99,7 +99,8 @@ app.get('/api/admin/data', async (req, res) => {
       adminClient
         .from('game_saves')
         .select('user_id, game_state, updated_at, created_at')
-        .gte('updated_at', { ascending: false })
+        .gte('updated_at', filterDate)
+        .order('updated_at', { ascending: false })
         ,
       adminClient
         .from('purchases')
