@@ -63,7 +63,6 @@ function App() {
 
         // Set up event listeners for game pause/unpause
         playlightSDK.onEvent('discoveryOpen', () => {
-          console.log("[PLAYLIGHT] Discovery opened - pausing game");
           const state = useGameStore.getState();
           if (!state.isPaused) {
             state.togglePause();
@@ -71,14 +70,11 @@ function App() {
         });
 
         playlightSDK.onEvent('discoveryClose', () => {
-          console.log("[PLAYLIGHT] Discovery closed - resuming game");
           const state = useGameStore.getState();
           if (state.isPaused) {
             state.togglePause();
           }
         });
-
-        console.log("[PLAYLIGHT] SDK initialized immediately with exit intent disabled");
 
         // Enable exit intent after 20 minutes using setConfig()
         const TWENTY_MINUTES = 20 * 60 * 1000;
@@ -89,7 +85,6 @@ function App() {
               immediate: false
             }
           });
-          console.log("[PLAYLIGHT] Exit intent enabled after 20 minutes");
         }, TWENTY_MINUTES);
 
       } catch (error) {
