@@ -75,14 +75,14 @@ export default function BuildingProgressChart() {
         buildingType: "cabin",
         maxCount: 2,
         color: tailwindToHex("gray-400/80"),
-        label: "Cabin",
+        label: "Cabins",
         relatedBuildings: ["greatCabin"],
       },
       {
         buildingType: "tannery",
         maxCount: 2,
         color: tailwindToHex("gray-400/80"),
-        label: "Tannery",
+        label: "Tanneries",
         relatedBuildings: ["masterTannery"],
       },
       {
@@ -346,8 +346,8 @@ export default function BuildingProgressChart() {
               
               const handleSegmentClick = () => {
                 if (isInteractive) {
-                  // Calculate silver reward: 100 * maxCount
-                  const silverReward = 100 * segment.maxCount;
+                  // Calculate silver reward: 50 * maxCount
+                  const silverReward = 50 * segment.maxCount;
                   
                   // Award silver
                   useGameStore.getState().updateResource("silver", silverReward);
@@ -473,15 +473,6 @@ export default function BuildingProgressChart() {
           <div className="text-muted-foreground">
             {hoveredSegment.currentCount}/{hoveredSegment.maxCount}
           </div>
-          {claimedAchievements.includes(`building-${hoveredSegment.id}`) ? (
-            <div className="text-green-400 mt-1">
-              Claimed: +{100 * hoveredSegment.maxCount} silver
-            </div>
-          ) : (
-            <div className="text-yellow-400 mt-1">
-              Click: +{100 * hoveredSegment.maxCount} silver
-            </div>
-          )}
         </div>
       )}
     </div>

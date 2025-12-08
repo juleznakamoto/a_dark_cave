@@ -607,8 +607,8 @@ export default function ItemProgressChart() {
               
               const handleSegmentClick = () => {
                 if (isInteractive) {
-                  // Calculate silver reward: 100 * maxCount
-                  const silverReward = 100 * segment.maxCount;
+                  // Calculate silver reward: 50 * maxCount
+                  const silverReward = 50 * segment.maxCount;
                   
                   // Award silver
                   useGameStore.getState().updateResource("silver", silverReward);
@@ -733,15 +733,6 @@ export default function ItemProgressChart() {
           <div className="text-muted-foreground">
             {hoveredSegment.currentCount}/{hoveredSegment.maxCount}
           </div>
-          {claimedAchievements.includes(`item-${hoveredSegment.id}`) ? (
-            <div className="text-green-400 mt-1">
-              Claimed: +{100 * hoveredSegment.maxCount} silver
-            </div>
-          ) : (
-            <div className="text-yellow-400 mt-1">
-              Click: +{100 * hoveredSegment.maxCount} silver
-            </div>
-          )}
         </div>
       )}
     </div>
