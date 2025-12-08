@@ -3,6 +3,7 @@ import { LogEntry } from "@/game/rules/events";
 import { GameState } from "@shared/schema";
 import { eventChoiceCostTooltip } from "@/game/rules/tooltips";
 import { getTotalKnowledge } from "@/game/rules/effectsCalculation";
+import { calculateMerchantDiscount, isKnowledgeBonusMaxed } from "@/game/rules/effectsStats";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import {
   DialogHeader,
@@ -57,13 +58,7 @@ export default function MerchantDialog({
 
   // Calculate discount based on knowledge
   const knowledge = getTotalKnowledge(gameState);
-  let discount = 0;
-  if (knowledge >= 10) discount = 5;
-  if (knowledge >= 20) discount = 10;
-  if (knowledge >= 30) discount = 15;
-  if (knowledge >= 40) discount = 20;
-  if (knowledge >= 50) discount = 25;
-
+  const discount = calculateMerchantDiscount(knowledge);
   const hasBookOfWar = gameState.books?.book_of_war;
 
   return (
@@ -104,7 +99,7 @@ export default function MerchantDialog({
                   </TooltipTrigger>
                   <TooltipContent>
                     <div className="text-xs whitespace-nowrap">
-                      {discount}% Discount due to Knowledge{discount >= 25 ? " (max)" : ""}
+                      {discount}% Discount due to Knowledge{isKnowledgeBonusMaxed(knowledge) ? " (max)" : ""}
                     </div>
                   </TooltipContent>
                 </Tooltip>

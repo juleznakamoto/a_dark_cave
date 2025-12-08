@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useGameStore } from "@/game/state";
 import { LogEntry } from "@/game/rules/events";
 import { getTotalKnowledge } from "@/game/rules/effectsCalculation";
+import { calculateKnowledgeTimeBonus, isKnowledgeBonusMaxed } from "@/game/rules/effectsStats";
 import { eventChoiceCostTooltip } from "@/game/rules/tooltips";
 import {
   Dialog,
@@ -69,7 +70,8 @@ export default function EventDialog({
     }
 
     const knowledge = getTotalKnowledge(gameState);
-    const decisionTime = (event.baseDecisionTime || 15) + 0.5 * knowledge;
+    const timeBonus = calculateKnowledgeTimeBonus(knowledge);
+    const decisionTime = (event.baseDecisionTime || 15) + timeBonus;
 
     setTotalTime(decisionTime);
     setTimeRemaining(decisionTime);
@@ -279,7 +281,7 @@ export default function EventDialog({
                       </TooltipTrigger>
                       <TooltipContent>
                         <div className="text-xs whitespace-nowrap">
-                          +{Math.floor(getTotalKnowledge(gameState) * 0.5)}s Decision Time due to Knowledge{getTotalKnowledge(gameState) >= 100 ? " (max)" : ""}
+                          +{calculateKnowledgeTimeBonus(getTotalKnowledge(gameState))}s Decision Time due to Knowledge{isKnowledgeBonusMaxed(getTotalKnowledge(gameState)) ? " (max)" : ""}
                         </div>
                       </TooltipContent>
                     </Tooltip>
