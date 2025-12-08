@@ -404,7 +404,7 @@ export default function ProfileMenu() {
         <img
           src="/flashlight.png"
           alt="Discovery"
-          className="w-full h-full object-contain rounded-md transition-all duration-300 invert opacity-80 group-hover:invert-0 group-hover:opacity-100"
+          className="w-full h-full object-contain rounded-md transition-all duration-300 invert opacity-60 group-hover:invert-0 group-hover:opacity-100"
         />
       </Button>
     </div>
