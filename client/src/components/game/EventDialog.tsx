@@ -69,7 +69,7 @@ export default function EventDialog({
     }
 
     const knowledge = getTotalKnowledge(gameState);
-    const decisionTime = (event.baseDecisionTime || 15) + 0.25 * knowledge;
+    const decisionTime = (event.baseDecisionTime || 15) + 0.5 * knowledge;
 
     setTotalTime(decisionTime);
     setTimeRemaining(decisionTime);
@@ -265,23 +265,44 @@ export default function EventDialog({
               <DialogTitle className="text-lg font-semibold flex-1">
                 {event.title || "Strange Encounter"}
               </DialogTitle>
-              {hasScriptorium && event.relevant_stats && event.relevant_stats.length > 0 && (
-                <div className="flex gap-1 ml-2">
-                  {event.relevant_stats.map((stat) => {
-                    const statInfo = statIcons[stat.toLowerCase()];
-                    if (!statInfo) return null;
-                    return (
-                      <span
-                        key={stat}
-                        className={`text-xs ${statInfo.color}`}
-                        title={stat}
-                      >
-                        {statInfo.icon}
-                      </span>
-                    );
-                  })}
-                </div>
-              )}
+              <div className="flex gap-2 items-center ml-2">
+                {hasScriptorium && event.isTimedChoice && getTotalKnowledge(gameState) > 0 && (
+                  <TooltipProvider>
+                    <Tooltip open={mobileTooltip.isTooltipOpen("event-time-bonus")}>
+                      <TooltipTrigger asChild>
+                        <span
+                          className="text-blue-300/80 cursor-pointer hover:text-blue-300 transition-colors text-xs"
+                          onClick={(e) => mobileTooltip.handleWrapperClick("event-time-bonus", false, false, e)}
+                        >
+                          ✧
+                        </span>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <div className="text-xs whitespace-nowrap">
+                          +{Math.floor(getTotalKnowledge(gameState) * 0.5)}s Decision Time due to Knowledge
+                        </div>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                )}
+                {hasScriptorium && event.relevant_stats && event.relevant_stats.length > 0 && (
+                  <div className="flex gap-1">
+                    {event.relevant_stats.map((stat) => {
+                      const statInfo = statIcons[stat.toLowerCase()];
+                      if (!statInfo) return null;
+                      return (
+                        <span
+                          key={stat}
+                          className={`text-xs ${statInfo.color}`}
+                          title={stat}
+                        >
+                          {statInfo.icon}
+                        </span>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
             </div>
             <DialogDescription className="text-sm text-gray-400 mt-2">
               {event.message}
