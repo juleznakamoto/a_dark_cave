@@ -603,7 +603,7 @@ export default function ItemProgressChart() {
               const achievementId = `item-${segment.segmentId}`;
               const isClaimed = claimedAchievements.includes(achievementId);
               const isInteractive = segment.isFull && !isClaimed;
-              const showTooltip = segment.isFull; // Show tooltip for both claimed and unclaimed
+              const showTooltip = true; // Show tooltip for all segments
               
               const handleSegmentClick = () => {
                 if (isInteractive) {
