@@ -342,6 +342,7 @@ export default function BuildingProgressChart() {
               const achievementId = `building-${segment.segmentId}`;
               const isClaimed = claimedAchievements.includes(achievementId);
               const isInteractive = ring.isRingComplete && segment.isFull && !isClaimed;
+              const showTooltip = ring.isRingComplete && segment.isFull; // Show tooltip for both claimed and unclaimed
               
               const handleSegmentClick = () => {
                 if (isInteractive) {
@@ -390,12 +391,12 @@ export default function BuildingProgressChart() {
                   isAnimationActive={false}
                   style={{ 
                     outline: "none", 
-                    pointerEvents: isInteractive ? "auto" : "none",
+                    pointerEvents: showTooltip ? "auto" : "none",
                     cursor: isInteractive ? "pointer" : "default",
                     opacity: isClaimed ? 0.5 : 1
                   }}
                   onMouseEnter={(e: any) => {
-                    if (isInteractive) {
+                    if (showTooltip) {
                       const rect = containerRef.current?.getBoundingClientRect();
                       if (rect) {
                         setHoveredSegment({
@@ -410,7 +411,7 @@ export default function BuildingProgressChart() {
                     }
                   }}
                   onMouseMove={(e: any) => {
-                    if (isInteractive && hoveredSegment?.id === segment.segmentId) {
+                    if (showTooltip && hoveredSegment?.id === segment.segmentId) {
                       const rect = containerRef.current?.getBoundingClientRect();
                       if (rect) {
                         setHoveredSegment({
@@ -425,7 +426,7 @@ export default function BuildingProgressChart() {
                     }
                   }}
                   onMouseLeave={() => {
-                    if (isInteractive && clickedSegment !== segment.segmentId) {
+                    if (showTooltip && clickedSegment !== segment.segmentId) {
                       setHoveredSegment(null);
                     }
                   }}
@@ -472,7 +473,11 @@ export default function BuildingProgressChart() {
           <div className="text-muted-foreground">
             {hoveredSegment.currentCount}/{hoveredSegment.maxCount}
           </div>
-          {!claimedAchievements.includes(`building-${hoveredSegment.id}`) && (
+          {claimedAchievements.includes(`building-${hoveredSegment.id}`) ? (
+            <div className="text-green-400 mt-1">
+              Claimed: +{100 * hoveredSegment.maxCount} silver
+            </div>
+          ) : (
             <div className="text-yellow-400 mt-1">
               Click: +{100 * hoveredSegment.maxCount} silver
             </div>
