@@ -279,7 +279,7 @@ export default function EventDialog({
                       </TooltipTrigger>
                       <TooltipContent>
                         <div className="text-xs whitespace-nowrap">
-                          +{Math.floor(getTotalKnowledge(gameState) * 0.5)}s Decision Time due to Knowledge
+                          +{Math.floor(getTotalKnowledge(gameState) * 0.5)}s Decision Time due to Knowledge{getTotalKnowledge(gameState) >= 100 ? " (max)" : ""}
                         </div>
                       </TooltipContent>
                     </Tooltip>
