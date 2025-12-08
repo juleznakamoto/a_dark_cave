@@ -885,38 +885,38 @@ function handleStrangerApproach() {
     const availableRoom = maxPop - currentPop;
 
     let strangersCount = 1; // Default to 1 stranger
-    let moreStrangersProbability = Math.random();
-
-    let multiStrangerMultiplier = 1.0;
-    if (state.blessings?.ravens_mark) {
-      multiStrangerMultiplier += 0.15;
-    }
-    if (state.blessings?.ravens_mark_enhanced) {
-      multiStrangerMultiplier += 0.2;
-    }
-
-    if (state.buildings.woodenHut >= 10) {
-      multiStrangerMultiplier += 0.1;
-    }
-
-    if (state.buildings.stoneHut >= 10) {
-      multiStrangerMultiplier += 0.25;
-    }
-
-    if (state.buildings.longhouse >= 2) {
-      multiStrangerMultiplier += 0.15;
-    }
-
-    if (state.buildings.furTents >= 1) {
-      multiStrangerMultiplier += 0.15;
-    }
-
-    if (state.CM === 1) {
-      multiStrangerMultiplier -= 0.15;
-    }
 
     // multiple strangers approach at once
     if (state.buildings.stoneHut >= 1) {
+      let multiStrangerMultiplier = 1.0;
+      if (state.blessings?.ravens_mark) {
+        multiStrangerMultiplier += 0.2;
+      }
+      if (state.blessings?.ravens_mark_enhanced) {
+        multiStrangerMultiplier += 0.3;
+      }
+
+      if (state.buildings.woodenHut >= 10) {
+        multiStrangerMultiplier += 0.15;
+      }
+
+      if (state.buildings.stoneHut >= 10) {
+        multiStrangerMultiplier += 0.25;
+      }
+
+      if (state.buildings.longhouse >= 2) {
+        multiStrangerMultiplier += 0.15;
+      }
+
+      if (state.buildings.furTents >= 1) {
+        multiStrangerMultiplier += 0.15;
+      }
+
+      if (state.CM === 1) {
+        multiStrangerMultiplier -= 0.25;
+      }
+
+      let moreStrangersProbability = Math.random();
       if (
         availableRoom >= 5 &&
         moreStrangersProbability < 0.1 * multiStrangerMultiplier
@@ -939,6 +939,7 @@ function handleStrangerApproach() {
         strangersCount = 2;
       }
     }
+    
     const messages = [
       "A stranger approaches and joins the village.",
       "A traveler arrives and decides to stay.",
