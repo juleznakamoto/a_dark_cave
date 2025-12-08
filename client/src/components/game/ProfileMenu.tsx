@@ -192,7 +192,7 @@ export default function ProfileMenu() {
       if (!currentState.isPaused) {
         currentState.togglePause();
       }
-      
+
       const module = await import(
         "https://sdk.playlight.dev/playlight-sdk.es.js"
       );
@@ -233,9 +233,7 @@ export default function ProfileMenu() {
                 </div>
               </TooltipTrigger>
               <TooltipContent>
-                <p className="text-xs">
-                  Sign in to save your game progress
-                </p>
+                <p className="text-xs">Sign in to save your game progress</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -264,133 +262,139 @@ export default function ProfileMenu() {
                 )}
             </Button>
           </DropdownMenuTrigger>
-        <DropdownMenuContent
-          align="end"
-          side="bottom"
-          sideOffset={8}
-          className="text-xs !max-h-none w-auto"
-        >
-          {currentUser ? (
-            <>
-              <DropdownMenuItem onClick={handleSignOut}>
-                Sign Out
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-            </>
-          ) : (
-            <>
-              <DropdownMenuItem
-                onClick={() => {
-                  setAccountDropdownOpen(false);
-                  handleSetAuthDialogOpen(true);
-                  setAuthNotificationSeen(true);
-                }}
-              >
-                Sign In/Up
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-            </>
-          )}
-          <DropdownMenuItem onClick={handleRestartGame}>
-            New Game
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-
-          <DropdownMenuItem
-            onClick={handleCopyInviteLink}
-            disabled={!currentUser}
+          <DropdownMenuContent
+            align="end"
+            side="bottom"
+            sideOffset={8}
+            className="text-xs !max-h-none w-auto"
           >
-            <div className="flex items-center justify-between w-full">
-              <div className="flex items-center gap-1">
-                <span>Invite&nbsp;</span>
-                <img
-                  src="/person-add.png"
-                  alt=""
-                  className="w-3 h-3 opacity-90"
-                />
+            {currentUser ? (
+              <>
+                <DropdownMenuItem onClick={handleSignOut}>
+                  Sign Out
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+              </>
+            ) : (
+              <>
+                <DropdownMenuItem
+                  onClick={() => {
+                    setAccountDropdownOpen(false);
+                    handleSetAuthDialogOpen(true);
+                    setAuthNotificationSeen(true);
+                  }}
+                >
+                  Sign In/Up
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+              </>
+            )}
+            <DropdownMenuItem onClick={handleRestartGame}>
+              New Game
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+
+            <DropdownMenuItem
+              onClick={handleCopyInviteLink}
+              disabled={!currentUser}
+            >
+              <div className="flex items-center justify-between w-full">
+                <div className="flex items-center gap-1">
+                  <span>Invite&nbsp;</span>
+                  <img
+                    src="/person-add.png"
+                    alt=""
+                    className="w-3 h-3 opacity-90"
+                  />
+                </div>
+                <span className="font-semibold">&nbsp;+250 Gold</span>
+                <TooltipProvider>
+                  <Tooltip
+                    open={
+                      isMobile
+                        ? mobileTooltip.isTooltipOpen("referral-info")
+                        : undefined
+                    }
+                  >
+                    <TooltipTrigger asChild>
+                      <span
+                        className="font-black ml-2 text-muted-foreground cursor-pointer"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          e.preventDefault();
+                          if (isMobile) {
+                            mobileTooltip.handleTooltipClick(
+                              "referral-info",
+                              e,
+                            );
+                          }
+                        }}
+                      >
+                        ⓘ{" "}
+                      </span>
+                    </TooltipTrigger>
+                    <TooltipContent className="max-w-xs">
+                      <p className="text-xs">
+                        Invite your friends and both of you will receive 250
+                        gold. You can invite up to 10 friends. (
+                        {referralCount || 0}/10 invited).
+                        <br />
+                      </p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               </div>
-              <span className="font-semibold">&nbsp;+250 Gold</span>
-              <TooltipProvider>
-                <Tooltip
-                  open={
-                    isMobile
-                      ? mobileTooltip.isTooltipOpen("referral-info")
-                      : undefined
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            {SOCIAL_PLATFORMS.map((platform) => {
+              const isClaimed =
+                social_media_rewards[platform.id]?.claimed ?? false;
+              const isActive = !isClaimed && !!currentUser;
+
+              return (
+                <DropdownMenuItem
+                  key={platform.id}
+                  onClick={() => {
+                    if (isActive) {
+                      handleSocialFollow(
+                        platform.id,
+                        platform.url,
+                        platform.reward,
+                        platform.name,
+                      );
+                    }
+                  }}
+                  disabled={!isActive}
+                  className={
+                    !isActive
+                      ? "opacity-50 cursor-not-allowed"
+                      : "cursor-pointer"
                   }
                 >
-                  <TooltipTrigger asChild>
-                    <span
-                      className="font-black ml-2 text-muted-foreground cursor-pointer"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        e.preventDefault();
-                        if (isMobile) {
-                          mobileTooltip.handleTooltipClick("referral-info", e);
-                        }
-                      }}
-                    >
-                      ⓘ{" "}
-                    </span>
-                  </TooltipTrigger>
-                  <TooltipContent className="max-w-xs">
-                    <p className="text-xs">
-                      Invite your friends and both of you will receive 250 gold. You can invite up to 10 friends. ({referralCount || 0}/10 invited).
-                      <br />
-                    </p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            </div>
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          {SOCIAL_PLATFORMS.map((platform) => {
-            const isClaimed =
-              social_media_rewards[platform.id]?.claimed ?? false;
-            const isActive = !isClaimed && !!currentUser;
-
-            return (
-              <DropdownMenuItem
-                key={platform.id}
-                onClick={() => {
-                  if (isActive) {
-                    handleSocialFollow(
-                      platform.id,
-                      platform.url,
-                      platform.reward,
-                      platform.name,
-                    );
-                  }
-                }}
-                disabled={!isActive}
-                className={
-                  !isActive ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
-                }
-              >
-                <div className="flex items-center justify-between w-full">
-                  <div className="flex items-center gap-1">
-                    <span>Follow&nbsp;</span>
-                    <img
-                      src={platform.icon}
-                      alt={platform.name}
-                      className="w-3 h-3 opacity-90 hover:bg-red"
-                    />
+                  <div className="flex items-center justify-between w-full">
+                    <div className="flex items-center gap-1">
+                      <span>Follow&nbsp;</span>
+                      <img
+                        src={platform.icon}
+                        alt={platform.name}
+                        className="w-3 h-3 opacity-90 hover:bg-red"
+                      />
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="font-semibold">
+                        &nbsp;+{platform.reward} Gold
+                      </span>
+                      {isClaimed && (
+                        <span className="text-xs text-muted-foreground">✓</span>
+                      )}
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <span className="font-semibold">
-                      &nbsp;+{platform.reward} Gold
-                    </span>
-                    {isClaimed && (
-                      <span className="text-xs text-muted-foreground">✓</span>
-                    )}
-                  </div>
-                </div>
-              </DropdownMenuItem>
-            );
-          })}
-        </DropdownMenuContent>
-      </DropdownMenu>
+                </DropdownMenuItem>
+              );
+            })}
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
-      {isMobile && (
       <Button
         variant="ghost"
         size="xs"
@@ -403,8 +407,6 @@ export default function ProfileMenu() {
           className="w-full h-full object-contain rounded-md transition-all duration-300 invert opacity-80 group-hover:invert-0 group-hover:opacity-100"
         />
       </Button>
-
-      )}
     </div>
   );
 }

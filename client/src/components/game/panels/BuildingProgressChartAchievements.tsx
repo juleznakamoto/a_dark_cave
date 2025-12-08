@@ -472,9 +472,7 @@ export default function BuildingProgressChart() {
           }}
         >
           <div className="font-semibold">{hoveredSegment.name}</div>
-          <div className="text-muted-foreground">
-            {hoveredSegment.currentCount}/{hoveredSegment.maxCount}
-          </div>
+         
         </div>
       )}
     </div>
