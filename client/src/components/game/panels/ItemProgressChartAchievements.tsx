@@ -29,7 +29,7 @@ export default function ItemProgressChart() {
   // Ring sizing parameters
   const startRadius = 20; // Inner radius of the first ring
   const ringSize = 5; // Thickness of each ring
-  const spaceBetweenRings = 6; // Gap between rings
+  const spaceBetweenRings = 7; // Gap between rings
 
   const getPaddingAngle = (ringIndex: number) => {
     return Math.max(2, 14 - ringIndex * 2);
