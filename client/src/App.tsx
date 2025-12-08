@@ -44,7 +44,7 @@ function Router() {
 function App() {
   useEffect(() => {
     // Initialize Playlight SDK with game pause integration after 30 minutes
-    const THIRTY_MINUTES = 20 * 60 * 1000; // 30 minutes in milliseconds
+    const THIRTY_MINUTES = 20 * 60 * 1000; // 20 minutes in milliseconds
     
     const initTimeout = setTimeout(async () => {
       try {
