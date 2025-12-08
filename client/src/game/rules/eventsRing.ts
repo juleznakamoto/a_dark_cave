@@ -111,7 +111,7 @@ export const ringEvents: Record<string, GameEvent> = {
     timeProbability: 5,
     title: "No Escape",
     message:
-      "After the horrifying events, you try once more to remove the cursed ring. You pull, twist, and wrench until your finger is raw and bleeding. But the ring will not yield. It has become part of you, feeding on your flesh. There is only one way to be free of it now.",
+      "After the horrifying events, you try once more to remove the cursed ring. But the ring will not yield, as if it has become part of you. There is only one way to be free of it now.",
     triggered: false,
     priority: 4,
     repeatable: false,
