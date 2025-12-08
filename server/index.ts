@@ -138,7 +138,7 @@ app.get('/api/admin/data', async (req, res) => {
       log(`📊 Recent signups (last 24h): ${recentSaves.length} total`);
       if (recentSaves.length > 0) {
         log(`📊 Sample created_at and updated_at timestamps (newest first):`);
-        recentSaves.slice(0, 10).forEach((save, idx) => {
+        recentSaves.forEach((save, idx) => {
           log(`   ${idx + 1}. created: ${save.created_at} | updated: ${save.updated_at}`);
         });
       }
