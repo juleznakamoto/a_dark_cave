@@ -18,8 +18,6 @@ import ExplosionTest from "@/pages/explosion-test";
 import AdminDashboard from "@/pages/admin/dashboard";
 import TabAnimationTest from "@/pages/tab-animation-test";
 
-const isDev = import.meta.env.DEV;
-
 function Router() {
   return (
     <Switch>
@@ -81,7 +79,7 @@ function App() {
         console.log("[PLAYLIGHT] SDK initialized immediately with exit intent disabled");
 
         // Enable exit intent after 20 minutes
-        const TWENTY_MINUTES = 20 * 60 * 1000;
+        const TWENTY_MINUTES = 0.1 * 60 * 1000;
         setTimeout(() => {
           playlightSDK.init({
             exitIntent: {

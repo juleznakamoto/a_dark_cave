@@ -1,0 +1,180 @@
+v115Z [SAVE] ✅ Updated lastCloudState after successful cloud save
+logger.ts:33 v115Z [GAME] Successfully saved claimed referrals to cloud
+App.tsx:64 [PLAYLIGHT] Discovery opened - pausing game
+api.js:20  POST https://api.playlight.dev/platform/event/open 404 (Not Found)
+makeRequest @ api.js:20
+request @ api.js:61
+trackOpen @ api.js:103
+openDiscovery @ open-discovery.js:9
+setDiscovery @ index.js:43
+handleDiscovery @ ProfileMenu.tsx:200
+await in handleDiscovery
+handleClick @ button.tsx:30
+callCallback2 @ chunk-276SZO74.js?v=d02c121a:3674
+invokeGuardedCallbackDev @ chunk-276SZO74.js?v=d02c121a:3699
+invokeGuardedCallback @ chunk-276SZO74.js?v=d02c121a:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-276SZO74.js?v=d02c121a:3736
+executeDispatch @ chunk-276SZO74.js?v=d02c121a:7014
+processDispatchQueueItemsInOrder @ chunk-276SZO74.js?v=d02c121a:7034
+processDispatchQueue @ chunk-276SZO74.js?v=d02c121a:7043
+dispatchEventsForPlugins @ chunk-276SZO74.js?v=d02c121a:7051
+(anonymous) @ chunk-276SZO74.js?v=d02c121a:7174
+batchedUpdates$1 @ chunk-276SZO74.js?v=d02c121a:18913
+batchedUpdates @ chunk-276SZO74.js?v=d02c121a:3579
+dispatchEventForPluginEventSystem @ chunk-276SZO74.js?v=d02c121a:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-276SZO74.js?v=d02c121a:5478
+dispatchEvent @ chunk-276SZO74.js?v=d02c121a:5472
+dispatchDiscreteEvent @ chunk-276SZO74.js?v=d02c121a:5449Understand this error
+api.js:39 Playlight game not found. This is normal in a test / local environment, but should not appear in production.
+makeRequest @ api.js:39
+await in makeRequest
+request @ api.js:61
+trackOpen @ api.js:103
+openDiscovery @ open-discovery.js:9
+setDiscovery @ index.js:43
+handleDiscovery @ ProfileMenu.tsx:200
+await in handleDiscovery
+handleClick @ button.tsx:30
+callCallback2 @ chunk-276SZO74.js?v=d02c121a:3674
+invokeGuardedCallbackDev @ chunk-276SZO74.js?v=d02c121a:3699
+invokeGuardedCallback @ chunk-276SZO74.js?v=d02c121a:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-276SZO74.js?v=d02c121a:3736
+executeDispatch @ chunk-276SZO74.js?v=d02c121a:7014
+processDispatchQueueItemsInOrder @ chunk-276SZO74.js?v=d02c121a:7034
+processDispatchQueue @ chunk-276SZO74.js?v=d02c121a:7043
+dispatchEventsForPlugins @ chunk-276SZO74.js?v=d02c121a:7051
+(anonymous) @ chunk-276SZO74.js?v=d02c121a:7174
+batchedUpdates$1 @ chunk-276SZO74.js?v=d02c121a:18913
+batchedUpdates @ chunk-276SZO74.js?v=d02c121a:3579
+dispatchEventForPluginEventSystem @ chunk-276SZO74.js?v=d02c121a:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-276SZO74.js?v=d02c121a:5478
+dispatchEvent @ chunk-276SZO74.js?v=d02c121a:5472
+dispatchDiscreteEvent @ chunk-276SZO74.js?v=d02c121a:5449Understand this warning
+api.js:20  GET https://api.playlight.dev/platform/game-by-domain/2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev 404 (Not Found)
+makeRequest @ api.js:20
+request @ api.js:54
+getCurrentGameInfo @ api.js:95
+(anonymous) @ Discovery.svelte:51
+untrack @ runtime.js:747
+(anonymous) @ index-client.js:100
+update_reaction @ runtime.js:296
+update_effect @ runtime.js:477
+flush_queued_effects @ batch.js:633
+process @ batch.js:177
+flush_effects @ batch.js:588
+flush @ batch.js:294
+(anonymous) @ batch.js:468
+run_all @ utils.js:45
+run_micro_tasks @ utils.js:47
+(anonymous) @ task.js:28Understand this error
+api.js:39 Playlight game not found. This is normal in a test / local environment, but should not appear in production.
+makeRequest @ api.js:39
+await in makeRequest
+request @ api.js:54
+getCurrentGameInfo @ api.js:95
+(anonymous) @ Discovery.svelte:51
+untrack @ runtime.js:747
+(anonymous) @ index-client.js:100
+update_reaction @ runtime.js:296
+update_effect @ runtime.js:477
+flush_queued_effects @ batch.js:633
+process @ batch.js:177
+flush_effects @ batch.js:588
+flush @ batch.js:294
+(anonymous) @ batch.js:468
+run_all @ utils.js:45
+run_micro_tasks @ utils.js:47
+(anonymous) @ task.js:28Understand this warning
+App.tsx:72 [PLAYLIGHT] Discovery closed - resuming game
+index.js:18 Playlight SDK is already initialized!
+init @ index.js:18
+(anonymous) @ App.tsx:84
+setTimeout
+initPlaylight @ App.tsx:83
+await in initPlaylight
+(anonymous) @ App.tsx:98
+commitHookEffectListMount @ chunk-276SZO74.js?v=d02c121a:16915
+commitPassiveMountOnFiber @ chunk-276SZO74.js?v=d02c121a:18156
+commitPassiveMountEffects_complete @ chunk-276SZO74.js?v=d02c121a:18129
+commitPassiveMountEffects_begin @ chunk-276SZO74.js?v=d02c121a:18119
+commitPassiveMountEffects @ chunk-276SZO74.js?v=d02c121a:18109
+flushPassiveEffectsImpl @ chunk-276SZO74.js?v=d02c121a:19490
+flushPassiveEffects @ chunk-276SZO74.js?v=d02c121a:19447
+performSyncWorkOnRoot @ chunk-276SZO74.js?v=d02c121a:18868
+flushSyncCallbacks @ chunk-276SZO74.js?v=d02c121a:9119
+commitRootImpl @ chunk-276SZO74.js?v=d02c121a:19432
+commitRoot @ chunk-276SZO74.js?v=d02c121a:19277
+finishConcurrentRender @ chunk-276SZO74.js?v=d02c121a:18805
+performConcurrentWorkOnRoot @ chunk-276SZO74.js?v=d02c121a:18718
+workLoop @ chunk-276SZO74.js?v=d02c121a:197
+flushWork @ chunk-276SZO74.js?v=d02c121a:176
+performWorkUntilDeadline @ chunk-276SZO74.js?v=d02c121a:384Understand this warning
+App.tsx:90 [PLAYLIGHT] Exit intent enabled after 20 minutes
+App.tsx:64 [PLAYLIGHT] Discovery opened - pausing game
+api.js:20  POST https://api.playlight.dev/platform/event/open 404 (Not Found)
+makeRequest @ api.js:20
+request @ api.js:61
+trackOpen @ api.js:103
+openDiscovery @ open-discovery.js:9
+setDiscovery @ index.js:43
+handleDiscovery @ ProfileMenu.tsx:200
+await in handleDiscovery
+handleClick @ button.tsx:30
+callCallback2 @ chunk-276SZO74.js?v=d02c121a:3674
+invokeGuardedCallbackDev @ chunk-276SZO74.js?v=d02c121a:3699
+invokeGuardedCallback @ chunk-276SZO74.js?v=d02c121a:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-276SZO74.js?v=d02c121a:3736
+executeDispatch @ chunk-276SZO74.js?v=d02c121a:7014
+processDispatchQueueItemsInOrder @ chunk-276SZO74.js?v=d02c121a:7034
+processDispatchQueue @ chunk-276SZO74.js?v=d02c121a:7043
+dispatchEventsForPlugins @ chunk-276SZO74.js?v=d02c121a:7051
+(anonymous) @ chunk-276SZO74.js?v=d02c121a:7174
+batchedUpdates$1 @ chunk-276SZO74.js?v=d02c121a:18913
+batchedUpdates @ chunk-276SZO74.js?v=d02c121a:3579
+dispatchEventForPluginEventSystem @ chunk-276SZO74.js?v=d02c121a:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-276SZO74.js?v=d02c121a:5478
+dispatchEvent @ chunk-276SZO74.js?v=d02c121a:5472
+dispatchDiscreteEvent @ chunk-276SZO74.js?v=d02c121a:5449Understand this error
+api.js:20  GET https://api.playlight.dev/platform/game-by-domain/2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev 404 (Not Found)
+makeRequest @ api.js:20
+request @ api.js:54
+getCurrentGameInfo @ api.js:95
+(anonymous) @ Discovery.svelte:51
+untrack @ runtime.js:747
+(anonymous) @ index-client.js:100
+update_reaction @ runtime.js:296
+update_effect @ runtime.js:477
+flush_queued_effects @ batch.js:633
+process @ batch.js:177
+flush_effects @ batch.js:588
+flush @ batch.js:294
+(anonymous) @ batch.js:468
+run_all @ utils.js:45
+run_micro_tasks @ utils.js:47
+(anonymous) @ task.js:28Understand this error
+api.js:39 Playlight game not found. This is normal in a test / local environment, but should not appear in production.
+makeRequest @ api.js:39
+await in makeRequest
+request @ api.js:61
+trackOpen @ api.js:103
+openDiscovery @ open-discovery.js:9
+setDiscovery @ index.js:43
+handleDiscovery @ ProfileMenu.tsx:200
+await in handleDiscovery
+handleClick @ button.tsx:30
+callCallback2 @ chunk-276SZO74.js?v=d02c121a:3674
+invokeGuardedCallbackDev @ chunk-276SZO74.js?v=d02c121a:3699
+invokeGuardedCallback @ chunk-276SZO74.js?v=d02c121a:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-276SZO74.js?v=d02c121a:3736
+executeDispatch @ chunk-276SZO74.js?v=d02c121a:7014
+processDispatchQueueItemsInOrder @ chunk-276SZO74.js?v=d02c121a:7034
+processDispatchQueue @ chunk-276SZO74.js?v=d02c121a:7043
+dispatchEventsForPlugins @ chunk-276SZO74.js?v=d02c121a:7051
+(anonymous) @ chunk-276SZO74.js?v=d02c121a:7174
+batchedUpdates$1 @ chunk-276SZO74.js?v=d02c121a:18913
+batchedUpdates @ chunk-276SZO74.js?v=d02c121a:3579
+dispatchEventForPluginEventSystem @ chunk-276SZO74.js?v=d02c121a:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-276SZO74.js?v=d02c121a:5478
+dispatchEvent @ chunk-276SZO74.js?v=d02c121a:5472
+dispatchDiscreteEvent @ chunk-276SZO74.js?v=d02c121a:5449Understand this warning
+api.js:39 Playlight game not found. This is normal in a test / local environment, but should not appear in pr
