@@ -1,7 +1,6 @@
 
 import BuildingProgressChart from "./BuildingProgressChartAchievements";
 import ItemProgressChart from "./ItemProgressChartAchievements";
-import SacrificeProgressChart from "./SacrificeProgressChartAchievements";
 
 export default function AchievementsPanel() {
   return (
@@ -12,9 +11,6 @@ export default function AchievementsPanel() {
         </div>
         <div className="flex flex-col items-center">
           <ItemProgressChart />
-        </div>
-        <div className="flex flex-col items-center">
-          <SacrificeProgressChart />
         </div>
       </div>
     </div>

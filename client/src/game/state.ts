@@ -24,7 +24,6 @@ import { GAME_CONSTANTS } from "@/game/constants";
 import { ACTION_TO_UPGRADE_KEY, incrementButtonUsage } from "@/game/buttonUpgrades";
 import { logger } from "@/lib/logger";
 import { madnessEvents } from "@/game/rules/eventsMadness";
-import * as z from "zod"; // Import zod for schema manipulation
 
 // Types
 interface GameStore extends GameState {
@@ -388,7 +387,6 @@ const defaultGameState: GameState = {
   // Cooldown management
   cooldowns: {},
   cooldownDurations: {}, // Initialize cooldownDurations
-  log: [], // Ensure log is initialized
 
   // Analytics tracking
   clickAnalytics: {},
@@ -401,6 +399,42 @@ const defaultGameState: GameState = {
   unlockedAchievements: [],
   claimedAchievements: [],
 };
+
+// State management utilities
+export class StateManager {
+  private static updateTimer: NodeJS.Timeout | null = null;
+
+  static scheduleEffectsUpdate(store: () => GameStore) {
+    if (this.updateTimer) return;
+
+    this.updateTimer = setTimeout(() => {
+      const state = store();
+      state.updateEffects();
+      state.updateBastionStats();
+      state.updateStats();
+      this.updateTimer = null;
+    }, 0);
+  }
+
+  static clearUpdateTimer() {
+    if (this.updateTimer) {
+      clearTimeout(this.updateTimer);
+      this.updateTimer = null;
+    }
+  }
+
+  static schedulePopulationUpdate(store: () => GameStore) {
+    setTimeout(() => store().updatePopulation(), 0);
+  }
+
+  static handleDelayedEffects(delayedEffects: Array<() => void> | undefined) {
+    if (!delayedEffects) return;
+
+    delayedEffects.forEach((effect) => {
+      effect();
+    });
+  }
+}
 
 // Main store
 export const useGameStore = create<GameStore>((set, get) => ({
@@ -870,7 +904,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
         lastFreeGoldClaim: savedState.lastFreeGoldClaim || 0, // Load lastFreeGoldClaim
         unlockedAchievements: savedState.unlockedAchievements || [], // Load unlocked achievements
         claimedAchievements: savedState.claimedAchievements || [], // Load claimed achievements
-        sacrificeStats: savedState.sacrificeStats || defaultGameState.sacrificeStats, // Load sacrificeStats
       };
 
       set(loadedState);

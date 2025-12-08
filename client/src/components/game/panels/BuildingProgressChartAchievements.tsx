@@ -65,7 +65,7 @@ export default function BuildingProgressChart() {
         buildingType: "longhouse",
         maxCount: 5,
         color: tailwindToHex("gray-400/80"),
-        label: "Nordic Shelter",
+        label: "Nordic Housing",
       },
     ],
     // Second ring: Basic crafting and trade buildings
