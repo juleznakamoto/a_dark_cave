@@ -1,5 +1,7 @@
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
+import { EventChoice, GameEvent } from "./events";
+import { logger } from "@/lib/logger";
 import { getTotalKnowledge } from "./effectsCalculation";
 
 // Resource prices in gold per unit
@@ -1464,6 +1466,7 @@ function selectTrades(
       effect: (state: GameState) => {
         if ((state.resources[sellResource] || 0) >= sellAmount) {
           const newMerchantPurchases = (Number(state.story?.seen?.merchantPurchases) || 0) + 1;
+          logger.info(`Merchant purchase incremented: ${newMerchantPurchases}`);
           return {
             resources: {
               ...state.resources,
@@ -1641,7 +1644,7 @@ export const merchantEvents: Record<string, GameEvent> = {
     condition: (state: GameState) => state.buildings.woodenHut >= 4,
     triggerType: "resource",
     timeProbability: (state: GameState) =>
-     
+
       0,
 
     title: "Traveling Merchant",
