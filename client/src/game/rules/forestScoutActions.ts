@@ -194,6 +194,12 @@ export function handleHunt(
   result: ActionResult,
 ): ActionResult {
   const effectUpdates = applyActionEffects("hunt", state);
+  
+  // Filter out any log entries that are event dialogs (have choices)
+  // These should only appear as dialogs, not in the log
+  if (result.logEntries) {
+    result.logEntries = result.logEntries.filter(entry => !entry.choices || entry.choices.length === 0);
+  }
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
