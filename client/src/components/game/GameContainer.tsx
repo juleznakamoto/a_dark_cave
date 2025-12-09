@@ -31,15 +31,10 @@ export default function GameContainer() {
     relics,
     eventDialog,
     combatDialog,
-    idleModeDialog,
     setActiveTab,
     setEventDialog,
     setCombatDialog,
-    setIdleModeDialog,
     isPaused,
-    devMode,
-    authDialogOpen, // Added authDialogOpen to state
-    shopDialogOpen, // Added shopDialogOpen to state
     inactivityDialogOpen, // Added inactivityDialogOpen to state
   } = useGameStore();
 

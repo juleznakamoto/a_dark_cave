@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -23,6 +23,7 @@ export default function TabAnimationTest() {
     { id: "forest", label: "Forest", unlocked: false },
     { id: "estate", label: "Estate", unlocked: false },
     { id: "bastion", label: "Bastion", unlocked: false },
+    { id: "achievements", label: "Achievements", unlocked: false }
   ];
 
   const [unlockedTabs, setUnlockedTabs] = useState<Set<string>>(
