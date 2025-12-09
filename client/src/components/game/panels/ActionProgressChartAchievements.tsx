@@ -1,4 +1,3 @@
-
 import { useGameStore } from "@/game/state";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { GameState } from "@shared/schema";
@@ -21,15 +20,20 @@ interface RingConfig {
 
 export default function ActionProgressChartAchievements() {
   const state = useGameStore.getState();
-  const claimedAchievements = useGameStore((state) => state.claimedAchievements || []);
-  
+  const claimedAchievements = useGameStore(
+    (state) => state.claimedAchievements || [],
+  );
+
   const [hoveredSegment, setHoveredSegment] = useState<{
     id: string;
     name: string;
     currentCount: number;
     maxCount: number;
   } | null>(null);
-  const [mousePosition, setMousePosition] = useState<{ x: number; y: number } | null>(null);
+  const [mousePosition, setMousePosition] = useState<{
+    x: number;
+    y: number;
+  } | null>(null);
   const [clickedSegment, setClickedSegment] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -50,42 +54,20 @@ export default function ActionProgressChartAchievements() {
     // First ring: Sacrifices
     [
       {
-        segmentType: "boneTotems",
-        maxCount: 20,
-        color: tailwindToHex("gray-400/80"),
-        label: "Bone Totem Sacrifices",
-        getCount: (state: GameState) => Number(state.story?.seen?.boneTotemsUsageCount) || 0,
-      },
-      {
-        segmentType: "leatherTotems",
-        maxCount: 20,
-        color: tailwindToHex("gray-400/80"),
-        label: "Leather Totem Sacrifices",
-        getCount: (state: GameState) => Number(state.story?.seen?.leatherTotemsUsageCount) || 0,
-      },
-      {
-        segmentType: "animals",
-        maxCount: 10,
-        color: tailwindToHex("gray-400/80"),
-        label: "Animal Sacrifices",
-        getCount: (state: GameState) => Number(state.story?.seen?.animalsSacrificeLevel) || 0,
-      },
-    ],
-    // Second ring: Cave & Gathering Actions
-    [
-      {
         segmentType: "exploreCave",
         maxCount: 10,
         color: tailwindToHex("gray-400/80"),
         label: "Cave Explore",
-        getCount: (state: GameState) => state.buttonUpgrades?.caveExplore?.level || 0,
+        getCount: (state: GameState) =>
+          state.buttonUpgrades?.caveExplore?.level || 0,
       },
       {
         segmentType: "chopWood",
         maxCount: 10,
         color: tailwindToHex("gray-400/80"),
         label: "Chop Wood",
-        getCount: (state: GameState) => state.buttonUpgrades?.chopWood?.level || 0,
+        getCount: (state: GameState) =>
+          state.buttonUpgrades?.chopWood?.level || 0,
       },
       {
         segmentType: "hunt",
@@ -95,49 +77,82 @@ export default function ActionProgressChartAchievements() {
         getCount: (state: GameState) => state.buttonUpgrades?.hunt?.level || 0,
       },
     ],
-    // Third ring: Mining Actions
+    // Second ring: Cave & Gathering Actions
     [
       {
         segmentType: "mineStone",
         maxCount: 10,
         color: tailwindToHex("gray-400/80"),
         label: "Mine Stone",
-        getCount: (state: GameState) => state.buttonUpgrades?.mineStone?.level || 0,
+        getCount: (state: GameState) =>
+          state.buttonUpgrades?.mineStone?.level || 0,
       },
       {
         segmentType: "mineIron",
         maxCount: 10,
         color: tailwindToHex("gray-400/80"),
         label: "Mine Iron",
-        getCount: (state: GameState) => state.buttonUpgrades?.mineIron?.level || 0,
+        getCount: (state: GameState) =>
+          state.buttonUpgrades?.mineIron?.level || 0,
       },
       {
         segmentType: "mineCoal",
         maxCount: 10,
         color: tailwindToHex("gray-400/80"),
         label: "Mine Coal",
-        getCount: (state: GameState) => state.buttonUpgrades?.mineCoal?.level || 0,
+        getCount: (state: GameState) =>
+          state.buttonUpgrades?.mineCoal?.level || 0,
       },
       {
         segmentType: "mineSulfur",
         maxCount: 10,
         color: tailwindToHex("gray-400/80"),
         label: "Mine Sulfur",
-        getCount: (state: GameState) => state.buttonUpgrades?.mineSulfur?.level || 0,
+        getCount: (state: GameState) =>
+          state.buttonUpgrades?.mineSulfur?.level || 0,
       },
       {
         segmentType: "mineObsidian",
         maxCount: 10,
         color: tailwindToHex("gray-400/80"),
         label: "Mine Obsidian",
-        getCount: (state: GameState) => state.buttonUpgrades?.mineObsidian?.level || 0,
+        getCount: (state: GameState) =>
+          state.buttonUpgrades?.mineObsidian?.level || 0,
       },
       {
         segmentType: "mineAdamant",
         maxCount: 10,
         color: tailwindToHex("gray-400/80"),
         label: "Mine Adamant",
-        getCount: (state: GameState) => state.buttonUpgrades?.mineAdamant?.level || 0,
+        getCount: (state: GameState) =>
+          state.buttonUpgrades?.mineAdamant?.level || 0,
+      },
+    ],
+    // Third ring: Mining Actions
+    [
+      {
+        segmentType: "boneTotems",
+        maxCount: 20,
+        color: tailwindToHex("gray-400/80"),
+        label: "Bone Totem Sacrifices",
+        getCount: (state: GameState) =>
+          Number(state.story?.seen?.boneTotemsUsageCount) || 0,
+      },
+      {
+        segmentType: "leatherTotems",
+        maxCount: 20,
+        color: tailwindToHex("gray-400/80"),
+        label: "Leather Totem Sacrifices",
+        getCount: (state: GameState) =>
+          Number(state.story?.seen?.leatherTotemsUsageCount) || 0,
+      },
+      {
+        segmentType: "animals",
+        maxCount: 10,
+        color: tailwindToHex("gray-400/80"),
+        label: "Animal Sacrifices",
+        getCount: (state: GameState) =>
+          Number(state.story?.seen?.animalsSacrificeLevel) || 0,
       },
     ],
   ];
@@ -171,7 +186,10 @@ export default function ActionProgressChartAchievements() {
       const totalDegrees = 360 - segments.length * paddingAngle;
 
       // Calculate total max count for this ring
-      const totalMaxCount = segments.reduce((sum, seg) => sum + seg.maxCount, 0);
+      const totalMaxCount = segments.reduce(
+        (sum, seg) => sum + seg.maxCount,
+        0,
+      );
 
       // Create background segments
       const backgroundSegments = segments.map((seg) => ({
@@ -200,7 +218,9 @@ export default function ActionProgressChartAchievements() {
         const progressDegrees = segmentDegrees * progress;
 
         const adjustedStartAngle =
-          index === 0 ? segmentStartAngle : segmentStartAngle - paddingAngle * index;
+          index === 0
+            ? segmentStartAngle
+            : segmentStartAngle - paddingAngle * index;
         const adjustedProgressAngle =
           index === 0
             ? segmentStartAngle - progressDegrees
@@ -280,13 +300,18 @@ export default function ActionProgressChartAchievements() {
               style={{ outline: "none" }}
             >
               {ring.backgroundSegments.map((entry, entryIndex) => (
-                <Cell key={`bg-cell-${ringIndex}-${entryIndex}`} fill={entry.fill} />
+                <Cell
+                  key={`bg-cell-${ringIndex}-${entryIndex}`}
+                  fill={entry.fill}
+                />
               ))}
             </Pie>,
 
             // Progress segments
             ...ring.progressSegments.map((segment, segIndex) => {
-              const segmentColor = segment.isFull ? tailwindToHex("green-400") : segment.fill;
+              const segmentColor = segment.isFull
+                ? tailwindToHex("green-400")
+                : segment.fill;
 
               const achievementId = `action-${segment.segmentId}`;
               const isClaimed = claimedAchievements.includes(achievementId);
@@ -297,7 +322,9 @@ export default function ActionProgressChartAchievements() {
                 if (isInteractive) {
                   const silverReward = 50 * segment.maxCount;
 
-                  useGameStore.getState().updateResource("silver", silverReward);
+                  useGameStore
+                    .getState()
+                    .updateResource("silver", silverReward);
 
                   useGameStore.setState((state) => ({
                     log: [
@@ -309,7 +336,10 @@ export default function ActionProgressChartAchievements() {
                         type: "event" as const,
                       },
                     ].slice(-100),
-                    claimedAchievements: [...(state.claimedAchievements || []), achievementId],
+                    claimedAchievements: [
+                      ...(state.claimedAchievements || []),
+                      achievementId,
+                    ],
                   }));
 
                   setHoveredSegment(null);
@@ -330,7 +360,9 @@ export default function ActionProgressChartAchievements() {
                   endAngle={segment.endAngle}
                   cornerRadius={5}
                   strokeWidth={segment.isFull ? (isClaimed ? 1 : 1.5) : 0}
-                  stroke={segment.isFull ? tailwindToHex("green-900") : undefined}
+                  stroke={
+                    segment.isFull ? tailwindToHex("green-900") : undefined
+                  }
                   isAnimationActive={false}
                   style={{
                     outline: "none",
@@ -340,7 +372,8 @@ export default function ActionProgressChartAchievements() {
                   }}
                   onMouseEnter={(e: any) => {
                     if (showTooltip) {
-                      const rect = containerRef.current?.getBoundingClientRect();
+                      const rect =
+                        containerRef.current?.getBoundingClientRect();
                       if (rect) {
                         setHoveredSegment({
                           id: segment.segmentId,
