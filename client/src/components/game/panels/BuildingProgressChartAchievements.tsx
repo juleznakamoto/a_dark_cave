@@ -28,14 +28,19 @@ interface RingConfig {
 
 export default function BuildingProgressChart() {
   const buildings = useGameStore((state) => state.buildings);
-  const claimedAchievements = useGameStore((state) => state.claimedAchievements || []);
+  const claimedAchievements = useGameStore(
+    (state) => state.claimedAchievements || [],
+  );
   const [hoveredSegment, setHoveredSegment] = useState<{
     id: string;
     name: string;
     currentCount: number;
     maxCount: number;
   } | null>(null);
-  const [mousePosition, setMousePosition] = useState<{ x: number; y: number } | null>(null);
+  const [mousePosition, setMousePosition] = useState<{
+    x: number;
+    y: number;
+  } | null>(null);
   const [clickedSegment, setClickedSegment] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -185,6 +190,7 @@ export default function BuildingProgressChart() {
     const startAngle = previousEndAngle;
     const endAngle = startAngle - segmentDegrees;
     const segmentLength = endAngle - startAngle;
+    currentCount = currentCount === 1 ? 1.3 : currentCount;
     const progress = maxCount > 0 ? currentCount / maxCount : 0;
     const progressAngle = startAngle + segmentLength * progress;
 
@@ -303,7 +309,7 @@ export default function BuildingProgressChart() {
     .filter((ring) => ring !== null);
 
   return (
-    <div 
+    <div
       ref={containerRef}
       className="w-40 h-48 flex flex-col items-center justify-center relative"
       onMouseMove={(e) => {
@@ -325,7 +331,7 @@ export default function BuildingProgressChart() {
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
         <span className="text-xl text-neutral-400">▨</span>
       </div>
-      
+
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
           {processedRings.map((ring, ringIndex) => [
@@ -356,24 +362,25 @@ export default function BuildingProgressChart() {
 
             // Progress segments
             ...ring.progressSegments.map((segment, segIndex) => {
-              const segmentColor =
-                segment.isFull
-                  ? COMPLETED_COLOR
-                  : segment.fill;
+              const segmentColor = segment.isFull
+                ? COMPLETED_COLOR
+                : segment.fill;
 
               const achievementId = `building-${segment.segmentId}`;
               const isClaimed = claimedAchievements.includes(achievementId);
               const isInteractive = segment.isFull && !isClaimed;
               const showTooltip = true; // Show tooltip for all segments
-              
+
               const handleSegmentClick = () => {
                 if (isInteractive) {
                   // Use custom reward if specified, otherwise default to 50 * maxCount
-                  const silverReward = segment.reward ?? (50 * segment.maxCount);
-                  
+                  const silverReward = segment.reward ?? 50 * segment.maxCount;
+
                   // Award silver
-                  useGameStore.getState().updateResource("silver", silverReward);
-                  
+                  useGameStore
+                    .getState()
+                    .updateResource("silver", silverReward);
+
                   // Add log entry and mark as claimed in one state update
                   useGameStore.setState((state) => ({
                     log: [
@@ -385,9 +392,12 @@ export default function BuildingProgressChart() {
                         type: "event" as const,
                       },
                     ].slice(-100),
-                    claimedAchievements: [...(state.claimedAchievements || []), achievementId],
+                    claimedAchievements: [
+                      ...(state.claimedAchievements || []),
+                      achievementId,
+                    ],
                   }));
-                  
+
                   // Clear hover state
                   setHoveredSegment(null);
                   setClickedSegment(null);
@@ -416,7 +426,8 @@ export default function BuildingProgressChart() {
                   }}
                   onMouseEnter={(e: any) => {
                     if (showTooltip) {
-                      const rect = containerRef.current?.getBoundingClientRect();
+                      const rect =
+                        containerRef.current?.getBoundingClientRect();
                       if (rect) {
                         setHoveredSegment({
                           id: segment.segmentId,
@@ -454,18 +465,16 @@ export default function BuildingProgressChart() {
                   endAngle={segment.endAngle}
                   cornerRadius={5}
                   strokeWidth={segment.isFull ? (isClaimed ? 1 : 1.5) : 0}
-                  stroke={
-                    segment.isFull ? COMPLETED_STROKE_COLOR : undefined
-                  }
+                  stroke={segment.isFull ? COMPLETED_STROKE_COLOR : undefined}
                   isAnimationActive={false}
-                  style={{ 
-                    outline: "none", 
+                  style={{
+                    outline: "none",
                     pointerEvents: "none",
-                    opacity: isClaimed ? 0.3 : 1
+                    opacity: isClaimed ? 0.3 : 1,
                   }}
                 >
                   <Cell fill={segmentColor} />
-                </Pie>
+                </Pie>,
               ];
             }),
 
@@ -493,16 +502,15 @@ export default function BuildingProgressChart() {
 
       {/* Tooltip display for hovered segment */}
       {hoveredSegment && mousePosition && (
-        <div 
+        <div
           className="absolute bg-popover border rounded-md px-2 py-1 text-xs shadow-md z-50 pointer-events-none whitespace-nowrap"
           style={{
             left: `${mousePosition.x}px`,
             top: `${mousePosition.y}px`,
-            transform: 'translate(-50%, calc(-100% - 5px))'
+            transform: "translate(-50%, calc(-100% - 5px))",
           }}
         >
           <div>{hoveredSegment.name}</div>
-         
         </div>
       )}
     </div>

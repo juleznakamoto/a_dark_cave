@@ -269,7 +269,8 @@ export default function ItemProgressChart() {
 
       let currentEndAngle = startAngle;
       const progressSegments = segments.map((seg, index) => {
-        const currentCount = getItemCount(seg);
+        let currentCount = getItemCount(seg);
+        currentCount = currentCount === 1 ? 1.3 : currentCount;
         const segmentDegrees = (totalDegrees * seg.maxCount) / totalMaxCount;
 
         const segmentStartAngle = currentEndAngle;
