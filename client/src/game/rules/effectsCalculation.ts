@@ -823,79 +823,83 @@ export const calculateTotalEffects = (state: GameState) => {
   // Fellowship effects
   Object.keys(state.fellowship || {}).forEach((fellowId) => {
     const effect = fellowshipEffects[fellowId];
-    if (!effect?.bonuses) return;
+    if (effect) {
+      // Process madness bonuses from general bonuses (items that ADD madness)
+      if (effect.bonuses?.generalBonuses?.madness) {
+        effects.statBonuses.madness += effect.bonuses.generalBonuses.madness;
+      }
 
-    // Process madness bonuses from general bonuses (items that ADD madness)
-    if (effect.bonuses.generalBonuses?.madness) {
-      effects.statBonuses.madness += effect.bonuses.generalBonuses.madness;
-    }
+      // Process madness reduction from general bonuses (items that REDUCE madness)
+      if (effect.bonuses?.generalBonuses?.madnessReduction) {
+        const effectKey = `${fellowId}_madness_reduction`;
+        effects.madness_reduction[effectKey] =
+          -effect.bonuses.generalBonuses.madnessReduction;
+      }
 
-    // Process madness reduction from general bonuses (items that REDUCE madness)
-    if (effect.bonuses.generalBonuses?.madnessReduction) {
-      const effectKey = `${fellowId}_madness_reduction`;
-      effects.madness_reduction[effectKey] =
-        -effect.bonuses.generalBonuses.madnessReduction;
-    }
+      // Populate actionBonuses directly from effects
+      if (effect.bonuses.actionBonuses) {
+        effects.actionBonuses[fellowId] = effect.bonuses.actionBonuses;
+      }
 
-    // Populate actionBonuses directly from effects
-    if (effect.bonuses.actionBonuses) {
-      effects.actionBonuses[fellowId] = effect.bonuses.actionBonuses;
-    }
+      if (effect.bonuses.actionBonuses) {
+        Object.entries(effect.bonuses.actionBonuses).forEach(
+          ([actionId, actionBonus]) => {
+            // Resource bonuses
+            if (actionBonus.resourceBonus) {
+              Object.entries(actionBonus.resourceBonus).forEach(
+                ([resource, bonus]) => {
+                  const key = `${actionId}_${resource}`;
+                  effects.resource_bonus[key] =
+                    (effects.resource_bonus[key] || 0) + bonus;
+                },
+              );
+            }
 
-    if (effect.bonuses.actionBonuses) {
-      Object.entries(effect.bonuses.actionBonuses).forEach(
-        ([actionId, actionBonus]) => {
-          // Resource bonuses
-          if (actionBonus.resourceBonus) {
-            Object.entries(actionBonus.resourceBonus).forEach(
-              ([resource, bonus]) => {
-                const key = `${actionId}_${resource}`;
-                effects.resource_bonus[key] =
-                  (effects.resource_bonus[key] || 0) + bonus;
-              },
-            );
-          }
+            // Resource multipliers (additive)
+            if (
+              actionBonus.resourceMultiplier &&
+              actionBonus.resourceMultiplier !== 1
+            ) {
+              effects.resource_multiplier[actionId] =
+                (effects.resource_multiplier[actionId] || 1) +
+                (actionBonus.resourceMultiplier - 1);
+            }
 
-          // Resource multipliers (additive)
-          if (
-            actionBonus.resourceMultiplier &&
-            actionBonus.resourceMultiplier !== 1
-          ) {
-            effects.resource_multiplier[actionId] =
-              (effects.resource_multiplier[actionId] || 1) +
-              (actionBonus.resourceMultiplier - 1);
-          }
+            // Probability bonuses
+            if (actionBonus.probabilityBonus) {
+              Object.entries(actionBonus.probabilityBonus).forEach(
+                ([resource, bonus]) => {
+                  const key = `${actionId}_${resource}`;
+                  effects.probability_bonus[key] =
+                    (effects.probability_bonus[key] || 0) + bonus;
+                },
+              );
+            }
 
-          // Probability bonuses
-          if (actionBonus.probabilityBonus) {
-            Object.entries(actionBonus.probabilityBonus).forEach(
-              ([resource, bonus]) => {
-                const key = `${actionId}_${resource}`;
-                effects.probability_bonus[key] =
-                  (effects.probability_bonus[key] || 0) + bonus;
-              },
-            );
-          }
+            // Cooldown reductions
+            if (actionBonus.cooldownReduction) {
+              effects.cooldown_reduction[actionId] =
+                (effects.cooldown_reduction[actionId] || 0) +
+                actionBonus.cooldownReduction;
+            }
+          },
+        );
+      }
 
-          // Cooldown reductions
-          if (actionBonus.cooldownReduction) {
-            effects.cooldown_reduction[actionId] =
-              (effects.cooldown_reduction[actionId] || 0) +
-              actionBonus.cooldownReduction;
-          }
-        },
-      );
-    }
-
-    // Process general bonuses
-    if (effect.bonuses.generalBonuses?.strength) {
-      effects.statBonuses.strength += effect.bonuses.generalBonuses.strength;
-    }
-    if (effect.bonuses.generalBonuses?.luck) {
-      effects.statBonuses.luck += effect.bonuses.generalBonuses.luck;
-    }
-    if (effect.bonuses.generalBonuses?.knowledge) {
-      effects.statBonuses.knowledge += effect.bonuses.generalBonuses.knowledge;
+      // Process general bonuses
+      if (effect.bonuses.generalBonuses) {
+        if (effect.bonuses.generalBonuses.strength) {
+          effects.statBonuses.strength +=
+            effect.bonuses.generalBonuses.strength;
+        }
+        if (effect.bonuses.generalBonuses.luck) {
+          effects.statBonuses.luck += effect.bonuses.generalBonuses.luck;
+        }
+        if (effect.bonuses.generalBonuses.knowledge) {
+          effects.statBonuses.knowledge +=
+            effect.bonuses.generalBonuses.knowledge;
+        }
+      }
     }
   });
 
