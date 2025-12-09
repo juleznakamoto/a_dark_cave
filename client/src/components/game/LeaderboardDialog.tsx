@@ -177,7 +177,7 @@ export default function LeaderboardDialog({ isOpen, onClose }: LeaderboardDialog
           <DialogTitle>Leaderboard</DialogTitle>
         </DialogHeader>
 
-        <div className="mb-4 p-4 bg-muted rounded-md">
+        <div className="mb-0 p-2 bg-muted rounded-md">
           <div className="flex items-center justify-between">
             <div className="flex-1">
               {editingUsername ? (
@@ -185,9 +185,9 @@ export default function LeaderboardDialog({ isOpen, onClose }: LeaderboardDialog
                   <Input
                     value={tempUsername}
                     onChange={(e) => setTempUsername(e.target.value)}
-                    placeholder="Enter username"
-                    maxLength={20}
-                    className="max-w-xs"
+                    placeholder="Enter name"
+                    maxLength={12}
+                    className="h-9 w-32"
                   />
                   <Button onClick={handleSaveUsername} size="sm">
                     Save
