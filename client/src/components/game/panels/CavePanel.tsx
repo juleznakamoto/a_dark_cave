@@ -33,7 +33,11 @@ export default function CavePanel() {
       subGroups: [
         {
           actions: [
-            { id: "chopWood", label: "Gather Wood", showWhen: !state.flags.forestUnlocked },
+            {
+              id: "chopWood",
+              label: "Gather Wood",
+              showWhen: !state.flags.forestUnlocked,
+            },
             { id: "exploreCave", label: "Explore Cave" },
             { id: "ventureDeeper", label: "Venture Deeper" },
             { id: "descendFurther", label: "Descend Further" },
@@ -47,7 +51,7 @@ export default function CavePanel() {
             { id: "lowChamber", label: "Low Chamber" },
             { id: "occultistChamber", label: "Occultist Chamber" },
             { id: "blastPortal", label: "Blast Portal" },
-            { id: "encounterBeyondPortal", label: "Venture Beyond Portal" }
+            { id: "encounterBeyondPortal", label: "Venture Beyond Portal" },
           ],
         },
       ],
@@ -80,9 +84,6 @@ export default function CavePanel() {
             { id: "craftBoneTotems5", label: "Bone Totems" },
             { id: "craftLeatherTotem", label: "Leather Totem" },
             { id: "craftLeatherTotems5", label: "Leather Totems" },
-            { id: "craftEmberBomb", label: "Ember Bomb" },
-            { id: "craftAshfireBomb", label: "Ashfire Bomb" },
-            { id: "craftVoidBomb", label: "Void Bomb" },
             { id: "craftIronLantern", label: "Iron Lantern" },
             { id: "craftSteelLantern", label: "Steel Lantern" },
             { id: "craftObsidianLantern", label: "Obsidian Lantern" },
@@ -97,7 +98,7 @@ export default function CavePanel() {
             { id: "craftGrenadierBag", label: "Grenadier's Bag" },
             { id: "craftHighpriestRobe", label: "Highpriest Robe" },
             { id: "craftSacrificialTunic", label: "Sacrificial Tunic" },
-          ]
+          ],
         },
         {
           actions: [
@@ -111,6 +112,13 @@ export default function CavePanel() {
             { id: "craftSteelPickaxe", label: "Steel Pickaxe" },
             { id: "craftObsidianPickaxe", label: "Obsidian Pickaxe" },
             { id: "craftAdamantPickaxe", label: "Adamant Pickaxe" },
+          ],
+        },
+        {
+          actions: [
+            { id: "craftEmberBomb", label: "Ember Bomb" },
+            { id: "craftAshfireBomb", label: "Ashfire Bomb" },
+            { id: "craftVoidBomb", label: "Void Bomb" },
           ],
         },
         {
@@ -144,19 +152,22 @@ export default function CavePanel() {
     // Check if this is a mine action or cave exploration action or craft action
     const isMineAction = actionId.startsWith("mine");
     const caveExploreActions = [
-      'exploreCave',
-      'ventureDeeper',
-      'descendFurther',
-      'exploreRuins',
-      'exploreTemple',
-      'exploreCitadel'
+      "exploreCave",
+      "ventureDeeper",
+      "descendFurther",
+      "exploreRuins",
+      "exploreTemple",
+      "exploreCitadel",
     ];
     const isCaveExploreAction = caveExploreActions.includes(actionId);
     const isCraftAction = actionId.startsWith("craft");
-    const resourceGainTooltip = (isMineAction || isCaveExploreAction || isCraftAction) ? getResourceGainTooltip(actionId, state) : null;
+    const resourceGainTooltip =
+      isMineAction || isCaveExploreAction || isCraftAction
+        ? getResourceGainTooltip(actionId, state)
+        : null;
 
     // Special handling for blastPortal button
-    const isBlastPortal = actionId === 'blastPortal';
+    const isBlastPortal = actionId === "blastPortal";
     const handleClick = () => {
       if (isBlastPortal) {
         // Capture button position before it's potentially removed
@@ -185,17 +196,18 @@ export default function CavePanel() {
         const costBreakdown = getActionCostBreakdown(actionId, state);
         const bonuses = state.activeEffects?.actionBonuses?.[actionId];
         const cooldownReduction = bonuses?.cooldownReduction || 0;
-        
+
         tooltipContent = (
           <div className="text-xs whitespace-nowrap">
             {costBreakdown.map((costItem, index) => (
-              <div key={index} className={costItem.satisfied ? "" : "text-muted-foreground"}>
+              <div
+                key={index}
+                className={costItem.satisfied ? "" : "text-muted-foreground"}
+              >
                 {costItem.text}
               </div>
             ))}
-            {cooldownReduction > 0 && (
-              <div>-{cooldownReduction}s Cooldown</div>
-            )}
+            {cooldownReduction > 0 && <div>-{cooldownReduction}s Cooldown</div>}
           </div>
         );
       }
@@ -224,7 +236,7 @@ export default function CavePanel() {
               setHighlightedResources([]);
             }
           }}
-          style={{ pointerEvents: 'auto' }}
+          style={{ pointerEvents: "auto" }}
         >
           {label}
         </CooldownButton>
@@ -235,7 +247,9 @@ export default function CavePanel() {
           {button}
           <ButtonLevelBadge upgradeKey={upgradeKey} />
         </div>
-      ) : button;
+      ) : (
+        button
+      );
     }
 
     const button = (
@@ -261,7 +275,7 @@ export default function CavePanel() {
             setHighlightedResources(new Set());
           }
         }}
-        style={{ pointerEvents: 'auto' }}
+        style={{ pointerEvents: "auto" }}
       >
         {label}
       </CooldownButton>
@@ -272,7 +286,9 @@ export default function CavePanel() {
         {button}
         <ButtonLevelBadge upgradeKey={upgradeKey} />
       </div>
-    ) : button;
+    ) : (
+      button
+    );
   };
 
   return (
@@ -280,18 +296,59 @@ export default function CavePanel() {
       {explosionEffect.ExplosionEffectRenderer()}
       <div className="space-y-4 mt-2">
         {actionGroups.map((group, groupIndex) => {
-        // Handle groups with subGroups (like Craft)
-        if (group.subGroups) {
-          const hasAnyVisibleActions = group.subGroups.some((subGroup) =>
-            subGroup.actions.some((action) => {
-              if (action.showWhen !== undefined) {
-                return action.showWhen;
-              }
-              return shouldShowAction(action.id, state);
-            }),
-          );
+          // Handle groups with subGroups (like Craft)
+          if (group.subGroups) {
+            const hasAnyVisibleActions = group.subGroups.some((subGroup) =>
+              subGroup.actions.some((action) => {
+                if (action.showWhen !== undefined) {
+                  return action.showWhen;
+                }
+                return shouldShowAction(action.id, state);
+              }),
+            );
 
-          if (!hasAnyVisibleActions) return null;
+            if (!hasAnyVisibleActions) return null;
+
+            return (
+              <div key={groupIndex} className="space-y-2">
+                {group.title && (
+                  <h3 className="text-xs font-bold text-foreground">
+                    {group.title}
+                  </h3>
+                )}
+                {group.subGroups.map((subGroup, subGroupIndex) => {
+                  const visibleActions = subGroup.actions.filter((action) => {
+                    if (action.showWhen !== undefined) {
+                      return action.showWhen;
+                    }
+                    return shouldShowAction(action.id, state);
+                  });
+
+                  if (visibleActions.length === 0) return null;
+
+                  return (
+                    <div key={subGroupIndex} className="flex flex-wrap gap-2">
+                      {visibleActions.map((action) =>
+                        renderButton(action.id, action.label),
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            );
+          }
+
+          // Handle regular groups (like Explore, Mine)
+          const visibleActions = group.actions.filter((action) => {
+            // Handle custom show conditions
+            if (action.showWhen !== undefined) {
+              return action.showWhen;
+            }
+            // Use standard shouldShowAction for others
+            return shouldShowAction(action.id, state);
+          });
+
+          if (visibleActions.length === 0) return null;
 
           return (
             <div key={groupIndex} className="space-y-2">
@@ -300,55 +357,14 @@ export default function CavePanel() {
                   {group.title}
                 </h3>
               )}
-              {group.subGroups.map((subGroup, subGroupIndex) => {
-                const visibleActions = subGroup.actions.filter((action) => {
-                  if (action.showWhen !== undefined) {
-                    return action.showWhen;
-                  }
-                  return shouldShowAction(action.id, state);
-                });
-
-                if (visibleActions.length === 0) return null;
-
-                return (
-                  <div key={subGroupIndex} className="flex flex-wrap gap-2">
-                    {visibleActions.map((action) =>
-                      renderButton(action.id, action.label),
-                    )}
-                  </div>
-                );
-              })}
+              <div className="flex flex-wrap gap-2">
+                {visibleActions.map((action) =>
+                  renderButton(action.id, action.label),
+                )}
+              </div>
             </div>
           );
-        }
-
-        // Handle regular groups (like Explore, Mine)
-        const visibleActions = group.actions.filter((action) => {
-          // Handle custom show conditions
-          if (action.showWhen !== undefined) {
-            return action.showWhen;
-          }
-          // Use standard shouldShowAction for others
-          return shouldShowAction(action.id, state);
-        });
-
-        if (visibleActions.length === 0) return null;
-
-        return (
-          <div key={groupIndex} className="space-y-2">
-            {group.title && (
-              <h3 className="text-xs font-bold text-foreground">
-                {group.title}
-              </h3>
-            )}
-            <div className="flex flex-wrap gap-2">
-              {visibleActions.map((action) =>
-                renderButton(action.id, action.label),
-              )}
-            </div>
-          </div>
-        );
-      })}
+        })}
       </div>
       <ScrollBar orientation="vertical" />
     </ScrollArea>

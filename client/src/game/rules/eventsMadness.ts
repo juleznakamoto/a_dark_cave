@@ -155,7 +155,7 @@ export const madnessEvents: Record<string, GameEvent> = {
   facesInWalls: {
     id: "facesInWalls",
     condition: (state: GameState) =>
-      getTotalMadness(state) >= 25 && !state.events.facesInWalls,
+      getTotalMadness(state) >= 27 && !state.events.facesInWalls,
     triggerType: "resource",
     timeProbability: 30,
     title: "Faces in the Walls",
@@ -535,11 +535,11 @@ export const madnessEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.flags.monolithUnlocked &&
       getTotalMadness(state) >= 30 &&
-      (state.story?.seen?.animalsSacrificeLevel || 0) >= 5 &&
+      (state.story?.seen?.animalsSacrificeLevel || 0) >= 3 &&
       !state.events.humanSacrificeDemand &&
       state.buildings.blackMonolith > 0,
     triggerType: "resource",
-    timeProbability: 0.05,
+    timeProbability: 5,
     title: "The Dark Hunger",
     message:
       "The villagers gather around the monolith, their eyes hollow. 'The animals are not enough,' they whisper in unison. 'The darkness demands more. It hungers for human souls.' They look at you, waiting for your command to make the ultimate sacrifice.",
