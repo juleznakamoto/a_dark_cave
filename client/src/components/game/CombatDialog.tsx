@@ -648,7 +648,11 @@ export default function CombatDialog({
                             <div className="w-full">
                               <Button
                                 onClick={handleUseCrushingStrike}
-                                disabled={usedCrushingStrike || isProcessingRound}
+                                disabled={
+                                  usedCrushingStrike || 
+                                  isProcessingRound || 
+                                  gameState.story?.seen?.restlessKnightWounded
+                                }
                                 variant="outline"
                                 size="sm"
                                 className="text-xs w-full"
@@ -660,8 +664,10 @@ export default function CombatDialog({
                           </TooltipTrigger>
                           <TooltipContent>
                             <div className="text-xs whitespace-pre-line">
-                              {combatItemTooltips.crushing_strike.getContent(gameState)}
-                              {'\n'}Available: {usedCrushingStrike ? "0/1" : "1/1"}
+                              {gameState.story?.seen?.restlessKnightWounded
+                                ? "Restless Knight is wounded and cannot fight"
+                                : `${combatItemTooltips.crushing_strike.getContent(gameState)}\nAvailable: ${usedCrushingStrike ? "0/1" : "1/1"}`
+                              }
                             </div>
                           </TooltipContent>
                         </Tooltip>
