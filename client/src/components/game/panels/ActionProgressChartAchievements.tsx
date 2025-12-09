@@ -65,23 +65,30 @@ export default function ActionProgressChartAchievements() {
         maxCount: 10,
         color: SEGMENT_COLOR,
         label: "Cave Explore",
-        getCount: (state: GameState) =>
-          state.buttonUpgrades?.caveExplore?.level || 0,
+        getCount: (state: GameState) => {
+          const count = state.buttonUpgrades?.caveExplore?.level || 0;
+          return count === 1 ? 1.3 : count;
+        },
       },
       {
         segmentType: "chopWood",
         maxCount: 10,
         color: SEGMENT_COLOR,
         label: "Chop Wood",
-        getCount: (state: GameState) =>
-          state.buttonUpgrades?.chopWood?.level || 0,
+        getCount: (state: GameState) => {
+          const count = state.buttonUpgrades?.chopWood?.level || 0;
+          return count === 1 ? 1.3 : count;
+        },
       },
       {
         segmentType: "hunt",
         maxCount: 10,
         color: SEGMENT_COLOR,
         label: "Hunt",
-        getCount: (state: GameState) => state.buttonUpgrades?.hunt?.level || 0,
+        getCount: (state: GameState) => {
+          const count = state.buttonUpgrades?.hunt?.level || 0;
+          return count === 1 ? 1.3 : count;
+        },
       },
     ],
     // Second ring: Cave & Gathering Actions
@@ -91,48 +98,60 @@ export default function ActionProgressChartAchievements() {
         maxCount: 10,
         color: SEGMENT_COLOR,
         label: "Mine Stone",
-        getCount: (state: GameState) =>
-          state.buttonUpgrades?.mineStone?.level || 0,
+        getCount: (state: GameState) => {
+          const count = state.buttonUpgrades?.mineStone?.level || 0;
+          return count === 1 ? 1.8 : count;
+        },
       },
       {
         segmentType: "mineIron",
         maxCount: 10,
         color: SEGMENT_COLOR,
         label: "Mine Iron",
-        getCount: (state: GameState) =>
-          state.buttonUpgrades?.mineIron?.level || 0,
+        getCount: (state: GameState) => {
+          const count = state.buttonUpgrades?.mineIron?.level || 0;
+          return count === 1 ? 1.8 : count;
+        },
       },
       {
         segmentType: "mineCoal",
         maxCount: 10,
         color: SEGMENT_COLOR,
         label: "Mine Coal",
-        getCount: (state: GameState) =>
-          state.buttonUpgrades?.mineCoal?.level || 0,
+        getCount: (state: GameState) => {
+          const count = state.buttonUpgrades?.mineCoal?.level || 0;
+          return count === 1 ? 1.8 : count;
+        },
       },
       {
         segmentType: "mineSulfur",
         maxCount: 10,
         color: SEGMENT_COLOR,
         label: "Mine Sulfur",
-        getCount: (state: GameState) =>
-          state.buttonUpgrades?.mineSulfur?.level || 0,
+        getCount: (state: GameState) => {
+          const count = state.buttonUpgrades?.mineSulfur?.level || 0;
+          return count === 1 ? 1.8 : count;
+        },
       },
       {
         segmentType: "mineObsidian",
         maxCount: 10,
         color: SEGMENT_COLOR,
         label: "Mine Obsidian",
-        getCount: (state: GameState) =>
-          state.buttonUpgrades?.mineObsidian?.level || 0,
+        getCount: (state: GameState) => {
+          const count = state.buttonUpgrades?.mineObsidian?.level || 0;
+          return count === 1 ? 1.8 : count;
+        },
       },
       {
         segmentType: "mineAdamant",
         maxCount: 10,
         color: SEGMENT_COLOR,
         label: "Mine Adamant",
-        getCount: (state: GameState) =>
-          state.buttonUpgrades?.mineAdamant?.level || 0,
+        getCount: (state: GameState) => {
+          const count = state.buttonUpgrades?.mineAdamant?.level || 0;
+          return count === 1 ? 1.8 : count;
+        },
       },
     ],
     // Third ring: Mining Actions
