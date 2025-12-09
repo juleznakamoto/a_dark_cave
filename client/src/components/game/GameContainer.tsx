@@ -177,7 +177,7 @@ export default function GameContainer() {
     }
 
     // Add Achievements tab if Book of Trials is owned
-    if (gameState.books?.book_of_trials) {
+    if (gameState?.books?.book_of_trials) {
       tabs.push({
         id: "achievements",
         icon: <Castle />,
@@ -193,7 +193,7 @@ export default function GameContainer() {
     flags.bastionUnlocked,
     buildings.stoneHut,
     setActiveTab,
-    gameState.books?.book_of_trials // Dependency for achievements tab
+    gameState?.books?.book_of_trials // Dependency for achievements tab
   ]);
 
   // Show start screen if game hasn't started yet
@@ -323,7 +323,7 @@ export default function GameContainer() {
                 )}
 
                 {/* Achievements Tab Button */}
-                {gameState.books?.book_of_trials && (
+                {gameState?.books?.book_of_trials && (
                   <button
                     className={`py-2 text-sm bg-transparent ${
                       animatingTabs.has("achievements")
