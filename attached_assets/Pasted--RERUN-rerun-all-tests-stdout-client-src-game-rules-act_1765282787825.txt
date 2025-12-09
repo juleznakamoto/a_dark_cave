@@ -1,0 +1,813 @@
+ RERUN  rerun all tests 
+
+stdout | client/src/game/rules/actionEffects.test.ts
+vdev Registering sounds for lazy loading...
+vdev Sound URLs registered for lazy loading
+
+stdout | client/src/game/rules/resourceGains.test.ts
+vdev Registering sounds for lazy loading...
+vdev Sound URLs registered for lazy loading
+
+ ❯ client/src/game/rules/actionEffects.test.ts (6 tests | 1 failed) 16ms
+     ✓ should successfully import and use applyActionEffects 2ms
+     ✓ should apply effects for craftBoneTotem action 3ms
+     ✓ should apply effects for craftTorch action 1ms
+     ✓ should apply effects for craftIronSword action 1ms
+     ✓ should handle action that does not exist 1ms
+     × should throw error if gameActions not registered 3ms
+ ❯ client/src/game/rules/resourceGains.test.ts (49 tests | 47 failed) 50ms
+       × chopWood gains match tooltip 12ms
+       × exploreCave gains match tooltip 1ms
+       × ventureDeeper gains match tooltip 1ms
+       × mineStone gains match tooltip 1ms
+       × mineIron gains match tooltip 1ms
+       × mineCoal gains match tooltip 1ms
+       × mineObsidian gains match tooltip 1ms
+       × hunt gains match tooltip 1ms
+       × chopWood with loggers_gloves applies correct bonus 1ms
+       × hunt with hunter_cloak applies correct bonus 1ms
+       × mineStone with different pickaxes shows progression 1ms
+       × exploreCave with different lanterns shows progression 1ms
+       ✓ mastermason_chisel reduces building costs by 10% 2ms
+       ✓ blacksmith_hammer reduces crafting costs by 15% 5ms
+       × boneTotems gains match tooltip 1ms
+       × leatherTotems gains match tooltip 1ms
+       × boneTotems with boneTemple applies 25% bonus 0ms
+       × boneTotems with sacrificial_tunic applies 25% bonus 1ms
+       × leatherTotems with sacrificial_tunic applies 25% bonus 0ms
+       × boneTotems with both boneTemple and sacrificial_tunic stacks additively (50% total) 1ms
+       × leatherTotems with both boneTemple and sacrificial_tunic stacks additively (50% total) 0ms
+       × boneTotems with sacrificial_tunic: tooltip matches actual gains 0ms
+       × leatherTotems with sacrificial_tunic: tooltip matches actual gains 1ms
+       × boneTotems with sacrificial_tunic and boneTemple: tooltip matches actual gains 1ms
+       × leatherTotems with sacrificial_tunic and boneTemple: tooltip matches actual gains 1ms
+       × boneTotems: only tunic (no temple) gives 25% bonus 0ms
+       × boneTotems: only temple (no tunic) gives 25% bonus 0ms
+       × leatherTotems: only tunic (no temple) gives 25% bonus 1ms
+       × leatherTotems: only temple (no tunic) gives 25% bonus 1ms
+       × chopWood with button upgrades increases gains 1ms
+       × exploreCave with button upgrades increases gains 1ms
+       × chopWood with stone axe shows baseline gains 1ms
+       × chopWood with iron axe shows improved gains 0ms
+       × chopWood with steel axe shows further improved gains 0ms
+       × multiple bonuses stack correctly for chopWood 1ms
+       × multiple bonuses stack correctly for mining 1ms
+       × exploreCitadel gains match tooltip 1ms
+       × exploreCitadel: tooltip calculation matches actual gains 1ms
+       × exploreCitadel with cave exploration bonuses 1ms
+       × craftBoneTotem produces correct amount 0ms
+       × craftBoneTotems5 produces correct amount 0ms
+       × craftLeatherTotem produces correct amount 0ms
+       × craftLeatherTotems5 produces correct amount 0ms
+       × mineSulfur gains match tooltip 1ms
+       × mineAdamant gains match tooltip 1ms
+       × tradeGoldForFood (tier 3) produces correct amount 0ms
+       × tradeGoldForStone (tier 3) produces correct amount 0ms
+       × tradeGoldForTorch (tier 3) produces correct amount 0ms
+       × tradeSilverForGold (tier 3) produces correct amount 0ms
+ ✓ client/src/game/save.comprehensive.test.ts (59 tests) 214ms
+stdout | client/src/game/save.test.ts > Game Save/Load > should preserve cooldowns after save/load cycle
+vdev Registering sounds for lazy loading...
+vdev Sound URLs registered for lazy loading
+
+stdout | client/src/game/save.test.ts > Game Save/Load > should preserve cooldowns after save/load cycle
+vdev [LOAD] 💾 Local save retrieved: {
+  hasLocalSave: true,
+  timestamp: '2025-12-09T12:19:26.223Z',
+  playTime: 1000,
+  playTimeMinutes: 0,
+  hasCooldowns: true,
+  cooldowns: { gatherWood: 5, buildHut: 10 },
+  hasCooldownDurations: true,
+  cooldownDurations: { gatherWood: 5, buildHut: 10 },
+  cooldownDetails: [
+    { action: 'gatherWood', remaining: 5, duration: 5 },
+    { action: 'buildHut', remaining: 10, duration: 10 }
+  ]
+}
+
+stdout | client/src/game/save.test.ts > Game Save/Load > should preserve cooldowns after save/load cycle
+vdev [REFERRAL] 🔍 Processing unclaimed referrals... {
+  hasUser: false,
+  hasReferrals: false,
+  referralsCount: 0,
+  referrals: undefined
+}
+vdev [REFERRAL] ⏭️ Skipping - no user or no referrals
+
+stdout | client/src/game/save.test.ts > Game Save/Load > should preserve cooldowns after save/load cycle
+vdev [LOAD] Returning local state (no auth): {
+  hasCooldownDurations: true,
+  cooldownDurations: { gatherWood: 5, buildHut: 10 }
+}
+
+stdout | client/src/game/save.test.ts > Game Save/Load > should handle corrupted save data gracefully
+vdev [LOAD] 💾 Local save retrieved: {
+  hasLocalSave: true,
+  timestamp: '2025-12-09T12:19:26.330Z',
+  playTime: undefined,
+  playTimeMinutes: 0,
+  hasCooldowns: false,
+  cooldowns: undefined,
+  hasCooldownDurations: false,
+  cooldownDurations: undefined,
+  cooldownDetails: []
+}
+
+stdout | client/src/game/save.test.ts > Game Save/Load > should handle corrupted save data gracefully
+vdev [REFERRAL] 🔍 Processing unclaimed referrals... {
+  hasUser: false,
+  hasReferrals: false,
+  referralsCount: 0,
+  referrals: undefined
+}
+vdev [REFERRAL] ⏭️ Skipping - no user or no referrals
+
+stdout | client/src/game/save.test.ts > Game Save/Load > should handle corrupted save data gracefully
+vdev [LOAD] Returning local state (no auth): { hasCooldownDurations: true, cooldownDurations: {} }
+
+stdout | client/src/game/save.test.ts > Game Save/Load > should merge cloud save with local save correctly
+vdev [LOAD] 💾 Local save retrieved: {
+  hasLocalSave: true,
+  timestamp: 'none',
+  playTime: 1000,
+  playTimeMinutes: 0,
+  hasCooldowns: false,
+  cooldowns: undefined,
+  hasCooldownDurations: false,
+  cooldownDurations: undefined,
+  cooldownDetails: []
+}
+
+stdout | client/src/game/save.test.ts > Game Save/Load > should merge cloud save with local save correctly
+vdev [LOAD] ☁️ Using cloud save (user authenticated)
+
+stdout | client/src/game/save.test.ts > Game Save/Load > should merge cloud save with local save correctly
+vdev [REFERRAL] 🔍 Processing unclaimed referrals... {
+  hasUser: true,
+  hasReferrals: false,
+  referralsCount: 0,
+  referrals: undefined
+}
+vdev [REFERRAL] ⏭️ Skipping - no user or no referrals
+
+stdout | client/src/game/save.test.ts > Game Save/Load > should merge cloud save with local save correctly
+vdev [LOAD] ✅ Cloud save loaded and synced locally
+
+ ✓ client/src/game/save.test.ts (3 tests) 115ms
+ ✓ server/referral.integration.test.ts (4 tests) 533ms
+     ✓ should return JSON content-type  480ms
+stdout | server/stripe.test.ts > Stripe Shop Integration > verifyPayment > should verify successful payment
+✅ Purchase saved: { id: 'purchase123', item_id: 'gold_250', user_id: 'user123' }
+
+stderr | server/stripe.test.ts > Stripe Shop Integration > verifyPayment > should reject payment with incorrect amount
+Payment amount mismatch for item gold_250. Expected: 99, Got: 1
+
+ ✓ server/stripe.test.ts (9 tests) 12ms
+stdout | client/src/game/loop.test.ts
+vdev Registering sounds for lazy loading...
+vdev Sound URLs registered for lazy loading
+
+stdout | client/src/game/loop.test.ts > Game Loop Production > should handle starvation when food runs out
+vdev [STATE] Set Flag: starvationActive = true
+
+ ✓ client/src/game/loop.test.ts (3 tests) 7ms
+ ✓ server/auth.test.ts (2 tests) 17ms
+ ✓ shared/shopItems.test.ts (39 tests) 37ms
+ ✓ client/src/game/population.test.ts (14 tests) 16ms
+ ✓ client/src/game/state.merge.test.ts (9 tests) 7ms
+ ✓ server/referral.test.ts (6 tests) 8ms
+ ✓ server/referral.e2e.test.ts (2 tests) 8ms
+stdout | client/src/game/rules/events.test.ts
+vdev Registering sounds for lazy loading...
+vdev Sound URLs registered for lazy loading
+
+ ✓ client/src/game/rules/events.test.ts (3 tests) 6ms
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯ Failed Tests 48 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  client/src/game/rules/actionEffects.test.ts > actionEffects - circular dependency fix > should throw error if gameActions not registered
+Error: Cannot find module './actionEffects'
+Require stack:
+- /home/runner/workspace/client/src/game/rules/actionEffects.test.ts
+ ❯ client/src/game/rules/actionEffects.test.ts:71:61
+     69|   it('should throw error if gameActions not registered', () => {
+     70|     // Create a fresh import scenario by testing without registration
+     71|     const { applyActionEffects: freshApplyActionEffects } = require('./actionEffects');
+       |                                                             ^
+     72|     
+     73|     // This would normally throw, but since we already registered in beforeEach,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/48]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Cave Exploration Actions > chopWood gains match tooltip
+TypeError: (0 , __vite_ssr_import_1__.applyActionEffects) is not a function
+ ❯ testActionGains client/src/game/rules/resourceGains.test.ts:273:27
+    271|   // Run action multiple times to sample the random range
+    272|   for (let i = 0; i < iterations; i++) {
+    273|     const effectUpdates = applyActionEffects(actionId, state);
+       |                           ^
+    274| 
+    275|     if (effectUpdates.resources) {
+ ❯ client/src/game/rules/resourceGains.test.ts:303:46
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/48]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Cave Exploration Actions > exploreCave gains match tooltip
+TypeError: (0 , __vite_ssr_import_1__.applyActionEffects) is not a function
+ ❯ testActionGains client/src/game/rules/resourceGains.test.ts:273:27
+    271|   // Run action multiple times to sample the random range
+    272|   for (let i = 0; i < iterations; i++) {
+    273|     const effectUpdates = applyActionEffects(actionId, state);
+       |                           ^
+    274| 
+    275|     if (effectUpdates.resources) {
+ ❯ client/src/game/rules/resourceGains.test.ts:319:46
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/48]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Cave Exploration Actions > ventureDeeper gains match tooltip
+TypeError: (0 , __vite_ssr_import_1__.applyActionEffects) is not a function
+ ❯ testActionGains client/src/game/rules/resourceGains.test.ts:273:27
+    271|   // Run action multiple times to sample the random range
+    272|   for (let i = 0; i < iterations; i++) {
+    273|     const effectUpdates = applyActionEffects(actionId, state);
+       |                           ^
+    274| 
+    275|     if (effectUpdates.resources) {
+ ❯ client/src/game/rules/resourceGains.test.ts:337:46
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/48]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Mining Actions > mineStone gains match tooltip
+TypeError: (0 , __vite_ssr_import_1__.applyActionEffects) is not a function
+ ❯ testActionGains client/src/game/rules/resourceGains.test.ts:273:27
+    271|   // Run action multiple times to sample the random range
+    272|   for (let i = 0; i < iterations; i++) {
+    273|     const effectUpdates = applyActionEffects(actionId, state);
+       |                           ^
+    274| 
+    275|     if (effectUpdates.resources) {
+ ❯ client/src/game/rules/resourceGains.test.ts:357:46
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/48]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Mining Actions > mineIron gains match tooltip
+TypeError: (0 , __vite_ssr_import_1__.applyActionEffects) is not a function
+ ❯ testActionGains client/src/game/rules/resourceGains.test.ts:273:27
+    271|   // Run action multiple times to sample the random range
+    272|   for (let i = 0; i < iterations; i++) {
+    273|     const effectUpdates = applyActionEffects(actionId, state);
+       |                           ^
+    274| 
+    275|     if (effectUpdates.resources) {
+ ❯ client/src/game/rules/resourceGains.test.ts:373:46
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/48]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Mining Actions > mineCoal gains match tooltip
+TypeError: (0 , __vite_ssr_import_1__.applyActionEffects) is not a function
+ ❯ testActionGains client/src/game/rules/resourceGains.test.ts:273:27
+    271|   // Run action multiple times to sample the random range
+    272|   for (let i = 0; i < iterations; i++) {
+    273|     const effectUpdates = applyActionEffects(actionId, state);
+       |                           ^
+    274| 
+    275|     if (effectUpdates.resources) {
+ ❯ client/src/game/rules/resourceGains.test.ts:389:46
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/48]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Mining Actions > mineObsidian gains match tooltip
+TypeError: (0 , __vite_ssr_import_1__.applyActionEffects) is not a function
+ ❯ testActionGains client/src/game/rules/resourceGains.test.ts:273:27
+    271|   // Run action multiple times to sample the random range
+    272|   for (let i = 0; i < iterations; i++) {
+    273|     const effectUpdates = applyActionEffects(actionId, state);
+       |                           ^
+    274| 
+    275|     if (effectUpdates.resources) {
+ ❯ client/src/game/rules/resourceGains.test.ts:405:46
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/48]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Hunting Actions > hunt gains match tooltip
+TypeError: (0 , __vite_ssr_import_1__.applyActionEffects) is not a function
+ ❯ testActionGains client/src/game/rules/resourceGains.test.ts:273:27
+    271|   // Run action multiple times to sample the random range
+    272|   for (let i = 0; i < iterations; i++) {
+    273|     const effectUpdates = applyActionEffects(actionId, state);
+       |                           ^
+    274| 
+    275|     if (effectUpdates.resources) {
+ ❯ client/src/game/rules/resourceGains.test.ts:423:46
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/48]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Actions with Item Bonuses > chopWood with loggers_gloves applies correct bonus
+TypeError: (0 , __vite_ssr_import_1__.applyActionEffects) is not a function
+ ❯ testActionGains client/src/game/rules/resourceGains.test.ts:273:27
+    271|   // Run action multiple times to sample the random range
+    272|   for (let i = 0; i < iterations; i++) {
+    273|     const effectUpdates = applyActionEffects(actionId, state);
+       |                           ^
+    274| 
+    275|     if (effectUpdates.resources) {
+ ❯ client/src/game/rules/resourceGains.test.ts:445:50
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/48]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Actions with Item Bonuses > hunt with hunter_cloak applies correct bonus
+TypeError: (0 , __vite_ssr_import_1__.applyActionEffects) is not a function
+ ❯ testActionGains client/src/game/rules/resourceGains.test.ts:273:27
+    271|   // Run action multiple times to sample the random range
+    272|   for (let i = 0; i < iterations; i++) {
+    273|     const effectUpdates = applyActionEffects(actionId, state);
+       |                           ^
+    274| 
+    275|     if (effectUpdates.resources) {
+ ❯ client/src/game/rules/resourceGains.test.ts:462:50
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/48]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Actions with Item Bonuses > mineStone with different pickaxes shows progression
+TypeError: (0 , __vite_ssr_import_1__.applyActionEffects) is not a function
+ ❯ testActionGains client/src/game/rules/resourceGains.test.ts:273:27
+    271|   // Run action multiple times to sample the random range
+    272|   for (let i = 0; i < iterations; i++) {
+    273|     const effectUpdates = applyActionEffects(actionId, state);
+       |                           ^
+    274| 
+    275|     if (effectUpdates.resources) {
+ ❯ client/src/game/rules/resourceGains.test.ts:479:45
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/48]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Actions with Item Bonuses > exploreCave with different lanterns shows progression
+TypeError: (0 , __vite_ssr_import_1__.applyActionEffects) is not a function
+ ❯ testActionGains client/src/game/rules/resourceGains.test.ts:273:27
+    271|   // Run action multiple times to sample the random range
+    272|   for (let i = 0; i < iterations; i++) {
+    273|     const effectUpdates = applyActionEffects(actionId, state);
+       |                           ^
+    274| 
+    275|     if (effectUpdates.resources) {
+ ❯ client/src/game/rules/resourceGains.test.ts:497:44
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/48]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Sacrifice Actions > boneTotems gains match tooltip
+TypeError: (0 , __vite_ssr_import_1__.applyActionEffects) is not a function
+ ❯ testActionGains client/src/game/rules/resourceGains.test.ts:273:27
+    271|   // Run action multiple times to sample the random range
+    272|   for (let i = 0; i < iterations; i++) {
+    273|     const effectUpdates = applyActionEffects(actionId, state);
+       |                           ^
+    274| 
+    275|     if (effectUpdates.resources) {
+ ❯ client/src/game/rules/resourceGains.test.ts:572:46
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/48]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Sacrifice Actions > leatherTotems gains match tooltip
+TypeError: (0 , __vite_ssr_import_1__.applyActionEffects) is not a function
+ ❯ testActionGains client/src/game/rules/resourceGains.test.ts:273:27
+    271|   // Run action multiple times to sample the random range
+    272|   for (let i = 0; i < iterations; i++) {
+    273|     const effectUpdates = applyActionEffects(actionId, state);
+       |                           ^
+    274| 
+    275|     if (effectUpdates.resources) {
+ ❯ client/src/game/rules/resourceGains.test.ts:588:46
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/48]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Sacrifice Actions > boneTotems with boneTemple applies 25% bonus
+TypeError: (0 , __vite_ssr_import_1__.applyActionEffects) is not a function
+ ❯ testActionGains client/src/game/rules/resourceGains.test.ts:273:27
+    271|   // Run action multiple times to sample the random range
+    272|   for (let i = 0; i < iterations; i++) {
+    273|     const effectUpdates = applyActionEffects(actionId, state);
+       |                           ^
+    274| 
+    275|     if (effectUpdates.resources) {
+ ❯ client/src/game/rules/resourceGains.test.ts:608:50
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/48]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Sacrifice Actions > boneTotems with sacrificial_tunic applies 25% bonus
+TypeError: (0 , __vite_ssr_import_1__.applyActionEffects) is not a function
+ ❯ testActionGains client/src/game/rules/resourceGains.test.ts:273:27
+    271|   // Run action multiple times to sample the random range
+    272|   for (let i = 0; i < iterations; i++) {
+    273|     const effectUpdates = applyActionEffects(actionId, state);
+       |                           ^
+    274| 
+    275|     if (effectUpdates.resources) {
+ ❯ client/src/game/rules/resourceGains.test.ts:625:50
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/48]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Sacrifice Actions > leatherTotems with sacrificial_tunic applies 25% bonus
+TypeError: (0 , __vite_ssr_import_1__.applyActionEffects) is not a function
+ ❯ testActionGains client/src/game/rules/resourceGains.test.ts:273:27
+    271|   // Run action multiple times to sample the random range
+    272|   for (let i = 0; i < iterations; i++) {
+    273|     const effectUpdates = applyActionEffects(actionId, state);
+       |                           ^
+    274| 
+    275|     if (effectUpdates.resources) {
+ ❯ client/src/game/rules/resourceGains.test.ts:644:50
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/48]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Sacrifice Actions > boneTotems with both boneTemple and sacrificial_tunic stacks additively (50% total)
+TypeError: (0 , __vite_ssr_import_1__.applyActionEffects) is not a function
+ ❯ testActionGains client/src/game/rules/resourceGains.test.ts:273:27
+    271|   // Run action multiple times to sample the random range
+    272|   for (let i = 0; i < iterations; i++) {
+    273|     const effectUpdates = applyActionEffects(actionId, state);
+       |                           ^
+    274| 
+    275|     if (effectUpdates.resources) {
+ ❯ client/src/game/rules/resourceGains.test.ts:663:50
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[19/48]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Sacrifice Actions > leatherTotems with both boneTemple and sacrificial_tunic stacks additively (50% total)
+TypeError: (0 , __vite_ssr_import_1__.applyActionEffects) is not a function
+ ❯ testActionGains client/src/game/rules/resourceGains.test.ts:273:27
+    271|   // Run action multiple times to sample the random range
+    272|   for (let i = 0; i < iterations; i++) {
+    273|     const effectUpdates = applyActionEffects(actionId, state);
+       |                           ^
+    274| 
+    275|     if (effectUpdates.resources) {
+ ❯ client/src/game/rules/resourceGains.test.ts:682:50
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[20/48]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Sacrifice Actions > boneTotems with sacrificial_tunic: tooltip matches actual gains
+TypeError: (0 , __vite_ssr_import_1__.applyActionEffects) is not a function
+ ❯ testActionGains client/src/game/rules/resourceGains.test.ts:273:27
+    271|   // Run action multiple times to sample the random range
+    272|   for (let i = 0; i < iterations; i++) {
+    273|     const effectUpdates = applyActionEffects(actionId, state);
+       |                           ^
+    274| 
+    275|     if (effectUpdates.resources) {
+ ❯ client/src/game/rules/resourceGains.test.ts:704:46
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[21/48]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Sacrifice Actions > leatherTotems with sacrificial_tunic: tooltip matches actual gains
+TypeError: (0 , __vite_ssr_import_1__.applyActionEffects) is not a function
+ ❯ testActionGains client/src/game/rules/resourceGains.test.ts:273:27
+    271|   // Run action multiple times to sample the random range
+    272|   for (let i = 0; i < iterations; i++) {
+    273|     const effectUpdates = applyActionEffects(actionId, state);
+       |                           ^
+    274| 
+    275|     if (effectUpdates.resources) {
+ ❯ client/src/game/rules/resourceGains.test.ts:729:46
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[22/48]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Sacrifice Actions > boneTotems with sacrificial_tunic and boneTemple: tooltip matches actual gains
+TypeError: (0 , __vite_ssr_import_1__.applyActionEffects) is not a function
+ ❯ testActionGains client/src/game/rules/resourceGains.test.ts:273:27
+    271|   // Run action multiple times to sample the random range
+    272|   for (let i = 0; i < iterations; i++) {
+    273|     const effectUpdates = applyActionEffects(actionId, state);
+       |                           ^
+    274| 
+    275|     if (effectUpdates.resources) {
+ ❯ client/src/game/rules/resourceGains.test.ts:754:46
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[23/48]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Sacrifice Actions > leatherTotems with sacrificial_tunic and boneTemple: tooltip matches actual gains
+TypeError: (0 , __vite_ssr_import_1__.applyActionEffects) is not a function
+ ❯ testActionGains client/src/game/rules/resourceGains.test.ts:273:27
+    271|   // Run action multiple times to sample the random range
+    272|   for (let i = 0; i < iterations; i++) {
+    273|     const effectUpdates = applyActionEffects(actionId, state);
+       |                           ^
+    274| 
+    275|     if (effectUpdates.resources) {
+ ❯ client/src/game/rules/resourceGains.test.ts:787:46
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[24/48]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Sacrifice Actions > boneTotems: only tunic (no temple) gives 25% bonus
+TypeError: (0 , __vite_ssr_import_1__.applyActionEffects) is not a function
+ ❯ testActionGains client/src/game/rules/resourceGains.test.ts:273:27
+    271|   // Run action multiple times to sample the random range
+    272|   for (let i = 0; i < iterations; i++) {
+    273|     const effectUpdates = applyActionEffects(actionId, state);
+       |                           ^
+    274| 
+    275|     if (effectUpdates.resources) {
+ ❯ client/src/game/rules/resourceGains.test.ts:817:47
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[25/48]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Sacrifice Actions > boneTotems: only temple (no tunic) gives 25% bonus
+TypeError: (0 , __vite_ssr_import_1__.applyActionEffects) is not a function
+ ❯ testActionGains client/src/game/rules/resourceGains.test.ts:273:27
+    271|   // Run action multiple times to sample the random range
+    272|   for (let i = 0; i < iterations; i++) {
+    273|     const effectUpdates = applyActionEffects(actionId, state);
+       |                           ^
+    274| 
+    275|     if (effectUpdates.resources) {
+ ❯ client/src/game/rules/resourceGains.test.ts:833:47
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[26/48]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Sacrifice Actions > leatherTotems: only tunic (no temple) gives 25% bonus
+TypeError: (0 , __vite_ssr_import_1__.applyActionEffects) is not a function
+ ❯ testActionGains client/src/game/rules/resourceGains.test.ts:273:27
+    271|   // Run action multiple times to sample the random range
+    272|   for (let i = 0; i < iterations; i++) {
+    273|     const effectUpdates = applyActionEffects(actionId, state);
+       |                           ^
+    274| 
+    275|     if (effectUpdates.resources) {
+ ❯ client/src/game/rules/resourceGains.test.ts:850:47
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[27/48]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Sacrifice Actions > leatherTotems: only temple (no tunic) gives 25% bonus
+TypeError: (0 , __vite_ssr_import_1__.applyActionEffects) is not a function
+ ❯ testActionGains client/src/game/rules/resourceGains.test.ts:273:27
+    271|   // Run action multiple times to sample the random range
+    272|   for (let i = 0; i < iterations; i++) {
+    273|     const effectUpdates = applyActionEffects(actionId, state);
+       |                           ^
+    274| 
+    275|     if (effectUpdates.resources) {
+ ❯ client/src/game/rules/resourceGains.test.ts:866:47
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[28/48]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Button Upgrades > chopWood with button upgrades increases gains
+TypeError: (0 , __vite_ssr_import_1__.applyActionEffects) is not a function
+ ❯ testActionGains client/src/game/rules/resourceGains.test.ts:273:27
+    271|   // Run action multiple times to sample the random range
+    272|   for (let i = 0; i < iterations; i++) {
+    273|     const effectUpdates = applyActionEffects(actionId, state);
+       |                           ^
+    274| 
+    275|     if (effectUpdates.resources) {
+ ❯ client/src/game/rules/resourceGains.test.ts:887:50
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[29/48]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Button Upgrades > exploreCave with button upgrades increases gains
+TypeError: (0 , __vite_ssr_import_1__.applyActionEffects) is not a function
+ ❯ testActionGains client/src/game/rules/resourceGains.test.ts:273:27
+    271|   // Run action multiple times to sample the random range
+    272|   for (let i = 0; i < iterations; i++) {
+    273|     const effectUpdates = applyActionEffects(actionId, state);
+       |                           ^
+    274| 
+    275|     if (effectUpdates.resources) {
+ ❯ client/src/game/rules/resourceGains.test.ts:908:50
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[30/48]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Axe Progression > chopWood with stone axe shows baseline gains
+TypeError: (0 , __vite_ssr_import_1__.applyActionEffects) is not a function
+ ❯ testActionGains client/src/game/rules/resourceGains.test.ts:273:27
+    271|   // Run action multiple times to sample the random range
+    272|   for (let i = 0; i < iterations; i++) {
+    273|     const effectUpdates = applyActionEffects(actionId, state);
+       |                           ^
+    274| 
+    275|     if (effectUpdates.resources) {
+ ❯ client/src/game/rules/resourceGains.test.ts:922:33
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[31/48]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Axe Progression > chopWood with iron axe shows improved gains
+TypeError: (0 , __vite_ssr_import_1__.applyActionEffects) is not a function
+ ❯ testActionGains client/src/game/rules/resourceGains.test.ts:273:27
+    271|   // Run action multiple times to sample the random range
+    272|   for (let i = 0; i < iterations; i++) {
+    273|     const effectUpdates = applyActionEffects(actionId, state);
+       |                           ^
+    274| 
+    275|     if (effectUpdates.resources) {
+ ❯ client/src/game/rules/resourceGains.test.ts:933:33
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[32/48]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Axe Progression > chopWood with steel axe shows further improved gains
+TypeError: (0 , __vite_ssr_import_1__.applyActionEffects) is not a function
+ ❯ testActionGains client/src/game/rules/resourceGains.test.ts:273:27
+    271|   // Run action multiple times to sample the random range
+    272|   for (let i = 0; i < iterations; i++) {
+    273|     const effectUpdates = applyActionEffects(actionId, state);
+       |                           ^
+    274| 
+    275|     if (effectUpdates.resources) {
+ ❯ client/src/game/rules/resourceGains.test.ts:944:33
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[33/48]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Multiplier Stacking > multiple bonuses stack correctly for chopWood
+TypeError: (0 , __vite_ssr_import_1__.applyActionEffects) is not a function
+ ❯ testActionGains client/src/game/rules/resourceGains.test.ts:273:27
+    271|   // Run action multiple times to sample the random range
+    272|   for (let i = 0; i < iterations; i++) {
+    273|     const effectUpdates = applyActionEffects(actionId, state);
+       |                           ^
+    274| 
+    275|     if (effectUpdates.resources) {
+ ❯ client/src/game/rules/resourceGains.test.ts:961:46
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[34/48]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Multiplier Stacking > multiple bonuses stack correctly for mining
+TypeError: (0 , __vite_ssr_import_1__.applyActionEffects) is not a function
+ ❯ testActionGains client/src/game/rules/resourceGains.test.ts:273:27
+    271|   // Run action multiple times to sample the random range
+    272|   for (let i = 0; i < iterations; i++) {
+    273|     const effectUpdates = applyActionEffects(actionId, state);
+       |                           ^
+    274| 
+    275|     if (effectUpdates.resources) {
+ ❯ client/src/game/rules/resourceGains.test.ts:981:46
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[35/48]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Additional Cave Exploration > exploreCitadel gains match tooltip
+TypeError: (0 , __vite_ssr_import_1__.applyActionEffects) is not a function
+ ❯ testActionGains client/src/game/rules/resourceGains.test.ts:273:27
+    271|   // Run action multiple times to sample the random range
+    272|   for (let i = 0; i < iterations; i++) {
+    273|     const effectUpdates = applyActionEffects(actionId, state);
+       |                           ^
+    274| 
+    275|     if (effectUpdates.resources) {
+ ❯ client/src/game/rules/resourceGains.test.ts:1001:46
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[36/48]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Additional Cave Exploration > exploreCitadel: tooltip calculation matches actual gains
+TypeError: (0 , __vite_ssr_import_1__.applyActionEffects) is not a function
+ ❯ testActionGains client/src/game/rules/resourceGains.test.ts:273:27
+    271|   // Run action multiple times to sample the random range
+    272|   for (let i = 0; i < iterations; i++) {
+    273|     const effectUpdates = applyActionEffects(actionId, state);
+       |                           ^
+    274| 
+    275|     if (effectUpdates.resources) {
+ ❯ client/src/game/rules/resourceGains.test.ts:1026:46
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[37/48]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Additional Cave Exploration > exploreCitadel with cave exploration bonuses
+TypeError: (0 , __vite_ssr_import_1__.applyActionEffects) is not a function
+ ❯ testActionGains client/src/game/rules/resourceGains.test.ts:273:27
+    271|   // Run action multiple times to sample the random range
+    272|   for (let i = 0; i < iterations; i++) {
+    273|     const effectUpdates = applyActionEffects(actionId, state);
+       |                           ^
+    274| 
+    275|     if (effectUpdates.resources) {
+ ❯ client/src/game/rules/resourceGains.test.ts:1053:47
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[38/48]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Craft Actions > craftBoneTotem produces correct amount
+TypeError: (0 , __vite_ssr_import_1__.applyActionEffects) is not a function
+ ❯ client/src/game/rules/resourceGains.test.ts:1068:29
+    1066|         buildings: { altar: 1 },
+    1067|       });
+    1068|       const effectUpdates = applyActionEffects('craftBoneTotem', state);
+       |                             ^
+    1069| 
+    1070|       expect(effectUpdates.resources?.bone_totem).toBe((state.resources.bone_totem || …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[39/48]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Craft Actions > craftBoneTotems5 produces correct amount
+TypeError: (0 , __vite_ssr_import_1__.applyActionEffects) is not a function
+ ❯ client/src/game/rules/resourceGains.test.ts:1077:29
+    1075|         buildings: { sanctum: 1 },
+    1076|       });
+    1077|       const effectUpdates = applyActionEffects('craftBoneTotems5', state);
+       |                             ^
+    1078| 
+    1079|       expect(effectUpdates.resources?.bone_totem).toBe((state.resources.bone_totem || …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[40/48]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Craft Actions > craftLeatherTotem produces correct amount
+TypeError: (0 , __vite_ssr_import_1__.applyActionEffects) is not a function
+ ❯ client/src/game/rules/resourceGains.test.ts:1086:29
+    1084|         buildings: { temple: 1 },
+    1085|       });
+    1086|       const effectUpdates = applyActionEffects('craftLeatherTotem', state);
+       |                             ^
+    1087| 
+    1088|       expect(effectUpdates.resources?.leather_totem).toBe((state.resources.leather_tot…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[41/48]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Craft Actions > craftLeatherTotems5 produces correct amount
+TypeError: (0 , __vite_ssr_import_1__.applyActionEffects) is not a function
+ ❯ client/src/game/rules/resourceGains.test.ts:1095:29
+    1093|         buildings: { sanctum: 1 },
+    1094|       });
+    1095|       const effectUpdates = applyActionEffects('craftLeatherTotems5', state);
+       |                             ^
+    1096| 
+    1097|       expect(effectUpdates.resources?.leather_totem).toBe((state.resources.leather_tot…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[42/48]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Advanced Mining Actions > mineSulfur gains match tooltip
+TypeError: (0 , __vite_ssr_import_1__.applyActionEffects) is not a function
+ ❯ testActionGains client/src/game/rules/resourceGains.test.ts:273:27
+    271|   // Run action multiple times to sample the random range
+    272|   for (let i = 0; i < iterations; i++) {
+    273|     const effectUpdates = applyActionEffects(actionId, state);
+       |                           ^
+    274| 
+    275|     if (effectUpdates.resources) {
+ ❯ client/src/game/rules/resourceGains.test.ts:1107:46
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[43/48]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Advanced Mining Actions > mineAdamant gains match tooltip
+TypeError: (0 , __vite_ssr_import_1__.applyActionEffects) is not a function
+ ❯ testActionGains client/src/game/rules/resourceGains.test.ts:273:27
+    271|   // Run action multiple times to sample the random range
+    272|   for (let i = 0; i < iterations; i++) {
+    273|     const effectUpdates = applyActionEffects(actionId, state);
+       |                           ^
+    274| 
+    275|     if (effectUpdates.resources) {
+ ❯ client/src/game/rules/resourceGains.test.ts:1123:46
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[44/48]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Trade Actions > tradeGoldForFood (tier 3) produces correct amount
+TypeError: (0 , __vite_ssr_import_1__.applyActionEffects) is not a function
+ ❯ client/src/game/rules/resourceGains.test.ts:1141:29
+    1139|         buildings: { merchantsGuild: 1 },
+    1140|       });
+    1141|       const effectUpdates = applyActionEffects('tradeGoldForFood', state);
+       |                             ^
+    1142| 
+    1143|       // Tier 3 gives 1000 food
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[45/48]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Trade Actions > tradeGoldForStone (tier 3) produces correct amount
+TypeError: (0 , __vite_ssr_import_1__.applyActionEffects) is not a function
+ ❯ client/src/game/rules/resourceGains.test.ts:1153:29
+    1151|         buildings: { merchantsGuild: 1 },
+    1152|       });
+    1153|       const effectUpdates = applyActionEffects('tradeGoldForStone', state);
+       |                             ^
+    1154| 
+    1155|       // Tier 3 gives 1000 stone
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[46/48]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Trade Actions > tradeGoldForTorch (tier 3) produces correct amount
+TypeError: (0 , __vite_ssr_import_1__.applyActionEffects) is not a function
+ ❯ client/src/game/rules/resourceGains.test.ts:1165:29
+    1163|         buildings: { merchantsGuild: 1 },
+    1164|       });
+    1165|       const effectUpdates = applyActionEffects('tradeGoldForTorch', state);
+       |                             ^
+    1166| 
+    1167|       // Tier 3 gives 250 torches
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[47/48]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Trade Actions > tradeSilverForGold (tier 3) produces correct amount
+TypeError: (0 , __vite_ssr_import_1__.applyActionEffects) is not a function
+ ❯ client/src/game/rules/resourceGains.test.ts:1177:29
+    1175|         buildings: { merchantsGuild: 1 },
+    1176|       });
+    1177|       const effectUpdates = applyActionEffects('tradeSilverForGold', state);
+       |                             ^
+    1178| 
+    1179|       // Tier 3 gives 50 gold
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[48/48]⎯
+
+
+ Test Files  2 failed | 12 passed (14)
+      Tests  48 failed | 160 passed (208)
+   Start at  12:19:25
+   Duration  2.37s
+
+ FAIL  Tests failed. Watching for file changes...
+       press h to show help, press q to quit
