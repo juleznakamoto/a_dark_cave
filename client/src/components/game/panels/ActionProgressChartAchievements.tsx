@@ -436,7 +436,7 @@ export default function ActionProgressChartAchievements() {
                   startAngle={segment.startAngle}
                   endAngle={segment.endAngle}
                   cornerRadius={5}
-                  strokeWidth={segment.isFull ? (isClaimed ? 1 : 1.5) : 0}
+                  strokeWidth={segment.isFull ? (isClaimed ? 1 : 3) : 0}
                   stroke={segment.isFull ? COMPLETED_STROKE_COLOR : undefined}
                   isAnimationActive={false}
                   style={{
