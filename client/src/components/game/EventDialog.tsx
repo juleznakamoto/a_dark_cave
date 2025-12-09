@@ -139,12 +139,6 @@ export default function EventDialog({
     if (isMerchantEvent && !isSayGoodbye) {
       const choice = eventChoices.find((c) => c.id === choiceId);
       if (choice) {
-        console.log('[MERCHANT] Processing merchant purchase:', {
-          choiceId,
-          eventId,
-          currentPurchaseCount: gameState.story?.seen?.merchantPurchases,
-        });
-        
         const result = choice.effect(gameState);
 
         // Apply state changes directly to avoid triggering new dialogs
@@ -189,22 +183,9 @@ export default function EventDialog({
           });
         }
 
-        // Don't add _logMessage to the log - it's only for dialog feedback
-        // The message will be shown in the dialog UI instead
-
-        console.log('[MERCHANT] After applyEventChoice:', {
-          choiceId,
-          newPurchaseCount: gameState.story?.seen?.merchantPurchases,
-        });
-
         // Increment merchant purchase counter
         const currentCount = Number(gameState.story?.seen?.merchantPurchases) || 0;
         const newCount = currentCount + 1;
-        
-        console.log('[MERCHANT] Incrementing counter in EventDialog:', {
-          currentCount,
-          newCount,
-        });
         
         gameState.setFlag('merchantPurchases' as any, newCount as any);
         
@@ -220,11 +201,6 @@ export default function EventDialog({
         
         // Apply the story update to the store
         useGameStore.setState({ story: updatedStory });
-        
-        console.log('[MERCHANT] Counter updated:', {
-          newCount,
-          storyValue: gameState.story?.seen?.merchantPurchases,
-        });
 
         setPurchasedItems(prev => new Set(prev).add(choiceId));
       }
