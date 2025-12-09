@@ -424,26 +424,25 @@ export default function ActionProgressChartAchievements() {
                 }
               };
 
-              return (
+              return [
+                // Invisible larger hit area for easier interaction
                 <Pie
-                  key={`progress-${ringIndex}-${segIndex}`}
+                  key={`hitarea-${ringIndex}-${segIndex}`}
                   data={[{ value: 1 }]}
                   cx="50%"
                   cy="50%"
-                  innerRadius={ring.innerRadius}
-                  outerRadius={ring.outerRadius}
+                  innerRadius={ring.innerRadius - 2}
+                  outerRadius={ring.outerRadius + 2}
                   dataKey="value"
                   startAngle={segment.startAngle}
                   endAngle={segment.endAngle}
-                  cornerRadius={5}
-                  strokeWidth={segment.isFull ? (isClaimed ? 1 : 1.5) : 0}
-                  stroke={segment.isFull ? COMPLETED_STROKE_COLOR : undefined}
+                  fill="transparent"
+                  strokeWidth={0}
                   isAnimationActive={false}
                   style={{
                     outline: "none",
                     pointerEvents: showTooltip ? "auto" : "none",
                     cursor: isInteractive ? "pointer" : "default",
-                    opacity: isClaimed ? 0.4 : 1,
                   }}
                   onMouseEnter={(e: any) => {
                     if (showTooltip) {
@@ -471,9 +470,32 @@ export default function ActionProgressChartAchievements() {
                   }}
                   onClick={handleSegmentClick}
                 >
+                  <Cell fill="transparent" />
+                </Pie>,
+                // Visible segment
+                <Pie
+                  key={`progress-${ringIndex}-${segIndex}`}
+                  data={[{ value: 1 }]}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={ring.innerRadius}
+                  outerRadius={ring.outerRadius}
+                  dataKey="value"
+                  startAngle={segment.startAngle}
+                  endAngle={segment.endAngle}
+                  cornerRadius={5}
+                  strokeWidth={segment.isFull ? (isClaimed ? 1 : 1.5) : 0}
+                  stroke={segment.isFull ? COMPLETED_STROKE_COLOR : undefined}
+                  isAnimationActive={false}
+                  style={{
+                    outline: "none",
+                    pointerEvents: "none",
+                    opacity: isClaimed ? 0.4 : 1,
+                  }}
+                >
                   <Cell fill={segmentColor} />
                 </Pie>
-              );
+              ];
             }),
 
             // Foreground ring
