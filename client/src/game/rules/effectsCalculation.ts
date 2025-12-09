@@ -837,11 +837,11 @@ export const calculateTotalEffects = (state: GameState) => {
       }
 
       // Populate actionBonuses directly from effects
-      if (effect.bonuses.actionBonuses) {
+      if (effect.bonuses?.actionBonuses) {
         effects.actionBonuses[fellowId] = effect.bonuses.actionBonuses;
       }
 
-      if (effect.bonuses.actionBonuses) {
+      if (effect.bonuses?.actionBonuses) {
         Object.entries(effect.bonuses.actionBonuses).forEach(
           ([actionId, actionBonus]) => {
             // Resource bonuses
@@ -887,7 +887,7 @@ export const calculateTotalEffects = (state: GameState) => {
       }
 
       // Process general bonuses
-      if (effect.bonuses.generalBonuses) {
+      if (effect.bonuses?.generalBonuses) {
         if (effect.bonuses.generalBonuses.strength) {
           effects.statBonuses.strength +=
             effect.bonuses.generalBonuses.strength;
