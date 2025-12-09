@@ -85,13 +85,13 @@ const TIMEOUT_MESSAGES = WRONG_ANSWER_MESSAGES;
 export const riddleEvents: Record<string, GameEvent> = {
   whisperersReward: {
     id: "whisperersReward",
-    condition: (state: GameState) => 
+    condition: (state: GameState) => true,
       // state.events.whispererInTheDark_correct === true &&
       // state.events.riddleOfAges_correct === true &&
       // state.events.riddleOfDevourer_correct === true &&
       // state.events.riddleOfTears_correct === true &&
       // state.events.riddleOfEternal_correct === true &&
-      !state.events.whisperersReward,
+      // !state.events.whisperersReward,
     triggerType: "resource",
     timeProbability: 0.05,
     title: "The Whisperer's Gift",
