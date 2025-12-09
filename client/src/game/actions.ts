@@ -275,6 +275,8 @@ export function executeGameAction(
       return handleCraftEmberBomb(state, result);
     case "craftAshfireBomb":
       return handleCraftAshfireBomb(state, result);
+    case "craftVoidBomb":
+      return handleCraftVoidBomb(state, result);
     case "craftIronSword":
       return handleCraftIronSword(state, result);
     case "craftSteelSword":
