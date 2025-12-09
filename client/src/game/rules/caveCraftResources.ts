@@ -1,6 +1,6 @@
 import { Action, GameState } from "@shared/schema";
 import { ActionResult } from "../actions";
-import { applyActionEffects } from "./effects";
+import { applyActionEffects } from "./index";
 
 export const caveCraftResources: Record<string, Action> = {
   craftBoneTotem: {
