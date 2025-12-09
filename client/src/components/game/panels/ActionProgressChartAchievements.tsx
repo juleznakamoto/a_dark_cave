@@ -294,6 +294,7 @@ export default function ActionProgressChartAchievements() {
           currentCount: currentCount,
           maxCount: seg.maxCount,
           segmentId: `${ringIndex}-${seg.segmentType}`,
+          reward: seg.reward,
         };
       });
 

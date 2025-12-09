@@ -268,6 +268,7 @@ export default function ItemProgressChart() {
           currentCount: currentCount, // Add currentCount for tooltip
           maxCount: seg.maxCount, // Add maxCount for tooltip
           segmentId: `${ringIndex}-${seg.itemType}`, // Unique ID for segment
+          reward: seg.reward,
         };
       });
 

@@ -282,6 +282,7 @@ export default function BuildingProgressChart() {
           currentCount,
           maxCount: seg.maxCount,
           segmentId: `${ringIndex}-${index}`,
+          reward: seg.reward,
         };
       });
 
