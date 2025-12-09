@@ -6,7 +6,7 @@ import { useState, useRef } from "react";
 
 // Segment colors
 const SEGMENT_COLOR = tailwindToHex("gray-400/70");
-const COMPLETED_COLOR = tailwindToHex("blue-600");
+const COMPLETED_COLOR = tailwindToHex("blue-700");
 const COMPLETED_STROKE_COLOR = tailwindToHex("blue-900");
 const BACKGROUND_COLOR = tailwindToHex("neutral-800");
 const BORDER_COLOR = tailwindToHex("neutral-400");

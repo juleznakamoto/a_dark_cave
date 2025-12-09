@@ -537,7 +537,7 @@ export default function CombatDialog({
                     </TooltipTrigger>
                     <TooltipContent>
                       <div className="text-xs whitespace-nowrap">
-                        {calculateCriticalStrikeChance(getTotalLuck(gameState))}% critical strike chance{getTotalLuck(gameState) >= 50 ? " (max)" : ""}
+                        {calculateCriticalStrikeChance(getTotalLuck(gameState))}% critical strike chance due to Luck{getTotalLuck(gameState) >= 50 ? " (max)" : ""}
                       </div>
                     </TooltipContent>
                   </Tooltip>
@@ -585,7 +585,7 @@ export default function CombatDialog({
               </div>
 
               {/* Player Stats */}
-              <div className="border-t pt-3">
+              <div className="pt-3">
                 {/* Bastion Integrity */}
                 <div className="relative">
                   <div className="flex justify-between text-sm">
@@ -609,7 +609,7 @@ export default function CombatDialog({
 
                 <div className="text-xs mt-2">
                   <div>
-                    Attack: {bastionStats.attack} Defense:{" "}
+                    Attack: {bastionStats.attack}, Defense:{" "}
                     {bastionStats.defense}
                   </div>
                 </div>
@@ -623,7 +623,7 @@ export default function CombatDialog({
                     ] > 0
                   : item.id === "poison_arrows" && NIGHTSHADE_BOW_OWNED
               ) && (
-                <div className="border-t pt-3">
+                <div className="pt-3">
                   <div className="text-sm font-medium mb-2">Items</div>
                   <div className="grid grid-cols-2 gap-2">
                     {combatItems
@@ -683,7 +683,7 @@ export default function CombatDialog({
 
               {/* Combat Skills Section - only show if any fellowship member is unlocked */}
               {(HAS_RESTLESS_KNIGHT || HAS_ELDER_WIZARD) && (
-                <div className="border-t pt-3">
+                <div className="pt-3">
                   <div className="text-sm font-medium mb-2">Combat Skills</div>
                   <div className="grid grid-cols-2 gap-2">
                     {HAS_RESTLESS_KNIGHT && (
@@ -756,7 +756,7 @@ export default function CombatDialog({
               )}
 
               {/* Fight Button */}
-              <div className="border-t pt-3">
+              <div className="pt-3">
                 {combatEnded ? (
                   <Button
                     onClick={handleEndFight}

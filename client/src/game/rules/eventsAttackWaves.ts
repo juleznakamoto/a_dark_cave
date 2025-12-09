@@ -4,19 +4,34 @@ import { killVillagers } from "@/game/stateHelpers";
 import { useGameStore } from "@/game/state";
 
 // Helper function to calculate enemy stats
-function calculateEnemyStats(params: {
-  attack: { base: number; random?: number; cmBonus: number; options?: number[] };
-  health: { base: number; cmBonus: number };
-}, state: GameState) {
+function calculateEnemyStats(
+  params: {
+    attack: {
+      base: number;
+      random?: number;
+      cmBonus: number;
+      options?: number[];
+    };
+    health: { base: number; cmBonus: number };
+  },
+  state: GameState,
+) {
   const health = params.health.base + state.CM * params.health.cmBonus;
 
   let attack: number;
   if (params.attack.options) {
     // Use options array if provided (e.g., fifth wave)
-    attack = params.attack.options[Math.floor(Math.random() * params.attack.options.length)] + state.CM * params.attack.cmBonus;
+    attack =
+      params.attack.options[
+        Math.floor(Math.random() * params.attack.options.length)
+      ] +
+      state.CM * params.attack.cmBonus;
   } else if (params.attack.random) {
     // Use random range if provided
-    attack = Math.ceil(Math.random() * params.attack.random) + params.attack.base + state.CM * params.attack.cmBonus;
+    attack =
+      Math.ceil(Math.random() * params.attack.random) +
+      params.attack.base +
+      state.CM * params.attack.cmBonus;
   } else {
     // Fallback to base + CM bonus
     attack = params.attack.base + state.CM * params.attack.cmBonus;
@@ -32,7 +47,7 @@ function calculateEnemyStats(params: {
 // Attack Wave Parameters
 const WAVE_PARAMS = {
   firstWave: {
-    attack: { base: 20, random: 10, options: [20, 25, 30],cmBonus: 5 },
+    attack: { base: 20, random: 10, options: [20, 25, 30], cmBonus: 5 },
     health: { base: 300, cmBonus: 50 },
     silverReward: 250,
     initialDuration: 10 * 60 * 1000, // 10 minutes
@@ -72,7 +87,12 @@ const WAVE_PARAMS = {
     fellowshipWoundedMultiplier: 0.25,
   },
   fifthWave: {
-    attack: { base: 65, random: 20, options: [65, 70, 75, 80, 85], cmBonus: 20 },
+    attack: {
+      base: 65,
+      random: 20,
+      options: [65, 70, 75, 80, 85],
+      cmBonus: 20,
+    },
     health: { base: 800, cmBonus: 200 },
     silverReward: 1500,
     initialDuration: 10 * 60 * 1000,
@@ -86,9 +106,10 @@ const WAVE_PARAMS = {
 const WAVE_CONFIG = {
   firstWave: {
     title: "The First Wave",
-    message: "Pale figures emerge from the cave, finally freed, their ember eyes cutting through the dark as they march towards the city.",
-    enemyName: "Group of pale creatures",
-    condition: (state: GameState) => 
+    message:
+      "Pale figures emerge from the cave, finally freed, their ember eyes cutting through the dark as they march towards the city.",
+    enemyName: "Group of creatures",
+    condition: (state: GameState) =>
       state.flags.portalBlasted &&
       state.story.seen.hasBastion &&
       !state.story.seen.firstWaveVictory,
@@ -97,19 +118,20 @@ const WAVE_CONFIG = {
   },
   secondWave: {
     title: "The Second Wave",
-    message: "They creatures return in greater numbers, clad in crude bone, their weapons glowing with foul light.",
-    enemyName: "Pack of pale creatures",
-    condition: (state: GameState) => 
-      state.story.seen.firstWaveVictory && 
-      !state.story.seen.secondWaveVictory,
+    message:
+      "They creatures return in greater numbers, clad in crude bone, their weapons glowing with foul light.",
+    enemyName: "Pack of creatures",
+    condition: (state: GameState) =>
+      state.story.seen.firstWaveVictory && !state.story.seen.secondWaveVictory,
     triggeredFlag: "secondWaveTriggered" as const,
     victoryFlag: "secondWaveVictory" as const,
   },
   thirdWave: {
     title: "The Third Wave",
-    message: "Hoards of pale creatures come from the cave, screams shake even the stones, their bone weapons cracking the ground.",
-    enemyName: "Horde of pale creatures",
-    condition: (state: GameState) => 
+    message:
+      "Hoards of pale creatures come from the cave, screams shake even the stones, their bone weapons cracking the ground.",
+    enemyName: "Horde of creatures",
+    condition: (state: GameState) =>
       state.story.seen.wizardDecryptsScrolls &&
       state.story.seen.secondWaveVictory &&
       !state.story.seen.thirdWaveVictory,
@@ -118,9 +140,10 @@ const WAVE_CONFIG = {
   },
   fourthWave: {
     title: "The Fourth Wave",
-    message: "The sky seems to darken as an uncountable mass of pale creatures surges from the cave, pressing towards the city.",
-    enemyName: "Legion of pale creatures",
-    condition: (state: GameState) => 
+    message:
+      "The sky seems to darken as an uncountable mass of pale creatures surges from the cave, pressing towards the city.",
+    enemyName: "Legion of creatures",
+    condition: (state: GameState) =>
       state.weapons.frostglass_sword &&
       state.story.seen.thirdWaveVictory &&
       !state.story.seen.fourthWaveVictory,
@@ -129,9 +152,10 @@ const WAVE_CONFIG = {
   },
   fifthWave: {
     title: "The Final Wave",
-    message: "From the cave emerge countless pale figures, larger and more twisted than before, their forms unspeakable as they advance on the city.",
-    enemyName: "Swarm of pale creatures",
-    condition: (state: GameState) => 
+    message:
+      "From the cave emerge countless pale figures, larger and more twisted than before, their forms unspeakable as they advance on the city.",
+    enemyName: "Swarm of creatures",
+    condition: (state: GameState) =>
       state.weapons.bloodstone_staff &&
       state.story.seen.fourthWaveVictory &&
       !state.story.seen.fifthWaveVictory,
@@ -154,7 +178,8 @@ function createDefeatMessage(
   let msg = "The creatures overwhelm your defenses. ";
 
   if (casualties === 0) {
-    msg += "The defenses crumble under the assault before the remaining creatures retreat to the depths.";
+    msg +=
+      "The defenses crumble under the assault before the remaining creatures retreat to the depths.";
   } else if (casualties === 1) {
     msg +=
       "One villager falls before the remaining creatures retreat to the depths.";
@@ -204,14 +229,25 @@ function handleDefeat(
   // Fellowship wounding logic
   let fellowshipWounded = {};
   const woundedFellows: string[] = [];
-  const fellowshipChance = Math.min(fellowshipWoundedMultiplier + state.CM * 0.1, 0.9);
+  const fellowshipChance = Math.min(
+    fellowshipWoundedMultiplier + state.CM * 0.1,
+    0.9,
+  );
 
-  if (state.fellowship?.restless_knight && !state.story.seen.restlessKnightWounded && chance(fellowshipChance)) {
+  if (
+    state.fellowship?.restless_knight &&
+    !state.story.seen.restlessKnightWounded &&
+    chance(fellowshipChance)
+  ) {
     fellowshipWounded = { ...fellowshipWounded, restlessKnightWounded: true };
     woundedFellows.push("Restless Knight");
   }
 
-  if (state.fellowship?.elder_wizard && !state.story.seen.elderWizardWounded && chance(fellowshipChance)) {
+  if (
+    state.fellowship?.elder_wizard &&
+    !state.story.seen.elderWizardWounded &&
+    chance(fellowshipChance)
+  ) {
     fellowshipWounded = { ...fellowshipWounded, elderWizardWounded: true };
     woundedFellows.push("Elder Wizard");
   }
@@ -256,14 +292,16 @@ function handleDefeat(
         ...fellowshipWounded,
       },
     },
-    _logMessage: createDefeatMessage(casualties, damagedBuildings, woundedFellows),
+    _logMessage: createDefeatMessage(
+      casualties,
+      damagedBuildings,
+      woundedFellows,
+    ),
   };
 }
 
 // Factory function to create attack wave events
-function createAttackWaveEvent(
-  waveId: keyof typeof WAVE_PARAMS,
-): GameEvent {
+function createAttackWaveEvent(waveId: keyof typeof WAVE_PARAMS): GameEvent {
   const params = WAVE_PARAMS[waveId];
   const config = WAVE_CONFIG[waveId];
 
@@ -313,15 +351,17 @@ function createAttackWaveEvent(
     effect: (state: GameState) => {
       const enemyStats = calculateEnemyStats(params, state);
 
-      const storyUpdate = config.triggeredFlag ? {
-        story: {
-          ...state.story,
-          seen: {
-            ...state.story.seen,
-            [config.triggeredFlag]: true,
-          },
-        },
-      } : {};
+      const storyUpdate = config.triggeredFlag
+        ? {
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                [config.triggeredFlag]: true,
+              },
+            },
+          }
+        : {};
 
       return {
         ...storyUpdate,
@@ -351,12 +391,18 @@ function createAttackWaveEvent(
                 defeated: true,
               },
             },
-            _logMessage: waveId === "fifthWave" 
-              ? FIFTH_WAVE_VICTORY_MESSAGE(params.silverReward)
-              : VICTORY_MESSAGE(params.silverReward),
+            _logMessage:
+              waveId === "fifthWave"
+                ? FIFTH_WAVE_VICTORY_MESSAGE(params.silverReward)
+                : VICTORY_MESSAGE(params.silverReward),
           }),
           onDefeat: () => {
-            const defeatResult = handleDefeat(state, params.buildingDamageMultiplier, params.maxCasualties, params.fellowshipWoundedMultiplier);
+            const defeatResult = handleDefeat(
+              state,
+              params.buildingDamageMultiplier,
+              params.maxCasualties,
+              params.fellowshipWoundedMultiplier,
+            );
             return {
               ...defeatResult,
               attackWaveTimers: {
@@ -367,10 +413,13 @@ function createAttackWaveEvent(
                   defeated: false,
                 },
               },
-              events: waveId === "firstWave" ? {
-                ...state.events,
-                firstWave: false, // Reset event triggered state
-              } : state.events,
+              events:
+                waveId === "firstWave"
+                  ? {
+                      ...state.events,
+                      firstWave: false, // Reset event triggered state
+                    }
+                  : state.events,
             };
           },
         },
