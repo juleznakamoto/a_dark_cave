@@ -58,7 +58,7 @@ export default function ActionProgressChartAchievements() {
 
   // Define ring segment configurations
   const ringSegments: ActionSegment[][] = [
-    // First ring: Sacrifices
+    // First ring: Sacrifices (1.3x multiplier)
     [
       {
         segmentType: "exploreCave",
@@ -66,7 +66,7 @@ export default function ActionProgressChartAchievements() {
         color: SEGMENT_COLOR,
         label: "Cave Explore",
         getCount: (state: GameState) =>
-          state.buttonUpgrades?.caveExplore?.level || 0,
+          (state.buttonUpgrades?.caveExplore?.level || 0) * 1.3,
       },
       {
         segmentType: "chopWood",
@@ -74,17 +74,17 @@ export default function ActionProgressChartAchievements() {
         color: SEGMENT_COLOR,
         label: "Chop Wood",
         getCount: (state: GameState) =>
-          state.buttonUpgrades?.chopWood?.level || 0,
+          (state.buttonUpgrades?.chopWood?.level || 0) * 1.3,
       },
       {
         segmentType: "hunt",
         maxCount: 10,
         color: SEGMENT_COLOR,
         label: "Hunt",
-        getCount: (state: GameState) => state.buttonUpgrades?.hunt?.level || 0,
+        getCount: (state: GameState) => (state.buttonUpgrades?.hunt?.level || 0) * 1.3,
       },
     ],
-    // Second ring: Cave & Gathering Actions
+    // Second ring: Cave & Gathering Actions (1.8x multiplier)
     [
       {
         segmentType: "mineStone",
@@ -92,7 +92,7 @@ export default function ActionProgressChartAchievements() {
         color: SEGMENT_COLOR,
         label: "Mine Stone",
         getCount: (state: GameState) =>
-          state.buttonUpgrades?.mineStone?.level || 0,
+          (state.buttonUpgrades?.mineStone?.level || 0) * 1.8,
       },
       {
         segmentType: "mineIron",
@@ -100,7 +100,7 @@ export default function ActionProgressChartAchievements() {
         color: SEGMENT_COLOR,
         label: "Mine Iron",
         getCount: (state: GameState) =>
-          state.buttonUpgrades?.mineIron?.level || 0,
+          (state.buttonUpgrades?.mineIron?.level || 0) * 1.8,
       },
       {
         segmentType: "mineCoal",
@@ -108,7 +108,7 @@ export default function ActionProgressChartAchievements() {
         color: SEGMENT_COLOR,
         label: "Mine Coal",
         getCount: (state: GameState) =>
-          state.buttonUpgrades?.mineCoal?.level || 0,
+          (state.buttonUpgrades?.mineCoal?.level || 0) * 1.8,
       },
       {
         segmentType: "mineSulfur",
@@ -116,7 +116,7 @@ export default function ActionProgressChartAchievements() {
         color: SEGMENT_COLOR,
         label: "Mine Sulfur",
         getCount: (state: GameState) =>
-          state.buttonUpgrades?.mineSulfur?.level || 0,
+          (state.buttonUpgrades?.mineSulfur?.level || 0) * 1.8,
       },
       {
         segmentType: "mineObsidian",
@@ -124,7 +124,7 @@ export default function ActionProgressChartAchievements() {
         color: SEGMENT_COLOR,
         label: "Mine Obsidian",
         getCount: (state: GameState) =>
-          state.buttonUpgrades?.mineObsidian?.level || 0,
+          (state.buttonUpgrades?.mineObsidian?.level || 0) * 1.8,
       },
       {
         segmentType: "mineAdamant",
@@ -132,7 +132,7 @@ export default function ActionProgressChartAchievements() {
         color: SEGMENT_COLOR,
         label: "Mine Adamant",
         getCount: (state: GameState) =>
-          state.buttonUpgrades?.mineAdamant?.level || 0,
+          (state.buttonUpgrades?.mineAdamant?.level || 0) * 1.8,
       },
     ],
     // Third ring: Mining Actions
