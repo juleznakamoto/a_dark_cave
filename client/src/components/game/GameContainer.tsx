@@ -327,9 +327,11 @@ export default function GameContainer() {
                 {/* Achievements Tab Button */}
                 <button
                   className={`py-2 text-sm bg-transparent ${
-                    activeTab === "achievements"
-                      ? "font-medium opacity-100"
-                      : "opacity-60"
+                    animatingTabs.has("achievements")
+                      ? "tab-fade-in"
+                      : activeTab === "achievements"
+                        ? "font-medium opacity-100"
+                        : "opacity-60"
                   }`}
                   onClick={() => setActiveTab("achievements")}
                   data-testid="tab-achievements"
