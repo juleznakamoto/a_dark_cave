@@ -115,6 +115,7 @@ export interface LogEntry {
   baseDecisionTime?: number;
   fallbackChoice?: EventChoice;
   skipSound?: boolean; // Skip playing sound for this event
+  skipEventLog?: boolean; // Skip adding to visible event log
   relevant_stats?: ("strength" | "knowledge" | "luck" | "madness")[]; // Stats relevant to event odds
   // Visual effect properties
   visualEffect?: {
@@ -234,6 +235,7 @@ export class EventManager {
           fallbackChoice: event.fallbackChoice,
           relevant_stats: event.relevant_stats,
           visualEffect: event.visualEffect,
+          skipEventLog: eventChoices && eventChoices.length > 0, // Mark events with choices to skip log
         };
 
         newLogEntries.push(logEntry);
