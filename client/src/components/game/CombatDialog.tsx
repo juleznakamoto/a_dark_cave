@@ -20,6 +20,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useMobileTooltip } from "@/hooks/useMobileTooltip";
 
 interface Enemy {
   name: string;
@@ -61,6 +62,7 @@ export default function CombatDialog({
   const bloodflameSphereLevel = useGameStore(
     (state) => state.combatSkills.bloodflameSphereLevel,
   );
+  const luckTooltip = useMobileTooltip();
 
 
   const [combatStarted, setCombatStarted] = useState(false);
@@ -518,14 +520,14 @@ export default function CombatDialog({
                 </DialogTitle>
                 <TooltipProvider>
                   <Tooltip
-                    open={discountTooltip.isTooltipOpen("merchant-discount")}
+                    open={luckTooltip.isTooltipOpen("combat-luck")}
                   >
                     <TooltipTrigger asChild>
                       <span
-                        className="text-green-300/80 cursor-pointer hover:text-blue-300 transition-colors inline-block text-3xl sm:text-xl"
+                        className="text-green-300/80 cursor-pointer hover:text-green-300 transition-colors inline-block text-3xl sm:text-xl"
                         onClick={(e) =>
-                          discountTooltip.handleTooltipClick(
-                            "merchant-discount",
+                          luckTooltip.handleTooltipClick(
+                            "combat-luck",
                             e,
                           )
                         }
@@ -535,7 +537,7 @@ export default function CombatDialog({
                     </TooltipTrigger>
                     <TooltipContent>
                       <div className="text-xs whitespace-nowrap">
-                        {calculateCriticalStrikeChance(getTotalLuck(gameState))}% critical strike chance? " isLuckBonusMaxed (max)" : ""}
+                        {calculateCriticalStrikeChance(getTotalLuck(gameState))}% critical strike chance{getTotalLuck(gameState) >= 50 ? " (max)" : ""}
                       </div>
                     </TooltipContent>
                   </Tooltip>
