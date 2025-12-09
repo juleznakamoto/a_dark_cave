@@ -6,7 +6,7 @@ import { useState, useRef } from "react";
 
 // Segment colors
 const SEGMENT_COLOR = tailwindToHex("gray-400/70");
-const COMPLETED_COLOR = tailwindToHex("blue-700");
+const COMPLETED_COLOR = tailwindToHex("blue-800");
 const COMPLETED_STROKE_COLOR = tailwindToHex("blue-900");
 const BACKGROUND_COLOR = tailwindToHex("neutral-800");
 const BORDER_COLOR = tailwindToHex("neutral-400");
@@ -66,18 +66,21 @@ export default function BuildingProgressChart() {
         maxCount: 10,
         color: SEGMENT_COLOR,
         label: "Basic Shelter",
+        reward: 500,
       },
       {
         buildingType: "stoneHut",
         maxCount: 10,
         color: SEGMENT_COLOR,
         label: "Advanced Shelter",
+        reward: 500,
       },
       {
         buildingType: "longhouse",
         maxCount: 5,
         color: SEGMENT_COLOR,
         label: "Nordic Housing",
+        reward: 500,
       },
     ],
     // Second ring: Basic crafting and trade buildings
@@ -88,6 +91,7 @@ export default function BuildingProgressChart() {
         color: SEGMENT_COLOR,
         label: "Hunting",
         relatedBuildings: ["greatCabin"],
+        reward: 250,
       },
       {
         buildingType: "tannery",
@@ -95,6 +99,7 @@ export default function BuildingProgressChart() {
         color: SEGMENT_COLOR,
         label: "Hidework",
         relatedBuildings: ["masterTannery"],
+        reward: 250,
       },
       {
         buildingType: "tradePost",
@@ -102,6 +107,7 @@ export default function BuildingProgressChart() {
         color: SEGMENT_COLOR,
         label: "Trade",
         relatedBuildings: ["grandBazaar", "merchantsGuild"],
+        reward: 250,
       },
       {
         buildingType: "clerksHut",
@@ -109,6 +115,7 @@ export default function BuildingProgressChart() {
         color: SEGMENT_COLOR,
         label: "Wisdom",
         relatedBuildings: ["scriptorium", "inkwardenAcademy"],
+        reward: 250,
       },
     ],
     // Third ring: Resource buildings and pits
@@ -119,6 +126,7 @@ export default function BuildingProgressChart() {
         color: SEGMENT_COLOR,
         label: "Forging",
         relatedBuildings: ["grandBlacksmith"],
+        reward: 250,
       },
       {
         buildingType: "foundry",
@@ -126,6 +134,7 @@ export default function BuildingProgressChart() {
         color: SEGMENT_COLOR,
         label: "Smelting",
         relatedBuildings: ["primeFoundry", "masterworkFoundry"],
+        reward: 250,
       },
       {
         buildingType: "shallowPit",
@@ -133,6 +142,7 @@ export default function BuildingProgressChart() {
         color: SEGMENT_COLOR,
         label: "Mining",
         relatedBuildings: ["deepeningPit", "deepPit", "bottomlessPit"],
+        reward: 500,
       },
     ],
     // Fourth ring: Advanced buildings
@@ -143,6 +153,7 @@ export default function BuildingProgressChart() {
         color: SEGMENT_COLOR,
         label: "Devotion",
         relatedBuildings: ["shrine", "temple", "sanctum"],
+        reward: 500,
       },
       {
         buildingType: "blackMonolith",
@@ -150,6 +161,7 @@ export default function BuildingProgressChart() {
         color: SEGMENT_COLOR,
         label: "Sacrifice",
         relatedBuildings: ["pillarOfClarity", "boneTemple"],
+        reward: 250,
       },
     ],
     // Fifth ring: Fortifications
@@ -159,12 +171,14 @@ export default function BuildingProgressChart() {
         maxCount: 4,
         color: SEGMENT_COLOR,
         label: "Walls",
+        reward: 500,
       },
       {
         buildingType: "watchtower",
         maxCount: 4,
         color: SEGMENT_COLOR,
         label: "Lookout",
+        reward: 500,
       },
     ],
   ];

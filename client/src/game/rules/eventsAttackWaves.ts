@@ -33,7 +33,7 @@ function calculateEnemyStats(
 // Attack Wave Parameters
 const WAVE_PARAMS = {
   firstWave: {
-    attack: { options: [20, 25, 30], cmBonus: 5 },
+    attack: { options: [25, 30, 35], cmBonus: 5 },
     health: { base: 300, cmBonus: 50 },
     silverReward: 250,
     initialDuration: 10 * 60 * 1000, // 10 minutes
@@ -43,7 +43,7 @@ const WAVE_PARAMS = {
     fellowshipWoundedMultiplier: 0.1,
   },
   secondWave: {
-    attack: { options: [30, 35, 40], cmBonus: 5 },
+    attack: { options: [35, 40, 45], cmBonus: 5 },
     health: { base: 400, cmBonus: 50 },
     silverReward: 500,
     initialDuration: 10 * 60 * 1000,
@@ -53,7 +53,7 @@ const WAVE_PARAMS = {
     fellowshipWoundedMultiplier: 0.15,
   },
   thirdWave: {
-    attack: { options: [40, 45, 50], cmBonus: 10 },
+    attack: { options: [45, 50, 55], cmBonus: 10 },
     health: { base: 500, cmBonus: 100 },
     silverReward: 750,
     initialDuration: 10 * 60 * 1000,
@@ -63,7 +63,7 @@ const WAVE_PARAMS = {
     fellowshipWoundedMultiplier: 0.2,
   },
   fourthWave: {
-    attack: { options: [50, 55, 60, 65], cmBonus: 15 },
+    attack: { options: [55, 60, 65, 70], cmBonus: 15 },
     health: { base: 600, cmBonus: 150 },
     silverReward: 1000,
     initialDuration: 10 * 60 * 1000,
@@ -73,7 +73,7 @@ const WAVE_PARAMS = {
     fellowshipWoundedMultiplier: 0.25,
   },
   fifthWave: {
-    attack: { options: [65, 70, 75, 80, 85], cmBonus: 20 },
+    attack: { options: [70, 75, 80, 85], cmBonus: 20 },
     health: { base: 800, cmBonus: 200 },
     silverReward: 1500,
     initialDuration: 10 * 60 * 1000,
