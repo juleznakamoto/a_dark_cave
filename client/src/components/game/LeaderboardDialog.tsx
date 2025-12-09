@@ -31,6 +31,11 @@ export default function LeaderboardDialog({ isOpen, onClose }: LeaderboardDialog
   const [tempUsername, setTempUsername] = useState(username || "");
   const { toast } = useToast();
 
+  // Prevent dialog from affecting game state
+  const handleInteraction = (e: React.MouseEvent | React.KeyboardEvent) => {
+    e.stopPropagation();
+  };
+
   useEffect(() => {
     if (isOpen) {
       fetchLeaderboards();
@@ -172,7 +177,11 @@ export default function LeaderboardDialog({ isOpen, onClose }: LeaderboardDialog
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[80vh] flex flex-col">
+      <DialogContent 
+        className="max-w-2xl max-h-[80vh] flex flex-col"
+        onClick={handleInteraction}
+        onKeyDown={handleInteraction}
+      >
         <DialogHeader>
           <DialogTitle>Leaderboard</DialogTitle>
         </DialogHeader>
