@@ -29,14 +29,14 @@ export default function GameContainer() {
     flags,
     buildings,
     relics,
+    books,
     eventDialog,
     combatDialog,
     setActiveTab,
     setEventDialog,
     setCombatDialog,
     isPaused,
-    inactivityDialogOpen, // Added inactivityDialogOpen to state
-    gameState // Added gameState to access book information
+    inactivityDialogOpen,
   } = useGameStore();
 
   // Estate unlocks when Dark Estate is built
@@ -177,7 +177,7 @@ export default function GameContainer() {
     }
 
     // Add Achievements tab if Book of Trials is owned
-    if (gameState?.books?.book_of_trials) {
+    if (books?.book_of_trials) {
       tabs.push({
         id: "achievements",
         icon: <Castle />,
@@ -193,7 +193,7 @@ export default function GameContainer() {
     flags.bastionUnlocked,
     buildings.stoneHut,
     setActiveTab,
-    gameState?.books?.book_of_trials // Dependency for achievements tab
+    books?.book_of_trials,
   ]);
 
   // Show start screen if game hasn't started yet
@@ -323,7 +323,7 @@ export default function GameContainer() {
                 )}
 
                 {/* Achievements Tab Button */}
-                {gameState?.books?.book_of_trials && (
+                {books?.book_of_trials && (
                   <button
                     className={`py-2 text-sm bg-transparent ${
                       animatingTabs.has("achievements")
