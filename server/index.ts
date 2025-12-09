@@ -238,8 +238,8 @@ app.get("/api/leaderboard/:mode", async (req, res) => {
   try {
     const mode = req.params.mode as 'normal' | 'cruel';
     const cruelMode = mode === 'cruel';
-    const env = process.env.NODE_ENV === 'production' ? 'prod' : 'dev';
-    const adminClient = getAdminClient(env);
+    // Always use production data for leaderboard
+    const adminClient = getAdminClient('prod');
 
     const { data, error } = await adminClient
       .from('leaderboard')
@@ -274,8 +274,8 @@ app.post("/api/leaderboard/submit", async (req, res) => {
       return res.status(400).json({ error: 'Missing required fields' });
     }
 
-    const env = process.env.NODE_ENV === 'production' ? 'prod' : 'dev';
-    const adminClient = getAdminClient(env);
+    // Always use production data for leaderboard
+    const adminClient = getAdminClient('prod');
 
     // Check if user already has an entry for this mode
     const { data: existing } = await adminClient
@@ -331,8 +331,8 @@ app.post("/api/leaderboard/update-username", async (req, res) => {
       return res.status(400).json({ error: 'Missing required fields' });
     }
 
-    const env = process.env.NODE_ENV === 'production' ? 'prod' : 'dev';
-    const adminClient = getAdminClient(env);
+    // Always use production data for leaderboard
+    const adminClient = getAdminClient('prod');
 
     // Update username in all leaderboard entries for this user
     const { error } = await adminClient
@@ -342,10 +342,9 @@ app.post("/api/leaderboard/update-username", async (req, res) => {
 
     if (error) throw error;
 
-    // Also update in game_saves
-    const tableName = env === 'dev' ? 'game_saves_dev' : 'game_saves';
+    // Also update in production game_saves
     await adminClient
-      .from(tableName)
+      .from('game_saves')
       .update({ username })
       .eq('user_id', userId);
 
