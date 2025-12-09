@@ -163,9 +163,56 @@ export default function ItemProgressChart() {
       },
     ],
     // Fourth ring: Clothing
-    [],
-    // Fifth ring: ???
-    [],
+    [
+      {
+        itemType: "explorer_pack",
+        itemKeys: [
+          "explorer_pack",
+          "hunter_cloak",
+          "grenadier_bag",
+          "highpriest_robe",
+          "loggers_gloves",
+          "sacrificial_tunic",
+        ],
+        color: tailwindToHex("gray-400/80"),
+        label: "Leather Crafting",
+        category: "clothing",
+        maxCount: 6,
+        reward: 500,
+      },
+    ],
+    // Fifth ring: Books
+    [
+      {
+        itemType: "books",
+        itemKeys: [
+          "unnamed_book",
+          "elder_scroll",
+          "occultist_grimoire",
+        ],
+        color: tailwindToHex("gray-400/80"),
+        label: "Ancient Books",
+        category: "relics",
+        maxCount: 3,
+        reward: 1000,
+      },
+    ],
+    // Sixth ring: Fellowship
+    [
+      {
+        itemType: "fellowship",
+        itemKeys: [
+          "elder_wizard",
+          "restless_knight",
+          "ashwraith_huntress",
+        ],
+        color: tailwindToHex("gray-400/80"),
+        label: "Fellowship",
+        category: "fellowship",
+        maxCount: 3,
+        reward: 1000,
+      },
+    ],
   ];
 
   // Calculate ring configurations with radius values
@@ -193,6 +240,9 @@ export default function ItemProgressChart() {
         if (state.clothing[itemKey as keyof typeof state.clothing]) count++;
       } else if (segment.category === "relics") {
         if (state.relics[itemKey as keyof typeof state.relics]) count++;
+      } else if (segment.category === "fellowship") {
+        // Assuming GameState has a fellowship property similar to others
+        if (state.fellowship && state.fellowship[itemKey as keyof typeof state.fellowship]) count++;
       }
     }
 
