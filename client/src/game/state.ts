@@ -46,7 +46,6 @@ interface GameStore extends GameState {
   };
   authDialogOpen: boolean;
   shopDialogOpen: boolean;
-  leaderboardDialogOpen: boolean;
   idleModeDialog: {
     isOpen: boolean;
   };
@@ -159,7 +158,6 @@ interface GameStore extends GameState {
   setCombatDialog: (isOpen: boolean, data?: any) => void;
   setAuthDialogOpen: (isOpen: boolean) => void;
   setShopDialogOpen: (isOpen: boolean) => void;
-  setLeaderboardDialogOpen: (isOpen: boolean) => void;
   setIdleModeDialog: (isOpen: boolean) => void;
   updateEffects: () => void;
   updateBastionStats: () => void;
@@ -469,7 +467,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
   authDialogOpen: false,
   shopDialogOpen: false,
-  leaderboardDialogOpen: false,
   isMuted: false,
   idleModeDialog: {
     isOpen: false,
@@ -1325,10 +1322,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   setShopDialogOpen: (isOpen: boolean) => {
     set({ shopDialogOpen: isOpen });
-  },
-
-  setLeaderboardDialogOpen: (isOpen: boolean) => {
-    set({ leaderboardDialogOpen: isOpen });
   },
 
   setIdleModeDialog: (isOpen: boolean) => {
