@@ -1549,22 +1549,22 @@ export const choiceEvents: Record<string, GameEvent> = {
     ],
   },
 
-  wanderingAlchemist: {
-    id: "wanderingAlchemist",
+  wanderingFirecrafter: {
+    id: "wanderingFirecrafter",
     condition: (state: GameState) =>
       state.cruelMode &&
-      state.story.seen.secondWaveVictory &&
-      state.buildings.alchemistHall >= 1 &&
-      state.story.seen.alchemistArrives &&
-      !state.story.seen.wanderingAlchemistEvent,
+      // state.story.seen.firstWaveVictory &&
+      // state.buildings.alchemistHall >= 1 &&
+      // state.story.seen.alchemistArrives &&
+      !state.story.seen.wanderingFirecrafterEvent,
     triggerType: "resource",
-    timeProbability: 10,
-    title: "The Wandering Alchemist",
+    timeProbability: 0.025,
+    title: "The Wandering Firecrafter",
     message:
-      "A hooded figure in stained robes arrives at your village. 'I am an alchemist,' he says with an echoing voice. 'I can teach you to craft a bomb of extreme power, that tears reality itself. But knowledge has its price.'",
+      "A hooded figure in stained robes arrives at your village. 'I am a firecrafter,' he says with an echoing voice. 'I can teach you to craft a bomb of extreme power, that tears reality itself. But knowledge has its price.'",
     triggered: false,
     priority: 4,
-    repeatable: false,
+    repeatable: true,
     choices: [
       {
         id: "payGold",
@@ -1586,12 +1586,12 @@ export const choiceEvents: Record<string, GameEvent> = {
               ...state.story,
               seen: {
                 ...state.story.seen,
-                wanderingAlchemistEvent: true,
+                wanderingFirecrafterEvent: true,
                 canCraftVoidBomb: true,
               },
             },
             _logMessage:
-              "The alchemist takes your gold and begins teaching you the dark art of void bomb creation. 'Use this power wisely,' he warns before vanishing into the shadows.",
+              "The firecrafter takes your gold and begins teaching you the dark art of void bomb creation. 'Use this power wisely,' he warns before vanishing into the shadows.",
           };
         },
       },
@@ -1615,12 +1615,12 @@ export const choiceEvents: Record<string, GameEvent> = {
               ...state.story,
               seen: {
                 ...state.story.seen,
-                wanderingAlchemistEvent: true,
+                wanderingFirecrafterEvent: true,
                 canCraftVoidBomb: true,
               },
             },
             _logMessage:
-              "The alchemist takes your silver and begins teaching you the dark art of void bomb creation. 'Use this power wisely,' he warns before vanishing into the shadows.",
+              "The firecrafter takes your silver and begins teaching you the dark art of void bomb creation. 'Use this power wisely,' he warns before vanishing into the shadows.",
           };
         },
       },
@@ -1633,11 +1633,11 @@ export const choiceEvents: Record<string, GameEvent> = {
               ...state.story,
               seen: {
                 ...state.story.seen,
-                wanderingAlchemistEvent: true,
+                wanderingFirecrafterEvent: true,
               },
             },
             _logMessage:
-              "You refuse the alchemist's offer. He nods knowingly, 'Perhaps you are not ready for such power,' and disappears into the night.",
+              "You refuse the firecrafter's offer. He nods knowingly, 'Perhaps you are not ready for such power yet,' and disappears into the night.",
           };
         },
       },
