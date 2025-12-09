@@ -18,8 +18,6 @@ import {
   getTotalBuildingCostReduction,
 } from "@/game/rules/effectsCalculation";
 import { bookEffects, fellowshipEffects } from "@/game/rules/effects";
-import BuildingProgressChart from "./BuildingProgressChart";
-import ItemProgressChart from "./ItemProgressChart";
 import { gameStateSchema } from "@shared/schema";
 
 // Extract property order from schema by parsing defaults
@@ -968,15 +966,6 @@ export default function SidePanel() {
               forceNotifications={buildings.clerksHut > 0}
             />
           )}
-          {/* Progress Charts - Side by Side */}
-          <div className="flex">
-            <div className="flex-1">
-              <BuildingProgressChart />
-            </div>
-            <div className="flex-1">
-              <ItemProgressChart />
-            </div>
-          </div>
         </div>
 
         {/* Second column - Everything else */}
