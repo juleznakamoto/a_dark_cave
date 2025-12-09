@@ -1099,35 +1099,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
       delete updatedChanges._logMessage;
     }
 
-    // Increment merchant purchase counter for merchant trades (not "say goodbye")
-    const isMerchantEvent = eventId.includes("merchant");
-    const isSayGoodbye = choiceId === "say_goodbye";
-    if (isMerchantEvent && !isSayGoodbye) {
-      const currentCount = Number(state.story?.seen?.merchantPurchases) || 0;
-      const newCount = currentCount + 1;
-      
-      logger.log('[MERCHANT] Incrementing purchase counter:', {
-        eventId,
-        choiceId,
-        currentCount,
-        newCount,
-        isMerchantEvent,
-        isSayGoodbye,
-      });
-      
-      if (!updatedChanges.story) {
-        updatedChanges.story = { ...state.story };
-      }
-      if (!updatedChanges.story.seen) {
-        updatedChanges.story.seen = { ...state.story.seen };
-      }
-      updatedChanges.story.seen.merchantPurchases = newCount;
-      
-      logger.log('[MERCHANT] After setting counter:', {
-        updatedChanges: updatedChanges.story?.seen?.merchantPurchases,
-      });
-    }
-
     // Apply state changes FIRST - this includes relics, resources, etc.
     if (Object.keys(updatedChanges).length > 0) {
       set((prevState) => {

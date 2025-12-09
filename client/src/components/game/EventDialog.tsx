@@ -197,6 +197,35 @@ export default function EventDialog({
           newPurchaseCount: gameState.story?.seen?.merchantPurchases,
         });
 
+        // Increment merchant purchase counter
+        const currentCount = Number(gameState.story?.seen?.merchantPurchases) || 0;
+        const newCount = currentCount + 1;
+        
+        console.log('[MERCHANT] Incrementing counter in EventDialog:', {
+          currentCount,
+          newCount,
+        });
+        
+        gameState.setFlag('merchantPurchases' as any, newCount as any);
+        
+        // Actually update the story.seen.merchantPurchases directly
+        const currentStory = gameState.story || { seen: {} };
+        const updatedStory = {
+          ...currentStory,
+          seen: {
+            ...currentStory.seen,
+            merchantPurchases: newCount,
+          },
+        };
+        
+        // Apply the story update to the store
+        useGameStore.setState({ story: updatedStory });
+        
+        console.log('[MERCHANT] Counter updated:', {
+          newCount,
+          storyValue: gameState.story?.seen?.merchantPurchases,
+        });
+
         setPurchasedItems(prev => new Set(prev).add(choiceId));
       }
       return;
