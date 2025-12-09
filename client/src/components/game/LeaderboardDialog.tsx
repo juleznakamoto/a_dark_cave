@@ -29,6 +29,7 @@ export default function LeaderboardDialog({ isOpen, onClose }: LeaderboardDialog
   const [loading, setLoading] = useState(false);
   const [editingUsername, setEditingUsername] = useState(false);
   const [tempUsername, setTempUsername] = useState(username || "");
+  const [lastUpdated, setLastUpdated] = useState<string | null>(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -40,9 +41,10 @@ export default function LeaderboardDialog({ isOpen, onClose }: LeaderboardDialog
   const fetchLeaderboards = async () => {
     setLoading(true);
     try {
-      const [normalRes, cruelRes] = await Promise.all([
+      const [normalRes, cruelRes, metaRes] = await Promise.all([
         fetch("/api/leaderboard/normal"),
         fetch("/api/leaderboard/cruel"),
+        fetch("/api/leaderboard/metadata"),
       ]);
 
       if (normalRes.ok) {
@@ -53,6 +55,11 @@ export default function LeaderboardDialog({ isOpen, onClose }: LeaderboardDialog
       if (cruelRes.ok) {
         const data = await cruelRes.json();
         setCruelLeaderboard(data);
+      }
+
+      if (metaRes.ok) {
+        const data = await metaRes.json();
+        setLastUpdated(data.lastUpdated);
       }
     } catch (error) {
       logger.error("Failed to fetch leaderboard:", error);
@@ -216,6 +223,11 @@ export default function LeaderboardDialog({ isOpen, onClose }: LeaderboardDialog
             <TabsTrigger value="normal">Normal Mode</TabsTrigger>
             <TabsTrigger value="cruel">Cruel Mode</TabsTrigger>
           </TabsList>
+          {lastUpdated && (
+            <div className="text-xs text-muted-foreground text-center mt-2">
+              Last updated: {new Date(lastUpdated).toLocaleString()}
+            </div>
+          )}
           <TabsContent value="normal" className="flex-1 min-h-0">
             <ScrollArea className="h-[400px] pr-4">
               {renderLeaderboard(normalLeaderboard)}

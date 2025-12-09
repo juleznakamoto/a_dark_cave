@@ -263,59 +263,21 @@ app.get("/api/leaderboard/:mode", async (req, res) => {
   }
 });
 
-app.post("/api/leaderboard/submit", async (req, res) => {
+app.get("/api/leaderboard/metadata", async (req, res) => {
   try {
-    const { userId, username, playTime, cruelMode, email } = req.body;
-
-    if (!userId || playTime === undefined) {
-      return res.status(400).json({ error: 'Missing required fields' });
-    }
-
-    // Always use production data for leaderboard
     const adminClient = getAdminClient('prod');
-
-    // Check if user already has an entry for this mode
-    const { data: existing } = await adminClient
-      .from('leaderboard')
-      .select('id, play_time')
-      .eq('user_id', userId)
-      .eq('cruel_mode', cruelMode)
+    
+    const { data, error } = await adminClient
+      .from('leaderboard_metadata')
+      .select('value')
+      .eq('key', 'last_updated')
       .single();
 
-    if (existing) {
-      // Only update if new time is better (lower)
-      if (playTime < existing.play_time) {
-        const { error } = await adminClient
-          .from('leaderboard')
-          .update({ 
-            play_time: playTime, 
-            username: username || null,
-            completed_at: new Date().toISOString() 
-          })
-          .eq('id', existing.id);
+    if (error) throw error;
 
-        if (error) throw error;
-        res.json({ success: true, updated: true });
-      } else {
-        res.json({ success: true, updated: false, message: 'Time not improved' });
-      }
-    } else {
-      // Insert new entry
-      const { error } = await adminClient
-        .from('leaderboard')
-        .insert({
-          user_id: userId,
-          username: username || null,
-          email: email,
-          play_time: playTime,
-          cruel_mode: cruelMode,
-        });
-
-      if (error) throw error;
-      res.json({ success: true, inserted: true });
-    }
+    res.json({ lastUpdated: data?.value || null });
   } catch (error: any) {
-    log('❌ Leaderboard submission failed:', error);
+    log('❌ Leaderboard metadata fetch failed:', error);
     res.status(500).json({ error: error.message });
   }
 });
