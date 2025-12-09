@@ -203,7 +203,7 @@ export default function LeaderboardDialog({ isOpen, onClose }: LeaderboardDialog
                     variant="ghost"
                     size="sm"
                   >
-                    Edit
+                    🖉
                   </Button>
                 </div>
               )}
