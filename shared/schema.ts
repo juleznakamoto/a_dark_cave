@@ -549,6 +549,7 @@ export const gameStateSchema = z.object({
   // Achievements
   unlockedAchievements: z.array(z.string()).default([]),
   claimedAchievements: z.array(z.string()).default([]), // Achievement segment IDs that have been claimed for silver
+  username: z.string().optional(), // Player's chosen username for leaderboard
 });
 
 export type GameState = z.infer<typeof gameStateSchema>;

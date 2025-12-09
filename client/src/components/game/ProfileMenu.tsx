@@ -24,6 +24,7 @@ import {
 import { useMobileTooltip } from "@/hooks/useMobileTooltip";
 import { useIsMobile } from "@/hooks/use-mobile";
 import AuthDialog from "./AuthDialog";
+import LeaderboardDialog from "./LeaderboardDialog";
 
 // Social media platform configurations
 const SOCIAL_PLATFORMS = [
@@ -55,6 +56,7 @@ export default function ProfileMenu() {
   const isMobile = useIsMobile();
   const [accountDropdownOpen, setAccountDropdownOpen] = useState(false);
   const [authDialogOpen, setAuthDialogOpen] = useState(false);
+  const [leaderboardDialogOpen, setLeaderboardDialogOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState<{
     id: string;
     email: string;
@@ -209,6 +211,10 @@ export default function ProfileMenu() {
         isOpen={authDialogOpen}
         onClose={() => handleSetAuthDialogOpen(false)}
         onAuthSuccess={handleAuthSuccess}
+      />
+      <LeaderboardDialog
+        isOpen={leaderboardDialogOpen}
+        onClose={() => setLeaderboardDialogOpen(false)}
       />
       <div className="flex items-center gap-2">
         {!currentUser && (
@@ -395,6 +401,14 @@ export default function ProfileMenu() {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
+      <Button
+        variant="ghost"
+        size="xs"
+        onClick={() => setLeaderboardDialogOpen(true)}
+        className="p-0 w-7 h-7 bg-background/70 backdrop-blur-sm border border-border flex items-center justify-center group"
+      >
+        <span className="text-lg opacity-60 group-hover:opacity-100 transition-opacity">🏆</span>
+      </Button>
       <Button
         variant="ghost"
         size="xs"

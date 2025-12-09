@@ -384,3 +384,103 @@ export async function loadGameFromSupabase(): Promise<SaveData | null> {
     timestamp,
   };
 }
+
+// Helper function to save the username to Supabase
+export async function saveUsernameToSupabase(username: string): Promise<void> {
+  const user = await getCurrentUser();
+  if (!user) {
+    throw new Error('Not authenticated');
+  }
+
+  const supabase = await getSupabaseClient();
+  const { error } = await supabase
+    .from('profiles') // Assuming 'profiles' table stores user profiles including username
+    .upsert(
+      {
+        id: user.id, // Use Supabase user ID as the primary key for profiles
+        username: username,
+      },
+      { onConflict: 'id' }
+    );
+
+  if (error) {
+    logger.error('[USERNAME SAVE] ❌ Database write failed:', error);
+    throw error;
+  }
+
+  logger.log('[USERNAME SAVE] ✅ Username saved successfully');
+}
+
+// Helper function to load the username from Supabase
+export async function loadUsernameFromSupabase(): Promise<string | null> {
+  const user = await getCurrentUser();
+  if (!user) {
+    return null;
+  }
+
+  const supabase = await getSupabaseClient();
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('username')
+    .eq('id', user.id)
+    .single();
+
+  if (error) {
+    logger.error('[USERNAME LOAD] ❌ Database read failed:', error);
+    throw error;
+  }
+
+  return data?.username || null;
+}
+
+
+// This is a placeholder and might need to be integrated with your actual SaveData structure
+// if you are storing username directly within game_saves.
+async function updateGameSaveWithUsername(gameState: Partial<GameState>) {
+  const user = await getCurrentUser();
+  if (!user) {
+    throw new Error('Not authenticated');
+  }
+
+  const supabase = await getSupabaseClient();
+  const tableName = 'game_saves'; // Assuming 'game_saves' is the table for game states
+
+  // Check if username exists in gameState, otherwise load it
+  const usernameToSave = gameState.username || await loadUsernameFromSupabase();
+
+  // Ensure username is handled correctly, potentially masking email if username is not set
+  let finalUsername = usernameToSave;
+  if (!finalUsername) {
+    const currentUser = await supabase.auth.getUser();
+    if (currentUser.data.user?.email) {
+      const email = currentUser.data.user.email;
+      finalUsername = email.substring(0, 3) + '***' + email.substring(email.length - 3);
+    }
+  }
+
+  // If username is still null or empty, do not save it.
+  // The server-side logic should handle the masking of emails if no username is provided.
+  if (!finalUsername) {
+    logger.warn('[SAVE GAME] ⚠️ No username found to save in game_saves.');
+    // Continue to save without username, relying on server-side email masking.
+  }
+
+
+  const { error } = await supabase
+    .from(tableName)
+    .upsert(
+      {
+        user_id: user.id,
+        game_state: { ...gameState, username: finalUsername }, // Include username in game_state
+        updated_at: new Date().toISOString(),
+      },
+      { onConflict: 'user_id' }
+    );
+
+  if (error) {
+    logger.error('[SAVE GAME] ❌ Database write failed:', error);
+    throw error;
+  }
+
+  logger.log('[SAVE GAME] ✅ Game saved successfully with username');
+}

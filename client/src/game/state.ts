@@ -117,6 +117,10 @@ interface GameStore extends GameState {
   claimedAchievements: string[];
   unlockAchievement: (achievementId: string) => void;
 
+  // Leaderboard
+  username?: string;
+  setUsername: (username: string) => void;
+
   // Actions
   getAndResetResourceAnalytics: () => Record<string, number> | null;
   executeAction: (actionId: string) => void;
@@ -504,6 +508,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
         ? state.unlockedAchievements
         : [...state.unlockedAchievements, achievementId],
     })),
+
+  // Leaderboard
+  username: undefined,
+  setUsername: (username: string) => set({ username }),
 
   setActiveTab: (tab: "cave" | "village" | "forest" | "bastion" | "estate" | "achievements") => set({ activeTab: tab }),
 

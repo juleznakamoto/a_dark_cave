@@ -38,6 +38,21 @@ app.get('/api/config', (req, res) => {
 // Server-side Supabase admin client (bypasses RLS)
 import { createClient } from '@supabase/supabase-js';
 
+// Helper function to mask emails
+function maskEmail(email: string | null): string {
+  if (!email) return 'Anonymous';
+  const parts = email.split('@');
+  if (parts.length !== 2) return 'Anonymous';
+  const local = parts[0];
+  const domain = parts[1];
+  
+  if (local.length <= 6) {
+    return `${local.substring(0, 2)}***@${domain}`;
+  }
+  
+  return `${local.substring(0, 3)}***${local.substring(local.length - 3)}@${domain}`;
+}
+
 const getAdminClient = (env: 'dev' | 'prod' = 'dev') => {
   const supabaseUrl = env === 'dev'
     ? process.env.VITE_SUPABASE_URL_DEV
@@ -240,6 +255,129 @@ import { createServer } from "http";
       res.setHeader('Content-Type', 'application/json');
       res.json(result);
     } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // Leaderboard endpoints
+  app.get("/api/leaderboard/:mode", async (req, res) => {
+    try {
+      const mode = req.params.mode as 'normal' | 'cruel';
+      const cruelMode = mode === 'cruel';
+      const env = req.query.env as 'dev' | 'prod' || 'prod';
+      const adminClient = getAdminClient(env);
+
+      const { data, error } = await adminClient
+        .from('leaderboard')
+        .select('id, username, email, play_time, completed_at')
+        .eq('cruel_mode', cruelMode)
+        .order('play_time', { ascending: true })
+        .limit(100);
+
+      if (error) throw error;
+
+      // Mask emails server-side
+      const maskedData = data.map(entry => ({
+        id: entry.id,
+        username: entry.username,
+        displayName: entry.username || maskEmail(entry.email),
+        play_time: entry.play_time,
+        completed_at: entry.completed_at,
+      }));
+
+      res.json(maskedData);
+    } catch (error: any) {
+      log('❌ Leaderboard fetch failed:', error);
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  app.post("/api/leaderboard/submit", async (req, res) => {
+    try {
+      const { userId, username, playTime, cruelMode, email } = req.body;
+
+      if (!userId || playTime === undefined) {
+        return res.status(400).json({ error: 'Missing required fields' });
+      }
+
+      const env = process.env.NODE_ENV === 'production' ? 'prod' : 'dev';
+      const adminClient = getAdminClient(env);
+
+      // Check if user already has an entry for this mode
+      const { data: existing } = await adminClient
+        .from('leaderboard')
+        .select('id, play_time')
+        .eq('user_id', userId)
+        .eq('cruel_mode', cruelMode)
+        .single();
+
+      if (existing) {
+        // Only update if new time is better (lower)
+        if (playTime < existing.play_time) {
+          const { error } = await adminClient
+            .from('leaderboard')
+            .update({ 
+              play_time: playTime, 
+              username: username || null,
+              completed_at: new Date().toISOString() 
+            })
+            .eq('id', existing.id);
+
+          if (error) throw error;
+          res.json({ success: true, updated: true });
+        } else {
+          res.json({ success: true, updated: false, message: 'Time not improved' });
+        }
+      } else {
+        // Insert new entry
+        const { error } = await adminClient
+          .from('leaderboard')
+          .insert({
+            user_id: userId,
+            username: username || null,
+            email: email,
+            play_time: playTime,
+            cruel_mode: cruelMode,
+          });
+
+        if (error) throw error;
+        res.json({ success: true, inserted: true });
+      }
+    } catch (error: any) {
+      log('❌ Leaderboard submission failed:', error);
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  app.post("/api/leaderboard/update-username", async (req, res) => {
+    try {
+      const { userId, username } = req.body;
+
+      if (!userId || !username) {
+        return res.status(400).json({ error: 'Missing required fields' });
+      }
+
+      const env = process.env.NODE_ENV === 'production' ? 'prod' : 'dev';
+      const adminClient = getAdminClient(env);
+
+      // Update username in all leaderboard entries for this user
+      const { error } = await adminClient
+        .from('leaderboard')
+        .update({ username })
+        .eq('user_id', userId);
+
+      if (error) throw error;
+
+      // Also update in game_saves
+      const tableName = env === 'dev' ? 'game_saves_dev' : 'game_saves';
+      await adminClient
+        .from(tableName)
+        .update({ username })
+        .eq('user_id', userId);
+
+      res.json({ success: true });
+    } catch (error: any) {
+      log('❌ Username update failed:', error);
       res.status(500).json({ error: error.message });
     }
   });
