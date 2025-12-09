@@ -170,27 +170,38 @@ export const caveCraftResources: Record<string, Action> = {
 
 // Action handlers
 export function handleCraftBoneTotem(state: GameState, result: ActionResult): ActionResult {
-  // Effects are applied in the main action handler
+  const effectUpdates = applyActionEffects("craftBoneTotem", state);
+  Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
 
 export function handleCraftBoneTotems2(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects("craftBoneTotems2", state);
+  Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
 
 export function handleCraftBoneTotems3(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects("craftBoneTotems3", state);
+  Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
 
 export function handleCraftLeatherTotem(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects("craftLeatherTotem", state);
+  Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
 
 export function handleCraftLeatherTotems5(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects("craftLeatherTotems5", state);
+  Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
 
 export function handleCraftBoneTotems5(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects("craftBoneTotems5", state);
+  Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
 
