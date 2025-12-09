@@ -1466,7 +1466,7 @@ function selectTrades(
       effect: (state: GameState) => {
         if ((state.resources[sellResource] || 0) >= sellAmount) {
           const newMerchantPurchases = (Number(state.story?.seen?.merchantPurchases) || 0) + 1;
-          logger.info(`Merchant purchase incremented: ${newMerchantPurchases}`);
+          logger.log(`Merchant purchase incremented: ${newMerchantPurchases}`);
           return {
             resources: {
               ...state.resources,
