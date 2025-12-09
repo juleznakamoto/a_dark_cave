@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useGameStore } from "@/game/state";
 import { calculateBastionStats } from "@/game/bastionStats";
-import { getTotalKnowledge } from "@/game/rules/effectsCalculation";
+import { getTotalKnowledge, getTotalLuck } from "@/game/rules/effectsCalculation";
 import { combatItemTooltips } from "@/game/rules/tooltips";
+import { calculateCriticalStrikeChance } from "@/game/rules/effectsStats";
 import { BLOODFLAME_SPHERE_UPGRADES, CRUSHING_STRIKE_UPGRADES } from "@/game/rules/skillUpgrades";
 import {
   Dialog,
@@ -93,6 +94,7 @@ export default function CombatDialog({
   const [enemyStunnedRounds, setEnemyStunnedRounds] = useState(0);
   const [enemyBurnRounds, setEnemyBurnRounds] = useState(0);
   const [enemyBurnDamage, setEnemyBurnDamage] = useState(0);
+  const [wasCriticalStrike, setWasCriticalStrike] = useState(false);
 
   const HAS_RESTLESS_KNIGHT = gameState.fellowship.restless_knight || false;
   const HAS_ELDER_WIZARD = gameState.fellowship.elder_wizard || false;
@@ -118,6 +120,7 @@ export default function CombatDialog({
       setEnemyStunnedRounds(0);
       setEnemyBurnRounds(0);
       setEnemyBurnDamage(0);
+      setWasCriticalStrike(false);
       const maxIntegrity = bastionStats.integrity;
       setMaxIntegrityForCombat(maxIntegrity);
       setCurrentIntegrity(maxIntegrity);
@@ -378,6 +381,18 @@ export default function CombatDialog({
     let poisonDamageDealt = 0;
     let burnDamageDealt = 0;
 
+    // Calculate critical strike
+    const totalLuck = getTotalLuck(gameState);
+    const critChance = calculateCriticalStrikeChance(totalLuck) / 100;
+    const isCritical = Math.random() < critChance;
+    
+    if (isCritical) {
+      playerDamage = Math.floor(playerDamage * 1.5); // 50% extra damage
+      setWasCriticalStrike(true);
+    } else {
+      setWasCriticalStrike(false);
+    }
+
     // Apply poison damage if active (works for all rounds poison is active)
     const poisonArrowsUsedThisRound = usedItemsInRound.has("poison_arrows");
     if (NIGHTSHADE_BOW_OWNED && poisonArrowsUsedThisRound) {
@@ -433,6 +448,7 @@ export default function CombatDialog({
     setEnemyDamageIndicator({ amount: playerDamage + poisonDamageDealt + burnDamageDealt, visible: true });
     setTimeout(() => {
       setEnemyDamageIndicator({ amount: 0, visible: false });
+      setWasCriticalStrike(false);
     }, 3000);
 
     setCurrentEnemy((prev) =>
@@ -496,9 +512,32 @@ export default function CombatDialog({
           // Combat interface
           <>
             <DialogHeader>
-              <DialogTitle className="text-lg font-semibold">
-                Combat - Round {round}
-              </DialogTitle>
+              <div className="flex items-start justify-between">
+                <DialogTitle className="text-lg font-semibold">
+                  Combat - Round {round}
+                </DialogTitle>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div className="flex items-center gap-1 text-xs text-muted-foreground cursor-help">
+                        <span>🍀</span>
+                        <span>{getTotalLuck(gameState)}</span>
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <div className="text-xs">
+                        <div className="font-semibold mb-1">Luck Bonus</div>
+                        <div>
+                          {calculateCriticalStrikeChance(getTotalLuck(gameState))}% critical strike chance
+                        </div>
+                        <div className="text-muted-foreground mt-1">
+                          Critical strikes deal 50% extra damage
+                        </div>
+                      </div>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </div>
             </DialogHeader>
 
             {/* Enemy Stats */}
@@ -531,6 +570,7 @@ export default function CombatDialog({
                   {enemyDamageIndicator.visible && (
                     <div className="absolute -translate-y-5 inset-0 flex items-center justify-center text-red-900 font-bold text-sm pointer-events-none">
                       -{enemyDamageIndicator.amount}
+                      {wasCriticalStrike && " (critical)"}
                     </div>
                   )}
                 </div>
