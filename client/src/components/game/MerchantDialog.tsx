@@ -24,6 +24,7 @@ import {
   useMobileButtonTooltip,
   useMobileTooltip,
 } from "@/hooks/useMobileTooltip";
+import { generateMerchantChoices } from "@/game/rules/eventsMerchant";
 
 interface MerchantDialogProps {
   event: LogEntry;
@@ -51,7 +52,7 @@ export default function MerchantDialog({
   if (!event) {
     return null;
   }
-  
+
   const eventChoices = event.choices || [];
   const mobileTooltip = useMobileButtonTooltip();
   const discountTooltip = useMobileTooltip();
