@@ -53,8 +53,7 @@ export default function MerchantDialog({
     return null;
   }
 
-  // Always regenerate choices with current game state to ensure proper counter increments
-  const eventChoices = generateMerchantChoices(gameState);
+  const eventChoices = event.choices || [];
   const mobileTooltip = useMobileButtonTooltip();
   const discountTooltip = useMobileTooltip();
 
