@@ -4,6 +4,13 @@ import { GameState } from "@shared/schema";
 import { tailwindToHex } from "@/lib/tailwindColors";
 import { useState, useRef } from "react";
 
+// Segment colors
+const SEGMENT_COLOR = tailwindToHex("gray-400/80");
+const COMPLETED_COLOR = tailwindToHex("blue-400");
+const COMPLETED_STROKE_COLOR = tailwindToHex("red-900");
+const BACKGROUND_COLOR = tailwindToHex("neutral-800");
+const BORDER_COLOR = tailwindToHex("neutral-400");
+
 interface ItemSegment {
   itemType: string;
   itemKeys: (
@@ -36,7 +43,6 @@ export default function ItemProgressChart() {
     return Math.max(2, 14 - ringIndex * 2);
   };
 
-  const backgroundColor = tailwindToHex("neutral-800");
   const getStartAngle = (paddingAngle: number) => 90 - paddingAngle / 2;
 
   const claimedAchievements = useGameStore(
@@ -70,7 +76,7 @@ export default function ItemProgressChart() {
           "obsidian_axe",
           "adamant_axe",
         ],
-        color: tailwindToHex("gray-400/80"),
+        color: SEGMENT_COLOR,
         label: "Chop",
         category: "tools",
         maxCount: 5,
@@ -84,7 +90,7 @@ export default function ItemProgressChart() {
           "obsidian_pickaxe",
           "adamant_pickaxe",
         ],
-        color: tailwindToHex("gray-400/80"),
+        color: SEGMENT_COLOR,
         label: "Dig",
         category: "tools",
         maxCount: 5,
@@ -97,7 +103,7 @@ export default function ItemProgressChart() {
           "obsidian_lantern",
           "adamant_lantern",
         ],
-        color: tailwindToHex("gray-400/80"),
+        color: SEGMENT_COLOR,
         label: "Illuminate",
         category: "tools",
         maxCount: 4,
@@ -116,7 +122,7 @@ export default function ItemProgressChart() {
           "obsidian_sword",
           "adamant_sword",
         ],
-        color: tailwindToHex("gray-400/80"),
+        color: SEGMENT_COLOR,
         label: "Swords",
         category: "weapons",
         maxCount: 4,
@@ -131,7 +137,7 @@ export default function ItemProgressChart() {
           "war_bow",
           "master_bow",
         ],
-        color: tailwindToHex("gray-400/80"),
+        color: SEGMENT_COLOR,
         label: "Bows",
         category: "weapons",
         maxCount: 5,
@@ -149,7 +155,7 @@ export default function ItemProgressChart() {
           "loggers_gloves",
           "sacrificial_tunic",
         ],
-        color: tailwindToHex("gray-400/80"),
+        color: SEGMENT_COLOR,
         label: "Leather Crafting",
         category: "clothing",
         maxCount: 6,
@@ -220,7 +226,7 @@ export default function ItemProgressChart() {
       const backgroundSegments = segments.map((seg) => ({
         name: seg.label,
         value: seg.maxCount,
-        fill: backgroundColor,
+        fill: BACKGROUND_COLOR,
       }));
 
       // Create foreground segments (borders only, no fill)
@@ -338,7 +344,7 @@ export default function ItemProgressChart() {
             // Progress segments
             ...ring.progressSegments.map((segment, segIndex) => {
               const segmentColor = segment.isFull
-                ? tailwindToHex("blue-400")
+                ? COMPLETED_COLOR
                 : segment.fill;
 
               const achievementId = `item-${segment.segmentId}`;
@@ -392,7 +398,7 @@ export default function ItemProgressChart() {
                   endAngle={segment.endAngle}
                   cornerRadius={5}
                   strokeWidth={segment.isFull ? (isClaimed ? 1 : 1.5) : 0}
-                  stroke={segment.isFull ? tailwindToHex("red-900") : undefined}
+                  stroke={segment.isFull ? COMPLETED_STROKE_COLOR : undefined}
                   isAnimationActive={false}
                   style={{
                     outline: "none",
@@ -445,7 +451,7 @@ export default function ItemProgressChart() {
               endAngle={-360 + ring.startAngle}
               cornerRadius={5}
               strokeWidth={0.25}
-              stroke={tailwindToHex("neutral-400")}
+              stroke={BORDER_COLOR}
               isAnimationActive={false}
               style={{ outline: "none", pointerEvents: "none" }}
             ></Pie>,

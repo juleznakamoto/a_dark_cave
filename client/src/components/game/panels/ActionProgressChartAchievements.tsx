@@ -4,6 +4,13 @@ import { GameState } from "@shared/schema";
 import { tailwindToHex } from "@/lib/tailwindColors";
 import { useState, useRef } from "react";
 
+// Segment colors
+const SEGMENT_COLOR = tailwindToHex("gray-400/80");
+const COMPLETED_COLOR = tailwindToHex("green-400");
+const COMPLETED_STROKE_COLOR = tailwindToHex("green-900");
+const BACKGROUND_COLOR = tailwindToHex("neutral-800");
+const BORDER_COLOR = tailwindToHex("neutral-400");
+
 interface ActionSegment {
   segmentType: string;
   maxCount: number;
@@ -47,7 +54,6 @@ export default function ActionProgressChartAchievements() {
     return Math.max(2, 14 - ringIndex * 2);
   };
 
-  const backgroundColor = tailwindToHex("neutral-800");
   const getStartAngle = (paddingAngle: number) => 90 - paddingAngle / 2;
 
   // Define ring segment configurations
@@ -57,7 +63,7 @@ export default function ActionProgressChartAchievements() {
       {
         segmentType: "exploreCave",
         maxCount: 10,
-        color: tailwindToHex("gray-400/80"),
+        color: SEGMENT_COLOR,
         label: "Cave Explore",
         getCount: (state: GameState) =>
           state.buttonUpgrades?.caveExplore?.level || 0,
@@ -65,7 +71,7 @@ export default function ActionProgressChartAchievements() {
       {
         segmentType: "chopWood",
         maxCount: 10,
-        color: tailwindToHex("gray-400/80"),
+        color: SEGMENT_COLOR,
         label: "Chop Wood",
         getCount: (state: GameState) =>
           state.buttonUpgrades?.chopWood?.level || 0,
@@ -73,7 +79,7 @@ export default function ActionProgressChartAchievements() {
       {
         segmentType: "hunt",
         maxCount: 10,
-        color: tailwindToHex("gray-400/80"),
+        color: SEGMENT_COLOR,
         label: "Hunt",
         getCount: (state: GameState) => state.buttonUpgrades?.hunt?.level || 0,
       },
@@ -83,7 +89,7 @@ export default function ActionProgressChartAchievements() {
       {
         segmentType: "mineStone",
         maxCount: 10,
-        color: tailwindToHex("gray-400/80"),
+        color: SEGMENT_COLOR,
         label: "Mine Stone",
         getCount: (state: GameState) =>
           state.buttonUpgrades?.mineStone?.level || 0,
@@ -91,7 +97,7 @@ export default function ActionProgressChartAchievements() {
       {
         segmentType: "mineIron",
         maxCount: 10,
-        color: tailwindToHex("gray-400/80"),
+        color: SEGMENT_COLOR,
         label: "Mine Iron",
         getCount: (state: GameState) =>
           state.buttonUpgrades?.mineIron?.level || 0,
@@ -99,7 +105,7 @@ export default function ActionProgressChartAchievements() {
       {
         segmentType: "mineCoal",
         maxCount: 10,
-        color: tailwindToHex("gray-400/80"),
+        color: SEGMENT_COLOR,
         label: "Mine Coal",
         getCount: (state: GameState) =>
           state.buttonUpgrades?.mineCoal?.level || 0,
@@ -107,7 +113,7 @@ export default function ActionProgressChartAchievements() {
       {
         segmentType: "mineSulfur",
         maxCount: 10,
-        color: tailwindToHex("gray-400/80"),
+        color: SEGMENT_COLOR,
         label: "Mine Sulfur",
         getCount: (state: GameState) =>
           state.buttonUpgrades?.mineSulfur?.level || 0,
@@ -115,7 +121,7 @@ export default function ActionProgressChartAchievements() {
       {
         segmentType: "mineObsidian",
         maxCount: 10,
-        color: tailwindToHex("gray-400/80"),
+        color: SEGMENT_COLOR,
         label: "Mine Obsidian",
         getCount: (state: GameState) =>
           state.buttonUpgrades?.mineObsidian?.level || 0,
@@ -123,7 +129,7 @@ export default function ActionProgressChartAchievements() {
       {
         segmentType: "mineAdamant",
         maxCount: 10,
-        color: tailwindToHex("gray-400/80"),
+        color: SEGMENT_COLOR,
         label: "Mine Adamant",
         getCount: (state: GameState) =>
           state.buttonUpgrades?.mineAdamant?.level || 0,
@@ -134,7 +140,7 @@ export default function ActionProgressChartAchievements() {
       {
         segmentType: "boneTotems",
         maxCount: 20,
-        color: tailwindToHex("gray-400/80"),
+        color: SEGMENT_COLOR,
         label: "Bone Totem Sacrifices",
         getCount: (state: GameState) =>
           Number(state.story?.seen?.boneTotemsUsageCount) || 0,
@@ -143,7 +149,7 @@ export default function ActionProgressChartAchievements() {
       {
         segmentType: "leatherTotems",
         maxCount: 20,
-        color: tailwindToHex("gray-400/80"),
+        color: SEGMENT_COLOR,
         label: "Leather Totem Sacrifices",
         getCount: (state: GameState) =>
           Number(state.story?.seen?.leatherTotemsUsageCount) || 0,
@@ -152,7 +158,7 @@ export default function ActionProgressChartAchievements() {
       {
         segmentType: "animals",
         maxCount: 10,
-        color: tailwindToHex("gray-400/80"),
+        color: SEGMENT_COLOR,
         label: "Animal Sacrifices",
         getCount: (state: GameState) =>
           Number(state.story?.seen?.animalsSacrificeLevel) || 0,
@@ -164,7 +170,7 @@ export default function ActionProgressChartAchievements() {
       {
         segmentType: "emberBombs",
         maxCount: 25,
-        color: tailwindToHex("gray-400/80"),
+        color: SEGMENT_COLOR,
         label: "Ember Bombs Crafted",
         getCount: (state: GameState) =>
           Number(state.story?.seen?.emberBombsCrafted) || 0,
@@ -173,7 +179,7 @@ export default function ActionProgressChartAchievements() {
       {
         segmentType: "ashfireBombs",
         maxCount: 20,
-        color: tailwindToHex("gray-400/80"),
+        color: SEGMENT_COLOR,
         label: "Ashfire Bombs Crafted",
         getCount: (state: GameState) =>
           Number(state.story?.seen?.ashfireBombsCrafted) || 0,
@@ -182,7 +188,7 @@ export default function ActionProgressChartAchievements() {
       {
         segmentType: "voidBombs",
         maxCount: 15,
-        color: tailwindToHex("gray-400/80"),
+        color: SEGMENT_COLOR,
         label: "Void Bombs Crafted",
         getCount: (state: GameState) =>
           state.cruelMode ? Number(state.story?.seen?.voidBombsCrafted) || 0 : 0,
@@ -194,7 +200,7 @@ export default function ActionProgressChartAchievements() {
       {
         segmentType: "merchantPurchases",
         maxCount: 100,
-        color: tailwindToHex("gray-400/80"),
+        color: SEGMENT_COLOR,
         label: "Merchant Purchases",
         getCount: (state: GameState) =>
           Number(state.story?.seen?.merchantPurchases) || 0,
@@ -241,7 +247,7 @@ export default function ActionProgressChartAchievements() {
       const backgroundSegments = segments.map((seg) => ({
         name: seg.label,
         value: seg.maxCount,
-        fill: backgroundColor,
+        fill: BACKGROUND_COLOR,
       }));
 
       // Create foreground segments
@@ -356,7 +362,7 @@ export default function ActionProgressChartAchievements() {
             // Progress segments
             ...ring.progressSegments.map((segment, segIndex) => {
               const segmentColor = segment.isFull
-                ? tailwindToHex("green-400")
+                ? COMPLETED_COLOR
                 : segment.fill;
 
               const achievementId = `action-${segment.segmentId}`;
@@ -407,7 +413,7 @@ export default function ActionProgressChartAchievements() {
                   cornerRadius={5}
                   strokeWidth={segment.isFull ? (isClaimed ? 1 : 1.5) : 0}
                   stroke={
-                    segment.isFull ? tailwindToHex("green-900") : undefined
+                    segment.isFull ? COMPLETED_STROKE_COLOR : undefined
                   }
                   isAnimationActive={false}
                   style={{
@@ -461,7 +467,7 @@ export default function ActionProgressChartAchievements() {
               endAngle={-360 + ring.startAngle}
               cornerRadius={5}
               strokeWidth={0.25}
-              stroke={tailwindToHex("neutral-400")}
+              stroke={BORDER_COLOR}
               isAnimationActive={false}
               style={{ outline: "none", pointerEvents: "none" }}
             ></Pie>,

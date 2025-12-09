@@ -4,6 +4,13 @@ import { GameState } from "@shared/schema";
 import { tailwindToHex } from "@/lib/tailwindColors";
 import { useState, useRef } from "react";
 
+// Segment colors
+const SEGMENT_COLOR = tailwindToHex("gray-400/80");
+const COMPLETED_COLOR = tailwindToHex("blue-400");
+const COMPLETED_STROKE_COLOR = tailwindToHex("blue-900");
+const BACKGROUND_COLOR = tailwindToHex("neutral-800");
+const BORDER_COLOR = tailwindToHex("neutral-400");
+
 interface BuildingSegment {
   buildingType: keyof GameState["buildings"];
   maxCount: number;
@@ -43,7 +50,6 @@ export default function BuildingProgressChart() {
     return Math.max(2, 14 - ringIndex * 2);
   };
 
-  const backgroundColor = tailwindToHex("neutral-800");
   const getStartAngle = (paddingAngle: number) => 90 - paddingAngle / 2;
 
   // Define ring segment configurations (without radius values)
@@ -53,19 +59,19 @@ export default function BuildingProgressChart() {
       {
         buildingType: "woodenHut",
         maxCount: 10,
-        color: tailwindToHex("gray-400/80"),
+        color: SEGMENT_COLOR,
         label: "Basic Shelter",
       },
       {
         buildingType: "stoneHut",
         maxCount: 10,
-        color: tailwindToHex("gray-400/80"),
+        color: SEGMENT_COLOR,
         label: "Advanced Shelter",
       },
       {
         buildingType: "longhouse",
         maxCount: 5,
-        color: tailwindToHex("gray-400/80"),
+        color: SEGMENT_COLOR,
         label: "Nordic Housing",
       },
     ],
@@ -74,28 +80,28 @@ export default function BuildingProgressChart() {
       {
         buildingType: "cabin",
         maxCount: 2,
-        color: tailwindToHex("gray-400/80"),
+        color: SEGMENT_COLOR,
         label: "Hunting",
         relatedBuildings: ["greatCabin"],
       },
       {
         buildingType: "tannery",
         maxCount: 2,
-        color: tailwindToHex("gray-400/80"),
+        color: SEGMENT_COLOR,
         label: "Hidework",
         relatedBuildings: ["masterTannery"],
       },
       {
         buildingType: "tradePost",
         maxCount: 3,
-        color: tailwindToHex("gray-400/80"),
+        color: SEGMENT_COLOR,
         label: "Trade",
         relatedBuildings: ["grandBazaar", "merchantsGuild"],
       },
       {
         buildingType: "clerksHut",
         maxCount: 3,
-        color: tailwindToHex("gray-400/80"),
+        color: SEGMENT_COLOR,
         label: "Wisdom",
         relatedBuildings: ["scriptorium", "inkwardenAcademy"],
       },
@@ -105,21 +111,21 @@ export default function BuildingProgressChart() {
       {
         buildingType: "blacksmith",
         maxCount: 2,
-        color: tailwindToHex("gray-400/80"),
+        color: SEGMENT_COLOR,
         label: "Forging",
         relatedBuildings: ["grandBlacksmith"],
       },
       {
         buildingType: "foundry",
         maxCount: 3,
-        color: tailwindToHex("gray-400/80"),
+        color: SEGMENT_COLOR,
         label: "Smelting",
         relatedBuildings: ["primeFoundry", "masterworkFoundry"],
       },
       {
         buildingType: "shallowPit",
         maxCount: 4,
-        color: tailwindToHex("gray-400/80"),
+        color: SEGMENT_COLOR,
         label: "Mining",
         relatedBuildings: ["deepeningPit", "deepPit", "bottomlessPit"],
       },
@@ -129,14 +135,14 @@ export default function BuildingProgressChart() {
       {
         buildingType: "altar",
         maxCount: 4,
-        color: tailwindToHex("gray-400/80"),
+        color: SEGMENT_COLOR,
         label: "Devotion",
         relatedBuildings: ["shrine", "temple", "sanctum"],
       },
       {
         buildingType: "blackMonolith",
         maxCount: 2,
-        color: tailwindToHex("gray-400/80"),
+        color: SEGMENT_COLOR,
         label: "Sacrifice",
         relatedBuildings: ["pillarOfClarity", "boneTemple"],
       },
@@ -146,13 +152,13 @@ export default function BuildingProgressChart() {
       {
         buildingType: "palisades",
         maxCount: 4,
-        color: tailwindToHex("gray-400/80"),
+        color: SEGMENT_COLOR,
         label: "Walls",
       },
       {
         buildingType: "watchtower",
         maxCount: 4,
-        color: tailwindToHex("gray-400/80"),
+        color: SEGMENT_COLOR,
         label: "Lookout",
       },
     ],
@@ -224,7 +230,7 @@ export default function BuildingProgressChart() {
       const backgroundSegments = segments.map((seg) => ({
         name: seg.label,
         value: seg.maxCount,
-        fill: backgroundColor,
+        fill: BACKGROUND_COLOR,
       }));
 
       // Create foreground segments (borders only, no fill)
@@ -351,7 +357,7 @@ export default function BuildingProgressChart() {
             ...ring.progressSegments.map((segment, segIndex) => {
               const segmentColor =
                 segment.isFull
-                  ? tailwindToHex("blue-400")
+                  ? COMPLETED_COLOR
                   : segment.fill;
 
               const achievementId = `building-${segment.segmentId}`;
@@ -401,7 +407,7 @@ export default function BuildingProgressChart() {
                   cornerRadius={5}
                   strokeWidth={segment.isFull ? (isClaimed ? 1 : 1.5) : 0}
                   stroke={
-                    segment.isFull ? tailwindToHex("blue-900") : undefined
+                    segment.isFull ? COMPLETED_STROKE_COLOR : undefined
                   }
                   isAnimationActive={false}
                   style={{ 
@@ -454,7 +460,7 @@ export default function BuildingProgressChart() {
               endAngle={-360 + ring.startAngle}
               cornerRadius={5}
               strokeWidth={0.25}
-              stroke={tailwindToHex("neutral-400")}
+              stroke={BORDER_COLOR}
               isAnimationActive={false}
               style={{ outline: "none", pointerEvents: "none" }}
             ></Pie>,
