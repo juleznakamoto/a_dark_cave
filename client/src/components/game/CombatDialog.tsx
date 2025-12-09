@@ -517,22 +517,25 @@ export default function CombatDialog({
                   Combat - Round {round}
                 </DialogTitle>
                 <TooltipProvider>
-                  <Tooltip>
+                  <Tooltip
+                    open={discountTooltip.isTooltipOpen("merchant-discount")}
+                  >
                     <TooltipTrigger asChild>
-                      <div className="flex items-center gap-1 text-xs text-muted-foreground cursor-help">
-                        <span>🍀</span>
-                        <span>{getTotalLuck(gameState)}</span>
-                      </div>
+                      <span
+                        className="text-green-300/80 cursor-pointer hover:text-blue-300 transition-colors inline-block text-3xl sm:text-xl"
+                        onClick={(e) =>
+                          discountTooltip.handleTooltipClick(
+                            "merchant-discount",
+                            e,
+                          )
+                        }
+                      >
+                        ☆
+                      </span>
                     </TooltipTrigger>
                     <TooltipContent>
-                      <div className="text-xs">
-                        <div className="font-semibold mb-1">Luck Bonus</div>
-                        <div>
-                          {calculateCriticalStrikeChance(getTotalLuck(gameState))}% critical strike chance
-                        </div>
-                        <div className="text-muted-foreground mt-1">
-                          Critical strikes deal 50% extra damage
-                        </div>
+                      <div className="text-xs whitespace-nowrap">
+                        {calculateCriticalStrikeChance(getTotalLuck(gameState))}% critical strike chance? " isLuckBonusMaxed (max)" : ""}
                       </div>
                     </TooltipContent>
                   </Tooltip>
