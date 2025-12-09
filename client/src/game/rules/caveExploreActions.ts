@@ -1,6 +1,6 @@
 import { Action, GameState } from "@shared/schema";
-import { ActionResult } from "@/game/actions";
-import { applyActionEffects } from "@/game/rules";
+import { ActionResult } from '@/game/actions';
+import { applyActionEffects } from "./actionEffects";
 
 // Base items for each cave exploration stage
 const caveItems = {
@@ -637,7 +637,7 @@ export function handleExploreCitadel(
   result: ActionResult,
 ): ActionResult {
   const effectUpdates = applyActionEffects("exploreCitadel", state);
-  
+
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
     effectUpdates.logMessages.forEach((message: string | any) => {

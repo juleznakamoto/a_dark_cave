@@ -1,5 +1,5 @@
 import { Action, GameState } from "@shared/schema";
-import { ActionResult } from "../actions";
+import { ActionResult } from '@/game/actions';
 import { applyActionEffects } from "./actionEffects";
 
 export const caveCraftResources: Record<string, Action> = {

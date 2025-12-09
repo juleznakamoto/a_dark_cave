@@ -1,6 +1,6 @@
 import { Action, GameState } from "@shared/schema";
-import { ActionResult } from "../actions";
-import { applyActionEffects } from "./index";
+import { ActionResult } from '@/game/actions';
+import { applyActionEffects } from "./actionEffects";
 import { killVillagers } from "../stateHelpers";
 
 // Helper function to get dynamic cost for bone totems
@@ -101,17 +101,17 @@ export const forestSacrificeActions: Record<string, Action> = {
     canExecute: (state: GameState) => {
       const usageCount = Number(state.story?.seen?.humansSacrificeLevel) || 0;
       const maxLevels = 10;
-      
+
       if (usageCount >= maxLevels) {
         return false;
       }
-      
+
       const currentCost = getHumansCost(state);
       const totalVillagers = Object.values(state.villagers).reduce(
         (sum, count) => sum + (count || 0),
         0,
       );
-      
+
       return totalVillagers >= currentCost;
     },
     effects: {},

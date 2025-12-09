@@ -1,6 +1,6 @@
 import { Action, GameState } from "@shared/schema";
 import { ActionResult } from "@/game/actions";
-import { applyActionEffects } from "@/game/rules";
+import { applyActionEffects } from "./actionEffects";
 import { killVillagers } from "@/game/stateHelpers";
 import { calculateSuccessChance } from "./events";
 
@@ -194,7 +194,7 @@ export function handleHunt(
   result: ActionResult,
 ): ActionResult {
   const effectUpdates = applyActionEffects("hunt", state);
-  
+
   // Filter out any log entries that are event dialogs (have choices)
   // These should only appear as dialogs, not in the log
   if (result.logEntries) {
