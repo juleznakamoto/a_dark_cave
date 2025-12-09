@@ -298,7 +298,7 @@ const generateDefaultGameState = (): GameState => {
   return extractDefaultsFromSchema(gameStateSchema) as GameState;
 };
 
-const defaultGameState: GameState = {
+export const createInitialState = (): GameState => ({
   ...generateDefaultGameState(),
   effects: {
     resource_bonus: {},
@@ -399,7 +399,9 @@ const defaultGameState: GameState = {
   // Achievements
   unlockedAchievements: [],
   claimedAchievements: [],
-};
+});
+
+const defaultGameState: GameState = createInitialState();
 
 // State management utilities
 export class StateManager {
