@@ -143,7 +143,7 @@ export default function ActionProgressChartAchievements() {
         color: SEGMENT_COLOR,
         label: "Bone Totem Sacrifices",
         getCount: (state: GameState) =>
-          Number(state.story?.seen?.boneTotemsUsageCount) || 0,
+          Math.min(Number(state.story?.seen?.boneTotemsUsageCount) || 0, 20),
         reward: 500,
       },
       {
@@ -152,7 +152,7 @@ export default function ActionProgressChartAchievements() {
         color: SEGMENT_COLOR,
         label: "Leather Totem Sacrifices",
         getCount: (state: GameState) =>
-          Number(state.story?.seen?.leatherTotemsUsageCount) || 0,
+          Math.min(Number(state.story?.seen?.leatherTotemsUsageCount) || 0, 20),
         reward: 500,
       },
       {
@@ -161,7 +161,7 @@ export default function ActionProgressChartAchievements() {
         color: SEGMENT_COLOR,
         label: "Animal Sacrifices",
         getCount: (state: GameState) =>
-          Number(state.story?.seen?.animalsSacrificeLevel) || 0,
+          Math.min(Number(state.story?.seen?.animalsSacrificeLevel) || 0, 10),
         reward: 500,
       },
     ],
@@ -173,7 +173,7 @@ export default function ActionProgressChartAchievements() {
         color: SEGMENT_COLOR,
         label: "Ember Bombs Crafted",
         getCount: (state: GameState) =>
-          Number(state.story?.seen?.emberBombsCrafted) || 0,
+          Math.min(Number(state.story?.seen?.emberBombsCrafted) || 0, 25),
         reward: 500,
       },
       {
@@ -182,7 +182,7 @@ export default function ActionProgressChartAchievements() {
         color: SEGMENT_COLOR,
         label: "Ashfire Bombs Crafted",
         getCount: (state: GameState) =>
-          Number(state.story?.seen?.ashfireBombsCrafted) || 0,
+          Math.min(Number(state.story?.seen?.ashfireBombsCrafted) || 0, 20),
         reward: 500,
       },
       {
@@ -191,7 +191,12 @@ export default function ActionProgressChartAchievements() {
         color: SEGMENT_COLOR,
         label: "Void Bombs Crafted",
         getCount: (state: GameState) =>
-          state.cruelMode ? Number(state.story?.seen?.voidBombsCrafted) || 0 : 0,
+          Math.min(
+            state.cruelMode
+              ? Number(state.story?.seen?.voidBombsCrafted) || 0
+              : 0,
+            15,
+          ),
         reward: 500,
       },
     ],
@@ -203,7 +208,7 @@ export default function ActionProgressChartAchievements() {
         color: SEGMENT_COLOR,
         label: "Merchant Purchases",
         getCount: (state: GameState) =>
-          Number(state.story?.seen?.merchantPurchases) || 0,
+          Math.min(Number(state.story?.seen?.merchantPurchases) || 0, 100),
         reward: 500,
       },
     ],
@@ -310,7 +315,7 @@ export default function ActionProgressChartAchievements() {
   return (
     <div
       ref={containerRef}
-      className="w-44 h-44 flex flex-col items-center justify-center relative"
+      className="w-40 h-48 flex flex-col items-center justify-center relative"
       onMouseMove={(e) => {
         if (hoveredSegment) {
           const rect = containerRef.current?.getBoundingClientRect();
@@ -372,7 +377,7 @@ export default function ActionProgressChartAchievements() {
 
               const handleSegmentClick = () => {
                 if (isInteractive) {
-                  const silverReward = segment.reward ?? (50 * segment.maxCount);
+                  const silverReward = segment.reward ?? 50 * segment.maxCount;
 
                   useGameStore
                     .getState()
@@ -412,9 +417,7 @@ export default function ActionProgressChartAchievements() {
                   endAngle={segment.endAngle}
                   cornerRadius={5}
                   strokeWidth={segment.isFull ? (isClaimed ? 1 : 1.5) : 0}
-                  stroke={
-                    segment.isFull ? COMPLETED_STROKE_COLOR : undefined
-                  }
+                  stroke={segment.isFull ? COMPLETED_STROKE_COLOR : undefined}
                   isAnimationActive={false}
                   style={{
                     outline: "none",
@@ -481,10 +484,10 @@ export default function ActionProgressChartAchievements() {
           style={{
             left: `${mousePosition.x}px`,
             top: `${mousePosition.y}px`,
-            transform: "translate(-50%, calc(-100% - 10px))",
+            transform: "translate(-50%, calc(-100% - 5px))",
           }}
         >
-          <div className="font-semibold">{hoveredSegment.name}</div>
+          <div>{hoveredSegment.name}</div>
         </div>
       )}
     </div>

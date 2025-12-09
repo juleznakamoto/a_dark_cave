@@ -292,7 +292,7 @@ export default function ItemProgressChart() {
   return (
     <div
       ref={containerRef}
-      className="w-44 h-44 flex flex-col items-center justify-center relative"
+      className="w-40 h-48 flex flex-col items-center justify-center relative"
       onMouseMove={(e) => {
         if (hoveredSegment) {
           const rect = containerRef.current?.getBoundingClientRect();
@@ -466,10 +466,10 @@ export default function ItemProgressChart() {
           style={{
             left: `${mousePosition.x}px`,
             top: `${mousePosition.y}px`,
-            transform: "translate(-50%, calc(-100% - 10px))",
+            transform: "translate(-50%, calc(-100% - 5px))",
           }}
         >
-          <div className="font-semibold">{hoveredSegment.name}</div>
+          <div>{hoveredSegment.name}</div>
         </div>
       )}
     </div>
