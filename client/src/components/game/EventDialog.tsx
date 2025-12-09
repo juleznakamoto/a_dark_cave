@@ -273,7 +273,7 @@ export default function EventDialog({
                     <Tooltip open={mobileTooltip.isTooltipOpen("event-time-bonus")}>
                       <TooltipTrigger asChild>
                         <span
-                          className="text-blue-300/80 cursor-pointer hover:text-blue-300 transition-colors text-xs"
+                          className="text-blue-300/80 cursor-pointer hover:text-blue-300 transition-colors inline-block text-3xl sm:text-xl"
                           onClick={(e) => mobileTooltip.handleWrapperClick("event-time-bonus", false, false, e)}
                         >
                           ✧
