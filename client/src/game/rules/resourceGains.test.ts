@@ -1,8 +1,14 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { GameState } from '@shared/schema';
-import { applyActionEffects, gameActions, getActionCostBreakdown } from './index';
+import { applyActionEffects, setGameActionsRef } from './actionEffects';
+import { gameActions, getActionCostBreakdown } from './index';
 import { getResourceGainTooltip, calculateResourceGains } from './tooltips';
 import { getActionBonuses } from './effectsCalculation';
+
+// Register gameActions before each test
+beforeEach(() => {
+  setGameActionsRef(gameActions);
+});
 
 // Helper to create a minimal test state
 const createTestState = (overrides?: Partial<GameState>): GameState => {
