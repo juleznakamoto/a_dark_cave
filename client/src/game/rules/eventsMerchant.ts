@@ -1469,13 +1469,6 @@ function selectTrades(
               [sellResource]: (state.resources[sellResource] || 0) - sellAmount,
               [buyResource]: (state.resources[buyResource] || 0) + buyAmount,
             },
-            story: {
-              ...state.story,
-              seen: {
-                ...state.story?.seen,
-                merchantPurchases: (Number(state.story?.seen?.merchantPurchases) || 0) + 1,
-              },
-            },
           };
         }
         return {};
@@ -1599,14 +1592,6 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
             } else if (trade.give === "book") {
               result.books = { ...state.books, [trade.giveItem]: true };
             }
-
-            result.story = {
-              ...state.story,
-              seen: {
-                ...state.story?.seen,
-                merchantPurchases: (Number(state.story?.seen?.merchantPurchases) || 0) + 1,
-              },
-            };
 
             return result;
           }
