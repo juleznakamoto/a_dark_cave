@@ -411,7 +411,6 @@ export default function BuildingProgressChart() {
                     segment.isFull ? COMPLETED_STROKE_COLOR : undefined
                   }
                   isAnimationActive={false}
-                  className="border-8 border-transparent"
                   style={{ 
                     outline: "none", 
                     pointerEvents: showTooltip ? "auto" : "none",
