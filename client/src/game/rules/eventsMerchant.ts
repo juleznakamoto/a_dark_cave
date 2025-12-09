@@ -1463,7 +1463,6 @@ function selectTrades(
       cost,
       effect: (state: GameState) => {
         if ((state.resources[sellResource] || 0) >= sellAmount) {
-          const newMerchantPurchases = (Number(state.story?.seen?.merchantPurchases) || 0) + 1;
           return {
             resources: {
               ...state.resources,
@@ -1474,7 +1473,7 @@ function selectTrades(
               ...state.story,
               seen: {
                 ...state.story?.seen,
-                merchantPurchases: newMerchantPurchases,
+                merchantPurchases: (Number(state.story?.seen?.merchantPurchases) || 0) + 1,
               },
             },
           };

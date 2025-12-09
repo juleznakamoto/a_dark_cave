@@ -225,14 +225,7 @@ const mergeStateUpdates = (
     story: stateUpdates.story
       ? {
         ...prevState.story,
-        seen: { 
-          ...prevState.story.seen, 
-          ...stateUpdates.story.seen,
-          // Ensure merchantPurchases increments properly
-          ...(stateUpdates.story.seen?.merchantPurchases !== undefined && {
-            merchantPurchases: stateUpdates.story.seen.merchantPurchases
-          })
-        },
+        seen: { ...prevState.story.seen, ...stateUpdates.story.seen },
       }
       : prevState.story,
     effects: stateUpdates.effects || prevState.effects,
