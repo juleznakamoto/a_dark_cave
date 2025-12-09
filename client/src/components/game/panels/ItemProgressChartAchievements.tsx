@@ -401,6 +401,7 @@ export default function ItemProgressChart() {
                   strokeWidth={segment.isFull ? (isClaimed ? 1 : 1.5) : 0}
                   stroke={segment.isFull ? COMPLETED_STROKE_COLOR : undefined}
                   isAnimationActive={false}
+                  className="border-8 border-transparent"
                   style={{
                     outline: "none",
                     pointerEvents: showTooltip ? "auto" : "none",
