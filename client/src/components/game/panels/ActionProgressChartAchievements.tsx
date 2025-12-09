@@ -10,6 +10,7 @@ interface ActionSegment {
   color: string;
   label: string;
   getCount: (state: GameState) => number;
+  reward?: number; // Optional custom silver reward
 }
 
 interface RingConfig {
@@ -358,7 +359,7 @@ export default function ActionProgressChartAchievements() {
 
               const handleSegmentClick = () => {
                 if (isInteractive) {
-                  const silverReward = 50 * segment.maxCount;
+                  const silverReward = segment.reward ?? (50 * segment.maxCount);
 
                   useGameStore
                     .getState()

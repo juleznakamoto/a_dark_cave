@@ -16,6 +16,7 @@ interface ItemSegment {
   label: string;
   category: "tools" | "weapons" | "clothing" | "relics";
   maxCount: number;
+  reward?: number; // Optional custom silver reward
 }
 
 interface RingConfig {
@@ -343,8 +344,8 @@ export default function ItemProgressChart() {
 
               const handleSegmentClick = () => {
                 if (isInteractive) {
-                  // Calculate silver reward: 50 * maxCount
-                  const silverReward = 50 * segment.maxCount;
+                  // Use custom reward if specified, otherwise default to 50 * maxCount
+                  const silverReward = segment.reward ?? (50 * segment.maxCount);
 
                   // Award silver
                   useGameStore

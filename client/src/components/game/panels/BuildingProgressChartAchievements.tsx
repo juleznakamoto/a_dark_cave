@@ -10,6 +10,7 @@ interface BuildingSegment {
   color: string;
   label: string;
   relatedBuildings?: (keyof GameState["buildings"])[];
+  reward?: number; // Optional custom silver reward
 }
 
 interface RingConfig {
@@ -360,8 +361,8 @@ export default function BuildingProgressChart() {
               
               const handleSegmentClick = () => {
                 if (isInteractive) {
-                  // Calculate silver reward: 50 * maxCount
-                  const silverReward = 50 * segment.maxCount;
+                  // Use custom reward if specified, otherwise default to 50 * maxCount
+                  const silverReward = segment.reward ?? (50 * segment.maxCount);
                   
                   // Award silver
                   useGameStore.getState().updateResource("silver", silverReward);
