@@ -194,11 +194,8 @@ export default function ItemProgressChart() {
         label: "Ancient Books",
         category: "relics",
         maxCount: 3,
-        reward: 1000,
+        reward: 500,
       },
-    ],
-    // Sixth ring: Fellowship
-    [
       {
         itemType: "fellowship",
         itemKeys: [
@@ -212,6 +209,10 @@ export default function ItemProgressChart() {
         maxCount: 3,
         reward: 1000,
       },
+    ],
+    // Sixth ring: Fellowship
+    [
+
     ],
   ];
 
