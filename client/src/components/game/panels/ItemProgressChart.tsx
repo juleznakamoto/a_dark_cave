@@ -10,11 +10,10 @@ interface ItemSegment {
     | keyof GameState["weapons"]
     | keyof GameState["clothing"]
     | keyof GameState["relics"]
-    | keyof GameState["fellowship"]
   )[];
   color: string;
   label: string;
-  category: "tools" | "weapons" | "clothing" | "relics" | "fellowship";
+  category: "tools" | "weapons" | "clothing" | "relics";
   maxCount: number;
 }
 
@@ -419,60 +418,8 @@ export default function ItemProgressChart() {
         maxCount: 1,
       },
     ],
-    // Fifth ring: Books
-    [
-      {
-        itemType: "unnamed_book",
-        itemKeys: ["unnamed_book"],
-        color: tailwindToHex("gray-400/80"),
-        label: "Unnamed Book",
-        category: "relics",
-        maxCount: 1,
-      },
-      {
-        itemType: "elder_scroll",
-        itemKeys: ["elder_scroll"],
-        color: tailwindToHex("gray-400/80"),
-        label: "Elder Scroll",
-        category: "relics",
-        maxCount: 1,
-      },
-      {
-        itemType: "occultist_grimoire",
-        itemKeys: ["occultist_grimoire"],
-        color: tailwindToHex("gray-400/80"),
-        label: "Occultist Grimoire",
-        category: "relics",
-        maxCount: 1,
-      },
-    ],
-    // Sixth ring: Fellowship
-    [
-      {
-        itemType: "elder_wizard",
-        itemKeys: ["elder_wizard"],
-        color: tailwindToHex("gray-400/80"),
-        label: "Elder Wizard",
-        category: "fellowship",
-        maxCount: 1,
-      },
-      {
-        itemType: "restless_knight",
-        itemKeys: ["restless_knight"],
-        color: tailwindToHex("gray-400/80"),
-        label: "Restless Knight",
-        category: "fellowship",
-        maxCount: 1,
-      },
-      {
-        itemType: "ashwraith_huntress",
-        itemKeys: ["ashwraith_huntress"],
-        color: tailwindToHex("gray-400/80"),
-        label: "Ashwraith Huntress",
-        category: "fellowship",
-        maxCount: 1,
-      },
-    ],
+    // Fifth ring: ???
+    [],
   ];
 
   // Calculate ring configurations with radius values
@@ -500,8 +447,6 @@ export default function ItemProgressChart() {
         if (state.clothing[itemKey as keyof typeof state.clothing]) count++;
       } else if (segment.category === "relics") {
         if (state.relics[itemKey as keyof typeof state.relics]) count++;
-      } else if (segment.category === "fellowship") {
-        if (state.fellowship[itemKey as keyof typeof state.fellowship]) count++;
       }
     }
 
