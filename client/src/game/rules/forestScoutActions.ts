@@ -240,11 +240,17 @@ export function handleLayTrap(
     let villagerDeaths: number;
 
     if (fightRand < fightChance) {
-      // Victory with minimal or no casualties (0-2 deaths)
-      villagerDeaths = Math.min(state.current_population, Math.floor(Math.random() * 3) + state.CM * 1); // 0-2 deaths
+      // Victory with minimal or no casualties
+      villagerDeaths = Math.min(
+        state.current_population,
+        Math.floor(Math.random() * 4) + state.CM * 1,
+      );
     } else {
-      // Defeat with heavy casualties (3-6 deaths)
-      villagerDeaths = Math.min(state.current_population, Math.floor(Math.random() * 4) + 3 + state.CM * 2); // 3-6 deaths
+      // Defeat with heavy casualties
+      villagerDeaths = Math.min(
+        state.current_population,
+        Math.floor(Math.random() * 5) + 3 + state.CM * 2,
+      );
     }
 
     const deathResult = killVillagers(state, villagerDeaths);
@@ -359,7 +365,10 @@ export function handleCastleRuins(
     const failureRand = Math.random();
 
     if (failureRand < 0.5 - state.CM * 0.1) {
-      const villagerDeaths = Math.min(state.current_population, Math.floor(Math.random() * 4) + 1 + state.CM * 2);
+      const villagerDeaths = Math.min(
+        state.current_population,
+        Math.floor(Math.random() * 5) + 1 + state.CM * 2,
+      );
       const deathResult = killVillagers(state, villagerDeaths);
       Object.assign(result.stateUpdates, deathResult);
 
@@ -374,7 +383,10 @@ export function handleCastleRuins(
         },
       });
     } else {
-      const villagerDeaths = Math.min(state.current_population, Math.floor(Math.random() * 8) + 2 + state.CM * 4);
+      const villagerDeaths = Math.min(
+        state.current_population,
+        Math.floor(Math.random() * 9) + 2 + state.CM * 4,
+      );
       const deathResult = killVillagers(state, villagerDeaths);
       Object.assign(result.stateUpdates, deathResult);
 
@@ -443,7 +455,10 @@ export function handleHillGrave(
       },
     });
   } else {
-    const villagerDeaths = Math.min(state.current_population, Math.floor(Math.random() * 10) + 3 + state.CM * 4);
+    const villagerDeaths = Math.min(
+      state.current_population,
+      Math.floor(Math.random() * 11) + 3 + state.CM * 4,
+    );
     const deathResult = killVillagers(state, villagerDeaths);
     Object.assign(result.stateUpdates, deathResult);
 
@@ -513,7 +528,10 @@ export function handleSunkenTemple(
       },
     });
   } else {
-    const villagerDeaths = Math.min(state.current_population, Math.floor(Math.random() * 12) + 4 + state.CM * 4);
+    const villagerDeaths = Math.min(
+      state.current_population,
+      Math.floor(Math.random() * 13) + 4 + state.CM * 4,
+    );
     const deathResult = killVillagers(state, villagerDeaths);
     Object.assign(result.stateUpdates, deathResult);
 
@@ -582,7 +600,10 @@ export function handlecollapsedTower(
       },
     });
   } else {
-    const villagerDeaths = Math.min(state.current_population, Math.floor(Math.random() * 8) + 2 + state.CM * 4);
+    const villagerDeaths = Math.min(
+      state.current_population,
+      Math.floor(Math.random() * 9) + 2 + state.CM * 4,
+    );
     const deathResult = killVillagers(state, villagerDeaths);
     Object.assign(result.stateUpdates, deathResult);
 
@@ -645,7 +666,10 @@ export function handleForestCave(
       },
     });
   } else {
-    const villagerDeaths = Math.min(state.current_population, Math.floor(Math.random() * 6) + 2 + state.CM * 3);
+    const villagerDeaths = Math.min(
+      state.current_population,
+      Math.floor(Math.random() * 8) + 2 + state.CM * 3,
+    );
     const deathResult = killVillagers(state, villagerDeaths);
     Object.assign(result.stateUpdates, deathResult);
 

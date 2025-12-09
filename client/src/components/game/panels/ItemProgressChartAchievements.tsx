@@ -38,9 +38,6 @@ export default function ItemProgressChart() {
   const backgroundColor = tailwindToHex("neutral-800");
   const getStartAngle = (paddingAngle: number) => 90 - paddingAngle / 2;
 
-  const state = useGameStore.getState();
-  const isCruelMode = state.cruelMode;
-
   const claimedAchievements = useGameStore(
     (state) => state.claimedAchievements || [],
   );
@@ -73,7 +70,7 @@ export default function ItemProgressChart() {
           "adamant_axe",
         ],
         color: tailwindToHex("gray-400/80"),
-        label: "Axes",
+        label: "Chop",
         category: "tools",
         maxCount: 5,
       },
@@ -87,7 +84,7 @@ export default function ItemProgressChart() {
           "adamant_pickaxe",
         ],
         color: tailwindToHex("gray-400/80"),
-        label: "Pickaxes",
+        label: "Dig",
         category: "tools",
         maxCount: 5,
       },
@@ -100,7 +97,7 @@ export default function ItemProgressChart() {
           "adamant_lantern",
         ],
         color: tailwindToHex("gray-400/80"),
-        label: "Lanterns",
+        label: "Illuminate",
         category: "tools",
         maxCount: 4,
       },

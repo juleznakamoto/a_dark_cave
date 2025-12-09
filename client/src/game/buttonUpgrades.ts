@@ -75,15 +75,15 @@ export const CHOP_WOOD_UPGRADE_LEVELS: UpgradeLevel[] = [
 export const CAVE_EXPLORE_UPGRADE_LEVELS: UpgradeLevel[] = [
   { level: 0, clicksRequired: 0, bonus: 0},
   { level: 1, clicksRequired: 10, bonus: 10},
-  { level: 2, clicksRequired: 21, bonus: 20},
-  { level: 3, clicksRequired: 33, bonus: 30},
-  { level: 4, clicksRequired: 43, bonus: 40},
-  { level: 5, clicksRequired: 57, bonus: 50},
-  { level: 6, clicksRequired: 72, bonus: 60},
-  { level: 7, clicksRequired: 88, bonus: 70},
-  { level: 8, clicksRequired: 105, bonus: 80},
-  { level: 9, clicksRequired: 123, bonus: 90},
-  { level: 10, clicksRequired: 142, bonus: 100},
+  { level: 2, clicksRequired: 22, bonus: 20},
+  { level: 3, clicksRequired: 36, bonus: 30},
+  { level: 4, clicksRequired: 52, bonus: 40},
+  { level: 5, clicksRequired: 70, bonus: 50},
+  { level: 6, clicksRequired: 90, bonus: 60},
+  { level: 7, clicksRequired: 112, bonus: 70},
+  { level: 8, clicksRequired: 136, bonus: 80},
+  { level: 9, clicksRequired: 162, bonus: 90},
+  { level: 10, clicksRequired: 190, bonus: 100},
 ];
 
 // Get the appropriate upgrade levels for a given key

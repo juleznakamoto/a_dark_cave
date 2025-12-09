@@ -167,7 +167,7 @@ export default function ActionProgressChartAchievements() {
       },
       {
         segmentType: "ashfireBombs",
-        maxCount: 25,
+        maxCount: 20,
         color: tailwindToHex("gray-400/80"),
         label: "Ashfire Bombs Crafted",
         getCount: (state: GameState) =>
@@ -175,7 +175,7 @@ export default function ActionProgressChartAchievements() {
       },
       {
         segmentType: "voidBombs",
-        maxCount: 25,
+        maxCount: 15,
         color: tailwindToHex("gray-400/80"),
         label: "Void Bombs Crafted",
         getCount: (state: GameState) =>
