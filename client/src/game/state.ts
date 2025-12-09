@@ -315,6 +315,7 @@ const defaultGameState: GameState = {
   books: {
     book_of_ascension: false,
     book_of_war: false,
+    book_of_trials: false,
   },
   fellowship: {},
   feastState: {

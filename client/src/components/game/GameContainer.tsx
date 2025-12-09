@@ -36,6 +36,7 @@ export default function GameContainer() {
     setCombatDialog,
     isPaused,
     inactivityDialogOpen, // Added inactivityDialogOpen to state
+    gameState // Added gameState to access book information
   } = useGameStore();
 
   // Estate unlocks when Dark Estate is built
@@ -175,7 +176,8 @@ export default function GameContainer() {
       });
     }
 
-    if (true) {
+    // Add Achievements tab if Book of Trials is owned
+    if (gameState.books?.book_of_trials) {
       tabs.push({
         id: "achievements",
         icon: <Castle />,
@@ -191,6 +193,7 @@ export default function GameContainer() {
     flags.bastionUnlocked,
     buildings.stoneHut,
     setActiveTab,
+    gameState.books?.book_of_trials // Dependency for achievements tab
   ]);
 
   // Show start screen if game hasn't started yet
@@ -320,19 +323,21 @@ export default function GameContainer() {
                 )}
 
                 {/* Achievements Tab Button */}
-                <button
-                  className={`py-2 text-sm bg-transparent ${
-                    animatingTabs.has("achievements")
-                      ? "tab-fade-in"
-                      : activeTab === "achievements"
-                        ? "font-medium opacity-100"
-                        : "opacity-60"
-                  }`}
-                  onClick={() => setActiveTab("achievements")}
-                  data-testid="tab-achievements"
-                >
-                  ⚜
-                </button>
+                {gameState.books?.book_of_trials && (
+                  <button
+                    className={`py-2 text-sm bg-transparent ${
+                      animatingTabs.has("achievements")
+                        ? "tab-fade-in"
+                        : activeTab === "achievements"
+                          ? "font-medium opacity-100"
+                          : "opacity-60"
+                    }`}
+                    onClick={() => setActiveTab("achievements")}
+                    data-testid="tab-achievements"
+                  >
+                    ⚜
+                  </button>
+                )}
               </div>
             )}
           </nav>

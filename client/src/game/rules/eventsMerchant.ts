@@ -1311,6 +1311,18 @@ const toolTrades = [
     message:
       "You purchase the Book of War. The merchant nods gravely: 'Military knowledge from a long gone kingdom in the far east. With this, you will better understand the outcomes of your choices.'",
   },
+  {
+    id: "trade_book_of_trials",
+    label: "Book of Trials",
+    give: "book",
+    giveItem: "book_of_trials",
+    condition: (state: GameState) =>
+      state.buildings.darkEstate >= 1 &&
+      !state.books.book_of_trials,
+    costs: [{ resource: "gold", amounts: [250] }],
+    message:
+      "You purchase the Book of Trials. The merchant smiles knowingly: 'A guide for those who seek to measure their journey. It teaches how to set goals and overcome resistance. With this, you can track your progress.'",
+  },
 ];
 
 // Helper function to select trades (used for both buy and sell)
