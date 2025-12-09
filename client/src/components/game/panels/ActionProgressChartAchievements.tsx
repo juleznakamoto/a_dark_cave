@@ -190,7 +190,7 @@ export default function ActionProgressChartAchievements() {
         segmentType: "emberBombs",
         maxCount: 25,
         color: SEGMENT_COLOR,
-        label: "Ember Bombs Crafted",
+        label: "Ember Bombs crafted",
         getCount: (state: GameState) =>
           Math.min(Number(state.story?.seen?.emberBombsCrafted) || 0, 25),
         reward: 500,
@@ -199,7 +199,7 @@ export default function ActionProgressChartAchievements() {
         segmentType: "ashfireBombs",
         maxCount: 20,
         color: SEGMENT_COLOR,
-        label: "Ashfire Bombs Crafted",
+        label: "Ashfire Bombs crafted",
         getCount: (state: GameState) =>
           Math.min(Number(state.story?.seen?.ashfireBombsCrafted) || 0, 20),
         reward: 500,
@@ -208,7 +208,7 @@ export default function ActionProgressChartAchievements() {
         segmentType: "voidBombs",
         maxCount: 15,
         color: SEGMENT_COLOR,
-        label: "Void Bombs Crafted",
+        label: "Void Bombs crafted",
         getCount: (state: GameState) =>
           Math.min(
             state.cruelMode

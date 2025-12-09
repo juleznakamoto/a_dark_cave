@@ -18,10 +18,11 @@ interface ItemSegment {
     | keyof GameState["weapons"]
     | keyof GameState["clothing"]
     | keyof GameState["relics"]
+    | keyof GameState["fellowship"]
   )[];
   color: string;
   label: string;
-  category: "tools" | "weapons" | "clothing" | "relics";
+  category: "tools" | "weapons" | "clothing" | "relics" | "fellowship";
   maxCount: number;
   reward?: number; // Optional custom silver reward
 }
@@ -80,6 +81,7 @@ export default function ItemProgressChart() {
         label: "Chop",
         category: "tools",
         maxCount: 5,
+        reward: 500,
       },
       {
         itemType: "pickaxes",
@@ -94,6 +96,7 @@ export default function ItemProgressChart() {
         label: "Dig",
         category: "tools",
         maxCount: 5,
+        reward: 500,
       },
       {
         itemType: "lanterns",
@@ -107,8 +110,7 @@ export default function ItemProgressChart() {
         label: "Illuminate",
         category: "tools",
         maxCount: 4,
-        reward: 250,
-
+        reward: 500,
       },
     ],
 
@@ -123,7 +125,7 @@ export default function ItemProgressChart() {
           "adamant_sword",
         ],
         color: SEGMENT_COLOR,
-        label: "Swords",
+        label: "Strike",
         category: "weapons",
         maxCount: 4,
         reward: 500,
@@ -138,9 +140,10 @@ export default function ItemProgressChart() {
           "master_bow",
         ],
         color: SEGMENT_COLOR,
-        label: "Bows",
+        label: "Shoot",
         category: "weapons",
         maxCount: 5,
+        reward: 500,
       },
     ],
     // Third ring: Relics
@@ -165,55 +168,28 @@ export default function ItemProgressChart() {
     // Fourth ring: Clothing
     [
       {
-        itemType: "explorer_pack",
-        itemKeys: [
-          "explorer_pack",
-          "hunter_cloak",
-          "grenadier_bag",
-          "highpriest_robe",
-          "loggers_gloves",
-          "sacrificial_tunic",
-        ],
-        color: tailwindToHex("gray-400/80"),
-        label: "Leather Crafting",
-        category: "clothing",
-        maxCount: 6,
-        reward: 500,
-      },
-    ],
-    // Fifth ring: Books
-    [
-      {
         itemType: "books",
-        itemKeys: [
-          "unnamed_book",
-          "elder_scroll",
-          "occultist_grimoire",
-        ],
+        itemKeys: ["unnamed_book", "elder_scroll", "occultist_grimoire"],
         color: tailwindToHex("gray-400/80"),
-        label: "Ancient Books",
+        label: "Ancient Wisdom",
         category: "relics",
         maxCount: 3,
         reward: 500,
       },
       {
         itemType: "fellowship",
-        itemKeys: [
-          "elder_wizard",
-          "restless_knight",
-          "ashwraith_huntress",
-        ],
+        itemKeys: ["elder_wizard", "restless_knight", "ashwraith_huntress"],
         color: tailwindToHex("gray-400/80"),
-        label: "Fellowship",
+        label: "Good Company",
         category: "fellowship",
         maxCount: 3,
-        reward: 1000,
+        reward: 500,
       },
     ],
+    // Fifth ring: Books
+    [],
     // Sixth ring: Fellowship
-    [
-
-    ],
+    [],
   ];
 
   // Calculate ring configurations with radius values
@@ -243,7 +219,11 @@ export default function ItemProgressChart() {
         if (state.relics[itemKey as keyof typeof state.relics]) count++;
       } else if (segment.category === "fellowship") {
         // Assuming GameState has a fellowship property similar to others
-        if (state.fellowship && state.fellowship[itemKey as keyof typeof state.fellowship]) count++;
+        if (
+          state.fellowship &&
+          state.fellowship[itemKey as keyof typeof state.fellowship]
+        )
+          count++;
       }
     }
 
@@ -407,7 +387,7 @@ export default function ItemProgressChart() {
               const handleSegmentClick = () => {
                 if (isInteractive) {
                   // Use custom reward if specified, otherwise default to 50 * maxCount
-                  const silverReward = segment.reward ?? (50 * segment.maxCount);
+                  const silverReward = segment.reward ?? 50 * segment.maxCount;
 
                   // Award silver
                   useGameStore
@@ -507,7 +487,7 @@ export default function ItemProgressChart() {
                   }}
                 >
                   <Cell fill={segmentColor} />
-                </Pie>
+                </Pie>,
               ];
             }),
 
