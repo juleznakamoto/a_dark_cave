@@ -822,15 +822,15 @@ export const calculateTotalEffects = (state: GameState) => {
 
   // Fellowship effects
   Object.keys(state.fellowship || {}).forEach((fellowId) => {
-    if (fellowshipEffects[fellowId]) {
-      const effect = fellowshipEffects[fellowId];
+    const effect = fellowshipEffects[fellowId];
+    if (effect) {
       // Process madness bonuses from general bonuses (items that ADD madness)
-      if (effect.bonuses.generalBonuses?.madness) {
+      if (effect.bonuses?.generalBonuses?.madness) {
         effects.statBonuses.madness += effect.bonuses.generalBonuses.madness;
       }
 
       // Process madness reduction from general bonuses (items that REDUCE madness)
-      if (effect.bonuses.generalBonuses?.madnessReduction) {
+      if (effect.bonuses?.generalBonuses?.madnessReduction) {
         const effectKey = `${fellowId}_madness_reduction`;
         effects.madness_reduction[effectKey] =
           -effect.bonuses.generalBonuses.madnessReduction;
