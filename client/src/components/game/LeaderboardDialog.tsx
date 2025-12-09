@@ -161,7 +161,7 @@ export default function LeaderboardDialog({ isOpen, onClose }: LeaderboardDialog
               <span className="font-bold text-lg w-8 text-center">
                 {index + 1}
               </span>
-              <span className="font-medium">{entry.displayName}</span>
+              <span className="font-sm">{entry.displayName}</span>
             </div>
             <span className="text-muted-foreground">{formatTime(entry.play_time)}</span>
           </div>
