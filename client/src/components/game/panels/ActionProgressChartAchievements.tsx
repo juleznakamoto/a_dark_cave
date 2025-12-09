@@ -138,6 +138,7 @@ export default function ActionProgressChartAchievements() {
         label: "Bone Totem Sacrifices",
         getCount: (state: GameState) =>
           Number(state.story?.seen?.boneTotemsUsageCount) || 0,
+        reward: 500,
       },
       {
         segmentType: "leatherTotems",
@@ -146,6 +147,7 @@ export default function ActionProgressChartAchievements() {
         label: "Leather Totem Sacrifices",
         getCount: (state: GameState) =>
           Number(state.story?.seen?.leatherTotemsUsageCount) || 0,
+        reward: 500,
       },
       {
         segmentType: "animals",
@@ -154,6 +156,7 @@ export default function ActionProgressChartAchievements() {
         label: "Animal Sacrifices",
         getCount: (state: GameState) =>
           Number(state.story?.seen?.animalsSacrificeLevel) || 0,
+        reward: 500,
       },
     ],
     // Fourth ring: Bomb Crafting
@@ -165,6 +168,7 @@ export default function ActionProgressChartAchievements() {
         label: "Ember Bombs Crafted",
         getCount: (state: GameState) =>
           Number(state.story?.seen?.emberBombsCrafted) || 0,
+        reward: 500,
       },
       {
         segmentType: "ashfireBombs",
@@ -173,6 +177,7 @@ export default function ActionProgressChartAchievements() {
         label: "Ashfire Bombs Crafted",
         getCount: (state: GameState) =>
           Number(state.story?.seen?.ashfireBombsCrafted) || 0,
+        reward: 500,
       },
       {
         segmentType: "voidBombs",
@@ -181,6 +186,7 @@ export default function ActionProgressChartAchievements() {
         label: "Void Bombs Crafted",
         getCount: (state: GameState) =>
           state.cruelMode ? Number(state.story?.seen?.voidBombsCrafted) || 0 : 0,
+        reward: 500,
       },
     ],
     // Fifth ring: Merchant Purchases
@@ -192,6 +198,7 @@ export default function ActionProgressChartAchievements() {
         label: "Merchant Purchases",
         getCount: (state: GameState) =>
           Number(state.story?.seen?.merchantPurchases) || 0,
+        reward: 500,
       },
     ],
   ];

@@ -101,6 +101,8 @@ export default function ItemProgressChart() {
         label: "Illuminate",
         category: "tools",
         maxCount: 4,
+        reward: 250,
+
       },
     ],
 
@@ -118,6 +120,7 @@ export default function ItemProgressChart() {
         label: "Swords",
         category: "weapons",
         maxCount: 4,
+        reward: 500,
       },
       {
         itemType: "bows",
@@ -150,6 +153,7 @@ export default function ItemProgressChart() {
         label: "Leather Crafting",
         category: "clothing",
         maxCount: 6,
+        reward: 500,
       },
     ],
     // Fourth ring: Clothing
