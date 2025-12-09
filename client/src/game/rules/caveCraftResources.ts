@@ -1,6 +1,5 @@
 import { Action, GameState } from "@shared/schema";
 import { ActionResult } from "../actions";
-import { applyActionEffects } from "./index";
 
 export const caveCraftResources: Record<string, Action> = {
   craftBoneTotem: {
@@ -170,38 +169,32 @@ export const caveCraftResources: Record<string, Action> = {
 
 // Action handlers
 export function handleCraftBoneTotem(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects("craftBoneTotem", state);
-  Object.assign(result.stateUpdates, effectUpdates);
+  Object.assign(result.stateUpdates, {}); // No direct effect updates here, handled by main executor
   return result;
 }
 
 export function handleCraftBoneTotems2(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects("craftBoneTotems2", state);
-  Object.assign(result.stateUpdates, effectUpdates);
+  Object.assign(result.stateUpdates, {});
   return result;
 }
 
 export function handleCraftBoneTotems3(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects("craftBoneTotems3", state);
-  Object.assign(result.stateUpdates, effectUpdates);
+  Object.assign(result.stateUpdates, {});
   return result;
 }
 
 export function handleCraftLeatherTotem(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects("craftLeatherTotem", state);
-  Object.assign(result.stateUpdates, effectUpdates);
+  Object.assign(result.stateUpdates, {});
   return result;
 }
 
 export function handleCraftLeatherTotems5(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects("craftLeatherTotems5", state);
-  Object.assign(result.stateUpdates, effectUpdates);
+  Object.assign(result.stateUpdates, {});
   return result;
 }
 
 export function handleCraftBoneTotems5(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects("craftBoneTotems5", state);
-  Object.assign(result.stateUpdates, effectUpdates);
+  Object.assign(result.stateUpdates, {});
   return result;
 }
 
@@ -212,8 +205,7 @@ export function handleCraftEmberBomb(state: GameState, result: ActionResult): Ac
     resultEffects: result.stateUpdates.story?.seen,
   });
 
-  const effectUpdates = applyActionEffects("craftEmberBomb", state);
-  Object.assign(result.stateUpdates, effectUpdates);
+  Object.assign(result.stateUpdates, {});
 
   // Only show message on first craft
   if (!state.story.seen.hasEmberBomb) {
@@ -233,8 +225,7 @@ export function handleCraftEmberBomb(state: GameState, result: ActionResult): Ac
 }
 
 export function handleCraftAshfireBomb(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects("craftAshfireBomb", state);
-  Object.assign(result.stateUpdates, effectUpdates);
+  Object.assign(result.stateUpdates, {});
 
   // Only show message on first craft
   if (!state.story.seen.hasAshfireBomb) {
@@ -250,8 +241,7 @@ export function handleCraftAshfireBomb(state: GameState, result: ActionResult): 
 }
 
 export function handleCraftVoidBomb(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects("craftVoidBomb", state);
-  Object.assign(result.stateUpdates, effectUpdates);
+  Object.assign(result.stateUpdates, {});
 
   // Only show message on first craft
   if (!state.story.seen.hasVoidBomb) {
