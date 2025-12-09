@@ -1121,21 +1121,18 @@ export const bookEffects: Record<string, EffectDefinition> = {
     name: "Book of Ascension",
     description:
       "Book on ascending the self. Grants the ability to improve at tasks through practice.",
-    bonuses: {
-      generalBonuses: {},
-      actionBonuses: {},
-    },
+    bonuses: {},
   },
   book_of_war: {
     id: "book_of_war",
     name: "Book of War",
-    description: "Reveals the true odds in every combat encounter",
+    description: "Book containing wisdom about combat. Reveals the likelihood of success in battles and encounters.",
     bonuses: {},
   },
   book_of_trials: {
     id: "book_of_trials",
     name: "Book of Trials",
-    description: "Unlocks the path to track your progress and achievements",
+    description: "Book about navigating life’s challenges. Unlocks rewards for those who prove themselves through achievements.",
     bonuses: {},
   },
 };
