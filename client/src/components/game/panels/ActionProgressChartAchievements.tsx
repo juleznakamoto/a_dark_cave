@@ -490,7 +490,7 @@ export default function ActionProgressChartAchievements() {
                   style={{
                     outline: "none",
                     pointerEvents: "none",
-                    opacity: isClaimed ? 0.4 : 1,
+                    opacity: isClaimed ? 0.3 : 1,
                   }}
                 >
                   <Cell fill={segmentColor} />
