@@ -86,14 +86,14 @@ export const riddleEvents: Record<string, GameEvent> = {
   whisperersReward: {
     id: "whisperersReward",
     condition: (state: GameState) => 
-      state.events.whispererInTheDark_correct === true &&
-      state.events.riddleOfAges_correct === true &&
-      state.events.riddleOfDevourer_correct === true &&
-      state.events.riddleOfTears_correct === true &&
-      state.events.riddleOfEternal_correct === true &&
+      // state.events.whispererInTheDark_correct === true &&
+      // state.events.riddleOfAges_correct === true &&
+      // state.events.riddleOfDevourer_correct === true &&
+      // state.events.riddleOfTears_correct === true &&
+      // state.events.riddleOfEternal_correct === true &&
       !state.events.whisperersReward,
     triggerType: "resource",
-    timeProbability: 5,
+    timeProbability: 0.05,
     title: "The Whisperer's Gift",
     message: "The cloaked figure appears again. His whispers drift through the cold night air one last time before he vanishes, 'Your wisdom has been weighed and found worthy. May shadows guard your path, and fortune follow your name.'",
     triggered: false,

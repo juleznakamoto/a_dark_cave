@@ -42,8 +42,8 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     name: "Cruel Mode",
     description:
       "Experience a cruel world, with expanded story, more items, more lore and deadlier foes. Endure, or vanish.",
-    originalPrice: 799,
-    price: 399, // 3.99 €
+    originalPrice: 999,
+    price: 499, // 4.99 €
     rewards: {},
     canPurchaseMultipleTimes: false,
     category: "blessing",
@@ -161,7 +161,8 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     },
     canPurchaseMultipleTimes: true,
     category: "bundle",
-    activationMessage: "Fading Wanderer Bundle components have been added to your purchases!",
+    activationMessage:
+      "Fading Wanderer Bundle components have been added to your purchases!",
     symbol: "◈",
     symbolColor: "text-purple-600",
     bundleComponents: ["gold_5000", "great_feast_1"], // Component items
@@ -179,35 +180,10 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     },
     canPurchaseMultipleTimes: true,
     category: "bundle",
-    activationMessage: "Pale King's Bundle components have been added to your purchases!",
+    activationMessage:
+      "Pale King's Bundle components have been added to your purchases!",
     symbol: "✣",
     symbolColor: "text-rose-600",
     bundleComponents: ["gold_20000", "great_feast_3"], // Component items
   },
-
-  // dwarven_hammer: {
-  //   id: 'dwarven_hammer',
-  //   name: 'Dwarven Hammer',
-  //   description: "A legendary blacksmith's hammer that reduces crafting costs",
-  //   price: 499, // 4.99 €
-  //   rewards: {
-  //     tools: ['blacksmith_hammer'],
-  //   },
-  //   canPurchaseMultipleTimes: false,
-  //   category: 'tool',
-  //   activationMessage: 'Activated Dwarven Hammer! Rewards have been added to your inventory.',
-  // },
-
-  // xxx_axe: {
-  //   id: 'xxx_axe',
-  //   name: 'Adamant Axe',
-  //   description: 'An unbreakable axe made from the hardest metal',
-  //   price: 199, // 1.99 €
-  //   rewards: {
-  //     tools: ['adamant_axe'],
-  //   },
-  //   canPurchaseMultipleTimes: false,
-  //   category: 'tool',
-  //   activationMessage: 'Activated Adamant Axe! Rewards have been added to your inventory.',
-  // },
 };

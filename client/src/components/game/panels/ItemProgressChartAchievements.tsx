@@ -5,7 +5,7 @@ import { tailwindToHex } from "@/lib/tailwindColors";
 import { useState, useRef } from "react";
 
 // Segment colors
-const SEGMENT_COLOR = tailwindToHex("gray-400/80");
+const SEGMENT_COLOR = tailwindToHex("gray-400/70");
 const COMPLETED_COLOR = tailwindToHex("red-600");
 const COMPLETED_STROKE_COLOR = tailwindToHex("red-900");
 const BACKGROUND_COLOR = tailwindToHex("neutral-800");
