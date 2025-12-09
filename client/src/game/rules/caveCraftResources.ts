@@ -114,6 +114,7 @@ export const caveCraftResources: Record<string, Action> = {
     effects: {
       "resources.ember_bomb": 1,
       "story.seen.hasEmberBomb": true,
+      "story.seen.emberBombsCrafted": (state: GameState) => (Number(state.story?.seen?.emberBombsCrafted) || 0) + 1,
     },
     cooldown: 20,
   },
@@ -132,6 +133,7 @@ export const caveCraftResources: Record<string, Action> = {
     effects: {
       "resources.ashfire_bomb": 1,
       "story.seen.hasAshfireBomb": true,
+      "story.seen.ashfireBombsCrafted": (state: GameState) => (Number(state.story?.seen?.ashfireBombsCrafted) || 0) + 1,
     },
     cooldown: 30,
   },
@@ -151,6 +153,7 @@ export const caveCraftResources: Record<string, Action> = {
     effects: {
       "resources.void_bomb": 1,
       "story.seen.hasVoidBomb": true,
+      "story.seen.voidBombsCrafted": (state: GameState) => (Number(state.story?.seen?.voidBombsCrafted) || 0) + 1,
     },
     cooldown: 45,
   },

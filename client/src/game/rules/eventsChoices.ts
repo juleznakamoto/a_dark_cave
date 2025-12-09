@@ -1553,12 +1553,12 @@ export const choiceEvents: Record<string, GameEvent> = {
     id: "wanderingFirecrafter",
     condition: (state: GameState) =>
       state.cruelMode &&
-      // state.story.seen.firstWaveVictory &&
-      // state.buildings.alchemistHall >= 1 &&
-      // state.story.seen.alchemistArrives &&
+      state.story.seen.firstWaveVictory &&
+      state.buildings.alchemistHall >= 1 &&
+      state.story.seen.alchemistArrives &&
       !state.story.seen.wanderingFirecrafterEvent,
     triggerType: "resource",
-    timeProbability: 0.025,
+    timeProbability: 20,
     title: "The Wandering Firecrafter",
     message:
       "A hooded figure in stained robes arrives at your village. 'I am a firecrafter,' he says with an echoing voice. 'I can teach you to craft a bomb of extreme power, that tears reality itself. But knowledge has its price.'",

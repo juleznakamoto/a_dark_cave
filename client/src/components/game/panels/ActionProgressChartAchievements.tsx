@@ -155,6 +155,44 @@ export default function ActionProgressChartAchievements() {
           Number(state.story?.seen?.animalsSacrificeLevel) || 0,
       },
     ],
+    // Fourth ring: Bomb Crafting
+    [
+      {
+        segmentType: "emberBombs",
+        maxCount: 25,
+        color: tailwindToHex("gray-400/80"),
+        label: "Ember Bombs Crafted",
+        getCount: (state: GameState) =>
+          Number(state.story?.seen?.emberBombsCrafted) || 0,
+      },
+      {
+        segmentType: "ashfireBombs",
+        maxCount: 25,
+        color: tailwindToHex("gray-400/80"),
+        label: "Ashfire Bombs Crafted",
+        getCount: (state: GameState) =>
+          Number(state.story?.seen?.ashfireBombsCrafted) || 0,
+      },
+      {
+        segmentType: "voidBombs",
+        maxCount: 25,
+        color: tailwindToHex("gray-400/80"),
+        label: "Void Bombs Crafted",
+        getCount: (state: GameState) =>
+          state.cruelMode ? Number(state.story?.seen?.voidBombsCrafted) || 0 : 0,
+      },
+    ],
+    // Fifth ring: Merchant Purchases
+    [
+      {
+        segmentType: "merchantPurchases",
+        maxCount: 100,
+        color: tailwindToHex("gray-400/80"),
+        label: "Merchant Purchases",
+        getCount: (state: GameState) =>
+          Number(state.story?.seen?.merchantPurchases) || 0,
+      },
+    ],
   ];
 
   // Calculate ring configurations with radius values
