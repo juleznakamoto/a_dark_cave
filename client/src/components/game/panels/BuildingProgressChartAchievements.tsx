@@ -372,7 +372,7 @@ export default function BuildingProgressChart() {
                       ...state.log,
                       {
                         id: `achievement-${achievementId}-${Date.now()}`,
-                        message: `${segment.name} Achievement complete: +${silverReward} silver`,
+                        message: `Achievement unlocked: ${segment.name} complete! +${silverReward} silver`,
                         timestamp: Date.now(),
                         type: "event" as const,
                       },

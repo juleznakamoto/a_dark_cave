@@ -1110,13 +1110,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
           ...mergedUpdates,
         };
 
-        // Log merchant purchases and other state updates
+        // Log blessings after state update
         logger.log('[STATE] After applying event choice:', {
           eventId,
           choiceId,
-          merchantPurchases: newState.story?.seen?.merchantPurchases,
-          hadStoryChanges: !!updatedChanges.story,
-          storyChanges: updatedChanges.story,
           blessingsInChanges: updatedChanges.blessings,
           blessingsAfterMerge: newState.blessings,
           hasBlessingsInChanges: !!updatedChanges.blessings,
