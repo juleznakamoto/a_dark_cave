@@ -7,10 +7,8 @@ import { useGameStore } from "@/game/state";
 function calculateEnemyStats(
   params: {
     attack: {
-      base: number;
-      random?: number;
       cmBonus: number;
-      options?: number[];
+      options: number[];
     };
     health: { base: number; cmBonus: number };
   },
@@ -18,24 +16,12 @@ function calculateEnemyStats(
 ) {
   const health = params.health.base + state.CM * params.health.cmBonus;
 
-  let attack: number;
-  if (params.attack.options) {
-    // Use options array if provided (e.g., fifth wave)
-    attack =
-      params.attack.options[
-        Math.floor(Math.random() * params.attack.options.length)
-      ] +
-      state.CM * params.attack.cmBonus;
-  } else if (params.attack.random) {
-    // Use random range if provided
-    attack =
-      Math.ceil(Math.random() * params.attack.random) +
-      params.attack.base +
-      state.CM * params.attack.cmBonus;
-  } else {
-    // Fallback to base + CM bonus
-    attack = params.attack.base + state.CM * params.attack.cmBonus;
-  }
+  // Use options array to select attack value
+  const attack =
+    params.attack.options[
+      Math.floor(Math.random() * params.attack.options.length)
+    ] +
+    state.CM * params.attack.cmBonus;
 
   return {
     attack,
@@ -47,7 +33,7 @@ function calculateEnemyStats(
 // Attack Wave Parameters
 const WAVE_PARAMS = {
   firstWave: {
-    attack: { base: 20, random: 10, options: [20, 25, 30], cmBonus: 5 },
+    attack: { options: [20, 25, 30], cmBonus: 5 },
     health: { base: 300, cmBonus: 50 },
     silverReward: 250,
     initialDuration: 10 * 60 * 1000, // 10 minutes
@@ -57,7 +43,7 @@ const WAVE_PARAMS = {
     fellowshipWoundedMultiplier: 0.1,
   },
   secondWave: {
-    attack: { base: 30, random: 10, options: [30, 35, 40], cmBonus: 5 },
+    attack: { options: [30, 35, 40], cmBonus: 5 },
     health: { base: 400, cmBonus: 50 },
     silverReward: 500,
     initialDuration: 10 * 60 * 1000,
@@ -67,7 +53,7 @@ const WAVE_PARAMS = {
     fellowshipWoundedMultiplier: 0.15,
   },
   thirdWave: {
-    attack: { base: 40, random: 10, options: [40, 45, 50], cmBonus: 10 },
+    attack: { options: [40, 45, 50], cmBonus: 10 },
     health: { base: 500, cmBonus: 100 },
     silverReward: 750,
     initialDuration: 10 * 60 * 1000,
@@ -77,7 +63,7 @@ const WAVE_PARAMS = {
     fellowshipWoundedMultiplier: 0.2,
   },
   fourthWave: {
-    attack: { base: 50, random: 15, options: [50, 55, 60, 65], cmBonus: 15 },
+    attack: { options: [50, 55, 60, 65], cmBonus: 15 },
     health: { base: 600, cmBonus: 150 },
     silverReward: 1000,
     initialDuration: 10 * 60 * 1000,
@@ -87,12 +73,7 @@ const WAVE_PARAMS = {
     fellowshipWoundedMultiplier: 0.25,
   },
   fifthWave: {
-    attack: {
-      base: 65,
-      random: 20,
-      options: [65, 70, 75, 80, 85],
-      cmBonus: 20,
-    },
+    attack: { options: [65, 70, 75, 80, 85], cmBonus: 20 },
     health: { base: 800, cmBonus: 200 },
     silverReward: 1500,
     initialDuration: 10 * 60 * 1000,
