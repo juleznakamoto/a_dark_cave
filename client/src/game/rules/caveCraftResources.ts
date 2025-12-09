@@ -1,5 +1,6 @@
 import { Action, GameState } from "@shared/schema";
 import { ActionResult } from "../actions";
+import { applyActionEffects } from "./effects";
 
 export const caveCraftResources: Record<string, Action> = {
   craftBoneTotem: {
@@ -200,6 +201,9 @@ export function handleCraftEmberBomb(state: GameState, result: ActionResult): Ac
     resultEffects: result.stateUpdates.story?.seen,
   });
 
+  const effectUpdates = applyActionEffects("craftEmberBomb", state);
+  Object.assign(result.stateUpdates, effectUpdates);
+
   // Only show message on first craft
   if (!state.story.seen.hasEmberBomb) {
     result.logEntries!.push({
@@ -218,6 +222,9 @@ export function handleCraftEmberBomb(state: GameState, result: ActionResult): Ac
 }
 
 export function handleCraftAshfireBomb(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects("craftAshfireBomb", state);
+  Object.assign(result.stateUpdates, effectUpdates);
+
   // Only show message on first craft
   if (!state.story.seen.hasAshfireBomb) {
     result.logEntries!.push({
@@ -232,6 +239,9 @@ export function handleCraftAshfireBomb(state: GameState, result: ActionResult): 
 }
 
 export function handleCraftVoidBomb(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects("craftVoidBomb", state);
+  Object.assign(result.stateUpdates, effectUpdates);
+
   // Only show message on first craft
   if (!state.story.seen.hasVoidBomb) {
     result.logEntries!.push({
