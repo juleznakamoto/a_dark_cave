@@ -6,7 +6,7 @@ import { useState, useRef } from "react";
 
 // Segment colors
 const SEGMENT_COLOR = tailwindToHex("gray-400/80");
-const COMPLETED_COLOR = tailwindToHex("green-400");
+const COMPLETED_COLOR = tailwindToHex("green-600");
 const COMPLETED_STROKE_COLOR = tailwindToHex("green-900");
 const BACKGROUND_COLOR = tailwindToHex("neutral-800");
 const BORDER_COLOR = tailwindToHex("neutral-400");
@@ -310,7 +310,7 @@ export default function ActionProgressChartAchievements() {
   return (
     <div
       ref={containerRef}
-      className="w-48 h-48 flex flex-col items-center justify-center relative"
+      className="w-44 h-44 flex flex-col items-center justify-center relative"
       onMouseMove={(e) => {
         if (hoveredSegment) {
           const rect = containerRef.current?.getBoundingClientRect();
@@ -420,7 +420,7 @@ export default function ActionProgressChartAchievements() {
                     outline: "none",
                     pointerEvents: showTooltip ? "auto" : "none",
                     cursor: isInteractive ? "pointer" : "default",
-                    opacity: isClaimed ? 0.5 : 1,
+                    opacity: isClaimed ? 0.4 : 1,
                   }}
                   onMouseEnter={(e: any) => {
                     if (showTooltip) {

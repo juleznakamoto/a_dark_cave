@@ -6,7 +6,7 @@ import { useState, useRef } from "react";
 
 // Segment colors
 const SEGMENT_COLOR = tailwindToHex("gray-400/80");
-const COMPLETED_COLOR = tailwindToHex("blue-400");
+const COMPLETED_COLOR = tailwindToHex("blue-600");
 const COMPLETED_STROKE_COLOR = tailwindToHex("blue-900");
 const BACKGROUND_COLOR = tailwindToHex("neutral-800");
 const BORDER_COLOR = tailwindToHex("neutral-400");
@@ -304,7 +304,7 @@ export default function BuildingProgressChart() {
   return (
     <div 
       ref={containerRef}
-      className="w-48 h-48 flex flex-col items-center justify-center relative"
+      className="w-44 h-44 flex flex-col items-center justify-center relative"
       onMouseMove={(e) => {
         if (hoveredSegment) {
           const rect = containerRef.current?.getBoundingClientRect();
@@ -414,7 +414,7 @@ export default function BuildingProgressChart() {
                     outline: "none", 
                     pointerEvents: showTooltip ? "auto" : "none",
                     cursor: isInteractive ? "pointer" : "default",
-                    opacity: isClaimed ? 0.5 : 1
+                    opacity: isClaimed ? 0.4 : 1
                   }}
                   onMouseEnter={(e: any) => {
                     if (showTooltip) {
