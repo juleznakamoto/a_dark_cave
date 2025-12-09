@@ -633,7 +633,11 @@ export const applyActionEffects = (
 
       const finalKey = pathParts[pathParts.length - 1];
 
-      if (typeof effect === "string" && effect.startsWith("random(")) {
+      if (typeof effect === "function") {
+        // Handle function-based effects (e.g., counters that increment)
+        const computedValue = effect(state);
+        current[finalKey] = computedValue;
+      } else if (typeof effect === "string" && effect.startsWith("random(")) {
         // Handle random effects like "random(1,3)"
         const match = effect.match(/random\((\d+),(\d+)\)/);
         if (match) {
