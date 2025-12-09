@@ -56,6 +56,7 @@ import {
   handleCraftLeatherTotems5,
   handleCraftEmberBomb,
   handleCraftAshfireBomb,
+  handleCraftVoidBomb,
 } from "@/game/rules/caveCraftResources";
 
 import {

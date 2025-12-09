@@ -559,7 +559,22 @@ export const useGameStore = create<GameStore>((set, get) => ({
     )
       return;
 
+    // Log bomb crafting actions
+    if (actionId === 'craftEmberBomb' || actionId === 'craftAshfireBomb' || actionId === 'craftVoidBomb') {
+      console.log(`[ACTION] Executing ${actionId}:`, {
+        currentCount: state.story?.seen?.[`${actionId.replace('craft', '').toLowerCase()}sCrafted`],
+        storySeenBefore: state.story?.seen,
+      });
+    }
+
     const result = executeGameAction(actionId, state);
+
+    if (actionId === 'craftEmberBomb' || actionId === 'craftAshfireBomb' || actionId === 'craftVoidBomb') {
+      console.log(`[ACTION] Result for ${actionId}:`, {
+        stateUpdates: result.stateUpdates.story?.seen,
+        hasStoryUpdates: !!result.stateUpdates.story,
+      });
+    }
 
     // Track button usage and check for level up (only if book_of_ascension is owned)
     const upgradeKey = ACTION_TO_UPGRADE_KEY[actionId];
@@ -620,6 +635,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
           ? [...prevState.log, ...result.logEntries].slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES)
           : prevState.log,
       };
+
+      // Log bomb crafting state after merge
+      if (actionId === 'craftEmberBomb' || actionId === 'craftAshfireBomb' || actionId === 'craftVoidBomb') {
+        console.log(`[ACTION] After merge for ${actionId}:`, {
+          prevCount: prevState.story?.seen?.[`${actionId.replace('craft', '').toLowerCase()}sCrafted`],
+          newCount: newState.story?.seen?.[`${actionId.replace('craft', '').toLowerCase()}sCrafted`],
+          mergedStory: mergedUpdates.story?.seen,
+        });
+      }
 
       return newState;
     });

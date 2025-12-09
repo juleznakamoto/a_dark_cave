@@ -194,6 +194,12 @@ export function handleCraftBoneTotems5(state: GameState, result: ActionResult): 
 }
 
 export function handleCraftEmberBomb(state: GameState, result: ActionResult): ActionResult {
+  console.log('[EMBER BOMB] Starting craft handler:', {
+    currentCount: state.story?.seen?.emberBombsCrafted,
+    hasEmberBomb: state.story?.seen?.hasEmberBomb,
+    resultEffects: result.stateUpdates.story?.seen,
+  });
+
   // Only show message on first craft
   if (!state.story.seen.hasEmberBomb) {
     result.logEntries!.push({
@@ -203,6 +209,10 @@ export function handleCraftEmberBomb(state: GameState, result: ActionResult): Ac
       type: 'system',
     });
   }
+
+  console.log('[EMBER BOMB] Craft handler complete:', {
+    finalResultUpdates: result.stateUpdates.story?.seen,
+  });
 
   return result;
 }
