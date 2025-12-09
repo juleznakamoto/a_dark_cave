@@ -75,21 +75,21 @@ export default function ActionProgressChartAchievements() {
     [
       {
         segmentType: "exploreCave",
-        maxCount: 5,
+        maxCount: 10,
         color: tailwindToHex("gray-400/80"),
         label: "Cave Explore",
         getCount: (state: GameState) => state.buttonUpgrades?.caveExplore?.level || 0,
       },
       {
         segmentType: "chopWood",
-        maxCount: 5,
+        maxCount: 10,
         color: tailwindToHex("gray-400/80"),
         label: "Chop Wood",
         getCount: (state: GameState) => state.buttonUpgrades?.chopWood?.level || 0,
       },
       {
         segmentType: "hunt",
-        maxCount: 5,
+        maxCount: 10,
         color: tailwindToHex("gray-400/80"),
         label: "Hunt",
         getCount: (state: GameState) => state.buttonUpgrades?.hunt?.level || 0,
@@ -99,42 +99,42 @@ export default function ActionProgressChartAchievements() {
     [
       {
         segmentType: "mineStone",
-        maxCount: 5,
+        maxCount: 10,
         color: tailwindToHex("gray-400/80"),
         label: "Mine Stone",
         getCount: (state: GameState) => state.buttonUpgrades?.mineStone?.level || 0,
       },
       {
         segmentType: "mineIron",
-        maxCount: 5,
+        maxCount: 10,
         color: tailwindToHex("gray-400/80"),
         label: "Mine Iron",
         getCount: (state: GameState) => state.buttonUpgrades?.mineIron?.level || 0,
       },
       {
         segmentType: "mineCoal",
-        maxCount: 5,
+        maxCount: 10,
         color: tailwindToHex("gray-400/80"),
         label: "Mine Coal",
         getCount: (state: GameState) => state.buttonUpgrades?.mineCoal?.level || 0,
       },
       {
         segmentType: "mineSulfur",
-        maxCount: 5,
+        maxCount: 10,
         color: tailwindToHex("gray-400/80"),
         label: "Mine Sulfur",
         getCount: (state: GameState) => state.buttonUpgrades?.mineSulfur?.level || 0,
       },
       {
         segmentType: "mineObsidian",
-        maxCount: 5,
+        maxCount: 10,
         color: tailwindToHex("gray-400/80"),
         label: "Mine Obsidian",
         getCount: (state: GameState) => state.buttonUpgrades?.mineObsidian?.level || 0,
       },
       {
         segmentType: "mineAdamant",
-        maxCount: 5,
+        maxCount: 10,
         color: tailwindToHex("gray-400/80"),
         label: "Mine Adamant",
         getCount: (state: GameState) => state.buttonUpgrades?.mineAdamant?.level || 0,
@@ -256,7 +256,7 @@ export default function ActionProgressChartAchievements() {
       }}
     >
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
-        <span className="text-xl text-neutral-400">⚡</span>
+        <span className="text-xl text-neutral-400">⧗</span>
       </div>
 
       <ResponsiveContainer width="100%" height="100%">

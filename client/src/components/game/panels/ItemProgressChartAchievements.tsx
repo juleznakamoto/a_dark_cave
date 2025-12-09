@@ -41,8 +41,10 @@ export default function ItemProgressChart() {
   const state = useGameStore.getState();
   const isCruelMode = state.cruelMode;
 
-  const claimedAchievements = useGameStore((state) => state.claimedAchievements || []);
-  
+  const claimedAchievements = useGameStore(
+    (state) => state.claimedAchievements || [],
+  );
+
   // State for tooltip interaction
   const [hoveredSegment, setHoveredSegment] = useState<{
     id: string;
@@ -50,7 +52,10 @@ export default function ItemProgressChart() {
     currentCount: number;
     maxCount: number;
   } | null>(null);
-  const [mousePosition, setMousePosition] = useState<{ x: number; y: number } | null>(null);
+  const [mousePosition, setMousePosition] = useState<{
+    x: number;
+    y: number;
+  } | null>(null);
   const [clickedSegment, setClickedSegment] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -99,30 +104,6 @@ export default function ItemProgressChart() {
         category: "tools",
         maxCount: 4,
       },
-      {
-        itemType: "blacksmith_hammer",
-        itemKeys: ["blacksmith_hammer"],
-        color: tailwindToHex("gray-400/80"),
-        label: "Blacksmith Hammer",
-        category: "tools",
-        maxCount: 1,
-      },
-      {
-        itemType: "mastermason_chisel",
-        itemKeys: ["mastermason_chisel"],
-        color: tailwindToHex("gray-400/80"),
-        label: "Mastermason Chisel",
-        category: "tools",
-        maxCount: 1,
-      },
-      {
-        itemType: "bone_saw",
-        itemKeys: ["bone_saw"],
-        color: tailwindToHex("gray-400/80"),
-        label: "Bone Saw",
-        category: "tools",
-        maxCount: 1,
-      },
     ],
 
     // Second ring: Weapons
@@ -154,285 +135,27 @@ export default function ItemProgressChart() {
         category: "weapons",
         maxCount: 5,
       },
-      {
-        itemType: "arbalest",
-        itemKeys: ["arbalest"],
-        color: tailwindToHex("gray-400/80"),
-        label: "Arbalest",
-        category: "weapons",
-        maxCount: 1,
-      },
-      {
-        itemType: "nightshade_bow",
-        itemKeys: ["nightshade_bow"],
-        color: tailwindToHex("gray-400/80"),
-        label: "Nightshade Bow",
-        category: "weapons",
-        maxCount: 1,
-      },
-      {
-        itemType: "compound_bow",
-        itemKeys: ["compound_bow"],
-        color: tailwindToHex("gray-400/80"),
-        label: "Compound Bow",
-        category: "weapons",
-        maxCount: 1,
-      },
-      {
-        itemType: "frostglass_sword",
-        itemKeys: ["frostglass_sword"],
-        color: tailwindToHex("gray-400/80"),
-        label: "Frostglass Sword",
-        category: "weapons",
-        maxCount: 1,
-      },
-      {
-        itemType: "bloodstone_staff",
-        itemKeys: ["bloodstone_staff"],
-        color: tailwindToHex("gray-400/80"),
-        label: "Bloodstone Staff",
-        category: "weapons",
-        maxCount: 1,
-      },
-      ...(isCruelMode ? [{
-        itemType: "nordic_war_axe",
-        itemKeys: ["nordic_war_axe" as keyof GameState["weapons"]],
-        color: tailwindToHex("gray-400/80"),
-        label: "Nordic War Axe",
-        category: "weapons" as const,
-        maxCount: 1,
-      }] : []),
     ],
     // Third ring: Relics
     [
       {
-        itemType: "whispering_cube",
-        itemKeys: ["whispering_cube"],
+        itemType: "explorer_pack",
+        itemKeys: [
+          "explorer_pack",
+          "hunter_cloak",
+          "grenadier_bag",
+          "highpriest_robe",
+          "loggers_gloves",
+          "sacrificial_tunic",
+        ],
         color: tailwindToHex("gray-400/80"),
-        label: "Whispering Cube",
-        category: "relics",
-        maxCount: 1,
-      },
-      {
-        itemType: "wooden_figure",
-        itemKeys: ["wooden_figure"],
-        color: tailwindToHex("gray-400/80"),
-        label: "Wooden Figure",
-        category: "relics",
-        maxCount: 1,
-      },
-      {
-        itemType: "bone_dice",
-        itemKeys: ["bone_dice"],
-        color: tailwindToHex("gray-400/80"),
-        label: "Bone Dice",
-        category: "relics",
-        maxCount: 1,
-      },
-      {
-        itemType: "blackened_mirror",
-        itemKeys: ["blackened_mirror"],
-        color: tailwindToHex("gray-400/80"),
-        label: "Blackened Mirror",
-        category: "relics",
-        maxCount: 1,
-      },
-      {
-        itemType: "unnamed_book",
-        itemKeys: ["unnamed_book"],
-        color: tailwindToHex("gray-400/80"),
-        label: "Unnamed Book",
-        category: "relics",
-        maxCount: 1,
-      },
-      {
-        itemType: "elder_scroll",
-        itemKeys: ["elder_scroll"],
-        color: tailwindToHex("gray-400/80"),
-        label: "Elder Scroll",
-        category: "relics",
-        maxCount: 1,
-      },
-      {
-        itemType: "ravens_orb",
-        itemKeys: ["ravens_orb"],
-        color: tailwindToHex("gray-400/80"),
-        label: "Raven's Orb",
-        category: "relics",
-        maxCount: 1,
-      },
-      {
-        itemType: "occultist_grimoire",
-        itemKeys: ["occultist_grimoire"],
-        color: tailwindToHex("gray-400/80"),
-        label: "Occultist Grimoire",
-        category: "relics",
-        maxCount: 1,
-      },
-      {
-        itemType: "shadow_flute",
-        itemKeys: ["shadow_flute"],
-        color: tailwindToHex("gray-400/80"),
-        label: "Shadow Flute",
-        category: "relics",
-        maxCount: 1,
+        label: "Leather Crafting",
+        category: "clothing",
+        maxCount: 6,
       },
     ],
     // Fourth ring: Clothing
-    [
-      {
-        itemType: "explorer_pack",
-        itemKeys: ["explorer_pack"],
-        color: tailwindToHex("gray-400/80"),
-        label: "Explorer Backpack",
-        category: "clothing",
-        maxCount: 1,
-      },
-      {
-        itemType: "hunter_cloak",
-        itemKeys: ["hunter_cloak"],
-        color: tailwindToHex("gray-400/80"),
-        label: "Hunter Cloak",
-        category: "clothing",
-        maxCount: 1,
-      },
-      {
-        itemType: "grenadier_bag",
-        itemKeys: ["grenadier_bag"],
-        color: tailwindToHex("gray-400/80"),
-        label: "Grenadier Bag",
-        category: "clothing",
-        maxCount: 1,
-      },
-      {
-        itemType: "highpriest_robe",
-        itemKeys: ["highpriest_robe"],
-        color: tailwindToHex("gray-400/80"),
-        label: "Highpriest Robe",
-        category: "clothing",
-        maxCount: 1,
-      },
-      {
-        itemType: "loggers_gloves",
-        itemKeys: ["loggers_gloves"],
-        color: tailwindToHex("gray-400/80"),
-        label: "Logger's Gloves",
-        category: "clothing",
-        maxCount: 1,
-      },
-      {
-        itemType: "tarnished_amulet",
-        itemKeys: ["tarnished_amulet"],
-        color: tailwindToHex("gray-400/80"),
-        label: "Tarnished Amulet",
-        category: "clothing",
-        maxCount: 1,
-      },
-      {
-        itemType: "bloodstained_belt",
-        itemKeys: ["bloodstained_belt"],
-        color: tailwindToHex("gray-400/80"),
-        label: "Bloodstained Belt",
-        category: "clothing",
-        maxCount: 1,
-      },
-      {
-        itemType: "ravenfeather_mantle",
-        itemKeys: ["ravenfeather_mantle"],
-        color: tailwindToHex("gray-400/80"),
-        label: "Ravenfeather Mantle",
-        category: "clothing",
-        maxCount: 1,
-      },
-      {
-        itemType: "muttering_amulet",
-        itemKeys: ["muttering_amulet"],
-        color: tailwindToHex("gray-400/80"),
-        label: "Muttering Amulet",
-        category: "clothing",
-        maxCount: 1,
-      },
-      {
-        itemType: "ring_of_clarity",
-        itemKeys: ["ring_of_clarity"],
-        color: tailwindToHex("gray-400/80"),
-        label: "Ring of Clarity",
-        category: "clothing",
-        maxCount: 1,
-      },
-      {
-        itemType: "alphas_hide",
-        itemKeys: ["alphas_hide"],
-        color: tailwindToHex("gray-400/80"),
-        label: "Alpha's Hide",
-        category: "clothing",
-        maxCount: 1,
-      },
-      {
-        itemType: "ebony_ring",
-        itemKeys: ["ebony_ring"],
-        color: tailwindToHex("gray-400/80"),
-        label: "Ebony Ring",
-        category: "clothing",
-        maxCount: 1,
-      },
-      {
-        itemType: "cracked_crown",
-        itemKeys: ["cracked_crown"],
-        color: tailwindToHex("gray-400/80"),
-        label: "Cracked Crown",
-        category: "clothing",
-        maxCount: 1,
-      },
-      {
-        itemType: "black_bear_fur",
-        itemKeys: ["black_bear_fur"],
-        color: tailwindToHex("gray-400/80"),
-        label: "Black Bear Fur",
-        category: "clothing",
-        maxCount: 1,
-      },
-      {
-        itemType: "ring_of_drowned",
-        itemKeys: ["ring_of_drowned"],
-        color: tailwindToHex("gray-400/80"),
-        label: "Ring of Drowned",
-        category: "clothing",
-        maxCount: 1,
-      },
-      {
-        itemType: "red_mask",
-        itemKeys: ["red_mask"],
-        color: tailwindToHex("gray-400/80"),
-        label: "Red Mask",
-        category: "clothing",
-        maxCount: 1,
-      },
-      {
-        itemType: "moon_bracelet",
-        itemKeys: ["moon_bracelet"],
-        color: tailwindToHex("gray-400/80"),
-        label: "Moon Bracelet",
-        category: "clothing",
-        maxCount: 1,
-      },
-      {
-        itemType: "bone_necklace",
-        itemKeys: ["bone_necklace"],
-        color: tailwindToHex("gray-400/80"),
-        label: "Bone Necklace",
-        category: "clothing",
-        maxCount: 1,
-      },
-      {
-        itemType: "sacrificial_tunic",
-        itemKeys: ["sacrificial_tunic"],
-        color: tailwindToHex("gray-400/80"),
-        label: "Sacrificial Tunic",
-        category: "clothing",
-        maxCount: 1,
-      },
-    ],
+    [],
     // Fifth ring: ???
     [],
   ];
@@ -541,7 +264,9 @@ export default function ItemProgressChart() {
       });
 
       // Check if the entire ring is complete
-      const isRingComplete = segments.every((seg) => getItemCount(seg) >= seg.maxCount);
+      const isRingComplete = segments.every(
+        (seg) => getItemCount(seg) >= seg.maxCount,
+      );
 
       return {
         backgroundSegments,
@@ -557,7 +282,7 @@ export default function ItemProgressChart() {
     .filter((ring) => ring !== null);
 
   return (
-    <div 
+    <div
       ref={containerRef}
       className="w-48 h-48 flex flex-col items-center justify-center relative"
       onMouseMove={(e) => {
@@ -579,7 +304,7 @@ export default function ItemProgressChart() {
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
         <span className="text-xl text-neutral-400">❖</span>
       </div>
-      
+
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
           {processedRings.map((ring, ringIndex) => [
@@ -618,15 +343,17 @@ export default function ItemProgressChart() {
               const isClaimed = claimedAchievements.includes(achievementId);
               const isInteractive = segment.isFull && !isClaimed;
               const showTooltip = true; // Show tooltip for all segments
-              
+
               const handleSegmentClick = () => {
                 if (isInteractive) {
                   // Calculate silver reward: 50 * maxCount
                   const silverReward = 50 * segment.maxCount;
-                  
+
                   // Award silver
-                  useGameStore.getState().updateResource("silver", silverReward);
-                  
+                  useGameStore
+                    .getState()
+                    .updateResource("silver", silverReward);
+
                   // Add log entry and mark as claimed in one state update
                   useGameStore.setState((state) => ({
                     log: [
@@ -638,9 +365,12 @@ export default function ItemProgressChart() {
                         type: "event" as const,
                       },
                     ].slice(-100),
-                    claimedAchievements: [...(state.claimedAchievements || []), achievementId],
+                    claimedAchievements: [
+                      ...(state.claimedAchievements || []),
+                      achievementId,
+                    ],
                   }));
-                  
+
                   // Clear hover state
                   setHoveredSegment(null);
                   setClickedSegment(null);
@@ -662,15 +392,16 @@ export default function ItemProgressChart() {
                   strokeWidth={segment.isFull ? (isClaimed ? 1 : 1.5) : 0}
                   stroke={segment.isFull ? tailwindToHex("red-900") : undefined}
                   isAnimationActive={false}
-                  style={{ 
-                    outline: "none", 
+                  style={{
+                    outline: "none",
                     pointerEvents: showTooltip ? "auto" : "none",
                     cursor: isInteractive ? "pointer" : "default",
-                    opacity: isClaimed ? 0.5 : 1
+                    opacity: isClaimed ? 0.5 : 1,
                   }}
                   onMouseEnter={(e: any) => {
                     if (showTooltip) {
-                      const rect = containerRef.current?.getBoundingClientRect();
+                      const rect =
+                        containerRef.current?.getBoundingClientRect();
                       if (rect) {
                         setHoveredSegment({
                           id: segment.segmentId,
@@ -715,24 +446,22 @@ export default function ItemProgressChart() {
               stroke={tailwindToHex("neutral-400")}
               isAnimationActive={false}
               style={{ outline: "none", pointerEvents: "none" }}
-            >
-            </Pie>
+            ></Pie>,
           ])}
         </PieChart>
       </ResponsiveContainer>
 
       {/* Tooltip display for hovered segment */}
       {hoveredSegment && mousePosition && (
-        <div 
+        <div
           className="absolute bg-popover border rounded-md px-2 py-1 text-xs shadow-md z-50 pointer-events-none whitespace-nowrap"
           style={{
             left: `${mousePosition.x}px`,
             top: `${mousePosition.y}px`,
-            transform: 'translate(-50%, calc(-100% - 10px))'
+            transform: "translate(-50%, calc(-100% - 10px))",
           }}
         >
           <div className="font-semibold">{hoveredSegment.name}</div>
-         
         </div>
       )}
     </div>
