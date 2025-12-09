@@ -993,7 +993,14 @@ export const clothingEffects: Record<string, EffectDefinition> = {
 
   // Blessings
   whisperers_mark: {
-    luck: 10,
+    id: "whisperers_mark",
+    name: "Whisperer's Mark",
+    description: "The mark of the whisperer in the dark",
+    bonuses: {
+      generalBonuses: {
+        luck: 10,
+      },
+    },
   },
 
   // Enhanced blessings
@@ -1126,13 +1133,15 @@ export const bookEffects: Record<string, EffectDefinition> = {
   book_of_war: {
     id: "book_of_war",
     name: "Book of War",
-    description: "Book containing wisdom about combat. Reveals the likelihood of success in battles and encounters.",
+    description:
+      "Book containing wisdom about combat. Reveals the likelihood of success in battles and encounters.",
     bonuses: {},
   },
   book_of_trials: {
     id: "book_of_trials",
     name: "Book of Trials",
-    description: "Book about navigating life’s challenges. Unlocks rewards for those who prove themselves through achievements.",
+    description:
+      "Book about navigating life’s challenges. Unlocks rewards for those who prove themselves through achievements.",
     bonuses: {},
   },
 };

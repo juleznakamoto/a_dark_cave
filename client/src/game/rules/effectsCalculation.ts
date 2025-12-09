@@ -719,7 +719,7 @@ export const calculateTotalEffects = (state: GameState) => {
   // Process all active effects
   activeEffects.forEach((effect) => {
     // Process madness bonuses from general bonuses (items that ADD madness)
-    if (effect.bonuses.generalBonuses?.madness) {
+    if (effect.bonuses?.generalBonuses?.madness) {
       let madnessValue = effect.bonuses.generalBonuses.madness;
       // In cruel mode, items with >=4 madness get +1 additional madness
       if (state.cruelMode && madnessValue >= 4) {
@@ -822,15 +822,15 @@ export const calculateTotalEffects = (state: GameState) => {
 
   // Fellowship effects
   Object.keys(state.fellowship || {}).forEach((fellowId) => {
-    const effect = fellowshipEffects[fellowId];
-    if (effect) {
+    if (fellowshipEffects[fellowId]) {
+      const effect = fellowshipEffects[fellowId];
       // Process madness bonuses from general bonuses (items that ADD madness)
-      if (effect.bonuses?.generalBonuses?.madness) {
+      if (effect.bonuses.generalBonuses?.madness) {
         effects.statBonuses.madness += effect.bonuses.generalBonuses.madness;
       }
 
       // Process madness reduction from general bonuses (items that REDUCE madness)
-      if (effect.bonuses?.generalBonuses?.madnessReduction) {
+      if (effect.bonuses.generalBonuses?.madnessReduction) {
         const effectKey = `${fellowId}_madness_reduction`;
         effects.madness_reduction[effectKey] =
           -effect.bonuses.generalBonuses.madnessReduction;
