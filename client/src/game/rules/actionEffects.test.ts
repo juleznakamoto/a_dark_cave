@@ -66,12 +66,15 @@ describe('actionEffects - circular dependency fix', () => {
     expect(updates).toEqual({});
   });
 
-  it('should throw error if gameActions not registered', () => {
-    // Create a fresh import scenario by testing without registration
-    const { applyActionEffects: freshApplyActionEffects } = require('./actionEffects');
+  it('should work with gameActions registered', () => {
+    // Verify the function works after registration
+    expect(applyActionEffects).toBeDefined();
+    expect(typeof applyActionEffects).toBe('function');
     
-    // This would normally throw, but since we already registered in beforeEach,
-    // we just verify the function exists
-    expect(freshApplyActionEffects).toBeDefined();
+    // Verify it can actually apply effects
+    const testState = createInitialState();
+    testState.resources.wood = 100;
+    const result = applyActionEffects('chopWood', testState);
+    expect(result).toBeDefined();
   });
 });

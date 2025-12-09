@@ -97,10 +97,10 @@ function getAdjustedCost(
 }
 
 // Main export: applyActionEffects
-export const applyActionEffects = (
+export function applyActionEffects(
   actionId: string,
   state: GameState,
-): Partial<GameState> => {
+): Partial<GameState> {
   const action = getGameActions()[actionId];
   if (!action) return {};
 
@@ -509,4 +509,4 @@ export const applyActionEffects = (
   }
 
   return updates;
-};
+}
