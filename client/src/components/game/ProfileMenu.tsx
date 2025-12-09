@@ -50,13 +50,14 @@ export default function ProfileMenu() {
     updateResource,
     addLogEntry,
     social_media_rewards,
+    leaderboardDialogOpen,
+    setLeaderboardDialogOpen,
   } = useGameStore();
 
   const mobileTooltip = useMobileTooltip();
   const isMobile = useIsMobile();
   const [accountDropdownOpen, setAccountDropdownOpen] = useState(false);
   const [authDialogOpen, setAuthDialogOpen] = useState(false);
-  const [leaderboardDialogOpen, setLeaderboardDialogOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState<{
     id: string;
     email: string;
