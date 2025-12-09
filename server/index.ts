@@ -143,13 +143,10 @@ app.get("/api/admin/user-lookup", async (req, res) => {
 
     const userId = req.query.userId as string;
     const email = req.query.email as string;
-    const env = req.query.env as 'dev' | 'prod' || 'dev';
 
     if (!userId && !email) {
       return res.status(400).json({ error: "userId or email is required" });
     }
-
-    const tableName = env === "dev" ? "game_saves_dev" : "game_saves";
 
     let save;
     let error;
@@ -169,7 +166,7 @@ app.get("/api/admin/user-lookup", async (req, res) => {
       }
 
       const { data: saveData, error: saveError } = await adminClient
-        .from(tableName)
+        .from('game_saves')
         .select('user_id, game_state, updated_at, created_at')
         .eq("user_id", matchingUser.id)
         .single();
@@ -179,7 +176,7 @@ app.get("/api/admin/user-lookup", async (req, res) => {
     } else {
       // Lookup by user ID
       const { data: saveData, error: saveError } = await adminClient
-        .from(tableName)
+        .from('game_saves')
         .select('user_id, game_state, updated_at, created_at')
         .eq("user_id", userId)
         .single();
