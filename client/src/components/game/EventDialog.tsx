@@ -139,6 +139,12 @@ export default function EventDialog({
     if (isMerchantEvent && !isSayGoodbye) {
       const choice = eventChoices.find((c) => c.id === choiceId);
       if (choice) {
+        console.log('[MERCHANT] Processing merchant purchase:', {
+          choiceId,
+          eventId,
+          currentPurchaseCount: gameState.story?.seen?.merchantPurchases,
+        });
+        
         const result = choice.effect(gameState);
 
         // Apply state changes directly to avoid triggering new dialogs
@@ -185,6 +191,11 @@ export default function EventDialog({
 
         // Don't add _logMessage to the log - it's only for dialog feedback
         // The message will be shown in the dialog UI instead
+
+        console.log('[MERCHANT] After applyEventChoice:', {
+          choiceId,
+          newPurchaseCount: gameState.story?.seen?.merchantPurchases,
+        });
 
         setPurchasedItems(prev => new Set(prev).add(choiceId));
       }
