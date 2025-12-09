@@ -1625,9 +1625,6 @@ export const merchantEvents: Record<string, GameEvent> = {
     condition: (state: GameState) => state.buildings.woodenHut >= 4,
     triggerType: "resource",
     timeProbability: (state: GameState) =>
-      10 + 1 * state.buildings.tradePost ||
-      0 + 2 * state.buildings.grandBazaar ||
-      0 + 2 * state.buildings.merchantsGuild ||
       0,
 
     title: "Traveling Merchant",
