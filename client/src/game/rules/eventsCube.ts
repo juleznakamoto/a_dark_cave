@@ -367,7 +367,7 @@ export const cubeEvents: Record<string, GameEvent> = {
       state.events.cube11 &&
       !state.events.cube13,
     triggerType: "resource",
-    timeProbability: 0.05,
+    timeProbability: 0.01,
     title: "Recovered data",
     message:
       "The cube pulses with energy as you approach the slain creatures. It seems to extract information from somewhere. The cube grows warm, processing the recovered knowledge.",
@@ -397,7 +397,7 @@ export const cubeEvents: Record<string, GameEvent> = {
       state.events.cube11 &&
       !state.events.cube14a,
     triggerType: "resource",
-    timeProbability: 0.05,
+    timeProbability: 0.01,
     title: "The resistance",
     message:
       "'When the resistance opposed the skull devices, they were exiled into the mountain’s depths, sealed away behind the portal. With no path back, they dug ever deeper. In isolation and darkness, their minds eroded and they descended into madness and degeneration.'",
@@ -425,7 +425,7 @@ export const cubeEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.events.cube14a && !state.events.cube14b,
     triggerType: "resource",
-    timeProbability: 0.05,
+    timeProbability: 0.01,
     title: "The unknown ore",
     message:
       "'One day, deep in the earth, they found a monolith of unknown ore. From it they forged an explosive to destroy the portal. But the bomb failed to breach the portal, instead unleashed an electro-magnetic pulse spanning the whole planet destroying all devices, ending civilization.'",
@@ -453,7 +453,7 @@ export const cubeEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.events.cube14b && !state.events.cube14c,
     triggerType: "resource",
-    timeProbability: 0.05,
+    timeProbability: 0.01,
     title: "The unknown ore",
     message:
       "'Shortly after the explosion, a man standing nearby began to dematerialize, his form flickering, half-transparent for seconds. Terrified and driven mad by what had happened, he took his own life moments later.'",
@@ -481,7 +481,7 @@ export const cubeEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.events.cube14c && !state.events.cube14d,
     triggerType: "resource",
-    timeProbability: 0.05,
+    timeProbability: 0.01,
     title: "Through the portal",
     message:
       "'Desperate, the survivors theorized the ore could help them pass through the portal. With its last fragments, they built a smaller bomb and positioned their sanest man with it before the portal. Right after the blast, he turned ghostly, translucent, and then vanished through the portal.'",
@@ -511,7 +511,7 @@ export const cubeEvents: Record<string, GameEvent> = {
       state.story.seen.slaughteredCreatures &&
       !state.events.cube15a,
     triggerType: "resource",
-    timeProbability: 0.05,
+    timeProbability: 0.01,
     title: "Recognition",
     message:
       "That was when you recognize that the creatures did not attack as they recognized you as one of their own. You are the man who vanished through the portal.",
@@ -541,7 +541,7 @@ export const cubeEvents: Record<string, GameEvent> = {
       state.story.seen.communicatedWithCreatures &&
       !state.events.cube15b,
     triggerType: "resource",
-    timeProbability: 0.05,
+    timeProbability: 0.01,
     title: "Recognition",
     message:
       "After finishing their story one of the survivors steps forward, pointing at you: 'You are the man who vanished through the portal. You are one of us.",
