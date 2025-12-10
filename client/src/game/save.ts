@@ -288,6 +288,11 @@ export async function saveGame(
         if (sanitizedState.gameId && !stateDiff.gameId) {
           stateDiff.gameId = sanitizedState.gameId;
         }
+        
+        // Ensure playTime is an integer for the database
+        if (stateDiff.playTime !== undefined) {
+          stateDiff.playTime = Math.floor(stateDiff.playTime);
+        }
 
         // Save diff to Supabase
         await saveGameToSupabase(
