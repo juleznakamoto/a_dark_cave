@@ -6,7 +6,7 @@ import ActionProgressChart from "./ActionProgressChartAchievements";
 export default function AchievementsPanel() {
   return (
     <div className="mt-0 pr-4">
-      <div className="flex items-start flex-wrap gap-4">
+      <div className="flex items-start flex-wrap gap-x-4 gap-y-0">
         <div className="flex flex-col items-center">
           <BuildingProgressChart />
         </div>
