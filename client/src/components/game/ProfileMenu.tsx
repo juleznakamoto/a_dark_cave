@@ -402,7 +402,7 @@ export default function ProfileMenu() {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      {!import.meta.env.DEV && (
+      {import.meta.env.DEV && (
         <Button
           variant="ghost"
           size="xs"
