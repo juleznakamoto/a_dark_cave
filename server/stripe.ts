@@ -24,6 +24,13 @@ export async function createPaymentIntent(itemId: string, userEmail?: string, us
     throw new Error('Invalid item');
   }
 
+  // SECURITY: Prevent claiming paid items as free
+  // Only gold_100_free is allowed to be claimed for free
+  if (item.price === 0 && itemId !== 'gold_100_free') {
+    logger.error(`Attempt to claim paid item as free: ${itemId}`);
+    throw new Error('Invalid item configuration');
+  }
+
   // CRITICAL: Always use server-side price, never trust client
   // This prevents price manipulation attacks
   const serverPrice = item.price;

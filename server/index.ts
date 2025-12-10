@@ -266,11 +266,11 @@ app.get("/api/leaderboard/metadata", async (req, res) => {
     // If no metadata exists yet, return null
     const result = { lastUpdated: data?.value || null };
     log(`📊 Returning metadata:`, result);
-    
+
     // Set proper content type and disable caching
     res.setHeader('Content-Type', 'application/json');
     res.set("Cache-Control", "no-store, no-cache, must-revalidate, private");
-    
+
     res.json(result);
   } catch (error: any) {
     log("❌ Leaderboard metadata fetch failed:", error);
