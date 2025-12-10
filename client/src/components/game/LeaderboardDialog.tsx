@@ -8,7 +8,11 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 import { logger } from "@/lib/logger";
+
+const isDev = import.meta.env.DEV;
 
 interface LeaderboardEntry {
   id: string;
@@ -30,21 +34,23 @@ export default function LeaderboardDialog({ isOpen, onClose }: LeaderboardDialog
   const [editingUsername, setEditingUsername] = useState(false);
   const [tempUsername, setTempUsername] = useState(username || "");
   const [lastUpdated, setLastUpdated] = useState<string | null>(null);
+  const [useDevStats, setUseDevStats] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
     if (isOpen) {
       fetchLeaderboards();
     }
-  }, [isOpen]);
+  }, [isOpen, useDevStats]);
 
   const fetchLeaderboards = async () => {
     setLoading(true);
     try {
+      const env = useDevStats ? 'dev' : 'prod';
       const [normalRes, cruelRes, metaRes] = await Promise.all([
-        fetch("/api/leaderboard/normal"),
-        fetch("/api/leaderboard/cruel"),
-        fetch("/api/leaderboard/metadata"),
+        fetch(`/api/leaderboard/normal?env=${env}`),
+        fetch(`/api/leaderboard/cruel?env=${env}`),
+        fetch(`/api/leaderboard/metadata?env=${env}`),
       ]);
 
       if (normalRes.ok) {
@@ -172,7 +178,21 @@ export default function LeaderboardDialog({ isOpen, onClose }: LeaderboardDialog
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-2xl max-h-[80vh] flex flex-col">
         <DialogHeader>
-          <DialogTitle>Leaderboard</DialogTitle>
+          <DialogTitle className="flex items-center justify-between">
+            <span>Leaderboard</span>
+            {isDev && (
+              <div className="flex items-center gap-2">
+                <Label htmlFor="env-switch" className="text-sm font-normal">
+                  {useDevStats ? 'Dev' : 'Prod'}
+                </Label>
+                <Switch
+                  id="env-switch"
+                  checked={useDevStats}
+                  onCheckedChange={setUseDevStats}
+                />
+              </div>
+            )}
+          </DialogTitle>
         </DialogHeader>
 
         <div className="mb-0 p-2 bg-muted rounded-md">

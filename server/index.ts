@@ -235,8 +235,8 @@ app.get("/api/leaderboard/:mode", async (req, res) => {
   try {
     const mode = req.params.mode as 'normal' | 'cruel';
     const cruelMode = mode === 'cruel';
-    // Always use production data for leaderboard
-    const adminClient = getAdminClient('prod');
+    const env = (req.query.env as 'dev' | 'prod') || 'prod';
+    const adminClient = getAdminClient(env);
 
     const { data, error } = await adminClient
       .from('leaderboard')
@@ -265,7 +265,8 @@ app.get("/api/leaderboard/:mode", async (req, res) => {
 
 app.get("/api/leaderboard/metadata", async (req, res) => {
   try {
-    const adminClient = getAdminClient('prod');
+    const env = (req.query.env as 'dev' | 'prod') || 'prod';
+    const adminClient = getAdminClient(env);
     
     const { data, error } = await adminClient
       .from('leaderboard_metadata')
