@@ -1,3 +1,4 @@
+
 -- Drop ALL existing function signatures to prevent overload conflicts
 DROP FUNCTION IF EXISTS save_game_with_analytics(UUID, JSONB, JSONB);
 DROP FUNCTION IF EXISTS save_game_with_analytics(UUID, JSONB, JSONB, JSONB, BOOLEAN, BOOLEAN);
@@ -130,6 +131,7 @@ BEGIN
   END IF;
 
   -- Check if game was just completed (cube13 or cube14/15 variants)
+  -- NOW CHECKING MERGED STATE INSTEAD OF DIFF
   DECLARE
     v_game_completed BOOLEAN := FALSE;
     v_existing_game_stats JSONB;
@@ -142,16 +144,16 @@ BEGIN
     v_game_id TEXT;
     v_already_recorded BOOLEAN := FALSE;
   BEGIN
-    -- Check if this save marks a game completion
-    IF p_game_state_diff ? 'events' THEN
+    -- Check if this save marks a game completion (check MERGED state)
+    IF v_merged_state ? 'events' THEN
       v_game_completed := (
-        (p_game_state_diff->'events'->>'cube13')::boolean = true OR
-        (p_game_state_diff->'events'->>'cube14a')::boolean = true OR
-        (p_game_state_diff->'events'->>'cube14b')::boolean = true OR
-        (p_game_state_diff->'events'->>'cube14c')::boolean = true OR
-        (p_game_state_diff->'events'->>'cube14d')::boolean = true OR
-        (p_game_state_diff->'events'->>'cube15a')::boolean = true OR
-        (p_game_state_diff->'events'->>'cube15b')::boolean = true
+        (v_merged_state->'events'->>'cube13')::boolean = true OR
+        (v_merged_state->'events'->>'cube14a')::boolean = true OR
+        (v_merged_state->'events'->>'cube14b')::boolean = true OR
+        (v_merged_state->'events'->>'cube14c')::boolean = true OR
+        (v_merged_state->'events'->>'cube14d')::boolean = true OR
+        (v_merged_state->'events'->>'cube15a')::boolean = true OR
+        (v_merged_state->'events'->>'cube15b')::boolean = true
       );
     END IF;
 
