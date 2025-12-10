@@ -312,7 +312,6 @@ app.post("/api/leaderboard/update-username", async (req, res) => {
     log(`📝 Updating username for user ${userId}: "${username}"`);
 
     // Update username in all leaderboard entries for this user
-    // The username column exists in the schema (created by migration 003)
     const { error: leaderboardError } = await adminClient
       .from('leaderboard')
       .update({ username })
