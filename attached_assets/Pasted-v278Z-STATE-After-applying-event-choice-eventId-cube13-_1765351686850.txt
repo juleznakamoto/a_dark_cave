@@ -1,0 +1,11 @@
+v278Z [STATE] After applying event choice: {eventId: 'cube13', choiceId: 'close', blessingsInChanges: undefined, blessingsAfterMerge: {…}, hasBlessingsInChanges: false}
+logger.ts:33 v278Z [SAVE CLOUD] 🎮 Saving cube events: (18) ['cube01', 'cube02', 'cube03', 'cube04', 'cube05', 'cube06', 'cube07', 'cube08', 'cube09', 'cube10', 'cube11', 'cube13', 'cube14a', 'cube14b', 'cube14c', 'cube14d', 'cube15a', 'cube15b']0: "cube01"1: "cube02"2: "cube03"3: "cube04"4: "cube05"5: "cube06"6: "cube07"7: "cube08"8: "cube09"9: "cube10"10: "cube11"11: "cube13"12: "cube14a"13: "cube14b"14: "cube14c"15: "cube14d"16: "cube15a"17: "cube15b"length: 18[[Prototype]]: Array(0) {log: Array(0), active: Array(0), cube01: true, cube02: true, cube03: true, …}
+logger.ts:33 v278Z [SAVE CLOUD] 📊 Game state includes: {hasPlayTime: true, hasStartTime: true, hasGameId: true, gameId: 'afsfesf', playTime: 67302476.19000246, …}gameId: "afsfesf"hasGameId: truehasPlayTime: truehasStartTime: trueplayTime: 67302476.19000246startTime: 1765194929008[[Prototype]]: Object
+logger.ts:33 v278Z [SAVE CLOUD] 🔍 Starting cloud save with OCC... {playTime: 67302476.19000246, isNewGame: false, userId: 'a375ecb5...', diffKeys: Array(12), hasPlayTime: true, …}
+logger.ts:33 v278Z [SAVE CLOUD] 💾 Calling database RPC with OCC validation... {hasClickAnalytics: true, clickAnalyticsKeys: Array(3), hasResourceAnalytics: false, resourceAnalyticsKeys: Array(0), diffSize: 5026, …}
+logger.ts:33 v278Z [SAVE CLOUD] ✅ Cloud save completed successfully 
+logger.ts:33 v278Z [SAVE] ✅ Updated lastCloudState after successful cloud save
+logger.ts:33 v278Z [SAVE CLOUD] 🔍 Starting cloud save with OCC... {playTime: 67346984.49000245, isNewGame: false, userId: 'a375ecb5...', diffKeys: Array(6), hasPlayTime: true, …}
+logger.ts:33 v278Z [SAVE CLOUD] 💾 Calling database RPC with OCC validation... {hasClickAnalytics: false, clickAnalyticsKeys: Array(0), hasResourceAnalytics: false, resourceAnalyticsKeys: Array(0), diffSize: 141, …}
+logger.ts:33 v278Z [SAVE CLOUD] ✅ Cloud save completed successfully 
+logger.ts:33 v278Z [SAVE] ✅ Updated lastCloudState after successful cloud save
