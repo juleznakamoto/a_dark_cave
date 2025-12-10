@@ -31,6 +31,11 @@ CREATE INDEX IF NOT EXISTS idx_leaderboard_user ON leaderboard (user_id);
 -- Enable RLS
 ALTER TABLE leaderboard ENABLE ROW LEVEL SECURITY;
 
+-- Drop existing policies if they exist
+DROP POLICY IF EXISTS "Anyone can view leaderboard" ON leaderboard;
+DROP POLICY IF EXISTS "Users can insert their own entries" ON leaderboard;
+DROP POLICY IF EXISTS "Users can update their own entries" ON leaderboard;
+
 -- Policies for leaderboard
 CREATE POLICY "Anyone can view leaderboard" ON leaderboard FOR SELECT USING (true);
 CREATE POLICY "Users can insert their own entries" ON leaderboard FOR INSERT WITH CHECK (auth.uid() = user_id);
