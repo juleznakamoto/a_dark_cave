@@ -397,9 +397,6 @@ export const createInitialState = (): GameState => ({
   // Achievements
   unlockedAchievements: [],
   claimedAchievements: [],
-
-  // Game ID is handled in loadGame and restartGame to ensure uniqueness
-  gameId: undefined,
 });
 
 const defaultGameState: GameState = createInitialState();
