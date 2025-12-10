@@ -162,10 +162,16 @@ export default function GameFooter() {
             >
               <svg
                 className="w-4 h-4"
-                viewBox="0 0 24 24"
-                fill="currentColor"
+                viewBox="0 0 26.488 29.926"
+                fill="none"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeWidth="1.4"
               >
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-5-9h10v2H7v-2z"/>
+                <g>
+                  <path d="m10.613 2.168 1.11-.865a2.286 2.286 0 0 1 2.871 0l1.145.975M17.804 25.986l-2.946 2.531a2.7 2.7 0 0 1-3.4 0l-2.515-2.156M13.148 15.155v13.587M15.853 27.656l9.532-8.166M10.764 27.917.987 19.66M.987 19.66V7.194M25.385 19.66V7.775M3.625 9.196.987 7.194M22.87 9.603l2.638-1.998" strokeLinejoin="round"/>
+                  <path strokeMiterlimit="10" d="m13.291 6.353 5.204 4.501M13.255 6.389l-5.034 4.213"/>
+                </g>
               </svg>
             </a>
             <a
