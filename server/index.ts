@@ -333,25 +333,28 @@ app.post("/api/leaderboard/update-username", async (req, res) => {
       .eq('user_id', userId)
       .single();
 
-    if (fetchError) {
+    if (fetchError && fetchError.code !== 'PGRST116') {
+      // PGRST116 is "no rows returned" - that's okay, we'll create a new save
       log('❌ Failed to fetch current game state:', fetchError);
       throw fetchError;
     }
 
     // Update the game_state with the new username
-    const updatedGameState = {
-      ...currentSave.game_state,
-      username
-    };
+    const updatedGameState = currentSave?.game_state 
+      ? { ...currentSave.game_state, username }
+      : { username };
 
-    // Save both the username column and the updated game_state
+    // Save both the username column and the updated game_state (upsert for new users)
     const { error: saveError } = await adminClient
       .from('game_saves')
-      .update({ 
+      .upsert({ 
+        user_id: userId,
         username,
-        game_state: updatedGameState
-      })
-      .eq('user_id', userId);
+        game_state: updatedGameState,
+        updated_at: new Date().toISOString()
+      }, {
+        onConflict: 'user_id'
+      });
 
     if (saveError) {
       log('❌ Game saves update error:', saveError);
