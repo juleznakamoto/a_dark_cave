@@ -224,6 +224,11 @@ export async function saveGame(
       sanitizedState.cooldownDurations = {};
     }
 
+    // Ensure startTime is always present for completion tracking
+    if (!sanitizedState.startTime) {
+      sanitizedState.startTime = Date.now();
+    }
+
     // Add timestamp to track save recency
     const now = Date.now();
     sanitizedState.lastSaved = now;

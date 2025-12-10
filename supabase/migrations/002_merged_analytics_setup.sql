@@ -100,6 +100,68 @@ BEGIN
   FROM game_saves
   WHERE user_id = p_user_id;
 
+  -- Check if game was just completed (cube13 or cube14/15 variants)
+  DECLARE
+    v_game_completed BOOLEAN := FALSE;
+    v_existing_game_stats JSONB;
+    v_new_game_stats JSONB;
+    v_completion_record JSONB;
+    v_game_mode TEXT;
+    v_start_time BIGINT;
+    v_finish_time BIGINT;
+    v_playtime_ms BIGINT;
+  BEGIN
+    -- Check if this save marks a game completion
+    IF p_game_state_diff ? 'events' THEN
+      v_game_completed := (
+        (p_game_state_diff->'events'->>'cube13')::boolean = true OR
+        (p_game_state_diff->'events'->>'cube14a')::boolean = true OR
+        (p_game_state_diff->'events'->>'cube14b')::boolean = true OR
+        (p_game_state_diff->'events'->>'cube14c')::boolean = true OR
+        (p_game_state_diff->'events'->>'cube14d')::boolean = true OR
+        (p_game_state_diff->'events'->>'cube15a')::boolean = true OR
+        (p_game_state_diff->'events'->>'cube15b')::boolean = true
+      );
+    END IF;
+
+    -- If game was completed, append completion record to game_stats
+    IF v_game_completed AND p_game_state_diff ? 'playTime' AND p_game_state_diff ? 'startTime' THEN
+      v_game_mode := CASE 
+        WHEN (p_game_state_diff->>'cruelMode')::boolean = true THEN 'cruel'
+        ELSE 'normal'
+      END;
+      
+      v_start_time := (p_game_state_diff->>'startTime')::bigint;
+      v_finish_time := EXTRACT(EPOCH FROM NOW())::bigint * 1000;
+      v_playtime_ms := (p_game_state_diff->>'playTime')::bigint;
+
+      -- Create completion record
+      v_completion_record := jsonb_build_object(
+        'gameMode', v_game_mode,
+        'startTime', v_start_time,
+        'finishTime', v_finish_time,
+        'playTime', v_playtime_ms
+      );
+
+      -- Get existing game_stats or initialize empty array
+      SELECT game_stats INTO v_existing_game_stats
+      FROM game_saves
+      WHERE user_id = p_user_id;
+
+      IF v_existing_game_stats IS NULL THEN
+        v_existing_game_stats := '[]'::jsonb;
+      END IF;
+
+      -- Append new completion record
+      v_new_game_stats := v_existing_game_stats || jsonb_build_array(v_completion_record);
+
+      -- Update game_stats column
+      UPDATE game_saves
+      SET game_stats = v_new_game_stats
+      WHERE user_id = p_user_id;
+    END IF;
+  END;
+
   -- OCC: Validate playTime if both states exist (unless overwrite is allowed)
   IF v_existing_state IS NOT NULL AND p_game_state_diff ? 'playTime' THEN
     v_existing_playtime := COALESCE((v_existing_state->>'playTime')::NUMERIC, 0);
