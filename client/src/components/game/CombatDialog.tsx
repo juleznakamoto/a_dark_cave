@@ -139,7 +139,7 @@ export default function CombatDialog({
   const MAX_EMBER_BOMBS = gameState.clothing.grenadier_bag ? 4 : 3;
   const MAX_CINDERFLAME_BOMBS = gameState.clothing.grenadier_bag ? 3 : 2;
   const MAX_VOID_BOMBS = gameState.clothing.grenadier_bag ? 2 : 1;
-  const NIGHTSHADE_BOW_OWNED = gameState.weapons.nightshade_bow; // Assuming inventory holds bow count
+  const NIGHTSHADE_BOW_OWNED = gameState.weapons.nightshade_bow;
 
   const emberBombsUsed = usedItemsInCombat.filter(
     (id) => id === "ember_bomb",
@@ -646,7 +646,9 @@ export default function CombatDialog({
                             ? `Available: ${MAX_EMBER_BOMBS - emberBombsUsed}/${MAX_EMBER_BOMBS}`
                             : item.id === "ashfire_bomb"
                               ? `Available: ${MAX_CINDERFLAME_BOMBS - ashfireBombsUsed}/${MAX_CINDERFLAME_BOMBS}`
-                              : `Available: ${MAX_VOID_BOMBS - voidBombsUsed}/${MAX_VOID_BOMBS}`;
+                              : item.id === "void_bomb"
+                                ? `Available: ${MAX_VOID_BOMBS - voidBombsUsed}/${MAX_VOID_BOMBS}`
+                                : "";
 
                         return (
                           <TooltipProvider key={item.id}>
