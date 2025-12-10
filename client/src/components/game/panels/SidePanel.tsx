@@ -908,18 +908,17 @@ export default function SidePanel() {
     });
   }
 
+  // Check if estate is unlocked
+  const estateUnlocked = gameState.buildings.darkEstate >= 1;
+  
   // Determine which sections to show based on active tab
   const shouldShowSection = (sectionName: string): boolean => {
     switch (activeTab) {
       case "cave":
-        return [
-          "resources",
-          "tools",
-          "weapons",
-          "clothing",
-          "stats",
-          "schematics",
-        ].includes(sectionName);
+        let caveSections = ["resources", "tools", "weapons", "clothing", "schematics"];
+        if (!estateUnlocked)
+          caveSections.push("stats");
+        return caveSections.includes(sectionName);
       case "village":
         return ["resources", "buildings", "population"].includes(sectionName);
       case "forest":
@@ -927,7 +926,7 @@ export default function SidePanel() {
           sectionName,
         );
       case "estate":
-        return ["resources", "books", "fellowship"].includes(sectionName);
+        return ["resources", "books", "fellowship", "stats"].includes(sectionName);
       case "bastion":
         return ["resources", "fortifications", "bastion"].includes(sectionName);
       case "achievements":

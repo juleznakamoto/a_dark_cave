@@ -2016,7 +2016,7 @@ export function handleBuildInkwardenAcademy(
     inkwardenAcademyResult.logEntries!.push({
       id: `inkwarden-academy-built-${Date.now()}`,
       message:
-        "The Inkwarden Academy rises as a monument to knowledge. Its halls echo with the wisdom of ages, and every resource is now tracked with unparalleled precision.",
+        "The Inkwarden Academy rises as a monument to knowledge. Its halls filled with the wisdom of ages, and every resource is now tracked with unparalleled precision.",
       timestamp: Date.now(),
       type: "system",
     });
