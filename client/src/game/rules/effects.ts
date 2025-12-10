@@ -905,7 +905,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
         luck: 5,
         strength: 5,
         knowledge: 5,
-        madness: 15,
+        madness: 19,
       },
     },
   },
