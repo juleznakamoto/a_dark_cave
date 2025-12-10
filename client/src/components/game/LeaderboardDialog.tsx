@@ -165,8 +165,10 @@ export default function LeaderboardDialog({ isOpen, onClose }: LeaderboardDialog
   };
 
   const formatTime = (ms: number) => {
-    const hours = ms / 1000 / 60 / 60;
-    return `${hours.toFixed(2)}h`;
+    const totalMinutes = Math.floor(ms / 1000 / 60);
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = totalMinutes % 60;
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
   };
 
   const renderLeaderboard = (entries: LeaderboardEntry[]) => {
