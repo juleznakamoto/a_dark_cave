@@ -1,3 +1,4 @@
+// Removed duplicate keys and ensured gameId is correctly handled.
 import { create } from "zustand";
 import { GameState, gameStateSchema, Referral } from "@shared/schema";
 import { gameActions, shouldShowAction, canExecuteAction } from "@/game/rules";
@@ -379,38 +380,26 @@ export const createInitialState = (): GameState => ({
   // Initialize resource highlighting state (array for serialization)
   highlightedResources: [],
 
-  // Auth state
-  isUserSignedIn: false,
-
-  // Play time tracking
-  playTime: 0,
-  isNewGame: false,
-  startTime: 0,
-
-  // Referral tracking
-  referralCount: 0,
-  referredUsers: [],
-  referrals: [], // Initialize referrals array
-  social_media_rewards: {}, // Initialize social_media_rewards
-
-  // Free gold claim tracking
+  // Initialize free gold claim tracking
   lastFreeGoldClaim: 0,
 
-  // Cooldown management
+  // Initialize cooldown management
   cooldowns: {},
   cooldownDurations: {}, // Initialize cooldownDurations
 
-  // Analytics tracking
+  // Initialize analytics tracking
   clickAnalytics: {},
   resourceAnalytics: {},
   lastResourceSnapshotTime: 0,
   isPausedPreviously: false, // Initialize isPausedPreviously
   versionCheckDialogOpen: false, // Initialize version check dialog state
-  gameId: undefined, // Initialize gameId to undefined, it will be set on new game
 
   // Achievements
   unlockedAchievements: [],
   claimedAchievements: [],
+
+  // Game ID is handled in loadGame and restartGame to ensure uniqueness
+  gameId: undefined,
 });
 
 const defaultGameState: GameState = createInitialState();
@@ -908,6 +897,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
       // CRITICAL: Extract playTime FIRST before any processing
       const loadedPlayTime = savedState.playTime !== undefined ? savedState.playTime : 0;
 
+      // Generate gameId if it doesn't exist in savedState or is undefined
+      const gameId = savedState.gameId ?? `game-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
+
       const loadedState = {
         ...savedState,
         activeTab: "cave",
@@ -949,7 +941,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         lastFreeGoldClaim: savedState.lastFreeGoldClaim || 0, // Load lastFreeGoldClaim
         unlockedAchievements: savedState.unlockedAchievements || [], // Load unlocked achievements
         claimedAchievements: savedState.claimedAchievements || [], // Load claimed achievements
-        gameId: savedState.gameId || `game-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`, // Load or generate gameId
+        gameId: gameId, // Load or generate gameId
       };
 
       set(loadedState);
