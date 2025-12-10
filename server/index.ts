@@ -44,13 +44,12 @@ function maskEmail(email: string | null): string {
   const parts = email.split('@');
   if (parts.length !== 2) return 'Anonymous';
   const local = parts[0];
-  const domain = parts[1];
   
-  if (local.length <= 6) {
-    return `${local.substring(0, 2)}***@${domain}`;
+  if (local.length <= 4) {
+    return `${local.substring(0, 2)}***`;
   }
   
-  return `${local.substring(0, 3)}***${local.substring(local.length - 3)}@${domain}`;
+  return `${local.substring(0, 2)}***${local.substring(local.length - 2)}`;
 }
 
 const getAdminClient = (env: 'dev' | 'prod' = 'dev') => {

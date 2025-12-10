@@ -160,6 +160,13 @@ export default function LeaderboardDialog({ isOpen, onClose }: LeaderboardDialog
 
     return (
       <div className="space-y-2">
+        <div className="flex items-center justify-between px-3 pb-2 border-b border-border">
+          <div className="flex items-center gap-3">
+            <span className="font-semibold text-sm w-8 text-center">#</span>
+            <span className="font-semibold text-sm">Player</span>
+          </div>
+          <span className="font-semibold text-sm">Playtime</span>
+        </div>
         {entries.map((entry, index) => (
           <div
             key={entry.id}
