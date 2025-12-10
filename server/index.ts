@@ -3,7 +3,7 @@ import compression from "compression";
 import { setupVite, serveStatic, log } from "./vite";
 import { createPaymentIntent, verifyPayment } from "./stripe";
 import { processReferral } from "./referral";
-import BadWordsFilter from "bad-words";
+import Filter from "bad-words";
 
 // Supabase config endpoint for production
 const getSupabaseConfig = () => {
@@ -321,7 +321,7 @@ app.post("/api/leaderboard/update-username", async (req, res) => {
     }
 
     // Check for profanity
-    const filter = new BadWordsFilter();
+    const filter = new Filter();
     if (filter.isProfane(username)) {
       log(`⚠️ Profane username rejected: "${username}"`);
       return res.status(400).json({ error: "Username contains inappropriate language" });
