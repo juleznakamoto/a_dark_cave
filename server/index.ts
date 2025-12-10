@@ -251,22 +251,12 @@ app.get("/api/leaderboard/:mode", async (req, res) => {
 
     log(`📊 Fetching ${mode} leaderboard for ${env} environment`);
 
-    // First check if there are any entries at all
-    const { data: allData, error: allError } = await adminClient
-      .from("leaderboard")
-      .select("*");
-
-    log(`📊 Total entries in leaderboard table: ${allData?.length || 0}`);
-    if (allData && allData.length > 0) {
-      log(`📊 Sample entry:`, allData[0]);
-    }
-
     const { data, error } = await adminClient
       .from("leaderboard")
       .select("id, username, email, play_time, completed_at")
       .eq("cruel_mode", cruelMode)
       .order("play_time", { ascending: true })
-      .limit(100);
+      .limit(50);
 
     if (error) throw error;
 
@@ -301,10 +291,11 @@ app.get("/api/leaderboard/metadata", async (req, res) => {
       .from("leaderboard_metadata")
       .select("value")
       .eq("key", "last_updated")
-      .single();
+      .maybeSingle();
 
     if (error) throw error;
 
+    // If no metadata exists yet, return null
     res.json({ lastUpdated: data?.value || null });
   } catch (error: any) {
     log("❌ Leaderboard metadata fetch failed:", error);
