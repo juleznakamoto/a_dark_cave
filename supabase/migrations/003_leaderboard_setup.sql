@@ -78,7 +78,7 @@ BEGIN
   SELECT DISTINCT ON (gs.user_id, (completion->>'gameMode')::text)
     gs.user_id,
     gs.username,
-     au.email,
+    au.email,
     (completion->>'playTime')::bigint as play_time,
     CASE 
       WHEN (completion->>'gameMode')::text = 'cruel' THEN true
@@ -86,6 +86,7 @@ BEGIN
     END as cruel_mode,
     to_timestamp((completion->>'finishTime')::bigint / 1000.0) as completed_at
   FROM game_saves gs
+  LEFT JOIN auth.users au ON gs.user_id = au.id
   CROSS JOIN LATERAL jsonb_array_elements(gs.game_stats) AS completion
   WHERE 
     gs.game_stats IS NOT NULL 
