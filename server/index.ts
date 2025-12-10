@@ -72,8 +72,44 @@ const getAdminClient = (env: 'dev' | 'prod' = 'dev') => {
   });
 };
 
+// Middleware to verify admin access
+const verifyAdminAuth = async (req: Request, res: Response, next: NextFunction) => {
+  const authHeader = req.headers.authorization;
+  
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+
+  const token = authHeader.substring(7);
+  const env = (req.query.env as 'dev' | 'prod') || 'dev';
+  const adminClient = getAdminClient(env);
+
+  try {
+    const { data: { user }, error } = await adminClient.auth.getUser(token);
+    
+    if (error || !user) {
+      return res.status(401).json({ error: 'Invalid token' });
+    }
+
+    // Check if user has admin role (you'll need to implement this in your database)
+    const { data: profile, error: profileError } = await adminClient
+      .from('profiles')
+      .select('is_admin')
+      .eq('id', user.id)
+      .single();
+
+    if (profileError || !profile?.is_admin) {
+      return res.status(403).json({ error: 'Forbidden: Admin access required' });
+    }
+
+    next();
+  } catch (error: any) {
+    res.status(401).json({ error: 'Authentication failed' });
+  }
+};
+
 // API endpoint to fetch admin dashboard data (server-side, bypasses RLS)
-app.get('/api/admin/data', async (req, res) => {
+app.get('/api/admin/data', verifyAdminAuth, async (req, res) => {
   try {
     // Cache for 5 minutes to reduce repeated fetches
     res.set('Cache-Control', 'public, max-age=300');
@@ -136,7 +172,7 @@ app.get('/api/admin/data', async (req, res) => {
 });
 
 // Admin user lookup endpoint
-app.get("/api/admin/user-lookup", async (req, res) => {
+app.get("/api/admin/user-lookup", verifyAdminAuth, async (req, res) => {
   try {
     const adminClient = getAdminClient(req.query.env as 'dev' | 'prod' || 'dev');
 
