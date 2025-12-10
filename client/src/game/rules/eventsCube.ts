@@ -523,8 +523,6 @@ export const cubeEvents: Record<string, GameEvent> = {
         id: "close",
         label: "Close",
         effect: (state: GameState) => {
-          // Submit to leaderboard when game is completed
-          submitLeaderboardEntry(state);
           return {
             events: {
               ...state.events,
