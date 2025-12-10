@@ -640,6 +640,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
       generalBonuses: {
         MAX_EMBER_BOMBS: 1,
         MAX_CINDERFLAME_BOMBS: 1,
+        MAX_VOID_BOMBS: 1,
       },
     },
   },
