@@ -1,5 +1,5 @@
 import { Action, GameState } from "@shared/schema";
-import { ActionResult } from '@/game/actions';
+import { ActionResult } from "@/game/actions";
 import { applyActionEffects } from "./actionEffects";
 
 export const caveCraftWeapons: Record<string, Action> = {
@@ -220,6 +220,7 @@ export const caveCraftWeapons: Record<string, Action> = {
     },
     cost: {
       "relics.frostglass": true,
+      "resources.steel": 1000,
     },
     effects: {
       "weapons.frostglass_sword": true,
@@ -236,7 +237,7 @@ export const caveCraftWeapons: Record<string, Action> = {
       "weapons.bloodstone_staff": false,
     },
     cost: {
-      "resources.bloodstone": true,
+      "relics.bloodstone": true,
       "resources.wood": 2500,
     },
     effects: {
