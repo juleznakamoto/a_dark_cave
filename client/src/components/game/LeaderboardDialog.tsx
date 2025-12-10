@@ -289,7 +289,7 @@ export default function LeaderboardDialog({ isOpen, onClose }: LeaderboardDialog
               {renderLeaderboard(cruelLeaderboard)}
             </ScrollArea>
             {lastUpdated && (
-              <div className="text-xs text-muted-foreground text-center mt-2 pt-2 border-t border-border">
+              <div className="text-xs text-muted-foreground text-center mt-2 pt-2 border-border">
                 Last updated: {new Date(lastUpdated).toLocaleString()}
               </div>
             )}
