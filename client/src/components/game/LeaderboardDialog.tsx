@@ -113,7 +113,8 @@ export default function LeaderboardDialog({ isOpen, onClose }: LeaderboardDialog
         return;
       }
 
-      const response = await fetch("/api/leaderboard/update-username", {
+      const env = useDevStats ? 'dev' : 'prod';
+      const response = await fetch(`/api/leaderboard/update-username?env=${env}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
