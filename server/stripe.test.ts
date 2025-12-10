@@ -200,4 +200,41 @@ describe('Purchase Restrictions', () => {
     const result = await createPaymentIntent('cruel_mode');
     expect(result.clientSecret).toBe('test_secret');
   });
+
+  it('REGRESSION TEST: should prevent the exploit from screenshot (multiple free advanced_bundles)', async () => {
+    const mockSupabase = {
+      from: vi.fn(() => ({
+        insert: vi.fn(() => ({
+          select: vi.fn(() => ({
+            single: vi.fn(() => ({
+              data: null,
+              error: null,
+            })),
+          })),
+        })),
+      })),
+    };
+
+    // This is what the attacker did: got advanced_bundle with price=0
+    const mockIntent: Stripe.PaymentIntent = {
+      id: 'pi_exploit_058cbb69',
+      amount: 0, // The exploit!
+      status: 'succeeded',
+      metadata: { itemId: 'advanced_bundle' },
+    } as Stripe.PaymentIntent;
+
+    mockPaymentIntents.retrieve.mockResolvedValue(mockIntent);
+
+    // Try to verify 3 times (as seen in screenshot)
+    for (let i = 0; i < 3; i++) {
+      const result = await verifyPayment('pi_exploit_058cbb69', '058cbb69-e1d5-473e-b99b-cddd0f2ff43e', mockSupabase);
+      
+      // Should REJECT every time
+      expect(result.success).toBe(false);
+      expect(result.error).toBe('Payment amount verification failed');
+    }
+
+    // Should NEVER have created purchases
+    expect(mockSupabase.from).not.toHaveBeenCalled();
+  });
 });
