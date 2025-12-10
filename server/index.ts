@@ -319,8 +319,8 @@ app.post("/api/leaderboard/update-username", async (req, res) => {
       return res.status(400).json({ error: "Missing required fields" });
     }
 
-    // Always use production data for leaderboard
-    const adminClient = getAdminClient("prod");
+    const env = (req.query.env as "dev" | "prod") || "prod";
+    const adminClient = getAdminClient(env);
 
     log(`📝 Updating username for user ${userId}: "${username}"`);
 
@@ -330,7 +330,8 @@ app.post("/api/leaderboard/update-username", async (req, res) => {
       .update({ username })
       .eq("user_id", userId)
       .select();
-    log(`Data: ${data}`);
+
+    log(`Data: ${data} | ${env}`);
 
     if (leaderboardError) {
       log("⚠️ Leaderboard update error (non-critical):", leaderboardError);
