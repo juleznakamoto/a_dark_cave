@@ -402,14 +402,16 @@ export default function ProfileMenu() {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <Button
-        variant="ghost"
-        size="xs"
-        onClick={() => setLeaderboardDialogOpen(true)}
-        className="p-0 w-7 h-7 bg-background/70 backdrop-blur-sm border border-border flex items-center justify-center group"
-      >
-        <span className="text-lg opacity-60 group-hover:opacity-100 transition-opacity">♕</span>
-      </Button>
+      {!import.meta.env.DEV && (
+        <Button
+          variant="ghost"
+          size="xs"
+          onClick={() => setLeaderboardDialogOpen(true)}
+          className="p-0 w-7 h-7 bg-background/70 backdrop-blur-sm border border-border flex items-center justify-center group"
+        >
+          <span className="text-lg opacity-60 group-hover:opacity-100 transition-opacity">♕</span>
+        </Button>
+      )}
       <Button
         variant="ghost"
         size="xs"
