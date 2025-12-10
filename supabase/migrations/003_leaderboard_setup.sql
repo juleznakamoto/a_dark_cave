@@ -69,11 +69,10 @@ BEGIN
   TRUNCATE TABLE leaderboard;
 
   -- Insert new entries from game_stats (best time per user per mode)
-  INSERT INTO leaderboard (user_id, username, email, play_time, cruel_mode, completed_at)
+  INSERT INTO leaderboard (user_id, username, play_time, cruel_mode, completed_at)
   SELECT DISTINCT ON (gs.user_id, (completion->>'gameMode')::text)
     gs.user_id,
     gs.username,
-    au.email,
     (completion->>'playTime')::bigint as play_time,
     CASE 
       WHEN (completion->>'gameMode')::text = 'cruel' THEN true
@@ -81,7 +80,6 @@ BEGIN
     END as cruel_mode,
     to_timestamp((completion->>'finishTime')::bigint / 1000.0) as completed_at
   FROM game_saves gs
-  JOIN auth.users au ON gs.user_id = au.id
   CROSS JOIN LATERAL jsonb_array_elements(gs.game_stats) AS completion
   WHERE 
     gs.game_stats IS NOT NULL 

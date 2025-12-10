@@ -309,19 +309,51 @@ app.post("/api/leaderboard/update-username", async (req, res) => {
     // Always use production data for leaderboard
     const adminClient = getAdminClient('prod');
 
-    // Update username in all leaderboard entries for this user
-    const { error } = await adminClient
+    log(`📝 Updating username for user ${userId}: "${username}"`);
+
+    // Check if username column exists in leaderboard table
+    const { data: columns, error: schemaError } = await adminClient
       .from('leaderboard')
-      .update({ username })
-      .eq('user_id', userId);
+      .select('*')
+      .limit(1);
 
-    if (error) throw error;
+    const hasUsernameColumn = columns && columns.length > 0 && 'username' in columns[0];
 
-    // Also update in production game_saves
-    await adminClient
+    if (hasUsernameColumn) {
+      // Update username in all leaderboard entries for this user
+      const { error } = await adminClient
+        .from('leaderboard')
+        .update({ username })
+        .eq('user_id', userId);
+
+      if (error) {
+        log('❌ Leaderboard update error:', error);
+        throw error;
+      }
+      log('✅ Updated username in leaderboard table');
+    } else {
+      log('⚠️ Username column not found in leaderboard table, skipping leaderboard update');
+    }
+
+    // Update in production game_saves (this is the primary storage)
+    const { error: saveError } = await adminClient
       .from('game_saves')
       .update({ username })
       .eq('user_id', userId);
+
+    if (saveError) {
+      log('❌ Game saves update error:', saveError);
+      throw saveError;
+    }
+    log('✅ Updated username in game_saves table');
+
+    // Trigger leaderboard refresh to pick up the new username
+    const { error: refreshError } = await adminClient.rpc('refresh_leaderboard');
+    if (refreshError) {
+      log('⚠️ Leaderboard refresh error (non-critical):', refreshError);
+    } else {
+      log('✅ Triggered leaderboard refresh');
+    }
 
     res.json({ success: true });
   } catch (error: any) {
