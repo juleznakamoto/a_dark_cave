@@ -443,7 +443,9 @@ export const getAllActionBonuses = (
       const label =
         actionId === "caveExplore"
           ? "Cave Explore"
-          : actionId
+          : actionId === "mining"
+            ? "Mine (All)" // Changed label here
+            : actionId
               .replace(/([A-Z])/g, " $1")
               .trim()
               .split(" ")
