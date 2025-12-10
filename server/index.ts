@@ -44,11 +44,11 @@ function maskEmail(email: string | null): string {
   const parts = email.split('@');
   if (parts.length !== 2) return 'Anonymous';
   const local = parts[0];
-  
+
   if (local.length <= 4) {
     return `${local.substring(0, 2)}***`;
   }
-  
+
   return `${local.substring(0, 2)}***${local.substring(local.length - 2)}`;
 }
 
@@ -282,7 +282,7 @@ app.get("/api/leaderboard/metadata", async (req, res) => {
   try {
     const env = (req.query.env as 'dev' | 'prod') || 'prod';
     const adminClient = getAdminClient(env);
-    
+
     const { data, error } = await adminClient
       .from('leaderboard_metadata')
       .select('value')
@@ -325,42 +325,23 @@ app.post("/api/leaderboard/update-username", async (req, res) => {
       log('✅ Updated username in leaderboard table');
     }
 
-    // Update username in both the username column AND the game_state JSONB
-    // First, get the current game_state
-    const { data: currentSave, error: fetchError } = await adminClient
+    // Update username in game_saves - simple UPDATE
+    const { error: saveError, data: saveData } = await adminClient
       .from('game_saves')
-      .select('game_state')
+      .update({ username })
       .eq('user_id', userId)
-      .single();
-
-    if (fetchError && fetchError.code !== 'PGRST116') {
-      // PGRST116 is "no rows returned" - that's okay, we'll create a new save
-      log('❌ Failed to fetch current game state:', fetchError);
-      throw fetchError;
-    }
-
-    // Update the game_state with the new username
-    const updatedGameState = currentSave?.game_state 
-      ? { ...currentSave.game_state, username }
-      : { username };
-
-    // Save both the username column and the updated game_state (upsert for new users)
-    const { error: saveError } = await adminClient
-      .from('game_saves')
-      .upsert({ 
-        user_id: userId,
-        username,
-        game_state: updatedGameState,
-        updated_at: new Date().toISOString()
-      }, {
-        onConflict: 'user_id'
-      });
+      .select();
 
     if (saveError) {
       log('❌ Game saves update error:', saveError);
       throw saveError;
     }
-    log('✅ Updated username in game_saves table and game_state JSONB');
+
+    if (saveData && saveData.length > 0) {
+      log('✅ Updated username in game_saves table');
+    } else {
+      log('⚠️ No game save found for user');
+    }
 
     // Trigger leaderboard refresh to pick up the new username
     const { error: refreshError } = await adminClient.rpc('refresh_leaderboard');
