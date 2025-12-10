@@ -103,21 +103,27 @@ app.get("/api/admin/data", async (req, res) => {
     }
 
     // Fetch data with 30-day filter for saves and clicks
+    // Use a high limit to get all results (Supabase default is 1000)
+    const QUERY_LIMIT = 50000;
+    
     const [clicksResult, savesResult, purchasesResult] = await Promise.all([
       adminClient
         .from("button_clicks")
         .select("*")
         .gte("timestamp", filterDate)
-        .order("timestamp", { ascending: false }),
+        .order("timestamp", { ascending: false })
+        .limit(QUERY_LIMIT),
       adminClient
         .from("game_saves")
         .select("user_id, game_state, updated_at, created_at")
         .gte("updated_at", filterDate)
-        .order("updated_at", { ascending: false }),
+        .order("updated_at", { ascending: false })
+        .limit(QUERY_LIMIT),
       adminClient
         .from("purchases")
         .select("*")
-        .order("purchased_at", { ascending: false }),
+        .order("purchased_at", { ascending: false })
+        .limit(QUERY_LIMIT),
     ]);
 
     if (clicksResult.error) {
