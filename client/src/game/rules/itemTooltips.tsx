@@ -86,6 +86,11 @@ export function renderItemTooltip(
                 % Bonus
               </div>
             )}
+          {(effect.bonuses.generalBonuses.MAX_EMBER_BOMBS ||
+            effect.bonuses.generalBonuses.MAX_CINDERFLAME_BOMBS ||
+            effect.bonuses.generalBonuses.MAX_VOID_BOMBS) && (
+            <div>+1 Capacity for all bombs</div>
+          )}
         </div>
       )}
       {effect.bonuses?.actionBonuses &&
