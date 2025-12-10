@@ -281,6 +281,14 @@ export async function saveGame(
           sanitizedState,
         );
 
+        // Always include startTime and gameId for completion tracking
+        if (sanitizedState.startTime && !stateDiff.startTime) {
+          stateDiff.startTime = sanitizedState.startTime;
+        }
+        if (sanitizedState.gameId && !stateDiff.gameId) {
+          stateDiff.gameId = sanitizedState.gameId;
+        }
+
         // Save diff to Supabase
         await saveGameToSupabase(
           stateDiff,
