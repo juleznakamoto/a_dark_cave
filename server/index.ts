@@ -3,7 +3,7 @@ import compression from "compression";
 import { setupVite, serveStatic, log } from "./vite";
 import { createPaymentIntent, verifyPayment } from "./stripe";
 import { processReferral } from "./referral";
-const Filter = require("bad-words");
+import { Filter } from "bad-words";
 
 // Supabase config endpoint for production
 const getSupabaseConfig = () => {
