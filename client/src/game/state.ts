@@ -255,7 +255,7 @@ const mergeStateUpdates = (
 
   if (
     stateUpdates.tools ||
-    state.weapons ||
+    stateUpdates.weapons ||
     stateUpdates.clothing ||
     stateUpdates.relics ||
     stateUpdates.books
