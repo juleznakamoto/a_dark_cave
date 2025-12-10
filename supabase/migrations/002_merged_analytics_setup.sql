@@ -127,8 +127,8 @@ BEGIN
     END IF;
 
     -- If game was completed, append completion record to game_stats (only once per gameId)
-    IF v_game_completed AND p_game_state_diff ? 'playTime' AND p_game_state_diff ? 'startTime' AND p_game_state_diff ? 'gameId' THEN
-      v_game_id := p_game_state_diff->>'gameId';
+    IF v_game_completed AND v_merged_state ? 'playTime' AND v_merged_state ? 'startTime' AND v_merged_state ? 'gameId' THEN
+      v_game_id := v_merged_state->>'gameId';
       
       -- Get existing game_stats to check if this gameId was already recorded
       SELECT game_stats INTO v_existing_game_stats
@@ -149,13 +149,13 @@ BEGIN
       -- Only add completion record if this gameId hasn't been recorded yet
       IF NOT v_already_recorded THEN
         v_game_mode := CASE 
-          WHEN (p_game_state_diff->>'cruelMode')::boolean = true THEN 'cruel'
+          WHEN (v_merged_state->>'cruelMode')::boolean = true THEN 'cruel'
           ELSE 'normal'
         END;
         
-        v_start_time := (p_game_state_diff->>'startTime')::bigint;
+        v_start_time := (v_merged_state->>'startTime')::bigint;
         v_finish_time := EXTRACT(EPOCH FROM NOW())::bigint * 1000;
-        v_playtime_ms := (p_game_state_diff->>'playTime')::bigint;
+        v_playtime_ms := (v_merged_state->>'playTime')::bigint;
 
         -- Create completion record with gameId
         v_completion_record := jsonb_build_object(
