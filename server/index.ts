@@ -242,6 +242,42 @@ app.use((req, res, next) => {
 import { createServer } from "http";
 
 // Leaderboard endpoints - MUST be before Vite setup
+// IMPORTANT: Specific routes (metadata) must come before parameterized routes (:mode)
+app.get("/api/leaderboard/metadata", async (req, res) => {
+  try {
+    const env = (req.query.env as "dev" | "prod") || "prod";
+    const adminClient = getAdminClient(env);
+
+    log(`📊 Fetching leaderboard metadata for ${env} environment`);
+
+    const { data, error } = await adminClient
+      .from("leaderboard_metadata")
+      .select("value")
+      .eq("key", "last_updated")
+      .maybeSingle();
+
+    if (error) {
+      log("❌ Metadata query error:", error);
+      throw error;
+    }
+
+    log(`📊 Metadata result:`, { data, hasValue: !!data?.value });
+
+    // If no metadata exists yet, return null
+    const result = { lastUpdated: data?.value || null };
+    log(`📊 Returning metadata:`, result);
+    
+    // Set proper content type and disable caching
+    res.setHeader('Content-Type', 'application/json');
+    res.set("Cache-Control", "no-store, no-cache, must-revalidate, private");
+    
+    res.json(result);
+  } catch (error: any) {
+    log("❌ Leaderboard metadata fetch failed:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 app.get("/api/leaderboard/:mode", async (req, res) => {
   try {
     const mode = req.params.mode as "normal" | "cruel";
@@ -278,41 +314,6 @@ app.get("/api/leaderboard/:mode", async (req, res) => {
     res.json(maskedData);
   } catch (error: any) {
     log("❌ Leaderboard fetch failed:", error);
-    res.status(500).json({ error: error.message });
-  }
-});
-
-app.get("/api/leaderboard/metadata", async (req, res) => {
-  try {
-    const env = (req.query.env as "dev" | "prod") || "prod";
-    const adminClient = getAdminClient(env);
-
-    log(`📊 Fetching leaderboard metadata for ${env} environment`);
-
-    const { data, error } = await adminClient
-      .from("leaderboard_metadata")
-      .select("value")
-      .eq("key", "last_updated")
-      .maybeSingle();
-
-    if (error) {
-      log("❌ Metadata query error:", error);
-      throw error;
-    }
-
-    log(`📊 Metadata result:`, { data, hasValue: !!data?.value });
-
-    // If no metadata exists yet, return null
-    const result = { lastUpdated: data?.value || null };
-    log(`📊 Returning metadata:`, result);
-    
-    // Set proper content type and disable caching
-    res.setHeader('Content-Type', 'application/json');
-    res.set("Cache-Control", "no-store, no-cache, must-revalidate, private");
-    
-    res.json(result);
-  } catch (error: any) {
-    log("❌ Leaderboard metadata fetch failed:", error);
     res.status(500).json({ error: error.message });
   }
 });
