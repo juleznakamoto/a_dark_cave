@@ -133,6 +133,14 @@ export default function LeaderboardDialog({ isOpen, onClose }: LeaderboardDialog
           });
           return;
         }
+        if (response.status === 409) {
+          toast({
+            title: "Username taken",
+            description: "This username is already in use. Please choose another.",
+            variant: "destructive",
+          });
+          return;
+        }
         throw new Error("Failed to update username");
       }
 

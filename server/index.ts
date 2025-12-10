@@ -334,6 +334,24 @@ app.post("/api/leaderboard/update-username", async (req, res) => {
 
     log(`📝 Updating username for user ${userId}: "${username}"`);
 
+    // Check if username is already taken by another user
+    const { data: existingUser, error: checkError } = await adminClient
+      .from("game_saves")
+      .select("user_id")
+      .eq("username", username)
+      .neq("user_id", userId)
+      .maybeSingle();
+
+    if (checkError) {
+      log("❌ Username check error:", checkError);
+      throw checkError;
+    }
+
+    if (existingUser) {
+      log(`⚠️ Username "${username}" already taken by another user`);
+      return res.status(409).json({ error: "Username already taken" });
+    }
+
     // Update username in all leaderboard entries for this user
     const { data, error: leaderboardError } = await adminClient
       .from("leaderboard")

@@ -51,6 +51,34 @@ BEGIN
   END IF;
 END $$;
 
+-- Add unique constraint to ensure each username can only exist once
+-- First, update any existing duplicate usernames by appending user_id
+UPDATE game_saves gs1
+SET username = username || '_' || SUBSTRING(user_id::text, 1, 8)
+WHERE username IS NOT NULL
+  AND EXISTS (
+    SELECT 1 FROM game_saves gs2
+    WHERE gs2.username = gs1.username
+      AND gs2.user_id != gs1.user_id
+      AND gs2.created_at < gs1.created_at
+  );
+
+-- Add unique constraint to game_saves username column
+DO $$ 
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_constraint WHERE conname = 'unique_username'
+  ) THEN
+    ALTER TABLE game_saves ADD CONSTRAINT unique_username UNIQUE (username);
+  END IF;
+END $$;
+
+-- Add index for faster username lookups
+CREATE INDEX IF NOT EXISTS idx_game_saves_username ON game_saves(username) WHERE username IS NOT NULL;
+
+-- Add comment
+COMMENT ON CONSTRAINT unique_username ON game_saves IS 'Ensures each username is unique across all users';
+
 -- Create metadata table to track last update time
 CREATE TABLE IF NOT EXISTS leaderboard_metadata (
   key TEXT PRIMARY KEY,
