@@ -177,7 +177,7 @@ export default function LeaderboardDialog({ isOpen, onClose }: LeaderboardDialog
             <span className="font-semibold text-sm w-8 text-center">#</span>
             <span className="font-semibold text-sm">Player</span>
           </div>
-          <span className="font-semibold text-sm">Playtime</span>
+          <span className="font-semibold text-sm">Completion Time</span>
         </div>
         {entries.map((entry, index) => (
           <div
