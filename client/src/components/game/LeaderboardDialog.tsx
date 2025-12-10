@@ -123,7 +123,18 @@ export default function LeaderboardDialog({ isOpen, onClose }: LeaderboardDialog
         }),
       });
 
-      if (!response.ok) throw new Error("Failed to update username");
+      if (!response.ok) {
+        const errorData = await response.json();
+        if (errorData.error === "Username contains inappropriate language") {
+          toast({
+            title: "Username not allowed",
+            description: "This username contains inappropriate language. Please choose a different one.",
+            variant: "destructive",
+          });
+          return;
+        }
+        throw new Error("Failed to update username");
+      }
 
       setUsername(tempUsername.trim());
       setEditingUsername(false);
