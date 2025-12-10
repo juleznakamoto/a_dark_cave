@@ -6,14 +6,14 @@ import { processReferral } from "./referral";
 
 // Supabase config endpoint for production
 const getSupabaseConfig = () => {
-  const isDev = process.env.NODE_ENV === 'development';
+  const isDev = process.env.NODE_ENV === "development";
   return {
     supabaseUrl: isDev
       ? process.env.VITE_SUPABASE_URL_DEV
       : process.env.VITE_SUPABASE_URL_PROD,
     supabaseAnonKey: isDev
       ? process.env.VITE_SUPABASE_ANON_KEY_DEV
-      : process.env.VITE_SUPABASE_ANON_KEY_PROD
+      : process.env.VITE_SUPABASE_ANON_KEY_PROD,
   };
 };
 
@@ -26,23 +26,25 @@ app.use(compression());
 // CRITICAL: Parse JSON bodies BEFORE defining any routes
 app.use(express.json());
 
-app.get('/api/config', (req, res) => {
+app.get("/api/config", (req, res) => {
   const config = getSupabaseConfig();
   if (!config.supabaseUrl || !config.supabaseAnonKey) {
-    log('⚠️ Supabase config not found in environment variables');
-    return res.status(500).json({ error: 'Supabase configuration not available' });
+    log("⚠️ Supabase config not found in environment variables");
+    return res
+      .status(500)
+      .json({ error: "Supabase configuration not available" });
   }
   res.json(config);
 });
 
 // Server-side Supabase admin client (bypasses RLS)
-import { createClient } from '@supabase/supabase-js';
+import { createClient } from "@supabase/supabase-js";
 
 // Helper function to mask emails
 function maskEmail(email: string | null): string {
-  if (!email) return 'Anonymous';
-  const parts = email.split('@');
-  if (parts.length !== 2) return 'Anonymous';
+  if (!email) return "Anonymous";
+  const parts = email.split("@");
+  if (parts.length !== 2) return "Anonymous";
   const local = parts[0];
 
   if (local.length <= 4) {
@@ -52,33 +54,37 @@ function maskEmail(email: string | null): string {
   return `${local.substring(0, 2)}***${local.substring(local.length - 2)}`;
 }
 
-const getAdminClient = (env: 'dev' | 'prod' = 'dev') => {
-  const supabaseUrl = env === 'dev'
-    ? process.env.VITE_SUPABASE_URL_DEV
-    : process.env.VITE_SUPABASE_URL_PROD;
-  const supabaseServiceKey = env === 'dev'
-    ? process.env.SUPABASE_SERVICE_ROLE_KEY_DEV
-    : process.env.SUPABASE_SERVICE_ROLE_KEY_PROD;
+const getAdminClient = (env: "dev" | "prod" = "dev") => {
+  const supabaseUrl =
+    env === "dev"
+      ? process.env.VITE_SUPABASE_URL_DEV
+      : process.env.VITE_SUPABASE_URL_PROD;
+  const supabaseServiceKey =
+    env === "dev"
+      ? process.env.SUPABASE_SERVICE_ROLE_KEY_DEV
+      : process.env.SUPABASE_SERVICE_ROLE_KEY_PROD;
 
   if (!supabaseUrl || !supabaseServiceKey) {
-    throw new Error(`Supabase admin config not available for ${env} environment`);
+    throw new Error(
+      `Supabase admin config not available for ${env} environment`,
+    );
   }
 
   return createClient(supabaseUrl, supabaseServiceKey, {
     auth: {
       autoRefreshToken: false,
-      persistSession: false
-    }
+      persistSession: false,
+    },
   });
 };
 
 // API endpoint to fetch admin dashboard data (server-side, bypasses RLS)
-app.get('/api/admin/data', async (req, res) => {
+app.get("/api/admin/data", async (req, res) => {
   try {
     // Cache for 5 minutes to reduce repeated fetches
-    res.set('Cache-Control', 'public, max-age=300');
+    res.set("Cache-Control", "public, max-age=300");
 
-    const env = req.query.env as 'dev' | 'prod' || 'dev';
+    const env = (req.query.env as "dev" | "prod") || "dev";
     const adminClient = getAdminClient(env);
 
     // Calculate date 30 days ago for filtering
@@ -88,8 +94,8 @@ app.get('/api/admin/data', async (req, res) => {
 
     // Get total user count from game_saves table (all time)
     const { count: totalUserCount, error: countError } = await adminClient
-      .from('game_saves')
-      .select('user_id', { count: 'exact', head: true });
+      .from("game_saves")
+      .select("user_id", { count: "exact", head: true });
 
     if (countError) {
       throw countError;
@@ -98,19 +104,19 @@ app.get('/api/admin/data', async (req, res) => {
     // Fetch data with 30-day filter for saves and clicks
     const [clicksResult, savesResult, purchasesResult] = await Promise.all([
       adminClient
-        .from('button_clicks')
-        .select('*')
-        .gte('timestamp', filterDate)
-        .order('timestamp', { ascending: false }),
+        .from("button_clicks")
+        .select("*")
+        .gte("timestamp", filterDate)
+        .order("timestamp", { ascending: false }),
       adminClient
-        .from('game_saves')
-        .select('user_id, game_state, updated_at, created_at')
-        .gte('updated_at', filterDate)
-        .order('updated_at', { ascending: false }),
+        .from("game_saves")
+        .select("user_id, game_state, updated_at, created_at")
+        .gte("updated_at", filterDate)
+        .order("updated_at", { ascending: false }),
       adminClient
-        .from('purchases')
-        .select('*')
-        .order('purchased_at', { ascending: false })
+        .from("purchases")
+        .select("*")
+        .order("purchased_at", { ascending: false }),
     ]);
 
     if (clicksResult.error) {
@@ -127,10 +133,10 @@ app.get('/api/admin/data', async (req, res) => {
       clicks: clicksResult.data,
       saves: savesResult.data,
       purchases: purchasesResult.data,
-      totalUserCount
+      totalUserCount,
     });
   } catch (error: any) {
-    log('❌ Admin data fetch failed:', error);
+    log("❌ Admin data fetch failed:", error);
     res.status(500).json({ error: error.message });
   }
 });
@@ -138,7 +144,9 @@ app.get('/api/admin/data', async (req, res) => {
 // Admin user lookup endpoint
 app.get("/api/admin/user-lookup", async (req, res) => {
   try {
-    const adminClient = getAdminClient(req.query.env as 'dev' | 'prod' || 'dev');
+    const adminClient = getAdminClient(
+      (req.query.env as "dev" | "prod") || "dev",
+    );
 
     const userId = req.query.userId as string;
     const email = req.query.email as string;
@@ -152,21 +160,24 @@ app.get("/api/admin/user-lookup", async (req, res) => {
 
     if (email) {
       // Lookup by email - need to join with auth.users
-      const { data: authUser, error: authError } = await adminClient.auth.admin.listUsers();
+      const { data: authUser, error: authError } =
+        await adminClient.auth.admin.listUsers();
 
       if (authError) {
-        return res.status(500).json({ error: "Failed to lookup user by email" });
+        return res
+          .status(500)
+          .json({ error: "Failed to lookup user by email" });
       }
 
-      const matchingUser = authUser.users.find(u => u.email === email);
+      const matchingUser = authUser.users.find((u) => u.email === email);
 
       if (!matchingUser) {
         return res.status(404).json({ error: "No user found with this email" });
       }
 
       const { data: saveData, error: saveError } = await adminClient
-        .from('game_saves')
-        .select('user_id, game_state, updated_at, created_at')
+        .from("game_saves")
+        .select("user_id, game_state, updated_at, created_at")
         .eq("user_id", matchingUser.id)
         .single();
 
@@ -175,8 +186,8 @@ app.get("/api/admin/user-lookup", async (req, res) => {
     } else {
       // Lookup by user ID
       const { data: saveData, error: saveError } = await adminClient
-        .from('game_saves')
-        .select('user_id, game_state, updated_at, created_at')
+        .from("game_saves")
+        .select("user_id, game_state, updated_at, created_at")
         .eq("user_id", userId)
         .single();
 
@@ -185,7 +196,7 @@ app.get("/api/admin/user-lookup", async (req, res) => {
     }
 
     if (error) {
-      if (error.code === 'PGRST116') {
+      if (error.code === "PGRST116") {
         return res.json({ save: null });
       }
       throw error;
@@ -232,17 +243,17 @@ import { createServer } from "http";
 // Leaderboard endpoints - MUST be before Vite setup
 app.get("/api/leaderboard/:mode", async (req, res) => {
   try {
-    const mode = req.params.mode as 'normal' | 'cruel';
-    const cruelMode = mode === 'cruel';
-    const env = (req.query.env as 'dev' | 'prod') || 'prod';
+    const mode = req.params.mode as "normal" | "cruel";
+    const cruelMode = mode === "cruel";
+    const env = (req.query.env as "dev" | "prod") || "prod";
     const adminClient = getAdminClient(env);
 
     log(`📊 Fetching ${mode} leaderboard for ${env} environment`);
 
     // First check if there are any entries at all
     const { data: allData, error: allError } = await adminClient
-      .from('leaderboard')
-      .select('*');
+      .from("leaderboard")
+      .select("*");
 
     log(`📊 Total entries in leaderboard table: ${allData?.length || 0}`);
     if (allData && allData.length > 0) {
@@ -250,18 +261,20 @@ app.get("/api/leaderboard/:mode", async (req, res) => {
     }
 
     const { data, error } = await adminClient
-      .from('leaderboard')
-      .select('id, username, email, play_time, completed_at')
-      .eq('cruel_mode', cruelMode)
-      .order('play_time', { ascending: true })
+      .from("leaderboard")
+      .select("id, username, email, play_time, completed_at")
+      .eq("cruel_mode", cruelMode)
+      .order("play_time", { ascending: true })
       .limit(100);
 
     if (error) throw error;
 
-    log(`📊 Found ${data?.length || 0} entries for ${mode} mode in ${env}, cruel_mode=${cruelMode}`);
+    log(
+      `📊 Found ${data?.length || 0} entries for ${mode} mode in ${env}, cruel_mode=${cruelMode}`,
+    );
 
     // Mask emails server-side
-    const maskedData = data.map(entry => ({
+    const maskedData = data.map((entry) => ({
       id: entry.id,
       username: entry.username,
       displayName: entry.username || maskEmail(entry.email),
@@ -270,30 +283,30 @@ app.get("/api/leaderboard/:mode", async (req, res) => {
     }));
 
     // No caching during development
-    res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+    res.set("Cache-Control", "no-store, no-cache, must-revalidate, private");
     res.json(maskedData);
   } catch (error: any) {
-    log('❌ Leaderboard fetch failed:', error);
+    log("❌ Leaderboard fetch failed:", error);
     res.status(500).json({ error: error.message });
   }
 });
 
 app.get("/api/leaderboard/metadata", async (req, res) => {
   try {
-    const env = (req.query.env as 'dev' | 'prod') || 'prod';
+    const env = (req.query.env as "dev" | "prod") || "prod";
     const adminClient = getAdminClient(env);
 
     const { data, error } = await adminClient
-      .from('leaderboard_metadata')
-      .select('value')
-      .eq('key', 'last_updated')
+      .from("leaderboard_metadata")
+      .select("value")
+      .eq("key", "last_updated")
       .single();
 
     if (error) throw error;
 
     res.json({ lastUpdated: data?.value || null });
   } catch (error: any) {
-    log('❌ Leaderboard metadata fetch failed:', error);
+    log("❌ Leaderboard metadata fetch failed:", error);
     res.status(500).json({ error: error.message });
   }
 });
@@ -303,56 +316,60 @@ app.post("/api/leaderboard/update-username", async (req, res) => {
     const { userId, username } = req.body;
 
     if (!userId || !username) {
-      return res.status(400).json({ error: 'Missing required fields' });
+      return res.status(400).json({ error: "Missing required fields" });
     }
 
     // Always use production data for leaderboard
-    const adminClient = getAdminClient('prod');
+    const adminClient = getAdminClient("prod");
 
     log(`📝 Updating username for user ${userId}: "${username}"`);
 
     // Update username in all leaderboard entries for this user
-    const { error: leaderboardError } = await adminClient
-      .from('leaderboard')
+    const { data, error: leaderboardError } = await adminClient
+      .from("leaderboard")
       .update({ username })
-      .eq('user_id', userId);
+      .eq("user_id", userId)
+      .select();
+    log(`Data: ${data}`);
 
     if (leaderboardError) {
-      log('⚠️ Leaderboard update error (non-critical):', leaderboardError);
+      log("⚠️ Leaderboard update error (non-critical):", leaderboardError);
       // Don't throw - continue to update game_saves
     } else {
-      log('✅ Updated username in leaderboard table');
+      log("✅ Updated username in leaderboard table");
     }
 
     // Update username in game_saves - simple UPDATE
     const { error: saveError, data: saveData } = await adminClient
-      .from('game_saves')
+      .from("game_saves")
       .update({ username })
-      .eq('user_id', userId)
+      .eq("user_id", userId)
       .select();
 
     if (saveError) {
-      log('❌ Game saves update error:', saveError);
+      log("❌ Game saves update error:", saveError);
       throw saveError;
     }
 
     if (saveData && saveData.length > 0) {
-      log('✅ Updated username in game_saves table');
+      log("✅ Updated username in game_saves table");
     } else {
-      log('⚠️ No game save found for user');
+      log("⚠️ No game save found for user");
     }
 
     // Trigger leaderboard refresh to pick up the new username
-    const { error: refreshError } = await adminClient.rpc('refresh_leaderboard');
+    const { error: refreshError } = await adminClient.rpc(
+      "refresh_leaderboard",
+    );
     if (refreshError) {
-      log('⚠️ Leaderboard refresh error (non-critical):', refreshError);
+      log("⚠️ Leaderboard refresh error (non-critical):", refreshError);
     } else {
-      log('✅ Triggered leaderboard refresh');
+      log("✅ Triggered leaderboard refresh");
     }
 
     res.json({ success: true });
   } catch (error: any) {
-    log('❌ Username update failed:', error);
+    log("❌ Username update failed:", error);
     res.status(500).json({ error: error.message });
   }
 });
@@ -367,16 +384,16 @@ app.post("/api/leaderboard/update-username", async (req, res) => {
       const { newUserId, referralCode } = req.body || {};
 
       if (!newUserId || !referralCode) {
-        return res.status(400).json({ 
-          error: 'Missing required parameters',
-          received: { newUserId: !!newUserId, referralCode: !!referralCode }
+        return res.status(400).json({
+          error: "Missing required parameters",
+          received: { newUserId: !!newUserId, referralCode: !!referralCode },
         });
       }
 
       const result = await processReferral(newUserId, referralCode);
 
       // Ensure we send JSON with correct content-type
-      res.setHeader('Content-Type', 'application/json');
+      res.setHeader("Content-Type", "application/json");
       res.json(result);
     } catch (error: any) {
       res.status(500).json({ error: error.message });
@@ -400,11 +417,11 @@ app.post("/api/leaderboard/update-username", async (req, res) => {
       const { paymentIntentId, userId } = req.body;
 
       if (!userId) {
-        return res.status(400).json({ error: 'User ID required' });
+        return res.status(400).json({ error: "User ID required" });
       }
 
       // Get supabase admin client
-      const env = process.env.NODE_ENV === 'production' ? 'prod' : 'dev';
+      const env = process.env.NODE_ENV === "production" ? "prod" : "dev";
       const adminClient = getAdminClient(env);
 
       // Verify payment and create all purchases (bundle + components)
@@ -412,7 +429,7 @@ app.post("/api/leaderboard/update-username", async (req, res) => {
 
       res.json(result);
     } catch (error: any) {
-      log('❌ Payment verification error:', error);
+      log("❌ Payment verification error:", error);
       res.status(400).json({ error: error.message });
     }
   });
