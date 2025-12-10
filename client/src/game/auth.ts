@@ -279,6 +279,22 @@ export async function saveGameToSupabase(
 
   const allowOverwrite = gameState.allowPlayTimeOverwrite === true;
 
+  // Debug: Log if this save includes cube completion events
+  if (gameState.events) {
+    const cubeEvents = Object.keys(gameState.events).filter(k => k.startsWith('cube'));
+    if (cubeEvents.length > 0) {
+      logger.log('[SAVE CLOUD] 🎮 Saving cube events:', cubeEvents, gameState.events);
+      logger.log('[SAVE CLOUD] 📊 Game state includes:', {
+        hasPlayTime: 'playTime' in gameState,
+        hasStartTime: 'startTime' in gameState,
+        hasGameId: 'gameId' in gameState,
+        gameId: gameState.gameId,
+        playTime: gameState.playTime,
+        startTime: gameState.startTime,
+      });
+    }
+  }
+
   logger.log('[SAVE CLOUD] 🔍 Starting cloud save with OCC...', {
     playTime,
     isNewGame,
@@ -316,11 +332,11 @@ export async function saveGameToSupabase(
 
   // OCC: Single atomic database call - the RPC function handles:
   // 1. Reading current state
-  // 2. Validating playTime is strictly greater (unless allowPlayTimeOverwrite is true)
+  // 2. Validating playTime is strictly greater (unless allowPlaytimeOverwrite is true)
   // 3. Merging diff with existing state
   // 4. Writing merged state
   // All in one transaction - prevents race conditions
-  const { error } = await supabase.rpc("save_game_with_analytics", {
+  const { error, data } = await supabase.rpc("save_game_with_analytics", {
         p_user_id: user.id,
         p_game_state_diff: sanitizedDiff as unknown as Json,
         p_click_analytics: clickAnalyticsParam as unknown as Json,
@@ -340,7 +356,7 @@ export async function saveGameToSupabase(
     throw error;
   }
 
-  logger.log('[SAVE CLOUD] ✅ Cloud save completed successfully - OCC check passed in database');
+  logger.log('[SAVE CLOUD] ✅ Cloud save completed successfully', data ? { response: data } : '');
 }
 
 export async function loadGameFromSupabase(): Promise<SaveData | null> {
