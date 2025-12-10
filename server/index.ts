@@ -324,7 +324,9 @@ app.post("/api/leaderboard/update-username", async (req, res) => {
     const filter = new Filter();
     if (filter.isProfane(username)) {
       log(`⚠️ Profane username rejected: "${username}"`);
-      return res.status(400).json({ error: "Username contains inappropriate language" });
+      return res
+        .status(400)
+        .json({ error: "Username contains inappropriate language" });
     }
 
     const env = (req.query.env as "dev" | "prod") || "prod";
@@ -336,10 +338,7 @@ app.post("/api/leaderboard/update-username", async (req, res) => {
     const { data, error: leaderboardError } = await adminClient
       .from("leaderboard")
       .update({ username })
-      .eq("user_id", userId)
-      .select();
-
-    log(`Data: ${data} | ${env}`);
+      .eq("user_id", userId);
 
     if (leaderboardError) {
       log("⚠️ Leaderboard update error (non-critical):", leaderboardError);
