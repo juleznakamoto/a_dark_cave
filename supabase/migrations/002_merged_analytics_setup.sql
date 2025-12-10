@@ -100,6 +100,35 @@ BEGIN
   FROM game_saves
   WHERE user_id = p_user_id;
 
+  -- OCC: Validate playTime if both states exist (unless overwrite is allowed)
+  IF v_existing_state IS NOT NULL AND p_game_state_diff ? 'playTime' THEN
+    v_existing_playtime := COALESCE((v_existing_state->>'playTime')::NUMERIC, 0);
+    v_new_playtime := COALESCE((p_game_state_diff->>'playTime')::NUMERIC, 0);
+
+    IF p_allow_playtime_overwrite THEN
+      -- Allow overwrite for game restarts
+      RAISE NOTICE 'OCC check SKIPPED: playTime overwrite allowed (game restart) - new: %, existing: %', 
+        v_new_playtime, v_existing_playtime;
+    ELSE
+      -- Reject save if new playTime is not strictly greater than existing
+      IF v_new_playtime <= v_existing_playtime THEN
+        RAISE EXCEPTION 'OCC violation: new playTime (%) must be greater than existing playTime (%)', 
+          v_new_playtime, v_existing_playtime;
+      END IF;
+
+      -- Log successful OCC check (visible in Supabase logs)
+      RAISE NOTICE 'OCC check passed: new playTime (%) > existing playTime (%)', 
+        v_new_playtime, v_existing_playtime;
+    END IF;
+  END IF;
+
+  -- Merge the diff with existing state (deep merge for JSONB)
+  IF v_existing_state IS NOT NULL THEN
+    v_merged_state := v_existing_state || p_game_state_diff;
+  ELSE
+    v_merged_state := p_game_state_diff;
+  END IF;
+
   -- Check if game was just completed (cube13 or cube14/15 variants)
   DECLARE
     v_game_completed BOOLEAN := FALSE;
@@ -169,54 +198,37 @@ BEGIN
         -- Append new completion record
         v_new_game_stats := v_existing_game_stats || jsonb_build_array(v_completion_record);
 
-        -- Update game_stats column
-        UPDATE game_saves
-        SET game_stats = v_new_game_stats
-        WHERE user_id = p_user_id;
+        -- Save merged state AND game_stats together
+        INSERT INTO game_saves (user_id, game_state, game_stats, updated_at)
+        VALUES (p_user_id, v_merged_state, v_new_game_stats, NOW())
+        ON CONFLICT (user_id) 
+        DO UPDATE SET 
+          game_state = EXCLUDED.game_state,
+          game_stats = EXCLUDED.game_stats,
+          updated_at = EXCLUDED.updated_at;
         
         RAISE NOTICE 'Game completion recorded for gameId: %', v_game_id;
       ELSE
+        -- Just save the merged state without updating game_stats
+        INSERT INTO game_saves (user_id, game_state, updated_at)
+        VALUES (p_user_id, v_merged_state, NOW())
+        ON CONFLICT (user_id) 
+        DO UPDATE SET 
+          game_state = EXCLUDED.game_state,
+          updated_at = EXCLUDED.updated_at;
+        
         RAISE NOTICE 'Game completion already recorded for gameId: %', v_game_id;
       END IF;
+    ELSE
+      -- No game completion, just save the merged state
+      INSERT INTO game_saves (user_id, game_state, updated_at)
+      VALUES (p_user_id, v_merged_state, NOW())
+      ON CONFLICT (user_id) 
+      DO UPDATE SET 
+        game_state = EXCLUDED.game_state,
+        updated_at = EXCLUDED.updated_at;
     END IF;
   END;
-
-  -- OCC: Validate playTime if both states exist (unless overwrite is allowed)
-  IF v_existing_state IS NOT NULL AND p_game_state_diff ? 'playTime' THEN
-    v_existing_playtime := COALESCE((v_existing_state->>'playTime')::NUMERIC, 0);
-    v_new_playtime := COALESCE((p_game_state_diff->>'playTime')::NUMERIC, 0);
-
-    IF p_allow_playtime_overwrite THEN
-      -- Allow overwrite for game restarts
-      RAISE NOTICE 'OCC check SKIPPED: playTime overwrite allowed (game restart) - new: %, existing: %', 
-        v_new_playtime, v_existing_playtime;
-    ELSE
-      -- Reject save if new playTime is not strictly greater than existing
-      IF v_new_playtime <= v_existing_playtime THEN
-        RAISE EXCEPTION 'OCC violation: new playTime (%) must be greater than existing playTime (%)', 
-          v_new_playtime, v_existing_playtime;
-      END IF;
-
-      -- Log successful OCC check (visible in Supabase logs)
-      RAISE NOTICE 'OCC check passed: new playTime (%) > existing playTime (%)', 
-        v_new_playtime, v_existing_playtime;
-    END IF;
-  END IF;
-
-  -- Merge the diff with existing state (deep merge for JSONB)
-  IF v_existing_state IS NOT NULL THEN
-    v_merged_state := v_existing_state || p_game_state_diff;
-  ELSE
-    v_merged_state := p_game_state_diff;
-  END IF;
-
-  -- Save or update the game state with merged data
-  INSERT INTO game_saves (user_id, game_state, updated_at)
-  VALUES (p_user_id, v_merged_state, NOW())
-  ON CONFLICT (user_id) 
-  DO UPDATE SET 
-    game_state = EXCLUDED.game_state,
-    updated_at = EXCLUDED.updated_at;
 
   -- Handle click and resource analytics
   IF p_clear_clicks THEN
