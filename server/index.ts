@@ -311,28 +311,18 @@ app.post("/api/leaderboard/update-username", async (req, res) => {
 
     log(`📝 Updating username for user ${userId}: "${username}"`);
 
-    // Check if username column exists in leaderboard table
-    const { data: columns, error: schemaError } = await adminClient
+    // Update username in all leaderboard entries for this user
+    // The username column exists in the schema (created by migration 003)
+    const { error: leaderboardError } = await adminClient
       .from('leaderboard')
-      .select('*')
-      .limit(1);
+      .update({ username })
+      .eq('user_id', userId);
 
-    const hasUsernameColumn = columns && columns.length > 0 && 'username' in columns[0];
-
-    if (hasUsernameColumn) {
-      // Update username in all leaderboard entries for this user
-      const { error } = await adminClient
-        .from('leaderboard')
-        .update({ username })
-        .eq('user_id', userId);
-
-      if (error) {
-        log('❌ Leaderboard update error:', error);
-        throw error;
-      }
-      log('✅ Updated username in leaderboard table');
+    if (leaderboardError) {
+      log('⚠️ Leaderboard update error (non-critical):', leaderboardError);
+      // Don't throw - continue to update game_saves
     } else {
-      log('⚠️ Username column not found in leaderboard table, skipping leaderboard update');
+      log('✅ Updated username in leaderboard table');
     }
 
     // Update in production game_saves (this is the primary storage)
