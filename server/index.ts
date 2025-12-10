@@ -287,16 +287,25 @@ app.get("/api/leaderboard/metadata", async (req, res) => {
     const env = (req.query.env as "dev" | "prod") || "prod";
     const adminClient = getAdminClient(env);
 
+    log(`📊 Fetching leaderboard metadata for ${env} environment`);
+
     const { data, error } = await adminClient
       .from("leaderboard_metadata")
       .select("value")
       .eq("key", "last_updated")
       .maybeSingle();
 
-    if (error) throw error;
+    if (error) {
+      log("❌ Metadata query error:", error);
+      throw error;
+    }
+
+    log(`📊 Metadata result:`, { data, hasValue: !!data?.value });
 
     // If no metadata exists yet, return null
-    res.json({ lastUpdated: data?.value || null });
+    const result = { lastUpdated: data?.value || null };
+    log(`📊 Returning metadata:`, result);
+    res.json(result);
   } catch (error: any) {
     log("❌ Leaderboard metadata fetch failed:", error);
     res.status(500).json({ error: error.message });
