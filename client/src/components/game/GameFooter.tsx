@@ -219,13 +219,13 @@ export default function GameFooter() {
             </a>
             <a
               href="/privacy"
-              className="hover:text-foreground transition-colors opacity-35 hover:opacity-100"
+              className="hover:opacity-100 transition-opacity opacity-35 text-currentColor"
             >
               Privacy
             </a>
             <a
               href="/imprint"
-              className="hover:text-foreground transition-colors opacity-35 hover:opacity-100"
+              className="hover:opacity-100 transition-opacity opacity-35 text-currentColor"
             >
               Imprint
             </a>
