@@ -308,7 +308,7 @@ export async function saveGame(
         logger.log("[SAVE] ✅ Updated lastCloudState after successful cloud save");
 
         // Clear the allowPlayTimeOverwrite flag after successful save
-        if (sanitizedState.allowPlayTimeOverwrite) {
+        if (gameState.allowPlayTimeOverwrite) {
           const { useGameStore } = await import("./state");
           useGameStore.setState({ allowPlayTimeOverwrite: false });
           logger.log("[SAVE] 🔓 Cleared allowPlayTimeOverwrite flag after successful cloud save");
@@ -407,7 +407,8 @@ export async function loadGame(): Promise<GameState | null> {
           try {
             // Force full sync by clearing lastCloudState, then saveGame will handle it
             await db.delete("lastCloudState", LAST_CLOUD_STATE_KEY);
-            await saveGame(processedState, false); // Pass true to skip OCC check during this initial sync
+            // Do NOT use allowPlayTimeOverwrite here - this is not a new game
+            await saveGame(processedState, false);
             await db.put("lastCloudState", processedState, LAST_CLOUD_STATE_KEY);
           } catch (syncError: any) {
             // If OCC violates due to equal playTimes, that's fine - cloud already has this state

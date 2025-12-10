@@ -158,11 +158,8 @@ async function processReferralInBackground(): Promise<void> {
     }
   }
 
-  // Assuming gameState is available in this scope or needs to be fetched.
-  // If gameState is not defined here, this line might cause an error.
-  // For now, keeping it as is based on original code structure, but it might need refactoring.
-  // If it's meant to be the loaded game state, it should be defined earlier or passed as an argument.
-  const isNewGame = (await loadGameFromSupabase())?.gameState.isNewGame || false; // Safely access isNewGame
+  // Don't set isNewGame or allowPlayTimeOverwrite for referral processing
+  // This is not a new game, just a state update
 }
 
 export async function signIn(email: string, password: string) {
