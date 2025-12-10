@@ -325,17 +325,39 @@ app.post("/api/leaderboard/update-username", async (req, res) => {
       log('✅ Updated username in leaderboard table');
     }
 
-    // Update in production game_saves (this is the primary storage)
+    // Update username in both the username column AND the game_state JSONB
+    // First, get the current game_state
+    const { data: currentSave, error: fetchError } = await adminClient
+      .from('game_saves')
+      .select('game_state')
+      .eq('user_id', userId)
+      .single();
+
+    if (fetchError) {
+      log('❌ Failed to fetch current game state:', fetchError);
+      throw fetchError;
+    }
+
+    // Update the game_state with the new username
+    const updatedGameState = {
+      ...currentSave.game_state,
+      username
+    };
+
+    // Save both the username column and the updated game_state
     const { error: saveError } = await adminClient
       .from('game_saves')
-      .update({ username })
+      .update({ 
+        username,
+        game_state: updatedGameState
+      })
       .eq('user_id', userId);
 
     if (saveError) {
       log('❌ Game saves update error:', saveError);
       throw saveError;
     }
-    log('✅ Updated username in game_saves table');
+    log('✅ Updated username in game_saves table and game_state JSONB');
 
     // Trigger leaderboard refresh to pick up the new username
     const { error: refreshError } = await adminClient.rpc('refresh_leaderboard');
