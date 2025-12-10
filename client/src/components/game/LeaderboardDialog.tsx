@@ -266,20 +266,25 @@ export default function LeaderboardDialog({ isOpen, onClose }: LeaderboardDialog
             <TabsTrigger value="normal">Normal Mode</TabsTrigger>
             <TabsTrigger value="cruel">Cruel Mode</TabsTrigger>
           </TabsList>
-          {lastUpdated && (
-            <div className="text-xs text-muted-foreground text-center mt-2">
-              Last updated: {new Date(lastUpdated).toLocaleString()}
-            </div>
-          )}
-          <TabsContent value="normal" className="flex-1 min-h-0">
-            <ScrollArea className="h-[400px] pr-4">
+          <TabsContent value="normal" className="flex-1 min-h-0 flex flex-col">
+            <ScrollArea className="h-[400px] pr-4 flex-1">
               {renderLeaderboard(normalLeaderboard)}
             </ScrollArea>
+            {lastUpdated && (
+              <div className="text-xs text-muted-foreground text-center mt-2 pt-2 border-t border-border">
+                Last updated: {new Date(lastUpdated).toLocaleString()}
+              </div>
+            )}
           </TabsContent>
-          <TabsContent value="cruel" className="flex-1 min-h-0">
-            <ScrollArea className="h-[400px] pr-4">
+          <TabsContent value="cruel" className="flex-1 min-h-0 flex flex-col">
+            <ScrollArea className="h-[400px] pr-4 flex-1">
               {renderLeaderboard(cruelLeaderboard)}
             </ScrollArea>
+            {lastUpdated && (
+              <div className="text-xs text-muted-foreground text-center mt-2 pt-2 border-t border-border">
+                Last updated: {new Date(lastUpdated).toLocaleString()}
+              </div>
+            )}
           </TabsContent>
         </Tabs>
       </DialogContent>
