@@ -397,7 +397,7 @@ export const cubeEvents: Record<string, GameEvent> = {
       state.events.cube11 &&
       !state.events.cube14a,
     triggerType: "resource",
-    timeProbability: 0.01,
+    timeProbability: 100,
     title: "The resistance",
     message:
       "'When the resistance opposed the skull devices, they were exiled into the mountain’s depths, sealed away behind the portal. With no path back, they dug ever deeper. In isolation and darkness, their minds eroded and they descended into madness and degeneration.'",
