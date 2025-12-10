@@ -21,7 +21,7 @@ const AUTH_NOTIFICATION_REPEAT_INTERVAL = 60 * 60 * 1000; // 60 minutes in milli
 const INACTIVITY_TIMEOUT = 15 * 60 * 1000; // 15 minute in milliseconds
 const TARGET_FPS = 4;
 const FRAME_DURATION = 1000 / TARGET_FPS; // 250ms per frame at 4 FPS
-const SESSION_CHECK_INTERVAL = 300000; // Check session every 5 minutes
+const SESSION_CHECK_INTERVAL = 5 * 60 * 1000; // Check session every 5 minutes
 
 let tickAccumulator = 0;
 let lastAutoSave = 0;
