@@ -165,6 +165,12 @@ export const calculateResourceGains = (
                 0) >= finalCost;
             costs.push({ resource, amount: finalCost, hasEnough });
           }
+        } else if (key.startsWith("relics.")) {
+          const relic = key.split(".")[1];
+          if (typeof value === "boolean" && value === true) {
+            const hasEnough = state.relics[relic as keyof typeof state.relics] === true;
+            costs.push({ resource: relic, amount: 1, hasEnough });
+          }
         }
       });
     }
