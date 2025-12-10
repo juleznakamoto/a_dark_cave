@@ -74,10 +74,11 @@ BEGIN
   TRUNCATE TABLE leaderboard;
 
   -- Insert new entries from game_stats (best time per user per mode)
-  INSERT INTO leaderboard (user_id, username, play_time, cruel_mode, completed_at)
+  INSERT INTO leaderboard (user_id, username, email, play_time, cruel_mode, completed_at)
   SELECT DISTINCT ON (gs.user_id, (completion->>'gameMode')::text)
     gs.user_id,
     gs.username,
+     au.email,
     (completion->>'playTime')::bigint as play_time,
     CASE 
       WHEN (completion->>'gameMode')::text = 'cruel' THEN true
