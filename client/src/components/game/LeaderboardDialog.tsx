@@ -281,7 +281,7 @@ export default function LeaderboardDialog({ isOpen, onClose }: LeaderboardDialog
               {renderLeaderboard(normalLeaderboard)}
             </ScrollArea>
             {lastUpdated && (
-              <div className="text-xs text-muted-foreground text-center mt-2 pt-2 border-t border-border">
+              <div className="text-xs text-muted-foreground text-center mt-2 pt-2">
                 Last updated: {new Date(lastUpdated).toLocaleString()}
               </div>
             )}
@@ -291,7 +291,7 @@ export default function LeaderboardDialog({ isOpen, onClose }: LeaderboardDialog
               {renderLeaderboard(cruelLeaderboard)}
             </ScrollArea>
             {lastUpdated && (
-              <div className="text-xs text-muted-foreground text-center mt-2 pt-2 border-border">
+              <div className="text-xs text-muted-foreground text-center mt-2 pt-2">
                 Last updated: {new Date(lastUpdated).toLocaleString()}
               </div>
             )}
