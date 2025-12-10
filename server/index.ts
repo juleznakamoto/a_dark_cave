@@ -240,6 +240,16 @@ app.get("/api/leaderboard/:mode", async (req, res) => {
 
     log(`📊 Fetching ${mode} leaderboard for ${env} environment`);
 
+    // First check if there are any entries at all
+    const { data: allData, error: allError } = await adminClient
+      .from('leaderboard')
+      .select('*');
+
+    log(`📊 Total entries in leaderboard table: ${allData?.length || 0}`);
+    if (allData && allData.length > 0) {
+      log(`📊 Sample entry:`, allData[0]);
+    }
+
     const { data, error } = await adminClient
       .from('leaderboard')
       .select('id, username, email, play_time, completed_at')
@@ -249,7 +259,7 @@ app.get("/api/leaderboard/:mode", async (req, res) => {
 
     if (error) throw error;
 
-    log(`📊 Found ${data?.length || 0} entries for ${mode} mode in ${env}`);
+    log(`📊 Found ${data?.length || 0} entries for ${mode} mode in ${env}, cruel_mode=${cruelMode}`);
 
     // Mask emails server-side
     const maskedData = data.map(entry => ({
