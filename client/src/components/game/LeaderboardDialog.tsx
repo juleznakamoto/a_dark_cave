@@ -47,6 +47,8 @@ export default function LeaderboardDialog({ isOpen, onClose }: LeaderboardDialog
     setLoading(true);
     try {
       const env = useDevStats ? 'dev' : 'prod';
+      logger.info(`Fetching ${env} leaderboard data...`);
+      
       const [normalRes, cruelRes, metaRes] = await Promise.all([
         fetch(`/api/leaderboard/normal?env=${env}`),
         fetch(`/api/leaderboard/cruel?env=${env}`),
@@ -55,11 +57,13 @@ export default function LeaderboardDialog({ isOpen, onClose }: LeaderboardDialog
 
       if (normalRes.ok) {
         const data = await normalRes.json();
+        logger.info(`${env} Normal leaderboard:`, data);
         setNormalLeaderboard(data);
       }
 
       if (cruelRes.ok) {
         const data = await cruelRes.json();
+        logger.info(`${env} Cruel leaderboard:`, data);
         setCruelLeaderboard(data);
       }
 

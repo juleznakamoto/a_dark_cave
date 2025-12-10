@@ -238,6 +238,8 @@ app.get("/api/leaderboard/:mode", async (req, res) => {
     const env = (req.query.env as 'dev' | 'prod') || 'prod';
     const adminClient = getAdminClient(env);
 
+    log(`📊 Fetching ${mode} leaderboard for ${env} environment`);
+
     const { data, error } = await adminClient
       .from('leaderboard')
       .select('id, username, email, play_time, completed_at')
@@ -246,6 +248,8 @@ app.get("/api/leaderboard/:mode", async (req, res) => {
       .limit(100);
 
     if (error) throw error;
+
+    log(`📊 Found ${data?.length || 0} entries for ${mode} mode in ${env}`);
 
     // Mask emails server-side
     const maskedData = data.map(entry => ({
@@ -256,6 +260,8 @@ app.get("/api/leaderboard/:mode", async (req, res) => {
       completed_at: entry.completed_at,
     }));
 
+    // No caching during development
+    res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
     res.json(maskedData);
   } catch (error: any) {
     log('❌ Leaderboard fetch failed:', error);
