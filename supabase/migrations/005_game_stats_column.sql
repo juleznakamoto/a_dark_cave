@@ -6,4 +6,4 @@ ALTER TABLE game_saves ADD COLUMN IF NOT EXISTS game_stats JSONB DEFAULT '[]'::j
 CREATE INDEX IF NOT EXISTS idx_game_stats_completions ON game_saves USING gin (game_stats);
 
 -- Add comment explaining the structure
-COMMENT ON COLUMN game_saves.game_stats IS 'Array of game completion records: [{gameMode: "normal"|"cruel", startTime: timestamp, finishTime: timestamp, playTime: number}]';
+COMMENT ON COLUMN game_saves.game_stats IS 'Array of game completion records: [{gameId: string, gameMode: "normal"|"cruel", startTime: timestamp, finishTime: timestamp, playTime: number}]';

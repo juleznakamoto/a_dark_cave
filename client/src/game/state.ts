@@ -249,11 +249,13 @@ const mergeStateUpdates = (
     // Achievements state
     unlockedAchievements: stateUpdates.unlockedAchievements || prevState.unlockedAchievements,
     claimedAchievements: stateUpdates.claimedAchievements || prevState.claimedAchievements,
+    // Game ID
+    gameId: stateUpdates.gameId !== undefined ? stateUpdates.gameId : prevState.gameId,
   };
 
   if (
     stateUpdates.tools ||
-    stateUpdates.weapons ||
+    state.weapons ||
     stateUpdates.clothing ||
     stateUpdates.relics ||
     stateUpdates.books
@@ -305,6 +307,9 @@ const generateDefaultGameState = (): GameState => {
 };
 
 export const createInitialState = (): GameState => ({
+  gameId: `game-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
+  playTime: 0,
+  startTime: Date.now(),
   ...generateDefaultGameState(),
   effects: {
     resource_bonus: {},
@@ -401,6 +406,7 @@ export const createInitialState = (): GameState => ({
   lastResourceSnapshotTime: 0,
   isPausedPreviously: false, // Initialize isPausedPreviously
   versionCheckDialogOpen: false, // Initialize version check dialog state
+  gameId: undefined, // Initialize gameId to undefined, it will be set on new game
 
   // Achievements
   unlockedAchievements: [],
@@ -774,6 +780,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const resetState = {
       ...defaultGameState,
       ...preserved,
+      gameId: `game-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`, // Generate new gameId on restart
 
       // UI state
       activeTab: "cave",
@@ -942,6 +949,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         lastFreeGoldClaim: savedState.lastFreeGoldClaim || 0, // Load lastFreeGoldClaim
         unlockedAchievements: savedState.unlockedAchievements || [], // Load unlocked achievements
         claimedAchievements: savedState.claimedAchievements || [], // Load claimed achievements
+        gameId: savedState.gameId || `game-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`, // Load or generate gameId
       };
 
       set(loadedState);
@@ -959,6 +967,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         bastion_stats: calculateBastionStats(defaultGameState),
         startTime: Date.now(), // Set start time for new game
         isNewGame: true, // Mark as new game to start tracking
+        gameId: `game-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`, // Generate gameId for new game
       };
 
       set(newGameState);

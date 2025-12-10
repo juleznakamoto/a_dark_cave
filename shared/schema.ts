@@ -16,6 +16,7 @@ export const logEntrySchema = z.object({
 
 // Game state schema for A Dark Cave
 export const gameStateSchema = z.object({
+  gameId: z.string().optional(), // Unique identifier for this game playthrough
   resources: z
     .object({
       wood: z.number().min(0).default(0),

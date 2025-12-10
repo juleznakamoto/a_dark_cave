@@ -110,6 +110,8 @@ BEGIN
     v_start_time BIGINT;
     v_finish_time BIGINT;
     v_playtime_ms BIGINT;
+    v_game_id TEXT;
+    v_already_recorded BOOLEAN := FALSE;
   BEGIN
     -- Check if this save marks a game completion
     IF p_game_state_diff ? 'events' THEN
@@ -124,26 +126,11 @@ BEGIN
       );
     END IF;
 
-    -- If game was completed, append completion record to game_stats
-    IF v_game_completed AND p_game_state_diff ? 'playTime' AND p_game_state_diff ? 'startTime' THEN
-      v_game_mode := CASE 
-        WHEN (p_game_state_diff->>'cruelMode')::boolean = true THEN 'cruel'
-        ELSE 'normal'
-      END;
+    -- If game was completed, append completion record to game_stats (only once per gameId)
+    IF v_game_completed AND p_game_state_diff ? 'playTime' AND p_game_state_diff ? 'startTime' AND p_game_state_diff ? 'gameId' THEN
+      v_game_id := p_game_state_diff->>'gameId';
       
-      v_start_time := (p_game_state_diff->>'startTime')::bigint;
-      v_finish_time := EXTRACT(EPOCH FROM NOW())::bigint * 1000;
-      v_playtime_ms := (p_game_state_diff->>'playTime')::bigint;
-
-      -- Create completion record
-      v_completion_record := jsonb_build_object(
-        'gameMode', v_game_mode,
-        'startTime', v_start_time,
-        'finishTime', v_finish_time,
-        'playTime', v_playtime_ms
-      );
-
-      -- Get existing game_stats or initialize empty array
+      -- Get existing game_stats to check if this gameId was already recorded
       SELECT game_stats INTO v_existing_game_stats
       FROM game_saves
       WHERE user_id = p_user_id;
@@ -152,13 +139,45 @@ BEGIN
         v_existing_game_stats := '[]'::jsonb;
       END IF;
 
-      -- Append new completion record
-      v_new_game_stats := v_existing_game_stats || jsonb_build_array(v_completion_record);
+      -- Check if this gameId already exists in game_stats
+      SELECT EXISTS (
+        SELECT 1
+        FROM jsonb_array_elements(v_existing_game_stats) AS elem
+        WHERE elem->>'gameId' = v_game_id
+      ) INTO v_already_recorded;
 
-      -- Update game_stats column
-      UPDATE game_saves
-      SET game_stats = v_new_game_stats
-      WHERE user_id = p_user_id;
+      -- Only add completion record if this gameId hasn't been recorded yet
+      IF NOT v_already_recorded THEN
+        v_game_mode := CASE 
+          WHEN (p_game_state_diff->>'cruelMode')::boolean = true THEN 'cruel'
+          ELSE 'normal'
+        END;
+        
+        v_start_time := (p_game_state_diff->>'startTime')::bigint;
+        v_finish_time := EXTRACT(EPOCH FROM NOW())::bigint * 1000;
+        v_playtime_ms := (p_game_state_diff->>'playTime')::bigint;
+
+        -- Create completion record with gameId
+        v_completion_record := jsonb_build_object(
+          'gameId', v_game_id,
+          'gameMode', v_game_mode,
+          'startTime', v_start_time,
+          'finishTime', v_finish_time,
+          'playTime', v_playtime_ms
+        );
+
+        -- Append new completion record
+        v_new_game_stats := v_existing_game_stats || jsonb_build_array(v_completion_record);
+
+        -- Update game_stats column
+        UPDATE game_saves
+        SET game_stats = v_new_game_stats
+        WHERE user_id = p_user_id;
+        
+        RAISE NOTICE 'Game completion recorded for gameId: %', v_game_id;
+      ELSE
+        RAISE NOTICE 'Game completion already recorded for gameId: %', v_game_id;
+      END IF;
     END IF;
   END;
 
