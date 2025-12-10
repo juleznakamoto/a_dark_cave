@@ -86,6 +86,13 @@ CREATE TABLE IF NOT EXISTS leaderboard_metadata (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
+-- Enable RLS for metadata table
+ALTER TABLE leaderboard_metadata ENABLE ROW LEVEL SECURITY;
+
+-- Only allow server-side (service role) access - no public access
+-- No policies needed since we want to block all public access
+-- The server will use the admin client which bypasses RLS
+
 -- Enable pg_cron extension
 CREATE EXTENSION IF NOT EXISTS pg_cron;
 
