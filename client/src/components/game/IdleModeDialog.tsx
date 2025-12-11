@@ -5,6 +5,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogDescription,
+  DialogPortal,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { useGameStore } from '@/game/state';
@@ -129,7 +130,7 @@ function simulatePopulationConsumption(state: any, multiplier: number, accumulat
   }
 }
 
-export default function IdleModeDialog() {
+export default function IdleModeDialog({ children }: { children?: React.ReactNode }) {
   const { idleModeDialog, setIdleModeDialog, idleModeState, sleepUpgrades } = useGameStore();
   const [accumulatedResources, setAccumulatedResources] = useState<Record<string, number>>({});
   const [remainingTime, setRemainingTime] = useState(0);
@@ -450,6 +451,9 @@ export default function IdleModeDialog() {
 
   return (
     <Dialog open={idleModeDialog.isOpen} onOpenChange={() => {}}>
+      <DialogPortal>
+        {children}
+      </DialogPortal>
       <DialogContent className="sm:max-w-sm" hideClose={true}>
         <DialogHeader>
           <DialogTitle >Sleeping</DialogTitle>

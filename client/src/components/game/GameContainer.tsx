@@ -373,12 +373,13 @@ export default function GameContainer() {
         combat={combatDialog.currentCombat}
       />
 
-      {/* Idle Mode Dialog */}
-      <IdleModeDialog />
+      {/* Idle Mode Dialog and its children */}
+      <IdleModeDialog>
+        <ProfileMenu />
+      </IdleModeDialog>
       <MerchantDialog />
       <CubeDialog />
       {inactivityDialogOpen && <InactivityDialog />}
-      <ProfileMenu />
     </div>
   );
 }
