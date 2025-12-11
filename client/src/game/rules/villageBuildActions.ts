@@ -20,7 +20,7 @@ export const villageBuildActions: Record<string, Action> = {
         "flags.villageUnlocked": true,
       },
       2: {
-        "buildings.cabin": 1,
+        "buildings.woodenHut": 1,
       },
       3: {
         "buildings.blacksmith": 1,
@@ -32,18 +32,16 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.foundry": 1,
       },
       6: {
-        "buildings.foundry": 1,
+        "buildings.woodenHut": 5,
       },
       7: {
-        "buildings.foundry": 1,
+        "buildings.woodenHut": 6,
       },
       8: {
         "buildings.altar": 1,
       },
       9: {
-        "buildings.greatCabin": 1,
-        "buildings.timberMill": 1,
-        "buildings.quarry": 1,
+        "buildings.woodenHut": 8,
       },
       10: {
         "buildings.woodenHut": 9,
@@ -515,8 +513,8 @@ export const villageBuildActions: Record<string, Action> = {
     },
     cost: {
       1: {
-        "resources.wood": 500,
-        "resources.stone": 750,
+        "resources.wood": 750,
+        "resources.stone": 500,
       },
     },
     effects: {
@@ -540,7 +538,7 @@ export const villageBuildActions: Record<string, Action> = {
     building: true,
     show_when: {
       1: {
-        "buildings.woodenHut": 8,
+        "buildings.woodenHut": 7,
         "buildings.clerksHut": 1,
         "buildings.scriptorium": 0,
       },
@@ -666,7 +664,7 @@ export const villageBuildActions: Record<string, Action> = {
     show_when: {
       1: {
         "flags.forestUnlocked": true,
-        "buildings.altar": 0,
+        "buildings.woodenHut": 5,
         "tools.steel_axe": true,
       },
     },
