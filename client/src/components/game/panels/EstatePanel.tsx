@@ -395,11 +395,12 @@ export default function EstatePanel() {
                           });
                           useGameStore.getState().updateResources({ focus: 0 });
                           useGameStore.getState().addLogEntry({
-                          id: `focus-activated-${Date.now()}`,
-                          message: `Focus activated! Actions grant 2x resources for ${focusDuration} minute${focusDuration > 1 ? 's' : ''}.`,
-                          timestamp: Date.now(),
-                          type: 'system',
-                        });
+                            id: `focus-activated-${Date.now()}`,
+                            message: `Focus activated! Actions grant 2x resources for ${focusDuration} minute${focusDuration > 1 ? 's' : ''}.`,
+                            timestamp: Date.now(),
+                            type: 'system',
+                          });
+                        }
                       }}
                       size="xs"
                       variant="outline"
