@@ -565,7 +565,7 @@ const Hero: React.FC<HeroProps> = ({
           {/* Incremental DB Vote Section */}
           <div className="py-3 flex flex-col items-center gap-3 mt-8 animate-fade-in-up animation-delay-4500">
             <p className="text-md font-medium text-gray-300 text-center max-w-md px-4">
-              If you want to support me, please vote and leave a review!
+              You can support the game for free by leaving a vote or review on Incremental DB. It makes a huge difference. Thank you! ♡
             </p>
             <button
               onClick={() =>
@@ -590,7 +590,7 @@ const Hero: React.FC<HeroProps> = ({
                   <path strokeMiterlimit="10" d="m13.291 6.353 5.204 4.501M13.255 6.389l-5.034 4.213"/>
                 </g>
               </svg>
-              <span>Vote on Incremental DB</span>
+              <span>Incremental DB</span>
             </button>
           </div>
 
