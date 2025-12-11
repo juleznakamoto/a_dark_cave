@@ -679,7 +679,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[80vh]">
+      <DialogContent className="max-w-4xl max-h-[80vh] z-[70]">
         <DialogHeader>
           <DialogTitle>Shop</DialogTitle>
           <DialogDescription className="text-muted-foreground text-sm">
