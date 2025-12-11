@@ -627,6 +627,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
     if (result.stateUpdates.cooldowns && result.stateUpdates.cooldowns[actionId]) {
       const initialDuration = result.stateUpdates.cooldowns[actionId];
 
+      console.log(`[STATE] executeAction storing cooldown:`, {
+        actionId,
+        initialDuration,
+        allCooldownsInUpdate: result.stateUpdates.cooldowns,
+      });
+
       set((prevState) => ({
         cooldownDurations: {
           ...prevState.cooldownDurations,
@@ -664,6 +670,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
           ? [...prevState.log, ...result.logEntries].slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES)
           : prevState.log,
       };
+
+      // Log cooldown state after merge
+      console.log(`[STATE] executeAction after merge for ${actionId}:`, {
+        prevCooldowns: prevState.cooldowns,
+        newCooldowns: newState.cooldowns,
+        mergedCooldowns: mergedUpdates.cooldowns,
+      });
 
       // Log bomb crafting state after merge
       if (actionId === 'craftEmberBomb' || actionId === 'craftAshfireBomb' || actionId === 'craftVoidBomb') {
@@ -725,6 +738,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
   setCooldown: (action: string, duration: number) => {
     // Enforce minimum cooldown of 1 second
     const finalDuration = Math.max(1, duration);
+    console.log(`[STATE] setCooldown called:`, {
+      action,
+      duration,
+      finalDuration,
+      currentCooldowns: get().cooldowns,
+    });
     set((state) => ({
       cooldowns: { ...state.cooldowns, [action]: finalDuration },
       cooldownDurations: { ...state.cooldownDurations, [action]: finalDuration },
