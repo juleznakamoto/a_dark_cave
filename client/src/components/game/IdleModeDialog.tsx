@@ -480,11 +480,14 @@ export default function IdleModeDialog() {
     const hoursSlept = Math.floor(elapsed / (1 * 10 * 1000)); // Full hours only
 
     if (hoursSlept > 0) {
-      const currentState = useGameStore.getState();
-      const newFocusPoints = currentState.focus + hoursSlept;
+      logger.log('[IDLE MODE] Awarding Focus:', {
+        hoursSlept,
+        elapsed,
+        currentFocus: state.resources.focus,
+      });
 
-      // Update focus points
-      useGameStore.setState({ focus: newFocusPoints });
+      // Update focus points using the updateResource method
+      state.updateResource('focus', hoursSlept);
     }
 
     // Create log message showing resources gained
