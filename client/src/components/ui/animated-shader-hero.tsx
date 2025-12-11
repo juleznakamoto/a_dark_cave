@@ -562,6 +562,34 @@ const Hero: React.FC<HeroProps> = ({
             </button>
           </div>
 
+          {/* Incremental DB Vote Section */}
+          <div className="py-3 flex flex-col items-center gap-3 mt-8 animate-fade-in-up animation-delay-4500">
+            <p className="text-md font-medium text-gray-300 text-center max-w-md px-4">
+              If you want to support me, please vote and leave a review!
+            </p>
+            <button
+              onClick={() =>
+                window.open(
+                  "https://plaza.dsolver.ca/games/a-dark-cave",
+                  "_blank",
+                  "noopener,noreferrer",
+                )
+              }
+              className="px-5 py-3 bg-gradient-to-r from-red-800 to-red-700 hover:from-red-700 hover:to-red-600 text-slate-200 rounded-md font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25 flex items-center gap-2"
+            >
+              <svg
+                className="h-6 w-6"
+                viewBox="0 0 200 200"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+              >
+                <circle cx="100" cy="100" r="90" fill="#4A90E2"/>
+                <text x="100" y="130" fontSize="100" fill="white" textAnchor="middle" fontWeight="bold">+</text>
+              </svg>
+              <span>Vote on Incremental DB</span>
+            </button>
+          </div>
+
           {/* Close Button */}
           {buttons && buttons.secondary && (
             <div className="flex justify-center animate-fade-in-up animation-delay-4500">
