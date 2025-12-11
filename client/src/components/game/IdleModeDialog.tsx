@@ -266,7 +266,7 @@ export default function IdleModeDialog() {
           wasActive: isActive,
           currentStartTime: startTime,
         });
-
+        
         setIsActive(false);
 
         // DO NOT CLEAR startTime HERE - only clear when user closes dialog
@@ -404,7 +404,7 @@ export default function IdleModeDialog() {
       wasActive: isActive,
       hadStartTime: startTime,
     });
-
+    
     useGameStore.setState({
       idleModeState: {
         isActive: false,
@@ -450,7 +450,7 @@ export default function IdleModeDialog() {
 
   return (
     <Dialog open={idleModeDialog.isOpen} onOpenChange={() => {}}>
-      <DialogContent className="sm:max-w-sm [&~div]:!pointer-events-none" hideClose={true}>
+      <DialogContent className="sm:max-w-sm" hideClose={true}>
         <DialogHeader>
           <DialogTitle >Sleeping</DialogTitle>
           <DialogDescription className = "py-1Cu">
