@@ -225,7 +225,61 @@ export default function EstatePanel() {
       <div className="space-y-2 mt-2">
         {/* Sleep Mode Section */}
         <div className="space-y-">
-          <h3 className="text-xs font-bold text-foreground pb-2">Sleep</h3>
+          <div className="flex items-center gap-2">
+            <h3 className="text-xs font-bold text-foreground pb-2">Sleep</h3>
+            {/* Focus Timer */}
+            {(() => {
+              const focusState = useGameStore.getState().focusState;
+              const isFocusActive = focusState?.isActive && focusState.endTime > Date.now();
+              
+              if (!isFocusActive) return null;
+              
+              return (
+                <TooltipProvider>
+                  <Tooltip open={mobileTooltip.isTooltipOpen("focus-timer")}>
+                    <TooltipTrigger asChild>
+                      <div
+                        className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
+                        onClick={(e) =>
+                          mobileTooltip.handleTooltipClick("focus-timer", e)
+                        }
+                      >
+                        <div className="relative inline-flex items-center gap-1 mt-[0px]">
+                          <CircularProgress
+                            value={(() => {
+                              const timeRemaining = Math.max(
+                                0,
+                                focusState.endTime - Date.now(),
+                              );
+                              const totalDuration = state.focus * 60 * 1000;
+                              const elapsed = totalDuration - timeRemaining;
+                              return Math.min(100, (elapsed / totalDuration) * 100);
+                            })()}
+                            size={18}
+                            strokeWidth={2}
+                            className="text-cyan-500"
+                          />
+                          <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[12px] -mt-[0px] text-cyan-500">
+                            ◆
+                          </span>
+                        </div>
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <div className="text-xs whitespace-nowrap">
+                        <div>Focus Active</div>
+                        <div>2x resources from actions</div>
+                        <div className="border-t border-border my-1" />
+                        <div>
+                          {Math.ceil((focusState.endTime - Date.now()) / 1000)}s remaining
+                        </div>
+                      </div>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              );
+            })()}
+          </div>
           <TooltipProvider>
             <Tooltip open={mobileTooltip.isTooltipOpen("sleep-button")}>
               <TooltipTrigger asChild>
@@ -323,6 +377,50 @@ export default function EstatePanel() {
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
+          
+          {/* Focus Activation Button */}
+          {state.focus > 0 && !state.focusState?.isActive && (
+            <TooltipProvider>
+              <Tooltip open={mobileTooltip.isTooltipOpen("focus-button")}>
+                <TooltipTrigger asChild>
+                  <div className="h-5 inline-block pb-1 text-xs font-medium text-foreground ml-2">
+                    <Button
+                      onClick={() => {
+                        const focusDuration = state.focus * 60 * 1000; // 1 minute per point
+                        const endTime = Date.now() + focusDuration;
+                        
+                        useGameStore.setState({
+                          focusState: {
+                            isActive: true,
+                            endTime: endTime,
+                          },
+                          focus: 0, // Consume all focus points
+                        });
+                        
+                        useGameStore.getState().addLogEntry({
+                          id: `focus-activated-${Date.now()}`,
+                          message: `Focus activated! Actions grant 2x resources for ${state.focus} minute${state.focus > 1 ? 's' : ''}.`,
+                          timestamp: Date.now(),
+                          type: 'system',
+                        });
+                      }}
+                      size="xs"
+                      variant="outline"
+                      className="h-7 hover:bg-transparent hover:text-foreground"
+                      button_id="activate-focus"
+                    >
+                      Use Focus ({state.focus})
+                    </Button>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <div className="text-xs whitespace-nowrap">
+                    Activate {state.focus} minute{state.focus > 1 ? 's' : ''} of 2x resource bonus
+                  </div>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          )}
         </div>
 
         {/* Sleep Upgrades Section */}

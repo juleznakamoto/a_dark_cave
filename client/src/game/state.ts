@@ -478,6 +478,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
     lengthLevel: 0,
     intensityLevel: 0,
   },
+  focus: 0,
+  focusState: {
+    isActive: false,
+    endTime: 0,
+  },
   // Initialize shop notification state
   shopNotificationSeen: false,
   shopNotificationVisible: false,

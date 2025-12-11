@@ -382,7 +382,22 @@ export default function IdleModeDialog() {
       );
     });
 
+    // Calculate Focus points gained (1 per hour slept)
+    const now = Date.now();
+    const elapsed = now - startTime;
+    const hoursSlept = Math.floor(elapsed / (60 * 60 * 1000)); // Full hours only
+    
+    if (hoursSlept > 0) {
+      const currentState = useGameStore.getState();
+      const newFocusPoints = currentState.focus + hoursSlept;
+      
+      // Update focus points
+      useGameStore.setState({ focus: newFocusPoints });
+    }
+
     // Create log message showing resources gained
+    const logMessages: string[] = [];
+    
     if (Object.keys(accumulatedResources).length > 0) {
       const resourcesList = Object.entries(accumulatedResources)
         .filter(([_, amount]) => Math.floor(amount) !== 0)
@@ -390,13 +405,21 @@ export default function IdleModeDialog() {
         .join(', ');
 
       if (resourcesList) {
-        useGameStore.getState().addLogEntry({
-          id: `idle-mode-end-${Date.now()}`,
-          message: `While you slept villagers produced: ${resourcesList}`,
-          timestamp: Date.now(),
-          type: 'system',
-        });
+        logMessages.push(`While you slept villagers produced: ${resourcesList}`);
       }
+    }
+    
+    if (hoursSlept > 0) {
+      logMessages.push(`You gained ${hoursSlept} Focus point${hoursSlept > 1 ? 's' : ''} from your rest.`);
+    }
+
+    if (logMessages.length > 0) {
+      useGameStore.getState().addLogEntry({
+        id: `idle-mode-end-${Date.now()}`,
+        message: logMessages.join(' '),
+        timestamp: Date.now(),
+        type: 'system',
+      });
     }
 
     // Clear persisted idle mode state completely - now reset startTime to 0
@@ -472,6 +495,12 @@ export default function IdleModeDialog() {
                 </span>
               </div>
             ))}
+            <div className="flex justify-between items-center">
+              <span className="text-sm font-medium">Focus:</span>
+              <span className="text-sm tabular-nums">
+                <AnimatedCounter value={Math.floor((now - startTime) / (60 * 60 * 1000))} />
+              </span>
+            </div>
           </div>
         </div>
 

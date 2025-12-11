@@ -1,4 +1,3 @@
-
 import { Action, GameState } from "@shared/schema";
 import { getTotalCraftingCostReduction as getTotalCraftingCostReductionCalc, getTotalBuildingCostReduction as getTotalBuildingCostReductionCalc, getActionBonuses as getActionBonusesCalc, getTotalLuck as getTotalLuckCalc } from "./effectsCalculation";
 import { getUpgradeBonusMultiplier, ACTION_TO_UPGRADE_KEY } from "../buttonUpgrades";
@@ -323,12 +322,24 @@ export function applyActionEffects(
               min = Math.floor(min * totalMultiplier);
               max = Math.floor(max * totalMultiplier);
             }
-          }
 
-          const baseAmount = Math.floor(Math.random() * (max - min + 1)) + min;
-          const originalAmount =
-            state.resources[finalKey as keyof typeof state.resources] || 0;
-          current[finalKey] = originalAmount + baseAmount;
+            // Apply focus multiplier for eligible actions
+            const focusEligibleActions = [
+              'exploreCave', 'ventureDeeper', 'descendFurther', 'exploreRuins', 'exploreTemple', 'exploreCitadel',
+              'mineCoal', 'mineIron', 'mineSulfur', 'mineObsidian', 'mineAdamant', 'mineMoonstone',
+              'hunt', 'chopWood'
+            ];
+
+            if (focusEligibleActions.includes(actionId) && state.focusState?.isActive && state.focusState.endTime > Date.now()) {
+              min = Math.floor(min * 2);
+              max = Math.floor(max * 2);
+            }
+
+            const baseAmount = Math.floor(Math.random() * (max - min + 1)) + min;
+            const originalAmount =
+              state.resources[finalKey as keyof typeof state.resources] || 0;
+            current[finalKey] = originalAmount + baseAmount;
+          }
         }
       } else if (
         typeof effect === "object" &&
@@ -416,6 +427,18 @@ export function applyActionEffects(
               if (totalMultiplier !== 1) {
                 min = Math.floor(min * totalMultiplier);
                 max = Math.floor(max * totalMultiplier);
+              }
+
+              // Apply focus multiplier for eligible actions
+              const focusEligibleActions = [
+                'exploreCave', 'ventureDeeper', 'descendFurther', 'exploreRuins', 'exploreTemple', 'exploreCitadel',
+                'mineCoal', 'mineIron', 'mineSulfur', 'mineObsidian', 'mineAdamant', 'mineMoonstone',
+                'hunt', 'chopWood'
+              ];
+
+              if (focusEligibleActions.includes(actionId) && state.focusState?.isActive && state.focusState.endTime > Date.now()) {
+                min = Math.floor(min * 2);
+                max = Math.floor(max * 2);
               }
 
               const randomAmount =

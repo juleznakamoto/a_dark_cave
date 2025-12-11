@@ -471,6 +471,16 @@ export const gameStateSchema = z.object({
       intensityLevel: z.number().default(0), // 0-5
     })
     .default({ lengthLevel: 0, intensityLevel: 0 }),
+  focus: z.number().default(0), // Focus points accumulated from sleep
+  focusState: z
+    .object({
+      isActive: z.boolean().default(false),
+      endTime: z.number().default(0),
+    })
+    .default({
+      isActive: false,
+      endTime: 0,
+    }),
 
   huntingSkills: z.object({
     level: z.number().default(0),
