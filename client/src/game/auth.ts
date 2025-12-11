@@ -13,8 +13,6 @@ interface SaveData {
   timestamp: number;
 }
 
-const isDev = import.meta.env.DEV;
-
 export interface AuthUser {
   id: string;
   email: string;
@@ -112,7 +110,6 @@ async function processReferralInBackground(): Promise<void> {
         try {
           const freshStateData = await loadGameFromSupabase(); // This now returns SaveData | null
           if (freshStateData) {
-            const freshGameState = freshStateData.gameState; // Extract gameState from SaveData
             // Update the game state directly
             const { useGameStore } = await import('./state');
             const currentState = useGameStore.getState();

@@ -1,5 +1,6 @@
 import { Action } from "@shared/schema";
 import { GameState } from "@shared/schema";
+import { GameEvent } from "./events";
 import {
   getTotalCraftingCostReduction as getTotalCraftingCostReductionCalc,
   getTotalBuildingCostReduction as getTotalBuildingCostReductionCalc,

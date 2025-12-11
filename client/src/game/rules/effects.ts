@@ -2,7 +2,6 @@
 export interface ActionBonuses {
   resourceBonus: Record<string, number>;
   resourceMultiplier: number;
-  probabilityBonus: Record<string, number>;
   cooldownReduction: number;
 }
 
@@ -23,7 +22,6 @@ export interface EffectDefinition {
         cooldownReduction?: number; // Percentage reduction (0.1 = 10% reduction)
         resourceBonus?: Record<string, number>; // Fixed bonus to specific resources
         resourceMultiplier?: number; // Multiplier for all resources (1.25 = 25% bonus)
-        probabilityBonus?: Record<string, number>; // Bonus to probability effects
       }
     >;
 
@@ -33,7 +31,6 @@ export interface EffectDefinition {
       strength?: number; // Strength bonus
       knowledge?: number; // Knowledge bonus
       madness?: number; // Madness bonus
-      madnessReduction?: number; // Reduction in madness
       craftingCostReduction?: number; // Percentage reduction in crafting costs (0.1 = 10% reduction)
       buildingCostReduction?: number; // Percentage reduction in building costs (0.1 = 10% reduction)
       MAX_EMBER_BOMBS?: number; // Bonus to max ember bombs capacity

@@ -1,8 +1,32 @@
 import { GameState } from "@shared/schema";
-import { getTotalKnowledge, getActionBonuses, getTotalCraftingCostReduction } from "./effectsCalculation";
+import {
+  getTotalKnowledge,
+  getActionBonuses,
+  getTotalCraftingCostReduction,
+} from "./effectsCalculation";
 import { gameActions } from "./index";
 import { getTotalMadness } from "./effectsCalculation";
-import { CRUSHING_STRIKE_UPGRADES, BLOODFLAME_SPHERE_UPGRADES } from "./skillUpgrades";
+import {
+  CRUSHING_STRIKE_UPGRADES,
+  BLOODFLAME_SPHERE_UPGRADES,
+} from "./skillUpgrades";
+
+const FOCUS_ELIGIBLE_ACTIONS = [
+  "exploreCave",
+  "ventureDeeper",
+  "descendFurther",
+  "exploreRuins",
+  "exploreTemple",
+  "exploreCitadel",
+  "mineCoal",
+  "mineIron",
+  "mineSulfur",
+  "mineObsidian",
+  "mineAdamant",
+  "mineMoonstone",
+  "hunt",
+  "chopWood",
+];
 
 export interface TooltipConfig {
   getContent: (state: GameState) => React.ReactNode | string;
@@ -123,13 +147,11 @@ export const calculateResourceGains = (
             }
 
             // Apply focus multiplier for eligible actions (exclude sacrifice actions)
-            const focusEligibleActions = [
-              'exploreCave', 'ventureDeeper', 'descendFurther', 'exploreRuins', 'exploreTemple', 'exploreCitadel',
-              'mineCoal', 'mineIron', 'mineSulfur', 'mineObsidian', 'mineAdamant', 'mineMoonstone',
-              'hunt', 'chopWood'
-            ];
-
-            if (focusEligibleActions.includes(actionId) && state.focusState?.isActive && state.focusState.endTime > Date.now()) {
+            if (
+              FOCUS_ELIGIBLE_ACTIONS.includes(actionId) &&
+              state.focusState?.isActive &&
+              state.focusState.endTime > Date.now()
+            ) {
               min = Math.floor(min * 2);
               max = Math.floor(max * 2);
             }
@@ -157,13 +179,11 @@ export const calculateResourceGains = (
           }
 
           // Apply focus multiplier for eligible actions (exclude sacrifice actions)
-          const focusEligibleActions = [
-            'exploreCave', 'ventureDeeper', 'descendFurther', 'exploreRuins', 'exploreTemple', 'exploreCitadel',
-            'mineCoal', 'mineIron', 'mineSulfur', 'mineObsidian', 'mineAdamant', 'mineMoonstone',
-            'hunt', 'chopWood'
-          ];
-
-          if (focusEligibleActions.includes(actionId) && state.focusState?.isActive && state.focusState.endTime > Date.now()) {
+          if (
+            FOCUS_ELIGIBLE_ACTIONS.includes(actionId) &&
+            state.focusState?.isActive &&
+            state.focusState.endTime > Date.now()
+          ) {
             amount = Math.floor(amount * 2);
           }
 
@@ -191,7 +211,8 @@ export const calculateResourceGains = (
         } else if (key.startsWith("relics.")) {
           const relic = key.split(".")[1];
           if (typeof value === "boolean" && value === true) {
-            const hasEnough = state.relics[relic as keyof typeof state.relics] === true;
+            const hasEnough =
+              state.relics[relic as keyof typeof state.relics] === true;
             costs.push({ resource: relic, amount: 1, hasEnough });
           }
         }
@@ -247,12 +268,6 @@ export const getResourceGainTooltip = (
       ))}
     </div>
   );
-};
-
-// Action button tooltips (for cost breakdowns)
-export const actionTooltips: Record<string, TooltipConfig> = {
-  // These are handled dynamically by getActionCostBreakdown
-  // This file is for static/simple tooltips
 };
 
 // Building tooltips
@@ -370,7 +385,8 @@ export const miningBoostTooltip: TooltipConfig = {
 export const frostfallTooltip: TooltipConfig = {
   getContent: (state: GameState) => {
     const frostfallState = state.frostfallState;
-    const isFrostfall = frostfallState?.isActive && frostfallState.endTime > Date.now();
+    const isFrostfall =
+      frostfallState?.isActive && frostfallState.endTime > Date.now();
 
     if (isFrostfall) {
       const remainingMs = frostfallState.endTime - Date.now();
@@ -412,7 +428,8 @@ export const fogTooltip: TooltipConfig = {
 export const focusTooltip: TooltipConfig = {
   getContent: (state: GameState) => {
     const focusState = state.focusState;
-    const isFocusActive = focusState?.isActive && focusState.endTime > Date.now();
+    const isFocusActive =
+      focusState?.isActive && focusState.endTime > Date.now();
 
     if (isFocusActive) {
       const remainingMs = focusState.endTime - Date.now();
@@ -468,7 +485,7 @@ export const combatItemTooltips: Record<string, TooltipConfig> = {
     getContent: (state) => {
       const level = state.combatSkills.crushingStrikeLevel ?? 0;
       const config = CRUSHING_STRIKE_UPGRADES[level];
-      return `Damage: ${config.damage}\nStun Duration: ${config.stunRounds} round${config.stunRounds > 1 ? 's' : ''}`;
+      return `Damage: ${config.damage}\nStun Duration: ${config.stunRounds} round${config.stunRounds > 1 ? "s" : ""}`;
     },
   },
   bloodflame_sphere: {
