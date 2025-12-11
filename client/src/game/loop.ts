@@ -633,17 +633,11 @@ function handlePopulationSurvival() {
     (sum, count) => sum + (count || 0),
     0,
   );
+  
 
   if (totalPopulation === 0) return;
 
-  // Only start starvation checks once the player has accumulated at least 5 food
-  if (!state.flags.starvationActive) {
-    if (state.resources.food < 5) return;
-    // Activate starvation system permanently once food reaches at least 5
-    useGameStore.setState({
-      flags: { ...state.flags, starvationActive: true },
-    });
-  }
+  if (!state.story.seen.hasHunted) return;
 
   // Handle food consumption (but not starvation - that's handled by events)
   const foodNeeded = totalPopulation;
@@ -673,8 +667,7 @@ function handlePopulationSurvival() {
 function handleStarvationCheck() {
   const state = useGameStore.getState();
 
-  // Only proceed if starvation is already active (activated in handlePopulationSurvival)
-  if (!state.flags.starvationActive) return;
+  if (!state.story.seen.hasHunted) return;
 
   const totalPopulation = Object.values(state.villagers).reduce(
     (sum, count) => sum + (count || 0),
