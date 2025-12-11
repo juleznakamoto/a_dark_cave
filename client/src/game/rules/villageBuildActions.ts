@@ -10,11 +10,6 @@ export const getNextBuildingLevel = (actionId: string, state: GameState): number
   let buildingKey = actionId.slice(5);
   buildingKey = buildingKey.charAt(0).toLowerCase() + buildingKey.slice(1);
   
-  // Handle special case
-  if (buildingKey === "alchemistTower") {
-    buildingKey = "alchemistHall";
-  }
-  
   return (state.buildings[buildingKey as keyof GameState["buildings"]] || 0) + 1;
 };
 
