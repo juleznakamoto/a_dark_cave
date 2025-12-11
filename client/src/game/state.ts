@@ -579,22 +579,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     )
       return;
 
-    // Log bomb crafting actions
-    if (actionId === 'craftEmberBomb' || actionId === 'craftAshfireBomb' || actionId === 'craftVoidBomb') {
-      console.log(`[ACTION] Executing ${actionId}:`, {
-        currentCount: state.story?.seen?.[`${actionId.replace('craft', '').toLowerCase()}sCrafted`],
-        storySeenBefore: state.story?.seen,
-      });
-    }
-
     const result = executeGameAction(actionId, state);
-
-    if (actionId === 'craftEmberBomb' || actionId === 'craftAshfireBomb' || actionId === 'craftVoidBomb') {
-      console.log(`[ACTION] Result for ${actionId}:`, {
-        stateUpdates: result.stateUpdates.story?.seen,
-        hasStoryUpdates: !!result.stateUpdates.story,
-      });
-    }
 
     // Track button usage and check for level up (only if book_of_ascension is owned)
     const upgradeKey = ACTION_TO_UPGRADE_KEY[actionId];
@@ -627,12 +612,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
     if (result.stateUpdates.cooldowns && result.stateUpdates.cooldowns[actionId]) {
       const initialDuration = result.stateUpdates.cooldowns[actionId];
 
-      console.log(`[STATE] executeAction storing cooldown:`, {
-        actionId,
-        initialDuration,
-        allCooldownsInUpdate: result.stateUpdates.cooldowns,
-      });
-
       set((prevState) => ({
         cooldownDurations: {
           ...prevState.cooldownDurations,
@@ -663,31 +642,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set((prevState) => {
       const mergedUpdates = mergeStateUpdates(prevState, result.stateUpdates);
 
-      const newState = {
+      return {
         ...prevState,
         ...mergedUpdates,
         log: result.logEntries
           ? [...prevState.log, ...result.logEntries].slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES)
           : prevState.log,
       };
-
-      // Log cooldown state after merge
-      console.log(`[STATE] executeAction after merge for ${actionId}:`, {
-        prevCooldowns: prevState.cooldowns,
-        newCooldowns: newState.cooldowns,
-        mergedCooldowns: mergedUpdates.cooldowns,
-      });
-
-      // Log bomb crafting state after merge
-      if (actionId === 'craftEmberBomb' || actionId === 'craftAshfireBomb' || actionId === 'craftVoidBomb') {
-        console.log(`[ACTION] After merge for ${actionId}:`, {
-          prevCount: prevState.story?.seen?.[`${actionId.replace('craft', '').toLowerCase()}sCrafted`],
-          newCount: newState.story?.seen?.[`${actionId.replace('craft', '').toLowerCase()}sCrafted`],
-          mergedStory: mergedUpdates.story?.seen,
-        });
-      }
-
-      return newState;
     });
 
     // Schedule updates
@@ -738,12 +699,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
   setCooldown: (action: string, duration: number) => {
     // Enforce minimum cooldown of 1 second
     const finalDuration = Math.max(1, duration);
-    console.log(`[STATE] setCooldown called:`, {
-      action,
-      duration,
-      finalDuration,
-      currentCooldowns: get().cooldowns,
-    });
     set((state) => ({
       cooldowns: { ...state.cooldowns, [action]: finalDuration },
       cooldownDurations: { ...state.cooldownDurations, [action]: finalDuration },

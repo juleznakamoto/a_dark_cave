@@ -62,15 +62,6 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
   const initialCooldown = cooldownDurations[actionId] || 0;
   const isCoolingDown = currentCooldown > 0;
 
-  console.log(`[CooldownButton] ${actionId}:`, {
-    testId,
-    button_id: props.button_id,
-    derivedActionId: actionId,
-    currentCooldown,
-    initialCooldown,
-    isCoolingDown,
-    allCooldowns: cooldowns,
-  });
 
   // Track first render for transition
   useEffect(() => {
