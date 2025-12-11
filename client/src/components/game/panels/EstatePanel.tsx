@@ -50,6 +50,28 @@ export default function EstatePanel() {
   const setHoveredTooltip = useGameStore((state) => state.setHoveredTooltip);
   const hoverTimersRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
 
+  // Calculate focus progress based on game loop timing
+  const [focusProgress, setFocusProgress] = React.useState(0);
+  const focusState = useGameStore((state) => state.focusState);
+
+  React.useEffect(() => {
+    const updateFocusProgress = () => {
+      const now = Date.now();
+      if (focusState?.isActive && focusState.endTime > now) {
+        const focusDuration = focusState.duration || 60000; // Default to 1 minute if not set
+        const focusElapsed = focusDuration - (focusState.endTime - now);
+        setFocusProgress((focusElapsed / focusDuration) * 100);
+      } else {
+        setFocusProgress(0);
+      }
+    };
+
+    updateFocusProgress();
+    const interval = setInterval(updateFocusProgress, 1000);
+
+    return () => clearInterval(interval);
+  }, [focusState]);
+
   // Get all cube events that have been triggered
   const completedCubeEvents = Object.entries(cubeEvents)
     .filter(([eventId]) => {
@@ -236,47 +258,42 @@ export default function EstatePanel() {
           <div className="flex items-center gap-2">
             <h3 className="text-xs font-bold text-foreground pb-2">Rest</h3>
             {/* Focus Timer */}
-            {(() => {
-              const focusState = useGameStore.getState().focusState;
-              const isFocusActive = focusState?.isActive && focusState.endTime > Date.now();
-
-              if (!isFocusActive) return null;
-
-              const now = Date.now();
-              const remainingMs = focusState.endTime - now;
-              const remainingMinutes = Math.ceil(remainingMs / 60000);
-
-              // Use stored duration if available, otherwise calculate from end time
-              const totalDuration = focusState.duration || (focusState.endTime - (focusState.startTime || focusState.endTime - 60000));
-              const progress = Math.max(0, Math.min(100, (remainingMs / totalDuration) * 100));
-
-              return (
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-purple-500/20 border border-purple-500/30">
+            {focusState?.isActive && focusState.endTime > Date.now() && (
+              <TooltipProvider>
+                <Tooltip open={mobileTooltip.isTooltipOpen("focus-progress")}>
+                  <TooltipTrigger asChild>
+                    <div
+                      className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
+                      onClick={(e) =>
+                        mobileTooltip.handleTooltipClick(
+                          "focus-progress",
+                          e,
+                        )
+                      }
+                    >
+                      <div className="relative inline-flex items-center gap-1 mt-[0px]">
                         <CircularProgress
-                          value={progress}
-                          size={14}
+                          value={focusProgress}
+                          size={18}
                           strokeWidth={2}
-                          className="text-purple-400"
+                          className="text-purple-600"
                         />
-                        <div className="text-[10px] font-medium text-purple-300">
-                          Focus: {remainingMinutes}m
-                        </div>
+                        <span
+                          className="absolute inset-0 flex items-center justify-center font-extrabold text-[12px] -mt-[0px] text-purple-600"
+                        >
+                          ◈
+                        </span>
                       </div>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <div className="text-xs">
-                        <div className="font-bold">Focus</div>
-                        <div>Action Bonus: 200%</div>
-                        <div>{remainingMinutes} min remaining</div>
-                      </div>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              );
-            })()}
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <div className="text-xs">
+                      {focusTooltip.getContent(state)}
+                    </div>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )}
           </div>
           <TooltipProvider>
             <Tooltip open={mobileTooltip.isTooltipOpen("sleep-button")}>
