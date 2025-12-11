@@ -158,7 +158,6 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.coal": "random(3,7)",
       "resources.iron": "random(3,7)",
       ...getInheritedItems("exploreCave"),
-      "flags.caveExplored": true,
       "story.seen.hasStone": true,
       "story.seen.caveExplored": true,
     },

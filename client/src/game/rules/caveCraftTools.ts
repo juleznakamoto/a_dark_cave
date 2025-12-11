@@ -109,7 +109,7 @@ export const caveCraftTools: Record<string, Action> = {
     id: "craftStoneAxe",
     label: "StoneAxe",
     show_when: {
-      "flags.caveExplored": true,
+      "story.seen.caveExplored": true,
       "tools.stone_axe": false,
     },
     cost: {
@@ -129,7 +129,7 @@ export const caveCraftTools: Record<string, Action> = {
     id: "craftStonePickaxe",
     label: "Stone Pickaxe",
     show_when: {
-      "flags.caveExplored": true,
+      "story.seen.caveExplored": true,
       "tools.stone_pickaxe": false,
       "tools.stone_axe": true,
     },
