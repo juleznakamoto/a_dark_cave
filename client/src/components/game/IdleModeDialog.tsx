@@ -556,7 +556,7 @@ export default function IdleModeDialog() {
   const hasCompletedFirstInterval = displaySecondsElapsed >= 15;
 
   // Calculate Focus points (1 per hour slept)
-  const focusPoints = Math.floor(displayElapsed / (60 * 60 * 1000));
+  const focusPoints = Math.floor(displayElapsed / (1 * 10 * 1000));
 
   // Get all resources that have changed (only positive), including Focus
   const producedResources = [
