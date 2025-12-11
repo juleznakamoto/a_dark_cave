@@ -1,6 +1,7 @@
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 import { getTotalKnowledge } from "./effectsCalculation";
+import { calculateMerchantDiscount } from "./effectsStats";
 
 // Resource prices in gold per unit
 const PRICES = {
@@ -1495,13 +1496,8 @@ function selectTrades(
 export function generateMerchantChoices(state: GameState): EventChoice[] {
   const knowledge = getTotalKnowledge(state);
 
-  // Calculate stepped discount: 5% per 10 knowledge, max 25%
-  let discount = 0;
-  if (knowledge >= 10) discount = 0.05;
-  if (knowledge >= 20) discount = 0.1;
-  if (knowledge >= 30) discount = 0.15;
-  if (knowledge >= 40) discount = 0.2;
-  if (knowledge >= 50) discount = 0.25;
+  // Calculate merchant discount using centralized function
+  const discount = calculateMerchantDiscount(knowledge);
 
   // Shared resource pair tracking
   const usedResourcePairs = new Set<string>();
