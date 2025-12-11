@@ -51,13 +51,11 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
   const isFirstRenderRef = useRef<boolean>(true);
   const mobileTooltip = useMobileButtonTooltip();
 
-  // Get the action ID - prioritize button_id prop, fallback to deriving from testId
-  const derivedFromTestId =
+  // Get the action ID from the test ID or generate one
+  const actionId =
     testId
       ?.replace("button-", "")
       .replace(/-([a-z])/g, (_, letter) => letter.toUpperCase()) || "unknown";
-  
-  const actionId = props.button_id || derivedFromTestId;
 
   // Get current cooldown from game state
   const currentCooldown = cooldowns[actionId] || 0;
@@ -67,8 +65,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
   console.log(`[CooldownButton] ${actionId}:`, {
     testId,
     button_id: props.button_id,
-    derivedActionId: derivedFromTestId,
-    actualActionId: actionId,
+    derivedActionId: actionId,
     currentCooldown,
     initialCooldown,
     isCoolingDown,
