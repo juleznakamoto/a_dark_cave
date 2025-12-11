@@ -58,18 +58,9 @@ export const gameStateSchema = z.object({
     .object({
       villageUnlocked: z.boolean().default(false),
       bastionUnlocked: z.boolean().default(false),
-      caveExplored: z.boolean().default(false),
-      venturedDeeper: z.boolean().default(false),
       gameStarted: z.boolean().default(false),
-      descendedFurther: z.boolean().default(false),
-      exploredRuins: z.boolean().default(false),
-      exploredTemple: z.boolean().default(false),
-      exploredCitadel: z.boolean().default(false),
-      lowChamberExplored: z.boolean().default(false),
-      occultistChamberExplored: z.boolean().default(false),
       starvationActive: z.boolean().default(false),
       forestUnlocked: z.boolean().default(false),
-      portalBlasted: z.boolean().default(false),
       firstWolfAttack: z.boolean().default(false),
       hasTraps: z.boolean().default(false),
       monolithUnlocked: z.boolean().default(false),
@@ -240,8 +231,8 @@ export const gameStateSchema = z.object({
       traps: z.number().default(0),
       blackMonolith: z.number().default(0),
       boneTemple: z.number().default(0),
-      darkEstate: z.number().default(0),
       pillarOfClarity: z.number().default(0),
+      darkEstate: z.number().default(0),
     })
     .default({}),
   villagers: z
