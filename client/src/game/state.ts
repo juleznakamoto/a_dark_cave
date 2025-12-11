@@ -179,6 +179,8 @@ interface GameStore extends GameState {
   trackButtonClick: (buttonId: string) => void;
   getAndResetClickAnalytics: () => Record<string, number> | null;
   setVersionCheckDialog: (isOpen: boolean) => void;
+  updateFocusState: (state: { isActive: boolean; endTime: number; startTime?: number; duration?: number }) => void;
+  updateResources: (updates: Partial<GameState["resources"]>) => void;
 }
 
 // Helper functions
@@ -1424,5 +1426,18 @@ export const useGameStore = create<GameStore>((set, get) => ({
   // Added action to set the version check dialog state
   setVersionCheckDialog: (isOpen: boolean) => {
     set({ versionCheckDialogOpen: isOpen });
+  },
+
+  updateFocusState: (focusState) => {
+    set({ focusState });
+  },
+
+  updateResources: (updates) => {
+    set((state) => ({
+      resources: {
+        ...state.resources,
+        ...updates,
+      },
+    }));
   },
 }));
