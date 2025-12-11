@@ -226,7 +226,7 @@ export default function EstatePanel() {
         {/* Sleep Mode Section */}
         <div className="space-y-">
           <div className="flex items-center gap-2">
-            <h3 className="text-xs font-bold text-foreground pb-2">Sleep</h3>
+            <h3 className="text-xs font-bold text-foreground pb-2">Rest</h3>
             {/* Focus Timer */}
             {(() => {
               const focusState = useGameStore.getState().focusState;
@@ -369,7 +369,7 @@ export default function EstatePanel() {
               <TooltipContent>
                 <div className="text-xs whitespace-nowrap">
                   {canActivateIdle ? (
-                    <div>Enter sleep mode to progress while away</div>
+                    <div>Sleep and let the world move in your absence</div>
                   ) : (
                     <div>Requires positive wood and food production</div>
                   )}
