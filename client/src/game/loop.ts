@@ -629,11 +629,7 @@ function handleMinerProduction() {
 function handlePopulationSurvival() {
   const state = useGameStore.getState();
 
-  const totalPopulation = Object.values(state.villagers).reduce(
-    (sum, count) => sum + (count || 0),
-    0,
-  );
-  
+  const totalPopulation = state.current_population;
 
   if (totalPopulation === 0) return;
 
@@ -669,10 +665,7 @@ function handleStarvationCheck() {
 
   if (!state.story.seen.hasHunted) return;
 
-  const totalPopulation = Object.values(state.villagers).reduce(
-    (sum, count) => sum + (count || 0),
-    0,
-  );
+  const totalPopulation = state.current_population;
   if (totalPopulation === 0) return;
 
   const availableFood = state.resources.food;
@@ -715,10 +708,7 @@ function handleStarvationCheck() {
 function handleFreezingCheck() {
   const state = useGameStore.getState();
 
-  const totalPopulation = Object.values(state.villagers).reduce(
-    (sum, count) => sum + (count || 0),
-    0,
-  );
+  const totalPopulation = state.current_population;
 
   if (totalPopulation > 0 && state.resources.wood === 0) {
     // 5% chance for each villager to die from cold
@@ -758,10 +748,7 @@ function handleFreezingCheck() {
 function handleMadnessCheck() {
   const state = useGameStore.getState();
 
-  const totalPopulation = Object.values(state.villagers).reduce(
-    (sum, count) => sum + (count || 0),
-    0,
-  );
+  const totalPopulation = state.current_population;
 
   if (totalPopulation === 0) return;
 
