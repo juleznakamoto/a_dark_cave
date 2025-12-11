@@ -65,7 +65,7 @@ const getNextBuildingLevel = (actionId: string, state: GameState): number => {
     buildTemple: "temple",
     buildSanctum: "sanctum",
     buildStoneHut: "stoneHut",
-    buildAlchemistTower: "alchemistHall",
+    buildAlchemistHall: "alchemistHall",
     buildTradePost: "tradePost",
     buildWizardTower: "wizardTower",
     buildLonghouse: "longhouse",

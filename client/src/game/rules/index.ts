@@ -92,7 +92,7 @@ const getNextBuildingLevel = (actionId: string, state: GameState): number => {
     buildTemple: "temple",
     buildSanctum: "sanctum",
     buildStoneHut: "stoneHut",
-    buildAlchemistTower: "alchemistHall",
+    buildAlchemistHall: "alchemistHall",
     buildTradePost: "tradePost",
     buildWizardTower: "wizardTower",
     buildLonghouse: "longhouse",
@@ -108,23 +108,6 @@ const getNextBuildingLevel = (actionId: string, state: GameState): number => {
 
   const buildingKey = buildingMap[actionId];
   return buildingKey ? (state.buildings[buildingKey] || 0) + 1 : 1;
-};
-
-// Helper function to evaluate conditions for probability effects
-const evaluateCondition = (condition: string, state: GameState): boolean => {
-  // Handle negation (e.g., "!clothing.tarnished_amulet")
-  const isNegated = condition.startsWith("!");
-  const path = isNegated ? condition.slice(1) : condition;
-
-  const pathParts = path.split(".");
-  let current: any = state;
-
-  for (const part of pathParts) {
-    current = current?.[part];
-  }
-
-  // Return negated result if condition started with !
-  return isNegated ? !current : !!current;
 };
 
 // Helper function to check if requirements are met for both building and non-building actions
