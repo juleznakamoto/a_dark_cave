@@ -420,7 +420,7 @@ export const focusTooltip: TooltipConfig = {
       return (
         <>
           <div className="font-bold">Focus</div>
-          <div>Action Bonus: 200%</div>
+          <div>Action Bonus: 2x</div>
           <div>{remainingMinutes} min remaining</div>
         </>
       );
