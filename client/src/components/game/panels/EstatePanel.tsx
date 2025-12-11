@@ -15,7 +15,6 @@ import { useMobileButtonTooltip } from "@/hooks/useMobileTooltip";
 import { getTotalPopulationEffects } from "@/game/population";
 import { Progress } from "@/components/ui/progress";
 import { CircularProgress } from "@/components/ui/circular-progress";
-import { logger } from "@/lib/logger";
 import {
   CRUSHING_STRIKE_UPGRADES,
   BLOODFLAME_SPHERE_UPGRADES,
@@ -268,7 +267,7 @@ export default function EstatePanel() {
                     </TooltipTrigger>
                     <TooltipContent>
                       <div className="text-xs whitespace-nowrap">
-                        <div>Focus Active</div>
+                        <div>Focus active</div>
                         <div>2x resources from actions</div>
                         <div className="border-t border-border my-1" />
                         <div>

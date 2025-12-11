@@ -15,30 +15,6 @@ run = ["sh", "-c", "NODE_ENV=production node dist/index.js"]
 localPort = 5000
 externalPort = 80
 
-[[ports]]
-localPort = 33167
-externalPort = 5000
-
-[[ports]]
-localPort = 36917
-externalPort = 3003
-
-[[ports]]
-localPort = 38647
-externalPort = 4200
-
-[[ports]]
-localPort = 42235
-externalPort = 3000
-
-[[ports]]
-localPort = 42447
-externalPort = 3002
-
-[[ports]]
-localPort = 51204
-externalPort = 3001
-
 [env]
 PORT = "5000"
 VITE_SUPABASE_URL_DEV = "${REPL_SECRETS.VITE_SUPABASE_URL_DEV}"
