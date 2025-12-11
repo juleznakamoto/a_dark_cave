@@ -277,7 +277,7 @@ export default function LeaderboardDialog({ isOpen, onClose }: LeaderboardDialog
             <TabsTrigger value="cruel">Cruel Mode</TabsTrigger>
           </TabsList>
           <TabsContent value="normal" className="flex-1 min-h-0 flex flex-col">
-            <ScrollArea className="h-[400px] pr-4 flex-1">
+            <ScrollArea className="h-[400px] pr-4 flex-1 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
               {renderLeaderboard(normalLeaderboard)}
             </ScrollArea>
             {lastUpdated && (
@@ -287,7 +287,7 @@ export default function LeaderboardDialog({ isOpen, onClose }: LeaderboardDialog
             )}
           </TabsContent>
           <TabsContent value="cruel" className="flex-1 min-h-0 flex flex-col">
-            <ScrollArea className="h-[400px] pr-4 flex-1">
+            <ScrollArea className="h-[400px] pr-4 flex-1 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
               {renderLeaderboard(cruelLeaderboard)}
             </ScrollArea>
             {lastUpdated && (
