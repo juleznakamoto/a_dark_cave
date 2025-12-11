@@ -154,7 +154,7 @@ export default function IdleModeDialog() {
     });
 
     if (idleModeDialog.isOpen && !isActive) {
-      const now = Date.now();
+      const initNow = Date.now();
 
       logger.log('[IDLE MODE INIT] Checking initialization conditions:', {
         hasStartTime: !!idleModeState?.startTime,
@@ -164,21 +164,21 @@ export default function IdleModeDialog() {
 
       // Check if there's a persisted idle mode state
       if (idleModeState?.startTime && idleModeState.startTime > 0) {
-        const elapsed = now - idleModeState.startTime;
-        const remaining = Math.max(0, IDLE_DURATION_MS - elapsed);
+        const initElapsed = initNow - idleModeState.startTime;
+        const remaining = Math.max(0, IDLE_DURATION_MS - initElapsed);
 
         logger.log('[IDLE MODE] Loading persisted state:', {
           startTime: idleModeState.startTime,
-          elapsed,
+          elapsed: initElapsed,
           remaining,
-          intervals: Math.floor((Math.min(elapsed, IDLE_DURATION_MS) / 1000) / 15)
+          intervals: Math.floor((Math.min(initElapsed, IDLE_DURATION_MS) / 1000) / 15)
         });
 
         setStartTime(idleModeState.startTime);
         setRemainingTime(remaining);
 
         // Calculate resources accumulated while offline
-        const secondsElapsed = Math.min(elapsed, IDLE_DURATION_MS) / 1000;
+        const secondsElapsed = Math.min(initElapsed, IDLE_DURATION_MS) / 1000;
         const intervals = Math.floor(secondsElapsed / 15); // How many 15-second intervals have passed
 
         // Get CURRENT resources state (most recent)
@@ -224,7 +224,7 @@ export default function IdleModeDialog() {
         // Get the CURRENT (most recent) resources state
         const currentState = useGameStore.getState();
         setIsActive(true);
-        setStartTime(now);
+        setStartTime(initNow);
         setAccumulatedResources({});
         setRemainingTime(IDLE_DURATION_MS);
         // Store the CURRENT resources as initial state
@@ -234,7 +234,7 @@ export default function IdleModeDialog() {
         useGameStore.setState({
           idleModeState: {
             isActive: true,
-            startTime: now,
+            startTime: initNow,
             needsDisplay: true,
           },
         });
@@ -452,9 +452,9 @@ export default function IdleModeDialog() {
   };
 
   // Show resources that are being produced
-  const now = Date.now();
-  const elapsed = now - startTime;
-  const secondsElapsed = Math.floor(elapsed / 1000);
+  const displayNow = Date.now();
+  const displayElapsed = displayNow - startTime;
+  const secondsElapsed = Math.floor(displayElapsed / 1000);
 
   // Show resources only after at least 15 seconds have elapsed from idle mode start
   const hasCompletedFirstInterval = secondsElapsed >= 15;
@@ -497,7 +497,7 @@ export default function IdleModeDialog() {
             <div className="flex justify-between items-center">
               <span className="text-sm font-medium">Focus:</span>
               <span className="text-sm tabular-nums">
-                <AnimatedCounter value={Math.floor((now - startTime) / (60 * 60 * 1000))} />
+                <AnimatedCounter value={Math.floor((displayNow - startTime) / (60 * 60 * 1000))} />
               </span>
             </div>
           </div>
