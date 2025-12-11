@@ -401,21 +401,17 @@ export default function EstatePanel() {
                   <div className="h-5 inline-block pb-1 text-xs font-medium text-foreground ml-2">
                     <Button
                       onClick={() => {
-                        const currentState = useGameStore.getState();
-                        if (currentState.focus > 0) {
-                          const focusDuration = currentState.focus;
-                          const { updateFocusState, updateResource, addLogEntry } = useGameStore.getState();
-
-                          updateFocusState({
+                        const state = useGameStore.getState();
+                        if (state.focus > 0) {
+                          const focusDuration = state.focus;
+                          useGameStore.getState().updateFocusState({
                             isActive: true,
                             endTime: Date.now() + focusDuration * 60000,
                             startTime: Date.now(),
                             duration: focusDuration * 60000,
                           });
-
-                          updateResource('focus', -currentState.focus);
-
-                          addLogEntry({
+                          useGameStore.getState().updateResources({ focus: 0 });
+                          useGameStore.getState().addLogEntry({
                             id: `focus-activated-${Date.now()}`,
                             message: `Focus activated! Actions grant 2x resources for ${focusDuration} minute${focusDuration > 1 ? 's' : ''}.`,
                             timestamp: Date.now(),
@@ -428,17 +424,17 @@ export default function EstatePanel() {
                       className="h-7 hover:bg-transparent hover:text-foreground"
                       button_id="activate-focus"
                     >
-                      Focus
-                              </Button>
-                            </div>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <div className="text-xs whitespace-nowrap">
-                              Activate Focus for 2x resource bonus for {state.focus} minute{state.focus > 1 ? 's' : ''} 
-                            </div>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
+                      Use Focus ({state.focus})
+                    </Button>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <div className="text-xs whitespace-nowrap">
+                    Activate {state.focus} minute{state.focus > 1 ? 's' : ''} of 2x resource bonus
+                  </div>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           )}
         </div>
 
