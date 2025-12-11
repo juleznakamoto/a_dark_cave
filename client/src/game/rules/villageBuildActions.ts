@@ -1,6 +1,5 @@
 import { Action, GameState } from "@shared/schema";
 import { ActionResult } from '@/game/actions';
-import { applyActionEffects } from "./actionEffects";
 import { logger } from "@/lib/logger";
 
 export const villageBuildActions: Record<string, Action> = {
@@ -52,16 +51,16 @@ export const villageBuildActions: Record<string, Action> = {
     },
     cost: {
       1: {
-        "resources.wood": 100,
+        "resources.wood": 50,
       },
       2: {
-        "resources.wood": 250,
+        "resources.wood": 100,
       },
       3: {
-        "resources.wood": 500,
+        "resources.wood": 250,
       },
       4: {
-        "resources.wood": 750,
+        "resources.wood": 500,
       },
       5: {
         "resources.wood": 1000,
@@ -131,7 +130,7 @@ export const villageBuildActions: Record<string, Action> = {
     },
     cost: {
       1: {
-        "resources.wood": 200,
+        "resources.wood": 150,
         "resources.stone": 100,
       },
     },
@@ -159,8 +158,8 @@ export const villageBuildActions: Record<string, Action> = {
     },
     cost: {
       1: {
-        "resources.wood": 200,
-        "resources.stone": 100,
+        "resources.wood": 150,
+        "resources.stone": 150,
         "resources.iron": 50,
       },
     },
@@ -516,7 +515,7 @@ export const villageBuildActions: Record<string, Action> = {
     },
     cost: {
       1: {
-        "resources.wood": 750,
+        "resources.wood": 500,
         "resources.stone": 750,
       },
     },
