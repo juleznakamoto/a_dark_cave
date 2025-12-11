@@ -215,7 +215,7 @@ export default function GameContainer() {
       {/* Sleep Mode Overlay - covers everything except footer and profile menu */}
       {idleModeDialog.isOpen && (
         <div
-          className="fixed top-0 left-0 right-0 bg-black/100 z-40 pointer-events-auto overlay-fade-in"
+          className="fixed inset-0 bg-black/100 z-40 pointer-events-auto overlay-fade-in"
           style={{ bottom: "45px" }}
         />
       )}
