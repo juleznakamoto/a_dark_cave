@@ -1,37 +1,28 @@
 import { Action } from "@shared/schema";
 import { GameState } from "@shared/schema";
-import { logger } from "@/lib/logger";
 import {
-  ACTION_TO_UPGRADE_KEY,
-  getUpgradeBonusMultiplier,
-} from "../buttonUpgrades";
-import {
-  getTotalLuck as getTotalLuckCalc,
-  getActionBonuses as getActionBonusesCalc,
   getTotalCraftingCostReduction as getTotalCraftingCostReductionCalc,
   getTotalBuildingCostReduction as getTotalBuildingCostReductionCalc,
 } from "./effectsCalculation";
-import { applyActionEffects, setGameActionsRef } from "./actionEffects";
+import { setGameActionsRef } from "./actionEffects";
 
 // Import action modules
 import { caveCraftResources } from "./caveCraftResources";
 import { caveCraftTools } from "./caveCraftTools";
 import { caveCraftWeapons } from "./caveCraftWeapons";
 import { caveMineActions } from "./caveMineActions";
-import { villageBuildActions, handleBuildBlackMonolith, handleBuildPrimeFoundry, handleBuildMasterworkFoundry, handleBuildScriptorium, handleBuildInkwardenAcademy, handleBuildTannery } from "./villageBuildActions";
+import { villageBuildActions } from "./villageBuildActions";
 import { forestScoutActions } from "./forestScoutActions";
 import {
   forestSacrificeActions,
   getBoneTotemsCost,
   getLeatherTotemsCost,
-  handleAnimals,
-  handleBoneTotems,
-  handleLeatherTotems,
   getAnimalsCost,
   getHumansCost,
 } from "./forestSacrificeActions";
 import { forestTradeActions } from "./forestTradeActions";
 import { caveExploreActions } from "./caveExploreActions";
+import { getNextBuildingLevel } from "./villageBuildActions";
 
 // Import event modules
 import { caveEvents } from "./eventsCave";
@@ -78,7 +69,7 @@ const checkRequirements = (
   actionId: string,
 ): boolean => {
   if (action.building) {
-    const level = villageBuildActions.getNextBuildingLevel(actionId, state);
+    const level = getNextBuildingLevel(actionId, state);
     const levelRequirements = requirements[level];
     if (!levelRequirements) return false;
     requirements = levelRequirements;
@@ -97,7 +88,7 @@ const checkRequirements = (
     }
 
     // For story.seen properties, treat undefined/missing as false
-    if (actualPath.startsWith('story.seen.')) {
+    if (actualPath.startsWith("story.seen.")) {
       current = current ?? false;
     }
 
@@ -142,7 +133,7 @@ export const shouldShowAction = (
 
   // For building actions, also check if the next level exists
   if (action.building) {
-    const nextLevel = villageBuildActions.getNextBuildingLevel(actionId, state);
+    const nextLevel = getNextBuildingLevel(actionId, state);
     // If there's no cost defined for the next level, the building is maxed out
     if (!action.cost?.[nextLevel]) {
       return false;
@@ -151,19 +142,20 @@ export const shouldShowAction = (
 
   // Check if show_when has tiered conditions (numeric keys)
   const showWhenKeys = Object.keys(action.show_when);
-  const hasTieredShowWhen = showWhenKeys.length > 0 && showWhenKeys.every(key => !isNaN(Number(key)));
+  const hasTieredShowWhen =
+    showWhenKeys.length > 0 && showWhenKeys.every((key) => !isNaN(Number(key)));
 
   if (hasTieredShowWhen) {
     // For tiered show_when (like trade actions), check if ANY tier's conditions are satisfied
     // AND that tier has a cost defined
-    return showWhenKeys.some(tierKey => {
+    return showWhenKeys.some((tierKey) => {
       const tierConditions = action.show_when[tierKey as any];
       const tierHasCost = action.cost?.[tierKey as any];
 
       if (!tierHasCost) return false;
 
       return Object.entries(tierConditions).every(([key, value]) => {
-        const pathParts = key.split('.');
+        const pathParts = key.split(".");
         let current: any = state;
         for (const part of pathParts) {
           current = current?.[part];
@@ -214,14 +206,17 @@ function getAdjustedCost(
 }
 
 // Helper function to extract resource IDs from action cost
-export function getResourcesFromActionCost(actionId: string, state: GameState): string[] {
+export function getResourcesFromActionCost(
+  actionId: string,
+  state: GameState,
+): string[] {
   const action = gameActions[actionId];
   if (!action?.cost) return [];
 
   const resources: string[] = [];
 
   // Handle different cost structures
-  if (typeof action.cost === 'object' && !Array.isArray(action.cost)) {
+  if (typeof action.cost === "object" && !Array.isArray(action.cost)) {
     // Check if it's a tiered cost structure (has numeric keys)
     const keys = Object.keys(action.cost);
     const firstKey = keys[0];
@@ -230,23 +225,23 @@ export function getResourcesFromActionCost(actionId: string, state: GameState): 
       // Tiered cost - for building actions, get the next building level
       let level = 1;
       if (action.building) {
-        level = villageBuildActions.getNextBuildingLevel(actionId, state);
+        level = getNextBuildingLevel(actionId, state);
       }
 
       const levelCost = action.cost[level];
       if (levelCost) {
-        Object.keys(levelCost).forEach(key => {
-          if (key.startsWith('resources.')) {
-            const resourceName = key.split('.')[1];
+        Object.keys(levelCost).forEach((key) => {
+          if (key.startsWith("resources.")) {
+            const resourceName = key.split(".")[1];
             resources.push(resourceName);
           }
         });
       }
     } else {
       // Simple cost structure
-      Object.keys(action.cost).forEach(key => {
-        if (key.startsWith('resources.')) {
-          const resourceName = key.split('.')[1];
+      Object.keys(action.cost).forEach((key) => {
+        if (key.startsWith("resources.")) {
+          const resourceName = key.split(".")[1];
           resources.push(resourceName);
         }
       });
@@ -262,14 +257,14 @@ export function canExecuteAction(actionId: string, state: GameState): boolean {
   if (!action) return false;
 
   // Handle dynamic totem costs
-  if (actionId === 'boneTotems') {
+  if (actionId === "boneTotems") {
     const dynamicCost = getBoneTotemsCost(state);
     if ((state.resources.bone_totem || 0) < dynamicCost) {
       return false;
     }
   }
 
-  if (actionId === 'leatherTotems') {
+  if (actionId === "leatherTotems") {
     const dynamicCost = getLeatherTotemsCost(state);
     if ((state.resources.leather_totem || 0) < dynamicCost) {
       return false;
@@ -277,7 +272,7 @@ export function canExecuteAction(actionId: string, state: GameState): boolean {
   }
 
   // Handle dynamic animals cost
-  if (actionId === 'animals') {
+  if (actionId === "animals") {
     const usageCount = Number(state.story?.seen?.animalsUsageCount) || 0;
     if (usageCount >= 10) {
       return false; // Max 10 uses
@@ -302,14 +297,15 @@ export function canExecuteAction(actionId: string, state: GameState): boolean {
 
   // For building actions, get the cost for the next level
   if (action.building) {
-    const level = villageBuildActions.getNextBuildingLevel(actionId, state);
+    const level = getNextBuildingLevel(actionId, state);
     costs = action.cost[level];
   }
 
   // For tiered actions (like trade actions), determine the active tier
   if (costs && typeof costs === "object") {
     const costKeys = Object.keys(costs);
-    const hasTieredCost = costKeys.length > 0 && costKeys.every(key => !isNaN(Number(key)));
+    const hasTieredCost =
+      costKeys.length > 0 && costKeys.every((key) => !isNaN(Number(key)));
 
     if (hasTieredCost) {
       // Find the active tier based on show_when conditions
@@ -318,23 +314,25 @@ export function canExecuteAction(actionId: string, state: GameState): boolean {
 
       for (const tierKey of showWhenKeys) {
         const tierConditions = action.show_when[tierKey as any];
-        const tierSatisfied = Object.entries(tierConditions).every(([key, value]) => {
-          const pathParts = key.split('.');
-          let current: any = state;
-          for (const part of pathParts) {
-            current = current?.[part];
-          }
-
-          if (key.startsWith("buildings.")) {
-            if (value === 0) {
-              return (current || 0) === 0;
-            } else {
-              return (current || 0) >= value;
+        const tierSatisfied = Object.entries(tierConditions).every(
+          ([key, value]) => {
+            const pathParts = key.split(".");
+            let current: any = state;
+            for (const part of pathParts) {
+              current = current?.[part];
             }
-          }
 
-          return (current || 0) >= value;
-        });
+            if (key.startsWith("buildings.")) {
+              if (value === 0) {
+                return (current || 0) === 0;
+              } else {
+                return (current || 0) >= value;
+              }
+            }
+
+            return (current || 0) >= value;
+          },
+        );
 
         if (tierSatisfied) {
           activeTier = Number(tierKey);
@@ -380,8 +378,6 @@ export function canExecuteAction(actionId: string, state: GameState): boolean {
   return true;
 }
 
-
-
 // Helper function to get readable action cost for display
 export function getActionCostDisplay(
   actionId: string,
@@ -413,7 +409,7 @@ export function getActionCostDisplay(
 
   // For building actions, get the cost for the next level
   if (action.building && state) {
-    const level = villageBuildActions.getNextBuildingLevel(actionId, state);
+    const level = getNextBuildingLevel(actionId, state);
     costs = action.cost[level];
   }
 
@@ -507,13 +503,14 @@ export function getActionCostBreakdown(
 
   // For building actions, get the cost for the next level
   if (action.building) {
-    const level = villageBuildActions.getNextBuildingLevel(actionId, state);
+    const level = getNextBuildingLevel(actionId, state);
     costs = action.cost[level];
   }
 
   // For tiered actions (like trade actions), determine the active tier
   const costKeys = Object.keys(costs);
-  const hasTieredCost = costKeys.length > 0 && costKeys.every(key => !isNaN(Number(key)));
+  const hasTieredCost =
+    costKeys.length > 0 && costKeys.every((key) => !isNaN(Number(key)));
 
   if (hasTieredCost) {
     // Find the active tier based on show_when conditions
@@ -522,23 +519,25 @@ export function getActionCostBreakdown(
 
     for (const tierKey of showWhenKeys) {
       const tierConditions = action.show_when[tierKey as any];
-      const tierSatisfied = Object.entries(tierConditions).every(([key, value]) => {
-        const pathParts = key.split('.');
-        let current: any = state;
-        for (const part of pathParts) {
-          current = current?.[part];
-        }
-
-        if (key.startsWith("buildings.")) {
-          if (value === 0) {
-            return (current || 0) === 0;
-          } else {
-            return (current || 0) >= value;
+      const tierSatisfied = Object.entries(tierConditions).every(
+        ([key, value]) => {
+          const pathParts = key.split(".");
+          let current: any = state;
+          for (const part of pathParts) {
+            current = current?.[part];
           }
-        }
 
-        return (current || 0) >= value;
-      });
+          if (key.startsWith("buildings.")) {
+            if (value === 0) {
+              return (current || 0) === 0;
+            } else {
+              return (current || 0) >= value;
+            }
+          }
+
+          return (current || 0) >= value;
+        },
+      );
 
       if (tierSatisfied) {
         activeTier = Number(tierKey);
@@ -580,13 +579,19 @@ export function getActionCostBreakdown(
     let satisfied: boolean;
     if (amount === true) {
       // For boolean costs (relics), check in the relics object
-      satisfied = Boolean(state.relics[resourceName as keyof typeof state.relics]);
+      satisfied = Boolean(
+        state.relics[resourceName as keyof typeof state.relics],
+      );
     } else {
       // For numeric costs, check if we have enough
-      satisfied = (resources[resourceName as keyof typeof resources] || 0) >= displayCost;
+      satisfied =
+        (resources[resourceName as keyof typeof resources] || 0) >= displayCost;
     }
 
-    breakdown.push({ text: `-${displayCost} ${resourceNameFormatted}`, satisfied });
+    breakdown.push({
+      text: `-${displayCost} ${resourceNameFormatted}`,
+      satisfied,
+    });
   });
 
   return breakdown;

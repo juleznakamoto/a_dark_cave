@@ -10,7 +10,6 @@ import {
   ACTION_TO_UPGRADE_KEY,
 } from "../buttonUpgrades";
 import { getNextBuildingLevel } from "./villageBuildActions";
-import { getNextBuildingLevel } from "./villageBuildActions";
 
 const FOCUS_ELIGIBLE_ACTIONS = [
   "exploreCave",
