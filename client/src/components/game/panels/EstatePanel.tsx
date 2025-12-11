@@ -40,7 +40,6 @@ export default function EstatePanel() {
     huntingSkills,
     combatSkills,
     fellowship,
-    resources,
     setHighlightedResources,
   } = useGameStore();
   const mobileTooltip = useMobileButtonTooltip();
@@ -389,7 +388,7 @@ export default function EstatePanel() {
           </TooltipProvider>
 
           {/* Focus Activation Button */}
-          {resources.focus > 0 && !focusState?.isActive && (
+          {focus > 0 && !focusState?.isActive && (
             <TooltipProvider>
               <Tooltip open={mobileTooltip.isTooltipOpen("focus-button")}>
                 <TooltipTrigger asChild>
@@ -398,7 +397,7 @@ export default function EstatePanel() {
                       onClick={() => {
                         const currentState = useGameStore.getState();
                         const focusAmount = currentState.resources.focus;
-                        
+
                         // Only activate if we have focus and it's not already active
                         if (focusAmount > 0 && !currentState.focusState?.isActive) {
                           // Update focus state and consume all focus
