@@ -70,46 +70,6 @@ export const gameActions: Record<string, Action> = {
 // Register gameActions with actionEffects to break circular dependency
 setGameActionsRef(gameActions);
 
-// Utility function to get the next building level
-const getNextBuildingLevel = (actionId: string, state: GameState): number => {
-  const buildingMap: Record<string, keyof GameState["buildings"]> = {
-    buildWoodenHut: "woodenHut",
-    buildShallowPit: "shallowPit",
-    buildDeepeningPit: "deepeningPit",
-    buildDeepPit: "deepPit",
-    buildBottomlessPit: "bottomlessPit",
-    buildCabin: "cabin",
-    buildBlacksmith: "blacksmith",
-    buildFoundry: "foundry",
-    buildPrimeFoundry: "primeFoundry", // Added Prime Foundry
-    buildMasterworkFoundry: "masterworkFoundry", // Added Masterwork Foundry
-    buildAltar: "altar",
-    buildGreatCabin: "greatCabin",
-    buildTimberMill: "timberMill",
-    buildQuarry: "quarry",
-    buildTannery: "tannery",
-    buildShrine: "shrine",
-    buildTemple: "temple",
-    buildSanctum: "sanctum",
-    buildStoneHut: "stoneHut",
-    buildAlchemistHall: "alchemistHall",
-    buildTradePost: "tradePost",
-    buildWizardTower: "wizardTower",
-    buildLonghouse: "longhouse",
-    buildGrandBlacksmith: "grandBlacksmith",
-    buildWatchtower: "watchtower",
-    buildPalisades: "palisades",
-    buildFortifiedMoat: "fortifiedMoat", // Added Fortified Moat
-    buildBlackMonolith: "blackMonolith", // Added Black Monolith
-    buildScriptorium: "scriptorium", // Added Scriptorium
-    buildInkwardenAcademy: "inkwardenAcademy", // Added Inkwarden Academy
-    buildBoneTemple: "boneTemple", // Added Bone Temple
-  };
-
-  const buildingKey = buildingMap[actionId];
-  return buildingKey ? (state.buildings[buildingKey] || 0) + 1 : 1;
-};
-
 // Helper function to check if requirements are met for both building and non-building actions
 const checkRequirements = (
   requirements: Record<string, any>,
@@ -118,7 +78,7 @@ const checkRequirements = (
   actionId: string,
 ): boolean => {
   if (action.building) {
-    const level = getNextBuildingLevel(actionId, state);
+    const level = villageBuildActions.getNextBuildingLevel(actionId, state);
     const levelRequirements = requirements[level];
     if (!levelRequirements) return false;
     requirements = levelRequirements;
@@ -182,7 +142,7 @@ export const shouldShowAction = (
 
   // For building actions, also check if the next level exists
   if (action.building) {
-    const nextLevel = getNextBuildingLevel(actionId, state);
+    const nextLevel = villageBuildActions.getNextBuildingLevel(actionId, state);
     // If there's no cost defined for the next level, the building is maxed out
     if (!action.cost?.[nextLevel]) {
       return false;
@@ -270,7 +230,7 @@ export function getResourcesFromActionCost(actionId: string, state: GameState): 
       // Tiered cost - for building actions, get the next building level
       let level = 1;
       if (action.building) {
-        level = getNextBuildingLevel(actionId, state);
+        level = villageBuildActions.getNextBuildingLevel(actionId, state);
       }
 
       const levelCost = action.cost[level];
@@ -342,7 +302,7 @@ export function canExecuteAction(actionId: string, state: GameState): boolean {
 
   // For building actions, get the cost for the next level
   if (action.building) {
-    const level = getNextBuildingLevel(actionId, state);
+    const level = villageBuildActions.getNextBuildingLevel(actionId, state);
     costs = action.cost[level];
   }
 
@@ -453,7 +413,7 @@ export function getActionCostDisplay(
 
   // For building actions, get the cost for the next level
   if (action.building && state) {
-    const level = getNextBuildingLevel(actionId, state);
+    const level = villageBuildActions.getNextBuildingLevel(actionId, state);
     costs = action.cost[level];
   }
 
@@ -547,7 +507,7 @@ export function getActionCostBreakdown(
 
   // For building actions, get the cost for the next level
   if (action.building) {
-    const level = getNextBuildingLevel(actionId, state);
+    const level = villageBuildActions.getNextBuildingLevel(actionId, state);
     costs = action.cost[level];
   }
 

@@ -2,6 +2,22 @@ import { Action, GameState } from "@shared/schema";
 import { ActionResult } from '@/game/actions';
 import { logger } from "@/lib/logger";
 
+// Utility function to get the next building level
+export const getNextBuildingLevel = (actionId: string, state: GameState): number => {
+  if (!actionId.startsWith("build")) return 1;
+  
+  // Remove "build" prefix and lowercase first character
+  let buildingKey = actionId.slice(5);
+  buildingKey = buildingKey.charAt(0).toLowerCase() + buildingKey.slice(1);
+  
+  // Handle special case
+  if (buildingKey === "alchemistTower") {
+    buildingKey = "alchemistHall";
+  }
+  
+  return (state.buildings[buildingKey as keyof GameState["buildings"]] || 0) + 1;
+};
+
 export const villageBuildActions: Record<string, Action> = {
   buildWoodenHut: {
     id: "buildWoodenHut",

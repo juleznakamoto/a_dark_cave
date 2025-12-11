@@ -9,6 +9,7 @@ import {
   getUpgradeBonusMultiplier,
   ACTION_TO_UPGRADE_KEY,
 } from "../buttonUpgrades";
+import { getNextBuildingLevel } from "./villageBuildActions";
 
 const FOCUS_ELIGIBLE_ACTIONS = [
   "exploreCave",
@@ -42,46 +43,6 @@ function getGameActions(): Record<string, Action> {
   }
   return gameActionsRef;
 }
-
-// Helper functions moved from index.ts
-const getNextBuildingLevel = (actionId: string, state: GameState): number => {
-  const buildingMap: Record<string, keyof GameState["buildings"]> = {
-    buildWoodenHut: "woodenHut",
-    buildShallowPit: "shallowPit",
-    buildDeepeningPit: "deepeningPit",
-    buildDeepPit: "deepPit",
-    buildBottomlessPit: "bottomlessPit",
-    buildCabin: "cabin",
-    buildBlacksmith: "blacksmith",
-    buildFoundry: "foundry",
-    buildPrimeFoundry: "primeFoundry",
-    buildMasterworkFoundry: "masterworkFoundry",
-    buildAltar: "altar",
-    buildGreatCabin: "greatCabin",
-    buildTimberMill: "timberMill",
-    buildQuarry: "quarry",
-    buildTannery: "tannery",
-    buildShrine: "shrine",
-    buildTemple: "temple",
-    buildSanctum: "sanctum",
-    buildStoneHut: "stoneHut",
-    buildAlchemistHall: "alchemistHall",
-    buildTradePost: "tradePost",
-    buildWizardTower: "wizardTower",
-    buildLonghouse: "longhouse",
-    buildGrandBlacksmith: "grandBlacksmith",
-    buildWatchtower: "watchtower",
-    buildPalisades: "palisades",
-    buildFortifiedMoat: "fortifiedMoat",
-    buildBlackMonolith: "blackMonolith",
-    buildScriptorium: "scriptorium",
-    buildInkwardenAcademy: "inkwardenAcademy",
-    buildBoneTemple: "boneTemple",
-  };
-
-  const buildingKey = buildingMap[actionId];
-  return buildingKey ? (state.buildings[buildingKey] || 0) + 1 : 1;
-};
 
 const evaluateCondition = (condition: string, state: GameState): boolean => {
   const isNegated = condition.startsWith("!");
