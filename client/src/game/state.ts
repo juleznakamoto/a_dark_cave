@@ -748,7 +748,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     });
   },
 
-  restartGame: () => {
+  restartGame: async () => {
     const state = get();
 
     // Check if cruel mode is activated (support both old and new purchase ID formats)
@@ -808,6 +808,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       // Mark as new game and allow overwriting cloud playTime once
       isNewGame: true,
       startTime: Date.now(),
+      playTime: 0,
       allowPlayTimeOverwrite: true,
     };
 
@@ -829,6 +830,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
       clickAnalytics: {},
       lastResourceSnapshotTime: 0, // Reset snapshot time
     });
+
+    // Immediately save the new game state to cloud to prevent OCC issues
+    const { saveGame } = await import('@/game/save');
+    try {
+      await saveGame(get(), false);
+      logger.log('[RESTART] ✅ New game state saved to cloud');
+    } catch (error) {
+      logger.error('[RESTART] ❌ Failed to save new game state to cloud:', error);
+    }
   },
 
   trackButtonClick: (buttonId: string) => {
