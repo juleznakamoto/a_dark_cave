@@ -1,4 +1,3 @@
-
 -- Drop ALL existing function signatures to prevent overload conflicts
 DROP FUNCTION IF EXISTS save_game_with_analytics(UUID, JSONB, JSONB);
 DROP FUNCTION IF EXISTS save_game_with_analytics(UUID, JSONB, JSONB, JSONB, BOOLEAN, BOOLEAN);
@@ -160,7 +159,7 @@ BEGIN
     -- If game was completed, append completion record to game_stats (only once per gameId)
     IF v_game_completed AND v_merged_state ? 'playTime' AND v_merged_state ? 'startTime' AND v_merged_state ? 'gameId' THEN
       v_game_id := v_merged_state->>'gameId';
-      
+
       -- Get existing game_stats to check if this gameId was already recorded
       SELECT game_stats INTO v_existing_game_stats
       FROM game_saves
@@ -171,11 +170,20 @@ BEGIN
       END IF;
 
       -- Check if this gameId already exists in game_stats
-      SELECT EXISTS (
-        SELECT 1
-        FROM jsonb_array_elements(v_existing_game_stats) AS elem
-        WHERE elem->>'gameId' = v_game_id
-      ) INTO v_already_recorded;
+      -- Handle null gameId case: if gameId is null, check if ANY null entry exists (treat all nulls as duplicates)
+      IF v_game_id IS NULL THEN
+        SELECT EXISTS (
+          SELECT 1
+          FROM jsonb_array_elements(v_existing_game_stats) AS elem
+          WHERE (elem->>'gameId') IS NULL
+        ) INTO v_already_recorded;
+      ELSE
+        SELECT EXISTS (
+          SELECT 1
+          FROM jsonb_array_elements(v_existing_game_stats) AS elem
+          WHERE elem->>'gameId' = v_game_id
+        ) INTO v_already_recorded;
+      END IF;
 
       -- Only add completion record if this gameId hasn't been recorded yet
       IF NOT v_already_recorded THEN
@@ -183,7 +191,7 @@ BEGIN
           WHEN (v_merged_state->>'cruelMode')::boolean = true THEN 'cruel'
           ELSE 'normal'
         END;
-        
+
         v_start_time := (v_merged_state->>'startTime')::bigint;
         v_finish_time := EXTRACT(EPOCH FROM NOW())::bigint * 1000;
         v_playtime_ms := (v_merged_state->>'playTime')::bigint;
@@ -208,7 +216,7 @@ BEGIN
           game_state = EXCLUDED.game_state,
           game_stats = EXCLUDED.game_stats,
           updated_at = EXCLUDED.updated_at;
-        
+
         RAISE NOTICE 'Game completion recorded for gameId: %', v_game_id;
       ELSE
         -- Just save the merged state without updating game_stats
@@ -218,7 +226,7 @@ BEGIN
         DO UPDATE SET 
           game_state = EXCLUDED.game_state,
           updated_at = EXCLUDED.updated_at;
-        
+
         RAISE NOTICE 'Game completion already recorded for gameId: %', v_game_id;
       END IF;
     ELSE
