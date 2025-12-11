@@ -371,6 +371,20 @@ body {
   animation: notification-pulse 0.8s ease-in-out infinite;
 }
 
+/* Overlay fade-in animation */
+@keyframes overlay-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.overlay-fade-in {
+  animation: overlay-fade-in 0.3s ease-in;
+}
+
 /* Bubbly button animations */
 @keyframes bubbly-top {
   0% {
