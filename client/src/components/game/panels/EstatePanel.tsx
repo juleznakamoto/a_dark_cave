@@ -275,7 +275,7 @@ export default function EstatePanel() {
                           strokeWidth={2}
                           className="text-purple-600"
                         />
-                        <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[12px] -mt-[0px] text-purple-600">
+                        <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[12px] -mt-[0px] text-teal-600">
                           ◈
                         </span>
                       </div>
@@ -389,7 +389,7 @@ export default function EstatePanel() {
           </TooltipProvider>
 
           {/* Focus Activation Button */}
-          {state.focus > 0 && !state.focusState?.isActive && (
+          {resources.focus > 0 && !focusState?.isActive && (
             <TooltipProvider>
               <Tooltip open={mobileTooltip.isTooltipOpen("focus-button")}>
                 <TooltipTrigger asChild>
@@ -397,18 +397,19 @@ export default function EstatePanel() {
                     <Button
                       onClick={() => {
                         const currentState = useGameStore.getState();
-                        if (currentState.focus > 0) {
-                          const focusDuration = currentState.focus;
-
-                          // Update focus state
+                        const focusAmount = currentState.resources.focus;
+                        
+                        // Only activate if we have focus and it's not already active
+                        if (focusAmount > 0 && !currentState.focusState?.isActive) {
+                          // Update focus state and consume all focus
                           useGameStore.setState({
                             focusState: {
                               isActive: true,
-                              endTime: Date.now() + focusDuration * 60000,
+                              endTime: Date.now() + focusAmount * 60000,
                             },
                             resources: {
                               ...currentState.resources,
-                              focus: 0,
+                              focus: 0, // Consume all focus
                             },
                           });
                         }
@@ -424,8 +425,8 @@ export default function EstatePanel() {
                 </TooltipTrigger>
                 <TooltipContent>
                   <div className="text-xs whitespace-nowrap">
-                    {state.focus} Focus: Get 2x action bonus for {state.focus}{" "}
-                    minute{state.focus > 1 ? "s" : ""}
+                    {resources.focus} Focus: Get 2x action bonus for {resources.focus}{" "}
+                    minute{resources.focus > 1 ? "s" : ""}
                   </div>
                 </TooltipContent>
               </Tooltip>
