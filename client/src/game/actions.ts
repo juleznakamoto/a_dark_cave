@@ -45,6 +45,7 @@ import {
   handleCraftHighpriestRobe,
   handleCraftLoggersGloves,
   handleCraftSacrificialTunic,
+  handleCraftShadowBoots,
 } from "@/game/rules/caveCraftTools";
 
 import {
@@ -256,6 +257,8 @@ export function executeGameAction(
       return handleCraftLoggersGloves(state, result);
     case "craftSacrificialTunic":
       return handleCraftSacrificialTunic(state, result);
+    case "craftShadowBoots":
+      return handleCraftShadowBoots(state, result);
     case "craftGrenadierBag":
       return handleCraftGrenadierBag(state, result);
     case "craftHighpriestRobe":

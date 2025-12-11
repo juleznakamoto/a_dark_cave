@@ -517,6 +517,25 @@ export const caveCraftTools: Record<string, Action> = {
     },
     cooldown: 60,
   },
+
+  craftShadowBoots: {
+    id: "craftShadowBoots",
+    label: "Shadow Boots",
+    show_when: {
+      "buildings.masterTannery": 1,
+      "clothing.shadow_boots": false,
+    },
+    cost: {
+      "resources.leather": 1000,
+      "resources.steel": 500,
+    },
+    effects: {
+      "clothing.shadow_boots": true,
+      "story.seen.hasShadowBoots": true,
+      "story.seen.actionCraftShadowBoots": true,
+    },
+    cooldown: 40,
+  },
 };
 
 // Action handlers
@@ -683,6 +702,12 @@ export function handleCraftLoggersGloves(state: GameState, result: ActionResult)
 
 export function handleCraftSacrificialTunic(state: GameState, result: ActionResult): ActionResult {
   const effectUpdates = applyActionEffects('craftSacrificialTunic', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+export function handleCraftShadowBoots(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('craftShadowBoots', state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }

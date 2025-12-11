@@ -898,6 +898,61 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     },
   },
 
+  shadow_boots: {
+    id: "shadow_boots",
+    name: "Shadow Boots",
+    description: "Enchanted boots that enhance speed and agility",
+    bonuses: {
+      actionBonuses: {
+        exploreCave: {
+          cooldownReduction: 4,
+        },
+        ventureDeeper: {
+          cooldownReduction: 4,
+        },
+        descendFurther: {
+          cooldownReduction: 4,
+        },
+        exploreRuins: {
+          cooldownReduction: 4,
+        },
+        exploreTemple: {
+          cooldownReduction: 4,
+        },
+        exploreCitadel: {
+          cooldownReduction: 4,
+        },
+        mining: {
+          cooldownReduction: 3,
+        },
+        mineStone: {
+          cooldownReduction: 3,
+        },
+        mineIron: {
+          cooldownReduction: 3,
+        },
+        mineCoal: {
+          cooldownReduction: 3,
+        },
+        mineSulfur: {
+          cooldownReduction: 3,
+        },
+        mineObsidian: {
+          cooldownReduction: 3,
+        },
+        mineAdamant: {
+          cooldownReduction: 3,
+        },
+        hunt: {
+          cooldownReduction: 2,
+        },
+        chopWood: {
+          cooldownReduction: 1,
+        },
+      },
+    },
+  },
+
   feeding_ring: {
     id: "feeding_ring",
     name: "Feeding Ring",

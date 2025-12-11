@@ -644,6 +644,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
       result.stateUpdates.cooldowns = updatedCooldowns;
     }
 
+    // Enforce minimum cooldown of 1 second for all actions
+    if (result.stateUpdates.cooldowns) {
+      const updatedCooldowns = { ...result.stateUpdates.cooldowns };
+      for (const key in updatedCooldowns) {
+        updatedCooldowns[key] = Math.max(1, updatedCooldowns[key]);
+      }
+      result.stateUpdates.cooldowns = updatedCooldowns;
+    }
+
     // Apply state updates
     set((prevState) => {
       const mergedUpdates = mergeStateUpdates(prevState, result.stateUpdates);
@@ -714,9 +723,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   setCooldown: (action: string, duration: number) => {
+    // Enforce minimum cooldown of 1 second
+    const finalDuration = Math.max(1, duration);
     set((state) => ({
-      cooldowns: { ...state.cooldowns, [action]: duration },
-      cooldownDurations: { ...state.cooldownDurations, [action]: duration },
+      cooldowns: { ...state.cooldowns, [action]: finalDuration },
+      cooldownDurations: { ...state.cooldownDurations, [action]: finalDuration },
     }));
   },
 
