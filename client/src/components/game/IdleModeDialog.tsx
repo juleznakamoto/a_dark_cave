@@ -462,7 +462,7 @@ export default function IdleModeDialog() {
           </DialogDescription>
         </DialogHeader>
 
-        <div className="py-1">
+        <div className="py-1"><span className="text-sm font-medium">While you sleep villagers produce:</span>
           <div className="space-y-1">
             {producedResources.map(([resource, amount]) => (
               <div key={resource} className="flex justify-between items-center">
