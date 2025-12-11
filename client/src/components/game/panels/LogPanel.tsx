@@ -106,7 +106,7 @@ function LogPanel() {
           </div>
 
         </div >{/* Gradient overlay at bottom of content area */}
-        <div className="absolute bottom-0 left-0 right-0 h-12 pointer-events-none bg-gradient-to-t from-background to-transparent"></div>
+        <div className="absolute bottom-[-1px] left-0 right-0 h-12 pointer-events-none bg-gradient-to-t from-background to-transparent"></div>
         <ScrollBar orientation="vertical" />
       </ScrollArea>
     </div>
