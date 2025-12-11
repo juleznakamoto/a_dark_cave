@@ -1,5 +1,19 @@
 import { Action } from "@shared/schema";
 import { GameState } from "@shared/schema";
+import { logger } from "@/lib/logger";
+import {
+  ACTION_TO_UPGRADE_KEY,
+  getUpgradeBonusMultiplier,
+} from "../buttonUpgrades";
+import {
+  getTotalLuck as getTotalLuckCalc,
+  getActionBonuses as getActionBonusesCalc,
+  getTotalCraftingCostReduction as getTotalCraftingCostReductionCalc,
+  getTotalBuildingCostReduction as getTotalBuildingCostReductionCalc,
+} from "./effectsCalculation";
+import { applyActionEffects, setGameActionsRef } from "./actionEffects";
+
+// Import action modules
 import { caveCraftResources } from "./caveCraftResources";
 import { caveCraftTools } from "./caveCraftTools";
 import { caveCraftWeapons } from "./caveCraftWeapons";
@@ -16,21 +30,12 @@ import {
   getAnimalsCost,
   getHumansCost,
 } from "./forestSacrificeActions";
-import { caveEvents } from "./eventsCave";
-import { huntEvents } from "./eventsHunt";
 import { forestTradeActions } from "./forestTradeActions";
 import { caveExploreActions } from "./caveExploreActions";
-import {
-  getTotalLuck as getTotalLuckCalc,
-  getActionBonuses as getActionBonusesCalc,
-  getTotalCraftingCostReduction as getTotalCraftingCostReductionCalc,
-  getTotalBuildingCostReduction as getTotalBuildingCostReductionCalc,
-} from "./effectsCalculation";
-import {
-  ACTION_TO_UPGRADE_KEY,
-  getUpgradeBonusMultiplier,
-} from "../buttonUpgrades";
-import { logger } from "@/lib/logger";
+
+// Import event modules
+import { caveEvents } from "./eventsCave";
+import { huntEvents } from "./eventsHunt";
 import { choiceEvents } from "./eventsChoices";
 import { cubeEvents } from "./eventsCube";
 import { feastEvents } from "./eventsFeast";
@@ -44,7 +49,6 @@ import { villageAttackEvents } from "./eventsVillageAttacks";
 import { woodcutterEvents } from "./eventsWoodcutter";
 import { fellowshipEvents } from "./eventsFellowship";
 import { attackWaveEvents } from "./eventsAttackWaves";
-import { applyActionEffects, setGameActionsRef } from "./actionEffects";
 
 // Combine all actions
 export const gameActions: Record<string, Action> = {
