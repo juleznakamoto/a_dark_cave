@@ -434,7 +434,7 @@ export default function EstatePanel() {
                           </TooltipTrigger>
                           <TooltipContent>
                             <div className="text-xs whitespace-nowrap">
-                              Activate Focus for 2x resource bonus for {state.focus} minute{state.focus > 1 ? 's' : ''} 
+                              Activate Focus for 2x resource bonus for {state.focus} minute{state.focus > 1 ? 's' : ''}
                             </div>
                           </TooltipContent>
                         </Tooltip>
