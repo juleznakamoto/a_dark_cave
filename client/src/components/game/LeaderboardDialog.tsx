@@ -181,14 +181,7 @@ export default function LeaderboardDialog({ isOpen, onClose }: LeaderboardDialog
     }
 
     return (
-      <div className="space-y-2">
-        <div className="flex items-center justify-between px-3 pb-2 border-b border-border">
-          <div className="flex items-center gap-3">
-            <span className="font-semibold text-sm w-8 text-center">#</span>
-            <span className="font-semibold text-sm">Player</span>
-          </div>
-          <span className="font-semibold text-sm">Completion Time</span>
-        </div>
+      <>
         {entries.map((entry, index) => (
           <div
             key={entry.id}
@@ -203,7 +196,7 @@ export default function LeaderboardDialog({ isOpen, onClose }: LeaderboardDialog
             <span className="text-muted-foreground">{formatTime(entry.play_time)}</span>
           </div>
         ))}
-      </div>
+      </>
     );
   };
 
@@ -277,8 +270,17 @@ export default function LeaderboardDialog({ isOpen, onClose }: LeaderboardDialog
             <TabsTrigger value="cruel">Cruel Mode</TabsTrigger>
           </TabsList>
           <TabsContent value="normal" className="flex-1 min-h-0 flex flex-col">
+            <div className="flex items-center justify-between px-3 pb-2 border-b border-border bg-background">
+              <div className="flex items-center gap-3">
+                <span className="font-semibold text-sm w-8 text-center">#</span>
+                <span className="font-semibold text-sm">Player</span>
+              </div>
+              <span className="font-semibold text-sm">Completion Time</span>
+            </div>
             <ScrollArea className="h-[400px] pr-4 flex-1 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-              {renderLeaderboard(normalLeaderboard)}
+              <div className="space-y-2 pt-2">
+                {renderLeaderboard(normalLeaderboard)}
+              </div>
             </ScrollArea>
             {lastUpdated && (
               <div className="text-xs text-muted-foreground text-center mt-2 pt-2">
@@ -287,8 +289,17 @@ export default function LeaderboardDialog({ isOpen, onClose }: LeaderboardDialog
             )}
           </TabsContent>
           <TabsContent value="cruel" className="flex-1 min-h-0 flex flex-col">
+            <div className="flex items-center justify-between px-3 pb-2 border-b border-border bg-background">
+              <div className="flex items-center gap-3">
+                <span className="font-semibold text-sm w-8 text-center">#</span>
+                <span className="font-semibold text-sm">Player</span>
+              </div>
+              <span className="font-semibold text-sm">Completion Time</span>
+            </div>
             <ScrollArea className="h-[400px] pr-4 flex-1 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-              {renderLeaderboard(cruelLeaderboard)}
+              <div className="space-y-2 pt-2">
+                {renderLeaderboard(cruelLeaderboard)}
+              </div>
             </ScrollArea>
             {lastUpdated && (
               <div className="text-xs text-muted-foreground text-center mt-2 pt-2">
