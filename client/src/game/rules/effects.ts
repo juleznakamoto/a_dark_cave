@@ -903,7 +903,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   shadow_boots: {
     id: "shadow_boots",
     name: "Shadow Boots",
-    description: "Enchanted boots that enhance speed and agility",
+    description: "Move across all terrain as quick as a shadow",
     bonuses: {
       actionBonuses: {
         caveExplore: {
