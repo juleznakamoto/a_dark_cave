@@ -98,6 +98,7 @@ export default function CavePanel() {
             { id: "craftGrenadierBag", label: "Grenadier's Bag" },
             { id: "craftHighpriestRobe", label: "Highpriest Robe" },
             { id: "craftSacrificialTunic", label: "Sacrificial Tunic" },
+            { id: "craftShadowBoots", label: "Shadow Boots" },
           ],
         },
         {
