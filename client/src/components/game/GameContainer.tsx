@@ -32,6 +32,7 @@ export default function GameContainer() {
     books,
     eventDialog,
     combatDialog,
+    idleModeDialog,
     setActiveTab,
     setEventDialog,
     setCombatDialog,
@@ -205,6 +206,14 @@ export default function GameContainer() {
     <div className="fixed inset-0 bg-background text-foreground flex flex-col">
       {/* Pause Overlay - covers everything except footer and profile menu */}
       {isPaused && (
+        <div
+          className="fixed inset-0 bg-black/70 z-40 pointer-events-auto"
+          style={{ bottom: "45px" }}
+        />
+      )}
+
+      {/* Sleep Mode Overlay - covers everything except footer and profile menu */}
+      {idleModeDialog.isOpen && (
         <div
           className="fixed inset-0 bg-black/70 z-40 pointer-events-auto"
           style={{ bottom: "45px" }}
