@@ -1,0 +1,103 @@
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Sacrifice Actions > boneTotems gains match tooltip
+AssertionError: expected undefined to be defined
+ ❯ client/src/game/rules/resourceGains.test.ts:581:34
+    579| 
+    580|       expect(expectedGains.silver).toBeDefined();
+    581|       expect(actualGains.silver).toBeDefined();
+       |                                  ^
+    582| 
+    583|       const minActual = Math.min(...actualGains.silver);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/7]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Sacrifice Actions > leatherTotems gains match tooltip
+AssertionError: expected undefined to be defined
+ ❯ client/src/game/rules/resourceGains.test.ts:597:32
+    595| 
+    596|       expect(expectedGains.gold).toBeDefined();
+    597|       expect(actualGains.gold).toBeDefined();
+       |                                ^
+    598| 
+    599|       const minActual = Math.min(...actualGains.gold);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/7]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Sacrifice Actions > boneTotems with sacrificial_tunic: tooltip matches actual gains
+TypeError: actualGains.silver is not iterable (cannot read property undefined)
+ ❯ client/src/game/rules/resourceGains.test.ts:717:30
+    715| 
+    716|       // Verify actual gains fall within tooltip range
+    717|       const minActual = Math.min(...actualGains.silver);
+       |                              ^
+    718|       const maxActual = Math.max(...actualGains.silver);
+    719|       expect(minActual).toBeGreaterThanOrEqual(tooltipSilver!.min);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/7]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Sacrifice Actions > leatherTotems with sacrificial_tunic: tooltip matches actual gains
+TypeError: actualGains.gold is not iterable (cannot read property undefined)
+ ❯ client/src/game/rules/resourceGains.test.ts:742:30
+    740| 
+    741|       // Verify actual gains fall within tooltip range
+    742|       const minActual = Math.min(...actualGains.gold);
+       |                              ^
+    743|       const maxActual = Math.max(...actualGains.gold);
+    744|       expect(minActual).toBeGreaterThanOrEqual(tooltipGold!.min);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/7]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Sacrifice Actions > boneTotems with sacrificial_tunic and boneTemple: tooltip matches actual gains
+TypeError: actualGains.silver is not iterable (cannot read property undefined)
+ ❯ client/src/game/rules/resourceGains.test.ts:767:30
+    765| 
+    766|       // Verify actual gains fall within tooltip range
+    767|       const minActual = Math.min(...actualGains.silver);
+       |                              ^
+    768|       const maxActual = Math.max(...actualGains.silver);
+    769|       expect(minActual).toBeGreaterThanOrEqual(tooltipSilver!.min);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/7]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Sacrifice Actions > leatherTotems with sacrificial_tunic and boneTemple: tooltip matches actual gains
+TypeError: actualGains.gold is not iterable (cannot read property undefined)
+ ❯ client/src/game/rules/resourceGains.test.ts:800:30
+    798| 
+    799|       // Verify actual gains fall within tooltip range
+    800|       const minActual = Math.min(...actualGains.gold);
+       |                              ^
+    801|       const maxActual = Math.max(...actualGains.gold);
+    802|       expect(minActual).toBeGreaterThanOrEqual(tooltipGold!.min);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/7]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Focus Mode > focus mode tooltip shows doubled gains for exploreCave
+AssertionError: expected 10 to be 8 // Object.is equality
+
+- Expected
++ Received
+
+- 8
++ 10
+
+ ❯ client/src/game/rules/resourceGains.test.ts:1110:28
+    1108|         if (base) {
+    1109|           // With focus, should be doubled
+    1110|           expect(gain.min).toBe(base.min * 2);
+       |                            ^
+    1111|           expect(gain.max).toBe(base.max * 2);
+    1112|         }
+ ❯ client/src/game/rules/resourceGains.test.ts:1098:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/7]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  7 failed | 51 passed (58)
+   Start at  11:29:30
+   Duration  1.33s
+
+ FAIL  Tests failed. Watching for file changes...
+       press h to show help, press q to quit
