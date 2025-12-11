@@ -222,9 +222,9 @@ export const toolEffects: Record<string, EffectDefinition> = {
           resourceMultiplier: 1.25,
           cooldownReduction: 1,
         },
-      },
-      generalBonuses: {
-        caveExploreMultiplier: 1.25,
+        caveExplore: {
+          resourceMultiplier: 1.25,
+        },
       },
     },
   },
@@ -239,9 +239,9 @@ export const toolEffects: Record<string, EffectDefinition> = {
           resourceMultiplier: 1.5,
           cooldownReduction: 2,
         },
-      },
-      generalBonuses: {
-        caveExploreMultiplier: 1.5,
+        caveExplore: {
+          resourceMultiplier: 1.5,
+        },
       },
     },
   },
@@ -256,9 +256,9 @@ export const toolEffects: Record<string, EffectDefinition> = {
           resourceMultiplier: 1.75,
           cooldownReduction: 3,
         },
-      },
-      generalBonuses: {
-        caveExploreMultiplier: 1.75,
+        caveExplore: {
+          resourceMultiplier: 1.75,
+        },
       },
     },
   },
@@ -273,9 +273,9 @@ export const toolEffects: Record<string, EffectDefinition> = {
           resourceMultiplier: 2.0,
           cooldownReduction: 4,
         },
-      },
-      generalBonuses: {
-        caveExploreMultiplier: 2.0,
+        caveExplore: {
+          resourceMultiplier: 2.0,
+        },
       },
     },
   },
@@ -850,8 +850,10 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     description:
       "Well-crafted leather backpack easing the weight upon the shoulders",
     bonuses: {
-      generalBonuses: {
-        caveExploreMultiplier: 1.25,
+      actionBonuses: {
+        caveExplore: {
+          resourceMultiplier: 1.25,
+        },
       },
     },
   },
@@ -904,22 +906,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     description: "Enchanted boots that enhance speed and agility",
     bonuses: {
       actionBonuses: {
-        exploreCave: {
-          cooldownReduction: 4,
-        },
-        ventureDeeper: {
-          cooldownReduction: 4,
-        },
-        descendFurther: {
-          cooldownReduction: 4,
-        },
-        exploreRuins: {
-          cooldownReduction: 4,
-        },
-        exploreTemple: {
-          cooldownReduction: 4,
-        },
-        exploreCitadel: {
+        caveExplore: {
           cooldownReduction: 4,
         },
         mining: {

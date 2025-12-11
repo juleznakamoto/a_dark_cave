@@ -282,7 +282,7 @@ export const getActionBonuses = (
       }
     }
 
-    // Add cave exploration multiplier for cave explore actions
+    // Add general cave explore bonuses for cave explore actions
     const caveExploreActions = [
       "exploreCave",
       "ventureDeeper",
@@ -292,10 +292,23 @@ export const getActionBonuses = (
       "exploreCitadel",
     ];
     if (caveExploreActions.includes(actionId)) {
-      if (effect.bonuses.generalBonuses?.caveExploreMultiplier) {
-        // Additive: sum the bonus percentages
-        caveExploreMultiplier +=
-          effect.bonuses.generalBonuses.caveExploreMultiplier - 1;
+      if (effect.bonuses.actionBonuses?.caveExplore) {
+        const caveBonus = effect.bonuses.actionBonuses.caveExplore;
+        if (caveBonus.resourceMultiplier) {
+          // Additive: sum the bonus percentages
+          resourceMultiplier += caveBonus.resourceMultiplier - 1;
+          caveExploreMultiplier += caveBonus.resourceMultiplier - 1;
+        }
+        if (caveBonus.cooldownReduction) {
+          cooldownReduction += caveBonus.cooldownReduction;
+        }
+        if (caveBonus.resourceBonus) {
+          Object.entries(caveBonus.resourceBonus).forEach(
+            ([resource, amount]) => {
+              resourceBonus[resource] = (resourceBonus[resource] || 0) + amount;
+            },
+          );
+        }
       }
     }
   });
