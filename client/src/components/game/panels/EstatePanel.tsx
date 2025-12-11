@@ -22,14 +22,7 @@ import {
   SLEEP_LENGTH_UPGRADES,
   SLEEP_INTENSITY_UPGRADES,
 } from "@/game/rules/skillUpgrades";
-import {
-  feastTooltip,
-  curseTooltip,
-  miningBoostTooltip,
-  frostfallTooltip,
-  fogTooltip,
-  focusTooltip,
-} from "@/game/rules/tooltips";
+import { focusTooltip } from "@/game/rules/tooltips";
 
 export default function EstatePanel() {
   const {
@@ -406,7 +399,10 @@ export default function EstatePanel() {
                         const focusAmount = currentState.resources.focus;
 
                         // Only activate if we have focus and it's not already active
-                        if (focusAmount > 0 && !currentState.focusState?.isActive) {
+                        if (
+                          focusAmount > 0 &&
+                          !currentState.focusState?.isActive
+                        ) {
                           // Update focus state and consume all focus
                           useGameStore.setState({
                             focusState: {
@@ -431,8 +427,8 @@ export default function EstatePanel() {
                 </TooltipTrigger>
                 <TooltipContent>
                   <div className="text-xs whitespace-nowrap">
-                    {resources.focus} Focus: Get 2x action bonus for {resources.focus}{" "}
-                    minute{resources.focus > 1 ? "s" : ""}
+                    {resources.focus} Focus: Get 2x action bonus for{" "}
+                    {resources.focus} minute{resources.focus > 1 ? "s" : ""}
                   </div>
                 </TooltipContent>
               </Tooltip>
