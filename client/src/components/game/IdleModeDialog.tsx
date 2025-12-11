@@ -266,7 +266,7 @@ export default function IdleModeDialog() {
           wasActive: isActive,
           currentStartTime: startTime,
         });
-        
+
         setIsActive(false);
 
         // DO NOT CLEAR startTime HERE - only clear when user closes dialog
@@ -386,18 +386,18 @@ export default function IdleModeDialog() {
     const now = Date.now();
     const elapsed = now - startTime;
     const hoursSlept = Math.floor(elapsed / (60 * 60 * 1000)); // Full hours only
-    
+
     if (hoursSlept > 0) {
       const currentState = useGameStore.getState();
       const newFocusPoints = currentState.focus + hoursSlept;
-      
+
       // Update focus points
       useGameStore.setState({ focus: newFocusPoints });
     }
 
     // Create log message showing resources gained
     const logMessages: string[] = [];
-    
+
     if (Object.keys(accumulatedResources).length > 0) {
       const resourcesList = Object.entries(accumulatedResources)
         .filter(([_, amount]) => Math.floor(amount) !== 0)
@@ -405,13 +405,13 @@ export default function IdleModeDialog() {
         .join(', ');
 
       if (resourcesList) {
-        let restMsg = hoursSlept > 0 
-          ? `You gained ${hoursSlept} Focus point${hoursSlept > 1 ? 's' : ''} from your rest. ` 
+        let restMsg = hoursSlept > 0
+          ? `You gained ${hoursSlept} Focus point${hoursSlept > 1 ? 's' : ''} from your rest. `
           : '';
 
         logMessages.push(`${restMsg}Villagers produced: ${resourcesList}`);
       }
-      
+
     if (logMessages.length > 0) {
       useGameStore.getState().addLogEntry({
         id: `idle-mode-end-${Date.now()}`,
@@ -426,7 +426,7 @@ export default function IdleModeDialog() {
       wasActive: isActive,
       hadStartTime: startTime,
     });
-    
+
     useGameStore.setState({
       idleModeState: {
         isActive: false,
@@ -454,10 +454,10 @@ export default function IdleModeDialog() {
   // Show resources that are being produced
   const displayNow = Date.now();
   const displayElapsed = displayNow - startTime;
-  const secondsElapsed = Math.floor(displayElapsed / 1000);
+  const displaySecondsElapsed = Math.floor(displayElapsed / 1000);
 
   // Show resources only after at least 15 seconds have elapsed from idle mode start
-  const hasCompletedFirstInterval = secondsElapsed >= 15;
+  const hasCompletedFirstInterval = displaySecondsElapsed >= 15;
 
   // Get all resources that have changed (only positive)
   const producedResources = Object.keys(accumulatedResources)

@@ -98,6 +98,13 @@ interface GameStore extends GameState {
   cooldowns: Record<string, number>;
   cooldownDurations: Record<string, number>; // Track initial duration for each cooldown
 
+  // Focus system
+  focus: number;
+  focusState: {
+    isActive: boolean;
+    endTime: number;
+  };
+
   // Population helpers
   current_population: number;
   total_population: number;
