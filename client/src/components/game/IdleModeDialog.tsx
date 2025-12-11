@@ -502,7 +502,7 @@ export default function IdleModeDialog() {
       if (resourcesList) {
         let restMsg =
           hoursSlept > 0
-            ? `You gained ${hoursSlept} Focus point${hoursSlept > 1 ? "s" : ""} from your rest. `
+            ? `You gained ${hoursSlept} Focus from your rest. `
             : "";
 
         logMessages.push(`${restMsg}Villagers produced: ${resourcesList}`);
