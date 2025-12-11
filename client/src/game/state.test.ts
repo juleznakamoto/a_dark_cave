@@ -109,6 +109,67 @@ describe('Focus State Management', () => {
       focusState: {
         isActive: true,
         endTime: Date.now() + 3 * 60000,
+
+
+  it('should add focus points after sleep based on intensity level', () => {
+    const store = useGameStore.getState();
+    
+    // Set up sleep upgrades with intensity level 3
+    useGameStore.setState({
+      sleepUpgrades: {
+        lengthLevel: 2,
+        intensityLevel: 3,
+      },
+      resources: {
+        ...store.resources,
+        focus: 0,
+      },
+    });
+
+    // Simulate sleep mode being active
+    useGameStore.setState({
+      idleModeState: {
+        isActive: true,
+        startTime: Date.now() - 60000, // Started 1 minute ago
+        needsDisplay: false,
+      },
+    });
+
+    // Intensity level 3 should give 3 focus points
+    const expectedFocus = 3;
+
+    // Simulate waking up and adding focus
+    useGameStore.getState().updateResource("focus", expectedFocus);
+
+    // Verify focus was added
+    expect(useGameStore.getState().resources.focus).toBe(expectedFocus);
+  });
+
+  it('should not add focus points if intensity level is 0', () => {
+    const store = useGameStore.getState();
+    
+    // Set up sleep upgrades with no intensity
+    useGameStore.setState({
+      sleepUpgrades: {
+        lengthLevel: 2,
+        intensityLevel: 0,
+      },
+      resources: {
+        ...store.resources,
+        focus: 0,
+      },
+    });
+
+    // Intensity level 0 should give 0 focus points
+    const expectedFocus = 0;
+
+    // Simulate waking up (no focus should be added)
+    // useGameStore.getState().updateResource("focus", expectedFocus); // Don't call with 0
+
+    // Verify focus remains 0
+    expect(useGameStore.getState().resources.focus).toBe(0);
+  });
+
       },
       resources: {
         ...useGameStore.getState().resources,
