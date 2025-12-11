@@ -211,6 +211,14 @@ export default function GameContainer() {
         />
       )}
 
+      {/* Sleep Mode Overlay - covers everything except footer and profile menu */}
+      {idleModeDialog.isOpen && (
+        <div
+          className="fixed inset-0 bg-black/70 z-40 pointer-events-auto"
+          style={{ bottom: "45px" }}
+        />
+      )}
+
       {/* Event Log - Fixed Height at Top */}
       <div className="w-full overflow-hidden pb-0 p-2 flex-shrink-0 pr-12">
         <LogPanel />
