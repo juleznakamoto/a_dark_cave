@@ -27,15 +27,40 @@ export default function GameFooter() {
     mysteriousNoteShopNotificationSeen,
     mysteriousNoteDonateNotificationSeen,
     idleModeDialog,
+    playTime,
+    devMode,
   } = useGameStore();
   const mobileTooltip = useMobileTooltip();
   const [glowingButton, setGlowingButton] = useState<string | null>(null);
+  const [displayTime, setDisplayTime] = useState("");
+
   // Trigger glow animation when pause state changes
   useEffect(() => {
     setGlowingButton("pause");
     const timer = setTimeout(() => setGlowingButton(null), 500);
     return () => clearTimeout(timer);
   }, [isPaused]);
+
+  // Update display time every second in dev mode
+  useEffect(() => {
+    if (!devMode) return;
+
+    const formatPlayTime = (ms: number) => {
+      const totalSeconds = Math.floor(ms / 1000);
+      const hours = Math.floor(totalSeconds / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      const seconds = totalSeconds % 60;
+      return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    };
+
+    setDisplayTime(formatPlayTime(playTime));
+
+    const interval = setInterval(() => {
+      setDisplayTime(formatPlayTime(useGameStore.getState().playTime));
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [devMode, playTime]);
 
   const handleOfferTribute = () => {
     window.open("https://www.buymeacoffee.com/julez.b", "_blank");
@@ -56,6 +81,11 @@ export default function GameFooter() {
       <footer className="border-t border-border px-2 py-2 text-xs text-muted-foreground pointer-events-auto z-50">
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-0 flex-1">
+            {devMode && (
+              <div className="px-2 py-1 text-xs font-mono">
+                {displayTime}
+              </div>
+            )}
             <Button
               variant="ghost"
               size="xs"
