@@ -382,7 +382,7 @@ body {
 }
 
 .overlay-fade-in {
-  animation: overlay-fade-in 3s ease-in;
+  animation: overlay-fade-in 2s ease-in;
 }
 
 /* Bubbly button animations */

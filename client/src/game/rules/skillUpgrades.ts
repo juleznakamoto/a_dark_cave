@@ -100,9 +100,9 @@ export const SLEEP_LENGTH_UPGRADES = [
 
 export const SLEEP_INTENSITY_UPGRADES = [
   { level: 0, percentage: 10, cost: 0, currency: null },
-  { level: 1, percentage: 12.5, cost: 500, currency: "gold" },
-  { level: 2, percentage: 15, cost: 1000, currency: "gold" },
-  { level: 3, percentage: 17.5, cost: 1500, currency: "gold" },
-  { level: 4, percentage: 20, cost: 2000, currency: "gold" },
-  { level: 5, percentage: 25, cost: 2500, currency: "gold" },
+  { level: 1, percentage: 12.5, cost: 250, currency: "gold" },
+  { level: 2, percentage: 15, cost: 500, currency: "gold" },
+  { level: 3, percentage: 17.5, cost: 1000, currency: "gold" },
+  { level: 4, percentage: 20, cost: 1500, currency: "gold" },
+  { level: 5, percentage: 25, cost: 2000, currency: "gold" },
 ];
