@@ -12,7 +12,7 @@ export default function AttackWavesChart() {
       id: "firstWave", 
       name: "First Wave",
       completed: story?.seen?.firstWaveVictory || false,
-      conditionMet: flags.portalBlasted && story?.seen?.hasBastion,
+      conditionMet: story.seen.portalBlasted && story?.seen?.hasBastion,
     },
     { 
       id: "secondWave", 

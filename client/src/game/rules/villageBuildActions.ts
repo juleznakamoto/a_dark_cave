@@ -907,7 +907,7 @@ export const villageBuildActions: Record<string, Action> = {
     building: true,
     show_when: {
       1: {
-        "flags.portalBlasted": true,
+        "story.seen.portalBlasted": true,
         "buildings.bastion": 0,
       },
     },
@@ -1003,7 +1003,7 @@ export const villageBuildActions: Record<string, Action> = {
     building: true,
     show_when: {
       1: {
-        "flags.portalBlasted": true,
+        "story.seen.portalBlasted": true,
         "buildings.bastion": 1,
         "buildings.palisades": 0,
       },

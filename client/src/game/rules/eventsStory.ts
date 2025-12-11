@@ -6,7 +6,7 @@ export const storyEvents: Record<string, GameEvent> = {
     id: "portalDiscovered",
     condition: (state: GameState) =>
       state.buildings.alchemistHall >= 1 &&
-      state.flags.exploredCitadel &&
+      state.story.seen.exploredCitadel &&
       !state.story.seen.portalDiscovered,
     triggerType: "resource",
     timeProbability: 1,

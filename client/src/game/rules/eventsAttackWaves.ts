@@ -91,7 +91,7 @@ const WAVE_CONFIG = {
       "Pale figures emerge from the cave, finally freed, their ember eyes cutting through the dark as they march towards the city.",
     enemyName: "Group of creatures",
     condition: (state: GameState) =>
-      state.flags.portalBlasted &&
+      state.story.seen.portalBlasted &&
       state.story.seen.hasBastion &&
       !state.story.seen.firstWaveVictory,
     triggeredFlag: "firstWaveTriggered" as const,

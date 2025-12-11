@@ -325,7 +325,7 @@ export const caveCraftTools: Record<string, Action> = {
     show_when: {
       "buildings.blacksmith": 1,
       "tools.iron_lantern": false,
-      "flags.venturedDeeper": true,
+      "story.seen.venturedDeeper": true,
     },
     cost: {
       "resources.wood": 200,
@@ -349,7 +349,7 @@ export const caveCraftTools: Record<string, Action> = {
       "tools.iron_axe": true,
       "tools.iron_pickaxe": true,
       "tools.steel_lantern": false,
-      "flags.descendedFurther": true,
+      "story.seen.descendedFurther": true,
     },
     cost: {
       "resources.wood": 400,
@@ -372,7 +372,7 @@ export const caveCraftTools: Record<string, Action> = {
       "tools.steel_axe": true,
       "tools.steel_pickaxe": true,
       "tools.obsidian_lantern": false,
-      "flags.exploredRuins": true,
+      "story.seen.exploredRuins": true,
     },
     cost: {
       "resources.wood": 800,
@@ -395,7 +395,7 @@ export const caveCraftTools: Record<string, Action> = {
       "tools.obsidian_axe": true,
       "tools.obsidian_pickaxe": true,
       "tools.adamant_lantern": false,
-      "flags.exploredTemple": true,
+      "story.seen.exploredTemple": true,
     },
     cost: {
       "resources.wood": 1600,

@@ -11,7 +11,7 @@ export const caveCraftWeapons: Record<string, Action> = {
       "weapons.iron_sword": false,
     },
     cost: {
-      "resources.iron": 100,
+      "resources.iron": 150,
     },
     effects: {
       "weapons.iron_sword": true,
@@ -83,7 +83,7 @@ export const caveCraftWeapons: Record<string, Action> = {
       "weapons.crude_bow": false,
     },
     cost: {
-      "resources.wood": 200,
+      "resources.wood": 150,
     },
     effects: {
       "weapons.crude_bow": true,
