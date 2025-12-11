@@ -41,6 +41,7 @@ export default function EstatePanel() {
     combatSkills,
     fellowship,
     setHighlightedResources,
+    resources,
   } = useGameStore();
   const mobileTooltip = useMobileButtonTooltip();
   const cubeTooltip = useMobileTooltip();
@@ -388,7 +389,7 @@ export default function EstatePanel() {
           </TooltipProvider>
 
           {/* Focus Activation Button */}
-          {focus > 0 && !focusState?.isActive && (
+          {resources.focus > 0 && !focusState?.isActive && (
             <TooltipProvider>
               <Tooltip open={mobileTooltip.isTooltipOpen("focus-button")}>
                 <TooltipTrigger asChild>
@@ -424,8 +425,8 @@ export default function EstatePanel() {
                 </TooltipTrigger>
                 <TooltipContent>
                   <div className="text-xs whitespace-nowrap">
-                    {focus} Focus: Get 2x action bonus for {focus}{" "}
-                    minute{focus > 1 ? "s" : ""}
+                    {resources.focus} Focus: Get 2x action bonus for {resources.focus}{" "}
+                    minute{resources.focus > 1 ? "s" : ""}
                   </div>
                 </TooltipContent>
               </Tooltip>
