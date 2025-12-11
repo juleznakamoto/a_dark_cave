@@ -602,11 +602,9 @@ export default function IdleModeDialog() {
               <span className="text-sm font-medium">Focus:</span>
               <span className="text-sm tabular-nums">
                 <AnimatedCounter
-                  value={
-                    hasCompletedFirstInterval
-                      ? Math.floor((displayNow - startTime) / (60 * 60 * 1000))
-                      : 0
-                  }
+                  value={Math.floor(
+                    (displayNow - startTime) / (60 * 60 * 1000),
+                  )}
                 />
               </span>
             </div>
