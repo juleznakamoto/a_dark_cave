@@ -1,7 +1,6 @@
 import { getSupabaseClient } from '@/lib/supabase';
 import { GameState } from '@shared/schema';
 import { logger } from '@/lib/logger';
-import { Json } from '@supabase/supabase-js/dist/main/lib/types';
 
 // Define SaveData interface here to avoid circular dependency if it's in schema
 // If SaveData is already defined elsewhere and accessible, this can be removed.
