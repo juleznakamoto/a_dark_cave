@@ -265,10 +265,7 @@ export default function EstatePanel() {
                     <div
                       className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
                       onClick={(e) =>
-                        mobileTooltip.handleTooltipClick(
-                          "focus-progress",
-                          e,
-                        )
+                        mobileTooltip.handleTooltipClick("focus-progress", e)
                       }
                     >
                       <div className="relative inline-flex items-center gap-1 mt-[0px]">
@@ -278,9 +275,7 @@ export default function EstatePanel() {
                           strokeWidth={2}
                           className="text-purple-600"
                         />
-                        <span
-                          className="absolute inset-0 flex items-center justify-center font-extrabold text-[12px] -mt-[0px] text-purple-600"
-                        >
+                        <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[12px] -mt-[0px] text-purple-600">
                           ◈
                         </span>
                       </div>
@@ -416,14 +411,6 @@ export default function EstatePanel() {
                               focus: 0,
                             },
                           });
-
-                          // Add log entry
-                          useGameStore.getState().addLogEntry({
-                            id: `focus-activated-${Date.now()}`,
-                            message: `Focus activated! Actions grant 2x resources for ${focusDuration} minute${focusDuration > 1 ? 's' : ''}.`,
-                            timestamp: Date.now(),
-                            type: 'system',
-                          });
                         }
                       }}
                       size="xs"
@@ -432,16 +419,17 @@ export default function EstatePanel() {
                       button_id="activate-focus"
                     >
                       Focus
-                              </Button>
-                            </div>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <div className="text-xs whitespace-nowrap">
-                              Activate Focus for 2x resource bonus for {state.focus} minute{state.focus > 1 ? 's' : ''}
-                            </div>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
+                    </Button>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <div className="text-xs whitespace-nowrap">
+                    {state.focus} Focus: Get 2x action bonus for {state.focus}{" "}
+                    minute{state.focus > 1 ? "s" : ""}
+                  </div>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           )}
         </div>
 
