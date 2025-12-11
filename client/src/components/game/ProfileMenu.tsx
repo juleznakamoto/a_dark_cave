@@ -208,7 +208,7 @@ export default function ProfileMenu() {
   };
 
   return (
-    <div className="fixed top-2 right-2 z-[60] pointer-events-auto flex flex-col items-end gap-2">
+    <div className="fixed top-2 right-2 z-50 pointer-events-auto flex flex-col items-end gap-2">
       <AuthDialog
         isOpen={authDialogOpen}
         onClose={() => handleSetAuthDialogOpen(false)}
