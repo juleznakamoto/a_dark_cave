@@ -378,12 +378,7 @@ export default function GameContainer() {
       <MerchantDialog />
       <CubeDialog />
       {inactivityDialogOpen && <InactivityDialog />}
-      {!idleModeDialog.isOpen && <ProfileMenu />}
-      {idleModeDialog.isOpen && (
-        <div className="fixed top-2 right-2 z-[60] pointer-events-auto">
-          <ProfileMenu />
-        </div>
-      )}
+      <ProfileMenu />
     </div>
   );
 }
