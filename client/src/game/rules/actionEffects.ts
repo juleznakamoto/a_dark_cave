@@ -1,6 +1,31 @@
 import { Action, GameState } from "@shared/schema";
-import { getTotalCraftingCostReduction as getTotalCraftingCostReductionCalc, getTotalBuildingCostReduction as getTotalBuildingCostReductionCalc, getActionBonuses as getActionBonusesCalc, getTotalLuck as getTotalLuckCalc } from "./effectsCalculation";
-import { getUpgradeBonusMultiplier, ACTION_TO_UPGRADE_KEY } from "../buttonUpgrades";
+import {
+  getTotalCraftingCostReduction as getTotalCraftingCostReductionCalc,
+  getTotalBuildingCostReduction as getTotalBuildingCostReductionCalc,
+  getActionBonuses as getActionBonusesCalc,
+  getTotalLuck as getTotalLuckCalc,
+} from "./effectsCalculation";
+import {
+  getUpgradeBonusMultiplier,
+  ACTION_TO_UPGRADE_KEY,
+} from "../buttonUpgrades";
+
+const FOCUS_ELIGIBLE_ACTIONS = [
+  "exploreCave",
+  "ventureDeeper",
+  "descendFurther",
+  "exploreRuins",
+  "exploreTemple",
+  "exploreCitadel",
+  "mineCoal",
+  "mineIron",
+  "mineSulfur",
+  "mineObsidian",
+  "mineAdamant",
+  "mineMoonstone",
+  "hunt",
+  "chopWood",
+];
 
 // Import gameActions - we'll use a getter function to avoid circular dependency
 let gameActionsRef: Record<string, Action> | null = null;
@@ -11,7 +36,9 @@ export function setGameActionsRef(actions: Record<string, Action>) {
 
 function getGameActions(): Record<string, Action> {
   if (!gameActionsRef) {
-    throw new Error("gameActions not initialized. Call setGameActionsRef first.");
+    throw new Error(
+      "gameActions not initialized. Call setGameActionsRef first.",
+    );
   }
   return gameActionsRef;
 }
@@ -79,7 +106,8 @@ function getAdjustedCost(
   if (!isResourceCost) return cost;
 
   const action = getGameActions()[actionId];
-  const isCraftingAction = actionId.startsWith("craft") || actionId.startsWith("forge");
+  const isCraftingAction =
+    actionId.startsWith("craft") || actionId.startsWith("forge");
   const isBuildingAction = action?.building || false;
 
   if (isCraftingAction) {
@@ -108,13 +136,16 @@ export function applyActionEffects(
     triggeredEvents?: string[];
   } = {};
 
-  const isCraftingAction = actionId.startsWith("craft") || actionId.startsWith("forge");
-  const craftingCostReduction = isCraftingAction ? getTotalCraftingCostReductionCalc(state) : 0;
+  const isCraftingAction =
+    actionId.startsWith("craft") || actionId.startsWith("forge");
+  const craftingCostReduction = isCraftingAction
+    ? getTotalCraftingCostReductionCalc(state)
+    : 0;
 
   const isBuildingAction = action.building;
-  const buildingCostReduction = isBuildingAction ? getTotalBuildingCostReductionCalc(state) : 0;
-
-  const actionBonuses = getActionBonusesCalc(actionId, state);
+  const buildingCostReduction = isBuildingAction
+    ? getTotalBuildingCostReductionCalc(state)
+    : 0;
 
   // Apply costs (as negative effects)
   if (action.cost) {
@@ -126,7 +157,8 @@ export function applyActionEffects(
     }
 
     const costKeys = Object.keys(costs);
-    const hasTieredCost = costKeys.length > 0 && costKeys.every(key => !isNaN(Number(key)));
+    const hasTieredCost =
+      costKeys.length > 0 && costKeys.every((key) => !isNaN(Number(key)));
 
     if (hasTieredCost) {
       const showWhenKeys = Object.keys(action.show_when || {});
@@ -134,23 +166,25 @@ export function applyActionEffects(
 
       for (const tierKey of showWhenKeys) {
         const tierConditions = action.show_when[tierKey as any];
-        const tierSatisfied = Object.entries(tierConditions).every(([key, value]) => {
-          const pathParts = key.split('.');
-          let current: any = state;
-          for (const part of pathParts) {
-            current = current?.[part];
-          }
-
-          if (key.startsWith("buildings.")) {
-            if (value === 0) {
-              return (current || 0) === 0;
-            } else {
-              return (current || 0) >= value;
+        const tierSatisfied = Object.entries(tierConditions).every(
+          ([key, value]) => {
+            const pathParts = key.split(".");
+            let current: any = state;
+            for (const part of pathParts) {
+              current = current?.[part];
             }
-          }
 
-          return (current || 0) >= value;
-        });
+            if (key.startsWith("buildings.")) {
+              if (value === 0) {
+                return (current || 0) === 0;
+              } else {
+                return (current || 0) >= value;
+              }
+            }
+
+            return (current || 0) >= value;
+          },
+        );
 
         if (tierSatisfied) {
           activeTier = Number(tierKey);
@@ -201,7 +235,8 @@ export function applyActionEffects(
     let effects = action.effects;
 
     const effectKeys = Object.keys(effects);
-    const hasTieredEffects = effectKeys.length > 0 && effectKeys.every(key => !isNaN(Number(key)));
+    const hasTieredEffects =
+      effectKeys.length > 0 && effectKeys.every((key) => !isNaN(Number(key)));
 
     if (hasTieredEffects) {
       const showWhenKeys = Object.keys(action.show_when || {});
@@ -209,23 +244,25 @@ export function applyActionEffects(
 
       for (const tierKey of showWhenKeys) {
         const tierConditions = action.show_when[tierKey as any];
-        const tierSatisfied = Object.entries(tierConditions).every(([key, value]) => {
-          const pathParts = key.split('.');
-          let current: any = state;
-          for (const part of pathParts) {
-            current = current?.[part];
-          }
-
-          if (key.startsWith("buildings.")) {
-            if (value === 0) {
-              return (current || 0) === 0;
-            } else {
-              return (current || 0) >= value;
+        const tierSatisfied = Object.entries(tierConditions).every(
+          ([key, value]) => {
+            const pathParts = key.split(".");
+            let current: any = state;
+            for (const part of pathParts) {
+              current = current?.[part];
             }
-          }
 
-          return (current || 0) >= value;
-        });
+            if (key.startsWith("buildings.")) {
+              if (value === 0) {
+                return (current || 0) === 0;
+              } else {
+                return (current || 0) >= value;
+              }
+            }
+
+            return (current || 0) >= value;
+          },
+        );
 
         if (tierSatisfied) {
           activeTier = Number(tierKey);
@@ -271,12 +308,14 @@ export function applyActionEffects(
           let min = parseInt(match[1]);
           let max = parseInt(match[2]);
 
-          const isSacrificeAction = actionId === 'boneTotems' || actionId === 'leatherTotems';
+          const isSacrificeAction =
+            actionId === "boneTotems" || actionId === "leatherTotems";
 
           if (isSacrificeAction) {
-            const usageCountKey = actionId === 'boneTotems'
-              ? 'boneTotemsUsageCount'
-              : 'leatherTotemsUsageCount';
+            const usageCountKey =
+              actionId === "boneTotems"
+                ? "boneTotemsUsageCount"
+                : "leatherTotemsUsageCount";
             const usageCount = Number(state.story?.seen?.[usageCountKey]) || 0;
             const cappedUsageCount = Math.min(usageCount, 20);
             min += cappedUsageCount;
@@ -289,7 +328,8 @@ export function applyActionEffects(
             }
 
             // Generate and assign the random value for sacrifice actions
-            const baseAmount = Math.floor(Math.random() * (max - min + 1)) + min;
+            const baseAmount =
+              Math.floor(Math.random() * (max - min + 1)) + min;
             const originalAmount =
               state.resources[finalKey as keyof typeof state.resources] || 0;
             current[finalKey] = originalAmount + baseAmount;
@@ -328,18 +368,18 @@ export function applyActionEffects(
             }
 
             // Apply focus multiplier for eligible actions (exclude sacrifice actions)
-            const focusEligibleActions = [
-              'exploreCave', 'ventureDeeper', 'descendFurther', 'exploreRuins', 'exploreTemple', 'exploreCitadel',
-              'mineCoal', 'mineIron', 'mineSulfur', 'mineObsidian', 'mineAdamant', 'mineMoonstone',
-              'hunt', 'chopWood'
-            ];
-
-            if (!isSacrificeAction && focusEligibleActions.includes(actionId) && state.focusState?.isActive && state.focusState.endTime > Date.now()) {
+            if (
+              !isSacrificeAction &&
+              FOCUS_ELIGIBLE_ACTIONS.includes(actionId) &&
+              state.focusState?.isActive &&
+              state.focusState.endTime > Date.now()
+            ) {
               min = Math.floor(min * 2);
               max = Math.floor(max * 2);
             }
 
-            const baseAmount = Math.floor(Math.random() * (max - min + 1)) + min;
+            const baseAmount =
+              Math.floor(Math.random() * (max - min + 1)) + min;
             const originalAmount =
               state.resources[finalKey as keyof typeof state.resources] || 0;
             current[finalKey] = originalAmount + baseAmount;
@@ -372,16 +412,20 @@ export function applyActionEffects(
 
         let conditionMet = true;
         if (probabilityEffect.condition) {
-          if (typeof probabilityEffect.condition === 'function') {
+          if (typeof probabilityEffect.condition === "function") {
             conditionMet = probabilityEffect.condition(state);
           } else {
-            conditionMet = evaluateCondition(probabilityEffect.condition, state);
+            conditionMet = evaluateCondition(
+              probabilityEffect.condition,
+              state,
+            );
           }
         }
 
-        const baseProbability = typeof probabilityEffect.probability === 'function'
-          ? probabilityEffect.probability(state)
-          : probabilityEffect.probability;
+        const baseProbability =
+          typeof probabilityEffect.probability === "function"
+            ? probabilityEffect.probability(state)
+            : probabilityEffect.probability;
 
         const totalLuck = getTotalLuckCalc(state);
         const luckBonus = totalLuck / 100;
@@ -402,7 +446,9 @@ export function applyActionEffects(
             typeof probabilityEffect.value === "string" &&
             probabilityEffect.value.startsWith("random(")
           ) {
-            const match = probabilityEffect.value.match(/random\((\d+),(\d+)\)/);
+            const match = probabilityEffect.value.match(
+              /random\((\d+),(\d+)\)/,
+            );
             if (match) {
               let min = parseInt(match[1]);
               let max = parseInt(match[2]);
@@ -424,7 +470,10 @@ export function applyActionEffects(
               let totalMultiplier = actionBonuses?.resourceMultiplier || 1;
               const upgradeKey = ACTION_TO_UPGRADE_KEY[actionId];
               if (upgradeKey && state.books?.book_of_ascension) {
-                const upgradeMultiplier = getUpgradeBonusMultiplier(upgradeKey, state);
+                const upgradeMultiplier = getUpgradeBonusMultiplier(
+                  upgradeKey,
+                  state,
+                );
                 totalMultiplier = totalMultiplier * upgradeMultiplier;
               }
 
@@ -434,13 +483,11 @@ export function applyActionEffects(
               }
 
               // Apply focus multiplier for eligible actions
-              const focusEligibleActions = [
-                'exploreCave', 'ventureDeeper', 'descendFurther', 'exploreRuins', 'exploreTemple', 'exploreCitadel',
-                'mineCoal', 'mineIron', 'mineSulfur', 'mineObsidian', 'mineAdamant', 'mineMoonstone',
-                'hunt', 'chopWood'
-              ];
-
-              if (focusEligibleActions.includes(actionId) && state.focusState?.isActive && state.focusState.endTime > Date.now()) {
+              if (
+                FOCUS_ELIGIBLE_ACTIONS.includes(actionId) &&
+                state.focusState?.isActive &&
+                state.focusState.endTime > Date.now()
+              ) {
                 min = Math.floor(min * 2);
                 max = Math.floor(max * 2);
               }
@@ -518,8 +565,6 @@ export function applyActionEffects(
         },
       );
     }
-
-    let totalMultiplier = actionBonuses.resourceMultiplier || 1;
   }
 
   if (state.devMode && updates.resources) {
