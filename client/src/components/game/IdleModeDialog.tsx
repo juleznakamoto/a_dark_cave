@@ -475,7 +475,7 @@ export default function IdleModeDialog() {
     // Calculate Focus points gained (1 per hour slept)
     const now = Date.now();
     const elapsed = now - startTime;
-    const hoursSlept = Math.floor(elapsed / (60 * 60 * 1000)); // Full hours only
+    const hoursSlept = Math.floor(elapsed / (1 * 10 * 1000)); // Full hours only
 
     if (hoursSlept > 0) {
       const currentState = useGameStore.getState();
