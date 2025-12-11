@@ -555,14 +555,20 @@ export default function IdleModeDialog() {
   // Show resources only after at least 15 seconds have elapsed from idle mode start
   const hasCompletedFirstInterval = displaySecondsElapsed >= 15;
 
-  // Get all resources that have changed (only positive)
-  const producedResources = Object.keys(accumulatedResources)
-    .map((resource) => {
+  // Calculate Focus points (1 per hour slept)
+  const focusPoints = Math.floor(displayElapsed / (60 * 60 * 1000));
+
+  // Get all resources that have changed (only positive), including Focus
+  const producedResources = [
+    ...Object.keys(accumulatedResources).map((resource) => {
       const amount = hasCompletedFirstInterval
         ? accumulatedResources[resource] || 0
         : 0;
       return [resource, amount] as [string, number];
-    })
+    }),
+    // Add Focus to the list
+    ['focus', focusPoints] as [string, number],
+  ]
     .filter(([_, amount]) => Math.floor(amount) > 0) // Only show positive resource changes
     .sort(([a], [b]) => a.localeCompare(b));
 
@@ -598,16 +604,6 @@ export default function IdleModeDialog() {
                 </span>
               </div>
             ))}
-            <div className="flex justify-between items-center">
-              <span className="text-sm font-medium">Focus:</span>
-              <span className="text-sm tabular-nums">
-                <AnimatedCounter
-                  value={Math.floor(
-                    (displayNow - startTime) / (60 * 60 * 1000),
-                  )}
-                />
-              </span>
-            </div>
           </div>
         </div>
 
