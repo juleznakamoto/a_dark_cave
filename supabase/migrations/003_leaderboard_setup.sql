@@ -145,7 +145,7 @@ $$;
 
 -- Schedule the job to run daily at 3 AM UTC
 SELECT cron.schedule(
-  'refresh-leaderboard-daily',
-  '0 3 * * *',
+  'refresh-leaderboard-6hourly',
+  '0 0,6,12,18 * * *',
   'SELECT refresh_leaderboard();'
 );

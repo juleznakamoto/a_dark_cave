@@ -1,5 +1,5 @@
 import { Action, GameState } from "@shared/schema";
-import { ActionResult } from '@/game/actions';
+import { ActionResult } from "@/game/actions";
 import { applyActionEffects } from "./actionEffects";
 
 export const caveCraftTools: Record<string, Action> = {
@@ -526,7 +526,7 @@ export const caveCraftTools: Record<string, Action> = {
       "clothing.shadow_boots": false,
     },
     cost: {
-      "resources.leather": 1000,
+      "resources.leather": 750,
       "resources.steel": 500,
     },
     effects: {
@@ -539,175 +539,257 @@ export const caveCraftTools: Record<string, Action> = {
 };
 
 // Action handlers
-export function handleCraftTorch(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('craftTorch', state);
+export function handleCraftTorch(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("craftTorch", state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
 
-export function handleCraftTorches(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('craftTorches', state);
+export function handleCraftTorches(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("craftTorches", state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
 
-export function handleCraftTorches3(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('craftTorches3', state);
+export function handleCraftTorches3(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("craftTorches3", state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
 
-export function handleCraftTorches4(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('craftTorches4', state);
+export function handleCraftTorches4(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("craftTorches4", state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
 
-export function handleCraftTorches5(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('craftTorches5', state);
+export function handleCraftTorches5(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("craftTorches5", state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
 
-export function handleCraftTorches10(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('craftTorches10', state);
+export function handleCraftTorches10(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("craftTorches10", state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
 
-export function handleCraftStoneAxe(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('craftStoneAxe', state);
+export function handleCraftStoneAxe(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("craftStoneAxe", state);
   Object.assign(result.stateUpdates, effectUpdates);
 
   // Add village unlocked message when stone axe is crafted
   if (!state.flags.villageUnlocked) {
     result.logEntries!.push({
       id: `village-unlocked-${Date.now()}`,
-      message: "Outside the cave a clearing opens. This looks like a good place to build a shelter.",
+      message:
+        "Outside the cave a clearing opens. This looks like a good place to build a shelter.",
       timestamp: Date.now(),
-      type: 'system',
+      type: "system",
     });
   }
 
   return result;
 }
 
-export function handleCraftStonePickaxe(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('craftStonePickaxe', state);
+export function handleCraftStonePickaxe(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("craftStonePickaxe", state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
 
-export function handleCraftIronAxe(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('craftIronAxe', state);
+export function handleCraftIronAxe(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("craftIronAxe", state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
 
-export function handleCraftIronPickaxe(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('craftIronPickaxe', state);
+export function handleCraftIronPickaxe(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("craftIronPickaxe", state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
 
-export function handleCraftSteelAxe(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('craftSteelAxe', state);
+export function handleCraftSteelAxe(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("craftSteelAxe", state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
 
-export function handleCraftSteelPickaxe(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('craftSteelPickaxe', state);
+export function handleCraftSteelPickaxe(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("craftSteelPickaxe", state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
 
-export function handleCraftObsidianAxe(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('craftObsidianAxe', state);
+export function handleCraftObsidianAxe(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("craftObsidianAxe", state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
 
-export function handleCraftObsidianPickaxe(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('craftObsidianPickaxe', state);
+export function handleCraftObsidianPickaxe(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("craftObsidianPickaxe", state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
 
-export function handleCraftAdamantAxe(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('craftAdamantAxe', state);
+export function handleCraftAdamantAxe(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("craftAdamantAxe", state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
 
-export function handleCraftAdamantPickaxe(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('craftAdamantPickaxe', state);
+export function handleCraftAdamantPickaxe(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("craftAdamantPickaxe", state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
 
-export function handleCraftIronLantern(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('craftIronLantern', state);
+export function handleCraftIronLantern(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("craftIronLantern", state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
 
-export function handleCraftSteelLantern(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('craftSteelLantern', state);
+export function handleCraftSteelLantern(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("craftSteelLantern", state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
 
-export function handleCraftObsidianLantern(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('craftObsidianLantern', state);
+export function handleCraftObsidianLantern(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("craftObsidianLantern", state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
 
-export function handleCraftAdamantLantern(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('craftAdamantLantern', state);
+export function handleCraftAdamantLantern(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("craftAdamantLantern", state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
 
-export function handleCraftExplorerPack(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('craftExplorerPack', state);
+export function handleCraftExplorerPack(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("craftExplorerPack", state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
 
-export function handleCraftHunterCloak(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('craftHunterCloak', state);
+export function handleCraftHunterCloak(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("craftHunterCloak", state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
 
-export function handleCraftGrenadierBag(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('craftGrenadierBag', state);
+export function handleCraftGrenadierBag(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("craftGrenadierBag", state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
 
-export function handleCraftHighpriestRobe(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('craftHighpriestRobe', state);
+export function handleCraftHighpriestRobe(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("craftHighpriestRobe", state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
 
-export function handleCraftLoggersGloves(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('craftLoggersGloves', state);
+export function handleCraftLoggersGloves(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("craftLoggersGloves", state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
 
-export function handleCraftSacrificialTunic(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('craftSacrificialTunic', state);
+export function handleCraftSacrificialTunic(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("craftSacrificialTunic", state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
 
-export function handleCraftShadowBoots(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('craftShadowBoots', state);
+export function handleCraftShadowBoots(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("craftShadowBoots", state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
