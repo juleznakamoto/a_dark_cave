@@ -19,7 +19,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     timeProbability: 35,
     title: "The Pale Figure",
     message:
-      "At dawn, men glimpse a tall, pale, slender figure at the woods’ edge. What do you do?",
+      "At dawn, villagers glimpse a tall, pale, slender figure at the woods’ edge. What do you do?",
     triggered: false,
     priority: 3,
     repeatable: true,
@@ -52,7 +52,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 ravenfeather_mantle: true,
               },
               _logMessage:
-                "As the men near, the pale figure vanishes. In its place lies a raven-feather mantle, shimmering with otherworldly power.",
+                "As the vilalgers near, the figure vanishes. In its place lies a raven-feather mantle, shimmering with otherworldly power.",
             };
           } else if (rand < 0.6) {
             return {
@@ -62,16 +62,11 @@ export const choiceEvents: Record<string, GameEvent> = {
             };
           } else {
             let deaths;
-            deaths = Math.min(
-              4 + state.CM * 1,
-              2 +
-                Math.floor(Math.random() * state.buildings.woodenHut) +
-                state.CM * 1,
-            );
+            deaths = 2 + Math.floor(Math.random() * state.buildings.woodenHut * 0.5) + state.CM * 2
 
             return {
               ...killVillagers(state, deaths),
-              _logMessage: `The pale figure moves with inhuman speed. ${deaths} men vanish into the mist, their screams echoing through the trees.`,
+              _logMessage: `The pale figure moves with inhuman speed. ${deaths} villagers vanish into the mist, their screams echoing through the trees.`,
             };
           }
         },
@@ -83,29 +78,29 @@ export const choiceEvents: Record<string, GameEvent> = {
         success_chance: (state: GameState) => {
           return calculateSuccessChance(
             state,
-            0.6,
-            { type: "luck", multiplier: 0.005 },
+            0.4,
+            { type: "luck", multiplier: 0.01 },
           );
         },
         effect: (state: GameState) => {
           const successChance = calculateSuccessChance(
             state,
-            0.6,
-            { type: "luck", multiplier: 0.005 },
+            0.4,
+            { type: "luck", multiplier: 0.01 },
           );
           const rand = Math.random();
-          if (rand < successChance - state.CM * 0.1) {
+          if (rand < successChance) {
             // Nothing happens
             return {
               _logMessage:
-                "The men stay close to the village. By evening, the figure is gone.",
+                "The villagers stay close to the village. By evening, the figure is gone.",
             };
           } else {
             // 1 man found dead
             return {
               ...killVillagers(state, 1),
               _logMessage:
-                "At dawn, one of the men who claimed to have seen the figure is found dead in his bed, his face frozen in terror.",
+                "At dawn, one of the villagers who claimed to have seen the figure is found dead in his bed, his face frozen in terror.",
             };
           }
         },

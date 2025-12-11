@@ -401,7 +401,7 @@ export default function EstatePanel() {
               <TooltipContent>
                 <div className="text-xs whitespace-nowrap">
                   {canActivateIdle ? (
-                    <div>Let the world move in your absence</div>
+                    <div>Let the world move on in your absence</div>
                   ) : (
                     <div>Requires positive wood and food production</div>
                   )}
