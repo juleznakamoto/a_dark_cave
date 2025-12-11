@@ -26,6 +26,7 @@ export default function GameFooter() {
     story,
     mysteriousNoteShopNotificationSeen,
     mysteriousNoteDonateNotificationSeen,
+    idleModeDialog,
   } = useGameStore();
   const mobileTooltip = useMobileTooltip();
   const [glowingButton, setGlowingButton] = useState<string | null>(null);
@@ -60,7 +61,8 @@ export default function GameFooter() {
               size="xs"
               onClick={togglePause}
               data-testid="button-pause-game"
-              className={`px-1 py-1 text-xs hover`}
+              disabled={idleModeDialog.isOpen}
+              className={`px-1 py-1 text-xs hover ${idleModeDialog.isOpen ? "opacity-30 cursor-not-allowed" : ""}`}
             >
               {isPaused ? "▶" : "❚❚"}
             </Button>
