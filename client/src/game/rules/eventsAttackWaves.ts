@@ -1,4 +1,4 @@
-import { GameEvent } from "./events";
+import type { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
 import { useGameStore } from "@/game/state";
