@@ -215,7 +215,7 @@ export default function GameContainer() {
       {/* Sleep Mode Overlay - covers everything except footer and profile menu */}
       {idleModeDialog.isOpen && (
         <div
-          className="fixed inset-0 bg-black/100 z-40 pointer-events-auto overlay-fade-in"
+          className="fixed inset-0 bg-black/80 z-40 pointer-events-auto overlay-fade-in"
           style={{ bottom: "45px" }}
         />
       )}
@@ -364,7 +364,7 @@ export default function GameContainer() {
       </main>
 
       {/* Footer - Fixed at Bottom */}
-      <div className="flex-shrink-0">
+      <div className="flex-shrink-0 relative z-50">
         <GameFooter />
       </div>
 
