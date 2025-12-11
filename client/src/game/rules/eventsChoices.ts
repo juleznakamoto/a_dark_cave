@@ -79,9 +79,22 @@ export const choiceEvents: Record<string, GameEvent> = {
       {
         id: "ignore",
         label: "Ignore it",
+        relevant_stats: ["luck"],
+        success_chance: (state: GameState) => {
+          return calculateSuccessChance(
+            state,
+            0.6,
+            { type: "luck", multiplier: 0.005 },
+          );
+        },
         effect: (state: GameState) => {
+          const successChance = calculateSuccessChance(
+            state,
+            0.6,
+            { type: "luck", multiplier: 0.005 },
+          );
           const rand = Math.random();
-          if (rand < 0.6 - state.CM * 0.1) {
+          if (rand < successChance - state.CM * 0.1) {
             // Nothing happens
             return {
               _logMessage:
