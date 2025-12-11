@@ -206,7 +206,7 @@ export default function GameContainer() {
       {/* Pause Overlay - covers everything except footer and profile menu */}
       {isPaused && (
         <div
-          className="fixed inset-0 bg-black/70 z-40 pointer-events-none"
+          className="fixed inset-0 bg-black/70 z-40 pointer-events-auto"
           style={{ bottom: "45px" }}
         />
       )}
