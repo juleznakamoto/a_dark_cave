@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { useMobileButtonTooltip } from "@/hooks/useMobileTooltip";
 import { getTotalPopulationEffects } from "@/game/population";
 import { Progress } from "@/components/ui/progress";
+import { CircularProgress } from "@/components/ui/circular-progress";
 import { logger } from "@/lib/logger";
 import {
   CRUSHING_STRIKE_UPGRADES,
