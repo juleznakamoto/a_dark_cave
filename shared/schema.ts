@@ -57,10 +57,10 @@ export const gameStateSchema = z.object({
   flags: z
     .object({
       villageUnlocked: z.boolean().default(false),
+      forestUnlocked: z.boolean().default(false),
       bastionUnlocked: z.boolean().default(false),
       gameStarted: z.boolean().default(false),
       starvationActive: z.boolean().default(false),
-      forestUnlocked: z.boolean().default(false),
       firstWolfAttack: z.boolean().default(false),
       hasTraps: z.boolean().default(false),
       monolithUnlocked: z.boolean().default(false),
