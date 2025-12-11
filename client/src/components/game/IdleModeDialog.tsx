@@ -450,7 +450,7 @@ export default function IdleModeDialog() {
 
   return (
     <Dialog open={idleModeDialog.isOpen} onOpenChange={() => {}}>
-      <DialogContent className="sm:max-w-sm" hideClose={true}>
+      <DialogContent className="sm:max-w-sm pointer-events-auto" hideClose={true}>
         <DialogHeader>
           <DialogTitle >Sleeping</DialogTitle>
           <DialogDescription className = "py-1Cu">
