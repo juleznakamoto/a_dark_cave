@@ -161,7 +161,6 @@ export function executeGameAction(
   const result: ActionResult = {
     stateUpdates: {
       cooldowns: {
-        ...state.cooldowns,
         [actionId]: getActionCooldown(actionId),
       },
       story: {
