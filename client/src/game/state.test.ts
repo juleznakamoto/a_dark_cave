@@ -109,7 +109,49 @@ describe('Focus State Management', () => {
       focusState: {
         isActive: true,
         endTime: Date.now() + 3 * 60000,
+      },
+      resources: {
+        ...useGameStore.getState().resources,
+        focus: 0,
+      },
+    });
 
+    expect(useGameStore.getState().resources.focus).toBe(0);
+
+    // Simulate focus expiring
+    useGameStore.setState({
+      focusState: {
+        isActive: false,
+        endTime: 0,
+      },
+    });
+
+    // Gain new focus
+    useGameStore.setState({
+      resources: {
+        ...useGameStore.getState().resources,
+        focus: 2,
+      },
+    });
+
+    expect(useGameStore.getState().resources.focus).toBe(2);
+
+    // Should be able to activate again
+    const newState = useGameStore.getState();
+    useGameStore.setState({
+      focusState: {
+        isActive: true,
+        endTime: Date.now() + newState.resources.focus * 60000,
+      },
+      resources: {
+        ...newState.resources,
+        focus: 0,
+      },
+    });
+
+    expect(useGameStore.getState().resources.focus).toBe(0);
+    expect(useGameStore.getState().focusState.isActive).toBe(true);
+  });
 
   it('should add focus points after sleep based on intensity level', () => {
     const store = useGameStore.getState();
@@ -170,47 +212,5 @@ describe('Focus State Management', () => {
     expect(useGameStore.getState().resources.focus).toBe(0);
   });
 
-      },
-      resources: {
-        ...useGameStore.getState().resources,
-        focus: 0,
-      },
-    });
-
-    expect(useGameStore.getState().resources.focus).toBe(0);
-
-    // Simulate focus expiring
-    useGameStore.setState({
-      focusState: {
-        isActive: false,
-        endTime: 0,
-      },
-    });
-
-    // Gain new focus
-    useGameStore.setState({
-      resources: {
-        ...useGameStore.getState().resources,
-        focus: 2,
-      },
-    });
-
-    expect(useGameStore.getState().resources.focus).toBe(2);
-
-    // Should be able to activate again
-    const newState = useGameStore.getState();
-    useGameStore.setState({
-      focusState: {
-        isActive: true,
-        endTime: Date.now() + newState.resources.focus * 60000,
-      },
-      resources: {
-        ...newState.resources,
-        focus: 0,
-      },
-    });
-
-    expect(useGameStore.getState().resources.focus).toBe(0);
-    expect(useGameStore.getState().focusState.isActive).toBe(true);
-  });
+      });
 });
