@@ -925,24 +925,6 @@ export const clothingEffects: Record<string, EffectDefinition> = {
         mining: {
           cooldownReduction: 3,
         },
-        mineStone: {
-          cooldownReduction: 3,
-        },
-        mineIron: {
-          cooldownReduction: 3,
-        },
-        mineCoal: {
-          cooldownReduction: 3,
-        },
-        mineSulfur: {
-          cooldownReduction: 3,
-        },
-        mineObsidian: {
-          cooldownReduction: 3,
-        },
-        mineAdamant: {
-          cooldownReduction: 3,
-        },
         hunt: {
           cooldownReduction: 2,
         },

@@ -9,22 +9,18 @@ import {
 import { getResourceGainTooltip } from "@/game/rules/tooltips";
 import CooldownButton from "@/components/CooldownButton";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { useMobileTooltip } from "@/hooks/useMobileTooltip";
 import { useExplosionEffect } from "@/components/ui/explosion-effect";
 import { useRef } from "react";
 import { ButtonLevelBadge } from "@/components/game/ButtonLevelBadge";
 import { ACTION_TO_UPGRADE_KEY } from "@/game/buttonUpgrades";
-import { logger } from "@/lib/logger";
 
 export default function CavePanel() {
-  const { flags, executeAction, setHighlightedResources } = useGameStore();
+  const { executeAction, setHighlightedResources } = useGameStore();
   const state = useGameStore();
-  const mobileTooltip = useMobileTooltip();
   const explosionEffect = useExplosionEffect();
 
   // Separate refs for each explosion button
   const blastPortalRef = useRef<HTMLButtonElement>(null);
-  const testExplosionRef = useRef<HTMLButtonElement>(null);
 
   // Define action groups with their actions
   const actionGroups = [
@@ -97,6 +93,7 @@ export default function CavePanel() {
             { id: "craftLoggersGloves", label: "Logger's Gloves" },
             { id: "craftGrenadierBag", label: "Grenadier's Bag" },
             { id: "craftHighpriestRobe", label: "Highpriest Robe" },
+            { id: "craftSahdowBoots", label: "Shadow Boots" },
             { id: "craftSacrificialTunic", label: "Sacrificial Tunic" },
             { id: "craftShadowBoots", label: "Shadow Boots" },
           ],
