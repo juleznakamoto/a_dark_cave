@@ -516,116 +516,115 @@ export default function IdleModeDialog() {
       }
 
       // Clear persisted idle mode state completely - now reset startTime to 0
-      logger.log("[IDLE MODE] User closing dialog, resetting all state", {
-        wasActive: isActive,
-        hadStartTime: startTime,
-      });
+    logger.log("[IDLE MODE] User closing dialog, resetting all state", {
+      wasActive: isActive,
+      hadStartTime: startTime,
+    });
 
-      useGameStore.setState({
-        idleModeState: {
-          isActive: false,
-          startTime: 0, // Reset to 0 only when user closes dialog
-          needsDisplay: false,
-        },
-      });
+    useGameStore.setState({
+      idleModeState: {
+        isActive: false,
+        startTime: 0, // Reset to 0 only when user closes dialog
+        needsDisplay: false,
+      },
+    });
 
-      // Close dialog and reset local state
-      setIsActive(false);
-      setIdleModeDialog(false);
-      setAccumulatedResources({});
-      setStartTime(0);
-      setInitialResources({});
-    }
+    // Close dialog and reset local state
+    setIsActive(false);
+    setIdleModeDialog(false);
+    setAccumulatedResources({});
+    setStartTime(0);
+    setInitialResources({});
+  };
 
-    const formatTime = (ms: number) => {
-      const totalSeconds = Math.floor(ms / 1000);
-      const hours = Math.floor(totalSeconds / 3600);
-      const minutes = Math.floor((totalSeconds % 3600) / 60);
-      const seconds = totalSeconds % 60;
-      return `${hours}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
-    };
+  const formatTime = (ms: number) => {
+    const totalSeconds = Math.floor(ms / 1000);
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+    return `${hours}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+  };
 
-    // Show resources that are being produced
-    const displayNow = Date.now();
-    const displayElapsed = displayNow - startTime;
-    const displaySecondsElapsed = Math.floor(displayElapsed / 1000);
+  // Show resources that are being produced
+  const displayNow = Date.now();
+  const displayElapsed = displayNow - startTime;
+  const displaySecondsElapsed = Math.floor(displayElapsed / 1000);
 
-    // Show resources only after at least 15 seconds have elapsed from idle mode start
-    const hasCompletedFirstInterval = displaySecondsElapsed >= 15;
+  // Show resources only after at least 15 seconds have elapsed from idle mode start
+  const hasCompletedFirstInterval = displaySecondsElapsed >= 15;
 
-    // Get all resources that have changed (only positive)
-    const producedResources = Object.keys(accumulatedResources)
-      .map((resource) => {
-        const amount = hasCompletedFirstInterval
-          ? accumulatedResources[resource] || 0
-          : 0;
-        return [resource, amount] as [string, number];
-      })
-      .filter(([_, amount]) => Math.floor(amount) > 0) // Only show positive resource changes
-      .sort(([a], [b]) => a.localeCompare(b));
+  // Get all resources that have changed (only positive)
+  const producedResources = Object.keys(accumulatedResources)
+    .map((resource) => {
+      const amount = hasCompletedFirstInterval
+        ? accumulatedResources[resource] || 0
+        : 0;
+      return [resource, amount] as [string, number];
+    })
+    .filter(([_, amount]) => Math.floor(amount) > 0) // Only show positive resource changes
+    .sort(([a], [b]) => a.localeCompare(b));
 
-    const isTimeUp = remainingTime <= 0;
+  const isTimeUp = remainingTime <= 0;
 
-    return (
-      <Dialog open={idleModeDialog.isOpen} onOpenChange={() => {}}>
-        <DialogContent
-          className="sm:max-w-sm z-[60]"
-          hideClose={true}
-          hideOverlay={true}
-        >
-          <DialogHeader>
-            <DialogTitle>Sleeping</DialogTitle>
-            <DialogDescription className="py-1Cu">
-              {isTimeUp ? (
-                <span className="pt-2">You are awake!</span>
-              ) : (
-                <span>Waking up in: {formatTime(remainingTime)}</span>
-              )}
-            </DialogDescription>
-          </DialogHeader>
+  return (
+    <Dialog open={idleModeDialog.isOpen} onOpenChange={() => {}}>
+      <DialogContent
+        className="sm:max-w-sm z-[60]"
+        hideClose={true}
+        hideOverlay={true}
+      >
+        <DialogHeader>
+          <DialogTitle>Sleeping</DialogTitle>
+          <DialogDescription className="py-1">
+            {isTimeUp ? (
+              <span className="pt-2">You are awake!</span>
+            ) : (
+              <span>Waking up in: {formatTime(remainingTime)}</span>
+            )}
+          </DialogDescription>
+        </DialogHeader>
 
-          <div className="py-1">
-            <span className="text-sm font-medium">
-              While you sleep villagers produce:
-            </span>
-            <div className="space-y-1">
-              {producedResources.map(([resource, amount]) => (
-                <div
-                  key={resource}
-                  className="flex justify-between items-center"
-                >
-                  <span className="text-sm font-medium">
-                    {capitalizeWords(resource)}:
-                  </span>
-                  <span className="text-sm tabular-nums">
-                    <AnimatedCounter value={Math.floor(amount)} />
-                  </span>
-                </div>
-              ))}
-              <div className="flex justify-between items-center">
-                <span className="text-sm font-medium">Focus:</span>
+        <div className="py-1">
+          <span className="text-sm font-medium">
+            While you sleep villagers produce:
+          </span>
+          <div className="space-y-1">
+            {producedResources.map(([resource, amount]) => (
+              <div
+                key={resource}
+                className="flex justify-between items-center"
+              >
+                <span className="text-sm font-medium">
+                  {capitalizeWords(resource)}:
+                </span>
                 <span className="text-sm tabular-nums">
-                  <AnimatedCounter
-                    value={Math.floor(
-                      (displayNow - startTime) / (60 * 60 * 1000),
-                    )}
-                  />
+                  <AnimatedCounter value={Math.floor(amount)} />
                 </span>
               </div>
+            ))}
+            <div className="flex justify-between items-center">
+              <span className="text-sm font-medium">Focus:</span>
+              <span className="text-sm tabular-nums">
+                <AnimatedCounter
+                  value={Math.floor(
+                    (displayNow - startTime) / (60 * 60 * 1000),
+                  )}
+                />
+              </span>
             </div>
           </div>
+        </div>
 
-          <div className="flex justify-center">
-            <Button
-              onClick={handleEndIdleMode}
-              variant="outline"
-              className="text-xs h-10"
-            >
-              {isTimeUp ? "Get Up" : "Wake Up"}
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
-    );
-  };
+        <div className="flex justify-center">
+          <Button
+            onClick={handleEndIdleMode}
+            variant="outline"
+            className="text-xs h-10"
+          >
+            {isTimeUp ? "Get Up" : "Wake Up"}
+          </Button>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
 }
