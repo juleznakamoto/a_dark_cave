@@ -256,7 +256,7 @@ export default function CavePanel() {
         onClick={handleClick}
         cooldownMs={action.cooldown * 1000}
         data-testid={`button-${actionId.replace(/([A-Z])/g, "-$1").toLowerCase()}`}
-        button_id={actionId}
+        data-analytics-id={actionId}
         size="xs"
         disabled={!canExecute}
         variant="outline"
