@@ -129,7 +129,7 @@ export const calculateResourceGains = (
               'hunt', 'chopWood'
             ];
 
-            if (!isSacrificeAction && focusEligibleActions.includes(actionId) && state.focusState?.isActive && state.focusState.endTime > Date.now()) {
+            if (focusEligibleActions.includes(actionId) && state.focusState?.isActive && state.focusState.endTime > Date.now()) {
               min = Math.floor(min * 2);
               max = Math.floor(max * 2);
             }

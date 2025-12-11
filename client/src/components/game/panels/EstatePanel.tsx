@@ -242,36 +242,35 @@ export default function EstatePanel() {
 
               if (!isFocusActive) return null;
 
+              const now = Date.now();
+              const remainingMs = focusState.endTime - now;
+              const remainingMinutes = Math.ceil(remainingMs / 60000);
+
+              // Use stored duration if available, otherwise calculate from end time
+              const totalDuration = focusState.duration || (focusState.endTime - (focusState.startTime || focusState.endTime - 60000));
+              const progress = Math.max(0, Math.min(100, (remainingMs / totalDuration) * 100));
+
               return (
                 <TooltipProvider>
-                  <Tooltip open={mobileTooltip.isTooltipOpen("focus-timer")}>
+                  <Tooltip>
                     <TooltipTrigger asChild>
-                      <div
-                        className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
-                        onClick={(e) =>
-                          mobileTooltip.handleTooltipClick("focus-timer", e)
-                        }
-                      >
-                        <div className="relative inline-flex items-center gap-1 mt-[0px]">
-                          <CircularProgress
-                            value={(() => {
-                              const focusDuration = (focusState.endTime - (Date.now() - (state.focus * 60 * 1000))) || state.focus * 60 * 1000;
-                              const focusElapsed = focusDuration - (focusState.endTime - Date.now());
-                              return (focusElapsed / focusDuration) * 100;
-                            })()}
-                            size={18}
-                            strokeWidth={2}
-                            className="text-purple-600"
-                          />
-                          <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[12px] -mt-[0px] text-purple-600">
-                            ◆
-                          </span>
+                      <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-purple-500/20 border border-purple-500/30">
+                        <CircularProgress
+                          value={progress}
+                          size={14}
+                          strokeWidth={2}
+                          className="text-purple-400"
+                        />
+                        <div className="text-[10px] font-medium text-purple-300">
+                          Focus: {remainingMinutes}m
                         </div>
                       </div>
                     </TooltipTrigger>
                     <TooltipContent>
                       <div className="text-xs">
-                        {focusTooltip.getContent(state)}
+                        <div className="font-bold">Focus</div>
+                        <div>Action Bonus: 200%</div>
+                        <div>{remainingMinutes} min remaining</div>
                       </div>
                     </TooltipContent>
                   </Tooltip>
@@ -385,20 +384,19 @@ export default function EstatePanel() {
                   <div className="h-5 inline-block pb-1 text-xs font-medium text-foreground ml-2">
                     <Button
                       onClick={() => {
-                        const focusDuration = state.focus * 60 * 1000; // 1 minute per point
-                        const endTime = Date.now() + focusDuration;
-
-                        useGameStore.setState({
-                          focusState: {
+                        const state = useGameStore.getState();
+                        if (state.focus > 0) {
+                          const focusDuration = state.focus;
+                          useGameStore.getState().updateFocusState({
                             isActive: true,
-                            endTime: endTime,
-                          },
-                          focus: 0, // Consume all focus points
-                        });
-
-                        useGameStore.getState().addLogEntry({
+                            endTime: Date.now() + focusDuration * 60000,
+                            startTime: Date.now(),
+                            duration: focusDuration * 60000,
+                          });
+                          useGameStore.getState().updateResources({ focus: 0 });
+                          useGameStore.getState().addLogEntry({
                           id: `focus-activated-${Date.now()}`,
-                          message: `Focus activated! Actions grant 2x resources for ${state.focus} minute${state.focus > 1 ? 's' : ''}.`,
+                          message: `Focus activated! Actions grant 2x resources for ${focusDuration} minute${focusDuration > 1 ? 's' : ''}.`,
                           timestamp: Date.now(),
                           type: 'system',
                         });
