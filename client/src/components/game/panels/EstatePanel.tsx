@@ -225,7 +225,62 @@ export default function EstatePanel() {
       <div className="space-y-2 mt-2">
         {/* Sleep Mode Section */}
         <div className="space-y-">
-          <h3 className="text-xs font-bold text-foreground pb-2">Sleep</h3>
+          <div className="flex items-center gap-2">
+            <h3 className="text-xs font-bold text-foreground pb-2">Sleep</h3>
+            {/* Focus Timer */}
+            {(() => {
+              const focusState = useGameStore.getState().focusState;
+              const isFocusActive =
+                focusState?.isActive && focusState.endTime > Date.now();
+
+              if (!isFocusActive) return null;
+
+              return (
+                <TooltipProvider>
+                  <Tooltip open={mobileTooltip.isTooltipOpen("focus-progress")}>
+                    <TooltipTrigger asChild>
+                      <div
+                        className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
+                        onClick={(e) =>
+                          mobileTooltip.handleTooltipClick("focus-progress", e)
+                        }
+                      >
+                        <div className="relative inline-flex items-center gap-1 mt-[0px]">
+                          <CircularProgress
+                            value={(() => {
+                              const totalDuration = focusState.points * 60 * 1000;
+                              const timeRemaining = Math.max(
+                                0,
+                                focusState.endTime - Date.now()
+                              );
+                              const elapsed = totalDuration - timeRemaining;
+                              return Math.min(100, (elapsed / totalDuration) * 100);
+                            })()}
+                            size={18}
+                            strokeWidth={2}
+                            className="text-cyan-500"
+                          />
+                          <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[12px] -mt-[0px] text-cyan-500">
+                            ◈
+                          </span>
+                        </div>
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <div className="text-xs whitespace-pre-line">
+                        <div className="font-bold">Focus</div>
+                        <div>Resource Bonus: 2x</div>
+                        <div>
+                          {Math.ceil((focusState.endTime - Date.now()) / 60000)} min
+                          remaining
+                        </div>
+                      </div>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              );
+            })()}
+          </div>
           <TooltipProvider>
             <Tooltip open={mobileTooltip.isTooltipOpen("sleep-button")}>
               <TooltipTrigger asChild>

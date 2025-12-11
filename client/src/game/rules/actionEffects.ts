@@ -319,6 +319,26 @@ export function applyActionEffects(
               totalMultiplier *= actionBonuses?.caveExploreMultiplier || 1;
             }
 
+            // Apply Focus 2x multiplier for specific action types
+            const focusActions = [
+              ...caveExploreActions,
+              "mineIron",
+              "mineCoal",
+              "mineSulfur",
+              "mineObsidian",
+              "mineAdamant",
+              "mineMoonstone",
+              "hunt",
+              "gatherWood",
+            ];
+            if (
+              focusActions.includes(actionId) &&
+              state.focusState?.isActive &&
+              state.focusState.endTime > Date.now()
+            ) {
+              totalMultiplier *= 2;
+            }
+
             if (totalMultiplier !== 1) {
               min = Math.floor(min * totalMultiplier);
               max = Math.floor(max * totalMultiplier);
