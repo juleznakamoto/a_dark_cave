@@ -266,7 +266,7 @@ export default function IdleModeDialog() {
           wasActive: isActive,
           currentStartTime: startTime,
         });
-
+        
         setIsActive(false);
 
         // DO NOT CLEAR startTime HERE - only clear when user closes dialog
@@ -374,58 +374,37 @@ export default function IdleModeDialog() {
   }, [isActive, idleModeDialog.isOpen, startTime]);
 
   const handleEndIdleMode = () => {
-    if (!idleModeState?.startTime) return;
-
-    const now = Date.now();
-    const elapsedMs = now - idleModeState.startTime;
-    const elapsedMinutes = Math.floor(elapsedMs / 60000);
-
-    // Calculate intensity-adjusted sleep time
-    const intensityPercentage = sleepIntensityConfig.percentage;
-    const intensityMultiplier = intensityPercentage / 100;
-    const adjustedMinutes = Math.floor(elapsedMinutes * intensityMultiplier);
-
-    // Simulate production for the adjusted time
-    const productionCycles = Math.floor(adjustedMinutes / 0.25); // 15 seconds = 0.25 minutes
-    const resourcesGained: Record<string, number> = {};
-
-    // Get current game state for simulation
-    const currentState = useGameStore.getState();
-
-    for (let i = 0; i < productionCycles; i++) {
-      simulateGathererProduction(currentState, PRODUCTION_SPEED_MULTIPLIER, resourcesGained);
-      simulateHunterProduction(currentState, PRODUCTION_SPEED_MULTIPLIER, resourcesGained);
-      simulateMinerProduction(currentState, PRODUCTION_SPEED_MULTIPLIER, resourcesGained);
-      simulatePopulationConsumption(currentState, PRODUCTION_SPEED_MULTIPLIER, resourcesGained);
-    }
-
-    // Apply the gained resources
-    Object.entries(resourcesGained).forEach(([resource, amount]) => {
+    // Apply accumulated resources to the game state
+    Object.entries(accumulatedResources).forEach(([resource, amount]) => {
       useGameStore.getState().updateResource(
         resource as keyof typeof state.resources,
         Math.floor(amount)
       );
     });
 
-    // Calculate Focus points: 1 point per hour slept
-    const hoursSlept = Math.floor(elapsedMs / (60 * 60 * 1000));
-    const focusPoints = hoursSlept;
+    // Create log message showing resources gained
+    if (Object.keys(accumulatedResources).length > 0) {
+      const resourcesList = Object.entries(accumulatedResources)
+        .filter(([_, amount]) => Math.floor(amount) !== 0)
+        .map(([resource, amount]) => `${capitalizeWords(resource)}: ${Math.floor(amount) > 0 ? '+' : ''}${Math.floor(amount)}`)
+        .join(', ');
 
-    // Activate Focus if points were earned
-    if (focusPoints > 0) {
-      const focusDuration = focusPoints * 60 * 1000; // 1 minute per point
-      const focusEndTime = Date.now() + focusDuration;
-
-      useGameStore.setState({
-        focusState: {
-          isActive: true,
-          endTime: focusEndTime,
-          points: focusPoints,
-        },
-      });
+      if (resourcesList) {
+        useGameStore.getState().addLogEntry({
+          id: `idle-mode-end-${Date.now()}`,
+          message: `While you slept villagers produced: ${resourcesList}`,
+          timestamp: Date.now(),
+          type: 'system',
+        });
+      }
     }
 
-    // Clear idle mode state
+    // Clear persisted idle mode state completely - now reset startTime to 0
+    logger.log('[IDLE MODE] User closing dialog, resetting all state', {
+      wasActive: isActive,
+      hadStartTime: startTime,
+    });
+    
     useGameStore.setState({
       idleModeState: {
         isActive: false,
@@ -469,8 +448,6 @@ export default function IdleModeDialog() {
 
   const isTimeUp = remainingTime <= 0;
 
-  const currentFocusState = useGameStore((state) => state.focusState);
-
   return (
     <Dialog open={idleModeDialog.isOpen} onOpenChange={() => {}}>
       <DialogContent className="sm:max-w-sm z-[60]" hideClose={true} hideOverlay={true}>
@@ -497,15 +474,6 @@ export default function IdleModeDialog() {
             ))}
           </div>
         </div>
-
-        {/* Display Focus points if available */}
-        {currentFocusState?.points && currentFocusState.points > 0 && (
-          <div className="py-1">
-            <span className="text-sm font-medium">Focus:</span>
-            <span className="text-sm tabular-nums"> {currentFocusState.points}</span>
-          </div>
-        )}
-
 
         <div className="flex justify-center">
           <Button onClick={handleEndIdleMode} variant="outline" className="text-xs h-10">

@@ -411,8 +411,10 @@ export const gameStateSchema = z.object({
       isActive: z.boolean().default(false),
       endTime: z.number().default(0),
     })
-    .default({ isActive: false, endTime: 0 }),
-
+    .default({
+      isActive: false,
+      endTime: 0,
+    }),
   fogState: z
     .object({
       isActive: z.boolean().default(false),
@@ -420,15 +422,6 @@ export const gameStateSchema = z.object({
       duration: z.number().default(0),
     })
     .default({ isActive: false, endTime: 0, duration: 0 }),
-
-  focusState: z
-    .object({
-      isActive: z.boolean().default(false),
-      endTime: z.number().default(0),
-      points: z.number().default(0),
-    })
-    .default({ isActive: false, endTime: 0, points: 0 }),
-
   shopNotificationSeen: z.boolean().default(false), // Added new field for shop notification
   authNotificationSeen: z.boolean().default(false), // Added new field for auth notification
   authNotificationVisible: z.boolean().default(false), // Added new field for auth notification visibility

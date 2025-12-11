@@ -25,7 +25,6 @@ import { GAME_CONSTANTS } from "@/game/constants";
 import { ACTION_TO_UPGRADE_KEY, incrementButtonUsage } from "@/game/buttonUpgrades";
 import { logger } from "@/lib/logger";
 import { madnessEvents } from "@/game/rules/eventsMadness";
-import * as z from "zod";
 
 // Types
 interface GameStore extends GameState {
@@ -253,8 +252,6 @@ const mergeStateUpdates = (
     claimedAchievements: stateUpdates.claimedAchievements || prevState.claimedAchievements,
     // Game ID
     gameId: stateUpdates.gameId !== undefined ? stateUpdates.gameId : prevState.gameId,
-    // Focus state
-    focusState: stateUpdates.focusState || prevState.focusState,
   };
 
   if (
@@ -354,11 +351,6 @@ export const createInitialState = (): GameState => ({
     isActive: false,
     endTime: 0,
     duration: 0,
-  },
-  focusState: {
-    isActive: false,
-    endTime: 0,
-    points: 0,
   },
   combatSkills: {
     crushingStrikeLevel: 0,
@@ -947,8 +939,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
         unlockedAchievements: savedState.unlockedAchievements || [], // Load unlocked achievements
         claimedAchievements: savedState.claimedAchievements || [], // Load claimed achievements
         gameId: gameId, // Load or generate gameId
-        // Load focus state
-        focusState: savedState.focusState || defaultGameState.focusState,
       };
 
       set(loadedState);

@@ -497,16 +497,6 @@ function processTick() {
     });
   }
 
-  // Check if focus has expired
-  if (state.focusState?.isActive && state.focusState.endTime <= Date.now()) {
-    useGameStore.setState({
-      focusState: {
-        ...state.focusState,
-        isActive: false,
-      },
-    });
-  }
-
   // Check if mining boost has expired
   if (
     state.miningBoostState?.isActive &&
