@@ -287,9 +287,13 @@ export function applyActionEffects(
               min = Math.floor(min * actionBonuses.resourceMultiplier);
               max = Math.floor(max * actionBonuses.resourceMultiplier);
             }
-          }
 
-          if (!isSacrificeAction) {
+            // Generate and assign the random value for sacrifice actions
+            const baseAmount = Math.floor(Math.random() * (max - min + 1)) + min;
+            const originalAmount =
+              state.resources[finalKey as keyof typeof state.resources] || 0;
+            current[finalKey] = originalAmount + baseAmount;
+          } else if (!isSacrificeAction) {
             const actionBonuses = getActionBonusesCalc(actionId, state);
             if (
               actionBonuses?.resourceBonus?.[
