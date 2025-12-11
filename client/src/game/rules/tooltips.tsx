@@ -409,6 +409,27 @@ export const fogTooltip: TooltipConfig = {
   },
 };
 
+export const focusTooltip: TooltipConfig = {
+  getContent: (state: GameState) => {
+    const focusState = state.focusState;
+    const isFocusActive = focusState?.isActive && focusState.endTime > Date.now();
+
+    if (isFocusActive) {
+      const remainingMs = focusState.endTime - Date.now();
+      const remainingMinutes = Math.ceil(remainingMs / 60000);
+      return (
+        <>
+          <div className="font-bold">Focus</div>
+          <div>Action Bonus: 200%</div>
+          <div>{remainingMinutes} min remaining</div>
+        </>
+      );
+    }
+
+    return null;
+  },
+};
+
 // Combat item tooltips
 export const combatItemTooltips: Record<string, TooltipConfig> = {
   ember_bomb: {
