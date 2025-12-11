@@ -17,7 +17,7 @@ export const caveMineActions: Record<string, Action> = {
       "resources.stone": "random(4,8)",
       "story.seen.hasMinedStone": true,
     },
-    cooldown: 12,
+    cooldown: 15,
     upgrade_key: "mineStone",
   },
 
