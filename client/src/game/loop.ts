@@ -763,8 +763,10 @@ function handleMadnessCheck() {
 
   // Determine probability and possible death counts based on madness level
   let probability = 0;
-  if (totalMadness <= 10) {
-    probability += 0.0 + state.CM * 0.01;
+  if (totalMadness <= 5) {
+    probability += 0.0;
+  } else if (totalMadness <= 10) {
+    probability += 0.0 + state.CM * 0.005;
   } else if (totalMadness <= 20) {
     probability += 0.005 + state.CM * 0.01;
   } else if (totalMadness <= 30) {
@@ -940,7 +942,7 @@ function handleStrangerApproach() {
         strangersCount = 2;
       }
     }
-    
+
     const messages = [
       "A stranger approaches and joins the village.",
       "A traveler arrives and decides to stay.",
