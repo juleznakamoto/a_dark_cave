@@ -122,6 +122,18 @@ export const calculateResourceGains = (
               max = Math.floor(max * totalMultiplier);
             }
 
+            // Apply focus multiplier for eligible actions
+            const focusEligibleActions = [
+              'exploreCave', 'ventureDeeper', 'descendFurther', 'exploreRuins', 'exploreTemple', 'exploreCitadel',
+              'mineCoal', 'mineIron', 'mineSulfur', 'mineObsidian', 'mineAdamant', 'mineMoonstone',
+              'hunt', 'chopWood'
+            ];
+
+            if (focusEligibleActions.includes(actionId) && state.focusState?.isActive && state.focusState.endTime > Date.now()) {
+              min = Math.floor(min * 2);
+              max = Math.floor(max * 2);
+            }
+
             gains.push({ resource, min, max });
           }
         } else if (typeof value === "number") {
@@ -142,6 +154,17 @@ export const calculateResourceGains = (
 
           if (totalMultiplier > 1) {
             amount = Math.floor(amount * totalMultiplier);
+          }
+
+          // Apply focus multiplier for eligible actions
+          const focusEligibleActions = [
+            'exploreCave', 'ventureDeeper', 'descendFurther', 'exploreRuins', 'exploreTemple', 'exploreCitadel',
+            'mineCoal', 'mineIron', 'mineSulfur', 'mineObsidian', 'mineAdamant', 'mineMoonstone',
+            'hunt', 'chopWood'
+          ];
+
+          if (focusEligibleActions.includes(actionId) && state.focusState?.isActive && state.focusState.endTime > Date.now()) {
+            amount = Math.floor(amount * 2);
           }
 
           gains.push({ resource, min: amount, max: amount });
