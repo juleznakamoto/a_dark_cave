@@ -46,9 +46,6 @@ export default function EstatePanel() {
   const mobileTooltip = useMobileButtonTooltip();
   const cubeTooltip = useMobileTooltip();
   const state = useGameStore.getState();
-  const hoveredTooltips = useGameStore((state) => state.hoveredTooltips || {});
-  const setHoveredTooltip = useGameStore((state) => state.setHoveredTooltip);
-  const hoverTimersRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
 
   // Calculate focus progress based on game loop timing
   const [focusProgress, setFocusProgress] = React.useState(0);
@@ -63,6 +60,15 @@ export default function EstatePanel() {
         setFocusProgress((focusElapsed / focusDuration) * 100);
       } else {
         setFocusProgress(0);
+        // Clear focus state when timer expires
+        if (focusState?.isActive && focusState.endTime <= now) {
+          useGameStore.setState({
+            focusState: {
+              isActive: false,
+              endTime: 0,
+            },
+          });
+        }
       }
     };
 
