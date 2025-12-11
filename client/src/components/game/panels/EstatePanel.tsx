@@ -55,6 +55,7 @@ export default function EstatePanel() {
         setFocusProgress(0);
         // Clear focus state when timer expires
         if (focusState?.isActive && focusState.endTime <= now) {
+          console.log('[FOCUS] Timer expired, clearing focus state');
           useGameStore.setState({
             focusState: {
               isActive: false,
@@ -70,6 +71,16 @@ export default function EstatePanel() {
 
     return () => clearInterval(interval);
   }, [focusState]);
+
+  // Debug logging for Focus button visibility
+  React.useEffect(() => {
+    console.log('[FOCUS] Button visibility check:', {
+      hasFocus: resources.focus > 0,
+      focusAmount: resources.focus,
+      isActive: focusState?.isActive,
+      shouldShow: resources.focus > 0 && !focusState?.isActive,
+    });
+  }, [resources.focus, focusState?.isActive]);
 
   // Get all cube events that have been triggered
   const completedCubeEvents = Object.entries(cubeEvents)
@@ -398,11 +409,21 @@ export default function EstatePanel() {
                         const currentState = useGameStore.getState();
                         const focusAmount = currentState.resources.focus;
 
+                        console.log('[FOCUS] Button clicked:', {
+                          focusAmount,
+                          isActive: currentState.focusState?.isActive,
+                        });
+
                         // Only activate if we have focus and it's not already active
                         if (
                           focusAmount > 0 &&
                           !currentState.focusState?.isActive
                         ) {
+                          console.log('[FOCUS] Activating focus:', {
+                            duration: focusAmount,
+                            endTime: Date.now() + focusAmount * 60000,
+                          });
+
                           // Update focus state and consume all focus
                           useGameStore.setState({
                             focusState: {
@@ -414,6 +435,8 @@ export default function EstatePanel() {
                               focus: 0, // Consume all focus
                             },
                           });
+                        } else {
+                          console.log('[FOCUS] Cannot activate - conditions not met');
                         }
                       }}
                       size="xs"
