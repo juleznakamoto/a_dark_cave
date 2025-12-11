@@ -12,37 +12,31 @@ describe('Focus State Management', () => {
     
     // Set up initial state with focus
     useGameStore.setState({
-      resources: {
-        ...store.resources,
-        focus: 5,
-      },
       focusState: {
         isActive: false,
         endTime: 0,
+        points: 5,
       },
     });
 
     // Verify initial focus amount
-    expect(useGameStore.getState().resources.focus).toBe(5);
+    expect(useGameStore.getState().focusState.points).toBe(5);
 
     // Simulate clicking the Focus button
     const currentState = useGameStore.getState();
-    const focusDuration = currentState.resources.focus;
+    const focusDuration = currentState.focusState.points;
 
     useGameStore.setState({
       focusState: {
         isActive: true,
         endTime: Date.now() + focusDuration * 60000,
-      },
-      resources: {
-        ...currentState.resources,
-        focus: 0,
+        points: 0,
       },
     });
 
     // Verify focus is consumed
     const finalState = useGameStore.getState();
-    expect(finalState.resources.focus).toBe(0);
+    expect(finalState.focusState.points).toBe(0);
     expect(finalState.focusState.isActive).toBe(true);
     expect(finalState.focusState.endTime).toBeGreaterThan(Date.now());
   });
@@ -52,41 +46,35 @@ describe('Focus State Management', () => {
     
     // Set up initial state with focus
     useGameStore.setState({
-      resources: {
-        ...store.resources,
-        focus: 5,
-      },
       focusState: {
         isActive: false,
         endTime: 0,
+        points: 5,
       },
     });
 
     // First activation
     const currentState = useGameStore.getState();
-    const focusDuration = currentState.resources.focus;
+    const focusDuration = currentState.focusState.points;
 
     useGameStore.setState({
       focusState: {
         isActive: true,
         endTime: Date.now() + focusDuration * 60000,
-      },
-      resources: {
-        ...currentState.resources,
-        focus: 0,
+        points: 0,
       },
     });
 
     // Verify first activation worked
-    expect(useGameStore.getState().resources.focus).toBe(0);
+    expect(useGameStore.getState().focusState.points).toBe(0);
     expect(useGameStore.getState().focusState.isActive).toBe(true);
 
     // Try to activate again (should not work because focus is 0)
     const secondState = useGameStore.getState();
-    expect(secondState.resources.focus).toBe(0);
+    expect(secondState.focusState.points).toBe(0);
     
     // Button should be hidden when focus is 0
-    // This is enforced by the UI: {state.focus > 0 && !state.focusState?.isActive && ...}
+    // This is enforced by the UI: {focusState.points > 0 && !focusState.isActive && ...}
   });
 
   it('should allow activating focus again after first focus expires and new focus is gained', () => {
@@ -94,13 +82,10 @@ describe('Focus State Management', () => {
     
     // Set up initial state with focus
     useGameStore.setState({
-      resources: {
-        ...store.resources,
-        focus: 3,
-      },
       focusState: {
         isActive: false,
         endTime: 0,
+        points: 3,
       },
     });
 
@@ -109,47 +94,43 @@ describe('Focus State Management', () => {
       focusState: {
         isActive: true,
         endTime: Date.now() + 3 * 60000,
-      },
-      resources: {
-        ...useGameStore.getState().resources,
-        focus: 0,
+        points: 0,
       },
     });
 
-    expect(useGameStore.getState().resources.focus).toBe(0);
+    expect(useGameStore.getState().focusState.points).toBe(0);
 
     // Simulate focus expiring
     useGameStore.setState({
       focusState: {
         isActive: false,
         endTime: 0,
+        points: 0,
       },
     });
 
     // Gain new focus
     useGameStore.setState({
-      resources: {
-        ...useGameStore.getState().resources,
-        focus: 2,
+      focusState: {
+        isActive: false,
+        endTime: 0,
+        points: 2,
       },
     });
 
-    expect(useGameStore.getState().resources.focus).toBe(2);
+    expect(useGameStore.getState().focusState.points).toBe(2);
 
     // Should be able to activate again
     const newState = useGameStore.getState();
     useGameStore.setState({
       focusState: {
         isActive: true,
-        endTime: Date.now() + newState.resources.focus * 60000,
-      },
-      resources: {
-        ...newState.resources,
-        focus: 0,
+        endTime: Date.now() + newState.focusState.points * 60000,
+        points: 0,
       },
     });
 
-    expect(useGameStore.getState().resources.focus).toBe(0);
+    expect(useGameStore.getState().focusState.points).toBe(0);
     expect(useGameStore.getState().focusState.isActive).toBe(true);
   });
 
@@ -162,9 +143,10 @@ describe('Focus State Management', () => {
         lengthLevel: 2,
         intensityLevel: 3,
       },
-      resources: {
-        ...store.resources,
-        focus: 0,
+      focusState: {
+        isActive: false,
+        endTime: 0,
+        points: 0,
       },
     });
 
@@ -181,10 +163,14 @@ describe('Focus State Management', () => {
     const expectedFocus = 3;
 
     // Simulate waking up and adding focus
-    useGameStore.getState().updateResource("focus", expectedFocus);
+    useGameStore.getState().updateFocusState({
+      isActive: false,
+      endTime: 0,
+      points: expectedFocus,
+    });
 
     // Verify focus was added
-    expect(useGameStore.getState().resources.focus).toBe(expectedFocus);
+    expect(useGameStore.getState().focusState.points).toBe(expectedFocus);
   });
 
   it('should not add focus points if intensity level is 0', () => {
@@ -196,9 +182,10 @@ describe('Focus State Management', () => {
         lengthLevel: 2,
         intensityLevel: 0,
       },
-      resources: {
-        ...store.resources,
-        focus: 0,
+      focusState: {
+        isActive: false,
+        endTime: 0,
+        points: 0,
       },
     });
 
@@ -206,9 +193,9 @@ describe('Focus State Management', () => {
     const expectedFocus = 0;
 
     // Simulate waking up (no focus should be added)
-    // useGameStore.getState().updateResource("focus", expectedFocus); // Don't call with 0
+    // useGameStore.getState().updateFocusState(...); // Don't call with 0
 
     // Verify focus remains 0
-    expect(useGameStore.getState().resources.focus).toBe(0);
+    expect(useGameStore.getState().focusState.points).toBe(0);
   });
 });

@@ -62,6 +62,8 @@ export default function EstatePanel() {
             focusState: {
               isActive: false,
               endTime: 0,
+              duration: 0,
+              points: 0,
             },
           });
         }
@@ -75,7 +77,7 @@ export default function EstatePanel() {
   }, [focusState]);
 
   // Focus button - only show when there's focus to activate and not already active
-  const showFocusButton = resources.focus > 0 && !focusState?.isActive;
+  const showFocusButton = focusState?.points > 0 && !focusState?.isActive;
 
   // Calculate Focus duration: 1 focus point = 1 minute of Focus time
   const calculateFocusDuration = (focusPoints: number) => {
@@ -84,13 +86,13 @@ export default function EstatePanel() {
 
   React.useEffect(() => {
     console.log('[FOCUS] Button visibility check:', {
-      hasFocus: resources.focus > 0,
-      focusAmount: resources.focus,
+      hasFocus: focusState?.points > 0,
+      focusAmount: focusState?.points,
       isActive: focusState?.isActive,
-      shouldShow: resources.focus > 0 && !focusState?.isActive,
+      shouldShow: focusState?.points > 0 && !focusState?.isActive,
       allResources: resources, // Log all resources to see if focus is being set
     });
-  }, [resources.focus, focusState?.isActive]);
+  }, [focusState?.points, focusState?.isActive]);
 
   // Get all cube events that have been triggered
   const completedCubeEvents = Object.entries(cubeEvents)
@@ -417,21 +419,21 @@ export default function EstatePanel() {
                     <Button
                       onClick={() => {
                         const now = Date.now();
-                        const focusDuration = calculateFocusDuration(resources.focus);
+                        const focusPoints = focusState?.points || 0;
+                        const focusDuration = calculateFocusDuration(focusPoints);
 
                         console.log('[FOCUS] Activating Focus:', {
-                          focusPoints: resources.focus,
+                          focusPoints,
                           durationMs: focusDuration,
                           durationMinutes: focusDuration / 60000,
                         });
-
                         updateFocusState({
                           isActive: true,
                           endTime: now + focusDuration,
                           startTime: now,
                           duration: focusDuration,
+                          points: 0,
                         });
-                        updateResource("focus", -resources.focus);
                       }}
                       size="xs"
                       variant="outline"
@@ -444,8 +446,8 @@ export default function EstatePanel() {
                 </TooltipTrigger>
                 <TooltipContent>
                   <div className="text-xs whitespace-nowrap">
-                    {resources.focus} Focus: Get 2x action bonus for{" "}
-                    {resources.focus} minute{resources.focus > 1 ? "s" : ""}
+                    {focusState?.points} Focus: Get 2x action bonus for{" "}
+                    {focusState?.points} minute{focusState?.points > 1 ? "s" : ""}
                   </div>
                 </TooltipContent>
               </Tooltip>

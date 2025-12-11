@@ -99,10 +99,10 @@ interface GameStore extends GameState {
   cooldownDurations: Record<string, number>; // Track initial duration for each cooldown
 
   // Focus system
-  focus: number;
   focusState: {
     isActive: boolean;
     endTime: number;
+    points: number;
   };
 
   // Population helpers
@@ -179,7 +179,7 @@ interface GameStore extends GameState {
   trackButtonClick: (buttonId: string) => void;
   getAndResetClickAnalytics: () => Record<string, number> | null;
   setVersionCheckDialog: (isOpen: boolean) => void;
-  updateFocusState: (state: { isActive: boolean; endTime: number; startTime?: number; duration?: number }) => void;
+  updateFocusState: (state: { isActive: boolean; endTime: number; startTime?: number; duration?: number; points?: number }) => void;
   updateResources: (updates: Partial<GameState["resources"]>) => void;
 }
 
@@ -487,10 +487,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
     lengthLevel: 0,
     intensityLevel: 0,
   },
-  focus: 0,
   focusState: {
     isActive: false,
     endTime: 0,
+    points: 0,
   },
   // Initialize shop notification state
   shopNotificationSeen: false,
