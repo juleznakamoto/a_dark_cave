@@ -35,6 +35,8 @@ export default function EstatePanel() {
     fellowship,
     setHighlightedResources,
     resources,
+    updateFocusState,
+    updateResource,
   } = useGameStore();
   const mobileTooltip = useMobileButtonTooltip();
   const cubeTooltip = useMobileTooltip();
@@ -72,13 +74,21 @@ export default function EstatePanel() {
     return () => clearInterval(interval);
   }, [focusState]);
 
-  // Debug logging for Focus button visibility
+  // Focus button - only show when there's focus to activate and not already active
+  const showFocusButton = resources.focus > 0 && !focusState?.isActive;
+
+  // Calculate Focus duration: 1 focus point = 1 minute of Focus time
+  const calculateFocusDuration = (focusPoints: number) => {
+    return focusPoints * 60 * 1000; // Convert focus points to milliseconds (1 point = 1 minute)
+  };
+
   React.useEffect(() => {
     console.log('[FOCUS] Button visibility check:', {
       hasFocus: resources.focus > 0,
       focusAmount: resources.focus,
       isActive: focusState?.isActive,
       shouldShow: resources.focus > 0 && !focusState?.isActive,
+      allResources: resources, // Log all resources to see if focus is being set
     });
   }, [resources.focus, focusState?.isActive]);
 
@@ -399,45 +409,29 @@ export default function EstatePanel() {
           </TooltipProvider>
 
           {/* Focus Activation Button */}
-          {resources.focus > 0 && !focusState?.isActive && (
+          {showFocusButton && (
             <TooltipProvider>
               <Tooltip open={mobileTooltip.isTooltipOpen("focus-button")}>
                 <TooltipTrigger asChild>
                   <div className="h-5 inline-block pb-1 text-xs font-medium text-foreground ml-2">
                     <Button
                       onClick={() => {
-                        const currentState = useGameStore.getState();
-                        const focusAmount = currentState.resources.focus;
+                        const now = Date.now();
+                        const focusDuration = calculateFocusDuration(resources.focus);
 
-                        console.log('[FOCUS] Button clicked:', {
-                          focusAmount,
-                          isActive: currentState.focusState?.isActive,
+                        console.log('[FOCUS] Activating Focus:', {
+                          focusPoints: resources.focus,
+                          durationMs: focusDuration,
+                          durationMinutes: focusDuration / 60000,
                         });
 
-                        // Only activate if we have focus and it's not already active
-                        if (
-                          focusAmount > 0 &&
-                          !currentState.focusState?.isActive
-                        ) {
-                          console.log('[FOCUS] Activating focus:', {
-                            duration: focusAmount,
-                            endTime: Date.now() + focusAmount * 60000,
-                          });
-
-                          // Update focus state and consume all focus
-                          useGameStore.setState({
-                            focusState: {
-                              isActive: true,
-                              endTime: Date.now() + focusAmount * 60000,
-                            },
-                            resources: {
-                              ...currentState.resources,
-                              focus: 0, // Consume all focus
-                            },
-                          });
-                        } else {
-                          console.log('[FOCUS] Cannot activate - conditions not met');
-                        }
+                        updateFocusState({
+                          isActive: true,
+                          endTime: now + focusDuration,
+                          startTime: now,
+                          duration: focusDuration,
+                        });
+                        updateResource("focus", -resources.focus);
                       }}
                       size="xs"
                       variant="outline"
@@ -469,9 +463,7 @@ export default function EstatePanel() {
               </span>
               {sleepUpgrades.lengthLevel < 5 ? (
                 <TooltipProvider>
-                  <Tooltip
-                    open={mobileTooltip.isTooltipOpen("upgrade-length-button")}
-                  >
+                  <Tooltip open={mobileTooltip.isTooltipOpen("upgrade-length-button")}>
                     <TooltipTrigger asChild>
                       <div
                         className="h-5 inline-block pb-1 text-xs font-medium text-foreground"
