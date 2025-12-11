@@ -122,14 +122,14 @@ export const calculateResourceGains = (
               max = Math.floor(max * totalMultiplier);
             }
 
-            // Apply focus multiplier for eligible actions
+            // Apply focus multiplier for eligible actions (exclude sacrifice actions)
             const focusEligibleActions = [
               'exploreCave', 'ventureDeeper', 'descendFurther', 'exploreRuins', 'exploreTemple', 'exploreCitadel',
               'mineCoal', 'mineIron', 'mineSulfur', 'mineObsidian', 'mineAdamant', 'mineMoonstone',
               'hunt', 'chopWood'
             ];
 
-            if (focusEligibleActions.includes(actionId) && state.focusState?.isActive && state.focusState.endTime > Date.now()) {
+            if (!isSacrificeAction && focusEligibleActions.includes(actionId) && state.focusState?.isActive && state.focusState.endTime > Date.now()) {
               min = Math.floor(min * 2);
               max = Math.floor(max * 2);
             }
@@ -156,7 +156,7 @@ export const calculateResourceGains = (
             amount = Math.floor(amount * totalMultiplier);
           }
 
-          // Apply focus multiplier for eligible actions
+          // Apply focus multiplier for eligible actions (exclude sacrifice actions)
           const focusEligibleActions = [
             'exploreCave', 'ventureDeeper', 'descendFurther', 'exploreRuins', 'exploreTemple', 'exploreCitadel',
             'mineCoal', 'mineIron', 'mineSulfur', 'mineObsidian', 'mineAdamant', 'mineMoonstone',
