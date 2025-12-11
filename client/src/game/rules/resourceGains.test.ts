@@ -1096,12 +1096,12 @@ describe('Resource Gain Tests', () => {
 
       // Verify each resource tooltip shows doubled gains
       tooltipGains.forEach(gain => {
-        // Base values for exploreCave without any bonuses
+        // Base values for exploreCave from action definition (random(5,10), random(3,7), etc.)
         const baseValues: Record<string, { min: number; max: number }> = {
-          wood: { min: 4, max: 8 },
-          stone: { min: 2, max: 6 },
-          coal: { min: 1, max: 3 },
-          iron: { min: 1, max: 2 },
+          wood: { min: 5, max: 10 },
+          stone: { min: 3, max: 7 },
+          coal: { min: 3, max: 7 },
+          iron: { min: 3, max: 7 },
         };
 
         const base = baseValues[gain.resource];
