@@ -205,16 +205,21 @@ export function startGameLoop() {
     if (!isDialogOpen) {
       // Accumulate time for fixed timestep
       tickAccumulator += deltaTime;
+    }
 
-      // Update play time in state (only when not paused, not in idle mode, and not inactive)
-      const currentState = useGameStore.getState();
-      if (
-        !state.isPaused &&
-        !currentState.idleModeState?.isActive &&
-        !isInactive
-      ) {
-        currentState.updatePlayTime(deltaTime);
-      }
+    // Update play time in state (only when not paused, not in idle mode, not inactive, and no dialogs open)
+    // Note: This is OUTSIDE the isDialogOpen check so we track time properly
+    const currentState = useGameStore.getState();
+    if (
+      !state.isPaused &&
+      !currentState.idleModeState?.isActive &&
+      !isInactive &&
+      !isDialogOpen // Added: Stop playTime when dialogs are open
+    ) {
+      currentState.updatePlayTime(deltaTime);
+    }
+
+    if (!isDialogOpen) {
 
       // Process ticks in fixed intervals
       let ticksProcessed = 0;
