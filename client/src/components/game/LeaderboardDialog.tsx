@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useGameStore } from "@/game/state";
 import { getCurrentUser } from "@/game/auth";
@@ -48,7 +47,7 @@ export default function LeaderboardDialog({ isOpen, onClose }: LeaderboardDialog
     try {
       const env = useDevStats ? 'dev' : 'prod';
       logger.log(`Fetching ${env} leaderboard data...`);
-      
+
       const [normalRes, cruelRes, metaRes] = await Promise.all([
         fetch(`/api/leaderboard/normal?env=${env}`),
         fetch(`/api/leaderboard/cruel?env=${env}`),
@@ -146,7 +145,7 @@ export default function LeaderboardDialog({ isOpen, onClose }: LeaderboardDialog
 
       setUsername(tempUsername.trim());
       setEditingUsername(false);
-      
+
       toast({
         title: "Username saved",
         description: "Your username has been updated",
@@ -284,7 +283,7 @@ export default function LeaderboardDialog({ isOpen, onClose }: LeaderboardDialog
             </ScrollArea>
             {lastUpdated && (
               <div className="text-xs text-muted-foreground text-center mt-2 pt-2 opacity-50">
-                Last updated: {new Date(lastUpdated).toLocaleString()}
+                Last updated: {new Date(lastUpdated).toUTCString()}
               </div>
             )}
           </TabsContent>
@@ -303,7 +302,7 @@ export default function LeaderboardDialog({ isOpen, onClose }: LeaderboardDialog
             </ScrollArea>
             {lastUpdated && (
               <div className="text-xs text-muted-foreground text-center mt-2 pt-2 opacity-50">
-                Last updated: {new Date(lastUpdated).toLocaleString()}
+                Last updated: {new Date(lastUpdated).toUTCString()}
               </div>
             )}
           </TabsContent>
