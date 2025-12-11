@@ -558,19 +558,22 @@ export default function IdleModeDialog() {
   // Calculate Focus points (1 per hour slept)
   const focusPoints = Math.floor(displayElapsed / (1 * 10 * 1000));
 
-  // Get all resources that have changed (only positive), including Focus
-  const producedResources = [
-    ...Object.keys(accumulatedResources).map((resource) => {
+  // Get all resources that have changed (only positive), with Focus at the start
+  const otherResources = Object.keys(accumulatedResources)
+    .map((resource) => {
       const amount = hasCompletedFirstInterval
         ? accumulatedResources[resource] || 0
         : 0;
       return [resource, amount] as [string, number];
-    }),
-    // Add Focus to the list
-    ['focus', focusPoints] as [string, number],
-  ]
+    })
     .filter(([_, amount]) => Math.floor(amount) > 0) // Only show positive resource changes
     .sort(([a], [b]) => a.localeCompare(b));
+
+  // Add Focus at the start if it's greater than 0
+  const producedResources: [string, number][] = 
+    focusPoints > 0 
+      ? [['focus', focusPoints] as [string, number], ...otherResources]
+      : otherResources;
 
   const isTimeUp = remainingTime <= 0;
 
