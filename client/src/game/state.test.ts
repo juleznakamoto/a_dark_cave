@@ -211,6 +211,4 @@ describe('Focus State Management', () => {
     // Verify focus remains 0
     expect(useGameStore.getState().resources.focus).toBe(0);
   });
-
-      });
 });
