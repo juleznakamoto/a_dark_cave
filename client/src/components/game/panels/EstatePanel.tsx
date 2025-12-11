@@ -404,18 +404,21 @@ export default function EstatePanel() {
                         const currentState = useGameStore.getState();
                         if (currentState.focus > 0) {
                           const focusDuration = currentState.focus;
-                          const { updateFocusState, updateResource, addLogEntry } = useGameStore.getState();
 
-                          updateFocusState({
-                            isActive: true,
-                            endTime: Date.now() + focusDuration * 60000,
-                            startTime: Date.now(),
-                            duration: focusDuration * 60000,
+                          // Update focus state
+                          useGameStore.setState({
+                            focusState: {
+                              isActive: true,
+                              endTime: Date.now() + focusDuration * 60000,
+                            },
+                            resources: {
+                              ...currentState.resources,
+                              focus: 0,
+                            },
                           });
 
-                          updateResource('focus', -currentState.focus);
-
-                          addLogEntry({
+                          // Add log entry
+                          useGameStore.getState().addLogEntry({
                             id: `focus-activated-${Date.now()}`,
                             message: `Focus activated! Actions grant 2x resources for ${focusDuration} minute${focusDuration > 1 ? 's' : ''}.`,
                             timestamp: Date.now(),
