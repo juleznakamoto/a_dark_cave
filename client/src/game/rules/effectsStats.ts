@@ -1,15 +1,17 @@
 
 /**
  * Calculate merchant discount based on knowledge
- * Returns discount percentage (5-25%)
+ * Returns discount as a decimal (0.05-0.25)
+ * Stepped: 5% per 10 knowledge, max 25%
  */
 export function calculateMerchantDiscount(knowledge: number): number {
-  if (knowledge >= 50) return 25;
-  if (knowledge >= 40) return 20;
-  if (knowledge >= 30) return 15;
-  if (knowledge >= 20) return 10;
-  if (knowledge >= 10) return 5;
-  return 0;
+  let discount = 0;
+  if (knowledge >= 10) discount = 0.05;
+  if (knowledge >= 20) discount = 0.1;
+  if (knowledge >= 30) discount = 0.15;
+  if (knowledge >= 40) discount = 0.2;
+  if (knowledge >= 50) discount = 0.25;
+  return discount;
 }
 
 /**
