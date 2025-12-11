@@ -1386,6 +1386,44 @@ export const choiceEvents: Record<string, GameEvent> = {
         },
       },
       {
+        id: "acceptArcherHelpGold",
+        label: "Pay 100 gold",
+        cost: "100 gold",
+        effect: (state: GameState) => {
+          if (state.resources.gold < 100) {
+            return {};
+          }
+
+          const result = {
+            resources: {
+              ...state.resources,
+              gold: Math.max(0, state.resources.gold - 100),
+            },
+            blessings: {
+              ...state.blessings,
+              sharp_aim: true,
+            },
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                masterArcherEvent: true,
+              },
+            },
+            _logMessage:
+              "The master archer takes the gold with a nod and begins training your hunters immediately.",
+          };
+
+          console.log("[MASTER ARCHER] Effect returning:", {
+            currentBlessings: state.blessings,
+            resultBlessings: result.blessings,
+            hasSharpAim: result.blessings.sharp_aim,
+          });
+
+          return result;
+        },
+      },
+      {
         id: "refuseArcherHelp",
         label: "Refuse his offer",
         effect: (state: GameState) => {
