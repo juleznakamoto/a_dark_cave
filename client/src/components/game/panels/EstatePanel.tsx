@@ -283,7 +283,7 @@ export default function EstatePanel() {
                           value={focusProgress}
                           size={18}
                           strokeWidth={2}
-                          className="text-purple-600"
+                          className="text-teal-600"
                         />
                         <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[12px] -mt-[0px] text-teal-600">
                           ◈
