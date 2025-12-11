@@ -1,0 +1,77 @@
+@supabase_supabase-js.js?v=fa690fe3:5633  POST https://epmegaduehlztjqoeqih.supabase.co/rest/v1/rpc/save_game_with_analytics 400 (Bad Request)
+(anonymous) @ @supabase_supabase-js.js?v=fa690fe3:5633
+(anonymous) @ @supabase_supabase-js.js?v=fa690fe3:5654
+await in (anonymous)
+then @ @supabase_supabase-js.js?v=fa690fe3:94Understand this error
+logger.ts:38 v812Z [SAVE CLOUD] ⚠️ OCC REJECTED by database: OCC violation: new playTime (119659) must be greater than existing playTime (21194501)
+warn @ logger.ts:38
+saveGameToSupabase @ auth.ts:348
+await in saveGameToSupabase
+saveGame @ save.ts:298
+await in saveGame
+handleAutoSave @ loop.ts:849
+tick @ loop.ts:242
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:343Understand this warning
+logger.ts:43 v812Z [SAVE] Cloud save failed: Error: OCC violation: OCC violation: new playTime (119659) must be greater than existing playTime (21194501)
+    at saveGameToSupabase (auth.ts:349:13)
+    at async saveGame (save.ts:298:9)
+    at async handleAutoSave (loop.ts:849:5)
