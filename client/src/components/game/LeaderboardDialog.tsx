@@ -181,29 +181,31 @@ export default function LeaderboardDialog({ isOpen, onClose }: LeaderboardDialog
     }
 
     return (
-      <div className="space-y-2">
-        <div className="flex items-center justify-between px-3 pb-2 border-b border-border">
+      <>
+        <div className="sticky top-0 z-10 bg-background flex items-center justify-between px-3 pb-2 border-b border-border">
           <div className="flex items-center gap-3">
             <span className="font-semibold text-sm w-8 text-center">#</span>
             <span className="font-semibold text-sm">Player</span>
           </div>
           <span className="font-semibold text-sm">Completion Time</span>
         </div>
-        {entries.map((entry, index) => (
-          <div
-            key={entry.id}
-            className="flex items-center justify-between p-3 rounded-md bg-muted/50 hover:bg-muted transition-colors"
-          >
-            <div className="flex items-center gap-3">
-              <span className="font-bold text-lg w-8 text-center">
-                {index + 1}
-              </span>
-              <span className="font-sm">{entry.displayName}</span>
+        <div className="space-y-2 pt-2">
+          {entries.map((entry, index) => (
+            <div
+              key={entry.id}
+              className="flex items-center justify-between p-3 rounded-md bg-muted/50 hover:bg-muted transition-colors"
+            >
+              <div className="flex items-center gap-3">
+                <span className="font-bold text-lg w-8 text-center">
+                  {index + 1}
+                </span>
+                <span className="font-sm">{entry.displayName}</span>
+              </div>
+              <span className="text-muted-foreground">{formatTime(entry.play_time)}</span>
             </div>
-            <span className="text-muted-foreground">{formatTime(entry.play_time)}</span>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      </>
     );
   };
 
