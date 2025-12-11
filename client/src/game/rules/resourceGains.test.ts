@@ -955,6 +955,209 @@ describe('Resource Gain Tests', () => {
     });
   });
 
+  describe('Focus Mode', () => {
+    it('chopWood gains are doubled during active focus mode', () => {
+      const stateWithoutFocus = createTestState({
+        tools: { stone_axe: true },
+      });
+      const stateWithFocus = createTestState({
+        tools: { stone_axe: true },
+        focusState: {
+          isActive: true,
+          endTime: Date.now() + 60000, // Active for 1 minute
+        },
+      });
+
+      const { expectedGains: gainsWithout } = testActionGains('chopWood', stateWithoutFocus, 50);
+      const { expectedGains: gainsWith } = testActionGains('chopWood', stateWithFocus, 50);
+
+      // Without focus: base 6-12 with stone axe (50%) = 9-18
+      // With focus: 9-18 * 2 = 18-36
+      expect(gainsWithout.wood.min).toBe(9);
+      expect(gainsWithout.wood.max).toBe(18);
+      expect(gainsWith.wood.min).toBe(18);
+      expect(gainsWith.wood.max).toBe(36);
+    });
+
+    it('exploreCave gains are doubled during active focus mode', () => {
+      const stateWithoutFocus = createTestState({
+        story: { seen: { actionCraftTorch: true } },
+      });
+      const stateWithFocus = createTestState({
+        story: { seen: { actionCraftTorch: true } },
+        focusState: {
+          isActive: true,
+          endTime: Date.now() + 60000,
+        },
+      });
+
+      const { expectedGains: gainsWithout } = testActionGains('exploreCave', stateWithoutFocus, 100);
+      const { expectedGains: gainsWith } = testActionGains('exploreCave', stateWithFocus, 100);
+
+      // Verify all resources are doubled
+      ['wood', 'stone', 'coal', 'iron'].forEach(resource => {
+        if (gainsWithout[resource]) {
+          expect(gainsWith[resource].min).toBe(gainsWithout[resource].min * 2);
+          expect(gainsWith[resource].max).toBe(gainsWithout[resource].max * 2);
+        }
+      });
+    });
+
+    it('hunt gains are doubled during active focus mode', () => {
+      const stateWithoutFocus = createTestState({
+        flags: { forestUnlocked: true },
+      });
+      const stateWithFocus = createTestState({
+        flags: { forestUnlocked: true },
+        focusState: {
+          isActive: true,
+          endTime: Date.now() + 60000,
+        },
+      });
+
+      const { expectedGains: gainsWithout } = testActionGains('hunt', stateWithoutFocus, 100);
+      const { expectedGains: gainsWith } = testActionGains('hunt', stateWithFocus, 100);
+
+      // Verify all resources are doubled
+      ['food', 'fur', 'bones'].forEach(resource => {
+        if (gainsWithout[resource]) {
+          expect(gainsWith[resource].min).toBe(gainsWithout[resource].min * 2);
+          expect(gainsWith[resource].max).toBe(gainsWithout[resource].max * 2);
+        }
+      });
+    });
+
+    it('mineCoal gains are doubled during active focus mode', () => {
+      const stateWithoutFocus = createTestState({
+        tools: { iron_pickaxe: true },
+      });
+      const stateWithFocus = createTestState({
+        tools: { iron_pickaxe: true },
+        focusState: {
+          isActive: true,
+          endTime: Date.now() + 60000,
+        },
+      });
+
+      const { expectedGains: gainsWithout } = testActionGains('mineCoal', stateWithoutFocus, 50);
+      const { expectedGains: gainsWith } = testActionGains('mineCoal', stateWithFocus, 50);
+
+      expect(gainsWith.coal.min).toBe(gainsWithout.coal.min * 2);
+      expect(gainsWith.coal.max).toBe(gainsWithout.coal.max * 2);
+    });
+
+    it('focus mode does not apply when expired', () => {
+      const stateWithExpiredFocus = createTestState({
+        tools: { stone_axe: true },
+        focusState: {
+          isActive: true,
+          endTime: Date.now() - 1000, // Expired 1 second ago
+        },
+      });
+
+      const { expectedGains } = testActionGains('chopWood', stateWithExpiredFocus, 50);
+
+      // Should be same as without focus: base 6-12 with stone axe (50%) = 9-18
+      expect(expectedGains.wood.min).toBe(9);
+      expect(expectedGains.wood.max).toBe(18);
+    });
+
+    it('focus mode tooltip shows doubled gains for chopWood', () => {
+      const state = createTestState({
+        buildings: { clerksHut: 1 },
+        focusState: {
+          isActive: true,
+          endTime: Date.now() + 60000,
+        },
+      });
+
+      // Get tooltip calculations
+      const { gains: tooltipGains } = calculateResourceGains('chopWood', state);
+      const woodGain = tooltipGains.find(g => g.resource === 'wood');
+
+      expect(woodGain).toBeDefined();
+      // Base 6-12, doubled = 12-24
+      expect(woodGain!.min).toBe(12);
+      expect(woodGain!.max).toBe(24);
+    });
+
+    it('focus mode tooltip shows doubled gains for exploreCave', () => {
+      const state = createTestState({
+        buildings: { clerksHut: 1 },
+        story: { seen: { actionCraftTorch: true } },
+        focusState: {
+          isActive: true,
+          endTime: Date.now() + 60000,
+        },
+      });
+
+      // Get tooltip calculations
+      const { gains: tooltipGains } = calculateResourceGains('exploreCave', state);
+
+      // Verify each resource tooltip shows doubled gains
+      tooltipGains.forEach(gain => {
+        // Base values for exploreCave without any bonuses
+        const baseValues: Record<string, { min: number; max: number }> = {
+          wood: { min: 4, max: 8 },
+          stone: { min: 2, max: 6 },
+          coal: { min: 1, max: 3 },
+          iron: { min: 1, max: 2 },
+        };
+
+        const base = baseValues[gain.resource];
+        if (base) {
+          // With focus, should be doubled
+          expect(gain.min).toBe(base.min * 2);
+          expect(gain.max).toBe(base.max * 2);
+        }
+      });
+    });
+
+    it('focus mode stacks with other bonuses (axe + focus)', () => {
+      const state = createTestState({
+        tools: { iron_axe: true },
+        focusState: {
+          isActive: true,
+          endTime: Date.now() + 60000,
+        },
+      });
+
+      const { expectedGains } = testActionGains('chopWood', state, 50);
+
+      // Base 6-12 with iron axe (100%) = 12-24
+      // With focus: 12-24 * 2 = 24-48
+      expect(expectedGains.wood.min).toBe(24);
+      expect(expectedGains.wood.max).toBe(48);
+    });
+
+    it('focus mode actual gains fall within doubled tooltip range', () => {
+      const state = createTestState({
+        buildings: { clerksHut: 1 },
+        focusState: {
+          isActive: true,
+          endTime: Date.now() + 60000,
+        },
+      });
+
+      // Get tooltip calculations
+      const { gains: tooltipGains } = calculateResourceGains('chopWood', state);
+      const woodGain = tooltipGains.find(g => g.resource === 'wood');
+
+      // Get actual gains from executing the action
+      const { expectedGains, actualGains } = testActionGains('chopWood', state, 100);
+
+      // Verify tooltip matches expected calculation
+      expect(woodGain!.min).toBe(expectedGains.wood.min);
+      expect(woodGain!.max).toBe(expectedGains.wood.max);
+
+      // Verify actual gains fall within tooltip range
+      const minActual = Math.min(...actualGains.wood);
+      const maxActual = Math.max(...actualGains.wood);
+      expect(minActual).toBeGreaterThanOrEqual(woodGain!.min);
+      expect(maxActual).toBeLessThanOrEqual(woodGain!.max);
+    });
+  });
+
   describe('Multiplier Stacking', () => {
     it('multiple bonuses stack correctly for chopWood', () => {
       const state = createTestState({
