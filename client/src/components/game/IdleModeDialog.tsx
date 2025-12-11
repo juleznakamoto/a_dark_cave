@@ -176,6 +176,7 @@ export default function IdleModeDialog() {
   const [initialResources, setInitialResources] = useState<
     Record<string, number>
   >({});
+  const [displayNow, setDisplayNow] = useState<number>(Date.now());
 
   const state = useGameStore.getState();
 
@@ -327,6 +328,7 @@ export default function IdleModeDialog() {
       const remaining = Math.max(0, IDLE_DURATION_MS - elapsed);
 
       setRemainingTime(remaining);
+      setDisplayNow(now);
 
       if (remaining <= 0) {
         // Time's up - stop active state and resource accumulation
@@ -547,7 +549,6 @@ export default function IdleModeDialog() {
   };
 
   // Show resources that are being produced
-  const displayNow = Date.now();
   const displayElapsed = displayNow - startTime;
   const displaySecondsElapsed = Math.floor(displayElapsed / 1000);
 
