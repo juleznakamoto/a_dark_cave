@@ -283,7 +283,7 @@ export default function LeaderboardDialog({ isOpen, onClose }: LeaderboardDialog
               </div>
             </ScrollArea>
             {lastUpdated && (
-              <div className="text-xs text-muted-foreground text-center mt-2 pt-2">
+              <div className="text-xs text-muted-foreground text-center mt-2 pt-2 opacity-50">
                 Last updated: {new Date(lastUpdated).toLocaleString()}
               </div>
             )}
@@ -302,7 +302,7 @@ export default function LeaderboardDialog({ isOpen, onClose }: LeaderboardDialog
               </div>
             </ScrollArea>
             {lastUpdated && (
-              <div className="text-xs text-muted-foreground text-center mt-2 pt-2">
+              <div className="text-xs text-muted-foreground text-center mt-2 pt-2 opacity-50">
                 Last updated: {new Date(lastUpdated).toLocaleString()}
               </div>
             )}
