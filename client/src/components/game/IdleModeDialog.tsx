@@ -405,14 +405,13 @@ export default function IdleModeDialog() {
         .join(', ');
 
       if (resourcesList) {
-        logMessages.push(`While you slept villagers produced: ${resourcesList}`);
-      }
-    }
-    
-    if (hoursSlept > 0) {
-      logMessages.push(`You gained ${hoursSlept} Focus point${hoursSlept > 1 ? 's' : ''} from your rest.`);
-    }
+        let restMsg = hoursSlept > 0 
+          ? `You gained ${hoursSlept} Focus point${hoursSlept > 1 ? 's' : ''} from your rest. ` 
+          : '';
 
+        logMessages.push(`${restMsg}Villagers produced: ${resourcesList}`);
+      }
+      
     if (logMessages.length > 0) {
       useGameStore.getState().addLogEntry({
         id: `idle-mode-end-${Date.now()}`,
