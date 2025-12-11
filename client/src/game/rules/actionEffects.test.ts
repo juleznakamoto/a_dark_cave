@@ -47,7 +47,7 @@ describe('actionEffects - circular dependency fix', () => {
   });
 
   it('should apply effects for craftIronSword action', () => {
-    state.resources.iron = 100;
+    state.resources.iron = 150;
     state.buildings.blacksmith = 1;
     state.weapons.iron_sword = false;
 
@@ -55,7 +55,7 @@ describe('actionEffects - circular dependency fix', () => {
 
     expect(updates).toBeDefined();
     expect(updates.resources).toBeDefined();
-    expect(updates.resources!.iron).toBe(0); // 100 - 100 cost
+    expect(updates.resources!.iron).toBe(0); // 150 - 150 cost
     expect(updates.weapons).toBeDefined();
     expect(updates.weapons!.iron_sword).toBe(true);
   });
