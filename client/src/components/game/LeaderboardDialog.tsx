@@ -181,33 +181,29 @@ export default function LeaderboardDialog({ isOpen, onClose }: LeaderboardDialog
     }
 
     return (
-      <>
-        <div className="flex items-center justify-between px-3 pb-2 border-b border-border bg-background">
+      <div className="space-y-2">
+        <div className="flex items-center justify-between px-3 pb-2 border-b border-border">
           <div className="flex items-center gap-3">
             <span className="font-semibold text-sm w-8 text-center">#</span>
             <span className="font-semibold text-sm">Player</span>
           </div>
           <span className="font-semibold text-sm">Completion Time</span>
         </div>
-        <ScrollArea className="h-[400px] pr-4 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-          <div className="space-y-2 pt-2">
-            {entries.map((entry, index) => (
-              <div
-                key={entry.id}
-                className="flex items-center justify-between p-3 rounded-md bg-muted/50 hover:bg-muted transition-colors"
-              >
-                <div className="flex items-center gap-3">
-                  <span className="font-bold text-lg w-8 text-center">
-                    {index + 1}
-                  </span>
-                  <span className="font-sm">{entry.displayName}</span>
-                </div>
-                <span className="text-muted-foreground">{formatTime(entry.play_time)}</span>
-              </div>
-            ))}
+        {entries.map((entry, index) => (
+          <div
+            key={entry.id}
+            className="flex items-center justify-between p-3 rounded-md bg-muted/50 hover:bg-muted transition-colors"
+          >
+            <div className="flex items-center gap-3">
+              <span className="font-bold text-lg w-8 text-center">
+                {index + 1}
+              </span>
+              <span className="font-sm">{entry.displayName}</span>
+            </div>
+            <span className="text-muted-foreground">{formatTime(entry.play_time)}</span>
           </div>
-        </ScrollArea>
-      </>
+        ))}
+      </div>
     );
   };
 
@@ -281,7 +277,9 @@ export default function LeaderboardDialog({ isOpen, onClose }: LeaderboardDialog
             <TabsTrigger value="cruel">Cruel Mode</TabsTrigger>
           </TabsList>
           <TabsContent value="normal" className="flex-1 min-h-0 flex flex-col">
-            {renderLeaderboard(normalLeaderboard)}
+            <ScrollArea className="h-[400px] pr-4 flex-1 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+              {renderLeaderboard(normalLeaderboard)}
+            </ScrollArea>
             {lastUpdated && (
               <div className="text-xs text-muted-foreground text-center mt-2 pt-2">
                 Last updated: {new Date(lastUpdated).toLocaleString()}
@@ -289,7 +287,9 @@ export default function LeaderboardDialog({ isOpen, onClose }: LeaderboardDialog
             )}
           </TabsContent>
           <TabsContent value="cruel" className="flex-1 min-h-0 flex flex-col">
-            {renderLeaderboard(cruelLeaderboard)}
+            <ScrollArea className="h-[400px] pr-4 flex-1 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+              {renderLeaderboard(cruelLeaderboard)}
+            </ScrollArea>
             {lastUpdated && (
               <div className="text-xs text-muted-foreground text-center mt-2 pt-2">
                 Last updated: {new Date(lastUpdated).toLocaleString()}
