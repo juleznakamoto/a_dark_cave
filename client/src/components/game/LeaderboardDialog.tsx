@@ -180,28 +180,31 @@ export default function LeaderboardDialog({ isOpen, onClose }: LeaderboardDialog
     }
 
     const getCrown = (index: number) => {
-      if (index === 0) return "♛"; // Golden crown
-      if (index === 1) return "♛"; // Silver crown
-      if (index === 2) return "♛"; // Bronze crown
+      if (index === 0) return { symbol: "♛", color: "text-yellow-400" }; // Golden crown
+      if (index === 1) return { symbol: "♛", color: "text-gray-300" }; // Silver crown
+      if (index === 2) return { symbol: "♛", color: "text-amber-600" }; // Bronze crown
       return null;
     };
 
     return (
       <>
-        {entries.map((entry, index) => (
-          <div
-            key={entry.id}
-            className="flex items-center justify-between p-3 rounded-md bg-muted/50 hover:bg-muted transition-colors"
-          >
-            <div className="flex items-center gap-3">
-              <span className="font-bold text-lg w-8 text-center">
-                {getCrown(index) || (index + 1)}
-              </span>
-              <span className="font-sm">{entry.displayName}</span>
-            </div>
+        {entries.map((entry, index) => {
+          const crown = getCrown(index);
+          return (
+            <div
+              key={entry.id}
+              className="flex items-center justify-between p-3 rounded-md bg-muted/50 hover:bg-muted transition-colors"
+            >
+              <div className="flex items-center gap-3">
+                <span className={`font-bold text-lg w-8 text-center ${crown?.color || ""}`}>
+                  {crown ? crown.symbol : (index + 1)}
+                </span>
+                <span className="font-sm">{entry.displayName}</span>
+              </div>
             <span className="text-muted-foreground">{formatTime(entry.play_time)}</span>
-          </div>
-        ))}
+            </div>
+          );
+        })}
       </>
     );
   };
