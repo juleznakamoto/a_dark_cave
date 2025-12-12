@@ -443,17 +443,27 @@ export default function EstatePanel() {
                       Focus
                     </Button>
                     {focusState?.points > 0 && (
-                      <div className="absolute -top-[7px] right-[-7px] flex items-center justify-center w-4 h-4 bg-teal-950 rounded-full text-[10px] font-medium z-1">
-                        {focusState.points}
-                      </div>
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <div className="absolute -top-[7px] right-[-7px] flex items-center justify-center w-4 h-4 bg-teal-950 rounded-full text-[10px] font-medium z-1 cursor-pointer">
+                              {focusState.points}
+                            </div>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <div className="text-xs whitespace-nowrap">
+                              {focusState.points} Focus: Get 2x action bonus for{" "}
+                              {focusState.points} minute{focusState.points > 1 ? "s" : ""}
+                            </div>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
                     )}
                   </div>
                 </TooltipTrigger>
                 <TooltipContent>
                   <div className="text-xs whitespace-nowrap">
-                    <div>{focusState?.points} Focus: Get 2x action bonus for{" "}
-                    {focusState?.points} minute{focusState?.points > 1 ? "s" : ""}</div>
-                    <div className="text-muted-foreground mt-1">Earn 1 Focus per hour of sleep</div>
+                    Earn 1 Focus per hour of sleep
                   </div>
                 </TooltipContent>
               </Tooltip>
