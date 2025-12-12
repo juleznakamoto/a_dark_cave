@@ -73,8 +73,8 @@ const WAVE_PARAMS = {
     fellowshipWoundedMultiplier: 0.25,
   },
   fifthWave: {
-    attack: { options: [65, 70, 75, 80], cmBonus: 20 },
-    health: { base: 750, cmBonus: 200 },
+    attack: { options: [70, 75, 80, 85], cmBonus: 20 },
+    health: { base: 750, cmBonus: 250 },
     silverReward: 1500,
     initialDuration: 10 * 60 * 1000,
     defeatDuration: 20 * 60 * 1000,
