@@ -170,21 +170,29 @@ export const ringEvents: Record<string, GameEvent> = {
           });
         },
         effect: (state: GameState) => {
-          const successChance = calculateSuccessChance(state, 0.1, {
+          const success = Math.random() < calculateSuccessChance(state, 0.1, {
             type: "strength",
             multiplier: 0.005,
           });
-          const success = Math.random() < successChance;
 
           if (success) {
             return {
+              events: {
+                ...state.events,
+                mercenaryDemand: true,
+              },
               _logMessage:
                 "The mercenary signals his men to attack. The battle is fierce, but your the villagers prevails. The mercenaries flee into the forest, leaving behind their weapons and wounded.",
             };
           } else {
-            const deaths = 18 + 6 * state.CM
-            const deathResult = killVillagers(state, deaths);            return {
+            const deaths = 18 + 6 * state.CM;
+            const deathResult = killVillagers(state, deaths);
+            return {
               ...deathResult,
+              events: {
+                ...state.events,
+                mercenaryDemand: true,
+              },
               _logMessage:
                 `The mercenary signals his men to attack. Despite your best efforts, you are overwhelmed. ${deaths} villagers fall before the mercenaries finally retreat, satisfied with the carnage.`,
             };
