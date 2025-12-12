@@ -203,9 +203,12 @@ export default function LeaderboardDialog({
     }
 
     const getCrown = (index: number) => {
-      if (index === 0) return { symbol: "♰", color: "text-yellow-400/80 rotate-180" }; // Golden
-      if (index === 1) return { symbol: "♰", color: "text-gray-300/80 rotate-180" }; // Silver
-      if (index === 2) return { symbol: "♰", color: "text-amber-600/80 rotate-180" }; // Bronze
+      if (index === 0)
+        return { symbol: "✠", color: "text-yellow-500/60 rotate-45" }; // Golden
+      if (index === 1)
+        return { symbol: "✠", color: "text-gray-400/60 rotate-45" }; // Silver
+      if (index === 2)
+        return { symbol: "✠", color: "text-amber-600/60 rotate-45" }; // Bronze
       return null;
     };
 
@@ -222,12 +225,12 @@ export default function LeaderboardDialog({
                 <span className="font-bold text-lg w-8 text-center">
                   {index + 1}
                 </span>
-                <span className="font-sm">{entry.displayName}</span>
                 {crown && (
-                  <span className={`font-bold text-lg ${crown.color}`}>
+                  <span className={`text-lg ${crown.color}`}>
                     {crown.symbol}
                   </span>
                 )}
+                <span className="font-sm">{entry.displayName}</span>
               </div>
               <span className="text-muted-foreground">
                 {formatTime(entry.play_time)}
