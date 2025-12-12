@@ -128,7 +128,7 @@ export default function AdminDashboard() {
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date()); // State to track last data update
 
   // Filter states
-  const [timeRange, setTimeRange] = useState<"1d" | "7d" | "30d" | "all">(
+  const [timeRange, setTimeRange] = useState<"1d" | "3d" | "7d" | "30d" | "all">(
     "30d",
   );
   const [selectedUser, setSelectedUser] = useState<string>("all");
@@ -169,6 +169,9 @@ export default function AdminDashboard() {
     switch (timeRange) {
       case "1d":
         cutoffDate = subDays(now, 1);
+        break;
+      case "3d":
+        cutoffDate = subDays(now, 3);
         break;
       case "7d":
         cutoffDate = subDays(now, 7);
@@ -2095,7 +2098,7 @@ export default function AdminDashboard() {
                 </Select>
                 <Select
                   value={timeRange}
-                  onValueChange={(value: "1d" | "7d" | "30d" | "all") =>
+                  onValueChange={(value: "1d" | "3d" | "7d" | "30d" | "all") =>
                     setTimeRange(value)
                   }
                 >
@@ -2104,6 +2107,7 @@ export default function AdminDashboard() {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="1d">Last 24 Hours</SelectItem>
+                    <SelectItem value="3d">Last 3 Days</SelectItem>
                     <SelectItem value="7d">Last 7 Days</SelectItem>
                     <SelectItem value="30d">Last 30 Days</SelectItem>
                     <SelectItem value="all">All Time</SelectItem>
