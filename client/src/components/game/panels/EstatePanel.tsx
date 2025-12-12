@@ -76,8 +76,8 @@ export default function EstatePanel() {
     return () => clearInterval(interval);
   }, [focusState]);
 
-  // Focus button - only show when there's focus to activate and not already active
-  const showFocusButton = focusState?.points > 0 && !focusState?.isActive;
+  // Focus button - always show when not active, but disable if no points
+  const showFocusButton = !focusState?.isActive;
 
   // Calculate Focus duration: 1 focus point = 1 minute of Focus time
   const calculateFocusDuration = (focusPoints: number) => {
@@ -451,7 +451,7 @@ export default function EstatePanel() {
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
-                {focusState?.points > 0 && (
+                {focusState && focusState.points > 0 && (
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger asChild>
