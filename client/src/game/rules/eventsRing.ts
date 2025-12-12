@@ -196,6 +196,13 @@ export const ringEvents: Record<string, GameEvent> = {
         label: "Give Feeding Ring",
         effect: (state: GameState) => {
           return {
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                mercenaryDemand_giveRing: true,
+              },
+            },
             _logMessage:
               "You offer him the feeding ring you still kept in a locked chest. The mercenary examines it with interest, slipping it onto his own finger. 'A nice ring,' he says, 'but not enough. I'll return tomorrow to collect the gold.'",
           };
@@ -208,7 +215,6 @@ export const ringEvents: Record<string, GameEvent> = {
     id: "mercenaryReturnDemand",
     condition: (state: GameState) =>
       state.buildings.darkEstate >= 1 &&
-      state.buildings.stoneHut >= 6 &&
       state.events.mercenaryDemand &&
       state.story.seen.mercenaryDemand_payGold,
     triggerType: "resource",
