@@ -84,6 +84,10 @@ export default function ForestPanel() {
         ? getResourceGainTooltip(actionId, state)
         : null;
 
+    // Check if this action is affected by focus mode
+    const isFocusAffected = isChopWood || isHunt;
+    const shouldGlow = isFocusAffected && state.focusState?.isActive;
+
     // Get dynamic label for trade buttons based on the amount
     let displayLabel = label;
     if (isTradeButton && action.effects) {
@@ -230,7 +234,7 @@ export default function ForestPanel() {
           size="xs"
           disabled={!canExecute}
           variant="outline"
-          className={`hover:bg-transparent hover:text-foreground ${isTradeButton ? "w-fit" : ""}`}
+          className={`hover:bg-transparent hover:text-foreground ${isTradeButton ? "w-fit" : ""} ${shouldGlow ? "focus-glow" : ""}`}
           tooltip={tooltipContent}
           onMouseEnter={() => {
             if (state.buildings.inkwardenAcademy > 0) {
@@ -269,7 +273,7 @@ export default function ForestPanel() {
         size="xs"
         disabled={!canExecute}
         variant="outline"
-        className={`hover:bg-transparent hover:text-foreground ${isTradeButton ? "w-fit" : ""}`}
+        className={`hover:bg-transparent hover:text-foreground ${isTradeButton ? "w-fit" : ""} ${shouldGlow ? "focus-glow" : ""}`}
         onMouseEnter={() => {
           if (state.buildings.inkwardenAcademy > 0) {
             const resources = getResourcesFromActionCost(actionId, state);

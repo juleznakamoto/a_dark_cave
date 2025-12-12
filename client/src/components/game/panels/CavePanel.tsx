@@ -163,6 +163,10 @@ export default function CavePanel() {
         ? getResourceGainTooltip(actionId, state)
         : null;
 
+    // Check if this action is affected by focus mode
+    const isFocusAffected = isMineAction || isCaveExploreAction;
+    const shouldGlow = isFocusAffected && state.focusState?.isActive;
+
     // Special handling for blastPortal button
     const isBlastPortal = actionId === "blastPortal";
     const handleClick = () => {
@@ -220,7 +224,7 @@ export default function CavePanel() {
           size="xs"
           disabled={!canExecute}
           variant="outline"
-          className="hover:bg-transparent hover:text-foreground"
+          className={`hover:bg-transparent hover:text-foreground ${shouldGlow ? "focus-glow" : ""}`}
           tooltip={tooltipContent}
           onMouseEnter={() => {
             if (state.buildings.inkwardenAcademy > 0) {
@@ -260,7 +264,7 @@ export default function CavePanel() {
         size="xs"
         disabled={!canExecute}
         variant="outline"
-        className="hover:bg-transparent hover:text-foreground"
+        className={`hover:bg-transparent hover:text-foreground ${shouldGlow ? "focus-glow" : ""}`}
         onMouseEnter={() => {
           if (state.buildings.inkwardenAcademy > 0) {
             const resources = getResourcesFromActionCost(actionId, state);

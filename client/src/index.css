@@ -371,6 +371,20 @@ body {
   animation: notification-pulse 0.8s ease-in-out infinite;
 }
 
+/* Focus mode glow animation */
+@keyframes focus-glow {
+  0%, 100% {
+    box-shadow: 0 0 8px rgba(20, 184, 166, 0.4), 0 0 12px rgba(20, 184, 166, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 12px rgba(20, 184, 166, 0.6), 0 0 20px rgba(20, 184, 166, 0.3);
+  }
+}
+
+.focus-glow {
+  animation: focus-glow 2s ease-in-out infinite;
+}
+
 /* Overlay fade-in animation */
 @keyframes overlay-fade-in {
   from {
