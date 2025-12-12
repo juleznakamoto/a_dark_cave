@@ -264,7 +264,7 @@ export const ringEvents: Record<string, GameEvent> = {
                 "You refuse. The mercenaries attack, but this time you're ready. After a brutal fight, they scatter into the wilderness, leaving their dead behind.",
             };
           } else {
-            const deaths = 24 + 6 * state.CM
+            const deaths = 24 + 6 * state.CM;
             const deathResult = killVillagers(state, deaths);
             return {
               ...deathResult,
@@ -272,6 +272,23 @@ export const ringEvents: Record<string, GameEvent> = {
                 `Your defiance costs you dearly. The mercenaries rampage through the village, killing ${deaths} before they finally depart, laughing at the destruction they've caused.`,
             };
           }
+        },
+      },
+      {
+        id: "giveRing",
+        label: "Give Feeding Ring",
+        effect: (state: GameState) => {
+          return {
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                mercenaryReturnDemand_giveRing: true,
+              },
+            },
+            _logMessage:
+              "You offer him the feeding ring you still kept in a locked chest. The mercenary examines it with interest, slipping it onto his own finger. 'A nice ring,' he says, 'but not enough. I'll return tomorrow to collect the gold.'",
+          };
         },
       },
     ],
@@ -287,7 +304,7 @@ export const ringEvents: Record<string, GameEvent> = {
     timeProbability: 5,
     title: "The Massacre",
     message:
-      "A pale villager rushes to you, breathless with terror. 'The mercenary camp... everyone's dead. They killed each other in the night. Blood everywhere.' You find 500 silver among the corpses. Only you know the truth - the ring fed well.",
+      "A pale villager rushes to you, breathless with terror. 'The mercenary camp... everyone's dead. They killed each other in the night. Blood everywhere.' You find 500 silver among the corpses. Only you know the truth - the ring found well.",
     triggered: false,
     priority: 4,
     repeatable: false,
