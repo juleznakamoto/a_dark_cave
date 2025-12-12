@@ -480,18 +480,24 @@ export default function IdleModeDialog() {
     const hoursSlept = Math.floor(elapsed / (1*5*1000)); // Full hours only
 
     if (hoursSlept > 0) {
+      const currentFocus = state.focusState?.points || 0;
+      const MAX_FOCUS = 30;
+      const newFocusPoints = Math.min(currentFocus + hoursSlept, MAX_FOCUS);
+      
       logger.log('[IDLE MODE] Awarding Focus:', {
         hoursSlept,
         elapsed,
-        currentFocus: state.focusState?.points || 0,
+        currentFocus,
+        newFocusPoints,
+        cappedAt: newFocusPoints === MAX_FOCUS,
         currentTotalFocusEarned: state.totalFocusEarned || 0,
       });
 
-      // Update focus points in focusState
+      // Update focus points in focusState (capped at 30)
       state.updateFocusState({
         isActive: state.focusState?.isActive || false,
         endTime: state.focusState?.endTime || 0,
-        points: (state.focusState?.points || 0) + hoursSlept,
+        points: newFocusPoints,
       });
 
       // Increment total focus earned for achievement tracking
