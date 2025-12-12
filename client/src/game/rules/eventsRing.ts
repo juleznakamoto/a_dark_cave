@@ -132,13 +132,14 @@ export const ringEvents: Record<string, GameEvent> = {
     id: "mercenaryDemand",
     condition: (state: GameState) =>
       state.buildings.darkEstate >= 1 &&
+      state.buildings.stoneHut >= 6 &&
       !state.clothing.feedingRing &&
       (state.events.bloodiedAwakening || state.events.desperateAmputation),
     triggerType: "resource",
     timeProbability: 60,
     title: "The Mercenary",
     message:
-      "A scarred mercenary arrives at your village, hand resting on his blade. 'I hear you've had some... trouble here. Pay me 100 gold, and I'll keep things peaceful. Refuse, and my men will burn this place to the ground.'",
+      "A scarred mercenary arrives at the village, hand resting on his blade. 'I’m not here to stir up trouble. Pay me 100 gold, and I'll keep things peaceful. Refuse, and my men will burn this place to the ground.'",
     triggered: false,
     priority: 4,
     repeatable: false,
@@ -154,7 +155,7 @@ export const ringEvents: Record<string, GameEvent> = {
               gold: state.resources.gold - 100,
             },
             _logMessage:
-              "You hand over the gold. The mercenary counts it slowly, a cruel smile on his face. 'Pleasure doing business,' he says, before disappearing into the forest.",
+              "You hand over the gold. The mercenary counts it slowly, a cruel smile on his face. 'Pleasure doing business,' he says, before disappearing.",
           };
         },
       },
@@ -163,34 +164,40 @@ export const ringEvents: Record<string, GameEvent> = {
         label: "Refuse to pay",
         relevant_stats: ["strength"],
         success_chance: (state: GameState) => {
-          return calculateSuccessChance(state, "strength", 0.1, 0.05);
+          return calculateSuccessChance(state, 0.1, {
+            type: "strength",
+            multiplier: 0.005,
+          });
         },
         effect: (state: GameState) => {
-          const successChance = calculateSuccessChance(state, "strength", 0.1, 0.05);
+          const successChance = calculateSuccessChance(state, 0.1, {
+            type: "strength",
+            multiplier: 0.005,
+          });
           const success = Math.random() < successChance;
 
           if (success) {
             return {
               _logMessage:
-                "The mercenary signals his men to attack. The battle is fierce, but your strength prevails. The mercenaries flee into the forest, leaving behind their weapons and wounded.",
+                "The mercenary signals his men to attack. The battle is fierce, but your the villagers prevails. The mercenaries flee into the forest, leaving behind their weapons and wounded.",
             };
           } else {
-            const deathResult = killVillagers(state, 12);
+            const deathResult = killVillagers(state, 18);
             return {
               ...deathResult,
               _logMessage:
-                "The mercenary signals his men to attack. Despite your best efforts, you are overwhelmed. Twelve villagers fall before the mercenaries finally retreat, satisfied with the carnage.",
+                "The mercenary signals his men to attack. Despite your best efforts, you are overwhelmed. 18 villagers fall before the mercenaries finally retreat, satisfied with the carnage.",
             };
           }
         },
       },
       {
         id: "giveRing",
-        label: "Give the severed finger with ring",
+        label: "Give Feeding Ring",
         effect: (state: GameState) => {
           return {
             _logMessage:
-              "You offer him the severed finger, the cursed ring still attached. The mercenary examines it with interest, slipping it onto his own finger. 'A nice trinket,' he says, 'but I want more. I'll return tomorrow to collect the gold.'",
+              "You offer him the feeding ring you still kept in a locked chest. The mercenary examines it with interest, slipping it onto his own finger. 'A nice ring,' he says, 'but not enough. I'll return tomorrow to collect the gold.'",
           };
         },
       },
@@ -201,6 +208,7 @@ export const ringEvents: Record<string, GameEvent> = {
     id: "mercenaryReturnDemand",
     condition: (state: GameState) =>
       state.buildings.darkEstate >= 1 &&
+      state.buildings.stoneHut >= 6 &&
       state.events.mercenaryDemand &&
       state.story.seen.mercenaryDemand_payGold,
     triggerType: "resource",
@@ -232,10 +240,16 @@ export const ringEvents: Record<string, GameEvent> = {
         label: "Refuse to pay",
         relevant_stats: ["strength"],
         success_chance: (state: GameState) => {
-          return calculateSuccessChance(state, "strength", 0.1, 0.05);
+          return calculateSuccessChance(state, 0.1, {
+            type: "strength",
+            multiplier: 0.005,
+          });
         },
         effect: (state: GameState) => {
-          const successChance = calculateSuccessChance(state, "strength", 0.1, 0.05);
+          const successChance = calculateSuccessChance(state, 0.1, {
+            type: "strength",
+            multiplier: 0.005,
+          });
           const success = Math.random() < successChance;
 
           if (success) {
