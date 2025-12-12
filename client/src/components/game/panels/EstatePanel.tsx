@@ -15,6 +15,7 @@ import { useMobileButtonTooltip } from "@/hooks/useMobileTooltip";
 import { getTotalPopulationEffects } from "@/game/population";
 import { Progress } from "@/components/ui/progress";
 import { CircularProgress } from "@/components/ui/circular-progress";
+import CooldownButton from "@/components/CooldownButton";
 import {
   CRUSHING_STRIKE_UPGRADES,
   BLOODFLAME_SPHERE_UPGRADES,
@@ -412,68 +413,63 @@ export default function EstatePanel() {
 
           {/* Focus Activation Button */}
           {showFocusButton && (
-            <TooltipProvider>
-              <Tooltip open={mobileTooltip.isTooltipOpen("focus-button")}>
-                <TooltipTrigger asChild>
-                  <div className="h-5 inline-block pb-1 text-xs font-medium text-foreground ml-2">
-                    <div className="relative">
-                      <Button
-                        onClick={() => {
-                          const now = Date.now();
-                          const focusPoints = focusState?.points || 0;
-                          const focusDuration = calculateFocusDuration(focusPoints);
-                          console.log('[FOCUS] Activating Focus:', {
-                            focusPoints,
-                            durationMs: focusDuration,
-                            durationMinutes: focusDuration / 60000,
-                          });
-                          updateFocusState({
-                            isActive: true,
-                            endTime: now + focusDuration,
-                            startTime: now,
-                            duration: focusDuration,
-                            points: 0,
-                          });
-                        }}
-                        size="xs"
-                        variant="outline"
-                        className="h-7 hover:bg-transparent hover:text-foreground"
-                        button_id="activate-focus"
-                        disabled={!focusState?.points || focusState.points === 0}
-                      >
-                        Focus
-                      </Button>
-                {focusState && focusState.points > 0 && (
-                        <TooltipProvider>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <div
-                                className="absolute -top-[7px] right-[-7px] flex items-center justify-center w-4 h-4 bg-teal-950 rounded-full text-[10px] font-medium z-1 cursor-pointer hover:bg-teal-900 transition-colors duration-300"
-                                onClick={(e) => e.stopPropagation()}
-                                onPointerDown={(e) => e.stopPropagation()}
-                              >
-                                {focusState.points}
-                              </div>
-                            </TooltipTrigger>
-                            <TooltipContent side="right">
-                              <div className="text-xs whitespace-nowrap">
-                                {focusState.points} Focus: Get 2x action bonus for{" "}
-                                {focusState.points} minute{focusState.points > 1 ? "s" : ""}
-                              </div>
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
-                      )}
+            <div className="h-5 inline-block pb-1 text-xs font-medium text-foreground ml-2">
+              <div className="relative">
+                <CooldownButton
+                  onClick={() => {
+                    const now = Date.now();
+                    const focusPoints = focusState?.points || 0;
+                    const focusDuration = calculateFocusDuration(focusPoints);
+                    console.log('[FOCUS] Activating Focus:', {
+                      focusPoints,
+                      durationMs: focusDuration,
+                      durationMinutes: focusDuration / 60000,
+                    });
+                    updateFocusState({
+                      isActive: true,
+                      endTime: now + focusDuration,
+                      startTime: now,
+                      duration: focusDuration,
+                      points: 0,
+                    });
+                  }}
+                  cooldownMs={0}
+                  size="xs"
+                  variant="outline"
+                  className="h-7 hover:bg-transparent hover:text-foreground"
+                  button_id="activate-focus"
+                  disabled={!focusState?.points || focusState.points === 0}
+                  tooltip={
+                    <div className="text-xs whitespace-nowrap">
+                      Earn 1 Focus per hour of sleep
                     </div>
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <div className="text-xs whitespace-nowrap">
-                    Earn 1 Focus per hour of sleep
-                  </div>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+                  }
+                >
+                  Focus
+                </CooldownButton>
+                {focusState && focusState.points > 0 && (
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <div
+                          className="absolute -top-[7px] right-[-7px] flex items-center justify-center w-4 h-4 bg-teal-950 rounded-full text-[10px] font-medium z-1 cursor-pointer hover:bg-teal-900 transition-colors duration-300"
+                          onClick={(e) => e.stopPropagation()}
+                          onPointerDown={(e) => e.stopPropagation()}
+                        >
+                          {focusState.points}
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent side="right">
+                        <div className="text-xs whitespace-nowrap">
+                          {focusState.points} Focus: Get 2x action bonus for{" "}
+                          {focusState.points} minute{focusState.points > 1 ? "s" : ""}
+                        </div>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                )}
+              </div>
+            </div>
           )}
         </div>
 
