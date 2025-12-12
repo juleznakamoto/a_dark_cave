@@ -143,7 +143,10 @@ export const gameStateSchema = z.object({
       bone_necklace: z.boolean().default(false),
       sacrificial_tunic: z.boolean().default(false),
       shadow_boots: z.boolean().default(false),
-      feeding_ring: z.boolean().default(false),
+      feedingRing: z.boolean().default(false),
+      bloodiedAwakening: z.boolean().default(false),
+      desperateAmputation: z.boolean().default(false),
+      mercenaryDemand: z.boolean().default(false),
     })
     .default({}),
   relics: z
@@ -315,6 +318,9 @@ export const gameStateSchema = z.object({
       riddleOfEternal: z.boolean().default(false),
       riddleOfEternal_correct: z.boolean().default(false),
       whisperersReward: z.boolean().default(false),
+      bloodiedAwakening: z.boolean().default(false),
+      desperateAmputation: z.boolean().default(false),
+      mercenaryDemand: z.boolean().default(false),
     })
     .default({}),
   effects: z

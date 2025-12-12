@@ -3,6 +3,8 @@
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
+import { getTotalStrength } from "./effectsCalculation";
+import { calculateSuccessChance } from "./eventsChoices";
 
 export const ringEvents: Record<string, GameEvent> = {
   feedingRing: {
@@ -163,11 +165,10 @@ export const ringEvents: Record<string, GameEvent> = {
         label: "Refuse to pay",
         relevant_stats: ["strength"],
         success_chance: (state: GameState) => {
-          return Math.min(0.1 + getTotalStrength(state) * 0.05, 1.0);
+          return calculateSuccessChance(state, "strength", 0.1, 0.05);
         },
         effect: (state: GameState) => {
-          const strength = getTotalStrength(state);
-          const successChance = Math.min(0.1 + strength * 0.05, 1.0);
+          const successChance = calculateSuccessChance(state, "strength", 0.1, 0.05);
           const success = Math.random() < successChance;
 
           if (success) {
@@ -233,11 +234,10 @@ export const ringEvents: Record<string, GameEvent> = {
         label: "Refuse to pay",
         relevant_stats: ["strength"],
         success_chance: (state: GameState) => {
-          return Math.min(0.1 + getTotalStrength(state) * 0.05, 1.0);
+          return calculateSuccessChance(state, "strength", 0.1, 0.05);
         },
         effect: (state: GameState) => {
-          const strength = getTotalStrength(state);
-          const successChance = Math.min(0.1 + strength * 0.05, 1.0);
+          const successChance = calculateSuccessChance(state, "strength", 0.1, 0.05);
           const success = Math.random() < successChance;
 
           if (success) {
