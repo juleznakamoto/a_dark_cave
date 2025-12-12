@@ -182,11 +182,11 @@ export const ringEvents: Record<string, GameEvent> = {
                 "The mercenary signals his men to attack. The battle is fierce, but your the villagers prevails. The mercenaries flee into the forest, leaving behind their weapons and wounded.",
             };
           } else {
-            const deathResult = killVillagers(state, 18);
-            return {
+            const deaths = 18 + 6 * state.CM
+            const deathResult = killVillagers(state, deaths);            return {
               ...deathResult,
               _logMessage:
-                "The mercenary signals his men to attack. Despite your best efforts, you are overwhelmed. 18 villagers fall before the mercenaries finally retreat, satisfied with the carnage.",
+                `The mercenary signals his men to attack. Despite your best efforts, you are overwhelmed. ${deaths} villagers fall before the mercenaries finally retreat, satisfied with the carnage.`,
             };
           }
         },
@@ -218,7 +218,7 @@ export const ringEvents: Record<string, GameEvent> = {
       state.events.mercenaryDemand &&
       state.story.seen.mercenaryDemand_payGold,
     triggerType: "resource",
-    timeProbability: 60,
+    timeProbability: 30,
     title: "The Mercenary Returns",
     message:
       "The mercenary is back, and this time he brings more men. 'Times are tough,' he says with a grin. 'The price has gone up. 200 gold, or things get messy.'",
@@ -252,7 +252,7 @@ export const ringEvents: Record<string, GameEvent> = {
           });
         },
         effect: (state: GameState) => {
-          const successChance = calculateSuccessChance(state, 0.1, {
+          const successChance = calculateSuccessChance(state, 0.0, {
             type: "strength",
             multiplier: 0.005,
           });
@@ -264,11 +264,12 @@ export const ringEvents: Record<string, GameEvent> = {
                 "You refuse. The mercenaries attack, but this time you're ready. After a brutal fight, they scatter into the wilderness, leaving their dead behind.",
             };
           } else {
-            const deathResult = killVillagers(state, 15);
+            const deaths = 24 + 6 * state.CM
+            const deathResult = killVillagers(state, deaths);
             return {
               ...deathResult,
               _logMessage:
-                "Your defiance costs you dearly. The mercenaries rampage through the village, killing fifteen before they finally depart, laughing at the destruction they've caused.",
+                `Your defiance costs you dearly. The mercenaries rampage through the village, killing ${deaths} before they finally depart, laughing at the destruction they've caused.`,
             };
           }
         },
