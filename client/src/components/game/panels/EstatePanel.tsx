@@ -446,7 +446,7 @@ export default function EstatePanel() {
                     </TooltipTrigger>
                     <TooltipContent>
                       <div className="text-xs whitespace-nowrap">
-                        Activates faster production
+                        Earn 1 Focus per hour of sleep
                       </div>
                     </TooltipContent>
                   </Tooltip>
@@ -465,7 +465,8 @@ export default function EstatePanel() {
                       </TooltipTrigger>
                       <TooltipContent side="right">
                         <div className="text-xs whitespace-nowrap">
-                          Earn 1 Focus per hour of sleep
+                          {focusState.points} Focus: Get 2x action bonus for{" "}
+                          {focusState.points} minute{focusState.points > 1 ? "s" : ""}
                         </div>
                       </TooltipContent>
                     </Tooltip>
