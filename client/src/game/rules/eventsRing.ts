@@ -306,13 +306,13 @@ export const ringEvents: Record<string, GameEvent> = {
     id: "cursedMercenaryMassacre",
     condition: (state: GameState) =>
       state.buildings.darkEstate >= 1 &&
-      // state.events.mercenaryDemand &&
+      state.events.mercenaryDemand &&
       state.story.seen.mercenaryDemand_giveRing,
     triggerType: "resource",
-    timeProbability: 0.05,
+    timeProbability: 5,
     title: "The Massacre",
     message:
-      "A pale villager rushes to you, breathless with terror. 'The mercenary camp... everyone's dead. They killed each other in the night. We found 500 silver among the corpses.' Only you know the truth - the ring fed well.",
+      "A pale villager rushes to you, breathless with terror. 'The mercenary camp... everyone's dead. They killed each other in the night. We found 500 silver among the corpses.'",
     triggered: false,
     priority: 4,
     repeatable: false,
@@ -327,7 +327,7 @@ export const ringEvents: Record<string, GameEvent> = {
               silver: state.resources.silver + 500,
             },
             _logMessage:
-              "You nod silently, accepting the silver. The villager hurries away, unaware of the dark truth.",
+              "The villager hurries away, unaware of the dark truth. The ring fed well.",
           };
         },
       },
