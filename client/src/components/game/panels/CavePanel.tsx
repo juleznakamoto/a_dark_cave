@@ -328,7 +328,7 @@ export default function CavePanel() {
                   if (visibleActions.length === 0) return null;
 
                   return (
-                    <div key={subGroupIndex} className="flex flex-wrap gap-2">
+                    <div key={subGroupIndex} className="flex flex-wrap gap-2 p-[3px]">
                       {visibleActions.map((action) =>
                         renderButton(action.id, action.label),
                       )}
@@ -358,7 +358,7 @@ export default function CavePanel() {
                   {group.title}
                 </h3>
               )}
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2 p-[3px]">
                 {visibleActions.map((action) =>
                   renderButton(action.id, action.label),
                 )}
