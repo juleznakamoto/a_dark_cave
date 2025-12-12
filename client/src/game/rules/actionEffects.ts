@@ -52,6 +52,11 @@ const evaluateCondition = (condition: string, state: GameState): boolean => {
 
   for (const part of pathParts) {
     current = current?.[part];
+    // If property doesn't exist at any point in the path, treat as false
+    if (current === undefined) {
+      current = false;
+      break;
+    }
   }
 
   return isNegated ? !current : !!current;
