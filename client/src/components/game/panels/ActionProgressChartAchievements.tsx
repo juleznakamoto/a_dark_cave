@@ -58,7 +58,19 @@ export default function ActionProgressChartAchievements() {
 
   // Define ring segment configurations
   const ringSegments: ActionSegment[][] = [
-    // First ring: Sacrifices
+    // First ring: Well Rested (outermost ring)
+    [
+      {
+        segmentType: "wellRested",
+        maxCount: 50,
+        color: SEGMENT_COLOR,
+        label: "Well Rested",
+        getCount: (state: GameState) =>
+          Math.min(Number(state.totalFocusEarned) || 0, 50),
+        reward: 1000,
+      },
+    ],
+    // Second ring: Sacrifices
     [
       {
         segmentType: "exploreCave",
@@ -91,7 +103,7 @@ export default function ActionProgressChartAchievements() {
         },
       },
     ],
-    // Second ring: Cave & Gathering Actions
+    // Third ring: Cave & Gathering Actions
     [
       {
         segmentType: "mineStone",
@@ -154,7 +166,7 @@ export default function ActionProgressChartAchievements() {
         },
       },
     ],
-    // Third ring: Mining Actions
+    // Fourth ring: Mining Actions
     [
       {
         segmentType: "boneTotems",
@@ -184,7 +196,7 @@ export default function ActionProgressChartAchievements() {
         reward: 500,
       },
     ],
-    // Fourth ring: Bomb Crafting
+    // Fifth ring: Bomb Crafting
     [
       {
         segmentType: "emberBombs",
@@ -219,7 +231,7 @@ export default function ActionProgressChartAchievements() {
         reward: 500,
       },
     ],
-    // Fifth ring: Merchant Purchases
+    // Sixth ring: Merchant Purchases
     [
       {
         segmentType: "merchantPurchases",

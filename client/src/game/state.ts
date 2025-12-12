@@ -492,6 +492,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     endTime: 0,
     points: 0,
   },
+  totalFocusEarned: 0,
   // Initialize shop notification state
   shopNotificationSeen: false,
   shopNotificationVisible: false,

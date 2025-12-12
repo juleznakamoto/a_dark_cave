@@ -464,6 +464,7 @@ export const gameStateSchema = z.object({
     })
     .default({ lengthLevel: 0, intensityLevel: 0 }),
   focus: z.number().default(0), // Focus points accumulated from sleep
+  totalFocusEarned: z.number().default(0), // Total focus earned across all sleep sessions
   focusState: z
     .object({
       isActive: z.boolean().default(false),
