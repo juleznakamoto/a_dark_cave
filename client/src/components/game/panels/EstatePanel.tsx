@@ -445,19 +445,26 @@ export default function EstatePanel() {
                     {focusState?.points > 0 && (
                       <TooltipProvider>
                         <Tooltip>
-                          <TooltipTrigger asChild>
+                          <TooltipTrigger
+                            asChild
+                            onClick={(e) => e.stopPropagation()}
+                            onPointerDown={(e) => e.stopPropagation()}
+                          >
                             <div
-                              className="absolute -top-[7px] right-[-7px] flex items-center justify-center w-4 h-4 bg-teal-950 rounded-full text-[10px] font-medium z-1 cursor-pointer"
-                              onPointerDown={(e) => e.stopPropagation()}
-                              onMouseEnter={(e) => e.stopPropagation()}
-                              onMouseLeave={(e) => e.stopPropagation()}
+                              className="absolute -top-[7px] right-[-7px] flex items-center justify-center w-4 h-4 bg-teal-950 rounded-full text-[10px] font-medium z-1 cursor-pointer hover:bg-teal-900 transition-colors duration-300"
                             >
                               {focusState.points}
                             </div>
                           </TooltipTrigger>
-                          <TooltipContent>
-                            <div className="text-xs whitespace-nowrap">
-                              Earn 1 Focus per hour of sleep
+                          <TooltipContent side="right" className="max-w-xs bg-popover text-white border text-xs">
+                            <div className="space-y-1">
+                              <div className="text-xs">
+                                {focusState.points} Focus: Get 2x action bonus for{" "}
+                                {focusState.points} minute{focusState.points > 1 ? "s" : ""}
+                              </div>
+                              <div className="text-xs text-muted-foreground pt-1 border-t">
+                                Max: 30 Focus
+                              </div>
                             </div>
                           </TooltipContent>
                         </Tooltip>
