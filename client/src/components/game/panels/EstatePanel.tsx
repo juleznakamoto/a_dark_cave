@@ -446,14 +446,17 @@ export default function EstatePanel() {
                       <TooltipProvider>
                         <Tooltip>
                           <TooltipTrigger asChild>
-                            <div className="absolute -top-[7px] right-[-7px] flex items-center justify-center w-4 h-4 bg-teal-950 rounded-full text-[10px] font-medium z-1 cursor-pointer">
+                            <div
+                              className="absolute -top-[7px] right-[-7px] flex items-center justify-center w-4 h-4 bg-teal-950 rounded-full text-[10px] font-medium z-1"
+                              onMouseEnter={(e) => e.stopPropagation()}
+                              onMouseLeave={(e) => e.stopPropagation()}
+                            >
                               {focusState.points}
                             </div>
                           </TooltipTrigger>
                           <TooltipContent>
                             <div className="text-xs whitespace-nowrap">
-                              {focusState.points} Focus: Get 2x action bonus for{" "}
-                              {focusState.points} minute{focusState.points > 1 ? "s" : ""}
+                              Earn 1 Focus per hour of sleep
                             </div>
                           </TooltipContent>
                         </Tooltip>
