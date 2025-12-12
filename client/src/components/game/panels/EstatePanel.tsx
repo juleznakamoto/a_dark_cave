@@ -422,7 +422,6 @@ export default function EstatePanel() {
                           const now = Date.now();
                           const focusPoints = focusState?.points || 0;
                           const focusDuration = calculateFocusDuration(focusPoints);
-
                           console.log('[FOCUS] Activating Focus:', {
                             focusPoints,
                             durationMs: focusDuration,
@@ -440,6 +439,7 @@ export default function EstatePanel() {
                         variant="outline"
                         className="h-7 hover:bg-transparent hover:text-foreground"
                         button_id="activate-focus"
+                        disabled={!focusState?.points || focusState.points === 0}
                       >
                         Focus
                       </Button>
