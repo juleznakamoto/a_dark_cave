@@ -484,6 +484,7 @@ export default function IdleModeDialog() {
         hoursSlept,
         elapsed,
         currentFocus: state.focusState?.points || 0,
+        currentTotalFocusEarned: state.totalFocusEarned || 0,
       });
 
       // Update focus points in focusState
@@ -491,6 +492,11 @@ export default function IdleModeDialog() {
         isActive: state.focusState?.isActive || false,
         endTime: state.focusState?.endTime || 0,
         points: (state.focusState?.points || 0) + hoursSlept,
+      });
+
+      // Increment total focus earned for achievement tracking
+      useGameStore.setState({
+        totalFocusEarned: (state.totalFocusEarned || 0) + hoursSlept,
       });
     }
 
