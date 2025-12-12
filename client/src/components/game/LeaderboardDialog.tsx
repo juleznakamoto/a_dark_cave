@@ -203,7 +203,7 @@ export default function LeaderboardDialog({
     }
 
     const getCrown = (index: number) => {
-      if (index === 0) return { symbol: "♰", color: "text-yellow-400/80  rotate-180" }; // Golden
+      if (index === 0) return { symbol: "♰", color: "text-yellow-400/80 rotate-180" }; // Golden
       if (index === 1) return { symbol: "♰", color: "text-gray-300/80 rotate-180" }; // Silver
       if (index === 2) return { symbol: "♰", color: "text-amber-600/80 rotate-180" }; // Bronze
       return null;
@@ -219,12 +219,15 @@ export default function LeaderboardDialog({
               className="flex items-center justify-between p-3 rounded-md bg-muted/50 hover:bg-muted transition-colors"
             >
               <div className="flex items-center gap-3">
-                <span
-                  className={`font-bold text-lg w-8 text-center ${crown?.color || ""}`}
-                >
-                  {crown ? crown.symbol : index + 1}
+                <span className="font-bold text-lg w-8 text-center">
+                  {index + 1}
                 </span>
                 <span className="font-sm">{entry.displayName}</span>
+                {crown && (
+                  <span className={`font-bold text-lg ${crown.color}`}>
+                    {crown.symbol}
+                  </span>
+                )}
               </div>
               <span className="text-muted-foreground">
                 {formatTime(entry.play_time)}
