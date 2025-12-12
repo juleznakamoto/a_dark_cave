@@ -180,9 +180,9 @@ export default function LeaderboardDialog({ isOpen, onClose }: LeaderboardDialog
     }
 
     const getCrown = (index: number) => {
-      if (index === 0) return "👑"; // Golden crown
-      if (index === 1) return "🥈"; // Silver medal
-      if (index === 2) return "🥉"; // Bronze medal
+      if (index === 0) return "♛"; // Golden crown
+      if (index === 1) return "♛"; // Silver crown
+      if (index === 2) return "♛"; // Bronze crown
       return null;
     };
 
