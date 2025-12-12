@@ -155,7 +155,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
 
   return (
     <div
-      className="relative inline-block"
+      className="relative inline-block overflow-visible"
       onClick={mobileTooltip.isMobile ? (e) => {
         // Don't show tooltip if action was just executed
         if (actionExecutedRef.current) return;
