@@ -1,9 +1,8 @@
 // estate 1, stone hut 4, 5
 
-import { GameEvent } from "./events";
+import { GameEvent, calculateSuccessChance } from "./events";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
-import { calculateSuccessChance } from "./eventsChoices";
 
 export const ringEvents: Record<string, GameEvent> = {
   feedingRing: {
