@@ -117,7 +117,6 @@ interface GameStore extends GameState {
 
   // Analytics tracking
   clickAnalytics: Record<string, number>;
-  resourceAnalytics: Record<string, number>;
   lastResourceSnapshotTime: number;
   isPausedPreviously: boolean;
 
@@ -398,7 +397,6 @@ export const createInitialState = (): GameState => ({
 
   // Initialize analytics tracking
   clickAnalytics: {},
-  resourceAnalytics: {},
   lastResourceSnapshotTime: 0,
   isPausedPreviously: false, // Initialize isPausedPreviously
   versionCheckDialogOpen: false, // Initialize version check dialog state
@@ -803,7 +801,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // Reset analytics trackers
     set({
       clickAnalytics: {},
-      lastResourceSnapshotTime: 0, // Reset snapshot time
+      lastResourceSnapshotTime: 0, // Reset snapshot time to start fresh
     });
 
     // Immediately save the new game state to cloud to prevent OCC issues
@@ -855,24 +853,18 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const resources = state.resources || {};
     const stats = state.stats || {};
 
-    // Add resources to snapshot
+    // Add ALL resources to snapshot (including zero values for complete snapshot)
     for (const [key, value] of Object.entries(resources)) {
-      if (typeof value === 'number' && value > 0) {
-        snapshot[key] = value;
-      }
-    }
-
-    // Add stats to snapshot (luck, strength, knowledge, madness)
-    // Include stats even if they're 0, as long as they're numbers
-    for (const [key, value] of Object.entries(stats)) {
       if (typeof value === 'number') {
         snapshot[key] = value;
       }
     }
 
-    // If no resources or stats, return null
-    if (Object.keys(snapshot).length === 0) {
-      return null;
+    // Add stats to snapshot (luck, strength, knowledge, madness)
+    for (const [key, value] of Object.entries(stats)) {
+      if (typeof value === 'number') {
+        snapshot[key] = value;
+      }
     }
 
     // Update last snapshot time

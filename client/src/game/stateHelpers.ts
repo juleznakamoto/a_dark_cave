@@ -8,23 +8,7 @@ export function updateResource(
 ): Partial<GameState> {
   const newAmount = Math.max(0, (state.resources[resource] || 0) + amount);
 
-  // Track the resource change for analytics (only track actual changes, not zero changes)
-  if (amount !== 0) {
-    const resourceName = resource as string;
-    const currentTracking = state.resourceAnalytics?.[resourceName] || 0;
-
-    return {
-      resources: {
-        ...state.resources,
-        [resource]: newAmount,
-      },
-      resourceAnalytics: {
-        ...state.resourceAnalytics,
-        [resourceName]: currentTracking + amount,
-      },
-    };
-  }
-
+  // No longer tracking deltas - snapshots are taken periodically instead
   return {
     resources: {
       ...state.resources,
