@@ -204,11 +204,11 @@ export default function LeaderboardDialog({
 
     const getCrown = (index: number) => {
       if (index === 0)
-        return { symbol: "♛", color: "text-yellow-500" }; // Golden
+        return { symbol: "✠", color: "text-yellow-500/60 rotate-45" }; // Golden
       if (index === 1)
-        return { symbol: "♛", color: "text-gray-400" }; // Silver
+        return { symbol: "✠", color: "text-gray-400/60 rotate-45" }; // Silver
       if (index === 2)
-        return { symbol: "♛", color: "text-amber-600" }; // Bronze
+        return { symbol: "✠", color: "text-amber-600/60 rotate-45" }; // Bronze
       return null;
     };
 
