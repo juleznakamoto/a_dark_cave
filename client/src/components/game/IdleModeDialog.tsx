@@ -477,7 +477,7 @@ export default function IdleModeDialog() {
     // Calculate Focus points gained (1 per almost 1 hour slept)
     const now = Date.now();
     const elapsed = now - startTime;
-    const hoursSlept = Math.floor(elapsed / (1 * 1 * 1000)); // Full hours only
+    const hoursSlept = Math.floor(elapsed / (59.99 * 60 * 1000)); // Full hours only
 
     if (hoursSlept > 0) {
       const currentFocus = state.focusState?.points || 0;
@@ -575,7 +575,7 @@ export default function IdleModeDialog() {
   const hasCompletedFirstInterval = displaySecondsElapsed >= 15;
 
   // Calculate Focus points (1 per almost 1 hour slept)
-  const focusPoints = Math.floor(displayElapsed / (1 * 1 * 1000));
+  const focusPoints = Math.floor(displayElapsed / (59.99 * 60 * 1000));
 
   // Get all resources that have changed (only positive)
   const otherResources = Object.keys(accumulatedResources)

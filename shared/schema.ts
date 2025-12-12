@@ -144,9 +144,6 @@ export const gameStateSchema = z.object({
       sacrificial_tunic: z.boolean().default(false),
       shadow_boots: z.boolean().default(false),
       feedingRing: z.boolean().default(false),
-      bloodiedAwakening: z.boolean().default(false),
-      desperateAmputation: z.boolean().default(false),
-      mercenaryDemand: z.boolean().default(false),
     })
     .default({}),
   relics: z
