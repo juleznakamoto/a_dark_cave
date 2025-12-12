@@ -132,29 +132,7 @@ export default function AdminDashboard() {
     "30d",
   );
   
-  // Prefiltered data based on timeRange
-  const clickData = useMemo(() => filterByTimeRange(rawClickData, "timestamp"), [rawClickData, timeRange]);
-  const gameSaves = useMemo(() => filterByTimeRange(rawGameSaves, "updated_at"), [rawGameSaves, timeRange]);
-  const purchases = useMemo(() => filterByTimeRange(rawPurchases, "purchased_at"), [rawPurchases, timeRange]);
-  const [selectedUser, setSelectedUser] = useState<string>("all");
-  const [selectedButtons, setSelectedButtons] = useState<Set<string>>(
-    new Set(["mine", "hunt", "chopWood", "caveExplore"]),
-  ); // Initialize with all buttons
-  const [selectedClickTypes, setSelectedClickTypes] = useState<Set<string>>(
-    new Set(),
-  ); // For individual click type chart
-  const [environment, setEnvironment] = useState<"dev" | "prod">("prod");
-  const [showCompletedOnly, setShowCompletedOnly] = useState<boolean>(false);
-  const [churnDays, setChurnDays] = useState<1 | 3 | 5 | 7>(3);
-
-  // User lookup states
-  const [lookupUserId, setLookupUserId] = useState<string>("");
-  const [lookupType, setLookupType] = useState<"id" | "email">("id");
-  const [lookupResult, setLookupResult] = useState<GameSaveData | null>(null);
-  const [lookupLoading, setLookupLoading] = useState<boolean>(false);
-  const [lookupError, setLookupError] = useState<string>("");
-
-  // Helper function to filter data by time range
+  // Helper function to filter data by time range - MUST be defined before useMemo calls
   const filterByTimeRange = <
     T extends {
       timestamp?: string;
@@ -195,6 +173,28 @@ export default function AdminDashboard() {
       return itemDate >= cutoffDate;
     });
   };
+  
+  // Prefiltered data based on timeRange
+  const clickData = useMemo(() => filterByTimeRange(rawClickData, "timestamp"), [rawClickData, timeRange]);
+  const gameSaves = useMemo(() => filterByTimeRange(rawGameSaves, "updated_at"), [rawGameSaves, timeRange]);
+  const purchases = useMemo(() => filterByTimeRange(rawPurchases, "purchased_at"), [rawPurchases, timeRange]);
+  const [selectedUser, setSelectedUser] = useState<string>("all");
+  const [selectedButtons, setSelectedButtons] = useState<Set<string>>(
+    new Set(["mine", "hunt", "chopWood", "caveExplore"]),
+  ); // Initialize with all buttons
+  const [selectedClickTypes, setSelectedClickTypes] = useState<Set<string>>(
+    new Set(),
+  ); // For individual click type chart
+  const [environment, setEnvironment] = useState<"dev" | "prod">("prod");
+  const [showCompletedOnly, setShowCompletedOnly] = useState<boolean>(false);
+  const [churnDays, setChurnDays] = useState<1 | 3 | 5 | 7>(3);
+
+  // User lookup states
+  const [lookupUserId, setLookupUserId] = useState<string>("");
+  const [lookupType, setLookupType] = useState<"id" | "email">("id");
+  const [lookupResult, setLookupResult] = useState<GameSaveData | null>(null);
+  const [lookupLoading, setLookupLoading] = useState<boolean>(false);
+  const [lookupError, setLookupError] = useState<string>("");
 
   useEffect(() => {
     checkAdminAccess();
