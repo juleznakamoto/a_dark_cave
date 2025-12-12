@@ -358,7 +358,7 @@ export default function CavePanel() {
                   {group.title}
                 </h3>
               )}
-              <div className="overflow-visible flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2">
                 {visibleActions.map((action) =>
                   renderButton(action.id, action.label),
                 )}
