@@ -61,18 +61,6 @@ export default function ActionProgressChartAchievements() {
     // First ring: Well Rested (outermost ring)
     [
       {
-        segmentType: "wellRested",
-        maxCount: 50,
-        color: SEGMENT_COLOR,
-        label: "Well Rested",
-        getCount: (state: GameState) =>
-          Math.min(Number(state.totalFocusEarned) || 0, 50),
-        reward: 1000,
-      },
-    ],
-    // Second ring: Sacrifices
-    [
-      {
         segmentType: "exploreCave",
         maxCount: 10,
         color: SEGMENT_COLOR,
@@ -103,7 +91,7 @@ export default function ActionProgressChartAchievements() {
         },
       },
     ],
-    // Third ring: Cave & Gathering Actions
+    // Second ring: Cave & Gathering Actions
     [
       {
         segmentType: "mineStone",
@@ -166,7 +154,7 @@ export default function ActionProgressChartAchievements() {
         },
       },
     ],
-    // Fourth ring: Mining Actions
+    // Third ring: Mining Actions
     [
       {
         segmentType: "boneTotems",
@@ -196,7 +184,7 @@ export default function ActionProgressChartAchievements() {
         reward: 500,
       },
     ],
-    // Fifth ring: Bomb Crafting
+    // Fourth ring: Bomb Crafting
     [
       {
         segmentType: "emberBombs",
@@ -231,15 +219,28 @@ export default function ActionProgressChartAchievements() {
         reward: 500,
       },
     ],
-    // Sixth ring: Merchant Purchases
+    // Fifth ring: Merchant Purchases
     [
       {
         segmentType: "merchantPurchases",
         maxCount: 100,
         color: SEGMENT_COLOR,
         label: "Merchant Purchases",
-        getCount: (state: GameState) =>
-          Math.min(Number(state.story?.seen?.merchantPurchases) || 0, 100),
+        getCount: (state: GameState) => {
+          const count = Number(state.story?.seen?.merchantPurchases) || 0;
+          return count === 1 ? 1.8 : count;
+        },
+        reward: 500,
+      },
+      {
+        segmentType: "wellRested",
+        maxCount: 50,
+        color: SEGMENT_COLOR,
+        label: "Well Rested",
+        getCount: (state: GameState) => {
+          const count = Math.min(Number(state.totalFocusEarned) || 0, 50);
+          return count === 1 ? 1.8 : count;
+        },
         reward: 500,
       },
     ],
@@ -506,7 +507,7 @@ export default function ActionProgressChartAchievements() {
                   }}
                 >
                   <Cell fill={segmentColor} />
-                </Pie>
+                </Pie>,
               ];
             }),
 
