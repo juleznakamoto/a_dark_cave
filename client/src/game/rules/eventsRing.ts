@@ -136,7 +136,7 @@ export const ringEvents: Record<string, GameEvent> = {
       !state.clothing.feedingRing &&
       (state.events.bloodiedAwakening || state.events.desperateAmputation),
     triggerType: "resource",
-    timeProbability: 60,
+    timeProbability: 0.060,
     title: "The Mercenary",
     message:
       "A scarred mercenary arrives at the village, hand resting on his blade. 'I’m not here to stir up trouble. Pay me 100 gold, and I'll keep things peaceful. Refuse, and my men will burn this place to the ground.'",
@@ -304,7 +304,7 @@ export const ringEvents: Record<string, GameEvent> = {
     timeProbability: 5,
     title: "The Massacre",
     message:
-      "A pale villager rushes to you, breathless with terror. 'The mercenary camp... everyone's dead. They killed each other in the night. Blood everywhere.' You find 500 silver among the corpses. Only you know the truth - the ring found well.",
+      "A pale villager rushes to you, breathless with terror. 'The mercenary camp... everyone's dead. They killed each other in the night. We found 500 silver among the corpses.' Only you know the truth - the ring fed well.",
     triggered: false,
     priority: 4,
     repeatable: false,
