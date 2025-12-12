@@ -179,6 +179,13 @@ export default function LeaderboardDialog({ isOpen, onClose }: LeaderboardDialog
       return <div className="text-center py-8 text-muted-foreground">No entries yet</div>;
     }
 
+    const getCrown = (index: number) => {
+      if (index === 0) return "👑"; // Golden crown
+      if (index === 1) return "🥈"; // Silver medal
+      if (index === 2) return "🥉"; // Bronze medal
+      return null;
+    };
+
     return (
       <>
         {entries.map((entry, index) => (
@@ -188,7 +195,7 @@ export default function LeaderboardDialog({ isOpen, onClose }: LeaderboardDialog
           >
             <div className="flex items-center gap-3">
               <span className="font-bold text-lg w-8 text-center">
-                {index + 1}
+                {getCrown(index) || (index + 1)}
               </span>
               <span className="font-sm">{entry.displayName}</span>
             </div>
