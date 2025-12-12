@@ -316,13 +316,21 @@ export const ringEvents: Record<string, GameEvent> = {
     triggered: false,
     priority: 4,
     repeatable: false,
-    effect: (state: GameState) => {
-      return {
-        resources: {
-          ...state.resources,
-          silver: state.resources.silver + 500,
+    choices: [
+      {
+        id: "nodSilently",
+        label: "Nod silently",
+        effect: (state: GameState) => {
+          return {
+            resources: {
+              ...state.resources,
+              silver: state.resources.silver + 500,
+            },
+            _logMessage:
+              "You nod silently, accepting the silver. The villager hurries away, unaware of the dark truth.",
+          };
         },
-      };
-    },
+      },
+    ],
   },
 };
