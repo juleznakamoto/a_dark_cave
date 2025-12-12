@@ -303,7 +303,7 @@ export default function ForestPanel() {
 
   return (
     <ScrollArea className="h-full w-full">
-      <div className="space-y-4 mt-2">
+      <div className="space-y-4 mt-2 pl-[3px] ">
         {actionGroups.map((group, groupIndex) => {
           const visibleActions = group.actions.filter((action) =>
             shouldShowAction(action.id, state),
@@ -318,7 +318,7 @@ export default function ForestPanel() {
                   {group.title}
                 </h3>
               )}
-              <div className="flex flex-wrap gap-x-2 gap-y-1 p-[3px]">
+              <div className="flex flex-wrap gap-x-2 gap-y-1">
                 {visibleActions.map((action, index) => (
                   <div key={action.id} className="contents">
                     {renderButton(action.id, action.label)}

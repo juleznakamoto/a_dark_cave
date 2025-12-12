@@ -537,7 +537,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
         },
       },
       generalBonuses: {
-        strength: 15,
+        strength: 12,
       },
     },
   },
@@ -545,7 +545,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
   nordic_war_axe: {
     id: "nordic_war_axe",
     name: "Nordic War Axe",
-    description: "Legendary war axe forged by a viking master",
+    description: "Legendary war axe forged by a viking master blacksmith",
     bonuses: {
       generalBonuses: {
         strength: 12,

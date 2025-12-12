@@ -253,7 +253,7 @@ export default function GameContainer() {
               />
             ) : (
               // Standard button design
-              <div className="flex space-x-4">
+              <div className="flex space-x-4 pl-[3px] ">
                 <button
                   className={`py-2 text-sm bg-transparent ${
                     activeTab === "cave"

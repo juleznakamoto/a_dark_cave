@@ -1,7 +1,6 @@
 import { useGameStore } from "@/game/state";
 import { gameActions } from "@/game/rules";
 import { getTotalBuildingCostReduction } from "@/game/rules/effectsCalculation";
-import { calculateBastionStats } from "@/game/bastionStats";
 import { Button } from "@/components/ui/button";
 import {
   Tooltip,
@@ -10,14 +9,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useMobileTooltip } from "@/hooks/useMobileTooltip";
-import { useMobileButtonTooltip } from "@/hooks/useMobileTooltip";
-import { Progress } from "@/components/ui/progress";
 import AttackWavesChart from "./AttackWavesChart";
-import { logger } from "@/lib/logger";
-import {
-  CRUSHING_STRIKE_UPGRADES,
-  BLOODFLAME_SPHERE_UPGRADES,
-} from "@/game/rules/skillUpgrades";
 
 // Helper to get building label based on level
 const getBuildingLabel = (
@@ -203,7 +195,7 @@ export default function BastionPanel() {
   };
 
   return (
-    <div className="w-80 space-y-4 mt-2 pr-4">
+    <div className="w-80 space-y-4 mt-2 pr-4 pl-[3px] ">
       {/* Attack Waves Chart */}
       <AttackWavesChart />
 
