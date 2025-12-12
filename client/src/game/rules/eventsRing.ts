@@ -127,4 +127,158 @@ export const ringEvents: Record<string, GameEvent> = {
       },
     ],
   },
+
+  mercenaryDemand: {
+    id: "mercenaryDemand",
+    condition: (state: GameState) =>
+      state.buildings.darkEstate >= 1 &&
+      !state.clothing.feeding_ring &&
+      (state.events.bloodiedAwakening || state.events.desperateAmputation),
+    triggerType: "resource",
+    timeProbability: 60,
+    title: "The Mercenary",
+    message:
+      "A scarred mercenary arrives at your village, hand resting on his blade. 'I hear you've had some... trouble here. Pay me 100 gold, and I'll keep things peaceful. Refuse, and my men will burn this place to the ground.'",
+    triggered: false,
+    priority: 4,
+    repeatable: false,
+    choices: [
+      {
+        id: "payGold",
+        label: "Pay 100 gold",
+        cost: "100 gold",
+        effect: (state: GameState) => {
+          return {
+            resources: {
+              ...state.resources,
+              gold: state.resources.gold - 100,
+            },
+            _logMessage:
+              "You hand over the gold. The mercenary counts it slowly, a cruel smile on his face. 'Pleasure doing business,' he says, before disappearing into the forest.",
+          };
+        },
+      },
+      {
+        id: "refuse",
+        label: "Refuse to pay",
+        relevant_stats: ["strength"],
+        success_chance: (state: GameState) => {
+          return Math.min(0.1 + getTotalStrength(state) * 0.05, 1.0);
+        },
+        effect: (state: GameState) => {
+          const strength = getTotalStrength(state);
+          const successChance = Math.min(0.1 + strength * 0.05, 1.0);
+          const success = Math.random() < successChance;
+
+          if (success) {
+            return {
+              _logMessage:
+                "The mercenary signals his men to attack. The battle is fierce, but your strength prevails. The mercenaries flee into the forest, leaving behind their weapons and wounded.",
+            };
+          } else {
+            const deathResult = killVillagers(state, 12);
+            return {
+              ...deathResult,
+              _logMessage:
+                "The mercenary signals his men to attack. Despite your best efforts, you are overwhelmed. Twelve villagers fall before the mercenaries finally retreat, satisfied with the carnage.",
+            };
+          }
+        },
+      },
+      {
+        id: "giveRing",
+        label: "Give the severed finger with ring",
+        effect: (state: GameState) => {
+          return {
+            _logMessage:
+              "You offer him the severed finger, the cursed ring still attached. The mercenary examines it with interest, slipping it onto his own finger. 'A nice trinket,' he says, 'but I want more. I'll return tomorrow to collect the gold.'",
+          };
+        },
+      },
+    ],
+  },
+
+  mercenaryReturnDemand: {
+    id: "mercenaryReturnDemand",
+    condition: (state: GameState) =>
+      state.buildings.darkEstate >= 1 &&
+      state.events.mercenaryDemand &&
+      state.story.seen.mercenaryDemand_payGold,
+    triggerType: "resource",
+    timeProbability: 60,
+    title: "The Mercenary Returns",
+    message:
+      "The mercenary is back, and this time he brings more men. 'Times are tough,' he says with a grin. 'The price has gone up. 200 gold, or things get messy.'",
+    triggered: false,
+    priority: 4,
+    repeatable: false,
+    choices: [
+      {
+        id: "payGold",
+        label: "Pay 200 gold",
+        cost: "200 gold",
+        effect: (state: GameState) => {
+          return {
+            resources: {
+              ...state.resources,
+              gold: state.resources.gold - 200,
+            },
+            _logMessage:
+              "You pay the gold, your hands shaking with rage. The mercenary laughs. 'Smart choice. I won't be bothering you again... probably.' He vanishes into the woods with his men.",
+          };
+        },
+      },
+      {
+        id: "refuse",
+        label: "Refuse to pay",
+        relevant_stats: ["strength"],
+        success_chance: (state: GameState) => {
+          return Math.min(0.1 + getTotalStrength(state) * 0.05, 1.0);
+        },
+        effect: (state: GameState) => {
+          const strength = getTotalStrength(state);
+          const successChance = Math.min(0.1 + strength * 0.05, 1.0);
+          const success = Math.random() < successChance;
+
+          if (success) {
+            return {
+              _logMessage:
+                "You refuse. The mercenaries attack, but this time you're ready. After a brutal fight, they scatter into the wilderness, leaving their dead behind.",
+            };
+          } else {
+            const deathResult = killVillagers(state, 15);
+            return {
+              ...deathResult,
+              _logMessage:
+                "Your defiance costs you dearly. The mercenaries rampage through the village, killing fifteen before they finally depart, laughing at the destruction they've caused.",
+            };
+          }
+        },
+      },
+    ],
+  },
+
+  cursedMercenaryMassacre: {
+    id: "cursedMercenaryMassacre",
+    condition: (state: GameState) =>
+      state.buildings.darkEstate >= 1 &&
+      state.events.mercenaryDemand &&
+      state.story.seen.mercenaryDemand_giveRing,
+    triggerType: "resource",
+    timeProbability: 5,
+    title: "The Massacre",
+    message:
+      "A pale villager rushes to you, breathless with terror. 'The mercenary camp... everyone's dead. They killed each other in the night. Blood everywhere.' You find 500 silver among the corpses. Only you know the truth - the ring fed well.",
+    triggered: false,
+    priority: 4,
+    repeatable: false,
+    effect: (state: GameState) => {
+      return {
+        resources: {
+          ...state.resources,
+          silver: state.resources.silver + 500,
+        },
+      };
+    },
+  },
 };
