@@ -477,14 +477,14 @@ export default function IdleModeDialog() {
     // Calculate Focus points gained (1 per almost 1 hour slept)
     const now = Date.now();
     const elapsed = now - startTime;
-    const hoursSlept = Math.floor(elapsed / (1*5*1000)); // Full hours only
+    const hoursSlept = Math.floor(elapsed / (59.99 * 60 * 1000)); // Full hours only
 
     if (hoursSlept > 0) {
       const currentFocus = state.focusState?.points || 0;
       const MAX_FOCUS = 30;
       const newFocusPoints = Math.min(currentFocus + hoursSlept, MAX_FOCUS);
-      
-      logger.log('[IDLE MODE] Awarding Focus:', {
+
+      logger.log("[IDLE MODE] Awarding Focus:", {
         hoursSlept,
         elapsed,
         currentFocus,
@@ -575,7 +575,7 @@ export default function IdleModeDialog() {
   const hasCompletedFirstInterval = displaySecondsElapsed >= 15;
 
   // Calculate Focus points (1 per almost 1 hour slept)
-  const focusPoints = Math.floor(displayElapsed / (1*5*1000));
+  const focusPoints = Math.floor(displayElapsed / (59.99 * 60 * 1000));
 
   // Get all resources that have changed (only positive)
   const otherResources = Object.keys(accumulatedResources)
@@ -589,9 +589,9 @@ export default function IdleModeDialog() {
     .sort(([a], [b]) => a.localeCompare(b));
 
   // Add Focus at the start if it's greater than 0
-  const producedResources: [string, number][] = 
-    focusPoints > 0 
-      ? [['Focus', focusPoints] as [string, number], ...otherResources]
+  const producedResources: [string, number][] =
+    focusPoints > 0
+      ? [["Focus", focusPoints] as [string, number], ...otherResources]
       : otherResources;
 
   const isTimeUp = remainingTime <= 0;
