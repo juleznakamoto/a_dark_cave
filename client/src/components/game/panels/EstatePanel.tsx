@@ -415,7 +415,7 @@ export default function EstatePanel() {
             <TooltipProvider>
               <Tooltip open={mobileTooltip.isTooltipOpen("focus-button")}>
                 <TooltipTrigger asChild>
-                  <div className="h-5 inline-block pb-1 text-xs font-medium text-foreground ml-2">
+                  <div className="h-5 inline-block pb-1 text-xs font-medium text-foreground ml-2 relative">
                     <Button
                       onClick={() => {
                         const now = Date.now();
@@ -442,12 +442,18 @@ export default function EstatePanel() {
                     >
                       Focus
                     </Button>
+                    {focusState?.points > 0 && (
+                      <div className="absolute -top-[7px] right-[-7px] flex items-center justify-center w-4 h-4 bg-teal-950 rounded-full text-[10px] font-medium z-1">
+                        {focusState.points}
+                      </div>
+                    )}
                   </div>
                 </TooltipTrigger>
                 <TooltipContent>
                   <div className="text-xs whitespace-nowrap">
-                    {focusState?.points} Focus: Get 2x action bonus for{" "}
-                    {focusState?.points} minute{focusState?.points > 1 ? "s" : ""}
+                    <div>{focusState?.points} Focus: Get 2x action bonus for{" "}
+                    {focusState?.points} minute{focusState?.points > 1 ? "s" : ""}</div>
+                    <div className="text-muted-foreground mt-1">Earn 1 Focus per hour of sleep</div>
                   </div>
                 </TooltipContent>
               </Tooltip>
