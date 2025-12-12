@@ -225,7 +225,7 @@ export default function ActionProgressChartAchievements() {
         segmentType: "merchantPurchases",
         maxCount: 100,
         color: SEGMENT_COLOR,
-        label: "Merchant Purchases",
+        label: "Good Deals",
         getCount: (state: GameState) => {
           const count = Number(state.story?.seen?.merchantPurchases) || 0;
           return count === 1 ? 1.8 : count;
