@@ -1232,41 +1232,76 @@ export default function AdminDashboard() {
 
   // Get cube events players saw over playtime
   const getCubeEventsOverPlaytime = () => {
-    // Track which cube events each user has seen at each playtime bucket
-    const playtimeBuckets = new Map<number, Map<number, Set<string>>>();
+    // Track cube event appearances from click analytics
+    let filteredClicks = clickData;
+
+    if (selectedUser !== "all") {
+      filteredClicks = filteredClicks.filter((d) => d.user_id === selectedUser);
+    }
+
+    // Filter by completed players if toggle is on
+    if (showCompletedOnly) {
+      const completedUserIds = new Set(
+        gameSaves
+          .filter(
+            (save) =>
+              save.game_state?.events?.cube15a ||
+              save.game_state?.events?.cube15b ||
+              save.game_state?.events?.cube13 ||
+              save.game_state?.events?.cube14a ||
+              save.game_state?.events?.cube14b ||
+              save.game_state?.events?.cube14c ||
+              save.game_state?.events?.cube14d,
+          )
+          .map((save) => save.user_id),
+      );
+      filteredClicks = filteredClicks.filter((d) =>
+        completedUserIds.has(d.user_id),
+      );
+    }
+
+    // Aggregate cube events by playtime buckets (1-hour intervals)
+    const playtimeBuckets = new Map<number, Record<string, number>>();
     let maxBucket = 0;
     let maxCubeEvent = 0;
 
-    gameSaves.forEach((save) => {
-      const playTimeMinutes = save.game_state?.playTime
-        ? Math.round(save.game_state.playTime / 1000 / 60)
-        : 0;
-      const bucket = Math.floor(playTimeMinutes / 60) * 60; // 1-hour buckets
-      maxBucket = Math.max(maxBucket, bucket);
+    filteredClicks.forEach((entry) => {
+      Object.entries(entry.clicks).forEach(
+        ([playtimeKey, clicksAtTime]: [string, any]) => {
+          try {
+            const playtimeMinutes = parseInt(playtimeKey.replace("m", ""));
+            if (!isNaN(playtimeMinutes)) {
+              const bucket = Math.floor(playtimeMinutes / 60) * 60; // 1-hour buckets
+              maxBucket = Math.max(maxBucket, bucket);
 
-      if (!playtimeBuckets.has(bucket)) {
-        playtimeBuckets.set(bucket, new Map());
-      }
+              if (!playtimeBuckets.has(bucket)) {
+                playtimeBuckets.set(bucket, {});
+              }
 
-      const bucketData = playtimeBuckets.get(bucket)!;
-      const events = save.game_state?.events || {};
-
-      // Check each cube event
-      Object.keys(events).forEach((eventKey) => {
-        if (eventKey.startsWith("cube") && events[eventKey] === true) {
-          const cubeNum = getCubeEventNumber(eventKey);
-          if (cubeNum !== null) {
-            maxCubeEvent = Math.max(maxCubeEvent, cubeNum);
-            if (!bucketData.has(cubeNum)) {
-              bucketData.set(cubeNum, new Set());
+              const bucketData = playtimeBuckets.get(bucket)!;
+              Object.entries(clicksAtTime as Record<string, number>).forEach(
+                ([button, count]) => {
+                  // Only track cubeEvent- prefixed buttons (actual event appearances)
+                  if (button.startsWith("cubeEvent-")) {
+                    const eventId = button.replace("cubeEvent-", "");
+                    const cubeNum = getCubeEventNumber(eventId);
+                    if (cubeNum !== null) {
+                      maxCubeEvent = Math.max(maxCubeEvent, cubeNum);
+                      const key = `Cube ${cubeNum}`;
+                      bucketData[key] = (bucketData[key] || 0) + count;
+                    }
+                  }
+                },
+              );
             }
-            bucketData.get(cubeNum)!.add(save.user_id);
+          } catch (e) {
+            logger.warn("Failed to parse playtime:", playtimeKey, e);
           }
-        }
-      });
+        },
+      );
     });
 
-    // Create array with all buckets and cube events
+    // Create array with all buckets from 0 to max playtime
     const result: Array<{ time: string; [key: string]: any }> = [];
     for (let bucket = 0; bucket <= maxBucket; bucket += 60) {
       const hours = bucket / 60;
@@ -1274,9 +1309,10 @@ export default function AdminDashboard() {
         time: hours === 0 ? "0h" : `${hours}h`,
       };
 
-      const bucketData = playtimeBuckets.get(bucket);
+      const bucketData = playtimeBuckets.get(bucket) || {};
       for (let cubeNum = 1; cubeNum <= maxCubeEvent; cubeNum++) {
-        dataPoint[`Cube ${cubeNum}`] = bucketData?.get(cubeNum)?.size || 0;
+        const key = `Cube ${cubeNum}`;
+        dataPoint[key] = bucketData[key] || 0;
       }
 
       result.push(dataPoint);
