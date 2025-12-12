@@ -119,10 +119,10 @@ export default function AdminDashboard() {
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  // Data states
-  const [clickData, setClickData] = useState<ButtonClickData[]>([]);
-  const [gameSaves, setGameSaves] = useState<GameSaveData[]>([]);
-  const [purchases, setPurchases] = useState<PurchaseData[]>([]);
+  // Data states (raw, unfiltered)
+  const [rawClickData, setRawClickData] = useState<ButtonClickData[]>([]);
+  const [rawGameSaves, setRawGameSaves] = useState<GameSaveData[]>([]);
+  const [rawPurchases, setRawPurchases] = useState<PurchaseData[]>([]);
   const [users, setUsers] = useState<Array<{ id: string; email: string }>>([]);
   const [totalUserCount, setTotalUserCount] = useState<number>(0);
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date()); // State to track last data update
@@ -131,6 +131,11 @@ export default function AdminDashboard() {
   const [timeRange, setTimeRange] = useState<"1d" | "3d" | "7d" | "30d" | "all">(
     "30d",
   );
+  
+  // Prefiltered data based on timeRange
+  const clickData = useMemo(() => filterByTimeRange(rawClickData, "timestamp"), [rawClickData, timeRange]);
+  const gameSaves = useMemo(() => filterByTimeRange(rawGameSaves, "updated_at"), [rawGameSaves, timeRange]);
+  const purchases = useMemo(() => filterByTimeRange(rawPurchases, "purchased_at"), [rawPurchases, timeRange]);
   const [selectedUser, setSelectedUser] = useState<string>("all");
   const [selectedButtons, setSelectedButtons] = useState<Set<string>>(
     new Set(["mine", "hunt", "chopWood", "caveExplore"]),
@@ -240,15 +245,15 @@ export default function AdminDashboard() {
 
       const data = await response.json();
 
-      // Set the data
+      // Set the raw data (will be filtered by timeRange useMemo)
       if (data.clicks) {
-        setClickData(data.clicks);
+        setRawClickData(data.clicks);
       }
       if (data.saves) {
-        setGameSaves(data.saves);
+        setRawGameSaves(data.saves);
       }
       if (data.purchases) {
-        setPurchases(data.purchases);
+        setRawPurchases(data.purchases);
       }
       if (typeof data.totalUserCount === 'number') {
         setTotalUserCount(data.totalUserCount);
@@ -274,8 +279,8 @@ export default function AdminDashboard() {
   const buttonClicksChartData = useMemo(() => {
     if (!clickData) return [];
 
-    // Filter by time range (except for Overview tab)
-    let filteredClicks = filterByTimeRange(clickData, "timestamp");
+    // Data is already prefiltered by timeRange
+    let filteredClicks = clickData;
 
     // Filter by selected user
     if (selectedUser !== "all") {
@@ -599,8 +604,8 @@ export default function AdminDashboard() {
 
   // Process data for charts
   const getButtonClicksOverTime = () => {
-    // Filter by time range
-    let filteredClicks = filterByTimeRange(clickData, "timestamp");
+    // Data is already prefiltered by timeRange
+    let filteredClicks = clickData;
 
     if (selectedUser !== "all") {
       filteredClicks = filteredClicks.filter((d) => d.user_id === selectedUser);
@@ -688,8 +693,8 @@ export default function AdminDashboard() {
   };
 
   const getClickTypesByTimestamp = () => {
-    // Filter by time range
-    let filteredClicks = filterByTimeRange(clickData, "timestamp");
+    // Data is already prefiltered by timeRange
+    let filteredClicks = clickData;
 
     if (selectedUser !== "all") {
       filteredClicks = filteredClicks.filter((d) => d.user_id === selectedUser);
@@ -840,8 +845,8 @@ export default function AdminDashboard() {
   };
 
   const getTotalClicksByButton = () => {
-    // Filter by time range
-    let filtered = filterByTimeRange(clickData, "timestamp");
+    // Data is already prefiltered by timeRange
+    let filtered = clickData;
 
     if (selectedUser !== "all") {
       filtered = filtered.filter((d) => d.user_id === selectedUser);
@@ -885,8 +890,8 @@ export default function AdminDashboard() {
   };
 
   const getAverageClicksByButton = () => {
-    // Filter by time range
-    let filtered = filterByTimeRange(clickData, "timestamp");
+    // Data is already prefiltered by timeRange
+    let filtered = clickData;
 
     if (selectedUser !== "all") {
       filtered = filtered.filter((d) => d.user_id === selectedUser);
@@ -938,8 +943,8 @@ export default function AdminDashboard() {
   };
 
   const getGameCompletionStats = () => {
-    // Filter by time range
-    const filteredSaves = filterByTimeRange(gameSaves, "updated_at");
+    // Data is already prefiltered by timeRange
+    const filteredSaves = gameSaves;
 
     const completed = filteredSaves.filter(
       (save) =>
@@ -1403,8 +1408,8 @@ export default function AdminDashboard() {
 
   // Get button upgrades over playtime
   const getButtonUpgradesOverPlaytime = () => {
-    // Filter by time range
-    let filteredSaves = filterByTimeRange(gameSaves, "updated_at");
+    // Data is already prefiltered by timeRange
+    let filteredSaves = gameSaves;
 
     if (selectedUser !== "all") {
       filteredSaves = filteredSaves.filter((s) => s.user_id === selectedUser);
@@ -1636,8 +1641,8 @@ export default function AdminDashboard() {
 
   // Get sleep upgrade levels distribution
   const getSleepUpgradesDistribution = () => {
-    // Filter by time range
-    let filteredSaves = filterByTimeRange(gameSaves, "updated_at");
+    // Data is already prefiltered by timeRange
+    let filteredSaves = gameSaves;
 
     if (selectedUser !== "all") {
       filteredSaves = filteredSaves.filter((s) => s.user_id === selectedUser);
@@ -1790,8 +1795,8 @@ export default function AdminDashboard() {
     // If no click data is available, return empty array
     if (!clickData || clickData.length === 0) return [];
 
-    // Filter by time range
-    let filteredClicks = filterByTimeRange(clickData, "timestamp");
+    // Data is already prefiltered by timeRange
+    let filteredClicks = clickData;
 
     // Filter data based on selected user
     if (selectedUser !== "all") {
@@ -1912,8 +1917,8 @@ export default function AdminDashboard() {
     // If no click data is available, return empty array
     if (!clickData || clickData.length === 0) return [];
 
-    // Filter by time range
-    let filteredClicks = filterByTimeRange(clickData, "timestamp");
+    // Data is already prefiltered by timeRange
+    let filteredClicks = clickData;
 
     // Filter data based on selected user
     if (selectedUser !== "all") {
@@ -2807,7 +2812,7 @@ export default function AdminDashboard() {
                     </CardHeader>
                     <CardContent>
                       <p className="text-4xl font-bold">
-                        {filterByTimeRange(gameSaves, "updated_at").length}
+                        {gameSaves.length}
                       </p>
                     </CardContent>
                   </Card>
@@ -2819,7 +2824,7 @@ export default function AdminDashboard() {
                     <CardContent>
                       <p className="text-4xl font-bold">
                         {
-                          filterByTimeRange(gameSaves, "updated_at").filter(
+                          gameSaves.filter(
                             (s) =>
                               s.game_state?.events?.cube15a ||
                               s.game_state?.events?.cube15b ||
@@ -2840,28 +2845,22 @@ export default function AdminDashboard() {
                     </CardHeader>
                     <CardContent>
                       <p className="text-4xl font-bold">
-                        {(() => {
-                          const filtered = filterByTimeRange(
-                            gameSaves,
-                            "updated_at",
-                          );
-                          return filtered.length > 0
-                            ? Math.round(
-                                (filtered.filter(
-                                  (s) =>
-                                    s.game_state?.events?.cube15a ||
-                                    s.game_state?.events?.cube15b ||
-                                    s.game_state?.events?.cube13 ||
-                                    s.game_state?.events?.cube14a ||
-                                    s.game_state?.events?.cube14b ||
-                                    s.game_state?.events?.cube14c ||
-                                    s.game_state?.events?.cube14d,
-                                ).length /
-                                  filtered.length) *
-                                  100,
-                              )
-                            : 0;
-                        })()}
+                        {gameSaves.length > 0
+                          ? Math.round(
+                              (gameSaves.filter(
+                                (s) =>
+                                  s.game_state?.events?.cube15a ||
+                                  s.game_state?.events?.cube15b ||
+                                  s.game_state?.events?.cube13 ||
+                                  s.game_state?.events?.cube14a ||
+                                  s.game_state?.events?.cube14b ||
+                                  s.game_state?.events?.cube14c ||
+                                  s.game_state?.events?.cube14d,
+                              ).length /
+                                gameSaves.length) *
+                                100,
+                            )
+                          : 0}
                         %
                       </p>
                     </CardContent>
