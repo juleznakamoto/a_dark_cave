@@ -412,11 +412,11 @@ export default function EstatePanel() {
 
           {/* Focus Activation Button */}
           {showFocusButton && (
-            <div className="h-5 inline-block pb-1 text-xs font-medium text-foreground ml-2">
-              <div className="relative">
-                <TooltipProvider>
-                  <Tooltip open={mobileTooltip.isTooltipOpen("focus-button")}>
-                    <TooltipTrigger asChild>
+            <TooltipProvider>
+              <Tooltip open={mobileTooltip.isTooltipOpen("focus-button")}>
+                <TooltipTrigger asChild>
+                  <div className="h-5 inline-block pb-1 text-xs font-medium text-foreground ml-2">
+                    <div className="relative">
                       <Button
                         onClick={() => {
                           const now = Date.now();
@@ -443,37 +443,37 @@ export default function EstatePanel() {
                       >
                         Focus
                       </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <div className="text-xs whitespace-nowrap">
-                        Earn 1 Focus per hour of sleep
-                      </div>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
                 {focusState && focusState.points > 0 && (
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <div
-                          className="absolute -top-[7px] right-[-7px] flex items-center justify-center w-4 h-4 bg-teal-950 rounded-full text-[10px] font-medium z-1 cursor-pointer hover:bg-teal-900 transition-colors duration-300"
-                          onClick={(e) => e.stopPropagation()}
-                          onPointerDown={(e) => e.stopPropagation()}
-                        >
-                          {focusState.points}
-                        </div>
-                      </TooltipTrigger>
-                      <TooltipContent side="right">
-                        <div className="text-xs whitespace-nowrap">
-                          {focusState.points} Focus: Get 2x action bonus for{" "}
-                          {focusState.points} minute{focusState.points > 1 ? "s" : ""}
-                        </div>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                )}
-              </div>
-            </div>
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <div
+                                className="absolute -top-[7px] right-[-7px] flex items-center justify-center w-4 h-4 bg-teal-950 rounded-full text-[10px] font-medium z-1 cursor-pointer hover:bg-teal-900 transition-colors duration-300"
+                                onClick={(e) => e.stopPropagation()}
+                                onPointerDown={(e) => e.stopPropagation()}
+                              >
+                                {focusState.points}
+                              </div>
+                            </TooltipTrigger>
+                            <TooltipContent side="right">
+                              <div className="text-xs whitespace-nowrap">
+                                {focusState.points} Focus: Get 2x action bonus for{" "}
+                                {focusState.points} minute{focusState.points > 1 ? "s" : ""}
+                              </div>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      )}
+                    </div>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <div className="text-xs whitespace-nowrap">
+                    Earn 1 Focus per hour of sleep
+                  </div>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           )}
         </div>
 
