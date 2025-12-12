@@ -263,10 +263,7 @@ export const caveCraftWeapons: Record<string, Action> = {
     effects: {
       "weapons.stormglass_halberd": true,
     },
-    statsEffects: {
-      strength: 15,
-    },
-    cooldown: 50,
+    cooldown: 60,
   },
 };
 
@@ -385,7 +382,7 @@ export function handleCraftFrostglassSword(
   result.logEntries!.push({
     id: `frostglass-sword-forged-${Date.now()}`,
     message:
-      "The Grand Blacksmith's forge burns with ethereal blue flames as the frostglass is shaped into a magnificent sword. The blade gleams with an otherworldly cold light, radiating immense power. You have forged the legendary Frostglass Sword.",
+      "The Grand Blacksmith's forge burns with ethereal blue flames as the frostglass is shaped into a magnificent sword. The blade gleams with an otherworldly cold light, radiating immense power.",
     timestamp: Date.now(),
     type: "system",
   });
@@ -446,7 +443,7 @@ export function handleCraftBloodstoneStaff(
   result.logEntries!.push({
     id: `bloodstone-staff-crafted-${Date.now()}`,
     message:
-      "The wizard channels his arcane power into the bloodstone gems, fusing them with ancient wood. The Bloodstone Staff pulses with crimson energy, radiating both strength and forbidden knowledge. You have forged a weapon of immense power.",
+      "The wizard channels his arcane power into the bloodstone gems, fusing them with ancient wood. The Bloodstone Staff pulses with crimson energy, radiating both strength and forbidden knowledge.",
     timestamp: Date.now(),
     type: "system",
   });
@@ -464,7 +461,7 @@ export function handleCraftStormglassHalberd(
   result.logEntries!.push({
     id: `stormglass-halberd-crafted-${Date.now()}`,
     message:
-      "You forge the Stormglass Halberd from storm-touched materials and adamant. The halberd crackles with latent energy, its blade gleaming with an ethereal light. You feel significantly stronger wielding this legendary weapon.",
+      "You forge the Stormglass Halberd, its blade gleaming with an ethereal light. You feel significantly stronger wielding this legendary weapon.",
     timestamp: Date.now(),
     type: "system",
   });

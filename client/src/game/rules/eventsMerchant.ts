@@ -1318,11 +1318,10 @@ const toolTrades = [
     give: "book",
     giveItem: "book_of_trials",
     condition: (state: GameState) =>
-      state.buildings.darkEstate >= 1 &&
-      !state.books.book_of_trials,
+      state.buildings.darkEstate >= 1 && !state.books.book_of_trials,
     costs: [{ resource: "gold", amounts: [250] }],
     message:
-      "You purchase the Book of Trials. The merchant smiles knowingly: 'A guide for those who seek to measure their journey. It teaches how to set goals and overcome resistance. With this, you can track your progress.'",
+      "You purchase the Book of Trials. The merchant smiles knowingly: 'A guide for those who seek to track their journey.'",
   },
   {
     id: "trade_stormglass_halberd_schematic",
@@ -1332,7 +1331,7 @@ const toolTrades = [
     condition: (state: GameState) => state.buildings.stoneHut >= 6,
     costs: [{ resource: "gold", amounts: [1500] }],
     message:
-      "You purchase the stormglass halberd schematic. The merchant unfurls ancient blueprints: 'A weapon of legend, forged from storm-touched glass and adamant. With this design, you can craft a halberd of tremendous power.'",
+      "You purchase the stormglass halberd schematic. The merchant reveals the faded plans: 'With this design, you can forge a halberd of tremendous power.'",
   },
 ];
 

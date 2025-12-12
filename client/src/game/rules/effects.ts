@@ -556,7 +556,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
   stormglass_halberd: {
     id: "stormglass_halberd",
     name: "Stormglass Halberd",
-    description: "Legendary halberd forged from storm-touched glass and adamant",
+    description: "Supreme halberd forged from masterfully refined adamant",
     bonuses: {
       generalBonuses: {
         strength: 15,
