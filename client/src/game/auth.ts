@@ -188,13 +188,14 @@ export async function signOut() {
 
   logger.log('[AUTH] ✅ User signed out from Supabase');
 
-  // Delete local save from IndexedDB
+  // PRESERVE local save - only clear lastCloudState to allow fresh sync on next login
   try {
-    const { deleteSave } = await import('./save');
-    await deleteSave();
-    logger.log('[AUTH] 🗑️ Local save deleted from IndexedDB');
-  } catch (deleteError) {
-    logger.error('[AUTH] ⚠️ Failed to delete local save:', deleteError);
+    const { openDB } = await import('idb');
+    const db = await openDB('ADarkCaveDB', 2);
+    await db.delete('lastCloudState', 'lastCloudState');
+    logger.log('[AUTH] 🔄 Cleared cloud sync state (local save preserved)');
+  } catch (clearError) {
+    logger.error('[AUTH] ⚠️ Failed to clear cloud sync state:', clearError);
   }
 
   // Stop the game loop
