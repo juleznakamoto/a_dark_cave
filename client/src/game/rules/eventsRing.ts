@@ -3,7 +3,6 @@
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
-import { getTotalStrength } from "./effectsCalculation";
 import { calculateSuccessChance } from "./eventsChoices";
 
 export const ringEvents: Record<string, GameEvent> = {
