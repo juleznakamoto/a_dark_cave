@@ -136,7 +136,7 @@ export const ringEvents: Record<string, GameEvent> = {
       !state.clothing.feedingRing &&
       (state.events.bloodiedAwakening || state.events.desperateAmputation),
     triggerType: "resource",
-    timeProbability: 0.060,
+    timeProbability: 60,
     title: "The Mercenary",
     message:
       "A scarred mercenary arrives at the village, hand resting on his blade. 'I’m not here to stir up trouble. Pay me 100 gold, and I'll keep things peaceful. Refuse, and my men will burn this place to the ground.'",
@@ -306,7 +306,7 @@ export const ringEvents: Record<string, GameEvent> = {
     id: "cursedMercenaryMassacre",
     condition: (state: GameState) =>
       state.buildings.darkEstate >= 1 &&
-      state.events.mercenaryDemand &&
+      // state.events.mercenaryDemand &&
       state.story.seen.mercenaryDemand_giveRing,
     triggerType: "resource",
     timeProbability: 0.05,
