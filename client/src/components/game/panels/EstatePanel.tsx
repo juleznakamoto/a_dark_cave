@@ -1470,7 +1470,9 @@ export default function EstatePanel() {
                     <button
                       onClick={(e) => {
                         cubeTooltip.handleTooltipClick(`cube-${event.id}`, e);
-                        // Don't track clicks - these are just for reviewing past events
+                        useGameStore
+                          .getState()
+                          .trackButtonClick(`cube-${event.id}`);
                         handleCubeClick(event);
                       }}
                       className="w-6 h-6 bg-neutral-900 border border-neutral-800 rounded-md flex items-center justify-center hover:bg-neutral-800 hover:border-neutral-500 transition-all cursor-pointer group relative"

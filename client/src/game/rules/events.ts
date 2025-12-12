@@ -1,3 +1,4 @@
+
 import { GameState } from "@shared/schema";
 import {
   getTotalStrength,
@@ -147,10 +148,10 @@ export class EventManager {
   // Assuming `allEvents` is intended to be `gameEvents` based on context
   private static allEvents: Record<string, GameEvent> = gameEvents;
 
-  static async checkEvents(state: GameState): Promise<{
+  static checkEvents(state: GameState): {
     newLogEntries: LogEntry[];
     stateChanges: Partial<GameState>;
-  }> {
+  } {
     const newLogEntries: LogEntry[] = [];
     let stateChanges: Partial<GameState> = {};
     const sortedEvents = Object.values(this.allEvents).sort(
@@ -174,10 +175,10 @@ export class EventManager {
           typeof event.timeProbability === "function"
             ? event.timeProbability(state)
             : event.timeProbability;
-
+        
         const cooldownPeriod = timeProbability * 0.25 * 60 * 1000; // 25% in milliseconds
         const timeSinceLastTrigger = currentTime - eventCooldowns[event.id];
-
+        
         if (timeSinceLastTrigger < cooldownPeriod) {
           continue; // Skip this event, it's still on cooldown
         }
@@ -255,13 +256,13 @@ export class EventManager {
             [event.id]: true,
           };
         }
-
+        
         // Record trigger time for cooldown tracking
         stateChanges.eventCooldowns = {
           ...(state.eventCooldowns || {}),
           [event.id]: currentTime,
         };
-
+        
         break; // Only trigger one event per tick
       }
     }
