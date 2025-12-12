@@ -301,7 +301,7 @@ export const ringEvents: Record<string, GameEvent> = {
       state.events.mercenaryDemand &&
       state.story.seen.mercenaryDemand_giveRing,
     triggerType: "resource",
-    timeProbability: 5,
+    timeProbability: 0.05,
     title: "The Massacre",
     message:
       "A pale villager rushes to you, breathless with terror. 'The mercenary camp... everyone's dead. They killed each other in the night. We found 500 silver among the corpses.' Only you know the truth - the ring fed well.",
