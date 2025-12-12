@@ -1324,6 +1324,16 @@ const toolTrades = [
     message:
       "You purchase the Book of Trials. The merchant smiles knowingly: 'A guide for those who seek to measure their journey. It teaches how to set goals and overcome resistance. With this, you can track your progress.'",
   },
+  {
+    id: "trade_stormglass_halberd_schematic",
+    label: "Stormglass Halberd Schematic",
+    give: "schematic",
+    giveItem: "stormglass_halberd_schematic",
+    condition: (state: GameState) => state.buildings.stoneHut >= 6,
+    costs: [{ resource: "gold", amounts: [1500] }],
+    message:
+      "You purchase the stormglass halberd schematic. The merchant unfurls ancient blueprints: 'A weapon of legend, forged from storm-touched glass and adamant. With this design, you can craft a halberd of tremendous power.'",
+  },
 ];
 
 // Helper function to select trades (used for both buy and sell)

@@ -246,6 +246,28 @@ export const caveCraftWeapons: Record<string, Action> = {
     },
     cooldown: 60,
   },
+
+  craftStormglassHalberd: {
+    id: "craftStormglassHalberd",
+    label: "Stormglass Halberd",
+    show_when: {
+      "buildings.blacksmith": 1,
+      "schematics.stormglass_halberd_schematic": true,
+      "weapons.stormglass_halberd": false,
+    },
+    cost: {
+      "resources.steel": 500,
+      "resources.adamant": 1000,
+      "resources.silver": 250,
+    },
+    effects: {
+      "weapons.stormglass_halberd": true,
+    },
+    statsEffects: {
+      strength: 15,
+    },
+    cooldown: 50,
+  },
 };
 
 // Action handlers
@@ -425,6 +447,24 @@ export function handleCraftBloodstoneStaff(
     id: `bloodstone-staff-crafted-${Date.now()}`,
     message:
       "The wizard channels his arcane power into the bloodstone gems, fusing them with ancient wood. The Bloodstone Staff pulses with crimson energy, radiating both strength and forbidden knowledge. You have forged a weapon of immense power.",
+    timestamp: Date.now(),
+    type: "system",
+  });
+
+  return result;
+}
+
+export function handleCraftStormglassHalberd(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("craftStormglassHalberd", state);
+  Object.assign(result.stateUpdates, effectUpdates);
+
+  result.logEntries!.push({
+    id: `stormglass-halberd-crafted-${Date.now()}`,
+    message:
+      "You forge the Stormglass Halberd from storm-touched materials and adamant. The halberd crackles with latent energy, its blade gleaming with an ethereal light. You feel significantly stronger wielding this legendary weapon.",
     timestamp: Date.now(),
     type: "system",
   });

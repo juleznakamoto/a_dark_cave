@@ -552,6 +552,17 @@ export const weaponEffects: Record<string, EffectDefinition> = {
       },
     },
   },
+
+  stormglass_halberd: {
+    id: "stormglass_halberd",
+    name: "Stormglass Halberd",
+    description: "Legendary halberd forged from storm-touched glass and adamant",
+    bonuses: {
+      generalBonuses: {
+        strength: 15,
+      },
+    },
+  },
 };
 
 // Relic effects
