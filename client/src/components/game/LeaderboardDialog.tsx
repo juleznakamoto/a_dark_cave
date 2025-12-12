@@ -1,7 +1,12 @@
 import { useState, useEffect } from "react";
 import { useGameStore } from "@/game/state";
 import { getCurrentUser } from "@/game/auth";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -25,10 +30,17 @@ interface LeaderboardDialogProps {
   onClose: () => void;
 }
 
-export default function LeaderboardDialog({ isOpen, onClose }: LeaderboardDialogProps) {
+export default function LeaderboardDialog({
+  isOpen,
+  onClose,
+}: LeaderboardDialogProps) {
   const { username, setUsername } = useGameStore();
-  const [normalLeaderboard, setNormalLeaderboard] = useState<LeaderboardEntry[]>([]);
-  const [cruelLeaderboard, setCruelLeaderboard] = useState<LeaderboardEntry[]>([]);
+  const [normalLeaderboard, setNormalLeaderboard] = useState<
+    LeaderboardEntry[]
+  >([]);
+  const [cruelLeaderboard, setCruelLeaderboard] = useState<LeaderboardEntry[]>(
+    [],
+  );
   const [loading, setLoading] = useState(false);
   const [editingUsername, setEditingUsername] = useState(false);
   const [tempUsername, setTempUsername] = useState(username || "");
@@ -45,7 +57,7 @@ export default function LeaderboardDialog({ isOpen, onClose }: LeaderboardDialog
   const fetchLeaderboards = async () => {
     setLoading(true);
     try {
-      const env = useDevStats ? 'dev' : 'prod';
+      const env = useDevStats ? "dev" : "prod";
       logger.log(`Fetching ${env} leaderboard data...`);
 
       const [normalRes, cruelRes, metaRes] = await Promise.all([
@@ -112,22 +124,26 @@ export default function LeaderboardDialog({ isOpen, onClose }: LeaderboardDialog
         return;
       }
 
-      const env = useDevStats ? 'dev' : 'prod';
-      const response = await fetch(`/api/leaderboard/update-username?env=${env}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          userId: user.id,
-          username: tempUsername.trim(),
-        }),
-      });
+      const env = useDevStats ? "dev" : "prod";
+      const response = await fetch(
+        `/api/leaderboard/update-username?env=${env}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            userId: user.id,
+            username: tempUsername.trim(),
+          }),
+        },
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
         if (errorData.error === "Username contains inappropriate language") {
           toast({
             title: "Username not allowed",
-            description: "This username contains inappropriate language. Please choose a different one.",
+            description:
+              "This username contains inappropriate language. Please choose a different one.",
             variant: "destructive",
           });
           return;
@@ -135,7 +151,8 @@ export default function LeaderboardDialog({ isOpen, onClose }: LeaderboardDialog
         if (response.status === 409) {
           toast({
             title: "Username taken",
-            description: "This username is already in use. Please choose another.",
+            description:
+              "This username is already in use. Please choose another.",
             variant: "destructive",
           });
           return;
@@ -167,22 +184,28 @@ export default function LeaderboardDialog({ isOpen, onClose }: LeaderboardDialog
     const totalMinutes = Math.floor(ms / 1000 / 60);
     const hours = Math.floor(totalMinutes / 60);
     const minutes = totalMinutes % 60;
-    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+    return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`;
   };
 
   const renderLeaderboard = (entries: LeaderboardEntry[]) => {
     if (loading) {
-      return <div className="text-center py-8 text-muted-foreground">Loading...</div>;
+      return (
+        <div className="text-center py-8 text-muted-foreground">Loading...</div>
+      );
     }
 
     if (entries.length === 0) {
-      return <div className="text-center py-8 text-muted-foreground">No entries yet</div>;
+      return (
+        <div className="text-center py-8 text-muted-foreground">
+          No entries yet
+        </div>
+      );
     }
 
     const getCrown = (index: number) => {
-      if (index === 0) return { symbol: "♛", color: "text-yellow-400" }; // Golden crown
-      if (index === 1) return { symbol: "♛", color: "text-gray-300" }; // Silver crown
-      if (index === 2) return { symbol: "♛", color: "text-amber-600" }; // Bronze crown
+      if (index === 0) return { symbol: "♰", color: "text-yellow-400/80  rotate-180" }; // Golden
+      if (index === 1) return { symbol: "♰", color: "text-gray-300/80 rotate-180" }; // Silver
+      if (index === 2) return { symbol: "♰", color: "text-amber-600/80 rotate-180" }; // Bronze
       return null;
     };
 
@@ -196,12 +219,16 @@ export default function LeaderboardDialog({ isOpen, onClose }: LeaderboardDialog
               className="flex items-center justify-between p-3 rounded-md bg-muted/50 hover:bg-muted transition-colors"
             >
               <div className="flex items-center gap-3">
-                <span className={`font-bold text-lg w-8 text-center ${crown?.color || ""}`}>
-                  {crown ? crown.symbol : (index + 1)}
+                <span
+                  className={`font-bold text-lg w-8 text-center ${crown?.color || ""}`}
+                >
+                  {crown ? crown.symbol : index + 1}
                 </span>
                 <span className="font-sm">{entry.displayName}</span>
               </div>
-            <span className="text-muted-foreground">{formatTime(entry.play_time)}</span>
+              <span className="text-muted-foreground">
+                {formatTime(entry.play_time)}
+              </span>
             </div>
           );
         })}
@@ -218,7 +245,7 @@ export default function LeaderboardDialog({ isOpen, onClose }: LeaderboardDialog
             {isDev && (
               <div className="flex items-center gap-2">
                 <Label htmlFor="env-switch" className="text-sm font-normal">
-                  {useDevStats ? 'Dev' : 'Prod'}
+                  {useDevStats ? "Dev" : "Prod"}
                 </Label>
                 <Switch
                   id="env-switch"
@@ -258,7 +285,9 @@ export default function LeaderboardDialog({ isOpen, onClose }: LeaderboardDialog
                 </div>
               ) : (
                 <div className="flex items-center gap-2">
-                  <span className="text-sm text-muted-foreground">Username:</span>
+                  <span className="text-sm text-muted-foreground">
+                    Username:
+                  </span>
                   <span className="font-medium">{username || "Not set"}</span>
                   <Button
                     onClick={() => setEditingUsername(true)}
