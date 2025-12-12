@@ -77,8 +77,8 @@ export default function EstatePanel() {
     return () => clearInterval(interval);
   }, [focusState]);
 
-  // Focus button - always show when not active, but disable if no points
-  const showFocusButton = !focusState?.isActive;
+  // Focus button - always show, but disable if no points or already active
+  const showFocusButton = true;
 
   // Calculate Focus duration: 1 focus point = 1 minute of Focus time
   const calculateFocusDuration = (focusPoints: number) => {
@@ -438,7 +438,7 @@ export default function EstatePanel() {
                   variant="outline"
                   className="h-7 hover:bg-transparent hover:text-foreground"
                   button_id="activate-focus"
-                  disabled={!focusState?.points || focusState.points === 0}
+                  disabled={!focusState?.points || focusState.points === 0 || focusState?.isActive}
                   tooltip={
                     <div className="text-xs whitespace-nowrap">
                       Earn 1 Focus per hour of sleep
