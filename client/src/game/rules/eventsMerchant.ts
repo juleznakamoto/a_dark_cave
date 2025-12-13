@@ -46,18 +46,32 @@ function roundCost(cost: number, direction: "up" | "down" = "down"): number {
 }
 
 // Helper to calculate cost amounts
-const cost = (giveAmount: number, giveResource: keyof typeof PRICES, costResource: keyof typeof PRICES) =>
-  (giveAmount * PRICES[giveResource]) / PRICES[costResource];
+const cost = (
+  giveAmount: number,
+  giveResource: keyof typeof PRICES,
+  costResource: keyof typeof PRICES,
+) => (giveAmount * PRICES[giveResource]) / PRICES[costResource];
 
 // Helper to generate cost array
-const generateCosts = (amount: number, give: keyof typeof PRICES, costResources: (keyof typeof PRICES)[]) =>
-  costResources.map(resource => ({ resource, amount: cost(amount, give, resource) }));
+const generateCosts = (
+  amount: number,
+  give: keyof typeof PRICES,
+  costResources: (keyof typeof PRICES)[],
+) =>
+  costResources.map((resource) => ({
+    resource,
+    amount: cost(amount, give, resource),
+  }));
 
 // Helper to generate rewards array
-const generateRewards = (amount: number, take: keyof typeof PRICES, rewardResources: (keyof typeof PRICES)[]) =>
-  rewardResources.map(resource => ({
+const generateRewards = (
+  amount: number,
+  take: keyof typeof PRICES,
+  rewardResources: (keyof typeof PRICES)[],
+) =>
+  rewardResources.map((resource) => ({
     resource,
-    amount: Math.round((amount * PRICES[take]) / PRICES[resource])
+    amount: Math.round((amount * PRICES[take]) / PRICES[resource]),
   }));
 
 // Helper to generate buy trade object
@@ -66,10 +80,10 @@ const createBuyTrade = (
   resource: keyof typeof PRICES,
   amount: number,
   condition: (state: GameState) => boolean,
-  costResources: (keyof typeof PRICES)[]
+  costResources: (keyof typeof PRICES)[],
 ) => ({
   id,
-  label: `${amount} ${resource.charAt(0).toUpperCase() + resource.slice(1).replace(/_/g, ' ')}`,
+  label: `${amount} ${resource.charAt(0).toUpperCase() + resource.slice(1).replace(/_/g, " ")}`,
   give: resource,
   giveAmount: amount,
   condition,
@@ -82,10 +96,10 @@ const createSellTrade = (
   resource: keyof typeof PRICES,
   amount: number,
   condition: (state: GameState) => boolean,
-  rewardResources: (keyof typeof PRICES)[]
+  rewardResources: (keyof typeof PRICES)[],
 ) => ({
   id,
-  label: `Sell ${amount} ${resource.charAt(0).toUpperCase() + resource.slice(1).replace(/_/g, ' ')}`,
+  label: `Sell ${amount} ${resource.charAt(0).toUpperCase() + resource.slice(1).replace(/_/g, " ")}`,
   take: resource,
   takeAmount: amount,
   condition,
@@ -94,200 +108,476 @@ const createSellTrade = (
 
 // Define trade configurations based on progression tiers
 const buyTrades = [
-  // Early tier (woodenHuts >= 4 && <= 9)
-  createBuyTrade("buy_food_500_early", "food", 500, 
-    (state) => state.buildings.woodenHut >= 4 && state.buildings.woodenHut <= 9,
-    ["wood", "stone", "silver", "gold"]),
-  createBuyTrade("buy_wood_500_early", "wood", 500,
-    (state) => state.buildings.woodenHut >= 4 && state.buildings.woodenHut <= 9,
-    ["food", "stone", "silver", "gold"]),
-  createBuyTrade("buy_leather_50_early", "leather", 50,
-    (state) => state.buildings.woodenHut >= 4 && state.buildings.woodenHut <= 9,
-    ["wood", "stone", "food", "steel", "silver", "gold"]),
-  createBuyTrade("buy_steel_50_early", "steel", 50,
-    (state) => state.buildings.woodenHut >= 4 && state.buildings.woodenHut <= 9,
-    ["wood", "stone", "food", "leather", "silver", "gold"]),
+  // Very Early tier (woodenHuts >= 3 && <= 6)
+  createBuyTrade(
+    "buy_food_250_early",
+    "food",
+    250,
+    (state) => state.buildings.woodenHut >= 3 && state.buildings.woodenHut <= 6,
+    ["wood", "stone", "silver", "gold"],
+  ),
+
+  createBuyTrade(
+    "buy_wood_250_early",
+    "wood",
+    250,
+    (state) => state.buildings.woodenHut >= 3 && state.buildings.woodenHut <= 6,
+    ["food", "stone", "silver", "gold"],
+  ),
+
+  createBuyTrade(
+    "buy_stone_250_early",
+    "stone",
+    250,
+    (state) => state.buildings.woodenHut >= 3 && state.buildings.woodenHut <= 6,
+    ["food", "wood", "silver", "gold"],
+  ),
+
+  createBuyTrade(
+    "buy_leather_50_early",
+    "leather",
+    50,
+    (state) => state.buildings.woodenHut >= 3 && state.buildings.woodenHut <= 6,
+    ["wood", "stone", "food", "steel", "silver", "gold"],
+  ),
+
+  // Early tier (woodenHuts >= 5 && <= 9)
+  createBuyTrade(
+    "buy_food_500_early",
+    "food",
+    500,
+    (state) => state.buildings.woodenHut >= 5 && state.buildings.woodenHut <= 9,
+    ["wood", "stone", "silver", "gold"],
+  ),
+  createBuyTrade(
+    "buy_wood_500_early",
+    "wood",
+    500,
+    (state) => state.buildings.woodenHut >= 5 && state.buildings.woodenHut <= 9,
+    ["food", "stone", "silver", "gold"],
+  ),
+  createBuyTrade(
+    "buy_stone_500_early",
+    "stone",
+    500,
+    (state) => state.buildings.woodenHut >= 5 && state.buildings.woodenHut <= 9,
+    ["food", "wood", "silver", "gold"],
+  ),
+  createBuyTrade(
+    "buy_leather_50_early",
+    "leather",
+    100,
+    (state) => state.buildings.woodenHut >= 5 && state.buildings.woodenHut <= 9,
+    ["wood", "stone", "food", "steel", "silver", "gold"],
+  ),
+  createBuyTrade(
+    "buy_steel_50_early",
+    "steel",
+    50,
+    (state) => state.buildings.woodenHut >= 5 && state.buildings.woodenHut <= 9,
+    ["wood", "stone", "food", "leather", "silver", "gold"],
+  ),
 
   // Mid 1 tier (woodenHuts >= 7, stoneHuts <= 5)
-  createBuyTrade("buy_food_1000_mid1", "food", 1000,
+  createBuyTrade(
+    "buy_food_1000_mid1",
+    "food",
+    1000,
     (state) => state.buildings.woodenHut >= 7 && state.buildings.stoneHut <= 5,
-    ["wood", "stone", "steel", "silver", "gold"]),
-  createBuyTrade("buy_wood_1000_mid1", "wood", 1000,
+    ["wood", "stone", "steel", "silver", "gold"],
+  ),
+  createBuyTrade(
+    "buy_wood_1000_mid1",
+    "wood",
+    1000,
     (state) => state.buildings.woodenHut >= 7 && state.buildings.stoneHut <= 5,
-    ["food", "stone", "steel", "silver", "gold"]),
-  createBuyTrade("buy_stone_500_mid1", "stone", 500,
+    ["food", "stone", "steel", "silver", "gold"],
+  ),
+  createBuyTrade(
+    "buy_stone_500_mid1",
+    "stone",
+    500,
     (state) => state.buildings.woodenHut >= 7 && state.buildings.stoneHut <= 5,
-    ["wood", "food", "steel", "silver", "gold"]),
-  createBuyTrade("buy_leather_100_mid1", "leather", 100,
+    ["wood", "food", "steel", "silver", "gold"],
+  ),
+  createBuyTrade(
+    "buy_leather_150_mid1",
+    "leather",
+    150,
     (state) => state.buildings.woodenHut >= 7 && state.buildings.stoneHut <= 5,
-    ["wood", "stone", "food", "steel", "silver", "gold"]),
-  createBuyTrade("buy_steel_100_mid1", "steel", 100,
+    ["wood", "stone", "food", "steel", "silver", "gold"],
+  ),
+  createBuyTrade(
+    "buy_steel_150_mid1",
+    "steel",
+    150,
     (state) => state.buildings.woodenHut >= 7 && state.buildings.stoneHut <= 5,
-    ["wood", "stone", "food", "leather", "silver", "gold"]),
+    ["wood", "stone", "food", "leather", "silver", "gold"],
+  ),
 
   // Mid 2 tier (stoneHuts >= 3 && <= 8)
-  createBuyTrade("buy_food_2000_mid2", "food", 2000,
+  createBuyTrade(
+    "buy_food_2000_mid2",
+    "food",
+    2000,
     (state) => state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
-    ["wood", "stone", "leather", "steel", "silver", "gold"]),
-  createBuyTrade("buy_wood_2000_mid2", "wood", 2000,
+    ["wood", "stone", "leather", "steel", "gold"],
+  ),
+  createBuyTrade(
+    "buy_wood_2000_mid2",
+    "wood",
+    2000,
     (state) => state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
-    ["food", "stone", "leather", "steel", "silver", "gold"]),
-  createBuyTrade("buy_stone_1000_mid2", "stone", 1000,
+    ["food", "stone", "leather", "steel", "gold"],
+  ),
+  createBuyTrade(
+    "buy_stone_1000_mid2",
+    "stone",
+    1000,
     (state) => state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
-    ["wood", "food", "leather", "steel", "silver", "gold"]),
-  createBuyTrade("buy_leather_100_mid2", "leather", 100,
+    ["wood", "food", "leather", "steel", "gold"],
+  ),
+  createBuyTrade(
+    "buy_leather_100_mid2",
+    "leather",
+    100,
     (state) => state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
-    ["wood", "stone", "food", "steel", "silver", "gold"]),
-  createBuyTrade("buy_steel_250_mid2", "steel", 250,
+    ["wood", "stone", "food", "steel", "gold"],
+  ),
+  createBuyTrade(
+    "buy_steel_250_mid2",
+    "steel",
+    250,
     (state) => state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
-    ["wood", "stone", "food", "leather", "silver", "gold"]),
+    ["wood", "stone", "food", "leather", "gold"],
+  ),
 
   // End tier (stoneHuts >= 7)
-  createBuyTrade("buy_food_2000_end", "food", 2000,
+  createBuyTrade(
+    "buy_food_2000_end",
+    "food",
+    2000,
     (state) => state.buildings.stoneHut >= 7,
-    ["wood", "stone", "leather", "steel", "silver", "gold"]),
-  createBuyTrade("buy_stone_2500_end", "stone", 2500,
+    ["wood", "stone", "leather", "steel", "gold"],
+  ),
+  createBuyTrade(
+    "buy_stone_2500_end",
+    "stone",
+    2500,
     (state) => state.buildings.stoneHut >= 7,
-    ["wood", "food", "leather", "steel", "silver", "gold"]),
-  createBuyTrade("buy_steel_500_end", "steel", 500,
+    ["wood", "food", "leather", "steel", "gold"],
+  ),
+  createBuyTrade(
+    "buy_steel_500_end",
+    "steel",
+    500,
     (state) => state.buildings.stoneHut >= 7,
-    ["wood", "stone", "food", "leather", "silver", "gold"]),
+    ["wood", "stone", "food", "leather", "gold"],
+  ),
 ];
 
 const sellTrades = [
   // Early tier (woodenHuts >= 4 && <= 9)
-  createSellTrade("sell_food_100_early", "food", 100,
+  createSellTrade(
+    "sell_food_100_early",
+    "food",
+    100,
     (state) => state.buildings.woodenHut >= 4 && state.buildings.woodenHut <= 9,
-    ["wood", "stone", "leather", "steel", "silver", "gold"]),
-  createSellTrade("sell_bones_100_early", "bones", 100,
+    ["wood", "stone", "leather", "steel", "gold"],
+  ),
+  createSellTrade(
+    "sell_bones_100_early",
+    "bones",
+    100,
     (state) => state.buildings.woodenHut >= 4 && state.buildings.woodenHut <= 9,
-    ["wood", "stone", "food", "leather", "steel", "silver", "gold"]),
-  createSellTrade("sell_fur_100_early", "fur", 100,
+    ["wood", "stone", "food", "leather", "steel", "gold"],
+  ),
+  createSellTrade(
+    "sell_fur_100_early",
+    "fur",
+    100,
     (state) => state.buildings.woodenHut >= 4 && state.buildings.woodenHut <= 9,
-    ["wood", "stone", "food", "leather", "steel", "silver", "gold"]),
-  createSellTrade("sell_wood_250_early", "wood", 250,
+    ["wood", "stone", "food", "leather", "steel", "gold"],
+  ),
+  createSellTrade(
+    "sell_wood_250_early",
+    "wood",
+    250,
     (state) => state.buildings.woodenHut >= 4 && state.buildings.woodenHut <= 9,
-    ["food", "stone", "leather", "steel", "silver", "gold"]),
-  createSellTrade("sell_stone_100_early", "stone", 100,
+    ["food", "stone", "leather", "steel", "gold"],
+  ),
+  createSellTrade(
+    "sell_stone_100_early",
+    "stone",
+    100,
     (state) => state.buildings.woodenHut >= 4 && state.buildings.woodenHut <= 9,
-    ["wood", "food", "leather", "steel", "silver", "gold"]),
-  createSellTrade("sell_iron_100_early", "iron", 100,
+    ["wood", "food", "leather", "steel", "gold"],
+  ),
+  createSellTrade(
+    "sell_iron_100_early",
+    "iron",
+    100,
     (state) => state.buildings.woodenHut >= 4 && state.buildings.woodenHut <= 9,
-    ["wood", "stone", "food", "leather", "steel", "silver", "gold"]),
+    ["wood", "stone", "food", "leather", "steel", "gold"],
+  ),
 
   // Mid 1 tier (woodenHuts >= 7, stoneHuts <= 5)
-  createSellTrade("sell_food_250_mid1", "food", 250,
+  createSellTrade(
+    "sell_food_250_mid1",
+    "food",
+    250,
     (state) => state.buildings.woodenHut >= 7 && state.buildings.stoneHut <= 5,
-    ["wood", "stone", "leather", "steel", "silver", "gold"]),
-  createSellTrade("sell_bones_250_mid1", "bones", 250,
+    ["wood", "stone", "leather", "steel", "gold"],
+  ),
+  createSellTrade(
+    "sell_bones_250_mid1",
+    "bones",
+    250,
     (state) => state.buildings.woodenHut >= 7 && state.buildings.stoneHut <= 5,
-    ["wood", "stone", "food", "leather", "steel", "silver", "gold"]),
-  createSellTrade("sell_fur_250_mid1", "fur", 250,
+    ["wood", "stone", "food", "leather", "steel", "gold"],
+  ),
+  createSellTrade(
+    "sell_fur_250_mid1",
+    "fur",
+    250,
     (state) => state.buildings.woodenHut >= 7 && state.buildings.stoneHut <= 5,
-    ["wood", "stone", "food", "leather", "steel", "silver", "gold"]),
-  createSellTrade("sell_wood_250_mid1", "wood", 250,
+    ["wood", "stone", "food", "leather", "steel", "gold"],
+  ),
+  createSellTrade(
+    "sell_wood_250_mid1",
+    "wood",
+    250,
     (state) => state.buildings.woodenHut >= 7 && state.buildings.stoneHut <= 5,
-    ["food", "stone", "leather", "steel", "silver", "gold"]),
-  createSellTrade("sell_stone_250_mid1", "stone", 250,
+    ["food", "stone", "leather", "steel", "gold"],
+  ),
+  createSellTrade(
+    "sell_stone_250_mid1",
+    "stone",
+    250,
     (state) => state.buildings.woodenHut >= 7 && state.buildings.stoneHut <= 5,
-    ["wood", "food", "leather", "steel", "silver", "gold"]),
-  createSellTrade("sell_iron_250_mid1", "iron", 250,
+    ["wood", "food", "leather", "steel", "gold"],
+  ),
+  createSellTrade(
+    "sell_iron_250_mid1",
+    "iron",
+    250,
     (state) => state.buildings.woodenHut >= 7 && state.buildings.stoneHut <= 5,
-    ["wood", "stone", "food", "leather", "steel", "silver", "gold"]),
-  createSellTrade("sell_coal_250_mid1", "coal", 250,
+    ["wood", "stone", "food", "leather", "steel", "gold"],
+  ),
+  createSellTrade(
+    "sell_coal_250_mid1",
+    "coal",
+    250,
     (state) => state.buildings.woodenHut >= 7 && state.buildings.stoneHut <= 5,
-    ["wood", "stone", "food", "leather", "steel", "silver", "gold"]),
-  createSellTrade("sell_sulfur_250_mid1", "sulfur", 250,
+    ["wood", "stone", "food", "leather", "steel", "gold"],
+  ),
+  createSellTrade(
+    "sell_sulfur_250_mid1",
+    "sulfur",
+    250,
     (state) => state.buildings.woodenHut >= 7 && state.buildings.stoneHut <= 5,
-    ["wood", "stone", "food", "leather", "steel", "silver", "gold"]),
-  createSellTrade("sell_leather_50_mid1", "leather", 50,
+    ["wood", "stone", "food", "leather", "steel", "gold"],
+  ),
+  createSellTrade(
+    "sell_leather_50_mid1",
+    "leather",
+    50,
     (state) => state.buildings.woodenHut >= 7 && state.buildings.stoneHut <= 5,
-    ["wood", "stone", "food", "steel", "silver", "gold"]),
-  createSellTrade("sell_steel_250_mid1", "steel", 250,
+    ["wood", "stone", "food", "steel", "gold"],
+  ),
+  createSellTrade(
+    "sell_steel_250_mid1",
+    "steel",
+    250,
     (state) => state.buildings.woodenHut >= 7 && state.buildings.stoneHut <= 5,
-    ["wood", "stone", "food", "leather", "silver", "gold"]),
+    ["wood", "stone", "food", "leather", "gold"],
+  ),
 
   // Mid 2 tier (stoneHuts >= 3 && <= 8)
-  createSellTrade("sell_food_500_mid2", "food", 500,
+  createSellTrade(
+    "sell_food_500_mid2",
+    "food",
+    500,
     (state) => state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
-    ["silver", "gold"]),
-  createSellTrade("sell_bones_250_mid2", "bones", 250,
+    ["silver", "gold"],
+  ),
+  createSellTrade(
+    "sell_bones_250_mid2",
+    "bones",
+    250,
     (state) => state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
-    ["silver", "gold"]),
-  createSellTrade("sell_fur_250_mid2", "fur", 250,
+    ["silver", "gold"],
+  ),
+  createSellTrade(
+    "sell_fur_250_mid2",
+    "fur",
+    250,
     (state) => state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
-    ["silver", "gold"]),
-  createSellTrade("sell_wood_500_mid2", "wood", 500,
+    ["silver", "gold"],
+  ),
+  createSellTrade(
+    "sell_wood_500_mid2",
+    "wood",
+    500,
     (state) => state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
-    ["silver", "gold"]),
-  createSellTrade("sell_stone_500_mid2", "stone", 500,
+    ["silver", "gold"],
+  ),
+  createSellTrade(
+    "sell_stone_500_mid2",
+    "stone",
+    500,
     (state) => state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
-    ["silver", "gold"]),
-  createSellTrade("sell_iron_500_mid2", "iron", 500,
+    ["silver", "gold"],
+  ),
+  createSellTrade(
+    "sell_iron_500_mid2",
+    "iron",
+    500,
     (state) => state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
-    ["silver", "gold"]),
-  createSellTrade("sell_coal_500_mid2", "coal", 500,
+    ["silver", "gold"],
+  ),
+  createSellTrade(
+    "sell_coal_500_mid2",
+    "coal",
+    500,
     (state) => state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
-    ["silver", "gold"]),
-  createSellTrade("sell_sulfur_500_mid2", "sulfur", 500,
+    ["silver", "gold"],
+  ),
+  createSellTrade(
+    "sell_sulfur_500_mid2",
+    "sulfur",
+    500,
     (state) => state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
-    ["silver", "gold"]),
-  createSellTrade("sell_obsidian_50_mid2", "obsidian", 50,
+    ["silver", "gold"],
+  ),
+  createSellTrade(
+    "sell_obsidian_50_mid2",
+    "obsidian",
+    50,
     (state) => state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
-    ["silver", "gold"]),
-  createSellTrade("sell_adamant_50_mid2", "adamant", 50,
+    ["silver", "gold"],
+  ),
+  createSellTrade(
+    "sell_adamant_50_mid2",
+    "adamant",
+    50,
     (state) => state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
-    ["silver", "gold"]),
-  createSellTrade("sell_moonstone_50_mid2", "moonstone", 50,
+    ["silver", "gold"],
+  ),
+  createSellTrade(
+    "sell_moonstone_50_mid2",
+    "moonstone",
+    50,
     (state) => state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
-    ["silver", "gold"]),
-  createSellTrade("sell_leather_100_mid2", "leather", 100,
+    ["silver", "gold"],
+  ),
+  createSellTrade(
+    "sell_leather_100_mid2",
+    "leather",
+    100,
     (state) => state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
-    ["silver", "gold"]),
-  createSellTrade("sell_steel_250_mid2", "steel", 250,
+    ["silver", "gold"],
+  ),
+  createSellTrade(
+    "sell_steel_250_mid2",
+    "steel",
+    250,
     (state) => state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
-    ["silver", "gold"]),
+    ["silver", "gold"],
+  ),
 
   // End tier (stoneHuts >= 7)
-  createSellTrade("sell_food_500_end", "food", 500,
+  createSellTrade(
+    "sell_food_500_end",
+    "food",
+    500,
     (state) => state.buildings.stoneHut >= 7,
-    ["silver", "gold"]),
-  createSellTrade("sell_bones_250_end", "bones", 250,
+    ["silver", "gold"],
+  ),
+  createSellTrade(
+    "sell_bones_250_end",
+    "bones",
+    250,
     (state) => state.buildings.stoneHut >= 7,
-    ["silver", "gold"]),
-  createSellTrade("sell_fur_250_end", "fur", 250,
+    ["silver", "gold"],
+  ),
+  createSellTrade(
+    "sell_fur_250_end",
+    "fur",
+    250,
     (state) => state.buildings.stoneHut >= 7,
-    ["silver", "gold"]),
-  createSellTrade("sell_wood_500_end", "wood", 500,
+    ["silver", "gold"],
+  ),
+  createSellTrade(
+    "sell_wood_500_end",
+    "wood",
+    500,
     (state) => state.buildings.stoneHut >= 7,
-    ["silver", "gold"]),
-  createSellTrade("sell_stone_500_end", "stone", 500,
+    ["silver", "gold"],
+  ),
+  createSellTrade(
+    "sell_stone_500_end",
+    "stone",
+    500,
     (state) => state.buildings.stoneHut >= 7,
-    ["silver", "gold"]),
-  createSellTrade("sell_iron_500_end", "iron", 500,
+    ["silver", "gold"],
+  ),
+  createSellTrade(
+    "sell_iron_500_end",
+    "iron",
+    500,
     (state) => state.buildings.stoneHut >= 7,
-    ["silver", "gold"]),
-  createSellTrade("sell_coal_500_end", "coal", 500,
+    ["silver", "gold"],
+  ),
+  createSellTrade(
+    "sell_coal_500_end",
+    "coal",
+    500,
     (state) => state.buildings.stoneHut >= 7,
-    ["silver", "gold"]),
-  createSellTrade("sell_sulfur_500_end", "sulfur", 500,
+    ["silver", "gold"],
+  ),
+  createSellTrade(
+    "sell_sulfur_500_end",
+    "sulfur",
+    500,
     (state) => state.buildings.stoneHut >= 7,
-    ["silver", "gold"]),
-  createSellTrade("sell_obsidian_100_end", "obsidian", 100,
+    ["silver", "gold"],
+  ),
+  createSellTrade(
+    "sell_obsidian_100_end",
+    "obsidian",
+    100,
     (state) => state.buildings.stoneHut >= 7,
-    ["silver", "gold"]),
-  createSellTrade("sell_adamant_100_end", "adamant", 100,
+    ["silver", "gold"],
+  ),
+  createSellTrade(
+    "sell_adamant_100_end",
+    "adamant",
+    100,
     (state) => state.buildings.stoneHut >= 7,
-    ["silver", "gold"]),
-  createSellTrade("sell_moonstone_100_end", "moonstone", 100,
+    ["silver", "gold"],
+  ),
+  createSellTrade(
+    "sell_moonstone_100_end",
+    "moonstone",
+    100,
     (state) => state.buildings.stoneHut >= 7,
-    ["silver", "gold"]),
-  createSellTrade("sell_leather_250_end", "leather", 250,
+    ["silver", "gold"],
+  ),
+  createSellTrade(
+    "sell_leather_250_end",
+    "leather",
+    250,
     (state) => state.buildings.stoneHut >= 7,
-    ["silver", "gold"]),
-  createSellTrade("sell_steel_250_end", "steel", 250,
+    ["silver", "gold"],
+  ),
+  createSellTrade(
+    "sell_steel_250_end",
+    "steel",
+    250,
     (state) => state.buildings.stoneHut >= 7,
-    ["silver", "gold"]),
+    ["silver", "gold"],
+  ),
 ];
 
 const toolTrades = [
@@ -702,13 +992,13 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
 export const merchantEvents: Record<string, GameEvent> = {
   merchant: {
     id: "merchant",
-    condition: (state: GameState) => state.buildings.woodenHut >= 4,
+    condition: (state: GameState) => state.buildings.woodenHut >= 3,
     triggerType: "resource",
     timeProbability: (state: GameState) =>
-      10 + 1 * state.buildings.tradePost ||
-      0 + 2 * state.buildings.grandBazaar ||
-      0 + 2 * state.buildings.merchantsGuild ||
-      0,
+      // 10 + 1 * state.buildings.tradePost ||
+      // 0 + 2 * state.buildings.grandBazaar ||
+      // 0 + 2 * state.buildings.merchantsGuild ||
+      0.5,
 
     title: "Traveling Merchant",
     message:
