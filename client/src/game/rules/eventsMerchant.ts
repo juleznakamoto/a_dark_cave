@@ -53,6 +53,45 @@ const cost = (giveAmount: number, giveResource: keyof typeof PRICES, costResourc
 const generateCosts = (amount: number, give: keyof typeof PRICES, costResources: (keyof typeof PRICES)[]) =>
   costResources.map(resource => ({ resource, amount: cost(amount, give, resource) }));
 
+// Helper to generate rewards array
+const generateRewards = (amount: number, take: keyof typeof PRICES, rewardResources: (keyof typeof PRICES)[]) =>
+  rewardResources.map(resource => ({
+    resource,
+    amount: Math.round((amount * PRICES[take]) / PRICES[resource])
+  }));
+
+// Helper to generate buy trade object
+const createBuyTrade = (
+  id: string,
+  resource: keyof typeof PRICES,
+  amount: number,
+  condition: (state: GameState) => boolean,
+  costResources: (keyof typeof PRICES)[]
+) => ({
+  id,
+  label: `${amount} ${resource.charAt(0).toUpperCase() + resource.slice(1).replace(/_/g, ' ')}`,
+  give: resource,
+  giveAmount: amount,
+  condition,
+  costs: generateCosts(amount, resource, costResources),
+});
+
+// Helper to generate sell trade object
+const createSellTrade = (
+  id: string,
+  resource: keyof typeof PRICES,
+  amount: number,
+  condition: (state: GameState) => boolean,
+  rewardResources: (keyof typeof PRICES)[]
+) => ({
+  id,
+  label: `Sell ${amount} ${resource.charAt(0).toUpperCase() + resource.slice(1).replace(/_/g, ' ')}`,
+  take: resource,
+  takeAmount: amount,
+  condition,
+  rewards: generateRewards(amount, resource, rewardResources),
+});
+
 // Define trade configurations based on progression tiers
 const buyTrades = [
   // Early tier (woodenHuts >= 4 && <= 9)
@@ -114,45 +153,6 @@ const buyTrades = [
     (state) => state.buildings.stoneHut >= 7,
     ["wood", "stone", "food", "leather", "silver", "gold"]),
 ];
-
-// Helper to generate rewards array
-const generateRewards = (amount: number, take: keyof typeof PRICES, rewardResources: (keyof typeof PRICES)[]) =>
-  rewardResources.map(resource => ({
-    resource,
-    amount: Math.round((amount * PRICES[take]) / PRICES[resource])
-  }));
-
-// Helper to generate buy trade object
-const createBuyTrade = (
-  id: string,
-  resource: keyof typeof PRICES,
-  amount: number,
-  condition: (state: GameState) => boolean,
-  costResources: (keyof typeof PRICES)[]
-) => ({
-  id,
-  label: `${amount} ${resource.charAt(0).toUpperCase() + resource.slice(1).replace(/_/g, ' ')}`,
-  give: resource,
-  giveAmount: amount,
-  condition,
-  costs: generateCosts(amount, resource, costResources),
-});
-
-// Helper to generate sell trade object
-const createSellTrade = (
-  id: string,
-  resource: keyof typeof PRICES,
-  amount: number,
-  condition: (state: GameState) => boolean,
-  rewardResources: (keyof typeof PRICES)[]
-) => ({
-  id,
-  label: `Sell ${amount} ${resource.charAt(0).toUpperCase() + resource.slice(1).replace(/_/g, ' ')}`,
-  take: resource,
-  takeAmount: amount,
-  condition,
-  rewards: generateRewards(amount, resource, rewardResources),
-});
 
 const sellTrades = [
   // Early tier (woodenHuts >= 4 && <= 9)
