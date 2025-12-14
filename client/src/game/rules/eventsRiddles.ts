@@ -306,12 +306,19 @@ export const riddleEvents: Record<string, GameEvent> = {
 
   whispererInTheDark: {
     id: "whispererInTheDark",
-    condition: (state: GameState) => state.buildings.darkEstate >= 1,
+    condition: (state: GameState) =>
+      state.buildings.darkEstate >= 1 &&
+      !state.clothing.ravenfeather_mantle &&
+      state.current_population >= 4,
     triggerType: "resource",
     timeProbability: 0.030,
     title: "Whisperer in the Dark",
     message: (state: GameState) => {
       const riddle = getUnusedRiddle(state);
+      // Store the riddle in state for consistency across message/choices/fallback
+      if (riddle && !state.events._currentRiddle_whispererInTheDark) {
+        (state.events as any)._currentRiddle_whispererInTheDark = riddle.id;
+      }
       return riddle ? getStartMessage(riddle.question, 1) : "";
     },
     triggered: false,
@@ -320,12 +327,14 @@ export const riddleEvents: Record<string, GameEvent> = {
     isTimedChoice: true,
     baseDecisionTime: 45,
     choices: (state: GameState) => {
-      const riddle = getUnusedRiddle(state);
+      const riddleId = (state.events as any)._currentRiddle_whispererInTheDark;
+      const riddle = riddleId ? RIDDLE_POOL.find(r => r.id === riddleId) : getUnusedRiddle(state);
       if (!riddle) return [];
       return createRiddleChoices(riddle, "first", "whispererInTheDark", "whispererInTheDark_correct");
     },
     fallbackChoice: (state: GameState) => {
-      const riddle = getUnusedRiddle(state);
+      const riddleId = (state.events as any)._currentRiddle_whispererInTheDark;
+      const riddle = riddleId ? RIDDLE_POOL.find(r => r.id === riddleId) : getUnusedRiddle(state);
       if (!riddle) return undefined;
       return createFallbackChoice(riddle, "first", "whispererInTheDark");
     },
