@@ -2,6 +2,40 @@ import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
 
+// Riddle pool - each riddle has question, correct answer, and wrong answers
+const RIDDLE_POOL = [
+  {
+    id: "wind",
+    question: "Voiceless it cries, wingless flutters, toothless bites, mouthless mutters.",
+    correctAnswer: "Wind",
+    wrongAnswers: ["Fire", "Tree", "Bones"],
+  },
+  {
+    id: "man",
+    question: "Goes on four feet in the morning, two feet at noon, and three feet in the evening.",
+    correctAnswer: "Man",
+    wrongAnswers: ["Earth", "Wolf", "Bird"],
+  },
+  {
+    id: "time",
+    question: "All things it devours, turns bones to dust, slays kings, wears mountains down, erases towns.",
+    correctAnswer: "Time",
+    wrongAnswers: ["Man", "Water", "Fire"],
+  },
+  {
+    id: "clouds",
+    question: "Flies without wings, cries without eyes, darkness follows wherever it goes.",
+    correctAnswer: "Clouds",
+    wrongAnswers: ["Night", "Wind", "Shadow"],
+  },
+  {
+    id: "darkness",
+    question: "Your eyes are open, I am there, your eyes are closed, I am there too.",
+    correctAnswer: "Darkness",
+    wrongAnswers: ["Light", "Life", "Death"],
+  },
+] as const;
+
 // Riddle rewards (gold amounts)
 const RIDDLE_REWARDS = {
   first: 150,
@@ -37,18 +71,19 @@ const RIDDLE_PENALTIES = {
   },
 } as const;
 
-// Questions
-const START_MESSAGES = {
-  first:
-    "A knock comes from the estate door. A figure completely hulled in dark robes stands in the shadows outside. It whispers: 'Voiceless it cries, wingless flutters, toothless bites, mouthless mutters.'",
-  second:
-    "The cloaked figure returns to the estate under the pale moonlight. Its voice echoes: 'Goes on four feet in the morning, two feet at noon, and three feet in the evening.'",
-  third:
-    "Once again, the mysterious figure appears at the estate. It whispers with a low voice: 'All things it devours, turns bones to dust, slays kings, wears mountains down, erases towns.'",
-  fourth:
-    "The hulled figure appears once more at the estate. It whispers: 'Flies without wings, cries without eyes, darkness follows wherever it goes.'",
-  fifth:
-    "The nightly figure appears one more time at the estate. Its voice silently echoes through the night: 'Your eyes are open, I am there, your eyes are closed, I am there too.'",
+// Generic messages
+const START_MESSAGE_PREFIX = "A knock comes from the estate door. A figure completely hulled in dark robes stands in the shadows outside. It whispers: '";
+const START_MESSAGE_SUFFIX = "'";
+
+const getStartMessage = (riddleQuestion: string, visitNumber: number) => {
+  const prefixes = [
+    "A knock comes from the estate door. A figure completely hulled in dark robes stands in the shadows outside. It whispers: '",
+    "The cloaked figure returns to the estate under the pale moonlight. Its voice echoes: '",
+    "Once again, the mysterious figure appears at the estate. It whispers with a low voice: '",
+    "The hulled figure appears once more at the estate. It whispers: '",
+    "The nightly figure appears one more time at the estate. Its voice silently echoes through the night: '",
+  ];
+  return prefixes[visitNumber - 1] + riddleQuestion + "'";
 };
 
 // Success messages
@@ -81,6 +116,159 @@ const WRONG_ANSWER_MESSAGES = {
 
 // Timeout messages
 const TIMEOUT_MESSAGES = WRONG_ANSWER_MESSAGES;
+
+// Helper function to get an unused riddle
+const getUnusedRiddle = (state: GameState): typeof RIDDLE_POOL[number] | null => {
+  const usedRiddles = state.events.usedRiddleIds || [];
+  const availableRiddles = RIDDLE_POOL.filter(riddle => !usedRiddles.includes(riddle.id));
+
+  if (availableRiddles.length === 0) {
+    return null;
+  }
+
+  // Return a random unused riddle
+  return availableRiddles[Math.floor(Math.random() * availableRiddles.length)];
+};
+
+// Helper function to create riddle choices
+const createRiddleChoices = (
+  riddle: typeof RIDDLE_POOL[number],
+  riddleNumber: "first" | "second" | "third" | "fourth" | "fifth",
+  eventId: string,
+  eventIdCorrect: string
+) => {
+  const allAnswers = [riddle.correctAnswer, ...riddle.wrongAnswers];
+
+  return allAnswers.map(answer => ({
+    id: `answer${answer}`,
+    label: answer,
+    effect: (state: GameState) => {
+      const isCorrect = answer === riddle.correctAnswer;
+
+      if (isCorrect) {
+        return {
+          resources: {
+            ...state.resources,
+            gold: state.resources.gold + RIDDLE_REWARDS[riddleNumber],
+          },
+          events: {
+            ...state.events,
+            [eventId]: true,
+            [eventIdCorrect]: true,
+            usedRiddleIds: [...(state.events.usedRiddleIds || []), riddle.id],
+          },
+          _logMessage: SUCCESS_MESSAGES[riddleNumber](RIDDLE_REWARDS[riddleNumber]),
+        };
+      } else {
+        // Wrong answer - apply penalty based on riddle number
+        if (riddleNumber === "first" || riddleNumber === "third") {
+          const deaths = RIDDLE_PENALTIES[riddleNumber].deaths + RIDDLE_PENALTIES[riddleNumber].cmMultiplier * state.CM;
+          return {
+            ...killVillagers(state, deaths),
+            events: {
+              ...state.events,
+              [eventId]: true,
+              usedRiddleIds: [...(state.events.usedRiddleIds || []), riddle.id],
+            },
+            _logMessage: WRONG_ANSWER_MESSAGES[riddleNumber](deaths),
+          };
+        } else if (riddleNumber === "second" || riddleNumber === "fourth") {
+          const fogDuration = RIDDLE_PENALTIES[riddleNumber].fogDuration + (RIDDLE_PENALTIES[riddleNumber].fogDurationCM * state.CM);
+          return {
+            fogState: {
+              isActive: true,
+              endTime: Date.now() + fogDuration,
+              duration: fogDuration,
+            },
+            events: {
+              ...state.events,
+              [eventId]: true,
+              usedRiddleIds: [...(state.events.usedRiddleIds || []), riddle.id],
+            },
+            _logMessage: WRONG_ANSWER_MESSAGES[riddleNumber](),
+          };
+        } else if (riddleNumber === "fifth") {
+          const deaths = RIDDLE_PENALTIES.fifth.deaths + RIDDLE_PENALTIES.fifth.cmMultiplier * state.CM;
+          const deathResult = killVillagers(state, deaths);
+          const fogDuration = RIDDLE_PENALTIES.fifth.fogDuration + (RIDDLE_PENALTIES.fifth.fogDurationCM * state.CM);
+          return {
+            ...deathResult,
+            fogState: {
+              isActive: true,
+              endTime: Date.now() + fogDuration,
+              duration: fogDuration,
+            },
+            events: {
+              ...state.events,
+              [eventId]: true,
+              usedRiddleIds: [...(state.events.usedRiddleIds || []), riddle.id],
+            },
+            _logMessage: WRONG_ANSWER_MESSAGES.fifth(deaths),
+          };
+        }
+      }
+      return {};
+    },
+  }));
+};
+
+// Helper function to create fallback choice
+const createFallbackChoice = (
+  riddle: typeof RIDDLE_POOL[number],
+  riddleNumber: "first" | "second" | "third" | "fourth" | "fifth",
+  eventId: string
+) => ({
+  id: "timeout",
+  label: "No answer given",
+  effect: (state: GameState) => {
+    if (riddleNumber === "first" || riddleNumber === "third") {
+      const deaths = RIDDLE_PENALTIES[riddleNumber].deaths + RIDDLE_PENALTIES[riddleNumber].cmMultiplier * state.CM;
+      return {
+        ...killVillagers(state, deaths),
+        events: {
+          ...state.events,
+          [eventId]: true,
+          usedRiddleIds: [...(state.events.usedRiddleIds || []), riddle.id],
+        },
+        _logMessage: TIMEOUT_MESSAGES[riddleNumber](deaths),
+      };
+    } else if (riddleNumber === "second" || riddleNumber === "fourth") {
+      const fogDuration = RIDDLE_PENALTIES[riddleNumber].fogDuration + (RIDDLE_PENALTIES[riddleNumber].fogDurationCM * state.CM);
+      return {
+        fogState: {
+          isActive: true,
+          endTime: Date.now() + fogDuration,
+          duration: fogDuration,
+        },
+        events: {
+          ...state.events,
+          [eventId]: true,
+          usedRiddleIds: [...(state.events.usedRiddleIds || []), riddle.id],
+        },
+        _logMessage: TIMEOUT_MESSAGES[riddleNumber](),
+      };
+    } else if (riddleNumber === "fifth") {
+      const deaths = RIDDLE_PENALTIES.fifth.deaths + RIDDLE_PENALTIES.fifth.cmMultiplier * state.CM;
+      const deathResult = killVillagers(state, deaths);
+      const fogDuration = RIDDLE_PENALTIES.fifth.fogDuration + (RIDDLE_PENALTIES.fifth.fogDurationCM * state.CM);
+      return {
+        ...deathResult,
+        fogState: {
+          isActive: true,
+          endTime: Date.now() + fogDuration,
+          duration: fogDuration,
+        },
+        events: {
+          ...state.events,
+          [eventId]: true,
+          usedRiddleIds: [...(state.events.usedRiddleIds || []), riddle.id],
+        },
+        _logMessage: TIMEOUT_MESSAGES.fifth(deaths),
+      };
+    }
+    return {};
+  },
+});
 
 export const riddleEvents: Record<string, GameEvent> = {
   whisperersReward: {
@@ -126,99 +314,24 @@ export const riddleEvents: Record<string, GameEvent> = {
     triggerType: "resource",
     timeProbability: 30,
     title: "Whisperer in the Dark",
-    message: START_MESSAGES.first,
+    message: (state: GameState) => {
+      const riddle = getUnusedRiddle(state);
+      return riddle ? getStartMessage(riddle.question, 1) : "";
+    },
     triggered: false,
     priority: 4,
     repeatable: false,
     isTimedChoice: true,
     baseDecisionTime: 45,
-    choices: [
-      {
-        id: "answerFire",
-        label: "Fire",
-        effect: (state: GameState) => {
-          const deaths =
-            RIDDLE_PENALTIES.first.deaths +
-            RIDDLE_PENALTIES.first.cmMultiplier * state.CM;
-          return {
-            ...killVillagers(state, deaths),
-            events: {
-              ...state.events,
-              whispererInTheDark: true,
-            },
-            _logMessage: WRONG_ANSWER_MESSAGES.first(deaths),
-          };
-        },
-      },
-      {
-        id: "answerTree",
-        label: "Tree",
-        effect: (state: GameState) => {
-          const deaths =
-            RIDDLE_PENALTIES.first.deaths +
-            RIDDLE_PENALTIES.first.cmMultiplier * state.CM;
-          return {
-            ...killVillagers(state, deaths),
-            events: {
-              ...state.events,
-              whispererInTheDark: true,
-            },
-            _logMessage: WRONG_ANSWER_MESSAGES.first(deaths),
-          };
-        },
-      },
-      {
-        id: "answerWind",
-        label: "Wind",
-        effect: (state: GameState) => {
-          return {
-            resources: {
-              ...state.resources,
-              gold: state.resources.gold + RIDDLE_REWARDS.first,
-            },
-            events: {
-              ...state.events,
-              whispererInTheDark: true,
-              whispererInTheDark_correct: true,
-            },
-            _logMessage: SUCCESS_MESSAGES.first(RIDDLE_REWARDS.first),
-          };
-        },
-      },
-      {
-        id: "answerBones",
-        label: "Bones",
-        effect: (state: GameState) => {
-          const deaths =
-            RIDDLE_PENALTIES.first.deaths +
-            RIDDLE_PENALTIES.first.cmMultiplier * state.CM;
-          return {
-            ...killVillagers(state, deaths),
-            events: {
-              ...state.events,
-              whispererInTheDark: true,
-            },
-            _logMessage: WRONG_ANSWER_MESSAGES.first(deaths),
-          };
-        },
-      },
-    ],
-    fallbackChoice: {
-      id: "timeout",
-      label: "No answer given",
-      effect: (state: GameState) => {
-        const deaths =
-          RIDDLE_PENALTIES.first.deaths +
-          RIDDLE_PENALTIES.first.cmMultiplier * state.CM;
-        return {
-          ...killVillagers(state, deaths),
-          events: {
-            ...state.events,
-            whispererInTheDark: true,
-          },
-          _logMessage: TIMEOUT_MESSAGES.first(deaths),
-        };
-      },
+    choices: (state: GameState) => {
+      const riddle = getUnusedRiddle(state);
+      if (!riddle) return [];
+      return createRiddleChoices(riddle, "first", "whispererInTheDark", "whispererInTheDark_correct");
+    },
+    fallbackChoice: (state: GameState) => {
+      const riddle = getUnusedRiddle(state);
+      if (!riddle) return undefined;
+      return createFallbackChoice(riddle, "first", "whispererInTheDark");
     },
   },
 
@@ -228,111 +341,24 @@ export const riddleEvents: Record<string, GameEvent> = {
     triggerType: "resource",
     timeProbability: 45,
     title: "Voices in the Dark",
-    message: START_MESSAGES.second,
+    message: (state: GameState) => {
+      const riddle = getUnusedRiddle(state);
+      return riddle ? getStartMessage(riddle.question, 2) : "";
+    },
     triggered: false,
     priority: 4,
     repeatable: false,
     isTimedChoice: true,
     baseDecisionTime: 45,
-    choices: [
-      {
-        id: "answerEarth",
-        label: "Earth",
-        effect: (state: GameState) => {
-          const fogDuration = RIDDLE_PENALTIES.second.fogDuration + 
-            (RIDDLE_PENALTIES.second.fogDurationCM * state.CM);
-          return {
-            fogState: {
-              isActive: true,
-              endTime: Date.now() + fogDuration,
-              duration: fogDuration,
-            },
-            events: {
-              ...state.events,
-              riddleOfAges: true,
-            },
-            _logMessage: WRONG_ANSWER_MESSAGES.second(),
-          };
-        },
-      },
-      {
-        id: "answerWolf",
-        label: "Wolf",
-        effect: (state: GameState) => {
-          const fogDuration = RIDDLE_PENALTIES.second.fogDuration + 
-            (RIDDLE_PENALTIES.second.fogDurationCM * state.CM);
-          return {
-            fogState: {
-              isActive: true,
-              endTime: Date.now() + fogDuration,
-              duration: fogDuration,
-            },
-            events: {
-              ...state.events,
-              riddleOfAges: true,
-            },
-            _logMessage: WRONG_ANSWER_MESSAGES.second(),
-          };
-        },
-      },
-      {
-        id: "answerMan",
-        label: "Man",
-        effect: (state: GameState) => {
-          return {
-            resources: {
-              ...state.resources,
-              gold: state.resources.gold + RIDDLE_REWARDS.second,
-            },
-            events: {
-              ...state.events,
-              riddleOfAges: true,
-              riddleOfAges_correct: true,
-            },
-            _logMessage: SUCCESS_MESSAGES.second(RIDDLE_REWARDS.second),
-          };
-        },
-      },
-      {
-        id: "answerBird",
-        label: "Bird",
-        effect: (state: GameState) => {
-          const fogDuration = RIDDLE_PENALTIES.second.fogDuration + 
-            (RIDDLE_PENALTIES.second.fogDurationCM * state.CM);
-          return {
-            fogState: {
-              isActive: true,
-              endTime: Date.now() + fogDuration,
-              duration: fogDuration,
-            },
-            events: {
-              ...state.events,
-              riddleOfAges: true,
-            },
-            _logMessage: WRONG_ANSWER_MESSAGES.second(),
-          };
-        },
-      },
-    ],
-    fallbackChoice: {
-      id: "timeout",
-      label: "No answer given",
-      effect: (state: GameState) => {
-        const fogDuration = RIDDLE_PENALTIES.second.fogDuration + 
-          (RIDDLE_PENALTIES.second.fogDurationCM * state.CM);
-        return {
-          fogState: {
-            isActive: true,
-            endTime: Date.now() + fogDuration,
-            duration: fogDuration,
-          },
-          events: {
-            ...state.events,
-            riddleOfAges: true,
-          },
-          _logMessage: TIMEOUT_MESSAGES.second(),
-        };
-      },
+    choices: (state: GameState) => {
+      const riddle = getUnusedRiddle(state);
+      if (!riddle) return [];
+      return createRiddleChoices(riddle, "second", "riddleOfAges", "riddleOfAges_correct");
+    },
+    fallbackChoice: (state: GameState) => {
+      const riddle = getUnusedRiddle(state);
+      if (!riddle) return undefined;
+      return createFallbackChoice(riddle, "second", "riddleOfAges");
     },
   },
 
@@ -342,99 +368,24 @@ export const riddleEvents: Record<string, GameEvent> = {
     triggerType: "resource",
     timeProbability: 45,
     title: "A nightly Visitor",
-    message: START_MESSAGES.third,
+    message: (state: GameState) => {
+      const riddle = getUnusedRiddle(state);
+      return riddle ? getStartMessage(riddle.question, 3) : "";
+    },
     triggered: false,
     priority: 4,
     repeatable: false,
     isTimedChoice: true,
     baseDecisionTime: 45,
-    choices: [
-      {
-        id: "answerMan",
-        label: "Man",
-        effect: (state: GameState) => {
-          const deaths =
-            RIDDLE_PENALTIES.third.deaths +
-            RIDDLE_PENALTIES.third.cmMultiplier * state.CM;
-          return {
-            ...killVillagers(state, deaths),
-            events: {
-              ...state.events,
-              riddleOfDevourer: true,
-            },
-            _logMessage: WRONG_ANSWER_MESSAGES.third(deaths),
-          };
-        },
-      },
-      {
-        id: "answerWater",
-        label: "Water",
-        effect: (state: GameState) => {
-          const deaths =
-            RIDDLE_PENALTIES.third.deaths +
-            RIDDLE_PENALTIES.third.cmMultiplier * state.CM;
-          return {
-            ...killVillagers(state, deaths),
-            events: {
-              ...state.events,
-              riddleOfDevourer: true,
-            },
-            _logMessage: WRONG_ANSWER_MESSAGES.third(deaths),
-          };
-        },
-      },
-      {
-        id: "answerTime",
-        label: "Time",
-        effect: (state: GameState) => {
-          return {
-            resources: {
-              ...state.resources,
-              gold: state.resources.gold + RIDDLE_REWARDS.third,
-            },
-            events: {
-              ...state.events,
-              riddleOfDevourer: true,
-              riddleOfDevourer_correct: true,
-            },
-            _logMessage: SUCCESS_MESSAGES.third(RIDDLE_REWARDS.third),
-          };
-        },
-      },
-      {
-        id: "answerFire",
-        label: "Fire",
-        effect: (state: GameState) => {
-          const deaths =
-            RIDDLE_PENALTIES.third.deaths +
-            RIDDLE_PENALTIES.third.cmMultiplier * state.CM;
-          return {
-            ...killVillagers(state, deaths),
-            events: {
-              ...state.events,
-              riddleOfDevourer: true,
-            },
-            _logMessage: WRONG_ANSWER_MESSAGES.third(deaths),
-          };
-        },
-      },
-    ],
-    fallbackChoice: {
-      id: "timeout",
-      label: "No answer given",
-      effect: (state: GameState) => {
-        const deaths =
-          RIDDLE_PENALTIES.third.deaths +
-          RIDDLE_PENALTIES.third.cmMultiplier * state.CM;
-        return {
-          ...killVillagers(state, deaths),
-          events: {
-            ...state.events,
-            riddleOfDevourer: true,
-          },
-          _logMessage: TIMEOUT_MESSAGES.third(deaths),
-        };
-      },
+    choices: (state: GameState) => {
+      const riddle = getUnusedRiddle(state);
+      if (!riddle) return [];
+      return createRiddleChoices(riddle, "third", "riddleOfDevourer", "riddleOfDevourer_correct");
+    },
+    fallbackChoice: (state: GameState) => {
+      const riddle = getUnusedRiddle(state);
+      if (!riddle) return undefined;
+      return createFallbackChoice(riddle, "third", "riddleOfDevourer");
     },
   },
 
@@ -444,111 +395,24 @@ export const riddleEvents: Record<string, GameEvent> = {
     triggerType: "resource",
     timeProbability: 45,
     title: "A hooded Guest",
-    message: START_MESSAGES.fourth,
+    message: (state: GameState) => {
+      const riddle = getUnusedRiddle(state);
+      return riddle ? getStartMessage(riddle.question, 4) : "";
+    },
     triggered: false,
     priority: 4,
     repeatable: false,
     isTimedChoice: true,
     baseDecisionTime: 45,
-    choices: [
-      {
-        id: "answerNight",
-        label: "Night",
-        effect: (state: GameState) => {
-          const fogDuration = RIDDLE_PENALTIES.fourth.fogDuration + 
-            (RIDDLE_PENALTIES.fourth.fogDurationCM * state.CM);
-          return {
-            fogState: {
-              isActive: true,
-              endTime: Date.now() + fogDuration,
-              duration: fogDuration,
-            },
-            events: {
-              ...state.events,
-              riddleOfTears: true,
-            },
-            _logMessage: WRONG_ANSWER_MESSAGES.fourth(),
-          };
-        },
-      },
-      {
-        id: "answerWind",
-        label: "Wind",
-        effect: (state: GameState) => {
-          const fogDuration = RIDDLE_PENALTIES.fourth.fogDuration + 
-            (RIDDLE_PENALTIES.fourth.fogDurationCM * state.CM);
-          return {
-            fogState: {
-              isActive: true,
-              endTime: Date.now() + fogDuration,
-              duration: fogDuration,
-            },
-            events: {
-              ...state.events,
-              riddleOfTears: true,
-            },
-            _logMessage: WRONG_ANSWER_MESSAGES.fourth(),
-          };
-        },
-      },
-      {
-        id: "answerClouds",
-        label: "Clouds",
-        effect: (state: GameState) => {
-          return {
-            resources: {
-              ...state.resources,
-              gold: state.resources.gold + RIDDLE_REWARDS.fourth,
-            },
-            events: {
-              ...state.events,
-              riddleOfTears: true,
-              riddleOfTears_correct: true,
-            },
-            _logMessage: SUCCESS_MESSAGES.fourth(RIDDLE_REWARDS.fourth),
-          };
-        },
-      },
-      {
-        id: "answerShadow",
-        label: "Shadow",
-        effect: (state: GameState) => {
-          const fogDuration = RIDDLE_PENALTIES.fourth.fogDuration + 
-            (RIDDLE_PENALTIES.fourth.fogDurationCM * state.CM);
-          return {
-            fogState: {
-              isActive: true,
-              endTime: Date.now() + fogDuration,
-              duration: fogDuration,
-            },
-            events: {
-              ...state.events,
-              riddleOfTears: true,
-            },
-            _logMessage: WRONG_ANSWER_MESSAGES.fourth(),
-          };
-        },
-      },
-    ],
-    fallbackChoice: {
-      id: "timeout",
-      label: "No answer given",
-      effect: (state: GameState) => {
-        const fogDuration = RIDDLE_PENALTIES.fourth.fogDuration + 
-          (RIDDLE_PENALTIES.fourth.fogDurationCM * state.CM);
-        return {
-          fogState: {
-            isActive: true,
-            endTime: Date.now() + fogDuration,
-            duration: fogDuration,
-          },
-          events: {
-            ...state.events,
-            riddleOfTears: true,
-          },
-          _logMessage: TIMEOUT_MESSAGES.fourth(),
-        };
-      },
+    choices: (state: GameState) => {
+      const riddle = getUnusedRiddle(state);
+      if (!riddle) return [];
+      return createRiddleChoices(riddle, "fourth", "riddleOfTears", "riddleOfTears_correct");
+    },
+    fallbackChoice: (state: GameState) => {
+      const riddle = getUnusedRiddle(state);
+      if (!riddle) return undefined;
+      return createFallbackChoice(riddle, "fourth", "riddleOfTears");
     },
   },
 
@@ -558,131 +422,24 @@ export const riddleEvents: Record<string, GameEvent> = {
     triggerType: "resource",
     timeProbability: 45,
     title: "The unknown Guest",
-    message: START_MESSAGES.fifth,
+    message: (state: GameState) => {
+      const riddle = getUnusedRiddle(state);
+      return riddle ? getStartMessage(riddle.question, 5) : "";
+    },
     triggered: false,
     priority: 4,
     repeatable: false,
     isTimedChoice: true,
     baseDecisionTime: 45,
-    choices: [
-      {
-        id: "answerLight",
-        label: "Light",
-        effect: (state: GameState) => {
-          const deaths =
-            RIDDLE_PENALTIES.fifth.deaths +
-            RIDDLE_PENALTIES.fifth.cmMultiplier * state.CM;
-          const deathResult = killVillagers(state, deaths);
-          const fogDuration = RIDDLE_PENALTIES.fifth.fogDuration + 
-            (RIDDLE_PENALTIES.fifth.fogDurationCM * state.CM);
-          return {
-            ...deathResult,
-            fogState: {
-              isActive: true,
-              endTime: Date.now() + fogDuration,
-              duration: fogDuration,
-            },
-            events: {
-              ...state.events,
-              riddleOfEternal: true,
-            },
-            _logMessage: WRONG_ANSWER_MESSAGES.fifth(deaths),
-          };
-        },
-      },
-      {
-        id: "answerLife",
-        label: "Life",
-        effect: (state: GameState) => {
-          const deaths =
-            RIDDLE_PENALTIES.fifth.deaths +
-            RIDDLE_PENALTIES.fifth.cmMultiplier * state.CM;
-          const deathResult = killVillagers(state, deaths);
-          const fogDuration = RIDDLE_PENALTIES.fifth.fogDuration + 
-            (RIDDLE_PENALTIES.fifth.fogDurationCM * state.CM);
-          return {
-            ...deathResult,
-            fogState: {
-              isActive: true,
-              endTime: Date.now() + fogDuration,
-              duration: fogDuration,
-            },
-            events: {
-              ...state.events,
-              riddleOfEternal: true,
-            },
-            _logMessage: WRONG_ANSWER_MESSAGES.fifth(deaths),
-          };
-        },
-      },
-      {
-        id: "answerDarkness",
-        label: "Darkness",
-        effect: (state: GameState) => {
-          return {
-            resources: {
-              ...state.resources,
-              gold: state.resources.gold + RIDDLE_REWARDS.fifth,
-            },
-            events: {
-              ...state.events,
-              riddleOfEternal: true,
-              riddleOfEternal_correct: true,
-            },
-            _logMessage: SUCCESS_MESSAGES.fifth(RIDDLE_REWARDS.fifth),
-          };
-        },
-      },
-      {
-        id: "answerDeath",
-        label: "Death",
-        effect: (state: GameState) => {
-          const deaths =
-            RIDDLE_PENALTIES.fifth.deaths +
-            RIDDLE_PENALTIES.fifth.cmMultiplier * state.CM;
-          const deathResult = killVillagers(state, deaths);
-          const fogDuration = RIDDLE_PENALTIES.fifth.fogDuration + 
-            (RIDDLE_PENALTIES.fifth.fogDurationCM * state.CM);
-          return {
-            ...deathResult,
-            fogState: {
-              isActive: true,
-              endTime: Date.now() + fogDuration,
-              duration: fogDuration,
-            },
-            events: {
-              ...state.events,
-              riddleOfEternal: true,
-            },
-            _logMessage: WRONG_ANSWER_MESSAGES.fifth(deaths),
-          };
-        },
-      },
-    ],
-    fallbackChoice: {
-      id: "timeout",
-      label: "No answer given",
-      effect: (state: GameState) => {
-        const deaths =
-          RIDDLE_PENALTIES.fifth.deaths +
-          RIDDLE_PENALTIES.fifth.cmMultiplier * state.CM;
-        const deathResult = killVillagers(state, deaths);
-        const fogDuration = RIDDLE_PENALTIES.fifth.fogDuration + 
-          (RIDDLE_PENALTIES.fifth.fogDurationCM * state.CM);
-        return {
-          ...deathResult,
-          fogState: {
-            isActive: true,
-            endTime: Date.now() + fogDuration,
-            duration: fogDuration,
-          },
-          events: {
-            ...state.events,
-            riddleOfEternal: true,
-          },
-          _logMessage: TIMEOUT_MESSAGES.fifth(deaths),
-        };
-      },
+    choices: (state: GameState) => {
+      const riddle = getUnusedRiddle(state);
+      if (!riddle) return [];
+      return createRiddleChoices(riddle, "fifth", "riddleOfEternal", "riddleOfEternal_correct");
+    },
+    fallbackChoice: (state: GameState) => {
+      const riddle = getUnusedRiddle(state);
+      if (!riddle) return undefined;
+      return createFallbackChoice(riddle, "fifth", "riddleOfEternal");
     },
   },
 };
