@@ -89,4 +89,4 @@ Preferred communication style: Simple, everyday language.
 - **Leverage**: Use battle-tested packages over custom implementations
 - **Readable**: Maintain comments and clear naming—don't sacrifice clarity for LoC
 - **Fast Refresh**: Adhere to the rules of Fast Refresh
-- **Mobile Friendly**": make sure the game is 
+- **Mobile Friendly**": make sure the game is mobile friendly

@@ -318,7 +318,7 @@ export default function ForestPanel() {
                   {group.title}
                 </h3>
               )}
-              <div className="flex flex-wrap gap-x-2 gap-y-1">
+              <div className="flex flex-wrap gap-x-2 gap-y-2">
                 {visibleActions.map((action, index) => (
                   <div key={action.id} className="contents">
                     {renderButton(action.id, action.label)}
