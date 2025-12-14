@@ -376,43 +376,45 @@ export default function ProfileMenu() {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      {!currentUser && (
-        <TooltipProvider>
-          <Tooltip
-            open={
-              isMobile
-                ? mobileTooltip.isTooltipOpen("login-reminder")
-                : undefined
-            }
-          >
-            <TooltipTrigger asChild>
-              <div
-                className="w-4 h-4 rounded-full border border-orange-500 flex items-center justify-center cursor-pointer opacity-80 hover:opacity-100 transition-opacity"
-                onClick={(e) => {
-                  if (isMobile) {
-                    mobileTooltip.handleTooltipClick("login-reminder", e);
-                  }
-                }}
-              >
-                <span className="text-orange-500 text-xs font-bold">!</span>
-              </div>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p className="text-xs">Sign in to save your game progress</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      )}
-      <Button
-        variant="ghost"
-        size="xs"
-        onClick={() => setLeaderboardDialogOpen(true)}
-        className="p-0 w-7 h-7 bg-background/70 backdrop-blur-sm border border-border flex items-center justify-center group"
-      >
-        <span className="text-lg opacity-60 group-hover:opacity-100 transition-opacity">
-          ♕
-        </span>
-      </Button>
+      <div className="flex items-center gap-2">
+        {!currentUser && (
+          <TooltipProvider>
+            <Tooltip
+              open={
+                isMobile
+                  ? mobileTooltip.isTooltipOpen("login-reminder")
+                  : undefined
+              }
+            >
+              <TooltipTrigger asChild>
+                <div
+                  className="w-4 h-4 rounded-full border border-orange-500 flex items-center justify-center cursor-pointer opacity-80 hover:opacity-100 transition-opacity"
+                  onClick={(e) => {
+                    if (isMobile) {
+                      mobileTooltip.handleTooltipClick("login-reminder", e);
+                    }
+                  }}
+                >
+                  <span className="text-orange-500 text-xs font-bold">!</span>
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p className="text-xs">Sign in to save your game progress</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        )}
+        <Button
+          variant="ghost"
+          size="xs"
+          onClick={() => setLeaderboardDialogOpen(true)}
+          className="p-0 w-7 h-7 bg-background/70 backdrop-blur-sm border border-border flex items-center justify-center group"
+        >
+          <span className="text-lg opacity-60 group-hover:opacity-100 transition-opacity">
+            ♕
+          </span>
+        </Button>
+      </div>
       <Button
         variant="ghost"
         size="xs"
