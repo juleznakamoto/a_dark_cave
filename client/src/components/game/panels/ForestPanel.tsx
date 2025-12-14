@@ -234,7 +234,7 @@ export default function ForestPanel() {
           size="xs"
           disabled={!canExecute}
           variant="outline"
-          className={`hover:bg-transparent hover:text-foreground ${isTradeButton ? "flex-[0_0_calc(25%-0.375rem)]" : ""} ${shouldGlow ? "focus-glow" : ""}`}
+          className={`hover:bg-transparent hover:text-foreground ${shouldGlow ? "focus-glow" : ""}`}
           tooltip={tooltipContent}
           onMouseEnter={() => {
             if (state.buildings.inkwardenAcademy > 0) {
@@ -273,7 +273,7 @@ export default function ForestPanel() {
         size="xs"
         disabled={!canExecute}
         variant="outline"
-        className={`hover:bg-transparent hover:text-foreground ${isTradeButton ? "flex-[0_0_calc(25%-0.375rem)]" : ""} ${shouldGlow ? "focus-glow" : ""}`}
+        className={`hover:bg-transparent hover:text-foreground ${shouldGlow ? "focus-glow" : ""}`}
         onMouseEnter={() => {
           if (state.buildings.inkwardenAcademy > 0) {
             const resources = getResourcesFromActionCost(actionId, state);
@@ -318,7 +318,7 @@ export default function ForestPanel() {
                   {group.title}
                 </h3>
               )}
-              <div className="flex flex-wrap gap-2 justify-start">
+              <div className={group.title === "Trade" ? "grid grid-cols-[repeat(auto-fill,minmax(0,1fr))] max-w-full gap-2" : "flex flex-wrap gap-2 justify-start"} style={group.title === "Trade" ? { gridTemplateColumns: 'repeat(4, minmax(0, 1fr))' } : undefined}>
                 {visibleActions.map((action) => (
                   renderButton(action.id, action.label)
                 ))}
