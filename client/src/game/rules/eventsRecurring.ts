@@ -6,8 +6,8 @@ export const recurringEvents: Record<string, GameEvent> = {
   foodGone: {
     id: "foodGone",
     condition: (state: GameState) =>
-      state.resources.food > 50 &&
-      state.buildings.woodenHut >= 3 &&
+      state.resources.food > 100 &&
+      state.buildings.woodenHut >= 4 &&
       state.buildings.stoneHut <= 5,
     triggerType: "resource",
     timeProbability: 30,

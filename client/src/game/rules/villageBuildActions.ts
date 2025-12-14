@@ -140,7 +140,7 @@ export const villageBuildActions: Record<string, Action> = {
     cost: {
       1: {
         "resources.wood": 150,
-        "resources.stone": 100,
+        "resources.stone": 50,
       },
     },
     effects: {
@@ -168,7 +168,7 @@ export const villageBuildActions: Record<string, Action> = {
     cost: {
       1: {
         "resources.wood": 150,
-        "resources.stone": 150,
+        "resources.stone": 100,
         "resources.iron": 50,
       },
     },

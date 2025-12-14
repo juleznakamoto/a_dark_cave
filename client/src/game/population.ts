@@ -188,7 +188,7 @@ export const getPopulationProduction = (
     baseProduction.forEach((prod) => {
       // Only reduce positive production (not consumption)
       if (prod.totalAmount > 0) {
-        prod.totalAmount = Math.floor(prod.totalAmount * 0.5);
+        prod.totalAmount = Math.ceil(prod.totalAmount * 0.5);
       }
     });
   }
@@ -201,7 +201,7 @@ export const getPopulationProduction = (
     baseProduction.forEach((prod) => {
       // Only reduce positive production (not consumption)
       if (prod.totalAmount > 0) {
-        prod.totalAmount = Math.floor(prod.totalAmount * 0.75);
+        prod.totalAmount = Math.ceil(prod.totalAmount * 0.75);
       }
     });
   }
@@ -213,7 +213,7 @@ export const getPopulationProduction = (
     baseProduction.forEach((prod) => {
       // Only reduce positive production (not consumption)
       if (prod.totalAmount > 0) {
-        prod.totalAmount = Math.floor(prod.totalAmount * 0.75);
+        prod.totalAmount = Math.ceil(prod.totalAmount * 0.75);
       }
     });
   }
