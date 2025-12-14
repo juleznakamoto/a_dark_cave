@@ -342,14 +342,14 @@ export default function LeaderboardDialog({
             <TabsTrigger value="normal">Normal Mode</TabsTrigger>
             <TabsTrigger value="cruel">Cruel Mode</TabsTrigger>
           </TabsList>
-          <TabsContent value="normal" className="flex-1 min-h-0 flex flex-col">
+          <TabsContent value="normal" className="flex-1 min-h-0 flex flex-col data-[state=inactive]:hidden">
             <LeaderboardTab 
               entries={normalLeaderboard} 
               loading={loading} 
               lastUpdated={lastUpdated} 
             />
           </TabsContent>
-          <TabsContent value="cruel" className="flex-1 min-h-0 flex flex-col">
+          <TabsContent value="cruel" className="flex-1 min-h-0 flex flex-col data-[state=inactive]:hidden">
             <LeaderboardTab 
               entries={cruelLeaderboard} 
               loading={loading} 
