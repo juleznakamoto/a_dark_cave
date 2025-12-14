@@ -76,7 +76,7 @@ export interface GameEvent {
   triggerType: "time" | "resource" | "random" | "action";
   title?: string;
   message: string | string[] | ((state: GameState) => string); // Support array of messages for random selection or function
-  choices?: EventChoice[];
+  choices?: EventChoice[] | ((state: GameState) => EventChoice[]);
   triggered: boolean;
   repeatable?: boolean;
   priority?: number; // Higher priority events check first
@@ -85,7 +85,7 @@ export interface GameEvent {
   // New timed choice properties
   isTimedChoice?: boolean;
   baseDecisionTime?: number; // Base decision time in seconds
-  fallbackChoice?: EventChoice; // Choice to execute if time runs out
+  fallbackChoice?: EventChoice | ((state: GameState) => EventChoice | undefined); // Choice to execute if time runs out
   relevant_stats?: ("strength" | "knowledge" | "luck" | "madness")[]; // Stats relevant to event odds
   // Visual effect properties
   visualEffect?: {
@@ -207,10 +207,18 @@ export class EventManager {
       }
 
       if (shouldTrigger) {
-        // Generate fresh choices for merchant events
+        // Generate fresh choices for merchant events or evaluate function-based choices
         let eventChoices = event.choices;
         if (event.id === "merchant") {
           eventChoices = generateMerchantChoices(state);
+        } else if (typeof event.choices === 'function') {
+          eventChoices = event.choices(state);
+        }
+
+        // Evaluate fallbackChoice if it's a function
+        let fallbackChoice = event.fallbackChoice;
+        if (typeof event.fallbackChoice === 'function') {
+          fallbackChoice = event.fallbackChoice(state);
         }
 
         // Select random message if message is an array, or evaluate if it's a function
@@ -232,7 +240,7 @@ export class EventManager {
           choices: eventChoices,
           isTimedChoice: event.isTimedChoice,
           baseDecisionTime: event.baseDecisionTime,
-          fallbackChoice: event.fallbackChoice,
+          fallbackChoice: fallbackChoice,
           relevant_stats: event.relevant_stats,
           visualEffect: event.visualEffect,
           skipEventLog: eventChoices && eventChoices.length > 0, // Mark events with choices to skip log
