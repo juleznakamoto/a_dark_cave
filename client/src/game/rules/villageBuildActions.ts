@@ -831,7 +831,7 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildTradePost",
     label: "Trade Post",
     description: "Trading post attracting merchants selling goods",
-    tooltipEffects: ["Unlocks Trade", "+1 Trade at Travelling Merchant"],
+    tooltipEffects: ["Higher Trade Amounts", "+1 Trade at Travelling Merchant"],
     building: true,
     show_when: {
       1: {
@@ -858,7 +858,7 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildGrandBazaar",
     label: "Grand Bazaar",
     description: "Sprawling marketplace attracting more merchants",
-    tooltipEffects: ["Improved Trade", "+2 Trades at Travelling Merchant"],
+    tooltipEffects: ["Higher Trade Amounts", "+2 Trades at Travelling Merchant"],
     building: true,
     show_when: {
       1: {
@@ -886,7 +886,7 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildMerchantsGuild",
     label: "Merchants Guild",
     description: "Powerful guild bringing the best trades and merchants",
-    tooltipEffects: ["Further improved Trade", "+3 Trades at Travelling Merchant"],
+    tooltipEffects: ["Higher Trade Amounts", "+3 Trades at Travelling Merchant"],
     building: true,
     show_when: {
       1: {
