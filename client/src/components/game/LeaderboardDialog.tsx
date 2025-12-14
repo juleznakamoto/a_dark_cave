@@ -338,7 +338,7 @@ export default function LeaderboardDialog({
         </div>
 
         <Tabs defaultValue="normal" className="flex-1 flex flex-col min-h-0">
-          <TabsList className="grid w-full grid-cols-2">
+          <TabsList className="grid w-full grid-cols-2 mb-1">
             <TabsTrigger value="normal">Normal Mode</TabsTrigger>
             <TabsTrigger value="cruel">Cruel Mode</TabsTrigger>
           </TabsList>

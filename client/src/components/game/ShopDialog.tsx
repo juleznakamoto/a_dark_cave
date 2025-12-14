@@ -226,7 +226,11 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
 
           // If this item has feast activations and doesn't already have them set up in state
           // BUT skip bundles - only track activations for bundle components
-          if (item?.rewards.feastActivations && !item.bundleComponents && !currentFeastActivations[purchaseId]) {
+          if (
+            item?.rewards.feastActivations &&
+            !item.bundleComponents &&
+            !currentFeastActivations[purchaseId]
+          ) {
             newFeastActivations[purchaseId] = item.rewards.feastActivations;
             hasNewActivations = true;
           }
@@ -273,7 +277,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
         }
 
         // Special handling for daily free gold - claim immediately without saving to DB
-        if (itemId === 'gold_100_free') {
+        if (itemId === "gold_100_free") {
           const lastClaim = gameState.lastFreeGoldClaim || 0;
           const now = Date.now();
           const hoursSinceLastClaim = (now - lastClaim) / (1000 * 60 * 60);
@@ -282,7 +286,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
             const hoursRemaining = Math.ceil(24 - hoursSinceLastClaim);
             gameState.addLogEntry({
               id: `free-gold-cooldown-${Date.now()}`,
-              message: `You can claim free gold again in ${hoursRemaining} hour${hoursRemaining !== 1 ? 's' : ''}.`,
+              message: `You can claim free gold again in ${hoursRemaining} hour${hoursRemaining !== 1 ? "s" : ""}.`,
               timestamp: Date.now(),
               type: "system",
             });
@@ -291,9 +295,11 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
 
           // Grant the gold immediately
           if (item.rewards.resources) {
-            Object.entries(item.rewards.resources).forEach(([resource, amount]) => {
-              gameState.updateResource(resource as any, amount);
-            });
+            Object.entries(item.rewards.resources).forEach(
+              ([resource, amount]) => {
+                gameState.updateResource(resource as any, amount);
+              },
+            );
           }
 
           // Update lastFreeGoldClaim timestamp
@@ -311,26 +317,29 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
             title: "Success!",
             description: `100 Gold has been added to your resources!`,
           });
-          
+
           // Return early - don't save to database
           return;
         }
 
         // For other free items (non-daily gold), check if already purchased
         if (!item.canPurchaseMultipleTimes) {
-          const alreadyPurchased = purchasedItems.some(pid => {
+          const alreadyPurchased = purchasedItems.some((pid) => {
             // Extract item ID from purchase ID
             // Format: purchase-{itemId}-{uuid} or purchase-{itemId}-temp-{timestamp}
-            if (!pid.startsWith('purchase-')) return false;
+            if (!pid.startsWith("purchase-")) return false;
 
-            const withoutPrefix = pid.substring('purchase-'.length);
+            const withoutPrefix = pid.substring("purchase-".length);
             // Check if it's a temp ID
-            if (withoutPrefix.includes('-temp-')) {
-              return withoutPrefix.substring(0, withoutPrefix.indexOf('-temp-')) === itemId;
+            if (withoutPrefix.includes("-temp-")) {
+              return (
+                withoutPrefix.substring(0, withoutPrefix.indexOf("-temp-")) ===
+                itemId
+              );
             }
             // For real IDs with UUID, remove the last 5 dash-separated segments (UUID)
-            const parts = withoutPrefix.split('-');
-            const purchasedItemId = parts.slice(0, -5).join('-');
+            const parts = withoutPrefix.split("-");
+            const purchasedItemId = parts.slice(0, -5).join("-");
             return purchasedItemId === itemId;
           });
 
@@ -356,17 +365,22 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
               const client = await getSupabaseClient();
 
               // First, create the bundle purchase itself
-              const { error: bundleError } = await client.from("purchases").insert({
-                user_id: user.id,
-                item_id: itemId,
-                item_name: item.name,
-                price_paid: item.price,
-                bundle_id: null, // Bundle itself has no parent bundle
-                purchased_at: new Date().toISOString(),
-              });
+              const { error: bundleError } = await client
+                .from("purchases")
+                .insert({
+                  user_id: user.id,
+                  item_id: itemId,
+                  item_name: item.name,
+                  price_paid: item.price,
+                  bundle_id: null, // Bundle itself has no parent bundle
+                  purchased_at: new Date().toISOString(),
+                });
 
               if (bundleError) {
-                logger.error("Error saving bundle purchase to Supabase:", bundleError);
+                logger.error(
+                  "Error saving bundle purchase to Supabase:",
+                  bundleError,
+                );
               }
 
               // Then create purchase records for each component
@@ -383,7 +397,10 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                   });
 
                   if (error) {
-                    logger.error("Error saving component purchase to Supabase:", error);
+                    logger.error(
+                      "Error saving component purchase to Supabase:",
+                      error,
+                    );
                   }
                 }
               }
@@ -441,10 +458,10 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     const response = await fetch("/api/payment/create-intent", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ 
+      body: JSON.stringify({
         itemId,
         userEmail: user?.email,
-        userId: user?.id
+        userId: user?.id,
       }),
     });
 
@@ -481,7 +498,9 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
 
       if (error) throw error;
 
-      const purchaseIds = data ? data.map((p) => `purchase-${p.item_id}-${p.id}`) : [];
+      const purchaseIds = data
+        ? data.map((p) => `purchase-${p.item_id}-${p.id}`)
+        : [];
 
       return purchaseIds;
     })();
@@ -490,9 +509,9 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     if (item.rewards.feastActivations && !item.bundleComponents) {
       // Get the latest purchase for this item (the one just created)
       const latestPurchaseId = updatedPurchasedItems
-        .filter(pid => {
-          const itemId = pid.startsWith('purchase-')
-            ? pid.substring('purchase-'.length, pid.lastIndexOf('-'))
+        .filter((pid) => {
+          const itemId = pid.startsWith("purchase-")
+            ? pid.substring("purchase-".length, pid.lastIndexOf("-"))
             : pid;
           return itemId === selectedItem;
         })
@@ -511,14 +530,14 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     // Handle bundle component feast purchases
     if (item.bundleComponents) {
       // After reload, find the newly created component purchases
-      item.bundleComponents.forEach(componentId => {
+      item.bundleComponents.forEach((componentId) => {
         const componentItem = SHOP_ITEMS[componentId];
 
         if (componentItem?.rewards.feastActivations) {
           // Find the latest purchase for this component
-          const allMatchingPurchases = updatedPurchasedItems.filter(pid => {
-            const itemId = pid.startsWith('purchase-')
-              ? pid.substring('purchase-'.length, pid.lastIndexOf('-'))
+          const allMatchingPurchases = updatedPurchasedItems.filter((pid) => {
+            const itemId = pid.startsWith("purchase-")
+              ? pid.substring("purchase-".length, pid.lastIndexOf("-"))
               : pid;
             return itemId === componentId;
           });
@@ -604,7 +623,8 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
       const endTime = Date.now() + feastDuration;
 
       useGameStore.setState((state) => ({
-        feastActivations: { // Changed from feastPurchases to feastActivations
+        feastActivations: {
+          // Changed from feastPurchases to feastActivations
           ...state.feastActivations,
           [purchaseId]: purchase - 1, // Decrement activationsRemaining
         },
@@ -714,11 +734,10 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                   !currentUser ? "h-[calc(80vh-260px)]" : "h-[calc(80vh-180px)]"
                 }
               >
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4 pr-4">
-                  {Object.values(SHOP_ITEMS)
-                    .map((item) => (
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                  {Object.values(SHOP_ITEMS).map((item) => (
                     <Card key={item.id} className="flex flex-col">
-                      <CardHeader className="pb-3">
+                      <CardHeader className="leading-snug p-3 md:p-6 pb-2 md:pb-3">
                         <div className="flex items-center gap-2">
                           <CardTitle className="text-md flex items-center gap-2">
                             {item.name}
@@ -735,39 +754,6 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                               </span>
                             )}
                           </CardTitle>
-                          {(item.rewards.weapons ||
-                            item.rewards.tools ||
-                            item.rewards.blessings) && (
-                            <TooltipProvider>
-                              <Tooltip>
-                                <TooltipTrigger asChild>
-                                  <Info className="w-4 h-4 text-muted-foreground cursor-pointer flex-shrink-0" />
-                                </TooltipTrigger>
-                                <TooltipContent>
-                                  <div className="space-y-2">
-                                    {item.rewards.weapons?.map((weapon) => (
-                                      <div key={weapon}>
-                                        {renderItemTooltip(weapon, "weapon")}
-                                      </div>
-                                    ))}
-                                    {item.rewards.tools?.map((tool) => (
-                                      <div key={tool}>
-                                        {renderItemTooltip(tool, "tool")}
-                                      </div>
-                                    ))}
-                                    {item.rewards.blessings?.map((blessing) => (
-                                      <div key={blessing}>
-                                        {renderItemTooltip(
-                                          blessing,
-                                          "blessing",
-                                        )}
-                                      </div>
-                                    ))}
-                                  </div>
-                                </TooltipContent>
-                              </Tooltip>
-                            </TooltipProvider>
-                          )}
                         </div>
                         <CardDescription className="text-bold">
                           {item.originalPrice && (
@@ -778,51 +764,86 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                           {formatPrice(item.price)}
                         </CardDescription>
                       </CardHeader>
-                      <CardContent className="flex-1">
+                      <CardContent className="pl-3 pr-3 md:pl-6 md:pr-6 pb-3 md:pb-4 flex-1">
                         <p className="text-sm text-muted-foreground">
                           {item.description}
                         </p>
                       </CardContent>
-                      <CardFooter className="flex-col gap-2">
+                      <CardFooter className="pl-3 pr-3 md:pl-6 md:pr-6 pb-4 md:pb-6 flex-col gap-2">
                         <Button
                           onClick={() => handlePurchaseClick(item.id)}
                           disabled={
                             !currentUser ||
-                            (item.id === 'gold_100_free' && 
-                              (Date.now() - (gameState.lastFreeGoldClaim || 0)) / (1000 * 60 * 60) < 24) ||
-                            (item.id !== 'gold_100_free' && !item.canPurchaseMultipleTimes &&
-                              purchasedItems.some(pid => {
-                                if (!pid.startsWith('purchase-')) return false;
-                                const withoutPrefix = pid.substring('purchase-'.length);
-                                if (withoutPrefix.includes('-temp-')) {
-                                  return withoutPrefix.substring(0, withoutPrefix.indexOf('-temp-')) === item.id;
+                            (item.id === "gold_100_free" &&
+                              (Date.now() -
+                                (gameState.lastFreeGoldClaim || 0)) /
+                                (1000 * 60 * 60) <
+                                24) ||
+                            (item.id !== "gold_100_free" &&
+                              !item.canPurchaseMultipleTimes &&
+                              purchasedItems.some((pid) => {
+                                if (!pid.startsWith("purchase-")) return false;
+                                const withoutPrefix = pid.substring(
+                                  "purchase-".length,
+                                );
+                                if (withoutPrefix.includes("-temp-")) {
+                                  return (
+                                    withoutPrefix.substring(
+                                      0,
+                                      withoutPrefix.indexOf("-temp-"),
+                                    ) === item.id
+                                  );
                                 }
-                                const parts = withoutPrefix.split('-');
-                                return parts.slice(0, -5).join('-') === item.id;
+                                const parts = withoutPrefix.split("-");
+                                return parts.slice(0, -5).join("-") === item.id;
                               }))
                           }
-                          className="w-full"
+                          className="h-8 md:h-10 w-full"
                           button_id={`shop-purchase-${item.id}`}
                         >
-                          {item.id === 'gold_100_free'
-                            ? (Date.now() - (gameState.lastFreeGoldClaim || 0)) / (1000 * 60 * 60) < 24
+                          {item.id === "gold_100_free"
+                            ? (Date.now() -
+                                (gameState.lastFreeGoldClaim || 0)) /
+                                (1000 * 60 * 60) <
+                              24
                               ? (() => {
-                                  const hoursRemaining = Math.ceil(24 - (Date.now() - (gameState.lastFreeGoldClaim || 0)) / (1000 * 60 * 60));
-                                  return hoursRemaining === 1 ? "Available in 1 hour" : `Available in ${hoursRemaining} hours`;
+                                  const hoursRemaining = Math.ceil(
+                                    24 -
+                                      (Date.now() -
+                                        (gameState.lastFreeGoldClaim || 0)) /
+                                        (1000 * 60 * 60),
+                                  );
+                                  return hoursRemaining === 1
+                                    ? "Available in 1 hour"
+                                    : `Available in ${hoursRemaining} hours`;
                                 })()
                               : "Claim"
                             : !item.canPurchaseMultipleTimes &&
-                              purchasedItems.some(pid => {
-                                if (!pid.startsWith('purchase-')) return false;
-                                const withoutPrefix = pid.substring('purchase-'.length);
-                                if (withoutPrefix.includes('-temp-')) {
-                                  return withoutPrefix.substring(0, withoutPrefix.indexOf('-temp-')) === item.id;
-                                }
-                                const parts = withoutPrefix.split('-');
-                                return parts.slice(0, -5).join('-') === item.id;
-                              })
-                            ? item.price === 0 ? "Already Claimed" : "Already Purchased"
-                            : item.price === 0 ? "Claim" : "Purchase"}
+                                purchasedItems.some((pid) => {
+                                  if (!pid.startsWith("purchase-"))
+                                    return false;
+                                  const withoutPrefix = pid.substring(
+                                    "purchase-".length,
+                                  );
+                                  if (withoutPrefix.includes("-temp-")) {
+                                    return (
+                                      withoutPrefix.substring(
+                                        0,
+                                        withoutPrefix.indexOf("-temp-"),
+                                      ) === item.id
+                                    );
+                                  }
+                                  const parts = withoutPrefix.split("-");
+                                  return (
+                                    parts.slice(0, -5).join("-") === item.id
+                                  );
+                                })
+                              ? item.price === 0
+                                ? "Already Claimed"
+                                : "Already Purchased"
+                              : item.price === 0
+                                ? "Claim"
+                                : "Purchase"}
                         </Button>
                       </CardFooter>
                     </Card>
@@ -851,17 +872,21 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                     </p>
                     <div className="space-y-2">
                       {/* Show individual feast activations (but not bundles themselves) */}
-                      {Object.entries(gameState.feastActivations || {}).map( // Changed feastPurchases to feastActivations
-                        ([purchaseId, activationsRemaining]) => { // Changed purchase to activationsRemaining
+                      {Object.entries(gameState.feastActivations || {}).map(
+                        // Changed feastPurchases to feastActivations
+                        ([purchaseId, activationsRemaining]) => {
+                          // Changed purchase to activationsRemaining
                           // Find the corresponding item to get its name and description
                           // We need to search through all SHOP_ITEMS to find the one that matches this purchaseId
                           // This is because purchaseId is in the format 'purchase-{itemId}-{uuid}'
                           let itemId = null;
-                          if (purchaseId.startsWith('purchase-')) {
-                            const withoutPrefix = purchaseId.substring('purchase-'.length);
-                            const parts = withoutPrefix.split('-');
+                          if (purchaseId.startsWith("purchase-")) {
+                            const withoutPrefix = purchaseId.substring(
+                              "purchase-".length,
+                            );
+                            const parts = withoutPrefix.split("-");
                             // Extract itemId by removing the UUID parts
-                            itemId = parts.slice(0, -5).join('-');
+                            itemId = parts.slice(0, -5).join("-");
                           }
 
                           const item = itemId ? SHOP_ITEMS[itemId] : null;
@@ -886,7 +911,9 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                             >
                               <div className="flex flex-col">
                                 <span className="text-sm font-medium">
-                                  {item.name} ({activationsRemaining}/{item.rewards.feastActivations!} available) {/* Display remaining activations */}
+                                  {item.name} ({activationsRemaining}/
+                                  {item.rewards.feastActivations!} available){" "}
+                                  {/* Display remaining activations */}
                                 </span>
                                 <span className="text-xs text-muted-foreground">
                                   {item.description}
@@ -905,7 +932,10 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                                 }
                                 size="sm"
                                 variant={
-                                  isGreatFeastActive || activationsRemaining <= 0 ? "outline" : "default"
+                                  isGreatFeastActive ||
+                                  activationsRemaining <= 0
+                                    ? "outline"
+                                    : "default"
                                 }
                                 className={
                                   isGreatFeastActive
@@ -914,7 +944,11 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                                 }
                                 button_id={`shop-activate-${item.id}`}
                               >
-                                {isGreatFeastActive ? "Active" : activationsRemaining <= 0 ? "Activated" : "Activate"}
+                                {isGreatFeastActive
+                                  ? "Active"
+                                  : activationsRemaining <= 0
+                                    ? "Activated"
+                                    : "Activate"}
                               </Button>
                             </div>
                           );
@@ -926,27 +960,35 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                         .filter((purchaseId) => {
                           // Extract itemId from purchaseId (format: purchase-{itemId}-{uuid})
                           let itemId = purchaseId;
-                          if (purchaseId.startsWith('purchase-')) {
-                            const withoutPrefix = purchaseId.substring('purchase-'.length);
-                            const parts = withoutPrefix.split('-');
+                          if (purchaseId.startsWith("purchase-")) {
+                            const withoutPrefix = purchaseId.substring(
+                              "purchase-".length,
+                            );
+                            const parts = withoutPrefix.split("-");
                             // Extract itemId by removing the UUID parts
-                            itemId = parts.slice(0, -5).join('-');
+                            itemId = parts.slice(0, -5).join("-");
                           }
                           const item = SHOP_ITEMS[itemId];
 
                           // Don't show items with feast activations here (they're shown above)
                           // Don't show bundles (their components are shown individually)
                           // But do check if the item exists
-                          return item && !item.rewards.feastActivations && !item.bundleComponents;
+                          return (
+                            item &&
+                            !item.rewards.feastActivations &&
+                            !item.bundleComponents
+                          );
                         })
                         .map((purchaseId) => {
                           // Extract itemId from purchaseId (format: purchase-{itemId}-{uuid})
                           let itemId = purchaseId;
-                          if (purchaseId.startsWith('purchase-')) {
-                            const withoutPrefix = purchaseId.substring('purchase-'.length);
-                            const parts = withoutPrefix.split('-');
+                          if (purchaseId.startsWith("purchase-")) {
+                            const withoutPrefix = purchaseId.substring(
+                              "purchase-".length,
+                            );
+                            const parts = withoutPrefix.split("-");
                             // Remove the last 5 parts (UUID segments)
-                            itemId = parts.slice(0, -5).join('-');
+                            itemId = parts.slice(0, -5).join("-");
                           }
                           const item = SHOP_ITEMS[itemId];
 

@@ -24,7 +24,7 @@ export interface ShopItem {
 export const SHOP_ITEMS: Record<string, ShopItem> = {
   gold_100_free: {
     id: "gold_100_free",
-    name: "100 Gold (Daily Free Gift)",
+    name: "100 Gold (Free Daily Gift)",
     description: "A small daily mercy in a cold world",
     price: 0,
     rewards: {
@@ -41,7 +41,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "cruel_mode",
     name: "Cruel Mode",
     description:
-      "Experience a cruel world, with expanded story, more items, more lore and deadlier foes. Endure, or vanish.",
+      "A more cruel world, expanded story, more items, more lore, deadlier foes. Endure, or vanish.",
     originalPrice: 999,
     price: 499, // 4.99 €
     rewards: {},
