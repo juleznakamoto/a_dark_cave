@@ -92,12 +92,6 @@ export interface GameEvent {
     type: 'glow' | 'pulse';
     duration: number; // in seconds
   };
-  // Dynamic setup for events that need runtime configuration
-  dynamicSetup?: (state: GameState) => {
-    message?: string;
-    choices?: EventChoice[];
-    fallbackChoice?: EventChoice;
-  } | null;
 }
 
 export interface EventChoice {
