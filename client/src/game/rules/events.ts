@@ -295,8 +295,13 @@ export class EventManager {
       choicesSource = currentLogEntry.choices;
     }
 
+    // Evaluate choicesSource if it's a function
+    const choicesArray = typeof choicesSource === 'function' 
+      ? choicesSource(state) 
+      : choicesSource;
+
     // First try to find the choice in the choices array
-    let choice = choicesSource?.find((c) => c.id === choiceId);
+    let choice = choicesArray?.find((c) => c.id === choiceId);
 
     // If not found and this is a fallback choice, use the fallbackChoice directly
     if (
