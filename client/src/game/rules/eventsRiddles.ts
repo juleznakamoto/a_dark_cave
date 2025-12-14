@@ -367,7 +367,7 @@ export const riddleEvents: Record<string, GameEvent> = {
       return state.buildings.darkEstate >= 1 && !(state.events.usedRiddleIds || []).length;
     },
     triggerType: "resource",
-    timeProbability: 30,
+    timeProbability: 0.030,
     title: "Whisperer in the Dark",
     message: "",
     triggered: false,
