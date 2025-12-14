@@ -269,7 +269,7 @@ const createFallbackChoice = (
 export const riddleEvents: Record<string, GameEvent> = {
   whisperersReward: {
     id: "whisperersReward",
-    condition: (state: GameState) => 
+    condition: (state: GameState) =>
       state.events.whispererInTheDark_correct === true &&
       state.events.riddleOfAges_correct === true &&
       state.events.riddleOfDevourer_correct === true &&
@@ -306,7 +306,7 @@ export const riddleEvents: Record<string, GameEvent> = {
 
   whispererInTheDark: (() => {
     let currentRiddle: typeof RIDDLE_POOL[number] | null = null;
-    
+
     return {
       id: "whispererInTheDark",
       condition: (state: GameState) =>
@@ -326,19 +326,48 @@ export const riddleEvents: Record<string, GameEvent> = {
       isTimedChoice: true,
       baseDecisionTime: 45,
       choices: (state: GameState) => {
-        if (!currentRiddle) return [];
-        return createRiddleChoices(currentRiddle, "first", "whispererInTheDark", "whispererInTheDark_correct");
+        const riddleId = (state.events as any)._currentRiddle_whispererInTheDark;
+        const riddle = riddleId ? RIDDLE_POOL.find(r => r.id === riddleId) : getUnusedRiddle(state);
+        if (!riddle) return [];
+
+        // Mark riddle as used and clean up temp tracking
+        const choices = createRiddleChoices(riddle, "first", "whispererInTheDark", "whispererInTheDark_correct");
+
+        // Modify each choice effect to clean up the temporary riddle ID
+        return choices.map(choice => ({
+          ...choice,
+          effect: (s: GameState) => {
+            const result = choice.effect(s);
+            // Clean up the temporary riddle tracking
+            delete (result.events as any)?._currentRiddle_whispererInTheDark;
+            return result;
+          }
+        }));
       },
       fallbackChoice: (state: GameState) => {
-        if (!currentRiddle) return undefined;
-        return createFallbackChoice(currentRiddle, "first", "whispererInTheDark");
+        const riddleId = (state.events as any)._currentRiddle_whispererInTheDark;
+        const riddle = riddleId ? RIDDLE_POOL.find(r => r.id === riddleId) : getUnusedRiddle(state);
+        if (!riddle) return undefined;
+
+        const fallback = createFallbackChoice(riddle, "first", "whispererInTheDark");
+
+        // Modify fallback effect to clean up the temporary riddle ID
+        return {
+          ...fallback,
+          effect: (s: GameState) => {
+            const result = fallback.effect(s);
+            // Clean up the temporary riddle tracking
+            delete (result.events as any)?._currentRiddle_whispererInTheDark;
+            return result;
+          }
+        };
       },
     };
   })(),
 
   riddleOfAges: (() => {
     let currentRiddle: typeof RIDDLE_POOL[number] | null = null;
-    
+
     return {
       id: "riddleOfAges",
       condition: (state: GameState) => state.events.whispererInTheDark === true,
@@ -367,7 +396,7 @@ export const riddleEvents: Record<string, GameEvent> = {
 
   riddleOfDevourer: (() => {
     let currentRiddle: typeof RIDDLE_POOL[number] | null = null;
-    
+
     return {
       id: "riddleOfDevourer",
       condition: (state: GameState) => state.events.riddleOfAges === true,
@@ -396,7 +425,7 @@ export const riddleEvents: Record<string, GameEvent> = {
 
   riddleOfTears: (() => {
     let currentRiddle: typeof RIDDLE_POOL[number] | null = null;
-    
+
     return {
       id: "riddleOfTears",
       condition: (state: GameState) => state.events.riddleOfDevourer === true,
@@ -425,7 +454,7 @@ export const riddleEvents: Record<string, GameEvent> = {
 
   riddleOfEternal: (() => {
     let currentRiddle: typeof RIDDLE_POOL[number] | null = null;
-    
+
     return {
       id: "riddleOfEternal",
       condition: (state: GameState) => state.events.riddleOfTears === true,
