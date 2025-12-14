@@ -240,72 +240,62 @@ const createRiddleChoices = (
 };
 
 // Helper function to create fallback choice (timeout = wrong answer)
-// This creates a choice that mimics selecting a wrong answer
 const createFallbackChoice = (
   riddle: typeof RIDDLE_POOL[number],
   riddleNumber: "first" | "second" | "third" | "fourth" | "fifth",
   eventId: string
 ) => {
-  // Get the first wrong answer from the riddle
-  const wrongAnswer = riddle.wrongAnswers[0];
-  
+
   return {
     id: "timeout",
     label: "No answer given",
-    // Use the exact same effect logic as the wrong answer choices
     effect: (state: GameState) => {
       console.log(`[Riddle] Timeout for ${eventId} - saving riddle ID: ${riddle.id}`);
-      
-      // This is NOT the correct answer
-      const isCorrect = false;
-      
-      if (!isCorrect) {
-        // Wrong answer - apply penalty based on riddle number
-        if (riddleNumber === "first" || riddleNumber === "third") {
-          const deaths = RIDDLE_PENALTIES[riddleNumber].deaths + RIDDLE_PENALTIES[riddleNumber].cmMultiplier * state.CM;
-          return {
-            ...killVillagers(state, deaths),
-            events: {
-              ...state.events,
-              [eventId]: true,
-              usedRiddleIds: [...(state.events.usedRiddleIds || []), riddle.id],
-            },
-            _logMessage: TIMEOUT_MESSAGES[riddleNumber](deaths),
-          } as Partial<GameState>;
-        } else if (riddleNumber === "second" || riddleNumber === "fourth") {
-          const fogDuration = RIDDLE_PENALTIES[riddleNumber].fogDuration + (RIDDLE_PENALTIES[riddleNumber].fogDurationCM * state.CM);
-          return {
-            fogState: {
-              isActive: true,
-              endTime: Date.now() + fogDuration,
-              duration: fogDuration,
-            },
-            events: {
-              ...state.events,
-              [eventId]: true,
-              usedRiddleIds: [...(state.events.usedRiddleIds || []), riddle.id],
-            },
-            _logMessage: TIMEOUT_MESSAGES[riddleNumber](),
-          } as Partial<GameState>;
-        } else if (riddleNumber === "fifth") {
-          const deaths = RIDDLE_PENALTIES.fifth.deaths + RIDDLE_PENALTIES.fifth.cmMultiplier * state.CM;
-          const deathResult = killVillagers(state, deaths);
-          const fogDuration = RIDDLE_PENALTIES.fifth.fogDuration + (RIDDLE_PENALTIES.fifth.fogDurationCM * state.CM);
-          return {
-            ...deathResult,
-            fogState: {
-              isActive: true,
-              endTime: Date.now() + fogDuration,
-              duration: fogDuration,
-            },
-            events: {
-              ...state.events,
-              [eventId]: true,
-              usedRiddleIds: [...(state.events.usedRiddleIds || []), riddle.id],
-            },
-            _logMessage: TIMEOUT_MESSAGES.fifth(deaths),
-          } as Partial<GameState>;
-        }
+      // Apply the exact same penalty as a wrong answer
+      if (riddleNumber === "first" || riddleNumber === "third") {
+        const deaths = RIDDLE_PENALTIES[riddleNumber].deaths + RIDDLE_PENALTIES[riddleNumber].cmMultiplier * state.CM;
+        return {
+          ...killVillagers(state, deaths),
+          events: {
+            ...state.events,
+            [eventId]: true,
+            usedRiddleIds: [...(state.events.usedRiddleIds || []), riddle.id],
+          },
+          _logMessage: WRONG_ANSWER_MESSAGES[riddleNumber](deaths),
+        } as Partial<GameState>;
+      } else if (riddleNumber === "second" || riddleNumber === "fourth") {
+        const fogDuration = RIDDLE_PENALTIES[riddleNumber].fogDuration + (RIDDLE_PENALTIES[riddleNumber].fogDurationCM * state.CM);
+        return {
+          fogState: {
+            isActive: true,
+            endTime: Date.now() + fogDuration,
+            duration: fogDuration,
+          },
+          events: {
+            ...state.events,
+            [eventId]: true,
+            usedRiddleIds: [...(state.events.usedRiddleIds || []), riddle.id],
+          },
+          _logMessage: WRONG_ANSWER_MESSAGES[riddleNumber](),
+        } as Partial<GameState>;
+      } else if (riddleNumber === "fifth") {
+        const deaths = RIDDLE_PENALTIES.fifth.deaths + RIDDLE_PENALTIES.fifth.cmMultiplier * state.CM;
+        const deathResult = killVillagers(state, deaths);
+        const fogDuration = RIDDLE_PENALTIES.fifth.fogDuration + (RIDDLE_PENALTIES.fifth.fogDurationCM * state.CM);
+        return {
+          ...deathResult,
+          fogState: {
+            isActive: true,
+            endTime: Date.now() + fogDuration,
+            duration: fogDuration,
+          },
+          events: {
+            ...state.events,
+            [eventId]: true,
+            usedRiddleIds: [...(state.events.usedRiddleIds || []), riddle.id],
+          },
+          _logMessage: WRONG_ANSWER_MESSAGES.fifth(deaths),
+        } as Partial<GameState>;
       }
       return {} as Partial<GameState>;
     },

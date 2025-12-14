@@ -92,17 +92,19 @@ export default function EventDialog({
         fallbackExecutedRef.current = true;
         clearInterval(interval);
 
+        const eventId = event.id.split("-")[0];
+
         if (event.fallbackChoice) {
-          // Use handleChoice to trigger the same flow as a wrong answer
-          // This ensures the penalty dialog is shown via _logMessage
-          handleChoice(event.fallbackChoice.id);
+          // Use defined fallback choice
+          applyEventChoice(event.fallbackChoice.id, eventId);
         } else if (eventChoices.length > 0) {
           // No fallback defined, choose randomly from available choices
           const randomChoice =
             eventChoices[Math.floor(Math.random() * eventChoices.length)];
-          handleChoice(randomChoice.id);
+          applyEventChoice(randomChoice.id, eventId);
         }
-        // Don't call onClose() - handleChoice will manage dialog state
+
+        onClose();
       }
     }, 100);
 
@@ -234,9 +236,7 @@ export default function EventDialog({
     // For non-merchant events, process normally
     fallbackExecutedRef.current = true;
     applyEventChoice(choiceId, eventId);
-    // Don't call onClose() here - let the state management handle dialog transitions
-    // If there's a _logMessage (penalty dialog), state.ts will close this dialog and open the penalty dialog
-    // Otherwise, the dialog stays open (or gets closed by the event system)
+    onClose();
   };
 
   const progress =
