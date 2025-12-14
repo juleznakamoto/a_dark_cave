@@ -140,7 +140,7 @@ export default function ForestPanel() {
           .split(' ')
           .map(word => word.charAt(0).toUpperCase() + word.slice(1))
           .join(' ');
-        displayLabel = `Buy ${amount} ${formattedName}`;
+        displayLabel = `+${amount} ${formattedName}`;
       }
     }
 
@@ -303,7 +303,7 @@ export default function ForestPanel() {
 
   return (
     <ScrollArea className="h-full w-full">
-      <div className="space-y-4 mt-2 pl-[3px] ">
+      <div className="space-y-4 mt-2 mb-2 pl-[3px] ">
         {actionGroups.map((group, groupIndex) => {
           const visibleActions = group.actions.filter((action) =>
             shouldShowAction(action.id, state),
@@ -318,7 +318,7 @@ export default function ForestPanel() {
                   {group.title}
                 </h3>
               )}
-              <div className="w-80">
+              <div className="w-96">
                 <div className="flex flex-wrap gap-2 justify-start">
                   {visibleActions.map((action) => (
                     renderButton(action.id, action.label)

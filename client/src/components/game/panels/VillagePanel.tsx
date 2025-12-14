@@ -392,7 +392,7 @@ export default function VillagePanel() {
 
   return (
     <ScrollArea className="h-full w-full">
-      <div className="space-y-4 mt-2 pl-[3px] ">
+      <div className="space-y-4 mt-2 mb-2 pl-[3px] ">
         {actionGroups.map((group, groupIndex) => {
           const visibleActions = group.actions.filter((action) =>
             shouldShowAction(action.id, state),

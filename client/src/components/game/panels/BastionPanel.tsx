@@ -195,7 +195,7 @@ export default function BastionPanel() {
   };
 
   return (
-    <div className="w-80 space-y-4 mt-2 pr-4 pl-[3px] ">
+    <div className="w-80 space-y-4 mt-2 mb-2 pr-4 pl-[3px] ">
       {/* Attack Waves Chart */}
       <AttackWavesChart />
 
