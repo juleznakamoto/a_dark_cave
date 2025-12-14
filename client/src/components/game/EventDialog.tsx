@@ -92,19 +92,16 @@ export default function EventDialog({
         fallbackExecutedRef.current = true;
         clearInterval(interval);
 
-        const eventId = event.id.split("-")[0];
-
         if (event.fallbackChoice) {
-          // Use defined fallback choice
-          applyEventChoice(event.fallbackChoice.id, eventId);
+          // Use handleChoice to trigger the same flow as a wrong answer
+          handleChoice(event.fallbackChoice.id);
         } else if (eventChoices.length > 0) {
           // No fallback defined, choose randomly from available choices
           const randomChoice =
             eventChoices[Math.floor(Math.random() * eventChoices.length)];
-          applyEventChoice(randomChoice.id, eventId);
+          handleChoice(randomChoice.id);
         }
-
-        onClose();
+        // Don't call onClose() - let state management handle it via _logMessage
       }
     }, 100);
 
@@ -236,7 +233,10 @@ export default function EventDialog({
     // For non-merchant events, process normally
     fallbackExecutedRef.current = true;
     applyEventChoice(choiceId, eventId);
-    onClose();
+    
+    // Don't call onClose() here - the state management in applyEventChoice
+    // will handle dialog transitions if there's a _logMessage (penalty dialog).
+    // For events without _logMessage, the dialog stays open until manually closed.
   };
 
   const progress =
