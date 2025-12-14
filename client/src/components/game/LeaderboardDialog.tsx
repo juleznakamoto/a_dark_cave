@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useGameStore } from "@/game/state";
 import { getCurrentUser } from "@/game/auth";
@@ -11,7 +12,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { logger } from "@/lib/logger";
@@ -28,6 +28,84 @@ interface LeaderboardEntry {
 interface LeaderboardDialogProps {
   isOpen: boolean;
   onClose: () => void;
+}
+
+interface LeaderboardTabProps {
+  entries: LeaderboardEntry[];
+  loading: boolean;
+  lastUpdated: string | null;
+}
+
+function LeaderboardTab({ entries, loading, lastUpdated }: LeaderboardTabProps) {
+  const formatTime = (ms: number) => {
+    const totalMinutes = Math.floor(ms / 1000 / 60);
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = totalMinutes % 60;
+    return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`;
+  };
+
+  const getCrown = (index: number) => {
+    if (index === 0)
+      return { symbol: "✠", color: "text-yellow-500/50 rotate-45" };
+    if (index === 1)
+      return { symbol: "✠", color: "text-gray-400/50 rotate-45" };
+    if (index === 2)
+      return { symbol: "✠", color: "text-amber-600/50 rotate-45" };
+    return null;
+  };
+
+  return (
+    <div className="flex-1 min-h-0 flex flex-col">
+      <div className="flex items-center justify-between px-3 pb-2 border-b border-border bg-background">
+        <div className="flex items-center gap-3">
+          <span className="font-semibold text-sm w-8 text-center">#</span>
+          <span className="font-semibold text-sm">Player</span>
+        </div>
+        <span className="font-semibold text-sm">Completion Time</span>
+      </div>
+      <div
+        className="h-[400px] pr-4 flex-1 overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] overscroll-contain"
+        style={{ WebkitOverflowScrolling: "touch" }}
+      >
+        <div className="space-y-2 pt-2">
+          {loading ? (
+            <div className="text-center py-8 text-muted-foreground">Loading...</div>
+          ) : entries.length === 0 ? (
+            <div className="text-center py-8 text-muted-foreground">
+              No entries yet
+            </div>
+          ) : (
+            entries.map((entry, index) => {
+              const crown = getCrown(index);
+              return (
+                <div
+                  key={entry.id}
+                  className="flex items-center justify-between p-3 rounded-md bg-muted/50 hover:bg-muted transition-colors"
+                >
+                  <div className="flex items-center gap-3">
+                    <span
+                      className={`font-bold text-lg w-8 text-center ${crown?.color || ""}`}
+                    >
+                      {crown ? crown.symbol : index + 1}
+                    </span>
+                    <span className="font-sm">{entry.displayName}</span>
+                  </div>
+                  <span className="text-muted-foreground">
+                    {formatTime(entry.play_time)}
+                  </span>
+                </div>
+              );
+            })
+          )}
+        </div>
+      </div>
+      {lastUpdated && (
+        <div className="text-xs text-muted-foreground text-center pt-2 opacity-50">
+          Last updated: {new Date(lastUpdated).toLocaleString()}
+        </div>
+      )}
+    </div>
+  );
 }
 
 export default function LeaderboardDialog({
@@ -168,7 +246,6 @@ export default function LeaderboardDialog({
         description: "Your username has been updated",
       });
 
-      // Refresh leaderboards
       fetchLeaderboards();
     } catch (error) {
       logger.error("Failed to save username:", error);
@@ -178,65 +255,6 @@ export default function LeaderboardDialog({
         variant: "destructive",
       });
     }
-  };
-
-  const formatTime = (ms: number) => {
-    const totalMinutes = Math.floor(ms / 1000 / 60);
-    const hours = Math.floor(totalMinutes / 60);
-    const minutes = totalMinutes % 60;
-    return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`;
-  };
-
-  const renderLeaderboard = (entries: LeaderboardEntry[]) => {
-    if (loading) {
-      return (
-        <div className="text-center py-8 text-muted-foreground">Loading...</div>
-      );
-    }
-
-    if (entries.length === 0) {
-      return (
-        <div className="text-center py-8 text-muted-foreground">
-          No entries yet
-        </div>
-      );
-    }
-
-    const getCrown = (index: number) => {
-      if (index === 0)
-        return { symbol: "✠", color: "text-yellow-500/50 rotate-45" }; // Golden
-      if (index === 1)
-        return { symbol: "✠", color: "text-gray-400/50 rotate-45" }; // Silver
-      if (index === 2)
-        return { symbol: "✠", color: "text-amber-600/50 rotate-45" }; // Bronze
-      return null;
-    };
-
-    return (
-      <>
-        {entries.map((entry, index) => {
-          const crown = getCrown(index);
-          return (
-            <div
-              key={entry.id}
-              className="flex items-center justify-between p-3 rounded-md bg-muted/50 hover:bg-muted transition-colors"
-            >
-              <div className="flex items-center gap-3">
-                <span
-                  className={`font-bold text-lg w-8 text-center ${crown?.color || ""}`}
-                >
-                  {crown ? crown.symbol : index + 1}
-                </span>
-                <span className="font-sm">{entry.displayName}</span>
-              </div>
-              <span className="text-muted-foreground">
-                {formatTime(entry.play_time)}
-              </span>
-            </div>
-          );
-        })}
-      </>
-    );
   };
 
   return (
@@ -325,48 +343,18 @@ export default function LeaderboardDialog({
             <TabsTrigger value="cruel">Cruel Mode</TabsTrigger>
           </TabsList>
           <TabsContent value="normal" className="flex-1 min-h-0 flex flex-col">
-            <div className="flex items-center justify-between px-3 pb-2 border-b border-border bg-background">
-              <div className="flex items-center gap-3">
-                <span className="font-semibold text-sm w-8 text-center">#</span>
-                <span className="font-semibold text-sm">Player</span>
-              </div>
-              <span className="font-semibold text-sm">Completion Time</span>
-            </div>
-            <div
-              className="h-[400px] pr-4 flex-1 overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] overscroll-contain"
-              style={{ WebkitOverflowScrolling: "touch" }}
-            >
-              <div className="space-y-2 pt-2">
-                {renderLeaderboard(normalLeaderboard)}
-              </div>
-            </div>
-            {lastUpdated && (
-              <div className="text-xs text-muted-foreground text-center pt-2 opacity-50">
-                Last updated: {new Date(lastUpdated).toLocaleString()}
-              </div>
-            )}
+            <LeaderboardTab 
+              entries={normalLeaderboard} 
+              loading={loading} 
+              lastUpdated={lastUpdated} 
+            />
           </TabsContent>
           <TabsContent value="cruel" className="flex-1 min-h-0 flex flex-col">
-            <div className="flex items-center justify-between px-3 pb-2 border-b border-border bg-background">
-              <div className="flex items-center gap-3">
-                <span className="font-semibold text-sm w-8 text-center">#</span>
-                <span className="font-semibold text-sm">Player</span>
-              </div>
-              <span className="font-semibold text-sm">Completion Time</span>
-            </div>
-            <div
-              className="h-[400px] pr-4 flex-1 overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] overscroll-contain"
-              style={{ WebkitOverflowScrolling: "touch" }}
-            >
-              <div className="space-y-2 pt-2">
-                {renderLeaderboard(cruelLeaderboard)}
-              </div>
-            </div>
-            {lastUpdated && (
-              <div className="text-xs text-muted-foreground text-center pt-2 opacity-50">
-                Last updated: {new Date(lastUpdated).toLocaleString()}
-              </div>
-            )}
+            <LeaderboardTab 
+              entries={cruelLeaderboard} 
+              loading={loading} 
+              lastUpdated={lastUpdated} 
+            />
           </TabsContent>
         </Tabs>
       </DialogContent>
