@@ -740,13 +740,14 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                       <CardHeader className="leading-snug p-3 md:p-6 pb-2 md:pb-3 relative">
                         {item.symbol && (
                           <span
-                            className={`leading-none text-lg text-right ${item.symbol.length > 2 ? 'block absolute top-3 right-3 md:top-6 md:right-6' : 'absolute top-3 right-3 md:top-6 md:right-6'}`}
+                            className="leading-tight text-lg text-right absolute top-3 right-3 md:top-6 md:right-6"
                             style={{
                               color: tailwindToHex(
                                 item.symbolColor.replace("text-", ""),
                               ),
-                              wordBreak: item.symbol.length > 2 ? 'break-all' : 'normal',
-                              maxWidth: item.symbol.length > 2 ? '3rem' : 'auto',
+                              maxWidth: '2.5ch',
+                              wordBreak: 'break-all',
+                              overflowWrap: 'anywhere',
                             }}
                           >
                             {item.symbol}
