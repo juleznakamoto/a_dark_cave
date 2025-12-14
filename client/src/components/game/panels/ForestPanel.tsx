@@ -318,16 +318,9 @@ export default function ForestPanel() {
                   {group.title}
                 </h3>
               )}
-              <div className="flex flex-wrap gap-x-2 gap-y-2">
-                {visibleActions.map((action, index) => (
-                  <div key={action.id} className="contents">
-                    {renderButton(action.id, action.label)}
-                    {group.title === "Trade" &&
-                      (index + 1) % 4 === 0 &&
-                      index !== visibleActions.length - 1 && (
-                        <div className="basis-full h-0" />
-                      )}
-                  </div>
+              <div className={group.title === "Trade" ? "grid grid-cols-4 gap-2" : "flex flex-wrap gap-2"}>
+                {visibleActions.map((action) => (
+                  renderButton(action.id, action.label)
                 ))}
               </div>
             </div>
