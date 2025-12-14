@@ -219,33 +219,6 @@ export default function ProfileMenu() {
         onClose={() => setLeaderboardDialogOpen(false)}
       />
       <div className="flex items-center gap-2">
-        {!currentUser && (
-          <TooltipProvider>
-            <Tooltip
-              open={
-                isMobile
-                  ? mobileTooltip.isTooltipOpen("login-reminder")
-                  : undefined
-              }
-            >
-              <TooltipTrigger asChild>
-                <div
-                  className="w-4 h-4 rounded-full border border-orange-500 flex items-center justify-center cursor-pointer opacity-80 hover:opacity-100 transition-opacity"
-                  onClick={(e) => {
-                    if (isMobile) {
-                      mobileTooltip.handleTooltipClick("login-reminder", e);
-                    }
-                  }}
-                >
-                  <span className="text-orange-500 text-xs font-bold">!</span>
-                </div>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p className="text-xs">Sign in to save your game progress</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        )}
         <DropdownMenu
           open={accountDropdownOpen}
           onOpenChange={(open) => {
@@ -403,6 +376,33 @@ export default function ProfileMenu() {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
+      {!currentUser && (
+        <TooltipProvider>
+          <Tooltip
+            open={
+              isMobile
+                ? mobileTooltip.isTooltipOpen("login-reminder")
+                : undefined
+            }
+          >
+            <TooltipTrigger asChild>
+              <div
+                className="w-4 h-4 rounded-full border border-orange-500 flex items-center justify-center cursor-pointer opacity-80 hover:opacity-100 transition-opacity"
+                onClick={(e) => {
+                  if (isMobile) {
+                    mobileTooltip.handleTooltipClick("login-reminder", e);
+                  }
+                }}
+              >
+                <span className="text-orange-500 text-xs font-bold">!</span>
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p className="text-xs">Sign in to save your game progress</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      )}
       <Button
         variant="ghost"
         size="xs"
