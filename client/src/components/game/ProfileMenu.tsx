@@ -376,7 +376,7 @@ export default function ProfileMenu() {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-1">
         {!currentUser && (
           <TooltipProvider>
             <Tooltip
@@ -388,7 +388,7 @@ export default function ProfileMenu() {
             >
               <TooltipTrigger asChild>
                 <div
-                  className="w-4 h-4 rounded-full border border-orange-500 flex items-center justify-center cursor-pointer opacity-80 hover:opacity-100 transition-opacity"
+                  className="w-5 h-5 rounded-full border border-orange-500 flex items-center justify-center cursor-pointer opacity-80 hover:opacity-100 transition-opacity"
                   onClick={(e) => {
                     if (isMobile) {
                       mobileTooltip.handleTooltipClick("login-reminder", e);
