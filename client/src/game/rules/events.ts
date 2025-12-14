@@ -231,6 +231,11 @@ export class EventManager {
           message = event.message;
         }
 
+        // Skip events with empty messages (e.g., riddles when no riddle is available)
+        if (message === "") {
+          break;
+        }
+
         const logEntry: LogEntry = {
           id: `${event.id}-${Date.now()}`,
           message: message,

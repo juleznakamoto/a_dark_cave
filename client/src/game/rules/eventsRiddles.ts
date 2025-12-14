@@ -330,10 +330,9 @@ export const riddleEvents: Record<string, GameEvent> = {
   whispererInTheDark: {
     id: "whispererInTheDark",
     condition: (state: GameState) =>
-      state.buildings.darkEstate >= 1 &&
-      state.current_population >= 0,
+      state.buildings.darkEstate >= 1,
     triggerType: "resource",
-    timeProbability: 0.030,
+    timeProbability: 30,
     title: "Whisperer in the Dark",
     message: (state: GameState) => {
       const riddle = getUnusedRiddle(state, "whispererInTheDark");
@@ -342,7 +341,7 @@ export const riddleEvents: Record<string, GameEvent> = {
     },
     triggered: false,
     priority: 4,
-    repeatable: true,
+    repeatable: false,
     isTimedChoice: true,
     baseDecisionTime: 45,
     choices: (state: GameState) => {
@@ -361,7 +360,7 @@ export const riddleEvents: Record<string, GameEvent> = {
     id: "riddleOfAges",
     condition: (state: GameState) => state.events.whispererInTheDark === true,
     triggerType: "resource",
-    timeProbability: 45,
+    timeProbability: 0.045,
     title: "Voices in the Dark",
     message: (state: GameState) => {
       const riddle = getUnusedRiddle(state, "riddleOfAges");
