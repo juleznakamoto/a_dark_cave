@@ -25,24 +25,7 @@ import { forestTradeActions } from "./forestTradeActions";
 import { caveExploreActions } from "./caveExploreActions";
 import { getNextBuildingLevel } from "./villageBuildActions";
 
-// Import event modules
-import { caveEvents } from "./eventsCave";
-import { huntEvents } from "./eventsHunt";
-import { choiceEvents } from "./eventsChoices";
-import { cubeEvents } from "./eventsCube";
-import { feastEvents } from "./eventsFeast";
-import { loreEvents } from "./eventsLore";
-import { madnessEvents } from "./eventsMadness";
-import { merchantEvents } from "./eventsMerchant";
-import { noChoiceEvents } from "./eventsNoChoices";
-import { recurringEvents } from "./eventsRecurring";
-import { storyEvents } from "./eventsStory";
-import { villageAttackEvents } from "./eventsVillageAttacks";
-import { woodcutterEvents } from "./eventsWoodcutter";
-import { fellowshipEvents } from "./eventsFellowship";
-import { attackWaveEvents } from "./eventsAttackWaves";
-
-// Combine all actions
+// Combine all actions first
 export const gameActions: Record<string, Action> = {
   ...villageBuildActions,
   ...caveExploreActions,
@@ -61,6 +44,23 @@ export const gameActions: Record<string, Action> = {
 
 // Register gameActions with actionEffects to break circular dependency
 setGameActionsRef(gameActions);
+
+// Import event modules AFTER gameActions is defined
+import { caveEvents } from "./eventsCave";
+import { huntEvents } from "./eventsHunt";
+import { choiceEvents } from "./eventsChoices";
+import { cubeEvents } from "./eventsCube";
+import { feastEvents } from "./eventsFeast";
+import { loreEvents } from "./eventsLore";
+import { madnessEvents } from "./eventsMadness";
+import { merchantEvents } from "./eventsMerchant";
+import { noChoiceEvents } from "./eventsNoChoices";
+import { recurringEvents } from "./eventsRecurring";
+import { storyEvents } from "./eventsStory";
+import { villageAttackEvents } from "./eventsVillageAttacks";
+import { woodcutterEvents } from "./eventsWoodcutter";
+import { fellowshipEvents } from "./eventsFellowship";
+import { attackWaveEvents } from "./eventsAttackWaves";
 
 // Helper function to check if requirements are met for both building and non-building actions
 const checkRequirements = (
