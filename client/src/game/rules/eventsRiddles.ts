@@ -124,15 +124,21 @@ const getUnusedRiddle = (state: GameState, eventId: string): typeof RIDDLE_POOL[
   const usedRiddles = state.events.usedRiddleIds || [];
   const availableRiddles = RIDDLE_POOL.filter(riddle => !usedRiddles.includes(riddle.id));
 
+  console.log(`[Riddle] Getting unused riddle for ${eventId}. Used riddles:`, usedRiddles, `Available:`, availableRiddles.map(r => r.id));
+
   if (availableRiddles.length === 0) {
+    console.log(`[Riddle] No available riddles for ${eventId} - all riddles used`);
     return null;
   }
 
   // Create a deterministic seed from game state
   const seed = state.resources.gold + state.current_population + usedRiddles.length + eventId.length;
   const index = Math.floor(seededRandom(seed) * availableRiddles.length);
+  const selectedRiddle = availableRiddles[index];
 
-  return availableRiddles[index];
+  console.log(`[Riddle] Selected riddle for ${eventId}: ${selectedRiddle.id}`);
+
+  return selectedRiddle;
 };
 
 // Helper function to create riddle choices
@@ -165,6 +171,7 @@ const createRiddleChoices = (
       const isCorrect = answer === correctAnswer;
 
       if (isCorrect) {
+        console.log(`[Riddle] Correct answer for ${eventId} - saving riddle ID: ${riddleId}`);
         return {
           resources: {
             ...state.resources,
@@ -179,6 +186,7 @@ const createRiddleChoices = (
           _logMessage: SUCCESS_MESSAGES[riddleNumber](RIDDLE_REWARDS[riddleNumber]),
         } as Partial<GameState>;
       } else {
+        console.log(`[Riddle] Wrong answer for ${eventId} - saving riddle ID: ${riddleId}`);
         // Wrong answer - apply penalty based on riddle number
         if (riddleNumber === "first" || riddleNumber === "third") {
           const deaths = RIDDLE_PENALTIES[riddleNumber].deaths + RIDDLE_PENALTIES[riddleNumber].cmMultiplier * state.CM;
@@ -240,6 +248,7 @@ const createFallbackChoice = (
   id: "timeout",
   label: "No answer given",
   effect: (state: GameState) => {
+    console.log(`[Riddle] Timeout for ${eventId} - saving riddle ID: ${riddle.id}`);
     if (riddleNumber === "first" || riddleNumber === "third") {
       const deaths = RIDDLE_PENALTIES[riddleNumber].deaths + RIDDLE_PENALTIES[riddleNumber].cmMultiplier * state.CM;
       return {
