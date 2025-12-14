@@ -234,7 +234,7 @@ export default function ForestPanel() {
           size="xs"
           disabled={!canExecute}
           variant="outline"
-          className={`hover:bg-transparent hover:text-foreground ${isTradeButton ? "w-fit" : ""} ${shouldGlow ? "focus-glow" : ""}`}
+          className={`hover:bg-transparent hover:text-foreground ${isTradeButton ? "flex-[0_0_calc(25%-0.375rem)]" : ""} ${shouldGlow ? "focus-glow" : ""}`}
           tooltip={tooltipContent}
           onMouseEnter={() => {
             if (state.buildings.inkwardenAcademy > 0) {
@@ -273,7 +273,7 @@ export default function ForestPanel() {
         size="xs"
         disabled={!canExecute}
         variant="outline"
-        className={`hover:bg-transparent hover:text-foreground ${isTradeButton ? "w-fit" : ""} ${shouldGlow ? "focus-glow" : ""}`}
+        className={`hover:bg-transparent hover:text-foreground ${isTradeButton ? "flex-[0_0_calc(25%-0.375rem)]" : ""} ${shouldGlow ? "focus-glow" : ""}`}
         onMouseEnter={() => {
           if (state.buildings.inkwardenAcademy > 0) {
             const resources = getResourcesFromActionCost(actionId, state);
@@ -318,14 +318,9 @@ export default function ForestPanel() {
                   {group.title}
                 </h3>
               )}
-              <div className="flex flex-wrap gap-x-2 gap-y-2 justify-start">
-                {visibleActions.map((action, index) => (
-                  <div 
-                    key={action.id}
-                    className={group.title === "Trade" ? "flex-[0_0_calc(25%-0.375rem)]" : ""}
-                  >
-                    {renderButton(action.id, action.label)}
-                  </div>
+              <div className="flex flex-wrap gap-2 justify-start">
+                {visibleActions.map((action) => (
+                  renderButton(action.id, action.label)
                 ))}
               </div>
             </div>
