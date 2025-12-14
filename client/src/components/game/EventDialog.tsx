@@ -94,17 +94,33 @@ export default function EventDialog({
 
         const eventId = event.id.split("-")[0];
 
+        // Check if this is a riddle event
+        const isRiddleEvent = eventId === "whispererInTheDark" ||
+                             eventId === "riddleOfAges" ||
+                             eventId === "riddleOfDevourer" ||
+                             eventId === "riddleOfTears" ||
+                             eventId === "riddleOfEternal";
+
         if (event.fallbackChoice) {
-          // Use defined fallback choice
-          applyEventChoice(event.fallbackChoice.id, eventId);
+          // For riddle events, use handleChoice to properly display the penalty dialog
+          // For other events, use the standard applyEventChoice
+          if (isRiddleEvent) {
+            handleChoice(event.fallbackChoice.id);
+          } else {
+            applyEventChoice(event.fallbackChoice.id, eventId);
+            onClose();
+          }
         } else if (eventChoices.length > 0) {
           // No fallback defined, choose randomly from available choices
           const randomChoice =
             eventChoices[Math.floor(Math.random() * eventChoices.length)];
-          applyEventChoice(randomChoice.id, eventId);
+          if (isRiddleEvent) {
+            handleChoice(randomChoice.id);
+          } else {
+            applyEventChoice(randomChoice.id, eventId);
+            onClose();
+          }
         }
-
-        onClose();
       }
     }, 100);
 
@@ -186,9 +202,9 @@ export default function EventDialog({
         // Increment merchant purchase counter
         const currentCount = Number(gameState.story?.seen?.merchantPurchases) || 0;
         const newCount = currentCount + 1;
-        
+
         gameState.setFlag('merchantPurchases' as any, newCount as any);
-        
+
         // Actually update the story.seen.merchantPurchases directly
         const currentStory = gameState.story || { seen: {} };
         const updatedStory = {
@@ -198,7 +214,7 @@ export default function EventDialog({
             merchantPurchases: newCount,
           },
         };
-        
+
         // Apply the story update to the store
         useGameStore.setState({ story: updatedStory });
 
@@ -212,7 +228,7 @@ export default function EventDialog({
       const choice = eventChoices.find((c) => c.id === choiceId);
       if (choice) {
         const result = choice.effect(gameState);
-        
+
         // Handle shop opening
         if ((result as any)._openShop) {
           fallbackExecutedRef.current = true;
@@ -221,7 +237,7 @@ export default function EventDialog({
           gameState.setShopDialogOpen(true);
           return;
         }
-        
+
         // Handle donation page opening
         if ((result as any)._openDonation) {
           fallbackExecutedRef.current = true;
