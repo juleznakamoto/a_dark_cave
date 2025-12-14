@@ -304,150 +304,262 @@ export const riddleEvents: Record<string, GameEvent> = {
     ],
   },
 
-  whispererInTheDark: (() => {
-    let currentRiddle: typeof RIDDLE_POOL[number] | null = null;
-    
-    return {
-      id: "whispererInTheDark",
-      condition: (state: GameState) =>
-        state.buildings.darkEstate >= 1 &&
-        state.current_population >= 0,
-      triggerType: "resource",
-      timeProbability: 0.030,
-      title: "Whisperer in the Dark",
-      message: (state: GameState) => {
-        currentRiddle = getUnusedRiddle(state);
-        return currentRiddle ? getStartMessage(currentRiddle.question, 1) : "";
-      },
-      triggered: false,
-      priority: 4,
-      repeatable: true,
-      isTimedChoice: true,
-      baseDecisionTime: 45,
-      choices: (state: GameState) => {
-        if (!currentRiddle) return [];
-        return createRiddleChoices(currentRiddle, "first", "whispererInTheDark", "whispererInTheDark_correct");
-      },
-      fallbackChoice: (state: GameState) => {
-        if (!currentRiddle) return undefined;
-        return createFallbackChoice(currentRiddle, "first", "whispererInTheDark");
-      },
-    };
-  })(),
+  whispererInTheDark: {
+    id: "whispererInTheDark",
+    condition: (state: GameState) =>
+      state.buildings.darkEstate >= 1 &&
+      state.current_population >= 0,
+    triggerType: "resource",
+    timeProbability: 0.030,
+    title: "Whisperer in the Dark",
+    message: (state: GameState) => {
+      const riddle = getUnusedRiddle(state);
+      if (!riddle) return "";
+      
+      // Store riddle ID in state temporarily for choices to use
+      (state.events as any)._currentRiddle_whispererInTheDark = riddle.id;
+      return getStartMessage(riddle.question, 1);
+    },
+    triggered: false,
+    priority: 4,
+    repeatable: true,
+    isTimedChoice: true,
+    baseDecisionTime: 45,
+    choices: (state: GameState) => {
+      const riddleId = (state.events as any)._currentRiddle_whispererInTheDark;
+      const riddle = riddleId ? RIDDLE_POOL.find(r => r.id === riddleId) : null;
+      if (!riddle) return [];
+      
+      const choices = createRiddleChoices(riddle, "first", "whispererInTheDark", "whispererInTheDark_correct");
+      
+      // Clean up temp tracking in all choice effects
+      return choices.map(choice => ({
+        ...choice,
+        effect: (s: GameState) => {
+          const result = choice.effect(s);
+          delete (result.events as any)._currentRiddle_whispererInTheDark;
+          return result;
+        }
+      }));
+    },
+    fallbackChoice: (state: GameState) => {
+      const riddleId = (state.events as any)._currentRiddle_whispererInTheDark;
+      const riddle = riddleId ? RIDDLE_POOL.find(r => r.id === riddleId) : null;
+      if (!riddle) return undefined;
+      
+      const fallback = createFallbackChoice(riddle, "first", "whispererInTheDark");
+      return {
+        ...fallback,
+        effect: (s: GameState) => {
+          const result = fallback.effect(s);
+          delete (result.events as any)._currentRiddle_whispererInTheDark;
+          return result;
+        }
+      };
+    },
+  },
 
-  riddleOfAges: (() => {
-    let currentRiddle: typeof RIDDLE_POOL[number] | null = null;
-    
-    return {
-      id: "riddleOfAges",
-      condition: (state: GameState) => state.events.whispererInTheDark === true,
-      triggerType: "resource",
-      timeProbability: 45,
-      title: "Voices in the Dark",
-      message: (state: GameState) => {
-        currentRiddle = getUnusedRiddle(state);
-        return currentRiddle ? getStartMessage(currentRiddle.question, 2) : "";
-      },
-      triggered: false,
-      priority: 4,
-      repeatable: false,
-      isTimedChoice: true,
-      baseDecisionTime: 45,
-      choices: (state: GameState) => {
-        if (!currentRiddle) return [];
-        return createRiddleChoices(currentRiddle, "second", "riddleOfAges", "riddleOfAges_correct");
-      },
-      fallbackChoice: (state: GameState) => {
-        if (!currentRiddle) return undefined;
-        return createFallbackChoice(currentRiddle, "second", "riddleOfAges");
-      },
-    };
-  })(),
+  riddleOfAges: {
+    id: "riddleOfAges",
+    condition: (state: GameState) => state.events.whispererInTheDark === true,
+    triggerType: "resource",
+    timeProbability: 45,
+    title: "Voices in the Dark",
+    message: (state: GameState) => {
+      const riddle = getUnusedRiddle(state);
+      if (!riddle) return "";
+      
+      (state.events as any)._currentRiddle_riddleOfAges = riddle.id;
+      return getStartMessage(riddle.question, 2);
+    },
+    triggered: false,
+    priority: 4,
+    repeatable: false,
+    isTimedChoice: true,
+    baseDecisionTime: 45,
+    choices: (state: GameState) => {
+      const riddleId = (state.events as any)._currentRiddle_riddleOfAges;
+      const riddle = riddleId ? RIDDLE_POOL.find(r => r.id === riddleId) : null;
+      if (!riddle) return [];
+      
+      const choices = createRiddleChoices(riddle, "second", "riddleOfAges", "riddleOfAges_correct");
+      
+      return choices.map(choice => ({
+        ...choice,
+        effect: (s: GameState) => {
+          const result = choice.effect(s);
+          delete (result.events as any)._currentRiddle_riddleOfAges;
+          return result;
+        }
+      }));
+    },
+    fallbackChoice: (state: GameState) => {
+      const riddleId = (state.events as any)._currentRiddle_riddleOfAges;
+      const riddle = riddleId ? RIDDLE_POOL.find(r => r.id === riddleId) : null;
+      if (!riddle) return undefined;
+      
+      const fallback = createFallbackChoice(riddle, "second", "riddleOfAges");
+      return {
+        ...fallback,
+        effect: (s: GameState) => {
+          const result = fallback.effect(s);
+          delete (result.events as any)._currentRiddle_riddleOfAges;
+          return result;
+        }
+      };
+    },
+  },
 
-  riddleOfDevourer: (() => {
-    let currentRiddle: typeof RIDDLE_POOL[number] | null = null;
-    
-    return {
-      id: "riddleOfDevourer",
-      condition: (state: GameState) => state.events.riddleOfAges === true,
-      triggerType: "resource",
-      timeProbability: 45,
-      title: "A nightly Visitor",
-      message: (state: GameState) => {
-        currentRiddle = getUnusedRiddle(state);
-        return currentRiddle ? getStartMessage(currentRiddle.question, 3) : "";
-      },
-      triggered: false,
-      priority: 4,
-      repeatable: false,
-      isTimedChoice: true,
-      baseDecisionTime: 45,
-      choices: (state: GameState) => {
-        if (!currentRiddle) return [];
-        return createRiddleChoices(currentRiddle, "third", "riddleOfDevourer", "riddleOfDevourer_correct");
-      },
-      fallbackChoice: (state: GameState) => {
-        if (!currentRiddle) return undefined;
-        return createFallbackChoice(currentRiddle, "third", "riddleOfDevourer");
-      },
-    };
-  })(),
+  riddleOfDevourer: {
+    id: "riddleOfDevourer",
+    condition: (state: GameState) => state.events.riddleOfAges === true,
+    triggerType: "resource",
+    timeProbability: 45,
+    title: "A nightly Visitor",
+    message: (state: GameState) => {
+      const riddle = getUnusedRiddle(state);
+      if (!riddle) return "";
+      
+      (state.events as any)._currentRiddle_riddleOfDevourer = riddle.id;
+      return getStartMessage(riddle.question, 3);
+    },
+    triggered: false,
+    priority: 4,
+    repeatable: false,
+    isTimedChoice: true,
+    baseDecisionTime: 45,
+    choices: (state: GameState) => {
+      const riddleId = (state.events as any)._currentRiddle_riddleOfDevourer;
+      const riddle = riddleId ? RIDDLE_POOL.find(r => r.id === riddleId) : null;
+      if (!riddle) return [];
+      
+      const choices = createRiddleChoices(riddle, "third", "riddleOfDevourer", "riddleOfDevourer_correct");
+      
+      return choices.map(choice => ({
+        ...choice,
+        effect: (s: GameState) => {
+          const result = choice.effect(s);
+          delete (result.events as any)._currentRiddle_riddleOfDevourer;
+          return result;
+        }
+      }));
+    },
+    fallbackChoice: (state: GameState) => {
+      const riddleId = (state.events as any)._currentRiddle_riddleOfDevourer;
+      const riddle = riddleId ? RIDDLE_POOL.find(r => r.id === riddleId) : null;
+      if (!riddle) return undefined;
+      
+      const fallback = createFallbackChoice(riddle, "third", "riddleOfDevourer");
+      return {
+        ...fallback,
+        effect: (s: GameState) => {
+          const result = fallback.effect(s);
+          delete (result.events as any)._currentRiddle_riddleOfDevourer;
+          return result;
+        }
+      };
+    },
+  },
 
-  riddleOfTears: (() => {
-    let currentRiddle: typeof RIDDLE_POOL[number] | null = null;
-    
-    return {
-      id: "riddleOfTears",
-      condition: (state: GameState) => state.events.riddleOfDevourer === true,
-      triggerType: "resource",
-      timeProbability: 45,
-      title: "The hooded Guest",
-      message: (state: GameState) => {
-        currentRiddle = getUnusedRiddle(state);
-        return currentRiddle ? getStartMessage(currentRiddle.question, 4) : "";
-      },
-      triggered: false,
-      priority: 4,
-      repeatable: false,
-      isTimedChoice: true,
-      baseDecisionTime: 45,
-      choices: (state: GameState) => {
-        if (!currentRiddle) return [];
-        return createRiddleChoices(currentRiddle, "fourth", "riddleOfTears", "riddleOfTears_correct");
-      },
-      fallbackChoice: (state: GameState) => {
-        if (!currentRiddle) return undefined;
-        return createFallbackChoice(currentRiddle, "fourth", "riddleOfTears");
-      },
-    };
-  })(),
+  riddleOfTears: {
+    id: "riddleOfTears",
+    condition: (state: GameState) => state.events.riddleOfDevourer === true,
+    triggerType: "resource",
+    timeProbability: 45,
+    title: "The hooded Guest",
+    message: (state: GameState) => {
+      const riddle = getUnusedRiddle(state);
+      if (!riddle) return "";
+      
+      (state.events as any)._currentRiddle_riddleOfTears = riddle.id;
+      return getStartMessage(riddle.question, 4);
+    },
+    triggered: false,
+    priority: 4,
+    repeatable: false,
+    isTimedChoice: true,
+    baseDecisionTime: 45,
+    choices: (state: GameState) => {
+      const riddleId = (state.events as any)._currentRiddle_riddleOfTears;
+      const riddle = riddleId ? RIDDLE_POOL.find(r => r.id === riddleId) : null;
+      if (!riddle) return [];
+      
+      const choices = createRiddleChoices(riddle, "fourth", "riddleOfTears", "riddleOfTears_correct");
+      
+      return choices.map(choice => ({
+        ...choice,
+        effect: (s: GameState) => {
+          const result = choice.effect(s);
+          delete (result.events as any)._currentRiddle_riddleOfTears;
+          return result;
+        }
+      }));
+    },
+    fallbackChoice: (state: GameState) => {
+      const riddleId = (state.events as any)._currentRiddle_riddleOfTears;
+      const riddle = riddleId ? RIDDLE_POOL.find(r => r.id === riddleId) : null;
+      if (!riddle) return undefined;
+      
+      const fallback = createFallbackChoice(riddle, "fourth", "riddleOfTears");
+      return {
+        ...fallback,
+        effect: (s: GameState) => {
+          const result = fallback.effect(s);
+          delete (result.events as any)._currentRiddle_riddleOfTears;
+          return result;
+        }
+      };
+    },
+  },
 
-  riddleOfEternal: (() => {
-    let currentRiddle: typeof RIDDLE_POOL[number] | null = null;
-    
-    return {
-      id: "riddleOfEternal",
-      condition: (state: GameState) => state.events.riddleOfTears === true,
-      triggerType: "resource",
-      timeProbability: 45,
-      title: "The unknown Guest",
-      message: (state: GameState) => {
-        currentRiddle = getUnusedRiddle(state);
-        return currentRiddle ? getStartMessage(currentRiddle.question, 5) : "";
-      },
-      triggered: false,
-      priority: 4,
-      repeatable: false,
-      isTimedChoice: true,
-      baseDecisionTime: 45,
-      choices: (state: GameState) => {
-        if (!currentRiddle) return [];
-        return createRiddleChoices(currentRiddle, "fifth", "riddleOfEternal", "riddleOfEternal_correct");
-      },
-      fallbackChoice: (state: GameState) => {
-        if (!currentRiddle) return undefined;
-        return createFallbackChoice(currentRiddle, "fifth", "riddleOfEternal");
-      },
-    };
-  })(),
+  riddleOfEternal: {
+    id: "riddleOfEternal",
+    condition: (state: GameState) => state.events.riddleOfTears === true,
+    triggerType: "resource",
+    timeProbability: 45,
+    title: "The unknown Guest",
+    message: (state: GameState) => {
+      const riddle = getUnusedRiddle(state);
+      if (!riddle) return "";
+      
+      (state.events as any)._currentRiddle_riddleOfEternal = riddle.id;
+      return getStartMessage(riddle.question, 5);
+    },
+    triggered: false,
+    priority: 4,
+    repeatable: false,
+    isTimedChoice: true,
+    baseDecisionTime: 45,
+    choices: (state: GameState) => {
+      const riddleId = (state.events as any)._currentRiddle_riddleOfEternal;
+      const riddle = riddleId ? RIDDLE_POOL.find(r => r.id === riddleId) : null;
+      if (!riddle) return [];
+      
+      const choices = createRiddleChoices(riddle, "fifth", "riddleOfEternal", "riddleOfEternal_correct");
+      
+      return choices.map(choice => ({
+        ...choice,
+        effect: (s: GameState) => {
+          const result = choice.effect(s);
+          delete (result.events as any)._currentRiddle_riddleOfEternal;
+          return result;
+        }
+      }));
+    },
+    fallbackChoice: (state: GameState) => {
+      const riddleId = (state.events as any)._currentRiddle_riddleOfEternal;
+      const riddle = riddleId ? RIDDLE_POOL.find(r => r.id === riddleId) : null;
+      if (!riddle) return undefined;
+      
+      const fallback = createFallbackChoice(riddle, "fifth", "riddleOfEternal");
+      return {
+        ...fallback,
+        effect: (s: GameState) => {
+          const result = fallback.effect(s);
+          delete (result.events as any)._currentRiddle_riddleOfEternal;
+          return result;
+        }
+      };
+    },
+  },
 };
