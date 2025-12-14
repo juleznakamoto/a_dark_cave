@@ -94,41 +94,17 @@ export default function EventDialog({
 
         const eventId = event.id.split("-")[0];
 
-        // Check if this is a riddle event - riddles need to show penalty dialog
-        const riddleEventIds = [
-          "whispererInTheDark",
-          "riddleOfAges",
-          "riddleOfDevourer",
-          "riddleOfTears",
-          "riddleOfEternal"
-        ];
-        const isRiddleEvent = riddleEventIds.includes(eventId);
-
         if (event.fallbackChoice) {
-          // For riddle events, use handleChoice to trigger the penalty dialog flow
-          // For other events, use applyEventChoice and close immediately
-          if (isRiddleEvent) {
-            handleChoice(event.fallbackChoice.id);
-          } else {
-            applyEventChoice(event.fallbackChoice.id, eventId);
-            onClose();
-          }
+          // Use defined fallback choice
+          applyEventChoice(event.fallbackChoice.id, eventId);
         } else if (eventChoices.length > 0) {
           // No fallback defined, choose randomly from available choices
           const randomChoice =
             eventChoices[Math.floor(Math.random() * eventChoices.length)];
-          if (isRiddleEvent) {
-            handleChoice(randomChoice.id);
-          } else {
-            applyEventChoice(randomChoice.id, eventId);
-            onClose();
-          }
-        } else {
-          // No fallback and no choices - just close for non-riddle events
-          if (!isRiddleEvent) {
-            onClose();
-          }
+          applyEventChoice(randomChoice.id, eventId);
         }
+
+        onClose();
       }
     }, 100);
 
@@ -259,25 +235,8 @@ export default function EventDialog({
 
     // For non-merchant events, process normally
     fallbackExecutedRef.current = true;
-    
-    // Check if this is a riddle event that will show a penalty dialog
-    const riddleEventIds = [
-      "whispererInTheDark",
-      "riddleOfAges",
-      "riddleOfDevourer",
-      "riddleOfTears",
-      "riddleOfEternal"
-    ];
-    const isRiddleEvent = riddleEventIds.includes(eventId);
-    
     applyEventChoice(choiceId, eventId);
-    
-    // For riddle events, don't call onClose() - the state management will handle
-    // closing this dialog and opening the penalty dialog via _logMessage
-    // For other events, close immediately
-    if (!isRiddleEvent) {
-      onClose();
-    }
+    onClose();
   };
 
   const progress =
