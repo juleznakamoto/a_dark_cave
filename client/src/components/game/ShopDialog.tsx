@@ -745,7 +745,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                               color: tailwindToHex(
                                 item.symbolColor.replace("text-", ""),
                               ),
-                              maxWidth: '2.5ch',
+                              maxWidth: '2.2em',
                               wordBreak: 'break-all',
                               overflowWrap: 'anywhere',
                             }}
