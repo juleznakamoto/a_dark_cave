@@ -6,46 +6,26 @@ import {
   getTotalBuildingCostReduction as getTotalBuildingCostReductionCalc,
 } from "./effectsCalculation";
 import { setGameActionsRef } from "./actionEffects";
+import { getNextBuildingLevel } from "./villageBuildActions";
+import {
+  getBoneTotemsCost,
+  getLeatherTotemsCost,
+  getAnimalsCost,
+  getHumansCost,
+} from "./forestSacrificeActions";
 
-// Import action modules
+// Import action modules - these are now safe because actionEffects uses late binding
 import { caveCraftResources } from "./caveCraftResources";
 import { caveCraftTools } from "./caveCraftTools";
 import { caveCraftWeapons } from "./caveCraftWeapons";
 import { caveMineActions } from "./caveMineActions";
 import { villageBuildActions } from "./villageBuildActions";
 import { forestScoutActions } from "./forestScoutActions";
-import {
-  forestSacrificeActions,
-  getBoneTotemsCost,
-  getLeatherTotemsCost,
-  getAnimalsCost,
-  getHumansCost,
-} from "./forestSacrificeActions";
+import { forestSacrificeActions } from "./forestSacrificeActions";
 import { forestTradeActions } from "./forestTradeActions";
 import { caveExploreActions } from "./caveExploreActions";
-import { getNextBuildingLevel } from "./villageBuildActions";
 
-// Combine all actions first
-export const gameActions: Record<string, Action> = {
-  ...villageBuildActions,
-  ...caveExploreActions,
-  ...caveCraftTools,
-  ...caveCraftResources,
-  ...caveCraftWeapons,
-  ...caveMineActions,
-  ...forestScoutActions,
-  ...forestSacrificeActions,
-  ...forestTradeActions,
-  // Add new actions here
-  buildBlackMonolith: villageBuildActions.buildBlackMonolith,
-  buildMasterworkFoundry: villageBuildActions.buildMasterworkFoundry,
-  animals: forestSacrificeActions.animals,
-};
-
-// Register gameActions with actionEffects to break circular dependency
-setGameActionsRef(gameActions);
-
-// Import event modules AFTER gameActions is defined
+// Import event modules - can be imported anytime since they don't have circular deps
 import { caveEvents } from "./eventsCave";
 import { huntEvents } from "./eventsHunt";
 import { choiceEvents } from "./eventsChoices";
@@ -61,6 +41,23 @@ import { villageAttackEvents } from "./eventsVillageAttacks";
 import { woodcutterEvents } from "./eventsWoodcutter";
 import { fellowshipEvents } from "./eventsFellowship";
 import { attackWaveEvents } from "./eventsAttackWaves";
+import { riddleEvents } from "./eventsRiddles";
+
+// Combine all actions
+export const gameActions: Record<string, Action> = {
+  ...villageBuildActions,
+  ...caveExploreActions,
+  ...caveCraftTools,
+  ...caveCraftResources,
+  ...caveCraftWeapons,
+  ...caveMineActions,
+  ...forestScoutActions,
+  ...forestSacrificeActions,
+  ...forestTradeActions,
+};
+
+// Register gameActions reference for late binding in actionEffects
+setGameActionsRef(gameActions);
 
 // Helper function to check if requirements are met for both building and non-building actions
 const checkRequirements = (
@@ -615,4 +612,5 @@ export const allEvents: Record<string, GameEvent> = {
   ...feastEvents,
   ...merchantEvents,
   ...fellowshipEvents,
+  ...riddleEvents,
 };
