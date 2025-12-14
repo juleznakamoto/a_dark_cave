@@ -272,6 +272,7 @@ export const gameStateSchema = z.object({
       available: z.array(z.string()).default([]),
       active: z.array(z.string()).default([]),
       log: z.array(z.string()).default([]),
+      usedRiddleIds: z.array(z.string()).default([]),
       whisperingVoices: z.boolean().default(false),
       shadowsMove: z.boolean().default(false),
       villagerStares: z.boolean().default(false),
