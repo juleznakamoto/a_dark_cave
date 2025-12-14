@@ -234,7 +234,7 @@ export default function ForestPanel() {
           size="xs"
           disabled={!canExecute}
           variant="outline"
-          className={`hover:bg-transparent hover:text-foreground ${isTradeButton ? "w-fit" : ""} ${shouldGlow ? "focus-glow" : ""}`}
+          className={`hover:bg-transparent hover:text-foreground w-full ${shouldGlow ? "focus-glow" : ""}`}
           tooltip={tooltipContent}
           onMouseEnter={() => {
             if (state.buildings.inkwardenAcademy > 0) {
@@ -273,7 +273,7 @@ export default function ForestPanel() {
         size="xs"
         disabled={!canExecute}
         variant="outline"
-        className={`hover:bg-transparent hover:text-foreground ${isTradeButton ? "w-fit" : ""} ${shouldGlow ? "focus-glow" : ""}`}
+        className={`hover:bg-transparent hover:text-foreground w-full ${shouldGlow ? "focus-glow" : ""}`}
         onMouseEnter={() => {
           if (state.buildings.inkwardenAcademy > 0) {
             const resources = getResourcesFromActionCost(actionId, state);
