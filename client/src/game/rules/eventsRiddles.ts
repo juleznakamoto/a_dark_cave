@@ -364,7 +364,8 @@ export const riddleEvents: Record<string, GameEvent> = {
   whispererInTheDark: {
     id: "whispererInTheDark",
     condition: (state: GameState) => {
-      return state.buildings.darkEstate >= 1 && !(state.events.usedRiddleIds || []).length;
+      return state.buildings.darkEstate >= 1
+        // && !(state.events.usedRiddleIds || []).length;
     },
     triggerType: "resource",
     timeProbability: 0.030,
@@ -372,7 +373,7 @@ export const riddleEvents: Record<string, GameEvent> = {
     message: "",
     triggered: false,
     priority: 4,
-    repeatable: false,
+    repeatable: true,
     isTimedChoice: true,
     baseDecisionTime: 45,
     choices: [],
