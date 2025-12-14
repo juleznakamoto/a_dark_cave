@@ -394,7 +394,7 @@ export const riddleEvents: Record<string, GameEvent> = {
     condition: (state: GameState) => state.events.riddleOfDevourer === true,
     triggerType: "resource",
     timeProbability: 45,
-    title: "A hooded Guest",
+    title: "The hooded Guest",
     message: (state: GameState) => {
       const riddle = getUnusedRiddle(state);
       return riddle ? getStartMessage(riddle.question, 4) : "";
