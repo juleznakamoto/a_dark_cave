@@ -222,8 +222,10 @@ export default function LeaderboardDialog({
               className="flex items-center justify-between p-3 rounded-md bg-muted/50 hover:bg-muted transition-colors"
             >
               <div className="flex items-center gap-3">
-                <span className={`font-bold text-lg w-8 text-center ${crown?.color || ""}`}>
-                  {crown ? crown.symbol : (index + 1)}
+                <span
+                  className={`font-bold text-lg w-8 text-center ${crown?.color || ""}`}
+                >
+                  {crown ? crown.symbol : index + 1}
                 </span>
                 <span className="font-sm">{entry.displayName}</span>
               </div>
@@ -302,7 +304,7 @@ export default function LeaderboardDialog({
                       height="16"
                       viewBox="0 0 24 24"
                       fill="none"
-                      stroke="currentColor"
+                      stroke="grey"
                       strokeWidth="2"
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -330,7 +332,10 @@ export default function LeaderboardDialog({
               </div>
               <span className="font-semibold text-sm">Completion Time</span>
             </div>
-            <div className="h-[400px] pr-4 flex-1 overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] overscroll-contain" style={{ WebkitOverflowScrolling: 'touch' }}>
+            <div
+              className="h-[400px] pr-4 flex-1 overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] overscroll-contain"
+              style={{ WebkitOverflowScrolling: "touch" }}
+            >
               <div className="space-y-2 pt-2">
                 {renderLeaderboard(normalLeaderboard)}
               </div>
@@ -349,13 +354,16 @@ export default function LeaderboardDialog({
               </div>
               <span className="font-semibold text-sm">Completion Time</span>
             </div>
-            <div className="h-[400px] pr-4 flex-1 overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] overscroll-contain" style={{ WebkitOverflowScrolling: 'touch' }}>
+            <div
+              className="h-[400px] pr-4 flex-1 overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] overscroll-contain"
+              style={{ WebkitOverflowScrolling: "touch" }}
+            >
               <div className="space-y-2 pt-2">
                 {renderLeaderboard(cruelLeaderboard)}
               </div>
             </div>
             {lastUpdated && (
-              <div className="text-xs text-muted-foreground text-center mt-2 pt-2 opacity-50">
+              <div className="text-xs text-muted-foreground text-center pt-2 opacity-50">
                 Last updated: {new Date(lastUpdated).toLocaleString()}
               </div>
             )}
