@@ -524,7 +524,7 @@ export default function CombatDialog({
                   >
                     <TooltipTrigger asChild>
                       <span
-                        className="text-green-300/80 cursor-pointer hover:text-green-300 transition-colors inline-block text-3xl sm:text-xl"
+                        className="text-green-300/80 cursor-pointer hover:text-green-300 transition-colors inline-block text-xl"
                         onClick={(e) =>
                           luckTooltip.handleTooltipClick(
                             "combat-luck",

@@ -740,7 +740,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                       <CardHeader className="leading-snug p-3 md:p-6 pb-2 md:pb-3 relative">
                         {item.symbol && (
                           <span
-                            className="leading-tight text-lg text-right absolute top-3 right-3 md:top-6 md:right-6"
+                            className="leading-none text-lg text-right absolute top-3 right-3 md:top-6 md:right-6"
                             style={{
                               color: tailwindToHex(
                                 item.symbolColor.replace("text-", ""),
@@ -753,7 +753,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                             {item.symbol}
                           </span>
                         )}
-                        <CardTitle className="text-md pr-6">
+                        <CardTitle className="!m-0 text-md pr-6">
                           {item.name}
                         </CardTitle>
                         <CardDescription className="text-bold">
