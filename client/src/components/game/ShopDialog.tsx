@@ -750,7 +750,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                             {item.symbol}
                           </span>
                         )}
-                        <CardTitle className="text-md pr-6">
+                        <CardTitle className="text-md pr-4">
                           {item.name}
                         </CardTitle>
                         <CardDescription className="text-bold">
@@ -763,7 +763,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                         </CardDescription>
                       </CardHeader>
                       <CardContent className="pl-3 pr-3 md:pl-6 md:pr-6 pb-3 md:pb-4 flex-1">
-                        <p className="text-sm text-muted-foreground">
+                        <p className="leading-snug text-sm text-muted-foreground">
                           {item.description}
                         </p>
                       </CardContent>
