@@ -133,13 +133,19 @@ const createRiddleChoices = (
   eventId: string,
   eventIdCorrect: string
 ) => {
+  // Shuffle the answers so correct answer isn't always first
   const allAnswers = [riddle.correctAnswer, ...riddle.wrongAnswers];
+  const shuffledAnswers = allAnswers.sort(() => Math.random() - 0.5);
 
-  return allAnswers.map(answer => ({
+  // Capture the correct answer in the closure
+  const correctAnswer = riddle.correctAnswer;
+  const riddleId = riddle.id;
+
+  return shuffledAnswers.map(answer => ({
     id: `answer${answer}`,
     label: answer,
     effect: (state: GameState) => {
-      const isCorrect = answer === riddle.correctAnswer;
+      const isCorrect = answer === correctAnswer;
 
       if (isCorrect) {
         return {
@@ -151,7 +157,7 @@ const createRiddleChoices = (
             ...state.events,
             [eventId]: true,
             [eventIdCorrect]: true,
-            usedRiddleIds: [...(state.events.usedRiddleIds || []), riddle.id],
+            usedRiddleIds: [...(state.events.usedRiddleIds || []), riddleId],
           },
           _logMessage: SUCCESS_MESSAGES[riddleNumber](RIDDLE_REWARDS[riddleNumber]),
         } as Partial<GameState>;
@@ -164,7 +170,7 @@ const createRiddleChoices = (
             events: {
               ...state.events,
               [eventId]: true,
-              usedRiddleIds: [...(state.events.usedRiddleIds || []), riddle.id],
+              usedRiddleIds: [...(state.events.usedRiddleIds || []), riddleId],
             },
             _logMessage: WRONG_ANSWER_MESSAGES[riddleNumber](deaths),
           } as Partial<GameState>;
@@ -179,7 +185,7 @@ const createRiddleChoices = (
             events: {
               ...state.events,
               [eventId]: true,
-              usedRiddleIds: [...(state.events.usedRiddleIds || []), riddle.id],
+              usedRiddleIds: [...(state.events.usedRiddleIds || []), riddleId],
             },
             _logMessage: WRONG_ANSWER_MESSAGES[riddleNumber](),
           } as Partial<GameState>;
@@ -197,7 +203,7 @@ const createRiddleChoices = (
             events: {
               ...state.events,
               [eventId]: true,
-              usedRiddleIds: [...(state.events.usedRiddleIds || []), riddle.id],
+              usedRiddleIds: [...(state.events.usedRiddleIds || []), riddleId],
             },
             _logMessage: WRONG_ANSWER_MESSAGES.fifth(deaths),
           } as Partial<GameState>;
@@ -269,7 +275,7 @@ const createFallbackChoice = (
 export const riddleEvents: Record<string, GameEvent> = {
   whisperersReward: {
     id: "whisperersReward",
-    condition: (state: GameState) => 
+    condition: (state: GameState) =>
       state.events.whispererInTheDark_correct === true &&
       state.events.riddleOfAges_correct === true &&
       state.events.riddleOfDevourer_correct === true &&
@@ -315,7 +321,7 @@ export const riddleEvents: Record<string, GameEvent> = {
     message: (state: GameState) => {
       const riddle = getUnusedRiddle(state);
       if (!riddle) return "";
-      
+
       // Store riddle ID in state temporarily for choices to use
       (state.events as any)._currentRiddle_whispererInTheDark = riddle.id;
       return getStartMessage(riddle.question, 1);
@@ -329,9 +335,9 @@ export const riddleEvents: Record<string, GameEvent> = {
       const riddleId = (state.events as any)._currentRiddle_whispererInTheDark;
       const riddle = riddleId ? RIDDLE_POOL.find(r => r.id === riddleId) : null;
       if (!riddle) return [];
-      
+
       const choices = createRiddleChoices(riddle, "first", "whispererInTheDark", "whispererInTheDark_correct");
-      
+
       // Clean up temp tracking in all choice effects
       return choices.map(choice => ({
         ...choice,
@@ -346,7 +352,7 @@ export const riddleEvents: Record<string, GameEvent> = {
       const riddleId = (state.events as any)._currentRiddle_whispererInTheDark;
       const riddle = riddleId ? RIDDLE_POOL.find(r => r.id === riddleId) : null;
       if (!riddle) return undefined;
-      
+
       const fallback = createFallbackChoice(riddle, "first", "whispererInTheDark");
       return {
         ...fallback,
@@ -368,7 +374,7 @@ export const riddleEvents: Record<string, GameEvent> = {
     message: (state: GameState) => {
       const riddle = getUnusedRiddle(state);
       if (!riddle) return "";
-      
+
       (state.events as any)._currentRiddle_riddleOfAges = riddle.id;
       return getStartMessage(riddle.question, 2);
     },
@@ -381,9 +387,9 @@ export const riddleEvents: Record<string, GameEvent> = {
       const riddleId = (state.events as any)._currentRiddle_riddleOfAges;
       const riddle = riddleId ? RIDDLE_POOL.find(r => r.id === riddleId) : null;
       if (!riddle) return [];
-      
+
       const choices = createRiddleChoices(riddle, "second", "riddleOfAges", "riddleOfAges_correct");
-      
+
       return choices.map(choice => ({
         ...choice,
         effect: (s: GameState) => {
@@ -397,7 +403,7 @@ export const riddleEvents: Record<string, GameEvent> = {
       const riddleId = (state.events as any)._currentRiddle_riddleOfAges;
       const riddle = riddleId ? RIDDLE_POOL.find(r => r.id === riddleId) : null;
       if (!riddle) return undefined;
-      
+
       const fallback = createFallbackChoice(riddle, "second", "riddleOfAges");
       return {
         ...fallback,
@@ -419,7 +425,7 @@ export const riddleEvents: Record<string, GameEvent> = {
     message: (state: GameState) => {
       const riddle = getUnusedRiddle(state);
       if (!riddle) return "";
-      
+
       (state.events as any)._currentRiddle_riddleOfDevourer = riddle.id;
       return getStartMessage(riddle.question, 3);
     },
@@ -432,9 +438,9 @@ export const riddleEvents: Record<string, GameEvent> = {
       const riddleId = (state.events as any)._currentRiddle_riddleOfDevourer;
       const riddle = riddleId ? RIDDLE_POOL.find(r => r.id === riddleId) : null;
       if (!riddle) return [];
-      
+
       const choices = createRiddleChoices(riddle, "third", "riddleOfDevourer", "riddleOfDevourer_correct");
-      
+
       return choices.map(choice => ({
         ...choice,
         effect: (s: GameState) => {
@@ -448,7 +454,7 @@ export const riddleEvents: Record<string, GameEvent> = {
       const riddleId = (state.events as any)._currentRiddle_riddleOfDevourer;
       const riddle = riddleId ? RIDDLE_POOL.find(r => r.id === riddleId) : null;
       if (!riddle) return undefined;
-      
+
       const fallback = createFallbackChoice(riddle, "third", "riddleOfDevourer");
       return {
         ...fallback,
@@ -470,7 +476,7 @@ export const riddleEvents: Record<string, GameEvent> = {
     message: (state: GameState) => {
       const riddle = getUnusedRiddle(state);
       if (!riddle) return "";
-      
+
       (state.events as any)._currentRiddle_riddleOfTears = riddle.id;
       return getStartMessage(riddle.question, 4);
     },
@@ -483,9 +489,9 @@ export const riddleEvents: Record<string, GameEvent> = {
       const riddleId = (state.events as any)._currentRiddle_riddleOfTears;
       const riddle = riddleId ? RIDDLE_POOL.find(r => r.id === riddleId) : null;
       if (!riddle) return [];
-      
+
       const choices = createRiddleChoices(riddle, "fourth", "riddleOfTears", "riddleOfTears_correct");
-      
+
       return choices.map(choice => ({
         ...choice,
         effect: (s: GameState) => {
@@ -499,7 +505,7 @@ export const riddleEvents: Record<string, GameEvent> = {
       const riddleId = (state.events as any)._currentRiddle_riddleOfTears;
       const riddle = riddleId ? RIDDLE_POOL.find(r => r.id === riddleId) : null;
       if (!riddle) return undefined;
-      
+
       const fallback = createFallbackChoice(riddle, "fourth", "riddleOfTears");
       return {
         ...fallback,
@@ -521,7 +527,7 @@ export const riddleEvents: Record<string, GameEvent> = {
     message: (state: GameState) => {
       const riddle = getUnusedRiddle(state);
       if (!riddle) return "";
-      
+
       (state.events as any)._currentRiddle_riddleOfEternal = riddle.id;
       return getStartMessage(riddle.question, 5);
     },
@@ -534,9 +540,9 @@ export const riddleEvents: Record<string, GameEvent> = {
       const riddleId = (state.events as any)._currentRiddle_riddleOfEternal;
       const riddle = riddleId ? RIDDLE_POOL.find(r => r.id === riddleId) : null;
       if (!riddle) return [];
-      
+
       const choices = createRiddleChoices(riddle, "fifth", "riddleOfEternal", "riddleOfEternal_correct");
-      
+
       return choices.map(choice => ({
         ...choice,
         effect: (s: GameState) => {
@@ -550,7 +556,7 @@ export const riddleEvents: Record<string, GameEvent> = {
       const riddleId = (state.events as any)._currentRiddle_riddleOfEternal;
       const riddle = riddleId ? RIDDLE_POOL.find(r => r.id === riddleId) : null;
       if (!riddle) return undefined;
-      
+
       const fallback = createFallbackChoice(riddle, "fifth", "riddleOfEternal");
       return {
         ...fallback,
