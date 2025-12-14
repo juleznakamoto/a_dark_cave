@@ -131,7 +131,7 @@ const getUnusedRiddle = (state: GameState, eventId: string): typeof RIDDLE_POOL[
   // Create a deterministic seed from game state
   const seed = state.resources.gold + state.current_population + usedRiddles.length + eventId.length;
   const index = Math.floor(seededRandom(seed) * availableRiddles.length);
-  
+
   return availableRiddles[index];
 };
 
@@ -146,7 +146,7 @@ const createRiddleChoices = (
   // Deterministically shuffle the answers using game state as seed
   const allAnswers = [riddle.correctAnswer, ...riddle.wrongAnswers];
   const seed = state.resources.gold + state.current_population + riddle.id.length;
-  
+
   // Fisher-Yates shuffle with seeded random
   const shuffledAnswers = [...allAnswers];
   for (let i = shuffledAnswers.length - 1; i > 0; i--) {
@@ -172,9 +172,8 @@ const createRiddleChoices = (
           },
           events: {
             ...state.events,
-            [eventId]: true,
-            [eventIdCorrect]: true,
-            usedRiddleIds: [...(state.events.usedRiddleIds || []), riddleId],
+            [eventId]: true, // Mark the event as completed
+            [`${eventIdCorrect}`]: true,
           },
           _logMessage: SUCCESS_MESSAGES[riddleNumber](RIDDLE_REWARDS[riddleNumber]),
         } as Partial<GameState>;
