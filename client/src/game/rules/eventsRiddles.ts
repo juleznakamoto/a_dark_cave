@@ -174,6 +174,7 @@ const createRiddleChoices = (
             ...state.events,
             [eventId]: true, // Mark the event as completed
             [`${eventIdCorrect}`]: true,
+            usedRiddleIds: [...(state.events.usedRiddleIds || []), riddleId],
           },
           _logMessage: SUCCESS_MESSAGES[riddleNumber](RIDDLE_REWARDS[riddleNumber]),
         } as Partial<GameState>;
