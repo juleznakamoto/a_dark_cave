@@ -1,8 +1,9 @@
+
 import { useState, useEffect, useRef } from "react";
-import { useIsMobileOrTablet } from "./use-mobile";
+import { useIsMobile } from "./use-mobile";
 
 export function useMobileTooltip() {
-  const isMobile = useIsMobileOrTablet();
+  const isMobile = useIsMobile();
   const [openTooltipId, setOpenTooltipId] = useState<string | null>(null);
 
   // Effect to handle click outside of tooltip on mobile
@@ -24,7 +25,7 @@ export function useMobileTooltip() {
 
   const handleTooltipClick = (id: string, e: React.MouseEvent) => {
     if (!isMobile) return;
-
+    
     e.stopPropagation();
     setOpenTooltipId(openTooltipId === id ? null : id);
   };
@@ -42,7 +43,7 @@ export function useMobileTooltip() {
 }
 
 export function useMobileButtonTooltip() {
-  const isMobile = useIsMobileOrTablet();
+  const isMobile = useIsMobile();
   const [openTooltipId, setOpenTooltipId] = useState<string | null>(null);
   const pressTimerRef = useRef<NodeJS.Timeout | null>(null);
   const [pressingId, setPressingId] = useState<string | null>(null);
@@ -75,7 +76,7 @@ export function useMobileButtonTooltip() {
 
   const handleWrapperClick = (id: string, disabled: boolean, isCoolingDown: boolean, e: React.MouseEvent) => {
     if (!isMobile || isCoolingDown) return;
-
+    
     // On mobile with tooltip, handle inactive buttons specially
     if (disabled) {
       e.stopPropagation();
@@ -85,16 +86,16 @@ export function useMobileButtonTooltip() {
 
   const handleMouseDown = (id: string, disabled: boolean, isCoolingDown: boolean, e: React.MouseEvent) => {
     if (!isMobile) return;
-
+    
     // Clear any existing timer before creating a new one
     if (pressTimerRef.current) {
       clearTimeout(pressTimerRef.current);
       pressTimerRef.current = null;
     }
-
+    
     // Don't prevent default to allow button interaction
     setPressingId(id);
-
+    
     // Start timer to show tooltip after 300ms
     pressTimerRef.current = setTimeout(() => {
       setOpenTooltipId(id);
@@ -104,13 +105,13 @@ export function useMobileButtonTooltip() {
 
   const handleMouseUp = (id: string, disabled: boolean, onClick: () => void, e: React.MouseEvent) => {
     if (!isMobile) return;
-
+    
     // Clear the timer
     if (pressTimerRef.current) {
       clearTimeout(pressTimerRef.current);
       pressTimerRef.current = null;
     }
-
+    
     // If tooltip is already open, close it
     if (openTooltipId === id) {
       e.preventDefault();
@@ -118,7 +119,7 @@ export function useMobileButtonTooltip() {
       setPressingId(null);
       return;
     }
-
+    
     // If we were pressing and didn't show tooltip yet, execute the action (only if not disabled)
     if (pressingId === id) {
       setPressingId(null);
@@ -127,21 +128,21 @@ export function useMobileButtonTooltip() {
         return;
       }
     }
-
+    
     setPressingId(null);
   };
 
   const handleTouchStart = (id: string, disabled: boolean, isCoolingDown: boolean, e: React.TouchEvent) => {
     if (!isMobile) return;
-
+    
     // Clear any existing timer before creating a new one
     if (pressTimerRef.current) {
       clearTimeout(pressTimerRef.current);
       pressTimerRef.current = null;
     }
-
+    
     setPressingId(id);
-
+    
     // Start timer to show tooltip after 300ms
     pressTimerRef.current = setTimeout(() => {
       setOpenTooltipId(id);
@@ -151,13 +152,13 @@ export function useMobileButtonTooltip() {
 
   const handleTouchEnd = (id: string, disabled: boolean, onClick: () => void, e: React.TouchEvent) => {
     if (!isMobile) return;
-
+    
     // Clear the timer
     if (pressTimerRef.current) {
       clearTimeout(pressTimerRef.current);
       pressTimerRef.current = null;
     }
-
+    
     // If tooltip is already open, close it
     if (openTooltipId === id) {
       e.preventDefault();
@@ -165,7 +166,7 @@ export function useMobileButtonTooltip() {
       setPressingId(null);
       return;
     }
-
+    
     // If we were pressing and didn't show tooltip yet, execute the action (only if not disabled)
     if (pressingId === id) {
       setPressingId(null);
