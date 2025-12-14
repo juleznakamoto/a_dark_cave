@@ -740,17 +740,19 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                       <CardHeader className="leading-snug p-3 md:p-6 pb-2 md:pb-3 relative">
                         {item.symbol && (
                           <span
-                            className="absolute top-3 right-3 md:top-6 md:right-6 text-lg"
+                            className={`text-lg text-right ${item.symbol.length > 2 ? 'block absolute top-3 right-3 md:top-6 md:right-6' : 'absolute top-3 right-3 md:top-6 md:right-6'}`}
                             style={{
                               color: tailwindToHex(
                                 item.symbolColor.replace("text-", ""),
                               ),
+                              wordBreak: item.symbol.length > 2 ? 'break-all' : 'normal',
+                              maxWidth: item.symbol.length > 2 ? '3rem' : 'auto',
                             }}
                           >
                             {item.symbol}
                           </span>
                         )}
-                        <CardTitle className="text-md pr-4">
+                        <CardTitle className="text-md pr-6">
                           {item.name}
                         </CardTitle>
                         <CardDescription className="text-bold">
