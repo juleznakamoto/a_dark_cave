@@ -311,8 +311,7 @@ export const riddleEvents: Record<string, GameEvent> = {
       id: "whispererInTheDark",
       condition: (state: GameState) =>
         state.buildings.darkEstate >= 1 &&
-        !state.clothing.ravenfeather_mantle &&
-        state.current_population >= 4,
+        state.current_population >= 0,
       triggerType: "resource",
       timeProbability: 0.030,
       title: "Whisperer in the Dark",
