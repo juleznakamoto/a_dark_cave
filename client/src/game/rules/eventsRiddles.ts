@@ -368,7 +368,7 @@ export const riddleEvents: Record<string, GameEvent> = {
     },
     triggered: false,
     priority: 4,
-    repeatable: false,
+    repeatable: true,
     isTimedChoice: true,
     baseDecisionTime: 45,
     choices: (state: GameState) => {
