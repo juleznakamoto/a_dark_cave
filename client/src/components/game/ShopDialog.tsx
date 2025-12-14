@@ -737,24 +737,22 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                   {Object.values(SHOP_ITEMS).map((item) => (
                     <Card key={item.id} className="flex flex-col">
-                      <CardHeader className="leading-snug p-3 md:p-6 pb-2 md:pb-3">
-                        <div className="flex items-center gap-2">
-                          <CardTitle className="text-md flex items-center gap-2">
-                            {item.name}
-                            {item.symbol && (
-                              <span
-                                className="text-lg"
-                                style={{
-                                  color: tailwindToHex(
-                                    item.symbolColor.replace("text-", ""),
-                                  ),
-                                }}
-                              >
-                                {item.symbol}
-                              </span>
-                            )}
-                          </CardTitle>
-                        </div>
+                      <CardHeader className="leading-snug p-3 md:p-6 pb-2 md:pb-3 relative">
+                        {item.symbol && (
+                          <span
+                            className="absolute top-3 right-3 md:top-6 md:right-6 text-lg"
+                            style={{
+                              color: tailwindToHex(
+                                item.symbolColor.replace("text-", ""),
+                              ),
+                            }}
+                          >
+                            {item.symbol}
+                          </span>
+                        )}
+                        <CardTitle className="text-md pr-6">
+                          {item.name}
+                        </CardTitle>
                         <CardDescription className="text-bold">
                           {item.originalPrice && (
                             <span className="line-through text-muted-foreground mr-2">
