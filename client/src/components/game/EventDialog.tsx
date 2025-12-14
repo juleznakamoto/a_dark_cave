@@ -94,36 +94,17 @@ export default function EventDialog({
 
         const eventId = event.id.split("-")[0];
 
-        // Check if this is a riddle event
-        const riddleEventIds = [
-          "whispererInTheDark",
-          "riddleOfAges",
-          "riddleOfDevourer",
-          "riddleOfTears",
-          "riddleOfEternal"
-        ];
-        const isRiddleEvent = riddleEventIds.includes(eventId);
-
         if (event.fallbackChoice) {
-          // For riddle events, use handleChoice to show the penalty dialog
-          // For other events, use applyEventChoice and close
-          if (isRiddleEvent) {
-            handleChoice(event.fallbackChoice.id);
-          } else {
-            applyEventChoice(event.fallbackChoice.id, eventId);
-            onClose();
-          }
+          // Use defined fallback choice
+          applyEventChoice(event.fallbackChoice.id, eventId);
         } else if (eventChoices.length > 0) {
           // No fallback defined, choose randomly from available choices
           const randomChoice =
             eventChoices[Math.floor(Math.random() * eventChoices.length)];
-          if (isRiddleEvent) {
-            handleChoice(randomChoice.id);
-          } else {
-            applyEventChoice(randomChoice.id, eventId);
-            onClose();
-          }
+          applyEventChoice(randomChoice.id, eventId);
         }
+
+        onClose();
       }
     }, 100);
 
