@@ -95,61 +95,68 @@ export default function EventDialog({
         const eventId = event.id.split("-")[0];
 
         if (event.fallbackChoice) {
-          // Get the actual fallback choice object (it might be a function)
-          const fallbackChoiceObj = typeof event.fallbackChoice === 'function'
-            ? event.fallbackChoice(gameState)
-            : event.fallbackChoice;
+          // Check if this is a riddle event (function-based fallbackChoice)
+          const isRiddleEvent = typeof event.fallbackChoice === 'function';
 
-          if (fallbackChoiceObj) {
-            // Execute fallback effect to get result
-            const fallbackResult = fallbackChoiceObj.effect(gameState);
+          if (isRiddleEvent) {
+            // NEW RIDDLE LOGIC: Execute fallback effect directly
+            const fallbackChoiceObj = event.fallbackChoice(gameState);
 
-            // Apply all state changes directly from the fallback result
-            if (fallbackResult.resources) {
-              Object.entries(fallbackResult.resources).forEach(([resource, value]) => {
-                gameState.resources[resource as keyof typeof gameState.resources] = value;
-              });
-            }
-            if (fallbackResult.fogState) {
-              gameState.fogState = fallbackResult.fogState;
-            }
-            if (fallbackResult.current_population !== undefined) {
-              gameState.current_population = fallbackResult.current_population;
-            }
-            if (fallbackResult.events) {
-              gameState.events = { ...gameState.events, ...fallbackResult.events };
-            }
+            if (fallbackChoiceObj) {
+              // Execute fallback effect to get result
+              const fallbackResult = fallbackChoiceObj.effect(gameState);
 
-            // Check if there's a penalty message to show
-            if (fallbackResult._logMessage) {
-              // Close current dialog
-              onClose();
+              // Apply all state changes directly from the fallback result
+              if (fallbackResult.resources) {
+                Object.entries(fallbackResult.resources).forEach(([resource, value]) => {
+                  gameState.resources[resource as keyof typeof gameState.resources] = value;
+                });
+              }
+              if (fallbackResult.fogState) {
+                gameState.fogState = fallbackResult.fogState;
+              }
+              if (fallbackResult.current_population !== undefined) {
+                gameState.current_population = fallbackResult.current_population;
+              }
+              if (fallbackResult.events) {
+                gameState.events = { ...gameState.events, ...fallbackResult.events };
+              }
 
-              // Show penalty dialog after a delay
-              setTimeout(() => {
-                const messageEntry: LogEntry = {
-                  id: `timeout-penalty-${Date.now()}`,
-                  message: fallbackResult._logMessage,
-                  timestamp: Date.now(),
-                  type: "event",
-                  title: event.title,
-                  choices: [
-                    {
-                      id: "acknowledge",
-                      label: "Continue",
-                      effect: () => ({}),
-                    },
-                  ],
-                  skipSound: true,
-                };
-                gameState.setEventDialog(true, messageEntry);
-              }, 200);
+              // Check if there's a penalty message to show
+              if (fallbackResult._logMessage) {
+                // Close current dialog
+                onClose();
+
+                // Show penalty dialog after a delay
+                setTimeout(() => {
+                  const messageEntry: LogEntry = {
+                    id: `timeout-penalty-${Date.now()}`,
+                    message: fallbackResult._logMessage,
+                    timestamp: Date.now(),
+                    type: "event",
+                    title: event.title,
+                    choices: [
+                      {
+                        id: "acknowledge",
+                        label: "Continue",
+                        effect: () => ({}),
+                      },
+                    ],
+                    skipSound: true,
+                  };
+                  gameState.setEventDialog(true, messageEntry);
+                }, 200);
+              } else {
+                // No penalty message, just close
+                onClose();
+              }
             } else {
-              // No penalty message, just close
+              // Fallback returned undefined, just close
               onClose();
             }
           } else {
-            // Fallback returned undefined, just close
+            // OLD LOGIC for non-riddle events: Use applyEventChoice
+            applyEventChoice(event.fallbackChoice.id, eventId);
             onClose();
           }
         } else if (eventChoices.length > 0) {
