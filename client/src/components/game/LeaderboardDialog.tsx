@@ -330,11 +330,11 @@ export default function LeaderboardDialog({
               </div>
               <span className="font-semibold text-sm">Completion Time</span>
             </div>
-            <ScrollArea className="h-[400px] pr-4 flex-1 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+            <div className="h-[400px] pr-4 flex-1 overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] overscroll-contain" style={{ WebkitOverflowScrolling: 'touch' }}>
               <div className="space-y-2 pt-2">
                 {renderLeaderboard(normalLeaderboard)}
               </div>
-            </ScrollArea>
+            </div>
             {lastUpdated && (
               <div className="text-xs text-muted-foreground text-center mt-2 pt-2 opacity-50">
                 Last updated: {new Date(lastUpdated).toLocaleString()}
@@ -349,11 +349,11 @@ export default function LeaderboardDialog({
               </div>
               <span className="font-semibold text-sm">Completion Time</span>
             </div>
-            <ScrollArea className="h-[400px] pr-4 flex-1 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+            <div className="h-[400px] pr-4 flex-1 overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] overscroll-contain" style={{ WebkitOverflowScrolling: 'touch' }}>
               <div className="space-y-2 pt-2">
                 {renderLeaderboard(cruelLeaderboard)}
               </div>
-            </ScrollArea>
+            </div>
             {lastUpdated && (
               <div className="text-xs text-muted-foreground text-center mt-2 pt-2 opacity-50">
                 Last updated: {new Date(lastUpdated).toLocaleString()}
