@@ -245,9 +245,7 @@ const createFallbackChoice = (
   riddleNumber: "first" | "second" | "third" | "fourth" | "fifth",
   eventId: string
 ) => {
-  // Find any wrong answer from the riddle to use its effect
-  const wrongAnswer = riddle.wrongAnswers[0];
-  
+
   return {
     id: "timeout",
     label: "No answer given",
@@ -386,7 +384,7 @@ export const riddleEvents: Record<string, GameEvent> = {
     priority: 4,
     repeatable: true,
     isTimedChoice: true,
-    baseDecisionTime: 45,
+    baseDecisionTime: 5,
     choices: (state: GameState) => {
       const riddle = getUnusedRiddle(state, "riddleOfAges");
       if (!riddle) return [];
