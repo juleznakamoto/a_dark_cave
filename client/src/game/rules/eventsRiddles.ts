@@ -176,7 +176,6 @@ const createRiddleChoices = (
             [eventIdCorrect]: true,
             usedRiddleIds: [...(state.events.usedRiddleIds || []), riddleId],
           },
-          _logMessage: SUCCESS_MESSAGES[riddleNumber](RIDDLE_REWARDS[riddleNumber]),
         } as Partial<GameState>;
       } else {
         // Wrong answer - apply penalty based on riddle number
@@ -189,7 +188,6 @@ const createRiddleChoices = (
               [eventId]: true,
               usedRiddleIds: [...(state.events.usedRiddleIds || []), riddleId],
             },
-            _logMessage: WRONG_ANSWER_MESSAGES[riddleNumber](deaths),
           } as Partial<GameState>;
         } else if (riddleNumber === "second" || riddleNumber === "fourth") {
           const fogDuration = RIDDLE_PENALTIES[riddleNumber].fogDuration + (RIDDLE_PENALTIES[riddleNumber].fogDurationCM * state.CM);
@@ -204,7 +202,6 @@ const createRiddleChoices = (
               [eventId]: true,
               usedRiddleIds: [...(state.events.usedRiddleIds || []), riddleId],
             },
-            _logMessage: WRONG_ANSWER_MESSAGES[riddleNumber](),
           } as Partial<GameState>;
         } else if (riddleNumber === "fifth") {
           const deaths = RIDDLE_PENALTIES.fifth.deaths + RIDDLE_PENALTIES.fifth.cmMultiplier * state.CM;
@@ -222,7 +219,6 @@ const createRiddleChoices = (
               [eventId]: true,
               usedRiddleIds: [...(state.events.usedRiddleIds || []), riddleId],
             },
-            _logMessage: WRONG_ANSWER_MESSAGES.fifth(deaths),
           } as Partial<GameState>;
         }
       }
@@ -249,7 +245,6 @@ const createFallbackChoice = (
           [eventId]: true,
           usedRiddleIds: [...(state.events.usedRiddleIds || []), riddle.id],
         },
-        _logMessage: TIMEOUT_MESSAGES[riddleNumber](deaths),
       } as Partial<GameState>;
     } else if (riddleNumber === "second" || riddleNumber === "fourth") {
       const fogDuration = RIDDLE_PENALTIES[riddleNumber].fogDuration + (RIDDLE_PENALTIES[riddleNumber].fogDurationCM * state.CM);
@@ -264,7 +259,6 @@ const createFallbackChoice = (
           [eventId]: true,
           usedRiddleIds: [...(state.events.usedRiddleIds || []), riddle.id],
         },
-        _logMessage: TIMEOUT_MESSAGES[riddleNumber](),
       } as Partial<GameState>;
     } else if (riddleNumber === "fifth") {
       const deaths = RIDDLE_PENALTIES.fifth.deaths + RIDDLE_PENALTIES.fifth.cmMultiplier * state.CM;
@@ -282,7 +276,6 @@ const createFallbackChoice = (
           [eventId]: true,
           usedRiddleIds: [...(state.events.usedRiddleIds || []), riddle.id],
         },
-        _logMessage: TIMEOUT_MESSAGES.fifth(deaths),
       } as Partial<GameState>;
     }
     return {} as Partial<GameState>;
@@ -320,7 +313,6 @@ export const riddleEvents: Record<string, GameEvent> = {
               ...state.events,
               whisperersReward: true,
             },
-            _logMessage: "As the figure fades into the dark, a faint euphoria washes over you, quiet and fleeting, like a half-remembered memory of a better time.",
           };
         },
       },
