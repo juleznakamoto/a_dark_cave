@@ -71,10 +71,6 @@ const RIDDLE_PENALTIES = {
   },
 } as const;
 
-// Generic messages
-const START_MESSAGE_PREFIX = "A knock comes from the estate door. A figure completely hulled in dark robes stands in the shadows outside. It whispers: '";
-const START_MESSAGE_SUFFIX = "'";
-
 const getStartMessage = (riddleQuestion: string, visitNumber: number) => {
   const prefixes = [
     "A knock comes from the estate door. A figure completely hulled in dark robes stands in the shadows outside. It whispers: '",
@@ -312,7 +308,7 @@ export const riddleEvents: Record<string, GameEvent> = {
     id: "whispererInTheDark",
     condition: (state: GameState) => state.buildings.darkEstate >= 1,
     triggerType: "resource",
-    timeProbability: 30,
+    timeProbability: 0.030,
     title: "Whisperer in the Dark",
     message: (state: GameState) => {
       const riddle = getUnusedRiddle(state);
@@ -320,7 +316,7 @@ export const riddleEvents: Record<string, GameEvent> = {
     },
     triggered: false,
     priority: 4,
-    repeatable: false,
+    repeatable: true,
     isTimedChoice: true,
     baseDecisionTime: 45,
     choices: (state: GameState) => {
