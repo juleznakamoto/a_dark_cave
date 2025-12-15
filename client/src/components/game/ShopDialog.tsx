@@ -1084,7 +1084,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
           </Tabs>
         ) : clientSecret ? (
           <ScrollArea className="max-h-[calc(80vh-80px)]">
-            <div className="mt-4">
+            <div className="mt-0">
               <h3 className="text-lg font-semibold mb-4">
                 Complete Purchase: {SHOP_ITEMS[selectedItem!]?.name}
               </h3>
