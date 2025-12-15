@@ -160,7 +160,12 @@ export function applyActionEffects(
             state,
           );
 
-          current[finalKey] = (current[finalKey] || 0) - (typeof adjustedCost === 'number' ? adjustedCost : 0);
+          // Get the current amount from state (not updates) and subtract the adjusted cost
+          const currentAmount = path.startsWith("resources.")
+            ? (state.resources[finalKey as keyof typeof state.resources] || 0)
+            : (current[finalKey] || 0);
+          
+          current[finalKey] = currentAmount - adjustedCost;
         }
       });
     }
