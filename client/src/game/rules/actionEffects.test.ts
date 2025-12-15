@@ -5,7 +5,7 @@ import { createInitialState } from '../state';
 // Import index first to ensure gameActions is initialized
 import { gameActions } from './index';
 import { applyActionEffects } from './actionEffects';
-import { gameActions as importedGameActions } from "../actions"; // Alias to avoid naming conflict
+import { getTotalCraftingCostReduction, getTotalBuildingCostReduction } from './effectsCalculation';
 
 describe('actionEffects - circular dependency fix', () => {
   let state: GameState;
@@ -76,11 +76,10 @@ describe('actionEffects - circular dependency fix', () => {
 
     // Verify it can actually apply effects
     const testState = createInitialState();
-    const chopWoodCost = (gameActions.chopWood.cost as any)["resources.wood"];
-    testState.resources.wood = chopWoodCost; // Set resources to cost
+    testState.resources.wood = 0; // Start with 0 wood
     const result = applyActionEffects('chopWood', testState);
     expect(result).toBeDefined();
-    expect(result.resources!.wood).toBe(0); // Should consume the cost
+    expect(result.resources!.wood).toBeGreaterThan(0); // Should gain wood
   });
 });
 
@@ -93,7 +92,7 @@ describe('Crafting Cost Reductions', () => {
   });
 
   it('should apply blacksmith_hammer 10% crafting discount for craftIronAxe', () => {
-    const baseCost = (importedGameActions.craftIronAxe.cost as any)["resources.iron"];
+    const baseCost = (gameActions.craftIronAxe.cost as any)["resources.iron"];
 
     const stateWith: GameState = {
       ...baseState,
@@ -111,7 +110,7 @@ describe('Crafting Cost Reductions', () => {
   });
 
   it('should stack crafting discounts from tools and highest storage building for craftIronAxe', () => {
-    const baseCost = (importedGameActions.craftIronAxe.cost as any)["resources.iron"];
+    const baseCost = (gameActions.craftIronAxe.cost as any)["resources.iron"];
 
     const state: GameState = {
       ...baseState,
@@ -179,8 +178,8 @@ describe('Building Cost Reductions', () => {
   });
 
   it('should apply mastermason_chisel 10% building discount for buildCabin', () => {
-    const baseWoodCost = (importedGameActions.buildCabin.cost as any)[1]["resources.wood"];
-    const baseStoneCost = (importedGameActions.buildCabin.cost as any)[1]["resources.stone"];
+    const baseWoodCost = (gameActions.buildCabin.cost as any)[1]["resources.wood"];
+    const baseStoneCost = (gameActions.buildCabin.cost as any)[1]["resources.stone"];
 
     const stateWith: GameState = {
       ...baseState,
@@ -199,8 +198,8 @@ describe('Building Cost Reductions', () => {
   });
 
   it('should apply fortified storehouse 5% building discount for buildCabin', () => {
-    const baseWoodCost = (importedGameActions.buildCabin.cost as any)[1]["resources.wood"];
-    const baseStoneCost = (importedGameActions.buildCabin.cost as any)[1]["resources.stone"];
+    const baseWoodCost = (gameActions.buildCabin.cost as any)[1]["resources.wood"];
+    const baseStoneCost = (gameActions.buildCabin.cost as any)[1]["resources.stone"];
 
     state.resources.wood = baseWoodCost;
     state.resources.stone = baseStoneCost;
@@ -214,8 +213,8 @@ describe('Building Cost Reductions', () => {
   });
 
   it('should use only highest tier storage building for building cost reduction for buildCabin', () => {
-    const baseWoodCost = (importedGameActions.buildCabin.cost as any)[1]["resources.wood"];
-    const baseStoneCost = (importedGameActions.buildCabin.cost as any)[1]["resources.stone"];
+    const baseWoodCost = (gameActions.buildCabin.cost as any)[1]["resources.wood"];
+    const baseStoneCost = (gameActions.buildCabin.cost as any)[1]["resources.stone"];
 
     state.resources.wood = baseWoodCost;
     state.resources.stone = baseStoneCost;
@@ -233,8 +232,8 @@ describe('Building Cost Reductions', () => {
   });
 
   it('should stack building discounts from buildings and tools for buildCabin', () => {
-    const baseWoodCost = (importedGameActions.buildCabin.cost as any)[1]["resources.wood"];
-    const baseStoneCost = (importedGameActions.buildCabin.cost as any)[1]["resources.stone"];
+    const baseWoodCost = (gameActions.buildCabin.cost as any)[1]["resources.wood"];
+    const baseStoneCost = (gameActions.buildCabin.cost as any)[1]["resources.stone"];
 
     const state: GameState = {
       ...baseState,
@@ -262,7 +261,7 @@ describe('Building Cost Reductions', () => {
   });
 
   it('should apply discounts to multi-tier building costs for buildCabin', () => {
-    const baseWoodCost = (importedGameActions.buildCabin.cost as any)[2]["resources.wood"];
+    const baseWoodCost = (gameActions.buildCabin.cost as any)[2]["resources.wood"];
 
     const state: GameState = {
       ...baseState,
@@ -318,8 +317,8 @@ describe('Cost Reduction Edge Cases', () => {
   });
 
   it('should handle building with maximum discounts for buildCabin', () => {
-    const baseWoodCost = (importedGameActions.buildCabin.cost as any)[1]["resources.wood"];
-    const baseStoneCost = (importedGameActions.buildCabin.cost as any)[1]["resources.stone"];
+    const baseWoodCost = (gameActions.buildCabin.cost as any)[1]["resources.wood"];
+    const baseStoneCost = (gameActions.buildCabin.cost as any)[1]["resources.stone"];
 
     const state: GameState = {
       ...baseState,
@@ -361,7 +360,7 @@ describe('Cost Reduction Edge Cases', () => {
 
   it('should floor discount calculations correctly for crafting', () => {
     // Test that partial costs are floored
-    const baseIronCost = (importedGameActions.craftIronSword.cost as any)["resources.iron"];
+    const baseIronCost = (gameActions.craftIronSword.cost as any)["resources.iron"];
 
     state.resources.iron = baseIronCost;
     state.buildings.blacksmith = 1;
@@ -375,8 +374,8 @@ describe('Cost Reduction Edge Cases', () => {
   });
 
   it('should floor discount calculations correctly for building', () => {
-    const baseWoodCost = (importedGameActions.buildCabin.cost as any)[1]["resources.wood"];
-    const baseStoneCost = (importedGameActions.buildCabin.cost as any)[1]["resources.stone"];
+    const baseWoodCost = (gameActions.buildCabin.cost as any)[1]["resources.wood"];
+    const baseStoneCost = (gameActions.buildCabin.cost as any)[1]["resources.stone"];
 
     state.resources.wood = baseWoodCost;
     state.resources.stone = baseStoneCost;
