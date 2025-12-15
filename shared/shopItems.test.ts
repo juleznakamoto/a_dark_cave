@@ -1,4 +1,3 @@
-
 import { describe, it, expect } from 'vitest';
 import { SHOP_ITEMS } from './shopItems';
 
@@ -127,12 +126,12 @@ describe('Shop Items Configuration', () => {
       const bundle = SHOP_ITEMS.basic_survival_bundle;
       expect(bundle.originalPrice).toBeDefined();
       expect(bundle.originalPrice).toBeGreaterThan(bundle.price);
-      
+
       // Check that bundle is cheaper than buying components separately
       const componentsCost = bundle.bundleComponents!.reduce((total, componentId) => {
         return total + SHOP_ITEMS[componentId].price;
       }, 0);
-      
+
       expect(bundle.price).toBeLessThan(componentsCost);
     });
 
@@ -142,7 +141,7 @@ describe('Shop Items Configuration', () => {
 
     it('should have bundle rewards that match components', () => {
       const bundle = SHOP_ITEMS.basic_survival_bundle;
-      
+
       // Bundle should have combined rewards
       expect(bundle.rewards.resources?.gold).toBe(5000);
       expect(bundle.rewards.feastActivations).toBe(1);
@@ -162,7 +161,7 @@ describe('Shop Items Configuration', () => {
 
     it('should not have conflicting reward types in bundle', () => {
       const bundle = SHOP_ITEMS.basic_survival_bundle;
-      
+
       // Bundles should not grant tools/weapons/blessings directly
       // since components are granted individually
       expect(bundle.rewards.tools).toBeUndefined();
@@ -172,7 +171,7 @@ describe('Shop Items Configuration', () => {
 
     it('should have component items that can be purchased individually', () => {
       const bundle = SHOP_ITEMS.basic_survival_bundle;
-      
+
       bundle.bundleComponents!.forEach(componentId => {
         const component = SHOP_ITEMS[componentId];
         expect(component.canPurchaseMultipleTimes).toBe(true);
@@ -187,20 +186,20 @@ describe('Shop Items Configuration', () => {
 
     it('should validate bundle pricing formula', () => {
       const bundle = SHOP_ITEMS.basic_survival_bundle;
-      
+
       // Bundle price should be less than sum of individual component prices
       const gold5000 = SHOP_ITEMS.gold_5000;
       const feast1 = SHOP_ITEMS.great_feast_1;
-      
+
       const individualPricesTotal = gold5000.price + feast1.price;
-      
+
       expect(bundle.price).toBeLessThan(individualPricesTotal);
     });
 
     it('should have bundle with reasonable discount percentage', () => {
       const bundle = SHOP_ITEMS.basic_survival_bundle;
       const discountPercent = ((bundle.originalPrice! - bundle.price) / bundle.originalPrice!) * 100;
-      
+
       // Should have at least 40% discount to make bundle attractive
       expect(discountPercent).toBeGreaterThanOrEqual(40);
       // But not more than 60% (too generous)
@@ -265,7 +264,7 @@ describe('Shop Items Configuration', () => {
     it('should have reasonable discount for advanced bundle', () => {
       const bundle = SHOP_ITEMS.advanced_bundle;
       const discountPercent = ((bundle.originalPrice! - bundle.price) / bundle.originalPrice!) * 100;
-      
+
       expect(discountPercent).toBeGreaterThanOrEqual(40);
       expect(discountPercent).toBeLessThanOrEqual(60);
     });
@@ -295,9 +294,9 @@ describe('Shop Items Configuration', () => {
       const bundle = SHOP_ITEMS.advanced_bundle;
       const gold20000 = SHOP_ITEMS.gold_20000;
       const feast3 = SHOP_ITEMS.great_feast_3;
-      
+
       const individualPricesTotal = gold20000.price + feast3.price;
-      
+
       expect(bundle.price).toBeLessThan(individualPricesTotal);
     });
 

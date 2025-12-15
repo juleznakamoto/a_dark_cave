@@ -53,6 +53,24 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     symbolColor: "text-red-600",
   },
 
+  skull_lantern: {
+    id: "skull_lantern",
+    name: "Skull Lantern",
+    description:
+      "Ancient lantern forged from cursed bone that illuminates the deepest depths",
+    originalPrice: 499,
+    price: 249, // 2.49 €
+    rewards: {
+      tools: ["skull_lantern"],
+    },
+    canPurchaseMultipleTimes: false,
+    category: "tool",
+    activationMessage:
+      "The Skull Lantern has been added to your tools! Its eerie light will guide you through the depths.",
+    symbol: "☠",
+    symbolColor: "text-purple-400",
+  },
+
   gold_250: {
     id: "gold_250",
     name: "250 Gold",

@@ -331,6 +331,24 @@ export const toolEffects: Record<string, EffectDefinition> = {
       },
     },
   },
+
+  skull_lantern: {
+    id: "skull_lantern",
+    name: "Skull Lantern",
+    description: "Ancient lantern forged from cursed bone that illuminates the deepest depths",
+    bonuses: {
+      actionBonuses: {
+        mining: {
+          resourceMultiplier: 3.0, // +200% = 3x total
+          cooldownReduction: 5,
+        },
+        caveExplore: {
+          resourceMultiplier: 3.0, // +200% = 3x total
+          cooldownReduction: 5,
+        },
+      },
+    },
+  },
 };
 
 // Weapon effects
