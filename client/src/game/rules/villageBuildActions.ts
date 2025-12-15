@@ -1600,7 +1600,7 @@ export const villageBuildActions: Record<string, Action> = {
     },
     effects: {
       1: {
-        "buildings.storage": 1,
+        "buildings.storehouse": 1,
         "story.seen.hasStorehouse": true,
       },
     },
@@ -1628,7 +1628,7 @@ export const villageBuildActions: Record<string, Action> = {
     },
     effects: {
       1: {
-        "buildings.storage": 1,
+        "buildings.fortifiedStorehouse": 1,
         "story.seen.hasFortifiedStorehouse": true,
       },
     },
@@ -1658,7 +1658,7 @@ export const villageBuildActions: Record<string, Action> = {
     },
     effects: {
       1: {
-        "buildings.storage": 1,
+        "buildings.villageWarehouse": 1,
         "story.seen.hasVillageWarehouse": true,
       },
     },
@@ -1688,7 +1688,7 @@ export const villageBuildActions: Record<string, Action> = {
     },
     effects: {
       1: {
-        "buildings.storage": 1,
+        "buildings.grandRepository": 1,
         "story.seen.hasGrandRepository": true,
       },
     },
@@ -1717,7 +1717,7 @@ export const villageBuildActions: Record<string, Action> = {
     },
     effects: {
       1: {
-        "buildings.storage": 1,
+        "buildings.cityVault": 1,
         "story.seen.hasCityVault": true,
       },
     },
