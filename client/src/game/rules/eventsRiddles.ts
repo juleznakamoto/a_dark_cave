@@ -69,11 +69,11 @@ const SUCCESS_MESSAGES = {
 const WRONG_ANSWER_MESSAGES = {
   first: (deaths: number) =>
     `The figure slowly shakes its head before vanishing into the night. By morning, ${deaths} villagers are found in their beds with slit throats.`,
-  second: () =>
+  second: 
     "The figure turns its hooded head side to side, then disappears without a sound. The next day, a dense fog creeps into the village. Villagers claim to see shifting shapes within it, many are too fearful to leave their huts.",
   third: (deaths: number) =>
     `The figure gives a slow, disapproving shake of the head before fading away. When dawn breaks, ${deaths} villagers are found dead, mouths frozen in silent screams.`,
-  fourth: () =>
+  fourth: 
     "The figure shakes its head faintly, then fades from sight. The following day, a heavy fog engulfs the village. Shadows seemt to move within the mist, many villagers are too scared to leave their huts.",
   fifth: (deaths: number) =>
     `The figure slowly shakes its head in rejection, then dissolves into the dark. The next day, a fog descends upon the village. ${deaths} villagers perish as the suffocating mist blankets the land.`,
@@ -289,7 +289,7 @@ function createRiddleEvent(config: RiddleConfig, isVariant: boolean): GameEvent 
             [eventId]: true,
             [oppositeEventId]: true, // Block opposite variant
           },
-          _logMessage: WRONG_ANSWER_MESSAGES[level](),
+          _logMessage: WRONG_ANSWER_MESSAGES[level] as string,
         };
       };
     }
@@ -346,7 +346,7 @@ function createRiddleEvent(config: RiddleConfig, isVariant: boolean): GameEvent 
             [eventId]: true,
             [oppositeEventId]: true, // Block opposite variant
           },
-          _logMessage: TIMEOUT_MESSAGES[level](),
+          _logMessage: TIMEOUT_MESSAGES[level] as string,
         };
       };
     }
