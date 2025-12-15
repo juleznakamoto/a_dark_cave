@@ -39,7 +39,6 @@ export default function SidePanel() {
     activeTab,
     bastion_stats, // Added bastion_stats
     story,
-    devMode,
   } = useGameStore();
 
   // Track resource changes for notifications with a max size limit
@@ -62,7 +61,6 @@ export default function SidePanel() {
   }, [resourceChanges]);
 
   // Get game state once for the entire component (needed early for stat calculations)
-  // Note: devMode is accessed from useGameStore hook above, not from gameState
   const gameState = useGameStore();
 
   // Calculate total stats including bonuses from relics/clothing (needed early for seenStatsRef)
