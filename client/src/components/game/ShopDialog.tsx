@@ -187,23 +187,19 @@ function CheckoutForm({ itemId, onSuccess, currency, onCancel }: CheckoutFormPro
         <div className="text-red-500 text-sm">{errorMessage}</div>
       )}
 
-      <div className="text-sm text-center text-muted-foreground">
-        You will be charged <strong>{SHOP_ITEMS[itemId]?.price ? formatPrice(SHOP_ITEMS[itemId].price) : ''}</strong>
-      </div>
-
       <div className="flex gap-3 justify-center">
         <Button
           type="submit"
           disabled={!stripe || isProcessing}
-          className="w-auto px-8"
+          className="w-auto px-6"
           button_id="shop-complete-purchase"
         >
-          {isProcessing ? "Processing..." : `Complete Purchase ${SHOP_ITEMS[itemId]?.price ? formatPrice(SHOP_ITEMS[itemId].price) : ''}`}
+          {isProcessing ? "Processing..." : `Complete Purchase for ${SHOP_ITEMS[itemId]?.price ? formatPrice(SHOP_ITEMS[itemId].price) : ''}`}
         </Button>
         <Button
           variant="outline"
           onClick={onCancel}
-          className="w-auto px-8"
+          className="w-auto px-6"
           button_id="shop-cancel-payment"
           type="button"
         >
@@ -1086,7 +1082,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
           <ScrollArea className="max-h-[calc(80vh-80px)]">
             <div className="mt-0">
               <h3 className="text-lg font-semibold mb-4">
-                Complete Purchase: {SHOP_ITEMS[selectedItem!]?.name}
+                Complete Purchase: {SHOP_ITEMS[selectedItem!]?.name} ({SHOP_ITEMS[selectedItem!]?.price ? formatPrice(SHOP_ITEMS[selectedItem!].price) : ''})
               </h3>
               <Elements stripe={stripePromise} options={{ clientSecret }}>
                 <CheckoutForm
