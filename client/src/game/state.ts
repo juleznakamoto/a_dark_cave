@@ -269,10 +269,10 @@ const mergeStateUpdates = (
 
   if (
     stateUpdates.tools ||
-    state.weapons ||
-    state.clothing ||
-    state.relics ||
-    state.books
+    stateUpdates.weapons ||
+    stateUpdates.clothing ||
+    stateUpdates.relics ||
+    stateUpdates.books
   ) {
     const tempState = { ...prevState, ...merged };
     merged.effects = calculateTotalEffects(tempState);

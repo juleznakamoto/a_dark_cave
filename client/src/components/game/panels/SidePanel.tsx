@@ -572,6 +572,38 @@ export default function SidePanel() {
       if (item.id === "temple" && buildings.sanctum > 0) {
         return false;
       }
+      // Only show the highest storage building level
+      if (
+        item.id === "supplyHut" &&
+        (buildings.storehouse > 0 || buildings.fortifiedStorehouse > 0 || 
+         buildings.villageWarehouse > 0 || buildings.grandRepository > 0 || 
+         buildings.cityVault > 0)
+      ) {
+        return false;
+      }
+      if (
+        item.id === "storehouse" &&
+        (buildings.fortifiedStorehouse > 0 || buildings.villageWarehouse > 0 || 
+         buildings.grandRepository > 0 || buildings.cityVault > 0)
+      ) {
+        return false;
+      }
+      if (
+        item.id === "fortifiedStorehouse" &&
+        (buildings.villageWarehouse > 0 || buildings.grandRepository > 0 || 
+         buildings.cityVault > 0)
+      ) {
+        return false;
+      }
+      if (
+        item.id === "villageWarehouse" &&
+        (buildings.grandRepository > 0 || buildings.cityVault > 0)
+      ) {
+        return false;
+      }
+      if (item.id === "grandRepository" && buildings.cityVault > 0) {
+        return false;
+      }
       return true;
     });
 
