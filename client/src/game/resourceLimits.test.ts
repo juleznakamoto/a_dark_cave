@@ -143,19 +143,28 @@ describe('Resource Limits - Core Functionality', () => {
 
   describe('getStorageBuildingName', () => {
     it('should return correct name for level 0', () => {
-      expect(getStorageBuildingName(0)).toBe('No Storage');
+      state.buildings.supplyHut = 0;
+      expect(getStorageBuildingName(state)).toBe('No Storage');
     });
 
     it('should return correct name for level 1', () => {
-      expect(getStorageBuildingName(1)).toBe('Supply Hut');
+      state.buildings.supplyHut = 1;
+      expect(getStorageBuildingName(state)).toBe('Supply Hut');
     });
 
     it('should return correct name for level 6', () => {
-      expect(getStorageBuildingName(6)).toBe('City Vault');
+      state.buildings.cityVault = 1;
+      expect(getStorageBuildingName(state)).toBe('City Vault');
     });
 
-    it('should return "Unknown" for invalid level', () => {
-      expect(getStorageBuildingName(99)).toBe('Unknown');
+    it('should return "No Storage" when no storage buildings exist', () => {
+      state.buildings.supplyHut = 0;
+      state.buildings.storehouse = 0;
+      state.buildings.fortifiedStorehouse = 0;
+      state.buildings.villageWarehouse = 0;
+      state.buildings.grandRepository = 0;
+      state.buildings.cityVault = 0;
+      expect(getStorageBuildingName(state)).toBe('No Storage');
     });
   });
 });

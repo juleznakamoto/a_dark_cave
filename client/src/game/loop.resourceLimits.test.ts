@@ -184,7 +184,7 @@ describe('Game Loop - Resource Limits Integration', () => {
     it('should increase limit when storage is upgraded', () => {
       const store = useGameStore.getState();
       
-      // Start at limit
+      // Start at limit with Supply Hut
       useGameStore.setState((state) => ({
         resources: {
           ...state.resources,
@@ -198,12 +198,19 @@ describe('Game Loop - Resource Limits Integration', () => {
       
       expect(useGameStore.getState().resources.wood).toBe(1000);
       
-      // Upgrade storage
+      // Upgrade storage to Storehouse
       useGameStore.setState((state) => ({
         buildings: {
           ...state.buildings,
-          supplyHut: 0,
-          storehouse: 1, // 5000 limit
+          storehouse: 1, // 5000 limit (supplyHut still exists but is overridden)
+        },
+      }));
+      
+      // Set wood to a value below new limit
+      useGameStore.setState((state) => ({
+        resources: {
+          ...state.resources,
+          wood: 1000,
         },
       }));
       
@@ -219,16 +226,16 @@ describe('Game Loop - Resource Limits Integration', () => {
     it('should handle all storage tiers correctly', () => {
       const store = useGameStore.getState();
       const tiers = [
-        { level: 0, limit: 500 },
-        { level: 1, limit: 1000 },
-        { level: 2, limit: 5000 },
-        { level: 3, limit: 10000 },
-        { level: 4, limit: 25000 },
-        { level: 5, limit: 50000 },
-        { level: 6, limit: 100000 },
+        { buildings: {}, limit: 500 },
+        { buildings: { supplyHut: 1 }, limit: 1000 },
+        { buildings: { storehouse: 1 }, limit: 5000 },
+        { buildings: { fortifiedStorehouse: 1 }, limit: 10000 },
+        { buildings: { villageWarehouse: 1 }, limit: 25000 },
+        { buildings: { grandRepository: 1 }, limit: 50000 },
+        { buildings: { cityVault: 1 }, limit: 100000 },
       ];
       
-      tiers.forEach(({ level, limit }) => {
+      tiers.forEach(({ buildings, limit }) => {
         useGameStore.setState((state) => ({
           resources: {
             ...state.resources,
@@ -236,7 +243,13 @@ describe('Game Loop - Resource Limits Integration', () => {
           },
           buildings: {
             ...state.buildings,
-            storage: level,
+            supplyHut: 0,
+            storehouse: 0,
+            fortifiedStorehouse: 0,
+            villageWarehouse: 0,
+            grandRepository: 0,
+            cityVault: 0,
+            ...buildings,
           },
         }));
         

@@ -1,3 +1,4 @@
+
 import { GameState } from "@shared/schema";
 
 // Resources that are never limited
@@ -10,7 +11,15 @@ export function getResourceLimit(state: GameState): number {
     return Infinity;
   }
 
-  const storageLevel = state.buildings.storage || 0;
+  // Determine storage level based on highest storage building
+  let storageLevel = 0;
+  
+  if (state.buildings.cityVault > 0) storageLevel = 6;
+  else if (state.buildings.grandRepository > 0) storageLevel = 5;
+  else if (state.buildings.villageWarehouse > 0) storageLevel = 4;
+  else if (state.buildings.fortifiedStorehouse > 0) storageLevel = 3;
+  else if (state.buildings.storehouse > 0) storageLevel = 2;
+  else if (state.buildings.supplyHut > 0) storageLevel = 1;
 
   const limits: Record<number, number> = {
     0: 500,    // Initial cap for new games
@@ -63,7 +72,7 @@ export function getStorageLimitText(state: GameState): string {
   return limit.toLocaleString();
 }
 
-// Get storage building name based on level
+// Get storage building name based on state
 export function getStorageBuildingName(state: GameState): string {
   if (!state.flags?.resourceLimitsEnabled) {
     return "Unlimited Storage";
