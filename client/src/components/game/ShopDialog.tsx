@@ -198,7 +198,7 @@ function CheckoutForm({ itemId, onSuccess, currency, onCancel }: CheckoutFormPro
           className="w-auto px-8"
           button_id="shop-complete-purchase"
         >
-          {isProcessing ? "Processing..." : "Complete Purchase"}
+          {isProcessing ? "Processing..." : `Complete Purchase ${SHOP_ITEMS[itemId]?.price ? formatPrice(SHOP_ITEMS[itemId].price) : ''}`}
         </Button>
         <Button
           variant="outline"
