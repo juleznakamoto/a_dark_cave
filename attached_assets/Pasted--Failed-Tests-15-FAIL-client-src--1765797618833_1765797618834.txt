@@ -1,0 +1,288 @@
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯ Failed Tests 15 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  client/src/game/rules/actionEffects.test.ts > Crafting Cost Reductions > should apply blacksmith_hammer 15% crafting discount
+AssertionError: expected +0 to be 23 // Object.is equality
+
+- Expected
++ Received
+
+- 23
++ 0
+
+ ❯ client/src/game/rules/actionEffects.test.ts:104:41
+    102|     const updatesWith = applyActionEffects('craftIronSword', state);
+    103|     const expectedCost = Math.floor(150 * 0.85); // 127
+    104|     expect(updatesWith.resources!.iron).toBe(150 - expectedCost); // 150 -…
+       |                                         ^
+    105|   });
+    106| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/15]⎯
+
+ FAIL  client/src/game/rules/actionEffects.test.ts > Crafting Cost Reductions > should apply storehouse 5% crafting discount
+AssertionError: expected +0 to be 8 // Object.is equality
+
+- Expected
++ Received
+
+- 8
++ 0
+
+ ❯ client/src/game/rules/actionEffects.test.ts:122:41
+    120|     const updatesWith = applyActionEffects('craftIronSword', state);
+    121|     const expectedCost = Math.floor(150 * 0.95); // 142
+    122|     expect(updatesWith.resources!.iron).toBe(150 - expectedCost); // 150 -…
+       |                                         ^
+    123|   });
+    124| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/15]⎯
+
+ FAIL  client/src/game/rules/actionEffects.test.ts > Crafting Cost Reductions > should use only highest tier storage building crafting discount
+AssertionError: expected +0 to be 15 // Object.is equality
+
+- Expected
++ Received
+
+- 15
++ 0
+
+ ❯ client/src/game/rules/actionEffects.test.ts:137:37
+    135|     // Only highest tier discount: 10% from grandRepository
+    136|     const expectedCost = Math.floor(150 * 0.9); // 135
+    137|     expect(updates.resources!.iron).toBe(150 - expectedCost); // 150 - 135…
+       |                                     ^
+    138|   });
+    139| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/15]⎯
+
+ FAIL  client/src/game/rules/actionEffects.test.ts > Crafting Cost Reductions > should stack crafting discounts from tools and highest storage building
+AssertionError: expected +0 to be 30 // Object.is equality
+
+- Expected
++ Received
+
+- 30
++ 0
+
+ ❯ client/src/game/rules/actionEffects.test.ts:151:37
+    149|     // Total discount: 15% (hammer) + 5% (storehouse) = 20%
+    150|     const expectedCost = Math.floor(150 * 0.8); // 120
+    151|     expect(updates.resources!.iron).toBe(150 - expectedCost); // 150 - 120…
+       |                                     ^
+    152|   });
+    153| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/15]⎯
+
+ FAIL  client/src/game/rules/actionEffects.test.ts > Building Cost Reductions > should apply mastermason_chisel 10% building discount
+AssertionError: expected +0 to be 15 // Object.is equality
+
+- Expected
++ Received
+
+- 15
++ 0
+
+ ❯ client/src/game/rules/actionEffects.test.ts:181:41
+    179|     const expectedWoodCost = Math.floor(150 * 0.9); // 135
+    180|     const expectedStoneCost = Math.floor(50 * 0.9); // 45
+    181|     expect(updatesWith.resources!.wood).toBe(150 - expectedWoodCost); // 1…
+       |                                         ^
+    182|     expect(updatesWith.resources!.stone).toBe(50 - expectedStoneCost); // …
+    183|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/15]⎯
+
+ FAIL  client/src/game/rules/actionEffects.test.ts > Building Cost Reductions > should apply fortified storehouse 5% building discount
+AssertionError: expected +0 to be 8 // Object.is equality
+
+- Expected
++ Received
+
+- 8
++ 0
+
+ ❯ client/src/game/rules/actionEffects.test.ts:203:41
+    201|     const expectedWoodCost = Math.floor(150 * 0.95); // 142
+    202|     const expectedStoneCost = Math.floor(50 * 0.95); // 47
+    203|     expect(updatesWith.resources!.wood).toBe(150 - expectedWoodCost); // 1…
+       |                                         ^
+    204|     expect(updatesWith.resources!.stone).toBe(50 - expectedStoneCost); // …
+    205|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/15]⎯
+
+ FAIL  client/src/game/rules/actionEffects.test.ts > Building Cost Reductions > should use only highest tier storage building for building cost reduction
+AssertionError: expected +0 to be 15 // Object.is equality
+
+- Expected
++ Received
+
+- 15
++ 0
+
+ ❯ client/src/game/rules/actionEffects.test.ts:222:37
+    220|     const expectedWoodCost = Math.floor(150 * 0.9); // 135
+    221|     const expectedStoneCost = Math.floor(50 * 0.9); // 45
+    222|     expect(updates.resources!.wood).toBe(150 - expectedWoodCost); // 150 -…
+       |                                     ^
+    223|     expect(updates.resources!.stone).toBe(50 - expectedStoneCost); // 50 -…
+    224|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/15]⎯
+
+ FAIL  client/src/game/rules/actionEffects.test.ts > Building Cost Reductions > should stack building discounts from buildings and tools
+AssertionError: expected +0 to be 23 // Object.is equality
+
+- Expected
++ Received
+
+- 23
++ 0
+
+ ❯ client/src/game/rules/actionEffects.test.ts:238:37
+    236|     const expectedWoodCost = Math.floor(150 * 0.85); // 127
+    237|     const expectedStoneCost = Math.floor(50 * 0.85); // 42
+    238|     expect(updates.resources!.wood).toBe(150 - expectedWoodCost); // 150 -…
+       |                                     ^
+    239|     expect(updates.resources!.stone).toBe(50 - expectedStoneCost); // 50 -…
+    240|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/15]⎯
+
+ FAIL  client/src/game/rules/actionEffects.test.ts > Building Cost Reductions > should apply discounts to multi-tier building costs
+AssertionError: expected +0 to be 10 // Object.is equality
+
+- Expected
++ Received
+
+- 10
++ 0
+
+ ❯ client/src/game/rules/actionEffects.test.ts:252:37
+    250|     // Level 2 costs 100 wood, with 10% discount = 90 wood
+    251|     const expectedCost = Math.floor(100 * 0.9); // 90
+    252|     expect(updates.resources!.wood).toBe(100 - expectedCost); // 100 - 90 …
+       |                                     ^
+    253|   });
+    254| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/15]⎯
+
+ FAIL  client/src/game/rules/actionEffects.test.ts > Cost Reduction Edge Cases > should handle crafting with maximum discounts
+AssertionError: expected +0 to be 38 // Object.is equality
+
+- Expected
++ Received
+
+- 38
++ 0
+
+ ❯ client/src/game/rules/actionEffects.test.ts:277:37
+    275|     // Total discount: 15% (hammer) + 10% (greatVault - highest tier only)…
+    276|     const expectedCost = Math.floor(150 * 0.75); // 112
+    277|     expect(updates.resources!.iron).toBe(150 - expectedCost); // 150 - 112…
+       |                                     ^
+    278|     // Note: Previously was 50% (stacking all), now 25% (only highest tier…
+    279|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/15]⎯
+
+ FAIL  client/src/game/rules/actionEffects.test.ts > Cost Reduction Edge Cases > should handle building with maximum discounts
+AssertionError: expected +0 to be 30 // Object.is equality
+
+- Expected
++ Received
+
+- 30
++ 0
+
+ ❯ client/src/game/rules/actionEffects.test.ts:296:37
+    294|     const expectedWoodCost = Math.floor(150 * 0.8); // 120
+    295|     const expectedStoneCost = Math.floor(50 * 0.8); // 40
+    296|     expect(updates.resources!.wood).toBe(150 - expectedWoodCost); // 150 -…
+       |                                     ^
+    297|     expect(updates.resources!.stone).toBe(50 - expectedStoneCost); // 50 -…
+    298|     // Note: Previously was 35% (stacking all), now 20% (only highest tier…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/15]⎯
+
+ FAIL  client/src/game/rules/actionEffects.test.ts > Cost Reduction Edge Cases > should floor discount calculations correctly
+AssertionError: expected +0 to be 8 // Object.is equality
+
+- Expected
++ Received
+
+- 8
++ 0
+
+ ❯ client/src/game/rules/actionEffects.test.ts:327:37
+    325|     // 150 * 0.95 = 142.5, should floor to 142
+    326|     const expectedCost = Math.floor(originalCost * 0.95);
+    327|     expect(updates.resources!.iron).toBe(originalCost - expectedCost);
+       |                                     ^
+    328|   });
+    329| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/15]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Building Cost Reductions > mastermason_chisel reduces building costs by 10%
+AssertionError: expected 150 to be 135 // Object.is equality
+
+- Expected
++ Received
+
+- 135
++ 150
+
+ ❯ client/src/game/rules/resourceGains.test.ts:534:26
+    532| 
+    533|       // With chisel should cost 10% less
+    534|       expect(amountWith).toBe(Math.floor(amountWithout * 0.9));
+       |                          ^
+    535|     });
+    536| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/15]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Building Cost Reductions > fortified storehouse reduces building costs correctly
+AssertionError: expected 150 to be 142 // Object.is equality
+
+- Expected
++ Received
+
+- 142
++ 150
+
+ ❯ client/src/game/rules/resourceGains.test.ts:556:45
+    554|       // Fortified Storehouse: 5% building cost reduction
+    555|       const amountWithFortifiedStorehouse = parseInt(woodCostWithFortified…
+    556|       expect(amountWithFortifiedStorehouse).toBe(Math.floor(amountWithout …
+       |                                             ^
+    557|     });
+    558|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/15]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Crafting Cost Reductions > blacksmith_hammer reduces crafting costs by 15%
+AssertionError: expected 50 to be less than 50
+ ❯ client/src/game/rules/resourceGains.test.ts:587:26
+    585|       // With hammer should cost 15% less (50 * 0.85 = 42.5, floor = 42)
+    586|       // However, the actual implementation shows 45, so verify the reduct…
+    587|       expect(amountWith).toBeLessThan(amountWithout);
+       |                          ^
+    588|       expect(amountWith).toBeGreaterThanOrEqual(Math.floor(amountWithout *…
+    589|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/15]⎯
+
+
+ Test Files  2 failed | 10 passed (12)
+      Tests  15 failed | 227 passed (242)
+   Start at  11:19:54
+   Duration  14.36s
+
+ FAIL  Tests failed. Watching for file changes...
+       press h to show help, press q to quit

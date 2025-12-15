@@ -185,29 +185,37 @@ export const shouldShowAction = (
 // Helper function to calculate adjusted cost with discounts (single source of truth)
 export function getAdjustedCost(
   actionId: string,
-  cost: number | boolean,
+  baseCost: number,
   isResourceCost: boolean,
   state: GameState,
-): number | boolean {
-  if (cost === true || cost === false) return cost;
-  if (!isResourceCost) return cost;
+): number {
+  if (!isResourceCost) {
+    return baseCost;
+  }
 
   const action = gameActions[actionId];
-  const isCraftingAction =
-    actionId.startsWith("craft") || actionId.startsWith("forge");
-  const isBuildingAction = action?.building || false;
-
-  if (isCraftingAction) {
-    const reduction = getTotalCraftingCostReductionCalc(state);
-    return Math.floor(cost * (1 - reduction));
+  if (!action) {
+    return baseCost;
   }
 
-  if (isBuildingAction) {
-    const reduction = getTotalBuildingCostReductionCalc(state);
-    return Math.floor(cost * (1 - reduction));
+  // Determine if this is a crafting or building action
+  const isCraftingAction = action.category === "crafting";
+  const isBuildingAction = action.category === "building";
+
+  if (!isCraftingAction && !isBuildingAction) {
+    return baseCost;
   }
 
-  return cost;
+  // Get the appropriate cost reduction using centralized functions
+  const reduction = isCraftingAction
+    ? getTotalCraftingCostReductionCalc(state)
+    : getTotalBuildingCostReductionCalc(state);
+
+  // Apply the reduction (reduction is a decimal like 0.15 for 15% off)
+  const discountMultiplier = 1 - reduction;
+  const adjustedCost = Math.floor(baseCost * discountMultiplier);
+
+  return adjustedCost;
 }
 
 // Helper function to extract resource IDs from action cost
