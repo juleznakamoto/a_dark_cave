@@ -54,10 +54,6 @@ export const gameActions: Record<string, Action> = {
   ...forestScoutActions,
   ...forestSacrificeActions,
   ...forestTradeActions,
-  buildBoneTemple: villageBuildActions.buildBoneTemple,
-  buildDarkEstate: villageBuildActions.buildDarkEstate,
-  buildPillarOfClarity: villageBuildActions.buildPillarOfClarity,
-  buildStorage: villageBuildActions.buildStorage,
 };
 
 // Register gameActions reference for late binding in actionEffects
