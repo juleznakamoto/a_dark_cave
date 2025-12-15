@@ -106,25 +106,16 @@ describe('Crafting Cost Reductions', () => {
     expect(updatesWith.resources!.iron).toBe(15);
   });
 
-  it('should apply storehouse 5% crafting discount', () => {
-    // Without storehouse - baseline
+  it('should apply fortified storehouse 5% crafting discount', () => {
     state.resources.iron = 150;
     state.buildings.blacksmith = 1;
-    state.buildings.storehouse = 0;
+    state.buildings.fortifiedStorehouse = 1;
 
-    const updatesWithout = applyActionEffects('craftIronSword', state);
-    expect(updatesWithout.resources!.iron).toBe(0); // 150 - 150 = 0
-
-    // Reset and test with storehouse (5% discount)
-    state = createInitialState();
-    state.resources.iron = 150;
-    state.buildings.blacksmith = 1;
-    state.buildings.storehouse = 1;
-
-    const updatesWith = applyActionEffects('craftIronSword', state);
-    // With 5% discount: cost = floor(150 * 0.95) = floor(142.5) = 142
+    const updates = applyActionEffects('craftIronSword', state);
+    // Fortified Storehouse: 5% discount
+    // Cost: floor(150 * 0.95) = 142
     // Remaining: 150 - 142 = 8
-    expect(updatesWith.resources!.iron).toBe(8);
+    expect(updates.resources!.iron).toBe(8);
   });
 
   it('should use only highest tier storage building crafting discount', () => {
