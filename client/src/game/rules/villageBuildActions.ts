@@ -1563,7 +1563,12 @@ export const villageBuildActions: Record<string, Action> = {
     show_when: {
       1: {
         "buildings.woodenHut": 2,
-        "buildings.storage": 0,
+        "buildings.supplyHut": 0,
+        "buildings.storehouse": 0,
+        "buildings.fortifiedStorehouse": 0,
+        "buildings.villageWarehouse": 0,
+        "buildings.grandRepository": 0,
+        "buildings.cityVault": 0,
       },
     },
     cost: {
@@ -1589,7 +1594,8 @@ export const villageBuildActions: Record<string, Action> = {
     show_when: {
       1: {
         "buildings.woodenHut": 3,
-        "buildings.storage": 1,
+        "buildings.supplyHut": 1,
+        "buildings.storehouse": 0,
       },
     },
     cost: {
@@ -1617,7 +1623,8 @@ export const villageBuildActions: Record<string, Action> = {
     show_when: {
       1: {
         "buildings.woodenHut": 6,
-        "buildings.storage": 2,
+        "buildings.storehouse": 1,
+        "buildings.fortifiedStorehouse": 0,
       },
     },
     cost: {
@@ -1646,7 +1653,8 @@ export const villageBuildActions: Record<string, Action> = {
     show_when: {
       1: {
         "buildings.woodenHut": 8,
-        "buildings.storage": 3,
+        "buildings.fortifiedStorehouse": 1,
+        "buildings.villageWarehouse": 0,
       },
     },
     cost: {
@@ -1676,7 +1684,8 @@ export const villageBuildActions: Record<string, Action> = {
     show_when: {
       1: {
         "buildings.stoneHut": 2,
-        "buildings.storage": 4,
+        "buildings.villageWarehouse": 1,
+        "buildings.grandRepository": 0,
       },
     },
     cost: {
@@ -1706,7 +1715,8 @@ export const villageBuildActions: Record<string, Action> = {
     show_when: {
       1: {
         "buildings.stoneHut": 6,
-        "buildings.storage": 5,
+        "buildings.grandRepository": 1,
+        "buildings.cityVault": 0,
       },
     },
     cost: {

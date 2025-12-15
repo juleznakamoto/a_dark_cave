@@ -341,6 +341,40 @@ export default function SidePanel() {
       ) {
         return false;
       }
+      // Hide altar if shrine or temple is built (similar logic for other tiered buildings)
+      if (key === "altar" && (buildings.shrine > 0 || buildings.temple > 0 || buildings.sanctum > 0)) {
+        return false;
+      }
+      if (key === "shrine" && (buildings.temple > 0 || buildings.sanctum > 0)) {
+        return false;
+      }
+      if (key === "temple" && buildings.sanctum > 0) {
+        return false;
+      }
+      if (
+        key === "blackMonolith" &&
+        (buildings.pillarOfClarity > 0 || buildings.boneTemple > 0)
+      ) {
+        return false;
+      }
+
+      // Hide lower-tier storage buildings
+      if (key === "supplyHut" && (buildings.storehouse > 0 || buildings.fortifiedStorehouse > 0 || buildings.villageWarehouse > 0 || buildings.grandRepository > 0 || buildings.cityVault > 0)) {
+        return false;
+      }
+      if (key === "storehouse" && (buildings.fortifiedStorehouse > 0 || buildings.villageWarehouse > 0 || buildings.grandRepository > 0 || buildings.cityVault > 0)) {
+        return false;
+      }
+      if (key === "fortifiedStorehouse" && (buildings.villageWarehouse > 0 || buildings.grandRepository > 0 || buildings.cityVault > 0)) {
+        return false;
+      }
+      if (key === "villageWarehouse" && (buildings.grandRepository > 0 || buildings.cityVault > 0)) {
+        return false;
+      }
+      if (key === "grandRepository" && buildings.cityVault > 0) {
+        return false;
+      }
+
       return (value ?? 0) > 0;
     })
     .map((key) => {
