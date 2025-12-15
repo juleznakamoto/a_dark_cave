@@ -828,11 +828,9 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                             {item.symbol}
                           </span>
                         )}
-                        <div className="flex items-center gap-1">
-                          <CardTitle className="!m-0 text-md">
-                            {item.name}
-                          </CardTitle>
-                          {item.id === 'skull_lantern' && (
+                        <CardTitle className="!m-0 text-md pr-6 flex items-center gap-1">
+                          {item.name}
+                          {item.id === "skull_lantern" && (
                             <TooltipProvider>
                               <Tooltip>
                                 <TooltipTrigger asChild>
@@ -857,7 +855,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                               </Tooltip>
                             </TooltipProvider>
                           )}
-                        </div>
+                        </CardTitle>
                         <CardDescription className="text-bold">
                           {item.originalPrice && (
                             <span className="line-through text-muted-foreground mr-2">
