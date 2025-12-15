@@ -18,20 +18,20 @@ const RIDDLE_PENALTIES = {
     cmMultiplier: 6,
   },
   second: {
-    fogDuration: 10 * 60 * 1000, // 10 minutes in milliseconds
-    fogDurationCM: 5 * 60 * 1000, // Additional 5 minutes per CM
+    fogDuration: 10 * 60 * 1000,
+    fogDurationCM: 5 * 60 * 1000,
   },
   third: {
     deaths: 18,
     cmMultiplier: 6,
   },
   fourth: {
-    fogDuration: 15 * 60 * 1000, // 15 minutes in milliseconds
-    fogDurationCM: 5 * 60 * 1000, // Additional 5 minutes per CM
+    fogDuration: 15 * 60 * 1000,
+    fogDurationCM: 5 * 60 * 1000,
   },
   fifth: {
-    fogDuration: 15 * 60 * 1000, // 15 minutes in milliseconds
-    fogDurationCM: 5 * 60 * 1000, // Additional 5 minutes per CM
+    fogDuration: 15 * 60 * 1000,
+    fogDurationCM: 5 * 60 * 1000,
     deaths: 24,
     cmMultiplier: 6,
   },
@@ -228,7 +228,7 @@ const RIDDLE_CONFIGS: RiddleConfig[] = [
 function applyPenalty(
   state: GameState,
   eventId: string,
-  penalties: typeof RIDDLE_PENALTIES[keyof typeof RIDDLE_PENALTIES],
+  penalties: (typeof RIDDLE_PENALTIES)[keyof typeof RIDDLE_PENALTIES],
   level: keyof typeof RIDDLE_PENALTIES,
   messageGetter: typeof WRONG_ANSWER_MESSAGES | typeof TIMEOUT_MESSAGES,
 ) {
@@ -250,7 +250,8 @@ function applyPenalty(
   }
 
   if (hasFog) {
-    const fogDuration = penalties.fogDuration + penalties.fogDurationCM * state.CM;
+    const fogDuration =
+      penalties.fogDuration + penalties.fogDurationCM * state.CM;
     result.fogState = {
       isActive: true,
       endTime: Date.now() + fogDuration,
@@ -304,12 +305,12 @@ function createRiddleEvent(
     id: eventId,
     condition: (state: GameState) => config.precondition(state),
     triggerType: "resource",
-    timeProbability: level === "first" ? 30 : 45,
+    timeProbability: level === "first" ? 0.030 : 45,
     title: config.title,
     message,
     triggered: false,
     priority: 4,
-    repeatable: false,
+    repeatable: true,
     isTimedChoice: true,
     baseDecisionTime: 40,
     choices: choices.map((choice) => ({
