@@ -338,7 +338,7 @@ export default function LeaderboardDialog({
                     <span className="text-sm text-muted-foreground">
                       Current Playtime:
                     </span>
-                    <span className="font-medium">{formatTime(useGameStore.getState().playTime)}</span>
+                    <span className="font-mono">{formatTime(useGameStore.getState().playTime)}</span>
                   </div>
                 </div>
               )}
