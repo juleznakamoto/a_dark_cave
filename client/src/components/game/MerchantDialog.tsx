@@ -25,6 +25,12 @@ import {
   useMobileTooltip,
 } from "@/hooks/useMobileTooltip";
 
+// Assume these helper functions are defined elsewhere or imported
+// For the purpose of this example, we'll mock them.
+declare function isResourceLimited(resourceName: string, gameState: GameState): boolean;
+declare function getResourceLimit(gameState: GameState): number;
+
+
 interface MerchantDialogProps {
   event: LogEntry;
   gameState: GameState;
@@ -51,7 +57,7 @@ export default function MerchantDialog({
   if (!event) {
     return null;
   }
-  
+
   const eventChoices = event.choices || [];
   const mobileTooltip = useMobileButtonTooltip();
   const discountTooltip = useMobileTooltip();
@@ -136,12 +142,29 @@ export default function MerchantDialog({
                     ? choice.cost(gameState)
                     : choice.cost;
 
+                // Check if there's enough space for the resource being bought
+                let hasSpace = true;
+                if (canAfford && typeof labelText === 'string') {
+                  const labelMatch = labelText.match(/^\+(\d+)\s+(.+)$/);
+                  if (labelMatch) {
+                    const amount = parseInt(labelMatch[1]);
+                    const resourceName = labelMatch[2].toLowerCase().replace(/\s+/g, '_');
+
+                    if (isResourceLimited(resourceName, gameState)) {
+                      const currentAmount = gameState.resources[resourceName as keyof typeof gameState.resources] || 0;
+                      const limit = getResourceLimit(gameState);
+                      hasSpace = currentAmount + amount <= limit;
+                    }
+                  }
+                }
+
                 const isPurchased = purchasedItems.has(choice.id);
                 const isDisabled =
                   (timeRemaining !== null && timeRemaining <= 0) ||
                   fallbackExecutedRef.current ||
                   isPurchased ||
-                  !canAfford;
+                  !canAfford ||
+                  !hasSpace;
 
                 const buttonContent = (
                   <Button

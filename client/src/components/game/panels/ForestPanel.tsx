@@ -8,6 +8,7 @@ import {
   getResourcesFromActionCost,
 } from "@/game/rules";
 import { getResourceGainTooltip } from "@/game/rules/tooltips";
+import { getResourceLimit, isResourceLimited } from "@/game/resourceLimits";
 import CooldownButton from "@/components/CooldownButton";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { ButtonLevelBadge } from "@/components/game/ButtonLevelBadge";
@@ -63,9 +64,58 @@ export default function ForestPanel() {
     const action = gameActions[actionId];
     if (!action) return null;
 
-    const canExecute = canExecuteAction(actionId, state);
+    let canExecute = canExecuteAction(actionId, state);
     const showCost = action.cost && Object.keys(action.cost).length > 0;
     const isTradeButton = actionId.startsWith("trade");
+
+    // For trade buttons, check if there's enough space for the resource being bought
+    if (isTradeButton && canExecute && action.effects) {
+      // Determine active tier
+      let activeTier = 1;
+      if (action.show_when?.[3]) {
+        const tier3Conditions = action.show_when[3];
+        const tier3Satisfied = Object.entries(tier3Conditions).every(
+          ([key, value]) => {
+            const [category, prop] = key.split(".");
+            return (
+              (state[category as keyof typeof state]?.[prop as any] || 0) >=
+              value
+            );
+          },
+        );
+        if (tier3Satisfied) activeTier = 3;
+      }
+      if (activeTier === 1 && action.show_when?.[2]) {
+        const tier2Conditions = action.show_when[2];
+        const tier2Satisfied = Object.entries(tier2Conditions).every(
+          ([key, value]) => {
+            const [category, prop] = key.split(".");
+            return (
+              (state[category as keyof typeof state]?.[prop as any] || 0) >=
+              value
+            );
+          },
+        );
+        if (tier2Satisfied) activeTier = 2;
+      }
+
+      // Get the effect amount for the active tier
+      const effects = action.effects[activeTier];
+      if (effects) {
+        const resourceKey = Object.keys(effects)[0];
+        const amount = effects[resourceKey];
+        const resourceName = resourceKey.split(".")[1];
+
+        // Check if resource is limited and if there's space
+        if (isResourceLimited(resourceName, state)) {
+          const currentAmount = state.resources[resourceName as keyof typeof state.resources] || 0;
+          const limit = getResourceLimit(state);
+          if (currentAmount + amount > limit) {
+            canExecute = false;
+          }
+        }
+      }
+    }
 
     // Check if action has success chance (for forest scout actions)
     const successPercentage = action.success_chance && state.books?.book_of_war
