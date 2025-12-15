@@ -20,7 +20,7 @@ import {
 import { bookEffects, fellowshipEffects } from "@/game/rules/effects";
 import { gameStateSchema } from "@shared/schema";
 
-import { getStorageLimitText, isResourceLimited } from "@/game/resourceLimits"; // Assuming this is the correct path
+import { getStorageLimitText, isResourceLimited, getResourceLimit } from "@/game/resourceLimits"; // Assuming this is the correct path
 
 
 // Extract property order from schema by parsing defaults
@@ -145,7 +145,18 @@ export default function SidePanel() {
       visible: true,
     }));
 
-  // Check if any resource has a limit applied AND the limit has been hit at least once
+  // Check if any resource has hit the limit
+  const limit = getResourceLimit(gameState);
+  const hasResourceAtLimit = resourceOrder.some((key) => {
+    const resource = resources[key as keyof typeof resources];
+    return isResourceLimited(key, gameState) && resource >= limit;
+  });
+
+  // Set the flag if we detect a resource at limit and flag isn't set yet
+  if (hasResourceAtLimit && !gameState.flags.hasHitResourceLimit) {
+    useGameStore.getState().setFlag('hasHitResourceLimit', true);
+  }
+
   const showResourceLimit = resourceOrder.some((key) =>
     isResourceLimited(key, gameState),
   ) && gameState.flags.hasHitResourceLimit;
@@ -157,6 +168,9 @@ export default function SidePanel() {
     hasHitResourceLimit: gameState.flags.hasHitResourceLimit,
     resourceLimitsEnabled: gameState.flags.resourceLimitsEnabled,
     hasLimitedResource: resourceOrder.some((key) => isResourceLimited(key, gameState)),
+    hasResourceAtLimit,
+    limit,
+    wood: resources.wood,
     resourceLimitText,
   });
 
