@@ -87,7 +87,7 @@ describe('Crafting Cost Reductions', () => {
   });
 
   it('should apply blacksmith_hammer 15% crafting discount', () => {
-    // Without hammer
+    // Without hammer - baseline
     state.resources.iron = 150;
     state.buildings.blacksmith = 1;
     state.tools.blacksmith_hammer = false;
@@ -95,17 +95,20 @@ describe('Crafting Cost Reductions', () => {
     const updatesWithout = applyActionEffects('craftIronSword', state);
     expect(updatesWithout.resources!.iron).toBe(0); // 150 - 150 = 0
 
-    // With hammer (15% discount)
+    // Reset and test with hammer (15% discount)
+    state = createInitialState();
     state.resources.iron = 150;
+    state.buildings.blacksmith = 1;
     state.tools.blacksmith_hammer = true;
 
     const updatesWith = applyActionEffects('craftIronSword', state);
-    const expectedCost = Math.floor(150 * 0.85); // 127
-    expect(updatesWith.resources!.iron).toBe(150 - expectedCost); // 150 - 127 = 23
+    // With 15% discount: cost = floor(150 * 0.85) = floor(127.5) = 127
+    // Remaining: 150 - 127 = 23
+    expect(updatesWith.resources!.iron).toBe(23);
   });
 
   it('should apply storehouse 5% crafting discount', () => {
-    // Without storehouse
+    // Without storehouse - baseline
     state.resources.iron = 150;
     state.buildings.blacksmith = 1;
     state.buildings.storehouse = 0;
@@ -113,18 +116,20 @@ describe('Crafting Cost Reductions', () => {
     const updatesWithout = applyActionEffects('craftIronSword', state);
     expect(updatesWithout.resources!.iron).toBe(0); // 150 - 150 = 0
 
-    // With storehouse (5% discount)
+    // Reset and test with storehouse (5% discount)
+    state = createInitialState();
     state.resources.iron = 150;
+    state.buildings.blacksmith = 1;
     state.buildings.storehouse = 1;
 
     const updatesWith = applyActionEffects('craftIronSword', state);
-    const expectedCost = Math.floor(150 * 0.95); // 142
-    expect(updatesWith.resources!.iron).toBe(150 - expectedCost); // 150 - 142 = 8
+    // With 5% discount: cost = floor(150 * 0.95) = floor(142.5) = 142
+    // Remaining: 150 - 142 = 8
+    expect(updatesWith.resources!.iron).toBe(8);
   });
 
   it('should use only highest tier storage building crafting discount', () => {
-    // With storehouse (5%), fortified storehouse (5%), and grand repository (10%)
-    // Only grand repository's 10% should apply (highest tier)
+    // With multiple storage buildings, only highest tier applies
     state.resources.iron = 150;
     state.buildings.blacksmith = 1;
     state.buildings.storehouse = 1;
@@ -133,22 +138,24 @@ describe('Crafting Cost Reductions', () => {
 
     const updates = applyActionEffects('craftIronSword', state);
     // Only highest tier discount: 10% from grandRepository
-    const expectedCost = Math.floor(150 * 0.9); // 135
-    expect(updates.resources!.iron).toBe(150 - expectedCost); // 150 - 135 = 15
+    // Cost: floor(150 * 0.9) = floor(135) = 135
+    // Remaining: 150 - 135 = 15
+    expect(updates.resources!.iron).toBe(15);
   });
 
   it('should stack crafting discounts from tools and highest storage building', () => {
-    // With blacksmith_hammer (15%) and storehouse (5%)
-    // Tool discount (15%) + storage building discount (5%) = 20% total
+    // Reset state to ensure clean test
+    state = createInitialState();
     state.resources.iron = 150;
     state.buildings.blacksmith = 1;
-    state.tools.blacksmith_hammer = true;
-    state.buildings.storehouse = 1;
+    state.tools.blacksmith_hammer = true; // 15%
+    state.buildings.storehouse = 1; // 5%
 
     const updates = applyActionEffects('craftIronSword', state);
     // Total discount: 15% (hammer) + 5% (storehouse) = 20%
-    const expectedCost = Math.floor(150 * 0.8); // 120
-    expect(updates.resources!.iron).toBe(150 - expectedCost); // 150 - 120 = 30
+    // Cost: floor(150 * 0.8) = floor(120) = 120
+    // Remaining: 150 - 120 = 30
+    expect(updates.resources!.iron).toBe(30);
   });
 });
 
@@ -261,7 +268,8 @@ describe('Cost Reduction Edge Cases', () => {
   });
 
   it('should handle crafting with maximum discounts', () => {
-    // Maximum crafting discount scenario
+    // Reset state for clean test
+    state = createInitialState();
     state.resources.iron = 150;
     state.buildings.blacksmith = 1;
     state.tools.blacksmith_hammer = true; // 15%
@@ -273,9 +281,10 @@ describe('Cost Reduction Edge Cases', () => {
 
     const updates = applyActionEffects('craftIronSword', state);
     // Total discount: 15% (hammer) + 10% (greatVault - highest tier only) = 25%
-    const expectedCost = Math.floor(150 * 0.75); // 112
-    expect(updates.resources!.iron).toBe(150 - expectedCost); // 150 - 112 = 38
-    // Note: Previously was 50% (stacking all), now 25% (only highest tier storage building)
+    // Cost: floor(150 * 0.75) = floor(112.5) = 112
+    // Remaining: 150 - 112 = 38
+    expect(updates.resources!.iron).toBe(38);
+    // Note: Only highest tier storage building discount applies (10% from greatVault)
   });
 
   it('should handle building with maximum discounts', () => {
