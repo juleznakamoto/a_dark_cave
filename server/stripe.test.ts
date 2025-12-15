@@ -63,11 +63,12 @@ describe('Stripe Shop Integration', () => {
 
       expect(mockPaymentIntents.create).toHaveBeenCalledWith({
         amount: 99, // Server-side price
-        currency: 'eur',
+        currency: 'usd',
         metadata: {
           itemId: 'gold_250',
           itemName: '250 Gold',
           priceInCents: '99',
+          currency: 'usd',
         },
       });
 
@@ -103,11 +104,12 @@ describe('Stripe Shop Integration', () => {
 
       expect(mockPaymentIntents.create).toHaveBeenCalledWith({
         amount: 149,
-        currency: 'eur',
+        currency: 'usd',
         metadata: {
           itemId: 'great_feast_1',
           itemName: '1 Great Feast',
           priceInCents: '149',
+          currency: 'usd',
         },
       });
     });
