@@ -586,12 +586,12 @@ export default function AdminDashboard() {
 
   // Buyers per 100 users
   const getBuyersPerHundred = () => {
-    const totalUsers = gameSaves.length;
+    const totalUsers = totalUserCount; // Use total users from database
     if (totalUsers === 0) return 0;
 
-    // Get unique users who made non-free purchases (exclude component purchases)
+    // Get unique users who made non-free purchases (exclude component purchases) - use rawPurchases
     const buyersSet = new Set<string>();
-    purchases.forEach((purchase) => {
+    rawPurchases.forEach((purchase) => {
       // Only count bundle purchases, not individual components
       if (purchase.price_paid > 0 && !purchase.bundle_id) {
         buyersSet.add(purchase.user_id);
@@ -983,8 +983,8 @@ export default function AdminDashboard() {
   };
 
   const getTotalRevenue = () => {
-    // Only count bundle purchases, not individual components
-    return purchases
+    // Only count bundle purchases, not individual components - use rawPurchases for all-time
+    return rawPurchases
       .filter((p) => p.price_paid > 0 && !p.bundle_id)
       .reduce((sum, p) => sum + p.price_paid, 0);
   };
@@ -1048,10 +1048,10 @@ export default function AdminDashboard() {
   };
 
   const getConversionRate = () => {
-    const totalUsers = gameSaves.length;
+    const totalUsers = totalUserCount; // Use total users from database, not filtered saves
     // Only count users who made non-free purchases (price_paid > 0 and not a component)
     const payingUsers = new Set(
-      purchases
+      rawPurchases // Use rawPurchases (unfiltered) to count all buyers
         .filter((p) => p.price_paid > 0 && !p.bundle_id)
         .map((p) => p.user_id),
     ).size;
@@ -1705,7 +1705,7 @@ export default function AdminDashboard() {
   };
 
   const getARPU = () => {
-    const totalUsers = gameSaves.length;
+    const totalUsers = totalUserCount; // Use total users from database
     if (totalUsers === 0) return 0;
 
     const totalRevenue = getTotalRevenue();
