@@ -1,5 +1,6 @@
 import { GameState } from "@shared/schema";
 import { getMaxPopulation } from "./population";
+import { isResourceLimited, getResourceLimit } from "./resourceLimits";
 
 export function updateResource(
   state: GameState,
@@ -189,9 +190,6 @@ export function buildGameState(state: any): GameState {
 
 // Cap resource to current storage limit
 function capResourceToLimit(resource: keyof GameState['resources'], amount: number, state: GameState): number {
-  // Import the resource limit functions
-  const { isResourceLimited, getResourceLimit } = require('./resourceLimits');
-  
   // Check if this resource should be limited
   if (!isResourceLimited(resource, state)) {
     return amount;
