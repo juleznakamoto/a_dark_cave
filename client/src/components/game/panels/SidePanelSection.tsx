@@ -66,8 +66,8 @@ export default function SidePanelSection({
   const hoveredTooltips = useGameStore((state) => state.hoveredTooltips || {});
   const setHoveredTooltip = useGameStore((state) => state.setHoveredTooltip);
   const highlightedResourcesRaw = useGameStore((state) => state.highlightedResources);
-  const highlightedResources = highlightedResourcesRaw instanceof Set 
-    ? highlightedResourcesRaw 
+  const highlightedResources = highlightedResourcesRaw instanceof Set
+    ? highlightedResourcesRaw
     : new Set(Array.isArray(highlightedResourcesRaw) ? highlightedResourcesRaw : []);
   const hoverTimersRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
   const mobileTooltip = useMobileTooltip();
@@ -224,7 +224,7 @@ export default function SidePanelSection({
       }
     };
 
-    // Check if this is a relic, weapon, tool, blessing, fellowship, or schematic that has effect information
+    // Check if this is a relic, weapon, tool, blessing, or schematic that has effect information
     const relicEffect = clothingEffects[item.id];
     const weaponEffect = weaponEffects[item.id];
     const toolEffect = toolEffects[item.id];
@@ -484,8 +484,8 @@ export default function SidePanelSection({
   };
 
   // Extract base title without dynamic values for consistent tooltip key
-  const titleString = typeof title === 'string' ? title : 'section';
-  const baseTitleForKey = titleString.split(' ')[0]; // Gets "Population" from "Population 5/10"
+  const titleString = typeof title === 'string' ? title : 'section-title';
+  const baseTitleForKey = titleString.split(' ')[0]; // Gets "Population" from "Population 5/10" or "Resources" from "Resources ◬ 1000"
   const tooltipKey = `section-title-${baseTitleForKey}`;
 
   return (
@@ -496,14 +496,21 @@ export default function SidePanelSection({
             <TooltipTrigger asChild>
               <h3
                 className={cn(
-                  "text-xs font-medium tracking-wide mb-0.5 cursor-pointer",
+                  "text-xs font-medium tracking-wide mb-0.5",
+                  mobileTooltip.isMobile ? "cursor-pointer" : "",
                   !hoveredTooltips[tooltipKey] && "new-item-pulse"
                 )}
                 onClick={(e) => {
                   mobileTooltip.handleTooltipClick(tooltipKey, e);
-                  setHoveredTooltip(tooltipKey, true);
+                  if (!hoveredTooltips[tooltipKey]) {
+                    setHoveredTooltip(tooltipKey, true);
+                  }
                 }}
-                onMouseEnter={() => setHoveredTooltip(tooltipKey, true)}
+                onMouseEnter={() => {
+                  if (!hoveredTooltips[tooltipKey]) {
+                    setHoveredTooltip(tooltipKey, true);
+                  }
+                }}
               >
                 {title}
               </h3>
