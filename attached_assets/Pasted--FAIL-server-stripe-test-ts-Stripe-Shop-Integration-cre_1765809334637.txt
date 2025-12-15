@@ -1,0 +1,77 @@
+
+ FAIL  server/stripe.test.ts > Stripe Shop Integration > createPaymentIntent > should create payment intent with correct amount
+AssertionError: expected "vi.fn()" to be called with arguments: [ { amount: 99, …(2) } ]
+
+Received: 
+
+  1st vi.fn() call:
+
+@@ -1,10 +1,11 @@
+  [
+    {
+      "amount": 99,
+-     "currency": "eur",
++     "currency": "usd",
+      "metadata": {
++       "currency": "usd",
+        "itemId": "gold_250",
+        "itemName": "250 Gold",
+        "priceInCents": "99",
+      },
+    },
+
+
+Number of calls: 1
+
+ ❯ server/stripe.test.ts:64:41
+     62|       const result = await createPaymentIntent('gold_250');
+     63| 
+     64|       expect(mockPaymentIntents.create).toHaveBeenCalledWith({
+       |                                         ^
+     65|         amount: 99, // Server-side price
+     66|         currency: 'eur',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  server/stripe.test.ts > Stripe Shop Integration > createPaymentIntent > should handle great feast items correctly
+AssertionError: expected "vi.fn()" to be called with arguments: [ { amount: 149, …(2) } ]
+
+Received: 
+
+  1st vi.fn() call:
+
+@@ -1,10 +1,11 @@
+  [
+    {
+      "amount": 149,
+-     "currency": "eur",
++     "currency": "usd",
+      "metadata": {
++       "currency": "usd",
+        "itemId": "great_feast_1",
+        "itemName": "1 Great Feast",
+        "priceInCents": "149",
+      },
+    },
+
+
+Number of calls: 1
+
+ ❯ server/stripe.test.ts:104:41
+    102|       const result = await createPaymentIntent('great_feast_1');
+    103| 
+    104|       expect(mockPaymentIntents.create).toHaveBeenCalledWith({
+       |                                         ^
+    105|         amount: 149,
+    106|         currency: 'eur',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  2 failed | 20 passed (22)
+      Tests  4 failed | 349 passed (353)
+   Start at  14:35:23
+   Duration  4.65s (transform 1.48s, setup 0ms, import 2.79s, tests 2.47s, environment 3ms)
+
+ FAIL  Tests failed. Watching for file changes...
+       press h to show help, press q to quit
