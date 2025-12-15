@@ -122,7 +122,7 @@ import {
   handleBuildStockpile,
   handleBuildGrandRepository,
   handleBuildCityVault,
-} from "./rules/villageBuildActions";
+} from "./rules/villageBuildHandlers";
 
 import {
   handleHunt,
