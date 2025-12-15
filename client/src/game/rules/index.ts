@@ -369,7 +369,7 @@ export function canExecuteAction(actionId: string, state: GameState): boolean {
         true,
         state,
       );
-      if ((current || 0) < adjustedCost) {
+      if ((current || 0) < adjustedAmount) {
         return false;
       }
     } else {
@@ -390,13 +390,13 @@ export function getActionCostDisplay(
 ): string {
   // Handle dynamic cost for bone totems
   if (actionId === "boneTotems") {
-    const dynamicCost = getBoneTotemsCost(state);
+    const dynamicCost = getBoneTotemsCost(state as GameState);
     return `-${dynamicCost} Bone Totem${dynamicCost !== 1 ? "s" : ""}`;
   }
 
   // Handle dynamic cost for leather totems
   if (actionId === "leatherTotems") {
-    const dynamicCost = getLeatherTotemsCost(state);
+    const dynamicCost = getLeatherTotemsCost(state as GameState);
     return `-${dynamicCost} Leather Totem${dynamicCost !== 1 ? "s" : ""}`;
   }
 
@@ -426,7 +426,7 @@ export function getActionCostDisplay(
       const adjustedAmount = state
         ? getAdjustedCost(
             actionId,
-            amount,
+            amount as number,
             resource.startsWith("resources."),
             state,
           )
