@@ -19,25 +19,15 @@ import {
 } from "@/game/rules/effectsCalculation";
 import { bookEffects, fellowshipEffects } from "@/game/rules/effects";
 import { gameStateSchema } from "@shared/schema";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"; // Assuming Tooltip components are available
-import { getResourceLimit, getStorageLimitText, isResourceLimited } from "@/game/resourceLimits"; // Assuming this is the correct path
+
+import { getStorageLimitText, isResourceLimited } from "@/game/resourceLimits"; // Assuming this is the correct path
+
 
 // Extract property order from schema by parsing defaults
 const defaultGameState = gameStateSchema.parse({});
 const resourceOrder = Object.keys(defaultGameState.resources);
 const buildingOrder = Object.keys(defaultGameState.buildings);
 const villagerOrder = Object.keys(defaultGameState.villagers);
-
-// Helper function to format resource names
-const formatResourceName = (key: string): string => {
-  return capitalizeWords(key);
-};
-
-// Helper function to format numbers
-const formatNumber = (num: number): string => {
-  return num.toLocaleString(); // Or use a more sophisticated formatter if needed
-};
-
 
 export default function SidePanel() {
   const {
@@ -108,35 +98,7 @@ export default function SidePanel() {
       value: resources[key as keyof typeof resources] ?? 0,
       testId: `resource-${key}`,
       visible: true,
-      tooltip: (
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <span>{capitalizeWords(key)}</span>
-            </TooltipTrigger>
-            <TooltipContent side="right" className="max-w-xs">
-              <div className="space-y-1">
-                <p className="font-semibold">{formatResourceName(key)}</p>
-                <p className="text-xs text-muted-foreground">
-                  Current: {formatNumber(resources[key as keyof typeof resources])}
-                </p>
-                {isResourceLimited(key, gameState) && (
-                  <p className="text-xs text-muted-foreground">
-                    Limit: {getStorageLimitText(gameState)}
-                  </p>
-                )}
-              </div>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      ),
     }));
-
-  // Check if any resource has a limit applied
-  const showResourceLimit = resourceOrder.some((key) =>
-    isResourceLimited(key, gameState),
-  );
-  const resourceLimitText = getStorageLimitText(gameState); // Get the storage limit text
 
   // Dynamically generate tool items from state (only show best tools, no weapons)
   const displayTools = getDisplayTools(gameState);
@@ -182,6 +144,14 @@ export default function SidePanel() {
       testId: `weapon-${key}`,
       visible: true,
     }));
+
+  // Check if any resource has a limit applied
+  const showResourceLimit = resourceOrder.some((key) =>
+    isResourceLimited(key, gameState),
+  );
+  const resourceLimitText = getStorageLimitText(gameState); // Get the storage limit text
+
+  // Dynamically generate tool items from state (only show best tools, no weapons)
 
   // Dynamically generate clothing items from state
   const clothingItems = Object.entries(gameState.clothing || {})
@@ -956,9 +926,14 @@ export default function SidePanel() {
   const shouldShowSection = (sectionName: string): boolean => {
     switch (activeTab) {
       case "cave":
-        let caveSections = ["resources", "tools", "weapons", "clothing", "schematics"];
-        if (!estateUnlocked)
-          caveSections.push("stats");
+        let caveSections = [
+          "resources",
+          "tools",
+          "weapons",
+          "clothing",
+          "schematics",
+        ];
+        if (!estateUnlocked) caveSections.push("stats");
         return caveSections.includes(sectionName);
       case "village":
         return ["resources", "buildings", "population"].includes(sectionName);
@@ -967,7 +942,9 @@ export default function SidePanel() {
           sectionName,
         );
       case "estate":
-        return ["resources", "books", "fellowship", "stats"].includes(sectionName);
+        return ["resources", "books", "fellowship", "stats"].includes(
+          sectionName,
+        );
       case "bastion":
         return ["resources", "fortifications", "bastion"].includes(sectionName);
       case "achievements":
@@ -985,7 +962,11 @@ export default function SidePanel() {
         <div className="flex-[0.9]">
           {resourceItems.length > 0 && shouldShowSection("resources") && (
             <SidePanelSection
-              title={showResourceLimit ? `Resources (${resourceLimitText})` : "Resources"}
+              title={
+                showResourceLimit
+                  ? `Resources ◬ ${resourceLimitText}`
+                  : "Resources"
+              }
               items={resourceItems}
               onValueChange={(itemId, oldValue, newValue) => {
                 logger.log(
