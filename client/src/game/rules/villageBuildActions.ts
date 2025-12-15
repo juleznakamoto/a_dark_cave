@@ -1573,7 +1573,7 @@ export const villageBuildActions: Record<string, Action> = {
     },
     effects: {
       1: {
-        "buildings.storage": 1,
+        "buildings.supplyHut": 1,
         "story.seen.hasStorage": true,
       },
     },
