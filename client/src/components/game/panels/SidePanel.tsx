@@ -1039,21 +1039,10 @@ export default function SidePanel() {
         <div className="flex-[0.9]">
           {resourceItems.length > 0 && shouldShowSection("resources") && (
             <SidePanelSection
-              title={
-                showResourceLimit ? (
-                  <>
-                    Resources{" "}
-                    <span className="text-muted-foreground font-normal">
-                      ◬ {resourceLimitText}
-                    </span>
-                  </>
-                ) : (
-                  "Resources"
-                )
-              }
+              title="Resources"
               titleTooltip={
                 showResourceLimit
-                  ? "Resource limit does not apply to silver and gold"
+                  ? `Max ${resourceLimitText}. Limit does not apply to silver and gold`
                   : undefined
               }
               items={resourceItems}
