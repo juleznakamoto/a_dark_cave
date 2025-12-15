@@ -190,14 +190,25 @@ function CheckoutForm({ itemId, onSuccess, currency }: CheckoutFormProps) {
         You will be charged <strong>{SHOP_ITEMS[itemId]?.price ? formatPrice(SHOP_ITEMS[itemId].price) : ''}</strong>
       </div>
 
-      <Button
-        type="submit"
-        disabled={!stripe || isProcessing}
-        className="w-auto px-8 mx-auto block"
-        button_id="shop-complete-purchase"
-      >
-        {isProcessing ? "Processing..." : "Complete Purchase"}
-      </Button>
+      <div className="flex gap-3 justify-center">
+        <Button
+          type="submit"
+          disabled={!stripe || isProcessing}
+          className="w-auto px-8"
+          button_id="shop-complete-purchase"
+        >
+          {isProcessing ? "Processing..." : "Complete Purchase"}
+        </Button>
+        <Button
+          variant="outline"
+          onClick={() => setClientSecret(null)}
+          className="w-auto px-8"
+          button_id="shop-cancel-payment"
+          type="button"
+        >
+          Cancel
+        </Button>
+      </div>
     </form>
   );
 }
@@ -1083,14 +1094,6 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                   currency={currency}
                 />
               </Elements>
-              <Button
-                variant="outline"
-                onClick={() => setClientSecret(null)}
-                className="w-auto px-8 mx-auto block mt-4"
-                button_id="shop-cancel-payment"
-              >
-                Cancel
-              </Button>
             </div>
             <ScrollBar orientation="vertical" />
           </ScrollArea>
