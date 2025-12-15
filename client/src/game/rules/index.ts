@@ -54,6 +54,13 @@ export const gameActions: Record<string, Action> = {
   ...forestScoutActions,
   ...forestSacrificeActions,
   ...forestTradeActions,
+  // Register new storage building actions
+  buildSupplyHut: villageBuildActions.buildSupplyHut,
+  buildStorehouse: villageBuildActions.buildStorehouse,
+  buildFortifiedStorehouse: villageBuildActions.buildFortifiedStorehouse,
+  buildVillageWarehouse: villageBuildActions.buildVillageWarehouse,
+  buildGrandRepository: villageBuildActions.buildGrandRepository,
+  buildCityVault: villageBuildActions.buildCityVault,
 };
 
 // Register gameActions reference for late binding in actionEffects
