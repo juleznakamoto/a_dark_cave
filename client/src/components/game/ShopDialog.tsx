@@ -47,26 +47,43 @@ const stripePromise = loadStripe(stripePublishableKey || "");
 
 // EU countries with Euro as main currency
 const EU_EURO_COUNTRIES = [
-  'AT', 'BE', 'CY', 'EE', 'FI', 'FR', 'DE', 'GR', 'IE', 'IT', 
-  'LV', 'LT', 'LU', 'MT', 'NL', 'PT', 'SK', 'SI', 'ES'
+  "AT",
+  "BE",
+  "CY",
+  "EE",
+  "FI",
+  "FR",
+  "DE",
+  "GR",
+  "IE",
+  "IT",
+  "LV",
+  "LT",
+  "LU",
+  "MT",
+  "NL",
+  "PT",
+  "SK",
+  "SI",
+  "ES",
 ];
 
 // Detect user's country and currency
-async function detectCurrency(): Promise<'EUR' | 'USD'> {
+async function detectCurrency(): Promise<"EUR" | "USD"> {
   try {
-    const response = await fetch('https://ipapi.co/json/');
+    const response = await fetch("https://ipapi.co/json/");
     const data = await response.json();
     const countryCode = data.country_code;
-    
+
     if (countryCode && EU_EURO_COUNTRIES.includes(countryCode)) {
-      return 'EUR';
+      return "EUR";
     }
   } catch (error) {
-    logger.error('Failed to detect location:', error);
+    logger.error("Failed to detect location:", error);
   }
-  
+
   // Default to USD
-  return 'USD';
+  return "USD";
 }
 
 // Function to get an initialized Supabase client
@@ -80,11 +97,16 @@ const getSupabaseClient = async () => {
 interface CheckoutFormProps {
   itemId: string;
   onSuccess: () => void;
-  currency: 'EUR' | 'USD';
+  currency: "EUR" | "USD";
   onCancel: () => void;
 }
 
-function CheckoutForm({ itemId, onSuccess, currency, onCancel }: CheckoutFormProps) {
+function CheckoutForm({
+  itemId,
+  onSuccess,
+  currency,
+  onCancel,
+}: CheckoutFormProps) {
   const stripe = useStripe();
   const elements = useElements();
   const [isProcessing, setIsProcessing] = useState(false);
@@ -92,7 +114,7 @@ function CheckoutForm({ itemId, onSuccess, currency, onCancel }: CheckoutFormPro
 
   const formatPrice = (cents: number) => {
     const amount = (cents / 100).toFixed(2);
-    return currency === 'EUR' ? `${amount} €` : `$${amount}`;
+    return currency === "EUR" ? `${amount} €` : `$${amount}`;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -200,7 +222,9 @@ function CheckoutForm({ itemId, onSuccess, currency, onCancel }: CheckoutFormPro
           className="w-auto px-6"
           button_id="shop-complete-purchase"
         >
-          {isProcessing ? "Processing..." : `Complete Purchase for ${SHOP_ITEMS[itemId]?.price ? formatPrice(SHOP_ITEMS[itemId].price) : ''}`}
+          {isProcessing
+            ? "Processing..."
+            : `Complete Purchase for ${SHOP_ITEMS[itemId]?.price ? formatPrice(SHOP_ITEMS[itemId].price) : ""}`}
         </Button>
         <Button
           variant="outline"
@@ -230,7 +254,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     id: string;
     email: string;
   } | null>(null);
-  const [currency, setCurrency] = useState<'EUR' | 'USD'>('USD');
+  const [currency, setCurrency] = useState<"EUR" | "USD">("USD");
   const [currencyLocked, setCurrencyLocked] = useState(false);
   const gameState = useGameStore();
   const activatedPurchases = gameState.activatedPurchases || {};
@@ -745,7 +769,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
 
   const formatPrice = (cents: number) => {
     const amount = (cents / 100).toFixed(2);
-    return currency === 'EUR' ? `${amount} €` : `$${amount}`;
+    return currency === "EUR" ? `${amount} €` : `$${amount}`;
   };
 
   return (
@@ -796,9 +820,9 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                               color: tailwindToHex(
                                 item.symbolColor.replace("text-", ""),
                               ),
-                              maxWidth: '2.2em',
-                              wordBreak: 'break-all',
-                              overflowWrap: 'anywhere',
+                              maxWidth: "2.2em",
+                              wordBreak: "break-all",
+                              overflowWrap: "anywhere",
                             }}
                           >
                             {item.symbol}
@@ -806,7 +830,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                         )}
                         <CardTitle className="!m-0 text-md pr-6 flex items-center gap-1">
                           {item.name}
-                          {item.id === 'skull_lantern' && (
+                          {item.id === "skull_lantern" && (
                             <TooltipProvider>
                               <Tooltip>
                                 <TooltipTrigger asChild>
@@ -816,8 +840,10 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                                 </TooltipTrigger>
                                 <TooltipContent className="max-w-xs">
                                   <div className="text-xs">
-                                    <div className="font-bold mb-1">Skull Lantern</div>
-                                    <div className="text-gray-400 mb-1">Ancient lantern forged from cursed bone that illuminates the deepest depths</div>
+                                    <div className="font-bold mb-1">
+                                      Skull Lantern
+                                    </div>
+
                                     <div className="mt-1 space-y-0.5">
                                       <div>Cave Explore: +200% Bonus</div>
                                       <div>Cave Explore: -5s Cooldown</div>
@@ -1111,7 +1137,11 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
           <ScrollArea className="max-h-[calc(80vh-80px)]">
             <div className="mt-0">
               <h3 className="text-lg font-semibold mb-4">
-                Complete Purchase: {SHOP_ITEMS[selectedItem!]?.name} ({SHOP_ITEMS[selectedItem!]?.price ? formatPrice(SHOP_ITEMS[selectedItem!].price) : ''})
+                Complete Purchase: {SHOP_ITEMS[selectedItem!]?.name} (
+                {SHOP_ITEMS[selectedItem!]?.price
+                  ? formatPrice(SHOP_ITEMS[selectedItem!].price)
+                  : ""}
+                )
               </h3>
               <Elements stripe={stripePromise} options={{ clientSecret }}>
                 <CheckoutForm
