@@ -14,7 +14,7 @@ export function getResourceLimit(state: GameState): number {
   const storageLevel = state.buildings.storage || 0;
   
   const limits: Record<number, number> = {
-    0: 0,      // No storage = no resources allowed
+    0: 500,    // Initial cap for new games
     1: 1000,   // Supply Hut
     2: 5000,   // Storehouse
     3: 10000,  // Fortified Storehouse
@@ -23,7 +23,7 @@ export function getResourceLimit(state: GameState): number {
     6: 100000, // City Vault
   };
 
-  return limits[storageLevel] || 0;
+  return limits[storageLevel] || 500;
 }
 
 // Check if a resource should be limited
@@ -55,9 +55,6 @@ export function getStorageLimitText(state: GameState): string {
   }
 
   const limit = getResourceLimit(state);
-  if (limit === 0) {
-    return "No Storage";
-  }
   if (limit === Infinity) {
     return "Unlimited";
   }

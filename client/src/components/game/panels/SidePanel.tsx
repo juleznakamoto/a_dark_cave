@@ -132,6 +132,12 @@ export default function SidePanel() {
       ),
     }));
 
+  // Check if any resource has a limit applied
+  const showResourceLimit = resourceOrder.some((key) =>
+    isResourceLimited(key, gameState),
+  );
+  const resourceLimitText = getStorageLimitText(gameState); // Get the storage limit text
+
   // Dynamically generate tool items from state (only show best tools, no weapons)
   const displayTools = getDisplayTools(gameState);
 
@@ -979,7 +985,7 @@ export default function SidePanel() {
         <div className="flex-[0.9]">
           {resourceItems.length > 0 && shouldShowSection("resources") && (
             <SidePanelSection
-              title="Resources"
+              title={showResourceLimit ? `Resources (${resourceLimitText})` : "Resources"}
               items={resourceItems}
               onValueChange={(itemId, oldValue, newValue) => {
                 logger.log(

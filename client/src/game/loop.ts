@@ -548,6 +548,7 @@ function handleGathererProduction() {
     const production = getPopulationProduction("gatherer", gatherer, state);
     production.forEach((prod) => {
       updates[prod.resource] = prod.totalAmount;
+      // updateResource automatically applies resource limits via capResourceToLimit
       state.updateResource(
         prod.resource as keyof typeof state.resources,
         prod.totalAmount,
@@ -563,6 +564,7 @@ function handleHunterProduction() {
   if (hunter > 0) {
     const production = getPopulationProduction("hunter", hunter, state);
     production.forEach((prod) => {
+      // updateResource automatically applies resource limits via capResourceToLimit
       state.updateResource(
         prod.resource as keyof typeof state.resources,
         prod.totalAmount,

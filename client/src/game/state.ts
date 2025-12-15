@@ -537,6 +537,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   setIsUserSignedIn: (signedIn: boolean) => set({ isUserSignedIn: signedIn }),
 
   updateResource: (resource: keyof GameState["resources"], amount: number) => {
+    // updateResource in stateHelpers automatically applies capResourceToLimit
     set((state) => updateResource(state, resource, amount));
 
     // If updating free villagers, update population counts immediately
