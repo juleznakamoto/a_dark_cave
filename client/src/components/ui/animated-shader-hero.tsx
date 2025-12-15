@@ -26,6 +26,11 @@ interface HeroProps {
       onClick?: () => void;
       buttonId?: string;
     };
+    feedback?: {
+      text: string;
+      onClick?: () => void;
+      buttonId?: string;
+    };
   };
   className?: string;
 }
@@ -594,16 +599,27 @@ const Hero: React.FC<HeroProps> = ({
             </button>
           </div>
 
-          {/* Close Button */}
-          {buttons && buttons.secondary && (
-            <div className="flex justify-center animate-fade-in-up animation-delay-4500">
-              <button
-                onClick={buttons.secondary.onClick}
-                button_id={buttons.secondary.buttonId}
-                className="px-4 py-2 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-normal text-md transition-all duration-300 hover:scale-105 backdrop-blur-sm"
-              >
-                {buttons.secondary.text}
-              </button>
+          {/* Feedback and Close Buttons */}
+          {(buttons?.feedback || buttons?.secondary) && (
+            <div className="flex justify-center gap-4 animate-fade-in-up animation-delay-4500">
+              {buttons.feedback && (
+                <button
+                  onClick={buttons.feedback.onClick}
+                  button_id={buttons.feedback.buttonId}
+                  className="px-4 py-2 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-normal text-md transition-all duration-300 hover:scale-105 backdrop-blur-sm"
+                >
+                  {buttons.feedback.text}
+                </button>
+              )}
+              {buttons.secondary && (
+                <button
+                  onClick={buttons.secondary.onClick}
+                  button_id={buttons.secondary.buttonId}
+                  className="px-4 py-2 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-normal text-md transition-all duration-300 hover:scale-105 backdrop-blur-sm"
+                >
+                  {buttons.secondary.text}
+                </button>
+              )}
             </div>
           )}
         </div>

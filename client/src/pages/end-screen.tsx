@@ -12,6 +12,10 @@ export default function EndScreenPage() {
     window.location.href = "/game?openShop=true";
   };
 
+  const handleFeedback = () => {
+    window.location.href = "mailto:support@a-dark-cave.com";
+  };
+
   return (
     <div className="fixed inset-0 z-[99999]">
       <Hero
@@ -30,6 +34,11 @@ export default function EndScreenPage() {
             text: "⛤ Cruel Mode",
             onClick: handleCruelMode,
             buttonId: "end-screen-cruel-mode",
+          },
+          feedback: {
+            text: "Feedback",
+            onClick: handleFeedback,
+            buttonId: "end-screen-feedback",
           },
           secondary: {
             text: "Close",
