@@ -142,10 +142,6 @@ function CheckoutForm({ itemId, onSuccess, currency }: CheckoutFormProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <PaymentElement />
-      
-      <div className="text-sm text-center text-muted-foreground">
-        You will be charged in <strong>{SHOP_ITEMS[itemId]?.price ? formatPrice(SHOP_ITEMS[itemId].price) : ''}</strong>
-      </div>
 
       <div className="flex items-center justify-center gap-1 text-xs text-muted-foreground">
         <span>Powered by</span>
@@ -189,6 +185,10 @@ function CheckoutForm({ itemId, onSuccess, currency }: CheckoutFormProps) {
       {errorMessage && (
         <div className="text-red-500 text-sm">{errorMessage}</div>
       )}
+
+      <div className="text-sm text-center text-muted-foreground">
+        You will be charged <strong>{SHOP_ITEMS[itemId]?.price ? formatPrice(SHOP_ITEMS[itemId].price) : ''}</strong>
+      </div>
 
       <Button
         type="submit"
