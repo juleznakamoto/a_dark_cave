@@ -3,6 +3,7 @@ import {
   getTotalKnowledge,
   getActionBonuses,
   getTotalCraftingCostReduction,
+  getTotalBuildingCostReduction,
 } from "./effectsCalculation";
 import { gameActions } from "./index";
 import { getTotalMadness } from "./effectsCalculation";
@@ -204,8 +205,8 @@ export const calculateResourceGains = (
               : value;
 
             const hasEnough =
-              (state.resources[resource as keyof typeof state.resources] ||
-                0) >= finalCost;
+              (state.resources[resource as keyof typeof state.resources] || 0) >=
+              finalCost;
             costs.push({ resource, amount: finalCost, hasEnough });
           }
         } else if (key.startsWith("relics.")) {

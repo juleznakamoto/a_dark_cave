@@ -1,7 +1,5 @@
 import { Action, GameState } from "@shared/schema";
 import {
-  getTotalCraftingCostReduction as getTotalCraftingCostReductionCalc,
-  getTotalBuildingCostReduction as getTotalBuildingCostReductionCalc,
   getActionBonuses as getActionBonusesCalc,
   getTotalLuck as getTotalLuckCalc,
 } from "./effectsCalculation";
@@ -10,7 +8,7 @@ import {
   ACTION_TO_UPGRADE_KEY,
 } from "../buttonUpgrades";
 import { getNextBuildingLevel } from "./villageBuildActions";
-import { getAdjustedCost } from "./index";
+import { calculateAdjustedCost } from "./costCalculation";
 
 const FOCUS_ELIGIBLE_ACTIONS = [
   "exploreCave",
@@ -152,12 +150,17 @@ export function applyActionEffects(
 
           const finalKey = pathParts[pathParts.length - 1];
 
+          // Get gameActions reference
+          const gameActions = getGameActions();
+          const actionDef = gameActions[actionId];
+
           // Use centralized cost adjustment function (same as tooltip for both buildings and crafting)
-          const adjustedCost = getAdjustedCost(
+          const adjustedCost = calculateAdjustedCost(
             actionId,
             cost,
             path.startsWith("resources."),
             state,
+            actionDef?.category as "crafting" | "building" | undefined,
           );
 
           // Get the current amount from state (not updates) and subtract the adjusted cost

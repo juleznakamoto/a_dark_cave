@@ -1,10 +1,6 @@
 import { Action } from "@shared/schema";
 import { GameState } from "@shared/schema";
 import { GameEvent } from "./events";
-import {
-  getTotalCraftingCostReduction as getTotalCraftingCostReductionCalc,
-  getTotalBuildingCostReduction as getTotalBuildingCostReductionCalc,
-} from "./effectsCalculation";
 import { setGameActionsRef } from "./actionEffects";
 import { getNextBuildingLevel } from "./villageBuildActions";
 import {
@@ -13,6 +9,7 @@ import {
   getAnimalsCost,
   getHumansCost,
 } from "./forestSacrificeActions";
+import { calculateAdjustedCost } from "./costCalculation";
 
 // Import action modules - these are now safe because actionEffects uses late binding
 import { caveCraftResources } from "./caveCraftResources";
@@ -189,33 +186,14 @@ export function getAdjustedCost(
   isResourceCost: boolean,
   state: GameState,
 ): number {
-  if (!isResourceCost) {
-    return baseCost;
-  }
-
   const action = gameActions[actionId];
-  if (!action) {
-    return baseCost;
-  }
-
-  // Determine if this is a crafting or building action
-  const isCraftingAction = action.category === "crafting";
-  const isBuildingAction = action.category === "building";
-
-  if (!isCraftingAction && !isBuildingAction) {
-    return baseCost;
-  }
-
-  // Get the appropriate cost reduction using centralized functions
-  const reduction = isCraftingAction
-    ? getTotalCraftingCostReductionCalc(state)
-    : getTotalBuildingCostReductionCalc(state);
-
-  // Apply the reduction (reduction is a decimal like 0.15 for 15% off)
-  const discountMultiplier = 1 - reduction;
-  const adjustedCost = Math.floor(baseCost * discountMultiplier);
-
-  return adjustedCost;
+  return calculateAdjustedCost(
+    actionId,
+    baseCost,
+    isResourceCost,
+    state,
+    action?.category as "crafting" | "building" | undefined,
+  );
 }
 
 // Helper function to extract resource IDs from action cost
