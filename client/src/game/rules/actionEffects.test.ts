@@ -84,7 +84,6 @@ describe('Crafting Cost Reductions', () => {
 
   beforeEach(() => {
     state = createInitialState();
-    setGameActionsRef(gameActions);
   });
 
   it('should apply blacksmith_hammer 15% crafting discount', () => {
@@ -156,7 +155,6 @@ describe('Building Cost Reductions', () => {
 
   beforeEach(() => {
     state = createInitialState();
-    setGameActionsRef(gameActions);
   });
 
   it('should apply mastermason_chisel 10% building discount', () => {
@@ -257,7 +255,6 @@ describe('Cost Reduction Edge Cases', () => {
 
   beforeEach(() => {
     state = createInitialState();
-    setGameActionsRef(gameActions);
   });
 
   it('should handle crafting with maximum discounts', () => {
