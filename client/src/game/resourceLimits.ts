@@ -1,4 +1,3 @@
-
 import { GameState } from "@shared/schema";
 
 // Resources that are never limited
@@ -12,7 +11,7 @@ export function getResourceLimit(state: GameState): number {
   }
 
   const storageLevel = state.buildings.storage || 0;
-  
+
   const limits: Record<number, number> = {
     0: 500,    // Initial cap for new games
     1: 1000,   // Supply Hut
@@ -43,10 +42,10 @@ export function capResourceToLimit(
   if (!isResourceLimited(resourceKey, state)) {
     return value;
   }
-  
+
   const limit = getResourceLimit(state);
   const cappedValue = Math.min(value, limit);
-  
+
   return cappedValue;
 }
 
@@ -60,21 +59,23 @@ export function getStorageLimitText(state: GameState): string {
   if (limit === Infinity) {
     return "Unlimited";
   }
-  
+
   return limit.toLocaleString();
 }
 
 // Get storage building name based on level
-export function getStorageBuildingName(level: number): string {
-  const names: Record<number, string> = {
-    0: "No Storage",
-    1: "Supply Hut",
-    2: "Storehouse",
-    3: "Fortified Storehouse",
-    4: "Village Warehouse",
-    5: "Grand Repository",
-    6: "City Vault",
-  };
-  
-  return names[level] || "Unknown";
+export function getStorageBuildingName(state: GameState): string {
+  if (!state.flags?.resourceLimitsEnabled) {
+    return "Unlimited Storage";
+  }
+
+  // Determine storage level based on highest storage building
+  if (state.buildings.cityVault > 0) return "City Vault";
+  if (state.buildings.grandRepository > 0) return "Grand Repository";
+  if (state.buildings.villageWarehouse > 0) return "Village Warehouse";
+  if (state.buildings.fortifiedStorehouse > 0) return "Fortified Storehouse";
+  if (state.buildings.storehouse > 0) return "Storehouse";
+  if (state.buildings.supplyHut > 0) return "Supply Hut";
+
+  return "No Storage";
 }

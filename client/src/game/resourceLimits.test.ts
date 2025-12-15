@@ -22,27 +22,26 @@ describe('Resource Limits - Core Functionality', () => {
 
   describe('getResourceLimit', () => {
     it('should return 500 for initial cap (no storage building)', () => {
-      state.buildings.storage = 0;
       expect(getResourceLimit(state)).toBe(500);
     });
 
     it('should return 1000 for Supply Hut (level 1)', () => {
-      state.buildings.storage = 1;
+      state.buildings.supplyHut = 1;
       expect(getResourceLimit(state)).toBe(1000);
     });
 
     it('should return 5000 for Storehouse (level 2)', () => {
-      state.buildings.storage = 2;
+      state.buildings.storehouse = 1;
       expect(getResourceLimit(state)).toBe(5000);
     });
 
     it('should return 10000 for Fortified Storehouse (level 3)', () => {
-      state.buildings.storage = 3;
+      state.buildings.fortifiedStorehouse = 1;
       expect(getResourceLimit(state)).toBe(10000);
     });
 
     it('should return 25000 for Village Warehouse (level 4)', () => {
-      state.buildings.storage = 4;
+      state.buildings.villageWarehouse = 1;
       expect(getResourceLimit(state)).toBe(25000);
     });
 

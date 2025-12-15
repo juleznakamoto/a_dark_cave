@@ -192,7 +192,7 @@ describe('Game Loop - Resource Limits Integration', () => {
         },
         buildings: {
           ...state.buildings,
-          storage: 1, // 1000 limit
+          supplyHut: 1, // 1000 limit
         },
       }));
       
@@ -202,7 +202,8 @@ describe('Game Loop - Resource Limits Integration', () => {
       useGameStore.setState((state) => ({
         buildings: {
           ...state.buildings,
-          storage: 2, // 5000 limit
+          supplyHut: 0,
+          storehouse: 1, // 5000 limit
         },
       }));
       

@@ -542,16 +542,16 @@ describe('Resource Gain Tests', () => {
         buildings: { woodenHut: 1 },
       });
       const stateWithStorage3 = createTestState({
-        buildings: { woodenHut: 1, storage: 3 },
+        buildings: { woodenHut: 1, fortifiedStorehouse: 1 },
       });
       const stateWithStorage4 = createTestState({
-        buildings: { woodenHut: 1, storage: 4 },
+        buildings: { woodenHut: 1, villageWarehouse: 1 },
       });
       const stateWithStorage5 = createTestState({
-        buildings: { woodenHut: 1, storage: 5 },
+        buildings: { woodenHut: 1, grandRepository: 1 },
       });
       const stateWithStorage6 = createTestState({
-        buildings: { woodenHut: 1, storage: 6 },
+        buildings: { woodenHut: 1, cityVault: 1 },
       });
 
       const costWithout = getActionCostBreakdown('buildCabin', stateWithoutStorage);

@@ -184,11 +184,12 @@ export default function BuildingProgressChart() {
     // Sixth ring: Storage
     [
       {
-        buildingType: "storage",
+        buildingType: "supplyHut",
         maxCount: 6,
         color: SEGMENT_COLOR,
         label: "Storage",
         reward: 500,
+        relatedBuildings: ["storehouse", "fortifiedStorehouse", "villageWarehouse", "grandRepository", "cityVault"],
       },
     ],
   ];
