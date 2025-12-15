@@ -35,7 +35,7 @@ interface ResourceChange {
 }
 
 interface SidePanelSectionProps {
-  title: string;
+  title: string | React.ReactNode;
   items: SidePanelItem[];
   className?: string;
   onValueChange?: (itemId: string, oldValue: number, newValue: number) => void;
@@ -484,7 +484,8 @@ export default function SidePanelSection({
   };
 
   // Extract base title without dynamic values for consistent tooltip key
-  const baseTitleForKey = title.split(' ')[0]; // Gets "Population" from "Population 5/10"
+  const titleString = typeof title === 'string' ? title : 'section';
+  const baseTitleForKey = titleString.split(' ')[0]; // Gets "Population" from "Population 5/10"
   const tooltipKey = `section-title-${baseTitleForKey}`;
 
   return (

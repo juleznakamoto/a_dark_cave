@@ -963,9 +963,16 @@ export default function SidePanel() {
           {resourceItems.length > 0 && shouldShowSection("resources") && (
             <SidePanelSection
               title={
-                showResourceLimit
-                  ? `Resources ◬ ${resourceLimitText}`
-                  : "Resources"
+                showResourceLimit ? (
+                  <>
+                    Resources{" "}
+                    <span className="text-muted-foreground">
+                      ◬ {resourceLimitText}
+                    </span>
+                  </>
+                ) : (
+                  "Resources"
+                )
               }
               items={resourceItems}
               onValueChange={(itemId, oldValue, newValue) => {
