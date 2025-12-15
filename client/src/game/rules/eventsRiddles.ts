@@ -1,3 +1,4 @@
+
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
@@ -267,7 +268,9 @@ function createRiddleEvent(
   config: RiddleConfig,
   isVariant: boolean,
 ): GameEvent {
-  const eventId = config.eventId;
+  const baseEventId = config.eventId;
+  const eventId = isVariant ? `${baseEventId}_variant` : baseEventId;
+  const oppositeEventId = isVariant ? baseEventId : `${baseEventId}_variant`;
   const message = isVariant ? config.variantMessage : config.originalMessage;
   const choices = isVariant
     ? VARIANT_CHOICES[config.eventId]
@@ -285,32 +288,59 @@ function createRiddleEvent(
         },
         events: {
           ...state.events,
+          [baseEventId]: true,
+          [`${baseEventId}_correct`]: true,
           [eventId]: true,
-          [`${eventId}_correct`]: true,
+          [oppositeEventId]: true, // Block the opposite variant
         },
         _logMessage: SUCCESS_MESSAGES[level](reward),
       });
     }
 
-    return (state: GameState) =>
-      applyPenalty(state, eventId, penalties, level, WRONG_ANSWER_MESSAGES);
+    return (state: GameState) => {
+      const penaltyResult = applyPenalty(state, eventId, penalties, level, WRONG_ANSWER_MESSAGES);
+      return {
+        ...penaltyResult,
+        events: {
+          ...penaltyResult.events,
+          [baseEventId]: true,
+          [oppositeEventId]: true, // Block the opposite variant
+        },
+      };
+    };
   };
 
   const createFallbackEffect = () => {
-    return (state: GameState) =>
-      applyPenalty(state, eventId, penalties, level, TIMEOUT_MESSAGES);
+    return (state: GameState) => {
+      const penaltyResult = applyPenalty(state, eventId, penalties, level, TIMEOUT_MESSAGES);
+      return {
+        ...penaltyResult,
+        events: {
+          ...penaltyResult.events,
+          [baseEventId]: true,
+          [oppositeEventId]: true, // Block the opposite variant
+        },
+      };
+    };
   };
 
   return {
     id: eventId,
-    condition: (state: GameState) => config.precondition(state),
+    condition: (state: GameState) => {
+      // Block if the opposite variant has already triggered
+      if (state.events[oppositeEventId]) return false;
+      // Block if this event has already triggered
+      if (state.events[eventId]) return false;
+      // Check base precondition
+      return config.precondition(state);
+    },
     triggerType: "resource",
     timeProbability: level === "first" ? 0.030 : 45,
     title: config.title,
     message,
     triggered: false,
     priority: 4,
-    repeatable: true,
+    repeatable: false,
     isTimedChoice: true,
     baseDecisionTime: 40,
     choices: choices.map((choice) => ({
@@ -327,11 +357,11 @@ function createRiddleEvent(
 }
 
 export const riddleEvents: Record<string, GameEvent> = {
-  // Generate original riddle events
+  // Generate both original and variant riddle events
   ...Object.fromEntries(
-    RIDDLE_CONFIGS.map((config) => [
-      config.eventId,
-      createRiddleEvent(config, Math.random() < 0.5),
+    RIDDLE_CONFIGS.flatMap((config) => [
+      [config.eventId, createRiddleEvent(config, false)],
+      [`${config.eventId}_variant`, createRiddleEvent(config, true)],
     ]),
   ),
 
