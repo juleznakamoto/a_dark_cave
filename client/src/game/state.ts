@@ -782,6 +782,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
       cruelMode: isCruelModeActive,
       CM: isCruelModeActive ? 1 : 0,
 
+      // Preserve hasWonAnyGame across restarts
+      hasWonAnyGame: state.hasWonAnyGame || false,
+
       // Enable resource limits for new games
       flags: {
         resourceLimitsEnabled: true,
@@ -816,8 +819,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
       startTime: Date.now(),
       playTime: 0,
       allowPlayTimeOverwrite: true,
-      // Reset hasWonAnyGame on restart
-      hasWonAnyGame: false,
     };
 
     set(resetState);

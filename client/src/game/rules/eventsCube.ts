@@ -384,6 +384,7 @@ export const cubeEvents: Record<string, GameEvent> = {
               ...state.events,
               cube13: true,
             },
+            hasWonAnyGame: true,
           };
         },
       },
