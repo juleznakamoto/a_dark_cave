@@ -231,6 +231,7 @@ function createRiddleEvent(config: RiddleConfig, isVariant: boolean): GameEvent 
         events: {
           ...state.events,
           [eventId]: true,
+          [oppositeEventId]: true, // Block opposite variant
           [`${eventId}_correct`]: true,
         },
         _logMessage: SUCCESS_MESSAGES[level](reward),
@@ -254,6 +255,7 @@ function createRiddleEvent(config: RiddleConfig, isVariant: boolean): GameEvent 
           events: {
             ...state.events,
             [eventId]: true,
+            [oppositeEventId]: true, // Block opposite variant
           },
           _logMessage: WRONG_ANSWER_MESSAGES[level](deaths),
         };
@@ -267,6 +269,7 @@ function createRiddleEvent(config: RiddleConfig, isVariant: boolean): GameEvent 
           events: {
             ...state.events,
             [eventId]: true,
+            [oppositeEventId]: true, // Block opposite variant
           },
           _logMessage: WRONG_ANSWER_MESSAGES[level](deaths),
         };
@@ -284,8 +287,9 @@ function createRiddleEvent(config: RiddleConfig, isVariant: boolean): GameEvent 
           events: {
             ...state.events,
             [eventId]: true,
+            [oppositeEventId]: true, // Block opposite variant
           },
-          _logMessage: WRONG_ANSWER_MESSAGES[level],
+          _logMessage: WRONG_ANSWER_MESSAGES[level](),
         };
       };
     }
@@ -308,6 +312,7 @@ function createRiddleEvent(config: RiddleConfig, isVariant: boolean): GameEvent 
           events: {
             ...state.events,
             [eventId]: true,
+            [oppositeEventId]: true, // Block opposite variant
           },
           _logMessage: TIMEOUT_MESSAGES[level](deaths),
         };
@@ -321,6 +326,7 @@ function createRiddleEvent(config: RiddleConfig, isVariant: boolean): GameEvent 
           events: {
             ...state.events,
             [eventId]: true,
+            [oppositeEventId]: true, // Block opposite variant
           },
           _logMessage: TIMEOUT_MESSAGES[level](deaths),
         };
@@ -338,6 +344,7 @@ function createRiddleEvent(config: RiddleConfig, isVariant: boolean): GameEvent 
           events: {
             ...state.events,
             [eventId]: true,
+            [oppositeEventId]: true, // Block opposite variant
           },
           _logMessage: TIMEOUT_MESSAGES[level](),
         };
@@ -348,7 +355,7 @@ function createRiddleEvent(config: RiddleConfig, isVariant: boolean): GameEvent 
   return {
     id: eventId,
     condition: (state: GameState) => 
-      config.precondition(state) && !state.events[oppositeEventId],
+      config.precondition(state) && !(state.events as Record<string, any>)[oppositeEventId],
     triggerType: "resource",
     timeProbability: level === 'first' ? 30 : 45,
     title: config.title,
