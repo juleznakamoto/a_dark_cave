@@ -1021,7 +1021,14 @@ export default function SidePanel() {
           )}
           {populationItems.length > 0 && shouldShowSection("population") && (
             <SidePanelSection
-              title={`Population ${current_population}/${total_population}`}
+              title={
+                <>
+                  Population{" "}
+                  <span className="text-muted-foreground">
+                    {current_population}/{total_population}
+                  </span>
+                </>
+              }
               items={populationItems}
               titleTooltip="Each villager consumes 1 food and 1 wood"
             />
