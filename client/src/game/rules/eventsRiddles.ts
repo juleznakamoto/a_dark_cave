@@ -80,18 +80,7 @@ const WRONG_ANSWER_MESSAGES = {
 } as const;
 
 // Timeout messages
-const TIMEOUT_MESSAGES = {
-  first: (deaths: number) =>
-    `The figure slowly shakes its head before vanishing into the night. By morning, ${deaths} villagers are found in their beds with slit throats.`,
-  second: () =>
-    "The figure turns its hooded head side to side, then disappears without a sound. The next day, a dense fog creeps into the village. Villagers claim to see shifting shapes within it, many are too fearful to leave their huts.",
-  third: (deaths: number) =>
-    `The figure gives a slow, disapproving shake of the head before fading away. When dawn breaks, ${deaths} villagers are found dead, mouths frozen in silent screams.`,
-  fourth: () =>
-    "The figure shakes its head faintly, then fades from sight. The following day, a heavy fog engulfs the village. Shadows seemt to move within the mist, many villagers are too scared to leave their huts.",
-  fifth: (deaths: number) =>
-    `The figure slowly shakes its head in rejection, then dissolves into the dark. The next day, a fog descends upon the village. ${deaths} villagers perish as the suffocating mist blankets the land.`,
-} as const;
+const TIMEOUT_MESSAGES = WRONG_ANSWER_MESSAGES;
 
 // Riddle configurations
 interface RiddleChoice {
