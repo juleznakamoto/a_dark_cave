@@ -10,6 +10,7 @@ import {
   ACTION_TO_UPGRADE_KEY,
 } from "../buttonUpgrades";
 import { getNextBuildingLevel } from "./villageBuildActions";
+import { getAdjustedCost } from "./index";
 
 const FOCUS_ELIGIBLE_ACTIONS = [
   "exploreCave",
@@ -74,18 +75,6 @@ export function applyActionEffects(
     logMessages?: string[];
     triggeredEvents?: string[];
   } = {};
-
-  // Determine action type and calculate cost reductions
-  const isCraftingAction =
-    actionId.startsWith("craft") || actionId.startsWith("forge");
-  const isBuildingAction = !!action.building;
-  
-  const craftingCostReduction = isCraftingAction
-    ? getTotalCraftingCostReductionCalc(state)
-    : 0;
-  const buildingCostReduction = isBuildingAction
-    ? getTotalBuildingCostReductionCalc(state)
-    : 0;
 
   // Apply costs (as negative effects)
   if (action.cost) {
@@ -163,17 +152,15 @@ export function applyActionEffects(
 
           const finalKey = pathParts[pathParts.length - 1];
           
-          // Apply cost reductions based on action type (only for numeric costs)
-          let adjustedCost = cost;
-          if (typeof cost === 'number') {
-            if (isCraftingAction && craftingCostReduction > 0) {
-              adjustedCost = Math.floor(cost * (1 - craftingCostReduction));
-            } else if (isBuildingAction && buildingCostReduction > 0) {
-              adjustedCost = Math.floor(cost * (1 - buildingCostReduction));
-            }
-          }
+          // Use centralized cost adjustment function (same as tooltip)
+          const adjustedCost = getAdjustedCost(
+            actionId,
+            cost,
+            path.startsWith("resources."),
+            state,
+          );
 
-          current[finalKey] = (current[finalKey] || 0) - adjustedCost;
+          current[finalKey] = (current[finalKey] || 0) - (typeof adjustedCost === 'number' ? adjustedCost : 0);
         }
       });
     }
@@ -476,17 +463,9 @@ export function applyActionEffects(
         }
       } else if (typeof effect === "number") {
         if (pathParts[0] === "resources") {
-          let adjustedEffect = effect;
-          if (isCraftingAction && effect < 0) {
-            adjustedEffect = Math.floor(effect * (1 - craftingCostReduction));
-          }
-          if (isBuildingAction && effect < 0) {
-            adjustedEffect = Math.floor(effect * (1 - buildingCostReduction));
-          }
-
           current[finalKey] =
             (state.resources[finalKey as keyof typeof state.resources] || 0) +
-            adjustedEffect;
+            effect;
         } else if (path === "madness") {
           current[finalKey] = (state.madness || 0) + effect;
         } else {

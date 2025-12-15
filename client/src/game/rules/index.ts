@@ -183,7 +183,7 @@ export const shouldShowAction = (
 };
 
 // Helper function to calculate adjusted cost with discounts (single source of truth)
-function getAdjustedCost(
+export function getAdjustedCost(
   actionId: string,
   cost: number | boolean,
   isResourceCost: boolean,
