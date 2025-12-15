@@ -132,7 +132,7 @@ app.get("/api/admin/data", async (req, res) => {
     // Fetch data with 30-day filter for saves and clicks
     // Use a high limit to get all results (Supabase default is 1000)
     const QUERY_LIMIT = 50000;
-    
+
     const [clicksResult, savesResult, purchasesResult] = await Promise.all([
       adminClient
         .from("button_clicks")
@@ -474,13 +474,15 @@ app.post("/api/leaderboard/update-username", async (req, res) => {
   });
 
   // Payment endpoints
-  app.post("/api/payment/create-intent", async (req, res) => {
+  app.post('/api/payment/create-intent', async (req, res) => {
     try {
-      const { itemId, userEmail, userId } = req.body;
+      const { itemId, userEmail, userId, currency } = req.body;
       // Never accept price from client - always use server-side price
-      const result = await createPaymentIntent(itemId, userEmail, userId);
-      res.json(result);
+      const { clientSecret, item } = await createPaymentIntent(itemId, userEmail, userId, undefined, currency);
+
+      res.json({ clientSecret, item });
     } catch (error: any) {
+      console.error('Payment intent creation failed:', error);
       res.status(400).json({ error: error.message });
     }
   });

@@ -47,6 +47,30 @@ const stripePublishableKey = import.meta.env.PROD
 
 const stripePromise = loadStripe(stripePublishableKey || "");
 
+// EU countries with Euro as main currency
+const EU_EURO_COUNTRIES = [
+  'AT', 'BE', 'CY', 'EE', 'FI', 'FR', 'DE', 'GR', 'IE', 'IT', 
+  'LV', 'LT', 'LU', 'MT', 'NL', 'PT', 'SK', 'SI', 'ES'
+];
+
+// Detect user's country and currency
+async function detectCurrency(): Promise<'EUR' | 'USD'> {
+  try {
+    const response = await fetch('https://ipapi.co/json/');
+    const data = await response.json();
+    const countryCode = data.country_code;
+    
+    if (countryCode && EU_EURO_COUNTRIES.includes(countryCode)) {
+      return 'EUR';
+    }
+  } catch (error) {
+    logger.error('Failed to detect location:', error);
+  }
+  
+  // Default to USD
+  return 'USD';
+}
+
 // Function to get an initialized Supabase client
 const getSupabaseClient = async () => {
   // Assuming supabase client is already initialized and ready
@@ -190,6 +214,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     id: string;
     email: string;
   } | null>(null);
+  const [currency, setCurrency] = useState<'EUR' | 'USD'>('USD');
   const gameState = useGameStore();
   const activatedPurchases = gameState.activatedPurchases || {};
   const { toast } = useToast();
@@ -248,6 +273,10 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
 
   useEffect(() => {
     const loadData = async () => {
+      // Detect currency based on location
+      const detectedCurrency = await detectCurrency();
+      setCurrency(detectedCurrency);
+
       // Check if user is authenticated
       const user = await getCurrentUser();
       setCurrentUser(user);
@@ -462,6 +491,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
         itemId,
         userEmail: user?.email,
         userId: user?.id,
+        currency: currency.toLowerCase(),
       }),
     });
 
@@ -694,7 +724,8 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
   };
 
   const formatPrice = (cents: number) => {
-    return `${(cents / 100).toFixed(2)} €`;
+    const amount = (cents / 100).toFixed(2);
+    return currency === 'EUR' ? `${amount} €` : `$${amount}`;
   };
 
   return (
