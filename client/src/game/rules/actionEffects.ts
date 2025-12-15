@@ -75,13 +75,14 @@ export function applyActionEffects(
     triggeredEvents?: string[];
   } = {};
 
+  // Determine action type and calculate cost reductions
   const isCraftingAction =
     actionId.startsWith("craft") || actionId.startsWith("forge");
+  const isBuildingAction = !!action.building;
+  
   const craftingCostReduction = isCraftingAction
     ? getTotalCraftingCostReductionCalc(state)
     : 0;
-
-  const isBuildingAction = action.building;
   const buildingCostReduction = isBuildingAction
     ? getTotalBuildingCostReductionCalc(state)
     : 0;
@@ -162,12 +163,14 @@ export function applyActionEffects(
 
           const finalKey = pathParts[pathParts.length - 1];
           
-          // Apply cost reductions based on action type
+          // Apply cost reductions based on action type (only for numeric costs)
           let adjustedCost = cost;
-          if (isCraftingAction) {
-            adjustedCost = Math.floor(cost * (1 - craftingCostReduction));
-          } else if (isBuildingAction) {
-            adjustedCost = Math.floor(cost * (1 - buildingCostReduction));
+          if (typeof cost === 'number') {
+            if (isCraftingAction && craftingCostReduction > 0) {
+              adjustedCost = Math.floor(cost * (1 - craftingCostReduction));
+            } else if (isBuildingAction && buildingCostReduction > 0) {
+              adjustedCost = Math.floor(cost * (1 - buildingCostReduction));
+            }
           }
 
           current[finalKey] = (current[finalKey] || 0) - adjustedCost;
