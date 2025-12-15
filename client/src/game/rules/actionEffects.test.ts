@@ -1,4 +1,3 @@
-
 import { describe, it, expect, beforeEach } from 'vitest';
 import { GameState } from '@shared/schema';
 import { createInitialState } from '../state';
@@ -70,7 +69,7 @@ describe('actionEffects - circular dependency fix', () => {
     // Verify the function works after registration
     expect(applyActionEffects).toBeDefined();
     expect(typeof applyActionEffects).toBe('function');
-    
+
     // Verify it can actually apply effects
     const testState = createInitialState();
     testState.resources.wood = 100;
@@ -86,7 +85,7 @@ describe('Crafting Cost Reductions', () => {
     state = createInitialState();
   });
 
-  it('should apply blacksmith_hammer 15% crafting discount', () => {
+  it('should apply blacksmith_hammer 10% crafting discount', () => {
     // Without hammer - baseline
     state.resources.iron = 150;
     state.buildings.blacksmith = 1;
@@ -95,16 +94,16 @@ describe('Crafting Cost Reductions', () => {
     const updatesWithout = applyActionEffects('craftIronSword', state);
     expect(updatesWithout.resources!.iron).toBe(0); // 150 - 150 = 0
 
-    // Reset and test with hammer (15% discount)
+    // Reset and test with hammer (10% discount)
     state = createInitialState();
     state.resources.iron = 150;
     state.buildings.blacksmith = 1;
     state.tools.blacksmith_hammer = true;
 
     const updatesWith = applyActionEffects('craftIronSword', state);
-    // With 15% discount: cost = floor(150 * 0.85) = floor(127.5) = 127
-    // Remaining: 150 - 127 = 23
-    expect(updatesWith.resources!.iron).toBe(23);
+    // With 10% discount: cost = floor(150 * 0.90) = 135
+    // Remaining: 150 - 135 = 15
+    expect(updatesWith.resources!.iron).toBe(15);
   });
 
   it('should apply storehouse 5% crafting discount', () => {
@@ -148,14 +147,14 @@ describe('Crafting Cost Reductions', () => {
     state = createInitialState();
     state.resources.iron = 150;
     state.buildings.blacksmith = 1;
-    state.tools.blacksmith_hammer = true; // 15%
+    state.tools.blacksmith_hammer = true; // 10%
     state.buildings.storehouse = 1; // 5%
 
     const updates = applyActionEffects('craftIronSword', state);
-    // Total discount: 15% (hammer) + 5% (storehouse) = 20%
-    // Cost: floor(150 * 0.8) = floor(120) = 120
-    // Remaining: 150 - 120 = 30
-    expect(updates.resources!.iron).toBe(30);
+    // Total discount: 10% (hammer) + 5% (storehouse) = 15%
+    // Cost: floor(150 * 0.85) = 127
+    // Remaining: 150 - 127 = 23
+    expect(updates.resources!.iron).toBe(23);
   });
 });
 
@@ -272,7 +271,7 @@ describe('Cost Reduction Edge Cases', () => {
     state = createInitialState();
     state.resources.iron = 150;
     state.buildings.blacksmith = 1;
-    state.tools.blacksmith_hammer = true; // 15%
+    state.tools.blacksmith_hammer = true; // 10%
     state.buildings.storehouse = 1;
     state.buildings.fortifiedStorehouse = 1;
     state.buildings.villageWarehouse = 1;
@@ -280,10 +279,10 @@ describe('Cost Reduction Edge Cases', () => {
     state.buildings.greatVault = 1; // 10% (only this one applies from storage buildings)
 
     const updates = applyActionEffects('craftIronSword', state);
-    // Total discount: 15% (hammer) + 10% (greatVault - highest tier only) = 25%
-    // Cost: floor(150 * 0.75) = floor(112.5) = 112
-    // Remaining: 150 - 112 = 38
-    expect(updates.resources!.iron).toBe(38);
+    // Total discount: 10% (hammer) + 10% (greatVault - highest tier only) = 20%
+    // Cost: floor(150 * 0.80) = 120
+    // Remaining: 150 - 120 = 30
+    expect(updates.resources!.iron).toBe(30);
     // Note: Only highest tier storage building discount applies (10% from greatVault)
   });
 
@@ -327,10 +326,10 @@ describe('Cost Reduction Edge Cases', () => {
     // Create a scenario where 5% would give a decimal
     const action = gameActions['craftIronSword'];
     const originalCost = 150;
-    
+
     state.resources.iron = originalCost;
     const updates = applyActionEffects('craftIronSword', state);
-    
+
     // 150 * 0.95 = 142.5, should floor to 142
     const expectedCost = Math.floor(originalCost * 0.95);
     expect(updates.resources!.iron).toBe(originalCost - expectedCost);
