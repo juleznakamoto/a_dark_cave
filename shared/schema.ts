@@ -600,7 +600,7 @@ export const actionSchema = z.object({
   productionEffects: z
     .record(z.string(), z.record(z.string(), z.number()))
     .optional(),
-  statsEffects: z.record(z.string(), z.number()).default({}),
+  statsEffects: z.record(z.string(), z.number()).optional(),
   unlocks: z.array(z.string()).optional(),
   craftingCostReduction: z.number().optional(),
   buildingCostReduction: z.number().optional(),
