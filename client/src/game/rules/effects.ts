@@ -50,7 +50,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     bonuses: {
       generalBonuses: {
         strength: 4,
-        craftingCostReduction: 0.1,
+        craftingCostReduction: 0.05,
       },
     },
   },
@@ -283,7 +283,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     description: "Exquisitely crafted tool of a long-forgotten master builder",
     bonuses: {
       generalBonuses: {
-        buildingCostReduction: 0.1,
+        buildingCostReduction: 0.05,
       },
     },
   },
