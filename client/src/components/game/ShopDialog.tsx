@@ -798,8 +798,31 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                             {item.symbol}
                           </span>
                         )}
-                        <CardTitle className="!m-0 text-md pr-6">
+                        <CardTitle className="!m-0 text-md pr-6 flex items-center gap-1">
                           {item.name}
+                          {item.id === 'skull_lantern' && (
+                            <TooltipProvider>
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <button className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-muted text-muted-foreground hover:bg-muted/80 text-xs">
+                                    i
+                                  </button>
+                                </TooltipTrigger>
+                                <TooltipContent className="max-w-xs">
+                                  <div className="text-xs">
+                                    <div className="font-bold mb-1">Skull Lantern</div>
+                                    <div className="text-gray-400 mb-1">Ancient lantern forged from cursed bone that illuminates the deepest depths</div>
+                                    <div className="mt-1 space-y-0.5">
+                                      <div>Cave Explore: +200% Bonus</div>
+                                      <div>Cave Explore: -5s Cooldown</div>
+                                      <div>Mining: +200% Bonus</div>
+                                      <div>Mining: -5s Cooldown</div>
+                                    </div>
+                                  </div>
+                                </TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
+                          )}
                         </CardTitle>
                         <CardDescription className="text-bold">
                           {item.originalPrice && (
