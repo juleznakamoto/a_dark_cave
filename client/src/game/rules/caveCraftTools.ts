@@ -328,7 +328,7 @@ export const caveCraftTools: Record<string, Action> = {
       "story.seen.venturedDeeper": true,
     },
     cost: {
-      "resources.wood": 200,
+      "resources.wood": 250,
       "resources.iron": 150,
     },
     effects: {
@@ -352,8 +352,8 @@ export const caveCraftTools: Record<string, Action> = {
       "story.seen.descendedFurther": true,
     },
     cost: {
-      "resources.wood": 400,
-      "resources.steel": 200,
+      "resources.wood": 500,
+      "resources.steel": 150,
     },
     effects: {
       "tools.steel_lantern": true,
@@ -375,8 +375,8 @@ export const caveCraftTools: Record<string, Action> = {
       "story.seen.exploredRuins": true,
     },
     cost: {
-      "resources.wood": 800,
-      "resources.obsidian": 300,
+      "resources.wood": 1000,
+      "resources.obsidian": 250,
     },
     effects: {
       "tools.obsidian_lantern": true,
@@ -398,8 +398,8 @@ export const caveCraftTools: Record<string, Action> = {
       "story.seen.exploredTemple": true,
     },
     cost: {
-      "resources.wood": 1600,
-      "resources.adamant": 400,
+      "resources.wood": 2000,
+      "resources.adamant": 500,
     },
     effects: {
       "tools.adamant_lantern": true,
@@ -509,6 +509,7 @@ export const caveCraftTools: Record<string, Action> = {
     },
     cost: {
       "resources.leather": 1500,
+      "resources.silver": 250
     },
     effects: {
       "clothing.sacrificial_tunic": true,
@@ -526,7 +527,7 @@ export const caveCraftTools: Record<string, Action> = {
       "clothing.shadow_boots": false,
     },
     cost: {
-      "resources.leather": 750,
+      "resources.leather": 1000,
       "resources.steel": 500,
     },
     effects: {
