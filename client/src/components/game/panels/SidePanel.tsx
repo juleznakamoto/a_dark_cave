@@ -716,7 +716,7 @@ export default function SidePanel() {
           <div>
             <div className="font-bold">{label}</div>
             {buildAction?.description && (
-              <div className="text-muted-foreground mb-1">
+              <div className="text-gray-400 mb-1">
                 {buildAction.description}
               </div>
             )}
@@ -760,7 +760,7 @@ export default function SidePanel() {
           <div>
             <div className="font-bold">{label}</div>
             {buildAction?.description && (
-              <div className="text-muted-foreground mb-1">
+              <div className="text-gray-400 mb-1">
                 {buildAction.description}
               </div>
             )}
@@ -810,7 +810,7 @@ export default function SidePanel() {
           <div>
             <div className="font-bold">{label}</div>
             {buildAction?.description && (
-              <div className="text-muted-foreground mb-1">
+              <div className="text-gray-400 mb-1">
                 {buildAction.description}
               </div>
             )}
@@ -836,7 +836,7 @@ export default function SidePanel() {
           <div>
             <div className="font-bold">{label}</div>
             {buildAction?.description && (
-              <div className="text-muted-foreground mb-1">
+              <div className="text-gray-400 mb-1">
                 {buildAction.description}
               </div>
             )}
