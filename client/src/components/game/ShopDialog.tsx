@@ -74,13 +74,19 @@ const getSupabaseClient = async () => {
 interface CheckoutFormProps {
   itemId: string;
   onSuccess: () => void;
+  currency: 'EUR' | 'USD';
 }
 
-function CheckoutForm({ itemId, onSuccess }: CheckoutFormProps) {
+function CheckoutForm({ itemId, onSuccess, currency }: CheckoutFormProps) {
   const stripe = useStripe();
   const elements = useElements();
   const [isProcessing, setIsProcessing] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+
+  const formatPrice = (cents: number) => {
+    const amount = (cents / 100).toFixed(2);
+    return currency === 'EUR' ? `${amount} €` : `$${amount}`;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -136,6 +142,10 @@ function CheckoutForm({ itemId, onSuccess }: CheckoutFormProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <PaymentElement />
+      
+      <div className="text-sm text-center text-muted-foreground">
+        You will be charged in <strong>{SHOP_ITEMS[itemId]?.price ? formatPrice(SHOP_ITEMS[itemId].price) : ''}</strong>
+      </div>
 
       <div className="flex items-center justify-center gap-1 text-xs text-muted-foreground">
         <span>Powered by</span>
@@ -207,6 +217,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     email: string;
   } | null>(null);
   const [currency, setCurrency] = useState<'EUR' | 'USD'>('USD');
+  const [currencyLocked, setCurrencyLocked] = useState(false);
   const gameState = useGameStore();
   const activatedPurchases = gameState.activatedPurchases || {};
   const { toast } = useToast();
@@ -265,9 +276,12 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
 
   useEffect(() => {
     const loadData = async () => {
-      // Detect currency based on location
-      const detectedCurrency = await detectCurrency();
-      setCurrency(detectedCurrency);
+      // Detect currency based on location - only if not already locked
+      if (!currencyLocked) {
+        const detectedCurrency = await detectCurrency();
+        setCurrency(detectedCurrency);
+        setCurrencyLocked(true); // Lock currency for this session
+      }
 
       // Check if user is authenticated
       const user = await getCurrentUser();
@@ -284,7 +298,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     if (isOpen) {
       loadData();
     }
-  }, [isOpen]);
+  }, [isOpen, currencyLocked]);
 
   const handlePurchaseClick = async (itemId: string) => {
     const item = SHOP_ITEMS[itemId];
@@ -1066,6 +1080,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                 <CheckoutForm
                   itemId={selectedItem!}
                   onSuccess={handlePurchaseSuccess}
+                  currency={currency}
                 />
               </Elements>
               <Button
