@@ -5,11 +5,11 @@ import { logger } from "@/lib/logger";
 // Utility function to get the next building level
 export const getNextBuildingLevel = (actionId: string, state: GameState): number => {
   if (!actionId.startsWith("build")) return 1;
-  
+
   // Remove "build" prefix and lowercase first character
   let buildingKey = actionId.slice(5);
   buildingKey = buildingKey.charAt(0).toLowerCase() + buildingKey.slice(1);
-  
+
   return (state.buildings[buildingKey as keyof GameState["buildings"]] || 0) + 1;
 };
 
@@ -2791,142 +2791,4 @@ export function handleBuildBoneTemple(
   }
 
   return boneTempleResult;
-}
-
-export function handleBuildSupplyHut(
-  state: GameState,
-  result: ActionResult,
-): ActionResult {
-  const supplyHutResult = handleBuildingConstruction(
-    state,
-    result,
-    "buildSupplyHut",
-    "storage",
-  );
-
-  if (state.buildings.storage === 0) {
-    supplyHutResult.logEntries!.push({
-      id: `supply-hut-built-${Date.now()}`,
-      message: "A supply hut is built to store resources. Maximum storage capacity is now 1,000 per resource.",
-      timestamp: Date.now(),
-      type: "system",
-    });
-  }
-
-  return supplyHutResult;
-}
-
-export function handleBuildStorehouse(
-  state: GameState,
-  result: ActionResult,
-): ActionResult {
-  const storehouseResult = handleBuildingConstruction(
-    state,
-    result,
-    "buildStorehouse",
-    "storage",
-  );
-
-  if (state.buildings.storage === 1) {
-    storehouseResult.logEntries!.push({
-      id: `storehouse-built-${Date.now()}`,
-      message: "The storehouse is complete, greatly expanding storage capacity to 5,000 per resource.",
-      timestamp: Date.now(),
-      type: "system",
-    });
-  }
-
-  return storehouseResult;
-}
-
-export function handleBuildFortifiedStorehouse(
-  state: GameState,
-  result: ActionResult,
-): ActionResult {
-  const fortifiedStorehouseResult = handleBuildingConstruction(
-    state,
-    result,
-    "buildFortifiedStorehouse",
-    "storage",
-  );
-
-  if (state.buildings.storage === 2) {
-    fortifiedStorehouseResult.logEntries!.push({
-      id: `fortified-storehouse-built-${Date.now()}`,
-      message: "A fortified storehouse stands ready, protecting 10,000 units of each resource. Crafting costs are reduced by 5%.",
-      timestamp: Date.now(),
-      type: "system",
-    });
-  }
-
-  return fortifiedStorehouseResult;
-}
-
-export function handleBuildVillageWarehouse(
-  state: GameState,
-  result: ActionResult,
-): ActionResult {
-  const villageWarehouseResult = handleBuildingConstruction(
-    state,
-    result,
-    "buildVillageWarehouse",
-    "storage",
-  );
-
-  if (state.buildings.storage === 3) {
-    villageWarehouseResult.logEntries!.push({
-      id: `village-warehouse-built-${Date.now()}`,
-      message: "The village warehouse is finished, holding up to 25,000 of each resource. Both crafting and building costs are reduced by 5%.",
-      timestamp: Date.now(),
-      type: "system",
-    });
-  }
-
-  return villageWarehouseResult;
-}
-
-export function handleBuildGrandRepository(
-  state: GameState,
-  result: ActionResult,
-): ActionResult {
-  const grandRepositoryResult = handleBuildingConstruction(
-    state,
-    result,
-    "buildGrandRepository",
-    "storage",
-  );
-
-  if (state.buildings.storage === 4) {
-    grandRepositoryResult.logEntries!.push({
-      id: `grand-repository-built-${Date.now()}`,
-      message: "The grand repository towers over the settlement, capable of storing 50,000 units per resource. Crafting costs are reduced by 10%.",
-      timestamp: Date.now(),
-      type: "system",
-    });
-  }
-
-  return grandRepositoryResult;
-}
-
-export function handleBuildCityVault(
-  state: GameState,
-  result: ActionResult,
-): ActionResult {
-  const cityVaultResult = handleBuildingConstruction(
-    state,
-    result,
-    "buildCityVault",
-    "storage",
-  );
-
-  if (state.buildings.storage === 5) {
-    cityVaultResult.logEntries!.push({
-      id: `city-vault-built-${Date.now()}`,
-      message: "The city vault is complete, a massive structure holding up to 100,000 of each resource. Both crafting and building costs are reduced by 10%.",
-      timestamp: Date.now(),
-      type: "system",
-    });
-  }
-
-  return cityVaultResult;
 }
