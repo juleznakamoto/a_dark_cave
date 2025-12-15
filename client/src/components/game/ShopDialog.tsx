@@ -47,10 +47,6 @@ const EU_EURO_COUNTRIES = [
 
 // Detect user's country and currency
 async function detectCurrency(): Promise<'EUR' | 'USD'> {
-  // TEMPORARY: Force USD for testing (simulating US location)
-  // Remove this block to re-enable auto-detection
-  return 'USD';
-  
   try {
     const response = await fetch('https://ipapi.co/json/');
     const data = await response.json();
