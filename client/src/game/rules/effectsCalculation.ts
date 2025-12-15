@@ -562,9 +562,31 @@ export const getTotalCraftingCostReduction = (state: GameState): number => {
     }
   });
 
-  // Add crafting cost reduction from buildings dynamically
+  // Add crafting cost reduction from highest tier storage building only
+  // Priority: greatVault > grandRepository > villageWarehouse > fortifiedStorehouse > storehouse
+  const storagePriority = [
+    'greatVault',
+    'grandRepository', 
+    'villageWarehouse',
+    'fortifiedStorehouse',
+    'storehouse'
+  ];
+  
+  for (const buildingKey of storagePriority) {
+    if (state.buildings[buildingKey as keyof typeof state.buildings] > 0) {
+      const actionId = `build${buildingKey.charAt(0).toUpperCase() + buildingKey.slice(1)}`;
+      const buildAction = villageBuildActions[actionId];
+      
+      if (buildAction?.craftingCostReduction) {
+        reduction += buildAction.craftingCostReduction;
+      }
+      break; // Only apply the highest tier building's discount
+    }
+  }
+
+  // Add crafting cost reduction from non-storage buildings (like grandBlacksmith)
   Object.entries(state.buildings).forEach(([buildingKey, buildingCount]) => {
-    if (buildingCount > 0) {
+    if (buildingCount > 0 && !storagePriority.includes(buildingKey)) {
       const actionId = `build${buildingKey.charAt(0).toUpperCase() + buildingKey.slice(1)}`;
       const buildAction = villageBuildActions[actionId];
 
@@ -588,17 +610,26 @@ export const getTotalBuildingCostReduction = (state: GameState): number => {
     }
   });
 
-  // Add building cost reduction from buildings dynamically
-  Object.entries(state.buildings).forEach(([buildingKey, buildingCount]) => {
-    if (buildingCount > 0) {
+  // Add building cost reduction from highest tier storage building only
+  // Priority: greatVault > grandRepository > villageWarehouse > fortifiedStorehouse
+  const storagePriority = [
+    'greatVault',
+    'grandRepository',
+    'villageWarehouse', 
+    'fortifiedStorehouse'
+  ];
+  
+  for (const buildingKey of storagePriority) {
+    if (state.buildings[buildingKey as keyof typeof state.buildings] > 0) {
       const actionId = `build${buildingKey.charAt(0).toUpperCase() + buildingKey.slice(1)}`;
       const buildAction = villageBuildActions[actionId];
-
+      
       if (buildAction?.buildingCostReduction) {
         reduction += buildAction.buildingCostReduction;
       }
+      break; // Only apply the highest tier building's discount
     }
-  });
+  }
 
   return reduction;
 };
