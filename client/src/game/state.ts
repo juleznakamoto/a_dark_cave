@@ -130,6 +130,16 @@ interface GameStore extends GameState {
   username?: string;
   setUsername: (username: string) => void;
 
+  // Game completion tracking
+  game_stats: Array<{
+    gameId: string | null;
+    gameMode: string;
+    startTime: number;
+    finishTime: number;
+    playTime: number;
+  }>;
+  hasWonAnyGame: boolean;
+
   // Actions
   getAndResetResourceAnalytics: () => Record<string, number> | null;
   executeAction: (actionId: string) => void;
@@ -265,6 +275,9 @@ const mergeStateUpdates = (
     claimedAchievements: stateUpdates.claimedAchievements || prevState.claimedAchievements,
     // Game ID
     gameId: stateUpdates.gameId !== undefined ? stateUpdates.gameId : prevState.gameId,
+    // Game completion tracking
+    game_stats: stateUpdates.game_stats || prevState.game_stats,
+    hasWonAnyGame: stateUpdates.hasWonAnyGame !== undefined ? stateUpdates.hasWonAnyGame : prevState.hasWonAnyGame,
   };
 
   if (
@@ -409,6 +422,10 @@ export const createInitialState = (): GameState => ({
   // Achievements
   unlockedAchievements: [],
   claimedAchievements: [],
+
+  // Game completion tracking
+  game_stats: [],
+  hasWonAnyGame: false,
 });
 
 const defaultGameState: GameState = createInitialState();
@@ -799,6 +816,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
       startTime: Date.now(),
       playTime: 0,
       allowPlayTimeOverwrite: true,
+      // Reset hasWonAnyGame on restart
+      hasWonAnyGame: false,
     };
 
     set(resetState);
@@ -957,6 +976,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
         unlockedAchievements: savedState.unlockedAchievements || [], // Load unlocked achievements
         claimedAchievements: savedState.claimedAchievements || [], // Load claimed achievements
         gameId: gameId, // Load or generate gameId
+        game_stats: savedState.game_stats || [], // Load game_stats
+        hasWonAnyGame: savedState.hasWonAnyGame !== undefined ? savedState.hasWonAnyGame : false, // Load hasWonAnyGame
       };
 
       set(loadedState);
