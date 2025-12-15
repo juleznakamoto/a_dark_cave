@@ -146,7 +146,7 @@ export default function BuildingProgressChart() {
         color: SEGMENT_COLOR,
         label: "Storage",
         reward: 500,
-        relatedBuildings: ["storehouse", "fortifiedStorehouse", "villageWarehouse", "grandRepository", "greatVault"],
+        relatedBuildings: ["storehouse", "fortifiedStorehouse", "villageWarehouse", "grandRepository", "cityVault"],
       },
       {
         buildingType: "clerksHut",

@@ -1704,8 +1704,8 @@ export const villageBuildActions: Record<string, Action> = {
     cooldown: 30,
   },
 
-  buildgreatVault: {
-    id: "buildgreatVault",
+  buildGreatVault: {
+    id: "buildGreatVault",
     label: "Great Vault",
     description: "Supreme vault capable of storing immense resources",
     tooltipEffects: ["Resource Limit: 100.000", "10% Crafting Discount", "10% Building Discount"],
@@ -1726,7 +1726,7 @@ export const villageBuildActions: Record<string, Action> = {
     effects: {
       1: {
         "buildings.greatVault": 1,
-        "story.seen.hasgreatVault": true,
+        "story.seen.hasGreatVault": true,
       },
     },
     craftingCostReduction: 0.1,

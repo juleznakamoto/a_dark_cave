@@ -1143,14 +1143,14 @@ export function handleBuildGrandRepository(
   return grandRepositoryResult;
 }
 
-export function handleBuildgreatVault(
+export function handleBuildGreatVault(
   state: GameState,
   result: ActionResult,
 ): ActionResult {
   const greatVaultResult = handleBuildingConstruction(
     state,
     result,
-    "buildgreatVault",
+    "buildGreatVault",
     "greatVault",
   );
 
