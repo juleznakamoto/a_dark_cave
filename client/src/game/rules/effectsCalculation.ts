@@ -562,7 +562,7 @@ export const getTotalCraftingCostReduction = (state: GameState): number => {
     }
   });
 
-  // Add reduction from buildings (similar to statsEffects processing)
+  // Add crafting cost reduction from buildings dynamically
   Object.entries(state.buildings).forEach(([buildingKey, buildingCount]) => {
     if (buildingCount > 0) {
       const actionId = `build${buildingKey.charAt(0).toUpperCase() + buildingKey.slice(1)}`;
@@ -573,12 +573,6 @@ export const getTotalCraftingCostReduction = (state: GameState): number => {
       }
     }
   });
-
-  // Add storage building bonuses
-  const storageLevel = state.buildings.storage || 0;
-  if (storageLevel >= 3) {
-    reduction += storageLevel >= 5 ? 0.1 : 0.05;
-  }
 
   return reduction;
 };
@@ -594,11 +588,17 @@ export const getTotalBuildingCostReduction = (state: GameState): number => {
     }
   });
 
-  // Add storage building bonuses
-  const storageLevel = state.buildings.storage || 0;
-  if (storageLevel >= 4) {
-    reduction += storageLevel >= 6 ? 0.1 : 0.05;
-  }
+  // Add building cost reduction from buildings dynamically
+  Object.entries(state.buildings).forEach(([buildingKey, buildingCount]) => {
+    if (buildingCount > 0) {
+      const actionId = `build${buildingKey.charAt(0).toUpperCase() + buildingKey.slice(1)}`;
+      const buildAction = villageBuildActions[actionId];
+
+      if (buildAction?.buildingCostReduction) {
+        reduction += buildAction.buildingCostReduction;
+      }
+    }
+  });
 
   return reduction;
 };
