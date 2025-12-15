@@ -219,7 +219,7 @@ export default function ProfileMenu() {
         isOpen={leaderboardDialogOpen}
         onClose={() => setLeaderboardDialogOpen(false)}
       />
-      <div className="flex items-center gap-2">
+      <div className="flex flex-wrap items-center justify-end gap-2 max-w-[200px]">
         <DropdownMenu
           open={accountDropdownOpen}
           onOpenChange={(open) => {
