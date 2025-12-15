@@ -834,7 +834,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                             <TooltipProvider>
                               <Tooltip>
                                 <TooltipTrigger asChild>
-                                  <button className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-muted text-muted-foreground hover:bg-muted/80 text-xs">
+                                  <button className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-muted text-muted-foreground hover:bg-muted/80 text-xs border border-muted-foreground/20">
                                     i
                                   </button>
                                 </TooltipTrigger>
