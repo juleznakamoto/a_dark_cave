@@ -94,33 +94,6 @@ export default function BuildingProgressChart() {
         reward: 250,
       },
       {
-        buildingType: "tannery",
-        maxCount: 2,
-        color: SEGMENT_COLOR,
-        label: "Hidework",
-        relatedBuildings: ["masterTannery"],
-        reward: 250,
-      },
-      {
-        buildingType: "tradePost",
-        maxCount: 3,
-        color: SEGMENT_COLOR,
-        label: "Trade",
-        relatedBuildings: ["grandBazaar", "merchantsGuild"],
-        reward: 250,
-      },
-      {
-        buildingType: "clerksHut",
-        maxCount: 3,
-        color: SEGMENT_COLOR,
-        label: "Wisdom",
-        relatedBuildings: ["scriptorium", "inkwardenAcademy"],
-        reward: 250,
-      },
-    ],
-    // Third ring: Resource buildings and pits
-    [
-      {
         buildingType: "blacksmith",
         maxCount: 2,
         color: SEGMENT_COLOR,
@@ -137,6 +110,18 @@ export default function BuildingProgressChart() {
         reward: 250,
       },
       {
+        buildingType: "tannery",
+        maxCount: 2,
+        color: SEGMENT_COLOR,
+        label: "Hidework",
+        relatedBuildings: ["masterTannery"],
+        reward: 250,
+      },
+
+    ],
+    // Third ring: Resource buildings and pits
+    [
+      {
         buildingType: "shallowPit",
         maxCount: 4,
         color: SEGMENT_COLOR,
@@ -147,6 +132,30 @@ export default function BuildingProgressChart() {
     ],
     // Fourth ring: Advanced buildings
     [
+      {
+        buildingType: "tradePost",
+        maxCount: 3,
+        color: SEGMENT_COLOR,
+        label: "Trade",
+        relatedBuildings: ["grandBazaar", "merchantsGuild"],
+        reward: 250,
+      },
+      {
+        buildingType: "supplyHut",
+        maxCount: 6,
+        color: SEGMENT_COLOR,
+        label: "Storage",
+        reward: 500,
+        relatedBuildings: ["storehouse", "fortifiedStorehouse", "villageWarehouse", "grandRepository", "cityVault"],
+      },
+      {
+        buildingType: "clerksHut",
+        maxCount: 3,
+        color: SEGMENT_COLOR,
+        label: "Wisdom",
+        relatedBuildings: ["scriptorium", "inkwardenAcademy"],
+        reward: 250,
+      },
       {
         buildingType: "altar",
         maxCount: 4,
@@ -179,17 +188,6 @@ export default function BuildingProgressChart() {
         color: SEGMENT_COLOR,
         label: "Lookout",
         reward: 500,
-      },
-    ],
-    // Sixth ring: Storage
-    [
-      {
-        buildingType: "supplyHut",
-        maxCount: 6,
-        color: SEGMENT_COLOR,
-        label: "Storage",
-        reward: 500,
-        relatedBuildings: ["storehouse", "fortifiedStorehouse", "villageWarehouse", "grandRepository", "cityVault"],
       },
     ],
   ];
