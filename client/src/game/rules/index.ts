@@ -60,7 +60,7 @@ export const gameActions: Record<string, Action> = {
   buildFortifiedStorehouse: villageBuildActions.buildFortifiedStorehouse,
   buildVillageWarehouse: villageBuildActions.buildVillageWarehouse,
   buildGrandRepository: villageBuildActions.buildGrandRepository,
-  buildCityVault: villageBuildActions.buildCityVault,
+  buildgreatVault: villageBuildActions.buildgreatVault,
 };
 
 // Register gameActions reference for late binding in actionEffects

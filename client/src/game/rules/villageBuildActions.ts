@@ -1566,7 +1566,7 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.fortifiedStorehouse": 0,
         "buildings.villageWarehouse": 0,
         "buildings.grandRepository": 0,
-        "buildings.cityVault": 0,
+        "buildings.greatVault": 0,
       },
     },
     cost: {
@@ -1616,7 +1616,7 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildFortifiedStorehouse",
     label: "Fortified Storehouse",
     description: "Reinforced storage building with enhanced capacity",
-    tooltipEffects: ["Resource Limit: 10.000", "5% Crafting Discount", "5% Building Discount"],
+    tooltipEffects: ["Resource Limit: 10", "5% Crafting Discount", "5% Building Discount"],
     building: true,
     show_when: {
       1: {
@@ -1704,9 +1704,9 @@ export const villageBuildActions: Record<string, Action> = {
     cooldown: 30,
   },
 
-  buildCityVault: {
-    id: "buildCityVault",
-    label: "City Vault",
+  buildgreatVault: {
+    id: "buildgreatVault",
+    label: "Great Vault",
     description: "Supreme vault capable of storing immense resources",
     tooltipEffects: ["Resource Limit: 100.000", "10% Crafting Discount", "10% Building Discount"],
     building: true,
@@ -1714,7 +1714,7 @@ export const villageBuildActions: Record<string, Action> = {
       1: {
         "buildings.stoneHut": 6,
         "buildings.grandRepository": 1,
-        "buildings.cityVault": 0,
+        "buildings.greatVault": 0,
       },
     },
     cost: {
@@ -1725,8 +1725,8 @@ export const villageBuildActions: Record<string, Action> = {
     },
     effects: {
       1: {
-        "buildings.cityVault": 1,
-        "story.seen.hasCityVault": true,
+        "buildings.greatVault": 1,
+        "story.seen.hasgreatVault": true,
       },
     },
     craftingCostReduction: 0.1,

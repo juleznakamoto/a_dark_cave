@@ -115,7 +115,7 @@ AssertionError: expected 500 to be 50000 // Object.is equality
 
 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/34]⎯
 
- FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Core Functionality > getResourceLimit > should return 100000 for City Vault (level 6)
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Core Functionality > getResourceLimit > should return 100000 for Great Vault (level 6)
 AssertionError: expected 500 to be 100000 // Object.is equality
 
 - Expected
@@ -125,7 +125,7 @@ AssertionError: expected 500 to be 100000 // Object.is equality
 + 500
 
  ❯ client/src/game/resourceLimits.test.ts:55:39
-     53|     it('should return 100000 for City Vault (level 6)', () => {
+     53|     it('should return 100000 for Great Vault (level 6)', () => {
      54|       state.buildings.storage = 6;
      55|       expect(getResourceLimit(state)).toBe(100000);
        |                                       ^

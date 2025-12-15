@@ -242,7 +242,7 @@ export const gameStateSchema = z.object({
       fortifiedStorehouse: z.number().default(0),
       villageWarehouse: z.number().default(0),
       grandRepository: z.number().default(0),
-      cityVault: z.number().default(0),
+      greatVault: z.number().default(0),
     })
     .default({}),
   villagers: z

@@ -129,15 +129,15 @@ Received: "Unlimited Storage"
 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/11]⎯
 
  FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Core Functionality > getStorageBuildingName > should return correct name for level 6
-AssertionError: expected 'Unlimited Storage' to be 'City Vault' // Object.is equality
+AssertionError: expected 'Unlimited Storage' to be 'Great Vault' // Object.is equality
 
-Expected: "City Vault"
+Expected: "Great Vault"
 Received: "Unlimited Storage"
 
  ❯ client/src/game/resourceLimits.test.ts:154:41
     152| 
     153|     it('should return correct name for level 6', () => {
-    154|       expect(getStorageBuildingName(6)).toBe('City Vault');
+    154|       expect(getStorageBuildingName(6)).toBe('Great Vault');
        |                                         ^
     155|     });
     156| 

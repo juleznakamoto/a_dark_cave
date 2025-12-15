@@ -1143,16 +1143,16 @@ export function handleBuildGrandRepository(
   return grandRepositoryResult;
 }
 
-export function handleBuildCityVault(
+export function handleBuildgreatVault(
   state: GameState,
   result: ActionResult,
 ): ActionResult {
-  const cityVaultResult = handleBuildingConstruction(
+  const greatVaultResult = handleBuildingConstruction(
     state,
     result,
-    "buildCityVault",
-    "cityVault",
+    "buildgreatVault",
+    "greatVault",
   );
 
-  return cityVaultResult;
+  return greatVaultResult;
 }

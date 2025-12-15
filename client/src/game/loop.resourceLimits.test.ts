@@ -232,7 +232,7 @@ describe('Game Loop - Resource Limits Integration', () => {
         { buildings: { fortifiedStorehouse: 1 }, limit: 10000 },
         { buildings: { villageWarehouse: 1 }, limit: 25000 },
         { buildings: { grandRepository: 1 }, limit: 50000 },
-        { buildings: { cityVault: 1 }, limit: 100000 },
+        { buildings: { greatVault: 1 }, limit: 100000 },
       ];
       
       tiers.forEach(({ buildings, limit }) => {
@@ -248,7 +248,7 @@ describe('Game Loop - Resource Limits Integration', () => {
             fortifiedStorehouse: 0,
             villageWarehouse: 0,
             grandRepository: 0,
-            cityVault: 0,
+            greatVault: 0,
             ...buildings,
           },
           flags: {

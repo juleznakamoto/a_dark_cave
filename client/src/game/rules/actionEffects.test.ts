@@ -205,14 +205,14 @@ describe('Building Cost Reductions', () => {
   });
 
   it('should stack building discounts from multiple buildings', () => {
-    // With fortified storehouse (5%), village warehouse (5%), grand repository (5%), and city vault (10%)
+    // With fortified storehouse (5%), village warehouse (5%), grand repository (5%), and Great Vault (10%)
     state.resources.wood = 150;
     state.resources.stone = 50;
     state.buildings.woodenHut = 1;
     state.buildings.fortifiedStorehouse = 1;
     state.buildings.villageWarehouse = 1;
     state.buildings.grandRepository = 1;
-    state.buildings.cityVault = 1;
+    state.buildings.greatVault = 1;
 
     const updates = applyActionEffects('buildCabin', state);
     // Total discount: 5% + 5% + 5% + 10% = 25%
@@ -269,7 +269,7 @@ describe('Cost Reduction Edge Cases', () => {
     state.buildings.fortifiedStorehouse = 1; // 5%
     state.buildings.villageWarehouse = 1; // 5%
     state.buildings.grandRepository = 1; // 10%
-    state.buildings.cityVault = 1; // 10%
+    state.buildings.greatVault = 1; // 10%
 
     const updates = applyActionEffects('craftIronSword', state);
     // Total discount: 15% + 5% + 5% + 5% + 10% + 10% = 50%
@@ -286,7 +286,7 @@ describe('Cost Reduction Edge Cases', () => {
     state.buildings.fortifiedStorehouse = 1; // 5%
     state.buildings.villageWarehouse = 1; // 5%
     state.buildings.grandRepository = 1; // 5%
-    state.buildings.cityVault = 1; // 10%
+    state.buildings.greatVault = 1; // 10%
 
     const updates = applyActionEffects('buildCabin', state);
     // Total discount: 10% + 5% + 5% + 5% + 10% = 35%

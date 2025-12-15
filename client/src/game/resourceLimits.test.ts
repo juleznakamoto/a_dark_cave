@@ -50,8 +50,8 @@ describe('Resource Limits - Core Functionality', () => {
       expect(getResourceLimit(state)).toBe(50000);
     });
 
-    it('should return 100000 for City Vault (level 6)', () => {
-      state.buildings.cityVault = 1;
+    it('should return 100000 for Great Vault (level 6)', () => {
+      state.buildings.greatVault = 1;
       expect(getResourceLimit(state)).toBe(100000);
     });
 
@@ -67,7 +67,7 @@ describe('Resource Limits - Core Functionality', () => {
       state.buildings.fortifiedStorehouse = 0;
       state.buildings.villageWarehouse = 0;
       state.buildings.grandRepository = 0;
-      state.buildings.cityVault = 0;
+      state.buildings.greatVault = 0;
       expect(getResourceLimit(state)).toBe(500);
     });
   });
@@ -136,7 +136,7 @@ describe('Resource Limits - Core Functionality', () => {
       state.buildings.fortifiedStorehouse = 0;
       state.buildings.villageWarehouse = 0;
       state.buildings.grandRepository = 0;
-      state.buildings.cityVault = 0;
+      state.buildings.greatVault = 0;
       expect(getStorageLimitText(state)).toBe('500');
     });
 
@@ -163,8 +163,8 @@ describe('Resource Limits - Core Functionality', () => {
     });
 
     it('should return correct name for level 6', () => {
-      state.buildings.cityVault = 1;
-      expect(getStorageBuildingName(state)).toBe('City Vault');
+      state.buildings.greatVault = 1;
+      expect(getStorageBuildingName(state)).toBe('Great Vault');
     });
 
     it('should return "No Storage" when no storage buildings exist', () => {
@@ -173,7 +173,7 @@ describe('Resource Limits - Core Functionality', () => {
       state.buildings.fortifiedStorehouse = 0;
       state.buildings.villageWarehouse = 0;
       state.buildings.grandRepository = 0;
-      state.buildings.cityVault = 0;
+      state.buildings.greatVault = 0;
       expect(getStorageBuildingName(state)).toBe('No Storage');
     });
   });
@@ -418,7 +418,7 @@ describe('Resource Limits - Integration with Game Components', () => {
         { buildings: { fortifiedStorehouse: 1 }, limit: 10000 },
         { buildings: { villageWarehouse: 1 }, limit: 25000 },
         { buildings: { grandRepository: 1 }, limit: 50000 },
-        { buildings: { cityVault: 1 }, limit: 100000 },
+        { buildings: { greatVault: 1 }, limit: 100000 },
       ];
       
       tiers.forEach(({ buildings, limit }) => {
@@ -428,7 +428,7 @@ describe('Resource Limits - Integration with Game Components', () => {
         state.buildings.fortifiedStorehouse = 0;
         state.buildings.villageWarehouse = 0;
         state.buildings.grandRepository = 0;
-        state.buildings.cityVault = 0;
+        state.buildings.greatVault = 0;
         
         // Set the tier's buildings
         Object.assign(state.buildings, buildings);
@@ -466,7 +466,7 @@ describe('Resource Limits - Integration with Game Components', () => {
 
     it('should handle very large production amounts', () => {
       state.resources.wood = 0;
-      state.buildings.cityVault = 1;
+      state.buildings.greatVault = 1;
       const updates = updateResource(state, 'wood', 150000);
       expect(updates.resources?.wood).toBe(100000);
     });

@@ -14,7 +14,7 @@ export function getResourceLimit(state: GameState): number {
   // Determine storage level based on highest storage building
   let storageLevel = 0;
   
-  if (state.buildings.cityVault > 0) storageLevel = 6;
+  if (state.buildings.greatVault > 0) storageLevel = 6;
   else if (state.buildings.grandRepository > 0) storageLevel = 5;
   else if (state.buildings.villageWarehouse > 0) storageLevel = 4;
   else if (state.buildings.fortifiedStorehouse > 0) storageLevel = 3;
@@ -28,7 +28,7 @@ export function getResourceLimit(state: GameState): number {
     3: 10000,  // Fortified Storehouse
     4: 25000,  // Village Warehouse
     5: 50000,  // Grand Repository
-    6: 100000, // City Vault
+    6: 100000, // Great Vault
   };
 
   return limits[storageLevel] || 500;
@@ -79,7 +79,7 @@ export function getStorageBuildingName(state: GameState): string {
   }
 
   // Determine storage level based on highest storage building
-  if (state.buildings.cityVault > 0) return "City Vault";
+  if (state.buildings.greatVault > 0) return "Great Vault";
   if (state.buildings.grandRepository > 0) return "Grand Repository";
   if (state.buildings.villageWarehouse > 0) return "Village Warehouse";
   if (state.buildings.fortifiedStorehouse > 0) return "Fortified Storehouse";

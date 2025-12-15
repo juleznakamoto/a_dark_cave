@@ -359,19 +359,19 @@ export default function SidePanel() {
       }
 
       // Hide lower-tier storage buildings
-      if (key === "supplyHut" && (buildings.storehouse > 0 || buildings.fortifiedStorehouse > 0 || buildings.villageWarehouse > 0 || buildings.grandRepository > 0 || buildings.cityVault > 0)) {
+      if (key === "supplyHut" && (buildings.storehouse > 0 || buildings.fortifiedStorehouse > 0 || buildings.villageWarehouse > 0 || buildings.grandRepository > 0 || buildings.greatVault > 0)) {
         return false;
       }
-      if (key === "storehouse" && (buildings.fortifiedStorehouse > 0 || buildings.villageWarehouse > 0 || buildings.grandRepository > 0 || buildings.cityVault > 0)) {
+      if (key === "storehouse" && (buildings.fortifiedStorehouse > 0 || buildings.villageWarehouse > 0 || buildings.grandRepository > 0 || buildings.greatVault > 0)) {
         return false;
       }
-      if (key === "fortifiedStorehouse" && (buildings.villageWarehouse > 0 || buildings.grandRepository > 0 || buildings.cityVault > 0)) {
+      if (key === "fortifiedStorehouse" && (buildings.villageWarehouse > 0 || buildings.grandRepository > 0 || buildings.greatVault > 0)) {
         return false;
       }
-      if (key === "villageWarehouse" && (buildings.grandRepository > 0 || buildings.cityVault > 0)) {
+      if (key === "villageWarehouse" && (buildings.grandRepository > 0 || buildings.greatVault > 0)) {
         return false;
       }
-      if (key === "grandRepository" && buildings.cityVault > 0) {
+      if (key === "grandRepository" && buildings.greatVault > 0) {
         return false;
       }
 
@@ -611,31 +611,31 @@ export default function SidePanel() {
         item.id === "supplyHut" &&
         (buildings.storehouse > 0 || buildings.fortifiedStorehouse > 0 || 
          buildings.villageWarehouse > 0 || buildings.grandRepository > 0 || 
-         buildings.cityVault > 0)
+         buildings.greatVault > 0)
       ) {
         return false;
       }
       if (
         item.id === "storehouse" &&
         (buildings.fortifiedStorehouse > 0 || buildings.villageWarehouse > 0 || 
-         buildings.grandRepository > 0 || buildings.cityVault > 0)
+         buildings.grandRepository > 0 || buildings.greatVault > 0)
       ) {
         return false;
       }
       if (
         item.id === "fortifiedStorehouse" &&
         (buildings.villageWarehouse > 0 || buildings.grandRepository > 0 || 
-         buildings.cityVault > 0)
+         buildings.greatVault > 0)
       ) {
         return false;
       }
       if (
         item.id === "villageWarehouse" &&
-        (buildings.grandRepository > 0 || buildings.cityVault > 0)
+        (buildings.grandRepository > 0 || buildings.greatVault > 0)
       ) {
         return false;
       }
-      if (item.id === "grandRepository" && buildings.cityVault > 0) {
+      if (item.id === "grandRepository" && buildings.greatVault > 0) {
         return false;
       }
       return true;

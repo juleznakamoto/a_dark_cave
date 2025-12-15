@@ -241,7 +241,7 @@ describe('State - Resource Limits Integration', () => {
             fortifiedStorehouse: 0,
             villageWarehouse: 0,
             grandRepository: 0,
-            cityVault: 0,
+            greatVault: 0,
           },
         }));
 
@@ -270,7 +270,7 @@ describe('State - Resource Limits Integration', () => {
           }));
         } else if (level === 6) {
           useGameStore.setState((state) => ({
-            buildings: { ...state.buildings, cityVault: 1 },
+            buildings: { ...state.buildings, greatVault: 1 },
           }));
         }
 
