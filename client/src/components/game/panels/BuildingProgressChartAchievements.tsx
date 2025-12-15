@@ -181,6 +181,16 @@ export default function BuildingProgressChart() {
         reward: 500,
       },
     ],
+    // Sixth ring: Storage
+    [
+      {
+        buildingType: "storage",
+        maxCount: 6,
+        color: SEGMENT_COLOR,
+        label: "Storage",
+        reward: 500,
+      },
+    ],
   ];
 
   // Calculate ring configurations with radius values
