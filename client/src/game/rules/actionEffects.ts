@@ -151,7 +151,7 @@ export function applyActionEffects(
           }
 
           const finalKey = pathParts[pathParts.length - 1];
-          
+
           // Use centralized cost adjustment function (same as tooltip)
           const adjustedCost = getAdjustedCost(
             actionId,
