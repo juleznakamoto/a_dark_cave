@@ -508,7 +508,7 @@ describe('Resource Gain Tests', () => {
   });
 
   describe('Building Cost Reductions', () => {
-    it('mastermason_chisel reduces building costs by 10%', () => {
+    it('mastermason_chisel reduces building costs by 5%', () => {
       const stateWithoutChisel = createTestState({
         buildings: {},
         tools: {},
@@ -536,8 +536,8 @@ describe('Resource Gain Tests', () => {
       // Verify the without-chisel cost matches base cost
       expect(amountWithout).toBe(baseCost);
 
-      // With chisel should cost 10% less
-      expect(amountWith).toBe(Math.floor(baseCost * 0.9));
+      // With chisel should cost 5% less
+      expect(amountWith).toBe(Math.floor(baseCost * 0.95));
     });
 
     it('fortified storehouse reduces building costs correctly', () => {
