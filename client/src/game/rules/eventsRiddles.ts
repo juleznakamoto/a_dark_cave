@@ -240,7 +240,7 @@ function applyPenalty(
     events: {
       ...state.events,
       [eventId]: true,
-    },
+    } as any,
   };
 
   let deaths = 0;
@@ -292,7 +292,7 @@ function createRiddleEvent(
           [`${baseEventId}_correct`]: true,
           [eventId]: true,
           [oppositeEventId]: true, // Block the opposite variant
-        },
+        } as any,
         _logMessage: SUCCESS_MESSAGES[level](reward),
       });
     }
@@ -305,7 +305,7 @@ function createRiddleEvent(
           ...penaltyResult.events,
           [baseEventId]: true,
           [oppositeEventId]: true, // Block the opposite variant
-        },
+        } as any,
       };
     };
   };
@@ -319,7 +319,7 @@ function createRiddleEvent(
           ...penaltyResult.events,
           [baseEventId]: true,
           [oppositeEventId]: true, // Block the opposite variant
-        },
+        } as any,
       };
     };
   };
@@ -328,9 +328,9 @@ function createRiddleEvent(
     id: eventId,
     condition: (state: GameState) => {
       // Block if the opposite variant has already triggered
-      if (state.events[oppositeEventId]) return false;
+      if ((state.events as any)[oppositeEventId]) return false;
       // Block if this event has already triggered
-      if (state.events[eventId]) return false;
+      if ((state.events as any)[eventId]) return false;
       // Check base precondition
       return config.precondition(state);
     },
