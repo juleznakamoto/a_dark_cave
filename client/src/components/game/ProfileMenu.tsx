@@ -404,7 +404,7 @@ export default function ProfileMenu() {
             </Tooltip>
           </TooltipProvider>
         )}
-        <Button
+        {/* <Button
           variant="ghost"
           size="xs"
           onClick={() => setLeaderboardDialogOpen(true)}
@@ -413,7 +413,7 @@ export default function ProfileMenu() {
           <span className="text-lg opacity-60 group-hover:opacity-100 transition-opacity">
             ♕
           </span>
-        </Button>
+        </Button> */}
       </div>
       <Button
         variant="ghost"
