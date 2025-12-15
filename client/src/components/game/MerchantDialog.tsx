@@ -24,12 +24,7 @@ import {
   useMobileButtonTooltip,
   useMobileTooltip,
 } from "@/hooks/useMobileTooltip";
-
-// Assume these helper functions are defined elsewhere or imported
-// For the purpose of this example, we'll mock them.
-declare function isResourceLimited(resourceName: string, gameState: GameState): boolean;
-declare function getResourceLimit(gameState: GameState): number;
-
+import { isResourceLimited, getResourceLimit } from "@/game/resourceLimits";
 
 interface MerchantDialogProps {
   event: LogEntry;
