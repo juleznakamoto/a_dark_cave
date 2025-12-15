@@ -151,11 +151,11 @@ const SUCCESS_MESSAGES = {
 const WRONG_ANSWER_MESSAGES = {
   first: (deaths: number) =>
     `The figure slowly shakes its head before vanishing into the night. By morning, ${deaths} villagers are found in their beds with slit throats.`,
-  second: (deaths: number) =>
+  second: () =>
     "The figure turns its hooded head side to side, then disappears without a sound. The next day, a dense fog creeps into the village. Villagers claim to see shifting shapes within it, many are too fearful to leave their huts.",
   third: (deaths: number) =>
     `The figure gives a slow, disapproving shake of the head before fading away. When dawn breaks, ${deaths} villagers are found dead, mouths frozen in silent screams.`,
-  fourth: (deaths: number) =>
+  fourth: () =>
     "The figure shakes its head faintly, then fades from sight. The following day, a heavy fog engulfs the village. Shadows seemt to move within the mist, many villagers are too scared to leave their huts.",
   fifth: (deaths: number) =>
     `The figure slowly shakes its head in rejection, then dissolves into the dark. The next day, a fog descends upon the village. ${deaths} villagers perish as the suffocating mist blankets the land.`,
@@ -224,6 +224,44 @@ const RIDDLE_CONFIGS: RiddleConfig[] = [
   },
 ];
 
+// Helper function to apply penalties
+function applyPenalty(
+  state: GameState,
+  eventId: string,
+  penalties: typeof RIDDLE_PENALTIES[keyof typeof RIDDLE_PENALTIES],
+  level: keyof typeof RIDDLE_PENALTIES,
+  messageGetter: typeof WRONG_ANSWER_MESSAGES | typeof TIMEOUT_MESSAGES,
+) {
+  const hasFog = "fogDuration" in penalties;
+  const hasDeaths = "deaths" in penalties;
+
+  let result: Partial<GameState> = {
+    events: {
+      ...state.events,
+      [eventId]: true,
+    },
+  };
+
+  let deaths = 0;
+
+  if (hasDeaths) {
+    deaths = penalties.deaths + penalties.cmMultiplier * state.CM;
+    result = { ...result, ...killVillagers(state, deaths) };
+  }
+
+  if (hasFog) {
+    const fogDuration = penalties.fogDuration + penalties.fogDurationCM * state.CM;
+    result.fogState = {
+      isActive: true,
+      endTime: Date.now() + fogDuration,
+      duration: fogDuration,
+    };
+  }
+
+  result._logMessage = messageGetter[level](deaths);
+  return result;
+}
+
 function createRiddleEvent(
   config: RiddleConfig,
   isVariant: boolean,
@@ -253,116 +291,13 @@ function createRiddleEvent(
       });
     }
 
-    // Wrong answer logic
-    if ("deaths" in penalties && "fogDuration" in penalties) {
-      // Fifth riddle - both fog and deaths
-      return (state: GameState) => {
-        const deaths = penalties.deaths + penalties.cmMultiplier * state.CM;
-        const deathResult = killVillagers(state, deaths);
-        const fogDuration =
-          penalties.fogDuration + penalties.fogDurationCM * state.CM;
-        return {
-          ...deathResult,
-          fogState: {
-            isActive: true,
-            endTime: Date.now() + fogDuration,
-            duration: fogDuration,
-          },
-          events: {
-            ...state.events,
-            [eventId]: true,
-          },
-          _logMessage: WRONG_ANSWER_MESSAGES[level](deaths),
-        };
-      };
-    } else if ("deaths" in penalties) {
-      // Death penalty only (first and third)
-      return (state: GameState) => {
-        const deaths = penalties.deaths + penalties.cmMultiplier * state.CM;
-        return {
-          ...killVillagers(state, deaths),
-          events: {
-            ...state.events,
-            [eventId]: true,
-          },
-          _logMessage: WRONG_ANSWER_MESSAGES[level](deaths),
-        };
-      };
-    } else {
-      // Fog penalty only (second and fourth)
-      return (state: GameState) => {
-        const fogDuration =
-          penalties.fogDuration + penalties.fogDurationCM * state.CM;
-        return {
-          fogState: {
-            isActive: true,
-            endTime: Date.now() + fogDuration,
-            duration: fogDuration,
-          },
-          events: {
-            ...state.events,
-            [eventId]: true,
-          },
-          _logMessage: WRONG_ANSWER_MESSAGES[level](0) as string,
-        };
-      };
-    }
+    return (state: GameState) =>
+      applyPenalty(state, eventId, penalties, level, WRONG_ANSWER_MESSAGES);
   };
 
   const createFallbackEffect = () => {
-    if ("deaths" in penalties && "fogDuration" in penalties) {
-      // Fifth riddle - both fog and deaths
-      return (state: GameState) => {
-        const deaths = penalties.deaths + penalties.cmMultiplier * state.CM;
-        const deathResult = killVillagers(state, deaths);
-        const fogDuration =
-          penalties.fogDuration + penalties.fogDurationCM * state.CM;
-        return {
-          ...deathResult,
-          fogState: {
-            isActive: true,
-            endTime: Date.now() + fogDuration,
-            duration: fogDuration,
-          },
-          events: {
-            ...state.events,
-            [eventId]: true,
-          },
-          _logMessage: TIMEOUT_MESSAGES[level](deaths),
-        };
-      };
-    } else if ("deaths" in penalties) {
-      // Death penalty only (first and third)
-      return (state: GameState) => {
-        const deaths = penalties.deaths + penalties.cmMultiplier * state.CM;
-        return {
-          ...killVillagers(state, deaths),
-          events: {
-            ...state.events,
-            [eventId]: true,
-          },
-          _logMessage: TIMEOUT_MESSAGES[level](deaths),
-        };
-      };
-    } else {
-      // Fog penalty only (second and fourth)
-      return (state: GameState) => {
-        const fogDuration =
-          penalties.fogDuration + penalties.fogDurationCM * state.CM;
-        return {
-          fogState: {
-            isActive: true,
-            endTime: Date.now() + fogDuration,
-            duration: fogDuration,
-          },
-          events: {
-            ...state.events,
-            [eventId]: true,
-          },
-          _logMessage: TIMEOUT_MESSAGES[level](0) as string,
-        };
-      };
-    }
+    return (state: GameState) =>
+      applyPenalty(state, eventId, penalties, level, TIMEOUT_MESSAGES);
   };
 
   return {
