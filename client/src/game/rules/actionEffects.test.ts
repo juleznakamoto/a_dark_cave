@@ -139,10 +139,10 @@ describe('Crafting Cost Reductions', () => {
     state.resources.iron = 150;
     state.buildings.blacksmith = 1;
     state.tools.blacksmith_hammer = true; // 10%
-    state.buildings.storehouse = 1; // 5%
+    state.buildings.fortifiedStorehouse = 1; // 5%
 
     const updates = applyActionEffects('craftIronSword', state);
-    // Total discount: 10% (hammer) + 5% (storehouse) = 15%
+    // Total discount: 10% (hammer) + 5% (fortifiedStorehouse) = 15%
     // Cost: floor(150 * 0.85) = 127
     // Remaining: 150 - 127 = 23
     expect(updates.resources!.iron).toBe(23);
