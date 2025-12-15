@@ -152,7 +152,7 @@ export function applyActionEffects(
 
           const finalKey = pathParts[pathParts.length - 1];
 
-          // Use centralized cost adjustment function (same as tooltip)
+          // Use centralized cost adjustment function (same as tooltip for both buildings and crafting)
           const adjustedCost = getAdjustedCost(
             actionId,
             cost,
@@ -160,12 +160,15 @@ export function applyActionEffects(
             state,
           );
 
-          // Get the current amount from state (not updates) and subtract the adjusted cost
-          const currentAmount = path.startsWith("resources.")
-            ? (state.resources[finalKey as keyof typeof state.resources] || 0)
-            : (current[finalKey] || 0);
+          // Initialize the resource in updates if not already present
+          if (!current[finalKey]) {
+            current[finalKey] = path.startsWith("resources.")
+              ? (state.resources[finalKey as keyof typeof state.resources] || 0)
+              : (state[pathParts[0] as keyof typeof state]?.[finalKey as any] || 0);
+          }
           
-          current[finalKey] = currentAmount - adjustedCost;
+          // Subtract the adjusted cost
+          current[finalKey] -= adjustedCost;
         }
       });
     }
