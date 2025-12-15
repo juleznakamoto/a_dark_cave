@@ -1,6 +1,4 @@
 import { Action, GameState } from "@shared/schema";
-import { ActionResult } from '@/game/actions';
-import { logger } from "@/lib/logger";
 
 // Utility function to get the next building level
 export const getNextBuildingLevel = (actionId: string, state: GameState): number => {

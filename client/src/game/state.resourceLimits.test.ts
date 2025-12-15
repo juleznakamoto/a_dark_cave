@@ -177,7 +177,7 @@ describe('State - Resource Limits Integration', () => {
     it('should allow accumulation above old limit after storage upgrade', () => {
       const store = useGameStore.getState();
 
-      // Start at limit with storage level 1
+      // Start at limit with supplyHut (1000 limit)
       useGameStore.setState((state) => ({
         resources: {
           ...state.resources,
@@ -185,15 +185,24 @@ describe('State - Resource Limits Integration', () => {
         },
         buildings: {
           ...state.buildings,
-          storage: 1, // 1000 limit
+          supplyHut: 1,
+          storehouse: 0,
         },
       }));
 
-      // Upgrade storage
+      // Upgrade storage to storehouse (5000 limit)
       useGameStore.setState((state) => ({
         buildings: {
           ...state.buildings,
-          storage: 2, // 5000 limit
+          storehouse: 1,
+        },
+      }));
+
+      // Set wood to a value below new limit
+      useGameStore.setState((state) => ({
+        resources: {
+          ...state.resources,
+          wood: 1000,
         },
       }));
 
@@ -227,7 +236,8 @@ describe('State - Resource Limits Integration', () => {
           },
           buildings: {
             ...state.buildings,
-            storage: level,
+            supplyHut: level === 0 ? 0 : 1, // Set supplyHut based on tier, only if tier is not 0
+            storehouse: level > 0 ? level - 1 : 0, // Set storehouse based on tier, adjust for 0-indexing
           },
         }));
 
