@@ -68,6 +68,7 @@ export const gameStateSchema = z.object({
       hasCity: z.boolean().default(false),
       hasFortress: z.boolean().default(false),
       resourceLimitsEnabled: z.boolean().default(false),
+      hasHitResourceLimit: z.boolean().default(false),
     })
     .default({}),
   schematics: z
@@ -599,7 +600,7 @@ export const actionSchema = z.object({
   productionEffects: z
     .record(z.string(), z.record(z.string(), z.number()))
     .optional(),
-  statsEffects: z.record(z.string(), z.number()).optional(),
+  statsEffects: z.record(z.string(), z.number()).default({}),
   unlocks: z.array(z.string()).optional(),
   craftingCostReduction: z.number().optional(),
   buildingCostReduction: z.number().optional(),

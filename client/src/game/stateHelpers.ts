@@ -7,19 +7,29 @@ export function updateResource(
   resource: keyof GameState['resources'],
   amount: number,
 ): Partial<GameState> {
-  const currentAmount = state.resources[resource] || 0;
-  const newAmount = currentAmount + amount;
-  const clampedAmount = Math.max(0, newAmount);
+  const currentValue = state.resources[resource] || 0;
+  let newValue = Math.max(0, currentValue + amount);
 
   // Apply resource limit cap
-  const finalAmount = capResourceToLimit(resource, clampedAmount, state);
+  const beforeCap = newValue;
+  newValue = capResourceToLimit(resource, newValue, state);
 
-  return {
+  const updates: Partial<GameState> = {
     resources: {
       ...state.resources,
-      [resource]: finalAmount,
+      [resource]: newValue,
     },
   };
+
+  // Set flag if we hit the limit for the first time
+  if (newValue < beforeCap && !state.flags.hasHitResourceLimit) {
+    updates.flags = {
+      ...state.flags,
+      hasHitResourceLimit: true,
+    };
+  }
+
+  return updates;
 }
 
 export function updateFlag(

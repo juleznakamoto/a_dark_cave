@@ -145,10 +145,10 @@ export default function SidePanel() {
       visible: true,
     }));
 
-  // Check if any resource has a limit applied
+  // Check if any resource has a limit applied AND the limit has been hit at least once
   const showResourceLimit = resourceOrder.some((key) =>
     isResourceLimited(key, gameState),
-  );
+  ) && gameState.flags.hasHitResourceLimit;
   const resourceLimitText = getStorageLimitText(gameState); // Get the storage limit text
 
   // Dynamically generate tool items from state (only show best tools, no weapons)
