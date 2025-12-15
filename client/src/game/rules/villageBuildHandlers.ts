@@ -1112,6 +1112,20 @@ export function handleBuildStockpile(
   return stockpileResult;
 }
 
+export function handleBuildVillageWarehouse(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const warehouseResult = handleBuildingConstruction(
+    state,
+    result,
+    "buildVillageWarehouse",
+    "storage",
+  );
+
+  return warehouseResult;
+}
+
 export function handleBuildGrandRepository(
   state: GameState,
   result: ActionResult,

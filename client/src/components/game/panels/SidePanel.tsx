@@ -162,18 +162,6 @@ export default function SidePanel() {
   ) && gameState.flags.hasHitResourceLimit;
   const resourceLimitText = getStorageLimitText(gameState); // Get the storage limit text
 
-  // Debug logging
-  console.log('[RESOURCE LIMIT DISPLAY]', {
-    showResourceLimit,
-    hasHitResourceLimit: gameState.flags.hasHitResourceLimit,
-    resourceLimitsEnabled: gameState.flags.resourceLimitsEnabled,
-    hasLimitedResource: resourceOrder.some((key) => isResourceLimited(key, gameState)),
-    hasResourceAtLimit,
-    limit,
-    wood: resources.wood,
-    resourceLimitText,
-  });
-
   // Dynamically generate tool items from state (only show best tools, no weapons)
 
   // Dynamically generate clothing items from state

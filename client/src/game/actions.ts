@@ -120,6 +120,7 @@ import {
   handleBuildStorageRoom,
   handleBuildWarehouse,
   handleBuildStockpile,
+  handleBuildVillageWarehouse,
   handleBuildGrandRepository,
   handleBuildCityVault,
 } from "./rules/villageBuildHandlers";
@@ -408,12 +409,14 @@ export function executeGameAction(
       return handleBuildPillarOfClarity(state, result);
     case "buildBoneTemple": // New case for Bone Temple
       return handleBuildBoneTemple(state, result);
-    case "buildStorageRoom":
+    case "buildSupplyHut":
       return handleBuildStorageRoom(state, result);
-    case "buildWarehouse":
+    case "buildStorehouse":
       return handleBuildWarehouse(state, result);
-    case "buildStockpile":
+    case "buildFortifiedStorehouse":
       return handleBuildStockpile(state, result);
+    case "buildVillageWarehouse":
+      return handleBuildVillageWarehouse(state, result);
     case "buildGrandRepository":
       return handleBuildGrandRepository(state, result);
     case "buildCityVault":
