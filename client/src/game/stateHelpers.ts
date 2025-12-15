@@ -19,10 +19,8 @@ export function updateResource(
   const isLimitedResource = isResourceLimited(resource, state);
   const reachedLimit = isLimitedResource && cappedAmount >= limit && !state.flags.hasHitResourceLimit;
 
-  // Debug logging
-  if (isLimitedResource) {
-    console.log(`[RESOURCE LIMIT] ${resource}: cappedAmount=${cappedAmount}, limit=${limit}, isLimited=${isLimitedResource}, reachedLimit=${reachedLimit}, hasHitResourceLimit=${state.flags.hasHitResourceLimit}`);
-  }
+  // Debug logging - log ALL updates to see what's happening
+  console.log(`[RESOURCE LIMIT] ${resource}: currentAmount=${currentAmount}, amount=${amount}, newAmount=${newAmount}, cappedAmount=${cappedAmount}, limit=${limit}, isLimited=${isLimitedResource}, reachedLimit=${reachedLimit}, hasHitResourceLimit=${state.flags.hasHitResourceLimit}`);
 
   return {
     resources: {
