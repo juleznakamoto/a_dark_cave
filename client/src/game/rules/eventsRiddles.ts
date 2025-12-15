@@ -285,7 +285,7 @@ function createRiddleEvent(config: RiddleConfig, isVariant: boolean): GameEvent 
             ...state.events,
             [eventId]: true,
           },
-          _logMessage: WRONG_ANSWER_MESSAGES[level](),
+          _logMessage: WRONG_ANSWER_MESSAGES[level],
         };
       };
     }
