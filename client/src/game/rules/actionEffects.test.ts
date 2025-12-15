@@ -122,8 +122,9 @@ describe('Crafting Cost Reductions', () => {
     expect(updatesWith.resources!.iron).toBe(150 - expectedCost); // 150 - 142 = 8
   });
 
-  it('should stack crafting discounts from multiple buildings', () => {
-    // With both storehouse (5%) and fortified storehouse (5%) and grand repository (10%)
+  it('should use only highest tier storage building crafting discount', () => {
+    // With storehouse (5%), fortified storehouse (5%), and grand repository (10%)
+    // Only grand repository's 10% should apply (highest tier)
     state.resources.iron = 150;
     state.buildings.blacksmith = 1;
     state.buildings.storehouse = 1;
@@ -131,20 +132,21 @@ describe('Crafting Cost Reductions', () => {
     state.buildings.grandRepository = 1;
 
     const updates = applyActionEffects('craftIronSword', state);
-    // Total discount: 5% + 5% + 10% = 20%
-    const expectedCost = Math.floor(150 * 0.8); // 120
-    expect(updates.resources!.iron).toBe(150 - expectedCost); // 150 - 120 = 30
+    // Only highest tier discount: 10% from grandRepository
+    const expectedCost = Math.floor(150 * 0.9); // 135
+    expect(updates.resources!.iron).toBe(150 - expectedCost); // 150 - 135 = 15
   });
 
-  it('should stack crafting discounts from buildings and tools', () => {
+  it('should stack crafting discounts from tools and highest storage building', () => {
     // With blacksmith_hammer (15%) and storehouse (5%)
+    // Tool discount (15%) + storage building discount (5%) = 20% total
     state.resources.iron = 150;
     state.buildings.blacksmith = 1;
     state.tools.blacksmith_hammer = true;
     state.buildings.storehouse = 1;
 
     const updates = applyActionEffects('craftIronSword', state);
-    // Total discount: 15% + 5% = 20%
+    // Total discount: 15% (hammer) + 5% (storehouse) = 20%
     const expectedCost = Math.floor(150 * 0.8); // 120
     expect(updates.resources!.iron).toBe(150 - expectedCost); // 150 - 120 = 30
   });
@@ -202,8 +204,9 @@ describe('Building Cost Reductions', () => {
     expect(updatesWith.resources!.stone).toBe(50 - expectedStoneCost); // 50 - 47 = 3
   });
 
-  it('should stack building discounts from multiple buildings', () => {
+  it('should use only highest tier storage building for building cost reduction', () => {
     // With fortified storehouse (5%), village warehouse (5%), grand repository (5%), and Great Vault (10%)
+    // Only Great Vault's 10% should apply (highest tier)
     state.resources.wood = 150;
     state.resources.stone = 50;
     state.buildings.woodenHut = 1;
@@ -213,11 +216,11 @@ describe('Building Cost Reductions', () => {
     state.buildings.greatVault = 1;
 
     const updates = applyActionEffects('buildCabin', state);
-    // Total discount: 5% + 5% + 5% + 10% = 25%
-    const expectedWoodCost = Math.floor(150 * 0.75); // 112
-    const expectedStoneCost = Math.floor(50 * 0.75); // 37
-    expect(updates.resources!.wood).toBe(150 - expectedWoodCost); // 150 - 112 = 38
-    expect(updates.resources!.stone).toBe(50 - expectedStoneCost); // 50 - 37 = 13
+    // Only highest tier discount: 10% from greatVault
+    const expectedWoodCost = Math.floor(150 * 0.9); // 135
+    const expectedStoneCost = Math.floor(50 * 0.9); // 45
+    expect(updates.resources!.wood).toBe(150 - expectedWoodCost); // 150 - 135 = 15
+    expect(updates.resources!.stone).toBe(50 - expectedStoneCost); // 50 - 45 = 5
   });
 
   it('should stack building discounts from buildings and tools', () => {
@@ -262,16 +265,17 @@ describe('Cost Reduction Edge Cases', () => {
     state.resources.iron = 150;
     state.buildings.blacksmith = 1;
     state.tools.blacksmith_hammer = true; // 15%
-    state.buildings.storehouse = 1; // 5%
-    state.buildings.fortifiedStorehouse = 1; // 5%
-    state.buildings.villageWarehouse = 1; // 5%
-    state.buildings.grandRepository = 1; // 10%
-    state.buildings.greatVault = 1; // 10%
+    state.buildings.storehouse = 1;
+    state.buildings.fortifiedStorehouse = 1;
+    state.buildings.villageWarehouse = 1;
+    state.buildings.grandRepository = 1;
+    state.buildings.greatVault = 1; // 10% (only this one applies from storage buildings)
 
     const updates = applyActionEffects('craftIronSword', state);
-    // Total discount: 15% + 5% + 5% + 5% + 10% + 10% = 50%
-    const expectedCost = Math.floor(150 * 0.5); // 75
-    expect(updates.resources!.iron).toBe(150 - expectedCost); // 150 - 75 = 75
+    // Total discount: 15% (hammer) + 10% (greatVault - highest tier only) = 25%
+    const expectedCost = Math.floor(150 * 0.75); // 112
+    expect(updates.resources!.iron).toBe(150 - expectedCost); // 150 - 112 = 38
+    // Note: Previously was 50% (stacking all), now 25% (only highest tier storage building)
   });
 
   it('should handle building with maximum discounts', () => {
@@ -280,17 +284,18 @@ describe('Cost Reduction Edge Cases', () => {
     state.resources.stone = 50;
     state.buildings.woodenHut = 1;
     state.tools.mastermason_chisel = true; // 10%
-    state.buildings.fortifiedStorehouse = 1; // 5%
-    state.buildings.villageWarehouse = 1; // 5%
-    state.buildings.grandRepository = 1; // 5%
-    state.buildings.greatVault = 1; // 10%
+    state.buildings.fortifiedStorehouse = 1;
+    state.buildings.villageWarehouse = 1;
+    state.buildings.grandRepository = 1;
+    state.buildings.greatVault = 1; // 10% (only this one applies from storage buildings)
 
     const updates = applyActionEffects('buildCabin', state);
-    // Total discount: 10% + 5% + 5% + 5% + 10% = 35%
-    const expectedWoodCost = Math.floor(150 * 0.65); // 97
-    const expectedStoneCost = Math.floor(50 * 0.65); // 32
-    expect(updates.resources!.wood).toBe(150 - expectedWoodCost); // 150 - 97 = 53
-    expect(updates.resources!.stone).toBe(50 - expectedStoneCost); // 50 - 32 = 18
+    // Total discount: 10% (chisel) + 10% (greatVault - highest tier only) = 20%
+    const expectedWoodCost = Math.floor(150 * 0.8); // 120
+    const expectedStoneCost = Math.floor(50 * 0.8); // 40
+    expect(updates.resources!.wood).toBe(150 - expectedWoodCost); // 150 - 120 = 30
+    expect(updates.resources!.stone).toBe(50 - expectedStoneCost); // 50 - 40 = 10
+    // Note: Previously was 35% (stacking all), now 20% (only highest tier storage building)
   });
 
   it('should not apply discounts to non-crafting, non-building actions', () => {
