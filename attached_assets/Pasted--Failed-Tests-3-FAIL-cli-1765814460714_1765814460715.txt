@@ -1,0 +1,67 @@
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  client/src/game/rules/actionEffects.test.ts > Crafting Cost Reductions > should apply blacksmith_hammer 10% crafting discount for craftIronAxe
+AssertionError: expected 3 to be 5 // Object.is equality
+
+- Expected
++ Received
+
+- 5
++ 3
+
+ ❯ client/src/game/rules/actionEffects.test.ts:110:41
+    108|     const expectedCost = Math.floor(baseCost * 0.90);
+    109|     const expectedFinalAmount = baseCost - expectedCost;
+    110|     expect(updatesWith.resources!.iron).toBe(expectedFinalAmount);
+       |                                         ^
+    111|   });
+    112| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  client/src/game/rules/actionEffects.test.ts > Building Cost Reductions > should apply mastermason_chisel 10% building discount for buildCabin
+AssertionError: expected 8 to be 15 // Object.is equality
+
+- Expected
++ Received
+
+- 15
++ 8
+
+ ❯ client/src/game/rules/actionEffects.test.ts:200:41
+    198|     const expectedFinalWood = baseWoodCost - expectedWoodCost;
+    199|     const expectedFinalStone = baseStoneCost - expectedStoneCost;
+    200|     expect(updatesWith.resources!.wood).toBe(expectedFinalWood);
+       |                                         ^
+    201|     expect(updatesWith.resources!.stone).toBe(expectedFinalStone);
+    202|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  client/src/game/rules/actionEffects.test.ts > Building Cost Reductions > should apply discounts to building with existing cabins
+AssertionError: expected 8 to be 15 // Object.is equality
+
+- Expected
++ Received
+
+- 15
++ 8
+
+ ❯ client/src/game/rules/actionEffects.test.ts:286:37
+    284|     const expectedFinalWood = baseWoodCost - expectedWoodCost;
+    285|     const expectedFinalStone = baseStoneCost - expectedStoneCost;
+    286|     expect(updates.resources!.wood).toBe(expectedFinalWood);
+       |                                     ^
+    287|     expect(updates.resources!.stone).toBe(expectedFinalStone);
+    288|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  4 failed | 78 passed (82)
+   Start at  16:00:46
+   Duration  361ms
+
+ FAIL  Tests failed. Watching for file changes...
+       press h to show help, press q to quit
