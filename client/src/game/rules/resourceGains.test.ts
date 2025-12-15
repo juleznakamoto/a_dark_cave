@@ -6,7 +6,6 @@ import { getActionBonuses } from './effectsCalculation';
 import { gameActions, getActionCostBreakdown } from './index';
 import { applyActionEffects } from './actionEffects';
 import { getResourceGainTooltip, calculateResourceGains } from './tooltips';
-import { gameActions as importedGameActions } from '../actions';
 
 // Helper to create a minimal test state
 const createTestState = (overrides?: Partial<GameState>): GameState => {
@@ -532,7 +531,7 @@ describe('Resource Gain Tests', () => {
       const amountWith = parseInt(woodCostWith!.text.split(' ')[0].replace('-', ''));
 
       // Get the base cost from game actions
-      const baseCost = (importedGameActions.buildCabin.cost as any)[1]["resources.wood"];
+      const baseCost = (gameActions.buildCabin.cost as any)[1]["resources.wood"];
 
       // Verify the without-chisel cost matches base cost
       expect(amountWithout).toBe(baseCost);

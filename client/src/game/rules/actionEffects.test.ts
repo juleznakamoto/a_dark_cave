@@ -118,8 +118,8 @@ describe('Crafting Cost Reductions', () => {
       buildings: {
         blacksmith: 1,
         storehouse: 1,
-        fortifiedStorehouse: 1, // 5% discount
-        greatVault: 1, // 10% discount (should apply)
+        fortifiedStorehouse: 1,
+        greatVault: 1, // 5% discount (should apply)
       },
       tools: {
         stone_pickaxe: true,
@@ -131,8 +131,8 @@ describe('Crafting Cost Reductions', () => {
     const updates = applyActionEffects("craftIronAxe", state);
 
     // blacksmith_hammer: 10%
-    // Great Vault: 10% (highest storage building)
-    // Total: 20%
+    // Great Vault: 5% (highest storage building)
+    // Total: 15%
     const totalDiscount = getTotalCraftingCostReduction(state);
     const expectedCost = Math.floor(baseCost * (1 - totalDiscount));
     const expectedRemaining = baseCost - expectedCost;
@@ -140,7 +140,7 @@ describe('Crafting Cost Reductions', () => {
   });
 
   it('should handle crafting with maximum discounts for craftIronAxe', () => {
-    const baseCost = (importedGameActions.craftIronAxe.cost as any)["resources.iron"];
+    const baseCost = (gameActions.craftIronAxe.cost as any)["resources.iron"];
 
     const state: GameState = {
       ...baseState,
@@ -288,7 +288,7 @@ describe('Cost Reduction Edge Cases', () => {
   });
 
   it('should handle crafting with maximum discounts for craftIronAxe', () => {
-    const baseCost = (importedGameActions.craftIronAxe.cost as any)["resources.iron"];
+    const baseCost = (gameActions.craftIronAxe.cost as any)["resources.iron"];
 
     const state: GameState = {
       ...baseState,
@@ -392,3 +392,7 @@ describe('Cost Reduction Edge Cases', () => {
     expect(updates.resources!.stone).toBe(baseStoneCost - expectedStoneCost);
   });
 });
+
+// Helper functions (assuming these are defined elsewhere and needed for context)
+declare function getTotalCraftingCostReduction(state: GameState): number;
+declare function getTotalBuildingCostReduction(state: GameState): number;
