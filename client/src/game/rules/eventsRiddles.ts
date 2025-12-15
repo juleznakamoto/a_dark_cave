@@ -51,6 +51,20 @@ const START_MESSAGES = {
     "The nightly figure appears one more time at the estate. Its voice silently echoes through the night: 'Your eyes are open, I am there, your eyes are closed, I am there too.'",
 };
 
+// Variant Questions
+const VARIANT_MESSAGES = {
+  first:
+    "A knock comes from the estate door. A figure completely hulled in dark robes stands in the shadows outside. It whispers: 'A lady's desire, grown in darkness, shining with pale light.'",
+  second:
+    "The cloaked figure returns to the estate under the pale moonlight. Its voice echoes: 'Can't hurt you, but leaves you with scars.'",
+  third:
+    "Once again, the mysterious figure appears at the estate. It whispers with a low voice: 'It has fingers yet no flesh, no feathers, no scales, no bone.'",
+  fourth:
+    "The hulled figure appears once more at the estate. It whispers: 'Soft, delicate, silky, but if you're wrapped in me, you scream.'",
+  fifth:
+    "The nightly figure appears one more time at the estate. Its voice silently echoes through the night: 'Poor have me, rich have me. Eat me, you die.'",
+};
+
 // Success messages
 const SUCCESS_MESSAGES = {
   first: (gold: number) =>
@@ -107,8 +121,7 @@ const RIDDLE_CONFIGS: RiddleConfig[] = [
     level: "first",
     title: "Whisperer in the Dark",
     originalMessage: START_MESSAGES.first,
-    variantMessage:
-      "A knock comes from the estate door. A figure completely hulled in dark robes stands in the shadows outside. It whispers: 'A lady's desire, grown in darkness, shining with pale light.'",
+    variantMessage: VARIANT_MESSAGES.first,
     choices: [
       { id: "answerFire", label: "Fire", isCorrect: false },
       { id: "answerTree", label: "Tree", isCorrect: false },
@@ -123,8 +136,7 @@ const RIDDLE_CONFIGS: RiddleConfig[] = [
     level: "second",
     title: "Voices in the Dark",
     originalMessage: START_MESSAGES.second,
-    variantMessage:
-      "The cloaked figure returns to the estate under the pale moonlight. Its voice echoes: 'Can't hurt you, but leaves you with scars.'",
+    variantMessage: VARIANT_MESSAGES.second,
     choices: [
       { id: "answerEarth", label: "Earth", isCorrect: false },
       { id: "answerWolf", label: "Wolf", isCorrect: false },
@@ -140,8 +152,7 @@ const RIDDLE_CONFIGS: RiddleConfig[] = [
     level: "third",
     title: "A nightly Visitor",
     originalMessage: START_MESSAGES.third,
-    variantMessage:
-      "Once again, the mysterious figure appears at the estate. It whispers with a low voice: 'It has fingers yet no flesh, no feathers, no scales, no bone.'",
+    variantMessage: VARIANT_MESSAGES.third,
     choices: [
       { id: "answerMan", label: "Man", isCorrect: false },
       { id: "answerWater", label: "Water", isCorrect: false },
@@ -156,8 +167,7 @@ const RIDDLE_CONFIGS: RiddleConfig[] = [
     level: "fourth",
     title: "A hooded Guest",
     originalMessage: START_MESSAGES.fourth,
-    variantMessage:
-      "The hulled figure appears once more at the estate. It whispers: 'Soft, delicate, silky, but if you're wrapped in me, you scream.'",
+    variantMessage: VARIANT_MESSAGES.fourth,
     choices: [
       { id: "answerNight", label: "Night", isCorrect: false },
       { id: "answerWind", label: "Wind", isCorrect: false },
@@ -172,8 +182,7 @@ const RIDDLE_CONFIGS: RiddleConfig[] = [
     level: "fifth",
     title: "The unknown Guest",
     originalMessage: START_MESSAGES.fifth,
-    variantMessage:
-      "The nightly figure appears one more time at the estate. Its voice silently echoes through the night: 'Poor have me, rich have me. Eat me, you die.'",
+    variantMessage: VARIANT_MESSAGES.fifth,
     choices: [
       { id: "answerLight", label: "Light", isCorrect: false },
       { id: "answerLife", label: "Life", isCorrect: false },
