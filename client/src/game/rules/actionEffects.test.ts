@@ -312,7 +312,7 @@ describe('Cost Reduction Edge Cases', () => {
     // Test that partial costs are floored
     state.resources.iron = 100;
     state.buildings.blacksmith = 1;
-    state.buildings.storehouse = 1; // 5% discount
+    state.buildings.fortifiedStorehouse = 1; // 5% discount
 
     // Create a scenario where 5% would give a decimal
     const action = gameActions['craftIronSword'];
