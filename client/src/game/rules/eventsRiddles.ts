@@ -65,6 +65,40 @@ const VARIANT_MESSAGES = {
     "The nightly figure appears one more time at the estate. Its voice silently echoes through the night: 'Poor have me, rich have me. Eat me, you die.'",
 };
 
+// Variant riddle choices for new riddles
+const VARIANT_CHOICES: Record<string, RiddleChoice[]> = {
+  whispererInTheDark_variant: [
+    { id: "answerSilver", label: "Silver", isCorrect: false },
+    { id: "answerPearl", label: "Pearl", isCorrect: true },
+    { id: "answerGold", label: "Gold", isCorrect: false },
+    { id: "answerDiamond", label: "Diamond", isCorrect: false },
+  ],
+  riddleOfAges_variant: [
+    { id: "answerNightmares", label: "Nightmares", isCorrect: false },
+    { id: "answerTime", label: "Time", isCorrect: true },
+    { id: "answerLove", label: "Love", isCorrect: false },
+    { id: "answerDeath", label: "Death", isCorrect: false },
+  ],
+  riddleOfDevourer_variant: [
+    { id: "answerFin", label: "Fin", isCorrect: false },
+    { id: "answerWing", label: "Wing", isCorrect: false },
+    { id: "answerGlove", label: "Glove", isCorrect: true },
+    { id: "answerHand", label: "Hand", isCorrect: false },
+  ],
+  riddleOfTears_variant: [
+    { id: "answerNightmares", label: "Nightmares", isCorrect: false },
+    { id: "answerCobweb", label: "Cobweb", isCorrect: true },
+    { id: "answerSilk", label: "Silk", isCorrect: false },
+    { id: "answerDeath", label: "Death", isCorrect: false },
+  ],
+  riddleOfEternal_variant: [
+    { id: "answerPoison", label: "Poison", isCorrect: false },
+    { id: "answerAir", label: "Air", isCorrect: false },
+    { id: "answerNothing", label: "Nothing", isCorrect: true },
+    { id: "answerTime", label: "Time", isCorrect: false },
+  ],
+};
+
 // Success messages
 const SUCCESS_MESSAGES = {
   first: (gold: number) =>
@@ -192,40 +226,6 @@ const RIDDLE_CONFIGS: RiddleConfig[] = [
     precondition: (state: GameState) => state.events.riddleOfTears === true,
   },
 ];
-
-// Variant riddle choices for new riddles
-const VARIANT_CHOICES: Record<string, RiddleChoice[]> = {
-  whispererInTheDark_variant: [
-    { id: "answerSilver", label: "Silver", isCorrect: false },
-    { id: "answerPearl", label: "Pearl", isCorrect: true },
-    { id: "answerGold", label: "Gold", isCorrect: false },
-    { id: "answerDiamond", label: "Diamond", isCorrect: false },
-  ],
-  riddleOfAges_variant: [
-    { id: "answerNightmares", label: "Nightmares", isCorrect: false },
-    { id: "answerTime", label: "Time", isCorrect: true },
-    { id: "answerLove", label: "Love", isCorrect: false },
-    { id: "answerDeath", label: "Death", isCorrect: false },
-  ],
-  riddleOfDevourer_variant: [
-    { id: "answerFin", label: "Fin", isCorrect: false },
-    { id: "answerWing", label: "Wing", isCorrect: false },
-    { id: "answerGlove", label: "Glove", isCorrect: true },
-    { id: "answerHand", label: "Hand", isCorrect: false },
-  ],
-  riddleOfTears_variant: [
-    { id: "answerNightmares", label: "Nightmares", isCorrect: false },
-    { id: "answerCobweb", label: "Cobweb", isCorrect: true },
-    { id: "answerSilk", label: "Silk", isCorrect: false },
-    { id: "answerDeath", label: "Death", isCorrect: false },
-  ],
-  riddleOfEternal_variant: [
-    { id: "answerPoison", label: "Poison", isCorrect: false },
-    { id: "answerAir", label: "Air", isCorrect: false },
-    { id: "answerNothing", label: "Nothing", isCorrect: true },
-    { id: "answerTime", label: "Time", isCorrect: false },
-  ],
-};
 
 function createRiddleEvent(
   config: RiddleConfig,
