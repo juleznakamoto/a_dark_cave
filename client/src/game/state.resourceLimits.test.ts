@@ -228,7 +228,7 @@ describe('State - Resource Limits Integration', () => {
       ];
 
       tiers.forEach(({ level, limit }) => {
-        // Reset resources
+        // Reset all storage buildings first
         useGameStore.setState((state) => ({
           resources: {
             ...state.resources,
@@ -236,8 +236,48 @@ describe('State - Resource Limits Integration', () => {
           },
           buildings: {
             ...state.buildings,
-            supplyHut: level === 0 ? 0 : 1, // Set supplyHut based on tier, only if tier is not 0
-            storehouse: level > 0 ? level - 1 : 0, // Set storehouse based on tier, adjust for 0-indexing
+            supplyHut: 0,
+            storehouse: 0,
+            fortifiedStorehouse: 0,
+            villageWarehouse: 0,
+            grandRepository: 0,
+            cityVault: 0,
+          },
+        }));
+
+        // Set the appropriate building for this tier
+        if (level === 0) {
+          // No storage buildings
+        } else if (level === 1) {
+          useGameStore.setState((state) => ({
+            buildings: { ...state.buildings, supplyHut: 1 },
+          }));
+        } else if (level === 2) {
+          useGameStore.setState((state) => ({
+            buildings: { ...state.buildings, storehouse: 1 },
+          }));
+        } else if (level === 3) {
+          useGameStore.setState((state) => ({
+            buildings: { ...state.buildings, fortifiedStorehouse: 1 },
+          }));
+        } else if (level === 4) {
+          useGameStore.setState((state) => ({
+            buildings: { ...state.buildings, villageWarehouse: 1 },
+          }));
+        } else if (level === 5) {
+          useGameStore.setState((state) => ({
+            buildings: { ...state.buildings, grandRepository: 1 },
+          }));
+        } else if (level === 6) {
+          useGameStore.setState((state) => ({
+            buildings: { ...state.buildings, cityVault: 1 },
+          }));
+        }
+
+        useGameStore.setState((state) => ({
+          resources: {
+            ...state.resources,
+            iron: 0,
           },
         }));
 

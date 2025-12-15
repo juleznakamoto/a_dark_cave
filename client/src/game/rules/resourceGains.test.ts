@@ -537,26 +537,26 @@ describe('Resource Gain Tests', () => {
       expect(amountWith).toBe(Math.floor(amountWithout * 0.9));
     });
 
-    it('storage buildings reduce building costs correctly', () => {
+    it('fortified storehouse reduces building costs correctly', () => {
       const stateWithoutStorage = createTestState({
         buildings: { woodenHut: 1, clerksHut: 1 },
       });
-      const stateWithStorehouse = createTestState({
-        buildings: { woodenHut: 1, clerksHut: 1, storehouse: 1 },
+      const stateWithFortifiedStorehouse = createTestState({
+        buildings: { woodenHut: 1, clerksHut: 1, fortifiedStorehouse: 1 },
       });
 
       const costWithout = getActionCostBreakdown('buildCabin', stateWithoutStorage);
-      const costWithStorehouse = getActionCostBreakdown('buildCabin', stateWithStorehouse);
+      const costWithFortifiedStorehouse = getActionCostBreakdown('buildCabin', stateWithFortifiedStorehouse);
 
       const woodCostWithout = costWithout.find(c => c.text.includes('Wood'));
-      const woodCostWithStorehouse = costWithStorehouse.find(c => c.text.includes('Wood'));
+      const woodCostWithFortifiedStorehouse = costWithFortifiedStorehouse.find(c => c.text.includes('Wood'));
 
       expect(woodCostWithout).toBeDefined();
       const amountWithout = parseInt(woodCostWithout!.text.split(' ')[0].replace('-', ''));
       
-      // Storehouse: 5% crafting cost reduction (applies to building costs too)
-      const amountWithStorehouse = parseInt(woodCostWithStorehouse!.text.split(' ')[0].replace('-', ''));
-      expect(amountWithStorehouse).toBe(Math.floor(amountWithout * 0.95));
+      // Fortified Storehouse: 5% building cost reduction
+      const amountWithFortifiedStorehouse = parseInt(woodCostWithFortifiedStorehouse!.text.split(' ')[0].replace('-', ''));
+      expect(amountWithFortifiedStorehouse).toBe(Math.floor(amountWithout * 0.95));
     });
   });
 
