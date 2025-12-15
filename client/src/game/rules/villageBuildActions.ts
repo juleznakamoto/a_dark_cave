@@ -1700,7 +1700,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildCityVault: {
     id: "buildCityVault",
     label: "City Vault",
-    description: "Supreme vault capable of storing immense wealth",
+    description: "Supreme vault capable of storing immense resources",
     tooltipEffects: ["Resource Limit: 100,000", "10% Crafting Discount", "10% Building Discount"],
     building: true,
     show_when: {
