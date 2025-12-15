@@ -1,0 +1,110 @@
+r/referral.e2e.test.ts (2 tests) 8ms
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  client/src/game/rules/actionEffects.test.ts > Crafting Cost Reductions > should stack crafting discounts from tools and highest storage building
+AssertionError: expected 15 to be 23 // Object.is equality
+
+- Expected
++ Received
+
+- 23
++ 15
+
+ ❯ client/src/game/rules/actionEffects.test.ts:148:37
+    146|     // Cost: floor(150 * 0.85) = 127
+    147|     // Remaining: 150 - 127 = 23
+    148|     expect(updates.resources!.iron).toBe(23);
+       |                                     ^
+    149|   });
+    150| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  client/src/game/rules/actionEffects.test.ts > Building Cost Reductions > should apply fortified storehouse 5% building discount
+AssertionError: expected +0 to be 8 // Object.is equality
+
+- Expected
++ Received
+
+- 8
++ 0
+
+ ❯ client/src/game/rules/actionEffects.test.ts:200:41
+    198|     const expectedWoodCost = Math.floor(150 * 0.95); // 142
+    199|     const expectedStoneCost = Math.floor(50 * 0.95); // 47
+    200|     expect(updatesWith.resources!.wood).toBe(150 - expectedWoodCost); // 1…
+       |                                         ^
+    201|     expect(updatesWith.resources!.stone).toBe(50 - expectedStoneCost); // …
+    202|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  client/src/game/rules/actionEffects.test.ts > Building Cost Reductions > should stack building discounts from buildings and tools
+AssertionError: expected 15 to be 23 // Object.is equality
+
+- Expected
++ Received
+
+- 23
++ 15
+
+ ❯ client/src/game/rules/actionEffects.test.ts:235:37
+    233|     const expectedWoodCost = Math.floor(150 * 0.85); // 127
+    234|     const expectedStoneCost = Math.floor(50 * 0.85); // 42
+    235|     expect(updates.resources!.wood).toBe(150 - expectedWoodCost); // 150 -…
+       |                                     ^
+    236|     expect(updates.resources!.stone).toBe(50 - expectedStoneCost); // 50 -…
+    237|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  client/src/game/rules/actionEffects.test.ts > Cost Reduction Edge Cases > should floor discount calculations correctly
+AssertionError: expected +0 to be 8 // Object.is equality
+
+- Expected
++ Received
+
+- 8
++ 0
+
+ ❯ client/src/game/rules/actionEffects.test.ts:326:37
+    324|     // 150 * 0.95 = 142.5, should floor to 142
+    325|     const expectedCost = Math.floor(originalCost * 0.95);
+    326|     expect(updates.resources!.iron).toBe(originalCost - expectedCost);
+       |                                     ^
+    327|   });
+    328| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Building Cost Reductions > fortified storehouse reduces building costs correctly
+AssertionError: expected 150 to be 142 // Object.is equality
+
+- Expected
++ Received
+
+- 142
++ 150
+
+ ❯ client/src/game/rules/resourceGains.test.ts:556:45
+    554|       // Fortified Storehouse: 5% building cost reduction
+    555|       const amountWithFortifiedStorehouse = parseInt(woodCostWithFortified…
+    556|       expect(amountWithFortifiedStorehouse).toBe(Math.floor(amountWithout …
+       |                                             ^
+    557|     });
+    558|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯
+
+
+ Test Files  2 failed | 19 passed (21)
+      Tests  5 failed | 337 passed (342)
+   Start at  11:49:51
+   Duration  5.94s (transform 2.29s, setup 0ms, import 4.97s, tests 2.18s, environment 4ms)
+
+ FAIL  Tests failed. Watching for file changes...
+       press h to show help, press q to quit
+Cancelling test run. Press CTRL+c again to exit forcefully.
+
+~/workspace$ 
