@@ -1,0 +1,126 @@
+e/loop.test.ts (3 tests) 16ms
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  client/src/game/rules/actionEffects.test.ts > Crafting Cost Reductions > should apply storehouse 5% crafting discount
+AssertionError: expected +0 to be 8 // Object.is equality
+
+- Expected
++ Received
+
+- 8
++ 0
+
+ ❯ client/src/game/rules/actionEffects.test.ts:127:41
+    125|     // With 5% discount: cost = floor(150 * 0.95) = floor(142.5) = 142
+    126|     // Remaining: 150 - 142 = 8
+    127|     expect(updatesWith.resources!.iron).toBe(8);
+       |                                         ^
+    128|   });
+    129| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  client/src/game/rules/actionEffects.test.ts > Crafting Cost Reductions > should stack crafting discounts from tools and highest storage building
+AssertionError: expected 15 to be 23 // Object.is equality
+
+- Expected
++ Received
+
+- 23
++ 15
+
+ ❯ client/src/game/rules/actionEffects.test.ts:157:37
+    155|     // Cost: floor(150 * 0.85) = 127
+    156|     // Remaining: 150 - 127 = 23
+    157|     expect(updates.resources!.iron).toBe(23);
+       |                                     ^
+    158|   });
+    159| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  client/src/game/rules/actionEffects.test.ts > Building Cost Reductions > should apply fortified storehouse 5% building discount
+AssertionError: expected +0 to be 8 // Object.is equality
+
+- Expected
++ Received
+
+- 8
++ 0
+
+ ❯ client/src/game/rules/actionEffects.test.ts:209:41
+    207|     const expectedWoodCost = Math.floor(150 * 0.95); // 142
+    208|     const expectedStoneCost = Math.floor(50 * 0.95); // 47
+    209|     expect(updatesWith.resources!.wood).toBe(150 - expectedWoodCost); // 1…
+       |                                         ^
+    210|     expect(updatesWith.resources!.stone).toBe(50 - expectedStoneCost); // …
+    211|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+ FAIL  client/src/game/rules/actionEffects.test.ts > Building Cost Reductions > should stack building discounts from buildings and tools
+AssertionError: expected 15 to be 23 // Object.is equality
+
+- Expected
++ Received
+
+- 23
++ 15
+
+ ❯ client/src/game/rules/actionEffects.test.ts:244:37
+    242|     const expectedWoodCost = Math.floor(150 * 0.85); // 127
+    243|     const expectedStoneCost = Math.floor(50 * 0.85); // 42
+    244|     expect(updates.resources!.wood).toBe(150 - expectedWoodCost); // 150 -…
+       |                                     ^
+    245|     expect(updates.resources!.stone).toBe(50 - expectedStoneCost); // 50 -…
+    246|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯
+
+ FAIL  client/src/game/rules/actionEffects.test.ts > Cost Reduction Edge Cases > should floor discount calculations correctly
+AssertionError: expected +0 to be 8 // Object.is equality
+
+- Expected
++ Received
+
+- 8
++ 0
+
+ ❯ client/src/game/rules/actionEffects.test.ts:335:37
+    333|     // 150 * 0.95 = 142.5, should floor to 142
+    334|     const expectedCost = Math.floor(originalCost * 0.95);
+    335|     expect(updates.resources!.iron).toBe(originalCost - expectedCost);
+       |                                     ^
+    336|   });
+    337| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Building Cost Reductions > fortified storehouse reduces building costs correctly
+AssertionError: expected 150 to be 142 // Object.is equality
+
+- Expected
++ Received
+
+- 142
++ 150
+
+ ❯ client/src/game/rules/resourceGains.test.ts:556:45
+    554|       // Fortified Storehouse: 5% building cost reduction
+    555|       const amountWithFortifiedStorehouse = parseInt(woodCostWithFortified…
+    556|       expect(amountWithFortifiedStorehouse).toBe(Math.floor(amountWithout …
+       |                                             ^
+    557|     });
+    558|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/6]⎯
+
+
+ Test Files  2 failed | 19 passed (21)
+      Tests  6 failed | 336 passed (342)
+   Start at  11:44:51
+   Duration  5.87s (transform 2.55s, setup 0ms, import 4.95s, tests 2.04s, environment 3ms)
+
+ FAIL  Tests failed. Watching for file changes...
+       press h to show help, press q to quit
