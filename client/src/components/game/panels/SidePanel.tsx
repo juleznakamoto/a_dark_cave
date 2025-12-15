@@ -1043,7 +1043,7 @@ export default function SidePanel() {
                 showResourceLimit ? (
                   <>
                     Resources{" "}
-                    <span className="text-muted-foreground">
+                    <span className="text-muted-foreground font-normal">
                       ◬ {resourceLimitText}
                     </span>
                   </>
@@ -1106,7 +1106,7 @@ export default function SidePanel() {
               title={
                 <>
                   Population{" "}
-                  <span className="text-muted-foreground">
+                  <span className="text-muted-foreground font-normal">
                     {current_population}/{total_population}
                   </span>
                 </>

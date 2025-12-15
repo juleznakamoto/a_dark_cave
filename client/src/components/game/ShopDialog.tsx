@@ -30,15 +30,7 @@ import {
 } from "@stripe/react-stripe-js";
 import { supabase } from "@/lib/supabase";
 import { getCurrentUser } from "@/game/auth";
-import { SHOP_ITEMS, type ShopItem } from "../../../../shared/shopItems";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { renderItemTooltip } from "@/game/rules/itemTooltips";
-import { Info } from "lucide-react";
+import { SHOP_ITEMS } from "../../../../shared/shopItems";
 import { tailwindToHex } from "@/lib/tailwindColors";
 
 const stripePublishableKey = import.meta.env.PROD
@@ -771,7 +763,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                       <CardHeader className="leading-snug p-3 md:p-6 pb-2 md:pb-3 relative">
                         {item.symbol && (
                           <span
-                            className="leading-none text-lg text-right absolute top-3 right-3 md:top-6 md:right-6"
+                            className="leading-[0.9] text-lg text-right absolute top-3 right-3 md:top-6 md:right-6"
                             style={{
                               color: tailwindToHex(
                                 item.symbolColor.replace("text-", ""),
@@ -903,21 +895,14 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                       can be activated once per game.
                     </p>
                     <div className="space-y-2">
-                      {/* Show individual feast activations (but not bundles themselves) */}
                       {Object.entries(gameState.feastActivations || {}).map(
-                        // Changed feastPurchases to feastActivations
                         ([purchaseId, activationsRemaining]) => {
-                          // Changed purchase to activationsRemaining
-                          // Find the corresponding item to get its name and description
-                          // We need to search through all SHOP_ITEMS to find the one that matches this purchaseId
-                          // This is because purchaseId is in the format 'purchase-{itemId}-{uuid}'
                           let itemId = null;
                           if (purchaseId.startsWith("purchase-")) {
                             const withoutPrefix = purchaseId.substring(
                               "purchase-".length,
                             );
                             const parts = withoutPrefix.split("-");
-                            // Extract itemId by removing the UUID parts
                             itemId = parts.slice(0, -5).join("-");
                           }
 
@@ -1001,10 +986,6 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                             itemId = parts.slice(0, -5).join("-");
                           }
                           const item = SHOP_ITEMS[itemId];
-
-                          // Don't show items with feast activations here (they're shown above)
-                          // Don't show bundles (their components are shown individually)
-                          // But do check if the item exists
                           return (
                             item &&
                             !item.rewards.feastActivations &&
@@ -1039,7 +1020,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                                 <span className="text-sm font-medium">
                                   {item.name}
                                   {isCruelModeItem && (
-                                    <span className="text-md  font-medium  ml-2">
+                                    <span className="text-md  font-medium ml-2">
                                       (to play activate and start a new game)
                                     </span>
                                   )}
