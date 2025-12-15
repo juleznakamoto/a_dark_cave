@@ -269,10 +269,10 @@ const mergeStateUpdates = (
 
   if (
     stateUpdates.tools ||
-    stateUpdates.weapons ||
-    stateUpdates.clothing ||
-    stateUpdates.relics ||
-    stateUpdates.books
+    state.weapons ||
+    state.clothing ||
+    state.relics ||
+    state.books
   ) {
     const tempState = { ...prevState, ...merged };
     merged.effects = calculateTotalEffects(tempState);
@@ -764,7 +764,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       // Cruel mode status
       cruelMode: isCruelModeActive,
       CM: isCruelModeActive ? 1 : 0,
-      
+
       // Enable resource limits for new games
       flags: {
         resourceLimitsEnabled: true,
@@ -1437,11 +1437,27 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   updateResources: (updates) => {
-    set((state) => ({
-      resources: {
-        ...state.resources,
-        ...updates,
-      },
-    }));
+    set((state) => {
+      const cappedUpdates: Partial<GameState["resources"]> = {};
+
+      // Apply resource limits to each updated resource
+      for (const [key, value] of Object.entries(updates)) {
+        if (typeof value === 'number') {
+          // Cap the absolute value, not the delta
+          cappedUpdates[key as keyof typeof cappedUpdates] = capResourceToLimit(
+            key,
+            value,
+            state
+          );
+        }
+      }
+
+      return {
+        resources: {
+          ...state.resources,
+          ...cappedUpdates,
+        },
+      };
+    });
   },
 }));
