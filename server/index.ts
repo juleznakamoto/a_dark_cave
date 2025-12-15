@@ -23,6 +23,23 @@ const app = express();
 // Enable gzip compression for all responses
 app.use(compression());
 
+// Add caching for static assets (audio, images, icons)
+app.use((req, res, next) => {
+  // Cache audio files for 1 week
+  if (req.path.startsWith('/sounds/')) {
+    res.set('Cache-Control', 'public, max-age=604800, immutable');
+  }
+  // Cache icons and images for 1 week
+  else if (req.path.match(/\.(png|jpg|jpeg|svg|ico|webp)$/)) {
+    res.set('Cache-Control', 'public, max-age=604800, immutable');
+  }
+  // Cache manifest and robots for 1 day
+  else if (req.path.match(/\.(json|txt|xml)$/) && !req.path.startsWith('/api/')) {
+    res.set('Cache-Control', 'public, max-age=86400');
+  }
+  next();
+});
+
 // API endpoint to provide Supabase config to client in production
 // CRITICAL: Parse JSON bodies BEFORE defining any routes
 app.use(express.json());
@@ -35,6 +52,8 @@ app.get("/api/config", (req, res) => {
       .status(500)
       .json({ error: "Supabase configuration not available" });
   }
+  // Cache config for 1 hour since it rarely changes
+  res.set('Cache-Control', 'public, max-age=3600');
   res.json(config);
 });
 
