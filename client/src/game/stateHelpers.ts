@@ -13,15 +13,18 @@ export function updateResource(
   // Apply resource cap
   const cappedAmount = capResourceToLimit(resource, newAmount, state);
 
-  // Check if we hit the limit and need to set the flag
-  const hitLimit = cappedAmount < newAmount && !state.flags.hasHitResourceLimit;
+  // Check if we hit the limit for the first time
+  // This should trigger when the resource reaches the limit, not just when capped
+  const limit = getResourceLimit(state);
+  const isLimitedResource = isResourceLimited(resource, state);
+  const reachedLimit = isLimitedResource && cappedAmount >= limit && !state.flags.hasHitResourceLimit;
 
   return {
     resources: {
       ...state.resources,
       [resource]: cappedAmount,
     },
-    ...(hitLimit && {
+    ...(reachedLimit && {
       flags: {
         ...state.flags,
         hasHitResourceLimit: true,
