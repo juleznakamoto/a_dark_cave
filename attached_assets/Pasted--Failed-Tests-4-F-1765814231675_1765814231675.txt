@@ -1,0 +1,74 @@
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  client/src/game/rules/actionEffects.test.ts > Crafting Cost Reductions > should apply blacksmith_hammer 10% crafting discount for craftIronAxe
+AssertionError: expected 3 to be 5 // Object.is equality
+
+- Expected
++ Received
+
+- 5
++ 3
+
+ ❯ client/src/game/rules/actionEffects.test.ts:109:41
+    107|     const expectedCost = Math.floor(baseCost * 0.90);
+    108|     const expectedRemaining = baseCost - expectedCost;
+    109|     expect(updatesWith.resources!.iron).toBe(expectedRemaining);
+       |                                         ^
+    110|   });
+    111| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  client/src/game/rules/actionEffects.test.ts > Building Cost Reductions > should apply mastermason_chisel 10% building discount for buildCabin
+AssertionError: expected 8 to be 15 // Object.is equality
+
+- Expected
++ Received
+
+- 15
++ 8
+
+ ❯ client/src/game/rules/actionEffects.test.ts:196:41
+    194|     const expectedWoodCost = Math.floor(baseWoodCost * 0.9);
+    195|     const expectedStoneCost = Math.floor(baseStoneCost * 0.9);
+    196|     expect(updatesWith.resources!.wood).toBe(baseWoodCost - expectedWoodCost);
+       |                                         ^
+    197|     expect(updatesWith.resources!.stone).toBe(baseStoneCost - expectedStoneCost);
+    198|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  client/src/game/rules/actionEffects.test.ts > Building Cost Reductions > should apply discounts to building with existing cabins
+TypeError: Cannot convert undefined or null to object
+ ❯ applyActionEffects client/src/game/rules/actionEffects.ts:86:29
+     84|     }
+     85| 
+     86|     const costKeys = Object.keys(costs);
+       |                             ^
+     87|     const hasTieredCost =
+     88|       costKeys.length > 0 && costKeys.every((key) => !isNaN(Number(key)));
+ ❯ client/src/game/rules/actionEffects.test.ts:275:21
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  client/src/game/rules/actionEffects.test.ts > Cost Reduction Edge Cases > should not apply discounts to non-crafting, non-building actions
+AssertionError: expected 10 to be less than or equal to 4
+ ❯ client/src/game/rules/actionEffects.test.ts:362:37
+    360|     // chopWood should give resources (random 1-4 wood), not consume them
+    361|     expect(updates.resources!.wood).toBeGreaterThan(0);
+    362|     expect(updates.resources!.wood).toBeLessThanOrEqual(4);
+       |                                     ^
+    363|   });
+    364| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  5 failed | 77 passed (82)
+   Start at  15:57:00
+   Duration  231ms
+
+ FAIL  Tests failed. Watching for file changes...
+       press h to show help, press q to quit
