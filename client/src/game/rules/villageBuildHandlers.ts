@@ -3,6 +3,7 @@ import { GameState } from "@shared/schema";
 import { ActionResult } from '@/game/actions';
 import { logger } from "@/lib/logger";
 import { villageBuildActions } from "./villageBuildActions";
+import { getAdjustedCost } from "./index";
 
 // Utility function to handle building construction
 function handleBuildingConstruction(
@@ -36,7 +37,9 @@ function handleBuildingConstruction(
     ][]) {
       if (path.startsWith("resources.")) {
         const resource = path.split(".")[1] as keyof typeof newResources;
-        newResources[resource] -= cost;
+        // Use centralized cost adjustment (same as tooltip and effects)
+        const adjustedCost = getAdjustedCost(actionId, cost, true, state);
+        newResources[resource] -= (typeof adjustedCost === 'number' ? adjustedCost : cost);
       }
     }
 
