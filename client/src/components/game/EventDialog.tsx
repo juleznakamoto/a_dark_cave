@@ -93,56 +93,18 @@ export default function EventDialog({
         clearInterval(interval);
 
         const eventId = event.id.split("-")[0];
-        const isRiddleEvent = event.id.startsWith("riddle"); // Assuming riddles have IDs starting with "riddle"
 
-        if (isRiddleEvent) {
-            // RIDDLE-SPECIFIC LOGIC: Use applyEventChoice to ensure proper state persistence
-            const fallbackChoiceObj = event.fallbackChoice(gameState);
+        if (event.fallbackChoice) {
+          // Use defined fallback choice
+          applyEventChoice(event.fallbackChoice.id, eventId);
+        } else if (eventChoices.length > 0) {
+          // No fallback defined, choose randomly from available choices
+          const randomChoice =
+            eventChoices[Math.floor(Math.random() * eventChoices.length)];
+          applyEventChoice(randomChoice.id, eventId);
+        }
 
-            if (fallbackChoiceObj) {
-              // Apply the fallback choice using the proper state management flow
-              applyEventChoice(fallbackChoiceObj.id, eventId);
-
-              // The applyEventChoice will handle the state updates and return a result with _logMessage
-              // We need to check if there's a penalty message to show after state is updated
-              const fallbackResult = fallbackChoiceObj.effect(gameState);
-
-              if (fallbackResult._logMessage) {
-                // Close current dialog
-                onClose();
-
-                // Show penalty dialog after a delay
-                setTimeout(() => {
-                  const messageEntry: LogEntry = {
-                    id: `timeout-penalty-${Date.now()}`,
-                    message: fallbackResult._logMessage,
-                    timestamp: Date.now(),
-                    type: "event",
-                    title: event.title,
-                    choices: [
-                      {
-                        id: "acknowledge",
-                        label: "Continue",
-                        effect: () => ({}),
-                      },
-                    ],
-                    skipSound: true,
-                  };
-                  gameState.setEventDialog(true, messageEntry);
-                }, 200);
-              } else {
-                // No penalty message, just close
-                onClose();
-              }
-            } else {
-              // Fallback returned undefined, just close
-              onClose();
-            }
-          } else {
-            // NON-RIDDLE LOGIC: Use applyEventChoice as before
-            applyEventChoice(event.fallbackChoice.id, eventId);
-            onClose();
-          }
+        onClose();
       }
     }, 100);
 
@@ -224,9 +186,9 @@ export default function EventDialog({
         // Increment merchant purchase counter
         const currentCount = Number(gameState.story?.seen?.merchantPurchases) || 0;
         const newCount = currentCount + 1;
-
+        
         gameState.setFlag('merchantPurchases' as any, newCount as any);
-
+        
         // Actually update the story.seen.merchantPurchases directly
         const currentStory = gameState.story || { seen: {} };
         const updatedStory = {
@@ -236,7 +198,7 @@ export default function EventDialog({
             merchantPurchases: newCount,
           },
         };
-
+        
         // Apply the story update to the store
         useGameStore.setState({ story: updatedStory });
 
@@ -250,7 +212,7 @@ export default function EventDialog({
       const choice = eventChoices.find((c) => c.id === choiceId);
       if (choice) {
         const result = choice.effect(gameState);
-
+        
         // Handle shop opening
         if ((result as any)._openShop) {
           fallbackExecutedRef.current = true;
@@ -259,7 +221,7 @@ export default function EventDialog({
           gameState.setShopDialogOpen(true);
           return;
         }
-
+        
         // Handle donation page opening
         if ((result as any)._openDonation) {
           fallbackExecutedRef.current = true;

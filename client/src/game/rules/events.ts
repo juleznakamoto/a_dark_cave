@@ -76,7 +76,7 @@ export interface GameEvent {
   triggerType: "time" | "resource" | "random" | "action";
   title?: string;
   message: string | string[] | ((state: GameState) => string); // Support array of messages for random selection or function
-  choices?: EventChoice[] | ((state: GameState) => EventChoice[]);
+  choices?: EventChoice[];
   triggered: boolean;
   repeatable?: boolean;
   priority?: number; // Higher priority events check first
@@ -85,7 +85,7 @@ export interface GameEvent {
   // New timed choice properties
   isTimedChoice?: boolean;
   baseDecisionTime?: number; // Base decision time in seconds
-  fallbackChoice?: EventChoice | ((state: GameState) => EventChoice | undefined); // Choice to execute if time runs out
+  fallbackChoice?: EventChoice; // Choice to execute if time runs out
   relevant_stats?: ("strength" | "knowledge" | "luck" | "madness")[]; // Stats relevant to event odds
   // Visual effect properties
   visualEffect?: {
@@ -207,18 +207,10 @@ export class EventManager {
       }
 
       if (shouldTrigger) {
-        // Generate fresh choices for merchant events or evaluate function-based choices
+        // Generate fresh choices for merchant events
         let eventChoices = event.choices;
         if (event.id === "merchant") {
           eventChoices = generateMerchantChoices(state);
-        } else if (typeof event.choices === 'function') {
-          eventChoices = event.choices(state);
-        }
-
-        // Evaluate fallbackChoice if it's a function
-        let fallbackChoice = event.fallbackChoice;
-        if (typeof event.fallbackChoice === 'function') {
-          fallbackChoice = event.fallbackChoice(state);
         }
 
         // Select random message if message is an array, or evaluate if it's a function
@@ -231,11 +223,6 @@ export class EventManager {
           message = event.message;
         }
 
-        // Skip events with empty messages (e.g., riddles when no riddle is available)
-        if (message === "") {
-          break;
-        }
-
         const logEntry: LogEntry = {
           id: `${event.id}-${Date.now()}`,
           message: message,
@@ -245,7 +232,7 @@ export class EventManager {
           choices: eventChoices,
           isTimedChoice: event.isTimedChoice,
           baseDecisionTime: event.baseDecisionTime,
-          fallbackChoice: fallbackChoice,
+          fallbackChoice: event.fallbackChoice,
           relevant_stats: event.relevant_stats,
           visualEffect: event.visualEffect,
           skipEventLog: eventChoices && eventChoices.length > 0, // Mark events with choices to skip log
@@ -300,13 +287,8 @@ export class EventManager {
       choicesSource = currentLogEntry.choices;
     }
 
-    // Evaluate choicesSource if it's a function
-    const choicesArray = typeof choicesSource === 'function' 
-      ? choicesSource(state) 
-      : choicesSource;
-
     // First try to find the choice in the choices array
-    let choice = choicesArray?.find((c) => c.id === choiceId);
+    let choice = choicesSource?.find((c) => c.id === choiceId);
 
     // If not found and this is a fallback choice, use the fallbackChoice directly
     if (
