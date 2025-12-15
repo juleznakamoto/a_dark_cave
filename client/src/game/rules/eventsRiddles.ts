@@ -235,7 +235,7 @@ function applyPenalty(
   const hasFog = "fogDuration" in penalties;
   const hasDeaths = "deaths" in penalties;
 
-  let result: Partial<GameState> = {
+  let result: Partial<GameState> & { _logMessage?: string } = {
     events: {
       ...state.events,
       [eventId]: true,
