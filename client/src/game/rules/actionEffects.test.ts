@@ -92,7 +92,7 @@ describe('Crafting Cost Reductions', () => {
   });
 
   it('should apply blacksmith_hammer 10% crafting discount for craftIronAxe', () => {
-    const baseCost = (gameActions.craftIronAxe.cost as any)["resources.iron"];
+    const baseCost = 50; // craftIronAxe base cost
 
     const stateWith: GameState = {
       ...baseState,
@@ -103,7 +103,7 @@ describe('Crafting Cost Reductions', () => {
 
     const updatesWith = applyActionEffects("craftIronAxe", stateWith);
 
-    // With 10% discount: cost = floor(baseCost * 0.90)
+    // With 10% discount from blacksmith_hammer: cost = floor(50 * 0.90) = 45
     const expectedCost = Math.floor(baseCost * 0.90);
     const expectedRemaining = baseCost - expectedCost;
     expect(updatesWith.resources!.iron).toBe(expectedRemaining);
@@ -178,8 +178,8 @@ describe('Building Cost Reductions', () => {
   });
 
   it('should apply mastermason_chisel 10% building discount for buildCabin', () => {
-    const baseWoodCost = (gameActions.buildCabin.cost as any)[1]["resources.wood"];
-    const baseStoneCost = (gameActions.buildCabin.cost as any)[1]["resources.stone"];
+    const baseWoodCost = 150;
+    const baseStoneCost = 50;
 
     const stateWith: GameState = {
       ...baseState,
@@ -190,7 +190,7 @@ describe('Building Cost Reductions', () => {
 
     const updatesWith = applyActionEffects("buildCabin", stateWith);
 
-    // With 10% discount
+    // With 10% discount: wood = floor(150 * 0.9) = 135, stone = floor(50 * 0.9) = 45
     const expectedWoodCost = Math.floor(baseWoodCost * 0.9);
     const expectedStoneCost = Math.floor(baseStoneCost * 0.9);
     expect(updatesWith.resources!.wood).toBe(baseWoodCost - expectedWoodCost);
@@ -260,21 +260,25 @@ describe('Building Cost Reductions', () => {
     expect(updates.resources!.stone).toBe(baseStoneCost - expectedStoneCost);
   });
 
-  it('should apply discounts to multi-tier building costs for buildCabin', () => {
-    const baseWoodCost = (gameActions.buildCabin.cost as any)[2]["resources.wood"];
+  it('should apply discounts to building with existing cabins', () => {
+    // buildCabin level 2 costs 300 wood, 100 stone
+    const baseWoodCost = 300;
+    const baseStoneCost = 100;
 
     const state: GameState = {
       ...baseState,
       buildings: { cabin: 1 }, // Has 1 cabin already, building level 2
       tools: { mastermason_chisel: true },
-      resources: { wood: baseWoodCost },
+      resources: { wood: baseWoodCost, stone: baseStoneCost },
     };
 
     const updates = applyActionEffects("buildCabin", state);
 
     // Level 2 with 10% discount
-    const expectedCost = Math.floor(baseWoodCost * 0.9);
-    expect(updates.resources!.wood).toBe(baseWoodCost - expectedCost);
+    const expectedWoodCost = Math.floor(baseWoodCost * 0.9);
+    const expectedStoneCost = Math.floor(baseStoneCost * 0.9);
+    expect(updates.resources!.wood).toBe(baseWoodCost - expectedWoodCost);
+    expect(updates.resources!.stone).toBe(baseStoneCost - expectedStoneCost);
   });
 });
 
@@ -347,15 +351,15 @@ describe('Cost Reduction Edge Cases', () => {
   });
 
   it('should not apply discounts to non-crafting, non-building actions', () => {
-    // Test that chopWood doesn't get discounts
-    const chopWoodResource = (gameActions.chopWood.effects as any).resources.wood;
+    // Test that chopWood doesn't get discounts (it gives resources, not consumes them)
     state.resources.wood = 0;
     state.tools.blacksmith_hammer = true;
     state.buildings.storehouse = 1;
 
     const updates = applyActionEffects('chopWood', state);
-    // chopWood should give resources, not consume them with discount
-    expect(updates.resources!.wood).toBe(chopWoodResource);
+    // chopWood should give resources (random 1-4 wood), not consume them
+    expect(updates.resources!.wood).toBeGreaterThan(0);
+    expect(updates.resources!.wood).toBeLessThanOrEqual(4);
   });
 
   it('should floor discount calculations correctly for crafting', () => {
