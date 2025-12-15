@@ -1,0 +1,642 @@
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯ Failed Tests 34 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  client/src/game/loop.resourceLimits.test.ts > Game Loop - Resource Limits Integration > Production Tick with Limits > should cap gatherer wood production during tick
+AssertionError: expected 500 to be 1000 // Object.is equality
+
+- Expected
++ Received
+
+- 1000
++ 500
+
+ ❯ client/src/game/loop.resourceLimits.test.ts:44:56
+     42|         store.updateResource('wood', woodProd.totalAmount);
+     43|         // Should be capped at 1000
+     44|         expect(useGameStore.getState().resources.wood).toBe(1000);
+       |                                                        ^
+     45|       }
+     46|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/34]⎯
+
+ FAIL  client/src/game/loop.resourceLimits.test.ts > Game Loop - Resource Limits Integration > Production Tick with Limits > should cap hunter food production during tick
+AssertionError: expected 500 to be 1000 // Object.is equality
+
+- Expected
++ Received
+
+- 1000
++ 500
+
+ ❯ client/src/game/loop.resourceLimits.test.ts:69:56
+     67|       if (foodProd) {
+     68|         store.updateResource('food', foodProd.totalAmount);
+     69|         expect(useGameStore.getState().resources.food).toBe(1000);
+       |                                                        ^
+     70|       }
+     71|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/34]⎯
+
+ FAIL  client/src/game/loop.resourceLimits.test.ts > Game Loop - Resource Limits Integration > Feast and Boost Effects with Limits > should cap boosted production from feast
+AssertionError: expected 500 to be 1000 // Object.is equality
+
+- Expected
++ Received
+
+- 1000
++ 500
+
+ ❯ client/src/game/loop.resourceLimits.test.ts:292:56
+    290|         store.updateResource('wood', woodProd.totalAmount);
+    291|         // Should still be capped at 1000
+    292|         expect(useGameStore.getState().resources.wood).toBe(1000);
+       |                                                        ^
+    293|       }
+    294|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/34]⎯
+
+ FAIL  client/src/game/loop.resourceLimits.test.ts > Game Loop - Resource Limits Integration > Feast and Boost Effects with Limits > should cap great feast 4x production
+AssertionError: expected 500 to be 1000 // Object.is equality
+
+- Expected
++ Received
+
+- 1000
++ 500
+
+ ❯ client/src/game/loop.resourceLimits.test.ts:324:56
+    322|       if (foodProd) {
+    323|         store.updateResource('food', foodProd.totalAmount);
+    324|         expect(useGameStore.getState().resources.food).toBe(1000);
+       |                                                        ^
+    325|       }
+    326|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/34]⎯
+
+ FAIL  client/src/game/loop.resourceLimits.test.ts > Game Loop - Resource Limits Integration > Feature Flag Persistence > should enforce limits for games with flag enabled
+AssertionError: expected 500 to be 1000 // Object.is equality
+
+- Expected
++ Received
+
+- 1000
++ 500
+
+ ❯ client/src/game/loop.resourceLimits.test.ts:397:54
+    395|       
+    396|       store.updateResource('wood', 50000);
+    397|       expect(useGameStore.getState().resources.wood).toBe(1000);
+       |                                                      ^
+    398|     });
+    399|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/34]⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Core Functionality > getResourceLimit > should return 50000 for Grand Repository (level 5)
+AssertionError: expected 500 to be 50000 // Object.is equality
+
+- Expected
++ Received
+
+- 50000
++ 500
+
+ ❯ client/src/game/resourceLimits.test.ts:50:39
+     48|     it('should return 50000 for Grand Repository (level 5)', () => {
+     49|       state.buildings.storage = 5;
+     50|       expect(getResourceLimit(state)).toBe(50000);
+       |                                       ^
+     51|     });
+     52| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/34]⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Core Functionality > getResourceLimit > should return 100000 for City Vault (level 6)
+AssertionError: expected 500 to be 100000 // Object.is equality
+
+- Expected
++ Received
+
+- 100000
++ 500
+
+ ❯ client/src/game/resourceLimits.test.ts:55:39
+     53|     it('should return 100000 for City Vault (level 6)', () => {
+     54|       state.buildings.storage = 6;
+     55|       expect(getResourceLimit(state)).toBe(100000);
+       |                                       ^
+     56|     });
+     57| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/34]⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Core Functionality > capResourceToLimit > should cap wood at limit
+AssertionError: expected 500 to be 1000 // Object.is equality
+
+- Expected
++ Received
+
+- 1000
++ 500
+
+ ❯ client/src/game/resourceLimits.test.ts:101:55
+     99|     it('should cap wood at limit', () => {
+    100|       state.buildings.storage = 1; // limit = 1000
+    101|       expect(capResourceToLimit('wood', 1500, state)).toBe(1000);
+       |                                                       ^
+    102|     });
+    103| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/34]⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Core Functionality > capResourceToLimit > should handle edge case of exact limit
+AssertionError: expected 500 to be 1000 // Object.is equality
+
+- Expected
++ Received
+
+- 1000
++ 500
+
+ ❯ client/src/game/resourceLimits.test.ts:123:55
+    121|     it('should handle edge case of exact limit', () => {
+    122|       state.buildings.storage = 1; // limit = 1000
+    123|       expect(capResourceToLimit('wood', 1000, state)).toBe(1000);
+       |                                                       ^
+    124|     });
+    125|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/34]⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Core Functionality > getStorageLimitText > should return formatted number for storage level 3
+AssertionError: expected '500' to be '10,000' // Object.is equality
+
+Expected: "10,000"
+Received: "500"
+
+ ❯ client/src/game/resourceLimits.test.ts:135:42
+    133|     it('should return formatted number for storage level 3', () => {
+    134|       state.buildings.storage = 3;
+    135|       expect(getStorageLimitText(state)).toBe('10,000');
+       |                                          ^
+    136|     });
+    137| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/34]⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Villager Production Integration > should cap gatherer wood production at limit
+AssertionError: expected 500 to be 1000 // Object.is equality
+
+- Expected
++ Received
+
+- 1000
++ 500
+
+ ❯ client/src/game/resourceLimits.test.ts:196:41
+    194|         const updates = updateResource(state, 'wood', woodProd.totalAmount…
+    195|         // Should be capped at 1000
+    196|         expect(updates.resources?.wood).toBe(1000);
+       |                                         ^
+    197|       }
+    198|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/34]⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Villager Production Integration > should cap hunter food production at limit
+AssertionError: expected 500 to be 1000 // Object.is equality
+
+- Expected
++ Received
+
+- 1000
++ 500
+
+ ❯ client/src/game/resourceLimits.test.ts:213:41
+    211|       if (foodProd) {
+    212|         const updates = updateResource(state, 'food', foodProd.totalAmount…
+    213|         expect(updates.resources?.food).toBe(1000);
+       |                                         ^
+    214|       }
+    215|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/34]⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Villager Production Integration > should cap miner iron production at limit
+AssertionError: expected 500 to be 1000 // Object.is equality
+
+- Expected
++ Received
+
+- 1000
++ 500
+
+ ❯ client/src/game/resourceLimits.test.ts:230:41
+    228|       if (ironProd) {
+    229|         const updates = updateResource(state, 'iron', ironProd.totalAmount…
+    230|         expect(updates.resources?.iron).toBe(1000);
+       |                                         ^
+    231|       }
+    232|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/34]⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Action Rewards Integration > should cap exploreCave stone rewards
+AssertionError: expected 1001 to be less than or equal to 1000
+ ❯ client/src/game/resourceLimits.test.ts:289:41
+    287|       // Stone rewards should be capped
+    288|       if (effects.resources?.stone !== undefined) {
+    289|         expect(effects.resources.stone).toBeLessThanOrEqual(1000);
+       |                                         ^
+    290|       }
+    291|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/34]⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Event Rewards Integration > should cap event wood rewards
+AssertionError: expected 500 to be 1000 // Object.is equality
+
+- Expected
++ Received
+
+- 1000
++ 500
+
+ ❯ client/src/game/resourceLimits.test.ts:312:39
+    310|       state.resources.wood = 950;
+    311|       const updates = updateResource(state, 'wood', 100);
+    312|       expect(updates.resources?.wood).toBe(1000);
+       |                                       ^
+    313|     });
+    314| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/34]⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Event Rewards Integration > should cap stranger arrival food bonus
+AssertionError: expected 500 to be 1000 // Object.is equality
+
+- Expected
++ Received
+
+- 1000
++ 500
+
+ ❯ client/src/game/resourceLimits.test.ts:318:39
+    316|       state.resources.food = 980;
+    317|       const updates = updateResource(state, 'food', 50);
+    318|       expect(updates.resources?.food).toBe(1000);
+       |                                       ^
+    319|     });
+    320| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/34]⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Multiple Resource Limits > should cap multiple resources independently
+AssertionError: expected 500 to be 1000 // Object.is equality
+
+- Expected
++ Received
+
+- 1000
++ 500
+
+ ❯ client/src/game/resourceLimits.test.ts:341:39
+    339|       
+    340|       let updates = updateResource(state, 'wood', 100);
+    341|       expect(updates.resources?.wood).toBe(1000);
+       |                                       ^
+    342|       
+    343|       updates = updateResource({ ...state, resources: updates.resources! }…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/34]⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Storage Building Upgrades > should increase limit when upgrading storage
+AssertionError: expected 500 to be 1000 // Object.is equality
+
+- Expected
++ Received
+
+- 1000
++ 500
+
+ ❯ client/src/game/resourceLimits.test.ts:382:39
+    380|     it('should increase limit when upgrading storage', () => {
+    381|       state.buildings.storage = 1; // 1000 limit
+    382|       expect(getResourceLimit(state)).toBe(1000);
+       |                                       ^
+    383|       
+    384|       state.buildings.storage = 2; // 5000 limit
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/34]⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Storage Building Upgrades > should cap at new limit after upgrade
+AssertionError: expected 500 to be 10000 // Object.is equality
+
+- Expected
++ Received
+
+- 10000
++ 500
+
+ ❯ client/src/game/resourceLimits.test.ts:397:40
+    395|       state.resources.stone = 9500;
+    396|       const updates = updateResource(state, 'stone', 1000);
+    397|       expect(updates.resources?.stone).toBe(10000);
+       |                                        ^
+    398|     });
+    399| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[19/34]⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Storage Building Upgrades > should allow accumulation up to each storage tier
+AssertionError: expected 500 to be 1000 // Object.is equality
+
+- Expected
++ Received
+
+- 1000
++ 500
+
+ ❯ client/src/game/resourceLimits.test.ts:405:41
+    403|       limits.forEach((expectedLimit, level) => {
+    404|         state.buildings.storage = level;
+    405|         expect(getResourceLimit(state)).toBe(expectedLimit);
+       |                                         ^
+    406|       });
+    407|     });
+ ❯ client/src/game/resourceLimits.test.ts:403:14
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[20/34]⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Edge Cases and Boundary Conditions > should handle exact limit value
+AssertionError: expected 500 to be 1000 // Object.is equality
+
+- Expected
++ Received
+
+- 1000
++ 500
+
+ ❯ client/src/game/resourceLimits.test.ts:414:39
+    412|       state.resources.wood = 1000;
+    413|       const updates = updateResource(state, 'wood', 0);
+    414|       expect(updates.resources?.wood).toBe(1000);
+       |                                       ^
+    415|     });
+    416| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[21/34]⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Edge Cases and Boundary Conditions > should handle very large production amounts
+AssertionError: expected 500 to be 100000 // Object.is equality
+
+- Expected
++ Received
+
+- 100000
++ 500
+
+ ❯ client/src/game/resourceLimits.test.ts:439:39
+    437|       state.buildings.storage = 6;
+    438|       const updates = updateResource(state, 'wood', 150000);
+    439|       expect(updates.resources?.wood).toBe(100000);
+       |                                       ^
+    440|     });
+    441|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[22/34]⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Idle Mode Integration > should cap idle mode resource accumulation
+AssertionError: expected 500 to be 1000 // Object.is equality
+
+- Expected
++ Received
+
+- 1000
++ 500
+
+ ❯ client/src/game/resourceLimits.test.ts:474:39
+    472|       state.buildings.storage = 1;
+    473|       const updates = updateResource(state, 'wood', 500);
+    474|       expect(updates.resources?.wood).toBe(1000);
+       |                                       ^
+    475|     });
+    476| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[23/34]⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Idle Mode Integration > should cap each resource type separately in idle mode
+AssertionError: expected 500 to be 1000 // Object.is equality
+
+- Expected
++ Received
+
+- 1000
++ 500
+
+ ❯ client/src/game/resourceLimits.test.ts:485:39
+    483|       let currentState = { ...state };
+    484|       let updates = updateResource(currentState, 'wood', 200);
+    485|       expect(updates.resources?.wood).toBe(1000);
+       |                                       ^
+    486|       currentState = { ...currentState, resources: { ...currentState.resou…
+    487|       
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[24/34]⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Crafting and Building Costs > should allow crafting when resources are at cap
+AssertionError: expected 500 to be 900 // Object.is equality
+
+- Expected
++ Received
+
+- 900
++ 500
+
+ ❯ client/src/game/resourceLimits.test.ts:501:39
+    499|       state.resources.wood = 1000;
+    500|       const updates = updateResource(state, 'wood', -100);
+    501|       expect(updates.resources?.wood).toBe(900);
+       |                                       ^
+    502|     });
+    503| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[25/34]⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Crafting and Building Costs > should allow building when resources are at cap
+AssertionError: expected 500 to be 800 // Object.is equality
+
+- Expected
++ Received
+
+- 800
++ 500
+
+ ❯ client/src/game/resourceLimits.test.ts:507:40
+    505|       state.resources.stone = 1000;
+    506|       const updates = updateResource(state, 'stone', -200);
+    507|       expect(updates.resources?.stone).toBe(800);
+       |                                        ^
+    508|     });
+    509|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[26/34]⎯
+
+ FAIL  client/src/game/state.resourceLimits.test.ts > State - Resource Limits Integration > executeAction with resource limits > should cap chopWood results at storage limit
+AssertionError: expected 500 to be greater than 950
+ ❯ client/src/game/state.resourceLimits.test.ts:48:25
+     46|       const finalWood = useGameStore.getState().resources.wood;
+     47|       expect(finalWood).toBeLessThanOrEqual(1000);
+     48|       expect(finalWood).toBeGreaterThan(950); // But should have increased
+       |                         ^
+     49|     });
+     50| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[27/34]⎯
+
+ FAIL  client/src/game/state.resourceLimits.test.ts > State - Resource Limits Integration > mergeStateUpdates resource capping > should cap resources when merging state updates
+AssertionError: expected 500 to be 1000 // Object.is equality
+
+- Expected
++ Received
+
+- 1000
++ 500
+
+ ❯ client/src/game/state.resourceLimits.test.ts:131:41
+    129|       
+    130|       const finalState = useGameStore.getState();
+    131|       expect(finalState.resources.wood).toBe(1000);
+       |                                         ^
+    132|       expect(finalState.resources.stone).toBe(1000);
+    133|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[28/34]⎯
+
+ FAIL  client/src/game/state.resourceLimits.test.ts > State - Resource Limits Integration > mergeStateUpdates resource capping > should handle negative resource changes while respecting limits
+AssertionError: expected 500 to be 1000 // Object.is equality
+
+- Expected
++ Received
+
+- 1000
++ 500
+
+ ❯ client/src/game/state.resourceLimits.test.ts:151:54
+    149|       // Then add back up to limit
+    150|       store.updateResource('wood', 700);
+    151|       expect(useGameStore.getState().resources.wood).toBe(1000);
+       |                                                      ^
+    152|     });
+    153| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[29/34]⎯
+
+ FAIL  client/src/game/state.resourceLimits.test.ts > State - Resource Limits Integration > Storage upgrade scenarios > should allow accumulation above old limit after storage upgrade
+AssertionError: expected 500 to be 3000 // Object.is equality
+
+- Expected
++ Received
+
+- 3000
++ 500
+
+ ❯ client/src/game/state.resourceLimits.test.ts:193:54
+    191|       // Now can add more
+    192|       store.updateResource('wood', 2000);
+    193|       expect(useGameStore.getState().resources.wood).toBe(3000);
+       |                                                      ^
+    194|       
+    195|       // But still capped at new limit
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[30/34]⎯
+
+ FAIL  client/src/game/state.resourceLimits.test.ts > State - Resource Limits Integration > Storage upgrade scenarios > should handle all storage tiers correctly
+AssertionError: expected 500 to be 1000 // Object.is equality
+
+- Expected
++ Received
+
+- 1000
++ 500
+
+ ❯ client/src/game/state.resourceLimits.test.ts:229:56
+    227|         
+    228|         // Should be capped exactly at limit
+    229|         expect(useGameStore.getState().resources.iron).toBe(limit);
+       |                                                        ^
+    230|       });
+    231|     });
+ ❯ client/src/game/state.resourceLimits.test.ts:212:13
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[31/34]⎯
+
+ FAIL  client/src/game/state.resourceLimits.test.ts > State - Resource Limits Integration > Concurrent resource updates > should handle rapid consecutive updates correctly
+AssertionError: expected 500 to be 1000 // Object.is equality
+
+- Expected
++ Received
+
+- 1000
++ 500
+
+ ❯ client/src/game/state.resourceLimits.test.ts:272:54
+    270|       
+    271|       // Should be capped at limit, not exceed it
+    272|       expect(useGameStore.getState().resources.wood).toBe(1000);
+       |                                                      ^
+    273|     });
+    274| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[32/34]⎯
+
+ FAIL  client/src/game/state.resourceLimits.test.ts > State - Resource Limits Integration > Concurrent resource updates > should handle mixed positive and negative updates
+AssertionError: expected 500 to be 1000 // Object.is equality
+
+- Expected
++ Received
+
+- 1000
++ 500
+
+ ❯ client/src/game/state.resourceLimits.test.ts:290:54
+    288|       store.updateResource('food', 500); // Should cap at 1000
+    289|       
+    290|       expect(useGameStore.getState().resources.food).toBe(1000);
+       |                                                      ^
+    291|     });
+    292|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[33/34]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Building Cost Reductions > storage buildings reduce building costs correctly
+AssertionError: expected 150 to be 142 // Object.is equality
+
+- Expected
++ Received
+
+- 142
++ 150
+
+ ❯ client/src/game/rules/resourceGains.test.ts:559:35
+    557|       // Fortified Storehouse: 5% building cost reduction
+    558|       const amountWithFortified = parseInt(woodCostWithFortified!.text.spl…
+    559|       expect(amountWithFortified).toBe(Math.floor(amountWithout * 0.95));
+       |                                   ^
+    560|     });
+    561|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[34/34]⎯
+
+
+ Test Files  4 failed | 17 passed (21)
+      Tests  34 failed | 295 passed (329)
+   Start at  09:23:59
+   Duration  5.99s (transform 2.02s, setup 0ms, import 4.58s, tests 1.89s, environment 5ms)
+
+ FAIL  Tests failed. Watching for file changes...
+       press h to show help, press q to quit
