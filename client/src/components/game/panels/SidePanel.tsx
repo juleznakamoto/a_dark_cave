@@ -294,6 +294,19 @@ export default function SidePanel() {
       tooltip: clothingEffects[key]?.description,
     }));
 
+  // Determine the highest storage building to display
+  const getHighestStorageBuilding = (): string | null => {
+    if (buildings.cityVault > 0) return "cityVault";
+    if (buildings.grandRepository > 0) return "grandRepository";
+    if (buildings.villageWarehouse > 0) return "villageWarehouse";
+    if (buildings.fortifiedStorehouse > 0) return "fortifiedStorehouse";
+    if (buildings.storehouse > 0) return "storehouse";
+    if (buildings.supplyHut > 0) return "supplyHut";
+    return null;
+  };
+
+  const highestStorageBuilding = getHighestStorageBuilding();
+
   // Dynamically generate building items from state (in schema order)
   const buildingItems = buildingOrder
     .filter((key) => {
