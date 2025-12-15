@@ -62,33 +62,6 @@ const evaluateCondition = (condition: string, state: GameState): boolean => {
   return isNegated ? !current : !!current;
 };
 
-function getAdjustedCost(
-  actionId: string,
-  cost: number | boolean,
-  isResourceCost: boolean,
-  state: GameState,
-): number | boolean {
-  if (cost === true || cost === false) return cost;
-  if (!isResourceCost) return cost;
-
-  const action = getGameActions()[actionId];
-  const isCraftingAction =
-    actionId.startsWith("craft") || actionId.startsWith("forge");
-  const isBuildingAction = action?.building || false;
-
-  if (isCraftingAction) {
-    const reduction = getTotalCraftingCostReductionCalc(state);
-    return Math.floor(cost * (1 - reduction));
-  }
-
-  if (isBuildingAction) {
-    const reduction = getTotalBuildingCostReductionCalc(state);
-    return Math.floor(cost * (1 - reduction));
-  }
-
-  return cost;
-}
-
 // Main export: applyActionEffects
 export function applyActionEffects(
   actionId: string,
@@ -188,7 +161,14 @@ export function applyActionEffects(
           }
 
           const finalKey = pathParts[pathParts.length - 1];
-          const adjustedCost = getAdjustedCost(actionId, cost, true, state);
+          
+          // Apply cost reductions based on action type
+          let adjustedCost = cost;
+          if (isCraftingAction) {
+            adjustedCost = Math.floor(cost * (1 - craftingCostReduction));
+          } else if (isBuildingAction) {
+            adjustedCost = Math.floor(cost * (1 - buildingCostReduction));
+          }
 
           current[finalKey] = (current[finalKey] || 0) - adjustedCost;
         }
