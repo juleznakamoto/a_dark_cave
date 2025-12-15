@@ -122,7 +122,7 @@ import {
   handleBuildStockpile,
   handleBuildVillageWarehouse,
   handleBuildGrandRepository,
-  handleBuildgreatVault,
+  handleBuildGreatVault,
 } from "./rules/villageBuildHandlers";
 
 import {
@@ -419,8 +419,8 @@ export function executeGameAction(
       return handleBuildVillageWarehouse(state, result);
     case "buildGrandRepository":
       return handleBuildGrandRepository(state, result);
-    case "buildgreatVault":
-      return handleBuildgreatVault(state, result);
+    case "buildGreatVault":
+      return handleBuildGreatVault(state, result);
 
     // Forest Scout Actions
     case "hunt":
