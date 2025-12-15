@@ -4,7 +4,7 @@ import {
   getActionBonuses,
   getTotalCraftingCostReduction,
 } from "./effectsCalculation";
-import { gameActions } from "./index";
+import { gameActions, getAdjustedCost } from "./index";
 import { getTotalMadness } from "./effectsCalculation";
 import {
   CRUSHING_STRIKE_UPGRADES,
@@ -47,12 +47,6 @@ export const calculateResourceGains = (
   const gains: Array<{ resource: string; min: number; max: number }> = [];
   const costs: Array<{ resource: string; amount: number; hasEnough: boolean }> =
     [];
-
-  // Check if this is a craft action to apply crafting discount
-  const isCraftAction = actionId.startsWith("craft");
-  const craftingDiscount = isCraftAction
-    ? getTotalCraftingCostReduction(state)
-    : 0;
 
   // Handle sacrifice actions with dynamic costs and bonuses
   const isSacrificeAction =
@@ -198,10 +192,8 @@ export const calculateResourceGains = (
         if (key.startsWith("resources.")) {
           const resource = key.split(".")[1];
           if (typeof value === "number") {
-            // Apply crafting discount if applicable
-            const finalCost = isCraftAction
-              ? Math.ceil(value * (1 - craftingDiscount))
-              : value;
+            // Use the same getAdjustedCost function as actual cost deduction
+            const finalCost = getAdjustedCost(actionId, value, true, state);
 
             const hasEnough =
               (state.resources[resource as keyof typeof state.resources] ||
