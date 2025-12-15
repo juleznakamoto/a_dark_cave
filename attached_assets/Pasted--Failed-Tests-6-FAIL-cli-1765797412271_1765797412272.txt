@@ -1,0 +1,125 @@
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  client/src/game/rules/actionEffects.test.ts > Crafting Cost Reductions > should apply blacksmith_hammer 15% crafting discount
+AssertionError: expected 15 to be 23 // Object.is equality
+
+- Expected
++ Received
+
+- 23
++ 15
+
+ ❯ client/src/game/rules/actionEffects.test.ts:104:41
+    102|     const updatesWith = applyActionEffects('craftIronSword', state);
+    103|     const expectedCost = Math.floor(150 * 0.85); // 127
+    104|     expect(updatesWith.resources!.iron).toBe(150 - expectedCost); // 150 -…
+       |                                         ^
+    105|   });
+    106| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  client/src/game/rules/actionEffects.test.ts > Crafting Cost Reductions > should stack crafting discounts from multiple buildings
+AssertionError: expected 15 to be 30 // Object.is equality
+
+- Expected
++ Received
+
+- 30
++ 15
+
+ ❯ client/src/game/rules/actionEffects.test.ts:136:37
+    134|     // Total discount: 5% + 5% + 10% = 20%
+    135|     const expectedCost = Math.floor(150 * 0.8); // 120
+    136|     expect(updates.resources!.iron).toBe(150 - expectedCost); // 150 - 120…
+       |                                     ^
+    137|   });
+    138| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  client/src/game/rules/actionEffects.test.ts > Crafting Cost Reductions > should stack crafting discounts from buildings and tools
+AssertionError: expected 23 to be 30 // Object.is equality
+
+- Expected
++ Received
+
+- 30
++ 23
+
+ ❯ client/src/game/rules/actionEffects.test.ts:149:37
+    147|     // Total discount: 15% + 5% = 20%
+    148|     const expectedCost = Math.floor(150 * 0.8); // 120
+    149|     expect(updates.resources!.iron).toBe(150 - expectedCost); // 150 - 120…
+       |                                     ^
+    150|   });
+    151| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+ FAIL  client/src/game/rules/actionEffects.test.ts > Building Cost Reductions > should stack building discounts from multiple buildings
+AssertionError: expected 15 to be 38 // Object.is equality
+
+- Expected
++ Received
+
+- 38
++ 15
+
+ ❯ client/src/game/rules/actionEffects.test.ts:219:37
+    217|     const expectedWoodCost = Math.floor(150 * 0.75); // 112
+    218|     const expectedStoneCost = Math.floor(50 * 0.75); // 37
+    219|     expect(updates.resources!.wood).toBe(150 - expectedWoodCost); // 150 -…
+       |                                     ^
+    220|     expect(updates.resources!.stone).toBe(50 - expectedStoneCost); // 50 -…
+    221|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯
+
+ FAIL  client/src/game/rules/actionEffects.test.ts > Cost Reduction Edge Cases > should handle crafting with maximum discounts
+AssertionError: expected 30 to be 75 // Object.is equality
+
+- Expected
++ Received
+
+- 75
++ 30
+
+ ❯ client/src/game/rules/actionEffects.test.ts:274:37
+    272|     // Total discount: 15% + 5% + 5% + 5% + 10% + 10% = 50%
+    273|     const expectedCost = Math.floor(150 * 0.5); // 75
+    274|     expect(updates.resources!.iron).toBe(150 - expectedCost); // 150 - 75 …
+       |                                     ^
+    275|   });
+    276| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯
+
+ FAIL  client/src/game/rules/actionEffects.test.ts > Cost Reduction Edge Cases > should handle building with maximum discounts
+AssertionError: expected 30 to be 53 // Object.is equality
+
+- Expected
++ Received
+
+- 53
++ 30
+
+ ❯ client/src/game/rules/actionEffects.test.ts:292:37
+    290|     const expectedWoodCost = Math.floor(150 * 0.65); // 97
+    291|     const expectedStoneCost = Math.floor(50 * 0.65); // 32
+    292|     expect(updates.resources!.wood).toBe(150 - expectedWoodCost); // 150 -…
+       |                                     ^
+    293|     expect(updates.resources!.stone).toBe(50 - expectedStoneCost); // 50 -…
+    294|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/6]⎯
+
+
+ Test Files  1 failed | 11 passed (12)
+      Tests  6 failed | 236 passed (242)
+   Start at  11:15:55
+   Duration  19.28s
+
+ FAIL  Tests failed. Watching for file changes...
+       press h to show help, press q to quit
