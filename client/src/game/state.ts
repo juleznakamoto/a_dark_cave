@@ -11,6 +11,7 @@ import {
   assignVillagerToJob,
   unassignVillagerFromJob,
 } from "@/game/stateHelpers";
+import { capResourceToLimit } from "@/game/resourceLimits";
 import {
   calculateTotalEffects,
   getTotalLuck,
@@ -187,14 +188,18 @@ const mergeStateUpdates = (
   prevState: GameState,
   stateUpdates: Partial<GameState>,
 ): Partial<GameState> => {
-  // Ensure resources never go negative when merging
+  // Ensure resources never go negative when merging, and apply resource limits
   const mergedResources = { ...prevState.resources, ...stateUpdates.resources };
   Object.keys(mergedResources).forEach(key => {
     if (typeof mergedResources[key as keyof typeof mergedResources] === 'number') {
-      const value = mergedResources[key as keyof typeof mergedResources];
+      let value = mergedResources[key as keyof typeof mergedResources];
+      // First ensure non-negative
       if (value < 0) {
-        mergedResources[key as keyof typeof mergedResources] = 0;
+        value = 0;
       }
+      // Then apply resource limit
+      value = capResourceToLimit(key, value, { ...prevState, ...stateUpdates });
+      mergedResources[key as keyof typeof mergedResources] = value;
     }
   });
 
