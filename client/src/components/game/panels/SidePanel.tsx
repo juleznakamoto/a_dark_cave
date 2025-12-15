@@ -1051,6 +1051,11 @@ export default function SidePanel() {
                   "Resources"
                 )
               }
+              titleTooltip={
+                showResourceLimit
+                  ? "Resource limit does not apply to silver and gold"
+                  : undefined
+              }
               items={resourceItems}
               onValueChange={(itemId, oldValue, newValue) => {
                 logger.log(
