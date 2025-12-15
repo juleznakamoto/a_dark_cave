@@ -57,7 +57,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "skull_lantern",
     name: "Skull Lantern",
     description:
-      "Ancient lantern forged from cursed bone that illuminates the deepest depths",
+      "Lantern forged from cursed bone illuminating the deepest depths. Unlocks new cave actions.",
     originalPrice: 499,
     price: 249, // 2.49 €
     rewards: {
