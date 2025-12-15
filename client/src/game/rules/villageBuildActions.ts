@@ -1608,7 +1608,6 @@ export const villageBuildActions: Record<string, Action> = {
         "story.seen.hasStorehouse": true,
       },
     },
-    craftingCostReduction: 0.05,
     cooldown: 30,
   },
 
@@ -1638,7 +1637,6 @@ export const villageBuildActions: Record<string, Action> = {
       },
     },
     craftingCostReduction: 0.05,
-    buildingCostReduction: 0.05,
     cooldown: 30,
   },
 
