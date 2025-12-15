@@ -91,7 +91,7 @@ describe('Crafting Cost Reductions', () => {
     state = createInitialState();
   });
 
-  it('should apply blacksmith_hammer 10% crafting discount for craftIronAxe', () => {
+  it('should apply blacksmith_hammer 5% crafting discount for craftIronAxe', () => {
     const baseCost = 50; // craftIronAxe base cost
 
     const stateWith: GameState = {
@@ -103,9 +103,9 @@ describe('Crafting Cost Reductions', () => {
 
     const updatesWith = applyActionEffects("craftIronAxe", stateWith);
 
-    // With 10% discount from blacksmith_hammer: cost = floor(50 * 0.90) = 45
-    // Starting with 50 iron, after spending 45, should have 5 remaining
-    const expectedCost = Math.floor(baseCost * 0.90);
+    // With 5% discount from blacksmith_hammer: cost = floor(50 * 0.95) = 47
+    // Starting with 50 iron, after spending 47, should have 3 remaining
+    const expectedCost = Math.floor(baseCost * 0.95);
     const expectedFinalAmount = baseCost - expectedCost;
     expect(updatesWith.resources!.iron).toBe(expectedFinalAmount);
   });
@@ -178,7 +178,7 @@ describe('Building Cost Reductions', () => {
     state = createInitialState();
   });
 
-  it('should apply mastermason_chisel 10% building discount for buildCabin', () => {
+  it('should apply mastermason_chisel 5% building discount for buildCabin', () => {
     const baseWoodCost = 150;
     const baseStoneCost = 50;
 
@@ -191,10 +191,10 @@ describe('Building Cost Reductions', () => {
 
     const updatesWith = applyActionEffects("buildCabin", stateWith);
 
-    // With 10% discount: wood = floor(150 * 0.9) = 135, stone = floor(50 * 0.9) = 45
-    // Starting with 150 wood and 50 stone, after spending, should have 15 and 5 remaining
-    const expectedWoodCost = Math.floor(baseWoodCost * 0.9);
-    const expectedStoneCost = Math.floor(baseStoneCost * 0.9);
+    // With 5% discount: wood = floor(150 * 0.95) = 142, stone = floor(50 * 0.95) = 47
+    // Starting with 150 wood and 50 stone, after spending, should have 8 and 3 remaining
+    const expectedWoodCost = Math.floor(baseWoodCost * 0.95);
+    const expectedStoneCost = Math.floor(baseStoneCost * 0.95);
     const expectedFinalWood = baseWoodCost - expectedWoodCost;
     const expectedFinalStone = baseStoneCost - expectedStoneCost;
     expect(updatesWith.resources!.wood).toBe(expectedFinalWood);
@@ -278,9 +278,9 @@ describe('Building Cost Reductions', () => {
 
     const updates = applyActionEffects("buildCabin", state);
 
-    // With 10% discount from mastermason_chisel
-    const expectedWoodCost = Math.floor(baseWoodCost * 0.9);
-    const expectedStoneCost = Math.floor(baseStoneCost * 0.9);
+    // With 5% discount from mastermason_chisel
+    const expectedWoodCost = Math.floor(baseWoodCost * 0.95);
+    const expectedStoneCost = Math.floor(baseStoneCost * 0.95);
     const expectedFinalWood = baseWoodCost - expectedWoodCost;
     const expectedFinalStone = baseStoneCost - expectedStoneCost;
     expect(updates.resources!.wood).toBe(expectedFinalWood);
