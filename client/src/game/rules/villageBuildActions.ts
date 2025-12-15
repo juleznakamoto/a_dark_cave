@@ -1587,7 +1587,7 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildStorehouse",
     label: "Storehouse",
     description: "Expanded storage facility for more resources",
-    tooltipEffects: ["Resource Limit: 5.000", "5% Crafting Discount"],
+    tooltipEffects: ["Resource Limit: 5.000"],
     building: true,
     show_when: {
       1: {
@@ -1615,7 +1615,7 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildFortifiedStorehouse",
     label: "Fortified Storehouse",
     description: "Reinforced storage building with enhanced capacity",
-    tooltipEffects: ["Resource Limit: 10", "5% Crafting Discount", "5% Building Discount"],
+    tooltipEffects: ["Resource Limit: 10", "5% Crafting Discount"],
     building: true,
     show_when: {
       1: {
