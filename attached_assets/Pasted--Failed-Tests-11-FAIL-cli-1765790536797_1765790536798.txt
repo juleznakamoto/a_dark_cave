@@ -1,0 +1,201 @@
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯ Failed Tests 11 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  client/src/game/loop.resourceLimits.test.ts > Game Loop - Resource Limits Integration > Storage Upgrade Effects > should increase limit when storage is upgraded
+AssertionError: expected 1000 to be 3000 // Object.is equality
+
+- Expected
++ Received
+
+- 3000
++ 1000
+
+ ❯ client/src/game/loop.resourceLimits.test.ts:212:54
+    210|       // Now production can go higher
+    211|       store.updateResource('wood', 2000);
+    212|       expect(useGameStore.getState().resources.wood).toBe(3000);
+       |                                                      ^
+    213|       
+    214|       // But not above new limit
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/11]⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Core Functionality > getResourceLimit > should return 1000 for Supply Hut (level 1)
+AssertionError: expected 500 to be 1000 // Object.is equality
+
+- Expected
++ Received
+
+- 1000
++ 500
+
+ ❯ client/src/game/resourceLimits.test.ts:30:39
+     28|     it('should return 1000 for Supply Hut (level 1)', () => {
+     29|       state.buildings.supplyHut = 1;
+     30|       expect(getResourceLimit(state)).toBe(1000);
+       |                                       ^
+     31|     });
+     32| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/11]⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Core Functionality > getResourceLimit > should return 5000 for Storehouse (level 2)
+AssertionError: expected 500 to be 5000 // Object.is equality
+
+- Expected
++ Received
+
+- 5000
++ 500
+
+ ❯ client/src/game/resourceLimits.test.ts:35:39
+     33|     it('should return 5000 for Storehouse (level 2)', () => {
+     34|       state.buildings.storehouse = 1;
+     35|       expect(getResourceLimit(state)).toBe(5000);
+       |                                       ^
+     36|     });
+     37| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/11]⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Core Functionality > getResourceLimit > should return 10000 for Fortified Storehouse (level 3)
+AssertionError: expected 500 to be 10000 // Object.is equality
+
+- Expected
++ Received
+
+- 10000
++ 500
+
+ ❯ client/src/game/resourceLimits.test.ts:40:39
+     38|     it('should return 10000 for Fortified Storehouse (level 3)', () => {
+     39|       state.buildings.fortifiedStorehouse = 1;
+     40|       expect(getResourceLimit(state)).toBe(10000);
+       |                                       ^
+     41|     });
+     42| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/11]⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Core Functionality > getResourceLimit > should return 25000 for Village Warehouse (level 4)
+AssertionError: expected 500 to be 25000 // Object.is equality
+
+- Expected
++ Received
+
+- 25000
++ 500
+
+ ❯ client/src/game/resourceLimits.test.ts:45:39
+     43|     it('should return 25000 for Village Warehouse (level 4)', () => {
+     44|       state.buildings.villageWarehouse = 1;
+     45|       expect(getResourceLimit(state)).toBe(25000);
+       |                                       ^
+     46|     });
+     47| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/11]⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Core Functionality > getStorageBuildingName > should return correct name for level 0
+AssertionError: expected 'Unlimited Storage' to be 'No Storage' // Object.is equality
+
+Expected: "No Storage"
+Received: "Unlimited Storage"
+
+ ❯ client/src/game/resourceLimits.test.ts:146:41
+    144|   describe('getStorageBuildingName', () => {
+    145|     it('should return correct name for level 0', () => {
+    146|       expect(getStorageBuildingName(0)).toBe('No Storage');
+       |                                         ^
+    147|     });
+    148| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/11]⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Core Functionality > getStorageBuildingName > should return correct name for level 1
+AssertionError: expected 'Unlimited Storage' to be 'Supply Hut' // Object.is equality
+
+Expected: "Supply Hut"
+Received: "Unlimited Storage"
+
+ ❯ client/src/game/resourceLimits.test.ts:150:41
+    148| 
+    149|     it('should return correct name for level 1', () => {
+    150|       expect(getStorageBuildingName(1)).toBe('Supply Hut');
+       |                                         ^
+    151|     });
+    152| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/11]⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Core Functionality > getStorageBuildingName > should return correct name for level 6
+AssertionError: expected 'Unlimited Storage' to be 'City Vault' // Object.is equality
+
+Expected: "City Vault"
+Received: "Unlimited Storage"
+
+ ❯ client/src/game/resourceLimits.test.ts:154:41
+    152| 
+    153|     it('should return correct name for level 6', () => {
+    154|       expect(getStorageBuildingName(6)).toBe('City Vault');
+       |                                         ^
+    155|     });
+    156| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/11]⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Core Functionality > getStorageBuildingName > should return "Unknown" for invalid level
+AssertionError: expected 'Unlimited Storage' to be 'Unknown' // Object.is equality
+
+Expected: "Unknown"
+Received: "Unlimited Storage"
+
+ ❯ client/src/game/resourceLimits.test.ts:158:42
+    156| 
+    157|     it('should return "Unknown" for invalid level', () => {
+    158|       expect(getStorageBuildingName(99)).toBe('Unknown');
+       |                                          ^
+    159|     });
+    160|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/11]⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Action Rewards Integration > should cap exploreCave stone rewards
+AssertionError: expected 1002 to be less than or equal to 1000
+ ❯ client/src/game/resourceLimits.test.ts:280:41
+    278|       // Stone rewards should be capped
+    279|       if (effects.resources?.stone !== undefined) {
+    280|         expect(effects.resources.stone).toBeLessThanOrEqual(1000);
+       |                                         ^
+    281|       }
+    282|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/11]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Building Cost Reductions > storage buildings reduce building costs correctly
+AssertionError: expected 150 to be 142 // Object.is equality
+
+- Expected
++ Received
+
+- 142
++ 150
+
+ ❯ client/src/game/rules/resourceGains.test.ts:578:27
+    576|       // Storage 4: 5% building cost reduction
+    577|       const amountWith4 = parseInt(woodCostWith4!.text.split(' ')[0].repla…
+    578|       expect(amountWith4).toBe(Math.floor(amountWithout * 0.95));
+       |                           ^
+    579| 
+    580|       // Storage 5: Still 5% building cost reduction (crafting becomes 10%)
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/11]⎯
+
+
+ Test Files  3 failed | 18 passed (21)
+      Tests  11 failed | 318 passed (329)
+   Start at  09:22:02
+   Duration  5.05s (transform 1.84s, setup 0ms, import 4.18s, tests 1.71s, environment 4ms)
+
+ FAIL  Tests failed. Watching for file changes...
+       press h to show help, press q to quit
