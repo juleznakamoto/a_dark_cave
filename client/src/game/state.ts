@@ -758,12 +758,22 @@ export const useGameStore = create<GameStore>((set, get) => ({
       // Cruel mode status
       cruelMode: isCruelModeActive,
       CM: isCruelModeActive ? 1 : 0,
+      
+      // Enable resource limits for new games
+      flags: {
+        resourceLimitsEnabled: true,
+      },
     };
 
     // Reset everything else to default
     const resetState = {
       ...defaultGameState,
       ...preserved,
+      // Merge flags properly
+      flags: {
+        ...defaultGameState.flags,
+        ...preserved.flags,
+      },
       gameId: `game-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`, // Generate new gameId on restart
 
       // UI state

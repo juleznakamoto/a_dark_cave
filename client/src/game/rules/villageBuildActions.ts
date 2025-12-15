@@ -1553,6 +1553,96 @@ export const villageBuildActions: Record<string, Action> = {
     },
     cooldown: 60,
   },
+
+  buildStorage: {
+    id: "buildStorage",
+    label: "Supply Hut",
+    description: "Small hut for storing resources",
+    tooltipEffects: ["Resource Limit: 1,000"],
+    building: true,
+    show_when: {
+      1: {
+        "buildings.woodenHut": 2,
+        "buildings.storage": 0,
+      },
+      2: {
+        "buildings.woodenHut": 3,
+        "buildings.storage": 1,
+      },
+      3: {
+        "buildings.woodenHut": 6,
+        "buildings.storage": 2,
+      },
+      4: {
+        "buildings.woodenHut": 8,
+        "buildings.storage": 3,
+      },
+      5: {
+        "buildings.stoneHut": 2,
+        "buildings.storage": 4,
+      },
+      6: {
+        "buildings.stoneHut": 6,
+        "buildings.storage": 5,
+      },
+    },
+    cost: {
+      1: {
+        "resources.wood": 500,
+      },
+      2: {
+        "resources.wood": 1000,
+        "resources.stone": 1000,
+      },
+      3: {
+        "resources.wood": 2500,
+        "resources.stone": 2500,
+      },
+      4: {
+        "resources.wood": 5000,
+        "resources.stone": 5000,
+        "resources.steel": 500,
+      },
+      5: {
+        "resources.wood": 5000,
+        "resources.stone": 10000,
+        "resources.steel": 1000,
+      },
+      6: {
+        "resources.stone": 15000,
+        "resources.steel": 1500,
+      },
+    },
+    effects: {
+      1: {
+        "buildings.storage": 1,
+        "story.seen.hasStorage": true,
+      },
+      2: {
+        "buildings.storage": 1,
+        "story.seen.hasStorehouse": true,
+      },
+      3: {
+        "buildings.storage": 1,
+        "story.seen.hasFortifiedStorehouse": true,
+      },
+      4: {
+        "buildings.storage": 1,
+        "story.seen.hasVillageWarehouse": true,
+      },
+      5: {
+        "buildings.storage": 1,
+        "story.seen.hasGrandRepository": true,
+      },
+      6: {
+        "buildings.storage": 1,
+        "story.seen.hasCityVault": true,
+      },
+    },
+    craftingCostReduction: 0,
+    buildingCostReduction: 0,
+    cooldown: 30,
+  },
 };
 
 // Action handlers
@@ -2619,4 +2709,47 @@ export function handleBuildBoneTemple(
   }
 
   return boneTempleResult;
+}
+
+export function handleBuildStorage(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const level = (state.buildings.storage || 0) + 1;
+  const storageResult = handleBuildingConstruction(
+    state,
+    result,
+    "buildStorage",
+    "storage",
+  );
+
+  // Add storage completion messages with different labels per level
+  const messages: Record<number, string> = {
+    1: "A supply hut is built to store resources. Maximum storage capacity is now 1,000 per resource.",
+    2: "The storehouse is complete, greatly expanding storage capacity to 5,000 per resource.",
+    3: "A fortified storehouse stands ready, protecting 10,000 units of each resource. Crafting costs are reduced by 5%.",
+    4: "The village warehouse is finished, holding up to 25,000 of each resource. Both crafting and building costs are reduced by 5%.",
+    5: "The grand repository towers over the settlement, capable of storing 50,000 units per resource. Crafting costs are reduced by 10%.",
+    6: "The city vault is complete, a massive structure holding up to 100,000 of each resource. Both crafting and building costs are reduced by 10%.",
+  };
+
+  if (messages[level]) {
+    storageResult.logEntries!.push({
+      id: `storage-built-${level}-${Date.now()}`,
+      message: messages[level],
+      timestamp: Date.now(),
+      type: "system",
+    });
+  }
+
+  // Update crafting and building cost reductions based on level
+  const action = villageBuildActions.buildStorage;
+  if (level >= 3) {
+    action.craftingCostReduction = level >= 5 ? 0.1 : 0.05;
+  }
+  if (level >= 4) {
+    action.buildingCostReduction = level >= 6 ? 0.1 : 0.05;
+  }
+
+  return storageResult;
 }

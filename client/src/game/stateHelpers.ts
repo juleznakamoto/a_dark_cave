@@ -4,15 +4,19 @@ import { getMaxPopulation } from "./population";
 export function updateResource(
   state: GameState,
   resource: keyof GameState['resources'],
-  amount: number
+  amount: number,
 ): Partial<GameState> {
-  const newAmount = Math.max(0, (state.resources[resource] || 0) + amount);
+  const currentAmount = state.resources[resource] || 0;
+  const newAmount = currentAmount + amount;
+  const clampedAmount = Math.max(0, newAmount);
 
-  // No longer tracking deltas - snapshots are taken periodically instead
+  // Apply resource limit cap
+  const finalAmount = capResourceToLimit(resource, clampedAmount, state);
+
   return {
     resources: {
       ...state.resources,
-      [resource]: newAmount,
+      [resource]: finalAmount,
     },
   };
 }
@@ -181,4 +185,58 @@ export function buildGameState(state: any): GameState {
   cleaned.isPaused = false;
 
   return cleaned as GameState;
+}
+
+// Placeholder for the new capResourceToLimit function.
+// This function needs to be implemented to actually cap resources.
+// It will likely depend on the 'buildings' and 'flags' in the GameState.
+function capResourceToLimit(resource: keyof GameState['resources'], amount: number, state: GameState): number {
+  // Feature flag for new games
+  if (!state.flags.newGameFeatures) {
+    return amount;
+  }
+
+  // Silver and gold are not limited
+  if (resource === 'silver' || resource === 'gold') {
+    return amount;
+  }
+
+  const buildingLevels = {
+    "Supply Hut": 1,
+    "Storehouse": 2,
+    "Fortified Storehouse": 3,
+    "Village Warehouse": 4,
+    "Grand Repository": 5,
+    "City Vault": 6,
+  };
+
+  const resourceLimits = {
+    1: 1000,
+    2: 5000,
+    3: 10000,
+    4: 25000,
+    5: 50000,
+    6: 100000,
+  };
+
+  let maxLimit = 0;
+
+  // Determine the highest level of storage building the player has
+  for (const buildingName in state.buildings) {
+    const buildingLevel = state.buildings[buildingName];
+    const level = Object.keys(buildingLevels).find(key => key === buildingName);
+    if (level) {
+      const currentBuildingLevel = buildingLevels[level as keyof typeof buildingLevels];
+      if (currentBuildingLevel > maxLimit) {
+        maxLimit = currentBuildingLevel;
+      }
+    }
+  }
+
+  // If no storage building is found, use a default or minimal limit, or 0 if that's intended.
+  // For now, let's assume 0 if no specific limit is found or applicable.
+  const limit = resourceLimits[maxLimit as keyof typeof resourceLimits] || 0;
+
+
+  return Math.min(amount, limit);
 }

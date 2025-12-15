@@ -117,6 +117,7 @@ import {
   handleBuildDarkEstate,
   handleBuildPillarOfClarity,
   handleBuildBoneTemple,
+  handleBuildStorage,
 } from "./rules/villageBuildActions";
 
 import {
@@ -403,6 +404,8 @@ export function executeGameAction(
       return handleBuildPillarOfClarity(state, result);
     case "buildBoneTemple": // New case for Bone Temple
       return handleBuildBoneTemple(state, result);
+    case "buildStorage":
+      return handleBuildStorage(state, result);
 
     // Forest Scout Actions
     case "hunt":

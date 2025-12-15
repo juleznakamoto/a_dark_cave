@@ -67,6 +67,7 @@ export const gameStateSchema = z.object({
       humanSacrificeUnlocked: z.boolean().default(false),
       hasCity: z.boolean().default(false),
       hasFortress: z.boolean().default(false),
+      resourceLimitsEnabled: z.boolean().default(false),
     })
     .default({}),
   schematics: z
@@ -235,6 +236,7 @@ export const gameStateSchema = z.object({
       boneTemple: z.number().default(0),
       pillarOfClarity: z.number().default(0),
       darkEstate: z.number().default(0),
+      storage: z.number().default(0),
     })
     .default({}),
   villagers: z

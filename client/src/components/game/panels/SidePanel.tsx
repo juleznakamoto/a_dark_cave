@@ -19,12 +19,25 @@ import {
 } from "@/game/rules/effectsCalculation";
 import { bookEffects, fellowshipEffects } from "@/game/rules/effects";
 import { gameStateSchema } from "@shared/schema";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"; // Assuming Tooltip components are available
+import { getResourceLimit, getStorageLimitText, isResourceLimited } from "@/game/resourceLimits"; // Assuming this is the correct path
 
 // Extract property order from schema by parsing defaults
 const defaultGameState = gameStateSchema.parse({});
 const resourceOrder = Object.keys(defaultGameState.resources);
 const buildingOrder = Object.keys(defaultGameState.buildings);
 const villagerOrder = Object.keys(defaultGameState.villagers);
+
+// Helper function to format resource names
+const formatResourceName = (key: string): string => {
+  return capitalizeWords(key);
+};
+
+// Helper function to format numbers
+const formatNumber = (num: number): string => {
+  return num.toLocaleString(); // Or use a more sophisticated formatter if needed
+};
+
 
 export default function SidePanel() {
   const {
@@ -95,6 +108,28 @@ export default function SidePanel() {
       value: resources[key as keyof typeof resources] ?? 0,
       testId: `resource-${key}`,
       visible: true,
+      tooltip: (
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <span>{capitalizeWords(key)}</span>
+            </TooltipTrigger>
+            <TooltipContent side="right" className="max-w-xs">
+              <div className="space-y-1">
+                <p className="font-semibold">{formatResourceName(key)}</p>
+                <p className="text-xs text-muted-foreground">
+                  Current: {formatNumber(resources[key as keyof typeof resources])}
+                </p>
+                {isResourceLimited(key, gameState) && (
+                  <p className="text-xs text-muted-foreground">
+                    Limit: {getStorageLimitText(gameState)}
+                  </p>
+                )}
+              </div>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      ),
     }));
 
   // Dynamically generate tool items from state (only show best tools, no weapons)
@@ -910,7 +945,7 @@ export default function SidePanel() {
 
   // Check if estate is unlocked
   const estateUnlocked = gameState.buildings.darkEstate >= 1;
-  
+
   // Determine which sections to show based on active tab
   const shouldShowSection = (sectionName: string): boolean => {
     switch (activeTab) {

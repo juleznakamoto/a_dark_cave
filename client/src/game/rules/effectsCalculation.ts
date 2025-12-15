@@ -574,6 +574,12 @@ export const getTotalCraftingCostReduction = (state: GameState): number => {
     }
   });
 
+  // Add storage building bonuses
+  const storageLevel = state.buildings.storage || 0;
+  if (storageLevel >= 3) {
+    reduction += storageLevel >= 5 ? 0.1 : 0.05;
+  }
+
   return reduction;
 };
 
@@ -587,6 +593,12 @@ export const getTotalBuildingCostReduction = (state: GameState): number => {
       reduction += effect.bonuses.generalBonuses.buildingCostReduction;
     }
   });
+
+  // Add storage building bonuses
+  const storageLevel = state.buildings.storage || 0;
+  if (storageLevel >= 4) {
+    reduction += storageLevel >= 6 ? 0.1 : 0.05;
+  }
 
   return reduction;
 };
