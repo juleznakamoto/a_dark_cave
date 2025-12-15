@@ -193,7 +193,7 @@ function CheckoutForm({ itemId, onSuccess, currency }: CheckoutFormProps) {
       <Button
         type="submit"
         disabled={!stripe || isProcessing}
-        className="w-full"
+        className="w-auto px-8 mx-auto block"
         button_id="shop-complete-purchase"
       >
         {isProcessing ? "Processing..." : "Complete Purchase"}
@@ -1086,7 +1086,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
               <Button
                 variant="outline"
                 onClick={() => setClientSecret(null)}
-                className="w-full mt-4"
+                className="w-auto px-8 mx-auto block mt-4"
                 button_id="shop-cancel-payment"
               >
                 Cancel
