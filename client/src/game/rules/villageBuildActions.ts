@@ -1615,7 +1615,7 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildFortifiedStorehouse",
     label: "Fortified Storehouse",
     description: "Reinforced storage building with enhanced capacity",
-    tooltipEffects: ["Resource Limit: 10", "5% Crafting Discount"],
+    tooltipEffects: ["Resource Limit: 10", "5% Crafting Discount", "5% Building Discount"],
     building: true,
     show_when: {
       1: {
@@ -1637,6 +1637,7 @@ export const villageBuildActions: Record<string, Action> = {
       },
     },
     craftingCostReduction: 0.05,
+    buildingCostReduction: 0.05,
     cooldown: 30,
   },
 
