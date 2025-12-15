@@ -1,0 +1,280 @@
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯ Failed Tests 19 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Event Rewards Integration > should cap event wood rewards
+Error: Cannot find module './stateHelpers'
+Require stack:
+- /home/runner/workspace/client/src/game/resourceLimits.test.ts
+ ❯ client/src/game/resourceLimits.test.ts:301:34
+    299|   describe('Event Rewards Integration', () => {
+    300|     it('should cap event wood rewards', () => {
+    301|       const { updateResource } = require('./stateHelpers');
+       |                                  ^
+    302|       
+    303|       state.resources.wood = 950;
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/19]⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Event Rewards Integration > should cap stranger arrival food bonus
+Error: Cannot find module './stateHelpers'
+Require stack:
+- /home/runner/workspace/client/src/game/resourceLimits.test.ts
+ ❯ client/src/game/resourceLimits.test.ts:311:34
+    309| 
+    310|     it('should cap stranger arrival food bonus', () => {
+    311|       const { updateResource } = require('./stateHelpers');
+       |                                  ^
+    312|       
+    313|       state.resources.food = 980;
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/19]⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Event Rewards Integration > should not cap silver rewards from events
+Error: Cannot find module './stateHelpers'
+Require stack:
+- /home/runner/workspace/client/src/game/resourceLimits.test.ts
+ ❯ client/src/game/resourceLimits.test.ts:321:34
+    319| 
+    320|     it('should not cap silver rewards from events', () => {
+    321|       const { updateResource } = require('./stateHelpers');
+       |                                  ^
+    322|       
+    323|       state.resources.silver = 5000;
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/19]⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Event Rewards Integration > should not cap gold rewards from events
+Error: Cannot find module './stateHelpers'
+Require stack:
+- /home/runner/workspace/client/src/game/resourceLimits.test.ts
+ ❯ client/src/game/resourceLimits.test.ts:331:34
+    329| 
+    330|     it('should not cap gold rewards from events', () => {
+    331|       const { updateResource } = require('./stateHelpers');
+       |                                  ^
+    332|       
+    333|       state.resources.gold = 5000;
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/19]⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Multiple Resource Limits > should cap multiple resources independently
+Error: Cannot find module './stateHelpers'
+Require stack:
+- /home/runner/workspace/client/src/game/resourceLimits.test.ts
+ ❯ client/src/game/resourceLimits.test.ts:343:34
+    341|   describe('Multiple Resource Limits', () => {
+    342|     it('should cap multiple resources independently', () => {
+    343|       const { updateResource } = require('./stateHelpers');
+       |                                  ^
+    344|       
+    345|       state.resources.wood = 950;
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/19]⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Multiple Resource Limits > should handle simultaneous production from multiple villager types
+AssertionError: expected 990 to be 1000 // Object.is equality
+
+- Expected
++ Received
+
+- 1000
++ 990
+
+ ❯ client/src/game/resourceLimits.test.ts:384:45
+    382|       if (foodProd) {
+    383|         const foodUpdates = updateResource(state, 'food', foodProd.totalAmount);
+    384|         expect(foodUpdates.resources?.food).toBe(1000);
+       |                                             ^
+    385|       }
+    386|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/19]⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Storage Building Upgrades > should increase limit when upgrading storage
+Error: Cannot find module './stateHelpers'
+Require stack:
+- /home/runner/workspace/client/src/game/resourceLimits.test.ts
+ ❯ client/src/game/resourceLimits.test.ts:398:34
+    396|       
+    397|       // Resources above old limit but below new limit should be allowed
+    398|       const { updateResource } = require('./stateHelpers');
+       |                                  ^
+    399|       state.resources.wood = 3000;
+    400|       const updates = updateResource(state, 'wood', 1000);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/19]⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Storage Building Upgrades > should cap at new limit after upgrade
+Error: Cannot find module './stateHelpers'
+Require stack:
+- /home/runner/workspace/client/src/game/resourceLimits.test.ts
+ ❯ client/src/game/resourceLimits.test.ts:406:34
+    404|     it('should cap at new limit after upgrade', () => {
+    405|       state.buildings.storage = 3; // 10000 limit
+    406|       const { updateResource } = require('./stateHelpers');
+       |                                  ^
+    407|       
+    408|       state.resources.stone = 9500;
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/19]⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Edge Cases and Boundary Conditions > should handle exact limit value
+Error: Cannot find module './stateHelpers'
+Require stack:
+- /home/runner/workspace/client/src/game/resourceLimits.test.ts
+ ❯ client/src/game/resourceLimits.test.ts:425:34
+    423|   describe('Edge Cases and Boundary Conditions', () => {
+    424|     it('should handle exact limit value', () => {
+    425|       const { updateResource } = require('./stateHelpers');
+       |                                  ^
+    426|       
+    427|       state.resources.wood = 1000;
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/19]⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Edge Cases and Boundary Conditions > should handle zero resources
+Error: Cannot find module './stateHelpers'
+Require stack:
+- /home/runner/workspace/client/src/game/resourceLimits.test.ts
+ ❯ client/src/game/resourceLimits.test.ts:433:34
+    431| 
+    432|     it('should handle zero resources', () => {
+    433|       const { updateResource } = require('./stateHelpers');
+       |                                  ^
+    434|       
+    435|       state.resources.wood = 0;
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/19]⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Edge Cases and Boundary Conditions > should handle negative resource values (consumption)
+Error: Cannot find module './stateHelpers'
+Require stack:
+- /home/runner/workspace/client/src/game/resourceLimits.test.ts
+ ❯ client/src/game/resourceLimits.test.ts:441:34
+    439| 
+    440|     it('should handle negative resource values (consumption)', () => {
+    441|       const { updateResource } = require('./stateHelpers');
+       |                                  ^
+    442|       
+    443|       state.resources.food = 500;
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/19]⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Edge Cases and Boundary Conditions > should not allow negative resources after consumption
+Error: Cannot find module './stateHelpers'
+Require stack:
+- /home/runner/workspace/client/src/game/resourceLimits.test.ts
+ ❯ client/src/game/resourceLimits.test.ts:449:34
+    447| 
+    448|     it('should not allow negative resources after consumption', () => {
+    449|       const { updateResource } = require('./stateHelpers');
+       |                                  ^
+    450|       
+    451|       state.resources.food = 50;
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/19]⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Edge Cases and Boundary Conditions > should handle very large production amounts
+Error: Cannot find module './stateHelpers'
+Require stack:
+- /home/runner/workspace/client/src/game/resourceLimits.test.ts
+ ❯ client/src/game/resourceLimits.test.ts:458:34
+    456| 
+    457|     it('should handle very large production amounts', () => {
+    458|       const { updateResource } = require('./stateHelpers');
+       |                                  ^
+    459|       
+    460|       state.resources.wood = 0;
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/19]⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Feature Flag Behavior > should allow unlimited accumulation when flag is off
+Error: Cannot find module './stateHelpers'
+Require stack:
+- /home/runner/workspace/client/src/game/resourceLimits.test.ts
+ ❯ client/src/game/resourceLimits.test.ts:487:34
+    485| 
+    486|     it('should allow unlimited accumulation when flag is off', () => {
+    487|       const { updateResource } = require('./stateHelpers');
+       |                                  ^
+    488|       
+    489|       state.flags.resourceLimitsEnabled = false;
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/19]⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Idle Mode Integration > should cap idle mode resource accumulation
+Error: Cannot find module './stateHelpers'
+Require stack:
+- /home/runner/workspace/client/src/game/resourceLimits.test.ts
+ ❯ client/src/game/resourceLimits.test.ts:499:34
+    497|   describe('Idle Mode Integration', () => {
+    498|     it('should cap idle mode resource accumulation', async () => {
+    499|       const { updateResource } = require('./stateHelpers');
+       |                                  ^
+    500|       
+    501|       state.resources.wood = 800;
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/19]⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Idle Mode Integration > should cap each resource type separately in idle mode
+Error: Cannot find module './stateHelpers'
+Require stack:
+- /home/runner/workspace/client/src/game/resourceLimits.test.ts
+ ❯ client/src/game/resourceLimits.test.ts:510:34
+    508| 
+    509|     it('should cap each resource type separately in idle mode', async () => {
+    510|       const { updateResource } = require('./stateHelpers');
+       |                                  ^
+    511|       
+    512|       state.resources.wood = 900;
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/19]⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Crafting and Building Costs > should allow crafting when resources are at cap
+Error: Cannot find module './stateHelpers'
+Require stack:
+- /home/runner/workspace/client/src/game/resourceLimits.test.ts
+ ❯ client/src/game/resourceLimits.test.ts:537:34
+    535|   describe('Crafting and Building Costs', () => {
+    536|     it('should allow crafting when resources are at cap', () => {
+    537|       const { updateResource } = require('./stateHelpers');
+       |                                  ^
+    538|       
+    539|       state.resources.wood = 1000;
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/19]⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Crafting and Building Costs > should allow building when resources are at cap
+Error: Cannot find module './stateHelpers'
+Require stack:
+- /home/runner/workspace/client/src/game/resourceLimits.test.ts
+ ❯ client/src/game/resourceLimits.test.ts:547:34
+    545| 
+    546|     it('should allow building when resources are at cap', () => {
+    547|       const { updateResource } = require('./stateHelpers');
+       |                                  ^
+    548|       
+    549|       state.resources.stone = 1000;
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/19]⎯
+
+ FAIL  client/src/game/loop.resourceLimits.test.ts > Game Loop - Resource Limits Integration > Action Execution with Limits > should cap chopWood action results
+AssertionError: expected 1895 to be less than or equal to 1000
+ ❯ client/src/game/loop.resourceLimits.test.ts:153:54
+    151|       
+    152|       // Should not exceed 1000
+    153|       expect(useGameStore.getState().resources.wood).toBeLessThanOrEqual(1000);
+       |                                                      ^
+    154|     });
+    155| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[19/19]⎯
+
+
+ Test Files  2 failed | 9 passed (11)
+      Tests  19 failed | 198 passed (217)
+   Start at  07:41:44
+   Duration  2.98s
+
+ FAIL  Tests failed. Watching for file changes...
+       press h to show help, press q to quit

@@ -9,6 +9,7 @@ import {
   getStorageBuildingName 
 } from './resourceLimits';
 import { createInitialState } from './state';
+import { updateResource } from './stateHelpers';
 
 describe('Resource Limits - Core Functionality', () => {
   let state: GameState;
@@ -298,41 +299,25 @@ describe('Resource Limits - Integration with Game Components', () => {
 
   describe('Event Rewards Integration', () => {
     it('should cap event wood rewards', () => {
-      const { updateResource } = require('./stateHelpers');
-      
       state.resources.wood = 950;
-      
-      // Simulate event giving 100 wood
       const updates = updateResource(state, 'wood', 100);
       expect(updates.resources?.wood).toBe(1000);
     });
 
     it('should cap stranger arrival food bonus', () => {
-      const { updateResource } = require('./stateHelpers');
-      
       state.resources.food = 980;
-      
-      // Simulate event giving 50 food
       const updates = updateResource(state, 'food', 50);
       expect(updates.resources?.food).toBe(1000);
     });
 
     it('should not cap silver rewards from events', () => {
-      const { updateResource } = require('./stateHelpers');
-      
       state.resources.silver = 5000;
-      
-      // Silver is unlimited
       const updates = updateResource(state, 'silver', 5000);
       expect(updates.resources?.silver).toBe(10000);
     });
 
     it('should not cap gold rewards from events', () => {
-      const { updateResource } = require('./stateHelpers');
-      
       state.resources.gold = 5000;
-      
-      // Gold is unlimited
       const updates = updateResource(state, 'gold', 5000);
       expect(updates.resources?.gold).toBe(10000);
     });
@@ -340,8 +325,6 @@ describe('Resource Limits - Integration with Game Components', () => {
 
   describe('Multiple Resource Limits', () => {
     it('should cap multiple resources independently', () => {
-      const { updateResource } = require('./stateHelpers');
-      
       state.resources.wood = 950;
       state.resources.stone = 980;
       state.resources.food = 990;
@@ -395,7 +378,6 @@ describe('Resource Limits - Integration with Game Components', () => {
       expect(getResourceLimit(state)).toBe(5000);
       
       // Resources above old limit but below new limit should be allowed
-      const { updateResource } = require('./stateHelpers');
       state.resources.wood = 3000;
       const updates = updateResource(state, 'wood', 1000);
       expect(updates.resources?.wood).toBe(4000);
@@ -403,8 +385,6 @@ describe('Resource Limits - Integration with Game Components', () => {
 
     it('should cap at new limit after upgrade', () => {
       state.buildings.storage = 3; // 10000 limit
-      const { updateResource } = require('./stateHelpers');
-      
       state.resources.stone = 9500;
       const updates = updateResource(state, 'stone', 1000);
       expect(updates.resources?.stone).toBe(10000);
@@ -422,44 +402,32 @@ describe('Resource Limits - Integration with Game Components', () => {
 
   describe('Edge Cases and Boundary Conditions', () => {
     it('should handle exact limit value', () => {
-      const { updateResource } = require('./stateHelpers');
-      
       state.resources.wood = 1000;
       const updates = updateResource(state, 'wood', 0);
       expect(updates.resources?.wood).toBe(1000);
     });
 
     it('should handle zero resources', () => {
-      const { updateResource } = require('./stateHelpers');
-      
       state.resources.wood = 0;
       const updates = updateResource(state, 'wood', 100);
       expect(updates.resources?.wood).toBe(100);
     });
 
     it('should handle negative resource values (consumption)', () => {
-      const { updateResource } = require('./stateHelpers');
-      
       state.resources.food = 500;
       const updates = updateResource(state, 'food', -100);
       expect(updates.resources?.food).toBe(400);
     });
 
     it('should not allow negative resources after consumption', () => {
-      const { updateResource } = require('./stateHelpers');
-      
       state.resources.food = 50;
       const updates = updateResource(state, 'food', -100);
-      // Should be clamped to 0, not negative
       expect(updates.resources?.food).toBe(0);
     });
 
     it('should handle very large production amounts', () => {
-      const { updateResource } = require('./stateHelpers');
-      
       state.resources.wood = 0;
-      state.buildings.storage = 6; // 100000 limit
-      
+      state.buildings.storage = 6;
       const updates = updateResource(state, 'wood', 150000);
       expect(updates.resources?.wood).toBe(100000);
     });
@@ -484,11 +452,8 @@ describe('Resource Limits - Integration with Game Components', () => {
     });
 
     it('should allow unlimited accumulation when flag is off', () => {
-      const { updateResource } = require('./stateHelpers');
-      
       state.flags.resourceLimitsEnabled = false;
       state.resources.wood = 50000;
-      
       const updates = updateResource(state, 'wood', 50000);
       expect(updates.resources?.wood).toBe(100000);
     });
@@ -496,37 +461,27 @@ describe('Resource Limits - Integration with Game Components', () => {
 
   describe('Idle Mode Integration', () => {
     it('should cap idle mode resource accumulation', async () => {
-      const { updateResource } = require('./stateHelpers');
-      
       state.resources.wood = 800;
-      state.buildings.storage = 1; // 1000 limit
-      
-      // Simulate idle mode giving 500 wood
+      state.buildings.storage = 1;
       const updates = updateResource(state, 'wood', 500);
       expect(updates.resources?.wood).toBe(1000);
     });
 
     it('should cap each resource type separately in idle mode', async () => {
-      const { updateResource } = require('./stateHelpers');
-      
       state.resources.wood = 900;
       state.resources.stone = 950;
       state.resources.food = 980;
-      state.buildings.storage = 1; // 1000 limit
+      state.buildings.storage = 1;
       
       let currentState = { ...state };
-      
-      // Wood
       let updates = updateResource(currentState, 'wood', 200);
       expect(updates.resources?.wood).toBe(1000);
       currentState = { ...currentState, resources: { ...currentState.resources, ...updates.resources } };
       
-      // Stone
       updates = updateResource(currentState, 'stone', 100);
       expect(updates.resources?.stone).toBe(1000);
       currentState = { ...currentState, resources: { ...currentState.resources, ...updates.resources } };
       
-      // Food
       updates = updateResource(currentState, 'food', 50);
       expect(updates.resources?.food).toBe(1000);
     });
@@ -534,21 +489,13 @@ describe('Resource Limits - Integration with Game Components', () => {
 
   describe('Crafting and Building Costs', () => {
     it('should allow crafting when resources are at cap', () => {
-      const { updateResource } = require('./stateHelpers');
-      
       state.resources.wood = 1000;
-      
-      // Crafting consumes resources
       const updates = updateResource(state, 'wood', -100);
       expect(updates.resources?.wood).toBe(900);
     });
 
     it('should allow building when resources are at cap', () => {
-      const { updateResource } = require('./stateHelpers');
-      
       state.resources.stone = 1000;
-      
-      // Building consumes resources
       const updates = updateResource(state, 'stone', -200);
       expect(updates.resources?.stone).toBe(800);
     });
