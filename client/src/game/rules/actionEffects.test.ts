@@ -1,17 +1,17 @@
 
 import { describe, it, expect, beforeEach } from 'vitest';
-import { applyActionEffects, setGameActionsRef } from './actionEffects';
-import { gameActions } from './index';
 import { GameState } from '@shared/schema';
 import { createInitialState } from '../state';
+
+// Import index first to ensure gameActions is initialized
+import { gameActions } from './index';
+import { applyActionEffects } from './actionEffects';
 
 describe('actionEffects - circular dependency fix', () => {
   let state: GameState;
 
   beforeEach(() => {
     state = createInitialState();
-    // Ensure gameActions is registered
-    setGameActionsRef(gameActions);
   });
 
   it('should successfully import and use applyActionEffects', () => {
