@@ -14,7 +14,7 @@ describe('Game Loop - Resource Limits Integration', () => {
       },
       buildings: {
         ...state.buildings,
-        storage: 1, // 1000 limit
+        supplyHut: 1, // 1000 limit
       },
     }));
   });
@@ -251,6 +251,10 @@ describe('Game Loop - Resource Limits Integration', () => {
             cityVault: 0,
             ...buildings,
           },
+          flags: {
+            ...state.flags,
+            resourceLimitsEnabled: true,
+          },
         }));
         
         // Try to set above limit
@@ -389,7 +393,7 @@ describe('Game Loop - Resource Limits Integration', () => {
         },
         buildings: {
           ...state.buildings,
-          storage: 1,
+          supplyHut: 1,
         },
       }));
       

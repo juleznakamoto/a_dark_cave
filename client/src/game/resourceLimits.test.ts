@@ -46,23 +46,28 @@ describe('Resource Limits - Core Functionality', () => {
     });
 
     it('should return 50000 for Grand Repository (level 5)', () => {
-      state.buildings.storage = 5;
+      state.buildings.grandRepository = 1;
       expect(getResourceLimit(state)).toBe(50000);
     });
 
     it('should return 100000 for City Vault (level 6)', () => {
-      state.buildings.storage = 6;
+      state.buildings.cityVault = 1;
       expect(getResourceLimit(state)).toBe(100000);
     });
 
     it('should return Infinity when feature flag is disabled', () => {
       state.flags.resourceLimitsEnabled = false;
-      state.buildings.storage = 3;
+      state.buildings.fortifiedStorehouse = 1;
       expect(getResourceLimit(state)).toBe(Infinity);
     });
 
-    it('should return 500 for undefined storage level', () => {
-      state.buildings.storage = undefined as any;
+    it('should return 500 for no storage buildings', () => {
+      state.buildings.supplyHut = 0;
+      state.buildings.storehouse = 0;
+      state.buildings.fortifiedStorehouse = 0;
+      state.buildings.villageWarehouse = 0;
+      state.buildings.grandRepository = 0;
+      state.buildings.cityVault = 0;
       expect(getResourceLimit(state)).toBe(500);
     });
   });
@@ -97,41 +102,46 @@ describe('Resource Limits - Core Functionality', () => {
 
   describe('capResourceToLimit', () => {
     it('should cap wood at limit', () => {
-      state.buildings.storage = 1; // limit = 1000
+      state.buildings.supplyHut = 1; // limit = 1000
       expect(capResourceToLimit('wood', 1500, state)).toBe(1000);
     });
 
     it('should not cap below limit', () => {
-      state.buildings.storage = 1; // limit = 1000
+      state.buildings.supplyHut = 1; // limit = 1000
       expect(capResourceToLimit('wood', 500, state)).toBe(500);
     });
 
     it('should not cap unlimited resources', () => {
-      state.buildings.storage = 1; // limit = 1000
+      state.buildings.supplyHut = 1; // limit = 1000
       expect(capResourceToLimit('silver', 50000, state)).toBe(50000);
       expect(capResourceToLimit('gold', 50000, state)).toBe(50000);
     });
 
     it('should not cap when feature flag is disabled', () => {
       state.flags.resourceLimitsEnabled = false;
-      state.buildings.storage = 1;
+      state.buildings.supplyHut = 1;
       expect(capResourceToLimit('wood', 50000, state)).toBe(50000);
     });
 
     it('should handle edge case of exact limit', () => {
-      state.buildings.storage = 1; // limit = 1000
+      state.buildings.supplyHut = 1; // limit = 1000
       expect(capResourceToLimit('wood', 1000, state)).toBe(1000);
     });
   });
 
   describe('getStorageLimitText', () => {
     it('should return "500" for initial cap', () => {
-      state.buildings.storage = 0;
+      state.buildings.supplyHut = 0;
+      state.buildings.storehouse = 0;
+      state.buildings.fortifiedStorehouse = 0;
+      state.buildings.villageWarehouse = 0;
+      state.buildings.grandRepository = 0;
+      state.buildings.cityVault = 0;
       expect(getStorageLimitText(state)).toBe('500');
     });
 
     it('should return formatted number for storage level 3', () => {
-      state.buildings.storage = 3;
+      state.buildings.fortifiedStorehouse = 1;
       expect(getStorageLimitText(state)).toBe('10,000');
     });
 
@@ -175,7 +185,7 @@ describe('Resource Limits - Integration with Game Components', () => {
   beforeEach(() => {
     state = createInitialState();
     state.flags.resourceLimitsEnabled = true;
-    state.buildings.storage = 1; // limit = 1000
+    state.buildings.supplyHut = 1; // limit = 1000
   });
 
   describe('Villager Production Integration', () => {
@@ -378,10 +388,10 @@ describe('Resource Limits - Integration with Game Components', () => {
 
   describe('Storage Building Upgrades', () => {
     it('should increase limit when upgrading storage', () => {
-      state.buildings.storage = 1; // 1000 limit
+      state.buildings.supplyHut = 1; // 1000 limit
       expect(getResourceLimit(state)).toBe(1000);
       
-      state.buildings.storage = 2; // 5000 limit
+      state.buildings.storehouse = 1; // 5000 limit (overrides supplyHut)
       expect(getResourceLimit(state)).toBe(5000);
       
       // Resources above old limit but below new limit should be allowed
@@ -391,24 +401,43 @@ describe('Resource Limits - Integration with Game Components', () => {
     });
 
     it('should cap at new limit after upgrade', () => {
-      state.buildings.storage = 3; // 10000 limit
+      state.buildings.fortifiedStorehouse = 1; // 10000 limit
       state.resources.stone = 9500;
       const updates = updateResource(state, 'stone', 1000);
       expect(updates.resources?.stone).toBe(10000);
     });
 
     it('should allow accumulation up to each storage tier', () => {
-      const limits = [500, 1000, 5000, 10000, 25000, 50000, 100000];
+      const tiers = [
+        { buildings: {}, limit: 500 },
+        { buildings: { supplyHut: 1 }, limit: 1000 },
+        { buildings: { storehouse: 1 }, limit: 5000 },
+        { buildings: { fortifiedStorehouse: 1 }, limit: 10000 },
+        { buildings: { villageWarehouse: 1 }, limit: 25000 },
+        { buildings: { grandRepository: 1 }, limit: 50000 },
+        { buildings: { cityVault: 1 }, limit: 100000 },
+      ];
       
-      limits.forEach((expectedLimit, level) => {
-        state.buildings.storage = level;
-        expect(getResourceLimit(state)).toBe(expectedLimit);
+      tiers.forEach(({ buildings, limit }) => {
+        // Reset all storage buildings
+        state.buildings.supplyHut = 0;
+        state.buildings.storehouse = 0;
+        state.buildings.fortifiedStorehouse = 0;
+        state.buildings.villageWarehouse = 0;
+        state.buildings.grandRepository = 0;
+        state.buildings.cityVault = 0;
+        
+        // Set the tier's buildings
+        Object.assign(state.buildings, buildings);
+        
+        expect(getResourceLimit(state)).toBe(limit);
       });
     });
   });
 
   describe('Edge Cases and Boundary Conditions', () => {
     it('should handle exact limit value', () => {
+      state.buildings.supplyHut = 1;
       state.resources.wood = 1000;
       const updates = updateResource(state, 'wood', 0);
       expect(updates.resources?.wood).toBe(1000);
@@ -434,7 +463,7 @@ describe('Resource Limits - Integration with Game Components', () => {
 
     it('should handle very large production amounts', () => {
       state.resources.wood = 0;
-      state.buildings.storage = 6;
+      state.buildings.cityVault = 1;
       const updates = updateResource(state, 'wood', 150000);
       expect(updates.resources?.wood).toBe(100000);
     });
@@ -469,7 +498,7 @@ describe('Resource Limits - Integration with Game Components', () => {
   describe('Idle Mode Integration', () => {
     it('should cap idle mode resource accumulation', async () => {
       state.resources.wood = 800;
-      state.buildings.storage = 1;
+      state.buildings.supplyHut = 1;
       const updates = updateResource(state, 'wood', 500);
       expect(updates.resources?.wood).toBe(1000);
     });
@@ -478,7 +507,7 @@ describe('Resource Limits - Integration with Game Components', () => {
       state.resources.wood = 900;
       state.resources.stone = 950;
       state.resources.food = 980;
-      state.buildings.storage = 1;
+      state.buildings.supplyHut = 1;
       
       let currentState = { ...state };
       let updates = updateResource(currentState, 'wood', 200);
@@ -496,12 +525,14 @@ describe('Resource Limits - Integration with Game Components', () => {
 
   describe('Crafting and Building Costs', () => {
     it('should allow crafting when resources are at cap', () => {
+      state.buildings.supplyHut = 1;
       state.resources.wood = 1000;
       const updates = updateResource(state, 'wood', -100);
       expect(updates.resources?.wood).toBe(900);
     });
 
     it('should allow building when resources are at cap', () => {
+      state.buildings.supplyHut = 1;
       state.resources.stone = 1000;
       const updates = updateResource(state, 'stone', -200);
       expect(updates.resources?.stone).toBe(800);
