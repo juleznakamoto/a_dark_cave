@@ -237,7 +237,12 @@ export const gameStateSchema = z.object({
       boneTemple: z.number().default(0),
       pillarOfClarity: z.number().default(0),
       darkEstate: z.number().default(0),
-      storage: z.number().default(0),
+      supplyHut: z.number().default(0),
+      storehouse: z.number().default(0),
+      fortifiedStorehouse: z.number().default(0),
+      villageWarehouse: z.number().default(0),
+      grandRepository: z.number().default(0),
+      cityVault: z.number().default(0),
     })
     .default({}),
   villagers: z
