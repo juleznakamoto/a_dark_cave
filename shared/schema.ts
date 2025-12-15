@@ -602,6 +602,7 @@ export const actionSchema = z.object({
   statsEffects: z.record(z.string(), z.number()).optional(),
   unlocks: z.array(z.string()).optional(),
   craftingCostReduction: z.number().optional(),
+  buildingCostReduction: z.number().optional(),
   success_chance: z.function().args(z.any()).returns(z.number()).optional(),
   relevant_stats: z
     .array(z.enum(["strength", "knowledge", "luck", "madness"]))

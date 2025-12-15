@@ -536,6 +536,55 @@ describe('Resource Gain Tests', () => {
       // With chisel should cost 10% less
       expect(amountWith).toBe(Math.floor(amountWithout * 0.9));
     });
+
+    it('storage buildings reduce building costs correctly', () => {
+      const stateWithoutStorage = createTestState({
+        buildings: { woodenHut: 1 },
+      });
+      const stateWithStorage3 = createTestState({
+        buildings: { woodenHut: 1, storage: 3 },
+      });
+      const stateWithStorage4 = createTestState({
+        buildings: { woodenHut: 1, storage: 4 },
+      });
+      const stateWithStorage5 = createTestState({
+        buildings: { woodenHut: 1, storage: 5 },
+      });
+      const stateWithStorage6 = createTestState({
+        buildings: { woodenHut: 1, storage: 6 },
+      });
+
+      const costWithout = getActionCostBreakdown('buildCabin', stateWithoutStorage);
+      const costWith3 = getActionCostBreakdown('buildCabin', stateWithStorage3);
+      const costWith4 = getActionCostBreakdown('buildCabin', stateWithStorage4);
+      const costWith5 = getActionCostBreakdown('buildCabin', stateWithStorage5);
+      const costWith6 = getActionCostBreakdown('buildCabin', stateWithStorage6);
+
+      const woodCostWithout = costWithout.find(c => c.text.includes('Wood'));
+      const woodCostWith3 = costWith3.find(c => c.text.includes('Wood'));
+      const woodCostWith4 = costWith4.find(c => c.text.includes('Wood'));
+      const woodCostWith5 = costWith5.find(c => c.text.includes('Wood'));
+      const woodCostWith6 = costWith6.find(c => c.text.includes('Wood'));
+
+      expect(woodCostWithout).toBeDefined();
+      const amountWithout = parseInt(woodCostWithout!.text.split(' ')[0].replace('-', ''));
+      
+      // Storage 3: No building cost reduction (only crafting)
+      const amountWith3 = parseInt(woodCostWith3!.text.split(' ')[0].replace('-', ''));
+      expect(amountWith3).toBe(amountWithout); // No reduction for building
+
+      // Storage 4: 5% building cost reduction
+      const amountWith4 = parseInt(woodCostWith4!.text.split(' ')[0].replace('-', ''));
+      expect(amountWith4).toBe(Math.floor(amountWithout * 0.95));
+
+      // Storage 5: Still 5% building cost reduction (crafting becomes 10%)
+      const amountWith5 = parseInt(woodCostWith5!.text.split(' ')[0].replace('-', ''));
+      expect(amountWith5).toBe(Math.floor(amountWithout * 0.95));
+
+      // Storage 6: 10% building cost reduction
+      const amountWith6 = parseInt(woodCostWith6!.text.split(' ')[0].replace('-', ''));
+      expect(amountWith6).toBe(Math.floor(amountWithout * 0.9));
+    });
   });
 
   describe('Crafting Cost Reductions', () => {
