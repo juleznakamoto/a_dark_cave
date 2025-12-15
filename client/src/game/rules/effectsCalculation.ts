@@ -552,103 +552,35 @@ export const getTotalMadness = (state: GameState): number => {
 
 // Helper function to calculate total crafting cost reduction
 export const getTotalCraftingCostReduction = (state: GameState): number => {
-  // Check for crafting cost reduction bonuses
-  let craftingCostReduction = 0;
+  const activeEffects = getActiveEffects(state);
+  let reduction = 0;
 
-  // Grand Blacksmith provides 10% crafting cost reduction
-  if (state.buildings.grandBlacksmith > 0) {
-    const grandBlacksmithAction = villageBuildActions.buildGrandBlacksmith;
-    if (grandBlacksmithAction?.craftingCostReduction) {
-      craftingCostReduction += grandBlacksmithAction.craftingCostReduction;
+  // Add reduction from items/tools
+  activeEffects.forEach((effect) => {
+    if (effect.bonuses.generalBonuses?.craftingCostReduction) {
+      reduction += effect.bonuses.generalBonuses.craftingCostReduction;
     }
-  }
+  });
 
-  // Storehouse provides 5% crafting cost reduction
-  if (state.buildings.storehouse > 0) {
-    const storehouseAction = villageBuildActions.buildStorehouse;
-    if (storehouseAction?.craftingCostReduction) {
-      craftingCostReduction += storehouseAction.craftingCostReduction;
+  // Add reduction from buildings (similar to statsEffects processing)
+  Object.entries(state.buildings).forEach(([buildingKey, buildingCount]) => {
+    if (buildingCount > 0) {
+      const actionId = `build${buildingKey.charAt(0).toUpperCase() + buildingKey.slice(1)}`;
+      const buildAction = villageBuildActions[actionId];
+
+      if (buildAction?.craftingCostReduction) {
+        reduction += buildAction.craftingCostReduction;
+      }
     }
+  });
+
+  // Add storage building bonuses
+  const storageLevel = state.buildings.storage || 0;
+  if (storageLevel >= 3) {
+    reduction += storageLevel >= 5 ? 0.1 : 0.05;
   }
 
-  // Fortified Storehouse provides 5% crafting cost reduction
-  if (state.buildings.fortifiedStorehouse > 0) {
-    const fortifiedStorehouseAction = villageBuildActions.buildFortifiedStorehouse;
-    if (fortifiedStorehouseAction?.craftingCostReduction) {
-      craftingCostReduction += fortifiedStorehouseAction.craftingCostReduction;
-    }
-  }
-
-  // Village Warehouse provides 5% crafting cost reduction
-  if (state.buildings.villageWarehouse > 0) {
-    const villageWarehouseAction = villageBuildActions.buildVillageWarehouse;
-    if (villageWarehouseAction?.craftingCostReduction) {
-      craftingCostReduction += villageWarehouseAction.craftingCostReduction;
-    }
-  }
-
-  // Grand Repository provides 10% crafting cost reduction
-  if (state.buildings.grandRepository > 0) {
-    const grandRepositoryAction = villageBuildActions.buildGrandRepository;
-    if (grandRepositoryAction?.craftingCostReduction) {
-      craftingCostReduction += grandRepositoryAction.craftingCostReduction;
-    }
-  }
-
-  // City Vault provides 10% crafting cost reduction
-  if (state.buildings.cityVault > 0) {
-    const cityVaultAction = villageBuildActions.buildCityVault;
-    if (cityVaultAction?.craftingCostReduction) {
-      craftingCostReduction += cityVaultAction.craftingCostReduction;
-    }
-  }
-
-  // Blacksmith Hammer provides 15% crafting cost reduction
-  if (state.tools.blacksmith_hammer) {
-    craftingCostReduction += 0.15;
-  }
-
-  // Check for building cost reduction bonuses
-  let buildingCostReduction = 0;
-
-  // Mastermason Chisel provides 10% building cost reduction
-  if (state.tools.mastermason_chisel) {
-    buildingCostReduction += 0.1;
-  }
-
-  // Fortified Storehouse provides 5% building cost reduction
-  if (state.buildings.fortifiedStorehouse > 0) {
-    const fortifiedStorehouseAction = villageBuildActions.buildFortifiedStorehouse;
-    if (fortifiedStorehouseAction?.buildingCostReduction) {
-      buildingCostReduction += fortifiedStorehouseAction.buildingCostReduction;
-    }
-  }
-
-  // Village Warehouse provides 5% building cost reduction
-  if (state.buildings.villageWarehouse > 0) {
-    const villageWarehouseAction = villageBuildActions.buildVillageWarehouse;
-    if (villageWarehouseAction?.buildingCostReduction) {
-      buildingCostReduction += villageWarehouseAction.buildingCostReduction;
-    }
-  }
-
-  // Grand Repository provides 5% building cost reduction
-  if (state.buildings.grandRepository > 0) {
-    const grandRepositoryAction = villageBuildActions.buildGrandRepository;
-    if (grandRepositoryAction?.buildingCostReduction) {
-      buildingCostReduction += grandRepositoryAction.buildingCostReduction;
-    }
-  }
-
-  // City Vault provides 10% building cost reduction
-  if (state.buildings.cityVault > 0) {
-    const cityVaultAction = villageBuildActions.buildCityVault;
-    if (cityVaultAction?.buildingCostReduction) {
-      buildingCostReduction += cityVaultAction.buildingCostReduction;
-    }
-  }
-
-  return craftingCostReduction;
+  return reduction;
 };
 
 // Helper function to calculate total building cost reduction
