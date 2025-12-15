@@ -10,7 +10,6 @@ import {
   ACTION_TO_UPGRADE_KEY,
 } from "../buttonUpgrades";
 import { getNextBuildingLevel } from "./villageBuildActions";
-import { capResourceToLimit, isResourceLimited } from "../resourceLimits";
 
 const FOCUS_ELIGIBLE_ACTIONS = [
   "exploreCave",
@@ -545,18 +544,6 @@ export function applyActionEffects(
         }
       }
     }
-  }
-
-  // Apply resource limits to the effects
-  if (updates.resources) {
-    const cappedResources = { ...updates.resources };
-    for (const [resource, value] of Object.entries(cappedResources)) {
-      if (typeof value === "number" && isResourceLimited(resource)) {
-        cappedResources[resource as keyof typeof cappedResources] =
-          capResourceToLimit(resource, value, state);
-      }
-    }
-    updates.resources = cappedResources;
   }
 
   return updates;
