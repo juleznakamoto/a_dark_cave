@@ -51,20 +51,6 @@ const START_MESSAGES = {
     "The nightly figure appears one more time at the estate. Its voice silently echoes through the night: 'Your eyes are open, I am there, your eyes are closed, I am there too.'",
 };
 
-// Variant Questions
-const VARIANT_MESSAGES = {
-  first:
-    "A knock comes from the estate door. A figure completely hulled in dark robes stands in the shadows outside. It whispers: 'A lady's desire, grown in darkness, shining with pale light.'",
-  second:
-    "The cloaked figure returns to the estate under the pale moonlight. Its voice echoes: 'Can't hurt you, but leaves you with scars.'",
-  third:
-    "Once again, the mysterious figure appears at the estate. It whispers with a low voice: 'It has fingers yet no flesh, no feathers, no scales, no bone.'",
-  fourth:
-    "The hulled figure appears once more at the estate. It whispers: 'Soft, delicate, silky, but if you're wrapped in me, you scream.'",
-  fifth:
-    "The nightly figure appears one more time at the estate. Its voice silently echoes through the night: 'Poor have me, rich have me. Eat me, you die.'",
-};
-
 // Original riddle choices
 const ORIGINAL_CHOICES: Record<string, RiddleChoice[]> = {
   whispererInTheDark: [
@@ -97,6 +83,20 @@ const ORIGINAL_CHOICES: Record<string, RiddleChoice[]> = {
     { id: "answerDarkness", label: "Darkness", isCorrect: true },
     { id: "answerDeath", label: "Death", isCorrect: false },
   ],
+};
+
+// Variant Questions
+const VARIANT_MESSAGES = {
+  first:
+    "A knock comes from the estate door. A figure completely hulled in dark robes stands in the shadows outside. It whispers: 'A lady's desire, grown in darkness, shining with pale light.'",
+  second:
+    "The cloaked figure returns to the estate under the pale moonlight. Its voice echoes: 'Can't hurt you, but leaves you with scars.'",
+  third:
+    "Once again, the mysterious figure appears at the estate. It whispers with a low voice: 'It has fingers yet no flesh, no feathers, no scales, no bone.'",
+  fourth:
+    "The hulled figure appears once more at the estate. It whispers: 'Soft, delicate, silky, but if you're wrapped in me, you scream.'",
+  fifth:
+    "The nightly figure appears one more time at the estate. Its voice silently echoes through the night: 'Poor have me, rich have me. Eat me, you die.'",
 };
 
 // Variant riddle choices
@@ -412,7 +412,7 @@ export const riddleEvents: Record<string, GameEvent> = {
     timeProbability: 5,
     title: "The Whisperer's Gift",
     message:
-      "The cloaked figure appears again. His whispers drift through the cold night air one last time before he vanishes, 'Your wisdom has been weighed and found worthy. May shadows guard your path, and fortune follow your name.'",
+      "The cloaked figure appears again. His whispers drift through the cold night one last time before he vanishes, 'Your wisdom has been weighed and found worthy. May shadows guard your path, and fortune follow your name.'",
     triggered: false,
     priority: 4,
     repeatable: true,
