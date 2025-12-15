@@ -594,41 +594,10 @@ export const getTotalBuildingCostReduction = (state: GameState): number => {
     }
   });
 
-  // Mastermason Chisel provides 10% building cost reduction
-  if (state.tools.mastermason_chisel) {
-    reduction += 0.1;
-  }
-
-  // Fortified Storehouse provides 5% building cost reduction
-  if (state.buildings.fortifiedStorehouse > 0) {
-    const fortifiedStorehouseAction = villageBuildActions.buildFortifiedStorehouse;
-    if (fortifiedStorehouseAction?.buildingCostReduction) {
-      reduction += fortifiedStorehouseAction.buildingCostReduction;
-    }
-  }
-
-  // Village Warehouse provides 5% building cost reduction
-  if (state.buildings.villageWarehouse > 0) {
-    const villageWarehouseAction = villageBuildActions.buildVillageWarehouse;
-    if (villageWarehouseAction?.buildingCostReduction) {
-      reduction += villageWarehouseAction.buildingCostReduction;
-    }
-  }
-
-  // Grand Repository provides 5% building cost reduction
-  if (state.buildings.grandRepository > 0) {
-    const grandRepositoryAction = villageBuildActions.buildGrandRepository;
-    if (grandRepositoryAction?.buildingCostReduction) {
-      reduction += grandRepositoryAction.buildingCostReduction;
-    }
-  }
-
-  // City Vault provides 10% building cost reduction
-  if (state.buildings.cityVault > 0) {
-    const cityVaultAction = villageBuildActions.buildCityVault;
-    if (cityVaultAction?.buildingCostReduction) {
-      reduction += cityVaultAction.buildingCostReduction;
-    }
+  // Add storage building bonuses
+  const storageLevel = state.buildings.storage || 0;
+  if (storageLevel >= 4) {
+    reduction += storageLevel >= 6 ? 0.1 : 0.05;
   }
 
   return reduction;
