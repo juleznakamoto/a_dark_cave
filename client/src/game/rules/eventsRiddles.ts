@@ -5,11 +5,11 @@ import { killVillagers } from "@/game/stateHelpers";
 
 // Riddle rewards (gold amounts)
 const RIDDLE_REWARDS = {
-  first: 150,
-  second: 200,
-  third: 250,
-  fourth: 300,
-  fifth: 350,
+  first: 100,
+  second: 150,
+  third: 200,
+  fourth: 350,
+  fifth: 300,
 } as const;
 
 // Riddle penalties
@@ -93,7 +93,7 @@ const VARIANT_MESSAGES = {
   second:
     "The cloaked figure returns to the estate under the pale moonlight. Its voice echoes: 'Can't hurt you, but leaves you with scars.'",
   third:
-    "Once again, the mysterious figure appears at the estate. It whispers with a low voice: 'It has fingers yet no flesh, no feathers, no scales, no bone.'",
+    "Once again, the mysterious figure appears at the estate. It whispers with a low voice: 'Has fingers yet no flesh, no feathers, no scales, no bone.'",
   fourth:
     "The hulled figure appears once more at the estate. It whispers: 'Soft, delicate, silky, but if you're wrapped in me, you scream.'",
   fifth:
@@ -109,10 +109,10 @@ const VARIANT_CHOICES: Record<string, RiddleChoice[]> = {
     { id: "answerDiamond", label: "Diamond", isCorrect: false },
   ],
   riddleOfAges: [
-    { id: "answerNightmares", label: "Nightmares", isCorrect: false },
-    { id: "answerTime", label: "Time", isCorrect: true },
-    { id: "answerLove", label: "Love", isCorrect: false },
-    { id: "answerDeath", label: "Death", isCorrect: false },
+    { id: "answerNightmares", label: "Nightmares", isCorrect: true },
+    { id: "answerTime", label: "Touch", isCorrect: false },
+    { id: "answerLove", label: "Knife", isCorrect: false },
+    { id: "answerDeath", label: "Lust", isCorrect: false },
   ],
   riddleOfDevourer: [
     { id: "answerFin", label: "Fin", isCorrect: false },
@@ -128,7 +128,7 @@ const VARIANT_CHOICES: Record<string, RiddleChoice[]> = {
   ],
   riddleOfEternal: [
     { id: "answerPoison", label: "Poison", isCorrect: false },
-    { id: "answerAir", label: "Air", isCorrect: false },
+    { id: "answerAir", label: "Gold", isCorrect: false },
     { id: "answerNothing", label: "Nothing", isCorrect: true },
     { id: "answerTime", label: "Time", isCorrect: false },
   ],
@@ -335,14 +335,14 @@ function createRiddleEvent(
       return config.precondition(state);
     },
     triggerType: "resource",
-    timeProbability: level === "first" ? 0.030 : 45,
+    timeProbability: level === "first" ? 30 : 45,
     title: config.title,
     message,
     triggered: false,
     priority: 4,
     repeatable: false,
     isTimedChoice: true,
-    baseDecisionTime: 40,
+    baseDecisionTime: 30,
     choices: choices.map((choice) => ({
       id: choice.id,
       label: choice.label,
