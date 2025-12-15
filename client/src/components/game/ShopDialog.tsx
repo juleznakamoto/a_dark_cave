@@ -75,9 +75,10 @@ interface CheckoutFormProps {
   itemId: string;
   onSuccess: () => void;
   currency: 'EUR' | 'USD';
+  onCancel: () => void;
 }
 
-function CheckoutForm({ itemId, onSuccess, currency }: CheckoutFormProps) {
+function CheckoutForm({ itemId, onSuccess, currency, onCancel }: CheckoutFormProps) {
   const stripe = useStripe();
   const elements = useElements();
   const [isProcessing, setIsProcessing] = useState(false);
@@ -201,7 +202,7 @@ function CheckoutForm({ itemId, onSuccess, currency }: CheckoutFormProps) {
         </Button>
         <Button
           variant="outline"
-          onClick={() => setClientSecret(null)}
+          onClick={onCancel}
           className="w-auto px-8"
           button_id="shop-cancel-payment"
           type="button"
@@ -1092,6 +1093,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                   itemId={selectedItem!}
                   onSuccess={handlePurchaseSuccess}
                   currency={currency}
+                  onCancel={() => setClientSecret(null)}
                 />
               </Elements>
             </div>
