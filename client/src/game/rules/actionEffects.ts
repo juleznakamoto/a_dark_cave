@@ -160,15 +160,12 @@ export function applyActionEffects(
             state,
           );
 
-          // Initialize the resource in updates if not already present
-          if (!current[finalKey]) {
-            current[finalKey] = path.startsWith("resources.")
-              ? (state.resources[finalKey as keyof typeof state.resources] || 0)
-              : (state[pathParts[0] as keyof typeof state]?.[finalKey as any] || 0);
-          }
+          // Get the current amount from state (not updates) and subtract the adjusted cost
+          const currentAmount = path.startsWith("resources.")
+            ? (state.resources[finalKey as keyof typeof state.resources] || 0)
+            : (state[pathParts[0] as keyof typeof state]?.[finalKey as any] || 0);
           
-          // Subtract the adjusted cost
-          current[finalKey] -= adjustedCost;
+          current[finalKey] = currentAmount - adjustedCost;
         }
       });
     }
