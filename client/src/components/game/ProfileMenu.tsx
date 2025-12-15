@@ -377,7 +377,7 @@ export default function ProfileMenu() {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="flex items-center gap-1">
+      <div className="flex-wrap justify-end max-w-[54px] flex items-center gap-1">
         {!currentUser && (
           <TooltipProvider>
             <Tooltip
