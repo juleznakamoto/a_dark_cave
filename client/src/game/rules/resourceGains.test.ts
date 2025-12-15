@@ -6,6 +6,7 @@ import { getActionBonuses } from './effectsCalculation';
 import { gameActions, getActionCostBreakdown } from './index';
 import { applyActionEffects } from './actionEffects';
 import { getResourceGainTooltip, calculateResourceGains } from './tooltips';
+import { gameActions as importedGameActions } from '../actions';
 
 // Helper to create a minimal test state
 const createTestState = (overrides?: Partial<GameState>): GameState => {
@@ -211,6 +212,7 @@ const createTestState = (overrides?: Partial<GameState>): GameState => {
     sacrifices: {},
     activeEffects: {},
     madness: 0,
+    focusState: { isActive: false, endTime: 0 },
     ...overrides,
   } as GameState;
 };
@@ -295,7 +297,7 @@ const testActionGains = (actionId: string, state: GameState, iterations = 100) =
   gains.forEach(gain => {
     expectedGains[gain.resource] = { min: gain.min, max: gain.max };
   });
-  
+
   return { expectedGains, actualGains };
 };
 
@@ -509,10 +511,11 @@ describe('Resource Gain Tests', () => {
   describe('Building Cost Reductions', () => {
     it('mastermason_chisel reduces building costs by 10%', () => {
       const stateWithoutChisel = createTestState({
-        buildings: { woodenHut: 1 },
+        buildings: {},
+        tools: {},
       });
       const stateWithChisel = createTestState({
-        buildings: { woodenHut: 1 },
+        buildings: {},
         tools: { mastermason_chisel: true },
       });
 
@@ -525,13 +528,17 @@ describe('Resource Gain Tests', () => {
 
       expect(woodCostWithout).toBeDefined();
       expect(woodCostWith).toBeDefined();
-
-      // Parse the numbers from the cost strings (e.g., "-100 Wood")
       const amountWithout = parseInt(woodCostWithout!.text.split(' ')[0].replace('-', ''));
       const amountWith = parseInt(woodCostWith!.text.split(' ')[0].replace('-', ''));
 
+      // Get the base cost from game actions
+      const baseCost = (importedGameActions.buildCabin.cost as any)[1]["resources.wood"];
+
+      // Verify the without-chisel cost matches base cost
+      expect(amountWithout).toBe(baseCost);
+
       // With chisel should cost 10% less
-      expect(amountWith).toBe(Math.floor(amountWithout * 0.9));
+      expect(amountWith).toBe(Math.floor(baseCost * 0.9));
     });
 
     it('fortified storehouse reduces building costs correctly', () => {
@@ -550,7 +557,7 @@ describe('Resource Gain Tests', () => {
 
       expect(woodCostWithout).toBeDefined();
       const amountWithout = parseInt(woodCostWithout!.text.split(' ')[0].replace('-', ''));
-      
+
       // Fortified Storehouse: 5% building cost reduction
       const amountWithFortifiedStorehouse = parseInt(woodCostWithFortifiedStorehouse!.text.split(' ')[0].replace('-', ''));
       expect(amountWithFortifiedStorehouse).toBe(Math.floor(amountWithout * 0.95));
@@ -714,10 +721,75 @@ describe('Resource Gain Tests', () => {
       expect(expectedWith.gold.max).toBe(expectedBonusMax);
     });
 
-    it('boneTotems with sacrificial_tunic: tooltip matches actual gains', () => {
-      const state = createTestState({
+    it('boneTotems: only tunic (no temple) gives 25% bonus', () => {
+      const stateWithoutTunic = createTestState({
+        buildings: { altar: 1, clerksHut: 1 },
+      });
+      const stateWithTunic = createTestState({
         buildings: { altar: 1, clerksHut: 1 },
         clothing: { sacrificial_tunic: true },
+      });
+
+      const { expectedGains: gainsWithout } = testActionGains('boneTotems', stateWithoutTunic, 50);
+      const { expectedGains: gainsWith } = testActionGains('boneTotems', stateWithTunic, 50);
+
+      // Verify tunic gives exactly 25% more
+      expect(gainsWith.silver.min).toBe(Math.floor(gainsWithout.silver.min * 1.25));
+      expect(gainsWith.silver.max).toBe(Math.floor(gainsWithout.silver.max * 1.25));
+    });
+
+    it('boneTotems: only temple (no tunic) gives 25% bonus', () => {
+      const stateWithoutTemple = createTestState({
+        buildings: { altar: 1, clerksHut: 1 },
+      });
+      const stateWithTemple = createTestState({
+        buildings: { altar: 1, clerksHut: 1, boneTemple: 1 },
+      });
+
+      const { expectedGains: gainsWithout } = testActionGains('boneTotems', stateWithoutTemple, 50);
+      const { expectedGains: gainsWith } = testActionGains('boneTotems', stateWithTemple, 50);
+
+      // Verify temple gives exactly 25% more
+      expect(gainsWith.silver.min).toBe(Math.floor(gainsWithout.silver.min * 1.25));
+      expect(gainsWith.silver.max).toBe(Math.floor(gainsWithout.silver.max * 1.25));
+    });
+
+    it('leatherTotems: only tunic (no temple) gives 25% bonus', () => {
+      const stateWithoutTunic = createTestState({
+        buildings: { temple: 1, clerksHut: 1 },
+      });
+      const stateWithTunic = createTestState({
+        buildings: { temple: 1, clerksHut: 1 },
+        clothing: { sacrificial_tunic: true },
+      });
+
+      const { expectedGains: gainsWithout } = testActionGains('leatherTotems', stateWithoutTunic, 50);
+      const { expectedGains: gainsWith } = testActionGains('leatherTotems', stateWithTunic, 50);
+
+      // Verify tunic gives exactly 25% more
+      expect(gainsWith.gold.min).toBe(Math.floor(gainsWithout.gold.min * 1.25));
+      expect(gainsWith.gold.max).toBe(Math.floor(gainsWithout.gold.max * 1.25));
+    });
+
+    it('leatherTotems: only temple (no tunic) gives 25% bonus', () => {
+      const stateWithoutTemple = createTestState({
+        buildings: { temple: 1, clerksHut: 1 },
+      });
+      const stateWithTemple = createTestState({
+        buildings: { temple: 1, clerksHut: 1, boneTemple: 1 },
+      });
+
+      const { expectedGains: gainsWithout } = testActionGains('leatherTotems', stateWithoutTemple, 50);
+      const { expectedGains: gainsWith } = testActionGains('leatherTotems', stateWithTemple, 50);
+
+      // Verify temple gives exactly 25% more
+      expect(gainsWith.gold.min).toBe(Math.floor(gainsWithout.gold.min * 1.25));
+      expect(gainsWith.gold.max).toBe(Math.floor(gainsWithout.gold.max * 1.25));
+    });
+
+    it('boneTotems: tooltip matches actual gains', () => {
+      const state = createTestState({
+        buildings: { altar: 1, clerksHut: 1 },
       });
 
       // Get tooltip calculations
@@ -739,10 +811,9 @@ describe('Resource Gain Tests', () => {
       expect(maxActual).toBeLessThanOrEqual(tooltipSilver!.max);
     });
 
-    it('leatherTotems with sacrificial_tunic: tooltip matches actual gains', () => {
+    it('leatherTotems: tooltip matches actual gains', () => {
       const state = createTestState({
         buildings: { temple: 1, clerksHut: 1 },
-        clothing: { sacrificial_tunic: true },
       });
 
       // Get tooltip calculations
@@ -1219,7 +1290,7 @@ describe('Resource Gain Tests', () => {
     });
   });
 
-  
+
 
   describe('Additional Cave Exploration', () => {
     it('exploreCitadel gains match tooltip', () => {
