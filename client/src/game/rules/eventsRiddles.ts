@@ -65,33 +65,67 @@ const VARIANT_MESSAGES = {
     "The nightly figure appears one more time at the estate. Its voice silently echoes through the night: 'Poor have me, rich have me. Eat me, you die.'",
 };
 
-// Variant riddle choices for new riddles
+// Original riddle choices
+const ORIGINAL_CHOICES: Record<string, RiddleChoice[]> = {
+  whispererInTheDark: [
+    { id: "answerFire", label: "Fire", isCorrect: false },
+    { id: "answerTree", label: "Tree", isCorrect: false },
+    { id: "answerWind", label: "Wind", isCorrect: true },
+    { id: "answerBones", label: "Bones", isCorrect: false },
+  ],
+  riddleOfAges: [
+    { id: "answerEarth", label: "Earth", isCorrect: false },
+    { id: "answerWolf", label: "Wolf", isCorrect: false },
+    { id: "answerMan", label: "Man", isCorrect: true },
+    { id: "answerBird", label: "Bird", isCorrect: false },
+  ],
+  riddleOfDevourer: [
+    { id: "answerMan", label: "Man", isCorrect: false },
+    { id: "answerWater", label: "Water", isCorrect: false },
+    { id: "answerTime", label: "Time", isCorrect: true },
+    { id: "answerFire", label: "Fire", isCorrect: false },
+  ],
+  riddleOfTears: [
+    { id: "answerNight", label: "Night", isCorrect: false },
+    { id: "answerWind", label: "Wind", isCorrect: false },
+    { id: "answerClouds", label: "Clouds", isCorrect: true },
+    { id: "answerShadow", label: "Shadow", isCorrect: false },
+  ],
+  riddleOfEternal: [
+    { id: "answerLight", label: "Light", isCorrect: false },
+    { id: "answerLife", label: "Life", isCorrect: false },
+    { id: "answerDarkness", label: "Darkness", isCorrect: true },
+    { id: "answerDeath", label: "Death", isCorrect: false },
+  ],
+};
+
+// Variant riddle choices
 const VARIANT_CHOICES: Record<string, RiddleChoice[]> = {
-  whispererInTheDark_variant: [
+  whispererInTheDark: [
     { id: "answerSilver", label: "Silver", isCorrect: false },
     { id: "answerPearl", label: "Pearl", isCorrect: true },
     { id: "answerGold", label: "Gold", isCorrect: false },
     { id: "answerDiamond", label: "Diamond", isCorrect: false },
   ],
-  riddleOfAges_variant: [
+  riddleOfAges: [
     { id: "answerNightmares", label: "Nightmares", isCorrect: false },
     { id: "answerTime", label: "Time", isCorrect: true },
     { id: "answerLove", label: "Love", isCorrect: false },
     { id: "answerDeath", label: "Death", isCorrect: false },
   ],
-  riddleOfDevourer_variant: [
+  riddleOfDevourer: [
     { id: "answerFin", label: "Fin", isCorrect: false },
     { id: "answerWing", label: "Wing", isCorrect: false },
     { id: "answerGlove", label: "Glove", isCorrect: true },
     { id: "answerHand", label: "Hand", isCorrect: false },
   ],
-  riddleOfTears_variant: [
+  riddleOfTears: [
     { id: "answerNightmares", label: "Nightmares", isCorrect: false },
     { id: "answerCobweb", label: "Cobweb", isCorrect: true },
     { id: "answerSilk", label: "Silk", isCorrect: false },
     { id: "answerDeath", label: "Death", isCorrect: false },
   ],
-  riddleOfEternal_variant: [
+  riddleOfEternal: [
     { id: "answerPoison", label: "Poison", isCorrect: false },
     { id: "answerAir", label: "Air", isCorrect: false },
     { id: "answerNothing", label: "Nothing", isCorrect: true },
@@ -139,90 +173,53 @@ interface RiddleChoice {
 
 interface RiddleConfig {
   eventId: string;
-  variantEventId: string;
   level: "first" | "second" | "third" | "fourth" | "fifth";
   title: string;
   originalMessage: string;
   variantMessage: string;
-  choices: RiddleChoice[];
   precondition: (state: GameState) => boolean;
 }
 
 const RIDDLE_CONFIGS: RiddleConfig[] = [
   {
     eventId: "whispererInTheDark",
-    variantEventId: "whispererInTheDark_variant",
     level: "first",
     title: "Whisperer in the Dark",
     originalMessage: START_MESSAGES.first,
     variantMessage: VARIANT_MESSAGES.first,
-    choices: [
-      { id: "answerFire", label: "Fire", isCorrect: false },
-      { id: "answerTree", label: "Tree", isCorrect: false },
-      { id: "answerWind", label: "Wind", isCorrect: true },
-      { id: "answerBones", label: "Bones", isCorrect: false },
-    ],
     precondition: (state: GameState) => state.buildings.darkEstate >= 1,
   },
   {
     eventId: "riddleOfAges",
-    variantEventId: "riddleOfAges_variant",
     level: "second",
     title: "Voices in the Dark",
     originalMessage: START_MESSAGES.second,
     variantMessage: VARIANT_MESSAGES.second,
-    choices: [
-      { id: "answerEarth", label: "Earth", isCorrect: false },
-      { id: "answerWolf", label: "Wolf", isCorrect: false },
-      { id: "answerMan", label: "Man", isCorrect: true },
-      { id: "answerBird", label: "Bird", isCorrect: false },
-    ],
     precondition: (state: GameState) =>
       state.events.whispererInTheDark === true,
   },
   {
     eventId: "riddleOfDevourer",
-    variantEventId: "riddleOfDevourer_variant",
     level: "third",
     title: "A nightly Visitor",
     originalMessage: START_MESSAGES.third,
     variantMessage: VARIANT_MESSAGES.third,
-    choices: [
-      { id: "answerMan", label: "Man", isCorrect: false },
-      { id: "answerWater", label: "Water", isCorrect: false },
-      { id: "answerTime", label: "Time", isCorrect: true },
-      { id: "answerFire", label: "Fire", isCorrect: false },
-    ],
     precondition: (state: GameState) => state.events.riddleOfAges === true,
   },
   {
     eventId: "riddleOfTears",
-    variantEventId: "riddleOfTears_variant",
     level: "fourth",
     title: "A hooded Guest",
     originalMessage: START_MESSAGES.fourth,
     variantMessage: VARIANT_MESSAGES.fourth,
-    choices: [
-      { id: "answerNight", label: "Night", isCorrect: false },
-      { id: "answerWind", label: "Wind", isCorrect: false },
-      { id: "answerClouds", label: "Clouds", isCorrect: true },
-      { id: "answerShadow", label: "Shadow", isCorrect: false },
-    ],
     precondition: (state: GameState) => state.events.riddleOfDevourer === true,
   },
   {
     eventId: "riddleOfEternal",
-    variantEventId: "riddleOfEternal_variant",
     level: "fifth",
     title: "The unknown Guest",
     originalMessage: START_MESSAGES.fifth,
     variantMessage: VARIANT_MESSAGES.fifth,
-    choices: [
-      { id: "answerLight", label: "Light", isCorrect: false },
-      { id: "answerLife", label: "Life", isCorrect: false },
-      { id: "answerDarkness", label: "Darkness", isCorrect: true },
-      { id: "answerDeath", label: "Death", isCorrect: false },
-    ],
     precondition: (state: GameState) => state.events.riddleOfTears === true,
   },
 ];
@@ -231,12 +228,11 @@ function createRiddleEvent(
   config: RiddleConfig,
   isVariant: boolean,
 ): GameEvent {
-  const eventId = isVariant ? config.variantEventId : config.eventId;
-  const oppositeEventId = isVariant ? config.eventId : config.variantEventId;
+  const eventId = config.eventId;
   const message = isVariant ? config.variantMessage : config.originalMessage;
   const choices = isVariant
-    ? VARIANT_CHOICES[config.variantEventId]
-    : config.choices;
+    ? VARIANT_CHOICES[config.eventId]
+    : ORIGINAL_CHOICES[config.eventId];
   const level = config.level;
   const penalties = RIDDLE_PENALTIES[level];
   const reward = RIDDLE_REWARDS[level];
@@ -251,7 +247,6 @@ function createRiddleEvent(
         events: {
           ...state.events,
           [eventId]: true,
-          [oppositeEventId]: true, // Block opposite variant
           [`${eventId}_correct`]: true,
         },
         _logMessage: SUCCESS_MESSAGES[level](reward),
@@ -276,7 +271,6 @@ function createRiddleEvent(
           events: {
             ...state.events,
             [eventId]: true,
-            [oppositeEventId]: true, // Block opposite variant
           },
           _logMessage: WRONG_ANSWER_MESSAGES[level](deaths),
         };
@@ -290,7 +284,6 @@ function createRiddleEvent(
           events: {
             ...state.events,
             [eventId]: true,
-            [oppositeEventId]: true, // Block opposite variant
           },
           _logMessage: WRONG_ANSWER_MESSAGES[level](deaths),
         };
@@ -309,7 +302,6 @@ function createRiddleEvent(
           events: {
             ...state.events,
             [eventId]: true,
-            [oppositeEventId]: true, // Block opposite variant
           },
           _logMessage: WRONG_ANSWER_MESSAGES[level](0) as string,
         };
@@ -335,7 +327,6 @@ function createRiddleEvent(
           events: {
             ...state.events,
             [eventId]: true,
-            [oppositeEventId]: true, // Block opposite variant
           },
           _logMessage: TIMEOUT_MESSAGES[level](deaths),
         };
@@ -349,7 +340,6 @@ function createRiddleEvent(
           events: {
             ...state.events,
             [eventId]: true,
-            [oppositeEventId]: true, // Block opposite variant
           },
           _logMessage: TIMEOUT_MESSAGES[level](deaths),
         };
@@ -368,7 +358,6 @@ function createRiddleEvent(
           events: {
             ...state.events,
             [eventId]: true,
-            [oppositeEventId]: true, // Block opposite variant
           },
           _logMessage: TIMEOUT_MESSAGES[level](0) as string,
         };
@@ -378,9 +367,7 @@ function createRiddleEvent(
 
   return {
     id: eventId,
-    condition: (state: GameState) =>
-      config.precondition(state) &&
-      !(state.events as Record<string, any>)[oppositeEventId],
+    condition: (state: GameState) => config.precondition(state),
     triggerType: "resource",
     timeProbability: level === "first" ? 30 : 45,
     title: config.title,
@@ -404,11 +391,11 @@ function createRiddleEvent(
 }
 
 export const riddleEvents: Record<string, GameEvent> = {
-  // Generate all original and variant riddles using the factory function
+  // Generate original riddle events
   ...Object.fromEntries(
-    RIDDLE_CONFIGS.flatMap((config) => [
-      [config.eventId, createRiddleEvent(config, false)],
-      [config.variantEventId, createRiddleEvent(config, true)],
+    RIDDLE_CONFIGS.map((config) => [
+      config.eventId,
+      createRiddleEvent(config, Math.random() < 0.5),
     ]),
   ),
 
