@@ -47,12 +47,6 @@ export function capResourceToLimit(
   const limit = getResourceLimit(state);
   const cappedValue = Math.min(value, limit);
   
-  // Set flag if we're actually capping the value (resource hit the limit)
-  if (cappedValue < value && !state.flags.hasHitResourceLimit) {
-    // This will be picked up by the state update
-    (state as any)._shouldSetLimitFlag = true;
-  }
-  
   return cappedValue;
 }
 
