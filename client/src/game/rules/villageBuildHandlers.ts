@@ -1078,7 +1078,7 @@ export function handleBuildStorageRoom(
     state,
     result,
     "buildSupplyHut",
-    "storage",
+    "supplyHut",
   );
 
   return storageRoomResult;
@@ -1092,7 +1092,7 @@ export function handleBuildWarehouse(
     state,
     result,
     "buildStorehouse",
-    "storage",
+    "storehouse",
   );
 
   return warehouseResult;
@@ -1106,7 +1106,7 @@ export function handleBuildStockpile(
     state,
     result,
     "buildFortifiedStorehouse",
-    "storage",
+    "fortifiedStorehouse",
   );
 
   return stockpileResult;
@@ -1120,7 +1120,7 @@ export function handleBuildVillageWarehouse(
     state,
     result,
     "buildVillageWarehouse",
-    "storage",
+    "villageWarehouse",
   );
 
   return warehouseResult;
@@ -1134,7 +1134,7 @@ export function handleBuildGrandRepository(
     state,
     result,
     "buildGrandRepository",
-    "storage",
+    "grandRepository",
   );
 
   return grandRepositoryResult;
@@ -1148,7 +1148,7 @@ export function handleBuildCityVault(
     state,
     result,
     "buildCityVault",
-    "storage",
+    "cityVault",
   );
 
   return cityVaultResult;
