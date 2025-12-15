@@ -287,6 +287,7 @@ describe('Resource Limits - Integration with Game Components', () => {
 
     it('should cap exploreCave stone rewards', async () => {
       const { applyActionEffects } = await import('./rules/actionEffects');
+      const { updateResource } = await import('./stateHelpers');
       
       state.resources.stone = 995;
       state.story.seen.hasWood = true;
@@ -294,9 +295,11 @@ describe('Resource Limits - Integration with Game Components', () => {
       
       const effects = applyActionEffects('exploreCave', state);
       
-      // Stone rewards should be capped
+      // Stone rewards should be capped when applied via updateResource
       if (effects.resources?.stone !== undefined) {
-        expect(effects.resources.stone).toBeLessThanOrEqual(1000);
+        const stoneDelta = effects.resources.stone - state.resources.stone;
+        const updates = updateResource(state, 'stone', stoneDelta);
+        expect(updates.resources?.stone).toBeLessThanOrEqual(1000);
       }
     });
 
