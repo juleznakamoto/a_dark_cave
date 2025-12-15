@@ -20,8 +20,20 @@ const getSupabaseConfig = () => {
 
 const app = express();
 
-// Enable gzip compression for all responses
-app.use(compression());
+// CRITICAL: Parse JSON bodies BEFORE defining any routes
+app.use(express.json());
+
+// Enable gzip compression for all responses with optimized settings
+app.use(compression({
+  level: 6, // Balance between speed and compression ratio
+  threshold: 1024, // Only compress responses larger than 1KB
+  filter: (req, res) => {
+    if (req.headers['x-no-compression']) {
+      return false;
+    }
+    return compression.filter(req, res);
+  }
+}));
 
 // Add caching for static assets (audio, images, icons)
 app.use((req, res, next) => {
@@ -39,10 +51,6 @@ app.use((req, res, next) => {
   }
   next();
 });
-
-// API endpoint to provide Supabase config to client in production
-// CRITICAL: Parse JSON bodies BEFORE defining any routes
-app.use(express.json());
 
 app.get("/api/config", (req, res) => {
   const config = getSupabaseConfig();
@@ -292,9 +300,13 @@ app.get("/api/leaderboard/metadata", async (req, res) => {
     const result = { lastUpdated: data?.value || null };
     log(`📊 Returning metadata:`, result);
 
-    // Set proper content type and disable caching
+    // Set proper content type and cache appropriately
     res.setHeader('Content-Type', 'application/json');
-    res.set("Cache-Control", "no-store, no-cache, must-revalidate, private");
+    if (env === "prod") {
+      res.set("Cache-Control", "public, max-age=600"); // 10 minutes in production
+    } else {
+      res.set("Cache-Control", "no-store, no-cache, must-revalidate, private");
+    }
 
     res.json(result);
   } catch (error: any) {
@@ -334,8 +346,12 @@ app.get("/api/leaderboard/:mode", async (req, res) => {
       completed_at: entry.completed_at,
     }));
 
-    // No caching during development
-    res.set("Cache-Control", "no-store, no-cache, must-revalidate, private");
+    // Cache appropriately based on environment
+    if (env === "prod") {
+      res.set("Cache-Control", "public, max-age=600"); // 10 minutes in production
+    } else {
+      res.set("Cache-Control", "no-store, no-cache, must-revalidate, private");
+    }
     res.json(maskedData);
   } catch (error: any) {
     log("❌ Leaderboard fetch failed:", error);
