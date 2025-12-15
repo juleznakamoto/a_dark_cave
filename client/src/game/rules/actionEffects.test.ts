@@ -265,20 +265,20 @@ describe('Building Cost Reductions', () => {
   });
 
   it('should apply discounts to building with existing cabins', () => {
-    // buildCabin level 2 costs 300 wood, 100 stone (as defined in villageBuildActions)
-    const baseWoodCost = (gameActions.buildCabin.cost as any)[2]["resources.wood"];
-    const baseStoneCost = (gameActions.buildCabin.cost as any)[2]["resources.stone"];
+    // buildCabin only has tier 1 defined, so we'll test with tier 1 cost
+    const baseWoodCost = (gameActions.buildCabin.cost as any)[1]["resources.wood"];
+    const baseStoneCost = (gameActions.buildCabin.cost as any)[1]["resources.stone"];
 
     const state: GameState = {
       ...baseState,
-      buildings: { cabin: 1 }, // Has 1 cabin already, building level 2
+      buildings: { woodenHut: 1, cabin: 0 }, // Building first cabin
       tools: { mastermason_chisel: true },
       resources: { wood: baseWoodCost, stone: baseStoneCost },
     };
 
     const updates = applyActionEffects("buildCabin", state);
 
-    // Level 2 with 10% discount
+    // With 10% discount from mastermason_chisel
     const expectedWoodCost = Math.floor(baseWoodCost * 0.9);
     const expectedStoneCost = Math.floor(baseStoneCost * 0.9);
     const expectedFinalWood = baseWoodCost - expectedWoodCost;
