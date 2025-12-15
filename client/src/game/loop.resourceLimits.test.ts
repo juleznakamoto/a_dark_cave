@@ -1,5 +1,5 @@
 
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import { useGameStore } from './state';
 import { getPopulationProduction } from './population';
 
@@ -7,16 +7,16 @@ describe('Game Loop - Resource Limits Integration', () => {
   beforeEach(() => {
     useGameStore.getState().initialize();
     // Enable resource limits
-    useGameStore.setState({
+    useGameStore.setState((state) => ({
       flags: {
-        ...useGameStore.getState().flags,
+        ...state.flags,
         resourceLimitsEnabled: true,
       },
       buildings: {
-        ...useGameStore.getState().buildings,
+        ...state.buildings,
         storage: 1, // 1000 limit
       },
-    });
+    }));
   });
 
   describe('Production Tick with Limits', () => {
@@ -27,12 +27,12 @@ describe('Game Loop - Resource Limits Integration', () => {
       store.updateResource('wood', 950 - store.resources.wood);
       
       // Assign gatherers
-      useGameStore.setState({
+      useGameStore.setState((state) => ({
         villagers: {
-          ...store.villagers,
+          ...state.villagers,
           gatherer: 10, // Would produce 100 wood
         },
-      });
+      }));
       
       // Simulate production
       const production = getPopulationProduction('gatherer', 10, useGameStore.getState());
@@ -50,16 +50,16 @@ describe('Game Loop - Resource Limits Integration', () => {
       
       store.updateResource('food', 985 - store.resources.food);
       
-      useGameStore.setState({
+      useGameStore.setState((state) => ({
         villagers: {
-          ...store.villagers,
+          ...state.villagers,
           hunter: 5, // Would produce 25 food
         },
         buildings: {
-          ...store.buildings,
+          ...state.buildings,
           cabin: 1,
         },
-      });
+      }));
       
       const production = getPopulationProduction('hunter', 5, useGameStore.getState());
       const foodProd = production.find(p => p.resource === 'food');
@@ -74,25 +74,25 @@ describe('Game Loop - Resource Limits Integration', () => {
       const store = useGameStore.getState();
       
       // Set up multiple villager types
-      useGameStore.setState({
+      useGameStore.setState((state) => ({
         resources: {
-          ...store.resources,
+          ...state.resources,
           wood: 950,
           food: 980,
           iron: 990,
         },
         villagers: {
-          ...store.villagers,
+          ...state.villagers,
           gatherer: 5,
           hunter: 2,
           iron_miner: 1,
         },
         buildings: {
-          ...store.buildings,
+          ...state.buildings,
           cabin: 1,
           shallowPit: 1,
         },
-      });
+      }));
       
       const currentState = useGameStore.getState();
       
@@ -130,19 +130,19 @@ describe('Game Loop - Resource Limits Integration', () => {
     it('should cap chopWood action results', () => {
       const store = useGameStore.getState();
       
-      useGameStore.setState({
+      useGameStore.setState((state) => ({
         resources: {
-          ...store.resources,
+          ...state.resources,
           wood: 995,
         },
         story: {
-          ...store.story,
+          ...state.story,
           seen: {
-            ...store.story.seen,
+            ...state.story.seen,
             hasWood: true,
           },
         },
-      });
+      }));
       
       // Execute chopWood action multiple times
       for (let i = 0; i < 3; i++) {
@@ -156,20 +156,20 @@ describe('Game Loop - Resource Limits Integration', () => {
     it('should cap exploreCave stone rewards', () => {
       const store = useGameStore.getState();
       
-      useGameStore.setState({
+      useGameStore.setState((state) => ({
         resources: {
-          ...store.resources,
+          ...state.resources,
           stone: 990,
           torch: 10,
         },
         story: {
-          ...store.story,
+          ...state.story,
           seen: {
-            ...store.story.seen,
+            ...state.story.seen,
             hasWood: true,
           },
         },
-      });
+      }));
       
       // Execute multiple times
       for (let i = 0; i < 5; i++) {
@@ -187,26 +187,26 @@ describe('Game Loop - Resource Limits Integration', () => {
       const store = useGameStore.getState();
       
       // Start at limit
-      useGameStore.setState({
+      useGameStore.setState((state) => ({
         resources: {
-          ...store.resources,
+          ...state.resources,
           wood: 1000,
         },
         buildings: {
-          ...store.buildings,
+          ...state.buildings,
           storage: 1, // 1000 limit
         },
-      });
+      }));
       
       expect(useGameStore.getState().resources.wood).toBe(1000);
       
       // Upgrade storage
-      useGameStore.setState({
+      useGameStore.setState((state) => ({
         buildings: {
-          ...useGameStore.getState().buildings,
+          ...state.buildings,
           storage: 2, // 5000 limit
         },
-      });
+      }));
       
       // Now production can go higher
       store.updateResource('wood', 2000);
@@ -230,16 +230,16 @@ describe('Game Loop - Resource Limits Integration', () => {
       ];
       
       tiers.forEach(({ level, limit }) => {
-        useGameStore.setState({
+        useGameStore.setState((state) => ({
           resources: {
-            ...store.resources,
+            ...state.resources,
             wood: 0,
           },
           buildings: {
-            ...store.buildings,
+            ...state.buildings,
             storage: level,
           },
-        });
+        }));
         
         // Try to set above limit
         store.updateResource('wood', limit + 1000);
@@ -254,13 +254,13 @@ describe('Game Loop - Resource Limits Integration', () => {
     it('should cap boosted production from feast', () => {
       const store = useGameStore.getState();
       
-      useGameStore.setState({
+      useGameStore.setState((state) => ({
         resources: {
-          ...store.resources,
+          ...state.resources,
           wood: 900,
         },
         villagers: {
-          ...store.villagers,
+          ...state.villagers,
           gatherer: 5,
         },
         feastState: {
@@ -268,7 +268,7 @@ describe('Game Loop - Resource Limits Integration', () => {
           endTime: Date.now() + 60000,
           lastAcceptedLevel: 0,
         },
-      });
+      }));
       
       // Feast doubles production (5 gatherers * 10 wood * 2 = 100 wood)
       const production = getPopulationProduction('gatherer', 5, useGameStore.getState());
@@ -284,24 +284,24 @@ describe('Game Loop - Resource Limits Integration', () => {
     it('should cap great feast 4x production', () => {
       const store = useGameStore.getState();
       
-      useGameStore.setState({
+      useGameStore.setState((state) => ({
         resources: {
-          ...store.resources,
+          ...state.resources,
           food: 800,
         },
         villagers: {
-          ...store.villagers,
+          ...state.villagers,
           hunter: 5,
         },
         buildings: {
-          ...store.buildings,
+          ...state.buildings,
           cabin: 1,
         },
         greatFeastState: {
           isActive: true,
           endTime: Date.now() + 60000,
         },
-      });
+      }));
       
       // Great feast 4x production (5 hunters * 5 food * 4 = 100 food)
       const production = getPopulationProduction('hunter', 5, useGameStore.getState());
@@ -318,12 +318,12 @@ describe('Game Loop - Resource Limits Integration', () => {
     it('should not cap silver accumulation', () => {
       const store = useGameStore.getState();
       
-      useGameStore.setState({
+      useGameStore.setState((state) => ({
         resources: {
-          ...store.resources,
+          ...state.resources,
           silver: 10000,
         },
-      });
+      }));
       
       store.updateResource('silver', 50000);
       expect(useGameStore.getState().resources.silver).toBe(60000);
@@ -332,12 +332,12 @@ describe('Game Loop - Resource Limits Integration', () => {
     it('should not cap gold accumulation', () => {
       const store = useGameStore.getState();
       
-      useGameStore.setState({
+      useGameStore.setState((state) => ({
         resources: {
-          ...store.resources,
+          ...state.resources,
           gold: 10000,
         },
-      });
+      }));
       
       store.updateResource('gold', 50000);
       expect(useGameStore.getState().resources.gold).toBe(60000);
@@ -348,16 +348,16 @@ describe('Game Loop - Resource Limits Integration', () => {
     it('should maintain unlimited resources for games without flag', () => {
       const store = useGameStore.getState();
       
-      useGameStore.setState({
+      useGameStore.setState((state) => ({
         flags: {
-          ...store.flags,
+          ...state.flags,
           resourceLimitsEnabled: false,
         },
         resources: {
-          ...store.resources,
+          ...state.resources,
           wood: 50000,
         },
-      });
+      }));
       
       store.updateResource('wood', 50000);
       expect(useGameStore.getState().resources.wood).toBe(100000);
@@ -366,20 +366,20 @@ describe('Game Loop - Resource Limits Integration', () => {
     it('should enforce limits for games with flag enabled', () => {
       const store = useGameStore.getState();
       
-      useGameStore.setState({
+      useGameStore.setState((state) => ({
         flags: {
-          ...store.flags,
+          ...state.flags,
           resourceLimitsEnabled: true,
         },
         resources: {
-          ...store.resources,
+          ...state.resources,
           wood: 0,
         },
         buildings: {
-          ...store.buildings,
+          ...state.buildings,
           storage: 1,
         },
-      });
+      }));
       
       store.updateResource('wood', 50000);
       expect(useGameStore.getState().resources.wood).toBe(1000);

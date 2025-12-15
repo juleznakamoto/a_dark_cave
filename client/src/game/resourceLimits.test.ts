@@ -1,6 +1,6 @@
 
 import { describe, it, expect, beforeEach } from 'vitest';
-import { GameState } from '@shared/schema';
+import { GameState } from '../../../shared/schema';
 import { 
   getResourceLimit, 
   isResourceLimited, 
