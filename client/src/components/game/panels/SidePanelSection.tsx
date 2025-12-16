@@ -16,6 +16,7 @@ import ResourceChangeNotification from "./ResourceChangeNotification";
 import { useGameStore } from "@/game/state";
 import { useMobileTooltip } from "@/hooks/useMobileTooltip";
 import cn from "clsx";
+import { getResourceLimit, isResourceLimited } from "@/game/resourceLimits";
 
 interface SidePanelItem {
   id: string;
@@ -215,6 +216,9 @@ export default function SidePanelSection({
     const isAnimated = animatedItems.has(item.id);
     const isDecreaseAnimated = decreaseAnimatedItems.has(item.id);
     const displayValue = formatValue(item.value);
+    const isLimited = isResourceLimited(item.id);
+    const limit = isLimited ? getResourceLimit(item.id) : null;
+    const isAtMax = isLimited && limit !== null && item.value === limit;
 
     // Handle mobile tooltip click - also mark as hovered to stop pulse
     const handleMobileTooltipClick = (id: string, e: React.MouseEvent) => {
@@ -318,7 +322,7 @@ export default function SidePanelSection({
             ? "text-green-400"
             : isDecreaseAnimated
               ? "text-red-400"
-              : ""
+              : isAtMax ? "text-yellow-400" : "" // Changed to yellow for max resources
         }`}
       >
         {labelContent}
@@ -339,7 +343,8 @@ export default function SidePanelSection({
               isAnimated && "text-green-800 font-bold",
               isDecreaseAnimated && "text-red-800 font-bold",
               isMadness && madnessClasses,
-              isHighlighted && "font-bold !text-gray-100"
+              isHighlighted && "font-bold !text-gray-100",
+              isAtMax && "font-bold !text-yellow-800" // Changed to yellow for max resources
             )}
           >
             {displayValue}
@@ -369,7 +374,7 @@ export default function SidePanelSection({
                   ? "text-green-400"
                   : isDecreaseAnimated
                     ? "text-red-400"
-                    : ""
+                    : isAtMax ? "text-yellow-400" : "" // Changed to yellow for max resources
               }`}
             >
               <TooltipTrigger asChild>
@@ -410,7 +415,7 @@ export default function SidePanelSection({
                   ? "text-green-400"
                   : isDecreaseAnimated
                     ? "text-red-400"
-                    : ""
+                    : isAtMax ? "text-yellow-400" : "" // Changed to yellow for max resources
               }`}
             >
               <TooltipTrigger asChild>
@@ -444,7 +449,7 @@ export default function SidePanelSection({
                         ? "text-red-800 font-bold"
                         : isMadness
                           ? madnessClasses
-                          : ""
+                          : isAtMax ? "font-bold !text-yellow-800" : "" // Changed to yellow for max resources
                   }`}
                 >
                   {displayValue}
@@ -459,7 +464,7 @@ export default function SidePanelSection({
                         ? "text-red-800 font-bold"
                         : isMadness
                           ? madnessClasses
-                          : ""
+                          : isAtMax ? "font-bold !text-yellow-800" : "" // Changed to yellow for max resources
                   }`}
                 >
                   {displayValue}
