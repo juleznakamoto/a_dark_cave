@@ -17,6 +17,7 @@ import {
   handleBlastPortal,
   handleEncounterBeyondPortal,
   handleExploreUndergroundLake,
+  handleLureLakeCreature,
 } from "@/game/rules/caveExploreActions";
 
 import {
