@@ -27,6 +27,7 @@ export default function AuthDialog({ isOpen, onClose, onAuthSuccess }: AuthDialo
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [signupSuccess, setSignupSuccess] = useState(false);
   const { toast } = useToast();
 
   const handleOpenChange = (open: boolean) => {
@@ -66,12 +67,11 @@ export default function AuthDialog({ isOpen, onClose, onAuthSuccess }: AuthDialo
       } else if (mode === 'signup') {
         const referralCode = getReferralCode();
         await signUp(email, password, referralCode || undefined);
+        setSignupSuccess(true);
         toast({
           title: 'Account created',
           description: 'Please check your email to verify your account. Also look in spam folder.',
         });
-        onAuthSuccess();
-        onClose();
       } else if (mode === 'reset') {
         const { resetPassword } = await import('@/game/auth');
         await resetPassword(email);
@@ -97,16 +97,28 @@ export default function AuthDialog({ isOpen, onClose, onAuthSuccess }: AuthDialo
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>
-            {mode === 'signin' ? 'Sign In' : mode === 'signup' ? 'Create Account' : 'Reset Password'}
+            {signupSuccess ? 'Account Created' : mode === 'signin' ? 'Sign In' : mode === 'signup' ? 'Create Account' : 'Reset Password'}
           </DialogTitle>
           <DialogDescription>
-            {mode === 'signin'
+            {signupSuccess
+              ? 'Please check your email to verify your account. Also look in spam folder.'
+              : mode === 'signin'
               ? 'Sign in to sync your game across devices'
               : mode === 'signup'
               ? 'Create an account to save your progress in the cloud'
               : 'Enter your email to receive a password reset link'}
           </DialogDescription>
         </DialogHeader>
+        {signupSuccess ? (
+          <div className="flex justify-center">
+            <Button onClick={() => {
+              onAuthSuccess();
+              onClose();
+            }} className="w-full">
+              Close
+            </Button>
+          </div>
+        ) : (
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
@@ -185,6 +197,7 @@ export default function AuthDialog({ isOpen, onClose, onAuthSuccess }: AuthDialo
             </Button>
           </div>
         </form>
+        )}
       </DialogContent>
     </Dialog>
   );
