@@ -95,6 +95,9 @@ interface GameStore extends GameState {
   // Free gold claim tracking
   lastFreeGoldClaim: number; // timestamp of last claim
 
+  // Currency detection (persists across game restarts)
+  detectedCurrency: "EUR" | "USD" | null;
+
   // Cooldown management
   cooldowns: Record<string, number>;
   cooldownDurations: Record<string, number>; // Track initial duration for each cooldown
@@ -154,6 +157,7 @@ interface GameStore extends GameState {
   setMysteriousNoteDonateNotificationSeen: (seen: boolean) => void;
   setHighlightedResources: (resources: string[]) => void;
   setIsUserSignedIn: (signedIn: boolean) => void;
+  setDetectedCurrency: (currency: "EUR" | "USD") => void;
   updateResource: (
     resource: keyof GameState["resources"],
     amount: number,
@@ -409,6 +413,9 @@ export const createInitialState = (): GameState => ({
   // Initialize free gold claim tracking
   lastFreeGoldClaim: 0,
 
+  // Initialize currency detection
+  detectedCurrency: null,
+
   // Initialize cooldown management
   cooldowns: {},
   cooldownDurations: {}, // Initialize cooldownDurations
@@ -557,6 +564,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set({ highlightedResources: resources });
   },
   setIsUserSignedIn: (signedIn: boolean) => set({ isUserSignedIn: signedIn }),
+  setDetectedCurrency: (currency: "EUR" | "USD") => set({ detectedCurrency: currency }),
 
   updateResource: (resource: keyof GameState["resources"], amount: number) => {
     // updateResource in stateHelpers automatically applies capResourceToLimit
@@ -784,6 +792,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
       // Preserve hasWonAnyGame across restarts
       hasWonAnyGame: state.hasWonAnyGame || false,
+
+      // Preserve detected currency across restarts
+      detectedCurrency: state.detectedCurrency,
 
       // Enable resource limits for new games
       flags: {

@@ -254,8 +254,10 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     id: string;
     email: string;
   } | null>(null);
-  const [currency, setCurrency] = useState<"EUR" | "USD">("USD");
-  const [currencyLocked, setCurrencyLocked] = useState(false);
+  const detectedCurrency = useGameStore((state) => state.detectedCurrency);
+  const setDetectedCurrency = useGameStore((state) => state.setDetectedCurrency);
+  const [currency, setCurrency] = useState<"EUR" | "USD">(detectedCurrency || "USD");
+  const [isDetectingCurrency, setIsDetectingCurrency] = useState(false);
   const gameState = useGameStore();
   const activatedPurchases = gameState.activatedPurchases || {};
   const { toast } = useToast();
@@ -312,31 +314,23 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     }
   };
 
+  // Detect currency on mount (only if not already detected)
   useEffect(() => {
-    const loadData = async () => {
-      // Detect currency based on location - only if not already locked
-      if (!currencyLocked) {
-        const detectedCurrency = await detectCurrency();
-        setCurrency(detectedCurrency);
-        setCurrencyLocked(true); // Lock currency for this session
-      }
-
-      // Check if user is authenticated
-      const user = await getCurrentUser();
-      setCurrentUser(user);
-
-      // Load user's purchases from database
-      if (user) {
-        await loadPurchasedItems();
-      }
-
-      setIsLoading(false);
-    };
-
-    if (isOpen) {
-      loadData();
+    if (isOpen && !detectedCurrency) {
+      setIsDetectingCurrency(true);
+      detectCurrency()
+        .then((detectedCurr) => {
+          setCurrency(detectedCurr);
+          setDetectedCurrency(detectedCurr); // Persist to game state
+        })
+        .finally(() => {
+          setIsDetectingCurrency(false);
+        });
+    } else if (isOpen && detectedCurrency) {
+      // Use already detected currency
+      setCurrency(detectedCurrency);
     }
-  }, [isOpen, currencyLocked]);
+  }, [isOpen, detectedCurrency, setDetectedCurrency]);
 
   const handlePurchaseClick = async (itemId: string) => {
     const item = SHOP_ITEMS[itemId];
