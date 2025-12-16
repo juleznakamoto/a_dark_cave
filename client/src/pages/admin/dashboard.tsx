@@ -2,116 +2,20 @@ import { useEffect, useState, useMemo } from "react";
 import { useLocation } from "wouter";
 import { getSupabaseClient } from "@/lib/supabase";
 import { logger } from "@/lib/logger";
-import {
-  LineChart,
-  Line,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
-  AreaChart,
-  Area,
-} from "recharts";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import {
-  subDays,
-  subMonths,
-  startOfDay,
-  endOfDay,
-  format,
-  differenceInDays,
-  isWithinInterval,
-  parseISO,
-} from "date-fns";
+import { useAdminData } from "./hooks/useAdminData";
+import { useAdminFilters } from "./hooks/useAdminFilters";
+import { getDailyActiveUsers, getWeeklyActiveUsers, getMonthlyActiveUsers, getAveragePlaytime, formatTime } from "./utils/calculations";
 
-// Mock useQuery for standalone execution if not in a React Query context
-const useQuery = (options) => {
-  const { queryKey, queryFn } = options;
-  const [data, setData] = useState(null);
-  const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
-      setError(null);
-      try {
-        const result = await queryFn();
-        setData(result);
-      } catch (err) {
-        setError(err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchData();
-  }, [queryKey, queryFn]); // Re-fetch if queryKey or queryFn changes
-
-  return { data, error, isLoading };
-};
-
-interface ButtonClickData {
-  user_id: string;
-  clicks: Record<string, number>;
-  timestamp: string; // Added timestamp for filtering by date
-  stats?: Record<string, any>; // Stats snapshots
-  resources?: Record<string, any>; // Resource snapshots
-}
-
-interface GameSaveData {
-  user_id: string;
-  game_state: any;
-  updated_at: string;
-  created_at: string;
-}
-
-interface PurchaseData {
-  user_id: string;
-  item_id: string;
-  item_name: string;
-  price_paid: number;
-  purchased_at: string;
-  bundle_id?: string; // Added bundle_id field
-}
-
-// Admin emails from environment variable (comma-separated)
 const getAdminEmails = (): string[] => {
   const adminEmailsEnv = import.meta.env.VITE_ADMIN_EMAILS || "";
   return adminEmailsEnv
     .split(",")
     .map((email) => email.trim())
     .filter(Boolean);
-};
-
-// Helper function to clean button names by removing timestamp suffixes
-const cleanButtonName = (buttonId: string): string => {
-  // Remove timestamp suffixes and random number suffixes from merchant trades
-  // Patterns: _1764039531673_0.6389963990042614 or _1764039531673 or -1764039531673
-  return buttonId
-    .replace(/_\d{13,}_[\d.]+$/, "") // Remove _timestamp_randomNumber
-    .replace(/[-_]\d{13,}$/, ""); // Remove -timestamp or _timestamp
 };
 
 export default function AdminDashboard() {
