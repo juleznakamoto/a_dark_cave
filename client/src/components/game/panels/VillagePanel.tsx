@@ -14,8 +14,7 @@ import {
   frostfallTooltip,
   fogTooltip,
 } from "@/game/rules/tooltips";
-import BubblyCooldownButton from "@/components/BubblyCooldownButton";
-import { BubblyButtonGlobalPortal } from "@/components/ui/bubbly-button";
+import CooldownButton from "@/components/CooldownButton";
 import { Button } from "@/components/ui/button";
 import {
   getPopulationProduction,
@@ -46,18 +45,6 @@ export default function VillagePanel() {
   } = useGameStore();
   const state = useGameStore.getState();
   const mobileTooltip = useMobileTooltip();
-
-  // Bubble animation state
-  const [bubbles, setBubbles] = React.useState<Array<{ id: string; x: number; y: number }>>([]);
-
-  const handleAnimationTrigger = (x: number, y: number) => {
-    const id = `bubble-${Date.now()}-${Math.random()}`;
-    setBubbles(prev => [...prev, { id, x, y }]);
-
-    setTimeout(() => {
-      setBubbles(prev => prev.filter(b => b.id !== id));
-    }, 4000);
-  };
 
   // Get progress from game loop state
   const loopProgress = useGameStore((state) => state.loopProgress);
@@ -249,7 +236,7 @@ export default function VillagePanel() {
     );
 
     return (
-      <BubblyCooldownButton
+      <CooldownButton
         key={actionId}
         onClick={() => executeAction(actionId)}
         cooldownMs={action.cooldown * 1000}
@@ -260,7 +247,6 @@ export default function VillagePanel() {
         variant="outline"
         className="hover:bg-transparent hover:text-foreground"
         tooltip={tooltipContent}
-        onAnimationTrigger={handleAnimationTrigger}
         onMouseEnter={() => {
           // Only highlight resources if Inkwarden Academy is built
           if (buildings.inkwardenAcademy > 0) {
@@ -276,7 +262,7 @@ export default function VillagePanel() {
         style={{ pointerEvents: "auto" }}
       >
         {displayLabel}
-      </BubblyCooldownButton>
+      </CooldownButton>
     );
   };
 
@@ -411,10 +397,8 @@ export default function VillagePanel() {
   });
 
   return (
-    <>
-      <BubblyButtonGlobalPortal bubbles={bubbles} />
-      <ScrollArea className="h-full w-full">
-        <div className="space-y-4 mt-2 mb-2 pl-[3px] ">
+    <ScrollArea className="h-full w-full">
+      <div className="space-y-4 mt-2 mb-2 pl-[3px] ">
         {actionGroups.map((group, groupIndex) => {
           const visibleActions = group.actions.filter((action) =>
             shouldShowAction(action.id, state),
@@ -761,6 +745,5 @@ export default function VillagePanel() {
       </div>
       <ScrollBar orientation="vertical" />
     </ScrollArea>
-    </>
   );
 }
