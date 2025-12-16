@@ -125,14 +125,12 @@ export default function AuthDialog({
           )}
         </DialogHeader>
         {signupSuccess ? (
-          <div className="space-y-6 py-4">
-            <div className="text-center space-y-4">
-              <div className="bg-primary/10 border-2 border-primary/30 rounded-lg p-4">
-                <p className="text-lg font-bold text-primary">
-                  Please check your email to verify your account.
-                </p>
-                <p className="text-base font-semibold text-primary/80 mt-2">
-                  Also look in your spam folder.
+          <div className="space-y-6 py-2">
+            <div className="text-center space-y-2">
+              <div className="bg-red-600/5 border border-red-600/50 rounded-lg p-3">
+                <p className="text-md font-medium text-red-600">
+                  Please check your email to verify your account. Also look in
+                  your spam folder.
                 </p>
               </div>
             </div>
