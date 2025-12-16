@@ -1,0 +1,65 @@
+Summarize the issue and suggest fixes for the following lint item: Title: Auth RLS Initialization Plan Entity: public.game_saves Schema: public Issue Details: Table public.game_saves has a row level security policy Users can view their own saves that re-evaluates current_setting() or auth.() for each row. This produces suboptimal query performance at scale. Resolve the issue by replacing auth.<function>() with (select auth.<function>()). See docs for more info. Description: Detects if calls to current_setting() and auth.<function>() in RLS policies are being unnecessarily re-evaluated for each row
+
+
+
+
+Reasoned
+Summary
+Table: public.game_saves
+Policy: Users can view their own saves
+Issue: The policy calls auth.*() (or current_setting()) directly in the USING/WITH CHECK expressions. In Postgres, such function calls are evaluated per row, which can severely degrade performance as data grows.*
+Why it matters:
+
+RLS conditions run on every row considered by a query. Per-row evaluation of auth.uid(), auth.jwt(), or current_setting() prevents PostgreSQL from caching the expression and can lead to poor plans and higher CPU.
+Recommended Fix
+Replace direct calls to auth.*() and current_setting() with a scalar subquery wrapping the call. This lets PostgreSQL treat the value as stable for the duration of the statement.*
+
+Instead of:
+
+USING (user_id = auth.uid())
+USING (tenant_id = (auth.jwt() ->> 'tenant_id')::uuid)
+USING (env = current_setting('request.header.x-env', true))
+Use:
+
+USING (user_id = (select auth.uid()))
+USING (tenant_id = ((select auth.jwt()) ->> 'tenant_id')::uuid)
+USING (env = (select current_setting('request.header.x-env', true)))
+Example Policy Rewrite
+If your current policy is something like:
+
+SQL Query
+
+
+
+CREATE POLICY "Users can view their own saves"
+ON public.game_saves
+FOR SELECT TO authenticated
+USING (user_id = auth.uid());
+
+Rewrite it to:
+
+SQL Query
+
+
+
+DROP POLICY "Users can view their own saves" ON public.game_saves;
+
+CREATE POLICY "Users can view their own saves"
+ON public.game_saves
+FOR SELECT TO authenticated
+USING (user_id = (select auth.uid()));
+
+If you also have INSERT/UPDATE policies, apply the same pattern to both USING and WITH CHECK clauses.
+
+Additional Best Practices
+Ensure an index exists on the filtered columns used in policies:
+
+CREATE INDEX IF NOT EXISTS idx_game_saves_user_id ON public.game_saves(user_id);
+Prefer simple comparisons and avoid JOINs in RLS where possible. Use EXISTS subqueries if you need related table checks.
+
+Test the policy with realistic data sizes and verify plans with EXPLAIN ANALYZE to confirm improved performance.
+
+If you’d like, I can apply the safe policy rewrite and create the index for public.game_saves.
+
+
+
