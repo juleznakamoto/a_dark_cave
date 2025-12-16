@@ -1013,6 +1013,15 @@ function handleStrangerApproach() {
     // Update population immediately
     state.updatePopulation();
 
+    // Add log entry for stranger approach
+    const selectedMessage = messages[Math.floor(Math.random() * messages.length)];
+    state.addLogEntry({
+      id: `stranger-approaches-${Date.now()}`,
+      message: selectedMessage,
+      timestamp: Date.now(),
+      type: "system",
+    });
+
     // Play new villager sound
     audioManager.playSound("newVillager", 0.02);
   }
