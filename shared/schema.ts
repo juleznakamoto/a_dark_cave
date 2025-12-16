@@ -435,6 +435,7 @@ export const gameStateSchema = z.object({
   mysteriousNoteShopNotificationSeen: z.boolean().default(false), // Track if mysterious note shop notification has been seen
   mysteriousNoteDonateNotificationSeen: z.boolean().default(false), // Track if mysterious note donate notification has been seen
   isUserSignedIn: z.boolean().default(false), // Track if user is currently signed in
+  detectedCurrency: z.enum(["EUR", "USD"]).nullable().default(null), // Currency detection (persists across game restarts)
   playTime: z.number().default(0), // Track total play time in milliseconds
   lastResourceSnapshotTime: z.number().default(0).optional(),
   isNewGame: z.boolean().default(false), // Track if this is a newly started game
