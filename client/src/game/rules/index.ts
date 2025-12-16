@@ -17,7 +17,6 @@ import { caveCraftTools } from "./caveCraftTools";
 import { caveCraftWeapons } from "./caveCraftWeapons";
 import { caveMineActions } from "./caveMineActions";
 import { villageBuildActions } from "./villageBuildActions";
-import { forestScoutActions } from "./forestScoutActions";
 import { forestSacrificeActions } from "./forestSacrificeActions";
 import { forestTradeActions } from "./forestTradeActions";
 import { caveExploreActions } from "./caveExploreActions";
@@ -40,7 +39,7 @@ import { fellowshipEvents } from "./eventsFellowship";
 import { attackWaveEvents } from "./eventsAttackWaves";
 import { riddleEvents } from "./eventsRiddles";
 
-// Combine all actions
+// Combine all actions (except forestScoutActions which needs to be added after setGameActionsRef)
 export const gameActions: Record<string, Action> = {
   ...villageBuildActions,
   ...caveExploreActions,
@@ -48,7 +47,6 @@ export const gameActions: Record<string, Action> = {
   ...caveCraftResources,
   ...caveCraftWeapons,
   ...caveMineActions,
-  ...forestScoutActions,
   ...forestSacrificeActions,
   ...forestTradeActions,
   // Register new storage building actions
@@ -62,6 +60,10 @@ export const gameActions: Record<string, Action> = {
 
 // Register gameActions reference for late binding in actionEffects
 setGameActionsRef(gameActions);
+
+// Now import and add forestScoutActions after gameActions is registered
+import { forestScoutActions } from "./forestScoutActions";
+Object.assign(gameActions, forestScoutActions);
 
 // Helper function to check if requirements are met for both building and non-building actions
 const checkRequirements = (
