@@ -187,6 +187,11 @@ app.get("/api/admin/data", async (req, res) => {
       throw dauResult.error;
     }
 
+    log(`📊 DAU query result: ${dauResult.data?.length || 0} records`);
+    if (dauResult.data && dauResult.data.length > 0) {
+      log(`📊 Sample DAU data:`, dauResult.data[0]);
+    }
+
     res.json({
       clicks: clicksResult.data,
       saves: savesResult.data,

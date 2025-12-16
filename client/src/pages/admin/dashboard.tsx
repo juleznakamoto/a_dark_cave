@@ -257,7 +257,10 @@ export default function AdminDashboard() {
         setRawPurchases(data.purchases);
       }
       if (data.dau) {
+        logger.info("DAU data received:", data.dau);
         setDauData(data.dau);
+      } else {
+        logger.warn("No DAU data in response");
       }
       if (typeof data.totalUserCount === 'number') {
         setTotalUserCount(data.totalUserCount);
