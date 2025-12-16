@@ -216,8 +216,8 @@ export default function SidePanelSection({
     const isAnimated = animatedItems.has(item.id);
     const isDecreaseAnimated = decreaseAnimatedItems.has(item.id);
     const displayValue = formatValue(item.value);
-    const isLimited = isResourceLimited(item.id);
-    const limit = isLimited ? getResourceLimit(item.id) : null;
+    const isLimited = isResourceLimited(item.id, gameState);
+    const limit = isLimited ? getResourceLimit(gameState) : null;
     const isAtMax = isLimited && limit !== null && item.value === limit;
 
     // Handle mobile tooltip click - also mark as hovered to stop pulse
