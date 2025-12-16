@@ -113,10 +113,13 @@ export function unassignVillagerFromJob(
 export function killVillagers(state: GameState, deathCount: number): Partial<GameState> & { villagersKilled?: number } {
   if (deathCount <= 0) return { villagersKilled: 0 };
 
-  // Apply 25% reduction if Ashen Greatshield is equipped
+  // Apply eventDeathReduction bonus if available
+  import { getTotalGeneralBonuses } from './rules/effectsCalculation';
+  const generalBonuses = getTotalGeneralBonuses(state);
+  const reductionRate = generalBonuses.eventDeathReduction || 0;
   let actualDeaths = deathCount;
-  if (state.weapons?.ashen_greatshield) {
-    actualDeaths = Math.ceil(deathCount * 0.75); // 25% reduction
+  if (reductionRate > 0) {
+    actualDeaths = Math.ceil(deathCount * (1 - reductionRate));
   }
 
   let updatedVillagers = { ...state.villagers };

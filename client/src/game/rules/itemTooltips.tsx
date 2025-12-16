@@ -75,6 +75,15 @@ export function renderItemTooltip(
               %
             </div>
           )}
+          {effect.bonuses.generalBonuses.eventDeathReduction && (
+            <div>
+              Event Death Reduction: -
+              {Math.floor(
+                effect.bonuses.generalBonuses.eventDeathReduction * 100,
+              )}
+              %
+            </div>
+          )}
           {effect.bonuses.generalBonuses.caveExploreMultiplier &&
             effect.bonuses.generalBonuses.caveExploreMultiplier !== 1 && (
               <div>
