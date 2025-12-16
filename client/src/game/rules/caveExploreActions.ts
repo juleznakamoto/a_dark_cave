@@ -346,22 +346,18 @@ export const caveExploreActions: Record<string, Action> = {
 
   lureLakeCreature: {
     id: "lureLakeCreature",
-    label: "Lure Creature",
+    label: "Place Trap",
     show_when: {
       "story.seen.undergroundLakeExplored": true,
       "story.seen.lakeCreatureLured": false,
-      "story.seen.timprobability": 5,
     },
     cost: {
-      "resources.food": 1000,
-      "resources.wood": 2000,
-      "resources.iron": 200
+      "resources.food": 10000,
+      "resources.wood": 5000,
+      "resources.steel": 1000
     },
     effects: {
       "story.seen.lakeCreatureLured": true,
-      "resources.gold": "random(50, 100)",
-      "resources.adamant": "random(50, 75)",
-      "resources.obsidian": "random(75, 100)",
     },
     cooldown: 1,
   },
@@ -813,7 +809,7 @@ export function handleLureLakeCreature(
   result.logEntries!.push({
     id: `lake-creature-lured-${Date.now()}`,
     message:
-      "You construct a massive trap baited with fresh meat at the edge of the underground lake. After hours of waiting, the water erupts as an enormous creature surges from the depths. The battle is fierce, but your trap holds. When the beast finally falls, you discover ancient treasures embedded in its hide and scattered around its lair.",
+      "You set a massive trap at the edge of the underground lake, baited with piles of meat. Hours pass before the black waters erupt, and a titanic, tentacled horror rises from the depths and crawls into the trap.",
     timestamp: Date.now(),
     type: "system",
     visualEffect: {

@@ -20,7 +20,7 @@ export const shopItemEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "unlockLake",
-        label: "Acknowledge",
+        label: "Prepare",
         effect: (state: GameState) => {
           return {
             story: {
@@ -47,14 +47,14 @@ export const shopItemEvents: Record<string, GameEvent> = {
     timeProbability: 5,
     title: "Something Beneath",
     message:
-      "During the exploration of the underground lake, you think you saw something under the surface, something very big. Maybe you can lure it out with a trap.",
+      "While exploring the underground lake, you catch a huge shadow beneath the black waters, something vast and unseen. Perhaps a trap could lure it out of the waters.",
     triggered: false,
     priority: 4,
     repeatable: false,
     choices: [
       {
         id: "acknowledgeLakeCreature",
-        label: "Acknowledge",
+        label: "Prepare",
         effect: (state: GameState) => {
           return {
             story: {
@@ -65,7 +65,7 @@ export const shopItemEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "You decide to prepare a trap to lure out whatever lurks in the depths of the underground lake.",
+              "You decide to craft a trap, daring to draw whatever unseen horror stirs in the black depths of the underground lake into the light.",
           };
         },
       },
