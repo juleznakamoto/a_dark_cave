@@ -43,6 +43,10 @@ export default function AuthDialog({
 
   const handleOpenChange = (open: boolean) => {
     if (!open) {
+      setSignupSuccess(false);
+      setEmail("");
+      setPassword("");
+      setAcceptedTerms(false);
       onClose();
     }
   };
