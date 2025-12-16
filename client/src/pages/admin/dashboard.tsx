@@ -2229,19 +2229,19 @@ export default function AdminDashboard() {
                       <div className="space-y-3">
                         <div>
                           <p className="text-4xl font-bold">
-                            {emailConfirmationStats.allTime.totalRegistrations > 0
+                            {emailConfirmationStats?.allTime?.totalRegistrations > 0
                               ? Math.round((emailConfirmationStats.allTime.confirmedUsers / emailConfirmationStats.allTime.totalRegistrations) * 100)
                               : 0}%
                           </p>
                           <p className="text-xs text-muted-foreground">
-                            All-time: {emailConfirmationStats.allTime.confirmedUsers} / {emailConfirmationStats.allTime.totalRegistrations}
+                            All-time: {emailConfirmationStats?.allTime?.confirmedUsers || 0} / {emailConfirmationStats?.allTime?.totalRegistrations || 0}
                           </p>
                         </div>
                         <div className="text-sm border-t pt-2">
                           <div className="flex justify-between">
                             <span className="text-muted-foreground">30 days:</span>
                             <span className="font-semibold">
-                              {emailConfirmationStats.last30Days.totalRegistrations > 0
+                              {emailConfirmationStats?.last30Days?.totalRegistrations > 0
                                 ? Math.round((emailConfirmationStats.last30Days.confirmedUsers / emailConfirmationStats.last30Days.totalRegistrations) * 100)
                                 : 0}%
                             </span>
@@ -2249,7 +2249,7 @@ export default function AdminDashboard() {
                           <div className="flex justify-between">
                             <span className="text-muted-foreground">7 days:</span>
                             <span className="font-semibold">
-                              {emailConfirmationStats.last7Days.totalRegistrations > 0
+                              {emailConfirmationStats?.last7Days?.totalRegistrations > 0
                                 ? Math.round((emailConfirmationStats.last7Days.confirmedUsers / emailConfirmationStats.last7Days.totalRegistrations) * 100)
                                 : 0}%
                             </span>
@@ -2268,18 +2268,18 @@ export default function AdminDashboard() {
                       <div className="space-y-3">
                         <div>
                           <p className="text-4xl font-bold">
-                            {emailConfirmationStats.allTime.unconfirmedUsers}
+                            {emailConfirmationStats?.allTime?.unconfirmedUsers || 0}
                           </p>
                           <p className="text-xs text-muted-foreground">All-time</p>
                         </div>
                         <div className="text-sm border-t pt-2">
                           <div className="flex justify-between">
                             <span className="text-muted-foreground">30 days:</span>
-                            <span className="font-semibold">{emailConfirmationStats.last30Days.unconfirmedUsers}</span>
+                            <span className="font-semibold">{emailConfirmationStats?.last30Days?.unconfirmedUsers || 0}</span>
                           </div>
                           <div className="flex justify-between">
                             <span className="text-muted-foreground">7 days:</span>
-                            <span className="font-semibold">{emailConfirmationStats.last7Days.unconfirmedUsers}</span>
+                            <span className="font-semibold">{emailConfirmationStats?.last7Days?.unconfirmedUsers || 0}</span>
                           </div>
                         </div>
                       </div>
@@ -2295,19 +2295,19 @@ export default function AdminDashboard() {
                       <div className="space-y-3">
                         <div>
                           <p className="text-4xl font-bold">
-                            {emailConfirmationStats.allTime.usersWithSignIn > 0
+                            {emailConfirmationStats?.allTime?.usersWithSignIn > 0
                               ? formatTime(Math.round(emailConfirmationStats.allTime.totalConfirmationDelay / emailConfirmationStats.allTime.usersWithSignIn))
                               : '0m'}
                           </p>
                           <p className="text-xs text-muted-foreground">
-                            All-time: {emailConfirmationStats.allTime.usersWithSignIn} users
+                            All-time: {emailConfirmationStats?.allTime?.usersWithSignIn || 0} users
                           </p>
                         </div>
                         <div className="text-sm border-t pt-2">
                           <div className="flex justify-between">
                             <span className="text-muted-foreground">30 days:</span>
                             <span className="font-semibold">
-                              {emailConfirmationStats.last30Days.usersWithSignIn > 0
+                              {emailConfirmationStats?.last30Days?.usersWithSignIn > 0
                                 ? formatTime(Math.round(emailConfirmationStats.last30Days.totalConfirmationDelay / emailConfirmationStats.last30Days.usersWithSignIn))
                                 : '0m'}
                             </span>
@@ -2315,7 +2315,7 @@ export default function AdminDashboard() {
                           <div className="flex justify-between">
                             <span className="text-muted-foreground">7 days:</span>
                             <span className="font-semibold">
-                              {emailConfirmationStats.last7Days.usersWithSignIn > 0
+                              {emailConfirmationStats?.last7Days?.usersWithSignIn > 0
                                 ? formatTime(Math.round(emailConfirmationStats.last7Days.totalConfirmationDelay / emailConfirmationStats.last7Days.usersWithSignIn))
                                 : '0m'}
                             </span>
@@ -2334,19 +2334,19 @@ export default function AdminDashboard() {
                       <div className="space-y-3">
                         <div>
                           <p className="text-4xl font-bold">
-                            {emailConfirmationStats.allTime.confirmedUsers > 0
+                            {emailConfirmationStats?.allTime?.confirmedUsers > 0
                               ? Math.round((emailConfirmationStats.allTime.usersWithSignIn / emailConfirmationStats.allTime.confirmedUsers) * 100)
                               : 0}%
                           </p>
                           <p className="text-xs text-muted-foreground">
-                            All-time: {emailConfirmationStats.allTime.usersWithSignIn} / {emailConfirmationStats.allTime.confirmedUsers}
+                            All-time: {emailConfirmationStats?.allTime?.usersWithSignIn || 0} / {emailConfirmationStats?.allTime?.confirmedUsers || 0}
                           </p>
                         </div>
                         <div className="text-sm border-t pt-2">
                           <div className="flex justify-between">
                             <span className="text-muted-foreground">30 days:</span>
                             <span className="font-semibold">
-                              {emailConfirmationStats.last30Days.confirmedUsers > 0
+                              {emailConfirmationStats?.last30Days?.confirmedUsers > 0
                                 ? Math.round((emailConfirmationStats.last30Days.usersWithSignIn / emailConfirmationStats.last30Days.confirmedUsers) * 100)
                                 : 0}%
                             </span>
@@ -2354,7 +2354,7 @@ export default function AdminDashboard() {
                           <div className="flex justify-between">
                             <span className="text-muted-foreground">7 days:</span>
                             <span className="font-semibold">
-                              {emailConfirmationStats.last7Days.confirmedUsers > 0
+                              {emailConfirmationStats?.last7Days?.confirmedUsers > 0
                                 ? Math.round((emailConfirmationStats.last7Days.usersWithSignIn / emailConfirmationStats.last7Days.confirmedUsers) * 100)
                                 : 0}%
                             </span>
