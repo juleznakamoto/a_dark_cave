@@ -1,12 +1,17 @@
-
-import { useState } from 'react';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Checkbox } from '@/components/ui/checkbox';
-import { signIn, signUp } from '@/game/auth';
-import { useToast } from '@/hooks/use-toast';
+import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
+import { signIn, signUp } from "@/game/auth";
+import { useToast } from "@/hooks/use-toast";
 
 interface AuthDialogProps {
   isOpen: boolean;
@@ -14,17 +19,23 @@ interface AuthDialogProps {
   onAuthSuccess: () => void;
 }
 
-export default function AuthDialog({ isOpen, onClose, onAuthSuccess }: AuthDialogProps) {
+export default function AuthDialog({
+  isOpen,
+  onClose,
+  onAuthSuccess,
+}: AuthDialogProps) {
   // Get referral code from URL
   const getReferralCode = () => {
     const params = new URLSearchParams(window.location.search);
-    return params.get('ref');
+    return params.get("ref");
   };
-  
+
   // Default to signup if there's a referral code, otherwise signin
-  const [mode, setMode] = useState<'signin' | 'signup' | 'reset'>(getReferralCode() ? 'signup' : 'signin');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [mode, setMode] = useState<"signin" | "signup" | "reset">(
+    getReferralCode() ? "signup" : "signin",
+  );
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [signupSuccess, setSignupSuccess] = useState(false);
@@ -38,50 +49,52 @@ export default function AuthDialog({ isOpen, onClose, onAuthSuccess }: AuthDialo
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (mode === 'signup' && !acceptedTerms) {
+
+    if (mode === "signup" && !acceptedTerms) {
       toast({
-        title: 'Terms required',
-        description: 'You must accept the Terms of Service and Privacy Policy to create an account.',
-        variant: 'destructive',
+        title: "Terms required",
+        description:
+          "You must accept the Terms of Service and Privacy Policy to create an account.",
+        variant: "destructive",
       });
       return;
     }
-    
+
     setLoading(true);
 
     try {
-      if (mode === 'signin') {
+      if (mode === "signin") {
         await signIn(email, password);
         toast({
-          title: 'Signed in successfully',
-          description: 'Your game will now sync across devices.',
+          title: "Signed in successfully",
+          description: "Your game will now sync across devices.",
         });
-        
+
         // Reload game from Supabase after sign-in
-        const { useGameStore } = await import('@/game/state');
+        const { useGameStore } = await import("@/game/state");
         await useGameStore.getState().loadGame();
-        
+
         onAuthSuccess();
         onClose();
-      } else if (mode === 'signup') {
+      } else if (mode === "signup") {
         const referralCode = getReferralCode();
         await signUp(email, password, referralCode || undefined);
         setSignupSuccess(true);
-      } else if (mode === 'reset') {
-        const { resetPassword } = await import('@/game/auth');
+      } else if (mode === "reset") {
+        const { resetPassword } = await import("@/game/auth");
         await resetPassword(email);
         toast({
-          title: 'Password reset email sent',
-          description: 'Check your email for a link to reset your password. Also look in spam folder.',
+          title: "Password reset email sent",
+          description:
+            "Check your email for a link to reset your password. Also look in spam folder.",
         });
-        setMode('signin');
+        setMode("signin");
       }
     } catch (error: any) {
       toast({
-        title: 'Error',
-        description: error.message || 'Authentication failed',
-        variant: 'destructive',
+        title: "Error",
+        description: error.message || "Authentication failed",
+        variant: "destructive",
       });
     } finally {
       setLoading(false);
@@ -93,16 +106,22 @@ export default function AuthDialog({ isOpen, onClose, onAuthSuccess }: AuthDialo
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>
-            {signupSuccess ? 'Account Created' : mode === 'signin' ? 'Sign In' : mode === 'signup' ? 'Create Account' : 'Reset Password'}
+            {signupSuccess
+              ? "Account Created"
+              : mode === "signin"
+                ? "Sign In"
+                : mode === "signup"
+                  ? "Create Account"
+                  : "Reset Password"}
           </DialogTitle>
           <DialogDescription>
-            {signupSuccess
-              ? 'Please check your email to verify your account. Also look in spam folder.'
-              : mode === 'signin'
-              ? 'Sign in to sync your game across devices'
-              : mode === 'signup'
-              ? 'Create an account to save your progress in the cloud'
-              : 'Enter your email to receive a password reset link'}
+            {!signupSuccess
+              ? "Please check your email to verify your account. Also look in spam folder."
+              : mode === "signin"
+                ? "Sign in to sync your game across devices"
+                : mode === "signup"
+                  ? "Create an account to save your progress in the cloud"
+                  : "Enter your email to receive a password reset link"}
           </DialogDescription>
         </DialogHeader>
         {signupSuccess ? (
@@ -117,92 +136,114 @@ export default function AuthDialog({ isOpen, onClose, onAuthSuccess }: AuthDialo
                 </p>
               </div>
             </div>
-            <Button onClick={() => {
-              onAuthSuccess();
-              onClose();
-            }} className="w-full" size="lg">
+            <Button
+              onClick={() => {
+                onAuthSuccess();
+                onClose();
+              }}
+              className="w-full"
+              size="lg"
+            >
               Close
             </Button>
           </div>
         ) : (
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              placeholder="your@email.com"
-            />
-          </div>
-          {mode !== 'reset' && (
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="email">Email</Label>
               <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
-                placeholder="••••••••"
-                minLength={6}
+                placeholder="your@email.com"
               />
             </div>
-          )}
-          {mode === 'signup' && (
-            <div className="flex items-start space-x-2">
-              <Checkbox
-                id="terms"
-                checked={acceptedTerms}
-                onCheckedChange={(checked) => setAcceptedTerms(checked === true)}
-              />
-              <label
-                htmlFor="terms"
-                className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                I accept the{' '}
-                <a href="/terms" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                  Terms of Service
-                </a>{' '}
-                and{' '}
-                <a href="/privacy" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                  Privacy Policy
-                </a>
-              </label>
-            </div>
-          )}
-          <div className="flex flex-col space-y-2">
-            <Button type="submit" disabled={loading}>
-              {loading ? 'Loading...' : mode === 'signin' ? 'Sign In' : mode === 'signup' ? 'Sign Up' : 'Send Reset Link'}
-            </Button>
-            {mode === 'signin' && (
+            {mode !== "reset" && (
+              <div className="space-y-2">
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  placeholder="••••••••"
+                  minLength={6}
+                />
+              </div>
+            )}
+            {mode === "signup" && (
+              <div className="flex items-start space-x-2">
+                <Checkbox
+                  id="terms"
+                  checked={acceptedTerms}
+                  onCheckedChange={(checked) =>
+                    setAcceptedTerms(checked === true)
+                  }
+                />
+                <label
+                  htmlFor="terms"
+                  className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  I accept the{" "}
+                  <a
+                    href="/terms"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary hover:underline"
+                  >
+                    Terms of Service
+                  </a>{" "}
+                  and{" "}
+                  <a
+                    href="/privacy"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary hover:underline"
+                  >
+                    Privacy Policy
+                  </a>
+                </label>
+              </div>
+            )}
+            <div className="flex flex-col space-y-2">
+              <Button type="submit" disabled={loading}>
+                {loading
+                  ? "Loading..."
+                  : mode === "signin"
+                    ? "Sign In"
+                    : mode === "signup"
+                      ? "Sign Up"
+                      : "Send Reset Link"}
+              </Button>
+              {mode === "signin" && (
+                <Button
+                  type="button"
+                  variant="link"
+                  className="text-sm"
+                  onClick={() => setMode("reset")}
+                >
+                  Forgot password?
+                </Button>
+              )}
               <Button
                 type="button"
-                variant="link"
-                className="text-sm"
-                onClick={() => setMode('reset')}
+                variant="ghost"
+                onClick={() => {
+                  setMode(mode === "signin" ? "signup" : "signin");
+                  setAcceptedTerms(false);
+                }}
               >
-                Forgot password?
+                {mode === "signin"
+                  ? "Don't have an account? Sign up"
+                  : mode === "signup"
+                    ? "Already have an account? Sign in"
+                    : "Back to sign in"}
               </Button>
-            )}
-            <Button
-              type="button"
-              variant="ghost"
-              onClick={() => {
-                setMode(mode === 'signin' ? 'signup' : 'signin');
-                setAcceptedTerms(false);
-              }}
-            >
-              {mode === 'signin'
-                ? "Don't have an account? Sign up"
-                : mode === 'signup'
-                ? 'Already have an account? Sign in'
-                : 'Back to sign in'}
-            </Button>
-          </div>
-        </form>
+            </div>
+          </form>
         )}
       </DialogContent>
     </Dialog>
