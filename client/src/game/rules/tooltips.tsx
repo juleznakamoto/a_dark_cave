@@ -137,9 +137,9 @@ export const calculateResourceGains = (
             // Apply all multipliers (resourceMultiplier already includes button upgrades from getActionBonuses)
             let totalMultiplier = bonuses.resourceMultiplier;
 
-            // Apply cave exploration multiplier for cave explore actions
+            // Apply cave exploration multiplier for cave explore actions (additive, not multiplicative)
             if (isCaveExploreAction) {
-              totalMultiplier *= bonuses.caveExploreMultiplier;
+              totalMultiplier += (bonuses.caveExploreMultiplier || 1) - 1;
             }
 
             if (totalMultiplier > 1) {
@@ -170,9 +170,9 @@ export const calculateResourceGains = (
           // Apply all multipliers (resourceMultiplier already includes button upgrades from getActionBonuses)
           let totalMultiplier = bonuses.resourceMultiplier;
 
-          // Apply cave exploration multiplier for cave explore actions
+          // Apply cave exploration multiplier for cave explore actions (additive, not multiplicative)
           if (isCaveExploreAction) {
-            totalMultiplier *= bonuses.caveExploreMultiplier;
+            totalMultiplier += (bonuses.caveExploreMultiplier || 1) - 1;
           }
 
           if (totalMultiplier > 1) {
