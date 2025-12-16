@@ -44,7 +44,7 @@ export const shopItemEvents: Record<string, GameEvent> = {
       state.story.seen.undergroundLakeExplored &&
       !state.story.seen.undergroundLakeCreatureDiscovered,
     triggerType: "resource",
-    timeProbability: 5,
+    timeProbability: 0.05,
     title: "Something Beneath",
     message:
       "While exploring the underground lake, you catch a huge shadow beneath the black waters, something vast and unseen. Perhaps a trap could lure it out of the waters.",

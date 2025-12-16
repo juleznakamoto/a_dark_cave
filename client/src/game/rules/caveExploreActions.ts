@@ -348,7 +348,7 @@ export const caveExploreActions: Record<string, Action> = {
     id: "lureLakeCreature",
     label: "Place Trap",
     show_when: {
-      "story.seen.undergroundLakeExplored": true,
+      "story.seen.undergroundLakeCreatureDiscovered": true,
       "story.seen.lakeCreatureLured": false,
     },
     cost: {
