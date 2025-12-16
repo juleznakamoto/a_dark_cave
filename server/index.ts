@@ -87,12 +87,6 @@ const getAdminClient = (env: "dev" | "prod" = "dev") => {
   const supabaseUrl =
     env === "dev"
       ? process.env.VITE_SUPABASE_URL_DEV
-
-
-const getAdminClient = (env: "dev" | "prod" = "dev") => {
-  const supabaseUrl =
-    env === "dev"
-      ? process.env.VITE_SUPABASE_URL_DEV
       : process.env.VITE_SUPABASE_URL_PROD;
   const supabaseServiceKey =
     env === "dev"
