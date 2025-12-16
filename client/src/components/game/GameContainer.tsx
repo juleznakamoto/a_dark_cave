@@ -73,7 +73,7 @@ export default function GameContainer() {
 
     if (newAnimations.size > 0) {
       setAnimatingTabs(newAnimations);
-      setTimeout(() => setAnimatingTabs(new Set()), 10000);
+      setTimeout(() => setAnimatingTabs(new Set()), 3000);
     }
 
     prevFlagsRef.current = {
