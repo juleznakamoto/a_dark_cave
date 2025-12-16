@@ -76,11 +76,6 @@ export default function ButtonTest() {
           <Approach3_LiftedState />
         </div>
       </div>
-
-      <div className="mt-8 text-xs text-muted-foreground max-w-3xl text-center space-y-2">
-        <p className="font-semibold">Both buttons use 100 gray-toned bubbles with randomized physics</p>
-        <p>The disappearing button uses lifted state to persist animations after the button is removed from the DOM</p>
-      </div>
     </div>
   );
 }
