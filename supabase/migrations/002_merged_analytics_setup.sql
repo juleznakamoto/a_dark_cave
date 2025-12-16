@@ -26,6 +26,9 @@ CREATE TABLE IF NOT EXISTS purchases (
 );
 
 -- Drop existing policies if they exist (after tables are created)
+DROP POLICY IF EXISTS "Users can view their own saves" ON game_saves;
+DROP POLICY IF EXISTS "Users can insert their own saves" ON game_saves;
+DROP POLICY IF EXISTS "Users can update their own saves" ON game_saves;
 DROP POLICY IF EXISTS "Users can view their own click data" ON button_clicks;
 DROP POLICY IF EXISTS "Users can insert their own click data" ON button_clicks;
 DROP POLICY IF EXISTS "Users can update their own click data" ON button_clicks;
@@ -35,29 +38,34 @@ DROP POLICY IF EXISTS "Users can insert their own purchases" ON purchases;
 -- Enable Row Level Security
 ALTER TABLE button_clicks ENABLE ROW LEVEL SECURITY;
 ALTER TABLE purchases ENABLE ROW LEVEL SECURITY;
+ALTER TABLE game_saves ENABLE ROW LEVEL SECURITY;
 
--- Create policies for button_clicks
-CREATE POLICY "Users can view their own click data"
-  ON button_clicks FOR SELECT
-  USING (auth.uid() = user_id);
+-- RLS policies for game_saves (optimized with subquery pattern)
+CREATE POLICY "Users can view their own saves" ON game_saves
+  FOR SELECT USING ((select auth.uid()) = user_id);
 
-CREATE POLICY "Users can insert their own click data"
-  ON button_clicks FOR INSERT
-  WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "Users can insert their own saves" ON game_saves
+  FOR INSERT WITH CHECK ((select auth.uid()) = user_id);
 
-CREATE POLICY "Users can update their own click data"
-  ON button_clicks FOR UPDATE
-  USING (auth.uid() = user_id)
-  WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "Users can update their own saves" ON game_saves
+  FOR UPDATE USING ((select auth.uid()) = user_id);
 
--- Create policies for purchases
-CREATE POLICY "Users can view their own purchases"
-  ON purchases FOR SELECT
-  USING (auth.uid() = user_id);
+-- RLS policies for button_clicks (optimized with subquery pattern)
+CREATE POLICY "Users can view their own click data" ON button_clicks
+  FOR SELECT USING ((select auth.uid()) = user_id);
 
-CREATE POLICY "Users can insert their own purchases"
-  ON purchases FOR INSERT
-  WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "Users can insert their own click data" ON button_clicks
+  FOR INSERT WITH CHECK ((select auth.uid()) = user_id);
+
+CREATE POLICY "Users can update their own click data" ON button_clicks
+  FOR UPDATE USING ((select auth.uid()) = user_id);
+
+-- RLS policies for purchases (optimized with subquery pattern)
+CREATE POLICY "Users can view their own purchases" ON purchases
+  FOR SELECT USING ((select auth.uid()) = user_id);
+
+CREATE POLICY "Users can insert their own purchases" ON purchases
+  FOR INSERT WITH CHECK ((select auth.uid()) = user_id);
 
 -- Create indexes for efficient queries
 CREATE INDEX IF NOT EXISTS button_clicks_user_id_idx ON button_clicks(user_id);
