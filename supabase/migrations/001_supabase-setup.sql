@@ -38,6 +38,19 @@ ALTER TABLE game_saves ENABLE ROW LEVEL SECURITY;
 ALTER TABLE button_clicks ENABLE ROW LEVEL SECURITY;
 ALTER TABLE purchases ENABLE ROW LEVEL SECURITY;
 
+-- Drop existing policies if they exist
+DROP POLICY IF EXISTS "Users can view their own saves" ON game_saves;
+DROP POLICY IF EXISTS "Users can insert their own saves" ON game_saves;
+DROP POLICY IF EXISTS "Users can update their own saves" ON game_saves;
+DROP POLICY IF EXISTS "Users can delete their own saves" ON game_saves;
+
+DROP POLICY IF EXISTS "Users can view their own click data" ON button_clicks;
+DROP POLICY IF EXISTS "Users can insert their own click data" ON button_clicks;
+DROP POLICY IF EXISTS "Users can update their own click data" ON button_clicks;
+
+DROP POLICY IF EXISTS "Users can view their own purchases" ON purchases;
+DROP POLICY IF EXISTS "Users can insert their own purchases" ON purchases;
+
 -- RLS policies for game_saves (optimized with subquery pattern)
 CREATE POLICY "Users can view their own saves"
   ON game_saves FOR SELECT
