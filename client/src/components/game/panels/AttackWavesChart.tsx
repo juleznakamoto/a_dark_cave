@@ -67,7 +67,7 @@ export default function AttackWavesChart() {
           ...state.attackWaveTimers,
           [waveId]: {
             ...timer,
-            startTime: Date.now() - timer.duration, // Set elapsed to duration (timer expired)
+            elapsedTime: timer.duration, // Set elapsed to duration (timer expired)
             provoked: true,
           },
         },
