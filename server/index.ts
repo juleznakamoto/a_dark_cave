@@ -190,15 +190,23 @@ app.get("/api/admin/data", async (req, res) => {
     log(`📊 DAU query result: ${dauResult.data?.length || 0} records`);
     if (dauResult.data && dauResult.data.length > 0) {
       log(`📊 Sample DAU data:`, dauResult.data[0]);
+      log(`📊 All DAU data:`, JSON.stringify(dauResult.data));
+    } else {
+      log(`📊 No DAU data returned from database`);
     }
 
-    res.json({
+    const responsePayload = {
       clicks: clicksResult.data,
       saves: savesResult.data,
       purchases: purchasesResult.data,
       dau: dauResult.data,
       totalUserCount,
-    });
+    };
+    
+    log(`📊 Response payload keys:`, Object.keys(responsePayload));
+    log(`📊 Response dau field:`, responsePayload.dau);
+
+    res.json(responsePayload);
   } catch (error: any) {
     log("❌ Admin data fetch failed:", error);
     res.status(500).json({ error: error.message });
