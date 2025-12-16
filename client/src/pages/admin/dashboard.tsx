@@ -256,6 +256,9 @@ export default function AdminDashboard() {
       if (data.purchases) {
         setRawPurchases(data.purchases);
       }
+      if (data.dau) {
+        setDauData(data.dau);
+      }
       if (typeof data.totalUserCount === 'number') {
         setTotalUserCount(data.totalUserCount);
       }
@@ -271,20 +274,6 @@ export default function AdminDashboard() {
 
       setUsers(userList);
       setLastUpdated(new Date());
-
-      // Fetch DAU data from database
-      const supabase = await getSupabaseClient();
-      const { data: dauRecords, error: dauError } = await supabase
-        .from('daily_active_users')
-        .select('date, active_user_count')
-        .order('date', { ascending: true })
-        .limit(30);
-
-      if (dauError) {
-        logger.error("Failed to load DAU data:", dauError);
-      } else if (dauRecords) {
-        setDauData(dauRecords);
-      }
     } catch (error) {
       logger.error("Failed to load admin data:", error);
     }

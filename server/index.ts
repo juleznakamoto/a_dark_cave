@@ -149,7 +149,7 @@ app.get("/api/admin/data", async (req, res) => {
     // Use a high limit to get all results (Supabase default is 1000)
     const QUERY_LIMIT = 50000;
 
-    const [clicksResult, savesResult, purchasesResult] = await Promise.all([
+    const [clicksResult, savesResult, purchasesResult, dauResult] = await Promise.all([
       adminClient
         .from("button_clicks")
         .select("*")
@@ -167,6 +167,11 @@ app.get("/api/admin/data", async (req, res) => {
         .select("*")
         .order("purchased_at", { ascending: false })
         .limit(QUERY_LIMIT),
+      adminClient
+        .from("daily_active_users")
+        .select("date, active_user_count")
+        .order("date", { ascending: true })
+        .limit(30),
     ]);
 
     if (clicksResult.error) {
@@ -178,11 +183,15 @@ app.get("/api/admin/data", async (req, res) => {
     if (purchasesResult.error) {
       throw purchasesResult.error;
     }
+    if (dauResult.error) {
+      throw dauResult.error;
+    }
 
     res.json({
       clicks: clicksResult.data,
       saves: savesResult.data,
       purchases: purchasesResult.data,
+      dau: dauResult.data,
       totalUserCount,
     });
   } catch (error: any) {
