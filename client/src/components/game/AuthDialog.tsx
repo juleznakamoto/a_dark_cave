@@ -68,6 +68,10 @@ export default function AuthDialog({ isOpen, onClose, onAuthSuccess }: AuthDialo
         const referralCode = getReferralCode();
         await signUp(email, password, referralCode || undefined);
         setSignupSuccess(true);
+        toast({
+          title: 'Account created',
+          description: 'Please check your email to verify your account. Also look in spam folder.',
+        });
       } else if (mode === 'reset') {
         const { resetPassword } = await import('@/game/auth');
         await resetPassword(email);
@@ -93,32 +97,24 @@ export default function AuthDialog({ isOpen, onClose, onAuthSuccess }: AuthDialo
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>
-            {signupSuccess ? 'Account Created!' : mode === 'signin' ? 'Sign In' : mode === 'signup' ? 'Create Account' : 'Reset Password'}
+            {signupSuccess ? 'Account Created' : mode === 'signin' ? 'Sign In' : mode === 'signup' ? 'Create Account' : 'Reset Password'}
           </DialogTitle>
-          {!signupSuccess && (
-            <DialogDescription>
-              {mode === 'signin'
-                ? 'Sign in to sync your game across devices'
-                : mode === 'signup'
-                ? 'Create an account to save your progress in the cloud'
-                : 'Enter your email to receive a password reset link'}
-            </DialogDescription>
-          )}
+          <DialogDescription>
+            {signupSuccess
+              ? 'Please check your email to verify your account. Also look in spam folder.'
+              : mode === 'signin'
+              ? 'Sign in to sync your game across devices'
+              : mode === 'signup'
+              ? 'Create an account to save your progress in the cloud'
+              : 'Enter your email to receive a password reset link'}
+          </DialogDescription>
         </DialogHeader>
         {signupSuccess ? (
-          <div className="space-y-6 py-4">
-            <div className="text-center space-y-3">
-              <p className="text-xl font-semibold text-foreground">
-                Please check your email to verify your account.
-              </p>
-              <p className="text-lg font-medium text-muted-foreground">
-                Also look in your spam folder.
-              </p>
-            </div>
+          <div className="flex justify-center">
             <Button onClick={() => {
               onAuthSuccess();
               onClose();
-            }} className="w-full" size="lg">
+            }} className="w-full">
               Close
             </Button>
           </div>
