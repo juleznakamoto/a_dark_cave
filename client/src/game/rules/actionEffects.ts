@@ -80,7 +80,7 @@ export function applyActionEffects(
       for (const tierKey of showWhenKeys) {
         const tierConditions = action.show_when?.[tierKey as any];
         if (!tierConditions) continue;
-        
+
         const tierSatisfied = Object.entries(tierConditions).every(
           ([key, value]) => {
             const pathParts = key.split(".");
@@ -178,7 +178,7 @@ export function applyActionEffects(
       for (const tierKey of showWhenKeys) {
         const tierConditions = action.show_when?.[tierKey as any];
         if (!tierConditions) continue;
-        
+
         const tierSatisfied = Object.entries(tierConditions).every(
           ([key, value]) => {
             const pathParts = key.split(".");
