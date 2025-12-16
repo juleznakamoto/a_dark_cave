@@ -137,6 +137,7 @@ export const caveEvents: Record<string, GameEvent> = {
         const luck = state.stats.luck || 0;
         const devoured = Math.floor((1 - luck) * Math.random() * 9) + 1;
         const deathResult = killVillagers(state, devoured);
+        const actualDevoured = deathResult.villagersKilled || 0;
         return {
           ...deathResult,
           story: {
@@ -147,7 +148,7 @@ export const caveEvents: Record<string, GameEvent> = {
             },
           },
           _logMessage:
-            `Your hesitation proves costly. The shadows grow hungry and violent, writhing with unnatural life. They surge forward and devour ${devoured} members of your fellowship. Their screams echo briefly before being swallowed by silence.`,
+            `Your hesitation proves costly. The shadows grow hungry and violent, writhing with unnatural life. They surge forward and devour ${actualDevoured} members of your fellowship. Their screams echo briefly before being swallowed by silence.`,
         };
       },
     },
@@ -212,6 +213,7 @@ export const caveEvents: Record<string, GameEvent> = {
         const luck = state.stats.luck || 0;
         const deaths = Math.floor((1-luck)*Math.random() * 6) + 3;
         const deathResult = killVillagers(state, deaths);
+        const actualDeaths = deathResult.villagersKilled || 0;
         return {
           ...deathResult,
           story: {
@@ -221,7 +223,7 @@ export const caveEvents: Record<string, GameEvent> = {
               hollowKingScepterChoice: true,
             },
           },
-          _logMessage: `As you stand frozen in indecision, the men grow impatient and greedy. One reaches for the scepter, then another. Soon they are fighting viciously. In the bloody melee ${deaths} of your fellowship die, their blood mixing with the dust of ages.`,
+          _logMessage: `As you stand frozen in indecision, the men grow impatient and greedy. One reaches for the scepter, then another. Soon they are fighting viciously. In the bloody melee ${actualDeaths} of your fellowship die, their blood mixing with the dust of ages.`,
         };
       },
     },

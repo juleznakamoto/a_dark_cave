@@ -66,9 +66,12 @@ export const choiceEvents: Record<string, GameEvent> = {
             let deaths;
             deaths = 2 + Math.floor(Math.random() * state.buildings.woodenHut * 0.5) + state.CM * 2
 
+            const deathResult = killVillagers(state, deaths);
+            const actualDeaths = deathResult.villagersKilled || 0;
+
             return {
-              ...killVillagers(state, deaths),
-              _logMessage: `The pale figure moves with inhuman speed. ${deaths} villagers vanish into the mist, their screams echoing through the trees.`,
+              ...deathResult,
+              _logMessage: `The pale figure moves with inhuman speed. ${actualDeaths} villagers vanish into the mist, their screams echoing through the trees.`,
             };
           }
         },
@@ -311,6 +314,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               },
               additionalDeaths,
             );
+            const actualAdditionalDeaths = totalDeathResult.villagersKilled || 0;
 
             return {
               villagers: totalDeathResult.villagers,
@@ -318,7 +322,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 ...state.clothing,
                 ebony_ring: true,
               },
-              _logMessage: `The forest accepts the sacrifice. The figures vanish, and an ebony ring is found on the altar where the villagers were offered. But the horror of the sacrifice drives ${additionalDeaths} villagers to take their own lives.`,
+              _logMessage: `The forest accepts the sacrifice. The figures vanish, and an ebony ring is found on the altar where the villagers were offered. But the horror of the sacrifice drives ${actualAdditionalDeaths} villagers to take their own lives.`,
             };
           }
         },
@@ -359,10 +363,11 @@ export const choiceEvents: Record<string, GameEvent> = {
             const disappearances =
               Math.floor(Math.random() * 3) + 1 + state.CM * 2;
             const deathResult = killVillagers(state, disappearances);
+            const actualDisappearances = deathResult.villagersKilled || 0;
 
             return {
               ...deathResult,
-              _logMessage: `You refuse the sacrifice. During the night, ${disappearances} villager${disappearances > 1 ? "s" : ""} wander${disappearances === 1 ? "s" : ""} into the woods as if sleepwalking, drawn by a voice only they could hear. They are never seen again.`,
+              _logMessage: `You refuse the sacrifice. During the night, ${actualDisappearances} villager${actualDisappearances > 1 ? "s" : ""} wander${actualDisappearances === 1 ? "s" : ""} into the woods as if sleepwalking, drawn by a voice only they could hear. They are never seen again.`,
             };
           }
         },
@@ -374,10 +379,11 @@ export const choiceEvents: Record<string, GameEvent> = {
       effect: (state: GameState) => {
         const departures = Math.floor(Math.random() * 4) + 2 + state.CM * 2;
         const deathResult = killVillagers(state, departures);
+        const actualDepartures = deathResult.villagersKilled || 0;
 
         return {
           ...deathResult,
-          _logMessage: `Your indecision angers the villagers. ${departures} villagers, frustrated with your lack of leadership, pack their belongings and leave the village in disgust.`,
+          _logMessage: `Your indecision angers the villagers. ${actualDepartures} villagers, frustrated with your lack of leadership, pack their belongings and leave the village in disgust.`,
         };
       },
     },
@@ -426,6 +432,7 @@ export const choiceEvents: Record<string, GameEvent> = {
           const hutDestruction = state.CM * 1;
 
           const deathResult = killVillagers(state, villagerDeaths);
+          const actualDeaths = deathResult.villagersKilled || 0;
 
           return {
             ...deathResult,
@@ -436,7 +443,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 state.buildings.woodenHut - hutDestruction,
               ),
             },
-            _logMessage: `You refuse the stranger entry. He leaves screaming curses in his alien tongue, echoing through the night. Before dawn, a barbarian tribe attacks as if summoned by his cries, killing ${villagerDeaths} villagers ${hutDestruction > 0 ? " and destroying one wooden hut " : ""}before vanishing into the wilds.`,
+            _logMessage: `You refuse the stranger entry. He leaves screaming curses in his alien tongue, echoing through the night. Before dawn, a barbarian tribe attacks as if summoned by his cries, killing ${actualDeaths} villagers ${hutDestruction > 0 ? " and destroying one wooden hut " : ""}before vanishing into the wilds.`,
           };
         },
       },
@@ -494,10 +501,11 @@ export const choiceEvents: Record<string, GameEvent> = {
             const drownedCount =
               Math.floor(Math.random() * 4) + 1 + state.CM * 2;
             const deathResult = killVillagers(state, drownedCount);
+            const actualDrowned = deathResult.villagersKilled || 0;
 
             return {
               ...deathResult,
-              _logMessage: `The creature rises like a nightmare, beauty masking deadly intent. With unnatural strength, she drags ${drownedCount} villager${drownedCount > 1 ? "s" : ""} beneath the waters. Only ripples and faint screams remain as the rest flee in terror.`,
+              _logMessage: `The creature rises like a nightmare, beauty masking deadly intent. With unnatural strength, she drags ${actualDrowned} villager${actualDrowned > 1 ? "s" : ""} beneath the waters. Only ripples and faint screams remain as the rest flee in terror.`,
             };
           }
         },
@@ -733,10 +741,11 @@ export const choiceEvents: Record<string, GameEvent> = {
             // Failure: he escapes and villagers are killed
             const casualties = Math.floor(Math.random() * 5) + 1 + state.CM * 3;
             const deathResult = killVillagers(state, casualties);
+            const actualCasualties = deathResult.villagersKilled || 0;
 
             return {
               ...deathResult,
-              _logMessage: `The builder proves stronger than expected! He fights back fiercely, killing ${casualties} men before escaping into the wilderness.`,
+              _logMessage: `The builder proves stronger than expected! He fights back fiercely, killing ${actualCasualties} men before escaping into the wilderness.`,
             };
           }
         },
@@ -1118,6 +1127,7 @@ export const choiceEvents: Record<string, GameEvent> = {
             // Failure: 1-2 villagers die
             const deaths = Math.floor(Math.random() * 2) + 1 + state.CM * 1;
             const deathResult = killVillagers(state, deaths);
+            const actualDeaths = deathResult.villagersKilled || 0;
 
             return {
               ...deathResult,
@@ -1128,7 +1138,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                   slaveTraderEvent: true,
                 },
               },
-              _logMessage: `Your men attack the slaver, but he's prepared! He fights back viciously. ${deaths} of the villagers ${deaths === 1 ? "falls" : "fall"} in the struggle. The trader escapes with his captives, leaving only death behind.`,
+              _logMessage: `Your men attack the slaver, but he's prepared! He fights back viciously. ${actualDeaths} of the villagers ${actualDeaths === 1 ? "falls" : "fall"} in the struggle. The trader escapes with his captives, leaving only death behind.`,
             };
           }
         },
@@ -1747,8 +1757,10 @@ export const choiceEvents: Record<string, GameEvent> = {
         id: "banishHer",
         label: "Banish her",
         effect: (state: GameState) => {
+          const deathResult = killVillagers(state, 10 + 5 * state.CM);
+          const actualLeavers = deathResult.villagersKilled || 0;
           return {
-            ...killVillagers(state, 10 + 5 * state.CM),
+            ...deathResult,
             story: {
               ...state.story,
               seen: {
@@ -1756,7 +1768,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 youngWomanProtestEvent: true,
               },
             },
-            _logMessage: `You banish the young woman from the village. She convinces ${state.CM ? "15" : "10"} sympathetic villagers to leave with her, abandoning your settlement forever.`,
+            _logMessage: `You banish the young woman from the village. She convinces ${actualLeavers} sympathetic villagers to leave with her, abandoning your settlement forever.`,
           };
         },
       },
@@ -1764,8 +1776,10 @@ export const choiceEvents: Record<string, GameEvent> = {
         id: "sacrificeHer",
         label: "Sacrifice her",
         effect: (state: GameState) => {
+          const deathResult = killVillagers(state, 21 + 10 * state.CM); // 1 for her + 20/30 who leave
+          const actualLeavers = deathResult.villagersKilled || 0;
           return {
-            ...killVillagers(state, 21 + 10 * state.CM), // 1 for her + 20/30 who leave
+            ...deathResult,
             story: {
               ...state.story,
               seen: {
@@ -1773,7 +1787,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 youngWomanProtestEvent: true,
               },
             },
-            _logMessage: `Shortly after the sacrifice is carried out at the Black Monolith, ${state.CM ? "30" : "20"} horrified villagers pack their belongings and flee the village in disgust.`,
+            _logMessage: `Shortly after the sacrifice is carried out at the Black Monolith, ${actualLeavers} horrified villagers pack their belongings and flee the village in disgust.`,
           };
         },
       },

@@ -194,6 +194,7 @@ function handleDefeat(
   );
   const casualties = Math.min(minCasualities, currentPopulation);
   const deathResult = killVillagers(state, casualties);
+  const actualCasualties = deathResult.villagersKilled || 0;
 
   let buildingDamage = {};
   const damagedBuildings: string[] = [];
@@ -274,7 +275,7 @@ function handleDefeat(
       },
     },
     _logMessage: createDefeatMessage(
-      casualties,
+      actualCasualties,
       damagedBuildings,
       woundedFellows,
     ),
