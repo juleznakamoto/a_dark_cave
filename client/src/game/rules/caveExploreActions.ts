@@ -331,6 +331,7 @@ export const caveExploreActions: Record<string, Action> = {
     cost: {
       "resources.food": 2500,
       "resources.wood": 5000,
+      "resources.iron": 500
     },
     effects: {
       "resources.silver": 500,

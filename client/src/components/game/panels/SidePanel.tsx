@@ -233,15 +233,19 @@ export default function SidePanel() {
     .filter(([key, value]) => {
       if (!value) return false;
 
-      // Hide arbalest schematic if weapon is crafted
+      // Hide schematic if weapon is crafted
       if (key === "arbalest_schematic" && gameState.weapons.arbalest) {
         return false;
       }
-
-      // Hide nightshade bow schematic if weapon is crafted
       if (
         key === "nightshade_bow_schematic" &&
         gameState.weapons.nightshade_bow
+      ) {
+        return false;
+      }
+      if (
+        key === "stormglass_halberd_schematic" &&
+        gameState.weapons.stormglass_halberd
       ) {
         return false;
       }
