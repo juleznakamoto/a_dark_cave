@@ -126,6 +126,7 @@ export default function AdminDashboard() {
   const [users, setUsers] = useState<Array<{ id: string; email: string }>>([]);
   const [totalUserCount, setTotalUserCount] = useState<number>(0);
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date()); // State to track last data update
+  const [dauData, setDauData] = useState<Array<{ date: string; active_user_count: number }>>([]);
 
   // Filter states
   const [timeRange, setTimeRange] = useState<"1d" | "3d" | "7d" | "30d" | "all">(
@@ -270,6 +271,20 @@ export default function AdminDashboard() {
 
       setUsers(userList);
       setLastUpdated(new Date());
+
+      // Fetch DAU data from database
+      const supabase = await getSupabaseClient();
+      const { data: dauRecords, error: dauError } = await supabase
+        .from('daily_active_users')
+        .select('date, active_user_count')
+        .order('date', { ascending: true })
+        .limit(30);
+
+      if (dauError) {
+        logger.error("Failed to load DAU data:", dauError);
+      } else if (dauRecords) {
+        setDauData(dauRecords);
+      }
     } catch (error) {
       logger.error("Failed to load admin data:", error);
     }
@@ -398,32 +413,17 @@ export default function AdminDashboard() {
     return Math.round(avgMs / 1000 / 60); // Convert to minutes
   };
 
-  // Retention metrics
+  // Retention metrics - now using DAU data from database
   const getUserRetention = () => {
-    const data: { day: string; users: number }[] = [];
-
-    for (let i = 30; i >= 0; i--) {
-      const date = subDays(new Date(), i);
-      const dayStart = startOfDay(date);
-      const dayEnd = endOfDay(date);
-
-      const activeUserIds = new Set<string>();
-
-      // Use raw click data (unfiltered) to track actual user activity
-      rawClickData.forEach((entry) => {
-        const entryDate = parseISO(entry.timestamp);
-        if (isWithinInterval(entryDate, { start: dayStart, end: dayEnd })) {
-          activeUserIds.add(entry.user_id);
-        }
-      });
-
-      data.push({
-        day: format(date, "MMM dd"),
-        users: activeUserIds.size,
-      });
+    if (dauData.length === 0) {
+      return [];
     }
 
-    return data;
+    // Transform database data to chart format
+    return dauData.map((record) => ({
+      day: format(parseISO(record.date), "MMM dd"),
+      users: record.active_user_count,
+    }));
   };
 
   // Session length distribution
