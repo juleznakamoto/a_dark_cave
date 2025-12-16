@@ -198,16 +198,23 @@ app.get("/api/admin/data", async (req, res) => {
     };
 
     try {
+      log("📧 Fetching auth users for email confirmation stats...");
       const { data: authData, error: authError } = await adminClient.auth.admin.listUsers();
       
       if (authError) {
         log("❌ Error fetching auth users:", authError);
       } else {
+        log("📧 Total auth users found:", authData.users.length);
+        
         const filterDateObj = new Date(filterDate);
+        log("📧 Filter date:", filterDate);
+        
         const usersInRange = authData.users.filter((user: any) => {
           const createdAt = new Date(user.created_at);
           return createdAt >= filterDateObj;
         });
+        
+        log("📧 Users in range (last 30 days):", usersInRange.length);
 
         emailConfirmationStats.totalRegistrations = usersInRange.length;
         
@@ -215,6 +222,9 @@ app.get("/api/admin/data", async (req, res) => {
         const confirmedUsers = usersInRange.filter((user: any) => user.email_confirmed_at);
         emailConfirmationStats.confirmedUsers = confirmedUsers.length;
         emailConfirmationStats.unconfirmedUsers = usersInRange.length - confirmedUsers.length;
+        
+        log("📧 Confirmed users:", confirmedUsers.length);
+        log("📧 Unconfirmed users:", emailConfirmationStats.unconfirmedUsers);
 
         // Count users who signed in after confirmation and calculate avg time
         let totalDelayMinutes = 0;
@@ -232,6 +242,10 @@ app.get("/api/admin/data", async (req, res) => {
 
         emailConfirmationStats.totalConfirmationDelay = totalDelayMinutes;
         emailConfirmationStats.usersWithSignIn = usersWithSignIn;
+        
+        log("📧 Users with sign-in:", usersWithSignIn);
+        log("📧 Total confirmation delay (minutes):", totalDelayMinutes);
+        log("📧 Final stats:", emailConfirmationStats);
       }
     } catch (error: any) {
       log("❌ Error processing email confirmation stats:", error);
