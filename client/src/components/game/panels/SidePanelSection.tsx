@@ -127,10 +127,11 @@ export default function SidePanelSection({
         return;
       }
 
-      // Check if resource hit max limit
+      // Check if resource hit max limit or is at max trying to gain more
       const isLimited = isResourceLimited(item.id, gameState);
       const limit = isLimited ? getResourceLimit(gameState) : null;
       const hitMax = isLimited && limit !== null && currentValue === limit && prevValue !== undefined && prevValue < limit;
+      const atMaxTryingToGain = isLimited && limit !== null && currentValue === limit && prevValue !== undefined && prevValue === limit;
 
       // We have a previous value to compare against
       if (prevValue !== undefined) {
@@ -163,6 +164,27 @@ export default function SidePanelSection({
             const newChange = {
               resource: item.id,
               amount: changeAmount,
+              timestamp: Date.now(),
+            };
+            onResourceChange(newChange);
+          }
+        } else if (currentValue === prevValue && atMaxTryingToGain) {
+          // Resource stayed at max because it was capped - show yellow animation
+          newMaxAnimatedItems.add(item.id);
+          // Remove animation after 2 seconds
+          setTimeout(() => {
+            setMaxAnimatedItems((prev) => {
+              const newSet = new Set(prev);
+              newSet.delete(item.id);
+              return newSet;
+            });
+          }, 2000);
+
+          // Trigger notification for attempted gain
+          if (onResourceChange) {
+            const newChange = {
+              resource: item.id,
+              amount: 0, // No actual change, but trigger notification
               timestamp: Date.now(),
             };
             onResourceChange(newChange);
