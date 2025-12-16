@@ -114,15 +114,15 @@ export default function AuthDialog({
                   ? "Create Account"
                   : "Reset Password"}
           </DialogTitle>
-          <DialogDescription>
-            {signupSuccess
-              ? "Please check your email to verify your account. Also look in spam folder."
-              : mode === "signin"
+          {!signupSuccess && (
+            <DialogDescription>
+              {mode === "signin"
                 ? "Sign in to sync your game across devices"
                 : mode === "signup"
                   ? "Create an account to save your progress in the cloud"
                   : "Enter your email to receive a password reset link"}
-          </DialogDescription>
+            </DialogDescription>
+          )}
         </DialogHeader>
         {signupSuccess ? (
           <div className="space-y-6 py-4">
