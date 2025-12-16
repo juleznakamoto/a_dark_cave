@@ -294,7 +294,8 @@ export function applyActionEffects(
               "exploreCitadel",
             ];
             if (caveExploreActions.includes(actionId)) {
-              totalMultiplier *= actionBonuses?.caveExploreMultiplier || 1;
+              // Add cave explore bonus additively, not multiplicatively
+              totalMultiplier += (actionBonuses?.caveExploreMultiplier || 1) - 1;
             }
 
             if (totalMultiplier !== 1) {
