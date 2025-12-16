@@ -308,6 +308,7 @@ function createAttackWaveEvent(waveId: keyof typeof WAVE_PARAMS): GameEvent {
                   duration: params.initialDuration,
                   defeated: false,
                   provoked: false,
+                  elapsedTime: 0, // Initialize elapsedTime
                 },
               },
             });
@@ -329,12 +330,26 @@ function createAttackWaveEvent(waveId: keyof typeof WAVE_PARAMS): GameEvent {
       const isPaused = state.isPaused || isDialogOpen;
 
       if (isPaused) {
+        // If paused, update elapsedTime without advancing the timer
+        if (timer.startTime && timer.elapsedTime !== undefined) {
+          const currentElapsedTime = timer.elapsedTime + (Date.now() - timer.startTime);
+          useGameStore.setState((prevState) => ({
+            attackWaveTimers: {
+              ...prevState.attackWaveTimers,
+              [waveId]: {
+                ...prevState.attackWaveTimers[waveId],
+                startTime: Date.now(), // Reset startTime to current time for next calculation
+                elapsedTime: currentElapsedTime,
+              },
+            },
+          }));
+        }
         return false;
       }
 
-      // Check if timer has expired
-      const elapsed = Date.now() - timer.startTime;
-      return elapsed >= timer.duration;
+      // Check if timer has expired based on elapsedTime (not Date.now())
+      const elapsed = timer.elapsedTime || 0;
+      return elapsed >= timer.duration || timer.provoked;
     },
     triggerType: "resource",
     timeProbability: 0.25,
@@ -406,6 +421,7 @@ function createAttackWaveEvent(waveId: keyof typeof WAVE_PARAMS): GameEvent {
                   startTime: Date.now(),
                   duration: params.defeatDuration,
                   defeated: false,
+                  elapsedTime: 0, // Reset elapsedTime on defeat
                 },
               },
               events:

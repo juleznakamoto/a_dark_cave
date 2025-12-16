@@ -43,29 +43,11 @@ export default function AttackWavesChart() {
   // Update timer display every second
   useEffect(() => {
     const interval = setInterval(() => {
-      const state = useGameStore.getState();
-      
-      // Check if game is paused
-      const isDialogOpen =
-        state.eventDialog?.isOpen ||
-        state.combatDialog?.isOpen ||
-        state.authDialogOpen ||
-        state.shopDialogOpen ||
-        state.leaderboardDialogOpen ||
-        state.idleModeDialog?.isOpen;
-      const isPaused = state.isPaused || isDialogOpen;
-
-      // Don't update timer display when paused
-      if (isPaused) {
-        return;
-      }
-
-      const now = Date.now();
       const newTimeRemaining: Record<string, number> = {};
 
       Object.entries(attackWaveTimers || {}).forEach(([waveId, timer]) => {
         if (!timer.defeated && timer.startTime > 0) {
-          const elapsed = now - timer.startTime;
+          const elapsed = timer.elapsedTime || 0;
           const remaining = Math.max(0, timer.duration - elapsed);
           newTimeRemaining[waveId] = remaining;
         }
@@ -109,7 +91,7 @@ export default function AttackWavesChart() {
     const timer = attackWaveTimers?.[waveId];
     if (!timer || timer.defeated || timer.startTime <= 0) return 0;
 
-    const elapsed = Date.now() - timer.startTime;
+    const elapsed = timer.elapsedTime || 0;
     return Math.max(0, timer.duration - elapsed);
   };
 

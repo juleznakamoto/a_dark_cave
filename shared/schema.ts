@@ -21,6 +21,7 @@ const attackWaveTimerSchema = z.object({
   defeated: z.boolean().default(false),
   provoked: z.boolean().default(false),
   pausedAt: z.number().optional(), // Timestamp when timer was paused
+  elapsedTime: z.number().default(0), // Accumulated elapsed time (only increments when not paused)
 });
 
 // Game state schema for A Dark Cave

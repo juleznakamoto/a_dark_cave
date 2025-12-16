@@ -227,40 +227,27 @@ export function startGameLoop() {
         state.tickCooldowns();
       }
 
-      // Handle attack wave timer pause/resume
+      // Handle attack wave timer - update elapsed time when not paused
       const attackWaveTimers = state.attackWaveTimers || {};
-      if (isPaused && !wasPaused) {
-        // Just paused - save the pause time for each active timer
+      if (!isPaused) {
+        // Update elapsed time for all active timers
         const updatedTimers: typeof attackWaveTimers = {};
+        let hasUpdates = false;
+        
         for (const [waveId, timer] of Object.entries(attackWaveTimers)) {
           if (!timer.defeated && timer.startTime > 0) {
+            const newElapsed = (timer.elapsedTime || 0) + deltaTime;
             updatedTimers[waveId] = {
               ...timer,
-              pausedAt: timestamp, // Store when we paused
+              elapsedTime: newElapsed,
             };
+            hasUpdates = true;
           } else {
             updatedTimers[waveId] = timer;
           }
         }
-        if (Object.keys(updatedTimers).length > 0) {
-          useGameStore.setState({ attackWaveTimers: updatedTimers });
-        }
-      } else if (!isPaused && wasPaused) {
-        // Just resumed - adjust startTime for each timer
-        const updatedTimers: typeof attackWaveTimers = {};
-        for (const [waveId, timer] of Object.entries(attackWaveTimers)) {
-          if (!timer.defeated && timer.startTime > 0 && timer.pausedAt) {
-            const pauseDuration = timestamp - timer.pausedAt;
-            updatedTimers[waveId] = {
-              ...timer,
-              startTime: timer.startTime + pauseDuration, // Shift startTime forward by pause duration
-              pausedAt: undefined, // Clear pause timestamp
-            };
-          } else {
-            updatedTimers[waveId] = timer;
-          }
-        }
-        if (Object.keys(updatedTimers).length > 0) {
+        
+        if (hasUpdates) {
           useGameStore.setState({ attackWaveTimers: updatedTimers });
         }
       }
