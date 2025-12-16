@@ -570,12 +570,12 @@ export const getTotalCraftingCostReduction = (state: GameState): number => {
     'fortifiedStorehouse',
     'storehouse'
   ];
-  
+
   for (const buildingKey of storagePriority) {
     if (state.buildings[buildingKey as keyof typeof state.buildings] > 0) {
       const actionId = `build${buildingKey.charAt(0).toUpperCase() + buildingKey.slice(1)}`;
       const buildAction = villageBuildActions[actionId];
-      
+
       if (buildAction?.craftingCostReduction) {
         reduction += buildAction.craftingCostReduction;
       }
@@ -617,12 +617,12 @@ export const getTotalBuildingCostReduction = (state: GameState): number => {
     'villageWarehouse', 
     'fortifiedStorehouse'
   ];
-  
+
   for (const buildingKey of storagePriority) {
     if (state.buildings[buildingKey as keyof typeof state.buildings] > 0) {
       const actionId = `build${buildingKey.charAt(0).toUpperCase() + buildingKey.slice(1)}`;
       const buildAction = villageBuildActions[actionId];
-      
+
       if (buildAction?.buildingCostReduction) {
         reduction += buildAction.buildingCostReduction;
       }
@@ -980,4 +980,18 @@ export const getCooldownReduction = (
   });
 
   return totalReduction;
+};
+
+// Helper function to calculate total event death reduction
+export const getTotalEventDeathReduction = (state: GameState): number => {
+  const activeEffects = getActiveEffects(state);
+  let eventDeathReduction = 0;
+
+  activeEffects.forEach((effect) => {
+    if (effect.bonuses.generalBonuses?.eventDeathReduction) {
+      eventDeathReduction += effect.bonuses.generalBonuses.eventDeathReduction;
+    }
+  });
+
+  return eventDeathReduction;
 };
