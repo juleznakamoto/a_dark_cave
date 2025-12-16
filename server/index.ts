@@ -187,25 +187,55 @@ app.get("/api/admin/data", async (req, res) => {
       throw dauResult.error;
     }
 
-    // Fetch email confirmation stats
-    const { data: emailConfirmationData, error: emailConfirmationError } = await adminClient
-      .from("users") // Assuming 'users' table has 'created_at' and 'last_sign_in_at' columns
-      .select("created_at, last_sign_in_at")
-      .neq("email_confirmed_at", null) // Only count users with confirmed emails
-      .gte("created_at", filterDate); // Filter by the same 30-day period
-
-    if (emailConfirmationError) {
-      log("❌ Error fetching email confirmation stats:", emailConfirmationError);
-      // Decide how to handle this error: either throw or return empty stats
-      // For now, we'll log and continue, returning empty stats
-    }
-
-    const emailConfirmationStats = {
-      totalRegistrations: emailConfirmationData?.length || 0,
-      registeredAndSignedIn: emailConfirmationData?.filter(
-        (user: any) => user.last_sign_in_at !== null,
-      ).length || 0,
+    // Fetch email confirmation stats from auth.users
+    let emailConfirmationStats = {
+      totalRegistrations: 0,
+      registeredAndSignedIn: 0,
+      confirmedUsers: 0,
+      unconfirmedUsers: 0,
+      totalConfirmationDelay: 0,
+      usersWithSignIn: 0,
     };
+
+    try {
+      const { data: authData, error: authError } = await adminClient.auth.admin.listUsers();
+      
+      if (authError) {
+        log("❌ Error fetching auth users:", authError);
+      } else {
+        const filterDateObj = new Date(filterDate);
+        const usersInRange = authData.users.filter((user: any) => {
+          const createdAt = new Date(user.created_at);
+          return createdAt >= filterDateObj;
+        });
+
+        emailConfirmationStats.totalRegistrations = usersInRange.length;
+        
+        // Count confirmed users
+        const confirmedUsers = usersInRange.filter((user: any) => user.email_confirmed_at);
+        emailConfirmationStats.confirmedUsers = confirmedUsers.length;
+        emailConfirmationStats.unconfirmedUsers = usersInRange.length - confirmedUsers.length;
+
+        // Count users who signed in after confirmation and calculate avg time
+        let totalDelayMinutes = 0;
+        let usersWithSignIn = 0;
+
+        confirmedUsers.forEach((user: any) => {
+          if (user.last_sign_in_at) {
+            usersWithSignIn++;
+            const confirmTime = new Date(user.email_confirmed_at);
+            const signInTime = new Date(user.last_sign_in_at);
+            const delayMs = signInTime.getTime() - confirmTime.getTime();
+            totalDelayMinutes += Math.max(0, delayMs / 1000 / 60); // Convert to minutes
+          }
+        });
+
+        emailConfirmationStats.totalConfirmationDelay = totalDelayMinutes;
+        emailConfirmationStats.usersWithSignIn = usersWithSignIn;
+      }
+    } catch (error: any) {
+      log("❌ Error processing email confirmation stats:", error);
+    }
 
     res.json({
       clicks: clicksResult.data,

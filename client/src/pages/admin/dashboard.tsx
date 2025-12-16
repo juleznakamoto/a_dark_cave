@@ -128,13 +128,13 @@ export default function AdminDashboard() {
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date()); // State to track last data update
   const [dauData, setDauData] = useState<Array<{ date: string; active_user_count: number }>>([]);
   const [emailConfirmationStats, setEmailConfirmationStats] = useState<{
-    totalUsers: number;
+    totalRegistrations: number;
     confirmedUsers: number;
     unconfirmedUsers: number;
     totalConfirmationDelay: number;
     usersWithSignIn: number;
   }>({
-    totalUsers: 0,
+    totalRegistrations: 0,
     confirmedUsers: 0,
     unconfirmedUsers: 0,
     totalConfirmationDelay: 0,
@@ -2195,12 +2195,12 @@ export default function AdminDashboard() {
                     </CardHeader>
                     <CardContent>
                       <p className="text-4xl font-bold">
-                        {emailConfirmationStats.totalUsers > 0
-                          ? Math.round((emailConfirmationStats.confirmedUsers / emailConfirmationStats.totalUsers) * 100)
+                        {emailConfirmationStats.totalRegistrations > 0
+                          ? Math.round((emailConfirmationStats.confirmedUsers / emailConfirmationStats.totalRegistrations) * 100)
                           : 0}%
                       </p>
                       <p className="text-sm text-muted-foreground mt-2">
-                        {emailConfirmationStats.confirmedUsers} of {emailConfirmationStats.totalUsers} confirmed
+                        {emailConfirmationStats.confirmedUsers} of {emailConfirmationStats.totalRegistrations} confirmed
                       </p>
                     </CardContent>
                   </Card>
