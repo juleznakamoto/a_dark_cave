@@ -110,8 +110,8 @@ export function unassignVillagerFromJob(
   };
 }
 
-export function killVillagers(state: GameState, deathCount: number): Partial<GameState> {
-  if (deathCount <= 0) return {};
+export function killVillagers(state: GameState, deathCount: number): Partial<GameState> & { villagersKilled?: number } {
+  if (deathCount <= 0) return { villagersKilled: 0 };
 
   // Apply 25% reduction if Ashen Greatshield is equipped
   let actualDeaths = deathCount;
@@ -121,12 +121,14 @@ export function killVillagers(state: GameState, deathCount: number): Partial<Gam
 
   let updatedVillagers = { ...state.villagers };
   let remainingDeaths = actualDeaths;
+  let totalKilled = 0;
 
   // First, kill free villagers
   if (updatedVillagers.free && updatedVillagers.free > 0) {
     const freeToKill = Math.min(remainingDeaths, updatedVillagers.free);
     updatedVillagers.free -= freeToKill;
     remainingDeaths -= freeToKill;
+    totalKilled += freeToKill;
   }
 
   // If more deaths are needed, kill from other villager types randomly
@@ -143,8 +145,8 @@ export function killVillagers(state: GameState, deathCount: number): Partial<Gam
     });
 
     // Kill remaining villagers randomly from the pool
-    const actualDeaths = Math.min(remainingDeaths, villagerPool.length);
-    for (let i = 0; i < actualDeaths; i++) {
+    const actualKills = Math.min(remainingDeaths, villagerPool.length);
+    for (let i = 0; i < actualKills; i++) {
       if (villagerPool.length === 0) break;
 
       const randomIndex = Math.floor(Math.random() * villagerPool.length);
@@ -153,11 +155,13 @@ export function killVillagers(state: GameState, deathCount: number): Partial<Gam
       // Remove the selected villager from the pool and from the state
       villagerPool.splice(randomIndex, 1);
       updatedVillagers[selectedType as keyof typeof updatedVillagers]--;
+      totalKilled++;
     }
   }
 
   return {
-    villagers: updatedVillagers
+    villagers: updatedVillagers,
+    villagersKilled: totalKilled
   };
 }
 
