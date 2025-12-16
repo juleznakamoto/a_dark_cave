@@ -260,13 +260,14 @@ export function handleLayTrap(
     }
 
     const deathResult = killVillagers(state, villagerDeaths);
+    const actualDeaths = deathResult.villagersKilled || 0;
     Object.assign(result.stateUpdates, deathResult);
     result.stateUpdates.clothing = {
       ...state.clothing,
       black_bear_fur: true,
     };
 
-    if (villagerDeaths === 0) {
+    if (actualDeaths === 0) {
       result.logEntries!.push({
         id: `giant-bear-trapped-success-${Date.now()}`,
         message:
@@ -278,10 +279,10 @@ export function handleLayTrap(
           duration: 3,
         },
       });
-    } else if (villagerDeaths <= 2) {
+    } else if (actualDeaths <= 2) {
       result.logEntries!.push({
         id: `giant-bear-trapped-victory-${Date.now()}`,
-        message: `The giant trap snares a colossal black bear with burning red eyes! ${villagerDeaths} brave villager${villagerDeaths > 1 ? "s" : ""} fall${villagerDeaths === 1 ? "s" : ""} to its supernatural claws before the beast is finally slain. You claim its cursed black fur as a hard-won trophy.`,
+        message: `The giant trap snares a colossal black bear with burning red eyes! ${actualDeaths} brave villager${actualDeaths > 1 ? "s" : ""} fall${actualDeaths === 1 ? "s" : ""} to its supernatural claws before the beast is finally slain. You claim its cursed black fur as a hard-won trophy.`,
         timestamp: Date.now(),
         type: "system",
         visualEffect: {
@@ -292,7 +293,7 @@ export function handleLayTrap(
     } else {
       result.logEntries!.push({
         id: `giant-bear-trapped-defeat-${Date.now()}`,
-        message: `The giant trap snares a colossal black bear with eyes like burning coals. ${villagerDeaths} villagers fall to its supernatural fury before the beast is finally overwhelmed. You claim its cursed black fur.`,
+        message: `The giant trap snares a colossal black bear with eyes like burning coals. ${actualDeaths} villagers fall to its supernatural fury before the beast is finally overwhelmed. You claim its cursed black fur.`,
         timestamp: Date.now(),
         type: "system",
         visualEffect: {
@@ -376,11 +377,12 @@ export function handleCastleRuins(
         Math.floor(Math.random() * 5) + 1 + state.CM * 2,
       );
       const deathResult = killVillagers(state, villagerDeaths);
+      const actualDeaths = deathResult.villagersKilled || 0;
       Object.assign(result.stateUpdates, deathResult);
 
       result.logEntries!.push({
         id: `castle-ruins-minor-attack-${Date.now()}`,
-        message: `Your expedition is ambushed by grotesque undead experiments left behind by the necromancer. ${villagerDeaths} villager${villagerDeaths > 1 ? "s" : ""} fall${villagerDeaths === 1 ? "s" : ""} to the undead before the survivors manage to retreat.`,
+        message: `Your expedition is ambushed by grotesque undead experiments left behind by the necromancer. ${actualDeaths} villager${actualDeaths > 1 ? "s" : ""} fall${actualDeaths === 1 ? "s" : ""} to the undead before the survivors manage to retreat.`,
         timestamp: Date.now(),
         type: "system",
         visualEffect: {
@@ -394,11 +396,12 @@ export function handleCastleRuins(
         Math.floor(Math.random() * 9) + 2 + state.CM * 4,
       );
       const deathResult = killVillagers(state, villagerDeaths);
+      const actualDeaths = deathResult.villagersKilled || 0;
       Object.assign(result.stateUpdates, deathResult);
 
       result.logEntries!.push({
         id: `castle-ruins-major-attack-${Date.now()}`,
-        message: `Shortly after your expedition enters the cursed castle ruins dozens of undead creatures pour from hidden chambers. In the desperate battle that follows, ${villagerDeaths} villagers are overwhelmed by the supernatural horde. The survivors flee in terror.`,
+        message: `Shortly after your expedition enters the cursed castle ruins dozens of undead creatures pour from hidden chambers. In the desperate battle that follows, ${actualDeaths} villagers are overwhelmed by the supernatural horde. The survivors flee in terror.`,
         timestamp: Date.now(),
         type: "system",
         visualEffect: {
@@ -466,11 +469,12 @@ export function handleHillGrave(
       Math.floor(Math.random() * 11) + 3 + state.CM * 4,
     );
     const deathResult = killVillagers(state, villagerDeaths);
+    const actualDeaths = deathResult.villagersKilled || 0;
     Object.assign(result.stateUpdates, deathResult);
 
     result.logEntries!.push({
       id: `hill-grave-failure-${Date.now()}`,
-      message: `Your expedition enters the hill grave but lacks the skill to navigate its deadly traps. ${villagerDeaths} villagers fall to the king's final defenses before the survivors retreat in horror, leaving their companions' bodies in the cursed tomb.`,
+      message: `Your expedition enters the hill grave but lacks the skill to navigate its deadly traps. ${actualDeaths} villagers fall to the king's final defenses before the survivors retreat in horror, leaving their companions' bodies in the cursed tomb.`,
       timestamp: Date.now(),
       type: "system",
       visualEffect: {
@@ -539,11 +543,12 @@ export function handleSunkenTemple(
       Math.floor(Math.random() * 13) + 4 + state.CM * 4,
     );
     const deathResult = killVillagers(state, villagerDeaths);
+    const actualDeaths = deathResult.villagersKilled || 0;
     Object.assign(result.stateUpdates, deathResult);
 
     result.logEntries!.push({
       id: `sunken-temple-failure-${Date.now()}`,
-      message: `Your expedition ventures into the swamp, seeking the sunken temple. The murky waters hide unspeakable horrors. Abominable creatures born of ancient magic rise from the depths and drag ${villagerDeaths} villagers beneath the surface before the survivors flee.`,
+      message: `Your expedition ventures into the swamp, seeking the sunken temple. The murky waters hide unspeakable horrors. Abominable creatures born of ancient magic rise from the depths and drag ${actualDeaths} villagers beneath the surface before the survivors flee.`,
       timestamp: Date.now(),
       type: "system",
       visualEffect: {
@@ -611,11 +616,12 @@ export function handlecollapsedTower(
       Math.floor(Math.random() * 9) + 2 + state.CM * 4,
     );
     const deathResult = killVillagers(state, villagerDeaths);
+    const actualDeaths = deathResult.villagersKilled || 0;
     Object.assign(result.stateUpdates, deathResult);
 
     result.logEntries!.push({
       id: `collapsed-tower-minor-failure-${Date.now()}`,
-      message: `Your expedition reaches the Collapsed Tower, but you are attacked by hooded figures outside. A tall man in a dark robe stands among them, commanding an aura of menace. ${villagerDeaths} villagers fall before the rest flee to safety.`,
+      message: `Your expedition reaches the Collapsed Tower, but you are attacked by hooded figures outside. A tall man in a dark robe stands among them, commanding an aura of menace. ${actualDeaths} villagers fall before the rest flee to safety.`,
       timestamp: Date.now(),
       type: "system",
       visualEffect: {
@@ -677,11 +683,12 @@ export function handleForestCave(
       Math.floor(Math.random() * 8) + 2 + state.CM * 3,
     );
     const deathResult = killVillagers(state, villagerDeaths);
+    const actualDeaths = deathResult.villagersKilled || 0;
     Object.assign(result.stateUpdates, deathResult);
 
     result.logEntries!.push({
       id: `forest-cave-failure-${Date.now()}`,
-      message: `As the expedition enters the cave it is overwhelmed by a pack of brutal hounds. ${villagerDeaths} villagers are torn apart by savage jaws before the survivors manage to retreat.`,
+      message: `As the expedition enters the cave it is overwhelmed by a pack of brutal hounds. ${actualDeaths} villagers are torn apart by savage jaws before the survivors manage to retreat.`,
       timestamp: Date.now(),
       type: "system",
       visualEffect: {

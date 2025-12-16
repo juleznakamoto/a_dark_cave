@@ -102,16 +102,17 @@ export const villageAttackEvents: Record<string, GameEvent> = {
 
           // Apply deaths to villagers
           const deathResult = killVillagers(state, villagerDeaths);
+          const actualDeaths = deathResult.villagersKilled || 0;
 
           // Construct result message
           let message = "The village fights desperately against the wolves. ";
 
-          if (villagerDeaths === 0) {
+          if (actualDeaths === 0) {
             message += "The villagers survive the attack.";
-          } else if (villagerDeaths === 1) {
+          } else if (actualDeaths === 1) {
             message += "One villager falls to the wolves' supernatural fury.";
           } else {
-            message += `${villagerDeaths} villagers are claimed by the wolves' unnatural hunger.`;
+            message += `${actualDeaths} villagers are claimed by the wolves' unnatural hunger.`;
           }
 
           if (foodLoss > 0) {
@@ -214,18 +215,20 @@ export const villageAttackEvents: Record<string, GameEvent> = {
             deathResult = killVillagers(state, villagerDeaths);
           }
 
+          const actualDeaths = deathResult.villagersKilled || 0;
+
           // Construct result message
           let message =
             "The villagers huddle in their huts as the wolves prowl outside. ";
 
-          if (villagerDeaths === 0) {
+          if (actualDeaths === 0) {
             message +=
               "By dawn, the wolves have departed, leaving only scratches and terror behind.";
-          } else if (villagerDeaths === 1) {
+          } else if (actualDeaths === 1) {
             message +=
               "One villager who ventured out is found torn apart at sunrise.";
           } else {
-            message += `${villagerDeaths} villagers are dragged from their huts, their screams echoing through the night.`;
+            message += `${actualDeaths} villagers are dragged from their huts, their screams echoing through the night.`;
           }
 
           message += ` The wolves ransack your supplies, consuming ${foodLoss} food.`;
@@ -295,6 +298,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
               state.current_population,
             );
             const deathResult = killVillagers(state, minimalDeaths);
+            const actualDeaths = deathResult.villagersKilled || 0;
 
             return {
               ...deathResult,
@@ -314,9 +318,9 @@ export const villageAttackEvents: Record<string, GameEvent> = {
                 },
               },
               _logMessage:
-                minimalDeaths === 1
+                actualDeaths === 1
                   ? `The villagers drive back the cannibals! One villager falls in the battle, but the tribe retreats in defeat. Among the bodies, you find a primitive necklace made of human bones and 500 silver.`
-                  : `The villagers fight valiantly and repel the cannibals! ${minimalDeaths} villagers fall in the battle, but the tribe is forced to retreat. Among the bodies, you find a primitive necklace made of human bones and 500 silver.`,
+                  : `The villagers fight valiantly and repel the cannibals! ${actualDeaths} villagers fall in the battle, but the tribe is forced to retreat. Among the bodies, you find a primitive necklace made of human bones and 500 silver.`,
             };
           }
 
@@ -353,16 +357,17 @@ export const villageAttackEvents: Record<string, GameEvent> = {
 
           // Apply deaths to villagers
           const deathResult = killVillagers(state, totalLost);
+          const actualLost = deathResult.villagersKilled || 0;
 
           // Construct result message
           let message = "The cannibals overwhelm your defenses. ";
 
-          if (totalLost === 0) {
+          if (actualLost === 0) {
             message += "The villagers manage to survive, though barely.";
-          } else if (totalLost === 1) {
+          } else if (actualLost === 1) {
             message += "One villager is abducted by the cannibals.";
           } else {
-            message += `${totalLost} villagers are killed or abducted by the cannibals.`;
+            message += `${actualLost} villagers are killed or abducted by the cannibals.`;
           }
 
           if (silverLoss > 0 || foodLoss > 0) {
