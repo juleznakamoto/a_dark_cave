@@ -1,8 +1,8 @@
 
 import { describe, it, expect, beforeEach } from 'vitest';
 import { GameState } from '@shared/schema';
-import { villageAttackEvents } from './eventsVillageAttacks';
 import { killVillagers } from '@/game/stateHelpers';
+import { getTotalEventDeathReduction } from './effectsCalculation';
 
 describe('Ashen Greatshield Event Death Reduction', () => {
   let mockState: GameState;
@@ -70,13 +70,11 @@ describe('Ashen Greatshield Event Death Reduction', () => {
       events: {},
       log: [],
       story: { 
-        seen: {
-          ashenGreatshieldTest: false,
-        } 
+        seen: {} 
       },
       relics: {},
       weapons: {
-        ashen_greatshield: true, // Equipped
+        ashen_greatshield: false,
       },
       tools: {},
       clothing: {},
@@ -129,81 +127,120 @@ describe('Ashen Greatshield Event Death Reduction', () => {
     } as GameState;
   });
 
-  it('should trigger test event when Ashen Greatshield is equipped', () => {
-    const event = villageAttackEvents.testAshenGreatshield;
-    
-    expect(event.condition(mockState)).toBe(true);
+  describe('getTotalEventDeathReduction', () => {
+    it('should return 0 when Ashen Greatshield is not equipped', () => {
+      const reduction = getTotalEventDeathReduction(mockState);
+      expect(reduction).toBe(0);
+    });
+
+    it('should return 0.25 when Ashen Greatshield is equipped', () => {
+      mockState.weapons.ashen_greatshield = true;
+      const reduction = getTotalEventDeathReduction(mockState);
+      expect(reduction).toBe(0.25);
+    });
   });
 
-  it('should not trigger if shield is not equipped', () => {
-    mockState.weapons.ashen_greatshield = false;
-    const event = villageAttackEvents.testAshenGreatshield;
-    
-    expect(event.condition(mockState)).toBe(false);
-  });
+  describe('killVillagers with Ashen Greatshield', () => {
+    it('should not reduce deaths when shield is not equipped', () => {
+      const deathCount = 10;
+      const result = killVillagers(mockState, deathCount);
+      
+      expect(result.villagersKilled).toBe(10);
+    });
 
-  it('should not trigger if already seen', () => {
-    mockState.story.seen.ashenGreatshieldTest = true;
-    const event = villageAttackEvents.testAshenGreatshield;
-    
-    expect(event.condition(mockState)).toBe(false);
-  });
+    it('should reduce deaths by 25% when shield is equipped', () => {
+      mockState.weapons.ashen_greatshield = true;
+      const deathCount = 10;
+      const result = killVillagers(mockState, deathCount);
+      
+      // 10 * 0.75 = 7.5, ceil(7.5) = 8
+      expect(result.villagersKilled).toBe(8);
+    });
 
-  it('should reduce deaths by 25% with Ashen Greatshield', () => {
-    const event = villageAttackEvents.testAshenGreatshield;
-    const choice = event.choices![0];
-    
-    // Run the test multiple times to verify average reduction
-    const results: number[] = [];
-    const baseDeaths = 10;
-    
-    for (let i = 0; i < 100; i++) {
-      const testState = { ...mockState };
-      const result = choice.effect!(testState);
-      results.push(result.villagersKilled || 0);
-    }
-    
-    // Calculate average deaths
-    const avgDeaths = results.reduce((sum, deaths) => sum + deaths, 0) / results.length;
-    
-    // Expected deaths with 25% reduction: 10 * 0.75 = 7.5
-    // Allow some variance due to random distribution in killVillagers
-    expect(avgDeaths).toBeGreaterThanOrEqual(6.5);
-    expect(avgDeaths).toBeLessThanOrEqual(8.5);
-  });
+    it('should round up partial deaths after reduction', () => {
+      mockState.weapons.ashen_greatshield = true;
+      
+      // Test with 9 deaths: 9 * 0.75 = 6.75, ceil(6.75) = 7
+      let result = killVillagers(mockState, 9);
+      expect(result.villagersKilled).toBe(7);
+      
+      // Test with 7 deaths: 7 * 0.75 = 5.25, ceil(5.25) = 6
+      result = killVillagers(mockState, 7);
+      expect(result.villagersKilled).toBe(6);
+    });
 
-  it('should mark event as seen after completion', () => {
-    const event = villageAttackEvents.testAshenGreatshield;
-    const choice = event.choices![0];
-    
-    const result = choice.effect!(mockState);
-    
-    expect(result.story?.seen?.ashenGreatshieldTest).toBe(true);
-  });
+    it('should handle edge case of 1 death', () => {
+      mockState.weapons.ashen_greatshield = true;
+      const result = killVillagers(mockState, 1);
+      
+      // 1 * 0.75 = 0.75, ceil(0.75) = 1
+      expect(result.villagersKilled).toBe(1);
+    });
 
-  it('should include damage reduction info in log message', () => {
-    const event = villageAttackEvents.testAshenGreatshield;
-    const choice = event.choices![0];
-    
-    const result = choice.effect!(mockState);
-    
-    expect(result._logMessage).toContain('25% reduction');
-    expect(result._logMessage).toContain('Base casualties: 10');
-    expect(result._logMessage).toContain('Actual deaths after');
-  });
+    it('should handle edge case of 2 deaths', () => {
+      mockState.weapons.ashen_greatshield = true;
+      const result = killVillagers(mockState, 2);
+      
+      // 2 * 0.75 = 1.5, ceil(1.5) = 2
+      expect(result.villagersKilled).toBe(2);
+    });
 
-  it('should verify killVillagers applies death reduction correctly', () => {
-    // Test that killVillagers respects the eventDeathReduction from the shield
-    const deathCount = 10;
-    const result = killVillagers(mockState, deathCount);
-    
-    // With 25% reduction, 10 deaths should be reduced to ~7-8
-    const actualDeaths = result.villagersKilled || 0;
-    
-    // The reduction should be noticeable
-    expect(actualDeaths).toBeLessThan(deathCount);
-    // Should be around 7-8 deaths (10 * 0.75 = 7.5, rounded up to 8)
-    expect(actualDeaths).toBeGreaterThanOrEqual(6);
-    expect(actualDeaths).toBeLessThanOrEqual(8);
+    it('should handle edge case of 4 deaths', () => {
+      mockState.weapons.ashen_greatshield = true;
+      const result = killVillagers(mockState, 4);
+      
+      // 4 * 0.75 = 3, ceil(3) = 3
+      expect(result.villagersKilled).toBe(3);
+    });
+
+    it('should save exactly 2 villagers on 8 deaths', () => {
+      mockState.weapons.ashen_greatshield = true;
+      const result = killVillagers(mockState, 8);
+      
+      // 8 * 0.75 = 6, ceil(6) = 6 (saves 2 lives)
+      expect(result.villagersKilled).toBe(6);
+    });
+
+    it('should save exactly 5 villagers on 20 deaths', () => {
+      mockState.weapons.ashen_greatshield = true;
+      const result = killVillagers(mockState, 20);
+      
+      // 20 * 0.75 = 15, ceil(15) = 15 (saves 5 lives)
+      expect(result.villagersKilled).toBe(15);
+    });
+
+    it('should update villager counts correctly after reduction', () => {
+      mockState.weapons.ashen_greatshield = true;
+      mockState.villagers.free = 10;
+      mockState.villagers.gatherer = 5;
+      mockState.villagers.hunter = 3;
+      
+      const result = killVillagers(mockState, 10);
+      
+      // 10 * 0.75 = 7.5, ceil(7.5) = 8 deaths
+      expect(result.villagersKilled).toBe(8);
+      
+      // Should kill all 10 free villagers first, but only need to kill 8 total
+      expect(result.villagers?.free).toBe(2);
+      expect(result.villagers?.gatherer).toBe(5);
+      expect(result.villagers?.hunter).toBe(3);
+    });
+
+    it('should kill from other job types after free villagers when reduction applies', () => {
+      mockState.weapons.ashen_greatshield = true;
+      mockState.villagers.free = 5;
+      mockState.villagers.gatherer = 10;
+      mockState.villagers.hunter = 5;
+      
+      const result = killVillagers(mockState, 12);
+      
+      // 12 * 0.75 = 9, ceil(9) = 9 deaths
+      expect(result.villagersKilled).toBe(9);
+      
+      // Should kill all 5 free villagers, then 4 more from gatherer/hunter
+      expect(result.villagers?.free).toBe(0);
+      const totalRemaining = (result.villagers?.gatherer || 0) + (result.villagers?.hunter || 0);
+      expect(totalRemaining).toBe(11); // 15 - 4 = 11
+    });
   });
 });
