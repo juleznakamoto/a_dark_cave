@@ -1,6 +1,7 @@
 import { GameState } from "@shared/schema";
 import { getMaxPopulation } from "./population";
 import { isResourceLimited, getResourceLimit } from "./resourceLimits";
+import { getTotalGeneralBonuses } from './rules/effectsCalculation';
 
 export function updateResource(
   state: GameState,
@@ -114,7 +115,6 @@ export function killVillagers(state: GameState, deathCount: number): Partial<Gam
   if (deathCount <= 0) return { villagersKilled: 0 };
 
   // Apply eventDeathReduction bonus if available
-  import { getTotalGeneralBonuses } from './rules/effectsCalculation';
   const generalBonuses = getTotalGeneralBonuses(state);
   const reductionRate = generalBonuses.eventDeathReduction || 0;
   let actualDeaths = deathCount;
