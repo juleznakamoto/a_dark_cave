@@ -295,8 +295,7 @@ export const getActionBonuses = (
       if (effect.bonuses.actionBonuses?.caveExplore) {
         const caveBonus = effect.bonuses.actionBonuses.caveExplore;
         if (caveBonus.resourceMultiplier) {
-          // Additive: sum the bonus percentages
-          resourceMultiplier += caveBonus.resourceMultiplier - 1;
+          // Only add to caveExploreMultiplier, not resourceMultiplier (to avoid double-counting)
           caveExploreMultiplier += caveBonus.resourceMultiplier - 1;
         }
         if (caveBonus.cooldownReduction) {
