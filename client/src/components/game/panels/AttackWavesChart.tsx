@@ -54,8 +54,22 @@ export default function AttackWavesChart() {
         state.idleModeDialog?.isOpen;
       const isGamePaused = state.isPaused || isDialogOpen;
 
+      console.log('[ATTACK WAVES] Timer update check:', {
+        isPaused: state.isPaused,
+        eventDialogOpen: state.eventDialog?.isOpen,
+        combatDialogOpen: state.combatDialog?.isOpen,
+        authDialogOpen: state.authDialogOpen,
+        shopDialogOpen: state.shopDialogOpen,
+        leaderboardDialogOpen: state.leaderboardDialogOpen,
+        idleModeDialogOpen: state.idleModeDialog?.isOpen,
+        isDialogOpen,
+        isGamePaused,
+        willSkipUpdate: isGamePaused
+      });
+
       // Don't update timers when paused
       if (isGamePaused) {
+        console.log('[ATTACK WAVES] Skipping timer update - game is paused');
         return;
       }
 
@@ -67,9 +81,17 @@ export default function AttackWavesChart() {
           const elapsed = now - timer.startTime;
           const remaining = Math.max(0, timer.duration - elapsed);
           newTimeRemaining[waveId] = remaining;
+          console.log(`[ATTACK WAVES] ${waveId} timer:`, {
+            startTime: timer.startTime,
+            duration: timer.duration,
+            elapsed,
+            remaining,
+            formattedRemaining: formatTime(remaining)
+          });
         }
       });
 
+      console.log('[ATTACK WAVES] Updating timeRemaining state:', newTimeRemaining);
       setTimeRemaining(newTimeRemaining);
     }, 1000);
 
