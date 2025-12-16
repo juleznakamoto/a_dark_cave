@@ -429,10 +429,6 @@ export const createInitialState = (): GameState => ({
   // Achievements
   unlockedAchievements: [],
   claimedAchievements: [],
-
-  // Game completion tracking
-  game_stats: [],
-  hasWonAnyGame: false,
 });
 
 const defaultGameState: GameState = createInitialState();
@@ -793,8 +789,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
       // Preserve hasWonAnyGame across restarts
       hasWonAnyGame: state.hasWonAnyGame || false,
 
-      // Preserve detected currency across restarts
-      detectedCurrency: state.detectedCurrency,
+      // Preserve detected currency across restarts (persists forever)
+      detectedCurrency: state.detectedCurrency || null,
 
       // Enable resource limits for new games
       flags: {
