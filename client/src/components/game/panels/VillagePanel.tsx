@@ -25,13 +25,7 @@ import { capitalizeWords } from "@/lib/utils";
 import { useState, useEffect } from "react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { useMobileTooltip } from "@/hooks/useMobileTooltip";
+import { StatusIndicator } from "./StatusIndicator";
 
 export default function VillagePanel() {
   const {
@@ -44,7 +38,6 @@ export default function VillagePanel() {
     setHighlightedResources,
   } = useGameStore();
   const state = useGameStore.getState();
-  const mobileTooltip = useMobileTooltip();
 
   // Get progress from game loop state
   const loopProgress = useGameStore((state) => state.loopProgress);
@@ -427,280 +420,92 @@ export default function VillagePanel() {
           <div className="space-y-2">
             <div className="flex items-center gap-2">
               <h3 className="text-xs font-bold text-foreground">Rule</h3>
-              {/* Feast Timer */}
               {(() => {
                 const feastState = useGameStore.getState().feastState;
                 const greatFeastState = useGameStore.getState().greatFeastState;
                 const curseState = useGameStore.getState().curseState;
-                const miningBoostState =
-                  useGameStore.getState().miningBoostState;
-                const frostfallState = useGameStore.getState().frostfallState; // Assume frostfallState exists
-                const isGreatFeast =
-                  greatFeastState?.isActive &&
-                  greatFeastState.endTime > Date.now();
-                const isFeast =
-                  feastState?.isActive && feastState.endTime > Date.now();
-                const isCursed =
-                  curseState?.isActive && curseState.endTime > Date.now();
-                const isMiningBoosted =
-                  miningBoostState?.isActive &&
-                  miningBoostState.endTime > Date.now();
-                const isFrostfall =
-                  frostfallState?.isActive &&
-                  frostfallState.endTime > Date.now();
+                const miningBoostState = useGameStore.getState().miningBoostState;
+                const frostfallState = useGameStore.getState().frostfallState;
+                const fogState = useGameStore.getState().fogState;
+
+                const isGreatFeast = greatFeastState?.isActive && greatFeastState.endTime > Date.now();
+                const isFeast = feastState?.isActive && feastState.endTime > Date.now();
+                const isCursed = curseState?.isActive && curseState.endTime > Date.now();
+                const isMiningBoosted = miningBoostState?.isActive && miningBoostState.endTime > Date.now();
+                const isFrostfall = frostfallState?.isActive && frostfallState.endTime > Date.now();
+                const isFog = fogState?.isActive && fogState.endTime > Date.now();
 
                 return (
                   <>
-                    {/* Feast/Great Feast Indicator */}
                     {(isGreatFeast || isFeast) && (
-                      <TooltipProvider>
-                        <Tooltip
-                          open={mobileTooltip.isTooltipOpen("feast-progress")}
-                        >
-                          <TooltipTrigger asChild>
-                            <div
-                              className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
-                              onClick={(e) =>
-                                mobileTooltip.handleTooltipClick(
-                                  "feast-progress",
-                                  e,
-                                )
-                              }
-                            >
-                              <div className="relative inline-flex items-center gap-1 mt-[0px]">
-                                <CircularProgress
-                                  value={feastProgress}
-                                  size={18}
-                                  strokeWidth={2}
-                                  className={
-                                    isGreatFeast
-                                      ? "text-orange-600"
-                                      : "text-yellow-600"
-                                  }
-                                />
-                                <span
-                                  className={`absolute inset-0 flex items-center justify-center font-extrabold ${isGreatFeast ? "text-[12px] -mt-[0px] text-orange-600" : "text-[12px] -mt-[1px] text-yellow-600"}`}
-                                >
-                                  {isGreatFeast ? "✦" : "⟡"}
-                                </span>
-                              </div>
-                            </div>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <div className="text-xs">
-                              {feastTooltip.getContent(state)}
-                            </div>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
+                      <StatusIndicator
+                        id="feast-progress"
+                        progress={feastProgress}
+                        color={isGreatFeast ? "text-orange-600" : "text-yellow-600"}
+                        icon={isGreatFeast ? "✦" : "⟡"}
+                        tooltipContent={feastTooltip.getContent(state)}
+                      />
                     )}
 
-                    {/* Curse Indicator */}
                     {isCursed && (
-                      <TooltipProvider>
-                        <Tooltip
-                          open={mobileTooltip.isTooltipOpen("curse-progress")}
-                        >
-                          <TooltipTrigger asChild>
-                            <div
-                              className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
-                              onClick={(e) =>
-                                mobileTooltip.handleTooltipClick(
-                                  "curse-progress",
-                                  e,
-                                )
-                              }
-                            >
-                              <div className="relative inline-flex items-center gap-1 mt-[0px]">
-                                <CircularProgress
-                                  value={(() => {
-                                    const timeRemaining = Math.max(
-                                      0,
-                                      curseState.endTime - Date.now(),
-                                    );
-                                    const totalDuration =
-                                      (10 + 5 * state.CM) * 60 * 1000;
-                                    const elapsed =
-                                      totalDuration - timeRemaining;
-                                    return Math.min(
-                                      100,
-                                      (elapsed / totalDuration) * 100,
-                                    );
-                                  })()}
-                                  size={18}
-                                  strokeWidth={2}
-                                  className="text-purple-600"
-                                />
-                                <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[12px] -mt-[0px] text-purple-600">
-                                  ✶
-                                </span>
-                              </div>
-                            </div>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <div className="text-xs whitespace-pre-line">
-                              {curseTooltip.getContent(state)}
-                            </div>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
+                      <StatusIndicator
+                        id="curse-progress"
+                        progress={(() => {
+                          const timeRemaining = Math.max(0, curseState.endTime - Date.now());
+                          const totalDuration = (10 + 5 * state.CM) * 60 * 1000;
+                          const elapsed = totalDuration - timeRemaining;
+                          return Math.min(100, (elapsed / totalDuration) * 100);
+                        })()}
+                        color="text-purple-600"
+                        icon="✶"
+                        tooltipContent={curseTooltip.getContent(state)}
+                      />
                     )}
 
-                    {/* Mining Boost Indicator */}
                     {isMiningBoosted && (
-                      <TooltipProvider>
-                        <Tooltip
-                          open={mobileTooltip.isTooltipOpen(
-                            "mining-boost-progress",
-                          )}
-                        >
-                          <TooltipTrigger asChild>
-                            <div
-                              className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
-                              onClick={(e) =>
-                                mobileTooltip.handleTooltipClick(
-                                  "mining-boost-progress",
-                                  e,
-                                )
-                              }
-                            >
-                              <div className="relative inline-flex items-center gap-1 mt-[0px]">
-                                <CircularProgress
-                                  value={(() => {
-                                    const boostDuration = 30 * 60 * 1000;
-                                    const boostElapsed =
-                                      boostDuration -
-                                      (miningBoostState.endTime - Date.now());
-                                    return (boostElapsed / boostDuration) * 100;
-                                  })()}
-                                  size={18}
-                                  strokeWidth={2}
-                                  className="text-amber-600"
-                                />
-                                <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[7px] -mt-[0px] text-amber-600">
-                                  ⛰
-                                </span>
-                              </div>
-                            </div>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <div className="text-xs whitespace-pre-line">
-                              {miningBoostTooltip.getContent(state)}
-                            </div>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
+                      <StatusIndicator
+                        id="mining-boost-progress"
+                        progress={(() => {
+                          const boostDuration = 30 * 60 * 1000;
+                          const boostElapsed = boostDuration - (miningBoostState.endTime - Date.now());
+                          return (boostElapsed / boostDuration) * 100;
+                        })()}
+                        color="text-amber-600"
+                        icon="⛰"
+                        iconSize="text-[7px]"
+                        tooltipContent={miningBoostTooltip.getContent(state)}
+                      />
                     )}
 
-                    {/* Frostfall Indicator */}
                     {isFrostfall && (
-                      <TooltipProvider>
-                        <Tooltip
-                          open={mobileTooltip.isTooltipOpen(
-                            "frostfall-progress",
-                          )}
-                        >
-                          <TooltipTrigger asChild>
-                            <div
-                              className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
-                              onClick={(e) =>
-                                mobileTooltip.handleTooltipClick(
-                                  "frostfall-progress",
-                                  e,
-                                )
-                              }
-                            >
-                              <div className="relative inline-flex items-center gap-1 mt-[0px]">
-                                <CircularProgress
-                                  value={(() => {
-                                    const frostfallDuration =
-                                      (10 + 5 * state.CM) * 60 * 1000; // Same duration as curse, adjust if needed
-                                    const timeRemaining = Math.max(
-                                      0,
-                                      frostfallState.endTime - Date.now(),
-                                    );
-                                    const elapsed =
-                                      frostfallDuration - timeRemaining;
-                                    return Math.min(
-                                      100,
-                                      (elapsed / frostfallDuration) * 100,
-                                    );
-                                  })()}
-                                  size={18}
-                                  strokeWidth={2}
-                                  className="text-blue-600" // Blue color for frostfall
-                                />
-                                <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[12px] -mt-[0px] text-blue-600">
-                                  ✼
-                                </span>
-                              </div>
-                            </div>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <div className="text-xs">
-                              {frostfallTooltip.getContent(state)}
-                            </div>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
+                      <StatusIndicator
+                        id="frostfall-progress"
+                        progress={(() => {
+                          const frostfallDuration = (10 + 5 * state.CM) * 60 * 1000;
+                          const timeRemaining = Math.max(0, frostfallState.endTime - Date.now());
+                          const elapsed = frostfallDuration - timeRemaining;
+                          return Math.min(100, (elapsed / frostfallDuration) * 100);
+                        })()}
+                        color="text-blue-600"
+                        icon="✼"
+                        tooltipContent={frostfallTooltip.getContent(state)}
+                      />
                     )}
 
-                    {/* Fog Indicator */}
-                    {(() => {
-                      const fogState = useGameStore.getState().fogState;
-                      const isFog =
-                        fogState?.isActive && fogState.endTime > Date.now();
-                      
-                      if (!isFog) return null;
-                      
-                      return (
-                        <TooltipProvider>
-                          <Tooltip
-                            open={mobileTooltip.isTooltipOpen("fog-progress")}
-                          >
-                            <TooltipTrigger asChild>
-                              <div
-                                className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
-                                onClick={(e) =>
-                                  mobileTooltip.handleTooltipClick(
-                                    "fog-progress",
-                                    e,
-                                  )
-                                }
-                              >
-                                <div className="relative inline-flex items-center gap-1 mt-[0px]">
-                                  <CircularProgress
-                                    value={(() => {
-                                      const fogDuration = fogState.duration || 5 * 60 * 1000;
-                                      const timeRemaining = Math.max(
-                                        0,
-                                        fogState.endTime - Date.now(),
-                                      );
-                                      const elapsed = fogDuration - timeRemaining;
-                                      return Math.min(
-                                        100,
-                                        (elapsed / fogDuration) * 100,
-                                      );
-                                    })()}
-                                    size={18}
-                                    strokeWidth={2}
-                                    className="text-gray-500"
-                                  />
-                                  <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[12px] -mt-[0px] text-gray-500">
-                                    ≋
-                                  </span>
-                                </div>
-                              </div>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <div className="text-xs">
-                                {fogTooltip.getContent(state)}
-                              </div>
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
-                      );
-                    })()}
+                    {isFog && (
+                      <StatusIndicator
+                        id="fog-progress"
+                        progress={(() => {
+                          const fogDuration = fogState.duration || 5 * 60 * 1000;
+                          const timeRemaining = Math.max(0, fogState.endTime - Date.now());
+                          const elapsed = fogDuration - timeRemaining;
+                          return Math.min(100, (elapsed / fogDuration) * 100);
+                        })()}
+                        color="text-gray-500"
+                        icon="≋"
+                        tooltipContent={fogTooltip.getContent(state)}
+                      />
+                    )}
                   </>
                 );
               })()}
