@@ -518,30 +518,32 @@ export default function CombatDialog({
                 <DialogTitle className="text-lg font-semibold">
                   Combat - Round {round}
                 </DialogTitle>
-                <TooltipProvider>
-                  <Tooltip
-                    open={luckTooltip.isTooltipOpen("combat-luck")}
-                  >
-                    <TooltipTrigger asChild>
-                      <span
-                        className="text-green-300/80 cursor-pointer hover:text-green-300 transition-colors inline-block text-xl"
-                        onClick={(e) =>
-                          luckTooltip.handleTooltipClick(
-                            "combat-luck",
-                            e,
-                          )
-                        }
-                      >
-                        ☆
-                      </span>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <div className="text-xs whitespace-nowrap">
-                        {calculateCriticalStrikeChance(getTotalLuck(gameState))}% critical strike chance due to Luck{getTotalLuck(gameState) >= 50 ? " (max)" : ""}
-                      </div>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
+                {calculateCriticalStrikeChance(getTotalLuck(gameState)) > 0 && (
+                  <TooltipProvider>
+                    <Tooltip
+                      open={luckTooltip.isTooltipOpen("combat-luck")}
+                    >
+                      <TooltipTrigger asChild>
+                        <span
+                          className="text-green-300/80 cursor-pointer hover:text-green-300 transition-colors inline-block text-xl"
+                          onClick={(e) =>
+                            luckTooltip.handleTooltipClick(
+                              "combat-luck",
+                              e,
+                            )
+                          }
+                        >
+                          ☆
+                        </span>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <div className="text-xs whitespace-nowrap">
+                          {calculateCriticalStrikeChance(getTotalLuck(gameState))}% critical strike chance due to Luck{getTotalLuck(gameState) >= 50 ? " (max)" : ""}
+                        </div>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                )}
               </div>
             </DialogHeader>
 
