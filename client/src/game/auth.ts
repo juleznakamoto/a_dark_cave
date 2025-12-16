@@ -1,6 +1,7 @@
 import { getSupabaseClient } from '@/lib/supabase';
 import { GameState } from '@shared/schema';
 import { logger } from '@/lib/logger';
+import { Json } from '@shared/schema/helpers';
 
 // Define SaveData interface here to avoid circular dependency if it's in schema
 // If SaveData is already defined elsewhere and accessible, this can be removed.
@@ -214,12 +215,26 @@ export async function signOut() {
 
 export async function getCurrentUser(): Promise<AuthUser | null> {
   try {
-    const supabase = await getSupabaseClient();
-    const { data: { user }, error } = await supabase.auth.getUser();
+    const { getCachedAuthUser, isAuthStateReady } = await import('@/lib/supabase');
 
-    if (error) {
-      return null;
+    // Wait for auth state to be initialized
+    if (!isAuthStateReady()) {
+      // Fallback to API call if cache not ready yet
+      const supabase = await getSupabaseClient();
+      const { data: { user }, error } = await supabase.auth.getUser();
+
+      if (error || !user || !user.email_confirmed_at) {
+        return null;
+      }
+
+      return {
+        id: user.id,
+        email: user.email || '',
+      };
     }
+
+    // Use cached auth state - no API call needed!
+    const user = getCachedAuthUser();
 
     if (!user) return null;
 

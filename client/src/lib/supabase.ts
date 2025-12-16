@@ -6,6 +6,11 @@ const isDev = import.meta.env.MODE === 'development';
 
 let supabaseClient: SupabaseClient | null = null;
 let initPromise: Promise<SupabaseClient> | null = null;
+let authStateListenerSetup = false;
+
+// Cached auth state
+let cachedAuthUser: any | null = null;
+let authStateInitialized = false;
 
 // Function to initialize Supabase
 async function initializeSupabase(): Promise<SupabaseClient> {
@@ -58,11 +63,39 @@ export async function getSupabaseClient(): Promise<SupabaseClient> {
   if (!initPromise) {
     initPromise = initializeSupabase().then(client => {
       supabaseClient = client;
+      
+      // Setup auth state listener once
+      if (!authStateListenerSetup) {
+        authStateListenerSetup = true;
+        
+        // Listen to auth state changes
+        client.auth.onAuthStateChange((_event, session) => {
+          cachedAuthUser = session?.user || null;
+          authStateInitialized = true;
+        });
+        
+        // Initialize current session
+        client.auth.getSession().then(({ data: { session } }) => {
+          cachedAuthUser = session?.user || null;
+          authStateInitialized = true;
+        });
+      }
+      
       return client;
     });
   }
 
   return initPromise;
+}
+
+// Get cached auth user without making API call
+export function getCachedAuthUser(): any | null {
+  return cachedAuthUser;
+}
+
+// Check if auth state is initialized
+export function isAuthStateReady(): boolean {
+  return authStateInitialized;
 }
 
 // Export a wrapper object that provides the same interface as SupabaseClient
