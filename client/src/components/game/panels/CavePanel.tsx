@@ -49,6 +49,7 @@ export default function CavePanel() {
             { id: "blastPortal", label: "Blast Portal" },
             { id: "encounterBeyondPortal", label: "Venture Beyond Portal" },
             { id: "exploreUndergroundLake", label: "Underground Lake" },
+            { id: "lureLakeCreature", label: "Lure Lake Creature" },
           ],
         },
       ],

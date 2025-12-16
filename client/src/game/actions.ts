@@ -216,6 +216,8 @@ export function executeGameAction(
       return handleEncounterBeyondPortal(state, result);
     case "exploreUndergroundLake":
       return handleExploreUndergroundLake(state, result);
+    case "lureLakeCreature":
+      return handleLureLakeCreature(state, result);
 
     // Cave Craft Actions
     case "craftTorch":

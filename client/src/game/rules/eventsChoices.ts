@@ -1725,6 +1725,40 @@ export const choiceEvents: Record<string, GameEvent> = {
     ],
   },
 
+  undergroundLakeCreature: {
+    id: "undergroundLakeCreature",
+    condition: (state: GameState) =>
+      state.story.seen.undergroundLakeExplored &&
+      !state.story.seen.undergroundLakeCreatureDiscovered,
+    triggerType: "resource",
+    timeProbability: 5,
+    title: "Something Beneath",
+    message:
+      "During the exploration of the underground lake, you think you saw something under the surface, something very big. Maybe you can lure it out with a trap.",
+    triggered: false,
+    priority: 4,
+    repeatable: false,
+    choices: [
+      {
+        id: "acknowledgeLakeCreature",
+        label: "Acknowledge",
+        effect: (state: GameState) => {
+          return {
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                undergroundLakeCreatureDiscovered: true,
+              },
+            },
+            _logMessage:
+              "You decide to prepare a trap to lure out whatever lurks in the depths of the underground lake.",
+          };
+        },
+      },
+    ],
+  },
+
   boneTempleProposal: {
     id: "boneTempleProposal",
     condition: (state: GameState) =>

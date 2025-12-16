@@ -344,6 +344,28 @@ export const caveExploreActions: Record<string, Action> = {
     cooldown: 1,
   },
 
+  lureLakeCreature: {
+    id: "lureLakeCreature",
+    label: "Lure Creature",
+    show_when: {
+      "story.seen.undergroundLakeExplored": true,
+      "story.seen.lakeCreatureLured": false,
+      "story.seen.timprobability": 5,
+    },
+    cost: {
+      "resources.food": 1000,
+      "resources.wood": 2000,
+      "resources.iron": 200
+    },
+    effects: {
+      "story.seen.lakeCreatureLured": true,
+      "resources.gold": "random(50, 100)",
+      "resources.adamant": "random(50, 75)",
+      "resources.obsidian": "random(75, 100)",
+    },
+    cooldown: 1,
+  },
+
   blastPortal: {
     id: "blastPortal",
     label: "Blast Portal",
@@ -769,7 +791,29 @@ export function handleExploreUndergroundLake(
   result.logEntries!.push({
     id: `underground-lake-explored-${Date.now()}`,
     message:
-      "With the skull lantern’s grim glow, you descend to the underground lake and build a small boat. On a tiny island in the middle of the dark lake, forgotten treasures lie in shadow, untouched for ages.",
+      "Using the skull lantern's grim glow, you descend to the underground lake and build a small boat. On a tiny island in the middle of the dark lake, forgotten treasures lie in shadow, untouched for ages.",
+    timestamp: Date.now(),
+    type: "system",
+    visualEffect: {
+      type: "glow",
+      duration: 3,
+    },
+  });
+
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+export function handleLureLakeCreature(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("lureLakeCreature", state);
+
+  result.logEntries!.push({
+    id: `lake-creature-lured-${Date.now()}`,
+    message:
+      "You construct a massive trap baited with fresh meat at the edge of the underground lake. After hours of waiting, the water erupts as an enormous creature surges from the depths. The battle is fierce, but your trap holds. When the beast finally falls, you discover ancient treasures embedded in its hide and scattered around its lair.",
     timestamp: Date.now(),
     type: "system",
     visualEffect: {
