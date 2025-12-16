@@ -68,10 +68,6 @@ export default function AuthDialog({ isOpen, onClose, onAuthSuccess }: AuthDialo
         const referralCode = getReferralCode();
         await signUp(email, password, referralCode || undefined);
         setSignupSuccess(true);
-        toast({
-          title: 'Account created',
-          description: 'Please check your email to verify your account. Also look in spam folder.',
-        });
       } else if (mode === 'reset') {
         const { resetPassword } = await import('@/game/auth');
         await resetPassword(email);
