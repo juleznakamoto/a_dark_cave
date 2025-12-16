@@ -1,6 +1,7 @@
 
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { logger } from '@/lib/logger';
+import { supabaseMonitor } from '@/lib/supabaseMonitor';
 
 const isDev = import.meta.env.MODE === 'development';
 
@@ -70,40 +71,67 @@ export async function getSupabaseClient(): Promise<SupabaseClient> {
 export const supabase = {
   auth: {
     getUser: async () => {
+      const start = performance.now();
       const client = await getSupabaseClient();
-      return client.auth.getUser();
+      const result = await client.auth.getUser();
+      supabaseMonitor.logCall('auth.getUser', performance.now() - start, true);
+      return result;
     },
     signUp: async (credentials: any) => {
+      const start = performance.now();
       const client = await getSupabaseClient();
-      return client.auth.signUp(credentials);
+      const result = await client.auth.signUp(credentials);
+      supabaseMonitor.logCall('auth.signUp', performance.now() - start);
+      return result;
     },
     signInWithPassword: async (credentials: any) => {
+      const start = performance.now();
       const client = await getSupabaseClient();
-      return client.auth.signInWithPassword(credentials);
+      const result = await client.auth.signInWithPassword(credentials);
+      supabaseMonitor.logCall('auth.signInWithPassword', performance.now() - start);
+      return result;
     },
     signOut: async () => {
+      const start = performance.now();
       const client = await getSupabaseClient();
-      return client.auth.signOut();
+      const result = await client.auth.signOut();
+      supabaseMonitor.logCall('auth.signOut', performance.now() - start);
+      return result;
     },
     resetPasswordForEmail: async (email: string, options?: any) => {
+      const start = performance.now();
       const client = await getSupabaseClient();
-      return client.auth.resetPasswordForEmail(email, options);
+      const result = await client.auth.resetPasswordForEmail(email, options);
+      supabaseMonitor.logCall('auth.resetPasswordForEmail', performance.now() - start);
+      return result;
     },
     updateUser: async (attributes: any) => {
+      const start = performance.now();
       const client = await getSupabaseClient();
-      return client.auth.updateUser(attributes);
+      const result = await client.auth.updateUser(attributes);
+      supabaseMonitor.logCall('auth.updateUser', performance.now() - start);
+      return result;
     },
     getSession: async () => {
+      const start = performance.now();
       const client = await getSupabaseClient();
-      return client.auth.getSession();
+      const result = await client.auth.getSession();
+      supabaseMonitor.logCall('auth.getSession', performance.now() - start, true);
+      return result;
     },
     refreshSession: async () => {
+      const start = performance.now();
       const client = await getSupabaseClient();
-      return client.auth.refreshSession();
+      const result = await client.auth.refreshSession();
+      supabaseMonitor.logCall('auth.refreshSession', performance.now() - start);
+      return result;
     },
     verifyOtp: async (params: any) => {
+      const start = performance.now();
       const client = await getSupabaseClient();
-      return client.auth.verifyOtp(params);
+      const result = await client.auth.verifyOtp(params);
+      supabaseMonitor.logCall('auth.verifyOtp', performance.now() - start);
+      return result;
     }
   },
   from: (table: string) => {

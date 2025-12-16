@@ -22,6 +22,7 @@ import ProfileMenu from "./ProfileMenu"; // Imported ProfileMenu
 import { startVersionCheck, stopVersionCheck } from "@/game/versionCheck";
 import { logger } from "@/lib/logger";
 import { toast } from "@/hooks/use-toast";
+import { DevPanel } from './DevPanel';
 
 export default function GameContainer() {
   const {
@@ -388,6 +389,7 @@ export default function GameContainer() {
       <CubeDialog />
       {inactivityDialogOpen && <InactivityDialog />}
       <ProfileMenu />
+      <DevPanel />
     </div>
   );
 }
