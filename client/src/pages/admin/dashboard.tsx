@@ -409,14 +409,8 @@ export default function AdminDashboard() {
 
       const activeUserIds = new Set<string>();
 
-      clickData.forEach((entry) => {
-        const entryDate = parseISO(entry.timestamp);
-        if (isWithinInterval(entryDate, { start: dayStart, end: dayEnd })) {
-          activeUserIds.add(entry.user_id);
-        }
-      });
-
-      gameSaves.forEach((save) => {
+      // Use ALL game saves (not filtered by timeRange) to get accurate DAU
+      allGameSaves.forEach((save) => {
         const saveDate = parseISO(save.updated_at);
         if (isWithinInterval(saveDate, { start: dayStart, end: dayEnd })) {
           activeUserIds.add(save.user_id);
