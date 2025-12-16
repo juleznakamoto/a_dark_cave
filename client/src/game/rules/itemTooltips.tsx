@@ -54,9 +54,6 @@ export function renderItemTooltip(
               {madnessValue}
             </div>
           )}
-          {effect.bonuses.generalBonuses.madnessReduction && (
-            <div>-{effect.bonuses.generalBonuses.madnessReduction} Madness</div>
-          )}
           {effect.bonuses.generalBonuses.craftingCostReduction && (
             <div>
               Craft Discount: -
@@ -77,7 +74,7 @@ export function renderItemTooltip(
           )}
           {effect.bonuses.generalBonuses.eventDeathReduction && (
             <div>
-              Event Death Reduction: -
+              Villager Deaths in Fights: -
               {Math.floor(
                 effect.bonuses.generalBonuses.eventDeathReduction * 100,
               )}

@@ -53,24 +53,6 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     symbolColor: "text-red-600",
   },
 
-  // skull_lantern: {
-  //   id: "skull_lantern",
-  //   name: "Skull Lantern",
-  //   description:
-  //     "Forged from cursed bone illuminating the deepest depths. Unlocks new cave actions.",
-  //   originalPrice: 499,
-  //   price: 249, // 2.49 €
-  //   rewards: {
-  //     tools: ["skull_lantern"],
-  //   },
-  //   canPurchaseMultipleTimes: false,
-  //   category: "tool",
-  //   activationMessage:
-  //     "The Skull Lantern has been added to your tools! Its eerie light will guide you through the depths.",
-  //   symbol: "❊",
-  //   symbolColor: "text-purple-400",
-  // },
-
   gold_250: {
     id: "gold_250",
     name: "250 Gold",
@@ -203,5 +185,23 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     symbol: "✣",
     symbolColor: "text-rose-600",
     bundleComponents: ["gold_20000", "great_feast_3"], // Component items
+  },
+
+  skull_lantern: {
+    id: "skull_lantern",
+    name: "Skull Lantern",
+    description:
+      "Forged from cursed bone illuminating the deepest depths. Unlocks new cave actions.",
+    originalPrice: 499,
+    price: 249, // 2.49 €
+    rewards: {
+      tools: ["skull_lantern"],
+    },
+    canPurchaseMultipleTimes: false,
+    category: "tool",
+    activationMessage:
+      "The Skull Lantern has been added to your tools! Its eerie light will guide you through the depths.",
+    symbol: "❊",
+    symbolColor: "text-purple-400",
   },
 };
