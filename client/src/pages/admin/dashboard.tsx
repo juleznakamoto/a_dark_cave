@@ -256,17 +256,8 @@ export default function AdminDashboard() {
       if (data.purchases) {
         setRawPurchases(data.purchases);
       }
-      logger.log("Full API response keys:", Object.keys(data));
-      logger.log("DAU field value:", data.dau);
-      logger.log("DAU type:", typeof data.dau);
-      logger.log("DAU is array?", Array.isArray(data.dau));
-      
       if (data.dau) {
-        logger.log("DAU data received, length:", data.dau.length);
-        logger.log("DAU data sample:", data.dau[0]);
         setDauData(data.dau);
-      } else {
-        logger.warn("No DAU data in response - full data:", data);
       }
       if (typeof data.totalUserCount === 'number') {
         setTotalUserCount(data.totalUserCount);
@@ -413,25 +404,15 @@ export default function AdminDashboard() {
 
   // Retention metrics - now using DAU data from database
   const getUserRetention = () => {
-    logger.log("getUserRetention called, dauData length:", dauData.length);
-    logger.log("dauData:", dauData);
-    
     if (dauData.length === 0) {
-      logger.warn("dauData is empty, returning empty array");
       return [];
     }
 
     // Transform database data to chart format
-    const result = dauData.map((record) => {
-      logger.log("Processing DAU record:", record);
-      return {
-        day: format(parseISO(record.date), "MMM dd"),
-        users: record.active_user_count,
-      };
-    });
-    
-    logger.log("getUserRetention result:", result);
-    return result;
+    return dauData.map((record) => ({
+      day: format(parseISO(record.date), "MMM dd"),
+      users: record.active_user_count,
+    }));
   };
 
   // Session length distribution
