@@ -115,7 +115,7 @@ export default function AuthDialog({
                   : "Reset Password"}
           </DialogTitle>
           <DialogDescription>
-            {!signupSuccess
+            {signupSuccess
               ? "Please check your email to verify your account. Also look in spam folder."
               : mode === "signin"
                 ? "Sign in to sync your game across devices"
