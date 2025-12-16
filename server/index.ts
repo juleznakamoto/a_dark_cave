@@ -125,8 +125,8 @@ const getAdminClient = (env: "dev" | "prod" = "dev") => {
 // API endpoint to fetch admin dashboard data (server-side, bypasses RLS)
 app.get("/api/admin/data", async (req, res) => {
   try {
-    // Disable cache for debugging
-    res.set("Cache-Control", "no-store, no-cache, must-revalidate, private");
+    // Cache for 5 minutes to reduce repeated fetches
+    res.set("Cache-Control", "public, max-age=300");
 
     const env = (req.query.env as "dev" | "prod") || "dev";
     const adminClient = getAdminClient(env);
@@ -192,18 +192,13 @@ app.get("/api/admin/data", async (req, res) => {
       log(`📊 Sample DAU data:`, dauResult.data[0]);
     }
 
-    const responseData = {
+    res.json({
       clicks: clicksResult.data,
       saves: savesResult.data,
       purchases: purchasesResult.data,
       dau: dauResult.data,
       totalUserCount,
-    };
-
-    log(`📊 Sending response with keys:`, Object.keys(responseData));
-    log(`📊 DAU in response:`, responseData.dau ? `${responseData.dau.length} records` : 'null/undefined');
-
-    res.json(responseData);
+    });
   } catch (error: any) {
     log("❌ Admin data fetch failed:", error);
     res.status(500).json({ error: error.message });

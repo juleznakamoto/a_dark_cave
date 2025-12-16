@@ -246,11 +246,6 @@ export default function AdminDashboard() {
 
       const data = await response.json();
 
-      // Log entire response structure for debugging
-      logger.info("Admin API response keys:", Object.keys(data));
-      logger.info("DAU field exists?", "dau" in data);
-      logger.info("DAU value:", data.dau);
-
       // Set the raw data (will be filtered by timeRange useMemo)
       if (data.clicks) {
         setRawClickData(data.clicks);
@@ -265,7 +260,7 @@ export default function AdminDashboard() {
         logger.info("DAU data received:", data.dau);
         setDauData(data.dau);
       } else {
-        logger.warn("No DAU data in response - full response:", data);
+        logger.warn("No DAU data in response");
       }
       if (typeof data.totalUserCount === 'number') {
         setTotalUserCount(data.totalUserCount);
