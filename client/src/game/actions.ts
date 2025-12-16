@@ -77,6 +77,7 @@ import {
   handleCraftNightshadeBow,
   handleCraftBloodstoneStaff,
   handleCraftStormglassHalberd,
+  handleCraftAshenGreatshield,
 } from "@/game/rules/caveCraftWeapons";
 
 import {
