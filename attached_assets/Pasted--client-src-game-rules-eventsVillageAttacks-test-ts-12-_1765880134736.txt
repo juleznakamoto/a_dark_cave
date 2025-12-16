@@ -1,0 +1,161 @@
+
+ ❯ client/src/game/rules/eventsVillageAttacks.test.ts (12 tests | 7 failed) 25ms
+   ❯ Ashen Greatshield Event Death Reduction (12)
+     ✓ getTotalEventDeathReduction (2)
+       ✓ should return 0 when Ashen Greatshield is not equipped 2ms
+       ✓ should return 0.25 when Ashen Greatshield is equipped 1ms
+     ❯ killVillagers with Ashen Greatshield (10)
+       ✓ should not reduce deaths when shield is not equipped 1ms
+       × should reduce deaths by 25% when shield is equipped 10ms
+       × should round up partial deaths after reduction 2ms
+       ✓ should handle edge case of 1 death 0ms
+       ✓ should handle edge case of 2 deaths 0ms
+       × should handle edge case of 4 deaths 1ms
+       × should save exactly 2 villagers on 8 deaths 1ms
+       × should save exactly 5 villagers on 20 deaths 1ms
+       × should update villager counts correctly after reduction 1ms
+       × should kill from other job types after free villagers when reduction applies 1ms
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  client/src/game/rules/eventsVillageAttacks.test.ts > Ashen Greatshield Event Death Reduction > killVillagers with Ashen Greatshield > should reduce deaths by 25% when shield is equipped
+AssertionError: expected 10 to be 8 // Object.is equality
+
+- Expected
++ Received
+
+- 8
++ 10
+
+ ❯ client/src/game/rules/eventsVillageAttacks.test.ts:157:38
+    155|       
+    156|       // 10 * 0.75 = 7.5, ceil(7.5) = 8
+    157|       expect(result.villagersKilled).toBe(8);
+       |                                      ^
+    158|     });
+    159| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/7]⎯
+
+ FAIL  client/src/game/rules/eventsVillageAttacks.test.ts > Ashen Greatshield Event Death Reduction > killVillagers with Ashen Greatshield > should round up partial deaths after reduction
+AssertionError: expected 9 to be 7 // Object.is equality
+
+- Expected
++ Received
+
+- 7
++ 9
+
+ ❯ client/src/game/rules/eventsVillageAttacks.test.ts:165:38
+    163|       // Test with 9 deaths: 9 * 0.75 = 6.75, ceil(6.75) = 7
+    164|       let result = killVillagers(mockState, 9);
+    165|       expect(result.villagersKilled).toBe(7);
+       |                                      ^
+    166|       
+    167|       // Test with 7 deaths: 7 * 0.75 = 5.25, ceil(5.25) = 6
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/7]⎯
+
+ FAIL  client/src/game/rules/eventsVillageAttacks.test.ts > Ashen Greatshield Event Death Reduction > killVillagers with Ashen Greatshield > should handle edge case of 4 deaths
+AssertionError: expected 4 to be 3 // Object.is equality
+
+- Expected
++ Received
+
+- 3
++ 4
+
+ ❯ client/src/game/rules/eventsVillageAttacks.test.ts:193:38
+    191|       
+    192|       // 4 * 0.75 = 3, ceil(3) = 3
+    193|       expect(result.villagersKilled).toBe(3);
+       |                                      ^
+    194|     });
+    195| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/7]⎯
+
+ FAIL  client/src/game/rules/eventsVillageAttacks.test.ts > Ashen Greatshield Event Death Reduction > killVillagers with Ashen Greatshield > should save exactly 2 villagers on 8 deaths
+AssertionError: expected 8 to be 6 // Object.is equality
+
+- Expected
++ Received
+
+- 6
++ 8
+
+ ❯ client/src/game/rules/eventsVillageAttacks.test.ts:201:38
+    199|       
+    200|       // 8 * 0.75 = 6, ceil(6) = 6 (saves 2 lives)
+    201|       expect(result.villagersKilled).toBe(6);
+       |                                      ^
+    202|     });
+    203| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/7]⎯
+
+ FAIL  client/src/game/rules/eventsVillageAttacks.test.ts > Ashen Greatshield Event Death Reduction > killVillagers with Ashen Greatshield > should save exactly 5 villagers on 20 deaths
+AssertionError: expected 20 to be 15 // Object.is equality
+
+- Expected
++ Received
+
+- 15
++ 20
+
+ ❯ client/src/game/rules/eventsVillageAttacks.test.ts:209:38
+    207|       
+    208|       // 20 * 0.75 = 15, ceil(15) = 15 (saves 5 lives)
+    209|       expect(result.villagersKilled).toBe(15);
+       |                                      ^
+    210|     });
+    211| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/7]⎯
+
+ FAIL  client/src/game/rules/eventsVillageAttacks.test.ts > Ashen Greatshield Event Death Reduction > killVillagers with Ashen Greatshield > should update villager counts correctly after reduction
+AssertionError: expected 10 to be 8 // Object.is equality
+
+- Expected
++ Received
+
+- 8
++ 10
+
+ ❯ client/src/game/rules/eventsVillageAttacks.test.ts:221:38
+    219|       
+    220|       // 10 * 0.75 = 7.5, ceil(7.5) = 8 deaths
+    221|       expect(result.villagersKilled).toBe(8);
+       |                                      ^
+    222|       
+    223|       // Should kill all 10 free villagers first, but only need to kill 8 total
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/7]⎯
+
+ FAIL  client/src/game/rules/eventsVillageAttacks.test.ts > Ashen Greatshield Event Death Reduction > killVillagers with Ashen Greatshield > should kill from other job types after free villagers when reduction applies
+AssertionError: expected 12 to be 9 // Object.is equality
+
+- Expected
++ Received
+
+- 9
++ 12
+
+ ❯ client/src/game/rules/eventsVillageAttacks.test.ts:238:38
+    236|       
+    237|       // 12 * 0.75 = 9, ceil(9) = 9 deaths
+    238|       expect(result.villagersKilled).toBe(9);
+       |                                      ^
+    239|       
+    240|       // Should kill all 5 free villagers, then 4 more from gatherer/hunter
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/7]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  7 failed | 5 passed (12)
+   Start at  10:15:18
+   Duration  150ms
+
+ FAIL  Tests failed. Watching for file changes...
+       press h to show help, press q to quit
