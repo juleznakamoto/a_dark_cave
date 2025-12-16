@@ -115,8 +115,7 @@ export function killVillagers(state: GameState, deathCount: number): Partial<Gam
   if (deathCount <= 0) return { villagersKilled: 0 };
 
   // Apply eventDeathReduction bonus if available
-  const generalBonuses = getTotalEventDeathReduction(state);
-  const reductionRate = generalBonuses.eventDeathReduction || 0;
+  const reductionRate = getTotalEventDeathReduction(state);
   let actualDeaths = deathCount;
   if (reductionRate > 0) {
     actualDeaths = Math.ceil(deathCount * (1 - reductionRate));
