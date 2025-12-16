@@ -127,6 +127,19 @@ export default function AdminDashboard() {
   const [totalUserCount, setTotalUserCount] = useState<number>(0);
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date()); // State to track last data update
   const [dauData, setDauData] = useState<Array<{ date: string; active_user_count: number }>>([]);
+  const [emailConfirmationStats, setEmailConfirmationStats] = useState<{
+    totalUsers: number;
+    confirmedUsers: number;
+    unconfirmedUsers: number;
+    totalConfirmationDelay: number;
+    usersWithSignIn: number;
+  }>({
+    totalUsers: 0,
+    confirmedUsers: 0,
+    unconfirmedUsers: 0,
+    totalConfirmationDelay: 0,
+    usersWithSignIn: 0,
+  });
 
   // Filter states
   const [timeRange, setTimeRange] = useState<"1d" | "3d" | "7d" | "30d" | "all">(
@@ -261,6 +274,9 @@ export default function AdminDashboard() {
       }
       if (typeof data.totalUserCount === 'number') {
         setTotalUserCount(data.totalUserCount);
+      }
+      if (data.emailConfirmationStats) {
+        setEmailConfirmationStats(data.emailConfirmationStats);
       }
 
       // Collect unique user IDs only from users who have click data
@@ -2166,6 +2182,71 @@ export default function AdminDashboard() {
                       <p className="text-4xl font-bold">{totalUserCount}</p>
                       <p className="text-sm text-muted-foreground mt-2">
                         {gameSaves.length} active in last 30 days
+                      </p>
+                    </CardContent>
+                  </Card>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Email Confirmation Rate</CardTitle>
+                      <CardDescription>% who clicked verification link</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-4xl font-bold">
+                        {emailConfirmationStats.totalUsers > 0
+                          ? Math.round((emailConfirmationStats.confirmedUsers / emailConfirmationStats.totalUsers) * 100)
+                          : 0}%
+                      </p>
+                      <p className="text-sm text-muted-foreground mt-2">
+                        {emailConfirmationStats.confirmedUsers} of {emailConfirmationStats.totalUsers} confirmed
+                      </p>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Unconfirmed Users</CardTitle>
+                      <CardDescription>Registered but not verified</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-4xl font-bold">
+                        {emailConfirmationStats.unconfirmedUsers}
+                      </p>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Avg Confirmation Time</CardTitle>
+                      <CardDescription>Time to first sign-in</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-4xl font-bold">
+                        {emailConfirmationStats.usersWithSignIn > 0
+                          ? formatTime(Math.round(emailConfirmationStats.totalConfirmationDelay / emailConfirmationStats.usersWithSignIn))
+                          : '0m'}
+                      </p>
+                      <p className="text-sm text-muted-foreground mt-2">
+                        {emailConfirmationStats.usersWithSignIn} users tracked
+                      </p>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Sign-in Rate</CardTitle>
+                      <CardDescription>Confirmed users who signed in</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-4xl font-bold">
+                        {emailConfirmationStats.confirmedUsers > 0
+                          ? Math.round((emailConfirmationStats.usersWithSignIn / emailConfirmationStats.confirmedUsers) * 100)
+                          : 0}%
+                      </p>
+                      <p className="text-sm text-muted-foreground mt-2">
+                        {emailConfirmationStats.usersWithSignIn} of {emailConfirmationStats.confirmedUsers} signed in
                       </p>
                     </CardContent>
                   </Card>

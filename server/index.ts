@@ -187,12 +187,33 @@ app.get("/api/admin/data", async (req, res) => {
       throw dauResult.error;
     }
 
+    // Fetch email confirmation stats
+    const { data: emailConfirmationData, error: emailConfirmationError } = await adminClient
+      .from("users") // Assuming 'users' table has 'created_at' and 'last_sign_in_at' columns
+      .select("created_at, last_sign_in_at")
+      .neq("email_confirmed_at", null) // Only count users with confirmed emails
+      .gte("created_at", filterDate); // Filter by the same 30-day period
+
+    if (emailConfirmationError) {
+      log("❌ Error fetching email confirmation stats:", emailConfirmationError);
+      // Decide how to handle this error: either throw or return empty stats
+      // For now, we'll log and continue, returning empty stats
+    }
+
+    const emailConfirmationStats = {
+      totalRegistrations: emailConfirmationData?.length || 0,
+      registeredAndSignedIn: emailConfirmationData?.filter(
+        (user: any) => user.last_sign_in_at !== null,
+      ).length || 0,
+    };
+
     res.json({
       clicks: clicksResult.data,
       saves: savesResult.data,
       purchases: purchasesResult.data,
       dau: dauResult.data,
-      totalUserCount,
+      totalUserCount: totalUserCount || 0,
+      emailConfirmationStats: emailConfirmationStats,
     });
   } catch (error: any) {
     log("❌ Admin data fetch failed:", error);
