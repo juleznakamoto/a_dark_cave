@@ -397,7 +397,7 @@ export const gameStateSchema = z.object({
     .record(
       z.object({
         startTime: z.number(),
-        duration: z.number(), // Duration in milliseconds
+        duration: z.number(),
         defeated: z.boolean(),
         provoked: z.boolean().default(false),
       }),

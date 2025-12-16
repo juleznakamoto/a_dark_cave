@@ -318,6 +318,20 @@ function createAttackWaveEvent(waveId: keyof typeof WAVE_PARAMS): GameEvent {
 
       if (timer.defeated) return false;
 
+      // Don't trigger if game is paused or any dialog is open
+      const isDialogOpen =
+        state.eventDialog?.isOpen ||
+        state.combatDialog?.isOpen ||
+        state.authDialogOpen ||
+        state.shopDialogOpen ||
+        state.leaderboardDialogOpen ||
+        state.idleModeDialog?.isOpen;
+      const isPaused = state.isPaused || isDialogOpen;
+
+      if (isPaused) {
+        return false;
+      }
+
       // Check if timer has expired
       const elapsed = Date.now() - timer.startTime;
       return elapsed >= timer.duration;
