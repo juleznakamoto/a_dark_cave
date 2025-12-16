@@ -16,6 +16,7 @@ import {
   handleoccultistChamber,
   handleBlastPortal,
   handleEncounterBeyondPortal,
+  handleExploreUndergroundLake,
 } from "@/game/rules/caveExploreActions";
 
 import {
@@ -213,6 +214,8 @@ export function executeGameAction(
       return handleBlastPortal(state, result);
     case "encounterBeyondPortal":
       return handleEncounterBeyondPortal(state, result);
+    case "exploreUndergroundLake":
+      return handleExploreUndergroundLake(state, result);
 
     // Cave Craft Actions
     case "craftTorch":
