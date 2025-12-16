@@ -262,6 +262,28 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
   const activatedPurchases = gameState.activatedPurchases || {};
   const { toast } = useToast();
 
+  // Initialize component and load user data
+  useEffect(() => {
+    const initializeShop = async () => {
+      if (!isOpen) return;
+
+      try {
+        const user = await getCurrentUser();
+        setCurrentUser(user);
+        
+        if (user) {
+          await loadPurchasedItems();
+        }
+      } catch (error) {
+        logger.error("Error initializing shop:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    initializeShop();
+  }, [isOpen]);
+
   const loadPurchasedItems = async () => {
     try {
       const user = await getCurrentUser();
