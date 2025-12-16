@@ -129,8 +129,7 @@ export default function AuthDialog({
             <div className="text-center space-y-2">
               <div className="bg-red-600/5 border border-red-600/50 rounded-lg p-3">
                 <p className="text-md font-medium text-red-600">
-                  Please check your email to verify your account. Also look in
-                  your spam folder.
+                  Please check your email to verify your account. Also check your spam folder.
                 </p>
               </div>
             </div>
