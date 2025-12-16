@@ -89,16 +89,10 @@ const getAdminClient = (env: "dev" | "prod" = "dev") => {
       ? process.env.VITE_SUPABASE_URL_DEV
 
 
-// API endpoint to view Supabase call statistics
-app.get("/api/monitor/stats", (req, res) => {
-  const stats = serverSupabaseMonitor.getStats();
-  res.json({
-    stats: stats.slice(0, 20),
-    totalCalls: stats.reduce((sum, s) => sum + s.count, 0),
-    totalErrors: stats.reduce((sum, s) => sum + s.errors, 0),
-  });
-});
-
+const getAdminClient = (env: "dev" | "prod" = "dev") => {
+  const supabaseUrl =
+    env === "dev"
+      ? process.env.VITE_SUPABASE_URL_DEV
       : process.env.VITE_SUPABASE_URL_PROD;
   const supabaseServiceKey =
     env === "dev"
@@ -118,6 +112,16 @@ app.get("/api/monitor/stats", (req, res) => {
     },
   });
 };
+
+// API endpoint to view Supabase call statistics
+app.get("/api/monitor/stats", (req, res) => {
+  const stats = serverSupabaseMonitor.getStats();
+  res.json({
+    stats: stats.slice(0, 20),
+    totalCalls: stats.reduce((sum, s) => sum + s.count, 0),
+    totalErrors: stats.reduce((sum, s) => sum + s.errors, 0),
+  });
+});
 
 // API endpoint to fetch admin dashboard data (server-side, bypasses RLS)
 app.get("/api/admin/data", async (req, res) => {
