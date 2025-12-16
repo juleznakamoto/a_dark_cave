@@ -48,6 +48,7 @@ export default function CavePanel() {
             { id: "occultistChamber", label: "Occultist Chamber" },
             { id: "blastPortal", label: "Blast Portal" },
             { id: "encounterBeyondPortal", label: "Venture Beyond Portal" },
+            { id: "exploreUndergroundLake", label: "Explore Underground Lake" },
           ],
         },
       ],
