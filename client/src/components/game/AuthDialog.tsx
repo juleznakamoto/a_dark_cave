@@ -139,6 +139,10 @@ export default function AuthDialog({
             </div>
             <Button
               onClick={() => {
+                setSignupSuccess(false);
+                setEmail("");
+                setPassword("");
+                setAcceptedTerms(false);
                 onAuthSuccess();
                 onClose();
               }}
