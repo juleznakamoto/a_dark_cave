@@ -272,7 +272,7 @@ export const caveCraftWeapons: Record<string, Action> = {
     show_when: {
       "buildings.blacksmith": 1,
       "story.seen.ashenGreatshieldUnlocked": true,
-      // "weapons.ashen_greatshield": false,
+      "weapons.ashen_greatshield": false,
     },
     cost: {
       "resources.bones": 5000,
