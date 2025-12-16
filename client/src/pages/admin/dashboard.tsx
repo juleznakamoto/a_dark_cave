@@ -256,14 +256,14 @@ export default function AdminDashboard() {
       if (data.purchases) {
         setRawPurchases(data.purchases);
       }
-      logger.info("Full API response keys:", Object.keys(data));
-      logger.info("DAU field value:", data.dau);
-      logger.info("DAU type:", typeof data.dau);
-      logger.info("DAU is array?", Array.isArray(data.dau));
+      logger.log("Full API response keys:", Object.keys(data));
+      logger.log("DAU field value:", data.dau);
+      logger.log("DAU type:", typeof data.dau);
+      logger.log("DAU is array?", Array.isArray(data.dau));
       
       if (data.dau) {
-        logger.info("DAU data received, length:", data.dau.length);
-        logger.info("DAU data sample:", data.dau[0]);
+        logger.log("DAU data received, length:", data.dau.length);
+        logger.log("DAU data sample:", data.dau[0]);
         setDauData(data.dau);
       } else {
         logger.warn("No DAU data in response - full data:", data);
@@ -413,8 +413,8 @@ export default function AdminDashboard() {
 
   // Retention metrics - now using DAU data from database
   const getUserRetention = () => {
-    logger.info("getUserRetention called, dauData length:", dauData.length);
-    logger.info("dauData:", dauData);
+    logger.log("getUserRetention called, dauData length:", dauData.length);
+    logger.log("dauData:", dauData);
     
     if (dauData.length === 0) {
       logger.warn("dauData is empty, returning empty array");
@@ -423,14 +423,14 @@ export default function AdminDashboard() {
 
     // Transform database data to chart format
     const result = dauData.map((record) => {
-      logger.info("Processing DAU record:", record);
+      logger.log("Processing DAU record:", record);
       return {
         day: format(parseISO(record.date), "MMM dd"),
         users: record.active_user_count,
       };
     });
     
-    logger.info("getUserRetention result:", result);
+    logger.log("getUserRetention result:", result);
     return result;
   };
 
