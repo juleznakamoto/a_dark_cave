@@ -148,7 +148,7 @@ export const gameStateSchema = z.object({
       bone_necklace: z.boolean().default(false),
       sacrificial_tunic: z.boolean().default(false),
       shadow_boots: z.boolean().default(false),
-      feedingRing: z.boolean().default(false),
+      feeding_ring: z.boolean().default(false),
     })
     .default({}),
   relics: z

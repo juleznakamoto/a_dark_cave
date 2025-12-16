@@ -10,7 +10,7 @@ export const ringEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.buildings.darkEstate >= 1 &&
       state.buildings.stoneHut >= 4 &&
-      !state.clothing.feedingRing,
+      !state.clothing.feeding_ring,
     triggerType: "resource",
     timeProbability: 15,
     title: "The Night Terror",
@@ -27,7 +27,7 @@ export const ringEvents: Record<string, GameEvent> = {
           return {
             clothing: {
               ...state.clothing,
-              feedingRing: true,
+              feeding_ring: true,
             },
             _logMessage:
               "Your finger aches softly, but you leave it be for now. It almost feels like a faint pulsing against your skin.",
@@ -41,7 +41,7 @@ export const ringEvents: Record<string, GameEvent> = {
           return {
             clothing: {
               ...state.clothing,
-              feedingRing: true,
+              feeding_ring: true,
             },
             _logMessage:
               "No matter how hard you try, the ring won't come off. It almost seems fused to your flesh. Your finger aches softly, but you leave it be for now. It almost feels like a faint pulsing against your skin.",
@@ -56,7 +56,7 @@ export const ringEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.buildings.darkEstate >= 1 &&
       state.buildings.stoneHut >= 5 &&
-      state.clothing.feedingRing,
+      state.clothing.feeding_ring,
     triggerType: "resource",
     timeProbability: 15,
     title: "Bloodied Awakening",
@@ -86,7 +86,7 @@ export const ringEvents: Record<string, GameEvent> = {
           return {
             clothing: {
               ...state.clothing,
-              feedingRing: false,
+              feeding_ring: false,
             },
             _logMessage:
               "With trembling hands, you raise your axe. The ring pulses as the blade falls. Agony tears through your arm as bone shatters. Lifting the severed finger, you see small black threads, like tentacles, sunk deep into its flesh.",
@@ -100,7 +100,7 @@ export const ringEvents: Record<string, GameEvent> = {
     id: "desperateAmputation",
     condition: (state: GameState) =>
       state.buildings.darkEstate >= 1 &&
-      state.clothing.feedingRing &&
+      state.clothing.feeding_ring &&
       state.events.bloodiedAwakening,
     triggerType: "resource",
     timeProbability: 5,
@@ -118,7 +118,7 @@ export const ringEvents: Record<string, GameEvent> = {
           return {
             clothing: {
               ...state.clothing,
-              feedingRing: false,
+              feeding_ring: false,
             },
             _logMessage:
               "With trembling hands, you raise your axe. The ring pulses as the blade falls. Agony tears through your arm as bone shatters. Lifting the severed finger, you see small black threads, like tentacles, sunk deep into its flesh.",
@@ -133,7 +133,7 @@ export const ringEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.buildings.darkEstate >= 1 &&
       state.buildings.stoneHut >= 6 &&
-      !state.clothing.feedingRing &&
+      !state.clothing.feeding_ring &&
       (state.events.bloodiedAwakening || state.events.desperateAmputation),
     triggerType: "resource",
     timeProbability: 60,

@@ -951,13 +951,13 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   feeding_ring: {
     id: "feeding_ring",
     name: "Feeding Ring",
-    description: "Ring that appeared one morning, seemingly fused to your finger.",
+    description: "Ring that appeared one morning, seemingly fused to your finger",
     bonuses: {
       generalBonuses: {
         luck: 5,
         strength: 5,
         knowledge: 5,
-        madness: 19,
+        madness: 10,
       },
     },
   },
