@@ -1700,7 +1700,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     timeProbability: 0.02,
     title: "The Underground Lake",
     message:
-      "After the last cave expedition, 2 men claimed to have seen an underground lake. Darkness was so dense they could not see much. Maybe with the skull lantern's light, it is possible to illuminate those dark waters.",
+      "After the last cave expedition, two men claimed to have seen an underground lake. The darkness was too dense to see clearly. Perhaps the skull lantern’s light could reveal those dark waters.",
     triggered: false,
     priority: 4,
     repeatable: true,
