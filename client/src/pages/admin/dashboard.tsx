@@ -410,7 +410,7 @@ export default function AdminDashboard() {
       const activeUserIds = new Set<string>();
 
       // Use ALL game saves (not filtered by timeRange) to get accurate DAU
-      allGameSaves.forEach((save) => {
+      rawGameSaves.forEach((save) => {
         const saveDate = parseISO(save.updated_at);
         if (isWithinInterval(saveDate, { start: dayStart, end: dayEnd })) {
           activeUserIds.add(save.user_id);
