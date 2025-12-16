@@ -10,11 +10,13 @@ CREATE TABLE IF NOT EXISTS daily_active_users (
 -- Create index for faster date queries
 CREATE INDEX IF NOT EXISTS idx_dau_date ON daily_active_users (date DESC);
 
--- Enable RLS (read-only for public)
+-- Enable RLS (but don't allow public access - only service key)
 ALTER TABLE daily_active_users ENABLE ROW LEVEL SECURITY;
 
--- Policy to allow anyone to view DAU data
-CREATE POLICY "Anyone can view DAU" ON daily_active_users FOR SELECT USING (true);
+-- Drop existing policy if it exists
+DROP POLICY IF EXISTS "Anyone can view DAU" ON daily_active_users;
+
+-- No RLS policies needed - access will be through service key only
 
 -- Create function to calculate and store DAU
 CREATE OR REPLACE FUNCTION calculate_daily_active_users()
@@ -51,6 +53,11 @@ $$;
 -- Ensure pg_cron extension is enabled
 CREATE EXTENSION IF NOT EXISTS pg_cron;
 
+-- Drop existing cron job if it exists
+SELECT cron.unschedule('calculate-dau-daily') WHERE EXISTS (
+  SELECT 1 FROM cron.job WHERE jobname = 'calculate-dau-daily'
+);
+
 -- Schedule the job to run daily at 11:59 PM UTC (end of day)
 -- This calculates the DAU for the day that just ended
 SELECT cron.schedule(
@@ -63,5 +70,5 @@ SELECT cron.schedule(
 SELECT calculate_daily_active_users();
 
 -- Add comment
-COMMENT ON TABLE daily_active_users IS 'Tracks the number of daily active users based on game_saves.updated_at';
+COMMENT ON TABLE daily_active_users IS 'Tracks the number of daily active users based on game_saves.updated_at (service key access only)';
 COMMENT ON FUNCTION calculate_daily_active_users IS 'Calculates DAU for the current day by counting unique users with updated_at activity';
