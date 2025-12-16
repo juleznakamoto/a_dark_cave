@@ -153,7 +153,7 @@ export function applyActionEffects(
           const stateAmount = path.startsWith("resources.")
             ? (state.resources[finalKey as keyof typeof state.resources] || 0)
             : (state[pathParts[0] as keyof typeof state]?.[finalKey as any] || 0);
-          
+
           // Set the new value after applying the cost
           current[finalKey] = stateAmount - adjustedCost;
         }
@@ -319,7 +319,8 @@ export function applyActionEffects(
       } else if (
         typeof effect === "object" &&
         effect !== null &&
-        "probability" in effect
+        typeof effect === "object" &&
+        "probability" in (effect as object)
       ) {
         const probabilityEffect = effect as {
           probability: number | ((state: GameState) => number);

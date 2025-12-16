@@ -130,7 +130,8 @@ export const shouldShowAction = (
   if (action.building) {
     const nextLevel = getNextBuildingLevel(actionId, state);
     // If there's no cost defined for the next level, the building is maxed out
-    if (!action.cost?.[nextLevel]) {
+    const cost = action.cost as Record<number, Record<string, any>> | undefined;
+    if (!cost?.[nextLevel]) {
       return false;
     }
   }

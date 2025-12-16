@@ -572,6 +572,8 @@ export const gameStateSchema = z.object({
   unlockedAchievements: z.array(z.string()).default([]),
   claimedAchievements: z.array(z.string()).default([]), // Achievement segment IDs that have been claimed for silver
   username: z.string().optional(), // Player's chosen username for leaderboard
+  cooldowns: z.record(z.number()).default({}), // Track current cooldown time remaining for each action
+  cooldownDurations: z.record(z.number()).default({}), // Track initial cooldown duration for each action
 });
 
 export type GameState = z.infer<typeof gameStateSchema>;
@@ -588,6 +590,7 @@ export const actionSchema = z.object({
     ])
     .optional(),
   building: z.boolean().optional(),
+  category: z.enum(["crafting", "building"]).optional(),
   show_when: z
     .union([
       z.record(z.string(), z.any()),
@@ -623,6 +626,7 @@ export const actionSchema = z.object({
     probabilityBonus: z.record(z.string(), z.number()).optional(),
   })).optional(),
   upgrade_key: z.string().optional(),
+  canExecute: z.function().args(z.any()).returns(z.boolean()).optional(),
 });
 
 export type Action = z.infer<typeof actionSchema>;
