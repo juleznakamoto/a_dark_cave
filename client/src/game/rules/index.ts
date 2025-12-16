@@ -137,6 +137,8 @@ export const shouldShowAction = (
   }
 
   // Check if show_when has tiered conditions (numeric keys)
+  if (!action.show_when) return false;
+  
   const showWhenKeys = Object.keys(action.show_when);
   const hasTieredShowWhen =
     showWhenKeys.length > 0 && showWhenKeys.every((key) => !isNaN(Number(key)));
@@ -145,10 +147,10 @@ export const shouldShowAction = (
     // For tiered show_when (like trade actions), check if ANY tier's conditions are satisfied
     // AND that tier has a cost defined
     return showWhenKeys.some((tierKey) => {
-      const tierConditions = action.show_when[tierKey as any];
+      const tierConditions = action.show_when?.[tierKey as any];
       const tierHasCost = action.cost?.[tierKey as any];
 
-      if (!tierHasCost) return false;
+      if (!tierHasCost || !tierConditions) return false;
 
       return Object.entries(tierConditions).every(([key, value]) => {
         const pathParts = key.split(".");
@@ -298,7 +300,9 @@ export function canExecuteAction(actionId: string, state: GameState): boolean {
       let activeTier = 1;
 
       for (const tierKey of showWhenKeys) {
-        const tierConditions = action.show_when[tierKey as any];
+        const tierConditions = action.show_when?.[tierKey as any];
+        if (!tierConditions) continue;
+        
         const tierSatisfied = Object.entries(tierConditions).every(
           ([key, value]) => {
             const pathParts = key.split(".");
@@ -503,7 +507,9 @@ export function getActionCostBreakdown(
     let activeTier = 1;
 
     for (const tierKey of showWhenKeys) {
-      const tierConditions = action.show_when[tierKey as any];
+      const tierConditions = action.show_when?.[tierKey as any];
+      if (!tierConditions) continue;
+      
       const tierSatisfied = Object.entries(tierConditions).every(
         ([key, value]) => {
           const pathParts = key.split(".");
