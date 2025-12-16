@@ -109,6 +109,9 @@ export default function SidePanelSection({
 
   const [maxAnimatedItems, setMaxAnimatedItems] = useState<Set<string>>(new Set());
 
+  // Track resource changes from game loop to detect capped gains
+  const lastResourceChanges = useRef<Map<string, number>>(new Map());
+
   useEffect(() => {
     const newAnimatedItems = new Set<string>();
     const newDecreaseAnimatedItems = new Set<string>();
@@ -127,15 +130,27 @@ export default function SidePanelSection({
         return;
       }
 
-      // Check if resource hit max limit
+      // Check if resource is at max limit
       const isLimited = isResourceLimited(item.id, gameState);
       const limit = isLimited ? getResourceLimit(gameState) : null;
-      const hitMax = isLimited && limit !== null && currentValue === limit && prevValue !== undefined && prevValue < limit;
+      const isAtLimit = isLimited && limit !== null && currentValue === limit;
+      const hitMax = isAtLimit && prevValue !== undefined && prevValue < limit;
+      
+      // Check if we stayed at max (resource was capped)
+      const stayedAtMax = isAtLimit && prevValue !== undefined && prevValue === limit;
 
       // We have a previous value to compare against
       if (prevValue !== undefined) {
-        if (currentValue > prevValue) {
-          if (hitMax) {
+        const actualChange = currentValue - prevValue;
+        
+        // Check if this resource had a change in the last tick from resourceChanges
+        const lastChange = lastResourceChanges.current.get(item.id);
+        
+        if (actualChange > 0 || (stayedAtMax && lastChange && lastChange > 0)) {
+          // Determine intended change: if we're at max and stayed there, use lastChange; otherwise use actual
+          const intendedChange = (stayedAtMax && lastChange && lastChange > 0) ? lastChange : actualChange;
+          
+          if (hitMax || stayedAtMax) {
             newMaxAnimatedItems.add(item.id);
             // Remove animation after 2 seconds
             setTimeout(() => {
@@ -145,7 +160,7 @@ export default function SidePanelSection({
                 return newSet;
               });
             }, 2000);
-          } else {
+          } else if (actualChange > 0) {
             newAnimatedItems.add(item.id);
             // Remove animation after 2 seconds
             setTimeout(() => {
@@ -157,25 +172,23 @@ export default function SidePanelSection({
             }, 2000);
           }
 
-          // Add to resourceChanges for notifications - always trigger if onResourceChange is provided
-          if (onResourceChange) {
-            const changeAmount = currentValue - prevValue;
+          // Add to resourceChanges for notifications with intended change amount
+          if (onResourceChange && intendedChange > 0) {
             const newChange = {
               resource: item.id,
-              amount: changeAmount,
+              amount: intendedChange,
               timestamp: Date.now(),
             };
             onResourceChange(newChange);
           }
-        } else if (currentValue < prevValue) {
+        } else if (actualChange < 0) {
           newDecreaseAnimatedItems.add(item.id);
 
-          // Add to resourceChanges for notifications - always trigger if onResourceChange is provided
+          // Add to resourceChanges for notifications
           if (onResourceChange) {
-            const changeAmount = currentValue - prevValue;
             const newChange = {
               resource: item.id,
-              amount: changeAmount,
+              amount: actualChange,
               timestamp: Date.now(),
             };
             onResourceChange(newChange);
@@ -213,6 +226,20 @@ export default function SidePanelSection({
       setMaxAnimatedItems((prev) => new Set([...prev, ...newMaxAnimatedItems]));
     }
   }, [visibleItems, onResourceChange, gameState]); // Simplified dependencies
+
+  // Track resource changes to detect intended changes even when capped
+  useEffect(() => {
+    resourceChanges.forEach((change) => {
+      if (change.amount > 0) {
+        lastResourceChanges.current.set(change.resource, change.amount);
+        
+        // Clear after a short delay to avoid stale data
+        setTimeout(() => {
+          lastResourceChanges.current.delete(change.resource);
+        }, 100);
+      }
+    });
+  }, [resourceChanges]);
 
   if (visibleItems.length === 0) {
     return null;
