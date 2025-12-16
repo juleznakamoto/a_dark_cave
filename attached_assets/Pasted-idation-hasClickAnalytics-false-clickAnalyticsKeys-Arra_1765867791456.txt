@@ -1,0 +1,669 @@
+idation... {hasClickAnalytics: false, clickAnalyticsKeys: Array(0), hasResourceAnalytics: false, resourceAnalyticsKeys: Array(0), diffSize: 23420, …}
+@supabase_supabase-js.js?v=fa690fe3:5633  POST https://epmegaduehlztjqoeqih.supabase.co/rest/v1/rpc/save_game_with_analytics 400 (Bad Request)
+(anonymous) @ @supabase_supabase-js.js?v=fa690fe3:5633
+(anonymous) @ @supabase_supabase-js.js?v=fa690fe3:5654
+await in (anonymous)
+then @ @supabase_supabase-js.js?v=fa690fe3:94Understand this error
+logger.ts:38 v087Z [SAVE CLOUD] ⚠️ OCC REJECTED by database: OCC violation: new playTime (13600287) must be greater than existing playTime (13600287)
+warn @ logger.ts:38
+saveGameToSupabase @ auth.ts:345
+await in saveGameToSupabase
+saveGame @ save.ts:298
+await in saveGame
+loadGame @ save.ts:392
+await in loadGame
+initializeGame @ game.tsx:31
+await in initializeGame
+(anonymous) @ game.tsx:90
+commitHookEffectListMount @ chunk-276SZO74.js?v=fa690fe3:16915
+commitPassiveMountOnFiber @ chunk-276SZO74.js?v=fa690fe3:18156
+commitPassiveMountEffects_complete @ chunk-276SZO74.js?v=fa690fe3:18129
+commitPassiveMountEffects_begin @ chunk-276SZO74.js?v=fa690fe3:18119
+commitPassiveMountEffects @ chunk-276SZO74.js?v=fa690fe3:18109
+flushPassiveEffectsImpl @ chunk-276SZO74.js?v=fa690fe3:19490
+flushPassiveEffects @ chunk-276SZO74.js?v=fa690fe3:19447
+commitRootImpl @ chunk-276SZO74.js?v=fa690fe3:19416
+commitRoot @ chunk-276SZO74.js?v=fa690fe3:19277
+performSyncWorkOnRoot @ chunk-276SZO74.js?v=fa690fe3:18895
+flushSyncCallbacks @ chunk-276SZO74.js?v=fa690fe3:9119
+flushSync @ chunk-276SZO74.js?v=fa690fe3:18959
+scheduleRefresh @ chunk-276SZO74.js?v=fa690fe3:20004
+(anonymous) @ @react-refresh:267
+performReactRefresh @ @react-refresh:256
+(anonymous) @ @react-refresh:677
+setTimeout
+(anonymous) @ @react-refresh:666
+validateRefreshBoundaryAndEnqueueUpdate @ @react-refresh:728
+(anonymous) @ ButtonLevelBadge.tsx:16
+(anonymous) @ client:34
+(anonymous) @ client:218
+(anonymous) @ client:193
+queueUpdate @ client:193
+await in queueUpdate
+(anonymous) @ client:642
+handleMessage @ client:640
+(anonymous) @ client:550Understand this warning
+logger.ts:43 v087Z [SAVE] Cloud save failed: Error: OCC violation: OCC violation: new playTime (13600287) must be greater than existing playTime (13600287)
+    at saveGameToSupabase (auth.ts:346:13)
+    at async saveGame (save.ts:298:9)
+    at async loadGame (save.ts:392:15)
+    at async initializeGame (game.tsx:31:26)
+error @ logger.ts:43
+saveGame @ save.ts:318
+await in saveGame
+loadGame @ save.ts:392
+await in loadGame
+initializeGame @ game.tsx:31
+await in initializeGame
+(anonymous) @ game.tsx:90
+commitHookEffectListMount @ chunk-276SZO74.js?v=fa690fe3:16915
+commitPassiveMountOnFiber @ chunk-276SZO74.js?v=fa690fe3:18156
+commitPassiveMountEffects_complete @ chunk-276SZO74.js?v=fa690fe3:18129
+commitPassiveMountEffects_begin @ chunk-276SZO74.js?v=fa690fe3:18119
+commitPassiveMountEffects @ chunk-276SZO74.js?v=fa690fe3:18109
+flushPassiveEffectsImpl @ chunk-276SZO74.js?v=fa690fe3:19490
+flushPassiveEffects @ chunk-276SZO74.js?v=fa690fe3:19447
+commitRootImpl @ chunk-276SZO74.js?v=fa690fe3:19416
+commitRoot @ chunk-276SZO74.js?v=fa690fe3:19277
+performSyncWorkOnRoot @ chunk-276SZO74.js?v=fa690fe3:18895
+flushSyncCallbacks @ chunk-276SZO74.js?v=fa690fe3:9119
+flushSync @ chunk-276SZO74.js?v=fa690fe3:18959
+scheduleRefresh @ chunk-276SZO74.js?v=fa690fe3:20004
+(anonymous) @ @react-refresh:267
+performReactRefresh @ @react-refresh:256
+(anonymous) @ @react-refresh:677
+setTimeout
+(anonymous) @ @react-refresh:666
+validateRefreshBoundaryAndEnqueueUpdate @ @react-refresh:728
+(anonymous) @ ButtonLevelBadge.tsx:16
+(anonymous) @ client:34
+(anonymous) @ client:218
+(anonymous) @ client:193
+queueUpdate @ client:193
+await in queueUpdate
+(anonymous) @ client:642
+handleMessage @ client:640
+(anonymous) @ client:550Understand this error
+logger.ts:33 v087Z [LOAD] ✅ Local progress synced to cloud
+logger.ts:33 v087Z [GAME] Game loaded from save
+logger.ts:33 v087Z [GAME] Detected claimed referrals - saving to cloud
+logger.ts:33 v087Z [IDLE MODE INIT] Dialog open check: {dialogOpen: false, isActive: false, idleModeState: {…}}
+logger.ts:33 v087Z [SAVE CLOUD] 🎮 Saving cube events: (18) ['cube01', 'cube02', 'cube03', 'cube04', 'cube05', 'cube06', 'cube07', 'cube08', 'cube09', 'cube10', 'cube11', 'cube13', 'cube14a', 'cube14b', 'cube14c', 'cube14d', 'cube15a', 'cube15b'] {available: Array(0), active: Array(0), log: Array(0), whisperingVoices: false, shadowsMove: false, …}
+logger.ts:33 v087Z [SAVE CLOUD] 📊 Game state includes: {hasPlayTime: true, hasStartTime: true, hasGameId: true, gameId: null, playTime: 257, …}
+logger.ts:33 v087Z [SAVE CLOUD] 🔍 Starting cloud save with OCC... {playTime: 257.69999995231046, isNewGame: false, userId: 'a375ecb5...', diffKeys: Array(53), hasPlayTime: true, …}
+logger.ts:33 v087Z [SAVE CLOUD] 💾 Calling database RPC with OCC validation... {hasClickAnalytics: false, clickAnalyticsKeys: Array(0), hasResourceAnalytics: false, resourceAnalyticsKeys: Array(0), diffSize: 6359, …}
+@supabase_supabase-js.js?v=fa690fe3:5633  POST https://epmegaduehlztjqoeqih.supabase.co/rest/v1/rpc/save_game_with_analytics 400 (Bad Request)
+(anonymous) @ @supabase_supabase-js.js?v=fa690fe3:5633
+(anonymous) @ @supabase_supabase-js.js?v=fa690fe3:5654
+await in (anonymous)
+then @ @supabase_supabase-js.js?v=fa690fe3:94Understand this error
+logger.ts:38 v087Z [SAVE CLOUD] ⚠️ OCC REJECTED by database: OCC violation: new playTime (257) must be greater than existing playTime (13600287)
+warn @ logger.ts:38
+saveGameToSupabase @ auth.ts:345
+await in saveGameToSupabase
+saveGame @ save.ts:298
+await in saveGame
+handleAutoSave @ loop.ts:862
+tick @ loop.ts:273
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+startGameLoop @ loop.ts:377
+initializeGame @ game.tsx:87
+await in initializeGame
+(anonymous) @ game.tsx:90
+commitHookEffectListMount @ chunk-276SZO74.js?v=fa690fe3:16915
+commitPassiveMountOnFiber @ chunk-276SZO74.js?v=fa690fe3:18156
+commitPassiveMountEffects_complete @ chunk-276SZO74.js?v=fa690fe3:18129
+commitPassiveMountEffects_begin @ chunk-276SZO74.js?v=fa690fe3:18119
+commitPassiveMountEffects @ chunk-276SZO74.js?v=fa690fe3:18109
+flushPassiveEffectsImpl @ chunk-276SZO74.js?v=fa690fe3:19490
+flushPassiveEffects @ chunk-276SZO74.js?v=fa690fe3:19447
+commitRootImpl @ chunk-276SZO74.js?v=fa690fe3:19416
+commitRoot @ chunk-276SZO74.js?v=fa690fe3:19277
+performSyncWorkOnRoot @ chunk-276SZO74.js?v=fa690fe3:18895
+flushSyncCallbacks @ chunk-276SZO74.js?v=fa690fe3:9119
+flushSync @ chunk-276SZO74.js?v=fa690fe3:18959
+scheduleRefresh @ chunk-276SZO74.js?v=fa690fe3:20004
+(anonymous) @ @react-refresh:267
+performReactRefresh @ @react-refresh:256
+(anonymous) @ @react-refresh:677
+setTimeout
+(anonymous) @ @react-refresh:666
+validateRefreshBoundaryAndEnqueueUpdate @ @react-refresh:728
+(anonymous) @ ButtonLevelBadge.tsx:16
+(anonymous) @ client:34
+(anonymous) @ client:218
+(anonymous) @ client:193
+queueUpdate @ client:193
+await in queueUpdate
+(anonymous) @ client:642
+handleMessage @ client:640
+(anonymous) @ client:550Understand this warning
+logger.ts:43 v087Z [SAVE] Cloud save failed: Error: OCC violation: OCC violation: new playTime (257) must be greater than existing playTime (13600287)
+    at saveGameToSupabase (auth.ts:346:13)
+    at async saveGame (save.ts:298:9)
+    at async handleAutoSave (loop.ts:862:5)
+error @ logger.ts:43
+saveGame @ save.ts:318
+await in saveGame
+handleAutoSave @ loop.ts:862
+tick @ loop.ts:273
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+startGameLoop @ loop.ts:377
+initializeGame @ game.tsx:87
+await in initializeGame
+(anonymous) @ game.tsx:90
+commitHookEffectListMount @ chunk-276SZO74.js?v=fa690fe3:16915
+commitPassiveMountOnFiber @ chunk-276SZO74.js?v=fa690fe3:18156
+commitPassiveMountEffects_complete @ chunk-276SZO74.js?v=fa690fe3:18129
+commitPassiveMountEffects_begin @ chunk-276SZO74.js?v=fa690fe3:18119
+commitPassiveMountEffects @ chunk-276SZO74.js?v=fa690fe3:18109
+flushPassiveEffectsImpl @ chunk-276SZO74.js?v=fa690fe3:19490
+flushPassiveEffects @ chunk-276SZO74.js?v=fa690fe3:19447
+commitRootImpl @ chunk-276SZO74.js?v=fa690fe3:19416
+commitRoot @ chunk-276SZO74.js?v=fa690fe3:19277
+performSyncWorkOnRoot @ chunk-276SZO74.js?v=fa690fe3:18895
+flushSyncCallbacks @ chunk-276SZO74.js?v=fa690fe3:9119
+flushSync @ chunk-276SZO74.js?v=fa690fe3:18959
+scheduleRefresh @ chunk-276SZO74.js?v=fa690fe3:20004
+(anonymous) @ @react-refresh:267
+performReactRefresh @ @react-refresh:256
+(anonymous) @ @react-refresh:677
+setTimeout
+(anonymous) @ @react-refresh:666
+validateRefreshBoundaryAndEnqueueUpdate @ @react-refresh:728
+(anonymous) @ ButtonLevelBadge.tsx:16
+(anonymous) @ client:34
+(anonymous) @ client:218
+(anonymous) @ client:193
+queueUpdate @ client:193
+await in queueUpdate
+(anonymous) @ client:642
+handleMessage @ client:640
+(anonymous) @ client:550Understand this error
+logger.ts:33 v087Z [SAVE CLOUD] 🔍 Starting cloud save with OCC... {playTime: 13600287.49999988, isNewGame: false, userId: 'a375ecb5...', diffKeys: Array(3), hasPlayTime: false, …}
+logger.ts:33 v087Z [SAVE CLOUD] 💾 Calling database RPC with OCC validation... {hasClickAnalytics: false, clickAnalyticsKeys: Array(0), hasResourceAnalytics: false, resourceAnalyticsKeys: Array(0), diffSize: 91, …}
+logger.ts:33 v087Z [SAVE CLOUD] ✅ Cloud save completed successfully 
+logger.ts:33 v087Z [SAVE] ✅ Updated lastCloudState after successful cloud save
+logger.ts:33 v087Z [GAME] Successfully saved claimed referrals to cloud
+logger.ts:33 v087Z [SAVE CLOUD] 🎮 Saving cube events: (18) ['cube01', 'cube02', 'cube03', 'cube04', 'cube05', 'cube06', 'cube07', 'cube08', 'cube09', 'cube10', 'cube11', 'cube13', 'cube14a', 'cube14b', 'cube14c', 'cube14d', 'cube15a', 'cube15b'] {available: Array(0), active: Array(0), log: Array(0), whisperingVoices: false, shadowsMove: false, …}
+logger.ts:33 v087Z [SAVE CLOUD] 📊 Game state includes: {hasPlayTime: true, hasStartTime: true, hasGameId: true, gameId: null, playTime: 15432, …}
+logger.ts:33 v087Z [SAVE CLOUD] 🔍 Starting cloud save with OCC... {playTime: 15432.69999995231, isNewGame: false, userId: 'a375ecb5...', diffKeys: Array(54), hasPlayTime: true, …}
+logger.ts:33 v087Z [SAVE CLOUD] 💾 Calling database RPC with OCC validation... {hasClickAnalytics: true, clickAnalyticsKeys: Array(2), hasResourceAnalytics: false, resourceAnalyticsKeys: Array(0), diffSize: 6407, …}
+@supabase_supabase-js.js?v=fa690fe3:5633  POST https://epmegaduehlztjqoeqih.supabase.co/rest/v1/rpc/save_game_with_analytics 400 (Bad Request)
+(anonymous) @ @supabase_supabase-js.js?v=fa690fe3:5633
+(anonymous) @ @supabase_supabase-js.js?v=fa690fe3:5654
+await in (anonymous)
+then @ @supabase_supabase-js.js?v=fa690fe3:94Understand this error
+logger.ts:38 v087Z [SAVE CLOUD] ⚠️ OCC REJECTED by database: OCC violation: new playTime (15432) must be greater than existing playTime (13600287)
+warn @ logger.ts:38
+saveGameToSupabase @ auth.ts:345
+await in saveGameToSupabase
+saveGame @ save.ts:298
+await in saveGame
+handleAutoSave @ loop.ts:862
+tick @ loop.ts:273
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:374Understand this warning
+logger.ts:43 v087Z [SAVE] Cloud save failed: Error: OCC violation: OCC violation: new playTime (15432) must be greater than existing playTime (13600287)
+    at saveGameToSupabase (auth.ts:346:13)
+    at async saveGame (save.ts:298:9)
+    at async handleAutoSave (loop.ts:862:5)
+error @ logger.ts:43
+saveGame @ save.ts:318
+await in saveGame
+handleAutoSave @ loop.ts:862
+tick @ loop.ts:273
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:374
+requestAnimationFrame
+tick @ loop.ts:163Understand this error
+logger.ts:33 v087Z [SAVE CLOUD] 🎮 Saving cube events: (18) ['cube01', 'cube02', 'cube03', 'cube04', 'cube05', 'cube06', 'cube07', 'cube08', 'cube09', 'cube10', 'cube11', 'cube13', 'cube14a', 'cube14b', 'cube14c', 'cube14d', 'cube15a', 'cube15b'] {available: Array(0), active: Array(0), log: Array(0), whisperingVoices: false, shadowsMove: false, …}
+logger.ts:33 v087Z [SAVE CLOUD] 📊 Game state includes: {hasPlayTime: true, hasStartTime: true, hasGameId: true, gameId: null, playTime: 30507, …}
+logger.ts:33 v087Z [SAVE CLOUD] 🔍 Starting cloud save with OCC... {playTime: 30507.69999995231, isNewGame: false, userId: 'a375ecb5...', diffKeys: Array(53), hasPlayTime: true, …}
+logger.ts:33 v087Z [SAVE CLOUD] 💾 Calling database RPC with OCC validation... {hasClickAnalytics: false, clickAnalyticsKeys: Array(0), hasResourceAnalytics: false, resourceAnalyticsKeys: Array(0), diffSize: 6361, …}
+@supabase_supabase-js.js?v=fa690fe3:5633  POST https://epmegaduehlztjqoeqih.supabase.co/rest/v1/rpc/save_game_with_analytics 400 (Bad Request)
+(anonymous) @ @supabase_supabase-js.js?v=fa690fe3:5633
+(anonymous) @ @supabase_supabase-js.js?v=fa690fe3:5654
+await in (anonymous)
+then @ @supabase_supabase-js.js?v=fa690fe3:94Understand this error
+logger.ts:38 v087Z [SAVE CLOUD] ⚠️ OCC REJECTED by database: OCC violation: new playTime (30507) must be greater than existing playTime (13600287)
+warn @ logger.ts:38
+saveGameToSupabase @ auth.ts:345
+await in saveGameToSupabase
+saveGame @ save.ts:298
+await in saveGame
+handleAutoSave @ loop.ts:862
+tick @ loop.ts:273
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:374Understand this warning
+logger.ts:43 v087Z [SAVE] Cloud save failed: Error: OCC violation: OCC violation: new playTime (30507) must be greater than existing playTime (13600287)
+    at saveGameToSupabase (auth.ts:346:13)
+    at async saveGame (save.ts:298:9)
+    at async handleAutoSave (loop.ts:862:5)
+error @ logger.ts:43
+saveGame @ save.ts:318
+await in saveGame
+handleAutoSave @ loop.ts:862
+tick @ loop.ts:273
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:374
+requestAnimationFrame
+tick @ loop.ts:163Understand this error
+logger.ts:33 v087Z [SAVE CLOUD] 📊 Resource snapshot includes stats: {hasStats: true, statsKeys: Array(4), snapshotKeys: Array(28)}
+logger.ts:33 v087Z [SAVE CLOUD] 🎮 Saving cube events: (18) ['cube01', 'cube02', 'cube03', 'cube04', 'cube05', 'cube06', 'cube07', 'cube08', 'cube09', 'cube10', 'cube11', 'cube13', 'cube14a', 'cube14b', 'cube14c', 'cube14d', 'cube15a', 'cube15b'] {available: Array(0), active: Array(0), log: Array(0), whisperingVoices: false, shadowsMove: false, …}
+logger.ts:33 v087Z [SAVE CLOUD] 📊 Game state includes: {hasPlayTime: true, hasStartTime: true, hasGameId: true, gameId: null, playTime: 92315, …}
+logger.ts:33 v087Z [SAVE CLOUD] 🔍 Starting cloud save with OCC... {playTime: 92315.99999995233, isNewGame: false, userId: 'a375ecb5...', diffKeys: Array(53), hasPlayTime: true, …}
+logger.ts:33 v087Z [SAVE CLOUD] 💾 Calling database RPC with OCC validation... {hasClickAnalytics: false, clickAnalyticsKeys: Array(0), hasResourceAnalytics: true, resourceAnalyticsKeys: Array(28), diffSize: 6378, …}
+@supabase_supabase-js.js?v=fa690fe3:5633  POST https://epmegaduehlztjqoeqih.supabase.co/rest/v1/rpc/save_game_with_analytics 400 (Bad Request)
+(anonymous) @ @supabase_supabase-js.js?v=fa690fe3:5633
+(anonymous) @ @supabase_supabase-js.js?v=fa690fe3:5654
+await in (anonymous)
+then @ @supabase_supabase-js.js?v=fa690fe3:94Understand this error
+logger.ts:38 v087Z [SAVE CLOUD] ⚠️ OCC REJECTED by database: OCC violation: new playTime (92315) must be greater than existing playTime (13600287)
+warn @ logger.ts:38
+saveGameToSupabase @ auth.ts:345
+await in saveGameToSupabase
+saveGame @ save.ts:298
+await in saveGame
+handleAutoSave @ loop.ts:862
+tick @ loop.ts:273
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:374
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163
+requestAnimationFrame
+tick @ loop.ts:163Understand this warning
+logger.ts:43 v087Z [SAVE] Cloud save failed: Error: OCC violation: OCC violation: new playTime (92315) must be greater than existing playTime (13600287)
+    at saveGameToSupabase (auth.ts:346:13)
+    at async saveGame (save.ts:298:9)
+    at async handleAutoSave (loop.ts:862:5)
