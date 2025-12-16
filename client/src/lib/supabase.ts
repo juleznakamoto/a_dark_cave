@@ -68,9 +68,13 @@ export async function getSupabaseClient(): Promise<SupabaseClient> {
       if (!authStateListenerSetup) {
         authStateListenerSetup = true;
         
-        // Listen to auth state changes
+        // Listen to auth state changes with minimal overhead
         client.auth.onAuthStateChange((_event, session) => {
-          cachedAuthUser = session?.user || null;
+          const newUser = session?.user || null;
+          // Only update if user actually changed
+          if (newUser?.id !== cachedAuthUser?.id) {
+            cachedAuthUser = newUser;
+          }
           authStateInitialized = true;
         });
         

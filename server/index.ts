@@ -82,7 +82,15 @@ function maskEmail(email: string | null): string {
   return `${local.substring(0, 2)}***${local.substring(local.length - 2)}`;
 }
 
+// Cache admin clients to reuse connections
+const adminClients = new Map<string, any>();
+
 const getAdminClient = (env: "dev" | "prod" = "dev") => {
+  // Return cached client if exists
+  if (adminClients.has(env)) {
+    return adminClients.get(env);
+  }
+
   const supabaseUrl =
     env === "dev"
       ? process.env.VITE_SUPABASE_URL_DEV
@@ -98,12 +106,20 @@ const getAdminClient = (env: "dev" | "prod" = "dev") => {
     );
   }
 
-  return createClient(supabaseUrl, supabaseServiceKey, {
+  const client = createClient(supabaseUrl, supabaseServiceKey, {
     auth: {
       autoRefreshToken: false,
       persistSession: false,
     },
+    global: {
+      headers: {
+        'x-connection-pool': 'true'
+      }
+    }
   });
+
+  adminClients.set(env, client);
+  return client;
 };
 
 // API endpoint to fetch admin dashboard data (server-side, bypasses RLS)
