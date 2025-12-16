@@ -44,7 +44,7 @@ export const shopItemEvents: Record<string, GameEvent> = {
       state.story.seen.undergroundLakeExplored &&
       !state.story.seen.undergroundLakeCreatureDiscovered,
     triggerType: "resource",
-    timeProbability: 0.05,
+    timeProbability: 4,
     title: "Something Beneath",
     message:
       "While exploring the underground lake, you catch a huge shadow beneath the black waters, something vast and unseen. Perhaps a trap could lure it out of the waters.",
@@ -64,8 +64,7 @@ export const shopItemEvents: Record<string, GameEvent> = {
                 undergroundLakeCreatureDiscovered: true,
               },
             },
-            _logMessage:
-              "You decide to craft a trap, daring to draw whatever unseen horror stirs in the black depths of the underground lake into the light.",
+            
           };
         },
       },
@@ -81,14 +80,14 @@ export const shopItemEvents: Record<string, GameEvent> = {
     timeProbability: 1,
     title: "The Creature's Fate",
     message:
-      "The massive creature writhes in the trap, its tentacles thrashing against the iron bars. Its ancient eyes regard you with what might be intelligence. The blacksmith steps forward, his eyes gleaming with greed. 'Those bones would forge the mightiest shield ever made.' But something in the creature's gaze makes you hesitate.",
+      "The massive creature writhes in the trap, its tentacles thrashing against the steel bars. Its ancient eyes regard you with what might be intelligence. What will you do?",
     triggered: false,
     priority: 4,
     repeatable: false,
     choices: [
       {
         id: "killCreature",
-        label: "Kill the creature",
+        label: "Kill creature",
         effect: (state: GameState) => {
           return {
             resources: {
@@ -105,18 +104,18 @@ export const shopItemEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "The creature's death throes echo through the cavern as your men drive spears into its flesh. The blacksmith harvests its massive bones, each one harder than steel. 'With these,' he says reverently, 'I can forge the Ashen Greatshield, a bulwark that will protect us from all harm.'",
+              "The creature’s last violent thrashes shake the cavern as the men drive their spears into its writhing body. As the blacksmith eyes the creature's massive bones, he declares he can forge them into a mighty greatshield.",
           };
         },
       },
       {
         id: "spareCreature",
-        label: "Spare its life",
+        label: "Spare life",
         effect: (state: GameState) => {
           return {
             resources: {
               ...state.resources,
-              gold: (state.resources.gold || 0) + 1000,
+              gold: (state.resources.gold || 0) + 750,
             },
             story: {
               ...state.story,
@@ -127,7 +126,7 @@ export const shopItemEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "You open the trap and step back. The creature regards you for a long moment before diving deep. Just as you turn to leave, it resurfaces and spits out an ancient chest encrusted with centuries of lake sediment. Inside gleams 1000 gold coins, untarnished by time. The creature vanishes into the black depths, leaving only ripples.",
+              "You open the trap and step back. The creature watches a moment, then dives deep, resurfacing to spit out a small rotten chest. Inside lie gleaming gold coins. It vanishes into the black depths, leaving only ripples.",
           };
         },
       },
