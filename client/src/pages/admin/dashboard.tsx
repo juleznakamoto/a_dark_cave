@@ -128,17 +128,49 @@ export default function AdminDashboard() {
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date()); // State to track last data update
   const [dauData, setDauData] = useState<Array<{ date: string; active_user_count: number }>>([]);
   const [emailConfirmationStats, setEmailConfirmationStats] = useState<{
-    totalRegistrations: number;
-    confirmedUsers: number;
-    unconfirmedUsers: number;
-    totalConfirmationDelay: number;
-    usersWithSignIn: number;
+    allTime: {
+      totalRegistrations: number;
+      confirmedUsers: number;
+      unconfirmedUsers: number;
+      totalConfirmationDelay: number;
+      usersWithSignIn: number;
+    };
+    last30Days: {
+      totalRegistrations: number;
+      confirmedUsers: number;
+      unconfirmedUsers: number;
+      totalConfirmationDelay: number;
+      usersWithSignIn: number;
+    };
+    last7Days: {
+      totalRegistrations: number;
+      confirmedUsers: number;
+      unconfirmedUsers: number;
+      totalConfirmationDelay: number;
+      usersWithSignIn: number;
+    };
   }>({
-    totalRegistrations: 0,
-    confirmedUsers: 0,
-    unconfirmedUsers: 0,
-    totalConfirmationDelay: 0,
-    usersWithSignIn: 0,
+    allTime: {
+      totalRegistrations: 0,
+      confirmedUsers: 0,
+      unconfirmedUsers: 0,
+      totalConfirmationDelay: 0,
+      usersWithSignIn: 0,
+    },
+    last30Days: {
+      totalRegistrations: 0,
+      confirmedUsers: 0,
+      unconfirmedUsers: 0,
+      totalConfirmationDelay: 0,
+      usersWithSignIn: 0,
+    },
+    last7Days: {
+      totalRegistrations: 0,
+      confirmedUsers: 0,
+      unconfirmedUsers: 0,
+      totalConfirmationDelay: 0,
+      usersWithSignIn: 0,
+    },
   });
 
   // Filter states
@@ -2194,14 +2226,36 @@ export default function AdminDashboard() {
                       <CardDescription>% who clicked verification link</CardDescription>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-4xl font-bold">
-                        {emailConfirmationStats.totalRegistrations > 0
-                          ? Math.round((emailConfirmationStats.confirmedUsers / emailConfirmationStats.totalRegistrations) * 100)
-                          : 0}%
-                      </p>
-                      <p className="text-sm text-muted-foreground mt-2">
-                        {emailConfirmationStats.confirmedUsers} of {emailConfirmationStats.totalRegistrations} confirmed
-                      </p>
+                      <div className="space-y-3">
+                        <div>
+                          <p className="text-4xl font-bold">
+                            {emailConfirmationStats.allTime.totalRegistrations > 0
+                              ? Math.round((emailConfirmationStats.allTime.confirmedUsers / emailConfirmationStats.allTime.totalRegistrations) * 100)
+                              : 0}%
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            All-time: {emailConfirmationStats.allTime.confirmedUsers} / {emailConfirmationStats.allTime.totalRegistrations}
+                          </p>
+                        </div>
+                        <div className="text-sm border-t pt-2">
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">30 days:</span>
+                            <span className="font-semibold">
+                              {emailConfirmationStats.last30Days.totalRegistrations > 0
+                                ? Math.round((emailConfirmationStats.last30Days.confirmedUsers / emailConfirmationStats.last30Days.totalRegistrations) * 100)
+                                : 0}%
+                            </span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">7 days:</span>
+                            <span className="font-semibold">
+                              {emailConfirmationStats.last7Days.totalRegistrations > 0
+                                ? Math.round((emailConfirmationStats.last7Days.confirmedUsers / emailConfirmationStats.last7Days.totalRegistrations) * 100)
+                                : 0}%
+                            </span>
+                          </div>
+                        </div>
+                      </div>
                     </CardContent>
                   </Card>
 
@@ -2211,9 +2265,24 @@ export default function AdminDashboard() {
                       <CardDescription>Registered but not verified</CardDescription>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-4xl font-bold">
-                        {emailConfirmationStats.unconfirmedUsers}
-                      </p>
+                      <div className="space-y-3">
+                        <div>
+                          <p className="text-4xl font-bold">
+                            {emailConfirmationStats.allTime.unconfirmedUsers}
+                          </p>
+                          <p className="text-xs text-muted-foreground">All-time</p>
+                        </div>
+                        <div className="text-sm border-t pt-2">
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">30 days:</span>
+                            <span className="font-semibold">{emailConfirmationStats.last30Days.unconfirmedUsers}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">7 days:</span>
+                            <span className="font-semibold">{emailConfirmationStats.last7Days.unconfirmedUsers}</span>
+                          </div>
+                        </div>
+                      </div>
                     </CardContent>
                   </Card>
 
@@ -2223,14 +2292,36 @@ export default function AdminDashboard() {
                       <CardDescription>Time to first sign-in</CardDescription>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-4xl font-bold">
-                        {emailConfirmationStats.usersWithSignIn > 0
-                          ? formatTime(Math.round(emailConfirmationStats.totalConfirmationDelay / emailConfirmationStats.usersWithSignIn))
-                          : '0m'}
-                      </p>
-                      <p className="text-sm text-muted-foreground mt-2">
-                        {emailConfirmationStats.usersWithSignIn} users tracked
-                      </p>
+                      <div className="space-y-3">
+                        <div>
+                          <p className="text-4xl font-bold">
+                            {emailConfirmationStats.allTime.usersWithSignIn > 0
+                              ? formatTime(Math.round(emailConfirmationStats.allTime.totalConfirmationDelay / emailConfirmationStats.allTime.usersWithSignIn))
+                              : '0m'}
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            All-time: {emailConfirmationStats.allTime.usersWithSignIn} users
+                          </p>
+                        </div>
+                        <div className="text-sm border-t pt-2">
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">30 days:</span>
+                            <span className="font-semibold">
+                              {emailConfirmationStats.last30Days.usersWithSignIn > 0
+                                ? formatTime(Math.round(emailConfirmationStats.last30Days.totalConfirmationDelay / emailConfirmationStats.last30Days.usersWithSignIn))
+                                : '0m'}
+                            </span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">7 days:</span>
+                            <span className="font-semibold">
+                              {emailConfirmationStats.last7Days.usersWithSignIn > 0
+                                ? formatTime(Math.round(emailConfirmationStats.last7Days.totalConfirmationDelay / emailConfirmationStats.last7Days.usersWithSignIn))
+                                : '0m'}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
                     </CardContent>
                   </Card>
 
@@ -2240,14 +2331,36 @@ export default function AdminDashboard() {
                       <CardDescription>Confirmed users who signed in</CardDescription>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-4xl font-bold">
-                        {emailConfirmationStats.confirmedUsers > 0
-                          ? Math.round((emailConfirmationStats.usersWithSignIn / emailConfirmationStats.confirmedUsers) * 100)
-                          : 0}%
-                      </p>
-                      <p className="text-sm text-muted-foreground mt-2">
-                        {emailConfirmationStats.usersWithSignIn} of {emailConfirmationStats.confirmedUsers} signed in
-                      </p>
+                      <div className="space-y-3">
+                        <div>
+                          <p className="text-4xl font-bold">
+                            {emailConfirmationStats.allTime.confirmedUsers > 0
+                              ? Math.round((emailConfirmationStats.allTime.usersWithSignIn / emailConfirmationStats.allTime.confirmedUsers) * 100)
+                              : 0}%
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            All-time: {emailConfirmationStats.allTime.usersWithSignIn} / {emailConfirmationStats.allTime.confirmedUsers}
+                          </p>
+                        </div>
+                        <div className="text-sm border-t pt-2">
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">30 days:</span>
+                            <span className="font-semibold">
+                              {emailConfirmationStats.last30Days.confirmedUsers > 0
+                                ? Math.round((emailConfirmationStats.last30Days.usersWithSignIn / emailConfirmationStats.last30Days.confirmedUsers) * 100)
+                                : 0}%
+                            </span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">7 days:</span>
+                            <span className="font-semibold">
+                              {emailConfirmationStats.last7Days.confirmedUsers > 0
+                                ? Math.round((emailConfirmationStats.last7Days.usersWithSignIn / emailConfirmationStats.last7Days.confirmedUsers) * 100)
+                                : 0}%
+                            </span>
+                          </div>
+                        </div>
+                      </div>
                     </CardContent>
                   </Card>
                 </div>
