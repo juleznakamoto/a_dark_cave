@@ -335,7 +335,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
   skull_lantern: {
     id: "skull_lantern",
     name: "Skull Lantern",
-    description: "Ancient lantern forged from cursed bone that illuminates the deepest depths",
+    description: "Forged from cursed bone illuminating the deepest depths",
     bonuses: {
       actionBonuses: {
         mining: {
