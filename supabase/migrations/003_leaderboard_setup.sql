@@ -36,10 +36,10 @@ DROP POLICY IF EXISTS "Anyone can view leaderboard" ON leaderboard;
 DROP POLICY IF EXISTS "Users can insert their own entries" ON leaderboard;
 DROP POLICY IF EXISTS "Users can update their own entries" ON leaderboard;
 
--- Policies for leaderboard
+-- Policies for leaderboard (optimized with subquery pattern)
 CREATE POLICY "Anyone can view leaderboard" ON leaderboard FOR SELECT USING (true);
-CREATE POLICY "Users can insert their own entries" ON leaderboard FOR INSERT WITH CHECK (auth.uid() = user_id);
-CREATE POLICY "Users can update their own entries" ON leaderboard FOR UPDATE USING (auth.uid() = user_id);
+CREATE POLICY "Users can insert their own entries" ON leaderboard FOR INSERT WITH CHECK ((select auth.uid()) = user_id);
+CREATE POLICY "Users can update their own entries" ON leaderboard FOR UPDATE USING ((select auth.uid()) = user_id);
 
 -- Add unique constraint to prevent duplicate entries per user per mode
 DO $$ 

@@ -50,6 +50,9 @@ CREATE POLICY "Users can insert their own saves" ON game_saves
 CREATE POLICY "Users can update their own saves" ON game_saves
   FOR UPDATE USING ((select auth.uid()) = user_id);
 
+CREATE POLICY "Users can delete their own saves" ON game_saves
+  FOR DELETE USING ((select auth.uid()) = user_id);
+
 -- RLS policies for button_clicks (optimized with subquery pattern)
 CREATE POLICY "Users can view their own click data" ON button_clicks
   FOR SELECT USING ((select auth.uid()) = user_id);
