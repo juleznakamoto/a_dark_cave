@@ -14,6 +14,15 @@ export const logEntrySchema = z.object({
     .optional(),
 });
 
+// Define AttackWaveTimer schema
+const attackWaveTimerSchema = z.object({
+  startTime: z.number().default(0),
+  duration: z.number().default(0),
+  defeated: z.boolean().default(false),
+  provoked: z.boolean().default(false),
+  pausedAt: z.number().optional(), // Timestamp when timer was paused
+});
+
 // Game state schema for A Dark Cave
 export const gameStateSchema = z.object({
   gameId: z.string().optional(), // Unique identifier for this game playthrough
@@ -393,16 +402,7 @@ export const gameStateSchema = z.object({
   feastActivations: z.record(z.number()).default({}), // purchaseId -> activations remaining
   cruelMode: z.boolean().default(false),
   CM: z.number().default(0),
-  attackWaveTimers: z
-    .record(
-      z.object({
-        startTime: z.number(),
-        duration: z.number(),
-        defeated: z.boolean(),
-        provoked: z.boolean().default(false),
-      }),
-    )
-    .default({}),
+  attackWaveTimers: z.record(attackWaveTimerSchema).default({}),
   curseState: z
     .object({
       isActive: z.boolean().default(false),

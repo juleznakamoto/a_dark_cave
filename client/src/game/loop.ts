@@ -178,6 +178,7 @@ export function startGameLoop() {
       state.leaderboardDialogOpen ||
       state.idleModeDialog.isOpen;
     const isPaused = state.isPaused || isDialogOpen;
+    const wasPaused = state.isPausedPreviously || state.dialogsOpenPreviously; // Track previous pause state
 
     if (isPaused) {
       // Stop all sounds when paused (unless already stopped by mute)
@@ -220,6 +221,49 @@ export function startGameLoop() {
     }
 
     if (!isDialogOpen) {
+
+      // Handle cooldowns only when not paused
+      if (!isPaused) {
+        state.tickCooldowns();
+      }
+
+      // Handle attack wave timer pause/resume
+      const attackWaveTimers = state.attackWaveTimers || {};
+      if (isPaused && !wasPaused) {
+        // Just paused - save the pause time for each active timer
+        const updatedTimers: typeof attackWaveTimers = {};
+        for (const [waveId, timer] of Object.entries(attackWaveTimers)) {
+          if (!timer.defeated && timer.startTime > 0) {
+            updatedTimers[waveId] = {
+              ...timer,
+              pausedAt: timestamp, // Store when we paused
+            };
+          } else {
+            updatedTimers[waveId] = timer;
+          }
+        }
+        if (Object.keys(updatedTimers).length > 0) {
+          useGameStore.setState({ attackWaveTimers: updatedTimers });
+        }
+      } else if (!isPaused && wasPaused) {
+        // Just resumed - adjust startTime for each timer
+        const updatedTimers: typeof attackWaveTimers = {};
+        for (const [waveId, timer] of Object.entries(attackWaveTimers)) {
+          if (!timer.defeated && timer.startTime > 0 && timer.pausedAt) {
+            const pauseDuration = timestamp - timer.pausedAt;
+            updatedTimers[waveId] = {
+              ...timer,
+              startTime: timer.startTime + pauseDuration, // Shift startTime forward by pause duration
+              pausedAt: undefined, // Clear pause timestamp
+            };
+          } else {
+            updatedTimers[waveId] = timer;
+          }
+        }
+        if (Object.keys(updatedTimers).length > 0) {
+          useGameStore.setState({ attackWaveTimers: updatedTimers });
+        }
+      }
 
       // Process ticks in fixed intervals
       let ticksProcessed = 0;

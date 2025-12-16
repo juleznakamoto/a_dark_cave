@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 
 export default function AttackWavesChart() {
-  const { story, attackWaveTimers, flags, isPaused, eventDialog, combatDialog, authDialogOpen, shopDialogOpen, leaderboardDialogOpen, idleModeDialog } = useGameStore();
+  const { story, attackWaveTimers, flags } = useGameStore();
   const [timeRemaining, setTimeRemaining] = useState<Record<string, number>>({});
 
   const waves = [
@@ -40,39 +40,9 @@ export default function AttackWavesChart() {
     },
   ];
 
-  // Update timer every second (but only when not paused)
+  // Update timer display every second
   useEffect(() => {
     const interval = setInterval(() => {
-      // Check if game is paused
-      const state = useGameStore.getState();
-      const isDialogOpen =
-        state.eventDialog?.isOpen ||
-        state.combatDialog?.isOpen ||
-        state.authDialogOpen ||
-        state.shopDialogOpen ||
-        state.leaderboardDialogOpen ||
-        state.idleModeDialog?.isOpen;
-      const isGamePaused = state.isPaused || isDialogOpen;
-
-      console.log('[ATTACK WAVES] Timer update check:', {
-        isPaused: state.isPaused,
-        eventDialogOpen: state.eventDialog?.isOpen,
-        combatDialogOpen: state.combatDialog?.isOpen,
-        authDialogOpen: state.authDialogOpen,
-        shopDialogOpen: state.shopDialogOpen,
-        leaderboardDialogOpen: state.leaderboardDialogOpen,
-        idleModeDialogOpen: state.idleModeDialog?.isOpen,
-        isDialogOpen,
-        isGamePaused,
-        willSkipUpdate: isGamePaused
-      });
-
-      // Don't update timers when paused
-      if (isGamePaused) {
-        console.log('[ATTACK WAVES] Skipping timer update - game is paused');
-        return;
-      }
-
       const now = Date.now();
       const newTimeRemaining: Record<string, number> = {};
 
@@ -81,22 +51,14 @@ export default function AttackWavesChart() {
           const elapsed = now - timer.startTime;
           const remaining = Math.max(0, timer.duration - elapsed);
           newTimeRemaining[waveId] = remaining;
-          console.log(`[ATTACK WAVES] ${waveId} timer:`, {
-            startTime: timer.startTime,
-            duration: timer.duration,
-            elapsed,
-            remaining,
-            formattedRemaining: formatTime(remaining)
-          });
         }
       });
 
-      console.log('[ATTACK WAVES] Updating timeRemaining state:', newTimeRemaining);
       setTimeRemaining(newTimeRemaining);
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [attackWaveTimers, isPaused, eventDialog, combatDialog, authDialogOpen, shopDialogOpen, leaderboardDialogOpen, idleModeDialog]);
+  }, [attackWaveTimers]);
 
   const handleProvoke = async (waveId: string) => {
     const timer = attackWaveTimers?.[waveId];
