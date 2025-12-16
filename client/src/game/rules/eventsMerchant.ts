@@ -117,34 +117,34 @@ const TIER_CONDITIONS = {
   mid2: (state: GameState) =>
     state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
   end: (state: GameState) => state.buildings.stoneHut >= 7,
-  sellEarly: (state: GameState) =>
-    state.buildings.woodenHut >= 4 && state.buildings.woodenHut <= 9,
 };
 
 // Define trade configurations based on progression tiers
 const buyTrades = [
   // Very Early tier
-  createBuyTrade("buy_food_250_early", "food", 250, TIER_CONDITIONS.veryEarly, [
-    "wood",
-    "stone",
-    "silver",
-    "gold",
-  ]),
-  createBuyTrade("buy_wood_250_early", "wood", 250, TIER_CONDITIONS.veryEarly, [
-    "food",
-    "stone",
-    "silver",
-    "gold",
-  ]),
   createBuyTrade(
-    "buy_stone_250_early",
+    "buy_food_250_very_early",
+    "food",
+    250,
+    TIER_CONDITIONS.veryEarly,
+    ["wood", "stone", "silver", "gold"],
+  ),
+  createBuyTrade(
+    "buy_wood_250_very_early",
+    "wood",
+    250,
+    TIER_CONDITIONS.veryEarly,
+    ["food", "stone", "silver", "gold"],
+  ),
+  createBuyTrade(
+    "buy_stone_250_very_early",
     "stone",
     250,
     TIER_CONDITIONS.veryEarly,
     ["food", "wood", "silver", "gold"],
   ),
   createBuyTrade(
-    "buy_leather_50_early",
+    "buy_leather_50_very_early",
     "leather",
     50,
     TIER_CONDITIONS.veryEarly,
@@ -287,22 +287,59 @@ const buyTrades = [
 ];
 
 const sellTrades = [
-  // Early tier
+  // Very Early tier
   createSellTrade(
-    "sell_food_100_early",
+    "sell_food_100_very_early",
     "food",
-    100,
-    TIER_CONDITIONS.sellEarly,
-    ["wood", "stone", "leather", "steel", "gold"],
+    50,
+    TIER_CONDITIONS.veryEarly,
+    ["wood", "stone", "leather", "gold"],
   ),
   createSellTrade(
-    "sell_bones_100_early",
+    "sell_bones_100_very_early",
     "bones",
-    100,
-    TIER_CONDITIONS.sellEarly,
-    ["wood", "stone", "food", "leather", "steel", "gold"],
+    50,
+    TIER_CONDITIONS.veryEarly,
+    ["wood", "stone", "food", "leather", "gold"],
   ),
-  createSellTrade("sell_fur_100_early", "fur", 100, TIER_CONDITIONS.sellEarly, [
+  createSellTrade("sell_fur_100_early", "fur", 50, TIER_CONDITIONS.veryEarly, [
+    "wood",
+    "stone",
+    "food",
+    "leather",
+    "gold",
+  ]),
+  createSellTrade(
+    "sell_wood_250_very_early",
+    "wood",
+    100,
+    TIER_CONDITIONS.veryEarly,
+    ["food", "stone", "leather", "gold"],
+  ),
+  createSellTrade(
+    "sell_stone_100_very_early",
+    "stone",
+    50,
+    TIER_CONDITIONS.veryEarly,
+    ["wood", "food", "leather", "gold"],
+  ),
+  createSellTrade(
+    "sell_iron_100_very_early",
+    "iron",
+    50,
+    TIER_CONDITIONS.veryEarly,
+    ["wood", "stone", "food", "leather", "gold"],
+  ),
+
+  // Early tier
+  createSellTrade("sell_food_100_early", "food", 100, TIER_CONDITIONS.early, [
+    "wood",
+    "stone",
+    "leather",
+    "steel",
+    "gold",
+  ]),
+  createSellTrade("sell_bones_100_early", "bones", 100, TIER_CONDITIONS.early, [
     "wood",
     "stone",
     "food",
@@ -310,27 +347,36 @@ const sellTrades = [
     "steel",
     "gold",
   ]),
-  createSellTrade(
-    "sell_wood_250_early",
+  createSellTrade("sell_fur_100_early", "fur", 100, TIER_CONDITIONS.early, [
     "wood",
-    250,
-    TIER_CONDITIONS.sellEarly,
-    ["food", "stone", "leather", "steel", "gold"],
-  ),
-  createSellTrade(
-    "sell_stone_100_early",
     "stone",
-    100,
-    TIER_CONDITIONS.sellEarly,
-    ["wood", "food", "leather", "steel", "gold"],
-  ),
-  createSellTrade(
-    "sell_iron_100_early",
-    "iron",
-    100,
-    TIER_CONDITIONS.sellEarly,
-    ["wood", "stone", "food", "leather", "steel", "gold"],
-  ),
+    "food",
+    "leather",
+    "steel",
+    "gold",
+  ]),
+  createSellTrade("sell_wood_250_early", "wood", 250, TIER_CONDITIONS.early, [
+    "food",
+    "stone",
+    "leather",
+    "steel",
+    "gold",
+  ]),
+  createSellTrade("sell_stone_100_early", "stone", 100, TIER_CONDITIONS.early, [
+    "wood",
+    "food",
+    "leather",
+    "steel",
+    "gold",
+  ]),
+  createSellTrade("sell_iron_100_early", "iron", 100, TIER_CONDITIONS.early, [
+    "wood",
+    "stone",
+    "food",
+    "leather",
+    "steel",
+    "gold",
+  ]),
 
   // Mid 1 tier
   createSellTrade("sell_food_250_mid1", "food", 250, TIER_CONDITIONS.mid1, [
