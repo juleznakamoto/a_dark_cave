@@ -321,6 +321,27 @@ export const caveExploreActions: Record<string, Action> = {
     cooldown: 1,
   },
 
+  exploreUndergroundLake: {
+    id: "exploreUndergroundLake",
+    label: "Underground Lake",
+    show_when: {
+      "story.seen.undergroundLakeDiscovered": true,
+      "story.seen.undergroundLakeExplored": false,
+    },
+    cost: {
+      "resources.food": 1250,
+    },
+    effects: {
+      "resources.silver": 300,
+      "resources.gold": 75,
+      "resources.obsidian": 60,
+      "resources.adamant": 40,
+      "resources.moonstone": 15,
+      "story.seen.undergroundLakeExplored": true,
+    },
+    cooldown: 1,
+  },
+
   blastPortal: {
     id: "blastPortal",
     label: "Blast Portal",
@@ -738,6 +759,28 @@ export function handleEncounterBeyondPortal(
     message: "You venture beyond the shattered portal into the depths below.",
     timestamp: Date.now(),
     type: "system",
+  });
+
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+export function handleExploreUndergroundLake(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("exploreUndergroundLake", state);
+
+  result.logEntries!.push({
+    id: `underground-lake-explored-${Date.now()}`,
+    message:
+      "With the Skull Lantern illuminating the darkness, you descend to the underground lake. The eerie light reveals ancient treasures hidden beneath the black waters, left by those who came before.",
+    timestamp: Date.now(),
+    type: "system",
+    visualEffect: {
+      type: "glow",
+      duration: 3,
+    },
   });
 
   Object.assign(result.stateUpdates, effectUpdates);

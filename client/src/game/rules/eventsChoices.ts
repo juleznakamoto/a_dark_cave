@@ -1690,6 +1690,41 @@ export const choiceEvents: Record<string, GameEvent> = {
     ],
   },
 
+  undergroundLakeDiscovery: {
+    id: "undergroundLakeDiscovery",
+    condition: (state: GameState) =>
+      state.tools.skull_lantern &&
+      state.story.seen.descendedFurther &&
+      !state.story.seen.undergroundLakeDiscovered,
+    triggerType: "resource",
+    timeProbability: 2,
+    title: "The Underground Lake",
+    message:
+      "During the last expedition into the depths of the cave, 2 men claimed to have seen an underground lake. The darkness was so dense they could not explore it. With the Skull Lantern's light, perhaps now you can illuminate what lies beneath those dark waters.",
+    triggered: false,
+    priority: 4,
+    repeatable: false,
+    choices: [
+      {
+        id: "unlockLake",
+        label: "Explore the underground lake",
+        effect: (state: GameState) => {
+          return {
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                undergroundLakeDiscovered: true,
+              },
+            },
+            _logMessage:
+              "The Skull Lantern's eerie glow pierces the darkness. You descend to the underground lake, its black waters stretching into the void. The path to its depths is now open.",
+          };
+        },
+      },
+    ],
+  },
+
   boneTempleProposal: {
     id: "boneTempleProposal",
     condition: (state: GameState) =>
