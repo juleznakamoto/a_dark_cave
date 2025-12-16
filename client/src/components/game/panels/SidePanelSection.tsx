@@ -107,9 +107,12 @@ export default function SidePanelSection({
     };
   }, []);
 
+  const [maxAnimatedItems, setMaxAnimatedItems] = useState<Set<string>>(new Set());
+
   useEffect(() => {
     const newAnimatedItems = new Set<string>();
     const newDecreaseAnimatedItems = new Set<string>();
+    const newMaxAnimatedItems = new Set<string>();
 
     visibleItems.forEach((item) => {
       const currentValue =
@@ -124,10 +127,35 @@ export default function SidePanelSection({
         return;
       }
 
+      // Check if resource hit max limit
+      const isLimited = isResourceLimited(item.id, gameState);
+      const limit = isLimited ? getResourceLimit(gameState) : null;
+      const hitMax = isLimited && limit !== null && currentValue === limit && prevValue !== undefined && prevValue < limit;
+
       // We have a previous value to compare against
       if (prevValue !== undefined) {
         if (currentValue > prevValue) {
-          newAnimatedItems.add(item.id);
+          if (hitMax) {
+            newMaxAnimatedItems.add(item.id);
+            // Remove animation after 2 seconds
+            setTimeout(() => {
+              setMaxAnimatedItems((prev) => {
+                const newSet = new Set(prev);
+                newSet.delete(item.id);
+                return newSet;
+              });
+            }, 2000);
+          } else {
+            newAnimatedItems.add(item.id);
+            // Remove animation after 2 seconds
+            setTimeout(() => {
+              setAnimatedItems((prev) => {
+                const newSet = new Set(prev);
+                newSet.delete(item.id);
+                return newSet;
+              });
+            }, 2000);
+          }
 
           // Add to resourceChanges for notifications - always trigger if onResourceChange is provided
           if (onResourceChange) {
@@ -139,15 +167,6 @@ export default function SidePanelSection({
             };
             onResourceChange(newChange);
           }
-
-          // Remove animation after 2 seconds
-          setTimeout(() => {
-            setAnimatedItems((prev) => {
-              const newSet = new Set(prev);
-              newSet.delete(item.id);
-              return newSet;
-            });
-          }, 2000);
         } else if (currentValue < prevValue) {
           newDecreaseAnimatedItems.add(item.id);
 
@@ -190,7 +209,10 @@ export default function SidePanelSection({
         (prev) => new Set([...prev, ...newDecreaseAnimatedItems]),
       );
     }
-  }, [visibleItems, onResourceChange]); // Simplified dependencies
+    if (newMaxAnimatedItems.size > 0) {
+      setMaxAnimatedItems((prev) => new Set([...prev, ...newMaxAnimatedItems]));
+    }
+  }, [visibleItems, onResourceChange, gameState]); // Simplified dependencies
 
   if (visibleItems.length === 0) {
     return null;
@@ -215,10 +237,8 @@ export default function SidePanelSection({
   const renderItemWithTooltip = (item: SidePanelItem) => {
     const isAnimated = animatedItems.has(item.id);
     const isDecreaseAnimated = decreaseAnimatedItems.has(item.id);
+    const isMaxAnimated = maxAnimatedItems.has(item.id);
     const displayValue = formatValue(item.value);
-    const isLimited = isResourceLimited(item.id, gameState);
-    const limit = isLimited ? getResourceLimit(gameState) : null;
-    const isAtMax = isLimited && limit !== null && item.value === limit;
 
     // Handle mobile tooltip click - also mark as hovered to stop pulse
     const handleMobileTooltipClick = (id: string, e: React.MouseEvent) => {
@@ -322,7 +342,7 @@ export default function SidePanelSection({
             ? "text-green-400"
             : isDecreaseAnimated
               ? "text-red-400"
-              : isAtMax ? "text-yellow-400" : "" // Changed to yellow for max resources
+              : isMaxAnimated ? "text-yellow-400" : ""
         }`}
       >
         {labelContent}
@@ -342,9 +362,9 @@ export default function SidePanelSection({
               "font-mono text-gray-300",
               isAnimated && "text-green-800 font-bold",
               isDecreaseAnimated && "text-red-800 font-bold",
+              isMaxAnimated && "text-yellow-800 font-bold",
               isMadness && madnessClasses,
-              isHighlighted && "font-bold !text-gray-100",
-              isAtMax && "font-bold !text-yellow-800" // Changed to yellow for max resources
+              isHighlighted && "font-bold !text-gray-100"
             )}
           >
             {displayValue}
@@ -415,7 +435,7 @@ export default function SidePanelSection({
                   ? "text-green-400"
                   : isDecreaseAnimated
                     ? "text-red-400"
-                    : isAtMax ? "text-yellow-400" : "" // Changed to yellow for max resources
+                    : isMaxAnimated ? "text-yellow-400" : ""
               }`}
             >
               <TooltipTrigger asChild>
@@ -447,9 +467,11 @@ export default function SidePanelSection({
                       ? "text-green-800 font-bold"
                       : isDecreaseAnimated
                         ? "text-red-800 font-bold"
-                        : isMadness
-                          ? madnessClasses
-                          : isAtMax ? "font-bold !text-yellow-800" : "" // Changed to yellow for max resources
+                        : isMaxAnimated
+                          ? "text-yellow-800 font-bold"
+                          : isMadness
+                            ? madnessClasses
+                            : ""
                   }`}
                 >
                   {displayValue}
@@ -462,9 +484,11 @@ export default function SidePanelSection({
                       ? "text-green-800 font-bold"
                       : isDecreaseAnimated
                         ? "text-red-800 font-bold"
-                        : isMadness
-                          ? madnessClasses
-                          : isAtMax ? "font-bold !text-yellow-800" : "" // Changed to yellow for max resources
+                        : isMaxAnimated
+                          ? "text-yellow-800 font-bold"
+                          : isMadness
+                            ? madnessClasses
+                            : ""
                   }`}
                 >
                   {displayValue}
