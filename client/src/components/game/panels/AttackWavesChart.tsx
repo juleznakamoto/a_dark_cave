@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 
 export default function AttackWavesChart() {
-  const { story, attackWaveTimers, flags } = useGameStore();
+  const { story, attackWaveTimers, flags, isPaused, eventDialog, combatDialog, authDialogOpen, shopDialogOpen, leaderboardDialogOpen, idleModeDialog } = useGameStore();
   const [timeRemaining, setTimeRemaining] = useState<Record<string, number>>({});
 
   const waves = [
@@ -40,9 +40,25 @@ export default function AttackWavesChart() {
     },
   ];
 
-  // Update timer every second
+  // Update timer every second (but only when not paused)
   useEffect(() => {
     const interval = setInterval(() => {
+      // Check if game is paused
+      const state = useGameStore.getState();
+      const isDialogOpen =
+        state.eventDialog?.isOpen ||
+        state.combatDialog?.isOpen ||
+        state.authDialogOpen ||
+        state.shopDialogOpen ||
+        state.leaderboardDialogOpen ||
+        state.idleModeDialog?.isOpen;
+      const isGamePaused = state.isPaused || isDialogOpen;
+
+      // Don't update timers when paused
+      if (isGamePaused) {
+        return;
+      }
+
       const now = Date.now();
       const newTimeRemaining: Record<string, number> = {};
 
@@ -58,7 +74,7 @@ export default function AttackWavesChart() {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [attackWaveTimers]);
+  }, [attackWaveTimers, isPaused, eventDialog, combatDialog, authDialogOpen, shopDialogOpen, leaderboardDialogOpen, idleModeDialog]);
 
   const handleProvoke = async (waveId: string) => {
     const timer = attackWaveTimers?.[waveId];
