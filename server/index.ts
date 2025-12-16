@@ -67,7 +67,6 @@ app.get("/api/config", (req, res) => {
 
 // Server-side Supabase admin client (bypasses RLS)
 import { createClient } from "@supabase/supabase-js";
-import { serverSupabaseMonitor } from "./supabaseMonitor";
 
 // Helper function to mask emails
 function maskEmail(email: string | null): string {
@@ -106,16 +105,6 @@ const getAdminClient = (env: "dev" | "prod" = "dev") => {
     },
   });
 };
-
-// API endpoint to view Supabase call statistics
-app.get("/api/monitor/stats", (req, res) => {
-  const stats = serverSupabaseMonitor.getStats();
-  res.json({
-    stats: stats.slice(0, 20),
-    totalCalls: stats.reduce((sum, s) => sum + s.count, 0),
-    totalErrors: stats.reduce((sum, s) => sum + s.errors, 0),
-  });
-});
 
 // API endpoint to fetch admin dashboard data (server-side, bypasses RLS)
 app.get("/api/admin/data", async (req, res) => {
