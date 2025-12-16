@@ -27,21 +27,7 @@ const FOCUS_ELIGIBLE_ACTIONS = [
   "chopWood",
 ];
 
-// Import gameActions - we'll use a getter function to avoid circular dependency
-let gameActionsRef: Record<string, Action> | null = null;
-
-export function setGameActionsRef(actions: Record<string, Action>) {
-  gameActionsRef = actions;
-}
-
-function getGameActions(): Record<string, Action> {
-  if (!gameActionsRef) {
-    throw new Error(
-      "gameActions not initialized. Call setGameActionsRef first.",
-    );
-  }
-  return gameActionsRef;
-}
+import { getGameActions } from "./actionsRegistry";
 
 const evaluateCondition = (condition: string, state: GameState): boolean => {
   const isNegated = condition.startsWith("!");

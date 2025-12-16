@@ -1,7 +1,7 @@
 import { Action } from "@shared/schema";
 import { GameState } from "@shared/schema";
 import { GameEvent } from "./events";
-import { setGameActionsRef } from "./actionEffects";
+import { registerActions, getGameActions } from "./actionsRegistry";
 import { getNextBuildingLevel } from "./villageBuildActions";
 import {
   getBoneTotemsCost,
@@ -11,7 +11,7 @@ import {
 } from "./forestSacrificeActions";
 import { calculateAdjustedCost } from "./costCalculation";
 
-// Import action modules - these are now safe because actionEffects uses late binding
+// Import action modules
 import { caveCraftResources } from "./caveCraftResources";
 import { caveCraftTools } from "./caveCraftTools";
 import { caveCraftWeapons } from "./caveCraftWeapons";
@@ -20,8 +20,9 @@ import { villageBuildActions } from "./villageBuildActions";
 import { forestSacrificeActions } from "./forestSacrificeActions";
 import { forestTradeActions } from "./forestTradeActions";
 import { caveExploreActions } from "./caveExploreActions";
+import { forestScoutActions } from "./forestScoutActions";
 
-// Import event modules - can be imported anytime since they don't have circular deps
+// Import event modules
 import { caveEvents } from "./eventsCave";
 import { huntEvents } from "./eventsHunt";
 import { choiceEvents } from "./eventsChoices";
@@ -39,8 +40,8 @@ import { fellowshipEvents } from "./eventsFellowship";
 import { attackWaveEvents } from "./eventsAttackWaves";
 import { riddleEvents } from "./eventsRiddles";
 
-// Combine all actions (except forestScoutActions which needs to be added after setGameActionsRef)
-export const gameActions: Record<string, Action> = {
+// Register all actions with the central registry
+registerActions({
   ...villageBuildActions,
   ...caveExploreActions,
   ...caveCraftTools,
@@ -49,21 +50,11 @@ export const gameActions: Record<string, Action> = {
   ...caveMineActions,
   ...forestSacrificeActions,
   ...forestTradeActions,
-  // Register new storage building actions
-  buildSupplyHut: villageBuildActions.buildSupplyHut,
-  buildStorehouse: villageBuildActions.buildStorehouse,
-  buildFortifiedStorehouse: villageBuildActions.buildFortifiedStorehouse,
-  buildVillageWarehouse: villageBuildActions.buildVillageWarehouse,
-  buildGrandRepository: villageBuildActions.buildGrandRepository,
-  buildgreatVault: villageBuildActions.buildgreatVault,
-};
+  ...forestScoutActions,
+});
 
-// Register gameActions reference for late binding in actionEffects
-setGameActionsRef(gameActions);
-
-// Now import and add forestScoutActions after gameActions is registered
-import { forestScoutActions } from "./forestScoutActions";
-Object.assign(gameActions, forestScoutActions);
+// Export the registry getter for external use
+export const gameActions = getGameActions();
 
 // Helper function to check if requirements are met for both building and non-building actions
 const checkRequirements = (
@@ -132,7 +123,7 @@ export const shouldShowAction = (
   actionId: string,
   state: GameState,
 ): boolean => {
-  const action = gameActions[actionId];
+  const action = getGameActions()[actionId];
   if (!action?.show_when) return false;
 
   // For building actions, also check if the next level exists
@@ -188,7 +179,7 @@ export function getAdjustedCost(
   isResourceCost: boolean,
   state: GameState,
 ): number {
-  const action = gameActions[actionId];
+  const action = getGameActions()[actionId];
   return calculateAdjustedCost(
     actionId,
     baseCost,
@@ -203,7 +194,7 @@ export function getResourcesFromActionCost(
   actionId: string,
   state: GameState,
 ): string[] {
-  const action = gameActions[actionId];
+  const action = getGameActions()[actionId];
   if (!action?.cost) return [];
 
   const resources: string[] = [];
@@ -246,7 +237,7 @@ export function getResourcesFromActionCost(
 
 // Utility function to check if requirements are met for an action
 export function canExecuteAction(actionId: string, state: GameState): boolean {
-  const action = gameActions[actionId];
+  const action = getGameActions()[actionId];
   if (!action) return false;
 
   // Handle dynamic totem costs
@@ -395,7 +386,7 @@ export function getActionCostDisplay(
     return `-${foodCost} Food`;
   }
 
-  const action = gameActions[actionId];
+  const action = getGameActions()[actionId];
   if (!action?.cost) return "";
 
   let costs = action.cost;
@@ -489,7 +480,7 @@ export function getActionCostBreakdown(
     ];
   }
 
-  const action = gameActions[actionId];
+  const action = getGameActions()[actionId];
   if (!action?.cost) return [];
 
   let costs = action.cost;

@@ -2,9 +2,13 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { GameState } from '@shared/schema';
 import { createInitialState } from '../state';
 
-// Import index first to ensure gameActions is initialized
-import { gameActions } from './index';
 import { applyActionEffects } from './actionEffects';
+import { getGameActions } from './actionsRegistry';
+
+// Import index to register all actions
+import './index';
+
+const gameActions = getGameActions();
 import { getTotalCraftingCostReduction, getTotalBuildingCostReduction } from './effectsCalculation';
 
 describe('actionEffects - circular dependency fix', () => {
