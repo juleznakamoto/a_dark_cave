@@ -581,6 +581,17 @@ export const weaponEffects: Record<string, EffectDefinition> = {
       },
     },
   },
+
+  ashen_greatshield: {
+    id: "ashen_greatshield",
+    name: "Ashen Greatshield",
+    description: "Massive shield forged from the bones of the lake creature, protecting your forces from harm",
+    bonuses: {
+      generalBonuses: {
+        strength: 10,
+      },
+    },
+  },
 };
 
 // Relic effects

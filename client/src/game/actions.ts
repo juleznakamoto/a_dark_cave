@@ -320,6 +320,8 @@ export function executeGameAction(
       return handleCraftBloodstoneStaff(state, result);
     case "craftStormglassHalberd":
       return handleCraftStormglassHalberd(state, result);
+    case "craftAshenGreatshield":
+      return handleCraftAshenGreatshield(state, result);
 
     // Cave Mine Actions
     case "mineStone":

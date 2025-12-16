@@ -71,4 +71,66 @@ export const shopItemEvents: Record<string, GameEvent> = {
       },
     ],
   },
+
+  lakeCreatureFate: {
+    id: "lakeCreatureFate",
+    condition: (state: GameState) =>
+      state.story.seen.lakeCreatureLured &&
+      !state.story.seen.lakeCreatureFateDecided,
+    triggerType: "resource",
+    timeProbability: 1,
+    title: "The Creature's Fate",
+    message:
+      "The massive creature writhes in the trap, its tentacles thrashing against the iron bars. Its ancient eyes regard you with what might be intelligence. The blacksmith steps forward, his eyes gleaming with greed. 'Those bones would forge the mightiest shield ever made.' But something in the creature's gaze makes you hesitate.",
+    triggered: false,
+    priority: 4,
+    repeatable: false,
+    choices: [
+      {
+        id: "killCreature",
+        label: "Kill the creature",
+        effect: (state: GameState) => {
+          return {
+            resources: {
+              ...state.resources,
+              bones: (state.resources.bones || 0) + 5000,
+            },
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                lakeCreatureFateDecided: true,
+                lakeCreatureKilled: true,
+                ashenGreatshieldUnlocked: true,
+              },
+            },
+            _logMessage:
+              "The creature's death throes echo through the cavern as your men drive spears into its flesh. The blacksmith harvests its massive bones, each one harder than steel. 'With these,' he says reverently, 'I can forge the Ashen Greatshield, a bulwark that will protect us from all harm.'",
+          };
+        },
+      },
+      {
+        id: "spareCreature",
+        label: "Spare its life",
+        effect: (state: GameState) => {
+          return {
+            resources: {
+              ...state.resources,
+              gold: (state.resources.gold || 0) + 1000,
+            },
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                lakeCreatureFateDecided: true,
+                lakeCreatureSpared: true,
+              },
+            },
+            _logMessage:
+              "You open the trap and step back. The creature regards you for a long moment before diving deep. Just as you turn to leave, it resurfaces and spits out an ancient chest encrusted with centuries of lake sediment. Inside gleams 1000 gold coins, untarnished by time. The creature vanishes into the black depths, leaving only ripples.",
+          };
+        },
+      },
+    ],
+  },
 };

@@ -113,8 +113,14 @@ export function unassignVillagerFromJob(
 export function killVillagers(state: GameState, deathCount: number): Partial<GameState> {
   if (deathCount <= 0) return {};
 
+  // Apply 25% reduction if Ashen Greatshield is equipped
+  let actualDeaths = deathCount;
+  if (state.weapons?.ashen_greatshield) {
+    actualDeaths = Math.ceil(deathCount * 0.75); // 25% reduction
+  }
+
   let updatedVillagers = { ...state.villagers };
-  let remainingDeaths = deathCount;
+  let remainingDeaths = actualDeaths;
 
   // First, kill free villagers
   if (updatedVillagers.free && updatedVillagers.free > 0) {

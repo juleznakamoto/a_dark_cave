@@ -265,6 +265,24 @@ export const caveCraftWeapons: Record<string, Action> = {
     },
     cooldown: 60,
   },
+
+  craftAshenGreatshield: {
+    id: "craftAshenGreatshield",
+    label: "Ashen Greatshield",
+    show_when: {
+      "buildings.blacksmith": 1,
+      "story.seen.ashenGreatshieldUnlocked": true,
+      "weapons.ashen_greatshield": false,
+    },
+    cost: {
+      "resources.bones": 5000,
+      "resources.silver": 500,
+    },
+    effects: {
+      "weapons.ashen_greatshield": true,
+    },
+    cooldown: 60,
+  },
 };
 
 // Action handlers
@@ -462,6 +480,24 @@ export function handleCraftStormglassHalberd(
     id: `stormglass-halberd-crafted-${Date.now()}`,
     message:
       "You forge the Stormglass Halberd, its blade gleaming with an ethereal light. You feel significantly stronger wielding this legendary weapon.",
+    timestamp: Date.now(),
+    type: "system",
+  });
+
+  return result;
+}
+
+export function handleCraftAshenGreatshield(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("craftAshenGreatshield", state);
+  Object.assign(result.stateUpdates, effectUpdates);
+
+  result.logEntries!.push({
+    id: `ashen-greatshield-crafted-${Date.now()}`,
+    message:
+      "The blacksmith forges the massive bones of the lake creature into an impenetrable shield. The Ashen Greatshield is a bulwark of unmatched strength, capable of protecting your forces from even the deadliest threats.",
     timestamp: Date.now(),
     type: "system",
   });
