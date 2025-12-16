@@ -12,22 +12,22 @@ CREATE TABLE IF NOT EXISTS game_saves (
 -- Enable Row Level Security
 ALTER TABLE game_saves ENABLE ROW LEVEL SECURITY;
 
--- Create policies
+-- Create policies (optimized with subquery pattern)
 CREATE POLICY "Users can view their own saves"
   ON game_saves FOR SELECT
-  USING (auth.uid() = user_id);
+  USING ((select auth.uid()) = user_id);
 
 CREATE POLICY "Users can insert their own saves"
   ON game_saves FOR INSERT
-  WITH CHECK (auth.uid() = user_id);
+  WITH CHECK ((select auth.uid()) = user_id);
 
 CREATE POLICY "Users can update their own saves"
   ON game_saves FOR UPDATE
-  USING (auth.uid() = user_id);
+  USING ((select auth.uid()) = user_id);
 
 CREATE POLICY "Users can delete their own saves"
   ON game_saves FOR DELETE
-  USING (auth.uid() = user_id);
+  USING ((select auth.uid()) = user_id);
 
 -- Create an index for faster queries
 CREATE INDEX IF NOT EXISTS game_saves_user_id_idx ON game_saves(user_id);
