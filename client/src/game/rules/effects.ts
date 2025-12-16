@@ -37,6 +37,7 @@ export interface EffectDefinition {
       MAX_CINDERFLAME_BOMBS?: number; // Bonus to max ashfire bombs 
       MAX_VOID_BOMBS?: number;
       caveExploreMultiplier?: number; // Multiplier for all cave exploration actions
+      eventDeathReduction?: number; // Percentage reduction in villager deaths from events (0.25 = 25% reduction)
     };
   };
 }
@@ -589,6 +590,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
     bonuses: {
       generalBonuses: {
         strength: 10,
+        eventDeathReduction: 0.25, // 25% reduction in villager deaths from events
       },
     },
   },
