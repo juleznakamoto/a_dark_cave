@@ -329,14 +329,15 @@ export const caveExploreActions: Record<string, Action> = {
       "story.seen.undergroundLakeExplored": false,
     },
     cost: {
-      "resources.food": 1250,
+      "resources.food": 2500,
+      "resources.wood": 5000,
     },
     effects: {
-      "resources.silver": 300,
-      "resources.gold": 75,
-      "resources.obsidian": 60,
-      "resources.adamant": 40,
-      "resources.moonstone": 15,
+      "resources.silver": 500,
+      "resources.gold": 100,
+      "resources.obsidian": 150,
+      "resources.adamant": 100,
+      "resources.moonstone": 25,
       "story.seen.undergroundLakeExplored": true,
     },
     cooldown: 1,
@@ -754,13 +755,6 @@ export function handleEncounterBeyondPortal(
 ): ActionResult {
   const effectUpdates = applyActionEffects("encounterBeyondPortal", state);
 
-  result.logEntries!.push({
-    id: `encounter-beyond-portal-${Date.now()}`,
-    message: "You venture beyond the shattered portal into the depths below.",
-    timestamp: Date.now(),
-    type: "system",
-  });
-
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
@@ -774,7 +768,7 @@ export function handleExploreUndergroundLake(
   result.logEntries!.push({
     id: `underground-lake-explored-${Date.now()}`,
     message:
-      "With the Skull Lantern illuminating the darkness, you descend to the underground lake. The eerie light reveals ancient treasures hidden beneath the black waters, left by those who came before.",
+      "With the skull lantern’s grim glow, you descend to the underground lake and build a small boat. On a tiny island in the middle of the dark lake, forgotten treasures lie in shadow, untouched for ages.",
     timestamp: Date.now(),
     type: "system",
     visualEffect: {
