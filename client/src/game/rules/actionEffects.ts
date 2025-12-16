@@ -325,21 +325,82 @@ export function applyActionEffects(
               console.log("=== EXPLORE CITADEL GOLD CALCULATION ===");
               console.log("Base range from action:", match[1], "-", match[2]);
               console.log("Flat bonus:", actionBonuses?.resourceBonus?.gold || 0);
-              console.log("Resource multiplier:", actionBonuses?.resourceMultiplier || 1);
-              console.log("Cave explore multiplier:", actionBonuses?.caveExploreMultiplier || 1);
-              console.log("Total multiplier (resource × cave):", totalMultiplier);
+              
+              // Break down resource multiplier sources
+              console.log("\n--- RESOURCE MULTIPLIER BREAKDOWN ---");
+              console.log("Total resource multiplier:", actionBonuses?.resourceMultiplier || 1);
+              
+              // Check tools/weapons/clothing/relics effects
+              const activeEffects = (await import('./effectsCalculation')).getActiveEffects(state);
+              let toolMultiplier = 0;
+              let bookMultiplier = 0;
+              let buildingMultiplier = 0;
+              
+              activeEffects.forEach((effect) => {
+                if (effect.bonuses.actionBonuses?.[actionId]?.resourceMultiplier) {
+                  const bonus = effect.bonuses.actionBonuses[actionId].resourceMultiplier - 1;
+                  console.log(`  ${effect.name}: +${Math.round(bonus * 100)}%`);
+                  toolMultiplier += bonus;
+                }
+              });
+              
+              // Check button upgrades
+              const upgradeKey = ACTION_TO_UPGRADE_KEY[actionId];
+              if (upgradeKey) {
+                const { getUpgradeBonus } = await import('../buttonUpgrades');
+                const upgradeBonus = getUpgradeBonus(upgradeKey, state);
+                if (upgradeBonus > 0) {
+                  console.log(`  Button Upgrade: +${upgradeBonus}%`);
+                  bookMultiplier = upgradeBonus / 100;
+                }
+              }
+              
+              // Check building bonuses
+              const { villageBuildActions } = await import('./villageBuildActions');
+              Object.entries(state.buildings).forEach(([buildingKey, buildingCount]) => {
+                if (buildingCount > 0) {
+                  const actionIdForBuilding = `build${buildingKey.charAt(0).toUpperCase() + buildingKey.slice(1)}`;
+                  const buildAction = villageBuildActions[actionIdForBuilding];
+                  
+                  if (buildAction?.actionBonuses?.[actionId]?.resourceMultiplier) {
+                    const bonus = buildAction.actionBonuses[actionId].resourceMultiplier - 1;
+                    console.log(`  ${buildingKey} (${buildingCount}): +${Math.round(bonus * 100)}%`);
+                    buildingMultiplier += bonus;
+                  }
+                }
+              });
+              
+              console.log(`Subtotal: 1 + ${Math.round(toolMultiplier * 100)}% + ${Math.round(bookMultiplier * 100)}% + ${Math.round(buildingMultiplier * 100)}% = ${actionBonuses?.resourceMultiplier || 1}`);
+              
+              // Break down cave explore multiplier sources
+              console.log("\n--- CAVE EXPLORE MULTIPLIER BREAKDOWN ---");
+              console.log("Total cave explore multiplier:", actionBonuses?.caveExploreMultiplier || 1);
+              
+              let caveToolMultiplier = 0;
+              activeEffects.forEach((effect) => {
+                if (effect.bonuses.actionBonuses?.caveExplore?.resourceMultiplier) {
+                  const bonus = effect.bonuses.actionBonuses.caveExplore.resourceMultiplier - 1;
+                  console.log(`  ${effect.name}: +${Math.round(bonus * 100)}%`);
+                  caveToolMultiplier += bonus;
+                }
+              });
+              
+              console.log(`Subtotal: 1 + ${Math.round(caveToolMultiplier * 100)}% = ${actionBonuses?.caveExploreMultiplier || 1}`);
+              
+              console.log("\n--- FINAL CALCULATION ---");
+              console.log("Combined multiplier:", actionBonuses?.resourceMultiplier || 1, "×", actionBonuses?.caveExploreMultiplier || 1, "=", totalMultiplier);
               console.log("Final range after multipliers:", min, "-", max);
 
               const isFocusActive = FOCUS_ELIGIBLE_ACTIONS.includes(actionId) &&
                 state.focusState?.isActive &&
                 state.focusState.endTime > Date.now();
-              console.log("Focus mode active:", isFocusActive);
+              console.log("\nFocus mode active:", isFocusActive);
               if (isFocusActive) {
                 console.log("Focus multiplier: 2x");
                 console.log("Range with focus:", Math.floor(min * 2), "-", Math.floor(max * 2));
               }
 
-              console.log("Random result:", baseAmount);
+              console.log("\nRandom result:", baseAmount);
               console.log("Original gold:", originalAmount);
               console.log("New gold total:", originalAmount + baseAmount);
               console.log("======================================");
