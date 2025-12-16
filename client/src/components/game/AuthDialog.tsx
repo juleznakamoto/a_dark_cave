@@ -106,11 +106,21 @@ export default function AuthDialog({ isOpen, onClose, onAuthSuccess }: AuthDialo
           </DialogDescription>
         </DialogHeader>
         {signupSuccess ? (
-          <div className="flex justify-center">
+          <div className="space-y-6 py-4">
+            <div className="text-center space-y-4">
+              <div className="bg-primary/10 border-2 border-primary/30 rounded-lg p-4">
+                <p className="text-lg font-bold text-primary">
+                  Please check your email to verify your account.
+                </p>
+                <p className="text-base font-semibold text-primary/80 mt-2">
+                  Also look in your spam folder.
+                </p>
+              </div>
+            </div>
             <Button onClick={() => {
               onAuthSuccess();
               onClose();
-            }} className="w-full">
+            }} className="w-full" size="lg">
               Close
             </Button>
           </div>
