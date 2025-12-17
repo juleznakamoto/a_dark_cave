@@ -1305,10 +1305,10 @@ export default function AdminDashboard() {
 
               <TabsContent value="referrals">
                 <ReferralsTab
-                  getTotalReferrals={getTotalReferrals()}
+                  getTotalReferrals={getTotalReferrals}
                   gameSaves={gameSaves}
-                  getDailyReferrals={getDailyReferrals()}
-                  getTopReferrers={getTopReferrers()}
+                  getDailyReferrals={getDailyReferrals}
+                  getTopReferrers={getTopReferrers}
                 />
               </TabsContent>
 
