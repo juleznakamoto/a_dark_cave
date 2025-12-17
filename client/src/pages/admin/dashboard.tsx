@@ -474,19 +474,173 @@ export default function AdminDashboard() {
 
               <TabsContent value="overview">
                 <OverviewTab
-                  rawClickData={rawClickData}
-                  rawGameSaves={rawGameSaves}
-                  rawPurchases={rawPurchases}
-                  users={users}
+                  getDailyActiveUsers={() => {
+                    const now = new Date();
+                    const oneDayAgo = subDays(now, 1);
+                    return gameSaves.filter(
+                      (s) => parseISO(s.updated_at) >= oneDayAgo
+                    ).length;
+                  }}
+                  getWeeklyActiveUsers={() => {
+                    const now = new Date();
+                    const sevenDaysAgo = subDays(now, 7);
+                    return gameSaves.filter(
+                      (s) => parseISO(s.updated_at) >= sevenDaysAgo
+                    ).length;
+                  }}
+                  getMonthlyActiveUsers={() => {
+                    const now = new Date();
+                    const thirtyDaysAgo = subDays(now, 30);
+                    return gameSaves.filter(
+                      (s) => parseISO(s.updated_at) >= thirtyDaysAgo
+                    ).length;
+                  }}
                   totalUserCount={totalUserCount}
-                  dauData={dauData}
+                  gameSaves={gameSaves}
                   emailConfirmationStats={emailConfirmationStats}
-                  timeRange={timeRange}
-                  selectedUser={selectedUser}
-                  showCompletedOnly={showCompletedOnly}
-                  gameSaves={gameSaves} // Pass filtered gameSaves
-                  clickData={clickData} // Pass filtered clickData
-                  purchases={purchases} // Pass filtered purchases
+                  formatTime={formatTime}
+                  getAveragePlaytime={() => {
+                    const filteredSaves = selectedUser === "all"
+                      ? gameSaves
+                      : gameSaves.filter((s) => s.user_id === selectedUser);
+
+                    const completedSaves = showCompletedOnly
+                      ? filteredSaves.filter((s) => s.game_state?.gameComplete)
+                      : filteredSaves;
+
+                    if (completedSaves.length === 0) return 0;
+
+                    const totalPlayTime = completedSaves.reduce(
+                      (sum, save) => sum + (save.game_state?.playTime || 0),
+                      0,
+                    );
+                    return Math.floor(totalPlayTime / completedSaves.length / 60000);
+                  }}
+                  getAveragePlaytimeToCompletion={() => {
+                    const filteredSaves = selectedUser === "all"
+                      ? gameSaves
+                      : gameSaves.filter((s) => s.user_id === selectedUser);
+
+                    const completedSaves = filteredSaves.filter(
+                      (s) => s.game_state?.gameComplete,
+                    );
+
+                    if (completedSaves.length === 0) return 0;
+
+                    const totalPlayTime = completedSaves.reduce(
+                      (sum, save) => sum + (save.game_state?.playTime || 0),
+                      0,
+                    );
+                    return Math.floor(totalPlayTime / completedSaves.length / 60000);
+                  }}
+                  getConversionRate={() => {
+                    const paidPurchases = rawPurchases.filter(
+                      (p) => p.price_paid > 0 && !p.bundle_id
+                    );
+                    const uniqueBuyers = new Set(paidPurchases.map((p) => p.user_id));
+                    return totalUserCount > 0
+                      ? Math.round((uniqueBuyers.size / totalUserCount) * 100)
+                      : 0;
+                  }}
+                  getBuyersPerHundred={() => {
+                    const paidPurchases = rawPurchases.filter(
+                      (p) => p.price_paid > 0 && !p.bundle_id
+                    );
+                    const uniqueBuyers = new Set(paidPurchases.map((p) => p.user_id));
+                    return totalUserCount > 0
+                      ? ((uniqueBuyers.size / totalUserCount) * 100).toFixed(2)
+                      : "0.00";
+                  }}
+                  getARPU={() => {
+                    const totalRevenue = rawPurchases
+                      .filter((p) => p.price_paid > 0 && !p.bundle_id)
+                      .reduce((sum, p) => sum + p.price_paid, 0);
+                    return totalUserCount > 0
+                      ? (totalRevenue / 100 / totalUserCount).toFixed(2)
+                      : "0.00";
+                  }}
+                  getTotalRevenue={() =>
+                    rawPurchases
+                      .filter((p) => p.price_paid > 0 && !p.bundle_id)
+                      .reduce((sum, p) => sum + p.price_paid, 0)
+                  }
+                  getInstagramFollowers={() => {
+                    return gameSaves.filter((s) => s.game_state?.instagramFollow).length;
+                  }}
+                  getInstagramFollowRate={() => {
+                    const followers = gameSaves.filter((s) => s.game_state?.instagramFollow).length;
+                    return totalUserCount > 0
+                      ? ((followers / totalUserCount) * 100).toFixed(2)
+                      : "0.00";
+                  }}
+                  getUserRetention={() => {
+                    const data: Array<{ day: string; users: number }> = [];
+                    const now = new Date();
+
+                    for (let i = 29; i >= 0; i--) {
+                      const date = subDays(now, i);
+                      const dayStart = startOfDay(date);
+                      const dayEnd = endOfDay(date);
+
+                      const activeUsers = rawGameSaves.filter((save) => {
+                        const activityDate = parseISO(save.updated_at);
+                        return activityDate >= dayStart && activityDate <= dayEnd;
+                      }).length;
+
+                      data.push({
+                        day: format(date, "MMM dd"),
+                        users: activeUsers,
+                      });
+                    }
+
+                    return data;
+                  }}
+                  getDailySignups={() => {
+                    const data: Array<{ day: string; signups: number }> = [];
+                    const now = new Date();
+
+                    for (let i = 29; i >= 0; i--) {
+                      const date = subDays(now, i);
+                      const dayStart = startOfDay(date);
+                      const dayEnd = endOfDay(date);
+
+                      const signups = rawGameSaves.filter((save) => {
+                        const createdDate = parseISO(save.created_at);
+                        return createdDate >= dayStart && createdDate <= dayEnd;
+                      }).length;
+
+                      data.push({
+                        day: format(date, "MMM dd"),
+                        signups,
+                      });
+                    }
+
+                    return data;
+                  }}
+                  getHourlySignups={() => {
+                    const data: Array<{ hour: string; signups: number }> = [];
+                    const now = new Date();
+                    const oneDayAgo = subDays(now, 1);
+
+                    for (let i = 23; i >= 0; i--) {
+                      const hour = new Date(now);
+                      hour.setHours(now.getHours() - i, 0, 0, 0);
+                      const nextHour = new Date(hour);
+                      nextHour.setHours(hour.getHours() + 1);
+
+                      const signups = rawGameSaves.filter((save) => {
+                        const createdDate = parseISO(save.created_at);
+                        return createdDate >= hour && createdDate < nextHour && createdDate >= oneDayAgo;
+                      }).length;
+
+                      data.push({
+                        hour: format(hour, "HH:mm"),
+                        signups,
+                      });
+                    }
+
+                    return data;
+                  }}
                 />
               </TabsContent>
 
