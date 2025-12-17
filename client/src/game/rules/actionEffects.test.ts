@@ -11,9 +11,22 @@ import './index';
 const gameActions = getGameActions();
 import { getTotalCraftingCostReduction, getTotalBuildingCostReduction } from './effectsCalculation';
 
-// Mock functions and types for testing purposes
-declare function createMockState(overrides?: Partial<GameState>): GameState;
-declare function executeActionEffects(actionName: string, state: GameState): Partial<GameState>;
+// Helper to create mock state for testing
+function createMockState(overrides?: Partial<GameState>): GameState {
+  const base = createInitialState();
+  return {
+    ...base,
+    ...overrides,
+    buildings: { ...base.buildings, ...overrides?.buildings },
+    resources: { ...base.resources, ...overrides?.resources },
+    tools: { ...base.tools, ...overrides?.tools },
+  };
+}
+
+// Helper to execute action effects (wrapper around applyActionEffects)
+function executeActionEffects(actionName: string, state: GameState): Partial<GameState> {
+  return applyActionEffects(actionName, state);
+}
 
 describe('actionEffects - circular dependency fix', () => {
   let state: GameState;
@@ -425,6 +438,3 @@ describe('Cost Reduction Edge Cases', () => {
   });
 });
 
-// Helper functions (assuming these are defined elsewhere and needed for context)
-declare function getTotalCraftingCostReduction(state: GameState): number;
-declare function getTotalBuildingCostReduction(state: GameState): number;

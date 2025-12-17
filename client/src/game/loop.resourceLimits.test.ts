@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { useGameStore } from './state';
 import { startGameLoop, stopGameLoop } from './loop';
 import { gameActions } from './rules';
+import { getPopulationProduction } from './population';
 
 describe('Game Loop - Resource Limits Integration', () => {
   beforeEach(() => {

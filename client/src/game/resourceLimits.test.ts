@@ -5,9 +5,12 @@ import {
   capResourceToLimit,
   isResourceCapped,
   getStorageLimitText,
+  isResourceLimited,
+  getStorageBuildingName,
 } from './resourceLimits';
 import { updateResource } from './stateHelpers';
 import { gameActions } from './rules';
+import { createInitialState } from './state';
 
 describe('Resource Limits - Core Functionality', () => {
   let state: GameState;
