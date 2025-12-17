@@ -374,6 +374,363 @@ export default function AdminDashboard() {
       .slice(0, 15);
   }, [clickData, gameSaves, selectedUser, showCompletedOnly]);
 
+  // All memos MUST be defined before conditional returns
+  const getStatsOverPlaytime = useMemo(() => {
+    const relevant = filterByUser(gameSaves);
+    if (relevant.length === 0) {
+      return Array.from({ length: 24 }, (_, i) => ({
+        time: `${i}h`,
+        strength: 0,
+        knowledge: 0,
+        luck: 0,
+        madness: 0,
+      }));
+    }
+
+    const timeMap = new Map<number, { strength: number[], knowledge: number[], luck: number[], madness: number[] }>();
+    for (let i = 0; i < 24; i++) {
+      timeMap.set(i, { strength: [], knowledge: [], luck: [], madness: [] });
+    }
+
+    relevant.forEach((save) => {
+      const clicksForUser = clickData.filter((c) => c.user_id === save.user_id);
+      if (clicksForUser.length === 0) return;
+
+      const firstClickTime = new Date(clicksForUser[0].timestamp).getTime();
+
+      clicksForUser.forEach((click) => {
+        const elapsed = (new Date(click.timestamp).getTime() - firstClickTime) / 1000;
+        const bucket = Math.floor(elapsed / 3600);
+
+        if (bucket >= 0 && bucket < 24) {
+          const state = click.game_state_snapshot;
+          if (state) {
+            const data = timeMap.get(bucket)!;
+            data.strength.push(state.strength || 0);
+            data.knowledge.push(state.knowledge || 0);
+            data.luck.push(state.luck || 0);
+            data.madness.push(state.madness || 0);
+          }
+        }
+      });
+    });
+
+    return Array.from({ length: 24 }, (_, i) => {
+      const stats = timeMap.get(i)!;
+      return {
+        time: `${i}h`,
+        strength: stats.strength.length > 0 ? stats.strength.reduce((a, b) => a + b, 0) / stats.strength.length : 0,
+        knowledge: stats.knowledge.length > 0 ? stats.knowledge.reduce((a, b) => a + b, 0) / stats.knowledge.length : 0,
+        luck: stats.luck.length > 0 ? stats.luck.reduce((a, b) => a + b, 0) / stats.luck.length : 0,
+        madness: stats.madness.length > 0 ? stats.madness.reduce((a, b) => a + b, 0) / stats.madness.length : 0,
+      };
+    });
+  }, [gameSaves, clickData, selectedUser, showCompletedOnly]);
+
+  const getResourceStatsOverPlaytime = useMemo(() => {
+    const relevant = filterByUser(gameSaves);
+    const resourceKeys = ['food', 'wood', 'stone', 'iron', 'coal', 'sulfur', 'obsidian', 'adamant', 'moonstone', 'leather', 'steel', 'gold', 'silver'];
+
+    if (relevant.length === 0) {
+      return Array.from({ length: 24 }, (_, i) => {
+        const result: any = { time: `${i}h` };
+        resourceKeys.forEach(key => result[key] = 0);
+        return result;
+      });
+    }
+
+    const timeMap = new Map<number, { [key: string]: number[] }>();
+    for (let i = 0; i < 24; i++) {
+      const emptyData: { [key: string]: number[] } = {};
+      resourceKeys.forEach(key => emptyData[key] = []);
+      timeMap.set(i, emptyData);
+    }
+
+    relevant.forEach((save) => {
+      const clicksForUser = clickData.filter((c) => c.user_id === save.user_id);
+      if (clicksForUser.length === 0) return;
+
+      const firstClickTime = new Date(clicksForUser[0].timestamp).getTime();
+
+      clicksForUser.forEach((click) => {
+        const elapsed = (new Date(click.timestamp).getTime() - firstClickTime) / 1000;
+        const bucket = Math.floor(elapsed / 3600);
+
+        if (bucket >= 0 && bucket < 24) {
+          const state = click.game_state_snapshot?.resources;
+          if (state) {
+            const data = timeMap.get(bucket)!;
+            resourceKeys.forEach(key => {
+              data[key].push(state[key] || 0);
+            });
+          }
+        }
+      });
+    });
+
+    return Array.from({ length: 24 }, (_, i) => {
+      const resources = timeMap.get(i)!;
+      const result: any = { time: `${i}h` };
+      resourceKeys.forEach(key => {
+        result[key] = resources[key].length > 0 ? resources[key].reduce((a, b) => a + b, 0) / resources[key].length : 0;
+      });
+      return result;
+    });
+  }, [gameSaves, clickData, selectedUser, showCompletedOnly, selectedResources]);
+
+  const getButtonUpgradesOverPlaytime = useMemo(() => {
+    const relevant = filterByUser(gameSaves);
+    if (relevant.length === 0) {
+      return Array.from({ length: 24 }, (_, i) => ({
+        time: `${i}h`,
+        caveExplore: 1, mineStone: 1, mineIron: 1, mineCoal: 1, mineSulfur: 1, mineObsidian: 1, mineAdamant: 1, hunt: 1, chopWood: 1,
+      }));
+    }
+
+    const timeMap = new Map<number, { caveExplore: number[], mineStone: number[], mineIron: number[], mineCoal: number[], mineSulfur: number[], mineObsidian: number[], mineAdamant: number[], hunt: number[], chopWood: number[] }>();
+    for (let i = 0; i < 24; i++) {
+      timeMap.set(i, { caveExplore: [], mineStone: [], mineIron: [], mineCoal: [], mineSulfur: [], mineObsidian: [], mineAdamant: [], hunt: [], chopWood: [] });
+    }
+
+    relevant.forEach((save) => {
+      const clicksForUser = clickData.filter((c) => c.user_id === save.user_id);
+      if (clicksForUser.length === 0) return;
+
+      const firstClickTime = new Date(clicksForUser[0].timestamp).getTime();
+
+      clicksForUser.forEach((click) => {
+        const elapsed = (new Date(click.timestamp).getTime() - firstClickTime) / 1000;
+        const bucket = Math.floor(elapsed / 3600);
+
+        if (bucket >= 0 && bucket < 24) {
+          const state = click.game_state_snapshot;
+          if (state?.buttonLevels) {
+            const data = timeMap.get(bucket)!;
+            data.caveExplore.push(state.buttonLevels.caveExplore || 1);
+            data.mineStone.push(state.buttonLevels.mineStone || 1);
+            data.mineIron.push(state.buttonLevels.mineIron || 1);
+            data.mineCoal.push(state.buttonLevels.mineCoal || 1);
+            data.mineSulfur.push(state.buttonLevels.mineSulfur || 1);
+            data.mineObsidian.push(state.buttonLevels.mineObsidian || 1);
+            data.mineAdamant.push(state.buttonLevels.mineAdamant || 1);
+            data.hunt.push(state.buttonLevels.hunt || 1);
+            data.chopWood.push(state.buttonLevels.chopWood || 1);
+          }
+        }
+      });
+    });
+
+    return Array.from({ length: 24 }, (_, i) => {
+      const levels = timeMap.get(i)!;
+      return {
+        time: `${i}h`,
+        caveExplore: levels.caveExplore.length > 0 ? levels.caveExplore.reduce((a, b) => a + b, 0) / levels.caveExplore.length : 1,
+        mineStone: levels.mineStone.length > 0 ? levels.mineStone.reduce((a, b) => a + b, 0) / levels.mineStone.length : 1,
+        mineIron: levels.mineIron.length > 0 ? levels.mineIron.reduce((a, b) => a + b, 0) / levels.mineIron.length : 1,
+        mineCoal: levels.mineCoal.length > 0 ? levels.mineCoal.reduce((a, b) => a + b, 0) / levels.mineCoal.length : 1,
+        mineSulfur: levels.mineSulfur.length > 0 ? levels.mineSulfur.reduce((a, b) => a + b, 0) / levels.mineSulfur.length : 1,
+        mineObsidian: levels.mineObsidian.length > 0 ? levels.mineObsidian.reduce((a, b) => a + b, 0) / levels.mineObsidian.length : 1,
+        mineAdamant: levels.mineAdamant.length > 0 ? levels.mineAdamant.reduce((a, b) => a + b, 0) / levels.mineAdamant.length : 1,
+        hunt: levels.hunt.length > 0 ? levels.hunt.reduce((a, b) => a + b, 0) / levels.hunt.length : 1,
+        chopWood: levels.chopWood.length > 0 ? levels.chopWood.reduce((a, b) => a + b, 0) / levels.chopWood.length : 1,
+      };
+    });
+  }, [gameSaves, clickData, selectedUser, showCompletedOnly]);
+
+  const getGameCompletionStats = useMemo(() => {
+    const relevantSaves = selectedUser === "all"
+      ? gameSaves
+      : gameSaves.filter((s) => s.user_id === selectedUser);
+
+    let completedCount = 0;
+    let notCompletedCount = 0;
+
+    relevantSaves.forEach(save => {
+      const isCompleted = save.game_state?.events?.cube15a ||
+                          save.game_state?.events?.cube15b ||
+                          save.game_state?.events?.cube13 ||
+                          save.game_state?.events?.cube14a ||
+                          save.game_state?.events?.cube14b ||
+                          save.game_state?.events?.cube14c ||
+                          save.game_state?.events?.cube14d ||
+                          save.game_state?.gameComplete;
+
+      if (isCompleted) {
+        completedCount++;
+      } else {
+        notCompletedCount++;
+      }
+    });
+
+    return [
+      { name: "Completed", value: completedCount },
+      { name: "Not Completed", value: notCompletedCount },
+    ];
+  }, [gameSaves, selectedUser]);
+
+  const getDailyPurchases = useMemo(() => {
+    const data: Array<{ day: string; purchases: number }> = [];
+    const now = new Date();
+
+    for (let i = 29; i >= 0; i--) {
+      const date = subDays(now, i);
+      const dayStart = startOfDay(date);
+      const dayEnd = endOfDay(date);
+
+      const dailyPurchases = purchases.filter((purchase) => {
+        const purchaseDate = parseISO(purchase.purchased_at);
+        return purchaseDate >= dayStart && purchaseDate <= dayEnd && purchase.price_paid > 0 && !purchase.bundle_id;
+      }).length;
+
+      data.push({
+        day: format(date, "MMM dd"),
+        purchases: dailyPurchases,
+      });
+    }
+
+    return data;
+  }, [purchases]);
+
+  const getPurchasesByPlaytime = useMemo(() => {
+    const playtimeBuckets = new Map<number, number>();
+    let maxBucket = 0;
+
+    purchases.filter((p) => p.price_paid > 0 && !p.bundle_id).forEach((purchase) => {
+      const save = gameSaves.find((s) => s.user_id === purchase.user_id);
+      if (save) {
+        const playTimeMinutes = save.game_state?.playTime
+          ? Math.round(save.game_state.playTime / 60000)
+          : 0;
+        const bucket = Math.floor(playTimeMinutes / 60);
+        maxBucket = Math.max(maxBucket, bucket);
+        playtimeBuckets.set(bucket, (playtimeBuckets.get(bucket) || 0) + 1);
+      }
+    });
+
+    const result: Array<{ playtime: string; purchases: number }> = [];
+    for (let bucket = 0; bucket <= maxBucket; bucket++) {
+      result.push({
+        playtime: `${bucket}h`,
+        purchases: playtimeBuckets.get(bucket) || 0,
+      });
+    }
+
+    return result;
+  }, [purchases, gameSaves]);
+
+  const getPurchaseStats = useMemo(() => {
+    const itemCounts = new Map<string, number>();
+
+    purchases.filter((p) => !p.bundle_id).forEach((purchase) => {
+      itemCounts.set(
+        purchase.item_name,
+        (itemCounts.get(purchase.item_name) || 0) + 1
+      );
+    });
+
+    return Array.from(itemCounts.entries())
+      .map(([name, count]) => ({ name, count }))
+      .sort((a, b) => b.count - a.count);
+  }, [purchases]);
+
+  const getTotalReferrals = useMemo(() => {
+    return gameSaves.reduce((sum, save) => {
+      return sum + (save.game_state?.referrals?.length || 0);
+    }, 0);
+  }, [gameSaves]);
+
+  const getDailyReferrals = useMemo(() => {
+    const data: Array<{ day: string; referrals: number }> = [];
+    const now = new Date();
+
+    for (let i = 29; i >= 0; i--) {
+      const date = subDays(now, i);
+      const dayStart = startOfDay(date);
+      const dayEnd = endOfDay(date);
+
+      const dailyReferrals = gameSaves.reduce((sum, save) => {
+        const referrals = save.game_state?.referrals || [];
+        return sum + referrals.filter((ref: any) => {
+          const timestamp = ref.timestamp || ref.created_at;
+          if (!timestamp || typeof timestamp !== 'string') return false;
+          try {
+            const refDate = parseISO(timestamp);
+            return refDate >= dayStart && refDate <= dayEnd;
+          } catch {
+            return false;
+          }
+        }).length;
+      }, 0);
+
+      data.push({
+        day: format(date, "MMM dd"),
+        referrals: dailyReferrals,
+      });
+    }
+
+    return data;
+  }, [gameSaves]);
+
+  const getTopReferrers = useMemo(() => {
+    const referrerCounts = new Map<string, number>();
+
+    gameSaves.forEach((save) => {
+      const referrals = save.game_state?.referrals || [];
+      if (referrals.length > 0) {
+        referrerCounts.set(
+          save.user_id.substring(0, 8) + "...",
+          referrals.length
+        );
+      }
+    });
+
+    return Array.from(referrerCounts.entries())
+      .map(([userId, count]) => ({ userId, count }))
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 10);
+  }, [gameSaves]);
+
+  const getSleepUpgradesDistribution = useMemo(() => {
+    const filteredSaves = selectedUser === "all"
+      ? gameSaves
+      : gameSaves.filter((s) => s.user_id === selectedUser);
+
+    const completedSaves = showCompletedOnly
+      ? filteredSaves.filter((s) => s.game_state?.gameComplete)
+      : filteredSaves;
+
+    const distribution = new Map<number, { lengthUsers: number; intensityUsers: number }>();
+
+    completedSaves.forEach((save) => {
+      const lengthLevel = save.game_state?.sleepUpgrades?.lengthLevel || 0;
+      const intensityLevel = save.game_state?.sleepUpgrades?.intensityLevel || 0;
+
+      if (!distribution.has(lengthLevel)) {
+        distribution.set(lengthLevel, { lengthUsers: 0, intensityUsers: 0 });
+      }
+      distribution.get(lengthLevel)!.lengthUsers++;
+
+      if (!distribution.has(intensityLevel)) {
+        distribution.set(intensityLevel, { lengthUsers: 0, intensityUsers: 0 });
+      }
+      distribution.get(intensityLevel)!.intensityUsers++;
+    });
+
+    const maxLevel = Math.max(...Array.from(distribution.keys()), 0);
+    const result = [];
+
+    for (let i = 0; i <= maxLevel; i++) {
+      const stats = distribution.get(i) || { lengthUsers: 0, intensityUsers: 0 };
+      result.push({
+        level: `Level ${i}`,
+        lengthUsers: stats.lengthUsers,
+        intensityUsers: stats.intensityUsers,
+      });
+    }
+
+    return result;
+  }, [gameSaves, selectedUser, showCompletedOnly]);
+
   const checkAdminAccess = async () => {
     try {
       const supabase = await getSupabaseClient();
@@ -524,368 +881,6 @@ export default function AdminDashboard() {
   if (!isAuthorized) {
     return null;
   }
-
-  const getStatsOverPlaytime = useMemo(() => {
-    const relevant = filterByUser(gameSaves);
-    if (relevant.length === 0) {
-      return Array.from({ length: 24 }, (_, i) => ({
-        time: `${i}h`,
-        strength: 0,
-        knowledge: 0,
-        luck: 0,
-        madness: 0,
-      }));
-    }
-
-    // Initialize 24 hourly buckets
-    const timeMap = new Map<number, { strength: number[], knowledge: number[], luck: number[], madness: number[] }>();
-    for (let i = 0; i < 24; i++) {
-      timeMap.set(i, { strength: [], knowledge: [], luck: [], madness: [] });
-    }
-
-    relevant.forEach((save) => {
-      const clicksForUser = clickData.filter((c) => c.user_id === save.user_id);
-      if (clicksForUser.length === 0) return;
-
-      const firstClickTime = new Date(clicksForUser[0].timestamp).getTime();
-
-      clicksForUser.forEach((click) => {
-        const elapsed = (new Date(click.timestamp).getTime() - firstClickTime) / 1000;
-        const bucket = Math.floor(elapsed / 3600);
-
-        if (bucket >= 0 && bucket < 24) {
-          const state = click.game_state_snapshot; // Use snapshot from click data
-          if (state) {
-            const data = timeMap.get(bucket)!;
-            data.strength.push(state.strength || 0);
-            data.knowledge.push(state.knowledge || 0);
-            data.luck.push(state.luck || 0);
-            data.madness.push(state.madness || 0);
-          }
-        }
-      });
-    });
-
-    return Array.from({ length: 24 }, (_, i) => {
-      const stats = timeMap.get(i)!;
-      return {
-        time: `${i}h`,
-        strength: stats.strength.length > 0 ? stats.strength.reduce((a, b) => a + b, 0) / stats.strength.length : 0,
-        knowledge: stats.knowledge.length > 0 ? stats.knowledge.reduce((a, b) => a + b, 0) / stats.knowledge.length : 0,
-        luck: stats.luck.length > 0 ? stats.luck.reduce((a, b) => a + b, 0) / stats.luck.length : 0,
-        madness: stats.madness.length > 0 ? stats.madness.reduce((a, b) => a + b, 0) / stats.madness.length : 0,
-      };
-    });
-  }, [gameSaves, clickData, selectedUser, showCompletedOnly]);
-
-  const getResourceStatsOverPlaytime = useMemo(() => {
-    const relevant = filterByUser(gameSaves);
-    const resourceKeys = ['food', 'wood', 'stone', 'iron', 'coal', 'sulfur', 'obsidian', 'adamant', 'moonstone', 'leather', 'steel', 'gold', 'silver']; // Simplified common resources
-
-    if (relevant.length === 0) {
-      return Array.from({ length: 24 }, (_, i) => {
-        const result: any = { time: `${i}h` };
-        resourceKeys.forEach(key => result[key] = 0);
-        return result;
-      });
-    }
-
-    // Initialize 24 hourly buckets
-    const timeMap = new Map<number, { [key: string]: number[] }>();
-    for (let i = 0; i < 24; i++) {
-      const emptyData: { [key: string]: number[] } = {};
-      resourceKeys.forEach(key => emptyData[key] = []);
-      timeMap.set(i, emptyData);
-    }
-
-    relevant.forEach((save) => {
-      const clicksForUser = clickData.filter((c) => c.user_id === save.user_id);
-      if (clicksForUser.length === 0) return;
-
-      const firstClickTime = new Date(clicksForUser[0].timestamp).getTime();
-
-      clicksForUser.forEach((click) => {
-        const elapsed = (new Date(click.timestamp).getTime() - firstClickTime) / 1000;
-        const bucket = Math.floor(elapsed / 3600);
-
-        if (bucket >= 0 && bucket < 24) {
-          const state = click.game_state_snapshot?.resources; // Access resources from snapshot
-          if (state) {
-            const data = timeMap.get(bucket)!;
-            resourceKeys.forEach(key => {
-              data[key].push(state[key] || 0);
-            });
-          }
-        }
-      });
-    });
-
-    return Array.from({ length: 24 }, (_, i) => {
-      const resources = timeMap.get(i)!;
-      const result: any = { time: `${i}h` };
-      resourceKeys.forEach(key => {
-        result[key] = resources[key].length > 0 ? resources[key].reduce((a, b) => a + b, 0) / resources[key].length : 0;
-      });
-      return result;
-    });
-  }, [gameSaves, clickData, selectedUser, showCompletedOnly, selectedResources]);
-
-  const getButtonUpgradesOverPlaytime = useMemo(() => {
-    const relevant = filterByUser(gameSaves);
-    if (relevant.length === 0) {
-      return Array.from({ length: 24 }, (_, i) => ({
-        time: `${i}h`,
-        caveExplore: 1, mineStone: 1, mineIron: 1, mineCoal: 1, mineSulfur: 1, mineObsidian: 1, mineAdamant: 1, hunt: 1, chopWood: 1,
-      }));
-    }
-
-    // Initialize 24 hourly buckets
-    const timeMap = new Map<number, { caveExplore: number[], mineStone: number[], mineIron: number[], mineCoal: number[], mineSulfur: number[], mineObsidian: number[], mineAdamant: number[], hunt: number[], chopWood: number[] }>();
-    for (let i = 0; i < 24; i++) {
-      timeMap.set(i, { caveExplore: [], mineStone: [], mineIron: [], mineCoal: [], mineSulfur: [], mineObsidian: [], mineAdamant: [], hunt: [], chopWood: [] });
-    }
-
-    relevant.forEach((save) => {
-      const clicksForUser = clickData.filter((c) => c.user_id === save.user_id);
-      if (clicksForUser.length === 0) return;
-
-      const firstClickTime = new Date(clicksForUser[0].timestamp).getTime();
-
-      clicksForUser.forEach((click) => {
-        const elapsed = (new Date(click.timestamp).getTime() - firstClickTime) / 1000;
-        const bucket = Math.floor(elapsed / 3600);
-
-        if (bucket >= 0 && bucket < 24) {
-          const state = click.game_state_snapshot;
-          if (state?.buttonLevels) {
-            const data = timeMap.get(bucket)!;
-            data.caveExplore.push(state.buttonLevels.caveExplore || 1);
-            data.mineStone.push(state.buttonLevels.mineStone || 1);
-            data.mineIron.push(state.buttonLevels.mineIron || 1);
-            data.mineCoal.push(state.buttonLevels.mineCoal || 1);
-            data.mineSulfur.push(state.buttonLevels.mineSulfur || 1);
-            data.mineObsidian.push(state.buttonLevels.mineObsidian || 1);
-            data.mineAdamant.push(state.buttonLevels.mineAdamant || 1);
-            data.hunt.push(state.buttonLevels.hunt || 1);
-            data.chopWood.push(state.buttonLevels.chopWood || 1);
-          }
-        }
-      });
-    });
-
-    return Array.from({ length: 24 }, (_, i) => {
-      const levels = timeMap.get(i)!;
-      return {
-        time: `${i}h`,
-        caveExplore: levels.caveExplore.length > 0 ? levels.caveExplore.reduce((a, b) => a + b, 0) / levels.caveExplore.length : 1,
-        mineStone: levels.mineStone.length > 0 ? levels.mineStone.reduce((a, b) => a + b, 0) / levels.mineStone.length : 1,
-        mineIron: levels.mineIron.length > 0 ? levels.mineIron.reduce((a, b) => a + b, 0) / levels.mineIron.length : 1,
-        mineCoal: levels.mineCoal.length > 0 ? levels.mineCoal.reduce((a, b) => a + b, 0) / levels.mineCoal.length : 1,
-        mineSulfur: levels.mineSulfur.length > 0 ? levels.mineSulfur.reduce((a, b) => a + b, 0) / levels.mineSulfur.length : 1,
-        mineObsidian: levels.mineObsidian.length > 0 ? levels.mineObsidian.reduce((a, b) => a + b, 0) / levels.mineObsidian.length : 1,
-        mineAdamant: levels.mineAdamant.length > 0 ? levels.mineAdamant.reduce((a, b) => a + b, 0) / levels.mineAdamant.length : 1,
-        hunt: levels.hunt.length > 0 ? levels.hunt.reduce((a, b) => a + b, 0) / levels.hunt.length : 1,
-        chopWood: levels.chopWood.length > 0 ? levels.chopWood.reduce((a, b) => a + b, 0) / levels.chopWood.length : 1,
-      };
-    });
-  }, [gameSaves, clickData, selectedUser, showCompletedOnly]);
-
-
-  const getGameCompletionStats = useMemo(() => {
-    const relevantSaves = selectedUser === "all"
-      ? gameSaves
-      : gameSaves.filter((s) => s.user_id === selectedUser);
-
-    let completedCount = 0;
-    let notCompletedCount = 0;
-
-    relevantSaves.forEach(save => {
-      // Check for specific completion criteria if gameComplete is not sufficient
-      const isCompleted = save.game_state?.events?.cube15a ||
-                          save.game_state?.events?.cube15b ||
-                          save.game_state?.events?.cube13 ||
-                          save.game_state?.events?.cube14a ||
-                          save.game_state?.events?.cube14b ||
-                          save.game_state?.events?.cube14c ||
-                          save.game_state?.events?.cube14d ||
-                          save.game_state?.gameComplete; // Fallback to gameComplete flag
-
-      if (isCompleted) {
-        completedCount++;
-      } else {
-        notCompletedCount++;
-      }
-    });
-
-    return [
-      { name: "Completed", value: completedCount },
-      { name: "Not Completed", value: notCompletedCount },
-    ];
-  }, [gameSaves, selectedUser]);
-
-  const getDailyPurchases = useMemo(() => {
-    const data: Array<{ day: string; purchases: number }> = [];
-    const now = new Date();
-
-    for (let i = 29; i >= 0; i--) {
-      const date = subDays(now, i);
-      const dayStart = startOfDay(date);
-      const dayEnd = endOfDay(date);
-
-      const dailyPurchases = purchases.filter((purchase) => { // Use filtered purchases
-        const purchaseDate = parseISO(purchase.purchased_at);
-        return purchaseDate >= dayStart && purchaseDate <= dayEnd && purchase.price_paid > 0 && !purchase.bundle_id;
-      }).length;
-
-      data.push({
-        day: format(date, "MMM dd"),
-        purchases: dailyPurchases,
-      });
-    }
-
-    return data;
-  }, [purchases]); // Depend on filtered purchases
-
-  const getPurchasesByPlaytime = useMemo(() => {
-    const playtimeBuckets = new Map<number, number>();
-    let maxBucket = 0;
-
-    purchases.filter((p) => p.price_paid > 0 && !p.bundle_id).forEach((purchase) => { // Use filtered purchases
-      const save = gameSaves.find((s) => s.user_id === purchase.user_id);
-      if (save) {
-        const playTimeMinutes = save.game_state?.playTime
-          ? Math.round(save.game_state.playTime / 60000)
-          : 0;
-        const bucket = Math.floor(playTimeMinutes / 60); // Changed to 60 minutes interval
-        maxBucket = Math.max(maxBucket, bucket);
-        playtimeBuckets.set(bucket, (playtimeBuckets.get(bucket) || 0) + 1);
-      }
-    });
-
-    const result: Array<{ playtime: string; purchases: number }> = [];
-    for (let bucket = 0; bucket <= maxBucket; bucket++) {
-      result.push({
-        playtime: `${bucket}h`,
-        purchases: playtimeBuckets.get(bucket) || 0,
-      });
-    }
-
-    return result;
-  }, [purchases, gameSaves]); // Depend on filtered purchases and gameSaves
-
-  const getPurchaseStats = useMemo(() => {
-    const itemCounts = new Map<string, number>();
-
-    purchases.filter((p) => !p.bundle_id).forEach((purchase) => { // Use filtered purchases
-      itemCounts.set(
-        purchase.item_name,
-        (itemCounts.get(purchase.item_name) || 0) + 1
-      );
-    });
-
-    return Array.from(itemCounts.entries())
-      .map(([name, count]) => ({ name, count }))
-      .sort((a, b) => b.count - a.count);
-  }, [purchases]); // Depend on filtered purchases
-
-  const getTotalReferrals = useMemo(() => {
-    return gameSaves.reduce((sum, save) => {
-      return sum + (save.game_state?.referrals?.length || 0);
-    }, 0);
-  }, [gameSaves]);
-
-  const getDailyReferrals = useMemo(() => {
-    const data: Array<{ day: string; referrals: number }> = [];
-    const now = new Date();
-
-    for (let i = 29; i >= 0; i--) {
-      const date = subDays(now, i);
-      const dayStart = startOfDay(date);
-      const dayEnd = endOfDay(date);
-
-      const dailyReferrals = gameSaves.reduce((sum, save) => {
-        const referrals = save.game_state?.referrals || [];
-        return sum + referrals.filter((ref: any) => {
-          const timestamp = ref.timestamp || ref.created_at;
-          if (!timestamp || typeof timestamp !== 'string') return false;
-          try {
-            const refDate = parseISO(timestamp);
-            return refDate >= dayStart && refDate <= dayEnd;
-          } catch {
-            return false;
-          }
-        }).length;
-      }, 0);
-
-      data.push({
-        day: format(date, "MMM dd"),
-        referrals: dailyReferrals,
-      });
-    }
-
-    return data;
-  }, [gameSaves]);
-
-  const getTopReferrers = useMemo(() => {
-    const referrerCounts = new Map<string, number>();
-
-    gameSaves.forEach((save) => {
-      const referrals = save.game_state?.referrals || [];
-      if (referrals.length > 0) {
-        referrerCounts.set(
-          save.user_id.substring(0, 8) + "...",
-          referrals.length
-        );
-      }
-    });
-
-    return Array.from(referrerCounts.entries())
-      .map(([userId, count]) => ({ userId, count }))
-      .sort((a, b) => b.count - a.count)
-      .slice(0, 10);
-  }, [gameSaves]);
-
-  const getSleepUpgradesDistribution = useMemo(() => {
-    const filteredSaves = selectedUser === "all"
-      ? gameSaves
-      : gameSaves.filter((s) => s.user_id === selectedUser);
-
-    const completedSaves = showCompletedOnly
-      ? filteredSaves.filter((s) => s.game_state?.gameComplete)
-      : filteredSaves;
-
-    const distribution = new Map<number, { lengthUsers: number; intensityUsers: number }>();
-
-    completedSaves.forEach((save) => {
-      const lengthLevel = save.game_state?.sleepUpgrades?.lengthLevel || 0;
-      const intensityLevel = save.game_state?.sleepUpgrades?.intensityLevel || 0;
-
-      if (!distribution.has(lengthLevel)) {
-        distribution.set(lengthLevel, { lengthUsers: 0, intensityUsers: 0 });
-      }
-      distribution.get(lengthLevel)!.lengthUsers++;
-
-      if (!distribution.has(intensityLevel)) {
-        distribution.set(intensityLevel, { lengthUsers: 0, intensityUsers: 0 });
-      }
-      distribution.get(intensityLevel)!.intensityUsers++;
-    });
-
-    const maxLevel = Math.max(...Array.from(distribution.keys()), 0);
-    const result = [];
-
-    for (let i = 0; i <= maxLevel; i++) {
-      const stats = distribution.get(i) || { lengthUsers: 0, intensityUsers: 0 };
-      result.push({
-        level: `Level ${i}`,
-        lengthUsers: stats.lengthUsers,
-        intensityUsers: stats.intensityUsers,
-      });
-    }
-
-    return result;
-  }, [gameSaves, selectedUser, showCompletedOnly]);
-
 
   return (
     <div className="h-screen bg-background overflow-hidden">

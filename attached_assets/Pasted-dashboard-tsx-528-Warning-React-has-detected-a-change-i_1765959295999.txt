@@ -1,0 +1,84 @@
+dashboard.tsx:528 Warning: React has detected a change in the order of Hooks called by AdminDashboard. This will lead to bugs and errors if not fixed. For more information, read the Rules of Hooks: https://reactjs.org/link/rules-of-hooks
+
+   Previous render            Next render
+   ------------------------------------------------------
+1. useContext                 useContext
+2. useSyncExternalStore       useSyncExternalStore
+3. useRef                     useRef
+4. useInsertionEffect         useInsertionEffect
+5. useState                   useState
+6. useState                   useState
+7. useState                   useState
+8. useState                   useState
+9. useState                   useState
+10. useState                  useState
+11. useState                  useState
+12. useState                  useState
+13. useState                  useState
+14. useState                  useState
+15. useState                  useState
+16. useState                  useState
+17. useState                  useState
+18. useState                  useState
+19. useState                  useState
+20. useState                  useState
+21. useState                  useState
+22. useState                  useState
+23. useState                  useState
+24. useState                  useState
+25. useState                  useState
+26. useState                  useState
+27. useState                  useState
+28. useState                  useState
+29. useState                  useState
+30. useState                  useState
+31. useMemo                   useMemo
+32. useMemo                   useMemo
+33. useMemo                   useMemo
+34. useEffect                 useEffect
+35. useEffect                 useEffect
+36. useCallback               useCallback
+37. useCallback               useCallback
+38. useCallback               useCallback
+39. useCallback               useCallback
+40. undefined                 useMemo
+   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+    at AdminDashboard (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/pages/admin/dashboard.tsx:85:27)
+    at Route (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=fa690fe3:265:16)
+    at Switch (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=fa690fe3:321:17)
+    at Router
+    at Provider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…unner/workspace/node_modules/.vite/deps/chunk-3RXG37ZK.js?v=fa690fe3:38:15)
+    at TooltipProvider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…kspace/node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=fa690fe3:294:5)
+    at TooltipProvider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/components/ui/tooltip.tsx:22:3)
+    at QueryClientProvider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…rkspace/node_modules/.vite/deps/@tanstack_react-query.js?v=fa690fe3:2805:3)
+    at App (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/App.tsx?v=eQh5fZoh4WTFfU2kZbYCo:118:3)
+AdminDashboard	@	dashboard.tsx:528
+
+chunk-276SZO74.js?v=fa690fe3:11678 Uncaught Error: Rendered more hooks than during the previous render.
+    at AdminDashboard (dashboard.tsx:528:32)
+chunk-276SZO74.js?v=fa690fe3:11678 Uncaught Error: Rendered more hooks than during the previous render.
+    at AdminDashboard (dashboard.tsx:528:32)
+chunk-276SZO74.js?v=fa690fe3:14032 The above error occurred in the <AdminDashboard> component:
+
+    at AdminDashboard (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/pages/admin/dashboard.tsx:85:27)
+    at Route (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=fa690fe3:265:16)
+    at Switch (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=fa690fe3:321:17)
+    at Router
+    at Provider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…unner/workspace/node_modules/.vite/deps/chunk-3RXG37ZK.js?v=fa690fe3:38:15)
+    at TooltipProvider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…kspace/node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=fa690fe3:294:5)
+    at TooltipProvider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/components/ui/tooltip.tsx:22:3)
+    at QueryClientProvider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…rkspace/node_modules/.vite/deps/@tanstack_react-query.js?v=fa690fe3:2805:3)
+    at App (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/App.tsx?v=eQh5fZoh4WTFfU2kZbYCo:118:3)
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+chunk-276SZO74.js?v=fa690fe3:11678 Uncaught Error: Rendered more hooks than during the previous render.
+    at AdminDashboard (dashboard.tsx:528:32)
+﻿
+
+Press ctrl i to turn on code suggestions. Press ctrl x to disable code suggestions.
+ctrl
+i
+ to turn on code suggestions. Don't show again
+
