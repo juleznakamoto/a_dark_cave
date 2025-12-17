@@ -1,16 +1,16 @@
-import { useState, useEffect, useRef } from 'react';
-import { ParticleButton } from '@/components/ui/particle-button';
-import { useGameStore } from '@/game/state';
-import CloudShader from '@/components/ui/cloud-shader';
-import { useIsMobile } from '@/hooks/use-mobile';
-import { audioManager } from '@/lib/audio';
-import { useMobileTooltip } from '@/hooks/useMobileTooltip';
+import { useState, useEffect, useRef } from "react";
+import { ParticleButton } from "@/components/ui/particle-button";
+import { useGameStore } from "@/game/state";
+import CloudShader from "@/components/ui/cloud-shader";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { audioManager } from "@/lib/audio";
+import { useMobileTooltip } from "@/hooks/useMobileTooltip";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/components/ui/tooltip';
+} from "@/components/ui/tooltip";
 
 export default function StartScreen() {
   const { executeAction, setBoostMode, boostMode } = useGameStore();
@@ -22,11 +22,11 @@ export default function StartScreen() {
 
   useEffect(() => {
     // Check if we're on the /boost path and set the flag
-    const isBoostPath = window.location.pathname.includes('/boost');
+    const isBoostPath = window.location.pathname.includes("/boost");
     if (isBoostPath) {
       setBoostMode(true);
       // Clean up the URL
-      window.history.replaceState({}, '', '/');
+      window.history.replaceState({}, "", "/");
     }
 
     const animationTimer = setTimeout(() => {
@@ -34,37 +34,37 @@ export default function StartScreen() {
     }, 5000); // 2s delay + 3s animation
 
     // Start preloading background music immediately
-    audioManager.loadSound('backgroundMusic', '/sounds/background_music.wav');
+    audioManager.loadSound("backgroundMusic", "/sounds/background_music.wav");
 
     // Wait for user gesture before playing wind sound
     let windTimer: NodeJS.Timeout;
     const handleUserGesture = () => {
       // Start wind sound after 2 seconds with 1 second fade-in
       windTimer = setTimeout(() => {
-        audioManager.playLoopingSound('wind', 0.2, false, 1);
+        audioManager.playLoopingSound("wind", 0.2, false, 1);
       }, 2000);
 
       // Remove listeners after first interaction
-      document.removeEventListener('click', handleUserGesture);
-      document.removeEventListener('keydown', handleUserGesture);
-      document.removeEventListener('touchstart', handleUserGesture);
+      document.removeEventListener("click", handleUserGesture);
+      document.removeEventListener("keydown", handleUserGesture);
+      document.removeEventListener("touchstart", handleUserGesture);
     };
 
     // Listen for user gestures
-    document.addEventListener('click', handleUserGesture);
-    document.addEventListener('keydown', handleUserGesture);
-    document.addEventListener('touchstart', handleUserGesture);
+    document.addEventListener("click", handleUserGesture);
+    document.addEventListener("keydown", handleUserGesture);
+    document.addEventListener("touchstart", handleUserGesture);
 
     return () => {
       clearTimeout(animationTimer);
       clearTimeout(windTimer);
       // Stop wind sound when component unmounts (no fade-out on unmount)
-      audioManager.stopLoopingSound('wind');
+      audioManager.stopLoopingSound("wind");
 
       // Clean up event listeners
-      document.removeEventListener('click', handleUserGesture);
-      document.removeEventListener('keydown', handleUserGesture);
-      document.removeEventListener('touchstart', handleUserGesture);
+      document.removeEventListener("click", handleUserGesture);
+      document.removeEventListener("keydown", handleUserGesture);
+      document.removeEventListener("touchstart", handleUserGesture);
     };
   }, [setBoostMode]);
 
@@ -76,7 +76,7 @@ export default function StartScreen() {
     executedRef.current = true;
 
     // Stop wind sound with 2 second fade-out
-    audioManager.stopLoopingSound('wind', 2);
+    audioManager.stopLoopingSound("wind", 2);
 
     // Start background music
     audioManager.startBackgroundMusic(0.3);
@@ -84,35 +84,35 @@ export default function StartScreen() {
     if (isMobile) {
       // On mobile, trigger hover effect first
       if (buttonRef.current) {
-        const mouseEnterEvent = new MouseEvent('mouseenter', {
+        const mouseEnterEvent = new MouseEvent("mouseenter", {
           bubbles: true,
           cancelable: true,
-          view: window
+          view: window,
         });
         buttonRef.current.dispatchEvent(mouseEnterEvent);
       }
 
       // Wait 3 seconds, then start the game
       setTimeout(() => {
-        executeAction('lightFire');
+        executeAction("lightFire");
       }, 3000);
     } else {
       // On desktop, start immediately
-      executeAction('lightFire');
+      executeAction("lightFire");
     }
   };
 
   return (
     <div className="relative min-h-screen bg-black text-white overflow-hidden">
       {/* Featured By Section */}
-      <div className="absolute top-4 right-4 z-20 animate-fade-in-featured">
+      <div className="absolute top-4 left-4 z-20 animate-fade-in-featured">
         <div className="flex flex-col items-end gap-2">
           <p className="text-xs text-gray-400 font-medium">Featured by</p>
-          <div className="bg-white/5 backdrop-blur-sm rounded-lg p-3 border border-white/10">
-            <img 
-              src="/the_hustle_logo.webp" 
-              alt="The Hustle" 
-              className="h-6 w-auto opacity-90"
+          <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3 border border-white/10">
+            <img
+              src="/the_hustle_logo.svg"
+              alt="The Hustle"
+              className="h-16 w-auto opacity-90"
             />
           </div>
         </div>
@@ -157,13 +157,14 @@ export default function StartScreen() {
       <main className="relative z-10 flex-1 flex flex-col items-center justify-center min-h-screen">
         <div className="text-center mb-4">
           <p className="text-lg text-gray-300 leading-relaxed">
-            A dark cave.<br></br>The air is cold and damp.<br></br>You barely see the shapes around you.
+            A dark cave.<br></br>The air is cold and damp.<br></br>You barely
+            see the shapes around you.
           </p>
         </div>
         <ParticleButton
           ref={buttonRef}
           onClick={handleLightFire}
-          className={`bg-transparent border-none text-white hover:bg-transparent text-lg px-8 py-4 fire-hover z-[99999] ${!isAnimationComplete ? 'animate-fade-in-button' : 'button-interactive'}`}
+          className={`bg-transparent border-none text-white hover:bg-transparent text-lg px-8 py-4 fire-hover z-[99999] ${!isAnimationComplete ? "animate-fade-in-button" : "button-interactive"}`}
           data-testid="button-light-fire"
           button_id="light-fire"
         >
@@ -173,9 +174,9 @@ export default function StartScreen() {
 
       {boostMode && (
         <TooltipProvider>
-          <Tooltip open={mobileTooltip.isTooltipOpen('boost-indicator')}>
+          <Tooltip open={mobileTooltip.isTooltipOpen("boost-indicator")}>
             <TooltipTrigger asChild>
-              <div 
+              <div
                 className="absolute bottom-4 right-4 z-20 cursor-pointer"
                 onClick={(e) => {
                   e.preventDefault();
@@ -195,10 +196,16 @@ export default function StartScreen() {
       )}
 
       <div className="absolute bottom-4 right-4 z-10 flex gap-4 text-xs text-muted-foreground">
-        <a href="/privacy" className="hover:text-foreground transition-colors opacity-40 hover:opacity-100">
+        <a
+          href="/privacy"
+          className="hover:text-foreground transition-colors opacity-40 hover:opacity-100"
+        >
           Privacy
         </a>
-        <a href="/imprint" className="hover:text-foreground transition-colors opacity-40 hover:opacity-100">
+        <a
+          href="/imprint"
+          className="hover:text-foreground transition-colors opacity-40 hover:opacity-100"
+        >
           Imprint
         </a>
       </div>
