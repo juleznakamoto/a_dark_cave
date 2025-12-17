@@ -38,6 +38,7 @@ import { supabase } from "@/lib/supabase";
 import { getCurrentUser } from "@/game/auth";
 import { SHOP_ITEMS } from "../../../../shared/shopItems";
 import { tailwindToHex } from "@/lib/tailwindColors";
+import { useMobileTooltip } from "@/hooks/useMobileTooltip";
 
 const stripePublishableKey = import.meta.env.PROD
   ? import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY_PROD
@@ -265,6 +266,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
   const gameState = useGameStore();
   const activatedPurchases = gameState.activatedPurchases || {};
   const { toast } = useToast();
+  const mobileTooltip = useMobileTooltip();
 
   // Initialize component and load user data
   useEffect(() => {
@@ -858,9 +860,17 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                           {item.name}
                           {item.id === "skull_lantern" && (
                             <TooltipProvider>
-                              <Tooltip>
+                              <Tooltip open={mobileTooltip.isTooltipOpen("skull-lantern-info")}>
                                 <TooltipTrigger asChild>
-                                  <button className="inline-flex items-center justify-center w-4 h-4 rounded-full text-muted-foreground text-sm">
+                                  <button 
+                                    className="inline-flex items-center justify-center w-4 h-4 rounded-full text-muted-foreground text-sm"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      if (mobileTooltip.isMobile) {
+                                        mobileTooltip.handleTooltipClick("skull-lantern-info", e);
+                                      }
+                                    }}
+                                  >
                                     ⓘ
                                   </button>
                                 </TooltipTrigger>
