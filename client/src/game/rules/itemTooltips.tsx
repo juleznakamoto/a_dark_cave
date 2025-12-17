@@ -134,6 +134,13 @@ export function renderItemTooltip(
 
   // For fellowship items, return simple name and description
   if (itemType === "fellowship") {
+    console.log('[TOOLTIP] Fellowship tooltip rendering:', {
+      itemId,
+      effect,
+      hasName: !!effect.name,
+      hasDescription: !!effect.description,
+    });
+    
     return (
       <div className="text-xs">
         {effect.name && <div className="font-bold">{effect.name}</div>}

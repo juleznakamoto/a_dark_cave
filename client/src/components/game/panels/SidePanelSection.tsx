@@ -476,6 +476,13 @@ export default function SidePanelSection({
 
     // If this item is a fellowship member with a tooltip, use renderItemTooltip
     if (item.tooltip && title === "Fellowship") {
+      console.log('[TOOLTIP] Fellowship item rendering:', {
+        itemId: item.id,
+        itemLabel: item.label,
+        hasTooltip: !!item.tooltip,
+        title,
+      });
+      
       return (
         <TooltipProvider key={item.id}>
           <Tooltip open={mobileTooltip.isTooltipOpen(item.id)}>
