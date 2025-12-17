@@ -194,11 +194,6 @@ export default function AdminDashboard() {
     "30d",
   );
 
-  // Prefiltered data based on timeRange
-  const clickData = useMemo(() => filterByTimeRange(rawClickData, "timestamp", timeRange), [rawClickData, timeRange]);
-  const gameSaves = useMemo(() => filterByTimeRange(rawGameSaves, "updated_at", timeRange), [rawGameSaves, timeRange]);
-  const purchases = useMemo(() => filterByTimeRange(rawPurchases, "purchased_at", timeRange), [rawPurchases, timeRange]);
-
   const [selectedUser, setSelectedUser] = useState<string>("all");
   const [selectedButtons, setSelectedButtons] = useState<Set<string>>(
     new Set(["mine", "hunt", "chopWood", "caveExplore"]),
@@ -235,6 +230,10 @@ export default function AdminDashboard() {
   // State for selected cube events
   const [selectedCubeEvents, setSelectedCubeEvents] = useState<Set<string>>(new Set());
 
+  // Prefiltered data based on timeRange - MOVED AFTER ALL useState
+  const clickData = useMemo(() => filterByTimeRange(rawClickData, "timestamp", timeRange), [rawClickData, timeRange]);
+  const gameSaves = useMemo(() => filterByTimeRange(rawGameSaves, "updated_at", timeRange), [rawGameSaves, timeRange]);
+  const purchases = useMemo(() => filterByTimeRange(rawPurchases, "purchased_at", timeRange), [rawPurchases, timeRange]);
 
   useEffect(() => {
     checkAdminAccess();
@@ -246,7 +245,7 @@ export default function AdminDashboard() {
       setLoading(true);
       loadData().finally(() => setLoading(false));
     }
-  }, [environment]);
+  }, [environment, isAuthorized]);
 
   const checkAdminAccess = async () => {
     try {
