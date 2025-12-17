@@ -476,11 +476,8 @@ export default function SidePanelSection({
       );
     }
 
-    // If this item is a building or fortification with a tooltip, use renderItemTooltip
-    if (
-      item.tooltip &&
-      (title === "Buildings" || title === "Fortifications")
-    ) {
+    // If this item is a building (not fortification) with a tooltip, use renderItemTooltip
+    if (item.tooltip && title === "Buildings") {
       return (
         <TooltipProvider key={item.id}>
           <Tooltip open={mobileTooltip.isTooltipOpen(item.id)}>
