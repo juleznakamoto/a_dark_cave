@@ -105,14 +105,14 @@ export default function StartScreen() {
   return (
     <div className="relative min-h-screen bg-black text-white overflow-hidden">
       {/* Featured By Section */}
-      <div className="absolute top-4 left-4 z-20 animate-fade-in-featured">
-        <div className="flex flex-col items-end gap-2">
-          <p className="text-xs text-gray-400 font-medium">Featured by</p>
-          <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3 border border-white/10">
+      <div className="absolute bottom-8 left-4 z-20 animate-fade-in-featured">
+        <div className="bg-white/15 backdrop-blur-sm rounded-lg p-2 border border-white/25 flex flex-col items-start gap-0.5">
+          <p className="text-xs text-gray-400/90 font-medium">Featured by</p>
+          <div className="">
             <img
               src="/the_hustle_logo.svg"
               alt="The Hustle"
-              className="h-16 w-auto opacity-90"
+              className="h-8 md:h-10 w-auto opacity-100"
             />
           </div>
         </div>
