@@ -67,7 +67,7 @@ export default function ClicksTab(props: ClicksTabProps) {
         <CardHeader>
           <CardTitle>Button Clicks Over Time</CardTitle>
           <CardDescription>
-            Total button clicks in 15-minute intervals (time elapsed since first click){" "}
+            Total button clicks in 1-hour intervals (time elapsed since first click){" "}
             {selectedUser !== "all"
               ? "for selected user"
               : showCompletedOnly
@@ -112,7 +112,7 @@ export default function ClicksTab(props: ClicksTabProps) {
         <CardHeader>
           <CardTitle>Individual Click Types Over Playtime</CardTitle>
           <CardDescription>
-            Click counts by type in 15-minute intervals (time elapsed since first click){" "}
+            Click counts by type in 1-hour intervals (time elapsed since first click){" "}
             {selectedUser !== "all"
               ? "for selected user"
               : showCompletedOnly

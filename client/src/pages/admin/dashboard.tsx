@@ -369,14 +369,11 @@ export default function AdminDashboard() {
     }
   };
 
-  // Helper to get playtime bucket label (e.g., "0-59m", "60-119m")
+  // Helper function to get playtime bucket label for session length (0-24 hours in 1-hour steps)
   const getBucketLabel = (playTimeMinutes: number): string => {
-    if (playTimeMinutes < 60) return "0-59m";
-    if (playTimeMinutes < 120) return "60-119m";
-    if (playTimeMinutes < 180) return "120-179m";
-    if (playTimeMinutes < 240) return "180-239m";
-    if (playTimeMinutes < 300) return "240-299m";
-    return "300+m"; // For 5+ hours
+    const hours = Math.floor(playTimeMinutes / 60);
+    if (hours >= 24) return "24h+";
+    return `${hours}h`;
   };
 
   // Get clicks and purchases for looked up user
@@ -522,7 +519,14 @@ export default function AdminDashboard() {
                       : gameSaves.filter((s) => s.user_id === selectedUser);
 
                     const completedSaves = filteredSaves.filter(
-                      (s) => s.game_state?.gameComplete,
+                      (s) =>
+                        s.game_state?.events?.cube15a ||
+                        s.game_state?.events?.cube15b ||
+                        s.game_state?.events?.cube13 ||
+                        s.game_state?.events?.cube14a ||
+                        s.game_state?.events?.cube14b ||
+                        s.game_state?.events?.cube14c ||
+                        s.game_state?.events?.cube14d,
                     );
 
                     if (completedSaves.length === 0) return 0;
@@ -647,14 +651,11 @@ export default function AdminDashboard() {
               <TabsContent value="engagement">
                 <EngagementTab
                   getSessionLengthDistribution={() => {
-                    const buckets = {
-                      "0-59m": 0,
-                      "60-119m": 0,
-                      "120-179m": 0,
-                      "180-239m": 0,
-                      "240-299m": 0,
-                      "300+m": 0,
-                    };
+                    const buckets: Record<string, number> = {};
+                    for (let i = 0; i < 24; i++) {
+                      buckets[`${i}h`] = 0;
+                    }
+                    buckets["24h+"] = 0;
 
                     const filteredSaves = selectedUser === "all"
                       ? gameSaves
@@ -699,7 +700,14 @@ export default function AdminDashboard() {
                       : gameSaves.filter((s) => s.user_id === selectedUser);
 
                     const completedSaves = filteredSaves.filter(
-                      (s) => s.game_state?.gameComplete,
+                      (s) =>
+                        s.game_state?.events?.cube15a ||
+                        s.game_state?.events?.cube15b ||
+                        s.game_state?.events?.cube13 ||
+                        s.game_state?.events?.cube14a ||
+                        s.game_state?.events?.cube14b ||
+                        s.game_state?.events?.cube14c ||
+                        s.game_state?.events?.cube14d,
                     );
 
                     if (completedSaves.length === 0) return 0;
@@ -749,7 +757,7 @@ export default function AdminDashboard() {
                     filteredByCompletion.forEach((entry) => {
                       Object.entries(entry.clicks).forEach(([playtime, clicks]) => {
                         const playtimeMinutes = parseInt(playtime);
-                        const bucket = Math.floor(playtimeMinutes / 15) * 15;
+                        const bucket = Math.floor(playtimeMinutes / 60) * 60; // Changed to 60 minutes interval
                         const bucketKey = `${bucket}m`;
                         if (!timeBuckets[bucketKey]) timeBuckets[bucketKey] = 0;
                         const clickCount = Object.values(clicks as Record<string, number>).reduce(
@@ -780,7 +788,7 @@ export default function AdminDashboard() {
                     filteredByCompletion.forEach((entry) => {
                       Object.entries(entry.clicks).forEach(([playtime, clicks]) => {
                         const playtimeMinutes = parseInt(playtime);
-                        const bucket = Math.floor(playtimeMinutes / 15) * 15;
+                        const bucket = Math.floor(playtimeMinutes / 60) * 60; // Changed to 60 minutes interval
                         const bucketKey = `${bucket}m`;
                         if (!timeBuckets[bucketKey]) timeBuckets[bucketKey] = {};
 
@@ -874,11 +882,7 @@ export default function AdminDashboard() {
                       ? gameSaves
                       : gameSaves.filter((s) => s.user_id === selectedUser);
 
-                    const completedSaves = showCompletedOnly
-                      ? filteredSaves.filter((s) => s.game_state?.gameComplete)
-                      : filteredSaves;
-
-                    const completed = completedSaves.filter(
+                    const completedSaves = filteredSaves.filter(
                       (s) =>
                         s.game_state?.events?.cube15a ||
                         s.game_state?.events?.cube15b ||
@@ -887,9 +891,10 @@ export default function AdminDashboard() {
                         s.game_state?.events?.cube14b ||
                         s.game_state?.events?.cube14c ||
                         s.game_state?.events?.cube14d,
-                    ).length;
+                    );
 
-                    const notCompleted = completedSaves.length - completed;
+                    const completed = completedSaves.length;
+                    const notCompleted = filteredSaves.filter(s => !s.game_state?.gameComplete).length;
 
                     return [
                       { name: "Completed", value: completed },
@@ -940,7 +945,7 @@ export default function AdminDashboard() {
                         const playTimeMinutes = save.game_state?.playTime
                           ? Math.round(save.game_state.playTime / 1000 / 60)
                           : 0;
-                        const bucket = Math.floor(playTimeMinutes / 60);
+                        const bucket = Math.floor(playTimeMinutes / 60); // Changed to 60 minutes interval
                         maxBucket = Math.max(maxBucket, bucket);
                         playtimeBuckets.set(bucket, (playtimeBuckets.get(bucket) || 0) + 1);
                       }
@@ -1065,16 +1070,16 @@ export default function AdminDashboard() {
                       : filteredSaves;
 
                     const distribution = new Map<number, { lengthUsers: number; intensityUsers: number }>();
-                    
+
                     completedSaves.forEach((save) => {
                       const lengthLevel = save.game_state?.sleepUpgrades?.lengthLevel || 0;
                       const intensityLevel = save.game_state?.sleepUpgrades?.intensityLevel || 0;
-                      
+
                       if (!distribution.has(lengthLevel)) {
                         distribution.set(lengthLevel, { lengthUsers: 0, intensityUsers: 0 });
                       }
                       distribution.get(lengthLevel)!.lengthUsers++;
-                      
+
                       if (!distribution.has(intensityLevel)) {
                         distribution.set(intensityLevel, { lengthUsers: 0, intensityUsers: 0 });
                       }
@@ -1083,7 +1088,7 @@ export default function AdminDashboard() {
 
                     const maxLevel = Math.max(...Array.from(distribution.keys()), 0);
                     const result = [];
-                    
+
                     for (let i = 0; i <= maxLevel; i++) {
                       const stats = distribution.get(i) || { lengthUsers: 0, intensityUsers: 0 };
                       result.push({
@@ -1092,7 +1097,7 @@ export default function AdminDashboard() {
                         intensityUsers: stats.intensityUsers,
                       });
                     }
-                    
+
                     return result;
                   }}
                 />
@@ -1125,7 +1130,7 @@ export default function AdminDashboard() {
                       const playTimeMinutes = save.game_state?.playTime
                         ? Math.round(save.game_state.playTime / 1000 / 60)
                         : 0;
-                      const bucket = Math.floor(playTimeMinutes / 60) * 60;
+                      const bucket = Math.floor(playTimeMinutes / 60) * 60; // Changed to 60 minutes interval
                       maxBucket = Math.max(maxBucket, bucket);
 
                       if (!playtimeBuckets.has(bucket)) {
@@ -1179,7 +1184,7 @@ export default function AdminDashboard() {
                       const playTimeMinutes = save.game_state?.playTime
                         ? Math.round(save.game_state.playTime / 1000 / 60)
                         : 0;
-                      const bucket = Math.floor(playTimeMinutes / 60) * 60;
+                      const bucket = Math.floor(playTimeMinutes / 60) * 60; // Changed to 60 minutes interval
                       maxBucket = Math.max(maxBucket, bucket);
 
                       if (!playtimeBuckets.has(bucket)) {
@@ -1245,7 +1250,7 @@ export default function AdminDashboard() {
                       const playTimeMinutes = save.game_state?.playTime
                         ? Math.round(save.game_state.playTime / 1000 / 60)
                         : 0;
-                      const bucket = Math.floor(playTimeMinutes / 60) * 60;
+                      const bucket = Math.floor(playTimeMinutes / 60) * 60; // Changed to 60 minutes interval
                       maxBucket = Math.max(maxBucket, bucket);
 
                       if (!playtimeBuckets.has(bucket)) {

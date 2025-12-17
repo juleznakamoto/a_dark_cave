@@ -6,6 +6,9 @@ interface EngagementTabProps {
   getAveragePlaytime: () => number;
   getAveragePlaytimeToCompletion: () => number;
   formatTime: (minutes: number) => string;
+  selectedUser: string;
+  showCompletedOnly: boolean;
+  gameSaves: any[];
 }
 
 export default function EngagementTab(props: EngagementTabProps) {

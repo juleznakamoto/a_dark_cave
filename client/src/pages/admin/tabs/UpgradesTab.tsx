@@ -387,7 +387,7 @@ export default function UpgradesTab(props: UpgradesTabProps) {
               <Legend />
               <Line
                 type="monotone"
-                dataKey="exploreCave"
+                dataKey="caveExplore"
                 stroke="#8884d8"
                 strokeWidth={2}
                 dot={{ r: 3 }}

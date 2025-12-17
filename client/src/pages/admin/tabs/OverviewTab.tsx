@@ -330,27 +330,23 @@ export default function OverviewTab(props: OverviewTabProps) {
         </Card>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Card>
-          <CardHeader>
-            <CardTitle>Instagram Followers</CardTitle>
-            <CardDescription>Users who clicked follow button</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="text-4xl font-bold">{getInstagramFollowers()}</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Instagram Follow Rate</CardTitle>
-            <CardDescription>% of total users</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="text-4xl font-bold">{getInstagramFollowRate()}%</p>
-          </CardContent>
-        </Card>
-      </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>Instagram Link Clicks</CardTitle>
+          <CardDescription>Users who clicked the Instagram link</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-2">
+            <div className="flex items-baseline gap-3">
+              <p className="text-4xl font-bold">{getInstagramFollowers()}</p>
+              <p className="text-2xl text-muted-foreground">clicks</p>
+            </div>
+            <div className="text-sm text-muted-foreground">
+              Click Rate: <span className="font-semibold text-foreground">{getInstagramFollowRate()}%</span> of total users
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Card>
