@@ -4,21 +4,118 @@ import {
   clothingEffects,
   bookEffects,
 } from "./effects";
+import { villageBuildActions } from "./villageBuildActions";
+import { calculateBastionStats } from "../bastionStats";
 import { capitalizeWords } from "@/lib/utils";
 import { useGameStore } from "../state";
+import type { GameState } from "@shared/schema";
 
 export function renderItemTooltip(
   itemId: string,
   itemType: "weapon" | "tool" | "blessing" | "book" | "building",
   customTooltip?: React.ReactNode,
 ) {
-  // For buildings, render the effects in the standard format
+  // For buildings, generate the tooltip from villageBuildActions
   if (itemType === "building") {
-    return (
-      <div className="text-xs">
-        {customTooltip}
-      </div>
-    );
+    const gameState = useGameStore.getState();
+    const buildings = gameState.buildings;
+    const story = gameState.story;
+    
+    // Get the action definition
+    const actionId = `build${itemId.charAt(0).toUpperCase() + itemId.slice(1)}`;
+    const buildAction = villageBuildActions[actionId];
+    
+    if (!buildAction) return null;
+
+    // Check if this building is damaged
+    const isDamaged =
+      (itemId === "bastion" && story?.seen?.bastionDamaged) ||
+      (itemId === "watchtower" && story?.seen?.watchtowerDamaged) ||
+      (itemId === "palisades" && story?.seen?.palisadesDamaged);
+
+    const tooltipParts: React.ReactNode[] = [];
+
+    // Add description if available
+    if (buildAction.description) {
+      tooltipParts.push(
+        <div key="description" className="text-gray-400 mb-1">
+          {buildAction.description}
+        </div>
+      );
+    }
+
+    // Check if manual tooltipEffects exist
+    const tooltipEffects = buildAction.tooltipEffects;
+    const effectsArray =
+      typeof tooltipEffects === "function"
+        ? tooltipEffects(gameState)
+        : tooltipEffects;
+    const hasManualTooltip = effectsArray && effectsArray.length > 0;
+
+    if (hasManualTooltip) {
+      // Use manual tooltipEffects
+      tooltipParts.push(
+        <div key="effects" className="mt-1">
+          {effectsArray.map((effect, idx) => (
+            <div key={idx}>{effect}</div>
+          ))}
+        </div>
+      );
+    } else {
+      // Auto-generate effects from statsEffects and productionEffects
+      const effectsList: string[] = [];
+
+      if (buildAction.statsEffects) {
+        Object.entries(buildAction.statsEffects).forEach(
+          ([stat, statValue]) => {
+            // Apply 50% reduction and round down if damaged
+            let finalValue = isDamaged
+              ? Math.floor(statValue * 0.5)
+              : statValue;
+
+            effectsList.push(
+              `${finalValue > 0 ? "+" : ""}${finalValue} ${capitalizeWords(stat)}`,
+            );
+          }
+        );
+      }
+
+      // Special handling for production effects
+      if (buildAction.productionEffects) {
+        Object.entries(buildAction.productionEffects).forEach(
+          ([jobType, production]) => {
+            Object.entries(production).forEach(([resource, amount]) => {
+              effectsList.push(
+                `+${amount} ${capitalizeWords(resource)} (${capitalizeWords(jobType)})`,
+              );
+            });
+          }
+        );
+      }
+
+      // Add effects section if there are any auto-generated effects
+      if (effectsList.length > 0) {
+        tooltipParts.push(
+          <div key="effects" className="mt-1">
+            {effectsList.map((effect, idx) => (
+              <div key={idx}>{effect}</div>
+            ))}
+          </div>
+        );
+      }
+    }
+
+    // Combine tooltip parts
+    if (tooltipParts.length > 0) {
+      return (
+        <div className="text-xs">
+          <div className="font-bold mb-1">{buildAction.label}</div>
+          {tooltipParts}
+        </div>
+      );
+    }
+
+    return null;
   }
 
   const effect =

@@ -505,7 +505,7 @@ export default function SidePanelSection({
               </TooltipTrigger>
             </div>
             <TooltipContent className="max-w-xs">
-              {renderItemTooltip(item.id, "building", item.tooltip)}
+              {renderItemTooltip(item.id, "building")}
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
