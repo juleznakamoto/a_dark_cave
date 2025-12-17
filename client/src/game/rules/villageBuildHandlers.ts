@@ -501,7 +501,7 @@ export function handleBuildTannery(
     tanneryResult.logEntries!.push({
       id: `tannery-built-${Date.now()}`,
       message:
-        "The tannery is complete. The smell of curing leather fills the air as craftsmen begin their work.",
+        "The Tannery is complete. The smell of curing leather fills the air as craftsmen begin their work.",
       timestamp: Date.now(),
       type: "system",
     });

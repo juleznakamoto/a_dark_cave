@@ -46,7 +46,7 @@ interface SidePanelSectionProps {
   onResourceChange?: (change: ResourceChange) => void;
   titleTooltip?: string;
 }
-import { logger } from "@/lib/logger"
+import { logger } from "@/lib/logger";
 
 export default function SidePanelSection({
   title,
@@ -66,10 +66,15 @@ export default function SidePanelSection({
   const gameState = useGameStore((state) => state);
   const hoveredTooltips = useGameStore((state) => state.hoveredTooltips || {});
   const setHoveredTooltip = useGameStore((state) => state.setHoveredTooltip);
-  const highlightedResourcesRaw = useGameStore((state) => state.highlightedResources);
-  const highlightedResources = highlightedResourcesRaw instanceof Set
-    ? highlightedResourcesRaw
-    : new Set(Array.isArray(highlightedResourcesRaw) ? highlightedResourcesRaw : []);
+  const highlightedResourcesRaw = useGameStore(
+    (state) => state.highlightedResources,
+  );
+  const highlightedResources =
+    highlightedResourcesRaw instanceof Set
+      ? highlightedResourcesRaw
+      : new Set(
+          Array.isArray(highlightedResourcesRaw) ? highlightedResourcesRaw : [],
+        );
   const hoverTimersRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
   const mobileTooltip = useMobileTooltip();
 
@@ -107,7 +112,9 @@ export default function SidePanelSection({
     };
   }, []);
 
-  const [maxAnimatedItems, setMaxAnimatedItems] = useState<Set<string>>(new Set());
+  const [maxAnimatedItems, setMaxAnimatedItems] = useState<Set<string>>(
+    new Set(),
+  );
 
   // Track resource changes from game loop to detect capped gains
   const lastResourceChanges = useRef<Map<string, number>>(new Map());
@@ -135,21 +142,25 @@ export default function SidePanelSection({
       const limit = isLimited ? getResourceLimit(gameState) : null;
       const isAtLimit = isLimited && limit !== null && currentValue === limit;
       const hitMax = isAtLimit && prevValue !== undefined && prevValue < limit;
-      
+
       // Check if we stayed at max (resource was capped)
-      const stayedAtMax = isAtLimit && prevValue !== undefined && prevValue === limit;
+      const stayedAtMax =
+        isAtLimit && prevValue !== undefined && prevValue === limit;
 
       // We have a previous value to compare against
       if (prevValue !== undefined) {
         const actualChange = currentValue - prevValue;
-        
+
         // Check if this resource had a change in the last tick from resourceChanges
         const lastChange = lastResourceChanges.current.get(item.id);
-        
+
         if (actualChange > 0 || (stayedAtMax && lastChange && lastChange > 0)) {
           // Determine intended change: if we're at max and stayed there, use lastChange; otherwise use actual
-          const intendedChange = (stayedAtMax && lastChange && lastChange > 0) ? lastChange : actualChange;
-          
+          const intendedChange =
+            stayedAtMax && lastChange && lastChange > 0
+              ? lastChange
+              : actualChange;
+
           if (hitMax || stayedAtMax) {
             newMaxAnimatedItems.add(item.id);
             // Remove animation after 2 seconds
@@ -232,7 +243,7 @@ export default function SidePanelSection({
     resourceChanges.forEach((change) => {
       if (change.amount > 0) {
         lastResourceChanges.current.set(change.resource, change.amount);
-        
+
         // Clear after a short delay to avoid stale data
         setTimeout(() => {
           lastResourceChanges.current.delete(change.resource);
@@ -268,7 +279,11 @@ export default function SidePanelSection({
     const displayValue = formatValue(item.value);
     const isLimited = isResourceLimited(item.id, gameState);
     const limit = isLimited ? getResourceLimit(gameState) : null;
-    const isAtMax = isLimited && limit !== null && typeof item.value === 'number' && item.value === limit;
+    const isAtMax =
+      isLimited &&
+      limit !== null &&
+      typeof item.value === "number" &&
+      item.value === limit;
 
     // Handle mobile tooltip click - also mark as hovered to stop pulse
     const handleMobileTooltipClick = (id: string, e: React.MouseEvent) => {
@@ -347,13 +362,13 @@ export default function SidePanelSection({
         className={cn(
           "text-xs text-gray-400 flex items-center gap-1",
           newItemPulseClass,
-          isHighlighted && "!text-gray-100"
+          isHighlighted && "!text-gray-100",
         )}
       >
         {item.icon !== undefined && (
           <span className={cn("mr-1", item.iconColor)}>{item.icon}</span>
         )}
-        {typeof item.label === 'string' && item.label.includes("↓") ? (
+        {typeof item.label === "string" && item.label.includes("↓") ? (
           <>
             {item.label.replace(" ↓", "")}
             <span className="text-red-800 ml-1">↓</span>
@@ -372,7 +387,9 @@ export default function SidePanelSection({
             ? "text-green-400"
             : isDecreaseAnimated
               ? "text-red-400"
-              : isMaxAnimated ? "text-yellow-400" : ""
+              : isMaxAnimated
+                ? "text-yellow-400"
+                : ""
         }`}
       >
         {labelContent}
@@ -394,7 +411,7 @@ export default function SidePanelSection({
               isDecreaseAnimated && "text-red-800 font-bold",
               isMaxAnimated && "text-yellow-800 font-bold",
               isMadness && madnessClasses,
-              isHighlighted && "font-bold !text-gray-100"
+              isHighlighted && "font-bold !text-gray-100",
             )}
           >
             {displayValue}
@@ -424,7 +441,9 @@ export default function SidePanelSection({
                   ? "text-green-400"
                   : isDecreaseAnimated
                     ? "text-red-400"
-                    : isAtMax ? "text-yellow-400" : "" // Changed to yellow for max resources
+                    : isAtMax
+                      ? "text-yellow-400"
+                      : "" // Changed to yellow for max resources
               }`}
             >
               <TooltipTrigger asChild>
@@ -443,9 +462,13 @@ export default function SidePanelSection({
                 item.id,
                 title === "Weapons"
                   ? "weapon"
-                  : title === "Blessings" || title === "Clothing" || title === "Relics" || title === "Schematics" || title === "Fellowship"
-                  ? "blessing"
-                  : "tool"
+                  : title === "Blessings" ||
+                      title === "Clothing" ||
+                      title === "Relics" ||
+                      title === "Schematics" ||
+                      title === "Fellowship"
+                    ? "blessing"
+                    : "tool",
               )}
             </TooltipContent>
           </Tooltip>
@@ -465,7 +488,9 @@ export default function SidePanelSection({
                   ? "text-green-400"
                   : isDecreaseAnimated
                     ? "text-red-400"
-                    : isMaxAnimated ? "text-yellow-400" : ""
+                    : isMaxAnimated
+                      ? "text-yellow-400"
+                      : ""
               }`}
             >
               <TooltipTrigger asChild>
@@ -526,12 +551,18 @@ export default function SidePanelSection({
               )}
             </div>
             <TooltipContent className="max-w-xs">
-              {typeof item.tooltip === 'string' ? (
+              {typeof item.tooltip === "string" ? (
                 <>
-                  {isMadnessTooltip && <p className="whitespace-pre-line">{madnessTooltipContent}</p>}
+                  {isMadnessTooltip && (
+                    <p className="whitespace-pre-line">
+                      {madnessTooltipContent}
+                    </p>
+                  )}
                   {item.tooltip}
                 </>
-              ) : item.tooltip}
+              ) : (
+                item.tooltip
+              )}
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
@@ -543,8 +574,8 @@ export default function SidePanelSection({
   };
 
   // Extract base title without dynamic values for consistent tooltip key
-  const titleString = typeof title === 'string' ? title : 'section-title';
-  const baseTitleForKey = titleString.split(' ')[0]; // Gets "Population" from "Population 5/10" or "Resources" from "Resources ◬ 1000"
+  const titleString = typeof title === "string" ? title : "section-title";
+  const baseTitleForKey = titleString.split(" ")[0];
   const tooltipKey = `section-title-${baseTitleForKey}`;
 
   return (
@@ -557,7 +588,7 @@ export default function SidePanelSection({
                 className={cn(
                   "text-xs font-medium tracking-wide mb-0.5",
                   mobileTooltip.isMobile ? "cursor-pointer" : "",
-                  !hoveredTooltips[tooltipKey] && "new-item-pulse"
+                  !hoveredTooltips[tooltipKey] && "new-item-pulse",
                 )}
                 onClick={(e) => {
                   mobileTooltip.handleTooltipClick(tooltipKey, e);
