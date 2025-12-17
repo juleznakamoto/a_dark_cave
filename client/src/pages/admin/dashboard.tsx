@@ -1261,7 +1261,7 @@ export default function AdminDashboard() {
               <TabsContent value="completion">
                 <CompletionTab
                   gameSaves={gameSaves}
-                  getGameCompletionStats={getGameCompletionStats}
+                  getGameCompletionStats={getGameCompletionStats()}
                   totalUserCount={totalUserCount}
                   COLORS={COLORS}
                 />
@@ -1275,18 +1275,18 @@ export default function AdminDashboard() {
                       .filter((p) => p.price_paid > 0 && !p.bundle_id)
                       .reduce((sum, p) => sum + p.price_paid, 0)
                   }
-                  getDailyPurchases={getDailyPurchases}
-                  getPurchasesByPlaytime={getPurchasesByPlaytime}
-                  getPurchaseStats={getPurchaseStats}
+                  getDailyPurchases={getDailyPurchases()}
+                  getPurchasesByPlaytime={getPurchasesByPlaytime()}
+                  getPurchaseStats={getPurchaseStats()}
                 />
               </TabsContent>
 
               <TabsContent value="referrals">
                 <ReferralsTab
                   gameSaves={gameSaves}
-                  getTotalReferrals={getTotalReferrals}
-                  getDailyReferrals={getDailyReferrals}
-                  getTopReferrers={getTopReferrers}
+                  getTotalReferrals={getTotalReferrals()}
+                  getDailyReferrals={getDailyReferrals()}
+                  getTopReferrers={getTopReferrers()}
                 />
               </TabsContent>
 
@@ -1308,7 +1308,7 @@ export default function AdminDashboard() {
                   selectedUser={selectedUser}
                   showCompletedOnly={showCompletedOnly}
                   setShowCompletedOnly={setShowCompletedOnly}
-                  getSleepUpgradesDistribution={getSleepUpgradesDistribution}
+                  getSleepUpgradesDistribution={getSleepUpgradesDistribution()}
                 />
               </TabsContent>
 
@@ -1322,8 +1322,8 @@ export default function AdminDashboard() {
                   setSelectedStats={setSelectedStats}
                   selectedResources={selectedResources}
                   setSelectedResources={setSelectedResources}
-                  getStatsOverPlaytime={() => getStatsOverPlaytime}
-                  getResourceStatsOverPlaytime={() => getResourceStatsOverPlaytime}
+                  getStatsOverPlaytime={getStatsOverPlaytime}
+                  getResourceStatsOverPlaytime={getResourceStatsOverPlaytime}
                   COLORS={COLORS}
                 />
               </TabsContent>
