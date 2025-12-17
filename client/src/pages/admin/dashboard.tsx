@@ -993,8 +993,14 @@ export default function AdminDashboard() {
                       const dailyReferrals = gameSaves.reduce((sum, save) => {
                         const referrals = save.game_state?.referrals || [];
                         return sum + referrals.filter((ref: any) => {
-                          const refDate = parseISO(ref.timestamp || ref.created_at);
-                          return refDate >= dayStart && refDate <= dayEnd;
+                          const timestamp = ref.timestamp || ref.created_at;
+                          if (!timestamp || typeof timestamp !== 'string') return false;
+                          try {
+                            const refDate = parseISO(timestamp);
+                            return refDate >= dayStart && refDate <= dayEnd;
+                          } catch {
+                            return false;
+                          }
                         }).length;
                       }, 0);
 
