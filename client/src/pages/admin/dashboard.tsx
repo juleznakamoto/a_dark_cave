@@ -272,6 +272,8 @@ export default function AdminDashboard() {
     userClicks.forEach((userClickData) => {
       if (userClickData.length === 0) return;
 
+      // Sort by timestamp to ensure we get the actual first click
+      userClickData.sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
       const firstClickTime = new Date(userClickData[0].timestamp).getTime();
 
       userClickData.forEach((entry) => {
