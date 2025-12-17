@@ -491,7 +491,73 @@ export default function AdminDashboard() {
               </TabsContent>
 
               <TabsContent value="engagement">
-                <EngagementTab />
+                <EngagementTab
+                  getSessionLengthDistribution={() => {
+                    const buckets = {
+                      "0-59m": 0,
+                      "60-119m": 0,
+                      "120-179m": 0,
+                      "180-239m": 0,
+                      "240-299m": 0,
+                      "300+m": 0,
+                    };
+
+                    const filteredSaves = selectedUser === "all"
+                      ? gameSaves
+                      : gameSaves.filter((s) => s.user_id === selectedUser);
+
+                    const completedSaves = showCompletedOnly
+                      ? filteredSaves.filter((s) => s.game_state?.gameComplete)
+                      : filteredSaves;
+
+                    completedSaves.forEach((save) => {
+                      const playTime = save.game_state?.playTime || 0;
+                      const playTimeMinutes = Math.floor(playTime / 60000);
+                      const bucket = getBucketLabel(playTimeMinutes);
+                      buckets[bucket]++;
+                    });
+
+                    return Object.entries(buckets).map(([range, count]) => ({
+                      range,
+                      count,
+                    }));
+                  }}
+                  getAveragePlaytime={() => {
+                    const filteredSaves = selectedUser === "all"
+                      ? gameSaves
+                      : gameSaves.filter((s) => s.user_id === selectedUser);
+
+                    const completedSaves = showCompletedOnly
+                      ? filteredSaves.filter((s) => s.game_state?.gameComplete)
+                      : filteredSaves;
+
+                    if (completedSaves.length === 0) return 0;
+
+                    const totalPlayTime = completedSaves.reduce(
+                      (sum, save) => sum + (save.game_state?.playTime || 0),
+                      0,
+                    );
+                    return Math.floor(totalPlayTime / completedSaves.length / 60000);
+                  }}
+                  getAveragePlaytimeToCompletion={() => {
+                    const filteredSaves = selectedUser === "all"
+                      ? gameSaves
+                      : gameSaves.filter((s) => s.user_id === selectedUser);
+
+                    const completedSaves = filteredSaves.filter(
+                      (s) => s.game_state?.gameComplete,
+                    );
+
+                    if (completedSaves.length === 0) return 0;
+
+                    const totalPlayTime = completedSaves.reduce(
+                      (sum, save) => sum + (save.game_state?.playTime || 0),
+                      0,
+                    );
+                    return Math.floor(totalPlayTime / completedSaves.length / 60000);
+                  }}
+                  formatTime={formatTime}
+                />
               </TabsContent>
 
               <TabsContent value="clicks">
