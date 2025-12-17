@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo, useCallback } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useLocation } from "wouter";
 import { getSupabaseClient } from "@/lib/supabase";
 import { logger } from "@/lib/logger";
@@ -109,6 +109,49 @@ const cleanButtonName = (buttonId: string): string => {
     .replace(/[-_]\d{13,}$/, ""); // Remove -timestamp or _timestamp
 };
 
+// Helper function to filter data by time range - defined outside component as pure function
+function filterByTimeRange<
+  T extends {
+    timestamp?: string;
+    updated_at?: string;
+    purchased_at?: string;
+    created_at?: string;
+  }
+>(
+  data: T[],
+  dateField: keyof T,
+  timeRange: "1d" | "3d" | "7d" | "30d" | "all"
+): T[] {
+  if (timeRange === "all") return data;
+
+  const now = new Date();
+  let cutoffDate: Date;
+
+  switch (timeRange) {
+    case "1d":
+      cutoffDate = subDays(now, 1);
+      break;
+    case "3d":
+      cutoffDate = subDays(now, 3);
+      break;
+    case "7d":
+      cutoffDate = subDays(now, 7);
+      break;
+    case "30d":
+      cutoffDate = subDays(now, 30);
+      break;
+    default:
+      return data;
+  }
+
+  return data.filter((item) => {
+    const dateValue = item[dateField];
+    if (!dateValue || typeof dateValue !== "string") return false;
+    const itemDate = parseISO(dateValue);
+    return itemDate >= cutoffDate;
+  });
+}
+
 export default function AdminDashboard() {
   const [, setLocation] = useLocation();
   const [isAuthorized, setIsAuthorized] = useState(false);
@@ -151,52 +194,10 @@ export default function AdminDashboard() {
     "30d",
   );
 
-  // Helper function to filter data by time range - wrapped in useCallback for stable reference
-  const filterByTimeRange = useCallback(<
-    T extends {
-      timestamp?: string;
-      updated_at?: string;
-      purchased_at?: string;
-      created_at?: string;
-    },
-  >(
-    data: T[],
-    dateField: keyof T,
-  ): T[] => {
-    if (timeRange === "all") return data;
-
-    const now = new Date();
-    let cutoffDate: Date;
-
-    switch (timeRange) {
-      case "1d":
-        cutoffDate = subDays(now, 1);
-        break;
-      case "3d":
-        cutoffDate = subDays(now, 3);
-        break;
-      case "7d":
-        cutoffDate = subDays(now, 7);
-        break;
-      case "30d":
-        cutoffDate = subDays(now, 30);
-        break;
-      default:
-        return data;
-    }
-
-    return data.filter((item) => {
-      const dateValue = item[dateField];
-      if (!dateValue || typeof dateValue !== "string") return false;
-      const itemDate = parseISO(dateValue);
-      return itemDate >= cutoffDate;
-    });
-  }, [timeRange]);
-
   // Prefiltered data based on timeRange
-  const clickData = useMemo(() => filterByTimeRange(rawClickData, "timestamp"), [rawClickData, timeRange, filterByTimeRange]);
-  const gameSaves = useMemo(() => filterByTimeRange(rawGameSaves, "updated_at"), [rawGameSaves, timeRange, filterByTimeRange]);
-  const purchases = useMemo(() => filterByTimeRange(rawPurchases, "purchased_at"), [rawPurchases, timeRange, filterByTimeRange]);
+  const clickData = useMemo(() => filterByTimeRange(rawClickData, "timestamp", timeRange), [rawClickData, timeRange]);
+  const gameSaves = useMemo(() => filterByTimeRange(rawGameSaves, "updated_at", timeRange), [rawGameSaves, timeRange]);
+  const purchases = useMemo(() => filterByTimeRange(rawPurchases, "purchased_at", timeRange), [rawPurchases, timeRange]);
 
   const [selectedUser, setSelectedUser] = useState<string>("all");
   const [selectedButtons, setSelectedButtons] = useState<Set<string>>(
