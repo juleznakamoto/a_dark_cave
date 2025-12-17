@@ -12,9 +12,13 @@ export function renderItemTooltip(
   itemType: "weapon" | "tool" | "blessing" | "book" | "building",
   customTooltip?: React.ReactNode,
 ) {
-  // For buildings, the custom tooltip is already formatted
-  if (itemType === "building" && customTooltip) {
-    return customTooltip;
+  // For buildings, render the effects in the standard format
+  if (itemType === "building") {
+    return (
+      <div className="text-xs">
+        {customTooltip}
+      </div>
+    );
   }
 
   const effect =
