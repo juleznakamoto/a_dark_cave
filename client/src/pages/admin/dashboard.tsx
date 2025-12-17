@@ -569,7 +569,7 @@ export default function AdminDashboard() {
     });
   }, [gameSaves, clickData, selectedUser, showCompletedOnly]);
 
-  const getGameCompletionStats = useMemo(() => {
+  const getGameCompletionStats = useCallback(() => {
     const relevantSaves = selectedUser === "all"
       ? gameSaves
       : gameSaves.filter((s) => s.user_id === selectedUser);
@@ -600,7 +600,7 @@ export default function AdminDashboard() {
     ];
   }, [gameSaves, selectedUser]);
 
-  const getDailyPurchases = useMemo(() => {
+  const getDailyPurchases = useCallback(() => {
     const data: Array<{ day: string; purchases: number }> = [];
     const now = new Date();
 
@@ -623,7 +623,7 @@ export default function AdminDashboard() {
     return data;
   }, [purchases]);
 
-  const getPurchasesByPlaytime = useMemo(() => {
+  const getPurchasesByPlaytime = useCallback(() => {
     const playtimeBuckets = new Map<number, number>();
     let maxBucket = 0;
 
@@ -650,7 +650,7 @@ export default function AdminDashboard() {
     return result;
   }, [purchases, gameSaves]);
 
-  const getPurchaseStats = useMemo(() => {
+  const getPurchaseStats = useCallback(() => {
     const itemCounts = new Map<string, number>();
 
     purchases.filter((p) => !p.bundle_id).forEach((purchase) => {
@@ -665,13 +665,13 @@ export default function AdminDashboard() {
       .sort((a, b) => b.count - a.count);
   }, [purchases]);
 
-  const getTotalReferrals = useMemo(() => {
+  const getTotalReferrals = useCallback(() => {
     return gameSaves.reduce((sum, save) => {
       return sum + (save.game_state?.referrals?.length || 0);
     }, 0);
   }, [gameSaves]);
 
-  const getDailyReferrals = useMemo(() => {
+  const getDailyReferrals = useCallback(() => {
     const data: Array<{ day: string; referrals: number }> = [];
     const now = new Date();
 
@@ -703,7 +703,7 @@ export default function AdminDashboard() {
     return data;
   }, [gameSaves]);
 
-  const getTopReferrers = useMemo(() => {
+  const getTopReferrers = useCallback(() => {
     const referrerCounts = new Map<string, number>();
 
     gameSaves.forEach((save) => {
@@ -722,7 +722,7 @@ export default function AdminDashboard() {
       .slice(0, 10);
   }, [gameSaves]);
 
-  const getSleepUpgradesDistribution = useMemo(() => {
+  const getSleepUpgradesDistribution = useCallback(() => {
     const filteredSaves = selectedUser === "all"
       ? gameSaves
       : gameSaves.filter((s) => s.user_id === selectedUser);
