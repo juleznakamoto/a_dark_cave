@@ -471,6 +471,7 @@ export default function AdminDashboard() {
 
               <TabsContent value="overview">
                 <OverviewTab
+                  rawGameSaves={rawGameSaves}
                   getDailyActiveUsers={() => {
                     const now = new Date();
                     const oneDayAgo = subDays(now, 1);

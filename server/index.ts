@@ -151,7 +151,7 @@ app.get("/api/admin/data", async (req, res) => {
 
     // Fetch data with 30-day filter for saves and clicks
     // Use a high limit to get all results (Supabase default is 1000)
-    const QUERY_LIMIT = 50000;
+    const QUERY_LIMIT = 10000000;
 
     const [clicksResult, savesResult, purchasesResult, dauResult] = await Promise.all([
       adminClient
