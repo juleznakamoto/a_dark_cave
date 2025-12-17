@@ -151,8 +151,8 @@ export default function AdminDashboard() {
     "30d",
   );
 
-  // Helper function to filter data by time range - MUST be defined before useMemo calls
-  const filterByTimeRange = <
+  // Helper function to filter data by time range - wrapped in useCallback for stable reference
+  const filterByTimeRange = useCallback(<
     T extends {
       timestamp?: string;
       updated_at?: string;
@@ -191,7 +191,7 @@ export default function AdminDashboard() {
       const itemDate = parseISO(dateValue);
       return itemDate >= cutoffDate;
     });
-  };
+  }, [timeRange]);
 
   // Prefiltered data based on timeRange
   const clickData = useMemo(() => filterByTimeRange(rawClickData, "timestamp"), [rawClickData, timeRange]);
