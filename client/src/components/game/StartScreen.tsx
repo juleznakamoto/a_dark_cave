@@ -104,8 +104,31 @@ export default function StartScreen() {
 
   return (
     <div className="relative min-h-screen bg-black text-white overflow-hidden">
+      {/* Featured By Section */}
+      <div className="absolute top-4 right-4 z-20 animate-fade-in-featured">
+        <div className="flex flex-col items-end gap-2">
+          <p className="text-xs text-gray-400 font-medium">Featured by</p>
+          <div className="bg-white/5 backdrop-blur-sm rounded-lg p-3 border border-white/10">
+            <img 
+              src="/the_hustle_logo.webp" 
+              alt="The Hustle" 
+              className="h-6 w-auto opacity-90"
+            />
+          </div>
+        </div>
+      </div>
+
       <style>{`
         @keyframes fade-in-button {
+          0% {
+            opacity: 0;
+          }
+          100% {
+            opacity: 1;
+          }
+        }
+
+        @keyframes fade-in-featured {
           0% {
             opacity: 0;
           }
@@ -118,6 +141,11 @@ export default function StartScreen() {
           animation: fade-in-button 2s ease-in 3s forwards;
           opacity: 0;
           pointer-events: none;
+        }
+
+        .animate-fade-in-featured {
+          animation: fade-in-featured 1s ease-in 2s forwards;
+          opacity: 0;
         }
 
         .button-interactive {
