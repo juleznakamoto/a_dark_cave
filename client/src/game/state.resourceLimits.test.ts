@@ -220,16 +220,16 @@ describe('State - Resource Limits Integration', () => {
     it('should handle all storage tiers correctly', () => {
       const store = useGameStore.getState();
       const tiers = [
-        { level: 0, limit: 500 },
-        { level: 1, limit: 1000 },
-        { level: 2, limit: gameActions.buildStorehouse.effect?.storageTier || 2500 },
-        { level: 3, limit: gameActions.buildFortifiedStorehouse.effect?.storageTier || 5000 },
-        { level: 4, limit: gameActions.buildVillageWarehouse.effect?.storageTier || 10000 },
-        { level: 5, limit: gameActions.buildGrandRepository.effect?.storageTier || 25000 },
-        { level: 6, limit: gameActions.buildGreatVault.effect?.storageTier || 50000 },
+        { level: 0, limit: 500, building: null },
+        { level: 1, limit: 1000, building: 'supplyHut' },
+        { level: 2, limit: 5000, building: 'storehouse' },
+        { level: 3, limit: 10000, building: 'fortifiedStorehouse' },
+        { level: 4, limit: 25000, building: 'villageWarehouse' },
+        { level: 5, limit: 50000, building: 'grandRepository' },
+        { level: 6, limit: 100000, building: 'greatVault' },
       ];
 
-      tiers.forEach(({ level, limit }) => {
+      tiers.forEach(({ level, limit, building }) => {
         // Reset all storage buildings first
         useGameStore.setState((state) => ({
           resources: {
@@ -247,41 +247,15 @@ describe('State - Resource Limits Integration', () => {
           },
         }));
 
-        // Set the appropriate building for this tier
-        if (level === 0) {
-          // No storage buildings
-        } else if (level === 1) {
+        // Set the specific building for this tier
+        if (building) {
           useGameStore.setState((state) => ({
-            buildings: { ...state.buildings, supplyHut: 1 },
-          }));
-        } else if (level === 2) {
-          useGameStore.setState((state) => ({
-            buildings: { ...state.buildings, storehouse: 1 },
-          }));
-        } else if (level === 3) {
-          useGameStore.setState((state) => ({
-            buildings: { ...state.buildings, fortifiedStorehouse: 1 },
-          }));
-        } else if (level === 4) {
-          useGameStore.setState((state) => ({
-            buildings: { ...state.buildings, villageWarehouse: 1 },
-          }));
-        } else if (level === 5) {
-          useGameStore.setState((state) => ({
-            buildings: { ...state.buildings, grandRepository: 1 },
-          }));
-        } else if (level === 6) {
-          useGameStore.setState((state) => ({
-            buildings: { ...state.buildings, greatVault: 1 },
+            buildings: {
+              ...state.buildings,
+              [building]: 1,
+            },
           }));
         }
-
-        useGameStore.setState((state) => ({
-          resources: {
-            ...state.resources,
-            iron: 0,
-          },
-        }));
 
         // Try to add more than limit
         store.updateResource('iron', limit + 5000);

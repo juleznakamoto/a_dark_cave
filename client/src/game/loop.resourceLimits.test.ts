@@ -228,16 +228,17 @@ describe('Game Loop - Resource Limits Integration', () => {
     it('should handle all storage tiers correctly', () => {
       const store = useGameStore.getState();
       const tiers = [
-        { level: 0, limit: 500 },
-        { level: 1, limit: 1000 },
-        { level: 2, limit: gameActions.buildStorehouse.effect?.storageTier || 2500 },
-        { level: 3, limit: gameActions.buildFortifiedStorehouse.effect?.storageTier || 5000 },
-        { level: 4, limit: gameActions.buildVillageWarehouse.effect?.storageTier || 10000 },
-        { level: 5, limit: gameActions.buildGrandRepository.effect?.storageTier || 25000 },
-        { level: 6, limit: gameActions.buildGreatVault.effect?.storageTier || 50000 },
+        { level: 0, limit: 500, building: null },
+        { level: 1, limit: 1000, building: 'supplyHut' },
+        { level: 2, limit: 5000, building: 'storehouse' },
+        { level: 3, limit: 10000, building: 'fortifiedStorehouse' },
+        { level: 4, limit: 25000, building: 'villageWarehouse' },
+        { level: 5, limit: 50000, building: 'grandRepository' },
+        { level: 6, limit: 100000, building: 'greatVault' },
       ];
 
-      tiers.forEach(({ level, limit }) => {
+      tiers.forEach(({ level, limit, building }) => {
+        // Reset all storage buildings
         useGameStore.setState((state) => ({
           resources: {
             ...state.resources,
@@ -251,13 +252,22 @@ describe('Game Loop - Resource Limits Integration', () => {
             villageWarehouse: 0,
             grandRepository: 0,
             greatVault: 0,
-            ...(level > 0 && { [Object.keys(gameActions).find(key => gameActions[key].effect?.storageTier === limit)]: 1 }),
           },
           flags: {
             ...state.flags,
             resourceLimitsEnabled: true,
           },
         }));
+
+        // Set the specific building for this tier
+        if (building) {
+          useGameStore.setState((state) => ({
+            buildings: {
+              ...state.buildings,
+              [building]: 1,
+            },
+          }));
+        }
 
         // Try to set above limit
         store.updateResource('wood', limit + 1000);
