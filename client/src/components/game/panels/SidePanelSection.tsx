@@ -510,7 +510,15 @@ export default function SidePanelSection({
               </TooltipTrigger>
             </div>
             <TooltipContent className="max-w-xs">
-              {renderItemTooltip(item.id, "fellowship")}
+              {(() => {
+                const tooltip = renderItemTooltip(item.id, "fellowship");
+                console.log('[TOOLTIP] Fellowship tooltip content:', {
+                  itemId: item.id,
+                  tooltip,
+                  tooltipType: typeof tooltip,
+                });
+                return tooltip;
+              })()}
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
