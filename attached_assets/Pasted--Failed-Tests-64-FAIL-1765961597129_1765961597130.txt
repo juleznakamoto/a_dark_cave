@@ -1,0 +1,193 @@
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯ Failed Tests 64 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  client/src/game/loop.resourceLimits.test.ts > Game Loop - Resource Limits Integration > Production Tick with Limits > should cap gatherer wood production during tick
+ReferenceError: getPopulationProduction is not defined
+ ❯ client/src/game/loop.resourceLimits.test.ts:38:26
+     36| 
+     37|       // Simulate production
+     38|       const production = getPopulationProduction('gatherer', 10, useGameStore.g…
+       |                          ^
+     39|       const woodProd = production.find(p => p.resource === 'wood');
+     40| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/64]⎯
+
+ FAIL  client/src/game/loop.resourceLimits.test.ts > Game Loop - Resource Limits Integration > Production Tick with Limits > should cap hunter food production during tick
+ReferenceError: getPopulationProduction is not defined
+ ❯ client/src/game/loop.resourceLimits.test.ts:64:26
+     62|       }));
+     63| 
+     64|       const production = getPopulationProduction('hunter', 5, useGameStore.getS…
+       |                          ^
+     65|       const foodProd = production.find(p => p.resource === 'food');
+     66| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/64]⎯
+
+ FAIL  client/src/game/loop.resourceLimits.test.ts > Game Loop - Resource Limits Integration > Production Tick with Limits > should handle multiple villager types producing simultaneously
+ReferenceError: getPopulationProduction is not defined
+ ❯ client/src/game/loop.resourceLimits.test.ts:100:26
+     98| 
+     99|       // Gatherer production
+    100|       const gatherProd = getPopulationProduction('gatherer', 5, currentState);
+       |                          ^
+    101|       const woodProd = gatherProd.find(p => p.resource === 'wood');
+    102|       if (woodProd) {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/64]⎯
+
+ FAIL  client/src/game/loop.resourceLimits.test.ts > Game Loop - Resource Limits Integration > Storage Upgrade Effects > should handle all storage tiers correctly
+AssertionError: expected 500 to be 1000 // Object.is equality
+
+- Expected
++ Received
+
+- 1000
++ 500
+
+ ❯ client/src/game/loop.resourceLimits.test.ts:257:56
+    255| 
+    256|         // Should be capped at limit
+    257|         expect(useGameStore.getState().resources.wood).toBe(limit);
+       |                                                        ^
+    258|       });
+    259|     });
+ ❯ client/src/game/loop.resourceLimits.test.ts:231:13
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/64]⎯
+
+ FAIL  client/src/game/loop.resourceLimits.test.ts > Game Loop - Resource Limits Integration > Feast and Boost Effects with Limits > should cap boosted production from feast
+ReferenceError: getPopulationProduction is not defined
+ ❯ client/src/game/loop.resourceLimits.test.ts:283:26
+    281| 
+    282|       // Feast doubles production (5 gatherers * 10 wood * 2 = 100 wood)
+    283|       const production = getPopulationProduction('gatherer', 5, useGameStore.ge…
+       |                          ^
+    284|       const woodProd = production.find(p => p.resource === 'wood');
+    285| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/64]⎯
+
+ FAIL  client/src/game/loop.resourceLimits.test.ts > Game Loop - Resource Limits Integration > Feast and Boost Effects with Limits > should cap great feast 4x production
+ReferenceError: getPopulationProduction is not defined
+ ❯ client/src/game/loop.resourceLimits.test.ts:316:26
+    314| 
+    315|       // Great feast 4x production (5 hunters * 5 food * 4 = 100 food)
+    316|       const production = getPopulationProduction('hunter', 5, useGameStore.getS…
+       |                          ^
+    317|       const foodProd = production.find(p => p.resource === 'food');
+    318| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/64]⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Core Functionality > getResourceLimit > should return 500 for initial cap (no storage building)
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Core Functionality > getResourceLimit > should return 1000 for Supply Hut (level 1)
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Core Functionality > getResourceLimit > should return 5000 for Storehouse (level 2)
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Core Functionality > getResourceLimit > should return 10000 for Fortified Storehouse (level 3)
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Core Functionality > getResourceLimit > should return 25000 for Village Warehouse (level 4)
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Core Functionality > getResourceLimit > should return 50000 for Grand Repository (level 5)
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Core Functionality > getResourceLimit > should return 100000 for Great Vault (level 6)
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Core Functionality > getResourceLimit > should return Infinity when feature flag is disabled
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Core Functionality > getResourceLimit > should return 500 for no storage buildings
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Core Functionality > isResourceLimited > should return true for wood
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Core Functionality > isResourceLimited > should return true for stone
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Core Functionality > isResourceLimited > should return true for food
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Core Functionality > isResourceLimited > should return false for silver
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Core Functionality > isResourceLimited > should return false for gold
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Core Functionality > isResourceLimited > should return false when feature flag is disabled
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Core Functionality > capResourceToLimit > should cap wood at limit
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Core Functionality > capResourceToLimit > should not cap below limit
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Core Functionality > capResourceToLimit > should not cap unlimited resources
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Core Functionality > capResourceToLimit > should not cap when feature flag is disabled
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Core Functionality > capResourceToLimit > should handle edge case of exact limit
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Core Functionality > getStorageLimitText > should return "500" for initial cap
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Core Functionality > getStorageLimitText > should return formatted number for storage level 3
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Core Functionality > getStorageLimitText > should return "Unlimited" when feature flag is disabled
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Core Functionality > getStorageBuildingName > should return correct name for level 0
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Core Functionality > getStorageBuildingName > should return correct name for level 1
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Core Functionality > getStorageBuildingName > should return correct name for level 6
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Core Functionality > getStorageBuildingName > should return "No Storage" when no storage buildings exist
+ReferenceError: createInitialState is not defined
+ ❯ client/src/game/resourceLimits.test.ts:16:5
+     14| 
+     15|   beforeEach(() => {
+     16|     state = createInitialState();
+       |     ^
+     17|     // Enable resource limits for testing
+     18|     state.flags.resourceLimitsEnabled = true;
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/64]⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Villager Production Integration > should cap gatherer wood production at limit
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Villager Production Integration > should cap hunter food production at limit
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Villager Production Integration > should cap miner iron production at limit
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Villager Production Integration > should not cap negative production (consumption)
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Villager Production Integration > should allow production below limit
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Action Rewards Integration > should cap chopWood action reward
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Action Rewards Integration > should cap exploreCave stone rewards
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Action Rewards Integration > should cap hunt food rewards
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Event Rewards Integration > should cap event wood rewards
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Event Rewards Integration > should cap stranger arrival food bonus
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Event Rewards Integration > should not cap silver rewards from events
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Event Rewards Integration > should not cap gold rewards from events
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Multiple Resource Limits > should cap multiple resources independently
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Multiple Resource Limits > should handle simultaneous production from multiple villager types
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Storage Building Upgrades > should increase limit when upgrading storage
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Storage Building Upgrades > should cap at new limit after upgrade
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Storage Building Upgrades > should allow accumulation up to each storage tier
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Edge Cases and Boundary Conditions > should handle exact limit value
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Edge Cases and Boundary Conditions > should handle zero resources
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Edge Cases and Boundary Conditions > should handle negative resource values (consumption)
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Edge Cases and Boundary Conditions > should not allow negative resources after consumption
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Edge Cases and Boundary Conditions > should handle very large production amounts
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Feature Flag Behavior > should respect feature flag for new games
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Feature Flag Behavior > should disable limits for old games without flag
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Feature Flag Behavior > should allow unlimited accumulation when flag is off
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Idle Mode Integration > should cap idle mode resource accumulation
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Idle Mode Integration > should cap each resource type separately in idle mode
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Crafting and Building Costs > should allow crafting when resources are at cap
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Crafting and Building Costs > should allow building when resources are at cap
+ReferenceError: createInitialState is not defined
+ ❯ client/src/game/resourceLimits.test.ts:184:5
+    182| 
+    183|   beforeEach(() => {
+    184|     state = createInitialState();
+       |     ^
+    185|     state.flags.resourceLimitsEnabled = true;
+    186|     state.buildings.supplyHut = 1; // limit = 1000
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/64]⎯
+
+ FAIL  client/src/game/rules/actionEffects.test.ts > Building Cost Reductions > should apply fortified storehouse building discount for buildCabin if available
+ReferenceError: createMockState is not defined
+ ❯ client/src/game/rules/actionEffects.test.ts:213:19
+    211| 
+    212|   it('should apply fortified storehouse building discount for buildCabin if ava…
+    213|     const state = createMockState({
+       |                   ^
+    214|       buildings: { fortifiedStorehouse: 1 },
+    215|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/64]⎯
+
+ FAIL  client/src/game/rules/actionEffects.test.ts > Cost Reduction Edge Cases > should floor discount calculations correctly for building if discount exists
+ReferenceError: createMockState is not defined
+ ❯ client/src/game/rules/actionEffects.test.ts:405:19
+    403| 
+    404|   it('should floor discount calculations correctly for building if discount exi…
+    405|     const state = createMockState({
+       |                   ^
+    406|       buildings: { fortifiedStorehouse: 1 },
+    407|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/64]⎯
+
+
+ Test Files  3 failed | 20 passed (23)
+      Tests  64 failed | 305 passed (369)
+   Start at  08:53:01
+   Duration  5.87s (transform 2.10s, setup 0ms, import 4.49s, tests 2.10s, environment 4ms)
+
+ FAIL  Tests failed. Watching for file changes...
+       press h to show help, press q to quit
