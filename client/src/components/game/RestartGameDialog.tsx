@@ -1,4 +1,3 @@
-
 import {
   Dialog,
   DialogContent,
@@ -24,12 +23,16 @@ export function RestartGameDialog({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="leading-6">Start New Game?</DialogTitle>
+          <DialogTitle className="leading-6">Start New Game</DialogTitle>
           <DialogDescription className="py-2 space-y-2">
-            <p>Are you sure you want to start a new game?</p>
-            <p className="font-semibold text-destructive">
-              All your current progress will be lost.
-            </p>
+            <div className="text-center space-y-2">
+              <div className="bg-red-600/5 border border-red-600/50 rounded-lg p-3">
+                <p className="text-md font-medium text-red-600">
+                  All your current progress will be lost if you start a new
+                  game.
+                </p>
+              </div>
+            </div>
           </DialogDescription>
         </DialogHeader>
 
@@ -45,7 +48,7 @@ export function RestartGameDialog({
           <Button
             onClick={onConfirm}
             variant="destructive"
-            className="flex-1"
+            className="flex-1 bg-primary"
             button_id="restart-confirm"
           >
             Start New Game

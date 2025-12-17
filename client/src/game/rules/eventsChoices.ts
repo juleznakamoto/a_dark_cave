@@ -1035,7 +1035,7 @@ export const choiceEvents: Record<string, GameEvent> = {
       );
     },
     triggerType: "resource",
-    timeProbability: 10,
+    timeProbability: 25,
     title: "The Slave Trader",
     message:
       "A man on a cart drawn by two horses approaches the village. An iron cage on the cart holds two miserable souls. The trader grins wickedly: 'I'll pay you 100 steel for two of your villagers. What do you say?'",

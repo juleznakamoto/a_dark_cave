@@ -1,5 +1,5 @@
 import { Action, GameState } from "@shared/schema";
-import { ActionResult } from '@/game/actions';
+import { ActionResult } from "@/game/actions";
 import { getTotalKnowledge } from "./effectsCalculation";
 import { applyActionEffects } from "./actionEffects";
 
@@ -376,7 +376,7 @@ export const forestTradeActions: Record<string, Action> = {
         "resources.gold": 50,
       },
     },
-    cooldown: 90,
+    cooldown: 30,
   },
 
   tradeGoldForEmberBomb: {
@@ -398,7 +398,7 @@ export const forestTradeActions: Record<string, Action> = {
         "resources.ember_bomb": 1,
       },
     },
-    cooldown: 90,
+    cooldown: 30,
   },
 
   tradeGoldForAshfireBomb: {
@@ -420,7 +420,28 @@ export const forestTradeActions: Record<string, Action> = {
         "resources.ashfire_bomb": 1,
       },
     },
-    cooldown: 90,
+    cooldown: 30,
+  },
+  tradeGoldForVoidBomb: {
+    id: "tradeGoldForVoidBomb",
+    label: "Buy Void Bomb",
+    show_when: {
+      1: {
+        "buildings.tradePost": 1,
+        "story.seen.hasVoidBomb": true,
+      },
+    },
+    cost: {
+      1: {
+        "resources.gold": 150,
+      },
+    },
+    effects: {
+      1: {
+        "resources.void_bomb": 1,
+      },
+    },
+    cooldown: 30,
   },
 };
 
