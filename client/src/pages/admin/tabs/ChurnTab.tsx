@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { LineChart, Line, BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from "recharts";
@@ -12,7 +11,6 @@ interface ChurnTabProps {
   selectedCubeEvents: Set<string>;
   setSelectedCubeEvents: (value: Set<string>) => void;
   COLORS: string[];
-  getCubeEventNumber: (eventId: string) => number | null;
 }
 
 export default function ChurnTab(props: ChurnTabProps) {
@@ -24,8 +22,12 @@ export default function ChurnTab(props: ChurnTabProps) {
     selectedCubeEvents,
     setSelectedCubeEvents,
     COLORS,
-    getCubeEventNumber,
   } = props;
+
+  const getCubeEventNumber = (eventId: string): number | null => {
+    const match = eventId.match(/cube(\d+)/);
+    return match ? parseInt(match[1]) : null;
+  };
 
   const getChurnedPlayers = () => {
     const now = new Date();

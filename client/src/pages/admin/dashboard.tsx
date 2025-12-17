@@ -879,11 +879,6 @@ export default function AdminDashboard() {
       .slice(0, 10);
   }, [gameSaves]);
 
-  const getCubeEventNumber = useMemo(() => {
-    const match = eventId.match(/cube(\d+)/);
-    return match ? parseInt(match[1]) : null;
-  }, []);
-
   const getSleepUpgradesDistribution = useMemo(() => {
     const filteredSaves = selectedUser === "all"
       ? gameSaves
@@ -1319,7 +1314,6 @@ export default function AdminDashboard() {
                   selectedCubeEvents={selectedCubeEvents}
                   setSelectedCubeEvents={setSelectedCubeEvents}
                   COLORS={COLORS}
-                  getCubeEventNumber={getCubeEventNumber}
                 />
               </TabsContent>
 
