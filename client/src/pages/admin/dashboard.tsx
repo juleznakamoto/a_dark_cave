@@ -221,6 +221,159 @@ export default function AdminDashboard() {
     }
   }, [environment, isAuthorized]);
 
+  // Helper function to filter data by user
+  const filterByUser = <T extends { user_id: string }>(data: T[]): T[] => {
+    if (selectedUser === "all") {
+      return data;
+    }
+    return data.filter((item) => item.user_id === selectedUser);
+  };
+
+  // Define all hooks BEFORE conditional returns to comply with React rules
+  const getButtonClicksOverTime = useCallback(() => {
+    const relevant = filterByUser(clickData);
+    if (relevant.length === 0) {
+      return Array.from({ length: 24 }, (_, i) => ({
+        time: `${i}h`,
+        clicks: 0,
+      }));
+    }
+
+    const timeMap = new Map<number, number>();
+    for (let i = 0; i < 24; i++) {
+      timeMap.set(i, 0);
+    }
+
+    const firstClickTime = new Date(relevant[0].timestamp).getTime();
+    relevant.forEach((click) => {
+      const elapsed = (new Date(click.timestamp).getTime() - firstClickTime) / 1000;
+      const bucket = Math.floor(elapsed / 3600);
+      if (bucket >= 0 && bucket < 24) {
+        const clickCount = Object.values(click.clicks).reduce(
+          (sum, playtimeClicks) => sum + Object.values(playtimeClicks).reduce((pcSum, count) => pcSum + count, 0),
+          0,
+        );
+        timeMap.set(bucket, (timeMap.get(bucket) || 0) + clickCount);
+      }
+    });
+
+    return Array.from({ length: 24 }, (_, i) => ({
+      time: `${i}h`,
+      clicks: timeMap.get(i) || 0,
+    }));
+  }, [clickData, selectedUser, showCompletedOnly, gameSaves]);
+
+  const getClickTypesByTimestamp = useCallback(() => {
+    const filteredClickData = selectedUser === "all"
+      ? clickData
+      : clickData.filter((d) => d.user_id === selectedUser);
+
+    const filteredByCompletion = showCompletedOnly
+      ? filteredClickData.filter((d) => {
+          const save = gameSaves.find((s) => s.user_id === d.user_id);
+          return save?.game_state?.gameComplete;
+        })
+      : filteredClickData;
+
+    const timeBuckets: Record<string, Record<string, number>> = {};
+    for (let i = 0; i < 24; i++) {
+      timeBuckets[`${i}h`] = {};
+    }
+
+    if (filteredByCompletion.length === 0) {
+      return Object.entries(timeBuckets).map(([time, clicks]) => ({ time, ...clicks }));
+    }
+
+    const firstClickTime = new Date(filteredByCompletion[0].timestamp).getTime();
+    filteredByCompletion.forEach((entry) => {
+      const elapsed = (new Date(entry.timestamp).getTime() - firstClickTime) / 1000;
+      const bucket = Math.floor(elapsed / 3600);
+
+      if (bucket >= 0 && bucket < 24) {
+        const bucketKey = `${bucket}h`;
+        Object.entries(entry.clicks).forEach(([playtime, clicks]) => {
+          Object.entries(clicks as Record<string, number>).forEach(
+            ([button, count]) => {
+              const cleanedButton = cleanButtonName(button);
+              if (selectedClickTypes.has(cleanedButton)) {
+                if (!timeBuckets[bucketKey][cleanedButton])
+                  timeBuckets[bucketKey][cleanedButton] = 0;
+                timeBuckets[bucketKey][cleanedButton] += count;
+              }
+            },
+          );
+        });
+      }
+    });
+
+    return Object.entries(timeBuckets)
+      .map(([time, clicks]) => ({ time, ...clicks }))
+      .sort((a, b) => parseInt(a.time) - parseInt(b.time));
+  }, [clickData, gameSaves, selectedUser, showCompletedOnly, selectedClickTypes]);
+
+  const getTotalClicksByButton = useCallback(() => {
+    const filteredClickData = selectedUser === "all"
+      ? clickData
+      : clickData.filter((d) => d.user_id === selectedUser);
+
+    const filteredByCompletion = showCompletedOnly
+      ? filteredClickData.filter((d) => {
+          const save = gameSaves.find((s) => s.user_id === d.user_id);
+          return save?.game_state?.gameComplete;
+        })
+      : filteredClickData;
+
+    const buttonTotals: Record<string, number> = {};
+    filteredByCompletion.forEach((entry) => {
+      Object.values(entry.clicks).forEach((playtimeClicks: any) => {
+        Object.entries(playtimeClicks).forEach(([button, count]) => {
+          const cleanedButton = cleanButtonName(button);
+          if (!buttonTotals[cleanedButton]) buttonTotals[cleanedButton] = 0;
+          buttonTotals[cleanedButton] += count as number;
+        });
+      });
+    });
+
+    return Object.entries(buttonTotals)
+      .map(([button, total]) => ({ button, total }))
+      .sort((a, b) => b.total - a.total)
+      .slice(0, 15);
+  }, [clickData, gameSaves, selectedUser, showCompletedOnly]);
+
+  const getAverageClicksByButton = useCallback(() => {
+    const filteredClickData = selectedUser === "all"
+      ? clickData
+      : clickData.filter((d) => d.user_id === selectedUser);
+
+    const filteredByCompletion = showCompletedOnly
+      ? filteredClickData.filter((d) => {
+          const save = gameSaves.find((s) => s.user_id === d.user_id);
+          return save?.game_state?.gameComplete;
+        })
+      : filteredClickData;
+
+    const buttonStats: Record<string, { total: number; users: Set<string> }> = {};
+    filteredByCompletion.forEach((entry) => {
+      Object.values(entry.clicks).forEach((playtimeClicks: any) => {
+        Object.entries(playtimeClicks).forEach(([button, count]) => {
+          const cleanedButton = cleanButtonName(button);
+          if (!buttonStats[cleanedButton])
+            buttonStats[cleanedButton] = { total: 0, users: new Set() };
+          buttonStats[cleanedButton].total += count as number;
+          buttonStats[cleanedButton].users.add(entry.user_id);
+        });
+      });
+    });
+
+    return Object.entries(buttonStats)
+      .map(([button, stats]) => ({
+        button,
+        average: stats.total / stats.users.size,
+      }))
+      .sort((a, b) => b.average - a.average)
+      .slice(0, 15);
+  }, [clickData, gameSaves, selectedUser, showCompletedOnly]);
+
   const checkAdminAccess = async () => {
     try {
       const supabase = await getSupabaseClient();
@@ -371,166 +524,6 @@ export default function AdminDashboard() {
   if (!isAuthorized) {
     return null;
   }
-
-  // Helper function to filter data by user
-  const filterByUser = <T extends { user_id: string }>(data: T[]): T[] => {
-    if (selectedUser === "all") {
-      return data;
-    }
-    return data.filter((item) => item.user_id === selectedUser);
-  };
-
-  // Data transformation functions with hourly bucketing (0-24h)
-
-  const getButtonClicksOverTime = useCallback(() => {
-    const relevant = filterByUser(clickData); // Use filtered clickData
-    if (relevant.length === 0) {
-      // Return empty 24-hour buckets
-      return Array.from({ length: 24 }, (_, i) => ({
-        time: `${i}h`,
-        clicks: 0,
-      }));
-    }
-
-    // Initialize 24 hourly buckets (0-23)
-    const timeMap = new Map<number, number>();
-    for (let i = 0; i < 24; i++) {
-      timeMap.set(i, 0);
-    }
-
-    // Find the earliest click timestamp to use as baseline within the filtered data
-    const firstClickTime = new Date(relevant[0].timestamp).getTime();
-
-    relevant.forEach((click) => {
-      const elapsed = (new Date(click.timestamp).getTime() - firstClickTime) / 1000;
-      const bucket = Math.floor(elapsed / 3600); // Convert to hours
-      if (bucket >= 0 && bucket < 24) {
-        // Summing up clicks if there are multiple entries for the same hour
-        const clickCount = Object.values(click.clicks).reduce(
-          (sum, playtimeClicks) => sum + Object.values(playtimeClicks).reduce((pcSum, count) => pcSum + count, 0),
-          0,
-        );
-        timeMap.set(bucket, (timeMap.get(bucket) || 0) + clickCount);
-      }
-    });
-
-    return Array.from({ length: 24 }, (_, i) => ({
-      time: `${i}h`,
-      clicks: timeMap.get(i) || 0,
-    }));
-  }, [clickData, selectedUser, showCompletedOnly, gameSaves]);
-
-  const getClickTypesByTimestamp = useCallback(() => {
-    const filteredClickData = selectedUser === "all"
-      ? clickData
-      : clickData.filter((d) => d.user_id === selectedUser);
-
-    const filteredByCompletion = showCompletedOnly
-      ? filteredClickData.filter((d) => {
-          const save = gameSaves.find((s) => s.user_id === d.user_id);
-          return save?.game_state?.gameComplete;
-        })
-      : filteredClickData;
-
-    const timeBuckets: Record<string, Record<string, number>> = {};
-    for (let i = 0; i < 24; i++) {
-      timeBuckets[`${i}h`] = {};
-    }
-
-    if (filteredByCompletion.length === 0) {
-      return Object.entries(timeBuckets).map(([time, clicks]) => ({ time, ...clicks }));
-    }
-
-    const firstClickTime = new Date(filteredByCompletion[0].timestamp).getTime();
-
-    filteredByCompletion.forEach((entry) => {
-      const elapsed = (new Date(entry.timestamp).getTime() - firstClickTime) / 1000;
-      const bucket = Math.floor(elapsed / 3600); // Convert to hours
-
-      if (bucket >= 0 && bucket < 24) {
-        const bucketKey = `${bucket}h`;
-        Object.entries(entry.clicks).forEach(([playtime, clicks]) => {
-          Object.entries(clicks as Record<string, number>).forEach(
-            ([button, count]) => {
-              const cleanedButton = cleanButtonName(button);
-              if (selectedClickTypes.has(cleanedButton)) {
-                if (!timeBuckets[bucketKey][cleanedButton])
-                  timeBuckets[bucketKey][cleanedButton] = 0;
-                timeBuckets[bucketKey][cleanedButton] += count;
-              }
-            },
-          );
-        });
-      }
-    });
-
-    return Object.entries(timeBuckets)
-      .map(([time, clicks]) => ({ time, ...clicks }))
-      .sort((a, b) => parseInt(a.time) - parseInt(b.time)); // Sort by time
-  }, [clickData, gameSaves, selectedUser, showCompletedOnly, selectedClickTypes]);
-
-  const getTotalClicksByButton = useCallback(() => {
-    const filteredClickData = selectedUser === "all"
-      ? clickData
-      : clickData.filter((d) => d.user_id === selectedUser);
-
-    const filteredByCompletion = showCompletedOnly
-      ? filteredClickData.filter((d) => {
-          const save = gameSaves.find((s) => s.user_id === d.user_id);
-          return save?.game_state?.gameComplete;
-        })
-      : filteredClickData;
-
-    const buttonTotals: Record<string, number> = {};
-    filteredByCompletion.forEach((entry) => {
-      Object.values(entry.clicks).forEach((playtimeClicks: any) => {
-        Object.entries(playtimeClicks).forEach(([button, count]) => {
-          const cleanedButton = cleanButtonName(button);
-          if (!buttonTotals[cleanedButton]) buttonTotals[cleanedButton] = 0;
-          buttonTotals[cleanedButton] += count as number;
-        });
-      });
-    });
-
-    return Object.entries(buttonTotals)
-      .map(([button, total]) => ({ button, total }))
-      .sort((a, b) => b.total - a.total)
-      .slice(0, 15);
-  }, [clickData, gameSaves, selectedUser, showCompletedOnly]);
-
-  const getAverageClicksByButton = useCallback(() => {
-    const filteredClickData = selectedUser === "all"
-      ? clickData
-      : clickData.filter((d) => d.user_id === selectedUser);
-
-    const filteredByCompletion = showCompletedOnly
-      ? filteredClickData.filter((d) => {
-          const save = gameSaves.find((s) => s.user_id === d.user_id);
-          return save?.game_state?.gameComplete;
-        })
-      : filteredClickData;
-
-    const buttonStats: Record<string, { total: number; users: Set<string> }> = {};
-    filteredByCompletion.forEach((entry) => {
-      Object.values(entry.clicks).forEach((playtimeClicks: any) => {
-        Object.entries(playtimeClicks).forEach(([button, count]) => {
-          const cleanedButton = cleanButtonName(button);
-          if (!buttonStats[cleanedButton])
-            buttonStats[cleanedButton] = { total: 0, users: new Set() };
-          buttonStats[cleanedButton].total += count as number;
-          buttonStats[cleanedButton].users.add(entry.user_id);
-        });
-      });
-    });
-
-    return Object.entries(buttonStats)
-      .map(([button, stats]) => ({
-        button,
-        average: stats.total / stats.users.size,
-      }))
-      .sort((a, b) => b.average - a.average)
-      .slice(0, 15);
-  }, [clickData, gameSaves, selectedUser, showCompletedOnly]);
 
   const getStatsOverPlaytime = useMemo(() => {
     const relevant = filterByUser(gameSaves);
