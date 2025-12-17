@@ -183,7 +183,7 @@ export default function AuthDialog({
                     href="/terms"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-primary hover:underline"
+                    className="underline"
                   >
                     Terms of Service
                   </a>{" "}
@@ -192,7 +192,7 @@ export default function AuthDialog({
                     href="/privacy"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-primary hover:underline"
+                    className="underline"
                   >
                     Privacy Policy
                   </a>
@@ -200,7 +200,7 @@ export default function AuthDialog({
               </div>
             )}
             <div className="flex flex-col space-y-2">
-              <Button type="submit" disabled={loading}>
+              <Button type="submit" className="font-medium text-sm" disabled={loading}>
                 {loading
                   ? "Loading..."
                   : mode === "signin"
@@ -212,8 +212,8 @@ export default function AuthDialog({
               {mode === "signin" && (
                 <Button
                   type="button"
-                  variant="link"
-                  className="text-sm"
+                  variant="ghost"
+                  className="text-xs"
                   onClick={() => setMode("reset")}
                 >
                   Forgot password?
@@ -222,6 +222,7 @@ export default function AuthDialog({
               <Button
                 type="button"
                 variant="ghost"
+                className="text-sm"
                 onClick={() => {
                   setMode(mode === "signin" ? "signup" : "signin");
                   setAcceptedTerms(false);
