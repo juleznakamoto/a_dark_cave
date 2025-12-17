@@ -132,6 +132,18 @@ export function renderItemTooltip(
 
   if (!effect) return null;
 
+  // For fellowship items, return simple name and description
+  if (itemType === "fellowship") {
+    return (
+      <div className="text-xs">
+        {effect.name && <div className="font-bold">{effect.name}</div>}
+        {effect.description && (
+          <div className="text-gray-400 mb-1">{effect.description}</div>
+        )}
+      </div>
+    );
+  }
+
   // Get cruel mode state
   const cruelMode = useGameStore.getState().cruelMode;
 
