@@ -25,7 +25,7 @@ import { useMobileTooltip } from "@/hooks/useMobileTooltip";
 import { useIsMobile } from "@/hooks/use-mobile";
 import AuthDialog from "./AuthDialog";
 import LeaderboardDialog from "./LeaderboardDialog";
-import RestartGameDialog from "./RestartGameDialog"; // Assuming RestartGameDialog.tsx is in the same directory
+import { RestartGameDialog } from "./RestartGameDialog";
 
 // Social media platform configurations
 const SOCIAL_PLATFORMS = [
