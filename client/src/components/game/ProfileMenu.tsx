@@ -394,6 +394,8 @@ export default function ProfileMenu() {
                     if (isMobile) {
                       mobileTooltip.handleTooltipClick("login-reminder", e);
                     }
+                    setAccountDropdownOpen(true);
+                    setAuthNotificationSeen(true);
                   }}
                 >
                   <span className="text-orange-500 text-xs font-bold">!</span>
