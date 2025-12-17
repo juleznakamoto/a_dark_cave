@@ -586,7 +586,8 @@ export const weaponEffects: Record<string, EffectDefinition> = {
   ashen_greatshield: {
     id: "ashen_greatshield",
     name: "Ashen Greatshield",
-    description: "Massive shield forged from bones of the underground lake creature",
+    description:
+      "Massive shield forged from bones of the underground lake creature",
     bonuses: {
       generalBonuses: {
         strength: 10,
@@ -964,7 +965,8 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   feeding_ring: {
     id: "feeding_ring",
     name: "Feeding Ring",
-    description: "Ring that appeared one morning, seemingly fused to your finger",
+    description:
+      "Ring that appeared one morning, seemingly fused to your finger",
     bonuses: {
       generalBonuses: {
         luck: 5,
@@ -1211,26 +1213,33 @@ export const bookEffects: Record<string, EffectDefinition> = {
   },
 };
 
-export const fellowshipEffects: Record<string, ItemEffect> = {
-  aric_the_steadfast: {
-    name: "Aric the Steadfast",
-    description: "A warrior loyal to the end",
+export const fellowshipEffects: Record<string, EffectDefinition> = {
+  restless_knight: {
+    id: "restless_knight",
+    name: "Restless Knight",
+    description:
+      "Veteran of combat who has seen the remnants of the old world. Unlocks combat skill Crushing Strike.",
+    bonuses: {
+      generalBonuses: {},
+    },
   },
-  elara_the_wise: {
-    name: "Elara the Wise",
-    description: "A scholar of ancient lore",
+  elder_wizard: {
+    id: "elder_wizard",
+    name: "Elder Wizard",
+    description:
+      "Old wizard who mastered arcane fire. Unlocks combat skill Bloodflame Sphere.",
+    bonuses: {
+      generalBonuses: {},
+    },
   },
-  kael_the_hunter: {
-    name: "Kael the Hunter",
-    description: "A master tracker and bowman",
-  },
-  mira_the_healer: {
-    name: "Mira the Healer",
-    description: "A compassionate medic",
-  },
-  thorne_the_rogue: {
-    name: "Thorne the Rogue",
-    description: "A cunning strategist",
+  ashwraith_huntress: {
+    id: "ashwraith_huntress",
+    name: "Ashwraith Huntress",
+    description:
+      "Wildling huntress from a forest tribe bound by blood oath. Unlocks hunting skill upgrades and hunter production upgrades.",
+    bonuses: {
+      generalBonuses: {},
+    },
   },
 };
 
