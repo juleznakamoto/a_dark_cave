@@ -191,8 +191,8 @@ describe('State - Resource Limits Integration', () => {
         },
       }));
 
-      // Upgrade storage to storehouse
-      const storehouseLimit = gameActions.buildStorehouse.effect?.storageTier || 2500;
+      // Upgrade to storehouse
+      const storehouseLimit = 5000;
       useGameStore.setState((state) => ({
         buildings: {
           ...state.buildings,

@@ -415,11 +415,11 @@ describe('Resource Limits - Integration with Game Components', () => {
       const tiers = [
         { level: 0, limit: 500, buildings: {} },
         { level: 1, limit: 1000, buildings: { supplyHut: 1 } },
-        { level: 2, limit: gameActions.buildStorehouse.effect?.storageTier || 2500, buildings: { storehouse: 1 } },
-        { level: 3, limit: gameActions.buildFortifiedStorehouse.effect?.storageTier || 5000, buildings: { fortifiedStorehouse: 1 } },
-        { level: 4, limit: gameActions.buildVillageWarehouse.effect?.storageTier || 10000, buildings: { villageWarehouse: 1 } },
-        { level: 5, limit: gameActions.buildGrandRepository.effect?.storageTier || 25000, buildings: { grandRepository: 1 } },
-        { level: 6, limit: gameActions.buildGreatVault.effect?.storageTier || 50000, buildings: { greatVault: 1 } },
+        { level: 2, limit: 5000, buildings: { storehouse: 1 } },
+        { level: 3, limit: 10000, buildings: { fortifiedStorehouse: 1 } },
+        { level: 4, limit: 25000, buildings: { villageWarehouse: 1 } },
+        { level: 5, limit: 50000, buildings: { grandRepository: 1 } },
+        { level: 6, limit: 100000, buildings: { greatVault: 1 } },
       ];
 
       tiers.forEach(({ buildings, limit }) => {

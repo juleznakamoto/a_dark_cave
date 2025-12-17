@@ -223,13 +223,14 @@ describe('Building Cost Reductions', () => {
   });
 
   it('should apply fortified storehouse building discount for buildCabin if available', () => {
+    const baseWoodCost = (gameActions.buildCabin.cost as any)[1]["resources.wood"];
+    const baseStoneCost = (gameActions.buildCabin.cost as any)[1]["resources.stone"];
+
     const state = createMockState({
       buildings: { fortifiedStorehouse: 1 },
+      resources: { wood: baseWoodCost, stone: baseStoneCost },
     });
     const updatesWith = executeActionEffects('buildCabin', state);
-    const baseCost = gameActions.buildCabin.cost!(state);
-    const baseWoodCost = parseInt(baseCost.wood!.split(' ')[0]);
-    const baseStoneCost = parseInt(baseCost.stone!.split(' ')[0]);
 
     // Check if fortified storehouse provides a discount
     const fortifiedStorehouseAction = gameActions.buildFortifiedStorehouse;
@@ -415,13 +416,14 @@ describe('Cost Reduction Edge Cases', () => {
   });
 
   it('should floor discount calculations correctly for building if discount exists', () => {
+    const baseWoodCost = (gameActions.buildCabin.cost as any)[1]["resources.wood"];
+    const baseStoneCost = (gameActions.buildCabin.cost as any)[1]["resources.stone"];
+
     const state = createMockState({
       buildings: { fortifiedStorehouse: 1 },
+      resources: { wood: baseWoodCost, stone: baseStoneCost },
     });
     const updates = executeActionEffects('buildCabin', state);
-    const baseCost = gameActions.buildCabin.cost!(state);
-    const baseWoodCost = parseInt(baseCost.wood!.split(' ')[0]);
-    const baseStoneCost = parseInt(baseCost.stone!.split(' ')[0]);
 
     const fortifiedStorehouseAction = gameActions.buildFortifiedStorehouse;
     const discountPercent = fortifiedStorehouseAction.effect?.buildingCostReduction || 0;
