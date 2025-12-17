@@ -25,7 +25,7 @@ export function RestartGameDialog({
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="leading-6">Start New Game?</DialogTitle>
-          <DialogDescription className="py-4 space-y-2">
+          <DialogDescription className="py-2 space-y-2">
             <p>Are you sure you want to start a new game?</p>
             <p className="font-semibold text-destructive">
               All your current progress will be lost.
