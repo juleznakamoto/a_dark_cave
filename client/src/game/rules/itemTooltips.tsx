@@ -109,7 +109,7 @@ export function renderItemTooltip(
     if (tooltipParts.length > 0) {
       return (
         <div className="text-xs">
-          <div className="font-bold mb-1">{buildAction.label}</div>
+          <div className="font-bold">{buildAction.label}</div>
           {tooltipParts}
         </div>
       );
@@ -140,7 +140,7 @@ export function renderItemTooltip(
 
   return (
     <div className="text-xs">
-      {effect.name && <div className="font-bold mb-1">{effect.name}</div>}
+      {effect.name && <div className="font-bold">{effect.name}</div>}
       {effect.description && (
         <div className="text-gray-400 mb-1">{effect.description}</div>
       )}
