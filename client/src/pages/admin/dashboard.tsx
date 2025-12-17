@@ -562,14 +562,12 @@ export default function AdminDashboard() {
 
               <TabsContent value="clicks">
                 <ClicksTab
-                  clickData={clickData}
                   gameSaves={gameSaves}
-                  users={users}
                   selectedUser={selectedUser}
-                  setSelectedUser={setSelectedUser}
                   showCompletedOnly={showCompletedOnly}
                   setShowCompletedOnly={setShowCompletedOnly}
-                  timeRange={timeRange}
+                  selectedClickTypes={selectedClickTypes}
+                  setSelectedClickTypes={setSelectedClickTypes}
                   getAllButtonNames={() => {
                     const buttonNames = new Set<string>();
                     clickData.forEach((entry) => {
@@ -581,10 +579,136 @@ export default function AdminDashboard() {
                     });
                     return Array.from(buttonNames);
                   }}
-                  selectedClickTypes={selectedClickTypes}
-                  setSelectedClickTypes={setSelectedClickTypes}
+                  getButtonClicksOverTime={() => {
+                    const filteredClickData = selectedUser === "all"
+                      ? clickData
+                      : clickData.filter((d) => d.user_id === selectedUser);
+
+                    const filteredByCompletion = showCompletedOnly
+                      ? filteredClickData.filter((d) => {
+                          const save = gameSaves.find((s) => s.user_id === d.user_id);
+                          return save?.game_state?.gameComplete;
+                        })
+                      : filteredClickData;
+
+                    const timeBuckets: Record<string, number> = {};
+                    filteredByCompletion.forEach((entry) => {
+                      Object.entries(entry.clicks).forEach(([playtime, clicks]) => {
+                        const playtimeMinutes = parseInt(playtime);
+                        const bucket = Math.floor(playtimeMinutes / 15) * 15;
+                        const bucketKey = `${bucket}m`;
+                        if (!timeBuckets[bucketKey]) timeBuckets[bucketKey] = 0;
+                        const clickCount = Object.values(clicks as Record<string, number>).reduce(
+                          (sum, count) => sum + count,
+                          0,
+                        );
+                        timeBuckets[bucketKey] += clickCount;
+                      });
+                    });
+
+                    return Object.entries(timeBuckets)
+                      .map(([time, clicks]) => ({ time, clicks }))
+                      .sort((a, b) => parseInt(a.time) - parseInt(b.time));
+                  }}
+                  getClickTypesByTimestamp={() => {
+                    const filteredClickData = selectedUser === "all"
+                      ? clickData
+                      : clickData.filter((d) => d.user_id === selectedUser);
+
+                    const filteredByCompletion = showCompletedOnly
+                      ? filteredClickData.filter((d) => {
+                          const save = gameSaves.find((s) => s.user_id === d.user_id);
+                          return save?.game_state?.gameComplete;
+                        })
+                      : filteredClickData;
+
+                    const timeBuckets: Record<string, Record<string, number>> = {};
+                    filteredByCompletion.forEach((entry) => {
+                      Object.entries(entry.clicks).forEach(([playtime, clicks]) => {
+                        const playtimeMinutes = parseInt(playtime);
+                        const bucket = Math.floor(playtimeMinutes / 15) * 15;
+                        const bucketKey = `${bucket}m`;
+                        if (!timeBuckets[bucketKey]) timeBuckets[bucketKey] = {};
+
+                        Object.entries(clicks as Record<string, number>).forEach(
+                          ([button, count]) => {
+                            const cleanedButton = cleanButtonName(button);
+                            if (selectedClickTypes.has(cleanedButton)) {
+                              if (!timeBuckets[bucketKey][cleanedButton])
+                                timeBuckets[bucketKey][cleanedButton] = 0;
+                              timeBuckets[bucketKey][cleanedButton] += count;
+                            }
+                          },
+                        );
+                      });
+                    });
+
+                    return Object.entries(timeBuckets)
+                      .map(([time, clicks]) => ({ time, ...clicks }))
+                      .sort((a, b) => parseInt(a.time) - parseInt(b.time));
+                  }}
+                  getTotalClicksByButton={() => {
+                    const filteredClickData = selectedUser === "all"
+                      ? clickData
+                      : clickData.filter((d) => d.user_id === selectedUser);
+
+                    const filteredByCompletion = showCompletedOnly
+                      ? filteredClickData.filter((d) => {
+                          const save = gameSaves.find((s) => s.user_id === d.user_id);
+                          return save?.game_state?.gameComplete;
+                        })
+                      : filteredClickData;
+
+                    const buttonTotals: Record<string, number> = {};
+                    filteredByCompletion.forEach((entry) => {
+                      Object.values(entry.clicks).forEach((playtimeClicks: any) => {
+                        Object.entries(playtimeClicks).forEach(([button, count]) => {
+                          const cleanedButton = cleanButtonName(button);
+                          if (!buttonTotals[cleanedButton]) buttonTotals[cleanedButton] = 0;
+                          buttonTotals[cleanedButton] += count as number;
+                        });
+                      });
+                    });
+
+                    return Object.entries(buttonTotals)
+                      .map(([button, total]) => ({ button, total }))
+                      .sort((a, b) => b.total - a.total)
+                      .slice(0, 15);
+                  }}
+                  getAverageClicksByButton={() => {
+                    const filteredClickData = selectedUser === "all"
+                      ? clickData
+                      : clickData.filter((d) => d.user_id === selectedUser);
+
+                    const filteredByCompletion = showCompletedOnly
+                      ? filteredClickData.filter((d) => {
+                          const save = gameSaves.find((s) => s.user_id === d.user_id);
+                          return save?.game_state?.gameComplete;
+                        })
+                      : filteredClickData;
+
+                    const buttonStats: Record<string, { total: number; users: Set<string> }> = {};
+                    filteredByCompletion.forEach((entry) => {
+                      Object.values(entry.clicks).forEach((playtimeClicks: any) => {
+                        Object.entries(playtimeClicks).forEach(([button, count]) => {
+                          const cleanedButton = cleanButtonName(button);
+                          if (!buttonStats[cleanedButton])
+                            buttonStats[cleanedButton] = { total: 0, users: new Set() };
+                          buttonStats[cleanedButton].total += count as number;
+                          buttonStats[cleanedButton].users.add(entry.user_id);
+                        });
+                      });
+                    });
+
+                    return Object.entries(buttonStats)
+                      .map(([button, stats]) => ({
+                        button,
+                        average: stats.total / stats.users.size,
+                      }))
+                      .sort((a, b) => b.average - a.average)
+                      .slice(0, 15);
+                  }}
                   COLORS={COLORS}
-                  cleanButtonName={cleanButtonName}
                 />
               </TabsContent>
 
