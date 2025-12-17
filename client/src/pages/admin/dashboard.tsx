@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import { useLocation } from "wouter";
 import { getSupabaseClient } from "@/lib/supabase";
 import { logger } from "@/lib/logger";
@@ -41,32 +41,6 @@ import SleepTab from "./tabs/SleepTab";
 import ResourcesTab from "./tabs/ResourcesTab";
 import UpgradesTab from "./tabs/UpgradesTab";
 import LookupTab from "./tabs/LookupTab";
-
-// Mock useQuery for standalone execution if not in a React Query context
-const useQuery = (options) => {
-  const { queryKey, queryFn } = options;
-  const [data, setData] = useState(null);
-  const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
-      setError(null);
-      try {
-        const result = await queryFn();
-        setData(result);
-      } catch (err) {
-        setError(err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchData();
-  }, [queryKey, queryFn]); // Re-fetch if queryKey or queryFn changes
-
-  return { data, error, isLoading };
-};
 
 interface ButtonClickData {
   user_id: string;
@@ -408,7 +382,7 @@ export default function AdminDashboard() {
 
   // Data transformation functions with hourly bucketing (0-24h)
 
-  const getButtonClicksOverTime = useMemo(() => {
+  const getButtonClicksOverTime = useCallback(() => {
     const relevant = filterByUser(clickData); // Use filtered clickData
     if (relevant.length === 0) {
       // Return empty 24-hour buckets
@@ -446,7 +420,7 @@ export default function AdminDashboard() {
     }));
   }, [clickData, selectedUser, showCompletedOnly, gameSaves]);
 
-  const getClickTypesByTimestamp = useMemo(() => {
+  const getClickTypesByTimestamp = useCallback(() => {
     const filteredClickData = selectedUser === "all"
       ? clickData
       : clickData.filter((d) => d.user_id === selectedUser);
@@ -495,7 +469,7 @@ export default function AdminDashboard() {
       .sort((a, b) => parseInt(a.time) - parseInt(b.time)); // Sort by time
   }, [clickData, gameSaves, selectedUser, showCompletedOnly, selectedClickTypes]);
 
-  const getTotalClicksByButton = useMemo(() => {
+  const getTotalClicksByButton = useCallback(() => {
     const filteredClickData = selectedUser === "all"
       ? clickData
       : clickData.filter((d) => d.user_id === selectedUser);
@@ -524,7 +498,7 @@ export default function AdminDashboard() {
       .slice(0, 15);
   }, [clickData, gameSaves, selectedUser, showCompletedOnly]);
 
-  const getAverageClicksByButton = useMemo(() => {
+  const getAverageClicksByButton = useCallback(() => {
     const filteredClickData = selectedUser === "all"
       ? clickData
       : clickData.filter((d) => d.user_id === selectedUser);
