@@ -34,7 +34,7 @@ export interface EffectDefinition {
       craftingCostReduction?: number; // Percentage reduction in crafting costs (0.1 = 10% reduction)
       buildingCostReduction?: number; // Percentage reduction in building costs (0.1 = 10% reduction)
       MAX_EMBER_BOMBS?: number; // Bonus to max ember bombs capacity
-      MAX_CINDERFLAME_BOMBS?: number; // Bonus to max ashfire bombs 
+      MAX_CINDERFLAME_BOMBS?: number; // Bonus to max ashfire bombs
       MAX_VOID_BOMBS?: number;
       caveExploreMultiplier?: number; // Multiplier for all cave exploration actions
       eventDeathReduction?: number; // Percentage reduction in villager deaths from events (0.25 = 25% reduction)
@@ -1211,32 +1211,28 @@ export const bookEffects: Record<string, EffectDefinition> = {
   },
 };
 
-export const fellowshipEffects: Record<string, EffectDefinition> = {
-  restless_knight: {
-    id: "restless_knight",
-    name: "Restless Knight",
-    description:
-      "Veteran of combat who has seen the remnants of the old world. Unlocks combat skill Crushing Strike.",
-    bonuses: {
-      generalBonuses: {},
-    },
+export const fellowshipEffects: Record<string, ItemEffect> = {
+  aric_the_steadfast: {
+    name: "Aric the Steadfast",
+    description: "A warrior loyal to the end",
   },
-  elder_wizard: {
-    id: "elder_wizard",
-    name: "Elder Wizard",
-    description:
-      "Old wizard who mastered arcane fire. Unlocks combat skill Bloodflame Sphere.",
-    bonuses: {
-      generalBonuses: {},
-    },
+  elara_the_wise: {
+    name: "Elara the Wise",
+    description: "A scholar of ancient lore",
   },
-  ashwraith_huntress: {
-    id: "ashwraith_huntress",
-    name: "Ashwraith Huntress",
-    description:
-      "Wildling huntress from a forest tribe bound by blood oath. Unlocks hunting skill upgrades and hunter production upgrades.",
-    bonuses: {
-      generalBonuses: {},
-    },
+  kael_the_hunter: {
+    name: "Kael the Hunter",
+    description: "A master tracker and bowman",
+  },
+  mira_the_healer: {
+    name: "Mira the Healer",
+    description: "A compassionate medic",
+  },
+  thorne_the_rogue: {
+    name: "Thorne the Rogue",
+    description: "A cunning strategist",
   },
 };
+
+// Building effects are derived from villageBuildActions
+export const buildingEffects: Record<string, ItemEffect> = {};

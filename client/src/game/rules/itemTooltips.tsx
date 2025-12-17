@@ -9,8 +9,14 @@ import { useGameStore } from "../state";
 
 export function renderItemTooltip(
   itemId: string,
-  itemType: "weapon" | "tool" | "blessing" | "book",
+  itemType: "weapon" | "tool" | "blessing" | "book" | "building",
+  customTooltip?: React.ReactNode,
 ) {
+  // For buildings, use the custom tooltip passed in
+  if (itemType === "building" && customTooltip) {
+    return <div className="text-xs">{customTooltip}</div>;
+  }
+
   const effect =
     itemType === "weapon"
       ? weaponEffects[itemId]

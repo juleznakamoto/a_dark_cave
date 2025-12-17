@@ -476,6 +476,45 @@ export default function SidePanelSection({
       );
     }
 
+    // If this item is a building or fortification with a tooltip, use renderItemTooltip
+    if (
+      item.tooltip &&
+      (title === "Buildings" || title === "Fortifications")
+    ) {
+      return (
+        <TooltipProvider key={item.id}>
+          <Tooltip open={mobileTooltip.isTooltipOpen(item.id)}>
+            <div
+              data-testid={item.testId}
+              className={`flex leading-tight justify-between items-center transition-all duration-300 ${
+                isAnimated
+                  ? "text-green-400"
+                  : isDecreaseAnimated
+                    ? "text-red-400"
+                    : isMaxAnimated
+                      ? "text-yellow-400"
+                      : ""
+              }`}
+            >
+              <TooltipTrigger asChild>
+                <span
+                  onClick={(e) => handleMobileTooltipClick(item.id, e)}
+                  onMouseEnter={() => handleTooltipHover(item.id)}
+                  onMouseLeave={() => handleTooltipLeave(item.id)}
+                  className={mobileTooltip.isMobile ? "cursor-pointer" : ""}
+                >
+                  {labelContent}
+                </span>
+              </TooltipTrigger>
+            </div>
+            <TooltipContent className="max-w-xs">
+              {renderItemTooltip(item.id, "building", item.tooltip)}
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      );
+    }
+
     // If this item has a tooltip, render with tooltip
     if (item.tooltip) {
       return (
