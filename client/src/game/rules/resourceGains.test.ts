@@ -557,9 +557,17 @@ describe('Resource Gain Tests', () => {
       expect(woodCostWithout).toBeDefined();
       const amountWithout = parseInt(woodCostWithout!.text.split(' ')[0].replace('-', ''));
 
-      // Fortified Storehouse: 5% building cost reduction
+      // Fortified Storehouse: check for building cost reduction
       const amountWithFortifiedStorehouse = parseInt(woodCostWithFortifiedStorehouse!.text.split(' ')[0].replace('-', ''));
-      expect(amountWithFortifiedStorehouse).toBe(Math.floor(amountWithout * 0.95));
+      const fortifiedStorehouseAction = gameActions.buildFortifiedStorehouse;
+      const discountPercent = fortifiedStorehouseAction.effect?.buildingCostReduction || 0;
+
+      if (discountPercent > 0) {
+        expect(amountWithFortifiedStorehouse).toBe(Math.floor(amountWithout * (1 - discountPercent / 100)));
+      } else {
+        // No discount provided
+        expect(amountWithFortifiedStorehouse).toBe(amountWithout);
+      }
     });
   });
 

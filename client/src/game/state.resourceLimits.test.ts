@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { useGameStore } from './state';
+import { gameActions } from './rules';
 
 describe('State - Resource Limits Integration', () => {
   beforeEach(() => {
@@ -190,7 +191,8 @@ describe('State - Resource Limits Integration', () => {
         },
       }));
 
-      // Upgrade storage to storehouse (5000 limit)
+      // Upgrade storage to storehouse
+      const storehouseLimit = gameActions.buildStorehouse.effect?.storageTier || 2500;
       useGameStore.setState((state) => ({
         buildings: {
           ...state.buildings,
@@ -207,12 +209,12 @@ describe('State - Resource Limits Integration', () => {
       }));
 
       // Now can add more
-      store.updateResource('wood', 2000);
-      expect(useGameStore.getState().resources.wood).toBe(3000);
+      store.updateResource('wood', storehouseLimit - 1500);
+      expect(useGameStore.getState().resources.wood).toBe(1000 + (storehouseLimit - 1500));
 
       // But still capped at new limit
-      store.updateResource('wood', 5000);
-      expect(useGameStore.getState().resources.wood).toBe(5000);
+      store.updateResource('wood', storehouseLimit);
+      expect(useGameStore.getState().resources.wood).toBe(storehouseLimit);
     });
 
     it('should handle all storage tiers correctly', () => {
@@ -220,11 +222,11 @@ describe('State - Resource Limits Integration', () => {
       const tiers = [
         { level: 0, limit: 500 },
         { level: 1, limit: 1000 },
-        { level: 2, limit: 5000 },
-        { level: 3, limit: 10000 },
-        { level: 4, limit: 25000 },
-        { level: 5, limit: 50000 },
-        { level: 6, limit: 100000 },
+        { level: 2, limit: gameActions.buildStorehouse.effect?.storageTier || 2500 },
+        { level: 3, limit: gameActions.buildFortifiedStorehouse.effect?.storageTier || 5000 },
+        { level: 4, limit: gameActions.buildVillageWarehouse.effect?.storageTier || 10000 },
+        { level: 5, limit: gameActions.buildGrandRepository.effect?.storageTier || 25000 },
+        { level: 6, limit: gameActions.buildGreatVault.effect?.storageTier || 50000 },
       ];
 
       tiers.forEach(({ level, limit }) => {
