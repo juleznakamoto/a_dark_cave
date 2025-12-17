@@ -7,7 +7,7 @@ interface SleepTabProps {
   setShowCompletedOnly: (value: boolean) => void;
   gameSaves: any[];
   selectedUser: string;
-  getSleepUpgradesDistribution: () => Array<{ level: string; lengthUsers: number; intensityUsers: number }>;
+  getSleepUpgradesDistribution: Array<{ level: string; lengthUsers: number; intensityUsers: number }>;
 }
 
 export default function SleepTab(props: SleepTabProps) {
@@ -62,7 +62,7 @@ export default function SleepTab(props: SleepTabProps) {
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={400}>
-            <BarChart data={getSleepUpgradesDistribution()}>
+            <BarChart data={getSleepUpgradesDistribution}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
                 dataKey="level"
