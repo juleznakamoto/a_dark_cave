@@ -428,8 +428,7 @@ export default function SidePanelSection({
         title === "Weapons" ||
         title === "Clothing" ||
         title === "Schematics" ||
-        title === "Blessings" ||
-        title === "Fellowship")
+        title === "Blessings")
     ) {
       return (
         <TooltipProvider key={item.id}>
@@ -465,11 +464,46 @@ export default function SidePanelSection({
                   : title === "Blessings" ||
                       title === "Clothing" ||
                       title === "Relics" ||
-                      title === "Schematics" ||
-                      title === "Fellowship"
+                      title === "Schematics"
                     ? "blessing"
                     : "tool",
               )}
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      );
+    }
+
+    // If this item is a fellowship member with a tooltip, use renderItemTooltip
+    if (item.tooltip && title === "Fellowship") {
+      return (
+        <TooltipProvider key={item.id}>
+          <Tooltip open={mobileTooltip.isTooltipOpen(item.id)}>
+            <div
+              data-testid={item.testId}
+              className={`flex leading-tight justify-between items-center transition-all duration-300 ${
+                isAnimated
+                  ? "text-green-400"
+                  : isDecreaseAnimated
+                    ? "text-red-400"
+                    : isMaxAnimated
+                      ? "text-yellow-400"
+                      : ""
+              }`}
+            >
+              <TooltipTrigger asChild>
+                <span
+                  onClick={(e) => handleMobileTooltipClick(item.id, e)}
+                  onMouseEnter={() => handleTooltipHover(item.id)}
+                  onMouseLeave={() => handleTooltipLeave(item.id)}
+                  className={mobileTooltip.isMobile ? "cursor-pointer" : ""}
+                >
+                  {labelContent}
+                </span>
+              </TooltipTrigger>
+            </div>
+            <TooltipContent className="max-w-xs">
+              {renderItemTooltip(item.id, "fellowship")}
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>

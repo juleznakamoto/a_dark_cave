@@ -216,16 +216,7 @@ export default function SidePanel() {
       value: 1,
       testId: `fellowship-${key}`,
       visible: true,
-      tooltip: fellowshipEffects[key] ? (
-        <div>
-          <div className="font-bold">{fellowshipEffects[key].name}</div>
-          {fellowshipEffects[key].description && (
-            <div className="text-gray-400 mb-1">
-              {fellowshipEffects[key].description}
-            </div>
-          )}
-        </div>
-      ) : undefined,
+      tooltip: true, // Tooltip will be generated in itemTooltips.tsx
     }));
 
   // Dynamically generate schematic items from state

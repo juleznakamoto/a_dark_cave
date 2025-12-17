@@ -12,7 +12,7 @@ import type { GameState } from "@shared/schema";
 
 export function renderItemTooltip(
   itemId: string,
-  itemType: "weapon" | "tool" | "blessing" | "book" | "building",
+  itemType: "weapon" | "tool" | "blessing" | "book" | "building" | "fellowship",
   customTooltip?: React.ReactNode,
 ) {
   // For buildings, generate the tooltip from villageBuildActions
@@ -125,7 +125,9 @@ export function renderItemTooltip(
         ? toolEffects[itemId]
         : itemType === "book"
           ? bookEffects[itemId]
-          : clothingEffects[itemId];
+          : itemType === "fellowship"
+            ? bookEffects[itemId]
+            : clothingEffects[itemId];
 
   if (!effect) return null;
 
