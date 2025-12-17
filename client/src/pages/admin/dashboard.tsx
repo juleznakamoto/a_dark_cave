@@ -194,9 +194,9 @@ export default function AdminDashboard() {
   }, [timeRange]);
 
   // Prefiltered data based on timeRange
-  const clickData = useMemo(() => filterByTimeRange(rawClickData, "timestamp"), [rawClickData, timeRange]);
-  const gameSaves = useMemo(() => filterByTimeRange(rawGameSaves, "updated_at"), [rawGameSaves, timeRange]);
-  const purchases = useMemo(() => filterByTimeRange(rawPurchases, "purchased_at"), [rawPurchases, timeRange]);
+  const clickData = useMemo(() => filterByTimeRange(rawClickData, "timestamp"), [rawClickData, timeRange, filterByTimeRange]);
+  const gameSaves = useMemo(() => filterByTimeRange(rawGameSaves, "updated_at"), [rawGameSaves, timeRange, filterByTimeRange]);
+  const purchases = useMemo(() => filterByTimeRange(rawPurchases, "purchased_at"), [rawPurchases, timeRange, filterByTimeRange]);
 
   const [selectedUser, setSelectedUser] = useState<string>("all");
   const [selectedButtons, setSelectedButtons] = useState<Set<string>>(
