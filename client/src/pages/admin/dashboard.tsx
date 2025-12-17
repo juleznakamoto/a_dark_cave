@@ -266,9 +266,9 @@ export default function AdminDashboard() {
         // playtimeKey is in minutes, convert to hours
         const playtimeMinutes = parseInt(playtimeKey);
         if (isNaN(playtimeMinutes)) return;
-        
+
         const bucket = Math.floor(playtimeMinutes / 60);
-        
+
         if (bucket >= 0 && bucket < 24) {
           const bucketKey = `${bucket}h`;
           const clickCount = Object.values(buttonClicks as Record<string, number>).reduce(
@@ -311,7 +311,7 @@ export default function AdminDashboard() {
       Object.entries(entry.clicks).forEach(([playtimeKey, buttonClicks]) => {
         const playtimeMinutes = parseInt(playtimeKey);
         if (isNaN(playtimeMinutes)) return;
-        
+
         const bucket = Math.floor(playtimeMinutes / 60);
 
         if (bucket >= 0 && bucket < 24) {
@@ -1293,7 +1293,7 @@ export default function AdminDashboard() {
                 <PurchasesTab
                   purchases={purchases}
                   getTotalRevenue={() =>
-                    rawPurchases // Use raw for total revenue
+                    rawPurchases
                       .filter((p) => p.price_paid > 0 && !p.bundle_id)
                       .reduce((sum, p) => sum + p.price_paid, 0)
                   }
@@ -1305,8 +1305,8 @@ export default function AdminDashboard() {
 
               <TabsContent value="referrals">
                 <ReferralsTab
-                  gameSaves={gameSaves}
                   getTotalReferrals={getTotalReferrals()}
+                  gameSaves={gameSaves}
                   getDailyReferrals={getDailyReferrals()}
                   getTopReferrers={getTopReferrers()}
                 />
@@ -1336,10 +1336,10 @@ export default function AdminDashboard() {
 
               <TabsContent value="resources">
                 <ResourcesTab
-                  gameSaves={gameSaves}
-                  selectedUser={selectedUser}
                   showCompletedOnly={showCompletedOnly}
                   setShowCompletedOnly={setShowCompletedOnly}
+                  gameSaves={gameSaves}
+                  selectedUser={selectedUser}
                   selectedStats={selectedStats}
                   setSelectedStats={setSelectedStats}
                   selectedResources={selectedResources}
@@ -1352,10 +1352,10 @@ export default function AdminDashboard() {
 
               <TabsContent value="upgrades">
                 <UpgradesTab
-                  gameSaves={gameSaves}
-                  selectedUser={selectedUser}
                   showCompletedOnly={showCompletedOnly}
                   setShowCompletedOnly={setShowCompletedOnly}
+                  gameSaves={gameSaves}
+                  selectedUser={selectedUser}
                   selectedMiningTypes={selectedMiningTypes}
                   setSelectedMiningTypes={setSelectedMiningTypes}
                   getButtonUpgradesOverPlaytime={getButtonUpgradesOverPlaytime}

@@ -47,10 +47,13 @@ export default function OverviewTab(props: OverviewTabProps) {
     dailyActiveUsersData
   } = props;
 
-  const formattedDailyActiveUsers = (dailyActiveUsersData || []).map(d => ({
-    date: format(parseISO(d.date), "MMM dd"),
-    users: d.active_user_count,
-  }));
+  const formattedDailyActiveUsers = (dailyActiveUsersData || [])
+    .slice()
+    .reverse()
+    .map(d => ({
+      date: format(parseISO(d.date), "MMM dd"),
+      users: d.active_user_count,
+    }));
 
   return (
     <div className="space-y-4">
