@@ -353,7 +353,7 @@ export default function SidePanelSection({
         {item.icon !== undefined && (
           <span className={cn("mr-1", item.iconColor)}>{item.icon}</span>
         )}
-        {item.label.includes("↓") ? (
+        {typeof item.label === 'string' && item.label.includes("↓") ? (
           <>
             {item.label.replace(" ↓", "")}
             <span className="text-red-800 ml-1">↓</span>
