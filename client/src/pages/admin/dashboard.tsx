@@ -409,7 +409,7 @@ export default function AdminDashboard() {
 
   // Data transformation functions with hourly bucketing (0-24h)
 
-  const getButtonClicksOverTime = useCallback(() => {
+  const getButtonClicksOverTime = useMemo(() => {
     const relevant = filterByUser(clickData); // Use filtered clickData
     if (relevant.length === 0) {
       // Return empty 24-hour buckets
@@ -447,7 +447,7 @@ export default function AdminDashboard() {
     }));
   }, [clickData, selectedUser, showCompletedOnly, gameSaves]);
 
-  const getClickTypesByTimestamp = useCallback(() => {
+  const getClickTypesByTimestamp = useMemo(() => {
     const filteredClickData = selectedUser === "all"
       ? clickData
       : clickData.filter((d) => d.user_id === selectedUser);
@@ -496,7 +496,7 @@ export default function AdminDashboard() {
       .sort((a, b) => parseInt(a.time) - parseInt(b.time)); // Sort by time
   }, [clickData, gameSaves, selectedUser, showCompletedOnly, selectedClickTypes]);
 
-  const getTotalClicksByButton = useCallback(() => {
+  const getTotalClicksByButton = useMemo(() => {
     const filteredClickData = selectedUser === "all"
       ? clickData
       : clickData.filter((d) => d.user_id === selectedUser);
@@ -525,7 +525,7 @@ export default function AdminDashboard() {
       .slice(0, 15);
   }, [clickData, gameSaves, selectedUser, showCompletedOnly]);
 
-  const getAverageClicksByButton = useCallback(() => {
+  const getAverageClicksByButton = useMemo(() => {
     const filteredClickData = selectedUser === "all"
       ? clickData
       : clickData.filter((d) => d.user_id === selectedUser);
@@ -559,7 +559,7 @@ export default function AdminDashboard() {
       .slice(0, 15);
   }, [clickData, gameSaves, selectedUser, showCompletedOnly]);
 
-  const getStatsOverPlaytime = useCallback(() => {
+  const getStatsOverPlaytime = useMemo(() => {
     const relevant = filterByUser(gameSaves);
     if (relevant.length === 0) {
       return Array.from({ length: 24 }, (_, i) => ({
@@ -612,7 +612,7 @@ export default function AdminDashboard() {
     });
   }, [gameSaves, clickData, selectedUser, showCompletedOnly]);
 
-  const getResourceStatsOverPlaytime = useCallback(() => {
+  const getResourceStatsOverPlaytime = useMemo(() => {
     const relevant = filterByUser(gameSaves);
     const resourceKeys = ['food', 'wood', 'stone', 'iron', 'coal', 'sulfur', 'obsidian', 'adamant', 'moonstone', 'leather', 'steel', 'gold', 'silver']; // Simplified common resources
 
@@ -664,7 +664,7 @@ export default function AdminDashboard() {
     });
   }, [gameSaves, clickData, selectedUser, showCompletedOnly, selectedResources]);
 
-  const getButtonUpgradesOverPlaytime = useCallback(() => {
+  const getButtonUpgradesOverPlaytime = useMemo(() => {
     const relevant = filterByUser(gameSaves);
     if (relevant.length === 0) {
       return Array.from({ length: 24 }, (_, i) => ({
@@ -722,10 +722,10 @@ export default function AdminDashboard() {
         chopWood: levels.chopWood.length > 0 ? levels.chopWood.reduce((a, b) => a + b, 0) / levels.chopWood.length : 1,
       };
     });
-  }, [gameSaves, clickData, selectedUser, showCompletedOnly, selectedMiningTypes]);
+  }, [gameSaves, clickData, selectedUser, showCompletedOnly]);
 
 
-  const getGameCompletionStats = useCallback(() => {
+  const getGameCompletionStats = useMemo(() => {
     const relevantSaves = selectedUser === "all"
       ? gameSaves
       : gameSaves.filter((s) => s.user_id === selectedUser);
@@ -757,7 +757,7 @@ export default function AdminDashboard() {
     ];
   }, [gameSaves, selectedUser]);
 
-  const getDailyPurchases = useCallback(() => {
+  const getDailyPurchases = useMemo(() => {
     const data: Array<{ day: string; purchases: number }> = [];
     const now = new Date();
 
@@ -780,7 +780,7 @@ export default function AdminDashboard() {
     return data;
   }, [purchases]); // Depend on filtered purchases
 
-  const getPurchasesByPlaytime = useCallback(() => {
+  const getPurchasesByPlaytime = useMemo(() => {
     const playtimeBuckets = new Map<number, number>();
     let maxBucket = 0;
 
@@ -807,7 +807,7 @@ export default function AdminDashboard() {
     return result;
   }, [purchases, gameSaves]); // Depend on filtered purchases and gameSaves
 
-  const getPurchaseStats = useCallback(() => {
+  const getPurchaseStats = useMemo(() => {
     const itemCounts = new Map<string, number>();
 
     purchases.filter((p) => !p.bundle_id).forEach((purchase) => { // Use filtered purchases
@@ -822,13 +822,13 @@ export default function AdminDashboard() {
       .sort((a, b) => b.count - a.count);
   }, [purchases]); // Depend on filtered purchases
 
-  const getTotalReferrals = useCallback(() => {
+  const getTotalReferrals = useMemo(() => {
     return gameSaves.reduce((sum, save) => {
       return sum + (save.game_state?.referrals?.length || 0);
     }, 0);
   }, [gameSaves]);
 
-  const getDailyReferrals = useCallback(() => {
+  const getDailyReferrals = useMemo(() => {
     const data: Array<{ day: string; referrals: number }> = [];
     const now = new Date();
 
@@ -860,7 +860,7 @@ export default function AdminDashboard() {
     return data;
   }, [gameSaves]);
 
-  const getTopReferrers = useCallback(() => {
+  const getTopReferrers = useMemo(() => {
     const referrerCounts = new Map<string, number>();
 
     gameSaves.forEach((save) => {
@@ -879,12 +879,12 @@ export default function AdminDashboard() {
       .slice(0, 10);
   }, [gameSaves]);
 
-  const getCubeEventNumber = useCallback((eventId: string) => {
+  const getCubeEventNumber = useMemo(() => {
     const match = eventId.match(/cube(\d+)/);
     return match ? parseInt(match[1]) : null;
   }, []);
 
-  const getSleepUpgradesDistribution = useCallback(() => {
+  const getSleepUpgradesDistribution = useMemo(() => {
     const filteredSaves = selectedUser === "all"
       ? gameSaves
       : gameSaves.filter((s) => s.user_id === selectedUser);
