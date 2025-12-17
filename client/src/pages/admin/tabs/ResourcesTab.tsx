@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from "recharts";
 
@@ -21,6 +20,7 @@ export default function ResourcesTab(props: ResourcesTabProps) {
     showCompletedOnly,
     setShowCompletedOnly,
     gameSaves,
+    selectedUser,
     selectedStats,
     setSelectedStats,
     selectedResources,

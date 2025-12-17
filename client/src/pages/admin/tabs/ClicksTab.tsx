@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { LineChart, Line, BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import { useMemo } from "react";
@@ -17,6 +16,12 @@ interface ClicksTabProps {
   getAverageClicksByButton: () => Array<{ button: string; average: number }>;
   COLORS: string[];
 }
+
+// Assuming 'clickData' and 'cleanButtonName' are defined elsewhere or passed as props.
+// For the purpose of this example, we'll assume they are available in the scope.
+declare const clickData: any[];
+declare const cleanButtonName: (button: string) => string;
+
 
 export default function ClicksTab(props: ClicksTabProps) {
   const {
