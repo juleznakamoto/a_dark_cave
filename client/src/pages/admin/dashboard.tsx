@@ -1358,7 +1358,7 @@ export default function AdminDashboard() {
                   selectedUser={selectedUser}
                   selectedMiningTypes={selectedMiningTypes}
                   setSelectedMiningTypes={setSelectedMiningTypes}
-                  getButtonUpgradesOverPlaytime={getButtonUpgradesOverPlaytime}
+                  buttonUpgradesOverPlaytime={getButtonUpgradesOverPlaytime}
                   COLORS={COLORS}
                 />
               </TabsContent>

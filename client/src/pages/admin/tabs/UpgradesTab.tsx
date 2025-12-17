@@ -8,7 +8,7 @@ interface UpgradesTabProps {
   selectedUser: string;
   selectedMiningTypes: Set<string>;
   setSelectedMiningTypes: (value: Set<string>) => void;
-  getButtonUpgradesOverPlaytime: () => Array<{ time: string; [key: string]: any }>;
+  buttonUpgradesOverPlaytime: Array<{ time: string; [key: string]: any }>;
   COLORS: string[];
 }
 
@@ -20,7 +20,7 @@ export default function UpgradesTab(props: UpgradesTabProps) {
     selectedUser,
     selectedMiningTypes,
     setSelectedMiningTypes,
-    getButtonUpgradesOverPlaytime,
+    buttonUpgradesOverPlaytime,
     COLORS,
   } = props;
 
@@ -67,7 +67,7 @@ export default function UpgradesTab(props: UpgradesTabProps) {
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={400}>
-            <LineChart data={getButtonUpgradesOverPlaytime()}>
+            <LineChart data={buttonUpgradesOverPlaytime}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
                 dataKey="time"
@@ -167,7 +167,7 @@ export default function UpgradesTab(props: UpgradesTabProps) {
             </div>
           </div>
           <ResponsiveContainer width="100%" height={400}>
-            <LineChart data={getButtonUpgradesOverPlaytime()}>
+            <LineChart data={buttonUpgradesOverPlaytime}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
                 dataKey="time"
@@ -267,7 +267,7 @@ export default function UpgradesTab(props: UpgradesTabProps) {
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={400}>
-            <LineChart data={getButtonUpgradesOverPlaytime()}>
+            <LineChart data={buttonUpgradesOverPlaytime}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
                 dataKey="time"
@@ -315,7 +315,7 @@ export default function UpgradesTab(props: UpgradesTabProps) {
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={400}>
-            <LineChart data={getButtonUpgradesOverPlaytime()}>
+            <LineChart data={buttonUpgradesOverPlaytime}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
                 dataKey="time"
@@ -363,7 +363,7 @@ export default function UpgradesTab(props: UpgradesTabProps) {
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width="100%" height={400}>
-            <LineChart data={getButtonUpgradesOverPlaytime()}>
+            <LineChart data={buttonUpgradesOverPlaytime}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
                 dataKey="time"
