@@ -21,11 +21,11 @@ export function renderItemTooltip(
     const gameState = useGameStore.getState();
     const buildings = gameState.buildings;
     const story = gameState.story;
-    
+
     // Get the action definition
     const actionId = `build${itemId.charAt(0).toUpperCase() + itemId.slice(1)}`;
     const buildAction = villageBuildActions[actionId];
-    
+
     if (!buildAction) return null;
 
     // Check if this building is damaged
@@ -134,13 +134,6 @@ export function renderItemTooltip(
 
   // For fellowship items, return simple name and description
   if (itemType === "fellowship") {
-    console.log('[TOOLTIP] Fellowship tooltip rendering:', {
-      itemId,
-      effect,
-      hasName: !!effect.name,
-      hasDescription: !!effect.description,
-    });
-    
     return (
       <div className="text-xs">
         {effect.name && <div className="font-bold">{effect.name}</div>}
