@@ -1,5 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { AreaChart, Area, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer, LineChart, Line, Legend } from "recharts";
+import { AreaChart, Area, BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer, LineChart, Line } from "recharts";
+import { format, parseISO } from "date-fns";
 
 interface OverviewTabProps {
   getDailyActiveUsers: () => number;
@@ -20,6 +21,7 @@ interface OverviewTabProps {
   getUserRetention: () => Array<{ day: string; users: number }>;
   getDailySignups: () => Array<{ day: string; signups: number }>;
   getHourlySignups: () => Array<{ hour: string; signups: number }>;
+  dailyActiveUsersData: Array<{ date: string; active_user_count: number }>;
 }
 
 export default function OverviewTab(props: OverviewTabProps) {
@@ -42,7 +44,13 @@ export default function OverviewTab(props: OverviewTabProps) {
     getUserRetention,
     getDailySignups,
     getHourlySignups,
+    dailyActiveUsersData
   } = props;
+
+  const formattedDailyActiveUsers = dailyActiveUsersData.map(d => ({
+    date: format(parseISO(d.date), "MMM dd"),
+    users: d.active_user_count,
+  }));
 
   return (
     <div className="space-y-4">
@@ -355,9 +363,9 @@ export default function OverviewTab(props: OverviewTabProps) {
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
-              <AreaChart data={getUserRetention()}>
+              <AreaChart data={formattedDailyActiveUsers}>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="day" />
+                <XAxis dataKey="date" />
                 <YAxis />
                 <Tooltip />
                 <Area type="monotone" dataKey="users" stroke="#8884d8" fill="#8884d8" />

@@ -217,7 +217,7 @@ export default function AdminDashboard() {
   useEffect(() => {
     if (isAuthorized) {
       setLoading(true);
-      loadData().finally(() => setLoading(false));
+      Promise.all([loadData(), loadDauData()]).finally(() => setLoading(false));
     }
   }, [environment, isAuthorized]);
 
@@ -779,6 +779,25 @@ export default function AdminDashboard() {
     }
   };
 
+  const loadDauData = async () => {
+    try {
+      const response = await fetch(`/api/admin/dau?env=${environment}`);
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        logger.error("DAU data fetch failed:", response.status, errorText);
+        throw new Error(`Failed to fetch DAU data: ${response.status}`);
+      }
+
+      const data = await response.json();
+      if (data.dau) {
+        setDauData(data.dau);
+      }
+    } catch (error) {
+      logger.error("Failed to load DAU data:", error);
+    }
+  };
+
   // Renamed from loadDashboardData to loadData
   const loadData = async () => {
     try {
@@ -801,9 +820,6 @@ export default function AdminDashboard() {
       }
       if (data.purchases) {
         setRawPurchases(data.purchases);
-      }
-      if (data.dau) {
-        setDauData(data.dau);
       }
       if (typeof data.totalUserCount === 'number') {
         setTotalUserCount(data.totalUserCount);
@@ -980,9 +996,13 @@ export default function AdminDashboard() {
                 <OverviewTab
                   rawGameSaves={rawGameSaves}
                   getDailyActiveUsers={() => {
+                    if (dauData.length > 0) {
+                      // Get the most recent DAU count
+                      return dauData[0].active_user_count;
+                    }
+                    // Fallback to calculation if no DAU data
                     const now = new Date();
                     const oneDayAgo = subDays(now, 1);
-                    // Using filtered gameSaves for consistency
                     return gameSaves.filter(
                       (s) => parseISO(s.updated_at) >= oneDayAgo
                     ).length;
@@ -1003,6 +1023,7 @@ export default function AdminDashboard() {
                   }}
                   totalUserCount={totalUserCount}
                   gameSaves={gameSaves}
+                  dauData={dauData}
                   emailConfirmationStats={emailConfirmationStats}
                   formatTime={formatTime}
                   getAveragePlaytime={() => {

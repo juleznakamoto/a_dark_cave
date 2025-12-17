@@ -122,6 +122,31 @@ const getAdminClient = (env: "dev" | "prod" = "dev") => {
   return client;
 };
 
+// Add endpoint to fetch daily_active_users data from Supabase
+app.get("/api/admin/dau", async (req, res) => {
+  try {
+    const env = (req.query.env as "dev" | "prod") || "dev";
+    const adminClient = getAdminClient(env);
+
+    const { data: dauData, error: dauError } = await adminClient
+      .from('daily_active_users')
+      .select('date, active_user_count')
+      .order('date', { ascending: false })
+      .limit(365); // Get last year of data
+
+    if (dauError) {
+      log('❌ Error fetching DAU data:', dauError);
+      return res.status(500).json({ error: 'Failed to fetch DAU data' });
+    }
+
+    res.json({ dau: dauData || [] });
+  } catch (error: any) {
+    log('❌ Error in /api/admin/dau:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+
 // API endpoint to fetch admin dashboard data (server-side, bypasses RLS)
 app.get("/api/admin/data", async (req, res) => {
   try {
@@ -193,7 +218,7 @@ app.get("/api/admin/data", async (req, res) => {
 
     // Helper function to calculate email confirmation stats for a time range
     const calculateEmailStats = (users: any[], startDate?: Date) => {
-      const filteredUsers = startDate 
+      const filteredUsers = startDate
         ? users.filter((user: any) => new Date(user.created_at) >= startDate)
         : users;
 
@@ -249,44 +274,44 @@ app.get("/api/admin/data", async (req, res) => {
 
     try {
       log("📧 Fetching auth users for email confirmation stats...");
-      
+
       // Paginate through all users
       let allUsers: any[] = [];
       let page = 1;
       const perPage = 1000; // Max per page
-      
+
       while (true) {
         const { data: authData, error: authError } = await adminClient.auth.admin.listUsers({
           page,
           perPage,
         });
-        
+
         if (authError) {
           log("❌ Error fetching auth users:", authError);
           break;
         }
-        
+
         if (!authData || authData.users.length === 0) {
           break;
         }
-        
+
         allUsers = allUsers.concat(authData.users);
-        
+
         // If we got fewer users than perPage, we've reached the end
         if (authData.users.length < perPage) {
           break;
         }
-        
+
         page++;
       }
-      
+
       log("📧 Total auth users found:", allUsers.length);
 
       // Calculate stats for all three time periods
       emailConfirmationStats.allTime = calculateEmailStats(allUsers);
       emailConfirmationStats.last30Days = calculateEmailStats(allUsers, thirtyDaysAgo);
       emailConfirmationStats.last7Days = calculateEmailStats(allUsers, sevenDaysAgo);
-      
+
       log("📧 Stats calculated for all time periods");
     } catch (error: any) {
       log("❌ Error processing email confirmation stats:", error);
