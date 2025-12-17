@@ -255,8 +255,12 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     email: string;
   } | null>(null);
   const detectedCurrency = useGameStore((state) => state.detectedCurrency);
-  const setDetectedCurrency = useGameStore((state) => state.setDetectedCurrency);
-  const [currency, setCurrency] = useState<"EUR" | "USD">(detectedCurrency || "USD");
+  const setDetectedCurrency = useGameStore(
+    (state) => state.setDetectedCurrency,
+  );
+  const [currency, setCurrency] = useState<"EUR" | "USD">(
+    detectedCurrency || "USD",
+  );
   const [isDetectingCurrency, setIsDetectingCurrency] = useState(false);
   const gameState = useGameStore();
   const activatedPurchases = gameState.activatedPurchases || {};
@@ -270,7 +274,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
       try {
         const user = await getCurrentUser();
         setCurrentUser(user);
-        
+
         if (user) {
           await loadPurchasedItems();
         }
@@ -805,8 +809,10 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
         )}
 
         {!isLoading && !currentUser && (
-          <div className="bg-red-900 text-gray-100 px-4 py-3 rounded-md text-center">
-            Sign in or create an account to purchase items.
+          <div className="bg-red-600/5 border border-red-600/50 rounded-lg p-3">
+            <p className="text-md font-medium text-red-600">
+              Sign in or create an account to purchase items.
+            </p>
           </div>
         )}
 
