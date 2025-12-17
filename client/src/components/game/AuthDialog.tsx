@@ -111,7 +111,7 @@ export default function AuthDialog({
         <DialogHeader>
           <DialogTitle>
             {signupSuccess
-              ? "Account Created"
+              ? "Account Created successfully"
               : mode === "signin"
                 ? "Sign In"
                 : mode === "signup"
@@ -137,20 +137,6 @@ export default function AuthDialog({
                 </p>
               </div>
             </div>
-            <Button
-              onClick={() => {
-                setSignupSuccess(false);
-                setEmail("");
-                setPassword("");
-                setAcceptedTerms(false);
-                onAuthSuccess();
-                onClose();
-              }}
-              className="w-full"
-              size="lg"
-            >
-              Close
-            </Button>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
