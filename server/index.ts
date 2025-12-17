@@ -249,20 +249,45 @@ app.get("/api/admin/data", async (req, res) => {
 
     try {
       log("📧 Fetching auth users for email confirmation stats...");
-      const { data: authData, error: authError } = await adminClient.auth.admin.listUsers();
       
-      if (authError) {
-        log("❌ Error fetching auth users:", authError);
-      } else {
-        log("📧 Total auth users found:", authData.users.length);
-
-        // Calculate stats for all three time periods
-        emailConfirmationStats.allTime = calculateEmailStats(authData.users);
-        emailConfirmationStats.last30Days = calculateEmailStats(authData.users, thirtyDaysAgo);
-        emailConfirmationStats.last7Days = calculateEmailStats(authData.users, sevenDaysAgo);
+      // Paginate through all users
+      let allUsers: any[] = [];
+      let page = 1;
+      const perPage = 1000; // Max per page
+      
+      while (true) {
+        const { data: authData, error: authError } = await adminClient.auth.admin.listUsers({
+          page,
+          perPage,
+        });
         
-        log("📧 Stats calculated for all time periods");
+        if (authError) {
+          log("❌ Error fetching auth users:", authError);
+          break;
+        }
+        
+        if (!authData || authData.users.length === 0) {
+          break;
+        }
+        
+        allUsers = allUsers.concat(authData.users);
+        
+        // If we got fewer users than perPage, we've reached the end
+        if (authData.users.length < perPage) {
+          break;
+        }
+        
+        page++;
       }
+      
+      log("📧 Total auth users found:", allUsers.length);
+
+      // Calculate stats for all three time periods
+      emailConfirmationStats.allTime = calculateEmailStats(allUsers);
+      emailConfirmationStats.last30Days = calculateEmailStats(allUsers, thirtyDaysAgo);
+      emailConfirmationStats.last7Days = calculateEmailStats(allUsers, sevenDaysAgo);
+      
+      log("📧 Stats calculated for all time periods");
     } catch (error: any) {
       log("❌ Error processing email confirmation stats:", error);
     }
