@@ -1,0 +1,133 @@
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Storage Building Upgrades > should allow accumulation up to each storage tier
+AssertionError: expected 5000 to be 2500 // Object.is equality
+
+- Expected
++ Received
+
+- 2500
++ 5000
+
+ ❯ client/src/game/resourceLimits.test.ts:437:41
+    435|         Object.assign(state.buildings, buildings);
+    436| 
+    437|         expect(getResourceLimit(state)).toBe(limit);
+       |                                         ^
+    438|       });
+    439|     });
+ ❯ client/src/game/resourceLimits.test.ts:425:13
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/7]⎯
+
+ FAIL  client/src/game/rules/actionEffects.test.ts > Building Cost Reductions > should apply fortified storehouse building discount for buildCabin if available
+TypeError: gameActions.buildCabin.cost is not a function
+ ❯ client/src/game/rules/actionEffects.test.ts:230:45
+    228|     });
+    229|     const updatesWith = executeActionEffects('buildCabin', state);
+    230|     const baseCost = gameActions.buildCabin.cost!(state);
+       |                                             ^
+    231|     const baseWoodCost = parseInt(baseCost.wood!.split(' ')[0]);
+    232|     const baseStoneCost = parseInt(baseCost.stone!.split(' ')[0]);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/7]⎯
+
+ FAIL  client/src/game/rules/actionEffects.test.ts > Cost Reduction Edge Cases > should floor discount calculations correctly for building if discount exists
+TypeError: gameActions.buildCabin.cost is not a function
+ ❯ client/src/game/rules/actionEffects.test.ts:422:45
+    420|     });
+    421|     const updates = executeActionEffects('buildCabin', state);
+    422|     const baseCost = gameActions.buildCabin.cost!(state);
+       |                                             ^
+    423|     const baseWoodCost = parseInt(baseCost.wood!.split(' ')[0]);
+    424|     const baseStoneCost = parseInt(baseCost.stone!.split(' ')[0]);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/7]⎯
+
+ FAIL  client/src/game/loop.resourceLimits.test.ts > Game Loop - Resource Limits Integration > Storage Upgrade Effects > should increase limit when storage is upgraded
+AssertionError: expected 4500 to be 2500 // Object.is equality
+
+- Expected
++ Received
+
+- 2500
++ 4500
+
+ ❯ client/src/game/loop.resourceLimits.test.ts:217:54
+    215|       // But not above new limit
+    216|       store.updateResource('wood', storehouseLimit);
+    217|       expect(useGameStore.getState().resources.wood).toBe(storehouseLimit);
+       |                                                      ^
+    218|     });
+    219| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/7]⎯
+
+ FAIL  client/src/game/loop.resourceLimits.test.ts > Game Loop - Resource Limits Integration > Storage Upgrade Effects > should handle all storage tiers correctly
+AssertionError: expected 500 to be 1000 // Object.is equality
+
+- Expected
++ Received
+
+- 1000
++ 500
+
+ ❯ client/src/game/loop.resourceLimits.test.ts:258:56
+    256| 
+    257|         // Should be capped at limit
+    258|         expect(useGameStore.getState().resources.wood).toBe(limit);
+       |                                                        ^
+    259|       });
+    260|     });
+ ❯ client/src/game/loop.resourceLimits.test.ts:232:13
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/7]⎯
+
+ FAIL  client/src/game/state.resourceLimits.test.ts > State - Resource Limits Integration > Storage upgrade scenarios > should allow accumulation above old limit after storage upgrade
+AssertionError: expected 4500 to be 2500 // Object.is equality
+
+- Expected
++ Received
+
+- 2500
++ 4500
+
+ ❯ client/src/game/state.resourceLimits.test.ts:217:54
+    215|       // But still capped at new limit
+    216|       store.updateResource('wood', storehouseLimit);
+    217|       expect(useGameStore.getState().resources.wood).toBe(storehouseLimit);
+       |                                                      ^
+    218|     });
+    219| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/7]⎯
+
+ FAIL  client/src/game/state.resourceLimits.test.ts > State - Resource Limits Integration > Storage upgrade scenarios > should handle all storage tiers correctly
+AssertionError: expected 5000 to be 2500 // Object.is equality
+
+- Expected
++ Received
+
+- 2500
++ 5000
+
+ ❯ client/src/game/state.resourceLimits.test.ts:290:56
+    288| 
+    289|         // Should be capped exactly at limit
+    290|         expect(useGameStore.getState().resources.iron).toBe(limit);
+       |                                                        ^
+    291|       });
+    292|     });
+ ❯ client/src/game/state.resourceLimits.test.ts:232:13
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/7]⎯
+
+
+ Test Files  4 failed | 9 passed (13)
+      Tests  7 failed | 251 passed (258)
+   Start at  09:24:49
+   Duration  4.55s
+
+ FAIL  Tests failed. Watching for file changes...
+       press h to show help, press q to quit
