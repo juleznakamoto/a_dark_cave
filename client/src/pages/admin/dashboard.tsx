@@ -1297,9 +1297,9 @@ export default function AdminDashboard() {
                       .filter((p) => p.price_paid > 0 && !p.bundle_id)
                       .reduce((sum, p) => sum + p.price_paid, 0)
                   }
-                  getDailyPurchases={getDailyPurchases()}
-                  getPurchasesByPlaytime={getPurchasesByPlaytime()}
-                  getPurchaseStats={getPurchaseStats()}
+                  getDailyPurchases={getDailyPurchases}
+                  getPurchasesByPlaytime={getPurchasesByPlaytime}
+                  getPurchaseStats={getPurchaseStats}
                 />
               </TabsContent>
 
