@@ -391,10 +391,6 @@ export default function SidePanel() {
       let label = buildAction?.label || capitalizeWords(key);
       const showCount = key === "woodenHut" || key === "stoneHut" || key === "longhouse";
 
-      // Buildings (not fortifications) will have their tooltips generated in itemTooltips.tsx
-      // Just mark that this building should have a tooltip
-      let tooltip: React.ReactNode = true;
-
       return {
         id: key,
         label: showCount ? (
@@ -405,7 +401,7 @@ export default function SidePanel() {
         value: value ?? 0,
         testId: `building-${key}`,
         visible: (value ?? 0) > 0,
-        tooltip: tooltip,
+        tooltip: true, // Tooltip will be generated in itemTooltips.tsx
       };
     })
     .filter((item) => item !== null) // Remove nulls from buildings not present
