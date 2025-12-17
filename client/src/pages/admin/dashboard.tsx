@@ -995,6 +995,7 @@ export default function AdminDashboard() {
               <TabsContent value="overview">
                 <OverviewTab
                   rawGameSaves={rawGameSaves}
+                  dailyActiveUsersData={dauData}
                   getDailyActiveUsers={() => {
                     if (dauData.length > 0) {
                       // Get the most recent DAU count

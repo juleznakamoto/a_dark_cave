@@ -47,7 +47,7 @@ export default function OverviewTab(props: OverviewTabProps) {
     dailyActiveUsersData
   } = props;
 
-  const formattedDailyActiveUsers = dailyActiveUsersData.map(d => ({
+  const formattedDailyActiveUsers = (dailyActiveUsersData || []).map(d => ({
     date: format(parseISO(d.date), "MMM dd"),
     users: d.active_user_count,
   }));

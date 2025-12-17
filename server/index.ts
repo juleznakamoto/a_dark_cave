@@ -122,31 +122,6 @@ const getAdminClient = (env: "dev" | "prod" = "dev") => {
   return client;
 };
 
-// Add endpoint to fetch daily_active_users data from Supabase
-app.get("/api/admin/dau", async (req, res) => {
-  try {
-    const env = (req.query.env as "dev" | "prod") || "dev";
-    const adminClient = getAdminClient(env);
-
-    const { data: dauData, error: dauError } = await adminClient
-      .from('daily_active_users')
-      .select('date, active_user_count')
-      .order('date', { ascending: false })
-      .limit(365); // Get last year of data
-
-    if (dauError) {
-      log('❌ Error fetching DAU data:', dauError);
-      return res.status(500).json({ error: 'Failed to fetch DAU data' });
-    }
-
-    res.json({ dau: dauData || [] });
-  } catch (error: any) {
-    log('❌ Error in /api/admin/dau:', error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
-
 // API endpoint to fetch admin dashboard data (server-side, bypasses RLS)
 app.get("/api/admin/data", async (req, res) => {
   try {
@@ -664,6 +639,34 @@ app.post("/api/leaderboard/update-username", async (req, res) => {
       res.status(400).json({ error: error.message });
     }
   });
+
+  // Add endpoint to fetch daily_active_users data from Supabase
+  app.get("/api/admin/dau", async (req, res) => {
+    try {
+      const env = (req.query.env as "dev" | "prod") || "dev";
+      const adminClient = getAdminClient(env);
+
+      // Log here, not in the other endpoint
+      log(`📊 Fetching DAU data for ${env} environment`);
+
+      const { data: dauData, error: dauError } = await adminClient
+        .from('daily_active_users')
+        .select('date, active_user_count')
+        .order('date', { ascending: false })
+        .limit(365); // Get last year of data
+
+      if (dauError) {
+        log('❌ Error fetching DAU data:', dauError);
+        return res.status(500).json({ error: 'Failed to fetch DAU data' });
+      }
+
+      res.json({ dau: dauData || [] });
+    } catch (error: any) {
+      log('❌ Error in /api/admin/dau:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
+
 
   // Setup Vite middleware AFTER all API routes to prevent catch-all interference
   if (app.get("env") === "development") {
