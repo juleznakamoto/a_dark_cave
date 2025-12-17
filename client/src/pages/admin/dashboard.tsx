@@ -259,32 +259,22 @@ export default function AdminDashboard() {
       timeBuckets[`${i}h`] = 0;
     }
 
-    // Group clicks by user to calculate per-user first click time
-    const userClicks = new Map<string, typeof filteredByCompletion>();
+    // Process clicks using the playtime keys already in the data
     filteredByCompletion.forEach((entry) => {
-      if (!userClicks.has(entry.user_id)) {
-        userClicks.set(entry.user_id, []);
-      }
-      userClicks.get(entry.user_id)!.push(entry);
-    });
-
-    // Process each user's clicks with their own first click time
-    userClicks.forEach((userClickData) => {
-      if (userClickData.length === 0) return;
-
-      // Sort by timestamp to ensure we get the actual first click
-      userClickData.sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
-      const firstClickTime = new Date(userClickData[0].timestamp).getTime();
-
-      userClickData.forEach((entry) => {
-        const elapsed = (new Date(entry.timestamp).getTime() - firstClickTime) / 1000;
-        const bucket = Math.floor(elapsed / 3600);
-
+      // entry.clicks is structured as: { "playtime_minutes": { "button_name": count } }
+      Object.entries(entry.clicks).forEach(([playtimeKey, buttonClicks]) => {
+        // playtimeKey is in minutes, convert to hours
+        const playtimeMinutes = parseInt(playtimeKey);
+        if (isNaN(playtimeMinutes)) return;
+        
+        const bucket = Math.floor(playtimeMinutes / 60);
+        
         if (bucket >= 0 && bucket < 24) {
           const bucketKey = `${bucket}h`;
-          const clickCount = Object.values(entry.clicks).reduce((sum, playtimeClicks: any) => {
-            return sum + Object.values(playtimeClicks).reduce((s: number, c) => s + (c as number), 0);
-          }, 0);
+          const clickCount = Object.values(buttonClicks as Record<string, number>).reduce(
+            (sum, count) => sum + count,
+            0
+          );
           timeBuckets[bucketKey] += clickCount;
         }
       });
@@ -316,15 +306,17 @@ export default function AdminDashboard() {
       return Object.entries(timeBuckets).map(([time, clicks]) => ({ time, ...clicks }));
     }
 
-    const firstClickTime = new Date(filteredByCompletion[0].timestamp).getTime();
+    // Process clicks using the playtime keys already in the data
     filteredByCompletion.forEach((entry) => {
-      const elapsed = (new Date(entry.timestamp).getTime() - firstClickTime) / 1000;
-      const bucket = Math.floor(elapsed / 3600);
+      Object.entries(entry.clicks).forEach(([playtimeKey, buttonClicks]) => {
+        const playtimeMinutes = parseInt(playtimeKey);
+        if (isNaN(playtimeMinutes)) return;
+        
+        const bucket = Math.floor(playtimeMinutes / 60);
 
-      if (bucket >= 0 && bucket < 24) {
-        const bucketKey = `${bucket}h`;
-        Object.entries(entry.clicks).forEach(([playtime, clicks]) => {
-          Object.entries(clicks as Record<string, number>).forEach(
+        if (bucket >= 0 && bucket < 24) {
+          const bucketKey = `${bucket}h`;
+          Object.entries(buttonClicks as Record<string, number>).forEach(
             ([button, count]) => {
               const cleanedButton = cleanButtonName(button);
               if (selectedClickTypes.has(cleanedButton)) {
@@ -334,8 +326,8 @@ export default function AdminDashboard() {
               }
             },
           );
-        });
-      }
+        }
+      });
     });
 
     return Object.entries(timeBuckets)
