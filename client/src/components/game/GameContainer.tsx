@@ -15,6 +15,7 @@ import IdleModeDialog from "./IdleModeDialog";
 import MerchantDialog from "./MerchantDialog";
 import CubeDialog from "./CubeDialog";
 import InactivityDialog from "./InactivityDialog";
+import { RestartGameDialog } from "./RestartGameDialog";
 import { useState, useEffect, useMemo, useRef } from "react";
 import { LimelightNav, NavItem } from "@/components/ui/limelight-nav";
 import { Mountain, Trees, Castle, Landmark } from "lucide-react";
@@ -38,6 +39,9 @@ export default function GameContainer() {
     setCombatDialog,
     isPaused,
     inactivityDialogOpen,
+    restartGameDialogOpen,
+    setRestartGameDialogOpen,
+    restartGame,
   } = useGameStore();
 
   // Estate unlocks when Dark Estate is built
@@ -387,6 +391,14 @@ export default function GameContainer() {
       <MerchantDialog />
       <CubeDialog />
       {inactivityDialogOpen && <InactivityDialog />}
+
+      {/* Restart Game Dialog */}
+      <RestartGameDialog
+        isOpen={restartGameDialogOpen}
+        onClose={() => setRestartGameDialogOpen(false)}
+        onRestart={restartGame}
+      />
+
       <ProfileMenu />
     </div>
   );

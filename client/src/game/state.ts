@@ -60,6 +60,7 @@ interface GameStore extends GameState {
   inactivityDialogOpen: boolean;
   inactivityReason: 'timeout' | 'multitab' | null;
   versionCheckDialogOpen: boolean; // Added for version check dialog
+  restartGameDialogOpen: boolean;
 
   // Notification state for shop
   shopNotificationSeen: boolean;
@@ -183,6 +184,7 @@ interface GameStore extends GameState {
   setShopDialogOpen: (isOpen: boolean) => void;
   setLeaderboardDialogOpen: (isOpen: boolean) => void;
   setIdleModeDialog: (isOpen: boolean) => void;
+  setRestartGameDialogOpen: (isOpen: boolean) => void;
   updateEffects: () => void;
   updateBastionStats: () => void;
   updateStats: () => void;
@@ -506,6 +508,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   inactivityDialogOpen: false,
   inactivityReason: null,
   versionCheckDialogOpen: false, // Initialize version check dialog state
+  restartGameDialogOpen: false,
   sleepUpgrades: {
     lengthLevel: 0,
     intensityLevel: 0,
@@ -1382,6 +1385,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
         isOpen,
       },
     }));
+  },
+
+  setRestartGameDialogOpen: (isOpen: boolean) => {
+    set({ restartGameDialogOpen: isOpen });
   },
 
   updateEffects: () => {

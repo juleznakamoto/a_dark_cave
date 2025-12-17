@@ -25,6 +25,7 @@ import { useMobileTooltip } from "@/hooks/useMobileTooltip";
 import { useIsMobile } from "@/hooks/use-mobile";
 import AuthDialog from "./AuthDialog";
 import LeaderboardDialog from "./LeaderboardDialog";
+import RestartGameDialog from "./RestartGameDialog"; // Assuming RestartGameDialog.tsx is in the same directory
 
 // Social media platform configurations
 const SOCIAL_PLATFORMS = [
@@ -54,6 +55,8 @@ export default function ProfileMenu() {
     setLeaderboardDialogOpen,
     isPaused,
     hasWonAnyGame,
+    restartGameDialogOpen, // Added from store
+    setRestartGameDialogOpen, // Added from store
   } = useGameStore();
 
   const mobileTooltip = useMobileTooltip();
@@ -98,16 +101,15 @@ export default function ProfileMenu() {
     }
   };
 
-  const handleRestartGame = async () => {
-    if (
-      confirm(
-        "Are you sure you want to start a new game? This will delete your current progress.",
-      )
-    ) {
-      setAccountDropdownOpen(false);
-      await deleteSave();
-      restartGame();
-    }
+  // Replaced window.confirm with dialog state and handlers
+  const handleRestartGame = () => {
+    setRestartGameDialogOpen(true);
+  };
+
+  const handleConfirmRestart = async () => {
+    setRestartGameDialogOpen(false);
+    await deleteSave(); // Ensure deleteSave is called before restartGame
+    restartGame();
   };
 
   const handleCopyInviteLink = () => {
@@ -219,6 +221,12 @@ export default function ProfileMenu() {
         isOpen={leaderboardDialogOpen}
         onClose={() => setLeaderboardDialogOpen(false)}
       />
+      {/* Added RestartGameDialog */}
+      <RestartGameDialog
+        isOpen={restartGameDialogOpen}
+        onClose={() => setRestartGameDialogOpen(false)}
+        onConfirm={handleConfirmRestart}
+      />
       <div className="flex flex-wrap items-center justify-end gap-2 max-w-[200px]">
         <DropdownMenu
           open={accountDropdownOpen}
@@ -271,6 +279,7 @@ export default function ProfileMenu() {
                 <DropdownMenuSeparator />
               </>
             )}
+            {/* Changed to use the new handler */}
             <DropdownMenuItem onClick={handleRestartGame}>
               New Game
             </DropdownMenuItem>
