@@ -850,8 +850,8 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                             <TooltipProvider>
                               <Tooltip>
                                 <TooltipTrigger asChild>
-                                  <button className="inline-flex items-center justify-center w-4 h-4 rounded-full text-muted-foreground text-xs border !border-muted-foreground">
-                                    i
+                                  <button className="inline-flex items-center justify-center w-4 h-4 rounded-full text-muted-foreground text-sm">
+                                    ⓘ
                                   </button>
                                 </TooltipTrigger>
                                 <TooltipContent className="max-w-xs">
