@@ -389,9 +389,7 @@ export default function SidePanel() {
 
       // Use the label from villageBuildActions, with special handling for multiple huts
       let label = buildAction?.label || capitalizeWords(key);
-      if (key === "woodenHut" || key === "stoneHut" || key === "longhouse") {
-        label = `${label} (${value})`;
-      }
+      const showCount = key === "woodenHut" || key === "stoneHut" || key === "longhouse";
 
       // Build tooltip JSX with description and effects
       let tooltip: React.ReactNode = undefined;
@@ -559,7 +557,11 @@ export default function SidePanel() {
 
       return {
         id: key,
-        label,
+        label: showCount ? (
+          <>
+            {label} <span className="text-muted-foreground">({value})</span>
+          </>
+        ) : label,
         value: value ?? 0,
         testId: `building-${key}`,
         visible: (value ?? 0) > 0,
