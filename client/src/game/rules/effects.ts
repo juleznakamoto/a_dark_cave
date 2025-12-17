@@ -1058,6 +1058,13 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     bonuses: {},
   },
 
+  stormglass_halberd_schematic: {
+    id: "stormglass_halberd_schematic",
+    name: "Stormglass Halberd Schematic",
+    description: "Blueprint for crafting a formidable halberd",
+    bonuses: {},
+  },
+
   // Blessings
   whisperers_mark: {
     id: "whisperers_mark",

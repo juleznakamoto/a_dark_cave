@@ -58,7 +58,7 @@ export const ringEvents: Record<string, GameEvent> = {
       state.buildings.stoneHut >= 5 &&
       state.clothing.feeding_ring,
     triggerType: "resource",
-    timeProbability: 15,
+    timeProbability: 20,
     title: "Bloodied Awakening",
     message:
       "You wake as dawn breaks, your clothes soaked in fresh blood. It is not yours. A villager arrives at the estate, face pale with horror. 'Eight are dead,' he whispers. 'Torn apart in the night.' The ring on your finger throbs with agonizing pain.",

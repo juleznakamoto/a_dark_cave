@@ -6,10 +6,8 @@ import {
   fellowshipEffects,
 } from "./effects";
 import { villageBuildActions } from "./villageBuildActions";
-import { calculateBastionStats } from "../bastionStats";
 import { capitalizeWords } from "@/lib/utils";
 import { useGameStore } from "../state";
-import type { GameState } from "@shared/schema";
 
 export function renderItemTooltip(
   itemId: string,
@@ -19,7 +17,6 @@ export function renderItemTooltip(
   // For buildings, generate the tooltip from villageBuildActions
   if (itemType === "building") {
     const gameState = useGameStore.getState();
-    const buildings = gameState.buildings;
     const story = gameState.story;
 
     // Get the action definition
@@ -39,7 +36,7 @@ export function renderItemTooltip(
     // Add description if available
     if (buildAction.description) {
       tooltipParts.push(
-        <div key="description" className="text-gray-400 mb-1">
+        <div key="description" className="text-gray-400 mb-0.5">
           {buildAction.description}
         </div>
       );
@@ -138,7 +135,7 @@ export function renderItemTooltip(
       <div className="text-xs">
         {effect.name && <div className="font-bold">{effect.name}</div>}
         {effect.description && (
-          <div className="text-gray-400 mb-1">{effect.description}</div>
+          <div className="text-gray-400">{effect.description}</div>
         )}
       </div>
     );
@@ -157,10 +154,10 @@ export function renderItemTooltip(
     <div className="text-xs">
       {effect.name && <div className="font-bold">{effect.name}</div>}
       {effect.description && (
-        <div className="text-gray-400 mb-1">{effect.description}</div>
+        <div className="text-gray-400 mb-0.5">{effect.description}</div>
       )}
       {effect.bonuses?.generalBonuses && (
-        <div className="mt-1 space-y-0.5">
+        <div>
           {effect.bonuses.generalBonuses.luck && (
             <div>Luck: +{effect.bonuses.generalBonuses.luck}</div>
           )}
