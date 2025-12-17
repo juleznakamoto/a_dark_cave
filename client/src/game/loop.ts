@@ -176,7 +176,8 @@ export function startGameLoop() {
       state.authDialogOpen ||
       state.shopDialogOpen ||
       state.leaderboardDialogOpen ||
-      state.idleModeDialog.isOpen;
+      state.idleModeDialog.isOpen ||
+      state.restartGameDialogOpen;
     const isPaused = state.isPaused || isDialogOpen;
     const wasPaused = state.isPausedPreviously || state.dialogsOpenPreviously; // Track previous pause state
 
