@@ -797,9 +797,6 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
       <DialogContent className="max-w-4xl max-h-[80vh] z-[70]">
         <DialogHeader>
           <DialogTitle>Shop</DialogTitle>
-          <DialogDescription className="text-muted-foreground text-sm">
-            All in-game purchases are currently 50 % off during Beta phase.
-          </DialogDescription>
         </DialogHeader>
 
         {isLoading && (
@@ -809,7 +806,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
         )}
 
         {!isLoading && !currentUser && (
-          <div className="bg-red-600/5 border border-red-600/50 rounded-lg p-3">
+          <div className="bg-red-600/5 border border-red-600/50 rounded-lg p-3 text-center">
             <p className="text-md font-medium text-red-600">
               Sign in or create an account to purchase items.
             </p>
@@ -831,6 +828,13 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                   !currentUser ? "h-[calc(80vh-260px)]" : "h-[calc(80vh-180px)]"
                 }
               >
+                {" "}
+                <div className="pb-4 text-muted-foreground text-sm">
+                  <p className="text-md font-medium">
+                    All in-game purchases are currently 50 % off during Beta
+                    phase.
+                  </p>
+                </div>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                   {Object.values(SHOP_ITEMS).map((item) => (
                     <Card key={item.id} className="flex flex-col">
