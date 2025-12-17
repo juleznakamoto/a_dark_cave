@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import { useLocation } from "wouter";
 import { getSupabaseClient } from "@/lib/supabase";
 import { logger } from "@/lib/logger";
@@ -70,10 +70,9 @@ const useQuery = (options) => {
 
 interface ButtonClickData {
   user_id: string;
-  clicks: Record<string, number>;
+  clicks: Record<string, Record<string, number>>; // Changed to Record<string, Record<string, number>> to match the structure
   timestamp: string; // Added timestamp for filtering by date
-  stats?: Record<string, any>; // Stats snapshots
-  resources?: Record<string, any>; // Resource snapshots
+  game_state_snapshot?: any; // Added for snapshotting state at the time of click
 }
 
 interface GameSaveData {
@@ -399,6 +398,533 @@ export default function AdminDashboard() {
     return null;
   }
 
+  // Helper function to filter data by user
+  const filterByUser = <T extends { user_id: string }>(data: T[]): T[] => {
+    if (selectedUser === "all") {
+      return data;
+    }
+    return data.filter((item) => item.user_id === selectedUser);
+  };
+
+  // Data transformation functions with hourly bucketing (0-24h)
+
+  const getButtonClicksOverTime = useCallback(() => {
+    const relevant = filterByUser(clickData); // Use filtered clickData
+    if (relevant.length === 0) {
+      // Return empty 24-hour buckets
+      return Array.from({ length: 24 }, (_, i) => ({
+        time: `${i}h`,
+        clicks: 0,
+      }));
+    }
+
+    // Initialize 24 hourly buckets (0-23)
+    const timeMap = new Map<number, number>();
+    for (let i = 0; i < 24; i++) {
+      timeMap.set(i, 0);
+    }
+
+    // Find the earliest click timestamp to use as baseline within the filtered data
+    const firstClickTime = new Date(relevant[0].timestamp).getTime();
+
+    relevant.forEach((click) => {
+      const elapsed = (new Date(click.timestamp).getTime() - firstClickTime) / 1000;
+      const bucket = Math.floor(elapsed / 3600); // Convert to hours
+      if (bucket >= 0 && bucket < 24) {
+        // Summing up clicks if there are multiple entries for the same hour
+        const clickCount = Object.values(click.clicks).reduce(
+          (sum, playtimeClicks) => sum + Object.values(playtimeClicks).reduce((pcSum, count) => pcSum + count, 0),
+          0,
+        );
+        timeMap.set(bucket, (timeMap.get(bucket) || 0) + clickCount);
+      }
+    });
+
+    return Array.from({ length: 24 }, (_, i) => ({
+      time: `${i}h`,
+      clicks: timeMap.get(i) || 0,
+    }));
+  }, [clickData, selectedUser, showCompletedOnly, gameSaves]);
+
+  const getClickTypesByTimestamp = useCallback(() => {
+    const filteredClickData = selectedUser === "all"
+      ? clickData
+      : clickData.filter((d) => d.user_id === selectedUser);
+
+    const filteredByCompletion = showCompletedOnly
+      ? filteredClickData.filter((d) => {
+          const save = gameSaves.find((s) => s.user_id === d.user_id);
+          return save?.game_state?.gameComplete;
+        })
+      : filteredClickData;
+
+    const timeBuckets: Record<string, Record<string, number>> = {};
+    for (let i = 0; i < 24; i++) {
+      timeBuckets[`${i}h`] = {};
+    }
+
+    if (filteredByCompletion.length === 0) {
+      return Object.entries(timeBuckets).map(([time, clicks]) => ({ time, ...clicks }));
+    }
+
+    const firstClickTime = new Date(filteredByCompletion[0].timestamp).getTime();
+
+    filteredByCompletion.forEach((entry) => {
+      const elapsed = (new Date(entry.timestamp).getTime() - firstClickTime) / 1000;
+      const bucket = Math.floor(elapsed / 3600); // Convert to hours
+
+      if (bucket >= 0 && bucket < 24) {
+        const bucketKey = `${bucket}h`;
+        Object.entries(entry.clicks).forEach(([playtime, clicks]) => {
+          Object.entries(clicks as Record<string, number>).forEach(
+            ([button, count]) => {
+              const cleanedButton = cleanButtonName(button);
+              if (selectedClickTypes.has(cleanedButton)) {
+                if (!timeBuckets[bucketKey][cleanedButton])
+                  timeBuckets[bucketKey][cleanedButton] = 0;
+                timeBuckets[bucketKey][cleanedButton] += count;
+              }
+            },
+          );
+        });
+      }
+    });
+
+    return Object.entries(timeBuckets)
+      .map(([time, clicks]) => ({ time, ...clicks }))
+      .sort((a, b) => parseInt(a.time) - parseInt(b.time)); // Sort by time
+  }, [clickData, gameSaves, selectedUser, showCompletedOnly, selectedClickTypes]);
+
+  const getTotalClicksByButton = useCallback(() => {
+    const filteredClickData = selectedUser === "all"
+      ? clickData
+      : clickData.filter((d) => d.user_id === selectedUser);
+
+    const filteredByCompletion = showCompletedOnly
+      ? filteredClickData.filter((d) => {
+          const save = gameSaves.find((s) => s.user_id === d.user_id);
+          return save?.game_state?.gameComplete;
+        })
+      : filteredClickData;
+
+    const buttonTotals: Record<string, number> = {};
+    filteredByCompletion.forEach((entry) => {
+      Object.values(entry.clicks).forEach((playtimeClicks: any) => {
+        Object.entries(playtimeClicks).forEach(([button, count]) => {
+          const cleanedButton = cleanButtonName(button);
+          if (!buttonTotals[cleanedButton]) buttonTotals[cleanedButton] = 0;
+          buttonTotals[cleanedButton] += count as number;
+        });
+      });
+    });
+
+    return Object.entries(buttonTotals)
+      .map(([button, total]) => ({ button, total }))
+      .sort((a, b) => b.total - a.total)
+      .slice(0, 15);
+  }, [clickData, gameSaves, selectedUser, showCompletedOnly]);
+
+  const getAverageClicksByButton = useCallback(() => {
+    const filteredClickData = selectedUser === "all"
+      ? clickData
+      : clickData.filter((d) => d.user_id === selectedUser);
+
+    const filteredByCompletion = showCompletedOnly
+      ? filteredClickData.filter((d) => {
+          const save = gameSaves.find((s) => s.user_id === d.user_id);
+          return save?.game_state?.gameComplete;
+        })
+      : filteredClickData;
+
+    const buttonStats: Record<string, { total: number; users: Set<string> }> = {};
+    filteredByCompletion.forEach((entry) => {
+      Object.values(entry.clicks).forEach((playtimeClicks: any) => {
+        Object.entries(playtimeClicks).forEach(([button, count]) => {
+          const cleanedButton = cleanButtonName(button);
+          if (!buttonStats[cleanedButton])
+            buttonStats[cleanedButton] = { total: 0, users: new Set() };
+          buttonStats[cleanedButton].total += count as number;
+          buttonStats[cleanedButton].users.add(entry.user_id);
+        });
+      });
+    });
+
+    return Object.entries(buttonStats)
+      .map(([button, stats]) => ({
+        button,
+        average: stats.total / stats.users.size,
+      }))
+      .sort((a, b) => b.average - a.average)
+      .slice(0, 15);
+  }, [clickData, gameSaves, selectedUser, showCompletedOnly]);
+
+  const getStatsOverPlaytime = useCallback(() => {
+    const relevant = filterByUser(gameSaves);
+    if (relevant.length === 0) {
+      return Array.from({ length: 24 }, (_, i) => ({
+        time: `${i}h`,
+        strength: 0,
+        knowledge: 0,
+        luck: 0,
+        madness: 0,
+      }));
+    }
+
+    // Initialize 24 hourly buckets
+    const timeMap = new Map<number, { strength: number[], knowledge: number[], luck: number[], madness: number[] }>();
+    for (let i = 0; i < 24; i++) {
+      timeMap.set(i, { strength: [], knowledge: [], luck: [], madness: [] });
+    }
+
+    relevant.forEach((save) => {
+      const clicksForUser = clickData.filter((c) => c.user_id === save.user_id);
+      if (clicksForUser.length === 0) return;
+
+      const firstClickTime = new Date(clicksForUser[0].timestamp).getTime();
+
+      clicksForUser.forEach((click) => {
+        const elapsed = (new Date(click.timestamp).getTime() - firstClickTime) / 1000;
+        const bucket = Math.floor(elapsed / 3600);
+
+        if (bucket >= 0 && bucket < 24) {
+          const state = click.game_state_snapshot; // Use snapshot from click data
+          if (state) {
+            const data = timeMap.get(bucket)!;
+            data.strength.push(state.strength || 0);
+            data.knowledge.push(state.knowledge || 0);
+            data.luck.push(state.luck || 0);
+            data.madness.push(state.madness || 0);
+          }
+        }
+      });
+    });
+
+    return Array.from({ length: 24 }, (_, i) => {
+      const stats = timeMap.get(i)!;
+      return {
+        time: `${i}h`,
+        strength: stats.strength.length > 0 ? stats.strength.reduce((a, b) => a + b, 0) / stats.strength.length : 0,
+        knowledge: stats.knowledge.length > 0 ? stats.knowledge.reduce((a, b) => a + b, 0) / stats.knowledge.length : 0,
+        luck: stats.luck.length > 0 ? stats.luck.reduce((a, b) => a + b, 0) / stats.luck.length : 0,
+        madness: stats.madness.length > 0 ? stats.madness.reduce((a, b) => a + b, 0) / stats.madness.length : 0,
+      };
+    });
+  }, [gameSaves, clickData, selectedUser, showCompletedOnly]);
+
+  const getResourceStatsOverPlaytime = useCallback(() => {
+    const relevant = filterByUser(gameSaves);
+    const resourceKeys = ['food', 'wood', 'stone', 'iron', 'coal', 'sulfur', 'obsidian', 'adamant', 'moonstone', 'leather', 'steel', 'gold', 'silver']; // Simplified common resources
+
+    if (relevant.length === 0) {
+      return Array.from({ length: 24 }, (_, i) => {
+        const result: any = { time: `${i}h` };
+        resourceKeys.forEach(key => result[key] = 0);
+        return result;
+      });
+    }
+
+    // Initialize 24 hourly buckets
+    const timeMap = new Map<number, { [key: string]: number[] }>();
+    for (let i = 0; i < 24; i++) {
+      const emptyData: { [key: string]: number[] } = {};
+      resourceKeys.forEach(key => emptyData[key] = []);
+      timeMap.set(i, emptyData);
+    }
+
+    relevant.forEach((save) => {
+      const clicksForUser = clickData.filter((c) => c.user_id === save.user_id);
+      if (clicksForUser.length === 0) return;
+
+      const firstClickTime = new Date(clicksForUser[0].timestamp).getTime();
+
+      clicksForUser.forEach((click) => {
+        const elapsed = (new Date(click.timestamp).getTime() - firstClickTime) / 1000;
+        const bucket = Math.floor(elapsed / 3600);
+
+        if (bucket >= 0 && bucket < 24) {
+          const state = click.game_state_snapshot?.resources; // Access resources from snapshot
+          if (state) {
+            const data = timeMap.get(bucket)!;
+            resourceKeys.forEach(key => {
+              data[key].push(state[key] || 0);
+            });
+          }
+        }
+      });
+    });
+
+    return Array.from({ length: 24 }, (_, i) => {
+      const resources = timeMap.get(i)!;
+      const result: any = { time: `${i}h` };
+      resourceKeys.forEach(key => {
+        result[key] = resources[key].length > 0 ? resources[key].reduce((a, b) => a + b, 0) / resources[key].length : 0;
+      });
+      return result;
+    });
+  }, [gameSaves, clickData, selectedUser, showCompletedOnly, selectedResources]);
+
+  const getButtonUpgradesOverPlaytime = useCallback(() => {
+    const relevant = filterByUser(gameSaves);
+    if (relevant.length === 0) {
+      return Array.from({ length: 24 }, (_, i) => ({
+        time: `${i}h`,
+        caveExplore: 1, mineStone: 1, mineIron: 1, mineCoal: 1, mineSulfur: 1, mineObsidian: 1, mineAdamant: 1, hunt: 1, chopWood: 1,
+      }));
+    }
+
+    // Initialize 24 hourly buckets
+    const timeMap = new Map<number, { caveExplore: number[], mineStone: number[], mineIron: number[], mineCoal: number[], mineSulfur: number[], mineObsidian: number[], mineAdamant: number[], hunt: number[], chopWood: number[] }>();
+    for (let i = 0; i < 24; i++) {
+      timeMap.set(i, { caveExplore: [], mineStone: [], mineIron: [], mineCoal: [], mineSulfur: [], mineObsidian: [], mineAdamant: [], hunt: [], chopWood: [] });
+    }
+
+    relevant.forEach((save) => {
+      const clicksForUser = clickData.filter((c) => c.user_id === save.user_id);
+      if (clicksForUser.length === 0) return;
+
+      const firstClickTime = new Date(clicksForUser[0].timestamp).getTime();
+
+      clicksForUser.forEach((click) => {
+        const elapsed = (new Date(click.timestamp).getTime() - firstClickTime) / 1000;
+        const bucket = Math.floor(elapsed / 3600);
+
+        if (bucket >= 0 && bucket < 24) {
+          const state = click.game_state_snapshot;
+          if (state?.buttonLevels) {
+            const data = timeMap.get(bucket)!;
+            data.caveExplore.push(state.buttonLevels.caveExplore || 1);
+            data.mineStone.push(state.buttonLevels.mineStone || 1);
+            data.mineIron.push(state.buttonLevels.mineIron || 1);
+            data.mineCoal.push(state.buttonLevels.mineCoal || 1);
+            data.mineSulfur.push(state.buttonLevels.mineSulfur || 1);
+            data.mineObsidian.push(state.buttonLevels.mineObsidian || 1);
+            data.mineAdamant.push(state.buttonLevels.mineAdamant || 1);
+            data.hunt.push(state.buttonLevels.hunt || 1);
+            data.chopWood.push(state.buttonLevels.chopWood || 1);
+          }
+        }
+      });
+    });
+
+    return Array.from({ length: 24 }, (_, i) => {
+      const levels = timeMap.get(i)!;
+      return {
+        time: `${i}h`,
+        caveExplore: levels.caveExplore.length > 0 ? levels.caveExplore.reduce((a, b) => a + b, 0) / levels.caveExplore.length : 1,
+        mineStone: levels.mineStone.length > 0 ? levels.mineStone.reduce((a, b) => a + b, 0) / levels.mineStone.length : 1,
+        mineIron: levels.mineIron.length > 0 ? levels.mineIron.reduce((a, b) => a + b, 0) / levels.mineIron.length : 1,
+        mineCoal: levels.mineCoal.length > 0 ? levels.mineCoal.reduce((a, b) => a + b, 0) / levels.mineCoal.length : 1,
+        mineSulfur: levels.mineSulfur.length > 0 ? levels.mineSulfur.reduce((a, b) => a + b, 0) / levels.mineSulfur.length : 1,
+        mineObsidian: levels.mineObsidian.length > 0 ? levels.mineObsidian.reduce((a, b) => a + b, 0) / levels.mineObsidian.length : 1,
+        mineAdamant: levels.mineAdamant.length > 0 ? levels.mineAdamant.reduce((a, b) => a + b, 0) / levels.mineAdamant.length : 1,
+        hunt: levels.hunt.length > 0 ? levels.hunt.reduce((a, b) => a + b, 0) / levels.hunt.length : 1,
+        chopWood: levels.chopWood.length > 0 ? levels.chopWood.reduce((a, b) => a + b, 0) / levels.chopWood.length : 1,
+      };
+    });
+  }, [gameSaves, clickData, selectedUser, showCompletedOnly, selectedMiningTypes]);
+
+
+  const getGameCompletionStats = useCallback(() => {
+    const relevantSaves = selectedUser === "all"
+      ? gameSaves
+      : gameSaves.filter((s) => s.user_id === selectedUser);
+
+    let completedCount = 0;
+    let notCompletedCount = 0;
+
+    relevantSaves.forEach(save => {
+      // Check for specific completion criteria if gameComplete is not sufficient
+      const isCompleted = save.game_state?.events?.cube15a ||
+                          save.game_state?.events?.cube15b ||
+                          save.game_state?.events?.cube13 ||
+                          save.game_state?.events?.cube14a ||
+                          save.game_state?.events?.cube14b ||
+                          save.game_state?.events?.cube14c ||
+                          save.game_state?.events?.cube14d ||
+                          save.game_state?.gameComplete; // Fallback to gameComplete flag
+
+      if (isCompleted) {
+        completedCount++;
+      } else {
+        notCompletedCount++;
+      }
+    });
+
+    return [
+      { name: "Completed", value: completedCount },
+      { name: "Not Completed", value: notCompletedCount },
+    ];
+  }, [gameSaves, selectedUser]);
+
+  const getDailyPurchases = useCallback(() => {
+    const data: Array<{ day: string; purchases: number }> = [];
+    const now = new Date();
+
+    for (let i = 29; i >= 0; i--) {
+      const date = subDays(now, i);
+      const dayStart = startOfDay(date);
+      const dayEnd = endOfDay(date);
+
+      const dailyPurchases = purchases.filter((purchase) => { // Use filtered purchases
+        const purchaseDate = parseISO(purchase.purchased_at);
+        return purchaseDate >= dayStart && purchaseDate <= dayEnd && purchase.price_paid > 0 && !purchase.bundle_id;
+      }).length;
+
+      data.push({
+        day: format(date, "MMM dd"),
+        purchases: dailyPurchases,
+      });
+    }
+
+    return data;
+  }, [purchases]); // Depend on filtered purchases
+
+  const getPurchasesByPlaytime = useCallback(() => {
+    const playtimeBuckets = new Map<number, number>();
+    let maxBucket = 0;
+
+    purchases.filter((p) => p.price_paid > 0 && !p.bundle_id).forEach((purchase) => { // Use filtered purchases
+      const save = gameSaves.find((s) => s.user_id === purchase.user_id);
+      if (save) {
+        const playTimeMinutes = save.game_state?.playTime
+          ? Math.round(save.game_state.playTime / 60000)
+          : 0;
+        const bucket = Math.floor(playTimeMinutes / 60); // Changed to 60 minutes interval
+        maxBucket = Math.max(maxBucket, bucket);
+        playtimeBuckets.set(bucket, (playtimeBuckets.get(bucket) || 0) + 1);
+      }
+    });
+
+    const result: Array<{ playtime: string; purchases: number }> = [];
+    for (let bucket = 0; bucket <= maxBucket; bucket++) {
+      result.push({
+        playtime: `${bucket}h`,
+        purchases: playtimeBuckets.get(bucket) || 0,
+      });
+    }
+
+    return result;
+  }, [purchases, gameSaves]); // Depend on filtered purchases and gameSaves
+
+  const getPurchaseStats = useCallback(() => {
+    const itemCounts = new Map<string, number>();
+
+    purchases.filter((p) => !p.bundle_id).forEach((purchase) => { // Use filtered purchases
+      itemCounts.set(
+        purchase.item_name,
+        (itemCounts.get(purchase.item_name) || 0) + 1
+      );
+    });
+
+    return Array.from(itemCounts.entries())
+      .map(([name, count]) => ({ name, count }))
+      .sort((a, b) => b.count - a.count);
+  }, [purchases]); // Depend on filtered purchases
+
+  const getTotalReferrals = useCallback(() => {
+    return gameSaves.reduce((sum, save) => {
+      return sum + (save.game_state?.referrals?.length || 0);
+    }, 0);
+  }, [gameSaves]);
+
+  const getDailyReferrals = useCallback(() => {
+    const data: Array<{ day: string; referrals: number }> = [];
+    const now = new Date();
+
+    for (let i = 29; i >= 0; i--) {
+      const date = subDays(now, i);
+      const dayStart = startOfDay(date);
+      const dayEnd = endOfDay(date);
+
+      const dailyReferrals = gameSaves.reduce((sum, save) => {
+        const referrals = save.game_state?.referrals || [];
+        return sum + referrals.filter((ref: any) => {
+          const timestamp = ref.timestamp || ref.created_at;
+          if (!timestamp || typeof timestamp !== 'string') return false;
+          try {
+            const refDate = parseISO(timestamp);
+            return refDate >= dayStart && refDate <= dayEnd;
+          } catch {
+            return false;
+          }
+        }).length;
+      }, 0);
+
+      data.push({
+        day: format(date, "MMM dd"),
+        referrals: dailyReferrals,
+      });
+    }
+
+    return data;
+  }, [gameSaves]);
+
+  const getTopReferrers = useCallback(() => {
+    const referrerCounts = new Map<string, number>();
+
+    gameSaves.forEach((save) => {
+      const referrals = save.game_state?.referrals || [];
+      if (referrals.length > 0) {
+        referrerCounts.set(
+          save.user_id.substring(0, 8) + "...",
+          referrals.length
+        );
+      }
+    });
+
+    return Array.from(referrerCounts.entries())
+      .map(([userId, count]) => ({ userId, count }))
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 10);
+  }, [gameSaves]);
+
+  const getCubeEventNumber = useCallback((eventId: string) => {
+    const match = eventId.match(/cube(\d+)/);
+    return match ? parseInt(match[1]) : null;
+  }, []);
+
+  const getSleepUpgradesDistribution = useCallback(() => {
+    const filteredSaves = selectedUser === "all"
+      ? gameSaves
+      : gameSaves.filter((s) => s.user_id === selectedUser);
+
+    const completedSaves = showCompletedOnly
+      ? filteredSaves.filter((s) => s.game_state?.gameComplete)
+      : filteredSaves;
+
+    const distribution = new Map<number, { lengthUsers: number; intensityUsers: number }>();
+
+    completedSaves.forEach((save) => {
+      const lengthLevel = save.game_state?.sleepUpgrades?.lengthLevel || 0;
+      const intensityLevel = save.game_state?.sleepUpgrades?.intensityLevel || 0;
+
+      if (!distribution.has(lengthLevel)) {
+        distribution.set(lengthLevel, { lengthUsers: 0, intensityUsers: 0 });
+      }
+      distribution.get(lengthLevel)!.lengthUsers++;
+
+      if (!distribution.has(intensityLevel)) {
+        distribution.set(intensityLevel, { lengthUsers: 0, intensityUsers: 0 });
+      }
+      distribution.get(intensityLevel)!.intensityUsers++;
+    });
+
+    const maxLevel = Math.max(...Array.from(distribution.keys()), 0);
+    const result = [];
+
+    for (let i = 0; i <= maxLevel; i++) {
+      const stats = distribution.get(i) || { lengthUsers: 0, intensityUsers: 0 };
+      result.push({
+        level: `Level ${i}`,
+        lengthUsers: stats.lengthUsers,
+        intensityUsers: stats.intensityUsers,
+      });
+    }
+
+    return result;
+  }, [gameSaves, selectedUser, showCompletedOnly]);
+
+
   return (
     <div className="h-screen bg-background overflow-hidden">
       <div className="max-w-7xl mx-auto h-full p-8">
@@ -475,6 +1001,7 @@ export default function AdminDashboard() {
                   getDailyActiveUsers={() => {
                     const now = new Date();
                     const oneDayAgo = subDays(now, 1);
+                    // Using filtered gameSaves for consistency
                     return gameSaves.filter(
                       (s) => parseISO(s.updated_at) >= oneDayAgo
                     ).length;
@@ -561,7 +1088,7 @@ export default function AdminDashboard() {
                       .filter((p) => p.price_paid > 0 && !p.bundle_id)
                       .reduce((sum, p) => sum + p.price_paid, 0);
                     return totalUserCount > 0
-                      ? (totalRevenue / 100 / totalUserCount).toFixed(2)
+                      ? (totalRevenue / totalUserCount).toFixed(2)
                       : "0.00";
                   }}
                   getTotalRevenue={() =>
@@ -587,7 +1114,7 @@ export default function AdminDashboard() {
                       const dayStart = startOfDay(date);
                       const dayEnd = endOfDay(date);
 
-                      const activeUsers = rawGameSaves.filter((save) => {
+                      const activeUsers = rawGameSaves.filter((save) => { // Use raw for historical accuracy
                         const activityDate = parseISO(save.updated_at);
                         return activityDate >= dayStart && activityDate <= dayEnd;
                       }).length;
@@ -609,7 +1136,7 @@ export default function AdminDashboard() {
                       const dayStart = startOfDay(date);
                       const dayEnd = endOfDay(date);
 
-                      const signups = rawGameSaves.filter((save) => {
+                      const signups = rawGameSaves.filter((save) => { // Use raw for historical accuracy
                         const createdDate = parseISO(save.created_at);
                         return createdDate >= dayStart && createdDate <= dayEnd;
                       }).length;
@@ -627,13 +1154,13 @@ export default function AdminDashboard() {
                     const now = new Date();
                     const oneDayAgo = subDays(now, 1);
 
-                    for (let i = 23; i >= 0; i--) {
+                    for (let i = 23; i >= 0; i--) { // Corrected loop for 24 hours
                       const hour = new Date(now);
                       hour.setHours(now.getHours() - i, 0, 0, 0);
                       const nextHour = new Date(hour);
                       nextHour.setHours(hour.getHours() + 1);
 
-                      const signups = rawGameSaves.filter((save) => {
+                      const signups = rawGameSaves.filter((save) => { // Use raw for historical accuracy
                         const createdDate = parseISO(save.created_at);
                         return createdDate >= hour && createdDate < nextHour && createdDate >= oneDayAgo;
                       }).length;
@@ -644,7 +1171,7 @@ export default function AdminDashboard() {
                       });
                     }
 
-                    return data;
+                    return data.reverse(); // Ensure chronological order
                   }}
                 />
               </TabsContent>
@@ -733,7 +1260,7 @@ export default function AdminDashboard() {
                   setSelectedClickTypes={setSelectedClickTypes}
                   getAllButtonNames={() => {
                     const buttonNames = new Set<string>();
-                    clickData.forEach((entry) => {
+                    clickData.forEach((entry) => { // Use filtered clickData
                       Object.values(entry.clicks).forEach((playtimeClicks: any) => {
                         Object.keys(playtimeClicks).forEach((button) => {
                           buttonNames.add(cleanButtonName(button));
@@ -742,135 +1269,10 @@ export default function AdminDashboard() {
                     });
                     return Array.from(buttonNames);
                   }}
-                  getButtonClicksOverTime={() => {
-                    const filteredClickData = selectedUser === "all"
-                      ? clickData
-                      : clickData.filter((d) => d.user_id === selectedUser);
-
-                    const filteredByCompletion = showCompletedOnly
-                      ? filteredClickData.filter((d) => {
-                          const save = gameSaves.find((s) => s.user_id === d.user_id);
-                          return save?.game_state?.gameComplete;
-                        })
-                      : filteredClickData;
-
-                    const timeBuckets: Record<string, number> = {};
-                    filteredByCompletion.forEach((entry) => {
-                      Object.entries(entry.clicks).forEach(([playtime, clicks]) => {
-                        const playtimeMinutes = parseInt(playtime);
-                        const bucket = Math.floor(playtimeMinutes / 60) * 60; // Changed to 60 minutes interval
-                        const bucketKey = `${bucket}m`;
-                        if (!timeBuckets[bucketKey]) timeBuckets[bucketKey] = 0;
-                        const clickCount = Object.values(clicks as Record<string, number>).reduce(
-                          (sum, count) => sum + count,
-                          0,
-                        );
-                        timeBuckets[bucketKey] += clickCount;
-                      });
-                    });
-
-                    return Object.entries(timeBuckets)
-                      .map(([time, clicks]) => ({ time, clicks }))
-                      .sort((a, b) => parseInt(a.time) - parseInt(b.time));
-                  }}
-                  getClickTypesByTimestamp={() => {
-                    const filteredClickData = selectedUser === "all"
-                      ? clickData
-                      : clickData.filter((d) => d.user_id === selectedUser);
-
-                    const filteredByCompletion = showCompletedOnly
-                      ? filteredClickData.filter((d) => {
-                          const save = gameSaves.find((s) => s.user_id === d.user_id);
-                          return save?.game_state?.gameComplete;
-                        })
-                      : filteredClickData;
-
-                    const timeBuckets: Record<string, Record<string, number>> = {};
-                    filteredByCompletion.forEach((entry) => {
-                      Object.entries(entry.clicks).forEach(([playtime, clicks]) => {
-                        const playtimeMinutes = parseInt(playtime);
-                        const bucket = Math.floor(playtimeMinutes / 60) * 60; // Changed to 60 minutes interval
-                        const bucketKey = `${bucket}m`;
-                        if (!timeBuckets[bucketKey]) timeBuckets[bucketKey] = {};
-
-                        Object.entries(clicks as Record<string, number>).forEach(
-                          ([button, count]) => {
-                            const cleanedButton = cleanButtonName(button);
-                            if (selectedClickTypes.has(cleanedButton)) {
-                              if (!timeBuckets[bucketKey][cleanedButton])
-                                timeBuckets[bucketKey][cleanedButton] = 0;
-                              timeBuckets[bucketKey][cleanedButton] += count;
-                            }
-                          },
-                        );
-                      });
-                    });
-
-                    return Object.entries(timeBuckets)
-                      .map(([time, clicks]) => ({ time, ...clicks }))
-                      .sort((a, b) => parseInt(a.time) - parseInt(b.time));
-                  }}
-                  getTotalClicksByButton={() => {
-                    const filteredClickData = selectedUser === "all"
-                      ? clickData
-                      : clickData.filter((d) => d.user_id === selectedUser);
-
-                    const filteredByCompletion = showCompletedOnly
-                      ? filteredClickData.filter((d) => {
-                          const save = gameSaves.find((s) => s.user_id === d.user_id);
-                          return save?.game_state?.gameComplete;
-                        })
-                      : filteredClickData;
-
-                    const buttonTotals: Record<string, number> = {};
-                    filteredByCompletion.forEach((entry) => {
-                      Object.values(entry.clicks).forEach((playtimeClicks: any) => {
-                        Object.entries(playtimeClicks).forEach(([button, count]) => {
-                          const cleanedButton = cleanButtonName(button);
-                          if (!buttonTotals[cleanedButton]) buttonTotals[cleanedButton] = 0;
-                          buttonTotals[cleanedButton] += count as number;
-                        });
-                      });
-                    });
-
-                    return Object.entries(buttonTotals)
-                      .map(([button, total]) => ({ button, total }))
-                      .sort((a, b) => b.total - a.total)
-                      .slice(0, 15);
-                  }}
-                  getAverageClicksByButton={() => {
-                    const filteredClickData = selectedUser === "all"
-                      ? clickData
-                      : clickData.filter((d) => d.user_id === selectedUser);
-
-                    const filteredByCompletion = showCompletedOnly
-                      ? filteredClickData.filter((d) => {
-                          const save = gameSaves.find((s) => s.user_id === d.user_id);
-                          return save?.game_state?.gameComplete;
-                        })
-                      : filteredClickData;
-
-                    const buttonStats: Record<string, { total: number; users: Set<string> }> = {};
-                    filteredByCompletion.forEach((entry) => {
-                      Object.values(entry.clicks).forEach((playtimeClicks: any) => {
-                        Object.entries(playtimeClicks).forEach(([button, count]) => {
-                          const cleanedButton = cleanButtonName(button);
-                          if (!buttonStats[cleanedButton])
-                            buttonStats[cleanedButton] = { total: 0, users: new Set() };
-                          buttonStats[cleanedButton].total += count as number;
-                          buttonStats[cleanedButton].users.add(entry.user_id);
-                        });
-                      });
-                    });
-
-                    return Object.entries(buttonStats)
-                      .map(([button, stats]) => ({
-                        button,
-                        average: stats.total / stats.users.size,
-                      }))
-                      .sort((a, b) => b.average - a.average)
-                      .slice(0, 15);
-                  }}
+                  getButtonClicksOverTime={getButtonClicksOverTime}
+                  getClickTypesByTimestamp={getClickTypesByTimestamp}
+                  getTotalClicksByButton={getTotalClicksByButton}
+                  getAverageClicksByButton={getAverageClicksByButton}
                   COLORS={COLORS}
                 />
               </TabsContent>
@@ -878,30 +1280,8 @@ export default function AdminDashboard() {
               <TabsContent value="completion">
                 <CompletionTab
                   gameSaves={gameSaves}
-                  getGameCompletionStats={() => {
-                    const filteredSaves = selectedUser === "all"
-                      ? gameSaves
-                      : gameSaves.filter((s) => s.user_id === selectedUser);
-
-                    const completedSaves = filteredSaves.filter(
-                      (s) =>
-                        s.game_state?.events?.cube15a ||
-                        s.game_state?.events?.cube15b ||
-                        s.game_state?.events?.cube13 ||
-                        s.game_state?.events?.cube14a ||
-                        s.game_state?.events?.cube14b ||
-                        s.game_state?.events?.cube14c ||
-                        s.game_state?.events?.cube14d,
-                    );
-
-                    const completed = completedSaves.length;
-                    const notCompleted = filteredSaves.filter(s => !s.game_state?.gameComplete).length;
-
-                    return [
-                      { name: "Completed", value: completed },
-                      { name: "Not Completed", value: notCompleted },
-                    ];
-                  }}
+                  getGameCompletionStats={getGameCompletionStats}
+                  totalUserCount={totalUserCount}
                   COLORS={COLORS}
                 />
               </TabsContent>
@@ -910,132 +1290,22 @@ export default function AdminDashboard() {
                 <PurchasesTab
                   purchases={purchases}
                   getTotalRevenue={() =>
-                    rawPurchases
+                    rawPurchases // Use raw for total revenue
                       .filter((p) => p.price_paid > 0 && !p.bundle_id)
                       .reduce((sum, p) => sum + p.price_paid, 0)
                   }
-                  getDailyPurchases={() => {
-                    const data: Array<{ day: string; purchases: number }> = [];
-                    const now = new Date();
-
-                    for (let i = 29; i >= 0; i--) {
-                      const date = subDays(now, i);
-                      const dayStart = startOfDay(date);
-                      const dayEnd = endOfDay(date);
-
-                      const dailyPurchases = rawPurchases.filter((purchase) => {
-                        const purchaseDate = parseISO(purchase.purchased_at);
-                        return purchaseDate >= dayStart && purchaseDate <= dayEnd && purchase.price_paid > 0 && !purchase.bundle_id;
-                      }).length;
-
-                      data.push({
-                        day: format(date, "MMM dd"),
-                        purchases: dailyPurchases,
-                      });
-                    }
-
-                    return data;
-                  }}
-                  getPurchasesByPlaytime={() => {
-                    const playtimeBuckets = new Map<number, number>();
-                    let maxBucket = 0;
-
-                    purchases.filter((p) => p.price_paid > 0 && !p.bundle_id).forEach((purchase) => {
-                      const save = gameSaves.find((s) => s.user_id === purchase.user_id);
-                      if (save) {
-                        const playTimeMinutes = save.game_state?.playTime
-                          ? Math.round(save.game_state.playTime / 1000 / 60)
-                          : 0;
-                        const bucket = Math.floor(playTimeMinutes / 60); // Changed to 60 minutes interval
-                        maxBucket = Math.max(maxBucket, bucket);
-                        playtimeBuckets.set(bucket, (playtimeBuckets.get(bucket) || 0) + 1);
-                      }
-                    });
-
-                    const result: Array<{ playtime: string; purchases: number }> = [];
-                    for (let bucket = 0; bucket <= maxBucket; bucket++) {
-                      result.push({
-                        playtime: `${bucket}h`,
-                        purchases: playtimeBuckets.get(bucket) || 0,
-                      });
-                    }
-
-                    return result;
-                  }}
-                  getPurchaseStats={() => {
-                    const itemCounts = new Map<string, number>();
-
-                    purchases.filter((p) => !p.bundle_id).forEach((purchase) => {
-                      itemCounts.set(
-                        purchase.item_name,
-                        (itemCounts.get(purchase.item_name) || 0) + 1
-                      );
-                    });
-
-                    return Array.from(itemCounts.entries())
-                      .map(([name, count]) => ({ name, count }))
-                      .sort((a, b) => b.count - a.count);
-                  }}
+                  getDailyPurchases={getDailyPurchases}
+                  getPurchasesByPlaytime={getPurchasesByPlaytime}
+                  getPurchaseStats={getPurchaseStats}
                 />
               </TabsContent>
 
               <TabsContent value="referrals">
                 <ReferralsTab
                   gameSaves={gameSaves}
-                  getTotalReferrals={() => {
-                    return gameSaves.reduce((sum, save) => {
-                      return sum + (save.game_state?.referrals?.length || 0);
-                    }, 0);
-                  }}
-                  getDailyReferrals={() => {
-                    const data: Array<{ day: string; referrals: number }> = [];
-                    const now = new Date();
-
-                    for (let i = 29; i >= 0; i--) {
-                      const date = subDays(now, i);
-                      const dayStart = startOfDay(date);
-                      const dayEnd = endOfDay(date);
-
-                      const dailyReferrals = gameSaves.reduce((sum, save) => {
-                        const referrals = save.game_state?.referrals || [];
-                        return sum + referrals.filter((ref: any) => {
-                          const timestamp = ref.timestamp || ref.created_at;
-                          if (!timestamp || typeof timestamp !== 'string') return false;
-                          try {
-                            const refDate = parseISO(timestamp);
-                            return refDate >= dayStart && refDate <= dayEnd;
-                          } catch {
-                            return false;
-                          }
-                        }).length;
-                      }, 0);
-
-                      data.push({
-                        day: format(date, "MMM dd"),
-                        referrals: dailyReferrals,
-                      });
-                    }
-
-                    return data;
-                  }}
-                  getTopReferrers={() => {
-                    const referrerCounts = new Map<string, number>();
-
-                    gameSaves.forEach((save) => {
-                      const referrals = save.game_state?.referrals || [];
-                      if (referrals.length > 0) {
-                        referrerCounts.set(
-                          save.user_id.substring(0, 8) + "...",
-                          referrals.length
-                        );
-                      }
-                    });
-
-                    return Array.from(referrerCounts.entries())
-                      .map(([userId, count]) => ({ userId, count }))
-                      .sort((a, b) => b.count - a.count)
-                      .slice(0, 10);
-                  }}
+                  getTotalReferrals={getTotalReferrals}
+                  getDailyReferrals={getDailyReferrals}
+                  getTopReferrers={getTopReferrers}
                 />
               </TabsContent>
 
@@ -1048,10 +1318,7 @@ export default function AdminDashboard() {
                   selectedCubeEvents={selectedCubeEvents}
                   setSelectedCubeEvents={setSelectedCubeEvents}
                   COLORS={COLORS}
-                  getCubeEventNumber={(eventId: string) => {
-                    const match = eventId.match(/cube(\d+)/);
-                    return match ? parseInt(match[1]) : null;
-                  }}
+                  getCubeEventNumber={getCubeEventNumber}
                 />
               </TabsContent>
 
@@ -1061,46 +1328,7 @@ export default function AdminDashboard() {
                   selectedUser={selectedUser}
                   showCompletedOnly={showCompletedOnly}
                   setShowCompletedOnly={setShowCompletedOnly}
-                  getSleepUpgradesDistribution={() => {
-                    const filteredSaves = selectedUser === "all"
-                      ? gameSaves
-                      : gameSaves.filter((s) => s.user_id === selectedUser);
-
-                    const completedSaves = showCompletedOnly
-                      ? filteredSaves.filter((s) => s.game_state?.gameComplete)
-                      : filteredSaves;
-
-                    const distribution = new Map<number, { lengthUsers: number; intensityUsers: number }>();
-
-                    completedSaves.forEach((save) => {
-                      const lengthLevel = save.game_state?.sleepUpgrades?.lengthLevel || 0;
-                      const intensityLevel = save.game_state?.sleepUpgrades?.intensityLevel || 0;
-
-                      if (!distribution.has(lengthLevel)) {
-                        distribution.set(lengthLevel, { lengthUsers: 0, intensityUsers: 0 });
-                      }
-                      distribution.get(lengthLevel)!.lengthUsers++;
-
-                      if (!distribution.has(intensityLevel)) {
-                        distribution.set(intensityLevel, { lengthUsers: 0, intensityUsers: 0 });
-                      }
-                      distribution.get(intensityLevel)!.intensityUsers++;
-                    });
-
-                    const maxLevel = Math.max(...Array.from(distribution.keys()), 0);
-                    const result = [];
-
-                    for (let i = 0; i <= maxLevel; i++) {
-                      const stats = distribution.get(i) || { lengthUsers: 0, intensityUsers: 0 };
-                      result.push({
-                        level: `Level ${i}`,
-                        lengthUsers: stats.lengthUsers,
-                        intensityUsers: stats.intensityUsers,
-                      });
-                    }
-
-                    return result;
-                  }}
+                  getSleepUpgradesDistribution={getSleepUpgradesDistribution}
                 />
               </TabsContent>
 
@@ -1115,114 +1343,8 @@ export default function AdminDashboard() {
                   setSelectedStats={setSelectedStats}
                   selectedResources={selectedResources}
                   setSelectedResources={setSelectedResources}
-                  getStatsOverPlaytime={() => {
-                    const filteredSaves = selectedUser === "all"
-                      ? gameSaves
-                      : gameSaves.filter((s) => s.user_id === selectedUser);
-
-                    const completedSaves = showCompletedOnly
-                      ? filteredSaves.filter((s) => s.game_state?.gameComplete)
-                      : filteredSaves;
-
-                    const playtimeBuckets = new Map<number, Map<string, number[]>>();
-                    let maxBucket = 0;
-
-                    completedSaves.forEach((save) => {
-                      const playTimeMinutes = save.game_state?.playTime
-                        ? Math.round(save.game_state.playTime / 1000 / 60)
-                        : 0;
-                      const bucket = Math.floor(playTimeMinutes / 60) * 60; // Changed to 60 minutes interval
-                      maxBucket = Math.max(maxBucket, bucket);
-
-                      if (!playtimeBuckets.has(bucket)) {
-                        playtimeBuckets.set(bucket, new Map());
-                      }
-
-                      const bucketData = playtimeBuckets.get(bucket)!;
-                      const stats = save.game_state?.stats || {};
-
-                      ["strength", "knowledge", "luck", "madness"].forEach((stat) => {
-                        if (!bucketData.has(stat)) {
-                          bucketData.set(stat, []);
-                        }
-                        bucketData.get(stat)!.push(stats[stat] || 0);
-                      });
-                    });
-
-                    const result: Array<{ time: string; [key: string]: any }> = [];
-                    for (let bucket = 0; bucket <= maxBucket; bucket += 60) {
-                      const hours = bucket / 60;
-                      const dataPoint: { time: string; [key: string]: any } = {
-                        time: hours === 0 ? "0h" : `${hours}h`,
-                      };
-
-                      const bucketData = playtimeBuckets.get(bucket);
-                      ["strength", "knowledge", "luck", "madness"].forEach((stat) => {
-                        const values = bucketData?.get(stat) || [];
-                        dataPoint[stat] = values.length > 0
-                          ? values.reduce((sum, val) => sum + val, 0) / values.length
-                          : 0;
-                      });
-
-                      result.push(dataPoint);
-                    }
-
-                    return result;
-                  }}
-                  getResourceStatsOverPlaytime={() => {
-                    const filteredSaves = selectedUser === "all"
-                      ? gameSaves
-                      : gameSaves.filter((s) => s.user_id === selectedUser);
-
-                    const completedSaves = showCompletedOnly
-                      ? filteredSaves.filter((s) => s.game_state?.gameComplete)
-                      : filteredSaves;
-
-                    const playtimeBuckets = new Map<number, Map<string, number[]>>();
-                    let maxBucket = 0;
-
-                    completedSaves.forEach((save) => {
-                      const playTimeMinutes = save.game_state?.playTime
-                        ? Math.round(save.game_state.playTime / 1000 / 60)
-                        : 0;
-                      const bucket = Math.floor(playTimeMinutes / 60) * 60; // Changed to 60 minutes interval
-                      maxBucket = Math.max(maxBucket, bucket);
-
-                      if (!playtimeBuckets.has(bucket)) {
-                        playtimeBuckets.set(bucket, new Map());
-                      }
-
-                      const bucketData = playtimeBuckets.get(bucket)!;
-                      const resources = save.game_state?.resources || {};
-
-                      Object.keys(resources).forEach((resource) => {
-                        if (!bucketData.has(resource)) {
-                          bucketData.set(resource, []);
-                        }
-                        bucketData.get(resource)!.push(resources[resource] || 0);
-                      });
-                    });
-
-                    const result: Array<{ time: string; [key: string]: any }> = [];
-                    for (let bucket = 0; bucket <= maxBucket; bucket += 60) {
-                      const hours = bucket / 60;
-                      const dataPoint: { time: string; [key: string]: any } = {
-                        time: hours === 0 ? "0h" : `${hours}h`,
-                      };
-
-                      const bucketData = playtimeBuckets.get(bucket);
-                      Array.from(selectedResources).forEach((resource) => {
-                        const values = bucketData?.get(resource) || [];
-                        dataPoint[resource] = values.length > 0
-                          ? values.reduce((sum, val) => sum + val, 0) / values.length
-                          : 0;
-                      });
-
-                      result.push(dataPoint);
-                    }
-
-                    return result;
-                  }}
+                  getStatsOverPlaytime={getStatsOverPlaytime}
+                  getResourceStatsOverPlaytime={getResourceStatsOverPlaytime}
                   COLORS={COLORS}
                 />
               </TabsContent>
@@ -1235,60 +1357,7 @@ export default function AdminDashboard() {
                   setShowCompletedOnly={setShowCompletedOnly}
                   selectedMiningTypes={selectedMiningTypes}
                   setSelectedMiningTypes={setSelectedMiningTypes}
-                  getButtonUpgradesOverPlaytime={() => {
-                    const filteredSaves = selectedUser === "all"
-                      ? gameSaves
-                      : gameSaves.filter((s) => s.user_id === selectedUser);
-
-                    const completedSaves = showCompletedOnly
-                      ? filteredSaves.filter((s) => s.game_state?.gameComplete)
-                      : filteredSaves;
-
-                    const playtimeBuckets = new Map<number, Map<string, number[]>>();
-                    let maxBucket = 0;
-
-                    completedSaves.forEach((save) => {
-                      const playTimeMinutes = save.game_state?.playTime
-                        ? Math.round(save.game_state.playTime / 1000 / 60)
-                        : 0;
-                      const bucket = Math.floor(playTimeMinutes / 60) * 60; // Changed to 60 minutes interval
-                      maxBucket = Math.max(maxBucket, bucket);
-
-                      if (!playtimeBuckets.has(bucket)) {
-                        playtimeBuckets.set(bucket, new Map());
-                      }
-
-                      const bucketData = playtimeBuckets.get(bucket)!;
-                      const upgrades = save.game_state?.buttonUpgrades || {};
-
-                      ["caveExplore", "mineStone", "mineIron", "mineCoal", "mineSulfur", "mineObsidian", "mineAdamant", "hunt", "chopWood"].forEach((buttonType) => {
-                        if (!bucketData.has(buttonType)) {
-                          bucketData.set(buttonType, []);
-                        }
-                        bucketData.get(buttonType)!.push(upgrades[buttonType] || 1);
-                      });
-                    });
-
-                    const result: Array<{ time: string; [key: string]: any }> = [];
-                    for (let bucket = 0; bucket <= maxBucket; bucket += 60) {
-                      const hours = bucket / 60;
-                      const dataPoint: { time: string; [key: string]: any } = {
-                        time: hours === 0 ? "0h" : `${hours}h`,
-                      };
-
-                      const bucketData = playtimeBuckets.get(bucket);
-                      ["caveExplore", "mineStone", "mineIron", "mineCoal", "mineSulfur", "mineObsidian", "mineAdamant", "hunt", "chopWood"].forEach((buttonType) => {
-                        const values = bucketData?.get(buttonType) || [];
-                        dataPoint[buttonType] = values.length > 0
-                          ? values.reduce((sum, val) => sum + val, 0) / values.length
-                          : 1;
-                      });
-
-                      result.push(dataPoint);
-                    }
-
-                    return result;
-                  }}
+                  getButtonUpgradesOverPlaytime={getButtonUpgradesOverPlaytime}
                   COLORS={COLORS}
                 />
               </TabsContent>
