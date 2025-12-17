@@ -1344,8 +1344,8 @@ export default function AdminDashboard() {
                   setSelectedStats={setSelectedStats}
                   selectedResources={selectedResources}
                   setSelectedResources={setSelectedResources}
-                  getStatsOverPlaytime={getStatsOverPlaytime}
-                  getResourceStatsOverPlaytime={getResourceStatsOverPlaytime}
+                  statsOverPlaytime={getStatsOverPlaytime}
+                  resourceStatsOverPlaytime={getResourceStatsOverPlaytime}
                   COLORS={COLORS}
                 />
               </TabsContent>

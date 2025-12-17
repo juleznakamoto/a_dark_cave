@@ -10,8 +10,8 @@ interface ResourcesTabProps {
   setSelectedStats: (value: Set<string>) => void;
   selectedResources: Set<string>;
   setSelectedResources: (value: Set<string>) => void;
-  getStatsOverPlaytime: () => Array<{ time: string; [key: string]: any }>;
-  getResourceStatsOverPlaytime: () => Array<{ time: string; [key: string]: any }>;
+  statsOverPlaytime: Array<{ time: string; [key: string]: any }>;
+  resourceStatsOverPlaytime: Array<{ time: string; [key: string]: any }>;
   COLORS: string[];
 }
 
@@ -25,8 +25,8 @@ export default function ResourcesTab(props: ResourcesTabProps) {
     setSelectedStats,
     selectedResources,
     setSelectedResources,
-    getStatsOverPlaytime,
-    getResourceStatsOverPlaytime,
+    statsOverPlaytime,
+    resourceStatsOverPlaytime,
     COLORS,
   } = props;
 
@@ -112,7 +112,7 @@ export default function ResourcesTab(props: ResourcesTabProps) {
             </div>
           </div>
           <ResponsiveContainer width="100%" height={400}>
-            <LineChart data={getStatsOverPlaytime()}>
+            <LineChart data={statsOverPlaytime}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
                 dataKey="time"
@@ -133,7 +133,7 @@ export default function ResourcesTab(props: ResourcesTabProps) {
               <Tooltip />
               <Legend />
               {(() => {
-                const chartData = getStatsOverPlaytime();
+                const chartData = statsOverPlaytime;
                 if (chartData.length === 0) return null;
 
                 const selectedStatsList = Array.from(selectedStats);
@@ -218,7 +218,7 @@ export default function ResourcesTab(props: ResourcesTabProps) {
             </div>
           </div>
           <ResponsiveContainer width="100%" height={400}>
-            <LineChart data={getResourceStatsOverPlaytime()}>
+            <LineChart data={resourceStatsOverPlaytime}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
                 dataKey="time"
@@ -239,7 +239,7 @@ export default function ResourcesTab(props: ResourcesTabProps) {
               <Tooltip />
               <Legend />
               {(() => {
-                const chartData = getResourceStatsOverPlaytime();
+                const chartData = resourceStatsOverPlaytime;
                 if (chartData.length === 0) return null;
 
                 const selectedResourcesList = Array.from(selectedResources);
