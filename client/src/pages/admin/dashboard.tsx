@@ -231,37 +231,67 @@ export default function AdminDashboard() {
 
   // Define all hooks BEFORE conditional returns to comply with React rules
   const getButtonClicksOverTime = useCallback(() => {
-    const relevant = filterByUser(clickData);
-    if (relevant.length === 0) {
-      return Array.from({ length: 24 }, (_, i) => ({
-        time: `${i}h`,
-        clicks: 0,
-      }));
+    const filteredClickData = selectedUser === "all"
+      ? clickData
+      : clickData.filter((d) => d.user_id === selectedUser);
+
+    const filteredByCompletion = showCompletedOnly
+      ? filteredClickData.filter((d) => {
+          const save = gameSaves.find((s) => s.user_id === d.user_id);
+          return save && (
+            save.game_state?.events?.cube15a ||
+            save.game_state?.events?.cube15b ||
+            save.game_state?.events?.cube13 ||
+            save.game_state?.events?.cube14a ||
+            save.game_state?.events?.cube14b ||
+            save.game_state?.events?.cube14c ||
+            save.game_state?.events?.cube14d
+          );
+        })
+      : filteredClickData;
+
+    if (filteredByCompletion.length === 0) {
+      return Array.from({ length: 24 }, (_, i) => ({ time: `${i}h`, clicks: 0 }));
     }
 
-    const timeMap = new Map<number, number>();
+    const timeBuckets: Record<string, number> = {};
     for (let i = 0; i < 24; i++) {
-      timeMap.set(i, 0);
+      timeBuckets[`${i}h`] = 0;
     }
 
-    const firstClickTime = new Date(relevant[0].timestamp).getTime();
-    relevant.forEach((click) => {
-      const elapsed = (new Date(click.timestamp).getTime() - firstClickTime) / 1000;
-      const bucket = Math.floor(elapsed / 3600);
-      if (bucket >= 0 && bucket < 24) {
-        const clickCount = Object.values(click.clicks).reduce(
-          (sum, playtimeClicks) => sum + Object.values(playtimeClicks).reduce((pcSum, count) => pcSum + count, 0),
-          0,
-        );
-        timeMap.set(bucket, (timeMap.get(bucket) || 0) + clickCount);
+    // Group clicks by user to calculate per-user first click time
+    const userClicks = new Map<string, typeof filteredByCompletion>();
+    filteredByCompletion.forEach((entry) => {
+      if (!userClicks.has(entry.user_id)) {
+        userClicks.set(entry.user_id, []);
       }
+      userClicks.get(entry.user_id)!.push(entry);
     });
 
-    return Array.from({ length: 24 }, (_, i) => ({
-      time: `${i}h`,
-      clicks: timeMap.get(i) || 0,
-    }));
-  }, [clickData, selectedUser, showCompletedOnly, gameSaves]);
+    // Process each user's clicks with their own first click time
+    userClicks.forEach((userClickData) => {
+      if (userClickData.length === 0) return;
+
+      const firstClickTime = new Date(userClickData[0].timestamp).getTime();
+
+      userClickData.forEach((entry) => {
+        const elapsed = (new Date(entry.timestamp).getTime() - firstClickTime) / 1000;
+        const bucket = Math.floor(elapsed / 3600);
+
+        if (bucket >= 0 && bucket < 24) {
+          const bucketKey = `${bucket}h`;
+          const clickCount = Object.values(entry.clicks).reduce((sum, playtimeClicks: any) => {
+            return sum + Object.values(playtimeClicks).reduce((s: number, c) => s + (c as number), 0);
+          }, 0);
+          timeBuckets[bucketKey] += clickCount;
+        }
+      });
+    });
+
+    return Object.entries(timeBuckets)
+      .map(([time, clicks]) => ({ time, clicks }))
+      .sort((a, b) => parseInt(a.time) - parseInt(b.time));
+  }, [clickData, gameSaves, selectedUser, showCompletedOnly]);
 
   const getClickTypesByTimestamp = useCallback(() => {
     const filteredClickData = selectedUser === "all"
@@ -374,7 +404,7 @@ export default function AdminDashboard() {
       .slice(0, 15);
   }, [clickData, gameSaves, selectedUser, showCompletedOnly]);
 
-  // All memos MUST be defined before conditional returns
+  // All memos MUST be defined before conditional returns to comply with React rules
   const getStatsOverPlaytime = useMemo(() => {
     const relevant = filterByUser(gameSaves);
     if (relevant.length === 0) {

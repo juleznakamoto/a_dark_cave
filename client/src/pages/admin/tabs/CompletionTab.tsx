@@ -4,7 +4,7 @@ import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from "recha
 interface CompletionTabProps {
   gameSaves: any[];
   totalUserCount: number;
-  getGameCompletionStats: () => Array<{ name: string; value: number }>;
+  getGameCompletionStats: Array<{ name: string; value: number }>;
   COLORS: string[];
 }
 
@@ -71,7 +71,7 @@ export default function CompletionTab(props: CompletionTabProps) {
           <ResponsiveContainer width="100%" height={300}>
             <PieChart>
               <Pie
-                data={getGameCompletionStats()}
+                data={getGameCompletionStats}
                 cx="50%"
                 cy="50%"
                 labelLine={false}
@@ -80,7 +80,7 @@ export default function CompletionTab(props: CompletionTabProps) {
                 fill="#8884d8"
                 dataKey="value"
               >
-                {getGameCompletionStats().map((entry, index) => (
+                {getGameCompletionStats.map((entry, index) => (
                   <Cell
                     key={`cell-${index}`}
                     fill={COLORS[index % COLORS.length]}
