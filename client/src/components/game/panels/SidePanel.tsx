@@ -791,7 +791,12 @@ export default function SidePanel() {
         const fortAttack = bastion_stats.attackFromFortifications || 0;
         const strengthAttack = bastion_stats.attackFromStrength || 0;
         if (fortAttack > 0 || strengthAttack > 0) {
-          tooltip = `${fortAttack} from Fortifications\n${strengthAttack} from Strength`;
+          tooltip = (
+            <>
+              <div>{fortAttack} from Fortifications</div>
+              <div>{strengthAttack} from Strength</div>
+            </>
+          );
         }
       }
 
