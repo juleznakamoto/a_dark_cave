@@ -1314,7 +1314,6 @@ export default function AdminDashboard() {
 
               <TabsContent value="resources">
                 <ResourcesTab
-                  clickData={clickData}
                   gameSaves={gameSaves}
                   selectedUser={selectedUser}
                   showCompletedOnly={showCompletedOnly}
@@ -1323,8 +1322,8 @@ export default function AdminDashboard() {
                   setSelectedStats={setSelectedStats}
                   selectedResources={selectedResources}
                   setSelectedResources={setSelectedResources}
-                  getStatsOverPlaytime={getStatsOverPlaytime}
-                  getResourceStatsOverPlaytime={getResourceStatsOverPlaytime}
+                  getStatsOverPlaytime={() => getStatsOverPlaytime}
+                  getResourceStatsOverPlaytime={() => getResourceStatsOverPlaytime}
                   COLORS={COLORS}
                 />
               </TabsContent>
