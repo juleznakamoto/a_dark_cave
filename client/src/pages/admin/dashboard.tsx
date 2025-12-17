@@ -401,7 +401,11 @@ export default function AdminDashboard() {
   // All memos MUST be defined before conditional returns to comply with React rules
   const getStatsOverPlaytime = useMemo(() => {
     const relevant = filterByUser(gameSaves);
+    console.log('📊 getStatsOverPlaytime - relevant saves:', relevant.length);
+    console.log('📊 getStatsOverPlaytime - clickData length:', clickData.length);
+    
     if (relevant.length === 0) {
+      console.log('📊 No relevant saves, returning empty data');
       return Array.from({ length: 24 }, (_, i) => ({
         time: `${i}h`,
         strength: 0,
@@ -439,7 +443,7 @@ export default function AdminDashboard() {
       });
     });
 
-    return Array.from({ length: 24 }, (_, i) => {
+    const result = Array.from({ length: 24 }, (_, i) => {
       const stats = timeMap.get(i)!;
       return {
         time: `${i}h`,
@@ -449,13 +453,20 @@ export default function AdminDashboard() {
         madness: stats.madness.length > 0 ? stats.madness.reduce((a, b) => a + b, 0) / stats.madness.length : 0,
       };
     });
+    
+    console.log('📊 getStatsOverPlaytime result:', result);
+    return result;
   }, [gameSaves, clickData, selectedUser, showCompletedOnly]);
 
   const getResourceStatsOverPlaytime = useMemo(() => {
     const relevant = filterByUser(gameSaves);
     const resourceKeys = ['food', 'wood', 'stone', 'iron', 'coal', 'sulfur', 'obsidian', 'adamant', 'moonstone', 'leather', 'steel', 'gold', 'silver'];
 
+    console.log('📦 getResourceStatsOverPlaytime - relevant saves:', relevant.length);
+    console.log('📦 getResourceStatsOverPlaytime - clickData length:', clickData.length);
+
     if (relevant.length === 0) {
+      console.log('📦 No relevant saves, returning empty data');
       return Array.from({ length: 24 }, (_, i) => {
         const result: any = { time: `${i}h` };
         resourceKeys.forEach(key => result[key] = 0);
@@ -470,6 +481,7 @@ export default function AdminDashboard() {
       timeMap.set(i, emptyData);
     }
 
+    let totalSnapshotsFound = 0;
     relevant.forEach((save) => {
       const clicksForUser = clickData.filter((c) => c.user_id === save.user_id);
       if (clicksForUser.length === 0) return;
@@ -483,6 +495,7 @@ export default function AdminDashboard() {
         if (bucket >= 0 && bucket < 24) {
           const state = click.game_state_snapshot?.resources;
           if (state) {
+            totalSnapshotsFound++;
             const data = timeMap.get(bucket)!;
             resourceKeys.forEach(key => {
               data[key].push(state[key] || 0);
@@ -492,7 +505,9 @@ export default function AdminDashboard() {
       });
     });
 
-    return Array.from({ length: 24 }, (_, i) => {
+    console.log('📦 Total resource snapshots found:', totalSnapshotsFound);
+
+    const result = Array.from({ length: 24 }, (_, i) => {
       const resources = timeMap.get(i)!;
       const result: any = { time: `${i}h` };
       resourceKeys.forEach(key => {
@@ -500,11 +515,18 @@ export default function AdminDashboard() {
       });
       return result;
     });
+    
+    console.log('📦 getResourceStatsOverPlaytime result:', result);
+    return result;
   }, [gameSaves, clickData, selectedUser, showCompletedOnly, selectedResources]);
 
   const getButtonUpgradesOverPlaytime = useMemo(() => {
     const relevant = filterByUser(gameSaves);
+    console.log('⬆️ getButtonUpgradesOverPlaytime - relevant saves:', relevant.length);
+    console.log('⬆️ getButtonUpgradesOverPlaytime - clickData length:', clickData.length);
+    
     if (relevant.length === 0) {
+      console.log('⬆️ No relevant saves, returning empty data');
       return Array.from({ length: 24 }, (_, i) => ({
         time: `${i}h`,
         caveExplore: 1, mineStone: 1, mineIron: 1, mineCoal: 1, mineSulfur: 1, mineObsidian: 1, mineAdamant: 1, hunt: 1, chopWood: 1,
@@ -516,6 +538,7 @@ export default function AdminDashboard() {
       timeMap.set(i, { caveExplore: [], mineStone: [], mineIron: [], mineCoal: [], mineSulfur: [], mineObsidian: [], mineAdamant: [], hunt: [], chopWood: [] });
     }
 
+    let totalButtonLevelsFound = 0;
     relevant.forEach((save) => {
       const clicksForUser = clickData.filter((c) => c.user_id === save.user_id);
       if (clicksForUser.length === 0) return;
@@ -529,6 +552,7 @@ export default function AdminDashboard() {
         if (bucket >= 0 && bucket < 24) {
           const state = click.game_state_snapshot;
           if (state?.buttonLevels) {
+            totalButtonLevelsFound++;
             const data = timeMap.get(bucket)!;
             data.caveExplore.push(state.buttonLevels.caveExplore || 1);
             data.mineStone.push(state.buttonLevels.mineStone || 1);
@@ -544,7 +568,9 @@ export default function AdminDashboard() {
       });
     });
 
-    return Array.from({ length: 24 }, (_, i) => {
+    console.log('⬆️ Total button level snapshots found:', totalButtonLevelsFound);
+
+    const result = Array.from({ length: 24 }, (_, i) => {
       const levels = timeMap.get(i)!;
       return {
         time: `${i}h`,
@@ -559,6 +585,9 @@ export default function AdminDashboard() {
         chopWood: levels.chopWood.length > 0 ? levels.chopWood.reduce((a, b) => a + b, 0) / levels.chopWood.length : 1,
       };
     });
+    
+    console.log('⬆️ getButtonUpgradesOverPlaytime result:', result);
+    return result;
   }, [gameSaves, clickData, selectedUser, showCompletedOnly]);
 
   const getGameCompletionStats = useCallback(() => {
