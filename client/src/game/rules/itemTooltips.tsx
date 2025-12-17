@@ -3,6 +3,7 @@ import {
   toolEffects,
   clothingEffects,
   bookEffects,
+  fellowshipEffects,
 } from "./effects";
 import { villageBuildActions } from "./villageBuildActions";
 import { calculateBastionStats } from "../bastionStats";
@@ -126,7 +127,7 @@ export function renderItemTooltip(
         : itemType === "book"
           ? bookEffects[itemId]
           : itemType === "fellowship"
-            ? bookEffects[itemId]
+            ? fellowshipEffects[itemId]
             : clothingEffects[itemId];
 
   if (!effect) return null;
