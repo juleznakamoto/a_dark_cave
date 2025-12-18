@@ -171,8 +171,7 @@ export default function ResourcesTab(props: ResourcesTabProps) {
                     new Set([
                       "food", "bones", "fur", "wood", "stone", "iron", "coal",
                       "sulfur", "obsidian", "adamant", "moonstone", "leather",
-                      "steel", "torch", "black_powder", "ember_bomb",
-                      "ashfire_dust", "ashfire_bomb", "void_bomb", "silver", "gold",
+                      "steel", "silver", "gold",
                     ]),
                   )
                 }
@@ -191,8 +190,7 @@ export default function ResourcesTab(props: ResourcesTabProps) {
               {[
                 "food", "bones", "fur", "wood", "stone", "iron", "coal",
                 "sulfur", "obsidian", "adamant", "moonstone", "leather",
-                "steel", "torch", "black_powder", "ember_bomb",
-                "ashfire_dust", "ashfire_bomb", "void_bomb", "silver", "gold",
+                "steel", "silver", "gold",
               ].map((resource) => (
                 <label
                   key={resource}
