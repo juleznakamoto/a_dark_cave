@@ -39,10 +39,11 @@ export const gameStateSchema = z.object({
       leather_totem: z.number().min(0).default(0),
       iron: z.number().min(0).default(0),
       coal: z.number().min(0).default(0),
-      steel: z.number().min(0).default(0),
       sulfur: z.number().min(0).default(0),
       obsidian: z.number().min(0).default(0),
       adamant: z.number().min(0).default(0),
+      steel: z.number().min(0).default(0),
+      black_steel: z.number().min(0).default(0),
       moonstone: z.number().min(0).default(0),
       black_powder: z.number().min(0).default(0),
       ember_bomb: z.number().min(0).default(0),
@@ -52,7 +53,6 @@ export const gameStateSchema = z.object({
       torch: z.number().min(0).default(0),
       silver: z.number().min(0).default(0),
       gold: z.number().min(0).default(0),
-      black_steel: z.number().min(0).default(0),
     })
     .default({}),
   stats: z
