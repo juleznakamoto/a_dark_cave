@@ -61,17 +61,35 @@ export default function AttackWavesChart() {
 
   const handleProvoke = async (waveId: string) => {
     const timer = attackWaveTimers?.[waveId];
+    console.log('[PROVOKE] Button clicked for wave:', waveId, {
+      timer,
+      timeRemaining: timeRemaining[waveId],
+      hasTimer: !!timer,
+      isDefeated: timer?.defeated,
+      isProvoked: timer?.provoked,
+    });
+
     if (timer && !timer.defeated && timeRemaining[waveId] > 0 && !timer.provoked) {
+      console.log('[PROVOKE] Conditions met, updating state...');
+
+      // Set the timer to expired and mark as provoked
       useGameStore.setState((state) => ({
         attackWaveTimers: {
           ...state.attackWaveTimers,
           [waveId]: {
             ...timer,
-            elapsedTime: timer.duration, // Set elapsed to duration (timer expired)
+            elapsedTime: timer.duration,
             provoked: true,
           },
         },
       }));
+
+      console.log('[PROVOKE] State updated, timer set to expired and provoked');
+
+      // Check if event will be triggered
+      const state = useGameStore.getState();
+      const updatedTimer = state.attackWaveTimers?.[waveId];
+      console.log('[PROVOKE] Updated timer state:', updatedTimer);
 
       // Trigger immediate save to persist provoked state
       const { manualSave } = await import('@/game/loop');
