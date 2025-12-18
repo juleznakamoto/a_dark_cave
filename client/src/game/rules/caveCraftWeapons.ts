@@ -400,7 +400,7 @@ export function handleCraftFrostglassSword(
   result.logEntries!.push({
     id: `frostglass-sword-forged-${Date.now()}`,
     message:
-      "The Grand Blacksmith's forge burns with ethereal blue flames as the frostglass is shaped into a magnificent sword. The blade gleams with an otherworldly cold light, radiating immense power.",
+      "The blacksmith's forge burns with ethereal blue flames as the frostglass is shaped into a magnificent sword. The blade gleams with an otherworldly cold light, radiating immense power.",
     timestamp: Date.now(),
     type: "system",
   });
@@ -436,7 +436,7 @@ export function handleCraftNightshadeBow(
   result.logEntries!.push({
     id: `nightshade-bow-crafted-${Date.now()}`,
     message:
-      "You craft a bow from dark wood. Its arrows will carry poison into your enemies, dealing damage over time.",
+      "You craft a bow from dark wood. Its arrows will carry poison into your enemies.",
     timestamp: Date.now(),
     type: "system",
   });
@@ -461,7 +461,7 @@ export function handleCraftBloodstoneStaff(
   result.logEntries!.push({
     id: `bloodstone-staff-crafted-${Date.now()}`,
     message:
-      "The wizard channels his arcane power into the bloodstone gems, fusing them with ancient wood. The Bloodstone Staff pulses with crimson energy, radiating both strength and forbidden knowledge.",
+      "The wizard channels his arcane power into the bloodstone gems, fusing them with ancient wood. The Bloodstone Staff pulses with crimson energy, radiating strength and forbidden knowledge.",
     timestamp: Date.now(),
     type: "system",
   });
