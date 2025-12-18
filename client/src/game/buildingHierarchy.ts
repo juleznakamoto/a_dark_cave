@@ -39,7 +39,7 @@ export const BUILDING_HIERARCHIES: Record<string, string[]> = {
   cabin: ["cabin", "greatCabin"],
   
   // Clerk chain
-  clerk: ["clerksHut", "scriptorium"],
+  clerk: ["clerksHut", "scriptorium", "inkwardenAcademy"],
 };
 
 /**
