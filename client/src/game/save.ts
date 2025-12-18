@@ -259,12 +259,12 @@ export async function saveGame(
 
         // Log snapshot to verify stats are included
         if (resourceData) {
-          const hasStats = Object.keys(resourceData).some(key => 
+          const hasStats = Object.keys(resourceData).some(key =>
             ['luck', 'strength', 'knowledge', 'madness'].includes(key)
           );
           logger.log('[SAVE CLOUD] 📊 Resource snapshot includes stats:', {
             hasStats,
-            statsKeys: Object.keys(resourceData).filter(key => 
+            statsKeys: Object.keys(resourceData).filter(key =>
               ['luck', 'strength', 'knowledge', 'madness'].includes(key)
             ),
             snapshotKeys: Object.keys(resourceData),
@@ -288,20 +288,38 @@ export async function saveGame(
         if (sanitizedState.gameId && !stateDiff.gameId) {
           stateDiff.gameId = sanitizedState.gameId;
         }
-        
+
         // Ensure playTime is an integer for the database
         if (stateDiff.playTime !== undefined) {
           stateDiff.playTime = Math.floor(stateDiff.playTime);
         }
 
+        // Create a snapshot of the entire game state
+        const gameStateSnapshot = {
+          ...sanitizedState,
+          // Include analytics data in the snapshot if it exists
+          ...(clickData && { clicks: clickData }),
+          ...(resourceData && { resources: resourceData }),
+        };
+
         // Save diff to Supabase
-        await saveGameToSupabase(
-          stateDiff,
-          gameState.playTime,
-          isNewGame,
-          clickData,
-          resourceData,
-        );
+        const response = await fetch("/api/game/save", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            gameStateDiff: stateDiff,
+            clickAnalytics: clickData,
+            resourceAnalytics: resourceData,
+            gameStateSnapshot: gameStateSnapshot,
+            clearClicks: isAutosave,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error(`API call failed with status: ${response.status}`);
+        }
 
         // Update lastCloudState after successful cloud save
         await db.put("lastCloudState", sanitizedState, LAST_CLOUD_STATE_KEY);
@@ -368,7 +386,7 @@ export async function loadGame(): Promise<GameState | null> {
           // Both saves exist - use the most recent one
           const cloudPlayTime = cloudSave.playTime || 0;
           const localPlayTime = localSave.playTime || 0;
-          
+
           logger.log("[LOAD] 🔍 Comparing local and cloud saves:", {
             cloudPlayTime,
             localPlayTime,
@@ -379,7 +397,7 @@ export async function loadGame(): Promise<GameState | null> {
           // Use whichever has more playtime (most progress)
           if (localPlayTime > cloudPlayTime) {
             logger.log("[LOAD] 💾 Local save is newer - using local and syncing to cloud");
-            
+
             const stateWithDefaults = {
               ...localSave.gameState,
               cooldownDurations: localSave.gameState.cooldownDurations || {},
