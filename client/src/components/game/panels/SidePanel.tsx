@@ -19,12 +19,8 @@ import {
 } from "@/game/rules/effectsCalculation";
 import { bookEffects, fellowshipEffects } from "@/game/rules/effects";
 import { gameStateSchema } from "@shared/schema";
-
-import {
-  getStorageLimitText,
-  isResourceLimited,
-  getResourceLimit,
-} from "@/game/resourceLimits"; // Assuming this is the correct path
+import { getStorageLimitText, isResourceLimited, getResourceLimit } from "@/game/resourceLimits";
+import { shouldHideBuilding, shouldExcludeFromBuildingsSection } from "@/game/buildingHierarchy";
 
 // Extract property order from schema by parsing defaults
 const defaultGameState = gameStateSchema.parse({});
@@ -295,117 +291,16 @@ export default function SidePanel() {
   // Dynamically generate building items from state (in schema order)
   const buildingItems = buildingOrder
     .filter((key) => {
-      const value = buildings[key as keyof typeof buildings];
+      if (shouldExcludeFromBuildingsSection(key)) {
+        return false;
+      }
       // Filter out fortification buildings from the buildings section
       if (
         ["bastion", "watchtower", "palisades", "fortifiedMoat"].includes(key)
       ) {
         return false;
       }
-      // Hide blacksmith when Grand Blacksmith is built
-      if (key === "blacksmith" && buildings.advancedBlacksmith > 0) {
-        return false;
-      }
-      // Hide blacksmith when Grand Blacksmith is built
-      if (key === "blacksmith" && buildings.grandBlacksmith > 0) {
-        return false;
-      }
-      // Hide advanced blacksmith when Grand Blacksmith is built
-      if (key === "advancedBlacksmith" && buildings.grandBlacksmith > 0) {
-        return false;
-      }
-      // Hide Trade Post when Grand Bazaar or Merchants Guild is built
-      if (
-        key === "tradePost" &&
-        (buildings.grandBazaar > 0 || buildings.merchantsGuild > 0)
-      ) {
-        return false;
-      }
-      // Hide Grand Bazaar when Merchants Guild is built
-      if (key === "grandBazaar" && buildings.merchantsGuild > 0) {
-        return false;
-      }
-      // Hide tannery when Master Tannery is built
-      if (key === "tannery" && buildings.masterTannery > 0) {
-        return false;
-      }
-      // Hide foundry when Prime Foundry or Masterwork Foundry is built
-      if (
-        key === "foundry" &&
-        (buildings.primeFoundry > 0 || buildings.masterworkFoundry > 0)
-      ) {
-        return false;
-      }
-      // Hide Prime Foundry when Masterwork Foundry is built
-      if (key === "primeFoundry" && buildings.masterworkFoundry > 0) {
-        return false;
-      }
-      // Hide Black Monolith when Pillar of Clarity or Bone Temple is built
-      if (
-        key === "blackMonolith" &&
-        (buildings.pillarOfClarity > 0 || buildings.boneTemple > 0)
-      ) {
-        return false;
-      }
-      // Hide altar if shrine or temple is built (similar logic for other tiered buildings)
-      if (
-        key === "altar" &&
-        (buildings.shrine > 0 || buildings.temple > 0 || buildings.sanctum > 0)
-      ) {
-        return false;
-      }
-      if (key === "shrine" && (buildings.temple > 0 || buildings.sanctum > 0)) {
-        return false;
-      }
-      if (key === "temple" && buildings.sanctum > 0) {
-        return false;
-      }
-      if (
-        key === "blackMonolith" &&
-        (buildings.pillarOfClarity > 0 || buildings.boneTemple > 0)
-      ) {
-        return false;
-      }
-
-      // Hide lower-tier storage buildings
-      if (
-        key === "supplyHut" &&
-        (buildings.storehouse > 0 ||
-          buildings.fortifiedStorehouse > 0 ||
-          buildings.villageWarehouse > 0 ||
-          buildings.grandRepository > 0 ||
-          buildings.greatVault > 0)
-      ) {
-        return false;
-      }
-      if (
-        key === "storehouse" &&
-        (buildings.fortifiedStorehouse > 0 ||
-          buildings.villageWarehouse > 0 ||
-          buildings.grandRepository > 0 ||
-          buildings.greatVault > 0)
-      ) {
-        return false;
-      }
-      if (
-        key === "fortifiedStorehouse" &&
-        (buildings.villageWarehouse > 0 ||
-          buildings.grandRepository > 0 ||
-          buildings.greatVault > 0)
-      ) {
-        return false;
-      }
-      if (
-        key === "villageWarehouse" &&
-        (buildings.grandRepository > 0 || buildings.greatVault > 0)
-      ) {
-        return false;
-      }
-      if (key === "grandRepository" && buildings.greatVault > 0) {
-        return false;
-      }
-
-      return (value ?? 0) > 0;
+      return (buildings[key as keyof typeof buildings] ?? 0) > 0;
     })
     .map((key) => {
       const value = buildings[key as keyof typeof buildings];
@@ -435,83 +330,8 @@ export default function SidePanel() {
     })
     .filter((item) => item !== null) // Remove nulls from buildings not present
     .filter((item) => {
-      // Only show the highest pit level
-      if (
-        item.id === "shallowPit" &&
-        (buildings.deepeningPit > 0 ||
-          buildings.deepPit > 0 ||
-          buildings.bottomlessPit > 0)
-      ) {
-        return false;
-      }
-      if (
-        item.id === "deepeningPit" &&
-        (buildings.deepPit > 0 || buildings.bottomlessPit > 0)
-      ) {
-        return false;
-      }
-      if (item.id === "deepPit" && buildings.bottomlessPit > 0) {
-        return false;
-      }
-      // Hide cabin when greatCabin is built
-      if (item.id === "cabin" && buildings.greatCabin > 0) {
-        return false;
-      }
-      // Hide clerksHut when scriptorium is built
-      if (item.id === "clerksHut" && buildings.scriptorium > 0) {
-        return false;
-      }
-      // Only show the highest religious building level
-      if (
-        item.id === "altar" &&
-        (buildings.shrine > 0 || buildings.temple > 0 || buildings.sanctum > 0)
-      ) {
-        return false;
-      }
-      if (
-        item.id === "shrine" &&
-        (buildings.temple > 0 || buildings.sanctum > 0)
-      ) {
-        return false;
-      }
-      if (item.id === "temple" && buildings.sanctum > 0) {
-        return false;
-      }
-      // Only show the highest storage building level
-      if (
-        item.id === "supplyHut" &&
-        (buildings.storehouse > 0 ||
-          buildings.fortifiedStorehouse > 0 ||
-          buildings.villageWarehouse > 0 ||
-          buildings.grandRepository > 0 ||
-          buildings.greatVault > 0)
-      ) {
-        return false;
-      }
-      if (
-        item.id === "storehouse" &&
-        (buildings.fortifiedStorehouse > 0 ||
-          buildings.villageWarehouse > 0 ||
-          buildings.grandRepository > 0 ||
-          buildings.greatVault > 0)
-      ) {
-        return false;
-      }
-      if (
-        item.id === "fortifiedStorehouse" &&
-        (buildings.villageWarehouse > 0 ||
-          buildings.grandRepository > 0 ||
-          buildings.greatVault > 0)
-      ) {
-        return false;
-      }
-      if (
-        item.id === "villageWarehouse" &&
-        (buildings.grandRepository > 0 || buildings.greatVault > 0)
-      ) {
-        return false;
-      }
-      if (item.id === "grandRepository" && buildings.greatVault > 0) {
+      // Hide buildings that are superseded by higher-tier versions or have specific conditions
+      if (shouldHideBuilding(item.id, buildings)) {
         return false;
       }
       return true;
