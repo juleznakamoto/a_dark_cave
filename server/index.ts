@@ -333,6 +333,7 @@ app.get("/api/admin/data", async (req, res) => {
       // Count registration methods
       allUsersForMethod.forEach((user: any) => {
         // Check if user has Google as identity provider
+        // A user has Google OAuth if they have a 'google' identity
         const hasGoogleProvider = user.identities?.some(
           (identity: any) => identity.provider === 'google'
         );
@@ -340,7 +341,7 @@ app.get("/api/admin/data", async (req, res) => {
         if (hasGoogleProvider) {
           registrationMethodStats.googleRegistrations++;
         } else {
-          // If no Google provider, assume email registration
+          // If no Google provider, it's an email registration
           registrationMethodStats.emailRegistrations++;
         }
       });

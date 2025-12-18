@@ -104,66 +104,57 @@ export default function OverviewTab(props: OverviewTabProps) {
         </Card>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Card>
-          <CardHeader>
-            <CardTitle>Email Registrations</CardTitle>
-            <CardDescription>Users registered with email</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="text-4xl font-bold">{registrationMethodStats?.emailRegistrations || 0}</p>
-            <p className="text-sm text-muted-foreground mt-2">
-              {totalUserCount > 0
-                ? Math.round((registrationMethodStats.emailRegistrations / totalUserCount) * 100)
-                : 0}% of total users
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Google Registrations</CardTitle>
-            <CardDescription>Users registered with Google OAuth</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="text-4xl font-bold">{registrationMethodStats?.googleRegistrations || 0}</p>
-            <p className="text-sm text-muted-foreground mt-2">
-              {totalUserCount > 0
-                ? Math.round((registrationMethodStats.googleRegistrations / totalUserCount) * 100)
-                : 0}% of total users
-            </p>
-          </CardContent>
-        </Card>
-      </div>
-
       <Card>
         <CardHeader>
-          <CardTitle>Registration Method Distribution</CardTitle>
-          <CardDescription>How users are registering</CardDescription>
+          <CardTitle>Registration Methods</CardTitle>
+          <CardDescription>How users are registering for the game</CardDescription>
         </CardHeader>
         <CardContent>
-          <ResponsiveContainer width="100%" height={300}>
-            <PieChart>
-              <Pie
-                data={[
-                  { name: 'Email', value: registrationMethodStats?.emailRegistrations || 0 },
-                  { name: 'Google', value: registrationMethodStats?.googleRegistrations || 0 },
-                ]}
-                cx="50%"
-                cy="50%"
-                labelLine={false}
-                label={({ name, value, percent }) => `${name}: ${value} (${(percent * 100).toFixed(0)}%)`}
-                outerRadius={80}
-                fill="#8884d8"
-                dataKey="value"
-              >
-                <Cell fill="#8884d8" />
-                <Cell fill="#82ca9d" />
-              </Pie>
-              <Tooltip />
-              <Legend />
-            </PieChart>
-          </ResponsiveContainer>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div>
+              <p className="text-sm text-muted-foreground mb-1">Email Registrations</p>
+              <p className="text-3xl font-bold">{registrationMethodStats?.emailRegistrations || 0}</p>
+              <p className="text-xs text-muted-foreground mt-1">
+                {totalUserCount > 0
+                  ? Math.round((registrationMethodStats.emailRegistrations / totalUserCount) * 100)
+                  : 0}% of total users
+              </p>
+            </div>
+            
+            <div>
+              <p className="text-sm text-muted-foreground mb-1">Google OAuth</p>
+              <p className="text-3xl font-bold">{registrationMethodStats?.googleRegistrations || 0}</p>
+              <p className="text-xs text-muted-foreground mt-1">
+                {totalUserCount > 0
+                  ? Math.round((registrationMethodStats.googleRegistrations / totalUserCount) * 100)
+                  : 0}% of total users
+              </p>
+            </div>
+
+            <div>
+              <ResponsiveContainer width="100%" height={120}>
+                <PieChart>
+                  <Pie
+                    data={[
+                      { name: 'Email', value: registrationMethodStats?.emailRegistrations || 0 },
+                      { name: 'Google', value: registrationMethodStats?.googleRegistrations || 0 },
+                    ]}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={25}
+                    outerRadius={50}
+                    fill="#8884d8"
+                    dataKey="value"
+                    paddingAngle={2}
+                  >
+                    <Cell fill="#8884d8" />
+                    <Cell fill="#82ca9d" />
+                  </Pie>
+                  <Tooltip />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
         </CardContent>
       </Card>
 
