@@ -219,7 +219,7 @@ export const villageBuildActions: Record<string, Action> = {
     description: "Advanced blacksmith capable of creating the finest products",
     tooltipEffects: [
       "Unlocks Schematic Crafting",
-      // "Unlocks Black Steel Crafting",
+      // "Unlocks Blacksteel Crafting",
       "5 % Craft Discount",
     ],
     building: true,
@@ -443,7 +443,7 @@ export const villageBuildActions: Record<string, Action> = {
     description: "Foundry with superior steel production",
     tooltipEffects: [
       "Unlocks Steel Forgers",
-      // "Unlocks Black Steel Forgers",
+      // "Unlocks Blacksteel Forgers",
       "Steel Forger: +2 Steel",
     ],
     building: true,
@@ -1624,7 +1624,7 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildFortifiedStorehouse",
     label: "Fortified Storehouse",
     description: "Reinforced storage building with enhanced capacity",
-    tooltipEffects: ["Resource Limit: 5,000", "2.5% Crafting Discount"],
+    tooltipEffects: ["Resource Limit: 5,000", "2.5% Craft Discount"],
     building: true,
     show_when: {
       1: {
@@ -1654,8 +1654,8 @@ export const villageBuildActions: Record<string, Action> = {
     description: "Large warehouse capable of storing vast quantities",
     tooltipEffects: [
       "Resource Limit: 10.000",
-      "2.5% Crafting Discount",
-      "2.5% Building Discount",
+      "2.5% Craft Discount",
+      "2.5% Build Discount",
     ],
     building: true,
     show_when: {
@@ -1688,8 +1688,8 @@ export const villageBuildActions: Record<string, Action> = {
     description: "Massive repository with exceptional storage capacity",
     tooltipEffects: [
       "Resource Limit: 25.000",
-      "5% Crafting Discount",
-      "2.5% Building Discount",
+      "5% Craft Discount",
+      "2.5% Build Discount",
     ],
     building: true,
     show_when: {
@@ -1722,8 +1722,8 @@ export const villageBuildActions: Record<string, Action> = {
     description: "Supreme vault capable of storing immense resources",
     tooltipEffects: [
       "Resource Limit: 50.000",
-      "5% Crafting Discount",
-      "5% Building Discount",
+      "5% Craft Discount",
+      "5% Build Discount",
     ],
     building: true,
     show_when: {

@@ -100,11 +100,11 @@ export const populationJobs: Record<string, PopulationJobConfig> = {
       { resource: "food", amount: -5, interval: 15000 },
     ],
   },
-  black_steel_forger: {
-    id: "black_steel_forger",
-    label: "black_steel_forger",
+  blacksteel_forger: {
+    id: "blacksteel_forger",
+    label: "blacksteel_forger",
     production: [
-      { resource: "black_steel", amount: 1, interval: 15000 },
+      { resource: "blacksteel", amount: 1, interval: 15000 },
       { resource: "steel", amount: -5, interval: 15000 },
       { resource: "obsidian", amount: -5, interval: 15000 },
       { resource: "adamant", amount: -5, interval: 15000 },

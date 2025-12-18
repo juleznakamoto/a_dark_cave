@@ -339,7 +339,7 @@ export function handleBuildMasterworkFoundry(
     masterworkFoundryResult.logEntries!.push({
       id: `masterwork-foundry-built-${Date.now()}`,
       message:
-        "The Masterwork Foundry stands complete, a monument to supreme metallurgical mastery. Within its fires, black steel can be forged, nearly unbreakable, but very difficult to produce.",
+        "The Masterwork Foundry stands complete, a monument to supreme metallurgical mastery. Within its fires, blacksteel can be forged, nearly unbreakable, but very difficult to produce.",
       timestamp: Date.now(),
       type: "system",
     });

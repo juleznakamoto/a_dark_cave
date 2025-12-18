@@ -152,8 +152,8 @@ export default function VillagePanel() {
       showWhen: () => state.buildings.foundry >= 1,
     },
     {
-      id: "black_steel_forger",
-      label: "Black Steel Forger",
+      id: "blacksteel_forger",
+      label: "Blacksteel Forger",
       showWhen: () => false, //state.buildings.masterworkFoundry >= 1,
     },
     {
