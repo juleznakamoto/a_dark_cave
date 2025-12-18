@@ -434,7 +434,7 @@ export const villageBuildActions: Record<string, Action> = {
     },
     productionEffects: {
       steel_forger: {
-        steel: 2,
+        steel: 1,
       },
     },
     cooldown: 40,
@@ -472,7 +472,7 @@ export const villageBuildActions: Record<string, Action> = {
     },
     productionEffects: {
       steel_forger: {
-        steel: 1,
+        steel: 2,
       },
     },
     cooldown: 60,
