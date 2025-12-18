@@ -186,6 +186,15 @@ export default function ItemProgressChart() {
         maxCount: 3,
         reward: 500,
       },
+      {
+        itemType: "schematic_weapons",
+        itemKeys: ["arbalest", "nightshade_bow", "stormglass_halberd"],
+        color: tailwindToHex("gray-400/80"),
+        label: "Schematic Mastery",
+        category: "weapons",
+        maxCount: 3,
+        reward: 750,
+      },
     ],
     // Fifth ring: Books
     [],
