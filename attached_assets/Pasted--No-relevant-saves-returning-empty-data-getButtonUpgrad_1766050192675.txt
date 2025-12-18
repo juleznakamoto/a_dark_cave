@@ -1,0 +1,106 @@
+📦 No relevant saves, returning empty data
+ ⬆️ getButtonUpgradesOverPlaytime - relevant saves: 0
+ ⬆️ getButtonUpgradesOverPlaytime - clickData length: 0
+ ⬆️ No relevant saves, returning empty data
+ 📊 getStatsOverPlaytime - relevant saves: 1000
+ 📊 getStatsOverPlaytime - clickData length: 1000
+ 📊 getStatsOverPlaytime result: Array(24)
+ 📦 getResourceStatsOverPlaytime - relevant saves: 1000
+ 📦 getResourceStatsOverPlaytime - clickData length: 1000
+ 📦 Total resource snapshots found: 0
+ 📦 getResourceStatsOverPlaytime result: Array(24)
+ ⬆️ getButtonUpgradesOverPlaytime - relevant saves: 1000
+ ⬆️ getButtonUpgradesOverPlaytime - clickData length: 1000
+ ⬆️ Total button level snapshots found: 0
+ ⬆️ getButtonUpgradesOverPlaytime result: Array(24)
+4dashboard:1 Uncaught (in promise) Error: A listener indicated an asynchronous response by returning true, but the message channel closed before a response was receivedUnderstand this error
+dashboard.tsx:404 📊 getStatsOverPlaytime - relevant saves: 1000
+dashboard.tsx:405 📊 getStatsOverPlaytime - clickData length: 1000
+dashboard.tsx:433 📊 User 6eeeac8c: 1 clicks
+dashboard.tsx:435 📊 First click stats: {strength: undefined, knowledge: undefined, luck: undefined, madness: undefined}
+dashboard.tsx:433 📊 User 7829b923: 1 clicks
+dashboard.tsx:435 📊 First click stats: {strength: undefined, knowledge: undefined, luck: undefined, madness: undefined}
+dashboard.tsx:433 📊 User 91d97466: 1 clicks
+dashboard.tsx:435 📊 First click stats: {strength: undefined, knowledge: undefined, luck: undefined, madness: undefined}
+dashboard.tsx:466 📊 Users processed: 971
+dashboard.tsx:467 📊 Clicks with stats: 0
+dashboard.tsx:468 📊 Clicks without stats: 971
+dashboard.tsx:481 📊 getStatsOverPlaytime result (first 3 buckets): (3) [{…}, {…}, {…}]
+dashboard.tsx:489 📦 getResourceStatsOverPlaytime - relevant saves: 1000
+dashboard.tsx:490 📦 getResourceStatsOverPlaytime - clickData length: 1000
+dashboard.tsx:519 📦 User 6eeeac8c: 1 clicks
+dashboard.tsx:521 📦 First click snapshot: undefined
+dashboard.tsx:519 📦 User 7829b923: 1 clicks
+dashboard.tsx:521 📦 First click snapshot: undefined
+dashboard.tsx:519 📦 User 91d97466: 1 clicks
+dashboard.tsx:521 📦 First click snapshot: undefined
+dashboard.tsx:547 📦 Total resource snapshots found: 0
+dashboard.tsx:548 📦 Users processed: 971
+dashboard.tsx:549 📦 Clicks with snapshots: 0
+dashboard.tsx:550 📦 Clicks without snapshots: 971
+dashboard.tsx:561 📦 getResourceStatsOverPlaytime result (first 3 buckets): (3) [{…}, {…}, {…}]
+dashboard.tsx:567 ⬆️ getButtonUpgradesOverPlaytime - relevant saves: 1000
+dashboard.tsx:568 ⬆️ getButtonUpgradesOverPlaytime - clickData length: 1000
+dashboard.tsx:594 ⬆️ User 6eeeac8c: 1 clicks
+dashboard.tsx:596 ⬆️ First click has game_state_snapshot: false
+dashboard.tsx:597 ⬆️ First click buttonLevels: undefined
+dashboard.tsx:594 ⬆️ User 7829b923: 1 clicks
+dashboard.tsx:596 ⬆️ First click has game_state_snapshot: false
+dashboard.tsx:597 ⬆️ First click buttonLevels: undefined
+dashboard.tsx:594 ⬆️ User 91d97466: 1 clicks
+dashboard.tsx:596 ⬆️ First click has game_state_snapshot: false
+dashboard.tsx:597 ⬆️ First click buttonLevels: undefined
+dashboard.tsx:629 ⬆️ Total button level snapshots found: 0
+dashboard.tsx:630 ⬆️ Users processed: 971
+dashboard.tsx:631 ⬆️ Clicks with buttonLevels: 0
+dashboard.tsx:632 ⬆️ Clicks without buttonLevels: 971
+dashboard.tsx:650 ⬆️ getButtonUpgradesOverPlaytime result (first 3 buckets): (3) [{…}, {…}, {…}]
+dashboard.tsx:906 📥 Loading click data: 1000 entries
+dashboard.tsx:908 📥 Sample click entry: {id: '7c6dc740-c31b-45a8-afae-69a9947b82a7', user_id: '91d97466-3455-4eb5-ad22-aa1ac6eb040a', timestamp: '2025-12-18T09:29:18.863904+00:00', clicks: {…}, created_at: '2025-12-17T14:06:55.932527+00:00', …}
+dashboard.tsx:909 📥 Click has game_state_snapshot: false
+dashboard.tsx:914 📥 Loading game saves: 1000 entries
+dashboard.tsx:906 📥 Loading click data: 1000 entries
+dashboard.tsx:908 📥 Sample click entry: {id: '7c6dc740-c31b-45a8-afae-69a9947b82a7', user_id: '91d97466-3455-4eb5-ad22-aa1ac6eb040a', timestamp: '2025-12-18T09:29:18.863904+00:00', clicks: {…}, created_at: '2025-12-17T14:06:55.932527+00:00', …}clicks: 180m: activate-sleep-mode: 1assign-coal_miner: 3assign-gatherer: 11assign-hunter: 10assign-iron_miner: 5assign-steel_forger: 1assign-tanner: 1boneTotems: 10buildAltar: 1buildBlacksmith: 1buildCabin: 1buildClerksHut: 1buildDarkEstate: 1buildDeepPit: 1buildDeepeningPit: 1buildFoundry: 1buildGreatCabin: 1buildScriptorium: 1buildShallowPit: 1buildStorehouse: 1buildSupplyHut: 1buildTannery: 1buildTradePost: 1buildTraps: 1buildWoodenHut: 7chopWood: 1255craftAdamantAxe: 1craftAdamantLantern: 1craftBoneTotem: 108craftCrudeBow: 1craftExplorerPack: 1craftHunterCloak: 1craftHuntsmanBow: 1craftIronAxe: 1craftIronLantern: 1craftIronPickaxe: 1craftIronSword: 1craftLoggersGloves: 1craftObsidianAxe: 1craftObsidianLantern: 1craftObsidianPickaxe: 1craftSteelAxe: 1craftSteelLantern: 1craftSteelPickaxe: 1craftStoneAxe: 1craftStonePickaxe: 1craftTorch: 10craftTorches: 35craftTorches3: 39craftTorches4: 4craftTorches5: 137craftTorches10: 42cube-close-cube01: 1cube-close-cube01-1765968972733: 1cube-close-cube02-1765970122374: 1cube-close-cube03-1765971731076: 1cube-close-cube04: 1cube-close-cube04-1765972693806: 1cube-close-cubeDiscovery-1765968779580: 1cube-cube01: 1cube-cube04: 1descendFurther: 30event-choice-acceptServices: 5event-choice-accept_help: 1event-choice-accept_oath: 1event-choice-acknowledge: 41event-choice-allowStay: 1event-choice-answerGold: 1event-choice-answerMan: 1event-choice-answerTime: 1event-choice-answerWind: 1event-choice-avoidLake: 1event-choice-buyMirror: 1event-choice-defendVillage: 2event-choice-denyServices: 5event-choice-doNothing: 3event-choice-freeSlaves: 1event-choice-investigate: 4event-choice-investigateHut: 1event-choice-keepFigure: 1event-choice-makeFeast: 3event-choice-noFeast: 4event-choice-sacrifice: 1event-choice-throw_away: 1event-choice-unpack_it: 1exploreCave: 16exploreRuins: 11exploreTemple: 18forestCave: 1hunt: 820layTrap: 2light-fire: 1lowChamber: 1merchant-buy_food_500_early: 2merchant-buy_leather_50_early: 1merchant-buy_leather_150_mid1: 1merchant-buy_stone_250_very_early: 1merchant-buy_stone_500_early: 2merchant-buy_wood_500_early: 2merchant-say-goodbye: 19merchant-sell_bones_100_early: 2merchant-sell_fur_100_early: 4merchant-sell_fur_250_mid1: 1merchant-sell_iron_100_early: 2merchant-sell_stone_100_early: 2merchant-sell_wood_250_mid1: 1merchant-trade_book_of_trials: 1merchant-trade_giant_trap: 1merchant-trade_occultist_map: 1merchant-trade_reinforced_rope: 1mineAdamant: 80mineCoal: 4mineIron: 92mineObsidian: 26mineStone: 202mineSulfur: 2occultistChamber: 1shop-purchase-gold_100_free: 1tradeGoldForLeather: 3tradeGoldForSteel: 6tradeSilverForGold: 24unassign-gatherer: 19unassign-hunter: 17unassign-iron_miner: 1unassign-tanner: 1ventureDeeper: 3[[Prototype]]: Object190m: {hunt: 19, chopWood: 37, mineCoal: 1, mineIron: 2, mineStone: 4, …}200m: {hunt: 27, chopWood: 58, mineCoal: 3, mineIron: 4, mineStone: 4, …}210m: {hunt: 59, chopWood: 102, mineCoal: 1, mineIron: 5, mineStone: 5, …}220m: {hunt: 59, chopWood: 73, mineCoal: 9, mineIron: 9, mineStone: 9, …}230m: {hunt: 64, animals: 2, chopWood: 91, buildWoodenHut: 1, craftBoneTotem: 10, …}240m: {hunt: 24, animals: 2, chopWood: 37, mineCoal: 4, mineIron: 4, …}250m: {hunt: 21, animals: 1, chopWood: 29, mineCoal: 4, mineIron: 4, …}260m: {hunt: 34, animals: 1, chopWood: 41, mineCoal: 4, mineIron: 4, …}270m: {hunt: 28, chopWood: 33, mineCoal: 2, mineIron: 2, mineStone: 2, …}280m: {hunt: 8, chopWood: 8, mineCoal: 4, mineIron: 4, mineStone: 4, …}290m: {hunt: 3, chopWood: 3, mineCoal: 1, mineIron: 1, mineStone: 1, …}300m: {hunt: 19, chopWood: 19, mineCoal: 2, mineIron: 2, mineStone: 2, …}310m: {hunt: 33, chopWood: 36, boneTotems: 1, craftTorches10: 2, exploreCitadel: 5, …}320m: {hunt: 14, animals: 1, chopWood: 14, assign-hunter: 2, buildStoneHut: 2, …}330m: {hunt: 35, animals: 1, chopWood: 42, boneTotems: 1, assign-hunter: 2, …}340m: {hunt: 25, chopWood: 25, mineCoal: 1, mineIron: 1, mineStone: 1, …}350m: {hunt: 20, chopWood: 24, craftEmberBomb: 1, exploreCitadel: 5, craftBoneTotems2: 4, …}360m: {hunt: 20, chopWood: 21, blastPortal: 1, buildStoneHut: 1, craftEmberBomb: 1, …}370m: {hunt: 10, animals: 1, chopWood: 11, boneTotems: 1, exploreCitadel: 4, …}380m: {hunt: 13, animals: 1, chopWood: 13, mineCoal: 1, mineIron: 1, …}390m: {hunt: 25, chopWood: 24, boneTotems: 2, buildSanctum: 1, assign-hunter: 5, …}400m: {hunt: 49, chopWood: 74, mineCoal: 1, mineIron: 1, mineStone: 1, …}410m: {hunt: 9, chopWood: 10, boneTotems: 1, mineAdamant: 1, exploreCitadel: 1, …}420m: {hunt: 18, chopWood: 24, boneTotems: 2, assign-hunter: 11, exploreCitadel: 4, …}430m: {hunt: 11, chopWood: 13, mineCoal: 8, mineIron: 9, mineStone: 9, …}440m: {hunt: 35, chopWood: 48, mineCoal: 8, mineIron: 9, mineStone: 9, …}450m: {hunt: 43, chopWood: 69, mineCoal: 10, mineIron: 10, hillGrave: 1, …}[[Prototype]]: Objectcreated_at: "2025-12-17T14:06:55.932527+00:00"id: "7c6dc740-c31b-45a8-afae-69a9947b82a7"resources: {180m: {…}, 190m: {…}, 200m: {…}, 210m: {…}, 220m: {…}, …}timestamp: "2025-12-18T09:29:18.863904+00:00"updated_at: "2025-12-17T14:06:55.932527+00:00"user_id: "91d97466-3455-4eb5-ad22-aa1ac6eb040a"[[Prototype]]: Object
+dashboard.tsx:909 📥 Click has game_state_snapshot: false
+dashboard.tsx:914 📥 Loading game saves: 1000 entries
+dashboard.tsx:404 📊 getStatsOverPlaytime - relevant saves: 1000
+dashboard.tsx:405 📊 getStatsOverPlaytime - clickData length: 1000
+dashboard.tsx:433 📊 User 91d97466: 1 clicks
+dashboard.tsx:435 📊 First click stats: {strength: undefined, knowledge: undefined, luck: undefined, madness: undefined}
+dashboard.tsx:433 📊 User 61e5256b: 1 clicks
+dashboard.tsx:435 📊 First click stats: {strength: undefined, knowledge: undefined, luck: undefined, madness: undefined}knowledge: undefinedluck: undefinedmadness: undefinedstrength: undefined[[Prototype]]: Object
+dashboard.tsx:433 📊 User 09e2e806: 1 clicks
+dashboard.tsx:435 📊 First click stats: {strength: undefined, knowledge: undefined, luck: undefined, madness: undefined}
+dashboard.tsx:466 📊 Users processed: 972
+dashboard.tsx:467 📊 Clicks with stats: 0
+dashboard.tsx:468 📊 Clicks without stats: 972
+dashboard.tsx:481 📊 getStatsOverPlaytime result (first 3 buckets): (3) [{…}, {…}, {…}]0: knowledge: 0luck: 0madness: 0strength: 0time: "0h"[[Prototype]]: Object1: knowledge: 0luck: 0madness: 0strength: 0time: "1h"[[Prototype]]: Object2: knowledge: 0luck: 0madness: 0strength: 0time: "2h"[[Prototype]]: Objectlength: 3[[Prototype]]: Array(0)
+dashboard.tsx:489 📦 getResourceStatsOverPlaytime - relevant saves: 1000
+dashboard.tsx:490 📦 getResourceStatsOverPlaytime - clickData length: 1000
+dashboard.tsx:519 📦 User 91d97466: 1 clicks
+dashboard.tsx:521 📦 First click snapshot: undefined
+dashboard.tsx:519 📦 User 61e5256b: 1 clicks
+dashboard.tsx:521 📦 First click snapshot: undefined
+dashboard.tsx:519 📦 User 09e2e806: 1 clicks
+dashboard.tsx:521 📦 First click snapshot: undefined
+dashboard.tsx:547 📦 Total resource snapshots found: 0
+dashboard.tsx:548 📦 Users processed: 972
+dashboard.tsx:549 📦 Clicks with snapshots: 0
+dashboard.tsx:550 📦 Clicks without snapshots: 972
+dashboard.tsx:561 📦 getResourceStatsOverPlaytime result (first 3 buckets): (3) [{…}, {…}, {…}]
+dashboard.tsx:567 ⬆️ getButtonUpgradesOverPlaytime - relevant saves: 1000
+dashboard.tsx:568 ⬆️ getButtonUpgradesOverPlaytime - clickData length: 1000
+dashboard.tsx:594 ⬆️ User 91d97466: 1 clicks
+dashboard.tsx:596 ⬆️ First click has game_state_snapshot: false
+dashboard.tsx:597 ⬆️ First click buttonLevels: undefined
+dashboard.tsx:594 ⬆️ User 61e5256b: 1 clicks
+dashboard.tsx:596 ⬆️ First click has game_state_snapshot: false
+dashboard.tsx:597 ⬆️ First click buttonLevels: undefined
+dashboard.tsx:594 ⬆️ User 09e2e806: 1 clicks
+dashboard.tsx:596 ⬆️ First click has game_state_snapshot: false
+dashboard.tsx:597 ⬆️ First click buttonLevels: undefined
+dashboard.tsx:629 ⬆️ Total button level snapshots found: 0
+dashboard.tsx:630 ⬆️ Users processed: 972
+dashboard.tsx:631 ⬆️ Clicks with buttonLevels: 0
+dashboard.tsx:632 ⬆️ Clicks without buttonLevels: 972
+dashboard.tsx:650 ⬆️ getButtonUpgradesOverPlaytime result (first 3 buckets): (3) [{…}, {…}, {…}]
