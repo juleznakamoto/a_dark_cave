@@ -346,7 +346,11 @@ app.get("/api/admin/data", async (req, res) => {
         }
       });
 
-      log("🔐 Registration method stats calculated:", registrationMethodStats);
+      log("🔐 Registration method stats:", {
+        emailRegistrations: registrationMethodStats.emailRegistrations,
+        googleRegistrations: registrationMethodStats.googleRegistrations,
+        totalUsers: allUsersForMethod.length
+      });
     } catch (error: any) {
       log("❌ Error calculating registration method stats:", error);
     }

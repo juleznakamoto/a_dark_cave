@@ -828,16 +828,9 @@ export default function AdminDashboard() {
 
       // Set the raw data (will be filtered by timeRange useMemo)
       if (data.clicks) {
-        console.log('📥 Loading click data:', data.clicks.length, 'entries');
-        if (data.clicks.length > 0) {
-          console.log('📥 Sample click entry:', data.clicks[0]);
-          console.log('📥 Click has game_state_snapshot:', !!data.clicks[0].game_state_snapshot);
-          console.log('📥 Click has resources:', !!data.clicks[0].resources); // Added logging for resources
-        }
         setRawClickData(data.clicks);
       }
       if (data.saves) {
-        console.log('📥 Loading game saves:', data.saves.length, 'entries');
         setRawGameSaves(data.saves);
       }
       if (data.purchases) {
