@@ -261,7 +261,7 @@ export default function AuthDialog({
                         fill="#EA4335"
                       />
                     </svg>
-                    Sign in with Google
+                    {mode === "signup" ? "Sign up with Google" : "Sign in with Google"}
                   </Button>
                 </>
               )}
