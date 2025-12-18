@@ -290,31 +290,24 @@ export function handleBuildFoundry(
   state: GameState,
   result: ActionResult,
 ): ActionResult {
-  const builtFoundry =
-    state.buildings.foundry === 0 && !state.story.seen.foundryComplete;
-  const resultWithBuilding = handleBuildingConstruction(
+  const foundryResult = handleBuildingConstruction(
     state,
     result,
     "buildFoundry",
     "foundry",
   );
 
-  if (builtFoundry) {
-    resultWithBuilding.logEntries!.push({
+  // Add completion message for first foundry
+  if (state.buildings.foundry === 0) {
+    foundryResult.logEntries!.push({
       id: `foundry-complete-${Date.now()}`,
       message: "The foundry roars to life as fire and heat fuse raw materials.",
       timestamp: Date.now(),
       type: "system",
     });
-    resultWithBuilding.stateUpdates.story = {
-      ...state.story,
-      seen: {
-        ...state.story.seen,
-        foundryComplete: true,
-      },
-    };
   }
-  return resultWithBuilding;
+
+  return foundryResult;
 }
 
 export function handleBuildPrimeFoundry(
