@@ -257,12 +257,12 @@ describe('Building Cost Reductions', () => {
     state.buildings.fortifiedStorehouse = 1;
     state.buildings.villageWarehouse = 1;
     state.buildings.grandRepository = 1;
-    state.buildings.greatVault = 1; // 10% discount (should apply)
+    state.buildings.greatVault = 1; // 5% discount (should apply)
 
     const updates = applyActionEffects('buildCabin', state);
-    // Only highest tier discount: 10% from greatVault
-    const expectedWoodCost = Math.floor(baseWoodCost * 0.9); // 135
-    const expectedStoneCost = Math.floor(baseStoneCost * 0.9); // 45
+    // Only highest tier discount: 5% from greatVault
+    const expectedWoodCost = Math.floor(baseWoodCost * 0.95); // 135
+    const expectedStoneCost = Math.floor(baseStoneCost * 0.95); // 45
     expect(updates.resources!.wood).toBe(baseWoodCost - expectedWoodCost); // 150 - 135 = 15
     expect(updates.resources!.stone).toBe(baseStoneCost - expectedStoneCost); // 50 - 45 = 5
   });
@@ -410,8 +410,8 @@ describe('Cost Reduction Edge Cases', () => {
 
     const updates = applyActionEffects('craftIronSword', state);
 
-    // 150 * 0.95 = 142.5, should floor to 142
-    const expectedCost = Math.floor(baseIronCost * 0.95);
+    // 150 * 0.975
+    const expectedCost = Math.floor(baseIronCost * 0.975);
     expect(updates.resources!.iron).toBe(baseIronCost - expectedCost);
   });
 
