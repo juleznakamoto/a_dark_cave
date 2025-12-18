@@ -19,10 +19,21 @@ export default function Game() {
     logger.log("[GAME PAGE] Initializing game");
     const initializeGame = async () => {
       try {
+        // Handle OAuth callback - check for tokens in URL
+        const hashParams = new URLSearchParams(window.location.hash.substring(1));
+        const searchParams = new URLSearchParams(window.location.search);
+        const accessToken = hashParams.get('access_token') || searchParams.get('access_token');
+        
+        if (accessToken) {
+          logger.log("[GAME PAGE] OAuth callback detected, processing authentication");
+          // Clear the URL hash/params after reading
+          window.history.replaceState({}, document.title, window.location.pathname);
+        }
+
         // Check if user just signed in with OAuth
         const user = await getCurrentUser();
         if (user) {
-          logger.log("[GAME PAGE] User authenticated via OAuth, loading game");
+          logger.log("[GAME PAGE] User authenticated, loading game");
         }
 
         // Check if URL is /game to skip start screen
