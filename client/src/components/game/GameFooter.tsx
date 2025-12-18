@@ -190,7 +190,12 @@ export default function GameFooter() {
               className="hover:opacity-100 transition-opacity opacity-35"
               title="Reddit"
             >
-              <img src="/reddit_logo.svg" alt="Reddit" className="w-4 h-4" />
+              <img
+                src="/reddit_logo.svg"
+                alt="Reddit"
+                className="w-4 h-4"
+                
+              />
             </a>
             <a
               href="https://www.instagram.com/a_dark_cave/"
@@ -199,7 +204,11 @@ export default function GameFooter() {
               className="hover:opacity-100 transition-opacity opacity-35"
               title="Instagram"
             >
-              <img src="/instagram_logo.svg" alt="Instagram" className="w-4 h-4" />
+              <img
+                src="/instagram_logo.svg"
+                alt="Instagram"
+                className="w-4 h-4"
+              />
             </a>
             <a
               href="https://www.incrementaldb.com/game/a-dark-cave"
