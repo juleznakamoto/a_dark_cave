@@ -1206,7 +1206,7 @@ export default function AdminDashboard() {
                       });
                     }
 
-                    return data.reverse(); // Ensure chronological order
+                    return data;
                   }}
                 />
               </TabsContent>
