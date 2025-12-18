@@ -1,3 +1,4 @@
+
 -- Create the game_saves table
 CREATE TABLE IF NOT EXISTS game_saves (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
@@ -17,8 +18,6 @@ CREATE TABLE IF NOT EXISTS button_clicks (
   timestamp TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   clicks JSONB DEFAULT '{}'::jsonb,
   resources JSONB DEFAULT '{}'::jsonb,
-  -- Assuming game_state column is added to store snapshot
-  game_state JSONB DEFAULT '{}'::jsonb,
   UNIQUE(user_id)
 );
 
@@ -267,33 +266,34 @@ BEGIN
       IF v_existing_clicks IS NOT NULL THEN
         IF v_existing_clicks ? v_playtime_key THEN
           DECLARE
-            v_existing_buttons JSONB;
-            v_new_buttons JSONB;
+            v_existing_bucket JSONB;
+            v_merged_bucket JSONB;
             v_key TEXT;
             v_existing_count INTEGER;
             v_new_count INTEGER;
           BEGIN
-            v_existing_buttons := v_existing_clicks->v_playtime_key;
-            v_new_buttons := p_click_analytics->v_playtime_key; -- Assuming p_click_analytics has playtime buckets
+            v_existing_bucket := v_existing_clicks->v_playtime_key;
+            v_merged_bucket := '{}'::jsonb;
 
-            FOR v_key IN SELECT jsonb_object_keys(v_new_buttons)
-            LOOP
-              v_existing_count := COALESCE((v_existing_buttons->>v_key)::INTEGER, 0);
-              v_new_count := COALESCE((v_new_buttons->>v_key)::INTEGER, 0);
-              v_existing_buttons := jsonb_set(
-                v_existing_buttons,
-                ARRAY[v_key],
-                to_jsonb(v_existing_count + v_new_count)
-              );
+            FOR v_key IN SELECT jsonb_object_keys(v_existing_bucket) LOOP
+              v_existing_count := (v_existing_bucket->>v_key)::INTEGER;
+              v_new_count := COALESCE((p_click_analytics->>v_key)::INTEGER, 0);
+              v_merged_bucket := jsonb_set(v_merged_bucket, ARRAY[v_key], to_jsonb(v_existing_count + v_new_count));
             END LOOP;
 
-            v_updated_clicks := jsonb_set(v_existing_clicks, ARRAY[v_playtime_key], v_existing_buttons);
+            FOR v_key IN SELECT jsonb_object_keys(p_click_analytics) LOOP
+              IF NOT (v_existing_bucket ? v_key) THEN
+                v_merged_bucket := jsonb_set(v_merged_bucket, ARRAY[v_key], p_click_analytics->v_key);
+              END IF;
+            END LOOP;
+
+            v_updated_clicks := jsonb_set(v_existing_clicks, ARRAY[v_playtime_key], v_merged_bucket);
           END;
         ELSE
-          v_updated_clicks := v_existing_clicks || jsonb_build_object(v_playtime_key, p_click_analytics->v_playtime_key);
+          v_updated_clicks := v_existing_clicks || jsonb_build_object(v_playtime_key, p_click_analytics);
         END IF;
       ELSE
-        v_updated_clicks := jsonb_build_object(v_playtime_key, p_click_analytics->v_playtime_key);
+        v_updated_clicks := jsonb_build_object(v_playtime_key, p_click_analytics);
       END IF;
     ELSE
       v_updated_clicks := v_existing_clicks;
@@ -302,31 +302,29 @@ BEGIN
     IF p_resource_analytics IS NOT NULL AND p_resource_analytics != '{}'::jsonb THEN
       IF v_existing_resources IS NOT NULL THEN
         IF v_existing_resources ? v_playtime_key THEN
-          v_updated_resources := jsonb_set(v_existing_resources, ARRAY[v_playtime_key], p_resource_analytics->v_playtime_key);
+          v_updated_resources := jsonb_set(v_existing_resources, ARRAY[v_playtime_key], p_resource_analytics);
         ELSE
-          v_updated_resources := v_existing_resources || jsonb_build_object(v_playtime_key, p_resource_analytics->v_playtime_key);
+          v_updated_resources := v_existing_resources || jsonb_build_object(v_playtime_key, p_resource_analytics);
         END IF;
       ELSE
-        v_updated_resources := jsonb_build_object(v_playtime_key, p_resource_analytics->v_playtime_key);
+        v_updated_resources := jsonb_build_object(v_playtime_key, p_resource_analytics);
       END IF;
     ELSE
       v_updated_resources := v_existing_resources;
     END IF;
 
     IF v_updated_clicks IS NOT NULL OR v_updated_resources IS NOT NULL THEN
-      INSERT INTO button_clicks (user_id, timestamp, clicks, resources, game_state)
+      INSERT INTO button_clicks (user_id, timestamp, clicks, resources)
       VALUES (
         p_user_id, 
         NOW(), 
         COALESCE(v_updated_clicks, '{}'::jsonb),
-        COALESCE(v_updated_resources, '{}'::jsonb),
-        v_merged_state -- Store the merged game state as the snapshot
+        COALESCE(v_updated_resources, '{}'::jsonb)
       )
       ON CONFLICT (user_id)
       DO UPDATE SET
         clicks = EXCLUDED.clicks,
         resources = EXCLUDED.resources,
-        game_state = EXCLUDED.game_state, -- Update snapshot on conflict
         timestamp = EXCLUDED.timestamp;
     END IF;
   END IF;

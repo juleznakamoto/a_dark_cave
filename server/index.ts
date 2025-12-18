@@ -667,46 +667,6 @@ app.post("/api/leaderboard/update-username", async (req, res) => {
     }
   });
 
-  // Game save endpoint
-  app.put("/api/game/save", async (req, res) => {
-    try {
-      const user = await requireAuth(req);
-      const {
-        gameStateDiff,
-        clickAnalytics,
-        resourceAnalytics,
-        gameStateSnapshot,
-        clearClicks = false,
-        allowPlaytimeOverwrite = false,
-      } = req.body;
-
-      // Get Supabase client. Ensure it's the admin client for server-side operations.
-      const env = process.env.NODE_ENV === "production" ? "prod" : "dev";
-      const supabase = getAdminClient(env);
-
-      // Call the Supabase RPC function to save game state and analytics
-      const { error } = await supabase.rpc("save_game_with_analytics", {
-        p_user_id: user.id,
-        p_game_state_diff: gameStateDiff,
-        p_click_analytics: clickAnalytics || null,
-        p_resource_analytics: resourceAnalytics || null,
-        p_game_state_snapshot: gameStateSnapshot || null,
-        p_clear_clicks: clearClicks,
-        p_allow_playtime_overwrite: allowPlaytimeOverwrite,
-      });
-
-      if (error) {
-        log("❌ Error saving game with analytics:", error);
-        throw error;
-      }
-
-      log(`✅ Game saved successfully for user ${user.id}`);
-      res.status(200).json({ success: true });
-    } catch (error: any) {
-      log("❌ Game save endpoint error:", error);
-      res.status(500).json({ error: error.message });
-    }
-  });
 
   // Setup Vite middleware AFTER all API routes to prevent catch-all interference
   if (app.get("env") === "development") {
