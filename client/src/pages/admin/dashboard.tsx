@@ -378,7 +378,7 @@ export default function AdminDashboard() {
       : filteredClickData;
 
     const buttonStats: Record<string, { total: number; users: Set<string> }> = {};
-    filteredClickData.forEach((entry) => {
+    filteredByCompletion.forEach((entry) => {
       Object.values(entry.clicks).forEach((playtimeClicks: any) => {
         Object.entries(playtimeClicks).forEach(([button, count]) => {
           const cleanedButton = cleanButtonName(button);
@@ -423,7 +423,7 @@ export default function AdminDashboard() {
     // Use the final game state stats from each user's save
     relevantSaves.forEach((save) => {
       if (!save.game_state?.stats) return;
-
+      
       const stats = save.game_state.stats;
       const playTimeMinutes = save.game_state.playTime ? Math.floor(save.game_state.playTime / 60000) : 0;
       const bucket = Math.floor(playTimeMinutes / 60);
@@ -471,7 +471,7 @@ export default function AdminDashboard() {
     // Use the final game state resources from each user's save
     relevant.forEach((save) => {
       if (!save.game_state?.resources) return;
-
+      
       const resources = save.game_state.resources;
       const playTimeMinutes = save.game_state.playTime ? Math.floor(save.game_state.playTime / 60000) : 0;
       const bucket = Math.floor(playTimeMinutes / 60);
@@ -496,131 +496,81 @@ export default function AdminDashboard() {
     });
   }, [gameSaves, selectedUser, selectedResources]);
 
-  const getButtonUpgradesOverPlaytime = useCallback(async () => {
-    if (!getSupabaseClient()) return [];
+  const getButtonUpgradesOverPlaytime = useMemo(() => {
+    const relevant = filterByUser(clickData);
 
-    const { data: clickData, error } = await getSupabaseClient()
-      .from("click_analytics")
-      .select("user_id, clicks")
-      .eq("environment", environment)
-      .not("clicks", "is", null)
-      .order("created_at", { ascending: true })
-      .limit(1000);
-
-    if (error) {
-      console.error("📦 Error fetching click data:", error);
-      return [];
+    if (relevant.length === 0) {
+      return Array.from({ length: 24 }, (_, i) => ({
+        time: `${i}h`,
+        caveExplore: 0, mineStone: 0, mineIron: 0, mineCoal: 0, mineSulfur: 0, mineObsidian: 0, mineAdamant: 0, hunt: 0, chopWood: 0,
+      }));
     }
 
-    console.log(
-      "⬆️ getButtonUpgradesOverPlaytime - clickData length:",
-      clickData?.length,
-    );
-
-    if (!clickData || clickData.length === 0) {
-      console.log("📦 No relevant saves, returning empty data");
-      return [];
-    }
-
-    // Group by user and aggregate all their clicks
-    const userClickMaps = new Map<
-      string,
-      Record<string, Record<string, number>>
-    >();
-
-    clickData.forEach((save) => {
-      const userId = save.user_id;
-      const clicks = save.clicks as Record<string, Record<string, number>>;
-
-      if (!clicks || typeof clicks !== "object") {
-        return;
-      }
-
-      if (!userClickMaps.has(userId)) {
-        userClickMaps.set(userId, clicks);
-      } else {
-        // Merge clicks for the same user
-        const existingClicks = userClickMaps.get(userId)!;
-        Object.entries(clicks).forEach(([timeBucket, actions]) => {
-          if (!existingClicks[timeBucket]) {
-            existingClicks[timeBucket] = {};
-          }
-          Object.entries(actions).forEach(([action, count]) => {
-            existingClicks[timeBucket][action] =
-              (existingClicks[timeBucket][action] || 0) + count;
-          });
-        });
-      }
-    });
-
-    console.log(
-      `⬆️ Processing ${userClickMaps.size} unique users with clicks`,
-    );
-
-    // Now process all users' data
-    const timeBuckets = new Map<
-      string,
-      { mineStone: number; hunt: number; chopWood: number; caveExplore: number }
-    >();
+    const timeMap = new Map<number, { caveExplore: number[], mineStone: number[], mineIron: number[], mineCoal: number[], mineSulfur: number[], mineObsidian: number[], mineAdamant: number[], hunt: number[], chopWood: number[] }>();
     for (let i = 0; i < 24; i++) {
-      timeBuckets.set(`${i}h`, {
-        mineStone: 0,
-        hunt: 0,
-        chopWood: 0,
-        caveExplore: 0,
-      });
+      timeMap.set(i, { caveExplore: [], mineStone: [], mineIron: [], mineCoal: [], mineSulfur: [], mineObsidian: [], mineAdamant: [], hunt: [], chopWood: [] });
     }
 
-    userClickMaps.forEach((userClicks) => {
-      Object.entries(userClicks).forEach(([timeBucket, actions]) => {
-        const bucketNumber = parseInt(timeBucket);
-        if (isNaN(bucketNumber) || bucketNumber < 0 || bucketNumber >= 24) return;
+    // Process click data which has structure: { "110m": { "action": count, ... }, ... }
+    relevant.forEach((clickEntry) => {
+      Object.entries(clickEntry.clicks).forEach(([playtimeKey, actions]) => {
+        // Extract playtime in minutes from keys like "110m"
+        const playtimeMinutes = parseInt(playtimeKey);
+        if (isNaN(playtimeMinutes)) return;
 
-        const bucketKey = `${bucketNumber}h`;
-        if (!timeBuckets.has(bucketKey)) {
-           timeBuckets.set(bucketKey, {
-            mineStone: 0,
-            hunt: 0,
-            chopWood: 0,
-            caveExplore: 0,
-          });
-        }
-        const bucket = timeBuckets.get(bucketKey)!;
-
-        // Map action IDs to our chart categories
-        Object.entries(actions).forEach(([actionId, count]) => {
-          if (selectedMiningTypes.has('mineStone') && actionId === "mineStone") {
-            bucket.mineStone += count;
-          } else if (selectedMiningTypes.has('hunt') && actionId === "hunt") {
-            bucket.hunt += count;
-          } else if (selectedMiningTypes.has('chopWood') && actionId === "chopWood") {
-            bucket.chopWood += count;
-          } else if (selectedMiningTypes.has('caveExplore') && (actionId === "exploreCave" || actionId === "ventureDeeper" || actionId === "descendFurther" || actionId === "exploreRuins" || actionId === "exploreTemple" || actionId === "exploreCitadel")) {
-            bucket.caveExplore += count;
+        const bucket = Math.floor(playtimeMinutes / 60);
+        if (bucket >= 0 && bucket < 24) {
+          const data = timeMap.get(bucket)!;
+          const actionCounts = actions as Record<string, number>;
+          
+          // Sum up click counts for mining actions
+          if (selectedMiningTypes.has('caveExplore') && actionCounts.exploreCave) {
+            data.caveExplore.push(actionCounts.exploreCave);
           }
-        });
+          if (selectedMiningTypes.has('mineStone') && actionCounts.mineStone) {
+            data.mineStone.push(actionCounts.mineStone);
+          }
+          if (selectedMiningTypes.has('mineIron') && actionCounts.mineIron) {
+            data.mineIron.push(actionCounts.mineIron);
+          }
+          if (selectedMiningTypes.has('mineCoal') && actionCounts.mineCoal) {
+            data.mineCoal.push(actionCounts.mineCoal);
+          }
+          if (selectedMiningTypes.has('mineSulfur') && actionCounts.mineSulfur) {
+            data.mineSulfur.push(actionCounts.mineSulfur);
+          }
+          if (selectedMiningTypes.has('mineObsidian') && actionCounts.mineObsidian) {
+            data.mineObsidian.push(actionCounts.mineObsidian);
+          }
+          if (selectedMiningTypes.has('mineAdamant') && actionCounts.mineAdamant) {
+            data.mineAdamant.push(actionCounts.mineAdamant);
+          }
+          if (selectedMiningTypes.has('hunt') && actionCounts.hunt) {
+            data.hunt.push(actionCounts.hunt);
+          }
+          if (selectedMiningTypes.has('chopWood') && actionCounts.chopWood) {
+            data.chopWood.push(actionCounts.chopWood);
+          }
+        }
       });
     });
 
-    // Convert to array and sort by time
-    const result = Array.from(timeBuckets.entries())
-      .map(([time, data]) => ({
-        time,
-        ...data,
-      }))
-      .sort((a, b) => {
-        const aMinutes = parseInt(a.time);
-        const bMinutes = parseInt(b.time);
-        return aMinutes - bMinutes;
-      });
-
-    console.log(
-      "⬆️ getButtonUpgradesOverPlaytime result (first 3 buckets):",
-      result.slice(0, 3),
-    );
-
-    return result;
-  }, [getSupabaseClient, environment, selectedMiningTypes]);
+    return Array.from({ length: 24 }, (_, i) => {
+      const levels = timeMap.get(i)!;
+      return {
+        time: `${i}h`,
+        caveExplore: levels.caveExplore.length > 0 ? levels.caveExplore.reduce((a, b) => a + b, 0) / levels.caveExplore.length : 0,
+        mineStone: levels.mineStone.length > 0 ? levels.mineStone.reduce((a, b) => a + b, 0) / levels.mineStone.length : 0,
+        mineIron: levels.mineIron.length > 0 ? levels.mineIron.reduce((a, b) => a + b, 0) / levels.mineIron.length : 0,
+        mineCoal: levels.mineCoal.length > 0 ? levels.mineCoal.reduce((a, b) => a + b, 0) / levels.mineCoal.length : 0,
+        mineSulfur: levels.mineSulfur.length > 0 ? levels.mineSulfur.reduce((a, b) => a + b, 0) / levels.mineSulfur.length : 0,
+        mineObsidian: levels.mineObsidian.length > 0 ? levels.mineObsidian.reduce((a, b) => a + b, 0) / levels.mineObsidian.length : 0,
+        mineAdamant: levels.mineAdamant.length > 0 ? levels.mineAdamant.reduce((a, b) => a + b, 0) / levels.mineAdamant.length : 0,
+        hunt: levels.hunt.length > 0 ? levels.hunt.reduce((a, b) => a + b, 0) / levels.hunt.length : 0,
+        chopWood: levels.chopWood.length > 0 ? levels.chopWood.reduce((a, b) => a + b, 0) / levels.chopWood.length : 0,
+      };
+    });
+  }, [clickData, selectedUser, selectedMiningTypes]);
 
   const getGameCompletionStats = useCallback(() => {
     const relevantSaves = selectedUser === "all"
