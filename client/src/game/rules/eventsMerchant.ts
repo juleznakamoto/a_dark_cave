@@ -630,13 +630,24 @@ const toolTrades = [
     message:
       "You purchase the compound bow. The merchant nods approvingly: 'High precision weapon from the vanished civilization. It will serve you well.'",
   },
+
+  {
+    id: "trade_stormglass_halberd_schematic",
+    label: "Stormglass Halberd Schematic",
+    give: "schematic",
+    giveItem: "stormglass_halberd_schematic",
+    condition: (state: GameState) => state.buildings.stoneHut >= 6,
+    costs: [{ resource: "gold", amounts: [1000] }],
+    message:
+      "You purchase the stormglass halberd schematic. The merchant reveals the faded plans: 'With this design, you can forge a halberd of tremendous power.'",
+  },
   {
     id: "trade_natharit_pickaxe",
     label: "Natharit Pickaxe",
     give: "tool",
     giveItem: "natharit_pickaxe",
-    condition: (state: GameState) => state.buildings.stoneHut >= 4,
-    costs: [{ resource: "gold", amounts: [2000] }],
+    condition: (state: GameState) => state.buildings.stoneHut >= 7,
+    costs: [{ resource: "gold", amounts: [1500] }],
     message:
       "You purchase the natharit pickaxe. The merchant hands you the sturdy tool: 'Extremely durable pickaxe of unknown material. Its quality is exceptional.'",
   },
@@ -645,24 +656,10 @@ const toolTrades = [
     label: "Nightshade Bow Schematic",
     give: "schematic",
     giveItem: "nightshade_bow_schematic",
-    condition: (state: GameState) => state.buildings.stoneHut >= 6,
-    costs: [{ resource: "gold", amounts: [1000] }],
+    condition: (state: GameState) => state.buildings.stoneHut >= 8,
+    costs: [{ resource: "gold", amounts: [2000] }],
     message:
       "You purchase the nightshade bow schematic. The merchant grins darkly: 'This bow's design is cruel. Its arrows will poison your enemies.'",
-  },
-  {
-    id: "trade_book_of_war",
-    label: "Book of War",
-    give: "book",
-    giveItem: "book_of_war",
-    condition: (state: GameState) =>
-      state.story.seen.firstWolfAttack &&
-      state.buildings.scriptorium >= 1 &&
-      state.buildings.darkEstate >= 1 &&
-      !state.books.book_of_war,
-    costs: [{ resource: "gold", amounts: [500] }],
-    message:
-      "You purchase the Book of War. The merchant nods gravely: 'Military knowledge from a long gone kingdom in the far east. With this, you will better understand the outcomes of your choices.'",
   },
   {
     id: "trade_book_of_trials",
@@ -676,14 +673,18 @@ const toolTrades = [
       "You purchase the Book of Trials. The merchant smiles knowingly: 'A guide for those who seek to track their journey.'",
   },
   {
-    id: "trade_stormglass_halberd_schematic",
-    label: "Stormglass Halberd Schematic",
-    give: "schematic",
-    giveItem: "stormglass_halberd_schematic",
-    condition: (state: GameState) => state.buildings.stoneHut >= 6,
-    costs: [{ resource: "gold", amounts: [1500] }],
+    id: "trade_book_of_war",
+    label: "Book of War",
+    give: "book",
+    giveItem: "book_of_war",
+    condition: (state: GameState) =>
+      state.story.seen.firstWolfAttack &&
+      state.buildings.scriptorium >= 1 &&
+      state.buildings.darkEstate >= 1 &&
+      !state.books.book_of_war,
+    costs: [{ resource: "gold", amounts: [500] }],
     message:
-      "You purchase the stormglass halberd schematic. The merchant reveals the faded plans: 'With this design, you can forge a halberd of tremendous power.'",
+      "You purchase the Book of War. The merchant nods gravely: 'Knowledge from a long gone kingdom in the far east. With this, you will better understand the outcomes of your choices.'",
   },
 ];
 

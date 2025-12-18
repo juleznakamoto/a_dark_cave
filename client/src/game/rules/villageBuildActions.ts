@@ -188,7 +188,7 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildAdvancedBlacksmith",
     label: "Advanced Blacksmith",
     description: "Improved blacksmith with better tools and techniques",
-    tooltipEffects: ["Unlocks Advanced Crafting", "5% Craft Discount"],
+    tooltipEffects: ["Unlocks Schematic Crafting", "5% Craft Discount"],
     building: true,
     show_when: {
       1: {
@@ -219,7 +219,11 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildGrandBlacksmith",
     label: "Grand Blacksmith",
     description: "Advanced blacksmith capable of creating the finest products",
-    tooltipEffects: ["Unlocks Black Steel Crafting", "10 % Craft Discount"],
+    tooltipEffects: [
+      "Unlocks Schematic Crafting",
+      // "Unlocks Black Steel Crafting",
+      "10 % Craft Discount",
+    ],
     building: true,
     show_when: {
       1: {
@@ -440,7 +444,11 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildMasterworkFoundry",
     label: "Masterwork Foundry",
     description: "Foundry with superior steel production",
-    tooltipEffects: ["Unlocks Steel Forgers", "Unlocks Black Steel Forgers", "Steel Forger: +2 Steel"],
+    tooltipEffects: [
+      "Unlocks Steel Forgers",
+      // "Unlocks Black Steel Forgers",
+      "Steel Forger: +2 Steel",
+    ],
     building: true,
     show_when: {
       1: {

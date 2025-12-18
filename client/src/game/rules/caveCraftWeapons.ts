@@ -178,7 +178,7 @@ export const caveCraftWeapons: Record<string, Action> = {
     id: "craftArbalest",
     label: "Arbalest",
     show_when: {
-      "buildings.blacksmith": 1,
+      "buildings.advancedBlacksmith": 1,
       "schematics.arbalest_schematic": true,
       "weapons.arbalest": false,
     },
@@ -197,7 +197,7 @@ export const caveCraftWeapons: Record<string, Action> = {
     id: "craftNightshadeBow",
     label: "Nightshade Bow",
     show_when: {
-      "buildings.blacksmith": 1,
+      "buildings.advancedBlacksmith": 1,
       "schematics.nightshade_bow_schematic": true,
       "weapons.nightshade_bow": false,
     },
@@ -209,6 +209,25 @@ export const caveCraftWeapons: Record<string, Action> = {
       "weapons.nightshade_bow": true,
     },
     cooldown: 45,
+  },
+
+  craftStormglassHalberd: {
+    id: "craftStormglassHalberd",
+    label: "Stormglass Halberd",
+    show_when: {
+      "buildings.advancedBlacksmith": 1,
+      "schematics.stormglass_halberd_schematic": true,
+      "weapons.stormglass_halberd": false,
+    },
+    cost: {
+      "resources.steel": 500,
+      "resources.adamant": 1000,
+      "resources.silver": 250,
+    },
+    effects: {
+      "weapons.stormglass_halberd": true,
+    },
+    cooldown: 60,
   },
 
   craftFrostglassSword: {
@@ -243,25 +262,6 @@ export const caveCraftWeapons: Record<string, Action> = {
     effects: {
       "weapons.bloodstone_staff": true,
       "story.seen.hasBloodstoneStaff": true,
-    },
-    cooldown: 60,
-  },
-
-  craftStormglassHalberd: {
-    id: "craftStormglassHalberd",
-    label: "Stormglass Halberd",
-    show_when: {
-      "buildings.blacksmith": 1,
-      "schematics.stormglass_halberd_schematic": true,
-      "weapons.stormglass_halberd": false,
-    },
-    cost: {
-      "resources.steel": 500,
-      "resources.adamant": 1000,
-      "resources.silver": 250,
-    },
-    effects: {
-      "weapons.stormglass_halberd": true,
     },
     cooldown: 60,
   },

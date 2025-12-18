@@ -154,7 +154,7 @@ export default function VillagePanel() {
     {
       id: "black_steel_forger",
       label: "Black Steel Forger",
-      showWhen: () => state.buildings.masterworkFoundry >= 1,
+      showWhen: () => false, //state.buildings.masterworkFoundry >= 1,
     },
     {
       id: "sulfur_miner",
