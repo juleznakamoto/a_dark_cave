@@ -20,8 +20,11 @@ import {
 import { bookEffects, fellowshipEffects } from "@/game/rules/effects";
 import { gameStateSchema } from "@shared/schema";
 
-import { getStorageLimitText, isResourceLimited, getResourceLimit } from "@/game/resourceLimits"; // Assuming this is the correct path
-
+import {
+  getStorageLimitText,
+  isResourceLimited,
+  getResourceLimit,
+} from "@/game/resourceLimits"; // Assuming this is the correct path
 
 // Extract property order from schema by parsing defaults
 const defaultGameState = gameStateSchema.parse({});
@@ -154,12 +157,12 @@ export default function SidePanel() {
 
   // Set the flag if we detect a resource at limit and flag isn't set yet
   if (hasResourceAtLimit && !gameState.flags.hasHitResourceLimit) {
-    useGameStore.getState().setFlag('hasHitResourceLimit', true);
+    useGameStore.getState().setFlag("hasHitResourceLimit", true);
   }
 
-  const showResourceLimit = resourceOrder.some((key) =>
-    isResourceLimited(key, gameState),
-  ) && gameState.flags.hasHitResourceLimit;
+  const showResourceLimit =
+    resourceOrder.some((key) => isResourceLimited(key, gameState)) &&
+    gameState.flags.hasHitResourceLimit;
   const resourceLimitText = getStorageLimitText(gameState); // Get the storage limit text
 
   // Dynamically generate tool items from state (only show best tools, no weapons)
@@ -300,7 +303,15 @@ export default function SidePanel() {
         return false;
       }
       // Hide blacksmith when Grand Blacksmith is built
+      if (key === "blacksmith" && buildings.advancedBlacksmith > 0) {
+        return false;
+      }
+      // Hide blacksmith when Grand Blacksmith is built
       if (key === "blacksmith" && buildings.grandBlacksmith > 0) {
+        return false;
+      }
+      // Hide advanced blacksmith when Grand Blacksmith is built
+      if (key === "advancedBlacksmith" && buildings.grandBlacksmith > 0) {
         return false;
       }
       // Hide Trade Post when Grand Bazaar or Merchants Guild is built
@@ -337,7 +348,10 @@ export default function SidePanel() {
         return false;
       }
       // Hide altar if shrine or temple is built (similar logic for other tiered buildings)
-      if (key === "altar" && (buildings.shrine > 0 || buildings.temple > 0 || buildings.sanctum > 0)) {
+      if (
+        key === "altar" &&
+        (buildings.shrine > 0 || buildings.temple > 0 || buildings.sanctum > 0)
+      ) {
         return false;
       }
       if (key === "shrine" && (buildings.temple > 0 || buildings.sanctum > 0)) {
@@ -354,16 +368,37 @@ export default function SidePanel() {
       }
 
       // Hide lower-tier storage buildings
-      if (key === "supplyHut" && (buildings.storehouse > 0 || buildings.fortifiedStorehouse > 0 || buildings.villageWarehouse > 0 || buildings.grandRepository > 0 || buildings.greatVault > 0)) {
+      if (
+        key === "supplyHut" &&
+        (buildings.storehouse > 0 ||
+          buildings.fortifiedStorehouse > 0 ||
+          buildings.villageWarehouse > 0 ||
+          buildings.grandRepository > 0 ||
+          buildings.greatVault > 0)
+      ) {
         return false;
       }
-      if (key === "storehouse" && (buildings.fortifiedStorehouse > 0 || buildings.villageWarehouse > 0 || buildings.grandRepository > 0 || buildings.greatVault > 0)) {
+      if (
+        key === "storehouse" &&
+        (buildings.fortifiedStorehouse > 0 ||
+          buildings.villageWarehouse > 0 ||
+          buildings.grandRepository > 0 ||
+          buildings.greatVault > 0)
+      ) {
         return false;
       }
-      if (key === "fortifiedStorehouse" && (buildings.villageWarehouse > 0 || buildings.grandRepository > 0 || buildings.greatVault > 0)) {
+      if (
+        key === "fortifiedStorehouse" &&
+        (buildings.villageWarehouse > 0 ||
+          buildings.grandRepository > 0 ||
+          buildings.greatVault > 0)
+      ) {
         return false;
       }
-      if (key === "villageWarehouse" && (buildings.grandRepository > 0 || buildings.greatVault > 0)) {
+      if (
+        key === "villageWarehouse" &&
+        (buildings.grandRepository > 0 || buildings.greatVault > 0)
+      ) {
         return false;
       }
       if (key === "grandRepository" && buildings.greatVault > 0) {
@@ -380,7 +415,8 @@ export default function SidePanel() {
 
       // Use the label from villageBuildActions, with special handling for multiple huts
       let label = buildAction?.label || capitalizeWords(key);
-      const showCount = key === "woodenHut" || key === "stoneHut" || key === "longhouse";
+      const showCount =
+        key === "woodenHut" || key === "stoneHut" || key === "longhouse";
 
       return {
         id: key,
@@ -388,7 +424,9 @@ export default function SidePanel() {
           <>
             {label} <span className="text-muted-foreground">({value})</span>
           </>
-        ) : label,
+        ) : (
+          label
+        ),
         value: value ?? 0,
         testId: `building-${key}`,
         visible: (value ?? 0) > 0,
@@ -442,23 +480,28 @@ export default function SidePanel() {
       // Only show the highest storage building level
       if (
         item.id === "supplyHut" &&
-        (buildings.storehouse > 0 || buildings.fortifiedStorehouse > 0 || 
-         buildings.villageWarehouse > 0 || buildings.grandRepository > 0 || 
-         buildings.greatVault > 0)
+        (buildings.storehouse > 0 ||
+          buildings.fortifiedStorehouse > 0 ||
+          buildings.villageWarehouse > 0 ||
+          buildings.grandRepository > 0 ||
+          buildings.greatVault > 0)
       ) {
         return false;
       }
       if (
         item.id === "storehouse" &&
-        (buildings.fortifiedStorehouse > 0 || buildings.villageWarehouse > 0 || 
-         buildings.grandRepository > 0 || buildings.greatVault > 0)
+        (buildings.fortifiedStorehouse > 0 ||
+          buildings.villageWarehouse > 0 ||
+          buildings.grandRepository > 0 ||
+          buildings.greatVault > 0)
       ) {
         return false;
       }
       if (
         item.id === "fortifiedStorehouse" &&
-        (buildings.villageWarehouse > 0 || buildings.grandRepository > 0 || 
-         buildings.greatVault > 0)
+        (buildings.villageWarehouse > 0 ||
+          buildings.grandRepository > 0 ||
+          buildings.greatVault > 0)
       ) {
         return false;
       }
