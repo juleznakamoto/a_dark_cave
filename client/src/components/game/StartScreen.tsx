@@ -31,7 +31,7 @@ export default function StartScreen() {
 
     const animationTimer = setTimeout(() => {
       setIsAnimationComplete(true);
-    }, 5000); // 2s delay + 3s animation
+    }, 10000);
 
     // Start preloading background music immediately
     audioManager.loadSound("backgroundMusic", "/sounds/background_music.wav");
@@ -106,7 +106,7 @@ export default function StartScreen() {
     <div className="relative min-h-screen bg-black text-white overflow-hidden">
       {/* Featured By Section */}
       <div className="absolute bottom-8 left-4 z-20 animate-fade-in-featured">
-        <div className="bg-white/15 backdrop-blur-sm rounded-lg p-2 border border-white/25 flex flex-col items-start gap-0.5">
+        <div className="bg-white/20 backdrop-blur-sm rounded-lg p-2 !pb-1 border border-white/25 flex flex-col items-start">
           <p className="text-xs text-gray-400/90 font-medium">Featured by</p>
           <div className="">
             <img
@@ -122,9 +122,22 @@ export default function StartScreen() {
         @keyframes fade-in-button {
           0% {
             opacity: 0;
+            filter: blur(10px);
           }
           100% {
             opacity: 1;
+            filter: blur(0px);
+          }
+        }
+
+        @keyframes fade-in-text {
+        0% {
+          opacity: 0;
+          filter: blur(10px);
+        }
+        100% {
+          opacity: 1;
+          filter: blur(0px);
           }
         }
 
@@ -136,15 +149,20 @@ export default function StartScreen() {
             opacity: 1;
           }
         }
+        
+        .animate-fade-in-text {
+          animation: fade-in-text 2s ease-in 0.5s forwards;
+          opacity: 0;
+        }
 
         .animate-fade-in-button {
-          animation: fade-in-button 2s ease-in 3s forwards;
+          animation: fade-in-button 2s ease-in 3.5s forwards;
           opacity: 0;
           pointer-events: none;
         }
 
         .animate-fade-in-featured {
-          animation: fade-in-featured 1s ease-in 2s forwards;
+          animation: fade-in-featured 3s ease-in 7s forwards;
           opacity: 0;
         }
 
@@ -156,7 +174,7 @@ export default function StartScreen() {
       <CloudShader />
       <main className="relative z-10 flex-1 flex flex-col items-center justify-center min-h-screen">
         <div className="text-center mb-4">
-          <p className="text-lg text-gray-300 leading-relaxed">
+          <p className="animate-fade-in-text text-lg text-gray-300/90 leading-relaxed">
             A dark cave.<br></br>The air is cold and damp.<br></br>You barely
             see the shapes around you.
           </p>
@@ -164,7 +182,7 @@ export default function StartScreen() {
         <ParticleButton
           ref={buttonRef}
           onClick={handleLightFire}
-          className={`bg-transparent border-none text-white hover:bg-transparent text-lg px-8 py-4 fire-hover z-[99999] ${!isAnimationComplete ? "animate-fade-in-button" : "button-interactive"}`}
+          className={`bg-transparent border-none text-gray-300/90 hover:bg-transparent text-lg px-8 py-4 fire-hover z-[99999] ${!isAnimationComplete ? "animate-fade-in-button" : "button-interactive"}`}
           data-testid="button-light-fire"
           button_id="light-fire"
         >
