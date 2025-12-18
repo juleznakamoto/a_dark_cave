@@ -84,6 +84,7 @@ import {
   handleBuildWoodenHut,
   handleBuildCabin,
   handleBuildBlacksmith,
+  handleBuildAdvancedBlacksmith,
   handleBuildShallowPit,
   handleBuildDeepeningPit,
   handleBuildDeepPit,
