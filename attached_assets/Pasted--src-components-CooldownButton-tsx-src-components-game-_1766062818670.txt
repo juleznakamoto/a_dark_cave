@@ -1,0 +1,81 @@
+, /src/components/CooldownButton.tsx, /src/components/game/panels/BuildingProgressChartAchievements.tsx, /src/components/game/ButtonLevelBadge.tsx, /src/components/game/MerchantDialog.tsx, /src/components/game/panels/SidePanelSection.tsx
+12:59:09 PM [vite] hmr update /src/index.css?v=9DvroxtHNfqId8j-KnE3, /src/App.tsx?v=9DvroxtHNfqId8j-KnE3, /src/pages/game.tsx, /src/components/game/GameContainer.tsx, /src/pages/reset-password.tsx, /src/components/game/ProfileMenu.tsx, /src/components/game/AuthDialog.tsx, /src/components/game/LeaderboardDialog.tsx, /src/components/game/ShopDialog.tsx, /src/components/game/panels/AttackWavesChart.tsx, /src/components/game/CubeDialog.tsx, /src/components/game/IdleModeDialog.tsx, /src/components/game/panels/EstatePanel.tsx, /src/components/game/CombatDialog.tsx, /src/components/ui/button.tsx, /src/components/game/EventDialog.tsx, /src/components/game/GameTabs.tsx, /src/components/game/StartScreen.tsx, /src/components/game/GameFooter.tsx, /src/components/game/InactivityDialog.tsx, /src/components/game/panels/VillagePanel.tsx, /src/components/game/panels/ForestPanel.tsx, /src/components/game/panels/CavePanel.tsx, /src/components/game/panels/BastionPanel.tsx, /src/components/game/panels/LogPanel.tsx, /src/components/game/panels/SidePanel.tsx, /src/components/game/panels/ActionProgressChartAchievements.tsx, /src/components/game/panels/ItemProgressChartAchievements.tsx, /src/components/CooldownButton.tsx, /src/components/game/panels/BuildingProgressChartAchievements.tsx, /src/components/game/ButtonLevelBadge.tsx, /src/components/game/MerchantDialog.tsx, /src/components/game/panels/SidePanelSection.tsx (x2)
+12:59:11 PM [vite] hmr update /src/index.css?v=9DvroxtHNfqId8j-KnE3, /src/App.tsx?v=9DvroxtHNfqId8j-KnE3, /src/pages/game.tsx, /src/components/game/GameContainer.tsx, /src/pages/reset-password.tsx, /src/components/game/ProfileMenu.tsx, /src/components/game/AuthDialog.tsx, /src/components/game/LeaderboardDialog.tsx, /src/components/game/ShopDialog.tsx, /src/components/game/panels/AttackWavesChart.tsx, /src/components/game/CubeDialog.tsx, /src/components/game/IdleModeDialog.tsx, /src/components/game/panels/EstatePanel.tsx, /src/components/game/CombatDialog.tsx, /src/components/ui/button.tsx, /src/components/game/EventDialog.tsx, /src/components/game/GameTabs.tsx, /src/components/game/StartScreen.tsx, /src/components/game/GameFooter.tsx, /src/components/game/InactivityDialog.tsx, /src/components/game/panels/VillagePanel.tsx, /src/components/game/panels/ForestPanel.tsx, /src/components/game/panels/CavePanel.tsx, /src/components/game/panels/BastionPanel.tsx, /src/components/game/panels/LogPanel.tsx, /src/components/game/panels/SidePanel.tsx, /src/components/game/panels/ActionProgressChartAchievements.tsx, /src/components/game/panels/ItemProgressChartAchievements.tsx, /src/components/CooldownButton.tsx, /src/components/game/panels/BuildingProgressChartAchievements.tsx, /src/components/game/ButtonLevelBadge.tsx, /src/components/game/MerchantDialog.tsx, /src/components/game/panels/SidePanelSection.tsx (x3)
+12:59:46 PM [express] 📊 Fetching DAU data for prod environment
+12:59:46 PM [express] GET /api/admin/dau 304 in 350ms :: {"dau":[{"date":"2025-12-17","active_user_co…
+12:59:49 PM [express] 📧 Fetching auth users for email confirmation stats...
+12:59:50 PM [2055] 📧 Total auth users found:
+12:59:50 PM [express] 📧 Stats calculated for all time periods
+12:59:50 PM [express] 🔐 Calculating registration method stats...
+12:59:51 PM [express] 🔐 Total users fetched for registration method: 2055
+12:59:51 PM [express] 🔐 User 1 email: zaharow1945@gmail.com
+12:59:51 PM [google] 🔐 User 1 provider:
+12:59:51 PM [["google"]] 🔐 User 1 providers:
+12:59:51 PM [true] 🔐 User 1 providerCheck (provider === 'google'):
+12:59:51 PM [true] 🔐 User 1 providersCheck (providers.includes('google')):
+12:59:51 PM [true] 🔐 User 1 hasGoogleProvider result:
+12:59:51 PM [express] ✅ User 1 counted as Google registration
+12:59:51 PM [express] 🔐 User 2 email: funkeymonkey209@yahoo.co.uk
+12:59:51 PM [email] 🔐 User 2 provider:
+12:59:51 PM [["email"]] 🔐 User 2 providers:
+12:59:51 PM [false] 🔐 User 2 providerCheck (provider === 'google'):
+12:59:51 PM [false] 🔐 User 2 providersCheck (providers.includes('google')):
+12:59:51 PM [false] 🔐 User 2 hasGoogleProvider result:
+12:59:51 PM [express] 📧 User 2 counted as Email registration
+12:59:51 PM [express] 🔐 User 3 email: julianbauer063@gmail.com
+12:59:51 PM [google] 🔐 User 3 provider:
+12:59:51 PM [["google"]] 🔐 User 3 providers:
+12:59:51 PM [true] 🔐 User 3 providerCheck (provider === 'google'):
+12:59:51 PM [true] 🔐 User 3 providersCheck (providers.includes('google')):
+12:59:51 PM [true] 🔐 User 3 hasGoogleProvider result:
+12:59:51 PM [express] ✅ User 3 counted as Google registration
+12:59:51 PM [express] 🔐 User 4 email: madgamer1@gmail.com
+12:59:51 PM [google] 🔐 User 4 provider:
+12:59:51 PM [["google"]] 🔐 User 4 providers:
+12:59:51 PM [true] 🔐 User 4 providerCheck (provider === 'google'):
+12:59:51 PM [true] 🔐 User 4 providersCheck (providers.includes('google')):
+12:59:51 PM [true] 🔐 User 4 hasGoogleProvider result:
+12:59:51 PM [express] ✅ User 4 counted as Google registration
+12:59:51 PM [express] 🔐 User 5 email: alisamitanis@gmail.com
+12:59:51 PM [email] 🔐 User 5 provider:
+12:59:51 PM [["email"]] 🔐 User 5 providers:
+12:59:51 PM [false] 🔐 User 5 providerCheck (provider === 'google'):
+12:59:51 PM [false] 🔐 User 5 providersCheck (providers.includes('google')):
+12:59:51 PM [false] 🔐 User 5 hasGoogleProvider result:
+12:59:51 PM [express] 📧 User 5 counted as Email registration
+12:59:51 PM [express] 🔐 User 6 email: kolia.nadalutti@gmail.com
+12:59:51 PM [email] 🔐 User 6 provider:
+12:59:51 PM [["email"]] 🔐 User 6 providers:
+12:59:51 PM [false] 🔐 User 6 providerCheck (provider === 'google'):
+12:59:51 PM [false] 🔐 User 6 providersCheck (providers.includes('google')):
+12:59:51 PM [false] 🔐 User 6 hasGoogleProvider result:
+12:59:51 PM [express] 📧 User 6 counted as Email registration
+12:59:51 PM [express] 🔐 User 7 email: mioochizzy@gmail.com
+12:59:51 PM [email] 🔐 User 7 provider:
+12:59:51 PM [["email"]] 🔐 User 7 providers:
+12:59:51 PM [false] 🔐 User 7 providerCheck (provider === 'google'):
+12:59:51 PM [false] 🔐 User 7 providersCheck (providers.includes('google')):
+12:59:51 PM [false] 🔐 User 7 hasGoogleProvider result:
+12:59:51 PM [express] 📧 User 7 counted as Email registration
+12:59:51 PM [express] 🔐 User 8 email: jack.pway.fisher@gmail.com
+12:59:51 PM [email] 🔐 User 8 provider:
+12:59:51 PM [["email"]] 🔐 User 8 providers:
+12:59:51 PM [false] 🔐 User 8 providerCheck (provider === 'google'):
+12:59:51 PM [false] 🔐 User 8 providersCheck (providers.includes('google')):
+12:59:51 PM [false] 🔐 User 8 hasGoogleProvider result:
+12:59:51 PM [express] 📧 User 8 counted as Email registration
+12:59:51 PM [express] 🔐 User 9 email: stafa.arbi@fossatidapassano.it
+12:59:51 PM [email] 🔐 User 9 provider:
+12:59:51 PM [["email"]] 🔐 User 9 providers:
+12:59:51 PM [false] 🔐 User 9 providerCheck (provider === 'google'):
+12:59:51 PM [false] 🔐 User 9 providersCheck (providers.includes('google')):
+12:59:51 PM [false] 🔐 User 9 hasGoogleProvider result:
+12:59:51 PM [express] 📧 User 9 counted as Email registration
+12:59:51 PM [express] 🔐 User 10 email: ricksun0128@126.com
+12:59:51 PM [email] 🔐 User 10 provider:
+12:59:51 PM [["email"]] 🔐 User 10 providers:
+12:59:51 PM [false] 🔐 User 10 providerCheck (provider === 'google'):
+12:59:51 PM [false] 🔐 User 10 providersCheck (providers.includes('google')):
+12:59:51 PM [false] 🔐 User 10 hasGoogleProvider result:
+12:59:51 PM [express] 📧 User 10 counted as Email registration
+12:59:51 PM [[object Object]] 🔐 Registration method stats:

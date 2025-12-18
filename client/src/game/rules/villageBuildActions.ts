@@ -192,7 +192,7 @@ export const villageBuildActions: Record<string, Action> = {
     building: true,
     show_when: {
       1: {
-        "buildings.stoneHut": 5,
+        "buildings.stoneHut": 1,
         "buildings.blacksmith": 1,
         "buildings.advancedBlacksmith": 0,
         "buildings.grandBlacksmith": 0, // for backwards compatibility
@@ -223,6 +223,7 @@ export const villageBuildActions: Record<string, Action> = {
     building: true,
     show_when: {
       1: {
+        "buildings.stoneHut": 5,
         "buildings.advancedBlacksmith": 1,
         "buildings.grandBlacksmith": 0,
       },
