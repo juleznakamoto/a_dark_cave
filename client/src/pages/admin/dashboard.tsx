@@ -164,6 +164,11 @@ export default function AdminDashboard() {
     },
   });
 
+  const [registrationMethodStats, setRegistrationMethodStats] = useState<any>({
+    emailRegistrations: 0,
+    googleRegistrations: 0,
+  });
+
   // Filter states
   const [timeRange, setTimeRange] = useState<"1d" | "3d" | "7d" | "30d" | "all">(
     "30d",
@@ -844,6 +849,9 @@ export default function AdminDashboard() {
       if (data.emailConfirmationStats) {
         setEmailConfirmationStats(data.emailConfirmationStats);
       }
+      if (data.registrationMethodStats) {
+        setRegistrationMethodStats(data.registrationMethodStats);
+      }
 
       // Collect unique user IDs only from users who have click data
       const userIdsWithClicks = new Set<string>();
@@ -1013,6 +1021,7 @@ export default function AdminDashboard() {
                 <OverviewTab
                   rawGameSaves={rawGameSaves}
                   dailyActiveUsersData={dauData}
+                  registrationMethodStats={registrationMethodStats}
                   getDailyActiveUsers={() => {
                     if (dauData.length > 0) {
                       // Get the most recent DAU count

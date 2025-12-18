@@ -1,5 +1,5 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { AreaChart, Area, BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer, LineChart, Line, Legend } from "recharts";
+import { AreaChart, Area, BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer, LineChart, Line, Legend, PieChart, Pie, Cell } from "recharts";
 import { format, parseISO } from "date-fns";
 
 interface OverviewTabProps {
@@ -9,6 +9,7 @@ interface OverviewTabProps {
   totalUserCount: number;
   gameSaves: any[];
   emailConfirmationStats: any;
+  registrationMethodStats: any;
   formatTime: (minutes: number) => string;
   getAveragePlaytime: () => number;
   getAveragePlaytimeToCompletion: () => number;
@@ -32,6 +33,7 @@ export default function OverviewTab(props: OverviewTabProps) {
     totalUserCount,
     gameSaves,
     emailConfirmationStats,
+    registrationMethodStats,
     formatTime,
     getAveragePlaytime,
     getAveragePlaytimeToCompletion,
@@ -101,6 +103,69 @@ export default function OverviewTab(props: OverviewTabProps) {
           </CardContent>
         </Card>
       </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Card>
+          <CardHeader>
+            <CardTitle>Email Registrations</CardTitle>
+            <CardDescription>Users registered with email</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p className="text-4xl font-bold">{registrationMethodStats?.emailRegistrations || 0}</p>
+            <p className="text-sm text-muted-foreground mt-2">
+              {totalUserCount > 0
+                ? Math.round((registrationMethodStats.emailRegistrations / totalUserCount) * 100)
+                : 0}% of total users
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Google Registrations</CardTitle>
+            <CardDescription>Users registered with Google OAuth</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p className="text-4xl font-bold">{registrationMethodStats?.googleRegistrations || 0}</p>
+            <p className="text-sm text-muted-foreground mt-2">
+              {totalUserCount > 0
+                ? Math.round((registrationMethodStats.googleRegistrations / totalUserCount) * 100)
+                : 0}% of total users
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Registration Method Distribution</CardTitle>
+          <CardDescription>How users are registering</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <ResponsiveContainer width="100%" height={300}>
+            <PieChart>
+              <Pie
+                data={[
+                  { name: 'Email', value: registrationMethodStats?.emailRegistrations || 0 },
+                  { name: 'Google', value: registrationMethodStats?.googleRegistrations || 0 },
+                ]}
+                cx="50%"
+                cy="50%"
+                labelLine={false}
+                label={({ name, value, percent }) => `${name}: ${value} (${(percent * 100).toFixed(0)}%)`}
+                outerRadius={80}
+                fill="#8884d8"
+                dataKey="value"
+              >
+                <Cell fill="#8884d8" />
+                <Cell fill="#82ca9d" />
+              </Pie>
+              <Tooltip />
+              <Legend />
+            </PieChart>
+          </ResponsiveContainer>
+        </CardContent>
+      </Card>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card>

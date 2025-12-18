@@ -292,6 +292,64 @@ app.get("/api/admin/data", async (req, res) => {
       log("❌ Error processing email confirmation stats:", error);
     }
 
+    // Calculate registration method stats
+    let registrationMethodStats = {
+      emailRegistrations: 0,
+      googleRegistrations: 0,
+    };
+
+    try {
+      log("🔐 Calculating registration method stats...");
+
+      // Paginate through all users again for registration method
+      let allUsersForMethod: any[] = [];
+      let page = 1;
+      const perPage = 1000;
+
+      while (true) {
+        const { data: authData, error: authError } = await adminClient.auth.admin.listUsers({
+          page,
+          perPage,
+        });
+
+        if (authError) {
+          log("❌ Error fetching auth users for registration method:", authError);
+          break;
+        }
+
+        if (!authData || authData.users.length === 0) {
+          break;
+        }
+
+        allUsersForMethod = allUsersForMethod.concat(authData.users);
+
+        if (authData.users.length < perPage) {
+          break;
+        }
+
+        page++;
+      }
+
+      // Count registration methods
+      allUsersForMethod.forEach((user: any) => {
+        // Check if user has Google as identity provider
+        const hasGoogleProvider = user.identities?.some(
+          (identity: any) => identity.provider === 'google'
+        );
+
+        if (hasGoogleProvider) {
+          registrationMethodStats.googleRegistrations++;
+        } else {
+          // If no Google provider, assume email registration
+          registrationMethodStats.emailRegistrations++;
+        }
+      });
+
+      log("🔐 Registration method stats calculated:", registrationMethodStats);
+    } catch (error: any) {
+      log("❌ Error calculating registration method stats:", error);
+    }
+
     res.json({
       clicks: clicksResult.data,
       saves: savesResult.data,
@@ -299,6 +357,7 @@ app.get("/api/admin/data", async (req, res) => {
       dau: dauResult.data,
       totalUserCount: totalUserCount || 0,
       emailConfirmationStats: emailConfirmationStats,
+      registrationMethodStats: registrationMethodStats,
     });
   } catch (error: any) {
     log("❌ Admin data fetch failed:", error);
