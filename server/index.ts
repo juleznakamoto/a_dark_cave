@@ -338,13 +338,19 @@ app.get("/api/admin/data", async (req, res) => {
         // Check app_metadata.provider or app_metadata.providers array
         const provider = user.app_metadata?.provider;
         const providers = user.app_metadata?.providers || [];
-        const hasGoogleProvider = provider === 'google' || providers.includes('google');
+        
+        // More detailed checks
+        const providerCheck = provider === 'google';
+        const providersCheck = providers.includes('google');
+        const hasGoogleProvider = providerCheck || providersCheck;
 
         // Log first 10 users for debugging
         if (index < 10) {
           log(`🔐 User ${index + 1} email: ${user.email}`);
-          log(`🔐 User ${index + 1} provider:`, provider);
-          log(`🔐 User ${index + 1} providers:`, providers);
+          log(`🔐 User ${index + 1} provider:`, provider, `(type: ${typeof provider})`);
+          log(`🔐 User ${index + 1} providers:`, JSON.stringify(providers), `(is array: ${Array.isArray(providers)})`);
+          log(`🔐 User ${index + 1} providerCheck (provider === 'google'):`, providerCheck);
+          log(`🔐 User ${index + 1} providersCheck (providers.includes('google')):`, providersCheck);
           log(`🔐 User ${index + 1} hasGoogleProvider result:`, hasGoogleProvider);
         }
 
