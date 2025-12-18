@@ -614,12 +614,13 @@ export const getTotalBuildingCostReduction = (state: GameState): number => {
   });
 
   // Add building cost reduction from highest tier storage building only
-  // Priority: greatVault > grandRepository > villageWarehouse > fortifiedStorehouse
+  // Priority: greatVault > grandRepository > villageWarehouse > fortifiedStorehouse > storehouse
   const storagePriorityForBuilding = [
     'greatVault',
     'grandRepository',
     'villageWarehouse', 
-    'fortifiedStorehouse'
+    'fortifiedStorehouse',
+    'storehouse'
   ];
 
   for (const buildingKey of storagePriorityForBuilding) {
