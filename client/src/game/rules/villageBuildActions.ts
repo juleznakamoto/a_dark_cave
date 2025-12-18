@@ -1,14 +1,19 @@
 import { Action, GameState } from "@shared/schema";
 
 // Utility function to get the next building level
-export const getNextBuildingLevel = (actionId: string, state: GameState): number => {
+export const getNextBuildingLevel = (
+  actionId: string,
+  state: GameState,
+): number => {
   if (!actionId.startsWith("build")) return 1;
 
   // Remove "build" prefix and lowercase first character
   let buildingKey = actionId.slice(5);
   buildingKey = buildingKey.charAt(0).toLowerCase() + buildingKey.slice(1);
 
-  return (state.buildings[buildingKey as keyof GameState["buildings"]] || 0) + 1;
+  return (
+    (state.buildings[buildingKey as keyof GameState["buildings"]] || 0) + 1
+  );
 };
 
 export const villageBuildActions: Record<string, Action> = {
@@ -178,8 +183,6 @@ export const villageBuildActions: Record<string, Action> = {
     },
     cooldown: 5,
   },
-
-  
 
   buildGrandBlacksmith: {
     id: "buildGrandBlacksmith",
@@ -889,7 +892,10 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildGrandBazaar",
     label: "Grand Bazaar",
     description: "Sprawling marketplace attracting more merchants",
-    tooltipEffects: ["Higher Trade Amounts", "+2 Trades at Travelling Merchant"],
+    tooltipEffects: [
+      "Higher Trade Amounts",
+      "+2 Trades at Travelling Merchant",
+    ],
     building: true,
     show_when: {
       1: {
@@ -917,7 +923,10 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildMerchantsGuild",
     label: "Merchants Guild",
     description: "Powerful guild bringing the best trades and merchants",
-    tooltipEffects: ["Higher Trade Amounts", "+3 Trades at Travelling Merchant"],
+    tooltipEffects: [
+      "Higher Trade Amounts",
+      "+3 Trades at Travelling Merchant",
+    ],
     building: true,
     show_when: {
       1: {
@@ -1641,7 +1650,11 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildVillageWarehouse",
     label: "Village Warehouse",
     description: "Large warehouse capable of storing vast quantities",
-    tooltipEffects: ["Resource Limit: 10.000", "5% Crafting Discount", "5% Building Discount"],
+    tooltipEffects: [
+      "Resource Limit: 10.000",
+      "5% Crafting Discount",
+      "5% Building Discount",
+    ],
     building: true,
     show_when: {
       1: {
@@ -1672,7 +1685,11 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildGrandRepository",
     label: "Grand Repository",
     description: "Massive repository with exceptional storage capacity",
-    tooltipEffects: ["Resource Limit: 25.000", "10% Crafting Discount", "5% Building Discount"],
+    tooltipEffects: [
+      "Resource Limit: 25.000",
+      "10% Crafting Discount",
+      "5% Building Discount",
+    ],
     building: true,
     show_when: {
       1: {
@@ -1703,7 +1720,11 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildGreatVault",
     label: "Great Vault",
     description: "Supreme vault capable of storing immense resources",
-    tooltipEffects: ["Resource Limit: 50.000", "10% Crafting Discount", "10% Building Discount"],
+    tooltipEffects: [
+      "Resource Limit: 50.000",
+      "10% Crafting Discount",
+      "10% Building Discount",
+    ],
     building: true,
     show_when: {
       1: {
