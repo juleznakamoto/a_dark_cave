@@ -299,8 +299,6 @@ app.get("/api/admin/data", async (req, res) => {
     };
 
     try {
-      log("🔐 Calculating registration method stats...");
-
       // Paginate through all users again for registration method
       let allUsersForMethod: any[] = [];
       let page = 1;
@@ -330,48 +328,17 @@ app.get("/api/admin/data", async (req, res) => {
         page++;
       }
 
-      log(`🔐 Total users fetched for registration method: ${allUsersForMethod.length}`);
-
       // Count registration methods
-      allUsersForMethod.forEach((user: any, index: number) => {
-        // Check if user has Google as identity provider
-        // Check app_metadata.provider or app_metadata.providers array
+      allUsersForMethod.forEach((user: any) => {
         const provider = user.app_metadata?.provider;
         const providers = user.app_metadata?.providers || [];
-        
-        // More detailed checks
-        const providerCheck = provider === 'google';
-        const providersCheck = providers.includes('google');
-        const hasGoogleProvider = providerCheck || providersCheck;
-
-        // Log first 10 users for debugging
-        if (index < 10) {
-          log(`🔐 User ${index + 1} email: ${user.email}`);
-          log(`🔐 User ${index + 1} provider:`, provider, `(type: ${typeof provider})`);
-          log(`🔐 User ${index + 1} providers:`, JSON.stringify(providers), `(is array: ${Array.isArray(providers)})`);
-          log(`🔐 User ${index + 1} providerCheck (provider === 'google'):`, providerCheck);
-          log(`🔐 User ${index + 1} providersCheck (providers.includes('google')):`, providersCheck);
-          log(`🔐 User ${index + 1} hasGoogleProvider result:`, hasGoogleProvider);
-        }
+        const hasGoogleProvider = provider === 'google' || providers.includes('google');
 
         if (hasGoogleProvider) {
           registrationMethodStats.googleRegistrations++;
-          if (index < 10) {
-            log(`✅ User ${index + 1} counted as Google registration`);
-          }
         } else {
-          // If no Google provider, it's an email registration
           registrationMethodStats.emailRegistrations++;
-          if (index < 10) {
-            log(`📧 User ${index + 1} counted as Email registration`);
-          }
         }
-      });
-
-      log("🔐 Registration method stats:", {
-        emailRegistrations: registrationMethodStats.emailRegistrations,
-        googleRegistrations: registrationMethodStats.googleRegistrations,
-        totalUsers: allUsersForMethod.length
       });
     } catch (error: any) {
       log("❌ Error calculating registration method stats:", error);
