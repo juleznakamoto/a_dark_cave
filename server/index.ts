@@ -342,16 +342,11 @@ app.get("/api/admin/data", async (req, res) => {
 
         // Log first 10 users for debugging
         if (index < 10) {
-          log(`🔐 User ${index + 1}:`, {
-            email: user.email,
-            hasIdentities: !!user.identities,
-            identityCount: user.identities?.length || 0,
-            identities: user.identities,
-            providers: user.identities?.map((i: any) => i.provider) || [],
-            hasGoogleProvider,
-            app_metadata: user.app_metadata,
-            user_metadata: user.user_metadata
-          });
+          log(`🔐 User ${index + 1} email: ${user.email}`);
+          log(`🔐 User ${index + 1} identities:`, JSON.stringify(user.identities, null, 2));
+          log(`🔐 User ${index + 1} app_metadata.provider:`, user.app_metadata?.provider);
+          log(`🔐 User ${index + 1} app_metadata.providers:`, user.app_metadata?.providers);
+          log(`🔐 User ${index + 1} hasGoogleProvider result:`, hasGoogleProvider);
         }
 
         if (hasGoogleProvider) {
