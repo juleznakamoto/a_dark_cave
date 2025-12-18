@@ -61,15 +61,19 @@ export default function AttackWavesChart() {
 
   const handleProvoke = async (waveId: string) => {
     const timer = attackWaveTimers?.[waveId];
+    const elapsed = timer?.elapsedTime || 0;
+    const remaining = timer ? Math.max(0, timer.duration - elapsed) : 0;
+    
     console.log('[PROVOKE] Button clicked for wave:', waveId, {
       timer,
-      timeRemaining: timeRemaining[waveId],
+      elapsed,
+      remaining,
       hasTimer: !!timer,
       isDefeated: timer?.defeated,
       isProvoked: timer?.provoked,
     });
 
-    if (timer && !timer.defeated && timeRemaining[waveId] > 0 && !timer.provoked) {
+    if (timer && !timer.defeated && remaining > 0 && !timer.provoked) {
       console.log('[PROVOKE] Conditions met, updating state...');
 
       // Set the timer to expired and mark as provoked
