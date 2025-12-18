@@ -401,47 +401,18 @@ export default function AdminDashboard() {
 
   // All memos MUST be defined before conditional returns to comply with React rules
   const getStatsOverPlaytime = useMemo(() => {
-    console.log('📊 getStatsOverPlaytime - relevant saves:', selectedUser === "all" ? gameSaves.length : gameSaves.filter(s => s.user_id === selectedUser).length);
-    console.log('📊 getStatsOverPlaytime - clickData length:', clickData.length);
-
-    // Log sample click data structure
-    if (clickData.length > 0) {
-      const sample = clickData[0];
-      console.log('📊 Sample click data structure:', {
-        hasClicks: !!sample.clicks,
-        hasResources: !!sample.resources,
-        clicksKeys: sample.clicks ? Object.keys(sample.clicks) : [],
-        resourcesKeys: sample.resources ? Object.keys(sample.resources) : [],
-        sampleResources: sample.resources,
-      });
-    }
-
     const relevantSaves = selectedUser === "all"
       ? gameSaves
       : gameSaves.filter((s) => s.user_id === selectedUser);
 
-    if (showCompletedOnly) {
-      const completedSaves = relevantSaves.filter(save => 
-        save.game_state?.events?.cube15a ||
-        save.game_state?.events?.cube15b ||
-        save.game_state?.events?.cube13 ||
-        save.game_state?.events?.cube14a ||
-        save.game_state?.events?.cube14b ||
-        save.game_state?.events?.cube14c ||
-        save.game_state?.events?.cube14d ||
-        save.game_state?.gameComplete
-      );
-
-      if (completedSaves.length === 0) {
-        console.log('📦 No relevant saves, returning empty data');
-        return Array.from({ length: 24 }, (_, i) => ({
-          bucket: `${i * 10}m`,
-          strength: 0,
-          knowledge: 0,
-          luck: 0,
-          madness: 0,
-        }));
-      }
+    if (relevantSaves.length === 0) {
+      return Array.from({ length: 24 }, (_, i) => ({
+        time: `${i}h`,
+        strength: 0,
+        knowledge: 0,
+        luck: 0,
+        madness: 0,
+      }));
     }
 
     const timeMap = new Map<number, { strength: number[], knowledge: number[], luck: number[], madness: number[] }>();
@@ -449,73 +420,24 @@ export default function AdminDashboard() {
       timeMap.set(i, { strength: [], knowledge: [], luck: [], madness: [] });
     }
 
-    let usersProcessed = 0;
-    let clicksWithStats = 0;
-    let clicksWithoutStats = 0;
-
+    // Use the final game state stats from each user's save
     relevantSaves.forEach((save) => {
-      const clicksForUser = clickData.filter((c) => c.user_id === save.user_id);
-      if (clicksForUser.length === 0) return;
+      if (!save.game_state?.stats) return;
+      
+      const stats = save.game_state.stats;
+      const playTimeMinutes = save.game_state.playTime ? Math.floor(save.game_state.playTime / 60000) : 0;
+      const bucket = Math.floor(playTimeMinutes / 60);
 
-      usersProcessed++;
-      if (usersProcessed <= 3) {
-        console.log(`📊 User ${save.user_id.substring(0, 8)}: ${clicksForUser.length} clicks`);
-        if (clicksForUser.length > 0) {
-          const firstClick = clicksForUser[0];
-          // Stats are stored in the resources field, not game_state_snapshot
-          const statsFromResources = {
-            strength: firstClick.resources?.strength,
-            knowledge: firstClick.resources?.knowledge,
-            luck: firstClick.resources?.luck,
-            madness: firstClick.resources?.madness,
-          };
-
-          console.log(`📊 First click stats (from resources):`, statsFromResources);
-
-          // Check if we have any stats data
-          const hasStats = Object.values(statsFromResources).some(v => v !== undefined && v !== null);
-
-          if (hasStats) {
-            clicksWithStats++;
-            for (const [key, value] of Object.entries(statsFromResources)) {
-              if (selectedStats.has(key) && typeof value === 'number') {
-                if (!userStats[key]) userStats[key] = [];
-                userStats[key].push(value);
-              }
-            }
-          } else {
-            clicksWithoutStats++;
-          }
-        }
+      if (bucket >= 0 && bucket < 24) {
+        const data = timeMap.get(bucket)!;
+        if (selectedStats.has('strength')) data.strength.push(stats.strength || 0);
+        if (selectedStats.has('knowledge')) data.knowledge.push(stats.knowledge || 0);
+        if (selectedStats.has('luck')) data.luck.push(stats.luck || 0);
+        if (selectedStats.has('madness')) data.madness.push(stats.madness || 0);
       }
-
-      const firstClickTime = new Date(clicksForUser[0].timestamp).getTime();
-
-      clicksForUser.forEach((click) => {
-        const elapsed = (new Date(click.timestamp).getTime() - firstClickTime) / 1000;
-        const bucket = Math.floor(elapsed / 3600);
-
-        if (bucket >= 0 && bucket < 24) {
-          const state = click.resources; // Changed to use resources directly
-          if (state) {
-            clicksWithStats++;
-            const data = timeMap.get(bucket)!;
-            data.strength.push(state.strength || 0);
-            data.knowledge.push(state.knowledge || 0);
-            data.luck.push(state.luck || 0);
-            data.madness.push(state.madness || 0);
-          } else {
-            clicksWithoutStats++;
-          }
-        }
-      });
     });
 
-    console.log('📊 Users processed:', usersProcessed);
-    console.log('📊 Clicks with stats:', clicksWithStats);
-    console.log('📊 Clicks without stats:', clicksWithoutStats);
-
-    const result = Array.from({ length: 24 }, (_, i) => {
+    return Array.from({ length: 24 }, (_, i) => {
       const stats = timeMap.get(i)!;
       return {
         time: `${i}h`,
@@ -525,20 +447,13 @@ export default function AdminDashboard() {
         madness: stats.madness.length > 0 ? stats.madness.reduce((a, b) => a + b, 0) / stats.madness.length : 0,
       };
     });
-
-    console.log('📊 getStatsOverPlaytime result (first 3 buckets):', result.slice(0, 3));
-    return result;
-  }, [gameSaves, clickData, selectedUser, showCompletedOnly, selectedStats]);
+  }, [gameSaves, selectedUser, selectedStats]);
 
   const getResourceStatsOverPlaytime = useMemo(() => {
     const relevant = filterByUser(gameSaves);
     const resourceKeys = ['food', 'wood', 'stone', 'iron', 'coal', 'sulfur', 'obsidian', 'adamant', 'moonstone', 'leather', 'steel', 'gold', 'silver'];
 
-    console.log('📦 getResourceStatsOverPlaytime - relevant saves:', relevant.length);
-    console.log('📦 getResourceStatsOverPlaytime - clickData length:', clickData.length);
-
     if (relevant.length === 0) {
-      console.log('📦 No relevant saves, returning empty data');
       return Array.from({ length: 24 }, (_, i) => {
         const result: any = { time: `${i}h` };
         resourceKeys.forEach(key => result[key] = 0);
@@ -553,64 +468,25 @@ export default function AdminDashboard() {
       timeMap.set(i, emptyData);
     }
 
-    let totalSnapshotsFound = 0;
-    let usersProcessed = 0;
-    let clicksWithSnapshots = 0;
-    let clicksWithoutSnapshots = 0;
-
+    // Use the final game state resources from each user's save
     relevant.forEach((save) => {
-      const clicksForUser = clickData.filter((c) => c.user_id === save.user_id);
-      if (clicksForUser.length === 0) return;
+      if (!save.game_state?.resources) return;
+      
+      const resources = save.game_state.resources;
+      const playTimeMinutes = save.game_state.playTime ? Math.floor(save.game_state.playTime / 60000) : 0;
+      const bucket = Math.floor(playTimeMinutes / 60);
 
-      usersProcessed++;
-      if (usersProcessed <= 3) {
-        console.log(`📦 User ${save.user_id.substring(0, 8)}: ${clicksForUser.length} clicks`);
-        if (clicksForUser.length > 0) {
-          const firstClick = clicksForUser[0];
-          console.log(`📦 First click resources:`, firstClick.resources);
-
-          if (firstClick.resources) {
-            clicksWithSnapshots++;
-            for (const [key, value] of Object.entries(firstClick.resources)) {
-              if (selectedResources.has(key) && typeof value === 'number') {
-                if (!resourceData[key]) resourceData[key] = [];
-                resourceData[key].push(value);
-              }
-            }
-          } else {
-            clicksWithoutSnapshots++;
+      if (bucket >= 0 && bucket < 24) {
+        const data = timeMap.get(bucket)!;
+        resourceKeys.forEach(key => {
+          if (selectedResources.has(key)) {
+            data[key].push(resources[key] || 0);
           }
-        }
+        });
       }
-
-      const firstClickTime = new Date(clicksForUser[0].timestamp).getTime();
-
-      clicksForUser.forEach((click) => {
-        const elapsed = (new Date(click.timestamp).getTime() - firstClickTime) / 1000;
-        const bucket = Math.floor(elapsed / 3600);
-
-        if (bucket >= 0 && bucket < 24) {
-          const state = click.resources; // Changed to use resources directly
-          if (state) {
-            totalSnapshotsFound++;
-            clicksWithSnapshots++;
-            const data = timeMap.get(bucket)!;
-            resourceKeys.forEach(key => {
-              data[key].push(state[key] || 0);
-            });
-          } else {
-            clicksWithoutSnapshots++;
-          }
-        }
-      });
     });
 
-    console.log('📦 Total resource snapshots found:', totalSnapshotsFound);
-    console.log('📦 Users processed:', usersProcessed);
-    console.log('📦 Clicks with snapshots:', clicksWithSnapshots);
-    console.log('📦 Clicks without snapshots:', clicksWithoutSnapshots);
-
-    const result = Array.from({ length: 24 }, (_, i) => {
+    return Array.from({ length: 24 }, (_, i) => {
       const resources = timeMap.get(i)!;
       const result: any = { time: `${i}h` };
       resourceKeys.forEach(key => {
@@ -618,21 +494,15 @@ export default function AdminDashboard() {
       });
       return result;
     });
-
-    console.log('📦 getResourceStatsOverPlaytime result (first 3 buckets):', result.slice(0, 3));
-    return result;
-  }, [gameSaves, clickData, selectedUser, showCompletedOnly, selectedResources]);
+  }, [gameSaves, selectedUser, selectedResources]);
 
   const getButtonUpgradesOverPlaytime = useMemo(() => {
-    const relevant = filterByUser(gameSaves);
-    console.log('⬆️ getButtonUpgradesOverPlaytime - relevant saves:', relevant.length);
-    console.log('⬆️ getButtonUpgradesOverPlaytime - clickData length:', clickData.length);
+    const relevant = filterByUser(clickData);
 
     if (relevant.length === 0) {
-      console.log('⬆️ No relevant saves, returning empty data');
       return Array.from({ length: 24 }, (_, i) => ({
         time: `${i}h`,
-        caveExplore: 1, mineStone: 1, mineIron: 1, mineCoal: 1, mineSulfur: 1, mineObsidian: 1, mineAdamant: 1, hunt: 1, chopWood: 1,
+        caveExplore: 0, mineStone: 0, mineIron: 0, mineCoal: 0, mineSulfur: 0, mineObsidian: 0, mineAdamant: 0, hunt: 0, chopWood: 0,
       }));
     }
 
@@ -641,90 +511,66 @@ export default function AdminDashboard() {
       timeMap.set(i, { caveExplore: [], mineStone: [], mineIron: [], mineCoal: [], mineSulfur: [], mineObsidian: [], mineAdamant: [], hunt: [], chopWood: [] });
     }
 
-    let totalButtonLevelsFound = 0;
-    let usersProcessed = 0;
-    let clicksWithButtonLevels = 0;
-    let clicksWithoutButtonLevels = 0;
+    // Process click data which has structure: { "110m": { "action": count, ... }, ... }
+    relevant.forEach((clickEntry) => {
+      Object.entries(clickEntry.clicks).forEach(([playtimeKey, actions]) => {
+        // Extract playtime in minutes from keys like "110m"
+        const playtimeMinutes = parseInt(playtimeKey);
+        if (isNaN(playtimeMinutes)) return;
 
-    relevant.forEach((save) => {
-      const clicksForUser = clickData.filter((c) => c.user_id === save.user_id);
-      if (clicksForUser.length === 0) return;
-
-      usersProcessed++;
-      if (usersProcessed <= 3) {
-        console.log(`⬆️ User ${save.user_id.substring(0, 8)}: ${clicksForUser.length} clicks`);
-        if (clicksForUser.length > 0) {
-          const firstClick = clicksForUser[0];
-          console.log(`⬆️ First click has clicks:`, !!firstClick.clicks);
-          console.log(`⬆️ First click clicks data:`, firstClick.clicks);
-
-          // Button levels are tracked in the clicks field as click counts per action
-          if (firstClick.clicks) {
-            clicksWithButtonLevels++;
-            for (const [key, value] of Object.entries(firstClick.clicks)) {
-              if (selectedMiningTypes.has(key) && typeof value === 'number') {
-                if (!buttonLevelData[key]) buttonLevelData[key] = [];
-                buttonLevelData[key].push(value);
-              }
-            }
-          } else {
-            clicksWithoutButtonLevels++;
-          }
-        }
-      }
-
-      const firstClickTime = new Date(clicksForUser[0].timestamp).getTime();
-
-      clicksForUser.forEach((click) => {
-        const elapsed = (new Date(click.timestamp).getTime() - firstClickTime) / 1000;
-        const bucket = Math.floor(elapsed / 3600);
-
+        const bucket = Math.floor(playtimeMinutes / 60);
         if (bucket >= 0 && bucket < 24) {
-          const state = click.clicks; // Changed to use clicks directly
-          if (state) {
-            totalButtonLevelsFound++;
-            clicksWithButtonLevels++;
-            const data = timeMap.get(bucket)!;
-            data.caveExplore.push(state.caveExplore || 1);
-            data.mineStone.push(state.mineStone || 1);
-            data.mineIron.push(state.mineIron || 1);
-            data.mineCoal.push(state.mineCoal || 1);
-            data.mineSulfur.push(state.mineSulfur || 1);
-            data.mineObsidian.push(state.mineObsidian || 1);
-            data.mineAdamant.push(state.mineAdamant || 1);
-            data.hunt.push(state.hunt || 1);
-            data.chopWood.push(state.chopWood || 1);
-          } else {
-            clicksWithoutButtonLevels++;
+          const data = timeMap.get(bucket)!;
+          const actionCounts = actions as Record<string, number>;
+          
+          // Sum up click counts for mining actions
+          if (selectedMiningTypes.has('caveExplore') && actionCounts.exploreCave) {
+            data.caveExplore.push(actionCounts.exploreCave);
+          }
+          if (selectedMiningTypes.has('mineStone') && actionCounts.mineStone) {
+            data.mineStone.push(actionCounts.mineStone);
+          }
+          if (selectedMiningTypes.has('mineIron') && actionCounts.mineIron) {
+            data.mineIron.push(actionCounts.mineIron);
+          }
+          if (selectedMiningTypes.has('mineCoal') && actionCounts.mineCoal) {
+            data.mineCoal.push(actionCounts.mineCoal);
+          }
+          if (selectedMiningTypes.has('mineSulfur') && actionCounts.mineSulfur) {
+            data.mineSulfur.push(actionCounts.mineSulfur);
+          }
+          if (selectedMiningTypes.has('mineObsidian') && actionCounts.mineObsidian) {
+            data.mineObsidian.push(actionCounts.mineObsidian);
+          }
+          if (selectedMiningTypes.has('mineAdamant') && actionCounts.mineAdamant) {
+            data.mineAdamant.push(actionCounts.mineAdamant);
+          }
+          if (selectedMiningTypes.has('hunt') && actionCounts.hunt) {
+            data.hunt.push(actionCounts.hunt);
+          }
+          if (selectedMiningTypes.has('chopWood') && actionCounts.chopWood) {
+            data.chopWood.push(actionCounts.chopWood);
           }
         }
       });
     });
 
-    console.log('⬆️ Total button level snapshots found:', totalButtonLevelsFound);
-    console.log('⬆️ Users processed:', usersProcessed);
-    console.log('⬆️ Clicks with buttonLevels:', clicksWithButtonLevels);
-    console.log('⬆️ Clicks without buttonLevels:', clicksWithoutButtonLevels);
-
-    const result = Array.from({ length: 24 }, (_, i) => {
+    return Array.from({ length: 24 }, (_, i) => {
       const levels = timeMap.get(i)!;
       return {
         time: `${i}h`,
-        caveExplore: levels.caveExplore.length > 0 ? levels.caveExplore.reduce((a, b) => a + b, 0) / levels.caveExplore.length : 1,
-        mineStone: levels.mineStone.length > 0 ? levels.mineStone.reduce((a, b) => a + b, 0) / levels.mineStone.length : 1,
-        mineIron: levels.mineIron.length > 0 ? levels.mineIron.reduce((a, b) => a + b, 0) / levels.mineIron.length : 1,
-        mineCoal: levels.mineCoal.length > 0 ? levels.mineCoal.reduce((a, b) => a + b, 0) / levels.mineCoal.length : 1,
-        mineSulfur: levels.mineSulfur.length > 0 ? levels.mineSulfur.reduce((a, b) => a + b, 0) / levels.mineSulfur.length : 1,
-        mineObsidian: levels.mineObsidian.length > 0 ? levels.mineObsidian.reduce((a, b) => a + b, 0) / levels.mineObsidian.length : 1,
-        mineAdamant: levels.mineAdamant.length > 0 ? levels.mineAdamant.reduce((a, b) => a + b, 0) / levels.mineAdamant.length : 1,
-        hunt: levels.hunt.length > 0 ? levels.hunt.reduce((a, b) => a + b, 0) / levels.hunt.length : 1,
-        chopWood: levels.chopWood.length > 0 ? levels.chopWood.reduce((a, b) => a + b, 0) / levels.chopWood.length : 1,
+        caveExplore: levels.caveExplore.length > 0 ? levels.caveExplore.reduce((a, b) => a + b, 0) / levels.caveExplore.length : 0,
+        mineStone: levels.mineStone.length > 0 ? levels.mineStone.reduce((a, b) => a + b, 0) / levels.mineStone.length : 0,
+        mineIron: levels.mineIron.length > 0 ? levels.mineIron.reduce((a, b) => a + b, 0) / levels.mineIron.length : 0,
+        mineCoal: levels.mineCoal.length > 0 ? levels.mineCoal.reduce((a, b) => a + b, 0) / levels.mineCoal.length : 0,
+        mineSulfur: levels.mineSulfur.length > 0 ? levels.mineSulfur.reduce((a, b) => a + b, 0) / levels.mineSulfur.length : 0,
+        mineObsidian: levels.mineObsidian.length > 0 ? levels.mineObsidian.reduce((a, b) => a + b, 0) / levels.mineObsidian.length : 0,
+        mineAdamant: levels.mineAdamant.length > 0 ? levels.mineAdamant.reduce((a, b) => a + b, 0) / levels.mineAdamant.length : 0,
+        hunt: levels.hunt.length > 0 ? levels.hunt.reduce((a, b) => a + b, 0) / levels.hunt.length : 0,
+        chopWood: levels.chopWood.length > 0 ? levels.chopWood.reduce((a, b) => a + b, 0) / levels.chopWood.length : 0,
       };
     });
-
-    console.log('⬆️ getButtonUpgradesOverPlaytime result (first 3 buckets):', result.slice(0, 3));
-    return result;
-  }, [gameSaves, clickData, selectedUser, showCompletedOnly, selectedMiningTypes]);
+  }, [clickData, selectedUser, selectedMiningTypes]);
 
   const getGameCompletionStats = useCallback(() => {
     const relevantSaves = selectedUser === "all"
