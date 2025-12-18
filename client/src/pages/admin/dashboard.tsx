@@ -47,6 +47,7 @@ interface ButtonClickData {
   clicks: Record<string, Record<string, number>>; // Changed to Record<string, Record<string, number>> to match the structure
   timestamp: string; // Added timestamp for filtering by date
   game_state_snapshot?: any; // Added for snapshotting state at the time of click
+  resources?: Record<string, number>; // Added for resources at the time of click
 }
 
 interface GameSaveData {
@@ -400,19 +401,47 @@ export default function AdminDashboard() {
 
   // All memos MUST be defined before conditional returns to comply with React rules
   const getStatsOverPlaytime = useMemo(() => {
-    const relevant = filterByUser(gameSaves);
-    console.log('📊 getStatsOverPlaytime - relevant saves:', relevant.length);
+    console.log('📊 getStatsOverPlaytime - relevant saves:', selectedUser === "all" ? gameSaves.length : gameSaves.filter(s => s.user_id === selectedUser).length);
     console.log('📊 getStatsOverPlaytime - clickData length:', clickData.length);
-    
-    if (relevant.length === 0) {
-      console.log('📊 No relevant saves, returning empty data');
-      return Array.from({ length: 24 }, (_, i) => ({
-        time: `${i}h`,
-        strength: 0,
-        knowledge: 0,
-        luck: 0,
-        madness: 0,
-      }));
+
+    // Log sample click data structure
+    if (clickData.length > 0) {
+      const sample = clickData[0];
+      console.log('📊 Sample click data structure:', {
+        hasClicks: !!sample.clicks,
+        hasResources: !!sample.resources,
+        clicksKeys: sample.clicks ? Object.keys(sample.clicks) : [],
+        resourcesKeys: sample.resources ? Object.keys(sample.resources) : [],
+        sampleResources: sample.resources,
+      });
+    }
+
+    const relevantSaves = selectedUser === "all"
+      ? gameSaves
+      : gameSaves.filter((s) => s.user_id === selectedUser);
+
+    if (showCompletedOnly) {
+      const completedSaves = relevantSaves.filter(save => 
+        save.game_state?.events?.cube15a ||
+        save.game_state?.events?.cube15b ||
+        save.game_state?.events?.cube13 ||
+        save.game_state?.events?.cube14a ||
+        save.game_state?.events?.cube14b ||
+        save.game_state?.events?.cube14c ||
+        save.game_state?.events?.cube14d ||
+        save.game_state?.gameComplete
+      );
+
+      if (completedSaves.length === 0) {
+        console.log('📦 No relevant saves, returning empty data');
+        return Array.from({ length: 24 }, (_, i) => ({
+          bucket: `${i * 10}m`,
+          strength: 0,
+          knowledge: 0,
+          luck: 0,
+          madness: 0,
+        }));
+      }
     }
 
     const timeMap = new Map<number, { strength: number[], knowledge: number[], luck: number[], madness: number[] }>();
@@ -423,8 +452,8 @@ export default function AdminDashboard() {
     let usersProcessed = 0;
     let clicksWithStats = 0;
     let clicksWithoutStats = 0;
-    
-    relevant.forEach((save) => {
+
+    relevantSaves.forEach((save) => {
       const clicksForUser = clickData.filter((c) => c.user_id === save.user_id);
       if (clicksForUser.length === 0) return;
 
@@ -432,12 +461,31 @@ export default function AdminDashboard() {
       if (usersProcessed <= 3) {
         console.log(`📊 User ${save.user_id.substring(0, 8)}: ${clicksForUser.length} clicks`);
         if (clicksForUser.length > 0) {
-          console.log(`📊 First click stats:`, {
-            strength: clicksForUser[0].game_state_snapshot?.strength,
-            knowledge: clicksForUser[0].game_state_snapshot?.knowledge,
-            luck: clicksForUser[0].game_state_snapshot?.luck,
-            madness: clicksForUser[0].game_state_snapshot?.madness,
-          });
+          const firstClick = clicksForUser[0];
+          // Stats are stored in the resources field, not game_state_snapshot
+          const statsFromResources = {
+            strength: firstClick.resources?.strength,
+            knowledge: firstClick.resources?.knowledge,
+            luck: firstClick.resources?.luck,
+            madness: firstClick.resources?.madness,
+          };
+
+          console.log(`📊 First click stats (from resources):`, statsFromResources);
+
+          // Check if we have any stats data
+          const hasStats = Object.values(statsFromResources).some(v => v !== undefined && v !== null);
+
+          if (hasStats) {
+            clicksWithStats++;
+            for (const [key, value] of Object.entries(statsFromResources)) {
+              if (selectedStats.has(key) && typeof value === 'number') {
+                if (!userStats[key]) userStats[key] = [];
+                userStats[key].push(value);
+              }
+            }
+          } else {
+            clicksWithoutStats++;
+          }
         }
       }
 
@@ -448,7 +496,7 @@ export default function AdminDashboard() {
         const bucket = Math.floor(elapsed / 3600);
 
         if (bucket >= 0 && bucket < 24) {
-          const state = click.game_state_snapshot;
+          const state = click.resources; // Changed to use resources directly
           if (state) {
             clicksWithStats++;
             const data = timeMap.get(bucket)!;
@@ -477,10 +525,10 @@ export default function AdminDashboard() {
         madness: stats.madness.length > 0 ? stats.madness.reduce((a, b) => a + b, 0) / stats.madness.length : 0,
       };
     });
-    
+
     console.log('📊 getStatsOverPlaytime result (first 3 buckets):', result.slice(0, 3));
     return result;
-  }, [gameSaves, clickData, selectedUser, showCompletedOnly]);
+  }, [gameSaves, clickData, selectedUser, showCompletedOnly, selectedStats]);
 
   const getResourceStatsOverPlaytime = useMemo(() => {
     const relevant = filterByUser(gameSaves);
@@ -509,16 +557,29 @@ export default function AdminDashboard() {
     let usersProcessed = 0;
     let clicksWithSnapshots = 0;
     let clicksWithoutSnapshots = 0;
-    
+
     relevant.forEach((save) => {
       const clicksForUser = clickData.filter((c) => c.user_id === save.user_id);
       if (clicksForUser.length === 0) return;
-      
+
       usersProcessed++;
       if (usersProcessed <= 3) {
         console.log(`📦 User ${save.user_id.substring(0, 8)}: ${clicksForUser.length} clicks`);
         if (clicksForUser.length > 0) {
-          console.log(`📦 First click snapshot:`, clicksForUser[0].game_state_snapshot);
+          const firstClick = clicksForUser[0];
+          console.log(`📦 First click resources:`, firstClick.resources);
+
+          if (firstClick.resources) {
+            clicksWithSnapshots++;
+            for (const [key, value] of Object.entries(firstClick.resources)) {
+              if (selectedResources.has(key) && typeof value === 'number') {
+                if (!resourceData[key]) resourceData[key] = [];
+                resourceData[key].push(value);
+              }
+            }
+          } else {
+            clicksWithoutSnapshots++;
+          }
         }
       }
 
@@ -529,7 +590,7 @@ export default function AdminDashboard() {
         const bucket = Math.floor(elapsed / 3600);
 
         if (bucket >= 0 && bucket < 24) {
-          const state = click.game_state_snapshot?.resources;
+          const state = click.resources; // Changed to use resources directly
           if (state) {
             totalSnapshotsFound++;
             clicksWithSnapshots++;
@@ -557,7 +618,7 @@ export default function AdminDashboard() {
       });
       return result;
     });
-    
+
     console.log('📦 getResourceStatsOverPlaytime result (first 3 buckets):', result.slice(0, 3));
     return result;
   }, [gameSaves, clickData, selectedUser, showCompletedOnly, selectedResources]);
@@ -566,7 +627,7 @@ export default function AdminDashboard() {
     const relevant = filterByUser(gameSaves);
     console.log('⬆️ getButtonUpgradesOverPlaytime - relevant saves:', relevant.length);
     console.log('⬆️ getButtonUpgradesOverPlaytime - clickData length:', clickData.length);
-    
+
     if (relevant.length === 0) {
       console.log('⬆️ No relevant saves, returning empty data');
       return Array.from({ length: 24 }, (_, i) => ({
@@ -584,7 +645,7 @@ export default function AdminDashboard() {
     let usersProcessed = 0;
     let clicksWithButtonLevels = 0;
     let clicksWithoutButtonLevels = 0;
-    
+
     relevant.forEach((save) => {
       const clicksForUser = clickData.filter((c) => c.user_id === save.user_id);
       if (clicksForUser.length === 0) return;
@@ -593,8 +654,22 @@ export default function AdminDashboard() {
       if (usersProcessed <= 3) {
         console.log(`⬆️ User ${save.user_id.substring(0, 8)}: ${clicksForUser.length} clicks`);
         if (clicksForUser.length > 0) {
-          console.log(`⬆️ First click has game_state_snapshot:`, !!clicksForUser[0].game_state_snapshot);
-          console.log(`⬆️ First click buttonLevels:`, clicksForUser[0].game_state_snapshot?.buttonLevels);
+          const firstClick = clicksForUser[0];
+          console.log(`⬆️ First click has clicks:`, !!firstClick.clicks);
+          console.log(`⬆️ First click clicks data:`, firstClick.clicks);
+
+          // Button levels are tracked in the clicks field as click counts per action
+          if (firstClick.clicks) {
+            clicksWithButtonLevels++;
+            for (const [key, value] of Object.entries(firstClick.clicks)) {
+              if (selectedMiningTypes.has(key) && typeof value === 'number') {
+                if (!buttonLevelData[key]) buttonLevelData[key] = [];
+                buttonLevelData[key].push(value);
+              }
+            }
+          } else {
+            clicksWithoutButtonLevels++;
+          }
         }
       }
 
@@ -605,20 +680,20 @@ export default function AdminDashboard() {
         const bucket = Math.floor(elapsed / 3600);
 
         if (bucket >= 0 && bucket < 24) {
-          const state = click.game_state_snapshot;
-          if (state?.buttonLevels) {
+          const state = click.clicks; // Changed to use clicks directly
+          if (state) {
             totalButtonLevelsFound++;
             clicksWithButtonLevels++;
             const data = timeMap.get(bucket)!;
-            data.caveExplore.push(state.buttonLevels.caveExplore || 1);
-            data.mineStone.push(state.buttonLevels.mineStone || 1);
-            data.mineIron.push(state.buttonLevels.mineIron || 1);
-            data.mineCoal.push(state.buttonLevels.mineCoal || 1);
-            data.mineSulfur.push(state.buttonLevels.mineSulfur || 1);
-            data.mineObsidian.push(state.buttonLevels.mineObsidian || 1);
-            data.mineAdamant.push(state.buttonLevels.mineAdamant || 1);
-            data.hunt.push(state.buttonLevels.hunt || 1);
-            data.chopWood.push(state.buttonLevels.chopWood || 1);
+            data.caveExplore.push(state.caveExplore || 1);
+            data.mineStone.push(state.mineStone || 1);
+            data.mineIron.push(state.mineIron || 1);
+            data.mineCoal.push(state.mineCoal || 1);
+            data.mineSulfur.push(state.mineSulfur || 1);
+            data.mineObsidian.push(state.mineObsidian || 1);
+            data.mineAdamant.push(state.mineAdamant || 1);
+            data.hunt.push(state.hunt || 1);
+            data.chopWood.push(state.chopWood || 1);
           } else {
             clicksWithoutButtonLevels++;
           }
@@ -646,10 +721,10 @@ export default function AdminDashboard() {
         chopWood: levels.chopWood.length > 0 ? levels.chopWood.reduce((a, b) => a + b, 0) / levels.chopWood.length : 1,
       };
     });
-    
+
     console.log('⬆️ getButtonUpgradesOverPlaytime result (first 3 buckets):', result.slice(0, 3));
     return result;
-  }, [gameSaves, clickData, selectedUser, showCompletedOnly]);
+  }, [gameSaves, clickData, selectedUser, showCompletedOnly, selectedMiningTypes]);
 
   const getGameCompletionStats = useCallback(() => {
     const relevantSaves = selectedUser === "all"
@@ -907,6 +982,7 @@ export default function AdminDashboard() {
         if (data.clicks.length > 0) {
           console.log('📥 Sample click entry:', data.clicks[0]);
           console.log('📥 Click has game_state_snapshot:', !!data.clicks[0].game_state_snapshot);
+          console.log('📥 Click has resources:', !!data.clicks[0].resources); // Added logging for resources
         }
         setRawClickData(data.clicks);
       }
