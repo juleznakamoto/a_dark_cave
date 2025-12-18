@@ -87,6 +87,7 @@ export default function VillagePanel() {
         { id: "buildLonghouse", label: "Longhouse" },
         { id: "buildCabin", label: "Cabin" },
         { id: "buildBlacksmith", label: "Blacksmith" },
+        { id: "buildAdvancedBlacksmith", label: "Advanced Blacksmith" },
         { id: "buildShallowPit", label: "Shallow Pit" },
         { id: "buildDeepeningPit", label: "Deepening Pit" },
         { id: "buildDeepPit", label: "Deep Pit" },
