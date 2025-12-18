@@ -346,6 +346,8 @@ export function executeGameAction(
       return handleBuildCabin(state, result);
     case "buildBlacksmith":
       return handleBuildBlacksmith(state, result);
+    case "buildAdvancedBlacksmith":
+      return handleBuildAdvancedBlacksmith(state, result);
     case "buildShallowPit":
       return handleBuildShallowPit(state, result);
     case "buildDeepeningPit":

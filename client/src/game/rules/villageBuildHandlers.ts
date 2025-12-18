@@ -1,4 +1,3 @@
-
 import { GameState } from "@shared/schema";
 import { ActionResult } from '@/game/actions';
 import { logger } from "@/lib/logger";
