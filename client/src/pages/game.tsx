@@ -6,6 +6,7 @@ import { loadGame, saveGame } from "@/game/save"; // Import saveGame
 import EventDialog from "@/components/game/EventDialog";
 import CombatDialog from "@/components/game/CombatDialog";
 import { logger } from "@/lib/logger";
+import { getCurrentUser } from "@/game/auth";
 
 export default function Game() {
   const initialize = useGameStore((state) => state.initialize);
@@ -15,76 +16,83 @@ export default function Game() {
   const [shouldStartMusic, setShouldStartMusic] = useState(false);
 
   useEffect(() => {
+    logger.log("[GAME PAGE] Initializing game");
     const initializeGame = async () => {
-      // Check if URL is /game to skip start screen
-      const isGamePath = window.location.pathname === '/game';
-      
-      // Check for openShop query parameter
-      const urlParams = new URLSearchParams(window.location.search);
-      const openShop = urlParams.get('openShop') === 'true';
-      
-      // Wait for auth to be ready first
-      const { getCurrentUser } = await import('@/game/auth');
-      const user = await getCurrentUser();
-
-      // Load saved game or initialize with defaults
-      const savedState = await loadGame();
-      if (savedState) {
-        // Set the loaded state using useGameStore.setState
-        useGameStore.setState({
-          ...savedState,
-          activeTab: 'cave', // Always start on cave tab
-          flags: {
-            ...savedState.flags,
-            gameStarted: isGamePath ? true : savedState.flags.gameStarted, // Force game started if /game path
-            hasLitFire: isGamePath ? true : savedState.flags.hasLitFire, // Force fire lit if /game path
-          }
-        });
-        logger.log('[GAME] Game loaded from save');
-
-        // If user is logged in and has claimed referrals, save to cloud
-        if (user && savedState.referrals && savedState.referrals.some(r => r.claimed)) {
-          logger.log('[GAME] Detected claimed referrals - saving to cloud');
-          // Use setTimeout to ensure state is fully set before saving
-          setTimeout(async () => {
-            try {
-              await saveGame(savedState, false, false);
-              logger.log('[GAME] Successfully saved claimed referrals to cloud');
-            } catch (error) {
-              logger.error('[GAME] Failed to save claimed referrals:', error);
-            }
-          }, 1000);
+      try {
+        // Check if user just signed in with OAuth
+        const user = await getCurrentUser();
+        if (user) {
+          logger.log("[GAME PAGE] User authenticated via OAuth, loading game");
         }
-      } else {
-        // If no saved state, initialize with defaults
-        initialize();
-        
-        // If accessing /game directly, also set the game as started
-        if (isGamePath) {
+
+        // Check if URL is /game to skip start screen
+        const isGamePath = window.location.pathname === '/game';
+
+        // Check for openShop query parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const openShop = urlParams.get('openShop') === 'true';
+
+        // Load saved game or initialize with defaults
+        const savedState = await loadGame();
+        if (savedState) {
+          // Set the loaded state using useGameStore.setState
           useGameStore.setState({
+            ...savedState,
+            activeTab: 'cave', // Always start on cave tab
             flags: {
-              ...useGameStore.getState().flags,
-              gameStarted: true,
-              hasLitFire: true,
+              ...savedState.flags,
+              gameStarted: isGamePath ? true : savedState.flags.gameStarted, // Force game started if /game path
+              hasLitFire: isGamePath ? true : savedState.flags.hasLitFire, // Force fire lit if /game path
             }
           });
+          logger.log('[GAME] Game loaded from save');
+
+          // If user is logged in and has claimed referrals, save to cloud
+          if (user && savedState.referrals && savedState.referrals.some(r => r.claimed)) {
+            logger.log('[GAME] Detected claimed referrals - saving to cloud');
+            // Use setTimeout to ensure state is fully set before saving
+            setTimeout(async () => {
+              try {
+                await saveGame(savedState, false, false);
+                logger.log('[GAME] Successfully saved claimed referrals to cloud');
+              } catch (error) {
+                logger.error('[GAME] Failed to save claimed referrals:', error);
+              }
+            }, 1000);
+          }
+        } else {
+          // If no saved state, initialize with defaults
+          initialize();
+
+          // If accessing /game directly, also set the game as started
+          if (isGamePath) {
+            useGameStore.setState({
+              flags: {
+                ...useGameStore.getState().flags,
+                gameStarted: true,
+                hasLitFire: true,
+              }
+            });
+          }
+
+          logger.log('[GAME] Game initialized with defaults');
         }
-        
-        logger.log('[GAME] Game initialized with defaults');
+
+        // Mark as initialized
+        setIsInitialized(true);
+
+        // Open shop if requested
+        if (openShop) {
+          setTimeout(() => {
+            setShopDialogOpen(true);
+          }, 500);
+        }
+
+        // Start game loop
+        startGameLoop();
+      } catch (error) {
+        logger.error("[GAME PAGE] Failed to initialize game:", error);
       }
-
-      // Mark as initialized
-      setIsInitialized(true);
-
-      // Open shop if requested
-      if (openShop) {
-        setTimeout(() => {
-          setShopDialogOpen(true);
-        }, 500);
-      }
-
-      // Start game loop
-      startGameLoop();
     };
 
     initializeGame();
@@ -93,7 +101,7 @@ export default function Game() {
     return () => {
       stopGameLoop();
     };
-  }, [initialize]);
+  }, [initialize, loadGame]); // Added loadGame to dependency array
 
   // Start background music on first user interaction (required by browser autoplay policies)
   useEffect(() => {

@@ -141,6 +141,10 @@ export const supabase = {
     verifyOtp: async (params: any) => {
       const client = await getSupabaseClient();
       return client.auth.verifyOtp(params);
+    },
+    signInWithOAuth: async (options: { provider: 'google' }) => {
+      const client = await getSupabaseClient();
+      return client.auth.signInWithOAuth(options);
     }
   },
   from: (table: string) => {

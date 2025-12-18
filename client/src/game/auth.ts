@@ -177,6 +177,19 @@ export async function signIn(email: string, password: string) {
   return data;
 }
 
+export async function signInWithGoogle() {
+  const supabase = await getSupabaseClient();
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      redirectTo: window.location.origin + '/game',
+    }
+  });
+
+  if (error) throw error;
+  return data;
+}
+
 export async function signOut() {
   logger.log('[AUTH] 🚪 Signing out user...');
 
