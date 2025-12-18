@@ -345,7 +345,7 @@ export function handleBuildMasterworkFoundry(
     masterworkFoundryResult.logEntries!.push({
       id: `masterwork-foundry-built-${Date.now()}`,
       message:
-        "The Masterwork Foundry is complete, a monument to the pinnacle of metallurgical craft.",
+        "The Masterwork Foundry stands complete, a monument to supreme metallurgical mastery. Within its fires, black steel can be forged, nearly unbreakable, but very difficult to produce.",
       timestamp: Date.now(),
       type: "system",
     });

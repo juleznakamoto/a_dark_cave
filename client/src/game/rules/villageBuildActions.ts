@@ -378,7 +378,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildFoundry: {
     id: "buildFoundry",
     label: "Foundry",
-    description: "Specialized building for forging steel",
+    description: "Specialized building for steel production",
     tooltipEffects: ["Unlocks Steel Forgers"],
     building: true,
     show_when: {
@@ -439,8 +439,8 @@ export const villageBuildActions: Record<string, Action> = {
   buildMasterworkFoundry: {
     id: "buildMasterworkFoundry",
     label: "Masterwork Foundry",
-    description: "Masterwork foundry with superior steel production",
-    tooltipEffects: ["Unlocks Steel Forgers", "Steel Forger: +2 Steel"],
+    description: "Foundry with superior steel production",
+    tooltipEffects: ["Unlocks Steel Forgers", "Unlocks Black Steel Forgers", "Steel Forger: +2 Steel"],
     building: true,
     show_when: {
       1: {

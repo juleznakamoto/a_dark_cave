@@ -31,7 +31,7 @@ export default function StartScreen() {
 
     const animationTimer = setTimeout(() => {
       setIsAnimationComplete(true);
-    }, 10000);
+    }, 5500);
 
     // Start preloading background music immediately
     audioManager.loadSound("backgroundMusic", "/sounds/background_music.wav");

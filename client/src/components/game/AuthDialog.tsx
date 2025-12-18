@@ -148,7 +148,8 @@ export default function AuthDialog({
             <div className="text-center space-y-2">
               <div className="bg-red-600/5 border border-red-600/50 rounded-lg p-3">
                 <p className="text-md font-medium text-red-600">
-                  Please check your email to verify your account. Also check your spam folder.
+                  Please check your email to verify your account. Also check
+                  your spam folder.
                 </p>
               </div>
             </div>
@@ -215,7 +216,11 @@ export default function AuthDialog({
               </div>
             )}
             <div className="flex flex-col space-y-2">
-              <Button type="submit" className="font-medium text-sm" disabled={loading}>
+              <Button
+                type="submit"
+                className="font-medium text-sm"
+                disabled={loading}
+              >
                 {loading
                   ? "Loading..."
                   : mode === "signin"
@@ -232,7 +237,7 @@ export default function AuthDialog({
                     </div>
                     <div className="relative flex justify-center text-xs uppercase">
                       <span className="bg-background px-2 text-muted-foreground">
-                        Or continue with
+                        or continue with
                       </span>
                     </div>
                   </div>
@@ -261,20 +266,13 @@ export default function AuthDialog({
                         fill="#EA4335"
                       />
                     </svg>
-                    {mode === "signup" ? "Sign up with Google" : "Sign in with Google"}
+                    {mode === "signup"
+                      ? "Sign up with Google"
+                      : "Sign in with Google"}
                   </Button>
                 </>
               )}
-              {mode === "signin" && (
-                <Button
-                  type="button"
-                  variant="ghost"
-                  className="text-xs"
-                  onClick={() => setMode("reset")}
-                >
-                  Forgot password?
-                </Button>
-              )}
+
               <Button
                 type="button"
                 variant="ghost"
@@ -290,6 +288,16 @@ export default function AuthDialog({
                     ? "Already have an account? Sign in"
                     : "Back to sign in"}
               </Button>
+              {mode === "signin" && (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  className="text-xs !m-0"
+                  onClick={() => setMode("reset")}
+                >
+                  Forgot password?
+                </Button>
+              )}
             </div>
           </form>
         )}
