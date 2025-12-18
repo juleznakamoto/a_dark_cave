@@ -115,9 +115,9 @@ export default function OverviewTab(props: OverviewTabProps) {
               <p className="text-sm text-muted-foreground mb-1">Email Registrations</p>
               <p className="text-3xl font-bold">{registrationMethodStats?.emailRegistrations || 0}</p>
               <p className="text-xs text-muted-foreground mt-1">
-                {totalUserCount > 0
-                  ? Math.round((registrationMethodStats.emailRegistrations / totalUserCount) * 100)
-                  : 0}% of total users
+                {(registrationMethodStats?.emailRegistrations + registrationMethodStats?.googleRegistrations) > 0
+                  ? Math.round((registrationMethodStats.emailRegistrations / (registrationMethodStats.emailRegistrations + registrationMethodStats.googleRegistrations)) * 100)
+                  : 0}% of registered users
               </p>
             </div>
             
@@ -125,9 +125,9 @@ export default function OverviewTab(props: OverviewTabProps) {
               <p className="text-sm text-muted-foreground mb-1">Google OAuth</p>
               <p className="text-3xl font-bold">{registrationMethodStats?.googleRegistrations || 0}</p>
               <p className="text-xs text-muted-foreground mt-1">
-                {totalUserCount > 0
-                  ? Math.round((registrationMethodStats.googleRegistrations / totalUserCount) * 100)
-                  : 0}% of total users
+                {(registrationMethodStats?.emailRegistrations + registrationMethodStats?.googleRegistrations) > 0
+                  ? Math.round((registrationMethodStats.googleRegistrations / (registrationMethodStats.emailRegistrations + registrationMethodStats.googleRegistrations)) * 100)
+                  : 0}% of registered users
               </p>
             </div>
 
