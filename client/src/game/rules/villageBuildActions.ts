@@ -179,6 +179,37 @@ export const villageBuildActions: Record<string, Action> = {
     cooldown: 5,
   },
 
+  buildGrandBlacksmith: {
+    id: "buildGrandBlacksmith",
+    label: "Grand Blacksmith",
+    description: "Advanced blacksmith capable of creating the finest products",
+    tooltipEffects: ["Unlocks Advanced Crafting", "10 % Craft Discount"],
+    building: true,
+    show_when: {
+      1: {
+        "buildings.blacksmith": 1,
+        "story.seen.wizardFrostglassSword": true,
+        "buildings.grandBlacksmith": 0,
+      },
+    },
+    cost: {
+      1: {
+        "resources.stone": 10000,
+        "resources.wood": 5000,
+        "resources.steel": 2500,
+        "resources.adamant": 500,
+      },
+    },
+    effects: {
+      1: {
+        "buildings.grandBlacksmith": 1,
+        "story.seen.hasGrandBlacksmith": true,
+      },
+    },
+    craftingCostReduction: 0.1,
+    cooldown: 120,
+  },
+
   buildShallowPit: {
     id: "buildShallowPit",
     label: "Shallow Pit",
@@ -1303,37 +1334,6 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.longhouse": 1,
       },
     },
-    cooldown: 120,
-  },
-
-  buildGrandBlacksmith: {
-    id: "buildGrandBlacksmith",
-    label: "Grand Blacksmith",
-    description: "Advanced blacksmith capable of creating the finest products",
-    tooltipEffects: ["Unlocks Advanced Crafting", "10 % Craft Discount"],
-    building: true,
-    show_when: {
-      1: {
-        "buildings.blacksmith": 1,
-        "story.seen.wizardFrostglassSword": true,
-        "buildings.grandBlacksmith": 0,
-      },
-    },
-    cost: {
-      1: {
-        "resources.stone": 10000,
-        "resources.wood": 5000,
-        "resources.steel": 2500,
-        "resources.adamant": 500,
-      },
-    },
-    effects: {
-      1: {
-        "buildings.grandBlacksmith": 1,
-        "story.seen.hasGrandBlacksmith": true,
-      },
-    },
-    craftingCostReduction: 0.1,
     cooldown: 120,
   },
 
