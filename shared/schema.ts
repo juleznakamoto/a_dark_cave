@@ -73,7 +73,6 @@ export const gameStateSchema = z.object({
       gameStarted: z.boolean().default(false),
       starvationActive: z.boolean().default(false),
       firstWolfAttack: z.boolean().default(false),
-      hasTraps: z.boolean().default(false),
       monolithUnlocked: z.boolean().default(false),
       humanSacrificeUnlocked: z.boolean().default(false),
       hasCity: z.boolean().default(false),

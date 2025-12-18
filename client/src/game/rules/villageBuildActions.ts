@@ -178,7 +178,6 @@ export const villageBuildActions: Record<string, Action> = {
     effects: {
       1: {
         "buildings.blacksmith": 1,
-        "story.seen.hasBlacksmith": true,
       },
     },
     cooldown: 5,
@@ -195,7 +194,7 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.stoneHut": 1,
         "buildings.blacksmith": 1,
         "buildings.advancedBlacksmith": 0,
-        "buildings.grandBlacksmith": 0, // for backwards compatibility
+        "buildings.grandBlacksmith": 0, // backwards compatibility
       },
     },
     cost: {
@@ -208,7 +207,6 @@ export const villageBuildActions: Record<string, Action> = {
     effects: {
       1: {
         "buildings.advancedBlacksmith": 1,
-        "story.seen.hasAdvancedBlacksmith": true,
       },
     },
     craftingCostReduction: 0.05,
@@ -243,7 +241,7 @@ export const villageBuildActions: Record<string, Action> = {
     effects: {
       1: {
         "buildings.grandBlacksmith": 1,
-        "story.seen.hasGrandBlacksmith": true,
+        "buildings.advancedBlacksmith": 1, // backwards compatibility
       },
     },
     craftingCostReduction: 0.1,
@@ -429,7 +427,6 @@ export const villageBuildActions: Record<string, Action> = {
     effects: {
       1: {
         "buildings.primeFoundry": 1,
-        "story.seen.hasPrimeFoundry": true,
       },
     },
     productionEffects: {
@@ -467,7 +464,6 @@ export const villageBuildActions: Record<string, Action> = {
     effects: {
       1: {
         "buildings.masterworkFoundry": 1,
-        "story.seen.hasMasterworkFoundry": true,
       },
     },
     productionEffects: {
@@ -505,7 +501,6 @@ export const villageBuildActions: Record<string, Action> = {
     effects: {
       1: {
         "buildings.greatCabin": 1,
-        "story.seen.hasGreatCabin": true,
       },
     },
     productionEffects: {
@@ -540,7 +535,6 @@ export const villageBuildActions: Record<string, Action> = {
     effects: {
       1: {
         "buildings.timberMill": 1,
-        "story.seen.hasTimberMill": true,
       },
     },
     productionEffects: {
@@ -572,7 +566,6 @@ export const villageBuildActions: Record<string, Action> = {
     effects: {
       1: {
         "buildings.quarry": 1,
-        "story.seen.hasQuarry": true,
       },
     },
     productionEffects: {
@@ -604,7 +597,6 @@ export const villageBuildActions: Record<string, Action> = {
     effects: {
       1: {
         "buildings.clerksHut": 1,
-        "story.seen.hasClerksHut": true,
       },
     },
     statsEffects: {
@@ -636,7 +628,6 @@ export const villageBuildActions: Record<string, Action> = {
     effects: {
       1: {
         "buildings.scriptorium": 1,
-        "story.seen.hasScriptorium": true,
       },
     },
     statsEffects: {
@@ -669,7 +660,6 @@ export const villageBuildActions: Record<string, Action> = {
     effects: {
       1: {
         "buildings.inkwardenAcademy": 1,
-        "story.seen.hasInkwardenAcademy": true,
       },
     },
     statsEffects: {
@@ -699,7 +689,6 @@ export const villageBuildActions: Record<string, Action> = {
     effects: {
       1: {
         "buildings.tannery": 1,
-        "story.seen.hasTannery": true,
       },
     },
     cooldown: 20,
@@ -728,7 +717,6 @@ export const villageBuildActions: Record<string, Action> = {
     effects: {
       1: {
         "buildings.masterTannery": 1,
-        "story.seen.hasMasterTannery": true,
       },
     },
     productionEffects: {
@@ -763,7 +751,6 @@ export const villageBuildActions: Record<string, Action> = {
     effects: {
       1: {
         "buildings.altar": 1,
-        "story.seen.hasAltar": true,
       },
     },
     statsEffects: {
@@ -796,7 +783,6 @@ export const villageBuildActions: Record<string, Action> = {
     effects: {
       1: {
         "buildings.shrine": 1,
-        "story.seen.hasShrine": true,
       },
     },
     statsEffects: {
@@ -828,7 +814,6 @@ export const villageBuildActions: Record<string, Action> = {
     effects: {
       1: {
         "buildings.temple": 1,
-        "story.seen.hasTemple": true,
       },
     },
     statsEffects: {
@@ -862,7 +847,6 @@ export const villageBuildActions: Record<string, Action> = {
     effects: {
       1: {
         "buildings.sanctum": 1,
-        "story.seen.hasSanctum": true,
       },
     },
     statsEffects: {
@@ -893,8 +877,6 @@ export const villageBuildActions: Record<string, Action> = {
     effects: {
       1: {
         "buildings.alchemistHall": 1,
-        "story.seen.hasAlchemistHall": true,
-        "story.seen.powderMakerUnlocked": true,
       },
     },
     cooldown: 30,
@@ -921,7 +903,6 @@ export const villageBuildActions: Record<string, Action> = {
     effects: {
       1: {
         "buildings.tradePost": 1,
-        "story.seen.hasTradePost": true,
       },
     },
     cooldown: 40,
@@ -952,7 +933,6 @@ export const villageBuildActions: Record<string, Action> = {
     effects: {
       1: {
         "buildings.grandBazaar": 1,
-        "story.seen.hasGrandBazaar": true,
       },
     },
     cooldown: 30,
@@ -983,7 +963,6 @@ export const villageBuildActions: Record<string, Action> = {
     effects: {
       1: {
         "buildings.merchantsGuild": 1,
-        "story.seen.hasMerchantsGuild": true,
       },
     },
     cooldown: 40,
@@ -1011,7 +990,6 @@ export const villageBuildActions: Record<string, Action> = {
     effects: {
       1: {
         "buildings.bastion": 1,
-        "story.seen.hasBastion": true,
       },
     },
     cooldown: 60,
@@ -1067,19 +1045,15 @@ export const villageBuildActions: Record<string, Action> = {
     effects: {
       1: {
         "buildings.watchtower": 1,
-        "story.seen.hasWatchtower": true,
       },
       2: {
         "buildings.watchtower": 1,
-        "story.seen.hasGuardTower": true,
       },
       3: {
         "buildings.watchtower": 1,
-        "story.seen.hasFortifiedTower": true,
       },
       4: {
         "buildings.watchtower": 1,
-        "story.seen.hasCannonTower": true,
       },
     },
     cooldown: 60,
@@ -1127,19 +1101,15 @@ export const villageBuildActions: Record<string, Action> = {
     effects: {
       1: {
         "buildings.palisades": 1,
-        "story.seen.hasWoodenPalisades": true,
       },
       2: {
         "buildings.palisades": 1,
-        "story.seen.hasFortifiedPalisades": true,
       },
       3: {
         "buildings.palisades": 1,
-        "story.seen.hasStoneWall": true,
       },
       4: {
         "buildings.palisades": 1,
-        "story.seen.hasReinforcedWall": true,
       },
     },
     cooldown: 50,
@@ -1280,7 +1250,6 @@ export const villageBuildActions: Record<string, Action> = {
     effects: {
       1: {
         "buildings.fortifiedMoat": 1,
-        "story.seen.hasFortifiedMoat": true,
       },
     },
     cooldown: 60,
@@ -1421,7 +1390,6 @@ export const villageBuildActions: Record<string, Action> = {
     effects: {
       1: {
         "buildings.traps": 1,
-        "story.seen.hasTraps": true,
       },
     },
     cooldown: 30,
@@ -1475,7 +1443,6 @@ export const villageBuildActions: Record<string, Action> = {
     effects: {
       1: {
         "buildings.blackMonolith": 1,
-        "story.seen.hasBlackMonolith": true,
       },
     },
     statsEffects: {
@@ -1567,7 +1534,6 @@ export const villageBuildActions: Record<string, Action> = {
     effects: {
       1: {
         "buildings.boneTemple": 1,
-        "story.seen.hasBoneTemple": true,
       },
     },
     statsEffects: {
@@ -1622,7 +1588,6 @@ export const villageBuildActions: Record<string, Action> = {
     effects: {
       1: {
         "buildings.supplyHut": 1,
-        "story.seen.hasStorage": true,
       },
     },
     cooldown: 30,
@@ -1650,7 +1615,6 @@ export const villageBuildActions: Record<string, Action> = {
     effects: {
       1: {
         "buildings.storehouse": 1,
-        "story.seen.hasStorehouse": true,
       },
     },
     cooldown: 30,
@@ -1678,7 +1642,6 @@ export const villageBuildActions: Record<string, Action> = {
     effects: {
       1: {
         "buildings.fortifiedStorehouse": 1,
-        "story.seen.hasFortifiedStorehouse": true,
       },
     },
     craftingCostReduction: 0.05,
@@ -1712,7 +1675,6 @@ export const villageBuildActions: Record<string, Action> = {
     effects: {
       1: {
         "buildings.villageWarehouse": 1,
-        "story.seen.hasVillageWarehouse": true,
       },
     },
     craftingCostReduction: 0.05,
@@ -1747,7 +1709,6 @@ export const villageBuildActions: Record<string, Action> = {
     effects: {
       1: {
         "buildings.grandRepository": 1,
-        "story.seen.hasGrandRepository": true,
       },
     },
     craftingCostReduction: 0.1,
@@ -1781,7 +1742,6 @@ export const villageBuildActions: Record<string, Action> = {
     effects: {
       1: {
         "buildings.greatVault": 1,
-        "story.seen.hasGreatVault": true,
       },
     },
     craftingCostReduction: 0.1,

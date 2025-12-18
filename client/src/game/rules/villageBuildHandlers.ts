@@ -1,5 +1,5 @@
 import { GameState } from "@shared/schema";
-import { ActionResult } from '@/game/actions';
+import { ActionResult } from "@/game/actions";
 import { logger } from "@/lib/logger";
 import { villageBuildActions } from "./villageBuildActions";
 import { getAdjustedCost } from "./index";
@@ -38,7 +38,8 @@ function handleBuildingConstruction(
         const resource = path.split(".")[1] as keyof typeof newResources;
         // Use centralized cost adjustment (same as tooltip and effects)
         const adjustedCost = getAdjustedCost(actionId, cost, true, state);
-        newResources[resource] -= (typeof adjustedCost === 'number' ? adjustedCost : cost);
+        newResources[resource] -=
+          typeof adjustedCost === "number" ? adjustedCost : cost;
       }
     }
 
@@ -175,7 +176,8 @@ export function handleBuildWoodenHut(
   ) {
     result.logEntries!.push({
       id: `city-growth-milestone-${Date.now()}`,
-      message: "The city has grown into a bustling metropolis, alive with trade, industry, and the promise of brighter days.",
+      message:
+        "The city has grown into a bustling metropolis, alive with trade, industry, and the promise of brighter days.",
       timestamp: Date.now(),
       type: "system",
     });
@@ -527,7 +529,12 @@ export function handleBuildStoneHut(
   state: GameState,
   result: ActionResult,
 ): ActionResult {
-  const stoneHutResult = handleBuildingConstruction(state, result, "buildStoneHut", "stoneHut");
+  const stoneHutResult = handleBuildingConstruction(
+    state,
+    result,
+    "buildStoneHut",
+    "stoneHut",
+  );
 
   // Check for city growth milestone after building
   const newStoneHutCount = (state.buildings.stoneHut || 0) + 1;
@@ -543,7 +550,8 @@ export function handleBuildStoneHut(
   ) {
     stoneHutResult.logEntries!.push({
       id: `city-growth-milestone-${Date.now()}`,
-      message: "The city has grown into a bustling metropolis, alive with trade, industry, and the promise of brighter days.",
+      message:
+        "The city has grown into a bustling metropolis, alive with trade, industry, and the promise of brighter days.",
       timestamp: Date.now(),
       type: "system",
     });
@@ -579,7 +587,8 @@ export function handleBuildLonghouse(
   if (state.buildings.longhouse === 0) {
     longhouseResult.logEntries!.push({
       id: `longhouse-built-${Date.now()}`,
-      message: "The first longhouse rises, a massive wooden hall with thick timbers and lots of space.",
+      message:
+        "The first longhouse rises, a massive wooden hall with thick timbers and lots of space.",
       timestamp: Date.now(),
       type: "system",
     });
@@ -599,7 +608,8 @@ export function handleBuildLonghouse(
   ) {
     longhouseResult.logEntries!.push({
       id: `city-growth-milestone-${Date.now()}`,
-      message: "The city has grown into a bustling metropolis, alive with trade, industry, and the promise of brighter days.",
+      message:
+        "The city has grown into a bustling metropolis, alive with trade, industry, and the promise of brighter days.",
       timestamp: Date.now(),
       type: "system",
     });
@@ -819,14 +829,6 @@ export function handleBuildBastion(
     bastionResult.stateUpdates.flags = {
       ...bastionResult.stateUpdates.flags,
       bastionUnlocked: true,
-    };
-
-    bastionResult.stateUpdates.story = {
-      ...bastionResult.stateUpdates.story,
-      seen: {
-        ...bastionResult.stateUpdates.story?.seen,
-        hasBastion: true,
-      },
     };
   }
 

@@ -35,7 +35,6 @@ interface MerchantDialogProps {
   purchasedItems: Set<string>;
   fallbackExecutedRef: React.MutableRefObject<boolean>;
   onChoice: (choiceId: string) => void;
-  hasScriptorium: boolean;
 }
 
 export default function MerchantDialog({
@@ -46,7 +45,6 @@ export default function MerchantDialog({
   purchasedItems,
   fallbackExecutedRef,
   onChoice,
-  hasScriptorium,
 }: MerchantDialogProps) {
   // Guard against null event
   if (!event) {

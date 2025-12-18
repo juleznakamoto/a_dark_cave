@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 
 export default function AttackWavesChart() {
-  const { story, attackWaveTimers, flags } = useGameStore();
+  const { story, buildings, attackWaveTimers } = useGameStore();
   const [timeRemaining, setTimeRemaining] = useState<Record<string, number>>({});
 
   const waves = [
@@ -12,7 +12,7 @@ export default function AttackWavesChart() {
       id: "firstWave", 
       name: "First Wave",
       completed: story?.seen?.firstWaveVictory || false,
-      conditionMet: story.seen.portalBlasted && story?.seen?.hasBastion,
+      conditionMet: story.seen.portalBlasted && buildings.bastion,
     },
     { 
       id: "secondWave", 
@@ -99,7 +99,7 @@ export default function AttackWavesChart() {
   const activeWave = waves.find(wave => !wave.completed && wave.conditionMet);
 
   // Only show if bastion exists
-  const shouldShowChart = story?.seen?.hasBastion || false;
+  const shouldShowChart = buildings.bastion || false;
 
   if (!shouldShowChart) {
     return null;

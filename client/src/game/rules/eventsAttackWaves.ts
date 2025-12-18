@@ -92,7 +92,7 @@ const WAVE_CONFIG = {
     enemyName: "Group of creatures",
     condition: (state: GameState) =>
       state.story.seen.portalBlasted &&
-      state.story.seen.hasBastion &&
+      state.buildings.bastion &&
       !state.story.seen.firstWaveVictory,
     triggeredFlag: "firstWaveTriggered" as const,
     victoryFlag: "firstWaveVictory" as const,
