@@ -342,7 +342,7 @@ app.get("/api/admin/data", async (req, res) => {
           registrationMethodStats.googleRegistrations++;
         } else {
           // If no Google provider, it's an email registration
-          registrationMethodStats.emailRegistrations++;+;
+          registrationMethodStats.emailRegistrations++;
         }
       });
 
