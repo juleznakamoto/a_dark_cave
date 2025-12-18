@@ -340,22 +340,31 @@ app.get("/api/admin/data", async (req, res) => {
           (identity: any) => identity.provider === 'google'
         );
 
-        // Log first few users for debugging
-        if (index < 5) {
+        // Log first 10 users for debugging
+        if (index < 10) {
           log(`🔐 User ${index + 1}:`, {
             email: user.email,
             hasIdentities: !!user.identities,
             identityCount: user.identities?.length || 0,
+            identities: user.identities,
             providers: user.identities?.map((i: any) => i.provider) || [],
-            hasGoogleProvider
+            hasGoogleProvider,
+            app_metadata: user.app_metadata,
+            user_metadata: user.user_metadata
           });
         }
 
         if (hasGoogleProvider) {
           registrationMethodStats.googleRegistrations++;
+          if (index < 10) {
+            log(`✅ User ${index + 1} counted as Google registration`);
+          }
         } else {
           // If no Google provider, it's an email registration
           registrationMethodStats.emailRegistrations++;
+          if (index < 10) {
+            log(`📧 User ${index + 1} counted as Email registration`);
+          }
         }
       });
 
