@@ -233,7 +233,7 @@ export const storyEvents: Record<string, GameEvent> = {
     triggerType: "resource",
     timeProbability: 0.5,
     message:
-      "The wizard spots the frostglass found at the hill grave: 'You have found it,' he says. 'But our blacksmith lacks the tools to shape such a material. We must build a better one, only then can the Frostglass Sword be crafted.'",
+      "The wizard examines the frostglass, cold light dancing across its surface. 'You have found it. Now, the Frostglass Sword can be forged.'",
     triggered: false,
     priority: 5,
     visualEffect: {

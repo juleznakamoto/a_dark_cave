@@ -152,6 +152,11 @@ export default function VillagePanel() {
       showWhen: () => state.buildings.foundry >= 1,
     },
     {
+      id: "black_steel_forger",
+      label: "Black Steel Forger",
+      showWhen: () => state.buildings.masterworkFoundry >= 1,
+    },
+    {
       id: "sulfur_miner",
       label: "Sulfur Miner",
       showWhen: () => buildings.deepeningPit >= 1,
@@ -186,11 +191,6 @@ export default function VillagePanel() {
       id: "ashfire_dust_maker",
       label: "Ashfire Dust Maker",
       showWhen: () => state.story?.seen?.canMakeAshfireDust === true,
-    },
-    {
-      id: "black_steel_forger",
-      label: "Black Steel Forger",
-      showWhen: () => state.buildings.masterworkFoundry >= 1,
     },
   ];
 

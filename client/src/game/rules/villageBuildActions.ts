@@ -219,12 +219,11 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildGrandBlacksmith",
     label: "Grand Blacksmith",
     description: "Advanced blacksmith capable of creating the finest products",
-    tooltipEffects: ["Unlocks Epic Crafting", "10 % Craft Discount"],
+    tooltipEffects: ["Unlocks Black Steel Crafting", "10 % Craft Discount"],
     building: true,
     show_when: {
       1: {
         "buildings.advancedBlacksmith": 1,
-        "story.seen.wizardFrostglassSword": true,
         "buildings.grandBlacksmith": 0,
       },
     },
