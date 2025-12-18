@@ -691,9 +691,19 @@ export default function AdminDashboard() {
         const referrals = save.game_state?.referrals || [];
         return sum + referrals.filter((ref: any) => {
           const timestamp = ref.timestamp || ref.created_at;
-          if (!timestamp || typeof timestamp !== 'string') return false;
+          if (!timestamp) return false;
+          
+          // Handle both number (milliseconds) and string (ISO date) timestamps
+          let refDate: Date;
           try {
-            const refDate = parseISO(timestamp);
+            if (typeof timestamp === 'number') {
+              refDate = new Date(timestamp);
+            } else if (typeof timestamp === 'string') {
+              refDate = parseISO(timestamp);
+            } else {
+              return false;
+            }
+            
             return refDate >= dayStart && refDate <= dayEnd;
           } catch {
             return false;
