@@ -335,17 +335,16 @@ app.get("/api/admin/data", async (req, res) => {
       // Count registration methods
       allUsersForMethod.forEach((user: any, index: number) => {
         // Check if user has Google as identity provider
-        // A user has Google OAuth if they have a 'google' identity
-        const hasGoogleProvider = user.identities?.some(
-          (identity: any) => identity.provider === 'google'
-        );
+        // Check app_metadata.provider or app_metadata.providers array
+        const provider = user.app_metadata?.provider;
+        const providers = user.app_metadata?.providers || [];
+        const hasGoogleProvider = provider === 'google' || providers.includes('google');
 
         // Log first 10 users for debugging
         if (index < 10) {
           log(`🔐 User ${index + 1} email: ${user.email}`);
-          log(`🔐 User ${index + 1} identities:`, JSON.stringify(user.identities, null, 2));
-          log(`🔐 User ${index + 1} app_metadata.provider:`, user.app_metadata?.provider);
-          log(`🔐 User ${index + 1} app_metadata.providers:`, user.app_metadata?.providers);
+          log(`🔐 User ${index + 1} provider:`, provider);
+          log(`🔐 User ${index + 1} providers:`, providers);
           log(`🔐 User ${index + 1} hasGoogleProvider result:`, hasGoogleProvider);
         }
 
