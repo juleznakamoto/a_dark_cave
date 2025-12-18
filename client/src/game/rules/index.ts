@@ -139,44 +139,6 @@ export const shouldShowAction = (
   // Check if show_when has tiered conditions (numeric keys)
   if (!action.show_when) return false;
   
-  // Handle OR condition at the top level
-  if (action.show_when.OR && Array.isArray(action.show_when.OR)) {
-    const orSatisfied = action.show_when.OR.some((orCondition: Record<string, any>) => {
-      return Object.entries(orCondition).every(([key, value]) => {
-        const pathParts = key.split(".");
-        let current: any = state;
-        for (const part of pathParts) {
-          current = current?.[part];
-        }
-        if (key.startsWith("buildings.")) {
-          return (current || 0) >= value;
-        }
-        return current === value;
-      });
-    });
-    
-    if (!orSatisfied) return false;
-    
-    // Check remaining conditions (excluding OR)
-    const remainingConditions = { ...action.show_when };
-    delete remainingConditions.OR;
-    
-    return Object.entries(remainingConditions).every(([key, value]) => {
-      const pathParts = key.split(".");
-      let current: any = state;
-      for (const part of pathParts) {
-        current = current?.[part];
-      }
-      if (key.startsWith("buildings.")) {
-        return (current || 0) >= value;
-      }
-      if (typeof value === "boolean") {
-        return current === value;
-      }
-      return (current || 0) >= value;
-    });
-  }
-  
   const showWhenKeys = Object.keys(action.show_when);
   const hasTieredShowWhen =
     showWhenKeys.length > 0 && showWhenKeys.every((key) => !isNaN(Number(key)));
