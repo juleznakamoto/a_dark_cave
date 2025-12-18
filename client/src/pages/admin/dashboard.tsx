@@ -199,7 +199,7 @@ export default function AdminDashboard() {
 
   // State for selected mining types
   const [selectedMiningTypes, setSelectedMiningTypes] = useState<Set<string>>(
-    new Set(["mineStone", "mineIron", "mineCoal", "mineSulfur", "mineObsidian", "mineAdamant"]),
+    new Set(["caveExplore", "mineStone", "mineIron", "mineCoal", "mineSulfur", "mineObsidian", "mineAdamant", "hunt", "chopWood"]),
   );
 
   // State for selected cube events
@@ -499,29 +499,11 @@ export default function AdminDashboard() {
   const getButtonUpgradesOverPlaytime = useMemo(() => {
     const relevant = filterByUser(gameSaves);
     
-    console.log('⬆️ getButtonUpgradesOverPlaytime - relevant saves:', relevant.length);
-    console.log('⬆️ getButtonUpgradesOverPlaytime - clickData length:', clickData.length);
-    
     if (relevant.length === 0) {
-      console.log('⬆️ No relevant saves, returning empty data');
       return Array.from({ length: 24 }, (_, i) => ({
         time: `${i}h`,
         caveExplore: 0, mineStone: 0, mineIron: 0, mineCoal: 0, mineSulfur: 0, mineObsidian: 0, mineAdamant: 0, hunt: 0, chopWood: 0,
       }));
-    }
-
-    // Log sample data structure
-    if (relevant.length > 0) {
-      const sample = relevant[0];
-      console.log('⬆️ Sample save game_state.buttonUpgrades:', sample.game_state?.buttonUpgrades);
-      console.log('⬆️ Sample save game_state.playTime:', sample.game_state?.playTime);
-    }
-    
-    // Check clickData structure
-    const clicksWithSnapshots = clickData.filter(c => c.game_state_snapshot);
-    console.log('⬆️ Clicks with snapshots:', clicksWithSnapshots.length);
-    if (clicksWithSnapshots.length > 0) {
-      console.log('⬆️ Sample click snapshot:', clicksWithSnapshots[0].game_state_snapshot);
     }
 
     const timeMap = new Map<number, { caveExplore: number[], mineStone: number[], mineIron: number[], mineCoal: number[], mineSulfur: number[], mineObsidian: number[], mineAdamant: number[], hunt: number[], chopWood: number[] }>();
@@ -585,8 +567,6 @@ export default function AdminDashboard() {
         chopWood: levels.chopWood.length > 0 ? levels.chopWood.reduce((a, b) => a + b, 0) / levels.chopWood.length : 0,
       };
     });
-    
-    console.log('⬆️ getButtonUpgradesOverPlaytime result (first 3 buckets):', result.slice(0, 3));
     
     return result;
   }, [gameSaves, selectedUser, selectedMiningTypes]);

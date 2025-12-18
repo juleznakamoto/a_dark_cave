@@ -131,12 +131,15 @@ export default function UpgradesTab(props: UpgradesTabProps) {
             </div>
             <div className="flex gap-4 flex-wrap">
               {[
+                { key: "caveExplore", label: "Cave Exploring", color: "#8884d8" },
                 { key: "mineStone", label: "Stone Mining", color: "#82ca9d" },
-                { key: "mineIron", label: "Iron Mining", color: "#8884d8" },
-                { key: "mineCoal", label: "Coal Mining", color: "#ffc658" },
-                { key: "mineSulfur", label: "Sulfur Mining", color: "#ff8042" },
-                { key: "mineObsidian", label: "Obsidian Mining", color: "#0088FE" },
-                { key: "mineAdamant", label: "Adamant Mining", color: "#00C49F" },
+                { key: "mineIron", label: "Iron Mining", color: "#ffc658" },
+                { key: "mineCoal", label: "Coal Mining", color: "#ff8042" },
+                { key: "mineSulfur", label: "Sulfur Mining", color: "#0088FE" },
+                { key: "mineObsidian", label: "Obsidian Mining", color: "#00C49F" },
+                { key: "mineAdamant", label: "Adamant Mining", color: "#a0522d" },
+                { key: "hunt", label: "Hunting", color: "#9b59b6" },
+                { key: "chopWood", label: "Woodcutting", color: "#27ae60" },
               ].map((miningType) => (
                 <label
                   key={miningType.key}
