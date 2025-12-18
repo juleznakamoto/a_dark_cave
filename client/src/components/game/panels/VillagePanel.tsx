@@ -187,6 +187,11 @@ export default function VillagePanel() {
       label: "Ashfire Dust Maker",
       showWhen: () => state.story?.seen?.canMakeAshfireDust === true,
     },
+    {
+      id: "black_steel_forger",
+      label: "Black Steel Forger",
+      showWhen: () => state.buildings.masterworkFoundry >= 1,
+    },
   ];
 
   const renderButton = (actionId: string, label: string) => {
@@ -651,9 +656,9 @@ export default function VillagePanel() {
                       const fogState = useGameStore.getState().fogState;
                       const isFog =
                         fogState?.isActive && fogState.endTime > Date.now();
-                      
+
                       if (!isFog) return null;
-                      
+
                       return (
                         <TooltipProvider>
                           <Tooltip

@@ -52,6 +52,7 @@ export const gameStateSchema = z.object({
       torch: z.number().min(0).default(0),
       silver: z.number().min(0).default(0),
       gold: z.number().min(0).default(0),
+      black_steel: z.number().min(0).default(0),
     })
     .default({}),
   stats: z
@@ -270,6 +271,7 @@ export const gameStateSchema = z.object({
       adamant_miner: z.number().min(0).default(0),
       moonstone_miner: z.number().min(0).default(0),
       steel_forger: z.number().min(0).default(0),
+      black_steel_forger: z.number().min(0).default(0),
       powder_maker: z.number().min(0).default(0),
       ashfire_dust_maker: z.number().min(0).default(0),
     })

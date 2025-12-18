@@ -32,6 +32,7 @@ const createTestState = (overrides?: Partial<GameState>): GameState => {
       ashfire_dust: 100,
       moonstone: 100,
       bloodstone: 0,
+      black_steel: 0,
     },
     buildings: {
       woodenHut: 0,
@@ -158,6 +159,7 @@ const createTestState = (overrides?: Partial<GameState>): GameState => {
       adamant_miner: 0,
       moonstone_miner: 0,
       steel_forger: 0,
+      black_steel_forger: 0,
       tanner: 0,
       powder_maker: 0,
       ashfire_dust_maker: 0,

@@ -615,6 +615,7 @@ function handleMinerProduction() {
       count > 0 &&
       (job.endsWith("miner") ||
         job === "steel_forger" ||
+        job === "black_steel_forger" ||
         job === "tanner" ||
         job === "powder_maker" ||
         job === "ashfire_dust_maker")
