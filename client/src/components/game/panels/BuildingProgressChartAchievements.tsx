@@ -95,10 +95,10 @@ export default function BuildingProgressChart() {
       },
       {
         buildingType: "blacksmith",
-        maxCount: 2,
+        maxCount: 3,
         color: SEGMENT_COLOR,
         label: "Forging",
-        relatedBuildings: ["grandBlacksmith"],
+        relatedBuildings: ["advancedBlacksmith","grandBlacksmith"],
         reward: 250,
       },
       {

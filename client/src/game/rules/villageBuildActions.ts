@@ -194,7 +194,6 @@ export const villageBuildActions: Record<string, Action> = {
       1: {
         "buildings.stoneHut": 5,
         "buildings.blacksmith": 1,
-        "buildings.deepPit": 1,
         "buildings.advancedBlacksmith": 0,
         "buildings.grandBlacksmith": 0, // for backwards compatibility
       },
@@ -220,7 +219,7 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildGrandBlacksmith",
     label: "Grand Blacksmith",
     description: "Advanced blacksmith capable of creating the finest products",
-    tooltipEffects: ["Unlocks Advanced Crafting", "10 % Craft Discount"],
+    tooltipEffects: ["Unlocks Epic Crafting", "10 % Craft Discount"],
     building: true,
     show_when: {
       1: {
