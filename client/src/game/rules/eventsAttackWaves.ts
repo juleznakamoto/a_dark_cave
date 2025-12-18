@@ -350,17 +350,7 @@ function createAttackWaveEvent(waveId: keyof typeof WAVE_PARAMS): GameEvent {
 
       // Check if timer has expired based on elapsedTime (not Date.now())
       const elapsed = timer.elapsedTime || 0;
-      const shouldTrigger = elapsed >= timer.duration || timer.provoked;
-      
-      if (timer.provoked) {
-        console.log(`[ATTACK_WAVE] ${waveId} provoked, should trigger:`, shouldTrigger, {
-          elapsed,
-          duration: timer.duration,
-          provoked: timer.provoked,
-        });
-      }
-      
-      return shouldTrigger;
+      return elapsed >= timer.duration || timer.provoked;
     },
     triggerType: "resource",
     timeProbability: 0.25,
