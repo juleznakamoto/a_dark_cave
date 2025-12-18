@@ -44,17 +44,6 @@ export interface EffectDefinition {
 
 // Tool effects
 export const toolEffects: Record<string, EffectDefinition> = {
-  blacksmith_hammer: {
-    id: "blacksmith_hammer",
-    name: "Blacksmith Hammer",
-    description: "Legendary blacksmith hammer once owned by a great blacksmith",
-    bonuses: {
-      generalBonuses: {
-        strength: 4,
-        craftingCostReduction: 0.05,
-      },
-    },
-  },
 
   stone_axe: {
     id: "stone_axe",
@@ -278,6 +267,18 @@ export const toolEffects: Record<string, EffectDefinition> = {
     },
   },
 
+  blacksmith_hammer: {
+    id: "blacksmith_hammer",
+    name: "Blacksmith Hammer",
+    description: "Legendary blacksmith hammer once owned by a great blacksmith",
+    bonuses: {
+      generalBonuses: {
+        strength: 4,
+        craftingCostReduction: 0.05,
+      },
+    },
+  },
+  
   mastermason_chisel: {
     id: "mastermason_chisel",
     name: "Mastermason Chisel",
@@ -329,6 +330,9 @@ export const toolEffects: Record<string, EffectDefinition> = {
             bones: 1,
           },
         },
+      },
+      generalBonuses: {
+        madness: 3,
       },
     },
   },
@@ -591,6 +595,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
     bonuses: {
       generalBonuses: {
         strength: 10,
+        madness: 3,
         eventDeathReduction: 0.25, // 25% reduction in villager deaths from events
       },
     },
@@ -668,7 +673,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
       generalBonuses: {
         strength: 5,
         luck: 3,
-        madness: 3,
+        madness: 4,
       },
     },
   },
@@ -693,6 +698,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     bonuses: {
       generalBonuses: {
         strength: 3,
+        madness: 1,
       },
     },
   },
@@ -758,6 +764,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     bonuses: {
       generalBonuses: {
         knowledge: 10,
+        madness: 5,
       },
     },
   },
@@ -844,12 +851,12 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     id: "ebony_ring",
     name: "Ebony Ring",
     description:
-      "Dark ring left as a gift by the forest gods, pulsing with otherworldly power",
+      "Dark ring left as a gift by the forest gods",
     bonuses: {
       generalBonuses: {
         luck: 5,
         strength: 3,
-        madness: 2,
+        madness: 3,
       },
     },
   },

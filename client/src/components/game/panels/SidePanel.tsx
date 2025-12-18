@@ -859,7 +859,7 @@ export default function SidePanel() {
     bonusItems.push({
       id: "craftingCostReduction",
       label: "Crafting Discount",
-      value: `-${Math.round(craftingCostReduction * 100)}%`,
+      value: `${Number((craftingCostReduction * 100).toFixed(1))}%`,
       testId: "bonus-crafting-cost-reduction",
       visible: true,
     });
@@ -871,7 +871,7 @@ export default function SidePanel() {
     bonusItems.push({
       id: "buildingCostReduction",
       label: "Building Discount",
-      value: `-${Math.round(buildingCostReduction * 100)}%`,
+      value: `${Number((buildingCostReduction * 100).toFixed(1))}%`,
       testId: "bonus-building-cost-reduction",
       visible: true,
     });

@@ -467,10 +467,10 @@ export const getAllActionBonuses = (
       // Build value string
       let valueStr = "";
       if (percentBonus > 0) {
-        valueStr = `+${percentBonus}%`;
+        valueStr = `${percentBonus}%`;
       }
       if (bonus.flatBonus > 0) {
-        valueStr += valueStr ? ` / +${bonus.flatBonus}` : `+${bonus.flatBonus}`;
+        valueStr += valueStr ? ` / ${bonus.flatBonus}` : `${bonus.flatBonus}`;
       }
 
       return {

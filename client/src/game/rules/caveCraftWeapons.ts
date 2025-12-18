@@ -178,10 +178,7 @@ export const caveCraftWeapons: Record<string, Action> = {
     id: "craftArbalest",
     label: "Arbalest",
     show_when: {
-      OR: [
-        { "buildings.advancedBlacksmith": 1 },
-        { "buildings.grandBlacksmith": 1 },
-      ], // bacwards compatibility
+      "buildings.grandBlacksmith": 1,
       "schematics.arbalest_schematic": true,
       "weapons.arbalest": false,
     },
@@ -200,10 +197,7 @@ export const caveCraftWeapons: Record<string, Action> = {
     id: "craftNightshadeBow",
     label: "Nightshade Bow",
     show_when: {
-      OR: [
-        { "buildings.advancedBlacksmith": 1 },
-        { "buildings.grandBlacksmith": 1 },
-      ], // backwards compatibility
+      "buildings.grandBlacksmith": 1,
       "schematics.nightshade_bow_schematic": true,
       "weapons.nightshade_bow": false,
     },
@@ -221,10 +215,7 @@ export const caveCraftWeapons: Record<string, Action> = {
     id: "craftStormglassHalberd",
     label: "Stormglass Halberd",
     show_when: {
-      OR: [
-        { "buildings.advancedBlacksmith": 1 },
-        { "buildings.grandBlacksmith": 1 },
-      ], // backwards compatibility
+      "buildings.grandBlacksmith": 1,
       "schematics.stormglass_halberd_schematic": true,
       "weapons.stormglass_halberd": false,
     },

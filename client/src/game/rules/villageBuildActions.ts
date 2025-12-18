@@ -187,7 +187,7 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildAdvancedBlacksmith",
     label: "Advanced Blacksmith",
     description: "Improved blacksmith with better tools and techniques",
-    tooltipEffects: ["Unlocks Schematic Crafting", "5% Craft Discount"],
+    tooltipEffects: ["Unlocks Schematic Crafting", "2.5 % Craft Discount"],
     building: true,
     show_when: {
       1: {
@@ -209,7 +209,7 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.advancedBlacksmith": 1,
       },
     },
-    craftingCostReduction: 0.05,
+    craftingCostReduction: 0.025,
     cooldown: 60,
   },
 
@@ -220,7 +220,7 @@ export const villageBuildActions: Record<string, Action> = {
     tooltipEffects: [
       "Unlocks Schematic Crafting",
       // "Unlocks Black Steel Crafting",
-      "10 % Craft Discount",
+      "5 % Craft Discount",
     ],
     building: true,
     show_when: {
@@ -244,7 +244,7 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.advancedBlacksmith": 1, // backwards compatibility
       },
     },
-    craftingCostReduction: 0.1,
+    craftingCostReduction: 0.05,
     cooldown: 120,
   },
 
@@ -1624,7 +1624,7 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildFortifiedStorehouse",
     label: "Fortified Storehouse",
     description: "Reinforced storage building with enhanced capacity",
-    tooltipEffects: ["Resource Limit: 5,000", "5% Crafting Discount"],
+    tooltipEffects: ["Resource Limit: 5,000", "2.5% Crafting Discount"],
     building: true,
     show_when: {
       1: {
@@ -1644,7 +1644,7 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.fortifiedStorehouse": 1,
       },
     },
-    craftingCostReduction: 0.05,
+    craftingCostReduction: 0.025,
     cooldown: 30,
   },
 
@@ -1654,8 +1654,8 @@ export const villageBuildActions: Record<string, Action> = {
     description: "Large warehouse capable of storing vast quantities",
     tooltipEffects: [
       "Resource Limit: 10.000",
-      "5% Crafting Discount",
-      "5% Building Discount",
+      "2.5% Crafting Discount",
+      "2.5% Building Discount",
     ],
     building: true,
     show_when: {
@@ -1677,8 +1677,8 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.villageWarehouse": 1,
       },
     },
-    craftingCostReduction: 0.05,
-    buildingCostReduction: 0.05,
+    craftingCostReduction: 0.025,
+    buildingCostReduction: 0.025,
     cooldown: 30,
   },
 
@@ -1688,8 +1688,8 @@ export const villageBuildActions: Record<string, Action> = {
     description: "Massive repository with exceptional storage capacity",
     tooltipEffects: [
       "Resource Limit: 25.000",
-      "10% Crafting Discount",
-      "5% Building Discount",
+      "5% Crafting Discount",
+      "2.5% Building Discount",
     ],
     building: true,
     show_when: {
@@ -1711,8 +1711,8 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.grandRepository": 1,
       },
     },
-    craftingCostReduction: 0.1,
-    buildingCostReduction: 0.05,
+    craftingCostReduction: 0.05,
+    buildingCostReduction: 0.025,
     cooldown: 30,
   },
 
@@ -1722,8 +1722,8 @@ export const villageBuildActions: Record<string, Action> = {
     description: "Supreme vault capable of storing immense resources",
     tooltipEffects: [
       "Resource Limit: 50.000",
-      "10% Crafting Discount",
-      "10% Building Discount",
+      "5% Crafting Discount",
+      "5% Building Discount",
     ],
     building: true,
     show_when: {
@@ -1744,8 +1744,8 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.greatVault": 1,
       },
     },
-    craftingCostReduction: 0.1,
-    buildingCostReduction: 0.1,
+    craftingCostReduction: 0.05,
+    buildingCostReduction: 0.05,
     cooldown: 30,
   },
 };
