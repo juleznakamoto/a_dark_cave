@@ -420,9 +420,26 @@ export default function AdminDashboard() {
       timeMap.set(i, { strength: [], knowledge: [], luck: [], madness: [] });
     }
 
+    let usersProcessed = 0;
+    let clicksWithStats = 0;
+    let clicksWithoutStats = 0;
+    
     relevant.forEach((save) => {
       const clicksForUser = clickData.filter((c) => c.user_id === save.user_id);
       if (clicksForUser.length === 0) return;
+
+      usersProcessed++;
+      if (usersProcessed <= 3) {
+        console.log(`📊 User ${save.user_id.substring(0, 8)}: ${clicksForUser.length} clicks`);
+        if (clicksForUser.length > 0) {
+          console.log(`📊 First click stats:`, {
+            strength: clicksForUser[0].game_state_snapshot?.strength,
+            knowledge: clicksForUser[0].game_state_snapshot?.knowledge,
+            luck: clicksForUser[0].game_state_snapshot?.luck,
+            madness: clicksForUser[0].game_state_snapshot?.madness,
+          });
+        }
+      }
 
       const firstClickTime = new Date(clicksForUser[0].timestamp).getTime();
 
@@ -433,15 +450,22 @@ export default function AdminDashboard() {
         if (bucket >= 0 && bucket < 24) {
           const state = click.game_state_snapshot;
           if (state) {
+            clicksWithStats++;
             const data = timeMap.get(bucket)!;
             data.strength.push(state.strength || 0);
             data.knowledge.push(state.knowledge || 0);
             data.luck.push(state.luck || 0);
             data.madness.push(state.madness || 0);
+          } else {
+            clicksWithoutStats++;
           }
         }
       });
     });
+
+    console.log('📊 Users processed:', usersProcessed);
+    console.log('📊 Clicks with stats:', clicksWithStats);
+    console.log('📊 Clicks without stats:', clicksWithoutStats);
 
     const result = Array.from({ length: 24 }, (_, i) => {
       const stats = timeMap.get(i)!;
@@ -454,7 +478,7 @@ export default function AdminDashboard() {
       };
     });
     
-    console.log('📊 getStatsOverPlaytime result:', result);
+    console.log('📊 getStatsOverPlaytime result (first 3 buckets):', result.slice(0, 3));
     return result;
   }, [gameSaves, clickData, selectedUser, showCompletedOnly]);
 
@@ -482,9 +506,21 @@ export default function AdminDashboard() {
     }
 
     let totalSnapshotsFound = 0;
+    let usersProcessed = 0;
+    let clicksWithSnapshots = 0;
+    let clicksWithoutSnapshots = 0;
+    
     relevant.forEach((save) => {
       const clicksForUser = clickData.filter((c) => c.user_id === save.user_id);
       if (clicksForUser.length === 0) return;
+      
+      usersProcessed++;
+      if (usersProcessed <= 3) {
+        console.log(`📦 User ${save.user_id.substring(0, 8)}: ${clicksForUser.length} clicks`);
+        if (clicksForUser.length > 0) {
+          console.log(`📦 First click snapshot:`, clicksForUser[0].game_state_snapshot);
+        }
+      }
 
       const firstClickTime = new Date(clicksForUser[0].timestamp).getTime();
 
@@ -496,16 +532,22 @@ export default function AdminDashboard() {
           const state = click.game_state_snapshot?.resources;
           if (state) {
             totalSnapshotsFound++;
+            clicksWithSnapshots++;
             const data = timeMap.get(bucket)!;
             resourceKeys.forEach(key => {
               data[key].push(state[key] || 0);
             });
+          } else {
+            clicksWithoutSnapshots++;
           }
         }
       });
     });
 
     console.log('📦 Total resource snapshots found:', totalSnapshotsFound);
+    console.log('📦 Users processed:', usersProcessed);
+    console.log('📦 Clicks with snapshots:', clicksWithSnapshots);
+    console.log('📦 Clicks without snapshots:', clicksWithoutSnapshots);
 
     const result = Array.from({ length: 24 }, (_, i) => {
       const resources = timeMap.get(i)!;
@@ -516,7 +558,7 @@ export default function AdminDashboard() {
       return result;
     });
     
-    console.log('📦 getResourceStatsOverPlaytime result:', result);
+    console.log('📦 getResourceStatsOverPlaytime result (first 3 buckets):', result.slice(0, 3));
     return result;
   }, [gameSaves, clickData, selectedUser, showCompletedOnly, selectedResources]);
 
@@ -539,9 +581,22 @@ export default function AdminDashboard() {
     }
 
     let totalButtonLevelsFound = 0;
+    let usersProcessed = 0;
+    let clicksWithButtonLevels = 0;
+    let clicksWithoutButtonLevels = 0;
+    
     relevant.forEach((save) => {
       const clicksForUser = clickData.filter((c) => c.user_id === save.user_id);
       if (clicksForUser.length === 0) return;
+
+      usersProcessed++;
+      if (usersProcessed <= 3) {
+        console.log(`⬆️ User ${save.user_id.substring(0, 8)}: ${clicksForUser.length} clicks`);
+        if (clicksForUser.length > 0) {
+          console.log(`⬆️ First click has game_state_snapshot:`, !!clicksForUser[0].game_state_snapshot);
+          console.log(`⬆️ First click buttonLevels:`, clicksForUser[0].game_state_snapshot?.buttonLevels);
+        }
+      }
 
       const firstClickTime = new Date(clicksForUser[0].timestamp).getTime();
 
@@ -553,6 +608,7 @@ export default function AdminDashboard() {
           const state = click.game_state_snapshot;
           if (state?.buttonLevels) {
             totalButtonLevelsFound++;
+            clicksWithButtonLevels++;
             const data = timeMap.get(bucket)!;
             data.caveExplore.push(state.buttonLevels.caveExplore || 1);
             data.mineStone.push(state.buttonLevels.mineStone || 1);
@@ -563,12 +619,17 @@ export default function AdminDashboard() {
             data.mineAdamant.push(state.buttonLevels.mineAdamant || 1);
             data.hunt.push(state.buttonLevels.hunt || 1);
             data.chopWood.push(state.buttonLevels.chopWood || 1);
+          } else {
+            clicksWithoutButtonLevels++;
           }
         }
       });
     });
 
     console.log('⬆️ Total button level snapshots found:', totalButtonLevelsFound);
+    console.log('⬆️ Users processed:', usersProcessed);
+    console.log('⬆️ Clicks with buttonLevels:', clicksWithButtonLevels);
+    console.log('⬆️ Clicks without buttonLevels:', clicksWithoutButtonLevels);
 
     const result = Array.from({ length: 24 }, (_, i) => {
       const levels = timeMap.get(i)!;
@@ -586,7 +647,7 @@ export default function AdminDashboard() {
       };
     });
     
-    console.log('⬆️ getButtonUpgradesOverPlaytime result:', result);
+    console.log('⬆️ getButtonUpgradesOverPlaytime result (first 3 buckets):', result.slice(0, 3));
     return result;
   }, [gameSaves, clickData, selectedUser, showCompletedOnly]);
 
@@ -842,9 +903,15 @@ export default function AdminDashboard() {
 
       // Set the raw data (will be filtered by timeRange useMemo)
       if (data.clicks) {
+        console.log('📥 Loading click data:', data.clicks.length, 'entries');
+        if (data.clicks.length > 0) {
+          console.log('📥 Sample click entry:', data.clicks[0]);
+          console.log('📥 Click has game_state_snapshot:', !!data.clicks[0].game_state_snapshot);
+        }
         setRawClickData(data.clicks);
       }
       if (data.saves) {
+        console.log('📥 Loading game saves:', data.saves.length, 'entries');
         setRawGameSaves(data.saves);
       }
       if (data.purchases) {
