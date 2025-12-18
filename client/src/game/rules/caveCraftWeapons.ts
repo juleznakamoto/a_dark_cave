@@ -49,7 +49,7 @@ export const caveCraftWeapons: Record<string, Action> = {
       "weapons.obsidian_sword": false,
     },
     cost: {
-      "resources.obsidian": 200,
+      "resources.obsidian": 250,
     },
     effects: {
       "weapons.obsidian_sword": true,
@@ -142,7 +142,7 @@ export const caveCraftWeapons: Record<string, Action> = {
     },
     cost: {
       "resources.wood": 1500,
-      "resources.obsidian": 100,
+      "resources.obsidian": 250,
     },
     effects: {
       "weapons.war_bow": true,
@@ -164,7 +164,7 @@ export const caveCraftWeapons: Record<string, Action> = {
     },
     cost: {
       "resources.wood": 2500,
-      "resources.adamant": 100,
+      "resources.adamant": 250,
     },
     effects: {
       "weapons.master_bow": true,
@@ -185,7 +185,7 @@ export const caveCraftWeapons: Record<string, Action> = {
     cost: {
       "resources.wood": 2500,
       "resources.steel": 500,
-      "resources.silver": 100,
+      "resources.silver": 250,
     },
     effects: {
       "weapons.arbalest": true,
