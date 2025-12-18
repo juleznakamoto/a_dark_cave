@@ -179,6 +179,8 @@ export const villageBuildActions: Record<string, Action> = {
     cooldown: 5,
   },
 
+  
+
   buildGrandBlacksmith: {
     id: "buildGrandBlacksmith",
     label: "Grand Blacksmith",
