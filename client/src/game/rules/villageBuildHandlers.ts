@@ -909,6 +909,31 @@ export function handleBuildWizardTower(
   return wizardTowerResult;
 }
 
+export function handleBuildAdvancedBlacksmith(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const advancedBlacksmithResult = handleBuildingConstruction(
+    state,
+    result,
+    "buildAdvancedBlacksmith",
+    "advancedBlacksmith",
+  );
+
+  // Add advanced blacksmith completion message
+  if (state.buildings.advancedBlacksmith === 0) {
+    advancedBlacksmithResult.logEntries!.push({
+      id: `advanced-blacksmith-built-${Date.now()}`,
+      message:
+        "The Advanced Blacksmith rises, equipped with superior tools and techniques for crafting.",
+      timestamp: Date.now(),
+      type: "system",
+    });
+  }
+
+  return advancedBlacksmithResult;
+}
+
 export function handleBuildGrandBlacksmith(
   state: GameState,
   result: ActionResult,

@@ -184,6 +184,37 @@ export const villageBuildActions: Record<string, Action> = {
     cooldown: 5,
   },
 
+  buildAdvancedBlacksmith: {
+    id: "buildAdvancedBlacksmith",
+    label: "Advanced Blacksmith",
+    description: "Improved blacksmith with better tools and techniques",
+    tooltipEffects: ["Unlocks Advanced Tools", "5% Craft Discount"],
+    building: true,
+    show_when: {
+      1: {
+        "buildings.blacksmith": 1,
+        "buildings.deepPit": 1,
+        "buildings.advancedBlacksmith": 0,
+      },
+    },
+    cost: {
+      1: {
+        "resources.stone": 5000,
+        "resources.wood": 2500,
+        "resources.steel": 1000,
+        "resources.obsidian": 250,
+      },
+    },
+    effects: {
+      1: {
+        "buildings.advancedBlacksmith": 1,
+        "story.seen.hasAdvancedBlacksmith": true,
+      },
+    },
+    craftingCostReduction: 0.05,
+    cooldown: 60,
+  },
+
   buildGrandBlacksmith: {
     id: "buildGrandBlacksmith",
     label: "Grand Blacksmith",
@@ -192,7 +223,7 @@ export const villageBuildActions: Record<string, Action> = {
     building: true,
     show_when: {
       1: {
-        "buildings.blacksmith": 1,
+        "buildings.advancedBlacksmith": 1,
         "story.seen.wizardFrostglassSword": true,
         "buildings.grandBlacksmith": 0,
       },

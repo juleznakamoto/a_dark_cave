@@ -217,6 +217,7 @@ export const gameStateSchema = z.object({
       timberMill: z.number().default(0),
       quarry: z.number().default(0),
       blacksmith: z.number().default(0),
+      advancedBlacksmith: z.number().default(0),
       grandBlacksmith: z.number().default(0),
       foundry: z.number().default(0),
       primeFoundry: z.number().default(0),
