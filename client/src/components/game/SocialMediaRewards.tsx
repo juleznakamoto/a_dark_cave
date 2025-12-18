@@ -146,14 +146,14 @@ export default function SocialMediaRewards() {
                   <img
                     src={platform.icon}
                     alt={platform.name}
-                    className="w-3 h-3 opacity-90"
+                    className="w-5 h-5 brightness-0 invert"
                   />
                 )}
               </div>
               <div className="flex items-center gap-2">
                 <span className="font-semibold">&nbsp;+{platform.reward} Gold</span>
                 {isClaimed && <span className="text-xs text-muted-foreground">✓</span>}
-                
+
               </div>
             </div>
           </DropdownMenuItem>

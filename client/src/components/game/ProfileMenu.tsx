@@ -373,14 +373,14 @@ export default function ProfileMenu() {
                       <div className="flex items-center gap-1">
                         <span>Follow&nbsp;</span>
                         {platform.id === 'instagram' ? (
-                          <img src="/instagram_logo.svg" alt="Instagram" className="w-3 h-3" />
+                          <img src="/instagram_logo.svg" alt="Instagram" className="w-3 h-3 brightness-0 invert" />
                         ) : platform.id === 'reddit' ? (
-                          <img src="/reddit_logo.svg" alt="Reddit" className="w-3 h-3" />
+                          <img src="/reddit_logo.svg" alt="Reddit" className="w-3 h-3 brightness-0 invert" />
                         ) : (
                           <img
                             src={platform.icon}
                             alt={platform.name}
-                            className="w-3 h-3 opacity-90"
+                            className="w-4 h-4 brightness-0 invert"
                           />
                         )}
                       </div>

@@ -193,8 +193,7 @@ export default function GameFooter() {
               <img
                 src="/reddit_logo.svg"
                 alt="Reddit"
-                className="w-4 h-4"
-                
+                className="w-4 h-4 brightness-0 invert opacity-60 hover:opacity-100"
               />
             </a>
             <a
@@ -207,7 +206,7 @@ export default function GameFooter() {
               <img
                 src="/instagram_logo.svg"
                 alt="Instagram"
-                className="w-4 h-4"
+                className="w-4 h-4 brightness-0 invert opacity-60 hover:opacity-100"
               />
             </a>
             <a
