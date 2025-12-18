@@ -843,7 +843,10 @@ export default function AdminDashboard() {
         setEmailConfirmationStats(data.emailConfirmationStats);
       }
       if (data.registrationMethodStats) {
+        console.log('📊 Dashboard received registration method stats:', data.registrationMethodStats);
         setRegistrationMethodStats(data.registrationMethodStats);
+      } else {
+        console.log('⚠️ No registrationMethodStats in response');
       }
 
       // Collect unique user IDs only from users who have click data
