@@ -845,17 +845,6 @@ export function handleBuildWatchtower(
     "watchtower",
   );
 
-  // Add watchtower completion message only for first watchtower
-  if (state.buildings.watchtower === 0) {
-    watchtowerResult.logEntries!.push({
-      id: `watchtower-built-${Date.now()}`,
-      message:
-        "The watchtower stretches high above the settlement.. It helps you see things coming earlier.",
-      timestamp: Date.now(),
-      type: "system",
-    });
-  }
-
   return watchtowerResult;
 }
 
@@ -869,17 +858,6 @@ export function handleBuildPalisades(
     "buildPalisades",
     "palisades",
   );
-
-  // Add palisades completion message only for first palisades
-  if (state.buildings.palisades === 0) {
-    palisadesResult.logEntries!.push({
-      id: `palisades-built-${Date.now()}`,
-      message:
-        "Wooden palisades rise around your settlement, providing basic protection against incoming threats.",
-      timestamp: Date.now(),
-      type: "system",
-    });
-  }
 
   return palisadesResult;
 }
@@ -919,17 +897,6 @@ export function handleBuildAdvancedBlacksmith(
     "buildAdvancedBlacksmith",
     "advancedBlacksmith",
   );
-
-  // Add advanced blacksmith completion message
-  if (state.buildings.advancedBlacksmith === 0) {
-    advancedBlacksmithResult.logEntries!.push({
-      id: `advanced-blacksmith-built-${Date.now()}`,
-      message:
-        "The Advanced Blacksmith rises, equipped with superior tools and techniques for crafting.",
-      timestamp: Date.now(),
-      type: "system",
-    });
-  }
 
   return advancedBlacksmithResult;
 }

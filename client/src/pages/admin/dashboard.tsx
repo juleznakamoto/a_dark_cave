@@ -497,13 +497,31 @@ export default function AdminDashboard() {
   }, [gameSaves, selectedUser, selectedResources]);
 
   const getButtonUpgradesOverPlaytime = useMemo(() => {
-    const relevant = filterByUser(clickData);
-
+    const relevant = filterByUser(gameSaves);
+    
+    console.log('⬆️ getButtonUpgradesOverPlaytime - relevant saves:', relevant.length);
+    console.log('⬆️ getButtonUpgradesOverPlaytime - clickData length:', clickData.length);
+    
     if (relevant.length === 0) {
+      console.log('⬆️ No relevant saves, returning empty data');
       return Array.from({ length: 24 }, (_, i) => ({
         time: `${i}h`,
         caveExplore: 0, mineStone: 0, mineIron: 0, mineCoal: 0, mineSulfur: 0, mineObsidian: 0, mineAdamant: 0, hunt: 0, chopWood: 0,
       }));
+    }
+
+    // Log sample data structure
+    if (relevant.length > 0) {
+      const sample = relevant[0];
+      console.log('⬆️ Sample save game_state.buttonUpgrades:', sample.game_state?.buttonUpgrades);
+      console.log('⬆️ Sample save game_state.playTime:', sample.game_state?.playTime);
+    }
+    
+    // Check clickData structure
+    const clicksWithSnapshots = clickData.filter(c => c.game_state_snapshot);
+    console.log('⬆️ Clicks with snapshots:', clicksWithSnapshots.length);
+    if (clicksWithSnapshots.length > 0) {
+      console.log('⬆️ Sample click snapshot:', clicksWithSnapshots[0].game_state_snapshot);
     }
 
     const timeMap = new Map<number, { caveExplore: number[], mineStone: number[], mineIron: number[], mineCoal: number[], mineSulfur: number[], mineObsidian: number[], mineAdamant: number[], hunt: number[], chopWood: number[] }>();
@@ -511,51 +529,48 @@ export default function AdminDashboard() {
       timeMap.set(i, { caveExplore: [], mineStone: [], mineIron: [], mineCoal: [], mineSulfur: [], mineObsidian: [], mineAdamant: [], hunt: [], chopWood: [] });
     }
 
-    // Process click data which has structure: { "110m": { "action": count, ... }, ... }
-    relevant.forEach((clickEntry) => {
-      Object.entries(clickEntry.clicks).forEach(([playtimeKey, actions]) => {
-        // Extract playtime in minutes from keys like "110m"
-        const playtimeMinutes = parseInt(playtimeKey);
-        if (isNaN(playtimeMinutes)) return;
+    // Use game saves to get button upgrade levels at different playtimes
+    relevant.forEach((save) => {
+      if (!save.game_state?.buttonUpgrades) return;
+      
+      const playTimeMinutes = save.game_state.playTime ? Math.floor(save.game_state.playTime / 60000) : 0;
+      const bucket = Math.floor(playTimeMinutes / 60);
 
-        const bucket = Math.floor(playtimeMinutes / 60);
-        if (bucket >= 0 && bucket < 24) {
-          const data = timeMap.get(bucket)!;
-          const actionCounts = actions as Record<string, number>;
-          
-          // Sum up click counts for mining actions
-          if (selectedMiningTypes.has('caveExplore') && actionCounts.exploreCave) {
-            data.caveExplore.push(actionCounts.exploreCave);
-          }
-          if (selectedMiningTypes.has('mineStone') && actionCounts.mineStone) {
-            data.mineStone.push(actionCounts.mineStone);
-          }
-          if (selectedMiningTypes.has('mineIron') && actionCounts.mineIron) {
-            data.mineIron.push(actionCounts.mineIron);
-          }
-          if (selectedMiningTypes.has('mineCoal') && actionCounts.mineCoal) {
-            data.mineCoal.push(actionCounts.mineCoal);
-          }
-          if (selectedMiningTypes.has('mineSulfur') && actionCounts.mineSulfur) {
-            data.mineSulfur.push(actionCounts.mineSulfur);
-          }
-          if (selectedMiningTypes.has('mineObsidian') && actionCounts.mineObsidian) {
-            data.mineObsidian.push(actionCounts.mineObsidian);
-          }
-          if (selectedMiningTypes.has('mineAdamant') && actionCounts.mineAdamant) {
-            data.mineAdamant.push(actionCounts.mineAdamant);
-          }
-          if (selectedMiningTypes.has('hunt') && actionCounts.hunt) {
-            data.hunt.push(actionCounts.hunt);
-          }
-          if (selectedMiningTypes.has('chopWood') && actionCounts.chopWood) {
-            data.chopWood.push(actionCounts.chopWood);
-          }
+      if (bucket >= 0 && bucket < 24) {
+        const data = timeMap.get(bucket)!;
+        const upgrades = save.game_state.buttonUpgrades;
+        
+        if (selectedMiningTypes.has('caveExplore') && upgrades.caveExplore) {
+          data.caveExplore.push(upgrades.caveExplore.level || 0);
         }
-      });
+        if (selectedMiningTypes.has('mineStone') && upgrades.mineStone) {
+          data.mineStone.push(upgrades.mineStone.level || 0);
+        }
+        if (selectedMiningTypes.has('mineIron') && upgrades.mineIron) {
+          data.mineIron.push(upgrades.mineIron.level || 0);
+        }
+        if (selectedMiningTypes.has('mineCoal') && upgrades.mineCoal) {
+          data.mineCoal.push(upgrades.mineCoal.level || 0);
+        }
+        if (selectedMiningTypes.has('mineSulfur') && upgrades.mineSulfur) {
+          data.mineSulfur.push(upgrades.mineSulfur.level || 0);
+        }
+        if (selectedMiningTypes.has('mineObsidian') && upgrades.mineObsidian) {
+          data.mineObsidian.push(upgrades.mineObsidian.level || 0);
+        }
+        if (selectedMiningTypes.has('mineAdamant') && upgrades.mineAdamant) {
+          data.mineAdamant.push(upgrades.mineAdamant.level || 0);
+        }
+        if (selectedMiningTypes.has('hunt') && upgrades.hunt) {
+          data.hunt.push(upgrades.hunt.level || 0);
+        }
+        if (selectedMiningTypes.has('chopWood') && upgrades.chopWood) {
+          data.chopWood.push(upgrades.chopWood.level || 0);
+        }
+      }
     });
 
-    return Array.from({ length: 24 }, (_, i) => {
+    const result = Array.from({ length: 24 }, (_, i) => {
       const levels = timeMap.get(i)!;
       return {
         time: `${i}h`,
@@ -570,7 +585,11 @@ export default function AdminDashboard() {
         chopWood: levels.chopWood.length > 0 ? levels.chopWood.reduce((a, b) => a + b, 0) / levels.chopWood.length : 0,
       };
     });
-  }, [clickData, selectedUser, selectedMiningTypes]);
+    
+    console.log('⬆️ getButtonUpgradesOverPlaytime result (first 3 buckets):', result.slice(0, 3));
+    
+    return result;
+  }, [gameSaves, selectedUser, selectedMiningTypes]);
 
   const getGameCompletionStats = useCallback(() => {
     const relevantSaves = selectedUser === "all"

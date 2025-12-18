@@ -188,21 +188,22 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildAdvancedBlacksmith",
     label: "Advanced Blacksmith",
     description: "Improved blacksmith with better tools and techniques",
-    tooltipEffects: ["Unlocks Advanced Tools", "5% Craft Discount"],
+    tooltipEffects: ["Unlocks Advanced Crafting", "5% Craft Discount"],
     building: true,
     show_when: {
       1: {
+        "buildings.stoneHut": 5,
         "buildings.blacksmith": 1,
         "buildings.deepPit": 1,
         "buildings.advancedBlacksmith": 0,
+        "buildings.grandBlacksmith": 0, // for backwards compatibility
       },
     },
     cost: {
       1: {
-        "resources.stone": 5000,
+        "resources.stone": 7500,
         "resources.wood": 2500,
         "resources.steel": 1000,
-        "resources.obsidian": 250,
       },
     },
     effects: {
@@ -231,7 +232,7 @@ export const villageBuildActions: Record<string, Action> = {
     cost: {
       1: {
         "resources.stone": 10000,
-        "resources.wood": 5000,
+        "resources.wood": 7500,
         "resources.steel": 2500,
         "resources.adamant": 500,
       },
