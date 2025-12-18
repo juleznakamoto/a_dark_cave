@@ -583,17 +583,21 @@ export const getTotalCraftingCostReduction = (state: GameState): number => {
     }
   }
 
-  // Add crafting cost reduction from non-storage buildings (like grandBlacksmith)
-  Object.entries(state.buildings).forEach(([buildingKey, buildingCount]) => {
-    if (buildingCount > 0 && !storagePriority.includes(buildingKey)) {
+  // Add crafting cost reduction from blacksmith buildings (only highest tier)
+  // Priority: grandBlacksmith > advancedBlacksmith
+  const blacksmithPriority = ['grandBlacksmith', 'advancedBlacksmith'];
+  
+  for (const buildingKey of blacksmithPriority) {
+    if (state.buildings[buildingKey as keyof typeof state.buildings] > 0) {
       const actionId = `build${buildingKey.charAt(0).toUpperCase() + buildingKey.slice(1)}`;
       const buildAction = villageBuildActions[actionId];
 
       if (buildAction?.craftingCostReduction) {
         reduction += buildAction.craftingCostReduction;
       }
+      break; // Only apply the highest tier building's discount
     }
-  });
+  }
 
   return reduction;
 };
@@ -611,14 +615,14 @@ export const getTotalBuildingCostReduction = (state: GameState): number => {
 
   // Add building cost reduction from highest tier storage building only
   // Priority: greatVault > grandRepository > villageWarehouse > fortifiedStorehouse
-  const storagePriority = [
+  const storagePriorityForBuilding = [
     'greatVault',
     'grandRepository',
     'villageWarehouse', 
     'fortifiedStorehouse'
   ];
 
-  for (const buildingKey of storagePriority) {
+  for (const buildingKey of storagePriorityForBuilding) {
     if (state.buildings[buildingKey as keyof typeof state.buildings] > 0) {
       const actionId = `build${buildingKey.charAt(0).toUpperCase() + buildingKey.slice(1)}`;
       const buildAction = villageBuildActions[actionId];
