@@ -475,8 +475,9 @@ export default function SidePanelSection({
       );
     }
 
-    // If this item is a fellowship member with a tooltip, use renderItemTooltip
-    if (item.tooltip && title === "Fellowship") {
+    // If this item is a fellowship member or book with a tooltip, use renderItemTooltip
+    if (item.tooltip && (title === "Fellowship" || title === "Books")) {
+      const itemType = title === "Fellowship" ? "fellowship" : "book";
       return (
         <TooltipProvider key={item.id}>
           <Tooltip open={mobileTooltip.isTooltipOpen(item.id)}>
@@ -504,7 +505,7 @@ export default function SidePanelSection({
               </TooltipTrigger>
             </div>
             <TooltipContent className="max-w-xs">
-              {renderItemTooltip(item.id, "fellowship")}
+              {renderItemTooltip(item.id, itemType)}
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>

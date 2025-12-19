@@ -194,16 +194,7 @@ export default function SidePanel() {
       value: 1,
       testId: `book-${key}`,
       visible: true,
-      tooltip: bookEffects[key] ? (
-        <div>
-          <div className="font-bold">{bookEffects[key].name}</div>
-          {bookEffects[key].description && (
-            <div className="text-gray-400 mb-1">
-              {bookEffects[key].description}
-            </div>
-          )}
-        </div>
-      ) : undefined,
+      tooltip: true, // Tooltip will be generated in itemTooltips.tsx
     }));
 
   // Dynamically generate fellowship items from state
