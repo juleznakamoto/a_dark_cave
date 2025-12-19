@@ -140,6 +140,7 @@ export default function AdminDashboard() {
   const [totalUserCount, setTotalUserCount] = useState<number>(0);
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date()); // State to track last data update
   const [dauData, setDauData] = useState<Array<{ date: string; active_user_count: number }>>([]);
+  const [currentDau, setCurrentDau] = useState<number>(0);
   const [emailConfirmationStats, setEmailConfirmationStats] = useState<any>({
     allTime: {
       totalRegistrations: 0,
@@ -834,6 +835,9 @@ export default function AdminDashboard() {
       if (data.dau) {
         setDauData(data.dau);
       }
+      if (typeof data.currentDau === 'number') {
+        setCurrentDau(data.currentDau);
+      }
     } catch (error) {
       logger.error("Failed to load DAU data:", error);
     }
@@ -1044,18 +1048,7 @@ export default function AdminDashboard() {
                   rawGameSaves={rawGameSaves}
                   dailyActiveUsersData={dauData}
                   registrationMethodStats={registrationMethodStats}
-                  getDailyActiveUsers={() => {
-                    if (dauData.length > 0) {
-                      // Get the most recent DAU count
-                      return dauData[0].active_user_count;
-                    }
-                    // Fallback to calculation if no DAU data
-                    const now = new Date();
-                    const oneDayAgo = subDays(now, 1);
-                    return gameSaves.filter(
-                      (s) => parseISO(s.updated_at) >= oneDayAgo
-                    ).length;
-                  }}
+                  getDailyActiveUsers={() => currentDau}
                   getWeeklyActiveUsers={() => {
                     const now = new Date();
                     const sevenDaysAgo = subDays(now, 7);
