@@ -6,9 +6,9 @@ export const CRUSHING_STRIKE_UPGRADES = [
   { level: 0, damage: 10, stunRounds: 1, cost: 0, currency: null },
   { level: 1, damage: 20, stunRounds: 1, cost: 250, currency: "gold" },
   { level: 2, damage: 30, stunRounds: 1, cost: 500, currency: "gold" },
-  { level: 3, damage: 40, stunRounds: 2, cost: 1000, currency: "gold" },
-  { level: 4, damage: 50, stunRounds: 2, cost: 1500, currency: "gold" },
-  { level: 5, damage: 60, stunRounds: 3, cost: 2000, currency: "gold" },
+  { level: 3, damage: 40, stunRounds: 2, cost: 750, currency: "gold" },
+  { level: 4, damage: 50, stunRounds: 2, cost: 1000, currency: "gold" },
+  { level: 5, damage: 60, stunRounds: 3, cost: 1500, currency: "gold" },
 ];
 
 // Bloodflame Sphere upgrade configurations (Combat skill from Elder Wizard)
@@ -46,7 +46,7 @@ export const BLOODFLAME_SPHERE_UPGRADES = [
     burnDamage: 25,
     burnRounds: 2,
     healthCost: 20,
-    cost: 1000,
+    cost: 750,
     currency: "gold",
   },
   {
@@ -55,7 +55,7 @@ export const BLOODFLAME_SPHERE_UPGRADES = [
     burnDamage: 30,
     burnRounds: 2,
     healthCost: 20,
-    cost: 1500,
+    cost: 1000,
     currency: "gold",
   },
   {
@@ -64,7 +64,7 @@ export const BLOODFLAME_SPHERE_UPGRADES = [
     burnDamage: 35,
     burnRounds: 3,
     healthCost: 20,
-    cost: 2000,
+    cost: 1500,
     currency: "gold",
   },
 ];
@@ -72,11 +72,11 @@ export const BLOODFLAME_SPHERE_UPGRADES = [
 // Hunting Skill upgrade configurations (from Ashwraith Huntress)
 export const HUNTING_SKILL_UPGRADES = [
   { level: 0, huntBonus: 25, food: 0, fur: 0, bones: 0, cost: 0 },
-  { level: 1, huntBonus: 50, food: 5, fur: 0, bones: 0, cost: 500 },
-  { level: 2, huntBonus: 75, food: 5, fur: 1, bones: 1, cost: 1000 },
-  { level: 3, huntBonus: 100, food: 15, fur: 1, bones: 1, cost: 1500 },
-  { level: 4, huntBonus: 125, food: 15, fur: 2, bones: 2, cost: 2000 },
-  { level: 5, huntBonus: 150, food: 20, fur: 2, bones: 2, cost: 2500 },
+  { level: 1, huntBonus: 50, food: 5, fur: 0, bones: 0, cost: 250 },
+  { level: 2, huntBonus: 75, food: 5, fur: 1, bones: 1, cost: 500 },
+  { level: 3, huntBonus: 100, food: 15, fur: 1, bones: 1, cost: 750 },
+  { level: 4, huntBonus: 125, food: 15, fur: 2, bones: 2, cost: 1000 },
+  { level: 5, huntBonus: 150, food: 20, fur: 2, bones: 2, cost: 1500 },
 ];
 
 // Extract bonuses for use in population calculations
