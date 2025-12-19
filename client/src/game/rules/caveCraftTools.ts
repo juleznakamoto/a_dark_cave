@@ -437,7 +437,7 @@ export const caveCraftTools: Record<string, Action> = {
       "tools.blacksteel_pickaxe": false,
     },
     cost: {
-      "resources.blacksteel": 200,
+      "resources.blacksteel": 300,
     },
     effects: {
       "tools.blacksteel_pickaxe": true,
@@ -456,7 +456,7 @@ export const caveCraftTools: Record<string, Action> = {
       "tools.blacksteel_lantern": false,
     },
     cost: {
-      "resources.blacksteel": 250,
+      "resources.blacksteel": 350,
     },
     effects: {
       "tools.blacksteel_lantern": true,
