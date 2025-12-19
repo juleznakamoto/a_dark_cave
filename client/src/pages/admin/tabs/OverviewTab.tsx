@@ -3,7 +3,7 @@ import { AreaChart, Area, BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip, R
 import { format, parseISO } from "date-fns";
 
 interface OverviewTabProps {
-  getDailyActiveUsers: () => number;
+  getDailyActiveUsers: () => number; // Now returns count from auth table (last 24h)
   getWeeklyActiveUsers: () => number;
   getMonthlyActiveUsers: () => number;
   totalUserCount: number;

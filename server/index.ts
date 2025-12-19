@@ -699,9 +699,9 @@ app.post("/api/leaderboard/update-username", async (req, res) => {
       const env = (req.query.env as "dev" | "prod") || "dev";
       const adminClient = getAdminClient(env);
 
-      // Log here, not in the other endpoint
       log(`📊 Fetching DAU data for ${env} environment`);
 
+      // Get historical DAU data from daily_active_users table
       const { data: dauData, error: dauError } = await adminClient
         .from('daily_active_users')
         .select('date, active_user_count')
@@ -713,7 +713,59 @@ app.post("/api/leaderboard/update-username", async (req, res) => {
         return res.status(500).json({ error: 'Failed to fetch DAU data' });
       }
 
-      res.json({ dau: dauData || [] });
+      // Calculate current DAU from auth table (last 24 hours)
+      const twentyFourHoursAgo = new Date();
+      twentyFourHoursAgo.setHours(twentyFourHoursAgo.getHours() - 24);
+
+      let currentDau = 0;
+      try {
+        // Paginate through auth users to count those active in last 24 hours
+        let page = 1;
+        const perPage = 1000;
+        const activeUserIds = new Set<string>();
+
+        while (true) {
+          const { data: authData, error: authError } = await adminClient.auth.admin.listUsers({
+            page,
+            perPage,
+          });
+
+          if (authError) {
+            log("❌ Error fetching auth users for DAU:", authError);
+            break;
+          }
+
+          if (!authData || authData.users.length === 0) {
+            break;
+          }
+
+          // Count users with last_sign_in_at within last 24 hours
+          authData.users.forEach((user: any) => {
+            if (user.last_sign_in_at) {
+              const lastSignIn = new Date(user.last_sign_in_at);
+              if (lastSignIn >= twentyFourHoursAgo) {
+                activeUserIds.add(user.id);
+              }
+            }
+          });
+
+          if (authData.users.length < perPage) {
+            break;
+          }
+
+          page++;
+        }
+
+        currentDau = activeUserIds.size;
+        log(`📊 Current DAU (last 24h): ${currentDau} active users`);
+      } catch (error: any) {
+        log("❌ Error calculating current DAU:", error);
+      }
+
+      res.json({ 
+        dau: dauData || [],
+        currentDau: currentDau
+      });
     } catch (error: any) {
       log('❌ Error in /api/admin/dau:', error);
       res.status(500).json({ error: 'Internal server error' });

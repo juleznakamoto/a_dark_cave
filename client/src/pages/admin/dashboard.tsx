@@ -140,6 +140,7 @@ export default function AdminDashboard() {
   const [totalUserCount, setTotalUserCount] = useState<number>(0);
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date()); // State to track last data update
   const [dauData, setDauData] = useState<Array<{ date: string; active_user_count: number }>>([]);
+  const [currentDau, setCurrentDau] = useState<number>(0); // State to store current DAU
   const [emailConfirmationStats, setEmailConfirmationStats] = useState<any>({
     allTime: {
       totalRegistrations: 0,
@@ -426,7 +427,7 @@ export default function AdminDashboard() {
     // Use the resources field from button_clicks table (it contains stats too)
     relevant.forEach((clickEntry) => {
       if (!clickEntry.resources) return;
-      
+
       // clickEntry.resources is structured as: { "10m": { "strength": 4, "luck": 5, ... }, "20m": { ... } }
       Object.entries(clickEntry.resources).forEach(([playtimeKey, resources]) => {
         // playtimeKey is in format like "10m", "20m", etc.
@@ -487,7 +488,7 @@ export default function AdminDashboard() {
     // Use the resources field from button_clicks table
     relevant.forEach((clickEntry) => {
       if (!clickEntry.resources) return;
-      
+
       // clickEntry.resources is structured as: { "10m": { "wood": 722, ... }, "20m": { ... } }
       Object.entries(clickEntry.resources).forEach(([playtimeKey, resources]) => {
         // playtimeKey is in format like "10m", "20m", etc.
@@ -519,7 +520,7 @@ export default function AdminDashboard() {
 
   const getButtonUpgradesOverPlaytime = useMemo(() => {
     const relevant = filterByUser(gameSaves);
-    
+
     if (relevant.length === 0) {
       return Array.from({ length: 24 }, (_, i) => ({
         time: `${i}h`,
@@ -535,14 +536,14 @@ export default function AdminDashboard() {
     // Use game saves to get button upgrade levels at different playtimes
     relevant.forEach((save) => {
       if (!save.game_state?.buttonUpgrades) return;
-      
+
       const playTimeMinutes = save.game_state.playTime ? Math.floor(save.game_state.playTime / 60000) : 0;
       const bucket = Math.floor(playTimeMinutes / 60);
 
       if (bucket >= 0 && bucket < 24) {
         const data = timeMap.get(bucket)!;
         const upgrades = save.game_state.buttonUpgrades;
-        
+
         if (selectedMiningTypes.has('caveExplore') && upgrades.caveExplore) {
           data.caveExplore.push(upgrades.caveExplore.level || 0);
         }
@@ -588,7 +589,7 @@ export default function AdminDashboard() {
         chopWood: levels.chopWood.length > 0 ? levels.chopWood.reduce((a, b) => a + b, 0) / levels.chopWood.length : 0,
       };
     });
-    
+
     return result;
   }, [gameSaves, selectedUser, selectedMiningTypes]);
 
@@ -708,7 +709,7 @@ export default function AdminDashboard() {
         return sum + referrals.filter((ref: any) => {
           const timestamp = ref.timestamp || ref.created_at;
           if (!timestamp) return false;
-          
+
           // Handle both number (milliseconds) and string (ISO date) timestamps
           let refDate: Date;
           try {
@@ -719,7 +720,7 @@ export default function AdminDashboard() {
             } else {
               return false;
             }
-            
+
             return refDate >= dayStart && refDate <= dayEnd;
           } catch {
             return false;
@@ -812,6 +813,7 @@ export default function AdminDashboard() {
 
       setIsAuthorized(true);
       await loadData();
+      await loadDauData(); // Load DAU data after authorization
       setLoading(false);
     } catch (error) {
       logger.error("Auth check failed:", error);
@@ -823,7 +825,6 @@ export default function AdminDashboard() {
   const loadDauData = async () => {
     try {
       const response = await fetch(`/api/admin/dau?env=${environment}`);
-
       if (!response.ok) {
         const errorText = await response.text();
         logger.error("DAU data fetch failed:", response.status, errorText);
@@ -833,6 +834,10 @@ export default function AdminDashboard() {
       const data = await response.json();
       if (data.dau) {
         setDauData(data.dau);
+      }
+      // Store current DAU separately if provided
+      if (data.currentDau !== undefined) {
+        setCurrentDau(data.currentDau);
       }
     } catch (error) {
       logger.error("Failed to load DAU data:", error);
@@ -1045,16 +1050,8 @@ export default function AdminDashboard() {
                   dailyActiveUsersData={dauData}
                   registrationMethodStats={registrationMethodStats}
                   getDailyActiveUsers={() => {
-                    if (dauData.length > 0) {
-                      // Get the most recent DAU count
-                      return dauData[0].active_user_count;
-                    }
-                    // Fallback to calculation if no DAU data
-                    const now = new Date();
-                    const oneDayAgo = subDays(now, 1);
-                    return gameSaves.filter(
-                      (s) => parseISO(s.updated_at) >= oneDayAgo
-                    ).length;
+                    // Use the current DAU from auth table (last 24 hours)
+                    return currentDau;
                   }}
                   getWeeklyActiveUsers={() => {
                     const now = new Date();
