@@ -350,7 +350,7 @@ export default function ProfileMenu() {
               const isActive = !isClaimed && !!currentUser;
 
               return (
-                <React.Fragment key={platform.id}>
+                <div key={platform.id}>
                   <DropdownMenuItem
                     onClick={() => {
                       if (isActive) {
@@ -415,7 +415,7 @@ export default function ProfileMenu() {
                   {index < SOCIAL_PLATFORMS.length - 1 && (
                     <DropdownMenuSeparator />
                   )}
-                </React.Fragment>
+                </div>
               );
             })}
           </DropdownMenuContent>
