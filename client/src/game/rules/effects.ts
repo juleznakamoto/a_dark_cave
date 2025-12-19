@@ -271,6 +271,48 @@ export const toolEffects: Record<string, EffectDefinition> = {
       },
     },
   },
+  blacksteel_axe: {
+    id: "blacksteel_axe",
+    name: "Blacksteel Axe",
+    description: "Axe forged from the rare blacksteel.",
+    bonuses: {
+      actionBonuses: {
+        chopWood: {
+          resourceMultiplier: 5.5,
+          cooldownReduction: 2,
+        },
+      },
+    },
+  },
+  blacksteel_pickaxe: {
+    id: "blacksteel_pickaxe",
+    name: "Blacksteel Pickaxe",
+    description: "Pickaxe forged from the rare blacksteel.",
+    bonuses: {
+      actionBonuses: {
+        mining: {
+          resourceMultiplier: 3.5,
+          cooldownReduction: 6,
+        },
+      },
+    },
+  },
+  blacksteel_lantern: {
+    id: "blacksteel_lantern",
+    name: "Blacksteel Lantern",
+    description: "Lantern forged from the rare blacksteel.",
+    bonuses: {
+      actionBonuses: {
+        mining: {
+          resourceMultiplier: 2.5,
+          cooldownReduction: 5.5,
+        },
+        caveExplore: {
+          resourceMultiplier: 2.5,
+        },
+      },
+    },
+  },
 
   blacksmith_hammer: {
     id: "blacksmith_hammer",
@@ -283,7 +325,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
       },
     },
   },
-  
+
   mastermason_chisel: {
     id: "mastermason_chisel",
     name: "Mastermason Chisel",
@@ -602,6 +644,32 @@ export const weaponEffects: Record<string, EffectDefinition> = {
         strength: 10,
         madness: 3,
         eventDeathReduction: 0.25, // 25% reduction in villager deaths from events
+      },
+    },
+  },
+  blacksteel_sword: {
+    id: "blacksteel_sword",
+    name: "Blacksteel Sword",
+    description: "Sword forged from the rare blacksteel.",
+    bonuses: {
+      generalBonuses: {
+        strength: 18,
+      },
+    },
+  },
+  blacksteel_bow: {
+    id: "blacksteel_bow",
+    name: "Blacksteel Bow",
+    description: "Bow forged from the rare blacksteel.",
+    bonuses: {
+      actionBonuses: {
+        hunt: {
+          resourceMultiplier: 5.5,
+          cooldownReduction: 3,
+        },
+      },
+      generalBonuses: {
+        strength: 10, // Default strength, adjust if needed
       },
     },
   },

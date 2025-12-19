@@ -409,6 +409,63 @@ export const caveCraftTools: Record<string, Action> = {
     cooldown: 30,
   },
 
+  craftBlacksteelAxe: {
+    id: "craftBlacksteelAxe",
+    label: "Blacksteel Axe",
+    show_when: {
+      "buildings.masterworkFoundry": 1,
+      "buildings.grandBlacksmith": 1,
+      "tools.blacksteel_axe": false,
+    },
+    cost: {
+      "resources.blacksteel": 150,
+    },
+    effects: {
+      "tools.blacksteel_axe": true,
+      "story.seen.hasBlacksteelAxe": true,
+      "story.seen.actionCraftBlacksteelAxe": true,
+    },
+    cooldown: 30,
+  },
+
+  craftBlacksteelPickaxe: {
+    id: "craftBlacksteelPickaxe",
+    label: "Blacksteel Pickaxe",
+    show_when: {
+      "buildings.masterworkFoundry": 1,
+      "buildings.grandBlacksmith": 1,
+      "tools.blacksteel_pickaxe": false,
+    },
+    cost: {
+      "resources.blacksteel": 200,
+    },
+    effects: {
+      "tools.blacksteel_pickaxe": true,
+      "story.seen.hasBlacksteelPickaxe": true,
+      "story.seen.actionCraftBlacksteelPickaxe": true,
+    },
+    cooldown: 30,
+  },
+
+  craftBlacksteelLantern: {
+    id: "craftBlacksteelLantern",
+    label: "Blacksteel Lantern",
+    show_when: {
+      "buildings.masterworkFoundry": 1,
+      "buildings.grandBlacksmith": 1,
+      "tools.blacksteel_lantern": false,
+    },
+    cost: {
+      "resources.blacksteel": 250,
+    },
+    effects: {
+      "tools.blacksteel_lantern": true,
+      "story.seen.hasBlacksteelLantern": true,
+      "story.seen.actionCraftBlacksteelLantern": true,
+    },
+    cooldown: 30,
+  },
+
   craftExplorerPack: {
     id: "craftExplorerPack",
     label: "Explorer's Pack",
@@ -791,6 +848,33 @@ export function handleCraftShadowBoots(
   result: ActionResult,
 ): ActionResult {
   const effectUpdates = applyActionEffects("craftShadowBoots", state);
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+export function handleCraftBlacksteelAxe(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("craftBlacksteelAxe", state);
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+export function handleCraftBlacksteelPickaxe(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("craftBlacksteelPickaxe", state);
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+export function handleCraftBlacksteelLantern(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("craftBlacksteelLantern", state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }

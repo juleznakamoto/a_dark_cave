@@ -284,6 +284,40 @@ export const caveCraftWeapons: Record<string, Action> = {
     },
     cooldown: 60,
   },
+
+  craftBlacksteelSword: {
+    id: "craftBlacksteelSword",
+    label: "Blacksteel Sword",
+    show_when: {
+      "buildings.masterworkFoundry": 1,
+      "buildings.grandBlacksmith": 1,
+      "weapons.blacksteel_sword": false,
+    },
+    cost: {
+      "resources.blacksteel": 150,
+    },
+    effects: {
+      "weapons.blacksteel_sword": true,
+    },
+    cooldown: 35,
+  },
+
+  craftBlacksteelBow: {
+    id: "craftBlacksteelBow",
+    label: "Blacksteel Bow",
+    show_when: {
+      "buildings.masterworkFoundry": 1,
+      "buildings.grandBlacksmith": 1,
+      "weapons.blacksteel_bow": false,
+    },
+    cost: {
+      "resources.blacksteel": 100,
+    },
+    effects: {
+      "weapons.blacksteel_bow": true,
+    },
+    cooldown: 35,
+  },
 };
 
 // Action handlers
@@ -503,5 +537,23 @@ export function handleCraftAshenGreatshield(
     type: "system",
   });
 
+  return result;
+}
+
+export function handleCraftBlacksteelSword(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("craftBlacksteelSword", state);
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+export function handleCraftBlacksteelBow(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("craftBlacksteelBow", state);
+  Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
