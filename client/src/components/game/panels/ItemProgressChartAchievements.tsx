@@ -197,18 +197,30 @@ export default function ItemProgressChart() {
       },
     ],
     [
-      // blacksteel
+      // blacksteel tools
       {
-        itemType: "blacksteel",
-        itemKeys: ["here"], // add blacksteel items here
+        itemType: "blacksteel_tools",
+        itemKeys: [
+          "blacksteel_axe",
+          "blacksteel_pickaxe",
+          "blacksteel_lantern",
+        ],
         color: SEGMENT_COLOR,
-        label: "",
-        category: "fellowship",
+        label: "Blacksteel Tools",
+        category: "tools",
         maxCount: 3,
         reward: 500,
-        // add blacksteel items here
       },
-      
+      // blacksteel weapons
+      {
+        itemType: "blacksteel_weapons",
+        itemKeys: ["blacksteel_sword", "blacksteel_bow"],
+        color: SEGMENT_COLOR,
+        label: "Blacksteel Weapons",
+        category: "weapons",
+        maxCount: 2,
+        reward: 500,
+      },
     ],
     // Sixth ring: Fellowship
     [],
