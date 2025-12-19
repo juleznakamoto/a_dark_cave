@@ -266,20 +266,7 @@ export default function EventDialog({
             // All closing should be handled explicitly through handleChoice
           }}
         >
-          {isMerchantEvent ? (
-            <MerchantDialog
-              event={event}
-              gameState={gameState}
-              timeRemaining={timeRemaining}
-              totalTime={totalTime}
-              progress={progress}
-              purchasedItems={purchasedItems}
-              fallbackExecutedRef={fallbackExecutedRef}
-              onChoice={handleChoice}
-              hasScriptorium={hasScriptorium}
-            />
-          ) : (
-            <DialogContent className="w-[95vw] sm:max-w-md [&>button]:hidden">
+          <DialogContent className="w-[95vw] sm:max-w-md [&>button]:hidden">
           <DialogHeader>
             <div className="flex items-start justify-between">
               <DialogTitle className="text-lg font-semibold flex-1">
@@ -449,7 +436,6 @@ export default function EventDialog({
             </div>
           )}
             </DialogContent>
-          )}
         </Dialog>
       )}
     </>
