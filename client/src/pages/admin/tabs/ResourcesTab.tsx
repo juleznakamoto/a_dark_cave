@@ -130,7 +130,7 @@ export default function ResourcesTab(props: ResourcesTabProps) {
                   position: "insideLeft",
                 }}
               />
-              <Tooltip />
+              <Tooltip formatter={(value: number) => Math.round(value)} />
               <Legend />
               {(() => {
                 const chartData = statsOverPlaytime;
@@ -234,7 +234,7 @@ export default function ResourcesTab(props: ResourcesTabProps) {
                   position: "insideLeft",
                 }}
               />
-              <Tooltip />
+              <Tooltip formatter={(value: number) => Math.round(value)} />
               <Legend />
               {(() => {
                 const chartData = resourceStatsOverPlaytime;

@@ -406,11 +406,9 @@ export default function AdminDashboard() {
 
   // All memos MUST be defined before conditional returns to comply with React rules
   const getStatsOverPlaytime = useMemo(() => {
-    const relevantSaves = selectedUser === "all"
-      ? gameSaves
-      : gameSaves.filter((s) => s.user_id === selectedUser);
+    const relevant = filterByUser(clickData);
 
-    if (relevantSaves.length === 0) {
+    if (relevant.length === 0) {
       return Array.from({ length: 24 }, (_, i) => ({
         time: `${i}h`,
         strength: 0,
@@ -425,21 +423,34 @@ export default function AdminDashboard() {
       timeMap.set(i, { strength: [], knowledge: [], luck: [], madness: [] });
     }
 
-    // Use the final game state stats from each user's save
-    relevantSaves.forEach((save) => {
-      if (!save.game_state?.stats) return;
+    // Use the resources field from button_clicks table (it contains stats too)
+    relevant.forEach((clickEntry) => {
+      if (!clickEntry.resources) return;
       
-      const stats = save.game_state.stats;
-      const playTimeMinutes = save.game_state.playTime ? Math.floor(save.game_state.playTime / 60000) : 0;
-      const bucket = Math.floor(playTimeMinutes / 60);
+      // clickEntry.resources is structured as: { "10m": { "strength": 4, "luck": 5, ... }, "20m": { ... } }
+      Object.entries(clickEntry.resources).forEach(([playtimeKey, resources]) => {
+        // playtimeKey is in format like "10m", "20m", etc.
+        const playtimeMinutes = parseInt(playtimeKey);
+        if (isNaN(playtimeMinutes)) return;
 
-      if (bucket >= 0 && bucket < 24) {
-        const data = timeMap.get(bucket)!;
-        if (selectedStats.has('strength')) data.strength.push(stats.strength || 0);
-        if (selectedStats.has('knowledge')) data.knowledge.push(stats.knowledge || 0);
-        if (selectedStats.has('luck')) data.luck.push(stats.luck || 0);
-        if (selectedStats.has('madness')) data.madness.push(stats.madness || 0);
-      }
+        const bucket = Math.floor(playtimeMinutes / 60);
+
+        if (bucket >= 0 && bucket < 24) {
+          const data = timeMap.get(bucket)!;
+          if (selectedStats.has('strength') && typeof resources.strength === 'number') {
+            data.strength.push(resources.strength);
+          }
+          if (selectedStats.has('knowledge') && typeof resources.knowledge === 'number') {
+            data.knowledge.push(resources.knowledge);
+          }
+          if (selectedStats.has('luck') && typeof resources.luck === 'number') {
+            data.luck.push(resources.luck);
+          }
+          if (selectedStats.has('madness') && typeof resources.madness === 'number') {
+            data.madness.push(resources.madness);
+          }
+        }
+      });
     });
 
     return Array.from({ length: 24 }, (_, i) => {
@@ -452,7 +463,7 @@ export default function AdminDashboard() {
         madness: stats.madness.length > 0 ? stats.madness.reduce((a, b) => a + b, 0) / stats.madness.length : 0,
       };
     });
-  }, [gameSaves, selectedUser, selectedStats]);
+  }, [clickData, selectedUser, selectedStats]);
 
   const getResourceStatsOverPlaytime = useMemo(() => {
     const relevant = filterByUser(clickData);
