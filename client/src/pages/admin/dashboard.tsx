@@ -455,7 +455,7 @@ export default function AdminDashboard() {
   }, [gameSaves, selectedUser, selectedStats]);
 
   const getResourceStatsOverPlaytime = useMemo(() => {
-    const relevant = filterByUser(gameSaves);
+    const relevant = filterByUser(clickData);
     const resourceKeys = ['food', 'bones', 'fur', 'wood', 'stone', 'iron', 'coal', 'sulfur', 'obsidian', 'adamant', 'moonstone', 'leather', 'steel', 'gold', 'silver'];
 
     if (relevant.length === 0) {
@@ -473,22 +473,27 @@ export default function AdminDashboard() {
       timeMap.set(i, emptyData);
     }
 
-    // Use the final game state resources from each user's save
-    relevant.forEach((save) => {
-      if (!save.game_state?.resources) return;
+    // Use the resources field from button_clicks table
+    relevant.forEach((clickEntry) => {
+      if (!clickEntry.resources) return;
       
-      const resources = save.game_state.resources;
-      const playTimeMinutes = save.game_state.playTime ? Math.floor(save.game_state.playTime / 60000) : 0;
-      const bucket = Math.floor(playTimeMinutes / 60);
+      // clickEntry.resources is structured as: { "10m": { "wood": 722, ... }, "20m": { ... } }
+      Object.entries(clickEntry.resources).forEach(([playtimeKey, resources]) => {
+        // playtimeKey is in format like "10m", "20m", etc.
+        const playtimeMinutes = parseInt(playtimeKey);
+        if (isNaN(playtimeMinutes)) return;
 
-      if (bucket >= 0 && bucket < 24) {
-        const data = timeMap.get(bucket)!;
-        resourceKeys.forEach(key => {
-          if (selectedResources.has(key)) {
-            data[key].push(resources[key] || 0);
-          }
-        });
-      }
+        const bucket = Math.floor(playtimeMinutes / 60);
+
+        if (bucket >= 0 && bucket < 24) {
+          const data = timeMap.get(bucket)!;
+          resourceKeys.forEach(key => {
+            if (selectedResources.has(key) && typeof resources[key] === 'number') {
+              data[key].push(resources[key]);
+            }
+          });
+        }
+      });
     });
 
     return Array.from({ length: 24 }, (_, i) => {
@@ -499,7 +504,7 @@ export default function AdminDashboard() {
       });
       return result;
     });
-  }, [gameSaves, selectedUser, selectedResources]);
+  }, [clickData, selectedUser, selectedResources]);
 
   const getButtonUpgradesOverPlaytime = useMemo(() => {
     const relevant = filterByUser(gameSaves);
