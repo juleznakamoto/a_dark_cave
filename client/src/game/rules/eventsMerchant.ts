@@ -1002,9 +1002,9 @@ export const merchantEvents: Record<string, GameEvent> = {
     },
     triggerType: "resource",
     timeProbability: (state: GameState) =>
-      10 + 1 * state.buildings.tradePost ||
-      0 + 2 * state.buildings.grandBazaar ||
-      0 + 2 * state.buildings.merchantsGuild ||
+      // 10 + 1 * state.buildings.tradePost ||
+      // 0 + 2 * state.buildings.grandBazaar ||
+      // 0 + 2 * state.buildings.merchantsGuild ||
       0,
 
     title: "Traveling Merchant",
