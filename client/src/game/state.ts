@@ -1046,6 +1046,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const isAnyDialogOpen = state.eventDialog.isOpen || state.combatDialog.isOpen;
     if (isAnyDialogOpen) return;
 
+    // Additional check: skip merchant events if merchant dialog is already active
+    const hasMerchantDialog = state.eventDialog.currentEvent?.id.includes("merchant");
+    if (hasMerchantDialog) return;
+
     const { newLogEntries, stateChanges, triggeredEvents } =
       EventManager.checkEvents(state);
 
