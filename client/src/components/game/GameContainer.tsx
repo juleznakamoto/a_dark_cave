@@ -190,6 +190,17 @@ export default function GameContainer() {
         onClick: () => setActiveTab("achievements"),
       });
     }
+    
+    // Add Merchant tab if merchant is active
+    if (flags.merchantActive) {
+      tabs.push({
+        id: "merchant",
+        icon: <span className="text-lg">🛒</span>,
+        label: "Merchant",
+        onClick: () => setActiveTab("merchant"),
+      });
+    }
+    
     return tabs;
   }, [
     flags.villageUnlocked,
@@ -199,6 +210,7 @@ export default function GameContainer() {
     buildings.stoneHut,
     setActiveTab,
     books?.book_of_trials,
+    flags.merchantActive,
   ]);
 
   // Show start screen if game hasn't started yet
@@ -388,7 +400,6 @@ export default function GameContainer() {
 
       {/* Idle Mode Dialog */}
       <IdleModeDialog />
-      <MerchantDialog />
       <CubeDialog />
       {inactivityDialogOpen && <InactivityDialog />}
 

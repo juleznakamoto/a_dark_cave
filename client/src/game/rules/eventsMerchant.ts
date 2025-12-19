@@ -992,7 +992,7 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
 export const merchantEvents: Record<string, GameEvent> = {
   merchant: {
     id: "merchant",
-    condition: (state: GameState) => state.buildings.woodenHut >= 3,
+    condition: (state: GameState) => state.buildings.woodenHut >= 3 && !state.flags.merchantActive,
     triggerType: "resource",
     timeProbability: (state: GameState) =>
       10 + 1 * state.buildings.tradePost ||
@@ -1006,6 +1006,13 @@ export const merchantEvents: Record<string, GameEvent> = {
     triggered: false,
     priority: 3,
     repeatable: true,
-    choices: [],
+    effect: (state: GameState) => {
+      return {
+        flags: {
+          ...state.flags,
+          merchantActive: true,
+        },
+      };
+    },
   },
 };
