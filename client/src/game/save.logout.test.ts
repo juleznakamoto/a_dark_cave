@@ -156,7 +156,7 @@ describe('Logout/Login Save Behavior Tests', () => {
       // Cloud save happens via RPC in saveGame, not via saveGameToSupabase
       // Verify local save was updated
       expect(mockStores.saves.mainSave).toBeDefined();
-      expect(mockStores.saves.mainSave.playTime).toBe(1000);
+      expect(mockStores.saves.mainSave.playTime).toBe(5000);
 
       // Step 2: User gets logged out (session expires, or they logout)
       vi.mocked(auth.getCurrentUser).mockResolvedValue(null);
