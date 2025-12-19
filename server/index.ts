@@ -713,7 +713,30 @@ app.post("/api/leaderboard/update-username", async (req, res) => {
         return res.status(500).json({ error: 'Failed to fetch DAU data' });
       }
 
-      res.json({ dau: dauData || [] });
+      // Calculate real-time DAU (last 24 hours) using same logic as cron job
+      const today = new Date().toISOString().split('T')[0]; // Get current date in YYYY-MM-DD format
+
+      const { data: recentActivity, error: activityError } = await adminClient
+        .from('game_saves')
+        .select('user_id', { count: 'exact', head: false })
+        .gte('updated_at', `${today}T00:00:00.000Z`)
+        .lt('updated_at', `${today}T23:59:59.999Z`);
+
+      if (activityError) {
+        log('❌ Error fetching recent activity:', activityError);
+      }
+
+      // Count unique users (same as cron job: COUNT(DISTINCT user_id))
+      const currentDau = recentActivity 
+        ? new Set(recentActivity.map(save => save.user_id)).size 
+        : 0;
+
+      log(`📊 Current DAU (today ${today}): ${currentDau} unique users`);
+
+      res.json({ 
+        dau: dauData || [],
+        currentDau: currentDau
+      });
     } catch (error: any) {
       log('❌ Error in /api/admin/dau:', error);
       res.status(500).json({ error: 'Internal server error' });
