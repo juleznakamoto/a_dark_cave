@@ -111,7 +111,7 @@ export default function BuildingProgressChart() {
       },
       {
         buildingType: "tannery",
-        maxCount: 2,
+        maxCount: 3,
         color: SEGMENT_COLOR,
         label: "Hidework",
         relatedBuildings: ["masterTannery", "highTannery"],

@@ -18,7 +18,7 @@ export const caveMineActions: Record<string, Action> = {
       "resources.silver": {
         probability: (state) => state.tools?.natharit_pickaxe ? 0.1 : 0,
         value: 50,
-        logMessage: "The natharit pickaxe reveals a vein of silver!",
+        logMessage: "The natharit pickaxe reveals a vein of silver! +50 Silver",
       },
       "story.seen.hasMinedStone": true,
     },
@@ -41,7 +41,7 @@ export const caveMineActions: Record<string, Action> = {
       "resources.silver": {
         probability: (state) => state.tools?.natharit_pickaxe ? 0.1 : 0,
         value: 50,
-        logMessage: "The natharit pickaxe reveals a vein of silver!",
+        logMessage: "The natharit pickaxe reveals a vein of silver! +50 Silver",
       },
       "story.seen.hasIron": true,
     },
@@ -64,7 +64,7 @@ export const caveMineActions: Record<string, Action> = {
       "resources.silver": {
         probability: (state) => state.tools?.natharit_pickaxe ? 0.1 : 0,
         value: 50,
-        logMessage: "The natharit pickaxe reveals a vein of silver!",
+        logMessage: "The natharit pickaxe reveals a vein of silver! +50 Silver",
       },
       "story.seen.hasCoal": true,
     },
@@ -88,7 +88,7 @@ export const caveMineActions: Record<string, Action> = {
       "resources.silver": {
         probability: (state) => state.tools?.natharit_pickaxe ? 0.1 : 0,
         value: 50,
-        logMessage: "The natharit pickaxe reveals a vein of silver!",
+        logMessage: "The natharit pickaxe reveals a vein of silver! +50 Silver",
       },
       "story.seen.hasSulfur": true,
     },
@@ -111,7 +111,7 @@ export const caveMineActions: Record<string, Action> = {
       "resources.silver": {
         probability: (state) => state.tools?.natharit_pickaxe ? 0.1 : 0,
         value: 50,
-        logMessage: "The natharit pickaxe reveals a vein of silver!",
+        logMessage: "The natharit pickaxe reveals a vein of silver! +50 Silver",
       },
       "story.seen.hasObsidian": true,
     },
@@ -134,7 +134,7 @@ export const caveMineActions: Record<string, Action> = {
       "resources.silver": {
         probability: (state) => state.tools?.natharit_pickaxe ? 0.1 : 0,
         value: 50,
-        logMessage: "The natharit pickaxe reveals a vein of silver!",
+        logMessage: "The natharit pickaxe reveals a vein of silver! +50 Silver",
       },
       "story.seen.hasAdamant": true,
     },
