@@ -60,11 +60,11 @@ const Progress = React.forwardRef<
             <>
               {/* Glow effect */}
               <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-500/50 to-transparent pointer-events-none"
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-red-500/100 to-transparent pointer-events-none"
                 initial={{ x: "-100%" }}
                 animate={{ x: "100%" }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 1.0, ease: "easeInOut" }}
+                transition={{ duration: 0.7, ease: "easeInOut" }}
               />
             </>
           )}
