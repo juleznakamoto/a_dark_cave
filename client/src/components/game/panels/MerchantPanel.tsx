@@ -30,11 +30,6 @@ export default function MerchantPanel() {
   const mobileTooltip = useMobileButtonTooltip();
   const discountTooltip = useMobileTooltip();
 
-  // Auto-switch to merchant tab when panel mounts
-  useEffect(() => {
-    gameState.setActiveTab("merchant");
-  }, []);
-
   const knowledge = getTotalKnowledge(gameState);
   const discount = calculateMerchantDiscount(knowledge);
   const hasBookOfWar = gameState.books?.book_of_war;

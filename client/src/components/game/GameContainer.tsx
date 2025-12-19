@@ -55,6 +55,7 @@ export default function GameContainer() {
     forestUnlocked: flags.forestUnlocked,
     estateUnlocked: estateUnlocked,
     bastionUnlocked: flags.bastionUnlocked,
+    merchantActive: flags.merchantActive,
   });
 
   // Track when new tabs are unlocked and trigger animations
@@ -74,6 +75,11 @@ export default function GameContainer() {
     if (!prev.bastionUnlocked && flags.bastionUnlocked) {
       newAnimations.add("bastion");
     }
+    if (!prev.merchantActive && flags.merchantActive) {
+      newAnimations.add("merchant");
+      // Auto-switch to merchant tab when merchant arrives
+      setActiveTab("merchant");
+    }
 
     if (newAnimations.size > 0) {
       setAnimatingTabs(newAnimations);
@@ -85,12 +91,15 @@ export default function GameContainer() {
       forestUnlocked: flags.forestUnlocked,
       estateUnlocked: estateUnlocked,
       bastionUnlocked: flags.bastionUnlocked,
+      merchantActive: flags.merchantActive,
     };
   }, [
     flags.villageUnlocked,
     flags.forestUnlocked,
     estateUnlocked,
     flags.bastionUnlocked,
+    flags.merchantActive,
+    setActiveTab,
   ]);
 
   // Initialize version check

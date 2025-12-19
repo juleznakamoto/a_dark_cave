@@ -995,10 +995,9 @@ export const merchantEvents: Record<string, GameEvent> = {
     condition: (state: GameState) => state.buildings.woodenHut >= 3 && !state.flags.merchantActive,
     triggerType: "resource",
     timeProbability: (state: GameState) =>
-      // 10 + 1 * state.buildings.tradePost ||
-      // 0 + 2 * state.buildings.grandBazaar ||
-      // 0 + 2 * state.buildings.merchantsGuild ||
-      0,
+      10 + 1 * (state.buildings.tradePost || 0) +
+      2 * (state.buildings.grandBazaar || 0) +
+      2 * (state.buildings.merchantsGuild || 0),
 
     title: "Traveling Merchant",
     message:
@@ -1006,12 +1005,14 @@ export const merchantEvents: Record<string, GameEvent> = {
     triggered: false,
     priority: 3,
     repeatable: true,
+    skipEventLog: true, // Don't show in event dialog, just set the flag
     effect: (state: GameState) => {
       return {
         flags: {
           ...state.flags,
           merchantActive: true,
         },
+        _logMessage: "A weathered merchant arrives, his cart overflowing with wares. His eyes glint with avarice as he murmurs 'I have rare items for sale'.",
       };
     },
   },
