@@ -237,6 +237,14 @@ export function renderItemTooltip(
                     </div>
                   ),
                 )}
+              {bonus.probabilityBonus &&
+                Object.entries(bonus.probabilityBonus).map(
+                  ([resource, probability]) => (
+                    <div key={resource}>
+                      {capitalizeWords(actionId)}: {Math.round(probability * 100)}% chance for +50 {capitalizeWords(resource)}
+                    </div>
+                  ),
+                )}
               {bonus.cooldownReduction && bonus.cooldownReduction !== 0 && (
                 <div>
                   {capitalizeWords(actionId)}: -{bonus.cooldownReduction}s
