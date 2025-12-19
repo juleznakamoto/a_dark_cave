@@ -196,18 +196,20 @@ export default function ItemProgressChart() {
         reward: 500,
       },
     ],
-    // blacksteel
-    {
-      itemType: "blacksteel",
-       itemKeys: ["blacksteel"],
-       color: SEGMENT_COLOR,
-       label: "Blacksteel",
-       category: "relics",
-       maxCount: 1,
-       reward: 500,
-    }
-    
-    [],
+    [
+      // blacksteel
+      {
+        itemType: "blacksteel",
+        itemKeys: ["here"], // add blacksteel items here
+        color: SEGMENT_COLOR,
+        label: "",
+        category: "fellowship",
+        maxCount: 3,
+        reward: 500,
+        // add blacksteel items here
+      },
+      
+    ],
     // Sixth ring: Fellowship
     [],
   ];
