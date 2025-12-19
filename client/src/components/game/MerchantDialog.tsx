@@ -191,7 +191,7 @@ export default function MerchantDialog({
                           <div
                             onClick={(e) => {
                               logger.log(`[MERCHANT TOOLTIP] Showing tooltips for choice: ${choice.id}, label: ${labelText}, cost: ${costText}`);
-                              mobileTooltip.handleWrapperClick(
+                              mobileTooltip.handleTooltipClick(
                                 choice.id,
                                 isDisabled,
                                 false,
@@ -247,13 +247,13 @@ export default function MerchantDialog({
                           </div>
                         </TooltipTrigger>
                         <TooltipContent side="top">
-                          <div className="text-xs whitespace-nowrap">
-                            {eventChoiceCostTooltip.getContent(costText)}
-                          </div>
-                        </TooltipContent>
-                        <TooltipContent side="bottom">
-                          <div className="text-xs whitespace-nowrap">
+                          <div className="text-xs whitespace-pre-line">
+                            {/* Display user resources at the top */}
                             {getMerchantCurrentAmounts.getContent(labelText, costText, gameState)}
+                            {/* Separator line */}
+                            <div className="my-1 border-t border-muted-foreground/50"></div>
+                            {/* Display cost at the bottom */}
+                            {eventChoiceCostTooltip.getContent(costText)}
                           </div>
                         </TooltipContent>
                       </Tooltip>

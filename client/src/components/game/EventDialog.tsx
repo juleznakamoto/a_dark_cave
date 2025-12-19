@@ -187,9 +187,9 @@ export default function EventDialog({
         // Increment merchant purchase counter
         const currentCount = Number(gameState.story?.seen?.merchantPurchases) || 0;
         const newCount = currentCount + 1;
-        
+
         gameState.setFlag('merchantPurchases' as any, newCount as any);
-        
+
         // Actually update the story.seen.merchantPurchases directly
         const currentStory = gameState.story || { seen: {} };
         const updatedStory = {
@@ -199,7 +199,7 @@ export default function EventDialog({
             merchantPurchases: newCount,
           },
         };
-        
+
         // Apply the story update to the store
         useGameStore.setState({ story: updatedStory });
 
@@ -213,7 +213,7 @@ export default function EventDialog({
       const choice = eventChoices.find((c) => c.id === choiceId);
       if (choice) {
         const result = choice.effect(gameState);
-        
+
         // Handle shop opening
         if ((result as any)._openShop) {
           fallbackExecutedRef.current = true;
@@ -222,7 +222,7 @@ export default function EventDialog({
           gameState.setShopDialogOpen(true);
           return;
         }
-        
+
         // Handle donation page opening
         if ((result as any)._openDonation) {
           fallbackExecutedRef.current = true;
@@ -337,8 +337,8 @@ export default function EventDialog({
               const costText = typeof cost === 'function' ? cost(gameState) : cost;
 
               // Check if player can afford the cost
+              let canAfford = true;
               if (costText) {
-                // Check all possible resources
                 const resourceKeys = Object.keys(gameState.resources) as Array<keyof typeof gameState.resources>;
                 for (const resourceKey of resourceKeys) {
                   if (costText.includes(resourceKey)) {
@@ -346,6 +346,7 @@ export default function EventDialog({
                     if (match) {
                       const cost = parseInt(match[1]);
                       if (gameState.resources[resourceKey] < cost) {
+                        canAfford = false;
                         isDisabled = true;
                         break;
                       }
@@ -404,9 +405,12 @@ export default function EventDialog({
                 </Button>
               );
 
+              const processing = false; // Placeholder, assuming this state is managed elsewhere
+              const selectedChoice = null; // Placeholder, assuming this state is managed elsewhere
+
               return costText ? (
                 <TooltipProvider key={choice.id}>
-                  <Tooltip open={mobileTooltip.isTooltipOpen(choice.id)}>
+                  <Tooltip>
                     <TooltipTrigger asChild>
                       <div
                         onClick={(e) => {
@@ -422,13 +426,11 @@ export default function EventDialog({
                       </div>
                     </TooltipTrigger>
                     <TooltipContent side="top">
-                      <div className="text-xs whitespace-nowrap">
-                        {eventChoiceCostTooltip.getContent(costText)}
-                      </div>
-                    </TooltipContent>
-                    <TooltipContent side="bottom">
-                      <div className="text-xs whitespace-nowrap">
+                      <div className="text-xs whitespace-pre-line">
+                        {/* Combined tooltip content: resources, line, then cost */}
                         {getCurrentResourceAmount.getContent(costText, gameState)}
+                        <div className="h-[1px] bg-muted my-1"></div> {/* Separator line */}
+                        {eventChoiceCostTooltip.getContent(costText)}
                       </div>
                     </TooltipContent>
                   </Tooltip>

@@ -498,26 +498,50 @@ export const combatItemTooltips: Record<string, TooltipConfig> = {
   },
 };
 
-// Event choice cost tooltip - formats cost string
+// Event choice cost tooltip - formats cost string with current amounts
 export const eventChoiceCostTooltip = {
-  getContent: (cost: string | Record<string, number> | undefined): string => {
+  getContent: (cost: string | Record<string, number> | undefined, gameState?: GameState): string => {
     if (!cost) return "";
 
-    // Handle string cost (e.g., "5 gold")
+    const lines: string[] = [];
+    
+    // Extract resources from cost
+    const resources: string[] = [];
+    if (typeof cost === "string") {
+      const parsed = parseResourceText(cost);
+      if (parsed) {
+        resources.push(parsed.resource);
+      }
+    } else {
+      resources.push(...Object.keys(cost));
+    }
+
+    // Add current amounts if gameState is provided
+    if (gameState && resources.length > 0) {
+      resources.forEach(resource => {
+        const currentAmount = gameState.resources[resource as keyof typeof gameState.resources] || 0;
+        lines.push(`${capitalizeWords(resource)}: ${currentAmount}`);
+      });
+      lines.push("---"); // Separator
+    }
+
+    // Add cost information
     if (typeof cost === "string") {
       const parts = cost.split(" ");
       if (parts.length >= 2) {
         const amount = parts[0];
         const resource = parts.slice(1).join(" ");
-        return `-${amount} ${capitalizeWords(resource)}`;
+        lines.push(`-${amount} ${capitalizeWords(resource)}`);
+      } else {
+        lines.push(`-${cost}`);
       }
-      return `-${cost}`;
+    } else {
+      Object.entries(cost).forEach(([resource, amount]) => {
+        lines.push(`-${amount} ${capitalizeWords(resource)}`);
+      });
     }
 
-    // Handle object cost
-    return Object.entries(cost)
-      .map(([resource, amount]) => `-${amount} ${capitalizeWords(resource)}`)
-      .join("\n");
+    return lines.join("\n");
   },
 };
 
@@ -559,17 +583,17 @@ export const getCurrentResourceAmount = {
   }
 };
 
-// Helper function to get current amounts for merchant (shows both buy and pay resources)
-export const getMerchantCurrentAmounts = {
+// Helper function to get merchant tooltip with current amounts and cost
+export const getMerchantTooltip = {
   getContent: (labelText: string | undefined, costText: string | undefined, gameState: GameState): string => {
-    const amounts: string[] = [];
+    const lines: string[] = [];
+    const resources: string[] = [];
 
     // Parse the resource being bought (from label, e.g., "+10 Food")
     if (labelText) {
       const buyParsed = parseResourceText(labelText);
       if (buyParsed) {
-        const currentAmount = gameState.resources[buyParsed.resource as keyof typeof gameState.resources] || 0;
-        amounts.push(`${capitalizeWords(buyParsed.resource)}: ${currentAmount}`);
+        resources.push(buyParsed.resource);
       }
     }
 
@@ -579,12 +603,32 @@ export const getMerchantCurrentAmounts = {
       if (payParsed) {
         // Avoid duplicates if buy and pay are the same resource
         if (!labelText || parseResourceText(labelText)?.resource !== payParsed.resource) {
-          const currentAmount = gameState.resources[payParsed.resource as keyof typeof gameState.resources] || 0;
-          amounts.push(`${capitalizeWords(payParsed.resource)}: ${currentAmount}`);
+          resources.push(payParsed.resource);
         }
       }
     }
 
-    return amounts.length > 0 ? [...amounts] : "";
+    // Add current amounts
+    resources.forEach(resource => {
+      const currentAmount = gameState.resources[resource as keyof typeof gameState.resources] || 0;
+      lines.push(`${capitalizeWords(resource)}: ${currentAmount}`);
+    });
+
+    // Add separator
+    if (lines.length > 0 && costText) {
+      lines.push("---");
+    }
+
+    // Add cost
+    if (costText) {
+      const parsed = parseResourceText(costText);
+      if (parsed) {
+        lines.push(`-${parsed.amount} ${capitalizeWords(parsed.resource)}`);
+      } else {
+        lines.push(`-${costText}`);
+      }
+    }
+
+    return lines.join("\n");
   }
 };
