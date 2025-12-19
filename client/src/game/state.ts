@@ -1062,6 +1062,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
       newLogEntriesCount: newLogEntries.length,
       hasStateChanges: Object.keys(stateChanges).length > 0,
       triggeredEventsCount: triggeredEvents?.length || 0,
+      stateChangesKeys: Object.keys(stateChanges),
+      flagsInChanges: stateChanges.flags,
       merchantActive: stateChanges.flags?.merchantActive
     });
 

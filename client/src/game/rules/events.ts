@@ -236,7 +236,9 @@ export class EventManager {
           // Apply effect if it exists
           if (event.effect && !eventChoices?.length) {
             const effectResult = event.effect(state);
-            console.log('[EVENTS] Applying effect for skipped dialog event:', event.id, effectResult);
+            console.log('[EVENTS] Effect result:', effectResult);
+            console.log('[EVENTS] Current state flags before:', state.flags);
+            console.log('[EVENTS] StateChanges flags before:', stateChanges.flags);
             
             // Merge flags separately to ensure proper state update
             if (effectResult.flags) {
@@ -245,11 +247,14 @@ export class EventManager {
                 ...(stateChanges.flags || {}),
                 ...effectResult.flags,
               };
+              console.log('[EVENTS] Merged flags:', stateChanges.flags);
             }
             
             // Merge other state changes
             const { flags: _flags, ...otherChanges } = effectResult;
             stateChanges = { ...stateChanges, ...otherChanges };
+            
+            console.log('[EVENTS] Final stateChanges:', stateChanges);
           }
           
           // Mark as triggered
