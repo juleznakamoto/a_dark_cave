@@ -115,7 +115,7 @@ export const shopItemEvents: Record<string, GameEvent> = {
           return {
             resources: {
               ...state.resources,
-              gold: (state.resources.gold || 0) + 750,
+              gold: (state.resources.gold || 0) + 500,
             },
             story: {
               ...state.story,

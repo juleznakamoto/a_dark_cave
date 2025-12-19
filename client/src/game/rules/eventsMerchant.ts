@@ -657,7 +657,7 @@ const toolTrades = [
     give: "schematic",
     giveItem: "nightshade_bow_schematic",
     condition: (state: GameState) => state.buildings.stoneHut >= 8,
-    costs: [{ resource: "gold", amounts: [2000] }],
+    costs: [{ resource: "gold", amounts: [1500] }],
     message:
       "You purchase the nightshade bow schematic. The merchant grins darkly: 'This bow's design is cruel. Its arrows will poison your enemies.'",
   },
@@ -668,7 +668,7 @@ const toolTrades = [
     giveItem: "book_of_trials",
     condition: (state: GameState) =>
       state.buildings.darkEstate >= 1 && !state.books.book_of_trials,
-    costs: [{ resource: "gold", amounts: [250] }],
+    costs: [{ resource: "gold", amounts: [200] }],
     message:
       "You purchase the Book of Trials. The merchant smiles knowingly: 'A guide for those who seek to track their journey.'",
   },
@@ -682,7 +682,7 @@ const toolTrades = [
       state.buildings.scriptorium >= 1 &&
       state.buildings.darkEstate >= 1 &&
       !state.books.book_of_war,
-    costs: [{ resource: "gold", amounts: [500] }],
+    costs: [{ resource: "gold", amounts: [400] }],
     message:
       "You purchase the Book of War. The merchant nods gravely: 'Knowledge from a long gone kingdom in the far east. With this, you will better understand the outcomes of your choices.'",
   },
