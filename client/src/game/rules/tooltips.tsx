@@ -547,19 +547,14 @@ function parseResourceText(text: string): { resource: string; amount: number } |
 // Helper function to get current amount of a resource from game state
 export const getCurrentResourceAmount = {
   getContent: (text: string | undefined, gameState: GameState): string => {
-    logger.log(`[TOOLTIP] getCurrentResourceAmount called with text: ${text}`);
     if (!text) return "";
 
     const parsed = parseResourceText(text);
-    if (!parsed) {
-      logger.log(`[TOOLTIP] Could not parse resource from text: ${text}`);
-      return "";
-    }
+    if (!parsed) return "";
 
     const { resource } = parsed;
     const currentAmount = gameState.resources[resource as keyof typeof gameState.resources] || 0;
     
-    logger.log(`[TOOLTIP] Current amount for ${resource}: ${currentAmount}`);
     return `Current: ${currentAmount} ${capitalizeWords(resource)}`;
   }
 };
@@ -567,7 +562,6 @@ export const getCurrentResourceAmount = {
 // Helper function to get current amounts for merchant (shows both buy and pay resources)
 export const getMerchantCurrentAmounts = {
   getContent: (labelText: string | undefined, costText: string | undefined, gameState: GameState): string => {
-    logger.log(`[TOOLTIP] getMerchantCurrentAmounts called with label: ${labelText}, cost: ${costText}`);
     const amounts: string[] = [];
 
     // Parse the resource being bought (from label, e.g., "+10 Food")
@@ -576,7 +570,6 @@ export const getMerchantCurrentAmounts = {
       if (buyParsed) {
         const currentAmount = gameState.resources[buyParsed.resource as keyof typeof gameState.resources] || 0;
         amounts.push(`${capitalizeWords(buyParsed.resource)}: ${currentAmount}`);
-        logger.log(`[TOOLTIP] Buy resource: ${buyParsed.resource}, current: ${currentAmount}`);
       }
     }
 
@@ -588,12 +581,10 @@ export const getMerchantCurrentAmounts = {
         if (!labelText || parseResourceText(labelText)?.resource !== payParsed.resource) {
           const currentAmount = gameState.resources[payParsed.resource as keyof typeof gameState.resources] || 0;
           amounts.push(`${capitalizeWords(payParsed.resource)}: ${currentAmount}`);
-          logger.log(`[TOOLTIP] Pay resource: ${payParsed.resource}, current: ${currentAmount}`);
         }
       }
     }
 
-    logger.log(`[TOOLTIP] Final amounts array: ${JSON.stringify(amounts)}, joined: ${amounts.join('\n')}`);
-    return amounts.length > 0 ? amounts.join('\n') : "";
+    return amounts.length > 0 ? [...amounts] : "";
   }
 };
