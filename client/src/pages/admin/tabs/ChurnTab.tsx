@@ -515,6 +515,63 @@ export default function ChurnTab(props: ChurnTabProps) {
     return result;
   };
 
+  const getCubeEventsOverRealTime = () => {
+    // Extract cube button clicks from the clicks data structure
+    // Looking for buttons like "cube-close-cube03-1766078383278"
+    const cubeClicksByDate = new Map<string, Map<number, Set<string>>>();
+    let maxCubeEvent = 0;
+
+    clickData.forEach(entry => {
+      // entry.clicks is structured as: { "40m": { "cube-close-cube03-1766078383278": 1, ... } }
+      Object.entries(entry.clicks).forEach(([playtimeKey, buttonClicks]) => {
+        Object.keys(buttonClicks as Record<string, number>).forEach(buttonId => {
+          // Match cube close buttons: cube-close-cube03-1766078383278
+          const cubeMatch = buttonId.match(/cube-close-cube(\d+)-(\d+)/);
+
+          if (cubeMatch) {
+            const cubeNum = parseInt(cubeMatch[1]);
+            const timestamp = parseInt(cubeMatch[2]);
+            maxCubeEvent = Math.max(maxCubeEvent, cubeNum);
+
+            // Convert timestamp to date
+            const date = format(new Date(timestamp), 'MMM dd');
+
+            if (!cubeClicksByDate.has(date)) {
+              cubeClicksByDate.set(date, new Map());
+            }
+
+            const dateData = cubeClicksByDate.get(date)!;
+            if (!dateData.has(cubeNum)) {
+              dateData.set(cubeNum, new Set());
+            }
+            dateData.get(cubeNum)!.add(entry.user_id);
+          }
+        });
+      });
+    });
+
+    // Convert to array and sort by date
+    const sortedDates = Array.from(cubeClicksByDate.keys()).sort((a, b) => {
+      return new Date(a + ' 2024').getTime() - new Date(b + ' 2024').getTime();
+    });
+
+    const result: Array<{ date: string; [key: string]: any }> = [];
+    sortedDates.forEach(date => {
+      const dataPoint: { date: string; [key: string]: any } = { date };
+      const dateData = cubeClicksByDate.get(date)!;
+
+      for (let cubeNum = 1; cubeNum <= maxCubeEvent; cubeNum++) {
+        const cubeKey = `Cube ${cubeNum}`;
+        dataPoint[cubeKey] = dateData.get(cubeNum)?.size || 0;
+      }
+
+      result.push(dataPoint);
+    });
+
+    return result;
+  };
+
+
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-4 mb-4">
