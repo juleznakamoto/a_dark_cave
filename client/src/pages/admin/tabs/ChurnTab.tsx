@@ -521,8 +521,10 @@ export default function ChurnTab(props: ChurnTabProps) {
     
     // Extract cube button clicks from the clicks data structure
     // Looking for buttons like "cube-close-cube03-1766078383278"
-    const cubeClicksByDate = new Map<string, Map<number, Set<string>>>();
+    // Group by playtime bucket (e.g., "40m", "80m", etc.)
+    const cubeClicksByPlaytime = new Map<number, Map<number, Set<string>>>();
     let maxCubeEvent = 0;
+    let maxPlaytime = 0;
     let cubeButtonsFound = 0;
 
     clickData.forEach((entry, index) => {
@@ -537,38 +539,39 @@ export default function ChurnTab(props: ChurnTabProps) {
 
       // entry.clicks is structured as: { "40m": { "cube-close-cube03-1766078383278": 1, ... } }
       Object.entries(entry.clicks).forEach(([playtimeKey, buttonClicks]) => {
+        const playtimeMinutes = parseInt(playtimeKey.replace('m', ''));
+        if (isNaN(playtimeMinutes)) return;
+
+        maxPlaytime = Math.max(maxPlaytime, playtimeMinutes);
+
         Object.keys(buttonClicks as Record<string, number>).forEach(buttonId => {
           // Match cube close buttons: cube-close-cube03-1766078383278
-          const cubeMatch = buttonId.match(/cube-close-cube(\d+)-(\d+)/);
+          const cubeMatch = buttonId.match(/cube-close-cube(\d+)-/);
 
           if (cubeMatch) {
             cubeButtonsFound++;
             const cubeNum = parseInt(cubeMatch[1]);
-            const timestamp = parseInt(cubeMatch[2]);
             maxCubeEvent = Math.max(maxCubeEvent, cubeNum);
-
-            // Convert timestamp to date
-            const date = format(new Date(timestamp), 'MMM dd');
 
             if (cubeButtonsFound <= 5) {
               console.log('Cube button found:', {
                 buttonId,
                 cubeNum,
-                timestamp,
-                date,
+                playtimeKey,
+                playtimeMinutes,
                 user_id: entry.user_id
               });
             }
 
-            if (!cubeClicksByDate.has(date)) {
-              cubeClicksByDate.set(date, new Map());
+            if (!cubeClicksByPlaytime.has(playtimeMinutes)) {
+              cubeClicksByPlaytime.set(playtimeMinutes, new Map());
             }
 
-            const dateData = cubeClicksByDate.get(date)!;
-            if (!dateData.has(cubeNum)) {
-              dateData.set(cubeNum, new Set());
+            const playtimeData = cubeClicksByPlaytime.get(playtimeMinutes)!;
+            if (!playtimeData.has(cubeNum)) {
+              playtimeData.set(cubeNum, new Set());
             }
-            dateData.get(cubeNum)!.add(entry.user_id);
+            playtimeData.get(cubeNum)!.add(entry.user_id);
           }
         });
       });
@@ -576,25 +579,28 @@ export default function ChurnTab(props: ChurnTabProps) {
 
     console.log('Total cube buttons found:', cubeButtonsFound);
     console.log('Max cube event:', maxCubeEvent);
-    console.log('Dates with cube events:', Array.from(cubeClicksByDate.keys()));
+    console.log('Max playtime:', maxPlaytime);
+    console.log('Playtime buckets with cube events:', Array.from(cubeClicksByPlaytime.keys()).sort((a, b) => a - b));
 
-    // Convert to array and sort by date
-    const sortedDates = Array.from(cubeClicksByDate.keys()).sort((a, b) => {
-      return new Date(a + ' 2024').getTime() - new Date(b + ' 2024').getTime();
-    });
+    // Convert to array and create buckets
+    const result: Array<{ time: string; [key: string]: any }> = [];
+    
+    // Create buckets in 60-minute increments
+    const maxBucket = Math.ceil(maxPlaytime / 60) * 60;
+    for (let bucket = 0; bucket <= maxBucket; bucket += 60) {
+      const hours = bucket / 60;
+      const dataPoint: { time: string; [key: string]: any } = {
+        time: hours === 0 ? "0h" : `${hours}h`,
+      };
 
-    const result: Array<{ date: string; [key: string]: any }> = [];
-    sortedDates.forEach(date => {
-      const dataPoint: { date: string; [key: string]: any } = { date };
-      const dateData = cubeClicksByDate.get(date)!;
-
+      const playtimeData = cubeClicksByPlaytime.get(bucket);
       for (let cubeNum = 1; cubeNum <= maxCubeEvent; cubeNum++) {
         const cubeKey = `Cube ${cubeNum}`;
-        dataPoint[cubeKey] = dateData.get(cubeNum)?.size || 0;
+        dataPoint[cubeKey] = playtimeData?.get(cubeNum)?.size || 0;
       }
 
       result.push(dataPoint);
-    });
+    }
 
     console.log('Final result:', result);
     console.log('=== End Debug ===');
@@ -1000,9 +1006,9 @@ export default function ChurnTab(props: ChurnTabProps) {
 
       <Card>
         <CardHeader>
-          <CardTitle>Cube Events Over Real Time</CardTitle>
+          <CardTitle>Cube Events Over Playtime (from Button Clicks)</CardTitle>
           <CardDescription>
-            When players actually clicked cube close buttons (by actual date/time)
+            When players actually clicked cube close buttons (by playtime bucket)
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -1010,9 +1016,9 @@ export default function ChurnTab(props: ChurnTabProps) {
             <LineChart data={getCubeEventsOverRealTime()}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
-                dataKey="date"
+                dataKey="time"
                 label={{
-                  value: "Date",
+                  value: "Playtime",
                   position: "insideBottom",
                   offset: -5,
                 }}
