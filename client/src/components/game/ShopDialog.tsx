@@ -901,7 +901,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                           {formatPrice(item.price)}
                         </CardDescription>
                       </CardHeader>
-                      <CardContent className="pl-3 pr-3 md:pl-6 md:pr-6 pb-3 md:pb-4 flex-1">
+                      <CardContent className="min-h-16 pl-3 pr-3 md:pl-6 md:pr-6 pb-3 md:pb-4 flex-1">
                         <p className="leading-snug text-sm text-muted-foreground">
                           {item.description}
                         </p>
