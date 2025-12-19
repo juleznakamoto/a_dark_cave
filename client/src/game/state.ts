@@ -204,6 +204,12 @@ const mergeStateUpdates = (
   prevState: GameState,
   stateUpdates: Partial<GameState>,
 ): Partial<GameState> => {
+  console.log('[MERGE] Input stateUpdates:', {
+    hasFlags: !!stateUpdates.flags,
+    flagsValue: stateUpdates.flags,
+    merchantActive: stateUpdates.flags?.merchantActive
+  });
+
   // Ensure resources never go negative when merging, and apply resource limits
   const mergedResources = { ...prevState.resources, ...stateUpdates.resources };
   Object.keys(mergedResources).forEach(key => {
@@ -296,6 +302,12 @@ const mergeStateUpdates = (
     const tempState = { ...prevState, ...merged };
     merged.effects = calculateTotalEffects(tempState);
   }
+
+  console.log('[MERGE] Output merged:', {
+    hasFlags: !!merged.flags,
+    flagsValue: merged.flags,
+    merchantActive: merged.flags?.merchantActive
+  });
 
   return merged;
 };
@@ -1071,6 +1083,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
     if (Object.keys(stateChanges).length > 0) {
       set((prevState) => {
         const merged = mergeStateUpdates(prevState, stateChanges);
+        console.log('[STATE] Merged state updates:', {
+          hasFlags: !!merged.flags,
+          flagsValue: merged.flags,
+          merchantActive: merged.flags?.merchantActive
+        });
         return {
           ...prevState,
           ...merged,
