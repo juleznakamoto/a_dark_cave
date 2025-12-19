@@ -725,7 +725,7 @@ export default function SidePanel() {
   };
 
   return (
-    <ScrollArea className="h-full max-h-[40vh] md:max-h-full px-3 py-1.5">
+    <ScrollArea className="h-full max-h-[40vh] md:max-h-full px-3 py-1.5 pr-2">
       <div className="pb-6 flex gap-12">
         {/* First column - Resources */}
         <div className="flex-[0.9]">
