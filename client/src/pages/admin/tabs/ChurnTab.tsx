@@ -582,21 +582,42 @@ export default function ChurnTab(props: ChurnTabProps) {
     console.log('Max playtime:', maxPlaytime);
     console.log('Playtime buckets with cube events:', Array.from(cubeClicksByPlaytime.keys()).sort((a, b) => a - b));
 
+    // Aggregate 5-minute buckets into hourly buckets
+    const hourlyBuckets = new Map<number, Map<number, Set<string>>>();
+    
+    cubeClicksByPlaytime.forEach((cubeData, playtime) => {
+      const hourlyBucket = Math.floor(playtime / 60) * 60;
+      
+      if (!hourlyBuckets.has(hourlyBucket)) {
+        hourlyBuckets.set(hourlyBucket, new Map());
+      }
+      
+      const hourlyData = hourlyBuckets.get(hourlyBucket)!;
+      
+      cubeData.forEach((users, cubeNum) => {
+        if (!hourlyData.has(cubeNum)) {
+          hourlyData.set(cubeNum, new Set());
+        }
+        
+        // Merge user sets
+        users.forEach(user => hourlyData.get(cubeNum)!.add(user));
+      });
+    });
+
     // Convert to array and create buckets
     const result: Array<{ time: string; [key: string]: any }> = [];
-    
-    // Create buckets in 60-minute increments
     const maxBucket = Math.ceil(maxPlaytime / 60) * 60;
+    
     for (let bucket = 0; bucket <= maxBucket; bucket += 60) {
       const hours = bucket / 60;
       const dataPoint: { time: string; [key: string]: any } = {
         time: hours === 0 ? "0h" : `${hours}h`,
       };
 
-      const playtimeData = cubeClicksByPlaytime.get(bucket);
+      const hourlyData = hourlyBuckets.get(bucket);
       for (let cubeNum = 1; cubeNum <= maxCubeEvent; cubeNum++) {
         const cubeKey = `Cube ${cubeNum}`;
-        dataPoint[cubeKey] = playtimeData?.get(cubeNum)?.size || 0;
+        dataPoint[cubeKey] = hourlyData?.get(cubeNum)?.size || 0;
       }
 
       result.push(dataPoint);
