@@ -516,7 +516,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildGrandHunterLodge: {
     id: "buildGrandHunterLodge",
     label: "Grand Hunter Lodge",
-    description: "Supreme hunting lodge with master hunters",
+    description: "Supreme hunting lodge for master hunters",
     tooltipEffects: [
       "Unlocks Hunters",
       "Hunter: +10 Food",
@@ -770,7 +770,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildHighTannery: {
     id: "buildHighTannery",
     label: "High Tannery",
-    description: "Supreme tannery with expert leather craftsmen",
+    description: "Supreme tannery for expert leather craftsmen",
     tooltipEffects: ["Unlocks Tanners", "Tanner: +2 Leather"],
     building: true,
     show_when: {

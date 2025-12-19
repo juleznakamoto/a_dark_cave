@@ -401,7 +401,7 @@ export function handleBuildGrandHunterLodge(
     grandHunterLodgeResult.logEntries!.push({
       id: `grand-hunter-lodge-built-${Date.now()}`,
       message:
-        "The Grand Hunter Lodge stands complete, a magnificent structure where master hunters gather to share their craft.",
+        "The Grand Hunter Lodge is complete, a magnificent structure where master hunters gather.",
       timestamp: Date.now(),
       type: "system",
     });
@@ -559,7 +559,7 @@ export function handleBuildHighTannery(
     highTanneryResult.logEntries!.push({
       id: `high-tannery-built-${Date.now()}`,
       message:
-        "The High Tannery rises, a grand workshop where expert craftsmen transform hides into the finest leather.",
+        "The High Tannery is built, a grand workshop where expert craftsmen transform hides into the finest leather.",
       timestamp: Date.now(),
       type: "system",
     });

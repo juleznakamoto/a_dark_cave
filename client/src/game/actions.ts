@@ -414,7 +414,7 @@ export function executeGameAction(
       return handleBuildLonghouse(state, result);
     case "buildFortifiedMoat":
       return handleBuildFortifiedMoat(state, result);
-    case "buildTraps": // New case for Traps
+    case "buildTraps":
       return handleBuildTraps(state, result);
     case "buildBlackMonolith":
       return handleBuildBlackMonolith(state, result);
@@ -422,7 +422,7 @@ export function executeGameAction(
       return handleBuildDarkEstate(state, result);
     case "buildPillarOfClarity":
       return handleBuildPillarOfClarity(state, result);
-    case "buildBoneTemple": // New case for Bone Temple
+    case "buildBoneTemple":
       return handleBuildBoneTemple(state, result);
     case "buildSupplyHut":
       return handleBuildStorageRoom(state, result);
