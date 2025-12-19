@@ -1540,7 +1540,7 @@ export const villageBuildActions: Record<string, Action> = {
       },
     },
     effects: {
-      1: {b
+      1: {
         "buildings.pillarOfClarity": 1,
         "stats.madness": -40,
         "buildings.blackMonolith": 0,
