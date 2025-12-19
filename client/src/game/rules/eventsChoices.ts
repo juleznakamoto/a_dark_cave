@@ -1181,7 +1181,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "payGold",
-        label: "Pay 50 gold",
+        label: "Pay gold",
         cost: "50 gold",
         effect: (state: GameState) => {
           if (state.resources.gold < 50) {
@@ -1369,7 +1369,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "acceptArcherHelp",
-        label: "Pay 2500 food",
+        label: "Give food",
         cost: "2500 food",
         effect: (state: GameState) => {
           if (state.resources.food < 2500) {
@@ -1407,7 +1407,7 @@ export const choiceEvents: Record<string, GameEvent> = {
       },
       {
         id: "acceptArcherHelpGold",
-        label: "Pay 100 gold",
+        label: "Pay gold",
         cost: "100 gold",
         effect: (state: GameState) => {
           if (state.resources.gold < 100) {
@@ -1626,7 +1626,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "payGold",
-        label: "Pay 250 gold",
+        label: "Pay gold",
         cost: "250 gold",
         effect: (state: GameState) => {
           if (state.resources.gold < 250) {
@@ -1655,7 +1655,7 @@ export const choiceEvents: Record<string, GameEvent> = {
       },
       {
         id: "paySilver",
-        label: "Pay 1000 silver",
+        label: "Pay silver",
         cost: "1000 silver",
         effect: (state: GameState) => {
           if (state.resources.silver < 1000) {
@@ -1827,7 +1827,7 @@ export const choiceEvents: Record<string, GameEvent> = {
       );
     },
     triggerType: "resource",
-    timeProbability: 90, // 1.5 hours
+    timeProbability: 0.090, // 1.5 hours
     title: "Frostfall",
     message:
       "Icy winds howl through the village. The elders warn that a terrible blizzard is approaching. Preparations must be made, or the consequences will be dire.",
