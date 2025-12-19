@@ -55,7 +55,6 @@ export default function GameContainer() {
     forestUnlocked: flags.forestUnlocked,
     estateUnlocked: estateUnlocked,
     bastionUnlocked: flags.bastionUnlocked,
-    merchantActive: flags.merchantActive,
   });
 
   // Track when new tabs are unlocked and trigger animations
@@ -75,11 +74,6 @@ export default function GameContainer() {
     if (!prev.bastionUnlocked && flags.bastionUnlocked) {
       newAnimations.add("bastion");
     }
-    if (!prev.merchantActive && flags.merchantActive) {
-      newAnimations.add("merchant");
-      // Auto-switch to merchant tab when merchant arrives
-      setActiveTab("merchant");
-    }
 
     if (newAnimations.size > 0) {
       setAnimatingTabs(newAnimations);
@@ -91,15 +85,12 @@ export default function GameContainer() {
       forestUnlocked: flags.forestUnlocked,
       estateUnlocked: estateUnlocked,
       bastionUnlocked: flags.bastionUnlocked,
-      merchantActive: flags.merchantActive,
     };
   }, [
     flags.villageUnlocked,
     flags.forestUnlocked,
     estateUnlocked,
     flags.bastionUnlocked,
-    flags.merchantActive,
-    setActiveTab,
   ]);
 
   // Initialize version check
@@ -199,12 +190,12 @@ export default function GameContainer() {
         onClick: () => setActiveTab("achievements"),
       });
     }
-    
-    // Add Merchant tab if merchant is active
-    if (flags.merchantActive) {
+
+    // Add Merchant tab if merchant event is active
+    if (eventDialog.isOpen && eventDialog.currentEvent?.id.includes("merchant")) {
       tabs.push({
         id: "merchant",
-        icon: <span className="text-lg">🛒</span>,
+        icon: <Castle />,
         label: "Merchant",
         onClick: () => setActiveTab("merchant"),
       });
@@ -219,7 +210,8 @@ export default function GameContainer() {
     buildings.stoneHut,
     setActiveTab,
     books?.book_of_trials,
-    flags.merchantActive,
+    eventDialog.isOpen,
+    eventDialog.currentEvent?.id,
   ]);
 
   // Show start screen if game hasn't started yet
@@ -372,6 +364,21 @@ export default function GameContainer() {
                     ⚜
                   </button>
                 )}
+
+                {/* Merchant Tab Button */}
+                {eventDialog.isOpen && eventDialog.currentEvent?.id.includes("merchant") && (
+                  <button
+                    className={`py-2 text-sm bg-transparent ${
+                      activeTab === "merchant"
+                        ? "font-medium opacity-100"
+                        : "opacity-60"
+                    }`}
+                    onClick={() => setActiveTab("merchant")}
+                    data-testid="tab-merchant"
+                  >
+                    🛒
+                  </button>
+                )}
               </div>
             )}
           </nav>
@@ -384,6 +391,14 @@ export default function GameContainer() {
             {activeTab === "estate" && <EstatePanel />}
             {activeTab === "bastion" && <BastionPanel />}
             {activeTab === "achievements" && <AchievementsPanel />}
+            {activeTab === "merchant" && eventDialog.isOpen && eventDialog.currentEvent?.id.includes("merchant") && (
+              <EventDialog
+                isOpen={true}
+                onClose={() => setEventDialog(false)}
+                event={eventDialog.currentEvent}
+                hideDialog={true}
+              />
+            )}
           </div>
         </section>
       </main>
@@ -409,6 +424,8 @@ export default function GameContainer() {
 
       {/* Idle Mode Dialog */}
       <IdleModeDialog />
+      {/* Only show merchant dialog overlay when NOT on merchant tab */}
+      {!(activeTab === "merchant" && eventDialog.isOpen && eventDialog.currentEvent?.id.includes("merchant")) && <MerchantDialog />}
       <CubeDialog />
       {inactivityDialogOpen && <InactivityDialog />}
 

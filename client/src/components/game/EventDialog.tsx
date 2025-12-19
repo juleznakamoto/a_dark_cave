@@ -27,6 +27,7 @@ interface EventDialogProps {
   isOpen: boolean;
   onClose: () => void;
   event: LogEntry | null;
+  hideDialog?: boolean;
 }
 
 // Stat icon mapping
@@ -41,6 +42,7 @@ export default function EventDialog({
   isOpen,
   onClose,
   event,
+  hideDialog,
 }: EventDialogProps) {
   const { applyEventChoice } = useGameStore();
   const gameState = useGameStore();

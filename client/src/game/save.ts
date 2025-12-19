@@ -96,12 +96,20 @@ async function processUnclaimedReferrals(
   const { useGameStore } = await import("./state");
   const currentUser = await getCurrentUser();
 
+  logger.log('[REFERRAL] 🔍 Processing unclaimed referrals...', {
+    hasUser: !!currentUser,
+    hasReferrals: !!gameState.referrals,
+    referralsCount: gameState.referrals?.length || 0,
+    referrals: gameState.referrals,
+  });
+
   // If no user or no referrals, return gameState as is
   if (
     !currentUser ||
     !gameState.referrals ||
     gameState.referrals.length === 0
   ) {
+    logger.log('[REFERRAL] ⏭️ Skipping - no user or no referrals');
     return gameState;
   }
 
@@ -112,6 +120,11 @@ async function processUnclaimedReferrals(
   // Process unclaimed referrals
   const updatedReferrals = updatedGameState.referrals.map((referral) => {
     if (!referral.claimed) {
+      logger.log('[REFERRAL] 💰 Claiming referral:', {
+        userId: referral.userId,
+        timestamp: referral.timestamp,
+      });
+
       // Claim this referral
       goldGained += 100;
       logEntriesAdded.push({
@@ -130,6 +143,13 @@ async function processUnclaimedReferrals(
   if (goldGained > 0) {
     const oldGold = updatedGameState.resources?.gold || 0;
     const newGold = oldGold + goldGained;
+
+    logger.log('[REFERRAL] ✅ Awarding gold:', {
+      oldGold,
+      goldGained,
+      newGold,
+      claimedCount: logEntriesAdded.length,
+    });
 
     updatedGameState = {
       ...updatedGameState,
@@ -150,6 +170,7 @@ async function processUnclaimedReferrals(
     });
 
     // CRITICAL: Save the claimed referrals back to Supabase immediately
+    logger.log('[REFERRAL] 💾 Saving claimed referrals to Supabase...');
     try {
       await saveGameToSupabase(
         {
@@ -158,16 +179,14 @@ async function processUnclaimedReferrals(
           log: updatedGameState.log,
         },
         updatedGameState.playTime,
-        false,
+        false
       );
-      logger.log("[REFERRAL] ✅ Successfully saved claimed referrals to cloud");
+      logger.log('[REFERRAL] ✅ Successfully saved claimed referrals to cloud');
     } catch (error) {
-      logger.error(
-        "[REFERRAL] ❌ Failed to save claimed referrals to cloud:",
-        error,
-      );
+      logger.error('[REFERRAL] ❌ Failed to save claimed referrals to cloud:', error);
     }
   } else {
+    logger.log('[REFERRAL] ℹ️ No unclaimed referrals to process');
   }
 
   return updatedGameState;
@@ -192,16 +211,11 @@ export async function saveGame(
     let sanitizedState: any;
     try {
       // Use custom replacer to convert undefined to null for safe serialization
-      sanitizedState = JSON.parse(
-        JSON.stringify(gameState, (key, value) => {
-          return value === undefined ? null : value;
-        }),
-      );
+      sanitizedState = JSON.parse(JSON.stringify(gameState, (key, value) => {
+        return value === undefined ? null : value;
+      }));
     } catch (parseError) {
-      logger.warn(
-        "[SAVE] ⚠️ JSON serialization failed, using gameState directly:",
-        parseError,
-      );
+      logger.warn("[SAVE] ⚠️ JSON serialization failed, using gameState directly:", parseError);
       // Fallback: use gameState directly if JSON round-trip fails
       sanitizedState = { ...gameState };
     }
@@ -246,13 +260,13 @@ export async function saveGame(
 
         // Log snapshot to verify stats are included
         if (resourceData) {
-          const hasStats = Object.keys(resourceData).some((key) =>
-            ["luck", "strength", "knowledge", "madness"].includes(key),
+          const hasStats = Object.keys(resourceData).some(key => 
+            ['luck', 'strength', 'knowledge', 'madness'].includes(key)
           );
-          logger.log("[SAVE CLOUD] 📊 Resource snapshot includes stats:", {
+          logger.log('[SAVE CLOUD] 📊 Resource snapshot includes stats:', {
             hasStats,
-            statsKeys: Object.keys(resourceData).filter((key) =>
-              ["luck", "strength", "knowledge", "madness"].includes(key),
+            statsKeys: Object.keys(resourceData).filter(key => 
+              ['luck', 'strength', 'knowledge', 'madness'].includes(key)
             ),
             snapshotKeys: Object.keys(resourceData),
           });
@@ -298,17 +312,13 @@ export async function saveGame(
 
         // Update lastCloudState only after successful cloud save
         await db.put("lastCloudState", sanitizedState, LAST_CLOUD_STATE_KEY);
-        logger.log(
-          "[SAVE] ✅ Updated lastCloudState after successful cloud save",
-        );
+        logger.log("[SAVE] ✅ Updated lastCloudState after successful cloud save");
 
         // Clear the allowPlayTimeOverwrite flag after successful save
         if (gameState.allowPlayTimeOverwrite) {
           const { useGameStore } = await import("./state");
           useGameStore.setState({ allowPlayTimeOverwrite: false });
-          logger.log(
-            "[SAVE] 🔓 Cleared allowPlayTimeOverwrite flag after successful cloud save",
-          );
+          logger.log("[SAVE] 🔓 Cleared allowPlayTimeOverwrite flag after successful cloud save");
         }
       }
     } catch (cloudError) {
@@ -376,37 +386,24 @@ export async function loadGame(): Promise<GameState | null> {
 
           // Use whichever has more playtime (most progress)
           if (localPlayTime > cloudPlayTime) {
-            logger.log(
-              "[LOAD] 💾 Local save is newer - using local and syncing to cloud",
-            );
+            logger.log("[LOAD] 💾 Local save is newer - using local and syncing to cloud");
 
             const stateWithDefaults = {
               ...localSave.gameState,
               cooldownDurations: localSave.gameState.cooldownDurations || {},
             };
-            const processedState =
-              await processUnclaimedReferrals(stateWithDefaults);
+            const processedState = await processUnclaimedReferrals(stateWithDefaults);
 
             // Sync local progress to cloud
             try {
               await db.delete("lastCloudState", LAST_CLOUD_STATE_KEY);
               await saveGame(processedState, false);
-              await db.put(
-                "lastCloudState",
-                processedState,
-                LAST_CLOUD_STATE_KEY,
-              );
+              await db.put("lastCloudState", processedState, LAST_CLOUD_STATE_KEY);
               logger.log("[LOAD] ✅ Local progress synced to cloud");
             } catch (syncError: any) {
               if (syncError.message?.includes("OCC violation")) {
-                logger.log(
-                  "[LOAD] 📊 Cloud already has this save state - skipping sync",
-                );
-                await db.put(
-                  "lastCloudState",
-                  processedState,
-                  LAST_CLOUD_STATE_KEY,
-                );
+                logger.log("[LOAD] 📊 Cloud already has this save state - skipping sync");
+                await db.put("lastCloudState", processedState, LAST_CLOUD_STATE_KEY);
               } else {
                 throw syncError;
               }
@@ -422,13 +419,11 @@ export async function loadGame(): Promise<GameState | null> {
               cooldownDurations: cloudSave.gameState.cooldownDurations || {},
             };
 
-            const processedState =
-              await processUnclaimedReferrals(stateWithDefaults);
+            const processedState = await processUnclaimedReferrals(
+              stateWithDefaults,
+            );
 
-            const stateToReturn = {
-              ...processedState,
-              playTime: cloudSave.playTime,
-            };
+            const stateToReturn = { ...processedState, playTime: cloudSave.playTime };
 
             // Save to IndexedDB to keep it in sync
             await db.put(
@@ -440,11 +435,7 @@ export async function loadGame(): Promise<GameState | null> {
               },
               SAVE_KEY,
             );
-            await db.put(
-              "lastCloudState",
-              processedState,
-              LAST_CLOUD_STATE_KEY,
-            );
+            await db.put("lastCloudState", processedState, LAST_CLOUD_STATE_KEY);
 
             logger.log("[LOAD] ✅ Cloud save loaded and synced locally");
             return stateToReturn;
@@ -458,13 +449,11 @@ export async function loadGame(): Promise<GameState | null> {
             cooldownDurations: cloudSave.gameState.cooldownDurations || {},
           };
 
-          const processedState =
-            await processUnclaimedReferrals(stateWithDefaults);
+          const processedState = await processUnclaimedReferrals(
+            stateWithDefaults,
+          );
 
-          const stateToReturn = {
-            ...processedState,
-            playTime: cloudSave.playTime,
-          };
+          const stateToReturn = { ...processedState, playTime: cloudSave.playTime };
 
           await db.put(
             "saves",
@@ -487,31 +476,20 @@ export async function loadGame(): Promise<GameState | null> {
             ...localSave.gameState,
             cooldownDurations: localSave.gameState.cooldownDurations || {},
           };
-          const processedState =
-            await processUnclaimedReferrals(stateWithDefaults);
+          const processedState = await processUnclaimedReferrals(stateWithDefaults);
 
           try {
             // Force full sync by clearing lastCloudState, then saveGame will handle it
             await db.delete("lastCloudState", LAST_CLOUD_STATE_KEY);
             // Do NOT use allowPlayTimeOverwrite here - this is not a new game
             await saveGame(processedState, false);
-            await db.put(
-              "lastCloudState",
-              processedState,
-              LAST_CLOUD_STATE_KEY,
-            );
+            await db.put("lastCloudState", processedState, LAST_CLOUD_STATE_KEY);
           } catch (syncError: any) {
             // If OCC violates due to equal playTimes, that's fine - cloud already has this state
             if (syncError.message?.includes("OCC violation")) {
               if (isDev)
-                logger.log(
-                  "[LOAD] 📊 Cloud already has this save state - skipping sync",
-                );
-              await db.put(
-                "lastCloudState",
-                processedState,
-                LAST_CLOUD_STATE_KEY,
-              );
+                logger.log("[LOAD] 📊 Cloud already has this save state - skipping sync");
+              await db.put("lastCloudState", processedState, LAST_CLOUD_STATE_KEY);
             } else {
               throw syncError;
             }

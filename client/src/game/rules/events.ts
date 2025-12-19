@@ -1,3 +1,4 @@
+
 import { GameState } from "@shared/schema";
 import {
   getTotalStrength,
@@ -25,7 +26,7 @@ export function calculateSuccessChance(
 
   // Add first stat bonus
   if (stat0) {
-    const statValue = stat0.type === 'strength'
+    const statValue = stat0.type === 'strength' 
       ? getTotalStrength(state)
       : stat0.type === 'knowledge'
       ? getTotalKnowledge(state)
@@ -91,7 +92,6 @@ export interface GameEvent {
     type: 'glow' | 'pulse';
     duration: number; // in seconds
   };
-  skipEventDialog?: boolean; // New property to skip dialog
 }
 
 export interface EventChoice {
@@ -116,7 +116,6 @@ export interface LogEntry {
   fallbackChoice?: EventChoice;
   skipSound?: boolean; // Skip playing sound for this event
   skipEventLog?: boolean; // Skip adding to visible event log
-  skipEventDialog?: boolean; // Skip opening dialog for this log entry
   relevant_stats?: ("strength" | "knowledge" | "luck" | "madness")[]; // Stats relevant to event odds
   // Visual effect properties
   visualEffect?: {
@@ -152,11 +151,9 @@ export class EventManager {
   static checkEvents(state: GameState): {
     newLogEntries: LogEntry[];
     stateChanges: Partial<GameState>;
-    triggeredEvents?: GameEvent[];
   } {
     const newLogEntries: LogEntry[] = [];
     let stateChanges: Partial<GameState> = {};
-    const triggeredEvents: GameEvent[] = [];
     const sortedEvents = Object.values(this.allEvents).sort(
       (a, b) => (b.priority || 0) - (a.priority || 0),
     );
@@ -178,10 +175,10 @@ export class EventManager {
           typeof event.timeProbability === "function"
             ? event.timeProbability(state)
             : event.timeProbability;
-
+        
         const cooldownPeriod = timeProbability * 0.25 * 60 * 1000; // 25% in milliseconds
         const timeSinceLastTrigger = currentTime - eventCooldowns[event.id];
-
+        
         if (timeSinceLastTrigger < cooldownPeriod) {
           continue; // Skip this event, it's still on cooldown
         }
@@ -210,12 +207,9 @@ export class EventManager {
       }
 
       if (shouldTrigger) {
-        console.log('[EVENTS] Event triggered:', event.id);
-
         // Generate fresh choices for merchant events
         let eventChoices = event.choices;
         if (event.id === "merchant") {
-          console.log('[MERCHANT] Generating merchant choices');
           eventChoices = generateMerchantChoices(state);
         }
 
@@ -229,58 +223,19 @@ export class EventManager {
           message = event.message;
         }
 
-        // Skip events marked to not appear in event dialog
-        if (event.skipEventDialog) {
-          console.log('[EVENTS] Skipping event dialog for:', event.id);
-
-          // Apply effect if it exists
-          if (event.effect && !eventChoices?.length) {
-            const effectResult = event.effect(state);
-            console.log('[EVENTS] Effect result for', event.id, ':', effectResult);
-            console.log('[EVENTS] Effect result has flags?', !!effectResult.flags);
-            console.log('[EVENTS] Effect result flags value:', effectResult.flags);
-
-            // Merge ALL effect results into stateChanges, including flags
-            stateChanges = { ...stateChanges, ...effectResult };
-
-            console.log('[EVENTS] After merge - stateChanges:', {
-                flags: stateChanges.flags,
-                merchantActive: stateChanges.flags?.merchantActive,
-                fullStateChanges: JSON.stringify(stateChanges, null, 2)
-              });
-
-            // Track triggered events
-            triggeredEvents.push(event);
-            
-            // Update state for triggered events and cooldowns
-            stateChanges.triggeredEvents = {
-              ...(state.triggeredEvents || {}),
-              ...(stateChanges.triggeredEvents || {}),
-              [event.id]: true,
-            };
-            stateChanges.eventCooldowns = {
-              ...(state.eventCooldowns || {}),
-              ...(stateChanges.eventCooldowns || {}),
-              [event.id]: currentTime,
-            };
-            
-            continue; // Continue to next event check
-          }
-        }
-
         const logEntry: LogEntry = {
           id: `${event.id}-${Date.now()}`,
-          title: event.title,
-          message: message, // Use the determined message
+          message: message,
           timestamp: Date.now(),
           type: "event",
+          title: event.title,
           choices: eventChoices,
           isTimedChoice: event.isTimedChoice,
           baseDecisionTime: event.baseDecisionTime,
           fallbackChoice: event.fallbackChoice,
           relevant_stats: event.relevant_stats,
-          skipEventLog: event.skipEventLog,
-          skipEventDialog: event.skipEventDialog, // Add skipEventDialog to log entry
+          visualEffect: event.visualEffect,
+          skipEventLog: eventChoices && eventChoices.length > 0, // Mark events with choices to skip log
         };
 
         newLogEntries.push(logEntry);
@@ -301,27 +256,18 @@ export class EventManager {
             [event.id]: true,
           };
         }
-
+        
         // Record trigger time for cooldown tracking
         stateChanges.eventCooldowns = {
           ...(state.eventCooldowns || {}),
           [event.id]: currentTime,
         };
-
+        
         break; // Only trigger one event per tick
       }
     }
 
-    console.log('[EVENTS] checkEvents returning:', {
-        newLogEntriesCount: newLogEntries.length,
-        stateChangesKeys: Object.keys(stateChanges),
-        hasFlags: !!stateChanges.flags,
-        flagsValue: stateChanges.flags,
-        merchantActive: stateChanges.flags?.merchantActive,
-        fullStateChanges: stateChanges
-      });
-
-    return { newLogEntries, stateChanges, triggeredEvents };
+    return { newLogEntries, stateChanges };
   }
 
   static applyEventChoice(

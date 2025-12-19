@@ -1,10 +1,9 @@
 import SidePanel from "./panels/SidePanel";
-import MerchantPanel from "./panels/MerchantPanel";
 import { useGameStore } from "@/game/state";
 import { useEffect } from "react";
 
 export default function GameTabs() {
-  const { buildings, blessings, villagers, flags, activeTab, updatePopulation } = useGameStore();
+  const { buildings, blessings, villagers, updatePopulation } = useGameStore();
 
   // Update population whenever the component renders
   useEffect(() => {
@@ -18,14 +17,6 @@ export default function GameTabs() {
     blessings.flames_touch_enhanced,
     updatePopulation,
   ]);
-
-  if (activeTab === "merchant") {
-    return (
-      <div className="h-full flex flex-col">
-        <MerchantPanel />
-      </div>
-    );
-  }
 
   return (
     <div className="h-full flex flex-col">

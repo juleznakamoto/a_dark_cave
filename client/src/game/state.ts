@@ -204,12 +204,6 @@ const mergeStateUpdates = (
   prevState: GameState,
   stateUpdates: Partial<GameState>,
 ): Partial<GameState> => {
-  console.log('[MERGE] Input stateUpdates:', {
-    hasFlags: !!stateUpdates.flags,
-    flagsValue: stateUpdates.flags,
-    merchantActive: stateUpdates.flags?.merchantActive
-  });
-
   // Ensure resources never go negative when merging, and apply resource limits
   const mergedResources = { ...prevState.resources, ...stateUpdates.resources };
   Object.keys(mergedResources).forEach(key => {
@@ -302,12 +296,6 @@ const mergeStateUpdates = (
     const tempState = { ...prevState, ...merged };
     merged.effects = calculateTotalEffects(tempState);
   }
-
-  console.log('[MERGE] Output merged:', {
-    hasFlags: !!merged.flags,
-    flagsValue: merged.flags,
-    merchantActive: merged.flags?.merchantActive
-  });
 
   return merged;
 };
@@ -1040,67 +1028,40 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   addLogEntry: (entry: LogEntry) => {
-    const currentLog = get().log || [];
-    const updatedLog = [entry, ...currentLog];
-
-    set({ log: updatedLog });
-
-    // Auto-open event dialog for events with choices (except those marked to skip dialog)
-    if (entry.choices && entry.choices.length > 0 && !entry.skipEventDialog) {
-      get().setEventDialog(true, entry);
+    if (entry.type === "event") {
+      audioManager.playSound("event", 0.02);
     }
+
+    set((state) => ({
+      log: [...state.log, entry].slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES),
+    }));
   },
 
   checkEvents: () => {
     const state = get();
     // If the game is paused, do not process events
-    if (state.isPaused) {
-      console.log('[STATE] checkEvents: Game is paused, skipping');
-      return;
-    }
+    if (state.isPaused) return;
 
     // Don't check for new events if any dialog is already open
     const isAnyDialogOpen = state.eventDialog.isOpen || state.combatDialog.isOpen;
-    if (isAnyDialogOpen) {
-      console.log('[STATE] checkEvents: Dialog is open, skipping');
-      return;
-    }
+    if (isAnyDialogOpen) return;
 
-    console.log('[STATE] checkEvents: Running event check');
     const { newLogEntries, stateChanges, triggeredEvents } =
       EventManager.checkEvents(state);
-    
-    console.log('[STATE] checkEvents results:', {
-      newLogEntriesCount: newLogEntries.length,
-      hasStateChanges: Object.keys(stateChanges).length > 0,
-      triggeredEventsCount: triggeredEvents?.length || 0,
-      stateChangesKeys: Object.keys(stateChanges),
-      flagsInChanges: stateChanges.flags,
-      merchantActive: stateChanges.flags?.merchantActive
-    });
-
-    // Apply state changes from events (especially flags)
-    if (Object.keys(stateChanges).length > 0) {
-      set((prevState) => {
-        const merged = mergeStateUpdates(prevState, stateChanges);
-        console.log('[STATE] Merged state updates:', {
-          hasFlags: !!merged.flags,
-          flagsValue: merged.flags,
-          merchantActive: merged.flags?.merchantActive
-        });
-        return {
-          ...prevState,
-          ...merged,
-        };
-      });
-    }
 
     if (newLogEntries.length > 0) {
       let combatData = null;
+      const updatedChanges = { ...stateChanges };
 
-      if (stateChanges._combatData) {
-        combatData = stateChanges._combatData;
+      if (updatedChanges._combatData) {
+        combatData = updatedChanges._combatData;
+        delete updatedChanges._combatData;
       }
+
+      set((prevState) => ({
+        ...prevState,
+        ...updatedChanges,
+      }));
 
       // Handle combat dialog for attack waves
       if (combatData) {
