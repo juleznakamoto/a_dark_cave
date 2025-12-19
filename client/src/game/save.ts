@@ -373,8 +373,9 @@ export async function loadGame(): Promise<GameState | null> {
 
         if (cloudSave && localSave) {
           // Both saves exist - use the most recent one
-          const cloudPlayTime = cloudSave.playTime || 0;
-          const localPlayTime = localSave.playTime || 0;
+          // Floor playTime values to avoid floating-point comparison issues
+          const cloudPlayTime = Math.floor(cloudSave.playTime || 0);
+          const localPlayTime = Math.floor(localSave.playTime || 0);
 
           logger.log("[LOAD] 🔍 Comparing local and cloud saves:", {
             cloudPlayTime,
