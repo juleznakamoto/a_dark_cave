@@ -513,6 +513,46 @@ export const villageBuildActions: Record<string, Action> = {
     cooldown: 30,
   },
 
+  buildGrandHunterLodge: {
+    id: "buildGrandHunterLodge",
+    label: "Grand Hunter Lodge",
+    description: "Supreme hunting lodge with master hunters",
+    tooltipEffects: [
+      "Unlocks Hunters",
+      "Hunter: +10 Food",
+      "Hunter: +2 Fur",
+      "Hunter: +2 Bones",
+    ],
+    building: true,
+    show_when: {
+      1: {
+        "buildings.stoneHut": 5,
+        "buildings.greatCabin": 1,
+        "buildings.grandHunterLodge": 0,
+      },
+    },
+    cost: {
+      1: {
+        "resources.wood": 10000,
+        "resources.stone": 5000,
+        "resources.bones": 5000,
+      },
+    },
+    effects: {
+      1: {
+        "buildings.grandHunterLodge": 1,
+      },
+    },
+    productionEffects: {
+      hunter: {
+        food: 10,
+        fur: 2,
+        bones: 2,
+      },
+    },
+    cooldown: 40,
+  },
+
   buildTimberMill: {
     id: "buildTimberMill",
     label: "Timber Mill",
@@ -725,6 +765,39 @@ export const villageBuildActions: Record<string, Action> = {
       },
     },
     cooldown: 40,
+  },
+
+  buildHighTannery: {
+    id: "buildHighTannery",
+    label: "High Tannery",
+    description: "Supreme tannery with expert leather craftsmen",
+    tooltipEffects: ["Unlocks Tanners", "Tanner: +2 Leather"],
+    building: true,
+    show_when: {
+      1: {
+        "buildings.stoneHut": 5,
+        "buildings.masterTannery": 1,
+        "buildings.highTannery": 0,
+      },
+    },
+    cost: {
+      1: {
+        "resources.wood": 10000,
+        "resources.stone": 5000,
+        "resources.steel": 2500,
+      },
+    },
+    effects: {
+      1: {
+        "buildings.highTannery": 1,
+      },
+    },
+    productionEffects: {
+      tanner: {
+        leather: 2,
+      },
+    },
+    cooldown: 50,
   },
 
   buildAltar: {

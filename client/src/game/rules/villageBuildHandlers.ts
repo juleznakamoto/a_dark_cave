@@ -518,6 +518,31 @@ export function handleBuildMasterTannery(
   return masterTanneryResult;
 }
 
+export function handleBuildHighTannery(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const highTanneryResult = handleBuildingConstruction(
+    state,
+    result,
+    "buildHighTannery",
+    "highTannery",
+  );
+
+  // Add high tannery completion message
+  if (state.buildings.highTannery === 0) {
+    highTanneryResult.logEntries!.push({
+      id: `high-tannery-built-${Date.now()}`,
+      message:
+        "The High Tannery rises, a grand workshop where expert craftsmen transform hides into the finest leather.",
+      timestamp: Date.now(),
+      type: "system",
+    });
+  }
+
+  return highTanneryResult;
+}
+
 export function handleBuildStoneHut(
   state: GameState,
   result: ActionResult,

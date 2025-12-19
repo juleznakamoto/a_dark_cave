@@ -11,7 +11,7 @@ export const BUILDING_HIERARCHIES: Record<string, string[]> = {
   trade: ["tradePost", "grandBazaar", "merchantsGuild"],
   
   // Tannery chain
-  tannery: ["tannery", "masterTannery"],
+  tannery: ["tannery", "masterTannery", "highTannery"],
   
   // Foundry chain
   foundry: ["foundry", "primeFoundry", "masterworkFoundry"],
@@ -36,7 +36,7 @@ export const BUILDING_HIERARCHIES: Record<string, string[]> = {
   pit: ["shallowPit", "deepeningPit", "deepPit", "bottomlessPit"],
   
   // Cabin chain
-  cabin: ["cabin", "greatCabin"],
+  cabin: ["cabin", "greatCabin", "grandHunterLodge"],
   
   // Clerk chain
   clerk: ["clerksHut", "scriptorium", "inkwardenAcademy"],
