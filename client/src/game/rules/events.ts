@@ -236,12 +236,15 @@ export class EventManager {
           // Apply effect if it exists
           if (event.effect && !eventChoices?.length) {
             const effectResult = event.effect(state);
-            console.log('[EVENTS] Effect result:', effectResult);
+            console.log('[EVENTS] Effect result for', event.id, ':', effectResult);
+            console.log('[EVENTS] Effect result has flags?', !!effectResult.flags);
+            console.log('[EVENTS] Effect result flags value:', effectResult.flags);
             
             // Merge ALL effect results into stateChanges, including flags
             stateChanges = { ...stateChanges, ...effectResult };
             
-            console.log('[EVENTS] Final stateChanges:', stateChanges);
+            console.log('[EVENTS] After merge - stateChanges:', stateChanges);
+            console.log('[EVENTS] After merge - stateChanges.flags:', stateChanges.flags);
           }
           
           // Mark as triggered
@@ -309,6 +312,13 @@ export class EventManager {
       }
     }
 
+    console.log('[EVENTS] checkEvents returning:', {
+      newLogEntriesCount: newLogEntries.length,
+      stateChangesKeys: Object.keys(stateChanges),
+      hasFlags: !!stateChanges.flags,
+      flagsValue: stateChanges.flags,
+    });
+    
     return { newLogEntries, stateChanges, triggeredEvents };
   }
 
