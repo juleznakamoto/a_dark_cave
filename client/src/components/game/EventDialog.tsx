@@ -247,6 +247,11 @@ export default function EventDialog({
   const isMerchantEvent = event?.id.includes("merchant");
   const isCubeEvent = event?.id.includes("cube");
 
+  // Merchant events are handled by the merchant tab now
+  if (isMerchantEvent) {
+    return null;
+  }
+
   return (
     <>
       {isCubeEvent ? (

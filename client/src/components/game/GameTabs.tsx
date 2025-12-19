@@ -1,9 +1,10 @@
 import SidePanel from "./panels/SidePanel";
+import MerchantPanel from "./panels/MerchantPanel";
 import { useGameStore } from "@/game/state";
 import { useEffect } from "react";
 
 export default function GameTabs() {
-  const { buildings, blessings, villagers, updatePopulation } = useGameStore();
+  const { buildings, blessings, villagers, updatePopulation, merchantTab } = useGameStore();
 
   // Update population whenever the component renders
   useEffect(() => {

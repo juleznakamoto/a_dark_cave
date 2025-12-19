@@ -62,6 +62,13 @@ interface GameStore extends GameState {
   versionCheckDialogOpen: boolean; // Added for version check dialog
   restartGameDialogOpen: boolean;
 
+  // Merchant Tab state
+  merchantTab: {
+    isOpen: boolean;
+    expiresAt: number | null;
+    purchasedItems: Set<string>;
+  };
+
   // Notification state for shop
   shopNotificationSeen: boolean;
   shopNotificationVisible: boolean;
@@ -197,6 +204,8 @@ interface GameStore extends GameState {
   setVersionCheckDialog: (isOpen: boolean) => void;
   updateFocusState: (state: { isActive: boolean; endTime: number; startTime?: number; duration?: number; points?: number }) => void;
   updateResources: (updates: Partial<GameState["resources"]>) => void;
+  setMerchantTab: (isOpen: boolean, expiresAt?: number | null) => void;
+  addMerchantPurchase: (itemId: string) => void;
 }
 
 // Helper functions
@@ -284,6 +293,8 @@ const mergeStateUpdates = (
     // Game completion tracking
     game_stats: stateUpdates.game_stats || prevState.game_stats,
     hasWonAnyGame: stateUpdates.hasWonAnyGame !== undefined ? stateUpdates.hasWonAnyGame : prevState.hasWonAnyGame,
+    // Merchant Tab state
+    merchantTab: stateUpdates.merchantTab !== undefined ? stateUpdates.merchantTab : prevState.merchantTab,
   };
 
   if (
@@ -534,6 +545,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   // Initialize free gold claim tracking
   lastFreeGoldClaim: 0,
+
+  // Initialize merchant tab state
+  merchantTab: {
+    isOpen: false,
+    expiresAt: null,
+    purchasedItems: new Set<string>(),
+  },
 
   // Achievements
   unlockedAchievements: [],
@@ -991,6 +1009,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
         gameId: gameId, // Load or generate gameId
         game_stats: savedState.game_stats || [], // Load game_stats
         hasWonAnyGame: savedState.hasWonAnyGame !== undefined ? savedState.hasWonAnyGame : false, // Load hasWonAnyGame
+        // Load merchant tab state
+        merchantTab: savedState.merchantTab || {
+          isOpen: false,
+          expiresAt: null,
+          purchasedItems: new Set<string>(),
+        },
       };
 
       set(loadedState);
@@ -1391,6 +1415,27 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   setRestartGameDialogOpen: (isOpen: boolean) => {
     set({ restartGameDialogOpen: isOpen });
+  },
+
+  // Set merchant tab state
+  setMerchantTab: (isOpen: boolean, expiresAt: number | null = null) => {
+    set((state) => ({
+      merchantTab: {
+        isOpen,
+        expiresAt,
+        // Reset purchased items when tab closes or opens with new merchant
+        purchasedItems: isOpen ? state.merchantTab.purchasedItems : new Set<string>(),
+      },
+    }));
+  },
+
+  addMerchantPurchase: (itemId: string) => {
+    set((state) => ({
+      merchantTab: {
+        ...state.merchantTab,
+        purchasedItems: new Set(state.merchantTab.purchasedItems).add(itemId),
+      },
+    }));
   },
 
   updateEffects: () => {
