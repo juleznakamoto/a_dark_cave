@@ -244,9 +244,41 @@ export default function MerchantDialog({
                             {buttonContent}
                           </div>
                         </TooltipTrigger>
-                        <TooltipContent>
+                        <TooltipContent side="top">
                           <div className="text-xs whitespace-nowrap">
                             {eventChoiceCostTooltip.getContent(costText)}
+                          </div>
+                        </TooltipContent>
+                      </Tooltip>
+                      <Tooltip open={mobileTooltip.isTooltipOpen(choice.id)}>
+                        <TooltipTrigger asChild>
+                          <div className="absolute inset-0 pointer-events-none" />
+                        </TooltipTrigger>
+                        <TooltipContent side="bottom">
+                          <div className="text-xs whitespace-nowrap">
+                            {(() => {
+                              // Parse what you're buying (from label)
+                              const labelMatch = typeof labelText === 'string' ? labelText.match(/^\+(\d+)\s+(.+)$/) : null;
+                              const buyResourceName = labelMatch ? labelMatch[2].toLowerCase().replace(/\s+/g, '_') : '';
+                              const buyAmount = buyResourceName ? (gameState.resources[buyResourceName as keyof typeof gameState.resources] || 0) : 0;
+
+                              // Parse what you're paying (from cost)
+                              const costMatch = typeof costText === 'string' ? costText.match(/^(\d+)\s+(.+)$/) : null;
+                              const costResourceName = costMatch ? costMatch[2].toLowerCase().replace(/\s+/g, '_') : '';
+                              const costAmount = costResourceName ? (gameState.resources[costResourceName as keyof typeof gameState.resources] || 0) : 0;
+
+                              const lines = [];
+                              if (costMatch && costResourceName) {
+                                const formattedCostName = costMatch[2].charAt(0).toUpperCase() + costMatch[2].slice(1);
+                                lines.push(`Current ${formattedCostName}: ${costAmount}`);
+                              }
+                              if (labelMatch && buyResourceName) {
+                                const formattedBuyName = labelMatch[2].charAt(0).toUpperCase() + labelMatch[2].slice(1);
+                                lines.push(`Current ${formattedBuyName}: ${buyAmount}`);
+                              }
+                              
+                              return lines.map((line, idx) => <div key={idx}>{line}</div>);
+                            })()}
                           </div>
                         </TooltipContent>
                       </Tooltip>
