@@ -470,7 +470,7 @@ export const getAllActionBonuses = (
         valueStr = `${percentBonus}%`;
       }
       if (bonus.flatBonus > 0) {
-        valueStr += valueStr ? ` / ${bonus.flatBonus}` : `${bonus.flatBonus}`;
+        valueStr += valueStr ? ` / ${bonus.flatBonus}` : ` ${bonus.flatBonus}`;
       }
 
       return {
