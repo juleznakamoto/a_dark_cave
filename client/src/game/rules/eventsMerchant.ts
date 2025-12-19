@@ -1007,6 +1007,7 @@ export const merchantEvents: Record<string, GameEvent> = {
     priority: 3,
     repeatable: true,
     skipEventLog: true, // Don't show in event dialog, just set the flag
+    skipEventDialog: true, // Don't open the event dialog
     effect: (state: GameState) => {
       return {
         flags: {

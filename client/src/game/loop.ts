@@ -234,7 +234,7 @@ export function startGameLoop() {
         // Update elapsed time for all active timers
         const updatedTimers: typeof attackWaveTimers = {};
         let hasUpdates = false;
-        
+
         for (const [waveId, timer] of Object.entries(attackWaveTimers)) {
           if (!timer.defeated && timer.startTime > 0) {
             const newElapsed = (timer.elapsedTime || 0) + deltaTime;
@@ -247,7 +247,7 @@ export function startGameLoop() {
             updatedTimers[waveId] = timer;
           }
         }
-        
+
         if (hasUpdates) {
           useGameStore.setState({ attackWaveTimers: updatedTimers });
         }

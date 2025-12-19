@@ -1028,13 +1028,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   addLogEntry: (entry: LogEntry) => {
-    if (entry.type === "event") {
-      audioManager.playSound("event", 0.02);
-    }
+    const currentLog = get().log || [];
+    const updatedLog = [entry, ...currentLog];
 
-    set((state) => ({
-      log: [...state.log, entry].slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES),
-    }));
+    set({ log: updatedLog });
+
+    // Auto-open event dialog for events with choices (except merchant events)
+    if (entry.choices && entry.choices.length > 0 && !entry.id.includes('merchant')) {
+      get().setEventDialog(true, entry);
+    }
   },
 
   checkEvents: () => {
