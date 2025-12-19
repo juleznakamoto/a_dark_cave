@@ -1067,19 +1067,23 @@ export const useGameStore = create<GameStore>((set, get) => ({
       merchantActive: stateChanges.flags?.merchantActive
     });
 
+    // Apply state changes from events (especially flags)
+    if (Object.keys(stateChanges).length > 0) {
+      set((prevState) => {
+        const merged = mergeStateUpdates(prevState, stateChanges);
+        return {
+          ...prevState,
+          ...merged,
+        };
+      });
+    }
+
     if (newLogEntries.length > 0) {
       let combatData = null;
-      const updatedChanges = { ...stateChanges };
 
-      if (updatedChanges._combatData) {
-        combatData = updatedChanges._combatData;
-        delete updatedChanges._combatData;
+      if (stateChanges._combatData) {
+        combatData = stateChanges._combatData;
       }
-
-      set((prevState) => ({
-        ...prevState,
-        ...updatedChanges,
-      }));
 
       // Handle combat dialog for attack waves
       if (combatData) {
