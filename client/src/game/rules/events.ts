@@ -211,7 +211,7 @@ export class EventManager {
 
       if (shouldTrigger) {
         console.log('[EVENTS] Event triggered:', event.id);
-        
+
         // Generate fresh choices for merchant events
         let eventChoices = event.choices;
         if (event.id === "merchant") {
@@ -232,40 +232,40 @@ export class EventManager {
         // Skip events marked to not appear in event dialog
         if (event.skipEventDialog) {
           console.log('[EVENTS] Skipping event dialog for:', event.id);
-          
+
           // Apply effect if it exists
           if (event.effect && !eventChoices?.length) {
             const effectResult = event.effect(state);
             console.log('[EVENTS] Effect result for', event.id, ':', effectResult);
             console.log('[EVENTS] Effect result has flags?', !!effectResult.flags);
             console.log('[EVENTS] Effect result flags value:', effectResult.flags);
-            
+
             // Merge ALL effect results into stateChanges, including flags
             stateChanges = { ...stateChanges, ...effectResult };
+
+            console.log('[EVENTS] After merge - stateChanges:', {
+                flags: stateChanges.flags,
+                merchantActive: stateChanges.flags?.merchantActive,
+                fullStateChanges: JSON.stringify(stateChanges, null, 2)
+              });
+
+            // Track triggered events
+            triggeredEvents.push(event);
             
-            console.log('[EVENTS] After merge - stateChanges:', stateChanges);
-            console.log('[EVENTS] After merge - stateChanges.flags:', stateChanges.flags);
-          }
-          
-          // Mark as triggered
-          event.triggered = true;
-          if (!event.repeatable) {
+            // Update state for triggered events and cooldowns
             stateChanges.triggeredEvents = {
               ...(state.triggeredEvents || {}),
               ...(stateChanges.triggeredEvents || {}),
               [event.id]: true,
             };
+            stateChanges.eventCooldowns = {
+              ...(state.eventCooldowns || {}),
+              ...(stateChanges.eventCooldowns || {}),
+              [event.id]: currentTime,
+            };
+            
+            continue; // Continue to next event check
           }
-          
-          // Record trigger time for cooldown tracking
-          stateChanges.eventCooldowns = {
-            ...(state.eventCooldowns || {}),
-            ...(stateChanges.eventCooldowns || {}),
-            [event.id]: currentTime,
-          };
-          
-          triggeredEvents.push(event);
-          break;
         }
 
         const logEntry: LogEntry = {
@@ -313,12 +313,14 @@ export class EventManager {
     }
 
     console.log('[EVENTS] checkEvents returning:', {
-      newLogEntriesCount: newLogEntries.length,
-      stateChangesKeys: Object.keys(stateChanges),
-      hasFlags: !!stateChanges.flags,
-      flagsValue: stateChanges.flags,
-    });
-    
+        newLogEntriesCount: newLogEntries.length,
+        stateChangesKeys: Object.keys(stateChanges),
+        hasFlags: !!stateChanges.flags,
+        flagsValue: stateChanges.flags,
+        merchantActive: stateChanges.flags?.merchantActive,
+        fullStateChanges: stateChanges
+      });
+
     return { newLogEntries, stateChanges, triggeredEvents };
   }
 
