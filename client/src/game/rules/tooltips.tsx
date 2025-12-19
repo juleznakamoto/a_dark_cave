@@ -532,8 +532,9 @@ export const eventChoiceCostTooltip = {
       resources.forEach(({ resource }, index) => {
         const currentAmount = gameState.resources[resource as keyof typeof gameState.resources] || 0;
         currentAmounts.push(
-          <div key={`current-${index}`}>
-            {capitalizeWords(resource)}: {formatNumber(currentAmount)}
+          <div key={`current-${index}`} className="flex justify-between gap-2">
+            <span>{capitalizeWords(resource)}:</span>
+            <span>{formatNumber(currentAmount)}</span>
           </div>
         );
       });
@@ -633,8 +634,9 @@ export const getMerchantTooltip = {
     Array.from(resourcesSet).forEach((resource, index) => {
       const currentAmount = gameState.resources[resource as keyof typeof gameState.resources] || 0;
       currentAmounts.push(
-        <div key={`current-${index}`}>
-          {capitalizeWords(resource)}: {formatNumber(currentAmount)}
+        <div key={`current-${index}`} className="flex justify-between gap-2">
+          <span>{capitalizeWords(resource)}:</span>
+          <span>{formatNumber(currentAmount)}</span>
         </div>
       );
     });
