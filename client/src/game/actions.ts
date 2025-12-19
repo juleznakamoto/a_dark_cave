@@ -489,10 +489,12 @@ export function executeGameAction(
     case "tradeGoldForSteel":
     case "tradeGoldForObsidian":
     case "tradeGoldForAdamant":
+    case "tradeGoldForBlacksteel":
     case "tradeGoldForTorch":
     case "tradeSilverForGold":
     case "tradeGoldForEmberBomb":
     case "tradeGoldForAshfireBomb":
+    case "tradeGoldForVoidBomb":
       return handleTradeAction(actionId, state, result);
 
     default:
