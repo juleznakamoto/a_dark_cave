@@ -87,6 +87,11 @@ const checkRequirements = (
       current = current ?? false;
     }
 
+    // Treat undefined as false for boolean comparisons
+    if (current === undefined && typeof expectedValue === "boolean") {
+      current = false;
+    }
+
     if (typeof expectedValue === "boolean") {
       // If negated, flip the comparison
       if (isNegated) {
@@ -138,7 +143,7 @@ export const shouldShowAction = (
 
   // Check if show_when has tiered conditions (numeric keys)
   if (!action.show_when) return false;
-  
+
   const showWhenKeys = Object.keys(action.show_when);
   const hasTieredShowWhen =
     showWhenKeys.length > 0 && showWhenKeys.every((key) => !isNaN(Number(key)));
@@ -302,7 +307,7 @@ export function canExecuteAction(actionId: string, state: GameState): boolean {
       for (const tierKey of showWhenKeys) {
         const tierConditions = action.show_when?.[tierKey as any];
         if (!tierConditions) continue;
-        
+
         const tierSatisfied = Object.entries(tierConditions).every(
           ([key, value]) => {
             const pathParts = key.split(".");
@@ -509,7 +514,7 @@ export function getActionCostBreakdown(
     for (const tierKey of showWhenKeys) {
       const tierConditions = action.show_when?.[tierKey as any];
       if (!tierConditions) continue;
-      
+
       const tierSatisfied = Object.entries(tierConditions).every(
         ([key, value]) => {
           const pathParts = key.split(".");
