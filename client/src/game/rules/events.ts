@@ -1,4 +1,3 @@
-
 import { GameState } from "@shared/schema";
 import {
   getTotalStrength,
@@ -26,7 +25,7 @@ export function calculateSuccessChance(
 
   // Add first stat bonus
   if (stat0) {
-    const statValue = stat0.type === 'strength' 
+    const statValue = stat0.type === 'strength'
       ? getTotalStrength(state)
       : stat0.type === 'knowledge'
       ? getTotalKnowledge(state)
@@ -92,6 +91,7 @@ export interface GameEvent {
     type: 'glow' | 'pulse';
     duration: number; // in seconds
   };
+  skipEventDialog?: boolean; // New property to skip dialog
 }
 
 export interface EventChoice {
@@ -116,6 +116,7 @@ export interface LogEntry {
   fallbackChoice?: EventChoice;
   skipSound?: boolean; // Skip playing sound for this event
   skipEventLog?: boolean; // Skip adding to visible event log
+  skipEventDialog?: boolean; // Skip opening dialog for this log entry
   relevant_stats?: ("strength" | "knowledge" | "luck" | "madness")[]; // Stats relevant to event odds
   // Visual effect properties
   visualEffect?: {
@@ -175,10 +176,10 @@ export class EventManager {
           typeof event.timeProbability === "function"
             ? event.timeProbability(state)
             : event.timeProbability;
-        
+
         const cooldownPeriod = timeProbability * 0.25 * 60 * 1000; // 25% in milliseconds
         const timeSinceLastTrigger = currentTime - eventCooldowns[event.id];
-        
+
         if (timeSinceLastTrigger < cooldownPeriod) {
           continue; // Skip this event, it's still on cooldown
         }
@@ -223,19 +224,24 @@ export class EventManager {
           message = event.message;
         }
 
+        // Skip events marked to not appear in event dialog
+        if (event.skipEventDialog) {
+          continue;
+        }
+
         const logEntry: LogEntry = {
           id: `${event.id}-${Date.now()}`,
-          message: message,
+          title: event.title,
+          message: message, // Use the determined message
           timestamp: Date.now(),
           type: "event",
-          title: event.title,
           choices: eventChoices,
           isTimedChoice: event.isTimedChoice,
           baseDecisionTime: event.baseDecisionTime,
           fallbackChoice: event.fallbackChoice,
           relevant_stats: event.relevant_stats,
-          visualEffect: event.visualEffect,
-          skipEventLog: eventChoices && eventChoices.length > 0, // Mark events with choices to skip log
+          skipEventLog: event.skipEventLog,
+          skipEventDialog: event.skipEventDialog, // Add skipEventDialog to log entry
         };
 
         newLogEntries.push(logEntry);
@@ -256,13 +262,13 @@ export class EventManager {
             [event.id]: true,
           };
         }
-        
+
         // Record trigger time for cooldown tracking
         stateChanges.eventCooldowns = {
           ...(state.eventCooldowns || {}),
           [event.id]: currentTime,
         };
-        
+
         break; // Only trigger one event per tick
       }
     }

@@ -1033,8 +1033,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     set({ log: updatedLog });
 
-    // Auto-open event dialog for events with choices (except merchant events)
-    if (entry.choices && entry.choices.length > 0 && !entry.id.includes('merchant')) {
+    // Auto-open event dialog for events with choices (except those marked to skip dialog)
+    if (entry.choices && entry.choices.length > 0 && !entry.skipEventDialog) {
       get().setEventDialog(true, entry);
     }
   },
