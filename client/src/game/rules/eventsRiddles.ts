@@ -342,7 +342,7 @@ function createRiddleEvent(
     priority: 4,
     repeatable: false,
     isTimedChoice: true,
-    baseDecisionTime: 30,
+    baseDecisionTime: 25,
     choices: choices.map((choice) => ({
       id: choice.id,
       label: choice.label,
