@@ -1,0 +1,99 @@
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯ Failed Suites 10 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  client/src/game/loop.resourceLimits.test.ts [ client/src/game/loop.resourceLimits.test.ts ]
+ FAIL  client/src/game/loop.test.ts [ client/src/game/loop.test.ts ]
+ FAIL  client/src/game/population.test.ts [ client/src/game/population.test.ts ]
+ FAIL  client/src/game/resourceLimits.test.ts [ client/src/game/resourceLimits.test.ts ]
+ FAIL  client/src/game/state.resourceLimits.test.ts [ client/src/game/state.resourceLimits.test.ts ]
+ FAIL  client/src/game/state.test.ts [ client/src/game/state.test.ts ]
+ FAIL  client/src/game/rules/actionEffects.test.ts [ client/src/game/rules/actionEffects.test.ts ]
+ FAIL  client/src/game/rules/events.test.ts [ client/src/game/rules/events.test.ts ]
+ FAIL  client/src/game/rules/eventsVillageAttacks.test.ts [ client/src/game/rules/eventsVillageAttacks.test.ts ]
+ FAIL  client/src/game/rules/resourceGains.test.ts [ client/src/game/rules/resourceGains.test.ts ]
+Error: Transform failed with 1 error:
+/home/runner/workspace/client/src/game/rules/villageBuildActions.ts:1544:8: ERROR: Expected "}" but found "\"buildings.pillarOfClarity\""
+  Plugin: vite:esbuild
+  File: /home/runner/workspace/client/src/game/rules/villageBuildActions.ts:1544:8
+  
+  Expected "}" but found "\"buildings.pillarOfClarity\""
+  1542 |      effects: {
+  1543 |        1: {b
+  1544 |          "buildings.pillarOfClarity": 1,
+       |          ^
+  1545 |          "stats.madness": -40,
+  1546 |          "buildings.blackMonolith": 0,
+  
+ ❯ failureErrorWithLog node_modules/esbuild/lib/main.js:1477:15
+ ❯ node_modules/esbuild/lib/main.js:756:50
+ ❯ responseCallbacks.<computed> node_modules/esbuild/lib/main.js:623:9
+ ❯ handleIncomingPacket node_modules/esbuild/lib/main.js:678:12
+ ❯ Socket.readFromStdout node_modules/esbuild/lib/main.js:601:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/14]⎯
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 8. Edge Cases and Race Conditions > should handle rapid successive saves
+ FAIL  client/src/game/save.test.ts > Game Save/Load > should preserve cooldowns after save/load cycle
+Error: Transform failed with 1 error:
+/home/runner/workspace/client/src/game/rules/villageBuildActions.ts:1544:8: ERROR: Expected "}" but found "\"buildings.pillarOfClarity\""
+  Plugin: vite:esbuild
+  File: /home/runner/workspace/client/src/game/rules/villageBuildActions.ts:1544:8
+  
+  Expected "}" but found "\"buildings.pillarOfClarity\""
+  1542 |      effects: {
+  1543 |        1: {b
+  1544 |          "buildings.pillarOfClarity": 1,
+       |          ^
+  1545 |          "stats.madness": -40,
+  1546 |          "buildings.blackMonolith": 0,
+  
+ ❯ failureErrorWithLog node_modules/esbuild/lib/main.js:1477:15
+ ❯ node_modules/esbuild/lib/main.js:756:50
+ ❯ responseCallbacks.<computed> node_modules/esbuild/lib/main.js:623:9
+ ❯ handleIncomingPacket node_modules/esbuild/lib/main.js:678:12
+ ❯ Socket.readFromStdout node_modules/esbuild/lib/main.js:601:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/14]⎯
+
+ FAIL  client/src/game/save.test.ts > Game Save/Load > should handle corrupted save data gracefully
+AssertionError: expected undefined to be defined
+ ❯ client/src/game/save.test.ts:61:39
+     59|     // Should return the corrupted data with defaults applied, not null
+     60|     expect(loaded).toBeDefined();
+     61|     expect(loaded?.cooldownDurations).toBeDefined();
+       |                                       ^
+     62|   });
+     63| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/14]⎯
+
+ FAIL  client/src/game/save.test.ts > Game Save/Load > should merge cloud save with local save correctly
+AssertionError: expected undefined to be 150 // Object.is equality
+
+- Expected: 
+150
+
++ Received: 
+undefined
+
+ ❯ client/src/game/save.test.ts:95:36
+     93| 
+     94|     const loaded = await loadGame();
+     95|     expect(loaded?.resources.wood).toBe(150); // Cloud should win
+       |                                    ^
+     96|   });
+     97| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/14]⎯
+
+
+ Test Files  12 failed | 11 passed (23)
+      Tests  4 failed | 166 passed (170)
+   Start at  09:18:30
+   Duration  4.22s (transform 1.24s, setup 0ms, import 1.44s, tests 1.33s, environment 4ms)
+
+ FAIL  Tests failed. Watching for file changes...
+       press h to show help, press q to quit

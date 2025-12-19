@@ -98,7 +98,7 @@ export default function BuildingProgressChart() {
         maxCount: 3,
         color: SEGMENT_COLOR,
         label: "Forging",
-        relatedBuildings: ["advancedBlacksmith","grandBlacksmith"],
+        relatedBuildings: ["advancedBlacksmith", "grandBlacksmith"],
         reward: 250,
       },
       {
@@ -117,7 +117,6 @@ export default function BuildingProgressChart() {
         relatedBuildings: ["masterTannery", "highTannery"],
         reward: 250,
       },
-
     ],
     // Third ring: Resource buildings and pits
     [
@@ -146,7 +145,13 @@ export default function BuildingProgressChart() {
         color: SEGMENT_COLOR,
         label: "Storage",
         reward: 500,
-        relatedBuildings: ["storehouse", "fortifiedStorehouse", "villageWarehouse", "grandRepository", "greatVault"],
+        relatedBuildings: [
+          "storehouse",
+          "fortifiedStorehouse",
+          "villageWarehouse",
+          "grandRepository",
+          "greatVault",
+        ],
       },
       {
         buildingType: "clerksHut",

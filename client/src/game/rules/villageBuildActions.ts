@@ -194,7 +194,6 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.stoneHut": 1,
         "buildings.blacksmith": 1,
         "buildings.advancedBlacksmith": 0,
-        "buildings.grandBlacksmith": 0, // backwards compatibility
       },
     },
     cost: {
@@ -241,7 +240,6 @@ export const villageBuildActions: Record<string, Action> = {
     effects: {
       1: {
         "buildings.grandBlacksmith": 1,
-        "buildings.advancedBlacksmith": 1, // backwards compatibility
       },
     },
     craftingCostReduction: 0.05,
@@ -1542,7 +1540,7 @@ export const villageBuildActions: Record<string, Action> = {
       },
     },
     effects: {
-      1: {
+      1: {b
         "buildings.pillarOfClarity": 1,
         "stats.madness": -40,
         "buildings.blackMonolith": 0,
