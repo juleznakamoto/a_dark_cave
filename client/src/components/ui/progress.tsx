@@ -59,38 +59,13 @@ const Progress = React.forwardRef<
       <AnimatePresence>
         {showCelebration && (
           <>
-            {Array.from({ length: 8 }).map((_, i) => (
-              <motion.div
-                key={i}
-                className="absolute w-2 h-2 rounded-full bg-yellow-400 z-20"
-                initial={{
-                  left: `${value}%`,
-                  top: "50%",
-                  opacity: 1,
-                  scale: 0,
-                }}
-                animate={{
-                  left: `${value}%`,
-                  top: `${50 + (Math.random() - 0.5) * 200}%`,
-                  x: (Math.random() - 0.5) * 60,
-                  opacity: 0,
-                  scale: [0, 1.5, 0],
-                }}
-                exit={{ opacity: 0 }}
-                transition={{
-                  duration: 0.8,
-                  delay: i * 0.05,
-                  ease: "easeOut",
-                }}
-              />
-            ))}
             {/* Glow effect */}
             <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-400/30 to-transparent z-10 pointer-events-none"
+              className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-500/50 to-transparent z-10 pointer-events-none"
               initial={{ x: "-100%" }}
               animate={{ x: "100%" }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.6, ease: "easeInOut" }}
+              transition={{ duration: 1.0, ease: "easeInOut" }}
             />
           </>
         )}
