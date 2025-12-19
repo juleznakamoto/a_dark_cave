@@ -16,6 +16,14 @@ export default function EndScreenPage() {
     window.location.href = "mailto:support@a-dark-cave.com";
   };
 
+  const handleInstagram = () => {
+    window.open("https://www.instagram.com/a_dark_cave/", "_blank", "noopener,noreferrer");
+  };
+
+  const handleReddit = () => {
+    window.open("https://www.reddit.com/r/aDarkCave/", "_blank", "noopener,noreferrer");
+  };
+
   return (
     <div className="fixed inset-0 z-[99999]">
       <Hero
@@ -44,6 +52,14 @@ export default function EndScreenPage() {
             text: "Close",
             onClick: handleMainMenu,
             buttonId: "end-screen-close",
+          },
+        }}
+        socialButtons={{
+          instagram: {
+            onClick: handleInstagram,
+          },
+          reddit: {
+            onClick: handleReddit,
           },
         }}
       />
