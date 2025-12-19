@@ -20,7 +20,7 @@ export const woodcutterEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "acceptServices",
-        label: "Pay 25 food",
+        label: "Pay food",
         cost: "25 food",
         effect: (state: GameState) => {
           if (state.resources.food < 25) {
@@ -78,7 +78,7 @@ export const woodcutterEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "acceptServices",
-        label: "Pay 50 food",
+        label: "Pay food",
         cost: "50 food",
         effect: (state: GameState) => {
           if (state.resources.food < 50) {
@@ -137,7 +137,7 @@ export const woodcutterEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "acceptServices",
-        label: "Pay 100 food",
+        label: "Pay food",
         cost: "100 food",
         effect: (state: GameState) => {
           if (state.resources.food < 100) {
@@ -196,7 +196,7 @@ export const woodcutterEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "acceptServices",
-        label: "Pay 150 food",
+        label: "Pay food",
         cost: "150 food",
         effect: (state: GameState) => {
           if (state.resources.food < 150) {
@@ -276,7 +276,7 @@ export const woodcutterEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "acceptServices",
-        label: "Pay 200 food",
+        label: "Pay food",
         cost: "200 food",
         effect: (state: GameState) => {
           if (state.resources.food < 200) {
@@ -356,7 +356,7 @@ export const woodcutterEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "acceptServices",
-        label: "Pay 250 food",
+        label: "Pay food",
         cost: "250 food",
         effect: (state: GameState) => {
           if (state.resources.food < 250) {

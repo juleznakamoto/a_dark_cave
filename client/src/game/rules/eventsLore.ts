@@ -21,7 +21,7 @@ export const loreEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "payGold",
-        label: "Pay 50 Gold",
+        label: "Pay gold",
         cost: "50 gold",
         effect: (state: GameState) => {
           if (state.resources.gold < 50) {
@@ -128,7 +128,7 @@ export const loreEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "payGold",
-        label: "Pay 50 Gold",
+        label: "Pay gold",
         cost: "50 gold",
         effect: (state: GameState) => {
           if (state.resources.gold < 50) {
@@ -156,7 +156,7 @@ export const loreEvents: Record<string, GameEvent> = {
       },
       {
         id: "payFood",
-        label: "Pay 2500 Food",
+        label: "Pay food",
         cost: "2500 food",
         effect: (state: GameState) => {
           if (state.resources.food < 2500) {
@@ -220,7 +220,7 @@ export const loreEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "payGold",
-        label: "Pay 50 Gold",
+        label: "Pay gold",
         cost: "50 gold",
         effect: (state: GameState) => {
           if (state.resources.gold < 50) {
@@ -248,7 +248,7 @@ export const loreEvents: Record<string, GameEvent> = {
       },
       {
         id: "payFood",
-        label: "Pay 2500 Food",
+        label: "Pay food",
         cost: "2500 food",
         effect: (state: GameState) => {
           if (state.resources.food < 2500) {
@@ -356,7 +356,7 @@ export const loreEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "payGold",
-        label: "Pay 250 Gold",
+        label: "Pay gold",
         cost: "250 gold",
         effect: (state: GameState) => {
           if (state.resources.gold < 250) {
@@ -388,7 +388,7 @@ export const loreEvents: Record<string, GameEvent> = {
       },
       {
         id: "paySilver",
-        label: "Pay 1000 Silver",
+        label: "Pay silver",
         cost: "1000 silver",
         effect: (state: GameState) => {
           if (state.resources.silver < 1000) {
