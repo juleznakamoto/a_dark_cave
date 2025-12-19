@@ -93,6 +93,7 @@ import {
   handleBuildPrimeFoundry,
   handleBuildAltar,
   handleBuildGreatCabin,
+  handleBuildGrandHunterLodge,
   handleBuildTimberMill,
   handleBuildQuarry,
   handleBuildClerksHut,
@@ -367,6 +368,8 @@ export function executeGameAction(
       return handleBuildAltar(state, result);
     case "buildGreatCabin":
       return handleBuildGreatCabin(state, result);
+    case "buildGrandHunterLodge":
+      return handleBuildGrandHunterLodge(state, result);
     case "buildTimberMill":
       return handleBuildTimberMill(state, result);
     case "buildQuarry":

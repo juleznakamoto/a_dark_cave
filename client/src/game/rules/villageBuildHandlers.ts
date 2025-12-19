@@ -385,6 +385,31 @@ export function handleBuildGreatCabin(
   );
 }
 
+export function handleBuildGrandHunterLodge(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const grandHunterLodgeResult = handleBuildingConstruction(
+    state,
+    result,
+    "buildGrandHunterLodge",
+    "grandHunterLodge",
+  );
+
+  // Add grand hunter lodge completion message
+  if (state.buildings.grandHunterLodge === 0) {
+    grandHunterLodgeResult.logEntries!.push({
+      id: `grand-hunter-lodge-built-${Date.now()}`,
+      message:
+        "The Grand Hunter Lodge stands complete, a magnificent structure where master hunters gather to share their craft.",
+      timestamp: Date.now(),
+      type: "system",
+    });
+  }
+
+  return grandHunterLodgeResult;
+}
+
 export function handleBuildTimberMill(
   state: GameState,
   result: ActionResult,
