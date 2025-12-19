@@ -249,6 +249,44 @@ export const caveCraftWeapons: Record<string, Action> = {
     cooldown: 60,
   },
 
+  craftBlacksteelSword: {
+    id: "craftBlacksteelSword",
+    label: "Blacksteel Sword",
+    show_when: {
+      "buildings.masterworkFoundry": 1,
+      "buildings.grandBlacksmith": 1,
+      "weapons.blacksteel_sword": false,
+    },
+    cost: {
+      "resources.blacksteel": 150,
+    },
+    effects: {
+      "weapons.blacksteel_sword": true,
+      "story.seen.hasBlacksteelSword": true,
+      "story.seen.actionCraftBlacksteelSword": true,
+    },
+    cooldown: 30,
+  },
+
+  craftBlacksteelBow: {
+    id: "craftBlacksteelBow",
+    label: "Blacksteel Bow",
+    show_when: {
+      "buildings.masterworkFoundry": 1,
+      "buildings.grandBlacksmith": 1,
+      "weapons.blacksteel_bow": false,
+    },
+    cost: {
+      "resources.blacksteel": 100,
+    },
+    effects: {
+      "weapons.blacksteel_bow": true,
+      "story.seen.hasBlacksteelBow": true,
+      "story.seen.actionCraftBlacksteelBow": true,
+    },
+    cooldown: 30,
+  },
+
   craftBloodstoneStaff: {
     id: "craftBloodstoneStaff",
     label: "Bloodstone Staff",
