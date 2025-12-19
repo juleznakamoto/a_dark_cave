@@ -186,18 +186,18 @@ export default function MerchantDialog({
                 if (choice.cost && !isPurchased) {
                   return (
                     <TooltipProvider key={choice.id}>
-                      {/* Top tooltip - shows cost */}
                       <Tooltip open={mobileTooltip.isTooltipOpen(choice.id)}>
                         <TooltipTrigger asChild>
                           <div
-                            onClick={(e) =>
+                            onClick={(e) => {
+                              logger.log(`[MERCHANT TOOLTIP] Showing tooltips for choice: ${choice.id}, label: ${labelText}, cost: ${costText}`);
                               mobileTooltip.handleWrapperClick(
                                 choice.id,
                                 isDisabled,
                                 false,
                                 e,
-                              )
-                            }
+                              );
+                            }}
                             onMouseDown={
                               mobileTooltip.isMobile
                                 ? (e) =>
@@ -251,20 +251,6 @@ export default function MerchantDialog({
                             {eventChoiceCostTooltip.getContent(costText)}
                           </div>
                         </TooltipContent>
-                      </Tooltip>
-                      {/* Bottom tooltip - shows current amounts of both buy and pay resources */}
-                      <Tooltip open={mobileTooltip.isTooltipOpen(`${choice.id}-current`)}>
-                        <TooltipTrigger asChild>
-                          <div
-                            onClick={(e) => {
-                              logger.log(`[MERCHANT TOOLTIP] Showing current amounts for choice: ${choice.id}, label: ${labelText}, cost: ${costText}`);
-                              mobileTooltip.handleWrapperClick(`${choice.id}-current`, isDisabled, false, e);
-                            }}
-                            style={{ position: 'absolute', width: '100%', height: '100%', pointerEvents: 'none' }}
-                          >
-                            <div style={{ pointerEvents: 'auto' }} />
-                          </div>
-                        </TooltipTrigger>
                         <TooltipContent side="bottom">
                           <div className="text-xs whitespace-nowrap">
                             {getMerchantCurrentAmounts.getContent(labelText, costText, gameState)}
