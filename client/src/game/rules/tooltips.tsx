@@ -531,3 +531,60 @@ function capitalizeWords(str: string): string {
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
 }
+
+// Helper function to extract resource name and amount from text
+function parseResourceText(text: string): { resource: string; amount: number } | null {
+  // Match patterns like "250 gold", "+10 Food", "-5 wood"
+  const match = text.match(/[+-]?\s*(\d+)\s+([a-zA-Z_\s]+)/);
+  if (match) {
+    const amount = parseInt(match[1]);
+    const resource = match[2].trim().toLowerCase().replace(/\s+/g, '_');
+    return { resource, amount };
+  }
+  return null;
+}
+
+// Helper function to get current amount of a resource from game state
+export const getCurrentResourceAmount = {
+  getContent: (text: string | undefined, gameState: GameState): string => {
+    if (!text) return "";
+
+    const parsed = parseResourceText(text);
+    if (!parsed) return "";
+
+    const { resource } = parsed;
+    const currentAmount = gameState.resources[resource as keyof typeof gameState.resources] || 0;
+    
+    return `Current: ${currentAmount} ${capitalizeWords(resource)}`;
+  }
+};
+
+// Helper function to get current amounts for merchant (shows both buy and pay resources)
+export const getMerchantCurrentAmounts = {
+  getContent: (labelText: string | undefined, costText: string | undefined, gameState: GameState): string => {
+    const amounts: string[] = [];
+
+    // Parse the resource being bought (from label, e.g., "+10 Food")
+    if (labelText) {
+      const buyParsed = parseResourceText(labelText);
+      if (buyParsed) {
+        const currentAmount = gameState.resources[buyParsed.resource as keyof typeof gameState.resources] || 0;
+        amounts.push(`${capitalizeWords(buyParsed.resource)}: ${currentAmount}`);
+      }
+    }
+
+    // Parse the resource being paid (from cost, e.g., "250 gold")
+    if (costText) {
+      const payParsed = parseResourceText(costText);
+      if (payParsed) {
+        // Avoid duplicates if buy and pay are the same resource
+        if (!labelText || parseResourceText(labelText)?.resource !== payParsed.resource) {
+          const currentAmount = gameState.resources[payParsed.resource as keyof typeof gameState.resources] || 0;
+          amounts.push(`${capitalizeWords(payParsed.resource)}: ${currentAmount}`);
+        }
+      }
+    }
+
+    return amounts.length > 0 ? `Current: ${amounts.join(", ")}` : "";
+  }
+};

@@ -1,7 +1,7 @@
 import React from "react";
 import { LogEntry } from "@/game/rules/events";
 import { GameState } from "@shared/schema";
-import { eventChoiceCostTooltip } from "@/game/rules/tooltips";
+import { eventChoiceCostTooltip, getMerchantCurrentAmounts } from "@/game/rules/tooltips";
 import { getTotalKnowledge } from "@/game/rules/effectsCalculation";
 import { calculateMerchantDiscount, isKnowledgeBonusMaxed } from "@/game/rules/effectsStats";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
@@ -25,6 +25,7 @@ import {
   useMobileTooltip,
 } from "@/hooks/useMobileTooltip";
 import { isResourceLimited, getResourceLimit } from "@/game/resourceLimits";
+import { logger } from "@/lib/logger";
 
 interface MerchantDialogProps {
   event: LogEntry;
@@ -185,6 +186,7 @@ export default function MerchantDialog({
                 if (choice.cost && !isPurchased) {
                   return (
                     <TooltipProvider key={choice.id}>
+                      {/* Top tooltip - shows cost */}
                       <Tooltip open={mobileTooltip.isTooltipOpen(choice.id)}>
                         <TooltipTrigger asChild>
                           <div
@@ -244,9 +246,28 @@ export default function MerchantDialog({
                             {buttonContent}
                           </div>
                         </TooltipTrigger>
-                        <TooltipContent>
+                        <TooltipContent side="top">
                           <div className="text-xs whitespace-nowrap">
                             {eventChoiceCostTooltip.getContent(costText)}
+                          </div>
+                        </TooltipContent>
+                      </Tooltip>
+                      {/* Bottom tooltip - shows current amounts of both buy and pay resources */}
+                      <Tooltip open={mobileTooltip.isTooltipOpen(`${choice.id}-current`)}>
+                        <TooltipTrigger asChild>
+                          <div
+                            onClick={(e) => {
+                              logger.log(`[MERCHANT TOOLTIP] Showing current amounts for choice: ${choice.id}, label: ${labelText}, cost: ${costText}`);
+                              mobileTooltip.handleWrapperClick(`${choice.id}-current`, isDisabled, false, e);
+                            }}
+                            style={{ position: 'absolute', width: '100%', height: '100%', pointerEvents: 'none' }}
+                          >
+                            <div style={{ pointerEvents: 'auto' }} />
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent side="bottom">
+                          <div className="text-xs whitespace-nowrap">
+                            {getMerchantCurrentAmounts.getContent(labelText, costText, gameState)}
                           </div>
                         </TooltipContent>
                       </Tooltip>
