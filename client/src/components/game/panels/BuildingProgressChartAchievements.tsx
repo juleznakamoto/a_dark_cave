@@ -87,10 +87,10 @@ export default function BuildingProgressChart() {
     [
       {
         buildingType: "cabin",
-        maxCount: 2,
+        maxCount: 3,
         color: SEGMENT_COLOR,
         label: "Hunting",
-        relatedBuildings: ["greatCabin"],
+        relatedBuildings: ["greatCabin", "grandHunterLodge"],
         reward: 250,
       },
       {
@@ -114,7 +114,7 @@ export default function BuildingProgressChart() {
         maxCount: 2,
         color: SEGMENT_COLOR,
         label: "Hidework",
-        relatedBuildings: ["masterTannery"],
+        relatedBuildings: ["masterTannery", "highTannery"],
         reward: 250,
       },
 
