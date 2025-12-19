@@ -1009,9 +1009,11 @@ export const merchantEvents: Record<string, GameEvent> = {
     },
     triggerType: "resource",
     timeProbability: (state: GameState) => {
-      const probability = 10 + 1 * (state.buildings.tradePost || 0) +
-        2 * (state.buildings.grandBazaar || 0) +
-        2 * (state.buildings.merchantsGuild || 0);
+      const probability = 0 
+        // + 10 + 1 * (state.buildings.tradePost || 0) +
+        // 2 * (state.buildings.grandBazaar || 0) +
+        // 2 * (state.buildings.merchantsGuild || 0)
+        ;
       
       console.log('[MERCHANT] Time probability:', {
         tradePost: state.buildings.tradePost || 0,
