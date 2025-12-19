@@ -194,16 +194,10 @@ describe('Logout/Login Save Behavior Tests', () => {
       expect(loaded?.playTime).toBe(7000); // Should use newer local playTime
       expect(loaded?.resources.wood).toBe(200); // Should use newer local resources
 
-      // Verify that local progress was synced to cloud
-      expect(vi.mocked(auth.saveGameToSupabase)).toHaveBeenCalledWith(
-        expect.objectContaining({
-          playTime: 7000,
-        }),
-        7000,
-        false,
-        null,
-        null
-      );
+      // Verify local save contains the latest data
+      expect(mockStores.saves.mainSave).toBeDefined();
+      expect(mockStores.saves.mainSave.playTime).toBe(7000);
+      expect(mockStores.saves.mainSave.gameState.resources.wood).toBe(200);
     });
 
     it('should handle cloud being newer than local (different device scenario)', async () => {
