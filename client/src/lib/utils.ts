@@ -15,3 +15,10 @@ export function capitalizeWords(str: string): string {
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
 }
+
+// Utility function to format numbers with thousands separator
+export function formatNumber(num: number | string): string {
+  const n = typeof num === 'string' ? parseFloat(num) : num;
+  if (isNaN(n)) return String(num);
+  return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "'");
+}

@@ -11,6 +11,7 @@ import {
   CRUSHING_STRIKE_UPGRADES,
   BLOODFLAME_SPHERE_UPGRADES,
 } from "./skillUpgrades";
+import { formatNumber } from "@/lib/utils";
 
 const FOCUS_ELIGIBLE_ACTIONS = [
   "exploreCave",
@@ -252,8 +253,8 @@ export const getResourceGainTooltip = (
       {gains.map((gain, index) => (
         <div key={`gain-${index}`}>
           {gain.min === gain.max
-            ? `+${gain.min} ${formatResourceName(gain.resource)}`
-            : `+${gain.min}-${gain.max} ${formatResourceName(gain.resource)}`}
+            ? `+${formatNumber(gain.min)} ${formatResourceName(gain.resource)}`
+            : `+${formatNumber(gain.min)}-${formatNumber(gain.max)} ${formatResourceName(gain.resource)}`}
         </div>
       ))}
       {gains.length > 0 && costs.length > 0 && (
@@ -264,7 +265,7 @@ export const getResourceGainTooltip = (
           key={`cost-${index}`}
           className={cost.hasEnough ? "" : "text-muted-foreground"}
         >
-          -{cost.amount} {formatResourceName(cost.resource)}
+          -{formatNumber(cost.amount)} {formatResourceName(cost.resource)}
         </div>
       ))}
     </div>
@@ -532,7 +533,7 @@ export const eventChoiceCostTooltip = {
         const currentAmount = gameState.resources[resource as keyof typeof gameState.resources] || 0;
         currentAmounts.push(
           <div key={`current-${index}`}>
-            {capitalizeWords(resource)}: {currentAmount}
+            {capitalizeWords(resource)}: {formatNumber(currentAmount)}
           </div>
         );
       });
@@ -542,7 +543,7 @@ export const eventChoiceCostTooltip = {
     resources.forEach(({ resource, amount }, index) => {
       costLines.push(
         <div key={`cost-${index}`}>
-          -{amount} {capitalizeWords(resource)}
+          -{formatNumber(amount)} {capitalizeWords(resource)}
         </div>
       );
     });
@@ -633,7 +634,7 @@ export const getMerchantTooltip = {
       const currentAmount = gameState.resources[resource as keyof typeof gameState.resources] || 0;
       currentAmounts.push(
         <div key={`current-${index}`}>
-          {capitalizeWords(resource)}: {currentAmount}
+          {capitalizeWords(resource)}: {formatNumber(currentAmount)}
         </div>
       );
     });
@@ -642,7 +643,7 @@ export const getMerchantTooltip = {
     costResources.forEach(({ resource, amount }, index) => {
       costLines.push(
         <div key={`cost-${index}`}>
-          -{amount} {capitalizeWords(resource)}
+          -{formatNumber(amount)} {capitalizeWords(resource)}
         </div>
       );
     });
