@@ -14,16 +14,15 @@ const Progress = React.forwardRef<
   React.ElementRef<typeof ProgressPrimitive.Root>,
   ProgressProps
 >(({ className, value, segments = 1, ...props }, ref) => {
-  const [prevValue, setPrevValue] = React.useState(value || 0);
-  const [showCelebration, setShowCelebration] = React.useState(false);
+  const [animationKey, setAnimationKey] = React.useState(0);
+  const prevValueRef = React.useRef(value || 0);
 
   React.useEffect(() => {
-    if (value !== undefined && value > prevValue) {
-      setShowCelebration(true);
-      setTimeout(() => setShowCelebration(false), 1000);
+    if (value !== undefined && value > prevValueRef.current) {
+      setAnimationKey(prev => prev + 1);
     }
-    setPrevValue(value || 0);
-  }, [value, prevValue]);
+    prevValueRef.current = value || 0;
+  }, [value]);
 
   return (
     <ProgressPrimitive.Root
@@ -48,27 +47,19 @@ const Progress = React.forwardRef<
       
       {/* Progress indicator */}
       <ProgressPrimitive.Indicator
-        className={cn(
-          "h-full w-full flex-1 bg-red-950 transition-all relative z-10 overflow-hidden",
-          showCelebration && "animate-pulse"
-        )}
+        className="h-full w-full flex-1 bg-red-950 transition-all relative z-10 overflow-hidden"
         style={{ transform: `translateX(-${100 - (value || 0)}%)` }}
       >
-        {/* Celebration particles - constrained within progress indicator */}
-        <AnimatePresence>
-          {showCelebration && (
-            <>
-              {/* Glow effect */}
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-red-500/100 to-transparent pointer-events-none"
-                initial={{ x: "-100%" }}
-                animate={{ x: "100%" }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.7, ease: "easeInOut" }}
-              />
-            </>
-          )}
-        </AnimatePresence>
+        {/* Glow effect - animates on every increase */}
+        {animationKey > 0 && (
+          <motion.div
+            key={animationKey}
+            className="absolute inset-0 bg-gradient-to-r from-transparent via-red-500/100 to-transparent pointer-events-none"
+            initial={{ x: "-100%", opacity: 1 }}
+            animate={{ x: "100%", opacity: 0 }}
+            transition={{ duration: 0.7, ease: "easeOut" }}
+          />
+        )}
       </ProgressPrimitive.Indicator>
     </ProgressPrimitive.Root>
   );
