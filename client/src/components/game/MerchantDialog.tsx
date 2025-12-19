@@ -1,7 +1,7 @@
 import React from "react";
 import { LogEntry } from "@/game/rules/events";
 import { GameState } from "@shared/schema";
-import { eventChoiceCostTooltip, getMerchantCurrentAmounts } from "@/game/rules/tooltips";
+import { getMerchantTooltip } from "@/game/rules/tooltips";
 import { getTotalKnowledge } from "@/game/rules/effectsCalculation";
 import { calculateMerchantDiscount, isKnowledgeBonusMaxed } from "@/game/rules/effectsStats";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
@@ -248,12 +248,7 @@ export default function MerchantDialog({
                         </TooltipTrigger>
                         <TooltipContent side="top">
                           <div className="text-xs whitespace-pre-line">
-                            {/* Display user resources at the top */}
-                            {getMerchantCurrentAmounts.getContent(labelText, costText, gameState)}
-                            {/* Separator line */}
-                            <div className="my-1 border-t border-muted-foreground/50"></div>
-                            {/* Display cost at the bottom */}
-                            {eventChoiceCostTooltip.getContent(costText)}
+                            {getMerchantTooltip.getContent(labelText, costText, gameState)}
                           </div>
                         </TooltipContent>
                       </Tooltip>

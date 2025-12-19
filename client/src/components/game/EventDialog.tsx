@@ -3,7 +3,7 @@ import { useGameStore } from "@/game/state";
 import { LogEntry } from "@/game/rules/events";
 import { getTotalKnowledge } from "@/game/rules/effectsCalculation";
 import { calculateKnowledgeTimeBonus, isKnowledgeBonusMaxed } from "@/game/rules/effectsStats";
-import { eventChoiceCostTooltip, getCurrentResourceAmount } from "@/game/rules/tooltips";
+import { eventChoiceCostTooltip } from "@/game/rules/tooltips";
 import {
   Dialog,
   DialogContent,
@@ -427,10 +427,7 @@ export default function EventDialog({
                     </TooltipTrigger>
                     <TooltipContent side="top">
                       <div className="text-xs whitespace-pre-line">
-                        {/* Combined tooltip content: resources, line, then cost */}
-                        {getCurrentResourceAmount.getContent(costText, gameState)}
-                        <div className="h-[1px] bg-muted my-1"></div> {/* Separator line */}
-                        {eventChoiceCostTooltip.getContent(costText)}
+                        {eventChoiceCostTooltip.getContent(costText, gameState)}
                       </div>
                     </TooltipContent>
                   </Tooltip>
