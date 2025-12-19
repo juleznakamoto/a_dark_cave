@@ -585,6 +585,6 @@ export const getMerchantCurrentAmounts = {
       }
     }
 
-    return amounts.length > 0 ? `Current: ${amounts.join(", ")}` : "";
+    return amounts.length > 0 ? [...amounts] : "";
   }
 };
