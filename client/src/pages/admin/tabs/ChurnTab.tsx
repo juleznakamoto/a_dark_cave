@@ -516,12 +516,25 @@ export default function ChurnTab(props: ChurnTabProps) {
   };
 
   const getCubeEventsOverRealTime = () => {
+    console.log('=== getCubeEventsOverRealTime Debug ===');
+    console.log('Total clickData entries:', clickData.length);
+    
     // Extract cube button clicks from the clicks data structure
     // Looking for buttons like "cube-close-cube03-1766078383278"
     const cubeClicksByDate = new Map<string, Map<number, Set<string>>>();
     let maxCubeEvent = 0;
+    let cubeButtonsFound = 0;
 
-    clickData.forEach(entry => {
+    clickData.forEach((entry, index) => {
+      // Log first entry structure
+      if (index === 0) {
+        console.log('Sample entry structure:', {
+          user_id: entry.user_id,
+          clicks_keys: Object.keys(entry.clicks),
+          sample_playtime_buttons: entry.clicks['40m'] ? Object.keys(entry.clicks['40m']).slice(0, 5) : 'no 40m'
+        });
+      }
+
       // entry.clicks is structured as: { "40m": { "cube-close-cube03-1766078383278": 1, ... } }
       Object.entries(entry.clicks).forEach(([playtimeKey, buttonClicks]) => {
         Object.keys(buttonClicks as Record<string, number>).forEach(buttonId => {
@@ -529,12 +542,23 @@ export default function ChurnTab(props: ChurnTabProps) {
           const cubeMatch = buttonId.match(/cube-close-cube(\d+)-(\d+)/);
 
           if (cubeMatch) {
+            cubeButtonsFound++;
             const cubeNum = parseInt(cubeMatch[1]);
             const timestamp = parseInt(cubeMatch[2]);
             maxCubeEvent = Math.max(maxCubeEvent, cubeNum);
 
             // Convert timestamp to date
             const date = format(new Date(timestamp), 'MMM dd');
+
+            if (cubeButtonsFound <= 5) {
+              console.log('Cube button found:', {
+                buttonId,
+                cubeNum,
+                timestamp,
+                date,
+                user_id: entry.user_id
+              });
+            }
 
             if (!cubeClicksByDate.has(date)) {
               cubeClicksByDate.set(date, new Map());
@@ -549,6 +573,10 @@ export default function ChurnTab(props: ChurnTabProps) {
         });
       });
     });
+
+    console.log('Total cube buttons found:', cubeButtonsFound);
+    console.log('Max cube event:', maxCubeEvent);
+    console.log('Dates with cube events:', Array.from(cubeClicksByDate.keys()));
 
     // Convert to array and sort by date
     const sortedDates = Array.from(cubeClicksByDate.keys()).sort((a, b) => {
@@ -568,6 +596,9 @@ export default function ChurnTab(props: ChurnTabProps) {
       result.push(dataPoint);
     });
 
+    console.log('Final result:', result);
+    console.log('=== End Debug ===');
+    
     return result;
   };
 
