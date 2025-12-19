@@ -59,50 +59,36 @@ const Progress = React.forwardRef<
       <AnimatePresence>
         {showCelebration && (
           <>
-            {Array.from({ length: 12 }).map((_, i) => {
-              const angle = (Math.PI / 6) + (i / 12) * Math.PI * 1.2; // Spread particles in an arc
-              const distance = 40 + Math.random() * 30;
-              const endX = Math.cos(angle) * distance;
-              const endY = -Math.sin(angle) * distance; // Negative for upward direction
-              
-              return (
-                <motion.div
-                  key={i}
-                  className="absolute w-2 h-2 rounded-full bg-yellow-400 z-20"
-                  style={{
-                    left: `${value}%`,
-                    top: "50%",
-                  }}
-                  initial={{
-                    opacity: 1,
-                    scale: 0,
-                    x: 0,
-                    y: 0,
-                  }}
-                  animate={{
-                    opacity: 0,
-                    scale: [0, 1.5, 0],
-                    x: endX,
-                    y: endY,
-                  }}
-                  exit={{ opacity: 0 }}
-                  transition={{
-                    duration: 0.8,
-                    delay: i * 0.05,
-                    ease: "easeOut",
-                  }}
-                />
-              );
-            })}
+            {Array.from({ length: 8 }).map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute w-2 h-2 rounded-full bg-yellow-400 z-20"
+                initial={{
+                  left: `${value}%`,
+                  top: "50%",
+                  opacity: 1,
+                  scale: 0,
+                }}
+                animate={{
+                  left: `${value}%`,
+                  top: `${50 + (Math.random() - 0.5) * 200}%`,
+                  x: (Math.random() - 0.5) * 60,
+                  opacity: 0,
+                  scale: [0, 1.5, 0],
+                }}
+                exit={{ opacity: 0 }}
+                transition={{
+                  duration: 0.8,
+                  delay: i * 0.05,
+                  ease: "easeOut",
+                }}
+              />
+            ))}
             {/* Glow effect */}
             <motion.div
               className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-400/30 to-transparent z-10 pointer-events-none"
-              style={{
-                left: 0,
-                width: `${value}%`,
-              }}
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: [0, 1, 0], scale: [0.8, 1.1, 1] }}
+              initial={{ x: "-100%" }}
+              animate={{ x: "100%" }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.6, ease: "easeInOut" }}
             />
