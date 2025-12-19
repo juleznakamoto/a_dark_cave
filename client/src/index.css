@@ -274,22 +274,18 @@ body {
 
 .madness-pulse-light {
   animation: madness-pulse-light 2.5s ease-in-out infinite;
-  padding-right: 4px;
 }
 
 .madness-pulse-medium {
   animation: madness-pulse-medium 2.0s ease-in-out infinite;
-  padding-right: 6px;
 }
 
 .madness-pulse-intense {
   animation: madness-pulse-intense 1.5s ease-in-out infinite;
-  padding-right: 8px;
 }
 
 .madness-pulse-extreme {
   animation: madness-pulse-extreme 1.0s ease-in-out infinite;
-  padding-right: 10px;
 }
 
 /* Cube dialog glow animation */

@@ -382,13 +382,16 @@ export default function SidePanelSection({
 
     const itemContent = (
       <div
-        className={cn(
-          "flex items-center justify-between py-0.5",
-          isAnimated && "animate-resource-increase",
-          isDecreaseAnimated && "animate-resource-decrease",
-          isMaxAnimated && "animate-at-max",
-        )}
         data-testid={item.testId}
+        className={`flex leading-tight justify-between items-center transition-all duration-300 ${
+          isAnimated
+            ? "text-green-400"
+            : isDecreaseAnimated
+              ? "text-red-400"
+              : isMaxAnimated
+                ? "text-yellow-400"
+                : ""
+        }`}
       >
         {labelContent}
         {![
@@ -432,13 +435,16 @@ export default function SidePanelSection({
         <TooltipProvider key={item.id}>
           <Tooltip open={mobileTooltip.isTooltipOpen(item.id)}>
             <div
-              className={cn(
-                "flex items-center justify-between py-0.5 overflow-visible",
-                isAnimated && "animate-resource-increase",
-                isDecreaseAnimated && "animate-resource-decrease",
-                isMaxAnimated && "animate-at-max",
-              )}
               data-testid={item.testId}
+              className={`flex leading-tight justify-between items-center transition-all duration-300 ${
+                isAnimated
+                  ? "text-green-400"
+                  : isDecreaseAnimated
+                    ? "text-red-400"
+                    : isAtMax
+                      ? "text-yellow-400"
+                      : "" // Changed to yellow for max resources
+              }`}
             >
               <TooltipTrigger asChild>
                 <span
@@ -476,13 +482,16 @@ export default function SidePanelSection({
         <TooltipProvider key={item.id}>
           <Tooltip open={mobileTooltip.isTooltipOpen(item.id)}>
             <div
-              className={cn(
-                "flex items-center justify-between py-0.5 overflow-visible",
-                isAnimated && "animate-resource-increase",
-                isDecreaseAnimated && "animate-resource-decrease",
-                isMaxAnimated && "animate-at-max",
-              )}
               data-testid={item.testId}
+              className={`flex leading-tight justify-between items-center transition-all duration-300 ${
+                isAnimated
+                  ? "text-green-400"
+                  : isDecreaseAnimated
+                    ? "text-red-400"
+                    : isMaxAnimated
+                      ? "text-yellow-400"
+                      : ""
+              }`}
             >
               <TooltipTrigger asChild>
                 <span
@@ -509,13 +518,16 @@ export default function SidePanelSection({
         <TooltipProvider key={item.id}>
           <Tooltip open={mobileTooltip.isTooltipOpen(item.id)}>
             <div
-              className={cn(
-                "flex items-center justify-between py-0.5 overflow-visible",
-                isAnimated && "animate-resource-increase",
-                isDecreaseAnimated && "animate-resource-decrease",
-                isMaxAnimated && "animate-at-max",
-              )}
               data-testid={item.testId}
+              className={`flex leading-tight justify-between items-center transition-all duration-300 ${
+                isAnimated
+                  ? "text-green-400"
+                  : isDecreaseAnimated
+                    ? "text-red-400"
+                    : isMaxAnimated
+                      ? "text-yellow-400"
+                      : ""
+              }`}
             >
               <TooltipTrigger asChild>
                 <span
@@ -542,13 +554,16 @@ export default function SidePanelSection({
         <TooltipProvider key={item.id}>
           <Tooltip open={mobileTooltip.isTooltipOpen(item.id)}>
             <div
-              className={cn(
-                "flex items-center justify-between py-0.5 overflow-visible",
-                isAnimated && "animate-resource-increase",
-                isDecreaseAnimated && "animate-resource-decrease",
-                isMaxAnimated && "animate-at-max",
-              )}
               data-testid={item.testId}
+              className={`flex leading-tight justify-between items-center transition-all duration-300 ${
+                isAnimated
+                  ? "text-green-400"
+                  : isDecreaseAnimated
+                    ? "text-red-400"
+                    : isMaxAnimated
+                      ? "text-yellow-400"
+                      : ""
+              }`}
             >
               <TooltipTrigger asChild>
                 <span
