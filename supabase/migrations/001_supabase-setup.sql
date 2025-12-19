@@ -275,15 +275,18 @@ BEGIN
             v_existing_bucket := v_existing_clicks->v_playtime_key;
             v_merged_bucket := '{}'::jsonb;
 
+            -- First, add all existing keys with their merged counts
             FOR v_key IN SELECT jsonb_object_keys(v_existing_bucket) LOOP
               v_existing_count := (v_existing_bucket->>v_key)::INTEGER;
               v_new_count := COALESCE((p_click_analytics->>v_key)::INTEGER, 0);
               v_merged_bucket := jsonb_set(v_merged_bucket, ARRAY[v_key], to_jsonb(v_existing_count + v_new_count));
             END LOOP;
 
+            -- Then, add any new keys that weren't in the existing bucket
             FOR v_key IN SELECT jsonb_object_keys(p_click_analytics) LOOP
               IF NOT (v_existing_bucket ? v_key) THEN
-                v_merged_bucket := jsonb_set(v_merged_bucket, ARRAY[v_key], p_click_analytics->v_key);
+                v_new_count := (p_click_analytics->>v_key)::INTEGER;
+                v_merged_bucket := jsonb_set(v_merged_bucket, ARRAY[v_key], to_jsonb(v_new_count));
               END IF;
             END LOOP;
 
