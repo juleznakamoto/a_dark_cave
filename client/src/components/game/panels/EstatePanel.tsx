@@ -77,8 +77,8 @@ export default function EstatePanel() {
     return () => clearInterval(interval);
   }, [focusState]);
 
-  // Focus button - always show, but disable if no points or already active
-  const showFocusButton = true;
+  // Focus button - only show if there are focus points available
+  const showFocusButton = focusState?.points > 0;
 
   // Calculate Focus duration: 1 focus point = 1 minute of Focus time
   const calculateFocusDuration = (focusPoints: number) => {
