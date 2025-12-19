@@ -275,7 +275,6 @@ export default function EventDialog({
               purchasedItems={purchasedItems}
               fallbackExecutedRef={fallbackExecutedRef}
               onChoice={handleChoice}
-              hasScriptorium={hasScriptorium}
             />
           ) : (
             <DialogContent className="w-[95vw] sm:max-w-md [&>button]:hidden">
@@ -433,10 +432,12 @@ export default function EventDialog({
                           logger.log(`[EVENT TOOLTIP] Showing current amounts for choice: ${choice.id}, cost: ${costText}`);
                           mobileTooltip.handleWrapperClick(`${choice.id}-current`, isDisabled, false, e);
                         }}
-                        style={{ position: 'absolute', width: '100%', height: '100%', pointerEvents: 'none' }}
-                      >
-                        <div style={{ pointerEvents: 'auto' }} />
-                      </div>
+                        onMouseDown={mobileTooltip.isMobile ? (e) => mobileTooltip.handleMouseDown(`${choice.id}-current`, isDisabled, false, e) : undefined}
+                        onMouseUp={mobileTooltip.isMobile ? (e) => mobileTooltip.handleMouseUp(`${choice.id}-current`, isDisabled, () => handleChoice(choice.id), e) : undefined}
+                        onTouchStart={mobileTooltip.isMobile ? (e) => mobileTooltip.handleTouchStart(`${choice.id}-current`, isDisabled, false, e) : undefined}
+                        onTouchEnd={mobileTooltip.isMobile ? (e) => mobileTooltip.handleTouchEnd(`${choice.id}-current`, isDisabled, () => handleChoice(choice.id), e) : undefined}
+                        style={{ position: 'absolute', width: '100%', height: '100%', top: 0, left: 0, pointerEvents: 'auto' }}
+                      />
                     </TooltipTrigger>
                     <TooltipContent side="bottom">
                       <div className="text-xs whitespace-nowrap">
