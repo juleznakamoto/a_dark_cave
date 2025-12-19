@@ -18,6 +18,7 @@ const AXE_HIERARCHY = [
   "steel_axe",
   "obsidian_axe",
   "adamant_axe",
+  "blacksteel_axe",
 ];
 const PICKAXE_HIERARCHY = [
   "stone_pickaxe",
@@ -25,6 +26,7 @@ const PICKAXE_HIERARCHY = [
   "steel_pickaxe",
   "obsidian_pickaxe",
   "adamant_pickaxe",
+  "blacksteel_pickaxe",
 ];
 const LANTERN_HIERARCHY = [
   "lantern",
@@ -32,6 +34,7 @@ const LANTERN_HIERARCHY = [
   "steel_lantern",
   "obsidian_lantern",
   "adamant_lantern",
+  "blacksteel_lantern",
 ];
 
 const BOW_HIERARCHY = [
@@ -40,6 +43,7 @@ const BOW_HIERARCHY = [
   "long_bow",
   "war_bow",
   "master_bow",
+  "blacksteel_bow",
 ];
 
 const SWORD_HIERARCHY = [
@@ -47,6 +51,7 @@ const SWORD_HIERARCHY = [
   "steel_sword",
   "obsidian_sword",
   "adamant_sword",
+  "blacksteel_sword",
 ];
 
 // Helper function to get the best tool of a specific type
