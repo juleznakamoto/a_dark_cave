@@ -92,6 +92,9 @@ CREATE INDEX IF NOT EXISTS button_clicks_timestamp_idx ON button_clicks(timestam
 CREATE INDEX IF NOT EXISTS purchases_user_id_idx ON purchases(user_id);
 CREATE INDEX IF NOT EXISTS purchases_item_id_idx ON purchases(item_id);
 
+-- Drop the old function first to allow parameter rename
+DROP FUNCTION IF EXISTS save_game_with_analytics(UUID, JSONB, JSONB, JSONB, BOOLEAN, BOOLEAN);
+
 -- Create a function that saves both game state and click analytics atomically
 CREATE OR REPLACE FUNCTION save_game_with_analytics(
   p_user_id UUID,
