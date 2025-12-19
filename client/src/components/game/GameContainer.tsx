@@ -5,7 +5,6 @@ import VillagePanel from "./panels/VillagePanel";
 import ForestPanel from "./panels/ForestPanel";
 import EstatePanel from "./panels/EstatePanel";
 import BastionPanel from "./panels/BastionPanel";
-import MerchantPanel from "./panels/MerchantPanel"; // Import MerchantPanel
 import AchievementsPanel from "./panels/AchievementsPanel";
 import LogPanel from "./panels/LogPanel";
 import StartScreen from "./StartScreen";
@@ -24,8 +23,6 @@ import ProfileMenu from "./ProfileMenu"; // Imported ProfileMenu
 import { startVersionCheck, stopVersionCheck } from "@/game/versionCheck";
 import { logger } from "@/lib/logger";
 import { toast } from "@/hooks/use-toast";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"; // Import Tabs components
-import { cn } from "@/lib/utils"; // Import cn for conditional class names
 
 export default function GameContainer() {
   const {
@@ -45,7 +42,6 @@ export default function GameContainer() {
     restartGameDialogOpen,
     setRestartGameDialogOpen,
     restartGame,
-    merchantTab, // Get merchantTab state
   } = useGameStore();
 
   // Estate unlocks when Dark Estate is built
@@ -59,7 +55,6 @@ export default function GameContainer() {
     forestUnlocked: flags.forestUnlocked,
     estateUnlocked: estateUnlocked,
     bastionUnlocked: flags.bastionUnlocked,
-    merchantUnlocked: merchantTab.isOpen, // Track merchant tab state
   });
 
   // Track when new tabs are unlocked and trigger animations
@@ -79,10 +74,6 @@ export default function GameContainer() {
     if (!prev.bastionUnlocked && flags.bastionUnlocked) {
       newAnimations.add("bastion");
     }
-    // Add animation trigger for merchant tab
-    if (!prev.merchantUnlocked && merchantTab.isOpen) {
-      newAnimations.add("merchant");
-    }
 
     if (newAnimations.size > 0) {
       setAnimatingTabs(newAnimations);
@@ -94,14 +85,12 @@ export default function GameContainer() {
       forestUnlocked: flags.forestUnlocked,
       estateUnlocked: estateUnlocked,
       bastionUnlocked: flags.bastionUnlocked,
-      merchantUnlocked: merchantTab.isOpen, // Update tracked merchant tab state
     };
   }, [
     flags.villageUnlocked,
     flags.forestUnlocked,
     estateUnlocked,
     flags.bastionUnlocked,
-    merchantTab.isOpen, // Add merchantTab.isOpen to dependency array
   ]);
 
   // Initialize version check
@@ -201,17 +190,6 @@ export default function GameContainer() {
         onClick: () => setActiveTab("achievements"),
       });
     }
-
-    // Add Merchant tab if merchantTab is open
-    if (merchantTab.isOpen) {
-      tabs.push({
-        id: "merchant",
-        icon: <Castle />, // Placeholder icon, change as needed
-        label: "Merchant",
-        onClick: () => setActiveTab("merchant"),
-      });
-    }
-
     return tabs;
   }, [
     flags.villageUnlocked,
@@ -221,7 +199,6 @@ export default function GameContainer() {
     buildings.stoneHut,
     setActiveTab,
     books?.book_of_trials,
-    merchantTab.isOpen, // Include merchantTab.isOpen in dependencies
   ]);
 
   // Show start screen if game hasn't started yet
@@ -279,160 +256,114 @@ export default function GameContainer() {
                 className="bg-transparent border-0"
               />
             ) : (
-              // Standard button design using Tabs component
-              <Tabs
-                value={activeTab}
-                onValueChange={(value) => setActiveTab(value as any)} // Cast to any for simplicity, consider stricter typing
-                className="w-full"
-              >
-                <TabsList className="bg-transparent p-0 h-auto flex space-x-4 pl-[3px] border-b border-border">
-                  <TabsTrigger
-                    value="cave"
-                    className={cn(
-                      "px-2 py-2 text-sm bg-transparent",
-                      activeTab === "cave"
-                        ? "font-bold opacity-100 border-b-2 border-primary"
-                        : "opacity-60"
-                    )}
-                    data-testid="tab-cave"
+              // Standard button design
+              <div className="flex space-x-4 pl-[3px] ">
+                <button
+                  className={`py-2 text-sm bg-transparent ${
+                    activeTab === "cave"
+                      ? "font-bold opacity-100"
+                      : "opacity-60"
+                  } `}
+                  onClick={() => setActiveTab("cave")}
+                  data-testid="tab-cave"
+                >
+                  Cave
+                </button>
+
+                {flags.villageUnlocked && (
+                  <button
+                    className={`py-2 text-sm bg-transparent ${
+                      animatingTabs.has("village")
+                        ? "tab-fade-in"
+                        : activeTab === "village"
+                          ? "font-bold opacity-100"
+                          : "opacity-60"
+                    }`}
+                    onClick={() => setActiveTab("village")}
+                    data-testid="tab-village"
                   >
-                    Cave
-                  </TabsTrigger>
+                    {buildings.stoneHut >= 5 ? "City" : "Village"}
+                  </button>
+                )}
 
-                  {flags.villageUnlocked && (
-                    <TabsTrigger
-                      value="village"
-                      className={cn(
-                        "px-2 py-2 text-sm bg-transparent",
-                        animatingTabs.has("village")
-                          ? "tab-fade-in"
-                          : activeTab === "village"
-                            ? "font-bold opacity-100 border-b-2 border-primary"
-                            : "opacity-60"
-                      )}
-                      data-testid="tab-village"
-                    >
-                      {buildings.stoneHut >= 5 ? "City" : "Village"}
-                    </TabsTrigger>
-                  )}
+                {/* Estate Tab Button */}
+                {(estateUnlocked || buildings.darkEstate >= 1) && (
+                  <button
+                    className={`py-2 text-sm bg-transparent ${
+                      animatingTabs.has("estate")
+                        ? "tab-fade-in"
+                        : activeTab === "estate"
+                          ? "font-bold opacity-100"
+                          : "opacity-60"
+                    }`}
+                    onClick={() => setActiveTab("estate")}
+                    data-testid="tab-estate"
+                  >
+                    Estate
+                  </button>
+                )}
 
-                  {/* Estate Tab Button */}
-                  {(estateUnlocked || buildings.darkEstate >= 1) && (
-                    <TabsTrigger
-                      value="estate"
-                      className={cn(
-                        "px-2 py-2 text-sm bg-transparent",
-                        animatingTabs.has("estate")
-                          ? "tab-fade-in"
-                          : activeTab === "estate"
-                            ? "font-bold opacity-100 border-b-2 border-primary"
-                            : "opacity-60"
-                      )}
-                      data-testid="tab-estate"
-                    >
-                      Estate
-                    </TabsTrigger>
-                  )}
+                {flags.forestUnlocked && (
+                  <button
+                    className={`py-2 text-sm bg-transparent ${
+                      animatingTabs.has("forest")
+                        ? "tab-fade-in"
+                        : activeTab === "forest"
+                          ? "font-bold opacity-100"
+                          : "opacity-60"
+                    }`}
+                    onClick={() => setActiveTab("forest")}
+                    data-testid="tab-forest"
+                  >
+                    Forest
+                  </button>
+                )}
 
-                  {flags.forestUnlocked && (
-                    <TabsTrigger
-                      value="forest"
-                      className={cn(
-                        "px-2 py-2 text-sm bg-transparent",
-                        animatingTabs.has("forest")
-                          ? "tab-fade-in"
-                          : activeTab === "forest"
-                            ? "font-bold opacity-100 border-b-2 border-primary"
-                            : "opacity-60"
-                      )}
-                      data-testid="tab-forest"
-                    >
-                      Forest
-                    </TabsTrigger>
-                  )}
+                {flags.bastionUnlocked && (
+                  <button
+                    className={`py-2 text-sm bg-transparent ${
+                      animatingTabs.has("bastion")
+                        ? "tab-fade-in"
+                        : activeTab === "bastion"
+                          ? "font-bold opacity-100"
+                          : "opacity-60"
+                    }`}
+                    onClick={() => setActiveTab("bastion")}
+                    data-testid="tab-bastion"
+                  >
+                    {flags.hasFortress ? "Fortress" : "Bastion"}
+                  </button>
+                )}
 
-                  {flags.bastionUnlocked && (
-                    <TabsTrigger
-                      value="bastion"
-                      className={cn(
-                        "px-2 py-2 text-sm bg-transparent",
-                        animatingTabs.has("bastion")
-                          ? "tab-fade-in"
-                          : activeTab === "bastion"
-                            ? "font-bold opacity-100 border-b-2 border-primary"
-                            : "opacity-60"
-                      )}
-                      data-testid="tab-bastion"
-                    >
-                      {flags.hasFortress ? "Fortress" : "Bastion"}
-                    </TabsTrigger>
-                  )}
-
-                  {/* Achievements Tab Button */}
-                  {books?.book_of_trials && (
-                    <TabsTrigger
-                      value="achievements"
-                      className={cn(
-                        "px-2 py-2 text-sm bg-transparent",
-                        animatingTabs.has("achievements")
-                          ? "tab-fade-in"
-                          : activeTab === "achievements"
-                            ? "font-medium opacity-100 border-b-2 border-primary"
-                            : "opacity-60"
-                      )}
-                      data-testid="tab-achievements"
-                    >
-                      ⚜
-                    </TabsTrigger>
-                  )}
-
-                  {/* Merchant Tab Button */}
-                  {merchantTab.isOpen && (
-                    <TabsTrigger
-                      value="merchant"
-                      className={cn(
-                        "px-2 py-2 text-sm bg-transparent",
-                        animatingTabs.has("merchant")
-                          ? "tab-fade-in"
-                          : activeTab === "merchant"
-                            ? "font-bold opacity-100 border-b-2 border-primary"
-                            : "opacity-60"
-                      )}
-                      data-testid="tab-merchant"
-                    >
-                      Merchant
-                    </TabsTrigger>
-                  )}
-                </TabsList>
-
-                {/* Action Panels */}
-                <div className="flex-1 overflow-auto pl-2 md:pl-4 min-h-0 pt-4">
-                  <TabsContent value="cave" className="mt-0 h-full">
-                    <CavePanel />
-                  </TabsContent>
-                  <TabsContent value="village" className="mt-0 h-full">
-                    <VillagePanel />
-                  </TabsContent>
-                  <TabsContent value="forest" className="mt-0 h-full">
-                    <ForestPanel />
-                  </TabsContent>
-                  <TabsContent value="estate" className="mt-0 h-full">
-                    <EstatePanel />
-                  </TabsContent>
-                  <TabsContent value="bastion" className="mt-0 h-full">
-                    <BastionPanel />
-                  </TabsContent>
-                  <TabsContent value="achievements" className="mt-0 h-full">
-                    <AchievementsPanel />
-                  </TabsContent>
-                  {/* Merchant Tab Content */}
-                  <TabsContent value="merchant" className="mt-0 h-full">
-                    <MerchantPanel />
-                  </TabsContent>
-                </div>
-              </Tabs>
+                {/* Achievements Tab Button */}
+                {books?.book_of_trials && (
+                  <button
+                    className={`py-2 text-sm bg-transparent ${
+                      animatingTabs.has("achievements")
+                        ? "tab-fade-in"
+                        : activeTab === "achievements"
+                          ? "font-medium opacity-100"
+                          : "opacity-60"
+                    }`}
+                    onClick={() => setActiveTab("achievements")}
+                    data-testid="tab-achievements"
+                  >
+                    ⚜
+                  </button>
+                )}
+              </div>
             )}
           </nav>
+
+          {/* Action Panels */}
+          <div className="flex-1 overflow-auto pl-2 md:pl-4 min-h-0">
+            {activeTab === "cave" && <CavePanel />}
+            {activeTab === "village" && <VillagePanel />}
+            {activeTab === "forest" && <ForestPanel />}
+            {activeTab === "estate" && <EstatePanel />}
+            {activeTab === "bastion" && <BastionPanel />}
+            {activeTab === "achievements" && <AchievementsPanel />}
+          </div>
         </section>
       </main>
 
@@ -457,7 +388,7 @@ export default function GameContainer() {
 
       {/* Idle Mode Dialog */}
       <IdleModeDialog />
-      {/* MerchantDialog is no longer used here as it's replaced by MerchantPanel */}
+      <MerchantDialog />
       <CubeDialog />
       {inactivityDialogOpen && <InactivityDialog />}
 

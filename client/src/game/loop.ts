@@ -234,7 +234,7 @@ export function startGameLoop() {
         // Update elapsed time for all active timers
         const updatedTimers: typeof attackWaveTimers = {};
         let hasUpdates = false;
-
+        
         for (const [waveId, timer] of Object.entries(attackWaveTimers)) {
           if (!timer.defeated && timer.startTime > 0) {
             const newElapsed = (timer.elapsedTime || 0) + deltaTime;
@@ -247,7 +247,7 @@ export function startGameLoop() {
             updatedTimers[waveId] = timer;
           }
         }
-
+        
         if (hasUpdates) {
           useGameStore.setState({ attackWaveTimers: updatedTimers });
         }
@@ -363,25 +363,6 @@ export function startGameLoop() {
 
           // Check for events (including attack waves)
           currentState.checkEvents();
-
-          // Check for merchant event
-          if (
-            state.eventDialog.currentEvent?.id.includes("merchant") &&
-            !state.eventDialog.isOpen &&
-            !state.merchantTab.isOpen
-          ) {
-            // Open merchant tab instead of dialog
-            const expiresAt = Date.now() + 120000; // 2 minutes
-            state.setMerchantTab(true, expiresAt);
-
-            // Add merchant arrival message to log
-            state.addLogEntry({
-              message: "A weathered merchant arrives, his cart overflowing with wares. His eyes glint with avarice as he murmurs 'I have rare items for sale'.",
-            });
-
-            // Clear the event dialog reference
-            state.setEventDialog(false, null);
-          }
         }
       } else {
         // Update loop progress (0-100 based on production cycle)
