@@ -237,22 +237,9 @@ export class EventManager {
           if (event.effect && !eventChoices?.length) {
             const effectResult = event.effect(state);
             console.log('[EVENTS] Effect result:', effectResult);
-            console.log('[EVENTS] Current state flags before:', state.flags);
-            console.log('[EVENTS] StateChanges flags before:', stateChanges.flags);
             
-            // Merge flags separately to ensure proper state update
-            if (effectResult.flags) {
-              stateChanges.flags = {
-                ...(state.flags || {}),
-                ...(stateChanges.flags || {}),
-                ...effectResult.flags,
-              };
-              console.log('[EVENTS] Merged flags:', stateChanges.flags);
-            }
-            
-            // Merge other state changes
-            const { flags: _flags, ...otherChanges } = effectResult;
-            stateChanges = { ...stateChanges, ...otherChanges };
+            // Merge ALL effect results into stateChanges, including flags
+            stateChanges = { ...stateChanges, ...effectResult };
             
             console.log('[EVENTS] Final stateChanges:', stateChanges);
           }
@@ -262,6 +249,7 @@ export class EventManager {
           if (!event.repeatable) {
             stateChanges.triggeredEvents = {
               ...(state.triggeredEvents || {}),
+              ...(stateChanges.triggeredEvents || {}),
               [event.id]: true,
             };
           }
@@ -269,6 +257,7 @@ export class EventManager {
           // Record trigger time for cooldown tracking
           stateChanges.eventCooldowns = {
             ...(state.eventCooldowns || {}),
+            ...(stateChanges.eventCooldowns || {}),
             [event.id]: currentTime,
           };
           
