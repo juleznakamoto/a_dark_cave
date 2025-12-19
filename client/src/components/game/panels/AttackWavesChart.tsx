@@ -38,6 +38,12 @@ export default function AttackWavesChart() {
       completed: story?.seen?.fifthWaveVictory || false,
       conditionMet: useGameStore.getState().weapons?.bloodstone_staff && story?.seen?.fourthWaveVictory,
     },
+    { 
+      id: "sixthWave", 
+      name: "Sixth Wave",
+      completed: story?.seen?.sixthWaveVictory || false,
+      conditionMet: useGameStore.getState().buildings?.pillarOfClarity && story?.seen?.fifthWaveVictory,
+    },
   ];
 
   // Update timer display every second
@@ -116,9 +122,9 @@ export default function AttackWavesChart() {
 
   // Find current wave index for progress bar
   const currentWaveIndex = waves.findIndex((wave) => !wave.completed);
-  const currentWave = currentWaveIndex === -1 ? 5 : currentWaveIndex;
-  const totalWaves = 5;
-  const completedWaves = currentWaveIndex === -1 ? 5 : currentWaveIndex;
+  const currentWave = currentWaveIndex === -1 ? 6 : currentWaveIndex;
+  const totalWaves = 6;
+  const completedWaves = currentWaveIndex === -1 ? 6 : currentWaveIndex;
   const allWavesCompleted = currentWaveIndex === -1;
   const currentWavePercentage = allWavesCompleted ? 100 : ((completedWaves) / totalWaves) * 100;
 
@@ -135,7 +141,7 @@ export default function AttackWavesChart() {
       <Progress
         value={currentWavePercentage}
         className="h-2"
-        segments={5}
+        segments={6}
       />
 
       {activeWave ? (

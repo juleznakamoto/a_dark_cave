@@ -76,11 +76,19 @@ const WAVE_PARAMS = {
     attack: { options: [70, 75, 80, 85], cmBonus: 20 },
     health: { base: 800, cmBonus: 200 },
     silverReward: 1500,
-    initialDuration: 10 * 60 * 1000,
-    defeatDuration: 20 * 60 * 1000,
-    maxCasualties: 25,
+    initialDuration: 15 * 60 * 1000, // 15 minutes
     buildingDamageMultiplier: 5,
     fellowshipWoundedMultiplier: 0.3,
+  },
+  sixthWave: {
+    attack: { options: [90, 95, 100, 105], cmBonus: 25 },
+    health: { base: 1000, cmBonus: 250 },
+    silverReward: 2000,
+    initialDuration: 20 * 60 * 1000, // 20 minutes
+    defeatDuration: 25 * 60 * 1000, // 25 minutes
+    maxCasualties: 30,
+    buildingDamageMultiplier: 6,
+    fellowshipWoundedMultiplier: 0.35,
   },
 } as const;
 
@@ -143,6 +151,18 @@ const WAVE_CONFIG = {
     triggeredFlag: null,
     victoryFlag: "fifthWaveVictory" as const,
   },
+  sixthWave: {
+    title: "The Ultimate Confrontation",
+    message:
+      "From the deepest abyss, the Ancient Harbingers rise. These primordial entities predate existence itself, and they seek to unmake all that has been created.",
+    enemyName: "Ancient Harbingers",
+    condition: (state: GameState) =>
+      state.story.seen.fifthWaveVictory &&
+      state.buildings.pillarOfClarity &&
+      !state.story.seen.sixthWaveVictory,
+    triggeredFlag: null,
+    victoryFlag: "sixthWaveVictory" as const,
+  },
 } as const;
 
 const VICTORY_MESSAGE = (silverReward: number) =>
@@ -150,6 +170,9 @@ const VICTORY_MESSAGE = (silverReward: number) =>
 
 const FIFTH_WAVE_VICTORY_MESSAGE = (silverReward: number) =>
   `The final wave has been defeated! The path beyond the shattered portal now lies open. You can venture deeper into the depths to discover what lies beyond. You claim ${silverReward} silver from the fallen creatures.`;
+
+const SIXTH_WAVE_VICTORY_MESSAGE = (silverReward: number) =>
+  `The Ancient Harbingers have been vanquished! The fabric of reality is secured, and the world is safe once more. You claim ${silverReward} silver from their remnants.`;
 
 function createDefeatMessage(
   casualties: number,
@@ -404,9 +427,11 @@ function createAttackWaveEvent(waveId: keyof typeof WAVE_PARAMS): GameEvent {
               },
             },
             _logMessage:
-              waveId === "fifthWave"
-                ? FIFTH_WAVE_VICTORY_MESSAGE(params.silverReward)
-                : VICTORY_MESSAGE(params.silverReward),
+              waveId === "sixthWave"
+                ? SIXTH_WAVE_VICTORY_MESSAGE(params.silverReward)
+                : waveId === "fifthWave"
+                  ? FIFTH_WAVE_VICTORY_MESSAGE(params.silverReward)
+                  : VICTORY_MESSAGE(params.silverReward),
           }),
           onDefeat: () => {
             const defeatResult = handleDefeat(
@@ -447,4 +472,5 @@ export const attackWaveEvents: Record<string, GameEvent> = {
   thirdWave: createAttackWaveEvent("thirdWave"),
   fourthWave: createAttackWaveEvent("fourthWave"),
   fifthWave: createAttackWaveEvent("fifthWave"),
+  sixthWave: createAttackWaveEvent("sixthWave"),
 };
