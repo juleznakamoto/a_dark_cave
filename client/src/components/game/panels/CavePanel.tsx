@@ -139,6 +139,15 @@ export default function CavePanel() {
             { id: "craftAshenGreatshield", label: "Ashen Greatshield" },
           ],
         },
+        {
+          actions: [
+            { id: "craftBlacksteelAxe", label: "Blacksteel Axe" },
+            { id: "craftBlacksteelPickaxe", label: "Blacksteel Pickaxe" },
+            { id: "craftBlacksteelLantern", label: "Blacksteel Lantern" },
+            { id: "craftBlacksteelSword", label: "Blacksteel Sword" },
+            { id: "craftBlacksteelBow", label: "Blacksteel Bow" },
+          ],
+        },
       ],
     },
   ];
