@@ -196,7 +196,17 @@ export default function ItemProgressChart() {
         reward: 500,
       },
     ],
-    // Fifth ring: Books
+    // blacksteel
+    {
+      itemType: "blacksteel",
+       itemKeys: ["blacksteel"],
+       color: SEGMENT_COLOR,
+       label: "Blacksteel",
+       category: "relics",
+       maxCount: 1,
+       reward: 500,
+    }
+    
     [],
     // Sixth ring: Fellowship
     [],
