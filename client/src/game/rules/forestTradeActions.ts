@@ -302,39 +302,30 @@ export const forestTradeActions: Record<string, Action> = {
     label: "Buy Blacksteel",
     show_when: {
       1: {
-        "buildings.tradePost": 1,
-        "buildings.merchantsGuild": 0,
-        "buildings.masterworkFoundry": 1,
-      },
-      2: {
         "buildings.grandBazaar": 1,
         "buildings.merchantsGuild": 0,
         "buildings.masterworkFoundry": 1,
       },
-      3: {
+      2: {
         "buildings.merchantsGuild": 1,
+        "buildings.masterworkFoundry": 1,
+        "buildings.grandBlacksmith": 1,
       },
     },
     cost: {
       1: {
-        "resources.gold": 80,
+        "resources.gold": 75,
       },
       2: {
-        "resources.gold": 160,
-      },
-      3: {
-        "resources.gold": 400,
+        "resources.gold": 150,
       },
     },
     effects: {
       1: {
-        "resources.blacksteel": 50,
+        "resources.blacksteel": 25,
       },
       2: {
-        "resources.blacksteel": 100,
-      },
-      3: {
-        "resources.blacksteel": 250,
+        "resources.blacksteel": 50,
       },
     },
     cooldown: 90,
@@ -386,37 +377,30 @@ export const forestTradeActions: Record<string, Action> = {
     label: "Buy Gold",
     show_when: {
       1: {
-        "buildings.tradePost": 1,
-        "buildings.merchantsGuild": 0,
-      },
-      2: {
         "buildings.grandBazaar": 1,
         "buildings.merchantsGuild": 0,
+        "buildings.masterworkFoundry": 0,
       },
-      3: {
+      2: {
         "buildings.merchantsGuild": 1,
+        "buildings.masterworkFoundry": 0,
+        "buildings.grandBlacksmith": 0,
       },
     },
     cost: {
       1: {
-        "resources.silver": 40,
+        "resources.silver": 25,
       },
       2: {
         "resources.silver": 100,
       },
-      3: {
-        "resources.silver": 200,
-      },
     },
     effects: {
       1: {
-        "resources.gold": 10,
+        "resources.gold": 75,
       },
       2: {
         "resources.gold": 25,
-      },
-      3: {
-        "resources.gold": 50,
       },
     },
     cooldown: 30,

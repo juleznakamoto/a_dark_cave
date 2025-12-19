@@ -274,7 +274,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
   blacksteel_axe: {
     id: "blacksteel_axe",
     name: "Blacksteel Axe",
-    description: "Axe forged from the rare blacksteel.",
+    description: "Axe forged from rare blacksteel",
     bonuses: {
       actionBonuses: {
         chopWood: {
@@ -287,7 +287,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
   blacksteel_pickaxe: {
     id: "blacksteel_pickaxe",
     name: "Blacksteel Pickaxe",
-    description: "Pickaxe forged from the rare blacksteel.",
+    description: "Pickaxe forged from rare blacksteel",
     bonuses: {
       actionBonuses: {
         mining: {
@@ -300,7 +300,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
   blacksteel_lantern: {
     id: "blacksteel_lantern",
     name: "Blacksteel Lantern",
-    description: "Lantern forged from the rare blacksteel.",
+    description: "Lantern forged from rare blacksteel",
     bonuses: {
       actionBonuses: {
         mining: {
@@ -650,7 +650,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
   blacksteel_sword: {
     id: "blacksteel_sword",
     name: "Blacksteel Sword",
-    description: "Sword forged from the rare blacksteel.",
+    description: "Sword forged from rare blacksteel",
     bonuses: {
       generalBonuses: {
         strength: 18,
@@ -660,7 +660,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
   blacksteel_bow: {
     id: "blacksteel_bow",
     name: "Blacksteel Bow",
-    description: "Bow forged from the rare blacksteel.",
+    description: "Bow forged from rare blacksteel",
     bonuses: {
       actionBonuses: {
         hunt: {

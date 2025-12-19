@@ -18,7 +18,7 @@ const PRICES = {
   moonstone: 1.5,
   leather: 0.5,
   steel: 0.6,
-  blacksteel: 0.8, // Added blacksteel price
+  blacksteel: 3.0,
   torch: 0.3,
   black_powder: 0.5,
   ember_bomb: 50,
@@ -262,14 +262,13 @@ const buyTrades = [
     "leather",
     "gold",
   ]),
-  createBuyTrade("buy_blacksteel_100_mid2", "blacksteel", 100, TIER_CONDITIONS.mid2, [
-    "wood",
-    "stone",
-    "food",
-    "leather",
-    "steel",
-    "gold",
-  ]),
+  createBuyTrade(
+    "buy_blacksteel_100_mid2",
+    "blacksteel",
+    25,
+    TIER_CONDITIONS.mid2,
+    ["wood", "stone", "food", "leather", "steel", "gold"],
+  ),
 
   // End tier
   createBuyTrade("buy_food_2000_end", "food", 2000, TIER_CONDITIONS.end, [
@@ -293,14 +292,13 @@ const buyTrades = [
     "leather",
     "gold",
   ]),
-  createBuyTrade("buy_blacksteel_100_end", "blacksteel", 100, TIER_CONDITIONS.end, [
-    "wood",
-    "stone",
-    "food",
-    "leather",
-    "steel",
-    "gold",
-  ]),
+  createBuyTrade(
+    "buy_blacksteel_100_end",
+    "blacksteel",
+    50,
+    TIER_CONDITIONS.end,
+    ["wood", "stone", "food", "leather", "steel", "gold"],
+  ),
 ];
 
 const sellTrades = [
@@ -594,6 +592,20 @@ const sellTrades = [
     "silver",
     "gold",
   ]),
+  createSellTrade(
+    "sell_blacksteel_25_end",
+    "blacksteel",
+    25,
+    TIER_CONDITIONS.end,
+    ["silver", "gold"],
+  ),
+  createSellTrade(
+    "sell_blacksteel_50_end",
+    "blacksteel",
+    50,
+    TIER_CONDITIONS.end,
+    ["silver", "gold"],
+  ),
 ];
 
 const toolTrades = [
