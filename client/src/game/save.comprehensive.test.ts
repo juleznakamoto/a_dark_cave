@@ -205,8 +205,9 @@ describe('Save Game System - Comprehensive Tests', () => {
       await saveGame(createMockGameState(), true);
       await saveGame(createMockGameState({ playTime: 2000 }), true);
 
+      // After successful cloud save, lastCloudState should be updated
       const lastCloudStateCalls = mockPut.mock.calls.filter(
-        (call: any) => call[2] === 'lastCloudState'
+        (call: any) => call[0] === 'lastCloudState'
       );
       expect(lastCloudStateCalls.length).toBeGreaterThan(0);
     });
@@ -328,11 +329,12 @@ describe('Save Game System - Comprehensive Tests', () => {
     it('should handle simultaneous saves from different devices', async () => {
       const auth = await import('./auth');
       vi.mocked(auth.getCurrentUser).mockResolvedValue({ id: 'user-1', email: 'test@example.com' });
+      vi.mocked(auth.saveGameToSupabase).mockResolvedValue(undefined);
 
       await saveGame(createMockGameState({ playTime: 1000, resources: { wood: 100, stone: 50, gold: 200, food: 75 } }), true);
       await saveGame(createMockGameState({ playTime: 1500, resources: { wood: 150, stone: 50, gold: 200, food: 75 } }), true);
 
-      // Each save writes to 'saves' and 'lastCloudState', so expect 4 total calls
+      // Each save writes to 'saves' (2 calls) and after successful cloud save to 'lastCloudState' (2 calls)
       expect(mockPut).toHaveBeenCalledTimes(4);
     });
 
@@ -1185,21 +1187,23 @@ describe('Save Game System - Comprehensive Tests', () => {
       await saveGame(createMockGameState({ playTime: 2000 }), true);
 
       vi.mocked(auth.getCurrentUser).mockResolvedValue({ id: 'user-1', email: 'test@example.com' });
+      vi.mocked(auth.saveGameToSupabase).mockResolvedValue(undefined);
       await saveGame(createMockGameState({ playTime: 3000 }), true);
 
-      // First save: 1 put to 'saves', second save: 1 put to 'saves' + 1 put to 'lastCloudState'
+      // First save: 1 put to 'saves', second save: 1 put to 'saves' + 1 put to 'lastCloudState' (after successful cloud save)
       expect(mockPut).toHaveBeenCalledTimes(3);
     });
 
     it('should handle user logging out mid-session', async () => {
       const auth = await import('./auth');
       vi.mocked(auth.getCurrentUser).mockResolvedValue({ id: 'user-1', email: 'test@example.com' });
+      vi.mocked(auth.saveGameToSupabase).mockResolvedValue(undefined);
       await saveGame(createMockGameState({ playTime: 1000 }), true);
 
       vi.mocked(auth.getCurrentUser).mockResolvedValue(null);
       await saveGame(createMockGameState({ playTime: 2000 }), true);
 
-      // First save: 1 put to 'saves' + 1 put to 'lastCloudState', second save: 1 put to 'saves'
+      // First save: 1 put to 'saves' + 1 put to 'lastCloudState' (after successful cloud save), second save: 1 put to 'saves'
       expect(mockPut).toHaveBeenCalledTimes(3);
     });
   });
