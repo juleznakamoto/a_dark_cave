@@ -713,29 +713,7 @@ app.post("/api/leaderboard/update-username", async (req, res) => {
         return res.status(500).json({ error: 'Failed to fetch DAU data' });
       }
 
-      // Calculate real-time DAU (last 24 hours)
-      const twentyFourHoursAgo = new Date();
-      twentyFourHoursAgo.setHours(twentyFourHoursAgo.getHours() - 24);
-
-      const { data: recentActivity, error: activityError } = await adminClient
-        .from('game_saves')
-        .select('user_id', { count: 'exact', head: false })
-        .gte('updated_at', twentyFourHoursAgo.toISOString());
-
-      if (activityError) {
-        log('❌ Error fetching recent activity:', activityError);
-      }
-
-      const currentDau = recentActivity 
-        ? new Set(recentActivity.map(save => save.user_id)).size 
-        : 0;
-
-      log(`📊 Current DAU (last 24h): ${currentDau}`);
-
-      res.json({ 
-        dau: dauData || [],
-        currentDau: currentDau
-      });
+      res.json({ dau: dauData || [] });
     } catch (error: any) {
       log('❌ Error in /api/admin/dau:', error);
       res.status(500).json({ error: 'Internal server error' });
