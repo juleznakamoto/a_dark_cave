@@ -297,7 +297,7 @@ export async function saveGame(
 
         // Save diff to Supabase
         const supabase = await getSupabaseClient();
-        await supabase.rpc("save_game_with_analytics", {
+        const { error } = await supabase.rpc("save_game_with_analytics", {
           p_user_id: user.id,
           p_game_state_diff: stateDiff,
           p_click_analytics: clickData,
@@ -306,7 +306,11 @@ export async function saveGame(
           p_allow_playtime_overwrite: gameState.allowPlayTimeOverwrite || false,
         });
 
-        // Update lastCloudState after successful cloud save
+        if (error) {
+          throw error;
+        }
+
+        // Update lastCloudState only after successful cloud save
         await db.put("lastCloudState", sanitizedState, LAST_CLOUD_STATE_KEY);
         logger.log("[SAVE] ✅ Updated lastCloudState after successful cloud save");
 
