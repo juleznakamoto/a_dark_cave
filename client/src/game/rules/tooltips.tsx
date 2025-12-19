@@ -504,14 +504,23 @@ export const eventChoiceCostTooltip = {
     if (!cost) return null;
     
     // Extract resources from cost
-    const resources: string[] = [];
+    const resources: Array<{ resource: string; amount: number }> = [];
+    
     if (typeof cost === "string") {
-      const parsed = parseResourceText(cost);
-      if (parsed) {
-        resources.push(parsed.resource);
+      // Handle comma-separated costs like "1000 wood, 500 food"
+      const costParts = cost.split(',').map(part => part.trim());
+      
+      for (const part of costParts) {
+        const parsed = parseResourceText(part);
+        if (parsed) {
+          resources.push(parsed);
+        }
       }
     } else {
-      resources.push(...Object.keys(cost));
+      // Handle object-based costs
+      Object.entries(cost).forEach(([resource, amount]) => {
+        resources.push({ resource, amount });
+      });
     }
 
     const currentAmounts: React.ReactNode[] = [];
@@ -519,7 +528,7 @@ export const eventChoiceCostTooltip = {
 
     // Add current amounts if gameState is provided
     if (gameState && resources.length > 0) {
-      resources.forEach((resource, index) => {
+      resources.forEach(({ resource }, index) => {
         const currentAmount = gameState.resources[resource as keyof typeof gameState.resources] || 0;
         currentAmounts.push(
           <div key={`current-${index}`}>
@@ -530,28 +539,13 @@ export const eventChoiceCostTooltip = {
     }
 
     // Add cost information
-    if (typeof cost === "string") {
-      const parts = cost.split(" ");
-      if (parts.length >= 2) {
-        const amount = parts[0];
-        const resource = parts.slice(1).join(" ");
-        costLines.push(
-          <div key="cost-0">
-            -{amount} {capitalizeWords(resource)}
-          </div>
-        );
-      } else {
-        costLines.push(<div key="cost-0">-{cost}</div>);
-      }
-    } else {
-      Object.entries(cost).forEach(([resource, amount], index) => {
-        costLines.push(
-          <div key={`cost-${index}`}>
-            -{amount} {capitalizeWords(resource)}
-          </div>
-        );
-      });
-    }
+    resources.forEach(({ resource, amount }, index) => {
+      costLines.push(
+        <div key={`cost-${index}`}>
+          -{amount} {capitalizeWords(resource)}
+        </div>
+      );
+    });
 
     return (
       <>
@@ -606,23 +600,27 @@ export const getCurrentResourceAmount = {
 // Helper function to get merchant tooltip with current amounts and cost
 export const getMerchantTooltip = {
   getContent: (labelText: string | undefined, costText: string | undefined, gameState: GameState): React.ReactNode => {
-    const resources: string[] = [];
+    const resourcesSet = new Set<string>();
 
     // Parse the resource being bought (from label, e.g., "+10 Food")
     if (labelText) {
       const buyParsed = parseResourceText(labelText);
       if (buyParsed) {
-        resources.push(buyParsed.resource);
+        resourcesSet.add(buyParsed.resource);
       }
     }
 
-    // Parse the resource being paid (from cost, e.g., "250 gold")
+    // Parse the resources being paid (from cost, e.g., "250 gold" or "1000 wood, 500 food")
+    const costResources: Array<{ resource: string; amount: number }> = [];
     if (costText) {
-      const payParsed = parseResourceText(costText);
-      if (payParsed) {
-        // Avoid duplicates if buy and pay are the same resource
-        if (!labelText || parseResourceText(labelText)?.resource !== payParsed.resource) {
-          resources.push(payParsed.resource);
+      // Handle comma-separated costs like "1000 wood, 500 food"
+      const costParts = costText.split(',').map(part => part.trim());
+      
+      for (const part of costParts) {
+        const payParsed = parseResourceText(part);
+        if (payParsed) {
+          resourcesSet.add(payParsed.resource);
+          costResources.push(payParsed);
         }
       }
     }
@@ -630,8 +628,8 @@ export const getMerchantTooltip = {
     const currentAmounts: React.ReactNode[] = [];
     const costLines: React.ReactNode[] = [];
 
-    // Add current amounts
-    resources.forEach((resource, index) => {
+    // Add current amounts for all involved resources
+    Array.from(resourcesSet).forEach((resource, index) => {
       const currentAmount = gameState.resources[resource as keyof typeof gameState.resources] || 0;
       currentAmounts.push(
         <div key={`current-${index}`}>
@@ -640,19 +638,14 @@ export const getMerchantTooltip = {
       );
     });
 
-    // Add cost
-    if (costText) {
-      const parsed = parseResourceText(costText);
-      if (parsed) {
-        costLines.push(
-          <div key="cost-0">
-            -{parsed.amount} {capitalizeWords(parsed.resource)}
-          </div>
-        );
-      } else {
-        costLines.push(<div key="cost-0">-{costText}</div>);
-      }
-    }
+    // Add cost lines
+    costResources.forEach(({ resource, amount }, index) => {
+      costLines.push(
+        <div key={`cost-${index}`}>
+          -{amount} {capitalizeWords(resource)}
+        </div>
+      );
+    });
 
     return (
       <>
