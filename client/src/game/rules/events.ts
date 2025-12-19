@@ -152,9 +152,11 @@ export class EventManager {
   static checkEvents(state: GameState): {
     newLogEntries: LogEntry[];
     stateChanges: Partial<GameState>;
+    triggeredEvents?: GameEvent[];
   } {
     const newLogEntries: LogEntry[] = [];
     let stateChanges: Partial<GameState> = {};
+    const triggeredEvents: GameEvent[] = [];
     const sortedEvents = Object.values(this.allEvents).sort(
       (a, b) => (b.priority || 0) - (a.priority || 0),
     );
@@ -208,9 +210,12 @@ export class EventManager {
       }
 
       if (shouldTrigger) {
+        console.log('[EVENTS] Event triggered:', event.id);
+        
         // Generate fresh choices for merchant events
         let eventChoices = event.choices;
         if (event.id === "merchant") {
+          console.log('[MERCHANT] Generating merchant choices');
           eventChoices = generateMerchantChoices(state);
         }
 
@@ -226,7 +231,32 @@ export class EventManager {
 
         // Skip events marked to not appear in event dialog
         if (event.skipEventDialog) {
-          continue;
+          console.log('[EVENTS] Skipping event dialog for:', event.id);
+          
+          // Apply effect if it exists
+          if (event.effect && !eventChoices?.length) {
+            const effectResult = event.effect(state);
+            console.log('[EVENTS] Applying effect for skipped dialog event:', event.id, effectResult);
+            stateChanges = { ...stateChanges, ...effectResult };
+          }
+          
+          // Mark as triggered
+          event.triggered = true;
+          if (!event.repeatable) {
+            stateChanges.triggeredEvents = {
+              ...(state.triggeredEvents || {}),
+              [event.id]: true,
+            };
+          }
+          
+          // Record trigger time for cooldown tracking
+          stateChanges.eventCooldowns = {
+            ...(state.eventCooldowns || {}),
+            [event.id]: currentTime,
+          };
+          
+          triggeredEvents.push(event);
+          break;
         }
 
         const logEntry: LogEntry = {
@@ -273,7 +303,7 @@ export class EventManager {
       }
     }
 
-    return { newLogEntries, stateChanges };
+    return { newLogEntries, stateChanges, triggeredEvents };
   }
 
   static applyEventChoice(

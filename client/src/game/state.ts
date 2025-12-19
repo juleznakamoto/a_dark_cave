@@ -1042,14 +1042,28 @@ export const useGameStore = create<GameStore>((set, get) => ({
   checkEvents: () => {
     const state = get();
     // If the game is paused, do not process events
-    if (state.isPaused) return;
+    if (state.isPaused) {
+      console.log('[STATE] checkEvents: Game is paused, skipping');
+      return;
+    }
 
     // Don't check for new events if any dialog is already open
     const isAnyDialogOpen = state.eventDialog.isOpen || state.combatDialog.isOpen;
-    if (isAnyDialogOpen) return;
+    if (isAnyDialogOpen) {
+      console.log('[STATE] checkEvents: Dialog is open, skipping');
+      return;
+    }
 
+    console.log('[STATE] checkEvents: Running event check');
     const { newLogEntries, stateChanges, triggeredEvents } =
       EventManager.checkEvents(state);
+    
+    console.log('[STATE] checkEvents results:', {
+      newLogEntriesCount: newLogEntries.length,
+      hasStateChanges: Object.keys(stateChanges).length > 0,
+      triggeredEventsCount: triggeredEvents?.length || 0,
+      merchantActive: stateChanges.flags?.merchantActive
+    });
 
     if (newLogEntries.length > 0) {
       let combatData = null;

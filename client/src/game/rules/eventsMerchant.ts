@@ -992,13 +992,36 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
 export const merchantEvents: Record<string, GameEvent> = {
   merchant: {
     id: "merchant",
-    condition: (state: GameState) => state.buildings.woodenHut >= 3 && !state.flags.merchantActive,
+    condition: (state: GameState) => {
+      const hasEnoughHuts = state.buildings.woodenHut >= 3;
+      const merchantNotActive = !state.flags.merchantActive;
+      const shouldTrigger = hasEnoughHuts && merchantNotActive;
+      
+      console.log('[MERCHANT] Condition check:', {
+        woodenHut: state.buildings.woodenHut,
+        hasEnoughHuts,
+        merchantActive: state.flags.merchantActive,
+        merchantNotActive,
+        shouldTrigger
+      });
+      
+      return shouldTrigger;
+    },
     triggerType: "resource",
-    timeProbability: (state: GameState) =>
-      // 10 + 1 * (state.buildings.tradePost || 0) +
-      // 2 * (state.buildings.grandBazaar || 0) +
-      // 2 * (state.buildings.merchantsGuild || 0) +
-    0,
+    timeProbability: (state: GameState) => {
+      const probability = 10 + 1 * (state.buildings.tradePost || 0) +
+        2 * (state.buildings.grandBazaar || 0) +
+        2 * (state.buildings.merchantsGuild || 0);
+      
+      console.log('[MERCHANT] Time probability:', {
+        tradePost: state.buildings.tradePost || 0,
+        grandBazaar: state.buildings.grandBazaar || 0,
+        merchantsGuild: state.buildings.merchantsGuild || 0,
+        totalProbability: probability
+      });
+      
+      return probability;
+    },
 
     title: "Traveling Merchant",
     message:
@@ -1009,6 +1032,7 @@ export const merchantEvents: Record<string, GameEvent> = {
     skipEventLog: true, // Don't show in event dialog, just set the flag
     skipEventDialog: true, // Don't open the event dialog
     effect: (state: GameState) => {
+      console.log('[MERCHANT] Effect triggered, setting merchantActive flag');
       return {
         flags: {
           ...state.flags,
