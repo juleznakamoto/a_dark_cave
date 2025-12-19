@@ -997,6 +997,58 @@ export default function ChurnTab(props: ChurnTabProps) {
           </ResponsiveContainer>
         </CardContent>
       </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Cube Events Over Real Time</CardTitle>
+          <CardDescription>
+            When players actually clicked cube close buttons (by actual date/time)
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <ResponsiveContainer width="100%" height={400}>
+            <LineChart data={getCubeEventsOverRealTime()}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis
+                dataKey="date"
+                label={{
+                  value: "Date",
+                  position: "insideBottom",
+                  offset: -5,
+                }}
+              />
+              <YAxis
+                label={{
+                  value: "Players",
+                  angle: -90,
+                  position: "insideLeft",
+                }}
+              />
+              <Tooltip />
+              <Legend />
+              {(() => {
+                const chartData = getCubeEventsOverRealTime();
+                if (chartData.length === 0) return null;
+
+                const cubeKeys = Object.keys(chartData[0]).filter(
+                  (key) => key.startsWith("Cube "),
+                );
+
+                return cubeKeys.map((key, index) => (
+                  <Line
+                    key={key}
+                    type="monotone"
+                    dataKey={key}
+                    stroke={COLORS[index % COLORS.length]}
+                    strokeWidth={2}
+                    dot={{ r: 3 }}
+                  />
+                ));
+              })()}
+            </LineChart>
+          </ResponsiveContainer>
+        </CardContent>
+      </Card>
     </div>
   );
 }
