@@ -1,0 +1,83 @@
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 1. Cloud Sync Failures > should recover from intermittent cloud failures
+AssertionError: expected 0 to be greater than 0
+ ❯ client/src/game/save.comprehensive.test.ts:212:42
+    210|         (call: any) => call[0] === 'lastCloudState'
+    211|       );
+    212|       expect(lastCloudStateCalls.length).toBeGreaterThan(0);
+       |                                          ^
+    213|     });
+    214|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 2. Multi-Device Conflicts > should handle simultaneous saves from different devices
+AssertionError: expected "vi.fn()" to be called 4 times, but got 2 times
+ ❯ client/src/game/save.comprehensive.test.ts:338:23
+    336| 
+    337|       // Each save writes to 'saves' (2 calls) and after successful cloud save to 'lastCloudStat…
+    338|       expect(mockPut).toHaveBeenCalledTimes(4);
+       |                       ^
+    339|     });
+    340| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 9. Authentication State Changes > should handle user logging in mid-session
+AssertionError: expected "vi.fn()" to be called 3 times, but got 2 times
+ ❯ client/src/game/save.comprehensive.test.ts:1194:23
+    1192| 
+    1193|       // First save: 1 put to 'saves', second save: 1 put to 'saves' + 1 put to 'lastCloudState'…
+    1194|       expect(mockPut).toHaveBeenCalledTimes(3);
+       |                       ^
+    1195|     });
+    1196| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+ FAIL  client/src/game/save.comprehensive.test.ts > Save Game System - Comprehensive Tests > 9. Authentication State Changes > should handle user logging out mid-session
+AssertionError: expected "vi.fn()" to be called 3 times, but got 2 times
+ ❯ client/src/game/save.comprehensive.test.ts:1207:23
+    1205| 
+    1206|       // First save: 1 put to 'saves' + 1 put to 'lastCloudState' (after successful cloud save),…
+    1207|       expect(mockPut).toHaveBeenCalledTimes(3);
+       |                       ^
+    1208|     });
+    1209|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯
+
+ FAIL  client/src/game/save.logout.test.ts > Logout/Login Save Behavior Tests > User Reported Bug: Logout -> Offline Play -> Login > should preserve offline progress when logging back in (newer local)
+AssertionError: expected "vi.fn()" to be called at least once
+ ❯ client/src/game/save.logout.test.ts:157:50
+    155| 
+    156|       // Verify cloud save was called
+    157|       expect(vi.mocked(auth.saveGameToSupabase)).toHaveBeenCalled();
+       |                                                  ^
+    158| 
+    159|       // Step 2: User gets logged out (session expires, or they logout)
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯
+
+ FAIL  client/src/game/save.logout.test.ts > Logout/Login Save Behavior Tests > Final Save Before Logout > should complete final save before clearing cloud state
+AssertionError: expected "vi.fn()" to be called at least once
+ ❯ client/src/game/save.logout.test.ts:377:50
+    375| 
+    376|       // Verify save was called before clearing
+    377|       expect(vi.mocked(auth.saveGameToSupabase)).toHaveBeenCalled();
+       |                                                  ^
+    378|       expect(mockStores.lastCloudState.lastCloudState).toBeUndefined();
+    379|       // Local save should still exist
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/6]⎯
+
+
+ Test Files  2 failed | 21 passed (23)
+      Tests  6 failed | 363 passed (369)
+   Start at  09:50:23
+   Duration  5.59s (transform 1.79s, setup 0ms, import 3.37s, tests 2.86s, environment 4ms)
+
+ FAIL  Tests failed. Watching for file changes...
+       press h to show help, press q to quit
