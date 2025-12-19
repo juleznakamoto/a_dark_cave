@@ -20,7 +20,6 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useMobileButtonTooltip } from "@/hooks/useMobileTooltip";
-import MerchantDialog from "./MerchantDialog";
 import CubeDialog from "./CubeDialog";
 
 interface EventDialogProps {
@@ -130,14 +129,15 @@ export default function EventDialog({
     const isMerchantEvent = event?.id.includes("merchant");
     const isSayGoodbye = choiceId === "say_goodbye";
 
-    // For merchant "say goodbye", just close the dialog without processing
+    // For merchant "say goodbye", close the event dialog which will also close the merchant tab
     if (isMerchantEvent && isSayGoodbye) {
       fallbackExecutedRef.current = true;
+      applyEventChoice(choiceId, eventId);
       onClose();
       return;
     }
 
-    // For merchant trades (not goodbye), mark item as purchased but don't close dialog
+    // For merchant trades (not goodbye), process the trade
     if (isMerchantEvent && !isSayGoodbye) {
       const choice = eventChoices.find((c) => c.id === choiceId);
       if (choice) {
