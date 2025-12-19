@@ -297,6 +297,49 @@ export const forestTradeActions: Record<string, Action> = {
     cooldown: 90,
   },
 
+  tradeGoldForBlacksteel: {
+    id: "tradeGoldForBlacksteel",
+    label: "Buy Blacksteel",
+    show_when: {
+      1: {
+        "buildings.tradePost": 1,
+        "buildings.merchantsGuild": 0,
+        "buildings.masterworkFoundry": 1,
+      },
+      2: {
+        "buildings.grandBazaar": 1,
+        "buildings.merchantsGuild": 0,
+        "buildings.masterworkFoundry": 1,
+      },
+      3: {
+        "buildings.merchantsGuild": 1,
+      },
+    },
+    cost: {
+      1: {
+        "resources.gold": 80,
+      },
+      2: {
+        "resources.gold": 160,
+      },
+      3: {
+        "resources.gold": 400,
+      },
+    },
+    effects: {
+      1: {
+        "resources.blacksteel": 50,
+      },
+      2: {
+        "resources.blacksteel": 100,
+      },
+      3: {
+        "resources.blacksteel": 250,
+      },
+    },
+    cooldown: 90,
+  },
+
   tradeGoldForTorch: {
     id: "tradeGoldForTorch",
     label: "Buy Torch",
