@@ -101,6 +101,7 @@ import {
   handleBuildInkwardenAcademy,
   handleBuildTannery,
   handleBuildMasterTannery,
+  handleBuildHighTannery,
   handleBuildStoneHut,
   handleBuildShrine,
   handleBuildTemple,
@@ -384,6 +385,8 @@ export function executeGameAction(
       return handleBuildTannery(state, result);
     case "buildMasterTannery":
       return handleBuildMasterTannery(state, result);
+    case "buildHighTannery":
+      return handleBuildHighTannery(state, result);
     case "buildStoneHut":
       return handleBuildStoneHut(state, result);
     case "buildShrine":
