@@ -11,6 +11,7 @@ import {
   CRUSHING_STRIKE_UPGRADES,
   BLOODFLAME_SPHERE_UPGRADES,
 } from "./skillUpgrades";
+import { capitalizeWords, formatNumber } from "@/lib/utils";
 
 const FOCUS_ELIGIBLE_ACTIONS = [
   "exploreCave",
@@ -500,75 +501,99 @@ export const combatItemTooltips: Record<string, TooltipConfig> = {
 
 // Event choice cost tooltip - formats cost string with current amounts
 export const eventChoiceCostTooltip = {
-  getContent: (cost: string | Record<string, number> | undefined, gameState?: GameState): React.ReactNode => {
-    if (!cost) return null;
-    
-    // Extract resources from cost
-    const resources: Array<{ resource: string; amount: number }> = [];
-    
-    if (typeof cost === "string") {
-      // Handle comma-separated costs like "1000 wood, 500 food"
-      const costParts = cost.split(',').map(part => part.trim());
-      
-      for (const part of costParts) {
-        const parsed = parseResourceText(part);
-        if (parsed) {
-          resources.push(parsed);
-        }
-      }
-    } else {
-      // Handle object-based costs
-      Object.entries(cost).forEach(([resource, amount]) => {
-        resources.push({ resource, amount });
-      });
-    }
-
-    const currentAmounts: React.ReactNode[] = [];
-    const costLines: React.ReactNode[] = [];
-
-    // Add current amounts if gameState is provided
-    if (gameState && resources.length > 0) {
-      resources.forEach(({ resource }, index) => {
-        const currentAmount = gameState.resources[resource as keyof typeof gameState.resources] || 0;
-        currentAmounts.push(
-          <div key={`current-${index}`}>
-            {capitalizeWords(resource)}: {currentAmount}
-          </div>
-        );
-      });
-    }
-
-    // Add cost information
-    resources.forEach(({ resource, amount }, index) => {
-      costLines.push(
-        <div key={`cost-${index}`}>
-          -{amount} {capitalizeWords(resource)}
-        </div>
-      );
-    });
+  getContent: (costText: string, gameState: GameState) => {
+    const costs = parseCost(costText, gameState);
 
     return (
-      <>
-        {currentAmounts}
-        {currentAmounts.length > 0 && costLines.length > 0 && (
+      <div className="space-y-0.5">
+        {costs.current.length > 0 && (
+          <>
+            {costs.current.map((cost, index) => (
+              <div
+                key={`current-${index}`}
+                className={cost.satisfied ? "" : "text-muted-foreground"}
+              >
+                {cost.text}
+              </div>
+            ))}
+          </>
+        )}
+        {costs.current.length > 0 && costs.pay.length > 0 && (
           <div className="border-t border-border my-1" />
         )}
-        {costLines}
-      </>
+        {costs.pay.length > 0 && (
+          <>
+            {costs.pay.map((cost, index) => (
+              <div
+                key={`pay-${index}`}
+                className={cost.satisfied ? "" : "text-muted-foreground"}
+              >
+                {cost.text}
+              </div>
+            ))}
+          </>
+        )}
+      </div>
     );
   },
 };
 
+// Helper function to parse cost string and check satisfaction against game state
+function parseCost(costText: string, gameState: GameState) {
+  const currentCosts: Array<{ text: string; satisfied: boolean }> = [];
+  const payCosts: Array<{ text: string; satisfied: boolean }> = [];
+
+  // Split the cost string by commas to handle multiple costs
+  const costParts = costText.split(',').map(part => part.trim());
+
+  costParts.forEach(part => {
+    // Handle "Current X resource" pattern (for checking satisfaction)
+    const currentMatch = part.match(/^Current\s+(\d+)\s+(.+)$/i);
+    if (currentMatch) {
+      const amount = parseInt(currentMatch[1]);
+      // Use a regex to capture the resource name, which might contain spaces
+      const resourceMatch = part.match(/^Current\s+\d+\s+([a-zA-Z_\s]+)$/i);
+      // Check if we have this resource
+      if (resourceMatch) {
+        const resourceName = resourceMatch[1].toLowerCase().replace(/\s+/g, '_');
+        const currentAmount = gameState.resources[resourceName as keyof typeof gameState.resources] || 0;
+        const satisfied = currentAmount >= amount;
+
+        currentCosts.push({
+          text: `${capitalizeWords(resourceName)}: ${formatNumber(currentAmount)}`,
+          satisfied: true, // Current amounts are always shown normally
+        });
+      }
+    }
+
+    // Handle "Pay X resource" pattern
+    const payMatch = part.match(/^Pay\s+(\d+)\s+(.+)$/i);
+    if (payMatch) {
+      const amount = parseInt(payMatch[1]);
+      const resourceName = payMatch[2].toLowerCase().replace(/\s+/g, '_');
+      const currentAmount = gameState.resources[resourceName as keyof typeof gameState.resources] || 0;
+      const satisfied = currentAmount >= amount;
+
+      payCosts.push({
+        text: `-${formatNumber(amount)} ${capitalizeWords(resourceName)}`,
+        satisfied,
+      });
+    }
+  });
+
+  return { current: currentCosts, pay: payCosts };
+}
+
 // Helper function to capitalize the first letter of each word in a string
 // Assuming this function is defined elsewhere and available in scope.
 // If not, it would need to be added. For example:
-function capitalizeWords(str: string): string {
-  return str
-    .toLowerCase()
-    .split(" ")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
-}
+// function capitalizeWords(str: string): string {
+//   return str
+//     .toLowerCase()
+//     .split(" ")
+//     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+//     .join(" ");
+// }
 
 // Helper function to extract resource name and amount from text
 function parseResourceText(text: string): { resource: string; amount: number } | null {
@@ -592,7 +617,7 @@ export const getCurrentResourceAmount = {
 
     const { resource } = parsed;
     const currentAmount = gameState.resources[resource as keyof typeof gameState.resources] || 0;
-    
+
     return `Current: ${currentAmount} ${capitalizeWords(resource)}`;
   }
 };
@@ -615,7 +640,7 @@ export const getMerchantTooltip = {
     if (costText) {
       // Handle comma-separated costs like "1000 wood, 500 food"
       const costParts = costText.split(',').map(part => part.trim());
-      
+
       for (const part of costParts) {
         const payParsed = parseResourceText(part);
         if (payParsed) {
@@ -625,35 +650,41 @@ export const getMerchantTooltip = {
       }
     }
 
-    const currentAmounts: React.ReactNode[] = [];
-    const costLines: React.ReactNode[] = [];
+    const amounts: React.ReactNode[] = [];
+    const payCosts: React.ReactNode[] = [];
 
     // Add current amounts for all involved resources
     Array.from(resourcesSet).forEach((resource, index) => {
       const currentAmount = gameState.resources[resource as keyof typeof gameState.resources] || 0;
-      currentAmounts.push(
-        <div key={`current-${index}`}>
-          {capitalizeWords(resource)}: {currentAmount}
-        </div>
-      );
+      amounts.push(`${capitalizeWords(resource)}: ${formatNumber(currentAmount)}`);
     });
 
     // Add cost lines
-    costResources.forEach(({ resource, amount }, index) => {
-      costLines.push(
-        <div key={`cost-${index}`}>
-          -{amount} {capitalizeWords(resource)}
-        </div>
-      );
+    costResources.forEach(({ resource: payResource, amount: payAmount }, index) => {
+      const currentAmount = gameState.resources[payResource as keyof typeof gameState.resources] || 0;
+      const satisfied = currentAmount >= payAmount;
+      payCosts.push({
+        text: `-${formatNumber(payAmount)} ${capitalizeWords(payResource)}`,
+        satisfied,
+      });
     });
 
     return (
       <>
-        {currentAmounts}
-        {currentAmounts.length > 0 && costLines.length > 0 && (
+        {amounts.map((amount, index) => (
+          <div key={`current-${index}`}>{amount}</div>
+        ))}
+        {amounts.length > 0 && payCosts.length > 0 && (
           <div className="border-t border-border my-1" />
         )}
-        {costLines}
+        {payCosts.map((cost, index) => (
+          <div
+            key={`pay-${index}`}
+            className={cost.satisfied ? "" : "text-muted-foreground"}
+          >
+            {cost.text}
+          </div>
+        ))}
       </>
     );
   }

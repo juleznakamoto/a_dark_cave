@@ -1,9 +1,9 @@
-
 import { GameState } from "@shared/schema";
 import {
   getTotalCraftingCostReduction,
   getTotalBuildingCostReduction,
 } from "./effectsCalculation";
+import { capitalizeWords, formatNumber } from "@/lib/utils";
 
 /**
  * Calculate adjusted crafting cost with all applicable discounts
@@ -58,3 +58,21 @@ export function calculateAdjustedCost(
 
   return baseCost;
 }
+
+// Example of how formatNumber might be used in a breakdown:
+/*
+      const breakdown = [];
+      const reducedCost = calculateAdjustedCost(
+        action.id,
+        action.cost,
+        true,
+        state,
+        action.category
+      );
+      const satisfied = reducedCost <= state.resources[resource];
+
+      breakdown.push({
+        text: `-${formatNumber(reducedCost)} ${capitalizeWords(resource)}`,
+        satisfied,
+      });
+*/
