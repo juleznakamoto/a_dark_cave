@@ -42,14 +42,6 @@ export default function EventDialog({
   onClose,
   event,
 }: EventDialogProps) {
-  // Check for merchant events BEFORE any hooks to avoid React hooks error
-  const isMerchantEvent = event?.id.includes("merchant");
-  
-  // Don't render dialog for merchant events - they use the merchant tab instead
-  if (isMerchantEvent) {
-    return null;
-  }
-
   const { applyEventChoice } = useGameStore();
   const gameState = useGameStore();
   const hasScriptorium = gameState.buildings.scriptorium > 0;
@@ -252,6 +244,7 @@ export default function EventDialog({
       ? ((totalTime - timeRemaining) / totalTime) * 100
       : 0;
 
+  const isMerchantEvent = event?.id.includes("merchant");
   const isCubeEvent = event?.id.includes("cube");
 
   return (
