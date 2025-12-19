@@ -426,7 +426,7 @@ export default function EventDialog({
                       </div>
                     </TooltipTrigger>
                     <TooltipContent side="top">
-                      <div className="text-xs whitespace-pre-line">
+                      <div className="text-xs">
                         {eventChoiceCostTooltip.getContent(costText, gameState)}
                       </div>
                     </TooltipContent>

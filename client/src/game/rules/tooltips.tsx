@@ -500,10 +500,8 @@ export const combatItemTooltips: Record<string, TooltipConfig> = {
 
 // Event choice cost tooltip - formats cost string with current amounts
 export const eventChoiceCostTooltip = {
-  getContent: (cost: string | Record<string, number> | undefined, gameState?: GameState): string => {
-    if (!cost) return "";
-
-    const lines: string[] = [];
+  getContent: (cost: string | Record<string, number> | undefined, gameState?: GameState): React.ReactNode => {
+    if (!cost) return null;
     
     // Extract resources from cost
     const resources: string[] = [];
@@ -516,13 +514,19 @@ export const eventChoiceCostTooltip = {
       resources.push(...Object.keys(cost));
     }
 
+    const currentAmounts: React.ReactNode[] = [];
+    const costLines: React.ReactNode[] = [];
+
     // Add current amounts if gameState is provided
     if (gameState && resources.length > 0) {
-      resources.forEach(resource => {
+      resources.forEach((resource, index) => {
         const currentAmount = gameState.resources[resource as keyof typeof gameState.resources] || 0;
-        lines.push(`${capitalizeWords(resource)}: ${currentAmount}`);
+        currentAmounts.push(
+          <div key={`current-${index}`}>
+            {capitalizeWords(resource)}: {currentAmount}
+          </div>
+        );
       });
-      lines.push("---"); // Separator
     }
 
     // Add cost information
@@ -531,17 +535,33 @@ export const eventChoiceCostTooltip = {
       if (parts.length >= 2) {
         const amount = parts[0];
         const resource = parts.slice(1).join(" ");
-        lines.push(`-${amount} ${capitalizeWords(resource)}`);
+        costLines.push(
+          <div key="cost-0">
+            -{amount} {capitalizeWords(resource)}
+          </div>
+        );
       } else {
-        lines.push(`-${cost}`);
+        costLines.push(<div key="cost-0">-{cost}</div>);
       }
     } else {
-      Object.entries(cost).forEach(([resource, amount]) => {
-        lines.push(`-${amount} ${capitalizeWords(resource)}`);
+      Object.entries(cost).forEach(([resource, amount], index) => {
+        costLines.push(
+          <div key={`cost-${index}`}>
+            -{amount} {capitalizeWords(resource)}
+          </div>
+        );
       });
     }
 
-    return lines.join("\n");
+    return (
+      <>
+        {currentAmounts}
+        {currentAmounts.length > 0 && costLines.length > 0 && (
+          <div className="border-t border-border my-1" />
+        )}
+        {costLines}
+      </>
+    );
   },
 };
 
@@ -585,8 +605,7 @@ export const getCurrentResourceAmount = {
 
 // Helper function to get merchant tooltip with current amounts and cost
 export const getMerchantTooltip = {
-  getContent: (labelText: string | undefined, costText: string | undefined, gameState: GameState): string => {
-    const lines: string[] = [];
+  getContent: (labelText: string | undefined, costText: string | undefined, gameState: GameState): React.ReactNode => {
     const resources: string[] = [];
 
     // Parse the resource being bought (from label, e.g., "+10 Food")
@@ -608,27 +627,41 @@ export const getMerchantTooltip = {
       }
     }
 
-    // Add current amounts
-    resources.forEach(resource => {
-      const currentAmount = gameState.resources[resource as keyof typeof gameState.resources] || 0;
-      lines.push(`${capitalizeWords(resource)}: ${currentAmount}`);
-    });
+    const currentAmounts: React.ReactNode[] = [];
+    const costLines: React.ReactNode[] = [];
 
-    // Add separator
-    if (lines.length > 0 && costText) {
-      lines.push("---");
-    }
+    // Add current amounts
+    resources.forEach((resource, index) => {
+      const currentAmount = gameState.resources[resource as keyof typeof gameState.resources] || 0;
+      currentAmounts.push(
+        <div key={`current-${index}`}>
+          {capitalizeWords(resource)}: {currentAmount}
+        </div>
+      );
+    });
 
     // Add cost
     if (costText) {
       const parsed = parseResourceText(costText);
       if (parsed) {
-        lines.push(`-${parsed.amount} ${capitalizeWords(parsed.resource)}`);
+        costLines.push(
+          <div key="cost-0">
+            -{parsed.amount} {capitalizeWords(parsed.resource)}
+          </div>
+        );
       } else {
-        lines.push(`-${costText}`);
+        costLines.push(<div key="cost-0">-{costText}</div>);
       }
     }
 
-    return lines.join("\n");
+    return (
+      <>
+        {currentAmounts}
+        {currentAmounts.length > 0 && costLines.length > 0 && (
+          <div className="border-t border-border my-1" />
+        )}
+        {costLines}
+      </>
+    );
   }
 };

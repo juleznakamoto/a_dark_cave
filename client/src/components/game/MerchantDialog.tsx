@@ -247,7 +247,7 @@ export default function MerchantDialog({
                           </div>
                         </TooltipTrigger>
                         <TooltipContent side="top">
-                          <div className="text-xs whitespace-pre-line">
+                          <div className="text-xs">
                             {getMerchantTooltip.getContent(labelText, costText, gameState)}
                           </div>
                         </TooltipContent>
