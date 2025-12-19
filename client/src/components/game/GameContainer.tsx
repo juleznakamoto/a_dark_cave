@@ -23,6 +23,7 @@ import ProfileMenu from "./ProfileMenu"; // Imported ProfileMenu
 import { startVersionCheck, stopVersionCheck } from "@/game/versionCheck";
 import { logger } from "@/lib/logger";
 import { toast } from "@/hooks/use-toast";
+import MerchantPanel from "./panels/MerchantPanel"; // Import MerchantPanel
 
 export default function GameContainer() {
   const {
@@ -42,6 +43,9 @@ export default function GameContainer() {
     restartGameDialogOpen,
     setRestartGameDialogOpen,
     restartGame,
+    merchantActive, // Added merchantActive
+    merchantTimer, // Added merchantTimer
+    setMerchantDialog, // Added setMerchantDialog
   } = useGameStore();
 
   // Estate unlocks when Dark Estate is built
@@ -55,6 +59,7 @@ export default function GameContainer() {
     forestUnlocked: flags.forestUnlocked,
     estateUnlocked: estateUnlocked,
     bastionUnlocked: flags.bastionUnlocked,
+    merchantActive: merchantActive, // Added merchantActive
   });
 
   // Track when new tabs are unlocked and trigger animations
@@ -74,6 +79,10 @@ export default function GameContainer() {
     if (!prev.bastionUnlocked && flags.bastionUnlocked) {
       newAnimations.add("bastion");
     }
+    // Trigger animation for merchant tab when it becomes active
+    if (!prev.merchantActive && merchantActive) {
+      newAnimations.add("merchant");
+    }
 
     if (newAnimations.size > 0) {
       setAnimatingTabs(newAnimations);
@@ -85,12 +94,14 @@ export default function GameContainer() {
       forestUnlocked: flags.forestUnlocked,
       estateUnlocked: estateUnlocked,
       bastionUnlocked: flags.bastionUnlocked,
+      merchantActive: merchantActive, // Added merchantActive
     };
   }, [
     flags.villageUnlocked,
     flags.forestUnlocked,
     estateUnlocked,
     flags.bastionUnlocked,
+    merchantActive, // Added merchantActive to dependency array
   ]);
 
   // Initialize version check
@@ -190,6 +201,17 @@ export default function GameContainer() {
         onClick: () => setActiveTab("achievements"),
       });
     }
+
+    // Add Merchant tab if merchant is active
+    if (merchantActive) {
+      tabs.push({
+        id: "merchant",
+        icon: <Landmark />, // Use a suitable icon
+        label: `Merchant (${Math.max(0, Math.ceil(merchantTimer / 60)).toFixed(0)})`,
+        onClick: () => setActiveTab("merchant"),
+      });
+    }
+
     return tabs;
   }, [
     flags.villageUnlocked,
@@ -199,12 +221,21 @@ export default function GameContainer() {
     buildings.stoneHut,
     setActiveTab,
     books?.book_of_trials,
+    merchantActive, // Added merchantActive
+    merchantTimer, // Added merchantTimer
   ]);
 
   // Show start screen if game hasn't started yet
   if (!flags.gameStarted) {
     return <StartScreen />;
   }
+
+  // Close merchant dialog if merchant is no longer active
+  useEffect(() => {
+    if (!merchantActive && eventDialog.currentEvent?.type === "merchant") {
+      setEventDialog(false);
+    }
+  }, [merchantActive, eventDialog, setEventDialog]);
 
   return (
     <div className="fixed inset-0 bg-background text-foreground flex flex-col">
@@ -351,6 +382,26 @@ export default function GameContainer() {
                     ⚜
                   </button>
                 )}
+
+                {/* Merchant Tab Button */}
+                {merchantActive && (
+                  <button
+                    className={`py-2 text-sm bg-transparent ${
+                      animatingTabs.has("merchant")
+                        ? "tab-fade-in"
+                        : activeTab === "merchant"
+                          ? "font-bold opacity-100"
+                          : "opacity-60"
+                    }`}
+                    onClick={() => {
+                      setActiveTab("merchant");
+                      setMerchantDialog(true); // Open merchant dialog when tab is clicked
+                    }}
+                    data-testid="tab-merchant"
+                  >
+                    <Landmark /> {/* Use a simple icon */}
+                  </button>
+                )}
               </div>
             )}
           </nav>
@@ -363,6 +414,7 @@ export default function GameContainer() {
             {activeTab === "estate" && <EstatePanel />}
             {activeTab === "bastion" && <BastionPanel />}
             {activeTab === "achievements" && <AchievementsPanel />}
+            {activeTab === "merchant" && <MerchantPanel />} {/* Render MerchantPanel */}
           </div>
         </section>
       </main>
@@ -372,9 +424,9 @@ export default function GameContainer() {
         <GameFooter />
       </div>
 
-      {/* Event Dialog */}
+      {/* Event Dialog - Modified to not show for merchant events */}
       <EventDialog
-        isOpen={eventDialog.isOpen}
+        isOpen={eventDialog.isOpen && eventDialog.currentEvent?.type !== "merchant"}
         onClose={() => setEventDialog(false)}
         event={eventDialog.currentEvent}
       />
@@ -388,6 +440,7 @@ export default function GameContainer() {
 
       {/* Idle Mode Dialog */}
       <IdleModeDialog />
+      {/* Merchant Dialog - Still rendered but controlled by state and dialog logic */}
       <MerchantDialog />
       <CubeDialog />
       {inactivityDialogOpen && <InactivityDialog />}

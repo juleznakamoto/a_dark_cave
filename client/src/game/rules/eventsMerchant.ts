@@ -1007,5 +1007,11 @@ export const merchantEvents: Record<string, GameEvent> = {
     priority: 3,
     repeatable: true,
     choices: [],
+    // Add log message when merchant appears
+    onTrigger: (state: GameState) => {
+      return {
+        _logMessage: "A weathered merchant arrives, his cart overflowing with wares. His eyes glint with avarice as he murmurs 'I have rare items for sale'.",
+      };
+    },
   },
 };

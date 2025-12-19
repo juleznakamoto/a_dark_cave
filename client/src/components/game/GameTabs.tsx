@@ -1,4 +1,5 @@
 import SidePanel from "./panels/SidePanel";
+import { MerchantPanel } from "./panels";
 import { useGameStore } from "@/game/state";
 import { useEffect } from "react";
 
