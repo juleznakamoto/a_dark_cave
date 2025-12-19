@@ -218,7 +218,7 @@ export const villageBuildActions: Record<string, Action> = {
     description: "Advanced blacksmith capable of creating the finest products",
     tooltipEffects: [
       "Unlocks Schematic Crafting",
-      // "Unlocks Blacksteel Crafting",
+      "Unlocks Blacksteel Crafting",
       "5 % Craft Discount",
     ],
     building: true,
@@ -441,7 +441,7 @@ export const villageBuildActions: Record<string, Action> = {
     description: "Foundry with superior steel production",
     tooltipEffects: [
       "Unlocks Steel Forgers",
-      // "Unlocks Blacksteel Forgers",
+      "Unlocks Blacksteel Forgers",
       "Steel Forger: +2 Steel",
     ],
     building: true,

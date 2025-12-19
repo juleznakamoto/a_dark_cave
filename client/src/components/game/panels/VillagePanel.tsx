@@ -157,7 +157,7 @@ export default function VillagePanel() {
     {
       id: "blacksteel_forger",
       label: "Blacksteel Forger",
-      showWhen: () => false, //state.buildings.masterworkFoundry >= 1,
+      showWhen: () => state.buildings.masterworkFoundry >= 1,
     },
     {
       id: "sulfur_miner",
@@ -680,12 +680,14 @@ export default function VillagePanel() {
                                 <div className="relative inline-flex items-center gap-1 mt-[0px]">
                                   <CircularProgress
                                     value={(() => {
-                                      const fogDuration = fogState.duration || 5 * 60 * 1000;
+                                      const fogDuration =
+                                        fogState.duration || 5 * 60 * 1000;
                                       const timeRemaining = Math.max(
                                         0,
                                         fogState.endTime - Date.now(),
                                       );
-                                      const elapsed = fogDuration - timeRemaining;
+                                      const elapsed =
+                                        fogDuration - timeRemaining;
                                       return Math.min(
                                         100,
                                         (elapsed / fogDuration) * 100,
