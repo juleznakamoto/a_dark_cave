@@ -47,7 +47,6 @@ interface SidePanelSectionProps {
   titleTooltip?: string;
 }
 import { logger } from "@/lib/logger";
-import { formatNumber } from "@/lib/utils";
 
 export default function SidePanelSection({
   title,
@@ -264,13 +263,13 @@ export default function SidePanelSection({
     }
 
     if (value < 0) {
-      return `${formatNumber(value)}`;
+      return `${value}`;
     } else if (value === -1) {
       return "done";
     } else if (value > 0 && value < 1) {
       return `${Math.round(value * 100)}%`;
     }
-    return formatNumber(value);
+    return value.toString();
   };
 
   const renderItemWithTooltip = (item: SidePanelItem) => {

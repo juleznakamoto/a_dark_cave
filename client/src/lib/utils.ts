@@ -15,23 +15,3 @@ export function capitalizeWords(str: string): string {
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
 }
-
-// Utility function to format numbers with thousand separators using "'"
-export function formatNumber(num: number | string): string {
-  // Convert to number if string
-  const numValue = typeof num === 'string' ? parseFloat(num) : num;
-  
-  // Handle invalid numbers
-  if (isNaN(numValue)) return String(num);
-  
-  // Split into integer and decimal parts
-  const parts = numValue.toString().split('.');
-  const integerPart = parts[0];
-  const decimalPart = parts[1];
-  
-  // Add thousand separators to integer part
-  const formattedInteger = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, "'");
-  
-  // Return with decimal part if it exists
-  return decimalPart ? `${formattedInteger}.${decimalPart}` : formattedInteger;
-}
