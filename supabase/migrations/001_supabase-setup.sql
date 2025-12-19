@@ -98,7 +98,7 @@ CREATE OR REPLACE FUNCTION save_game_with_analytics(
   p_game_state_diff JSONB,
   p_click_analytics JSONB DEFAULT NULL,
   p_resource_analytics JSONB DEFAULT NULL,
-  p_clear_clicks BOOLEAN DEFAULT FALSE,
+  p_clear_analytics BOOLEAN DEFAULT FALSE,
   p_allow_playtime_overwrite BOOLEAN DEFAULT FALSE
 )
 RETURNS void
@@ -250,7 +250,7 @@ BEGIN
   END;
 
   -- Handle click and resource analytics
-  IF p_clear_clicks THEN
+  IF p_clear_analytics THEN
     DELETE FROM button_clicks WHERE user_id = p_user_id;
   ELSE
     v_playtime_ms := (v_merged_state->>'playTime')::NUMERIC;

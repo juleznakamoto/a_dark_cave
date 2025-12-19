@@ -288,20 +288,21 @@ export async function saveGame(
         if (sanitizedState.gameId && !stateDiff.gameId) {
           stateDiff.gameId = sanitizedState.gameId;
         }
-        
+
         // Ensure playTime is an integer for the database
         if (stateDiff.playTime !== undefined) {
           stateDiff.playTime = Math.floor(stateDiff.playTime);
         }
 
         // Save diff to Supabase
-        await saveGameToSupabase(
-          stateDiff,
-          gameState.playTime,
-          isNewGame,
-          clickData,
-          resourceData,
-        );
+        await supabase.rpc("save_game_with_analytics", {
+          p_user_id: user.id,
+          p_game_state_diff: stateDiff,
+          p_click_analytics: clickData,
+          p_resource_analytics: resourceData,
+          p_clear_analytics: state.isNewGame || false,
+          p_allow_playtime_overwrite: state.allowPlayTimeOverwrite || false,
+        });
 
         // Update lastCloudState after successful cloud save
         await db.put("lastCloudState", sanitizedState, LAST_CLOUD_STATE_KEY);
@@ -368,7 +369,7 @@ export async function loadGame(): Promise<GameState | null> {
           // Both saves exist - use the most recent one
           const cloudPlayTime = cloudSave.playTime || 0;
           const localPlayTime = localSave.playTime || 0;
-          
+
           logger.log("[LOAD] 🔍 Comparing local and cloud saves:", {
             cloudPlayTime,
             localPlayTime,
@@ -379,7 +380,7 @@ export async function loadGame(): Promise<GameState | null> {
           // Use whichever has more playtime (most progress)
           if (localPlayTime > cloudPlayTime) {
             logger.log("[LOAD] 💾 Local save is newer - using local and syncing to cloud");
-            
+
             const stateWithDefaults = {
               ...localSave.gameState,
               cooldownDurations: localSave.gameState.cooldownDurations || {},

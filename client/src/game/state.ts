@@ -854,7 +854,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const { saveGame } = await import('@/game/save');
     try {
       await saveGame(get(), false);
-      logger.log('[RESTART] ✅ New game state saved to cloud');
+      logger.log('[RESTART] ✅ New game state saved to cloud with analytics cleared');
+      // Clear the new game flag after successful save
+      set({ isNewGame: false });
     } catch (error) {
       logger.error('[RESTART] ❌ Failed to save new game state to cloud:', error);
     }
