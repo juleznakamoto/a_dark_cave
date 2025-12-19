@@ -417,30 +417,9 @@ export default function EventDialog({
                         {buttonContent}
                       </div>
                     </TooltipTrigger>
-                    <TooltipContent side="top">
+                    <TooltipContent>
                       <div className="text-xs whitespace-nowrap">
                         {eventChoiceCostTooltip.getContent(costText)}
-                      </div>
-                    </TooltipContent>
-                  </Tooltip>
-                  <Tooltip open={mobileTooltip.isTooltipOpen(choice.id)}>
-                    <TooltipTrigger asChild>
-                      <div className="absolute inset-0 pointer-events-none" />
-                    </TooltipTrigger>
-                    <TooltipContent side="bottom">
-                      <div className="text-xs whitespace-nowrap">
-                        {(() => {
-                          // Parse resource from cost string
-                          const costStr = typeof costText === 'string' ? costText : '';
-                          const match = costStr.match(/(\d+)\s+(.+)$/);
-                          if (match) {
-                            const resourceName = match[2].toLowerCase().replace(/\s+/g, '_');
-                            const currentAmount = gameState.resources[resourceName as keyof typeof gameState.resources] || 0;
-                            const formattedName = match[2].charAt(0).toUpperCase() + match[2].slice(1);
-                            return `Current: ${currentAmount} ${formattedName}`;
-                          }
-                          return '';
-                        })()}
                       </div>
                     </TooltipContent>
                   </Tooltip>
