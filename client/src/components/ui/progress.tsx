@@ -49,27 +49,27 @@ const Progress = React.forwardRef<
       {/* Progress indicator */}
       <ProgressPrimitive.Indicator
         className={cn(
-          "h-full w-full flex-1 bg-red-950 transition-all relative z-10",
+          "h-full w-full flex-1 bg-red-950 transition-all relative z-10 overflow-hidden",
           showCelebration && "animate-pulse"
         )}
         style={{ transform: `translateX(-${100 - (value || 0)}%)` }}
-      />
-
-      {/* Celebration particles */}
-      <AnimatePresence>
-        {showCelebration && (
-          <>
-            {/* Glow effect */}
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-500/50 to-transparent z-10 pointer-events-none"
-              initial={{ x: "-100%" }}
-              animate={{ x: "100%" }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 1.0, ease: "easeInOut" }}
-            />
-          </>
-        )}
-      </AnimatePresence>
+      >
+        {/* Celebration particles - constrained within progress indicator */}
+        <AnimatePresence>
+          {showCelebration && (
+            <>
+              {/* Glow effect */}
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-500/50 to-transparent pointer-events-none"
+                initial={{ x: "-100%" }}
+                animate={{ x: "100%" }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 1.0, ease: "easeInOut" }}
+              />
+            </>
+          )}
+        </AnimatePresence>
+      </ProgressPrimitive.Indicator>
     </ProgressPrimitive.Root>
   );
 })
