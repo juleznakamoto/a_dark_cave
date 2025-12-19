@@ -20,13 +20,13 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useMobileButtonTooltip } from "@/hooks/useMobileTooltip";
+import MerchantDialog from "./MerchantDialog";
 import CubeDialog from "./CubeDialog";
 
 interface EventDialogProps {
   isOpen: boolean;
   onClose: () => void;
   event: LogEntry | null;
-  hideDialog?: boolean;
 }
 
 // Stat icon mapping
@@ -41,7 +41,6 @@ export default function EventDialog({
   isOpen,
   onClose,
   event,
-  hideDialog,
 }: EventDialogProps) {
   const { applyEventChoice } = useGameStore();
   const gameState = useGameStore();
@@ -129,15 +128,14 @@ export default function EventDialog({
     const isMerchantEvent = event?.id.includes("merchant");
     const isSayGoodbye = choiceId === "say_goodbye";
 
-    // For merchant "say goodbye", close the event dialog which will also close the merchant tab
+    // For merchant "say goodbye", just close the dialog without processing
     if (isMerchantEvent && isSayGoodbye) {
       fallbackExecutedRef.current = true;
-      applyEventChoice(choiceId, eventId);
       onClose();
       return;
     }
 
-    // For merchant trades (not goodbye), process the trade
+    // For merchant trades (not goodbye), mark item as purchased but don't close dialog
     if (isMerchantEvent && !isSayGoodbye) {
       const choice = eventChoices.find((c) => c.id === choiceId);
       if (choice) {
@@ -266,7 +264,20 @@ export default function EventDialog({
             // All closing should be handled explicitly through handleChoice
           }}
         >
-          <DialogContent className="w-[95vw] sm:max-w-md [&>button]:hidden">
+          {isMerchantEvent ? (
+            <MerchantDialog
+              event={event}
+              gameState={gameState}
+              timeRemaining={timeRemaining}
+              totalTime={totalTime}
+              progress={progress}
+              purchasedItems={purchasedItems}
+              fallbackExecutedRef={fallbackExecutedRef}
+              onChoice={handleChoice}
+              hasScriptorium={hasScriptorium}
+            />
+          ) : (
+            <DialogContent className="w-[95vw] sm:max-w-md [&>button]:hidden">
           <DialogHeader>
             <div className="flex items-start justify-between">
               <DialogTitle className="text-lg font-semibold flex-1">
@@ -436,6 +447,7 @@ export default function EventDialog({
             </div>
           )}
             </DialogContent>
+          )}
         </Dialog>
       )}
     </>

@@ -1,0 +1,69 @@
+ost: 1, grandBazaar: 1, merchantsGuild: 1, totalProbability: 0}
+events.ts:213 [EVENTS] Event triggered: merchant
+events.ts:218 [MERCHANT] Generating merchant choices
+events.ts:234 [EVENTS] Skipping event dialog for: merchant
+events.ts:315 [EVENTS] checkEvents returning: {newLogEntriesCount: 0, stateChangesKeys: Array(1), hasFlags: false, flagsValue: undefined}
+state.ts:1073 [STATE] checkEvents results: {newLogEntriesCount: 0, hasStateChanges: true, triggeredEventsCount: 1, stateChangesKeys: Array(1), flagsInChanges: undefined, …}
+state.ts:207 [MERGE] Input stateUpdates: {hasFlags: false, flagsValue: undefined, merchantActive: undefined}
+state.ts:306 [MERGE] Output merged: {hasFlags: true, flagsValue: {…}, merchantActive: undefined}
+state.ts:1086 [STATE] Merged state updates: {hasFlags: true, flagsValue: {…}, merchantActive: undefined}
+state.ts:1069 [STATE] checkEvents: Running event check
+eventsMerchant.ts:1018 [MERCHANT] Time probability: {tradePost: 1, grandBazaar: 1, merchantsGuild: 1, totalProbability: 0}
+eventsMerchant.ts:1000 [MERCHANT] Condition check: {woodenHut: 10, hasEnoughHuts: true, merchantActive: undefined, merchantNotActive: true, shouldTrigger: true}
+eventsMerchant.ts:1018 [MERCHANT] Time probability: {tradePost: 1, grandBazaar: 1, merchantsGuild: 1, totalProbability: 0}
+events.ts:213 [EVENTS] Event triggered: merchant
+events.ts:218 [MERCHANT] Generating merchant choices
+events.ts:234 [EVENTS] Skipping event dialog for: merchant
+events.ts:315 [EVENTS] checkEvents returning: {newLogEntriesCount: 0, stateChangesKeys: Array(1), hasFlags: false, flagsValue: undefined}
+state.ts:1073 [STATE] checkEvents results: {newLogEntriesCount: 0, hasStateChanges: true, triggeredEventsCount: 1, stateChangesKeys: Array(1), flagsInChanges: undefined, …}
+state.ts:207 [MERGE] Input stateUpdates: {hasFlags: false, flagsValue: undefined, merchantActive: undefined}
+state.ts:306 [MERGE] Output merged: {hasFlags: true, flagsValue: {…}, merchantActive: undefined}
+state.ts:1086 [STATE] Merged state updates: {hasFlags: true, flagsValue: {…}, merchantActive: undefined}
+state.ts:1069 [STATE] checkEvents: Running event check
+eventsMerchant.ts:1018 [MERCHANT] Time probability: {tradePost: 1, grandBazaar: 1, merchantsGuild: 1, totalProbability: 0}
+eventsMerchant.ts:1000 [MERCHANT] Condition check: {woodenHut: 10, hasEnoughHuts: true, merchantActive: undefined, merchantNotActive: true, shouldTrigger: true}
+eventsMerchant.ts:1018 [MERCHANT] Time probability: {tradePost: 1, grandBazaar: 1, merchantsGuild: 1, totalProbability: 0}
+events.ts:213 [EVENTS] Event triggered: merchant
+events.ts:218 [MERCHANT] Generating merchant choices
+events.ts:234 [EVENTS] Skipping event dialog for: merchant
+events.ts:315 [EVENTS] checkEvents returning: {newLogEntriesCount: 0, stateChangesKeys: Array(1), hasFlags: false, flagsValue: undefined}
+state.ts:1073 [STATE] checkEvents results: {newLogEntriesCount: 0, hasStateChanges: true, triggeredEventsCount: 1, stateChangesKeys: Array(1), flagsInChanges: undefined, …}
+state.ts:207 [MERGE] Input stateUpdates: {hasFlags: false, flagsValue: undefined, merchantActive: undefined}
+state.ts:306 [MERGE] Output merged: {hasFlags: true, flagsValue: {…}, merchantActive: undefined}
+state.ts:1086 [STATE] Merged state updates: {hasFlags: true, flagsValue: {…}, merchantActive: undefined}
+state.ts:1069 [STATE] checkEvents: Running event check
+eventsMerchant.ts:1018 [MERCHANT] Time probability: {tradePost: 1, grandBazaar: 1, merchantsGuild: 1, totalProbability: 0}
+eventsMerchant.ts:1000 [MERCHANT] Condition check: {woodenHut: 10, hasEnoughHuts: true, merchantActive: undefined, merchantNotActive: true, shouldTrigger: true}
+eventsMerchant.ts:1018 [MERCHANT] Time probability: {tradePost: 1, grandBazaar: 1, merchantsGuild: 1, totalProbability: 0}
+events.ts:213 [EVENTS] Event triggered: merchant
+events.ts:218 [MERCHANT] Generating merchant choices
+events.ts:234 [EVENTS] Skipping event dialog for: merchant
+events.ts:315 [EVENTS] checkEvents returning: {newLogEntriesCount: 0, stateChangesKeys: Array(1), hasFlags: false, flagsValue: undefined}
+state.ts:1073 [STATE] checkEvents results: {newLogEntriesCount: 0, hasStateChanges: true, triggeredEventsCount: 1, stateChangesKeys: Array(1), flagsInChanges: undefined, …}
+state.ts:207 [MERGE] Input stateUpdates: {hasFlags: false, flagsValue: undefined, merchantActive: undefined}
+state.ts:306 [MERGE] Output merged: {hasFlags: true, flagsValue: {…}, merchantActive: undefined}
+state.ts:1086 [STATE] Merged state updates: {hasFlags: true, flagsValue: {…}, merchantActive: undefined}
+state.ts:1069 [STATE] checkEvents: Running event check
+eventsMerchant.ts:1018 [MERCHANT] Time probability: {tradePost: 1, grandBazaar: 1, merchantsGuild: 1, totalProbability: 0}
+eventsMerchant.ts:1000 [MERCHANT] Condition check: {woodenHut: 10, hasEnoughHuts: true, merchantActive: undefined, merchantNotActive: true, shouldTrigger: true}
+eventsMerchant.ts:1018 [MERCHANT] Time probability: {tradePost: 1, grandBazaar: 1, merchantsGuild: 1, totalProbability: 0}
+events.ts:213 [EVENTS] Event triggered: merchant
+events.ts:218 [MERCHANT] Generating merchant choices
+events.ts:234 [EVENTS] Skipping event dialog for: merchant
+events.ts:315 [EVENTS] checkEvents returning: {newLogEntriesCount: 0, stateChangesKeys: Array(1), hasFlags: false, flagsValue: undefined}
+state.ts:1073 [STATE] checkEvents results: {newLogEntriesCount: 0, hasStateChanges: true, triggeredEventsCount: 1, stateChangesKeys: Array(1), flagsInChanges: undefined, …}
+state.ts:207 [MERGE] Input stateUpdates: {hasFlags: false, flagsValue: undefined, merchantActive: undefined}
+state.ts:306 [MERGE] Output merged: {hasFlags: true, flagsValue: {…}, merchantActive: undefined}
+state.ts:1086 [STATE] Merged state updates: {hasFlags: true, flagsValue: {…}, merchantActive: undefined}
+state.ts:1069 [STATE] checkEvents: Running event check
+eventsMerchant.ts:1018 [MERCHANT] Time probability: {tradePost: 1, grandBazaar: 1, merchantsGuild: 1, totalProbability: 0}
+eventsMerchant.ts:1000 [MERCHANT] Condition check: {woodenHut: 10, hasEnoughHuts: true, merchantActive: undefined, merchantNotActive: true, shouldTrigger: true}
+eventsMerchant.ts:1018 [MERCHANT] Time probability: {tradePost: 1, grandBazaar: 1, merchantsGuild: 1, totalProbability: 0}
+events.ts:213 [EVENTS] Event triggered: merchant
+events.ts:218 [MERCHANT] Generating merchant choices
+events.ts:234 [EVENTS] Skipping event dialog for: merchant
+events.ts:315 [EVENTS] checkEvents returning: {newLogEntriesCount: 0, stateChangesKeys: Array(1), hasFlags: false, flagsValue: undefined}
+state.ts:1073 [STATE] checkEvents results: {newLogEntriesCount: 0, hasStateChanges: true, triggeredEventsCount: 1, stateChangesKeys: Array(1), flagsInChanges: undefined, …}
+state.ts:207 [MERGE] Input stateUpdates: {hasFlags: false, flagsValue: undefined, merchantActive: undefined}
+state.ts:306 [MERGE] Output merged: {hasFlags: true, flagsValue: {…}, merchantActive: undefined}
+state.ts:1086 [STATE] Merged state updates: 

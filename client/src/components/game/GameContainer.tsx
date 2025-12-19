@@ -12,6 +12,7 @@ import { useGameStore } from "@/game/state";
 import EventDialog from "./EventDialog";
 import CombatDialog from "./CombatDialog";
 import IdleModeDialog from "./IdleModeDialog";
+import MerchantDialog from "./MerchantDialog";
 import CubeDialog from "./CubeDialog";
 import InactivityDialog from "./InactivityDialog";
 import { RestartGameDialog } from "./RestartGameDialog";
@@ -189,17 +190,6 @@ export default function GameContainer() {
         onClick: () => setActiveTab("achievements"),
       });
     }
-
-    // Add Merchant tab if merchant event is active
-    if (eventDialog.isOpen && eventDialog.currentEvent?.id.includes("merchant")) {
-      tabs.push({
-        id: "merchant",
-        icon: <Castle />,
-        label: "Merchant",
-        onClick: () => setActiveTab("merchant"),
-      });
-    }
-
     return tabs;
   }, [
     flags.villageUnlocked,
@@ -209,8 +199,6 @@ export default function GameContainer() {
     buildings.stoneHut,
     setActiveTab,
     books?.book_of_trials,
-    eventDialog.isOpen,
-    eventDialog.currentEvent?.id,
   ]);
 
   // Show start screen if game hasn't started yet
@@ -363,21 +351,6 @@ export default function GameContainer() {
                     ⚜
                   </button>
                 )}
-
-                {/* Merchant Tab Button */}
-                {eventDialog.isOpen && eventDialog.currentEvent?.id.includes("merchant") && (
-                  <button
-                    className={`py-2 text-sm bg-transparent ${
-                      activeTab === "merchant"
-                        ? "font-medium opacity-100"
-                        : "opacity-60"
-                    }`}
-                    onClick={() => setActiveTab("merchant")}
-                    data-testid="tab-merchant"
-                  >
-                    🛒
-                  </button>
-                )}
               </div>
             )}
           </nav>
@@ -390,14 +363,6 @@ export default function GameContainer() {
             {activeTab === "estate" && <EstatePanel />}
             {activeTab === "bastion" && <BastionPanel />}
             {activeTab === "achievements" && <AchievementsPanel />}
-            {activeTab === "merchant" && eventDialog.isOpen && eventDialog.currentEvent?.id.includes("merchant") && (
-              <EventDialog
-                isOpen={true}
-                onClose={() => setEventDialog(false)}
-                event={eventDialog.currentEvent}
-                hideDialog={true}
-              />
-            )}
           </div>
         </section>
       </main>
@@ -423,8 +388,7 @@ export default function GameContainer() {
 
       {/* Idle Mode Dialog */}
       <IdleModeDialog />
-      {/* Only show merchant dialog overlay when NOT on merchant tab */}
-      {!(activeTab === "merchant" && eventDialog.isOpen && eventDialog.currentEvent?.id.includes("merchant"))}
+      <MerchantDialog />
       <CubeDialog />
       {inactivityDialogOpen && <InactivityDialog />}
 

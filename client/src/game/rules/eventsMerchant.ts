@@ -992,19 +992,12 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
 export const merchantEvents: Record<string, GameEvent> = {
   merchant: {
     id: "merchant",
-    condition: (state: GameState) => {
-      // Don't trigger if merchant is already active
-      const merchantDialogOpen = state.eventDialog?.isOpen && 
-        state.eventDialog?.currentEvent?.id?.includes("merchant");
-      if (merchantDialogOpen) return false;
-      
-      return state.buildings.woodenHut >= 3;
-    },
+    condition: (state: GameState) => state.buildings.woodenHut >= 3,
     triggerType: "resource",
     timeProbability: (state: GameState) =>
-      // 10 + 1 * state.buildings.tradePost ||
-      // 0 + 2 * state.buildings.grandBazaar ||
-      // 0 + 2 * state.buildings.merchantsGuild ||
+      10 + 1 * state.buildings.tradePost ||
+      0 + 2 * state.buildings.grandBazaar ||
+      0 + 2 * state.buildings.merchantsGuild ||
       0,
 
     title: "Traveling Merchant",
