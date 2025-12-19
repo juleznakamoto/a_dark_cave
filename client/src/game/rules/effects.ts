@@ -526,7 +526,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
   adamant_sword: {
     id: "adamant_sword",
     name: "Adamant Sword",
-    description: "Ultimate weapon forged from the hardest metal",
+    description: "Legendary blade of unparalleled strength",
     bonuses: {
       generalBonuses: {
         strength: 12,

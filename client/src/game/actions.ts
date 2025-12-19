@@ -81,6 +81,8 @@ import {
   handleCraftBloodstoneStaff,
   handleCraftStormglassHalberd,
   handleCraftAshenGreatshield,
+  handleCraftBlacksteelSword,
+  handleCraftBlacksteelBow,
 } from "@/game/rules/caveCraftWeapons";
 
 import {
@@ -336,6 +338,10 @@ export function executeGameAction(
       return handleCraftStormglassHalberd(state, result);
     case "craftAshenGreatshield":
       return handleCraftAshenGreatshield(state, result);
+    case "craftBlacksteelSword":
+      return handleCraftBlacksteelSword(state, result);
+    case "craftBlacksteelBow":
+      return handleCraftBlacksteelBow(state, result);
 
     // Cave Mine Actions
     case "mineStone":
