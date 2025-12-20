@@ -155,8 +155,8 @@ const WAVE_CONFIG = {
   sixthWave: {
     title: "The Final Wave",
     message:
-      "From the deepest abyss, the Ancient Harbingers rise. These primordial entities predate existence itself, and they seek to unmake all that has been created.",
-    enemyName: "Ancient Harbingers",
+      "From the deepest reaches of the cave, a final horde emerges. These pale creatures are ancient beyond measure, their twisted forms radiating an otherworldly hunger as they descend upon the city.",
+    enemyName: "Ancient Horde",
     condition: (state: GameState) =>
       state.weapons.bloodstone_staff &&
       state.story.seen.fifthWaveVictory &&
