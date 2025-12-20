@@ -147,7 +147,6 @@ const WAVE_CONFIG = {
       "From the cave emerge countless pale figures, larger and more twisted than before, their forms unspeakable as they advance on the city.",
     enemyName: "Swarm of creatures",
     condition: (state: GameState) =>
-      state.weapons.bloodstone_staff &&
       state.story.seen.fourthWaveVictory &&
       !state.story.seen.fifthWaveVictory,
     triggeredFlag: null,
@@ -159,8 +158,8 @@ const WAVE_CONFIG = {
       "From the deepest abyss, the Ancient Harbingers rise. These primordial entities predate existence itself, and they seek to unmake all that has been created.",
     enemyName: "Ancient Harbingers",
     condition: (state: GameState) =>
+      state.weapons.bloodstone_staff &&
       state.story.seen.fifthWaveVictory &&
-      state.buildings.pillarOfClarity &&
       !state.story.seen.sixthWaveVictory,
     triggeredFlag: null,
     victoryFlag: "sixthWaveVictory" as const,

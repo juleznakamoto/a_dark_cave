@@ -42,7 +42,7 @@ export default function AttackWavesChart() {
       id: "sixthWave", 
       name: "Sixth Wave",
       completed: story?.seen?.sixthWaveVictory || false,
-      conditionMet: true,
+      conditionMet: useGameStore.getState().weapons?.bloodstone_staff && story?.seen?.fifthWaveVictory,
     },
   ];
 
