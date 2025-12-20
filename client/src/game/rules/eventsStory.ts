@@ -227,8 +227,6 @@ export const storyEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.story.seen.hillGraveExplored &&
       state.relics.frostglass &&
-      state.buildings.blacksmith >= 1 &&
-      state.buildings.grandBlacksmith === 0 &&
       !state.story.seen.wizardFrostglassSword,
     triggerType: "resource",
     timeProbability: 0.5,

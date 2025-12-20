@@ -42,7 +42,7 @@ export default function AttackWavesChart() {
       id: "sixthWave", 
       name: "Sixth Wave",
       completed: story?.seen?.sixthWaveVictory || false,
-      conditionMet: useGameStore.getState().weapons?.bloodstone_staff && story?.seen?.fifthWaveVictory,
+      conditionMet: true,
     },
   ];
 
@@ -153,7 +153,7 @@ export default function AttackWavesChart() {
             <span className="text-xs text-muted-foreground">
               {attackWaveTimers?.[activeWave.id] 
                 ? formatTime(getTimeRemaining(activeWave.id))
-                : "Preparing..."}
+                : "It is calm, for now..."}
             </span>
           </div>
           {attackWaveTimers?.[activeWave.id] && (

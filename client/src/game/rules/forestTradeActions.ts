@@ -377,14 +377,15 @@ export const forestTradeActions: Record<string, Action> = {
     label: "Buy Gold",
     show_when: {
       1: {
-        "buildings.grandBazaar": 1,
+        "buildings.tradePost": 1,
         "buildings.merchantsGuild": 0,
-        "buildings.masterworkFoundry": 0,
       },
       2: {
+        "buildings.grandBazaar": 1,
+        "buildings.merchantsGuild": 0,
+      },
+      3: {
         "buildings.merchantsGuild": 1,
-        "buildings.masterworkFoundry": 0,
-        "buildings.grandBlacksmith": 0,
       },
     },
     cost: {
@@ -394,14 +395,20 @@ export const forestTradeActions: Record<string, Action> = {
       2: {
         "resources.silver": 100,
       },
+      3: {
+        "resources.silver": 200,
+      }
     },
     effects: {
       1: {
-        "resources.gold": 75,
+        "resources.gold": 5,
       },
       2: {
         "resources.gold": 25,
       },
+      3: {
+        "resources.gold": 50,
+      }
     },
     cooldown: 30,
   },
