@@ -37,7 +37,24 @@ serve(async (req) => {
     // Get JWT from Authorization header
     const authHeader = req.headers.get('Authorization')
     if (!authHeader) {
-      throw new Error('Missing authorization header')
+      return new Response(
+        JSON.stringify({ error: 'Missing authorization header' }),
+        { 
+          status: 401, 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        }
+      )
+    }
+
+    // Validate Bearer format
+    if (!authHeader.startsWith('Bearer ')) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid authorization format' }),
+        { 
+          status: 401, 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        }
+      )
     }
 
     // Create Supabase client with service role
@@ -46,11 +63,17 @@ serve(async (req) => {
     const supabase = createClient(supabaseUrl, supabaseServiceKey)
 
     // Verify the JWT and get user
-    const jwt = authHeader.replace('Bearer ', '')
+    const jwt = authHeader.substring(7) // Remove 'Bearer ' prefix
     const { data: { user }, error: authError } = await supabase.auth.getUser(jwt)
 
     if (authError || !user) {
-      throw new Error('Invalid token')
+      return new Response(
+        JSON.stringify({ error: 'Invalid or expired token' }),
+        { 
+          status: 401, 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        }
+      )
     }
 
     // Rate limit: 2 saves per second per user
@@ -74,16 +97,42 @@ serve(async (req) => {
       allowPlaytimeOverwrite
     } = body
 
+    // Validate request shape
+    if (!gameStateDiff || typeof gameStateDiff !== 'object' || Array.isArray(gameStateDiff)) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid gameStateDiff: must be a non-null object' }),
+        { 
+          status: 400, 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        }
+      )
+    }
+
+    if (Object.keys(gameStateDiff).length === 0) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid gameStateDiff: cannot be empty' }),
+        { 
+          status: 400, 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        }
+      )
+    }
+
     // Validate payload size (prevent abuse)
     const payloadSize = JSON.stringify(body).length
     if (payloadSize > 500000) { // 500KB limit
-      throw new Error('Payload too large')
+      return new Response(
+        JSON.stringify({ error: 'Payload too large' }),
+        { 
+          status: 413, 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        }
+      )
     }
 
-    // Call the database function with service role (bypassing RLS)
-    // User ID comes from verified JWT, not from client
+    // Call the database function with service role
+    // User ID is derived from auth.uid() inside the SQL function
     const { error: dbError } = await supabase.rpc('save_game_with_analytics', {
-      p_user_id: user.id, // Trusted user ID from JWT
       p_game_state_diff: gameStateDiff,
       p_click_analytics: clickAnalytics || null,
       p_resource_analytics: resourceAnalytics || null,

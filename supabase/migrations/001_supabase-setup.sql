@@ -92,12 +92,13 @@ CREATE INDEX IF NOT EXISTS button_clicks_timestamp_idx ON button_clicks(timestam
 CREATE INDEX IF NOT EXISTS purchases_user_id_idx ON purchases(user_id);
 CREATE INDEX IF NOT EXISTS purchases_item_id_idx ON purchases(item_id);
 
--- Drop the old function first to allow parameter rename
+-- Drop the old function first to allow parameter changes
 DROP FUNCTION IF EXISTS save_game_with_analytics(UUID, JSONB, JSONB, JSONB, BOOLEAN, BOOLEAN);
+DROP FUNCTION IF EXISTS save_game_with_analytics(JSONB, JSONB, JSONB, BOOLEAN, BOOLEAN);
 
 -- Create a function that saves both game state and click analytics atomically
+-- User ID is derived from auth.uid() - never passed from client
 CREATE OR REPLACE FUNCTION save_game_with_analytics(
-  p_user_id UUID,
   p_game_state_diff JSONB,
   p_click_analytics JSONB DEFAULT NULL,
   p_resource_analytics JSONB DEFAULT NULL,
@@ -109,6 +110,7 @@ LANGUAGE plpgsql
 SECURITY DEFINER
 AS $$
 DECLARE
+  v_user_id UUID;
   v_existing_state JSONB;
   v_merged_state JSONB;
   v_existing_clicks JSONB;
@@ -122,10 +124,17 @@ DECLARE
   v_existing_playtime NUMERIC;
   v_new_playtime NUMERIC;
 BEGIN
+  -- Get authenticated user ID from JWT context
+  v_user_id := auth.uid();
+  
+  IF v_user_id IS NULL THEN
+    RAISE EXCEPTION 'Not authenticated';
+  END IF;
+
   -- Get existing game state
   SELECT game_state INTO v_existing_state
   FROM game_saves
-  WHERE user_id = p_user_id;
+  WHERE user_id = v_user_id;
 
   -- OCC: Validate playTime if both states exist (unless overwrite is allowed)
   IF v_existing_state IS NOT NULL AND p_game_state_diff ? 'playTime' THEN
@@ -183,7 +192,7 @@ BEGIN
 
       SELECT game_stats INTO v_existing_game_stats
       FROM game_saves
-      WHERE user_id = p_user_id;
+      WHERE user_id = v_user_id;
 
       IF v_existing_game_stats IS NULL THEN
         v_existing_game_stats := '[]'::jsonb;
@@ -224,7 +233,7 @@ BEGIN
         v_new_game_stats := v_existing_game_stats || jsonb_build_array(v_completion_record);
 
         INSERT INTO game_saves (user_id, game_state, game_stats, updated_at)
-        VALUES (p_user_id, v_merged_state, v_new_game_stats, NOW())
+        VALUES (v_user_id, v_merged_state, v_new_game_stats, NOW())
         ON CONFLICT (user_id) 
         DO UPDATE SET 
           game_state = EXCLUDED.game_state,
@@ -234,7 +243,7 @@ BEGIN
         RAISE NOTICE 'Game completion recorded for gameId: %', v_game_id;
       ELSE
         INSERT INTO game_saves (user_id, game_state, updated_at)
-        VALUES (p_user_id, v_merged_state, NOW())
+        VALUES (v_user_id, v_merged_state, NOW())
         ON CONFLICT (user_id) 
         DO UPDATE SET 
           game_state = EXCLUDED.game_state,
@@ -244,7 +253,7 @@ BEGIN
       END IF;
     ELSE
       INSERT INTO game_saves (user_id, game_state, updated_at)
-      VALUES (p_user_id, v_merged_state, NOW())
+      VALUES (v_user_id, v_merged_state, NOW())
       ON CONFLICT (user_id) 
       DO UPDATE SET 
         game_state = EXCLUDED.game_state,
@@ -254,7 +263,7 @@ BEGIN
 
   -- Handle click and resource analytics
   IF p_clear_analytics THEN
-    DELETE FROM button_clicks WHERE user_id = p_user_id;
+    DELETE FROM button_clicks WHERE user_id = v_user_id;
   ELSE
     v_playtime_ms := (v_merged_state->>'playTime')::NUMERIC;
     v_playtime_minutes := FLOOR(v_playtime_ms / 1000 / 60);
@@ -263,7 +272,7 @@ BEGIN
 
     SELECT clicks, resources INTO v_existing_clicks, v_existing_resources
     FROM button_clicks
-    WHERE user_id = p_user_id;
+    WHERE user_id = v_user_id;
 
     IF p_click_analytics IS NOT NULL AND p_click_analytics != '{}'::jsonb THEN
       IF v_existing_clicks IS NOT NULL THEN
@@ -322,7 +331,7 @@ BEGIN
     IF v_updated_clicks IS NOT NULL OR v_updated_resources IS NOT NULL THEN
       INSERT INTO button_clicks (user_id, timestamp, clicks, resources)
       VALUES (
-        p_user_id, 
+        v_user_id, 
         NOW(), 
         COALESCE(v_updated_clicks, '{}'::jsonb),
         COALESCE(v_updated_resources, '{}'::jsonb)
@@ -339,5 +348,5 @@ $$;
 
 -- Only service role (Edge Functions) can call this function
 -- Remove public execute permission to prevent direct client access
-REVOKE EXECUTE ON FUNCTION save_game_with_analytics(UUID, JSONB, JSONB, JSONB, BOOLEAN, BOOLEAN) FROM authenticated;
-REVOKE EXECUTE ON FUNCTION save_game_with_analytics(UUID, JSONB, JSONB, JSONB, BOOLEAN, BOOLEAN) FROM anon;
+REVOKE EXECUTE ON FUNCTION save_game_with_analytics(JSONB, JSONB, JSONB, BOOLEAN, BOOLEAN) FROM authenticated;
+REVOKE EXECUTE ON FUNCTION save_game_with_analytics(JSONB, JSONB, JSONB, BOOLEAN, BOOLEAN) FROM anon;
