@@ -21,6 +21,9 @@ const getSupabaseConfig = () => {
 
 const app = express();
 
+// CRITICAL: Enable trust proxy for accurate rate limiting behind reverse proxy
+app.set('trust proxy', 1);
+
 // CRITICAL: Parse JSON bodies BEFORE defining any routes
 app.use(express.json());
 
