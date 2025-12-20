@@ -295,15 +295,16 @@ export async function saveGame(
           stateDiff.playTime = Math.floor(stateDiff.playTime);
         }
 
-        // Save diff to Supabase
-        const supabase = await getSupabaseClient();
-        const { error } = await supabase.rpc("save_game_with_analytics", {
-          p_user_id: user.id,
-          p_game_state_diff: stateDiff,
-          p_click_analytics: clickData,
-          p_resource_analytics: resourceData,
-          p_clear_analytics: gameState.isNewGame || false,
-          p_allow_playtime_overwrite: gameState.allowPlayTimeOverwrite || false,
+        // Save via Edge Function (handles auth, rate limiting, and trust)
+        const supabaseClient = await getSupabaseClient();
+        const { data, error } = await supabaseClient.functions.invoke('save-game', {
+          body: {
+            gameStateDiff: stateDiff,
+            clickAnalytics: clickData,
+            resourceAnalytics: resourceData,
+            clearAnalytics: isNewGame,
+            allowPlaytimeOverwrite: gameState.allowPlaytimeOverwrite || false
+          }
         });
 
         if (error) {
@@ -315,9 +316,9 @@ export async function saveGame(
         logger.log("[SAVE] ✅ Updated lastCloudState after successful cloud save");
 
         // Clear the allowPlayTimeOverwrite flag after successful save
-        if (gameState.allowPlayTimeOverwrite) {
+        if (gameState.allowPlaytimeOverwrite) {
           const { useGameStore } = await import("./state");
-          useGameStore.setState({ allowPlayTimeOverwrite: false });
+          useGameStore.setState({ allowPlaytimeOverwrite: false });
           logger.log("[SAVE] 🔓 Cleared allowPlayTimeOverwrite flag after successful cloud save");
         }
       }
@@ -479,7 +480,7 @@ export async function loadGame(): Promise<GameState | null> {
           const processedState = await processUnclaimedReferrals(stateWithDefaults);
 
           try {
-            // Force full sync by clearing lastCloudState, then saveGame will handle it
+            // Force sync by clearing lastCloudState, then saveGame will handle it
             await db.delete("lastCloudState", LAST_CLOUD_STATE_KEY);
             // Do NOT use allowPlayTimeOverwrite here - this is not a new game
             await saveGame(processedState, false);

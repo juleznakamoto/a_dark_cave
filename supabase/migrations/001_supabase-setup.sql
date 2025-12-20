@@ -337,4 +337,7 @@ BEGIN
 END;
 $$;
 
-GRANT EXECUTE ON FUNCTION save_game_with_analytics(UUID, JSONB, JSONB, JSONB, BOOLEAN, BOOLEAN) TO authenticated;
+-- Only service role (Edge Functions) can call this function
+-- Remove public execute permission to prevent direct client access
+REVOKE EXECUTE ON FUNCTION save_game_with_analytics(UUID, JSONB, JSONB, JSONB, BOOLEAN, BOOLEAN) FROM authenticated;
+REVOKE EXECUTE ON FUNCTION save_game_with_analytics(UUID, JSONB, JSONB, JSONB, BOOLEAN, BOOLEAN) FROM anon;
