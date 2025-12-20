@@ -1,0 +1,256 @@
+For anything important, the client should call Edge Functions, not Postgres directly.
+
+Now let’s map that clearly onto your current setup, because you are already very close.
+
+1. Your current model (what is happening now)
+
+Right now the flow is likely:
+
+Client
+  ↓ (supabase-js)
+Postgres RPC: save_game_with_analytics(...)
+  ↓
+Tables (game_saves, button_clicks, purchases, leaderboard)
+
+
+You rely on:
+
+RLS
+
+SECURITY DEFINER
+
+Passing p_user_id from the client
+
+This works, but it has three structural problems.
+
+2. The three real problems in your current setup
+Problem 1: The client controls p_user_id
+
+Your function is:
+
+SECURITY DEFINER
+save_game_with_analytics(p_user_id UUID, ...)
+
+
+Even with RLS:
+
+SECURITY DEFINER bypasses RLS
+
+Any authenticated client can pass any UUID
+
+You rely on the client behaving correctly
+
+That is fine for honest players.
+It is not fine for adversarial clients.
+
+This is the single biggest issue.
+
+Problem 2: No rate limiting before heavy logic
+
+Your function does:
+
+JSON merges
+
+OCC checks
+
+Analytics aggregation
+
+Completion detection
+
+Multiple inserts and updates
+
+All of this runs after the request already hit Postgres.
+
+A bot can:
+
+Call this hundreds of times per second
+
+Burn CPU
+
+Inflate analytics
+
+Stress WAL and indexes
+
+RLS does not protect against abuse.
+
+Problem 3: You are mixing responsibilities
+
+Right now Postgres is doing:
+
+Persistence
+
+Validation
+
+Business logic
+
+Abuse exposure
+
+Analytics aggregation
+
+Postgres is excellent at the first two.
+It is not meant to be your firewall.
+
+3. The correct architecture for your exact game
+
+Here is the architecture you actually want.
+
+Client
+  ↓
+Supabase Edge Function
+  ↓
+Postgres (RLS + logic)
+
+What changes conceptually
+Layer	Responsibility
+Client	UX, batching, retries
+Edge Function	Auth, rate limiting, trust, sanity checks
+Postgres	Data integrity, atomic updates
+4. What stays exactly as it is
+
+Good news: most of your SQL stays.
+
+These are fine and can remain:
+
+Tables
+
+Indexes
+
+Leaderboard logic
+
+Cron jobs
+
+Analytics structure
+
+OCC playTime check
+
+JSON merge strategy
+
+You do not need to rewrite everything.
+
+5. What must change (important)
+A. The client must stop calling the RPC directly
+
+Instead of:
+
+supabase.rpc("save_game_with_analytics", { ... })
+
+
+You do:
+
+supabase.functions.invoke("save-game", { body: { ... } })
+
+B. The Edge Function does these things
+
+In the Edge Function:
+
+Verify session
+
+Get user_id from the JWT
+
+Apply rate limiting
+
+Validate payload size and shape
+
+Call Postgres using service role
+
+Pass the user_id internally
+
+The client never sends user_id.
+
+C. Fix the SECURITY DEFINER risk
+
+You have two valid options.
+
+Option 1: Keep SECURITY DEFINER, remove trust in client
+
+Change the function signature to:
+
+save_game_with_analytics(
+  p_game_state_diff JSONB,
+  p_click_analytics JSONB,
+  ...
+)
+
+
+Inside the function:
+
+DECLARE
+  v_user_id UUID := auth.uid();
+
+
+Never accept user_id as a parameter.
+
+Option 2: Only allow service role to call it
+
+Remove:
+
+GRANT EXECUTE TO authenticated;
+
+
+Only the Edge Function (service role) can call it.
+
+This is my preferred option for your case.
+
+6. Where rate limiting belongs (for your game)
+What to rate limit
+
+At the Edge Function level:
+
+Action	Limit
+save game	1 to 2 per second
+purchases	very strict
+analytics	batched only
+leaderboard submit	once per completion
+What not to rate limit
+
+Reads
+
+Public leaderboard views
+
+Static config
+
+7. Your analytics batching is actually good
+
+One thing you did very well:
+
+Analytics are merged
+
+Stored per time bucket
+
+Written in bulk
+
+That is exactly what you want.
+
+Just make sure:
+
+Analytics submission is not per click
+
+It is batched client side (every X seconds)
+
+8. Minimal concrete next steps
+
+If you want the safest path with minimal work:
+
+Create an Edge Function save-game
+
+Move rate limiting there
+
+Stop passing user_id from client
+
+Call your existing SQL function from the Edge Function
+
+Remove GRANT EXECUTE for authenticated users
+
+That alone hardens the system massively.
+
+Final answer in one sentence
+
+Yes, the client should call Edge Functions, and in your setup this is the missing layer that fixes rate limiting, trust, and abuse without throwing away your existing database design.
+
+If you want, I can:
+
+Sketch the exact Edge Function code
+
+Suggest concrete rate limits for your game
+
+Review which RPCs should remain client accessible
