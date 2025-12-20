@@ -49,7 +49,7 @@ const WAVE_PARAMS = {
     initialDuration: 10 * 60 * 1000,
     defeatDuration: 20 * 60 * 1000,
     maxCasualties: 10,
-    buildingDamageMultiplier: 2,
+    buildingDamageMultiplier: 1.5,
     fellowshipWoundedMultiplier: 0.15,
   },
   thirdWave: {
@@ -59,7 +59,7 @@ const WAVE_PARAMS = {
     initialDuration: 10 * 60 * 1000,
     defeatDuration: 20 * 60 * 1000,
     maxCasualties: 15,
-    buildingDamageMultiplier: 3,
+    buildingDamageMultiplier: 2,
     fellowshipWoundedMultiplier: 0.2,
   },
   fourthWave: {
@@ -69,25 +69,27 @@ const WAVE_PARAMS = {
     initialDuration: 10 * 60 * 1000,
     defeatDuration: 20 * 60 * 1000,
     maxCasualties: 20,
-    buildingDamageMultiplier: 4,
+    buildingDamageMultiplier: 2.5,
     fellowshipWoundedMultiplier: 0.25,
   },
   fifthWave: {
     attack: { options: [70, 75, 80, 85], cmBonus: 20 },
     health: { base: 800, cmBonus: 200 },
     silverReward: 1500,
-    initialDuration: 15 * 60 * 1000, // 15 minutes
-    buildingDamageMultiplier: 5,
+    initialDuration: 10 * 60 * 1000,
+    defeatDuration: 20 * 60 * 1000,
+    maxCasualties: 25,
+    buildingDamageMultiplier: 3,
     fellowshipWoundedMultiplier: 0.3,
   },
   sixthWave: {
-    attack: { options: [90, 95, 100, 105], cmBonus: 25 },
+    attack: { options: [80, 85, 90, 95], cmBonus: 25 },
     health: { base: 1000, cmBonus: 250 },
     silverReward: 2000,
-    initialDuration: 20 * 60 * 1000, // 20 minutes
-    defeatDuration: 25 * 60 * 1000, // 25 minutes
+    initialDuration: 10 * 60 * 1000,
+    defeatDuration: 20 * 60 * 1000,
     maxCasualties: 30,
-    buildingDamageMultiplier: 6,
+    buildingDamageMultiplier: 3.5,
     fellowshipWoundedMultiplier: 0.35,
   },
 } as const;
@@ -140,7 +142,7 @@ const WAVE_CONFIG = {
     victoryFlag: "fourthWaveVictory" as const,
   },
   fifthWave: {
-    title: "The Final Wave",
+    title: "The Fifth Wave",
     message:
       "From the cave emerge countless pale figures, larger and more twisted than before, their forms unspeakable as they advance on the city.",
     enemyName: "Swarm of creatures",
@@ -152,7 +154,7 @@ const WAVE_CONFIG = {
     victoryFlag: "fifthWaveVictory" as const,
   },
   sixthWave: {
-    title: "The Ultimate Confrontation",
+    title: "The Final Wave",
     message:
       "From the deepest abyss, the Ancient Harbingers rise. These primordial entities predate existence itself, and they seek to unmake all that has been created.",
     enemyName: "Ancient Harbingers",
@@ -168,11 +170,8 @@ const WAVE_CONFIG = {
 const VICTORY_MESSAGE = (silverReward: number) =>
   `The defenses hold! The pale creatures crash against the walls but cannot break through. You claim ${silverReward} silver from the fallen creatures.`;
 
-const FIFTH_WAVE_VICTORY_MESSAGE = (silverReward: number) =>
-  `The final wave has been defeated! The path beyond the shattered portal now lies open. You can venture deeper into the depths to discover what lies beyond. You claim ${silverReward} silver from the fallen creatures.`;
-
 const SIXTH_WAVE_VICTORY_MESSAGE = (silverReward: number) =>
-  `The Ancient Harbingers have been vanquished! The fabric of reality is secured, and the world is safe once more. You claim ${silverReward} silver from their remnants.`;
+  `The final wave has been defeated! The path beyond the shattered portal now lies open. You can venture deeper into the depths to discover what lies beyond. You claim ${silverReward} silver from the fallen creatures.`;
 
 function createDefeatMessage(
   casualties: number,
@@ -356,7 +355,8 @@ function createAttackWaveEvent(waveId: keyof typeof WAVE_PARAMS): GameEvent {
       if (isPaused) {
         // If paused, update elapsedTime without advancing the timer
         if (timer.startTime && timer.elapsedTime !== undefined) {
-          const currentElapsedTime = timer.elapsedTime + (Date.now() - timer.startTime);
+          const currentElapsedTime =
+            timer.elapsedTime + (Date.now() - timer.startTime);
           useGameStore.setState((prevState) => ({
             attackWaveTimers: {
               ...prevState.attackWaveTimers,
@@ -429,9 +429,7 @@ function createAttackWaveEvent(waveId: keyof typeof WAVE_PARAMS): GameEvent {
             _logMessage:
               waveId === "sixthWave"
                 ? SIXTH_WAVE_VICTORY_MESSAGE(params.silverReward)
-                : waveId === "fifthWave"
-                  ? FIFTH_WAVE_VICTORY_MESSAGE(params.silverReward)
-                  : VICTORY_MESSAGE(params.silverReward),
+                : VICTORY_MESSAGE(params.silverReward),
           }),
           onDefeat: () => {
             const defeatResult = handleDefeat(

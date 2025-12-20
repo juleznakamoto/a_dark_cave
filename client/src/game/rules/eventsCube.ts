@@ -333,7 +333,7 @@ export const cubeEvents: Record<string, GameEvent> = {
   cube11: {
     id: "cube11",
     condition: (state: GameState) =>
-      state.story.seen.fifthWaveVictory &&
+      state.story.seen.sixthWaveVictory &&
       state.events.cube10 &&
       !state.events.cube11,
     triggerType: "resource",

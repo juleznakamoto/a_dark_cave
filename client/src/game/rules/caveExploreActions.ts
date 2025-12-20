@@ -383,7 +383,7 @@ export const caveExploreActions: Record<string, Action> = {
     id: "encounterBeyondPortal",
     label: "Venture beyond Portal",
     show_when: {
-      "story.seen.fifthWaveVictory": true,
+      "story.seen.sixthWaveVictory": true,
       "story.seen.encounteredBeyondPortal": false,
     },
     cost: {

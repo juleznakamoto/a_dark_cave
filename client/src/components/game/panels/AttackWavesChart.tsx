@@ -36,13 +36,13 @@ export default function AttackWavesChart() {
       id: "fifthWave", 
       name: "Fifth Wave",
       completed: story?.seen?.fifthWaveVictory || false,
-      conditionMet: useGameStore.getState().weapons?.bloodstone_staff && story?.seen?.fourthWaveVictory,
+      conditionMet: story?.seen?.fourthWaveVictory,
     },
     { 
       id: "sixthWave", 
       name: "Sixth Wave",
       completed: story?.seen?.sixthWaveVictory || false,
-      conditionMet: useGameStore.getState().buildings?.pillarOfClarity && story?.seen?.fifthWaveVictory,
+      conditionMet: useGameStore.getState().weapons?.bloodstone_staff && story?.seen?.fifthWaveVictory,
     },
   ];
 

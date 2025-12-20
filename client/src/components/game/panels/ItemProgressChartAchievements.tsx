@@ -209,7 +209,7 @@ export default function ItemProgressChart() {
         label: "Blacksteel Tools",
         category: "tools",
         maxCount: 3,
-        reward: 500,
+        reward: 250,
       },
       // blacksteel weapons
       {
@@ -219,7 +219,7 @@ export default function ItemProgressChart() {
         label: "Blacksteel Weapons",
         category: "weapons",
         maxCount: 2,
-        reward: 500,
+        reward: 250,
       },
     ],
     // Sixth ring: Fellowship

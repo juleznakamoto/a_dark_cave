@@ -383,7 +383,7 @@ export default function SidePanelSection({
     const itemContent = (
       <div
         data-testid={item.testId}
-        className={`flex leading-tight justify-between items-center transition-all duration-300 ${
+        className={`mr-2 flex leading-tight justify-between items-center transition-all duration-300 ${
           isAnimated
             ? "text-green-400"
             : isDecreaseAnimated
