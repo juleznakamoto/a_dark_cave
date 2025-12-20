@@ -74,7 +74,7 @@ const WAVE_PARAMS = {
   },
   fifthWave: {
     attack: { options: [70, 75, 80, 85], cmBonus: 20 },
-    health: { base: 800, cmBonus: 200 },
+    health: { base: 700, cmBonus: 200 },
     silverReward: 1500,
     initialDuration: 10 * 60 * 1000,
     defeatDuration: 20 * 60 * 1000,
@@ -84,7 +84,7 @@ const WAVE_PARAMS = {
   },
   sixthWave: {
     attack: { options: [80, 85, 90, 95], cmBonus: 25 },
-    health: { base: 1000, cmBonus: 250 },
+    health: { base: 800, cmBonus: 250 },
     silverReward: 2000,
     initialDuration: 10 * 60 * 1000,
     defeatDuration: 20 * 60 * 1000,
