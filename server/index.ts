@@ -1,5 +1,6 @@
 import express, { type Request, Response, NextFunction } from "express";
 import compression from "compression";
+import rateLimit from "express-rate-limit";
 import { setupVite, serveStatic, log } from "./vite";
 import { createPaymentIntent, verifyPayment } from "./stripe";
 import { processReferral } from "./referral";
@@ -22,6 +23,37 @@ const app = express();
 
 // CRITICAL: Parse JSON bodies BEFORE defining any routes
 app.use(express.json());
+
+// Rate limiting configurations
+const generalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per windowMs
+  message: "Too many requests from this IP, please try again later.",
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 5, // Limit each IP to 5 auth attempts per windowMs
+  message: "Too many authentication attempts, please try again later.",
+  skipSuccessfulRequests: true,
+});
+
+const paymentLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: 10, // Limit each IP to 10 payment requests per hour
+  message: "Too many payment requests, please try again later.",
+});
+
+const leaderboardUpdateLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 3, // Limit each IP to 3 username updates per minute
+  message: "Too many username update attempts, please slow down.",
+});
+
+// Apply general rate limiting to all API routes
+app.use('/api/', generalLimiter);
 
 // Enable gzip compression for all responses with optimized settings
 app.use(compression({
@@ -543,7 +575,7 @@ app.get("/api/leaderboard/:mode", async (req, res) => {
   }
 });
 
-app.post("/api/leaderboard/update-username", async (req, res) => {
+app.post("/api/leaderboard/update-username", leaderboardUpdateLimiter, async (req, res) => {
   try {
     const { userId, username } = req.body;
 
@@ -636,7 +668,7 @@ app.post("/api/leaderboard/update-username", async (req, res) => {
 
   // CRITICAL: All API routes MUST be defined before Vite middleware
   // Referral endpoint
-  app.post("/api/referral/process", async (req, res) => {
+  app.post("/api/referral/process", authLimiter, async (req, res) => {
     try {
       const { newUserId, referralCode } = req.body || {};
 
@@ -658,7 +690,7 @@ app.post("/api/leaderboard/update-username", async (req, res) => {
   });
 
   // Payment endpoints
-  app.post('/api/payment/create-intent', async (req, res) => {
+  app.post('/api/payment/create-intent', paymentLimiter, async (req, res) => {
     try {
       const { itemId, userEmail, userId, currency } = req.body;
       // Never accept price from client - always use server-side price
@@ -671,7 +703,7 @@ app.post("/api/leaderboard/update-username", async (req, res) => {
     }
   });
 
-  app.post("/api/payment/verify", async (req, res) => {
+  app.post("/api/payment/verify", paymentLimiter, async (req, res) => {
     try {
       const { paymentIntentId, userId } = req.body;
 
