@@ -200,7 +200,7 @@ export default function ItemProgressChart() {
           "blacksteel_lantern",
         ],
         color: SEGMENT_COLOR,
-        label: "Blacksteel Tools",
+        label: "Dark Tools",
         category: "tools",
         maxCount: 3,
         reward: 250,
@@ -210,10 +210,10 @@ export default function ItemProgressChart() {
         itemType: "blacksteel_equipment",
         itemKeys: ["blacksteel_sword", "blacksteel_bow", "blacksteel_armor"],
         color: SEGMENT_COLOR,
-        label: "Blacksteel Equipment",
+        label: "Dark War Equipment",
         category: "weapons", // Primary category, but we'll check clothing too
         maxCount: 3,
-        reward: 300,
+        reward: 250,
       },
     ],
     // Sixth ring: Fellowship
