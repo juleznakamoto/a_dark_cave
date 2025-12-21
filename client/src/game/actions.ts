@@ -51,6 +51,7 @@ import {
   handleCraftBlacksteelAxe,
   handleCraftBlacksteelPickaxe,
   handleCraftBlacksteelLantern,
+  handleCraftBlacksteelArmor,
 } from "@/game/rules/caveCraftTools";
 
 import {

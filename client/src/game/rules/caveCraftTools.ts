@@ -904,5 +904,14 @@ export function handleCraftBlacksteelArmor(
 ): ActionResult {
   const effectUpdates = applyActionEffects("craftBlacksteelArmor", state);
   Object.assign(result.stateUpdates, effectUpdates);
+
+  result.logEntries!.push({
+    id: `blacksteel-armor-crafted-${Date.now()}`,
+    message:
+      "You forge the Blacksteel Armor, a heavy suit adorned with deadly spikes. You feel both stronger and more lethal.",
+    timestamp: Date.now(),
+    type: "system",
+  });
+
   return result;
 }
