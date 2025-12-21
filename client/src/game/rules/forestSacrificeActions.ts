@@ -163,6 +163,28 @@ function handleTotemSacrifice(
     });
   }
 
+  // Get action bonuses (e.g., devourer_crown +20 silver for boneTotems)
+  const actionBonuses = getActionBonuses(actionId, state);
+  
+  // Apply bonuses to the deltas
+  Object.keys(resourceDeltas).forEach((resource) => {
+    if (resource !== totemResource) {
+      let delta = resourceDeltas[resource];
+      
+      // Apply multiplier first if exists
+      if (actionBonuses.resourceMultiplier > 1) {
+        delta = Math.floor(delta * actionBonuses.resourceMultiplier);
+      }
+      
+      // Then apply flat bonus if exists for this resource
+      if (actionBonuses.resourceBonus && actionBonuses.resourceBonus[resource]) {
+        delta += actionBonuses.resourceBonus[resource];
+      }
+      
+      resourceDeltas[resource] = delta;
+    }
+  });
+
   // Create fresh resources object with current state
   if (!effectUpdates.resources) {
     effectUpdates.resources = { ...state.resources };
@@ -174,27 +196,10 @@ function handleTotemSacrifice(
   effectUpdates.resources[totemResource] =
     (state.resources[totemResource] || 0) - currentCost;
 
-  // Get action bonuses first (e.g., devourer_crown +20 silver for boneTotems)
-  const actionBonuses = getActionBonuses(actionId, state);
-  
-  // Apply the resource deltas (generated gains like silver/gold) with bonuses
+  // Apply the resource deltas (already includes bonuses)
   Object.entries(resourceDeltas).forEach(([resource, delta]) => {
-    if (resource !== totemResource) {
-      let finalDelta = delta;
-      
-      // Apply flat bonus if exists for this resource
-      if (actionBonuses.resourceBonus && actionBonuses.resourceBonus[resource]) {
-        finalDelta += actionBonuses.resourceBonus[resource];
-      }
-      
-      // Apply multiplier if exists
-      if (actionBonuses.resourceMultiplier > 1) {
-        finalDelta = Math.floor(finalDelta * actionBonuses.resourceMultiplier);
-      }
-      
-      effectUpdates.resources![resource] =
-        (effectUpdates.resources![resource] || 0) + finalDelta;
-    }
+    effectUpdates.resources![resource] =
+      (effectUpdates.resources![resource] || 0) + delta;
   });
 
   // Track usage count for next time
