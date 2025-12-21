@@ -148,16 +148,26 @@ function handleTotemSacrifice(
     return result; // Not enough resources
   }
 
-  // Apply the dynamic cost
+  // Apply the dynamic cost and get base effects (including random resource gains)
   const effectUpdates = applyActionEffects(actionId, state);
 
   if (!effectUpdates.resources) {
     effectUpdates.resources = { ...state.resources };
   }
 
+  // Store the generated resource values (e.g., silver/gold from random())
+  const generatedResources = { ...effectUpdates.resources };
+
   // Override the cost with dynamic pricing
   effectUpdates.resources[totemResource] =
     (state.resources[totemResource] || 0) - currentCost;
+
+  // Restore any generated resource values that were overwritten
+  Object.keys(generatedResources).forEach((resource) => {
+    if (resource !== totemResource && generatedResources[resource] !== state.resources[resource as keyof typeof state.resources]) {
+      effectUpdates.resources![resource] = generatedResources[resource];
+    }
+  });
 
   // Apply action bonuses (e.g., devourer_crown +20 silver for boneTotems)
   const actionBonuses = getActionBonuses(actionId, state);
