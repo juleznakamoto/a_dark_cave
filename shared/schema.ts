@@ -385,11 +385,12 @@ export const gameStateSchema = z.object({
       endTime: 0,
       lastAcceptedLevel: 0,
     }),
-  boneDevourerState: z.object({
-    lastAcceptedLevel: z.number().default(0),
-  }).default({
-    lastAcceptedLevel: 0,
-  }),
+  boneDevourerState: z
+    .object({
+      lastAcceptedLevel: z.number().default(0),
+      lastSeenLevel: z.number().default(0),
+    })
+    .default({ lastAcceptedLevel: 0, lastSeenLevel: 0 }),
 
   greatFeastState: z
     .object({
