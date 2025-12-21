@@ -13,15 +13,18 @@ const abbreviateNumber = (num: number): string => {
   const sign = num < 0 ? '-' : '';
   
   if (absNum >= 1000000000) {
-    return sign + (absNum / 1000000000).toFixed(1).replace(/\.0$/, '') + 'B';
+    const value = Math.floor(absNum / 1000000000);
+    return sign + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "'") + 'B';
   }
   if (absNum >= 1000000) {
-    return sign + (absNum / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+    const value = Math.floor(absNum / 1000000);
+    return sign + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "'") + 'M';
   }
   if (absNum >= 1000) {
-    return sign + (absNum / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
+    const value = Math.floor(absNum / 1000);
+    return sign + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "'") + 'K';
   }
-  return num.toString();
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "'");
 };
 
 interface ResourceChangeNotificationProps {
