@@ -191,7 +191,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "skull_lantern",
     name: "Skull Lantern",
     description:
-      "Forged from cursed bone illuminating the deepest depths. Unlocks new cave actions.",
+      "Forged from cursed bone illuminating the deepest depths. Unlocks Lanter storyline.",
     originalPrice: 499,
     price: 249, // 2.49 €
     rewards: {
@@ -209,7 +209,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "tarnished_compass",
     name: "Tarnished Compass",
     description:
-      "Relic of the ancient civilization. 10% chance to double gains from exploring, mining, chopping wood, and hunting.",
+      "Relic of the ancient civilization. Unlocks Compass storyline.",
     originalPrice: 499,
     price: 249, // 2.49 €
     rewards: {
@@ -220,6 +220,6 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     activationMessage:
       "The Tarnished Compass has been added to your inventory! Its ancient magic may grant fortune to your endeavors.",
     symbol: "⛯",
-    symbolColor: "text-amber-500",
+    symbolColor: "text-amber-200/90",
   },
 };

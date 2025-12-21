@@ -860,14 +860,21 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                           {item.name}
                           {item.id === "skull_lantern" && (
                             <TooltipProvider>
-                              <Tooltip open={mobileTooltip.isTooltipOpen("skull-lantern-info")}>
+                              <Tooltip
+                                open={mobileTooltip.isTooltipOpen(
+                                  "skull-lantern-info",
+                                )}
+                              >
                                 <TooltipTrigger asChild>
-                                  <button 
+                                  <button
                                     className="inline-flex items-center justify-center w-4 h-4 rounded-full text-muted-foreground text-sm"
                                     onClick={(e) => {
                                       e.stopPropagation();
                                       if (mobileTooltip.isMobile) {
-                                        mobileTooltip.handleTooltipClick("skull-lantern-info", e);
+                                        mobileTooltip.handleTooltipClick(
+                                          "skull-lantern-info",
+                                          e,
+                                        );
                                       }
                                     }}
                                   >
@@ -893,14 +900,21 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                           )}
                           {item.id === "tarnished_compass" && (
                             <TooltipProvider>
-                              <Tooltip open={mobileTooltip.isTooltipOpen("tarnished-compass-info")}>
+                              <Tooltip
+                                open={mobileTooltip.isTooltipOpen(
+                                  "tarnished-compass-info",
+                                )}
+                              >
                                 <TooltipTrigger asChild>
-                                  <button 
+                                  <button
                                     className="inline-flex items-center justify-center w-4 h-4 rounded-full text-muted-foreground text-sm"
                                     onClick={(e) => {
                                       e.stopPropagation();
                                       if (mobileTooltip.isMobile) {
-                                        mobileTooltip.handleTooltipClick("tarnished-compass-info", e);
+                                        mobileTooltip.handleTooltipClick(
+                                          "tarnished-compass-info",
+                                          e,
+                                        );
                                       }
                                     }}
                                   >
@@ -912,13 +926,12 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                                     <div className="font-bold mb-1">
                                       Tarnished Compass
                                     </div>
-
                                     <div className="mt-1 space-y-0.5">
-                                      <div>10% chance to double gains from:</div>
-                                      <div className="ml-2">• Cave Exploring</div>
-                                      <div className="ml-2">• Mining</div>
-                                      <div className="ml-2">• Chopping Wood</div>
-                                      <div className="ml-2">• Hunting</div>
+                                      <div>+5 Luck</div>
+                                      <div>
+                                        10% chance to double resource gains from
+                                        all actions
+                                      </div>
                                     </div>
                                   </div>
                                 </TooltipContent>
