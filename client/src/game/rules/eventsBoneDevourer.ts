@@ -50,12 +50,13 @@ function createBoneDevourerEvent(config: BoneDevourerConfig): GameEvent {
       // First appearance of this level: 10 minutes
       // After being seen (regardless of accept/decline): 25 minutes
       const hasBeenSeen = state.triggeredEvents?.[`${eventId}_seen`];
-      const probability = hasBeenSeen ? 25 : 0.010;
+      const probability = hasBeenSeen ? 25 : 10;
       console.log(`[BONE DEVOURER] timeProbability for ${eventId}:`, {
         hasBeenSeen,
         probability,
         seenKey: `${eventId}_seen`,
         triggeredEvents: state.triggeredEvents,
+        fullTriggeredEvents: JSON.stringify(state.triggeredEvents || {}),
       });
       return probability;
     },

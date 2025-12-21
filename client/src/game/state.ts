@@ -357,6 +357,7 @@ export const createInitialState = (): GameState => ({
     integrity: 0,
   },
   hoveredTooltips: {},
+  triggeredEvents: {},
   books: {
     book_of_ascension: false,
     book_of_war: false,
