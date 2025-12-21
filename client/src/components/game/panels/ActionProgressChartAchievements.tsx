@@ -69,6 +69,7 @@ export default function ActionProgressChartAchievements() {
           const count = state.buttonUpgrades?.caveExplore?.level || 0;
           return count === 1 ? 1.3 : count;
         },
+        reward: 500,
       },
       {
         segmentType: "chopWood",
@@ -79,6 +80,7 @@ export default function ActionProgressChartAchievements() {
           const count = state.buttonUpgrades?.chopWood?.level || 0;
           return count === 1 ? 1.3 : count;
         },
+        reward: 500,
       },
       {
         segmentType: "hunt",
@@ -89,6 +91,7 @@ export default function ActionProgressChartAchievements() {
           const count = state.buttonUpgrades?.hunt?.level || 0;
           return count === 1 ? 1.3 : count;
         },
+        reward: 500,
       },
     ],
     // Second ring: Cave & Gathering Actions
@@ -102,6 +105,7 @@ export default function ActionProgressChartAchievements() {
           const count = state.buttonUpgrades?.mineStone?.level || 0;
           return count === 1 ? 1.8 : count;
         },
+        reward: 500,
       },
       {
         segmentType: "mineIron",
@@ -112,6 +116,7 @@ export default function ActionProgressChartAchievements() {
           const count = state.buttonUpgrades?.mineIron?.level || 0;
           return count === 1 ? 1.8 : count;
         },
+        reward: 500,
       },
       {
         segmentType: "mineCoal",
@@ -122,6 +127,7 @@ export default function ActionProgressChartAchievements() {
           const count = state.buttonUpgrades?.mineCoal?.level || 0;
           return count === 1 ? 1.8 : count;
         },
+        reward: 500,
       },
       {
         segmentType: "mineSulfur",
@@ -132,6 +138,7 @@ export default function ActionProgressChartAchievements() {
           const count = state.buttonUpgrades?.mineSulfur?.level || 0;
           return count === 1 ? 1.8 : count;
         },
+        reward: 500,
       },
       {
         segmentType: "mineObsidian",
@@ -142,6 +149,7 @@ export default function ActionProgressChartAchievements() {
           const count = state.buttonUpgrades?.mineObsidian?.level || 0;
           return count === 1 ? 1.8 : count;
         },
+        reward: 500,
       },
       {
         segmentType: "mineAdamant",
@@ -152,6 +160,7 @@ export default function ActionProgressChartAchievements() {
           const count = state.buttonUpgrades?.mineAdamant?.level || 0;
           return count === 1 ? 1.8 : count;
         },
+        reward: 500,
       },
     ],
     // Third ring: Mining Actions
@@ -234,11 +243,11 @@ export default function ActionProgressChartAchievements() {
       },
       {
         segmentType: "wellRested",
-        maxCount: 50,
+        maxCount: 20,
         color: SEGMENT_COLOR,
         label: "Well Rested",
         getCount: (state: GameState) => {
-          const count = Math.min(Number(state.totalFocusEarned) || 0, 50);
+          const count = Math.min(Number(state.totalFocusEarned) || 0, 20);
           return count === 1 ? 1.8 : count;
         },
         reward: 500,
