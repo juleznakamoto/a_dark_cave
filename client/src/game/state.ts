@@ -857,6 +857,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
       logger.log('[RESTART] ✅ New game state saved to cloud with analytics cleared');
       // Clear the new game flag after successful save
       set({ isNewGame: false });
+      // Note: allowPlaytimeOverwrite flag is NOT cleared here - it will be cleared
+      // after the first successful autosave in save.ts to ensure no OCC conflicts
     } catch (error) {
       logger.error('[RESTART] ❌ Failed to save new game state to cloud:', error);
     }

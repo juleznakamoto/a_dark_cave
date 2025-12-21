@@ -315,11 +315,24 @@ export async function saveGame(
         });
 
         if (error) {
-          logger.error('[SAVE CLOUD] Edge Function error details:', {
+          // Try to extract more details from the error response
+          let errorDetails = {
             error,
             message: error.message,
             context: error.context,
-          });
+          };
+          
+          // If there's a response body with more details, log it
+          if (error.context instanceof Response) {
+            try {
+              const responseText = await error.context.text();
+              errorDetails = { ...errorDetails, responseBody: responseText };
+            } catch (e) {
+              // Ignore if we can't read the response
+            }
+          }
+          
+          logger.error('[SAVE CLOUD] Edge Function error details:', errorDetails);
           throw error;
         }
         
@@ -329,11 +342,12 @@ export async function saveGame(
         await db.put("lastCloudState", sanitizedState, LAST_CLOUD_STATE_KEY);
         logger.log("[SAVE] ✅ Updated lastCloudState after successful cloud save");
 
-        // Clear the allowPlayTimeOverwrite flag after successful save
-        if (gameState.allowPlaytimeOverwrite) {
+        // Clear the allowPlayTimeOverwrite flag after successful AUTOSAVE only
+        // Manual saves from restartGame() should not clear it yet
+        if (gameState.allowPlaytimeOverwrite && isAutosave) {
           const { useGameStore } = await import("./state");
           useGameStore.setState({ allowPlaytimeOverwrite: false });
-          logger.log("[SAVE] 🔓 Cleared allowPlayTimeOverwrite flag after successful cloud save");
+          logger.log("[SAVE] 🔓 Cleared allowPlayTimeOverwrite flag after successful autosave");
         }
       }
     } catch (cloudError) {
