@@ -50,7 +50,7 @@ function createBoneDevourerEvent(config: BoneDevourerConfig): GameEvent {
     timeProbability: (state: GameState) => {
       // First appearance: 10 minutes, repeated appearances: 25 minutes
       const hasBeenTriggered = state.triggeredEvents?.[eventId];
-      return hasBeenTriggered ? 25 : 10;
+      return hasBeenTriggered ? 25 : 0.010;
     },
     title: "The Bone Devourer",
     message: (state: GameState) => {
@@ -101,10 +101,6 @@ function createBoneDevourerEvent(config: BoneDevourerConfig): GameEvent {
           state: GameState,
         ): Partial<GameState> & { _logMessage?: string } => {
           return {
-            triggeredEvents: {
-              ...(state.triggeredEvents || {}),
-              [eventId]: true,
-            },
             _logMessage:
               "You refuse the creature's offer. It hisses in displeasure and retreats into the shadows. You sense it will return.",
           };
