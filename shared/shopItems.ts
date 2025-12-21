@@ -219,7 +219,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     category: "tool",
     activationMessage:
       "The Tarnished Compass has been added to your inventory! Its ancient magic may grant fortune to your endeavors.",
-    symbol: "⊕",
+    symbol: "⛯",
     symbolColor: "text-amber-500",
   },
 };
