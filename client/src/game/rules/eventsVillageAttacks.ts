@@ -11,7 +11,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
       !state.clothing.devourer_crown &&
       state.current_population > 10,
     triggerType: "resource",
-    timeProbability: 15,
+    timeProbability: 0.015,
     title: "The Bone Army",
     message:
       "The earth trembles as an army of skeletal creatures appears from the forest. The Bone Devourer has used the bones you traded to build an unholy legion. With hollow eyes and weapons of sharpened bone they approach the city.",
@@ -57,30 +57,23 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           // Base chance of casualties (75%), reduced by 2% per strength point, minimum 25%
           // Traps reduce death chance by 10%
           const casualtyChance =
-            Math.max(0.25, 0.75 - strength * 0.02) -
+            Math.max(0.25, 0.75 - strength * 0.005) -
             traps * 0.1 +
             state.CM * 0.05;
 
           let villagerDeaths = 0;
           let steelLoss = Math.min(
             state.resources.steel,
-            (state.buildings.woodenHut + Math.floor(Math.random() * 10)) * 30 +
+            (Math.floor(Math.random() * 10)) * 25 +
               50 +
-              state.CM * 150,
-          );
-          let ironLoss = Math.min(
-            state.resources.iron,
-            (state.buildings.woodenHut + Math.floor(Math.random() * 10)) * 30 +
-              50 +
-              state.CM * 150,
+              state.CM * 100,
           );
           let hutDestroyed = false;
 
           // Determine villager casualties
           // Traps reduce max deaths by 3
           const maxPotentialDeaths = Math.min(
-            5 + state.buildings.woodenHut + state.CM * 2 - traps * 3,
-            state.current_population,
+            (Math.floor(Math.random() * 20)) + 10 + state.CM * 8,            state.current_population,
           );
           for (let i = 0; i < maxPotentialDeaths; i++) {
             if (Math.random() < casualtyChance) {
@@ -111,10 +104,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           }
 
           if (steelLoss > 0) {
-            message += ` The bone army destroys ${steelLoss} steel in their rampage.`;
-          }
-          if (ironLoss > 0) {
-            message += ` The bone army destroys ${ironLoss} iron in their rampage.`;
+            message += ` The bone army steals ${steelLoss} steel from the stores.`;
           }
 
           if (hutDestroyed) {
@@ -127,7 +117,6 @@ export const villageAttackEvents: Record<string, GameEvent> = {
             resources: {
               ...state.resources,
               steel: Math.max(0, state.resources.steel - steelLoss),
-              iron: Math.max(0, state.resources.iron - ironLoss),
             },
             buildings: hutDestroyed
               ? {
@@ -176,20 +165,20 @@ export const villageAttackEvents: Record<string, GameEvent> = {
 
             steelLoss = Math.min(
               state.resources.steel,
-              (state.buildings.woodenHut + Math.floor(Math.random() * 20)) * 40 +
-                50 +
-                state.CM * 3,
+              (Math.floor(Math.random() * 20)) * 25 +
+                100 +
+                state.CM * 100,
             );
             ironLoss = Math.min(
               state.resources.iron,
-              (state.buildings.woodenHut + Math.floor(Math.random() * 20)) * 40 +
-                50 +
-                state.CM * 3,
+              (Math.floor(Math.random() * 20)) * 25 +
+                200 +
+                state.CM * 200,
             );
 
             // Determine villager casualties
             const maxPotentialDeaths = Math.min(
-              3 + state.buildings.woodenHut / 2 - traps * 1 + state.CM * 2,
+              (Math.floor(Math.random() * 15)) + 5 + state.CM * 8,
               state.current_population,
             );
             for (let i = 0; i < maxPotentialDeaths; i++) {
@@ -219,10 +208,10 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           }
 
           if (steelLoss > 0) {
-            message += ` The army ransacks your supplies, destroying ${steelLoss} steel.`;
+            message += ` The army ransacks your supplies, stealing ${steelLoss} steel.`;
           }
           if (ironLoss > 0) {
-            message += ` The army ransacks your supplies, destroying ${ironLoss} iron.`;
+            message += ` The army ransacks your supplies, stealing ${ironLoss} iron.`;
           }
 
           return {

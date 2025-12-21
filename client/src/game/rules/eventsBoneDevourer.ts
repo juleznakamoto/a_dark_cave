@@ -1,7 +1,5 @@
-import { GameEvent, calculateSuccessChance } from "./events";
+import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
-import { killVillagers } from "@/game/stateHelpers";
-import { getTotalStrength, getTotalLuck } from "./effectsCalculation";
 
 interface BoneDevourerConfig {
   level: number;
