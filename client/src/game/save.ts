@@ -298,7 +298,7 @@ export async function saveGame(
         // Save via Edge Function (handles auth, rate limiting, and trust)
         const supabaseClient = await getSupabaseClient();
         
-        // Get the current session to ensure we have a valid JWT
+        // Verify we have an active session (Supabase client will automatically include the JWT)
         const { data: { session } } = await supabaseClient.auth.getSession();
         if (!session) {
           throw new Error('No active session');
@@ -311,9 +311,6 @@ export async function saveGame(
             resourceAnalytics: resourceData,
             clearAnalytics: isNewGame,
             allowPlaytimeOverwrite: gameState.allowPlaytimeOverwrite || false
-          },
-          headers: {
-            Authorization: `Bearer ${session.access_token}`
           }
         });
 
