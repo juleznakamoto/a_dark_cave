@@ -952,13 +952,21 @@ describe('Resource Gain Tests', () => {
         clothing: { devourer_crown: true },
       });
 
+      console.log('\n=== TEST: boneTotems with devourer_crown ===');
+      console.log('State clothing:', state.clothing);
+
       // Get tooltip calculations
       const { gains: tooltipGains } = calculateResourceGains('boneTotems', state);
       const tooltipSilver = tooltipGains.find(g => g.resource === 'silver');
       expect(tooltipSilver).toBeDefined();
+      
+      console.log('Tooltip silver range:', tooltipSilver);
 
       // Get actual gains from executing the action multiple times
       const { expectedGains, actualGains } = testActionGains('boneTotems', state, 100);
+      
+      console.log('Expected gains:', expectedGains.silver);
+      console.log('Actual gains range:', Math.min(...actualGains.silver), '-', Math.max(...actualGains.silver));
 
       // Verify tooltip matches expected calculation
       expect(tooltipSilver!.min).toBe(expectedGains.silver.min);
