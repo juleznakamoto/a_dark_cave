@@ -87,6 +87,16 @@ export default function ProfileMenu() {
     const user = await getCurrentUser();
     setCurrentUser(user);
     setIsUserSignedIn(!!user);
+    
+    // Reset manual save cooldown when user logs in
+    if (user) {
+      useGameStore.setState((state) => ({
+        cooldowns: {
+          ...state.cooldowns,
+          manualSave: 0,
+        },
+      }));
+    }
   };
 
   const handleSetAuthDialogOpen = (open: boolean) => {
@@ -136,7 +146,13 @@ export default function ProfileMenu() {
       await saveGame(gameState, false);
 
       const now = new Date();
-      const timestamp = now.toLocaleString();
+      const timestamp = now.toLocaleString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+      });
 
       // Set 15-second cooldown (in seconds, not milliseconds - game loop ticks down by 0.2 seconds)
       useGameStore.setState((state) => ({
