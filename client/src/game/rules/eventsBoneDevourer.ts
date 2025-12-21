@@ -11,7 +11,7 @@ interface BoneDevourerConfig {
 }
 
 const boneDevourerConfigs: BoneDevourerConfig[] = [
-  { level: 1, woodenHuts: 3, boneCost: 100, silverReward: 30 },
+  { level: 1, woodenHuts: 3, boneCost: 100, silverReward: 25 },
   { level: 2, woodenHuts: 5, boneCost: 500, silverReward: 100 },
   { level: 3, woodenHuts: 8, boneCost: 1000, silverReward: 250 },
   { level: 4, stoneHuts: 1, boneCost: 5000, silverReward: 500 },
@@ -50,7 +50,7 @@ function createBoneDevourerEvent(config: BoneDevourerConfig): GameEvent {
     timeProbability: (state: GameState) => {
       // First appearance: 10 minutes, repeated appearances: 25 minutes
       const hasBeenTriggered = state.triggeredEvents?.[eventId];
-      return hasBeenTriggered ? 25 : 10;
+      return hasBeenTriggered ? 0.025 : 10;
     },
     title: "The Bone Devourer",
     message: `A deformed creature shuffles to the village gates, its hunched form covered in pale, stretched skin. It speaks in a rasping voice: 'I seek bones. ${boneCost} bones. I pay ${silverReward} silver.'`,
@@ -84,7 +84,7 @@ function createBoneDevourerEvent(config: BoneDevourerConfig): GameEvent {
               ...(state.triggeredEvents || {}),
               [eventId]: true,
             },
-            _logMessage: `The creature takes the bones with its gnarled hands, counting each one carefully. It places a pouch of silver at your feet and disappears into the darkness.`,
+            _logMessage: `The creature takes the bones with its gnarled hands, as if attempting to count them. It places a pouch of silver at your feet and disappears into the darkness.`,
           };
         },
       },
