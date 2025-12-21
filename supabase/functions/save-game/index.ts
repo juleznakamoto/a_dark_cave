@@ -11,8 +11,8 @@ const rateLimitMap = new Map<string, { count: number; resetTime: number }>()
 const RATE_LIMIT_WINDOW_MS = 60000 // 1 minute
 const MAX_REQUESTS_PER_WINDOW = 100
 
-// Create Supabase client once per isolate (reused across requests)
-const supabase = createClient(
+// Create admin client for auth verification only
+const supabaseAdmin = createClient(
   Deno.env.get('SUPABASE_URL') ?? '',
   Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
   {
@@ -77,7 +77,7 @@ serve(async (req) => {
     // Verify the JWT and get user
     const jwt = authHeader.substring(7) // Remove 'Bearer ' prefix
     console.log('JWT token length:', jwt.length)
-    const { data: { user }, error: authError } = await supabase.auth.getUser(jwt)
+    const { data: { user }, error: authError } = await supabaseAdmin.auth.getUser(jwt)
 
     if (authError || !user) {
       console.error('Auth error:', authError?.message || 'No user found')
@@ -91,6 +91,23 @@ serve(async (req) => {
     }
     
     console.log('User authenticated:', user.id)
+    
+    // Create a user-scoped client with their JWT for database operations
+    const supabase = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_ANON_KEY') ?? '',
+      {
+        global: {
+          headers: {
+            Authorization: authHeader
+          }
+        },
+        auth: {
+          autoRefreshToken: false,
+          persistSession: false,
+        },
+      }
+    )
 
     // Rate limit: 2 saves per second per user
     if (!checkRateLimit(user.id, 2, 1000)) {
