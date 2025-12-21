@@ -767,7 +767,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   devourer_crown: {
     id: "devourer_crown",
     name: "Devourer Crown",
-    description: "Crown of the Bone Devourer, pulsing with dark knowledge",
+    description: "Crown of the Bone Devourer, made from bones",
     bonuses: {
       actionBonuses: {
         boneTotems: {
