@@ -310,34 +310,38 @@ export default function ProfileMenu() {
             sideOffset={8}
             className="text-xs !max-h-none w-auto"
           >
-            <TooltipProvider>
-              <Tooltip delayDuration={300}>
-                <TooltipTrigger asChild>
-                  <div>
-                    <DropdownMenuItem
-                      onClick={handleManualSave}
-                      disabled={cooldowns["manualSave"] > 0}
-                      className={
-                        cooldowns["manualSave"] > 0
-                          ? "opacity-50 cursor-not-allowed"
-                          : ""
-                      }
-                    >
-                      Save
-                    </DropdownMenuItem>
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <div className="text-xs">
-                    <p>Game auto-saves every minute</p>
-                    {lastSaved && (
-                      <p className="mt-1">Last Save: {lastSaved}</p>
-                    )}
-                  </div>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-            <DropdownMenuSeparator />
+            {currentUser && (
+              <>
+                <TooltipProvider>
+                  <Tooltip delayDuration={300}>
+                    <TooltipTrigger asChild>
+                      <div>
+                        <DropdownMenuItem
+                          onClick={handleManualSave}
+                          disabled={cooldowns["manualSave"] > 0}
+                          className={
+                            cooldowns["manualSave"] > 0
+                              ? "opacity-50 cursor-not-allowed"
+                              : ""
+                          }
+                        >
+                          Save
+                        </DropdownMenuItem>
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <div className="text-xs">
+                        <p>Game auto-saves every minute</p>
+                        {lastSaved && (
+                          <p className="mt-1">Last Save: {lastSaved}</p>
+                        )}
+                      </div>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+                <DropdownMenuSeparator />
+              </>
+            )}
             <DropdownMenuItem onClick={handleRestartGame}>
               New Game
             </DropdownMenuItem>
