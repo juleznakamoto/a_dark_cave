@@ -853,6 +853,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // Immediately save the new game state to cloud to prevent OCC issues
     const { saveGame } = await import('@/game/save');
     try {
+      // CRITICAL: Clear lastCloudState before saving to force a full state diff
+      // This ensures the database gets the complete new game state including playTime: 0
+      const { openDB } = await import('idb');
+      const DB_NAME = "ADarkCaveDB";
+      const DB_VERSION = 2;
+      const db = await openDB(DB_NAME, DB_VERSION);
+      await db.delete("lastCloudState", "lastCloudState");
+      logger.log('[RESTART] 🗑️ Cleared lastCloudState to force full state sync');
+      
       await saveGame(get(), false);
       logger.log('[RESTART] ✅ New game state saved to cloud with analytics cleared');
       // Clear the new game flag after successful save
