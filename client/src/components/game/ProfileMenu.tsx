@@ -66,6 +66,7 @@ export default function ProfileMenu() {
     setRestartGameDialogOpen, // Added from store
     cooldowns,
     cooldownDurations,
+    lastSaved,
   } = useGameStore();
 
   const mobileTooltip = useMobileTooltip();
@@ -132,9 +133,10 @@ export default function ProfileMenu() {
     try {
       const currentState = useGameStore.getState();
       const gameState = buildGameState(currentState);
-      const playTimeToSave = currentState.isNewGame ? 0 : currentState.playTime;
+      await saveGame(gameState, false);
 
-      await saveGame(gameState, playTimeToSave);
+      const now = new Date();
+      const timestamp = now.toLocaleString();
 
       // Set 15-second cooldown
       useGameStore.setState((state) => ({
@@ -146,7 +148,7 @@ export default function ProfileMenu() {
           ...state.cooldownDurations,
           [actionId]: 15000,
         },
-        lastSaved: new Date().toLocaleTimeString(),
+        lastSaved: timestamp,
         isNewGame: false,
       }));
 
@@ -326,9 +328,12 @@ export default function ProfileMenu() {
                   </div>
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p className="text-xs">
-                    Game auto-saves every minute
-                  </p>
+                  <div className="text-xs">
+                    <p>Game auto-saves every minute</p>
+                    {lastSaved && (
+                      <p className="mt-1">Last Save: {lastSaved}</p>
+                    )}
+                  </div>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
