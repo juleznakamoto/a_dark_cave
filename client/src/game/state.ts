@@ -236,6 +236,7 @@ const mergeStateUpdates = (
     cooldowns: { ...prevState.cooldowns, ...stateUpdates.cooldowns },
     cooldownDurations: { ...prevState.cooldownDurations, ...stateUpdates.cooldownDurations },
     attackWaveTimers: { ...prevState.attackWaveTimers, ...stateUpdates.attackWaveTimers },
+    triggeredEvents: { ...prevState.triggeredEvents, ...stateUpdates.triggeredEvents },
     feastState: stateUpdates.feastState || prevState.feastState,
     boneDevourerState: stateUpdates.boneDevourerState || prevState.boneDevourerState,
     greatFeastState: stateUpdates.greatFeastState || prevState.greatFeastState,
@@ -1175,6 +1176,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
       eventId,
       currentLogEntry || undefined,
     );
+    
+    console.log(`[STATE] applyEventChoice for ${eventId}, choice ${choiceId}:`, {
+      hasTriggeredEventsInChanges: !!changes.triggeredEvents,
+      triggeredEventsInChanges: changes.triggeredEvents,
+      currentTriggeredEvents: state.triggeredEvents,
+    });
 
     let combatData = null;
     let logMessage = null;
@@ -1202,6 +1209,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
           ...prevState,
           ...mergedUpdates,
         };
+        
+        console.log(`[STATE] After mergeStateUpdates for ${eventId}:`, {
+          hasTriggeredEventsInUpdates: !!updatedChanges.triggeredEvents,
+          triggeredEventsInUpdates: updatedChanges.triggeredEvents,
+          triggeredEventsInMerged: mergedUpdates.triggeredEvents,
+          triggeredEventsInNewState: newState.triggeredEvents,
+        });
 
         // Log blessings after state update
         logger.log('[STATE] After applying event choice:', {
