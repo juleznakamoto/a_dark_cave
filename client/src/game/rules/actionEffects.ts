@@ -60,6 +60,41 @@ export function applyActionEffects(
     triggeredEvents?: string[];
   } = {};
 
+  // Check for action bonus chance (Tarnished Compass effect)
+  const BONUS_CHANCE_ELIGIBLE_ACTIONS = [
+    "exploreCave",
+    "ventureDeeper",
+    "descendFurther",
+    "exploreRuins",
+    "exploreTemple",
+    "exploreCitadel",
+    "mineStone",
+    "mineIron",
+    "mineCoal",
+    "mineSulfur",
+    "mineObsidian",
+    "mineAdamant",
+    "chopWood",
+    "hunt",
+  ];
+
+  let actionBonusChanceTriggered = false;
+  if (BONUS_CHANCE_ELIGIBLE_ACTIONS.includes(actionId)) {
+    // Get total actionBonusChance from effects
+    let totalActionBonusChance = 0;
+    
+    // Check clothing for actionBonusChance
+    if (state.clothing?.tarnished_compass) {
+      const compassEffect = require('./effects').clothingEffects.tarnished_compass;
+      totalActionBonusChance += compassEffect.bonuses.generalBonuses?.actionBonusChance || 0;
+    }
+
+    // Roll for bonus chance
+    if (totalActionBonusChance > 0 && Math.random() < totalActionBonusChance) {
+      actionBonusChanceTriggered = true;
+    }
+  }
+
   // Apply costs (as negative effects)
   if (action.cost) {
     let costs = action.cost;
@@ -506,6 +541,26 @@ export function applyActionEffects(
         },
       );
     }
+  }
+
+  // Apply action bonus chance (2x multiplier) AFTER all other bonuses
+  if (actionBonusChanceTriggered && updates.resources) {
+    const originalResources = { ...state.resources };
+    
+    Object.keys(updates.resources).forEach((resource) => {
+      const originalAmount = originalResources[resource as keyof typeof originalResources] || 0;
+      const newAmount = updates.resources![resource];
+      const gainedAmount = newAmount - originalAmount;
+      
+      // Double the gained amount
+      if (gainedAmount > 0) {
+        updates.resources![resource] = originalAmount + (gainedAmount * 2);
+      }
+    });
+
+    // Add log message about the bonus
+    if (!updates.logMessages) updates.logMessages = [];
+    updates.logMessages.push("The Tarnished Compass glows! Your gains are doubled!");
   }
 
   if (state.devMode && updates.resources) {

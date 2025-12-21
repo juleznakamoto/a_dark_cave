@@ -41,6 +41,7 @@ export interface EffectDefinition {
       caveExploreMultiplier?: number; // Multiplier for all cave exploration actions
       eventDeathReduction?: number; // Percentage reduction in villager deaths from events (0.25 = 25% reduction)
       criticalDamageBonus?: number; // Percentage bonus to critical hit damage (0.05 = 5% bonus)
+      actionBonusChance?: number; // Chance to double action gains (0.1 = 10% chance)
     };
   };
 }
@@ -1301,6 +1302,32 @@ export const clothingEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         hunt: {
           resourceMultiplier: 1.25,
+        },
+      },
+    },
+  },
+
+  tarnished_compass: {
+    id: "tarnished_compass",
+    name: "Tarnished Compass",
+    description: "Relict of the ancient civilization. Unlocks Compass storyline.",
+    bonuses: {
+      generalBonuses: {
+        luck: 5,
+        actionBonusChance: 0.1, // 10% chance to double action gains
+      },
+      actionBonuses: {
+        caveExplore: {
+          resourceMultiplier: 1.0, // No direct multiplier, only bonus chance
+        },
+        mining: {
+          resourceMultiplier: 1.0,
+        },
+        chopWood: {
+          resourceMultiplier: 1.0,
+        },
+        hunt: {
+          resourceMultiplier: 1.0,
         },
       },
     },

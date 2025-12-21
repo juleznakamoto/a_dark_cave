@@ -164,7 +164,10 @@ export const gameStateSchema = z.object({
       sacrificial_tunic: z.boolean().default(false),
       shadow_boots: z.boolean().default(false),
       feeding_ring: z.boolean().default(false),
-      devourer_crown: z.boolean().default(false),
+      tarnished_compass: z.boolean().default(false),
+      unnamed_book: z.boolean().default(false),
+      occultist_grimoire: z.boolean().default(false),
+      ravens_orb: z.boolean().default(false),
     })
     .default({}),
   relics: z

@@ -204,4 +204,22 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     symbol: "❊",
     symbolColor: "text-purple-400",
   },
+
+  tarnished_compass: {
+    id: "tarnished_compass",
+    name: "Tarnished Compass",
+    description:
+      "Relic of the ancient civilization. 10% chance to double gains from exploring, mining, chopping wood, and hunting.",
+    originalPrice: 499,
+    price: 249, // 2.49 €
+    rewards: {
+      clothing: ["tarnished_compass"],
+    },
+    canPurchaseMultipleTimes: false,
+    category: "tool",
+    activationMessage:
+      "The Tarnished Compass has been added to your inventory! Its ancient magic may grant fortune to your endeavors.",
+    symbol: "⊕",
+    symbolColor: "text-amber-500",
+  },
 };
