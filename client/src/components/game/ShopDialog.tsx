@@ -770,6 +770,12 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
       });
     }
 
+    if (item.rewards.relics) {
+      item.rewards.relics.forEach((relic) => {
+        gameState.relics[relic as keyof typeof gameState.relics] = true;
+      });
+    }
+
     gameState.addLogEntry({
       id: `activate-${Date.now()}`,
       message:
