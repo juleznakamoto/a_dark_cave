@@ -289,15 +289,8 @@ const parseTooltipGains = (tooltipContent: React.ReactNode): Record<string, { mi
 const testActionGains = (actionId: string, state: GameState, iterations: number = 100) => {
     const actualGains: Record<string, number[]> = {};
 
-    console.log(`\n--- testActionGains for ${actionId} (${iterations} iterations) ---`);
-    console.log('State clothing:', state.clothing);
-
     for (let i = 0; i < iterations; i++) {
       const result = executeAction(actionId, state);
-
-      if (i === 0) {
-        console.log('First execution result resources:', result.stateUpdates.resources);
-      }
 
       Object.entries(result.stateUpdates.resources || {}).forEach(([resource, newValue]) => {
         const oldValue = state.resources[resource as keyof typeof state.resources] || 0;
@@ -952,21 +945,13 @@ describe('Resource Gain Tests', () => {
         clothing: { devourer_crown: true },
       });
 
-      console.log('\n=== TEST: boneTotems with devourer_crown ===');
-      console.log('State clothing:', state.clothing);
-
       // Get tooltip calculations
       const { gains: tooltipGains } = calculateResourceGains('boneTotems', state);
       const tooltipSilver = tooltipGains.find(g => g.resource === 'silver');
       expect(tooltipSilver).toBeDefined();
-      
-      console.log('Tooltip silver range:', tooltipSilver);
 
       // Get actual gains from executing the action multiple times
       const { expectedGains, actualGains } = testActionGains('boneTotems', state, 100);
-      
-      console.log('Expected gains:', expectedGains.silver);
-      console.log('Actual gains range:', Math.min(...actualGains.silver), '-', Math.max(...actualGains.silver));
 
       // Verify tooltip matches expected calculation
       expect(tooltipSilver!.min).toBe(expectedGains.silver.min);
