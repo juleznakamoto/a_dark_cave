@@ -135,7 +135,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
         relevant_stats: ["luck"],
         success_chance: (state: GameState) => {
           const traps = state.buildings.traps;
-          return calculateSuccessChance(state, 0.1 + traps * 0.1, {
+          return calculateSuccessChance(state, 0.0a + traps * 0.1, {
             type: "luck",
             multiplier: 0.01,
           });
@@ -144,7 +144,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           const traps = state.buildings.traps;
           const success_chance = calculateSuccessChance(
             state,
-            0.1 + traps * 0.1,
+            0.0 + traps * 0.1,
             { type: "luck", multiplier: 0.01 },
           );
 
@@ -196,9 +196,9 @@ export const villageAttackEvents: Record<string, GameEvent> = {
               "By morning, the skeletal army has departed, leaving only bone fragments behind.";
           } else if (actualDeaths === 1) {
             message +=
-              "One villager who tried to flee is dragged away by bony hands.";
+              "One villager who tried to flee is killed.";
           } else {
-            message += `${actualDeaths} villagers are taken by the bone creatures.`;
+            message += `${actualDeaths} villagers are killed by the bone creatures.`;
           }
 
           message += ` The army ransacks your supplies, destroying ${foodLoss} food.`;
