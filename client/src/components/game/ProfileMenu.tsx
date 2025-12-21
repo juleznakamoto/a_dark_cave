@@ -377,7 +377,12 @@ export default function ProfileMenu() {
                   >
                     <DropdownMenuItem
                       onClick={handleCopyInviteLink}
-                      disabled={!currentUser}
+                      disabled={!currentUser || (referralCount || 0) >= 10}
+                      className={
+                        !currentUser || (referralCount || 0) >= 10
+                          ? "opacity-50 cursor-not-allowed"
+                          : ""
+                      }
                     >
                       <div className="flex items-center justify-between w-full">
                         <div className="flex items-center gap-1">
@@ -388,7 +393,14 @@ export default function ProfileMenu() {
                             className="w-3 h-3 opacity-90"
                           />
                         </div>
-                        <span className="font-semibold">&nbsp;+250 Gold</span>
+                        <div className="flex items-center gap-2">
+                          <span className="font-semibold">&nbsp;+250 Gold</span>
+                          {(referralCount || 0) >= 10 && (
+                            <span className="text-xs text-muted-foreground">
+                              ✓
+                            </span>
+                          )}
+                        </div>
                       </div>
                     </DropdownMenuItem>
                   </div>
