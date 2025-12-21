@@ -8,8 +8,6 @@ const corsHeaders = {
 
 // Simple in-memory rate limiting (per isolate)
 const rateLimitMap = new Map<string, { count: number; resetTime: number }>()
-const RATE_LIMIT_WINDOW_MS = 60000 // 1 minute
-const MAX_REQUESTS_PER_WINDOW = 100
 
 function checkRateLimit(userId: string, maxRequests: number, windowMs: number): boolean {
   const now = Date.now()
