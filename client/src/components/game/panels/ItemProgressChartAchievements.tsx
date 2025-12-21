@@ -211,15 +211,15 @@ export default function ItemProgressChart() {
         maxCount: 3,
         reward: 250,
       },
-      // blacksteel weapons
+      // blacksteel equipment (weapons + armor)
       {
-        itemType: "blacksteel_weapons",
-        itemKeys: ["blacksteel_sword", "blacksteel_bow"],
+        itemType: "blacksteel_equipment",
+        itemKeys: ["blacksteel_sword", "blacksteel_bow", "blacksteel_armor"],
         color: SEGMENT_COLOR,
-        label: "Blacksteel Weapons",
-        category: "weapons",
-        maxCount: 2,
-        reward: 250,
+        label: "Blacksteel Equipment",
+        category: "weapons", // Primary category, but we'll check clothing too
+        maxCount: 3,
+        reward: 300,
       },
     ],
     // Sixth ring: Fellowship
@@ -243,21 +243,15 @@ export default function ItemProgressChart() {
     let count = 0;
 
     for (const itemKey of segment.itemKeys) {
-      if (segment.category === "tools") {
-        if (state.tools[itemKey as keyof typeof state.tools]) count++;
-      } else if (segment.category === "weapons") {
-        if (state.weapons[itemKey as keyof typeof state.weapons]) count++;
-      } else if (segment.category === "clothing") {
-        if (state.clothing[itemKey as keyof typeof state.clothing]) count++;
-      } else if (segment.category === "relics") {
-        if (state.relics[itemKey as keyof typeof state.relics]) count++;
-      } else if (segment.category === "fellowship") {
-        // Assuming GameState has a fellowship property similar to others
-        if (
-          state.fellowship &&
-          state.fellowship[itemKey as keyof typeof state.fellowship]
-        )
-          count++;
+      // Check all relevant categories for mixed-category segments
+      if (
+        (state.tools && state.tools[itemKey as keyof typeof state.tools]) ||
+        (state.weapons && state.weapons[itemKey as keyof typeof state.weapons]) ||
+        (state.clothing && state.clothing[itemKey as keyof typeof state.clothing]) ||
+        (state.relics && state.relics[itemKey as keyof typeof state.relics]) ||
+        (state.fellowship && state.fellowship[itemKey as keyof typeof state.fellowship])
+      ) {
+        count++;
       }
     }
 
