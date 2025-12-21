@@ -15,7 +15,7 @@ export interface ShopItem {
   originalPrice?: number; // in cents, for showing crossed-out prices
   rewards: ShopItemRewards;
   canPurchaseMultipleTimes: boolean;
-  category: "resource" | "weapon" | "tool" | "blessing" | "feast" | "bundle";
+  category: "resource" | "weapon" | "tool" | "blessing" | "feast" | "bundle" | "relic";
   activationMessage?: string;
   symbol?: string;
   symbolColor?: string;
@@ -217,7 +217,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
       relics: ["tarnished_compass"],
     },
     canPurchaseMultipleTimes: false,
-    category: "tool",
+    category: "relic",
     activationMessage:
       "The Tarnished Compass has been added to your inventory! Its ancient magic may grant fortune to your endeavors.",
     symbol: "⛯",
