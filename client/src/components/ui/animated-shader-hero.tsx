@@ -617,10 +617,11 @@ const Hero: React.FC<HeroProps> = ({
                 }
                 className="px-5 py-3 bg-gradient-to-r from-red-800 to-red-700 hover:from-red-700 hover:to-red-600 text-slate-200 rounded-md font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25 flex items-center gap-2"
               >
-                <svg className="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5zm0 18c-3.87-.96-7-5.42-7-10V8.3l7-3.5 7 3.5V10c0 4.58-3.13 9.04-7 10z"/>
-                  <path d="M12 6L6 9v4c0 3.09 2.13 5.97 5 6.71V6z"/>
-                </svg>
+                <img 
+                  src="/indiedb_logo_black.png" 
+                  alt="IndieDB" 
+                  className="h-6 w-6 invert"
+                />
                 <span>IndieDB</span>
               </button>
             </div>
