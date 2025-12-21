@@ -359,57 +359,49 @@ export default function ProfileMenu() {
               </>
             )}
 
-            <DropdownMenuItem
-              onClick={handleCopyInviteLink}
-              disabled={!currentUser}
-            >
-              <div className="flex items-center justify-between w-full">
-                <div className="flex items-center gap-1">
-                  <span>Invite&nbsp;</span>
-                  <img
-                    src="/person-add.png"
-                    alt=""
-                    className="w-3 h-3 opacity-90"
-                  />
-                </div>
-                <span className="font-semibold">&nbsp;+250 Gold</span>
-                <TooltipProvider>
-                  <Tooltip
-                    open={
-                      isMobile
-                        ? mobileTooltip.isTooltipOpen("referral-info")
-                        : undefined
-                    }
+            <TooltipProvider>
+              <Tooltip
+                open={
+                  isMobile
+                    ? mobileTooltip.isTooltipOpen("referral-info")
+                    : undefined
+                }
+              >
+                <TooltipTrigger asChild>
+                  <div
+                    onClick={(e) => {
+                      if (isMobile) {
+                        mobileTooltip.handleTooltipClick("referral-info", e);
+                      }
+                    }}
                   >
-                    <TooltipTrigger asChild>
-                      <span
-                        className="font-black ml-2 text-muted-foreground cursor-pointer"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          e.preventDefault();
-                          if (isMobile) {
-                            mobileTooltip.handleTooltipClick(
-                              "referral-info",
-                              e,
-                            );
-                          }
-                        }}
-                      >
-                        ⓘ{" "}
-                      </span>
-                    </TooltipTrigger>
-                    <TooltipContent className="max-w-xs">
-                      <p className="text-xs">
-                        Invite your friends and both of you will receive 250
-                        gold. You can invite up to 10 friends. (
-                        {referralCount || 0}/10 invited).
-                        <br />
-                      </p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              </div>
-            </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={handleCopyInviteLink}
+                      disabled={!currentUser}
+                    >
+                      <div className="flex items-center justify-between w-full">
+                        <div className="flex items-center gap-1">
+                          <span>Invite&nbsp;</span>
+                          <img
+                            src="/person-add.png"
+                            alt=""
+                            className="w-3 h-3 opacity-90"
+                          />
+                        </div>
+                        <span className="font-semibold">&nbsp;+250 Gold</span>
+                      </div>
+                    </DropdownMenuItem>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent className="max-w-xs">
+                  <p className="text-xs">
+                    Invite your friends and both of you will receive 250 gold.
+                    You can invite up to 10 friends. ({referralCount || 0}/10
+                    invited).
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
             <DropdownMenuSeparator />
             {SOCIAL_PLATFORMS.map((platform, index) => {
               const isClaimed =
