@@ -62,8 +62,14 @@ export const villageAttackEvents: Record<string, GameEvent> = {
             state.CM * 0.05;
 
           let villagerDeaths = 0;
-          let foodLoss = Math.min(
-            state.resources.food,
+          let steelLoss = Math.min(
+            state.resources.steel,
+            (state.buildings.woodenHut + Math.floor(Math.random() * 10)) * 30 +
+              50 +
+              state.CM * 150,
+          );
+          let ironLoss = Math.min(
+            state.resources.iron,
             (state.buildings.woodenHut + Math.floor(Math.random() * 10)) * 30 +
               50 +
               state.CM * 150,
@@ -104,8 +110,11 @@ export const villageAttackEvents: Record<string, GameEvent> = {
             message += `${actualDeaths} villagers are slain by the bone creatures.`;
           }
 
-          if (foodLoss > 0) {
-            message += ` The bone army destroys ${foodLoss} food in their rampage.`;
+          if (steelLoss > 0) {
+            message += ` The bone army destroys ${steelLoss} steel in their rampage.`;
+          }
+          if (ironLoss > 0) {
+            message += ` The bone army destroys ${ironLoss} iron in their rampage.`;
           }
 
           if (hutDestroyed) {
@@ -117,7 +126,8 @@ export const villageAttackEvents: Record<string, GameEvent> = {
             ...deathResult,
             resources: {
               ...state.resources,
-              food: Math.max(0, state.resources.food - foodLoss),
+              steel: Math.max(0, state.resources.steel - steelLoss),
+              iron: Math.max(0, state.resources.iron - ironLoss),
             },
             buildings: hutDestroyed
               ? {
@@ -135,7 +145,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
         relevant_stats: ["luck"],
         success_chance: (state: GameState) => {
           const traps = state.buildings.traps;
-          return calculateSuccessChance(state, 0.0a + traps * 0.1, {
+          return calculateSuccessChance(state, 0.0 + traps * 0.1, {
             type: "luck",
             multiplier: 0.01,
           });
@@ -149,7 +159,8 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           );
 
           let villagerDeaths = 0;
-          let foodLoss = 0;
+          let steelLoss = 0;
+          let ironLoss = 0;
           let deathResult = {};
 
           if (Math.random() < success_chance) {
@@ -163,8 +174,14 @@ export const villageAttackEvents: Record<string, GameEvent> = {
             const casualtyChance =
               Math.max(0.15, 0.4 - luck * 0.02) - traps * 0.05 + state.CM * 0.05;
 
-            foodLoss = Math.min(
-              state.resources.food,
+            steelLoss = Math.min(
+              state.resources.steel,
+              (state.buildings.woodenHut + Math.floor(Math.random() * 20)) * 40 +
+                50 +
+                state.CM * 3,
+            );
+            ironLoss = Math.min(
+              state.resources.iron,
               (state.buildings.woodenHut + Math.floor(Math.random() * 20)) * 40 +
                 50 +
                 state.CM * 3,
@@ -201,13 +218,19 @@ export const villageAttackEvents: Record<string, GameEvent> = {
             message += `${actualDeaths} villagers are killed by the bone creatures.`;
           }
 
-          message += ` The army ransacks your supplies, destroying ${foodLoss} food.`;
+          if (steelLoss > 0) {
+            message += ` The army ransacks your supplies, destroying ${steelLoss} steel.`;
+          }
+          if (ironLoss > 0) {
+            message += ` The army ransacks your supplies, destroying ${ironLoss} iron.`;
+          }
 
           return {
             ...deathResult,
             resources: {
               ...state.resources,
-              food: Math.max(0, state.resources.food - foodLoss),
+              steel: Math.max(0, state.resources.steel - steelLoss),
+              iron: Math.max(0, state.resources.iron - ironLoss),
             },
             _logMessage: message,
           };
