@@ -138,15 +138,15 @@ export default function ProfileMenu() {
       const now = new Date();
       const timestamp = now.toLocaleString();
 
-      // Set 15-second cooldown
+      // Set 15-second cooldown (in seconds, not milliseconds - game loop ticks down by 0.2 seconds)
       useGameStore.setState((state) => ({
         cooldowns: {
           ...state.cooldowns,
-          [actionId]: 15000,
+          [actionId]: 15,
         },
         cooldownDurations: {
           ...state.cooldownDurations,
-          [actionId]: 15000,
+          [actionId]: 15,
         },
         lastSaved: timestamp,
         isNewGame: false,
