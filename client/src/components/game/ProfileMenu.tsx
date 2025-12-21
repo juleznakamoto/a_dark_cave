@@ -409,7 +409,7 @@ export default function ProfileMenu() {
                           <img
                             src="/person-add.png"
                             alt=""
-                            className="w-3 h-3 opacity-90"
+                            className="w-4 h-4 opacity-90"
                           />
                         </div>
                         <div className="flex items-center gap-2">
