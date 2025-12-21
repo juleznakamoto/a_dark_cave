@@ -139,17 +139,24 @@ function handleTotemSacrifice(
     bonusPerUse: number;
   },
 ): ActionResult {
+  console.log(`\n=== ${actionId} SACRIFICE DEBUG ===`);
+  
   // Track how many times this action has been used
   const usageCount = Number(state.story?.seen?.[usageCountKey]) || 0;
   const currentCost = Math.min(5 + usageCount, 25);
 
+  console.log(`Usage count: ${usageCount}, Current cost: ${currentCost}`);
+
   // Check if player has enough totems for the current price
   if ((state.resources[totemResource] || 0) < currentCost) {
+    console.log(`Not enough ${totemResource}: have ${state.resources[totemResource]}, need ${currentCost}`);
     return result; // Not enough resources
   }
 
   // Apply the dynamic cost
   const effectUpdates = applyActionEffects(actionId, state);
+  
+  console.log(`After applyActionEffects, resources:`, effectUpdates.resources);
 
   if (!effectUpdates.resources) {
     effectUpdates.resources = { ...state.resources };
@@ -159,17 +166,32 @@ function handleTotemSacrifice(
   effectUpdates.resources[totemResource] =
     (state.resources[totemResource] || 0) - currentCost;
 
+  console.log(`After cost override, ${totemResource}: ${effectUpdates.resources[totemResource]}`);
+
   // Apply action bonuses (e.g., devourer_crown +20 silver for boneTotems)
   const actionBonuses = getActionBonuses(actionId, state);
+  console.log(`Action bonuses:`, actionBonuses);
+  
   if (actionBonuses.resourceBonus) {
+    console.log(`Applying resource bonuses:`, actionBonuses.resourceBonus);
     Object.entries(actionBonuses.resourceBonus).forEach(([resource, bonus]) => {
+      const beforeValue = effectUpdates.resources![resource];
+      console.log(`  ${resource}: before=${beforeValue}, bonus=${bonus}`);
+      
       // Initialize resource if it doesn't exist yet, then add bonus
       if (!effectUpdates.resources![resource]) {
         effectUpdates.resources![resource] = state.resources[resource as keyof typeof state.resources] || 0;
+        console.log(`    Initialized ${resource} to ${effectUpdates.resources![resource]}`);
       }
       effectUpdates.resources![resource] += bonus;
+      console.log(`    ${resource}: after=${effectUpdates.resources![resource]}`);
     });
+  } else {
+    console.log(`No resource bonuses found`);
   }
+  
+  console.log(`Final resources after bonus:`, effectUpdates.resources);
+  console.log(`=== END ${actionId} DEBUG ===\n`);
 
   // Track usage count for next time
   if (!effectUpdates.story) {
