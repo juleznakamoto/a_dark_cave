@@ -7,6 +7,35 @@ import { gameActions, getActionCostBreakdown } from './index';
 import { applyActionEffects } from './actionEffects';
 import { getResourceGainTooltip, calculateResourceGains } from './tooltips';
 
+// Mock executeAction if it's not imported or available in this scope
+// If executeAction is defined elsewhere and imported, this mock can be removed.
+const executeAction = (actionId: string, state: GameState) => {
+  // This is a placeholder. In a real scenario, you would import and use the actual `executeAction`.
+  // For the purpose of this test file, we can assume applyActionEffects is sufficient,
+  // or we can mock it to return a structure similar to what executeAction would.
+
+  // Assuming applyActionEffects is the core logic we need to test:
+  const resourceUpdates = applyActionEffects(actionId, state);
+
+  // Mock a return structure similar to executeAction if needed for `testActionGains`
+  // If `testActionGains` specifically needs `executeAction`, and `applyActionEffects` is used
+  // within `executeAction`, then this mock might need to be more sophisticated.
+  // For now, we'll adapt `testActionGains` to directly use `applyActionEffects` if `executeAction`
+  // is not intended to be tested here or is implicitly handled.
+
+  // Given the original code structure uses `applyActionEffects` inside `testActionGains`,
+  // it's likely `executeAction` was either a typo or an older version.
+  // Let's assume `applyActionEffects` is the intended function to call here.
+  return {
+    stateUpdates: {
+      resources: resourceUpdates.resources,
+      // Add other relevant updates if applyActionEffects were to return them
+    },
+    // other properties of the result from executeAction
+  };
+};
+
+
 // Helper to create a minimal test state
 const createTestState = (overrides?: Partial<GameState>): GameState => {
   return {
@@ -240,15 +269,15 @@ const parseTooltipGains = (tooltipContent: React.ReactNode): Record<string, { mi
 
     if (rangeMatch) {
       const [, min, max, resource] = rangeMatch;
-      gains[resource.toLowerCase().replace(/\s+/g, '_')] = { 
-        min: parseInt(min), 
-        max: parseInt(max) 
+      gains[resource.toLowerCase().replace(/\s+/g, '_')] = {
+        min: parseInt(min),
+        max: parseInt(max)
       };
     } else if (fixedMatch) {
       const [, amount, resource] = fixedMatch;
-      gains[resource.toLowerCase().replace(/\s+/g, '_')] = { 
-        min: parseInt(amount), 
-        max: parseInt(amount) 
+      gains[resource.toLowerCase().replace(/\s+/g, '_')] = {
+        min: parseInt(amount),
+        max: parseInt(amount)
       };
     }
   });
@@ -257,7 +286,31 @@ const parseTooltipGains = (tooltipContent: React.ReactNode): Record<string, { mi
 };
 
 // Helper to run action multiple times and check if actual gains fall within tooltip range
-const testActionGains = (actionId: string, state: GameState, iterations = 100) => {
+const testActionGains = (actionId: string, state: GameState, iterations: number = 100) => {
+    const actualGains: Record<string, number[]> = {};
+
+    console.log(`\n--- testActionGains for ${actionId} (${iterations} iterations) ---`);
+    console.log('State clothing:', state.clothing);
+
+    for (let i = 0; i < iterations; i++) {
+      const result = executeAction(actionId, state);
+
+      if (i === 0) {
+        console.log('First execution result resources:', result.stateUpdates.resources);
+      }
+
+      Object.entries(result.stateUpdates.resources || {}).forEach(([resource, newValue]) => {
+        const oldValue = state.resources[resource as keyof typeof state.resources] || 0;
+        const gain = newValue - oldValue;
+
+        if (gain > 0) {
+          if (!actualGains[resource]) {
+            actualGains[resource] = [];
+          }
+          actualGains[resource].push(gain);
+        }
+      });
+    }
   // Get expected range from calculation
   const { gains } = calculateResourceGains(actionId, state);
 
@@ -269,27 +322,6 @@ const testActionGains = (actionId: string, state: GameState, iterations = 100) =
     expectedMax = gains[0].max;
   }
 
-
-  const actualGains: Record<string, number[]> = {};
-
-  // Run action multiple times to sample the random range
-  for (let i = 0; i < iterations; i++) {
-    const effectUpdates = applyActionEffects(actionId, state);
-
-    if (effectUpdates.resources) {
-      Object.entries(effectUpdates.resources).forEach(([resource, newValue]) => {
-        const oldValue = state.resources[resource as keyof typeof state.resources] || 0;
-        const gain = (newValue as number) - oldValue;
-
-        if (gain > 0) {
-          if (!actualGains[resource]) {
-            actualGains[resource] = [];
-          }
-          actualGains[resource].push(gain);
-        }
-      });
-    }
-  }
 
   // Return expected gains and sampled actual gains - extract all resources from gains
   const expectedGains: Record<string, {min: number, max: number}> = {};
