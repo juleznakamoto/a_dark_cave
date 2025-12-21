@@ -47,14 +47,14 @@ function createBoneDevourerEvent(config: BoneDevourerConfig): GameEvent {
     },
     triggerType: "resource",
     timeProbability: (state: GameState) => {
-      // First appearance: 10 minutes, after any interaction (accept or refuse): 25 minutes
-      const hasBeenSeen = state.boneDevourerState.lastSeenLevel >= level;
-      return hasBeenSeen ? 25 : 10;
+      // First appearance: 10 minutes, repeated appearances: 25 minutes
+      const hasBeenTriggered = state.triggeredEvents?.[eventId];
+      return hasBeenTriggered ? 25 : 0.010;
     },
     title: "The Bone Devourer",
     message: (state: GameState) => {
-      const hasBeenSeen = state.boneDevourerState.lastSeenLevel >= level;
-      if (hasBeenSeen) {
+      const hasBeenTriggered = state.triggeredEvents?.[eventId];
+      if (hasBeenTriggered) {
         return `The deformed creature returns to the village gates, its hunched form still covered in pale, stretched skin. It speaks in its familiar rasping voice: 'I seek bones. ${boneCost} bones. I pay ${silverReward} silver.'`;
       }
       return `A deformed creature shuffles to the village gates, its hunched form covered in pale, stretched skin. It speaks in a rasping voice: 'I seek bones. ${boneCost} bones. I pay ${silverReward} silver.'`;
@@ -84,7 +84,6 @@ function createBoneDevourerEvent(config: BoneDevourerConfig): GameEvent {
             },
             boneDevourerState: {
               lastAcceptedLevel: level,
-              lastSeenLevel: Math.max(state.boneDevourerState.lastSeenLevel || 0, level),
             },
             triggeredEvents: {
               ...(state.triggeredEvents || {}),
@@ -101,10 +100,6 @@ function createBoneDevourerEvent(config: BoneDevourerConfig): GameEvent {
           state: GameState,
         ): Partial<GameState> & { _logMessage?: string } => {
           return {
-            boneDevourerState: {
-              ...state.boneDevourerState,
-              lastSeenLevel: Math.max(state.boneDevourerState.lastSeenLevel || 0, level),
-            },
             _logMessage:
               "You refuse the creature's offer. It hisses in displeasure and retreats into the shadows. You sense it will return.",
           };
