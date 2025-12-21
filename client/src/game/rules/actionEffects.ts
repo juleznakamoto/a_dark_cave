@@ -9,6 +9,7 @@ import {
 } from "../buttonUpgrades";
 import { getNextBuildingLevel } from "./villageBuildActions";
 import { calculateAdjustedCost } from "./costCalculation";
+import { clothingEffects } from "./effects";
 
 const FOCUS_ELIGIBLE_ACTIONS = [
   "exploreCave",
@@ -82,11 +83,11 @@ export function applyActionEffects(
   if (BONUS_CHANCE_ELIGIBLE_ACTIONS.includes(actionId)) {
     // Get total actionBonusChance from effects
     let totalActionBonusChance = 0;
-    
+
     // Check clothing for actionBonusChance
     if (state.clothing?.tarnished_compass) {
-      const compassEffect = require('./effects').clothingEffects.tarnished_compass;
-      totalActionBonusChance += compassEffect.bonuses.generalBonuses?.actionBonusChance || 0;
+      const compassEffect = clothingEffects.tarnished_compass;
+      totalActionBonusChance += compassEffect.actionBonusChance || 0;
     }
 
     // Roll for bonus chance
@@ -292,13 +293,13 @@ export function applyActionEffects(
             max += cappedUsageCount;
 
             const actionBonuses = getActionBonusesCalc(actionId, state);
-            
+
             // Apply multiplier first (like Bone Temple or Sacrificial Tunic)
             if (actionBonuses?.resourceMultiplier > 1) {
               min = Math.floor(min * actionBonuses.resourceMultiplier);
               max = Math.floor(max * actionBonuses.resourceMultiplier);
             }
-            
+
             // Apply flat bonuses after multiplier (like devourer_crown +20 silver)
             const flatBonus = actionBonuses?.resourceBonus?.[finalKey] || 0;
             if (flatBonus > 0) {
@@ -528,7 +529,7 @@ export function applyActionEffects(
 
   // Don't apply resource bonuses here for sacrifice actions - they're already applied in the sacrifice logic
   const isSacrificeAction = actionId === "boneTotems" || actionId === "leatherTotems";
-  
+
   if (updates.resources && !isSacrificeAction) {
     const actionBonuses = getActionBonusesCalc(actionId, state);
 
@@ -546,12 +547,12 @@ export function applyActionEffects(
   // Apply action bonus chance (2x multiplier) AFTER all other bonuses
   if (actionBonusChanceTriggered && updates.resources) {
     const originalResources = { ...state.resources };
-    
+
     Object.keys(updates.resources).forEach((resource) => {
       const originalAmount = originalResources[resource as keyof typeof originalResources] || 0;
       const newAmount = updates.resources![resource];
       const gainedAmount = newAmount - originalAmount;
-      
+
       // Double the gained amount
       if (gainedAmount > 0) {
         updates.resources![resource] = originalAmount + (gainedAmount * 2);
