@@ -50,10 +50,16 @@ function createBoneDevourerEvent(config: BoneDevourerConfig): GameEvent {
     timeProbability: (state: GameState) => {
       // First appearance: 10 minutes, repeated appearances: 25 minutes
       const hasBeenTriggered = state.triggeredEvents?.[eventId];
-      return hasBeenTriggered ? 25 : 0.010;
+      return hasBeenTriggered ? 25 : 10;
     },
     title: "The Bone Devourer",
-    message: `A deformed creature shuffles to the village gates, its hunched form covered in pale, stretched skin. It speaks in a rasping voice: 'I seek bones. ${boneCost} bones. I pay ${silverReward} silver.'`,
+    message: (state: GameState) => {
+      const hasBeenTriggered = state.triggeredEvents?.[eventId];
+      if (hasBeenTriggered) {
+        return `The deformed creature returns to the village gates, its hunched form still covered in pale, stretched skin. It speaks in its familiar rasping voice: 'I seek bones. ${boneCost} bones. I pay ${silverReward} silver.'`;
+      }
+      return `A deformed creature shuffles to the village gates, its hunched form covered in pale, stretched skin. It speaks in a rasping voice: 'I seek bones. ${boneCost} bones. I pay ${silverReward} silver.'`;
+    },
     triggered: false,
     priority: 3,
     repeatable: true,
