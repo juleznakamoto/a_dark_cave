@@ -429,9 +429,15 @@ export async function loadGame(): Promise<GameState | null> {
             // Cloud save is newer or equal - use cloud
             logger.log("[LOAD] ☁️ Cloud save is newer - using cloud save");
 
+            const { formatSaveTimestamp } = await import("@/lib/utils");
+            
             const stateWithDefaults = {
               ...cloudSave.gameState,
               cooldownDurations: cloudSave.gameState.cooldownDurations || {},
+              // Format lastSaved if it's a timestamp
+              lastSaved: cloudSave.gameState.lastSaved && typeof cloudSave.gameState.lastSaved === 'number' 
+                ? formatSaveTimestamp() 
+                : cloudSave.gameState.lastSaved,
             };
 
             const processedState = await processUnclaimedReferrals(
@@ -459,9 +465,15 @@ export async function loadGame(): Promise<GameState | null> {
           // Only cloud save exists - use it
           logger.log("[LOAD] ☁️ Using cloud save (no local save)");
 
+          const { formatSaveTimestamp } = await import("@/lib/utils");
+          
           const stateWithDefaults = {
             ...cloudSave.gameState,
             cooldownDurations: cloudSave.gameState.cooldownDurations || {},
+            // Format lastSaved if it's a timestamp
+            lastSaved: cloudSave.gameState.lastSaved && typeof cloudSave.gameState.lastSaved === 'number' 
+              ? formatSaveTimestamp() 
+              : cloudSave.gameState.lastSaved,
           };
 
           const processedState = await processUnclaimedReferrals(
