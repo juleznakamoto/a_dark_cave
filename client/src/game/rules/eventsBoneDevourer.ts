@@ -52,7 +52,7 @@ function createBoneDevourerEvent(config: BoneDevourerConfig): GameEvent {
       // First appearance of this level: 10 minutes
       // After being seen (regardless of accept/decline): 25 minutes
       const hasBeenSeen = state.triggeredEvents?.[`${eventId}_seen`];
-      return hasBeenSeen ? 25 : 10;
+      return hasBeenSeen ? 0.25 : 0.10;
     },
     title: "The Bone Devourer",
     message: (state: GameState) => {
