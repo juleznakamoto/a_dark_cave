@@ -315,18 +315,6 @@ export const toolEffects: Record<string, EffectDefinition> = {
     },
   },
 
-  blacksteel_armor: {
-    id: "blacksteel_armor",
-    name: "Blacksteel Armor",
-    description: "Heavy armor adorned with deadly spikes",
-    bonuses: {
-      generalBonuses: {
-        strength: 10,
-        criticalChance: 5, // 5% critical strike chance in combat
-      },
-    },
-  },
-
   blacksmith_hammer: {
     id: "blacksmith_hammer",
     name: "Blacksmith Hammer",
@@ -690,6 +678,18 @@ export const weaponEffects: Record<string, EffectDefinition> = {
 
 // Relic effects
 export const clothingEffects: Record<string, EffectDefinition> = {
+  blacksteel_armor: {
+    id: "blacksteel_armor",
+    name: "Blacksteel Armor",
+    description: "Heavy armor adorned with deadly spikes",
+    bonuses: {
+      generalBonuses: {
+        strength: 10,
+        criticalChance: 5, // 5% critical strike chance in combat
+      },
+    },
+  },
+
   highpriest_robe: {
     id: "highpriest_robe",
     name: "Highpriest Robe",
