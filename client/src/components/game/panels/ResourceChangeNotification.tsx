@@ -13,13 +13,13 @@ const abbreviateNumber = (num: number): string => {
   const sign = num < 0 ? '-' : '';
   
   if (absNum >= 1000000000) {
-    return sign + (absNum / 1000000000).toFixed(1).replace(/\.0$/, '').replace(".", "'") + 'B';
+    return sign + (absNum / 1000000000).toFixed(1).replace(/\.0$/, '') + 'B';
   }
   if (absNum >= 1000000) {
-    return sign + (absNum / 1000000).toFixed(1).replace(/\.0$/, '').replace(".", "'") + 'M';
+    return sign + (absNum / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
   }
   if (absNum >= 1000) {
-    return sign + (absNum / 1000).toFixed(1).replace(/\0$/, '').replace(".", "'") + 'k';
+    return sign + (absNum / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
   }
   return num.toString();
 };
