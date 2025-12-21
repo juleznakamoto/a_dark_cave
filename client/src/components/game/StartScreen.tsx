@@ -103,7 +103,7 @@ export default function StartScreen() {
   };
 
   return (
-    <div className="relative min-h-screen bg-black text-white overflow-hidden">
+    <div className="fixed inset-0 bg-black text-white overflow-hidden">
       {/* Featured By Section */}
       <div className="absolute bottom-8 left-4 z-20 animate-fade-in-featured">
         <div className="bg-white/25 backdrop-blur-sm rounded-lg p-2 !pb-1 border border-white/25 flex flex-col items-start">
