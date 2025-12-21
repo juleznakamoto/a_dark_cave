@@ -72,7 +72,7 @@ interface GameStore extends GameState {
 
   // Notification state for mysterious note
   mysteriousNoteShopNotificationSeen: boolean;
-  mysteriousNoteDonateNotificationSeen: boolean;
+  mystNoteDonateNotificationSeen: boolean;
 
   // Resource highlighting state
   highlightedResources: string[]; // Updated to array for serialization
@@ -828,7 +828,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       isNewGame: true,
       startTime: Date.now(),
       playTime: 0,
-      allowPlayTimeOverwrite: true,
+      allowPlaytimeOverwrite: true,
     };
 
     set(resetState);
@@ -973,7 +973,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         authNotificationSeen: savedState.authNotificationSeen !== undefined ? savedState.authNotificationSeen : false,
         authNotificationVisible: savedState.authNotificationVisible !== undefined ? savedState.authNotificationVisible : false,
         mysteriousNoteShopNotificationSeen: savedState.mysteriousNoteShopNotificationSeen !== undefined ? savedState.mysteriousNoteShopNotificationSeen : false,
-        mysteriousNoteDonateNotificationSeen: savedState.mysteriousNoteDonateNotificationSeen !== undefined ? savedState.mysteriousNoteDonateNotificationSeen : false,
+        mystNoteDonateNotificationSeen: savedState.mystNoteDonateNotificationSeen !== undefined ? savedState.mystNoteDonateNotificationSeen : false,
         playTime: loadedPlayTime, // CRITICAL: Use the extracted playTime value
         isNewGame: false, // Clear the new game flag when loading
         startTime: savedState.startTime !== undefined ? savedState.startTime : 0, // Ensure startTime is loaded

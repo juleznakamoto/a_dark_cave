@@ -295,6 +295,16 @@ export async function saveGame(
           stateDiff.playTime = Math.floor(stateDiff.playTime);
         }
 
+        // Check if this is a new game that needs playtime overwrite
+        const allowOverwrite = sanitizedState.allowPlaytimeOverwrite === true || sanitizedState.isNewGame === true;
+
+        logger.log('[SAVE CLOUD] 🔍 Playtime overwrite check:', {
+          allowPlaytimeOverwrite: sanitizedState.allowPlaytimeOverwrite,
+          isNewGame: sanitizedState.isNewGame,
+          willAllowOverwrite: allowOverwrite,
+          currentPlayTime: stateDiff.playTime,
+        });
+
         // Save via Edge Function (handles auth, rate limiting, and trust)
         const supabaseClient = await getSupabaseClient();
         
@@ -310,7 +320,7 @@ export async function saveGame(
             clickAnalytics: clickData,
             resourceAnalytics: resourceData,
             clearAnalytics: isNewGame,
-            allowPlaytimeOverwrite: gameState.allowPlaytimeOverwrite || false
+            allowPlaytimeOverwrite: allowOverwrite
           }
         });
 
