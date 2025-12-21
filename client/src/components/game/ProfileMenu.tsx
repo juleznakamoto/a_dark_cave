@@ -77,10 +77,6 @@ export default function ProfileMenu() {
     email: string;
   } | null>(null);
   const { toast } = useToast();
-  const [lastManualSave, setLastManualSave] = useState<number>(0);
-  const [isSaveCooldownActive, setIsSaveCooldownActive] =
-    useState<boolean>(false);
-  const [lastSaveTime, setLastSaveTime] = useState<number | null>(null);
 
   useEffect(() => {
     checkAuth();
@@ -126,20 +122,43 @@ export default function ProfileMenu() {
   };
 
   const handleManualSave = async () => {
-    if (isSaveCooldownActive || !currentUser) return;
-
-    const now = Date.now();
-    setLastManualSave(now);
-    setIsSaveCooldownActive(true);
+    const actionId = "manualSave";
+    const currentCooldown = cooldowns[actionId] || 0;
+    
+    if (currentCooldown > 0) {
+      return; // Still on cooldown
+    }
 
     try {
-      const { saveGame } = await import("@/game/save");
-      const state = useGameStore.getState();
-      await saveGame(state, false);
-      setLastSaveTime(now);
-      logger.log("[PROFILE] Manual save completed");
+      const currentState = useGameStore.getState();
+      const gameState = buildGameState(currentState);
+      const playTimeToSave = currentState.isNewGame ? 0 : currentState.playTime;
+
+      await saveGame(gameState, playTimeToSave);
+
+      // Set 15-second cooldown
+      useGameStore.setState((state) => ({
+        cooldowns: {
+          ...state.cooldowns,
+          [actionId]: 15000,
+        },
+        cooldownDurations: {
+          ...state.cooldownDurations,
+          [actionId]: 15000,
+        },
+        lastSaved: new Date().toLocaleTimeString(),
+        isNewGame: false,
+      }));
+
+      toast({
+        title: "Game saved successfully",
+      });
     } catch (error) {
-      logger.error("[PROFILE] Manual save failed:", error);
+      logger.error("Failed to manually save game:", error);
+      toast({
+        title: "Failed to save game",
+        variant: "destructive",
+      });
     }
   };
 
@@ -241,26 +260,6 @@ export default function ProfileMenu() {
     }
   };
 
-  useEffect(() => {
-    if (!currentUser) return;
-
-    const checkReferrals = async () => {
-      const { checkPendingReferrals } = await import("@/game/auth");
-      await checkPendingReferrals();
-    };
-
-    checkReferrals();
-
-    // Initialize last save time from game state
-    const state = useGameStore.getState();
-    if (state.lastSaved && state.lastSaved !== 'Never') {
-      const savedTime = new Date(state.lastSaved).getTime();
-      if (!isNaN(savedTime)) {
-        setLastSaveTime(savedTime);
-      }
-    }
-  }, [currentUser]);
-
   return (
     <div className="fixed top-2 right-2 z-50 pointer-events-auto flex flex-col items-end gap-2">
       <AuthDialog
@@ -310,36 +309,25 @@ export default function ProfileMenu() {
             className="text-xs !max-h-none w-auto"
           >
             <TooltipProvider>
-              <Tooltip
-                open={
-                  isMobile
-                    ? mobileTooltip.isTooltipOpen("manual-save")
-                    : undefined
-                }
-              >
+              <Tooltip delayDuration={300}>
                 <TooltipTrigger asChild>
-                  <div
-                    onClick={(e) => {
-                      if (isMobile) {
-                        mobileTooltip.handleTooltipClick("manual-save", e);
-                      }
-                    }}
-                  >
+                  <div>
                     <DropdownMenuItem
                       onClick={handleManualSave}
-                      disabled={isSaveCooldownActive || !currentUser}
+                      disabled={cooldowns["manualSave"] > 0}
+                      className={
+                        cooldowns["manualSave"] > 0
+                          ? "opacity-50 cursor-not-allowed"
+                          : ""
+                      }
                     >
-                      <div className="flex items-center justify-between w-full">
-                        <span>Save</span>
-                      </div>
+                      Save
                     </DropdownMenuItem>
                   </div>
                 </TooltipTrigger>
-                <TooltipContent className="max-w-xs">
+                <TooltipContent>
                   <p className="text-xs">
-                    Game is autosaved every minute
-                    <br />
-                    Last Save: {lastSaveTime ? new Date(lastSaveTime).toLocaleString() : 'Never'}
+                    Game auto-saves every minute
                   </p>
                 </TooltipContent>
               </Tooltip>
