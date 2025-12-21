@@ -52,7 +52,7 @@ function createBoneDevourerEvent(config: BoneDevourerConfig): GameEvent {
       // First appearance of this level: 10 minutes
       // After being seen (regardless of accept/decline): 25 minutes
       const hasBeenSeen = state.triggeredEvents?.[`${eventId}_seen`];
-      return hasBeenSeen ? 0.25 : 0.10;
+      return hasBeenSeen ? 25 : 10;
     },
     title: "The Bone Devourer",
     message: (state: GameState) => {
@@ -146,11 +146,10 @@ boneDevourerEvents.boneArmyAttack = {
       relevant_stats: ["strength"],
       success_chance: (state: GameState) => {
         const traps = state.buildings.traps;
-        return calculateSuccessChance(
-          state,
-          0.12 + traps * 0.1,
-          { type: 'strength', multiplier: 0.01 }
-        );
+        return calculateSuccessChance(state, 0.12 + traps * 0.1, {
+          type: "strength",
+          multiplier: 0.01,
+        });
       },
       effect: (state: GameState) => {
         const traps = state.buildings.traps;
@@ -161,7 +160,7 @@ boneDevourerEvents.boneArmyAttack = {
         const victoryChance = calculateSuccessChance(
           state,
           0.12 + traps * 0.1,
-          { type: 'strength', multiplier: 0.01 }
+          { type: "strength", multiplier: 0.01 },
         );
 
         if (Math.random() < victoryChance) {
@@ -257,18 +256,17 @@ boneDevourerEvents.boneArmyAttack = {
       relevant_stats: ["luck"],
       success_chance: (state: GameState) => {
         const traps = state.buildings.traps;
-        return calculateSuccessChance(
-          state,
-          0.1 + traps * 0.1,
-          { type: 'luck', multiplier: 0.02 }
-        );
+        return calculateSuccessChance(state, 0.1 + traps * 0.1, {
+          type: "luck",
+          multiplier: 0.02,
+        });
       },
       effect: (state: GameState) => {
         const traps = state.buildings.traps;
         const success_chance = calculateSuccessChance(
           state,
           0.1 + traps * 0.1,
-          { type: 'luck', multiplier: 0.02 }
+          { type: "luck", multiplier: 0.02 },
         );
 
         let villagerDeaths = 0;
