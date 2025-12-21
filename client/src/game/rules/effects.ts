@@ -764,6 +764,24 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     },
   },
 
+  devourer_crown: {
+    id: "devourer_crown",
+    name: "Devourer Crown",
+    description: "Crown of the Bone Devourer, pulsing with dark knowledge",
+    bonuses: {
+      actionBonuses: {
+        boneTotems: {
+          resourceBonus: {
+            silver: 20,
+          },
+        },
+      },
+      generalBonuses: {
+        knowledge: 5,
+      },
+    },
+  },
+
   grenadier_bag: {
     id: "grenadier_bag",
     name: "Grenadier's Bag",
