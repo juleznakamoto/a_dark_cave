@@ -47,7 +47,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
     },
     ref
   ) {
-  const { cooldowns, cooldownDurations } = useGameStore();
+  const { cooldowns, cooldownDurations, compassGlowButton } = useGameStore();
   const isFirstRenderRef = useRef<boolean>(true);
   const mobileTooltip = useMobileButtonTooltip();
 
@@ -100,6 +100,14 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
   };
 
   const isButtonDisabled = disabled || isCoolingDown;
+  const isCompassGlowing = compassGlowButton === actionId;
+
+  // Log compass glow state changes
+  useEffect(() => {
+    if (isCompassGlowing) {
+      console.log('[COMPASS GLOW] Button is glowing for action:', actionId);
+    }
+  }, [isCompassGlowing, actionId]);
 
   const buttonId = testId || `button-${Math.random()}`;
 
@@ -112,7 +120,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       size={size}
       className={`relative overflow-hidden transition-all duration-200 select-none ${
         isCoolingDown ? "opacity-60 cursor-not-allowed" : ""
-      } ${className}`}
+      } ${isCompassGlowing ? "compass-glow" : ""} ${className}`}
       data-testid={testId}
       button_id={props.button_id || actionId}
       {...props}

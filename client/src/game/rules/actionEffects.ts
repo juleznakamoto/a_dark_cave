@@ -559,9 +559,8 @@ export function applyActionEffects(
       }
     });
 
-    // Add log message about the bonus
-    if (!updates.logMessages) updates.logMessages = [];
-    updates.logMessages.push("The Tarnished Compass glows! Your gains are doubled!");
+    // Mark that the compass bonus was triggered (for button glow effect)
+    (updates as any).compassBonusTriggered = true;
   }
 
   if (state.devMode && updates.resources) {
