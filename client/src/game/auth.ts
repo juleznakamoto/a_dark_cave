@@ -174,22 +174,15 @@ export async function signIn(email: string, password: string) {
     throw new Error('Please confirm your email address before signing in. Check your inbox for the confirmation link.');
   }
 
-  // Reset save button cooldown and clear last saved timestamp on successful sign in
-  const { useGameStore } = await import('./state');
-  useGameStore.setState({
-    saveCooldown: 0,
-    lastSaved: null
-  });
-
   return data;
 }
 
 export async function signInWithGoogle() {
   const supabase = await getSupabaseClient();
-
+  
   // Determine the correct redirect URL based on environment
   const redirectTo = window.location.origin + '/game';
-
+  
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
