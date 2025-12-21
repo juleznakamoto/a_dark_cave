@@ -61,9 +61,6 @@ export const calculateResourceGains = (
     actionId === "boneTotems" || actionId === "leatherTotems";
 
   if (isSacrificeAction) {
-    console.log(`\n=== calculateResourceGains for ${actionId} ===`);
-    console.log('bonuses:', bonuses);
-    
     // Get dynamic cost
     const usageCountKey =
       actionId === "boneTotems"
@@ -89,15 +86,11 @@ export const calculateResourceGains = (
           if (match) {
             let min = parseInt(match[1]);
             let max = parseInt(match[2]);
-            
-            console.log(`Base range for ${resource}: ${min}-${max}`);
 
             // Apply fixed +1 bonus per usage, capped at 20 usages
             const cappedUsageCount = Math.min(usageCount, 20);
             min = min + cappedUsageCount;
             max = max + cappedUsageCount;
-            
-            console.log(`After usage count (+${cappedUsageCount}): ${min}-${max}`);
 
             // Apply bonuses through centralized system (includes Bone Temple + items)
             const totalMultiplier = bonuses.resourceMultiplier;
@@ -106,7 +99,6 @@ export const calculateResourceGains = (
             if (totalMultiplier > 1) {
               min = Math.floor(min * totalMultiplier);
               max = Math.floor(max * totalMultiplier);
-              console.log(`After multiplier (${totalMultiplier}): ${min}-${max}`);
             }
 
             // Apply flat bonuses after multiplier (like devourer_crown +20 silver)
@@ -114,17 +106,13 @@ export const calculateResourceGains = (
             if (flatBonus > 0) {
               min += flatBonus;
               max += flatBonus;
-              console.log(`After flat bonus (+${flatBonus}): ${min}-${max}`);
             }
 
-            console.log(`Final range for ${resource}: ${min}-${max}`);
             gains.push({ resource, min, max });
           }
         }
       }
     });
-    
-    console.log('=== END calculateResourceGains ===\n');
   } else {
     // Check if this is a cave exploration action
     const caveExploreActions = [
@@ -522,14 +510,14 @@ export const combatItemTooltips: Record<string, TooltipConfig> = {
 export const eventChoiceCostTooltip = {
   getContent: (cost: string | Record<string, number> | undefined, gameState?: GameState): React.ReactNode => {
     if (!cost) return null;
-    
+
     // Extract resources from cost
     const resources: Array<{ resource: string; amount: number }> = [];
-    
+
     if (typeof cost === "string") {
       // Handle comma-separated costs like "1000 wood, 500 food"
       const costParts = cost.split(',').map(part => part.trim());
-      
+
       for (const part of costParts) {
         const parsed = parseResourceText(part);
         if (parsed) {
@@ -613,7 +601,7 @@ export const getCurrentResourceAmount = {
 
     const { resource } = parsed;
     const currentAmount = gameState.resources[resource as keyof typeof gameState.resources] || 0;
-    
+
     return `Current: ${currentAmount} ${capitalizeWords(resource)}`;
   }
 };
@@ -636,7 +624,7 @@ export const getMerchantTooltip = {
     if (costText) {
       // Handle comma-separated costs like "1000 wood, 500 food"
       const costParts = costText.split(',').map(part => part.trim());
-      
+
       for (const part of costParts) {
         const payParsed = parseResourceText(part);
         if (payParsed) {
