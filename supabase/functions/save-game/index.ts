@@ -49,7 +49,10 @@ serve(async (req) => {
   try {
     // Get JWT from Authorization header
     const authHeader = req.headers.get('Authorization')
+    console.log('Authorization header present:', !!authHeader)
+    
     if (!authHeader) {
+      console.error('Missing authorization header')
       return new Response(
         JSON.stringify({ error: 'Missing authorization header' }),
         { 
@@ -61,6 +64,7 @@ serve(async (req) => {
 
     // Validate Bearer format
     if (!authHeader.startsWith('Bearer ')) {
+      console.error('Invalid authorization format:', authHeader.substring(0, 20))
       return new Response(
         JSON.stringify({ error: 'Invalid authorization format' }),
         { 
@@ -72,17 +76,21 @@ serve(async (req) => {
 
     // Verify the JWT and get user
     const jwt = authHeader.substring(7) // Remove 'Bearer ' prefix
+    console.log('JWT token length:', jwt.length)
     const { data: { user }, error: authError } = await supabase.auth.getUser(jwt)
 
     if (authError || !user) {
+      console.error('Auth error:', authError?.message || 'No user found')
       return new Response(
-        JSON.stringify({ error: 'Invalid or expired token' }),
+        JSON.stringify({ error: 'Invalid or expired token', details: authError?.message }),
         { 
           status: 401, 
           headers: { ...corsHeaders, 'Content-Type': 'application/json' }
         }
       )
     }
+    
+    console.log('User authenticated:', user.id)
 
     // Rate limit: 2 saves per second per user
     if (!checkRateLimit(user.id, 2, 1000)) {
@@ -96,7 +104,20 @@ serve(async (req) => {
     }
 
     // Parse request body
-    const body = await req.json()
+    let body
+    try {
+      body = await req.json()
+    } catch (parseError) {
+      console.error('Failed to parse JSON body:', parseError)
+      return new Response(
+        JSON.stringify({ error: 'Invalid JSON in request body' }),
+        { 
+          status: 400, 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        }
+      )
+    }
+    
     const {
       gameStateDiff,
       clickAnalytics,
@@ -105,8 +126,12 @@ serve(async (req) => {
       allowPlaytimeOverwrite
     } = body
 
+    console.log('Request body keys:', Object.keys(body))
+    console.log('gameStateDiff type:', typeof gameStateDiff, 'is array:', Array.isArray(gameStateDiff))
+    
     // Validate request shape
     if (!gameStateDiff || typeof gameStateDiff !== 'object' || Array.isArray(gameStateDiff)) {
+      console.error('Invalid gameStateDiff validation failed')
       return new Response(
         JSON.stringify({ error: 'Invalid gameStateDiff: must be a non-null object' }),
         { 
@@ -117,6 +142,7 @@ serve(async (req) => {
     }
 
     if (Object.keys(gameStateDiff).length === 0) {
+      console.error('Empty gameStateDiff')
       return new Response(
         JSON.stringify({ error: 'Invalid gameStateDiff: cannot be empty' }),
         { 
@@ -125,6 +151,8 @@ serve(async (req) => {
         }
       )
     }
+    
+    console.log('gameStateDiff keys:', Object.keys(gameStateDiff))
 
     // Validate payload size (prevent abuse)
     const payloadSize = JSON.stringify(body).length
