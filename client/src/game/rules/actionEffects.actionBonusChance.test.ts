@@ -41,7 +41,7 @@ describe('Tarnished Compass - actionBonusChance', () => {
         vi.spyOn(Math, 'random').mockReturnValue(0.05);
 
         const state = createMockState({
-          clothing: { tarnished_compass: true },
+          relics: { tarnished_compass: true },
           resources: { wood: 100, stone: 100, food: 100, torch: 100 },
           flags: { forestUnlocked: true },
           tools: { reinforced_rope: true, stone_pickaxe: true },
@@ -65,7 +65,7 @@ describe('Tarnished Compass - actionBonusChance', () => {
         vi.spyOn(Math, 'random').mockReturnValue(0.15);
 
         const state = createMockState({
-          clothing: { tarnished_compass: true },
+          relics: { tarnished_compass: true },
           resources: { wood: 100, stone: 100, food: 100, torch: 100 },
           flags: { forestUnlocked: true },
           tools: { reinforced_rope: true, stone_pickaxe: true },
@@ -90,7 +90,7 @@ describe('Tarnished Compass - actionBonusChance', () => {
       vi.spyOn(Math, 'random').mockReturnValue(0.05);
 
       const state = createMockState({
-        clothing: { tarnished_compass: true },
+        relics: { tarnished_compass: true },
         resources: { wood: 0 },
       });
 
@@ -106,7 +106,7 @@ describe('Tarnished Compass - actionBonusChance', () => {
       vi.spyOn(Math, 'random').mockReturnValue(0.05);
 
       const state = createMockState({
-        clothing: { tarnished_compass: true },
+        relics: { tarnished_compass: true },
         resources: { stone: 0, food: 100, torch: 100 },
         tools: { stone_pickaxe: true },
       });
@@ -123,7 +123,7 @@ describe('Tarnished Compass - actionBonusChance', () => {
       vi.spyOn(Math, 'random').mockReturnValue(0.05);
 
       const state = createMockState({
-        clothing: { tarnished_compass: true },
+        relics: { tarnished_compass: true },
         resources: { food: 0, fur: 0, bones: 0 },
         flags: { forestUnlocked: true },
       });
@@ -142,12 +142,12 @@ describe('Tarnished Compass - actionBonusChance', () => {
       vi.spyOn(Math, 'random').mockReturnValue(0.05);
 
       const stateWithoutTool = createMockState({
-        clothing: { tarnished_compass: true },
+        relics: { tarnished_compass: true },
         resources: { wood: 0 },
       });
 
       const stateWithTool = createMockState({
-        clothing: { tarnished_compass: true },
+        relics: { tarnished_compass: true },
         tools: { stone_axe: true },
         resources: { wood: 0 },
       });
@@ -168,7 +168,7 @@ describe('Tarnished Compass - actionBonusChance', () => {
       vi.spyOn(Math, 'random').mockReturnValue(0.05);
 
       const state = createMockState({
-        clothing: { tarnished_compass: true },
+        relics: { tarnished_compass: true },
         tools: { stone_pickaxe: true },
         resources: { stone: 0 },
       });
@@ -186,7 +186,7 @@ describe('Tarnished Compass - actionBonusChance', () => {
       vi.spyOn(Math, 'random').mockReturnValue(0.05);
 
       const state = createMockState({
-        clothing: { tarnished_compass: true },
+        relics: { tarnished_compass: true },
         tools: { iron_lantern: true },
         resources: { wood: 0, stone: 0 },
         story: { seen: { actionCraftTorch: true } },
@@ -205,7 +205,7 @@ describe('Tarnished Compass - actionBonusChance', () => {
       vi.spyOn(Math, 'random').mockReturnValue(0.05);
 
       const state = createMockState({
-        clothing: { tarnished_compass: false },
+        relics: { tarnished_compass: false },
         resources: { wood: 0 },
       });
 
@@ -238,7 +238,7 @@ describe('Tarnished Compass - actionBonusChance', () => {
         vi.spyOn(Math, 'random').mockReturnValue(0.05);
 
         const state = createMockState({
-          clothing: { tarnished_compass: true },
+          relics: { tarnished_compass: true },
           resources: { wood: 100, stone: 100, iron: 100, bones: 10, leather: 10 },
           buildings: { altar: 1, temple: 1, clerksHut: 1 },
         });
@@ -265,7 +265,7 @@ describe('Tarnished Compass - actionBonusChance', () => {
 
       for (let i = 0; i < iterations; i++) {
         const state = createMockState({
-          clothing: { tarnished_compass: true },
+          relics: { tarnished_compass: true },
           resources: { wood: 0 },
         });
 
@@ -293,7 +293,7 @@ describe('Tarnished Compass - actionBonusChance', () => {
       vi.spyOn(Math, 'random').mockReturnValue(0.05);
 
       const state = createMockState({
-        clothing: { tarnished_compass: true },
+        relics: { tarnished_compass: true },
         resources: { wood: 100 },
       });
 
@@ -308,7 +308,7 @@ describe('Tarnished Compass - actionBonusChance', () => {
       vi.spyOn(Math, 'random').mockReturnValue(0.05);
 
       const state = createMockState({
-        clothing: { tarnished_compass: true },
+        relics: { tarnished_compass: true },
         resources: { stone: 100 },
       });
 
@@ -325,7 +325,7 @@ describe('Tarnished Compass - actionBonusChance', () => {
       vi.spyOn(Math, 'random').mockReturnValue(0.05);
 
       const state = createMockState({
-        clothing: { tarnished_compass: true },
+        relics: { tarnished_compass: true },
         resources: { wood: 0, stone: 0 },
         story: { seen: { actionCraftTorch: true } },
       });
@@ -341,7 +341,7 @@ describe('Tarnished Compass - actionBonusChance', () => {
       vi.spyOn(Math, 'random').mockReturnValue(0.05);
 
       const state = createMockState({
-        clothing: { tarnished_compass: true },
+        relics: { tarnished_compass: true },
         resources: { food: 0, fur: 0, bones: 0 },
         flags: { forestUnlocked: true },
       });

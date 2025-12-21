@@ -84,10 +84,10 @@ export function applyActionEffects(
     // Get total actionBonusChance from effects
     let totalActionBonusChance = 0;
 
-    // Check clothing for actionBonusChance
-    if (state.clothing?.tarnished_compass) {
+    // Check relics for actionBonusChance (Tarnished Compass)
+    if (state.relics?.tarnished_compass) {
       const compassEffect = clothingEffects.tarnished_compass;
-      totalActionBonusChance += compassEffect.actionBonusChance || 0;
+      totalActionBonusChance += compassEffect.bonuses.generalBonuses?.actionBonusChance || 0;
     }
 
     // Roll for bonus chance
