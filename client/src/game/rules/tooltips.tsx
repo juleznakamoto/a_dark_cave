@@ -99,22 +99,22 @@ export const calculateResourceGains = (
             
             console.log(`After usage count (+${cappedUsageCount}): ${min}-${max}`);
 
-            // Apply flat bonuses first (like devourer_crown +20 silver)
+            // Apply bonuses through centralized system (includes Bone Temple + items)
+            const totalMultiplier = bonuses.resourceMultiplier;
+
+            // Apply combined multiplier first
+            if (totalMultiplier > 1) {
+              min = Math.floor(min * totalMultiplier);
+              max = Math.floor(max * totalMultiplier);
+              console.log(`After multiplier (${totalMultiplier}): ${min}-${max}`);
+            }
+
+            // Apply flat bonuses after multiplier (like devourer_crown +20 silver)
             const flatBonus = bonuses.resourceBonus?.[resource] || 0;
             if (flatBonus > 0) {
               min += flatBonus;
               max += flatBonus;
               console.log(`After flat bonus (+${flatBonus}): ${min}-${max}`);
-            }
-
-            // Apply bonuses through centralized system (includes Bone Temple + items)
-            const totalMultiplier = bonuses.resourceMultiplier;
-
-            // Apply combined multiplier
-            if (totalMultiplier > 1) {
-              min = Math.floor(min * totalMultiplier);
-              max = Math.floor(max * totalMultiplier);
-              console.log(`After multiplier (${totalMultiplier}): ${min}-${max}`);
             }
 
             console.log(`Final range for ${resource}: ${min}-${max}`);
