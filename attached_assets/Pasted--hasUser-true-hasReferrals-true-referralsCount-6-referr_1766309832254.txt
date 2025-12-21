@@ -1,0 +1,732 @@
+{hasUser: true, hasReferrals: true, referralsCount: 6, referrals: Array(6)}
+logger.ts:33 v257Z [REFERRAL] ℹ️ No unclaimed referrals to process
+logger.ts:33 v257Z [SAVE CLOUD] Edge Function success: {success: true}
+logger.ts:33 v257Z [SAVE] ✅ Updated lastCloudState after successful cloud save
+logger.ts:33 v257Z [LOAD] ✅ Local progress synced to cloud
+logger.ts:33 v257Z [GAME] Game loaded from save
+logger.ts:33 v257Z [GAME] Detected claimed referrals - saving to cloud
+logger.ts:33 v257Z [IDLE MODE INIT] Dialog open check: {dialogOpen: false, isActive: false, idleModeState: {…}}
+logger.ts:33 v257Z [VERSION] Initializing version check from GameContainer
+logger.ts:33 v257Z [SAVE CLOUD] Edge Function success: {success: true}
+logger.ts:33 v257Z [SAVE] ✅ Updated lastCloudState after successful cloud save
+logger.ts:33 v257Z [GAME] Successfully saved claimed referrals to cloud
+chunk-276SZO74.js?v=cfcc4e86:521 Warning: validateDOMNesting(...): <p> cannot appear as a descendant of <p>.
+    at p
+    at div
+    at div
+    at p
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=cfcc4e86:1228:13
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=cfcc4e86:1506:13
+    at _c9 (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/components/ui/dialog.tsx:185:12)
+    at div
+    at DialogHeader (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/components/ui/dialog.tsx:110:3)
+    at div
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=cfcc4e86:267:13
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=cfcc4e86:296:7
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=cfcc4e86:522:13
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=cfcc4e86:499:13
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=cfcc4e86:612:13
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=cfcc4e86:631:5
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=cfcc4e86:1458:13
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=cfcc4e86:1381:58
+    at Presence (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=cfcc4e86:988:11)
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=cfcc4e86:1372:64
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=cfcc4e86:864:13
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=cfcc4e86:841:13
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=cfcc4e86:954:13
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=cfcc4e86:970:22
+    at Presence (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=cfcc4e86:988:11)
+    at Provider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-3RXG37ZK.js?v=cfcc4e86:38:15)
+    at DialogPortal (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=cfcc4e86:1334:11)
+    at _c3 (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/components/ui/dialog.tsx:52:12)
+    at Provider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-3RXG37ZK.js?v=cfcc4e86:38:15)
+    at Dialog (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=cfcc4e86:1274:5)
+    at RestartGameDialog (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/components/game/RestartGameDialog.tsx?t=1766309763556:27:3)
+    at div
+    at GameContainer (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/components/game/GameContainer.tsx?t=1766309763556:62:7)
+    at div
+    at Game (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/pages/game.tsx?t=1766309763556:29:22)
+    at Route (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=cfcc4e86:265:16)
+    at Switch (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=cfcc4e86:321:17)
+    at Router
+    at Provider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-3RXG37ZK.js?v=cfcc4e86:38:15)
+    at TooltipProvider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=cfcc4e86:294:5)
+    at TooltipProvider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/components/ui/tooltip.tsx:22:3)
+    at QueryClientProvider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=cfcc4e86:2805:3)
+    at App (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/App.tsx?t=1766309763556&v=rpwnkL5ouWC5E98h0toS9:118:3)
+printWarning @ chunk-276SZO74.js?v=cfcc4e86:521
+error @ chunk-276SZO74.js?v=cfcc4e86:505
+validateDOMNesting @ chunk-276SZO74.js?v=cfcc4e86:8256
+createInstance @ chunk-276SZO74.js?v=cfcc4e86:8328
+completeWork @ chunk-276SZO74.js?v=cfcc4e86:16290
+completeUnitOfWork @ chunk-276SZO74.js?v=cfcc4e86:19224
+performUnitOfWork @ chunk-276SZO74.js?v=cfcc4e86:19206
+workLoopSync @ chunk-276SZO74.js?v=cfcc4e86:19137
+renderRootSync @ chunk-276SZO74.js?v=cfcc4e86:19116
+performSyncWorkOnRoot @ chunk-276SZO74.js?v=cfcc4e86:18874
+flushSyncCallbacks @ chunk-276SZO74.js?v=cfcc4e86:9119
+flushSync @ chunk-276SZO74.js?v=cfcc4e86:18959
+flushSync$1 @ chunk-276SZO74.js?v=cfcc4e86:21538
+dispatchDiscreteCustomEvent @ chunk-7O3VHJ4X.js?v=cfcc4e86:53
+handleSelect @ @radix-ui_react-dropdown-menu.js?v=cfcc4e86:866
+handleEvent @ chunk-5Q5YC75F.js?v=cfcc4e86:6
+callCallback2 @ chunk-276SZO74.js?v=cfcc4e86:3674
+invokeGuardedCallbackDev @ chunk-276SZO74.js?v=cfcc4e86:3699
+invokeGuardedCallback @ chunk-276SZO74.js?v=cfcc4e86:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-276SZO74.js?v=cfcc4e86:3736
+executeDispatch @ chunk-276SZO74.js?v=cfcc4e86:7014
+processDispatchQueueItemsInOrder @ chunk-276SZO74.js?v=cfcc4e86:7034
+processDispatchQueue @ chunk-276SZO74.js?v=cfcc4e86:7043
+dispatchEventsForPlugins @ chunk-276SZO74.js?v=cfcc4e86:7051
+(anonymous) @ chunk-276SZO74.js?v=cfcc4e86:7174
+batchedUpdates$1 @ chunk-276SZO74.js?v=cfcc4e86:18913
+batchedUpdates @ chunk-276SZO74.js?v=cfcc4e86:3579
+dispatchEventForPluginEventSystem @ chunk-276SZO74.js?v=cfcc4e86:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-276SZO74.js?v=cfcc4e86:5478
+dispatchEvent @ chunk-276SZO74.js?v=cfcc4e86:5472
+dispatchDiscreteEvent @ chunk-276SZO74.js?v=cfcc4e86:5449Understand this error
+chunk-276SZO74.js?v=cfcc4e86:521 Warning: validateDOMNesting(...): <div> cannot appear as a descendant of <p>.
+    at div
+    at div
+    at p
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=cfcc4e86:1228:13
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=cfcc4e86:1506:13
+    at _c9 (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/components/ui/dialog.tsx:185:12)
+    at div
+    at DialogHeader (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/components/ui/dialog.tsx:110:3)
+    at div
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=cfcc4e86:267:13
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=cfcc4e86:296:7
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=cfcc4e86:522:13
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=cfcc4e86:499:13
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=cfcc4e86:612:13
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=cfcc4e86:631:5
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=cfcc4e86:1458:13
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=cfcc4e86:1381:58
+    at Presence (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=cfcc4e86:988:11)
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=cfcc4e86:1372:64
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=cfcc4e86:864:13
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=cfcc4e86:841:13
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=cfcc4e86:954:13
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=cfcc4e86:970:22
+    at Presence (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=cfcc4e86:988:11)
+    at Provider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-3RXG37ZK.js?v=cfcc4e86:38:15)
+    at DialogPortal (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=cfcc4e86:1334:11)
+    at _c3 (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/components/ui/dialog.tsx:52:12)
+    at Provider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-3RXG37ZK.js?v=cfcc4e86:38:15)
+    at Dialog (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=cfcc4e86:1274:5)
+    at RestartGameDialog (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/components/game/RestartGameDialog.tsx?t=1766309763556:27:3)
+    at div
+    at GameContainer (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/components/game/GameContainer.tsx?t=1766309763556:62:7)
+    at div
+    at Game (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/pages/game.tsx?t=1766309763556:29:22)
+    at Route (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=cfcc4e86:265:16)
+    at Switch (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=cfcc4e86:321:17)
+    at Router
+    at Provider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-3RXG37ZK.js?v=cfcc4e86:38:15)
+    at TooltipProvider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=cfcc4e86:294:5)
+    at TooltipProvider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/components/ui/tooltip.tsx:22:3)
+    at QueryClientProvider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=cfcc4e86:2805:3)
+    at App (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/App.tsx?t=1766309763556&v=rpwnkL5ouWC5E98h0toS9:118:3)
+printWarning @ chunk-276SZO74.js?v=cfcc4e86:521
+error @ chunk-276SZO74.js?v=cfcc4e86:505
+validateDOMNesting @ chunk-276SZO74.js?v=cfcc4e86:8256
+createInstance @ chunk-276SZO74.js?v=cfcc4e86:8328
+completeWork @ chunk-276SZO74.js?v=cfcc4e86:16290
+completeUnitOfWork @ chunk-276SZO74.js?v=cfcc4e86:19224
+performUnitOfWork @ chunk-276SZO74.js?v=cfcc4e86:19206
+workLoopSync @ chunk-276SZO74.js?v=cfcc4e86:19137
+renderRootSync @ chunk-276SZO74.js?v=cfcc4e86:19116
+performSyncWorkOnRoot @ chunk-276SZO74.js?v=cfcc4e86:18874
+flushSyncCallbacks @ chunk-276SZO74.js?v=cfcc4e86:9119
+flushSync @ chunk-276SZO74.js?v=cfcc4e86:18959
+flushSync$1 @ chunk-276SZO74.js?v=cfcc4e86:21538
+dispatchDiscreteCustomEvent @ chunk-7O3VHJ4X.js?v=cfcc4e86:53
+handleSelect @ @radix-ui_react-dropdown-menu.js?v=cfcc4e86:866
+handleEvent @ chunk-5Q5YC75F.js?v=cfcc4e86:6
+callCallback2 @ chunk-276SZO74.js?v=cfcc4e86:3674
+invokeGuardedCallbackDev @ chunk-276SZO74.js?v=cfcc4e86:3699
+invokeGuardedCallback @ chunk-276SZO74.js?v=cfcc4e86:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-276SZO74.js?v=cfcc4e86:3736
+executeDispatch @ chunk-276SZO74.js?v=cfcc4e86:7014
+processDispatchQueueItemsInOrder @ chunk-276SZO74.js?v=cfcc4e86:7034
+processDispatchQueue @ chunk-276SZO74.js?v=cfcc4e86:7043
+dispatchEventsForPlugins @ chunk-276SZO74.js?v=cfcc4e86:7051
+(anonymous) @ chunk-276SZO74.js?v=cfcc4e86:7174
+batchedUpdates$1 @ chunk-276SZO74.js?v=cfcc4e86:18913
+batchedUpdates @ chunk-276SZO74.js?v=cfcc4e86:3579
+dispatchEventForPluginEventSystem @ chunk-276SZO74.js?v=cfcc4e86:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-276SZO74.js?v=cfcc4e86:5478
+dispatchEvent @ chunk-276SZO74.js?v=cfcc4e86:5472
+dispatchDiscreteEvent @ chunk-276SZO74.js?v=cfcc4e86:5449Understand this error
+(index):1 Blocked aria-hidden on an element because its descendant retained focus. The focus must not be hidden from assistive technology users. Avoid using aria-hidden on a focused element or its ancestor. Consider using the inert attribute instead, which will also prevent focus. For more details, see the aria-hidden section of the WAI-ARIA specification at https://w3c.github.io/aria/#aria-hidden.
+Element with focus: <div.z-50 max-h-[var(--radix-dropdown-menu-content-available-height)] min-w-[8rem] overflow-y-auto overflow-x-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-[--radix-dropdown-menu-content-transform-origin] text-xs !max-h-none w-auto#radix-:r21:>
+Ancestor with aria-hidden: <div> <div data-radix-popper-content-wrapper dir=​"ltr" style=​"position:​ fixed;​ left:​ 0px;​ top:​ 0px;​ transform:​ translate(866.5px, 44px)​;​ min-width:​ max-content;​ will-change:​ transform;​ z-index:​ 50;​ --radix-popper-available-width:​ 1032px;​ --radix-popper-available-height:​ 827px;​ --radix-popper-anchor-width:​ 54.7265625px;​ --radix-popper-anchor-height:​ 28px;​ --radix-popper-transform-origin:​ 100% 0px;​" data-aria-hidden=​"true" aria-hidden=​"true">​…​</div>​Understand this warning
+(index):1 Blocked aria-hidden on an element because its descendant retained focus. The focus must not be hidden from assistive technology users. Avoid using aria-hidden on a focused element or its ancestor. Consider using the inert attribute instead, which will also prevent focus. For more details, see the aria-hidden section of the WAI-ARIA specification at https://w3c.github.io/aria/#aria-hidden.
+Element with focus: <button.inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium ring-offset-background transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 select-none [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-accent hover:text-accent-foreground h-7 rounded-md px-2 py-1 text-xs hover relative bg-background/80 text-neutral-300 backdrop-blur-sm border border-border#radix-:r20:>
+Ancestor with aria-hidden: <div#root> <div id=​"root" data-aria-hidden=​"true" aria-hidden=​"true">​…​</div>​Understand this warning
+(index):1 Blocked aria-hidden on an element because its descendant retained focus. The focus must not be hidden from assistive technology users. Avoid using aria-hidden on a focused element or its ancestor. Consider using the inert attribute instead, which will also prevent focus. For more details, see the aria-hidden section of the WAI-ARIA specification at https://w3c.github.io/aria/#aria-hidden.
+Element with focus: <button.inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-xs font-medium ring-offset-background transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 select-none [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-destructive-foreground hover:bg-destructive/90 h-10 px-4 py-2 flex-1 bg-primary>
+Ancestor with aria-hidden: <div.fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg sm:max-w-md#radix-:r1t:> <div role=​"dialog" id=​"radix-:​r1t:​" aria-describedby=​"radix-:​r1v:​" aria-labelledby=​"radix-:​r1u:​" data-state=​"open" data-replit-metadata=​"client/​src/​components/​game/​RestartGameDialog.tsx:​24:​6" data-component-name=​"DialogContent" class=​"fixed left-[50%]​ top-[50%]​ z-50 grid w-full max-w-lg translate-x-[-50%]​ translate-y-[-50%]​ gap-4 border bg-background p-6 shadow-lg duration-200 data-[state=open]​:​animate-in data-[state=closed]​:​animate-out data-[state=closed]​:​fade-out-0 data-[state=open]​:​fade-in-0 data-[state=closed]​:​zoom-out-95 data-[state=open]​:​zoom-in-95 data-[state=closed]​:​slide-out-to-left-1/​2 data-[state=closed]​:​slide-out-to-top-[48%]​ data-[state=open]​:​slide-in-from-left-1/​2 data-[state=open]​:​slide-in-from-top-[48%]​ sm:​rounded-lg sm:​max-w-md" tabindex=​"-1" data-aria-hidden=​"true" aria-hidden=​"true" style=​"pointer-events:​ auto;​">​…​</div>​gridUnderstand this warning
+save.ts:307  POST https://epmegaduehlztjqoeqih.supabase.co/functions/v1/save-game 400 (Bad Request)
+(anonymous) @ @supabase_supabase-js.js?v=cfcc4e86:5633
+(anonymous) @ @supabase_supabase-js.js?v=cfcc4e86:5654
+await in (anonymous)
+(anonymous) @ @supabase_supabase-js.js?v=cfcc4e86:1221
+(anonymous) @ @supabase_supabase-js.js?v=cfcc4e86:1318
+(anonymous) @ chunk-WXTWEME6.js?v=cfcc4e86:147
+__awaiter @ chunk-WXTWEME6.js?v=cfcc4e86:129
+invoke @ @supabase_supabase-js.js?v=cfcc4e86:1287
+saveGame @ save.ts:307
+await in saveGame
+restartGame @ state.ts:856
+await in restartGame
+handleConfirmRestart @ ProfileMenu.tsx:133
+await in handleConfirmRestart
+handleClick @ button.tsx:30
+callCallback2 @ chunk-276SZO74.js?v=cfcc4e86:3674
+invokeGuardedCallbackDev @ chunk-276SZO74.js?v=cfcc4e86:3699
+invokeGuardedCallback @ chunk-276SZO74.js?v=cfcc4e86:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-276SZO74.js?v=cfcc4e86:3736
+executeDispatch @ chunk-276SZO74.js?v=cfcc4e86:7014
+processDispatchQueueItemsInOrder @ chunk-276SZO74.js?v=cfcc4e86:7034
+processDispatchQueue @ chunk-276SZO74.js?v=cfcc4e86:7043
+dispatchEventsForPlugins @ chunk-276SZO74.js?v=cfcc4e86:7051
+(anonymous) @ chunk-276SZO74.js?v=cfcc4e86:7174
+batchedUpdates$1 @ chunk-276SZO74.js?v=cfcc4e86:18913
+batchedUpdates @ chunk-276SZO74.js?v=cfcc4e86:3579
+dispatchEventForPluginEventSystem @ chunk-276SZO74.js?v=cfcc4e86:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-276SZO74.js?v=cfcc4e86:5478
+dispatchEvent @ chunk-276SZO74.js?v=cfcc4e86:5472
+dispatchDiscreteEvent @ chunk-276SZO74.js?v=cfcc4e86:5449Understand this error
+logger.ts:43 v257Z [SAVE CLOUD] Edge Function error details: {error: FunctionsHttpError: Edge Function returned a non-2xx status code
+    at FunctionsClient.<anonymous>…, message: 'Edge Function returned a non-2xx status code', context: Response, responseBody: '{"error":"OCC violation: new playTime (257) must b…equestId":"96796566-7f31-4188-a5b7-3100fc530a58"}'}
+error @ logger.ts:43
+saveGame @ save.ts:335
+await in saveGame
+restartGame @ state.ts:856
+await in restartGame
+handleConfirmRestart @ ProfileMenu.tsx:133
+await in handleConfirmRestart
+handleClick @ button.tsx:30
+callCallback2 @ chunk-276SZO74.js?v=cfcc4e86:3674
+invokeGuardedCallbackDev @ chunk-276SZO74.js?v=cfcc4e86:3699
+invokeGuardedCallback @ chunk-276SZO74.js?v=cfcc4e86:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-276SZO74.js?v=cfcc4e86:3736
+executeDispatch @ chunk-276SZO74.js?v=cfcc4e86:7014
+processDispatchQueueItemsInOrder @ chunk-276SZO74.js?v=cfcc4e86:7034
+processDispatchQueue @ chunk-276SZO74.js?v=cfcc4e86:7043
+dispatchEventsForPlugins @ chunk-276SZO74.js?v=cfcc4e86:7051
+(anonymous) @ chunk-276SZO74.js?v=cfcc4e86:7174
+batchedUpdates$1 @ chunk-276SZO74.js?v=cfcc4e86:18913
+batchedUpdates @ chunk-276SZO74.js?v=cfcc4e86:3579
+dispatchEventForPluginEventSystem @ chunk-276SZO74.js?v=cfcc4e86:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-276SZO74.js?v=cfcc4e86:5478
+dispatchEvent @ chunk-276SZO74.js?v=cfcc4e86:5472
+dispatchDiscreteEvent @ chunk-276SZO74.js?v=cfcc4e86:5449Understand this error
+logger.ts:43 v257Z [SAVE] Cloud save failed: FunctionsHttpError: Edge Function returned a non-2xx status code
+    at FunctionsClient.<anonymous> (@supabase_supabase-js.js?v=cfcc4e86:1338:17)
+    at Generator.next (<anonymous>)
+    at fulfilled (chunk-WXTWEME6.js?v=cfcc4e86:132:24)
+error @ logger.ts:43
+saveGame @ save.ts:354
+await in saveGame
+restartGame @ state.ts:856
+await in restartGame
+handleConfirmRestart @ ProfileMenu.tsx:133
+await in handleConfirmRestart
+handleClick @ button.tsx:30
+callCallback2 @ chunk-276SZO74.js?v=cfcc4e86:3674
+invokeGuardedCallbackDev @ chunk-276SZO74.js?v=cfcc4e86:3699
+invokeGuardedCallback @ chunk-276SZO74.js?v=cfcc4e86:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-276SZO74.js?v=cfcc4e86:3736
+executeDispatch @ chunk-276SZO74.js?v=cfcc4e86:7014
+processDispatchQueueItemsInOrder @ chunk-276SZO74.js?v=cfcc4e86:7034
+processDispatchQueue @ chunk-276SZO74.js?v=cfcc4e86:7043
+dispatchEventsForPlugins @ chunk-276SZO74.js?v=cfcc4e86:7051
+(anonymous) @ chunk-276SZO74.js?v=cfcc4e86:7174
+batchedUpdates$1 @ chunk-276SZO74.js?v=cfcc4e86:18913
+batchedUpdates @ chunk-276SZO74.js?v=cfcc4e86:3579
+dispatchEventForPluginEventSystem @ chunk-276SZO74.js?v=cfcc4e86:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-276SZO74.js?v=cfcc4e86:5478
+dispatchEvent @ chunk-276SZO74.js?v=cfcc4e86:5472
+dispatchDiscreteEvent @ chunk-276SZO74.js?v=cfcc4e86:5449Understand this error
+logger.ts:33 v257Z [RESTART] ✅ New game state saved to cloud with analytics cleared
+logger.ts:33 v257Z Loading all sounds after user gesture...
+logger.ts:33 v257Z [IDLE MODE INIT] Dialog open check: {dialogOpen: false, isActive: false, idleModeState: {…}}
+logger.ts:33 v257Z Successfully loaded sound: newVillager
+logger.ts:33 v257Z Successfully loaded sound: eventMadness
+logger.ts:33 v257Z Successfully loaded sound: event
+logger.ts:33 v257Z Successfully loaded sound: explosion
+logger.ts:33 v257Z Successfully loaded sound: whisperingCube
+logger.ts:33 v257Z Successfully loaded sound: wind
+logger.ts:33 v257Z Successfully loaded sound: backgroundMusic
+logger.ts:33 v257Z Finished loading all sounds
+logger.ts:33 v257Z [STATE] Set Flag: hasHitResourceLimit = true
+state.ts:581 Warning: Cannot update a component (`Game`) while rendering a different component (`SidePanel`). To locate the bad setState() call inside `SidePanel`, follow the stack trace as described in https://reactjs.org/link/setstate-in-render
+    at SidePanel (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/components/game/panels/SidePanel.tsx?t=1766309763556:57:7)
+    at div
+    at GameTabs (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/components/game/GameTabs.tsx?t=1766309763556:23:65)
+    at div
+    at main
+    at div
+    at GameContainer (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/components/game/GameContainer.tsx?t=1766309763556:62:7)
+    at div
+    at Game (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/pages/game.tsx?t=1766309763556:29:22)
+    at Route (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=cfcc4e86:265:16)
+    at Switch (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=cfcc4e86:321:17)
+    at Router
+    at Provider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-3RXG37ZK.js?v=cfcc4e86:38:15)
+    at TooltipProvider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=cfcc4e86:294:5)
+    at TooltipProvider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/components/ui/tooltip.tsx:22:3)
+    at QueryClientProvider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=cfcc4e86:2805:3)
+    at App (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/App.tsx?t=1766309763556&v=rpwnkL5ouWC5E98h0toS9:118:3)
+printWarning @ chunk-276SZO74.js?v=cfcc4e86:521
+error @ chunk-276SZO74.js?v=cfcc4e86:505
+warnAboutRenderPhaseUpdatesInDEV @ chunk-276SZO74.js?v=cfcc4e86:19793
+scheduleUpdateOnFiber @ chunk-276SZO74.js?v=cfcc4e86:18546
+forceStoreRerender @ chunk-276SZO74.js?v=cfcc4e86:11999
+handleStoreChange @ chunk-276SZO74.js?v=cfcc4e86:11981
+(anonymous) @ zustand.js?v=cfcc4e86:17
+setState @ zustand.js?v=cfcc4e86:17
+setFlag @ state.ts:581
+SidePanel @ SidePanel.tsx:156
+renderWithHooks @ chunk-276SZO74.js?v=cfcc4e86:11548
+updateFunctionComponent @ chunk-276SZO74.js?v=cfcc4e86:14582
+beginWork @ chunk-276SZO74.js?v=cfcc4e86:15924
+beginWork$1 @ chunk-276SZO74.js?v=cfcc4e86:19753
+performUnitOfWork @ chunk-276SZO74.js?v=cfcc4e86:19198
+workLoopSync @ chunk-276SZO74.js?v=cfcc4e86:19137
+renderRootSync @ chunk-276SZO74.js?v=cfcc4e86:19116
+performSyncWorkOnRoot @ chunk-276SZO74.js?v=cfcc4e86:18874
+flushSyncCallbacks @ chunk-276SZO74.js?v=cfcc4e86:9119
+(anonymous) @ chunk-276SZO74.js?v=cfcc4e86:18627Understand this error
+save.ts:307  POST https://epmegaduehlztjqoeqih.supabase.co/functions/v1/save-game 400 (Bad Request)
+(anonymous) @ @supabase_supabase-js.js?v=cfcc4e86:5633
+(anonymous) @ @supabase_supabase-js.js?v=cfcc4e86:5654
+await in (anonymous)
+(anonymous) @ @supabase_supabase-js.js?v=cfcc4e86:1221
+(anonymous) @ @supabase_supabase-js.js?v=cfcc4e86:1318
+(anonymous) @ chunk-WXTWEME6.js?v=cfcc4e86:147
+__awaiter @ chunk-WXTWEME6.js?v=cfcc4e86:129
+invoke @ @supabase_supabase-js.js?v=cfcc4e86:1287
+saveGame @ save.ts:307
+await in saveGame
+handleAutoSave @ loop.ts:865
+tick @ loop.ts:275
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:376Understand this error
+logger.ts:43 v257Z [SAVE CLOUD] Edge Function error details: {error: FunctionsHttpError: Edge Function returned a non-2xx status code
+    at FunctionsClient.<anonymous>…, message: 'Edge Function returned a non-2xx status code', context: Response, responseBody: '{"error":"OCC violation: new playTime (19149) must…equestId":"bfed6b80-205c-4b6d-8889-14f475b6a7fc"}'}context: Responsebody: (...)bodyUsed: trueheaders: Headers {}ok: falseredirected: falsestatus: 400statusText: ""type: "cors"url: "https://epmegaduehlztjqoeqih.supabase.co/functions/v1/save-game"[[Prototype]]: Responseerror: FunctionsHttpError: Edge Function returned a non-2xx status code
+    at FunctionsClient.<anonymous> (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@supabase_supabase-js.js?v=cfcc4e86:1338:17)
+    at Generator.next (<anonymous>)
+    at fulfilled (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-WXTWEME6.js?v=cfcc4e86:132:24)context: Response {type: 'cors', url: 'https://epmegaduehlztjqoeqih.supabase.co/functions/v1/save-game', redirected: false, status: 400, ok: false, …}name: "FunctionsHttpError"message: "Edge Function returned a non-2xx status code"stack: "FunctionsHttpError: Edge Function returned a non-2xx status code\n    at FunctionsClient.<anonymous> (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@supabase_supabase-js.js?v=cfcc4e86:1338:17)\n    at Generator.next (<anonymous>)\n    at fulfilled (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-WXTWEME6.js?v=cfcc4e86:132:24)"[[Prototype]]: FunctionsErrormessage: "Edge Function returned a non-2xx status code"responseBody: "{\"error\":\"OCC violation: new playTime (19149) must be greater than existing playTime (48763393)\",\"requestId\":\"bfed6b80-205c-4b6d-8889-14f475b6a7fc\"}"[[Prototype]]: Object
+error @ logger.ts:43
+saveGame @ save.ts:335
+await in saveGame
+handleAutoSave @ loop.ts:865
+tick @ loop.ts:275
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:376
+requestAnimationFrame
+tick @ loop.ts:164Understand this error
+logger.ts:43 v257Z [SAVE] Cloud save failed: FunctionsHttpError: Edge Function returned a non-2xx status code
+    at FunctionsClient.<anonymous> (@supabase_supabase-js.js?v=cfcc4e86:1338:17)
+    at Generator.next (<anonymous>)
+    at fulfilled (chunk-WXTWEME6.js?v=cfcc4e86:132:24)
+error @ logger.ts:43
+saveGame @ save.ts:354
+await in saveGame
+handleAutoSave @ loop.ts:865
+tick @ loop.ts:275
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:376
+requestAnimationFrame
+tick @ loop.ts:164Understand this error
+save.ts:307  POST https://epmegaduehlztjqoeqih.supabase.co/functions/v1/save-game 400 (Bad Request)
+(anonymous) @ @supabase_supabase-js.js?v=cfcc4e86:5633
+(anonymous) @ @supabase_supabase-js.js?v=cfcc4e86:5654
+await in (anonymous)
+(anonymous) @ @supabase_supabase-js.js?v=cfcc4e86:1221
+(anonymous) @ @supabase_supabase-js.js?v=cfcc4e86:1318
+(anonymous) @ chunk-WXTWEME6.js?v=cfcc4e86:147
+__awaiter @ chunk-WXTWEME6.js?v=cfcc4e86:129
+invoke @ @supabase_supabase-js.js?v=cfcc4e86:1287
+saveGame @ save.ts:307
+await in saveGame
+handleAutoSave @ loop.ts:865
+tick @ loop.ts:275
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:376Understand this error
+logger.ts:43 v257Z [SAVE CLOUD] Edge Function error details: {error: FunctionsHttpError: Edge Function returned a non-2xx status code
+    at FunctionsClient.<anonymous>…, message: 'Edge Function returned a non-2xx status code', context: Response, responseBody: '{"error":"OCC violation: new playTime (34216) must…equestId":"7be9b9d9-7bc9-4165-a8d0-119e9511e190"}'}
+error @ logger.ts:43
+saveGame @ save.ts:335
+await in saveGame
+handleAutoSave @ loop.ts:865
+tick @ loop.ts:275
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:376
+requestAnimationFrame
+tick @ loop.ts:164Understand this error
+logger.ts:43 v257Z [SAVE] Cloud save failed: FunctionsHttpError: Edge Function returned a non-2xx status code
+    at FunctionsClient.<anonymous> (@supabase_supabase-js.js?v=cfcc4e86:1338:17)
+    at Generator.next (<anonymous>)
+    at fulfilled (chunk-WXTWEME6.js?v=cfcc4e86:132:24)
+error @ logger.ts:43
+saveGame @ save.ts:354
+await in saveGame
+handleAutoSave @ loop.ts:865
+tick @ loop.ts:275
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:164
+requestAnimationFrame
+tick @ loop.ts:376
+requestAnimationFrame
+tick @ loop.ts:164Understand this error
