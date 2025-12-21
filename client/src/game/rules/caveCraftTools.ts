@@ -585,7 +585,7 @@ export const caveCraftTools: Record<string, Action> = {
     },
     cost: {
       "resources.leather": 1500,
-      "resources.silver": 250
+      "resources.silver": 250,
     },
     effects: {
       "clothing.sacrificial_tunic": true,
@@ -904,14 +904,6 @@ export function handleCraftBlacksteelArmor(
 ): ActionResult {
   const effectUpdates = applyActionEffects("craftBlacksteelArmor", state);
   Object.assign(result.stateUpdates, effectUpdates);
-
-  result.logEntries!.push({
-    id: `blacksteel-armor-crafted-${Date.now()}`,
-    message:
-      "You forge the Blacksteel Armor, a heavy suit adorned with deadly spikes. You feel both stronger and more lethal.",
-    timestamp: Date.now(),
-    type: "system",
-  });
 
   return result;
 }
