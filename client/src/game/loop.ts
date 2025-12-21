@@ -8,6 +8,7 @@ import { getTotalMadness } from "./rules/effectsCalculation";
 import { GAME_CONSTANTS } from "./constants";
 import { logger } from "@/lib/logger";
 import { startVersionCheck, stopVersionCheck } from "./versionCheck";
+import { formatSaveTimestamp } from "@/lib/utils";
 
 let gameLoopId: number | null = null;
 let lastFrameTime = 0;
@@ -862,14 +863,7 @@ async function handleAutoSave() {
     const playTimeToSave = state.isNewGame ? 0 : state.playTime;
 
     await saveGame(gameState, playTimeToSave);
-    const now = new Date();
-    const timestamp = now.toLocaleString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true
-    });
+    const timestamp = formatSaveTimestamp();
 
     useGameStore.setState({
       lastSaved: timestamp,

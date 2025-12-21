@@ -17,8 +17,23 @@ export function capitalizeWords(str: string): string {
 }
 
 // Utility function to format numbers with thousands separator
-export function formatNumber(num: number | string): string {
-  const n = typeof num === 'string' ? parseFloat(num) : num;
-  if (isNaN(n)) return String(num);
-  return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "'");
+export function formatNumber(value: number): string {
+  if (value >= 1000000) {
+    return (value / 1000000).toFixed(1) + "M";
+  }
+  if (value >= 1000) {
+    return (value / 1000).toFixed(1) + "K";
+  }
+  return value.toString();
+}
+
+export function formatSaveTimestamp(): string {
+  const now = new Date();
+  return now.toLocaleString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true
+  });
 }

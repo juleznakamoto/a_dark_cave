@@ -8,6 +8,7 @@ import { saveGame } from "@/game/save";
 import { buildGameState } from "@/game/stateHelpers";
 import { logger } from "@/lib/logger";
 import { LogEntry } from "@/game/rules/events";
+import { formatSaveTimestamp } from "@/lib/utils";
 import {
   Tooltip,
   TooltipContent,
@@ -145,14 +146,7 @@ export default function ProfileMenu() {
       const gameState = buildGameState(currentState);
       await saveGame(gameState, false);
 
-      const now = new Date();
-      const timestamp = now.toLocaleString('en-US', {
-        month: 'short',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: '2-digit',
-        hour12: true
-      });
+      const timestamp = formatSaveTimestamp();
 
       // Set 15-second cooldown (in seconds, not milliseconds - game loop ticks down by 0.2 seconds)
       useGameStore.setState((state) => ({
