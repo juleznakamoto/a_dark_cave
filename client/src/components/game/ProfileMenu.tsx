@@ -64,6 +64,8 @@ export default function ProfileMenu() {
     hasWonAnyGame,
     restartGameDialogOpen, // Added from store
     setRestartGameDialogOpen, // Added from store
+    cooldowns,
+    cooldownDurations,
   } = useGameStore();
 
   const mobileTooltip = useMobileTooltip();
@@ -117,6 +119,47 @@ export default function ProfileMenu() {
     setRestartGameDialogOpen(false);
     await deleteSave(); // Ensure deleteSave is called before restartGame
     restartGame();
+  };
+
+  const handleManualSave = async () => {
+    const actionId = "manualSave";
+    const currentCooldown = cooldowns[actionId] || 0;
+    
+    if (currentCooldown > 0) {
+      return; // Still on cooldown
+    }
+
+    try {
+      const currentState = useGameStore.getState();
+      const gameState = buildGameState(currentState);
+      const playTimeToSave = currentState.isNewGame ? 0 : currentState.playTime;
+
+      await saveGame(gameState, playTimeToSave);
+
+      // Set 15-second cooldown
+      useGameStore.setState((state) => ({
+        cooldowns: {
+          ...state.cooldowns,
+          [actionId]: 15000,
+        },
+        cooldownDurations: {
+          ...state.cooldownDurations,
+          [actionId]: 15000,
+        },
+        lastSaved: new Date().toLocaleTimeString(),
+        isNewGame: false,
+      }));
+
+      toast({
+        title: "Game saved successfully",
+      });
+    } catch (error) {
+      logger.error("Failed to manually save game:", error);
+      toast({
+        title: "Failed to save game",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleCopyInviteLink = () => {
@@ -265,6 +308,35 @@ export default function ProfileMenu() {
             sideOffset={8}
             className="text-xs !max-h-none w-auto"
           >
+            <TooltipProvider>
+              <Tooltip delayDuration={300}>
+                <TooltipTrigger asChild>
+                  <div>
+                    <DropdownMenuItem
+                      onClick={handleManualSave}
+                      disabled={cooldowns["manualSave"] > 0}
+                      className={
+                        cooldowns["manualSave"] > 0
+                          ? "opacity-50 cursor-not-allowed"
+                          : ""
+                      }
+                    >
+                      Save
+                    </DropdownMenuItem>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="text-xs">
+                    Game auto-saves every minute
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={handleRestartGame}>
+              New Game
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
             {currentUser ? (
               <>
                 <DropdownMenuItem onClick={handleSignOut}>
@@ -286,11 +358,6 @@ export default function ProfileMenu() {
                 <DropdownMenuSeparator />
               </>
             )}
-            {/* Changed to use the new handler */}
-            <DropdownMenuItem onClick={handleRestartGame}>
-              New Game
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
 
             <DropdownMenuItem
               onClick={handleCopyInviteLink}
