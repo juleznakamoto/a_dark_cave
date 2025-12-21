@@ -174,22 +174,28 @@ function handleTotemSacrifice(
   effectUpdates.resources[totemResource] =
     (state.resources[totemResource] || 0) - currentCost;
 
-  // Apply the resource deltas (generated gains like silver/gold)
+  // Get action bonuses first (e.g., devourer_crown +20 silver for boneTotems)
+  const actionBonuses = getActionBonuses(actionId, state);
+  
+  // Apply the resource deltas (generated gains like silver/gold) with bonuses
   Object.entries(resourceDeltas).forEach(([resource, delta]) => {
     if (resource !== totemResource) {
+      let finalDelta = delta;
+      
+      // Apply flat bonus if exists for this resource
+      if (actionBonuses.resourceBonus && actionBonuses.resourceBonus[resource]) {
+        finalDelta += actionBonuses.resourceBonus[resource];
+      }
+      
+      // Apply multiplier if exists
+      if (actionBonuses.resourceMultiplier > 1) {
+        finalDelta = Math.floor(finalDelta * actionBonuses.resourceMultiplier);
+      }
+      
       effectUpdates.resources![resource] =
-        (effectUpdates.resources![resource] || 0) + delta;
+        (effectUpdates.resources![resource] || 0) + finalDelta;
     }
   });
-
-  // Apply action bonuses (e.g., devourer_crown +20 silver for boneTotems)
-  const actionBonuses = getActionBonuses(actionId, state);
-  if (actionBonuses.resourceBonus) {
-    Object.entries(actionBonuses.resourceBonus).forEach(([resource, bonus]) => {
-      effectUpdates.resources![resource] =
-        (effectUpdates.resources![resource] || 0) + bonus;
-    });
-  }
 
   // Track usage count for next time
   if (!effectUpdates.story) {
