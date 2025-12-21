@@ -13,13 +13,7 @@ const BORDER_COLOR = tailwindToHex("neutral-400");
 
 interface ItemSegment {
   itemType: string;
-  itemKeys: (
-    | keyof GameState["tools"]
-    | keyof GameState["weapons"]
-    | keyof GameState["clothing"]
-    | keyof GameState["relics"]
-    | keyof GameState["fellowship"]
-  )[];
+  itemKeys: string[]; // Allow any string keys to support mixed-category segments
   color: string;
   label: string;
   category: "tools" | "weapons" | "clothing" | "relics" | "fellowship";
