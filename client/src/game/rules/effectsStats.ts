@@ -46,18 +46,3 @@ export function calculateCriticalStrikeChance(luck: number): number {
   if (luck >= 10) return 5;
   return 0;
 }
-
-/**
- * Calculate critical damage bonus from equipment
- * Returns bonus as a decimal (0.05 = 5% increased critical damage)
- */
-export function calculateCriticalDamageBonus(state: any): number {
-  let bonus = 0;
-  
-  // Check for blacksteel armor
-  if (state.clothing?.blacksteel_armor) {
-    bonus += 0.05; // 5% critical damage
-  }
-  
-  return bonus;
-}

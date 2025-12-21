@@ -322,7 +322,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     bonuses: {
       generalBonuses: {
         strength: 10,
-        criticalDamageBonus: 0.05, // 5% critical damage bonus
+        criticalChance: 5, // +5% critical strike chance
       },
     },
   },
