@@ -1,0 +1,171 @@
+hat comment is partly misleading and this is where a lot of confusion around Edge Functions comes from.
+
+Let me clarify it cleanly in the context of Supabase Edge Functions (Deno) and your code.
+
+Are Edge Functions stateless?
+
+Yes, logically stateless.
+No, not reset on every request.
+
+What this means:
+
+There is no guarantee that memory persists between requests
+
+But often it does, as long as the same isolate stays warm
+
+Supabase may spin up multiple isolates at any time
+
+Each isolate has its own memory, its own Map, its own client
+
+So Edge Functions are ephemeral but reused, not cold every time.
+
+About this statement
+
+Create Supabase client once ❌ Not applicable for Edge Functions
+
+This is incorrect.
+
+Correct version
+
+Create the Supabase client once per isolate, outside serve().
+
+This is exactly what you already did, and it is best practice.
+
+Your code here is correct:
+
+const supabase = createClient(...)
+
+
+Why this is good:
+
+Avoids recreating the client on every request
+
+Reuses internal fetch pools
+
+Lower latency
+
+Less GC pressure
+
+What you must not do is create it inside serve() for each request.
+
+Your rate limiting Map
+const rateLimitMap = new Map()
+
+
+This works per isolate, not globally.
+
+Important consequences:
+
+One user can bypass limits by hitting different isolates
+
+After cold start, limits reset
+
+This is acceptable for soft protection
+
+Not acceptable for strict security enforcement
+
+This is totally fine for:
+
+Save throttling
+
+Anti spam
+
+Abuse reduction
+
+Not fine for:
+
+Billing enforcement
+
+Hard security limits
+
+Cheating prevention alone
+
+If you ever need hard guarantees, rate limit in:
+
+Postgres
+
+Redis
+
+Supabase row locks
+
+Auth handling in your function
+
+You are doing this exactly right:
+
+Client sends user JWT
+
+Edge Function verifies it using supabase.auth.getUser(jwt)
+
+Service role key never touches the client
+
+User id is derived server side
+
+This is best practice Supabase architecture.
+
+Calling DB directly vs Edge Functions
+
+Your instinct earlier was correct.
+
+Direct DB access from client
+
+Good for:
+
+Simple reads
+
+RLS protected tables
+
+Low risk data
+
+Bad for:
+
+Game saves
+
+Analytics
+
+Anything spammy
+
+Anything you want to validate or throttle
+
+Edge Function in front
+
+Best for:
+
+Validation
+
+Rate limiting
+
+Anti cheat logic
+
+Aggregation
+
+RPC calls
+
+Service role usage
+
+For a game like yours, Edge Functions are the correct choice.
+
+Summary in plain terms
+
+Edge Functions are not reset every request
+
+Memory may persist, but is not guaranteed
+
+Creating the Supabase client once is correct
+
+Your rate limiter is fine as a soft guard
+
+Your auth flow is solid
+
+Your architecture is best practice for a browser game
+
+If you want, next we can:
+
+Harden anti cheat at SQL level
+
+Add idempotent save protection
+
+Detect tampered game state diffs
+
+Design a global rate limiter pattern for Supabase
+
+Just tell me where you want to go next.
