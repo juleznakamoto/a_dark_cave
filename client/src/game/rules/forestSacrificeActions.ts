@@ -2,6 +2,7 @@ import { Action, GameState } from "@shared/schema";
 import { ActionResult } from '@/game/actions';
 import { applyActionEffects } from "./actionEffects";
 import { killVillagers } from "../stateHelpers";
+import { getActionBonuses } from "./effectsCalculation";
 
 // Helper function to get dynamic cost for bone totems
 export function getBoneTotemsCost(state: GameState): number {
@@ -157,6 +158,16 @@ function handleTotemSacrifice(
   // Override the cost with dynamic pricing
   effectUpdates.resources[totemResource] =
     (state.resources[totemResource] || 0) - currentCost;
+
+  // Apply action bonuses (e.g., devourer_crown +20 silver for boneTotems)
+  const actionBonuses = getActionBonuses(actionId, state);
+  if (actionBonuses.resourceBonus) {
+    Object.entries(actionBonuses.resourceBonus).forEach(([resource, bonus]) => {
+      if (effectUpdates.resources![resource] !== undefined) {
+        effectUpdates.resources![resource] += bonus;
+      }
+    });
+  }
 
   // Track usage count for next time
   if (!effectUpdates.story) {
