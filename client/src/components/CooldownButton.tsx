@@ -47,7 +47,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
     },
     ref
   ) {
-  const { cooldowns, cooldownDurations, compassGlowButton } = useGameStore();
+  const { cooldowns, cooldownDurations } = useGameStore();
   const isFirstRenderRef = useRef<boolean>(true);
   const mobileTooltip = useMobileButtonTooltip();
 
@@ -100,7 +100,6 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
   };
 
   const isButtonDisabled = disabled || isCoolingDown;
-  const isCompassGlowing = compassGlowButton === actionId;
 
   const buttonId = testId || `button-${Math.random()}`;
 
@@ -113,7 +112,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       size={size}
       className={`relative overflow-hidden transition-all duration-200 select-none ${
         isCoolingDown ? "opacity-60 cursor-not-allowed" : ""
-      } ${isCompassGlowing ? "compass-glow" : ""} ${className}`}
+      } ${className}`}
       data-testid={testId}
       button_id={props.button_id || actionId}
       {...props}
