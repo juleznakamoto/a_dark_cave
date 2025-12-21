@@ -921,17 +921,18 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                                     ⓘ
                                   </button>
                                 </TooltipTrigger>
-                                <TooltipContent className="max-w-xs">
+                                <TooltipContent className="max-w-[16rem]">
                                   <div className="text-xs">
                                     <div className="font-bold mb-1">
                                       Tarnished Compass
                                     </div>
+
                                     <div className="mt-1 space-y-0.5">
-                                      <div>+5 Luck</div>
-                                      <div>
-                                        10% chance to double resource gains from
-                                        all actions
-                                      </div>
+                                      <div>10% chance to double gains from:</div>
+                                      <div className="ml-2">• Cave Exploring</div>
+                                      <div className="ml-2">• Mining</div>
+                                      <div className="ml-2">• Chopping Wood</div>
+                                      <div className="ml-2">• Hunting</div>
                                     </div>
                                   </div>
                                 </TooltipContent>
