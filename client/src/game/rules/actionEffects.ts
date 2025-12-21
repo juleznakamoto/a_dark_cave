@@ -517,7 +517,10 @@ export function applyActionEffects(
     }
   }
 
-  if (updates.resources) {
+  // Don't apply resource bonuses here for sacrifice actions - they're already applied in the sacrifice logic
+  const isSacrificeAction = actionId === "boneTotems" || actionId === "leatherTotems";
+  
+  if (updates.resources && !isSacrificeAction) {
     const actionBonuses = getActionBonusesCalc(actionId, state);
 
     if (actionBonuses.resourceBonus) {
