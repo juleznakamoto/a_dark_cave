@@ -234,7 +234,7 @@ export function startGameLoop() {
         // Update elapsed time for all active timers
         const updatedTimers: typeof attackWaveTimers = {};
         let hasUpdates = false;
-        
+
         for (const [waveId, timer] of Object.entries(attackWaveTimers)) {
           if (!timer.defeated && timer.startTime > 0) {
             const newElapsed = (timer.elapsedTime || 0) + deltaTime;
@@ -247,7 +247,7 @@ export function startGameLoop() {
             updatedTimers[waveId] = timer;
           }
         }
-        
+
         if (hasUpdates) {
           useGameStore.setState({ attackWaveTimers: updatedTimers });
         }
@@ -862,8 +862,19 @@ async function handleAutoSave() {
     const playTimeToSave = state.isNewGame ? 0 : state.playTime;
 
     await saveGame(gameState, playTimeToSave);
-    const now = new Date().toLocaleTimeString();
-    useGameStore.setState({ lastSaved: now, isNewGame: false });
+    const now = new Date();
+    const timestamp = now.toLocaleString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true
+    });
+
+    useGameStore.setState({
+      lastSaved: timestamp,
+      isNewGame: false,
+    });
   } catch (error) {}
 }
 
