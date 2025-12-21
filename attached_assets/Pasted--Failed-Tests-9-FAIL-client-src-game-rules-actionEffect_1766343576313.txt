@@ -1,0 +1,64 @@
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯ Failed Tests 9 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  client/src/game/rules/actionEffects.actionBonusChance.test.ts > Tarnished Compass - actionBonusChance > Eligible Actions > exploreCave: should trigger 2x bonus when random check succeeds
+ FAIL  client/src/game/rules/actionEffects.actionBonusChance.test.ts > Tarnished Compass - actionBonusChance > Eligible Actions > ventureDeeper: should trigger 2x bonus when random check succeeds
+ FAIL  client/src/game/rules/actionEffects.actionBonusChance.test.ts > Tarnished Compass - actionBonusChance > Eligible Actions > mineStone: should trigger 2x bonus when random check succeeds
+ FAIL  client/src/game/rules/actionEffects.actionBonusChance.test.ts > Tarnished Compass - actionBonusChance > Eligible Actions > mineIron: should trigger 2x bonus when random check succeeds
+ FAIL  client/src/game/rules/actionEffects.actionBonusChance.test.ts > Tarnished Compass - actionBonusChance > Eligible Actions > chopWood: should trigger 2x bonus when random check succeeds
+ FAIL  client/src/game/rules/actionEffects.actionBonusChance.test.ts > Tarnished Compass - actionBonusChance > Eligible Actions > hunt: should trigger 2x bonus when random check succeeds
+AssertionError: expected undefined to be defined
+ ❯ client/src/game/rules/actionEffects.actionBonusChance.test.ts:54:37
+     52| 
+     53|         // Verify bonus message is add…
+     54|         expect(updates.logMessages).to…
+       |                                     ^
+     55|         expect(updates.logMessages).to…
+     56|           'The Tarnished Compass glows…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/9]⎯
+
+ FAIL  client/src/game/rules/actionEffects.actionBonusChance.test.ts > Tarnished Compass - actionBonusChance > Bonus Calculation > chopWood: should exactly double the gained wood
+AssertionError: expected 6 to be greater than or equal to 12
+ ❯ client/src/game/rules/actionEffects.actionBonusChance.test.ts:101:39
+     99|       // Base chopWood gives 6-12 wood
+    100|       // With 2x bonus, should give 12…
+    101|       expect(updates.resources!.wood).…
+       |                                       ^
+    102|       expect(updates.resources!.wood).…
+    103|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/9]⎯
+
+ FAIL  client/src/game/rules/actionEffects.actionBonusChance.test.ts > Tarnished Compass - actionBonusChance > Bonus Calculation > mineStone: should exactly double the gained stone
+AssertionError: expected 5 to be greater than or equal to 8
+ ❯ client/src/game/rules/actionEffects.actionBonusChance.test.ts:118:40
+    116|       // Base mineStone gives 4-8 stone
+    117|       // With 2x bonus, should give 8-…
+    118|       expect(updates.resources!.stone)…
+       |                                        ^
+    119|       expect(updates.resources!.stone)…
+    120|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/9]⎯
+
+ FAIL  client/src/game/rules/actionEffects.actionBonusChance.test.ts > Tarnished Compass - actionBonusChance > Probability Distribution > should trigger approximately 10% of the time over many iterations
+AssertionError: expected 0 to be greater than 5
+ ❯ client/src/game/rules/actionEffects.actionBonusChance.test.ts:286:26
+    284|       // Allow 5% - 15% range for stat…
+    285|       const percentage = (triggeredCou…
+    286|       expect(percentage).toBeGreaterTh…
+       |                          ^
+    287|       expect(percentage).toBeLessThan(…
+    288|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/9]⎯
+
+
+ Test Files  1 failed | 12 passed (13)
+      Tests  9 failed | 269 passed (278)
+   Start at  18:59:11
+   Duration  4.39s
+
+ FAIL  Tests failed. Watching for file changes...
+       press h to show help, press q to quit
