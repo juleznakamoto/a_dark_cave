@@ -318,11 +318,11 @@ export const toolEffects: Record<string, EffectDefinition> = {
   blacksteel_armor: {
     id: "blacksteel_armor",
     name: "Blacksteel Armor",
-    description: "Heavy armor forged from rare blacksteel with deadly spikes",
+    description: "Heavy armor adorned with deadly spikes",
     bonuses: {
       generalBonuses: {
         strength: 10,
-        criticalChance: 5, // +5% critical strike chance
+        criticalChance: 5, // 5% critical strike chance in combat
       },
     },
   },
