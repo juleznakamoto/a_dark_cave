@@ -217,7 +217,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
       relics: ["tarnished_compass"],
     },
     canPurchaseMultipleTimes: false,
-    category: "blessing",
+    category: "tool",
     activationMessage:
       "The Tarnished Compass has been added to your inventory! Its ancient magic may grant fortune to your endeavors.",
     symbol: "⛯",
