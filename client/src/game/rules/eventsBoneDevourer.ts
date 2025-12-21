@@ -50,15 +50,7 @@ function createBoneDevourerEvent(config: BoneDevourerConfig): GameEvent {
       // First appearance of this level: 10 minutes
       // After being seen (regardless of accept/decline): 25 minutes
       const hasBeenSeen = state.triggeredEvents?.[`${eventId}_seen`];
-      const probability = hasBeenSeen ? 25 : 0.010;
-      console.log(`[BONE DEVOURER] timeProbability for ${eventId}:`, {
-        hasBeenSeen,
-        probability,
-        seenKey: `${eventId}_seen`,
-        triggeredEvents: state.triggeredEvents,
-        fullTriggeredEvents: JSON.stringify(state.triggeredEvents || {}),
-      });
-      return probability;
+      return hasBeenSeen ? 25 : 0.010;
     },
     title: "The Bone Devourer",
     message: (state: GameState) => {
@@ -85,20 +77,6 @@ function createBoneDevourerEvent(config: BoneDevourerConfig): GameEvent {
             };
           }
 
-          console.log(`[BONE DEVOURER] Accepting ${eventId}, setting triggered and _seen flags`, {
-            eventId,
-            seenKey: `${eventId}_seen`,
-            currentTriggeredEvents: state.triggeredEvents,
-          });
-          
-          const newTriggeredEvents = {
-            ...(state.triggeredEvents || {}),
-            [eventId]: true,
-            [`${eventId}_seen`]: true,
-          };
-          
-          console.log(`[BONE DEVOURER] New triggeredEvents after accept:`, newTriggeredEvents);
-          
           return {
             resources: {
               ...state.resources,
@@ -108,7 +86,11 @@ function createBoneDevourerEvent(config: BoneDevourerConfig): GameEvent {
             boneDevourerState: {
               lastAcceptedLevel: level,
             },
-            triggeredEvents: newTriggeredEvents,
+            triggeredEvents: {
+              ...(state.triggeredEvents || {}),
+              [eventId]: true,
+              [`${eventId}_seen`]: true,
+            },
             _logMessage: `The creature takes the bones with its gnarled hands, as if attempting to count them. It places a pouch of silver at your feet and disappears into the darkness.`,
           };
         },
@@ -119,21 +101,11 @@ function createBoneDevourerEvent(config: BoneDevourerConfig): GameEvent {
         effect: (
           state: GameState,
         ): Partial<GameState> & { _logMessage?: string } => {
-          console.log(`[BONE DEVOURER] Refusing ${eventId}, setting _seen flag`, {
-            eventId,
-            seenKey: `${eventId}_seen`,
-            currentTriggeredEvents: state.triggeredEvents,
-          });
-          
-          const newTriggeredEvents = {
-            ...(state.triggeredEvents || {}),
-            [`${eventId}_seen`]: true,
-          };
-          
-          console.log(`[BONE DEVOURER] New triggeredEvents after refuse:`, newTriggeredEvents);
-          
           return {
-            triggeredEvents: newTriggeredEvents,
+            triggeredEvents: {
+              ...(state.triggeredEvents || {}),
+              [`${eventId}_seen`]: true,
+            },
             _logMessage:
               "You refuse the creature's offer. It hisses in displeasure and retreats into the shadows. You sense it will return.",
           };
