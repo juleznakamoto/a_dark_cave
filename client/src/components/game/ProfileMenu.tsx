@@ -347,7 +347,7 @@ export default function ProfileMenu() {
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleRestartGame}>
               New Game
-            </DropdownMenuMenuItem>
+            </DropdownMenuItem>
             <DropdownMenuSeparator />
             {currentUser ? (
               <>
