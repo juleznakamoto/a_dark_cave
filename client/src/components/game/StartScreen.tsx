@@ -107,7 +107,7 @@ export default function StartScreen() {
       {/* Featured By Section */}
       <div className="absolute bottom-8 left-4 z-20 animate-fade-in-featured">
         <div className="bg-white/25 backdrop-blur-sm rounded-lg p-2 !pb-1 border border-white/25 flex flex-col items-start">
-          <p className="text-xs text-gray-300/80 font-medium">Featured by</p>
+          <p className="text-xs text-gray-300/80 font-medium">Recommended by</p>
           <div className="">
             <img
               src="/the_hustle_logo.svg"
