@@ -213,10 +213,10 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     originalPrice: 499,
     price: 249, // 2.49 €
     rewards: {
-      clothing: ["tarnished_compass"],
+      relics: ["tarnished_compass"],
     },
     canPurchaseMultipleTimes: false,
-    category: "tool",
+    category: "blessing",
     activationMessage:
       "The Tarnished Compass has been added to your inventory! Its ancient magic may grant fortune to your endeavors.",
     symbol: "⛯",
