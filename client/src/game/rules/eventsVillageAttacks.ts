@@ -1,159 +1,7 @@
-
 import { GameEvent, calculateSuccessChance } from "./events";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
 import { getTotalStrength, getTotalLuck } from "./effectsCalculation";
-
-// Bone Army Attack Parameters
-const BONE_ARMY_PARAMS = {
-  defendVictory: {
-    baseChance: 0.12,
-    strengthMultiplier: 0.01,
-    trapsBonus: 0.1,
-  },
-  defendCasualty: {
-    baseChance: 0.75,
-    strengthReduction: 0.02,
-    minChance: 0.25,
-    trapsReduction: 0.1,
-    maxDeaths: {
-      base: 5,
-      perHut: 1,
-      perTrap: -3,
-    },
-    hutDestructionChance: 0.3,
-    hutDestructionMinDeaths: 3,
-    trapsHutReduction: 0.05,
-  },
-  hideCasualty: {
-    baseChance: 0.4,
-    luckReduction: 0.02,
-    minChance: 0.15,
-    trapsReduction: 0.05,
-    maxDeaths: {
-      base: 3,
-      perHut: 0.5,
-      perTrap: -1,
-    },
-  },
-  hideSuccess: {
-    baseChance: 0.1,
-    luckMultiplier: 0.02,
-    trapsBonus: 0.1,
-  },
-  foodLoss: {
-    base: 50,
-    perHut: 30,
-    randomRange: 10,
-  },
-};
-
-// Wolf Attack Parameters
-const WOLF_ATTACK_PARAMS = {
-  defendVictory: {
-    baseChance: 0.15,
-    strengthMultiplier: 0.01,
-    trapsBonus: 0.1,
-  },
-  defendCasualty: {
-    baseChance: 0.6,
-    strengthReduction: 0.02,
-    minChance: 0.2,
-    trapsReduction: 0.1,
-    maxDeaths: {
-      base: 4,
-      perHut: 1,
-      perTrap: -3,
-    },
-    hutDestructionChance: 0,
-    hutDestructionMinDeaths: 2,
-    trapsHutReduction: 0.05,
-  },
-  hideCasualty: {
-    baseChance: 0.35,
-    luckReduction: 0.02,
-    minChance: 0.1,
-    trapsReduction: 0.05,
-    maxDeaths: {
-      base: 2,
-      perHut: 0.5,
-      perTrap: -1,
-    },
-  },
-  hideSuccess: {
-    baseChance: 0.15,
-    luckMultiplier: 0.02,
-    trapsBonus: 0.1,
-  },
-  foodLoss: {
-    base: 25,
-    perHut: 25,
-    randomRange: 8,
-  },
-};
-
-// Cannibal Raid Parameters
-const CANNIBAL_RAID_PARAMS = {
-  defendVictory: {
-    baseChance: 0.1,
-    strengthMultiplier: 0.01,
-    trapsBonus: 0.1,
-    minimalDeaths: {
-      base: 0,
-      randomRange: 2,
-    },
-    silverReward: 500,
-  },
-  defendCasualty: {
-    baseChance: 0.5,
-    strengthReduction: 0.01,
-    minChance: 0.15,
-    trapsReduction: 0.1,
-    maxDeaths: {
-      base: 4,
-      perHut: 1,
-      perTrap: -3,
-    },
-  },
-  hideCasualty: {
-    baseChance: 0.3,
-    luckReduction: 0.01,
-    minChance: 0.1,
-    trapsReduction: 0.05,
-    maxDeaths: {
-      base: 4,
-      perHut: 0.5,
-      perTrap: -2,
-    },
-  },
-  hideSuccess: {
-    baseChance: 0.05,
-    luckMultiplier: 0.01,
-    trapsBonus: 0.1,
-  },
-  resourceLoss: {
-    silver: {
-      base: 25,
-      randomMultiplier: 25,
-      randomRange: 4,
-    },
-    food: {
-      base: 50,
-      randomMultiplier: 50,
-      randomRange: 6,
-    },
-    silverHiding: {
-      base: 50,
-      randomMultiplier: 50,
-      randomRange: 4,
-    },
-    foodHiding: {
-      base: 100,
-      randomMultiplier: 100,
-      randomRange: 6,
-    },
-  },
-};
 
 export const villageAttackEvents: Record<string, GameEvent> = {
   boneArmyAttack: {
@@ -177,26 +25,25 @@ export const villageAttackEvents: Record<string, GameEvent> = {
         relevant_stats: ["strength"],
         success_chance: (state: GameState) => {
           const traps = state.buildings.traps;
-          return calculateSuccessChance(
-            state,
-            BONE_ARMY_PARAMS.defendVictory.baseChance + traps * BONE_ARMY_PARAMS.defendVictory.trapsBonus,
-            {
-              type: "strength",
-              multiplier: BONE_ARMY_PARAMS.defendVictory.strengthMultiplier,
-            }
-          );
+          return calculateSuccessChance(state, 0.12 + traps * 0.1, {
+            type: "strength",
+            multiplier: 0.01,
+          });
         },
         effect: (state: GameState) => {
           const traps = state.buildings.traps;
           const strength = getTotalStrength(state);
 
+          // Check for victory: 12% base chance + 1% per strength point
+          // Traps increase victory chance by 10%
           const victoryChance = calculateSuccessChance(
             state,
-            BONE_ARMY_PARAMS.defendVictory.baseChance + traps * BONE_ARMY_PARAMS.defendVictory.trapsBonus,
-            { type: "strength", multiplier: BONE_ARMY_PARAMS.defendVictory.strengthMultiplier },
+            0.12 + traps * 0.1,
+            { type: "strength", multiplier: 0.01 },
           );
 
           if (Math.random() < victoryChance) {
+            // Victory! Get Devourer Crown
             return {
               clothing: {
                 ...state.clothing,
@@ -207,29 +54,26 @@ export const villageAttackEvents: Record<string, GameEvent> = {
             };
           }
 
+          // Base chance of casualties (75%), reduced by 2% per strength point, minimum 25%
+          // Traps reduce death chance by 10%
           const casualtyChance =
-            Math.max(
-              BONE_ARMY_PARAMS.defendCasualty.minChance,
-              BONE_ARMY_PARAMS.defendCasualty.baseChance - strength * BONE_ARMY_PARAMS.defendCasualty.strengthReduction
-            ) -
-            traps * BONE_ARMY_PARAMS.defendCasualty.trapsReduction +
+            Math.max(0.25, 0.75 - strength * 0.02) -
+            traps * 0.1 +
             state.CM * 0.05;
 
           let villagerDeaths = 0;
           let foodLoss = Math.min(
             state.resources.food,
-            (state.buildings.woodenHut + Math.floor(Math.random() * BONE_ARMY_PARAMS.foodLoss.randomRange)) *
-              BONE_ARMY_PARAMS.foodLoss.perHut +
-              BONE_ARMY_PARAMS.foodLoss.base +
+            (state.buildings.woodenHut + Math.floor(Math.random() * 10)) * 30 +
+              50 +
               state.CM * 150,
           );
           let hutDestroyed = false;
 
+          // Determine villager casualties
+          // Traps reduce max deaths by 3
           const maxPotentialDeaths = Math.min(
-            BONE_ARMY_PARAMS.defendCasualty.maxDeaths.base +
-              state.buildings.woodenHut * BONE_ARMY_PARAMS.defendCasualty.maxDeaths.perHut +
-              state.CM * 2 +
-              traps * BONE_ARMY_PARAMS.defendCasualty.maxDeaths.perTrap,
+            5 + state.buildings.woodenHut + state.CM * 2 - traps * 3,
             state.current_population,
           );
           for (let i = 0; i < maxPotentialDeaths; i++) {
@@ -238,23 +82,18 @@ export const villageAttackEvents: Record<string, GameEvent> = {
             }
           }
 
-          if (
-            villagerDeaths >= BONE_ARMY_PARAMS.defendCasualty.hutDestructionMinDeaths &&
-            state.buildings.woodenHut > 0
-          ) {
-            if (
-              Math.random() <
-              BONE_ARMY_PARAMS.defendCasualty.hutDestructionChance +
-                state.CM * 0.25 -
-                traps * BONE_ARMY_PARAMS.defendCasualty.trapsHutReduction
-            ) {
+          // If 3+ villagers die and there's a hut, 30% chance to destroy it
+          if (villagerDeaths >= 3 && state.buildings.woodenHut > 0) {
+            if (Math.random() < 0.3 + state.CM * 0.25 - traps * 0.05) {
               hutDestroyed = true;
             }
           }
 
+          // Apply deaths to villagers
           const deathResult = killVillagers(state, villagerDeaths);
           const actualDeaths = deathResult.villagersKilled || 0;
 
+          // Construct result message
           let message = "The village fights desperately against the bone army. ";
 
           if (actualDeaths === 0) {
@@ -296,21 +135,17 @@ export const villageAttackEvents: Record<string, GameEvent> = {
         relevant_stats: ["luck"],
         success_chance: (state: GameState) => {
           const traps = state.buildings.traps;
-          return calculateSuccessChance(
-            state,
-            BONE_ARMY_PARAMS.hideSuccess.baseChance + traps * BONE_ARMY_PARAMS.hideSuccess.trapsBonus,
-            {
-              type: "luck",
-              multiplier: BONE_ARMY_PARAMS.hideSuccess.luckMultiplier,
-            }
-          );
+          return calculateSuccessChance(state, 0.1 + traps * 0.1, {
+            type: "luck",
+            multiplier: 0.02,
+          });
         },
         effect: (state: GameState) => {
           const traps = state.buildings.traps;
           const success_chance = calculateSuccessChance(
             state,
-            BONE_ARMY_PARAMS.hideSuccess.baseChance + traps * BONE_ARMY_PARAMS.hideSuccess.trapsBonus,
-            { type: "luck", multiplier: BONE_ARMY_PARAMS.hideSuccess.luckMultiplier },
+            0.1 + traps * 0.1,
+            { type: "luck", multiplier: 0.02 },
           );
 
           let villagerDeaths = 0;
@@ -318,6 +153,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           let deathResult = {};
 
           if (Math.random() < success_chance) {
+            // Success - bone army passes without finding anyone
             return {
               _logMessage:
                 "The villagers hide in terror as the bone army searches the village. The skeletal creatures eventually march away, their purpose unfulfilled.",
@@ -325,12 +161,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           } else {
             const luck = getTotalLuck(state);
             const casualtyChance =
-              Math.max(
-                BONE_ARMY_PARAMS.hideCasualty.minChance,
-                BONE_ARMY_PARAMS.hideCasualty.baseChance - luck * BONE_ARMY_PARAMS.hideCasualty.luckReduction
-              ) -
-              traps * BONE_ARMY_PARAMS.hideCasualty.trapsReduction +
-              state.CM * 0.05;
+              Math.max(0.15, 0.4 - luck * 0.02) - traps * 0.05 + state.CM * 0.05;
 
             foodLoss = Math.min(
               state.resources.food,
@@ -339,11 +170,9 @@ export const villageAttackEvents: Record<string, GameEvent> = {
                 state.CM * 3,
             );
 
+            // Determine villager casualties
             const maxPotentialDeaths = Math.min(
-              BONE_ARMY_PARAMS.hideCasualty.maxDeaths.base +
-                state.buildings.woodenHut * BONE_ARMY_PARAMS.hideCasualty.maxDeaths.perHut +
-                traps * BONE_ARMY_PARAMS.hideCasualty.maxDeaths.perTrap +
-                state.CM * 2,
+              3 + state.buildings.woodenHut / 2 - traps * 1 + state.CM * 2,
               state.current_population,
             );
             for (let i = 0; i < maxPotentialDeaths; i++) {
@@ -352,11 +181,13 @@ export const villageAttackEvents: Record<string, GameEvent> = {
               }
             }
 
+            // Apply deaths to villagers
             deathResult = killVillagers(state, villagerDeaths);
           }
 
           const actualDeaths = deathResult.villagersKilled || 0;
 
+          // Construct result message
           let message =
             "The villagers hide in terror as the bone army searches the village. ";
 
@@ -413,8 +244,8 @@ export const villageAttackEvents: Record<string, GameEvent> = {
 
           return calculateSuccessChance(
             state,
-            WOLF_ATTACK_PARAMS.defendVictory.baseChance + traps * WOLF_ATTACK_PARAMS.defendVictory.trapsBonus,
-            { type: 'strength', multiplier: WOLF_ATTACK_PARAMS.defendVictory.strengthMultiplier }
+            0.15 + traps * 0.1,
+            { type: 'strength', multiplier: 0.01 }
           );
         },
         effect: (state: GameState) => {
@@ -425,14 +256,17 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           if (!state.story.seen.firstWolfAttack) {
             victoryChance = 0;
           } else {
+            // Check for victory: 15% base chance + 1% per strength point
+            // Traps increase victory chance by 10%
             victoryChance = calculateSuccessChance(
               state,
-              WOLF_ATTACK_PARAMS.defendVictory.baseChance + traps * WOLF_ATTACK_PARAMS.defendVictory.trapsBonus,
-              { type: 'strength', multiplier: WOLF_ATTACK_PARAMS.defendVictory.strengthMultiplier }
+              0.15 + traps * 0.1,
+              { type: 'strength', multiplier: 0.01 }
             );
           }
 
           if (Math.random() < victoryChance) {
+            // Victory! Get Alpha's Hide
             return {
               clothing: {
                 ...state.clothing,
@@ -443,29 +277,26 @@ export const villageAttackEvents: Record<string, GameEvent> = {
             };
           }
 
+          // Base chance of casualties (70%), reduced by 2% per strength point, minimum 20%
+          // Traps reduce death chance by 10%
           const casualtyChance =
-            Math.max(
-              WOLF_ATTACK_PARAMS.defendCasualty.minChance,
-              WOLF_ATTACK_PARAMS.defendCasualty.baseChance - strength * WOLF_ATTACK_PARAMS.defendCasualty.strengthReduction
-            ) -
-            traps * WOLF_ATTACK_PARAMS.defendCasualty.trapsReduction +
+            Math.max(0.2, 0.6 - strength * 0.02) -
+            traps * 0.1 +
             state.CM * 0.05;
 
           let villagerDeaths = 0;
           let foodLoss = Math.min(
             state.resources.food,
-            (state.buildings.woodenHut + Math.floor(Math.random() * WOLF_ATTACK_PARAMS.foodLoss.randomRange)) *
-              WOLF_ATTACK_PARAMS.foodLoss.perHut +
-              WOLF_ATTACK_PARAMS.foodLoss.base +
+            (state.buildings.woodenHut + Math.floor(Math.random() * 8)) * 25 +
+              25 +
               state.CM * 100,
           );
           let hutDestroyed = false;
 
+          // Determine villager casualties
+          // Traps reduce max deaths by 3
           const maxPotentialDeaths = Math.min(
-            WOLF_ATTACK_PARAMS.defendCasualty.maxDeaths.base +
-              state.buildings.woodenHut * WOLF_ATTACK_PARAMS.defendCasualty.maxDeaths.perHut +
-              state.CM * 2 +
-              traps * WOLF_ATTACK_PARAMS.defendCasualty.maxDeaths.perTrap,
+            4 + state.buildings.woodenHut + state.CM * 2 - traps * 3,
             state.current_population,
           );
           for (let i = 0; i < maxPotentialDeaths; i++) {
@@ -474,18 +305,18 @@ export const villageAttackEvents: Record<string, GameEvent> = {
             }
           }
 
-          if (
-            villagerDeaths >= WOLF_ATTACK_PARAMS.defendCasualty.hutDestructionMinDeaths &&
-            state.buildings.woodenHut > 0
-          ) {
-            if (Math.random() < state.CM * 0.25 - traps * WOLF_ATTACK_PARAMS.defendCasualty.trapsHutReduction) {
+          // If 2+ villagers die and there's a hut, 25% chance to destroy it
+          if (villagerDeaths >= 2 && state.buildings.woodenHut > 0) {
+            if (Math.random() < state.CM * 0.25 - traps * 0.05) {
               hutDestroyed = true;
             }
           }
 
+          // Apply deaths to villagers
           const deathResult = killVillagers(state, villagerDeaths);
           const actualDeaths = deathResult.villagersKilled || 0;
 
+          // Construct result message
           let message = "The village fights desperately against the wolves. ";
 
           if (actualDeaths === 0) {
@@ -537,19 +368,19 @@ export const villageAttackEvents: Record<string, GameEvent> = {
         label: "Hide",
         relevant_stats: ["luck"],
         success_chance: (state: GameState) => {
-          const traps = state.buildings.traps;
+          const traps = state.buildings.traps * 0.1;
           return calculateSuccessChance(
             state,
-            WOLF_ATTACK_PARAMS.hideSuccess.baseChance + traps * WOLF_ATTACK_PARAMS.hideSuccess.trapsBonus,
-            { type: 'luck', multiplier: WOLF_ATTACK_PARAMS.hideSuccess.luckMultiplier }
+            0.15 + traps * 0.1,
+            { type: 'luck', multiplier: 0.02 }
           );
         },
         effect: (state: GameState) => {
-          const traps = state.buildings.traps;
+          const traps = state.buildings.traps * 0.1;
           const success_chance = calculateSuccessChance(
             state,
-            WOLF_ATTACK_PARAMS.hideSuccess.baseChance + traps * WOLF_ATTACK_PARAMS.hideSuccess.trapsBonus,
-            { type: 'luck', multiplier: WOLF_ATTACK_PARAMS.hideSuccess.luckMultiplier }
+            0.15 + traps * 0.1,
+            { type: 'luck', multiplier: 0.02 }
           );
 
           let villagerDeaths = 0;
@@ -557,6 +388,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           let deathResult = {};
 
           if (Math.random() < success_chance) {
+            // Success - wolves leave without causing damage
             return {
               story: {
                 ...state.story,
@@ -571,12 +403,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           } else {
             const luck = getTotalLuck(state);
             const casualtyChance =
-              Math.max(
-                WOLF_ATTACK_PARAMS.hideCasualty.minChance,
-                WOLF_ATTACK_PARAMS.hideCasualty.baseChance - luck * WOLF_ATTACK_PARAMS.hideCasualty.luckReduction
-              ) -
-              traps * WOLF_ATTACK_PARAMS.hideCasualty.trapsReduction +
-              state.CM * 0.05;
+              Math.max(0.1, 0.35 - luck * 0.02) - traps * 0.05 + state.CM * 0.05;
 
             foodLoss = Math.min(
               state.resources.food,
@@ -585,11 +412,9 @@ export const villageAttackEvents: Record<string, GameEvent> = {
                 state.CM * 2,
             );
 
+            // Determine villager casualties
             const maxPotentialDeaths = Math.min(
-              WOLF_ATTACK_PARAMS.hideCasualty.maxDeaths.base +
-                state.buildings.woodenHut * WOLF_ATTACK_PARAMS.hideCasualty.maxDeaths.perHut +
-                traps * WOLF_ATTACK_PARAMS.hideCasualty.maxDeaths.perTrap +
-                state.CM * 2,
+              2 + state.buildings.woodenHut / 2 - traps * 1 + state.CM * 2,
               state.current_population,
             );
             for (let i = 0; i < maxPotentialDeaths; i++) {
@@ -598,11 +423,13 @@ export const villageAttackEvents: Record<string, GameEvent> = {
               }
             }
 
+            // Apply deaths to villagers
             deathResult = killVillagers(state, villagerDeaths);
           }
 
           const actualDeaths = deathResult.villagersKilled || 0;
 
+          // Construct result message
           let message =
             "The villagers huddle in their huts as the wolves prowl outside. ";
 
@@ -661,25 +488,25 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           const traps = state.buildings.traps;
           return calculateSuccessChance(
             state,
-            CANNIBAL_RAID_PARAMS.defendVictory.baseChance + traps * CANNIBAL_RAID_PARAMS.defendVictory.trapsBonus,
-            { type: 'strength', multiplier: CANNIBAL_RAID_PARAMS.defendVictory.strengthMultiplier }
+            0.1 + traps * 0.1,
+            { type: 'strength', multiplier: 0.01 }
           );
         },
         effect: (state: GameState) => {
           const traps = state.buildings.traps;
           const strength = getTotalStrength(state);
 
+          // Check for victory: 10% base chance + 1% per strength point
           const victoryChance = calculateSuccessChance(
             state,
-            CANNIBAL_RAID_PARAMS.defendVictory.baseChance + traps * CANNIBAL_RAID_PARAMS.defendVictory.trapsBonus,
-            { type: 'strength', multiplier: CANNIBAL_RAID_PARAMS.defendVictory.strengthMultiplier }
+            0.1 + traps * 0.1,
+            { type: 'strength', multiplier: 0.01 }
           );
 
           if (Math.random() < victoryChance) {
+            // Victory - minimal losses
             const minimalDeaths = Math.min(
-              Math.floor(Math.random() * CANNIBAL_RAID_PARAMS.defendVictory.minimalDeaths.randomRange) +
-                CANNIBAL_RAID_PARAMS.defendVictory.minimalDeaths.base +
-                state.CM * 1,
+              Math.floor(Math.random() * 2) + state.CM * 1,
               state.current_population,
             );
             const deathResult = killVillagers(state, minimalDeaths);
@@ -689,7 +516,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
               ...deathResult,
               resources: {
                 ...state.resources,
-                silver: state.resources.silver + CANNIBAL_RAID_PARAMS.defendVictory.silverReward,
+                silver: state.resources.silver + 500,
               },
               clothing: {
                 ...state.clothing,
@@ -704,26 +531,23 @@ export const villageAttackEvents: Record<string, GameEvent> = {
               },
               _logMessage:
                 actualDeaths === 1
-                  ? `The villagers drive back the cannibals! One villager falls in the battle, but the tribe retreats in defeat. Among the bodies, you find a primitive necklace made of human bones and ${CANNIBAL_RAID_PARAMS.defendVictory.silverReward} silver.`
-                  : `The villagers fight valiantly and repel the cannibals! ${actualDeaths} villagers fall in the battle, but the tribe is forced to retreat. Among the bodies, you find a primitive necklace made of human bones and ${CANNIBAL_RAID_PARAMS.defendVictory.silverReward} silver.`,
+                  ? `The villagers drive back the cannibals! One villager falls in the battle, but the tribe retreats in defeat. Among the bodies, you find a primitive necklace made of human bones and 500 silver.`
+                  : `The villagers fight valiantly and repel the cannibals! ${actualDeaths} villagers fall in the battle, but the tribe is forced to retreat. Among the bodies, you find a primitive necklace made of human bones and 500 silver.`,
             };
           }
 
+          // Defeat - casualties and resource loss
+          // Base 50% casualty chance, reduced by 2% per strength point, minimum 15%
           const casualtyChance =
-            Math.max(
-              CANNIBAL_RAID_PARAMS.defendCasualty.minChance,
-              CANNIBAL_RAID_PARAMS.defendCasualty.baseChance - strength * CANNIBAL_RAID_PARAMS.defendCasualty.strengthReduction
-            ) -
-            traps * CANNIBAL_RAID_PARAMS.defendCasualty.trapsReduction +
+            Math.max(0.15, 0.5 - strength * 0.01) -
+            traps * 0.1 +
             state.CM * 0.1;
 
           let totalLost = 0;
 
+          // Determine casualties
           const maxPotentialCasualties = Math.min(
-            CANNIBAL_RAID_PARAMS.defendCasualty.maxDeaths.base +
-              state.buildings.woodenHut * CANNIBAL_RAID_PARAMS.defendCasualty.maxDeaths.perHut +
-              traps * CANNIBAL_RAID_PARAMS.defendCasualty.maxDeaths.perTrap +
-              state.CM * 2,
+            4 + state.buildings.woodenHut - traps * 3 + state.CM * 2,
             state.current_population,
           );
 
@@ -733,24 +557,21 @@ export const villageAttackEvents: Record<string, GameEvent> = {
             }
           }
 
+          // Calculate resource losses
           const silverLoss = Math.min(
             state.resources.silver,
-            Math.floor(Math.random() * CANNIBAL_RAID_PARAMS.resourceLoss.silver.randomRange) *
-              CANNIBAL_RAID_PARAMS.resourceLoss.silver.randomMultiplier +
-              CANNIBAL_RAID_PARAMS.resourceLoss.silver.base +
-              state.CM * 100,
+            Math.floor(Math.random() * 4) * 25 + 25 + state.CM * 100,
           );
           const foodLoss = Math.min(
             state.resources.food,
-            Math.floor(Math.random() * CANNIBAL_RAID_PARAMS.resourceLoss.food.randomRange) *
-              CANNIBAL_RAID_PARAMS.resourceLoss.food.randomMultiplier +
-              CANNIBAL_RAID_PARAMS.resourceLoss.food.base +
-              state.CM * 250,
+            Math.floor(Math.random() * 6) * 50 + 50 + state.CM * 250,
           );
 
+          // Apply deaths to villagers
           const deathResult = killVillagers(state, totalLost);
           const actualLost = deathResult.villagersKilled || 0;
 
+          // Construct result message
           let message = "The cannibals overwhelm your defenses. ";
 
           if (actualLost === 0) {
@@ -792,16 +613,16 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           const traps = state.buildings.traps;
           return calculateSuccessChance(
             state,
-            CANNIBAL_RAID_PARAMS.hideSuccess.baseChance + traps * CANNIBAL_RAID_PARAMS.hideSuccess.trapsBonus,
-            { type: 'luck', multiplier: CANNIBAL_RAID_PARAMS.hideSuccess.luckMultiplier }
+            0.05 + traps * 0.1,
+            { type: 'luck', multiplier: 0.01 }
           );
         },
         effect: (state: GameState) => {
           const traps = state.buildings.traps;
           const success_chance = calculateSuccessChance(
             state,
-            CANNIBAL_RAID_PARAMS.hideSuccess.baseChance + traps * CANNIBAL_RAID_PARAMS.hideSuccess.trapsBonus,
-            { type: 'luck', multiplier: CANNIBAL_RAID_PARAMS.hideSuccess.luckMultiplier }
+            0.05 + traps * 0.1,
+            { type: 'luck', multiplier: 0.01 }
           );
 
           let totalLost = 0;
@@ -810,24 +631,22 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           let deathResult = {};
 
           if (Math.random() < success_chance) {
+            // Success - cannibals leave without causing major damage
             return {
               _logMessage:
                 "The villagers hide in terror as the cannibals search the village. By dawn, the cannibals have left without finding anyone.",
             };
           } else {
             const luck = getTotalLuck(state);
+            // Base 30% casualty chance, reduced by 1% per luck point, minimum 10%
             const casualtyChance =
-              Math.max(
-                CANNIBAL_RAID_PARAMS.hideCasualty.minChance,
-                CANNIBAL_RAID_PARAMS.hideCasualty.baseChance - luck * CANNIBAL_RAID_PARAMS.hideCasualty.luckReduction
-              ) -
-              traps * CANNIBAL_RAID_PARAMS.hideCasualty.trapsReduction +
-              state.CM * 0.05;
+              Math.max(0.1, 0.3 - luck * 0.01) - traps * 0.05 + state.CM * 0.05;
 
+            // Fewer potential casualties when hiding
             const maxPotentialCasualties = Math.min(
-              CANNIBAL_RAID_PARAMS.hideCasualty.maxDeaths.base +
-                Math.floor(state.buildings.woodenHut * CANNIBAL_RAID_PARAMS.hideCasualty.maxDeaths.perHut) +
-                traps * CANNIBAL_RAID_PARAMS.hideCasualty.maxDeaths.perTrap +
+              4 +
+                Math.floor(state.buildings.woodenHut / 2) -
+                traps * 2 +
                 state.CM * 2,
               state.current_population,
             );
@@ -838,24 +657,21 @@ export const villageAttackEvents: Record<string, GameEvent> = {
               }
             }
 
+            // Higher resource losses when not defending
             silverLoss = Math.min(
               state.resources.silver,
-              Math.floor(Math.random() * CANNIBAL_RAID_PARAMS.resourceLoss.silverHiding.randomRange) *
-                CANNIBAL_RAID_PARAMS.resourceLoss.silverHiding.randomMultiplier +
-                CANNIBAL_RAID_PARAMS.resourceLoss.silverHiding.base +
-                state.CM * 200,
+              Math.floor(Math.random() * 4) * 50 + 50 + state.CM * 200,
             );
             foodLoss = Math.min(
               state.resources.food,
-              Math.floor(Math.random() * CANNIBAL_RAID_PARAMS.resourceLoss.foodHiding.randomRange) *
-                CANNIBAL_RAID_PARAMS.resourceLoss.foodHiding.randomMultiplier +
-                CANNIBAL_RAID_PARAMS.resourceLoss.foodHiding.base +
-                state.CM * 500,
+              Math.floor(Math.random() * 6) * 100 + 100 + state.CM * 500,
             );
 
+            // Apply deaths to villagers
             deathResult = killVillagers(state, totalLost);
           }
 
+          // Construct result message
           let message =
             "The villagers hide in terror as the cannibals search the village. ";
 
