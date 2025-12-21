@@ -590,10 +590,10 @@ const Hero: React.FC<HeroProps> = ({
                     "noopener,noreferrer",
                   )
                 }
-                className="px-5 py-3 bg-gradient-to-r from-red-800 to-red-700 hover:from-red-700 hover:to-red-600 text-slate-200 rounded-md font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25 flex items-center gap-2"
+                className="px-4 py-2 bg-gradient-to-r from-red-800 to-red-700 hover:from-red-700 hover:to-red-600 text-slate-200 rounded-md font-semibold text-base transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25 flex items-center gap-2"
               >
                 <svg
-                  className="h-6 w-6"
+                  className="h-5 w-5 flex-shrink-0"
                   viewBox="0 0 26.488 29.926"
                   fill="none"
                   stroke="currentColor"
@@ -615,12 +615,12 @@ const Hero: React.FC<HeroProps> = ({
                     "noopener,noreferrer",
                   )
                 }
-                className="px-5 py-3 bg-gradient-to-r from-red-800 to-red-700 hover:from-red-700 hover:to-red-600 text-slate-200 rounded-md font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25 flex items-center gap-2"
+                className="px-4 py-2 bg-gradient-to-r from-red-800 to-red-700 hover:from-red-700 hover:to-red-600 text-slate-200 rounded-md font-semibold text-base transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25 flex items-center gap-2"
               >
                 <img 
                   src="/indiedb_logo_black.png" 
                   alt="IndieDB" 
-                  className="h-6 w-6 invert"
+                  className="h-5 w-5 object-contain flex-shrink-0 invert"
                 />
                 <span>IndieDB</span>
               </button>
