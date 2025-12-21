@@ -40,6 +40,7 @@ export interface EffectDefinition {
       MAX_VOID_BOMBS?: number;
       caveExploreMultiplier?: number; // Multiplier for all cave exploration actions
       eventDeathReduction?: number; // Percentage reduction in villager deaths from events (0.25 = 25% reduction)
+      criticalDamageBonus?: number; // Percentage bonus to critical hit damage (0.05 = 5% bonus)
     };
   };
 }
@@ -310,6 +311,18 @@ export const toolEffects: Record<string, EffectDefinition> = {
         caveExplore: {
           resourceMultiplier: 2.5,
         },
+      },
+    },
+  },
+
+  blacksteel_armor: {
+    id: "blacksteel_armor",
+    name: "Blacksteel Armor",
+    description: "Heavy armor forged from rare blacksteel with deadly spikes",
+    bonuses: {
+      generalBonuses: {
+        strength: 10,
+        criticalDamageBonus: 0.05, // 5% critical damage bonus
       },
     },
   },

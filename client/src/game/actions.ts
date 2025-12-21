@@ -342,6 +342,8 @@ export function executeGameAction(
       return handleCraftBlacksteelSword(state, result);
     case "craftBlacksteelBow":
       return handleCraftBlacksteelBow(state, result);
+    case "craftBlacksteelArmor":
+      return handleCraftBlacksteelArmor(state, result);
 
     // Cave Mine Actions
     case "mineStone":
