@@ -891,6 +891,40 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                               </Tooltip>
                             </TooltipProvider>
                           )}
+                          {item.id === "tarnished_compass" && (
+                            <TooltipProvider>
+                              <Tooltip open={mobileTooltip.isTooltipOpen("tarnished-compass-info")}>
+                                <TooltipTrigger asChild>
+                                  <button 
+                                    className="inline-flex items-center justify-center w-4 h-4 rounded-full text-muted-foreground text-sm"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      if (mobileTooltip.isMobile) {
+                                        mobileTooltip.handleTooltipClick("tarnished-compass-info", e);
+                                      }
+                                    }}
+                                  >
+                                    ⓘ
+                                  </button>
+                                </TooltipTrigger>
+                                <TooltipContent className="max-w-xs">
+                                  <div className="text-xs">
+                                    <div className="font-bold mb-1">
+                                      Tarnished Compass
+                                    </div>
+
+                                    <div className="mt-1 space-y-0.5">
+                                      <div>10% chance to double gains from:</div>
+                                      <div className="ml-2">• Cave Exploring</div>
+                                      <div className="ml-2">• Mining</div>
+                                      <div className="ml-2">• Chopping Wood</div>
+                                      <div className="ml-2">• Hunting</div>
+                                    </div>
+                                  </div>
+                                </TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
+                          )}
                         </CardTitle>
                         <CardDescription className="text-bold">
                           {item.originalPrice && (
