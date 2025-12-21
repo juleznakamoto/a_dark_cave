@@ -14,7 +14,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
     timeProbability: 15,
     title: "The Bone Army",
     message:
-      "The earth trembles as an army of skeletal creatures rises from the ground. The Bone Devourer has used the bones you traded to build an unholy legion. They march toward the village with hollow eyes and weapons of sharpened bone.",
+      "The earth trembles as an army of skeletal creatures appears from the forest. The Bone Devourer has used the bones you traded to build an unholy legion. With hollow eyes and weapons of sharpened bone they approach the city.",
     triggered: false,
     priority: 4,
     repeatable: true,
@@ -25,9 +25,9 @@ export const villageAttackEvents: Record<string, GameEvent> = {
         relevant_stats: ["strength"],
         success_chance: (state: GameState) => {
           const traps = state.buildings.traps;
-          return calculateSuccessChance(state, 0.12 + traps * 0.1, {
+          return calculateSuccessChance(state, 0.0 + traps * 0.1, {
             type: "strength",
-            multiplier: 0.01,
+            multiplier: 0.0075,
           });
         },
         effect: (state: GameState) => {
@@ -38,8 +38,8 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           // Traps increase victory chance by 10%
           const victoryChance = calculateSuccessChance(
             state,
-            0.12 + traps * 0.1,
-            { type: "strength", multiplier: 0.01 },
+            0.0 + traps * 0.1,
+            { type: "strength", multiplier: 0.075 },
           );
 
           if (Math.random() < victoryChance) {
@@ -50,7 +50,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
                 devourer_crown: true,
               },
               _logMessage:
-                "The village defeats the bone army! The skeletal creatures shatter into fragments. Among the remains, you find the Devourer's Crown, pulsing with dark knowledge.",
+                "The village defeats the bone army! Bone and silence litter the battlefield. Among the remains, you find the Devourer's Crown.",
             };
           }
 
@@ -82,9 +82,9 @@ export const villageAttackEvents: Record<string, GameEvent> = {
             }
           }
 
-          // If 3+ villagers die and there's a hut, 30% chance to destroy it
+          // If 3+ villagers die and there's a hut
           if (villagerDeaths >= 3 && state.buildings.woodenHut > 0) {
-            if (Math.random() < 0.3 + state.CM * 0.25 - traps * 0.05) {
+            if (Math.random() < state.CM * 0.45 - traps * 0.05) {
               hutDestroyed = true;
             }
           }
@@ -137,7 +137,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           const traps = state.buildings.traps;
           return calculateSuccessChance(state, 0.1 + traps * 0.1, {
             type: "luck",
-            multiplier: 0.02,
+            multiplier: 0.01,
           });
         },
         effect: (state: GameState) => {
@@ -145,7 +145,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           const success_chance = calculateSuccessChance(
             state,
             0.1 + traps * 0.1,
-            { type: "luck", multiplier: 0.02 },
+            { type: "luck", multiplier: 0.01 },
           );
 
           let villagerDeaths = 0;
