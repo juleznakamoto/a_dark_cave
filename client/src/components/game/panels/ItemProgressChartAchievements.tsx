@@ -172,7 +172,7 @@ export default function ItemProgressChart() {
         label: "Schematic Crafter",
         category: "weapons",
         maxCount: 3,
-        reward: 500,
+        reward: 250,
       },
     ],
     // Fourth ring: Clothing
@@ -184,7 +184,7 @@ export default function ItemProgressChart() {
         label: "Ancient Wisdom",
         category: "relics",
         maxCount: 3,
-        reward: 500,
+        reward: 250,
       },
       {
         itemType: "fellowship",
@@ -193,7 +193,7 @@ export default function ItemProgressChart() {
         label: "Good Company",
         category: "fellowship",
         maxCount: 3,
-        reward: 500,
+        reward: 250,
       },
     ],
     [

@@ -5,11 +5,11 @@ import { killVillagers } from "@/game/stateHelpers";
 
 // Riddle rewards (gold amounts)
 const RIDDLE_REWARDS = {
-  first: 100,
+  first: 150,
   second: 150,
-  third: 200,
-  fourth: 350,
-  fifth: 300,
+  third: 150,
+  fourth: 150,
+  fifth: 150,
 } as const;
 
 // Riddle penalties
