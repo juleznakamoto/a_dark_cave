@@ -50,13 +50,20 @@ function createBoneDevourerEvent(config: BoneDevourerConfig): GameEvent {
       // First appearance of this level: 10 minutes
       // After being seen (regardless of accept/decline): 25 minutes
       const hasBeenSeen = state.triggeredEvents?.[`${eventId}_seen`];
-      return hasBeenSeen ? 25 : 0.010;
+      const probability = hasBeenSeen ? 25 : 10;
+      console.log(`[BONE DEVOURER] timeProbability for ${eventId}:`, {
+        hasBeenSeen,
+        probability,
+        seenKey: `${eventId}_seen`,
+        triggeredEvents: state.triggeredEvents,
+      });
+      return probability;
     },
     title: "The Bone Devourer",
     message: (state: GameState) => {
       const hasBeenTriggered = state.triggeredEvents?.[eventId];
       if (hasBeenTriggered) {
-        return `The deformed creature returns to the village gates, its hunched form still covered in pale, stretched skin. It speaks in its familiar rasping voice: 'I seek bones. ${boneCost} bones. I pay ${silverReward} silver.'`;
+        return `The creature returns to the village gates, its hunched form still covered in pale, stretched skin. It speaks in its familiar rasping voice: 'I seek bones. ${boneCost} bones. I pay ${silverReward} silver.'`;
       }
       return `A deformed creature shuffles to the village gates, its hunched form covered in pale, stretched skin. It speaks in a rasping voice: 'I seek bones. ${boneCost} bones. I pay ${silverReward} silver.'`;
     },
