@@ -875,6 +875,74 @@ describe('Resource Gain Tests', () => {
       expect(tooltipSilver!.max).toBe(expectedMax);
     });
 
+    it('boneTotems with devourer_crown applies +20 silver bonus', () => {
+      const stateWithoutCrown = createTestState({
+        buildings: { altar: 1, clerksHut: 1 },
+      });
+      const stateWithCrown = createTestState({
+        buildings: { altar: 1, clerksHut: 1 },
+        clothing: { devourer_crown: true },
+      });
+
+      const { expectedGains: expectedWithout } = testActionGains('boneTotems', stateWithoutCrown, 50);
+      const { expectedGains: expectedWith } = testActionGains('boneTotems', stateWithCrown, 50);
+
+      // Devourer Crown adds flat +20 silver bonus
+      expect(expectedWith.silver.min).toBe(expectedWithout.silver.min + 20);
+      expect(expectedWith.silver.max).toBe(expectedWithout.silver.max + 20);
+    });
+
+    it('boneTotems with devourer_crown and sacrificial_tunic stacks correctly', () => {
+      const state = createTestState({
+        buildings: { altar: 1, clerksHut: 1 },
+        clothing: { devourer_crown: true, sacrificial_tunic: true },
+      });
+
+      const { expectedGains } = testActionGains('boneTotems', state, 50);
+
+      // Base: 10-25 silver
+      // Sacrificial tunic: 25% multiplier -> 12-31 (floor(10*1.25) to floor(25*1.25))
+      // Devourer Crown: +20 flat bonus -> 32-51
+      const baseMin = 10;
+      const baseMax = 25;
+      const multipliedMin = Math.floor(baseMin * 1.25);
+      const multipliedMax = Math.floor(baseMax * 1.25);
+      const expectedMin = multipliedMin + 20;
+      const expectedMax = multipliedMax + 20;
+
+      expect(expectedGains.silver.min).toBe(expectedMin);
+      expect(expectedGains.silver.max).toBe(expectedMax);
+    });
+
+    it('boneTotems with devourer_crown: tooltip matches actual gains', () => {
+      const state = createTestState({
+        buildings: { altar: 1, clerksHut: 1 },
+        clothing: { devourer_crown: true },
+      });
+
+      // Get tooltip calculations
+      const { gains: tooltipGains } = calculateResourceGains('boneTotems', state);
+      const tooltipSilver = tooltipGains.find(g => g.resource === 'silver');
+      expect(tooltipSilver).toBeDefined();
+
+      // Get actual gains from executing the action multiple times
+      const { expectedGains, actualGains } = testActionGains('boneTotems', state, 100);
+
+      // Verify tooltip matches expected calculation
+      expect(tooltipSilver!.min).toBe(expectedGains.silver.min);
+      expect(tooltipSilver!.max).toBe(expectedGains.silver.max);
+
+      // Verify actual gains fall within tooltip range
+      const minActual = Math.min(...actualGains.silver);
+      const maxActual = Math.max(...actualGains.silver);
+      expect(minActual).toBeGreaterThanOrEqual(tooltipSilver!.min);
+      expect(maxActual).toBeLessThanOrEqual(tooltipSilver!.max);
+
+      // Base 10-25 + 20 bonus = 30-45
+      expect(tooltipSilver!.min).toBe(30);
+      expect(tooltipSilver!.max).toBe(45);
+    });
+
     it('leatherTotems with sacrificial_tunic and boneTemple: tooltip matches actual gains', () => {
       const state = createTestState({
         buildings: { temple: 1, clerksHut: 1, boneTemple: 1 },
