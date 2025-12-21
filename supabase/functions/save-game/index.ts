@@ -11,18 +11,6 @@ const rateLimitMap = new Map<string, { count: number; resetTime: number }>()
 const RATE_LIMIT_WINDOW_MS = 60000 // 1 minute
 const MAX_REQUESTS_PER_WINDOW = 100
 
-// Create admin client for auth verification only
-const supabaseAdmin = createClient(
-  Deno.env.get('SUPABASE_URL') ?? '',
-  Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
-  {
-    auth: {
-      autoRefreshToken: false,
-      persistSession: false,
-    },
-  }
-)
-
 function checkRateLimit(userId: string, maxRequests: number, windowMs: number): boolean {
   const now = Date.now()
   const userLimit = rateLimitMap.get(userId)
@@ -74,25 +62,7 @@ serve(async (req) => {
       )
     }
 
-    // Verify the JWT and get user
-    const jwt = authHeader.substring(7) // Remove 'Bearer ' prefix
-    console.log('JWT token length:', jwt.length)
-    const { data: { user }, error: authError } = await supabaseAdmin.auth.getUser(jwt)
-
-    if (authError || !user) {
-      console.error('Auth error:', authError?.message || 'No user found')
-      return new Response(
-        JSON.stringify({ error: 'Invalid or expired token', details: authError?.message }),
-        { 
-          status: 401, 
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-        }
-      )
-    }
-    
-    console.log('User authenticated:', user.id)
-    
-    // Create a user-scoped client with their JWT for database operations
+    // Create client with anon key + user JWT
     const supabase = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_ANON_KEY') ?? '',
@@ -108,6 +78,24 @@ serve(async (req) => {
         },
       }
     )
+
+    // Verify the JWT and get user (works with anon key + JWT)
+    const jwt = authHeader.substring(7) // Remove 'Bearer ' prefix
+    console.log('JWT token length:', jwt.length)
+    const { data: { user }, error: authError } = await supabase.auth.getUser(jwt)
+
+    if (authError || !user) {
+      console.error('Auth error:', authError?.message || 'No user found')
+      return new Response(
+        JSON.stringify({ error: 'Invalid or expired token', details: authError?.message }),
+        { 
+          status: 401, 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        }
+      )
+    }
+    
+    console.log('User authenticated:', user.id)
 
     // Rate limit: 2 saves per second per user
     if (!checkRateLimit(user.id, 2, 1000)) {
