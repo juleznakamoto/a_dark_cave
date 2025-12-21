@@ -151,21 +151,34 @@ function handleTotemSacrifice(
   // Apply the dynamic cost and get base effects (including random resource gains)
   const effectUpdates = applyActionEffects(actionId, state);
 
+  // Store the resource deltas from applyActionEffects (what was generated)
+  const resourceDeltas: Record<string, number> = {};
+  if (effectUpdates.resources) {
+    Object.keys(effectUpdates.resources).forEach((key) => {
+      const generated = effectUpdates.resources![key];
+      const original = state.resources[key as keyof typeof state.resources] || 0;
+      if (generated !== original) {
+        resourceDeltas[key] = generated - original;
+      }
+    });
+  }
+
+  // Create fresh resources object with current state
   if (!effectUpdates.resources) {
+    effectUpdates.resources = { ...state.resources };
+  } else {
     effectUpdates.resources = { ...state.resources };
   }
 
-  // Store the generated resource values (e.g., silver/gold from random())
-  const generatedResources = { ...effectUpdates.resources };
-
-  // Override the cost with dynamic pricing
+  // Apply the dynamic totem cost
   effectUpdates.resources[totemResource] =
     (state.resources[totemResource] || 0) - currentCost;
 
-  // Restore any generated resource values that were overwritten
-  Object.keys(generatedResources).forEach((resource) => {
-    if (resource !== totemResource && generatedResources[resource] !== state.resources[resource as keyof typeof state.resources]) {
-      effectUpdates.resources![resource] = generatedResources[resource];
+  // Apply the resource deltas (generated gains like silver/gold)
+  Object.entries(resourceDeltas).forEach(([resource, delta]) => {
+    if (resource !== totemResource) {
+      effectUpdates.resources![resource] =
+        (effectUpdates.resources![resource] || 0) + delta;
     }
   });
 
@@ -173,9 +186,8 @@ function handleTotemSacrifice(
   const actionBonuses = getActionBonuses(actionId, state);
   if (actionBonuses.resourceBonus) {
     Object.entries(actionBonuses.resourceBonus).forEach(([resource, bonus]) => {
-      if (effectUpdates.resources![resource] !== undefined) {
-        effectUpdates.resources![resource] += bonus;
-      }
+      effectUpdates.resources![resource] =
+        (effectUpdates.resources![resource] || 0) + bonus;
     });
   }
 
