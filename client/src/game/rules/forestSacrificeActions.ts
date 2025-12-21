@@ -167,30 +167,7 @@ function handleTotemSacrifice(
     (state.resources[totemResource] || 0) - currentCost;
 
   console.log(`After cost override, ${totemResource}: ${effectUpdates.resources[totemResource]}`);
-
-  // Apply action bonuses (e.g., devourer_crown +20 silver for boneTotems)
-  const actionBonuses = getActionBonuses(actionId, state);
-  console.log(`Action bonuses:`, actionBonuses);
-  
-  if (actionBonuses.resourceBonus) {
-    console.log(`Applying resource bonuses:`, actionBonuses.resourceBonus);
-    Object.entries(actionBonuses.resourceBonus).forEach(([resource, bonus]) => {
-      const beforeValue = effectUpdates.resources![resource];
-      console.log(`  ${resource}: before=${beforeValue}, bonus=${bonus}`);
-      
-      // Initialize resource if it doesn't exist yet, then add bonus
-      if (!effectUpdates.resources![resource]) {
-        effectUpdates.resources![resource] = state.resources[resource as keyof typeof state.resources] || 0;
-        console.log(`    Initialized ${resource} to ${effectUpdates.resources![resource]}`);
-      }
-      effectUpdates.resources![resource] += bonus;
-      console.log(`    ${resource}: after=${effectUpdates.resources![resource]}`);
-    });
-  } else {
-    console.log(`No resource bonuses found`);
-  }
-  
-  console.log(`Final resources after bonus:`, effectUpdates.resources);
+  console.log(`Final resources:`, effectUpdates.resources);
   console.log(`=== END ${actionId} DEBUG ===\n`);
 
   // Track usage count for next time

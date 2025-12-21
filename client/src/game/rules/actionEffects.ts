@@ -257,6 +257,14 @@ export function applyActionEffects(
             max += cappedUsageCount;
 
             const actionBonuses = getActionBonusesCalc(actionId, state);
+            
+            // Apply flat bonuses first (like devourer_crown +20 silver)
+            const flatBonus = actionBonuses?.resourceBonus?.[finalKey] || 0;
+            if (flatBonus > 0) {
+              min += flatBonus;
+              max += flatBonus;
+            }
+            
             if (actionBonuses?.resourceMultiplier > 1) {
               min = Math.floor(min * actionBonuses.resourceMultiplier);
               max = Math.floor(max * actionBonuses.resourceMultiplier);

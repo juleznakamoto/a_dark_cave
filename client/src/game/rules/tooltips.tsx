@@ -61,6 +61,9 @@ export const calculateResourceGains = (
     actionId === "boneTotems" || actionId === "leatherTotems";
 
   if (isSacrificeAction) {
+    console.log(`\n=== calculateResourceGains for ${actionId} ===`);
+    console.log('bonuses:', bonuses);
+    
     // Get dynamic cost
     const usageCountKey =
       actionId === "boneTotems"
@@ -86,11 +89,23 @@ export const calculateResourceGains = (
           if (match) {
             let min = parseInt(match[1]);
             let max = parseInt(match[2]);
+            
+            console.log(`Base range for ${resource}: ${min}-${max}`);
 
             // Apply fixed +1 bonus per usage, capped at 20 usages
             const cappedUsageCount = Math.min(usageCount, 20);
             min = min + cappedUsageCount;
             max = max + cappedUsageCount;
+            
+            console.log(`After usage count (+${cappedUsageCount}): ${min}-${max}`);
+
+            // Apply flat bonuses first (like devourer_crown +20 silver)
+            const flatBonus = bonuses.resourceBonus?.[resource] || 0;
+            if (flatBonus > 0) {
+              min += flatBonus;
+              max += flatBonus;
+              console.log(`After flat bonus (+${flatBonus}): ${min}-${max}`);
+            }
 
             // Apply bonuses through centralized system (includes Bone Temple + items)
             const totalMultiplier = bonuses.resourceMultiplier;
@@ -99,13 +114,17 @@ export const calculateResourceGains = (
             if (totalMultiplier > 1) {
               min = Math.floor(min * totalMultiplier);
               max = Math.floor(max * totalMultiplier);
+              console.log(`After multiplier (${totalMultiplier}): ${min}-${max}`);
             }
 
+            console.log(`Final range for ${resource}: ${min}-${max}`);
             gains.push({ resource, min, max });
           }
         }
       }
     });
+    
+    console.log('=== END calculateResourceGains ===\n');
   } else {
     // Check if this is a cave exploration action
     const caveExploreActions = [
