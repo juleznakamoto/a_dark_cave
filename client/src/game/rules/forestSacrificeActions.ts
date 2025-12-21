@@ -163,9 +163,11 @@ function handleTotemSacrifice(
   const actionBonuses = getActionBonuses(actionId, state);
   if (actionBonuses.resourceBonus) {
     Object.entries(actionBonuses.resourceBonus).forEach(([resource, bonus]) => {
-      if (effectUpdates.resources![resource] !== undefined) {
-        effectUpdates.resources![resource] += bonus;
+      // Initialize resource if it doesn't exist yet, then add bonus
+      if (!effectUpdates.resources![resource]) {
+        effectUpdates.resources![resource] = state.resources[resource as keyof typeof state.resources] || 0;
       }
+      effectUpdates.resources![resource] += bonus;
     });
   }
 
