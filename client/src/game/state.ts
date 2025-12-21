@@ -237,6 +237,7 @@ const mergeStateUpdates = (
     cooldownDurations: { ...prevState.cooldownDurations, ...stateUpdates.cooldownDurations },
     attackWaveTimers: { ...prevState.attackWaveTimers, ...stateUpdates.attackWaveTimers },
     feastState: stateUpdates.feastState || prevState.feastState,
+    boneDevourerState: stateUpdates.boneDevourerState || prevState.boneDevourerState,
     greatFeastState: stateUpdates.greatFeastState || prevState.greatFeastState,
     curseState: stateUpdates.curseState || prevState.curseState,
     frostfallState: stateUpdates.frostfallState || prevState.frostfallState,
@@ -365,6 +366,9 @@ export const createInitialState = (): GameState => ({
   feastState: {
     isActive: false,
     endTime: 0,
+    lastAcceptedLevel: 0,
+  },
+  boneDevourerState: {
     lastAcceptedLevel: 0,
   },
   greatFeastState: {

@@ -380,14 +380,26 @@ export const gameStateSchema = z.object({
       endTime: z.number().default(0),
       lastAcceptedLevel: z.number().default(0),
     })
-    .default({}),
+    .default({
+      isActive: false,
+      endTime: 0,
+      lastAcceptedLevel: 0,
+    }),
+  boneDevourerState: z.object({
+    lastAcceptedLevel: z.number().default(0),
+  }).default({
+    lastAcceptedLevel: 0,
+  }),
 
   greatFeastState: z
     .object({
       isActive: z.boolean().default(false),
       endTime: z.number().default(0),
     })
-    .default({}),
+    .default({
+      isActive: false,
+      endTime: 0,
+    }),
 
   greatFeastActivations: z.number().default(0),
 
@@ -396,7 +408,10 @@ export const gameStateSchema = z.object({
       isActive: z.boolean().default(false),
       endTime: z.number().default(0),
     })
-    .default({}),
+    .default({
+      isActive: false,
+      endTime: 0,
+    }),
 
   combatSkills: z
     .object({
