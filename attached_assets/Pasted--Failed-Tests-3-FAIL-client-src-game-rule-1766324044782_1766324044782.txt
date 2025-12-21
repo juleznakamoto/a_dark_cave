@@ -1,0 +1,60 @@
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Sacrifice Actions > boneTotems with devourer_crown applies +20 silver bonus
+AssertionError: expected 10 to be 30 // Object.is equality
+
+- Expected
++ Received
+
+- 30
++ 10
+
+ ❯ client/src/game/rules/resourceGains.test.ts:923:39
+    921| 
+    922|       // Devourer Crown adds flat +20 silver bonus
+    923|       expect(expectedWith.silver.min).toBe(expectedWithout.silver.min + 20);
+       |                                       ^
+    924|       expect(expectedWith.silver.max).toBe(expectedWithout.silver.max + 20);
+    925|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Sacrifice Actions > boneTotems with devourer_crown and sacrificial_tunic stacks correctly
+AssertionError: expected 12 to be 32 // Object.is equality
+
+- Expected
++ Received
+
+- 32
++ 12
+
+ ❯ client/src/game/rules/resourceGains.test.ts:945:40
+    943|       const expectedMax = multipliedMax + 20;
+    944| 
+    945|       expect(expectedGains.silver.min).toBe(expectedMin);
+       |                                        ^
+    946|       expect(expectedGains.silver.max).toBe(expectedMax);
+    947|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Sacrifice Actions > boneTotems with devourer_crown: tooltip matches actual gains
+AssertionError: expected 45 to be less than or equal to 25
+ ❯ client/src/game/rules/resourceGains.test.ts:971:25
+    969|       const maxActual = Math.max(...actualGains.silver);
+    970|       expect(minActual).toBeGreaterThanOrEqual(tooltipSilver!.min);
+    971|       expect(maxActual).toBeLessThanOrEqual(tooltipSilver!.max);
+       |                         ^
+    972| 
+    973|       // Base 10-25 + 20 bonus = 30-45
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed | 22 passed (23)
+      Tests  3 failed | 369 passed (372)
+   Start at  13:33:46
+   Duration  3.76s
+
+ FAIL  Tests failed. Watching for file changes...
+       press h to show help, press q to quit
