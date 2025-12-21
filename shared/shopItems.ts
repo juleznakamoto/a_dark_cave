@@ -3,6 +3,7 @@ export interface ShopItemRewards {
   tools?: string[];
   weapons?: string[];
   blessings?: string[];
+  relics?: string[];
   feastActivations?: number;
 }
 
