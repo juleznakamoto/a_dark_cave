@@ -47,9 +47,10 @@ function createBoneDevourerEvent(config: BoneDevourerConfig): GameEvent {
     },
     triggerType: "resource",
     timeProbability: (state: GameState) => {
-      // First appearance: 10 minutes, repeated appearances: 25 minutes
-      const hasBeenTriggered = state.triggeredEvents?.[eventId];
-      return hasBeenTriggered ? 25 : 0.010;
+      // First appearance of this level: 10 minutes
+      // After being seen (regardless of accept/decline): 25 minutes
+      const hasBeenSeen = state.triggeredEvents?.[`${eventId}_seen`];
+      return hasBeenSeen ? 25 : 10;
     },
     title: "The Bone Devourer",
     message: (state: GameState) => {
@@ -88,6 +89,7 @@ function createBoneDevourerEvent(config: BoneDevourerConfig): GameEvent {
             triggeredEvents: {
               ...(state.triggeredEvents || {}),
               [eventId]: true,
+              [`${eventId}_seen`]: true,
             },
             _logMessage: `The creature takes the bones with its gnarled hands, as if attempting to count them. It places a pouch of silver at your feet and disappears into the darkness.`,
           };
@@ -100,6 +102,10 @@ function createBoneDevourerEvent(config: BoneDevourerConfig): GameEvent {
           state: GameState,
         ): Partial<GameState> & { _logMessage?: string } => {
           return {
+            triggeredEvents: {
+              ...(state.triggeredEvents || {}),
+              [`${eventId}_seen`]: true,
+            },
             _logMessage:
               "You refuse the creature's offer. It hisses in displeasure and retreats into the shadows. You sense it will return.",
           };
