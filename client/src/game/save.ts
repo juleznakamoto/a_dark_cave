@@ -295,44 +295,18 @@ export async function saveGame(
           stateDiff.playTime = Math.floor(stateDiff.playTime);
         }
 
-        // Deep clone and sanitize the diff to remove non-serializable data
-        const sanitizedDiff = JSON.parse(JSON.stringify(sanitizedState));
-
-        // CRITICAL: When restarting game (allowOverwrite=true), ensure playTime is in the diff
-        // Otherwise the database will reject the save due to OCC violation
-        if (gameState.allowPlaytimeOverwrite && !sanitizedDiff.playTime) {
-          logger.warn('[SAVE CLOUD] ⚠️ allowPlaytimeOverwrite is true but playTime not in diff - adding it');
-          sanitizedDiff.playTime = gameState.playTime;
-        }
-
         // Save via Edge Function (handles auth, rate limiting, and trust)
         const supabaseClient = await getSupabaseClient();
-
+        
         // Verify we have an active session (Supabase client will automatically include the JWT)
         const { data: { session } } = await supabaseClient.auth.getSession();
         if (!session) {
           throw new Error('No active session');
         }
-
-        const playTime = gameState.playTime; // For logging purposes
-        const allowOverwrite = gameState.allowPlaytimeOverwrite || false; // For logging purposes
-
-        logger.log('[SAVE CLOUD] 💾 Calling database RPC with OCC validation...', {
-            hasClickAnalytics: !!clickData,
-            clickAnalyticsKeys: clickData ? Object.keys(clickData) : [],
-            hasResourceAnalytics: !!resourceData,
-            resourceAnalyticsKeys: resourceData ? Object.keys(resourceData) : [],
-            diffSize: JSON.stringify(sanitizedDiff).length,
-            playTime,
-            playTimeInDiff: sanitizedDiff.playTime,
-            isNewGame,
-            allowOverwrite,
-            allowPlaytimeOverwriteFlag: gameState.allowPlaytimeOverwrite
-          });
-
+        
         const { data, error } = await supabaseClient.functions.invoke('save-game', {
           body: {
-            gameStateDiff: sanitizedDiff,
+            gameStateDiff: stateDiff,
             clickAnalytics: clickData,
             resourceAnalytics: resourceData,
             clearAnalytics: isNewGame,
@@ -341,39 +315,25 @@ export async function saveGame(
         });
 
         if (error) {
-          // Try to extract more details from the error response
-          let errorDetails = {
+          logger.error('[SAVE CLOUD] Edge Function error details:', {
             error,
             message: error.message,
             context: error.context,
-          };
-
-          // If there's a response body with more details, log it
-          if (error.context instanceof Response) {
-            try {
-              const responseText = await error.context.text();
-              errorDetails = { ...errorDetails, responseBody: responseText };
-            } catch (e) {
-              // Ignore if we can't read the response
-            }
-          }
-
-          logger.error('[SAVE CLOUD] Edge Function error details:', errorDetails);
+          });
           throw error;
         }
-
+        
         logger.log('[SAVE CLOUD] Edge Function success:', data);
 
         // Update lastCloudState only after successful cloud save
         await db.put("lastCloudState", sanitizedState, LAST_CLOUD_STATE_KEY);
         logger.log("[SAVE] ✅ Updated lastCloudState after successful cloud save");
 
-        // Clear the allowPlayTimeOverwrite flag after successful AUTOSAVE only
-        // Manual saves from restartGame() should not clear it yet
-        if (gameState.allowPlaytimeOverwrite && isAutosave) {
+        // Clear the allowPlayTimeOverwrite flag after successful save
+        if (gameState.allowPlaytimeOverwrite) {
           const { useGameStore } = await import("./state");
           useGameStore.setState({ allowPlaytimeOverwrite: false });
-          logger.log("[SAVE] 🔓 Cleared allowPlayTimeOverwrite flag after successful autosave");
+          logger.log("[SAVE] 🔓 Cleared allowPlayTimeOverwrite flag after successful cloud save");
         }
       }
     } catch (cloudError) {
@@ -470,7 +430,7 @@ export async function loadGame(): Promise<GameState | null> {
             logger.log("[LOAD] ☁️ Cloud save is newer - using cloud save");
 
             const { formatSaveTimestamp } = await import("@/lib/utils");
-
+            
             const stateWithDefaults = {
               ...cloudSave.gameState,
               cooldownDurations: cloudSave.gameState.cooldownDurations || {},
@@ -506,7 +466,7 @@ export async function loadGame(): Promise<GameState | null> {
           logger.log("[LOAD] ☁️ Using cloud save (no local save)");
 
           const { formatSaveTimestamp } = await import("@/lib/utils");
-
+          
           const stateWithDefaults = {
             ...cloudSave.gameState,
             cooldownDurations: cloudSave.gameState.cooldownDurations || {},

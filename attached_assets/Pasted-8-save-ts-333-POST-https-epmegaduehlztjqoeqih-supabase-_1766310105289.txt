@@ -1,0 +1,64 @@
+8, …}
+save.ts:333  POST https://epmegaduehlztjqoeqih.supabase.co/functions/v1/save-game 400 (Bad Request)
+(anonymous) @ @supabase_supabase-js.js?v=cfcc4e86:5633
+(anonymous) @ @supabase_supabase-js.js?v=cfcc4e86:5654
+await in (anonymous)
+(anonymous) @ @supabase_supabase-js.js?v=cfcc4e86:1221
+(anonymous) @ @supabase_supabase-js.js?v=cfcc4e86:1318
+(anonymous) @ chunk-WXTWEME6.js?v=cfcc4e86:147
+__awaiter @ chunk-WXTWEME6.js?v=cfcc4e86:129
+invoke @ @supabase_supabase-js.js?v=cfcc4e86:1287
+saveGame @ save.ts:333
+await in saveGame
+restartGame @ state.ts:865
+await in restartGame
+handleConfirmRestart @ ProfileMenu.tsx:133
+await in handleConfirmRestart
+handleClick @ button.tsx:30
+callCallback2 @ chunk-276SZO74.js?v=cfcc4e86:3674
+invokeGuardedCallbackDev @ chunk-276SZO74.js?v=cfcc4e86:3699
+invokeGuardedCallback @ chunk-276SZO74.js?v=cfcc4e86:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-276SZO74.js?v=cfcc4e86:3736
+executeDispatch @ chunk-276SZO74.js?v=cfcc4e86:7014
+processDispatchQueueItemsInOrder @ chunk-276SZO74.js?v=cfcc4e86:7034
+processDispatchQueue @ chunk-276SZO74.js?v=cfcc4e86:7043
+dispatchEventsForPlugins @ chunk-276SZO74.js?v=cfcc4e86:7051
+(anonymous) @ chunk-276SZO74.js?v=cfcc4e86:7174
+batchedUpdates$1 @ chunk-276SZO74.js?v=cfcc4e86:18913
+batchedUpdates @ chunk-276SZO74.js?v=cfcc4e86:3579
+dispatchEventForPluginEventSystem @ chunk-276SZO74.js?v=cfcc4e86:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-276SZO74.js?v=cfcc4e86:5478
+dispatchEvent @ chunk-276SZO74.js?v=cfcc4e86:5472
+dispatchDiscreteEvent @ chunk-276SZO74.js?v=cfcc4e86:5449Understand this error
+logger.ts:43 v257Z [SAVE CLOUD] Edge Function error details: {error: FunctionsHttpError: Edge Function returned a non-2xx status code
+    at FunctionsClient.<anonymous>…, message: 'Edge Function returned a non-2xx status code', context: Response, responseBody: '{"error":"OCC violation: new playTime (0) must be …equestId":"e37e42f6-1efd-456f-bb8b-c66898840486"}'}context: Response {type: 'cors', url: 'https://epmegaduehlztjqoeqih.supabase.co/functions/v1/save-game', redirected: false, status: 400, ok: false, …}error: FunctionsHttpError: Edge Function returned a non-2xx status code
+    at FunctionsClient.<anonymous> (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@supabase_supabase-js.js?v=cfcc4e86:1338:17)
+    at Generator.next (<anonymous>)
+    at fulfilled (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-WXTWEME6.js?v=cfcc4e86:132:24)message: "Edge Function returned a non-2xx status code"responseBody: "{\"error\":\"OCC violation: new playTime (0) must be greater than existing playTime (48784029.599999994)\",\"requestId\":\"e37e42f6-1efd-456f-bb8b-c66898840486\"}"[[Prototype]]: Object
+error @ logger.ts:43
+saveGame @ save.ts:361
+await in saveGame
+restartGame @ state.ts:865
+await in restartGame
+handleConfirmRestart @ ProfileMenu.tsx:133
+await in handleConfirmRestart
+handleClick @ button.tsx:30
+callCallback2 @ chunk-276SZO74.js?v=cfcc4e86:3674
+invokeGuardedCallbackDev @ chunk-276SZO74.js?v=cfcc4e86:3699
+invokeGuardedCallback @ chunk-276SZO74.js?v=cfcc4e86:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-276SZO74.js?v=cfcc4e86:3736
+executeDispatch @ chunk-276SZO74.js?v=cfcc4e86:7014
+processDispatchQueueItemsInOrder @ chunk-276SZO74.js?v=cfcc4e86:7034
+processDispatchQueue @ chunk-276SZO74.js?v=cfcc4e86:7043
+dispatchEventsForPlugins @ chunk-276SZO74.js?v=cfcc4e86:7051
+(anonymous) @ chunk-276SZO74.js?v=cfcc4e86:7174
+batchedUpdates$1 @ chunk-276SZO74.js?v=cfcc4e86:18913
+batchedUpdates @ chunk-276SZO74.js?v=cfcc4e86:3579
+dispatchEventForPluginEventSystem @ chunk-276SZO74.js?v=cfcc4e86:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-276SZO74.js?v=cfcc4e86:5478
+dispatchEvent @ chunk-276SZO74.js?v=cfcc4e86:5472
+dispatchDiscreteEvent @ chunk-276SZO74.js?v=cfcc4e86:5449Understand this error
+logger.ts:43 v257Z [SAVE] Cloud save failed: FunctionsHttpError: Edge Function returned a non-2xx status code
+    at FunctionsClient.<anonymous> (@supabase_supabase-js.js?v=cfcc4e86:1338:17)
+    at Generator.next (<anonymous>)
+    at fulfilled (chunk-WXTWEME6.js?v=cfcc4e86:132:24)
