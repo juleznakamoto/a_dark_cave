@@ -341,17 +341,29 @@ body {
 }
 
 @keyframes log-fade-out {
-  from {
+  0% {
     opacity: 1;
   }
-
-  to {
+  100% {
     opacity: 0;
   }
 }
 
 .log-fade-out {
   animation: log-fade-out 4.5s ease-out forwards;
+}
+
+@keyframes compass-glow {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(251, 191, 36, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(251, 191, 36, 0.8), 0 0 30px rgba(251, 191, 36, 0.6);
+  }
+}
+
+.compass-glow {
+  animation: compass-glow 3s ease-in-out;
 }
 
 /* Notification dot pulsating animation */

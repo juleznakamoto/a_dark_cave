@@ -103,6 +103,9 @@ interface GameStore extends GameState {
   cooldowns: Record<string, number>;
   cooldownDurations: Record<string, number>; // Track initial duration for each cooldown
 
+  // Compass glow effect
+  compassGlowButton: string | null; // Action ID of button to glow
+
   // Focus system
   focusState: {
     isActive: boolean;
@@ -173,6 +176,7 @@ interface GameStore extends GameState {
   updatePopulation: () => void;
   setCooldown: (action: string, duration: number) => void;
   tickCooldowns: () => void;
+  setCompassGlow: (actionId: string | null) => void;
   addLogEntry: (entry: LogEntry) => void;
   checkEvents: () => void;
   applyEventChoice: (choiceId: string, eventId: string) => void;
@@ -428,6 +432,9 @@ export const createInitialState = (): GameState => ({
   cooldowns: {},
   cooldownDurations: {}, // Initialize cooldownDurations
 
+  // Initialize compass glow
+  compassGlowButton: null,
+
   // Initialize analytics tracking
   clickAnalytics: {},
   lastResourceSnapshotTime: 0,
@@ -673,6 +680,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
       result.stateUpdates.cooldowns = updatedCooldowns;
     }
 
+    // Handle compass bonus glow effect
+    if ((result.stateUpdates as any).compassBonusTriggered) {
+      get().setCompassGlow(actionId);
+      setTimeout(() => {
+        get().setCompassGlow(null);
+      }, 3000);
+    }
+
     // Apply state updates
     set((prevState) => {
       const mergedUpdates = mergeStateUpdates(prevState, result.stateUpdates);
@@ -738,6 +753,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
       cooldowns: { ...state.cooldowns, [action]: finalDuration },
       cooldownDurations: { ...state.cooldownDurations, [action]: finalDuration },
     }));
+  },
+
+  setCompassGlow: (actionId: string | null) => {
+    set({ compassGlowButton: actionId });
   },
 
   tickCooldowns: () => {
