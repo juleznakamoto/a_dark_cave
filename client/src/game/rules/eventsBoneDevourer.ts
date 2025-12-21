@@ -50,7 +50,7 @@ function createBoneDevourerEvent(config: BoneDevourerConfig): GameEvent {
     timeProbability: (state: GameState) => {
       // First appearance: 10 minutes, repeated appearances: 25 minutes
       const hasBeenTriggered = state.triggeredEvents?.[eventId];
-      return hasBeenTriggered ? 25 : 10;
+      return hasBeenTriggered ? 25 : 0.010;
     },
     title: "The Bone Devourer",
     message: (state: GameState) => {
