@@ -148,59 +148,26 @@ function handleTotemSacrifice(
     return result; // Not enough resources
   }
 
-  // Apply the dynamic cost and get base effects (including random resource gains)
+  // Apply the dynamic cost
   const effectUpdates = applyActionEffects(actionId, state);
 
-  // Store the resource deltas from applyActionEffects (what was generated)
-  const resourceDeltas: Record<string, number> = {};
-  if (effectUpdates.resources) {
-    Object.keys(effectUpdates.resources).forEach((key) => {
-      const generated = effectUpdates.resources![key];
-      const original = state.resources[key as keyof typeof state.resources] || 0;
-      if (generated !== original) {
-        resourceDeltas[key] = generated - original;
-      }
-    });
-  }
-
-  // Get action bonuses (e.g., devourer_crown +20 silver for boneTotems)
-  const actionBonuses = getActionBonuses(actionId, state);
-  
-  // Apply bonuses to the deltas
-  Object.keys(resourceDeltas).forEach((resource) => {
-    if (resource !== totemResource) {
-      let delta = resourceDeltas[resource];
-      
-      // Apply multiplier first if exists
-      if (actionBonuses.resourceMultiplier > 1) {
-        delta = Math.floor(delta * actionBonuses.resourceMultiplier);
-      }
-      
-      // Then apply flat bonus if exists for this resource
-      if (actionBonuses.resourceBonus && actionBonuses.resourceBonus[resource]) {
-        delta += actionBonuses.resourceBonus[resource];
-      }
-      
-      resourceDeltas[resource] = delta;
-    }
-  });
-
-  // Create fresh resources object with current state
   if (!effectUpdates.resources) {
     effectUpdates.resources = { ...state.resources };
-  } else {
-    effectUpdates.resources = { ...state.resources };
   }
 
-  // Apply the dynamic totem cost
+  // Override the cost with dynamic pricing
   effectUpdates.resources[totemResource] =
     (state.resources[totemResource] || 0) - currentCost;
 
-  // Apply the resource deltas (already includes bonuses)
-  Object.entries(resourceDeltas).forEach(([resource, delta]) => {
-    effectUpdates.resources![resource] =
-      (effectUpdates.resources![resource] || 0) + delta;
-  });
+  // Apply action bonuses (e.g., devourer_crown +20 silver for boneTotems)
+  const actionBonuses = getActionBonuses(actionId, state);
+  if (actionBonuses.resourceBonus) {
+    Object.entries(actionBonuses.resourceBonus).forEach(([resource, bonus]) => {
+      if (effectUpdates.resources![resource] !== undefined) {
+        effectUpdates.resources![resource] += bonus;
+      }
+    });
+  }
 
   // Track usage count for next time
   if (!effectUpdates.story) {
