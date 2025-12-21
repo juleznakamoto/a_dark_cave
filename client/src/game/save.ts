@@ -297,6 +297,13 @@ export async function saveGame(
 
         // Save via Edge Function (handles auth, rate limiting, and trust)
         const supabaseClient = await getSupabaseClient();
+        
+        // Get the current session to ensure we have a valid JWT
+        const { data: { session } } = await supabaseClient.auth.getSession();
+        if (!session) {
+          throw new Error('No active session');
+        }
+        
         const { data, error } = await supabaseClient.functions.invoke('save-game', {
           body: {
             gameStateDiff: stateDiff,
@@ -304,12 +311,22 @@ export async function saveGame(
             resourceAnalytics: resourceData,
             clearAnalytics: isNewGame,
             allowPlaytimeOverwrite: gameState.allowPlaytimeOverwrite || false
+          },
+          headers: {
+            Authorization: `Bearer ${session.access_token}`
           }
         });
 
         if (error) {
+          logger.error('[SAVE CLOUD] Edge Function error details:', {
+            error,
+            message: error.message,
+            context: error.context,
+          });
           throw error;
         }
+        
+        logger.log('[SAVE CLOUD] Edge Function success:', data);
 
         // Update lastCloudState only after successful cloud save
         await db.put("lastCloudState", sanitizedState, LAST_CLOUD_STATE_KEY);
