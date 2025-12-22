@@ -199,15 +199,8 @@ export default function FullGamePurchaseDialog({
   onClose,
 }: FullGamePurchaseDialogProps) {
   const gameState = useGameStore();
-  const requiresPurchase =
-    gameState.story?.seen?.villageElderDecision && gameState.BTP === 1;
-
-  // Prevent closing if purchase is required
-  const handleClose = () => {
-    if (!requiresPurchase) {
-      onClose();
-    }
-  };
+  // Always require purchase - dialog should only close after successful purchase
+  const requiresPurchase = true;
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [currency, setCurrency] = useState<"EUR" | "USD">("USD");
   const [currentUser, setCurrentUser] = useState<{
@@ -313,12 +306,12 @@ export default function FullGamePurchaseDialog({
   return (
     <Dialog
       open={isOpen}
-      onOpenChange={requiresPurchase ? undefined : handleClose}
+      onOpenChange={undefined}
     >
       <DialogContent
         className="max-w-md [&>button]:hidden"
-        onEscapeKeyDown={(e) => requiresPurchase && e.preventDefault()}
-        onPointerDownOutside={(e) => requiresPurchase && e.preventDefault()}
+        onEscapeKeyDown={(e) => e.preventDefault()}
+        onPointerDownOutside={(e) => e.preventDefault()}
       >
         <DialogHeader>
           <DialogTitle>The Journey Continues</DialogTitle>
@@ -331,22 +324,35 @@ export default function FullGamePurchaseDialog({
           <div className="space-y-4">
             <div className="border rounded-lg p-4 bg-muted/50">
               <div className="flex items-start justify-between mb-2">
-                <div>
+                <div className="flex-1">
                   <h3 className="font-semibold text-lg">{item.name}</h3>
                   <p className="text-sm text-muted-foreground mt-1">
                     {item.description}
                   </p>
                 </div>
               </div>
-              <div className="mt-3">
-                <span className="text-2xl font-bold">
-                  {item.originalPrice && (
-                    <span className="line-through text-muted-foreground mr-2 text-lg">
-                      {formatPrice(item.originalPrice)}
-                    </span>
-                  )}
-                  {formatPrice(item.price)}
-                </span>
+              <div className="mt-3 flex items-start gap-4">
+                <div className="flex-shrink-0">
+                  <div className="text-2xl font-bold">
+                    {item.originalPrice && (
+                      <span className="line-through text-muted-foreground mr-2 text-lg">
+                        {formatPrice(item.originalPrice)}
+                      </span>
+                    )}
+                    {formatPrice(item.price)}
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    One time purchase. No subscriptions.<br/>No microtransactions.
+                  </p>
+                </div>
+                <div className="flex-1 text-sm text-muted-foreground border-l border-border pl-4">
+                  <ul className="space-y-1">
+                    <li>• ~14 hours of gameplay</li>
+                    <li>• 50+ buildings</li>
+                    <li>• 150+ items, characters, books</li>
+                    <li>• 50+ achievements</li>
+                  </ul>
+                </div>
               </div>
             </div>
             {!currentUser && (
@@ -368,18 +374,6 @@ export default function FullGamePurchaseDialog({
               </Button>
             </div>
 
-            {!requiresPurchase && (
-              <div className="flex gap-3 justify-center">
-                <Button
-                  variant="outline"
-                  onClick={onClose}
-                  className="w-full"
-                  button_id="full-game-come-back-later"
-                >
-                  Come Back Later
-                </Button>
-              </div>
-            )}
             <div className="bg-gray-600/10 border border-gray-600/50 rounded-lg p-3">
               <p className="text-sm text-blue-200">
                 Your progress is saved. You can return at any time and continue where you left off.
