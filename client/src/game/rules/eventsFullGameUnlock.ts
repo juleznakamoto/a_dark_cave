@@ -52,7 +52,7 @@ export const fullGameUnlockEvents: Record<string, GameEvent> = {
     timeProbability: 5,
     title: "The Time Has Come",
     message:
-      "The village elder returns, his expression grave and resolute. 'The time has come,' he says, his voice carrying the weight of destiny. 'You have walked far on this path, and now you must decide: will you continue this journey into the unknown?'",
+      "The village elder returns, his expression grave. 'The time has come,' he says. 'You have taken your first steps on a long and unforgiving path. What lies ahead is deeper, darker, and more demanding. Decide now whether you will continue this journey.'",
     triggered: false,
     priority: 5,
     visualEffect: {
@@ -62,8 +62,8 @@ export const fullGameUnlockEvents: Record<string, GameEvent> = {
     repeatable: false,
     choices: [
       {
-        id: "consider",
-        label: "I will consider it",
+        id: "nod",
+        label: "Nod silently",
         effect: (state: GameState) => {
           return {
             story: {
@@ -74,7 +74,7 @@ export const fullGameUnlockEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "You tell the elder you will consider his words carefully. He nods slowly, understanding the weight of the choice before you, and departs into the gathering dusk.",
+              "The elder looks at you, understanding the weight of the choice before you, then departs into the gathering dusk.",
           };
         },
       },
