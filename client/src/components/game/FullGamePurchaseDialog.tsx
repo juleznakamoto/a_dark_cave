@@ -345,9 +345,10 @@ export default function FullGamePurchaseDialog({
                   <h4 className="font-semibold text-foreground mb-2">Game Content</h4>
                   <ul className="space-y-1">
                     <li>• ~14 hours of gameplay</li>
-                    <li>• 50+ buildings</li>
-                    <li>• 150+ items, characters, books</li>
-                    <li>• 50+ achievements</li>
+                    <li>• 100+ structures</li>
+                    <li>• 250+ items, fellowship members, books, blessings ...</li>
+                    <li>• 50+ achievements</li>                    <li>• Dark and challenging story based on your choices</li>
+
                   </ul>
                 </div>
               </div>
