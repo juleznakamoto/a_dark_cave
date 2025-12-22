@@ -311,11 +311,15 @@ export default function FullGamePurchaseDialog({
         onPointerDownOutside={(e) => e.preventDefault()}
       >
         <DialogHeader>
-          <DialogTitle>The Journey Continues</DialogTitle>
-          <DialogDescription className="text-sm text-gray-400 mt-2">
-            You have reached the end of the trial. The full journey awaits
-            beyond this point.
-          </DialogDescription>
+          <DialogTitle>
+            {!clientSecret ? "The Journey Continues" : "Complete Your Purchase"}
+          </DialogTitle>
+          {!clientSecret && (
+            <DialogDescription className="text-sm text-gray-400 mt-2">
+              You have reached the end of the trial. The full journey awaits
+              beyond this point.
+            </DialogDescription>
+          )}
         </DialogHeader>
         {!clientSecret ? (
           <div className="space-y-4">
