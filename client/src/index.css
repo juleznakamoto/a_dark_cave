@@ -354,16 +354,16 @@ body {
 }
 
 @keyframes compass-glow {
-  0%, 100% {
-    box-shadow: 0 0 5px rgba(251, 191, 36, 0.5);
+  0% {
+    box-shadow: 0 0 6px rgba(251, 191, 36, 1);
   }
-  50% {
-    box-shadow: 0 0 20px rgba(251, 191, 36, 0.8), 0 0 30px rgba(251, 191, 36, 0.6);
+  100% {
+    box-shadow: 0 0 6 rgba(251, 191, 36, 1), 0 0 8px rgba(251, 191, 36, 1);
   }
 }
 
 .compass-glow {
-  animation: compass-glow 3s ease-in-out;
+  animation: compass-glow 1s ease-in-out;
 }
 
 /* Notification dot pulsating animation */
