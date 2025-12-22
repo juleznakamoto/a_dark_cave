@@ -304,10 +304,7 @@ export default function FullGamePurchaseDialog({
   };
 
   return (
-    <Dialog
-      open={isOpen}
-      onOpenChange={undefined}
-    >
+    <Dialog open={isOpen} onOpenChange={undefined}>
       <DialogContent
         className="max-w-md [&>button]:hidden"
         onEscapeKeyDown={(e) => e.preventDefault()}
@@ -338,15 +335,16 @@ export default function FullGamePurchaseDialog({
                     {formatPrice(item.price)}
                   </div>
                   <p className="text-xs text-muted-foreground mt-1">
-                    One time purchase. No subscriptions.<br/>No microtransactions.
+                    One time purchase. No subscriptions. No microtransactions.
                   </p>
                 </div>
                 <div className="text-sm text-muted-foreground border-t border-border pt-4">
-                  <h4 className="font-semibold text-foreground mb-2">Game Content</h4>
                   <ul className="space-y-1">
                     <li>• ~14 hours of gameplay</li>
                     <li>• 100+ structures</li>
-                    <li>• 250+ items, fellowship members, books, blessings ...</li>
+                    <li>
+                      • 250+ items, fellowship members, books, blessings...
+                    </li>
                     <li>• 50+ achievements</li>
                     <li>• Dark and challenging story based on your choices</li>
                   </ul>
@@ -374,7 +372,8 @@ export default function FullGamePurchaseDialog({
 
             <div className="bg-gray-600/10 border border-gray-600/50 rounded-lg p-3">
               <p className="text-sm text-gray-400">
-                Your progress is saved. You can return at any time and continue where you left off.
+                Your progress is saved. You can return at any time and continue
+                where you left off.
               </p>
             </div>
           </div>
