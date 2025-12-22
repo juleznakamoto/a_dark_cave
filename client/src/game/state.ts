@@ -49,6 +49,7 @@ interface GameStore extends GameState {
   authDialogOpen: boolean;
   shopDialogOpen: boolean;
   leaderboardDialogOpen: boolean;
+  fullGamePurchaseDialogOpen: boolean;
   idleModeDialog: {
     isOpen: boolean;
   };
@@ -187,6 +188,7 @@ interface GameStore extends GameState {
   setAuthDialogOpen: (isOpen: boolean) => void;
   setShopDialogOpen: (isOpen: boolean) => void;
   setLeaderboardDialogOpen: (isOpen: boolean) => void;
+  setFullGamePurchaseDialogOpen: (isOpen: boolean) => void;
   setIdleModeDialog: (isOpen: boolean) => void;
   setRestartGameDialogOpen: (isOpen: boolean) => void;
   updateEffects: () => void;
@@ -509,6 +511,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   authDialogOpen: false,
   shopDialogOpen: false,
   leaderboardDialogOpen: false,
+  fullGamePurchaseDialogOpen: false,
   isMuted: false,
   idleModeDialog: {
     isOpen: false,
@@ -1407,6 +1410,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   setLeaderboardDialogOpen: (isOpen: boolean) => {
     set({ leaderboardDialogOpen: isOpen });
+  },
+
+  setFullGamePurchaseDialogOpen: (isOpen: boolean) => {
+    set({ fullGamePurchaseDialogOpen: isOpen });
   },
 
   setIdleModeDialog: (isOpen: boolean) => {

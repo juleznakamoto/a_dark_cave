@@ -177,6 +177,7 @@ export function startGameLoop() {
       state.authDialogOpen ||
       state.shopDialogOpen ||
       state.leaderboardDialogOpen ||
+      state.fullGamePurchaseDialogOpen ||
       state.idleModeDialog.isOpen ||
       state.restartGameDialogOpen;
     const isPaused = state.isPaused || isDialogOpen;

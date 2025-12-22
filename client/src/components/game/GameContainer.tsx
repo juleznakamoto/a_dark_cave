@@ -16,6 +16,7 @@ import MerchantDialog from "./MerchantDialog";
 import CubeDialog from "./CubeDialog";
 import InactivityDialog from "./InactivityDialog";
 import { RestartGameDialog } from "./RestartGameDialog";
+import FullGamePurchaseDialog from "./FullGamePurchaseDialog";
 import { useState, useEffect, useMemo, useRef } from "react";
 import { LimelightNav, NavItem } from "@/components/ui/limelight-nav";
 import { Mountain, Trees, Castle, Landmark } from "lucide-react";
@@ -206,6 +207,15 @@ export default function GameContainer() {
     return <StartScreen />;
   }
 
+  // State selectors for dialogs
+  const shopDialogOpen = useGameStore((state) => state.shopDialogOpen);
+  const setShopDialogOpen = useGameStore((state) => state.setShopDialogOpen);
+  const leaderboardDialogOpen = useGameStore((state) => state.leaderboardDialogOpen);
+  const setLeaderboardDialogOpen = useGameStore((state) => state.setLeaderboardDialogOpen);
+  const fullGamePurchaseDialogOpen = useGameStore((state) => state.fullGamePurchaseDialogOpen);
+  const setFullGamePurchaseDialogOpen = useGameStore((state) => state.setFullGamePurchaseDialogOpen);
+
+
   return (
     <div className="fixed inset-0 bg-background text-foreground flex flex-col">
       {/* Pause Overlay - covers everything except footer and profile menu */}
@@ -390,6 +400,18 @@ export default function GameContainer() {
       <IdleModeDialog />
       <MerchantDialog />
       <CubeDialog />
+      <ShopDialog
+        isOpen={shopDialogOpen}
+        onClose={() => setShopDialogOpen(false)}
+      />
+      <LeaderboardDialog
+        isOpen={leaderboardDialogOpen}
+        onClose={() => setLeaderboardDialogOpen(false)}
+      />
+      <FullGamePurchaseDialog
+        isOpen={fullGamePurchaseDialogOpen}
+        onClose={() => setFullGamePurchaseDialogOpen(false)}
+      />
       {inactivityDialogOpen && <InactivityDialog />}
 
       {/* Restart Game Dialog */}

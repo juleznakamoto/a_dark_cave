@@ -5,10 +5,16 @@ import { GameState } from "@shared/schema";
 export const fullGameUnlockEvents: Record<string, GameEvent> = {
   villageElderNotice: {
     id: "villageElderNotice",
-    condition: (state: GameState) =>
-      state.BTP === 1 &&
-      state.buildings.darkEstate >= 1 &&
-      !state.story.seen.villageElderNotice,
+    condition: (state: GameState) => {
+      // Check if full_game has been purchased
+      const hasFullGame = Object.keys(state.activatedPurchases || {}).some(
+        key => (key === 'full_game' || key.startsWith('purchase-full_game-')) && state.activatedPurchases?.[key]
+      );
+      return state.BTP === 1 &&
+        state.buildings.darkEstate >= 1 &&
+        !state.story.seen.villageElderNotice &&
+        !hasFullGame;
+    },
     triggerType: "time",
     timeProbability: 5,
     title: "The Elder's Notice",
@@ -43,11 +49,17 @@ export const fullGameUnlockEvents: Record<string, GameEvent> = {
 
   villageElderDecision: {
     id: "villageElderDecision",
-    condition: (state: GameState) =>
-      state.BTP === 1 &&
-      state.story.seen.villageElderNotice &&
-      state.books.book_of_trials &&
-      !state.story.seen.villageElderDecision,
+    condition: (state: GameState) => {
+      // Check if full_game has been purchased
+      const hasFullGame = Object.keys(state.activatedPurchases || {}).some(
+        key => (key === 'full_game' || key.startsWith('purchase-full_game-')) && state.activatedPurchases?.[key]
+      );
+      return state.BTP === 1 &&
+        state.story.seen.villageElderNotice &&
+        state.books.book_of_trials &&
+        !state.story.seen.villageElderDecision &&
+        !hasFullGame;
+    },
     triggerType: "time",
     timeProbability: 5,
     title: "The Time Has Come",
@@ -65,6 +77,12 @@ export const fullGameUnlockEvents: Record<string, GameEvent> = {
         id: "nod",
         label: "Nod silently",
         effect: (state: GameState) => {
+          // Open the full game purchase dialog
+          setTimeout(() => {
+            const { useGameStore } = require('@/game/state');
+            useGameStore.getState().setFullGamePurchaseDialogOpen(true);
+          }, 500);
+
           return {
             story: {
               ...state.story,
