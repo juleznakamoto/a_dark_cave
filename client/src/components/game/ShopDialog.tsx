@@ -677,6 +677,31 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     const item = SHOP_ITEMS[itemId];
     if (!item) return;
 
+    // Handle Full Game activation/deactivation
+    if (itemId === "full_game") {
+      const isCurrentlyActivated = activatedPurchases[purchaseId] || false;
+
+      // Toggle activation state
+      useGameStore.setState((state) => ({
+        activatedPurchases: {
+          ...state.activatedPurchases,
+          [purchaseId]: !isCurrentlyActivated,
+        },
+      }));
+
+      gameState.addLogEntry({
+        id: `toggle-full-game-${Date.now()}`,
+        message: isCurrentlyActivated
+          ? "Full Game mode deactivated. New games will use normal mode."
+          : item.activationMessage ||
+            "Full Game activated! Start a new game to play without microtransactions.",
+        timestamp: Date.now(),
+        type: "system",
+      });
+
+      return;
+    }
+
     // Handle Cruel Mode activation/deactivation
     if (itemId === "cruel_mode") {
       const isCurrentlyActivated = activatedPurchases[purchaseId] || false;
@@ -844,7 +869,16 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                   </p>
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                  {Object.values(SHOP_ITEMS).map((item) => (
+                  {Object.values(SHOP_ITEMS).filter((item) => {
+                    const isBTPActive = gameState.BTP === 1;
+                    if (isBTPActive) {
+                      // In BTP mode, only show full_game and cruel_mode
+                      return item.id === "full_game" || item.id === "cruel_mode";
+                    } else {
+                      // In normal mode, hide full_game
+                      return item.id !== "full_game";
+                    }
+                  }).map((item) => (
                     <Card key={item.id} className="flex flex-col">
                       <CardHeader className="leading-snug p-3 md:p-6 pb-2 md:pb-3 relative">
                         {item.symbol && (
@@ -1173,7 +1207,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
 
                           const isActivated =
                             activatedPurchases[purchaseId] || false;
-                          const isCruelModeItem = itemId === "cruel_mode";
+                          const isToggleable = itemId === "cruel_mode" || itemId === "full_game";
 
                           return (
                             <div
@@ -1183,7 +1217,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                               <div className="flex flex-col">
                                 <span className="text-sm font-medium">
                                   {item.name}
-                                  {isCruelModeItem && (
+                                  {isToggleable && (
                                     <span className="text-md  font-medium ml-2">
                                       (to play activate and start a new game)
                                     </span>
@@ -1197,12 +1231,12 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                                 onClick={() =>
                                   handleActivatePurchase(purchaseId, itemId)
                                 }
-                                disabled={!isCruelModeItem && isActivated}
+                                disabled={!isToggleable && isActivated}
                                 size="sm"
                                 variant={isActivated ? "outline" : "default"}
                                 button_id={`shop-activate-${itemId}`}
                               >
-                                {isCruelModeItem
+                                {isToggleable
                                   ? isActivated
                                     ? "Deactivate"
                                     : "Activate"

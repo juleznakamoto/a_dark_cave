@@ -38,6 +38,22 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     symbolColor: "text-sky-700",
   },
 
+  full_game: {
+    id: "full_game",
+    name: "Full Game (No Microtransactions)",
+    description:
+      "Unlock the complete game experience with enhanced rewards and no microtransactions. Achievements grant bonus silver, longer feasts, better riddle rewards, and improved production buildings.",
+    originalPrice: 1599,
+    price: 799, // 7.99 €
+    rewards: {},
+    canPurchaseMultipleTimes: false,
+    category: "blessing",
+    activationMessage:
+      "Full Game unlocked! Start a new game to play without microtransactions and enhanced rewards.",
+    symbol: "◆",
+    symbolColor: "text-emerald-600",
+  },
+
   cruel_mode: {
     id: "cruel_mode",
     name: "Cruel Mode",

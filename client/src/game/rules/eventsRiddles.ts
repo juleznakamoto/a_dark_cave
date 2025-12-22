@@ -281,20 +281,26 @@ function createRiddleEvent(
 
   const createChoiceEffect = (choice: RiddleChoice) => {
     if (choice.isCorrect) {
-      return (state: GameState) => ({
-        resources: {
-          ...state.resources,
-          gold: state.resources.gold + reward,
-        },
-        events: {
-          ...state.events,
-          [baseEventId]: true,
-          [`${baseEventId}_correct`]: true,
-          [eventId]: true,
-          [oppositeEventId]: true, // Block the opposite variant
-        } as any,
-        _logMessage: SUCCESS_MESSAGES[level](reward),
-      });
+      return (state: GameState) => {
+        // Add +100 gold bonus if BTP mode is active
+        const btpBonus = state.BTP === 1 ? 100 : 0;
+        const totalReward = reward + btpBonus;
+        
+        return {
+          resources: {
+            ...state.resources,
+            gold: state.resources.gold + totalReward,
+          },
+          events: {
+            ...state.events,
+            [baseEventId]: true,
+            [`${baseEventId}_correct`]: true,
+            [eventId]: true,
+            [oppositeEventId]: true, // Block the opposite variant
+          } as any,
+          _logMessage: SUCCESS_MESSAGES[level](totalReward),
+        };
+      };
     }
 
     return (state: GameState) => {

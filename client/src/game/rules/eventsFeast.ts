@@ -89,7 +89,10 @@ function createFeastEvent(config: FeastConfig): GameEvent {
             };
           }
 
-          const feastDuration = 10 * 60 * 1000; // 10 minutes in milliseconds
+          // Base duration is 10 minutes, +5 minutes if BTP mode is active
+          const baseDuration = 10 * 60 * 1000; // 10 minutes in milliseconds
+          const btpBonus = state.BTP === 1 ? 5 * 60 * 1000 : 0; // +5 minutes for BTP
+          const feastDuration = baseDuration + btpBonus;
           const endTime = Date.now() + feastDuration;
 
           return {

@@ -429,8 +429,9 @@ export const gameStateSchema = z.object({
 
   activatedPurchases: z.record(z.boolean()).default({}),
   feastActivations: z.record(z.number()).default({}), // purchaseId -> activations remaining
-  cruelMode: z.boolean().default(false),
-  CM: z.number().default(0),
+  cruelMode: z.boolean().default(false), // Cruel mode flag
+  CM: z.number().default(0), // Number of cruel mode games completed
+  BTP: z.number().default(0), // Buy To Play mode (0 = normal, 1 = BTP active)
   attackWaveTimers: z.record(attackWaveTimerSchema).default({}),
   curseState: z
     .object({
