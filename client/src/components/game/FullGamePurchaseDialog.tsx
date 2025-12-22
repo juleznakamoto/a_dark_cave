@@ -375,7 +375,7 @@ export default function FullGamePurchaseDialog({
             </div>
 
             <div className="bg-gray-600/10 border border-gray-600/50 rounded-lg p-3">
-              <p className="text-sm text-blue-200">
+              <p className="text-sm text-gray-400">
                 Your progress is saved. You can return at any time and continue where you left off.
               </p>
             </div>
