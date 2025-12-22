@@ -12,36 +12,39 @@ export const forestScoutActions: Record<string, Action> = {
       "flags.forestUnlocked": true,
     },
     cost: {},
-    effects: {
-      "resources.food": "random(6,12)",
-      "resources.fur": "random(3,6)",
-      "resources.bones": "random(3,6)",
-      "story.seen.hasHunted": true,
-      "tools.blacksmith_hammer": {
-        probability: (state: any) => {
-          const stoneHuts = state.buildings.stoneHut || 0;
-          let prob = 0.0075 + stoneHuts * 0.01 - state.CM * 0.005;
-          return prob;
+    effects: (state: GameState) => {
+      const isBTP = state.BTP === 1;
+      return {
+        "resources.food": isBTP ? "random(6,14)" : "random(6,12)",
+        "resources.fur": isBTP ? "random(4,7)" : "random(3,6)",
+        "resources.bones": isBTP ? "random(4,7)" : "random(3,6)",
+        "story.seen.hasHunted": true,
+        "tools.blacksmith_hammer": {
+          probability: (state: any) => {
+            const stoneHuts = state.buildings.stoneHut || 0;
+            let prob = 0.0075 + stoneHuts * 0.01 - state.CM * 0.005;
+            return prob;
+          },
+          value: true,
+          condition:
+            "!tools.blacksmith_hammer && !story.seen.blacksmithHammerChoice",
+          logMessage: "",
+          isChoice: true,
+          eventId: "blacksmithHammerChoice",
         },
-        value: true,
-        condition:
-          "!tools.blacksmith_hammer && !story.seen.blacksmithHammerChoice",
-        logMessage: "",
-        isChoice: true,
-        eventId: "blacksmithHammerChoice",
-      },
-      "clothing.red_mask": {
-        probability: (state: any) => {
-          const stoneHuts = state.buildings.stoneHut || 0;
-          let prob = 0.005 + stoneHuts * 0.01 - state.CM * 0.0025;
-          return prob;
+        "clothing.red_mask": {
+          probability: (state: any) => {
+            const stoneHuts = state.buildings.stoneHut || 0;
+            let prob = 0.005 + stoneHuts * 0.01 - state.CM * 0.0025;
+            return prob;
+          },
+          value: true,
+          condition: "!clothing.red_mask && !story.seen.redMaskChoice",
+          logMessage: "",
+          isChoice: true,
+          eventId: "redMaskChoice",
         },
-        value: true,
-        condition: "!clothing.red_mask && !story.seen.redMaskChoice",
-        logMessage: "",
-        isChoice: true,
-        eventId: "redMaskChoice",
-      },
+      };
     },
     cooldown: 8,
   },

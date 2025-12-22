@@ -13,14 +13,17 @@ export const caveMineActions: Record<string, Action> = {
       "resources.food": 10,
       "resources.torch": 1,
     },
-    effects: {
-      "resources.stone": "random(4,8)",
-      "resources.silver": {
-        probability: (state) => state.tools?.natharit_pickaxe ? 0.05 : 0,
-        value: 50,
-        logMessage: "The natharit pickaxe reveals a vein of silver! +50 Silver",
-      },
-      "story.seen.hasMinedStone": true,
+    effects: (state: GameState) => {
+      const bonus = state.BTP === 1 ? 1 : 0;
+      return {
+        "resources.stone": `random(${4 + bonus},${8 + bonus})`,
+        "resources.silver": {
+          probability: (state) => state.tools?.natharit_pickaxe ? 0.05 : 0,
+          value: 50,
+          logMessage: "The natharit pickaxe reveals a vein of silver! +50 Silver",
+        },
+        "story.seen.hasMinedStone": true,
+      };
     },
     cooldown: 15,
     upgrade_key: "mineStone",
@@ -36,14 +39,17 @@ export const caveMineActions: Record<string, Action> = {
       "resources.food": 10,
       "resources.torch": 1,
     },
-    effects: {
-      "resources.iron": "random(4,8)",
-      "resources.silver": {
-        probability: (state) => state.tools?.natharit_pickaxe ? 0.05 : 0,
-        value: 50,
-        logMessage: "The natharit pickaxe reveals a vein of silver! +50 Silver",
-      },
-      "story.seen.hasIron": true,
+    effects: (state: GameState) => {
+      const bonus = state.BTP === 1 ? 1 : 0;
+      return {
+        "resources.iron": `random(${4 + bonus},${8 + bonus})`,
+        "resources.silver": {
+          probability: (state) => state.tools?.natharit_pickaxe ? 0.05 : 0,
+          value: 50,
+          logMessage: "The natharit pickaxe reveals a vein of silver! +50 Silver",
+        },
+        "story.seen.hasIron": true,
+      };
     },
     cooldown: 15,
     upgrade_key: "mineIron",
@@ -59,14 +65,17 @@ export const caveMineActions: Record<string, Action> = {
       "resources.food": 10,
       "resources.torch": 1,
     },
-    effects: {
-      "resources.coal": "random(4,8)",
-      "resources.silver": {
-        probability: (state) => state.tools?.natharit_pickaxe ? 0.05 : 0,
-        value: 50,
-        logMessage: "The natharit pickaxe reveals a vein of silver! +50 Silver",
-      },
-      "story.seen.hasCoal": true,
+    effects: (state: GameState) => {
+      const bonus = state.BTP === 1 ? 1 : 0;
+      return {
+        "resources.coal": `random(${4 + bonus},${8 + bonus})`,
+        "resources.silver": {
+          probability: (state) => state.tools?.natharit_pickaxe ? 0.05 : 0,
+          value: 50,
+          logMessage: "The natharit pickaxe reveals a vein of silver! +50 Silver",
+        },
+        "story.seen.hasCoal": true,
+      };
     },
     cooldown: 15,
     upgrade_key: "mineCoal",
@@ -83,14 +92,17 @@ export const caveMineActions: Record<string, Action> = {
       "resources.food": 30,
       "resources.torch": 2,
     },
-    effects: {
-      "resources.sulfur": "random(4,8)",
-      "resources.silver": {
-        probability: (state) => state.tools?.natharit_pickaxe ? 0.05 : 0,
-        value: 50,
-        logMessage: "The natharit pickaxe reveals a vein of silver! +50 Silver",
-      },
-      "story.seen.hasSulfur": true,
+    effects: (state: GameState) => {
+      const bonus = state.BTP === 1 ? 1 : 0;
+      return {
+        "resources.sulfur": `random(${4 + bonus},${8 + bonus})`,
+        "resources.silver": {
+          probability: (state) => state.tools?.natharit_pickaxe ? 0.05 : 0,
+          value: 50,
+          logMessage: "The natharit pickaxe reveals a vein of silver! +50 Silver",
+        },
+        "story.seen.hasSulfur": true,
+      };
     },
     cooldown: 15,
     upgrade_key: "mineSulfur",
@@ -106,14 +118,17 @@ export const caveMineActions: Record<string, Action> = {
       "resources.food": 50,
       "resources.torch": 5,
     },
-    effects: {
-      "resources.obsidian": "random(3,7)",
-      "resources.silver": {
-        probability: (state) => state.tools?.natharit_pickaxe ? 0.05 : 0,
-        value: 50,
-        logMessage: "The natharit pickaxe reveals a vein of silver! +50 Silver",
-      },
-      "story.seen.hasObsidian": true,
+    effects: (state: GameState) => {
+      const bonus = state.BTP === 1 ? 1 : 0;
+      return {
+        "resources.obsidian": `random(${3 + bonus},${7 + bonus})`,
+        "resources.silver": {
+          probability: (state) => state.tools?.natharit_pickaxe ? 0.05 : 0,
+          value: 50,
+          logMessage: "The natharit pickaxe reveals a vein of silver! +50 Silver",
+        },
+        "story.seen.hasObsidian": true,
+      };
     },
     cooldown: 20,
     upgrade_key: "mineObsidian",
@@ -129,14 +144,17 @@ export const caveMineActions: Record<string, Action> = {
       "resources.food": 100,
       "resources.torch": 10,
     },
-    effects: {
-      "resources.adamant": "random(2,6)",
-      "resources.silver": {
-        probability: (state) => state.tools?.natharit_pickaxe ? 0.05 : 0,
-        value: 50,
-        logMessage: "The natharit pickaxe reveals a vein of silver! +50 Silver",
-      },
-      "story.seen.hasAdamant": true,
+    effects: (state: GameState) => {
+      const bonus = state.BTP === 1 ? 1 : 0;
+      return {
+        "resources.adamant": `random(${2 + bonus},${6 + bonus})`,
+        "resources.silver": {
+          probability: (state) => state.tools?.natharit_pickaxe ? 0.05 : 0,
+          value: 50,
+          logMessage: "The natharit pickaxe reveals a vein of silver! +50 Silver",
+        },
+        "story.seen.hasAdamant": true,
+      };
     },
     cooldown: 25,
     upgrade_key: "mineAdamant",

@@ -123,20 +123,23 @@ export const caveExploreActions: Record<string, Action> = {
     label: "Gather Wood",
     show_when: {},
     cost: {},
-    effects: {
-      "resources.wood": "random(6,12)",
-      "story.seen.hasWood": true,
-      "story.seen.firstWoodGathered": true,
-      "relics.odd_trinket": {
-        probability: 0.05,
-        value: true,
-        condition: (state: GameState) =>
-          !state.relics?.odd_trinket &&
-          state.weapons.crude_bow &&
-          state.buildings.woodenHut <= 4,
-        logMessage:
-          "While chopping wood, you find a trinket with glowing amber liquid inside. After some hesitation, you drink it. It burns as it goes down, but you feel stronger than before.",
-      },
+    effects: (state: GameState) => {
+      const woodAmount = state.BTP === 1 ? "random(6,14)" : "random(6,12)";
+      return {
+        "resources.wood": woodAmount,
+        "story.seen.hasWood": true,
+        "story.seen.firstWoodGathered": true,
+        "relics.odd_trinket": {
+          probability: 0.05,
+          value: true,
+          condition: (state: GameState) =>
+            !state.relics?.odd_trinket &&
+            state.weapons.crude_bow &&
+            state.buildings.woodenHut <= 4,
+          logMessage:
+            "While chopping wood, you find a trinket with glowing amber liquid inside. After some hesitation, you drink it. It burns as it goes down, but you feel stronger than before.",
+        },
+      };
     },
     cooldown: 4,
     upgrade_key: "chopWood",
