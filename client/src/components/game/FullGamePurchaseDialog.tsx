@@ -323,8 +323,8 @@ export default function FullGamePurchaseDialog({
         {!clientSecret ? (
           <div className="space-y-4">
             <div className="border rounded-lg p-4 bg-muted/50">
-              <div className="flex gap-4">
-                <div className="flex-shrink-0">
+              <div className="space-y-4">
+                <div>
                   <h3 className="font-semibold text-lg">{item.name}</h3>
                   <p className="text-sm text-muted-foreground mt-1 mb-3">
                     {item.description}
@@ -341,14 +341,14 @@ export default function FullGamePurchaseDialog({
                     One time purchase. No subscriptions.<br/>No microtransactions.
                   </p>
                 </div>
-                <div className="flex-1 text-sm text-muted-foreground border-l border-border pl-4">
+                <div className="text-sm text-muted-foreground border-t border-border pt-4">
                   <h4 className="font-semibold text-foreground mb-2">Game Content</h4>
                   <ul className="space-y-1">
                     <li>• ~14 hours of gameplay</li>
                     <li>• 100+ structures</li>
                     <li>• 250+ items, fellowship members, books, blessings ...</li>
-                    <li>• 50+ achievements</li>                    <li>• Dark and challenging story based on your choices</li>
-
+                    <li>• 50+ achievements</li>
+                    <li>• Dark and challenging story based on your choices</li>
                   </ul>
                 </div>
               </div>
