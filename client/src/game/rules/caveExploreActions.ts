@@ -1,5 +1,5 @@
 import { Action, GameState } from "@shared/schema";
-import { ActionResult } from '@/game/actions';
+import { ActionResult } from "@/game/actions";
 import { applyActionEffects } from "./actionEffects";
 
 // Base items for each cave exploration stage
@@ -183,7 +183,7 @@ export const caveExploreActions: Record<string, Action> = {
         "resources.coal": "random(4,8)",
         "resources.iron": "random(4,8)",
         "resources.sulfur": "random(4,8)",
-        "resources.silver": `random(${1 * multiplier},${5 * multiplier})`,
+        "resources.silver": `random(1,${5 * multiplier})`,
         ...getInheritedItems("ventureDeeper"),
         "story.seen.venturedDeeper": true,
       };
@@ -209,7 +209,7 @@ export const caveExploreActions: Record<string, Action> = {
         "resources.coal": "random(5,10)",
         "resources.iron": "random(5,10)",
         "resources.obsidian": "random(0,2)",
-        "resources.silver": `random(${1 * multiplier},${10 * multiplier})`,
+        "resources.silver": `random(1,${10 * multiplier})`,
         ...getInheritedItems("descendFurther"),
         "story.seen.descendedFurther": true,
       };
@@ -233,8 +233,8 @@ export const caveExploreActions: Record<string, Action> = {
       return {
         "resources.obsidian": "random(1,4)",
         "resources.adamant": "random(0,2)",
-        "resources.silver": `random(${5 * multiplier},${10 * multiplier})`,
-        "resources.gold": `random(${1 * multiplier},${5 * multiplier})`,
+        "resources.silver": `random(5,${10 * multiplier})`,
+        "resources.gold": `random(1,${5 * multiplier})`,
         ...getInheritedItems("exploreRuins"),
         "story.seen.exploredRuins": true,
       };
@@ -253,14 +253,18 @@ export const caveExploreActions: Record<string, Action> = {
     cost: {
       "resources.food": 500,
     },
-    effects: {
-      "resources.obsidian": "random(1,6)",
-      "resources.adamant": "random(1,4)",
-      "resources.moonstone": "random(0,1)",
-      "resources.silver": "random(10,15)",
-      "resources.gold": "random(1,10)",
-      ...getInheritedItems("exploreTemple"),
-      "story.seen.exploredTemple": true,
+    effects: (state: GameState) => {
+      const multiplier = state.BTP === 1 ? 2 : 1;
+      return {
+        "resources.obsidian": "random(1,6)",
+        "resources.adamant": "random(1,4)",
+        "resources.moonstone": "random(0,1)",
+        "resources.silver": `random(10,${10 * multiplier})`,
+        "resources.gold": `random(1,${10 * multiplier})`,
+
+        ...getInheritedItems("exploreTemple"),
+        "story.seen.exploredTemple": true,
+      };
     },
     cooldown: 30,
     upgrade_key: "exploreTemple",
@@ -281,8 +285,8 @@ export const caveExploreActions: Record<string, Action> = {
         "resources.obsidian": "random(1,8)",
         "resources.adamant": "random(1,6)",
         "resources.moonstone": "random(0,2)",
-        "resources.silver": `random(${10 * multiplier},${20 * multiplier})`,
-        "resources.gold": `random(${5 * multiplier},${10 * multiplier})`,
+        "resources.silver": `random(10,${20 * multiplier})`,
+        "resources.gold": `random(5,${10 * multiplier})`,
         ...getInheritedItems("exploreCitadel"),
         "story.seen.exploredCitadel": true,
       };
@@ -302,9 +306,10 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.food": 1000,
     },
     effects: (state: GameState) => {
+      const silverBonus = state.BTP === 1 ? 150 : 1;
       const goldBonus = state.BTP === 1 ? 100 : 0;
       return {
-        "resources.silver": 250,
+        "resources.silver": 250 + silverBonus,
         "resources.gold": 50 + goldBonus,
         "resources.obsidian": 50,
         "resources.adamant": 50,
@@ -326,7 +331,7 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.food": 1000,
     },
     effects: (state: GameState) => {
-      const goldBonus = state.BTP === 1 ? 100 : 0;
+      const goldBonus = state.BTP === 1 ? 150 : 0;
       return {
         "resources.gold": 150 + goldBonus,
         "resources.obsidian": 75,
@@ -349,7 +354,7 @@ export const caveExploreActions: Record<string, Action> = {
     cost: {
       "resources.food": 2500,
       "resources.wood": 5000,
-      "resources.iron": 500
+      "resources.iron": 500,
     },
     effects: (state: GameState) => {
       const goldBonus = state.BTP === 1 ? 100 : 0;
@@ -375,7 +380,7 @@ export const caveExploreActions: Record<string, Action> = {
     cost: {
       "resources.food": 10000,
       "resources.wood": 5000,
-      "resources.steel": 1000
+      "resources.steel": 1000,
     },
     effects: {
       "story.seen.lakeCreatureLured": true,
