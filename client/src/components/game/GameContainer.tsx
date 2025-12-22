@@ -17,6 +17,8 @@ import CubeDialog from "./CubeDialog";
 import InactivityDialog from "./InactivityDialog";
 import { RestartGameDialog } from "./RestartGameDialog";
 import FullGamePurchaseDialog from "./FullGamePurchaseDialog";
+import { ShopDialog } from "./ShopDialog";
+import { LeaderboardDialog } from "./LeaderboardDialog";
 import { useState, useEffect, useMemo, useRef } from "react";
 import { LimelightNav, NavItem } from "@/components/ui/limelight-nav";
 import { Mountain, Trees, Castle, Landmark } from "lucide-react";
