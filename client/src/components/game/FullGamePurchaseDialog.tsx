@@ -184,6 +184,16 @@ function CheckoutForm({ onSuccess, currency, onCancel }: CheckoutFormProps) {
             ? "Processing..."
             : `Complete Purchase for ${item?.price ? formatPrice(item.price) : ""}`}
         </Button>
+        <Button
+          variant="outline"
+          onClick={onCancel}
+          className="w-auto px-6"
+          button_id="full-game-back-to-details"
+          type="button"
+          disabled={isProcessing}
+        >
+          Back
+        </Button>
       </div>
     </form>
   );
