@@ -196,7 +196,6 @@ export default function FullGamePurchaseDialog({
     id: string;
     email: string;
   } | null>(null);
-  const gameState = useGameStore();
   const detectedCurrency = gameState.detectedCurrency;
   const setDetectedCurrency = gameState.setDetectedCurrency;
   const { toast } = useToast();
