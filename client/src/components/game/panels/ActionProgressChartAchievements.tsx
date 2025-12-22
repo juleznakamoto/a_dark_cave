@@ -30,7 +30,9 @@ export default function ActionProgressChartAchievements() {
   const state = useGameStore.getState();
   const claimedAchievements = useGameStore(
     (state) => state.claimedAchievements || [],
+    
   );
+  const BTP = useGameStore((state) => state.BTP || 0);
 
   const [hoveredSegment, setHoveredSegment] = useState<{
     id: string;
@@ -419,7 +421,7 @@ export default function ActionProgressChartAchievements() {
 
               const handleSegmentClick = () => {
                 if (isInteractive) {
-                  const silverReward = segment.reward ?? 50 * segment.maxCount;
+                  const silverReward = (segment.reward || 0 + BTP * 250) ?? 50 * segment.maxCount;
 
                   useGameStore
                     .getState()

@@ -43,6 +43,7 @@ export default function ItemProgressChart() {
   const claimedAchievements = useGameStore(
     (state) => state.claimedAchievements || [],
   );
+   const BTP = useGameStore((state) => state.BTP || 0);
 
   // State for tooltip interaction
   const [hoveredSegment, setHoveredSegment] = useState<{
@@ -410,7 +411,7 @@ export default function ItemProgressChart() {
               const handleSegmentClick = () => {
                 if (isInteractive) {
                   // Use custom reward if specified, otherwise default to 50 * maxCount
-                  const silverReward = segment.reward ?? 50 * segment.maxCount;
+                  const silverReward = (segment.reward || 0 + BTP * 250) ?? 50 * segment.maxCount;
 
                   // Award silver
                   useGameStore

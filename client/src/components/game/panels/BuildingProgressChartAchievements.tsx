@@ -31,6 +31,7 @@ export default function BuildingProgressChart() {
   const claimedAchievements = useGameStore(
     (state) => state.claimedAchievements || [],
   );
+   const BTP = useGameStore((state) => state.BTP || 0);
   const [hoveredSegment, setHoveredSegment] = useState<{
     id: string;
     name: string;
@@ -402,7 +403,7 @@ export default function BuildingProgressChart() {
               const handleSegmentClick = () => {
                 if (isInteractive) {
                   // Use custom reward if specified, otherwise default to 50 * maxCount
-                  const silverReward = segment.reward ?? 50 * segment.maxCount;
+                  const silverReward = (segment.reward || 0 + BTP * 250) ?? 50 * segment.maxCount;
 
                   // Award silver
                   useGameStore
