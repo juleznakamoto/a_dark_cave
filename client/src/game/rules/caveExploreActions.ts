@@ -244,14 +244,17 @@ export const caveExploreActions: Record<string, Action> = {
     cost: {
       "resources.food": 500,
     },
-    effects: {
-      "resources.obsidian": "random(1,6)",
-      "resources.adamant": "random(1,4)",
-      "resources.moonstone": "random(0,1)",
-      "resources.silver": "random(10,15)",
-      "resources.gold": "random(1,10)",
-      ...getInheritedItems("exploreTemple"),
-      "story.seen.exploredTemple": true,
+    effects: (state: GameState) => {
+      const multiplier = state.BTP === 1 ? 2 : 1;
+      return {
+        "resources.obsidian": "random(1,6)",
+        "resources.adamant": "random(1,4)",
+        "resources.moonstone": "random(0,1)",
+        "resources.silver": `random(${10 * multiplier},${15 * multiplier})`,
+        "resources.gold": `random(${1 * multiplier},${10 * multiplier})`,
+        ...getInheritedItems("exploreTemple"),
+        "story.seen.exploredTemple": true,
+      };
     },
     cooldown: 30,
     upgrade_key: "exploreTemple",
