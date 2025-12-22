@@ -176,14 +176,17 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.torch": 5,
       "resources.food": 25,
     },
-    effects: {
-      "resources.stone": "random(4,8)",
-      "resources.coal": "random(4,8)",
-      "resources.iron": "random(4,8)",
-      "resources.sulfur": "random(4,8)",
-      "resources.silver": "random(1,5)",
-      ...getInheritedItems("ventureDeeper"),
-      "story.seen.venturedDeeper": true,
+    effects: (state: GameState) => {
+      const multiplier = state.BTP === 1 ? 2 : 1;
+      return {
+        "resources.stone": "random(4,8)",
+        "resources.coal": "random(4,8)",
+        "resources.iron": "random(4,8)",
+        "resources.sulfur": "random(4,8)",
+        "resources.silver": `random(${1 * multiplier},${5 * multiplier})`,
+        ...getInheritedItems("ventureDeeper"),
+        "story.seen.venturedDeeper": true,
+      };
     },
     cooldown: 15,
     upgrade_key: "ventureDeeper",
@@ -199,14 +202,17 @@ export const caveExploreActions: Record<string, Action> = {
     cost: {
       "resources.food": 50,
     },
-    effects: {
-      "resources.stone": "random(5,10)",
-      "resources.coal": "random(5,10)",
-      "resources.iron": "random(5,10)",
-      "resources.obsidian": "random(0,2)",
-      "resources.silver": "random(1,10)",
-      ...getInheritedItems("descendFurther"),
-      "story.seen.descendedFurther": true,
+    effects: (state: GameState) => {
+      const multiplier = state.BTP === 1 ? 2 : 1;
+      return {
+        "resources.stone": "random(5,10)",
+        "resources.coal": "random(5,10)",
+        "resources.iron": "random(5,10)",
+        "resources.obsidian": "random(0,2)",
+        "resources.silver": `random(${1 * multiplier},${10 * multiplier})`,
+        ...getInheritedItems("descendFurther"),
+        "story.seen.descendedFurther": true,
+      };
     },
     cooldown: 20,
     upgrade_key: "descendFurther",
@@ -222,13 +228,16 @@ export const caveExploreActions: Record<string, Action> = {
     cost: {
       "resources.food": 100,
     },
-    effects: {
-      "resources.obsidian": "random(1,4)",
-      "resources.adamant": "random(0,2)",
-      "resources.silver": "random(5,10)",
-      "resources.gold": "random(1,5)",
-      ...getInheritedItems("exploreRuins"),
-      "story.seen.exploredRuins": true,
+    effects: (state: GameState) => {
+      const multiplier = state.BTP === 1 ? 2 : 1;
+      return {
+        "resources.obsidian": "random(1,4)",
+        "resources.adamant": "random(0,2)",
+        "resources.silver": `random(${5 * multiplier},${10 * multiplier})`,
+        "resources.gold": `random(${1 * multiplier},${5 * multiplier})`,
+        ...getInheritedItems("exploreRuins"),
+        "story.seen.exploredRuins": true,
+      };
     },
     cooldown: 25,
     upgrade_key: "exploreRuins",
@@ -266,14 +275,17 @@ export const caveExploreActions: Record<string, Action> = {
     cost: {
       "resources.food": 750,
     },
-    effects: {
-      "resources.obsidian": "random(1,8)",
-      "resources.adamant": "random(1,6)",
-      "resources.moonstone": "random(0,2)",
-      "resources.silver": "random(10,20)",
-      "resources.gold": "random(5,10)",
-      ...getInheritedItems("exploreCitadel"),
-      "story.seen.exploredCitadel": true,
+    effects: (state: GameState) => {
+      const multiplier = state.BTP === 1 ? 2 : 1;
+      return {
+        "resources.obsidian": "random(1,8)",
+        "resources.adamant": "random(1,6)",
+        "resources.moonstone": "random(0,2)",
+        "resources.silver": `random(${10 * multiplier},${20 * multiplier})`,
+        "resources.gold": `random(${5 * multiplier},${10 * multiplier})`,
+        ...getInheritedItems("exploreCitadel"),
+        "story.seen.exploredCitadel": true,
+      };
     },
     cooldown: 35,
     upgrade_key: "exploreCitadel",
@@ -289,13 +301,16 @@ export const caveExploreActions: Record<string, Action> = {
     cost: {
       "resources.food": 1000,
     },
-    effects: {
-      "resources.silver": 250,
-      "resources.gold": 50,
-      "resources.obsidian": 50,
-      "resources.adamant": 50,
-      "tools.mastermason_chisel": true,
-      "story.seen.lowChamberExplored": true,
+    effects: (state: GameState) => {
+      const goldBonus = state.BTP === 1 ? 100 : 0;
+      return {
+        "resources.silver": 250,
+        "resources.gold": 50 + goldBonus,
+        "resources.obsidian": 50,
+        "resources.adamant": 50,
+        "tools.mastermason_chisel": true,
+        "story.seen.lowChamberExplored": true,
+      };
     },
     cooldown: 1,
   },
@@ -310,13 +325,16 @@ export const caveExploreActions: Record<string, Action> = {
     cost: {
       "resources.food": 1000,
     },
-    effects: {
-      "resources.gold": 150,
-      "resources.obsidian": 75,
-      "resources.adamant": 50,
-      "resources.moonstone": 25,
-      "relics.occultist_grimoire": true,
-      "story.seen.occultistChamberExplored": true,
+    effects: (state: GameState) => {
+      const goldBonus = state.BTP === 1 ? 100 : 0;
+      return {
+        "resources.gold": 150 + goldBonus,
+        "resources.obsidian": 75,
+        "resources.adamant": 50,
+        "resources.moonstone": 25,
+        "relics.occultist_grimoire": true,
+        "story.seen.occultistChamberExplored": true,
+      };
     },
     cooldown: 1,
   },
@@ -333,13 +351,16 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.wood": 5000,
       "resources.iron": 500
     },
-    effects: {
-      "resources.silver": 500,
-      "resources.gold": 100,
-      "resources.obsidian": 150,
-      "resources.adamant": 100,
-      "resources.moonstone": 25,
-      "story.seen.undergroundLakeExplored": true,
+    effects: (state: GameState) => {
+      const goldBonus = state.BTP === 1 ? 100 : 0;
+      return {
+        "resources.silver": 500,
+        "resources.gold": 100 + goldBonus,
+        "resources.obsidian": 150,
+        "resources.adamant": 100,
+        "resources.moonstone": 25,
+        "story.seen.undergroundLakeExplored": true,
+      };
     },
     cooldown: 1,
   },
