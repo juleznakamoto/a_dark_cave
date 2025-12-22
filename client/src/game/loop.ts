@@ -368,8 +368,10 @@ export function startGameLoop() {
           handleMadnessCheck();
           handleStrangerApproach();
 
-          // Check for events (including attack waves)
-          currentState.checkEvents();
+          // Check for events (including attack waves) - but NOT when dialogs are open
+          if (!isDialogOpen) {
+            currentState.checkEvents();
+          }
         }
       } else {
         // Update loop progress (0-100 based on production cycle)
