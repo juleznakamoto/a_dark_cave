@@ -35,7 +35,7 @@ export default function EndScreenPage() {
           line2: "Ends Here",
         }}
         subtitle1="At least for now..."
-        subtitle2="Try Cruel Mode for an even bigger challenge with an extended gameplay."
+        subtitle2="Try Cruel Mode for an even bigger challenge with extended gameplay."
         subtitle3=""
         buttons={{
           primary: {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useGameStore } from "@/game/state";
 import { calculateBastionStats } from "@/game/bastionStats";
-import { getTotalKnowledge, getTotalLuck } from "@/game/rules/effectsCalculation";
+import { getTotalKnowledge, getTotalLuck, getTotalCriticalChance } from "@/game/rules/effectsCalculation";
 import { combatItemTooltips } from "@/game/rules/tooltips";
 import { calculateCriticalStrikeChance } from "@/game/rules/effectsStats";
 import { BLOODFLAME_SPHERE_UPGRADES, CRUSHING_STRIKE_UPGRADES } from "@/game/rules/skillUpgrades";
@@ -385,7 +385,8 @@ export default function CombatDialog({
 
     // Calculate critical strike
     const totalLuck = getTotalLuck(gameState);
-    const critChance = calculateCriticalStrikeChance(totalLuck) / 100;
+    const criticalChanceBonus = getTotalCriticalChance(gameState);
+    const critChance = (calculateCriticalStrikeChance(totalLuck) + criticalChanceBonus) / 100;
     const isCritical = Math.random() < critChance;
     
     if (isCritical) {
@@ -518,7 +519,7 @@ export default function CombatDialog({
                 <DialogTitle className="text-lg font-semibold">
                   Combat - Round {round}
                 </DialogTitle>
-                {calculateCriticalStrikeChance(getTotalLuck(gameState)) > 0 && (
+                {(calculateCriticalStrikeChance(getTotalLuck(gameState)) + getTotalCriticalChance(gameState)) > 0 && (
                   <TooltipProvider>
                     <Tooltip
                       open={luckTooltip.isTooltipOpen("combat-luck")}
@@ -538,7 +539,9 @@ export default function CombatDialog({
                       </TooltipTrigger>
                       <TooltipContent>
                         <div className="text-xs whitespace-nowrap">
-                          {calculateCriticalStrikeChance(getTotalLuck(gameState))}% critical strike chance due to Luck{getTotalLuck(gameState) >= 50 ? " (max)" : ""}
+                          {calculateCriticalStrikeChance(getTotalLuck(gameState)) + getTotalCriticalChance(gameState)}% critical strike chance
+                          {calculateCriticalStrikeChance(getTotalLuck(gameState)) > 0 && ` (${calculateCriticalStrikeChance(getTotalLuck(gameState))}% from Luck${getTotalLuck(gameState) >= 50 ? " max" : ""})`}
+                          {getTotalCriticalChance(gameState) > 0 && ` ${calculateCriticalStrikeChance(getTotalLuck(gameState)) > 0 ? '+' : ''}${getTotalCriticalChance(gameState)}% from equipment`}
                         </div>
                       </TooltipContent>
                     </Tooltip>

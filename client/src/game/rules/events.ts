@@ -63,6 +63,7 @@ import { cubeEvents } from "./eventsCube";
 import { recurringEvents } from "./eventsRecurring";
 import { noChoiceEvents } from "./eventsNoChoices";
 import { feastEvents } from "./eventsFeast";
+import { boneDevourerEvents } from "./eventsBoneDevourer";
 import { villageAttackEvents } from "./eventsVillageAttacks";
 import { loreEvents } from "./eventsLore";
 import { fellowshipEvents } from "./eventsFellowship";
@@ -137,6 +138,7 @@ export const gameEvents: Record<string, GameEvent> = {
   ...recurringEvents,
   ...noChoiceEvents,
   ...feastEvents,
+  ...boneDevourerEvents,
   ...villageAttackEvents,
   ...loreEvents,
   ...fellowshipEvents,

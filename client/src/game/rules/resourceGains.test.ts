@@ -7,6 +7,35 @@ import { gameActions, getActionCostBreakdown } from './index';
 import { applyActionEffects } from './actionEffects';
 import { getResourceGainTooltip, calculateResourceGains } from './tooltips';
 
+// Mock executeAction if it's not imported or available in this scope
+// If executeAction is defined elsewhere and imported, this mock can be removed.
+const executeAction = (actionId: string, state: GameState) => {
+  // This is a placeholder. In a real scenario, you would import and use the actual `executeAction`.
+  // For the purpose of this test file, we can assume applyActionEffects is sufficient,
+  // or we can mock it to return a structure similar to what executeAction would.
+
+  // Assuming applyActionEffects is the core logic we need to test:
+  const resourceUpdates = applyActionEffects(actionId, state);
+
+  // Mock a return structure similar to executeAction if needed for `testActionGains`
+  // If `testActionGains` specifically needs `executeAction`, and `applyActionEffects` is used
+  // within `executeAction`, then this mock might need to be more sophisticated.
+  // For now, we'll adapt `testActionGains` to directly use `applyActionEffects` if `executeAction`
+  // is not intended to be tested here or is implicitly handled.
+
+  // Given the original code structure uses `applyActionEffects` inside `testActionGains`,
+  // it's likely `executeAction` was either a typo or an older version.
+  // Let's assume `applyActionEffects` is the intended function to call here.
+  return {
+    stateUpdates: {
+      resources: resourceUpdates.resources,
+      // Add other relevant updates if applyActionEffects were to return them
+    },
+    // other properties of the result from executeAction
+  };
+};
+
+
 // Helper to create a minimal test state
 const createTestState = (overrides?: Partial<GameState>): GameState => {
   return {
@@ -240,15 +269,15 @@ const parseTooltipGains = (tooltipContent: React.ReactNode): Record<string, { mi
 
     if (rangeMatch) {
       const [, min, max, resource] = rangeMatch;
-      gains[resource.toLowerCase().replace(/\s+/g, '_')] = { 
-        min: parseInt(min), 
-        max: parseInt(max) 
+      gains[resource.toLowerCase().replace(/\s+/g, '_')] = {
+        min: parseInt(min),
+        max: parseInt(max)
       };
     } else if (fixedMatch) {
       const [, amount, resource] = fixedMatch;
-      gains[resource.toLowerCase().replace(/\s+/g, '_')] = { 
-        min: parseInt(amount), 
-        max: parseInt(amount) 
+      gains[resource.toLowerCase().replace(/\s+/g, '_')] = {
+        min: parseInt(amount),
+        max: parseInt(amount)
       };
     }
   });
@@ -257,7 +286,24 @@ const parseTooltipGains = (tooltipContent: React.ReactNode): Record<string, { mi
 };
 
 // Helper to run action multiple times and check if actual gains fall within tooltip range
-const testActionGains = (actionId: string, state: GameState, iterations = 100) => {
+const testActionGains = (actionId: string, state: GameState, iterations: number = 100) => {
+    const actualGains: Record<string, number[]> = {};
+
+    for (let i = 0; i < iterations; i++) {
+      const result = executeAction(actionId, state);
+
+      Object.entries(result.stateUpdates.resources || {}).forEach(([resource, newValue]) => {
+        const oldValue = state.resources[resource as keyof typeof state.resources] || 0;
+        const gain = newValue - oldValue;
+
+        if (gain > 0) {
+          if (!actualGains[resource]) {
+            actualGains[resource] = [];
+          }
+          actualGains[resource].push(gain);
+        }
+      });
+    }
   // Get expected range from calculation
   const { gains } = calculateResourceGains(actionId, state);
 
@@ -269,27 +315,6 @@ const testActionGains = (actionId: string, state: GameState, iterations = 100) =
     expectedMax = gains[0].max;
   }
 
-
-  const actualGains: Record<string, number[]> = {};
-
-  // Run action multiple times to sample the random range
-  for (let i = 0; i < iterations; i++) {
-    const effectUpdates = applyActionEffects(actionId, state);
-
-    if (effectUpdates.resources) {
-      Object.entries(effectUpdates.resources).forEach(([resource, newValue]) => {
-        const oldValue = state.resources[resource as keyof typeof state.resources] || 0;
-        const gain = (newValue as number) - oldValue;
-
-        if (gain > 0) {
-          if (!actualGains[resource]) {
-            actualGains[resource] = [];
-          }
-          actualGains[resource].push(gain);
-        }
-      });
-    }
-  }
 
   // Return expected gains and sampled actual gains - extract all resources from gains
   const expectedGains: Record<string, {min: number, max: number}> = {};
@@ -873,6 +898,74 @@ describe('Resource Gain Tests', () => {
       const expectedMax = Math.floor(baseMax * 1.5);
       expect(tooltipSilver!.min).toBe(expectedMin);
       expect(tooltipSilver!.max).toBe(expectedMax);
+    });
+
+    it('boneTotems with devourer_crown applies +20 silver bonus', () => {
+      const stateWithoutCrown = createTestState({
+        buildings: { altar: 1, clerksHut: 1 },
+      });
+      const stateWithCrown = createTestState({
+        buildings: { altar: 1, clerksHut: 1 },
+        clothing: { devourer_crown: true },
+      });
+
+      const { expectedGains: expectedWithout } = testActionGains('boneTotems', stateWithoutCrown, 50);
+      const { expectedGains: expectedWith } = testActionGains('boneTotems', stateWithCrown, 50);
+
+      // Devourer Crown adds flat +20 silver bonus
+      expect(expectedWith.silver.min).toBe(expectedWithout.silver.min + 20);
+      expect(expectedWith.silver.max).toBe(expectedWithout.silver.max + 20);
+    });
+
+    it('boneTotems with devourer_crown and sacrificial_tunic stacks correctly', () => {
+      const state = createTestState({
+        buildings: { altar: 1, clerksHut: 1 },
+        clothing: { devourer_crown: true, sacrificial_tunic: true },
+      });
+
+      const { expectedGains } = testActionGains('boneTotems', state, 50);
+
+      // Base: 10-25 silver
+      // Sacrificial tunic: 25% multiplier -> 12-31 (floor(10*1.25) to floor(25*1.25))
+      // Devourer Crown: +20 flat bonus -> 32-51
+      const baseMin = 10;
+      const baseMax = 25;
+      const multipliedMin = Math.floor(baseMin * 1.25);
+      const multipliedMax = Math.floor(baseMax * 1.25);
+      const expectedMin = multipliedMin + 20;
+      const expectedMax = multipliedMax + 20;
+
+      expect(expectedGains.silver.min).toBe(expectedMin);
+      expect(expectedGains.silver.max).toBe(expectedMax);
+    });
+
+    it('boneTotems with devourer_crown: tooltip matches actual gains', () => {
+      const state = createTestState({
+        buildings: { altar: 1, clerksHut: 1 },
+        clothing: { devourer_crown: true },
+      });
+
+      // Get tooltip calculations
+      const { gains: tooltipGains } = calculateResourceGains('boneTotems', state);
+      const tooltipSilver = tooltipGains.find(g => g.resource === 'silver');
+      expect(tooltipSilver).toBeDefined();
+
+      // Get actual gains from executing the action multiple times
+      const { expectedGains, actualGains } = testActionGains('boneTotems', state, 100);
+
+      // Verify tooltip matches expected calculation
+      expect(tooltipSilver!.min).toBe(expectedGains.silver.min);
+      expect(tooltipSilver!.max).toBe(expectedGains.silver.max);
+
+      // Verify actual gains fall within tooltip range
+      const minActual = Math.min(...actualGains.silver);
+      const maxActual = Math.max(...actualGains.silver);
+      expect(minActual).toBeGreaterThanOrEqual(tooltipSilver!.min);
+      expect(maxActual).toBeLessThanOrEqual(tooltipSilver!.max);
+
+      // Base 10-25 + 20 bonus = 30-45
+      expect(tooltipSilver!.min).toBe(30);
+      expect(tooltipSilver!.max).toBe(45);
     });
 
     it('leatherTotems with sacrificial_tunic and boneTemple: tooltip matches actual gains', () => {

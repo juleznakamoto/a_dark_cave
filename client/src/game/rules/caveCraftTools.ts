@@ -456,12 +456,31 @@ export const caveCraftTools: Record<string, Action> = {
       "tools.blacksteel_lantern": false,
     },
     cost: {
-      "resources.blacksteel": 350,
+      "resources.blacksteel": 250,
     },
     effects: {
       "tools.blacksteel_lantern": true,
       "story.seen.hasBlacksteelLantern": true,
       "story.seen.actionCraftBlacksteelLantern": true,
+    },
+    cooldown: 30,
+  },
+
+  craftBlacksteelArmor: {
+    id: "craftBlacksteelArmor",
+    label: "Blacksteel Armor",
+    show_when: {
+      "buildings.masterworkFoundry": 1,
+      "buildings.grandBlacksmith": 1,
+      "clothing.blacksteel_armor": false,
+    },
+    cost: {
+      "resources.blacksteel": 300,
+    },
+    effects: {
+      "clothing.blacksteel_armor": true,
+      "story.seen.hasBlacksteelArmor": true,
+      "story.seen.actionCraftBlacksteelArmor": true,
     },
     cooldown: 30,
   },
@@ -566,7 +585,7 @@ export const caveCraftTools: Record<string, Action> = {
     },
     cost: {
       "resources.leather": 1500,
-      "resources.silver": 250
+      "resources.silver": 250,
     },
     effects: {
       "clothing.sacrificial_tunic": true,
@@ -876,5 +895,15 @@ export function handleCraftBlacksteelLantern(
 ): ActionResult {
   const effectUpdates = applyActionEffects("craftBlacksteelLantern", state);
   Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+export function handleCraftBlacksteelArmor(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("craftBlacksteelArmor", state);
+  Object.assign(result.stateUpdates, effectUpdates);
+
   return result;
 }

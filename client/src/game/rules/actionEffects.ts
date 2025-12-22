@@ -9,6 +9,7 @@ import {
 } from "../buttonUpgrades";
 import { getNextBuildingLevel } from "./villageBuildActions";
 import { calculateAdjustedCost } from "./costCalculation";
+import { clothingEffects } from "./effects";
 
 const FOCUS_ELIGIBLE_ACTIONS = [
   "exploreCave",
@@ -59,6 +60,41 @@ export function applyActionEffects(
     logMessages?: string[];
     triggeredEvents?: string[];
   } = {};
+
+  // Check for action bonus chance (Tarnished Compass effect)
+  const BONUS_CHANCE_ELIGIBLE_ACTIONS = [
+    "exploreCave",
+    "ventureDeeper",
+    "descendFurther",
+    "exploreRuins",
+    "exploreTemple",
+    "exploreCitadel",
+    "mineStone",
+    "mineIron",
+    "mineCoal",
+    "mineSulfur",
+    "mineObsidian",
+    "mineAdamant",
+    "chopWood",
+    "hunt",
+  ];
+
+  let actionBonusChanceTriggered = false;
+  if (BONUS_CHANCE_ELIGIBLE_ACTIONS.includes(actionId)) {
+    // Get total actionBonusChance from effects
+    let totalActionBonusChance = 0;
+
+    // Check relics for actionBonusChance (Tarnished Compass)
+    if (state.relics?.tarnished_compass) {
+      const compassEffect = clothingEffects.tarnished_compass;
+      totalActionBonusChance += compassEffect.bonuses.generalBonuses?.actionBonusChance || 0;
+    }
+
+    // Roll for bonus chance
+    if (totalActionBonusChance > 0 && Math.random() < totalActionBonusChance) {
+      actionBonusChanceTriggered = true;
+    }
+  }
 
   // Apply costs (as negative effects)
   if (action.cost) {
@@ -257,9 +293,18 @@ export function applyActionEffects(
             max += cappedUsageCount;
 
             const actionBonuses = getActionBonusesCalc(actionId, state);
+
+            // Apply multiplier first (like Bone Temple or Sacrificial Tunic)
             if (actionBonuses?.resourceMultiplier > 1) {
               min = Math.floor(min * actionBonuses.resourceMultiplier);
               max = Math.floor(max * actionBonuses.resourceMultiplier);
+            }
+
+            // Apply flat bonuses after multiplier (like devourer_crown +20 silver)
+            const flatBonus = actionBonuses?.resourceBonus?.[finalKey] || 0;
+            if (flatBonus > 0) {
+              min += flatBonus;
+              max += flatBonus;
             }
 
             // Generate and assign the random value for sacrifice actions
@@ -319,32 +364,6 @@ export function applyActionEffects(
             const originalAmount =
               state.resources[finalKey as keyof typeof state.resources] || 0;
             current[finalKey] = originalAmount + baseAmount;
-
-            // Detailed logging for exploreCitadel gold
-            if (actionId === "exploreCitadel" && finalKey === "gold") {
-              const actionBonuses = getActionBonusesCalc(actionId, state);
-              console.log("=== EXPLORE CITADEL GOLD CALCULATION ===");
-              console.log("Base range from action:", match[1], "-", match[2]);
-              console.log("Flat bonus:", actionBonuses?.resourceBonus?.gold || 0);
-              console.log("Resource multiplier:", actionBonuses?.resourceMultiplier || 1);
-              console.log("Cave explore multiplier:", actionBonuses?.caveExploreMultiplier || 1);
-              console.log("Total multiplier (resource × cave):", totalMultiplier);
-              console.log("Final range after multipliers:", min, "-", max);
-
-              const isFocusActive = FOCUS_ELIGIBLE_ACTIONS.includes(actionId) &&
-                state.focusState?.isActive &&
-                state.focusState.endTime > Date.now();
-              console.log("Focus mode active:", isFocusActive);
-              if (isFocusActive) {
-                console.log("Focus multiplier: 2x");
-                console.log("Range with focus:", Math.floor(min * 2), "-", Math.floor(max * 2));
-              }
-
-              console.log("Random result:", baseAmount);
-              console.log("Original gold:", originalAmount);
-              console.log("New gold total:", originalAmount + baseAmount);
-              console.log("======================================");
-            }
           }
         }
       } else if (
@@ -508,7 +527,10 @@ export function applyActionEffects(
     }
   }
 
-  if (updates.resources) {
+  // Don't apply resource bonuses here for sacrifice actions - they're already applied in the sacrifice logic
+  const isSacrificeAction = actionId === "boneTotems" || actionId === "leatherTotems";
+
+  if (updates.resources && !isSacrificeAction) {
     const actionBonuses = getActionBonusesCalc(actionId, state);
 
     if (actionBonuses.resourceBonus) {
@@ -520,6 +542,25 @@ export function applyActionEffects(
         },
       );
     }
+  }
+
+  // Apply action bonus chance (2x multiplier) AFTER all other bonuses
+  if (actionBonusChanceTriggered && updates.resources) {
+    const originalResources = { ...state.resources };
+
+    Object.keys(updates.resources).forEach((resource) => {
+      const originalAmount = originalResources[resource as keyof typeof originalResources] || 0;
+      const newAmount = updates.resources![resource];
+      const gainedAmount = newAmount - originalAmount;
+
+      // Double the gained amount
+      if (gainedAmount > 0) {
+        updates.resources![resource] = originalAmount + (gainedAmount * 2);
+      }
+    });
+
+    // Mark that the compass bonus was triggered (for button glow effect)
+    (updates as any).compassBonusTriggered = true;
   }
 
   if (state.devMode && updates.resources) {

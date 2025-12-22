@@ -191,6 +191,12 @@ export function renderItemTooltip(
               %
             </div>
           )}
+          {effect.bonuses.generalBonuses.criticalChance && (
+            <div>
+              Critical Strike Chance: +
+              {effect.bonuses.generalBonuses.criticalChance}%
+            </div>
+          )}
           {effect.bonuses.generalBonuses.eventDeathReduction && (
             <div>
               Villager Deaths in Fights: -

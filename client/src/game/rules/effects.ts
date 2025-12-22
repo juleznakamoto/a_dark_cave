@@ -40,6 +40,8 @@ export interface EffectDefinition {
       MAX_VOID_BOMBS?: number;
       caveExploreMultiplier?: number; // Multiplier for all cave exploration actions
       eventDeathReduction?: number; // Percentage reduction in villager deaths from events (0.25 = 25% reduction)
+      criticalDamageBonus?: number; // Percentage bonus to critical hit damage (0.05 = 5% bonus)
+      actionBonusChance?: number; // Chance to double action gains (0.1 = 10% chance)
     };
   };
 }
@@ -677,6 +679,18 @@ export const weaponEffects: Record<string, EffectDefinition> = {
 
 // Relic effects
 export const clothingEffects: Record<string, EffectDefinition> = {
+  blacksteel_armor: {
+    id: "blacksteel_armor",
+    name: "Blacksteel Armor",
+    description: "Heavy armor adorned with deadly spikes",
+    bonuses: {
+      generalBonuses: {
+        strength: 10,
+        criticalChance: 5, // 5% critical strike chance in combat
+      },
+    },
+  },
+
   highpriest_robe: {
     id: "highpriest_robe",
     name: "Highpriest Robe",
@@ -747,6 +761,24 @@ export const clothingEffects: Record<string, EffectDefinition> = {
         strength: 5,
         luck: 3,
         madness: 4,
+      },
+    },
+  },
+
+  devourer_crown: {
+    id: "devourer_crown",
+    name: "Devourer Crown",
+    description: "Crown of the Bone Devourer, made from bones",
+    bonuses: {
+      actionBonuses: {
+        boneTotems: {
+          resourceBonus: {
+            silver: 20,
+          },
+        },
+      },
+      generalBonuses: {
+        knowledge: 5,
       },
     },
   },
@@ -1270,6 +1302,32 @@ export const clothingEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         hunt: {
           resourceMultiplier: 1.25,
+        },
+      },
+    },
+  },
+
+  tarnished_compass: {
+    id: "tarnished_compass",
+    name: "Tarnished Compass",
+    description: "Ancient relic for those seeking guidance",
+    bonuses: {
+      generalBonuses: {
+        luck: 5,
+        actionBonusChance: 0.1, // 10% chance to double action gains
+      },
+      actionBonuses: {
+        caveExplore: {
+          resourceMultiplier: 1.0, // No direct multiplier, only bonus chance
+        },
+        mining: {
+          resourceMultiplier: 1.0,
+        },
+        chopWood: {
+          resourceMultiplier: 1.0,
+        },
+        hunt: {
+          resourceMultiplier: 1.0,
         },
       },
     },

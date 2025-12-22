@@ -95,10 +95,17 @@ export const calculateResourceGains = (
             // Apply bonuses through centralized system (includes Bone Temple + items)
             const totalMultiplier = bonuses.resourceMultiplier;
 
-            // Apply combined multiplier
+            // Apply combined multiplier first
             if (totalMultiplier > 1) {
               min = Math.floor(min * totalMultiplier);
               max = Math.floor(max * totalMultiplier);
+            }
+
+            // Apply flat bonuses after multiplier (like devourer_crown +20 silver)
+            const flatBonus = bonuses.resourceBonus?.[resource] || 0;
+            if (flatBonus > 0) {
+              min += flatBonus;
+              max += flatBonus;
             }
 
             gains.push({ resource, min, max });
@@ -503,14 +510,14 @@ export const combatItemTooltips: Record<string, TooltipConfig> = {
 export const eventChoiceCostTooltip = {
   getContent: (cost: string | Record<string, number> | undefined, gameState?: GameState): React.ReactNode => {
     if (!cost) return null;
-    
+
     // Extract resources from cost
     const resources: Array<{ resource: string; amount: number }> = [];
-    
+
     if (typeof cost === "string") {
       // Handle comma-separated costs like "1000 wood, 500 food"
       const costParts = cost.split(',').map(part => part.trim());
-      
+
       for (const part of costParts) {
         const parsed = parseResourceText(part);
         if (parsed) {
@@ -594,7 +601,7 @@ export const getCurrentResourceAmount = {
 
     const { resource } = parsed;
     const currentAmount = gameState.resources[resource as keyof typeof gameState.resources] || 0;
-    
+
     return `Current: ${currentAmount} ${capitalizeWords(resource)}`;
   }
 };
@@ -617,7 +624,7 @@ export const getMerchantTooltip = {
     if (costText) {
       // Handle comma-separated costs like "1000 wood, 500 food"
       const costParts = costText.split(',').map(part => part.trim());
-      
+
       for (const part of costParts) {
         const payParsed = parseResourceText(part);
         if (payParsed) {

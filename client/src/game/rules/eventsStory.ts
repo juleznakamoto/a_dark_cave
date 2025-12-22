@@ -255,7 +255,7 @@ export const storyEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.weapons.frostglass_sword && !state.story.seen.wizardBloodstone,
     triggerType: "resource",
-    timeProbability: 0.01,
+    timeProbability: 0.02,
     title: "The Sunken Temple",
     message:
       "The wizard returns from a journey into the forest. 'I have consulted with an old friend, a hermit wizard who dwells deep in the woods,' he says gravely. 'He spoke of the bloodstone we need. It lies within the Sunken Temple, an ancient shrine now half-drowned in the swamps of the forest.'",
@@ -340,7 +340,7 @@ export const storyEvents: Record<string, GameEvent> = {
       state.story.seen.encounteredBeyondPortal &&
       !state.story.seen.encounteredCreaturesChoice,
     triggerType: "resource",
-    timeProbability: 0.01,
+    timeProbability: 0.02,
     title: "The Dwellers Below",
     message:
       "In the depths beyond the shattered portal, you find some creatures that don't attack. Their forms are vaguely human, twisted by generations in darkness. They gesture, attempting to communicate through broken words and signs.",

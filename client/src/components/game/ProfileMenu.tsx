@@ -8,6 +8,7 @@ import { saveGame } from "@/game/save";
 import { buildGameState } from "@/game/stateHelpers";
 import { logger } from "@/lib/logger";
 import { LogEntry } from "@/game/rules/events";
+import { formatSaveTimestamp } from "@/lib/utils";
 import {
   Tooltip,
   TooltipContent,
@@ -64,6 +65,9 @@ export default function ProfileMenu() {
     hasWonAnyGame,
     restartGameDialogOpen, // Added from store
     setRestartGameDialogOpen, // Added from store
+    cooldowns,
+    cooldownDurations,
+    lastSaved,
   } = useGameStore();
 
   const mobileTooltip = useMobileTooltip();
@@ -84,6 +88,16 @@ export default function ProfileMenu() {
     const user = await getCurrentUser();
     setCurrentUser(user);
     setIsUserSignedIn(!!user);
+    
+    // Reset manual save cooldown when user logs in
+    if (user) {
+      useGameStore.setState((state) => ({
+        cooldowns: {
+          ...state.cooldowns,
+          manualSave: 0,
+        },
+      }));
+    }
   };
 
   const handleSetAuthDialogOpen = (open: boolean) => {
@@ -117,6 +131,47 @@ export default function ProfileMenu() {
     setRestartGameDialogOpen(false);
     await deleteSave(); // Ensure deleteSave is called before restartGame
     restartGame();
+  };
+
+  const handleManualSave = async () => {
+    const actionId = "manualSave";
+    const currentCooldown = cooldowns[actionId] || 0;
+    
+    if (currentCooldown > 0) {
+      return; // Still on cooldown
+    }
+
+    try {
+      const currentState = useGameStore.getState();
+      const gameState = buildGameState(currentState);
+      await saveGame(gameState, false);
+
+      const timestamp = formatSaveTimestamp();
+
+      // Set 15-second cooldown (in seconds, not milliseconds - game loop ticks down by 0.2 seconds)
+      useGameStore.setState((state) => ({
+        cooldowns: {
+          ...state.cooldowns,
+          [actionId]: 15,
+        },
+        cooldownDurations: {
+          ...state.cooldownDurations,
+          [actionId]: 15,
+        },
+        lastSaved: timestamp,
+        isNewGame: false,
+      }));
+
+      toast({
+        title: "Game saved successfully",
+      });
+    } catch (error) {
+      logger.error("Failed to manually save game:", error);
+      toast({
+        title: "Failed to save game",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleCopyInviteLink = () => {
@@ -265,6 +320,42 @@ export default function ProfileMenu() {
             sideOffset={8}
             className="text-xs !max-h-none w-auto"
           >
+            {currentUser && (
+              <>
+                <TooltipProvider>
+                  <Tooltip delayDuration={300}>
+                    <TooltipTrigger asChild>
+                      <div>
+                        <DropdownMenuItem
+                          onClick={handleManualSave}
+                          disabled={cooldowns["manualSave"] > 0}
+                          className={
+                            cooldowns["manualSave"] > 0
+                              ? "opacity-50 cursor-not-allowed"
+                              : ""
+                          }
+                        >
+                          Save
+                        </DropdownMenuItem>
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <div className="text-xs">
+                        <p>Game auto-saves every minute</p>
+                        {lastSaved && (
+                          <p className="mt-1">Last Save: {lastSaved}</p>
+                        )}
+                      </div>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+                <DropdownMenuSeparator />
+              </>
+            )}
+            <DropdownMenuItem onClick={handleRestartGame}>
+              New Game
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
             {currentUser ? (
               <>
                 <DropdownMenuItem onClick={handleSignOut}>
@@ -286,63 +377,62 @@ export default function ProfileMenu() {
                 <DropdownMenuSeparator />
               </>
             )}
-            {/* Changed to use the new handler */}
-            <DropdownMenuItem onClick={handleRestartGame}>
-              New Game
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
 
-            <DropdownMenuItem
-              onClick={handleCopyInviteLink}
-              disabled={!currentUser}
-            >
-              <div className="flex items-center justify-between w-full">
-                <div className="flex items-center gap-1">
-                  <span>Invite&nbsp;</span>
-                  <img
-                    src="/person-add.png"
-                    alt=""
-                    className="w-3 h-3 opacity-90"
-                  />
-                </div>
-                <span className="font-semibold">&nbsp;+250 Gold</span>
-                <TooltipProvider>
-                  <Tooltip
-                    open={
-                      isMobile
-                        ? mobileTooltip.isTooltipOpen("referral-info")
-                        : undefined
-                    }
+            <TooltipProvider>
+              <Tooltip
+                open={
+                  isMobile
+                    ? mobileTooltip.isTooltipOpen("referral-info")
+                    : undefined
+                }
+              >
+                <TooltipTrigger asChild>
+                  <div
+                    onClick={(e) => {
+                      if (isMobile) {
+                        mobileTooltip.handleTooltipClick("referral-info", e);
+                      }
+                    }}
                   >
-                    <TooltipTrigger asChild>
-                      <span
-                        className="font-black ml-2 text-muted-foreground cursor-pointer"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          e.preventDefault();
-                          if (isMobile) {
-                            mobileTooltip.handleTooltipClick(
-                              "referral-info",
-                              e,
-                            );
-                          }
-                        }}
-                      >
-                        ⓘ{" "}
-                      </span>
-                    </TooltipTrigger>
-                    <TooltipContent className="max-w-xs">
-                      <p className="text-xs">
-                        Invite your friends and both of you will receive 250
-                        gold. You can invite up to 10 friends. (
-                        {referralCount || 0}/10 invited).
-                        <br />
-                      </p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              </div>
-            </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={handleCopyInviteLink}
+                      disabled={!currentUser || (referralCount || 0) >= 10}
+                      className={
+                        !currentUser || (referralCount || 0) >= 10
+                          ? "opacity-50 cursor-not-allowed"
+                          : ""
+                      }
+                    >
+                      <div className="flex items-center justify-between w-full">
+                        <div className="flex items-center gap-1">
+                          <span>Invite&nbsp;</span>
+                          <img
+                            src="/person-add.png"
+                            alt=""
+                            className="w-4 h-4 opacity-90"
+                          />
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className="font-semibold">&nbsp;+250 Gold</span>
+                          {(referralCount || 0) >= 10 && (
+                            <span className="text-xs text-muted-foreground">
+                              ✓
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </DropdownMenuItem>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent className="max-w-xs">
+                  <p className="text-xs">
+                    Invite your friends and both of you will receive 250 gold.
+                    You can invite up to 10 friends. ({referralCount || 0}/10
+                    invited).
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
             <DropdownMenuSeparator />
             {SOCIAL_PLATFORMS.map((platform, index) => {
               const isClaimed =

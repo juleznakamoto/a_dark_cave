@@ -81,7 +81,7 @@ export const ringEvents: Record<string, GameEvent> = {
       },
       {
         id: "severFinger",
-        label: "Sever the finger",
+        label: "Sever finger",
         effect: (state: GameState) => {
           return {
             clothing: {
@@ -113,7 +113,7 @@ export const ringEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "severFinger",
-        label: "Sever the finger",
+        label: "Sever finger",
         effect: (state: GameState) => {
           return {
             clothing: {

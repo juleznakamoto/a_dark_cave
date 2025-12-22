@@ -19,7 +19,7 @@ const abbreviateNumber = (num: number): string => {
     return sign + (absNum / 1000000).toFixed(1).replace(/\.0$/, '').replace(".", "'") + 'M';
   }
   if (absNum >= 1000) {
-    return sign + (absNum / 1000).toFixed(1).replace(/\0$/, '').replace(".", "'") + 'k';
+    return sign + (absNum / 1000).toFixed(1).replace(/\.0$/, '').replace(".", "'") + 'K';
   }
   return num.toString();
 };

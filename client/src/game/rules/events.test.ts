@@ -1,4 +1,3 @@
-
 import { describe, it, expect, beforeEach } from 'vitest';
 import { EventManager } from './events';
 import { GameState } from '@shared/schema';
@@ -25,23 +24,24 @@ describe('Event System', () => {
       fellowship: {}, // Add fellowship to prevent undefined errors
       schematics: {}, // Add schematics to prevent undefined errors
       books: {}, // Add books to prevent undefined errors
+      boneDevourerState: { lastAcceptedLevel: 0 }, // Add boneDevourerState to prevent undefined errors
     };
   });
 
   it('should trigger events based on conditions', () => {
     const { newLogEntries, stateChanges } = EventManager.checkEvents(mockState as GameState);
-    
+
     expect(newLogEntries).toBeDefined();
     expect(Array.isArray(newLogEntries)).toBe(true);
   });
 
   it('should not trigger events with unmet conditions', () => {
     mockState.buildings!.woodenHut = 0; // No huts
-    
+
     const { newLogEntries } = EventManager.checkEvents(mockState as GameState);
-    
+
     // Should not trigger events requiring huts
-    const hutRequiredEvents = newLogEntries.filter(e => 
+    const hutRequiredEvents = newLogEntries.filter(e =>
       e.id.includes('stranger') || e.id.includes('merchant')
     );
     expect(hutRequiredEvents.length).toBe(0);
@@ -67,7 +67,7 @@ describe('Event System', () => {
     };
 
     const initialWood = mockState.resources!.wood;
-    
+
     // Apply the effect directly since EventManager.applyEventChoice may not exist
     const choice = testEvent.choices.find(c => c.id === 'accept');
     const changes = choice?.effect(mockState as GameState);

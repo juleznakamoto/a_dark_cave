@@ -13,13 +13,7 @@ const BORDER_COLOR = tailwindToHex("neutral-400");
 
 interface ItemSegment {
   itemType: string;
-  itemKeys: (
-    | keyof GameState["tools"]
-    | keyof GameState["weapons"]
-    | keyof GameState["clothing"]
-    | keyof GameState["relics"]
-    | keyof GameState["fellowship"]
-  )[];
+  itemKeys: string[]; // Allow any string keys to support mixed-category segments
   color: string;
   label: string;
   category: "tools" | "weapons" | "clothing" | "relics" | "fellowship";
@@ -172,7 +166,7 @@ export default function ItemProgressChart() {
         label: "Schematic Crafter",
         category: "weapons",
         maxCount: 3,
-        reward: 500,
+        reward: 250,
       },
     ],
     // Fourth ring: Clothing
@@ -184,7 +178,7 @@ export default function ItemProgressChart() {
         label: "Ancient Wisdom",
         category: "relics",
         maxCount: 3,
-        reward: 500,
+        reward: 250,
       },
       {
         itemType: "fellowship",
@@ -193,7 +187,7 @@ export default function ItemProgressChart() {
         label: "Good Company",
         category: "fellowship",
         maxCount: 3,
-        reward: 500,
+        reward: 250,
       },
     ],
     [
@@ -206,19 +200,19 @@ export default function ItemProgressChart() {
           "blacksteel_lantern",
         ],
         color: SEGMENT_COLOR,
-        label: "Blacksteel Tools",
+        label: "Dark Tools",
         category: "tools",
         maxCount: 3,
         reward: 250,
       },
-      // blacksteel weapons
+      // blacksteel equipment (weapons + armor)
       {
-        itemType: "blacksteel_weapons",
-        itemKeys: ["blacksteel_sword", "blacksteel_bow"],
+        itemType: "blacksteel_equipment",
+        itemKeys: ["blacksteel_sword", "blacksteel_bow", "blacksteel_armor"],
         color: SEGMENT_COLOR,
-        label: "Blacksteel Weapons",
-        category: "weapons",
-        maxCount: 2,
+        label: "Dark War Equipment",
+        category: "weapons", // Primary category, but we'll check clothing too
+        maxCount: 3,
         reward: 250,
       },
     ],
@@ -243,21 +237,15 @@ export default function ItemProgressChart() {
     let count = 0;
 
     for (const itemKey of segment.itemKeys) {
-      if (segment.category === "tools") {
-        if (state.tools[itemKey as keyof typeof state.tools]) count++;
-      } else if (segment.category === "weapons") {
-        if (state.weapons[itemKey as keyof typeof state.weapons]) count++;
-      } else if (segment.category === "clothing") {
-        if (state.clothing[itemKey as keyof typeof state.clothing]) count++;
-      } else if (segment.category === "relics") {
-        if (state.relics[itemKey as keyof typeof state.relics]) count++;
-      } else if (segment.category === "fellowship") {
-        // Assuming GameState has a fellowship property similar to others
-        if (
-          state.fellowship &&
-          state.fellowship[itemKey as keyof typeof state.fellowship]
-        )
-          count++;
+      // Check all relevant categories for mixed-category segments
+      if (
+        (state.tools && state.tools[itemKey as keyof typeof state.tools]) ||
+        (state.weapons && state.weapons[itemKey as keyof typeof state.weapons]) ||
+        (state.clothing && state.clothing[itemKey as keyof typeof state.clothing]) ||
+        (state.relics && state.relics[itemKey as keyof typeof state.relics]) ||
+        (state.fellowship && state.fellowship[itemKey as keyof typeof state.fellowship])
+      ) {
+        count++;
       }
     }
 

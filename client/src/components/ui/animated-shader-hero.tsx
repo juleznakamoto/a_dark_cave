@@ -576,36 +576,55 @@ const Hero: React.FC<HeroProps> = ({
             </button>
           </div>
 
-          {/* Incremental DB Vote Section */}
+          {/* Incremental DB & IndieDB Vote Section */}
           <div className="py-3 flex flex-col items-center gap-3 mt-8 animate-fade-in-up animation-delay-4500">
             <p className="text-md font-medium text-gray-300 text-center max-w-md px-4">
-              You can support the game for free by leaving a vote or review on Incremental DB. It makes a huge difference. Thank you! ♡
+              You can support the game for free by leaving a vote or review. It makes a huge difference. Thank you! ♡
             </p>
-            <button
-              onClick={() =>
-                window.open(
-                  "https://www.incrementaldb.com/game/a-dark-cave",
-                  "_blank",
-                  "noopener,noreferrer",
-                )
-              }
-              className="px-5 py-3 bg-gradient-to-r from-red-800 to-red-700 hover:from-red-700 hover:to-red-600 text-slate-200 rounded-md font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25 flex items-center gap-2"
-            >
-              <svg
-                className="h-6 w-6"
-                viewBox="0 0 26.488 29.926"
-                fill="none"
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeWidth="1.4"
+            <div className="flex gap-3 flex-wrap justify-center">
+              <button
+                onClick={() =>
+                  window.open(
+                    "https://www.incrementaldb.com/game/a-dark-cave",
+                    "_blank",
+                    "noopener,noreferrer",
+                  )
+                }
+                className="px-4 py-2 bg-gradient-to-r from-red-800 to-red-700 hover:from-red-700 hover:to-red-600 text-slate-200 rounded-md font-semibold text-base transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25 flex items-center gap-2"
               >
-                <g>
-                  <path d="m10.613 2.168 1.11-.865a2.286 2.286 0 0 1 2.871 0l1.145.975M17.804 25.986l-2.946 2.531a2.7 2.7 0 0 1-3.4 0l-2.515-2.156M13.148 15.155v13.587M15.853 27.656l9.532-8.166M10.764 27.917.987 19.66M.987 19.66V7.194M25.385 19.66V7.775M3.625 9.196.987 7.194M22.87 9.603l2.638-1.998" strokeLinejoin="round"/>
-                  <path strokeMiterlimit="10" d="m13.291 6.353 5.204 4.501M13.255 6.389l-5.034 4.213"/>
-                </g>
-              </svg>
-              <span>Incremental DB</span>
-            </button>
+                <svg
+                  className="h-5 w-5 flex-shrink-0"
+                  viewBox="0 0 26.488 29.926"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeWidth="1.4"
+                >
+                  <g>
+                    <path d="m10.613 2.168 1.11-.865a2.286 2.286 0 0 1 2.871 0l1.145.975M17.804 25.986l-2.946 2.531a2.7 2.7 0 0 1-3.4 0l-2.515-2.156M13.148 15.155v13.587M15.853 27.656l9.532-8.166M10.764 27.917.987 19.66M.987 19.66V7.194M25.385 19.66V7.775M3.625 9.196.987 7.194M22.87 9.603l2.638-1.998" strokeLinejoin="round"/>
+                    <path strokeMiterlimit="10" d="m13.291 6.353 5.204 4.501M13.255 6.389l-5.034 4.213"/>
+                  </g>
+                </svg>
+                <span>Incremental DB</span>
+              </button>
+              <button
+                onClick={() =>
+                  window.open(
+                    "https://www.indiedb.com/games/a-dark-cave",
+                    "_blank",
+                    "noopener,noreferrer",
+                  )
+                }
+                className="px-4 py-2 bg-gradient-to-r from-red-800 to-red-700 hover:from-red-700 hover:to-red-600 text-slate-200 rounded-md font-semibold text-base transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25 flex items-center gap-2"
+              >
+                <img 
+                  src="/indiedb_logo_black.png" 
+                  alt="IndieDB" 
+                  className="h-5 w-5 object-contain flex-shrink-0 invert"
+                />
+                <span>IndieDB</span>
+              </button>
+            </div>
           </div>
 
           {/* Social, Feedback and Close Buttons */}

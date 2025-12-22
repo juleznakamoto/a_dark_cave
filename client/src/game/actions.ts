@@ -51,6 +51,7 @@ import {
   handleCraftBlacksteelAxe,
   handleCraftBlacksteelPickaxe,
   handleCraftBlacksteelLantern,
+  handleCraftBlacksteelArmor,
 } from "@/game/rules/caveCraftTools";
 
 import {
@@ -342,6 +343,8 @@ export function executeGameAction(
       return handleCraftBlacksteelSword(state, result);
     case "craftBlacksteelBow":
       return handleCraftBlacksteelBow(state, result);
+    case "craftBlacksteelArmor":
+      return handleCraftBlacksteelArmor(state, result);
 
     // Cave Mine Actions
     case "mineStone":

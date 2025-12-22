@@ -2,6 +2,7 @@ import { Action, GameState } from "@shared/schema";
 import { ActionResult } from '@/game/actions';
 import { applyActionEffects } from "./actionEffects";
 import { killVillagers } from "../stateHelpers";
+import { getActionBonuses } from "./effectsCalculation";
 
 // Helper function to get dynamic cost for bone totems
 export function getBoneTotemsCost(state: GameState): number {
@@ -138,17 +139,24 @@ function handleTotemSacrifice(
     bonusPerUse: number;
   },
 ): ActionResult {
+  console.log(`\n=== ${actionId} SACRIFICE DEBUG ===`);
+  
   // Track how many times this action has been used
   const usageCount = Number(state.story?.seen?.[usageCountKey]) || 0;
   const currentCost = Math.min(5 + usageCount, 25);
 
+  console.log(`Usage count: ${usageCount}, Current cost: ${currentCost}`);
+
   // Check if player has enough totems for the current price
   if ((state.resources[totemResource] || 0) < currentCost) {
+    console.log(`Not enough ${totemResource}: have ${state.resources[totemResource]}, need ${currentCost}`);
     return result; // Not enough resources
   }
 
   // Apply the dynamic cost
   const effectUpdates = applyActionEffects(actionId, state);
+  
+  console.log(`After applyActionEffects, resources:`, effectUpdates.resources);
 
   if (!effectUpdates.resources) {
     effectUpdates.resources = { ...state.resources };
@@ -157,6 +165,10 @@ function handleTotemSacrifice(
   // Override the cost with dynamic pricing
   effectUpdates.resources[totemResource] =
     (state.resources[totemResource] || 0) - currentCost;
+
+  console.log(`After cost override, ${totemResource}: ${effectUpdates.resources[totemResource]}`);
+  console.log(`Final resources:`, effectUpdates.resources);
+  console.log(`=== END ${actionId} DEBUG ===\n`);
 
   // Track usage count for next time
   if (!effectUpdates.story) {

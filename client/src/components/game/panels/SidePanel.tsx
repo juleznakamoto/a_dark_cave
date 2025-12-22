@@ -152,9 +152,11 @@ export default function SidePanel() {
   });
 
   // Set the flag if we detect a resource at limit and flag isn't set yet
-  if (hasResourceAtLimit && !gameState.flags.hasHitResourceLimit) {
-    useGameStore.getState().setFlag("hasHitResourceLimit", true);
-  }
+  useEffect(() => {
+    if (hasResourceAtLimit && !gameState.flags.hasHitResourceLimit) {
+      useGameStore.getState().setFlag("hasHitResourceLimit", true);
+    }
+  }, [hasResourceAtLimit, gameState.flags.hasHitResourceLimit]);
 
   const showResourceLimit =
     resourceOrder.some((key) => isResourceLimited(key, gameState)) &&

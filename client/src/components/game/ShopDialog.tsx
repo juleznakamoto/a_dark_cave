@@ -770,6 +770,12 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
       });
     }
 
+    if (item.rewards.relics) {
+      item.rewards.relics.forEach((relic) => {
+        gameState.relics[relic as keyof typeof gameState.relics] = true;
+      });
+    }
+
     gameState.addLogEntry({
       id: `activate-${Date.now()}`,
       message:
@@ -860,14 +866,21 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                           {item.name}
                           {item.id === "skull_lantern" && (
                             <TooltipProvider>
-                              <Tooltip open={mobileTooltip.isTooltipOpen("skull-lantern-info")}>
+                              <Tooltip
+                                open={mobileTooltip.isTooltipOpen(
+                                  "skull-lantern-info",
+                                )}
+                              >
                                 <TooltipTrigger asChild>
-                                  <button 
+                                  <button
                                     className="inline-flex items-center justify-center w-4 h-4 rounded-full text-muted-foreground text-sm"
                                     onClick={(e) => {
                                       e.stopPropagation();
                                       if (mobileTooltip.isMobile) {
-                                        mobileTooltip.handleTooltipClick("skull-lantern-info", e);
+                                        mobileTooltip.handleTooltipClick(
+                                          "skull-lantern-info",
+                                          e,
+                                        );
                                       }
                                     }}
                                   >
@@ -885,6 +898,44 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                                       <div>Cave Explore: -5s Cooldown</div>
                                       <div>Mining: +200% Bonus</div>
                                       <div>Mining: -5s Cooldown</div>
+                                    </div>
+                                  </div>
+                                </TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
+                          )}
+                          {item.id === "tarnished_compass" && (
+                            <TooltipProvider>
+                              <Tooltip
+                                open={mobileTooltip.isTooltipOpen(
+                                  "tarnished-compass-info",
+                                )}
+                              >
+                                <TooltipTrigger asChild>
+                                  <button
+                                    className="inline-flex items-center justify-center w-4 h-4 rounded-full text-muted-foreground text-sm"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      if (mobileTooltip.isMobile) {
+                                        mobileTooltip.handleTooltipClick(
+                                          "tarnished-compass-info",
+                                          e,
+                                        );
+                                      }
+                                    }}
+                                  >
+                                    ⓘ
+                                  </button>
+                                </TooltipTrigger>
+                                <TooltipContent className="max-w-[14rem]">
+                                  <div className="text-xs">
+                                    <div className="font-bold mb-1">
+                                      Tarnished Compass
+                                    </div>
+
+                                    <div className="mt-1 space-y-0.5">
+                                      <div>+5 Luck</div>
+                                      <div>10% chance to double gains from all actions</div>
                                     </div>
                                   </div>
                                 </TooltipContent>

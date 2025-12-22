@@ -4,6 +4,227 @@ import { killVillagers } from "@/game/stateHelpers";
 import { getTotalStrength, getTotalLuck } from "./effectsCalculation";
 
 export const villageAttackEvents: Record<string, GameEvent> = {
+  boneArmyAttack: {
+    id: "boneArmyAttack",
+    condition: (state: GameState) =>
+      state.boneDevourerState.lastAcceptedLevel >= 6 &&
+      !state.clothing.devourer_crown &&
+      state.current_population > 10,
+    triggerType: "resource",
+    timeProbability: 15,
+    title: "The Bone Army",
+    message:
+      "The earth trembles as skeletal creatures emerge from the forest. The Bone Devourer has used the bones you traded to forge an unholy legion. With hollow eyes and sharpened bone weapons, they approach the city.",
+    triggered: false,
+    priority: 4,
+    repeatable: true,
+    choices: [
+      {
+        id: "defendAgainstBoneArmy",
+        label: "Defend village",
+        relevant_stats: ["strength"],
+        success_chance: (state: GameState) => {
+          const traps = state.buildings.traps;
+          return calculateSuccessChance(state, 0.0 + traps * 0.1, {
+            type: "strength",
+            multiplier: 0.0075,
+          });
+        },
+        effect: (state: GameState) => {
+          const traps = state.buildings.traps;
+          const strength = getTotalStrength(state);
+
+          // Check for victory: 12% base chance + 1% per strength point
+          // Traps increase victory chance by 10%
+          const victoryChance = calculateSuccessChance(
+            state,
+            0.0 + traps * 0.1,
+            { type: "strength", multiplier: 0.075 },
+          );
+
+          if (Math.random() < victoryChance) {
+            // Victory! Get Devourer Crown
+            return {
+              clothing: {
+                ...state.clothing,
+                devourer_crown: true,
+              },
+              _logMessage:
+                "The village defeats the bone army! Bone and silence litter the battlefield. Among the remains, you find the Devourer's Crown.",
+            };
+          }
+
+          // Base chance of casualties (75%), reduced by 2% per strength point, minimum 25%
+          // Traps reduce death chance by 10%
+          const casualtyChance =
+            Math.max(0.25, 0.75 - strength * 0.005) -
+            traps * 0.1 +
+            state.CM * 0.05;
+
+          let villagerDeaths = 0;
+          let steelLoss = Math.min(
+            state.resources.steel,
+            Math.floor(Math.random() * 10) * 25 + 50 + state.CM * 100,
+          );
+          let hutDestroyed = false;
+
+          // Determine villager casualties
+          // Traps reduce max deaths by 3
+          const maxPotentialDeaths = Math.min(
+            Math.floor(Math.random() * 20) + 10 + state.CM * 8,
+            state.current_population,
+          );
+          for (let i = 0; i < maxPotentialDeaths; i++) {
+            if (Math.random() < casualtyChance) {
+              villagerDeaths++;
+            }
+          }
+
+          // If 3+ villagers die and there's a hut
+          if (villagerDeaths >= 3 && state.buildings.woodenHut > 0) {
+            if (Math.random() < state.CM * 0.45 - traps * 0.05) {
+              hutDestroyed = true;
+            }
+          }
+
+          // Apply deaths to villagers
+          const deathResult = killVillagers(state, villagerDeaths);
+          const actualDeaths = deathResult.villagersKilled || 0;
+
+          // Construct result message
+          let message =
+            "The village fights desperately against the bone army. ";
+
+          if (actualDeaths === 0) {
+            message += "The villagers survive the onslaught.";
+          } else if (actualDeaths === 1) {
+            message += "One villager falls to the skeletal warriors.";
+          } else {
+            message += `${actualDeaths} villagers are slain by the bone creatures.`;
+          }
+
+          if (steelLoss > 0) {
+            message += ` The bone army steals ${steelLoss} steel from the stores.`;
+          }
+
+          if (hutDestroyed) {
+            message +=
+              " The skeletal creatures tear apart one of the huts, reducing it to rubble.";
+          }
+
+          return {
+            ...deathResult,
+            resources: {
+              ...state.resources,
+              steel: Math.max(0, state.resources.steel - steelLoss),
+            },
+            buildings: hutDestroyed
+              ? {
+                  ...state.buildings,
+                  woodenHut: Math.max(0, state.buildings.woodenHut - 1),
+                }
+              : state.buildings,
+            _logMessage: message,
+          };
+        },
+      },
+      {
+        id: "hideFromBoneArmy",
+        label: "Hide",
+        relevant_stats: ["luck"],
+        success_chance: (state: GameState) => {
+          const traps = state.buildings.traps;
+          return calculateSuccessChance(state, 0.0 + traps * 0.1, {
+            type: "luck",
+            multiplier: 0.01,
+          });
+        },
+        effect: (state: GameState) => {
+          const traps = state.buildings.traps;
+          const success_chance = calculateSuccessChance(
+            state,
+            0.0 + traps * 0.1,
+            { type: "luck", multiplier: 0.01 },
+          );
+
+          let villagerDeaths = 0;
+          let steelLoss = 0;
+          let ironLoss = 0;
+          let deathResult = {};
+
+          if (Math.random() < success_chance) {
+            // Success - bone army passes without finding anyone
+            return {
+              _logMessage:
+                "The villagers hide in terror as the bone army searches the village. The skeletal creatures eventually march away, their purpose unfulfilled.",
+            };
+          } else {
+            const luck = getTotalLuck(state);
+            const casualtyChance =
+              Math.max(0.15, 0.4 - luck * 0.02) -
+              traps * 0.05 +
+              state.CM * 0.05;
+
+            steelLoss = Math.min(
+              state.resources.steel,
+              Math.floor(Math.random() * 20) * 25 + 100 + state.CM * 100,
+            );
+            ironLoss = Math.min(
+              state.resources.iron,
+              Math.floor(Math.random() * 20) * 25 + 200 + state.CM * 200,
+            );
+
+            // Determine villager casualties
+            const maxPotentialDeaths = Math.min(
+              Math.floor(Math.random() * 15) + 5 + state.CM * 8,
+              state.current_population,
+            );
+            for (let i = 0; i < maxPotentialDeaths; i++) {
+              if (Math.random() < casualtyChance) {
+                villagerDeaths++;
+              }
+            }
+
+            // Apply deaths to villagers
+            deathResult = killVillagers(state, villagerDeaths);
+          }
+
+          const actualDeaths = deathResult.villagersKilled || 0;
+
+          // Construct result message
+          let message =
+            "The villagers hide in terror as the bone army searches the village. ";
+
+          if (actualDeaths === 0) {
+            message +=
+              "By morning, the skeletal army has departed, leaving only bone fragments behind.";
+          } else if (actualDeaths === 1) {
+            message += "One villager who tried to flee is killed.";
+          } else {
+            message += `${actualDeaths} villagers are killed by the bone creatures.`;
+          }
+
+          if (steelLoss > 0) {
+            message += ` The army ransacks your supplies, stealing ${steelLoss} steel.`;
+          }
+          if (ironLoss > 0) {
+            message += ` The army ransacks your supplies, stealing ${ironLoss} iron.`;
+          }
+
+          return {
+            ...deathResult,
+            resources: {
+              ...state.resources,
+              steel: Math.max(0, state.resources.steel - steelLoss),
+              iron: Math.max(0, state.resources.iron - ironLoss),
+            },
+            _logMessage: message,
+          };
+        },
+      },
+    ],
+  },
+
   wolfAttack: {
     id: "wolfAttack",
     condition: (state: GameState) =>
@@ -25,32 +246,30 @@ export const villageAttackEvents: Record<string, GameEvent> = {
         relevant_stats: ["strength"],
         success_chance: (state: GameState) => {
           const traps = state.buildings.traps;
-          
+
           if (!state.story.seen.firstWolfAttack) {
             return 0;
           }
-          
-          return calculateSuccessChance(
-            state,
-            0.15 + traps * 0.1,
-            { type: 'strength', multiplier: 0.01 }
-          );
+
+          return calculateSuccessChance(state, 0.15 + traps * 0.1, {
+            type: "strength",
+            multiplier: 0.01,
+          });
         },
         effect: (state: GameState) => {
           const traps = state.buildings.traps;
           const strength = getTotalStrength(state);
-          
+
           let victoryChance;
           if (!state.story.seen.firstWolfAttack) {
             victoryChance = 0;
           } else {
             // Check for victory: 15% base chance + 1% per strength point
             // Traps increase victory chance by 10%
-            victoryChance = calculateSuccessChance(
-              state,
-              0.15 + traps * 0.1,
-              { type: 'strength', multiplier: 0.01 }
-            );
+            victoryChance = calculateSuccessChance(state, 0.15 + traps * 0.1, {
+              type: "strength",
+              multiplier: 0.01,
+            });
           }
 
           if (Math.random() < victoryChance) {
@@ -157,18 +376,17 @@ export const villageAttackEvents: Record<string, GameEvent> = {
         relevant_stats: ["luck"],
         success_chance: (state: GameState) => {
           const traps = state.buildings.traps * 0.1;
-          return calculateSuccessChance(
-            state,
-            0.15 + traps * 0.1,
-            { type: 'luck', multiplier: 0.02 }
-          );
+          return calculateSuccessChance(state, 0.15 + traps * 0.1, {
+            type: "luck",
+            multiplier: 0.02,
+          });
         },
         effect: (state: GameState) => {
           const traps = state.buildings.traps * 0.1;
           const success_chance = calculateSuccessChance(
             state,
             0.15 + traps * 0.1,
-            { type: 'luck', multiplier: 0.02 }
+            { type: "luck", multiplier: 0.02 },
           );
 
           let villagerDeaths = 0;
@@ -191,11 +409,14 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           } else {
             const luck = getTotalLuck(state);
             const casualtyChance =
-              Math.max(0.1, 0.35 - luck * 0.02) - traps * 0.05 + state.CM * 0.05;
+              Math.max(0.1, 0.35 - luck * 0.02) -
+              traps * 0.05 +
+              state.CM * 0.05;
 
             foodLoss = Math.min(
               state.resources.food,
-              (state.buildings.woodenHut + Math.floor(Math.random() * 16)) * 25 +
+              (state.buildings.woodenHut + Math.floor(Math.random() * 16)) *
+                25 +
                 25 +
                 state.CM * 2,
             );
@@ -274,11 +495,10 @@ export const villageAttackEvents: Record<string, GameEvent> = {
         relevant_stats: ["strength"],
         success_chance: (state: GameState) => {
           const traps = state.buildings.traps;
-          return calculateSuccessChance(
-            state,
-            0.1 + traps * 0.1,
-            { type: 'strength', multiplier: 0.01 }
-          );
+          return calculateSuccessChance(state, 0.1 + traps * 0.1, {
+            type: "strength",
+            multiplier: 0.01,
+          });
         },
         effect: (state: GameState) => {
           const traps = state.buildings.traps;
@@ -288,7 +508,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           const victoryChance = calculateSuccessChance(
             state,
             0.1 + traps * 0.1,
-            { type: 'strength', multiplier: 0.01 }
+            { type: "strength", multiplier: 0.01 },
           );
 
           if (Math.random() < victoryChance) {
@@ -399,18 +619,17 @@ export const villageAttackEvents: Record<string, GameEvent> = {
         relevant_stats: ["luck"],
         success_chance: (state: GameState) => {
           const traps = state.buildings.traps;
-          return calculateSuccessChance(
-            state,
-            0.05 + traps * 0.1,
-            { type: 'luck', multiplier: 0.01 }
-          );
+          return calculateSuccessChance(state, 0.05 + traps * 0.1, {
+            type: "luck",
+            multiplier: 0.01,
+          });
         },
         effect: (state: GameState) => {
           const traps = state.buildings.traps;
           const success_chance = calculateSuccessChance(
             state,
             0.05 + traps * 0.1,
-            { type: 'luck', multiplier: 0.01 }
+            { type: "luck", multiplier: 0.01 },
           );
 
           let totalLost = 0;

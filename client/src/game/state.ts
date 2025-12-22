@@ -72,7 +72,7 @@ interface GameStore extends GameState {
 
   // Notification state for mysterious note
   mysteriousNoteShopNotificationSeen: boolean;
-  mysteriousNoteDonateNotificationSeen: boolean;
+  mystNoteDonateNotificationSeen: boolean;
 
   // Resource highlighting state
   highlightedResources: string[]; // Updated to array for serialization
@@ -102,6 +102,9 @@ interface GameStore extends GameState {
   // Cooldown management
   cooldowns: Record<string, number>;
   cooldownDurations: Record<string, number>; // Track initial duration for each cooldown
+
+  // Compass glow effect
+  compassGlowButton: string | null; // Action ID of button to glow
 
   // Focus system
   focusState: {
@@ -173,6 +176,7 @@ interface GameStore extends GameState {
   updatePopulation: () => void;
   setCooldown: (action: string, duration: number) => void;
   tickCooldowns: () => void;
+  setCompassGlow: (actionId: string | null) => void;
   addLogEntry: (entry: LogEntry) => void;
   checkEvents: () => void;
   applyEventChoice: (choiceId: string, eventId: string) => void;
@@ -236,7 +240,9 @@ const mergeStateUpdates = (
     cooldowns: { ...prevState.cooldowns, ...stateUpdates.cooldowns },
     cooldownDurations: { ...prevState.cooldownDurations, ...stateUpdates.cooldownDurations },
     attackWaveTimers: { ...prevState.attackWaveTimers, ...stateUpdates.attackWaveTimers },
+    triggeredEvents: { ...prevState.triggeredEvents, ...stateUpdates.triggeredEvents },
     feastState: stateUpdates.feastState || prevState.feastState,
+    boneDevourerState: stateUpdates.boneDevourerState || prevState.boneDevourerState,
     greatFeastState: stateUpdates.greatFeastState || prevState.greatFeastState,
     curseState: stateUpdates.curseState || prevState.curseState,
     frostfallState: stateUpdates.frostfallState || prevState.frostfallState,
@@ -356,6 +362,7 @@ export const createInitialState = (): GameState => ({
     integrity: 0,
   },
   hoveredTooltips: {},
+  triggeredEvents: {},
   books: {
     book_of_ascension: false,
     book_of_war: false,
@@ -365,6 +372,9 @@ export const createInitialState = (): GameState => ({
   feastState: {
     isActive: false,
     endTime: 0,
+    lastAcceptedLevel: 0,
+  },
+  boneDevourerState: {
     lastAcceptedLevel: 0,
   },
   greatFeastState: {
@@ -421,6 +431,9 @@ export const createInitialState = (): GameState => ({
   // Initialize cooldown management
   cooldowns: {},
   cooldownDurations: {}, // Initialize cooldownDurations
+
+  // Initialize compass glow
+  compassGlowButton: null,
 
   // Initialize analytics tracking
   clickAnalytics: {},
@@ -667,6 +680,16 @@ export const useGameStore = create<GameStore>((set, get) => ({
       result.stateUpdates.cooldowns = updatedCooldowns;
     }
 
+    // Handle compass bonus glow effect
+    if ((result.stateUpdates as any).compassBonusTriggered) {
+      console.log('[COMPASS GLOW] Compass bonus triggered for action:', actionId);
+      get().setCompassGlow(actionId);
+      setTimeout(() => {
+        console.log('[COMPASS GLOW] Clearing compass glow');
+        get().setCompassGlow(null);
+      }, 3000);
+    }
+
     // Apply state updates
     set((prevState) => {
       const mergedUpdates = mergeStateUpdates(prevState, result.stateUpdates);
@@ -732,6 +755,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
       cooldowns: { ...state.cooldowns, [action]: finalDuration },
       cooldownDurations: { ...state.cooldownDurations, [action]: finalDuration },
     }));
+  },
+
+  setCompassGlow: (actionId: string | null) => {
+    console.log('[COMPASS GLOW] Setting compass glow for action:', actionId);
+    set({ compassGlowButton: actionId });
   },
 
   tickCooldowns: () => {
@@ -828,7 +856,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       isNewGame: true,
       startTime: Date.now(),
       playTime: 0,
-      allowPlayTimeOverwrite: true,
+      allowPlaytimeOverwrite: true,
     };
 
     set(resetState);
@@ -973,7 +1001,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         authNotificationSeen: savedState.authNotificationSeen !== undefined ? savedState.authNotificationSeen : false,
         authNotificationVisible: savedState.authNotificationVisible !== undefined ? savedState.authNotificationVisible : false,
         mysteriousNoteShopNotificationSeen: savedState.mysteriousNoteShopNotificationSeen !== undefined ? savedState.mysteriousNoteShopNotificationSeen : false,
-        mysteriousNoteDonateNotificationSeen: savedState.mysteriousNoteDonateNotificationSeen !== undefined ? savedState.mysteriousNoteDonateNotificationSeen : false,
+        mystNoteDonateNotificationSeen: savedState.mystNoteDonateNotificationSeen !== undefined ? savedState.mystNoteDonateNotificationSeen : false,
         playTime: loadedPlayTime, // CRITICAL: Use the extracted playTime value
         isNewGame: false, // Clear the new game flag when loading
         startTime: savedState.startTime !== undefined ? savedState.startTime : 0, // Ensure startTime is loaded

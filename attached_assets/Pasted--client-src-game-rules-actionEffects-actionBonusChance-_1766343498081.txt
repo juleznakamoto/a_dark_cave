@@ -1,0 +1,256 @@
+
+ ❯ client/src/game/rules/actionEffects.actionBonusChance.test.ts (29 tests | 23 failed) 39ms
+   ❯ Tarnished Compass - actionBonusChance (29)
+     ❯ Eligible Actions (12)
+       × exploreCave: should trigger 2x bonus when random check succeeds 7ms
+       × exploreCave: should not trigger bonus when random check fails 1ms
+       × ventureDeeper: should trigger 2x bonus when random check succeeds 1ms
+       × ventureDeeper: should not trigger bonus when random check fails 1ms
+       × mineStone: should trigger 2x bonus when random check succeeds 3ms
+       × mineStone: should not trigger bonus when random check fails 1ms
+       × mineIron: should trigger 2x bonus when random check succeeds 1ms
+       × mineIron: should not trigger bonus when random check fails 1ms
+       × chopWood: should trigger 2x bonus when random check succeeds 1ms
+       × chopWood: should not trigger bonus when random check fails 1ms
+       × hunt: should trigger 2x bonus when random check succeeds 1ms
+       × hunt: should not trigger bonus when random check fails 1ms
+     ❯ Bonus Calculation (3)
+       × chopWood: should exactly double the gained wood 1ms
+       × mineStone: should exactly double the gained stone 1ms
+       × hunt: should double all gained resources (food, fur, bones) 1ms
+     ❯ Stacking with Other Bonuses (3)
+       × chopWood: should apply 2x after tool bonuses 1ms
+       × mineStone: should apply 2x after pickaxe bonuses 1ms
+       × exploreCave: should apply 2x after lantern bonuses 1ms
+     ✓ Without Tarnished Compass (1)
+       ✓ should not trigger bonus without compass equipped 2ms
+     ✓ Non-Eligible Actions (5)
+       ✓ craftTorch: should not trigger bonus for non-eligible action 4ms
+       ✓ craftIronSword: should not trigger bonus for non-eligible action 1ms
+       ✓ buildCabin: should not trigger bonus for non-eligible action 1ms
+       ✓ boneTotems: should not trigger bonus for non-eligible action 0ms
+       ✓ leatherTotems: should not trigger bonus for non-eligible action 0ms
+     ❯ Probability Distribution (1)
+       × should trigger approximately 10% of the time over many iterations 1ms
+     ❯ Edge Cases (2)
+       × should not double negative amounts (costs) 1ms
+       × should handle zero gains correctly 1ms
+     ❯ Multiple Resources (2)
+       × exploreCave: should double all resources gained 1ms
+       × hunt: should double food, fur, and bones independently 1ms
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯ Failed Tests 23 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  client/src/game/rules/actionEffects.actionBonusChance.test.ts > Tarnished Compass - actionBonusChance > Eligible Actions > exploreCave: should trigger 2x bonus when random check succeeds
+ FAIL  client/src/game/rules/actionEffects.actionBonusChance.test.ts > Tarnished Compass - actionBonusChance > Eligible Actions > ventureDeeper: should trigger 2x bonus when random check succeeds
+ FAIL  client/src/game/rules/actionEffects.actionBonusChance.test.ts > Tarnished Compass - actionBonusChance > Eligible Actions > mineStone: should trigger 2x bonus when random check succeeds
+ FAIL  client/src/game/rules/actionEffects.actionBonusChance.test.ts > Tarnished Compass - actionBonusChance > Eligible Actions > mineIron: should trigger 2x bonus when random check succeeds
+ FAIL  client/src/game/rules/actionEffects.actionBonusChance.test.ts > Tarnished Compass - actionBonusChance > Eligible Actions > chopWood: should trigger 2x bonus when random check succeeds
+ FAIL  client/src/game/rules/actionEffects.actionBonusChance.test.ts > Tarnished Compass - actionBonusChance > Eligible Actions > hunt: should trigger 2x bonus when random check succeeds
+Error: Cannot find module './effects'
+Require stack:
+- /home/runner/workspace/client/src/game/rules/actionEffects.ts
+ ❯ applyActionEffects client/src/game/rules/actionEffects.ts:88:29
+     86|     // Check clothing for actionBonusC…
+     87|     if (state.clothing?.tarnished_comp…
+     88|       const compassEffect = require('.…
+       |                             ^
+     89|       totalActionBonusChance += compas…
+     90|     }
+ ❯ client/src/game/rules/actionEffects.actionBonusChance.test.ts:51:25
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/23]⎯
+
+ FAIL  client/src/game/rules/actionEffects.actionBonusChance.test.ts > Tarnished Compass - actionBonusChance > Eligible Actions > exploreCave: should not trigger bonus when random check fails
+ FAIL  client/src/game/rules/actionEffects.actionBonusChance.test.ts > Tarnished Compass - actionBonusChance > Eligible Actions > ventureDeeper: should not trigger bonus when random check fails
+ FAIL  client/src/game/rules/actionEffects.actionBonusChance.test.ts > Tarnished Compass - actionBonusChance > Eligible Actions > mineStone: should not trigger bonus when random check fails
+ FAIL  client/src/game/rules/actionEffects.actionBonusChance.test.ts > Tarnished Compass - actionBonusChance > Eligible Actions > mineIron: should not trigger bonus when random check fails
+ FAIL  client/src/game/rules/actionEffects.actionBonusChance.test.ts > Tarnished Compass - actionBonusChance > Eligible Actions > chopWood: should not trigger bonus when random check fails
+ FAIL  client/src/game/rules/actionEffects.actionBonusChance.test.ts > Tarnished Compass - actionBonusChance > Eligible Actions > hunt: should not trigger bonus when random check fails
+Error: Cannot find module './effects'
+Require stack:
+- /home/runner/workspace/client/src/game/rules/actionEffects.ts
+ ❯ applyActionEffects client/src/game/rules/actionEffects.ts:88:29
+     86|     // Check clothing for actionBonusC…
+     87|     if (state.clothing?.tarnished_comp…
+     88|       const compassEffect = require('.…
+       |                             ^
+     89|       totalActionBonusChance += compas…
+     90|     }
+ ❯ client/src/game/rules/actionEffects.actionBonusChance.test.ts:75:25
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/23]⎯
+
+ FAIL  client/src/game/rules/actionEffects.actionBonusChance.test.ts > Tarnished Compass - actionBonusChance > Bonus Calculation > chopWood: should exactly double the gained wood
+Error: Cannot find module './effects'
+Require stack:
+- /home/runner/workspace/client/src/game/rules/actionEffects.ts
+ ❯ applyActionEffects client/src/game/rules/actionEffects.ts:88:29
+     86|     // Check clothing for actionBonusC…
+     87|     if (state.clothing?.tarnished_comp…
+     88|       const compassEffect = require('.…
+       |                             ^
+     89|       totalActionBonusChance += compas…
+     90|     }
+ ❯ client/src/game/rules/actionEffects.actionBonusChance.test.ts:97:23
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/23]⎯
+
+ FAIL  client/src/game/rules/actionEffects.actionBonusChance.test.ts > Tarnished Compass - actionBonusChance > Bonus Calculation > mineStone: should exactly double the gained stone
+Error: Cannot find module './effects'
+Require stack:
+- /home/runner/workspace/client/src/game/rules/actionEffects.ts
+ ❯ applyActionEffects client/src/game/rules/actionEffects.ts:88:29
+     86|     // Check clothing for actionBonusC…
+     87|     if (state.clothing?.tarnished_comp…
+     88|       const compassEffect = require('.…
+       |                             ^
+     89|       totalActionBonusChance += compas…
+     90|     }
+ ❯ client/src/game/rules/actionEffects.actionBonusChance.test.ts:114:23
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/23]⎯
+
+ FAIL  client/src/game/rules/actionEffects.actionBonusChance.test.ts > Tarnished Compass - actionBonusChance > Bonus Calculation > hunt: should double all gained resources (food, fur, bones)
+Error: Cannot find module './effects'
+Require stack:
+- /home/runner/workspace/client/src/game/rules/actionEffects.ts
+ ❯ applyActionEffects client/src/game/rules/actionEffects.ts:88:29
+     86|     // Check clothing for actionBonusC…
+     87|     if (state.clothing?.tarnished_comp…
+     88|       const compassEffect = require('.…
+       |                             ^
+     89|       totalActionBonusChance += compas…
+     90|     }
+ ❯ client/src/game/rules/actionEffects.actionBonusChance.test.ts:131:23
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/23]⎯
+
+ FAIL  client/src/game/rules/actionEffects.actionBonusChance.test.ts > Tarnished Compass - actionBonusChance > Stacking with Other Bonuses > chopWood: should apply 2x after tool bonuses
+Error: Cannot find module './effects'
+Require stack:
+- /home/runner/workspace/client/src/game/rules/actionEffects.ts
+ ❯ applyActionEffects client/src/game/rules/actionEffects.ts:88:29
+     86|     // Check clothing for actionBonusC…
+     87|     if (state.clothing?.tarnished_comp…
+     88|       const compassEffect = require('.…
+       |                             ^
+     89|       totalActionBonusChance += compas…
+     90|     }
+ ❯ client/src/game/rules/actionEffects.actionBonusChance.test.ts:155:30
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/23]⎯
+
+ FAIL  client/src/game/rules/actionEffects.actionBonusChance.test.ts > Tarnished Compass - actionBonusChance > Stacking with Other Bonuses > mineStone: should apply 2x after pickaxe bonuses
+Error: Cannot find module './effects'
+Require stack:
+- /home/runner/workspace/client/src/game/rules/actionEffects.ts
+ ❯ applyActionEffects client/src/game/rules/actionEffects.ts:88:29
+     86|     // Check clothing for actionBonusC…
+     87|     if (state.clothing?.tarnished_comp…
+     88|       const compassEffect = require('.…
+       |                             ^
+     89|       totalActionBonusChance += compas…
+     90|     }
+ ❯ client/src/game/rules/actionEffects.actionBonusChance.test.ts:176:23
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/23]⎯
+
+ FAIL  client/src/game/rules/actionEffects.actionBonusChance.test.ts > Tarnished Compass - actionBonusChance > Stacking with Other Bonuses > exploreCave: should apply 2x after lantern bonuses
+Error: Cannot find module './effects'
+Require stack:
+- /home/runner/workspace/client/src/game/rules/actionEffects.ts
+ ❯ applyActionEffects client/src/game/rules/actionEffects.ts:88:29
+     86|     // Check clothing for actionBonusC…
+     87|     if (state.clothing?.tarnished_comp…
+     88|       const compassEffect = require('.…
+       |                             ^
+     89|       totalActionBonusChance += compas…
+     90|     }
+ ❯ client/src/game/rules/actionEffects.actionBonusChance.test.ts:195:23
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/23]⎯
+
+ FAIL  client/src/game/rules/actionEffects.actionBonusChance.test.ts > Tarnished Compass - actionBonusChance > Probability Distribution > should trigger approximately 10% of the time over many iterations
+Error: Cannot find module './effects'
+Require stack:
+- /home/runner/workspace/client/src/game/rules/actionEffects.ts
+ ❯ applyActionEffects client/src/game/rules/actionEffects.ts:88:29
+     86|     // Check clothing for actionBonusC…
+     87|     if (state.clothing?.tarnished_comp…
+     88|       const compassEffect = require('.…
+       |                             ^
+     89|       totalActionBonusChance += compas…
+     90|     }
+ ❯ client/src/game/rules/actionEffects.actionBonusChance.test.ts:272:25
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/23]⎯
+
+ FAIL  client/src/game/rules/actionEffects.actionBonusChance.test.ts > Tarnished Compass - actionBonusChance > Edge Cases > should not double negative amounts (costs)
+Error: Cannot find module './effects'
+Require stack:
+- /home/runner/workspace/client/src/game/rules/actionEffects.ts
+ ❯ applyActionEffects client/src/game/rules/actionEffects.ts:88:29
+     86|     // Check clothing for actionBonusC…
+     87|     if (state.clothing?.tarnished_comp…
+     88|       const compassEffect = require('.…
+       |                             ^
+     89|       totalActionBonusChance += compas…
+     90|     }
+ ❯ client/src/game/rules/actionEffects.actionBonusChance.test.ts:300:23
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/23]⎯
+
+ FAIL  client/src/game/rules/actionEffects.actionBonusChance.test.ts > Tarnished Compass - actionBonusChance > Edge Cases > should handle zero gains correctly
+Error: Cannot find module './effects'
+Require stack:
+- /home/runner/workspace/client/src/game/rules/actionEffects.ts
+ ❯ applyActionEffects client/src/game/rules/actionEffects.ts:88:29
+     86|     // Check clothing for actionBonusC…
+     87|     if (state.clothing?.tarnished_comp…
+     88|       const compassEffect = require('.…
+       |                             ^
+     89|       totalActionBonusChance += compas…
+     90|     }
+ ❯ client/src/game/rules/actionEffects.actionBonusChance.test.ts:316:23
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/23]⎯
+
+ FAIL  client/src/game/rules/actionEffects.actionBonusChance.test.ts > Tarnished Compass - actionBonusChance > Multiple Resources > exploreCave: should double all resources gained
+Error: Cannot find module './effects'
+Require stack:
+- /home/runner/workspace/client/src/game/rules/actionEffects.ts
+ ❯ applyActionEffects client/src/game/rules/actionEffects.ts:88:29
+     86|     // Check clothing for actionBonusC…
+     87|     if (state.clothing?.tarnished_comp…
+     88|       const compassEffect = require('.…
+       |                             ^
+     89|       totalActionBonusChance += compas…
+     90|     }
+ ❯ client/src/game/rules/actionEffects.actionBonusChance.test.ts:333:23
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/23]⎯
+
+ FAIL  client/src/game/rules/actionEffects.actionBonusChance.test.ts > Tarnished Compass - actionBonusChance > Multiple Resources > hunt: should double food, fur, and bones independently
+Error: Cannot find module './effects'
+Require stack:
+- /home/runner/workspace/client/src/game/rules/actionEffects.ts
+ ❯ applyActionEffects client/src/game/rules/actionEffects.ts:88:29
+     86|     // Check clothing for actionBonusC…
+     87|     if (state.clothing?.tarnished_comp…
+     88|       const compassEffect = require('.…
+       |                             ^
+     89|       totalActionBonusChance += compas…
+     90|     }
+ ❯ client/src/game/rules/actionEffects.actionBonusChance.test.ts:349:23
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/23]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  23 failed | 6 passed (29)
+   Start at  18:58:06
+   Duration  166ms
+
+ FAIL  Tests failed. Watching for file changes...
+       press h to show help, press q to quit

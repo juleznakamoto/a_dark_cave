@@ -155,8 +155,8 @@ const WAVE_CONFIG = {
   sixthWave: {
     title: "The Final Wave",
     message:
-      "From the deepest reaches of the cave, a final horde emerges. These pale creatures are ancient beyond measure, their twisted forms radiating an otherworldly hunger as they descend upon the city.",
-    enemyName: "Ancient Horde",
+      "From the deepest reaches of the cave, an unimaginable mass of pale creatures erupts. They flood over the land like a living tide, their hunger unrelenting as the city braces for annihilation.",
+    enemyName: "Living Tide",
     condition: (state: GameState) =>
       state.weapons.bloodstone_staff &&
       state.story.seen.fifthWaveVictory &&

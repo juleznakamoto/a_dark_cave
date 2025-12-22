@@ -146,6 +146,7 @@ export default function CavePanel() {
             { id: "craftBlacksteelLantern", label: "Blacksteel Lantern" },
             { id: "craftBlacksteelSword", label: "Blacksteel Sword" },
             { id: "craftBlacksteelBow", label: "Blacksteel Bow" },
+            { id: "craftBlacksteelArmor", label: "Blacksteel Armor" },
           ],
         },
       ],

@@ -3,6 +3,7 @@ export interface ShopItemRewards {
   tools?: string[];
   weapons?: string[];
   blessings?: string[];
+  relics?: string[];
   feastActivations?: number;
 }
 
@@ -14,7 +15,7 @@ export interface ShopItem {
   originalPrice?: number; // in cents, for showing crossed-out prices
   rewards: ShopItemRewards;
   canPurchaseMultipleTimes: boolean;
-  category: "resource" | "weapon" | "tool" | "blessing" | "feast" | "bundle";
+  category: "resource" | "weapon" | "tool" | "blessing" | "feast" | "bundle" | "relic";
   activationMessage?: string;
   symbol?: string;
   symbolColor?: string;
@@ -191,7 +192,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "skull_lantern",
     name: "Skull Lantern",
     description:
-      "Forged from cursed bone illuminating the deepest depths. Unlocks new cave actions.",
+      "Forged from cursed bone illuminating the deepest depths. Unlocks Lanter storyline.",
     originalPrice: 499,
     price: 249, // 2.49 €
     rewards: {
@@ -204,4 +205,22 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     symbol: "❊",
     symbolColor: "text-purple-400",
   },
+
+  // tarnished_compass: {
+  //   id: "tarnished_compass",
+  //   name: "Tarnished Compass",
+  //   description:
+  //     "Relic of the ancient civilization. Unlocks Compass storyline.",
+  //   originalPrice: 499,
+  //   price: 249, // 2.49 €
+  //   rewards: {
+  //     relics: ["tarnished_compass"],
+  //   },
+  //   canPurchaseMultipleTimes: false,
+  //   category: "relic",
+  //   activationMessage:
+  //     "The Tarnished Compass has been added to your inventory! Its ancient magic may grant fortune to your endeavors.",
+  //   symbol: "⛯",
+  //   symbolColor: "text-amber-200/90",
+  // },
 };

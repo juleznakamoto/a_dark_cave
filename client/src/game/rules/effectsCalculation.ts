@@ -1005,3 +1005,17 @@ export const getTotalEventDeathReduction = (state: GameState): number => {
 
   return eventDeathReduction;
 };
+
+// Helper function to calculate total critical chance bonus
+export const getTotalCriticalChance = (state: GameState): number => {
+  const activeEffects = getActiveEffects(state);
+  let criticalChance = 0;
+
+  activeEffects.forEach((effect) => {
+    if (effect.bonuses.generalBonuses?.criticalChance) {
+      criticalChance += effect.bonuses.generalBonuses.criticalChance;
+    }
+  });
+
+  return criticalChance;
+};
