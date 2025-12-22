@@ -40,9 +40,9 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
 
   full_game: {
     id: "full_game",
-    name: "Full Game (No Microtransactions)",
+    name: "Full Game",
     description:
-      "Unlock the complete game experience with enhanced rewards and no microtransactions. Achievements grant bonus silver, longer feasts, better riddle rewards, and improved production buildings.",
+      "Unlock the complete game.",
     originalPrice: 1599,
     price: 799, // 7.99 €
     rewards: {},

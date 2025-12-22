@@ -46,7 +46,7 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.foundry": 1,
       },
       6: {
-        "buildings.woodenHut": 5,
+        "buildings.darkEstate": 1,
       },
       7: {
         "buildings.woodenHut": 6,
