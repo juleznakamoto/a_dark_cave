@@ -444,11 +444,14 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildMasterworkFoundry",
     label: "Masterwork Foundry",
     description: "Foundry with superior steel production",
-    tooltipEffects: [
-      "Unlocks Steel Forgers",
-      "Unlocks Blacksteel Forgers",
-      "Steel Forger: +2 Steel",
-    ],
+    tooltipEffects: (state: GameState) => {
+      const bonusSteel = state.BTP === 1 ? 3 : 2;
+      return [
+        "Unlocks Steel Forgers",
+        "Unlocks Blacksteel Forgers",
+        `Steel Forger: +${bonusSteel} Steel`,
+      ];
+    },
     building: true,
     show_when: {
       1: {
@@ -469,10 +472,12 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.masterworkFoundry": 1,
       },
     },
-    productionEffects: {
-      steel_forger: {
-        steel: 2,
-      },
+    productionEffects: (state: GameState) => {
+      return {
+        steel_forger: {
+          steel: 2 + state.BTP,
+        },
+      };
     },
     cooldown: 60,
   },
@@ -741,7 +746,10 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildMasterTannery",
     label: "Master Tannery",
     description: "Advanced tannery improving leather production",
-    tooltipEffects: ["Unlocks Tanners", "Tanner: +1 Leather"],
+    tooltipEffects: (state: GameState) => {
+      const bonusLeather = state.BTP === 1 ? 2 : 1;
+      return ["Unlocks Tanners", `Tanner: +${bonusLeather} Leather`];
+    },
     building: true,
     show_when: {
       1: {
@@ -762,10 +770,12 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.masterTannery": 1,
       },
     },
-    productionEffects: {
-      tanner: {
-        leather: 1,
-      },
+    productionEffects: (state: GameState) => {
+      return {
+        tanner: {
+          leather: 1 + state.BTP,
+        },
+      };
     },
     cooldown: 40,
   },
@@ -774,7 +784,10 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildHighTannery",
     label: "High Tannery",
     description: "Supreme tannery for expert leather craftsmen",
-    tooltipEffects: ["Unlocks Tanners", "Tanner: +2 Leather"],
+    tooltipEffects: (state: GameState) => {
+      const bonusLeather = state.BTP === 1 ? 3 : 2;
+      return ["Unlocks Tanners", `Tanner: +${bonusLeather} Leather`];
+    },
     building: true,
     show_when: {
       1: {
@@ -795,10 +808,12 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.highTannery": 1,
       },
     },
-    productionEffects: {
-      tanner: {
-        leather: 2,
-      },
+    productionEffects: (state: GameState) => {
+      return {
+        tanner: {
+          leather: 2 + state.BTP,
+        },
+      };
     },
     cooldown: 50,
   },
