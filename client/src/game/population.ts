@@ -164,7 +164,12 @@ export const getPopulationProduction = (
 
       // Check all buildings for production effects that apply to this job
       Object.entries(villageBuildActions).forEach(([actionId, buildAction]) => {
-        if (buildAction.productionEffects?.[jobId]?.[prod.resource]) {
+        // Resolve productionEffects (can be object or function)
+        const productionEffects = typeof buildAction.productionEffects === 'function'
+          ? buildAction.productionEffects(state)
+          : buildAction.productionEffects;
+
+        if (productionEffects?.[jobId]?.[prod.resource]) {
           // Extract building name from action ID (e.g., "buildTimberMill" -> "timberMill")
           const buildingKey = actionId.replace("build", "");
           const buildingName =
@@ -174,7 +179,7 @@ export const getPopulationProduction = (
 
           if (buildingCount > 0) {
             buildingBonusPerWorker +=
-              buildAction.productionEffects[jobId][prod.resource] *
+              productionEffects[jobId][prod.resource] *
               buildingCount;
           }
         }

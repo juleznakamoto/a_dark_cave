@@ -80,7 +80,12 @@ export function renderItemTooltip(
 
       // Special handling for production effects
       if (buildAction.productionEffects) {
-        Object.entries(buildAction.productionEffects).forEach(
+        // Resolve productionEffects (can be object or function)
+        const productionEffects = typeof buildAction.productionEffects === 'function'
+          ? buildAction.productionEffects(gameState)
+          : buildAction.productionEffects;
+
+        Object.entries(productionEffects).forEach(
           ([jobType, production]) => {
             Object.entries(production).forEach(([resource, amount]) => {
               effectsList.push(

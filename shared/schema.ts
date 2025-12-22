@@ -638,7 +638,10 @@ export const actionSchema = z.object({
     z.record(z.number(), z.record(z.string(), z.any())),
   ]),
   productionEffects: z
-    .record(z.string(), z.record(z.string(), z.number()))
+    .union([
+      z.record(z.string(), z.record(z.string(), z.number())),
+      z.function().args(z.any()).returns(z.record(z.string(), z.record(z.string(), z.number()))),
+    ])
     .optional(),
   statsEffects: z.record(z.string(), z.number()).optional(),
   unlocks: z.array(z.string()).optional(),
