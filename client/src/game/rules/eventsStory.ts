@@ -486,41 +486,4 @@ export const storyEvents: Record<string, GameEvent> = {
     ],
   },
 
-  villageElderNotice: {
-    id: "villageElderNotice",
-    condition: (state: GameState) =>
-      state.BTP === 1 &&
-      state.buildings.darkEstate >= 1 &&
-      !state.story.seen.villageElderNotice,
-    triggerType: "time",
-    timeProbability: 5,
-    title: "The Elder's Notice",
-    message: "A village elder approaches you. He speaks quietly. 'You stand at the beginning of a long path filled with trials. Soon, you must choose whether you will continue this journey.'",
-    triggered: false,
-    priority: 5,
-    visualEffect: {
-      type: "glow",
-      duration: 3,
-    },
-    repeatable: false,
-    choices: [
-      {
-        id: "nod",
-        label: "Nod silently",
-        effect: (state: GameState) => {
-          return {
-            story: {
-              ...state.story,
-              seen: {
-                ...state.story.seen,
-                villageElderNotice: true,
-              },
-            },
-            _logMessage:
-              "You nod solemnly at the elder's words. His words echoe in your mind as he walks away into the shadows.",
-          };
-        },
-      },
-    ],
-  },
-};
+  };
