@@ -201,7 +201,10 @@ export function applyActionEffects(
 
   // Apply effects
   if (action.effects) {
-    let effects = action.effects;
+    // Resolve effects (can be object or function)
+    let effects = typeof action.effects === 'function'
+      ? action.effects(state)
+      : action.effects;
 
     const effectKeys = Object.keys(effects);
     const hasTieredEffects =

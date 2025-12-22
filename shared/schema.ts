@@ -636,6 +636,7 @@ export const actionSchema = z.object({
   effects: z.union([
     z.record(z.string(), z.any()),
     z.record(z.number(), z.record(z.string(), z.any())),
+    z.function().args(z.any()).returns(z.record(z.string(), z.any())),
   ]),
   productionEffects: z
     .union([
