@@ -296,7 +296,7 @@ export default function FullGamePurchaseDialog({
     <Dialog open={isOpen} onOpenChange={requiresPurchase ? undefined : handleClose}>
       <DialogContent className="max-w-md [&>button]:hidden" onEscapeKeyDown={(e) => requiresPurchase && e.preventDefault()} onPointerDownOutside={(e) => requiresPurchase && e.preventDefault()}>
         <DialogHeader>
-          <DialogTitle>Continue Your Journey</DialogTitle>
+          <DialogTitle>The Journey Continues</DialogTitle>
           <DialogDescription className="text-sm text-gray-400 mt-2">
             {!clientSecret && (requiresPurchase 
               ? "You've reached the end of the trial. You must purchase the Full Game to continue playing." 
@@ -329,7 +329,7 @@ export default function FullGamePurchaseDialog({
 
             <div className="bg-blue-600/10 border border-blue-600/50 rounded-lg p-3">
               <p className="text-sm text-blue-200">
-                💾 Your progress is automatically saved. You can come back anytime to complete your purchase.
+                Your progress is automatically saved. You can come back anytime to complete your purchase.
               </p>
             </div>
 
