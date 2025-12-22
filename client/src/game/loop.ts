@@ -170,7 +170,6 @@ export function startGameLoop() {
     lastFrameTime = timestamp;
 
     // Check if game is paused
-    const state = useGameStore.getState();
     const isDialogOpen =
       state.eventDialog.isOpen ||
       state.combatDialog.isOpen ||
@@ -180,7 +179,13 @@ export function startGameLoop() {
       state.fullGamePurchaseDialogOpen ||
       state.idleModeDialog.isOpen ||
       state.restartGameDialogOpen;
-    const isPaused = state.isPaused || isDialogOpen;
+
+    // Force pause if full game purchase is required (villageElderDecision seen and BTP=1)
+    const requiresFullGamePurchase = state.story?.seen?.villageElderDecision && state.BTP === 1 && !Object.keys(state.activatedPurchases || {}).some(
+      key => (key === 'full_game' || key.startsWith('purchase-full_game-')) && state.activatedPurchases?.[key]
+    );
+
+    const isPaused = state.isPaused || isDialogOpen || requiresFullGamePurchase;
     const wasPaused = state.isPausedPreviously || state.dialogsOpenPreviously; // Track previous pause state
 
     if (isPaused) {

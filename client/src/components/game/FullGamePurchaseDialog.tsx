@@ -167,15 +167,6 @@ function CheckoutForm({ onSuccess, currency, onCancel }: CheckoutFormProps) {
             ? "Processing..."
             : `Complete Purchase for ${item?.price ? formatPrice(item.price) : ""}`}
         </Button>
-        <Button
-          variant="outline"
-          onClick={onCancel}
-          className="w-auto px-6"
-          button_id="full-game-cancel-payment"
-          type="button"
-        >
-          Come Back Later
-        </Button>
       </div>
     </form>
   );
@@ -190,6 +181,15 @@ export default function FullGamePurchaseDialog({
   isOpen,
   onClose,
 }: FullGamePurchaseDialogProps) {
+  const gameState = useGameStore();
+  const requiresPurchase = gameState.story?.seen?.villageElderDecision && gameState.BTP === 1;
+  
+  // Prevent closing if purchase is required
+  const handleClose = () => {
+    if (!requiresPurchase) {
+      onClose();
+    }
+  };
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [currency, setCurrency] = useState<"EUR" | "USD">("USD");
   const [currentUser, setCurrentUser] = useState<{
@@ -294,12 +294,14 @@ export default function FullGamePurchaseDialog({
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={() => {}}>
-      <DialogContent className="max-w-md [&>button]:hidden">
+    <Dialog open={isOpen} onOpenChange={requiresPurchase ? undefined : handleClose}>
+      <DialogContent className="max-w-md [&>button]:hidden" onEscapeKeyDown={(e) => requiresPurchase && e.preventDefault()} onPointerDownOutside={(e) => requiresPurchase && e.preventDefault()}>
         <DialogHeader>
           <DialogTitle>Continue Your Journey</DialogTitle>
           <DialogDescription className="text-sm text-gray-400 mt-2">
-            {!clientSecret && "You've reached the end of the trial. Purchase the Full Game to continue your adventure."}
+            {!clientSecret && (requiresPurchase 
+              ? "You've reached the end of the trial. You must purchase the Full Game to continue playing." 
+              : "You've reached the end of the trial. Purchase the Full Game to continue your adventure.")}
           </DialogDescription>
         </DialogHeader>
 
@@ -351,16 +353,18 @@ export default function FullGamePurchaseDialog({
               </Button>
             </div>
 
-            <div className="flex gap-3 justify-center">
-              <Button
-                variant="outline"
-                onClick={onClose}
-                className="w-full"
-                button_id="full-game-come-back-later"
-              >
-                Come Back Later
-              </Button>
-            </div>
+            {!requiresPurchase && (
+              <div className="flex gap-3 justify-center">
+                <Button
+                  variant="outline"
+                  onClick={onClose}
+                  className="w-full"
+                  button_id="full-game-come-back-later"
+                >
+                  Come Back Later
+                </Button>
+              </div>
+            )}
           </div>
         ) : (
           <Elements stripe={stripePromise} options={{ clientSecret }}>
