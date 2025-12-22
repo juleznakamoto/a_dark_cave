@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import {
   Dialog,
@@ -29,7 +28,25 @@ const stripePromise = loadStripe(stripePublishableKey || "");
 
 // EU countries with Euro as main currency
 const EU_EURO_COUNTRIES = [
-  "AT", "BE", "CY", "EE", "FI", "FR", "DE", "GR", "IE", "IT", "LV", "LT", "LU", "MT", "NL", "PT", "SK", "SI", "ES",
+  "AT",
+  "BE",
+  "CY",
+  "EE",
+  "FI",
+  "FR",
+  "DE",
+  "GR",
+  "IE",
+  "IT",
+  "LV",
+  "LT",
+  "LU",
+  "MT",
+  "NL",
+  "PT",
+  "SK",
+  "SI",
+  "ES",
 ];
 
 async function detectCurrency(): Promise<"EUR" | "USD"> {
@@ -182,8 +199,9 @@ export default function FullGamePurchaseDialog({
   onClose,
 }: FullGamePurchaseDialogProps) {
   const gameState = useGameStore();
-  const requiresPurchase = gameState.story?.seen?.villageElderDecision && gameState.BTP === 1;
-  
+  const requiresPurchase =
+    gameState.story?.seen?.villageElderDecision && gameState.BTP === 1;
+
   // Prevent closing if purchase is required
   const handleClose = () => {
     if (!requiresPurchase) {
@@ -219,11 +237,10 @@ export default function FullGamePurchaseDialog({
 
   useEffect(() => {
     if (isOpen && !detectedCurrency) {
-      detectCurrency()
-        .then((detectedCurr) => {
-          setCurrency(detectedCurr);
-          setDetectedCurrency(detectedCurr);
-        });
+      detectCurrency().then((detectedCurr) => {
+        setCurrency(detectedCurr);
+        setDetectedCurrency(detectedCurr);
+      });
     } else if (isOpen && detectedCurrency) {
       setCurrency(detectedCurrency);
     }
@@ -247,7 +264,7 @@ export default function FullGamePurchaseDialog({
   };
 
   const handlePurchaseSuccess = async () => {
-    useGameStore.setState({ 
+    useGameStore.setState({
       hasMadeNonFreePurchase: true,
       BTP: 0, // Deactivate BTP mode
     });
@@ -256,7 +273,7 @@ export default function FullGamePurchaseDialog({
     const { getSupabaseClient } = await import("@/lib/supabase");
     const supabase = await getSupabaseClient();
     const user = await getCurrentUser();
-    
+
     if (user) {
       const { data } = await supabase
         .from("purchases")
@@ -280,7 +297,8 @@ export default function FullGamePurchaseDialog({
 
     toast({
       title: "Purchase Successful!",
-      description: "Full Game unlocked! You can now continue your journey without restrictions.",
+      description:
+        "Full Game unlocked! You can now continue your journey without restrictions.",
     });
 
     setClientSecret(null);
@@ -293,17 +311,22 @@ export default function FullGamePurchaseDialog({
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={requiresPurchase ? undefined : handleClose}>
-      <DialogContent className="max-w-md [&>button]:hidden" onEscapeKeyDown={(e) => requiresPurchase && e.preventDefault()} onPointerDownOutside={(e) => requiresPurchase && e.preventDefault()}>
+    <Dialog
+      open={isOpen}
+      onOpenChange={requiresPurchase ? undefined : handleClose}
+    >
+      <DialogContent
+        className="max-w-md [&>button]:hidden"
+        onEscapeKeyDown={(e) => requiresPurchase && e.preventDefault()}
+        onPointerDownOutside={(e) => requiresPurchase && e.preventDefault()}
+      >
         <DialogHeader>
           <DialogTitle>The Journey Continues</DialogTitle>
           <DialogDescription className="text-sm text-gray-400 mt-2">
-            {!clientSecret && (requiresPurchase 
-              ? "You've reached the end of the trial. You must purchase the Full Game to continue playing." 
-              : "You've reached the end of the trial. Purchase the Full Game to continue your adventure.")}
+            You have reached the end of the trial. The full journey awaits
+            beyond this point.
           </DialogDescription>
         </DialogHeader>
-
         {!clientSecret ? (
           <div className="space-y-4">
             <div className="border rounded-lg p-4 bg-muted/50">
@@ -326,13 +349,6 @@ export default function FullGamePurchaseDialog({
                 </span>
               </div>
             </div>
-
-            <div className="bg-blue-600/10 border border-blue-600/50 rounded-lg p-3">
-              <p className="text-sm text-blue-200">
-                Your progress is automatically saved. You can come back anytime to complete your purchase.
-              </p>
-            </div>
-
             {!currentUser && (
               <div className="bg-red-600/10 border border-red-600/50 rounded-lg p-3">
                 <p className="text-sm text-red-200">
@@ -348,7 +364,7 @@ export default function FullGamePurchaseDialog({
                 className="w-full"
                 button_id="full-game-purchase"
               >
-                Purchase Full Game
+                Continue the Journey
               </Button>
             </div>
 
@@ -364,6 +380,11 @@ export default function FullGamePurchaseDialog({
                 </Button>
               </div>
             )}
+            <div className="bg-gray-600/10 border border-gray-600/50 rounded-lg p-3">
+              <p className="text-sm text-blue-200">
+                Your progress is saved. You can return at any time and continue where you left off.
+              </p>
+            </div>
           </div>
         ) : (
           <Elements stripe={stripePromise} options={{ clientSecret }}>
