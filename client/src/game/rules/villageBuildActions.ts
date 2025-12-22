@@ -406,7 +406,10 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildPrimeFoundry",
     label: "Prime Foundry",
     description: "Advanced foundry with improved steel production",
-    tooltipEffects: ["Unlocks Steel Forgers", "Steel Forger: +1 Steel"],
+    tooltipEffects: (state: GameState) => {
+      const bonusSteel = state.BTP === 1 ? 2 : 1;
+      return ["Unlocks Steel Forgers", `Steel Forger: +${bonusSteel} Steel`];
+    },
     building: true,
     show_when: {
       1: {
@@ -427,10 +430,12 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.primeFoundry": 1,
       },
     },
-    productionEffects: {
-      steel_forger: {
-        steel: 1,
-      },
+    productionEffects: (state: GameState) => {
+      return {
+        steel_forger: {
+          steel: 1 + state.BTP,
+        },
+      };
     },
     cooldown: 40,
   },
