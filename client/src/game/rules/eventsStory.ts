@@ -486,17 +486,16 @@ export const storyEvents: Record<string, GameEvent> = {
     ],
   },
 
-  villageElderDecision: {
-    id: "villageElderDecision",
+  villageElderNotice: {
+    id: "villageElderNotice",
     condition: (state: GameState) =>
       state.BTP === 1 &&
       state.buildings.darkEstate >= 1 &&
-      !state.story.seen.villageElderDecision,
+      !state.story.seen.villageElderNotice,
     triggerType: "time",
     timeProbability: 5,
-    title: "The Elder's Warning",
-    message:
-      "A village elder approaches you with a grave expression. 'I have seen many things in my long years,' he says quietly. 'Soon, you will face a decision that will determine the fate of this journey. Prepare yourself.'",
+    title: "The Elder's Notice",
+    message: "A village elder approaches you. He speaks quietly. 'You stand at the beginning of a long path filled with trials. Soon, you must choose whether you will continue this journey.'",
     triggered: false,
     priority: 5,
     visualEffect: {
@@ -506,19 +505,19 @@ export const storyEvents: Record<string, GameEvent> = {
     repeatable: false,
     choices: [
       {
-        id: "acknowledge",
-        label: "Acknowledge",
+        id: "nod",
+        label: "Nod silently",
         effect: (state: GameState) => {
           return {
             story: {
               ...state.story,
               seen: {
                 ...state.story.seen,
-                villageElderDecision: true,
+                villageElderNotice: true,
               },
             },
             _logMessage:
-              "You nod solemnly at the elder's words. His warning echoes in your mind as he walks away into the shadows.",
+              "You nod solemnly at the elder's words. His words echoe in your mind as he walks away into the shadows.",
           };
         },
       },
