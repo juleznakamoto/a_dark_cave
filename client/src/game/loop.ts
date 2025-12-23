@@ -188,39 +188,19 @@ export function startGameLoop() {
       key => (key === 'full_game' || key.startsWith('purchase-full_game-')) && state.activatedPurchases?.[key]
     );
 
-    // Debug: Log which dialog is open
-    if (isDialogOpen) {
-      logger.log('[GAME LOOP] Dialog check:', {
-        'eventDialog.isOpen': state.eventDialog.isOpen,
-        'combatDialog.isOpen': state.combatDialog.isOpen,
-        'authDialogOpen': state.authDialogOpen,
-        'shopDialogOpen': state.shopDialogOpen,
-        'leaderboardDialogOpen': state.leaderboardDialogOpen,
-        'fullGamePurchaseDialogOpen': state.fullGamePurchaseDialogOpen,
-        'idleModeDialog.isOpen': state.idleModeDialog.isOpen,
-        'restartGameDialogOpen': state.restartGameDialogOpen,
-        'isDialogOpen': isDialogOpen,
-        'requiresFullGamePurchase': requiresFullGamePurchase,
-      });
-    }
+    // Recalculate isDialogOpen from fresh state to ensure accuracy
+    const actualIsDialogOpen = 
+      state.eventDialog.isOpen ||
+      state.combatDialog.isOpen ||
+      state.authDialogOpen ||
+      state.shopDialogOpen ||
+      state.leaderboardDialogOpen ||
+      state.fullGamePurchaseDialogOpen ||
+      state.idleModeDialog.isOpen ||
+      state.restartGameDialogOpen;
 
     const wasPaused = state.isPausedPreviously || state.dialogsOpenPreviously; // Track previous pause state
-    const isPaused = state.isPaused || isDialogOpen || requiresFullGamePurchase;
-
-    // Debug logging for pause state
-    if (requiresFullGamePurchase || state.fullGamePurchaseDialogOpen) {
-      logger.log('[GAME LOOP] Pause debug:', {
-        isPaused,
-        'state.isPaused': state.isPaused,
-        isDialogOpen,
-        requiresFullGamePurchase,
-        'state.BTP': state.BTP,
-        'state.fullGamePurchaseDialogOpen': state.fullGamePurchaseDialogOpen,
-        'villageElderDecision': state.story?.seen?.villageElderDecision,
-        'activatedPurchases': state.activatedPurchases,
-        'isPausedPreviously': state.isPausedPreviously,
-      });
-    }
+    const isPaused = state.isPaused || actualIsDialogOpen || requiresFullGamePurchase;
 
     if (isPaused) {
       // Stop all sounds when paused (unless already stopped by mute)
@@ -245,7 +225,7 @@ export function startGameLoop() {
       useGameStore.setState({ isPausedPreviously: false });
     }
 
-    if (!isDialogOpen) {
+    if (!actualIsDialogOpen) {
       // Accumulate time for fixed timestep
       tickAccumulator += deltaTime;
     }
@@ -257,12 +237,12 @@ export function startGameLoop() {
       !state.isPaused &&
       !currentState.idleModeState?.isActive &&
       !isInactive &&
-      !isDialogOpen // Added: Stop playTime when dialogs are open
+      !actualIsDialogOpen // Added: Stop playTime when dialogs are open
     ) {
       currentState.updatePlayTime(deltaTime);
     }
 
-    if (!isDialogOpen) {
+    if (!actualIsDialogOpen) {
 
       // Handle cooldowns only when not paused
       if (!isPaused) {
@@ -403,7 +383,7 @@ export function startGameLoop() {
           handleStrangerApproach();
 
           // Check for events (including attack waves) - but NOT when dialogs are open
-          if (!isDialogOpen) {
+          if (!actualIsDialogOpen) {
             currentState.checkEvents();
           }
         }
