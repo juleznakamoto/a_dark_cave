@@ -270,6 +270,7 @@ export default function FullGamePurchaseDialog({
     useGameStore.setState({
       hasMadeNonFreePurchase: true,
       BTP: 0, // Deactivate BTP mode
+      isPaused: false, // Explicitly unpause the game
     });
 
     // Mark as activated
