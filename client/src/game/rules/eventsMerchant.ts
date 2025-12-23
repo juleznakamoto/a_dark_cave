@@ -614,7 +614,7 @@ const toolTrades = [
     label: "Reinforced Rope",
     give: "tool",
     giveItem: "reinforced_rope",
-    condition: (state: GameState) => state.buildings.woodenHut >= 4,
+    condition: (state: GameState) => state.buildings.woodenHut >= 5,
     costs: [{ resource: "gold", amounts: [150] }],
     message:
       "You purchase the reinforced rope. This rope can withstand tremendous strain and reach places in the deepest cave chambers.",
@@ -624,7 +624,7 @@ const toolTrades = [
     label: "Occultists's Map",
     give: "tool",
     giveItem: "occultist_map",
-    condition: (state: GameState) => state.buildings.woodenHut >= 5,
+    condition: (state: GameState) => state.buildings.woodenHut >= 6,
     costs: [{ resource: "gold", amounts: [200] }],
     message:
       "As you buy the occultists's map the merchant whispers: 'An old occultist hid his secrets in a chamber deep in the cave. This map will guide you.'",
@@ -634,7 +634,7 @@ const toolTrades = [
     label: "Giant Trap",
     give: "tool",
     giveItem: "giant_trap",
-    condition: (state: GameState) => state.buildings.woodenHut >= 6,
+    condition: (state: GameState) => state.buildings.woodenHut >= 7,
     costs: [{ resource: "gold", amounts: [250] }],
     message:
       "As you purchase the giant trap, the merchant grins: 'This can trap something gigantic in the woods. Use it wisely.'",
@@ -644,7 +644,7 @@ const toolTrades = [
     label: "Arbalest Schematic",
     give: "schematic",
     giveItem: "arbalest_schematic",
-    condition: (state: GameState) => state.buildings.woodenHut >= 7,
+    condition: (state: GameState) => state.buildings.woodenHut >= 8,
     costs: [{ resource: "gold", amounts: [500] }],
     message:
       "You purchase the arbalest schematic. The merchant unfurls an intricate blueprint: 'A design from a master engineer. With this, you can craft a powerful weapon.'",
@@ -675,7 +675,7 @@ const toolTrades = [
     label: "Natharit Pickaxe",
     give: "tool",
     giveItem: "natharit_pickaxe",
-    condition: (state: GameState) => state.buildings.stoneHut >= 7,
+    condition: (state: GameState) => state.buildings.stoneHut >= 8,
     costs: [{ resource: "gold", amounts: [1500] }],
     message:
       "You purchase the natharit pickaxe. The merchant hands you the sturdy tool: 'Extremely durable pickaxe of unknown material. Its quality is exceptional.'",
@@ -685,7 +685,7 @@ const toolTrades = [
     label: "Nightshade Bow Schematic",
     give: "schematic",
     giveItem: "nightshade_bow_schematic",
-    condition: (state: GameState) => state.buildings.stoneHut >= 8,
+    condition: (state: GameState) => state.buildings.stoneHut >= 9,
     costs: [{ resource: "gold", amounts: [1500] }],
     message:
       "You purchase the nightshade bow schematic. The merchant grins darkly: 'This bow's design is cruel. Its arrows will poison your enemies.'",

@@ -199,7 +199,6 @@ export function startGameLoop() {
       state.idleModeDialog.isOpen ||
       state.restartGameDialogOpen;
 
-    const wasPaused = state.isPausedPreviously || state.dialogsOpenPreviously; // Track previous pause state
     const isPaused = state.isPaused || actualIsDialogOpen || requiresFullGamePurchase;
 
     if (isPaused) {
