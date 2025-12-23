@@ -171,6 +171,7 @@ const createTestState = (overrides?: Partial<GameState>): GameState => {
       frostglass: false,
       bloodstone: false,
       occultist_grimoire: false,
+      tarnished_compass: false, // Disable to avoid random 2x bonus in tests
     },
     schematics: {
       arbalest_schematic: false,

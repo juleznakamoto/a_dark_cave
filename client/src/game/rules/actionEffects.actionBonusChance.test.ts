@@ -250,17 +250,17 @@ describe('Tarnished Compass - actionBonusChance', () => {
 
         const updates = applyActionEffects('chopWood', state);
 
-        // Bonus triggered if wood gain is doubled (12-24 range vs base 6-12)
-        if (updates.resources!.wood >= 12) {
+        // Check if compassBonusTriggered flag was set
+        if ((updates as any).compassBonusTriggered) {
           triggeredCount++;
         }
       }
 
       // Should be approximately 10% (with some variance)
-      // Allow 5% - 15% range for statistical variance
+      // Allow 7% - 13% range for statistical variance
       const percentage = (triggeredCount / iterations) * 100;
-      expect(percentage).toBeGreaterThan(5);
-      expect(percentage).toBeLessThan(15);
+      expect(percentage).toBeGreaterThan(7);
+      expect(percentage).toBeLessThan(13);
     });
   });
 
