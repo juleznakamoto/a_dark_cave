@@ -180,6 +180,21 @@ export function startGameLoop() {
       state.idleModeDialog.isOpen ||
       state.restartGameDialogOpen;
 
+    // Debug: Log which dialog is open
+    if (isDialogOpen && (requiresFullGamePurchase || state.fullGamePurchaseDialogOpen || !state.fullGamePurchaseDialogOpen)) {
+      logger.log('[GAME LOOP] Dialog check:', {
+        'eventDialog.isOpen': state.eventDialog.isOpen,
+        'combatDialog.isOpen': state.combatDialog.isOpen,
+        'authDialogOpen': state.authDialogOpen,
+        'shopDialogOpen': state.shopDialogOpen,
+        'leaderboardDialogOpen': state.leaderboardDialogOpen,
+        'fullGamePurchaseDialogOpen': state.fullGamePurchaseDialogOpen,
+        'idleModeDialog.isOpen': state.idleModeDialog.isOpen,
+        'restartGameDialogOpen': state.restartGameDialogOpen,
+        'isDialogOpen': isDialogOpen,
+      });
+    }
+
     // Force pause if full game purchase is required (villageElderDecision seen and BTP=1)
     const requiresFullGamePurchase = state.story?.seen?.villageElderDecision && state.BTP === 1 && !Object.keys(state.activatedPurchases || {}).some(
       key => (key === 'full_game' || key.startsWith('purchase-full_game-')) && state.activatedPurchases?.[key]
