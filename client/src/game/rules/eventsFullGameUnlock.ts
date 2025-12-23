@@ -3,6 +3,46 @@ import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 
 export const fullGameUnlockEvents: Record<string, GameEvent> = {
+  firstElderWarning: {
+    id: "firstElderWarning",
+    condition: (state: GameState) => {
+      return state.BTP === 1 &&
+        state.buildings.woodenHut >= 2 &&
+        state.current_population >= 4 &&
+        !state.story.seen.firstElderWarning;
+    },
+    triggerType: "time",
+    timeProbability: 5,
+    title: "The Elder's Words",
+    message: "An older villager approaches you with a weathered face and knowing eyes. 'You have made your first experiences in this cruel world,' he says quietly. 'At some point, you will have to decide if you want to face what will come.'",
+    triggered: false,
+    priority: 5,
+    visualEffect: {
+      type: "glow",
+      duration: 3,
+    },
+    repeatable: false,
+    choices: [
+      {
+        id: "listen",
+        label: "Listen carefully",
+        effect: (state: GameState) => {
+          return {
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                firstElderWarning: true,
+              },
+            },
+            _logMessage:
+              "You listen to the elder's words. There is a weight to them that settles in your chest. He nods gravely and walks away, leaving you with the echo of his warning.",
+          };
+        },
+      },
+    ],
+  },
+
   villageElderNotice: {
     id: "villageElderNotice",
     condition: (state: GameState) => {
