@@ -47,10 +47,30 @@ export default function GameContainer() {
     restartGame,
   } = useGameStore();
 
+  // State selectors for dialogs - must be at top before any conditional returns
+  const shopDialogOpen = useGameStore((state) => state.shopDialogOpen);
+  const setShopDialogOpen = useGameStore((state) => state.setShopDialogOpen);
+  const leaderboardDialogOpen = useGameStore((state) => state.leaderboardDialogOpen);
+  const setLeaderboardDialogOpen = useGameStore((state) => state.setLeaderboardDialogOpen);
+  const fullGamePurchaseDialogOpen = useGameStore((state) => state.fullGamePurchaseDialogOpen);
+  const setFullGamePurchaseDialogOpen = useGameStore((state) => state.setFullGamePurchaseDialogOpen);
+
   // Estate unlocks when Dark Estate is built
   const estateUnlocked = buildings.darkEstate >= 1;
 
   const [animatingTabs, setAnimatingTabs] = useState<Set<string>>(new Set());
+
+  // Debug: Log when full game dialog state changes
+  useEffect(() => {
+    if (!fullGamePurchaseDialogOpen) {
+      const state = useGameStore.getState();
+      logger.log('[GAME CONTAINER] Full game dialog closed, state:', {
+        BTP: state.BTP,
+        isPaused: state.isPaused,
+        isPausedPreviously: state.isPausedPreviously,
+      });
+    }
+  }, [fullGamePurchaseDialogOpen]);
 
   // Track unlocked tabs to trigger fade-in animation
   const prevFlagsRef = useRef({
@@ -208,27 +228,6 @@ export default function GameContainer() {
   if (!flags.gameStarted) {
     return <StartScreen />;
   }
-
-  // State selectors for dialogs
-  const shopDialogOpen = useGameStore((state) => state.shopDialogOpen);
-  const setShopDialogOpen = useGameStore((state) => state.setShopDialogOpen);
-  const leaderboardDialogOpen = useGameStore((state) => state.leaderboardDialogOpen);
-  const setLeaderboardDialogOpen = useGameStore((state) => state.setLeaderboardDialogOpen);
-  const fullGamePurchaseDialogOpen = useGameStore((state) => state.fullGamePurchaseDialogOpen);
-  const setFullGamePurchaseDialogOpen = useGameStore((state) => state.setFullGamePurchaseDialogOpen);
-
-  // Debug: Log when full game dialog state changes
-  useEffect(() => {
-    if (!fullGamePurchaseDialogOpen) {
-      const state = useGameStore.getState();
-      logger.log('[GAME CONTAINER] Full game dialog closed, state:', {
-        BTP: state.BTP,
-        isPaused: state.isPaused,
-        isPausedPreviously: state.isPausedPreviously,
-      });
-    }
-  }, [fullGamePurchaseDialogOpen]);
-
 
   return (
     <div className="fixed inset-0 bg-background text-foreground flex flex-col">
