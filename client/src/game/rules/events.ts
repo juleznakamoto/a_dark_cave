@@ -69,6 +69,7 @@ import { loreEvents } from "./eventsLore";
 import { fellowshipEvents } from "./eventsFellowship";
 import { riddleEvents } from "./eventsRiddles";
 import { ringEvents } from "./eventsRing";
+import { fullGameUnlockEvents } from "./eventsFullGameUnlock";
 import { GAME_CONSTANTS } from "../constants";
 
 export interface GameEvent {
@@ -144,6 +145,7 @@ export const gameEvents: Record<string, GameEvent> = {
   ...fellowshipEvents,
   ...riddleEvents,
   ...ringEvents,
+  ...fullGameUnlockEvents,
 };
 
 export class EventManager {
