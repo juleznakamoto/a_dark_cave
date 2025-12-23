@@ -39,9 +39,9 @@ export default function Game() {
         // Check if URL is /game or /boost to skip start screen
         const isGamePath = window.location.pathname === '/game' || window.location.pathname === '/boost';
 
-        // Check for openShop query parameter or /boost path
+        // Check for openShop query parameter only (not /boost path)
         const urlParams = new URLSearchParams(window.location.search);
-        const openShop = urlParams.get('openShop') === 'true' || window.location.pathname === '/boost';
+        const openShop = urlParams.get('openShop') === 'true';
 
         // Load saved game or initialize with defaults
         const savedState = await loadGame();
