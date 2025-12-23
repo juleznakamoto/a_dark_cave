@@ -77,7 +77,6 @@ export const gameStateSchema = z.object({
       humanSacrificeUnlocked: z.boolean().default(false),
       hasCity: z.boolean().default(false),
       hasFortress: z.boolean().default(false),
-      resourceLimitsEnabled: z.boolean().default(false),
       hasHitResourceLimit: z.boolean().default(false),
     })
     .default({}),

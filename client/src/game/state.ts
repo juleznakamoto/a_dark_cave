@@ -825,22 +825,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
       // Preserve detected currency across restarts (persists forever)
       detectedCurrency: state.detectedCurrency || null,
-
-      // Enable resource limits for new games
-      flags: {
-        resourceLimitsEnabled: true,
-      },
     };
 
     // Reset everything else to default
     const resetState = {
       ...defaultGameState,
       ...preserved,
-      // Merge flags properly
-      flags: {
-        ...defaultGameState.flags,
-        ...preserved.flags,
-      },
       gameId: `game-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`, // Generate new gameId on restart
 
       // UI state

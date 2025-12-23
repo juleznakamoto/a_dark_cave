@@ -7,12 +7,7 @@ import { getPopulationProduction } from './population';
 describe('Game Loop - Resource Limits Integration', () => {
   beforeEach(() => {
     useGameStore.getState().initialize();
-    // Enable resource limits
     useGameStore.setState((state) => ({
-      flags: {
-        ...state.flags,
-        resourceLimitsEnabled: true,
-      },
       buildings: {
         ...state.buildings,
         supplyHut: 1, // 1000 limit

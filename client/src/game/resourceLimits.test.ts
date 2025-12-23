@@ -17,8 +17,6 @@ describe('Resource Limits - Core Functionality', () => {
 
   beforeEach(() => {
     state = createInitialState();
-    // Enable resource limits for testing
-    state.flags.resourceLimitsEnabled = true;
   });
 
   describe('getResourceLimit', () => {
