@@ -57,6 +57,7 @@ export const fullGameUnlockEvents: Record<string, GameEvent> = {
       return state.BTP === 1 &&
         state.story.seen.villageElderNotice &&
         state.books.book_of_trials &&
+        state.books.book_of_ascension &&
         !state.story.seen.villageElderDecision &&
         !hasFullGame;
     },
