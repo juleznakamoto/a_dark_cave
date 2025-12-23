@@ -697,7 +697,7 @@ const toolTrades = [
     giveItem: "book_of_trials",
     condition: (state: GameState) =>
       state.buildings.darkEstate >= 1 && !state.books.book_of_trials,
-    costs: [{ resource: "gold", amounts: [150] }],
+    costs: [{ resource: "gold", amounts: [100] }],
     message:
       "You purchase the Book of Trials. The merchant smiles knowingly: 'A guide for those who seek to track their journey.'",
   },
@@ -1021,14 +1021,13 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
 export const merchantEvents: Record<string, GameEvent> = {
   merchant: {
     id: "merchant",
-    condition: (state: GameState) => state.buildings.woodenHut >= 3,
+    condition: (state: GameState) => state.buildings.woodenHut >= 2,
     triggerType: "resource",
     timeProbability: (state: GameState) =>
-      10 + 1 * state.buildings.tradePost ||
-      0 + 2 * state.buildings.grandBazaar ||
-      0 + 2 * state.buildings.merchantsGuild ||
-      0,
-
+      10 + 0.5 * state.buildings.tradePost ||
+      0 + 1 * state.buildings.grandBazaar ||
+      0 + 1.5 * state.buildings.merchantsGuild ||
+      0 - 2.5 * state.BTP,
     title: "Traveling Merchant",
     message:
       "A weathered merchant arrives, his cart overflowing with wares. His eyes glint with avarice as he murmurs 'I have rare items for sale'.",

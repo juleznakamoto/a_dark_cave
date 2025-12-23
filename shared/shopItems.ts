@@ -42,14 +42,14 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "full_game",
     name: "Full Game",
     description:
-      "Unlock the complete game.",
+      "Unlock the full game and continue your journey.",
     originalPrice: 1599,
     price: 799, // 7.99 €
     rewards: {},
     canPurchaseMultipleTimes: false,
     category: "blessing",
     activationMessage:
-      "Full Game unlocked! Start a new game to play without microtransactions and enhanced rewards.",
+      "You unlocked the full game. The journey continues.",
     symbol: "◆",
     symbolColor: "text-emerald-600",
   },
