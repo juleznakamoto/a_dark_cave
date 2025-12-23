@@ -23,14 +23,23 @@ import { calculateBastionStats } from "@/game/bastionStats";
 import { getMaxPopulation } from "@/game/population";
 import { audioManager } from "@/lib/audio";
 import { GAME_CONSTANTS } from "@/game/constants";
-import { ACTION_TO_UPGRADE_KEY, incrementButtonUsage } from "@/game/buttonUpgrades";
+import {
+  ACTION_TO_UPGRADE_KEY,
+  incrementButtonUsage,
+} from "@/game/buttonUpgrades";
 import { logger } from "@/lib/logger";
 import { madnessEvents } from "@/game/rules/eventsMadness";
 
 // Types
 interface GameStore extends GameState {
   // UI state
-  activeTab: "cave" | "village" | "forest" | "bastion" | "estate" | "achievements";
+  activeTab:
+    | "cave"
+    | "village"
+    | "forest"
+    | "bastion"
+    | "estate"
+    | "achievements";
   devMode: boolean;
   boostMode: boolean;
   lastSaved: string;
@@ -59,7 +68,7 @@ interface GameStore extends GameState {
     needsDisplay: boolean; // Track if user needs to see results
   };
   inactivityDialogOpen: boolean;
-  inactivityReason: 'timeout' | 'multitab' | null;
+  inactivityReason: "timeout" | "multitab" | null;
   versionCheckDialogOpen: boolean; // Added for version check dialog
   restartGameDialogOpen: boolean;
 
@@ -73,7 +82,7 @@ interface GameStore extends GameState {
 
   // Notification state for mysterious note
   mysteriousNoteShopNotificationSeen: boolean;
-  mystNoteDonateNotificationSeen: boolean;
+  mysteriousNoteDonateNotificationSeen: boolean;
 
   // Resource highlighting state
   highlightedResources: string[]; // Updated to array for serialization
@@ -151,7 +160,9 @@ interface GameStore extends GameState {
   // Actions
   getAndResetResourceAnalytics: () => Record<string, number> | null;
   executeAction: (actionId: string) => void;
-  setActiveTab: (tab: "cave" | "village" | "forest" | "bastion" | "estate" | "achievements") => void;
+  setActiveTab: (
+    tab: "cave" | "village" | "forest" | "bastion" | "estate" | "achievements",
+  ) => void;
   setBoostMode: (enabled: boolean) => void;
   setIsMuted: (isMuted: boolean) => void;
   setShopNotificationSeen: (seen: boolean) => void;
@@ -201,7 +212,13 @@ interface GameStore extends GameState {
   trackButtonClick: (buttonId: string) => void;
   getAndResetClickAnalytics: () => Record<string, number> | null;
   setVersionCheckDialog: (isOpen: boolean) => void;
-  updateFocusState: (state: { isActive: boolean; endTime: number; startTime?: number; duration?: number; points?: number }) => void;
+  updateFocusState: (state: {
+    isActive: boolean;
+    endTime: number;
+    startTime?: number;
+    duration?: number;
+    points?: number;
+  }) => void;
   updateResources: (updates: Partial<GameState["resources"]>) => void;
 }
 
@@ -212,8 +229,10 @@ const mergeStateUpdates = (
 ): Partial<GameState> => {
   // Ensure resources never go negative when merging, and apply resource limits
   const mergedResources = { ...prevState.resources, ...stateUpdates.resources };
-  Object.keys(mergedResources).forEach(key => {
-    if (typeof mergedResources[key as keyof typeof mergedResources] === 'number') {
+  Object.keys(mergedResources).forEach((key) => {
+    if (
+      typeof mergedResources[key as keyof typeof mergedResources] === "number"
+    ) {
       let value = mergedResources[key as keyof typeof mergedResources];
       // First ensure non-negative
       if (value < 0) {
@@ -240,66 +259,121 @@ const mergeStateUpdates = (
     events: { ...prevState.events, ...stateUpdates.events },
     stats: { ...prevState.stats, ...stateUpdates.stats },
     cooldowns: { ...prevState.cooldowns, ...stateUpdates.cooldowns },
-    cooldownDurations: { ...prevState.cooldownDurations, ...stateUpdates.cooldownDurations },
-    attackWaveTimers: { ...prevState.attackWaveTimers, ...stateUpdates.attackWaveTimers },
-    triggeredEvents: { ...prevState.triggeredEvents, ...stateUpdates.triggeredEvents },
+    cooldownDurations: {
+      ...prevState.cooldownDurations,
+      ...stateUpdates.cooldownDurations,
+    },
+    attackWaveTimers: {
+      ...prevState.attackWaveTimers,
+      ...stateUpdates.attackWaveTimers,
+    },
+    triggeredEvents: {
+      ...prevState.triggeredEvents,
+      ...stateUpdates.triggeredEvents,
+    },
     feastState: stateUpdates.feastState || prevState.feastState,
-    boneDevourerState: stateUpdates.boneDevourerState || prevState.boneDevourerState,
+    boneDevourerState:
+      stateUpdates.boneDevourerState || prevState.boneDevourerState,
     greatFeastState: stateUpdates.greatFeastState || prevState.greatFeastState,
     curseState: stateUpdates.curseState || prevState.curseState,
     frostfallState: stateUpdates.frostfallState || prevState.frostfallState,
     fogState: stateUpdates.fogState || prevState.fogState,
     sleepUpgrades: stateUpdates.sleepUpgrades || prevState.sleepUpgrades,
     combatSkills: stateUpdates.combatSkills || prevState.combatSkills,
-    clickAnalytics: { ...prevState.clickAnalytics, ...stateUpdates.clickAnalytics },
-    madness: stateUpdates.madness !== undefined ? stateUpdates.madness : prevState.madness,
-    miningBoostState: stateUpdates.miningBoostState || prevState.miningBoostState,
-    greatFeastActivations: stateUpdates.greatFeastActivations !== undefined ? stateUpdates.greatFeastActivations : prevState.greatFeastActivations,
+    clickAnalytics: {
+      ...prevState.clickAnalytics,
+      ...stateUpdates.clickAnalytics,
+    },
+    madness:
+      stateUpdates.madness !== undefined
+        ? stateUpdates.madness
+        : prevState.madness,
+    miningBoostState:
+      stateUpdates.miningBoostState || prevState.miningBoostState,
+    greatFeastActivations:
+      stateUpdates.greatFeastActivations !== undefined
+        ? stateUpdates.greatFeastActivations
+        : prevState.greatFeastActivations,
     buttonUpgrades: stateUpdates.buttonUpgrades
       ? {
-        ...prevState.buttonUpgrades,
-        ...Object.fromEntries(
-          Object.entries(stateUpdates.buttonUpgrades).map(([key, value]) => [
-            key,
-            { ...prevState.buttonUpgrades[key as keyof typeof prevState.buttonUpgrades], ...value }
-          ])
-        )
-      }
+          ...prevState.buttonUpgrades,
+          ...Object.fromEntries(
+            Object.entries(stateUpdates.buttonUpgrades).map(([key, value]) => [
+              key,
+              {
+                ...prevState.buttonUpgrades[
+                  key as keyof typeof prevState.buttonUpgrades
+                ],
+                ...value,
+              },
+            ]),
+          ),
+        }
       : prevState.buttonUpgrades,
     story: stateUpdates.story
       ? {
-        ...prevState.story,
-        seen: { ...prevState.story.seen, ...stateUpdates.story.seen },
-      }
+          ...prevState.story,
+          seen: { ...prevState.story.seen, ...stateUpdates.story.seen },
+        }
       : prevState.story,
     effects: stateUpdates.effects || prevState.effects,
     // Merge loop-related states if they are part of stateUpdates
-    loopProgress: stateUpdates.loopProgress !== undefined ? stateUpdates.loopProgress : prevState.loopProgress,
-    isGameLoopActive: stateUpdates.isGameLoopActive !== undefined ? stateUpdates.isGameLoopActive : prevState.isGameLoopActive,
-    isPaused: stateUpdates.isPaused !== undefined ? stateUpdates.isPaused : prevState.isPaused, // Merge isPaused
-    playTime: stateUpdates.playTime !== undefined ? stateUpdates.playTime : prevState.playTime, // Merge playTime
-    referralCount: stateUpdates.referralCount !== undefined ? stateUpdates.referralCount : prevState.referralCount, // Merge referralCount
+    loopProgress:
+      stateUpdates.loopProgress !== undefined
+        ? stateUpdates.loopProgress
+        : prevState.loopProgress,
+    isGameLoopActive:
+      stateUpdates.isGameLoopActive !== undefined
+        ? stateUpdates.isGameLoopActive
+        : prevState.isGameLoopActive,
+    isPaused:
+      stateUpdates.isPaused !== undefined
+        ? stateUpdates.isPaused
+        : prevState.isPaused, // Merge isPaused
+    playTime:
+      stateUpdates.playTime !== undefined
+        ? stateUpdates.playTime
+        : prevState.playTime, // Merge playTime
+    referralCount:
+      stateUpdates.referralCount !== undefined
+        ? stateUpdates.referralCount
+        : prevState.referralCount, // Merge referralCount
     referredUsers: stateUpdates.referredUsers || prevState.referredUsers, // Merge referredUsers
     referrals: stateUpdates.referrals || prevState.referrals, // Merge referrals
-    social_media_rewards: stateUpdates.social_media_rewards || prevState.social_media_rewards, // Merge social_media_rewards
-    lastResourceSnapshotTime: stateUpdates.lastResourceSnapshotTime !== undefined ? stateUpdates.lastResourceSnapshotTime : prevState.lastResourceSnapshotTime, // Merge lastResourceSnapshotTime
-    isPausedPreviously: stateUpdates.isPausedPreviously !== undefined ? stateUpdates.isPausedPreviously : prevState.isPausedPreviously, // Merge isPausedPreviously
+    social_media_rewards:
+      stateUpdates.social_media_rewards || prevState.social_media_rewards, // Merge social_media_rewards
+    lastResourceSnapshotTime:
+      stateUpdates.lastResourceSnapshotTime !== undefined
+        ? stateUpdates.lastResourceSnapshotTime
+        : prevState.lastResourceSnapshotTime, // Merge lastResourceSnapshotTime
+    isPausedPreviously:
+      stateUpdates.isPausedPreviously !== undefined
+        ? stateUpdates.isPausedPreviously
+        : prevState.isPausedPreviously, // Merge isPausedPreviously
     // Achievements state
-    unlockedAchievements: stateUpdates.unlockedAchievements || prevState.unlockedAchievements,
-    claimedAchievements: stateUpdates.claimedAchievements || prevState.claimedAchievements,
+    unlockedAchievements:
+      stateUpdates.unlockedAchievements || prevState.unlockedAchievements,
+    claimedAchievements:
+      stateUpdates.claimedAchievements || prevState.claimedAchievements,
     // Game ID
-    gameId: stateUpdates.gameId !== undefined ? stateUpdates.gameId : prevState.gameId,
+    gameId:
+      stateUpdates.gameId !== undefined
+        ? stateUpdates.gameId
+        : prevState.gameId,
     // Game completion tracking
     game_stats: stateUpdates.game_stats || prevState.game_stats,
-    hasWonAnyGame: stateUpdates.hasWonAnyGame !== undefined ? stateUpdates.hasWonAnyGame : prevState.hasWonAnyGame,
+    hasWonAnyGame:
+      stateUpdates.hasWonAnyGame !== undefined
+        ? stateUpdates.hasWonAnyGame
+        : prevState.hasWonAnyGame,
   };
 
   if (
     stateUpdates.tools ||
-    state.weapons ||
-    state.clothing ||
-    state.relics ||
-    state.books
+    stateUpdates.weapons ||
+    stateUpdates.clothing ||
+    stateUpdates.relics ||
+    stateUpdates.books
   ) {
     const tempState = { ...prevState, ...merged };
     merged.effects = calculateTotalEffects(tempState);
@@ -565,21 +639,31 @@ export const useGameStore = create<GameStore>((set, get) => ({
   username: undefined,
   setUsername: (username: string) => set({ username }),
 
-  setActiveTab: (tab: "cave" | "village" | "forest" | "bastion" | "estate" | "achievements") => set({ activeTab: tab }),
+  setActiveTab: (
+    tab: "cave" | "village" | "forest" | "bastion" | "estate" | "achievements",
+  ) => set({ activeTab: tab }),
 
   setBoostMode: (enabled: boolean) => set({ boostMode: enabled }),
   setIsMuted: (isMuted: boolean) => set({ isMuted }),
-  setShopNotificationSeen: (seen: boolean) => set({ shopNotificationSeen: seen }),
-  setShopNotificationVisible: (visible: boolean) => set({ shopNotificationVisible: visible }),
-  setAuthNotificationSeen: (seen: boolean) => set({ authNotificationSeen: seen }),
-  setAuthNotificationVisible: (visible: boolean) => set({ authNotificationVisible: visible }),
-  setMysteriousNoteShopNotificationSeen: (seen: boolean) => set({ mysteriousNoteShopNotificationSeen: seen }),
-  setMysteriousNoteDonateNotificationSeen: (seen: boolean) => set({ mysteriousNoteDonateNotificationSeen: seen }),
-  setHighlightedResources: (resources: string[]) => { // Updated type
+  setShopNotificationSeen: (seen: boolean) =>
+    set({ shopNotificationSeen: seen }),
+  setShopNotificationVisible: (visible: boolean) =>
+    set({ shopNotificationVisible: visible }),
+  setAuthNotificationSeen: (seen: boolean) =>
+    set({ authNotificationSeen: seen }),
+  setAuthNotificationVisible: (visible: boolean) =>
+    set({ authNotificationVisible: visible }),
+  setMysteriousNoteShopNotificationSeen: (seen: boolean) =>
+    set({ mysteriousNoteShopNotificationSeen: seen }),
+  setMysteriousNoteDonateNotificationSeen: (seen: boolean) =>
+    set({ mysteriousNoteDonateNotificationSeen: seen }),
+  setHighlightedResources: (resources: string[]) => {
+    // Updated type
     set({ highlightedResources: resources });
   },
   setIsUserSignedIn: (signedIn: boolean) => set({ isUserSignedIn: signedIn }),
-  setDetectedCurrency: (currency: "EUR" | "USD") => set({ detectedCurrency: currency }),
+  setDetectedCurrency: (currency: "EUR" | "USD") =>
+    set({ detectedCurrency: currency }),
 
   updateResource: (resource: keyof GameState["resources"], amount: number) => {
     // updateResource in stateHelpers automatically applies capResourceToLimit
@@ -607,7 +691,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   initialize: (initialState?: Partial<GameState>) => {
-    const stateToSet = initialState ? { ...defaultGameState, ...initialState } : defaultGameState;
+    const stateToSet = initialState
+      ? { ...defaultGameState, ...initialState }
+      : defaultGameState;
 
     set(stateToSet);
     StateManager.scheduleEffectsUpdate(get);
@@ -635,7 +721,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
       if (!result.stateUpdates.buttonUpgrades) {
         result.stateUpdates.buttonUpgrades = {} as any;
       }
-      result.stateUpdates.buttonUpgrades[upgradeKey] = upgradeResult.updatedUpgrade;
+      result.stateUpdates.buttonUpgrades[upgradeKey] =
+        upgradeResult.updatedUpgrade;
 
       // Add level up log entry if applicable
       if (upgradeResult.levelUpMessage) {
@@ -654,7 +741,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }
 
     // Store initial cooldown duration if it's a new cooldown
-    if (result.stateUpdates.cooldowns && result.stateUpdates.cooldowns[actionId]) {
+    if (
+      result.stateUpdates.cooldowns &&
+      result.stateUpdates.cooldowns[actionId]
+    ) {
       const initialDuration = result.stateUpdates.cooldowns[actionId];
 
       set((prevState) => ({
@@ -685,10 +775,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     // Handle compass bonus glow effect
     if ((result.stateUpdates as any).compassBonusTriggered) {
-      console.log('[COMPASS GLOW] Compass bonus triggered for action:', actionId);
+      console.log(
+        "[COMPASS GLOW] Compass bonus triggered for action:",
+        actionId,
+      );
       get().setCompassGlow(actionId);
       setTimeout(() => {
-        console.log('[COMPASS GLOW] Clearing compass glow');
+        console.log("[COMPASS GLOW] Clearing compass glow");
         get().setCompassGlow(null);
       }, 3000);
     }
@@ -701,7 +794,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
         ...prevState,
         ...mergedUpdates,
         log: result.logEntries
-          ? [...prevState.log, ...result.logEntries].slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES)
+          ? [...prevState.log, ...result.logEntries].slice(
+              -GAME_CONSTANTS.LOG_MAX_ENTRIES,
+            )
           : prevState.log,
       };
     });
@@ -756,12 +851,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const finalDuration = Math.max(1, duration);
     set((state) => ({
       cooldowns: { ...state.cooldowns, [action]: finalDuration },
-      cooldownDurations: { ...state.cooldownDurations, [action]: finalDuration },
+      cooldownDurations: {
+        ...state.cooldownDurations,
+        [action]: finalDuration,
+      },
     }));
   },
 
   setCompassGlow: (actionId: string | null) => {
-    console.log('[COMPASS GLOW] Setting compass glow for action:', actionId);
+    console.log("[COMPASS GLOW] Setting compass glow for action:", actionId);
     set({ compassGlowButton: actionId });
   },
 
@@ -786,15 +884,21 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const state = get();
 
     // Check if cruel mode is activated (support both old and new purchase ID formats)
-    const isCruelModeActive = Object.keys(state.activatedPurchases || {}).some(
-      key => key === 'cruel_mode' || key.startsWith('purchase-cruel_mode-')
-    ) && Object.entries(state.activatedPurchases || {}).some(
-      ([key, value]) => (key === 'cruel_mode' || key.startsWith('purchase-cruel_mode-')) && value === true
-    );
+    const isCruelModeActive =
+      Object.keys(state.activatedPurchases || {}).some(
+        (key) => key === "cruel_mode" || key.startsWith("purchase-cruel_mode-"),
+      ) &&
+      Object.entries(state.activatedPurchases || {}).some(
+        ([key, value]) =>
+          (key === "cruel_mode" || key.startsWith("purchase-cruel_mode-")) &&
+          value === true,
+      );
 
     // Find the cruel mode purchase key to preserve
-    const cruelModePurchaseKey = Object.keys(state.activatedPurchases || {}).find(
-      key => key === 'cruel_mode' || key.startsWith('purchase-cruel_mode-')
+    const cruelModePurchaseKey = Object.keys(
+      state.activatedPurchases || {},
+    ).find(
+      (key) => key === "cruel_mode" || key.startsWith("purchase-cruel_mode-"),
     );
 
     // Preserve these across game restarts
@@ -802,9 +906,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
       // Purchases and boosts that persist
       boostMode: state.boostMode,
       // Only preserve cruel_mode activation, reset everything else
-      activatedPurchases: cruelModePurchaseKey ? {
-        [cruelModePurchaseKey]: state.activatedPurchases?.[cruelModePurchaseKey] || false,
-      } : {},
+      activatedPurchases: cruelModePurchaseKey
+        ? {
+            [cruelModePurchaseKey]:
+              state.activatedPurchases?.[cruelModePurchaseKey] || false,
+          }
+        : {},
       // Feast activations are reset (cleared) on new game
       feastActivations: {},
 
@@ -872,14 +979,19 @@ export const useGameStore = create<GameStore>((set, get) => ({
     });
 
     // Immediately save the new game state to cloud to prevent OCC issues
-    const { saveGame } = await import('@/game/save');
+    const { saveGame } = await import("@/game/save");
     try {
       await saveGame(get(), false);
-      logger.log('[RESTART] ✅ New game state saved to cloud with analytics cleared');
+      logger.log(
+        "[RESTART] ✅ New game state saved to cloud with analytics cleared",
+      );
       // Clear the new game flag after successful save
       set({ isNewGame: false });
     } catch (error) {
-      logger.error('[RESTART] ❌ Failed to save new game state to cloud:', error);
+      logger.error(
+        "[RESTART] ❌ Failed to save new game state to cloud:",
+        error,
+      );
     }
   },
 
@@ -924,14 +1036,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     // Add ALL resources to snapshot (including zero values for complete snapshot)
     for (const [key, value] of Object.entries(resources)) {
-      if (typeof value === 'number') {
+      if (typeof value === "number") {
         snapshot[key] = value;
       }
     }
 
     // Add stats to snapshot (luck, strength, knowledge, madness)
     for (const [key, value] of Object.entries(stats)) {
-      if (typeof value === 'number') {
+      if (typeof value === "number") {
         snapshot[key] = value;
       }
     }
@@ -944,18 +1056,22 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   loadGame: async () => {
-    const { loadGame: loadFromIDB } = await import('@/game/save');
+    const { loadGame: loadFromIDB } = await import("@/game/save");
     const savedState = await loadFromIDB();
 
-    logger.log('[STATE] 📊 loadGame received state from save.ts:', {
+    logger.log("[STATE] 📊 loadGame received state from save.ts:", {
       exists: !!savedState,
       playTime: savedState?.playTime,
-      hasPlayTime: savedState ? 'playTime' in savedState : false,
-      allTimeKeys: savedState ? Object.keys(savedState).filter(k => k.includes('play') || k.includes('time')) : [],
+      hasPlayTime: savedState ? "playTime" in savedState : false,
+      allTimeKeys: savedState
+        ? Object.keys(savedState).filter(
+            (k) => k.includes("play") || k.includes("time"),
+          )
+        : [],
     });
 
     // Notify game loop that we just loaded to skip auto-save for 30 seconds
-    const { setLastGameLoadTime } = await import('@/game/loop');
+    const { setLastGameLoadTime } = await import("@/game/loop");
     setLastGameLoadTime(performance.now());
 
     // Get current boost mode before loading
@@ -963,10 +1079,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     if (savedState) {
       // CRITICAL: Extract playTime FIRST before any processing
-      const loadedPlayTime = savedState.playTime !== undefined ? savedState.playTime : 0;
+      const loadedPlayTime =
+        savedState.playTime !== undefined ? savedState.playTime : 0;
 
       // Generate gameId if it doesn't exist in savedState or is undefined
-      const gameId = savedState.gameId ?? `game-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
+      const gameId =
+        savedState.gameId ??
+        `game-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
 
       const loadedState = {
         ...savedState,
@@ -980,38 +1099,76 @@ export const useGameStore = create<GameStore>((set, get) => ({
         boostMode: savedState.boostMode,
         effects: calculateTotalEffects(savedState),
         bastion_stats: calculateBastionStats(savedState),
-        cruelMode: savedState.cruelMode !== undefined ? savedState.cruelMode : false,
+        cruelMode:
+          savedState.cruelMode !== undefined ? savedState.cruelMode : false,
         CM: savedState.CM !== undefined ? savedState.CM : 0,
         activatedPurchases: savedState.activatedPurchases || {},
         feastPurchases: savedState.feastPurchases || {},
         // Ensure loop state is loaded correctly
-        loopProgress: savedState.loopProgress !== undefined ? savedState.loopProgress : 0,
-        isGameLoopActive: savedState.isGameLoopActive !== undefined ? savedState.isGameLoopActive : false,
-        isPaused: savedState.isPaused !== undefined ? savedState.isPaused : false, // Ensure isPaused is loaded
+        loopProgress:
+          savedState.loopProgress !== undefined ? savedState.loopProgress : 0,
+        isGameLoopActive:
+          savedState.isGameLoopActive !== undefined
+            ? savedState.isGameLoopActive
+            : false,
+        isPaused:
+          savedState.isPaused !== undefined ? savedState.isPaused : false, // Ensure isPaused is loaded
         isMuted: savedState.isMuted !== undefined ? savedState.isMuted : false,
-        shopNotificationSeen: savedState.shopNotificationSeen !== undefined ? savedState.shopNotificationSeen : false,
-        shopNotificationVisible: savedState.shopNotificationVisible !== undefined ? savedState.shopNotificationVisible : false,
-        authNotificationSeen: savedState.authNotificationSeen !== undefined ? savedState.authNotificationSeen : false,
-        authNotificationVisible: savedState.authNotificationVisible !== undefined ? savedState.authNotificationVisible : false,
-        mysteriousNoteShopNotificationSeen: savedState.mysteriousNoteShopNotificationSeen !== undefined ? savedState.mysteriousNoteShopNotificationSeen : false,
-        mystNoteDonateNotificationSeen: savedState.mystNoteDonateNotificationSeen !== undefined ? savedState.mystNoteDonateNotificationSeen : false,
+        shopNotificationSeen:
+          savedState.shopNotificationSeen !== undefined
+            ? savedState.shopNotificationSeen
+            : false,
+        shopNotificationVisible:
+          savedState.shopNotificationVisible !== undefined
+            ? savedState.shopNotificationVisible
+            : false,
+        authNotificationSeen:
+          savedState.authNotificationSeen !== undefined
+            ? savedState.authNotificationSeen
+            : false,
+        authNotificationVisible:
+          savedState.authNotificationVisible !== undefined
+            ? savedState.authNotificationVisible
+            : false,
+        mysteriousNoteShopNotificationSeen:
+          savedState.mysteriousNoteShopNotificationSeen !== undefined
+            ? savedState.mysteriousNoteShopNotificationSeen
+            : false,
+        mystNoteDonateNotificationSeen:
+          savedState.mystNoteDonateNotificationSeen !== undefined
+            ? savedState.mystNoteDonateNotificationSeen
+            : false,
         playTime: loadedPlayTime, // CRITICAL: Use the extracted playTime value
         isNewGame: false, // Clear the new game flag when loading
-        startTime: savedState.startTime !== undefined ? savedState.startTime : 0, // Ensure startTime is loaded
-        idleModeState: savedState.idleModeState || { isActive: false, startTime: 0, needsDisplay: false }, // Load idle mode state
+        startTime:
+          savedState.startTime !== undefined ? savedState.startTime : 0, // Ensure startTime is loaded
+        idleModeState: savedState.idleModeState || {
+          isActive: false,
+          startTime: 0,
+          needsDisplay: false,
+        }, // Load idle mode state
         referrals: savedState.referrals || [], // Load referrals list
-        social_media_rewards: savedState.social_media_rewards || defaultGameState.social_media_rewards, // Load social_media_rewards
-        lastResourceSnapshotTime: savedState.lastResourceSnapshotTime !== undefined ? savedState.lastResourceSnapshotTime : 0, // Load lastResourceSnapshotTime
+        social_media_rewards:
+          savedState.social_media_rewards ||
+          defaultGameState.social_media_rewards, // Load social_media_rewards
+        lastResourceSnapshotTime:
+          savedState.lastResourceSnapshotTime !== undefined
+            ? savedState.lastResourceSnapshotTime
+            : 0, // Load lastResourceSnapshotTime
         highlightedResources: savedState.highlightedResources || [], // Load highlightedResources
         curseState: savedState.curseState || defaultGameState.curseState, // Load curseState
-        frostfallState: savedState.frostfallState || defaultGameState.frostfallState, // Load frostfallState
+        frostfallState:
+          savedState.frostfallState || defaultGameState.frostfallState, // Load frostfallState
         fogState: savedState.fogState || defaultGameState.fogState, // Load fogState
         lastFreeGoldClaim: savedState.lastFreeGoldClaim || 0, // Load lastFreeGoldClaim
         unlockedAchievements: savedState.unlockedAchievements || [], // Load unlocked achievements
         claimedAchievements: savedState.claimedAchievements || [], // Load claimed achievements
         gameId: gameId, // Load or generate gameId
         game_stats: savedState.game_stats || [], // Load game_stats
-        hasWonAnyGame: savedState.hasWonAnyGame !== undefined ? savedState.hasWonAnyGame : false, // Load hasWonAnyGame
+        hasWonAnyGame:
+          savedState.hasWonAnyGame !== undefined
+            ? savedState.hasWonAnyGame
+            : false, // Load hasWonAnyGame
       };
 
       set(loadedState);
@@ -1064,7 +1221,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
     if (state.isPaused) return;
 
     // Don't check for new events if any dialog is already open
-    const isAnyDialogOpen = state.eventDialog.isOpen || state.combatDialog.isOpen;
+    const isAnyDialogOpen =
+      state.eventDialog.isOpen || state.combatDialog.isOpen;
     if (isAnyDialogOpen) return;
 
     const { newLogEntries, stateChanges, triggeredEvents } =
@@ -1220,7 +1378,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         };
 
         // Log blessings after state update
-        logger.log('[STATE] After applying event choice:', {
+        logger.log("[STATE] After applying event choice:", {
           eventId,
           choiceId,
           blessingsInChanges: updatedChanges.blessings,
@@ -1505,12 +1663,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
       // Apply resource limits to each updated resource
       for (const [key, value] of Object.entries(updates)) {
-        if (typeof value === 'number') {
+        if (typeof value === "number") {
           // Cap the absolute value, not the delta
           cappedUpdates[key as keyof typeof cappedUpdates] = capResourceToLimit(
             key,
             value,
-            state
+            state,
           );
         }
       }

@@ -1,4 +1,3 @@
-
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 
@@ -6,15 +5,18 @@ export const fullGameUnlockEvents: Record<string, GameEvent> = {
   firstElderWarning: {
     id: "firstElderWarning",
     condition: (state: GameState) => {
-      return state.BTP === 1 &&
+      return (
+        state.BTP === 1 &&
         state.buildings.woodenHut >= 2 &&
-        state.current_population >= 4 &&
-        !state.story.seen.firstElderWarning;
+        state.current_population >= 1 &&
+        !state.story.seen.firstElderWarning
+      );
     },
     triggerType: "time",
     timeProbability: 1,
     title: "The Village Elder",
-    message: "An older villager approaches you, his eyes heavy with knowledge. 'You have taken your first steps in this cruel world,' he says quietly. 'Soon, you will have to decide whether you are willing to face what lies ahead.'",
+    message:
+      "An older villager approaches you, his eyes heavy with knowledge. 'You have taken your first steps in this cruel world,' he says quietly. 'Soon, you will have to decide whether you are willing to face what lies ahead.'",
     triggered: false,
     priority: 5,
     visualEffect: {
@@ -35,8 +37,6 @@ export const fullGameUnlockEvents: Record<string, GameEvent> = {
                 firstElderWarning: true,
               },
             },
-            // _logMessage:
-            //   "You listen to the elder's words. There is a weight to them that settles in your chest. He nods gravely and walks away, leaving you with the echo of his warning.",
           };
         },
       },
@@ -48,18 +48,23 @@ export const fullGameUnlockEvents: Record<string, GameEvent> = {
     condition: (state: GameState) => {
       // Check if full_game has been purchased
       const hasFullGame = Object.keys(state.activatedPurchases || {}).some(
-        key => (key === 'full_game' || key.startsWith('purchase-full_game-')) && state.activatedPurchases?.[key]
+        (key) =>
+          (key === "full_game" || key.startsWith("purchase-full_game-")) &&
+          state.activatedPurchases?.[key],
       );
-      return state.BTP === 1 &&
+      return (
+        state.BTP === 1 &&
         state.buildings.darkEstate >= 1 &&
         state.story.seen.firstElderWarning &&
         !state.story.seen.villageElderNotice &&
-        !hasFullGame;
+        !hasFullGame
+      );
     },
     triggerType: "time",
     timeProbability: 1,
     title: "The Elder's Notice",
-    message: "A village elder approaches you. He speaks quietly. 'You stand at the beginning of a long path filled with trials. Very soon, you must choose whether you will continue this journey.'",
+    message:
+      "A village elder approaches you. He speaks quietly. 'You stand at the beginning of a long path filled with trials. Very soon, you must choose whether you will continue this journey.'",
     triggered: false,
     priority: 5,
     visualEffect: {
@@ -80,8 +85,6 @@ export const fullGameUnlockEvents: Record<string, GameEvent> = {
                 villageElderNotice: true,
               },
             },
-            // _logMessage:
-            //   "You nod solemnly at the elder's words. His words echo in your mind as he walks away into the shadows.",
           };
         },
       },
@@ -93,14 +96,18 @@ export const fullGameUnlockEvents: Record<string, GameEvent> = {
     condition: (state: GameState) => {
       // Check if full_game has been purchased
       const hasFullGame = Object.keys(state.activatedPurchases || {}).some(
-        key => (key === 'full_game' || key.startsWith('purchase-full_game-')) && state.activatedPurchases?.[key]
+        (key) =>
+          (key === "full_game" || key.startsWith("purchase-full_game-")) &&
+          state.activatedPurchases?.[key],
       );
-      return state.BTP === 1 &&
+      return (
+        state.BTP === 1 &&
         state.story.seen.villageElderNotice &&
         state.books.book_of_trials &&
         state.books.book_of_ascension &&
         !state.story.seen.villageElderDecision &&
-        !hasFullGame;
+        !hasFullGame
+      );
     },
     triggerType: "time",
     timeProbability: 5,
@@ -121,7 +128,7 @@ export const fullGameUnlockEvents: Record<string, GameEvent> = {
         effect: (state: GameState) => {
           // Open the full game purchase dialog
           setTimeout(() => {
-            const { useGameStore } = require('@/game/state');
+            const { useGameStore } = require("@/game/state");
             useGameStore.getState().setFullGamePurchaseDialogOpen(true);
           }, 500);
 
@@ -133,8 +140,6 @@ export const fullGameUnlockEvents: Record<string, GameEvent> = {
                 villageElderDecision: true,
               },
             },
-            // _logMessage:
-            //   "The elder looks at you, understanding the weight of the choice before you, then departs into the gathering dusk.",
           };
         },
       },
