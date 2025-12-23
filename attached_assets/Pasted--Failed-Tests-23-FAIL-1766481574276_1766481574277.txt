@@ -1,0 +1,287 @@
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯ Failed Tests 23 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Cave Exploration Actions > chopWood gains match tooltip
+AssertionError: expected undefined to be defined
+ ❯ client/src/game/rules/resourceGains.test.ts:335:34
+    333|       const { expectedGains, actualGains } = testActionGains('chopWood', state);
+    334| 
+    335|       expect(expectedGains.wood).toBeDefined();
+       |                                  ^
+    336|       expect(actualGains.wood).toBeDefined();
+    337| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/23]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Mining Actions > mineStone gains match tooltip
+AssertionError: expected undefined to be defined
+ ❯ client/src/game/rules/resourceGains.test.ts:389:35
+    387|       const { expectedGains, actualGains } = testActionGains('mineStone', state…
+    388| 
+    389|       expect(expectedGains.stone).toBeDefined();
+       |                                   ^
+    390|       expect(actualGains.stone).toBeDefined();
+    391| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/23]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Mining Actions > mineIron gains match tooltip
+AssertionError: expected undefined to be defined
+ ❯ client/src/game/rules/resourceGains.test.ts:405:34
+    403|       const { expectedGains, actualGains } = testActionGains('mineIron', state);
+    404| 
+    405|       expect(expectedGains.iron).toBeDefined();
+       |                                  ^
+    406|       expect(actualGains.iron).toBeDefined();
+    407| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/23]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Mining Actions > mineCoal gains match tooltip
+AssertionError: expected undefined to be defined
+ ❯ client/src/game/rules/resourceGains.test.ts:421:34
+    419|       const { expectedGains, actualGains } = testActionGains('mineCoal', state);
+    420| 
+    421|       expect(expectedGains.coal).toBeDefined();
+       |                                  ^
+    422|       expect(actualGains.coal).toBeDefined();
+    423| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/23]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Mining Actions > mineObsidian gains match tooltip
+AssertionError: expected undefined to be defined
+ ❯ client/src/game/rules/resourceGains.test.ts:437:38
+    435|       const { expectedGains, actualGains } = testActionGains('mineObsidian', st…
+    436| 
+    437|       expect(expectedGains.obsidian).toBeDefined();
+       |                                      ^
+    438|       expect(actualGains.obsidian).toBeDefined();
+    439| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/23]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Actions with Item Bonuses > chopWood with loggers_gloves applies correct bonus
+TypeError: Cannot read properties of undefined (reading 'min')
+ ❯ client/src/game/rules/resourceGains.test.ts:479:32
+    477| 
+    478|       // With gloves should have higher gains (30% multiplier)
+    479|       expect(expectedWith.wood.min).toBeGreaterThanOrEqual(Math.floor(expectedW…
+       |                                ^
+    480|       expect(expectedWith.wood.max).toBeGreaterThanOrEqual(Math.floor(expectedW…
+    481|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/23]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Actions with Item Bonuses > hunt with hunter_cloak applies correct bonus
+TypeError: Cannot read properties of undefined (reading 'min')
+ ❯ client/src/game/rules/resourceGains.test.ts:497:32
+    495|       // With cloak should have higher gains (50% multiplier)
+    496|       // Use a more lenient check since the multiplier is applied to the random…
+    497|       expect(expectedWith.food.min).toBeGreaterThan(expectedWithout.food.min);
+       |                                ^
+    498|       expect(expectedWith.food.max).toBeGreaterThan(expectedWithout.food.max);
+    499|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/23]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Actions with Item Bonuses > mineStone with different pickaxes shows progression
+TypeError: Cannot read properties of undefined (reading 'min')
+ ❯ client/src/game/rules/resourceGains.test.ts:513:30
+    511| 
+    512|       // Iron pickaxe should give more stone (50% vs 25% bonus)
+    513|       expect(ironGains.stone.min).toBeGreaterThan(stoneGains.stone.min);
+       |                              ^
+    514|       expect(ironGains.stone.max).toBeGreaterThan(stoneGains.stone.max);
+    515|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/23]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Button Upgrades > chopWood with button upgrades increases gains
+TypeError: Cannot read properties of undefined (reading 'min')
+ ❯ client/src/game/rules/resourceGains.test.ts:1088:32
+    1086| 
+    1087|       // With upgrades should have higher gains (100% more at level 5)
+    1088|       expect(expectedWith.wood.min).toBeGreaterThan(expectedWithout.wood.min);
+       |                                ^
+    1089|       expect(expectedWith.wood.max).toBeGreaterThan(expectedWithout.wood.max);
+    1090|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/23]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Axe Progression > chopWood with stone axe shows baseline gains
+TypeError: Cannot read properties of undefined (reading 'min')
+ ❯ client/src/game/rules/resourceGains.test.ts:1122:33
+    1120| 
+    1121|       // Stone axe gives 50% multiplier: base 6-12 becomes 9-18
+    1122|       expect(expectedGains.wood.min).toBe(9);
+       |                                 ^
+    1123|       expect(expectedGains.wood.max).toBe(18);
+    1124|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/23]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Axe Progression > chopWood with iron axe shows improved gains
+TypeError: Cannot read properties of undefined (reading 'min')
+ ❯ client/src/game/rules/resourceGains.test.ts:1133:33
+    1131| 
+    1132|       // Iron axe gives 100% multiplier: base 6-12 becomes 12-24
+    1133|       expect(expectedGains.wood.min).toBe(12);
+       |                                 ^
+    1134|       expect(expectedGains.wood.max).toBe(24);
+    1135|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/23]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Axe Progression > chopWood with steel axe shows further improved gains
+TypeError: Cannot read properties of undefined (reading 'min')
+ ❯ client/src/game/rules/resourceGains.test.ts:1144:33
+    1142| 
+    1143|       // Steel axe gives 150% multiplier: base 6-12 becomes 15-30
+    1144|       expect(expectedGains.wood.min).toBe(15);
+       |                                 ^
+    1145|       expect(expectedGains.wood.max).toBe(30);
+    1146|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/23]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Focus Mode > chopWood gains are doubled during active focus mode
+TypeError: Cannot read properties of undefined (reading 'min')
+ ❯ client/src/game/rules/resourceGains.test.ts:1167:32
+    1165|       // Without focus: base 6-12 with stone axe (50%) = 9-18
+    1166|       // With focus: 9-18 * 2 = 18-36
+    1167|       expect(gainsWithout.wood.min).toBe(9);
+       |                                ^
+    1168|       expect(gainsWithout.wood.max).toBe(18);
+    1169|       expect(gainsWith.wood.min).toBe(18);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/23]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Focus Mode > mineCoal gains are doubled during active focus mode
+TypeError: Cannot read properties of undefined (reading 'min')
+ ❯ client/src/game/rules/resourceGains.test.ts:1236:29
+    1234|       const { expectedGains: gainsWith } = testActionGains('mineCoal', stateWit…
+    1235| 
+    1236|       expect(gainsWith.coal.min).toBe(gainsWithout.coal.min * 2);
+       |                             ^
+    1237|       expect(gainsWith.coal.max).toBe(gainsWithout.coal.max * 2);
+    1238|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/23]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Focus Mode > focus mode does not apply when expired
+TypeError: Cannot read properties of undefined (reading 'min')
+ ❯ client/src/game/rules/resourceGains.test.ts:1252:33
+    1250| 
+    1251|       // Should be same as without focus: base 6-12 with stone axe (50%) = 9-18
+    1252|       expect(expectedGains.wood.min).toBe(9);
+       |                                 ^
+    1253|       expect(expectedGains.wood.max).toBe(18);
+    1254|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/23]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Focus Mode > focus mode tooltip shows doubled gains for chopWood
+AssertionError: expected undefined to be defined
+ ❯ client/src/game/rules/resourceGains.test.ts:1269:24
+    1267|       const woodGain = tooltipGains.find(g => g.resource === 'wood');
+    1268| 
+    1269|       expect(woodGain).toBeDefined();
+       |                        ^
+    1270|       // Base 6-12, doubled = 12-24
+    1271|       expect(woodGain!.min).toBe(12);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/23]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Focus Mode > focus mode stacks with other bonuses (axe + focus)
+TypeError: Cannot read properties of undefined (reading 'min')
+ ❯ client/src/game/rules/resourceGains.test.ts:1320:33
+    1318|       // Base 6-12 with iron axe (100%) = 12-24
+    1319|       // With focus: 12-24 * 2 = 24-48
+    1320|       expect(expectedGains.wood.min).toBe(24);
+       |                                 ^
+    1321|       expect(expectedGains.wood.max).toBe(48);
+    1322|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/23]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Focus Mode > focus mode actual gains fall within doubled tooltip range
+TypeError: Cannot read properties of undefined (reading 'min')
+ ❯ client/src/game/rules/resourceGains.test.ts:1341:24
+    1339| 
+    1340|       // Verify tooltip matches expected calculation
+    1341|       expect(woodGain!.min).toBe(expectedGains.wood.min);
+       |                        ^
+    1342|       expect(woodGain!.max).toBe(expectedGains.wood.max);
+    1343| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/23]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Multiplier Stacking > multiple bonuses stack correctly for chopWood
+TypeError: Cannot read properties of undefined (reading 'min')
+ ❯ client/src/game/rules/resourceGains.test.ts:1369:67
+    1367|       const maxActual = Math.max(...actualGains.wood);
+    1368| 
+    1369|       expect(minActual).toBeGreaterThanOrEqual(expectedGains.wood.min);
+       |                                                                   ^
+    1370|       expect(maxActual).toBeLessThanOrEqual(expectedGains.wood.max);
+    1371|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[19/23]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Multiplier Stacking > multiple bonuses stack correctly for mining
+TypeError: Cannot read properties of undefined (reading 'min')
+ ❯ client/src/game/rules/resourceGains.test.ts:1389:68
+    1387|       const maxActual = Math.max(...actualGains.stone);
+    1388| 
+    1389|       expect(minActual).toBeGreaterThanOrEqual(expectedGains.stone.min);
+       |                                                                    ^
+    1390|       expect(maxActual).toBeLessThanOrEqual(expectedGains.stone.max);
+    1391|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[20/23]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Additional Cave Exploration > exploreCitadel with cave exploration bonuses
+TypeError: Cannot read properties of undefined (reading 'max')
+ ❯ client/src/game/rules/resourceGains.test.ts:1458:33
+    1456|       // Iron lantern provides 25% cave explore multiplier
+    1457|       // Note: min may stay the same due to floor(1 * 1.25) = 1, but max should…
+    1458|       expect(gainsWith.obsidian.max).toBeGreaterThan(gainsWithout.obsidian.max);
+       |                                 ^
+    1459|       expect(gainsWith.adamant.max).toBeGreaterThan(gainsWithout.adamant.max);
+    1460|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[21/23]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Advanced Mining Actions > mineSulfur gains match tooltip
+AssertionError: expected undefined to be defined
+ ❯ client/src/game/rules/resourceGains.test.ts:1509:36
+    1507|       const { expectedGains, actualGains } = testActionGains('mineSulfur', stat…
+    1508| 
+    1509|       expect(expectedGains.sulfur).toBeDefined();
+       |                                    ^
+    1510|       expect(actualGains.sulfur).toBeDefined();
+    1511| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[22/23]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Advanced Mining Actions > mineAdamant gains match tooltip
+AssertionError: expected undefined to be defined
+ ❯ client/src/game/rules/resourceGains.test.ts:1525:37
+    1523|       const { expectedGains, actualGains } = testActionGains('mineAdamant', sta…
+    1524| 
+    1525|       expect(expectedGains.adamant).toBeDefined();
+       |                                     ^
+    1526|       expect(actualGains.adamant).toBeDefined();
+    1527| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[23/23]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  23 failed | 43 passed (66)
+   Start at  09:18:04
+   Duration  570ms
+
+ FAIL  Tests failed. Watching for file changes...
+       press h to show help, press q to quit
