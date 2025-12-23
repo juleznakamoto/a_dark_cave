@@ -872,8 +872,15 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                   {Object.values(SHOP_ITEMS).filter((item) => {
                     const isBTPActive = gameState.BTP === 1;
                     if (isBTPActive) {
-                      // In BTP mode, only show full_game and cruel_mode
-                      return item.id === "full_game" || item.id === "cruel_mode";
+                      // In BTP mode, only show full_game initially
+                      // Show cruel_mode only after winning at least one game
+                      if (item.id === "full_game") {
+                        return true;
+                      }
+                      if (item.id === "cruel_mode") {
+                        return gameState.hasWonAnyGame === true;
+                      }
+                      return false;
                     } else {
                       // In normal mode, hide full_game
                       return item.id !== "full_game";
