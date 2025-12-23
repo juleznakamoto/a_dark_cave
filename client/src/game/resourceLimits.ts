@@ -6,11 +6,6 @@ const UNLIMITED_RESOURCES = ['silver', 'gold'];
 
 // Get the current resource limit based on storage building level
 export function getResourceLimit(state: GameState): number {
-  // Feature flag check - if not enabled, return unlimited
-  if (!state.flags?.resourceLimitsEnabled) {
-    return Infinity;
-  }
-
   // Determine storage level based on highest storage building
   let storageLevel = 0;
   
@@ -36,9 +31,6 @@ export function getResourceLimit(state: GameState): number {
 
 // Check if a resource should be limited
 export function isResourceLimited(resourceKey: string, state: GameState): boolean {
-  if (!state.flags?.resourceLimitsEnabled) {
-    return false;
-  }
   return !UNLIMITED_RESOURCES.includes(resourceKey);
 }
 
@@ -60,10 +52,6 @@ export function capResourceToLimit(
 
 // Get display text for current storage capacity
 export function getStorageLimitText(state: GameState): string {
-  if (!state.flags?.resourceLimitsEnabled) {
-    return "Unlimited";
-  }
-
   const limit = getResourceLimit(state);
   if (limit === Infinity) {
     return "Unlimited";
@@ -74,10 +62,6 @@ export function getStorageLimitText(state: GameState): string {
 
 // Get storage building name based on state
 export function getStorageBuildingName(state: GameState): string {
-  if (!state.flags?.resourceLimitsEnabled) {
-    return "Unlimited Storage";
-  }
-
   // Determine storage level based on highest storage building
   if (state.buildings.greatVault > 0) return "Great Vault";
   if (state.buildings.grandRepository > 0) return "Grand Repository";
