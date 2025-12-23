@@ -36,12 +36,12 @@ export default function Game() {
           logger.log("[GAME PAGE] User authenticated, loading game");
         }
 
-        // Check if URL is /game to skip start screen
-        const isGamePath = window.location.pathname === '/game';
+        // Check if URL is /game or /boost to skip start screen
+        const isGamePath = window.location.pathname === '/game' || window.location.pathname === '/boost';
 
-        // Check for openShop query parameter
+        // Check for openShop query parameter or /boost path
         const urlParams = new URLSearchParams(window.location.search);
-        const openShop = urlParams.get('openShop') === 'true';
+        const openShop = urlParams.get('openShop') === 'true' || window.location.pathname === '/boost';
 
         // Load saved game or initialize with defaults
         const savedState = await loadGame();
@@ -112,7 +112,7 @@ export default function Game() {
     return () => {
       stopGameLoop();
     };
-  }, [initialize]); // Remove loadGame from dependency array as it's not a dependency
+  }, []); // Empty dependency array - only run once on mount
 
   // Start background music on first user interaction (required by browser autoplay policies)
   useEffect(() => {
