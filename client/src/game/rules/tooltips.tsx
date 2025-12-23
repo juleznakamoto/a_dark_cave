@@ -43,7 +43,14 @@ export const calculateResourceGains = (
   costs: Array<{ resource: string; amount: number; hasEnough: boolean }>;
 } => {
   const action = gameActions[actionId];
-  if (!action?.effects) return { gains: [], costs: [] };
+  if (!action) return { gains: [], costs: [] };
+
+  // Resolve effects if they are a function
+  const effects = typeof action.effects === 'function' 
+    ? action.effects(state) 
+    : action.effects;
+
+  if (!effects) return { gains: [], costs: [] };
 
   const bonuses = getActionBonuses(actionId, state);
   const gains: Array<{ resource: string; min: number; max: number }> = [];
@@ -126,7 +133,7 @@ export const calculateResourceGains = (
     const isCaveExploreAction = caveExploreActions.includes(actionId);
 
     // Parse effects for resource gains (normal actions)
-    Object.entries(action.effects).forEach(([key, value]) => {
+    Object.entries(effects).forEach(([key, value]) => {
       if (key.startsWith("resources.")) {
         const resource = key.split(".")[1];
 
