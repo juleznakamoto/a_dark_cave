@@ -271,6 +271,7 @@ export default function FullGamePurchaseDialog({
       hasMadeNonFreePurchase: true,
       BTP: 0, // Deactivate BTP mode
       isPaused: false, // Explicitly unpause the game
+      isPausedPreviously: false, // Clear previous pause state to resume playTime
     });
 
     // Mark as activated

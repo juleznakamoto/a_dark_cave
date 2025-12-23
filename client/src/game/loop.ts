@@ -187,11 +187,6 @@ export function startGameLoop() {
 
     const wasPaused = state.isPausedPreviously || state.dialogsOpenPreviously; // Track previous pause state
     const isPaused = state.isPaused || isDialogOpen || requiresFullGamePurchase;
-    
-    // If full game was just purchased and we're no longer paused for that reason, unpause the game
-    if (wasPaused && !isPaused && !requiresFullGamePurchase && state.story?.seen?.villageElderDecision) {
-      useGameStore.setState({ isPaused: false });
-    }
 
     if (isPaused) {
       // Stop all sounds when paused (unless already stopped by mute)
