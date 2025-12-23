@@ -80,8 +80,8 @@ export const fullGameUnlockEvents: Record<string, GameEvent> = {
                 villageElderNotice: true,
               },
             },
-            _logMessage:
-              "You nod solemnly at the elder's words. His words echo in your mind as he walks away into the shadows.",
+            // _logMessage:
+            //   "You nod solemnly at the elder's words. His words echo in your mind as he walks away into the shadows.",
           };
         },
       },
@@ -133,8 +133,8 @@ export const fullGameUnlockEvents: Record<string, GameEvent> = {
                 villageElderDecision: true,
               },
             },
-            _logMessage:
-              "The elder looks at you, understanding the weight of the choice before you, then departs into the gathering dusk.",
+            // _logMessage:
+            //   "The elder looks at you, understanding the weight of the choice before you, then departs into the gathering dusk.",
           };
         },
       },
