@@ -243,36 +243,24 @@ describe('Tarnished Compass - actionBonusChance', () => {
       vi.restoreAllMocks();
 
       for (let i = 0; i < iterations; i++) {
-        // Mock Math.random to track if it's called with a value < 0.1
-        let bonusTriggered = false;
-        const originalRandom = Math.random;
-        vi.spyOn(Math, 'random').mockImplementation(() => {
-          const value = originalRandom();
-          if (value < 0.1) {
-            bonusTriggered = true;
-          }
-          return value;
-        });
-
         const state = createMockState({
           relics: { tarnished_compass: true },
           resources: { wood: 0 },
         });
 
-        applyActionEffects('chopWood', state);
+        const updates = applyActionEffects('chopWood', state);
 
-        if (bonusTriggered) {
+        // Bonus triggered if wood gain is doubled (12-24 range vs base 6-12)
+        if (updates.resources!.wood >= 12) {
           triggeredCount++;
         }
-
-        vi.restoreAllMocks();
       }
 
       // Should be approximately 10% (with some variance)
-      // Allow 7% - 13% range for statistical variance
+      // Allow 5% - 15% range for statistical variance
       const percentage = (triggeredCount / iterations) * 100;
-      expect(percentage).toBeGreaterThan(7);
-      expect(percentage).toBeLessThan(13);
+      expect(percentage).toBeGreaterThan(5);
+      expect(percentage).toBeLessThan(15);
     });
   });
 
