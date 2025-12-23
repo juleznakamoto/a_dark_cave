@@ -12,9 +12,9 @@ export const fullGameUnlockEvents: Record<string, GameEvent> = {
         !state.story.seen.firstElderWarning;
     },
     triggerType: "time",
-    timeProbability: 5,
-    title: "The Elder's Words",
-    message: "An older villager approaches you with a weathered face and knowing eyes. 'You have made your first experiences in this cruel world,' he says quietly. 'At some point, you will have to decide if you want to face what will come.'",
+    timeProbability: 1,
+    title: "The Village Elder",
+    message: "An older villager approaches you, his eyes heavy with knowledge. 'You have taken your first steps in this cruel world,' he says quietly. 'Soon, you will have to decide whether you are willing to face what lies ahead.'",
     triggered: false,
     priority: 5,
     visualEffect: {
@@ -24,8 +24,8 @@ export const fullGameUnlockEvents: Record<string, GameEvent> = {
     repeatable: false,
     choices: [
       {
-        id: "listen",
-        label: "Listen carefully",
+        id: "nod",
+        label: "Nod silently",
         effect: (state: GameState) => {
           return {
             story: {
@@ -52,13 +52,14 @@ export const fullGameUnlockEvents: Record<string, GameEvent> = {
       );
       return state.BTP === 1 &&
         state.buildings.darkEstate >= 1 &&
+        state.story.seen.firstElderWarning &&
         !state.story.seen.villageElderNotice &&
         !hasFullGame;
     },
     triggerType: "time",
-    timeProbability: 5,
+    timeProbability: 1,
     title: "The Elder's Notice",
-    message: "A village elder approaches you. He speaks quietly. 'You stand at the beginning of a long path filled with trials. Soon, you must choose whether you will continue this journey.'",
+    message: "A village elder approaches you. He speaks quietly. 'You stand at the beginning of a long path filled with trials. Very soon, you must choose whether you will continue this journey.'",
     triggered: false,
     priority: 5,
     visualEffect: {
