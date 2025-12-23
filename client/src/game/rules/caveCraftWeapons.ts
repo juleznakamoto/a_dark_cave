@@ -197,7 +197,7 @@ export const caveCraftWeapons: Record<string, Action> = {
     id: "craftNightshadeBow",
     label: "Nightshade Bow",
     show_when: {
-      "buildings.grandBlacksmith": 1,
+      "buildings.advancedBlacksmith": 1,
       "schematics.nightshade_bow_schematic": true,
       "weapons.nightshade_bow": false,
     },
@@ -215,7 +215,7 @@ export const caveCraftWeapons: Record<string, Action> = {
     id: "craftStormglassHalberd",
     label: "Stormglass Halberd",
     show_when: {
-      "buildings.grandBlacksmith": 1,
+      "buildings.advancedBlacksmith": 1,
       "schematics.stormglass_halberd_schematic": true,
       "weapons.stormglass_halberd": false,
     },
@@ -234,7 +234,7 @@ export const caveCraftWeapons: Record<string, Action> = {
     id: "craftFrostglassSword",
     label: "Frostglass Sword",
     show_when: {
-      "buildings.grandBlacksmith": 1,
+      "buildings.advancedBlacksmith": 1,
       "story.seen.wizardFrostglassSword": true,
       "weapons.frostglass_sword": false,
     },

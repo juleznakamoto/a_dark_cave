@@ -354,7 +354,7 @@ export default function FullGamePurchaseDialog({
                 </div>
                 <div className="text-sm text-muted-foreground border-t border-border pt-4">
                   <ul className="space-y-1">
-                    <li>• ~14 hours of gameplay</li>
+                    <li>• 14+ hours of gameplay</li>
                     <li>• 100+ structures</li>
                     <li>
                       • 250+ items, fellowship members, books, blessings...
