@@ -369,7 +369,7 @@ export const forestTradeActions: Record<string, Action> = {
         "resources.torch": 250,
       },
     },
-    cooldown: 90,
+    cooldown: 60,
   },
 
   tradeSilverForGold: {
@@ -410,7 +410,7 @@ export const forestTradeActions: Record<string, Action> = {
         "resources.gold": 50,
       }
     },
-    cooldown: 30,
+    cooldown: 15,
   },
 
   tradeGoldForEmberBomb: {
@@ -432,7 +432,7 @@ export const forestTradeActions: Record<string, Action> = {
         "resources.ember_bomb": 1,
       },
     },
-    cooldown: 30,
+    cooldown: 15,
   },
 
   tradeGoldForAshfireBomb: {
@@ -454,7 +454,7 @@ export const forestTradeActions: Record<string, Action> = {
         "resources.ashfire_bomb": 1,
       },
     },
-    cooldown: 30,
+    cooldown: 15,
   },
   tradeGoldForVoidBomb: {
     id: "tradeGoldForVoidBomb",
@@ -475,7 +475,7 @@ export const forestTradeActions: Record<string, Action> = {
         "resources.void_bomb": 1,
       },
     },
-    cooldown: 30,
+    cooldown: 15,
   },
 };
 

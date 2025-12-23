@@ -697,7 +697,7 @@ const toolTrades = [
     giveItem: "book_of_trials",
     condition: (state: GameState) =>
       state.buildings.darkEstate >= 1 && !state.books.book_of_trials,
-    costs: [{ resource: "gold", amounts: [200] }],
+    costs: [{ resource: "gold", amounts: [150] }],
     message:
       "You purchase the Book of Trials. The merchant smiles knowingly: 'A guide for those who seek to track their journey.'",
   },
@@ -711,7 +711,7 @@ const toolTrades = [
       state.buildings.scriptorium >= 1 &&
       state.buildings.darkEstate >= 1 &&
       !state.books.book_of_war,
-    costs: [{ resource: "gold", amounts: [400] }],
+    costs: [{ resource: "gold", amounts: [300] }],
     message:
       "You purchase the Book of War. The merchant nods gravely: 'Knowledge from a long gone kingdom in the far east. With this, you will better understand the outcomes of your choices.'",
   },
