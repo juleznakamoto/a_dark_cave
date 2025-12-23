@@ -92,15 +92,15 @@ export default function Game() {
         // Mark as initialized
         setIsInitialized(true);
 
-        // Open shop if requested
+        // Start game loop
+        startGameLoop();
+
+        // Open shop if requested (after a delay to ensure game is loaded)
         if (openShop) {
           setTimeout(() => {
             setShopDialogOpen(true);
           }, 500);
         }
-
-        // Start game loop
-        startGameLoop();
       } catch (error) {
         logger.error("[GAME PAGE] Failed to initialize game:", error);
       }
@@ -112,7 +112,7 @@ export default function Game() {
     return () => {
       stopGameLoop();
     };
-  }, [initialize, loadGame]); // Added loadGame to dependency array
+  }, [initialize]); // Remove loadGame from dependency array as it's not a dependency
 
   // Start background music on first user interaction (required by browser autoplay policies)
   useEffect(() => {
