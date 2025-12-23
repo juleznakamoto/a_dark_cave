@@ -169,6 +169,9 @@ export function startGameLoop() {
     const deltaTime = timestamp - lastFrameTime;
     lastFrameTime = timestamp;
 
+    // Get fresh state on each tick to avoid stale dialog states
+    const state = useGameStore.getState();
+
     // Check if game is paused
     const isDialogOpen =
       state.eventDialog.isOpen ||
