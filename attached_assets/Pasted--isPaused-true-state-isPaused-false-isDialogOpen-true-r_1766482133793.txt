@@ -1,0 +1,32 @@
+{isPaused: true, state.isPaused: false, isDialogOpen: true, requiresFullGamePurchase: undefined, state.BTP: 0, …}
+logger.ts:33 v644Z [GAME LOOP] Pause debug: {isPaused: true, state.isPaused: false, isDialogOpen: true, requiresFullGamePurchase: undefined, state.BTP: 0, …}
+logger.ts:33 v644Z [GAME LOOP] Pause debug: {isPaused: true, state.isPaused: false, isDialogOpen: true, requiresFullGamePurchase: undefined, state.BTP: 0, …}
+logger.ts:33 v644Z [GAME LOOP] Pause debug: {isPaused: true, state.isPaused: false, isDialogOpen: true, requiresFullGamePurchase: undefined, state.BTP: 0, …}
+logger.ts:33 v644Z [GAME LOOP] Pause debug: {isPaused: true, state.isPaused: false, isDialogOpen: true, requiresFullGamePurchase: undefined, state.BTP: 0, …}
+logger.ts:33 v644Z [GAME LOOP] Pause debug: {isPaused: true, state.isPaused: false, isDialogOpen: true, requiresFullGamePurchase: undefined, state.BTP: 0, …}
+logger.ts:33 v644Z [GAME LOOP] Pause debug: {isPaused: true, state.isPaused: false, isDialogOpen: true, requiresFullGamePurchase: undefined, state.BTP: 0, …}
+logger.ts:33 v644Z [GAME LOOP] Pause debug: {isPaused: true, state.isPaused: false, isDialogOpen: true, requiresFullGamePurchase: undefined, state.BTP: 0, …}
+logger.ts:33 v644Z [GAME LOOP] Pause debug: {isPaused: true, state.isPaused: false, isDialogOpen: true, requiresFullGamePurchase: undefined, state.BTP: 0, …}
+logger.ts:33 v644Z [FULL GAME] Purchase success - setting state before changes
+logger.ts:33 v644Z [FULL GAME] State before: {BTP: 0, isPaused: false, isPausedPreviously: true, fullGamePurchaseDialogOpen: true}
+logger.ts:33 v644Z [FULL GAME] State updated, BTP=0, isPaused=false
+logger.ts:33 v644Z [FULL GAME] Setting activated purchase: purchase-full_game-f631e2e5-8853-4ae8-93e1-60e1c3e0c7f0
+logger.ts:33 v644Z [FULL GAME] State after: {BTP: 0, isPaused: false, isPausedPreviously: false, fullGamePurchaseDialogOpen: true, activatedPurchases: {…}}
+logger.ts:33 v644Z [FULL GAME] Closing dialog
+logger.ts:33 v644Z [GAME CONTAINER] Full game dialog closed, state: {BTP: 0, isPaused: false, isPausedPreviously: false}
+logger.ts:33 v644Z [GAME LOOP] Pause debug: {isPaused: true, state.isPaused: false, isDialogOpen: true, requiresFullGamePurchase: undefined, state.BTP: 0, …}
+logger.ts:33 v644Z [FULL GAME] Final state after close: {BTP: 0, isPaused: false, isPausedPreviously: true, fullGamePurchaseDialogOpen: false}
+logger.ts:33 v644Z [GAME LOOP] Pause debug: {isPaused: true, state.isPaused: false, isDialogOpen: true, requiresFullGamePurchase: undefined, state.BTP: 0, …}
+logger.ts:33 v644Z [GAME LOOP] Pause debug: {isPaused: true, state.isPaused: false, isDialogOpen: true, requiresFullGamePurchase: undefined, state.BTP: 0, …}
+logger.ts:33 v644Z [GAME LOOP] Pause debug: {isPaused: true, state.isPaused: false, isDialogOpen: true, requiresFullGamePurchase: undefined, state.BTP: 0, …}
+logger.ts:33 v644Z [GAME LOOP] Pause debug: {isPaused: true, state.isPaused: false, isDialogOpen: true, requiresFullGamePurchase: undefined, state.BTP: 0, …}
+logger.ts:33 v644Z [GAME LOOP] Pause debug: {isPaused: true, state.isPaused: false, isDialogOpen: true, requiresFullGamePurchase: undefined, state.BTP: 0, …}
+logger.ts:33 v644Z [GAME LOOP] Pause debug: {isPaused: true, state.isPaused: false, isDialogOpen: true, requiresFullGamePurchase: undefined, state.BTP: 0, …}
+logger.ts:33 v644Z [GAME LOOP] Pause debug: {isPaused: true, state.isPaused: false, isDialogOpen: true, requiresFullGamePurchase: undefined, state.BTP: 0, …}
+logger.ts:33 v644Z [GAME LOOP] Pause debug: {isPaused: true, state.isPaused: false, isDialogOpen: true, requiresFullGamePurchase: undefined, state.BTP: 0, …}
+logger.ts:33 v644Z [GAME LOOP] Pause debug: {isPaused: true, state.isPaused: false, isDialogOpen: true, requiresFullGamePurchase: undefined, state.BTP: 0, …}
+logger.ts:33 v644Z [GAME LOOP] Pause debug: {isPaused: true, state.isPaused: false, isDialogOpen: true, requiresFullGamePurchase: undefined, state.BTP: 0, …}
+logger.ts:33 v644Z [GAME LOOP] Pause debug: {isPaused: true, state.isPaused: false, isDialogOpen: true, requiresFullGamePurchase: undefined, state.BTP: 0, …}
+logger.ts:33 v644Z [GAME LOOP] Pause debug: {isPaused: true, state.isPaused: false, isDialogOpen: true, requiresFullGamePurchase: undefined, state.BTP: 0, …}
+logger.ts:33 v644Z [GAME LOOP] Pause debug: {isPaused: true, state.isPaused: false, isDialogOpen: true, requiresFullGamePurchase: undefined, state.BTP: 0, …}
+logger.ts:33 v644Z [GAME LOOP] Pause debug: {isPaused: true, state.isPaused: false, isDialogOpen: true, requiresFullGamePurchase: undefined, state.BTP: 0, …}
