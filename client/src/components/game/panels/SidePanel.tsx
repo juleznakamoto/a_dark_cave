@@ -736,7 +736,7 @@ export default function SidePanel() {
               title="Resources"
               titleTooltip={
                 showResourceLimit
-                  ? `Max ${resourceLimitText} (silver and gold excluded)`
+                  ? `Max ${resourceLimitText} (no limit for silver and gold)`
                   : undefined
               }
               items={resourceItems}
