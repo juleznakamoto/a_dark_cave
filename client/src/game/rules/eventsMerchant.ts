@@ -610,6 +610,16 @@ const sellTrades = [
 
 const toolTrades = [
   {
+    id: "trade_skull_lantern",
+    label: "Skull Lantern",
+    give: "tool",
+    giveItem: "skull_lantern",
+    condition: (state: GameState) => state.BTP === 1 && state.buildings.stoneHut >= 1,
+    costs: [{ resource: "gold", amounts: [1500] }],
+    message:
+      "You purchase the skull lantern. Forged from cursed bone, its eerie light will guide you through the deepest depths.",
+  },
+  {
     id: "trade_reinforced_rope",
     label: "Reinforced Rope",
     give: "tool",
