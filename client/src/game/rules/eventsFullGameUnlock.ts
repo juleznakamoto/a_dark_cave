@@ -35,8 +35,8 @@ export const fullGameUnlockEvents: Record<string, GameEvent> = {
                 firstElderWarning: true,
               },
             },
-            _logMessage:
-              "You listen to the elder's words. There is a weight to them that settles in your chest. He nods gravely and walks away, leaving you with the echo of his warning.",
+            // _logMessage:
+            //   "You listen to the elder's words. There is a weight to them that settles in your chest. He nods gravely and walks away, leaving you with the echo of his warning.",
           };
         },
       },
