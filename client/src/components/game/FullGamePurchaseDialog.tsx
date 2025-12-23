@@ -267,12 +267,24 @@ export default function FullGamePurchaseDialog({
   };
 
   const handlePurchaseSuccess = async () => {
+    logger.log('[FULL GAME] Purchase success - setting state before changes');
+    
+    const stateBefore = useGameStore.getState();
+    logger.log('[FULL GAME] State before:', {
+      BTP: stateBefore.BTP,
+      isPaused: stateBefore.isPaused,
+      isPausedPreviously: stateBefore.isPausedPreviously,
+      fullGamePurchaseDialogOpen: stateBefore.fullGamePurchaseDialogOpen,
+    });
+
     useGameStore.setState({
       hasMadeNonFreePurchase: true,
       BTP: 0, // Deactivate BTP mode
       isPaused: false, // Explicitly unpause the game
       isPausedPreviously: false, // Clear previous pause state to resume playTime
     });
+
+    logger.log('[FULL GAME] State updated, BTP=0, isPaused=false');
 
     // Mark as activated
     const { getSupabaseClient } = await import("@/lib/supabase");
@@ -291,14 +303,26 @@ export default function FullGamePurchaseDialog({
 
       if (data) {
         const purchaseId = `purchase-full_game-${data.id}`;
+        logger.log('[FULL GAME] Setting activated purchase:', purchaseId);
         useGameStore.setState((state) => ({
           activatedPurchases: {
             ...state.activatedPurchases,
             [purchaseId]: true,
           },
         }));
+      } else {
+        logger.log('[FULL GAME] No purchase data found in database');
       }
     }
+
+    const stateAfter = useGameStore.getState();
+    logger.log('[FULL GAME] State after:', {
+      BTP: stateAfter.BTP,
+      isPaused: stateAfter.isPaused,
+      isPausedPreviously: stateAfter.isPausedPreviously,
+      fullGamePurchaseDialogOpen: stateAfter.fullGamePurchaseDialogOpen,
+      activatedPurchases: stateAfter.activatedPurchases,
+    });
 
     toast({
       title: "Purchase Successful!",
@@ -307,7 +331,19 @@ export default function FullGamePurchaseDialog({
     });
 
     setClientSecret(null);
+    logger.log('[FULL GAME] Closing dialog');
     onClose();
+    
+    // Log state after dialog close
+    setTimeout(() => {
+      const finalState = useGameStore.getState();
+      logger.log('[FULL GAME] Final state after close:', {
+        BTP: finalState.BTP,
+        isPaused: finalState.isPaused,
+        isPausedPreviously: finalState.isPausedPreviously,
+        fullGamePurchaseDialogOpen: finalState.fullGamePurchaseDialogOpen,
+      });
+    }, 100);
   };
 
   const formatPrice = (cents: number) => {

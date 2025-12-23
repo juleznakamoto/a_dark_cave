@@ -188,6 +188,21 @@ export function startGameLoop() {
     const wasPaused = state.isPausedPreviously || state.dialogsOpenPreviously; // Track previous pause state
     const isPaused = state.isPaused || isDialogOpen || requiresFullGamePurchase;
 
+    // Debug logging for pause state
+    if (requiresFullGamePurchase || state.fullGamePurchaseDialogOpen) {
+      logger.log('[GAME LOOP] Pause debug:', {
+        isPaused,
+        'state.isPaused': state.isPaused,
+        isDialogOpen,
+        requiresFullGamePurchase,
+        'state.BTP': state.BTP,
+        'state.fullGamePurchaseDialogOpen': state.fullGamePurchaseDialogOpen,
+        'villageElderDecision': state.story?.seen?.villageElderDecision,
+        'activatedPurchases': state.activatedPurchases,
+        'isPausedPreviously': state.isPausedPreviously,
+      });
+    }
+
     if (isPaused) {
       // Stop all sounds when paused (unless already stopped by mute)
       if (!state.isPausedPreviously && !state.isMuted) {
