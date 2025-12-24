@@ -31,6 +31,7 @@ export default function GameFooter() {
     playTime,
     devMode,
     setFullGamePurchaseDialogOpen,
+    fullGamePurchaseDialogOpen,
     BTP,
   } = useGameStore();
   const mobileTooltip = useMobileTooltip();
