@@ -803,7 +803,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={(open) => { if (!open) return; }}>
+    <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-4xl max-h-[80vh] z-[70]" onPointerDownOutside={(e) => e.preventDefault()} onInteractOutside={(e) => e.preventDefault()}>
         <DialogHeader>
           <DialogTitle>Shop</DialogTitle>
