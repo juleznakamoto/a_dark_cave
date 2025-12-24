@@ -163,32 +163,6 @@ function CheckoutForm({
           useGameStore.setState({ hasMadeNonFreePurchase: true });
         }
 
-        // Auto-activate full_game purchase immediately
-        if (result.itemId === 'full_game') {
-          const user = await getCurrentUser();
-          if (user) {
-            const client = await getSupabaseClient();
-            const { data } = await client
-              .from("purchases")
-              .select("id, item_id")
-              .eq("user_id", user.id)
-              .eq("item_id", "full_game")
-              .order("purchased_at", { ascending: false })
-              .limit(1)
-              .single();
-
-            if (data) {
-              const purchaseId = `purchase-full_game-${data.id}`;
-              useGameStore.setState((state) => ({
-                activatedPurchases: {
-                  ...state.activatedPurchases,
-                  [purchaseId]: true,
-                },
-              }));
-            }
-          }
-        }
-
         onSuccess();
       }
       setIsProcessing(false);
@@ -389,15 +363,8 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
   const handlePurchaseClick = async (itemId: string) => {
     const item = SHOP_ITEMS[itemId];
 
-    logger.log(`[SHOP] ========== PURCHASE CLICK START ==========`);
-    logger.log(`[SHOP] Item: ${itemId}, Price: ${item.price}`);
-    logger.log(`[SHOP] Current clientSecret: ${clientSecret ? 'EXISTS' : 'NULL'}`);
-    logger.log(`[SHOP] Current selectedItem: ${selectedItem || 'NULL'}`);
-    logger.log(`[SHOP] Dialog state - isOpen: ${isOpen}`);
-
     // For free items, handle them directly
     if (item.price === 0) {
-      logger.log(`[SHOP] Processing FREE item: ${itemId}`);
       try {
         const user = await getCurrentUser();
         if (!user) {
@@ -583,12 +550,6 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
 
     // For paid items, create payment intent for embedded checkout
     const user = await getCurrentUser();
-    logger.log(`[SHOP] ========== CREATING PAYMENT INTENT ==========`);
-    logger.log(`[SHOP] Item: ${itemId}`);
-    logger.log(`[SHOP] User ID: ${user?.id}`);
-    logger.log(`[SHOP] User Email: ${user?.email}`);
-    logger.log(`[SHOP] Currency: ${currency}`);
-
     const response = await fetch("/api/payment/create-intent", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -600,27 +561,13 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
       }),
     });
 
-    const result = await response.json();
-    logger.log(`[SHOP] Payment intent response received`);
-    logger.log(`[SHOP] Client secret: ${result.clientSecret ? 'RECEIVED' : 'MISSING'}`);
-    
-    logger.log(`[SHOP] ========== SWITCHING TO PAYMENT VIEW ==========`);
-    logger.log(`[SHOP] Setting clientSecret (will trigger payment form render)`);
-    logger.log(`[SHOP] Setting selectedItem to: ${itemId}`);
-
-    setClientSecret(result.clientSecret);
+    const { clientSecret } = await response.json();
+    setClientSecret(clientSecret);
     setSelectedItem(itemId);
-
-    logger.log(`[SHOP] ========== STATE UPDATE COMPLETE ==========`);
-    logger.log(`[SHOP] Payment form should now be visible`);
   };
 
   const handlePurchaseSuccess = async () => {
     const item = SHOP_ITEMS[selectedItem!];
-
-    logger.log(`[SHOP] ========== PURCHASE SUCCESS ==========`);
-    logger.log(`[SHOP] Item: ${selectedItem}`);
-    logger.log(`[SHOP] Price: ${item.price}`);
 
     // Set hasMadeNonFreePurchase flag if this is a paid item
     if (item.price > 0) {
@@ -722,30 +669,13 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
         : `${item.name} has been added to your purchases. Check the Purchases tab to activate it.`,
     });
 
-    logger.log(`[SHOP] ========== CLEARING PAYMENT STATE ==========`);
-    logger.log(`[SHOP] Clearing clientSecret (will return to shop view)`);
-    logger.log(`[SHOP] Clearing selectedItem`);
     setClientSecret(null);
     setSelectedItem(null);
-    logger.log(`[SHOP] ========== PURCHASE FLOW COMPLETE ==========`);
   };
 
   const handleActivatePurchase = (purchaseId: string, itemId: string) => {
     const item = SHOP_ITEMS[itemId];
     if (!item) return;
-
-    // Handle Full Game - it's always activated once purchased, no toggle
-    if (itemId === "full_game") {
-      // Full game is auto-activated and cannot be deactivated
-      gameState.addLogEntry({
-        id: `full-game-active-${Date.now()}`,
-        message: "Full Game is already active! You are playing without restrictions.",
-        timestamp: Date.now(),
-        type: "system",
-      });
-
-      return;
-    }
 
     // Handle Cruel Mode activation/deactivation
     if (itemId === "cruel_mode") {
@@ -840,12 +770,6 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
       });
     }
 
-    if (item.rewards.relics) {
-      item.rewards.relics.forEach((relic) => {
-        gameState.relics[relic as keyof typeof gameState.relics] = true;
-      });
-    }
-
     gameState.addLogEntry({
       id: `activate-${Date.now()}`,
       message:
@@ -870,40 +794,28 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     return currency === "EUR" ? `${amount} €` : `$${amount}`;
   };
 
-  // Log when dialog state changes
-  logger.log(`[SHOP] ========== DIALOG RENDER ==========`);
-  logger.log(`[SHOP] Shop dialog isOpen: ${isOpen && !clientSecret}`);
-  logger.log(`[SHOP] Payment dialog isOpen: ${!!clientSecret}`);
-  logger.log(`[SHOP] isLoading: ${isLoading}`);
-  logger.log(`[SHOP] clientSecret: ${clientSecret ? 'EXISTS' : 'NULL'}`);
-  logger.log(`[SHOP] selectedItem: ${selectedItem || 'NULL'}`);
-  logger.log(`[SHOP] currentUser: ${currentUser ? currentUser.id : 'NULL'}`);
-  logger.log(`[SHOP] =====================================`);
-
   return (
-    <>
-      {/* Shop Dialog - closes when payment dialog opens */}
-      <Dialog open={isOpen && !clientSecret} onOpenChange={onClose}>
-        <DialogContent className="max-w-4xl max-h-[80vh] z-[70]">
-          <DialogHeader>
-            <DialogTitle>Shop</DialogTitle>
-          </DialogHeader>
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="max-w-4xl max-h-[80vh] z-[70]">
+        <DialogHeader>
+          <DialogTitle>Shop</DialogTitle>
+        </DialogHeader>
 
-          {isLoading && (
-            <div className="flex justify-center py-8">
-              <div className="text-muted-foreground">Loading...</div>
-            </div>
-          )}
+        {isLoading && (
+          <div className="flex justify-center py-8">
+            <div className="text-muted-foreground">Loading...</div>
+          </div>
+        )}
 
-          {!isLoading && !currentUser && (
-            <div className="bg-red-600/5 border border-red-600/50 rounded-lg p-3 text-center mb-4">
-              <p className="text-md font-medium text-red-600">
-                Sign in or create an account to purchase items.
-              </p>
-            </div>
-          )}
+        {!isLoading && !currentUser && (
+          <div className="bg-red-600/5 border border-red-600/50 rounded-lg p-3 text-center">
+            <p className="text-md font-medium text-red-600">
+              Sign in or create an account to purchase items.
+            </p>
+          </div>
+        )}
 
-          {!isLoading && (
+        {!isLoading && !clientSecret ? (
           <Tabs defaultValue="shop" className="w-full">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="shop">For Sale</TabsTrigger>
@@ -926,23 +838,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                   </p>
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                  {Object.values(SHOP_ITEMS).filter((item) => {
-                    const isBTPActive = gameState.BTP === 1;
-                    if (isBTPActive) {
-                      // In BTP mode, only show full_game initially
-                      // Show cruel_mode only after winning at least one game
-                      if (item.id === "full_game") {
-                        return true;
-                      }
-                      if (item.id === "cruel_mode") {
-                        return gameState.hasWonAnyGame === true;
-                      }
-                      return false;
-                    } else {
-                      // In normal mode, hide full_game
-                      return item.id !== "full_game";
-                    }
-                  }).map((item) => (
+                  {Object.values(SHOP_ITEMS).map((item) => (
                     <Card key={item.id} className="flex flex-col">
                       <CardHeader className="leading-snug p-3 md:p-6 pb-2 md:pb-3 relative">
                         {item.symbol && (
@@ -1271,7 +1167,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
 
                           const isActivated =
                             activatedPurchases[purchaseId] || false;
-                          const isToggleable = itemId === "cruel_mode" || itemId === "full_game";
+                          const isCruelModeItem = itemId === "cruel_mode";
 
                           return (
                             <div
@@ -1281,14 +1177,9 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                               <div className="flex flex-col">
                                 <span className="text-sm font-medium">
                                   {item.name}
-                                  {isToggleable && itemId !== "full_game" && (
+                                  {isCruelModeItem && (
                                     <span className="text-md  font-medium ml-2">
                                       (to play activate and start a new game)
-                                    </span>
-                                  )}
-                                  {itemId === "full_game" && (
-                                    <span className="text-md font-medium ml-2">
-                                      (active immediately, no restart needed)
                                     </span>
                                   )}
                                 </span>
@@ -1300,20 +1191,18 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                                 onClick={() =>
                                   handleActivatePurchase(purchaseId, itemId)
                                 }
-                                disabled={itemId === "full_game" || (!isToggleable && isActivated)}
+                                disabled={!isCruelModeItem && isActivated}
                                 size="sm"
                                 variant={isActivated ? "outline" : "default"}
                                 button_id={`shop-activate-${itemId}`}
                               >
-                                {itemId === "full_game"
-                                  ? "Active"
-                                  : isToggleable
-                                    ? isActivated
-                                      ? "Deactivate"
-                                      : "Activate"
-                                    : isActivated
-                                      ? "Activated"
-                                      : "Activate"}
+                                {isCruelModeItem
+                                  ? isActivated
+                                    ? "Deactivate"
+                                    : "Activate"
+                                  : isActivated
+                                    ? "Activated"
+                                    : "Activate"}
                               </Button>
                             </div>
                           );
@@ -1325,61 +1214,29 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
               </ScrollArea>
             </TabsContent>
           </Tabs>
-          )}
-        </DialogContent>
-      </Dialog>
-
-      {/* Payment Dialog - separate dialog that opens when clientSecret exists */}
-      <Dialog open={!!clientSecret} onOpenChange={(open) => {
-        logger.log(`[SHOP] ========== PAYMENT DIALOG CLOSE REQUESTED ==========`);
-        logger.log(`[SHOP] Open state: ${open}`);
-        if (!open) {
-          logger.log(`[SHOP] Clearing clientSecret (will close payment dialog)`);
-          logger.log(`[SHOP] Clearing selectedItem`);
-          setClientSecret(null);
-          setSelectedItem(null);
-          logger.log(`[SHOP] ========== PAYMENT DIALOG CLOSED ==========`);
-        }
-      }}>
-        <DialogContent className="max-w-md max-h-[80vh] z-[80]">
-          <DialogHeader>
-            <DialogTitle>
-              Complete Purchase: {SHOP_ITEMS[selectedItem!]?.name}
-            </DialogTitle>
-          </DialogHeader>
-
-          <div className="max-h-[calc(80vh-80px)] overflow-y-auto">
-            {(() => {
-              logger.log(`[SHOP] ========== RENDERING PAYMENT FORM ==========`);
-              logger.log(`[SHOP] Selected item: ${selectedItem}`);
-              logger.log(`[SHOP] Item name: ${SHOP_ITEMS[selectedItem!]?.name}`);
-              return null;
-            })()}
-            <div className="mt-0 pr-4">
-              <div className="text-sm text-muted-foreground mb-4">
+        ) : clientSecret ? (
+          <ScrollArea className="max-h-[calc(80vh-80px)]">
+            <div className="mt-0">
+              <h3 className="text-lg font-semibold mb-4">
+                Complete Purchase: {SHOP_ITEMS[selectedItem!]?.name} (
                 {SHOP_ITEMS[selectedItem!]?.price
                   ? formatPrice(SHOP_ITEMS[selectedItem!].price)
                   : ""}
-              </div>
-              <Elements stripe={stripePromise} options={{ clientSecret: clientSecret! }}>
+                )
+              </h3>
+              <Elements stripe={stripePromise} options={{ clientSecret }}>
                 <CheckoutForm
                   itemId={selectedItem!}
                   onSuccess={handlePurchaseSuccess}
                   currency={currency}
-                  onCancel={() => {
-                    logger.log(`[SHOP] ========== PAYMENT CANCELED ==========`);
-                    logger.log(`[SHOP] Clearing clientSecret (will close payment dialog)`);
-                    logger.log(`[SHOP] Clearing selectedItem`);
-                    setClientSecret(null);
-                    setSelectedItem(null);
-                    logger.log(`[SHOP] ========== PAYMENT DIALOG CLOSED ==========`);
-                  }}
+                  onCancel={() => setClientSecret(null)}
                 />
               </Elements>
             </div>
-          </div>
-        </DialogContent>
-      </Dialog>
-    </>
+            <ScrollBar orientation="vertical" />
+          </ScrollArea>
+        ) : null}
+      </DialogContent>
+    </Dialog>
   );
 }
