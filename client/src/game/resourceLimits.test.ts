@@ -126,9 +126,9 @@ describe('Resource Limits - Core Functionality', () => {
       expect(getStorageLimitText(state)).toBe('10,000');
     });
 
-    it('should return "Unlimited" when feature flag is disabled', () => {
-      state.flags.resourceLimitsEnabled = false;
-      expect(getStorageLimitText(state)).toBe('Unlimited');
+    it('should return formatted number for storage level 6', () => {
+      state.buildings.greatVault = 1;
+      expect(getStorageLimitText(state)).toBe('100,000');
     });
   });
 
