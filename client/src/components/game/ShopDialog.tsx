@@ -582,7 +582,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
       return;
     }
 
-    // For paid items, create payment intent and close shop dialog
+    // For paid items, create payment intent for embedded checkout
     const user = await getCurrentUser();
     const response = await fetch("/api/payment/create-intent", {
       method: "POST",
@@ -598,7 +598,6 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     const { clientSecret } = await response.json();
     setClientSecret(clientSecret);
     setSelectedItem(itemId);
-    onClose();
   };
 
   const handlePurchaseSuccess = async () => {
