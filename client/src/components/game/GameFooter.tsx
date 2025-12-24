@@ -86,15 +86,6 @@ export default function GameFooter() {
             {devMode && (
               <>
                 <div className="px-2 py-1 text-xs font-mono">{displayTime}</div>
-                <Button
-                  variant="ghost"
-                  size="xs"
-                  onClick={() => setFullGamePurchaseDialogOpen(true)}
-                  className="px-1 py-1 text-xs hover"
-                  title="Open Full Game Purchase Dialog"
-                >
-                  FG
-                </Button>
               </>
             )}
             <Button
