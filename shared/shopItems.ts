@@ -49,7 +49,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     canPurchaseMultipleTimes: false,
     category: "blessing",
     activationMessage:
-      "You unlocked the full game. The journey continues.",
+      "Full Game unlocked and activated! The journey continues without restrictions.",
     symbol: "◆",
     symbolColor: "text-emerald-600",
   },

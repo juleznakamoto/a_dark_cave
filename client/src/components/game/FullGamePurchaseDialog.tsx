@@ -303,7 +303,7 @@ export default function FullGamePurchaseDialog({
 
       if (data) {
         const purchaseId = `purchase-full_game-${data.id}`;
-        logger.log('[FULL GAME] Setting activated purchase:', purchaseId);
+        logger.log('[FULL GAME] Auto-activating purchase:', purchaseId);
         useGameStore.setState((state) => ({
           activatedPurchases: {
             ...state.activatedPurchases,
@@ -327,7 +327,7 @@ export default function FullGamePurchaseDialog({
     toast({
       title: "Purchase Successful!",
       description:
-        "Full Game unlocked! You can now continue your journey without restrictions.",
+        "Full Game unlocked and activated! You can now continue your journey without restrictions.",
     });
 
     setClientSecret(null);

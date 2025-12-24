@@ -163,6 +163,32 @@ function CheckoutForm({
           useGameStore.setState({ hasMadeNonFreePurchase: true });
         }
 
+        // Auto-activate full_game purchase immediately
+        if (result.itemId === 'full_game') {
+          const user = await getCurrentUser();
+          if (user) {
+            const client = await getSupabaseClient();
+            const { data } = await client
+              .from("purchases")
+              .select("id, item_id")
+              .eq("user_id", user.id)
+              .eq("item_id", "full_game")
+              .order("purchased_at", { ascending: false })
+              .limit(1)
+              .single();
+
+            if (data) {
+              const purchaseId = `purchase-full_game-${data.id}`;
+              useGameStore.setState((state) => ({
+                activatedPurchases: {
+                  ...state.activatedPurchases,
+                  [purchaseId]: true,
+                },
+              }));
+            }
+          }
+        }
+
         onSuccess();
       }
       setIsProcessing(false);
@@ -677,24 +703,12 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     const item = SHOP_ITEMS[itemId];
     if (!item) return;
 
-    // Handle Full Game activation/deactivation
+    // Handle Full Game - it's always activated once purchased, no toggle
     if (itemId === "full_game") {
-      const isCurrentlyActivated = activatedPurchases[purchaseId] || false;
-
-      // Toggle activation state
-      useGameStore.setState((state) => ({
-        activatedPurchases: {
-          ...state.activatedPurchases,
-          [purchaseId]: !isCurrentlyActivated,
-        },
-      }));
-
+      // Full game is auto-activated and cannot be deactivated
       gameState.addLogEntry({
-        id: `toggle-full-game-${Date.now()}`,
-        message: isCurrentlyActivated
-          ? "Full Game mode deactivated. New games will use normal mode."
-          : item.activationMessage ||
-            "Full Game activated! Start a new game to play without microtransactions.",
+        id: `full-game-active-${Date.now()}`,
+        message: "Full Game is already active! You are playing without restrictions.",
         timestamp: Date.now(),
         type: "system",
       });
@@ -1224,9 +1238,14 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                               <div className="flex flex-col">
                                 <span className="text-sm font-medium">
                                   {item.name}
-                                  {isToggleable && (
+                                  {isToggleable && itemId !== "full_game" && (
                                     <span className="text-md  font-medium ml-2">
                                       (to play activate and start a new game)
+                                    </span>
+                                  )}
+                                  {itemId === "full_game" && (
+                                    <span className="text-md font-medium ml-2">
+                                      (active immediately, no restart needed)
                                     </span>
                                   )}
                                 </span>
@@ -1238,18 +1257,20 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                                 onClick={() =>
                                   handleActivatePurchase(purchaseId, itemId)
                                 }
-                                disabled={!isToggleable && isActivated}
+                                disabled={itemId === "full_game" || (!isToggleable && isActivated)}
                                 size="sm"
                                 variant={isActivated ? "outline" : "default"}
                                 button_id={`shop-activate-${itemId}`}
                               >
-                                {isToggleable
-                                  ? isActivated
-                                    ? "Deactivate"
-                                    : "Activate"
-                                  : isActivated
-                                    ? "Activated"
-                                    : "Activate"}
+                                {itemId === "full_game"
+                                  ? "Active"
+                                  : isToggleable
+                                    ? isActivated
+                                      ? "Deactivate"
+                                      : "Activate"
+                                    : isActivated
+                                      ? "Activated"
+                                      : "Activate"}
                               </Button>
                             </div>
                           );
