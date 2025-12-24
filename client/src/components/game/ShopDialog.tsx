@@ -592,11 +592,11 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
       }),
     });
 
-    const { clientSecret } = await response.json();
+    const result = await response.json();
     logger.log(`[SHOP] Payment intent created, showing payment form in shop dialog`);
     logger.log(`[SHOP] About to set clientSecret and selectedItem`);
     
-    setClientSecret(clientSecret);
+    setClientSecret(result.clientSecret);
     setSelectedItem(itemId);
     
     logger.log(`[SHOP] State updated - clientSecret set, selectedItem: ${itemId}`);
