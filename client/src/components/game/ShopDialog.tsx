@@ -389,6 +389,13 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
   const handlePurchaseClick = async (itemId: string) => {
     const item = SHOP_ITEMS[itemId];
 
+    // For full_game, close this dialog and open the dedicated FullGamePurchaseDialog
+    if (itemId === 'full_game') {
+      onClose();
+      useGameStore.setState({ fullGamePurchaseDialogOpen: true });
+      return;
+    }
+
     // For free items, handle them directly
     if (item.price === 0) {
       try {
