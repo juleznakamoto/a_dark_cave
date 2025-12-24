@@ -43,7 +43,7 @@ export const shopItemEvents: Record<string, GameEvent> = {
       state.tools.skull_lantern &&
       state.story.seen.descendedFurther &&
       !state.story.seen.undergroundLakeDiscovered,
-    triggerType: "resource",
+    
     timeProbability: 3,
     title: "The Underground Lake",
     message:
