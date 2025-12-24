@@ -3,17 +3,15 @@ import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 
 export const shopItemEvents: Record<string, GameEvent> = {
-  compassActivation: {
-    id: "compassActivation",
+    compassTreasure: {
+    id: "compassTreasure",
     condition: (state: GameState) =>
       state.relics.tarnished_compass &&
-      !state.story.seen.compassActivated,
-    triggerType: "resource",
+      !state.story.seen.compassTreasureFound,
     timeProbability: 10,
     title: "The Stirring Needle",
     message:
       "You wake in the night to a strange sound. The tarnished compass needle spins wildly in the darkness. When you grasp it, the needle stops, pointing firmly in one direction.",
-    triggered: false,
     priority: 4,
     repeatable: false,
     choices: [
@@ -22,15 +20,56 @@ export const shopItemEvents: Record<string, GameEvent> = {
         label: "Follow compass",
         effect: (state: GameState) => {
           return {
+            relics: {
+              ...state.relics,
+              sealed_chest: true,
+            },
             story: {
               ...state.story,
               seen: {
                 ...state.story.seen,
-                compassActivated: true,
+                  compassTreasureFound: true,
               },
             },
             _logMessage:
-              "You follow the compass deep into the woods, where you unearth a small chest of extraordinary sturdiness. Unable to open it, you carry it back with you.",
+              "You follow the compass deap into the woods, where ou unearth a small chest extraordinarily sturdy construction. You cannot open it, so you cary it back with you.",
+          };
+        },
+      },
+    ],
+  },
+
+  compassTreasure: {
+    id: "compassTreasure",
+    condition: (state: GameState) =>
+      state.story.seen.compassActivated &&
+      !state.story.seen.compassTreasureFound,
+    timeProbability: 1,
+    title: "The Buried Chest",
+    message:
+      "The compass leads you deep into the woods to an unremarkable patch of earth. Following its insistent pull, you dig. Your shovel strikes metal - a small chest of extraordinarily sturdy construction. No matter how you try, you cannot open it.",
+    triggered: false,
+    priority: 4,
+    repeatable: false,
+    choices: [
+      {
+        id: "takeChest",
+        label: "Take the chest",
+        effect: (state: GameState) => {
+          return {
+            relics: {
+              ...state.relics,
+              sealed_chest: true,
+            },
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                compassTreasureFound: true,
+              },
+            },
+            _logMessage:
+              "You carry the sealed chest back to the village. Whatever secrets lie within remain locked away.",
           };
         },
       },
@@ -77,7 +116,6 @@ export const shopItemEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.story.seen.undergroundLakeExplored &&
       !state.story.seen.undergroundLakeCreatureDiscovered,
-    triggerType: "resource",
     timeProbability: 4,
     title: "Something Beneath",
     message:
@@ -110,7 +148,6 @@ export const shopItemEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.story.seen.lakeCreatureLured &&
       !state.story.seen.lakeCreatureFateDecided,
-    triggerType: "resource",
     timeProbability: 1,
     title: "The Creature's Fate",
     message:
