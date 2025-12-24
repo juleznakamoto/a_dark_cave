@@ -220,7 +220,7 @@ function CheckoutForm({
         <Button
           type="submit"
           disabled={!stripe || isProcessing}
-          className="w-auto px-6"
+          className="flex-1"
           button_id="shop-complete-purchase"
         >
           {isProcessing
@@ -230,7 +230,7 @@ function CheckoutForm({
         <Button
           variant="outline"
           onClick={onCancel}
-          className="w-auto px-6"
+          className="flex-1"
           button_id="shop-cancel-payment"
           type="button"
         >
