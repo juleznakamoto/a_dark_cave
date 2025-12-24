@@ -1,0 +1,160 @@
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  client/src/game/loop.resourceLimits.test.ts > Game Loop - Resource Limits Integration > Feature Flag Persistence > should maintain unlimited resources for games without flag
+AssertionError: expected 1000 to be 100000 // Object.is equality
+
+- Expected
++ Received
+
+- 100000
++ 1000
+
+ ❯ client/src/game/loop.resourceLimits.test.ts:386:54
+    384| 
+    385|       store.updateResource('wood', 50000);
+    386|       expect(useGameStore.getState().resources.wood).toBe(100000);
+       |                                                      ^
+    387|     });
+    388| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Core Functionality > getResourceLimit > should return Infinity when feature flag is disabled
+AssertionError: expected 10000 to be Infinity // Object.is equality
+
+- Expected
++ Received
+
+- Infinity
++ 10000
+
+ ❯ client/src/game/resourceLimits.test.ts:60:39
+     58|       state.flags.resourceLimitsEnabled = false;
+     59|       state.buildings.fortifiedStorehouse = 1;
+     60|       expect(getResourceLimit(state)).toBe(Infinity);
+       |                                       ^
+     61|     });
+     62| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/8]⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Core Functionality > isResourceLimited > should return false when feature flag is disabled
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ client/src/game/resourceLimits.test.ts:97:48
+     95|     it('should return false when feature flag is disabled', () => {
+     96|       state.flags.resourceLimitsEnabled = false;
+     97|       expect(isResourceLimited('wood', state)).toBe(false);
+       |                                                ^
+     98|       expect(isResourceLimited('stone', state)).toBe(false);
+     99|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/8]⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Core Functionality > capResourceToLimit > should not cap when feature flag is disabled
+AssertionError: expected 1000 to be 50000 // Object.is equality
+
+- Expected
++ Received
+
+- 50000
++ 1000
+
+ ❯ client/src/game/resourceLimits.test.ts:122:56
+    120|       state.flags.resourceLimitsEnabled = false;
+    121|       state.buildings.supplyHut = 1;
+    122|       expect(capResourceToLimit('wood', 50000, state)).toBe(50000);
+       |                                                        ^
+    123|     });
+    124| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/8]⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Core Functionality > getStorageLimitText > should return "Unlimited" when feature flag is disabled
+AssertionError: expected '500' to be 'Unlimited' // Object.is equality
+
+Expected: "Unlimited"
+Received: "500"
+
+ ❯ client/src/game/resourceLimits.test.ts:149:42
+    147|     it('should return "Unlimited" when feature flag is disabled', () =>…
+    148|       state.flags.resourceLimitsEnabled = false;
+    149|       expect(getStorageLimitText(state)).toBe('Unlimited');
+       |                                          ^
+    150|     });
+    151|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/8]⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Feature Flag Behavior > should disable limits for old games without flag
+AssertionError: expected 500 to be Infinity // Object.is equality
+
+- Expected
++ Received
+
+- Infinity
++ 500
+
+ ❯ client/src/game/resourceLimits.test.ts:488:42
+    486|       oldState.flags.resourceLimitsEnabled = false;
+    487| 
+    488|       expect(getResourceLimit(oldState)).toBe(Infinity);
+       |                                          ^
+    489|       expect(isResourceLimited('wood', oldState)).toBe(false);
+    490|     });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/8]⎯
+
+ FAIL  client/src/game/resourceLimits.test.ts > Resource Limits - Integration with Game Components > Feature Flag Behavior > should allow unlimited accumulation when flag is off
+AssertionError: expected 1000 to be 100000 // Object.is equality
+
+- Expected
++ Received
+
+- 100000
++ 1000
+
+ ❯ client/src/game/resourceLimits.test.ts:496:39
+    494|       state.resources.wood = 50000;
+    495|       const updates = updateResource(state, 'wood', 50000);
+    496|       expect(updates.resources?.wood).toBe(100000);
+       |                                       ^
+    497|     });
+    498|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/8]⎯
+
+ FAIL  client/src/game/state.resourceLimits.test.ts > State - Resource Limits Integration > Feature flag disabled scenarios > should allow unlimited resources when flag is disabled
+AssertionError: expected 1000 to be 150000 // Object.is equality
+
+- Expected
++ Received
+
+- 150000
++ 1000
+
+ ❯ client/src/game/state.resourceLimits.test.ts:281:54
+    279|       // Should not be capped
+    280|       store.updateResource('wood', 150000);
+    281|       expect(useGameStore.getState().resources.wood).toBe(150000);
+       |                                                      ^
+    282|     });
+    283|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/8]⎯
+
+
+ Test Files  3 failed | 21 passed (24)
+      Tests  8 failed | 393 passed (401)
+   Start at  08:19:17
+   Duration  6.85s (transform 2.46s, setup 0ms, import 5.41s, tests 3.12s, environment 5ms)
+
+ FAIL  Tests failed. Watching for file changes...
+       press h to show help, press q to quit
