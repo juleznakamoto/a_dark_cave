@@ -244,9 +244,10 @@ function CheckoutForm({
 interface ShopDialogProps {
   isOpen: boolean;
   onClose: () => void;
+  onOpen: () => void;
 }
 
-export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
+export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [purchasedItems, setPurchasedItems] = useState<string[]>([]);
@@ -570,8 +571,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
   const handleCancelPayment = () => {
     setClientSecret(null);
     setSelectedItem(null);
-    // Reopen the shop dialog
-    // Note: we don't call onClose() here, the dialog will reopen naturally
+    onOpen(); // Explicitly reopen the shop dialog
   };
 
   const handlePurchaseSuccess = async () => {
@@ -1227,8 +1227,8 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
 
       {/* Payment Dialog - only shown when payment is in progress */}
       {clientSecret && selectedItem && (
-        <Dialog open={true} onOpenChange={(open) => { if (!open) return; }}>
-          <DialogContent className="max-w-md max-h-[80vh] z-[80]" onPointerDownOutside={(e) => e.preventDefault()} onInteractOutside={(e) => e.preventDefault()}>
+        <Dialog open={true} onOpenChange={(open) => { if (!open) handleCancelPayment(); }}>
+          <DialogContent className="max-w-md max-h-[80vh] z-[80]">
             <DialogHeader>
               <DialogTitle>
                 Complete Purchase: {SHOP_ITEMS[selectedItem]?.name}
