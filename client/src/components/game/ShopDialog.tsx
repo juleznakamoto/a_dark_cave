@@ -864,49 +864,49 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
           </div>
         )}
 
-        {!isLoading && !currentUser && (
-          <div className="bg-red-600/5 border border-red-600/50 rounded-lg p-3 text-center">
-            <p className="text-md font-medium text-red-600">
-              Sign in or create an account to purchase items.
-            </p>
-          </div>
-        )}
+        {!isLoading && (
+          <>
+            {!currentUser && !clientSecret && (
+              <div className="bg-red-600/5 border border-red-600/50 rounded-lg p-3 text-center mb-4">
+                <p className="text-md font-medium text-red-600">
+                  Sign in or create an account to purchase items.
+                </p>
+              </div>
+            )}
 
-        {!isLoading && clientSecret && (
-          <ScrollArea className="max-h-[calc(80vh-80px)]">
-            {logger.log(`[SHOP] Rendering payment form for ${selectedItem}`) && null}
-            <div className="mt-0">
-              <h3 className="text-lg font-semibold mb-4">
-                Complete Purchase: {SHOP_ITEMS[selectedItem!]?.name} (
-                {SHOP_ITEMS[selectedItem!]?.price
-                  ? formatPrice(SHOP_ITEMS[selectedItem!].price)
-                  : ""}
-                )
-              </h3>
-              <Elements stripe={stripePromise} options={{ clientSecret }}>
-                <CheckoutForm
-                  itemId={selectedItem!}
-                  onSuccess={handlePurchaseSuccess}
-                  currency={currency}
-                  onCancel={() => {
-                    logger.log(`[SHOP] Payment canceled, returning to shop`);
-                    setClientSecret(null);
-                  }}
-                />
-              </Elements>
-            </div>
-            <ScrollBar orientation="vertical" />
-          </ScrollArea>
-        )}
-
-        {!isLoading && !clientSecret && (
-          <Tabs defaultValue="shop" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="shop">For Sale</TabsTrigger>
-              <TabsTrigger value="purchases" disabled={!currentUser}>
-                Purchases
-              </TabsTrigger>
-            </TabsList>
+            {clientSecret ? (
+              <ScrollArea className="max-h-[calc(80vh-80px)]">
+                {logger.log(`[SHOP] Rendering payment form for ${selectedItem}`) && null}
+                <div className="mt-0">
+                  <h3 className="text-lg font-semibold mb-4">
+                    Complete Purchase: {SHOP_ITEMS[selectedItem!]?.name} (
+                    {SHOP_ITEMS[selectedItem!]?.price
+                      ? formatPrice(SHOP_ITEMS[selectedItem!].price)
+                      : ""}
+                    )
+                  </h3>
+                  <Elements stripe={stripePromise} options={{ clientSecret }}>
+                    <CheckoutForm
+                      itemId={selectedItem!}
+                      onSuccess={handlePurchaseSuccess}
+                      currency={currency}
+                      onCancel={() => {
+                        logger.log(`[SHOP] Payment canceled, returning to shop`);
+                        setClientSecret(null);
+                      }}
+                    />
+                  </Elements>
+                </div>
+                <ScrollBar orientation="vertical" />
+              </ScrollArea>
+            ) : (
+              <Tabs defaultValue="shop" className="w-full">
+                <TabsList className="grid w-full grid-cols-2">
+                  <TabsTrigger value="shop">For Sale</TabsTrigger>
+                  <TabsTrigger value="purchases" disabled={!currentUser}>
+                    Purchases
+                  </TabsTrigger>
+                </TabsList>
 
             <TabsContent value="shop" className="mt-4">
               <ScrollArea
@@ -1321,6 +1321,8 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
               </ScrollArea>
             </TabsContent>
           </Tabs>
+            )}
+          </>
         )}
       </DialogContent>
     </Dialog>
