@@ -610,14 +610,29 @@ const sellTrades = [
 
 const toolTrades = [
   {
-    id: "trade_skull_lantern",
-    label: "Skull Lantern",
-    give: "tool",
-    giveItem: "skull_lantern",
-    condition: (state: GameState) => state.BTP === 1 && state.buildings.stoneHut >= 1,
-    costs: [{ resource: "gold", amounts: [1500] }],
+    id: "trade_book_of_trials",
+    label: "Book of Trials",
+    give: "book",
+    giveItem: "book_of_trials",
+    condition: (state: GameState) =>
+      state.buildings.darkEstate >= 1 && !state.books.book_of_trials,
+    costs: [{ resource: "gold", amounts: [100] }],
     message:
-      "You purchase the skull lantern. Forged from cursed bone, its eerie light will guide you through the deepest depths.",
+      "You purchase the Book of Trials. The merchant smiles knowingly: 'A guide for those who seek to track their journey.'",
+  },
+  {
+    id: "trade_book_of_war",
+    label: "Book of War",
+    give: "book",
+    giveItem: "book_of_war",
+    condition: (state: GameState) =>
+      state.story.seen.firstWolfAttack &&
+      state.buildings.scriptorium >= 1 &&
+      state.buildings.darkEstate >= 1 &&
+      !state.books.book_of_war,
+    costs: [{ resource: "gold", amounts: [300] }],
+    message:
+      "You purchase the Book of War. The merchant nods gravely: 'Knowledge from a long gone kingdom in the far east. With this, you will better understand the outcomes of your choices.'",
   },
   {
     id: "trade_reinforced_rope",
@@ -665,7 +680,7 @@ const toolTrades = [
     give: "weapon",
     giveItem: "compound_bow",
     condition: (state: GameState) => state.buildings.stoneHut >= 2,
-    costs: [{ resource: "gold", amounts: [1500] }],
+    costs: [{ resource: "gold", amounts: [1000] }],
     message:
       "You purchase the compound bow. The merchant nods approvingly: 'High precision weapon from the vanished civilization. It will serve you well.'",
   },
@@ -701,29 +716,15 @@ const toolTrades = [
       "You purchase the nightshade bow schematic. The merchant grins darkly: 'This bow's design is cruel. Its arrows will poison your enemies.'",
   },
   {
-    id: "trade_book_of_trials",
-    label: "Book of Trials",
-    give: "book",
-    giveItem: "book_of_trials",
+    id: "trade_skull_lantern",
+    label: "Skull Lantern",
+    give: "tool",
+    giveItem: "skull_lantern",
     condition: (state: GameState) =>
-      state.buildings.darkEstate >= 1 && !state.books.book_of_trials,
-    costs: [{ resource: "gold", amounts: [100] }],
+      state.BTP === 1 && state.buildings.stoneHut >= 1,
+    costs: [{ resource: "gold", amounts: [1500] }],
     message:
-      "You purchase the Book of Trials. The merchant smiles knowingly: 'A guide for those who seek to track their journey.'",
-  },
-  {
-    id: "trade_book_of_war",
-    label: "Book of War",
-    give: "book",
-    giveItem: "book_of_war",
-    condition: (state: GameState) =>
-      state.story.seen.firstWolfAttack &&
-      state.buildings.scriptorium >= 1 &&
-      state.buildings.darkEstate >= 1 &&
-      !state.books.book_of_war,
-    costs: [{ resource: "gold", amounts: [300] }],
-    message:
-      "You purchase the Book of War. The merchant nods gravely: 'Knowledge from a long gone kingdom in the far east. With this, you will better understand the outcomes of your choices.'",
+      "You purchase the skull lantern. Forged from cursed bone, its eerie light will guide you through the deepest depths.",
   },
 ];
 
