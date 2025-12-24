@@ -875,9 +875,9 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
         )}
 
         {!isLoading && clientSecret && (
-          <ScrollArea className="max-h-[calc(80vh-80px)]">
+          <div className="max-h-[calc(80vh-80px)] overflow-y-auto">
             {logger.log(`[SHOP] Rendering payment form for ${selectedItem}`) && null}
-            <div className="mt-0">
+            <div className="mt-0 pr-4">
               <div className="text-sm text-muted-foreground mb-4">
                 {SHOP_ITEMS[selectedItem!]?.price
                   ? formatPrice(SHOP_ITEMS[selectedItem!].price)
@@ -895,8 +895,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                 />
               </Elements>
             </div>
-            <ScrollBar orientation="vertical" />
-          </ScrollArea>
+          </div>
         )}
 
         {!isLoading && !clientSecret && (
