@@ -567,6 +567,13 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     onClose(); // Close shop dialog when payment starts
   };
 
+  const handleCancelPayment = () => {
+    setClientSecret(null);
+    setSelectedItem(null);
+    // Reopen the shop dialog
+    // Note: we don't call onClose() here, the dialog will reopen naturally
+  };
+
   const handlePurchaseSuccess = async () => {
     const item = SHOP_ITEMS[selectedItem!];
 
@@ -796,8 +803,8 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[80vh] z-[70]">
+    <Dialog open={isOpen} onOpenChange={(open) => { if (!open) return; }}>
+      <DialogContent className="max-w-4xl max-h-[80vh] z-[70]" onPointerDownOutside={(e) => e.preventDefault()} onInteractOutside={(e) => e.preventDefault()}>
         <DialogHeader>
           <DialogTitle>Shop</DialogTitle>
         </DialogHeader>
@@ -1220,8 +1227,8 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
 
       {/* Payment Dialog - only shown when payment is in progress */}
       {clientSecret && selectedItem && (
-        <Dialog open={true} onOpenChange={() => setClientSecret(null)}>
-          <DialogContent className="max-w-md max-h-[80vh] z-[80]">
+        <Dialog open={true} onOpenChange={(open) => { if (!open) return; }}>
+          <DialogContent className="max-w-md max-h-[80vh] z-[80]" onPointerDownOutside={(e) => e.preventDefault()} onInteractOutside={(e) => e.preventDefault()}>
             <DialogHeader>
               <DialogTitle>
                 Complete Purchase: {SHOP_ITEMS[selectedItem]?.name}
@@ -1233,7 +1240,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                   itemId={selectedItem}
                   onSuccess={handlePurchaseSuccess}
                   currency={currency}
-                  onCancel={() => setClientSecret(null)}
+                  onCancel={handleCancelPayment}
                 />
               </Elements>
             </ScrollArea>
