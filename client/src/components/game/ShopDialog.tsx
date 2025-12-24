@@ -856,7 +856,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
       <DialogContent className="max-w-4xl max-h-[80vh] z-[70]">
         <DialogHeader>
           <DialogTitle>
-            {clientSecret ? `Complete Purchase: ${SHOP_ITEMS[selectedItem!]?.name} (${SHOP_ITEMS[selectedItem!]?.price ? formatPrice(SHOP_ITEMS[selectedItem!].price) : ""})` : "Shop"}
+            {clientSecret ? `Complete Purchase: ${SHOP_ITEMS[selectedItem!]?.name}` : "Shop"}
           </DialogTitle>
         </DialogHeader>
 
@@ -866,30 +866,37 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
           </div>
         )}
 
-        {!isLoading && clientSecret && (
-          <div className="space-y-4">
-            {logger.log(`[SHOP] Rendering payment form for ${selectedItem}`) && null}
-            <Elements stripe={stripePromise} options={{ clientSecret }}>
-              <CheckoutForm
-                itemId={selectedItem!}
-                onSuccess={handlePurchaseSuccess}
-                currency={currency}
-                onCancel={() => {
-                  logger.log(`[SHOP] Payment canceled, returning to shop`);
-                  setClientSecret(null);
-                  setSelectedItem(null);
-                }}
-              />
-            </Elements>
-          </div>
-        )}
-
         {!isLoading && !clientSecret && !currentUser && (
           <div className="bg-red-600/5 border border-red-600/50 rounded-lg p-3 text-center mb-4">
             <p className="text-md font-medium text-red-600">
               Sign in or create an account to purchase items.
             </p>
           </div>
+        )}
+
+        {!isLoading && clientSecret && (
+          <ScrollArea className="max-h-[calc(80vh-80px)]">
+            {logger.log(`[SHOP] Rendering payment form for ${selectedItem}`) && null}
+            <div className="mt-0">
+              <div className="text-sm text-muted-foreground mb-4">
+                {SHOP_ITEMS[selectedItem!]?.price
+                  ? formatPrice(SHOP_ITEMS[selectedItem!].price)
+                  : ""}
+              </div>
+              <Elements stripe={stripePromise} options={{ clientSecret }}>
+                <CheckoutForm
+                  itemId={selectedItem!}
+                  onSuccess={handlePurchaseSuccess}
+                  currency={currency}
+                  onCancel={() => {
+                    logger.log(`[SHOP] Payment canceled, returning to shop`);
+                    setClientSecret(null);
+                  }}
+                />
+              </Elements>
+            </div>
+            <ScrollBar orientation="vertical" />
+          </ScrollArea>
         )}
 
         {!isLoading && !clientSecret && (
