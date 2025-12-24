@@ -564,6 +564,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     const { clientSecret } = await response.json();
     setClientSecret(clientSecret);
     setSelectedItem(itemId);
+    onClose(); // Close shop dialog when payment starts
   };
 
   const handlePurchaseSuccess = async () => {
