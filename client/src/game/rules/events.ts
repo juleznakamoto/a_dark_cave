@@ -75,7 +75,6 @@ import { GAME_CONSTANTS } from "../constants";
 export interface GameEvent {
   id: string;
   condition: (state: GameState) => boolean;
-  triggerType: "time" | "resource" | "random" | "action";
   title?: string;
   message: string | string[] | ((state: GameState) => string); // Support array of messages for random selection or function
   choices?: EventChoice[];
