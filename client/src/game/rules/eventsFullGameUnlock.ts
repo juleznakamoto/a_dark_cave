@@ -60,7 +60,7 @@ export const fullGameUnlockEvents: Record<string, GameEvent> = {
       );
     },
     
-    timeProbability: 1,
+    timeProbability: 2,
     title: "The Elder's Notice",
     message:
       "A village elder approaches you. He speaks quietly. 'You stand at the beginning of a long path filled with trials. Very soon, you must choose whether you will continue this journey.'",
@@ -108,7 +108,7 @@ export const fullGameUnlockEvents: Record<string, GameEvent> = {
       );
     },
     
-    timeProbability: 5,
+    timeProbability: 3,
     title: "The Time Has Come",
     message:
       "The village elder returns, his expression grave. 'The time has come,' he says. 'You have taken your first steps on a long and unforgiving path. What lies ahead is deeper, darker, and more demanding. Decide now whether you will continue this journey.'",

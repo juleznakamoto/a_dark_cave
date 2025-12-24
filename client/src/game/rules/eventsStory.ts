@@ -98,7 +98,7 @@ export const storyEvents: Record<string, GameEvent> = {
       !state.story.seen.mysteriousBookReceived &&
       !state.books.book_of_ascension,
     
-    timeProbability: 15,
+    timeProbability: 10,
     title: "A Quiet Knock",
     message:
       "One late evening, you hear a gentle knock on the door of the estate. As you open it, no one is there, only something bound in dark brown leather resting on the doorstep.",
