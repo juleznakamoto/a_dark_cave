@@ -1,0 +1,62 @@
+v068Z [SHOP] Purchase clicked for item: gold_250, price: 99
+logger.ts:33 v068Z [SHOP] Current state - clientSecret: null, selectedItem: gold_250
+logger.ts:33 v068Z [SHOP] Creating payment intent for gold_250, user: a375ecb5-3d1f-470d-8a60-f913b522bedc
+logger.ts:33 v068Z [SHOP] Payment intent created, showing payment form in shop dialog
+logger.ts:33 v068Z [SHOP] About to set clientSecret and selectedItem
+logger.ts:33 v068Z [SHOP] State updated - clientSecret set, selectedItem: gold_250
+logger.ts:33 v068Z [SHOP] Rendering payment form for gold_250
+controller-with-preconnect-c6ede1ff9b5116df14acab347c76f12d.js:1 [Stripe.js] The following payment method types are not activated:
+
+- alipay
+- wechat_pay
+- revolut_pay
+- p24
+
+They will be displayed in test mode, but hidden in live mode. Please activate the payment method types in your dashboard (https://dashboard.stripe.com/settings/payment_methods) and ensure your account is enabled for any preview features that you are trying to use.
+warn @ controller-with-preconnect-c6ede1ff9b5116df14acab347c76f12d.js:1
+(anonymous) @ controller-with-preconnect-c6ede1ff9b5116df14acab347c76f12d.js:1
+_v @ controller-with-preconnect-c6ede1ff9b5116df14acab347c76f12d.js:1
+(anonymous) @ controller-with-preconnect-c6ede1ff9b5116df14acab347c76f12d.js:1
+Promise.then
+(anonymous) @ controller-with-preconnect-c6ede1ff9b5116df14acab347c76f12d.js:1
+n @ shared-7747287a56ce9a8c2999c0802c853724.js:1
+(anonymous) @ shared-7747287a56ce9a8c2999c0802c853724.js:1
+(anonymous) @ shared-7747287a56ce9a8c2999c0802c853724.js:1
+a @ shared-7747287a56ce9a8c2999c0802c853724.js:1
+i @ shared-7747287a56ce9a8c2999c0802c853724.js:1
+(anonymous) @ shared-7747287a56ce9a8c2999c0802c853724.js:1
+(anonymous) @ shared-7747287a56ce9a8c2999c0802c853724.js:1
+(anonymous) @ controller-with-preconnect-c6ede1ff9b5116df14acab347c76f12d.js:1
+(anonymous) @ controller-with-preconnect-c6ede1ff9b5116df14acab347c76f12d.js:1
+(anonymous) @ controller-with-preconnect-c6ede1ff9b5116df14acab347c76f12d.js:1
+n @ shared-7747287a56ce9a8c2999c0802c853724.js:1
+(anonymous) @ shared-7747287a56ce9a8c2999c0802c853724.js:1
+(anonymous) @ shared-7747287a56ce9a8c2999c0802c853724.js:1
+a @ shared-7747287a56ce9a8c2999c0802c853724.js:1
+i @ shared-7747287a56ce9a8c2999c0802c853724.js:1
+(anonymous) @ shared-7747287a56ce9a8c2999c0802c853724.js:1
+(anonymous) @ shared-7747287a56ce9a8c2999c0802c853724.js:1
+(anonymous) @ controller-with-preconnect-c6ede1ff9b5116df14acab347c76f12d.js:1
+value @ controller-with-preconnect-c6ede1ff9b5116df14acab347c76f12d.js:1
+(anonymous) @ controller-with-preconnect-c6ede1ff9b5116df14acab347c76f12d.js:1Understand this warning
+logger.ts:33 v068Z [SHOP] Payment canceled, returning to shop
+logger.ts:33 v068Z [SHOP] Purchase clicked for item: gold_1000, price: 249
+logger.ts:33 v068Z [SHOP] Current state - clientSecret: null, selectedItem: gold_250
+logger.ts:33 v068Z [SHOP] Creating payment intent for gold_1000, user: a375ecb5-3d1f-470d-8a60-f913b522bedc
+logger.ts:33 v068Z [SHOP] Payment intent created, showing payment form in shop dialog
+logger.ts:33 v068Z [SHOP] About to set clientSecret and selectedItem
+logger.ts:33 v068Z [SHOP] State updated - clientSecret set, selectedItem: gold_1000
+logger.ts:33 v068Z [SHOP] Rendering payment form for gold_1000
+controller-with-preconnect-c6ede1ff9b5116df14acab347c76f12d.js:1 [Stripe.js] The following payment method types are not activated:
+
+- alipay
+- wechat_pay
+- revolut_pay
+- p24
+
+They will be displayed in test mode, but hidden in live mode. Please activate the payment method types in your dashboard (https://dashboard.stripe.com/settings/payment_methods) and ensure your account is enabled for any preview features that you are trying to use.
+warn @ controller-with-preconnect-c6ede1ff9b5116df14acab347c76f12d.js:1
+(anonymous) @ controller-with-preconnect-c6ede1ff9b5116df14acab347c76f12d.js:1
+_v @ controller-with-preconnect-c6ede1ff9b5116df14acab347c76f12d.js:1
+(anonymous) @ controller-with-preconnect-c6ede1ff9b5116df14acab347c76f12d.js:1Understand this warning
+logger.ts:33 v068Z [SHOP] Payment canceled, returning to shop
