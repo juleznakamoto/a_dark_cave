@@ -868,7 +868,33 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
           </div>
         )}
 
-        {!isLoading && !clientSecret ? (
+        {!isLoading && clientSecret && (
+          <ScrollArea className="max-h-[calc(80vh-80px)]">
+            <div className="mt-0">
+              <h3 className="text-lg font-semibold mb-4">
+                Complete Purchase: {SHOP_ITEMS[selectedItem!]?.name} (
+                {SHOP_ITEMS[selectedItem!]?.price
+                  ? formatPrice(SHOP_ITEMS[selectedItem!].price)
+                  : ""}
+                )
+              </h3>
+              <Elements stripe={stripePromise} options={{ clientSecret }}>
+                <CheckoutForm
+                  itemId={selectedItem!}
+                  onSuccess={handlePurchaseSuccess}
+                  currency={currency}
+                  onCancel={() => {
+                    logger.log(`[SHOP] Payment canceled, returning to shop`);
+                    setClientSecret(null);
+                  }}
+                />
+              </Elements>
+            </div>
+            <ScrollBar orientation="vertical" />
+          </ScrollArea>
+        )}
+
+        {!isLoading && !clientSecret && (
           <Tabs defaultValue="shop" className="w-full">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="shop">For Sale</TabsTrigger>
@@ -1290,31 +1316,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
               </ScrollArea>
             </TabsContent>
           </Tabs>
-        ) : clientSecret ? (
-          <ScrollArea className="max-h-[calc(80vh-80px)]">
-            <div className="mt-0">
-              <h3 className="text-lg font-semibold mb-4">
-                Complete Purchase: {SHOP_ITEMS[selectedItem!]?.name} (
-                {SHOP_ITEMS[selectedItem!]?.price
-                  ? formatPrice(SHOP_ITEMS[selectedItem!].price)
-                  : ""}
-                )
-              </h3>
-              <Elements stripe={stripePromise} options={{ clientSecret }}>
-                <CheckoutForm
-                  itemId={selectedItem!}
-                  onSuccess={handlePurchaseSuccess}
-                  currency={currency}
-                  onCancel={() => {
-                    logger.log(`[SHOP] Payment canceled, reopening shop dialog`);
-                    setClientSecret(null);
-                  }}
-                />
-              </Elements>
-            </div>
-            <ScrollBar orientation="vertical" />
-          </ScrollArea>
-        ) : null}
+        )}
       </DialogContent>
     </Dialog>
   );
