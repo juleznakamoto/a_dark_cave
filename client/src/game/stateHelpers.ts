@@ -66,11 +66,14 @@ export function assignVillagerToJob(
 ): Partial<GameState> {
   if (state.villagers.free <= 0) return {};
 
+  // Initialize job count to 0 if undefined (for backwards compatibility with old saves)
+  const currentJobCount = state.villagers[job] ?? 0;
+
   const updates: Partial<GameState> = {
     villagers: {
       ...state.villagers,
       free: state.villagers.free - 1,
-      [job]: state.villagers[job] + 1
+      [job]: currentJobCount + 1
     }
   };
 
@@ -100,13 +103,16 @@ export function unassignVillagerFromJob(
   state: GameState,
   job: keyof GameState['villagers']
 ): Partial<GameState> {
-  if (job === 'free' || state.villagers[job] <= 0) return {};
+  // Initialize job count to 0 if undefined (for backwards compatibility with old saves)
+  const currentJobCount = state.villagers[job] ?? 0;
+  
+  if (job === 'free' || currentJobCount <= 0) return {};
 
   return {
     villagers: {
       ...state.villagers,
       free: state.villagers.free + 1,
-      [job]: state.villagers[job] - 1
+      [job]: currentJobCount - 1
     }
   };
 }
