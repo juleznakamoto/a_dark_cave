@@ -564,14 +564,12 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     const { clientSecret } = await response.json();
     setClientSecret(clientSecret);
     setSelectedItem(itemId);
-    onClose(); // Close shop dialog when payment starts
+    // Don't close shop dialog - payment dialog will overlay it
   };
 
   const handleCancelPayment = () => {
     setClientSecret(null);
     setSelectedItem(null);
-    // Reopen the shop dialog
-    // Note: we don't call onClose() here, the dialog will reopen naturally
   };
 
   const handlePurchaseSuccess = async () => {
@@ -823,7 +821,13 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
           </div>
         )}
 
-        {!isLoading && (
+        {clientSecret && (
+          <div className="flex justify-center py-8">
+            <div className="text-muted-foreground">Processing payment...</div>
+          </div>
+        )}
+
+        {!isLoading && !clientSecret && (
           <Tabs defaultValue="shop" className="w-full">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="shop">For Sale</TabsTrigger>
