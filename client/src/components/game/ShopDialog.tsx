@@ -899,9 +899,8 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
           </ScrollArea>
         )}
 
-        {!isLoading && !clientSecret && (
+        {!isLoading && !clientSecret ? (
           <Tabs defaultValue="shop" className="w-full">
-            {logger.log(`[SHOP] Rendering shop tabs (clientSecret is ${clientSecret ? 'exists' : 'null'})`) && null}
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="shop">For Sale</TabsTrigger>
               <TabsTrigger value="purchases" disabled={!currentUser}>
@@ -1322,7 +1321,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
               </ScrollArea>
             </TabsContent>
           </Tabs>
-        )}
+        ) : null}
       </DialogContent>
     </Dialog>
   );
