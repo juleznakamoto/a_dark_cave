@@ -846,7 +846,15 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                   </p>
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                  {Object.values(SHOP_ITEMS).map((item) => (
+                  {Object.values(SHOP_ITEMS)
+                    .filter((item) => {
+                      // Hide full_game item when BTP=0
+                      if (item.id === 'full_game' && gameState.BTP === 0) {
+                        return false;
+                      }
+                      return true;
+                    })
+                    .map((item) => (
                     <Card key={item.id} className="flex flex-col">
                       <CardHeader className="leading-snug p-3 md:p-6 pb-2 md:pb-3 relative">
                         {item.symbol && (
