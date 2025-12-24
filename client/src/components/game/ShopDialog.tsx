@@ -1237,7 +1237,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
       {clientSecret && selectedItem && (
         <Dialog open={true} onOpenChange={undefined}>
           <DialogContent 
-            className="max-w-md max-h-[80vh] z-[80]"
+            className="max-w-md max-h-[80vh] z-[80] [&>button]:hidden"
             onPointerDownOutside={(e) => e.preventDefault()}
             onInteractOutside={(e) => e.preventDefault()}
           >
