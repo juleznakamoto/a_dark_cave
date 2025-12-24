@@ -851,16 +851,16 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-4xl max-h-[80vh] z-[70]">
         <DialogHeader>
-          <DialogTitle>{clientSecret ? "Complete Your Purchase" : "Shop"}</DialogTitle>
+          <DialogTitle>Shop</DialogTitle>
         </DialogHeader>
 
-        {!clientSecret && isLoading && (
+        {isLoading && (
           <div className="flex justify-center py-8">
             <div className="text-muted-foreground">Loading...</div>
           </div>
         )}
 
-        {!clientSecret && !isLoading && !currentUser && (
+        {!isLoading && !currentUser && (
           <div className="bg-red-600/5 border border-red-600/50 rounded-lg p-3 text-center">
             <p className="text-md font-medium text-red-600">
               Sign in or create an account to purchase items.
@@ -868,7 +868,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
           </div>
         )}
 
-        {!clientSecret && !isLoading ? (
+        {!isLoading && !clientSecret ? (
           <Tabs defaultValue="shop" className="w-full">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="shop">For Sale</TabsTrigger>
@@ -1290,18 +1290,16 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
               </ScrollArea>
             </TabsContent>
           </Tabs>
-        ) : null}
-
-        {clientSecret && (
+        ) : clientSecret ? (
           <ScrollArea className="max-h-[calc(80vh-80px)]">
             <div className="mt-0">
-              <p className="text-sm text-muted-foreground mb-4">
-                {SHOP_ITEMS[selectedItem!]?.name} (
+              <h3 className="text-lg font-semibold mb-4">
+                Complete Purchase: {SHOP_ITEMS[selectedItem!]?.name} (
                 {SHOP_ITEMS[selectedItem!]?.price
                   ? formatPrice(SHOP_ITEMS[selectedItem!].price)
                   : ""}
                 )
-              </p>
+              </h3>
               <Elements stripe={stripePromise} options={{ clientSecret }}>
                 <CheckoutForm
                   itemId={selectedItem!}
@@ -1313,7 +1311,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
             </div>
             <ScrollBar orientation="vertical" />
           </ScrollArea>
-        )}
+        ) : null}
       </DialogContent>
     </Dialog>
   );
