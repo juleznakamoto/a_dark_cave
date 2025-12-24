@@ -390,6 +390,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     const item = SHOP_ITEMS[itemId];
     
     logger.log(`[SHOP] Purchase clicked for item: ${itemId}, price: ${item.price}`);
+    logger.log(`[SHOP] Current state - clientSecret: ${clientSecret ? 'exists' : 'null'}, selectedItem: ${selectedItem}`);
 
     // For free items, handle them directly
     if (item.price === 0) {
@@ -593,9 +594,12 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
 
     const { clientSecret } = await response.json();
     logger.log(`[SHOP] Payment intent created, showing payment form in shop dialog`);
+    logger.log(`[SHOP] About to set clientSecret and selectedItem`);
     
     setClientSecret(clientSecret);
     setSelectedItem(itemId);
+    
+    logger.log(`[SHOP] State updated - clientSecret set, selectedItem: ${itemId}`);
   };
 
   const handlePurchaseSuccess = async () => {
@@ -870,6 +874,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
 
         {!isLoading && clientSecret && (
           <ScrollArea className="max-h-[calc(80vh-80px)]">
+            {logger.log(`[SHOP] Rendering payment form for ${selectedItem}`) && null}
             <div className="mt-0">
               <h3 className="text-lg font-semibold mb-4">
                 Complete Purchase: {SHOP_ITEMS[selectedItem!]?.name} (
@@ -896,6 +901,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
 
         {!isLoading && !clientSecret && (
           <Tabs defaultValue="shop" className="w-full">
+            {logger.log(`[SHOP] Rendering shop tabs (clientSecret is ${clientSecret ? 'exists' : 'null'})`) && null}
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="shop">For Sale</TabsTrigger>
               <TabsTrigger value="purchases" disabled={!currentUser}>
