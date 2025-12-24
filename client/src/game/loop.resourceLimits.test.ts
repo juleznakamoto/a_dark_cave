@@ -248,10 +248,6 @@ describe('Game Loop - Resource Limits Integration', () => {
             grandRepository: 0,
             greatVault: 0,
           },
-          flags: {
-            ...state.flags,
-            resourceLimitsEnabled: true,
-          },
         }));
 
         // Set the specific building for this tier
@@ -367,45 +363,4 @@ describe('Game Loop - Resource Limits Integration', () => {
     });
   });
 
-  describe('Feature Flag Persistence', () => {
-    it('should maintain unlimited resources for games without flag', () => {
-      const store = useGameStore.getState();
-
-      useGameStore.setState((state) => ({
-        flags: {
-          ...state.flags,
-          resourceLimitsEnabled: false,
-        },
-        resources: {
-          ...state.resources,
-          wood: 50000,
-        },
-      }));
-
-      store.updateResource('wood', 50000);
-      expect(useGameStore.getState().resources.wood).toBe(100000);
-    });
-
-    it('should enforce limits for games with flag enabled', () => {
-      const store = useGameStore.getState();
-
-      useGameStore.setState((state) => ({
-        flags: {
-          ...state.flags,
-          resourceLimitsEnabled: true,
-        },
-        resources: {
-          ...state.resources,
-          wood: 0,
-        },
-        buildings: {
-          ...state.buildings,
-          supplyHut: 1,
-        },
-      }));
-
-      store.updateResource('wood', 50000);
-      expect(useGameStore.getState().resources.wood).toBe(1000);
-    });
   });
-});

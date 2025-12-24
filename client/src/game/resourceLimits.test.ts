@@ -54,12 +54,6 @@ describe('Resource Limits - Core Functionality', () => {
       expect(getResourceLimit(state)).toBe(100000);
     });
 
-    it('should return Infinity when feature flag is disabled', () => {
-      state.flags.resourceLimitsEnabled = false;
-      state.buildings.fortifiedStorehouse = 1;
-      expect(getResourceLimit(state)).toBe(Infinity);
-    });
-
     it('should return 500 for no storage buildings', () => {
       state.buildings.supplyHut = 0;
       state.buildings.storehouse = 0;
@@ -91,12 +85,6 @@ describe('Resource Limits - Core Functionality', () => {
     it('should return false for gold', () => {
       expect(isResourceLimited('gold', state)).toBe(false);
     });
-
-    it('should return false when feature flag is disabled', () => {
-      state.flags.resourceLimitsEnabled = false;
-      expect(isResourceLimited('wood', state)).toBe(false);
-      expect(isResourceLimited('stone', state)).toBe(false);
-    });
   });
 
   describe('capResourceToLimit', () => {
@@ -114,12 +102,6 @@ describe('Resource Limits - Core Functionality', () => {
       state.buildings.supplyHut = 1; // limit = 1000
       expect(capResourceToLimit('silver', 50000, state)).toBe(50000);
       expect(capResourceToLimit('gold', 50000, state)).toBe(50000);
-    });
-
-    it('should not cap when feature flag is disabled', () => {
-      state.flags.resourceLimitsEnabled = false;
-      state.buildings.supplyHut = 1;
-      expect(capResourceToLimit('wood', 50000, state)).toBe(50000);
     });
 
     it('should handle edge case of exact limit', () => {
@@ -467,32 +449,6 @@ describe('Resource Limits - Integration with Game Components', () => {
       state.resources.wood = 0;
       state.buildings.greatVault = 1;
       const updates = updateResource(state, 'wood', 150000);
-      expect(updates.resources?.wood).toBe(100000);
-    });
-  });
-
-  describe('Feature Flag Behavior', () => {
-    it('should respect feature flag for new games', () => {
-      const newState = createInitialState();
-      newState.flags.resourceLimitsEnabled = true;
-      newState.buildings.storage = 0;
-
-      expect(getResourceLimit(newState)).toBe(500);
-      expect(isResourceLimited('wood', newState)).toBe(true);
-    });
-
-    it('should disable limits for old games without flag', () => {
-      const oldState = createInitialState();
-      oldState.flags.resourceLimitsEnabled = false;
-
-      expect(getResourceLimit(oldState)).toBe(Infinity);
-      expect(isResourceLimited('wood', oldState)).toBe(false);
-    });
-
-    it('should allow unlimited accumulation when flag is off', () => {
-      state.flags.resourceLimitsEnabled = false;
-      state.resources.wood = 50000;
-      const updates = updateResource(state, 'wood', 50000);
       expect(updates.resources?.wood).toBe(100000);
     });
   });

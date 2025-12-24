@@ -109,10 +109,6 @@ describe('State - Resource Limits Integration', () => {
   describe('mergeStateUpdates resource capping', () => {
     it('should cap resources when merging state updates', () => {
       useGameStore.setState((state) => ({
-        flags: {
-          ...state.flags,
-          resourceLimitsEnabled: true,
-        },
         buildings: {
           ...state.buildings,
           supplyHut: 1, // 1000 limit
@@ -133,10 +129,6 @@ describe('State - Resource Limits Integration', () => {
       const store = useGameStore.getState();
 
       useGameStore.setState((state) => ({
-        flags: {
-          ...state.flags,
-          resourceLimitsEnabled: true,
-        },
         buildings: {
           ...state.buildings,
           supplyHut: 1, // 1000 limit
@@ -261,36 +253,11 @@ describe('State - Resource Limits Integration', () => {
     });
   });
 
-  describe('Feature flag disabled scenarios', () => {
-    it('should allow unlimited resources when flag is disabled', () => {
-      const store = useGameStore.getState();
-
-      useGameStore.setState((state) => ({
-        flags: {
-          ...state.flags,
-          resourceLimitsEnabled: false,
-        },
-        resources: {
-          ...state.resources,
-          wood: 0,
-        },
-      }));
-
-      // Should not be capped
-      store.updateResource('wood', 150000);
-      expect(useGameStore.getState().resources.wood).toBe(150000);
-    });
-  });
-
   describe('Concurrent resource updates', () => {
     it('should handle rapid consecutive updates correctly', () => {
       const store = useGameStore.getState();
 
       useGameStore.setState((state) => ({
-        flags: {
-          ...state.flags,
-          resourceLimitsEnabled: true,
-        },
         buildings: {
           ...state.buildings,
           supplyHut: 1, // 1000 limit
@@ -314,10 +281,6 @@ describe('State - Resource Limits Integration', () => {
       const store = useGameStore.getState();
 
       useGameStore.setState((state) => ({
-        flags: {
-          ...state.flags,
-          resourceLimitsEnabled: true,
-        },
         buildings: {
           ...state.buildings,
           supplyHut: 1, // 1000 limit
