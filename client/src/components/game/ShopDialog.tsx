@@ -251,9 +251,6 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [purchasedItems, setPurchasedItems] = useState<string[]>([]);
-  
-  // Determine if we're in payment mode
-  const isPaymentMode = Boolean(clientSecret && selectedItem);
   const [isLoading, setIsLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState<{
     id: string;
@@ -574,7 +571,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
   const handleCancelPayment = () => {
     setClientSecret(null);
     setSelectedItem(null);
-    // No need to call onOpen - we stay in the same dialog, just change mode
+    onOpen(); // Explicitly reopen the shop dialog
   };
 
   const handlePurchaseSuccess = async () => {
@@ -806,29 +803,27 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[80vh] z-[70]">
-        {!isPaymentMode && (
-          <>
-            <DialogHeader>
-              <DialogTitle>Shop</DialogTitle>
-            </DialogHeader>
+    <Dialog open={isOpen} onOpenChange={(open) => { if (!open) return; }}>
+      <DialogContent className="max-w-4xl max-h-[80vh] z-[70]" onPointerDownOutside={(e) => e.preventDefault()} onInteractOutside={(e) => e.preventDefault()}>
+        <DialogHeader>
+          <DialogTitle>Shop</DialogTitle>
+        </DialogHeader>
 
-            {isLoading && (
-              <div className="flex justify-center py-8">
-                <div className="text-muted-foreground">Loading...</div>
-              </div>
-            )}
+        {isLoading && (
+          <div className="flex justify-center py-8">
+            <div className="text-muted-foreground">Loading...</div>
+          </div>
+        )}
 
-            {!isLoading && !currentUser && (
-              <div className="bg-red-600/5 border border-red-600/50 rounded-lg p-3 text-center">
-                <p className="text-md font-medium text-red-600">
-                  Sign in or create an account to purchase items.
-                </p>
-              </div>
-            )}
+        {!isLoading && !currentUser && (
+          <div className="bg-red-600/5 border border-red-600/50 rounded-lg p-3 text-center">
+            <p className="text-md font-medium text-red-600">
+              Sign in or create an account to purchase items.
+            </p>
+          </div>
+        )}
 
-            {!isLoading && (
+        {!isLoading && (
           <Tabs defaultValue="shop" className="w-full">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="shop">For Sale</TabsTrigger>
@@ -1228,29 +1223,30 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
             </TabsContent>
           </Tabs>
         )}
-          </>
-        )}
+      </DialogContent>
 
-        {isPaymentMode && (
-          <>
+      {/* Payment Dialog - only shown when payment is in progress */}
+      {clientSecret && selectedItem && (
+        <Dialog open={true} onOpenChange={(open) => { if (!open) handleCancelPayment(); }}>
+          <DialogContent className="max-w-md max-h-[80vh] z-[80]">
             <DialogHeader>
               <DialogTitle>
-                Complete Purchase: {SHOP_ITEMS[selectedItem!]?.name}
+                Complete Purchase: {SHOP_ITEMS[selectedItem]?.name}
               </DialogTitle>
             </DialogHeader>
             <ScrollArea className="max-h-[calc(80vh-120px)]">
-              <Elements stripe={stripePromise} options={{ clientSecret: clientSecret! }}>
+              <Elements stripe={stripePromise} options={{ clientSecret }}>
                 <CheckoutForm
-                  itemId={selectedItem!}
+                  itemId={selectedItem}
                   onSuccess={handlePurchaseSuccess}
                   currency={currency}
                   onCancel={handleCancelPayment}
                 />
               </Elements>
             </ScrollArea>
-          </>
-        )}
-      </DialogContent>
+          </DialogContent>
+        </Dialog>
+      )}
     </Dialog>
   );
 }
