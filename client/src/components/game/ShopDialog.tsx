@@ -230,7 +230,7 @@ function CheckoutForm({
         <Button
           variant="outline"
           onClick={onCancel}
-          className="flex-1"
+          className="flex-2"
           button_id="shop-cancel-payment"
           type="button"
         >
