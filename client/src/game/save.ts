@@ -388,6 +388,40 @@ export async function loadGame(): Promise<GameState | null> {
       });
     }
 
+    // Helper function to merge loaded state with defaults
+    const mergeWithDefaults = (loadedState: Partial<GameState>): GameState => {
+      const { createInitialState } = require('./state');
+      const defaultState = createInitialState();
+      
+      // Deep merge: defaults first, then override with loaded values
+      return {
+        ...defaultState,
+        ...loadedState,
+        resources: { ...defaultState.resources, ...loadedState.resources },
+        weapons: { ...defaultState.weapons, ...loadedState.weapons },
+        tools: { ...defaultState.tools, ...loadedState.tools },
+        buildings: { ...defaultState.buildings, ...loadedState.buildings },
+        flags: { ...defaultState.flags, ...loadedState.flags },
+        villagers: { ...defaultState.villagers, ...loadedState.villagers },
+        clothing: { ...defaultState.clothing, ...loadedState.clothing },
+        relics: { ...defaultState.relics, ...loadedState.relics },
+        books: { ...defaultState.books, ...loadedState.books },
+        fellowship: { ...defaultState.fellowship, ...loadedState.fellowship },
+        blessings: { ...defaultState.blessings, ...loadedState.blessings },
+        events: { ...defaultState.events, ...loadedState.events },
+        stats: { ...defaultState.stats, ...loadedState.stats },
+        cooldowns: { ...defaultState.cooldowns, ...loadedState.cooldowns },
+        cooldownDurations: { ...defaultState.cooldownDurations, ...loadedState.cooldownDurations },
+        attackWaveTimers: { ...defaultState.attackWaveTimers, ...loadedState.attackWaveTimers },
+        buttonUpgrades: { ...defaultState.buttonUpgrades, ...loadedState.buttonUpgrades },
+        story: loadedState.story ? {
+          ...defaultState.story,
+          ...loadedState.story,
+          seen: { ...defaultState.story.seen, ...(loadedState.story.seen || {}) }
+        } : defaultState.story,
+      };
+    };
+
     // Check if user is authenticated
     const user = await getCurrentUser();
 
@@ -413,10 +447,7 @@ export async function loadGame(): Promise<GameState | null> {
           if (localPlayTime > cloudPlayTime) {
             logger.log("[LOAD] 💾 Local save is newer - using local and syncing to cloud");
 
-            const stateWithDefaults = {
-              ...localSave.gameState,
-              cooldownDurations: localSave.gameState.cooldownDurations || {},
-            };
+            const stateWithDefaults = mergeWithDefaults(localSave.gameState);
             const processedState = await processUnclaimedReferrals(stateWithDefaults);
 
             // Sync local progress to cloud
@@ -441,14 +472,11 @@ export async function loadGame(): Promise<GameState | null> {
 
             const { formatSaveTimestamp } = await import("@/lib/utils");
             
-            const stateWithDefaults = {
-              ...cloudSave.gameState,
-              cooldownDurations: cloudSave.gameState.cooldownDurations || {},
-              // Format lastSaved if it's a timestamp
-              lastSaved: cloudSave.gameState.lastSaved && typeof cloudSave.gameState.lastSaved === 'number' 
-                ? formatSaveTimestamp() 
-                : cloudSave.gameState.lastSaved,
-            };
+            const stateWithDefaults = mergeWithDefaults(cloudSave.gameState);
+            // Format lastSaved if it's a timestamp
+            if (cloudSave.gameState.lastSaved && typeof cloudSave.gameState.lastSaved === 'number') {
+              stateWithDefaults.lastSaved = formatSaveTimestamp();
+            }
 
             const processedState = await processUnclaimedReferrals(
               stateWithDefaults,
@@ -477,14 +505,11 @@ export async function loadGame(): Promise<GameState | null> {
 
           const { formatSaveTimestamp } = await import("@/lib/utils");
           
-          const stateWithDefaults = {
-            ...cloudSave.gameState,
-            cooldownDurations: cloudSave.gameState.cooldownDurations || {},
-            // Format lastSaved if it's a timestamp
-            lastSaved: cloudSave.gameState.lastSaved && typeof cloudSave.gameState.lastSaved === 'number' 
-              ? formatSaveTimestamp() 
-              : cloudSave.gameState.lastSaved,
-          };
+          const stateWithDefaults = mergeWithDefaults(cloudSave.gameState);
+          // Format lastSaved if it's a timestamp
+          if (cloudSave.gameState.lastSaved && typeof cloudSave.gameState.lastSaved === 'number') {
+            stateWithDefaults.lastSaved = formatSaveTimestamp();
+          }
 
           const processedState = await processUnclaimedReferrals(
             stateWithDefaults,
@@ -509,10 +534,7 @@ export async function loadGame(): Promise<GameState | null> {
           // No cloud save but has local save - sync local to cloud
           logger.log("[LOAD] 📤 No cloud save found, syncing local to cloud");
 
-          const stateWithDefaults = {
-            ...localSave.gameState,
-            cooldownDurations: localSave.gameState.cooldownDurations || {},
-          };
+          const stateWithDefaults = mergeWithDefaults(localSave.gameState);
           const processedState = await processUnclaimedReferrals(stateWithDefaults);
 
           try {
@@ -548,10 +570,7 @@ export async function loadGame(): Promise<GameState | null> {
     } else {
       // Not authenticated, use local save only
       if (localSave) {
-        const stateWithDefaults = {
-          ...localSave.gameState,
-          cooldownDurations: localSave.gameState.cooldownDurations || {},
-        };
+        const stateWithDefaults = mergeWithDefaults(localSave.gameState);
         const processedState =
           await processUnclaimedReferrals(stateWithDefaults);
         if (isDev) {
