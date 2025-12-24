@@ -1235,8 +1235,12 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
 
       {/* Payment Dialog - only shown when payment is in progress */}
       {clientSecret && selectedItem && (
-        <Dialog open={true} onOpenChange={(open) => { if (!open) handleCancelPayment(); }}>
-          <DialogContent className="max-w-md max-h-[80vh] z-[80]">
+        <Dialog open={true} onOpenChange={undefined}>
+          <DialogContent 
+            className="max-w-md max-h-[80vh] z-[80]"
+            onPointerDownOutside={(e) => e.preventDefault()}
+            onInteractOutside={(e) => e.preventDefault()}
+          >
             <DialogHeader>
               <DialogTitle>
                 Complete Purchase: {SHOP_ITEMS[selectedItem]?.name}
