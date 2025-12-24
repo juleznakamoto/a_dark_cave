@@ -860,7 +860,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
           </div>
         )}
 
-        {!isLoading && !currentUser && (
+        {!clientSecret && !isLoading && !currentUser && (
           <div className="bg-red-600/5 border border-red-600/50 rounded-lg p-3 text-center">
             <p className="text-md font-medium text-red-600">
               Sign in or create an account to purchase items.
@@ -868,7 +868,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
           </div>
         )}
 
-        {!isLoading && !clientSecret ? (
+        {!clientSecret && !isLoading && (
           <Tabs defaultValue="shop" className="w-full">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="shop">For Sale</TabsTrigger>
@@ -1290,7 +1290,9 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
               </ScrollArea>
             </TabsContent>
           </Tabs>
-        ) : clientSecret ? (
+        )}
+
+        {clientSecret && (
           <ScrollArea className="max-h-[calc(80vh-80px)]">
             <div className="mt-0">
               <h3 className="text-lg font-semibold mb-4">
@@ -1311,7 +1313,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
             </div>
             <ScrollBar orientation="vertical" />
           </ScrollArea>
-        ) : null}
+        )}
       </DialogContent>
     </Dialog>
   );
