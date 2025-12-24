@@ -1325,6 +1325,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
               </ScrollArea>
             </TabsContent>
           </Tabs>
+          )}
         </DialogContent>
       </Dialog>
 
