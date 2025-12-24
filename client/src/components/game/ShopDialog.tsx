@@ -815,7 +815,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
           </div>
         )}
 
-        {!isLoading && !clientSecret ? (
+        {!isLoading && (
           <Tabs defaultValue="shop" className="w-full">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="shop">For Sale</TabsTrigger>
@@ -1214,51 +1214,31 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
               </ScrollArea>
             </TabsContent>
           </Tabs>
-        ) : (
-          // This is the new section for the payment dialog
-          <ScrollArea className="max-h-[calc(80vh-80px)]">
-            <div className="mt-0">
-              <h3 className="text-lg font-semibold mb-4">
-                Complete Purchase: {SHOP_ITEMS[selectedItem!]?.name} (
-                {SHOP_ITEMS[selectedItem!]?.price
-                  ? formatPrice(SHOP_ITEMS[selectedItem!].price)
-                  : ""}
-                )
-              </h3>
+        )}
+      </DialogContent>
+
+      {/* Payment Dialog - only shown when payment is in progress */}
+      {clientSecret && selectedItem && (
+        <Dialog open={true} onOpenChange={() => setClientSecret(null)}>
+          <DialogContent className="max-w-md max-h-[80vh] z-[80]">
+            <DialogHeader>
+              <DialogTitle>
+                Complete Purchase: {SHOP_ITEMS[selectedItem]?.name}
+              </DialogTitle>
+            </DialogHeader>
+            <ScrollArea className="max-h-[calc(80vh-120px)]">
               <Elements stripe={stripePromise} options={{ clientSecret }}>
                 <CheckoutForm
-                  itemId={selectedItem!}
+                  itemId={selectedItem}
                   onSuccess={handlePurchaseSuccess}
                   currency={currency}
                   onCancel={() => setClientSecret(null)}
                 />
               </Elements>
-            </div>
-            <ScrollBar orientation="vertical" />
-          </ScrollArea>
-        )}
-      </DialogContent>
-
-      {/* Payment Dialog - only shown when payment is in progress */}
-      <Dialog open={!!clientSecret} onOpenChange={() => setClientSecret(null)}>
-        <DialogContent className="max-w-md max-h-[80vh] z-[80]">
-          <DialogHeader>
-            <DialogTitle>
-              Complete Purchase: {SHOP_ITEMS[selectedItem!]?.name}
-            </DialogTitle>
-          </DialogHeader>
-          <ScrollArea className="max-h-[calc(80vh-120px)]">
-            <Elements stripe={stripePromise} options={{ clientSecret }}>
-              <CheckoutForm
-                itemId={selectedItem!}
-                onSuccess={handlePurchaseSuccess}
-                currency={currency}
-                onCancel={() => setClientSecret(null)}
-              />
-            </Elements>
-          </ScrollArea>
-        </DialogContent>
-      </Dialog>
+            </ScrollArea>
+          </DialogContent>
+        </Dialog>
+      )}
     </Dialog>
   );
 }
