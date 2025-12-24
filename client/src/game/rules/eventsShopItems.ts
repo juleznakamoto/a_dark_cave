@@ -10,9 +10,9 @@ export const shopItemEvents: Record<string, GameEvent> = {
       !state.story.seen.compassActivated,
     triggerType: "resource",
     timeProbability: 10,
-    title: "The Compass Stirs",
+    title: "The Stirring Needle",
     message:
-      "You wake in the night to a strange sound - a metallic clicking. The tarnished compass needle spins wildly in the darkness. When you grasp it, the needle stops, pointing firmly in one direction.",
+      "You wake in the night to a strange sound. The tarnished compass needle spins wildly in the darkness. When you grasp it, the needle stops, pointing firmly in one direction.",
     triggered: false,
     priority: 4,
     repeatable: false,
@@ -30,45 +30,7 @@ export const shopItemEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "You decide to follow where the compass leads, wondering what ancient secret it might reveal.",
-          };
-        },
-      },
-    ],
-  },
-
-  compassTreasure: {
-    id: "compassTreasure",
-    condition: (state: GameState) =>
-      state.story.seen.compassActivated &&
-      !state.story.seen.compassTreasureFound,
-    triggerType: "resource",
-    timeProbability: 1,
-    title: "The Buried Chest",
-    message:
-      "The compass leads you deep into the woods to an unremarkable patch of earth. Following its insistent pull, you dig. Your shovel strikes metal - a small chest of extraordinarily sturdy construction. No matter how you try, you cannot open it.",
-    triggered: false,
-    priority: 4,
-    repeatable: false,
-    choices: [
-      {
-        id: "takeChest",
-        label: "Take the chest",
-        effect: (state: GameState) => {
-          return {
-            relics: {
-              ...state.relics,
-              sealed_chest: true,
-            },
-            story: {
-              ...state.story,
-              seen: {
-                ...state.story.seen,
-                compassTreasureFound: true,
-              },
-            },
-            _logMessage:
-              "You carry the sealed chest back to the village. Whatever secrets lie within remain locked away.",
+              "You follow the compass deep into the woods, where you unearth a small chest of extraordinary sturdiness. Unable to open it, you carry it back with you.",
           };
         },
       },
