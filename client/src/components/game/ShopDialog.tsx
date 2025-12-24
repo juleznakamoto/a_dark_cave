@@ -220,7 +220,7 @@ function CheckoutForm({
         <Button
           type="submit"
           disabled={!stripe || isProcessing}
-          className="flex-1"
+          className="flex-1 font-bold"
           button_id="shop-complete-purchase"
         >
           {isProcessing
