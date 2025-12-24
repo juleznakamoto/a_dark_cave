@@ -855,7 +855,9 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-4xl max-h-[80vh] z-[70]">
         <DialogHeader>
-          <DialogTitle>Shop</DialogTitle>
+          <DialogTitle>
+            {clientSecret ? `Complete Purchase: ${SHOP_ITEMS[selectedItem!]?.name}` : "Shop"}
+          </DialogTitle>
         </DialogHeader>
 
         {isLoading && (
@@ -876,13 +878,11 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
           <ScrollArea className="max-h-[calc(80vh-80px)]">
             {logger.log(`[SHOP] Rendering payment form for ${selectedItem}`) && null}
             <div className="mt-0">
-              <h3 className="text-lg font-semibold mb-4">
-                Complete Purchase: {SHOP_ITEMS[selectedItem!]?.name} (
+              <div className="text-sm text-muted-foreground mb-4">
                 {SHOP_ITEMS[selectedItem!]?.price
                   ? formatPrice(SHOP_ITEMS[selectedItem!].price)
                   : ""}
-                )
-              </h3>
+              </div>
               <Elements stripe={stripePromise} options={{ clientSecret }}>
                 <CheckoutForm
                   itemId={selectedItem!}
