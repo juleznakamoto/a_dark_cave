@@ -210,7 +210,6 @@ interface GameStore extends GameState {
   togglePause: () => void;
   updatePlayTime: (deltaTime: number) => void;
   trackButtonClick: (buttonId: string) => void;
-  getAndResetClickAnalytics: () => Record<string, number> | null;
   setVersionCheckDialog: (isOpen: boolean) => void;
   updateFocusState: (state: {
     isActive: boolean;
