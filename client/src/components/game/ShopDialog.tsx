@@ -851,10 +851,10 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-4xl max-h-[80vh] z-[70]">
         <DialogHeader>
-          <DialogTitle>Shop</DialogTitle>
+          <DialogTitle>{clientSecret ? "Complete Your Purchase" : "Shop"}</DialogTitle>
         </DialogHeader>
 
-        {isLoading && (
+        {isLoading && !clientSecret && (
           <div className="flex justify-center py-8">
             <div className="text-muted-foreground">Loading...</div>
           </div>
