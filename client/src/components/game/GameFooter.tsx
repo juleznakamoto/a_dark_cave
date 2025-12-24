@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/tooltip";
 import { useMobileTooltip } from "@/hooks/useMobileTooltip";
 import { ShopDialog } from "./ShopDialog";
+import FullGamePurchaseDialog from "./FullGamePurchaseDialog";
 import { useState, useEffect } from "react";
 
 export default function GameFooter() {
