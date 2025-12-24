@@ -163,7 +163,7 @@ function CheckoutForm({
           useGameStore.setState({ hasMadeNonFreePurchase: true });
         }
 
-        // Auto-activate full_game purchase immediately
+        // Auto-activate full_game purchase immediately and deactivate BTP mode
         if (result.itemId === 'full_game') {
           const user = await getCurrentUser();
           if (user) {
@@ -184,6 +184,9 @@ function CheckoutForm({
                   ...state.activatedPurchases,
                   [purchaseId]: true,
                 },
+                BTP: 0, // Deactivate BTP mode
+                isPaused: false, // Unpause the game
+                isPausedPreviously: false, // Clear previous pause state
               }));
             }
           }
@@ -388,14 +391,6 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
 
   const handlePurchaseClick = async (itemId: string) => {
     const item = SHOP_ITEMS[itemId];
-
-    // For full_game, close this dialog and open the dedicated FullGamePurchaseDialog
-    if (itemId === 'full_game') {
-      // Set the full game dialog to open, then close shop dialog
-      useGameStore.setState({ fullGamePurchaseDialogOpen: true });
-      onClose();
-      return;
-    }
 
     // For free items, handle them directly
     if (item.price === 0) {
