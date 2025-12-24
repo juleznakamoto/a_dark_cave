@@ -375,11 +375,10 @@ function createAttackWaveEvent(waveId: keyof typeof WAVE_PARAMS): GameEvent {
       const shouldTrigger = elapsed >= timer.duration || timer.provoked;
       return shouldTrigger;
     },
-    triggerType: "resource",
+    
     timeProbability: 0.25,
     title: config.title,
     message: config.message,
-    triggered: false,
     priority: 5,
     repeatable: true,
     effect: (state: GameState) => {

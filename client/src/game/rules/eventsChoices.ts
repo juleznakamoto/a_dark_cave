@@ -19,12 +19,11 @@ export const choiceEvents: Record<string, GameEvent> = {
       state.buildings.woodenHut >= 2 &&
       !state.clothing.ravenfeather_mantle &&
       state.current_population >= 4,
-    triggerType: "resource",
+    
     timeProbability: 35,
     title: "The Pale Figure",
     message:
       "At dawn, villagers glimpse a tall, pale, slender figure at the woods’ edge. What do you do?",
-    triggered: false,
     priority: 3,
     repeatable: true,
     choices: [
@@ -119,12 +118,11 @@ export const choiceEvents: Record<string, GameEvent> = {
     id: "whispersBeneathHut",
     condition: (state: GameState) =>
       state.buildings.woodenHut >= 4 && !state.clothing.muttering_amulet,
-    triggerType: "resource",
+    
     timeProbability: 25,
     title: "Whispers Beneath the Hut",
     message:
       "At night, faint whispers seem to rise from under the floor of one of the huts. The villagers are uneasy. Do you investigate?",
-    triggered: false,
     priority: 3,
     repeatable: false,
     choices: [
@@ -161,12 +159,11 @@ export const choiceEvents: Record<string, GameEvent> = {
       state.buildings.woodenHut >= 5 &&
       state.resources.iron >= 500 &&
       !state.relics.blackened_mirror,
-    triggerType: "resource",
+    
     timeProbability: 35,
     title: "The Blackened Mirror",
     message:
       "A wandering tradesman offers a tall, cracked mirror framed in black iron. It radiates a cold, unnatural aura. He claims it can give glimpses of the future.",
-    triggered: false,
     priority: 3,
     repeatable: false,
     choices: [
@@ -207,12 +204,11 @@ export const choiceEvents: Record<string, GameEvent> = {
       state.buildings.woodenHut >= 4 &&
       !state.relics.wooden_figure &&
       !state.story.seen.cthulhuFigureChoice,
-    triggerType: "resource",
+    
     timeProbability: 45,
     title: "A Strange Wooden Figure",
     message:
       "At the forest's edge a small wooden figure is found, carved with tentacled features. It emanates a strange aura. Do you keep it?",
-    triggered: false,
     priority: 3,
     repeatable: false,
     choices: [
@@ -263,12 +259,11 @@ export const choiceEvents: Record<string, GameEvent> = {
       state.current_population >= 10 &&
       !state.clothing.ebony_ring &&
       state.buildings.altar == 1,
-    triggerType: "resource",
+    
     timeProbability: 35,
     title: "Offer to the Forest Gods",
     message:
       "While hunting, villagers report unsettling figures in the forest. They are terrified. Village elders say the forest gods demand four villagers as sacrifice.",
-    triggered: false,
     priority: 4,
     repeatable: false,
     isTimedChoice: true,
@@ -397,12 +392,11 @@ export const choiceEvents: Record<string, GameEvent> = {
       state.buildings.woodenHut >= 7 &&
       state.current_population > 12 &&
       !state.relics.unnamed_book,
-    triggerType: "resource",
+    
     timeProbability: 35,
     title: "The Mad Beduine",
     message:
       "In the evening, a robed figure approaches from the wilderness. His eyes burn with madness as he mutters in a foreign tongue, gestures sharp and unsettling. The villagers grow uneasy. Do you allow this Beduine to stay the night?",
-    triggered: false,
     priority: 3,
     repeatable: false,
     choices: [
@@ -458,12 +452,11 @@ export const choiceEvents: Record<string, GameEvent> = {
       state.flags.forestUnlocked &&
       state.buildings.woodenHut >= 4 &&
       !state.clothing.cracked_crown,
-    triggerType: "resource",
+    
     timeProbability: 40,
     title: "The Hidden Lake",
     message:
       "While gathering wood in the forest, the villagers discover a lake hidden among trees. One villager swears he saw a woman-like figure surface briefly, her gaze beautiful yet inhuman. What do you do?",
-    triggered: false,
     priority: 3,
     repeatable: true,
     choices: [
@@ -552,12 +545,11 @@ export const choiceEvents: Record<string, GameEvent> = {
     id: "templeDedication",
     condition: (state: GameState) =>
       state.buildings.temple >= 1 && !state.story.seen.templeDedicated,
-    triggerType: "time",
+    
     timeProbability: 1,
     title: "The Blind Druid returns",
     message:
       "Shortly after the temple is built, the blind druid appears. His milky eyes seem to see through your soul as he speaks: 'The temple must be dedicated to a god. Choose wisely.'",
-    triggered: false,
     priority: 5,
     repeatable: false,
     choices: [
@@ -671,12 +663,11 @@ export const choiceEvents: Record<string, GameEvent> = {
     id: "vikingBuilder",
     condition: (state: GameState) =>
       state.buildings.stoneHut >= 9 && !state.story.seen.vikingBuilderEvent,
-    triggerType: "resource",
+    
     timeProbability: 15,
     title: "The Viking Builder",
     message:
       "One day, a strong man wearing thick furs stands at the gates. He says he comes from the far north and is a skilled builder. For a little gold, he will teach you how to build big houses that can hold many villagers.",
-    triggered: false,
     priority: 4,
     repeatable: true,
     choices: [
@@ -772,12 +763,11 @@ export const choiceEvents: Record<string, GameEvent> = {
       state.cruelMode &&
       !state.weapons.nordic_war_axe &&
       !state.story.seen.nordicWarAxeEvent,
-    triggerType: "resource",
+    
     timeProbability: 15,
     title: "The Viking Returns",
     message:
       "The viking builder returns to your village, carrying a magnificent war axe. 'I forged this Nordic War Axe in my homeland. It shall be yours... for a price.'",
-    triggered: false,
     priority: 5,
     repeatable: true,
     choices: [
@@ -855,12 +845,11 @@ export const choiceEvents: Record<string, GameEvent> = {
       state.buildings.stoneHut >= 4 &&
       state.resources.fur >= 2500 &&
       !state.buildings.furTents,
-    triggerType: "resource",
+    
     timeProbability: 30,
     title: "The Wandering Tribe",
     message:
       "A small tribe of nomads approaches the village. Their leader speaks: 'We have traveled far and seek a place to call home. Help us help build fur tents to shelter our people and we will join your community.'",
-    triggered: false,
     priority: 3,
     repeatable: true,
     choices: [
@@ -920,12 +909,11 @@ export const choiceEvents: Record<string, GameEvent> = {
       state.buildings.bastion >= 1 &&
       state.story.seen.templeDedicated &&
       !state.story.seen.sanctumDedicated,
-    triggerType: "resource",
+    
     timeProbability: 3,
     title: "The Dedication of the Sanctum",
     message:
       "The blind druid emerges: 'The Sanctum stands complete,' he says, his voice carrying the weight of ancient wisdom. 'Now you must choose: deepen your devotion to the path you have chosen, or embrace all gods and their gifts. Choose wisely.'",
-    triggered: false,
     priority: 5,
     repeatable: false,
     choices: [
@@ -1036,12 +1024,11 @@ export const choiceEvents: Record<string, GameEvent> = {
         !state.story.seen.slaveTraderEvent
       );
     },
-    triggerType: "resource",
+    
     timeProbability: 25,
     title: "The Slave Trader",
     message:
       "A man on a cart drawn by two horses approaches the village. An iron cage on the cart holds two miserable souls. The trader grins wickedly: 'I'll pay you 100 steel for two of your villagers. What do you say?'",
-    triggered: false,
     priority: 3,
     repeatable: false,
     choices: [
@@ -1172,12 +1159,11 @@ export const choiceEvents: Record<string, GameEvent> = {
       state.resources.gold >= 50 &&
       !state.curseState?.isActive &&
       !state.story.seen.witchsCurseEvent,
-    triggerType: "resource",
+    
     timeProbability: 45,
     title: "The Witch's Curse",
     message:
       "A hunched old woman in tattered robes arrives at the gates. With malice in her voice she demands, 'Pay me 50 gold, or I shall curse you with misfortune.'",
-    triggered: false,
     priority: 4,
     repeatable: false,
     choices: [
@@ -1360,12 +1346,11 @@ export const choiceEvents: Record<string, GameEvent> = {
     id: "masterArcher",
     condition: (state: GameState) =>
       state.buildings.stoneHut >= 5 && !state.blessings.sharp_aim,
-    triggerType: "resource",
+    
     timeProbability: 30,
     title: "The Master Archer",
     message:
       "A man in a dark red leather coat arrives with a confident grin and sharp eyes. He offers to help your archers, saying he can sharpen their aim and improve their hunting skills. If you accept, he'll stay and get to work.",
-    triggered: false,
     priority: 3,
     repeatable: true,
     choices: [
@@ -1464,12 +1449,11 @@ export const choiceEvents: Record<string, GameEvent> = {
       state.buildings.stoneHut >= 3 &&
       state.resources.silver >= 200 + state.CM * 100 &&
       !state.story.seen.mysteriousWomanEvent,
-    triggerType: "resource",
+    
     timeProbability: 5,
     title: "The Mysterious Woman",
     message:
       "An attractive young woman in fine clothes arrives at the village as the sun sets. She smiles warmly at you and asks, 'Might I have shelter in your hut for the night? I've traveled far and have nowhere else to go.'",
-    triggered: false,
     priority: 3,
     repeatable: false,
     choices: [
@@ -1521,12 +1505,11 @@ export const choiceEvents: Record<string, GameEvent> = {
       state.buildings.deepPit >= 1 &&
       !state.miningBoostState?.isActive &&
       !state.story.seen.unnamedWandererAccepted,
-    triggerType: "resource",
+    
     timeProbability: 60,
     title: "The Unnamed Wanderer",
     message:
       "A man in torn clothes approaches the village, his hands marked from years of hard labor. 'I come from a mining colony,' he says in a rough voice. 'I can work for you to improve your mining yield.'",
-    triggered: false,
     priority: 3,
     repeatable: true,
     choices: [
@@ -1617,12 +1600,11 @@ export const choiceEvents: Record<string, GameEvent> = {
       state.buildings.alchemistHall >= 1 &&
       state.story.seen.alchemistArrives &&
       !state.story.seen.wanderingFirecrafterEvent,
-    triggerType: "resource",
+    
     timeProbability: 20,
     title: "The Wandering Firecrafter",
     message:
       "A hooded figure in stained robes arrives at your village. 'I am a firecrafter,' he says with an echoing voice. 'I can teach you to craft a bomb of extreme power, that tears reality itself. But knowledge has its price.'",
-    triggered: false,
     priority: 4,
     repeatable: true,
     choices: [
@@ -1711,12 +1693,11 @@ export const choiceEvents: Record<string, GameEvent> = {
       !state.story?.seen?.boneTempleProposalEvent &&
       state.buildings.blackMonolith >= 1 &&
       (state.buildings.boneTemple || 0) === 0,
-    triggerType: "resource",
+    
     timeProbability: 1,
     title: "The Elder's Demand",
     message:
       "An elder woman with clouded eyes approaches you, 'We must end the spillng of human blood,' she declares. 'The old gods demand a great monument in their honor. Only then will the gods grant us their continued favor.'",
-    triggered: false,
     priority: 5,
     repeatable: false,
     choices: [
@@ -1746,12 +1727,11 @@ export const choiceEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       (state.story?.seen?.humansSacrificeLevel || 0) >= 5 &&
       !state.story?.seen?.youngWomanProtestEvent,
-    triggerType: "resource",
+    
     timeProbability: 2,
     title: "The Young Woman's Plea",
     message:
       "A young woman approaches you with tears streaming down her face. 'Both my parents were sacrificed to that cursed monolith,' she cries. 'This barbaric behavior has to stop!'",
-    triggered: false,
     priority: 5,
     repeatable: false,
     choices: [
@@ -1828,12 +1808,11 @@ export const choiceEvents: Record<string, GameEvent> = {
         timesOccurred < 5
       );
     },
-    triggerType: "resource",
+    
     timeProbability: 90, // 1.5 hours
     title: "Frostfall",
     message:
       "Icy winds howl through the village. The elders warn that a terrible blizzard is approaching. Preparations must be made, or the consequences will be dire.",
-    triggered: false,
     priority: 4,
     repeatable: true,
     choices: [

@@ -6,7 +6,7 @@ export const loreEvents: Record<string, GameEvent> = {
     id: "restlessKnight",
     condition: (state: GameState) =>
       state.buildings.stoneHut >= 4 && !state.story.seen.restlessKnightSuccess,
-    triggerType: "resource",
+    
     timeProbability: (state: GameState) => {
       return state.story.seen.restlessKnightFailed ? 60 : 20;
     },
@@ -15,7 +15,6 @@ export const loreEvents: Record<string, GameEvent> = {
       state.story.seen.restlessKnightFailed
         ? "Again, the knight in worn armor arrives at the village. 'I have seen much of the world,' he says with a hollow voice. 'For some gold, I will share what I have seen in my travels.'"
         : "A knight in worn armor arrives at the village. 'I have seen much of the world,' he says with a hollow voice. 'For some gold, I will share what I have seen in my travels.'",
-    triggered: false,
     priority: 3,
     repeatable: true,
     choices: [
@@ -116,13 +115,12 @@ export const loreEvents: Record<string, GameEvent> = {
       state.buildings.stoneHut >= 6 &&
       state.story.seen.restlessKnightSuccess &&
       !state.story.seen.restlessKnightMountains,
-    triggerType: "resource",
+    
     timeProbability: (state: GameState) =>
       state.story.seen.restlessKnightMountainsFailed ? 60 : 20,
     title: "Return from the Mountains",
     message:
       "The knight returns, his armor scratched and weathered. 'I found something extraordinary in the mountains,' he says. I will tell you about it, for a price'",
-    triggered: false,
     priority: 3,
     repeatable: true,
     choices: [
@@ -208,13 +206,12 @@ export const loreEvents: Record<string, GameEvent> = {
       state.buildings.stoneHut >= 8 &&
       state.story.seen.restlessKnightMountains &&
       !state.story.seen.restlessKnightCoast,
-    triggerType: "resource",
+    
     timeProbability: (state: GameState) =>
       state.story.seen.restlessKnightCoastFailed ? 60 : 20,
     title: "Tales from the Shore",
     message:
       "The knight appears once more, 'I have traveled to a city on the shore of an ocean,' he says. 'What I found there defies belief. I will share this knowledge, for a price.'",
-    triggered: false,
     priority: 3,
     repeatable: true,
     choices: [
@@ -344,13 +341,12 @@ export const loreEvents: Record<string, GameEvent> = {
       state.buildings.darkEstate >= 1 &&
       state.story.seen.restlessKnightCoast &&
       !state.story.seen.restlessKnightDesert,
-    triggerType: "resource",
+    
     timeProbability: (state: GameState) =>
       state.story.seen.restlessKnightDesertFailed ? 60 : 20,
     title: "The Knight's Final Journey",
     message:
       "The knight returns, 'I traveled far south to a vast desert. There I met a man devoted to recovering the lost technology of the ancients. He showed me devices once embedded in the body, enhancing senses beyond natural limits. The ancients were not merely human.' He pauses, 'I have traveled enough. Your could use a veteran blade. I offer my service in combat, if you accept.'",
-    triggered: false,
     priority: 3,
     repeatable: true,
     choices: [

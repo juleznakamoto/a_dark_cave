@@ -9,12 +9,11 @@ export const woodcutterEvents: Record<string, GameEvent> = {
       state.resources.food > 25 &&
       !state.story.seen.woodcutterBetrayed &&
       !state.story.seen.woodcutter1Accepted,
-    triggerType: "resource",
+    
     timeProbability: 7,
     title: "The Woodcutter",
     message:
       "A muscular man with a large axe approaches the village. He flexes his arms 'I can cut trees like no other,' he boasts. 'Give me food, and I'll bring wood.'",
-    triggered: false,
     priority: 3,
     repeatable: true,
     choices: [
@@ -67,12 +66,11 @@ export const woodcutterEvents: Record<string, GameEvent> = {
       state.story.seen.woodcutter1Met &&
       !state.story.seen.woodcutterBetrayed &&
       !state.story.seen.woodcutter2Accepted,
-    triggerType: "time",
+    
     timeProbability: 7,
     title: "The Woodcutter Returns",
     message:
       "The woodcutter returns, his axe gleaming in the sun. 'Your village grows well,' he observes. 'I can bring you more wood. What do you say?'",
-    triggered: false,
     priority: 3,
     repeatable: true,
     choices: [
@@ -126,12 +124,11 @@ export const woodcutterEvents: Record<string, GameEvent> = {
       state.story.seen.woodcutter2Met &&
       !state.story.seen.woodcutterBetrayed &&
       !state.story.seen.woodcutter3Accepted,
-    triggerType: "time",
+    
     timeProbability: 7,
     title: "The Woodcutter's Offer",
     message:
       "The woodcutter approaches again 'I see your village continues to thrive,' he says with a grin. 'I can bring you more wood if you pay for it.'",
-    triggered: false,
     priority: 3,
     repeatable: true,
     choices: [
@@ -185,12 +182,11 @@ export const woodcutterEvents: Record<string, GameEvent> = {
       state.story.seen.woodcutter3Met &&
       !state.story.seen.woodcutterBetrayed &&
       !state.story.seen.woodcutter4Accepted,
-    triggerType: "time",
+    
     timeProbability: 7,
     title: "The Woodcutter's Ambitious Plan",
     message:
       "The woodcutter arrives once more, 'Do you want to use my services once more?,' he asks.'",
-    triggered: false,
     priority: 3,
     repeatable: true,
     choices: [
@@ -265,12 +261,11 @@ export const woodcutterEvents: Record<string, GameEvent> = {
       state.story.seen.woodcutter4Met &&
       !state.story.seen.woodcutterBetrayed &&
       !state.story.seen.woodcutter5Accepted,
-    triggerType: "time",
+    
     timeProbability: 7,
     title: "The Woodcutter's Grand Proposal",
     message:
       "The woodcutter appears with a confident smile. 'How about we make one more deal?'",
-    triggered: false,
     priority: 3,
     repeatable: true,
     choices: [
@@ -345,12 +340,11 @@ export const woodcutterEvents: Record<string, GameEvent> = {
       state.story.seen.woodcutter5Met &&
       !state.story.seen.woodcutterBetrayed &&
       !state.story.seen.woodcutter6Accepted,
-    triggerType: "time",
+    
     timeProbability: 7,
     title: "The Woodcutter's Offer",
     message:
       "The woodcutter returns to the village, 'Do you want to use my services once more?,' he asks.'",
-    triggered: false,
     priority: 3,
     repeatable: true,
     choices: [

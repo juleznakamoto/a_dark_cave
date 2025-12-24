@@ -45,7 +45,7 @@ function createBoneDevourerEvent(config: BoneDevourerConfig): GameEvent {
 
       return false;
     },
-    triggerType: "resource",
+    
     timeProbability: (state: GameState) => {
       // First appearance of this level: 10 minutes
       // After being seen (regardless of accept/decline): 25 minutes
@@ -60,7 +60,6 @@ function createBoneDevourerEvent(config: BoneDevourerConfig): GameEvent {
       }
       return `A deformed creature shuffles to the village gates, its hunched form covered in pale, stretched skin. It speaks in a rasping voice: 'I seek bones. ${boneCost} bones. I pay ${silverReward} silver.'`;
     },
-    triggered: false,
     priority: 3,
     repeatable: true,
     choices: [

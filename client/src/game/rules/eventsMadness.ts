@@ -9,12 +9,11 @@ export const madnessEvents: Record<string, GameEvent> = {
     id: "whisperingVoices",
     condition: (state: GameState) =>
       getTotalMadness(state) >= 10 && !state.events.whisperingVoices,
-    triggerType: "resource",
+    
     timeProbability: 30,
     title: "Whispering Voices",
     message:
       "You hear faint whispers in the wind, speaking words in no language you recognize, but somehow you understand them. They speak of ancient things buried beneath the earth. The voices grow clearer until in the evening they are suddenly gone. (+1 Madness)",
-    triggered: false,
     priority: 2,
     repeatable: false,
     effect: (state: GameState) => ({
@@ -34,11 +33,10 @@ export const madnessEvents: Record<string, GameEvent> = {
     id: "shadowsMove",
     condition: (state: GameState) =>
       getTotalMadness(state) >= 15 && !state.events.shadowsMove,
-    triggerType: "resource",
+    
     timeProbability: 30,
     message:
       "The shadows in the village seem to move wrong. They stretch too long, twist at impossible angles, and sometimes seem to move independently of their sources. You catch glimpses of shapes that shouldn't be there. (+2 Madness)",
-    triggered: false,
     priority: 1,
     repeatable: false,
     effect: (state: GameState) => ({
@@ -60,12 +58,11 @@ export const madnessEvents: Record<string, GameEvent> = {
       getTotalMadness(state) >= 20 &&
       state.villagers.free > 0 &&
       !state.events.villagerStares,
-    triggerType: "resource",
+    
     timeProbability: 30,
     title: "Hollow Stares",
     message:
       "One of the villagers has begun staring at nothing for hours. When you approach, their eyes are completely black. They smile when they notice you watching.",
-    triggered: false,
     priority: 3,
     repeatable: false,
     isTimedChoice: true,
@@ -132,11 +129,10 @@ export const madnessEvents: Record<string, GameEvent> = {
     id: "bloodInWater",
     condition: (state: GameState) =>
       getTotalMadness(state) >= 25 && !state.events.bloodInWater,
-    triggerType: "resource",
+    
     timeProbability: 30,
     message:
       "The village water runs red for three days. The villagers don't seem to notice, drinking it as if nothing has changed. You taste copper and iron, but they claim it tastes like the sweetest spring water. (+2 Madness)",
-    triggered: false,
     priority: 2,
     repeatable: false,
     effect: (state: GameState) => ({
@@ -156,12 +152,11 @@ export const madnessEvents: Record<string, GameEvent> = {
     id: "facesInWalls",
     condition: (state: GameState) =>
       getTotalMadness(state) >= 27 && !state.events.facesInWalls,
-    triggerType: "resource",
+    
     timeProbability: 30,
     title: "Faces in the Walls",
     message:
       "The wooden walls of your huts have begun showing faces - twisted, agonized expressions that seem to push through from the other side. They mouth silent screams and pleas. The villagers step around them as if they've always been there.",
-    triggered: false,
     priority: 3,
     repeatable: false,
     isTimedChoice: true,
@@ -221,11 +216,10 @@ export const madnessEvents: Record<string, GameEvent> = {
         !state.events.wrongVillagers
       );
     },
-    triggerType: "resource",
+    
     timeProbability: 30,
     message:
       "You count the villagers and there are three more than there should be. The extra ones look exactly like villagers who died months ago. They work, eat, and sleep normally, but their eyes hold depths of ancient malice. (+2 Madness)",
-    triggered: false,
     priority: 2,
     repeatable: false,
     effect: (state: GameState) => {
@@ -258,12 +252,11 @@ export const madnessEvents: Record<string, GameEvent> = {
     id: "skinCrawling",
     condition: (state: GameState) =>
       getTotalMadness(state) >= 35 && !state.events.skinCrawling,
-    triggerType: "resource",
+    
     timeProbability: 30,
     title: "Crawling Skin",
     message:
       "Your skin begins to crawl - literally. You can see shapes moving beneath the surface, seamingly creating patterns. The villagers watch you scratch bloody furrows in your arms with expressions of great worry.",
-    triggered: false,
     priority: 4,
     repeatable: false,
     isTimedChoice: true,
@@ -331,12 +324,11 @@ export const madnessEvents: Record<string, GameEvent> = {
       getTotalMadness(state) >= 35 &&
       state.buildings.woodenHut > 0 &&
       !state.events.creatureInHut,
-    triggerType: "resource",
+    
     timeProbability: 30,
     title: "Something in the Hut",
     message:
       "Through the cracks in one of your wooden huts, you glimpse something that shouldn't be there. A dark shape moves in the darkness, too tall and too thin to be human. As it turns toward you, you see eyes gleaming like dying stars.",
-    triggered: false,
     priority: 3,
     repeatable: false,
     isTimedChoice: true,
@@ -386,12 +378,11 @@ export const madnessEvents: Record<string, GameEvent> = {
     id: "wrongReflections",
     condition: (state: GameState) =>
       getTotalMadness(state) >= 40 && !state.events.wrongReflections,
-    triggerType: "resource",
+    
     timeProbability: 30,
     title: "Wrong Reflections",
     message:
       "The surface of the village well shows reflections that don't match reality. You see yourself, but older, with hollow eyes and a mouth full of darkness.",
-    triggered: false,
     priority: 2,
     repeatable: false,
     isTimedChoice: true,
@@ -435,12 +426,11 @@ export const madnessEvents: Record<string, GameEvent> = {
     id: "villagersStareAtSky",
     condition: (state: GameState) =>
       getTotalMadness(state) >= 45 && !state.events.villagersStareAtSky,
-    triggerType: "resource",
+    
     timeProbability: 30,
     title: "Skyward Gaze",
     message:
       "All the villagers have stopped their work and stand motionless, staring at the empty sky. They remain like this for hours, unblinking, while tears of black liquid stream down their faces. When you follow their gaze, you see only ordinary clouds, but something feels terribly wrong.",
-    triggered: false,
     priority: 2,
     repeatable: false,
     isTimedChoice: true,
@@ -510,12 +500,11 @@ export const madnessEvents: Record<string, GameEvent> = {
       getTotalMadness(state) >= 20 &&
       !state.events.monolithDemand &&
       !state.buildings.blackMonolith,
-    triggerType: "resource",
+    
     timeProbability: 5,
     title: "Demand for the Monolith",
     message:
       "The villagers demand to build a monolith in the village center, a monument to appease the darkness that creeps into their minds. Through sacrifice of animals they want to find peace.",
-    triggered: false,
     priority: 3,
     repeatable: false,
     effect: (state: GameState) => ({
@@ -538,12 +527,11 @@ export const madnessEvents: Record<string, GameEvent> = {
       (state.story?.seen?.animalsSacrificeLevel || 0) >= 3 &&
       !state.events.humanSacrificeDemand &&
       state.buildings.blackMonolith > 0,
-    triggerType: "resource",
+    
     timeProbability: 5,
     title: "The Dark Hunger",
     message:
       "The villagers gather around the monolith, their eyes hollow. 'The animals are not enough,' they whisper in unison. 'The darkness demands more. It hungers for human souls.' They look at you, waiting for your command to make the ultimate sacrifice.",
-    triggered: false,
     priority: 3,
     repeatable: false,
     effect: (state: GameState) => ({

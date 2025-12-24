@@ -10,12 +10,11 @@ export const villageAttackEvents: Record<string, GameEvent> = {
       state.boneDevourerState.lastAcceptedLevel >= 6 &&
       !state.clothing.devourer_crown &&
       state.current_population > 10,
-    triggerType: "resource",
+    
     timeProbability: 15,
     title: "The Bone Army",
     message:
       "The earth trembles as skeletal creatures emerge from the forest. The Bone Devourer has used the bones you traded to forge an unholy legion. With hollow eyes and sharpened bone weapons, they approach the city.",
-    triggered: false,
     priority: 4,
     repeatable: true,
     choices: [
@@ -231,12 +230,11 @@ export const villageAttackEvents: Record<string, GameEvent> = {
       state.buildings.woodenHut >= 3 &&
       !state.clothing.alphas_hide &&
       state.current_population > 10,
-    triggerType: "resource",
+    
     timeProbability: 40,
     title: "Wolf Attack",
     message:
       "Close to midnight, wolves emerge from the darkness, their eyes glowing with unnatural hunger. Their howls echo filled with malice as they circle the village.",
-    triggered: false,
     priority: 4,
     repeatable: true,
     choices: [
@@ -480,12 +478,11 @@ export const villageAttackEvents: Record<string, GameEvent> = {
       state.buildings.woodenHut >= 8 &&
       state.current_population > 10 &&
       !state.story.seen.cannibalRaidVictory,
-    triggerType: "resource",
+    
     timeProbability: 40,
     title: "Cannibal Raid",
     message:
       "War drums echo through the night as tribe of cannibals emerges from the wilderness. They advance on the village with crude weapons and terrible intent.",
-    triggered: false,
     priority: 4,
     repeatable: true,
     choices: [

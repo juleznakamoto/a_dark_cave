@@ -11,12 +11,11 @@ export const ringEvents: Record<string, GameEvent> = {
       state.buildings.darkEstate >= 1 &&
       state.buildings.stoneHut >= 4 &&
       !state.clothing.feeding_ring,
-    triggerType: "resource",
+    
     timeProbability: 15,
     title: "The Night Terror",
     message:
       "You awaken in the dead of night, paralyzed. You sense a presence looming beside your bed, silent and unmoving. Before terror can take hold, sleep drags you back into the void. At dawn, you find an unfamiliar ring on one of your fingers.",
-    triggered: false,
     priority: 4,
     repeatable: false,
     choices: [
@@ -57,12 +56,11 @@ export const ringEvents: Record<string, GameEvent> = {
       state.buildings.darkEstate >= 1 &&
       state.buildings.stoneHut >= 5 &&
       state.clothing.feeding_ring,
-    triggerType: "resource",
+    
     timeProbability: 20,
     title: "Bloodied Awakening",
     message:
       "You wake as dawn breaks, your clothes soaked in fresh blood. It is not yours. A villager arrives at the estate, face pale with horror. 'Eight are dead,' he whispers. 'Torn apart in the night.' The ring on your finger throbs with agonizing pain.",
-    triggered: false,
     priority: 4,
     repeatable: false,
     choices: [
@@ -102,12 +100,11 @@ export const ringEvents: Record<string, GameEvent> = {
       state.buildings.darkEstate >= 1 &&
       state.clothing.feeding_ring &&
       state.events.bloodiedAwakening,
-    triggerType: "resource",
+    
     timeProbability: 5,
     title: "No Escape",
     message:
       "After the horrifying events, you try once more to remove the cursed ring. But the ring will not yield, as if it has become part of you. There is only one way to be free of it now.",
-    triggered: false,
     priority: 4,
     repeatable: false,
     choices: [
@@ -135,12 +132,11 @@ export const ringEvents: Record<string, GameEvent> = {
       state.buildings.stoneHut >= 6 &&
       !state.clothing.feeding_ring &&
       (state.events.bloodiedAwakening || state.events.desperateAmputation),
-    triggerType: "resource",
+    
     timeProbability: 60,
     title: "The Mercenary",
     message:
       "A scarred mercenary arrives at the village, hand resting on his blade. 'I’m not here to stir up trouble. Pay me 100 gold, and I'll keep things peaceful. Refuse, and my men will burn this place to the ground.'",
-    triggered: false,
     priority: 4,
     repeatable: false,
     choices: [
@@ -225,12 +221,11 @@ export const ringEvents: Record<string, GameEvent> = {
       state.buildings.darkEstate >= 1 &&
       state.events.mercenaryDemand &&
       state.story.seen.mercenaryDemand_payGold,
-    triggerType: "resource",
+    
     timeProbability: 30,
     title: "The Mercenary Returns",
     message:
       "The mercenary is back, and this time he brings more men. 'Times are tough,' he says with a grin. 'The price has gone up. 200 gold, or things get messy.'",
-    triggered: false,
     priority: 4,
     repeatable: false,
     choices: [
@@ -308,12 +303,11 @@ export const ringEvents: Record<string, GameEvent> = {
       state.buildings.darkEstate >= 1 &&
       state.events.mercenaryDemand &&
       state.story.seen.mercenaryDemand_giveRing,
-    triggerType: "resource",
+    
     timeProbability: 5,
     title: "The Massacre",
     message:
       "A pale villager rushes to you, breathless with terror. 'The mercenary camp... everyone's dead. They killed each other in the night. We found 500 silver among the corpses.'",
-    triggered: false,
     priority: 4,
     repeatable: false,
     choices: [

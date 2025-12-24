@@ -1033,7 +1033,7 @@ export const merchantEvents: Record<string, GameEvent> = {
   merchant: {
     id: "merchant",
     condition: (state: GameState) => state.buildings.woodenHut >= 2,
-    triggerType: "resource",
+    
     timeProbability: (state: GameState) =>
       10 + 0.5 * state.buildings.tradePost ||
       0 + 1 * state.buildings.grandBazaar ||
@@ -1042,7 +1042,6 @@ export const merchantEvents: Record<string, GameEvent> = {
     title: "Traveling Merchant",
     message:
       "A weathered merchant arrives, his cart overflowing with wares. His eyes glint with avarice as he murmurs 'I have rare items for sale'.",
-    triggered: false,
     priority: 3,
     repeatable: true,
     choices: [],

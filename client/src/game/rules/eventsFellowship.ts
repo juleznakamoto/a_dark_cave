@@ -7,7 +7,7 @@ export const fellowshipEvents: Record<string, GameEvent> = {
     id: "wizardOffer",
     condition: (state: GameState) =>
       state.buildings.wizardTower >= 1 && !state.fellowship.elder_wizard,
-    triggerType: "resource",
+    
     timeProbability: (state: GameState) => {
       return state.story.seen.wizardOfferDeclined ? 45 : 30;
     },
@@ -16,7 +16,6 @@ export const fellowshipEvents: Record<string, GameEvent> = {
       state.story.seen.wizardOfferDeclined
         ? "The old wizard approaches you again, 'My offer to join you in the fight against the foes from the depths still stands. For a fair price, I will join you.'"
         : "The old wizard approaches you, 'I have lived long and seen much,' he says with a weary voice. 'The threat you face is dire. For a fair price, I will join you in the fight against the foes that emerge from the depths.'",
-    triggered: false,
     priority: 3,
     repeatable: true,
     choices: [

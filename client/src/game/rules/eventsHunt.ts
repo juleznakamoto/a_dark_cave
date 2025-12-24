@@ -5,11 +5,10 @@ export const huntEvents: Record<string, GameEvent> = {
   blacksmithHammerChoice: {
     id: "blacksmithHammerChoice",
     condition: (state: GameState) => false, // Only triggered by hunt action
-    triggerType: "action",
+    
     title: "The Giant's Forge",
     message:
       "Deep in the forest, you discover the ruin of a stone building with a massive furnace. You find skeletal remains of what must have been a giant, next to it a magnificent blacksmith hammer. Do you take it?",
-    triggered: false,
     priority: 5,
     repeatable: false,
     choices: [
@@ -57,11 +56,10 @@ export const huntEvents: Record<string, GameEvent> = {
   redMaskChoice: {
     id: "redMaskChoice",
     condition: (state: GameState) => false, // Only triggered by hunt action
-    triggerType: "action",
+    
     title: "The Raven's Gift",
     message:
       "While hunting, you see an oddly large black raven staring at you from a broken tree. As you approach it, Suddenly it croaks, sounding like it's saying a word again and again. Then it flies away. In front of the tree lies a mask made of deep red leather. Do you take it?",
-    triggered: false,
     priority: 5,
     repeatable: false,
     choices: [

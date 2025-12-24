@@ -340,11 +340,10 @@ function createRiddleEvent(
       // Check base precondition
       return config.precondition(state);
     },
-    triggerType: "resource",
+    
     timeProbability: level === "first" ? 30 : 45,
     title: config.title,
     message,
-    triggered: false,
     priority: 4,
     repeatable: false,
     isTimedChoice: true,
@@ -380,12 +379,11 @@ export const riddleEvents: Record<string, GameEvent> = {
       state.events.riddleOfTears_correct === true &&
       state.events.riddleOfEternal_correct === true &&
       !state.events.whisperersReward,
-    triggerType: "resource",
+    
     timeProbability: 5,
     title: "The Whisperer's Gift",
     message:
       "The cloaked figure appears again. His whispers drift through the cold night one last time before he vanishes, 'Your wisdom has been weighed and found worthy. May shadows guard your path, and fortune follow your name.'",
-    triggered: false,
     priority: 4,
     repeatable: true,
     choices: [

@@ -7,7 +7,7 @@ export const noChoiceEvents: Record<string, GameEvent> = {
     id: "bloodDrainedVillagers",
     condition: (state: GameState) =>
       state.buildings.stoneHut >= 7 && !state.story.seen.collapsedTowerExplored,
-    triggerType: "resource",
+    
     timeProbability: (state: GameState) =>
       state.story.seen.bloodDrainedVillagersFirstTime ? 30 : 45,
     title: "Drained Bodies",
@@ -20,7 +20,6 @@ export const noChoiceEvents: Record<string, GameEvent> = {
         return `Again, 8 more villagers are discovered dead at dawn, their bodies drained of blood, covered in the same mysterious marks. The demands that something be done about what dwells in the collapsed tower grow louder.`;
       }
     },
-    triggered: false,
     priority: 4,
     visualEffect: {
       type: "glow",
@@ -50,10 +49,9 @@ export const noChoiceEvents: Record<string, GameEvent> = {
     id: "villageBecomesCity",
     condition: (state: GameState) =>
       state.buildings.stoneHut >= 5 && !state.flags.hasCity,
-    triggerType: "time",
+    
     message:
       "The village has grown into a city. What began as a small settlement now stands as a thriving center of stone and smoke.",
-    triggered: false,
     priority: 10,
     timeProbability: 0.01,
     repeatable: false,
@@ -76,10 +74,9 @@ export const noChoiceEvents: Record<string, GameEvent> = {
       state.buildings.palisades >= 3 &&
       state.buildings.watchtower >= 3 &&
       !state.flags.hasFortress,
-    triggerType: "time",
+    
     message:
       "Your bastion has grown into a mighty fortress of stone and steel.",
-    triggered: false,
     priority: 10,
     timeProbability: 0.01,
     repeatable: false,
@@ -99,11 +96,10 @@ export const noChoiceEvents: Record<string, GameEvent> = {
     id: "findElderScroll",
     condition: (state: GameState) =>
       state.buildings.woodenHut >= 6 && !state.relics.elder_scroll,
-    triggerType: "time",
+    
     timeProbability: 45,
     message:
       "During the night as you pass a narrow path, something moves at the edge of your vision, like a shadow fleeing the firelight. You follow it, and there, upon the cold stones, lies an ancient scroll.",
-    triggered: false,
     priority: 5,
     visualEffect: {
       type: "glow",
@@ -128,12 +124,11 @@ export const noChoiceEvents: Record<string, GameEvent> = {
       state.buildings.shrine >= 1 &&
       !state.blessings.forests_grace &&
       !state.story.seen.blindDruidBlessing,
-    triggerType: "resource",
+    
     timeProbability: 0.5,
     title: "The Blind Druid",
     message:
       "A blind druid emerges from the forest. He approaches the shrine and nods approvingly. 'The gods of the forest are pleased with your devotion, they grant you their blessing'.",
-    triggered: false,
     priority: 5,
     visualEffect: {
       type: "glow",
