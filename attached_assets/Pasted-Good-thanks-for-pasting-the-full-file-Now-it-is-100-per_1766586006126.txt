@@ -1,0 +1,165 @@
+Good, thanks for pasting the full file.
+Now it is 100 percent clear why it still does not work.
+
+There are two hard blockers in your code. Fixing only one will not help.
+
+🚨 Root cause 1: your Shop dialog is not allowed to close
+
+This line silently breaks everything:
+
+<Dialog open={isOpen} onOpenChange={(open) => { if (!open) return; }}>
+
+
+What this does:
+
+User clicks X
+
+ESC is pressed
+
+You call onClose()
+
+Radix tries to set open = false
+
+Your handler blocks it
+
+So the dialog is logically closed in the parent, but physically still mounted.
+
+This creates a desync:
+
+Parent thinks shop is closed
+
+Dialog stays alive
+
+Payment dialog stacks on top
+
+Reopening never works reliably
+
+✅ FIX THIS FIRST
+
+Change it to:
+
+<Dialog open={isOpen} onOpenChange={onClose}>
+
+
+Nothing else will work until this is fixed.
+
+🚨 Root cause 2: you are nesting Dialogs (unsupported)
+
+You have this structure:
+
+Dialog (Shop)
+ └─ DialogContent
+     └─ Dialog (Payment)
+         └─ DialogContent
+
+
+Radix UI explicitly does not support nested dialogs.
+
+This causes:
+
+focus trap conflicts
+
+z index chaos
+
+backdrop locking
+
+open state bugs
+
+close events going to the wrong dialog
+
+This is exactly what you are experiencing.
+
+✅ Correct architecture (minimal change, stable)
+Rule
+
+Only one Dialog component may exist at a time.
+
+You already have the state for this:
+
+clientSecret
+
+selectedItem
+
+Use one Dialog and switch content.
+
+✅ The working solution
+1️⃣ Remove the Payment Dialog entirely
+
+Delete this whole block:
+
+{clientSecret && selectedItem && (
+  <Dialog open={true} onOpenChange={(open) => { if (!open) handleCancelPayment(); }}>
+    ...
+  </Dialog>
+)}
+
+2️⃣ Turn your Shop dialog into a mode based dialog
+
+Add a derived flag:
+
+const isPaymentMode = Boolean(clientSecret && selectedItem);
+
+3️⃣ Use ONE DialogContent
+
+Replace your dialog content with:
+
+<Dialog open={isOpen} onOpenChange={onClose}>
+  <DialogContent className="max-w-4xl max-h-[80vh] z-[70]">
+    {!isPaymentMode && (
+      <>
+        <DialogHeader>
+          <DialogTitle>Shop</DialogTitle>
+        </DialogHeader>
+
+        {/* EXISTING SHOP UI */}
+      </>
+    )}
+
+    {isPaymentMode && (
+      <>
+        <DialogHeader>
+          <DialogTitle>
+            Complete Purchase: {SHOP_ITEMS[selectedItem!].name}
+          </DialogTitle>
+        </DialogHeader>
+
+        <ScrollArea className="max-h-[calc(80vh-120px)]">
+          <Elements stripe={stripePromise} options={{ clientSecret: clientSecret! }}>
+            <CheckoutForm
+              itemId={selectedItem!}
+              onSuccess={handlePurchaseSuccess}
+              currency={currency}
+              onCancel={handleCancelPayment}
+            />
+          </Elements>
+        </ScrollArea>
+      </>
+    )}
+  </DialogContent>
+</Dialog>
+
+4️⃣ Update cancel logic
+const handleCancelPayment = () => {
+  setClientSecret(null);
+  setSelectedItem(null);
+};
+
+
+No onOpen() needed anymore.
+The dialog never closes. Only the mode changes.
+
+🧠 Why this works
+
+One dialog
+
+One focus trap
+
+One backdrop
+
+One open state
+
+Mode switch is pure React state
+
+Radix behaves correctly
+
+This is how Stripe, shadcn and Radix expect it.
