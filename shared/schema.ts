@@ -163,7 +163,6 @@ export const gameStateSchema = z.object({
       sacrificial_tunic: z.boolean().default(false),
       shadow_boots: z.boolean().default(false),
       feeding_ring: z.boolean().default(false),
-      tarnished_compass: z.boolean().default(false),
       unnamed_book: z.boolean().default(false),
       occultist_grimoire: z.boolean().default(false),
       ravens_orb: z.boolean().default(false),
@@ -184,6 +183,7 @@ export const gameStateSchema = z.object({
       shadow_flute: z.boolean().default(false),
       bloodstone: z.boolean().default(false),
       frostglass: z.boolean().default(false),
+      tarnished_compass: z.boolean().default(false),
       sealed_chest: z.boolean().default(false),
     })
     .default({}),
