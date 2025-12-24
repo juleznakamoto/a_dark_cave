@@ -81,6 +81,11 @@ export default function GameFooter() {
         onClose={() => setShopDialogOpen(false)}
         onOpen={() => setShopDialogOpen(true)}
       />
+      <FullGamePurchaseDialog
+        isOpen={fullGamePurchaseDialogOpen}
+        onClose={() => setFullGamePurchaseDialogOpen(false)}
+        openedFromFooter={true}
+      />
       <footer className="border-t border-border px-2 py-2 text-xs text-muted-foreground pointer-events-auto z-50">
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-0 flex-1">

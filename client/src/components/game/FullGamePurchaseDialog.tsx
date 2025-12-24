@@ -202,15 +202,17 @@ function CheckoutForm({ onSuccess, currency, onCancel }: CheckoutFormProps) {
 interface FullGamePurchaseDialogProps {
   isOpen: boolean;
   onClose: () => void;
+  openedFromFooter?: boolean;
 }
 
 export default function FullGamePurchaseDialog({
   isOpen,
   onClose,
+  openedFromFooter = false,
 }: FullGamePurchaseDialogProps) {
   const gameState = useGameStore();
-  // Always require purchase - dialog should only close after successful purchase
-  const requiresPurchase = true;
+  // Only require purchase if NOT opened from footer (i.e., opened due to BTP mode)
+  const requiresPurchase = !openedFromFooter;
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [currency, setCurrency] = useState<"EUR" | "USD">("USD");
   const [currentUser, setCurrentUser] = useState<{
@@ -352,11 +354,11 @@ export default function FullGamePurchaseDialog({
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={undefined}>
+    <Dialog open={isOpen} onOpenChange={requiresPurchase ? undefined : onClose}>
       <DialogContent
-        className="max-w-md [&>button]:hidden"
-        onEscapeKeyDown={(e) => e.preventDefault()}
-        onPointerDownOutside={(e) => e.preventDefault()}
+        className={`max-w-md ${requiresPurchase ? '[&>button]:hidden' : ''}`}
+        onEscapeKeyDown={(e) => requiresPurchase && e.preventDefault()}
+        onPointerDownOutside={(e) => requiresPurchase && e.preventDefault()}
       >
         <DialogHeader>
           <DialogTitle>
