@@ -388,6 +388,8 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
 
   const handlePurchaseClick = async (itemId: string) => {
     const item = SHOP_ITEMS[itemId];
+    
+    logger.log(`[SHOP] Purchase clicked for item: ${itemId}, price: ${item.price}`);
 
     // For free items, handle them directly
     if (item.price === 0) {
@@ -576,6 +578,8 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
 
     // For paid items, create payment intent for embedded checkout
     const user = await getCurrentUser();
+    logger.log(`[SHOP] Creating payment intent for ${itemId}, user: ${user?.id}`);
+    
     const response = await fetch("/api/payment/create-intent", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -588,12 +592,17 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     });
 
     const { clientSecret } = await response.json();
+    logger.log(`[SHOP] Payment intent created, closing shop dialog and opening payment dialog`);
+    
     setClientSecret(clientSecret);
     setSelectedItem(itemId);
+    onClose(); // Close the shop dialog when payment flow starts
   };
 
   const handlePurchaseSuccess = async () => {
     const item = SHOP_ITEMS[selectedItem!];
+    
+    logger.log(`[SHOP] Purchase success for item: ${selectedItem}, price: ${item.price}`);
 
     // Set hasMadeNonFreePurchase flag if this is a paid item
     if (item.price > 0) {
@@ -1297,7 +1306,10 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                   itemId={selectedItem!}
                   onSuccess={handlePurchaseSuccess}
                   currency={currency}
-                  onCancel={() => setClientSecret(null)}
+                  onCancel={() => {
+                    logger.log(`[SHOP] Payment canceled, reopening shop dialog`);
+                    setClientSecret(null);
+                  }}
                 />
               </Elements>
             </div>
