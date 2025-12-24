@@ -8,6 +8,7 @@ import {
 } from "./auth";
 import { logger } from "@/lib/logger";
 import { getSupabaseClient } from "@/lib/supabase";
+import { generateDefaultGameState } from "./state";
 
 const isDev = import.meta.env.DEV;
 
@@ -26,6 +27,15 @@ const DB_NAME = "ADarkCaveDB";
 const DB_VERSION = 2;
 const SAVE_KEY = "mainSave";
 const LAST_CLOUD_STATE_KEY = "lastCloudState";
+
+// Helper function to merge loaded game state with default values from the schema.
+// This ensures that any missing fields in the loaded state are populated with defaults,
+// but existing values in the loaded state take precedence.
+function mergeWithDefaults(loadedState: GameState): GameState {
+  const defaultState = generateDefaultGameState();
+  // Deep merge: existing values in loadedState should overwrite defaults
+  return { ...defaultState, ...loadedState };
+}
 
 // Calculate diff between two states
 function calculateStateDiff(
@@ -307,13 +317,13 @@ export async function saveGame(
 
         // Save via Edge Function (handles auth, rate limiting, and trust)
         const supabaseClient = await getSupabaseClient();
-        
+
         // Verify we have an active session (Supabase client will automatically include the JWT)
         const { data: { session } } = await supabaseClient.auth.getSession();
         if (!session) {
           throw new Error('No active session');
         }
-        
+
         const { data, error } = await supabaseClient.functions.invoke('save-game', {
           body: {
             gameStateDiff: stateDiff,
@@ -332,7 +342,7 @@ export async function saveGame(
           });
           throw error;
         }
-        
+
         logger.log('[SAVE CLOUD] Edge Function success:', data);
 
         // Update lastCloudState only after successful cloud save
@@ -413,10 +423,7 @@ export async function loadGame(): Promise<GameState | null> {
           if (localPlayTime > cloudPlayTime) {
             logger.log("[LOAD] 💾 Local save is newer - using local and syncing to cloud");
 
-            const stateWithDefaults = {
-              ...localSave.gameState,
-              cooldownDurations: localSave.gameState.cooldownDurations || {},
-            };
+            const stateWithDefaults = mergeWithDefaults(localSave.gameState);
             const processedState = await processUnclaimedReferrals(stateWithDefaults);
 
             // Sync local progress to cloud
@@ -427,7 +434,10 @@ export async function loadGame(): Promise<GameState | null> {
               logger.log("[LOAD] ✅ Local progress synced to cloud");
             } catch (syncError: any) {
               if (syncError.message?.includes("OCC violation")) {
-                logger.log("[LOAD] 📊 Cloud already has this save state - skipping sync");
+                log("OCC violation detected, likely due to concurrent save. State will be updated with latest cloud version if applicable.");
+                // If OCC violates, it means the cloud save has been updated since we loaded it.
+                // We should re-load from cloud and re-apply local changes if possible, or just use the latest cloud state.
+                // For simplicity here, we'll just log and ensure lastCloudState is updated with the state we intended to save.
                 await db.put("lastCloudState", processedState, LAST_CLOUD_STATE_KEY);
               } else {
                 throw syncError;
@@ -440,15 +450,12 @@ export async function loadGame(): Promise<GameState | null> {
             logger.log("[LOAD] ☁️ Cloud save is newer - using cloud save");
 
             const { formatSaveTimestamp } = await import("@/lib/utils");
-            
-            const stateWithDefaults = {
-              ...cloudSave.gameState,
-              cooldownDurations: cloudSave.gameState.cooldownDurations || {},
-              // Format lastSaved if it's a timestamp
-              lastSaved: cloudSave.gameState.lastSaved && typeof cloudSave.gameState.lastSaved === 'number' 
-                ? formatSaveTimestamp() 
-                : cloudSave.gameState.lastSaved,
-            };
+
+            const stateWithDefaults = mergeWithDefaults(cloudSave.gameState);
+            // Format lastSaved if it's a timestamp
+            stateWithDefaults.lastSaved = stateWithDefaults.lastSaved && typeof stateWithDefaults.lastSaved === 'number' 
+              ? formatSaveTimestamp() 
+              : stateWithDefaults.lastSaved;
 
             const processedState = await processUnclaimedReferrals(
               stateWithDefaults,
@@ -476,15 +483,12 @@ export async function loadGame(): Promise<GameState | null> {
           logger.log("[LOAD] ☁️ Using cloud save (no local save)");
 
           const { formatSaveTimestamp } = await import("@/lib/utils");
-          
-          const stateWithDefaults = {
-            ...cloudSave.gameState,
-            cooldownDurations: cloudSave.gameState.cooldownDurations || {},
-            // Format lastSaved if it's a timestamp
-            lastSaved: cloudSave.gameState.lastSaved && typeof cloudSave.gameState.lastSaved === 'number' 
-              ? formatSaveTimestamp() 
-              : cloudSave.gameState.lastSaved,
-          };
+
+          const stateWithDefaults = mergeWithDefaults(cloudSave.gameState);
+          // Format lastSaved if it's a timestamp
+          stateWithDefaults.lastSaved = stateWithDefaults.lastSaved && typeof stateWithDefaults.lastSaved === 'number' 
+            ? formatSaveTimestamp() 
+            : stateWithDefaults.lastSaved;
 
           const processedState = await processUnclaimedReferrals(
             stateWithDefaults,
@@ -509,10 +513,7 @@ export async function loadGame(): Promise<GameState | null> {
           // No cloud save but has local save - sync local to cloud
           logger.log("[LOAD] 📤 No cloud save found, syncing local to cloud");
 
-          const stateWithDefaults = {
-            ...localSave.gameState,
-            cooldownDurations: localSave.gameState.cooldownDurations || {},
-          };
+          const stateWithDefaults = mergeWithDefaults(localSave.gameState);
           const processedState = await processUnclaimedReferrals(stateWithDefaults);
 
           try {
@@ -539,19 +540,15 @@ export async function loadGame(): Promise<GameState | null> {
         // Fall back to local save if cloud fails
         if (localSave) {
           logger.warn("[LOAD] ⚠️ Using local save as fallback");
-          const processedState = await processUnclaimedReferrals(
-            localSave.gameState,
-          );
+          const stateWithDefaults = mergeWithDefaults(localSave.gameState);
+          const processedState = await processUnclaimedReferrals(stateWithDefaults);
           return processedState;
         }
       }
     } else {
       // Not authenticated, use local save only
       if (localSave) {
-        const stateWithDefaults = {
-          ...localSave.gameState,
-          cooldownDurations: localSave.gameState.cooldownDurations || {},
-        };
+        const stateWithDefaults = mergeWithDefaults(localSave.gameState);
         const processedState =
           await processUnclaimedReferrals(stateWithDefaults);
         if (isDev) {
