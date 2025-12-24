@@ -882,7 +882,10 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[80vh] z-[70]">
+      <DialogContent 
+        className={clientSecret ? "max-w-md max-h-[80vh] z-[80]" : "max-w-4xl max-h-[80vh] z-[70]"}
+        hideOverlay={false}
+      >
         <DialogHeader>
           <DialogTitle>
             {clientSecret ? `Complete Purchase: ${SHOP_ITEMS[selectedItem!]?.name}` : "Shop"}
