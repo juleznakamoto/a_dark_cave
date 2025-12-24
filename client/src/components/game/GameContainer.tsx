@@ -416,6 +416,7 @@ export default function GameContainer() {
       <ShopDialog
         isOpen={shopDialogOpen}
         onClose={() => setShopDialogOpen(false)}
+        onOpen={() => setShopDialogOpen(true)}
       />
       <LeaderboardDialog
         isOpen={leaderboardDialogOpen}

@@ -78,6 +78,7 @@ export default function GameFooter() {
       <ShopDialog
         isOpen={shopDialogOpen}
         onClose={() => setShopDialogOpen(false)}
+        onOpen={() => setShopDialogOpen(true)}
       />
       <footer className="border-t border-border px-2 py-2 text-xs text-muted-foreground pointer-events-auto z-50">
         <div className="flex justify-between items-center">
