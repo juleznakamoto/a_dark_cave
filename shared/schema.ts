@@ -184,6 +184,7 @@ export const gameStateSchema = z.object({
       shadow_flute: z.boolean().default(false),
       bloodstone: z.boolean().default(false),
       frostglass: z.boolean().default(false),
+      sealed_chest: z.boolean().default(false),
     })
     .default({}),
   fellowship: z
