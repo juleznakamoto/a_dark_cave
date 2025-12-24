@@ -1,6 +1,17 @@
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 
+/**
+ * Check if the full game has been purchased
+ */
+export const hasFullGamePurchase = (state: GameState): boolean => {
+  return Object.keys(state.activatedPurchases || {}).some(
+    (key) =>
+      (key === "full_game" || key.startsWith("purchase-full_game-")) &&
+      state.activatedPurchases?.[key],
+  );
+};
+
 export const fullGameUnlockEvents: Record<string, GameEvent> = {
   firstElderWarning: {
     id: "firstElderWarning",
@@ -9,7 +20,8 @@ export const fullGameUnlockEvents: Record<string, GameEvent> = {
         state.BTP === 1 &&
         state.buildings.woodenHut >= 2 &&
         state.current_population >= 1 &&
-        !state.story.seen.firstElderWarning
+        !state.story.seen.firstElderWarning &&
+        !hasFullGamePurchase(state)
       );
     },
     
@@ -45,18 +57,12 @@ export const fullGameUnlockEvents: Record<string, GameEvent> = {
   villageElderNotice: {
     id: "villageElderNotice",
     condition: (state: GameState) => {
-      // Check if full_game has been purchased
-      const hasFullGame = Object.keys(state.activatedPurchases || {}).some(
-        (key) =>
-          (key === "full_game" || key.startsWith("purchase-full_game-")) &&
-          state.activatedPurchases?.[key],
-      );
       return (
         state.BTP === 1 &&
         state.buildings.darkEstate >= 1 &&
         state.story.seen.firstElderWarning &&
         !state.story.seen.villageElderNotice &&
-        !hasFullGame
+        !hasFullGamePurchase(state)
       );
     },
     
@@ -92,19 +98,13 @@ export const fullGameUnlockEvents: Record<string, GameEvent> = {
   villageElderDecision: {
     id: "villageElderDecision",
     condition: (state: GameState) => {
-      // Check if full_game has been purchased
-      const hasFullGame = Object.keys(state.activatedPurchases || {}).some(
-        (key) =>
-          (key === "full_game" || key.startsWith("purchase-full_game-")) &&
-          state.activatedPurchases?.[key],
-      );
       return (
         state.BTP === 1 &&
         state.story.seen.villageElderNotice &&
         state.books.book_of_trials &&
         state.books.book_of_ascension &&
         !state.story.seen.villageElderDecision &&
-        !hasFullGame
+        !hasFullGamePurchase(state)
       );
     },
     
