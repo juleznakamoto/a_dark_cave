@@ -391,8 +391,9 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
 
     // For full_game, close this dialog and open the dedicated FullGamePurchaseDialog
     if (itemId === 'full_game') {
-      onClose();
+      // Set the full game dialog to open, then close shop dialog
       useGameStore.setState({ fullGamePurchaseDialogOpen: true });
+      onClose();
       return;
     }
 
