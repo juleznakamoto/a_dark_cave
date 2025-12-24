@@ -389,11 +389,15 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
   const handlePurchaseClick = async (itemId: string) => {
     const item = SHOP_ITEMS[itemId];
 
-    logger.log(`[SHOP] Purchase clicked for item: ${itemId}, price: ${item.price}`);
-    logger.log(`[SHOP] Current state - clientSecret: ${clientSecret ? 'exists' : 'null'}, selectedItem: ${selectedItem}`);
+    logger.log(`[SHOP] ========== PURCHASE CLICK START ==========`);
+    logger.log(`[SHOP] Item: ${itemId}, Price: ${item.price}`);
+    logger.log(`[SHOP] Current clientSecret: ${clientSecret ? 'EXISTS' : 'NULL'}`);
+    logger.log(`[SHOP] Current selectedItem: ${selectedItem || 'NULL'}`);
+    logger.log(`[SHOP] Dialog state - isOpen: ${isOpen}`);
 
     // For free items, handle them directly
     if (item.price === 0) {
+      logger.log(`[SHOP] Processing FREE item: ${itemId}`);
       try {
         const user = await getCurrentUser();
         if (!user) {
@@ -579,7 +583,11 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
 
     // For paid items, create payment intent for embedded checkout
     const user = await getCurrentUser();
-    logger.log(`[SHOP] Creating payment intent for ${itemId}, user: ${user?.id}`);
+    logger.log(`[SHOP] ========== CREATING PAYMENT INTENT ==========`);
+    logger.log(`[SHOP] Item: ${itemId}`);
+    logger.log(`[SHOP] User ID: ${user?.id}`);
+    logger.log(`[SHOP] User Email: ${user?.email}`);
+    logger.log(`[SHOP] Currency: ${currency}`);
 
     const response = await fetch("/api/payment/create-intent", {
       method: "POST",
@@ -593,19 +601,26 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     });
 
     const result = await response.json();
-    logger.log(`[SHOP] Payment intent created, showing payment form in shop dialog`);
-    logger.log(`[SHOP] About to set clientSecret and selectedItem`);
+    logger.log(`[SHOP] Payment intent response received`);
+    logger.log(`[SHOP] Client secret: ${result.clientSecret ? 'RECEIVED' : 'MISSING'}`);
+    
+    logger.log(`[SHOP] ========== SWITCHING TO PAYMENT VIEW ==========`);
+    logger.log(`[SHOP] Setting clientSecret (will trigger payment form render)`);
+    logger.log(`[SHOP] Setting selectedItem to: ${itemId}`);
 
     setClientSecret(result.clientSecret);
     setSelectedItem(itemId);
 
-    logger.log(`[SHOP] State updated - clientSecret set, selectedItem: ${itemId}`);
+    logger.log(`[SHOP] ========== STATE UPDATE COMPLETE ==========`);
+    logger.log(`[SHOP] Payment form should now be visible`);
   };
 
   const handlePurchaseSuccess = async () => {
     const item = SHOP_ITEMS[selectedItem!];
 
-    logger.log(`[SHOP] Purchase success for item: ${selectedItem}, price: ${item.price}`);
+    logger.log(`[SHOP] ========== PURCHASE SUCCESS ==========`);
+    logger.log(`[SHOP] Item: ${selectedItem}`);
+    logger.log(`[SHOP] Price: ${item.price}`);
 
     // Set hasMadeNonFreePurchase flag if this is a paid item
     if (item.price > 0) {
@@ -707,8 +722,12 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
         : `${item.name} has been added to your purchases. Check the Purchases tab to activate it.`,
     });
 
+    logger.log(`[SHOP] ========== CLEARING PAYMENT STATE ==========`);
+    logger.log(`[SHOP] Clearing clientSecret (will return to shop view)`);
+    logger.log(`[SHOP] Clearing selectedItem`);
     setClientSecret(null);
     setSelectedItem(null);
+    logger.log(`[SHOP] ========== PURCHASE FLOW COMPLETE ==========`);
   };
 
   const handleActivatePurchase = (purchaseId: string, itemId: string) => {
@@ -851,6 +870,16 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     return currency === "EUR" ? `${amount} €` : `$${amount}`;
   };
 
+  // Log when dialog state changes
+  logger.log(`[SHOP] ========== DIALOG RENDER ==========`);
+  logger.log(`[SHOP] isOpen: ${isOpen}`);
+  logger.log(`[SHOP] isLoading: ${isLoading}`);
+  logger.log(`[SHOP] clientSecret: ${clientSecret ? 'EXISTS' : 'NULL'}`);
+  logger.log(`[SHOP] selectedItem: ${selectedItem || 'NULL'}`);
+  logger.log(`[SHOP] currentUser: ${currentUser ? currentUser.id : 'NULL'}`);
+  logger.log(`[SHOP] Will render: ${clientSecret ? 'PAYMENT FORM' : 'SHOP TABS'}`);
+  logger.log(`[SHOP] =====================================`);
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-4xl max-h-[80vh] z-[70]">
@@ -876,7 +905,12 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
 
         {!isLoading && clientSecret && (
           <div className="max-h-[calc(80vh-80px)] overflow-y-auto">
-            {logger.log(`[SHOP] Rendering payment form for ${selectedItem}`) && null}
+            {(() => {
+              logger.log(`[SHOP] ========== RENDERING PAYMENT FORM ==========`);
+              logger.log(`[SHOP] Selected item: ${selectedItem}`);
+              logger.log(`[SHOP] Item name: ${SHOP_ITEMS[selectedItem!]?.name}`);
+              return null;
+            })()}
             <div className="mt-0 pr-4">
               <div className="text-sm text-muted-foreground mb-4">
                 {SHOP_ITEMS[selectedItem!]?.price
@@ -889,8 +923,12 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                   onSuccess={handlePurchaseSuccess}
                   currency={currency}
                   onCancel={() => {
-                    logger.log(`[SHOP] Payment canceled, returning to shop`);
+                    logger.log(`[SHOP] ========== PAYMENT CANCELED ==========`);
+                    logger.log(`[SHOP] Clearing clientSecret (will return to shop view)`);
+                    logger.log(`[SHOP] Clearing selectedItem`);
                     setClientSecret(null);
+                    setSelectedItem(null);
+                    logger.log(`[SHOP] ========== RETURNED TO SHOP VIEW ==========`);
                   }}
                 />
               </Elements>
