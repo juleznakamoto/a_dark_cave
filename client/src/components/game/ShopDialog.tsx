@@ -872,74 +872,38 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
 
   // Log when dialog state changes
   logger.log(`[SHOP] ========== DIALOG RENDER ==========`);
-  logger.log(`[SHOP] isOpen: ${isOpen}`);
+  logger.log(`[SHOP] Shop dialog isOpen: ${isOpen && !clientSecret}`);
+  logger.log(`[SHOP] Payment dialog isOpen: ${!!clientSecret}`);
   logger.log(`[SHOP] isLoading: ${isLoading}`);
   logger.log(`[SHOP] clientSecret: ${clientSecret ? 'EXISTS' : 'NULL'}`);
   logger.log(`[SHOP] selectedItem: ${selectedItem || 'NULL'}`);
   logger.log(`[SHOP] currentUser: ${currentUser ? currentUser.id : 'NULL'}`);
-  logger.log(`[SHOP] Will render: ${clientSecret ? 'PAYMENT FORM' : 'SHOP TABS'}`);
   logger.log(`[SHOP] =====================================`);
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent 
-        className={clientSecret ? "max-w-md max-h-[80vh] z-[80]" : "max-w-4xl max-h-[80vh] z-[70]"}
-        hideOverlay={false}
-      >
-        <DialogHeader>
-          <DialogTitle>
-            {clientSecret ? `Complete Purchase: ${SHOP_ITEMS[selectedItem!]?.name}` : "Shop"}
-          </DialogTitle>
-        </DialogHeader>
+    <>
+      {/* Shop Dialog - closes when payment dialog opens */}
+      <Dialog open={isOpen && !clientSecret} onOpenChange={onClose}>
+        <DialogContent className="max-w-4xl max-h-[80vh] z-[70]">
+          <DialogHeader>
+            <DialogTitle>Shop</DialogTitle>
+          </DialogHeader>
 
-        {isLoading && (
-          <div className="flex justify-center py-8">
-            <div className="text-muted-foreground">Loading...</div>
-          </div>
-        )}
-
-        {!isLoading && !clientSecret && !currentUser && (
-          <div className="bg-red-600/5 border border-red-600/50 rounded-lg p-3 text-center mb-4">
-            <p className="text-md font-medium text-red-600">
-              Sign in or create an account to purchase items.
-            </p>
-          </div>
-        )}
-
-        {!isLoading && clientSecret && (
-          <div className="max-h-[calc(80vh-80px)] overflow-y-auto">
-            {(() => {
-              logger.log(`[SHOP] ========== RENDERING PAYMENT FORM ==========`);
-              logger.log(`[SHOP] Selected item: ${selectedItem}`);
-              logger.log(`[SHOP] Item name: ${SHOP_ITEMS[selectedItem!]?.name}`);
-              return null;
-            })()}
-            <div className="mt-0 pr-4">
-              <div className="text-sm text-muted-foreground mb-4">
-                {SHOP_ITEMS[selectedItem!]?.price
-                  ? formatPrice(SHOP_ITEMS[selectedItem!].price)
-                  : ""}
-              </div>
-              <Elements stripe={stripePromise} options={{ clientSecret }}>
-                <CheckoutForm
-                  itemId={selectedItem!}
-                  onSuccess={handlePurchaseSuccess}
-                  currency={currency}
-                  onCancel={() => {
-                    logger.log(`[SHOP] ========== PAYMENT CANCELED ==========`);
-                    logger.log(`[SHOP] Clearing clientSecret (will return to shop view)`);
-                    logger.log(`[SHOP] Clearing selectedItem`);
-                    setClientSecret(null);
-                    setSelectedItem(null);
-                    logger.log(`[SHOP] ========== RETURNED TO SHOP VIEW ==========`);
-                  }}
-                />
-              </Elements>
+          {isLoading && (
+            <div className="flex justify-center py-8">
+              <div className="text-muted-foreground">Loading...</div>
             </div>
-          </div>
-        )}
+          )}
 
-        {!isLoading && !clientSecret && (
+          {!isLoading && !currentUser && (
+            <div className="bg-red-600/5 border border-red-600/50 rounded-lg p-3 text-center mb-4">
+              <p className="text-md font-medium text-red-600">
+                Sign in or create an account to purchase items.
+              </p>
+            </div>
+          )}
+
+          {!isLoading && (
           <Tabs defaultValue="shop" className="w-full">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="shop">For Sale</TabsTrigger>
@@ -1361,8 +1325,60 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
               </ScrollArea>
             </TabsContent>
           </Tabs>
-        )}
-      </DialogContent>
-    </Dialog>
+        </DialogContent>
+      </Dialog>
+
+      {/* Payment Dialog - separate dialog that opens when clientSecret exists */}
+      <Dialog open={!!clientSecret} onOpenChange={(open) => {
+        logger.log(`[SHOP] ========== PAYMENT DIALOG CLOSE REQUESTED ==========`);
+        logger.log(`[SHOP] Open state: ${open}`);
+        if (!open) {
+          logger.log(`[SHOP] Clearing clientSecret (will close payment dialog)`);
+          logger.log(`[SHOP] Clearing selectedItem`);
+          setClientSecret(null);
+          setSelectedItem(null);
+          logger.log(`[SHOP] ========== PAYMENT DIALOG CLOSED ==========`);
+        }
+      }}>
+        <DialogContent className="max-w-md max-h-[80vh] z-[80]">
+          <DialogHeader>
+            <DialogTitle>
+              Complete Purchase: {SHOP_ITEMS[selectedItem!]?.name}
+            </DialogTitle>
+          </DialogHeader>
+
+          <div className="max-h-[calc(80vh-80px)] overflow-y-auto">
+            {(() => {
+              logger.log(`[SHOP] ========== RENDERING PAYMENT FORM ==========`);
+              logger.log(`[SHOP] Selected item: ${selectedItem}`);
+              logger.log(`[SHOP] Item name: ${SHOP_ITEMS[selectedItem!]?.name}`);
+              return null;
+            })()}
+            <div className="mt-0 pr-4">
+              <div className="text-sm text-muted-foreground mb-4">
+                {SHOP_ITEMS[selectedItem!]?.price
+                  ? formatPrice(SHOP_ITEMS[selectedItem!].price)
+                  : ""}
+              </div>
+              <Elements stripe={stripePromise} options={{ clientSecret: clientSecret! }}>
+                <CheckoutForm
+                  itemId={selectedItem!}
+                  onSuccess={handlePurchaseSuccess}
+                  currency={currency}
+                  onCancel={() => {
+                    logger.log(`[SHOP] ========== PAYMENT CANCELED ==========`);
+                    logger.log(`[SHOP] Clearing clientSecret (will close payment dialog)`);
+                    logger.log(`[SHOP] Clearing selectedItem`);
+                    setClientSecret(null);
+                    setSelectedItem(null);
+                    logger.log(`[SHOP] ========== PAYMENT DIALOG CLOSED ==========`);
+                  }}
+                />
+              </Elements>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }
