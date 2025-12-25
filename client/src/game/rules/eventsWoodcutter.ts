@@ -82,6 +82,9 @@ function createWoodcutterEvent(config: WoodcutterConfig): GameEvent {
       "The woodcutter returns to the village, 'Do you want to use my services once more?,' he asks.'",
     priority: 3,
     repeatable: true,
+    showAsTimedTab: true,
+    timedTabDuration: 3 * 60 * 1000, // 3 minutes
+    tabSymbol: "⚒",
     choices: [
       {
         id: "acceptServices",
@@ -182,6 +185,16 @@ function createWoodcutterEvent(config: WoodcutterConfig): GameEvent {
         },
       },
     ],
+    fallbackChoice: {
+      id: "doNothing",
+      label: "No Decision Made",
+      effect: (state: GameState) => {
+        return {
+          _logMessage:
+            "Your indecision frustrates the woodcutter. He shakes his head and walks away into the forest.",
+        };
+      },
+    },
   };
 }
 
