@@ -54,7 +54,7 @@ export default function TimedEventPanel() {
     return () => {
       clearInterval(interval);
     };
-  }, [timedEventTab.isActive, timedEventTab.event?.id, timedEventTab.expiryTime, setTimedEventTab, applyEventChoice, event]);
+  }, [timedEventTab.isActive, timedEventTab.event?.id, timedEventTab.expiryTime, setTimedEventTab, applyEventChoice]);
 
   if (!timedEventTab.event) {
     return null;
