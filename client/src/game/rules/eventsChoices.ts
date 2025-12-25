@@ -1869,6 +1869,8 @@ export const choiceEvents: Record<string, GameEvent> = {
       "Icy winds howl through the village. The elders warn that a terrible blizzard is approaching. Preparations must be made, or the consequences will be dire.",
     priority: 4,
     repeatable: true,
+    showAsTimedTab: true,
+    timedTabDuration: 5 * 60 * 1000, // 5 minutes
     choices: [
       {
         id: "prepareFrostfall",

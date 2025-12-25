@@ -6,6 +6,7 @@ import ForestPanel from "./panels/ForestPanel";
 import EstatePanel from "./panels/EstatePanel";
 import BastionPanel from "./panels/BastionPanel";
 import AchievementsPanel from "./panels/AchievementsPanel";
+import TimedEventPanel from "./panels/TimedEventPanel";
 import LogPanel from "./panels/LogPanel";
 import StartScreen from "./StartScreen";
 import { useGameStore } from "@/game/state";
@@ -37,6 +38,7 @@ export default function GameContainer() {
     eventDialog,
     combatDialog,
     idleModeDialog,
+    timedEventTab,
     setActiveTab,
     setEventDialog,
     setCombatDialog,
@@ -79,6 +81,13 @@ export default function GameContainer() {
     estateUnlocked: estateUnlocked,
     bastionUnlocked: flags.bastionUnlocked,
   });
+
+  // Auto-switch to timed event tab when it becomes active
+  useEffect(() => {
+    if (timedEventTab.isActive) {
+      setActiveTab("timedevent");
+    }
+  }, [timedEventTab.isActive, setActiveTab]);
 
   // Track when new tabs are unlocked and trigger animations
   useEffect(() => {
@@ -204,6 +213,16 @@ export default function GameContainer() {
       });
     }
 
+    // Add Timed Event tab if active
+    if (timedEventTab.isActive) {
+      tabs.push({
+        id: "timedevent",
+        icon: <span className="text-blue-400">✼</span>,
+        label: timedEventTab.event?.title || "Event",
+        onClick: () => setActiveTab("timedevent"),
+      });
+    }
+
     // Add Achievements tab if Book of Trials is owned
     if (books?.book_of_trials) {
       tabs.push({
@@ -222,6 +241,8 @@ export default function GameContainer() {
     buildings.stoneHut,
     setActiveTab,
     books?.book_of_trials,
+    timedEventTab.isActive,
+    timedEventTab.event?.title,
   ]);
 
   // Show start screen if game hasn't started yet
@@ -386,6 +407,7 @@ export default function GameContainer() {
             {activeTab === "estate" && <EstatePanel />}
             {activeTab === "bastion" && <BastionPanel />}
             {activeTab === "achievements" && <AchievementsPanel />}
+            {activeTab === "timedevent" && <TimedEventPanel />}
           </div>
         </section>
       </main>

@@ -1,4 +1,3 @@
-
 import { GameState } from "@shared/schema";
 import {
   getTotalStrength,
@@ -26,7 +25,7 @@ export function calculateSuccessChance(
 
   // Add first stat bonus
   if (stat0) {
-    const statValue = stat0.type === 'strength' 
+    const statValue = stat0.type === 'strength'
       ? getTotalStrength(state)
       : stat0.type === 'knowledge'
       ? getTotalKnowledge(state)
@@ -93,6 +92,9 @@ export interface GameEvent {
     type: 'glow' | 'pulse';
     duration: number; // in seconds
   };
+  // Timed tab properties
+  showAsTimedTab?: boolean;
+  timedTabDuration?: number; // Duration in milliseconds
 }
 
 export interface EventChoice {
@@ -123,6 +125,9 @@ export interface LogEntry {
     type: 'glow' | 'pulse';
     duration: number; // in seconds
   };
+  // Timed tab properties
+  showAsTimedTab?: boolean;
+  timedTabDuration?: number; // Duration in milliseconds
 }
 
 // Merge all events from separate files
@@ -178,10 +183,10 @@ export class EventManager {
           typeof event.timeProbability === "function"
             ? event.timeProbability(state)
             : event.timeProbability;
-        
+
         const cooldownPeriod = timeProbability * 0.25 * 60 * 1000; // 25% in milliseconds
         const timeSinceLastTrigger = currentTime - eventCooldowns[event.id];
-        
+
         if (timeSinceLastTrigger < cooldownPeriod) {
           continue; // Skip this event, it's still on cooldown
         }
@@ -238,6 +243,8 @@ export class EventManager {
           fallbackChoice: event.fallbackChoice,
           relevant_stats: event.relevant_stats,
           visualEffect: event.visualEffect,
+          showAsTimedTab: event.showAsTimedTab, // Add this for timed tabs
+          timedTabDuration: event.timedTabDuration, // Add this for timed tabs
           skipEventLog: eventChoices && eventChoices.length > 0, // Mark events with choices to skip log
         };
 
@@ -259,13 +266,13 @@ export class EventManager {
             [event.id]: true,
           };
         }
-        
+
         // Record trigger time for cooldown tracking
         stateChanges.eventCooldowns = {
           ...(state.eventCooldowns || {}),
           [event.id]: currentTime,
         };
-        
+
         break; // Only trigger one event per tick
       }
     }

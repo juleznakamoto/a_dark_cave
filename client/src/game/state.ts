@@ -55,6 +55,11 @@ interface GameStore extends GameState {
     onVictory: (() => Partial<GameState>) | null;
     onDefeat: (() => Partial<GameState>) | null;
   };
+  timedEventTab: {
+    isActive: boolean;
+    event: LogEntry | null;
+    expiryTime: number;
+  };
   authDialogOpen: boolean;
   shopDialogOpen: boolean;
   leaderboardDialogOpen: boolean;
@@ -196,6 +201,7 @@ interface GameStore extends GameState {
   unassignVillager: (job: keyof GameState["villagers"]) => void;
   setEventDialog: (isOpen: boolean, event?: LogEntry | null) => void;
   setCombatDialog: (isOpen: boolean, data?: any) => void;
+  setTimedEventTab: (isActive: boolean, event?: LogEntry | null, duration?: number) => void;
   setAuthDialogOpen: (isOpen: boolean) => void;
   setShopDialogOpen: (isOpen: boolean) => void;
   setLeaderboardDialogOpen: (isOpen: boolean) => void;
@@ -580,6 +586,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
     eventMessage: "",
     onVictory: null,
     onDefeat: null,
+  },
+  timedEventTab: {
+    isActive: false,
+    event: null,
+    expiryTime: 0,
   },
   authDialogOpen: false,
   shopDialogOpen: false,
@@ -1291,6 +1302,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
       } else {
         // Handle normal event dialogs
         newLogEntries.forEach((entry) => {
+          // Check if this should be shown as a timed tab
+          if (entry.showAsTimedTab && entry.timedTabDuration) {
+            get().setTimedEventTab(true, entry, entry.timedTabDuration);
+            return;
+          }
+
           // Skip events marked to not appear in log
           if (entry.skipEventLog) {
             // Only show as dialog, don't add to log
@@ -1543,6 +1560,17 @@ export const useGameStore = create<GameStore>((set, get) => ({
         eventMessage: data?.eventMessage || "",
         onVictory: data?.onVictory || null,
         onDefeat: data?.onDefeat || null,
+      },
+    }));
+  },
+
+  setTimedEventTab: (isActive: boolean, event?: LogEntry | null, duration?: number) => {
+    set((state) => ({
+      ...state,
+      timedEventTab: {
+        isActive,
+        event: event || null,
+        expiryTime: isActive && duration ? Date.now() + duration : 0,
       },
     }));
   },
