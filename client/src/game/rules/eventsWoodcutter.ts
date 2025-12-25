@@ -33,76 +33,50 @@ function createWoodcutterEvent(config: WoodcutterConfig): GameEvent {
   return {
     id: eventId,
     condition: (state: GameState) => {
-      console.log(`[WOODCUTTER ${level}] Checking condition:`, {
-        isActive: state.woodcutterState?.isActive,
-        endTime: state.woodcutterState?.endTime,
-        now: Date.now(),
-        timeRemaining: state.woodcutterState?.endTime ? state.woodcutterState.endTime - Date.now() : 0,
-        betrayed: state.story.seen.woodcutterBetrayed,
-        ended: state.story.seen.woodcutterEnded,
-        accepted: state.story.seen[`woodcutter${level}Accepted` as keyof typeof state.story.seen],
-        met: state.story.seen[`woodcutter${level}Met` as keyof typeof state.story.seen],
-        prevMet: level > 1 ? state.story.seen[`woodcutter${level - 1}Met` as keyof typeof state.story.seen] : 'N/A',
-        woodenHuts: state.buildings.woodenHut,
-        requiredHuts: woodenHuts,
-        food: state.resources.food,
-      });
-
       // Check if woodcutter event is currently active (timed tab is showing)
       if (state.woodcutterState?.isActive && state.woodcutterState.endTime > Date.now()) {
-        console.log(`[WOODCUTTER ${level}] BLOCKED: Event is currently active`);
         return false;
       }
 
       // Check if woodcutter was betrayed
       if (state.story.seen.woodcutterBetrayed) {
-        console.log(`[WOODCUTTER ${level}] BLOCKED: Woodcutter was betrayed`);
         return false;
       }
 
       // Check if woodcutter storyline ended
       if (state.story.seen.woodcutterEnded) {
-        console.log(`[WOODCUTTER ${level}] BLOCKED: Storyline ended`);
         return false;
       }
 
       // Check if this specific event was already accepted
       if (state.story.seen[`woodcutter${level}Accepted` as keyof typeof state.story.seen]) {
-        console.log(`[WOODCUTTER ${level}] BLOCKED: Already accepted`);
         return false;
       }
 
       // For first event, just check building requirement
       if (level === 1) {
         const canTrigger = state.buildings.woodenHut >= woodenHuts && state.resources.food > 25;
-        console.log(`[WOODCUTTER ${level}] Level 1 check:`, canTrigger ? 'PASS' : 'FAIL');
         return canTrigger;
       }
 
       // For subsequent events, check if previous event was met
       if (!state.story.seen[`woodcutter${level - 1}Met` as keyof typeof state.story.seen]) {
-        console.log(`[WOODCUTTER ${level}] BLOCKED: Previous event not met`);
         return false;
       }
 
       // Check building requirements
       const canTrigger = state.buildings.woodenHut >= woodenHuts;
-      console.log(`[WOODCUTTER ${level}] Building check:`, canTrigger ? 'PASS' : 'FAIL');
       return canTrigger;
     },
 
     timeProbability: 0.015,
-    title: level === 1 ? "The Woodcutter" : 
+    title: level === 1 ? "The Woodcutter" :
            level === 2 ? "The Woodcutter Returns" :
            level === 3 ? "The Woodcutter's Offer" :
            level === 4 ? "The Woodcutter's Ambitious Plan" :
            level === 5 ? "The Woodcutter's Grand Proposal" :
            "The Woodcutter's Offer",
     effect: (state: GameState) => {
-      console.log(`[WOODCUTTER ${level}] EVENT TRIGGERED - Setting woodcutterState to active`, {
-        currentState: state.woodcutterState,
-        newEndTime: Date.now() + (3 * 60 * 1000),
-      });
       return {
         woodcutterState: {
           isActive: true,
@@ -110,7 +84,7 @@ function createWoodcutterEvent(config: WoodcutterConfig): GameEvent {
         },
       };
     },
-    message: level === 1 ? 
+    message: level === 1 ?
       "A muscular man with a large axe approaches the village. He flexes his arms 'I can cut trees like no other,' he boasts. 'Give me food, and I'll bring wood.'" :
       level === 2 ?
       "The woodcutter returns, his axe gleaming in the sun. 'Your village grows well,' he observes. 'I can bring you more wood. What do you say?'" :
@@ -166,12 +140,6 @@ function createWoodcutterEvent(config: WoodcutterConfig): GameEvent {
           }
 
           // Successful transaction
-          console.log(`[WOODCUTTER ${level}] ACCEPTING offer - Setting state flags`, {
-            woodcutterMet: true,
-            [`woodcutter${level}Met`]: true,
-            [`woodcutter${level}Accepted`]: true,
-            clearingActiveState: true,
-          });
           return {
             resources: {
               ...state.resources,
@@ -222,7 +190,6 @@ function createWoodcutterEvent(config: WoodcutterConfig): GameEvent {
             };
           }
 
-          console.log(`[WOODCUTTER ${level}] DENYING offer - Clearing active state`);
           return {
             woodcutterState: {
               isActive: false,
@@ -245,7 +212,6 @@ function createWoodcutterEvent(config: WoodcutterConfig): GameEvent {
       id: "doNothing",
       label: "No Decision Made",
       effect: (state: GameState) => {
-        console.log(`[WOODCUTTER ${level}] FALLBACK triggered - Clearing active state`);
         return {
           woodcutterState: {
             isActive: false,
