@@ -77,7 +77,7 @@ export interface GameEvent {
   title?: string;
   message: string | string[] | ((state: GameState) => string); // Support array of messages for random selection or function
   choices?: EventChoice[];
-  triggered: boolean;
+  triggered?: boolean;
   repeatable?: boolean;
   priority?: number; // Higher priority events check first
   timeProbability?: number | ((state: GameState) => number); // Average minutes between triggers

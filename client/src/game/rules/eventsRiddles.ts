@@ -97,7 +97,7 @@ const VARIANT_MESSAGES = {
   fourth:
     "The hulled figure appears once more at the estate. It whispers: 'Soft, delicate, silky, but if you're wrapped in me, you scream.'",
   fifth:
-    "The nightly figure appears one more time at the estate. Its voice silently echoes through the night: 'Poor have me, rich have me. Eat me, you die.'",
+    "The nightly figure appears one more time at the estate. Its voice silently echoes through the night: 'Poor have me, rich need me. Eat me, you die.'",
 };
 
 // Variant riddle choices
