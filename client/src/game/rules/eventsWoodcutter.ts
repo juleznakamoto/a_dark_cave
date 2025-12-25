@@ -33,6 +33,11 @@ function createWoodcutterEvent(config: WoodcutterConfig): GameEvent {
   return {
     id: eventId,
     condition: (state: GameState) => {
+      // Check if woodcutter event is currently active (timed tab is showing)
+      if (state.woodcutterState?.isActive && state.woodcutterState.endTime > Date.now()) {
+        return false;
+      }
+
       // Check if woodcutter was betrayed
       if (state.story.seen.woodcutterBetrayed) {
         return false;
@@ -131,6 +136,10 @@ function createWoodcutterEvent(config: WoodcutterConfig): GameEvent {
               food: state.resources.food - foodCost,
               wood: state.resources.wood + woodReward,
             },
+            woodcutterState: {
+              isActive: false,
+              endTime: 0,
+            },
             story: {
               ...state.story,
               seen: {
@@ -172,6 +181,10 @@ function createWoodcutterEvent(config: WoodcutterConfig): GameEvent {
           }
 
           return {
+            woodcutterState: {
+              isActive: false,
+              endTime: 0,
+            },
             _logMessage: level === 1 ?
               "You decline his offer. The woodcutter shrugs and walks away into the forest." :
               level === 2 ?
@@ -190,6 +203,10 @@ function createWoodcutterEvent(config: WoodcutterConfig): GameEvent {
       label: "No Decision Made",
       effect: (state: GameState) => {
         return {
+          woodcutterState: {
+            isActive: false,
+            endTime: 0,
+          },
           _logMessage:
             "Your indecision frustrates the woodcutter. He shakes his head and walks away into the forest.",
         };

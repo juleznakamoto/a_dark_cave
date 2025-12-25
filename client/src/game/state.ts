@@ -285,6 +285,7 @@ const mergeStateUpdates = (
     greatFeastState: stateUpdates.greatFeastState || prevState.greatFeastState,
     curseState: stateUpdates.curseState || prevState.curseState,
     frostfallState: stateUpdates.frostfallState || prevState.frostfallState,
+    woodcutterState: stateUpdates.woodcutterState || prevState.woodcutterState,
     fogState: stateUpdates.fogState || prevState.fogState,
     sleepUpgrades: stateUpdates.sleepUpgrades || prevState.sleepUpgrades,
     combatSkills: stateUpdates.combatSkills || prevState.combatSkills,
@@ -470,6 +471,10 @@ export const createInitialState = (): GameState => ({
     endTime: 0,
   },
   frostfallState: {
+    isActive: false,
+    endTime: 0,
+  },
+  woodcutterState: {
     isActive: false,
     endTime: 0,
   },

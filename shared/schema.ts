@@ -451,6 +451,14 @@ export const gameStateSchema = z.object({
       isActive: false,
       endTime: 0,
     }),
+
+  woodcutterState: z
+    .object({
+      isActive: z.boolean().default(false),
+      endTime: z.number().default(0),
+    })
+    .default({ isActive: false, endTime: 0 }),
+
   fogState: z
     .object({
       isActive: z.boolean().default(false),
