@@ -1305,6 +1305,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
         newLogEntries.forEach((entry) => {
           // Check if this should be shown as a timed tab
           if (entry.showAsTimedTab && entry.timedTabDuration) {
+            // Add event message to log first
+            set((prevState) => ({
+              log: [...prevState.log, { ...entry, title: entry.title || "Event" }].slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES),
+            }));
             get().setTimedEventTab(true, entry, entry.timedTabDuration);
             return;
           }
