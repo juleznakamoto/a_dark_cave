@@ -31,7 +31,7 @@ import { logger } from "@/lib/logger";
 import { madnessEvents } from "@/game/rules/eventsMadness";
 
 // Types
-interface GameStore extends GameState {
+interface GameStore extends Omit<GameState, 'timedEventTab'> {
   // UI state
   activeTab:
     | "cave"

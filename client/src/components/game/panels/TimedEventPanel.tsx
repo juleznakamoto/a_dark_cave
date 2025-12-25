@@ -32,6 +32,14 @@ export default function TimedEventPanel() {
       setTimeRemaining(remaining);
 
       if (remaining <= 0) {
+        // Execute fallback choice when timer expires
+        if (event && event.choices) {
+          const eventId = event.id.split("-")[0];
+          const fallbackChoice = event.choices.find(c => c.id === "doNothing");
+          if (fallbackChoice) {
+            applyEventChoice(fallbackChoice.id, eventId, event);
+          }
+        }
         // Auto-close the tab when timer expires
         setTimedEventTab(false);
       }
@@ -46,7 +54,7 @@ export default function TimedEventPanel() {
     return () => {
       clearInterval(interval);
     };
-  }, [timedEventTab.isActive, timedEventTab.event?.id, timedEventTab.expiryTime, setTimedEventTab]);
+  }, [timedEventTab.isActive, timedEventTab.event?.id, timedEventTab.expiryTime, setTimedEventTab, applyEventChoice, event]);
 
   if (!timedEventTab.event) {
     return null;
