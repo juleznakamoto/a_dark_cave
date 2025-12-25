@@ -141,25 +141,35 @@ export default function TimedEventPanel() {
 
             return costText ? (
               <TooltipProvider key={choice.id}>
-                <Tooltip open={mobileTooltip.isTooltipOpen(`timedevent-${choice.id}`)}>
+                <Tooltip>
                   <TooltipTrigger asChild>
                     <div
-                      onClick={(e) =>
-                        mobileTooltip.handleTooltipClick(`timedevent-${choice.id}`, e)
-                      }
+                      onClick={(e) => {
+                        mobileTooltip.handleWrapperClick(`timedevent-${choice.id}`, isDisabled, false, e);
+                      }}
+                      onMouseDown={mobileTooltip.isMobile ? (e) => mobileTooltip.handleMouseDown(`timedevent-${choice.id}`, isDisabled, false, e) : undefined}
+                      onMouseUp={mobileTooltip.isMobile ? (e) => mobileTooltip.handleMouseUp(`timedevent-${choice.id}`, isDisabled, () => handleChoice(choice.id), e) : undefined}
+                      onTouchStart={mobileTooltip.isMobile ? (e) => mobileTooltip.handleTouchStart(`timedevent-${choice.id}`, isDisabled, false, e) : undefined}
+                      onTouchEnd={mobileTooltip.isMobile ? (e) => mobileTooltip.handleTouchEnd(`timedevent-${choice.id}`, isDisabled, () => handleChoice(choice.id), e) : undefined}
                     >
                       {buttonContent}
                     </div>
                   </TooltipTrigger>
-                  <TooltipContent>
-                    <div className="text-xs whitespace-nowrap">
+                  <TooltipContent side="top">
+                    <div className="text-xs">
                       {eventChoiceCostTooltip.getContent(costText, gameState)}
                     </div>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
             ) : (
-              <div key={choice.id}>
+              <div
+                key={choice.id}
+                onMouseDown={mobileTooltip.isMobile ? (e) => mobileTooltip.handleMouseDown(`timedevent-${choice.id}`, isDisabled, false, e) : undefined}
+                onMouseUp={mobileTooltip.isMobile ? (e) => mobileTooltip.handleMouseUp(`timedevent-${choice.id}`, isDisabled, () => handleChoice(choice.id), e) : undefined}
+                onTouchStart={mobileTooltip.isMobile ? (e) => mobileTooltip.handleTouchStart(`timedevent-${choice.id}`, isDisabled, false, e) : undefined}
+                onTouchEnd={mobileTooltip.isMobile ? (e) => mobileTooltip.handleTouchEnd(`timedevent-${choice.id}`, isDisabled, () => handleChoice(choice.id), e) : undefined}
+              >
                 {buttonContent}
               </div>
             );
