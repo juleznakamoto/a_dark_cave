@@ -217,6 +217,15 @@ export class EventManager {
       }
 
       if (shouldTrigger) {
+        // Log when woodcutter events trigger
+        if (event.id.startsWith('woodcutter')) {
+          console.log(`[EVENT MANAGER] Woodcutter event triggering:`, event.id, {
+            hasOnTrigger: !!event.effect,
+            showAsTimedTab: event.showAsTimedTab,
+            timedTabDuration: event.timedTabDuration,
+          });
+        }
+
         // Generate fresh choices for merchant events
         let eventChoices = event.choices;
         if (event.id === "merchant") {
@@ -257,6 +266,12 @@ export class EventManager {
         if (event.effect && !eventChoices?.length) {
           // If the effect returns combat data, ensure it's handled correctly
           const effectResult = event.effect(state);
+          
+          // Log when woodcutter onTrigger effect is applied
+          if (event.id.startsWith('woodcutter')) {
+            console.log(`[EVENT MANAGER] Applying woodcutter onTrigger effect:`, event.id, effectResult);
+          }
+          
           stateChanges = { ...stateChanges, ...effectResult };
         }
 

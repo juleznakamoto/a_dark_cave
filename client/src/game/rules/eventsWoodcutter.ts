@@ -98,7 +98,7 @@ function createWoodcutterEvent(config: WoodcutterConfig): GameEvent {
            level === 4 ? "The Woodcutter's Ambitious Plan" :
            level === 5 ? "The Woodcutter's Grand Proposal" :
            "The Woodcutter's Offer",
-    onTrigger: (state: GameState) => {
+    effect: (state: GameState) => {
       console.log(`[WOODCUTTER ${level}] EVENT TRIGGERED - Setting woodcutterState to active`, {
         currentState: state.woodcutterState,
         newEndTime: Date.now() + (3 * 60 * 1000),
