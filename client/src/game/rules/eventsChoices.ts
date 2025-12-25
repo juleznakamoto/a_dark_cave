@@ -1871,7 +1871,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     priority: 4,
     repeatable: true,
     showAsTimedTab: true,
-    timedTabDuration: 5 * 60 * 1000, // 5 minutes
+    timedTabDuration: 5  * 1000, // 5 minutes
     choices: [
       {
         id: "prepareFrostfall",
