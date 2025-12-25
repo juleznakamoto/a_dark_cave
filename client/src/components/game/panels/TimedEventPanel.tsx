@@ -76,7 +76,7 @@ export default function TimedEventPanel() {
 
   const handleChoice = (choiceId: string) => {
     const eventId = event.id.split("-")[0];
-    applyEventChoice(choiceId, eventId);
+    applyEventChoice(choiceId, eventId, event);
     setTimedEventTab(false);
   };
 
