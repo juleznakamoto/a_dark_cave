@@ -379,6 +379,21 @@ export default function GameContainer() {
                   </button>
                 )}
 
+                {/* Timed Event Tab Button */}
+                {timedEventTab.isActive && (
+                  <button
+                    className={`py-2 text-sm bg-transparent ${
+                      activeTab === "timedevent"
+                        ? "font-bold opacity-100"
+                        : "opacity-60"
+                    }`}
+                    onClick={() => setActiveTab("timedevent")}
+                    data-testid="tab-timedevent"
+                  >
+                    <span className="text-blue-400">✼</span> {timedEventTab.event?.title || "Event"}
+                  </button>
+                )}
+
                 {/* Achievements Tab Button */}
                 {books?.book_of_trials && (
                   <button

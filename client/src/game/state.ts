@@ -39,7 +39,8 @@ interface GameStore extends GameState {
     | "forest"
     | "bastion"
     | "estate"
-    | "achievements";
+    | "achievements"
+    | "timedevent";
   devMode: boolean;
   boostMode: boolean;
   lastSaved: string;
@@ -166,7 +167,7 @@ interface GameStore extends GameState {
   getAndResetResourceAnalytics: () => Record<string, number> | null;
   executeAction: (actionId: string) => void;
   setActiveTab: (
-    tab: "cave" | "village" | "forest" | "bastion" | "estate" | "achievements",
+    tab: "cave" | "village" | "forest" | "bastion" | "estate" | "achievements" | "timedevent",
   ) => void;
   setBoostMode: (enabled: boolean) => void;
   setIsMuted: (isMuted: boolean) => void;
