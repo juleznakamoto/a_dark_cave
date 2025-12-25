@@ -12,7 +12,7 @@ import { useMobileButtonTooltip } from "@/hooks/useMobileTooltip";
 import { eventChoiceCostTooltip } from "@/game/rules/tooltips";
 
 export default function TimedEventPanel() {
-  const { timedEventTab, applyEventChoice, setTimedEventTab } = useGameStore();
+  const { timedEventTab, applyEventChoice, setTimedEventTab, setHighlightedResources } = useGameStore();
   const gameState = useGameStore();
   const mobileTooltip = useMobileButtonTooltip();
 
@@ -76,6 +76,20 @@ export default function TimedEventPanel() {
     setTimedEventTab(false);
   };
 
+  // Helper function to extract resource names from cost text
+  const extractResourcesFromCost = (costText: string): string[] => {
+    const resources: string[] = [];
+    // Match patterns like "25 food", "100 wood", etc.
+    const matches = costText.matchAll(/(\d+)\s+([a-zA-Z_]+)/g);
+    
+    for (const match of matches) {
+      const resourceName = match[2].toLowerCase();
+      resources.push(resourceName);
+    }
+    
+    return resources;
+  };
+
   return (
     <div className="w-80 space-y-1 mt-1 mb-2 pr-4 pl-[3px]">
 
@@ -130,6 +144,15 @@ export default function TimedEventPanel() {
                 className="hover:bg-transparent hover:text-foreground"
                 disabled={isDisabled}
                 button_id={`timedevent-${choice.id}`}
+                onMouseEnter={() => {
+                  if (costText) {
+                    const resources = extractResourcesFromCost(costText);
+                    setHighlightedResources(resources);
+                  }
+                }}
+                onMouseLeave={() => {
+                  setHighlightedResources([]);
+                }}
               >
                 {labelText}
               </Button>
