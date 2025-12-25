@@ -19,22 +19,12 @@ export default function TimedEventPanel() {
   const [timeRemaining, setTimeRemaining] = useState<number>(0);
 
   useEffect(() => {
-    console.log('[TIMED EVENT] useEffect triggered:', {
-      isActive: timedEventTab.isActive,
-      expiryTime: timedEventTab.expiryTime,
-      eventId: timedEventTab.event?.id,
-      currentTime: Date.now(),
-      remainingMs: timedEventTab.expiryTime ? timedEventTab.expiryTime - Date.now() : 0,
-    });
-
     if (!timedEventTab.isActive || !timedEventTab.expiryTime) {
-      console.log('[TIMED EVENT] Tab inactive or no expiry time, setting timeRemaining to 0');
       setTimeRemaining(0);
       return;
     }
 
     const expiryTime = timedEventTab.expiryTime;
-    console.log('[TIMED EVENT] Starting timer with expiryTime:', expiryTime);
 
     const updateTimer = () => {
       const now = Date.now();
@@ -42,7 +32,6 @@ export default function TimedEventPanel() {
       setTimeRemaining(remaining);
 
       if (remaining <= 0) {
-        console.log('[TIMED EVENT] Timer expired, closing tab');
         // Auto-close the tab when timer expires
         setTimedEventTab(false);
       }
@@ -55,7 +44,6 @@ export default function TimedEventPanel() {
     const interval = setInterval(updateTimer, 100);
 
     return () => {
-      console.log('[TIMED EVENT] Cleaning up interval');
       clearInterval(interval);
     };
   }, [timedEventTab.isActive, timedEventTab.event?.id, timedEventTab.expiryTime, setTimedEventTab]);
@@ -76,15 +64,6 @@ export default function TimedEventPanel() {
 
   const handleChoice = (choiceId: string) => {
     const eventId = event.id.split("-")[0];
-    
-    console.log("[TIMED EVENT] handleChoice called:", {
-      choiceId,
-      eventId,
-      fullEventId: event.id,
-      eventTitle: event.title,
-      hasEvent: !!event,
-    });
-    
     applyEventChoice(choiceId, eventId, event);
     setTimedEventTab(false);
   };
