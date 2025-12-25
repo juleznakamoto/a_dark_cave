@@ -282,7 +282,7 @@ export default function EventDialog({
           <DialogHeader>
             <div className="flex items-start justify-between">
               <DialogTitle className="text-lg font-semibold flex-1">
-                {event.title || "Strange Encounter"}
+                {event.title}
               </DialogTitle>
               <div className="flex gap-2 items-center ml-2">
                 {hasScriptorium && event.isTimedChoice && getTotalKnowledge(gameState) > 0 && (
