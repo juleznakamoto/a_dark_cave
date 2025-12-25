@@ -280,12 +280,11 @@ export default function EventDialog({
           ) : (
             <DialogContent className="w-[95vw] sm:max-w-md [&>button]:hidden">
           <DialogHeader>
-            <div className="flex items-start justify-between">
-              <DialogTitle className="text-lg font-semibold flex-1">
-                {event.title}
-              </DialogTitle>
-              <div className="flex gap-2 items-center ml-2">
-                {hasScriptorium && event.isTimedChoice && getTotalKnowledge(gameState) > 0 && (
+            <DialogTitle className="text-lg font-semibold">
+              {event.title}
+            </DialogTitle>
+            <div className="flex gap-2 items-center justify-end mt-1">
+              {hasScriptorium && event.isTimedChoice && getTotalKnowledge(gameState) > 0 && (
                   <TooltipProvider>
                     <Tooltip open={mobileTooltip.isTooltipOpen("event-time-bonus")}>
                       <TooltipTrigger asChild>
@@ -304,24 +303,23 @@ export default function EventDialog({
                     </Tooltip>
                   </TooltipProvider>
                 )}
-                {hasScriptorium && event.relevant_stats && event.relevant_stats.length > 0 && (
-                  <div className="flex gap-1">
-                    {event.relevant_stats.map((stat) => {
-                      const statInfo = statIcons[stat.toLowerCase()];
-                      if (!statInfo) return null;
-                      return (
-                        <span
-                          key={stat}
-                          className={`text-xs ${statInfo.color}`}
-                          title={stat}
-                        >
-                          {statInfo.icon}
-                        </span>
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
+              {hasScriptorium && event.relevant_stats && event.relevant_stats.length > 0 && (
+                <div className="flex gap-1">
+                  {event.relevant_stats.map((stat) => {
+                    const statInfo = statIcons[stat.toLowerCase()];
+                    if (!statInfo) return null;
+                    return (
+                      <span
+                        key={stat}
+                        className={`text-xs ${statInfo.color}`}
+                        title={stat}
+                      >
+                        {statInfo.icon}
+                      </span>
+                    );
+                  })}
+                </div>
+              )}
             </div>
             <DialogDescription className="text-sm text-gray-400 mt-2">
               {event.message}
