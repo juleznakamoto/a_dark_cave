@@ -9,7 +9,7 @@ export const recurringEvents: Record<string, GameEvent> = {
       state.resources.food > 100 &&
       state.buildings.woodenHut >= 4 &&
       state.buildings.stoneHut <= 5,
-    
+
     timeProbability: 30,
     repeatable: true,
     message: [
@@ -35,7 +35,7 @@ export const recurringEvents: Record<string, GameEvent> = {
     id: "villagerMissing",
     condition: (state: GameState) =>
       state.villagers.free > 0 && state.buildings.stoneHut <= 10,
-    
+
     timeProbability: 30,
     message: [
       "One hut lies empty. Its occupant is gone.",
@@ -55,7 +55,7 @@ export const recurringEvents: Record<string, GameEvent> = {
     id: "woodGift",
     condition: (state: GameState) =>
       state.buildings.woodenHut >= 2 && state.buildings.woodenHut < 6,
-    
+
     timeProbability: 30,
     repeatable: true,
     message: [
@@ -78,7 +78,7 @@ export const recurringEvents: Record<string, GameEvent> = {
     id: "stoneGift",
     condition: (state: GameState) =>
       state.buildings.woodenHut >= 4 && state.buildings.woodenHut < 8,
-    
+
     timeProbability: 30,
     repeatable: true,
     message: [
@@ -101,7 +101,7 @@ export const recurringEvents: Record<string, GameEvent> = {
     id: "ironGift",
     condition: (state: GameState) =>
       state.buildings.woodenHut >= 1 && state.buildings.woodenHut < 8,
-    
+
     timeProbability: 30,
     message: [
       "By dawn, a heap of iron lies at the village edge. No tracks remain.",
@@ -123,7 +123,7 @@ export const recurringEvents: Record<string, GameEvent> = {
     id: "silverSackDiscovery",
     condition: (state: GameState) =>
       state.tools?.stone_axe && !state.story?.seen?.silverSackFound,
-    
+
     timeProbability: 2,
     message:
       "You find a small leather sack containing silver close to the cave's entrance.",
@@ -150,7 +150,7 @@ export const recurringEvents: Record<string, GameEvent> = {
     id: "steelGift",
     condition: (state: GameState) =>
       state.buildings.woodenHut >= 4 && state.buildings.stoneHut <= 10,
-    
+
     timeProbability: 30,
     message: [
       "Villagers found steel bars at the village's edge.",
@@ -172,7 +172,7 @@ export const recurringEvents: Record<string, GameEvent> = {
     id: "obsidianGift",
     condition: (state: GameState) =>
       state.buildings.woodenHut >= 6 && state.buildings.stoneHut <= 4,
-    
+
     timeProbability: 35,
     message: [
       "By dawn, obsidian has been found around the village.",
@@ -195,7 +195,7 @@ export const recurringEvents: Record<string, GameEvent> = {
     id: "adamantGift",
     condition: (state: GameState) =>
       state.buildings.woodenHut >= 8 && state.buildings.stoneHut <= 8,
-    
+
     timeProbability: 35,
     message: [
       "By morning, adamant lies behind one of the huts.",
@@ -226,7 +226,7 @@ export const recurringEvents: Record<string, GameEvent> = {
         fireStormCount < maxOccurrences
       );
     },
-    
+
     timeProbability: 120,
     repeatable: true,
     message:
