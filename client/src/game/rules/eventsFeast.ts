@@ -129,7 +129,7 @@ function createFeastEvent(config: FeastConfig): GameEvent {
       },
     ],
     fallbackChoice: {
-      id: "noDecision",
+      id: "doNothing",
       label: "No Decision Made",
       effect: (state: GameState): Partial<GameState> & { _logMessage?: string } => {
         return {
