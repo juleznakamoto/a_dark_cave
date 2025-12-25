@@ -69,7 +69,7 @@ function createFeastEvent(config: FeastConfig): GameEvent {
       return false;
     },
     
-    timeProbability: 15,
+    timeProbability: 0.015,
     title: "Village Feast",
     message: `The villagers propose organizing a feast to celebrate and boost work morale.`,
     priority: 3,
