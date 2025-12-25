@@ -20,11 +20,14 @@ export default function TimedEventPanel() {
 
   useEffect(() => {
     if (!timedEventTab.isActive || !timedEventTab.expiryTime) {
+      setTimeRemaining(0);
       return;
     }
 
+    const expiryTime = timedEventTab.expiryTime;
+
     const updateTimer = () => {
-      const remaining = Math.max(0, timedEventTab.expiryTime - Date.now());
+      const remaining = Math.max(0, expiryTime - Date.now());
       setTimeRemaining(remaining);
 
       if (remaining <= 0) {
@@ -40,7 +43,7 @@ export default function TimedEventPanel() {
     const interval = setInterval(updateTimer, 100);
 
     return () => clearInterval(interval);
-  }, [timedEventTab.isActive, timedEventTab.expiryTime, setTimedEventTab]);
+  }, [timedEventTab.isActive, timedEventTab.event?.id, setTimedEventTab]);
 
   if (!timedEventTab.event) {
     return null;
