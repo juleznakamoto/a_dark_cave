@@ -189,15 +189,7 @@ function createWoodcutterEvent(config: WoodcutterConfig): GameEvent {
       id: "doNothing",
       label: "No Decision Made",
       effect: (state: GameState) => {
-        // Mark this event as met so it doesn't re-trigger immediately
         return {
-          story: {
-            ...state.story,
-            seen: {
-              ...state.story.seen,
-              [`woodcutter${level}Met`]: true,
-            },
-          },
           _logMessage:
             "Your indecision frustrates the woodcutter. He shakes his head and walks away into the forest.",
         };
