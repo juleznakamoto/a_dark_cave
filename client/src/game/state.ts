@@ -56,11 +56,6 @@ interface GameStore extends GameState {
     onVictory: (() => Partial<GameState>) | null;
     onDefeat: (() => Partial<GameState>) | null;
   };
-  timedEventTab: {
-    isActive: boolean;
-    event: LogEntry | null;
-    expiryTime: number;
-  };
   authDialogOpen: boolean;
   shopDialogOpen: boolean;
   leaderboardDialogOpen: boolean;
@@ -121,6 +116,13 @@ interface GameStore extends GameState {
 
   // Compass glow effect
   compassGlowButton: string | null; // Action ID of button to glow
+
+  // Timed event tab (not part of GameState, only UI state)
+  timedEventTab: {
+    isActive: boolean;
+    event: LogEntry | null;
+    expiryTime: number;
+  };
 
   // Focus system
   focusState: {
