@@ -76,7 +76,7 @@ function createFeastEvent(config: FeastConfig): GameEvent {
     repeatable: true,
     showAsTimedTab: true,
     timedTabDuration: 3 * 60 * 1000, // 3 minutes
-    tabSymbol: "🍖",
+    tabSymbol: "⟡",
     choices: [
       {
         id: "makeFeast",
