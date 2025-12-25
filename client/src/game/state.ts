@@ -1311,9 +1311,19 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
           // Skip events marked to not appear in log
           if (entry.skipEventLog) {
-            // Only show as dialog, don't add to log
-            if (entry.choices && entry.choices.length > 0) {
-              get().setEventDialog(true, entry);
+            // For timed tab events, add message to log but also show dialog
+            if (entry.showAsTimedTab) {
+              set((prevState) => ({
+                log: [...prevState.log, entry].slice(-10),
+              }));
+              if (entry.choices && entry.choices.length > 0) {
+                get().setEventDialog(true, entry);
+              }
+            } else {
+              // Only show as dialog, don't add to log
+              if (entry.choices && entry.choices.length > 0) {
+                get().setEventDialog(true, entry);
+              }
             }
             return;
           }
