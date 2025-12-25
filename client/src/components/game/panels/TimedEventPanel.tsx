@@ -84,9 +84,11 @@ export default function TimedEventPanel() {
     <div className="w-80 space-y-1 mt-1 mb-2 pr-4 pl-[3px]">
 
       {/* Event Title */}
-      <h2 className="text-sm font-semibold">
-        {eventChoices[0]?.title || event.title || "Event"} {formatTime(timeRemaining)}
-      </h2>
+      {event.title && (
+        <h2 className="text-sm font-semibold">
+          {event.title} {formatTime(timeRemaining)}
+        </h2>
+      )}
       {/* Event Message */}
       <div className="text-sm text-muted-foreground">
         {event.message}

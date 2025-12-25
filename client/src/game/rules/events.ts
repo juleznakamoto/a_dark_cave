@@ -100,7 +100,6 @@ export interface GameEvent {
 export interface EventChoice {
   id: string;
   label: string | ((state: GameState) => string);
-  title?: string; // Optional title to override event title in dialog
   relevant_stats?: ("strength" | "knowledge" | "luck" | "madness")[];
   success_chance?: number | ((state: GameState) => number); // Success probability for this choice
   cost?: string | ((state: GameState) => string); // Optional cost information for hover display
