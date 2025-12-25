@@ -1872,10 +1872,12 @@ export const choiceEvents: Record<string, GameEvent> = {
     repeatable: true,
     showAsTimedTab: true,
     timedTabDuration: 5 * 60 * 1000, // 5 minutes
+    skipEventLog: true,
     choices: [
       {
         id: "prepareFrostfall",
         label: "Prepare",
+        title: "Frostfall",
         cost: (state: GameState) => {
           const timesOccurred = state.story?.seen?.frostfallCount || 0;
           const woodCost = 1000 * (timesOccurred + 1);
@@ -1909,14 +1911,13 @@ export const choiceEvents: Record<string, GameEvent> = {
                 frostfallCount: timesOccurred + 1,
               },
             },
-            _logMessage:
-              "Thanks to the stockpiles of firewood and food, the villagers survive the blizzard unharmed.",
           };
         },
       },
       {
         id: "doNothing",
         label: "Do nothing",
+        title: "Frostfall",
         effect: (state: GameState) => {
           const timesOccurred = state.story?.seen?.frostfallCount || 0;
           const frostfallDuration = (10 + 5 * state.CM) * 60 * 1000; // 10/15 minutes
@@ -1933,8 +1934,6 @@ export const choiceEvents: Record<string, GameEvent> = {
                 frostfallCount: timesOccurred + 1,
               },
             },
-            _logMessage:
-              "The blizzard hits with brutal force. All production slows to a crawl as villagers struggle to survive the cold.",
           };
         },
       },
