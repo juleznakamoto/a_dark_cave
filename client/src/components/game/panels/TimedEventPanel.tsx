@@ -81,11 +81,11 @@ export default function TimedEventPanel() {
   };
 
   return (
-    <div className="w-80 space-y-2 mt-2 mb-2 pr-4 pl-[3px]">
+    <div className="w-80 space-y-1 mt-1 mb-2 pr-4 pl-[3px]">
 
       {/* Event Title */}
       {event.title && (
-        <h2 className="text-lg font-semibold">
+        <h2 className="text-sm font-semibold">
           {event.title} {formatTime(timeRemaining)}
         </h2>
       )}
@@ -96,7 +96,7 @@ export default function TimedEventPanel() {
 
       {/* Choices */}
       <div className="space-y-2">
-        <div className="flex flex-wrap gap-2 mt-4">
+        <div className="flex flex-wrap gap-2 mt-3">
           {eventChoices.map((choice) => {
             const cost = choice.cost;
             let isDisabled = false;
