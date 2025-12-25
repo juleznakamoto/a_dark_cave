@@ -74,6 +74,8 @@ function createFeastEvent(config: FeastConfig): GameEvent {
     message: `The villagers propose organizing a feast to celebrate and boost work morale.`,
     priority: 3,
     repeatable: true,
+    showAsTimedTab: true,
+    timedTabDuration: 3 * 60 * 1000, // 3 minutes
     choices: [
       {
         id: "makeFeast",
@@ -125,6 +127,16 @@ function createFeastEvent(config: FeastConfig): GameEvent {
         },
       },
     ],
+    fallbackChoice: {
+      id: "noDecision",
+      label: "No Decision Made",
+      effect: (state: GameState): Partial<GameState> & { _logMessage?: string } => {
+        return {
+          _logMessage:
+            "Your indecision frustrates the villagers. They abandon the feast proposal and return to their duties, disappointed.",
+        };
+      },
+    },
   };
 }
 
