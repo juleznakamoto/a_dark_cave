@@ -19,18 +19,30 @@ export default function TimedEventPanel() {
   const [timeRemaining, setTimeRemaining] = useState<number>(0);
 
   useEffect(() => {
+    console.log('[TIMED EVENT] useEffect triggered:', {
+      isActive: timedEventTab.isActive,
+      expiryTime: timedEventTab.expiryTime,
+      eventId: timedEventTab.event?.id,
+      currentTime: Date.now(),
+      remainingMs: timedEventTab.expiryTime ? timedEventTab.expiryTime - Date.now() : 0,
+    });
+
     if (!timedEventTab.isActive || !timedEventTab.expiryTime) {
+      console.log('[TIMED EVENT] Tab inactive or no expiry time, setting timeRemaining to 0');
       setTimeRemaining(0);
       return;
     }
 
     const expiryTime = timedEventTab.expiryTime;
+    console.log('[TIMED EVENT] Starting timer with expiryTime:', expiryTime);
 
     const updateTimer = () => {
-      const remaining = Math.max(0, expiryTime - Date.now());
+      const now = Date.now();
+      const remaining = Math.max(0, expiryTime - now);
       setTimeRemaining(remaining);
 
       if (remaining <= 0) {
+        console.log('[TIMED EVENT] Timer expired, closing tab');
         // Auto-close the tab when timer expires
         setTimedEventTab(false);
       }
@@ -42,8 +54,11 @@ export default function TimedEventPanel() {
     // Update every 100ms for smooth countdown
     const interval = setInterval(updateTimer, 100);
 
-    return () => clearInterval(interval);
-  }, [timedEventTab.isActive, timedEventTab.event?.id, setTimedEventTab]);
+    return () => {
+      console.log('[TIMED EVENT] Cleaning up interval');
+      clearInterval(interval);
+    };
+  }, [timedEventTab.isActive, timedEventTab.event?.id, timedEventTab.expiryTime, setTimedEventTab]);
 
   if (!timedEventTab.event) {
     return null;
