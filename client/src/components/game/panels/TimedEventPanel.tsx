@@ -66,14 +66,14 @@ export default function TimedEventPanel() {
   };
 
   return (
-    <div className="w-80 space-y-4 mt-2 mb-2 pr-4 pl-[3px]">
-      {/* Timer - styled like bastion timer */}
-      <div className="space-y-2">
-        <div className="text-4xl font-bold text-blue-400">
-          {formatTime(timeRemaining)}
-        </div>
-      </div>
+    <div className="w-80 space-y-2 mt-2 mb-2 pr-4 pl-[3px]">
 
+      {/* Event Title */}
+      {event.title && (
+        <h2 className="text-lg font-semibold">
+          {event.title} {formatTime(timeRemaining)}
+        </h2>
+      )}
       {/* Event Message */}
       <div className="text-sm text-muted-foreground">
         {event.message}
@@ -81,7 +81,7 @@ export default function TimedEventPanel() {
 
       {/* Choices */}
       <div className="space-y-2">
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2 mt-4">
           {eventChoices.map((choice) => {
             const cost = choice.cost;
             let isDisabled = false;
