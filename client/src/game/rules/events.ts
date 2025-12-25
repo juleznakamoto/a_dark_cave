@@ -95,6 +95,7 @@ export interface GameEvent {
   // Timed tab properties
   showAsTimedTab?: boolean;
   timedTabDuration?: number; // Duration in milliseconds
+  tabSymbol?: string; // Custom symbol for the timed event tab
 }
 
 export interface EventChoice {
@@ -128,6 +129,7 @@ export interface LogEntry {
   // Timed tab properties
   showAsTimedTab?: boolean;
   timedTabDuration?: number; // Duration in milliseconds
+  tabSymbol?: string; // Custom symbol for the timed event tab
 }
 
 // Merge all events from separate files
@@ -245,6 +247,7 @@ export class EventManager {
           visualEffect: event.visualEffect,
           showAsTimedTab: event.showAsTimedTab, // Add this for timed tabs
           timedTabDuration: event.timedTabDuration, // Add this for timed tabs
+          tabSymbol: event.tabSymbol, // Add this for timed tabs
           skipEventLog: eventChoices && eventChoices.length > 0, // Mark events with choices to skip log
         };
 

@@ -215,9 +215,10 @@ export default function GameContainer() {
 
     // Add Timed Event tab if active
     if (timedEventTab.isActive) {
+      const symbol = timedEventTab.event?.tabSymbol || "✼";
       tabs.push({
         id: "timedevent",
-        icon: <span className="text-blue-400">✼</span>,
+        icon: <span className="text-blue-400">{symbol}</span>,
         label: timedEventTab.event?.title || "Event",
         onClick: () => setActiveTab("timedevent"),
       });
@@ -390,7 +391,7 @@ export default function GameContainer() {
                     onClick={() => setActiveTab("timedevent")}
                     data-testid="tab-timedevent"
                   >
-                    <span className="text-blue-400">✼</span>
+                    <span className="text-blue-400">{timedEventTab.event?.tabSymbol || "✼"}</span>
                   </button>
                 )}
 
