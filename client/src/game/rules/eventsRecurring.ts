@@ -31,26 +31,6 @@ export const recurringEvents: Record<string, GameEvent> = {
     }),
   },
 
-  villagerMissing: {
-    id: "villagerMissing",
-    condition: (state: GameState) =>
-      state.villagers.free > 0 && state.buildings.stoneHut <= 10,
-
-    timeProbability: 30,
-    message: [
-      "One hut lies empty. Its occupant is gone.",
-      "The wind moves through an empty hut. The villager is gone.",
-      "A door of a hut stands ajar. Its occupant is gone.",
-    ],
-    priority: 2,
-    effect: (state: GameState) => ({
-      villagers: {
-        ...state.villagers,
-        free: Math.max(0, state.villagers.free - 1),
-      },
-    }),
-  },
-
   findWood: {
     id: "woodGift",
     condition: (state: GameState) =>
