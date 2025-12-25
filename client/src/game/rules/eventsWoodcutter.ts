@@ -62,7 +62,7 @@ function createWoodcutterEvent(config: WoodcutterConfig): GameEvent {
       return state.buildings.woodenHut >= woodenHuts;
     },
 
-    timeProbability: 7,
+    timeProbability: 0.015,
     title: level === 1 ? "The Woodcutter" : 
            level === 2 ? "The Woodcutter Returns" :
            level === 3 ? "The Woodcutter's Offer" :
