@@ -1310,7 +1310,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
               ...entry, 
               title: entry.title || "Event" 
             };
-            
+
             // Add event message to log first
             set((prevState) => ({
               log: [...prevState.log, entryWithTitle].slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES),
@@ -1374,18 +1374,45 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }
   },
 
-  applyEventChoice: (choiceId: string, eventId: string) => {
+  applyEventChoice: (choiceId: string, eventId: string, currentLogEntry?: LogEntry) => {
+    logger.log("[EVENT CHOICE] Starting applyEventChoice:", {
+      choiceId,
+      eventId,
+      hasCurrentLogEntry: !!currentLogEntry,
+      currentLogEntryTitle: currentLogEntry?.title,
+      currentLogEntryId: currentLogEntry?.id,
+    });
+
     const state = get();
     // If the game is paused, do not apply event choices
-    if (state.isPaused) return;
+    if (state.isPaused) {
+      logger.log("[EVENT CHOICE] Game is paused, skipping");
+      return;
+    }
 
-    const currentLogEntry = get().eventDialog.currentEvent;
+    // Use passed currentLogEntry or fall back to eventDialog.currentEvent
+    const logEntry = currentLogEntry || get().eventDialog.currentEvent;
+    logger.log("[EVENT CHOICE] Resolved logEntry:", {
+      hasLogEntry: !!logEntry,
+      logEntryTitle: logEntry?.title,
+      logEntryId: logEntry?.id,
+      usedCurrentLogEntry: !!currentLogEntry,
+      usedEventDialog: !currentLogEntry,
+    });
+
     const changes = EventManager.applyEventChoice(
       state,
       choiceId,
       eventId,
-      currentLogEntry || undefined,
+      logEntry || undefined,
     );
+
+    logger.log("[EVENT CHOICE] EventManager returned changes:", {
+      hasChanges: Object.keys(changes).length > 0,
+      changeKeys: Object.keys(changes),
+      hasCombatData: !!(changes as any)._combatData,
+      hasLogMessage: !!(changes as any)._logMessage,
+    });
 
     let combatData = null;
     let logMessage = null;
@@ -1395,16 +1422,22 @@ export const useGameStore = create<GameStore>((set, get) => ({
     if (updatedChanges._combatData) {
       combatData = updatedChanges._combatData;
       delete updatedChanges._combatData;
+      logger.log("[EVENT CHOICE] Extracted combat data");
     }
 
     // Extract _logMessage if present
     if (updatedChanges._logMessage) {
       logMessage = updatedChanges._logMessage;
       delete updatedChanges._logMessage;
+      logger.log("[EVENT CHOICE] Extracted log message:", logMessage);
     }
 
     // Apply state changes FIRST - this includes relics, resources, etc.
     if (Object.keys(updatedChanges).length > 0) {
+      logger.log("[EVENT CHOICE] Applying state changes:", {
+        changeKeys: Object.keys(updatedChanges),
+      });
+
       set((prevState) => {
         // Use the same mergeStateUpdates function that other actions use
         const mergedUpdates = mergeStateUpdates(prevState, updatedChanges);
@@ -1415,7 +1448,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         };
 
         // Log blessings after state update
-        logger.log("[STATE] After applying event choice:", {
+        logger.log("[EVENT CHOICE] State updated:", {
           eventId,
           choiceId,
           blessingsInChanges: updatedChanges.blessings,
@@ -1432,6 +1465,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // Only create a log message dialog if there's a _logMessage but no combat
     // Note: _logMessage is for dialog feedback only, not for the main log
     if (logMessage && !combatData) {
+      logger.log("[EVENT CHOICE] Creating feedback dialog with title:", logEntry?.title);
+
       get().setEventDialog(false);
       setTimeout(() => {
         const messageEntry: LogEntry = {
@@ -1439,7 +1474,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
           message: logMessage,
           timestamp: Date.now(),
           type: "event",
-          title: currentLogEntry?.title, // Use the original event's title
+          title: logEntry?.title, // Use the merged logEntry's title
           choices: [
             {
               id: "acknowledge",
@@ -1449,6 +1484,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
           ],
           skipSound: true, // Don't play sound for log messages
         };
+
+        logger.log("[EVENT CHOICE] Opening feedback dialog:", {
+          messageEntryTitle: messageEntry.title,
+          messageEntryMessage: messageEntry.message,
+        });
+
         get().setEventDialog(true, messageEntry);
       }, 200);
       return; // Don't proceed to combat dialog
@@ -1460,7 +1501,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       get().setCombatDialog(true, {
         enemy: combatData.enemy,
         eventTitle: combatData.eventTitle,
-        eventMessage: currentLogEntry?.message || "",
+        eventMessage: logEntry?.message || "",
         onVictory: () => {
           const victoryResult = combatData.onVictory();
           set((prevState) => ({

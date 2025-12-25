@@ -76,6 +76,15 @@ export default function TimedEventPanel() {
 
   const handleChoice = (choiceId: string) => {
     const eventId = event.id.split("-")[0];
+    
+    console.log("[TIMED EVENT] handleChoice called:", {
+      choiceId,
+      eventId,
+      fullEventId: event.id,
+      eventTitle: event.title,
+      hasEvent: !!event,
+    });
+    
     applyEventChoice(choiceId, eventId, event);
     setTimedEventTab(false);
   };
