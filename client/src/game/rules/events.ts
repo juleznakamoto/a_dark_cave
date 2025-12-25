@@ -262,8 +262,10 @@ export class EventManager {
 
         newLogEntries.push(logEntry);
 
-        // Apply effect if it exists and there are no choices
-        if (event.effect && !eventChoices?.length) {
+        // Apply effect if it exists
+        // For timed tab events, always apply the effect to set up the timer state
+        // For other events, only apply if there are no choices (choices will apply effects when selected)
+        if (event.effect && (!eventChoices?.length || event.showAsTimedTab)) {
           // If the effect returns combat data, ensure it's handled correctly
           const effectResult = event.effect(state);
           
