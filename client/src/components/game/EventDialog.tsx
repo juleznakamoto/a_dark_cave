@@ -281,7 +281,7 @@ export default function EventDialog({
             <DialogContent className="w-[95vw] sm:max-w-md [&>button]:hidden">
           <DialogHeader>
             <DialogTitle className="text-lg font-semibold">
-              {event.title}
+              {event.title || "Event"}
             </DialogTitle>
             <div className="flex gap-2 items-center justify-end mt-1">
               {hasScriptorium && event.isTimedChoice && getTotalKnowledge(gameState) > 0 && (
