@@ -1863,26 +1863,26 @@ export const choiceEvents: Record<string, GameEvent> = {
       );
     },
 
-    timeProbability: 0.09, // 1.5 hours
+    timeProbability: 80, // 1.33 hours
     title: "Frostfall",
     message:
       "Icy winds howl through the village. The elders warn that a terrible blizzard is approaching. Preparations must be made, or the consequences will be dire.",
     priority: 4,
     repeatable: true,
     showAsTimedTab: true,
-    timedTabDuration: 5 * 1000, // 5 minutes
+    timedTabDuration: 3 *60* 1000, // 3 minutes
     choices: [
       {
         id: "prepareFrostfall",
         label: "Prepare",
         cost: (state: GameState) => {
-          const timesOccurred = state.story?.seen?.frostfallCount || 0;
+          const timesOccurred = (state.story?.seen?.frostfallCount as number) || 0;
           const woodCost = 1000 * (timesOccurred + 1);
           const foodCost = 1000 * (timesOccurred + 1);
           return `${woodCost} wood, ${foodCost} food`;
         },
         effect: (state: GameState) => {
-          const timesOccurred = state.story?.seen?.frostfallCount || 0;
+          const timesOccurred = (state.story?.seen?.frostfallCount as number) || 0;
           const woodCost = 1000 * (timesOccurred + 1);
           const foodCost = 1000 * (timesOccurred + 1);
 
@@ -1917,7 +1917,7 @@ export const choiceEvents: Record<string, GameEvent> = {
         id: "doNothing",
         label: "Do nothing",
         effect: (state: GameState) => {
-          const timesOccurred = state.story?.seen?.frostfallCount || 0;
+          const timesOccurred = (state.story?.seen?.frostfallCount as number) || 0;
           const frostfallDuration = (10 + 5 * state.CM) * 60 * 1000; // 10/15 minutes
 
           return {
