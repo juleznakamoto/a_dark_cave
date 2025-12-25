@@ -1858,8 +1858,8 @@ export const choiceEvents: Record<string, GameEvent> = {
       const timesOccurred = state.story?.seen?.frostfallCount || 0;
       return (
         state.buildings.woodenHut >= 3 &&
-        // !state.frostfallState?.isActive &&
-        // timesOccurred < 5 &&
+        !state.frostfallState?.isActive &&
+        timesOccurred < 5 &&
         !state.timedEventTab.isActive
       );
     },
