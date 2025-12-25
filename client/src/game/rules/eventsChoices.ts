@@ -1917,6 +1917,7 @@ export const choiceEvents: Record<string, GameEvent> = {
       {
         id: "doNothing",
         label: "Do nothing",
+        titel: "Frostfall",
         effect: (state: GameState) => {
           const timesOccurred = state.story?.seen?.frostfallCount || 0;
           const frostfallDuration = (10 + 5 * state.CM) * 60 * 1000; // 10/15 minutes
