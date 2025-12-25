@@ -129,16 +129,6 @@ export const caveExploreActions: Record<string, Action> = {
         "resources.wood": woodAmount,
         "story.seen.hasWood": true,
         "story.seen.firstWoodGathered": true,
-        "relics.odd_trinket": {
-          probability: 0.05,
-          value: true,
-          condition: (state: GameState) =>
-            !state.relics?.odd_trinket &&
-            state.weapons.crude_bow &&
-            state.buildings.woodenHut <= 4,
-          logMessage:
-            "While chopping wood, you find a trinket with glowing amber liquid inside. After some hesitation, you drink it. It burns as it goes down, but you feel stronger than before.",
-        },
       };
     },
     cooldown: 4,

@@ -1730,15 +1730,14 @@ export const choiceEvents: Record<string, GameEvent> = {
       !state.relics?.odd_trinket &&
       state.weapons.crude_bow &&
       state.buildings.woodenHut <= 4,
-
-    timeProbability: 35,
+    timeProbability: 10,
     title: "The Odd Trinket",
     message:
       "While chopping wood, you find a trinket with glowing amber liquid inside. The liquid swirls hypnotically. Do you drink it?",
     priority: 3,
     repeatable: false,
     isTimedChoice: true,
-    baseDecisionTime: 15,
+    baseDecisionTime: 20,
     choices: [
       {
         id: "drinkTrinket",
