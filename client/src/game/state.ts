@@ -1439,7 +1439,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
           message: logMessage,
           timestamp: Date.now(),
           type: "event",
-          title: currentLogEntry?.title, // Use the original event's title
+          title: logEntry?.title, // Use the merged logEntry's title
           choices: [
             {
               id: "acknowledge",
