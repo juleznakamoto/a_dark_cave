@@ -6,7 +6,7 @@ interface FeastConfig {
   woodenHuts?: number;
   stoneHuts?: number;
   secondWaveVictory?: number;
-  fourthWaveVictory?: number
+  fourthWaveVictory?: number;
   foodCost: number;
 }
 
@@ -23,16 +23,19 @@ const feastConfigs: FeastConfig[] = [
 ];
 
 function createFeastEvent(config: FeastConfig): GameEvent {
-  const { level, woodenHuts, stoneHuts, secondWaveVictory, fourthWaveVictory, foodCost } = config;
+  const {
+    level,
+    woodenHuts,
+    stoneHuts,
+    secondWaveVictory,
+    fourthWaveVictory,
+    foodCost,
+  } = config;
   const eventId = `feast${level}`;
 
   return {
     id: eventId,
     condition: (state: GameState) => {
-
-      return true;
-
-      
       // No feast events can trigger while a feast is active
       if (state.feastState?.isActive && state.feastState.endTime > Date.now()) {
         return false;
@@ -72,8 +75,8 @@ function createFeastEvent(config: FeastConfig): GameEvent {
 
       return false;
     },
-    
-    timeProbability: 0.015,
+
+    timeProbability: 20,
     title: "Village Feast",
     message: `The villagers propose organizing a feast to celebrate and boost work morale.`,
     priority: 3,
@@ -135,7 +138,9 @@ function createFeastEvent(config: FeastConfig): GameEvent {
     fallbackChoice: {
       id: "doNothing",
       label: "No Decision Made",
-      effect: (state: GameState): Partial<GameState> & { _logMessage?: string } => {
+      effect: (
+        state: GameState,
+      ): Partial<GameState> & { _logMessage?: string } => {
         return {
           _logMessage:
             "Your indecision frustrates the villagers. They abandon the feast proposal and return to their duties, disappointed.",
