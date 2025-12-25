@@ -1724,6 +1724,59 @@ export const choiceEvents: Record<string, GameEvent> = {
     ],
   },
 
+  oddTrinket: {
+    id: "oddTrinket",
+    condition: (state: GameState) =>
+      !state.relics?.odd_trinket &&
+      state.weapons.crude_bow &&
+      state.buildings.woodenHut <= 4,
+
+    timeProbability: 35,
+    title: "The Odd Trinket",
+    message:
+      "While chopping wood, you find a trinket with glowing amber liquid inside. The liquid swirls hypnotically. Do you drink it?",
+    priority: 3,
+    repeatable: false,
+    isTimedChoice: true,
+    baseDecisionTime: 15,
+    choices: [
+      {
+        id: "drinkTrinket",
+        label: "Drink it",
+        effect: (state: GameState) => {
+          return {
+            relics: {
+              ...state.relics,
+              odd_trinket: true,
+            },
+            _logMessage:
+              "You drink the amber liquid. It burns as it goes down, but you feel stronger than before.",
+          };
+        },
+      },
+      {
+        id: "discardTrinket",
+        label: "Discard it",
+        effect: (state: GameState) => {
+          return {
+            _logMessage:
+              "You decide not to risk it and toss the trinket into the woods. It disappears into the undergrowth.",
+          };
+        },
+      },
+    ],
+    fallbackChoice: {
+      id: "discardTrinket",
+      label: "Discard it",
+      effect: (state: GameState) => {
+        return {
+          _logMessage:
+            "Your hesitation costs you. The trinket slips from your fingers and shatters on a rock, the amber liquid seeping into the earth.",
+        };
+      },
+    },
+  },
+
   youngWomanProtest: {
     id: "youngWomanProtest",
     condition: (state: GameState) =>

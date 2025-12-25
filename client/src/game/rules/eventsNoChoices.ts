@@ -7,7 +7,7 @@ export const noChoiceEvents: Record<string, GameEvent> = {
     id: "bloodDrainedVillagers",
     condition: (state: GameState) =>
       state.buildings.stoneHut >= 7 && !state.story.seen.collapsedTowerExplored,
-    
+
     timeProbability: (state: GameState) =>
       state.story.seen.bloodDrainedVillagersFirstTime ? 30 : 45,
     title: "Drained Bodies",
@@ -49,7 +49,7 @@ export const noChoiceEvents: Record<string, GameEvent> = {
     id: "villageBecomesCity",
     condition: (state: GameState) =>
       state.buildings.stoneHut >= 5 && !state.flags.hasCity,
-    
+
     message:
       "The village has grown into a city. What began as a small settlement now stands as a thriving center of stone and smoke.",
     priority: 10,
@@ -74,7 +74,7 @@ export const noChoiceEvents: Record<string, GameEvent> = {
       state.buildings.palisades >= 3 &&
       state.buildings.watchtower >= 3 &&
       !state.flags.hasFortress,
-    
+
     message:
       "Your bastion has grown into a mighty fortress of stone and steel.",
     priority: 10,
@@ -96,7 +96,7 @@ export const noChoiceEvents: Record<string, GameEvent> = {
     id: "findElderScroll",
     condition: (state: GameState) =>
       state.buildings.woodenHut >= 6 && !state.relics.elder_scroll,
-    
+
     timeProbability: 45,
     message:
       "During the night as you pass a narrow path, something moves at the edge of your vision, like a shadow fleeing the firelight. You follow it, and there, upon the cold stones, lies an ancient scroll.",
@@ -124,7 +124,7 @@ export const noChoiceEvents: Record<string, GameEvent> = {
       state.buildings.shrine >= 1 &&
       !state.blessings.forests_grace &&
       !state.story.seen.blindDruidBlessing,
-    
+
     timeProbability: 0.5,
     title: "The Blind Druid",
     message:
