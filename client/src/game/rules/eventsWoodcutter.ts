@@ -1,349 +1,84 @@
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 
-export const woodcutterEvents: Record<string, GameEvent> = {
-  woodcutter1: {
-    id: "woodcutter1",
-    condition: (state: GameState) =>
-      state.buildings.woodenHut >= 2 &&
-      state.resources.food > 25 &&
-      !state.story.seen.woodcutterBetrayed &&
-      !state.story.seen.woodcutter1Accepted,
-    
+interface WoodcutterConfig {
+  level: number;
+  woodenHuts: number;
+  foodCost: number;
+  woodReward: number;
+  betrayalChance?: number;
+  isLastEvent?: boolean;
+}
+
+const woodcutterConfigs: WoodcutterConfig[] = [
+  { level: 1, woodenHuts: 2, foodCost: 25, woodReward: 200 },
+  { level: 2, woodenHuts: 3, foodCost: 50, woodReward: 500 },
+  { level: 3, woodenHuts: 4, foodCost: 100, woodReward: 1000 },
+  { level: 4, woodenHuts: 5, foodCost: 150, woodReward: 1500, betrayalChance: 0.3333 },
+  { level: 5, woodenHuts: 6, foodCost: 200, woodReward: 2000, betrayalChance: 0.5 },
+  { level: 6, woodenHuts: 7, foodCost: 250, woodReward: 0, betrayalChance: 1.0, isLastEvent: true },
+];
+
+function createWoodcutterEvent(config: WoodcutterConfig): GameEvent {
+  const {
+    level,
+    woodenHuts,
+    foodCost,
+    woodReward,
+    betrayalChance,
+    isLastEvent,
+  } = config;
+  const eventId = `woodcutter${level}`;
+
+  return {
+    id: eventId,
+    condition: (state: GameState) => {
+      // Check if woodcutter was betrayed
+      if (state.story.seen.woodcutterBetrayed) {
+        return false;
+      }
+
+      // Check if woodcutter storyline ended
+      if (state.story.seen.woodcutterEnded) {
+        return false;
+      }
+
+      // Check if this specific event was already accepted
+      if (state.story.seen[`woodcutter${level}Accepted` as keyof typeof state.story.seen]) {
+        return false;
+      }
+
+      // For first event, just check building requirement
+      if (level === 1) {
+        return state.buildings.woodenHut >= woodenHuts && state.resources.food > 25;
+      }
+
+      // For subsequent events, check if previous event was met
+      if (!state.story.seen[`woodcutter${level - 1}Met` as keyof typeof state.story.seen]) {
+        return false;
+      }
+
+      // Check building requirements
+      return state.buildings.woodenHut >= woodenHuts;
+    },
+
     timeProbability: 7,
-    title: "The Woodcutter",
-    message:
-      "A muscular man with a large axe approaches the village. He flexes his arms 'I can cut trees like no other,' he boasts. 'Give me food, and I'll bring wood.'",
-    priority: 3,
-    repeatable: true,
-    choices: [
-      {
-        id: "acceptServices",
-        label: "Pay food",
-        cost: "25 food",
-        effect: (state: GameState) => {
-          if (state.resources.food < 25) {
-            return {};
-          }
-
-          return {
-            resources: {
-              ...state.resources,
-              food: state.resources.food - 25,
-              wood: state.resources.wood + 200,
-            },
-            story: {
-              ...state.story,
-              seen: {
-                ...state.story.seen,
-                woodcutterMet: true,
-                woodcutter1Met: true,
-                woodcutter1Accepted: true,
-              },
-            },
-            _logMessage:
-              "The woodcutter takes the food and heads into the forest. By evening, he returns with the promised 100 wood stacked neatly at the village's edge.",
-          };
-        },
-      },
-      {
-        id: "denyServices",
-        label: "Deny services",
-        effect: (state: GameState) => {
-          return {
-            _logMessage:
-              "You decline his offer. The woodcutter shrugs and walks away into the forest.",
-          };
-        },
-      },
-    ],
-  },
-
-  woodcutter2: {
-    id: "woodcutter2",
-    condition: (state: GameState) =>
-      state.buildings.woodenHut >= 3 &&
-      state.story.seen.woodcutter1Met &&
-      !state.story.seen.woodcutterBetrayed &&
-      !state.story.seen.woodcutter2Accepted,
-    
-    timeProbability: 7,
-    title: "The Woodcutter Returns",
-    message:
-      "The woodcutter returns, his axe gleaming in the sun. 'Your village grows well,' he observes. 'I can bring you more wood. What do you say?'",
-    priority: 3,
-    repeatable: true,
-    choices: [
-      {
-        id: "acceptServices",
-        label: "Pay food",
-        cost: "50 food",
-        effect: (state: GameState) => {
-          if (state.resources.food < 50) {
-            return {
-              _logMessage: "You don't have enough food for this deal.",
-            };
-          }
-
-          return {
-            resources: {
-              ...state.resources,
-              food: state.resources.food - 50,
-              wood: state.resources.wood + 500,
-            },
-            story: {
-              ...state.story,
-              seen: {
-                ...state.story.seen,
-                woodcutter2Met: true,
-                woodcutter2Accepted: true,
-              },
-            },
-            _logMessage:
-              "The woodcutter takes the food and disappears into the forest. By nightfall, he returns with a large pile of 250 wood.",
-          };
-        },
-      },
-      {
-        id: "denyServices",
-        label: "Deny services",
-        effect: (state: GameState) => {
-          return {
-            _logMessage:
-              "You decline his offer. The woodcutter nods and departs without complaint.",
-          };
-        },
-      },
-    ],
-  },
-
-  woodcutter3: {
-    id: "woodcutter3",
-    condition: (state: GameState) =>
-      state.buildings.woodenHut >= 4 &&
-      state.story.seen.woodcutter2Met &&
-      !state.story.seen.woodcutterBetrayed &&
-      !state.story.seen.woodcutter3Accepted,
-    
-    timeProbability: 7,
-    title: "The Woodcutter's Offer",
-    message:
-      "The woodcutter approaches again 'I see your village continues to thrive,' he says with a grin. 'I can bring you more wood if you pay for it.'",
-    priority: 3,
-    repeatable: true,
-    choices: [
-      {
-        id: "acceptServices",
-        label: "Pay food",
-        cost: "100 food",
-        effect: (state: GameState) => {
-          if (state.resources.food < 100) {
-            return {
-              _logMessage: "You don't have enough food for this deal.",
-            };
-          }
-
-          return {
-            resources: {
-              ...state.resources,
-              food: state.resources.food - 100,
-              wood: state.resources.wood + 1000,
-            },
-            story: {
-              ...state.story,
-              seen: {
-                ...state.story.seen,
-                woodcutter3Met: true,
-                woodcutter3Accepted: true,
-              },
-            },
-            _logMessage:
-              "The woodcutter takes the food and ventures deep into the forest. He returns with an impressive haul of 750 wood.",
-          };
-        },
-      },
-      {
-        id: "denyServices",
-        label: "Deny services",
-        effect: (state: GameState) => {
-          return {
-            _logMessage:
-              "You turn down his offer. He shrugs and walks back into the woods.",
-          };
-        },
-      },
-    ],
-  },
-
-  woodcutter4: {
-    id: "woodcutter4",
-    condition: (state: GameState) =>
-      state.buildings.woodenHut >= 5 &&
-      state.story.seen.woodcutter3Met &&
-      !state.story.seen.woodcutterBetrayed &&
-      !state.story.seen.woodcutter4Accepted,
-    
-    timeProbability: 7,
-    title: "The Woodcutter's Ambitious Plan",
-    message:
-      "The woodcutter arrives once more, 'Do you want to use my services once more?,' he asks.'",
-    priority: 3,
-    repeatable: true,
-    choices: [
-      {
-        id: "acceptServices",
-        label: "Pay food",
-        cost: "150 food",
-        effect: (state: GameState) => {
-          if (state.resources.food < 150) {
-            return {
-              _logMessage: "You don't have enough food for this deal.",
-            };
-          }
-
-          const betrayalChance = 0.3333; // 33.33%
-          const isBetrayedNow = Math.random() < betrayalChance;
-
-          if (isBetrayedNow) {
-            return {
-              resources: {
-                ...state.resources,
-                food: state.resources.food - 150,
-              },
-              story: {
-                ...state.story,
-                seen: {
-                  ...state.story.seen,
-                  woodcutterBetrayed: true,
-                },
-              },
-              _logMessage:
-                "You hand over the food, but days pass with no sign of the woodcutter. It seems you got betrayed.",
-            };
-          }
-
-          return {
-            resources: {
-              ...state.resources,
-              food: state.resources.food - 150,
-              wood: state.resources.wood + 1500,
-            },
-            story: {
-              ...state.story,
-              seen: {
-                ...state.story.seen,
-                woodcutter4Met: true,
-                woodcutter4Accepted: true,
-              },
-            },
-            _logMessage:
-              "The woodcutter takes the food and spends the afternoon in the forest. He returns with an enormous pile of 1500 wood.",
-          };
-        },
-      },
-      {
-        id: "denyServices",
-        label: "Deny services",
-        effect: (state: GameState) => {
-          return {
-            _logMessage:
-              "You decline his ambitious offer. The woodcutter looks disappointed but accepts your decision.",
-          };
-        },
-      },
-    ],
-  },
-
-  woodcutter5: {
-    id: "woodcutter5",
-    condition: (state: GameState) =>
-      state.buildings.woodenHut >= 6 &&
-      state.story.seen.woodcutter4Met &&
-      !state.story.seen.woodcutterBetrayed &&
-      !state.story.seen.woodcutter5Accepted,
-    
-    timeProbability: 7,
-    title: "The Woodcutter's Grand Proposal",
-    message:
-      "The woodcutter appears with a confident smile. 'How about we make one more deal?'",
-    priority: 3,
-    repeatable: true,
-    choices: [
-      {
-        id: "acceptServices",
-        label: "Pay food",
-        cost: "200 food",
-        effect: (state: GameState) => {
-          if (state.resources.food < 200) {
-            return {
-              _logMessage: "You don't have enough food for this deal.",
-            };
-          }
-
-          const betrayalChance = 0.5; // 50%
-          const isBetrayedNow = Math.random() < betrayalChance;
-
-          if (isBetrayedNow) {
-            return {
-              resources: {
-                ...state.resources,
-                food: state.resources.food - 200,
-              },
-              story: {
-                ...state.story,
-                seen: {
-                  ...state.story.seen,
-                  woodcutterBetrayed: true,
-                },
-              },
-              _logMessage:
-                "You hand over the food. The woodcutter promises to return the same day. But he never does. It seems you got betrayed.",
-            };
-          }
-
-          return {
-            resources: {
-              ...state.resources,
-              food: state.resources.food - 200,
-              wood: state.resources.wood + 2000,
-            },
-            story: {
-              ...state.story,
-              seen: {
-                ...state.story.seen,
-                woodcutter5Met: true,
-                woodcutter5Accepted: true,
-              },
-            },
-            _logMessage:
-              "The woodcutter takes the food and within the same day he delivers a massive stockpile of 2500 wood to the village.",
-          };
-        },
-      },
-      {
-        id: "denyServices",
-        label: "Deny services",
-        effect: (state: GameState) => {
-          return {
-            _logMessage:
-              "You refuse the deal. The woodcutter frowns but doesn't argue.",
-          };
-        },
-      },
-    ],
-  },
-
-  woodcutter6: {
-    id: "woodcutter6",
-    condition: (state: GameState) =>
-      state.buildings.woodenHut >= 7 &&
-      state.story.seen.woodcutter5Met &&
-      !state.story.seen.woodcutterBetrayed &&
-      !state.story.seen.woodcutter6Accepted,
-    
-    timeProbability: 7,
-    title: "The Woodcutter's Offer",
-    message:
+    title: level === 1 ? "The Woodcutter" : 
+           level === 2 ? "The Woodcutter Returns" :
+           level === 3 ? "The Woodcutter's Offer" :
+           level === 4 ? "The Woodcutter's Ambitious Plan" :
+           level === 5 ? "The Woodcutter's Grand Proposal" :
+           "The Woodcutter's Offer",
+    message: level === 1 ? 
+      "A muscular man with a large axe approaches the village. He flexes his arms 'I can cut trees like no other,' he boasts. 'Give me food, and I'll bring wood.'" :
+      level === 2 ?
+      "The woodcutter returns, his axe gleaming in the sun. 'Your village grows well,' he observes. 'I can bring you more wood. What do you say?'" :
+      level === 3 ?
+      "The woodcutter approaches again 'I see your village continues to thrive,' he says with a grin. 'I can bring you more wood if you pay for it.'" :
+      level === 4 ?
+      "The woodcutter arrives once more, 'Do you want to use my services once more?,' he asks.'" :
+      level === 5 ?
+      "The woodcutter appears with a confident smile. 'How about we make one more deal?'" :
       "The woodcutter returns to the village, 'Do you want to use my services once more?,' he asks.'",
     priority: 3,
     repeatable: true,
@@ -351,30 +86,66 @@ export const woodcutterEvents: Record<string, GameEvent> = {
       {
         id: "acceptServices",
         label: "Pay food",
-        cost: "250 food",
+        cost: `${foodCost} food`,
         effect: (state: GameState) => {
-          if (state.resources.food < 250) {
+          if (state.resources.food < foodCost) {
             return {
               _logMessage: "You don't have enough food for this deal.",
             };
           }
 
-          // 100% betrayal
+          // Handle betrayal chance if it exists
+          if (betrayalChance !== undefined) {
+            const isBetrayedNow = Math.random() < betrayalChance;
+
+            if (isBetrayedNow) {
+              return {
+                resources: {
+                  ...state.resources,
+                  food: state.resources.food - foodCost,
+                },
+                story: {
+                  ...state.story,
+                  seen: {
+                    ...state.story.seen,
+                    woodcutterBetrayed: true,
+                    [`woodcutter${level}Accepted`]: true,
+                  },
+                },
+                _logMessage: isLastEvent ?
+                  "You hand over the food. The woodcutter grins as he leaves towards the forest. You wait, but he never returns. It seems you got betrayed." :
+                  level === 5 ?
+                  "You hand over the food. The woodcutter promises to return the same day. But he never does. It seems you got betrayed." :
+                  "You hand over the food, but days pass with no sign of the woodcutter. It seems you got betrayed.",
+              };
+            }
+          }
+
+          // Successful transaction
           return {
             resources: {
               ...state.resources,
-              food: state.resources.food - 250,
+              food: state.resources.food - foodCost,
+              wood: state.resources.wood + woodReward,
             },
             story: {
               ...state.story,
               seen: {
                 ...state.story.seen,
-                woodcutterBetrayed: true,
-                woodcutter6Accepted: true,
+                woodcutterMet: true,
+                [`woodcutter${level}Met`]: true,
+                [`woodcutter${level}Accepted`]: true,
               },
             },
-            _logMessage:
-              "You hand over the food. The woodcutter grins as he leaves towards the forest. You wait, but he never returns. It seems you got betrayed.",
+            _logMessage: level === 1 ?
+              "The woodcutter takes the food and heads into the forest. By evening, he returns with the promised 100 wood stacked neatly at the village's edge." :
+              level === 2 ?
+              "The woodcutter takes the food and disappears into the forest. By nightfall, he returns with a large pile of 250 wood." :
+              level === 3 ?
+              "The woodcutter takes the food and ventures deep into the forest. He returns with an impressive haul of 750 wood." :
+              level === 4 ?
+              "The woodcutter takes the food and spends the afternoon in the forest. He returns with an enormous pile of 1500 wood." :
+              `The woodcutter takes the food and within the same day he delivers a massive stockpile of 2500 wood to the village.`,
           };
         },
       },
@@ -382,19 +153,41 @@ export const woodcutterEvents: Record<string, GameEvent> = {
         id: "denyServices",
         label: "Deny services",
         effect: (state: GameState) => {
-          return {
-            story: {
-              ...state.story,
-              seen: {
-                ...state.story.seen,
-                woodcutterEnded: true,
+          // Special handling for last event
+          if (isLastEvent) {
+            return {
+              story: {
+                ...state.story,
+                seen: {
+                  ...state.story.seen,
+                  woodcutterEnded: true,
+                },
               },
-            },
-            _logMessage:
-              "Something about his demeanor makes you uneasy. You refuse the deal. The woodcutter's smile fades, and he leaves without a word.",
+              _logMessage:
+                "Something about his demeanor makes you uneasy. You refuse the deal. The woodcutter's smile fades, and he leaves without a word.",
+            };
+          }
+
+          return {
+            _logMessage: level === 1 ?
+              "You decline his offer. The woodcutter shrugs and walks away into the forest." :
+              level === 2 ?
+              "You decline his offer. The woodcutter nods and departs without complaint." :
+              level === 3 ?
+              "You turn down his offer. He shrugs and walks back into the woods." :
+              level === 4 ?
+              "You decline his ambitious offer. The woodcutter looks disappointed but accepts your decision." :
+              "You refuse the deal. The woodcutter frowns but doesn't argue.",
           };
         },
       },
     ],
-  },
-};
+  };
+}
+
+// Generate all woodcutter events
+export const woodcutterEvents: Record<string, GameEvent> = {};
+woodcutterConfigs.forEach((config) => {
+  const event = createWoodcutterEvent(config);
+  woodcutterEvents[event.id] = event;
+});
