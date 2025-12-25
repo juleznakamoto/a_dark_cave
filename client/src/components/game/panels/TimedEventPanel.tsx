@@ -83,12 +83,16 @@ export default function TimedEventPanel() {
   return (
     <div className="w-80 space-y-1 mt-1 mb-2 pr-4 pl-[3px]">
 
-      {/* Event Title */}
-      {event.title && (
-        <h2 className="text-sm font-semibold">
-          {event.title} {formatTime(timeRemaining)}
+      {/* Event Title with Timer */}
+      <div className="flex items-center justify-between">
+        <h2 className="text-base font-semibold">
+          {event.title}
         </h2>
-      )}
+        <span className="text-sm text-muted-foreground">
+          {formatTime(timeRemaining)}
+        </span>
+      </div>
+      
       {/* Event Message */}
       <div className="text-sm text-muted-foreground">
         {event.message}
