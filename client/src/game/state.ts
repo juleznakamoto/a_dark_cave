@@ -112,7 +112,6 @@ interface GameStore extends GameState {
 
   // Cooldown management
   cooldowns: Record<string, number>;
-  cooldownDurations: Record<string, number>; // Track initial duration for each cooldown
 
   // Compass glow effect
   compassGlowButton: string | null; // Action ID of button to glow
@@ -267,10 +266,6 @@ const mergeStateUpdates = (
     events: { ...prevState.events, ...stateUpdates.events },
     stats: { ...prevState.stats, ...stateUpdates.stats },
     cooldowns: { ...prevState.cooldowns, ...stateUpdates.cooldowns },
-    cooldownDurations: {
-      ...prevState.cooldownDurations,
-      ...stateUpdates.cooldownDurations,
-    },
     attackWaveTimers: {
       ...prevState.attackWaveTimers,
       ...stateUpdates.attackWaveTimers,
@@ -519,7 +514,6 @@ export const createInitialState = (): GameState => ({
 
   // Initialize cooldown management
   cooldowns: {},
-  cooldownDurations: {}, // Initialize cooldownDurations
 
   // Initialize compass glow
   compassGlowButton: null,
@@ -581,7 +575,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
   boostMode: false,
   lastSaved: "Never",
   cooldowns: {},
-  cooldownDurations: {}, // Initialize cooldownDurations
   log: [],
   eventDialog: {
     isOpen: false,
@@ -758,21 +751,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
       }
     }
 
-    // Store initial cooldown duration if it's a new cooldown
-    if (
-      result.stateUpdates.cooldowns &&
-      result.stateUpdates.cooldowns[actionId]
-    ) {
-      const initialDuration = result.stateUpdates.cooldowns[actionId];
-
-      set((prevState) => ({
-        cooldownDurations: {
-          ...prevState.cooldownDurations,
-          [actionId]: initialDuration,
-        },
-      }));
-    }
-
     // Apply dev mode cooldown multiplier (0.1x)
     if (state.devMode && result.stateUpdates.cooldowns) {
       const updatedCooldowns = { ...result.stateUpdates.cooldowns };
@@ -869,10 +847,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const finalDuration = Math.max(1, duration);
     set((state) => ({
       cooldowns: { ...state.cooldowns, [action]: finalDuration },
-      cooldownDurations: {
-        ...state.cooldownDurations,
-        [action]: finalDuration,
-      },
     }));
   },
 
@@ -893,7 +867,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
         }
       }
 
-      // Only update cooldowns, keep cooldownDurations intact for UI reference
       return { cooldowns: newCooldowns };
     });
   },
@@ -1109,7 +1082,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
         ...savedState,
         activeTab: "cave",
         cooldowns: savedState.cooldowns || {},
-        cooldownDurations: savedState.cooldownDurations || {},
         attackWaveTimers: savedState.attackWaveTimers || {},
         log: savedState.log || [],
         events: savedState.events || defaultGameState.events,
@@ -1196,7 +1168,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
         ...defaultGameState,
         activeTab: "cave",
         cooldowns: {},
-        cooldownDurations: {},
         log: [],
         devMode: import.meta.env.DEV,
         boostMode: currentBoostMode, // Preserve boost mode flag
@@ -1253,7 +1224,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     if (stateChanges._timedTabEvent) {
       const timedTabEntry = stateChanges._timedTabEvent;
       delete stateChanges._timedTabEvent;
-      
+
       get().setTimedEventTab(true, timedTabEntry, timedTabEntry.timedTabDuration);
     }
 
