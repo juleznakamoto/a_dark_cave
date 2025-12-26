@@ -95,6 +95,7 @@ export interface GameEvent {
   // Timed tab properties
   showAsTimedTab?: boolean;
   timedTabDuration?: number; // Duration in milliseconds
+  skipEventLog?: boolean; // Skip adding to visible event log
 }
 
 export interface EventChoice {
