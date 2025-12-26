@@ -720,7 +720,8 @@ export default function SidePanel() {
         return ["resources", "fortifications", "bastion"].includes(sectionName);
       case "achievements":
         return ["resources"].includes(sectionName);
-
+      case "timedevent":
+        return ["resources"].includes(sectionName);
       default:
         return true; // Show all sections by default
     }
