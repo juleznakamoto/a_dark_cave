@@ -238,28 +238,43 @@ export class EventManager {
           message = event.message;
         }
 
-        const logEntry: LogEntry = {
-          id: `${event.id}-${Date.now()}`,
-          message: message,
-          timestamp: Date.now(),
-          type: "event",
-          title: event.title,
-          choices: eventChoices,
-          isTimedChoice: event.isTimedChoice,
-          baseDecisionTime: event.baseDecisionTime,
-          fallbackChoice: event.fallbackChoice,
-          relevant_stats: event.relevant_stats,
-          visualEffect: event.visualEffect,
-          showAsTimedTab: event.showAsTimedTab,
-          timedTabDuration: event.timedTabDuration,
-          skipEventLog: event.skipEventLog || (eventChoices && eventChoices.length > 0),
-        };
-
-        // Only add to log entries if it's NOT a timed tab event
+        // Only create and add log entry if it's NOT a timed tab event
         if (!event.showAsTimedTab) {
+          const logEntry: LogEntry = {
+            id: `${event.id}-${Date.now()}`,
+            message: message,
+            timestamp: Date.now(),
+            type: "event",
+            title: event.title,
+            choices: eventChoices,
+            isTimedChoice: event.isTimedChoice,
+            baseDecisionTime: event.baseDecisionTime,
+            fallbackChoice: event.fallbackChoice,
+            relevant_stats: event.relevant_stats,
+            visualEffect: event.visualEffect,
+            showAsTimedTab: event.showAsTimedTab,
+            timedTabDuration: event.timedTabDuration,
+            skipEventLog: event.skipEventLog || (eventChoices && eventChoices.length > 0),
+          };
           newLogEntries.push(logEntry);
         } else {
-          // For timed tab events, add the logEntry to state changes so it can be picked up by the UI
+          // For timed tab events, create a log entry for the UI but don't add to log panel
+          const logEntry: LogEntry = {
+            id: `${event.id}-${Date.now()}`,
+            message: message,
+            timestamp: Date.now(),
+            type: "event",
+            title: event.title,
+            choices: eventChoices,
+            isTimedChoice: event.isTimedChoice,
+            baseDecisionTime: event.baseDecisionTime,
+            fallbackChoice: event.fallbackChoice,
+            relevant_stats: event.relevant_stats,
+            visualEffect: event.visualEffect,
+            showAsTimedTab: event.showAsTimedTab,
+            timedTabDuration: event.timedTabDuration,
+            skipEventLog: true,
+          };
           stateChanges._timedTabEvent = logEntry;
         }
 
