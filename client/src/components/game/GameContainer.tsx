@@ -90,7 +90,17 @@ export default function GameContainer() {
     bastionUnlocked: flags.bastionUnlocked,
   });
 
-  // Don't auto-switch to timed event tab - let user discover it via pulsing glow
+  // Track previous timed event state to detect when a new event starts
+  const prevTimedEventActiveRef = useRef(timedEventTab.isActive);
+
+  // Auto-switch to timed event tab when a new event becomes active
+  useEffect(() => {
+    if (timedEventTab.isActive && !prevTimedEventActiveRef.current) {
+      // A new timed event just became active - switch to it
+      setActiveTab("timedevent");
+    }
+    prevTimedEventActiveRef.current = timedEventTab.isActive;
+  }, [timedEventTab.isActive, setActiveTab]);
 
   // Ensure cave tab is ALWAYS active if no valid tab is selected
   useEffect(() => {
