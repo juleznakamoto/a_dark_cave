@@ -102,6 +102,39 @@ export default function GameContainer() {
     }
   }, [activeTab, setActiveTab, timedEventTab.isActive]);
 
+  // Apply pulse animation to timed event tab button when time is running low
+  useEffect(() => {
+    const tabButton = document.querySelector('[data-testid="tab-timedevent"]');
+    if (!tabButton) return;
+
+    if (timedEventTab.isActive && timedEventTab.expiryTime) {
+      const updatePulse = () => {
+        const now = Date.now();
+        const remaining = Math.max(0, timedEventTab.expiryTime! - now);
+        const shouldPulse = remaining > 0 && remaining <= 30000; // Last 30 seconds
+
+        if (shouldPulse) {
+          tabButton.classList.add("timer-tab-pulse");
+        } else {
+          tabButton.classList.remove("timer-tab-pulse");
+        }
+      };
+
+      // Initial update
+      updatePulse();
+
+      // Update every second
+      const interval = setInterval(updatePulse, 1000);
+
+      return () => {
+        clearInterval(interval);
+        tabButton.classList.remove("timer-tab-pulse");
+      };
+    } else {
+      tabButton.classList.remove("timer-tab-pulse");
+    }
+  }, [timedEventTab.isActive, timedEventTab.expiryTime]);
+
   // Track when new tabs are unlocked and trigger animations
   useEffect(() => {
     const prev = prevFlagsRef.current;

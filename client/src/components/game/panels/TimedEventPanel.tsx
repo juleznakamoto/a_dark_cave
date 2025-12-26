@@ -22,19 +22,6 @@ export default function TimedEventPanel() {
 
   const [timeRemaining, setTimeRemaining] = useState<number>(0);
 
-  // Add pulsing effect to tab button in last 30 seconds (even when tab is inactive)
-  useEffect(() => {
-    const tabButton = document.querySelector('[data-testid="tab-timedevent"]');
-    if (tabButton) {
-      const shouldPulse = timedEventTab.isActive && timeRemaining > 0 && timeRemaining <= 30000; // Last 30 seconds
-      if (shouldPulse) {
-        tabButton.classList.add("timer-tab-pulse");
-      } else {
-        tabButton.classList.remove("timer-tab-pulse");
-      }
-    }
-  }, [timeRemaining, timedEventTab.isActive]);
-
   useEffect(() => {
     if (!timedEventTab.isActive || !timedEventTab.expiryTime) {
       setTimeRemaining(0);
