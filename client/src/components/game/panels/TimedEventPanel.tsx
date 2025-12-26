@@ -51,22 +51,22 @@ export default function TimedEventPanel() {
       if (remaining <= 0) {
         // Execute fallback choice when timer expires
         if (event) {
-          const eventId = event.id.split("-")[0];
+          const timedEventId = event.eventId || event.id.split("-")[0];
           
           // Use the event's defined fallbackChoice if available
           if (event.fallbackChoice) {
-            console.log('[TIMED EVENT] Timer expired, executing fallback choice:', event.fallbackChoice.id, 'for event:', eventId);
-            applyEventChoice(event.fallbackChoice.id, eventId, event);
+            console.log('[TIMED EVENT] Timer expired, executing fallback choice:', event.fallbackChoice.id, 'for event:', timedEventId);
+            applyEventChoice(event.fallbackChoice.id, timedEventId, event);
           } else {
             // Fallback to looking for "doNothing" choice
             const fallbackChoice = event.choices?.find(
               (c) => c.id === "doNothing",
             );
             if (fallbackChoice) {
-              console.log('[TIMED EVENT] Timer expired, executing doNothing choice for event:', eventId);
-              applyEventChoice(fallbackChoice.id, eventId, event);
+              console.log('[TIMED EVENT] Timer expired, executing doNothing choice for event:', timedEventId);
+              applyEventChoice(fallbackChoice.id, timedEventId, event);
             } else {
-              console.warn('[TIMED EVENT] Timer expired but no fallback choice found for event:', eventId);
+              console.warn('[TIMED EVENT] Timer expired but no fallback choice found for event:', timedEventId);
             }
           }
         }
@@ -98,6 +98,7 @@ export default function TimedEventPanel() {
 
   const event = timedEventTab.event;
   const eventChoices = event.choices || [];
+  const eventId = event.eventId || event.id.split("-")[0];
 
   const formatTime = (ms: number) => {
     const totalSeconds = Math.ceil(ms / 1000);
@@ -107,7 +108,6 @@ export default function TimedEventPanel() {
   };
 
   const handleChoice = (choiceId: string) => {
-    const eventId = event.id.split("-")[0];
     applyEventChoice(choiceId, eventId, event);
     setTimedEventTab(false);
   };

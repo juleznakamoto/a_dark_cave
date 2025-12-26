@@ -1568,7 +1568,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }));
   },
 
-  setTimedEventTab: (isActive: boolean, event?: LogEntry | null, duration?: number) => {
+  setTimedEventTab: (isActive: boolean, event?: any | null, duration?: number) => {
     set((state) => ({
       ...state,
       timedEventTab: {

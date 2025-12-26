@@ -258,24 +258,17 @@ export class EventManager {
           };
           newLogEntries.push(logEntry);
         } else {
-          // For timed tab events, create a log entry for the UI but don't add to log panel
-          const logEntry: LogEntry = {
-            id: `${event.id}-${Date.now()}`,
-            message: message,
+          // For timed tab events, pass event data directly without creating a LogEntry
+          stateChanges._timedTabEvent = {
+            id: event.id,
+            eventId: event.id,
             timestamp: Date.now(),
-            type: "event",
+            message: message,
             title: event.title,
             choices: eventChoices,
-            isTimedChoice: event.isTimedChoice,
-            baseDecisionTime: event.baseDecisionTime,
             fallbackChoice: event.fallbackChoice,
-            relevant_stats: event.relevant_stats,
-            visualEffect: event.visualEffect,
-            showAsTimedTab: event.showAsTimedTab,
             timedTabDuration: event.timedTabDuration,
-            skipEventLog: true,
           };
-          stateChanges._timedTabEvent = logEntry;
         }
 
         // Apply effect if it exists
