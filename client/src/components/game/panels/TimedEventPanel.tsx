@@ -127,10 +127,10 @@ export default function TimedEventPanel() {
   };
 
   return (
-    <div className="w-80 space-y-1 mt-1 mb-2 pr-4 pl-[3px]">
+    <div className="w-80 space-y-1 mt-2 mb-2 pr-4 pl-[3px]">
       {/* Event Title */}
       {event.title && (
-        <h2 className="text-sm">
+        <h2 className="text-xs">
           <span className="font-semibold">{event.title} </span>
           <span className="text-muted-foreground">
             {formatTime(timeRemaining)}
@@ -138,7 +138,7 @@ export default function TimedEventPanel() {
         </h2>
       )}
       {/* Event Message */}
-      <div className="text-sm text-muted-foreground">{event.message}</div>
+      <div className="text-xs text-muted-foreground">{event.message}</div>
 
       {/* Choices */}
       <div className="space-y-2">
