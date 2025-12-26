@@ -136,6 +136,7 @@ body {
     opacity: 0;
     filter: blur(5px);
   }
+
   100% {
     opacity: 0.6;
     filter: blur(0px);
@@ -344,6 +345,7 @@ body {
   0% {
     opacity: 1;
   }
+
   100% {
     opacity: 0;
   }
@@ -357,6 +359,7 @@ body {
   0% {
     box-shadow: 0 0 6px rgba(251, 191, 36, 1);
   }
+
   100% {
     box-shadow: 0 0 6 rgba(251, 191, 36, 1), 0 0 8px rgba(251, 191, 36, 1);
   }
@@ -385,9 +388,12 @@ body {
 
 /* Focus mode glow animation */
 @keyframes focus-glow {
-  0%, 100% {
+
+  0%,
+  100% {
     box-shadow: 0 0 2px rgba(20, 184, 166, 0.3), 0 0 3px rgba(20, 184, 166, 0.2);
   }
+
   50% {
     box-shadow: 0 0 2px rgba(20, 184, 166, 0.5), 0 0 3px rgba(20, 184, 166, 0.4);
   }
@@ -399,16 +405,19 @@ body {
 
 /* Timer tab pulse animation for last 30 seconds */
 @keyframes timer-tab-pulse {
-  0%, 100% {
-    opacity: 0.6;
-  }
-  50% {
+  0% {
     opacity: 1;
+    text-shadow: 0 0 0 0 rgb(255, 255, 255, 0.7);
+  }
+
+  100% {
+    opacity: 0.7;
+    text-shadow: 0 0 0 6px rgb(255, 255, 255, 0.7);
   }
 }
 
 .timer-tab-pulse {
-  animation: timer-tab-pulse 1.5s ease-in-out infinite;
+  animation: notification-pulse 0.8s ease-in-out infinite;
 }
 
 /* Overlay fade-in animation */
@@ -416,6 +425,7 @@ body {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
