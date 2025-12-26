@@ -62,6 +62,9 @@ function createBoneDevourerEvent(config: BoneDevourerConfig): GameEvent {
     },
     priority: 3,
     repeatable: true,
+    showAsTimedTab: true,
+    timedTabDuration: 3 * 60 * 1000, // 3 minutes
+    skipEventLog: true, // Don't add to event log, only show in timed tab
     choices: [
       {
         id: "sellBones",
@@ -111,6 +114,22 @@ function createBoneDevourerEvent(config: BoneDevourerConfig): GameEvent {
         },
       },
     ],
+    fallbackChoice: {
+      id: "refuse",
+      label: "Time Expired",
+      effect: (
+        state: GameState,
+      ): Partial<GameState> & { _logMessage?: string } => {
+        return {
+          triggeredEvents: {
+            ...(state.triggeredEvents || {}),
+            [`${eventId}_seen`]: true,
+          },
+          _logMessage:
+            "Your indecision frustrates the creature. It hisses in displeasure and retreats into the shadows.",
+        };
+      },
+    },
   };
 }
 
