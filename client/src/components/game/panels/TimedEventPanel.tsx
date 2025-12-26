@@ -50,13 +50,24 @@ export default function TimedEventPanel() {
 
       if (remaining <= 0) {
         // Execute fallback choice when timer expires
-        if (event && event.choices) {
+        if (event) {
           const eventId = event.id.split("-")[0];
-          const fallbackChoice = event.choices.find(
-            (c) => c.id === "doNothing",
-          );
-          if (fallbackChoice) {
-            applyEventChoice(fallbackChoice.id, eventId, event);
+          
+          // Use the event's defined fallbackChoice if available
+          if (event.fallbackChoice) {
+            console.log('[TIMED EVENT] Timer expired, executing fallback choice:', event.fallbackChoice.id, 'for event:', eventId);
+            applyEventChoice(event.fallbackChoice.id, eventId, event);
+          } else {
+            // Fallback to looking for "doNothing" choice
+            const fallbackChoice = event.choices?.find(
+              (c) => c.id === "doNothing",
+            );
+            if (fallbackChoice) {
+              console.log('[TIMED EVENT] Timer expired, executing doNothing choice for event:', eventId);
+              applyEventChoice(fallbackChoice.id, eventId, event);
+            } else {
+              console.warn('[TIMED EVENT] Timer expired but no fallback choice found for event:', eventId);
+            }
           }
         }
         // Auto-close the tab when timer expires

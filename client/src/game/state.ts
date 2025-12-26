@@ -1316,15 +1316,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
           // Check if this should be shown as a timed tab
           if (entry.showAsTimedTab && entry.timedTabDuration) {
             // Ensure title is set on the entry
-            const entryWithTitle = { 
-              ...entry, 
-              title: entry.title || "Event" 
+            const entryWithTitle = {
+              ...entry,
+              title: entry.title || "Event",
             };
 
-            // Add event message to log first
-            set((prevState) => ({
-              log: [...prevState.log, entryWithTitle].slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES),
-            }));
+            // Do NOT add to log - timed tab events should only show in the timed tab
+            logger.log('[TIMED TAB EVENT] Showing timed tab for event:', entryWithTitle.id, 'without adding to log');
             get().setTimedEventTab(true, entryWithTitle, entry.timedTabDuration);
             return;
           }

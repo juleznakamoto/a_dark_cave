@@ -212,6 +212,8 @@ function createWoodcutterEvent(config: WoodcutterConfig): GameEvent {
       id: "denyServices",
       label: "Time Expired",
       effect: (state: GameState) => {
+        console.log('[WOODCUTTER] Fallback choice (denyServices) triggered - timer expired for level:', level);
+        
         // Special handling for last event
         if (isLastEvent) {
           return {
@@ -237,14 +239,14 @@ function createWoodcutterEvent(config: WoodcutterConfig): GameEvent {
             endTime: 0,
           },
           _logMessage: level === 1 ?
-            "You decline his offer. The woodcutter shrugs and walks away into the forest." :
+            "Your indecision frustrates the woodcutter. He shrugs and walks away into the forest." :
             level === 2 ?
-            "You decline his offer. The woodcutter nods and departs without complaint." :
+            "Your indecision frustrates the woodcutter. He nods and departs without complaint." :
             level === 3 ?
-            "You turn down his offer. He shrugs and walks back into the woods." :
+            "Your indecision frustrates the woodcutter. He shrugs and walks back into the woods." :
             level === 4 ?
-            "You decline his ambitious offer. The woodcutter looks disappointed but accepts your decision." :
-            "You refuse the deal. The woodcutter frowns but doesn't argue.",
+            "Your indecision frustrates the woodcutter. He looks disappointed but accepts and leaves." :
+            "Your indecision frustrates the woodcutter. He frowns and walks away.",
         };
       },
     },
