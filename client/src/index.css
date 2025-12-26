@@ -404,21 +404,27 @@ body {
 }
 
 /* Timer tab pulse animation for last 30 seconds */
-@keyframes timer-tab-pulse {
+@keyframes timer-symbol-pulse {
   0% {
     opacity: 1;
-    text-shadow: 0 0 0 0 rgb(255, 255, 255, 0.7);
+    text-shadow: 0 0 0 rgba(255, 255, 255, 0);
   }
 
   100% {
     opacity: 0.7;
-    text-shadow: 0 0 0 6px rgb(255, 255, 255, 0.7);
+    text-shadow: 0 0 6px rgba(255, 255, 255, 0.7);
   }
 }
 
-.timer-tab-pulse {
-  animation: notification-pulse 0.8s ease-in-out infinite;
+.timer-symbol {
+  display: inline-block;
+  pointer-events: none;
 }
+
+.timer-tab-pulse {
+  animation: timer-symbol-pulse 0.8s ease-in-out infinite;
+}
+
 
 /* Overlay fade-in animation */
 @keyframes overlay-fade-in {
