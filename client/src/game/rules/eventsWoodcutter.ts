@@ -99,6 +99,7 @@ function createWoodcutterEvent(config: WoodcutterConfig): GameEvent {
     repeatable: true,
     showAsTimedTab: true,
     timedTabDuration: 3 * 60 * 1000, // 3 minutes
+    skipEventLog: true, // Don't add to event log, only show in timed tab
     choices: [
       {
         id: "acceptServices",
@@ -208,16 +209,42 @@ function createWoodcutterEvent(config: WoodcutterConfig): GameEvent {
       },
     ],
     fallbackChoice: {
-      id: "doNothing",
-      label: "No Decision Made",
+      id: "denyServices",
+      label: "Time Expired",
       effect: (state: GameState) => {
+        // Special handling for last event
+        if (isLastEvent) {
+          return {
+            woodcutterState: {
+              isActive: false,
+              endTime: 0,
+            },
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                woodcutterEnded: true,
+              },
+            },
+            _logMessage:
+              "Your indecision frustrates the woodcutter. He shakes his head and walks away into the forest.",
+          };
+        }
+
         return {
           woodcutterState: {
             isActive: false,
             endTime: 0,
           },
-          _logMessage:
-            "Your indecision frustrates the woodcutter. He shakes his head and walks away into the forest.",
+          _logMessage: level === 1 ?
+            "You decline his offer. The woodcutter shrugs and walks away into the forest." :
+            level === 2 ?
+            "You decline his offer. The woodcutter nods and departs without complaint." :
+            level === 3 ?
+            "You turn down his offer. He shrugs and walks back into the woods." :
+            level === 4 ?
+            "You decline his ambitious offer. The woodcutter looks disappointed but accepts your decision." :
+            "You refuse the deal. The woodcutter frowns but doesn't argue.",
         };
       },
     },

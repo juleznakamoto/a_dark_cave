@@ -252,7 +252,7 @@ export class EventManager {
           visualEffect: event.visualEffect,
           showAsTimedTab: event.showAsTimedTab, // Add this for timed tabs
           timedTabDuration: event.timedTabDuration, // Add this for timed tabs
-          skipEventLog: eventChoices && eventChoices.length > 0, // Mark events with choices to skip log
+          skipEventLog: event.skipEventLog || (eventChoices && eventChoices.length > 0), // Use event's skipEventLog or default for choice events
         };
 
         newLogEntries.push(logEntry);
