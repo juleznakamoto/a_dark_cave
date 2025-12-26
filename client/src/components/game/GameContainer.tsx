@@ -92,6 +92,14 @@ export default function GameContainer() {
 
   // Don't auto-switch to timed event tab - let user discover it via pulsing glow
 
+  // Ensure cave tab is active if no valid tab is selected
+  useEffect(() => {
+    const validTabs = ["cave", "village", "forest", "estate", "bastion", "achievements", "timedevent"];
+    if (!activeTab || !validTabs.includes(activeTab)) {
+      setActiveTab("cave");
+    }
+  }, [activeTab, setActiveTab]);
+
   // Track when new tabs are unlocked and trigger animations
   useEffect(() => {
     const prev = prevFlagsRef.current;
