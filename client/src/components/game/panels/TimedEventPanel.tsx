@@ -70,10 +70,11 @@ export default function TimedEventPanel() {
             }
           }
         }
-        // Auto-close the tab and switch to cave when timer expires
+        // Auto-close the tab
         setTimedEventTab(false);
-        const { setActiveTab } = useGameStore.getState();
-        setActiveTab("cave");
+        
+        // The useEffect in GameContainer will automatically switch to cave tab
+        // when it detects timedevent tab is active but event is no longer active
       }
     };
 
