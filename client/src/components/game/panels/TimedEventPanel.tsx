@@ -105,9 +105,8 @@ export default function TimedEventPanel() {
   // Helper function to extract resource names from cost text
   const extractResourcesFromCost = (costText: string): string[] => {
     const resources: string[] = [];
-    // Match patterns like "25 food", "100 wood", "1,000 wood", etc.
-    // Updated regex to handle comma-separated numbers
-    const matches = costText.matchAll(/([0-9,]+)\s+([a-zA-Z_]+)/g);
+    // Match patterns like "25 food", "100 wood", etc.
+    const matches = costText.matchAll(/(\d+)\s+([a-zA-Z_]+)/g);
 
     for (const match of matches) {
       const resourceName = match[2].toLowerCase();
