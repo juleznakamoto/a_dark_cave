@@ -90,12 +90,7 @@ export default function GameContainer() {
     bastionUnlocked: flags.bastionUnlocked,
   });
 
-  // Auto-switch to timed event tab when it becomes active
-  useEffect(() => {
-    if (timedEventTab.isActive) {
-      setActiveTab("timedevent");
-    }
-  }, [timedEventTab.isActive, setActiveTab]);
+  // Don't auto-switch to timed event tab - let user discover it via pulsing glow
 
   // Track when new tabs are unlocked and trigger animations
   useEffect(() => {

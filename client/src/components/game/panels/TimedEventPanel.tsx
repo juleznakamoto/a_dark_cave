@@ -22,18 +22,18 @@ export default function TimedEventPanel() {
 
   const [timeRemaining, setTimeRemaining] = useState<number>(0);
 
-  // Add pulsing effect to tab button only in last 30 seconds
+  // Add pulsing effect to tab button in last 30 seconds (even when tab is inactive)
   useEffect(() => {
     const tabButton = document.querySelector('[data-testid="tab-timedevent"]');
     if (tabButton) {
-      const shouldPulse = timeRemaining > 0 && timeRemaining <= 30000; // Last 30 seconds
+      const shouldPulse = timedEventTab.isActive && timeRemaining > 0 && timeRemaining <= 30000; // Last 30 seconds
       if (shouldPulse) {
         tabButton.classList.add("timer-tab-pulse");
       } else {
         tabButton.classList.remove("timer-tab-pulse");
       }
     }
-  }, [timeRemaining]);
+  }, [timeRemaining, timedEventTab.isActive]);
 
   useEffect(() => {
     if (!timedEventTab.isActive || !timedEventTab.expiryTime) {
@@ -70,8 +70,10 @@ export default function TimedEventPanel() {
             }
           }
         }
-        // Auto-close the tab when timer expires
+        // Auto-close the tab and switch to cave when timer expires
         setTimedEventTab(false);
+        const { setActiveTab } = useGameStore.getState();
+        setActiveTab("cave");
       }
     };
 
