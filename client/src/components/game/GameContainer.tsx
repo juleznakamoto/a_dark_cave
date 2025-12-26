@@ -392,7 +392,7 @@ export default function GameContainer() {
                     onClick={() => setActiveTab("timedevent")}
                     data-testid="tab-timedevent"
                   >
-                    {timedEventTab.event?.tabSymbol || "✼"}
+                    ⊚
                   </button>
                 )}
 

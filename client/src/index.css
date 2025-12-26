@@ -397,6 +397,20 @@ body {
   animation: focus-glow 3s ease-in-out infinite;
 }
 
+/* Timer tab pulse animation for last 30 seconds */
+@keyframes timer-tab-pulse {
+  0%, 100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.timer-tab-pulse {
+  animation: timer-tab-pulse 1.5s ease-in-out infinite;
+}
+
 /* Overlay fade-in animation */
 @keyframes overlay-fade-in {
   from {
