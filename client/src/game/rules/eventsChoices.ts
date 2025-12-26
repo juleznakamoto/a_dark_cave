@@ -170,7 +170,8 @@ export const choiceEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "buyMirror",
-        label: "Buy for 500 iron",
+        label: "Pay 500 iron",
+        cost: "500 iron",
         effect: (state: GameState) => {
           return {
             resources: {
