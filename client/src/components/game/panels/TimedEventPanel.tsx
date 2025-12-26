@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useGameStore } from "@/game/state";
 import { Button } from "@/components/ui/button";
@@ -12,7 +11,12 @@ import { useMobileButtonTooltip } from "@/hooks/useMobileTooltip";
 import { eventChoiceCostTooltip } from "@/game/rules/tooltips";
 
 export default function TimedEventPanel() {
-  const { timedEventTab, applyEventChoice, setTimedEventTab, setHighlightedResources } = useGameStore();
+  const {
+    timedEventTab,
+    applyEventChoice,
+    setTimedEventTab,
+    setHighlightedResources,
+  } = useGameStore();
   const gameState = useGameStore();
   const mobileTooltip = useMobileButtonTooltip();
 
@@ -24,9 +28,9 @@ export default function TimedEventPanel() {
     if (tabButton) {
       const shouldPulse = timeRemaining > 0 && timeRemaining <= 30000; // Last 30 seconds
       if (shouldPulse) {
-        tabButton.classList.add('timer-tab-pulse');
+        tabButton.classList.add("timer-tab-pulse");
       } else {
-        tabButton.classList.remove('timer-tab-pulse');
+        tabButton.classList.remove("timer-tab-pulse");
       }
     }
   }, [timeRemaining]);
@@ -48,7 +52,9 @@ export default function TimedEventPanel() {
         // Execute fallback choice when timer expires
         if (event && event.choices) {
           const eventId = event.id.split("-")[0];
-          const fallbackChoice = event.choices.find(c => c.id === "doNothing");
+          const fallbackChoice = event.choices.find(
+            (c) => c.id === "doNothing",
+          );
           if (fallbackChoice) {
             applyEventChoice(fallbackChoice.id, eventId, event);
           }
@@ -67,7 +73,13 @@ export default function TimedEventPanel() {
     return () => {
       clearInterval(interval);
     };
-  }, [timedEventTab.isActive, timedEventTab.event?.id, timedEventTab.expiryTime, setTimedEventTab, applyEventChoice]);
+  }, [
+    timedEventTab.isActive,
+    timedEventTab.event?.id,
+    timedEventTab.expiryTime,
+    setTimedEventTab,
+    applyEventChoice,
+  ]);
 
   if (!timedEventTab.event) {
     return null;
@@ -80,7 +92,7 @@ export default function TimedEventPanel() {
     const totalSeconds = Math.ceil(ms / 1000);
     const minutes = Math.floor(totalSeconds / 60);
     const seconds = totalSeconds % 60;
-    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    return `${minutes}:${seconds.toString().padStart(2, "0")}`;
   };
 
   const handleChoice = (choiceId: string) => {
@@ -94,28 +106,28 @@ export default function TimedEventPanel() {
     const resources: string[] = [];
     // Match patterns like "25 food", "100 wood", etc.
     const matches = costText.matchAll(/(\d+)\s+([a-zA-Z_]+)/g);
-    
+
     for (const match of matches) {
       const resourceName = match[2].toLowerCase();
       resources.push(resourceName);
     }
-    
+
     return resources;
   };
 
   return (
     <div className="w-80 space-y-1 mt-1 mb-2 pr-4 pl-[3px]">
-
       {/* Event Title */}
       {event.title && (
         <h2 className="text-sm">
-          <span className="font-semibold">{event.title}</span> {formatTime(timeRemaining)}
+          <span className="font-semibold">{event.title} </span>
+          <span className="text-muted-foreground">
+            {formatTime(timeRemaining)}
+          </span>
         </h2>
       )}
       {/* Event Message */}
-      <div className="text-sm text-muted-foreground">
-        {event.message}
-      </div>
+      <div className="text-sm text-muted-foreground">{event.message}</div>
 
       {/* Choices */}
       <div className="space-y-2">
@@ -125,14 +137,19 @@ export default function TimedEventPanel() {
             let isDisabled = false;
 
             // Evaluate cost if it's a function
-            const costText = typeof cost === 'function' ? cost(gameState) : cost;
+            const costText =
+              typeof cost === "function" ? cost(gameState) : cost;
 
             // Check if player can afford the cost
             if (costText) {
-              const resourceKeys = Object.keys(gameState.resources) as Array<keyof typeof gameState.resources>;
+              const resourceKeys = Object.keys(gameState.resources) as Array<
+                keyof typeof gameState.resources
+              >;
               for (const resourceKey of resourceKeys) {
                 if (costText.includes(resourceKey)) {
-                  const match = costText.match(new RegExp(`(\\d+)\\s*${resourceKey}`));
+                  const match = costText.match(
+                    new RegExp(`(\\d+)\\s*${resourceKey}`),
+                  );
                   if (match) {
                     const costAmount = parseInt(match[1]);
                     if (gameState.resources[resourceKey] < costAmount) {
@@ -145,9 +162,10 @@ export default function TimedEventPanel() {
             }
 
             // Evaluate label if it's a function
-            const labelText = typeof choice.label === 'function'
-              ? choice.label(gameState)
-              : choice.label;
+            const labelText =
+              typeof choice.label === "function"
+                ? choice.label(gameState)
+                : choice.label;
 
             const buttonContent = (
               <Button
@@ -177,12 +195,57 @@ export default function TimedEventPanel() {
                   <TooltipTrigger asChild>
                     <div
                       onClick={(e) => {
-                        mobileTooltip.handleWrapperClick(`timedevent-${choice.id}`, isDisabled, false, e);
+                        mobileTooltip.handleWrapperClick(
+                          `timedevent-${choice.id}`,
+                          isDisabled,
+                          false,
+                          e,
+                        );
                       }}
-                      onMouseDown={mobileTooltip.isMobile ? (e) => mobileTooltip.handleMouseDown(`timedevent-${choice.id}`, isDisabled, false, e) : undefined}
-                      onMouseUp={mobileTooltip.isMobile ? (e) => mobileTooltip.handleMouseUp(`timedevent-${choice.id}`, isDisabled, () => handleChoice(choice.id), e) : undefined}
-                      onTouchStart={mobileTooltip.isMobile ? (e) => mobileTooltip.handleTouchStart(`timedevent-${choice.id}`, isDisabled, false, e) : undefined}
-                      onTouchEnd={mobileTooltip.isMobile ? (e) => mobileTooltip.handleTouchEnd(`timedevent-${choice.id}`, isDisabled, () => handleChoice(choice.id), e) : undefined}
+                      onMouseDown={
+                        mobileTooltip.isMobile
+                          ? (e) =>
+                              mobileTooltip.handleMouseDown(
+                                `timedevent-${choice.id}`,
+                                isDisabled,
+                                false,
+                                e,
+                              )
+                          : undefined
+                      }
+                      onMouseUp={
+                        mobileTooltip.isMobile
+                          ? (e) =>
+                              mobileTooltip.handleMouseUp(
+                                `timedevent-${choice.id}`,
+                                isDisabled,
+                                () => handleChoice(choice.id),
+                                e,
+                              )
+                          : undefined
+                      }
+                      onTouchStart={
+                        mobileTooltip.isMobile
+                          ? (e) =>
+                              mobileTooltip.handleTouchStart(
+                                `timedevent-${choice.id}`,
+                                isDisabled,
+                                false,
+                                e,
+                              )
+                          : undefined
+                      }
+                      onTouchEnd={
+                        mobileTooltip.isMobile
+                          ? (e) =>
+                              mobileTooltip.handleTouchEnd(
+                                `timedevent-${choice.id}`,
+                                isDisabled,
+                                () => handleChoice(choice.id),
+                                e,
+                              )
+                          : undefined
+                      }
                     >
                       {buttonContent}
                     </div>
@@ -197,10 +260,50 @@ export default function TimedEventPanel() {
             ) : (
               <div
                 key={choice.id}
-                onMouseDown={mobileTooltip.isMobile ? (e) => mobileTooltip.handleMouseDown(`timedevent-${choice.id}`, isDisabled, false, e) : undefined}
-                onMouseUp={mobileTooltip.isMobile ? (e) => mobileTooltip.handleMouseUp(`timedevent-${choice.id}`, isDisabled, () => handleChoice(choice.id), e) : undefined}
-                onTouchStart={mobileTooltip.isMobile ? (e) => mobileTooltip.handleTouchStart(`timedevent-${choice.id}`, isDisabled, false, e) : undefined}
-                onTouchEnd={mobileTooltip.isMobile ? (e) => mobileTooltip.handleTouchEnd(`timedevent-${choice.id}`, isDisabled, () => handleChoice(choice.id), e) : undefined}
+                onMouseDown={
+                  mobileTooltip.isMobile
+                    ? (e) =>
+                        mobileTooltip.handleMouseDown(
+                          `timedevent-${choice.id}`,
+                          isDisabled,
+                          false,
+                          e,
+                        )
+                    : undefined
+                }
+                onMouseUp={
+                  mobileTooltip.isMobile
+                    ? (e) =>
+                        mobileTooltip.handleMouseUp(
+                          `timedevent-${choice.id}`,
+                          isDisabled,
+                          () => handleChoice(choice.id),
+                          e,
+                        )
+                    : undefined
+                }
+                onTouchStart={
+                  mobileTooltip.isMobile
+                    ? (e) =>
+                        mobileTooltip.handleTouchStart(
+                          `timedevent-${choice.id}`,
+                          isDisabled,
+                          false,
+                          e,
+                        )
+                    : undefined
+                }
+                onTouchEnd={
+                  mobileTooltip.isMobile
+                    ? (e) =>
+                        mobileTooltip.handleTouchEnd(
+                          `timedevent-${choice.id}`,
+                          isDisabled,
+                          () => handleChoice(choice.id),
+                          e,
+                        )
+                    : undefined
+                }
               >
                 {buttonContent}
               </div>
