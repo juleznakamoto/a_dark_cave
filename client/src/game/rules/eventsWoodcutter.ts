@@ -99,7 +99,6 @@ function createWoodcutterEvent(config: WoodcutterConfig): GameEvent {
     repeatable: true,
     showAsTimedTab: true,
     timedTabDuration: 3 * 60 * 1000, // 3 minutes
-    tabSymbol: "▤",
     choices: [
       {
         id: "acceptServices",

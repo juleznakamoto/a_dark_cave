@@ -52,10 +52,18 @@ export default function GameContainer() {
   // State selectors for dialogs - must be at top before any conditional returns
   const shopDialogOpen = useGameStore((state) => state.shopDialogOpen);
   const setShopDialogOpen = useGameStore((state) => state.setShopDialogOpen);
-  const leaderboardDialogOpen = useGameStore((state) => state.leaderboardDialogOpen);
-  const setLeaderboardDialogOpen = useGameStore((state) => state.setLeaderboardDialogOpen);
-  const fullGamePurchaseDialogOpen = useGameStore((state) => state.fullGamePurchaseDialogOpen);
-  const setFullGamePurchaseDialogOpen = useGameStore((state) => state.setFullGamePurchaseDialogOpen);
+  const leaderboardDialogOpen = useGameStore(
+    (state) => state.leaderboardDialogOpen,
+  );
+  const setLeaderboardDialogOpen = useGameStore(
+    (state) => state.setLeaderboardDialogOpen,
+  );
+  const fullGamePurchaseDialogOpen = useGameStore(
+    (state) => state.fullGamePurchaseDialogOpen,
+  );
+  const setFullGamePurchaseDialogOpen = useGameStore(
+    (state) => state.setFullGamePurchaseDialogOpen,
+  );
 
   // Estate unlocks when Dark Estate is built
   const estateUnlocked = buildings.darkEstate >= 1;
@@ -66,7 +74,7 @@ export default function GameContainer() {
   useEffect(() => {
     if (!fullGamePurchaseDialogOpen) {
       const state = useGameStore.getState();
-      logger.log('[GAME CONTAINER] Full game dialog closed, state:', {
+      logger.log("[GAME CONTAINER] Full game dialog closed, state:", {
         BTP: state.BTP,
         isPaused: state.isPaused,
         isPausedPreviously: state.isPausedPreviously,
@@ -213,18 +221,6 @@ export default function GameContainer() {
       });
     }
 
-    // Add Timed Event tab if active
-    if (timedEventTab.isActive) {
-      const symbol = timedEventTab.event?.tabSymbol || "✼";
-      const title = timedEventTab.event?.title || "Event";
-      tabs.push({
-        id: "timedevent",
-        icon: <span>{symbol}</span>,
-        label: `${symbol} ${title}`,
-        onClick: () => setActiveTab("timedevent"),
-      });
-    }
-
     // Add Achievements tab if Book of Trials is owned
     if (books?.book_of_trials) {
       tabs.push({
@@ -234,6 +230,19 @@ export default function GameContainer() {
         onClick: () => setActiveTab("achievements"),
       });
     }
+
+    // Add Timed Event tab if active
+    if (timedEventTab.isActive) {
+      const symbol = "⊚";
+      const title = timedEventTab.event?.title || "Event";
+      tabs.push({
+        id: "timedevent",
+        icon: <span>{symbol}</span>,
+        label: `${symbol} ${title}`,
+        onClick: () => setActiveTab("timedevent"),
+      });
+    }
+
     return tabs;
   }, [
     flags.villageUnlocked,
