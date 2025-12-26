@@ -22,7 +22,7 @@ export default function TimedEventPanel() {
 
   const [timeRemaining, setTimeRemaining] = useState<number>(0);
 
-  // Add pulsing effect to tab button when time is running out
+  // Add pulsing effect to tab button only in last 30 seconds
   useEffect(() => {
     const tabButton = document.querySelector('[data-testid="tab-timedevent"]');
     if (tabButton) {

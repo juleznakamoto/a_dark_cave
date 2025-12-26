@@ -418,7 +418,7 @@ export default function GameContainer() {
                     onClick={() => setActiveTab("timedevent")}
                     data-testid="tab-timedevent"
                   >
-                    <span className="timer-symbol timer-tab-pulse">⊚</span>
+                    <span className="timer-symbol">⊚</span>
                   </button>
                 )}
               </div>
