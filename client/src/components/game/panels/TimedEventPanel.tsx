@@ -176,15 +176,6 @@ export default function TimedEventPanel() {
                 className="hover:bg-transparent hover:text-foreground"
                 disabled={isDisabled}
                 button_id={`timedevent-${choice.id}`}
-                onMouseEnter={() => {
-                  if (costText) {
-                    const resources = extractResourcesFromCost(costText);
-                    setHighlightedResources(resources);
-                  }
-                }}
-                onMouseLeave={() => {
-                  setHighlightedResources([]);
-                }}
               >
                 {labelText}
               </Button>
@@ -247,6 +238,15 @@ export default function TimedEventPanel() {
                               )
                           : undefined
                       }
+                      onMouseEnter={() => {
+                        if (costText) {
+                          const resources = extractResourcesFromCost(costText);
+                          setHighlightedResources(resources);
+                        }
+                      }}
+                      onMouseLeave={() => {
+                        setHighlightedResources([]);
+                      }}
                     >
                       {buttonContent}
                     </div>
