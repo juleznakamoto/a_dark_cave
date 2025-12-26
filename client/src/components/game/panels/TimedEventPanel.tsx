@@ -108,8 +108,8 @@ export default function TimedEventPanel() {
 
       {/* Event Title */}
       {event.title && (
-        <h2 className="text-sm font-semibold">
-          {event.title} {formatTime(timeRemaining)}
+        <h2 className="text-sm">
+          <span className="font-semibold">{event.title}</span> {formatTime(timeRemaining)}
         </h2>
       )}
       {/* Event Message */}
