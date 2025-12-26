@@ -411,8 +411,8 @@ body {
   }
 
   100% {
-    opacity: 0.7;
-    text-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
+    opacity: 0.5;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
   }
 }
 
@@ -422,7 +422,7 @@ body {
 }
 
 .timer-tab-pulse {
-  animation: timer-symbol-pulse 0.8s ease-in-out infinite;
+  animation: timer-symbol-pulse 1s ease-in-out infinite;
 }
 
 

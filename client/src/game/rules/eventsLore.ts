@@ -115,7 +115,6 @@ export const loreEvents: Record<string, GameEvent> = {
       state.buildings.stoneHut >= 6 &&
       state.story.seen.restlessKnightSuccess &&
       !state.story.seen.restlessKnightMountains,
-    
     timeProbability: (state: GameState) =>
       state.story.seen.restlessKnightMountainsFailed ? 60 : 20,
     title: "Return from the Mountains",

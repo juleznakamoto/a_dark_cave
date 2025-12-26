@@ -1857,13 +1857,13 @@ export const choiceEvents: Record<string, GameEvent> = {
     condition: (state: GameState) => {
       const timesOccurred = (state.story?.seen?.frostfallCount as number) || 0;
       return (
-        state.buildings.woodenHut >= 3 &&
+        state.buildings.woodenHut >= 3 //&&
         !state.frostfallState?.isActive &&
         timesOccurred < 5
       );
     },
 
-    timeProbability: 0.080, // 1.33 hours
+    timeProbability: 80, // 1.33 hours
     title: "Frostfall",
     message:
       "Icy winds howl through the village. The elders warn that a terrible blizzard is approaching. Preparations must be made, or the consequences will be dire.",
