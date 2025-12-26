@@ -1871,6 +1871,30 @@ export const choiceEvents: Record<string, GameEvent> = {
     repeatable: true,
     showAsTimedTab: true,
     timedTabDuration: 3 * 60 * 1000, // 3 minutes
+    fallbackChoice: {
+      id: "doNothing",
+      label: "Do nothing",
+      effect: (state: GameState) => {
+        const timesOccurred = (state.story?.seen?.frostfallCount as number) || 0;
+        const frostfallDuration = (10 + 5 * state.CM) * 60 * 1000; // 10/15 minutes
+
+        return {
+          frostfallState: {
+            isActive: true,
+            endTime: Date.now() + frostfallDuration,
+          },
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              frostfallCount: timesOccurred + 1,
+            },
+          },
+          _logMessage:
+            "The blizzard hits with brutal force. All production slows to a crawl as villagers struggle to survive the cold.",
+        };
+      },
+    },
     choices: [
       {
         id: "prepareFrostfall",
