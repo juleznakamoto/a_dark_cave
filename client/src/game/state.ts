@@ -1351,11 +1351,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
       StateManager.schedulePopulationUpdate(get);
 
-      if (triggeredEvents && triggeredEvents.length > 0) {
+      // Play sound if new events were triggered
+      if (newLogEntries && newLogEntries.length > 0) {
         const madnessEventIds = Object.keys(madnessEvents);
 
-        const hasMadnessEvent = triggeredEvents.some((event) =>
-          madnessEventIds.includes(event.id.split("-")[0]),
+        const hasMadnessEvent = newLogEntries.some((entry) =>
+          madnessEventIds.includes(entry.id.split("-")[0]),
         );
 
         audioManager.playSound(
