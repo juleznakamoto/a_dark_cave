@@ -250,12 +250,18 @@ export class EventManager {
           fallbackChoice: event.fallbackChoice,
           relevant_stats: event.relevant_stats,
           visualEffect: event.visualEffect,
-          showAsTimedTab: event.showAsTimedTab, // Add this for timed tabs
-          timedTabDuration: event.timedTabDuration, // Add this for timed tabs
-          skipEventLog: event.skipEventLog || (eventChoices && eventChoices.length > 0), // Use event's skipEventLog or default for choice events
+          showAsTimedTab: event.showAsTimedTab,
+          timedTabDuration: event.timedTabDuration,
+          skipEventLog: event.skipEventLog || (eventChoices && eventChoices.length > 0),
         };
 
-        newLogEntries.push(logEntry);
+        // Only add to log entries if it's NOT a timed tab event
+        if (!event.showAsTimedTab) {
+          newLogEntries.push(logEntry);
+        } else {
+          // For timed tab events, add the logEntry to state changes so it can be picked up by the UI
+          stateChanges._timedTabEvent = logEntry;
+        }
 
         // Apply effect if it exists
         // For timed tab events, always apply the effect to set up the timer state

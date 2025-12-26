@@ -1246,8 +1246,16 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // Don't check for new timed tab events if one is already active
     const timedTabActive = get().timedEventTab.isActive;
 
-    const { newLogEntries, stateChanges, triggeredEvents } =
+    const { newLogEntries, stateChanges } =
       EventManager.checkEvents({ ...state, timedEventTab: { isActive: timedTabActive } } as any);
+
+    // Handle timed tab event if present
+    if (stateChanges._timedTabEvent) {
+      const timedTabEntry = stateChanges._timedTabEvent;
+      delete stateChanges._timedTabEvent;
+      
+      get().setTimedEventTab(true, timedTabEntry, timedTabEntry.timedTabDuration);
+    }
 
     if (newLogEntries.length > 0) {
       let combatData = null;
@@ -1313,35 +1321,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
       } else {
         // Handle normal event dialogs
         newLogEntries.forEach((entry) => {
-          // Check if this should be shown as a timed tab
-          if (entry.showAsTimedTab && entry.timedTabDuration) {
-            // Ensure title is set on the entry
-            const entryWithTitle = {
-              ...entry,
-              title: entry.title || "Event",
-            };
-
-            // Do NOT add to log - timed tab events should only show in the timed tab
-            logger.log('[TIMED TAB EVENT] Showing timed tab for event:', entryWithTitle.id, 'without adding to log');
-            get().setTimedEventTab(true, entryWithTitle, entry.timedTabDuration);
-            return;
-          }
-
           // Skip events marked to not appear in log
           if (entry.skipEventLog) {
-            // For timed tab events, add message to log but also show dialog
-            if (entry.showAsTimedTab) {
-              set((prevState) => ({
-                log: [...prevState.log, entry].slice(-10),
-              }));
-              if (entry.choices && entry.choices.length > 0) {
-                get().setEventDialog(true, entry);
-              }
-            } else {
-              // Only show as dialog, don't add to log
-              if (entry.choices && entry.choices.length > 0) {
-                get().setEventDialog(true, entry);
-              }
+            // Only show as dialog, don't add to log
+            if (entry.choices && entry.choices.length > 0) {
+              get().setEventDialog(true, entry);
             }
             return;
           }
