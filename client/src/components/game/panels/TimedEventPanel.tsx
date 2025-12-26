@@ -57,7 +57,8 @@ export default function TimedEventPanel() {
             }
           }
         }
-        // Auto-close the tab
+        // Clear highlights and auto-close the tab
+        setHighlightedResources([]);
         setTimedEventTab(false);
         
         // The useEffect in GameContainer will automatically switch to cave tab
@@ -98,6 +99,7 @@ export default function TimedEventPanel() {
   };
 
   const handleChoice = (choiceId: string) => {
+    setHighlightedResources([]); // Clear highlights before closing
     applyEventChoice(choiceId, eventId, event);
     setTimedEventTab(false);
   };
