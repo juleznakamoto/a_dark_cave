@@ -1243,8 +1243,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
       state.eventDialog.isOpen || state.combatDialog.isOpen;
     if (isAnyDialogOpen) return;
 
+    // Don't check for new timed tab events if one is already active
+    const timedTabActive = get().timedEventTab.isActive;
+
     const { newLogEntries, stateChanges, triggeredEvents } =
-      EventManager.checkEvents(state);
+      EventManager.checkEvents({ ...state, timedEventTab: { isActive: timedTabActive } } as any);
 
     if (newLogEntries.length > 0) {
       let combatData = null;

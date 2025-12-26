@@ -170,12 +170,19 @@ export class EventManager {
     const eventCooldowns = state.eventCooldowns || {};
     const currentTime = Date.now();
 
+    // Check if a timed tab event is currently active (from UI state)
+    // We'll check if the state indicates an active timed tab
+    const isTimedTabActive = state.timedEventTab?.isActive || false;
+
     for (const event of sortedEvents) {
       // Skip if already triggered and not repeatable
       if (event.triggered && !event.repeatable) continue;
 
       // Skip if event was already triggered this session (for non-repeatable events)
       if (state.triggeredEvents?.[event.id] && !event.repeatable) continue;
+
+      // Skip timed tab events if another timed tab event is already active
+      if (event.showAsTimedTab && isTimedTabActive) continue;
 
       // Check if event is on cooldown (25% of its time probability must pass)
       if (event.timeProbability && eventCooldowns[event.id]) {
