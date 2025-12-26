@@ -1857,9 +1857,9 @@ export const choiceEvents: Record<string, GameEvent> = {
     condition: (state: GameState) => {
       const timesOccurred = (state.story?.seen?.frostfallCount as number) || 0;
       return (
-        state.buildings.woodenHut >= 3 &&
-        !state.frostfallState?.isActive &&
-        timesOccurred < 5
+        state.buildings.woodenHut >= 3 
+        // !state.frostfallState?.isActive &&
+        // timesOccurred < 5
       );
     },
 
