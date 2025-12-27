@@ -1049,12 +1049,10 @@ export const merchantEvents: Record<string, GameEvent> = {
     fallbackChoice: {
       id: "say_goodbye",
       label: "Say goodbye",
-      effect: (state: GameState) => {
-        return {
-          _logMessage:
-            "The merchant packs up and leaves. You missed your chance to trade.",
-        };
-      },
+      effect: () => ({
+        _logMessage:
+          "The merchant packs up and leaves. You missed your chance to trade.",
+      }),
     },
     choices: [], // Choices will be generated dynamically in TimedEventPanel
   },

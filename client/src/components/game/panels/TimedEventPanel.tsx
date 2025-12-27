@@ -24,10 +24,17 @@ export default function TimedEventPanel() {
 
   const [timeRemaining, setTimeRemaining] = useState<number>(0);
 
+  // Early return BEFORE any hooks if no event exists
+  if (!timedEventTab.event) {
+    return null;
+  }
+
+  const event = timedEventTab.event;
+  const eventId = event.eventId || event.id.split("-")[0];
+
   useEffect(() => {
     if (!timedEventTab.isActive || !timedEventTab.expiryTime) {
       setTimeRemaining(0);
-      setMerchantChoices([]);
       return;
     }
 
@@ -88,13 +95,6 @@ export default function TimedEventPanel() {
     applyEventChoice,
   ]);
 
-  if (!timedEventTab.event) {
-    return null;
-  }
-
-  const event = timedEventTab.event;
-  const eventId = event.eventId || event.id.split("-")[0];
-  
   // Memoize merchant choices to prevent constant re-renders while keeping effect functions
   const isMerchantEvent = eventId === "merchant";
   const eventChoices: EventChoice[] = useMemo(() => {
