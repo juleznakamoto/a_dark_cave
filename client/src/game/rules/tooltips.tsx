@@ -541,8 +541,8 @@ export const eventChoiceCostTooltip = {
     const currentAmounts: React.ReactNode[] = [];
     const costLines: React.ReactNode[] = [];
 
-    // Only show current amounts if clerksHut is built
-    if (gameState && gameState.buildings.clerksHut && resources.length > 0) {
+    // Add current amounts if gameState is provided
+    if (gameState && resources.length > 0) {
       resources.forEach(({ resource }, index) => {
         const currentAmount = gameState.resources[resource as keyof typeof gameState.resources] || 0;
         currentAmounts.push(
