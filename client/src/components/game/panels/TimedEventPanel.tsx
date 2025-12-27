@@ -173,6 +173,7 @@ export default function TimedEventPanel() {
 
     // Apply the choice and log the result
     console.log('[TIMED EVENT TRADE] Applying choice with effect:', choice.effect);
+    // Pass the event as currentLogEntry to preserve pre-generated merchant choices
     applyEventChoice(choiceId, eventId, event);
 
     // Log resources AFTER trade (with slight delay to allow state to update)

@@ -360,12 +360,19 @@ export class EventManager {
         return {};
       }
 
+      // Log current resources before executing effect
+      console.log('[EVENT MANAGER] Current resources before effect:', {
+        stone: state.resources.stone,
+        leather: state.resources.leather
+      });
+
       // Execute the effect
       const effectResult = choice.effect(state);
       console.log('[EVENT MANAGER] Effect result:', {
         hasResources: !!effectResult.resources,
         resourceChanges: effectResult.resources,
-        logMessage: (effectResult as any)._logMessage
+        logMessage: (effectResult as any)._logMessage,
+        fullResult: effectResult
       });
 
       return effectResult;
