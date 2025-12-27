@@ -1010,7 +1010,7 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
       };
     });
 
-  const finalChoices = [
+  const finalChoices: EventChoice[] = [
     ...availableBuyTrades,
     ...availableSellTrades,
     ...availableToolTrades,
@@ -1023,7 +1023,7 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
             "You bid the merchant farewell. He tips his hat and mutters about the road ahead.",
         };
       },
-    },
+    } as EventChoice,
   ];
 
   return finalChoices;

@@ -57,19 +57,21 @@ export default function TimedEventPanel() {
           const timedEventId = event.eventId || event.id.split("-")[0];
 
           // Use the event's defined fallbackChoice if available
-          if (event.fallbackChoice) {
+          if (event.fallbackChoice && typeof event.fallbackChoice.effect === 'function') {
             console.log('[TIMED EVENT] Timer expired, executing fallback choice:', event.fallbackChoice.id, 'for event:', timedEventId);
             applyEventChoice(event.fallbackChoice.id, timedEventId, event);
+          } else if (event.fallbackChoice) {
+            console.warn('[TIMED EVENT] Fallback choice exists but has no effect function:', event.fallbackChoice);
           } else {
             // Fallback to looking for "doNothing" choice
             const fallbackChoice = event.choices?.find(
               (c) => c.id === "doNothing",
             );
-            if (fallbackChoice) {
+            if (fallbackChoice && typeof fallbackChoice.effect === 'function') {
               console.log('[TIMED EVENT] Timer expired, executing doNothing choice for event:', timedEventId);
               applyEventChoice(fallbackChoice.id, timedEventId, event);
             } else {
-              console.warn('[TIMED EVENT] Timer expired but no fallback choice found for event:', timedEventId);
+              console.warn('[TIMED EVENT] Timer expired but no valid fallback choice found for event:', timedEventId);
             }
           }
         }
