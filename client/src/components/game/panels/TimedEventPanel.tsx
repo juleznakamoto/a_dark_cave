@@ -24,51 +24,83 @@ export default function TimedEventPanel() {
 
   const [timeRemaining, setTimeRemaining] = useState<number>(0);
 
-  // Early return BEFORE any hooks if no event exists
-  if (!timedEventTab.event) {
-    return null;
-  }
-
-  const event = timedEventTab.event;
-  const eventId = event.eventId || event.id.split("-")[0];
+  console.log('[TIMED EVENT PANEL] Render state:', {
+    hasEvent: !!timedEventTab.event,
+    isActive: timedEventTab.isActive,
+    expiryTime: timedEventTab.expiryTime,
+    eventId: timedEventTab.event?.id,
+    eventTitle: timedEventTab.event?.title
+  });
 
   useEffect(() => {
-    if (!timedEventTab.isActive || !timedEventTab.expiryTime) {
+    console.log('[TIMED EVENT PANEL] useEffect triggered:', {
+      hasEvent: !!timedEventTab.event,
+      isActive: timedEventTab.isActive,
+      expiryTime: timedEventTab.expiryTime,
+      eventId: timedEventTab.event?.id
+    });
+
+    if (!timedEventTab.isActive || !timedEventTab.expiryTime || !timedEventTab.event) {
+      console.log('[TIMED EVENT PANEL] Clearing timer - conditions not met');
       setTimeRemaining(0);
       return;
     }
+
+    const event = timedEventTab.event;
 
     const expiryTime = timedEventTab.expiryTime;
 
     const updateTimer = () => {
       const now = Date.now();
       const remaining = Math.max(0, expiryTime - now);
+      
+      console.log('[TIMED EVENT PANEL] Timer update:', {
+        now,
+        expiryTime,
+        remaining,
+        remainingSeconds: Math.floor(remaining / 1000)
+      });
+      
       setTimeRemaining(remaining);
 
       if (remaining <= 0) {
+        console.log('[TIMED EVENT PANEL] Timer expired! Processing fallback...', {
+          hasEvent: !!event,
+          eventId: event?.id,
+          hasFallbackChoice: !!event?.fallbackChoice,
+          fallbackChoiceId: event?.fallbackChoice?.id,
+          hasEffect: typeof event?.fallbackChoice?.effect === 'function'
+        });
+
         // Execute fallback choice when timer expires
         if (event) {
           const timedEventId = event.eventId || event.id.split("-")[0];
 
           // Use the event's defined fallbackChoice if available
           if (event.fallbackChoice && typeof event.fallbackChoice.effect === 'function') {
-            console.log('[TIMED EVENT] Timer expired, executing fallback choice:', event.fallbackChoice.id, 'for event:', timedEventId);
+            console.log('[TIMED EVENT PANEL] Executing fallback choice:', {
+              choiceId: event.fallbackChoice.id,
+              eventId: timedEventId,
+              eventTitle: event.title
+            });
             applyEventChoice(event.fallbackChoice.id, timedEventId, event);
           } else if (event.fallbackChoice) {
-            console.warn('[TIMED EVENT] Fallback choice exists but has no effect function:', event.fallbackChoice);
+            console.error('[TIMED EVENT PANEL] Fallback choice exists but has no effect function:', event.fallbackChoice);
           } else {
             // Fallback to looking for "doNothing" choice
             const fallbackChoice = event.choices?.find(
               (c) => c.id === "doNothing",
             );
             if (fallbackChoice && typeof fallbackChoice.effect === 'function') {
-              console.log('[TIMED EVENT] Timer expired, executing doNothing choice for event:', timedEventId);
+              console.log('[TIMED EVENT PANEL] Executing doNothing choice for event:', timedEventId);
               applyEventChoice(fallbackChoice.id, timedEventId, event);
             } else {
-              console.warn('[TIMED EVENT] Timer expired but no valid fallback choice found for event:', timedEventId);
+              console.error('[TIMED EVENT PANEL] Timer expired but no valid fallback choice found for event:', timedEventId);
             }
           }
         }
+        
+        console.log('[TIMED EVENT PANEL] Clearing highlights and closing tab');
         // Clear highlights and auto-close the tab
         setHighlightedResources([]);
         setTimedEventTab(false);
@@ -95,12 +127,30 @@ export default function TimedEventPanel() {
     applyEventChoice,
   ]);
 
+  // Early return AFTER all hooks
+  if (!timedEventTab.event) {
+    console.log('[TIMED EVENT PANEL] No event - returning null');
+    return null;
+  }
+
+  const event = timedEventTab.event;
+  const eventId = event.eventId || event.id.split("-")[0];
+
   // Memoize merchant choices to prevent constant re-renders while keeping effect functions
   const isMerchantEvent = eventId === "merchant";
   const eventChoices: EventChoice[] = useMemo(() => {
+    console.log('[TIMED EVENT PANEL] Generating choices:', {
+      isMerchantEvent,
+      eventId: event.id,
+      hasChoices: !!event.choices
+    });
+    
     if (isMerchantEvent) {
-      return generateMerchantChoices(gameState);
+      const choices = generateMerchantChoices(gameState);
+      console.log('[TIMED EVENT PANEL] Generated merchant choices:', choices.length);
+      return choices;
     }
+    console.log('[TIMED EVENT PANEL] Using event choices:', event.choices?.length || 0);
     return event.choices || [];
   }, [isMerchantEvent, event.id]);
 
@@ -112,20 +162,30 @@ export default function TimedEventPanel() {
   };
 
   const handleChoice = (choiceId: string) => {
-    console.log('[TIMED EVENT PANEL] Button clicked:', {
+    console.log('[TIMED EVENT PANEL] handleChoice called:', {
       choiceId,
       eventId,
       eventTitle: event.title,
-      availableChoices: eventChoices.map(c => ({
+      timeRemaining,
+      isActive: timedEventTab.isActive
+    });
+    
+    console.log('[TIMED EVENT PANEL] Available choices:', 
+      eventChoices.map(c => ({
         id: c.id,
         label: typeof c.label === 'function' ? c.label(gameState) : c.label,
         hasEffect: typeof c.effect === 'function',
         effectType: typeof c.effect
       }))
-    });
+    );
     
+    console.log('[TIMED EVENT PANEL] Clearing highlights and applying choice');
     setHighlightedResources([]); // Clear highlights before closing
+    
+    console.log('[TIMED EVENT PANEL] Calling applyEventChoice');
     applyEventChoice(choiceId, eventId, event);
+    
+    console.log('[TIMED EVENT PANEL] Closing timed event tab');
     setTimedEventTab(false);
   };
 
