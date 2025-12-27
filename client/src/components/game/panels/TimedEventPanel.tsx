@@ -131,43 +131,10 @@ export default function TimedEventPanel() {
     applyEventChoice,
   ]);
 
-  // CRITICAL: useMemo MUST be called before any early returns
-  const eventForMemo = timedEventTab.event;
-  const eventIdForMemo = eventForMemo?.eventId || eventForMemo?.id?.split("-")[0];
-  const isMerchantEvent = eventIdForMemo === "merchant";
+  // Use choices directly from the event - they were pre-generated when event was created
+  const eventChoices: EventChoice[] = timedEventTab.event?.choices || [];
   
-  console.log('[TIMED EVENT PANEL] About to call useMemo', {
-    hasEvent: !!eventForMemo,
-    eventIdForMemo,
-    isMerchantEvent
-  });
-  
-  // Only recalculate when event changes, NOT on every gameState update
-  const eventChoices: EventChoice[] = useMemo(() => {
-    console.log('[TIMED EVENT PANEL] === useMemo EXECUTING ===', {
-      isMerchantEvent,
-      hasEvent: !!eventForMemo,
-      eventId: eventForMemo?.id,
-      hasChoices: !!eventForMemo?.choices
-    });
-    
-    if (!eventForMemo) {
-      console.log('[TIMED EVENT PANEL] useMemo: No event, returning empty array');
-      return [];
-    }
-    
-    if (isMerchantEvent) {
-      // Generate merchant choices once when event appears, not on every render
-      const choices = generateMerchantChoices(gameState);
-      console.log('[TIMED EVENT PANEL] useMemo: Generated merchant choices:', choices.length);
-      return choices;
-    }
-    
-    console.log('[TIMED EVENT PANEL] useMemo: Using event choices:', eventForMemo.choices?.length || 0);
-    return eventForMemo.choices || [];
-  }, [isMerchantEvent, eventForMemo?.id]);
-
-  console.log('[TIMED EVENT PANEL] === ALL HOOKS CALLED (including useMemo) ===');
+  console.log('[TIMED EVENT PANEL] === ALL HOOKS CALLED ===');
 
   // Early return AFTER ALL hooks (including useEffect and useMemo) have been called
   if (!timedEventTab.event) {

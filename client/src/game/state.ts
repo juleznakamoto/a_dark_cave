@@ -1552,15 +1552,25 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   setTimedEventTab: (isActive: boolean, event?: any | null, duration?: number) => {
-    set((state) => ({
-      ...state,
-      timedEventTab: {
-        isActive,
-        event: event || null,
-        expiryTime: isActive && duration ? Date.now() + duration : 0,
-      },
-    }));
-  },
+      set((state) => {
+        let processedEvent = event;
+
+        // Pre-generate merchant choices when event is activated
+        if (isActive && event && (event.id === 'merchant' || event.eventId === 'merchant')) {
+          const { generateMerchantChoices } = require('./rules/eventsMerchant');
+          const choices = generateMerchantChoices(get());
+          processedEvent = { ...event, choices };
+        }
+
+        return {
+          timedEventTab: {
+            isActive,
+            event: processedEvent || null,
+            expiryTime: duration ? Date.now() + duration : 0,
+          },
+        };
+      });
+    },
 
   setAuthDialogOpen: (isOpen: boolean) => {
     set({ authDialogOpen: isOpen });
