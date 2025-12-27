@@ -25,86 +25,47 @@ export default function TimedEventPanel() {
   const mobileTooltip = useMobileButtonTooltip();
   const [timeRemaining, setTimeRemaining] = useState<number>(0);
 
-  console.log('[TIMED EVENT PANEL] === RENDER START ===');
-  console.log('[TIMED EVENT PANEL] Render state:', {
-    hasEvent: !!timedEventTab.event,
-    isActive: timedEventTab.isActive,
-    expiryTime: timedEventTab.expiryTime,
-    eventId: timedEventTab.event?.id,
-    eventTitle: timedEventTab.event?.title
-  });
-
   // useEffect MUST be called before any early returns
   useEffect(() => {
-    console.log('[TIMED EVENT PANEL] === useEffect START ===');
-    console.log('[TIMED EVENT PANEL] useEffect triggered:', {
-      hasEvent: !!timedEventTab.event,
-      isActive: timedEventTab.isActive,
-      expiryTime: timedEventTab.expiryTime,
-      eventId: timedEventTab.event?.id
-    });
-
     if (!timedEventTab.isActive || !timedEventTab.expiryTime || !timedEventTab.event) {
-      console.log('[TIMED EVENT PANEL] Clearing timer - conditions not met');
       setTimeRemaining(0);
       return;
     }
 
     const event = timedEventTab.event;
-
     const expiryTime = timedEventTab.expiryTime;
 
     const updateTimer = () => {
       const now = Date.now();
       const remaining = Math.max(0, expiryTime - now);
       
-      console.log('[TIMED EVENT PANEL] Timer update:', {
-        now,
-        expiryTime,
-        remaining,
-        remainingSeconds: Math.floor(remaining / 1000)
-      });
-      
       setTimeRemaining(remaining);
 
       if (remaining <= 0) {
-        console.log('[TIMED EVENT PANEL] Timer expired! Processing fallback...', {
-          hasEvent: !!event,
-          eventId: event?.id,
-          hasFallbackChoice: !!event?.fallbackChoice,
-          fallbackChoiceId: event?.fallbackChoice?.id,
-          hasEffect: typeof event?.fallbackChoice?.effect === 'function'
-        });
-
         // Execute fallback choice when timer expires
         if (event) {
           const timedEventId = event.eventId || event.id.split("-")[0];
 
           // Use the event's defined fallbackChoice if available
           if (event.fallbackChoice && typeof event.fallbackChoice.effect === 'function') {
-            console.log('[TIMED EVENT PANEL] Executing fallback choice:', {
-              choiceId: event.fallbackChoice.id,
-              eventId: timedEventId,
-              eventTitle: event.title
-            });
+            console.log('[TIMED EVENT] Timer expired, executing fallback for:', event.title);
             applyEventChoice(event.fallbackChoice.id, timedEventId, event);
           } else if (event.fallbackChoice) {
-            console.error('[TIMED EVENT PANEL] Fallback choice exists but has no effect function:', event.fallbackChoice);
+            console.error('[TIMED EVENT] Fallback choice exists but has no effect function:', event.fallbackChoice);
           } else {
             // Fallback to looking for "doNothing" choice
             const fallbackChoice = event.choices?.find(
               (c) => c.id === "doNothing",
             );
             if (fallbackChoice && typeof fallbackChoice.effect === 'function') {
-              console.log('[TIMED EVENT PANEL] Executing doNothing choice for event:', timedEventId);
+              console.log('[TIMED EVENT] Timer expired, executing doNothing for:', timedEventId);
               applyEventChoice(fallbackChoice.id, timedEventId, event);
             } else {
-              console.error('[TIMED EVENT PANEL] Timer expired but no valid fallback choice found for event:', timedEventId);
+              console.error('[TIMED EVENT] Timer expired but no valid fallback choice found for event:', timedEventId);
             }
           }
         }
         
-        console.log('[TIMED EVENT PANEL] Clearing highlights and closing tab');
         // Clear highlights and auto-close the tab
         setHighlightedResources([]);
         setTimedEventTab(false).catch(console.error);
@@ -133,16 +94,11 @@ export default function TimedEventPanel() {
 
   // Use choices directly from the event - they were pre-generated when event was created
   const eventChoices: EventChoice[] = timedEventTab.event?.choices || [];
-  
-  console.log('[TIMED EVENT PANEL] === ALL HOOKS CALLED ===');
 
   // Early return AFTER ALL hooks (including useEffect and useMemo) have been called
   if (!timedEventTab.event) {
-    console.log('[TIMED EVENT PANEL] No event - returning null AFTER all hooks');
     return null;
   }
-
-  console.log('[TIMED EVENT PANEL] Event exists, proceeding with render');
 
   const event = timedEventTab.event;
   const eventId = event.eventId || event.id.split("-")[0];
@@ -155,31 +111,41 @@ export default function TimedEventPanel() {
   };
 
   const handleChoice = (choiceId: string) => {
-    console.log('[TIMED EVENT PANEL] handleChoice called:', {
+    const choice = eventChoices.find(c => c.id === choiceId);
+    
+    console.log('[TIMED EVENT] ========================================');
+    console.log('[TIMED EVENT] Button clicked:', {
       choiceId,
+      choiceLabel: choice ? (typeof choice.label === 'function' ? choice.label(gameState) : choice.label) : 'NOT FOUND',
       eventId,
       eventTitle: event.title,
-      timeRemaining,
-      isActive: timedEventTab.isActive
+      timeRemaining: Math.floor(timeRemaining / 1000) + 's',
     });
     
-    console.log('[TIMED EVENT PANEL] Available choices:', 
-      eventChoices.map(c => ({
-        id: c.id,
-        label: typeof c.label === 'function' ? c.label(gameState) : c.label,
-        hasEffect: typeof c.effect === 'function',
-        effectType: typeof c.effect
-      }))
-    );
+    if (!choice) {
+      console.error('[TIMED EVENT] ERROR: Choice not found in eventChoices!');
+      console.log('[TIMED EVENT] Available choices:', 
+        eventChoices.map(c => ({
+          id: c.id,
+          label: typeof c.label === 'function' ? c.label(gameState) : c.label,
+        }))
+      );
+      return;
+    }
     
-    console.log('[TIMED EVENT PANEL] Clearing highlights and applying choice');
+    console.log('[TIMED EVENT] Clearing highlights and applying choice');
     setHighlightedResources([]); // Clear highlights before closing
     
-    console.log('[TIMED EVENT PANEL] Calling applyEventChoice');
+    console.log('[TIMED EVENT] Calling applyEventChoice with:', {
+      choiceId,
+      eventId,
+      hasEvent: !!event
+    });
     applyEventChoice(choiceId, eventId, event);
     
-    console.log('[TIMED EVENT PANEL] Closing timed event tab');
+    console.log('[TIMED EVENT] Closing timed event tab');
     setTimedEventTab(false).catch(console.error);
+    console.log('[TIMED EVENT] ========================================');
   };
 
   // Helper function to extract resource names from cost text
@@ -257,6 +223,7 @@ export default function TimedEventPanel() {
                 onClick={
                   !mobileTooltip.isMobile
                     ? (e) => {
+                        console.log('[TIMED EVENT] Trade button onClick fired:', choice.id);
                         e.stopPropagation();
                         handleChoice(choice.id);
                       }
@@ -301,7 +268,10 @@ export default function TimedEventPanel() {
                               mobileTooltip.handleMouseUp(
                                 `timedevent-${choice.id}`,
                                 isDisabled,
-                                () => handleChoice(choice.id),
+                                () => {
+                                  console.log('[TIMED EVENT] Mobile trade button (with tooltip) fired:', choice.id);
+                                  handleChoice(choice.id);
+                                },
                                 e,
                               )
                           : undefined
@@ -323,7 +293,10 @@ export default function TimedEventPanel() {
                               mobileTooltip.handleTouchEnd(
                                 `timedevent-${choice.id}`,
                                 isDisabled,
-                                () => handleChoice(choice.id),
+                                () => {
+                                  console.log('[TIMED EVENT] Mobile trade button (with tooltip) touchEnd fired:', choice.id);
+                                  handleChoice(choice.id);
+                                },
                                 e,
                               )
                           : undefined
@@ -368,7 +341,10 @@ export default function TimedEventPanel() {
                         mobileTooltip.handleMouseUp(
                           `timedevent-${choice.id}`,
                           isDisabled,
-                          () => handleChoice(choice.id),
+                          () => {
+                            console.log('[TIMED EVENT] Mobile trade button (no tooltip) fired:', choice.id);
+                            handleChoice(choice.id);
+                          },
                           e,
                         )
                     : undefined
@@ -390,7 +366,10 @@ export default function TimedEventPanel() {
                         mobileTooltip.handleTouchEnd(
                           `timedevent-${choice.id}`,
                           isDisabled,
-                          () => handleChoice(choice.id),
+                          () => {
+                            console.log('[TIMED EVENT] Mobile trade button (no tooltip) touchEnd fired:', choice.id);
+                            handleChoice(choice.id);
+                          },
                           e,
                         )
                     : undefined
