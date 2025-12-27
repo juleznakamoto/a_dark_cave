@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useGameStore } from "@/game/state";
 import { Button } from "@/components/ui/button";
 import {
@@ -95,11 +95,14 @@ export default function TimedEventPanel() {
   const event = timedEventTab.event;
   const eventId = event.eventId || event.id.split("-")[0];
   
-  // Generate fresh merchant choices on each render to ensure effect functions are present
+  // Memoize merchant choices to prevent constant re-renders while keeping effect functions
   const isMerchantEvent = eventId === "merchant";
-  const eventChoices: EventChoice[] = isMerchantEvent 
-    ? generateMerchantChoices(gameState)
-    : (event.choices || []);
+  const eventChoices: EventChoice[] = useMemo(() => {
+    if (isMerchantEvent) {
+      return generateMerchantChoices(gameState);
+    }
+    return event.choices || [];
+  }, [isMerchantEvent, event.id]);
 
   const formatTime = (ms: number) => {
     const totalSeconds = Math.ceil(ms / 1000);
