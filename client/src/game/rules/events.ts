@@ -323,11 +323,10 @@ export class EventManager {
       return {};
     }
 
-    // For merchant events, regenerate choices with fresh effect functions
+    // For merchant events, use imported generateMerchantChoices
     // Stored choices lose their function references during serialization
     if (eventId === 'merchant') {
       console.log('[EVENT MANAGER] Regenerating merchant choices for:', choiceId);
-      const { generateMerchantChoices } = require('./eventsMerchant');
       const freshChoices = generateMerchantChoices(state);
 
       console.log('[EVENT MANAGER] Regenerated choices:', freshChoices.map(c => ({
