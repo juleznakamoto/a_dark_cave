@@ -39,9 +39,14 @@ export default function TimedEventPanel() {
     applyEventChoice,
     setTimedEventTab,
     setHighlightedResources,
-    merchantPurchasedItems,
+    merchantPurchasedItems: rawMerchantPurchasedItems,
   } = useGameStore();
   const gameState = useGameStore();
+
+  // Ensure merchantPurchasedItems is always a Set
+  const merchantPurchasedItems = rawMerchantPurchasedItems instanceof Set 
+    ? rawMerchantPurchasedItems 
+    : new Set(Array.isArray(rawMerchantPurchasedItems) ? rawMerchantPurchasedItems : []);
 
   // ALL HOOKS MUST BE CALLED BEFORE ANY EARLY RETURNS
   const mobileTooltip = useMobileButtonTooltip();
