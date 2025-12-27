@@ -311,16 +311,31 @@ export class EventManager {
     eventId: string,
     currentLogEntry?: LogEntry,
   ): Partial<GameState> {
+    console.log('[EVENT MANAGER] applyEventChoice called:', {
+      choiceId,
+      eventId,
+      hasCurrentLogEntry: !!currentLogEntry
+    });
+
     const eventDefinition = this.allEvents[eventId];
     if (!eventDefinition) {
+      console.error('[EVENT MANAGER] No event definition found for:', eventId);
       return {};
     }
 
     // For merchant events, use choices from the current log entry if available
     let choicesSource = eventDefinition.choices;
     if (eventId === "merchant" && currentLogEntry?.choices) {
+      console.log('[EVENT MANAGER] Using choices from currentLogEntry for merchant event');
       choicesSource = currentLogEntry.choices;
     }
+
+    console.log('[EVENT MANAGER] Available choices:', choicesSource?.map(c => ({
+      id: c.id,
+      hasEffect: typeof c.effect === 'function',
+      effectType: typeof c.effect,
+      effectValue: c.effect
+    })));
 
     // First try to find the choice in the choices array
     let choice = choicesSource?.find((c) => c.id === choiceId);
@@ -331,12 +346,21 @@ export class EventManager {
       eventDefinition.fallbackChoice &&
       eventDefinition.fallbackChoice.id === choiceId
     ) {
+      console.log('[EVENT MANAGER] Using fallback choice');
       choice = eventDefinition.fallbackChoice;
     }
 
     if (!choice) {
+      console.error('[EVENT MANAGER] No choice found for:', choiceId);
       return {};
     }
+
+    console.log('[EVENT MANAGER] Found choice:', {
+      id: choice.id,
+      hasEffect: typeof choice.effect === 'function',
+      effectType: typeof choice.effect,
+      effectValue: choice.effect
+    });
 
     const choiceResult = choice.effect(state);
 

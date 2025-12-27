@@ -112,6 +112,18 @@ export default function TimedEventPanel() {
   };
 
   const handleChoice = (choiceId: string) => {
+    console.log('[TIMED EVENT PANEL] Button clicked:', {
+      choiceId,
+      eventId,
+      eventTitle: event.title,
+      availableChoices: eventChoices.map(c => ({
+        id: c.id,
+        label: typeof c.label === 'function' ? c.label(gameState) : c.label,
+        hasEffect: typeof c.effect === 'function',
+        effectType: typeof c.effect
+      }))
+    });
+    
     setHighlightedResources([]); // Clear highlights before closing
     applyEventChoice(choiceId, eventId, event);
     setTimedEventTab(false);
