@@ -54,7 +54,12 @@ export function applyActionEffects(
   state: GameState,
 ): Partial<GameState> {
   const action = getGameActions()[actionId];
-  if (!action) return {};
+  if (!action) {
+    console.log(`[EFFECTS] No action found for: ${actionId}`);
+    return {};
+  }
+
+  console.log(`[EFFECTS] Applying effects for: ${actionId}`);
 
   const updates: Partial<GameState> & {
     logMessages?: string[];
@@ -575,5 +580,6 @@ export function applyActionEffects(
     }
   }
 
+  console.log(`[EFFECTS] Updates for ${actionId}:`, updates);
   return updates;
 }

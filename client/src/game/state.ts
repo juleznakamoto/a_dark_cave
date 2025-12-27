@@ -240,18 +240,18 @@ const mergeStateUpdates = (
 ): Partial<GameState> => {
   // Handle resource updates - these can be either absolute values or deltas
   const mergedResources = { ...prevState.resources };
-  
+
   if (stateUpdates.resources) {
     Object.entries(stateUpdates.resources).forEach(([key, value]) => {
       if (typeof value === "number") {
         // Add the delta to the current resource value
         let newValue = (prevState.resources[key as keyof typeof prevState.resources] || 0) + value;
-        
+
         // Ensure non-negative
         if (newValue < 0) {
           newValue = 0;
         }
-        
+
         // Apply resource limit
         newValue = capResourceToLimit(key, newValue, { ...prevState, ...stateUpdates });
         mergedResources[key as keyof typeof mergedResources] = newValue;
@@ -721,16 +721,18 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   executeAction: (actionId: string) => {
     const state = get();
-    const action = gameActions[actionId];
 
-    if (!action || (state.cooldowns[actionId] || 0) > 0) return;
-    if (
-      !shouldShowAction(actionId, state) ||
-      !canExecuteAction(actionId, state)
-    )
+    logger.log(`[STORE] executeAction called for: ${actionId}`);
+
+    // Check if action can be executed
+    if (!canExecuteAction(actionId, state)) {
+      logger.warn(`[STORE] Cannot execute action: ${actionId}`);
       return;
+    }
 
+    logger.log(`[STORE] Executing action: ${actionId}`);
     const result = executeGameAction(actionId, state);
+    logger.log(`[STORE] Action result:`, result);
 
     // Track button usage and check for level up (only if book_of_ascension is owned)
     const upgradeKey = ACTION_TO_UPGRADE_KEY[actionId];
@@ -791,20 +793,28 @@ export const useGameStore = create<GameStore>((set, get) => ({
       }, 3000);
     }
 
-    // Apply state updates
-    set((prevState) => {
-      const mergedUpdates = mergeStateUpdates(prevState, result.stateUpdates);
+    // Merge state updates
+    const newState = get();
+    set((state) => mergeStateUpdates(state, result.stateUpdates));
 
-      return {
-        ...prevState,
-        ...mergedUpdates,
-        log: result.logEntries
-          ? [...prevState.log, ...result.logEntries].slice(
-              -GAME_CONSTANTS.LOG_MAX_ENTRIES,
-            )
-          : prevState.log,
-      };
+    logger.log(`[STORE] State after merge for ${actionId}:`, {
+      resources: get().resources,
+      updates: result.stateUpdates,
     });
+
+    // Handle log entries
+    if (result.logEntries && result.logEntries.length > 0) {
+      set((prevState) => {
+        return {
+          ...prevState,
+          log: result.logEntries
+            ? [...prevState.log, ...result.logEntries].slice(
+                -GAME_CONSTANTS.LOG_MAX_ENTRIES,
+              )
+            : prevState.log,
+        };
+      });
+    }
 
     // Schedule updates
     if (
@@ -1361,21 +1371,21 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     // For timed tab events (like merchant), use the event from timedEventTab
     const logEntry = currentLogEntry || get().timedEventTab.event || get().eventDialog.currentEvent;
-    
+
     console.log('[STATE] Calling EventManager.applyEventChoice with:', {
       choiceId,
       eventId,
       hasLogEntry: !!logEntry,
       logEntryChoices: logEntry?.choices?.length
     });
-    
+
     const changes = EventManager.applyEventChoice(
       state,
       choiceId,
       eventId,
       logEntry || undefined,
     );
-    
+
     console.log('[STATE] EventManager returned changes:', {
       hasResources: !!changes.resources,
       resourceChanges: changes.resources,
