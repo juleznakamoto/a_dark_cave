@@ -1017,12 +1017,10 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
     {
       id: "say_goodbye",
       label: "Say goodbye",
-      effect: (state: GameState) => {
-        return {
-          _logMessage:
-            "You bid the merchant farewell. He tips his hat and mutters about the road ahead.",
-        };
-      },
+      effect: () => ({
+        _logMessage:
+          "You bid the merchant farewell. He tips his hat and mutters about the road ahead.",
+      }),
     } as EventChoice,
   ];
 
@@ -1033,7 +1031,7 @@ export const merchantEvents: Record<string, GameEvent> = {
   merchant: {
     id: "merchant",
     condition: (state: GameState) => state.buildings.woodenHut >= 2,
-    
+
     timeProbability: (state: GameState) =>0,
       // 10 + 0.5 * (state.buildings.tradePost || 0) +
       // 1 * (state.buildings.grandBazaar || 0) +
