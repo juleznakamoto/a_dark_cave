@@ -89,8 +89,6 @@ export default function TimedEventPanel() {
     timedEventTab.isActive,
     timedEventTab.event?.id,
     timedEventTab.expiryTime,
-    setTimedEventTab,
-    applyEventChoice,
   ]);
 
   // Use choices directly from the event - they were pre-generated when event was created
