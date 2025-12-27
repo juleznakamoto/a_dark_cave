@@ -1,0 +1,65 @@
+TimedEventPanel.tsx:51 [TIMED EVENT] Fallback choice exists but has no effect function: 
+{id: 'say_goodbye', label: 'Say goodbye'}
+
+chunk-276SZO74.js?v=d54e99be:11595 Uncaught Error: Rendered fewer hooks than expected. This may be caused by an accidental early return statement.
+    at renderWithHooks (chunk-276SZO74.js?v=d54e99be:11595:19)
+    at updateFunctionComponent (chunk-276SZO74.js?v=d54e99be:14582:28)
+    at beginWork (chunk-276SZO74.js?v=d54e99be:15924:22)
+    at HTMLUnknownElement.callCallback2 (chunk-276SZO74.js?v=d54e99be:3674:22)
+    at Object.invokeGuardedCallbackDev (chunk-276SZO74.js?v=d54e99be:3699:24)
+    at invokeGuardedCallback (chunk-276SZO74.js?v=d54e99be:3733:39)
+    at beginWork$1 (chunk-276SZO74.js?v=d54e99be:19765:15)
+    at performUnitOfWork (chunk-276SZO74.js?v=d54e99be:19198:20)
+    at workLoopSync (chunk-276SZO74.js?v=d54e99be:19137:13)
+    at renderRootSync (chunk-276SZO74.js?v=d54e99be:19116:15)
+chunk-276SZO74.js?v=d54e99be:11595 Uncaught Error: Rendered fewer hooks than expected. This may be caused by an accidental early return statement.
+    at renderWithHooks (chunk-276SZO74.js?v=d54e99be:11595:19)
+    at updateFunctionComponent (chunk-276SZO74.js?v=d54e99be:14582:28)
+    at beginWork (chunk-276SZO74.js?v=d54e99be:15924:22)
+    at HTMLUnknownElement.callCallback2 (chunk-276SZO74.js?v=d54e99be:3674:22)
+    at Object.invokeGuardedCallbackDev (chunk-276SZO74.js?v=d54e99be:3699:24)
+    at invokeGuardedCallback (chunk-276SZO74.js?v=d54e99be:3733:39)
+    at beginWork$1 (chunk-276SZO74.js?v=d54e99be:19765:15)
+    at performUnitOfWork (chunk-276SZO74.js?v=d54e99be:19198:20)
+    at workLoopSync (chunk-276SZO74.js?v=d54e99be:19137:13)
+    at renderRootSync (chunk-276SZO74.js?v=d54e99be:19116:15)
+chunk-276SZO74.js?v=d54e99be:14032 The above error occurred in the <TimedEventPanel> component:
+
+    at TimedEventPanel (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/components/game/panels/TimedEventPanel.tsx?t=1766847325300:37:7)
+    at div
+    at section
+    at main
+    at div
+    at GameContainer (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/components/game/GameContainer.tsx?t=1766847325300:67:7)
+    at div
+    at Game (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/pages/game.tsx?t=1766847325300:29:22)
+    at Route (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=d54e99be:265:16)
+    at Switch (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=d54e99be:321:17)
+    at Router
+    at Provider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…unner/workspace/node_modules/.vite/deps/chunk-3RXG37ZK.js?v=d54e99be:38:15)
+    at TooltipProvider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…kspace/node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=d54e99be:294:5)
+    at TooltipProvider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/components/ui/tooltip.tsx:22:3)
+    at QueryClientProvider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…rkspace/node_modules/.vite/deps/@tanstack_react-query.js?v=d54e99be:2805:3)
+    at App (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/App.tsx?t=1766847325300&v=Ld5YSsys7JPfq_A0sKnhx:123:3)
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+chunk-276SZO74.js?v=d54e99be:11595 Uncaught Error: Rendered fewer hooks than expected. This may be caused by an accidental early return statement.
+    at renderWithHooks (chunk-276SZO74.js?v=d54e99be:11595:19)
+    at updateFunctionComponent (chunk-276SZO74.js?v=d54e99be:14582:28)
+    at beginWork (chunk-276SZO74.js?v=d54e99be:15924:22)
+    at beginWork$1 (chunk-276SZO74.js?v=d54e99be:19753:22)
+    at performUnitOfWork (chunk-276SZO74.js?v=d54e99be:19198:20)
+    at workLoopSync (chunk-276SZO74.js?v=d54e99be:19137:13)
+    at renderRootSync (chunk-276SZO74.js?v=d54e99be:19116:15)
+    at recoverFromConcurrentError (chunk-276SZO74.js?v=d54e99be:18736:28)
+    at performSyncWorkOnRoot (chunk-276SZO74.js?v=d54e99be:18879:28)
+    at flushSyncCallbacks (chunk-276SZO74.js?v=d54e99be:9119:30)
+logger.ts:33 v524Z [VERSION] Cleaning up version check
+﻿
+
+Press ctrl i to turn on code suggestions. Press ctrl x to disable code suggestions.
+ctrl
+i
+ to turn on code suggestions. Don't show again
+
