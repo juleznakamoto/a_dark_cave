@@ -43,7 +43,7 @@ export default function ForestPanel() {
       ],
     },
     {
-      title: "Trade",
+      title: "Buy",
       actions: [
         { id: "tradeGoldForFood", label: "Buy Food" },
         { id: "tradeGoldForWood", label: "Buy Wood" },
@@ -192,7 +192,7 @@ export default function ForestPanel() {
           .split(' ')
           .map(word => word.charAt(0).toUpperCase() + word.slice(1))
           .join(' ');
-        displayLabel = `Buy ${amount} ${formattedName}`;
+        displayLabel = `${amount} ${formattedName}`;
       }
     }
 
