@@ -187,8 +187,13 @@ export function applyActionEffects(
             actionDef?.category as "crafting" | "building" | undefined,
           );
 
-          // Return negative delta to subtract the cost
-          current[finalKey] = -adjustedCost;
+          // Get the current amount from state and subtract the adjusted cost
+          const stateAmount = path.startsWith("resources.")
+            ? (state.resources[finalKey as keyof typeof state.resources] || 0)
+            : (state[pathParts[0] as keyof typeof state]?.[finalKey as any] || 0);
+
+          // Set the new value after applying the cost
+          current[finalKey] = stateAmount - adjustedCost;
         }
       });
     }
