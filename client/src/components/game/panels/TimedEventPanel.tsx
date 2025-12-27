@@ -107,7 +107,7 @@ export default function TimedEventPanel() {
         console.log('[TIMED EVENT PANEL] Clearing highlights and closing tab');
         // Clear highlights and auto-close the tab
         setHighlightedResources([]);
-        setTimedEventTab(false);
+        setTimedEventTab(false).catch(console.error);
 
         // The useEffect in GameContainer will automatically switch to cave tab
         // when it detects timedevent tab is active but event is no longer active
@@ -179,7 +179,7 @@ export default function TimedEventPanel() {
     applyEventChoice(choiceId, eventId, event);
     
     console.log('[TIMED EVENT PANEL] Closing timed event tab');
-    setTimedEventTab(false);
+    setTimedEventTab(false).catch(console.error);
   };
 
   // Helper function to extract resource names from cost text

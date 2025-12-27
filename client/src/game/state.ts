@@ -1225,7 +1225,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const timedTabEntry = stateChanges._timedTabEvent;
       delete stateChanges._timedTabEvent;
 
-      get().setTimedEventTab(true, timedTabEntry, timedTabEntry.timedTabDuration);
+      get().setTimedEventTab(true, timedTabEntry, timedTabEntry.timedTabDuration).catch(console.error);
     }
 
     if (newLogEntries.length > 0) {
@@ -1551,24 +1551,22 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }));
   },
 
-  setTimedEventTab: (isActive: boolean, event?: any | null, duration?: number) => {
-      set((state) => {
-        let processedEvent = event;
+  setTimedEventTab: async (isActive: boolean, event?: any | null, duration?: number) => {
+      let processedEvent = event;
 
-        // Pre-generate merchant choices when event is activated
-        if (isActive && event && (event.id === 'merchant' || event.eventId === 'merchant')) {
-          const { generateMerchantChoices } = require('./rules/eventsMerchant');
-          const choices = generateMerchantChoices(get());
-          processedEvent = { ...event, choices };
-        }
+      // Pre-generate merchant choices when event is activated
+      if (isActive && event && (event.id === 'merchant' || event.eventId === 'merchant')) {
+        const { generateMerchantChoices } = await import('./rules/eventsMerchant');
+        const choices = generateMerchantChoices(get());
+        processedEvent = { ...event, choices };
+      }
 
-        return {
-          timedEventTab: {
-            isActive,
-            event: processedEvent || null,
-            expiryTime: duration ? Date.now() + duration : 0,
-          },
-        };
+      set({
+        timedEventTab: {
+          isActive,
+          event: processedEvent || null,
+          expiryTime: duration ? Date.now() + duration : 0,
+        },
       });
     },
 
