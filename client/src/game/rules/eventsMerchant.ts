@@ -877,18 +877,16 @@ function selectTrades(
       label,
       cost,
       effect: (state: GameState) => {
-        // Check if player can afford the cost
-        if ((state.resources[sellResource] || 0) < sellAmount) {
-          return {};
+        if ((state.resources[sellResource] || 0) >= sellAmount) {
+          return {
+            resources: {
+              ...state.resources,
+              [sellResource]: (state.resources[sellResource] || 0) - sellAmount,
+              [buyResource]: (state.resources[buyResource] || 0) + buyAmount,
+            },
+          };
         }
-
-        // Return only the resource changes (deltas), not the full state
-        return {
-          resources: {
-            [sellResource]: -sellAmount,
-            [buyResource]: buyAmount,
-          },
-        };
+        return {};
       },
     });
   }
@@ -982,34 +980,37 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
         label: `${trade.label}`,
         cost: `${cost} ${costOption.resource}`,
         effect: (state: GameState) => {
-          // Check if player can afford the cost
-          if ((state.resources[costOption.resource] || 0) < cost) {
-            return {};
+          if ((state.resources[costOption.resource] || 0) >= cost) {
+            const result: any = {
+              resources: {
+                ...state.resources,
+                [costOption.resource]:
+                  (state.resources[costOption.resource] || 0) - cost,
+              },
+              _logMessage: trade.message,
+            };
+
+            if (trade.give === "tool") {
+              result.tools = { ...state.tools, [trade.giveItem]: true };
+            } else if (trade.give === "weapon") {
+              result.weapons = { ...state.weapons, [trade.giveItem]: true };
+            } else if (trade.give === "schematic") {
+              result.schematics = {
+                ...state.schematics,
+                [trade.giveItem]: true,
+              };
+            } else if (trade.give === "book") {
+              result.books = { ...state.books, [trade.giveItem]: true };
+            }
+
+            return result;
           }
-
-          const result: any = {
-            resources: {
-              [costOption.resource]: -cost,
-            },
-            _logMessage: trade.message,
-          };
-
-          if (trade.give === "tool") {
-            result.tools = { [trade.giveItem]: true };
-          } else if (trade.give === "weapon") {
-            result.weapons = { [trade.giveItem]: true };
-          } else if (trade.give === "schematic") {
-            result.schematics = { [trade.giveItem]: true };
-          } else if (trade.give === "book") {
-            result.books = { [trade.giveItem]: true };
-          }
-
-          return result;
+          return {};
         },
       };
     });
 
-  const finalChoices: EventChoice[] = [
+  const finalChoices = [
     ...availableBuyTrades,
     ...availableSellTrades,
     ...availableToolTrades,
@@ -1022,7 +1023,7 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
             "You bid the merchant farewell. He tips his hat and mutters about the road ahead.",
         };
       },
-    } as EventChoice,
+    },
   ];
 
   return finalChoices;
@@ -1044,14 +1045,16 @@ export const merchantEvents: Record<string, GameEvent> = {
     priority: 3,
     repeatable: true,
     showAsTimedTab: true,
-    timedTabDuration: 4 * 60 *1000, // 4 minutes
+    timedTabDuration: 120000, // 2 minutes
     fallbackChoice: {
       id: "say_goodbye",
       label: "Say goodbye",
-      effect: () => ({
-        _logMessage:
-          "The merchant packs up and leaves. You missed your chance to trade.",
-      }),
+      effect: (state: GameState) => {
+        return {
+          _logMessage:
+            "The merchant packs up and leaves. You missed your chance to trade.",
+        };
+      },
     },
     choices: [], // Choices will be generated dynamically in TimedEventPanel
   },

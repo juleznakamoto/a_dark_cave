@@ -177,15 +177,6 @@ export function executeGameAction(
   actionId: string,
   state: GameState,
 ): ActionResult {
-  logger.log(`[ACTION] Executing action: ${actionId}`);
-  logger.log(`[ACTION] Current resources before:`, {
-    wood: state.resources.wood,
-    food: state.resources.food,
-    stone: state.resources.stone,
-    iron: state.resources.iron,
-    coal: state.resources.coal,
-  });
-
   const result: ActionResult = {
     stateUpdates: {
       cooldowns: {
@@ -513,12 +504,6 @@ export function executeGameAction(
       logger.warn(`No handler found for action: ${actionId}`);
       return result;
   }
-
-  logger.log(`[ACTION] Result for ${actionId}:`, {
-    stateUpdates: result.stateUpdates,
-    logEntries: result.logEntries?.length || 0,
-  });
-  return result;
 }
 
 // Helper function to get action cooldown from game rules

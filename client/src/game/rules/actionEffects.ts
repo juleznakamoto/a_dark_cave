@@ -54,12 +54,7 @@ export function applyActionEffects(
   state: GameState,
 ): Partial<GameState> {
   const action = getGameActions()[actionId];
-  if (!action) {
-    console.log(`[EFFECTS] No action found for: ${actionId}`);
-    return {};
-  }
-
-  console.log(`[EFFECTS] Applying effects for: ${actionId}`);
+  if (!action) return {};
 
   const updates: Partial<GameState> & {
     logMessages?: string[];
@@ -187,14 +182,18 @@ export function applyActionEffects(
           const adjustedCost = calculateAdjustedCost(
             actionId,
             cost,
-            true,
+            path.startsWith("resources."),
             state,
             actionDef?.category as "crafting" | "building" | undefined,
           );
 
-          // Return negative delta to subtract the cost
-          const finalCost = typeof adjustedCost === "number" ? adjustedCost : cost;
-          current[finalKey] = -finalCost;
+          // Get the current amount from state and subtract the adjusted cost
+          const stateAmount = path.startsWith("resources.")
+            ? (state.resources[finalKey as keyof typeof state.resources] || 0)
+            : (state[pathParts[0] as keyof typeof state]?.[finalKey as any] || 0);
+
+          // Set the new value after applying the cost
+          current[finalKey] = stateAmount - adjustedCost;
         }
       });
     }
@@ -314,8 +313,9 @@ export function applyActionEffects(
             // Generate and assign the random value for sacrifice actions
             const baseAmount =
               Math.floor(Math.random() * (max - min + 1)) + min;
-            // Return delta, not absolute value
-            current[finalKey] = baseAmount;
+            const originalAmount =
+              state.resources[finalKey as keyof typeof state.resources] || 0;
+            current[finalKey] = originalAmount + baseAmount;
           } else if (!isSacrificeAction) {
             const actionBonuses = getActionBonusesCalc(actionId, state);
             if (
@@ -364,8 +364,9 @@ export function applyActionEffects(
 
             const baseAmount =
               Math.floor(Math.random() * (max - min + 1)) + min;
-            // Return delta, not absolute value
-            current[finalKey] = baseAmount;
+            const originalAmount =
+              state.resources[finalKey as keyof typeof state.resources] || 0;
+            current[finalKey] = originalAmount + baseAmount;
           }
         }
       } else if (
@@ -578,6 +579,5 @@ export function applyActionEffects(
     }
   }
 
-  console.log(`[EFFECTS] Updates for ${actionId}:`, updates);
   return updates;
 }

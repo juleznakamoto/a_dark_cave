@@ -87,15 +87,8 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
   const actionExecutedRef = useRef<boolean>(false);
 
   const handleClick = (e: React.MouseEvent) => {
-    console.log(`[BUTTON] Click on ${actionId}, disabled: ${disabled}, cooling: ${isCoolingDown}`);
-    
-    if (disabled && !isCoolingDown) {
-      console.log(`[BUTTON] Click blocked - button disabled`);
-      return;
-    }
-    
+    if (disabled && !isCoolingDown) return;
     if (!isCoolingDown) {
-      console.log(`[BUTTON] Executing click for ${actionId}`);
       actionExecutedRef.current = true;
 
       // Note: Button component now handles tracking via button_id
@@ -105,8 +98,6 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       setTimeout(() => {
         actionExecutedRef.current = false;
       }, 100);
-    } else {
-      console.log(`[BUTTON] Click blocked - button on cooldown`);
     }
   };
 

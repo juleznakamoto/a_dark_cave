@@ -51,7 +51,7 @@ describe('actionEffects - circular dependency fix', () => {
 
     expect(updates).toBeDefined();
     expect(updates.resources).toBeDefined();
-    expect(updates.resources!.bones).toBe(-boneCost); // negative delta for cost
+    expect(updates.resources!.bones).toBe(0); // boneCost - boneCost
     expect(updates.resources!.bone_totem).toBe(1);
   });
 
@@ -65,7 +65,7 @@ describe('actionEffects - circular dependency fix', () => {
 
     expect(updates).toBeDefined();
     expect(updates.resources).toBeDefined();
-    expect(updates.resources!.wood).toBe(-woodCost); // negative delta for cost
+    expect(updates.resources!.wood).toBe(woodCost); // woodCost * 2 - woodCost
     expect(updates.resources!.torch).toBeGreaterThanOrEqual(1);
   });
 
@@ -79,7 +79,7 @@ describe('actionEffects - circular dependency fix', () => {
 
     expect(updates).toBeDefined();
     expect(updates.resources).toBeDefined();
-    expect(updates.resources!.iron).toBe(-ironCost); // negative delta for cost
+    expect(updates.resources!.iron).toBe(0); // ironCost - ironCost
     expect(updates.weapons).toBeDefined();
     expect(updates.weapons!.iron_sword).toBe(true);
   });
@@ -128,7 +128,7 @@ describe('Crafting Cost Reductions', () => {
     // Starting with 50 iron, after spending 47, should have 3 remaining
     const expectedCost = Math.floor(baseCost * 0.95);
     const expectedFinalAmount = baseCost - expectedCost;
-    expect(updatesWith.resources!.iron).toBe(-expectedCost); // negative delta for adjusted cost
+    expect(updatesWith.resources!.iron).toBe(expectedFinalAmount);
   });
 
   it('should stack crafting discounts from tools and highest storage building for craftIronAxe', () => {
@@ -156,7 +156,8 @@ describe('Crafting Cost Reductions', () => {
     // Total: 15%
     const totalDiscount = getTotalCraftingCostReduction(state);
     const expectedCost = Math.floor(baseCost * (1 - totalDiscount));
-    expect(updates.resources!.iron).toBe(-expectedCost); // negative delta for adjusted cost
+    const expectedRemaining = baseCost - expectedCost;
+    expect(updates.resources!.iron).toBe(expectedRemaining);
   });
 
   it('should handle crafting with maximum discounts for craftIronAxe', () => {
@@ -184,7 +185,8 @@ describe('Crafting Cost Reductions', () => {
     // Total: 20%
     const totalDiscount = getTotalCraftingCostReduction(state);
     const expectedCost = Math.floor(baseCost * (1 - totalDiscount));
-    expect(updates.resources!.iron).toBe(-expectedCost); // negative delta for adjusted cost
+    const expectedRemaining = baseCost - expectedCost;
+    expect(updates.resources!.iron).toBe(expectedRemaining);
     // Note: Only highest tier storage building discount applies (10% from greatVault)
   });
 });
@@ -214,8 +216,10 @@ describe('Building Cost Reductions', () => {
     // Starting with 150 wood and 50 stone, after spending, should have 8 and 3 remaining
     const expectedWoodCost = Math.floor(baseWoodCost * 0.95);
     const expectedStoneCost = Math.floor(baseStoneCost * 0.95);
-    expect(updatesWith.resources!.wood).toBe(-expectedWoodCost); // negative delta for adjusted cost
-    expect(updatesWith.resources!.stone).toBe(-expectedStoneCost); // negative delta for adjusted cost
+    const expectedFinalWood = baseWoodCost - expectedWoodCost;
+    const expectedFinalStone = baseStoneCost - expectedStoneCost;
+    expect(updatesWith.resources!.wood).toBe(expectedFinalWood);
+    expect(updatesWith.resources!.stone).toBe(expectedFinalStone);
   });
 
   it('should apply fortified storehouse building discount for buildCabin if available', () => {
@@ -235,8 +239,8 @@ describe('Building Cost Reductions', () => {
     if (discountPercent > 0) {
       const expectedWoodCost = Math.floor(baseWoodCost * (1 - discountPercent / 100));
       const expectedStoneCost = Math.floor(baseStoneCost * (1 - discountPercent / 100));
-      expect(updatesWith.resources!.wood).toBe(-expectedWoodCost); // negative delta for adjusted cost
-      expect(updatesWith.resources!.stone).toBe(-expectedStoneCost); // negative delta for adjusted cost
+      expect(updatesWith.resources!.wood).toBe(baseWoodCost - expectedWoodCost);
+      expect(updatesWith.resources!.stone).toBe(baseStoneCost - expectedStoneCost);
     } else {
       // No discount, costs should be unchanged
       expect(updatesWith.resources!.wood).toBeDefined();
@@ -259,8 +263,8 @@ describe('Building Cost Reductions', () => {
     // Only highest tier discount: 5% from greatVault
     const expectedWoodCost = Math.floor(baseWoodCost * 0.95); // 135
     const expectedStoneCost = Math.floor(baseStoneCost * 0.95); // 45
-    expect(updates.resources!.wood).toBe(-expectedWoodCost); // negative delta for adjusted cost
-    expect(updates.resources!.stone).toBe(-expectedStoneCost); // negative delta for adjusted cost
+    expect(updates.resources!.wood).toBe(baseWoodCost - expectedWoodCost); // 150 - 135 = 15
+    expect(updates.resources!.stone).toBe(baseStoneCost - expectedStoneCost); // 50 - 45 = 5
   });
 
   it('should stack building discounts from buildings and tools for buildCabin', () => {
@@ -283,13 +287,13 @@ describe('Building Cost Reductions', () => {
     const updates = applyActionEffects("buildCabin", state);
 
     // mastermason_chisel: 10%
-    // Great Vault: 10%
+    // Great Vault: 10% (highest storage building)
     // Total: 20%
     const totalDiscount = getTotalBuildingCostReduction(state);
     const expectedWoodCost = Math.floor(baseWoodCost * (1 - totalDiscount));
     const expectedStoneCost = Math.floor(baseStoneCost * (1 - totalDiscount));
-    expect(updates.resources!.wood).toBe(-expectedWoodCost); // negative delta for adjusted cost
-    expect(updates.resources!.stone).toBe(-expectedStoneCost); // negative delta for adjusted cost
+    expect(updates.resources!.wood).toBe(baseWoodCost - expectedWoodCost);
+    expect(updates.resources!.stone).toBe(baseStoneCost - expectedStoneCost);
   });
 
   it('should apply discounts to building with existing cabins', () => {
@@ -309,8 +313,10 @@ describe('Building Cost Reductions', () => {
     // With 5% discount from mastermason_chisel
     const expectedWoodCost = Math.floor(baseWoodCost * 0.95);
     const expectedStoneCost = Math.floor(baseStoneCost * 0.95);
-    expect(updates.resources!.wood).toBe(-expectedWoodCost); // negative delta for adjusted cost
-    expect(updates.resources!.stone).toBe(-expectedStoneCost); // negative delta for adjusted cost
+    const expectedFinalWood = baseWoodCost - expectedWoodCost;
+    const expectedFinalStone = baseStoneCost - expectedStoneCost;
+    expect(updates.resources!.wood).toBe(expectedFinalWood);
+    expect(updates.resources!.stone).toBe(expectedFinalStone);
   });
 });
 
@@ -347,8 +353,9 @@ describe('Cost Reduction Edge Cases', () => {
     // Total: 20%
     const totalDiscount = getTotalCraftingCostReduction(state);
     const expectedCost = Math.floor(baseCost * (1 - totalDiscount));
-    expect(updates.resources!.iron).toBe(-expectedCost); // negative delta for adjusted cost
-    // Note: Only highest tier storage building discount applies (10% from warehouse)
+    const expectedRemaining = baseCost - expectedCost;
+    expect(updates.resources!.iron).toBe(expectedRemaining);
+    // Note: Only highest tier storage building discount applies (10% from greatVault)
   });
 
   it('should handle building with maximum discounts for buildCabin', () => {
@@ -376,8 +383,8 @@ describe('Cost Reduction Edge Cases', () => {
     const totalDiscount = getTotalBuildingCostReduction(state);
     const expectedWoodCost = Math.floor(baseWoodCost * (1 - totalDiscount));
     const expectedStoneCost = Math.floor(baseStoneCost * (1 - totalDiscount));
-    expect(updates.resources!.wood).toBe(-expectedWoodCost); // negative delta for adjusted cost
-    expect(updates.resources!.stone).toBe(-expectedStoneCost); // negative delta for adjusted cost
+    expect(updates.resources!.wood).toBe(baseWoodCost - expectedWoodCost);
+    expect(updates.resources!.stone).toBe(baseStoneCost - expectedStoneCost);
     // Note: Previously was 35% (stacking all), now 20% (only highest tier storage building)
   });
 
@@ -405,7 +412,7 @@ describe('Cost Reduction Edge Cases', () => {
 
     // 150 * 0.975
     const expectedCost = Math.floor(baseIronCost * 0.975);
-    expect(updates.resources!.iron).toBe(-expectedCost); // negative delta for adjusted cost
+    expect(updates.resources!.iron).toBe(baseIronCost - expectedCost);
   });
 
   it('should floor discount calculations correctly for building if discount exists', () => {
@@ -424,11 +431,12 @@ describe('Cost Reduction Edge Cases', () => {
     if (discountPercent > 0) {
       const expectedWoodCost = Math.floor(baseWoodCost * (1 - discountPercent / 100));
       const expectedStoneCost = Math.floor(baseStoneCost * (1 - discountPercent / 100));
-      expect(updates.resources!.wood).toBe(-expectedWoodCost); // negative delta for adjusted cost
-      expect(updates.resources!.stone).toBe(-expectedStoneCost); // negative delta for adjusted cost
+      expect(updates.resources!.wood).toBe(baseWoodCost - expectedWoodCost);
+      expect(updates.resources!.stone).toBe(baseStoneCost - expectedStoneCost);
     } else {
       expect(updates.resources!.wood).toBeDefined();
       expect(updates.resources!.stone).toBeDefined();
     }
   });
 });
+

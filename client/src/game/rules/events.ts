@@ -311,75 +311,19 @@ export class EventManager {
     eventId: string,
     currentLogEntry?: LogEntry,
   ): Partial<GameState> {
-    console.log('[EVENT MANAGER] applyEventChoice called:', {
-      choiceId,
-      eventId,
-      hasCurrentLogEntry: !!currentLogEntry,
-      currentLogEntryHasChoices: !!currentLogEntry?.choices?.length
-    });
-
     const eventDefinition = this.allEvents[eventId];
     if (!eventDefinition) {
-      console.error('[EVENT MANAGER] No event definition found for:', eventId);
       return {};
     }
 
-    // For merchant events, try to use currentLogEntry choices first (they were pre-generated)
-    // If not available, regenerate them
-    if (eventId === 'merchant') {
-      let freshChoices = currentLogEntry?.choices;
-      
-      if (!freshChoices || freshChoices.length === 0) {
-        console.log('[EVENT MANAGER] No pre-generated choices, regenerating for:', choiceId);
-        freshChoices = generateMerchantChoices(state);
-      } else {
-        console.log('[EVENT MANAGER] Using pre-generated merchant choices from currentLogEntry');
-      }
-
-      console.log('[EVENT MANAGER] Merchant choices:', freshChoices.map(c => ({
-        id: c.id,
-        label: typeof c.label === 'function' ? c.label(state) : c.label,
-        cost: typeof c.cost === 'function' ? c.cost(state) : c.cost,
-        hasEffect: !!c.effect,
-        effectType: typeof c.effect
-      })));
-
-      const choice = freshChoices.find((c) => c.id === choiceId);
-
-      console.log('[EVENT MANAGER] Found choice:', {
-        found: !!choice,
-        id: choice?.id,
-        label: typeof choice?.label === 'function' ? choice.label(state) : choice?.label,
-        cost: typeof choice?.cost === 'function' ? choice.cost(state) : choice?.cost,
-        hasEffect: !!(choice?.effect),
-        effectType: typeof choice?.effect
-      });
-
-      if (!choice || typeof choice.effect !== 'function') {
-        console.error('[EVENT MANAGER] Choice not found or effect is not a function');
-        return {};
-      }
-
-      // Log current resources before executing effect
-      console.log('[EVENT MANAGER] Current resources before effect:', {
-        stone: state.resources.stone,
-        leather: state.resources.leather
-      });
-
-      // Execute the effect
-      const effectResult = choice.effect(state);
-      console.log('[EVENT MANAGER] Effect result:', {
-        hasResources: !!effectResult.resources,
-        resourceChanges: effectResult.resources,
-        logMessage: (effectResult as any)._logMessage,
-        fullResult: effectResult
-      });
-
-      return effectResult;
+    // For merchant events, use choices from the current log entry if available
+    let choicesSource = eventDefinition.choices;
+    if (eventId === "merchant" && currentLogEntry?.choices) {
+      choicesSource = currentLogEntry.choices;
     }
 
     // First try to find the choice in the choices array
-    let choice = eventDefinition.choices?.find((c) => c.id === choiceId);
+    let choice = choicesSource?.find((c) => c.id === choiceId);
 
     // If not found and this is a fallback choice, use the fallbackChoice directly
     if (
@@ -387,21 +331,12 @@ export class EventManager {
       eventDefinition.fallbackChoice &&
       eventDefinition.fallbackChoice.id === choiceId
     ) {
-      console.log('[EVENT MANAGER] Using fallback choice');
       choice = eventDefinition.fallbackChoice;
     }
 
     if (!choice) {
-      console.error('[EVENT MANAGER] No choice found for:', choiceId);
       return {};
     }
-
-    console.log('[EVENT MANAGER] Found choice:', {
-      id: choice.id,
-      hasEffect: typeof choice.effect === 'function',
-      effectType: typeof choice.effect,
-      effectValue: choice.effect
-    });
 
     const choiceResult = choice.effect(state);
 

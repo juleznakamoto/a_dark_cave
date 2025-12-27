@@ -123,10 +123,6 @@ interface GameStore extends GameState {
     expiryTime: number;
   };
 
-  // Merchant purchased items (persists during merchant visit)
-  // Note: Store as array for serialization, convert to Set when needed
-  merchantPurchasedItems: Set<string> | string[];
-
   // Focus system
   focusState: {
     isActive: boolean;
@@ -238,26 +234,22 @@ const mergeStateUpdates = (
   prevState: GameState,
   stateUpdates: Partial<GameState>,
 ): Partial<GameState> => {
-  // Handle resource updates - these can be either absolute values or deltas
-  const mergedResources = { ...prevState.resources };
-
-  if (stateUpdates.resources) {
-    Object.entries(stateUpdates.resources).forEach(([key, value]) => {
-      if (typeof value === "number") {
-        // Add the delta to the current resource value
-        let newValue = (prevState.resources[key as keyof typeof prevState.resources] || 0) + value;
-
-        // Ensure non-negative
-        if (newValue < 0) {
-          newValue = 0;
-        }
-
-        // Apply resource limit
-        newValue = capResourceToLimit(key, newValue, { ...prevState, ...stateUpdates });
-        mergedResources[key as keyof typeof mergedResources] = newValue;
+  // Ensure resources never go negative when merging, and apply resource limits
+  const mergedResources = { ...prevState.resources, ...stateUpdates.resources };
+  Object.keys(mergedResources).forEach((key) => {
+    if (
+      typeof mergedResources[key as keyof typeof mergedResources] === "number"
+    ) {
+      let value = mergedResources[key as keyof typeof mergedResources];
+      // First ensure non-negative
+      if (value < 0) {
+        value = 0;
       }
-    });
-  }
+      // Then apply resource limit
+      value = capResourceToLimit(key, value, { ...prevState, ...stateUpdates });
+      mergedResources[key as keyof typeof mergedResources] = value;
+    }
+  });
 
   const merged = {
     resources: mergedResources,
@@ -601,7 +593,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
     event: null,
     expiryTime: 0,
   },
-  merchantPurchasedItems: [],
   authDialogOpen: false,
   shopDialogOpen: false,
   leaderboardDialogOpen: false,
@@ -721,18 +712,16 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   executeAction: (actionId: string) => {
     const state = get();
+    const action = gameActions[actionId];
 
-    logger.log(`[STORE] executeAction called for: ${actionId}`);
-
-    // Check if action can be executed
-    if (!canExecuteAction(actionId, state)) {
-      logger.warn(`[STORE] Cannot execute action: ${actionId}`);
+    if (!action || (state.cooldowns[actionId] || 0) > 0) return;
+    if (
+      !shouldShowAction(actionId, state) ||
+      !canExecuteAction(actionId, state)
+    )
       return;
-    }
 
-    logger.log(`[STORE] Executing action: ${actionId}`);
     const result = executeGameAction(actionId, state);
-    logger.log(`[STORE] Action result:`, result);
 
     // Track button usage and check for level up (only if book_of_ascension is owned)
     const upgradeKey = ACTION_TO_UPGRADE_KEY[actionId];
@@ -793,28 +782,20 @@ export const useGameStore = create<GameStore>((set, get) => ({
       }, 3000);
     }
 
-    // Merge state updates
-    const newState = get();
-    set((state) => mergeStateUpdates(state, result.stateUpdates));
+    // Apply state updates
+    set((prevState) => {
+      const mergedUpdates = mergeStateUpdates(prevState, result.stateUpdates);
 
-    logger.log(`[STORE] State after merge for ${actionId}:`, {
-      resources: get().resources,
-      updates: result.stateUpdates,
+      return {
+        ...prevState,
+        ...mergedUpdates,
+        log: result.logEntries
+          ? [...prevState.log, ...result.logEntries].slice(
+              -GAME_CONSTANTS.LOG_MAX_ENTRIES,
+            )
+          : prevState.log,
+      };
     });
-
-    // Handle log entries
-    if (result.logEntries && result.logEntries.length > 0) {
-      set((prevState) => {
-        return {
-          ...prevState,
-          log: result.logEntries
-            ? [...prevState.log, ...result.logEntries].slice(
-                -GAME_CONSTANTS.LOG_MAX_ENTRIES,
-              )
-            : prevState.log,
-        };
-      });
-    }
 
     // Schedule updates
     if (
@@ -1244,7 +1225,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const timedTabEntry = stateChanges._timedTabEvent;
       delete stateChanges._timedTabEvent;
 
-      get().setTimedEventTab(true, timedTabEntry, timedTabEntry.timedTabDuration).catch(console.error);
+      get().setTimedEventTab(true, timedTabEntry, timedTabEntry.timedTabDuration);
     }
 
     if (newLogEntries.length > 0) {
@@ -1362,36 +1343,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // If the game is paused, do not apply event choices
     if (state.isPaused) return;
 
-    console.log('[STATE] applyEventChoice called:', {
-      choiceId,
-      eventId,
-      hasCurrentLogEntry: !!currentLogEntry,
-      timedEventTabEvent: get().timedEventTab.event
-    });
-
-    // For timed tab events (like merchant), use the event from timedEventTab
-    const logEntry = currentLogEntry || get().timedEventTab.event || get().eventDialog.currentEvent;
-
-    console.log('[STATE] Calling EventManager.applyEventChoice with:', {
-      choiceId,
-      eventId,
-      hasLogEntry: !!logEntry,
-      logEntryChoices: logEntry?.choices?.length
-    });
-
+    // Use passed currentLogEntry or fall back to eventDialog.currentEvent
+    const logEntry = currentLogEntry || get().eventDialog.currentEvent;
     const changes = EventManager.applyEventChoice(
       state,
       choiceId,
       eventId,
       logEntry || undefined,
     );
-
-    console.log('[STATE] EventManager returned changes:', {
-      hasResources: !!changes.resources,
-      resourceChanges: changes.resources,
-      hasLogMessage: !!(changes as any)._logMessage,
-      hasCombatData: !!(changes as any)._combatData
-    });
 
     let combatData = null;
     let logMessage = null;
@@ -1581,26 +1540,16 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }));
   },
 
-  setTimedEventTab: async (isActive: boolean, event?: any | null, duration?: number) => {
-      let processedEvent = event;
-
-      // Pre-generate merchant choices when event is activated
-      if (isActive && event && (event.id === 'merchant' || event.eventId === 'merchant')) {
-        const { generateMerchantChoices } = await import('./rules/eventsMerchant');
-        const choices = generateMerchantChoices(get());
-        processedEvent = { ...event, choices };
-      }
-
-      set({
-        timedEventTab: {
-          isActive,
-          event: processedEvent || null,
-          expiryTime: duration ? Date.now() + duration : 0,
-        },
-        // Clear purchased items when closing the tab
-        merchantPurchasedItems: isActive ? get().merchantPurchasedItems : [],
-      });
-    },
+  setTimedEventTab: (isActive: boolean, event?: any | null, duration?: number) => {
+    set((state) => ({
+      ...state,
+      timedEventTab: {
+        isActive,
+        event: event || null,
+        expiryTime: isActive && duration ? Date.now() + duration : 0,
+      },
+    }));
+  },
 
   setAuthDialogOpen: (isOpen: boolean) => {
     set({ authDialogOpen: isOpen });
