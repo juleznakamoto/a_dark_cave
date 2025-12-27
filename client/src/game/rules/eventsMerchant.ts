@@ -1032,10 +1032,9 @@ export const merchantEvents: Record<string, GameEvent> = {
   merchant: {
     id: "merchant",
     condition: (state: GameState) => state.buildings.woodenHut >= 2,
-
+    
     timeProbability: (state: GameState) =>0,
-      // 10 +
-      // 0.5 * (state.buildings.tradePost || 0) +
+      // 10 + 0.5 * (state.buildings.tradePost || 0) +
       // 1 * (state.buildings.grandBazaar || 0) +
       // 1.5 * (state.buildings.merchantsGuild || 0) -
       // 2.5 * state.BTP,
@@ -1045,7 +1044,7 @@ export const merchantEvents: Record<string, GameEvent> = {
     priority: 3,
     repeatable: true,
     showAsTimedTab: true,
-    timedTabDuration: 4 * 60 * 1000, // 4 minutes
+    timedTabDuration: 4 * 60 *1000, // 4 minutes
     fallbackChoice: {
       id: "say_goodbye",
       label: "Say goodbye",
