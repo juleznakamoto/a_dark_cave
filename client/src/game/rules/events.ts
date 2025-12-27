@@ -323,22 +323,39 @@ export class EventManager {
       return {};
     }
 
-    // For merchant events, use choices from the current log entry if available
-    let choicesSource = eventDefinition.choices;
-    if (eventId === "merchant" && currentLogEntry?.choices) {
-      console.log('[EVENT MANAGER] Using choices from currentLogEntry for merchant event');
-      choicesSource = currentLogEntry.choices;
+    // For merchant events, regenerate choices with fresh effect functions
+    // Stored choices lose their function references during serialization
+    if (eventId === 'merchant') {
+      console.log('[EVENT MANAGER] Regenerating merchant choices for:', choiceId);
+      const { generateMerchantChoices } = require('./eventsMerchant');
+      const freshChoices = generateMerchantChoices(state);
+
+      console.log('[EVENT MANAGER] Regenerated choices:', freshChoices.map(c => ({
+        id: c.id,
+        hasLabel: !!c.label,
+        hasCost: !!c.cost,
+        hasEffect: !!c.effect,
+        effectType: typeof c.effect
+      })));
+
+      const choice = freshChoices.find((c) => c.id === choiceId);
+
+      console.log('[EVENT MANAGER] Found choice:', {
+        id: choice?.id,
+        hasEffect: !!(choice?.effect),
+        effectType: typeof choice?.effect
+      });
+
+      if (!choice || typeof choice.effect !== 'function') {
+        console.error('[EVENT MANAGER] Choice not found or effect is not a function');
+        return {};
+      }
+
+      return choice.effect(state);
     }
 
-    console.log('[EVENT MANAGER] Available choices:', choicesSource?.map(c => ({
-      id: c.id,
-      hasEffect: typeof c.effect === 'function',
-      effectType: typeof c.effect,
-      effectValue: c.effect
-    })));
-
     // First try to find the choice in the choices array
-    let choice = choicesSource?.find((c) => c.id === choiceId);
+    let choice = eventDefinition.choices?.find((c) => c.id === choiceId);
 
     // If not found and this is a fallback choice, use the fallbackChoice directly
     if (
