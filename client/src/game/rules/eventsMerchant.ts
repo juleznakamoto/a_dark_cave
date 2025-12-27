@@ -1044,6 +1044,8 @@ export const merchantEvents: Record<string, GameEvent> = {
       "A weathered merchant arrives, his cart overflowing with wares. His eyes glint with avarice as he murmurs 'I have rare items for sale'.",
     priority: 3,
     repeatable: true,
-    choices: [],
+    timedTab: true,
+    timedTabDuration: 120000, // 2 minutes
+    choices: [], // Choices will be generated dynamically in TimedEventPanel
   },
 };

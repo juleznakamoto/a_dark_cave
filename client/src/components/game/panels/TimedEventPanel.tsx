@@ -39,7 +39,7 @@ export default function TimedEventPanel() {
         // Execute fallback choice when timer expires
         if (event) {
           const timedEventId = event.eventId || event.id.split("-")[0];
-          
+
           // Use the event's defined fallbackChoice if available
           if (event.fallbackChoice) {
             console.log('[TIMED EVENT] Timer expired, executing fallback choice:', event.fallbackChoice.id, 'for event:', timedEventId);
@@ -60,7 +60,7 @@ export default function TimedEventPanel() {
         // Clear highlights and auto-close the tab
         setHighlightedResources([]);
         setTimedEventTab(false);
-        
+
         // The useEffect in GameContainer will automatically switch to cave tab
         // when it detects timedevent tab is active but event is no longer active
       }
@@ -118,6 +118,11 @@ export default function TimedEventPanel() {
     return resources;
   };
 
+  // Check if the current event is a merchant event
+  const isMerchantEvent = event.id === "travellingMerchant";
+  const purchasedItems = new Set(event.purchasedItems || []); // Assuming purchasedItems are passed in event data
+  const hasSpace = true; // Placeholder for inventory space check
+
   return (
     <div className="w-80 space-y-1 mt-2 mb-2 pr-4 pl-[3px]">
       {/* Event Title */}
@@ -137,13 +142,12 @@ export default function TimedEventPanel() {
         <div className="flex flex-wrap gap-2 mt-3">
           {eventChoices.map((choice) => {
             const cost = choice.cost;
-            let isDisabled = false;
-
             // Evaluate cost if it's a function
             const costText =
               typeof cost === "function" ? cost(gameState) : cost;
 
             // Check if player can afford the cost
+            let canAfford = true;
             if (costText) {
               const resourceKeys = Object.keys(gameState.resources) as Array<
                 keyof typeof gameState.resources
@@ -156,7 +160,7 @@ export default function TimedEventPanel() {
                   if (match) {
                     const costAmount = parseInt(match[1]);
                     if (gameState.resources[resourceKey] < costAmount) {
-                      isDisabled = true;
+                      canAfford = false;
                       break;
                     }
                   }
@@ -170,16 +174,29 @@ export default function TimedEventPanel() {
                 ? choice.label(gameState)
                 : choice.label;
 
+            // For merchant events, check if item is purchased
+            const isPurchased = isMerchantEvent && purchasedItems.has(choice.id);
+            const isDisabled = isPurchased || !canAfford || !hasSpace || timeRemaining <= 0;
+
             const buttonContent = (
               <Button
-                onClick={() => handleChoice(choice.id)}
+                onClick={
+                  !mobileTooltip.isMobile
+                    ? (e) => {
+                        e.stopPropagation();
+                        handleChoice(choice.id);
+                      }
+                    : undefined
+                }
                 variant="outline"
-                size="xs"
-                className="hover:bg-transparent hover:text-foreground"
+                className={isMerchantEvent ? `w-full justify-center text-xs h-10 ${isPurchased ? "opacity-30" : ""}` : ""}
+                size={isMerchantEvent ? undefined : "xs"}
                 disabled={isDisabled}
                 button_id={`timedevent-${choice.id}`}
               >
-                {labelText}
+                <span className={isMerchantEvent ? "block text-left leading-tight" : ""}>
+                  {isPurchased ? `✓ ${labelText}` : labelText}
+                </span>
               </Button>
             );
 
@@ -312,6 +329,22 @@ export default function TimedEventPanel() {
               </div>
             );
           })}
+
+          {/* Merchant Goodbye Button */}
+          {isMerchantEvent && (
+            <Button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleChoice("say_goodbye");
+              }}
+              variant="outline"
+              className="text-xs h-10 px-4"
+              disabled={timeRemaining <= 0}
+              button_id="timedevent-say-goodbye"
+            >
+              Say Goodbye
+            </Button>
+          )}
         </div>
       </div>
     </div>
