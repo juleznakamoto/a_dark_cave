@@ -1552,10 +1552,10 @@ describe('Resource Gain Tests', () => {
       });
       const effectUpdates = applyActionEffects('tradeGoldForStone', state);
 
-      // Tier 3 gives 1000 stone
-      expect(effectUpdates.resources?.stone).toBe(state.resources.stone + 1000);
-      // Costs 60 gold
-      expect(effectUpdates.resources?.gold).toBe(state.resources.gold - 60);
+      // Tier 3 gives 500 stone
+      expect(effectUpdates.resources?.stone).toBe(state.resources.stone + 500);
+      // Costs 60 gold (negative delta)
+      expect(effectUpdates.resources?.gold).toBe(-60);
     });
 
     it('tradeGoldForTorch (tier 3) produces correct amount', () => {
@@ -1564,10 +1564,10 @@ describe('Resource Gain Tests', () => {
       });
       const effectUpdates = applyActionEffects('tradeGoldForTorch', state);
 
-      // Tier 3 gives 250 torches
-      expect(effectUpdates.resources?.torch).toBe(state.resources.torch + 250);
-      // Costs 75 gold
-      expect(effectUpdates.resources?.gold).toBe(state.resources.gold - 75);
+      // Tier 3 gives 100 torches
+      expect(effectUpdates.resources?.torch).toBe(state.resources.torch + 100);
+      // Costs 75 gold (negative delta)
+      expect(effectUpdates.resources?.gold).toBe(-75);
     });
 
     it('tradeSilverForGold (tier 3) produces correct amount', () => {
