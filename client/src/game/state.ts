@@ -123,6 +123,9 @@ interface GameStore extends GameState {
     expiryTime: number;
   };
 
+  // Merchant purchased items (persists during merchant visit)
+  merchantPurchasedItems: Set<string>;
+
   // Focus system
   focusState: {
     isActive: boolean;
@@ -597,6 +600,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     event: null,
     expiryTime: 0,
   },
+  merchantPurchasedItems: new Set(),
   authDialogOpen: false,
   shopDialogOpen: false,
   leaderboardDialogOpen: false,
@@ -1582,6 +1586,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
           event: processedEvent || null,
           expiryTime: duration ? Date.now() + duration : 0,
         },
+        // Clear purchased items when closing the tab
+        merchantPurchasedItems: isActive ? get().merchantPurchasedItems : new Set(),
       });
     },
 

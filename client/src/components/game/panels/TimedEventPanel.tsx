@@ -39,13 +39,13 @@ export default function TimedEventPanel() {
     applyEventChoice,
     setTimedEventTab,
     setHighlightedResources,
+    merchantPurchasedItems,
   } = useGameStore();
   const gameState = useGameStore();
 
   // ALL HOOKS MUST BE CALLED BEFORE ANY EARLY RETURNS
   const mobileTooltip = useMobileButtonTooltip();
   const [timeRemaining, setTimeRemaining] = useState<number>(0);
-  const [purchasedItems, setPurchasedItems] = useState<Set<string>>(new Set());
 
   // useEffect MUST be called before any early returns
   useEffect(() => {
@@ -152,7 +152,7 @@ export default function TimedEventPanel() {
     }
 
     // Check if already purchased (shouldn't happen due to disabled state, but double-check)
-    if (!isSayGoodbye && purchasedItems.has(choiceId)) {
+    if (!isSayGoodbye && merchantPurchasedItems.has(choiceId)) {
       console.log('[TIMED EVENT TRADE] Item already purchased:', choiceId);
       return;
     }
@@ -192,7 +192,9 @@ export default function TimedEventPanel() {
 
     // If it's a trade button (not say goodbye), mark as purchased
     if (!isSayGoodbye) {
-      setPurchasedItems(prev => new Set([...prev, choiceId]));
+      useGameStore.setState({
+        merchantPurchasedItems: new Set([...merchantPurchasedItems, choiceId])
+      });
       console.log('[TIMED EVENT TRADE] Marked as purchased:', choiceId);
     } else {
       // If saying goodbye, close the tab and show a farewell message
@@ -292,7 +294,7 @@ export default function TimedEventPanel() {
             const isGoodbyeButton = choice.id === 'say_goodbye';
 
             // Check if this item has been purchased
-            const isPurchased = purchasedItems.has(choice.id);
+            const isPurchased = merchantPurchasedItems.has(choice.id);
 
             // Disable if can't afford, time is up, or already purchased (except goodbye)
             const isDisabled = !canAfford || timeRemaining <= 0 || (!isGoodbyeButton && isPurchased);
