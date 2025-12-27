@@ -1,0 +1,62 @@
+[EVENT MANAGER] applyEventChoice called: {choiceId: 'buy_stone_500_mid1', eventId: 'merchant', hasCurrentLogEntry: true, currentLogEntryHasChoices: true}choiceId: "buy_stone_500_mid1"currentLogEntryHasChoices: trueeventId: "merchant"hasCurrentLogEntry: true[[Prototype]]: Object
+events.ts?t=1766859035162:174 [EVENT MANAGER] Using pre-generated merchant choices from currentLogEntry
+events.ts?t=1766859035162:176 [EVENT MANAGER] Merchant choices: (7) [{…}, {…}, {…}, {…}, {…}, {…}, {…}]0: {id: 'buy_wood_1000_mid1', label: '+1100 Wood', cost: '990 Food', hasEffect: true, effectType: 'function'}1: {id: 'buy_stone_500_mid1', label: '+550 Stone', cost: '740 Food', hasEffect: true, effectType: 'function'}2: {id: 'buy_leather_150_mid1', label: '+170 Leather', cost: '1200 Stone', hasEffect: true, effectType: 'function'}3: {id: 'sell_stone_250_mid1', label: '+420 Food', cost: '240 Stone', hasEffect: true, effectType: 'function'}4: {id: 'sell_steel_250_mid1', label: '+4150 Wood', cost: '240 Steel', hasEffect: true, effectType: 'function'}5: {id: 'trade_reinforced_rope', label: 'Reinforced Rope', cost: '140 gold', hasEffect: true, effectType: 'function'}6: {id: 'say_goodbye', label: 'Say goodbye', cost: undefined, hasEffect: true, effectType: 'function'}length: 7[[Prototype]]: Array(0)
+events.ts?t=1766859035162:184 [EVENT MANAGER] Found choice: {found: true, id: 'buy_stone_500_mid1', label: '+550 Stone', cost: '740 Food', hasEffect: true, …}cost: "740 Food"effectType: "function"found: truehasEffect: trueid: "buy_stone_500_mid1"label: "+550 Stone"[[Prototype]]: Object
+events.ts?t=1766859035162:197 [EVENT MANAGER] Effect result: {hasResources: true, resourceChanges: {…}, logMessage: undefined}hasResources: truelogMessage: undefinedresourceChanges: adamant: 0ashfire_bomb: 0ashfire_dust: 0black_powder: 0blacksteel: 0bone_totem: 0bones: 9100coal: 2340ember_bomb: 0food: 7815fur: 8680gold: 1815iron: 3600leather: 10000leather_totem: 0moonstone: 0obsidian: 600silver: 2185steel: 4006stone: 5800sulfur: 2000torch: 993void_bomb: 0wood: 3999[[Prototype]]: Object[[Prototype]]: Object
+state.ts:1370 [STATE] EventManager returned changes: {hasResources: true, resourceChanges: {…}, hasLogMessage: false, hasCombatData: false}hasCombatData: falsehasLogMessage: falsehasResources: trueresourceChanges: adamant: 0ashfire_bomb: 0ashfire_dust: 0black_powder: 0blacksteel: 0bone_totem: 0bones: 9100coal: 2340ember_bomb: 0food: 7815fur: 8680gold: 1815iron: 3600leather: 10000leather_totem: 0moonstone: 0obsidian: 600silver: 2185steel: 4006stone: 5800sulfur: 2000torch: 993void_bomb: 0wood: 3999[[Prototype]]: Object[[Prototype]]: Object
+TimedEventPanel.tsx?t=1766859035162:153 [TIMED EVENT TRADE] Marked as purchased: buy_stone_500_mid1
+TimedEventPanel.tsx?t=1766859035162:140 [TIMED EVENT TRADE] Resources AFTER trade: {food: 8555, wood: 3999, stone: 5250, iron: 3600, leather: 10000, …}food: 8555gold: 1815iron: 3600leather: 10000silver: 2185steel: 4006stone: 5250wood: 3999[[Prototype]]: Object
+logger.ts:33 v236Z [VERSION] Cleaning up version check
+logger.ts:33 v236Z [GAME CONTAINER] Full game dialog closed, state: {BTP: 0, isPaused: false, isPausedPreviously: false}
+logger.ts:33 v236Z [VERSION] Initializing version check from GameContainer
+logger.ts:33 v236Z [GAME PAGE] Initializing game
+logger.ts:33 v236Z Loading sound: backgroundMusic from /sounds/background_music.wav
+index.js:18 Playlight SDK is already initialized!
+init @ index.js:18
+initPlaylight @ App.tsx:56
+await in initPlaylight
+(anonymous) @ App.tsx:97
+commitHookEffectListMount @ chunk-276SZO74.js?v=d54e99be:16915
+commitPassiveMountOnFiber @ chunk-276SZO74.js?v=d54e99be:18156
+commitPassiveMountEffects_complete @ chunk-276SZO74.js?v=d54e99be:18129
+commitPassiveMountEffects_begin @ chunk-276SZO74.js?v=d54e99be:18119
+commitPassiveMountEffects @ chunk-276SZO74.js?v=d54e99be:18109
+flushPassiveEffectsImpl @ chunk-276SZO74.js?v=d54e99be:19490
+flushPassiveEffects @ chunk-276SZO74.js?v=d54e99be:19447
+commitRootImpl @ chunk-276SZO74.js?v=d54e99be:19416
+commitRoot @ chunk-276SZO74.js?v=d54e99be:19277
+performSyncWorkOnRoot @ chunk-276SZO74.js?v=d54e99be:18895
+flushSyncCallbacks @ chunk-276SZO74.js?v=d54e99be:9119
+flushSync @ chunk-276SZO74.js?v=d54e99be:18959
+scheduleRefresh @ chunk-276SZO74.js?v=d54e99be:20004
+(anonymous) @ @react-refresh:267
+performReactRefresh @ @react-refresh:256
+(anonymous) @ @react-refresh:677
+setTimeout
+(anonymous) @ @react-refresh:666
+validateRefreshBoundaryAndEnqueueUpdate @ @react-refresh:728
+(anonymous) @ ButtonLevelBadge.tsx:16
+(anonymous) @ client:34
+(anonymous) @ client:218
+(anonymous) @ client:193
+queueUpdate @ client:193
+await in queueUpdate
+(anonymous) @ client:642
+handleMessage @ client:640
+(anonymous) @ client:550Understand this warning
+logger.ts:33 v236Z [GAME PAGE] User authenticated, loading game
+logger.ts:33 v236Z [LOAD] 💾 Local save retrieved: {hasLocalSave: true, timestamp: '2025-12-27T18:12:36.252Z', playTime: 3219730.400000027, playTimeMinutes: 54, hasCooldowns: true, …}
+logger.ts:33 v236Z [LOAD CLOUD] 📊 Loaded from Supabase: {hasData: true, hasReferrals: true, referralsCount: 0, referrals: Array(0), playTime: 3219730, …}
+logger.ts:33 v236Z [LOAD] 🔍 Comparing local and cloud saves: {cloudPlayTime: 3219730, localPlayTime: 3219730, cloudTimestamp: 1766859156749, localTimestamp: 1766859156252}
+logger.ts:33 v236Z [LOAD] ☁️ Cloud save is newer - using cloud save
+logger.ts:33 v236Z [REFERRAL] 🔍 Processing unclaimed referrals... {hasUser: true, hasReferrals: true, referralsCount: 0, referrals: Array(0)}
+logger.ts:33 v236Z [REFERRAL] ⏭️ Skipping - no user or no referrals
+logger.ts:33 v236Z [LOAD] ✅ Cloud save loaded and synced locally
+logger.ts:33 v236Z [GAME] Game loaded from save
+logger.ts:33 v236Z [IDLE MODE INIT] Dialog open check: {dialogOpen: false, isActive: false, idleModeState: {…}}
+logger.ts:33 v236Z [SAVE CLOUD] 🔍 Playtime overwrite check: {allowPlaytimeOverwrite: false, isNewGame: false, willAllowOverwrite: false, currentPlayTime: 3219984}
+logger.ts:33 v236Z Successfully loaded sound: backgroundMusic
+logger.ts:33 v236Z [SAVE CLOUD] Edge Function success: {success: true}
+logger.ts:33 v236Z [SAVE] ✅ Updated lastCloudState after successful cloud save
+logger.ts:33 v236Z [SAVE CLOUD] 🔍 Playtime overwrite check: {allowPlaytimeOverwrite: false, isNewGame: false, willAllowOverwrite: false, currentPlayTime: 3234985}
+logger.ts:33 v236Z [SAVE CLOUD] Edge Function success: {success: true}
