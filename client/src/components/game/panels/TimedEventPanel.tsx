@@ -23,10 +23,24 @@ export default function TimedEventPanel() {
   const mobileTooltip = useMobileButtonTooltip();
 
   const [timeRemaining, setTimeRemaining] = useState<number>(0);
+  const [merchantChoices, setMerchantChoices] = useState<EventChoice[]>([]);
+
+  // Generate merchant choices once when the event opens
+  useEffect(() => {
+    if (timedEventTab.isActive && timedEventTab.event) {
+      const event = timedEventTab.event;
+      const eventId = event.eventId || event.id.split("-")[0];
+      
+      if (eventId === "merchant") {
+        setMerchantChoices(generateMerchantChoices(gameState));
+      }
+    }
+  }, [timedEventTab.isActive, timedEventTab.event?.id]);
 
   useEffect(() => {
     if (!timedEventTab.isActive || !timedEventTab.expiryTime) {
       setTimeRemaining(0);
+      setMerchantChoices([]);
       return;
     }
 
@@ -92,10 +106,10 @@ export default function TimedEventPanel() {
   const event = timedEventTab.event;
   const eventId = event.eventId || event.id.split("-")[0];
   
-  // Generate merchant choices dynamically if this is a merchant event
+  // Use pre-generated merchant choices or event choices
   const isMerchantEvent = eventId === "merchant";
   const eventChoices: EventChoice[] = isMerchantEvent 
-    ? generateMerchantChoices(gameState)
+    ? merchantChoices
     : (event.choices || []);
 
   const formatTime = (ms: number) => {
