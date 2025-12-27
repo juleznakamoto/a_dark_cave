@@ -142,6 +142,7 @@ export default function TimedEventPanel() {
     isMerchantEvent
   });
   
+  // Only recalculate when event changes, NOT on every gameState update
   const eventChoices: EventChoice[] = useMemo(() => {
     console.log('[TIMED EVENT PANEL] === useMemo EXECUTING ===', {
       isMerchantEvent,
@@ -156,6 +157,7 @@ export default function TimedEventPanel() {
     }
     
     if (isMerchantEvent) {
+      // Generate merchant choices once when event appears, not on every render
       const choices = generateMerchantChoices(gameState);
       console.log('[TIMED EVENT PANEL] useMemo: Generated merchant choices:', choices.length);
       return choices;
@@ -163,7 +165,7 @@ export default function TimedEventPanel() {
     
     console.log('[TIMED EVENT PANEL] useMemo: Using event choices:', eventForMemo.choices?.length || 0);
     return eventForMemo.choices || [];
-  }, [isMerchantEvent, eventForMemo?.id, eventForMemo, gameState]);
+  }, [isMerchantEvent, eventForMemo?.id]);
 
   console.log('[TIMED EVENT PANEL] === ALL HOOKS CALLED (including useMemo) ===');
 
