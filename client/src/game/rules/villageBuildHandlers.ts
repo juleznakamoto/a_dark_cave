@@ -28,22 +28,23 @@ function handleBuildingConstruction(
 
   // Apply resource costs (negative changes)
   if (actionCosts) {
-    const newResources = { ...state.resources };
+    const resourceDeltas: Record<string, number> = {};
 
     for (const [path, cost] of Object.entries(actionCosts) as [
       string,
       number,
     ][]) {
       if (path.startsWith("resources.")) {
-        const resource = path.split(".")[1] as keyof typeof newResources;
+        const resource = path.split(".")[1];
         // Use centralized cost adjustment (same as tooltip and effects)
         const adjustedCost = getAdjustedCost(actionId, cost, true, state);
-        newResources[resource] -=
-          typeof adjustedCost === "number" ? adjustedCost : cost;
+        const finalCost = typeof adjustedCost === "number" ? adjustedCost : cost;
+        // Return negative delta to subtract the cost
+        resourceDeltas[resource] = -finalCost;
       }
     }
 
-    result.stateUpdates.resources = newResources;
+    result.stateUpdates.resources = resourceDeltas;
   }
 
   // Apply building effects
@@ -116,14 +117,15 @@ export function handleBuildWoodenHut(
 
   // Apply resource costs (negative changes)
   if (actionCosts) {
-    const newResources = { ...state.resources };
+    const resourceDeltas: Record<string, number> = {};
     for (const [path, cost] of Object.entries(actionCosts)) {
       if (path.startsWith("resources.")) {
-        const resource = path.split(".")[1] as keyof typeof newResources;
-        newResources[resource] -= cost; // Subtract the cost
+        const resource = path.split(".")[1];
+        // Return negative delta to subtract the cost
+        resourceDeltas[resource] = -cost;
       }
     }
-    result.stateUpdates.resources = newResources;
+    result.stateUpdates.resources = resourceDeltas;
   }
 
   // Apply building effects
