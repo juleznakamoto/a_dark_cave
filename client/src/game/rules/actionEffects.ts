@@ -314,9 +314,8 @@ export function applyActionEffects(
             // Generate and assign the random value for sacrifice actions
             const baseAmount =
               Math.floor(Math.random() * (max - min + 1)) + min;
-            const originalAmount =
-              state.resources[finalKey as keyof typeof state.resources] || 0;
-            current[finalKey] = originalAmount + baseAmount;
+            // Return delta, not absolute value
+            current[finalKey] = baseAmount;
           } else if (!isSacrificeAction) {
             const actionBonuses = getActionBonusesCalc(actionId, state);
             if (
@@ -365,9 +364,8 @@ export function applyActionEffects(
 
             const baseAmount =
               Math.floor(Math.random() * (max - min + 1)) + min;
-            const originalAmount =
-              state.resources[finalKey as keyof typeof state.resources] || 0;
-            current[finalKey] = originalAmount + baseAmount;
+            // Return delta, not absolute value
+            current[finalKey] = baseAmount;
           }
         }
       } else if (
