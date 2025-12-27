@@ -1045,7 +1045,7 @@ export const merchantEvents: Record<string, GameEvent> = {
     priority: 3,
     repeatable: true,
     showAsTimedTab: true,
-    timedTabDuration: 120000, // 2 minutes
+    timedTabDuration: 4 * 60 *1000, // 4 minutes
     fallbackChoice: {
       id: "say_goodbye",
       label: "Say goodbye",
