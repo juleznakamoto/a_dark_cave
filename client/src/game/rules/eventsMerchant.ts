@@ -1034,18 +1034,28 @@ export const merchantEvents: Record<string, GameEvent> = {
     id: "merchant",
     condition: (state: GameState) => state.buildings.woodenHut >= 2,
     
-    timeProbability: (state: GameState) =>0,
-      // 10 + 0.5 * state.buildings.tradePost ||
-      // 0 + 1 * state.buildings.grandBazaar ||
-      // 0 + 1.5 * state.buildings.merchantsGuild ||
-      // 0 - 2.5 * state.BTP,
+    timeProbability: (state: GameState) =>
+      10 + 0.5 * (state.buildings.tradePost || 0) +
+      1 * (state.buildings.grandBazaar || 0) +
+      1.5 * (state.buildings.merchantsGuild || 0) -
+      2.5 * state.BTP,
     title: "Traveling Merchant",
     message:
       "A weathered merchant arrives, his cart overflowing with wares. His eyes glint with avarice as he murmurs 'I have rare items for sale'.",
     priority: 3,
     repeatable: true,
-    timedTab: true,
+    showAsTimedTab: true,
     timedTabDuration: 120000, // 2 minutes
+    fallbackChoice: {
+      id: "say_goodbye",
+      label: "Say goodbye",
+      effect: (state: GameState) => {
+        return {
+          _logMessage:
+            "The merchant packs up and leaves. You missed your chance to trade.",
+        };
+      },
+    },
     choices: [], // Choices will be generated dynamically in TimedEventPanel
   },
 };

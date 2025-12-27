@@ -9,6 +9,8 @@ import {
 } from "@/components/ui/tooltip";
 import { useMobileButtonTooltip } from "@/hooks/useMobileTooltip";
 import { eventChoiceCostTooltip } from "@/game/rules/tooltips";
+import { generateMerchantChoices } from "@/game/rules/eventsMerchant";
+import { EventChoice } from "@/game/rules/events";
 
 export default function TimedEventPanel() {
   const {
@@ -88,8 +90,13 @@ export default function TimedEventPanel() {
   }
 
   const event = timedEventTab.event;
-  const eventChoices = event.choices || [];
   const eventId = event.eventId || event.id.split("-")[0];
+  
+  // Generate merchant choices dynamically if this is a merchant event
+  const isMerchantEvent = eventId === "merchant";
+  const eventChoices: EventChoice[] = isMerchantEvent 
+    ? generateMerchantChoices(gameState)
+    : (event.choices || []);
 
   const formatTime = (ms: number) => {
     const totalSeconds = Math.ceil(ms / 1000);
@@ -118,10 +125,7 @@ export default function TimedEventPanel() {
     return resources;
   };
 
-  // Check if the current event is a merchant event
-  const isMerchantEvent = event.id === "travellingMerchant";
-  const purchasedItems = new Set(event.purchasedItems || []); // Assuming purchasedItems are passed in event data
-  const hasSpace = true; // Placeholder for inventory space check
+  
 
   return (
     <div className="w-80 space-y-1 mt-2 mb-2 pr-4 pl-[3px]">
@@ -174,9 +178,8 @@ export default function TimedEventPanel() {
                 ? choice.label(gameState)
                 : choice.label;
 
-            // For merchant events, check if item is purchased
-            const isPurchased = isMerchantEvent && purchasedItems.has(choice.id);
-            const isDisabled = isPurchased || !canAfford || !hasSpace || timeRemaining <= 0;
+            // Disable if can't afford or time is up
+            const isDisabled = !canAfford || timeRemaining <= 0;
 
             const buttonContent = (
               <Button
@@ -189,14 +192,11 @@ export default function TimedEventPanel() {
                     : undefined
                 }
                 variant="outline"
-                className={isMerchantEvent ? `w-full justify-center text-xs h-10 ${isPurchased ? "opacity-30" : ""}` : ""}
-                size={isMerchantEvent ? undefined : "xs"}
+                size="xs"
                 disabled={isDisabled}
                 button_id={`timedevent-${choice.id}`}
               >
-                <span className={isMerchantEvent ? "block text-left leading-tight" : ""}>
-                  {isPurchased ? `✓ ${labelText}` : labelText}
-                </span>
+                {labelText}
               </Button>
             );
 
@@ -330,21 +330,7 @@ export default function TimedEventPanel() {
             );
           })}
 
-          {/* Merchant Goodbye Button */}
-          {isMerchantEvent && (
-            <Button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleChoice("say_goodbye");
-              }}
-              variant="outline"
-              className="text-xs h-10 px-4"
-              disabled={timeRemaining <= 0}
-              button_id="timedevent-say-goodbye"
-            >
-              Say Goodbye
-            </Button>
-          )}
+          
         </div>
       </div>
     </div>
