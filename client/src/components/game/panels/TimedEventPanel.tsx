@@ -20,6 +20,10 @@ export default function TimedEventPanel() {
     setHighlightedResources,
   } = useGameStore();
   const gameState = useGameStore();
+  
+  // ALL HOOKS MUST BE CALLED BEFORE ANY EARLY RETURNS
+  const mobileTooltip = useMobileButtonTooltip();
+  const [timeRemaining, setTimeRemaining] = useState<number>(0);
 
   console.log('[TIMED EVENT PANEL] Render state:', {
     hasEvent: !!timedEventTab.event,
@@ -29,14 +33,11 @@ export default function TimedEventPanel() {
     eventTitle: timedEventTab.event?.title
   });
 
-  // Early return BEFORE any hooks if no event exists
+  // Early return AFTER all hooks have been called
   if (!timedEventTab.event) {
     console.log('[TIMED EVENT PANEL] No event - returning null');
     return null;
   }
-
-  const mobileTooltip = useMobileButtonTooltip();
-  const [timeRemaining, setTimeRemaining] = useState<number>(0);
 
   useEffect(() => {
     console.log('[TIMED EVENT PANEL] useEffect triggered:', {
