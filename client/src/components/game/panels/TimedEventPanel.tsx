@@ -24,6 +24,7 @@ export default function TimedEventPanel() {
   // ALL HOOKS MUST BE CALLED BEFORE ANY EARLY RETURNS
   const mobileTooltip = useMobileButtonTooltip();
   const [timeRemaining, setTimeRemaining] = useState<number>(0);
+  const [purchasedItems, setPurchasedItems] = useState<Set<string>>(new Set());
 
   // useEffect MUST be called before any early returns
   useEffect(() => {
@@ -112,6 +113,7 @@ export default function TimedEventPanel() {
 
   const handleChoice = (choiceId: string) => {
     const choice = eventChoices.find(c => c.id === choiceId);
+    const isSayGoodbye = choiceId === 'say_goodbye';
     
     console.log('[TIMED EVENT] ========================================');
     console.log('[TIMED EVENT] Button clicked:', {
@@ -120,6 +122,8 @@ export default function TimedEventPanel() {
       eventId,
       eventTitle: event.title,
       timeRemaining: Math.floor(timeRemaining / 1000) + 's',
+      isSayGoodbye,
+      isPurchased: purchasedItems.has(choiceId),
     });
     
     if (!choice) {
@@ -132,6 +136,12 @@ export default function TimedEventPanel() {
       );
       return;
     }
+
+    // Check if already purchased (shouldn't happen due to disabled state, but double-check)
+    if (!isSayGoodbye && purchasedItems.has(choiceId)) {
+      console.warn('[TIMED EVENT] Item already purchased, ignoring click:', choiceId);
+      return;
+    }
     
     console.log('[TIMED EVENT] Clearing highlights and applying choice');
     setHighlightedResources([]); // Clear highlights before closing
@@ -142,9 +152,17 @@ export default function TimedEventPanel() {
       hasEvent: !!event
     });
     applyEventChoice(choiceId, eventId, event);
+
+    // If it's a trade button (not say goodbye), mark as purchased
+    if (!isSayGoodbye) {
+      console.log('[TIMED EVENT] Marking item as purchased:', choiceId);
+      setPurchasedItems(prev => new Set([...prev, choiceId]));
+    } else {
+      // If saying goodbye, close the tab
+      console.log('[TIMED EVENT] Closing timed event tab (goodbye)');
+      setTimedEventTab(false).catch(console.error);
+    }
     
-    console.log('[TIMED EVENT] Closing timed event tab');
-    setTimedEventTab(false).catch(console.error);
     console.log('[TIMED EVENT] ========================================');
   };
 
@@ -215,11 +233,23 @@ export default function TimedEventPanel() {
                 ? choice.label(gameState)
                 : choice.label;
 
-            // Disable if can't afford or time is up
-            const isDisabled = !canAfford || timeRemaining <= 0;
-            
             // Check if this is the goodbye button
             const isGoodbyeButton = choice.id === 'say_goodbye';
+            
+            // Check if this item has been purchased
+            const isPurchased = purchasedItems.has(choice.id);
+
+            // Disable if can't afford, time is up, or already purchased (except goodbye)
+            const isDisabled = !canAfford || timeRemaining <= 0 || (!isGoodbyeButton && isPurchased);
+            
+            console.log('[TIMED EVENT] Rendering button:', {
+              id: choice.id,
+              label: labelText,
+              canAfford,
+              isPurchased,
+              isDisabled,
+              isGoodbye: isGoodbyeButton,
+            });
 
             const buttonContent = (
               <Button
