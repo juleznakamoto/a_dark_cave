@@ -27,6 +27,7 @@ export default function TimedEventPanel() {
   useEffect(() => {
     if (!timedEventTab.isActive || !timedEventTab.expiryTime) {
       setTimeRemaining(0);
+      setMerchantChoices([]);
       return;
     }
 
@@ -87,22 +88,21 @@ export default function TimedEventPanel() {
     applyEventChoice,
   ]);
 
-  // Memoize merchant choices to prevent constant re-renders while keeping effect functions
-  // Must be called before early return to satisfy Rules of Hooks
+  if (!timedEventTab.event) {
+    return null;
+  }
+
   const event = timedEventTab.event;
-  const eventId = event ? (event.eventId || event.id.split("-")[0]) : "";
+  const eventId = event.eventId || event.id.split("-")[0];
+  
+  // Memoize merchant choices to prevent constant re-renders while keeping effect functions
   const isMerchantEvent = eventId === "merchant";
   const eventChoices: EventChoice[] = useMemo(() => {
-    if (!event) return [];
     if (isMerchantEvent) {
       return generateMerchantChoices(gameState);
     }
     return event.choices || [];
-  }, [isMerchantEvent, event?.id, gameState]);
-
-  if (!event) {
-    return null;
-  }
+  }, [isMerchantEvent, event.id]);
 
   const formatTime = (ms: number) => {
     const totalSeconds = Math.ceil(ms / 1000);
