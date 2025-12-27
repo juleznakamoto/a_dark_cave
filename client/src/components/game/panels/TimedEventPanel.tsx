@@ -25,6 +25,7 @@ export default function TimedEventPanel() {
   const mobileTooltip = useMobileButtonTooltip();
   const [timeRemaining, setTimeRemaining] = useState<number>(0);
 
+  console.log('[TIMED EVENT PANEL] === RENDER START ===');
   console.log('[TIMED EVENT PANEL] Render state:', {
     hasEvent: !!timedEventTab.event,
     isActive: timedEventTab.isActive,
@@ -33,13 +34,9 @@ export default function TimedEventPanel() {
     eventTitle: timedEventTab.event?.title
   });
 
-  // Early return AFTER all hooks have been called
-  if (!timedEventTab.event) {
-    console.log('[TIMED EVENT PANEL] No event - returning null');
-    return null;
-  }
-
+  // useEffect MUST be called before any early returns
   useEffect(() => {
+    console.log('[TIMED EVENT PANEL] === useEffect START ===');
     console.log('[TIMED EVENT PANEL] useEffect triggered:', {
       hasEvent: !!timedEventTab.event,
       isActive: timedEventTab.isActive,
@@ -133,6 +130,16 @@ export default function TimedEventPanel() {
     setTimedEventTab,
     applyEventChoice,
   ]);
+
+  console.log('[TIMED EVENT PANEL] === ALL HOOKS CALLED ===');
+
+  // Early return AFTER ALL hooks (including useEffect) have been called
+  if (!timedEventTab.event) {
+    console.log('[TIMED EVENT PANEL] No event - returning null AFTER all hooks');
+    return null;
+  }
+
+  console.log('[TIMED EVENT PANEL] Event exists, proceeding with render');
 
   const event = timedEventTab.event;
   const eventId = event.eventId || event.id.split("-")[0];
