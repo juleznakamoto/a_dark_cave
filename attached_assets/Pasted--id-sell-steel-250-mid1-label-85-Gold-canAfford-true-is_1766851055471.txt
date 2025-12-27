@@ -1,0 +1,57 @@
+{id: 'sell_steel_250_mid1', label: '+85 Gold', canAfford: true, isPurchased: false, isDisabled: false, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'trade_book_of_trials', label: 'Book of Trials', canAfford: true, isPurchased: false, isDisabled: false, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'say_goodbye', label: 'Say goodbye', canAfford: true, isPurchased: false, isDisabled: false, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'buy_steel_150_mid1', label: '+170 Steel', canAfford: true, isPurchased: true, isDisabled: true, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'buy_food_1000_mid1', label: '+1100 Food', canAfford: true, isPurchased: true, isDisabled: true, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'buy_wood_1000_mid1', label: '+1100 Wood', canAfford: true, isPurchased: true, isDisabled: true, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'sell_iron_250_mid1', label: '+10 Gold', canAfford: true, isPurchased: true, isDisabled: true, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'sell_steel_250_mid1', label: '+85 Gold', canAfford: true, isPurchased: false, isDisabled: false, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'trade_book_of_trials', label: 'Book of Trials', canAfford: true, isPurchased: false, isDisabled: false, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'say_goodbye', label: 'Say goodbye', canAfford: true, isPurchased: false, isDisabled: false, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'buy_steel_150_mid1', label: '+170 Steel', canAfford: true, isPurchased: true, isDisabled: true, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'buy_food_1000_mid1', label: '+1100 Food', canAfford: true, isPurchased: true, isDisabled: true, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'buy_wood_1000_mid1', label: '+1100 Wood', canAfford: true, isPurchased: true, isDisabled: true, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'sell_iron_250_mid1', label: '+10 Gold', canAfford: true, isPurchased: true, isDisabled: true, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'sell_steel_250_mid1', label: '+85 Gold', canAfford: true, isPurchased: false, isDisabled: false, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'trade_book_of_trials', label: 'Book of Trials', canAfford: true, isPurchased: false, isDisabled: false, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'say_goodbye', label: 'Say goodbye', canAfford: true, isPurchased: false, isDisabled: false, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'buy_steel_150_mid1', label: '+170 Steel', canAfford: true, isPurchased: true, isDisabled: true, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'buy_food_1000_mid1', label: '+1100 Food', canAfford: true, isPurchased: true, isDisabled: true, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'buy_wood_1000_mid1', label: '+1100 Wood', canAfford: true, isPurchased: true, isDisabled: true, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'sell_iron_250_mid1', label: '+10 Gold', canAfford: true, isPurchased: true, isDisabled: true, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'sell_steel_250_mid1', label: '+85 Gold', canAfford: true, isPurchased: false, isDisabled: false, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'trade_book_of_trials', label: 'Book of Trials', canAfford: true, isPurchased: false, isDisabled: false, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'say_goodbye', label: 'Say goodbye', canAfford: true, isPurchased: false, isDisabled: false, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'buy_steel_150_mid1', label: '+170 Steel', canAfford: true, isPurchased: true, isDisabled: true, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'buy_food_1000_mid1', label: '+1100 Food', canAfford: true, isPurchased: true, isDisabled: true, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'buy_wood_1000_mid1', label: '+1100 Wood', canAfford: true, isPurchased: true, isDisabled: true, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'sell_iron_250_mid1', label: '+10 Gold', canAfford: true, isPurchased: true, isDisabled: true, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'sell_steel_250_mid1', label: '+85 Gold', canAfford: true, isPurchased: false, isDisabled: false, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'trade_book_of_trials', label: 'Book of Trials', canAfford: true, isPurchased: false, isDisabled: false, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'say_goodbye', label: 'Say goodbye', canAfford: true, isPurchased: false, isDisabled: false, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'buy_steel_150_mid1', label: '+170 Steel', canAfford: true, isPurchased: true, isDisabled: true, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'buy_food_1000_mid1', label: '+1100 Food', canAfford: true, isPurchased: true, isDisabled: true, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'buy_wood_1000_mid1', label: '+1100 Wood', canAfford: true, isPurchased: true, isDisabled: true, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'sell_iron_250_mid1', label: '+10 Gold', canAfford: true, isPurchased: true, isDisabled: true, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'sell_steel_250_mid1', label: '+85 Gold', canAfford: true, isPurchased: false, isDisabled: false, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'trade_book_of_trials', label: 'Book of Trials', canAfford: true, isPurchased: false, isDisabled: false, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'say_goodbye', label: 'Say goodbye', canAfford: true, isPurchased: false, isDisabled: false, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'buy_steel_150_mid1', label: '+170 Steel', canAfford: true, isPurchased: true, isDisabled: true, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'buy_food_1000_mid1', label: '+1100 Food', canAfford: true, isPurchased: true, isDisabled: true, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'buy_wood_1000_mid1', label: '+1100 Wood', canAfford: true, isPurchased: true, isDisabled: true, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'sell_iron_250_mid1', label: '+10 Gold', canAfford: true, isPurchased: true, isDisabled: true, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'sell_steel_250_mid1', label: '+85 Gold', canAfford: true, isPurchased: false, isDisabled: false, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'trade_book_of_trials', label: 'Book of Trials', canAfford: true, isPurchased: false, isDisabled: false, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'say_goodbye', label: 'Say goodbye', canAfford: true, isPurchased: false, isDisabled: false, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'buy_steel_150_mid1', label: '+170 Steel', canAfford: true, isPurchased: true, isDisabled: true, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'buy_food_1000_mid1', label: '+1100 Food', canAfford: true, isPurchased: true, isDisabled: true, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'buy_wood_1000_mid1', label: '+1100 Wood', canAfford: true, isPurchased: true, isDisabled: true, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'sell_iron_250_mid1', label: '+10 Gold', canAfford: true, isPurchased: true, isDisabled: true, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'sell_steel_250_mid1', label: '+85 Gold', canAfford: true, isPurchased: false, isDisabled: false, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'trade_book_of_trials', label: 'Book of Trials', canAfford: true, isPurchased: false, isDisabled: false, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'say_goodbye', label: 'Say goodbye', canAfford: true, isPurchased: false, isDisabled: false, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'buy_steel_150_mid1', label: '+170 Steel', canAfford: true, isPurchased: true, isDisabled: true, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'buy_food_1000_mid1', label: '+1100 Food', canAfford: true, isPurchased: true, isDisabled: true, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'buy_wood_1000_mid1', label: '+1100 Wood', canAfford: true, isPurchased: true, isDisabled: true, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'sell_iron_250_mid1', label: '+10 Gold', canAfford: true, isPurchased: true, isDisabled: true, …}
+TimedEventPanel.tsx:245 [TIMED EVENT] Rendering button: {id: 'sell_steel_250_mid1', lab
