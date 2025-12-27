@@ -260,7 +260,8 @@ export default function TimedEventPanel() {
 
       {/* Choices */}
       <div className="space-y-2">
-        <div className="flex flex-wrap gap-2 mt-3">
+        <h3 className="text-xs font-semibold mt-3">Buy</h3>
+        <div className="flex flex-wrap gap-2">
           {eventChoices.map((choice) => {
             const cost = choice.cost;
             // Evaluate cost if it's a function
@@ -290,10 +291,15 @@ export default function TimedEventPanel() {
             }
 
             // Evaluate label if it's a function
-            const labelText =
+            let labelText =
               typeof choice.label === "function"
                 ? choice.label(gameState)
                 : choice.label;
+            
+            // Remove '+' prefix from trade labels (except goodbye button)
+            if (typeof labelText === 'string' && labelText.startsWith('+') && choice.id !== 'say_goodbye') {
+              labelText = labelText.substring(1).trim();
+            }
 
             // Check if this is the goodbye button
             const isGoodbyeButton = choice.id === 'say_goodbye';
