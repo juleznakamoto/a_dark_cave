@@ -114,3 +114,16 @@ function App() {
 }
 
 export default App;
+</original>
+import { createRoot } from "react-dom/client";
+import { lazy, Suspense } from "react";
+import "./index.css";
+
+// Lazy load the main app to reduce initial bundle size
+const App = lazy(() => import("./App"));
+
+createRoot(document.getElementById("root")!).render(
+  <Suspense fallback={<div style={{ padding: '20px' }}>Loading...</div>}>
+    <App />
+  </Suspense>
+);
