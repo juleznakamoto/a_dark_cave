@@ -331,8 +331,8 @@ export class EventManager {
 
       console.log('[EVENT MANAGER] Regenerated choices:', freshChoices.map(c => ({
         id: c.id,
-        hasLabel: !!c.label,
-        hasCost: !!c.cost,
+        label: c.label,
+        cost: c.cost,
         hasEffect: !!c.effect,
         effectType: typeof c.effect
       })));
@@ -341,6 +341,8 @@ export class EventManager {
 
       console.log('[EVENT MANAGER] Found choice:', {
         id: choice?.id,
+        label: choice?.label,
+        cost: choice?.cost,
         hasEffect: !!(choice?.effect),
         effectType: typeof choice?.effect
       });
@@ -350,7 +352,15 @@ export class EventManager {
         return {};
       }
 
-      return choice.effect(state);
+      // Test the effect to see what it will return
+      const effectResult = choice.effect(state);
+      console.log('[EVENT MANAGER] Effect result:', {
+        hasResources: !!effectResult.resources,
+        resourceChanges: effectResult.resources,
+        logMessage: (effectResult as any)._logMessage
+      });
+
+      return effectResult;
     }
 
     // First try to find the choice in the choices array

@@ -1349,6 +1349,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
       hasCurrentLogEntry: !!currentLogEntry,
       currentLogEntryChoices: currentLogEntry?.choices?.map(c => ({
         id: c.id,
+        label: typeof c.label === 'function' ? c.label(state) : c.label,
+        cost: typeof c.cost === 'function' ? c.cost(state) : c.cost,
         hasEffect: typeof c.effect === 'function',
         effectType: typeof c.effect
       }))
@@ -1356,12 +1358,26 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     // Use passed currentLogEntry or fall back to eventDialog.currentEvent
     const logEntry = currentLogEntry || get().eventDialog.currentEvent;
+    
+    console.log('[STATE] Calling EventManager.applyEventChoice with:', {
+      choiceId,
+      eventId,
+      hasLogEntry: !!logEntry
+    });
+    
     const changes = EventManager.applyEventChoice(
       state,
       choiceId,
       eventId,
       logEntry || undefined,
     );
+    
+    console.log('[STATE] EventManager returned changes:', {
+      hasResources: !!changes.resources,
+      resourceChanges: changes.resources,
+      hasLogMessage: !!(changes as any)._logMessage,
+      hasCombatData: !!(changes as any)._combatData
+    });
 
     let combatData = null;
     let logMessage = null;
