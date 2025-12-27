@@ -1,0 +1,349 @@
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  client/src/game/rules/actionEffects.resourceDeltas.test.ts [ client/src/game/rules/actionEffects.resourceDeltas.test.ts ]
+Error: Cannot find module '../../state' imported from '/home/runner/workspace/client/src/game/rules/actionEffects.resourceDeltas.test.ts'
+ ❯ client/src/game/rules/actionEffects.resourceDeltas.test.ts:4:1
+      2| import { describe, it, expect, beforeEach } from 'vitest';
+      3| import { GameState } from '@shared/schema';
+      4| import { createInitialState } from '../../state';
+       | ^
+      5| import { applyActionEffects } from './actionEffects';
+      6| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/18]⎯
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯ Failed Tests 17 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  client/src/game/rules/actionEffects.test.ts > actionEffects - circular dependency fix > should apply effects for craftBoneTotem action
+AssertionError: expected -100 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ -100
+
+ ❯ client/src/game/rules/actionEffects.test.ts:54:38
+     52|     expect(updates).toBeDefined();
+     53|     expect(updates.resources).toBeDefined();
+     54|     expect(updates.resources!.bones).toBe(0); // boneCost - boneCost
+       |                                      ^
+     55|     expect(updates.resources!.bone_totem).toBe(1);
+     56|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/18]⎯
+
+ FAIL  client/src/game/rules/actionEffects.test.ts > actionEffects - circular dependency fix > should apply effects for craftTorch action
+AssertionError: expected -10 to be 10 // Object.is equality
+
+- Expected
++ Received
+
+- 10
++ -10
+
+ ❯ client/src/game/rules/actionEffects.test.ts:68:37
+     66|     expect(updates).toBeDefined();
+     67|     expect(updates.resources).toBeDefined();
+     68|     expect(updates.resources!.wood).toBe(woodCost); // woodCost * 2 - wood…
+       |                                     ^
+     69|     expect(updates.resources!.torch).toBeGreaterThanOrEqual(1);
+     70|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/18]⎯
+
+ FAIL  client/src/game/rules/actionEffects.test.ts > actionEffects - circular dependency fix > should apply effects for craftIronSword action
+AssertionError: expected -150 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ -150
+
+ ❯ client/src/game/rules/actionEffects.test.ts:82:37
+     80|     expect(updates).toBeDefined();
+     81|     expect(updates.resources).toBeDefined();
+     82|     expect(updates.resources!.iron).toBe(0); // ironCost - ironCost
+       |                                     ^
+     83|     expect(updates.weapons).toBeDefined();
+     84|     expect(updates.weapons!.iron_sword).toBe(true);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/18]⎯
+
+ FAIL  client/src/game/rules/actionEffects.test.ts > Crafting Cost Reductions > should apply blacksmith_hammer 5% crafting discount for craftIronAxe
+AssertionError: expected -47 to be 3 // Object.is equality
+
+- Expected
++ Received
+
+- 3
++ -47
+
+ ❯ client/src/game/rules/actionEffects.test.ts:131:41
+    129|     const expectedCost = Math.floor(baseCost * 0.95);
+    130|     const expectedFinalAmount = baseCost - expectedCost;
+    131|     expect(updatesWith.resources!.iron).toBe(expectedFinalAmount);
+       |                                         ^
+    132|   });
+    133| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/18]⎯
+
+ FAIL  client/src/game/rules/actionEffects.test.ts > Crafting Cost Reductions > should stack crafting discounts from tools and highest storage building for craftIronAxe
+AssertionError: expected -45 to be 5 // Object.is equality
+
+- Expected
++ Received
+
+- 5
++ -45
+
+ ❯ client/src/game/rules/actionEffects.test.ts:160:37
+    158|     const expectedCost = Math.floor(baseCost * (1 - totalDiscount));
+    159|     const expectedRemaining = baseCost - expectedCost;
+    160|     expect(updates.resources!.iron).toBe(expectedRemaining);
+       |                                     ^
+    161|   });
+    162| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/18]⎯
+
+ FAIL  client/src/game/rules/actionEffects.test.ts > Crafting Cost Reductions > should handle crafting with maximum discounts for craftIronAxe
+AssertionError: expected -45 to be 5 // Object.is equality
+
+- Expected
++ Received
+
+- 5
++ -45
+
+ ❯ client/src/game/rules/actionEffects.test.ts:189:37
+    187|     const expectedCost = Math.floor(baseCost * (1 - totalDiscount));
+    188|     const expectedRemaining = baseCost - expectedCost;
+    189|     expect(updates.resources!.iron).toBe(expectedRemaining);
+       |                                     ^
+    190|     // Note: Only highest tier storage building discount applies (10% from…
+    191|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/18]⎯
+
+ FAIL  client/src/game/rules/actionEffects.test.ts > Building Cost Reductions > should apply mastermason_chisel 5% building discount for buildCabin
+AssertionError: expected -142 to be 8 // Object.is equality
+
+- Expected
++ Received
+
+- 8
++ -142
+
+ ❯ client/src/game/rules/actionEffects.test.ts:221:41
+    219|     const expectedFinalWood = baseWoodCost - expectedWoodCost;
+    220|     const expectedFinalStone = baseStoneCost - expectedStoneCost;
+    221|     expect(updatesWith.resources!.wood).toBe(expectedFinalWood);
+       |                                         ^
+    222|     expect(updatesWith.resources!.stone).toBe(expectedFinalStone);
+    223|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/18]⎯
+
+ FAIL  client/src/game/rules/actionEffects.test.ts > Building Cost Reductions > should use only highest tier storage building for building cost reduction for buildCabin
+AssertionError: expected -142 to be 8 // Object.is equality
+
+- Expected
++ Received
+
+- 8
++ -142
+
+ ❯ client/src/game/rules/actionEffects.test.ts:266:37
+    264|     const expectedWoodCost = Math.floor(baseWoodCost * 0.95); // 135
+    265|     const expectedStoneCost = Math.floor(baseStoneCost * 0.95); // 45
+    266|     expect(updates.resources!.wood).toBe(baseWoodCost - expectedWoodCost);…
+       |                                     ^
+    267|     expect(updates.resources!.stone).toBe(baseStoneCost - expectedStoneCos…
+    268|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/18]⎯
+
+ FAIL  client/src/game/rules/actionEffects.test.ts > Building Cost Reductions > should stack building discounts from buildings and tools for buildCabin
+AssertionError: expected -135 to be 15 // Object.is equality
+
+- Expected
++ Received
+
+- 15
++ -135
+
+ ❯ client/src/game/rules/actionEffects.test.ts:295:37
+    293|     const expectedWoodCost = Math.floor(baseWoodCost * (1 - totalDiscount)…
+    294|     const expectedStoneCost = Math.floor(baseStoneCost * (1 - totalDiscoun…
+    295|     expect(updates.resources!.wood).toBe(baseWoodCost - expectedWoodCost);
+       |                                     ^
+    296|     expect(updates.resources!.stone).toBe(baseStoneCost - expectedStoneCos…
+    297|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/18]⎯
+
+ FAIL  client/src/game/rules/actionEffects.test.ts > Building Cost Reductions > should apply discounts to building with existing cabins
+AssertionError: expected -142 to be 8 // Object.is equality
+
+- Expected
++ Received
+
+- 8
++ -142
+
+ ❯ client/src/game/rules/actionEffects.test.ts:318:37
+    316|     const expectedFinalWood = baseWoodCost - expectedWoodCost;
+    317|     const expectedFinalStone = baseStoneCost - expectedStoneCost;
+    318|     expect(updates.resources!.wood).toBe(expectedFinalWood);
+       |                                     ^
+    319|     expect(updates.resources!.stone).toBe(expectedFinalStone);
+    320|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/18]⎯
+
+ FAIL  client/src/game/rules/actionEffects.test.ts > Cost Reduction Edge Cases > should handle crafting with maximum discounts for craftIronAxe
+AssertionError: expected -45 to be 5 // Object.is equality
+
+- Expected
++ Received
+
+- 5
++ -45
+
+ ❯ client/src/game/rules/actionEffects.test.ts:357:37
+    355|     const expectedCost = Math.floor(baseCost * (1 - totalDiscount));
+    356|     const expectedRemaining = baseCost - expectedCost;
+    357|     expect(updates.resources!.iron).toBe(expectedRemaining);
+       |                                     ^
+    358|     // Note: Only highest tier storage building discount applies (10% from…
+    359|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/18]⎯
+
+ FAIL  client/src/game/rules/actionEffects.test.ts > Cost Reduction Edge Cases > should handle building with maximum discounts for buildCabin
+AssertionError: expected -135 to be 15 // Object.is equality
+
+- Expected
++ Received
+
+- 15
++ -135
+
+ ❯ client/src/game/rules/actionEffects.test.ts:386:37
+    384|     const expectedWoodCost = Math.floor(baseWoodCost * (1 - totalDiscount)…
+    385|     const expectedStoneCost = Math.floor(baseStoneCost * (1 - totalDiscoun…
+    386|     expect(updates.resources!.wood).toBe(baseWoodCost - expectedWoodCost);
+       |                                     ^
+    387|     expect(updates.resources!.stone).toBe(baseStoneCost - expectedStoneCos…
+    388|     // Note: Previously was 35% (stacking all), now 20% (only highest tier…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/18]⎯
+
+ FAIL  client/src/game/rules/actionEffects.test.ts > Cost Reduction Edge Cases > should floor discount calculations correctly for crafting
+AssertionError: expected -146 to be 4 // Object.is equality
+
+- Expected
++ Received
+
+- 4
++ -146
+
+ ❯ client/src/game/rules/actionEffects.test.ts:415:37
+    413|     // 150 * 0.975
+    414|     const expectedCost = Math.floor(baseIronCost * 0.975);
+    415|     expect(updates.resources!.iron).toBe(baseIronCost - expectedCost);
+       |                                     ^
+    416|   });
+    417| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/18]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Trade Actions > tradeGoldForFood (tier 3) produces correct amount
+AssertionError: expected -40 to be 960 // Object.is equality
+
+- Expected
++ Received
+
+- 960
++ -40
+
+ ❯ client/src/game/rules/resourceGains.test.ts:1546:45
+    1544|       expect(effectUpdates.resources?.food).toBe(state.resources.food + 10…
+    1545|       // Costs 40 gold
+    1546|       expect(effectUpdates.resources?.gold).toBe(state.resources.gold - 40…
+       |                                             ^
+    1547|     });
+    1548| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/18]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Trade Actions > tradeGoldForStone (tier 3) produces correct amount
+AssertionError: expected -60 to be 940 // Object.is equality
+
+- Expected
++ Received
+
+- 940
++ -60
+
+ ❯ client/src/game/rules/resourceGains.test.ts:1558:45
+    1556|       expect(effectUpdates.resources?.stone).toBe(state.resources.stone + …
+    1557|       // Costs 60 gold
+    1558|       expect(effectUpdates.resources?.gold).toBe(state.resources.gold - 60…
+       |                                             ^
+    1559|     });
+    1560| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/18]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Trade Actions > tradeGoldForTorch (tier 3) produces correct amount
+AssertionError: expected -75 to be 925 // Object.is equality
+
+- Expected
++ Received
+
+- 925
++ -75
+
+ ❯ client/src/game/rules/resourceGains.test.ts:1570:45
+    1568|       expect(effectUpdates.resources?.torch).toBe(state.resources.torch + …
+    1569|       // Costs 75 gold
+    1570|       expect(effectUpdates.resources?.gold).toBe(state.resources.gold - 75…
+       |                                             ^
+    1571|     });
+    1572| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/18]⎯
+
+ FAIL  client/src/game/rules/resourceGains.test.ts > Resource Gain Tests > Trade Actions > tradeSilverForGold (tier 3) produces correct amount
+AssertionError: expected -200 to be 800 // Object.is equality
+
+- Expected
++ Received
+
+- 800
++ -200
+
+ ❯ client/src/game/rules/resourceGains.test.ts:1582:47
+    1580|       expect(effectUpdates.resources?.gold).toBe(state.resources.gold + 50…
+    1581|       // Costs 200 silver
+    1582|       expect(effectUpdates.resources?.silver).toBe(state.resources.silver …
+       |                                               ^
+    1583|     });
+    1584|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/18]⎯
+
+
+ Test Files  3 failed | 22 passed (25)
+      Tests  17 failed | 375 passed (392)
+   Start at  21:06:13
+   Duration  6.48s (transform 2.24s, setup 0ms, import 5.10s, tests 2.36s, environment 4ms)
+
+ FAIL  Tests failed. Watching for file changes...
+       press h to show help, press q to quit
