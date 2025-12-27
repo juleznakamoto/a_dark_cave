@@ -234,22 +234,26 @@ const mergeStateUpdates = (
   prevState: GameState,
   stateUpdates: Partial<GameState>,
 ): Partial<GameState> => {
-  // Ensure resources never go negative when merging, and apply resource limits
-  const mergedResources = { ...prevState.resources, ...stateUpdates.resources };
-  Object.keys(mergedResources).forEach((key) => {
-    if (
-      typeof mergedResources[key as keyof typeof mergedResources] === "number"
-    ) {
-      let value = mergedResources[key as keyof typeof mergedResources];
-      // First ensure non-negative
-      if (value < 0) {
-        value = 0;
+  // Handle resource updates - these can be either absolute values or deltas
+  const mergedResources = { ...prevState.resources };
+  
+  if (stateUpdates.resources) {
+    Object.entries(stateUpdates.resources).forEach(([key, value]) => {
+      if (typeof value === "number") {
+        // Add the delta to the current resource value
+        let newValue = (prevState.resources[key as keyof typeof prevState.resources] || 0) + value;
+        
+        // Ensure non-negative
+        if (newValue < 0) {
+          newValue = 0;
+        }
+        
+        // Apply resource limit
+        newValue = capResourceToLimit(key, newValue, { ...prevState, ...stateUpdates });
+        mergedResources[key as keyof typeof mergedResources] = newValue;
       }
-      // Then apply resource limit
-      value = capResourceToLimit(key, value, { ...prevState, ...stateUpdates });
-      mergedResources[key as keyof typeof mergedResources] = value;
-    }
-  });
+    });
+  }
 
   const merged = {
     resources: mergedResources,

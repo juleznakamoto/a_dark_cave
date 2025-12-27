@@ -877,16 +877,18 @@ function selectTrades(
       label,
       cost,
       effect: (state: GameState) => {
-        if ((state.resources[sellResource] || 0) >= sellAmount) {
-          return {
-            resources: {
-              ...state.resources,
-              [sellResource]: (state.resources[sellResource] || 0) - sellAmount,
-              [buyResource]: (state.resources[buyResource] || 0) + buyAmount,
-            },
-          };
+        // Check if player can afford the cost
+        if ((state.resources[sellResource] || 0) < sellAmount) {
+          return {};
         }
-        return {};
+
+        // Return only the resource changes (deltas), not the full state
+        return {
+          resources: {
+            [sellResource]: -sellAmount,
+            [buyResource]: buyAmount,
+          },
+        };
       },
     });
   }
@@ -980,32 +982,29 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
         label: `${trade.label}`,
         cost: `${cost} ${costOption.resource}`,
         effect: (state: GameState) => {
-          if ((state.resources[costOption.resource] || 0) >= cost) {
-            const result: any = {
-              resources: {
-                ...state.resources,
-                [costOption.resource]:
-                  (state.resources[costOption.resource] || 0) - cost,
-              },
-              _logMessage: trade.message,
-            };
-
-            if (trade.give === "tool") {
-              result.tools = { ...state.tools, [trade.giveItem]: true };
-            } else if (trade.give === "weapon") {
-              result.weapons = { ...state.weapons, [trade.giveItem]: true };
-            } else if (trade.give === "schematic") {
-              result.schematics = {
-                ...state.schematics,
-                [trade.giveItem]: true,
-              };
-            } else if (trade.give === "book") {
-              result.books = { ...state.books, [trade.giveItem]: true };
-            }
-
-            return result;
+          // Check if player can afford the cost
+          if ((state.resources[costOption.resource] || 0) < cost) {
+            return {};
           }
-          return {};
+
+          const result: any = {
+            resources: {
+              [costOption.resource]: -cost,
+            },
+            _logMessage: trade.message,
+          };
+
+          if (trade.give === "tool") {
+            result.tools = { [trade.giveItem]: true };
+          } else if (trade.give === "weapon") {
+            result.weapons = { [trade.giveItem]: true };
+          } else if (trade.give === "schematic") {
+            result.schematics = { [trade.giveItem]: true };
+          } else if (trade.give === "book") {
+            result.books = { [trade.giveItem]: true };
+          }
+
+          return result;
         },
       };
     });
