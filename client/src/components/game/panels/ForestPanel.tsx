@@ -192,7 +192,7 @@ export default function ForestPanel() {
           .split(' ')
           .map(word => word.charAt(0).toUpperCase() + word.slice(1))
           .join(' ');
-        displayLabel = `+${amount} ${formattedName}`;
+        displayLabel = `Buy ${amount} ${formattedName}`;
       }
     }
 
