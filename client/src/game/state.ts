@@ -258,6 +258,7 @@ const mergeStateUpdates = (
     resources: mergedResources,
     weapons: { ...prevState.weapons, ...stateUpdates.weapons },
     tools: { ...prevState.tools, ...stateUpdates.tools },
+    schematics: { ...prevState.schematics, ...stateUpdates.schematics },
     buildings: { ...prevState.buildings, ...stateUpdates.buildings },
     flags: { ...prevState.flags, ...stateUpdates.flags },
     villagers: { ...prevState.villagers, ...stateUpdates.villagers },
