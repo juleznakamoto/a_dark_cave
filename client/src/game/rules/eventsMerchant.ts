@@ -870,7 +870,7 @@ function selectTrades(
     // Create label and cost
     // Buy trade: label = what you get (from trade.label), cost = what you pay
     // Sell trade: label = what you get (buyAmount buyResource), cost = what you pay (sellAmount sellResource)
-    const label = `+${buyAmount} ${buyFormatted}`;
+    const label = `${buyAmount} ${buyFormatted}`;
     const cost = `${sellAmount} ${sellFormatted}`;
 
     selected.push({
