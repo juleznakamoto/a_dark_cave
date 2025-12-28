@@ -1,0 +1,74 @@
+{BTP: 0, isPaused: false, isPausedPreviously: false}
+logger.ts:33 v463Z [VERSION] Initializing version check from GameContainer
+logger.ts:33 v463Z [MERCHANT TRADE] Creating merchant trade: sell_food_100_very_early
+state.ts:1380 [STATE] applyEventChoice called: {choiceId: 'sell_food_100_very_early', eventId: 'merchant', hasCurrentLogEntry: true, currentLogEntryChoices: Array(5)}
+events.ts:320 [EVENT MANAGER] applyEventChoice called: {choiceId: 'sell_food_100_very_early', eventId: 'merchant', hasCurrentLogEntry: true}
+events.ts:335 [EVENT MANAGER] Using choices from state.merchantTrades for merchant event
+events.ts:339 [EVENT MANAGER] Available choices: (5) [{…}, {…}, {…}, {…}, {…}]0: effectType: "undefined"effectValue: undefinedhasEffect: falseid: "buy_stone_500_early"[[Prototype]]: Object1: {id: 'buy_food_250_very_early', hasEffect: false, effectType: 'undefined', effectValue: undefined}2: {id: 'sell_food_100_very_early', hasEffect: false, effectType: 'undefined', effectValue: undefined}3: {id: 'sell_food_100_early', hasEffect: false, effectType: 'undefined', effectValue: undefined}4: {id: 'trade_book_of_trials', hasEffect: false, effectType: 'undefined', effectValue: undefined}length: 5[[Prototype]]: Array(0)
+events.ts:364 [EVENT MANAGER] Found choice: {id: 'sell_food_100_very_early', hasEffect: false, effectType: 'undefined', effectValue: undefined}
+events.ts:371 Uncaught TypeError: choice.effect is not a function
+    at EventManager.applyEventChoice (events.ts:371:33)
+    at applyEventChoice (state.ts:1391:34)
+    at handleChoice (TimedEventPanel.tsx:135:5)
+    at jsxDEV.onClick (TimedEventPanel.tsx:222:25)
+    at handleClick (button.tsx:30:9)
+    at HTMLUnknownElement.callCallback2 (chunk-276SZO74.js?v=d54e99be:3674:22)
+    at Object.invokeGuardedCallbackDev (chunk-276SZO74.js?v=d54e99be:3699:24)
+    at invokeGuardedCallback (chunk-276SZO74.js?v=d54e99be:3733:39)
+    at invokeGuardedCallbackAndCatchFirstError (chunk-276SZO74.js?v=d54e99be:3736:33)
+    at executeDispatch (chunk-276SZO74.js?v=d54e99be:7014:11)
+applyEventChoice @ events.ts:371
+applyEventChoice @ state.ts:1391
+handleChoice @ TimedEventPanel.tsx:135
+jsxDEV.onClick @ TimedEventPanel.tsx:222
+handleClick @ button.tsx:30
+callCallback2 @ chunk-276SZO74.js?v=d54e99be:3674
+invokeGuardedCallbackDev @ chunk-276SZO74.js?v=d54e99be:3699
+invokeGuardedCallback @ chunk-276SZO74.js?v=d54e99be:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-276SZO74.js?v=d54e99be:3736
+executeDispatch @ chunk-276SZO74.js?v=d54e99be:7014
+processDispatchQueueItemsInOrder @ chunk-276SZO74.js?v=d54e99be:7034
+processDispatchQueue @ chunk-276SZO74.js?v=d54e99be:7043
+dispatchEventsForPlugins @ chunk-276SZO74.js?v=d54e99be:7051
+(anonymous) @ chunk-276SZO74.js?v=d54e99be:7174
+batchedUpdates$1 @ chunk-276SZO74.js?v=d54e99be:18913
+batchedUpdates @ chunk-276SZO74.js?v=d54e99be:3579
+dispatchEventForPluginEventSystem @ chunk-276SZO74.js?v=d54e99be:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-276SZO74.js?v=d54e99be:5478
+dispatchEvent @ chunk-276SZO74.js?v=d54e99be:5472
+dispatchDiscreteEvent @ chunk-276SZO74.js?v=d54e99be:5449Understand this error
+chunk-276SZO74.js?v=d54e99be:3750 Uncaught TypeError: choice.effect is not a function
+    at EventManager.applyEventChoice (events.ts:371:33)
+    at applyEventChoice (state.ts:1391:34)
+    at handleChoice (TimedEventPanel.tsx:135:5)
+    at jsxDEV.onClick (TimedEventPanel.tsx:222:25)
+    at handleClick (button.tsx:30:9)
+    at HTMLUnknownElement.callCallback2 (chunk-276SZO74.js?v=d54e99be:3674:22)
+    at Object.invokeGuardedCallbackDev (chunk-276SZO74.js?v=d54e99be:3699:24)
+    at invokeGuardedCallback (chunk-276SZO74.js?v=d54e99be:3733:39)
+    at invokeGuardedCallbackAndCatchFirstError (chunk-276SZO74.js?v=d54e99be:3736:33)
+    at executeDispatch (chunk-276SZO74.js?v=d54e99be:7014:11)
+applyEventChoice @ events.ts:371
+applyEventChoice @ state.ts:1391
+handleChoice @ TimedEventPanel.tsx:135
+jsxDEV.onClick @ TimedEventPanel.tsx:222
+handleClick @ button.tsx:30
+callCallback2 @ chunk-276SZO74.js?v=d54e99be:3674
+invokeGuardedCallbackDev @ chunk-276SZO74.js?v=d54e99be:3699
+invokeGuardedCallback @ chunk-276SZO74.js?v=d54e99be:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-276SZO74.js?v=d54e99be:3736
+executeDispatch @ chunk-276SZO74.js?v=d54e99be:7014
+processDispatchQueueItemsInOrder @ chunk-276SZO74.js?v=d54e99be:7034
+processDispatchQueue @ chunk-276SZO74.js?v=d54e99be:7043
+dispatchEventsForPlugins @ chunk-276SZO74.js?v=d54e99be:7051
+(anonymous) @ chunk-276SZO74.js?v=d54e99be:7174
+batchedUpdates$1 @ chunk-276SZO74.js?v=d54e99be:18913
+batchedUpdates @ chunk-276SZO74.js?v=d54e99be:3579
+dispatchEventForPluginEventSystem @ chunk-276SZO74.js?v=d54e99be:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-276SZO74.js?v=d54e99be:5478
+dispatchEvent @ chunk-276SZO74.js?v=d54e99be:5472
+dispatchDiscreteEvent @ chunk-276SZO74.js?v=d54e99be:5449Understand this error
+logger.ts:33 v463Z [SAVE CLOUD] 📊 Resource snapshot includes stats: {hasStats: true, statsKeys: Array(4), snapshotKeys: Array(29)}
+logger.ts:33 v463Z [SAVE CLOUD] 🔍 Playtime overwrite check: {allowPlaytimeOverwrite: false, isNewGame: false, willAllowOverwrite: false, currentPlayTime: 1419807}
+logger.ts:33 v463Z [SAVE CLOUD] Edge Function success: {success: true}
+logger.ts:33 v463Z [SAVE] ✅ Updated lastCloudState after successful cloud save
