@@ -983,7 +983,7 @@ export const merchantEvents: Record<string, GameEvent> = {
   merchant: {
     id: "merchant",
     condition: (state: GameState) => state.buildings.woodenHut >= 2,
-    
+
     timeProbability: (state: GameState) =>0,
       // 10 + 0.5 * (state.buildings.tradePost || 0) +
       // 1 * (state.buildings.grandBazaar || 0) +

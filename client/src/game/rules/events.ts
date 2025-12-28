@@ -330,39 +330,68 @@ export class EventManager {
       return {};
     }
 
-    // For merchant events, use choices from state.merchantTrades (where generated trades are stored)
-    let choices: EventChoice[] = [];
+    // For merchant events, execute trades directly from merchantTrades data
     if (eventId === "merchant" && (state as any).merchantTrades?.choices) {
-      // For merchant events, use the choices from state.merchantTrades
-      logger.log('[EVENT MANAGER] Using choices from state.merchantTrades for merchant event');
-      choices = (state as any).merchantTrades.choices;
-
-      logger.log('[EVENT MANAGER] Available merchant choices:', {
-        count: choices.length,
-        choicesWithEffects: choices.filter((c: any) => typeof c.effect === 'function').length,
-        choicesData: choices.map((c: any) => ({
-          id: c.id,
-          label: c.label,
-          cost: c.cost,
-          hasEffect: typeof c.effect === 'function',
-          effectType: typeof c.effect,
-          effectValue: c.effect,
-          tradeType: (c as any).tradeType,
-        })),
-      });
+      const merchantTrades = (state as any).merchantTrades.choices;
       
-      // If choices don't have effect functions, something went wrong during reconstruction
-      if (choices.some((c: any) => typeof c.effect !== 'function')) {
-        logger.error('[EVENT MANAGER] ERROR: Some merchant choices missing effect functions after reload!', {
-          choicesWithoutEffects: choices.filter((c: any) => typeof c.effect !== 'function').map((c: any) => c.id),
+      // Find the trade data
+      const trade = merchantTrades.find((t: any) => t.id === choiceId);
+      
+      if (trade) {
+        logger.log('[EVENT MANAGER] Executing merchant trade:', {
+          choiceId,
+          buyResource: trade.buyResource,
+          buyAmount: trade.buyAmount,
+          sellResource: trade.sellResource,
+          sellAmount: trade.sellAmount,
         });
+
+        const currentBuyAmount = state.resources[trade.buyResource as keyof typeof state.resources] || 0;
+        const currentSellAmount = state.resources[trade.sellResource as keyof typeof state.resources] || 0;
+
+        // Check if player can afford
+        if (currentSellAmount < trade.sellAmount) {
+          return {
+            _logMessage: `You don't have enough ${trade.sellResource} to complete this trade.`,
+            log: currentLogEntry
+              ? state.log.filter((entry) => entry.id !== currentLogEntry.id)
+              : state.log,
+          };
+        }
+
+        // Execute the trade
+        return {
+          resources: {
+            ...state.resources,
+            [trade.buyResource]: currentBuyAmount + trade.buyAmount,
+            [trade.sellResource]: currentSellAmount - trade.sellAmount,
+          },
+          _logMessage: `You traded ${trade.sellAmount} ${trade.sellResource} for ${trade.buyAmount} ${trade.buyResource}.`,
+          log: currentLogEntry
+            ? state.log.filter((entry) => entry.id !== currentLogEntry.id)
+            : state.log,
+        };
       }
-    } else {
-      choices = eventDefinition.choices || [];
+      
+      // If not a trade choice, check for fallback (say_goodbye)
+      if (eventDefinition.fallbackChoice && eventDefinition.fallbackChoice.id === choiceId) {
+        logger.log('[EVENT MANAGER] Using fallback choice for merchant');
+        const fallbackChoice = eventDefinition.fallbackChoice;
+        const choiceResult = fallbackChoice.effect(state);
+        return {
+          ...choiceResult,
+          log: currentLogEntry
+            ? state.log.filter((entry) => entry.id !== currentLogEntry.id)
+            : state.log,
+        };
+      }
+
+      logger.error('[EVENT MANAGER] Merchant trade not found:', { choiceId });
+      return {};
     }
 
-
-    // First try to find the choice in the choices array
+    // For non-merchant events, use the standard choice execution
+    const choices = eventDefinition.choices || [];
     const choice = choices.find((c) => c.id === choiceId);
 
     if (!choice) {
@@ -389,10 +418,7 @@ export class EventManager {
     logger.log('[EVENT MANAGER] Found choice:', {
       id: choice.id,
       label: choice.label,
-      cost: choice.cost,
       hasEffect: typeof choice.effect === 'function',
-      effectType: typeof choice.effect,
-      choice,
     });
 
     const choiceResult = choice.effect(state);
