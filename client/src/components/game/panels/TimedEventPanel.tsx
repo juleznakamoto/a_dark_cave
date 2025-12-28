@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/tooltip";
 import { useMobileButtonTooltip } from "@/hooks/useMobileTooltip";
 import { eventChoiceCostTooltip } from "@/game/rules/tooltips";
-import { generateMerchantChoices, reconstructTradeFromData } from "@/game/rules/eventsMerchant";
+import { generateMerchantChoices } from "@/game/rules/eventsMerchant";
 import { EventChoice } from "@/game/rules/events";
 
 export default function TimedEventPanel() {
@@ -34,17 +34,8 @@ export default function TimedEventPanel() {
       // Reconstruct trades from saved data
       const savedTrades = gameState.merchantTrades.choices;
       if (savedTrades.length > 0) {
-        const reconstructed = savedTrades.map((trade: any) => reconstructTradeFromData(trade, gameState));
-        
-        // Update state with reconstructed trades (with effect functions)
-        useGameStore.setState((state) => ({
-          merchantTrades: {
-            ...state.merchantTrades,
-            choices: reconstructed,
-          },
-        }));
-        
-        return reconstructed;
+        const { reconstructTradeFromData } = require('@/game/rules/eventsMerchant');
+        return savedTrades.map((trade: any) => reconstructTradeFromData(trade, gameState));
       }
       return [];
     }
