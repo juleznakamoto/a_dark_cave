@@ -237,7 +237,10 @@ export default function TimedEventPanel() {
             });
             
             const isPurchased = isMerchantEvent && 
-              gameState.merchantTrades?.purchasedIds?.includes(choice.id);</old_str>
+              gameState.merchantTrades?.purchasedIds?.includes(choice.id);
+
+            // Disable if can't afford, time is up, or already purchased
+            const isDisabled = !canAfford || timeRemaining <= 0 || isPurchased;</old_str>
 
             // Disable if can't afford, time is up, or already purchased
             const isDisabled = !canAfford || timeRemaining <= 0 || isPurchased;
