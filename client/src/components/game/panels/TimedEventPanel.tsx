@@ -152,7 +152,7 @@ export default function TimedEventPanel() {
 
         return {
           merchantTrades: {
-            ...state.merchantTrades,
+            choices: state.merchantTrades?.choices || [],
             purchasedIds: [
               ...(state.merchantTrades?.purchasedIds || []),
               choiceId,

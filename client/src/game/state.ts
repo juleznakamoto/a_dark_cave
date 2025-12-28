@@ -1590,11 +1590,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
     if (isActive && event?.id.includes('merchant')) {
       const { generateMerchantChoices } = await import('@/game/rules/eventsMerchant');
       const state = get();
-      const merchantTrades = generateMerchantChoices(state);
+      const choices = generateMerchantChoices(state);
       
       logger.log('[MERCHANT TRADES] Setting timed event tab with merchant trades:', {
         eventId: event?.id,
-        choicesCount: merchantTrades.length,
+        choicesCount: choices.length,
         duration,
         expiryTime: duration ? Date.now() + duration : 0,
       });
@@ -1605,7 +1605,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
           event: event || null,
           expiryTime: duration ? Date.now() + duration : 0,
         },
-        merchantTrades,
+        merchantTrades: {
+          choices,
+          purchasedIds: state.merchantTrades?.purchasedIds || [],
+        },
       });
     } else if (!isActive) {
       // If deactivating, clear merchant trades
