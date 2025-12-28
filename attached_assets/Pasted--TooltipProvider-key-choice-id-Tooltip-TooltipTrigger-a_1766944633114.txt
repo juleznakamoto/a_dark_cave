@@ -1,0 +1,201 @@
+ <TooltipProvider key={choice.id}>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div
+                        onClick={(e) => {
+                          mobileTooltip.handleWrapperClick(
+                            `timedevent-${choice.id}`,
+                            isDisabled,
+                            false,
+                            e,
+                          );
+                        }}
+                        onMouseDown={
+                          mobileTooltip.isMobile
+                            ? (e) =>
+                                mobileTooltip.handleMouseDown(
+                                  `timedevent-${choice.id}`,
+                                  isDisabled,
+                                  false,
+                                  e,
+                                )
+                            : undefined
+                        }
+                        onMouseUp={
+                          mobileTooltip.isMobile
+                            ? (e) =>
+                                mobileTooltip.handleMouseUp(
+                                  `timedevent-${choice.id}`,
+                                  isDisabled,
+                                  () => handleChoice(choice.id),
+                                  e,
+                                )
+                            : undefined
+                        }
+                        onTouchStart={
+                          mobileTooltip.isMobile
+                            ? (e) =>
+                                mobileTooltip.handleTouchStart(
+                                  `timedevent-${choice.id}`,
+                                  isDisabled,
+                                  false,
+                                  e,
+                                )
+                            : undefined
+                        }
+                        onTouchEnd={
+                          mobileTooltip.isMobile
+                            ? (e) =>
+                                mobileTooltip.handleTouchEnd(
+                                  `timedevent-${choice.id}`,
+                                  isDisabled,
+                                  () => handleChoice(choice.id),
+                                  e,
+                                )
+                            : undefined
+                        }
+                        onMouseEnter={() => {
+                          if (costText) {
+                            const resources =
+                              extractResourcesFromCost(costText);
+                            setHighlightedResources(resources);
+                          }
+                        }}
+                        onMouseLeave={() => {
+                          setHighlightedResources([]);
+                        }}
+                      >
+                        {buttonContent}
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent side="top">
+                      <div className="text-xs">
+                        {eventChoiceCostTooltip.getContent(costText, gameState)}
+                      </div>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              ) : (
+                <div
+                  key={choice.id}
+                  onMouseDown={
+                    mobileTooltip.isMobile
+                      ? (e) =>
+                          mobileTooltip.handleMouseDown(
+                            `timedevent-${choice.id}`,
+                            isDisabled,
+                            false,
+                            e,
+                          )
+                      : undefined
+                  }
+                  onMouseUp={
+                    mobileTooltip.isMobile
+                      ? (e) =>
+                          mobileTooltip.handleMouseUp(
+                            `timedevent-${choice.id}`,
+                            isDisabled,
+                            () => handleChoice(choice.id),
+                            e,
+                          )
+                      : undefined
+                  }
+                  onTouchStart={
+                    mobileTooltip.isMobile
+                      ? (e) =>
+                          mobileTooltip.handleTouchStart(
+                            `timedevent-${choice.id}`,
+                            isDisabled,
+                            false,
+                            e,
+                          )
+                      : undefined
+                  }
+                  onTouchEnd={
+                    mobileTooltip.isMobile
+                      ? (e) =>
+                          mobileTooltip.handleTouchEnd(
+                            `timedevent-${choice.id}`,
+                            isDisabled,
+                            () => handleChoice(choice.id),
+                            e,
+                          )
+                      : undefined
+                  }
+                >
+                  {buttonContent}
+                </div>
+              );
+            })}
+        </div>
+
+        {/* Say Goodbye button - always on its own row */}
+        <div
+          onMouseDown={
+            mobileTooltip.isMobile
+              ? (e) =>
+                  mobileTooltip.handleMouseDown(
+                    `timedevent-say_goodbye`,
+                    timeRemaining <= 0,
+                    false,
+                    e,
+                  )
+              : undefined
+          }
+          onMouseUp={
+            mobileTooltip.isMobile
+              ? (e) =>
+                  mobileTooltip.handleMouseUp(
+                    `timedevent-say_goodbye`,
+                    timeRemaining <= 0,
+                    () => {
+                      setHighlightedResources([]);
+                      setTimedEventTab(false);
+                    },
+                    e,
+                  )
+              : undefined
+          }
+          onTouchStart={
+            mobileTooltip.isMobile
+              ? (e) =>
+                  mobileTooltip.handleTouchStart(
+                    `timedevent-say_goodbye`,
+                    timeRemaining <= 0,
+                    false,
+                    e,
+                  )
+              : undefined
+          }
+          onTouchEnd={
+            mobileTooltip.isMobile
+              ? (e) =>
+                  mobileTooltip.handleTouchEnd(
+                    `timedevent-say_goodbye`,
+                    timeRemaining <= 0,
+                    () => {
+                      setHighlightedResources([]);
+                      setTimedEventTab(false);
+                    },
+                    e,
+                  )
+              : undefined
+          }
+        >
+          <Button
+            onClick={
+              !mobileTooltip.isMobile
+                ? (e) => {
+                    e.stopPropagation();
+                    setHighlightedResources([]);
+                    setTimedEventTab(false);
+                  }
+                : undefined
+            }
+            variant="outline"
+            size="xs"
+            disabled={timeRemaining <= 0}
+            button_id="timedevent-say_goodbye"
+          >
+            Say Goodbye
+          </Button>
