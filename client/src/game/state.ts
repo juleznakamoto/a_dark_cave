@@ -1685,7 +1685,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }
 
     // Save state after changing timed event tab
-    await get().saveGame();
+    const { saveGame } = await import("@/game/save");
+    await saveGame(get(), false);
   },
 
   addMerchantPurchase: (choiceId: string) => {
