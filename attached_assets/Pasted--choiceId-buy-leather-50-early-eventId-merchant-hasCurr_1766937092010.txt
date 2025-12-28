@@ -1,0 +1,51 @@
+{choiceId: 'buy_leather_50_early', eventId: 'merchant', hasCurrentLogEntry: true}
+logger.ts:33 v506Z [EVENT MANAGER] Processing merchant event: {choiceId: 'buy_leather_50_early', hasMerchantTrades: false, merchantTradesCount: 0}
+logger.ts:43 v506Z [EVENT MANAGER] Merchant trade not found: {choiceId: 'buy_leather_50_early', availableTrades: Array(0)}
+error @ logger.ts:43
+applyEventChoice @ events.ts:397
+applyEventChoice @ state.ts:1391
+handleChoice @ TimedEventPanel.tsx:164
+jsxDEV.onClick @ TimedEventPanel.tsx:253
+handleClick @ button.tsx:30
+callCallback2 @ chunk-276SZO74.js?v=d54e99be:3674
+invokeGuardedCallbackDev @ chunk-276SZO74.js?v=d54e99be:3699
+invokeGuardedCallback @ chunk-276SZO74.js?v=d54e99be:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-276SZO74.js?v=d54e99be:3736
+executeDispatch @ chunk-276SZO74.js?v=d54e99be:7014
+processDispatchQueueItemsInOrder @ chunk-276SZO74.js?v=d54e99be:7034
+processDispatchQueue @ chunk-276SZO74.js?v=d54e99be:7043
+dispatchEventsForPlugins @ chunk-276SZO74.js?v=d54e99be:7051
+(anonymous) @ chunk-276SZO74.js?v=d54e99be:7174
+batchedUpdates$1 @ chunk-276SZO74.js?v=d54e99be:18913
+batchedUpdates @ chunk-276SZO74.js?v=d54e99be:3579
+dispatchEventForPluginEventSystem @ chunk-276SZO74.js?v=d54e99be:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-276SZO74.js?v=d54e99be:5478
+dispatchEvent @ chunk-276SZO74.js?v=d54e99be:5472
+dispatchDiscreteEvent @ chunk-276SZO74.js?v=d54e99be:5449Understand this error
+logger.ts:33 v506Z [MERCHANT TRADE] Creating merchant trade: buy_wood_500_early
+logger.ts:33 v506Z [MERCHANT TRADE] Current state before update: {merchantTrades: {…}, purchasedIds: Array(1)}
+state.ts:1380 [STATE] applyEventChoice called: {choiceId: 'buy_wood_500_early', eventId: 'merchant', hasCurrentLogEntry: true, currentLogEntryChoices: Array(4)}
+logger.ts:33 v506Z [EVENT MANAGER] applyEventChoice called: {choiceId: 'buy_wood_500_early', eventId: 'merchant', hasCurrentLogEntry: true}
+logger.ts:33 v506Z [EVENT MANAGER] Processing merchant event: {choiceId: 'buy_wood_500_early', hasMerchantTrades: false, merchantTradesCount: 0}
+logger.ts:43 v506Z [EVENT MANAGER] Merchant trade not found: {choiceId: 'buy_wood_500_early', availableTrades: Array(0)}
+error @ logger.ts:43
+applyEventChoice @ events.ts:397
+applyEventChoice @ state.ts:1391
+handleChoice @ TimedEventPanel.tsx:164
+jsxDEV.onClick @ TimedEventPanel.tsx:253
+handleClick @ button.tsx:30
+callCallback2 @ chunk-276SZO74.js?v=d54e99be:3674
+invokeGuardedCallbackDev @ chunk-276SZO74.js?v=d54e99be:3699
+invokeGuardedCallback @ chunk-276SZO74.js?v=d54e99be:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-276SZO74.js?v=d54e99be:3736
+executeDispatch @ chunk-276SZO74.js?v=d54e99be:7014
+processDispatchQueueItemsInOrder @ chunk-276SZO74.js?v=d54e99be:7034
+processDispatchQueue @ chunk-276SZO74.js?v=d54e99be:7043
+dispatchEventsForPlugins @ chunk-276SZO74.js?v=d54e99be:7051
+(anonymous) @ chunk-276SZO74.js?v=d54e99be:7174
+batchedUpdates$1 @ chunk-276SZO74.js?v=d54e99be:18913
+batchedUpdates @ chunk-276SZO74.js?v=d54e99be:3579
+dispatchEventForPluginEventSystem @ chunk-276SZO74.js?v=d54e99be:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-276SZO74.js?v=d54e99be:5478
+dispatchEvent @ chunk-276SZO74.js?v=d54e99be:5472
+dispatchDiscreteEvent @ chunk-276SZO74.js?v=d54e99be:5449Understand this error
