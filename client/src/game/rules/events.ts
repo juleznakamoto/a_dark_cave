@@ -321,7 +321,10 @@ export class EventManager {
     logger.log('[EVENT MANAGER] applyEventChoice called:', {
       choiceId,
       eventId,
-      hasCurrentLogEntry: !!currentLogEntry
+      hasCurrentLogEntry: !!currentLogEntry,
+      stateKeys: Object.keys(state),
+      hasMerchantTrades: !!(state as any).merchantTrades,
+      merchantTradesKeys: (state as any).merchantTrades ? Object.keys((state as any).merchantTrades) : [],
     });
 
     const eventDefinition = this.allEvents[eventId];
@@ -332,12 +335,16 @@ export class EventManager {
 
     // For merchant events, execute trades directly from merchantTrades data
     if (eventId === "merchant") {
+      logger.log('[EVENT MANAGER] Full state.merchantTrades:', (state as any).merchantTrades);
+      
       const merchantTrades = (state as any).merchantTrades?.choices;
       
       logger.log('[EVENT MANAGER] Processing merchant event:', {
         choiceId,
         hasMerchantTrades: !!merchantTrades,
         merchantTradesCount: merchantTrades?.length || 0,
+        fullMerchantTradesObject: (state as any).merchantTrades,
+        merchantTradesChoices: merchantTrades,
       });
       
       // Find the trade data

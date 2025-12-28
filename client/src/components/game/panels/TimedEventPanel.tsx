@@ -41,6 +41,7 @@ export default function TimedEventPanel() {
         eventId: timedEventTab.event.id,
         choicesCount: timedEventTab.event.choices?.length || 0,
         choices: timedEventTab.event.choices,
+        merchantTradesFromState: gameState.merchantTrades,
       });
       return timedEventTab.event.choices || [];
     }
