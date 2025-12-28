@@ -1,86 +1,7 @@
-import { GameEvent, EventChoice } from "./events";
+import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 import { getTotalKnowledge } from "./effectsCalculation";
 import { calculateMerchantDiscount } from "./effectsStats";
-
-// Serializable trade data (no functions, just parameters)
-export interface MerchantTrade {
-  id: string;
-  type: 'buy' | 'sell' | 'tool';
-  buyResource?: string;
-  buyAmount?: number;
-  sellResource?: string;
-  sellAmount?: number;
-  giveItem?: string;
-  giveType?: 'tool' | 'weapon' | 'schematic' | 'book';
-  message?: string;
-}
-
-// Convert MerchantTrade to EventChoice (with effect function)
-export function tradeToChoice(trade: MerchantTrade): EventChoice {
-  const formatResourceName = (res: string) =>
-    res.replace(/_/g, " ")
-      .split(" ")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" ");
-
-  if (trade.type === 'tool' && trade.giveItem && trade.giveType) {
-    return {
-      id: trade.id,
-      label: trade.id.replace(/^trade_/, '').split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '),
-      cost: `${trade.sellAmount} ${formatResourceName(trade.sellResource!)}`,
-      effect: (state: GameState): any => {
-        if ((state.resources[trade.sellResource!] || 0) >= trade.sellAmount!) {
-          const baseResult: any = {
-            resources: {
-              [trade.sellResource!]: (state.resources[trade.sellResource!] || 0) - trade.sellAmount!,
-            },
-          };
-
-          if (trade.giveType === "tool") {
-            baseResult.tools = { [trade.giveItem]: true };
-          } else if (trade.giveType === "weapon") {
-            baseResult.weapons = { [trade.giveItem]: true };
-          } else if (trade.giveType === "schematic") {
-            baseResult.schematics = { [trade.giveItem]: true };
-          } else if (trade.giveType === "book") {
-            baseResult.books = { [trade.giveItem]: true };
-          }
-
-          if (trade.message) {
-            baseResult._logMessage = trade.message;
-          }
-          return baseResult;
-        }
-        return {};
-      },
-    };
-  }
-
-  // Buy/Sell trade
-  const label = `+${trade.buyAmount} ${formatResourceName(trade.buyResource!)}`;
-  const cost = `${trade.sellAmount} ${formatResourceName(trade.sellResource!)}`;
-
-  return {
-    id: trade.id,
-    label,
-    cost,
-    effect: (state: GameState): any => {
-      const currentSell = state.resources[trade.sellResource!] || 0;
-      const currentBuy = state.resources[trade.buyResource!] || 0;
-
-      if (currentSell >= trade.sellAmount!) {
-        return {
-          resources: {
-            [trade.sellResource!]: currentSell - trade.sellAmount!,
-            [trade.buyResource!]: currentBuy + trade.buyAmount!,
-          },
-        };
-      }
-      return {};
-    },
-  };
-}
 
 // Resource prices in gold per unit
 const PRICES = {
@@ -371,14 +292,13 @@ const buyTrades = [
     "leather",
     "gold",
   ]),
-  createBuyTrade("buy_blacksteel_100_end", "blacksteel", 50, TIER_CONDITIONS.end, [
-    "wood",
-    "stone",
-    "food",
-    "leather",
-    "steel",
-    "gold",
-  ]),
+  createBuyTrade(
+    "buy_blacksteel_100_end",
+    "blacksteel",
+    50,
+    TIER_CONDITIONS.end,
+    ["wood", "stone", "food", "leather", "steel", "gold"],
+  ),
 ];
 
 const sellTrades = [
@@ -816,7 +736,6 @@ function selectTrades(
   usedResourcePairs: Set<string>,
   usedRewardTypes: Set<string>,
   isBuyTrade: boolean,
-  seededRandom: () => number,
 ): EventChoice[] {
   const selected: EventChoice[] = [];
   const availableTrades = [...trades];
@@ -825,8 +744,8 @@ function selectTrades(
   let goldSilverBuyCount = 0;
   const MAX_GOLD_SILVER_BUY = 3;
 
-  // Shuffle the available trades using seeded random
-  availableTrades.sort(() => seededRandom() - 0.5);
+  // Shuffle the available trades
+  availableTrades.sort(() => Math.random() - 0.5);
 
   for (const trade of availableTrades) {
     if (selected.length >= numTrades) break;
@@ -873,7 +792,7 @@ function selectTrades(
 
     // Try each valid option to find one that doesn't conflict
     let foundValidOption = false;
-    const shuffledOptions = [...validOptions].sort(() => seededRandom() - 0.5);
+    const shuffledOptions = [...validOptions].sort(() => Math.random() - 0.5);
 
     for (const selectedOption of shuffledOptions) {
       let testBuyResource = buyResource;
@@ -957,15 +876,13 @@ function selectTrades(
       id: trade.id,
       label,
       cost,
-      effect: (state: GameState): any => {
-        const currentSell = state.resources[sellResource] || 0;
-        const currentBuy = state.resources[buyResource] || 0;
-
-        if (currentSell >= sellAmount) {
+      effect: (state: GameState) => {
+        if ((state.resources[sellResource] || 0) >= sellAmount) {
           return {
             resources: {
-              [sellResource]: currentSell - sellAmount,
-              [buyResource]: currentBuy + buyAmount,
+              ...state.resources,
+              [sellResource]: (state.resources[sellResource] || 0) - sellAmount,
+              [buyResource]: (state.resources[buyResource] || 0) + buyAmount,
             },
           };
         }
@@ -977,21 +894,9 @@ function selectTrades(
   return selected;
 }
 
-// Function to generate merchant trades (returns serializable data)
-// seed parameter ensures the same trades are generated for the same merchant event
-export function generateMerchantTrades(state: GameState, seed?: number): MerchantTrade[] {
+// Function to generate fresh merchant choices
+export function generateMerchantChoices(state: GameState): EventChoice[] {
   const knowledge = getTotalKnowledge(state);
-  
-  // Use seed for deterministic randomization (same seed = same trades)
-  const seededRandom = seed 
-    ? (() => {
-        let s = seed;
-        return () => {
-          s = Math.sin(s) * 10000;
-          return s - Math.floor(s);
-        };
-      })()
-    : Math.random;
 
   // Calculate merchant discount using centralized function
   const discount = calculateMerchantDiscount(knowledge);
@@ -1026,7 +931,6 @@ export function generateMerchantTrades(state: GameState, seed?: number): Merchan
     usedResourcePairs,
     usedRewardTypes,
     true,
-    seededRandom,
   );
 
   // Filter sell trades (use separate resource pair tracking)
@@ -1044,7 +948,6 @@ export function generateMerchantTrades(state: GameState, seed?: number): Merchan
     sellUsedResourcePairs,
     sellUsedRewardTypes,
     false,
-    seededRandom,
   );
 
   // Check which tool trades pass filters
@@ -1065,7 +968,7 @@ export function generateMerchantTrades(state: GameState, seed?: number): Merchan
 
   // Select 1 tool trade
   const availableToolTrades = filteredToolTrades
-    .sort(() => seededRandom() - 0.5)
+    .sort(() => Math.random() - 0.5)
     .slice(0, 1)
     .map((trade) => {
       const costOption = trade.costs[0];
@@ -1076,117 +979,80 @@ export function generateMerchantTrades(state: GameState, seed?: number): Merchan
         id: trade.id,
         label: `${trade.label}`,
         cost: `${cost} ${costOption.resource}`,
-        effect: (state: GameState): any => {
-          console.log('[MERCHANT TOOL TRADE] Effect called for:', trade.id);
-          console.log('[MERCHANT TOOL TRADE] Current resources:', state.resources[costOption.resource]);
-          console.log('[MERCHANT TOOL TRADE] Cost:', cost);
-
+        effect: (state: GameState) => {
           if ((state.resources[costOption.resource] || 0) >= cost) {
-            const baseResult: any = {
+            const result: any = {
               resources: {
+                ...state.resources,
                 [costOption.resource]:
                   (state.resources[costOption.resource] || 0) - cost,
               },
+              _logMessage: trade.message,
             };
 
             if (trade.give === "tool") {
-              baseResult.tools = { [trade.giveItem]: true };
-              console.log('[MERCHANT TOOL TRADE] Adding tool:', trade.giveItem);
+              result.tools = { ...state.tools, [trade.giveItem]: true };
             } else if (trade.give === "weapon") {
-              baseResult.weapons = { [trade.giveItem]: true };
-              console.log('[MERCHANT TOOL TRADE] Adding weapon:', trade.giveItem);
+              result.weapons = { ...state.weapons, [trade.giveItem]: true };
             } else if (trade.give === "schematic") {
-              baseResult.schematics = { [trade.giveItem]: true };
-              console.log('[MERCHANT TOOL TRADE] Adding schematic:', trade.giveItem);
+              result.schematics = {
+                ...state.schematics,
+                [trade.giveItem]: true,
+              };
             } else if (trade.give === "book") {
-              baseResult.books = { [trade.giveItem]: true };
-              console.log('[MERCHANT TOOL TRADE] Adding book:', trade.giveItem);
+              result.books = { ...state.books, [trade.giveItem]: true };
             }
 
-            // _logMessage is a special property handled by the event system
-            baseResult._logMessage = trade.message;
-            console.log('[MERCHANT TOOL TRADE] Returning result:', baseResult);
-            return baseResult;
+            return result;
           }
-          console.log('[MERCHANT TOOL TRADE] Not enough resources');
           return {};
         },
-      } as EventChoice;
+      };
     });
 
-  // Convert EventChoice arrays to MerchantTrade arrays
-  const buyTradesData: MerchantTrade[] = availableBuyTrades.map(choice => {
-    const labelMatch = choice.label.match(/^\+(\d+)\s+(.+)$/);
-    const costMatch = (choice.cost as string).match(/^(\d+)\s+(.+)$/);
-    
-    return {
-      id: choice.id,
-      type: 'buy' as const,
-      buyResource: labelMatch![2].toLowerCase().replace(/\s+/g, '_'),
-      buyAmount: parseInt(labelMatch![1]),
-      sellResource: costMatch![2].toLowerCase().replace(/\s+/g, '_'),
-      sellAmount: parseInt(costMatch![1]),
-    };
-  });
-
-  const sellTradesData: MerchantTrade[] = availableSellTrades.map(choice => {
-    const labelMatch = choice.label.match(/^\+(\d+)\s+(.+)$/);
-    const costMatch = (choice.cost as string).match(/^(\d+)\s+(.+)$/);
-    
-    return {
-      id: choice.id,
-      type: 'sell' as const,
-      buyResource: labelMatch![2].toLowerCase().replace(/\s+/g, '_'),
-      buyAmount: parseInt(labelMatch![1]),
-      sellResource: costMatch![2].toLowerCase().replace(/\s+/g, '_'),
-      sellAmount: parseInt(costMatch![1]),
-    };
-  });
-
-  const toolTradesData: MerchantTrade[] = availableToolTrades.map(choice => {
-    const tradeId = choice.id;
-    const toolTrade = toolTrades.find(t => t.id === tradeId)!;
-    const costMatch = (choice.cost as string).match(/^(\d+)\s+(.+)$/);
-    
-    return {
-      id: choice.id,
-      type: 'tool' as const,
-      giveItem: toolTrade.giveItem,
-      giveType: toolTrade.give as 'tool' | 'weapon' | 'schematic' | 'book',
-      sellResource: costMatch![2].toLowerCase().replace(/\s+/g, '_'),
-      sellAmount: parseInt(costMatch![1]),
-      message: toolTrade.message,
-    };
-  });
-
-  return [
-    ...buyTradesData,
-    ...sellTradesData,
-    ...toolTradesData,
+  const finalChoices: EventChoice[] = [
+    ...availableBuyTrades,
+    ...availableSellTrades,
+    ...availableToolTrades,
+    {
+      id: "say_goodbye",
+      label: "Say goodbye",
+      effect: (state: GameState) => {
+        return {
+          _logMessage:
+            "You bid the merchant farewell. He tips his hat and mutters about the road ahead.",
+        };
+      },
+    } as EventChoice,
   ];
+
+  return finalChoices;
 }
 
 export const merchantEvents: Record<string, GameEvent> = {
   merchant: {
     id: "merchant",
     condition: (state: GameState) => state.buildings.woodenHut >= 2,
-
-    timeProbability: (state: GameState) => 0,
-    // 10 + 0.5 * (state.buildings.tradePost || 0) +
-    // 1 * (state.buildings.grandBazaar || 0) +
-    // 1.5 * (state.buildings.merchantsGuild || 0) -
-    // 2.5 * state.BTP,
+    
+    timeProbability: (state: GameState) =>0,
+      // 10 + 0.5 * (state.buildings.tradePost || 0) +
+      // 1 * (state.buildings.grandBazaar || 0) +
+      // 1.5 * (state.buildings.merchantsGuild || 0) -
+      // 2.5 * state.BTP,
     title: "Traveling Merchant",
     message:
       "A weathered merchant arrives, his cart overflowing with wares. His eyes glint with avarice as he murmurs 'I have rare items for sale'.",
     priority: 3,
     repeatable: true,
     showAsTimedTab: true,
-    timedTabDuration: 4 * 60 * 1000, // 4 minutes
+    timedTabDuration: 4 * 60 *1000, // 4 minutes
     fallbackChoice: {
       id: "say_goodbye",
       label: "Say goodbye",
-      effect: (): any => ({}),
+      effect: () => ({
+        _logMessage:
+          "The merchant packs up and leaves. You missed your chance to trade.",
+      }),
     },
     choices: [], // Choices will be generated dynamically in TimedEventPanel
   },

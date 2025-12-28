@@ -123,9 +123,6 @@ interface GameStore extends GameState {
     expiryTime: number;
   };
 
-  // Purchased items for timed events (e.g., merchant) to persist across tab switches
-  merchantPurchases: Set<string>;
-
   // Focus system
   focusState: {
     isActive: boolean;
@@ -258,7 +255,6 @@ const mergeStateUpdates = (
     resources: mergedResources,
     weapons: { ...prevState.weapons, ...stateUpdates.weapons },
     tools: { ...prevState.tools, ...stateUpdates.tools },
-    schematics: { ...prevState.schematics, ...stateUpdates.schematics },
     buildings: { ...prevState.buildings, ...stateUpdates.buildings },
     flags: { ...prevState.flags, ...stateUpdates.flags },
     villagers: { ...prevState.villagers, ...stateUpdates.villagers },
@@ -374,11 +370,6 @@ const mergeStateUpdates = (
       stateUpdates.hasWonAnyGame !== undefined
         ? stateUpdates.hasWonAnyGame
         : prevState.hasWonAnyGame,
-    // Add merchantPurchases to merge logic
-    merchantPurchases:
-      stateUpdates.merchantPurchases !== undefined
-        ? stateUpdates.merchantPurchases
-        : prevState.merchantPurchases,
   };
 
   if (
@@ -536,9 +527,6 @@ export const createInitialState = (): GameState => ({
   // Achievements
   unlockedAchievements: [],
   claimedAchievements: [],
-
-  // Initialize merchant purchases
-  merchantPurchases: new Set<string>(),
 });
 
 const defaultGameState: GameState = createInitialState();
@@ -663,7 +651,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   setUsername: (username: string) => set({ username }),
 
   setActiveTab: (
-    tab: "cave" | "village" | "forest" | "bastion" | "estate" | "achievements" | "timedevent",
+    tab: "cave" | "village" | "forest" | "bastion" | "estate" | "achievements",
   ) => set({ activeTab: tab }),
 
   setBoostMode: (enabled: boolean) => set({ boostMode: enabled }),
@@ -1171,19 +1159,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
           savedState.hasWonAnyGame !== undefined
             ? savedState.hasWonAnyGame
             : false, // Load hasWonAnyGame
-        merchantPurchases: savedState.merchantPurchases
-          ? new Set(Array.isArray(savedState.merchantPurchases) ? savedState.merchantPurchases : [])
-          : new Set<string>(), // Load merchantPurchases
       };
-
-      // Ensure merchantPurchases is always a Set (convert from array if needed)
-      if (Array.isArray(savedState.merchantPurchases)) {
-        loadedState.merchantPurchases = new Set(savedState.merchantPurchases);
-      } else if (savedState.merchantPurchases instanceof Set) {
-        loadedState.merchantPurchases = savedState.merchantPurchases;
-      } else {
-        loadedState.merchantPurchases = new Set();
-      }
 
       set(loadedState);
       StateManager.scheduleEffectsUpdate(get);
@@ -1249,7 +1225,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const timedTabEntry = stateChanges._timedTabEvent;
       delete stateChanges._timedTabEvent;
 
-      get().setTimedEventTab(true, timedTabEntry, timedTabEntry.timedTabDuration).catch(console.error);
+      get().setTimedEventTab(true, timedTabEntry, timedTabEntry.timedTabDuration);
     }
 
     if (newLogEntries.length > 0) {
@@ -1364,15 +1340,22 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   applyEventChoice: (choiceId: string, eventId: string, currentLogEntry?: LogEntry) => {
     const state = get();
-    
     // If the game is paused, do not apply event choices
-    if (state.isPaused) {
-      return;
-    }
+    if (state.isPaused) return;
 
-    // For timed tab events (like merchant), use the event from timedEventTab
-    const logEntry = currentLogEntry || get().timedEventTab.event || get().eventDialog.currentEvent;
+    console.log('[STATE] applyEventChoice called:', {
+      choiceId,
+      eventId,
+      hasCurrentLogEntry: !!currentLogEntry,
+      currentLogEntryChoices: currentLogEntry?.choices?.map(c => ({
+        id: c.id,
+        hasEffect: typeof c.effect === 'function',
+        effectType: typeof c.effect
+      }))
+    });
 
+    // Use passed currentLogEntry or fall back to eventDialog.currentEvent
+    const logEntry = currentLogEntry || get().eventDialog.currentEvent;
     const changes = EventManager.applyEventChoice(
       state,
       choiceId,
@@ -1396,7 +1379,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       delete updatedChanges._logMessage;
     }
 
-    // Apply state changes - this includes resources, tools, weapons, etc.
+    // Apply state changes FIRST - this includes relics, resources, etc.
     if (Object.keys(updatedChanges).length > 0) {
       set((prevState) => {
         // Use the same mergeStateUpdates function that other actions use
@@ -1568,91 +1551,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }));
   },
 
-  setTimedEventTab: async (isActive: boolean, event?: any | null, duration?: number) => {
-    const state = get();
-
-    if (isActive && event) {
-      // When opening a timed event tab, set the event and expiry time
-      const eventDuration = duration || event.timedTabDuration || 60000;
-      const expiryTime = Date.now() + eventDuration;
-
-      // For merchant events, generate and store trades
-      let eventWithTrades = event;
-      if (event.id === 'merchant' || event.eventId === 'merchant') {
-        const { generateMerchantTrades } = await import('./rules/eventsMerchant');
-        const trades = generateMerchantTrades(state, Date.now());
-
-        eventWithTrades = {
-          ...event,
-          merchantTrades: trades,
-        } as any;
-
-        logger.log('[MERCHANT] Generated trades for new merchant event:', {
-          tradesCount: trades.length,
-        });
-
-        // Reset merchantPurchases for the new merchant visit
-        set({
-          merchantPurchases: new Set<string>(),
-        });
-      }
-
-      set({
-        timedEventTab: {
-          isActive: true,
-          event: eventWithTrades,
-          expiryTime: expiryTime,
-        },
-      });
-
-      logger.log("[TIMED EVENT] Opening timed event tab:", {
-        eventId: event.id,
-        duration: eventDuration,
-        expiryTime,
-      });
-    } else {
-      // When closing, clear the event
-      set({
-        timedEventTab: {
-          isActive: false,
-          event: null,
-          expiryTime: 0,
-        },
-      });
-
-      logger.log("[TIMED EVENT] Closing timed event tab");
-    }
-
-    // Save state after changing timed event tab
-    const { saveGame } = await import("@/game/save");
-    await saveGame(get(), false);
-  },
-
-  addMerchantPurchase: (choiceId: string) => {
-    set((state) => {
-      // Ensure merchantPurchases is always converted to a Set properly
-      const currentPurchases = state.merchantPurchases instanceof Set
-        ? state.merchantPurchases
-        : new Set(Array.isArray(state.merchantPurchases) ? state.merchantPurchases : []);
-
-      const newPurchases = new Set(currentPurchases);
-      newPurchases.add(choiceId);
-
-      logger.log('[MERCHANT STATE] ✅ Trade executed - updating purchases:', {
-        choiceId,
-        previousPurchases: Array.from(currentPurchases),
-        newPurchases: Array.from(newPurchases),
-        purchaseCount: newPurchases.size,
-      });
-
-      // Save immediately after purchase
-      setTimeout(async () => {
-        const { saveGame } = await import("@/game/save");
-        await saveGame(useGameStore.getState(), false);
-      }, 100);
-
-      return { merchantPurchases: newPurchases };
-    });
+  setTimedEventTab: (isActive: boolean, event?: any | null, duration?: number) => {
+    set((state) => ({
+      ...state,
+      timedEventTab: {
+        isActive,
+        event: event || null,
+        expiryTime: isActive && duration ? Date.now() + duration : 0,
+      },
+    }));
   },
 
   setAuthDialogOpen: (isOpen: boolean) => {

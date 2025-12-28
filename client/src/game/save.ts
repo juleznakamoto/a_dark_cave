@@ -242,7 +242,6 @@ export async function saveGame(
 
     // Save locally first (most important)
     await db.put("saves", saveData, SAVE_KEY);
-    logger.log('[SAVE] 💾 Saved game locally');
 
     // Try to save to cloud if user is authenticated
     try {
@@ -261,12 +260,12 @@ export async function saveGame(
 
         // Log snapshot to verify stats are included
         if (resourceData) {
-          const hasStats = Object.keys(resourceData).some(key =>
+          const hasStats = Object.keys(resourceData).some(key => 
             ['luck', 'strength', 'knowledge', 'madness'].includes(key)
           );
           logger.log('[SAVE CLOUD] 📊 Resource snapshot includes stats:', {
             hasStats,
-            statsKeys: Object.keys(resourceData).filter(key =>
+            statsKeys: Object.keys(resourceData).filter(key => 
               ['luck', 'strength', 'knowledge', 'madness'].includes(key)
             ),
             snapshotKeys: Object.keys(resourceData),
@@ -308,13 +307,13 @@ export async function saveGame(
 
         // Save via Edge Function (handles auth, rate limiting, and trust)
         const supabaseClient = await getSupabaseClient();
-
+        
         // Verify we have an active session (Supabase client will automatically include the JWT)
         const { data: { session } } = await supabaseClient.auth.getSession();
         if (!session) {
           throw new Error('No active session');
         }
-
+        
         const { data, error } = await supabaseClient.functions.invoke('save-game', {
           body: {
             gameStateDiff: stateDiff,
@@ -333,7 +332,7 @@ export async function saveGame(
           });
           throw error;
         }
-
+        
         logger.log('[SAVE CLOUD] Edge Function success:', data);
 
         // Update lastCloudState only after successful cloud save
@@ -441,20 +440,14 @@ export async function loadGame(): Promise<GameState | null> {
             logger.log("[LOAD] ☁️ Cloud save is newer - using cloud save");
 
             const { formatSaveTimestamp } = await import("@/lib/utils");
-
+            
             const stateWithDefaults = {
               ...cloudSave.gameState,
               cooldownDurations: cloudSave.gameState.cooldownDurations || {},
               // Format lastSaved if it's a timestamp
-              lastSaved: cloudSave.gameState.lastSaved && typeof cloudSave.gameState.lastSaved === 'number'
-                ? formatSaveTimestamp()
+              lastSaved: cloudSave.gameState.lastSaved && typeof cloudSave.gameState.lastSaved === 'number' 
+                ? formatSaveTimestamp() 
                 : cloudSave.gameState.lastSaved,
-              // Ensure merchantPurchases is reconstructed as Set
-              merchantPurchases: cloudSave.gameState.merchantPurchases
-                ? new Set(Array.isArray(cloudSave.gameState.merchantPurchases) 
-                    ? cloudSave.gameState.merchantPurchases 
-                    : Array.from(cloudSave.gameState.merchantPurchases))
-                : new Set<string>(),
             };
 
             const processedState = await processUnclaimedReferrals(
@@ -483,20 +476,14 @@ export async function loadGame(): Promise<GameState | null> {
           logger.log("[LOAD] ☁️ Using cloud save (no local save)");
 
           const { formatSaveTimestamp } = await import("@/lib/utils");
-
+          
           const stateWithDefaults = {
             ...cloudSave.gameState,
             cooldownDurations: cloudSave.gameState.cooldownDurations || {},
             // Format lastSaved if it's a timestamp
-            lastSaved: cloudSave.gameState.lastSaved && typeof cloudSave.gameState.lastSaved === 'number'
-              ? formatSaveTimestamp()
+            lastSaved: cloudSave.gameState.lastSaved && typeof cloudSave.gameState.lastSaved === 'number' 
+              ? formatSaveTimestamp() 
               : cloudSave.gameState.lastSaved,
-            // Ensure merchantPurchases is reconstructed as Set
-            merchantPurchases: cloudSave.gameState.merchantPurchases
-              ? new Set(Array.isArray(cloudSave.gameState.merchantPurchases) 
-                  ? cloudSave.gameState.merchantPurchases 
-                  : Array.from(cloudSave.gameState.merchantPurchases))
-              : new Set<string>(),
           };
 
           const processedState = await processUnclaimedReferrals(
@@ -564,12 +551,6 @@ export async function loadGame(): Promise<GameState | null> {
         const stateWithDefaults = {
           ...localSave.gameState,
           cooldownDurations: localSave.gameState.cooldownDurations || {},
-          // Ensure merchantPurchases is reconstructed as Set
-          merchantPurchases: localSave.gameState.merchantPurchases
-            ? new Set(Array.isArray(localSave.gameState.merchantPurchases) 
-                ? localSave.gameState.merchantPurchases 
-                : Array.from(localSave.gameState.merchantPurchases))
-            : new Set<string>(),
         };
         const processedState =
           await processUnclaimedReferrals(stateWithDefaults);

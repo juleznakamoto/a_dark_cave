@@ -5,9 +5,6 @@ import {
   getTotalKnowledge,
 } from "./effectsCalculation";
 
-// Import generateMerchantTrades at the top of the file
-import { generateMerchantTrades } from "./eventsMerchant";
-
 /**
  * Helper function to calculate success chance for event choices
  * @param state - Current game state
@@ -56,7 +53,7 @@ export function calculateSuccessChance(
 
 import { storyEvents } from "./eventsStory";
 import { choiceEvents } from "./eventsChoices";
-import { merchantEvents } from "./eventsMerchant";
+import { merchantEvents, generateMerchantChoices } from "./eventsMerchant";
 import { madnessEvents } from "./eventsMadness";
 import { caveEvents } from "./eventsCave";
 import { huntEvents } from "./eventsHunt";
@@ -132,10 +129,6 @@ export interface LogEntry {
   // Timed tab properties
   showAsTimedTab?: boolean;
   timedTabDuration?: number; // Duration in milliseconds
-  // Store original event ID for merchant detection
-  eventId?: string;
-  // Store merchant trades for serializable data
-  merchantTrades?: { item: string; cost: number; quantity: number }[];
 }
 
 // Merge all events from separate files
@@ -230,25 +223,11 @@ export class EventManager {
       }
 
       if (shouldTrigger) {
-        // Generate fresh choices for merchant events and store them
+        // Generate fresh choices for merchant events
         let eventChoices = event.choices;
         if (event.id === "merchant") {
-          // Generate and save merchant trades (serializable data, no functions)
-          const merchantTrades = generateMerchantTrades(state, Date.now());
-          const merchantEntry: LogEntry = {
-            id: `merchant-${Date.now()}`,
-            eventId: "merchant",
-            message: event.message,
-            timestamp: Date.now(),
-            type: "event",
-            title: event.title,
-            choices: [], // Choices will be generated from merchantTrades in TimedEventPanel
-            merchantTrades, // Save serializable trade data
-            timedTabDuration: event.timedTabDuration,
-          };
-          newLogEntries.push(merchantEntry);
+          eventChoices = generateMerchantChoices(state);
         }
-
 
         // Select random message if message is an array, or evaluate if it's a function
         let message: string;
@@ -277,7 +256,6 @@ export class EventManager {
             showAsTimedTab: event.showAsTimedTab,
             timedTabDuration: event.timedTabDuration,
             skipEventLog: event.skipEventLog || (eventChoices && eventChoices.length > 0),
-            eventId: event.id, // Store original event ID for merchant detection
           };
           newLogEntries.push(logEntry);
         } else {
@@ -333,14 +311,10 @@ export class EventManager {
     eventId: string,
     currentLogEntry?: LogEntry,
   ): Partial<GameState> {
-    console.log('[EVENT MANAGER] ===== applyEventChoice START =====');
-    console.log('[EVENT MANAGER] choiceId:', choiceId);
-    console.log('[EVENT MANAGER] eventId:', eventId);
-    console.log('[EVENT MANAGER] currentLogEntry:', {
-      hasEntry: !!currentLogEntry,
-      entryId: currentLogEntry?.id,
-      hasChoices: !!currentLogEntry?.choices,
-      choicesCount: currentLogEntry?.choices?.length
+    console.log('[EVENT MANAGER] applyEventChoice called:', {
+      choiceId,
+      eventId,
+      hasCurrentLogEntry: !!currentLogEntry
     });
 
     const eventDefinition = this.allEvents[eventId];
@@ -349,49 +323,22 @@ export class EventManager {
       return {};
     }
 
-    // For merchant events, use the choices from currentLogEntry (they were pre-generated with effects)
-    if (eventId === 'merchant' && currentLogEntry?.choices) {
-      console.log('[EVENT MANAGER] Using pre-generated merchant choices from currentLogEntry');
-      console.log('[EVENT MANAGER] Available choices:', currentLogEntry.choices.map(c => ({ id: c.id, label: c.label })));
-
-      const choice = currentLogEntry.choices.find((c) => c.id === choiceId);
-      console.log('[EVENT MANAGER] Found merchant choice:', {
-        found: !!choice,
-        id: choice?.id,
-        hasEffect: !!(choice?.effect),
-        effectType: typeof choice?.effect,
-        effectString: choice?.effect?.toString().substring(0, 300)
-      });
-
-      if (choice && typeof choice.effect === "function") {
-        console.log('[EVENT MANAGER] Calling merchant effect function...');
-        console.log('[EVENT MANAGER] State before effect:', {
-          food: state.resources.food,
-          wood: state.resources.wood,
-          stone: state.resources.stone,
-          leather: state.resources.leather,
-          steel: state.resources.steel,
-          gold: state.resources.gold
-        });
-
-        const result = choice.effect(state);
-
-        console.log('[EVENT MANAGER] Merchant effect result:', {
-          hasResources: !!result.resources,
-          resourceChanges: result.resources,
-          fullResult: result
-        });
-        console.log('[EVENT MANAGER] ===== applyEventChoice END (merchant) =====');
-        return result;
-      } else {
-        console.error('[EVENT MANAGER] Merchant choice not found or effect is not a function');
-        console.log('[EVENT MANAGER] ===== applyEventChoice END (error) =====');
-        return {};
-      }
+    // For merchant events, use choices from the current log entry if available
+    let choicesSource = eventDefinition.choices;
+    if (eventId === "merchant" && currentLogEntry?.choices) {
+      console.log('[EVENT MANAGER] Using choices from currentLogEntry for merchant event');
+      choicesSource = currentLogEntry.choices;
     }
 
+    console.log('[EVENT MANAGER] Available choices:', choicesSource?.map(c => ({
+      id: c.id,
+      hasEffect: typeof c.effect === 'function',
+      effectType: typeof c.effect,
+      effectValue: c.effect
+    })));
+
     // First try to find the choice in the choices array
-    let choice = eventDefinition.choices?.find((c) => c.id === choiceId);
+    let choice = choicesSource?.find((c) => c.id === choiceId);
 
     // If not found and this is a fallback choice, use the fallbackChoice directly
     if (
@@ -424,7 +371,6 @@ export class EventManager {
         : state.log,
     };
 
-    console.log('[EVENT MANAGER] ===== applyEventChoice END =====');
     return result;
   }
 }
