@@ -513,7 +513,7 @@ export const combatItemTooltips: Record<string, TooltipConfig> = {
   },
 };
 
-// Event choice cost tooltip - formats cost string with current amounts
+// Event choice cost tooltip - formats cost string without current amounts
 export const eventChoiceCostTooltip = {
   getContent: (cost: string | Record<string, number> | undefined, gameState?: GameState): React.ReactNode => {
     if (!cost) return null;
@@ -538,23 +538,9 @@ export const eventChoiceCostTooltip = {
       });
     }
 
-    const currentAmounts: React.ReactNode[] = [];
     const costLines: React.ReactNode[] = [];
 
-    // Add current amounts if gameState is provided
-    if (gameState && resources.length > 0) {
-      resources.forEach(({ resource }, index) => {
-        const currentAmount = gameState.resources[resource as keyof typeof gameState.resources] || 0;
-        currentAmounts.push(
-          <div key={`current-${index}`} className="flex justify-between gap-2">
-            <span>{capitalizeWords(resource)}:</span>
-            <span>{formatNumber(currentAmount)}</span>
-          </div>
-        );
-      });
-    }
-
-    // Add cost information
+    // Add cost information only
     resources.forEach(({ resource, amount }, index) => {
       costLines.push(
         <div key={`cost-${index}`}>
@@ -563,15 +549,7 @@ export const eventChoiceCostTooltip = {
       );
     });
 
-    return (
-      <>
-        {currentAmounts}
-        {currentAmounts.length > 0 && costLines.length > 0 && (
-          <div className="border-t border-border my-1" />
-        )}
-        {costLines}
-      </>
-    );
+    return <>{costLines}</>;
   },
 };
 
