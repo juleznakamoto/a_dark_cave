@@ -332,8 +332,8 @@ export default function TimedEventPanel() {
                           if (costText) {
                             const costResources = extractResourcesFromCost(costText);
                             
-                            // If Inkwarden Academy is built, highlight both buy and sell resources
-                            if (isMerchantEvent && gameState.buildings.inkwardenAcademy >= 1) {
+                            // For merchant trades, always highlight both buy and sell resources
+                            if (isMerchantEvent) {
                               const buyResource = extractBuyResourceFromLabel(labelText);
                               const highlightResources = buyResource 
                                 ? [...costResources, buyResource]

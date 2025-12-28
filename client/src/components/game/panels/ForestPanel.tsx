@@ -291,12 +291,12 @@ export default function ForestPanel() {
           onMouseEnter={() => {
             if (state.buildings.inkwardenAcademy > 0) {
               const resources = getResourcesFromActionCost(actionId, state);
-              setHighlightedResources(resources);
+              setHighlightedResources(new Set(resources));
             }
           }}
           onMouseLeave={() => {
             if (state.buildings.inkwardenAcademy > 0) {
-              setHighlightedResources([]);
+              setHighlightedResources(new Set());
             }
           }}
           style={{ pointerEvents: 'auto' }}
