@@ -133,6 +133,14 @@ export default function EventDialog({
     const eventId = event!.id.split("-")[0];
     const isMerchantEvent = event?.id.includes("merchant");
     const isSayGoodbye = choiceId === "say_goodbye";
+    const isAcknowledge = choiceId === "acknowledge";
+
+    // For "acknowledge" buttons (log messages), just close the dialog
+    if (isAcknowledge) {
+      fallbackExecutedRef.current = true;
+      onClose();
+      return;
+    }
 
     // For merchant "say goodbye", just close the dialog without processing
     if (isMerchantEvent && isSayGoodbye) {
