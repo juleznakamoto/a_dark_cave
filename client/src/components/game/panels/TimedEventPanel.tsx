@@ -182,16 +182,16 @@ export default function TimedEventPanel() {
       {/* Choices */}
       <div className="space-y-2">
         {isMerchantEvent && (
-          <h3 className="text-sm font-semibold mt-3">Buy</h3>
-        )}
-        <div className="flex flex-wrap gap-2">
-          {eventChoices
-            .filter((choice) => choice.id !== "say_goodbye")
-            .map((choice) => {
-              const cost = choice.cost;
-              // Evaluate cost if it's a function
-              const costText =
-                typeof cost === "function" ? cost(gameState) : cost;
+       <h3 className="text-xs font-semibold mt-3">Buy</h3>
+      )}
+      <div className="flex flex-wrap gap-2">
+        {eventChoices
+          .filter((choice) => choice.id !== "say_goodbye")
+          .map((choice) => {
+            const cost = choice.cost;
+            // Evaluate cost if it's a function
+            const costText =
+              typeof cost === "function" ? cost(gameState) : cost;
 
               // Check if player can afford the cost
               let canAfford = true;
