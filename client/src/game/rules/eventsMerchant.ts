@@ -988,28 +988,29 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
           console.log('[MERCHANT TOOL TRADE] Cost:', cost);
 
           if ((state.resources[costOption.resource] || 0) >= cost) {
-            const result: any = {
+            const baseResult: Partial<GameState> = {
               resources: {
                 [costOption.resource]:
                   (state.resources[costOption.resource] || 0) - cost,
-              },
-              _logMessage: trade.message,
+              } as any,
             };
 
             if (trade.give === "tool") {
-              result.tools = { [trade.giveItem]: true };
+              baseResult.tools = { [trade.giveItem]: true } as any;
               console.log('[MERCHANT TOOL TRADE] Adding tool:', trade.giveItem);
             } else if (trade.give === "weapon") {
-              result.weapons = { [trade.giveItem]: true };
+              baseResult.weapons = { [trade.giveItem]: true } as any;
               console.log('[MERCHANT TOOL TRADE] Adding weapon:', trade.giveItem);
             } else if (trade.give === "schematic") {
-              result.schematics = { [trade.giveItem]: true };
+              baseResult.schematics = { [trade.giveItem]: true } as any;
               console.log('[MERCHANT TOOL TRADE] Adding schematic:', trade.giveItem);
             } else if (trade.give === "book") {
-              result.books = { [trade.giveItem]: true };
+              baseResult.books = { [trade.giveItem]: true } as any;
               console.log('[MERCHANT TOOL TRADE] Adding book:', trade.giveItem);
             }
 
+            // _logMessage is a special property handled by the event system
+            const result = { ...baseResult, _logMessage: trade.message } as any;
             console.log('[MERCHANT TOOL TRADE] Returning result:', result);
             return result;
           }
