@@ -2,6 +2,7 @@ import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 import { getTotalKnowledge } from "./effectsCalculation";
 import { calculateMerchantDiscount } from "./effectsStats";
+import { logger } from "@/lib/logger";
 
 // Resource prices in gold per unit
 const PRICES = {
@@ -1021,7 +1022,7 @@ export function generateMerchantChoices(state: GameState): MerchantTradeData[] {
     numSellTrades = 2;
   }
 
-  console.log('[MERCHANT TRADES] Generating merchant choices:', {
+  logger.log('[MERCHANT TRADES] Generating merchant choices:', {
     knowledge,
     discount: Math.round(discount * 100) + '%',
     numBuyTrades,
@@ -1099,7 +1100,7 @@ export function generateMerchantChoices(state: GameState): MerchantTradeData[] {
     ...availableToolTrades,
   ];
 
-  console.log('[MERCHANT TRADES] Final choices generated:', {
+  logger.log('[MERCHANT TRADES] Final choices generated:', {
     totalChoices: finalChoices.length,
     buyTrades: availableBuyTrades.length,
     sellTrades: availableSellTrades.length,

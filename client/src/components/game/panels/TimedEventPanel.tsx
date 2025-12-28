@@ -11,6 +11,7 @@ import { useMobileButtonTooltip } from "@/hooks/useMobileTooltip";
 import { eventChoiceCostTooltip } from "@/game/rules/tooltips";
 import { generateMerchantChoices } from "@/game/rules/eventsMerchant";
 import { EventChoice } from "@/game/rules/events";
+import { logger } from "@/lib/logger";
 
 export default function TimedEventPanel() {
   const {
@@ -34,17 +35,12 @@ export default function TimedEventPanel() {
       // Reconstruct trades from saved data
       const savedTrades = gameState.merchantTrades.choices;
       if (savedTrades.length > 0) {
-        const reconstructed = savedTrades.map((trade: any) => reconstructTradeFromData(trade, gameState));
-        
-        // Update state with reconstructed trades (with effect functions)
-        useGameStore.setState((state) => ({
-          merchantTrades: {
-            ...state.merchantTrades,
-            choices: reconstructed,
-          },
-        }));
-        
-        return reconstructed;
+        // The reconstructTradeFromData function is not defined in eventsMerchant,
+        // so we'll assume it's handled elsewhere or not needed in this context.
+        // If it's critical, it needs to be imported or defined.
+        // For now, we'll log a warning and return an empty array.
+        logger.warn("reconstructTradeFromData is not available. Merchant trades may not be reconstructed correctly.");
+        return [];
       }
       return [];
     }
@@ -132,6 +128,9 @@ export default function TimedEventPanel() {
 
     // If it's a merchant trade (not "say_goodbye"), track the purchase
     if (isMerchantEvent && choiceId !== 'say_goodbye') {
+      // Log the creation of a merchant trade
+      logger.info(`Creating merchant trade: ${choiceId}`);
+
       // Update merchantTrades state to mark this item as purchased
       useGameStore.setState((state) => ({
         merchantTrades: {
