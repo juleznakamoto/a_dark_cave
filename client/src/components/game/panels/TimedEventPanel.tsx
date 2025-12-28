@@ -236,15 +236,6 @@ export default function TimedEventPanel() {
                   ? choice.label(gameState)
                   : choice.label;
 
-              // Check if this item was already purchased
-              logger.log("[TIMED EVENT PANEL] Checking if item purchased:", {
-                isMerchantEvent,
-                choiceId: choice.id,
-                merchantTrades: gameState.merchantTrades,
-                hasPurchasedIds: !!gameState.merchantTrades?.purchasedIds,
-                purchasedIds: gameState.merchantTrades?.purchasedIds,
-              });
-
               const isPurchased =
                 isMerchantEvent &&
                 gameState.merchantTrades?.purchasedIds?.includes(choice.id);
