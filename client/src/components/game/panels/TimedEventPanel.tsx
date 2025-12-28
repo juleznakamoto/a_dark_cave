@@ -7,10 +7,11 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useMobileButtonTooltip } from "@/hooks/useMobileTooltip";
+import { useMobileButtonTooltip, useMobileTooltip } from "@/hooks/useMobileTooltip";
 import { eventChoiceCostTooltip, merchantTooltip } from "@/game/rules/tooltips";
 import { EventChoice } from "@/game/rules/events";
 import { logger } from "@/lib/logger";
+import { isKnowledgeBonusMaxed } from "@/game/rules/eventsMerchant";
 
 export default function TimedEventPanel() {
   const {
@@ -23,6 +24,7 @@ export default function TimedEventPanel() {
 
   // ALL HOOKS MUST BE CALLED BEFORE ANY EARLY RETURNS
   const mobileTooltip = useMobileButtonTooltip();
+  const discountTooltip = useMobileTooltip();
   const [timeRemaining, setTimeRemaining] = useState<number>(0);
 
   // Get merchant trades from state (generated once when event starts)
@@ -208,7 +210,44 @@ export default function TimedEventPanel() {
       {/* Choices */}
       <div className="space-y-2">
         {isMerchantEvent && (
-       <h3 className="text-xs font-semibold mt-3">Buy</h3>
+          <div className="flex items-center gap-1 mt-3">
+            <h3 className="text-xs font-semibold">Buy</h3>
+            {(() => {
+              const knowledge = gameState.stats?.knowledge || 0;
+              const discount = Math.min(knowledge * 0.02, 0.5);
+              
+              if (discount > 0) {
+                return (
+                  <TooltipProvider>
+                    <Tooltip
+                      open={discountTooltip.isTooltipOpen("merchant-discount")}
+                    >
+                      <TooltipTrigger asChild>
+                        <span
+                          className="text-blue-300/80 cursor-pointer hover:text-blue-300 transition-colors inline-block text-xl"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            discountTooltip.handleTooltipClick(
+                              "merchant-discount",
+                              e,
+                            );
+                          }}
+                        >
+                          ✧
+                        </span>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <div className="text-xs whitespace-nowrap">
+                          {Math.round(discount * 100)}% discount due to Knowledge{isKnowledgeBonusMaxed(knowledge) ? " (max)" : ""}
+                        </div>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                );
+              }
+              return null;
+            })()}
+          </div>
       )}
       <div className="flex flex-wrap gap-2">
         {eventChoices

@@ -900,6 +900,11 @@ export interface MerchantTradeData {
   executed: boolean;
 }
 
+// Helper function to check if knowledge bonus is maxed
+export const isKnowledgeBonusMaxed = (knowledge: number): boolean => {
+  return knowledge >= 25; // Max is 50% discount at 25 knowledge
+};
+
 // Function to generate fresh merchant choices
 export function generateMerchantChoices(state: GameState): MerchantTradeData[] {
   const knowledge = getTotalKnowledge(state);
