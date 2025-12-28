@@ -121,7 +121,7 @@ export default function TimedEventPanel() {
     // If it's a merchant trade (not "say_goodbye"), track the purchase
     if (isMerchantEvent && choiceId !== 'say_goodbye') {
       // Log the creation of a merchant trade
-      logger.info(`Creating merchant trade: ${choiceId}`);
+      logger.log(`[MERCHANT TRADE] Creating merchant trade: ${choiceId}`);
 
       // Update merchantTrades state to mark this item as purchased
       useGameStore.setState((state) => ({
