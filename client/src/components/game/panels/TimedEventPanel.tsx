@@ -9,10 +9,9 @@ import {
 } from "@/components/ui/tooltip";
 import { useMobileButtonTooltip } from "@/hooks/useMobileTooltip";
 import { eventChoiceCostTooltip } from "@/game/rules/tooltips";
-import { generateMerchantChoices } from "@/game/rules/eventsMerchant";
+import { generateMerchantChoices, tradeToChoice } from "@/game/rules/eventsMerchant";
 import { EventChoice } from "@/game/rules/events";
 import { logger } from "@/lib/logger";
-import { generateMerchantTrades, tradeToChoice } from "@/game/rules/eventsMerchant";
 
 // Assuming LogEntry and setEventDialog are defined elsewhere and imported if necessary
 // For this example, we'll define dummy types if they are not provided
@@ -136,8 +135,7 @@ export default function TimedEventPanel() {
         tradesCount: savedTrades.length,
       });
 
-      // Import the conversion function
-      const { tradeToChoice } = require('@/game/rules/eventsMerchant');
+      // Convert trades to choices
       const choices = savedTrades.map((trade: any) => tradeToChoice(trade));
 
       return choices;
