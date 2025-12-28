@@ -982,37 +982,37 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
         id: trade.id,
         label: `${trade.label}`,
         cost: `${cost} ${costOption.resource}`,
-        effect: (state: GameState) => {
+        effect: (state: GameState): any => {
           console.log('[MERCHANT TOOL TRADE] Effect called for:', trade.id);
           console.log('[MERCHANT TOOL TRADE] Current resources:', state.resources[costOption.resource]);
           console.log('[MERCHANT TOOL TRADE] Cost:', cost);
 
           if ((state.resources[costOption.resource] || 0) >= cost) {
-            const baseResult: Partial<GameState> = {
+            const baseResult: any = {
               resources: {
                 [costOption.resource]:
                   (state.resources[costOption.resource] || 0) - cost,
-              } as any,
+              },
             };
 
             if (trade.give === "tool") {
-              baseResult.tools = { [trade.giveItem]: true } as any;
+              baseResult.tools = { [trade.giveItem]: true };
               console.log('[MERCHANT TOOL TRADE] Adding tool:', trade.giveItem);
             } else if (trade.give === "weapon") {
-              baseResult.weapons = { [trade.giveItem]: true } as any;
+              baseResult.weapons = { [trade.giveItem]: true };
               console.log('[MERCHANT TOOL TRADE] Adding weapon:', trade.giveItem);
             } else if (trade.give === "schematic") {
-              baseResult.schematics = { [trade.giveItem]: true } as any;
+              baseResult.schematics = { [trade.giveItem]: true };
               console.log('[MERCHANT TOOL TRADE] Adding schematic:', trade.giveItem);
             } else if (trade.give === "book") {
-              baseResult.books = { [trade.giveItem]: true } as any;
+              baseResult.books = { [trade.giveItem]: true };
               console.log('[MERCHANT TOOL TRADE] Adding book:', trade.giveItem);
             }
 
             // _logMessage is a special property handled by the event system
-            const result = { ...baseResult, _logMessage: trade.message } as any;
-            console.log('[MERCHANT TOOL TRADE] Returning result:', result);
-            return result;
+            baseResult._logMessage = trade.message;
+            console.log('[MERCHANT TOOL TRADE] Returning result:', baseResult);
+            return baseResult;
           }
           console.log('[MERCHANT TOOL TRADE] Not enough resources');
           return {};
