@@ -362,19 +362,28 @@ export class EventManager {
         });
 
         if (trade) {
+          const currentBuyAmount = state.resources[trade.buyResource as keyof typeof state.resources] || 0;
+          const currentSellAmount = state.resources[trade.sellResource as keyof typeof state.resources] || 0;
+
           logger.log('[EVENT MANAGER] Executing merchant trade:', {
             choiceId,
             buyResource: trade.buyResource,
             buyAmount: trade.buyAmount,
             sellResource: trade.sellResource,
             sellAmount: trade.sellAmount,
+            beforeTrade: {
+              [trade.buyResource]: currentBuyAmount,
+              [trade.sellResource]: currentSellAmount,
+            },
           });
-
-          const currentBuyAmount = state.resources[trade.buyResource as keyof typeof state.resources] || 0;
-          const currentSellAmount = state.resources[trade.sellResource as keyof typeof state.resources] || 0;
 
           // Check if player can afford
           if (currentSellAmount < trade.sellAmount) {
+            logger.log('[EVENT MANAGER] Trade failed - insufficient resources:', {
+              required: trade.sellAmount,
+              available: currentSellAmount,
+              resource: trade.sellResource,
+            });
             return {
               _logMessage: `You don't have enough ${trade.sellResource} to complete this trade.`,
               log: currentLogEntry
@@ -383,12 +392,31 @@ export class EventManager {
             };
           }
 
+          const newBuyAmount = currentBuyAmount + trade.buyAmount;
+          const newSellAmount = currentSellAmount - trade.sellAmount;
+
+          logger.log('[EVENT MANAGER] Trade executed successfully:', {
+            choiceId,
+            resourceChanges: {
+              [trade.buyResource]: {
+                before: currentBuyAmount,
+                after: newBuyAmount,
+                change: `+${trade.buyAmount}`,
+              },
+              [trade.sellResource]: {
+                before: currentSellAmount,
+                after: newSellAmount,
+                change: `-${trade.sellAmount}`,
+              },
+            },
+          });
+
           // Execute the trade
           return {
             resources: {
               ...state.resources,
-              [trade.buyResource]: currentBuyAmount + trade.buyAmount,
-              [trade.sellResource]: currentSellAmount - trade.sellAmount,
+              [trade.buyResource]: newBuyAmount,
+              [trade.sellResource]: newSellAmount,
             },
             _logMessage: `You traded ${trade.sellAmount} ${trade.sellResource} for ${trade.buyAmount} ${trade.buyResource}.`,
             log: currentLogEntry
