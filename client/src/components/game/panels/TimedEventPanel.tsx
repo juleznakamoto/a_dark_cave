@@ -258,23 +258,21 @@ export default function TimedEventPanel() {
             const costText =
               typeof cost === "function" ? cost(gameState) : cost;
 
-              // Check if player can afford the cost
+              // Check if player can afford the cost (only for merchant trades)
               let canAfford = true;
-              if (costText) {
-                const resourceKeys = Object.keys(gameState.resources) as Array<
-                  keyof typeof gameState.resources
-                >;
-                for (const resourceKey of resourceKeys) {
-                  if (costText.includes(resourceKey)) {
-                    const match = costText.match(
-                      new RegExp(`(\\d+)\\s*${resourceKey}`),
-                    );
-                    if (match) {
-                      const costAmount = parseInt(match[1]);
-                      if (gameState.resources[resourceKey] < costAmount) {
-                        canAfford = false;
-                        break;
-                      }
+              if (costText && isMerchantEvent) {
+                // Extract all resource requirements from cost string
+                const costMatches = costText.matchAll(/(\d+)\s+([a-zA-Z_]+)/g);
+                for (const match of costMatches) {
+                  const costAmount = parseInt(match[1]);
+                  const resourceName = match[2].toLowerCase();
+                  
+                  // Check if this resource exists in gameState.resources
+                  const resourceKey = resourceName as keyof typeof gameState.resources;
+                  if (resourceKey in gameState.resources) {
+                    if (gameState.resources[resourceKey] < costAmount) {
+                      canAfford = false;
+                      break;
                     }
                   }
                 }
@@ -310,6 +308,7 @@ export default function TimedEventPanel() {
                   button_id={`timedevent-${choice.id}`}
                 >
                   {labelText}
+                  {isPurchased && <span className="ml-1">✓</span>}
                 </Button>
               );
 
