@@ -982,10 +982,13 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
         label: `${trade.label}`,
         cost: `${cost} ${costOption.resource}`,
         effect: (state: GameState) => {
+          console.log('[MERCHANT TOOL TRADE] Effect called for:', trade.id);
+          console.log('[MERCHANT TOOL TRADE] Current resources:', state.resources[costOption.resource]);
+          console.log('[MERCHANT TOOL TRADE] Cost:', cost);
+          
           if ((state.resources[costOption.resource] || 0) >= cost) {
             const result: any = {
               resources: {
-                ...state.resources,
                 [costOption.resource]:
                   (state.resources[costOption.resource] || 0) - cost,
               },
@@ -993,23 +996,26 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
             };
 
             if (trade.give === "tool") {
-              result.tools = { ...state.tools, [trade.giveItem]: true };
+              result.tools = { [trade.giveItem]: true };
+              console.log('[MERCHANT TOOL TRADE] Adding tool:', trade.giveItem);
             } else if (trade.give === "weapon") {
-              result.weapons = { ...state.weapons, [trade.giveItem]: true };
+              result.weapons = { [trade.giveItem]: true };
+              console.log('[MERCHANT TOOL TRADE] Adding weapon:', trade.giveItem);
             } else if (trade.give === "schematic") {
-              result.schematics = {
-                ...state.schematics,
-                [trade.giveItem]: true,
-              };
+              result.schematics = { [trade.giveItem]: true };
+              console.log('[MERCHANT TOOL TRADE] Adding schematic:', trade.giveItem);
             } else if (trade.give === "book") {
-              result.books = { ...state.books, [trade.giveItem]: true };
+              result.books = { [trade.giveItem]: true };
+              console.log('[MERCHANT TOOL TRADE] Adding book:', trade.giveItem);
             }
 
+            console.log('[MERCHANT TOOL TRADE] Returning result:', result);
             return result;
           }
+          console.log('[MERCHANT TOOL TRADE] Not enough resources');
           return {};
         },
-      };
+      } as EventChoice;
     });
 
   const finalChoices: EventChoice[] = [

@@ -92,7 +92,7 @@ export default function TimedEventPanel() {
         // Clear highlights and auto-close the tab
         setHighlightedResources([]);
         setTimedEventTab(false).catch(console.error);
-        
+
         // Switch to cave tab when merchant expires
         setTimeout(() => {
           useGameStore.getState().setActiveTab('cave');
@@ -149,7 +149,7 @@ export default function TimedEventPanel() {
     console.log('[TIMED EVENT TRADE] choiceId:', choiceId);
     console.log('[TIMED EVENT TRADE] eventId:', eventId);
     console.log('[TIMED EVENT TRADE] event:', event);
-    
+
     const choice = eventChoices.find(c => c.id === choiceId);
     const isSayGoodbye = choiceId === 'say_goodbye';
 
@@ -189,24 +189,28 @@ export default function TimedEventPanel() {
     });
 
     // Test the effect function directly
-    console.log('[TIMED EVENT TRADE] Testing effect function...');
-    const testResult = choice.effect(gameState);
-    console.log('[TIMED EVENT TRADE] Effect test result:', testResult);
+    console.log('[TIMED EVENT TRADE] Choice object:', choice);
+    console.log('[TIMED EVENT TRADE] Has effect?', typeof choice.effect === 'function');
+
+    if (typeof choice.effect !== 'function') {
+      console.error('[TIMED EVENT TRADE] Effect is not a function!', choice);
+      return;
+    }
+
+    console.log('[TIMED EVENT TRADE] Calling effect function...');
+    const result = choice.effect(gameState);
+    console.log('[TIMED EVENT TRADE] Effect result:', result);
+
+    if (result && Object.keys(result).length > 0) {
+      console.log('[TIMED EVENT TRADE] Applying event choice via applyEventChoice');
+      // Pass the current log entry to applyEventChoice
+      applyEventChoice(choiceId, eventId, event);
+    } else {
+      console.log('[TIMED EVENT TRADE] Effect returned empty result (insufficient resources?)');
+    }
+
 
     setHighlightedResources([]); // Clear highlights before closing
-
-    // Apply the choice and log the result
-    console.log('[TIMED EVENT TRADE] Calling applyEventChoice...');
-    console.log('[TIMED EVENT TRADE] Passing event to applyEventChoice:', {
-      eventId: event?.id,
-      eventEventId: event?.eventId,
-      hasChoices: !!event?.choices,
-      choicesCount: event?.choices?.length
-    });
-    
-    // Pass the event as currentLogEntry to preserve pre-generated merchant choices
-    applyEventChoice(choiceId, eventId, event);
-    console.log('[TIMED EVENT TRADE] applyEventChoice called');
 
     // Log resources AFTER trade (with slight delay to allow state to update)
     setTimeout(() => {
@@ -231,7 +235,7 @@ export default function TimedEventPanel() {
     } else {
       // If saying goodbye, close the tab and switch to cave
       setTimedEventTab(false).catch(console.error);
-      
+
       // Switch to cave tab
       setTimeout(() => {
         useGameStore.getState().setActiveTab('cave');
