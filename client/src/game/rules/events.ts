@@ -335,21 +335,14 @@ export class EventManager {
 
     // Handle merchant event specially
     if (eventId === 'merchant') {
-      // CRITICAL: Use choices from currentLogEntry, NOT from state.merchantTrades
-      // The state.merchantTrades.choices may have been regenerated, but the user
-      // is clicking on choices from the original event that was shown to them
-      const merchantTrades = currentLogEntry?.choices || state.merchantTrades?.choices;
+      // CRITICAL: state.merchantTrades is the ONLY source of truth for merchant trades
+      const merchantTrades = state.merchantTrades?.choices;
       const merchantTradesState = state.merchantTrades;
-
-      logger.log('[EVENT MANAGER] Full state.merchantTrades:', state.merchantTrades);
 
       logger.log('[EVENT MANAGER] Processing merchant event:', {
         choiceId,
-        usingLogEntryChoices: !!currentLogEntry?.choices,
         hasMerchantTrades: !!merchantTrades,
         merchantTradesCount: merchantTrades?.length || 0,
-        fullMerchantTradesObject: state.merchantTrades,
-        merchantTradesChoices: merchantTrades,
         allTradeIds: merchantTrades?.map((t: any) => t.id) || [],
         purchasedIds: merchantTradesState?.purchasedIds || [],
       });
@@ -360,7 +353,7 @@ export class EventManager {
         return {};
       }
 
-      // Find the trade data from the choices the user actually saw
+      // Find the trade data from state.merchantTrades (SSOT)
       if (merchantTrades && Array.isArray(merchantTrades)) {
         const trade = merchantTrades.find((t: any) => t.id === choiceId);
 

@@ -35,15 +35,13 @@ export default function TimedEventPanel() {
     }
 
     if (isMerchantEvent) {
-      // Use the merchant trades that were generated and stored when the event was created
-      // These trades already have their effect functions intact
-      logger.log("[TIMED EVENT PANEL] Merchant event, using stored choices:", {
+      // CRITICAL: Use state.merchantTrades as the single source of truth
+      logger.log("[TIMED EVENT PANEL] Merchant event, using merchantTrades from state:", {
         eventId: timedEventTab.event.id,
-        choicesCount: timedEventTab.event.choices?.length || 0,
-        choices: timedEventTab.event.choices,
-        merchantTradesFromState: gameState.merchantTrades,
+        choicesCount: gameState.merchantTrades?.choices?.length || 0,
+        choices: gameState.merchantTrades?.choices,
       });
-      return timedEventTab.event.choices || [];
+      return gameState.merchantTrades?.choices || [];
     }
 
     logger.log("[TIMED EVENT PANEL] Non-merchant event, using event choices:", {
