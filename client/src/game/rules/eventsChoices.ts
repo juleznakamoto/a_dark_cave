@@ -1161,7 +1161,7 @@ export const choiceEvents: Record<string, GameEvent> = {
       state.buildings.woodenHut >= 8 &&
       state.resources.gold >= 50 &&
       !state.curseState?.isActive &&
-      !state.story.seen.witchsCurseEvent,
+      !state.story.seen.witchsCurseEvent && false,
     timeProbability: 45,
     title: "The Witch's Curse",
     message:
