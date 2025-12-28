@@ -323,11 +323,11 @@ export class EventManager {
       return {};
     }
 
-    // For merchant events, use choices from the current log entry if available
+    // For merchant events, use choices from state.merchantTrades (where generated trades are stored)
     let choicesSource = eventDefinition.choices;
-    if (eventId === "merchant" && currentLogEntry?.choices) {
-      console.log('[EVENT MANAGER] Using choices from currentLogEntry for merchant event');
-      choicesSource = currentLogEntry.choices;
+    if (eventId === "merchant" && (state as any).merchantTrades?.choices) {
+      console.log('[EVENT MANAGER] Using choices from state.merchantTrades for merchant event');
+      choicesSource = (state as any).merchantTrades.choices;
     }
 
     console.log('[EVENT MANAGER] Available choices:', choicesSource?.map(c => ({
