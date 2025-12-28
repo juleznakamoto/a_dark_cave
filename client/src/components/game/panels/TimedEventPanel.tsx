@@ -217,13 +217,20 @@ export default function TimedEventPanel() {
 
             // Disable if can't afford or time is up
             const isDisabled = !canAfford || timeRemaining <= 0;
+            
+            // Check if this is the goodbye button
+            const isGoodbyeButton = choice.id === 'say_goodbye';
 
             const buttonContent = (
               <Button
                 onClick={
                   !mobileTooltip.isMobile
                     ? (e) => {
-                        console.log('[TIMED EVENT] Trade button onClick fired:', choice.id);
+                        console.log('[TIMED EVENT] Button clicked:', {
+                          id: choice.id,
+                          label: labelText,
+                          isGoodbye: isGoodbyeButton
+                        });
                         e.stopPropagation();
                         handleChoice(choice.id);
                       }
@@ -269,7 +276,11 @@ export default function TimedEventPanel() {
                                 `timedevent-${choice.id}`,
                                 isDisabled,
                                 () => {
-                                  console.log('[TIMED EVENT] Mobile trade button (with tooltip) fired:', choice.id);
+                                  console.log('[TIMED EVENT] Mobile button fired:', {
+                                    id: choice.id,
+                                    label: labelText,
+                                    isGoodbye: isGoodbyeButton
+                                  });
                                   handleChoice(choice.id);
                                 },
                                 e,
@@ -294,7 +305,11 @@ export default function TimedEventPanel() {
                                 `timedevent-${choice.id}`,
                                 isDisabled,
                                 () => {
-                                  console.log('[TIMED EVENT] Mobile trade button (with tooltip) touchEnd fired:', choice.id);
+                                  console.log('[TIMED EVENT] Mobile button touchEnd:', {
+                                    id: choice.id,
+                                    label: labelText,
+                                    isGoodbye: isGoodbyeButton
+                                  });
                                   handleChoice(choice.id);
                                 },
                                 e,
@@ -342,7 +357,11 @@ export default function TimedEventPanel() {
                           `timedevent-${choice.id}`,
                           isDisabled,
                           () => {
-                            console.log('[TIMED EVENT] Mobile trade button (no tooltip) fired:', choice.id);
+                            console.log('[TIMED EVENT] Mobile button (no tooltip) fired:', {
+                              id: choice.id,
+                              label: labelText,
+                              isGoodbye: isGoodbyeButton
+                            });
                             handleChoice(choice.id);
                           },
                           e,
@@ -367,7 +386,11 @@ export default function TimedEventPanel() {
                           `timedevent-${choice.id}`,
                           isDisabled,
                           () => {
-                            console.log('[TIMED EVENT] Mobile trade button (no tooltip) touchEnd fired:', choice.id);
+                            console.log('[TIMED EVENT] Mobile button touchEnd (no tooltip):', {
+                              id: choice.id,
+                              label: labelText,
+                              isGoodbye: isGoodbyeButton
+                            });
                             handleChoice(choice.id);
                           },
                           e,
