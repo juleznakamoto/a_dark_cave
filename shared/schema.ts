@@ -632,12 +632,11 @@ export const gameStateSchema = z.object({
     isActive: z.boolean().default(false),
     startTime: z.number().default(0),
     needsDisplay: z.boolean().default(false),
-  })
-    .default({
-      isActive: false,
-      startTime: 0,
-      needsDisplay: false,
-    }),
+  }).default({
+    isActive: false,
+    startTime: 0,
+    needsDisplay: false,
+  }),
 });
 
 export type GameState = z.infer<typeof gameStateSchema>;
