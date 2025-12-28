@@ -449,14 +449,26 @@ export async function loadGame(): Promise<GameState | null> {
               ...loadedState,
               cooldownDurations: loadedState.cooldownDurations || {},
               // Format lastSaved if it's a timestamp
-              lastSaved: loadedState.lastSaved && typeof loadedState.lastSaved === 'number' 
-                ? formatSaveTimestamp() 
+              lastSaved: loadedState.lastSaved && typeof loadedState.lastSaved === 'number'
+                ? formatSaveTimestamp()
                 : loadedState.lastSaved,
             };
 
             const processedState = await processUnclaimedReferrals(
               stateWithDefaults,
             );
+
+            // Reconstruct merchant trades if they exist
+            if (processedState.merchantTrades?.choices && Array.isArray(processedState.merchantTrades.choices)) {
+              const { reconstructTradeFromData } = await import('./rules/eventsMerchant');
+              logger.log('[LOAD] 🔄 Reconstructing merchant trades from save data:', {
+                choicesCount: processedState.merchantTrades.choices.length
+              });
+
+              processedState.merchantTrades.choices = processedState.merchantTrades.choices.map(
+                (tradeData: any) => reconstructTradeFromData(tradeData, processedState)
+              );
+            }
 
             const stateToReturn = { ...processedState, playTime: cloudSave.playTime };
 
@@ -486,14 +498,26 @@ export async function loadGame(): Promise<GameState | null> {
             ...loadedState,
             cooldownDurations: loadedState.cooldownDurations || {},
             // Format lastSaved if it's a timestamp
-            lastSaved: loadedState.lastSaved && typeof loadedState.lastSaved === 'number' 
-              ? formatSaveTimestamp() 
+            lastSaved: loadedState.lastSaved && typeof loadedState.lastSaved === 'number'
+              ? formatSaveTimestamp()
               : loadedState.lastSaved,
           };
 
           const processedState = await processUnclaimedReferrals(
             stateWithDefaults,
           );
+
+          // Reconstruct merchant trades if they exist
+          if (processedState.merchantTrades?.choices && Array.isArray(processedState.merchantTrades.choices)) {
+            const { reconstructTradeFromData } = await import('./rules/eventsMerchant');
+            logger.log('[LOAD] 🔄 Reconstructing merchant trades from save data:', {
+              choicesCount: processedState.merchantTrades.choices.length
+            });
+
+            processedState.merchantTrades.choices = processedState.merchantTrades.choices.map(
+              (tradeData: any) => reconstructTradeFromData(tradeData, processedState)
+            );
+          }
 
           const stateToReturn = { ...processedState, playTime: cloudSave.playTime };
 
