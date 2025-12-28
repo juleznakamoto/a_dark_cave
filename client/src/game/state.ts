@@ -1635,46 +1635,76 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   setTimedEventTab: async (isActive: boolean, event?: any | null, duration?: number) => {
-      let processedEvent = event;
+    const state = get();
 
-      // Don't pre-generate choices here - they'll be generated in TimedEventPanel
-      // using the event timestamp as seed for consistency across page reloads
+    if (isActive && event) {
+      // When opening a timed event tab, set the event and expiry time
+      const eventDuration = duration || event.timedTabDuration || 60000;
+      const expiryTime = Date.now() + eventDuration;
 
-      const currentPurchases = get().merchantPurchases;
-      logger.log('[MERCHANT STATE] 💾 Resetting merchant purchases:', {
-        isActive,
-        previousPurchases: Array.from(currentPurchases instanceof Set ? currentPurchases : []),
-        willReset: true,
-      });
+      // For merchant events, generate and store trades
+      let eventWithTrades = event;
+      if (event.id === 'merchant' || event.eventId === 'merchant') {
+        const { generateMerchantTrades } = await import('./rules/eventsMerchant');
+        const trades = generateMerchantTrades(state, Date.now());
+
+        eventWithTrades = {
+          ...event,
+          merchantTrades: trades,
+        } as any;
+
+        logger.log('[MERCHANT] Generated trades for new merchant event:', {
+          tradesCount: trades.length,
+        });
+      }
 
       set({
         timedEventTab: {
-          isActive,
-          event: processedEvent || null,
-          expiryTime: duration ? Date.now() + duration : 0,
+          isActive: true,
+          event: eventWithTrades,
+          expiryTime: expiryTime,
         },
-        // Reset merchant purchases when opening a new merchant or closing
-        merchantPurchases: isActive ? new Set<string>() : new Set<string>(),
       });
-    },
+
+      logger.log("[TIMED EVENT] Opening timed event tab:", {
+        eventId: event.id,
+        duration: eventDuration,
+        expiryTime,
+      });
+    } else {
+      // When closing, clear the event
+      set({
+        timedEventTab: {
+          isActive: false,
+          event: null,
+          expiryTime: 0,
+        },
+      });
+
+      logger.log("[TIMED EVENT] Closing timed event tab");
+    }
+
+    // Save state after changing timed event tab
+    await get().saveGame();
+  },
 
   addMerchantPurchase: (choiceId: string) => {
     set((state) => {
       // Ensure merchantPurchases is always converted to a Set properly
-      const currentPurchases = state.merchantPurchases instanceof Set 
-        ? state.merchantPurchases 
+      const currentPurchases = state.merchantPurchases instanceof Set
+        ? state.merchantPurchases
         : new Set(Array.isArray(state.merchantPurchases) ? state.merchantPurchases : []);
 
       const newPurchases = new Set(currentPurchases);
       newPurchases.add(choiceId);
-      
+
       logger.log('[MERCHANT STATE] ✅ Trade executed - updating purchases:', {
         choiceId,
         previousPurchases: Array.from(currentPurchases),
         newPurchases: Array.from(newPurchases),
         purchaseCount: newPurchases.size,
       });
-      
+
       return { merchantPurchases: newPurchases };
     });
   },
