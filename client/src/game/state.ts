@@ -1175,6 +1175,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
           : new Set<string>(), // Load merchantPurchases
       };
 
+      // Ensure merchantPurchases is always a Set
+      loadedState.merchantPurchases = new Set(loadedState.merchantPurchases || []);
+      
       set(loadedState);
       StateManager.scheduleEffectsUpdate(get);
     } else {

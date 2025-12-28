@@ -120,6 +120,15 @@ export default function TimedEventPanel() {
     return timedEventTab.event?.choices || [];
   }, [timedEventTab.event?.id]);
 
+  // Ensure merchantPurchases is always a Set
+  const merchantPurchasesSet = useMemo(() => {
+    if (merchantPurchases instanceof Set) {
+      return merchantPurchases;
+    }
+    // Convert to Set if it's not already
+    return new Set(Array.isArray(merchantPurchases) ? merchantPurchases : []);
+  }, [merchantPurchases]);
+
   // Early return AFTER ALL hooks (including useEffect and useMemo) have been called
   if (!timedEventTab.event) {
     return null;
@@ -300,7 +309,7 @@ export default function TimedEventPanel() {
             const isGoodbyeButton = choice.id === 'say_goodbye';
 
             // Check if this item has been purchased (using global state)
-            const isPurchased = merchantPurchases.has(choice.id);
+            const isPurchased = merchantPurchasesSet.has(choice.id);
 
             // Disable if can't afford, time is up, or already purchased (except goodbye)
             const isDisabled = !canAfford || timeRemaining <= 0 || (!isGoodbyeButton && isPurchased);
