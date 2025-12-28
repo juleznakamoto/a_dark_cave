@@ -1186,11 +1186,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
           savedState.hasWonAnyGame !== undefined
             ? savedState.hasWonAnyGame
             : false, // Load hasWonAnyGame
-        // Merchant trades: Preserve saved trades exactly as they were
-        merchantTrades: {
-          choices: savedState.merchantTrades?.choices || [],
-          purchasedIds: savedState.merchantTrades?.purchasedIds || [],
-        },
+        merchantTrades: savedState.merchantTrades || {
+          choices: [],
+          purchasedIds: [],
+        }, // Load merchant trades
       };
 
       logger.log('[MERCHANT TRADES] Loaded merchant trades from state:', {
@@ -1592,37 +1591,18 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   setTimedEventTab: async (isActive: boolean, event?: LogEntry | null, duration?: number) => {
-    // If activating merchant event, use existing trades or generate new ones
+    // If activating merchant event, generate and store trades
     if (isActive && event?.id.includes('merchant')) {
+      const { generateMerchantChoices } = await import('@/game/rules/eventsMerchant');
       const state = get();
+      const generatedChoices = generateMerchantChoices(state);
       
-      // Check if we already have saved merchant trades (from game load)
-      const hasSavedTrades = state.merchantTrades.choices.length > 0;
-      
-      let merchantChoices = state.merchantTrades.choices;
-      let purchasedIds = state.merchantTrades.purchasedIds;
-      
-      // Only generate fresh trades if we don't have saved ones
-      if (!hasSavedTrades) {
-        const { generateMerchantChoices } = await import('@/game/rules/eventsMerchant');
-        merchantChoices = generateMerchantChoices(state);
-        purchasedIds = [];
-        
-        logger.log('[MERCHANT TRADES] Generating fresh merchant trades:', {
-          eventId: event?.id,
-          choicesCount: merchantChoices.length,
-          duration,
-          expiryTime: duration ? Date.now() + duration : 0,
-        });
-      } else {
-        logger.log('[MERCHANT TRADES] Using saved merchant trades:', {
-          eventId: event?.id,
-          choicesCount: merchantChoices.length,
-          purchasedIdsCount: purchasedIds.length,
-          duration,
-          expiryTime: duration ? Date.now() + duration : 0,
-        });
-      }
+      logger.log('[MERCHANT TRADES] Setting timed event tab with merchant trades:', {
+        eventId: event?.id,
+        choicesCount: generatedChoices.length,
+        duration,
+        expiryTime: duration ? Date.now() + duration : 0,
+      });
       
       set({
         timedEventTab: {
@@ -1631,8 +1611,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
           expiryTime: duration ? Date.now() + duration : 0,
         },
         merchantTrades: {
-          choices: merchantChoices,
-          purchasedIds: purchasedIds,
+          choices: generatedChoices,
+          purchasedIds: [],
         },
       });
     } else if (!isActive) {
