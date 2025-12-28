@@ -1374,19 +1374,20 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // If the game is paused, do not apply event choices
     if (state.isPaused) return;
 
+    // Use passed currentLogEntry or fall back to eventDialog.currentEvent
+    const logEntry = currentLogEntry || get().eventDialog.currentEvent;
+
     console.log('[STATE] applyEventChoice called:', {
       choiceId,
       eventId,
-      hasCurrentLogEntry: !!currentLogEntry,
-      currentLogEntryChoices: currentLogEntry?.choices?.map(c => ({
+      hasCurrentLogEntry: !!logEntry,
+      currentLogEntryChoices: logEntry?.choices?.map(c => ({
         id: c.id,
         hasEffect: typeof c.effect === 'function',
         effectType: typeof c.effect
       }))
     });
 
-    // Use passed currentLogEntry or fall back to eventDialog.currentEvent
-    const logEntry = currentLogEntry || get().eventDialog.currentEvent;
     const changes = EventManager.applyEventChoice(
       state,
       choiceId,
