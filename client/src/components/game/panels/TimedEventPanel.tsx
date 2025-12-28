@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/tooltip";
 import { useMobileButtonTooltip } from "@/hooks/useMobileTooltip";
 import { eventChoiceCostTooltip } from "@/game/rules/tooltips";
-import { generateMerchantChoices } from "@/game/rules/eventsMerchant";
 import { EventChoice } from "@/game/rules/events";
 import { logger } from "@/lib/logger";
 
