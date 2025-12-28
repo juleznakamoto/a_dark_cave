@@ -449,6 +449,12 @@ export async function loadGame(): Promise<GameState | null> {
               lastSaved: cloudSave.gameState.lastSaved && typeof cloudSave.gameState.lastSaved === 'number'
                 ? formatSaveTimestamp()
                 : cloudSave.gameState.lastSaved,
+              // Ensure merchantPurchases is reconstructed as Set
+              merchantPurchases: cloudSave.gameState.merchantPurchases
+                ? new Set(Array.isArray(cloudSave.gameState.merchantPurchases) 
+                    ? cloudSave.gameState.merchantPurchases 
+                    : Array.from(cloudSave.gameState.merchantPurchases))
+                : new Set<string>(),
             };
 
             const processedState = await processUnclaimedReferrals(
@@ -485,6 +491,12 @@ export async function loadGame(): Promise<GameState | null> {
             lastSaved: cloudSave.gameState.lastSaved && typeof cloudSave.gameState.lastSaved === 'number'
               ? formatSaveTimestamp()
               : cloudSave.gameState.lastSaved,
+            // Ensure merchantPurchases is reconstructed as Set
+            merchantPurchases: cloudSave.gameState.merchantPurchases
+              ? new Set(Array.isArray(cloudSave.gameState.merchantPurchases) 
+                  ? cloudSave.gameState.merchantPurchases 
+                  : Array.from(cloudSave.gameState.merchantPurchases))
+              : new Set<string>(),
           };
 
           const processedState = await processUnclaimedReferrals(
@@ -552,6 +564,12 @@ export async function loadGame(): Promise<GameState | null> {
         const stateWithDefaults = {
           ...localSave.gameState,
           cooldownDurations: localSave.gameState.cooldownDurations || {},
+          // Ensure merchantPurchases is reconstructed as Set
+          merchantPurchases: localSave.gameState.merchantPurchases
+            ? new Set(Array.isArray(localSave.gameState.merchantPurchases) 
+                ? localSave.gameState.merchantPurchases 
+                : Array.from(localSave.gameState.merchantPurchases))
+            : new Set<string>(),
         };
         const processedState =
           await processUnclaimedReferrals(stateWithDefaults);
