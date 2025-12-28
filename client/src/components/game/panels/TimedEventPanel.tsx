@@ -357,7 +357,7 @@ export default function TimedEventPanel() {
             );
           })}
 
-          {/* Say Goodbye button - always visible */}
+          {/* Say Goodbye button - always visible and hardcoded */}
           <div
             onMouseDown={
               mobileTooltip.isMobile
@@ -376,7 +376,10 @@ export default function TimedEventPanel() {
                     mobileTooltip.handleMouseUp(
                       `timedevent-say_goodbye`,
                       timeRemaining <= 0,
-                      () => handleChoice('say_goodbye'),
+                      () => {
+                        setHighlightedResources([]);
+                        setTimedEventTab(false);
+                      },
                       e,
                     )
                 : undefined
@@ -398,7 +401,10 @@ export default function TimedEventPanel() {
                     mobileTooltip.handleTouchEnd(
                       `timedevent-say_goodbye`,
                       timeRemaining <= 0,
-                      () => handleChoice('say_goodbye'),
+                      () => {
+                        setHighlightedResources([]);
+                        setTimedEventTab(false);
+                      },
                       e,
                     )
                 : undefined
@@ -409,7 +415,8 @@ export default function TimedEventPanel() {
                 !mobileTooltip.isMobile
                   ? (e) => {
                       e.stopPropagation();
-                      handleChoice('say_goodbye');
+                      setHighlightedResources([]);
+                      setTimedEventTab(false);
                     }
                   : undefined
               }

@@ -1022,16 +1022,6 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
     ...availableBuyTrades,
     ...availableSellTrades,
     ...availableToolTrades,
-    {
-      id: "say_goodbye",
-      label: "Say goodbye",
-      effect: (state: GameState) => {
-        return {
-          _logMessage:
-            "You bid the merchant farewell. He tips his hat and mutters about the road ahead.",
-        };
-      },
-    } as EventChoice,
   ];
 
   console.log('[MERCHANT TRADES] Final choices generated:', {
