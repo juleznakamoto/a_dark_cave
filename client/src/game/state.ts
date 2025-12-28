@@ -1593,12 +1593,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
       
       logger.log('[MERCHANT TRADES] Setting timed event tab with merchant trades:', {
         eventId: event?.id,
-        choicesCount: generatedChoices.length,
+        choicesCount: eventChoices.length,
         duration,
         expiryTime: duration ? Date.now() + duration : 0,
       });
       
       // Store the event with converted EventChoice objects that have effect functions
+      // Also store the converted choices in merchantTrades so applyEventChoice can use them
       set({
         timedEventTab: {
           isActive,
@@ -1606,7 +1607,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
           expiryTime: duration ? Date.now() + duration : 0,
         },
         merchantTrades: {
-          choices: generatedChoices,
+          choices: eventChoices, // Store EventChoice[] instead of MerchantTradeData[]
           purchasedIds: [],
         },
       });
