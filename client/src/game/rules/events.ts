@@ -345,11 +345,19 @@ export class EventManager {
         merchantTradesCount: merchantTrades?.length || 0,
         fullMerchantTradesObject: (state as any).merchantTrades,
         merchantTradesChoices: merchantTrades,
+        allTradeIds: merchantTrades?.map((t: any) => t.id),
       });
       
       // Find the trade data
       if (merchantTrades) {
         const trade = merchantTrades.find((t: any) => t.id === choiceId);
+        
+        logger.log('[EVENT MANAGER] Trade lookup result:', {
+          choiceId,
+          foundTrade: !!trade,
+          tradeData: trade,
+          allAvailableIds: merchantTrades.map((t: any) => t.id),
+        });
         
         if (trade) {
           logger.log('[EVENT MANAGER] Executing merchant trade:', {
