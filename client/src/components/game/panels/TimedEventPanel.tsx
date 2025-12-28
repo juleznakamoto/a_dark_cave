@@ -186,7 +186,6 @@ export default function TimedEventPanel() {
       )}
       <div className="flex flex-wrap gap-2">
         {eventChoices
-          .filter((choice) => choice.id !== "say_goodbye")
           .map((choice) => {
             const cost = choice.cost;
             // Evaluate cost if it's a function
