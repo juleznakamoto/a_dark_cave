@@ -116,35 +116,41 @@ export default function TimedEventPanel() {
     timedEventTab.expiryTime,
   ]);
 
-  // Always regenerate merchant choices using event timestamp as seed
-  // This ensures the same trades appear even after page reload
+  // Convert saved merchant trades to choices with effect functions
   const eventChoices = useMemo(() => {
     const event = timedEventTab.event;
     if (!event) return [];
     
-    // For merchant events, always regenerate with timestamp as seed
+    // For merchant events, convert saved trades to choices
     if (event.id === 'merchant' || event.eventId === 'merchant') {
-      // Use event timestamp as seed for deterministic trade generation
-      const seed = event.timestamp || Date.now();
+      // Get saved trades from event (or generate if not present)
+      const savedTrades = (event as any).merchantTrades;
       
-      logger.log('[MERCHANT LOAD] 🔄 Generating merchant trades with seed:', {
-        eventId: event.id,
-        timestamp: event.timestamp,
-        seed,
+      if (!savedTrades) {
+        logger.log('[MERCHANT] No saved trades, this should not happen');
+        return [];
+      }
+      
+      logger.log('[MERCHANT LOAD] Converting saved trades to choices:', {
+        tradesCount: savedTrades.length,
       });
       
-      const regeneratedChoices = generateMerchantChoices(gameState, seed);
+      // Import the conversion function
+      const { tradeToChoice } = require('@/game/rules/eventsMerchant');
+      const choices = savedTrades.map((trade: any) => tradeToChoice(trade));
       
-      logger.log('[MERCHANT LOAD] ✅ Trades generated:', {
-        tradesCount: regeneratedChoices.length,
-        tradeIds: regeneratedChoices.map(c => c.id),
+      // Add "say goodbye" choice
+      choices.push({
+        id: "say_goodbye",
+        label: "Say goodbye",
+        effect: (): any => ({}),
       });
       
-      return regeneratedChoices;
+      return choices;
     }
     
     return event.choices || [];
-  }, [timedEventTab.event?.id, timedEventTab.event?.eventId, timedEventTab.event?.timestamp, gameState.resources, gameState.buildings]);
+  }, [timedEventTab.event?.id, timedEventTab.event?.eventId, (timedEventTab.event as any)?.merchantTrades, gameState.resources, gameState.buildings]);
 
   // Convert merchantPurchases array to Set for efficient lookup
   const merchantPurchasesSet = useMemo(() => {

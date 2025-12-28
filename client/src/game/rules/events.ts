@@ -131,6 +131,8 @@ export interface LogEntry {
   timedTabDuration?: number; // Duration in milliseconds
   // Store original event ID for merchant detection
   eventId?: string;
+  // Store merchant trades for serializable data
+  merchantTrades?: { item: string; cost: number; quantity: number }[];
 }
 
 // Merge all events from separate files
@@ -228,8 +230,26 @@ export class EventManager {
         // Generate fresh choices for merchant events and store them
         let eventChoices = event.choices;
         if (event.id === "merchant") {
-          eventChoices = generateMerchantChoices(state);
+          // Generate and save merchant trades (serializable data, no functions)
+          const { generateMerchantTrades } = require('./eventsMerchant');
+          const merchantTrades = generateMerchantTrades(state, Date.now());
+
+          const merchantEntry: LogEntry = {
+            id: `merchant-${Date.now()}`,
+            eventId: "merchant",
+            message: event.message,
+            timestamp: Date.now(),
+            type: "event",
+            title: event.title,
+            choices: [], // Choices will be generated from merchantTrades in TimedEventPanel
+            merchantTrades, // Save serializable trade data
+            timedTabDuration: event.timedTabDuration,
+          };
+          newLogEntries.push(merchantEntry);
+        } else {
+          eventChoices = generateMerchantChoices(state); // This line seems redundant if event.id is not 'merchant'
         }
+
 
         // Select random message if message is an array, or evaluate if it's a function
         let message: string;
