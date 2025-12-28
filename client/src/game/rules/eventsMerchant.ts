@@ -745,8 +745,8 @@ function selectTrades(
   let goldSilverBuyCount = 0;
   const MAX_GOLD_SILVER_BUY = 3;
 
-  // Shuffle the available trades
-  availableTrades.sort(() => Math.random() - 0.5);
+  // Shuffle the available trades using seeded random
+  availableTrades.sort(() => seededRandom() - 0.5);
 
   for (const trade of availableTrades) {
     if (selected.length >= numTrades) break;
@@ -793,7 +793,7 @@ function selectTrades(
 
     // Try each valid option to find one that doesn't conflict
     let foundValidOption = false;
-    const shuffledOptions = [...validOptions].sort(() => Math.random() - 0.5);
+    const shuffledOptions = [...validOptions].sort(() => seededRandom() - 0.5);
 
     for (const selectedOption of shuffledOptions) {
       let testBuyResource = buyResource;
@@ -898,8 +898,20 @@ function selectTrades(
 }
 
 // Function to generate fresh merchant choices
-export function generateMerchantChoices(state: GameState): EventChoice[] {
+// seed parameter ensures the same trades are generated for the same merchant event
+export function generateMerchantChoices(state: GameState, seed?: number): EventChoice[] {
   const knowledge = getTotalKnowledge(state);
+  
+  // Use seed for deterministic randomization (same seed = same trades)
+  const seededRandom = seed 
+    ? (() => {
+        let s = seed;
+        return () => {
+          s = Math.sin(s) * 10000;
+          return s - Math.floor(s);
+        };
+      })()
+    : Math.random;
 
   // Calculate merchant discount using centralized function
   const discount = calculateMerchantDiscount(knowledge);
@@ -971,7 +983,7 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
 
   // Select 1 tool trade
   const availableToolTrades = filteredToolTrades
-    .sort(() => Math.random() - 0.5)
+    .sort(() => seededRandom() - 0.5)
     .slice(0, 1)
     .map((trade) => {
       const costOption = trade.costs[0];

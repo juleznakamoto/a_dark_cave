@@ -1637,23 +1637,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
   setTimedEventTab: async (isActive: boolean, event?: any | null, duration?: number) => {
       let processedEvent = event;
 
-      // Pre-generate merchant choices when event is activated
-      if (isActive && event && (event.id === 'merchant' || event.eventId === 'merchant')) {
-        const { generateMerchantChoices } = await import('./rules/eventsMerchant');
-        // Use event timestamp as seed for consistent trades
-        const seed = event.timestamp || Date.now();
-        const choices = generateMerchantChoices(get(), seed);
-        processedEvent = { ...event, choices };
-        
-        logger.log('[MERCHANT STATE] 💾 Saving merchant trades to state:', {
-          eventId: event.id,
-          timestamp: event.timestamp,
-          seed,
-          tradesCount: choices.length,
-          tradeIds: choices.map(c => c.id),
-          tradeLabels: choices.map(c => typeof c.label === 'function' ? c.label(get()) : c.label),
-        });
-      }
+      // Don't pre-generate choices here - they'll be generated in TimedEventPanel
+      // using the event timestamp as seed for consistency across page reloads
 
       const currentPurchases = get().merchantPurchases;
       logger.log('[MERCHANT STATE] 💾 Resetting merchant purchases:', {

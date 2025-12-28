@@ -116,44 +116,35 @@ export default function TimedEventPanel() {
     timedEventTab.expiryTime,
   ]);
 
-  // Use choices directly from the event - they were pre-generated when merchant spawned
+  // Always regenerate merchant choices using event timestamp as seed
+  // This ensures the same trades appear even after page reload
   const eventChoices = useMemo(() => {
     const event = timedEventTab.event;
     if (!event) return [];
     
-    // For merchant events, regenerate choices to restore effect functions (lost after page refresh)
-    // Only regenerate if choices are missing or have no effect functions
+    // For merchant events, always regenerate with timestamp as seed
     if (event.id === 'merchant' || event.eventId === 'merchant') {
-      const hasValidChoices = event.choices?.length > 0 && 
-                             event.choices.some(c => typeof c.effect === 'function');
+      // Use event timestamp as seed for deterministic trade generation
+      const seed = event.timestamp || Date.now();
       
-      logger.log('[MERCHANT LOAD] 🔄 Checking if trades need regeneration:', {
-        hasChoices: !!event.choices,
-        choicesCount: event.choices?.length || 0,
-        hasValidChoices,
-        choiceIds: event.choices?.map(c => c.id) || [],
-        sampleEffectType: event.choices?.[0] ? typeof event.choices[0].effect : 'none',
+      logger.log('[MERCHANT LOAD] 🔄 Generating merchant trades with seed:', {
+        eventId: event.id,
+        timestamp: event.timestamp,
+        seed,
       });
       
-      if (!hasValidChoices) {
-        logger.log('[MERCHANT LOAD] 🔄 Regenerating merchant trades after page refresh');
-        const regeneratedChoices = generateMerchantChoices(gameState);
-        logger.log('[MERCHANT LOAD] ✅ Trades regenerated:', {
-          tradesCount: regeneratedChoices.length,
-          tradeIds: regeneratedChoices.map(c => c.id),
-          tradeLabels: regeneratedChoices.map(c => typeof c.label === 'function' ? c.label(gameState) : c.label),
-        });
-        return regeneratedChoices;
-      } else {
-        logger.log('[MERCHANT LOAD] ✅ Using existing trades (functions intact):', {
-          tradesCount: event.choices.length,
-          tradeIds: event.choices.map(c => c.id),
-        });
-      }
+      const regeneratedChoices = generateMerchantChoices(gameState, seed);
+      
+      logger.log('[MERCHANT LOAD] ✅ Trades generated:', {
+        tradesCount: regeneratedChoices.length,
+        tradeIds: regeneratedChoices.map(c => c.id),
+      });
+      
+      return regeneratedChoices;
     }
     
     return event.choices || [];
-  }, [timedEventTab.event?.id, timedEventTab.event?.eventId, timedEventTab.event?.choices?.length]);
+  }, [timedEventTab.event?.id, timedEventTab.event?.eventId, timedEventTab.event?.timestamp, gameState.resources, gameState.buildings]);
 
   // Convert merchantPurchases array to Set for efficient lookup
   const merchantPurchasesSet = useMemo(() => {
