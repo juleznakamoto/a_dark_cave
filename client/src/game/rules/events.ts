@@ -219,8 +219,11 @@ export class EventManager {
         continue;
       }
 
+      // Check condition with probability if specified
+      let shouldTrigger = true;
+
       // Apply time-based probability if specified
-      if (shouldTrigger && event.timeProbability) {
+      if (event.timeProbability) {
         // Calculate ticks per minute dynamically based on TICK_INTERVAL from constants
         // TICK_INTERVAL is in milliseconds, so: (1000ms / TICK_INTERVAL) * 60 seconds
         const ticksPerSecond = 1000 / GAME_CONSTANTS.TICK_INTERVAL;
