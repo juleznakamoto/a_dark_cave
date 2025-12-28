@@ -1356,19 +1356,31 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   applyEventChoice: (choiceId: string, eventId: string, currentLogEntry?: LogEntry) => {
+    console.log('[STATE] ===== applyEventChoice START =====');
     const state = get();
     // If the game is paused, do not apply event choices
-    if (state.isPaused) return;
+    if (state.isPaused) {
+      console.log('[STATE] Game is paused, ignoring event choice');
+      return;
+    }
 
     console.log('[STATE] applyEventChoice called:', {
       choiceId,
       eventId,
       hasCurrentLogEntry: !!currentLogEntry,
-      timedEventTabEvent: get().timedEventTab.event
+      currentLogEntryId: currentLogEntry?.id,
+      timedEventTabEvent: get().timedEventTab.event?.id
     });
 
     // For timed tab events (like merchant), use the event from timedEventTab
     const logEntry = currentLogEntry || get().timedEventTab.event || get().eventDialog.currentEvent;
+
+    console.log('[STATE] Using logEntry:', {
+      hasLogEntry: !!logEntry,
+      logEntryId: logEntry?.id,
+      logEntryChoices: logEntry?.choices?.length,
+      logEntryChoiceIds: logEntry?.choices?.map(c => c.id)
+    });
 
     console.log('[STATE] Calling EventManager.applyEventChoice with:', {
       choiceId,
@@ -1388,7 +1400,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
       hasResources: !!changes.resources,
       resourceChanges: changes.resources,
       hasLogMessage: !!(changes as any)._logMessage,
-      hasCombatData: !!(changes as any)._combatData
+      hasCombatData: !!(changes as any)._combatData,
+      allKeys: Object.keys(changes)
     });
 
     let combatData = null;
@@ -1409,18 +1422,53 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     // Apply state changes FIRST - this includes relics, resources, etc.
     if (Object.keys(updatedChanges).length > 0) {
+      console.log('[STATE] Applying state changes:', updatedChanges);
+      
       set((prevState) => {
+        console.log('[STATE] prevState resources:', {
+          food: prevState.resources.food,
+          wood: prevState.resources.wood,
+          stone: prevState.resources.stone,
+          leather: prevState.resources.leather,
+          steel: prevState.resources.steel,
+          gold: prevState.resources.gold
+        });
+        
         // Use the same mergeStateUpdates function that other actions use
         const mergedUpdates = mergeStateUpdates(prevState, updatedChanges);
 
-        return {
+        console.log('[STATE] mergedUpdates resources:', mergedUpdates.resources);
+
+        const newState = {
           ...prevState,
           ...mergedUpdates,
         };
+        
+        console.log('[STATE] newState resources:', {
+          food: newState.resources.food,
+          wood: newState.resources.wood,
+          stone: newState.resources.stone,
+          leather: newState.resources.leather,
+          steel: newState.resources.steel,
+          gold: newState.resources.gold
+        });
+        
+        return newState;
+      });
+
+      console.log('[STATE] State updated, final resources:', {
+        food: get().resources.food,
+        wood: get().resources.wood,
+        stone: get().resources.stone,
+        leather: get().resources.leather,
+        steel: get().resources.steel,
+        gold: get().resources.gold
       });
 
       StateManager.schedulePopulationUpdate(get);
     }
+    
+    console.log('[STATE] ===== applyEventChoice END =====');
 
     // Only create a log message dialog if there's a _logMessage but no combat
     // Note: _logMessage is for dialog feedback only, not for the main log

@@ -311,11 +311,14 @@ export class EventManager {
     eventId: string,
     currentLogEntry?: LogEntry,
   ): Partial<GameState> {
-    console.log('[EVENT MANAGER] applyEventChoice called:', {
-      choiceId,
-      eventId,
-      hasCurrentLogEntry: !!currentLogEntry,
-      currentLogEntryHasChoices: !!currentLogEntry?.choices?.length
+    console.log('[EVENT MANAGER] ===== applyEventChoice START =====');
+    console.log('[EVENT MANAGER] choiceId:', choiceId);
+    console.log('[EVENT MANAGER] eventId:', eventId);
+    console.log('[EVENT MANAGER] currentLogEntry:', {
+      hasEntry: !!currentLogEntry,
+      entryId: currentLogEntry?.id,
+      hasChoices: !!currentLogEntry?.choices,
+      choicesCount: currentLogEntry?.choices?.length
     });
 
     const eventDefinition = this.allEvents[eventId];
@@ -327,24 +330,40 @@ export class EventManager {
     // For merchant events, use the choices from currentLogEntry (they were pre-generated with effects)
     if (eventId === 'merchant' && currentLogEntry?.choices) {
       console.log('[EVENT MANAGER] Using pre-generated merchant choices from currentLogEntry');
-      
+      console.log('[EVENT MANAGER] Available choices:', currentLogEntry.choices.map(c => ({ id: c.id, label: c.label })));
+
       const choice = currentLogEntry.choices.find((c) => c.id === choiceId);
       console.log('[EVENT MANAGER] Found merchant choice:', {
         found: !!choice,
         id: choice?.id,
         hasEffect: !!(choice?.effect),
-        effectType: typeof choice?.effect
+        effectType: typeof choice?.effect,
+        effectString: choice?.effect?.toString().substring(0, 300)
       });
 
       if (choice && typeof choice.effect === "function") {
+        console.log('[EVENT MANAGER] Calling merchant effect function...');
+        console.log('[EVENT MANAGER] State before effect:', {
+          food: state.resources.food,
+          wood: state.resources.wood,
+          stone: state.resources.stone,
+          leather: state.resources.leather,
+          steel: state.resources.steel,
+          gold: state.resources.gold
+        });
+
         const result = choice.effect(state);
+
         console.log('[EVENT MANAGER] Merchant effect result:', {
           hasResources: !!result.resources,
-          resourceChanges: result.resources
+          resourceChanges: result.resources,
+          fullResult: result
         });
+        console.log('[EVENT MANAGER] ===== applyEventChoice END (merchant) =====');
         return result;
       } else {
-        console.log('[EVENT MANAGER] Merchant choice not found or effect is not a function');
+        console.error('[EVENT MANAGER] Merchant choice not found or effect is not a function');
+        console.log('[EVENT MANAGER] ===== applyEventChoice END (error) =====');
         return {};
       }
     }
@@ -383,6 +402,7 @@ export class EventManager {
         : state.log,
     };
 
+    console.log('[EVENT MANAGER] ===== applyEventChoice END =====');
     return result;
   }
 }

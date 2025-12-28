@@ -145,6 +145,11 @@ export default function TimedEventPanel() {
   };
 
   const handleChoice = (choiceId: string) => {
+    console.log('[TIMED EVENT TRADE] ===== handleChoice START =====');
+    console.log('[TIMED EVENT TRADE] choiceId:', choiceId);
+    console.log('[TIMED EVENT TRADE] eventId:', eventId);
+    console.log('[TIMED EVENT TRADE] event:', event);
+    
     const choice = eventChoices.find(c => c.id === choiceId);
     const isSayGoodbye = choiceId === 'say_goodbye';
 
@@ -155,11 +160,13 @@ export default function TimedEventPanel() {
       isSayGoodbye,
       choiceLabel: choice?.label,
       choiceCost: choice?.cost,
-      effectType: typeof choice?.effect
+      effectType: typeof choice?.effect,
+      effectFunction: choice?.effect?.toString().substring(0, 200)
     });
 
     if (!choice) {
       console.error('[TIMED EVENT TRADE] No choice found for:', choiceId);
+      console.log('[TIMED EVENT TRADE] Available choices:', eventChoices.map(c => ({ id: c.id, label: c.label })));
       return;
     }
 
@@ -181,25 +188,40 @@ export default function TimedEventPanel() {
       silver: gameState.resources.silver
     });
 
+    // Test the effect function directly
+    console.log('[TIMED EVENT TRADE] Testing effect function...');
+    const testResult = choice.effect(gameState);
+    console.log('[TIMED EVENT TRADE] Effect test result:', testResult);
+
     setHighlightedResources([]); // Clear highlights before closing
 
     // Apply the choice and log the result
-    console.log('[TIMED EVENT TRADE] Applying choice with effect:', choice.effect);
+    console.log('[TIMED EVENT TRADE] Calling applyEventChoice...');
+    console.log('[TIMED EVENT TRADE] Passing event to applyEventChoice:', {
+      eventId: event?.id,
+      eventEventId: event?.eventId,
+      hasChoices: !!event?.choices,
+      choicesCount: event?.choices?.length
+    });
+    
     // Pass the event as currentLogEntry to preserve pre-generated merchant choices
     applyEventChoice(choiceId, eventId, event);
+    console.log('[TIMED EVENT TRADE] applyEventChoice called');
 
     // Log resources AFTER trade (with slight delay to allow state to update)
     setTimeout(() => {
+      const state = useGameStore.getState();
       console.log('[TIMED EVENT TRADE] Resources AFTER trade:', {
-        food: gameState.resources.food,
-        wood: gameState.resources.wood,
-        stone: gameState.resources.stone,
-        iron: gameState.resources.iron,
-        leather: gameState.resources.leather,
-        steel: gameState.resources.steel,
-        gold: gameState.resources.gold,
-        silver: gameState.resources.silver
+        food: state.resources.food,
+        wood: state.resources.wood,
+        stone: state.resources.stone,
+        iron: state.resources.iron,
+        leather: state.resources.leather,
+        steel: state.resources.steel,
+        gold: state.resources.gold,
+        silver: state.resources.silver
       });
+      console.log('[TIMED EVENT TRADE] ===== handleChoice END =====');
     }, 100);
 
     // If it's a trade button (not say goodbye), mark as purchased
