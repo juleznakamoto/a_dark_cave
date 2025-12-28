@@ -324,19 +324,18 @@ export class EventManager {
       return {};
     }
 
-    // For merchant events, try to use currentLogEntry choices first (they were pre-generated)
-    // If not available, regenerate them
+    // For merchant events, regenerate choices to ensure effect functions are available
     if (eventId === 'merchant') {
-      let freshChoices = currentLogEntry?.choices;
-      
-      if (!freshChoices || freshChoices.length === 0) {
-        console.log('[EVENT MANAGER] No pre-generated choices, regenerating for:', choiceId);
-        freshChoices = generateMerchantChoices(state);
-      } else {
-        console.log('[EVENT MANAGER] Using pre-generated merchant choices from currentLogEntry');
-      }
-
-      console.log('[EVENT MANAGER] Merchant choices:', freshChoices.map(c => ({
+      console.log('[EVENT MANAGER] Regenerating merchant choices for choice application');
+      // Dynamically import generateMerchantChoices to avoid circular dependencies if Merchant events depend on EventManager
+      // This assumes generateMerchantChoices is in './eventsMerchant' relative to this file
+      // If the path is different, adjust accordingly.
+      // Note: This dynamic import will only work in an environment that supports top-level await or within an async function.
+      // If this function is not async, you might need to restructure or use a different approach.
+      // For simplicity, assuming this context allows dynamic import.
+      const { generateMerchantChoices } = require('./eventsMerchant'); // Using require for compatibility if top-level await is not available
+      const freshChoices = generateMerchantChoices(state);
+      console.log('[EVENT MANAGER] Fresh merchant choices:', freshChoices.map(c => ({
         id: c.id,
         label: typeof c.label === 'function' ? c.label(state) : c.label,
         cost: typeof c.cost === 'function' ? c.cost(state) : c.cost,
@@ -345,7 +344,6 @@ export class EventManager {
       })));
 
       const choice = freshChoices.find((c) => c.id === choiceId);
-
       console.log('[EVENT MANAGER] Found choice:', {
         found: !!choice,
         id: choice?.id,
@@ -355,27 +353,19 @@ export class EventManager {
         effectType: typeof choice?.effect
       });
 
-      if (!choice || typeof choice.effect !== 'function') {
-        console.error('[EVENT MANAGER] Choice not found or effect is not a function');
+      if (choice && typeof choice.effect === "function") {
+        const result = choice.effect(state);
+        console.log('[EVENT MANAGER] Effect result:', {
+          hasResources: !!result.resources,
+          resourceChanges: result.resources,
+          logMessage: (result as any)._logMessage,
+          fullResult: result
+        });
+        return result;
+      } else {
+        console.log('[EVENT MANAGER] Choice not found or effect is not a function');
         return {};
       }
-
-      // Log current resources before executing effect
-      console.log('[EVENT MANAGER] Current resources before effect:', {
-        stone: state.resources.stone,
-        leather: state.resources.leather
-      });
-
-      // Execute the effect
-      const effectResult = choice.effect(state);
-      console.log('[EVENT MANAGER] Effect result:', {
-        hasResources: !!effectResult.resources,
-        resourceChanges: effectResult.resources,
-        logMessage: (effectResult as any)._logMessage,
-        fullResult: effectResult
-      });
-
-      return effectResult;
     }
 
     // First try to find the choice in the choices array
