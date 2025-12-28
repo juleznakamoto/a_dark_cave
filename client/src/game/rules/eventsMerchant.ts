@@ -877,11 +877,14 @@ function selectTrades(
       label,
       cost,
       effect: (state: GameState) => {
-        if ((state.resources[sellResource] || 0) >= sellAmount) {
+        const currentSell = state.resources[sellResource] || 0;
+        const currentBuy = state.resources[buyResource] || 0;
+
+        if (currentSell >= sellAmount) {
           return {
             resources: {
-              [sellResource]: -sellAmount, // Delta: negative for cost
-              [buyResource]: buyAmount, // Delta: positive for gain
+              [sellResource]: currentSell - sellAmount,
+              [buyResource]: currentBuy + buyAmount,
             },
           };
         }
