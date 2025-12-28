@@ -12,8 +12,6 @@ import { eventChoiceCostTooltip } from "@/game/rules/tooltips";
 import { generateMerchantChoices } from "@/game/rules/eventsMerchant";
 import { EventChoice } from "@/game/rules/events";
 import { logger } from "@/lib/logger";
-import { GameState } from "@/game/state/types";
-import { useRef } from "react";
 
 export default function TimedEventPanel() {
   const {
@@ -21,112 +19,25 @@ export default function TimedEventPanel() {
     applyEventChoice,
     setTimedEventTab,
     setHighlightedResources,
-    merchantTrades,
   } = useGameStore();
   const gameState = useGameStore();
 
   // ALL HOOKS MUST BE CALLED BEFORE ANY EARLY RETURNS
   const mobileTooltip = useMobileButtonTooltip();
   const [timeRemaining, setTimeRemaining] = useState<number>(0);
-  const fallbackExecutedRef = useRef(false);
-
 
   // Get merchant trades from state (generated once when event starts)
   const isMerchantEvent = timedEventTab.event?.id.split("-")[0] === "merchant";
+  const eventChoices: EventChoice[] = useMemo(() => {
+    if (!timedEventTab.event) return [];
 
-  logger.log('[TIMED EVENT PANEL] Component render:', {
-    hasEvent: !!timedEventTab.event,
-    eventId: timedEventTab.event?.id,
-    isMerchantEvent,
-    hasMerchantTrades: !!merchantTrades,
-    merchantTradesCount: merchantTrades?.choices?.length || 0,
-    eventChoicesCount: timedEventTab.event?.choices?.length || 0,
-    timeRemaining,
-  });
-
-
-  // For merchant events, use merchantTrades.choices, otherwise use event choices
-  const eventChoices = isMerchantEvent && merchantTrades?.choices
-    ? merchantTrades.choices.map((trade) => {
-        logger.log('[TIMED EVENT PANEL] Mapping merchant trade to choice:', {
-          trade,
-          hasId: !!trade?.id,
-          hasLabel: !!trade?.label,
-          hasCost: !!trade?.cost,
-        });
-
-        if (!trade || !trade.id) {
-          logger.error('[TIMED EVENT PANEL] Invalid merchant trade detected:', trade);
-          return null;
-        }
-
-        return {
-          id: trade.id,
-          label: trade.label,
-          cost: trade.cost,
-          effect: () => {
-            logger.log('[MERCHANT TRADES] Executing trade from TimedEventPanel:', {
-              tradeId: trade.id,
-              buyResource: trade.buyResource,
-              buyAmount: trade.buyAmount,
-              sellResource: trade.sellResource,
-              sellAmount: trade.sellAmount,
-            });
-
-            // Check if player can afford
-            const canAfford = (gameState.resources[trade.sellResource as keyof typeof gameState.resources] || 0) >= trade.sellAmount;
-
-            if (!canAfford) {
-              logger.log('[MERCHANT TRADES] Player cannot afford trade:', {
-                tradeId: trade.id,
-                required: trade.sellAmount,
-                available: gameState.resources[trade.sellResource as keyof typeof gameState.resources] || 0,
-              });
-              return {};
-            }
-
-            // Execute trade
-            const updates: Partial<GameState> = {
-              resources: {
-                ...gameState.resources,
-                [trade.sellResource]: (gameState.resources[trade.sellResource as keyof typeof gameState.resources] || 0) - trade.sellAmount,
-                [trade.buyResource]: (gameState.resources[trade.buyResource as keyof typeof gameState.resources] || 0) + trade.buyAmount,
-              },
-            };
-
-            // Mark trade as executed
-            const updatedChoices = merchantTrades.choices.map(c => 
-              c.id === trade.id ? { ...c, executed: true } : c
-            );
-
-            logger.log('[MERCHANT TRADES] Trade executed successfully:', {
-              tradeId: trade.id,
-              updates,
-              updatedChoices: updatedChoices.map(c => ({ id: c.id, executed: c.executed })),
-            });
-
-            return {
-              ...updates,
-              merchantTrades: {
-                choices: updatedChoices,
-                purchasedIds: [...(merchantTrades.purchasedIds || []), trade.id],
-              },
-            };
-          },
-        };
-      }).filter(Boolean)
-    : timedEventTab.event?.choices || [];
-
-  logger.log('[TIMED EVENT PANEL] Final eventChoices:', {
-    count: eventChoices.length,
-    choices: eventChoices.map(c => ({
-      id: c?.id,
-      hasLabel: !!c?.label,
-      hasCost: !!c?.cost,
-      hasEffect: typeof c?.effect === 'function',
-    })),
-  });
-
+    if (isMerchantEvent) {
+      // Use the merchant trades that were generated and stored when the event was created
+      // These trades already have their effect functions intact
+      return timedEventTab.event.choices || [];
+    }
+    return timedEventTab.event.choices || [];
+  }, [isMerchantEvent, timedEventTab.event]);
 
   useEffect(() => {
     if (!timedEventTab.isActive || !timedEventTab.expiryTime || !timedEventTab.event) {
@@ -151,7 +62,6 @@ export default function TimedEventPanel() {
 
           // Use the event's defined fallbackChoice if available
           if (event.fallbackChoice && typeof event.fallbackChoice.effect === 'function') {
-            logger.log('[TIMED EVENT PANEL] Timer expired, executing fallbackChoice:', { fallbackChoice: event.fallbackChoice.id });
             applyEventChoice(event.fallbackChoice.id, timedEventId, event);
           } else {
             // Fallback to looking for "doNothing" choice
@@ -159,7 +69,6 @@ export default function TimedEventPanel() {
               (c) => c.id === "doNothing",
             );
             if (fallbackChoice && typeof fallbackChoice.effect === 'function') {
-              logger.log('[TIMED EVENT PANEL] Timer expired, executing doNothing choice');
               applyEventChoice(fallbackChoice.id, timedEventId, event);
             }
           }
@@ -189,8 +98,6 @@ export default function TimedEventPanel() {
     timedEventTab.expiryTime,
     setTimedEventTab,
     applyEventChoice,
-    setHighlightedResources,
-    fallbackExecutedRef
   ]);
 
   // Early return AFTER all hooks have been called
@@ -209,33 +116,29 @@ export default function TimedEventPanel() {
   };
 
   const handleChoice = (choiceId: string) => {
-    logger.log('[TIMED EVENT PANEL] handleChoice called:', {
-      choiceId,
-      eventId: timedEventTab.event?.id,
-      isMerchantEvent,
-      hasMerchantTrades: !!merchantTrades?.choices,
-      merchantTradesCount: merchantTrades?.choices?.length || 0,
-    });
+    setHighlightedResources([]); // Clear highlights before closing
 
-    const isSayGoodbye = choiceId === "say_goodbye";
+    // If it's a merchant trade (not "say_goodbye"), track the purchase
+    if (isMerchantEvent && choiceId !== 'say_goodbye') {
+      // Log the creation of a merchant trade
+      logger.log(`[MERCHANT TRADE] Creating merchant trade: ${choiceId}`);
 
-    if (isSayGoodbye) {
-      logger.log('[TIMED EVENT] User said goodbye');
-      fallbackExecutedRef.current = true;
-      setTimedEventTab(false);
-      return;
+      // Update merchantTrades state to mark this item as purchased
+      useGameStore.setState((state) => ({
+        merchantTrades: {
+          ...state.merchantTrades,
+          purchasedIds: [...state.merchantTrades.purchasedIds, choiceId],
+        },
+      }));
     }
 
-    logger.log('[TIMED EVENT PANEL] Calling applyEventChoice with:', {
-      choiceId,
-      eventId: timedEventTab.event!.id,
-      hasEvent: !!timedEventTab.event,
-    });
+    applyEventChoice(choiceId, eventId, event);
 
-    applyEventChoice(choiceId, timedEventTab.event!.id, timedEventTab.event!);
-    setTimedEventTab(false);
+    // Only close tab if it's "say_goodbye"
+    if (choiceId === 'say_goodbye') {
+      setTimedEventTab(false);
+    }
   };
-
 
   // Helper function to extract resource names from cost text
   const extractResourcesFromCost = (costText: string): string[] => {
@@ -270,220 +173,265 @@ export default function TimedEventPanel() {
       {/* Choices */}
       <div className="space-y-2">
         <div className="flex flex-wrap gap-2 mt-3">
-          {eventChoices
-              .filter(
-                (choice) => {
-                  logger.log('[TIMED EVENT PANEL] Filtering choice:', {
-                    choice,
-                    hasId: !!choice?.id,
-                    id: choice?.id,
-                    willFilter: choice?.id !== "say_goodbye" && !choice?.id?.includes("acknowledge"),
-                  });
-                  return choice?.id !== "say_goodbye" && !choice?.id?.includes("acknowledge");
-                }
-              )
-              .map((choice) => {
-                logger.log('[TIMED EVENT PANEL] Mapping choice for render:', {
-                  choice,
-                  hasId: !!choice?.id,
-                  id: choice?.id,
-                  hasLabel: !!choice?.label,
-                  hasCost: !!choice?.cost,
-                });
+          {eventChoices.filter(choice => choice.id !== 'say_goodbye').map((choice) => {
+            const cost = choice.cost;
+            // Evaluate cost if it's a function
+            const costText =
+              typeof cost === "function" ? cost(gameState) : cost;
 
-                // Guard against invalid choices
-                if (!choice || !choice.id) {
-                  logger.error('[TIMED EVENT PANEL] Invalid choice detected during render:', choice);
-                  return null;
-                }
-
-                const cost = choice.cost;
-                // Evaluate cost if it's a function
-                const costText =
-                  typeof cost === "function" ? cost(gameState) : cost;
-
-                // Check if player can afford the cost
-                let canAfford = true;
-                if (costText) {
-                  const resourceKeys = Object.keys(gameState.resources) as Array<
-                    keyof typeof gameState.resources
-                  >;
-                  for (const resourceKey of resourceKeys) {
-                    if (costText.includes(resourceKey)) {
-                      const match = costText.match(
-                        new RegExp(`(\\d+)\\s*${resourceKey}`),
-                      );
-                      if (match) {
-                        const costAmount = parseInt(match[1]);
-                        if (gameState.resources[resourceKey] < costAmount) {
-                          canAfford = false;
-                          break;
-                        }
-                      }
+            // Check if player can afford the cost
+            let canAfford = true;
+            if (costText) {
+              const resourceKeys = Object.keys(gameState.resources) as Array<
+                keyof typeof gameState.resources
+              >;
+              for (const resourceKey of resourceKeys) {
+                if (costText.includes(resourceKey)) {
+                  const match = costText.match(
+                    new RegExp(`(\\d+)\\s*${resourceKey}`),
+                  );
+                  if (match) {
+                    const costAmount = parseInt(match[1]);
+                    if (gameState.resources[resourceKey] < costAmount) {
+                      canAfford = false;
+                      break;
                     }
                   }
                 }
+              }
+            }
 
-                // Evaluate label if it's a function
-                const labelText =
-                  typeof choice.label === "function"
-                    ? choice.label(gameState)
-                    : choice.label;
+            // Evaluate label if it's a function
+            const labelText =
+              typeof choice.label === "function"
+                ? choice.label(gameState)
+                : choice.label;
 
-                // Check if this item was already purchased
-                const isPurchased = isMerchantEvent && gameState.merchantTrades.purchasedIds.includes(choice.id);
+            // Check if this item was already purchased
+            const isPurchased = isMerchantEvent && gameState.merchantTrades.purchasedIds.includes(choice.id);
 
-                // Disable if can't afford, time is up, or already purchased
-                const isDisabled = !canAfford || timeRemaining <= 0 || isPurchased;
+            // Disable if can't afford, time is up, or already purchased
+            const isDisabled = !canAfford || timeRemaining <= 0 || isPurchased;
 
-                const buttonContent = (
-                  <Button
-                    onClick={
-                      !mobileTooltip.isMobile
-                        ? (e) => {
-                            e.stopPropagation();
-                            handleChoice(choice.id);
-                          }
-                        : undefined
-                    }
-                    variant="outline"
-                    size="xs"
-                    disabled={isDisabled}
-                    button_id={`timedevent-${choice.id}`}
-                  >
-                    {labelText}
-                  </Button>
-                );
+            const buttonContent = (
+              <Button
+                onClick={
+                  !mobileTooltip.isMobile
+                    ? (e) => {
+                        e.stopPropagation();
+                        handleChoice(choice.id);
+                      }
+                    : undefined
+                }
+                variant="outline"
+                size="xs"
+                disabled={isDisabled}
+                button_id={`timedevent-${choice.id}`}
+              >
+                {labelText}
+              </Button>
+            );
 
-                return costText ? (
-                  <TooltipProvider key={choice.id}>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <div
-                          onClick={(e) => {
-                            mobileTooltip.handleWrapperClick(
-                              `timedevent-${choice.id}`,
-                              isDisabled,
-                              false,
-                              e,
-                            );
-                          }}
-                          onMouseDown={
-                            mobileTooltip.isMobile
-                              ? (e) =>
-                                  mobileTooltip.handleMouseDown(
-                                    `timedevent-${choice.id}`,
-                                    isDisabled,
-                                    false,
-                                    e,
-                                  )
-                              : undefined
-                          }
-                          onMouseUp={
-                            mobileTooltip.isMobile
-                              ? (e) =>
-                                  mobileTooltip.handleMouseUp(
-                                    `timedevent-${choice.id}`,
-                                    isDisabled,
-                                    () => handleChoice(choice.id),
-                                    e,
-                                  )
-                              : undefined
-                          }
-                          onTouchStart={
-                            mobileTooltip.isMobile
-                              ? (e) =>
-                                  mobileTooltip.handleTouchStart(
-                                    `timedevent-${choice.id}`,
-                                    isDisabled,
-                                    false,
-                                    e,
-                                  )
-                              : undefined
-                          }
-                          onTouchEnd={
-                            mobileTooltip.isMobile
-                              ? (e) =>
-                                  mobileTooltip.handleTouchEnd(
-                                    `timedevent-${choice.id}`,
-                                    isDisabled,
-                                    () => handleChoice(choice.id),
-                                    e,
-                                  )
-                              : undefined
-                          }
-                          onMouseEnter={() => {
-                            if (costText) {
-                              const resources = extractResourcesFromCost(costText);
-                              setHighlightedResources(resources);
-                            }
-                          }}
-                          onMouseLeave={() => {
-                            setHighlightedResources([]);
-                          }}
-                        >
-                          {buttonContent}
-                        </div>
-                      </TooltipTrigger>
-                      <TooltipContent side="top">
-                        <div className="text-xs">
-                          {eventChoiceCostTooltip.getContent(costText, gameState)}
-                        </div>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                ) : (
-                  <div
-                    key={choice.id}
-                    onMouseDown={
-                      mobileTooltip.isMobile
-                        ? (e) =>
-                            mobileTooltip.handleMouseDown(
-                              `timedevent-${choice.id}`,
-                              isDisabled,
-                              false,
-                              e,
-                            )
-                        : undefined
+            return costText ? (
+              <TooltipProvider key={choice.id}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div
+                      onClick={(e) => {
+                        mobileTooltip.handleWrapperClick(
+                          `timedevent-${choice.id}`,
+                          isDisabled,
+                          false,
+                          e,
+                        );
+                      }}
+                      onMouseDown={
+                        mobileTooltip.isMobile
+                          ? (e) =>
+                              mobileTooltip.handleMouseDown(
+                                `timedevent-${choice.id}`,
+                                isDisabled,
+                                false,
+                                e,
+                              )
+                          : undefined
+                      }
+                      onMouseUp={
+                        mobileTooltip.isMobile
+                          ? (e) =>
+                              mobileTooltip.handleMouseUp(
+                                `timedevent-${choice.id}`,
+                                isDisabled,
+                                () => handleChoice(choice.id),
+                                e,
+                              )
+                          : undefined
+                      }
+                      onTouchStart={
+                        mobileTooltip.isMobile
+                          ? (e) =>
+                              mobileTooltip.handleTouchStart(
+                                `timedevent-${choice.id}`,
+                                isDisabled,
+                                false,
+                                e,
+                              )
+                          : undefined
+                      }
+                      onTouchEnd={
+                        mobileTooltip.isMobile
+                          ? (e) =>
+                              mobileTooltip.handleTouchEnd(
+                                `timedevent-${choice.id}`,
+                                isDisabled,
+                                () => handleChoice(choice.id),
+                                e,
+                              )
+                          : undefined
+                      }
+                      onMouseEnter={() => {
+                        if (costText) {
+                          const resources = extractResourcesFromCost(costText);
+                          setHighlightedResources(resources);
+                        }
+                      }}
+                      onMouseLeave={() => {
+                        setHighlightedResources([]);
+                      }}
+                    >
+                      {buttonContent}
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent side="top">
+                    <div className="text-xs">
+                      {eventChoiceCostTooltip.getContent(costText, gameState)}
+                    </div>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            ) : (
+              <div
+                key={choice.id}
+                onMouseDown={
+                  mobileTooltip.isMobile
+                    ? (e) =>
+                        mobileTooltip.handleMouseDown(
+                          `timedevent-${choice.id}`,
+                          isDisabled,
+                          false,
+                          e,
+                        )
+                    : undefined
+                }
+                onMouseUp={
+                  mobileTooltip.isMobile
+                    ? (e) =>
+                        mobileTooltip.handleMouseUp(
+                          `timedevent-${choice.id}`,
+                          isDisabled,
+                          () => handleChoice(choice.id),
+                          e,
+                        )
+                    : undefined
+                }
+                onTouchStart={
+                  mobileTooltip.isMobile
+                    ? (e) =>
+                        mobileTooltip.handleTouchStart(
+                          `timedevent-${choice.id}`,
+                          isDisabled,
+                          false,
+                          e,
+                        )
+                    : undefined
+                }
+                onTouchEnd={
+                  mobileTooltip.isMobile
+                    ? (e) =>
+                        mobileTooltip.handleTouchEnd(
+                          `timedevent-${choice.id}`,
+                          isDisabled,
+                          () => handleChoice(choice.id),
+                          e,
+                        )
+                    : undefined
+                }
+              >
+                {buttonContent}
+              </div>
+            );
+          })}
+
+          {/* Say Goodbye button - always visible and hardcoded */}
+          <div
+            onMouseDown={
+              mobileTooltip.isMobile
+                ? (e) =>
+                    mobileTooltip.handleMouseDown(
+                      `timedevent-say_goodbye`,
+                      timeRemaining <= 0,
+                      false,
+                      e,
+                    )
+                : undefined
+            }
+            onMouseUp={
+              mobileTooltip.isMobile
+                ? (e) =>
+                    mobileTooltip.handleMouseUp(
+                      `timedevent-say_goodbye`,
+                      timeRemaining <= 0,
+                      () => {
+                        setHighlightedResources([]);
+                        setTimedEventTab(false);
+                      },
+                      e,
+                    )
+                : undefined
+            }
+            onTouchStart={
+              mobileTooltip.isMobile
+                ? (e) =>
+                    mobileTooltip.handleTouchStart(
+                      `timedevent-say_goodbye`,
+                      timeRemaining <= 0,
+                      false,
+                      e,
+                    )
+                : undefined
+            }
+            onTouchEnd={
+              mobileTooltip.isMobile
+                ? (e) =>
+                    mobileTooltip.handleTouchEnd(
+                      `timedevent-say_goodbye`,
+                      timeRemaining <= 0,
+                      () => {
+                        setHighlightedResources([]);
+                        setTimedEventTab(false);
+                      },
+                      e,
+                    )
+                : undefined
+            }
+          >
+            <Button
+              onClick={
+                !mobileTooltip.isMobile
+                  ? (e) => {
+                      e.stopPropagation();
+                      setHighlightedResources([]);
+                      setTimedEventTab(false);
                     }
-                    onMouseUp={
-                      mobileTooltip.isMobile
-                        ? (e) =>
-                            mobileTooltip.handleMouseUp(
-                              `timedevent-${choice.id}`,
-                              isDisabled,
-                              () => handleChoice(choice.id),
-                              e,
-                            )
-                        : undefined
-                    }
-                    onTouchStart={
-                      mobileTooltip.isMobile
-                        ? (e) =>
-                            mobileTooltip.handleTouchStart(
-                              `timedevent-${choice.id}`,
-                              isDisabled,
-                              false,
-                              e,
-                            )
-                        : undefined
-                    }
-                    onTouchEnd={
-                      mobileTooltip.isMobile
-                        ? (e) =>
-                            mobileTooltip.handleTouchEnd(
-                              `timedevent-${choice.id}`,
-                              isDisabled,
-                              () => handleChoice(choice.id),
-                              e,
-                            )
-                        : undefined
-                    }
-                  >
-                    {buttonContent}
-                  </div>
-                );
-              }).filter(Boolean)}
+                  : undefined
+              }
+              variant="outline"
+              size="xs"
+              disabled={timeRemaining <= 0}
+              button_id="timedevent-say_goodbye"
+            >
+              Say Goodbye
+            </Button>
           </div>
         </div>
       </div>
