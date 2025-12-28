@@ -1,0 +1,22 @@
+Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+logger.ts:33 v222Z Registering sounds for lazy loading...
+logger.ts:33 v222Z Sound URLs registered for lazy loading
+logger.ts:33 v222Z [GAME PAGE] Initializing game
+logger.ts:33 v222Z [GAME PAGE] User authenticated, loading game
+logger.ts:33 v222Z [LOAD] 💾 Local save retrieved: {hasLocalSave: true, timestamp: '2025-12-28T10:29:37.860Z', playTime: 5533595.499999998, playTimeMinutes: 92, hasCooldowns: true, …}
+logger.ts:33 v222Z [LOAD CLOUD] 📊 Loaded from Supabase: {hasData: true, hasReferrals: true, referralsCount: 0, referrals: Array(0), playTime: 5533595, …}
+logger.ts:33 v222Z [LOAD] 🔍 Comparing local and cloud saves: {cloudPlayTime: 5533595, localPlayTime: 5533595, cloudTimestamp: 1766917778313, localTimestamp: 1766917777860}
+logger.ts:33 v222Z [LOAD] ☁️ Cloud save is newer - using cloud save
+logger.ts:33 v222Z [REFERRAL] 🔍 Processing unclaimed referrals... {hasUser: true, hasReferrals: true, referralsCount: 0, referrals: Array(0)}
+logger.ts:33 v222Z [REFERRAL] ⏭️ Skipping - no user or no referrals
+logger.ts:33 v222Z [LOAD] ✅ Cloud save loaded and synced locally
+logger.ts:33 v222Z [GAME] Game loaded from save
+logger.ts:33 v222Z [IDLE MODE INIT] Dialog open check: {dialogOpen: false, isActive: false, idleModeState: {…}}
+logger.ts:33 v222Z [GAME CONTAINER] Full game dialog closed, state: {BTP: 0, isPaused: false, isPausedPreviously: false}
+logger.ts:33 v222Z [VERSION] Initializing version check from GameContainer
+logger.ts:33 v222Z Loading all sounds after user gesture...
+8The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. <URL>Understand this warning
+logger.ts:33 v222Z [MERCHANT LOAD] 🔄 Checking if trades need regeneration: {hasChoices: true, choicesCount: 7, hasValidChoices: false, choiceIds: Array(7), sampleEffectType: 'undefined'}
+logger.ts:33 v222Z [MERCHANT LOAD] 🔄 Regenerating merchant trades after page refresh
+logger.ts:33 v222Z [MERCHANT LOAD] ✅ Trades regenerated: {tradesCount: 7, tradeIds: Array(7), tradeLabels: Array(7)}tradeIds: (7) ['buy_blacksteel_100_mid2', 'buy_steel_250_mid2', 'buy_steel_150_mid1', 'sell_wood_250_mid1', 'sell_steel_250_mid1', 'trade_book_of_trials', 'say_goodbye']tradeLabels: (7) ['+30 Blacksteel', '+280 Steel', '+170 Steel', '+20 Steel', '+2750 Stone', 'Book of Trials', 'Say goodbye']tradesCount: 7[[Prototype]]: Object
+logger.ts:33 v222Z [MERCHANT RENDER] 🎨 Converting purchases for rendering: {merchantPurchases: {…}, isArray: false, isSet: false, purchasesArray: Array(0), purchaseCount: 0}
