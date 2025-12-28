@@ -1,0 +1,23 @@
+[EVENT MANAGER] eventId: merchant
+events.ts:320 [EVENT MANAGER] currentLogEntry: {hasEntry: true, entryId: 'merchant', hasChoices: true, choicesCount: 7}
+events.ts:335 [EVENT MANAGER] Using pre-generated merchant choices from currentLogEntry
+events.ts:336 [EVENT MANAGER] Available choices: (7) [{…}, {…}, {…}, {…}, {…}, {…}, {…}]
+events.ts:339 [EVENT MANAGER] Found merchant choice: {found: true, id: 'buy_leather_150_mid1', hasEffect: true, effectType: 'function', effectString: '(state) => {\n        const currentSell = state.res…]: currentSell - sellAmount,\n              [buyRe'}
+events.ts:348 [EVENT MANAGER] Calling merchant effect function...
+events.ts:349 [EVENT MANAGER] State before effect: {food: 30194, wood: 13682, stone: 2525, leather: 460, steel: 21643, …}
+events.ts:360 [EVENT MANAGER] Merchant effect result: {hasResources: true, resourceChanges: {…}, fullResult: {…}}
+events.ts:365 [EVENT MANAGER] ===== applyEventChoice END (merchant) =====
+state.ts:1406 [STATE] EventManager returned changes: {hasResources: true, resourceChanges: {…}, hasLogMessage: false, hasCombatData: false, allKeys: Array(1)}
+state.ts:1432 [STATE] Applying state changes: {resources: {…}}
+state.ts:1435 [STATE] prevState resources: {food: 30194, wood: 13682, stone: 2525, leather: 460, steel: 21643, …}
+state.ts:1447 [STATE] mergedUpdates resources: {fur: 25000, coal: 25000, food: 30194, gold: 1523059945, iron: 25000, …}
+state.ts:1454 [STATE] newState resources: {food: 30194, wood: 11932, stone: 2525, leather: 630, steel: 21643, …}
+state.ts:1466 [STATE] State updated, final resources: {food: 30194, wood: 11932, stone: 2525, leather: 630, steel: 21643, …}
+state.ts:1478 [STATE] ===== applyEventChoice END =====
+TimedEventPanel.tsx:238 [TIMED EVENT TRADE] Marked as purchased: buy_leather_150_mid1
+TimedEventPanel.tsx:222 [TIMED EVENT TRADE] Resources AFTER trade: {food: 30194, wood: 11932, stone: 2525, iron: 25000, leather: 630, …}
+TimedEventPanel.tsx:232 [TIMED EVENT TRADE] ===== handleChoice END =====
+logger.ts:33 v222Z [SAVE CLOUD] 📊 Resource snapshot includes stats: {hasStats: true, statsKeys: Array(4), snapshotKeys: Array(29)}
+logger.ts:33 v222Z [SAVE CLOUD] 🔍 Playtime overwrite check: {allowPlaytimeOverwrite: false, isNewGame: false, willAllowOverwrite: false, currentPlayTime: 5311625}
+logger.ts:33 v222Z [SAVE CLOUD] Edge Function success: {success: true}
+logger.ts:33 v222Z [SAVE] ✅ Updated lastCloudState after successful cloud save
