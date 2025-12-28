@@ -12,6 +12,27 @@ import { eventChoiceCostTooltip } from "@/game/rules/tooltips";
 import { generateMerchantChoices } from "@/game/rules/eventsMerchant";
 import { EventChoice } from "@/game/rules/events";
 
+// Assuming LogEntry and setEventDialog are defined elsewhere and imported if necessary
+// For this example, we'll define dummy types if they are not provided
+interface LogEntry {
+  id: string;
+  message: string;
+  timestamp: number;
+  type: "event";
+  title: string;
+  choices: Array<{
+    id: string;
+    label: string;
+    effect: () => any;
+  }>;
+  skipSound?: boolean;
+}
+
+// Dummy function for setEventDialog, replace with actual import if available
+const setEventDialog = (show: boolean, entry?: LogEntry) => {
+  console.log(`[setEventDialog] Called with show: ${show}, entry:`, entry);
+};
+
 export default function TimedEventPanel() {
   const {
     timedEventTab,
@@ -20,7 +41,7 @@ export default function TimedEventPanel() {
     setHighlightedResources,
   } = useGameStore();
   const gameState = useGameStore();
-  
+
   // ALL HOOKS MUST BE CALLED BEFORE ANY EARLY RETURNS
   const mobileTooltip = useMobileButtonTooltip();
   const [timeRemaining, setTimeRemaining] = useState<number>(0);
@@ -39,7 +60,7 @@ export default function TimedEventPanel() {
     const updateTimer = () => {
       const now = Date.now();
       const remaining = Math.max(0, expiryTime - now);
-      
+
       setTimeRemaining(remaining);
 
       if (remaining <= 0) {
@@ -66,7 +87,7 @@ export default function TimedEventPanel() {
             }
           }
         }
-        
+
         // Clear highlights and auto-close the tab
         setHighlightedResources([]);
         setTimedEventTab(false).catch(console.error);
@@ -114,25 +135,89 @@ export default function TimedEventPanel() {
   const handleChoice = (choiceId: string) => {
     const choice = eventChoices.find(c => c.id === choiceId);
     const isSayGoodbye = choiceId === 'say_goodbye';
-    
+
+    console.log('[TIMED EVENT TRADE] Button clicked:', {
+      choiceId,
+      eventId,
+      choiceFound: !!choice,
+      isSayGoodbye,
+      choiceLabel: choice?.label,
+      choiceCost: choice?.cost,
+      effectType: typeof choice?.effect
+    });
+
     if (!choice) {
+      console.error('[TIMED EVENT TRADE] No choice found for:', choiceId);
       return;
     }
 
     // Check if already purchased (shouldn't happen due to disabled state, but double-check)
     if (!isSayGoodbye && purchasedItems.has(choiceId)) {
+      console.log('[TIMED EVENT TRADE] Item already purchased:', choiceId);
       return;
     }
-    
+
+    // Log the current resources BEFORE the trade
+    console.log('[TIMED EVENT TRADE] Resources BEFORE trade:', {
+      food: gameState.resources.food,
+      wood: gameState.resources.wood,
+      stone: gameState.resources.stone,
+      iron: gameState.resources.iron,
+      leather: gameState.resources.leather,
+      steel: gameState.resources.steel,
+      gold: gameState.resources.gold,
+      silver: gameState.resources.silver
+    });
+
     setHighlightedResources([]); // Clear highlights before closing
+
+    // Apply the choice and log the result
+    console.log('[TIMED EVENT TRADE] Applying choice with effect:', choice.effect);
+    // Pass the event as currentLogEntry to preserve pre-generated merchant choices
     applyEventChoice(choiceId, eventId, event);
+
+    // Log resources AFTER trade (with slight delay to allow state to update)
+    setTimeout(() => {
+      console.log('[TIMED EVENT TRADE] Resources AFTER trade:', {
+        food: gameState.resources.food,
+        wood: gameState.resources.wood,
+        stone: gameState.resources.stone,
+        iron: gameState.resources.iron,
+        leather: gameState.resources.leather,
+        steel: gameState.resources.steel,
+        gold: gameState.resources.gold,
+        silver: gameState.resources.silver
+      });
+    }, 100);
 
     // If it's a trade button (not say goodbye), mark as purchased
     if (!isSayGoodbye) {
       setPurchasedItems(prev => new Set([...prev, choiceId]));
+      console.log('[TIMED EVENT TRADE] Marked as purchased:', choiceId);
     } else {
-      // If saying goodbye, close the tab
+      // If saying goodbye, close the tab and show a farewell message
       setTimedEventTab(false).catch(console.error);
+
+      // Show farewell dialog
+      const farewellEntry: LogEntry = {
+        id: `merchant-goodbye-${Date.now()}`,
+        message: "The merchant nods respectfully and continues on their way.",
+        timestamp: Date.now(),
+        type: "event",
+        title: "Farewell",
+        choices: [
+          {
+            id: "acknowledge",
+            label: "Continue",
+            effect: () => ({}),
+          },
+        ],
+        skipSound: true,
+      };
+
+      setTimeout(() => {
+        setEventDialog(true, farewellEntry);
+      }, 200);
     }
   };
 
@@ -150,7 +235,7 @@ export default function TimedEventPanel() {
     return resources;
   };
 
-  
+
 
   return (
     <div className="w-80 space-y-1 mt-2 mb-2 pr-4 pl-[3px]">
@@ -205,7 +290,7 @@ export default function TimedEventPanel() {
 
             // Check if this is the goodbye button
             const isGoodbyeButton = choice.id === 'say_goodbye';
-            
+
             // Check if this item has been purchased
             const isPurchased = purchasedItems.has(choice.id);
 
@@ -394,7 +479,7 @@ export default function TimedEventPanel() {
             );
           })}
 
-          
+
         </div>
       </div>
     </div>

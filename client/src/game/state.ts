@@ -1347,21 +1347,32 @@ export const useGameStore = create<GameStore>((set, get) => ({
       choiceId,
       eventId,
       hasCurrentLogEntry: !!currentLogEntry,
-      currentLogEntryChoices: currentLogEntry?.choices?.map(c => ({
-        id: c.id,
-        hasEffect: typeof c.effect === 'function',
-        effectType: typeof c.effect
-      }))
+      timedEventTabEvent: get().timedEventTab.event
     });
 
-    // Use passed currentLogEntry or fall back to eventDialog.currentEvent
-    const logEntry = currentLogEntry || get().eventDialog.currentEvent;
+    // For timed tab events (like merchant), use the event from timedEventTab
+    const logEntry = currentLogEntry || get().timedEventTab.event || get().eventDialog.currentEvent;
+    
+    console.log('[STATE] Calling EventManager.applyEventChoice with:', {
+      choiceId,
+      eventId,
+      hasLogEntry: !!logEntry,
+      logEntryChoices: logEntry?.choices?.length
+    });
+    
     const changes = EventManager.applyEventChoice(
       state,
       choiceId,
       eventId,
       logEntry || undefined,
     );
+    
+    console.log('[STATE] EventManager returned changes:', {
+      hasResources: !!changes.resources,
+      resourceChanges: changes.resources,
+      hasLogMessage: !!(changes as any)._logMessage,
+      hasCombatData: !!(changes as any)._combatData
+    });
 
     let combatData = null;
     let logMessage = null;
