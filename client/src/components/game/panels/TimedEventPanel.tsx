@@ -197,11 +197,48 @@ export default function TimedEventPanel() {
     <div className="w-80 space-y-1 mt-2 mb-2 pr-4 pl-[3px]">
       {/* Event Title */}
       {event.title && (
-        <h2 className="text-xs">
-          <span className="font-semibold">{event.title} </span>
-          <span className="text-muted-foreground">
-            {formatTime(timeRemaining)}
-          </span>
+        <h2 className="text-xs flex items-center justify-between">
+          <div>
+            <span className="font-semibold">{event.title} </span>
+            <span className="text-muted-foreground">
+              {formatTime(timeRemaining)}
+            </span>
+          </div>
+          {isMerchantEvent && (() => {
+            const knowledge = gameState.stats?.knowledge || 0;
+            const discount = Math.min(knowledge * 0.02, 0.5);
+            
+            if (discount > 0) {
+              return (
+                <TooltipProvider>
+                  <Tooltip
+                    open={discountTooltip.isTooltipOpen("merchant-discount")}
+                  >
+                    <TooltipTrigger asChild>
+                      <span
+                        className="text-blue-300/80 cursor-pointer hover:text-blue-300 transition-colors inline-block text-xl"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          discountTooltip.handleTooltipClick(
+                            "merchant-discount",
+                            e,
+                          );
+                        }}
+                      >
+                        ✧
+                      </span>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <div className="text-xs whitespace-nowrap">
+                        {Math.round(discount * 100)}% discount due to Knowledge{isKnowledgeBonusMaxed(knowledge) ? " (max)" : ""}
+                      </div>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              );
+            }
+            return null;
+          })()}
         </h2>
       )}
       {/* Event Message */}
@@ -210,44 +247,7 @@ export default function TimedEventPanel() {
       {/* Choices */}
       <div className="space-y-2">
         {isMerchantEvent && (
-          <div className="flex items-center justify-between mt-3">
-            <h3 className="text-xs font-semibold">Buy</h3>
-            {(() => {
-              const knowledge = gameState.stats?.knowledge || 0;
-              const discount = Math.min(knowledge * 0.02, 0.5);
-              
-              if (discount > 0) {
-                return (
-                  <TooltipProvider>
-                    <Tooltip
-                      open={discountTooltip.isTooltipOpen("merchant-discount")}
-                    >
-                      <TooltipTrigger asChild>
-                        <span
-                          className="text-blue-300/80 cursor-pointer hover:text-blue-300 transition-colors inline-block text-xl"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            discountTooltip.handleTooltipClick(
-                              "merchant-discount",
-                              e,
-                            );
-                          }}
-                        >
-                          ✧
-                        </span>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <div className="text-xs whitespace-nowrap">
-                          {Math.round(discount * 100)}% discount due to Knowledge{isKnowledgeBonusMaxed(knowledge) ? " (max)" : ""}
-                        </div>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                );
-              }
-              return null;
-            })()}
-          </div>
+       <h3 className="text-xs font-semibold mt-3">Buy</h3>
       )}
       <div className="flex flex-wrap gap-2">
         {eventChoices
