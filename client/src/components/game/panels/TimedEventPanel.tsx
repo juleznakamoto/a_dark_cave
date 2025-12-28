@@ -217,14 +217,14 @@ export default function TimedEventPanel() {
       <div className="text-xs text-muted-foreground">{event.message}</div>
 
       {/* Choices */}
-      <div className="space-y-2">
+      <div className="space-y-2 mt-3">
         {isMerchantEvent && (
-          <h3 className="text-xs font-semibold mt-3 flex items-center justify-between">
+          <h3 className="text-xs font-semibold flex items-center justify-between">
             <span>Buy</span>
             {(() => {
               const knowledge = gameState.stats?.knowledge || 0;
               const discount = calculateMerchantDiscount(knowledge);
-              
+
               if (discount > 0) {
                 return (
                   <TooltipProvider>
@@ -258,7 +258,7 @@ export default function TimedEventPanel() {
             })()}
           </h3>
         )}
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-2 mt-2">
         {eventChoices
           .map((choice) => {
             const cost = choice.cost;
@@ -274,7 +274,7 @@ export default function TimedEventPanel() {
                 for (const match of costMatches) {
                   const costAmount = parseInt(match[1]);
                   const resourceName = match[2].toLowerCase();
-                  
+
                   // Check if this resource exists in gameState.resources
                   const resourceKey = resourceName as keyof typeof gameState.resources;
                   if (resourceKey in gameState.resources) {
@@ -338,11 +338,11 @@ export default function TimedEventPanel() {
                         onMouseEnter={() => {
                           if (costText) {
                             const costResources = extractResourcesFromCost(costText);
-                            
+
                             // For merchant trades, always highlight both buy and sell resources
                             if (isMerchantEvent) {
                               const buyResource = extractBuyResourceFromLabel(labelText);
-                              const highlightResources = buyResource 
+                              const highlightResources = buyResource
                                 ? [...costResources, buyResource]
                                 : costResources;
                               setHighlightedResources(highlightResources);
@@ -361,7 +361,7 @@ export default function TimedEventPanel() {
                     </TooltipTrigger>
                     <TooltipContent side="top">
                       <div className="text-xs">
-                        {isMerchantEvent 
+                        {isMerchantEvent
                           ? merchantTooltip.getContent(costText)
                           : eventChoiceCostTooltip.getContent(costText, gameState)
                         }
