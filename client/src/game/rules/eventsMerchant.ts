@@ -1111,6 +1111,11 @@ export function generateMerchantChoices(state: GameState): MerchantTradeData[] {
   return finalChoices;
 }
 
+// Convert MerchantTradeData array to EventChoice array with effect functions
+export function convertTradesToEventChoices(trades: MerchantTradeData[], state: GameState): EventChoice[] {
+  return trades.map(trade => reconstructTradeFromData(trade, state));
+}
+
 export const merchantEvents: Record<string, GameEvent> = {
   merchant: {
     id: "merchant",

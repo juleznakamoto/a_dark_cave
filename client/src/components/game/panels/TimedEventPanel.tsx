@@ -32,20 +32,12 @@ export default function TimedEventPanel() {
     if (!timedEventTab.event) return [];
 
     if (isMerchantEvent) {
-      // Reconstruct trades from saved data
-      const savedTrades = gameState.merchantTrades.choices;
-      if (savedTrades.length > 0) {
-        // The reconstructTradeFromData function is not defined in eventsMerchant,
-        // so we'll assume it's handled elsewhere or not needed in this context.
-        // If it's critical, it needs to be imported or defined.
-        // For now, we'll log a warning and return an empty array.
-        logger.warn("reconstructTradeFromData is not available. Merchant trades may not be reconstructed correctly.");
-        return [];
-      }
-      return [];
+      // Use the merchant trades that were generated and stored when the event was created
+      // These trades already have their effect functions intact
+      return timedEventTab.event.choices || [];
     }
     return timedEventTab.event.choices || [];
-  }, [isMerchantEvent, timedEventTab.event?.id, gameState.merchantTrades.choices, gameState]);
+  }, [isMerchantEvent, timedEventTab.event]);
 
   useEffect(() => {
     if (!timedEventTab.isActive || !timedEventTab.expiryTime || !timedEventTab.event) {
