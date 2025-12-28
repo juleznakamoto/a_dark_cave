@@ -1,0 +1,34 @@
+events.ts:371 Uncaught TypeError: choice.effect is not a function
+    at EventManager.applyEventChoice (events.ts:371:33)
+    at applyEventChoice (state.ts:1391:34)
+    at handleChoice (TimedEventPanel.tsx:130:5)
+    at TimedEventPanel.jsxDEV.children.jsxDEV.children.jsxDEV.children.jsxDEV.children.jsxDEV.onClick (TimedEventPanel.tsx:412:23)
+    at handleClick (button.tsx:30:9)
+
+chunk-276SZO74.js?v=d54e99be:3750 Uncaught TypeError: choice.effect is not a function
+    at EventManager.applyEventChoice (events.ts:371:33)
+    at applyEventChoice (state.ts:1391:34)
+    at handleChoice (TimedEventPanel.tsx:130:5)
+    at TimedEventPanel.jsxDEV.children.jsxDEV.children.jsxDEV.children.jsxDEV.children.jsxDEV.onClick (TimedEventPanel.tsx:412:23)
+    at handleClick (button.tsx:30:9)
+state.ts:1380 [STATE] applyEventChoice called: 
+{choiceId: 'say_goodbye', eventId: 'merchant', hasCurrentLogEntry: true, currentLogEntryChoices: Array(1)}
+events.ts:320 [EVENT MANAGER] applyEventChoice called: 
+{choiceId: 'say_goodbye', eventId: 'merchant', hasCurrentLogEntry: true}
+events.ts:335 [EVENT MANAGER] Using choices from state.merchantTrades for merchant event
+events.ts:339 [EVENT MANAGER] Available choices: 
+[{…}]
+events.ts:364 [EVENT MANAGER] Found choice: 
+{id: 'say_goodbye', hasEffect: false, effectType: 'undefined', effectValue: undefined}
+events.ts:371 Uncaught TypeError: choice.effect is not a function
+    at EventManager.applyEventChoice (events.ts:371:33)
+    at applyEventChoice (state.ts:1391:34)
+    at handleChoice (TimedEventPanel.tsx:130:5)
+    at TimedEventPanel.jsxDEV.children.jsxDEV.children.jsxDEV.children.jsxDEV.children.jsxDEV.onClick (TimedEventPanel.tsx:412:23)
+    at handleClick (button.tsx:30:9)
+chunk-276SZO74.js?v=d54e99be:3750 Uncaught TypeError: choice.effect is not a function
+    at EventManager.applyEventChoice (events.ts:371:33)
+    at applyEventChoice (state.ts:1391:34)
+    at handleChoice (TimedEventPanel.tsx:130:5)
+    at TimedEventPanel.jsxDEV.children.jsxDEV.children.jsxDEV.children.jsxDEV.children.jsxDEV.onClick (TimedEventPanel.tsx:412:23)
+    at handleClick (button.tsx:30:9)
