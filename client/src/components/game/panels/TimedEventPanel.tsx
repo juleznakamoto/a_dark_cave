@@ -11,6 +11,7 @@ import { useMobileButtonTooltip } from "@/hooks/useMobileTooltip";
 import { eventChoiceCostTooltip } from "@/game/rules/tooltips";
 import { generateMerchantChoices } from "@/game/rules/eventsMerchant";
 import { EventChoice } from "@/game/rules/events";
+import { logger } from "@/lib/logger";
 
 // Assuming LogEntry and setEventDialog are defined elsewhere and imported if necessary
 // For this example, we'll define dummy types if they are not provided
