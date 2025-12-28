@@ -290,7 +290,29 @@ export default function ForestPanel() {
           tooltip={tooltipContent}
           onMouseEnter={() => {
             if (state.buildings.inkwardenAcademy > 0) {
-              const resources = getResourcesFromActionCost(actionId, state);
+              const resources: string[] = [];
+              
+              // For trade buttons, extract both buy and sell resources
+              if (isTradeButton && action.cost && action.effects) {
+                // Get cost resource (what you pay)
+                const costKeys = Object.keys(action.cost[activeTier] || {});
+                const costResourceKey = costKeys.find(key => key.startsWith('resources.'));
+                if (costResourceKey) {
+                  resources.push(costResourceKey.split('.')[1]);
+                }
+                
+                // Get effect resource (what you get)
+                const effectKeys = Object.keys(action.effects[activeTier] || {});
+                const effectResourceKey = effectKeys.find(key => key.startsWith('resources.'));
+                if (effectResourceKey) {
+                  resources.push(effectResourceKey.split('.')[1]);
+                }
+              } else {
+                // For non-trade actions, use existing logic
+                const actionResources = getResourcesFromActionCost(actionId, state);
+                resources.push(...actionResources);
+              }
+              
               setHighlightedResources(new Set(resources));
             }
           }}
