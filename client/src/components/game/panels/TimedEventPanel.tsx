@@ -168,7 +168,7 @@ export default function TimedEventPanel() {
       {/* Choices */}
       <div className="space-y-2">
         <div className="flex flex-wrap gap-2 mt-3">
-          {eventChoices.map((choice) => {
+          {eventChoices.filter(choice => choice.id !== 'say_goodbye').map((choice) => {
             const cost = choice.cost;
             // Evaluate cost if it's a function
             const costText =
@@ -357,7 +357,70 @@ export default function TimedEventPanel() {
             );
           })}
 
-          
+          {/* Say Goodbye button - always visible */}
+          <div
+            onMouseDown={
+              mobileTooltip.isMobile
+                ? (e) =>
+                    mobileTooltip.handleMouseDown(
+                      `timedevent-say_goodbye`,
+                      timeRemaining <= 0,
+                      false,
+                      e,
+                    )
+                : undefined
+            }
+            onMouseUp={
+              mobileTooltip.isMobile
+                ? (e) =>
+                    mobileTooltip.handleMouseUp(
+                      `timedevent-say_goodbye`,
+                      timeRemaining <= 0,
+                      () => handleChoice('say_goodbye'),
+                      e,
+                    )
+                : undefined
+            }
+            onTouchStart={
+              mobileTooltip.isMobile
+                ? (e) =>
+                    mobileTooltip.handleTouchStart(
+                      `timedevent-say_goodbye`,
+                      timeRemaining <= 0,
+                      false,
+                      e,
+                    )
+                : undefined
+            }
+            onTouchEnd={
+              mobileTooltip.isMobile
+                ? (e) =>
+                    mobileTooltip.handleTouchEnd(
+                      `timedevent-say_goodbye`,
+                      timeRemaining <= 0,
+                      () => handleChoice('say_goodbye'),
+                      e,
+                    )
+                : undefined
+            }
+          >
+            <Button
+              onClick={
+                !mobileTooltip.isMobile
+                  ? (e) => {
+                      e.stopPropagation();
+                      handleChoice('say_goodbye');
+                    }
+                  : undefined
+              }
+              variant="outline"
+              size="xs"
+              disabled={timeRemaining <= 0}
+              button_id="timedevent-say_goodbye"
+            >
+              Say Goodbye
+            </Button>
+          </div>
         </div>
       </div>
     </div>
