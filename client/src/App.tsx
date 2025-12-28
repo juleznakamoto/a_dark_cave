@@ -52,8 +52,8 @@ function App() {
     let exitIntentTimeout: NodeJS.Timeout | null = null;
 
     const initPlaylight = async () => {
-      // Defer SDK loading by 2 seconds to prioritize initial render
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // Defer SDK loading by 5 seconds to prioritize initial render
+      await new Promise(resolve => setTimeout(resolve, 5000));
       
       try {
         const module = await import(
