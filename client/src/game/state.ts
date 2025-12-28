@@ -1176,14 +1176,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
           : new Set<string>(), // Load merchantPurchases
       };
 
-      // Ensure merchantPurchases is always a Set (double-check for safety)
-      loadedState.merchantPurchases = new Set(
-        Array.isArray(loadedState.merchantPurchases) 
-          ? loadedState.merchantPurchases 
-          : loadedState.merchantPurchases instanceof Set
-          ? Array.from(loadedState.merchantPurchases)
-          : []
-      );
+      // Ensure merchantPurchases is always a Set (convert from array if needed)
+      if (Array.isArray(savedState.merchantPurchases)) {
+        loadedState.merchantPurchases = new Set(savedState.merchantPurchases);
+      } else if (savedState.merchantPurchases instanceof Set) {
+        loadedState.merchantPurchases = savedState.merchantPurchases;
+      } else {
+        loadedState.merchantPurchases = new Set();
+      }
 
       set(loadedState);
       StateManager.scheduleEffectsUpdate(get);

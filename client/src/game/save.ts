@@ -307,13 +307,13 @@ export async function saveGame(
 
         // Save via Edge Function (handles auth, rate limiting, and trust)
         const supabaseClient = await getSupabaseClient();
-        
+
         // Verify we have an active session (Supabase client will automatically include the JWT)
         const { data: { session } } = await supabaseClient.auth.getSession();
         if (!session) {
           throw new Error('No active session');
         }
-        
+
         const { data, error } = await supabaseClient.functions.invoke('save-game', {
           body: {
             gameStateDiff: stateDiff,
@@ -332,7 +332,7 @@ export async function saveGame(
           });
           throw error;
         }
-        
+
         logger.log('[SAVE CLOUD] Edge Function success:', data);
 
         // Update lastCloudState only after successful cloud save
@@ -440,7 +440,7 @@ export async function loadGame(): Promise<GameState | null> {
             logger.log("[LOAD] ☁️ Cloud save is newer - using cloud save");
 
             const { formatSaveTimestamp } = await import("@/lib/utils");
-            
+
             const stateWithDefaults = {
               ...cloudSave.gameState,
               cooldownDurations: cloudSave.gameState.cooldownDurations || {},
@@ -476,7 +476,7 @@ export async function loadGame(): Promise<GameState | null> {
           logger.log("[LOAD] ☁️ Using cloud save (no local save)");
 
           const { formatSaveTimestamp } = await import("@/lib/utils");
-          
+
           const stateWithDefaults = {
             ...cloudSave.gameState,
             cooldownDurations: cloudSave.gameState.cooldownDurations || {},

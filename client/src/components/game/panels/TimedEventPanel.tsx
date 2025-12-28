@@ -121,12 +121,18 @@ export default function TimedEventPanel() {
     if (!event) return [];
     
     // For merchant events, regenerate choices to restore effect functions (lost after page refresh)
+    // Only regenerate if choices are missing or have no effect functions
     if (event.id === 'merchant' || event.eventId === 'merchant') {
-      return generateMerchantChoices(gameState);
+      const hasValidChoices = event.choices?.length > 0 && 
+                             event.choices.some(c => typeof c.effect === 'function');
+      
+      if (!hasValidChoices) {
+        return generateMerchantChoices(gameState);
+      }
     }
     
     return event.choices || [];
-  }, [timedEventTab.event?.id, timedEventTab.event?.eventId]);
+  }, [timedEventTab.event?.id, timedEventTab.event?.eventId, timedEventTab.event?.choices?.length]);
 
   // Convert merchantPurchases array to Set for efficient lookup
   const merchantPurchasesSet = useMemo(() => {
@@ -339,10 +345,10 @@ export default function TimedEventPanel() {
             const isGoodbyeButton = choice.id === 'say_goodbye';
 
             // Check if this item has been purchased (using global state)
-            const isPurchased = merchantPurchasesSet.has(choice.id);
+            const isPurchased = !isGoodbyeButton && merchantPurchasesSet.has(choice.id);
 
             // Disable if can't afford, time is up, or already purchased (except goodbye)
-            const isDisabled = !canAfford || timeRemaining <= 0 || (!isGoodbyeButton && isPurchased);
+            const isDisabled = !canAfford || timeRemaining <= 0 || isPurchased;
 
             const buttonContent = (
               <Button
