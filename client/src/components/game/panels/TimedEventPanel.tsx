@@ -34,7 +34,17 @@ export default function TimedEventPanel() {
       // Reconstruct trades from saved data
       const savedTrades = gameState.merchantTrades.choices;
       if (savedTrades.length > 0) {
-        return savedTrades.map((trade: any) => reconstructTradeFromData(trade, gameState));
+        const reconstructed = savedTrades.map((trade: any) => reconstructTradeFromData(trade, gameState));
+        
+        // Update state with reconstructed trades (with effect functions)
+        useGameStore.setState((state) => ({
+          merchantTrades: {
+            ...state.merchantTrades,
+            choices: reconstructed,
+          },
+        }));
+        
+        return reconstructed;
       }
       return [];
     }
