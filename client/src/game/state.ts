@@ -1634,11 +1634,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   setTimedEventTab: async (isActive: boolean, event?: LogEntry | null, duration?: number) => {
-    // If activating merchant event, generate and store trades in merchantTrades ONLY
+    // If activating merchant event, use the choices already generated and passed in the event
     if (isActive && event?.id.includes('merchant')) {
-      const { generateMerchantChoices } = await import('@/game/rules/eventsMerchant');
-      const state = get();
-      const choices = generateMerchantChoices(state);
+      // CRITICAL: Use the choices that were already generated in EventManager.checkEvents
+      const choices = event.choices || [];
       
       logger.log('[MERCHANT TRADES] Setting timed event tab with merchant trades:', {
         eventId: event?.id,
@@ -1654,7 +1653,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
           expiryTime: duration ? Date.now() + duration : 0,
         },
         merchantTrades: {
-          choices, // SSOT: Store choices ONLY here
+          choices, // SSOT: Use the choices that were already generated
           purchasedIds: [],
         },
       });
