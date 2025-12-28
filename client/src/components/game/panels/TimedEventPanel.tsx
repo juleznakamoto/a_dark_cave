@@ -310,7 +310,7 @@ export default function TimedEventPanel() {
                   button_id={`timedevent-${choice.id}`}
                 >
                   {labelText}
-                  {isPurchased && <span className="ml-1">✓</span>}
+                  {isPurchased && <span>✓</span>}
                 </Button>
               );
 
