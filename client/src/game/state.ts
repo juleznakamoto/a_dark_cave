@@ -123,6 +123,9 @@ interface GameStore extends GameState {
     expiryTime: number;
   };
 
+  // Purchased items for timed events (e.g., merchant) to persist across tab switches
+  merchantPurchases: Set<string>;
+
   // Focus system
   focusState: {
     isActive: boolean;
@@ -370,6 +373,11 @@ const mergeStateUpdates = (
       stateUpdates.hasWonAnyGame !== undefined
         ? stateUpdates.hasWonAnyGame
         : prevState.hasWonAnyGame,
+    // Add merchantPurchases to merge logic
+    merchantPurchases:
+      stateUpdates.merchantPurchases !== undefined
+        ? stateUpdates.merchantPurchases
+        : prevState.merchantPurchases,
   };
 
   if (
@@ -527,6 +535,9 @@ export const createInitialState = (): GameState => ({
   // Achievements
   unlockedAchievements: [],
   claimedAchievements: [],
+
+  // Initialize merchant purchases
+  merchantPurchases: new Set<string>(),
 });
 
 const defaultGameState: GameState = createInitialState();
@@ -651,7 +662,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   setUsername: (username: string) => set({ username }),
 
   setActiveTab: (
-    tab: "cave" | "village" | "forest" | "bastion" | "estate" | "achievements",
+    tab: "cave" | "village" | "forest" | "bastion" | "estate" | "achievements" | "timedevent",
   ) => set({ activeTab: tab }),
 
   setBoostMode: (enabled: boolean) => set({ boostMode: enabled }),
@@ -1159,6 +1170,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
           savedState.hasWonAnyGame !== undefined
             ? savedState.hasWonAnyGame
             : false, // Load hasWonAnyGame
+        merchantPurchases: savedState.merchantPurchases
+          ? new Set(savedState.merchantPurchases)
+          : new Set<string>(), // Load merchantPurchases
       };
 
       set(loadedState);
@@ -1352,21 +1366,21 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     // For timed tab events (like merchant), use the event from timedEventTab
     const logEntry = currentLogEntry || get().timedEventTab.event || get().eventDialog.currentEvent;
-    
+
     console.log('[STATE] Calling EventManager.applyEventChoice with:', {
       choiceId,
       eventId,
       hasLogEntry: !!logEntry,
       logEntryChoices: logEntry?.choices?.length
     });
-    
+
     const changes = EventManager.applyEventChoice(
       state,
       choiceId,
       eventId,
       logEntry || undefined,
     );
-    
+
     console.log('[STATE] EventManager returned changes:', {
       hasResources: !!changes.resources,
       resourceChanges: changes.resources,
@@ -1578,8 +1592,18 @@ export const useGameStore = create<GameStore>((set, get) => ({
           event: processedEvent || null,
           expiryTime: duration ? Date.now() + duration : 0,
         },
+        // Reset merchant purchases when opening a new merchant or closing
+        merchantPurchases: isActive ? new Set<string>() : new Set<string>(),
       });
     },
+
+  addMerchantPurchase: (choiceId: string) => {
+    set((state) => {
+      const newPurchases = new Set(state.merchantPurchases);
+      newPurchases.add(choiceId);
+      return { merchantPurchases: newPurchases };
+    });
+  },
 
   setAuthDialogOpen: (isOpen: boolean) => {
     set({ authDialogOpen: isOpen });

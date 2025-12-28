@@ -880,8 +880,8 @@ function selectTrades(
         if ((state.resources[sellResource] || 0) >= sellAmount) {
           return {
             resources: {
-              [sellResource]: -sellAmount,  // Delta: negative for cost
-              [buyResource]: buyAmount,      // Delta: positive for gain
+              [sellResource]: -sellAmount, // Delta: negative for cost
+              [buyResource]: buyAmount, // Delta: positive for gain
             },
           };
         }
@@ -1032,19 +1032,19 @@ export const merchantEvents: Record<string, GameEvent> = {
   merchant: {
     id: "merchant",
     condition: (state: GameState) => state.buildings.woodenHut >= 2,
-    
-    timeProbability: (state: GameState) =>0,
-      // 10 + 0.5 * (state.buildings.tradePost || 0) +
-      // 1 * (state.buildings.grandBazaar || 0) +
-      // 1.5 * (state.buildings.merchantsGuild || 0) -
-      // 2.5 * state.BTP,
+
+    timeProbability: (state: GameState) => 0,
+    // 10 + 0.5 * (state.buildings.tradePost || 0) +
+    // 1 * (state.buildings.grandBazaar || 0) +
+    // 1.5 * (state.buildings.merchantsGuild || 0) -
+    // 2.5 * state.BTP,
     title: "Traveling Merchant",
     message:
       "A weathered merchant arrives, his cart overflowing with wares. His eyes glint with avarice as he murmurs 'I have rare items for sale'.",
     priority: 3,
     repeatable: true,
     showAsTimedTab: true,
-    timedTabDuration: 4 * 60 *1000, // 4 minutes
+    timedTabDuration: 4 * 60 * 1000, // 4 minutes
     fallbackChoice: {
       id: "say_goodbye",
       label: "Say goodbye",
