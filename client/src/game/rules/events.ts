@@ -4,7 +4,7 @@ import {
   getTotalLuck,
   getTotalKnowledge,
 } from "./effectsCalculation";
-import logger from "../logger"; // Assuming logger is available at this path
+import { logger } from "../../lib/logger";
 
 /**
  * Helper function to calculate success chance for event choices
@@ -337,8 +337,7 @@ export class EventManager {
       logger.log('[EVENT MANAGER] Using choices from state.merchantTrades for merchant event');
       choices = (state as any).merchantTrades.choices;
 
-      logger.log('[EVENT MANAGER] Available choices:', choices);
-      logger.log('[EVENT MANAGER] Merchant choices details:', {
+      logger.log('[EVENT MANAGER] Available merchant choices:', {
         count: choices.length,
         choicesWithEffects: choices.filter((c: any) => typeof c.effect === 'function').length,
         choicesData: choices.map((c: any) => ({
@@ -347,9 +346,17 @@ export class EventManager {
           cost: c.cost,
           hasEffect: typeof c.effect === 'function',
           effectType: typeof c.effect,
+          effectValue: c.effect,
           tradeType: (c as any).tradeType,
         })),
       });
+      
+      // If choices don't have effect functions, something went wrong during reconstruction
+      if (choices.some((c: any) => typeof c.effect !== 'function')) {
+        logger.error('[EVENT MANAGER] ERROR: Some merchant choices missing effect functions after reload!', {
+          choicesWithoutEffects: choices.filter((c: any) => typeof c.effect !== 'function').map((c: any) => c.id),
+        });
+      }
     } else {
       choices = eventDefinition.choices || [];
     }
