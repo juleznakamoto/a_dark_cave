@@ -182,8 +182,45 @@ export default function TimedEventPanel() {
     console.log('[TIMED EVENT TRADE] eventId:', eventId);
     console.log('[TIMED EVENT TRADE] event:', event);
 
-    const choice = eventChoices.find(c => c.id === choiceId);
     const isSayGoodbye = choiceId === 'say_goodbye';
+
+    // Handle goodbye button separately - it doesn't need a choice object
+    if (isSayGoodbye) {
+      console.log('[TIMED EVENT TRADE] Goodbye button - closing tab and switching to cave');
+      setHighlightedResources([]);
+      setTimedEventTab(false).catch(console.error);
+
+      // Switch to cave tab
+      setTimeout(() => {
+        useGameStore.getState().setActiveTab('cave');
+      }, 100);
+
+      // Show farewell dialog
+      const farewellEntry: LogEntry = {
+        id: `merchant-goodbye-${Date.now()}`,
+        message: "The merchant nods respectfully and continues on their way.",
+        timestamp: Date.now(),
+        type: "event",
+        title: "Farewell",
+        choices: [
+          {
+            id: "acknowledge",
+            label: "Continue",
+            effect: () => ({}),
+          },
+        ],
+        skipSound: true,
+      };
+
+      setTimeout(() => {
+        setEventDialog(true, farewellEntry);
+      }, 200);
+      
+      return;
+    }
+
+    // For trade buttons, find the choice
+    const choice = eventChoices.find(c => c.id === choiceId);
 
     console.log('[TIMED EVENT TRADE] Button clicked:', {
       choiceId,
@@ -260,40 +297,9 @@ export default function TimedEventPanel() {
       console.log('[TIMED EVENT TRADE] ===== handleChoice END =====');
     }, 100);
 
-    // If it's a trade button (not say goodbye), mark as purchased
-    if (!isSayGoodbye) {
-      addMerchantPurchase(choiceId);
-      console.log('[TIMED EVENT TRADE] Marked as purchased:', choiceId);
-    } else {
-      // If saying goodbye, close the tab and switch to cave
-      setTimedEventTab(false).catch(console.error);
-
-      // Switch to cave tab
-      setTimeout(() => {
-        useGameStore.getState().setActiveTab('cave');
-      }, 100);
-
-      // Show farewell dialog
-      const farewellEntry: LogEntry = {
-        id: `merchant-goodbye-${Date.now()}`,
-        message: "The merchant nods respectfully and continues on their way.",
-        timestamp: Date.now(),
-        type: "event",
-        title: "Farewell",
-        choices: [
-          {
-            id: "acknowledge",
-            label: "Continue",
-            effect: () => ({}),
-          },
-        ],
-        skipSound: true,
-      };
-
-      setTimeout(() => {
-        setEventDialog(true, farewellEntry);
-      }, 200);
-    }
+    // Mark as purchased
+    addMerchantPurchase(choiceId);
+    console.log('[TIMED EVENT TRADE] Marked as purchased:', choiceId);
   };
 
   // Helper function to extract resource names from cost text
