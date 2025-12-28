@@ -446,7 +446,6 @@ export default function TimedEventPanel() {
             size="xs"
             disabled={timeRemaining <= 0}
             button_id="timedevent-say_goodbye"
-            className="w-full"
           >
             Say Goodbye
           </Button>
