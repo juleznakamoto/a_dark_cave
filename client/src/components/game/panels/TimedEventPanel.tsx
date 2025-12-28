@@ -91,9 +91,11 @@ export default function TimedEventPanel() {
         // Clear highlights and auto-close the tab
         setHighlightedResources([]);
         setTimedEventTab(false).catch(console.error);
-
-        // The useEffect in GameContainer will automatically switch to cave tab
-        // when it detects timedevent tab is active but event is no longer active
+        
+        // Switch to cave tab when merchant expires
+        setTimeout(() => {
+          useGameStore.getState().setActiveTab('cave');
+        }, 100);
       }
     };
 
@@ -195,8 +197,13 @@ export default function TimedEventPanel() {
       setPurchasedItems(prev => new Set([...prev, choiceId]));
       console.log('[TIMED EVENT TRADE] Marked as purchased:', choiceId);
     } else {
-      // If saying goodbye, close the tab and show a farewell message
+      // If saying goodbye, close the tab and switch to cave
       setTimedEventTab(false).catch(console.error);
+      
+      // Switch to cave tab
+      setTimeout(() => {
+        useGameStore.getState().setActiveTab('cave');
+      }, 100);
 
       // Show farewell dialog
       const farewellEntry: LogEntry = {

@@ -324,46 +324,27 @@ export class EventManager {
       return {};
     }
 
-    // For merchant events, regenerate choices to ensure effect functions are available
-    if (eventId === 'merchant') {
-      console.log('[EVENT MANAGER] Regenerating merchant choices for choice application');
-      // Dynamically import generateMerchantChoices to avoid circular dependencies if Merchant events depend on EventManager
-      // This assumes generateMerchantChoices is in './eventsMerchant' relative to this file
-      // If the path is different, adjust accordingly.
-      // Note: This dynamic import will only work in an environment that supports top-level await or within an async function.
-      // If this function is not async, you might need to restructure or use a different approach.
-      // For simplicity, assuming this context allows dynamic import.
-      const { generateMerchantChoices } = require('./eventsMerchant'); // Using require for compatibility if top-level await is not available
-      const freshChoices = generateMerchantChoices(state);
-      console.log('[EVENT MANAGER] Fresh merchant choices:', freshChoices.map(c => ({
-        id: c.id,
-        label: typeof c.label === 'function' ? c.label(state) : c.label,
-        cost: typeof c.cost === 'function' ? c.cost(state) : c.cost,
-        hasEffect: !!c.effect,
-        effectType: typeof c.effect
-      })));
-
-      const choice = freshChoices.find((c) => c.id === choiceId);
-      console.log('[EVENT MANAGER] Found choice:', {
+    // For merchant events, use the choices from currentLogEntry (they were pre-generated with effects)
+    if (eventId === 'merchant' && currentLogEntry?.choices) {
+      console.log('[EVENT MANAGER] Using pre-generated merchant choices from currentLogEntry');
+      
+      const choice = currentLogEntry.choices.find((c) => c.id === choiceId);
+      console.log('[EVENT MANAGER] Found merchant choice:', {
         found: !!choice,
         id: choice?.id,
-        label: typeof choice?.label === 'function' ? choice.label(state) : choice?.label,
-        cost: typeof choice?.cost === 'function' ? choice.cost(state) : choice?.cost,
         hasEffect: !!(choice?.effect),
         effectType: typeof choice?.effect
       });
 
       if (choice && typeof choice.effect === "function") {
         const result = choice.effect(state);
-        console.log('[EVENT MANAGER] Effect result:', {
+        console.log('[EVENT MANAGER] Merchant effect result:', {
           hasResources: !!result.resources,
-          resourceChanges: result.resources,
-          logMessage: (result as any)._logMessage,
-          fullResult: result
+          resourceChanges: result.resources
         });
         return result;
       } else {
-        console.log('[EVENT MANAGER] Choice not found or effect is not a function');
+        console.log('[EVENT MANAGER] Merchant choice not found or effect is not a function');
         return {};
       }
     }
