@@ -148,8 +148,14 @@ export default function TimedEventPanel() {
     // Don't pre-emptively mark as purchased - let applyEventChoice handle it atomically
     applyEventChoice(choiceId, eventId, event);
 
-    // Only close tab if it's "say_goodbye"
-    if (choiceId === "say_goodbye") {
+    // For merchant events, only close on "say_goodbye"
+    // For other timed events (woodcutter, boneDevourer), close after any choice
+    if (isMerchantEvent) {
+      if (choiceId === "say_goodbye") {
+        setTimedEventTab(false);
+      }
+    } else {
+      // Non-merchant timed events close after any choice
       setTimedEventTab(false);
     }
   };
