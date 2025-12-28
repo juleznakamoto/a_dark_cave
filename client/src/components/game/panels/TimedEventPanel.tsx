@@ -29,13 +29,26 @@ export default function TimedEventPanel() {
   // Get merchant trades from state (generated once when event starts)
   const isMerchantEvent = timedEventTab.event?.id.split("-")[0] === "merchant";
   const eventChoices: EventChoice[] = useMemo(() => {
-    if (!timedEventTab.event) return [];
+    if (!timedEventTab.event) {
+      logger.log('[TIMED EVENT PANEL] No event, returning empty choices');
+      return [];
+    }
 
     if (isMerchantEvent) {
       // Use the merchant trades that were generated and stored when the event was created
       // These trades already have their effect functions intact
+      logger.log('[TIMED EVENT PANEL] Merchant event, using stored choices:', {
+        eventId: timedEventTab.event.id,
+        choicesCount: timedEventTab.event.choices?.length || 0,
+        choices: timedEventTab.event.choices,
+      });
       return timedEventTab.event.choices || [];
     }
+    
+    logger.log('[TIMED EVENT PANEL] Non-merchant event, using event choices:', {
+      eventId: timedEventTab.event.id,
+      choicesCount: timedEventTab.event.choices?.length || 0,
+    });
     return timedEventTab.event.choices || [];
   }, [isMerchantEvent, timedEventTab.event]);
 
@@ -124,12 +137,19 @@ export default function TimedEventPanel() {
       logger.log(`[MERCHANT TRADE] Creating merchant trade: ${choiceId}`);
 
       // Update merchantTrades state to mark this item as purchased
-      useGameStore.setState((state) => ({
-        merchantTrades: {
-          ...state.merchantTrades,
-          purchasedIds: [...state.merchantTrades.purchasedIds, choiceId],
-        },
-      }));
+      useGameStore.setState((state) => {
+        logger.log('[MERCHANT TRADE] Current state before update:', {
+          merchantTrades: state.merchantTrades,
+          purchasedIds: state.merchantTrades?.purchasedIds,
+        });
+        
+        return {
+          merchantTrades: {
+            ...state.merchantTrades,
+            purchasedIds: [...(state.merchantTrades?.purchasedIds || []), choiceId],
+          },
+        };
+      });
     }
 
     applyEventChoice(choiceId, eventId, event);
@@ -208,7 +228,16 @@ export default function TimedEventPanel() {
                 : choice.label;
 
             // Check if this item was already purchased
-            const isPurchased = isMerchantEvent && gameState.merchantTrades.purchasedIds.includes(choice.id);
+            logger.log('[TIMED EVENT PANEL] Checking if item purchased:', {
+              isMerchantEvent,
+              choiceId: choice.id,
+              merchantTrades: gameState.merchantTrades,
+              hasPurchasedIds: !!gameState.merchantTrades?.purchasedIds,
+              purchasedIds: gameState.merchantTrades?.purchasedIds,
+            });
+            
+            const isPurchased = isMerchantEvent && 
+              gameState.merchantTrades?.purchasedIds?.includes(choice.id);</old_str>
 
             // Disable if can't afford, time is up, or already purchased
             const isDisabled = !canAfford || timeRemaining <= 0 || isPurchased;
