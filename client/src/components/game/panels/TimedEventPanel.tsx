@@ -202,7 +202,7 @@ export default function TimedEventPanel() {
           <div>
             <span className="font-semibold">{event.title} </span>
             <span className="text-muted-foreground">
-              {formatTime(timeRemaining)}
+              &nbsp;{formatTime(timeRemaining)}
             </span>
           </div>
           {isMerchantEvent && (() => {
