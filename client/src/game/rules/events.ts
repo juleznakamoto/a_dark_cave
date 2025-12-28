@@ -348,25 +348,40 @@ export class EventManager {
         allTradeIds: merchantTrades?.map((t: any) => t.id),
       });
 
-      // Find the trade data
+      // Find the trade data - also check if the choiceId matches any choice from currentLogEntry
       if (merchantTrades) {
-        const trade = merchantTrades.find((t: any) => t.id === choiceId);
+        let trade = merchantTrades.find((t: any) => t.id === choiceId);
+        
+        // If not found directly, try to find by checking the current log entry choices
+        if (!trade && currentLogEntry?.choices) {
+          const matchingChoice = currentLogEntry.choices.find((c) => c.id === choiceId);
+          if (matchingChoice) {
+            // Extract trade info from the choice's label and cost
+            const labelMatch = typeof matchingChoice.label === 'string' 
+              ? matchingChoice.label.match(/^\+(\d+)\s+(.+)$/)
+              : null;
+            const costText = typeof matchingChoice.cost === 'function' 
+              ? matchingChoice.cost(state) 
+              : matchingChoice.cost;
+            const costMatch = costText ? costText.match(/^(\d+)\s+(.+)$/) : null;
+
+            if (labelMatch && costMatch) {
+              trade = {
+                id: choiceId,
+                buyResource: labelMatch[2].toLowerCase().replace(/\s+/g, '_'),
+                buyAmount: parseInt(labelMatch[1]),
+                sellResource: costMatch[2].toLowerCase().replace(/\s+/g, '_'),
+                sellAmount: parseInt(costMatch[1]),
+              };
+            }
+          }
+        }
 
         logger.log('[EVENT MANAGER] Trade lookup result:', {
           choiceId,
           foundTrade: !!trade,
           tradeData: trade,
           allAvailableIds: merchantTrades.map((t: any) => t.id),
-          firstTradeStructure: merchantTrades[0],
-          merchantTradesFullStructure: merchantTrades,
-          lookupComparison: merchantTrades.map((t: any) => ({
-            tradeId: t.id,
-            matches: t.id === choiceId,
-            buyResource: t.buyResource,
-            sellResource: t.sellResource,
-          })),
-          typeofId: typeof merchantTrades[0]?.id,
-          typeofChoiceId: typeof choiceId,
         });
 
         if (trade && trade.buyResource && trade.sellResource) {
@@ -392,12 +407,7 @@ export class EventManager {
               available: currentSellAmount,
               resource: trade.sellResource,
             });
-            return {
-              _logMessage: `You don't have enough ${trade.sellResource} to complete this trade.`,
-              log: currentLogEntry
-                ? state.log.filter((entry) => entry.id !== currentLogEntry.id)
-                : state.log,
-            };
+            return {};
           }
 
           const newBuyAmount = currentBuyAmount + trade.buyAmount;
@@ -419,14 +429,13 @@ export class EventManager {
             },
           });
 
-          // Execute the trade
+          // Execute the trade - no _logMessage to avoid showing dialog
           return {
             resources: {
               ...state.resources,
               [trade.buyResource]: newBuyAmount,
               [trade.sellResource]: newSellAmount,
             },
-            _logMessage: `You traded ${trade.sellAmount} ${trade.sellResource} for ${trade.buyAmount} ${trade.buyResource}.`,
             log: currentLogEntry
               ? state.log.filter((entry) => entry.id !== currentLogEntry.id)
               : state.log,

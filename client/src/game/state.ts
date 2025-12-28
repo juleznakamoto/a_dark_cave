@@ -1428,9 +1428,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
       StateManager.schedulePopulationUpdate(get);
     }
 
-    // Only create a log message dialog if there's a _logMessage but no combat
+    // For merchant events, don't show any dialog - just apply the changes
+    const isMerchantEvent = eventId === 'merchant';
+    
+    // Only create a log message dialog if there's a _logMessage but no combat and it's not a merchant event
     // Note: _logMessage is for dialog feedback only, not for the main log
-    if (logMessage && !combatData) {
+    if (logMessage && !combatData && !isMerchantEvent) {
       get().setEventDialog(false);
       setTimeout(() => {
         const messageEntry: LogEntry = {
