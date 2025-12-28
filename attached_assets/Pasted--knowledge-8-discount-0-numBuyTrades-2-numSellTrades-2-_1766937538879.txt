@@ -1,0 +1,45 @@
+{knowledge: 8, discount: '0%', numBuyTrades: 2, numSellTrades: 2, filteredBuyTradesCount: 9}
+logger.ts:33 v506Z [MERCHANT TRADES] Final choices generated: {totalChoices: 4, buyTrades: 2, sellTrades: 2, choices: Array(4)}
+logger.ts:33 v506Z [MERCHANT TRADES] Generating merchant choices: {knowledge: 8, discount: '0%', numBuyTrades: 2, numSellTrades: 2, filteredBuyTradesCount: 9}
+logger.ts:33 v506Z [MERCHANT TRADES] Final choices generated: {totalChoices: 4, buyTrades: 2, sellTrades: 2, choices: Array(4)}
+logger.ts:33 v506Z [MERCHANT TRADES] Setting timed event tab with merchant trades: {eventId: 'merchant', choicesCount: 4, duration: 240000, expiryTime: 1766937752872}
+logger.ts:33 v506Z [TIMED EVENT PANEL] Merchant event, using stored choices: {eventId: 'merchant', choicesCount: 4, choices: Array(4), merchantTradesFromState: {…}}
+logger.ts:33 v506Z [SAVE CLOUD] Edge Function success: {success: true}
+logger.ts:33 v506Z [SAVE] ✅ Updated lastCloudState after successful cloud save
+logger.ts:33 v506Z [MERCHANT TRADE] Creating merchant trade: buy_wood_250_very_early
+logger.ts:33 v506Z [MERCHANT TRADE] Current state before update: {merchantTrades: {…}, purchasedIds: Array(0)}
+state.ts:1380 [STATE] applyEventChoice called: {choiceId: 'buy_wood_250_very_early', eventId: 'merchant', hasCurrentLogEntry: true, currentLogEntryChoices: Array(4), merchantTradesInState: {…}, …}
+logger.ts:33 v506Z [EVENT MANAGER] applyEventChoice called: {choiceId: 'buy_wood_250_very_early', eventId: 'merchant', hasCurrentLogEntry: true, stateKeys: Array(162), hasMerchantTrades: true, …}
+logger.ts:33 v506Z [EVENT MANAGER] Full state.merchantTrades: {choices: Array(4), purchasedIds: Array(1)}
+logger.ts:33 v506Z [EVENT MANAGER] Processing merchant event: {choiceId: 'buy_wood_250_very_early', hasMerchantTrades: true, merchantTradesCount: 4, fullMerchantTradesObject: {…}, merchantTradesChoices: Array(4), …}
+logger.ts:33 v506Z [EVENT MANAGER] Trade lookup result: {choiceId: 'buy_wood_250_very_early', foundTrade: true, tradeData: {…}, allAvailableIds: Array(4), firstTradeStructure: {…}, …}
+logger.ts:33 v506Z [EVENT MANAGER] Executing merchant trade: {choiceId: 'buy_wood_250_very_early', buyResource: 'wood', buyAmount: 280, sellResource: 'gold', sellAmount: 10, …}
+logger.ts:33 v506Z [EVENT MANAGER] Trade executed successfully: {choiceId: 'buy_wood_250_very_early', resourceChanges: {…}}
+logger.ts:33 v506Z [MERCHANT TRADE] Creating merchant trade: buy_food_250_very_early
+logger.ts:33 v506Z [MERCHANT TRADE] Current state before update: {merchantTrades: {…}, purchasedIds: Array(1)}
+state.ts:1380 [STATE] applyEventChoice called: {choiceId: 'buy_food_250_very_early', eventId: 'merchant', hasCurrentLogEntry: true, currentLogEntryChoices: Array(4), merchantTradesInState: {…}, …}
+logger.ts:33 v506Z [EVENT MANAGER] applyEventChoice called: {choiceId: 'buy_food_250_very_early', eventId: 'merchant', hasCurrentLogEntry: true, stateKeys: Array(162), hasMerchantTrades: true, …}
+logger.ts:33 v506Z [EVENT MANAGER] Full state.merchantTrades: {choices: Array(4), purchasedIds: Array(2)}
+logger.ts:33 v506Z [EVENT MANAGER] Processing merchant event: {choiceId: 'buy_food_250_very_early', hasMerchantTrades: true, merchantTradesCount: 4, fullMerchantTradesObject: {…}, merchantTradesChoices: Array(4), …}
+logger.ts:33 v506Z [EVENT MANAGER] Trade lookup result: {choiceId: 'buy_food_250_very_early', foundTrade: false, tradeData: undefined, allAvailableIds: Array(4), firstTradeStructure: {…}, …}
+logger.ts:33 v506Z [EVENT MANAGER] Merchant trade not found: {choiceId: 'buy_food_250_very_early', availableTrades: Array(4)}
+logger.ts:33 v506Z [MERCHANT TRADE] Creating merchant trade: sell_iron_100_very_early
+logger.ts:33 v506Z [MERCHANT TRADE] Current state before update: {merchantTrades: {…}, purchasedIds: Array(2)}
+state.ts:1380 [STATE] applyEventChoice called: {choiceId: 'sell_iron_100_very_early', eventId: 'merchant', hasCurrentLogEntry: true, currentLogEntryChoices: Array(4), merchantTradesInState: {…}, …}
+logger.ts:33 v506Z [EVENT MANAGER] applyEventChoice called: {choiceId: 'sell_iron_100_very_early', eventId: 'merchant', hasCurrentLogEntry: true, stateKeys: Array(162), hasMerchantTrades: true, …}
+logger.ts:33 v506Z [EVENT MANAGER] Full state.merchantTrades: {choices: Array(4), purchasedIds: Array(3)}
+logger.ts:33 v506Z [EVENT MANAGER] Processing merchant event: {choiceId: 'sell_iron_100_very_early', hasMerchantTrades: true, merchantTradesCount: 4, fullMerchantTradesObject: {…}, merchantTradesChoices: Array(4), …}
+logger.ts:33 v506Z [EVENT MANAGER] Trade lookup result: {choiceId: 'sell_iron_100_very_early', foundTrade: false, tradeData: undefined, allAvailableIds: Array(4), firstTradeStructure: {…}, …}
+logger.ts:33 v506Z [EVENT MANAGER] Merchant trade not found: {choiceId: 'sell_iron_100_very_early', availableTrades: Array(4)}
+logger.ts:33 v506Z [MERCHANT TRADE] Creating merchant trade: sell_food_100_very_early
+logger.ts:33 v506Z [MERCHANT TRADE] Current state before update: {merchantTrades: {…}, purchasedIds: Array(3)}
+state.ts:1380 [STATE] applyEventChoice called: {choiceId: 'sell_food_100_very_early', eventId: 'merchant', hasCurrentLogEntry: true, currentLogEntryChoices: Array(4), merchantTradesInState: {…}, …}
+logger.ts:33 v506Z [EVENT MANAGER] applyEventChoice called: {choiceId: 'sell_food_100_very_early', eventId: 'merchant', hasCurrentLogEntry: true, stateKeys: Array(162), hasMerchantTrades: true, …}
+logger.ts:33 v506Z [EVENT MANAGER] Full state.merchantTrades: {choices: Array(4), purchasedIds: Array(4)}
+logger.ts:33 v506Z [EVENT MANAGER] Processing merchant event: {choiceId: 'sell_food_100_very_early', hasMerchantTrades: true, merchantTradesCount: 4, fullMerchantTradesObject: {…}, merchantTradesChoices: Array(4), …}
+logger.ts:33 v506Z [EVENT MANAGER] Trade lookup result: {choiceId: 'sell_food_100_very_early', foundTrade: true, tradeData: {…}, allAvailableIds: Array(4), firstTradeStructure: {…}, …}
+logger.ts:33 v506Z [EVENT MANAGER] Executing merchant trade: {choiceId: 'sell_food_100_very_early', buyResource: 'leather', buyAmount: 5, sellResource: 'food', sellAmount: 55, …}
+logger.ts:33 v506Z [EVENT MANAGER] Trade executed successfully: {choiceId: 'sell_food_100_very_early', resourceChanges: {…}}choiceId: "sell_food_100_very_early"resourceChanges: {leather: {…}, food: {…}}[[Prototype]]: Object
+logger.ts:33 v506Z [SAVE CLOUD] 🔍 Playtime overwrite check: {allowPlaytimeOverwrite: false, isNewGame: false, willAllowOverwrite: false, currentPlayTime: 2674019}
+logger.ts:33 v506Z [SAVE CLOUD] Edge Function success: {success: true}
+logger.ts:33 v506Z [SAVE] ✅ Updated lastCloudState after successful cloud save
