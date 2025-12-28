@@ -202,19 +202,6 @@ export class EventManager {
 
       const conditionMet = event.condition(state);
 
-      // Debug logging for witch's curse
-      if (event.id === 'witchsCurse') {
-        console.log('[WITCH CURSE] Condition check:', {
-          id: event.id,
-          conditionMet,
-          woodenHuts: state.buildings.woodenHut,
-          gold: state.resources.gold,
-          curseActive: state.curseState?.isActive,
-          seenEvent: state.story?.seen?.witchsCurseEvent,
-          triggeredEvents: state.triggeredEvents?.witchsCurse,
-        });
-      }
-
       if (!conditionMet) {
         continue;
       }

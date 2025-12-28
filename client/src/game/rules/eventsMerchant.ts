@@ -1051,7 +1051,7 @@ export const merchantEvents: Record<string, GameEvent> = {
       label: "Say goodbye",
       effect: () => ({
         _logMessage:
-          "The merchant packs up and leaves. You missed your chance to trade.",
+          "You bid the merchant farewell. He tips his hat and mutters about the road ahead.",
       }),
     },
     choices: [], // Choices will be generated dynamically in TimedEventPanel
