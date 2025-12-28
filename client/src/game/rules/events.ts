@@ -368,35 +368,15 @@ export class EventManager {
       effectValue: choice.effect
     });
 
-    // For merchant "say_goodbye", we don't need to execute an effect
-    if (eventId === 'merchant' && choiceId === 'say_goodbye') {
-      console.log('[EVENT MANAGER] Merchant say_goodbye - closing merchant without effect');
-      // Assuming state has a way to set flags or close interfaces
-      // This might need to be adapted based on how `GameState` is structured
-      // For now, we'll simulate by returning an empty state change and logging
-      // A more robust solution would involve a dedicated state update function
-      if (typeof (state as any).setFlag === 'function') {
-        (state as any).setFlag('merchantActive', false);
-      } else {
-        console.warn('[EVENT MANAGER] state.setFlag not found, cannot deactivate merchant');
-        // As a fallback, we can directly modify a property if it exists
-        // This is less ideal as it bypasses potential state management logic
-        // This part needs to be reviewed based on actual GameState implementation
-      }
-      // We return an empty object because no state changes are applied directly by this function
-      // The side effect of setting a flag is handled within the mocked state or actual GameState
-      return {};
-    }
+    const choiceResult = choice.effect(state);
 
-    const result = choice.effect(state);
-
-    const finalResult = {
-      ...result,
+    const result = {
+      ...choiceResult,
       log: currentLogEntry
         ? state.log.filter((entry) => entry.id !== currentLogEntry.id)
         : state.log,
     };
 
-    return finalResult;
+    return result;
   }
 }

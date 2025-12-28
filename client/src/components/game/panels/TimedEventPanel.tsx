@@ -11,7 +11,6 @@ import { useMobileButtonTooltip } from "@/hooks/useMobileTooltip";
 import { eventChoiceCostTooltip } from "@/game/rules/tooltips";
 import { generateMerchantChoices } from "@/game/rules/eventsMerchant";
 import { EventChoice } from "@/game/rules/events";
-import { logger } from "@/lib/logger";
 
 export default function TimedEventPanel() {
   const {
@@ -21,7 +20,7 @@ export default function TimedEventPanel() {
     setHighlightedResources,
   } = useGameStore();
   const gameState = useGameStore();
-
+  
   // ALL HOOKS MUST BE CALLED BEFORE ANY EARLY RETURNS
   const mobileTooltip = useMobileButtonTooltip();
   const [timeRemaining, setTimeRemaining] = useState<number>(0);
@@ -30,7 +29,7 @@ export default function TimedEventPanel() {
   const isMerchantEvent = timedEventTab.event?.id.split("-")[0] === "merchant";
   const eventChoices: EventChoice[] = useMemo(() => {
     if (!timedEventTab.event) return [];
-
+    
     if (isMerchantEvent) {
       // Use stored trades from state instead of regenerating
       return gameState.merchantTrades.choices;
@@ -50,7 +49,7 @@ export default function TimedEventPanel() {
     const updateTimer = () => {
       const now = Date.now();
       const remaining = Math.max(0, expiryTime - now);
-
+      
       setTimeRemaining(remaining);
 
       if (remaining <= 0) {
@@ -72,7 +71,7 @@ export default function TimedEventPanel() {
             }
           }
         }
-
+        
         // Clear highlights and auto-close the tab
         setHighlightedResources([]);
         setTimedEventTab(false);
@@ -115,20 +114,25 @@ export default function TimedEventPanel() {
   };
 
   const handleChoice = (choiceId: string) => {
-    const isSayGoodbye = choiceId === 'say_goodbye';
-
-    if (isSayGoodbye) {
-      logger.log('[TIMED EVENT PANEL] User said goodbye');
-      // For merchant events, also apply the choice to clear the merchant state properly
-      if (eventId === 'merchant') {
-        applyEventChoice(choiceId, eventId);
-      }
-      gameState.setFlag('merchantActive', false);
-      return;
+    setHighlightedResources([]); // Clear highlights before closing
+    
+    // If it's a merchant trade (not "say_goodbye"), track the purchase
+    if (isMerchantEvent && choiceId !== 'say_goodbye') {
+      // Update merchantTrades state to mark this item as purchased
+      useGameStore.setState((state) => ({
+        merchantTrades: {
+          ...state.merchantTrades,
+          purchasedIds: [...state.merchantTrades.purchasedIds, choiceId],
+        },
+      }));
     }
-
-    logger.log('[TIMED EVENT PANEL] Applying choice:', choiceId);
+    
     applyEventChoice(choiceId, eventId, event);
+    
+    // Only close tab if it's "say_goodbye"
+    if (choiceId === 'say_goodbye') {
+      setTimedEventTab(false);
+    }
   };
 
   // Helper function to extract resource names from cost text
@@ -145,7 +149,7 @@ export default function TimedEventPanel() {
     return resources;
   };
 
-
+  
 
   return (
     <div className="w-80 space-y-1 mt-2 mb-2 pr-4 pl-[3px]">
