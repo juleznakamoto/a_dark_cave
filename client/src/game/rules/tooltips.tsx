@@ -613,19 +613,9 @@ export const getCurrentResourceAmount = {
   }
 };
 
-// Helper function to get merchant tooltip with current amounts and cost
+// Helper function to get merchant tooltip with cost only
 export const getMerchantTooltip = {
   getContent: (labelText: string | undefined, costText: string | undefined, gameState: GameState): React.ReactNode => {
-    const resourcesSet = new Set<string>();
-
-    // Parse the resource being bought (from label, e.g., "+10 Food")
-    if (labelText) {
-      const buyParsed = parseResourceText(labelText);
-      if (buyParsed) {
-        resourcesSet.add(buyParsed.resource);
-      }
-    }
-
     // Parse the resources being paid (from cost, e.g., "250 gold" or "1000 wood, 500 food")
     const costResources: Array<{ resource: string; amount: number }> = [];
     if (costText) {
@@ -635,25 +625,12 @@ export const getMerchantTooltip = {
       for (const part of costParts) {
         const payParsed = parseResourceText(part);
         if (payParsed) {
-          resourcesSet.add(payParsed.resource);
           costResources.push(payParsed);
         }
       }
     }
 
-    const currentAmounts: React.ReactNode[] = [];
     const costLines: React.ReactNode[] = [];
-
-    // Add current amounts for all involved resources
-    Array.from(resourcesSet).forEach((resource, index) => {
-      const currentAmount = gameState.resources[resource as keyof typeof gameState.resources] || 0;
-      currentAmounts.push(
-        <div key={`current-${index}`} className="flex justify-between gap-2">
-          <span>{capitalizeWords(resource)}:</span>
-          <span>{formatNumber(currentAmount)}</span>
-        </div>
-      );
-    });
 
     // Add cost lines
     costResources.forEach(({ resource, amount }, index) => {
@@ -666,10 +643,6 @@ export const getMerchantTooltip = {
 
     return (
       <>
-        {currentAmounts}
-        {currentAmounts.length > 0 && costLines.length > 0 && (
-          <div className="border-t border-border my-1" />
-        )}
         {costLines}
       </>
     );
