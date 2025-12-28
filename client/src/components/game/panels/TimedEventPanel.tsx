@@ -165,6 +165,22 @@ export default function TimedEventPanel() {
     return resources;
   };
 
+  // Helper function to get mobile tooltip handlers
+  const getMobileHandlers = (choiceId: string, isDisabled: boolean, onAction: () => void) => ({
+    onMouseDown: mobileTooltip.isMobile
+      ? (e: React.MouseEvent) => mobileTooltip.handleMouseDown(`timedevent-${choiceId}`, isDisabled, false, e)
+      : undefined,
+    onMouseUp: mobileTooltip.isMobile
+      ? (e: React.MouseEvent) => mobileTooltip.handleMouseUp(`timedevent-${choiceId}`, isDisabled, onAction, e)
+      : undefined,
+    onTouchStart: mobileTooltip.isMobile
+      ? (e: React.TouchEvent) => mobileTooltip.handleTouchStart(`timedevent-${choiceId}`, isDisabled, false, e)
+      : undefined,
+    onTouchEnd: mobileTooltip.isMobile
+      ? (e: React.TouchEvent) => mobileTooltip.handleTouchEnd(`timedevent-${choiceId}`, isDisabled, onAction, e)
+      : undefined,
+  });
+
   return (
     <div className="w-80 space-y-1 mt-2 mb-2 pr-4 pl-[3px]">
       {/* Event Title */}
@@ -260,50 +276,7 @@ export default function TimedEventPanel() {
                             e,
                           );
                         }}
-                        onMouseDown={
-                          mobileTooltip.isMobile
-                            ? (e) =>
-                                mobileTooltip.handleMouseDown(
-                                  `timedevent-${choice.id}`,
-                                  isDisabled,
-                                  false,
-                                  e,
-                                )
-                            : undefined
-                        }
-                        onMouseUp={
-                          mobileTooltip.isMobile
-                            ? (e) =>
-                                mobileTooltip.handleMouseUp(
-                                  `timedevent-${choice.id}`,
-                                  isDisabled,
-                                  () => handleChoice(choice.id),
-                                  e,
-                                )
-                            : undefined
-                        }
-                        onTouchStart={
-                          mobileTooltip.isMobile
-                            ? (e) =>
-                                mobileTooltip.handleTouchStart(
-                                  `timedevent-${choice.id}`,
-                                  isDisabled,
-                                  false,
-                                  e,
-                                )
-                            : undefined
-                        }
-                        onTouchEnd={
-                          mobileTooltip.isMobile
-                            ? (e) =>
-                                mobileTooltip.handleTouchEnd(
-                                  `timedevent-${choice.id}`,
-                                  isDisabled,
-                                  () => handleChoice(choice.id),
-                                  e,
-                                )
-                            : undefined
-                        }
+                        {...getMobileHandlers(choice.id, isDisabled, () => handleChoice(choice.id))}
                         onMouseEnter={() => {
                           if (costText) {
                             const resources =
@@ -328,50 +301,7 @@ export default function TimedEventPanel() {
               ) : (
                 <div
                   key={choice.id}
-                  onMouseDown={
-                    mobileTooltip.isMobile
-                      ? (e) =>
-                          mobileTooltip.handleMouseDown(
-                            `timedevent-${choice.id}`,
-                            isDisabled,
-                            false,
-                            e,
-                          )
-                      : undefined
-                  }
-                  onMouseUp={
-                    mobileTooltip.isMobile
-                      ? (e) =>
-                          mobileTooltip.handleMouseUp(
-                            `timedevent-${choice.id}`,
-                            isDisabled,
-                            () => handleChoice(choice.id),
-                            e,
-                          )
-                      : undefined
-                  }
-                  onTouchStart={
-                    mobileTooltip.isMobile
-                      ? (e) =>
-                          mobileTooltip.handleTouchStart(
-                            `timedevent-${choice.id}`,
-                            isDisabled,
-                            false,
-                            e,
-                          )
-                      : undefined
-                  }
-                  onTouchEnd={
-                    mobileTooltip.isMobile
-                      ? (e) =>
-                          mobileTooltip.handleTouchEnd(
-                            `timedevent-${choice.id}`,
-                            isDisabled,
-                            () => handleChoice(choice.id),
-                            e,
-                          )
-                      : undefined
-                  }
+                  {...getMobileHandlers(choice.id, isDisabled, () => handleChoice(choice.id))}
                 >
                   {buttonContent}
                 </div>
@@ -381,56 +311,10 @@ export default function TimedEventPanel() {
 
         {/* Say Goodbye button - always on its own row */}
         <div
-          onMouseDown={
-            mobileTooltip.isMobile
-              ? (e) =>
-                  mobileTooltip.handleMouseDown(
-                    `timedevent-say_goodbye`,
-                    timeRemaining <= 0,
-                    false,
-                    e,
-                  )
-              : undefined
-          }
-          onMouseUp={
-            mobileTooltip.isMobile
-              ? (e) =>
-                  mobileTooltip.handleMouseUp(
-                    `timedevent-say_goodbye`,
-                    timeRemaining <= 0,
-                    () => {
-                      setHighlightedResources([]);
-                      setTimedEventTab(false);
-                    },
-                    e,
-                  )
-              : undefined
-          }
-          onTouchStart={
-            mobileTooltip.isMobile
-              ? (e) =>
-                  mobileTooltip.handleTouchStart(
-                    `timedevent-say_goodbye`,
-                    timeRemaining <= 0,
-                    false,
-                    e,
-                  )
-              : undefined
-          }
-          onTouchEnd={
-            mobileTooltip.isMobile
-              ? (e) =>
-                  mobileTooltip.handleTouchEnd(
-                    `timedevent-say_goodbye`,
-                    timeRemaining <= 0,
-                    () => {
-                      setHighlightedResources([]);
-                      setTimedEventTab(false);
-                    },
-                    e,
-                  )
-              : undefined
-          }
+          {...getMobileHandlers('say_goodbye', timeRemaining <= 0, () => {
+            setHighlightedResources([]);
+            setTimedEventTab(false);
+          })}
         >
           <Button
             onClick={
