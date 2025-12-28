@@ -140,13 +140,6 @@ export default function TimedEventPanel() {
       const { tradeToChoice } = require('@/game/rules/eventsMerchant');
       const choices = savedTrades.map((trade: any) => tradeToChoice(trade));
 
-      // Add "say goodbye" choice
-      choices.push({
-        id: "say_goodbye",
-        label: "Say goodbye",
-        effect: (): any => ({}),
-      });
-
       return choices;
     }
 
@@ -336,7 +329,7 @@ export default function TimedEventPanel() {
       {/* Choices */}
       <div className="space-y-2">
         <div className="flex flex-wrap gap-2 mt-3">
-          {eventChoices.map((choice) => {
+          {eventChoices.filter(c => c.id !== 'say_goodbye').map((choice) => {
             const cost = choice.cost;
             // Evaluate cost if it's a function
             const costText =
@@ -561,7 +554,74 @@ export default function TimedEventPanel() {
             );
           })}
 
-
+          {/* Say Goodbye button - always present, not from state */}
+          <Button
+            onClick={
+              !mobileTooltip.isMobile
+                ? (e) => {
+                    console.log('[TIMED EVENT] Goodbye button clicked');
+                    e.stopPropagation();
+                    handleChoice("say_goodbye");
+                  }
+                : undefined
+            }
+            variant="outline"
+            size="xs"
+            disabled={timeRemaining <= 0}
+            button_id="timedevent-say-goodbye"
+            onMouseDown={
+              mobileTooltip.isMobile
+                ? (e) =>
+                    mobileTooltip.handleMouseDown(
+                      "timedevent-say-goodbye",
+                      timeRemaining <= 0,
+                      false,
+                      e,
+                    )
+                : undefined
+            }
+            onMouseUp={
+              mobileTooltip.isMobile
+                ? (e) =>
+                    mobileTooltip.handleMouseUp(
+                      "timedevent-say-goodbye",
+                      timeRemaining <= 0,
+                      () => {
+                        console.log('[TIMED EVENT] Mobile goodbye button fired');
+                        handleChoice("say_goodbye");
+                      },
+                      e,
+                    )
+                : undefined
+            }
+            onTouchStart={
+              mobileTooltip.isMobile
+                ? (e) =>
+                    mobileTooltip.handleTouchStart(
+                      "timedevent-say-goodbye",
+                      timeRemaining <= 0,
+                      false,
+                      e,
+                    )
+                : undefined
+            }
+            onTouchEnd={
+              mobileTooltip.isMobile
+                ? (e) =>
+                    mobileTooltip.handleTouchEnd(
+                      "timedevent-say-goodbye",
+                      timeRemaining <= 0,
+                      () => {
+                        console.log('[TIMED EVENT] Mobile goodbye touchEnd');
+                        handleChoice("say_goodbye");
+                      },
+                      e,
+                    )
+                : undefined
+            }
+          >
+            Say goodbye
+          </Button>
         </div>
       </div>
     </div>
