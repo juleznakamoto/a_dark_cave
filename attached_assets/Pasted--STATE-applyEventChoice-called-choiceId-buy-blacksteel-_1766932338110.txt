@@ -1,0 +1,86 @@
+[STATE] applyEventChoice called: {choiceId: 'buy_blacksteel_100_mid2', eventId: 'merchant', hasCurrentLogEntry: true, currentLogEntryChoices: Array(7)}
+events.ts:314 [EVENT MANAGER] applyEventChoice called: {choiceId: 'buy_blacksteel_100_mid2', eventId: 'merchant', hasCurrentLogEntry: true}
+events.ts:329 [EVENT MANAGER] Using choices from currentLogEntry for merchant event
+events.ts:333 [EVENT MANAGER] Available choices: (7) [{…}, {…}, {…}, {…}, {…}, {…}, {…}]
+events.ts:354 [EVENT MANAGER] No choice found for: buy_blacksteel_100_mid2
+applyEventChoice @ events.ts:354
+applyEventChoice @ state.ts:1391
+handleChoice @ TimedEventPanel.tsx:130
+jsxDEV.onClick @ TimedEventPanel.tsx:217
+handleClick @ button.tsx:30
+callCallback2 @ chunk-276SZO74.js?v=d54e99be:3674
+invokeGuardedCallbackDev @ chunk-276SZO74.js?v=d54e99be:3699
+invokeGuardedCallback @ chunk-276SZO74.js?v=d54e99be:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-276SZO74.js?v=d54e99be:3736
+executeDispatch @ chunk-276SZO74.js?v=d54e99be:7014
+processDispatchQueueItemsInOrder @ chunk-276SZO74.js?v=d54e99be:7034
+processDispatchQueue @ chunk-276SZO74.js?v=d54e99be:7043
+dispatchEventsForPlugins @ chunk-276SZO74.js?v=d54e99be:7051
+(anonymous) @ chunk-276SZO74.js?v=d54e99be:7174
+batchedUpdates$1 @ chunk-276SZO74.js?v=d54e99be:18913
+batchedUpdates @ chunk-276SZO74.js?v=d54e99be:3579
+dispatchEventForPluginEventSystem @ chunk-276SZO74.js?v=d54e99be:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-276SZO74.js?v=d54e99be:5478
+dispatchEvent @ chunk-276SZO74.js?v=d54e99be:5472
+dispatchDiscreteEvent @ chunk-276SZO74.js?v=d54e99be:5449Understand this error
+state.ts:1380 [STATE] applyEventChoice called: {choiceId: 'buy_stone_1000_mid2', eventId: 'merchant', hasCurrentLogEntry: true, currentLogEntryChoices: Array(7)}
+events.ts:314 [EVENT MANAGER] applyEventChoice called: {choiceId: 'buy_stone_1000_mid2', eventId: 'merchant', hasCurrentLogEntry: true}
+events.ts:329 [EVENT MANAGER] Using choices from currentLogEntry for merchant event
+events.ts:333 [EVENT MANAGER] Available choices: (7) [{…}, {…}, {…}, {…}, {…}, {…}, {…}]
+events.ts:358 [EVENT MANAGER] Found choice: {id: 'buy_stone_1000_mid2', hasEffect: true, effectType: 'function', effectValue: ƒ}
+logger.ts:33 v463Z [SAVE CLOUD] 🔍 Playtime overwrite check: {allowPlaytimeOverwrite: false, isNewGame: false, willAllowOverwrite: false, currentPlayTime: 17785881}
+logger.ts:33 v463Z [SAVE CLOUD] Edge Function success: {success: true}
+logger.ts:33 v463Z [SAVE] ✅ Updated lastCloudState after successful cloud save
+state.ts:1380 [STATE] applyEventChoice called: {choiceId: 'buy_food_1000_mid1', eventId: 'merchant', hasCurrentLogEntry: true, currentLogEntryChoices: Array(7)}
+events.ts:314 [EVENT MANAGER] applyEventChoice called: {choiceId: 'buy_food_1000_mid1', eventId: 'merchant', hasCurrentLogEntry: true}
+events.ts:329 [EVENT MANAGER] Using choices from currentLogEntry for merchant event
+events.ts:333 [EVENT MANAGER] Available choices: (7) [{…}, {…}, {…}, {…}, {…}, {…}, {…}]
+events.ts:354 [EVENT MANAGER] No choice found for: buy_food_1000_mid1
+applyEventChoice @ events.ts:354
+applyEventChoice @ state.ts:1391
+handleChoice @ TimedEventPanel.tsx:130
+jsxDEV.onClick @ TimedEventPanel.tsx:217
+handleClick @ button.tsx:30
+callCallback2 @ chunk-276SZO74.js?v=d54e99be:3674
+invokeGuardedCallbackDev @ chunk-276SZO74.js?v=d54e99be:3699
+invokeGuardedCallback @ chunk-276SZO74.js?v=d54e99be:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-276SZO74.js?v=d54e99be:3736
+executeDispatch @ chunk-276SZO74.js?v=d54e99be:7014
+processDispatchQueueItemsInOrder @ chunk-276SZO74.js?v=d54e99be:7034
+processDispatchQueue @ chunk-276SZO74.js?v=d54e99be:7043
+dispatchEventsForPlugins @ chunk-276SZO74.js?v=d54e99be:7051
+(anonymous) @ chunk-276SZO74.js?v=d54e99be:7174
+batchedUpdates$1 @ chunk-276SZO74.js?v=d54e99be:18913
+batchedUpdates @ chunk-276SZO74.js?v=d54e99be:3579
+dispatchEventForPluginEventSystem @ chunk-276SZO74.js?v=d54e99be:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-276SZO74.js?v=d54e99be:5478
+dispatchEvent @ chunk-276SZO74.js?v=d54e99be:5472
+dispatchDiscreteEvent @ chunk-276SZO74.js?v=d54e99be:5449Understand this error
+state.ts:1380 [STATE] applyEventChoice called: {choiceId: 'sell_wood_500_mid2', eventId: 'merchant', hasCurrentLogEntry: true, currentLogEntryChoices: Array(7)}
+events.ts:314 [EVENT MANAGER] applyEventChoice called: {choiceId: 'sell_wood_500_mid2', eventId: 'merchant', hasCurrentLogEntry: true}
+events.ts:329 [EVENT MANAGER] Using choices from currentLogEntry for merchant event
+events.ts:333 [EVENT MANAGER] Available choices: (7) [{…}, {…}, {…}, {…}, {…}, {…}, {…}]
+events.ts:354 [EVENT MANAGER] No choice found for: sell_wood_500_mid2
+applyEventChoice @ events.ts:354
+applyEventChoice @ state.ts:1391
+handleChoice @ TimedEventPanel.tsx:130
+jsxDEV.onClick @ TimedEventPanel.tsx:217
+handleClick @ button.tsx:30
+callCallback2 @ chunk-276SZO74.js?v=d54e99be:3674
+invokeGuardedCallbackDev @ chunk-276SZO74.js?v=d54e99be:3699
+invokeGuardedCallback @ chunk-276SZO74.js?v=d54e99be:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-276SZO74.js?v=d54e99be:3736
+executeDispatch @ chunk-276SZO74.js?v=d54e99be:7014
+processDispatchQueueItemsInOrder @ chunk-276SZO74.js?v=d54e99be:7034
+processDispatchQueue @ chunk-276SZO74.js?v=d54e99be:7043
+dispatchEventsForPlugins @ chunk-276SZO74.js?v=d54e99be:7051
+(anonymous) @ chunk-276SZO74.js?v=d54e99be:7174
+batchedUpdates$1 @ chunk-276SZO74.js?v=d54e99be:18913
+batchedUpdates @ chunk-276SZO74.js?v=d54e99be:3579
+dispatchEventForPluginEventSystem @ chunk-276SZO74.js?v=d54e99be:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-276SZO74.js?v=d54e99be:5478
+dispatchEvent @ chunk-276SZO74.js?v=d54e99be:5472
+dispatchDiscreteEvent @ chunk-276SZO74.js?v=d54e99be:5449Understand this error
+logger.ts:33 v463Z [SAVE CLOUD] 🔍 Playtime overwrite check: {allowPlaytimeOverwrite: false, isNewGame: false, willAllowOverwrite: false, currentPlayTime: 17801006}
+logger.ts:33 v463Z [SAVE CLOUD] Edge Function success: {success: true}
+logger.ts:33 v463Z [SAVE] ✅ Updated lastCloudState after successful cloud save
