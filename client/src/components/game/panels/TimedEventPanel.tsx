@@ -308,6 +308,7 @@ export default function TimedEventPanel() {
                   size="xs"
                   disabled={isDisabled}
                   button_id={`timedevent-${choice.id}`}
+                  className="gap-1"
                 >
                   {labelText}
                   {isPurchased && <span>✓</span>}

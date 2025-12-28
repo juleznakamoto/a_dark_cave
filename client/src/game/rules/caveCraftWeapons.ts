@@ -178,7 +178,7 @@ export const caveCraftWeapons: Record<string, Action> = {
     id: "craftArbalest",
     label: "Arbalest",
     show_when: {
-      "buildings.grandBlacksmith": 1,
+      "buildings.advancedBlacksmith": 1,
       "schematics.arbalest_schematic": true,
       "weapons.arbalest": false,
     },
