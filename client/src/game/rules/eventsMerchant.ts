@@ -1026,11 +1026,11 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
     {
       id: "say_goodbye",
       label: "Say goodbye",
-      effect: (state: GameState) => {
+      effect: () => {
         // Just close the merchant without any state changes
         return {};
       },
-    },
+    } as EventChoice,
   ];
 
   return finalChoices;
