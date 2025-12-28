@@ -23,6 +23,7 @@ const MERCHANT_DURATION = 120; // 2 minutes in seconds
 
 export default function MerchantPanel() {
   const gameState = useGameStore();
+  const { setHighlightedResources } = useGameStore();
   const [purchasedItems, setPurchasedItems] = useState<Set<string>>(new Set());
   const [timeRemaining, setTimeRemaining] = useState<number>(MERCHANT_DURATION);
   const [eventChoices, setEventChoices] = useState(() => generateMerchantChoices(gameState));
@@ -33,6 +34,7 @@ export default function MerchantPanel() {
   const knowledge = getTotalKnowledge(gameState);
   const discount = calculateMerchantDiscount(knowledge);
   const hasBookOfWar = gameState.books?.book_of_war;
+  const hasInkwardenAcademy = gameState.buildings.inkwardenAcademy > 0;
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -177,6 +179,10 @@ export default function MerchantPanel() {
             const isPurchased = purchasedItems.has(choice.id);
             const isDisabled = isPurchased || !canAfford || !hasSpace || timeRemaining <= 0;
 
+            // Extract resources for highlighting
+            const buyResource = labelMatch ? labelMatch[2].toLowerCase().replace(/\s+/g, '_') : '';
+            const sellResource = costMatch ? costMatch[2].toLowerCase().replace(/\s+/g, '_') : '';
+
             const buttonContent = (
               <Button
                 key={choice.id}
@@ -192,6 +198,16 @@ export default function MerchantPanel() {
                 className={`w-full justify-center text-xs h-10 ${isPurchased ? "opacity-30" : ""}`}
                 disabled={isDisabled}
                 button_id={`merchant-${choice.id}`}
+                onMouseEnter={() => {
+                  if (hasInkwardenAcademy && !isDisabled) {
+                    setHighlightedResources(new Set([buyResource, sellResource]));
+                  }
+                }}
+                onMouseLeave={() => {
+                  if (hasInkwardenAcademy) {
+                    setHighlightedResources(new Set());
+                  }
+                }}
               >
                 <span className="block text-left leading-tight">
                   {isPurchased ? `✓ ${labelText}` : labelText}
@@ -200,6 +216,23 @@ export default function MerchantPanel() {
             );
 
             if (choice.cost && !isPurchased) {
+              // Format cost for tooltip
+              const formatResourceName = (resource: string) => {
+                return resource
+                  .split("_")
+                  .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                  .join(" ");
+              };
+
+              const sellAmount = costMatch ? parseInt(costMatch[1]) : 0;
+              const tooltipContent = (
+                <div className="text-xs whitespace-nowrap">
+                  <div className={canAfford ? "" : "text-muted-foreground"}>
+                    -{sellAmount} {formatResourceName(sellResource)}
+                  </div>
+                </div>
+              );
+
               return (
                 <TooltipProvider key={choice.id}>
                   <Tooltip open={mobileTooltip.isTooltipOpen(choice.id)}>
@@ -233,9 +266,7 @@ export default function MerchantPanel() {
                       </div>
                     </TooltipTrigger>
                     <TooltipContent>
-                      <div className="text-xs whitespace-nowrap">
-                        {eventChoiceCostTooltip.getContent(costText)}
-                      </div>
+                      {tooltipContent}
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
