@@ -25,18 +25,17 @@ export default function TimedEventPanel() {
   const mobileTooltip = useMobileButtonTooltip();
   const [timeRemaining, setTimeRemaining] = useState<number>(0);
 
-  // Get merchant trades - regenerate to preserve effect functions
+  // Get merchant trades from state (generated once when event starts)
   const isMerchantEvent = timedEventTab.event?.id.split("-")[0] === "merchant";
   const eventChoices: EventChoice[] = useMemo(() => {
     if (!timedEventTab.event) return [];
     
     if (isMerchantEvent) {
-      // Regenerate choices to preserve effect functions, but filter by purchased IDs
-      const allChoices = generateMerchantChoices(gameState);
-      return allChoices.filter(choice => !gameState.merchantTrades.purchasedIds.includes(choice.id));
+      // Use stored trades from state instead of regenerating
+      return gameState.merchantTrades.choices;
     }
     return timedEventTab.event.choices || [];
-  }, [isMerchantEvent, timedEventTab.event?.id, gameState.merchantTrades.purchasedIds, gameState.resources, gameState.buildings]);
+  }, [isMerchantEvent, timedEventTab.event?.id, gameState.merchantTrades.choices]);
 
   useEffect(() => {
     if (!timedEventTab.isActive || !timedEventTab.expiryTime || !timedEventTab.event) {
