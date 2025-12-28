@@ -25,16 +25,17 @@ export default function TimedEventPanel() {
   const mobileTooltip = useMobileButtonTooltip();
   const [timeRemaining, setTimeRemaining] = useState<number>(0);
 
-  // Memoize merchant choices to prevent constant re-renders while keeping effect functions
+  // Get merchant trades from state (generated once when event starts)
   const isMerchantEvent = timedEventTab.event?.id.split("-")[0] === "merchant";
   const eventChoices: EventChoice[] = useMemo(() => {
     if (!timedEventTab.event) return [];
     
     if (isMerchantEvent) {
-      return generateMerchantChoices(gameState);
+      // Use stored trades from state instead of regenerating
+      return gameState.merchantTrades.choices;
     }
     return timedEventTab.event.choices || [];
-  }, [isMerchantEvent, timedEventTab.event?.id]);
+  }, [isMerchantEvent, timedEventTab.event?.id, gameState.merchantTrades.choices]);
 
   useEffect(() => {
     if (!timedEventTab.isActive || !timedEventTab.expiryTime || !timedEventTab.event) {
@@ -43,7 +44,6 @@ export default function TimedEventPanel() {
     }
 
     const event = timedEventTab.event;
-
     const expiryTime = timedEventTab.expiryTime;
 
     const updateTimer = () => {
@@ -115,8 +115,24 @@ export default function TimedEventPanel() {
 
   const handleChoice = (choiceId: string) => {
     setHighlightedResources([]); // Clear highlights before closing
+    
+    // If it's a merchant trade (not "say_goodbye"), track the purchase
+    if (isMerchantEvent && choiceId !== 'say_goodbye') {
+      // Update merchantTrades state to mark this item as purchased
+      useGameStore.setState((state) => ({
+        merchantTrades: {
+          ...state.merchantTrades,
+          purchasedIds: [...state.merchantTrades.purchasedIds, choiceId],
+        },
+      }));
+    }
+    
     applyEventChoice(choiceId, eventId, event);
-    setTimedEventTab(false);
+    
+    // Only close tab if it's "say_goodbye"
+    if (choiceId === 'say_goodbye') {
+      setTimedEventTab(false);
+    }
   };
 
   // Helper function to extract resource names from cost text
@@ -186,8 +202,11 @@ export default function TimedEventPanel() {
                 ? choice.label(gameState)
                 : choice.label;
 
-            // Disable if can't afford or time is up
-            const isDisabled = !canAfford || timeRemaining <= 0;
+            // Check if this item was already purchased
+            const isPurchased = isMerchantEvent && gameState.merchantTrades.purchasedIds.includes(choice.id);
+
+            // Disable if can't afford, time is up, or already purchased
+            const isDisabled = !canAfford || timeRemaining <= 0 || isPurchased;
 
             const buttonContent = (
               <Button

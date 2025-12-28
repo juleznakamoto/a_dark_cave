@@ -123,6 +123,19 @@ interface GameStore extends GameState {
     expiryTime: number;
   };
 
+  // Merchant trades state
+  merchantTrades: {
+    choices: Array<{
+      id: string;
+      cost: Record<string, number>;
+      item: string;
+      quantity: number;
+      actionId: string;
+      description: string;
+    }>;
+    purchasedIds: string[];
+  };
+
   // Focus system
   focusState: {
     isActive: boolean;
@@ -168,7 +181,7 @@ interface GameStore extends GameState {
   getAndResetResourceAnalytics: () => Record<string, number> | null;
   executeAction: (actionId: string) => void;
   setActiveTab: (
-    tab: "cave" | "village" | "forest" | "bastion" | "estate" | "achievements" | "timedevent",
+    tab: "cave" | "village" | "forest" | "bastion" | "estate" | "achievements",
   ) => void;
   setBoostMode: (enabled: boolean) => void;
   setIsMuted: (isMuted: boolean) => void;
@@ -370,6 +383,8 @@ const mergeStateUpdates = (
       stateUpdates.hasWonAnyGame !== undefined
         ? stateUpdates.hasWonAnyGame
         : prevState.hasWonAnyGame,
+    // Merchant trades state
+    merchantTrades: stateUpdates.merchantTrades || prevState.merchantTrades,
   };
 
   if (
@@ -524,6 +539,12 @@ export const createInitialState = (): GameState => ({
   isPausedPreviously: false, // Initialize isPausedPreviously
   versionCheckDialogOpen: false, // Initialize version check dialog state
 
+  // Initialize merchant trades state
+  merchantTrades: {
+    choices: [],
+    purchasedIds: [],
+  },
+
   // Achievements
   unlockedAchievements: [],
   claimedAchievements: [],
@@ -635,6 +656,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   // Initialize free gold claim tracking
   lastFreeGoldClaim: 0,
+
+  // Merchant trades state
+  merchantTrades: {
+    choices: [],
+    purchasedIds: [],
+  },
 
   // Achievements
   unlockedAchievements: [],
@@ -1159,6 +1186,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
           savedState.hasWonAnyGame !== undefined
             ? savedState.hasWonAnyGame
             : false, // Load hasWonAnyGame
+        merchantTrades: savedState.merchantTrades || {
+          choices: [],
+          purchasedIds: [],
+        }, // Load merchant trades
       };
 
       set(loadedState);
@@ -1551,15 +1582,39 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }));
   },
 
-  setTimedEventTab: (isActive: boolean, event?: any | null, duration?: number) => {
-    set((state) => ({
-      ...state,
-      timedEventTab: {
-        isActive,
-        event: event || null,
-        expiryTime: isActive && duration ? Date.now() + duration : 0,
-      },
-    }));
+  setTimedEventTab: (isActive: boolean, event?: LogEntry | null, duration?: number) => {
+    set((state) => {
+      const updates: any = {
+        timedEventTab: {
+          isActive,
+          event: event || null,
+          expiryTime: isActive && duration ? Date.now() + duration : 0,
+        },
+      };
+
+      // If activating merchant event, generate and store trades
+      if (isActive && event?.id.includes('merchant')) {
+        const { generateMerchantChoices } = require('@/game/rules/eventsMerchant');
+        const generatedChoices = generateMerchantChoices(state);
+        updates.merchantTrades = {
+          choices: generatedChoices,
+          purchasedIds: [],
+        };
+      }
+
+      // If deactivating, clear merchant trades
+      if (!isActive) {
+        updates.merchantTrades = {
+          choices: [],
+          purchasedIds: [],
+        };
+      }
+
+      return {
+        ...state,
+        ...updates,
+      };
+    });
   },
 
   setAuthDialogOpen: (isOpen: boolean) => {
