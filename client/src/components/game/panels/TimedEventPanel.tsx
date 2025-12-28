@@ -164,7 +164,7 @@ export default function TimedEventPanel() {
     }
 
     // Check if already purchased (shouldn't happen due to disabled state, but double-check)
-    if (!isSayGoodbye && purchasedItems.has(choiceId)) {
+    if (!isSayGoodbye && merchantPurchasesSet.has(choiceId)) {
       console.log('[TIMED EVENT TRADE] Item already purchased:', choiceId);
       return;
     }
