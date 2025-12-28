@@ -1112,7 +1112,7 @@ export function generateMerchantTrades(state: GameState, seed?: number): Merchan
     });
 
   // Convert EventChoice arrays to MerchantTrade arrays
-  const buyTrades: MerchantTrade[] = availableBuyTrades.map(choice => {
+  const buyTradesData: MerchantTrade[] = availableBuyTrades.map(choice => {
     const labelMatch = choice.label.match(/^\+(\d+)\s+(.+)$/);
     const costMatch = (choice.cost as string).match(/^(\d+)\s+(.+)$/);
     
@@ -1126,7 +1126,7 @@ export function generateMerchantTrades(state: GameState, seed?: number): Merchan
     };
   });
 
-  const sellTrades: MerchantTrade[] = availableSellTrades.map(choice => {
+  const sellTradesData: MerchantTrade[] = availableSellTrades.map(choice => {
     const labelMatch = choice.label.match(/^\+(\d+)\s+(.+)$/);
     const costMatch = (choice.cost as string).match(/^(\d+)\s+(.+)$/);
     
@@ -1157,8 +1157,8 @@ export function generateMerchantTrades(state: GameState, seed?: number): Merchan
   });
 
   return [
-    ...buyTrades,
-    ...sellTrades,
+    ...buyTradesData,
+    ...sellTradesData,
     ...toolTradesData,
   ];
 }
