@@ -129,6 +129,8 @@ export interface LogEntry {
   // Timed tab properties
   showAsTimedTab?: boolean;
   timedTabDuration?: number; // Duration in milliseconds
+  // Store original event ID for merchant detection
+  eventId?: string;
 }
 
 // Merge all events from separate files
@@ -223,7 +225,7 @@ export class EventManager {
       }
 
       if (shouldTrigger) {
-        // Generate fresh choices for merchant events
+        // Generate fresh choices for merchant events and store them
         let eventChoices = event.choices;
         if (event.id === "merchant") {
           eventChoices = generateMerchantChoices(state);
@@ -256,6 +258,7 @@ export class EventManager {
             showAsTimedTab: event.showAsTimedTab,
             timedTabDuration: event.timedTabDuration,
             skipEventLog: event.skipEventLog || (eventChoices && eventChoices.length > 0),
+            eventId: event.id, // Store original event ID for merchant detection
           };
           newLogEntries.push(logEntry);
         } else {

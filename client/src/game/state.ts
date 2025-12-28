@@ -1184,7 +1184,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
           ? Array.from(loadedState.merchantPurchases)
           : []
       );
-      
+
       set(loadedState);
       StateManager.scheduleEffectsUpdate(get);
     } else {
@@ -1430,7 +1430,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // Apply state changes FIRST - this includes relics, resources, etc.
     if (Object.keys(updatedChanges).length > 0) {
       console.log('[STATE] Applying state changes:', updatedChanges);
-      
+
       set((prevState) => {
         console.log('[STATE] prevState resources:', {
           food: prevState.resources.food,
@@ -1440,7 +1440,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
           steel: prevState.resources.steel,
           gold: prevState.resources.gold
         });
-        
+
         // Use the same mergeStateUpdates function that other actions use
         const mergedUpdates = mergeStateUpdates(prevState, updatedChanges);
 
@@ -1450,7 +1450,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
           ...prevState,
           ...mergedUpdates,
         };
-        
+
         console.log('[STATE] newState resources:', {
           food: newState.resources.food,
           wood: newState.resources.wood,
@@ -1459,7 +1459,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
           steel: newState.resources.steel,
           gold: newState.resources.gold
         });
-        
+
         return newState;
       });
 
@@ -1474,7 +1474,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
       StateManager.schedulePopulationUpdate(get);
     }
-    
+
     console.log('[STATE] ===== applyEventChoice END =====');
 
     // Only create a log message dialog if there's a _logMessage but no combat
@@ -1663,7 +1663,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const currentPurchases = state.merchantPurchases instanceof Set 
         ? state.merchantPurchases 
         : new Set(Array.isArray(state.merchantPurchases) ? state.merchantPurchases : []);
-      
+
       const newPurchases = new Set(currentPurchases);
       newPurchases.add(choiceId);
       return { merchantPurchases: newPurchases };

@@ -115,27 +115,21 @@ export default function TimedEventPanel() {
     timedEventTab.expiryTime,
   ]);
 
-  // Use choices directly from the event - regenerate merchant choices to restore effect functions
+  // Use choices directly from the event - they were pre-generated when merchant spawned
   const eventChoices = useMemo(() => {
     const event = timedEventTab.event;
     if (!event) return [];
     
     // For merchant events, regenerate choices to restore effect functions (lost after page refresh)
-    // Use event timestamp as seed to ensure consistent trades across page reloads
     if (event.id === 'merchant' || event.eventId === 'merchant') {
-      const seed = event.timestamp || Date.now();
-      return generateMerchantChoices(gameState, seed);
+      return generateMerchantChoices(gameState);
     }
     
     return event.choices || [];
-  }, [timedEventTab.event?.id, timedEventTab.event?.eventId, timedEventTab.event?.timestamp]);
+  }, [timedEventTab.event?.id, timedEventTab.event?.eventId]);
 
-  // Ensure merchantPurchases is always a Set
+  // Convert merchantPurchases array to Set for efficient lookup
   const merchantPurchasesSet = useMemo(() => {
-    if (merchantPurchases instanceof Set) {
-      return merchantPurchases;
-    }
-    // Convert to Set if it's not already
     return new Set(Array.isArray(merchantPurchases) ? merchantPurchases : []);
   }, [merchantPurchases]);
 

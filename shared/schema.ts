@@ -611,6 +611,17 @@ export const gameStateSchema = z.object({
   claimedAchievements: z.array(z.string()).default([]), // Achievement segment IDs that have been claimed for silver
   username: z.string().optional(), // Player's chosen username for leaderboard
   cooldowns: z.record(z.number()).default({}), // Track current cooldown time remaining for each action
+  game_stats: z.array(z.object({
+    gameId: z.string().nullable(),
+    gameMode: z.string(),
+    startTime: z.number(),
+    finishTime: z.number(),
+    playTime: z.number(),
+  })).default([]),
+  hasWonAnyGame: z.boolean().default(false),
+
+  // Merchant purchases tracking (persists across page reloads)
+  merchantPurchases: z.array(z.string()).default([]),
 });
 
 export type GameState = z.infer<typeof gameStateSchema>;
