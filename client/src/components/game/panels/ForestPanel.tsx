@@ -43,21 +43,21 @@ export default function ForestPanel() {
       ],
     },
     {
-      title: "Trade",
+      title: "Buy",
       actions: [
-        { id: "tradeGoldForFood", label: "Buy Food" },
-        { id: "tradeGoldForWood", label: "Buy Wood" },
-        { id: "tradeGoldForStone", label: "Buy Stone" },
-        { id: "tradeGoldForLeather", label: "Buy Leather" },
-        { id: "tradeGoldForSteel", label: "Buy Steel" },
-        { id: "tradeGoldForObsidian", label: "Buy Obsidian" },
-        { id: "tradeGoldForAdamant", label: "Buy Adamant" },
-        { id: "tradeGoldForBlacksteel", label: "Buy Blacksteel" },
-        { id: "tradeGoldForTorch", label: "Buy Torch" },
-        { id: "tradeGoldForEmberBomb", label: "Buy Ember Bomb" },
-        { id: "tradeGoldForAshfireBomb", label: "Buy Ashfire Bomb" },
-        { id: "tradeGoldForVoidBomb", label: "Buy Void Bomb" },
-        { id: "tradeSilverForGold", label: "Buy Gold" },
+        { id: "tradeGoldForFood", label: "Food" },
+        { id: "tradeGoldForWood", label: "Wood" },
+        { id: "tradeGoldForStone", label: "Stone" },
+        { id: "tradeGoldForLeather", label: "Leather" },
+        { id: "tradeGoldForSteel", label: "Steel" },
+        { id: "tradeGoldForObsidian", label: "Obsidian" },
+        { id: "tradeGoldForAdamant", label: "Adamant" },
+        { id: "tradeGoldForBlacksteel", label: "Blacksteel" },
+        { id: "tradeGoldForTorch", label: "Torch" },
+        { id: "tradeGoldForEmberBomb", label: "Ember Bomb" },
+        { id: "tradeGoldForAshfireBomb", label: "Ashfire Bomb" },
+        { id: "tradeGoldForVoidBomb", label: "Void Bomb" },
+        { id: "tradeSilverForGold", label: "Gold" },
       ],
     },
   ];
@@ -192,7 +192,7 @@ export default function ForestPanel() {
           .split(' ')
           .map(word => word.charAt(0).toUpperCase() + word.slice(1))
           .join(' ');
-        displayLabel = `Buy ${amount} ${formattedName}`;
+        displayLabel = `${amount} ${formattedName}`;
       }
     }
 

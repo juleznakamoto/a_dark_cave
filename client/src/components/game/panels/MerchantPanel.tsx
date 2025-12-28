@@ -138,10 +138,12 @@ export default function MerchantPanel() {
         <Progress value={progress} className="h-2" />
       </div>
 
-      <div className="grid grid-cols-2 gap-2">
-        {eventChoices
-          .filter((choice) => choice.id !== "say_goodbye")
-          .map((choice) => {
+      <div className="space-y-2">
+        <h3 className="text-xs font-bold text-foreground">Buy</h3>
+        <div className="grid grid-cols-2 gap-2">
+          {eventChoices
+            .filter((choice) => choice.id !== "say_goodbye")
+            .map((choice) => {
             const labelText =
               typeof choice.label === "function"
                 ? choice.label(gameState)
@@ -210,7 +212,7 @@ export default function MerchantPanel() {
                 }}
               >
                 <span className="block text-left leading-tight">
-                  {isPurchased ? `✓ ${labelText}` : labelText}
+                  {isPurchased ? `✓ ${labelText.replace(/^\+/, '')}` : labelText.replace(/^\+/, '')}
                 </span>
               </Button>
             );
@@ -275,6 +277,7 @@ export default function MerchantPanel() {
 
             return buttonContent;
           })}
+        </div>
 
         {eventChoices.find((choice) => choice.id === "say_goodbye") && (
           <Button
