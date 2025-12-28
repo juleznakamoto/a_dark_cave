@@ -616,35 +616,12 @@ export const getCurrentResourceAmount = {
 // Helper function to get merchant tooltip with cost only
 export const getMerchantTooltip = {
   getContent: (labelText: string | undefined, costText: string | undefined, gameState: GameState): React.ReactNode => {
-    // Parse the resources being paid (from cost, e.g., "250 gold" or "1000 wood, 500 food")
-    const costResources: Array<{ resource: string; amount: number }> = [];
-    if (costText) {
-      // Handle comma-separated costs like "1000 wood, 500 food"
-      const costParts = costText.split(',').map(part => part.trim());
-
-      for (const part of costParts) {
-        const payParsed = parseResourceText(part);
-        if (payParsed) {
-          costResources.push(payParsed);
-        }
-      }
-    }
-
-    const costLines: React.ReactNode[] = [];
-
-    // Add cost lines
-    costResources.forEach(({ resource, amount }, index) => {
-      costLines.push(
-        <div key={`cost-${index}`}>
-          -{formatNumber(amount)} {capitalizeWords(resource)}
-        </div>
-      );
-    });
-
+    if (!costText) return null;
+    
     return (
-      <>
-        {costLines}
-      </>
+      <div className="text-xs">
+        {costText}
+      </div>
     );
   }
 };
