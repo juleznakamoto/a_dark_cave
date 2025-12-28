@@ -118,7 +118,7 @@ export default function TimedEventPanel() {
   // Use choices directly from the event - they were pre-generated when event was created
   const eventChoices = useMemo(() => {
     return timedEventTab.event?.choices || [];
-  }, [timedEventTab.event?.id]);
+  }, [timedEventTab.event?.choices]);
 
   // Ensure merchantPurchases is always a Set
   const merchantPurchasesSet = useMemo(() => {
