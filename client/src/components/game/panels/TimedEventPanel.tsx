@@ -210,7 +210,7 @@ export default function TimedEventPanel() {
       {/* Choices */}
       <div className="space-y-2">
         {isMerchantEvent && (
-          <div className="flex items-center gap-1 mt-3">
+          <div className="flex items-center justify-between mt-3">
             <h3 className="text-xs font-semibold">Buy</h3>
             {(() => {
               const knowledge = gameState.stats?.knowledge || 0;
