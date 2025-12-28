@@ -1172,12 +1172,18 @@ export const useGameStore = create<GameStore>((set, get) => ({
             ? savedState.hasWonAnyGame
             : false, // Load hasWonAnyGame
         merchantPurchases: savedState.merchantPurchases
-          ? new Set(savedState.merchantPurchases)
+          ? new Set(Array.isArray(savedState.merchantPurchases) ? savedState.merchantPurchases : [])
           : new Set<string>(), // Load merchantPurchases
       };
 
-      // Ensure merchantPurchases is always a Set
-      loadedState.merchantPurchases = new Set(loadedState.merchantPurchases || []);
+      // Ensure merchantPurchases is always a Set (double-check for safety)
+      loadedState.merchantPurchases = new Set(
+        Array.isArray(loadedState.merchantPurchases) 
+          ? loadedState.merchantPurchases 
+          : loadedState.merchantPurchases instanceof Set
+          ? Array.from(loadedState.merchantPurchases)
+          : []
+      );
       
       set(loadedState);
       StateManager.scheduleEffectsUpdate(get);
@@ -1651,7 +1657,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   addMerchantPurchase: (choiceId: string) => {
     set((state) => {
-      const newPurchases = new Set(state.merchantPurchases);
+      // Ensure merchantPurchases is always converted to a Set properly
+      const currentPurchases = state.merchantPurchases instanceof Set 
+        ? state.merchantPurchases 
+        : new Set(Array.isArray(state.merchantPurchases) ? state.merchantPurchases : []);
+      
+      const newPurchases = new Set(currentPurchases);
       newPurchases.add(choiceId);
       return { merchantPurchases: newPurchases };
     });
