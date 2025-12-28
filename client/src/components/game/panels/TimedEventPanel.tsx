@@ -217,7 +217,7 @@ export default function TimedEventPanel() {
       <div className="text-xs text-muted-foreground">{event.message}</div>
 
       {/* Choices */}
-      <div className="space-y-2 mt-3">
+      <div className="space-y-2 pt-1">
         {isMerchantEvent && (
           <h3 className="text-xs font-semibold flex items-center justify-between">
             <span>Buy</span>
