@@ -220,84 +220,24 @@ export default function TimedEventPanel() {
     // For trade buttons, find the choice
     const choice = eventChoices.find(c => c.id === choiceId);
 
-    console.log('[TIMED EVENT TRADE] Button clicked:', {
-      choiceId,
-      eventId,
-      choiceFound: !!choice,
-      isSayGoodbye,
-      choiceLabel: choice?.label,
-      choiceCost: choice?.cost,
-      effectType: typeof choice?.effect,
-      effectFunction: choice?.effect?.toString().substring(0, 200)
-    });
-
     if (!choice) {
       console.error('[TIMED EVENT TRADE] No choice found for:', choiceId);
-      console.log('[TIMED EVENT TRADE] Available choices:', eventChoices.map(c => ({ id: c.id, label: c.label })));
       return;
     }
 
-    // Check if already purchased (shouldn't happen due to disabled state, but double-check)
-    if (!isSayGoodbye && merchantPurchasesSet.has(choiceId)) {
+    // Check if already purchased
+    if (merchantPurchasesSet.has(choiceId)) {
       console.log('[TIMED EVENT TRADE] Item already purchased:', choiceId);
       return;
     }
 
-    // Log the current resources BEFORE the trade
-    console.log('[TIMED EVENT TRADE] Resources BEFORE trade:', {
-      food: gameState.resources.food,
-      wood: gameState.resources.wood,
-      stone: gameState.resources.stone,
-      iron: gameState.resources.iron,
-      leather: gameState.resources.leather,
-      steel: gameState.resources.steel,
-      gold: gameState.resources.gold,
-      silver: gameState.resources.silver
-    });
-
-    // Test the effect function directly
-    console.log('[TIMED EVENT TRADE] Choice object:', choice);
-    console.log('[TIMED EVENT TRADE] Has effect?', typeof choice.effect === 'function');
-
-    if (typeof choice.effect !== 'function') {
-      console.error('[TIMED EVENT TRADE] Effect is not a function!', choice);
-      return;
-    }
-
-    console.log('[TIMED EVENT TRADE] Calling effect function...');
-    const result = choice.effect(gameState);
-    console.log('[TIMED EVENT TRADE] Effect result:', result);
-
-    if (result && Object.keys(result).length > 0) {
-      console.log('[TIMED EVENT TRADE] Applying event choice via applyEventChoice');
-      // Pass the current log entry to applyEventChoice
-      applyEventChoice(choiceId, eventId, event);
-    } else {
-      console.log('[TIMED EVENT TRADE] Effect returned empty result (insufficient resources?)');
-    }
-
-
-    setHighlightedResources([]); // Clear highlights before closing
-
-    // Log resources AFTER trade (with slight delay to allow state to update)
-    setTimeout(() => {
-      const state = useGameStore.getState();
-      console.log('[TIMED EVENT TRADE] Resources AFTER trade:', {
-        food: state.resources.food,
-        wood: state.resources.wood,
-        stone: state.resources.stone,
-        iron: state.resources.iron,
-        leather: state.resources.leather,
-        steel: state.resources.steel,
-        gold: state.resources.gold,
-        silver: state.resources.silver
-      });
-      console.log('[TIMED EVENT TRADE] ===== handleChoice END =====');
-    }, 100);
-
-    // Mark as purchased
+    // Mark as purchased FIRST to prevent double-clicks
     addMerchantPurchase(choiceId);
-    console.log('[TIMED EVENT TRADE] Marked as purchased:', choiceId);
+
+    // Apply the trade via applyEventChoice which handles state updates
+    applyEventChoice(choiceId, eventId, event);
+
+    setHighlightedResources([]);
   };
 
   // Helper function to extract resource names from cost text
