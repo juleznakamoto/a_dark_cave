@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from "react";
 import { useGameStore } from "@/game/state";
 import { generateMerchantChoices } from "@/game/rules/eventsMerchant";
@@ -27,7 +26,7 @@ export default function MerchantPanel() {
   const [purchasedItems, setPurchasedItems] = useState<Set<string>>(new Set());
   const [timeRemaining, setTimeRemaining] = useState<number>(MERCHANT_DURATION);
   const [eventChoices, setEventChoices] = useState(() => generateMerchantChoices(gameState));
-  
+
   const mobileTooltip = useMobileButtonTooltip();
   const discountTooltip = useMobileTooltip();
 
@@ -65,21 +64,21 @@ export default function MerchantPanel() {
       // Parse trade info from label/cost
       const labelMatch = trade.label.match(/^\+(\d+)\s+(.+)$/);
       const costMatch = trade.cost.match(/^(\d+)\s+(.+)$/);
-      
+
       if (labelMatch && costMatch) {
         const buyAmount = parseInt(labelMatch[1]);
         const buyResource = labelMatch[2].toLowerCase().replace(/\s+/g, '_');
         const sellAmount = parseInt(costMatch[1]);
         const sellResource = costMatch[2].toLowerCase().replace(/\s+/g, '_');
-        
+
         // Check if player can afford
         const canAfford = (gameState.resources[sellResource as keyof typeof gameState.resources] || 0) >= sellAmount;
-        
+
         if (canAfford) {
           // Execute trade
           gameState.setResource(sellResource as any, (gameState.resources[sellResource as keyof typeof gameState.resources] || 0) - sellAmount);
           gameState.setResource(buyResource as any, (gameState.resources[buyResource as keyof typeof gameState.resources] || 0) + buyAmount);
-          
+
           const currentCount = Number(gameState.story?.seen?.merchantPurchases) || 0;
           const newCount = currentCount + 1;
           gameState.setFlag('merchantPurchases' as any, newCount as any);
@@ -92,7 +91,7 @@ export default function MerchantPanel() {
               merchantPurchases: newCount,
             },
           };
-          
+
           useGameStore.setState({ story: updatedStory });
 
           setPurchasedItems(prev => new Set(prev).add(choiceId));
@@ -157,19 +156,19 @@ export default function MerchantPanel() {
             // Parse trade info from label/cost
             const labelMatch = labelText.match(/^\+(\d+)\s+(.+)$/);
             const costMatch = costText.match(/^(\d+)\s+(.+)$/);
-            
+
             let canAfford = false;
             let hasSpace = true;
-            
+
             if (labelMatch && costMatch) {
               const buyAmount = parseInt(labelMatch[1]);
               const buyResource = labelMatch[2].toLowerCase().replace(/\s+/g, '_');
               const sellAmount = parseInt(costMatch[1]);
               const sellResource = costMatch[2].toLowerCase().replace(/\s+/g, '_');
-              
+
               // Check if player can afford
               canAfford = (gameState.resources[sellResource as keyof typeof gameState.resources] || 0) >= sellAmount;
-              
+
               // Check if there's space
               if (isResourceLimited(buyResource, gameState)) {
                 const currentAmount = gameState.resources[buyResource as keyof typeof gameState.resources] || 0;
@@ -212,7 +211,7 @@ export default function MerchantPanel() {
                 }}
               >
                 <span className="block text-left leading-tight">
-                  {isPurchased ? `✓ ${labelText.replace(/^\+/, '')}` : labelText.replace(/^\+/, '')}
+                  {isPurchased ? `✓ ${labelText}` : labelText}
                 </span>
               </Button>
             );
