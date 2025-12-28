@@ -115,10 +115,18 @@ export default function TimedEventPanel() {
     timedEventTab.expiryTime,
   ]);
 
-  // Use choices directly from the event - they were pre-generated when event was created
+  // Use choices directly from the event - regenerate merchant choices to restore effect functions
   const eventChoices = useMemo(() => {
-    return timedEventTab.event?.choices || [];
-  }, [timedEventTab.event?.choices]);
+    const event = timedEventTab.event;
+    if (!event) return [];
+    
+    // For merchant events, regenerate choices to restore effect functions (lost after page refresh)
+    if (event.id === 'merchant' || event.eventId === 'merchant') {
+      return generateMerchantChoices(gameState);
+    }
+    
+    return event.choices || [];
+  }, [timedEventTab.event?.id, timedEventTab.event?.eventId, timedEventTab.event?.choices]);
 
   // Ensure merchantPurchases is always a Set
   const merchantPurchasesSet = useMemo(() => {
