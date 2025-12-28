@@ -331,46 +331,54 @@ export class EventManager {
     }
 
     // For merchant events, execute trades directly from merchantTrades data
-    if (eventId === "merchant" && (state as any).merchantTrades?.choices) {
-      const merchantTrades = (state as any).merchantTrades.choices;
+    if (eventId === "merchant") {
+      const merchantTrades = (state as any).merchantTrades?.choices;
+      
+      logger.log('[EVENT MANAGER] Processing merchant event:', {
+        choiceId,
+        hasMerchantTrades: !!merchantTrades,
+        merchantTradesCount: merchantTrades?.length || 0,
+      });
       
       // Find the trade data
-      const trade = merchantTrades.find((t: any) => t.id === choiceId);
-      
-      if (trade) {
-        logger.log('[EVENT MANAGER] Executing merchant trade:', {
-          choiceId,
-          buyResource: trade.buyResource,
-          buyAmount: trade.buyAmount,
-          sellResource: trade.sellResource,
-          sellAmount: trade.sellAmount,
-        });
+      if (merchantTrades) {
+        const trade = merchantTrades.find((t: any) => t.id === choiceId);
+        
+        if (trade) {
+          logger.log('[EVENT MANAGER] Executing merchant trade:', {
+            choiceId,
+            buyResource: trade.buyResource,
+            buyAmount: trade.buyAmount,
+            sellResource: trade.sellResource,
+            sellAmount: trade.sellAmount,
+          });
 
-        const currentBuyAmount = state.resources[trade.buyResource as keyof typeof state.resources] || 0;
-        const currentSellAmount = state.resources[trade.sellResource as keyof typeof state.resources] || 0;
+          const currentBuyAmount = state.resources[trade.buyResource as keyof typeof state.resources] || 0;
+          const currentSellAmount = state.resources[trade.sellResource as keyof typeof state.resources] || 0;
 
-        // Check if player can afford
-        if (currentSellAmount < trade.sellAmount) {
+          // Check if player can afford
+          if (currentSellAmount < trade.sellAmount) {
+            return {
+              _logMessage: `You don't have enough ${trade.sellResource} to complete this trade.`,
+              log: currentLogEntry
+                ? state.log.filter((entry) => entry.id !== currentLogEntry.id)
+                : state.log,
+            };
+          }
+
+          // Execute the trade
           return {
-            _logMessage: `You don't have enough ${trade.sellResource} to complete this trade.`,
+            resources: {
+              ...state.resources,
+              [trade.buyResource]: currentBuyAmount + trade.buyAmount,
+              [trade.sellResource]: currentSellAmount - trade.sellAmount,
+            },
+            _logMessage: `You traded ${trade.sellAmount} ${trade.sellResource} for ${trade.buyAmount} ${trade.buyResource}.`,
             log: currentLogEntry
               ? state.log.filter((entry) => entry.id !== currentLogEntry.id)
               : state.log,
           };
         }
-
-        // Execute the trade
-        return {
-          resources: {
-            ...state.resources,
-            [trade.buyResource]: currentBuyAmount + trade.buyAmount,
-            [trade.sellResource]: currentSellAmount - trade.sellAmount,
-          },
-          _logMessage: `You traded ${trade.sellAmount} ${trade.sellResource} for ${trade.buyAmount} ${trade.buyResource}.`,
-          log: currentLogEntry
-            ? state.log.filter((entry) => entry.id !== currentLogEntry.id)
-            : state.log,
-        };
       }
       
       // If not a trade choice, check for fallback (say_goodbye)
@@ -386,7 +394,10 @@ export class EventManager {
         };
       }
 
-      logger.error('[EVENT MANAGER] Merchant trade not found:', { choiceId });
+      logger.error('[EVENT MANAGER] Merchant trade not found:', { 
+        choiceId,
+        availableTrades: merchantTrades?.map((t: any) => t.id) || [],
+      });
       return {};
     }
 
