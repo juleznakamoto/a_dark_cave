@@ -200,8 +200,24 @@ export class EventManager {
         }
       }
 
-      // Check condition with probability if specified
-      let shouldTrigger = event.condition(state);
+      const conditionMet = event.condition(state);
+
+      // Debug logging for witch's curse
+      if (event.id === 'witchsCurse') {
+        console.log('[WITCH CURSE] Condition check:', {
+          id: event.id,
+          conditionMet,
+          woodenHuts: state.buildings.woodenHut,
+          gold: state.resources.gold,
+          curseActive: state.curseState?.isActive,
+          seenEvent: state.story?.seen?.witchsCurseEvent,
+          triggeredEvents: state.triggeredEvents?.witchsCurse,
+        });
+      }
+
+      if (!conditionMet) {
+        continue;
+      }
 
       // Apply time-based probability if specified
       if (shouldTrigger && event.timeProbability) {
