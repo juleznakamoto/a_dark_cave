@@ -880,9 +880,8 @@ function selectTrades(
         if ((state.resources[sellResource] || 0) >= sellAmount) {
           return {
             resources: {
-              ...state.resources,
-              [sellResource]: (state.resources[sellResource] || 0) - sellAmount,
-              [buyResource]: (state.resources[buyResource] || 0) + buyAmount,
+              [sellResource]: -sellAmount,  // Delta: negative for cost
+              [buyResource]: buyAmount,      // Delta: positive for gain
             },
           };
         }
