@@ -121,12 +121,14 @@ export default function TimedEventPanel() {
     if (!event) return [];
     
     // For merchant events, regenerate choices to restore effect functions (lost after page refresh)
+    // Use event timestamp as seed to ensure consistent trades across page reloads
     if (event.id === 'merchant' || event.eventId === 'merchant') {
-      return generateMerchantChoices(gameState);
+      const seed = event.timestamp || Date.now();
+      return generateMerchantChoices(gameState, seed);
     }
     
     return event.choices || [];
-  }, [timedEventTab.event?.id, timedEventTab.event?.eventId, timedEventTab.event?.choices]);
+  }, [timedEventTab.event?.id, timedEventTab.event?.eventId, timedEventTab.event?.timestamp]);
 
   // Ensure merchantPurchases is always a Set
   const merchantPurchasesSet = useMemo(() => {

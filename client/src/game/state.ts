@@ -1640,7 +1640,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
       // Pre-generate merchant choices when event is activated
       if (isActive && event && (event.id === 'merchant' || event.eventId === 'merchant')) {
         const { generateMerchantChoices } = await import('./rules/eventsMerchant');
-        const choices = generateMerchantChoices(get());
+        // Use event timestamp as seed for consistent trades
+        const seed = event.timestamp || Date.now();
+        const choices = generateMerchantChoices(get(), seed);
         processedEvent = { ...event, choices };
       }
 
