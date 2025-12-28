@@ -25,6 +25,26 @@ export default function TimedEventPanel() {
   const mobileTooltip = useMobileButtonTooltip();
   const [timeRemaining, setTimeRemaining] = useState<number>(0);
 
+  // Memoize merchant choices to prevent constant re-renders while keeping effect functions
+  const isMerchantEvent = timedEventTab.event?.id.split("-")[0] === "merchant";
+  const eventChoices: EventChoice[] = useMemo(() => {
+    if (!timedEventTab.event) return [];
+    
+    console.log('[TIMED EVENT PANEL] Generating choices:', {
+      isMerchantEvent,
+      eventId: timedEventTab.event.id,
+      hasChoices: !!timedEventTab.event.choices
+    });
+    
+    if (isMerchantEvent) {
+      const choices = generateMerchantChoices(gameState);
+      console.log('[TIMED EVENT PANEL] Generated merchant choices:', choices.length);
+      return choices;
+    }
+    console.log('[TIMED EVENT PANEL] Using event choices:', timedEventTab.event.choices?.length || 0);
+    return timedEventTab.event.choices || [];
+  }, [isMerchantEvent, timedEventTab.event?.id]);
+
   console.log('[TIMED EVENT PANEL] Render state:', {
     hasEvent: !!timedEventTab.event,
     isActive: timedEventTab.isActive,
@@ -32,12 +52,6 @@ export default function TimedEventPanel() {
     eventId: timedEventTab.event?.id,
     eventTitle: timedEventTab.event?.title
   });
-
-  // Early return AFTER all hooks have been called
-  if (!timedEventTab.event) {
-    console.log('[TIMED EVENT PANEL] No event - returning null');
-    return null;
-  }
 
   useEffect(() => {
     console.log('[TIMED EVENT PANEL] useEffect triggered:', {
@@ -134,26 +148,14 @@ export default function TimedEventPanel() {
     applyEventChoice,
   ]);
 
+  // Early return AFTER all hooks have been called
+  if (!timedEventTab.event) {
+    console.log('[TIMED EVENT PANEL] No event - returning null');
+    return null;
+  }
+
   const event = timedEventTab.event;
   const eventId = event.eventId || event.id.split("-")[0];
-
-  // Memoize merchant choices to prevent constant re-renders while keeping effect functions
-  const isMerchantEvent = eventId === "merchant";
-  const eventChoices: EventChoice[] = useMemo(() => {
-    console.log('[TIMED EVENT PANEL] Generating choices:', {
-      isMerchantEvent,
-      eventId: event.id,
-      hasChoices: !!event.choices
-    });
-    
-    if (isMerchantEvent) {
-      const choices = generateMerchantChoices(gameState);
-      console.log('[TIMED EVENT PANEL] Generated merchant choices:', choices.length);
-      return choices;
-    }
-    console.log('[TIMED EVENT PANEL] Using event choices:', event.choices?.length || 0);
-    return event.choices || [];
-  }, [isMerchantEvent, event.id]);
 
   const formatTime = (ms: number) => {
     const totalSeconds = Math.ceil(ms / 1000);
