@@ -292,13 +292,14 @@ const buyTrades = [
     "leather",
     "gold",
   ]),
-  createBuyTrade(
-    "buy_blacksteel_100_end",
-    "blacksteel",
-    50,
-    TIER_CONDITIONS.end,
-    ["wood", "stone", "food", "leather", "steel", "gold"],
-  ),
+  createBuyTrade("buy_blacksteel_100_end", "blacksteel", 50, TIER_CONDITIONS.end, [
+    "wood",
+    "stone",
+    "food",
+    "leather",
+    "steel",
+    "gold",
+  ]),
 ];
 
 const sellTrades = [
@@ -985,7 +986,7 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
           console.log('[MERCHANT TOOL TRADE] Effect called for:', trade.id);
           console.log('[MERCHANT TOOL TRADE] Current resources:', state.resources[costOption.resource]);
           console.log('[MERCHANT TOOL TRADE] Cost:', cost);
-          
+
           if ((state.resources[costOption.resource] || 0) >= cost) {
             const result: any = {
               resources: {
@@ -1026,12 +1027,10 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
       id: "say_goodbye",
       label: "Say goodbye",
       effect: (state: GameState) => {
-        return {
-          _logMessage:
-            "You bid the merchant farewell. He tips his hat and mutters about the road ahead.",
-        };
+        // Just close the merchant without any state changes
+        return {};
       },
-    } as EventChoice,
+    },
   ];
 
   return finalChoices;
