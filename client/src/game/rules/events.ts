@@ -4,6 +4,7 @@ import {
   getTotalLuck,
   getTotalKnowledge,
 } from "./effectsCalculation";
+import logger from "../logger"; // Assuming logger is available at this path
 
 /**
  * Helper function to calculate success chance for event choices
@@ -317,7 +318,7 @@ export class EventManager {
     eventId: string,
     currentLogEntry?: LogEntry,
   ): Partial<GameState> {
-    console.log('[EVENT MANAGER] applyEventChoice called:', {
+    logger.log('[EVENT MANAGER] applyEventChoice called:', {
       choiceId,
       eventId,
       hasCurrentLogEntry: !!currentLogEntry
@@ -325,47 +326,66 @@ export class EventManager {
 
     const eventDefinition = this.allEvents[eventId];
     if (!eventDefinition) {
-      console.error('[EVENT MANAGER] No event definition found for:', eventId);
+      logger.error('[EVENT MANAGER] No event definition found for:', eventId);
       return {};
     }
 
     // For merchant events, use choices from state.merchantTrades (where generated trades are stored)
-    let choicesSource = eventDefinition.choices;
+    let choices: EventChoice[] = [];
     if (eventId === "merchant" && (state as any).merchantTrades?.choices) {
-      console.log('[EVENT MANAGER] Using choices from state.merchantTrades for merchant event');
-      choicesSource = (state as any).merchantTrades.choices;
+      // For merchant events, use the choices from state.merchantTrades
+      logger.log('[EVENT MANAGER] Using choices from state.merchantTrades for merchant event');
+      choices = (state as any).merchantTrades.choices;
+
+      logger.log('[EVENT MANAGER] Available choices:', choices);
+      logger.log('[EVENT MANAGER] Merchant choices details:', {
+        count: choices.length,
+        choicesWithEffects: choices.filter((c: any) => typeof c.effect === 'function').length,
+        choicesData: choices.map((c: any) => ({
+          id: c.id,
+          label: c.label,
+          cost: c.cost,
+          hasEffect: typeof c.effect === 'function',
+          effectType: typeof c.effect,
+          tradeType: (c as any).tradeType,
+        })),
+      });
+    } else {
+      choices = eventDefinition.choices || [];
     }
 
-    console.log('[EVENT MANAGER] Available choices:', choicesSource?.map(c => ({
-      id: c.id,
-      hasEffect: typeof c.effect === 'function',
-      effectType: typeof c.effect,
-      effectValue: c.effect
-    })));
 
     // First try to find the choice in the choices array
-    let choice = choicesSource?.find((c) => c.id === choiceId);
-
-    // If not found and this is a fallback choice, use the fallbackChoice directly
-    if (
-      !choice &&
-      eventDefinition.fallbackChoice &&
-      eventDefinition.fallbackChoice.id === choiceId
-    ) {
-      console.log('[EVENT MANAGER] Using fallback choice');
-      choice = eventDefinition.fallbackChoice;
-    }
+    const choice = choices.find((c) => c.id === choiceId);
 
     if (!choice) {
-      console.error('[EVENT MANAGER] No choice found for:', choiceId);
+      // If not found and this is a fallback choice, use the fallbackChoice directly
+      if (
+        eventDefinition.fallbackChoice &&
+        eventDefinition.fallbackChoice.id === choiceId
+      ) {
+        logger.log('[EVENT MANAGER] Using fallback choice');
+        const fallbackChoice = eventDefinition.fallbackChoice;
+        const choiceResult = fallbackChoice.effect(state);
+        const result = {
+          ...choiceResult,
+          log: currentLogEntry
+            ? state.log.filter((entry) => entry.id !== currentLogEntry.id)
+            : state.log,
+        };
+        return result;
+      }
+      logger.error('[EVENT MANAGER] Choice not found:', { choiceId, eventId });
       return {};
     }
 
-    console.log('[EVENT MANAGER] Found choice:', {
+    logger.log('[EVENT MANAGER] Found choice:', {
       id: choice.id,
+      label: choice.label,
+      cost: choice.cost,
       hasEffect: typeof choice.effect === 'function',
       effectType: typeof choice.effect,
-      effectValue: choice.effect
+      choice,
     });
 
     const choiceResult = choice.effect(state);
