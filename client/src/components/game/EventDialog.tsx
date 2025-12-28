@@ -189,7 +189,7 @@ export default function EventDialog({
       ? ((totalTime - timeRemaining) / totalTime) * 100
       : 0;
 
-  const isCubeEvent = event?.id === "whispering_cube";
+  const isCubeEvent = event?.id?.startsWith("cube") || event?.id === "whispering_cube";
 
   return (
     <>
