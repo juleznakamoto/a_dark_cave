@@ -613,27 +613,27 @@ export const getCurrentResourceAmount = {
   }
 };
 
-// Helper function to get merchant tooltip with only costs
-export const getMerchantTooltip = {
-  getContent: (labelText: string | undefined, costText: string | undefined, gameState: GameState): React.ReactNode => {
-    // Parse the resources being paid (from cost, e.g., "250 gold" or "1000 wood, 500 food")
-    const costResources: Array<{ resource: string; amount: number }> = [];
-    if (costText) {
-      // Handle comma-separated costs like "1000 wood, 500 food"
-      const costParts = costText.split(',').map(part => part.trim());
+// Merchant-specific tooltip that only shows cost (no current amounts)
+export const merchantTooltip = {
+  getContent: (costText: string | undefined): React.ReactNode => {
+    if (!costText) return null;
 
-      for (const part of costParts) {
-        const payParsed = parseResourceText(part);
-        if (payParsed) {
-          costResources.push(payParsed);
-        }
+    const resources: Array<{ resource: string; amount: number }> = [];
+
+    // Handle comma-separated costs like "1000 wood, 500 food"
+    const costParts = costText.split(',').map(part => part.trim());
+
+    for (const part of costParts) {
+      const parsed = parseResourceText(part);
+      if (parsed) {
+        resources.push(parsed);
       }
     }
 
     const costLines: React.ReactNode[] = [];
 
-    // Add cost lines
-    costResources.forEach(({ resource, amount }, index) => {
+    // Add cost lines only (no current amounts)
+    resources.forEach(({ resource, amount }, index) => {
       costLines.push(
         <div key={`cost-${index}`}>
           -{formatNumber(amount)} {capitalizeWords(resource)}
@@ -641,10 +641,6 @@ export const getMerchantTooltip = {
       );
     });
 
-    return (
-      <>
-        {costLines}
-      </>
-    );
+    return <>{costLines}</>;
   }
 };

@@ -8,7 +8,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useMobileButtonTooltip } from "@/hooks/useMobileTooltip";
-import { eventChoiceCostTooltip } from "@/game/rules/tooltips";
+import { eventChoiceCostTooltip, merchantTooltip } from "@/game/rules/tooltips";
 import { EventChoice } from "@/game/rules/events";
 import { logger } from "@/lib/logger";
 
@@ -165,6 +165,16 @@ export default function TimedEventPanel() {
     return resources;
   };
 
+  // Helper function to extract buy resource from label text
+  const extractBuyResourceFromLabel = (labelText: string): string | null => {
+    // Match patterns like "250 Food", "100 Wood", etc. (first resource in label)
+    const match = labelText.match(/\d+\s+([a-zA-Z\s]+)/);
+    if (match) {
+      return match[1].trim().toLowerCase().replace(/\s+/g, '_');
+    }
+    return null;
+  };
+
   // Helper function to get mobile tooltip handlers
   const getMobileHandlers = (choiceId: string, isDisabled: boolean, onAction: () => void) => ({
     onMouseDown: mobileTooltip.isMobile
@@ -279,9 +289,19 @@ export default function TimedEventPanel() {
                         {...getMobileHandlers(choice.id, isDisabled, () => handleChoice(choice.id))}
                         onMouseEnter={() => {
                           if (costText) {
-                            const resources =
-                              extractResourcesFromCost(costText);
-                            setHighlightedResources(resources);
+                            const costResources = extractResourcesFromCost(costText);
+                            
+                            // If Inkwarden Academy is built, highlight both buy and sell resources
+                            if (isMerchantEvent && gameState.buildings.inkwardenAcademy >= 1) {
+                              const buyResource = extractBuyResourceFromLabel(labelText);
+                              const highlightResources = buyResource 
+                                ? [...costResources, buyResource]
+                                : costResources;
+                              setHighlightedResources(highlightResources);
+                            } else {
+                              // Standard: only highlight cost resources
+                              setHighlightedResources(costResources);
+                            }
                           }
                         }}
                         onMouseLeave={() => {
@@ -293,7 +313,10 @@ export default function TimedEventPanel() {
                     </TooltipTrigger>
                     <TooltipContent side="top">
                       <div className="text-xs">
-                        {eventChoiceCostTooltip.getContent(costText, gameState)}
+                        {isMerchantEvent 
+                          ? merchantTooltip.getContent(costText)
+                          : eventChoiceCostTooltip.getContent(costText, gameState)
+                        }
                       </div>
                     </TooltipContent>
                   </Tooltip>
