@@ -20,7 +20,6 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useMobileButtonTooltip } from "@/hooks/useMobileTooltip";
-import MerchantDialog from "./MerchantDialog";
 import CubeDialog from "./CubeDialog";
 import { logger } from "@/lib/logger";
 
@@ -52,14 +51,14 @@ export default function EventDialog({
   const [totalTime, setTotalTime] = useState<number>(0);
   const startTimeRef = useRef<number>(0);
   const fallbackExecutedRef = useRef(false);
-  
+
   // Derive eventChoices directly from event prop instead of using state
   const eventChoices = event?.choices || [];
 
   // Reset purchased items when dialog opens
   useEffect(() => {
     if (isOpen) {
-      // No longer need to reset purchasedItems as merchant dialog is removed
+      // No longer need to reset purchased items as merchant dialog is removed
     }
   }, [isOpen, event?.id]);
 
@@ -377,7 +376,7 @@ export default function EventDialog({
               })}
             </div>
 
-            {/* Timer bar for timed choices */}
+            {/* Timer bar for timed events */}
             {event.isTimedChoice && timeRemaining !== null && (
               <div className="mt-1 space-y-1">
                 <div className="flex justify-between text-sm text-muted-foreground">
