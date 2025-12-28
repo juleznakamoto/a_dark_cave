@@ -242,6 +242,7 @@ export async function saveGame(
 
     // Save locally first (most important)
     await db.put("saves", saveData, SAVE_KEY);
+    logger.log('[SAVE] 💾 Saved game locally');
 
     // Try to save to cloud if user is authenticated
     try {
@@ -260,12 +261,12 @@ export async function saveGame(
 
         // Log snapshot to verify stats are included
         if (resourceData) {
-          const hasStats = Object.keys(resourceData).some(key => 
+          const hasStats = Object.keys(resourceData).some(key =>
             ['luck', 'strength', 'knowledge', 'madness'].includes(key)
           );
           logger.log('[SAVE CLOUD] 📊 Resource snapshot includes stats:', {
             hasStats,
-            statsKeys: Object.keys(resourceData).filter(key => 
+            statsKeys: Object.keys(resourceData).filter(key =>
               ['luck', 'strength', 'knowledge', 'madness'].includes(key)
             ),
             snapshotKeys: Object.keys(resourceData),
@@ -445,8 +446,8 @@ export async function loadGame(): Promise<GameState | null> {
               ...cloudSave.gameState,
               cooldownDurations: cloudSave.gameState.cooldownDurations || {},
               // Format lastSaved if it's a timestamp
-              lastSaved: cloudSave.gameState.lastSaved && typeof cloudSave.gameState.lastSaved === 'number' 
-                ? formatSaveTimestamp() 
+              lastSaved: cloudSave.gameState.lastSaved && typeof cloudSave.gameState.lastSaved === 'number'
+                ? formatSaveTimestamp()
                 : cloudSave.gameState.lastSaved,
             };
 
@@ -481,8 +482,8 @@ export async function loadGame(): Promise<GameState | null> {
             ...cloudSave.gameState,
             cooldownDurations: cloudSave.gameState.cooldownDurations || {},
             // Format lastSaved if it's a timestamp
-            lastSaved: cloudSave.gameState.lastSaved && typeof cloudSave.gameState.lastSaved === 'number' 
-              ? formatSaveTimestamp() 
+            lastSaved: cloudSave.gameState.lastSaved && typeof cloudSave.gameState.lastSaved === 'number'
+              ? formatSaveTimestamp()
               : cloudSave.gameState.lastSaved,
           };
 

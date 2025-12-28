@@ -126,8 +126,28 @@ export default function TimedEventPanel() {
       const hasValidChoices = event.choices?.length > 0 && 
                              event.choices.some(c => typeof c.effect === 'function');
       
+      logger.log('[MERCHANT LOAD] 🔄 Checking if trades need regeneration:', {
+        hasChoices: !!event.choices,
+        choicesCount: event.choices?.length || 0,
+        hasValidChoices,
+        choiceIds: event.choices?.map(c => c.id) || [],
+        sampleEffectType: event.choices?.[0] ? typeof event.choices[0].effect : 'none',
+      });
+      
       if (!hasValidChoices) {
-        return generateMerchantChoices(gameState);
+        logger.log('[MERCHANT LOAD] 🔄 Regenerating merchant trades after page refresh');
+        const regeneratedChoices = generateMerchantChoices(gameState);
+        logger.log('[MERCHANT LOAD] ✅ Trades regenerated:', {
+          tradesCount: regeneratedChoices.length,
+          tradeIds: regeneratedChoices.map(c => c.id),
+          tradeLabels: regeneratedChoices.map(c => typeof c.label === 'function' ? c.label(gameState) : c.label),
+        });
+        return regeneratedChoices;
+      } else {
+        logger.log('[MERCHANT LOAD] ✅ Using existing trades (functions intact):', {
+          tradesCount: event.choices.length,
+          tradeIds: event.choices.map(c => c.id),
+        });
       }
     }
     
@@ -136,7 +156,17 @@ export default function TimedEventPanel() {
 
   // Convert merchantPurchases array to Set for efficient lookup
   const merchantPurchasesSet = useMemo(() => {
-    return new Set(Array.isArray(merchantPurchases) ? merchantPurchases : []);
+    const purchasesArray = Array.isArray(merchantPurchases) ? merchantPurchases : Array.from(merchantPurchases instanceof Set ? merchantPurchases : []);
+    
+    logger.log('[MERCHANT RENDER] 🎨 Converting purchases for rendering:', {
+      merchantPurchases,
+      isArray: Array.isArray(merchantPurchases),
+      isSet: merchantPurchases instanceof Set,
+      purchasesArray,
+      purchaseCount: purchasesArray.length,
+    });
+    
+    return new Set(purchasesArray);
   }, [merchantPurchases]);
 
   // Early return AFTER ALL hooks (including useEffect and useMemo) have been called

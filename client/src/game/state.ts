@@ -1644,7 +1644,23 @@ export const useGameStore = create<GameStore>((set, get) => ({
         const seed = event.timestamp || Date.now();
         const choices = generateMerchantChoices(get(), seed);
         processedEvent = { ...event, choices };
+        
+        logger.log('[MERCHANT STATE] 💾 Saving merchant trades to state:', {
+          eventId: event.id,
+          timestamp: event.timestamp,
+          seed,
+          tradesCount: choices.length,
+          tradeIds: choices.map(c => c.id),
+          tradeLabels: choices.map(c => typeof c.label === 'function' ? c.label(get()) : c.label),
+        });
       }
+
+      const currentPurchases = get().merchantPurchases;
+      logger.log('[MERCHANT STATE] 💾 Resetting merchant purchases:', {
+        isActive,
+        previousPurchases: Array.from(currentPurchases instanceof Set ? currentPurchases : []),
+        willReset: true,
+      });
 
       set({
         timedEventTab: {
@@ -1666,6 +1682,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
       const newPurchases = new Set(currentPurchases);
       newPurchases.add(choiceId);
+      
+      logger.log('[MERCHANT STATE] ✅ Trade executed - updating purchases:', {
+        choiceId,
+        previousPurchases: Array.from(currentPurchases),
+        newPurchases: Array.from(newPurchases),
+        purchaseCount: newPurchases.size,
+      });
+      
       return { merchantPurchases: newPurchases };
     });
   },
