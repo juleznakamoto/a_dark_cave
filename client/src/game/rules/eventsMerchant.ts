@@ -877,7 +877,7 @@ function selectTrades(
       id: trade.id,
       label,
       cost,
-      effect: (state: GameState) => {
+      effect: (state: GameState): any => {
         const currentSell = state.resources[sellResource] || 0;
         const currentBuy = state.resources[buyResource] || 0;
 
@@ -1027,7 +1027,7 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
     {
       id: "say_goodbye",
       label: "Say goodbye",
-      effect: () => {
+      effect: (): any => {
         // Just close the merchant without any state changes
         return {};
       },
@@ -1057,7 +1057,7 @@ export const merchantEvents: Record<string, GameEvent> = {
     fallbackChoice: {
       id: "say_goodbye",
       label: "Say goodbye",
-      effect: () => ({
+      effect: (): any => ({
         _logMessage:
           "The merchant packs up and leaves. You missed your chance to trade.",
       }),
