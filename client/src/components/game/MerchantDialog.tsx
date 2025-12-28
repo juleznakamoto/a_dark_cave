@@ -70,20 +70,11 @@ export default function MerchantDialog({
       return;
     }
 
-    const choice = eventChoices.find((c) => c.id === choiceId);
-    if (!choice) return;
-
-    const result = choice.effect(gameState);
-
-    if (Object.keys(result).length > 0) {
-      logger.log('[MERCHANT TRADES] Purchase completed:', {
-        choiceId,
-        choiceLabel: choice.label,
-        choiceCost: choice.cost,
-        resultKeys: Object.keys(result),
-      });
-      onChoice(choiceId);
-    }
+    // Execute the trade directly based on merchant trade data
+    logger.log('[MERCHANT TRADES] Purchase completed:', {
+      choiceId,
+    });
+    onChoice(choiceId);
   };
 
 
@@ -146,35 +137,37 @@ export default function MerchantDialog({
                   choice.id !== "say_goodbye",
               )
               .map((choice) => {
-                // Check if choice can be afforded (for merchant trades)
-                const testResult = choice.effect(gameState);
-                const canAfford = Object.keys(testResult).length > 0;
-
-                // Evaluate label if it's a function
                 const labelText =
                   typeof choice.label === "function"
                     ? choice.label(gameState)
                     : choice.label;
 
-                // Evaluate cost if it's a function
                 const costText =
                   typeof choice.cost === "function"
                     ? choice.cost(gameState)
                     : choice.cost;
 
-                // Check if there's enough space for the resource being bought
+                // Parse trade info from label/cost to check affordability
+                const labelMatch = labelText.match(/^\+(\d+)\s+(.+)$/);
+                const costMatch = costText.match(/^(\d+)\s+(.+)$/);
+                
+                let canAfford = false;
                 let hasSpace = true;
-                if (canAfford && typeof labelText === 'string') {
-                  const labelMatch = labelText.match(/^\+(\d+)\s+(.+)$/);
-                  if (labelMatch) {
-                    const amount = parseInt(labelMatch[1]);
-                    const resourceName = labelMatch[2].toLowerCase().replace(/\s+/g, '_');
-
-                    if (isResourceLimited(resourceName, gameState)) {
-                      const currentAmount = gameState.resources[resourceName as keyof typeof gameState.resources] || 0;
-                      const limit = getResourceLimit(gameState);
-                      hasSpace = currentAmount + amount <= limit;
-                    }
+                
+                if (labelMatch && costMatch) {
+                  const buyAmount = parseInt(labelMatch[1]);
+                  const buyResource = labelMatch[2].toLowerCase().replace(/\s+/g, '_');
+                  const sellAmount = parseInt(costMatch[1]);
+                  const sellResource = costMatch[2].toLowerCase().replace(/\s+/g, '_');
+                  
+                  // Check if player can afford
+                  canAfford = (gameState.resources[sellResource as keyof typeof gameState.resources] || 0) >= sellAmount;
+                  
+                  // Check if there's space for the resource being bought
+                  if (isResourceLimited(buyResource, gameState)) {
+                    const currentAmount = gameState.resources[buyResource as keyof typeof gameState.resources] || 0;
+                    const limit = getResourceLimit(gameState);
+                    hasSpace = currentAmount + buyAmount <= limit;
                   }
                 }
 

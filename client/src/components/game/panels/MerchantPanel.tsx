@@ -58,51 +58,43 @@ export default function MerchantPanel() {
       return;
     }
 
-    const choice = eventChoices.find((c) => c.id === choiceId);
-    if (choice) {
-      const result = choice.effect(gameState);
-
-      if (Object.keys(result).length > 0) {
-        Object.entries(result).forEach(([key, value]) => {
-          if (key === 'resources' && typeof value === 'object') {
-            Object.entries(value).forEach(([resource, amount]) => {
-              gameState.setResource(resource as any, amount as number);
-            });
-          } else if (key === 'tools' && typeof value === 'object') {
-            Object.entries(value).forEach(([tool, owned]) => {
-              if (owned) gameState.setTool(tool as any, true);
-            });
-          } else if (key === 'weapons' && typeof value === 'object') {
-            Object.entries(value).forEach(([weapon, owned]) => {
-              if (owned) gameState.setWeapon(weapon as any, true);
-            });
-          } else if (key === 'schematics' && typeof value === 'object') {
-            Object.entries(value).forEach(([schematic, owned]) => {
-              if (owned) gameState.setSchematic(schematic as any, true);
-            });
-          } else if (key === 'books' && typeof value === 'object') {
-            Object.entries(value).forEach(([book, owned]) => {
-              if (owned) gameState.setBook(book as any, true);
-            });
-          }
-        });
-
-        const currentCount = Number(gameState.story?.seen?.merchantPurchases) || 0;
-        const newCount = currentCount + 1;
-        gameState.setFlag('merchantPurchases' as any, newCount as any);
-
-        const currentStory = gameState.story || { seen: {} };
-        const updatedStory = {
-          ...currentStory,
-          seen: {
-            ...currentStory.seen,
-            merchantPurchases: newCount,
-          },
-        };
+    const trade = eventChoices.find((c) => c.id === choiceId);
+    if (trade && !trade.executed) {
+      // Parse trade info from label/cost
+      const labelMatch = trade.label.match(/^\+(\d+)\s+(.+)$/);
+      const costMatch = trade.cost.match(/^(\d+)\s+(.+)$/);
+      
+      if (labelMatch && costMatch) {
+        const buyAmount = parseInt(labelMatch[1]);
+        const buyResource = labelMatch[2].toLowerCase().replace(/\s+/g, '_');
+        const sellAmount = parseInt(costMatch[1]);
+        const sellResource = costMatch[2].toLowerCase().replace(/\s+/g, '_');
         
-        useGameStore.setState({ story: updatedStory });
+        // Check if player can afford
+        const canAfford = (gameState.resources[sellResource as keyof typeof gameState.resources] || 0) >= sellAmount;
+        
+        if (canAfford) {
+          // Execute trade
+          gameState.setResource(sellResource as any, (gameState.resources[sellResource as keyof typeof gameState.resources] || 0) - sellAmount);
+          gameState.setResource(buyResource as any, (gameState.resources[buyResource as keyof typeof gameState.resources] || 0) + buyAmount);
+          
+          const currentCount = Number(gameState.story?.seen?.merchantPurchases) || 0;
+          const newCount = currentCount + 1;
+          gameState.setFlag('merchantPurchases' as any, newCount as any);
 
-        setPurchasedItems(prev => new Set(prev).add(choiceId));
+          const currentStory = gameState.story || { seen: {} };
+          const updatedStory = {
+            ...currentStory,
+            seen: {
+              ...currentStory.seen,
+              merchantPurchases: newCount,
+            },
+          };
+          
+          useGameStore.setState({ story: updatedStory });
+
+          setPurchasedItems(prev => new Set(prev).add(choiceId));
+        }
       }
     }
   };
@@ -148,9 +140,6 @@ export default function MerchantPanel() {
         {eventChoices
           .filter((choice) => choice.id !== "say_goodbye")
           .map((choice) => {
-            const testResult = choice.effect(gameState);
-            const canAfford = Object.keys(testResult).length > 0;
-
             const labelText =
               typeof choice.label === "function"
                 ? choice.label(gameState)
@@ -161,18 +150,27 @@ export default function MerchantPanel() {
                 ? choice.cost(gameState)
                 : choice.cost;
 
+            // Parse trade info from label/cost
+            const labelMatch = labelText.match(/^\+(\d+)\s+(.+)$/);
+            const costMatch = costText.match(/^(\d+)\s+(.+)$/);
+            
+            let canAfford = false;
             let hasSpace = true;
-            if (canAfford && typeof labelText === 'string') {
-              const labelMatch = labelText.match(/^\+(\d+)\s+(.+)$/);
-              if (labelMatch) {
-                const amount = parseInt(labelMatch[1]);
-                const resourceName = labelMatch[2].toLowerCase().replace(/\s+/g, '_');
-
-                if (isResourceLimited(resourceName, gameState)) {
-                  const currentAmount = gameState.resources[resourceName as keyof typeof gameState.resources] || 0;
-                  const limit = getResourceLimit(gameState);
-                  hasSpace = currentAmount + amount <= limit;
-                }
+            
+            if (labelMatch && costMatch) {
+              const buyAmount = parseInt(labelMatch[1]);
+              const buyResource = labelMatch[2].toLowerCase().replace(/\s+/g, '_');
+              const sellAmount = parseInt(costMatch[1]);
+              const sellResource = costMatch[2].toLowerCase().replace(/\s+/g, '_');
+              
+              // Check if player can afford
+              canAfford = (gameState.resources[sellResource as keyof typeof gameState.resources] || 0) >= sellAmount;
+              
+              // Check if there's space
+              if (isResourceLimited(buyResource, gameState)) {
+                const currentAmount = gameState.resources[buyResource as keyof typeof gameState.resources] || 0;
+                const limit = getResourceLimit(gameState);
+                hasSpace = currentAmount + buyAmount <= limit;
               }
             }
 

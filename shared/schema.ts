@@ -612,10 +612,18 @@ export const gameStateSchema = z.object({
   username: z.string().optional(), // Player's chosen username for leaderboard
   cooldowns: z.record(z.number()).default({}), // Track current cooldown time remaining for each action
   // Merchant trades state (persisted when merchant is active)
-  merchantTrades: z.object({
-    choices: z.array(z.any()).default([]), // EventChoice objects
-    purchasedIds: z.array(z.string()).default([]), // IDs of purchased items
-  }).default({ choices: [], purchasedIds: [] }),
+  merchantTrades: z.array(
+    z.object({
+      id: z.string(),
+      label: z.string(),
+      cost: z.string(),
+      buyResource: z.string(),
+      buyAmount: z.number(),
+      sellResource: z.string(),
+      sellAmount: z.number(),
+      executed: z.boolean(),
+    })
+  ).default([]),
 
   timedTabDuration: z.number().default(0),
 
