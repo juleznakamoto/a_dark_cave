@@ -1655,7 +1655,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         },
         merchantTrades: {
           choices,
-          purchasedIds: state.merchantTrades?.purchasedIds || [],
+          purchasedIds: [], // Always start fresh when generating new merchant trades
         },
       });
     } else if (!isActive) {
