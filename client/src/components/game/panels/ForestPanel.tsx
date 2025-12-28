@@ -294,6 +294,35 @@ export default function ForestPanel() {
               
               // For trade buttons, extract both buy and sell resources
               if (isTradeButton && action.cost && action.effects) {
+                // Determine active tier
+                let activeTier = 1;
+                if (action.show_when?.[3]) {
+                  const tier3Conditions = action.show_when[3];
+                  const tier3Satisfied = Object.entries(tier3Conditions).every(
+                    ([key, value]) => {
+                      const [category, prop] = key.split(".");
+                      return (
+                        (state[category as keyof typeof state]?.[prop as any] || 0) >=
+                        value
+                      );
+                    },
+                  );
+                  if (tier3Satisfied) activeTier = 3;
+                }
+                if (activeTier === 1 && action.show_when?.[2]) {
+                  const tier2Conditions = action.show_when[2];
+                  const tier2Satisfied = Object.entries(tier2Conditions).every(
+                    ([key, value]) => {
+                      const [category, prop] = key.split(".");
+                      return (
+                        (state[category as keyof typeof state]?.[prop as any] || 0) >=
+                        value
+                      );
+                    },
+                  );
+                  if (tier2Satisfied) activeTier = 2;
+                }
+
                 // Get cost resource (what you pay)
                 const costKeys = Object.keys(action.cost[activeTier] || {});
                 const costResourceKey = costKeys.find(key => key.startsWith('resources.'));
