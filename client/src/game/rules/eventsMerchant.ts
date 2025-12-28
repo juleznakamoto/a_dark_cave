@@ -816,6 +816,7 @@ function selectTrades(
   usedResourcePairs: Set<string>,
   usedRewardTypes: Set<string>,
   isBuyTrade: boolean,
+  seededRandom: () => number,
 ): EventChoice[] {
   const selected: EventChoice[] = [];
   const availableTrades = [...trades];
@@ -1025,6 +1026,7 @@ export function generateMerchantTrades(state: GameState, seed?: number): Merchan
     usedResourcePairs,
     usedRewardTypes,
     true,
+    seededRandom,
   );
 
   // Filter sell trades (use separate resource pair tracking)
@@ -1042,6 +1044,7 @@ export function generateMerchantTrades(state: GameState, seed?: number): Merchan
     sellUsedResourcePairs,
     sellUsedRewardTypes,
     false,
+    seededRandom,
   );
 
   // Check which tool trades pass filters
