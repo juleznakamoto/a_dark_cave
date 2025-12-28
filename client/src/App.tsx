@@ -1,43 +1,49 @@
 
-import { useEffect } from "react";
+import { useEffect, lazy, Suspense } from "react";
 import { Switch, Route } from "wouter";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./lib/queryClient";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+
+// Eagerly load only the main game page
 import Game from "@/pages/game";
-import EndScreenPage from "@/pages/end-screen";
-import HeroTest from "@/pages/hero-test";
-import ButtonTest from "@/pages/button-test";
-import NotFound from "@/pages/not-found";
-import ResetPassword from "@/pages/reset-password";
-import Imprint from "@/pages/imprint";
-import Privacy from "@/pages/privacy";
-import Terms from "@/pages/terms";
-import Withdrawal from "@/pages/withdrawal";
-import ExplosionTest from "@/pages/explosion-test";
-import AdminDashboard from "@/pages/admin/dashboard";
-import TabAnimationTest from "@/pages/tab-animation-test";
+
+// Lazy load all other pages
+const EndScreenPage = lazy(() => import("@/pages/end-screen"));
+const HeroTest = lazy(() => import("@/pages/hero-test"));
+const ButtonTest = lazy(() => import("@/pages/button-test"));
+const NotFound = lazy(() => import("@/pages/not-found"));
+const ResetPassword = lazy(() => import("@/pages/reset-password"));
+const Imprint = lazy(() => import("@/pages/imprint"));
+const Privacy = lazy(() => import("@/pages/privacy"));
+const Terms = lazy(() => import("@/pages/terms"));
+const Withdrawal = lazy(() => import("@/pages/withdrawal"));
+const ExplosionTest = lazy(() => import("@/pages/explosion-test"));
+const AdminDashboard = lazy(() => import("@/pages/admin/dashboard"));
+const TabAnimationTest = lazy(() => import("@/pages/tab-animation-test"));
 
 function Router() {
   return (
-    <Switch>
-      <Route path="/" component={Game} />
-      <Route path="/game" component={Game} />
-      <Route path="/boost" component={Game} />
-      <Route path="/end-screen" component={EndScreenPage} />
-      <Route path="/imprint" component={Imprint} />
-      <Route path="/privacy" component={Privacy} />
-      <Route path="/terms" component={Terms} />
-      <Route path="/withdrawal" component={Withdrawal} />
-      <Route path="/reset-password" component={ResetPassword} />
-      <Route path="/explosion-test" component={ExplosionTest} />
-      <Route path="/hero-test" component={HeroTest} />
-      <Route path="/tab-animation-test" component={TabAnimationTest} />
-      <Route path="/button-test" component={ButtonTest} />
-      <Route path="/admin/dashboard" component={AdminDashboard} />
-      <Route component={NotFound} />
-    </Switch>
+    <Suspense fallback={<div className="flex items-center justify-center h-screen">Loading...</div>}>
+      <Switch>
+        <Route path="/" component={Game} />
+        <Route path="/game" component={Game} />
+        <Route path="/boost" component={Game} />
+        <Route path="/end-screen" component={EndScreenPage} />
+        <Route path="/imprint" component={Imprint} />
+        <Route path="/privacy" component={Privacy} />
+        <Route path="/terms" component={Terms} />
+        <Route path="/withdrawal" component={Withdrawal} />
+        <Route path="/reset-password" component={ResetPassword} />
+        <Route path="/explosion-test" component={ExplosionTest} />
+        <Route path="/hero-test" component={HeroTest} />
+        <Route path="/tab-animation-test" component={TabAnimationTest} />
+        <Route path="/button-test" component={ButtonTest} />
+        <Route path="/admin/dashboard" component={AdminDashboard} />
+        <Route component={NotFound} />
+      </Switch>
+    </Suspense>
   );
 }
 
@@ -46,8 +52,12 @@ function App() {
     let exitIntentTimeout: NodeJS.Timeout | null = null;
 
     const initPlaylight = async () => {
+      // Defer SDK loading by 2 seconds to prioritize initial render
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
       try {
         const module = await import(
+          /* webpackChunkName: "playlight-sdk" */
           "https://sdk.playlight.dev/playlight-sdk.es.js"
         );
         const playlightSDK = module.default;
