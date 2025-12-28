@@ -1,0 +1,54 @@
+[STATE] applyEventChoice called: {choiceId: 'buy_leather_50_very_early', eventId: 'merchant', hasCurrentLogEntry: true, currentLogEntryChoices: Array(4), merchantTradesInState: {…}, …}
+logger.ts:33 v506Z [EVENT MANAGER] applyEventChoice called: {choiceId: 'buy_leather_50_very_early', eventId: 'merchant', hasCurrentLogEntry: true, stateKeys: Array(162), hasMerchantTrades: true, …}
+logger.ts:33 v506Z [EVENT MANAGER] Full state.merchantTrades: {0: {…}, 1: {…}, 2: {…}, 3: {…}, purchasedIds: Array(1)}0: {id: 'buy_leather_50_early', label: '+120 Leather', cost: '1350 Wood', buyResource: 'leather', buyAmount: 120, …}1: buyAmount: 550buyResource: "stone"cost: "30 Gold"executed: falseid: "buy_stone_500_early"label: "+550 Stone"sellAmount: 30sellResource: "gold"[[Prototype]]: Object2: {id: 'sell_stone_100_very_early', label: '+85 Food', cost: '55 Stone', buyResource: 'food', buyAmount: 85, …}3: {id: 'sell_bones_100_early', label: '+140 Wood', cost: '110 Bones', buyResource: 'wood', buyAmount: 140, …}purchasedIds: ['buy_leather_50_very_early'][[Prototype]]: Object
+logger.ts:33 v506Z [EVENT MANAGER] Processing merchant event: {choiceId: 'buy_leather_50_very_early', hasMerchantTrades: false, merchantTradesCount: 0, fullMerchantTradesObject: {…}, merchantTradesChoices: undefined}
+logger.ts:43 v506Z [EVENT MANAGER] Merchant trade not found: {choiceId: 'buy_leather_50_very_early', availableTrades: Array(0)}
+error @ logger.ts:43
+applyEventChoice @ events.ts:404
+applyEventChoice @ state.ts:1393
+handleChoice @ TimedEventPanel.tsx:165
+jsxDEV.onClick @ TimedEventPanel.tsx:254
+handleClick @ button.tsx:30
+callCallback2 @ chunk-276SZO74.js?v=d54e99be:3674
+invokeGuardedCallbackDev @ chunk-276SZO74.js?v=d54e99be:3699
+invokeGuardedCallback @ chunk-276SZO74.js?v=d54e99be:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-276SZO74.js?v=d54e99be:3736
+executeDispatch @ chunk-276SZO74.js?v=d54e99be:7014
+processDispatchQueueItemsInOrder @ chunk-276SZO74.js?v=d54e99be:7034
+processDispatchQueue @ chunk-276SZO74.js?v=d54e99be:7043
+dispatchEventsForPlugins @ chunk-276SZO74.js?v=d54e99be:7051
+(anonymous) @ chunk-276SZO74.js?v=d54e99be:7174
+batchedUpdates$1 @ chunk-276SZO74.js?v=d54e99be:18913
+batchedUpdates @ chunk-276SZO74.js?v=d54e99be:3579
+dispatchEventForPluginEventSystem @ chunk-276SZO74.js?v=d54e99be:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-276SZO74.js?v=d54e99be:5478
+dispatchEvent @ chunk-276SZO74.js?v=d54e99be:5472
+dispatchDiscreteEvent @ chunk-276SZO74.js?v=d54e99be:5449Understand this error
+logger.ts:33 v506Z [MERCHANT TRADE] Creating merchant trade: buy_leather_50_early
+logger.ts:33 v506Z [MERCHANT TRADE] Current state before update: {merchantTrades: {…}, purchasedIds: Array(1)}
+state.ts:1380 [STATE] applyEventChoice called: {choiceId: 'buy_leather_50_early', eventId: 'merchant', hasCurrentLogEntry: true, currentLogEntryChoices: Array(4), merchantTradesInState: {…}, …}
+logger.ts:33 v506Z [EVENT MANAGER] applyEventChoice called: {choiceId: 'buy_leather_50_early', eventId: 'merchant', hasCurrentLogEntry: true, stateKeys: Array(162), hasMerchantTrades: true, …}
+logger.ts:33 v506Z [EVENT MANAGER] Full state.merchantTrades: {0: {…}, 1: {…}, 2: {…}, 3: {…}, purchasedIds: Array(2)}
+logger.ts:33 v506Z [EVENT MANAGER] Processing merchant event: {choiceId: 'buy_leather_50_early', hasMerchantTrades: false, merchantTradesCount: 0, fullMerchantTradesObject: {…}, merchantTradesChoices: undefined}
+logger.ts:43 v506Z [EVENT MANAGER] Merchant trade not found: {choiceId: 'buy_leather_50_early', availableTrades: Array(0)}
+error @ logger.ts:43
+applyEventChoice @ events.ts:404
+applyEventChoice @ state.ts:1393
+handleChoice @ TimedEventPanel.tsx:165
+jsxDEV.onClick @ TimedEventPanel.tsx:254
+handleClick @ button.tsx:30
+callCallback2 @ chunk-276SZO74.js?v=d54e99be:3674
+invokeGuardedCallbackDev @ chunk-276SZO74.js?v=d54e99be:3699
+invokeGuardedCallback @ chunk-276SZO74.js?v=d54e99be:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-276SZO74.js?v=d54e99be:3736
+executeDispatch @ chunk-276SZO74.js?v=d54e99be:7014
+processDispatchQueueItemsInOrder @ chunk-276SZO74.js?v=d54e99be:7034
+processDispatchQueue @ chunk-276SZO74.js?v=d54e99be:7043
+dispatchEventsForPlugins @ chunk-276SZO74.js?v=d54e99be:7051
+(anonymous) @ chunk-276SZO74.js?v=d54e99be:7174
+batchedUpdates$1 @ chunk-276SZO74.js?v=d54e99be:18913
+batchedUpdates @ chunk-276SZO74.js?v=d54e99be:3579
+dispatchEventForPluginEventSystem @ chunk-276SZO74.js?v=d54e99be:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-276SZO74.js?v=d54e99be:5478
+dispatchEvent @ chunk-276SZO74.js?v=d54e99be:5472
+dispatchDiscreteEvent @ chunk-276SZO74.js?v=d54e99be:5449Understand this error
