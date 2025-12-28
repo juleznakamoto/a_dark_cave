@@ -53,7 +53,7 @@ export function calculateSuccessChance(
 
 import { storyEvents } from "./eventsStory";
 import { choiceEvents } from "./eventsChoices";
-import { merchantEvents, generateMerchantChoices } from "./eventsMerchant";
+import { merchantEvents } from "./eventsMerchant";
 import { madnessEvents } from "./eventsMadness";
 import { caveEvents } from "./eventsCave";
 import { huntEvents } from "./eventsHunt";
@@ -246,8 +246,6 @@ export class EventManager {
             timedTabDuration: event.timedTabDuration,
           };
           newLogEntries.push(merchantEntry);
-        } else {
-          eventChoices = generateMerchantChoices(state); // This line seems redundant if event.id is not 'merchant'
         }
 
 
