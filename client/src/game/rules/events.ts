@@ -359,9 +359,17 @@ export class EventManager {
           allAvailableIds: merchantTrades.map((t: any) => t.id),
           firstTradeStructure: merchantTrades[0],
           merchantTradesFullStructure: merchantTrades,
+          lookupComparison: merchantTrades.map((t: any) => ({
+            tradeId: t.id,
+            matches: t.id === choiceId,
+            buyResource: t.buyResource,
+            sellResource: t.sellResource,
+          })),
+          typeofId: typeof merchantTrades[0]?.id,
+          typeofChoiceId: typeof choiceId,
         });
 
-        if (trade) {
+        if (trade && trade.buyResource && trade.sellResource) {
           const currentBuyAmount = state.resources[trade.buyResource as keyof typeof state.resources] || 0;
           const currentSellAmount = state.resources[trade.sellResource as keyof typeof state.resources] || 0;
 
