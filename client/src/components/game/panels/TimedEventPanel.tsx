@@ -374,31 +374,33 @@ export default function TimedEventPanel() {
             })}
         </div>
 
-        {/* Say Goodbye button - always on its own row */}
-        <div
-          {...getMobileHandlers('say_goodbye', timeRemaining <= 0, () => {
-            setHighlightedResources([]);
-            setTimedEventTab(false);
-          })}
-        >
-          <Button
-            onClick={
-              !mobileTooltip.isMobile
-                ? (e) => {
-                    e.stopPropagation();
-                    setHighlightedResources([]);
-                    setTimedEventTab(false);
-                  }
-                : undefined
-            }
-            variant="outline"
-            size="xs"
-            disabled={timeRemaining <= 0}
-            button_id="timedevent-say_goodbye"
+        {/* Say Goodbye button - only for merchant events */}
+        {isMerchantEvent && (
+          <div
+            {...getMobileHandlers('say_goodbye', timeRemaining <= 0, () => {
+              setHighlightedResources([]);
+              setTimedEventTab(false);
+            })}
           >
-            Say Goodbye
-          </Button>
-        </div>
+            <Button
+              onClick={
+                !mobileTooltip.isMobile
+                  ? (e) => {
+                      e.stopPropagation();
+                      setHighlightedResources([]);
+                      setTimedEventTab(false);
+                    }
+                  : undefined
+              }
+              variant="outline"
+              size="xs"
+              disabled={timeRemaining <= 0}
+              button_id="timedevent-say_goodbye"
+            >
+              Say Goodbye
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );
