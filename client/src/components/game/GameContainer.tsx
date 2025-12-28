@@ -13,7 +13,6 @@ import { useGameStore } from "@/game/state";
 import EventDialog from "./EventDialog";
 import CombatDialog from "./CombatDialog";
 import IdleModeDialog from "./IdleModeDialog";
-import MerchantDialog from "./MerchantDialog";
 import CubeDialog from "./CubeDialog";
 import InactivityDialog from "./InactivityDialog";
 import { RestartGameDialog } from "./RestartGameDialog";
@@ -507,7 +506,6 @@ export default function GameContainer() {
 
       {/* Idle Mode Dialog */}
       <IdleModeDialog />
-      <MerchantDialog />
       <CubeDialog />
       <ShopDialog
         isOpen={shopDialogOpen}
