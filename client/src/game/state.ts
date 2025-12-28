@@ -1397,6 +1397,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
       logEntry || undefined,
     );
 
+    logger.log('[STATE] EventManager.applyEventChoice returned:', {
+      choiceId,
+      eventId,
+      changes,
+      hasResources: !!changes.resources,
+      resourceKeys: changes.resources ? Object.keys(changes.resources) : [],
+    });
+
     let combatData = null;
     let logMessage = null;
     const updatedChanges = { ...changes };
@@ -1413,19 +1421,56 @@ export const useGameStore = create<GameStore>((set, get) => ({
       delete updatedChanges._logMessage;
     }
 
+    logger.log('[STATE] State changes after extraction:', {
+      choiceId,
+      eventId,
+      updatedChanges,
+      hasResources: !!updatedChanges.resources,
+      resourceKeys: updatedChanges.resources ? Object.keys(updatedChanges.resources) : [],
+      changeCount: Object.keys(updatedChanges).length,
+    });
+
     // Apply state changes FIRST - this includes relics, resources, etc.
     if (Object.keys(updatedChanges).length > 0) {
+      logger.log('[STATE] Before set() - applying changes:', {
+        choiceId,
+        updatedChanges,
+        currentResources: state.resources,
+      });
+
       set((prevState) => {
         // Use the same mergeStateUpdates function that other actions use
         const mergedUpdates = mergeStateUpdates(prevState, updatedChanges);
 
-        return {
+        logger.log('[STATE] After mergeStateUpdates:', {
+          choiceId,
+          mergedUpdates,
+          hasResources: !!mergedUpdates.resources,
+          resourceKeys: mergedUpdates.resources ? Object.keys(mergedUpdates.resources) : [],
+        });
+
+        const newState = {
           ...prevState,
           ...mergedUpdates,
         };
+
+        logger.log('[STATE] Final new state being applied:', {
+          choiceId,
+          newResources: newState.resources,
+          oldResources: prevState.resources,
+        });
+
+        return newState;
       });
 
       StateManager.schedulePopulationUpdate(get);
+
+      logger.log('[STATE] After set() - state updated:', {
+        choiceId,
+        newResources: get().resources,
+      });
+    } else {
+      logger.log('[STATE] No changes to apply - updatedChanges is empty');
     }
 
     // For merchant events, don't show any dialog - just apply the changes

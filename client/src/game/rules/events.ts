@@ -389,7 +389,18 @@ export class EventManager {
           const newBuyAmount = currentBuyAmount + trade.buyAmount;
           const newSellAmount = currentSellAmount - trade.sellAmount;
 
-          logger.log('[EVENT MANAGER] Trade executed successfully:', {
+          const stateChanges = {
+            resources: {
+              ...state.resources,
+              [trade.buyResource]: newBuyAmount,
+              [trade.sellResource]: newSellAmount,
+            },
+            log: currentLogEntry
+              ? state.log.filter((entry) => entry.id !== currentLogEntry.id)
+              : state.log,
+          };
+
+          logger.log('[EVENT MANAGER] Trade state changes being returned:', {
             choiceId,
             resourceChanges: {
               [trade.buyResource]: {
@@ -403,19 +414,11 @@ export class EventManager {
                 change: `-${trade.sellAmount}`,
               },
             },
+            fullStateChanges: stateChanges,
           });
 
           // Execute the trade - no _logMessage to avoid showing dialog
-          return {
-            resources: {
-              ...state.resources,
-              [trade.buyResource]: newBuyAmount,
-              [trade.sellResource]: newSellAmount,
-            },
-            log: currentLogEntry
-              ? state.log.filter((entry) => entry.id !== currentLogEntry.id)
-              : state.log,
-          };
+          return stateChanges;
         }
       }
 
