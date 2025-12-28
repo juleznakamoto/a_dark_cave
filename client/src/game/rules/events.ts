@@ -347,9 +347,9 @@ export class EventManager {
         purchasedIds: merchantTradesState?.purchasedIds || [],
       });
 
-      // Check if this trade was already purchased
+      // Check if this trade was already purchased (should not happen with atomic updates)
       if (merchantTradesState?.purchasedIds?.includes(choiceId)) {
-        logger.log('[EVENT MANAGER] Trade already purchased:', { choiceId });
+        logger.log('[EVENT MANAGER] Trade already purchased - this should not happen:', { choiceId });
         return {};
       }
 
@@ -405,7 +405,7 @@ export class EventManager {
               : state.log,
             merchantTrades: {
               choices: merchantTrades,
-              purchasedIds: [...(merchantTradesState?.purchasedIds || []), choiceId],
+              purchasedIds: [...(merchantTradesState?.purchasedIds || []), choiceId], // Add to purchased AFTER validation
             },
           };
 

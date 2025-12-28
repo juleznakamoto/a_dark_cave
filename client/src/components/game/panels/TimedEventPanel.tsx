@@ -143,22 +143,7 @@ export default function TimedEventPanel() {
       merchantTrades: gameState.merchantTrades,
     });
 
-    // If it's a merchant trade (not "say_goodbye"), track the purchase
-    if (isMerchantEvent && choiceId !== "say_goodbye") {
-      // Update merchantTrades state to mark this item as purchased
-      useGameStore.setState((state) => {
-        return {
-          merchantTrades: {
-            choices: state.merchantTrades?.choices || [],
-            purchasedIds: [
-              ...(state.merchantTrades?.purchasedIds || []),
-              choiceId,
-            ],
-          },
-        };
-      });
-    }
-
+    // Don't pre-emptively mark as purchased - let applyEventChoice handle it atomically
     applyEventChoice(choiceId, eventId, event);
 
     // Only close tab if it's "say_goodbye"
