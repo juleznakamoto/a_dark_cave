@@ -613,15 +613,9 @@ export const getCurrentResourceAmount = {
   }
 };
 
-// Helper function to get merchant tooltip with cost only
+// Helper function to get merchant tooltip - shows nothing (cost already visible on button)
 export const getMerchantTooltip = {
   getContent: (labelText: string | undefined, costText: string | undefined, gameState: GameState): React.ReactNode => {
-    if (!costText) return null;
-    
-    return (
-      <div className="text-xs">
-        {costText}
-      </div>
-    );
+    return null;
   }
 };
