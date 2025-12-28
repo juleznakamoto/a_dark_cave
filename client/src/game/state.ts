@@ -1225,7 +1225,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const timedTabEntry = stateChanges._timedTabEvent;
       delete stateChanges._timedTabEvent;
 
-      get().setTimedEventTab(true, timedTabEntry, timedTabEntry.timedTabDuration);
+      get().setTimedEventTab(true, timedTabEntry, timedTabEntry.timedTabDuration).catch(console.error);
     }
 
     if (newLogEntries.length > 0) {
@@ -1342,6 +1342,17 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const state = get();
     // If the game is paused, do not apply event choices
     if (state.isPaused) return;
+
+    console.log('[STATE] applyEventChoice called:', {
+      choiceId,
+      eventId,
+      hasCurrentLogEntry: !!currentLogEntry,
+      currentLogEntryChoices: currentLogEntry?.choices?.map(c => ({
+        id: c.id,
+        hasEffect: typeof c.effect === 'function',
+        effectType: typeof c.effect
+      }))
+    });
 
     // Use passed currentLogEntry or fall back to eventDialog.currentEvent
     const logEntry = currentLogEntry || get().eventDialog.currentEvent;
@@ -1540,16 +1551,24 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }));
   },
 
-  setTimedEventTab: (isActive: boolean, event?: any | null, duration?: number) => {
-    set((state) => ({
-      ...state,
-      timedEventTab: {
-        isActive,
-        event: event || null,
-        expiryTime: isActive && duration ? Date.now() + duration : 0,
-      },
-    }));
-  },
+  setTimedEventTab: async (isActive: boolean, event?: any | null, duration?: number) => {
+      let processedEvent = event;
+
+      // Pre-generate merchant choices when event is activated
+      if (isActive && event && (event.id === 'merchant' || event.eventId === 'merchant')) {
+        const { generateMerchantChoices } = await import('./rules/eventsMerchant');
+        const choices = generateMerchantChoices(get());
+        processedEvent = { ...event, choices };
+      }
+
+      set({
+        timedEventTab: {
+          isActive,
+          event: processedEvent || null,
+          expiryTime: duration ? Date.now() + duration : 0,
+        },
+      });
+    },
 
   setAuthDialogOpen: (isOpen: boolean) => {
     set({ authDialogOpen: isOpen });

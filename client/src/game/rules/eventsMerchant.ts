@@ -1010,7 +1010,7 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
       };
     });
 
-  const finalChoices = [
+  const finalChoices: EventChoice[] = [
     ...availableBuyTrades,
     ...availableSellTrades,
     ...availableToolTrades,
@@ -1023,7 +1023,7 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
             "You bid the merchant farewell. He tips his hat and mutters about the road ahead.",
         };
       },
-    },
+    } as EventChoice,
   ];
 
   return finalChoices;
@@ -1045,16 +1045,14 @@ export const merchantEvents: Record<string, GameEvent> = {
     priority: 3,
     repeatable: true,
     showAsTimedTab: true,
-    timedTabDuration: 120000, // 2 minutes
+    timedTabDuration: 4 * 60 *1000, // 4 minutes
     fallbackChoice: {
       id: "say_goodbye",
       label: "Say goodbye",
-      effect: (state: GameState) => {
-        return {
-          _logMessage:
-            "The merchant packs up and leaves. You missed your chance to trade.",
-        };
-      },
+      effect: () => ({
+        _logMessage:
+          "The merchant packs up and leaves. You missed your chance to trade.",
+      }),
     },
     choices: [], // Choices will be generated dynamically in TimedEventPanel
   },

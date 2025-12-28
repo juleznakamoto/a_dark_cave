@@ -96,11 +96,20 @@ export function useMobileButtonTooltip() {
     // Don't prevent default to allow button interaction
     setPressingId(id);
     
-    // Start timer to show tooltip after 300ms
-    pressTimerRef.current = setTimeout(() => {
-      setOpenTooltipId(id);
-      setPressingId(null);
-    }, 300);
+    // Use requestIdleCallback to defer non-critical work
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(() => {
+        pressTimerRef.current = setTimeout(() => {
+          setOpenTooltipId(id);
+          setPressingId(null);
+        }, 300);
+      }, { timeout: 100 });
+    } else {
+      pressTimerRef.current = setTimeout(() => {
+        setOpenTooltipId(id);
+        setPressingId(null);
+      }, 300);
+    }
   };
 
   const handleMouseUp = (id: string, disabled: boolean, onClick: () => void, e: React.MouseEvent) => {

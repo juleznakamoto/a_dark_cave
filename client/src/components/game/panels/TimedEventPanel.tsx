@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useGameStore } from "@/game/state";
 import { Button } from "@/components/ui/button";
 import {
@@ -20,35 +20,25 @@ export default function TimedEventPanel() {
     setHighlightedResources,
   } = useGameStore();
   const gameState = useGameStore();
+  
+  // ALL HOOKS MUST BE CALLED BEFORE ANY EARLY RETURNS
   const mobileTooltip = useMobileButtonTooltip();
-
   const [timeRemaining, setTimeRemaining] = useState<number>(0);
-  const [merchantChoices, setMerchantChoices] = useState<EventChoice[]>([]);
 
-  // Generate merchant choices once when the event opens
+  // useEffect MUST be called before any early returns
   useEffect(() => {
-    if (timedEventTab.isActive && timedEventTab.event) {
-      const event = timedEventTab.event;
-      const eventId = event.eventId || event.id.split("-")[0];
-      
-      if (eventId === "merchant") {
-        setMerchantChoices(generateMerchantChoices(gameState));
-      }
-    }
-  }, [timedEventTab.isActive, timedEventTab.event?.id]);
-
-  useEffect(() => {
-    if (!timedEventTab.isActive || !timedEventTab.expiryTime) {
+    if (!timedEventTab.isActive || !timedEventTab.expiryTime || !timedEventTab.event) {
       setTimeRemaining(0);
-      setMerchantChoices([]);
       return;
     }
 
+    const event = timedEventTab.event;
     const expiryTime = timedEventTab.expiryTime;
 
     const updateTimer = () => {
       const now = Date.now();
       const remaining = Math.max(0, expiryTime - now);
+      
       setTimeRemaining(remaining);
 
       if (remaining <= 0) {
@@ -57,25 +47,28 @@ export default function TimedEventPanel() {
           const timedEventId = event.eventId || event.id.split("-")[0];
 
           // Use the event's defined fallbackChoice if available
-          if (event.fallbackChoice) {
-            console.log('[TIMED EVENT] Timer expired, executing fallback choice:', event.fallbackChoice.id, 'for event:', timedEventId);
+          if (event.fallbackChoice && typeof event.fallbackChoice.effect === 'function') {
+            console.log('[TIMED EVENT] Timer expired, executing fallback for:', event.title);
             applyEventChoice(event.fallbackChoice.id, timedEventId, event);
+          } else if (event.fallbackChoice) {
+            console.error('[TIMED EVENT] Fallback choice exists but has no effect function:', event.fallbackChoice);
           } else {
             // Fallback to looking for "doNothing" choice
             const fallbackChoice = event.choices?.find(
               (c) => c.id === "doNothing",
             );
-            if (fallbackChoice) {
-              console.log('[TIMED EVENT] Timer expired, executing doNothing choice for event:', timedEventId);
+            if (fallbackChoice && typeof fallbackChoice.effect === 'function') {
+              console.log('[TIMED EVENT] Timer expired, executing doNothing for:', timedEventId);
               applyEventChoice(fallbackChoice.id, timedEventId, event);
             } else {
-              console.warn('[TIMED EVENT] Timer expired but no fallback choice found for event:', timedEventId);
+              console.error('[TIMED EVENT] Timer expired but no valid fallback choice found for event:', timedEventId);
             }
           }
         }
+        
         // Clear highlights and auto-close the tab
         setHighlightedResources([]);
-        setTimedEventTab(false);
+        setTimedEventTab(false).catch(console.error);
 
         // The useEffect in GameContainer will automatically switch to cave tab
         // when it detects timedevent tab is active but event is no longer active
@@ -99,18 +92,16 @@ export default function TimedEventPanel() {
     applyEventChoice,
   ]);
 
+  // Use choices directly from the event - they were pre-generated when event was created
+  const eventChoices: EventChoice[] = timedEventTab.event?.choices || [];
+
+  // Early return AFTER ALL hooks (including useEffect and useMemo) have been called
   if (!timedEventTab.event) {
     return null;
   }
 
   const event = timedEventTab.event;
   const eventId = event.eventId || event.id.split("-")[0];
-  
-  // Use pre-generated merchant choices or event choices
-  const isMerchantEvent = eventId === "merchant";
-  const eventChoices: EventChoice[] = isMerchantEvent 
-    ? merchantChoices
-    : (event.choices || []);
 
   const formatTime = (ms: number) => {
     const totalSeconds = Math.ceil(ms / 1000);
@@ -120,9 +111,41 @@ export default function TimedEventPanel() {
   };
 
   const handleChoice = (choiceId: string) => {
+    const choice = eventChoices.find(c => c.id === choiceId);
+    
+    console.log('[TIMED EVENT] ========================================');
+    console.log('[TIMED EVENT] Button clicked:', {
+      choiceId,
+      choiceLabel: choice ? (typeof choice.label === 'function' ? choice.label(gameState) : choice.label) : 'NOT FOUND',
+      eventId,
+      eventTitle: event.title,
+      timeRemaining: Math.floor(timeRemaining / 1000) + 's',
+    });
+    
+    if (!choice) {
+      console.error('[TIMED EVENT] ERROR: Choice not found in eventChoices!');
+      console.log('[TIMED EVENT] Available choices:', 
+        eventChoices.map(c => ({
+          id: c.id,
+          label: typeof c.label === 'function' ? c.label(gameState) : c.label,
+        }))
+      );
+      return;
+    }
+    
+    console.log('[TIMED EVENT] Clearing highlights and applying choice');
     setHighlightedResources([]); // Clear highlights before closing
+    
+    console.log('[TIMED EVENT] Calling applyEventChoice with:', {
+      choiceId,
+      eventId,
+      hasEvent: !!event
+    });
     applyEventChoice(choiceId, eventId, event);
-    setTimedEventTab(false);
+    
+    console.log('[TIMED EVENT] Closing timed event tab');
+    setTimedEventTab(false).catch(console.error);
+    console.log('[TIMED EVENT] ========================================');
   };
 
   // Helper function to extract resource names from cost text
@@ -200,6 +223,7 @@ export default function TimedEventPanel() {
                 onClick={
                   !mobileTooltip.isMobile
                     ? (e) => {
+                        console.log('[TIMED EVENT] Trade button onClick fired:', choice.id);
                         e.stopPropagation();
                         handleChoice(choice.id);
                       }
@@ -244,7 +268,10 @@ export default function TimedEventPanel() {
                               mobileTooltip.handleMouseUp(
                                 `timedevent-${choice.id}`,
                                 isDisabled,
-                                () => handleChoice(choice.id),
+                                () => {
+                                  console.log('[TIMED EVENT] Mobile trade button (with tooltip) fired:', choice.id);
+                                  handleChoice(choice.id);
+                                },
                                 e,
                               )
                           : undefined
@@ -266,7 +293,10 @@ export default function TimedEventPanel() {
                               mobileTooltip.handleTouchEnd(
                                 `timedevent-${choice.id}`,
                                 isDisabled,
-                                () => handleChoice(choice.id),
+                                () => {
+                                  console.log('[TIMED EVENT] Mobile trade button (with tooltip) touchEnd fired:', choice.id);
+                                  handleChoice(choice.id);
+                                },
                                 e,
                               )
                           : undefined
@@ -311,7 +341,10 @@ export default function TimedEventPanel() {
                         mobileTooltip.handleMouseUp(
                           `timedevent-${choice.id}`,
                           isDisabled,
-                          () => handleChoice(choice.id),
+                          () => {
+                            console.log('[TIMED EVENT] Mobile trade button (no tooltip) fired:', choice.id);
+                            handleChoice(choice.id);
+                          },
                           e,
                         )
                     : undefined
@@ -333,7 +366,10 @@ export default function TimedEventPanel() {
                         mobileTooltip.handleTouchEnd(
                           `timedevent-${choice.id}`,
                           isDisabled,
-                          () => handleChoice(choice.id),
+                          () => {
+                            console.log('[TIMED EVENT] Mobile trade button (no tooltip) touchEnd fired:', choice.id);
+                            handleChoice(choice.id);
+                          },
                           e,
                         )
                     : undefined
