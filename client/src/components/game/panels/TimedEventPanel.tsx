@@ -24,6 +24,7 @@ export default function TimedEventPanel() {
   // ALL HOOKS MUST BE CALLED BEFORE ANY EARLY RETURNS
   const mobileTooltip = useMobileButtonTooltip();
   const [timeRemaining, setTimeRemaining] = useState<number>(0);
+  const [purchasedItems, setPurchasedItems] = useState<Set<string>>(new Set());
 
   // useEffect MUST be called before any early returns
   useEffect(() => {
@@ -88,12 +89,12 @@ export default function TimedEventPanel() {
     timedEventTab.isActive,
     timedEventTab.event?.id,
     timedEventTab.expiryTime,
-    setTimedEventTab,
-    applyEventChoice,
   ]);
 
   // Use choices directly from the event - they were pre-generated when event was created
-  const eventChoices: EventChoice[] = timedEventTab.event?.choices || [];
+  const eventChoices = useMemo(() => {
+    return timedEventTab.event?.choices || [];
+  }, [timedEventTab.event?.id]);
 
   // Early return AFTER ALL hooks (including useEffect and useMemo) have been called
   if (!timedEventTab.event) {
@@ -112,40 +113,27 @@ export default function TimedEventPanel() {
 
   const handleChoice = (choiceId: string) => {
     const choice = eventChoices.find(c => c.id === choiceId);
-    
-    console.log('[TIMED EVENT] ========================================');
-    console.log('[TIMED EVENT] Button clicked:', {
-      choiceId,
-      choiceLabel: choice ? (typeof choice.label === 'function' ? choice.label(gameState) : choice.label) : 'NOT FOUND',
-      eventId,
-      eventTitle: event.title,
-      timeRemaining: Math.floor(timeRemaining / 1000) + 's',
-    });
+    const isSayGoodbye = choiceId === 'say_goodbye';
     
     if (!choice) {
-      console.error('[TIMED EVENT] ERROR: Choice not found in eventChoices!');
-      console.log('[TIMED EVENT] Available choices:', 
-        eventChoices.map(c => ({
-          id: c.id,
-          label: typeof c.label === 'function' ? c.label(gameState) : c.label,
-        }))
-      );
+      return;
+    }
+
+    // Check if already purchased (shouldn't happen due to disabled state, but double-check)
+    if (!isSayGoodbye && purchasedItems.has(choiceId)) {
       return;
     }
     
-    console.log('[TIMED EVENT] Clearing highlights and applying choice');
     setHighlightedResources([]); // Clear highlights before closing
-    
-    console.log('[TIMED EVENT] Calling applyEventChoice with:', {
-      choiceId,
-      eventId,
-      hasEvent: !!event
-    });
     applyEventChoice(choiceId, eventId, event);
-    
-    console.log('[TIMED EVENT] Closing timed event tab');
-    setTimedEventTab(false).catch(console.error);
-    console.log('[TIMED EVENT] ========================================');
+
+    // If it's a trade button (not say goodbye), mark as purchased
+    if (!isSayGoodbye) {
+      setPurchasedItems(prev => new Set([...prev, choiceId]));
+    } else {
+      // If saying goodbye, close the tab
+      setTimedEventTab(false).catch(console.error);
+    }
   };
 
   // Helper function to extract resource names from cost text
@@ -215,11 +203,14 @@ export default function TimedEventPanel() {
                 ? choice.label(gameState)
                 : choice.label;
 
-            // Disable if can't afford or time is up
-            const isDisabled = !canAfford || timeRemaining <= 0;
-            
             // Check if this is the goodbye button
             const isGoodbyeButton = choice.id === 'say_goodbye';
+            
+            // Check if this item has been purchased
+            const isPurchased = purchasedItems.has(choice.id);
+
+            // Disable if can't afford, time is up, or already purchased (except goodbye)
+            const isDisabled = !canAfford || timeRemaining <= 0 || (!isGoodbyeButton && isPurchased);
 
             const buttonContent = (
               <Button
