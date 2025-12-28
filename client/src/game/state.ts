@@ -1192,6 +1192,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
         }, // Load merchant trades
       };
 
+      logger.log('[MERCHANT TRADES] Loaded merchant trades from state:', {
+        hasChoices: !!savedState.merchantTrades?.choices?.length,
+        choicesCount: savedState.merchantTrades?.choices?.length || 0,
+        purchasedCount: savedState.merchantTrades?.purchasedIds?.length || 0,
+        purchasedIds: savedState.merchantTrades?.purchasedIds || [],
+      });
+
       set(loadedState);
       StateManager.scheduleEffectsUpdate(get);
     } else {
@@ -1590,6 +1597,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const state = get();
       const generatedChoices = generateMerchantChoices(state);
       
+      logger.log('[MERCHANT TRADES] Setting timed event tab with merchant trades:', {
+        eventId: event?.id,
+        choicesCount: generatedChoices.length,
+        duration,
+        expiryTime: duration ? Date.now() + duration : 0,
+      });
+      
       set({
         timedEventTab: {
           isActive,
@@ -1603,6 +1617,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
       });
     } else if (!isActive) {
       // If deactivating, clear merchant trades
+      logger.log('[MERCHANT TRADES] Clearing merchant trades (deactivating timed tab)');
+      
       set({
         timedEventTab: {
           isActive: false,

@@ -924,6 +924,14 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
     numSellTrades = 2;
   }
 
+  console.log('[MERCHANT TRADES] Generating merchant choices:', {
+    knowledge,
+    discount: Math.round(discount * 100) + '%',
+    numBuyTrades,
+    numSellTrades,
+    filteredBuyTradesCount: filteredBuyTrades.length,
+  });
+
   const availableBuyTrades = selectTrades(
     filteredBuyTrades,
     numBuyTrades,
@@ -1025,6 +1033,14 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
       },
     } as EventChoice,
   ];
+
+  console.log('[MERCHANT TRADES] Final choices generated:', {
+    totalChoices: finalChoices.length,
+    buyTrades: availableBuyTrades.length,
+    sellTrades: availableSellTrades.length,
+    toolTrades: availableToolTrades.length,
+    choices: finalChoices.map(c => ({ id: c.id, label: c.label, cost: c.cost })),
+  });
 
   return finalChoices;
 }

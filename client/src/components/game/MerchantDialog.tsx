@@ -61,6 +61,32 @@ export default function MerchantDialog({
   const discount = calculateMerchantDiscount(knowledge);
   const hasBookOfWar = gameState.books?.book_of_war;
 
+  const handleChoice = (choiceId: string) => {
+    const isSayGoodbye = choiceId === "say_goodbye";
+
+    if (isSayGoodbye) {
+      logger.log('[MERCHANT TRADES] User said goodbye to merchant');
+      onChoice(choiceId);
+      return;
+    }
+
+    const choice = eventChoices.find((c) => c.id === choiceId);
+    if (!choice) return;
+
+    const result = choice.effect(gameState);
+
+    if (Object.keys(result).length > 0) {
+      logger.log('[MERCHANT TRADES] Purchase completed:', {
+        choiceId,
+        choiceLabel: choice.label,
+        choiceCost: choice.cost,
+        resultKeys: Object.keys(result),
+      });
+      onChoice(choiceId);
+    }
+  };
+
+
   return (
     <DialogPortal>
       <DialogPrimitive.Overlay
@@ -167,7 +193,7 @@ export default function MerchantDialog({
                       !mobileTooltip.isMobile
                         ? (e) => {
                             e.stopPropagation();
-                            onChoice(choice.id);
+                            handleChoice(choice.id);
                           }
                         : undefined
                     }
@@ -215,7 +241,7 @@ export default function MerchantDialog({
                                     mobileTooltip.handleMouseUp(
                                       choice.id,
                                       isDisabled,
-                                      () => onChoice(choice.id),
+                                      () => handleChoice(choice.id),
                                       e,
                                     )
                                 : undefined
@@ -237,7 +263,7 @@ export default function MerchantDialog({
                                     mobileTooltip.handleTouchEnd(
                                       choice.id,
                                       isDisabled,
-                                      () => onChoice(choice.id),
+                                      () => handleChoice(choice.id),
                                       e,
                                     )
                                 : undefined
@@ -264,7 +290,7 @@ export default function MerchantDialog({
               <Button
                 onClick={(e) => {
                   e.stopPropagation();
-                  onChoice("say_goodbye");
+                  handleChoice("say_goodbye");
                 }}
                 variant="outline"
                 className="text-xs h-10 px-4"
