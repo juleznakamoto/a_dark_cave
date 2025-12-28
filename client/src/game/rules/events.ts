@@ -348,40 +348,16 @@ export class EventManager {
         allTradeIds: merchantTrades?.map((t: any) => t.id),
       });
 
-      // Find the trade data - also check if the choiceId matches any choice from currentLogEntry
+      // Find the trade data
       if (merchantTrades) {
-        let trade = merchantTrades.find((t: any) => t.id === choiceId);
-        
-        // If not found directly, try to find by checking the current log entry choices
-        if (!trade && currentLogEntry?.choices) {
-          const matchingChoice = currentLogEntry.choices.find((c) => c.id === choiceId);
-          if (matchingChoice) {
-            // Extract trade info from the choice's label and cost
-            const labelMatch = typeof matchingChoice.label === 'string' 
-              ? matchingChoice.label.match(/^\+(\d+)\s+(.+)$/)
-              : null;
-            const costText = typeof matchingChoice.cost === 'function' 
-              ? matchingChoice.cost(state) 
-              : matchingChoice.cost;
-            const costMatch = costText ? costText.match(/^(\d+)\s+(.+)$/) : null;
-
-            if (labelMatch && costMatch) {
-              trade = {
-                id: choiceId,
-                buyResource: labelMatch[2].toLowerCase().replace(/\s+/g, '_'),
-                buyAmount: parseInt(labelMatch[1]),
-                sellResource: costMatch[2].toLowerCase().replace(/\s+/g, '_'),
-                sellAmount: parseInt(costMatch[1]),
-              };
-            }
-          }
-        }
+        const trade = merchantTrades.find((t: any) => t.id === choiceId);
 
         logger.log('[EVENT MANAGER] Trade lookup result:', {
           choiceId,
           foundTrade: !!trade,
           tradeData: trade,
           allAvailableIds: merchantTrades.map((t: any) => t.id),
+          allTrades: merchantTrades,
         });
 
         if (trade && trade.buyResource && trade.sellResource) {

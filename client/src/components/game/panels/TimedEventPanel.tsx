@@ -138,18 +138,17 @@ export default function TimedEventPanel() {
   const handleChoice = (choiceId: string) => {
     setHighlightedResources([]); // Clear highlights before closing
 
+    logger.log('[TIMED EVENT PANEL] handleChoice called:', {
+      choiceId,
+      isMerchantEvent,
+      eventChoices: eventChoices.map(c => ({ id: c.id, label: typeof c.label === 'function' ? c.label(gameState) : c.label })),
+      merchantTrades: gameState.merchantTrades,
+    });
+
     // If it's a merchant trade (not "say_goodbye"), track the purchase
     if (isMerchantEvent && choiceId !== "say_goodbye") {
-      // Log the creation of a merchant trade
-      logger.log(`[MERCHANT TRADE] Creating merchant trade: ${choiceId}`);
-
       // Update merchantTrades state to mark this item as purchased
       useGameStore.setState((state) => {
-        logger.log("[MERCHANT TRADE] Current state before update:", {
-          merchantTrades: state.merchantTrades,
-          purchasedIds: state.merchantTrades?.purchasedIds,
-        });
-
         return {
           merchantTrades: {
             choices: state.merchantTrades?.choices || [],
