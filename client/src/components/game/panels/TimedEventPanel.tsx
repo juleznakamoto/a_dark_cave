@@ -12,6 +12,7 @@ import { eventChoiceCostTooltip } from "@/game/rules/tooltips";
 import { generateMerchantChoices } from "@/game/rules/eventsMerchant";
 import { EventChoice } from "@/game/rules/events";
 import { logger } from "@/lib/logger";
+import { generateMerchantTrades, tradeToChoice } from "@/game/rules/eventsMerchant";
 
 // Assuming LogEntry and setEventDialog are defined elsewhere and imported if necessary
 // For this example, we'll define dummy types if they are not provided
@@ -120,42 +121,42 @@ export default function TimedEventPanel() {
   const eventChoices = useMemo(() => {
     const event = timedEventTab.event;
     if (!event) return [];
-    
+
     // For merchant events, convert saved trades to choices
     if (event.id === 'merchant' || event.eventId === 'merchant') {
       // Get saved trades from event (or generate if not present)
       const savedTrades = (event as any).merchantTrades;
-      
+
       if (!savedTrades) {
         logger.log('[MERCHANT] No saved trades, this should not happen');
         return [];
       }
-      
+
       logger.log('[MERCHANT LOAD] Converting saved trades to choices:', {
         tradesCount: savedTrades.length,
       });
-      
+
       // Import the conversion function
       const { tradeToChoice } = require('@/game/rules/eventsMerchant');
       const choices = savedTrades.map((trade: any) => tradeToChoice(trade));
-      
+
       // Add "say goodbye" choice
       choices.push({
         id: "say_goodbye",
         label: "Say goodbye",
         effect: (): any => ({}),
       });
-      
+
       return choices;
     }
-    
+
     return event.choices || [];
   }, [timedEventTab.event?.id, timedEventTab.event?.eventId, (timedEventTab.event as any)?.merchantTrades, gameState.resources, gameState.buildings]);
 
   // Convert merchantPurchases array to Set for efficient lookup
   const merchantPurchasesSet = useMemo(() => {
     const purchasesArray = Array.isArray(merchantPurchases) ? merchantPurchases : Array.from(merchantPurchases instanceof Set ? merchantPurchases : []);
-    
+
     logger.log('[MERCHANT RENDER] 🎨 Converting purchases for rendering:', {
       merchantPurchases,
       isArray: Array.isArray(merchantPurchases),
@@ -163,7 +164,7 @@ export default function TimedEventPanel() {
       purchasesArray,
       purchaseCount: purchasesArray.length,
     });
-    
+
     return new Set(purchasesArray);
   }, [merchantPurchases]);
 
