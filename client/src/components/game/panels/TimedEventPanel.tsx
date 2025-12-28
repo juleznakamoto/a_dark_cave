@@ -20,7 +20,7 @@ export default function TimedEventPanel() {
     setHighlightedResources,
   } = useGameStore();
   const gameState = useGameStore();
-  
+
   // ALL HOOKS MUST BE CALLED BEFORE ANY EARLY RETURNS
   const mobileTooltip = useMobileButtonTooltip();
   const [timeRemaining, setTimeRemaining] = useState<number>(0);
@@ -29,13 +29,18 @@ export default function TimedEventPanel() {
   const isMerchantEvent = timedEventTab.event?.id.split("-")[0] === "merchant";
   const eventChoices: EventChoice[] = useMemo(() => {
     if (!timedEventTab.event) return [];
-    
+
     if (isMerchantEvent) {
-      // Use stored trades from state instead of regenerating
-      return gameState.merchantTrades.choices;
+      // Reconstruct trades from saved data
+      const savedTrades = gameState.merchantTrades.choices;
+      if (savedTrades.length > 0) {
+        const { reconstructTradeFromData } = require('@/game/rules/eventsMerchant');
+        return savedTrades.map((trade: any) => reconstructTradeFromData(trade, gameState));
+      }
+      return [];
     }
     return timedEventTab.event.choices || [];
-  }, [isMerchantEvent, timedEventTab.event?.id, gameState.merchantTrades.choices]);
+  }, [isMerchantEvent, timedEventTab.event?.id, gameState.merchantTrades.choices, gameState]);
 
   useEffect(() => {
     if (!timedEventTab.isActive || !timedEventTab.expiryTime || !timedEventTab.event) {
@@ -49,7 +54,7 @@ export default function TimedEventPanel() {
     const updateTimer = () => {
       const now = Date.now();
       const remaining = Math.max(0, expiryTime - now);
-      
+
       setTimeRemaining(remaining);
 
       if (remaining <= 0) {
@@ -71,7 +76,7 @@ export default function TimedEventPanel() {
             }
           }
         }
-        
+
         // Clear highlights and auto-close the tab
         setHighlightedResources([]);
         setTimedEventTab(false);
@@ -115,7 +120,7 @@ export default function TimedEventPanel() {
 
   const handleChoice = (choiceId: string) => {
     setHighlightedResources([]); // Clear highlights before closing
-    
+
     // If it's a merchant trade (not "say_goodbye"), track the purchase
     if (isMerchantEvent && choiceId !== 'say_goodbye') {
       // Update merchantTrades state to mark this item as purchased
@@ -126,9 +131,9 @@ export default function TimedEventPanel() {
         },
       }));
     }
-    
+
     applyEventChoice(choiceId, eventId, event);
-    
+
     // Only close tab if it's "say_goodbye"
     if (choiceId === 'say_goodbye') {
       setTimedEventTab(false);
@@ -149,7 +154,7 @@ export default function TimedEventPanel() {
     return resources;
   };
 
-  
+
 
   return (
     <div className="w-80 space-y-1 mt-2 mb-2 pr-4 pl-[3px]">

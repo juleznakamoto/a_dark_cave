@@ -736,8 +736,8 @@ function selectTrades(
   usedResourcePairs: Set<string>,
   usedRewardTypes: Set<string>,
   isBuyTrade: boolean,
-): EventChoice[] {
-  const selected: EventChoice[] = [];
+): MerchantTradeData[] {
+  const selected: MerchantTradeData[] = [];
   const availableTrades = [...trades];
 
   // Track how many trades have gold/silver as buy resource (what player receives)
@@ -876,26 +876,123 @@ function selectTrades(
       id: trade.id,
       label,
       cost,
-      effect: (state: GameState) => {
-        if ((state.resources[sellResource] || 0) >= sellAmount) {
-          return {
-            resources: {
-              ...state.resources,
-              [sellResource]: (state.resources[sellResource] || 0) - sellAmount,
-              [buyResource]: (state.resources[buyResource] || 0) + buyAmount,
-            },
-          };
-        }
-        return {};
-      },
+      tradeType: isBuyTrade ? 'buy' : 'sell',
+      giveResource: buyResource,
+      giveAmount: buyAmount,
+      takeResource: sellResource,
+      takeAmount: sellAmount,
     });
   }
 
   return selected;
 }
 
+// Merchant trade state structure
+export interface MerchantTradeData {
+  id: string;
+  cost: string;
+  label: string;
+  tradeType: 'buy' | 'sell' | 'tool';
+  // For buy/sell trades
+  giveResource?: string;
+  giveAmount?: number;
+  takeResource?: string;
+  takeAmount?: number;
+  // For tool trades
+  toolType?: 'tool' | 'weapon' | 'schematic' | 'book';
+  toolItem?: string;
+  toolCostResource?: string;
+  toolCostAmount?: number;
+  toolMessage?: string;
+}
+
+// Function to reconstruct a trade from saved data
+export function reconstructTradeFromData(
+  data: MerchantTradeData,
+  state: GameState
+): EventChoice {
+  if (data.tradeType === 'tool' && data.toolType && data.toolItem && data.toolCostResource && data.toolCostAmount) {
+    // Reconstruct tool trade
+    return {
+      id: data.id,
+      label: data.label,
+      cost: data.cost,
+      effect: (state: GameState) => {
+        if ((state.resources[data.toolCostResource!] || 0) >= data.toolCostAmount!) {
+          const result: any = {
+            resources: {
+              ...state.resources,
+              [data.toolCostResource!]: (state.resources[data.toolCostResource!] || 0) - data.toolCostAmount!,
+            },
+            _logMessage: data.toolMessage || '',
+          };
+
+          if (data.toolType === 'tool') {
+            result.tools = { ...state.tools, [data.toolItem!]: true };
+          } else if (data.toolType === 'weapon') {
+            result.weapons = { ...state.weapons, [data.toolItem!]: true };
+          } else if (data.toolType === 'schematic') {
+            result.schematics = { ...state.schematics, [data.toolItem!]: true };
+          } else if (data.toolType === 'book') {
+            result.books = { ...state.books, [data.toolItem!]: true };
+          }
+
+          return result;
+        }
+        return {};
+      },
+    };
+  } else if (data.tradeType === 'buy' && data.giveResource && data.giveAmount && data.takeResource && data.takeAmount) {
+    // Reconstruct buy trade
+    return {
+      id: data.id,
+      label: data.label,
+      cost: data.cost,
+      effect: (state: GameState) => {
+        if ((state.resources[data.takeResource!] || 0) >= data.takeAmount!) {
+          return {
+            resources: {
+              ...state.resources,
+              [data.takeResource!]: (state.resources[data.takeResource!] || 0) - data.takeAmount!,
+              [data.giveResource!]: (state.resources[data.giveResource!] || 0) + data.giveAmount!,
+            },
+          };
+        }
+        return {};
+      },
+    };
+  } else if (data.tradeType === 'sell' && data.giveResource && data.giveAmount && data.takeResource && data.takeAmount) {
+    // Reconstruct sell trade
+    return {
+      id: data.id,
+      label: data.label,
+      cost: data.cost,
+      effect: (state: GameState) => {
+        if ((state.resources[data.takeResource!] || 0) >= data.takeAmount!) {
+          return {
+            resources: {
+              ...state.resources,
+              [data.takeResource!]: (state.resources[data.takeResource!] || 0) - data.takeAmount!,
+              [data.giveResource!]: (state.resources[data.giveResource!] || 0) + data.giveAmount!,
+            },
+          };
+        }
+        return {};
+      },
+    };
+  }
+
+  // Fallback
+  return {
+    id: data.id,
+    label: data.label,
+    cost: data.cost,
+    effect: () => ({}),
+  };
+}
+
 // Function to generate fresh merchant choices
-export function generateMerchantChoices(state: GameState): EventChoice[] {
+export function generateMerchantChoices(state: GameState): MerchantTradeData[] {
   const knowledge = getTotalKnowledge(state);
 
   // Calculate merchant discount using centralized function
@@ -987,38 +1084,16 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
         id: trade.id,
         label: `${trade.label}`,
         cost: `${cost} ${costOption.resource}`,
-        effect: (state: GameState) => {
-          if ((state.resources[costOption.resource] || 0) >= cost) {
-            const result: any = {
-              resources: {
-                ...state.resources,
-                [costOption.resource]:
-                  (state.resources[costOption.resource] || 0) - cost,
-              },
-              _logMessage: trade.message,
-            };
-
-            if (trade.give === "tool") {
-              result.tools = { ...state.tools, [trade.giveItem]: true };
-            } else if (trade.give === "weapon") {
-              result.weapons = { ...state.weapons, [trade.giveItem]: true };
-            } else if (trade.give === "schematic") {
-              result.schematics = {
-                ...state.schematics,
-                [trade.giveItem]: true,
-              };
-            } else if (trade.give === "book") {
-              result.books = { ...state.books, [trade.giveItem]: true };
-            }
-
-            return result;
-          }
-          return {};
-        },
+        tradeType: 'tool' as const,
+        toolType: trade.give as 'tool' | 'weapon' | 'schematic' | 'book',
+        toolItem: trade.giveItem,
+        toolCostResource: costOption.resource,
+        toolCostAmount: cost,
+        toolMessage: trade.message,
       };
     });
 
-  const finalChoices: EventChoice[] = [
+  const finalChoices: MerchantTradeData[] = [
     ...availableBuyTrades,
     ...availableSellTrades,
     ...availableToolTrades,

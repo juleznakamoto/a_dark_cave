@@ -125,14 +125,7 @@ interface GameStore extends GameState {
 
   // Merchant trades state
   merchantTrades: {
-    choices: Array<{
-      id: string;
-      cost: Record<string, number>;
-      item: string;
-      quantity: number;
-      actionId: string;
-      description: string;
-    }>;
+    choices: Array<any>; // Will be MerchantTradeData from eventsMerchant.ts
     purchasedIds: string[];
   };
 
