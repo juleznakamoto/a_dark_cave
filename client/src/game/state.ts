@@ -216,7 +216,7 @@ interface GameStore extends GameState {
   unassignVillager: (job: keyof GameState["villagers"]) => void;
   setEventDialog: (isOpen: boolean, event?: LogEntry | null) => void;
   setCombatDialog: (isOpen: boolean, data?: any) => void;
-  setTimedEventTab: (isActive: boolean, event?: LogEntry | null, duration?: number) => void;
+  setTimedEventTab: (isActive: boolean, event?: LogEntry | null, duration?: number) => Promise<void>;
   setAuthDialogOpen: (isOpen: boolean) => void;
   setShopDialogOpen: (isOpen: boolean) => void;
   setLeaderboardDialogOpen: (isOpen: boolean) => void;
@@ -1582,39 +1582,47 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }));
   },
 
-  setTimedEventTab: (isActive: boolean, event?: LogEntry | null, duration?: number) => {
-    set((state) => {
-      const updates: any = {
+  setTimedEventTab: async (isActive: boolean, event?: LogEntry | null, duration?: number) => {
+    // If activating merchant event, generate and store trades
+    if (isActive && event?.id.includes('merchant')) {
+      const { generateMerchantChoices } = await import('@/game/rules/eventsMerchant');
+      const state = get();
+      const generatedChoices = generateMerchantChoices(state);
+      
+      set({
+        timedEventTab: {
+          isActive,
+          event: event || null,
+          expiryTime: duration ? Date.now() + duration : 0,
+        },
+        merchantTrades: {
+          choices: generatedChoices,
+          purchasedIds: [],
+        },
+      });
+    } else if (!isActive) {
+      // If deactivating, clear merchant trades
+      set({
+        timedEventTab: {
+          isActive: false,
+          event: null,
+          expiryTime: 0,
+        },
+        merchantTrades: {
+          choices: [],
+          purchasedIds: [],
+        },
+      });
+    } else {
+      // Normal activation without merchant
+      set({
         timedEventTab: {
           isActive,
           event: event || null,
           expiryTime: isActive && duration ? Date.now() + duration : 0,
         },
-      };
-
-      // If activating merchant event, generate and store trades
-      if (isActive && event?.id.includes('merchant')) {
-        const { generateMerchantChoices } = require('@/game/rules/eventsMerchant');
-        const generatedChoices = generateMerchantChoices(state);
-        updates.merchantTrades = {
-          choices: generatedChoices,
-          purchasedIds: [],
-        };
-      }
-
-      // If deactivating, clear merchant trades
-      if (!isActive) {
-        updates.merchantTrades = {
-          choices: [],
-          purchasedIds: [],
-        };
-      }
-
-      return {
-        ...state,
-        ...updates,
-      };
-    });
+      });
+    }
   },
 
   setAuthDialogOpen: (isOpen: boolean) => {
