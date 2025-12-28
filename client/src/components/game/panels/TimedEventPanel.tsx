@@ -182,7 +182,10 @@ export default function TimedEventPanel() {
 
       {/* Choices */}
       <div className="space-y-2">
-        <div className="flex flex-wrap gap-2 mt-3">
+        {isMerchantEvent && (
+          <h3 className="text-sm font-semibold mt-3">Buy</h3>
+        )}
+        <div className="flex flex-wrap gap-2">
           {eventChoices
             .filter((choice) => choice.id !== "say_goodbye")
             .map((choice) => {
@@ -376,78 +379,79 @@ export default function TimedEventPanel() {
                 </div>
               );
             })}
+        </div>
 
-          {/* Say Goodbye button - always visible and hardcoded */}
-          <div
-            onMouseDown={
-              mobileTooltip.isMobile
-                ? (e) =>
-                    mobileTooltip.handleMouseDown(
-                      `timedevent-say_goodbye`,
-                      timeRemaining <= 0,
-                      false,
-                      e,
-                    )
-                : undefined
-            }
-            onMouseUp={
-              mobileTooltip.isMobile
-                ? (e) =>
-                    mobileTooltip.handleMouseUp(
-                      `timedevent-say_goodbye`,
-                      timeRemaining <= 0,
-                      () => {
-                        setHighlightedResources([]);
-                        setTimedEventTab(false);
-                      },
-                      e,
-                    )
-                : undefined
-            }
-            onTouchStart={
-              mobileTooltip.isMobile
-                ? (e) =>
-                    mobileTooltip.handleTouchStart(
-                      `timedevent-say_goodbye`,
-                      timeRemaining <= 0,
-                      false,
-                      e,
-                    )
-                : undefined
-            }
-            onTouchEnd={
-              mobileTooltip.isMobile
-                ? (e) =>
-                    mobileTooltip.handleTouchEnd(
-                      `timedevent-say_goodbye`,
-                      timeRemaining <= 0,
-                      () => {
-                        setHighlightedResources([]);
-                        setTimedEventTab(false);
-                      },
-                      e,
-                    )
-                : undefined
-            }
-          >
-            <Button
-              onClick={
-                !mobileTooltip.isMobile
-                  ? (e) => {
-                      e.stopPropagation();
+        {/* Say Goodbye button - always on its own row */}
+        <div
+          onMouseDown={
+            mobileTooltip.isMobile
+              ? (e) =>
+                  mobileTooltip.handleMouseDown(
+                    `timedevent-say_goodbye`,
+                    timeRemaining <= 0,
+                    false,
+                    e,
+                  )
+              : undefined
+          }
+          onMouseUp={
+            mobileTooltip.isMobile
+              ? (e) =>
+                  mobileTooltip.handleMouseUp(
+                    `timedevent-say_goodbye`,
+                    timeRemaining <= 0,
+                    () => {
                       setHighlightedResources([]);
                       setTimedEventTab(false);
-                    }
-                  : undefined
-              }
-              variant="outline"
-              size="xs"
-              disabled={timeRemaining <= 0}
-              button_id="timedevent-say_goodbye"
-            >
-              Say Goodbye
-            </Button>
-          </div>
+                    },
+                    e,
+                  )
+              : undefined
+          }
+          onTouchStart={
+            mobileTooltip.isMobile
+              ? (e) =>
+                  mobileTooltip.handleTouchStart(
+                    `timedevent-say_goodbye`,
+                    timeRemaining <= 0,
+                    false,
+                    e,
+                  )
+              : undefined
+          }
+          onTouchEnd={
+            mobileTooltip.isMobile
+              ? (e) =>
+                  mobileTooltip.handleTouchEnd(
+                    `timedevent-say_goodbye`,
+                    timeRemaining <= 0,
+                    () => {
+                      setHighlightedResources([]);
+                      setTimedEventTab(false);
+                    },
+                    e,
+                  )
+              : undefined
+          }
+        >
+          <Button
+            onClick={
+              !mobileTooltip.isMobile
+                ? (e) => {
+                    e.stopPropagation();
+                    setHighlightedResources([]);
+                    setTimedEventTab(false);
+                  }
+                : undefined
+            }
+            variant="outline"
+            size="xs"
+            disabled={timeRemaining <= 0}
+            button_id="timedevent-say_goodbye"
+            className="w-full"
+          >
+            Say Goodbye
+          </Button>
         </div>
       </div>
     </div>
