@@ -336,9 +336,9 @@ export class EventManager {
     // For merchant events, execute trades directly from merchantTrades data
     if (eventId === "merchant") {
       logger.log('[EVENT MANAGER] Full state.merchantTrades:', (state as any).merchantTrades);
-      
+
       const merchantTrades = (state as any).merchantTrades?.choices;
-      
+
       logger.log('[EVENT MANAGER] Processing merchant event:', {
         choiceId,
         hasMerchantTrades: !!merchantTrades,
@@ -347,18 +347,20 @@ export class EventManager {
         merchantTradesChoices: merchantTrades,
         allTradeIds: merchantTrades?.map((t: any) => t.id),
       });
-      
+
       // Find the trade data
       if (merchantTrades) {
         const trade = merchantTrades.find((t: any) => t.id === choiceId);
-        
+
         logger.log('[EVENT MANAGER] Trade lookup result:', {
           choiceId,
           foundTrade: !!trade,
           tradeData: trade,
           allAvailableIds: merchantTrades.map((t: any) => t.id),
+          firstTradeStructure: merchantTrades[0],
+          merchantTradesFullStructure: merchantTrades,
         });
-        
+
         if (trade) {
           logger.log('[EVENT MANAGER] Executing merchant trade:', {
             choiceId,
@@ -395,7 +397,7 @@ export class EventManager {
           };
         }
       }
-      
+
       // If not a trade choice, check for fallback (say_goodbye)
       if (eventDefinition.fallbackChoice && eventDefinition.fallbackChoice.id === choiceId) {
         logger.log('[EVENT MANAGER] Using fallback choice for merchant');
@@ -409,7 +411,7 @@ export class EventManager {
         };
       }
 
-      logger.error('[EVENT MANAGER] Merchant trade not found:', { 
+      logger.log('[EVENT MANAGER] Merchant trade not found:', { 
         choiceId,
         availableTrades: merchantTrades?.map((t: any) => t.id) || [],
       });
