@@ -5,6 +5,9 @@ import {
   getTotalKnowledge,
 } from "./effectsCalculation";
 
+// Import generateMerchantTrades at the top of the file
+import { generateMerchantTrades } from "./eventsMerchant";
+
 /**
  * Helper function to calculate success chance for event choices
  * @param state - Current game state
@@ -231,9 +234,7 @@ export class EventManager {
         let eventChoices = event.choices;
         if (event.id === "merchant") {
           // Generate and save merchant trades (serializable data, no functions)
-          const { generateMerchantTrades } = require('./eventsMerchant');
           const merchantTrades = generateMerchantTrades(state, Date.now());
-
           const merchantEntry: LogEntry = {
             id: `merchant-${Date.now()}`,
             eventId: "merchant",
