@@ -138,7 +138,7 @@ export default function MerchantPanel() {
       </div>
 
       <div className="space-y-2">
-        <h3 className="text-xs font-bold text-foreground">Buy</h3>
+        <h3 className="text-sm font-semibold">Buy</h3>
         <div className="grid grid-cols-2 gap-2">
           {eventChoices
             .filter((choice) => choice.id !== "say_goodbye")
@@ -277,22 +277,22 @@ export default function MerchantPanel() {
             return buttonContent;
           })}
         </div>
-
-        {eventChoices.find((choice) => choice.id === "say_goodbye") && (
-          <Button
-            onClick={(e) => {
-              e.stopPropagation();
-              handleChoice("say_goodbye");
-            }}
-            variant="outline"
-            className="text-xs h-10 px-4"
-            disabled={timeRemaining <= 0}
-            button_id="merchant-say-goodbye"
-          >
-            Say Goodbye
-          </Button>
-        )}
       </div>
+
+      {eventChoices.find((choice) => choice.id === "say_goodbye") && (
+        <Button
+          onClick={(e) => {
+            e.stopPropagation();
+            handleChoice("say_goodbye");
+          }}
+          variant="outline"
+          className="text-xs h-10 px-4 w-full"
+          disabled={timeRemaining <= 0}
+          button_id="merchant-say-goodbye"
+        >
+          Say Goodbye
+        </Button>
+      )}
     </div>
   );
 }
