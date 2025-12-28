@@ -335,21 +335,30 @@ export class EventManager {
 
     // For merchant events, execute trades directly from merchantTrades data
     if (eventId === "merchant") {
-      logger.log('[EVENT MANAGER] Full state.merchantTrades:', (state as any).merchantTrades);
+      const merchantTradesState = (state as any).merchantTrades;
+      
+      logger.log('[EVENT MANAGER] Full state.merchantTrades:', merchantTradesState);
 
-      const merchantTrades = (state as any).merchantTrades?.choices;
+      const merchantTrades = merchantTradesState?.choices;
 
       logger.log('[EVENT MANAGER] Processing merchant event:', {
         choiceId,
         hasMerchantTrades: !!merchantTrades,
         merchantTradesCount: merchantTrades?.length || 0,
-        fullMerchantTradesObject: (state as any).merchantTrades,
+        fullMerchantTradesObject: merchantTradesState,
         merchantTradesChoices: merchantTrades,
         allTradeIds: merchantTrades?.map((t: any) => t.id),
+        purchasedIds: merchantTradesState?.purchasedIds || [],
       });
 
+      // Check if this trade was already purchased
+      if (merchantTradesState?.purchasedIds?.includes(choiceId)) {
+        logger.log('[EVENT MANAGER] Trade already purchased:', { choiceId });
+        return {};
+      }
+
       // Find the trade data
-      if (merchantTrades) {
+      if (merchantTrades && Array.isArray(merchantTrades)) {
         const trade = merchantTrades.find((t: any) => t.id === choiceId);
 
         logger.log('[EVENT MANAGER] Trade lookup result:', {
@@ -398,6 +407,10 @@ export class EventManager {
             log: currentLogEntry
               ? state.log.filter((entry) => entry.id !== currentLogEntry.id)
               : state.log,
+            merchantTrades: {
+              choices: merchantTrades,
+              purchasedIds: [...(merchantTradesState?.purchasedIds || []), choiceId],
+            },
           };
 
           logger.log('[EVENT MANAGER] Trade state changes being returned:', {
