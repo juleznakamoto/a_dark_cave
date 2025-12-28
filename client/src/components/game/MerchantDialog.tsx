@@ -26,6 +26,7 @@ import {
 } from "@/hooks/useMobileTooltip";
 import { isResourceLimited, getResourceLimit } from "@/game/resourceLimits";
 import { logger } from "@/lib/logger";
+import { useGameStore } from "@/game/state";
 
 interface MerchantDialogProps {
   event: LogEntry;
@@ -37,6 +38,27 @@ interface MerchantDialogProps {
   fallbackExecutedRef: React.MutableRefObject<boolean>;
   onChoice: (choiceId: string) => void;
 }
+
+// Helper to extract resources from merchant trade for highlighting
+const extractMerchantTradeResources = (labelText: string, costText: string): string[] => {
+  const resources: string[] = [];
+  
+  // Extract buy resource from label (e.g., "+250 Food" -> "food")
+  const labelMatch = labelText.match(/\+\d+\s+(.+)$/);
+  if (labelMatch) {
+    const buyResource = labelMatch[1].toLowerCase().replace(/\s+/g, '_');
+    resources.push(buyResource);
+  }
+  
+  // Extract sell resource from cost (e.g., "10 Gold" -> "gold")
+  const costMatch = costText.match(/^\d+\s+(.+)$/);
+  if (costMatch) {
+    const sellResource = costMatch[1].toLowerCase().replace(/\s+/g, '_');
+    resources.push(sellResource);
+  }
+  
+  return resources;
+};
 
 export default function MerchantDialog({
   event,
@@ -55,6 +77,7 @@ export default function MerchantDialog({
   const eventChoices = event.choices || [];
   const mobileTooltip = useMobileButtonTooltip();
   const discountTooltip = useMobileTooltip();
+  const { setHighlightedResources } = useGameStore();
 
   // Calculate discount based on knowledge
   const knowledge = getTotalKnowledge(gameState);
@@ -203,6 +226,11 @@ export default function MerchantDialog({
 
                 // If there's cost info, wrap in Tooltip
                 if (choice.cost && !isPurchased) {
+                  // Extract resources for highlighting if Inkwarden Academy is built
+                  const resourcesToHighlight = gameState.buildings.inkwardenAcademy > 0
+                    ? extractMerchantTradeResources(labelText, costText)
+                    : [];
+
                   return (
                     <TooltipProvider key={choice.id}>
                       <Tooltip open={mobileTooltip.isTooltipOpen(choice.id)}>
@@ -261,6 +289,16 @@ export default function MerchantDialog({
                                     )
                                 : undefined
                             }
+                            onMouseEnter={() => {
+                              if (gameState.buildings.inkwardenAcademy > 0) {
+                                setHighlightedResources(resourcesToHighlight);
+                              }
+                            }}
+                            onMouseLeave={() => {
+                              if (gameState.buildings.inkwardenAcademy > 0) {
+                                setHighlightedResources([]);
+                              }
+                            }}
                           >
                             {buttonContent}
                           </div>
