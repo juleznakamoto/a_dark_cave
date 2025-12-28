@@ -12,6 +12,7 @@ import { eventChoiceCostTooltip, merchantTooltip } from "@/game/rules/tooltips";
 import { EventChoice } from "@/game/rules/events";
 import { logger } from "@/lib/logger";
 import { isKnowledgeBonusMaxed } from "@/game/rules/eventsMerchant";
+import { calculateMerchantDiscount } from "@/game/rules/effectsStats";
 
 export default function TimedEventPanel() {
   const {
@@ -206,7 +207,7 @@ export default function TimedEventPanel() {
           </div>
           {isMerchantEvent && (() => {
             const knowledge = gameState.stats?.knowledge || 0;
-            const discount = Math.min(knowledge * 0.02, 0.5);
+            const discount = calculateMerchantDiscount(knowledge);
             
             if (discount > 0) {
               return (
