@@ -30,7 +30,6 @@ export default function ActionProgressChartAchievements() {
   const state = useGameStore.getState();
   const claimedAchievements = useGameStore(
     (state) => state.claimedAchievements || [],
-    
   );
   const BTP = useGameStore((state) => state.BTP || 0);
 
@@ -215,20 +214,20 @@ export default function ActionProgressChartAchievements() {
           Math.min(Number(state.story?.seen?.ashfireBombsCrafted) || 0, 20),
         reward: 500,
       },
-      {
-        segmentType: "voidBombs",
-        maxCount: 15,
-        color: SEGMENT_COLOR,
-        label: "Void Bombs crafted",
-        getCount: (state: GameState) =>
-          Math.min(
-            state.cruelMode
-              ? Number(state.story?.seen?.voidBombsCrafted) || 0
-              : 0,
-            15,
-          ),
-        reward: 500,
-      },
+      // {
+      //   segmentType: "voidBombs",
+      //   maxCount: 15,
+      //   color: SEGMENT_COLOR,
+      //   label: "Void Bombs crafted",
+      //   getCount: (state: GameState) =>
+      //     Math.min(
+      //       state.cruelMode
+      //         ? Number(state.story?.seen?.voidBombsCrafted) || 0
+      //         : 0,
+      //       15,
+      //     ),
+      //   reward: 500,
+      // },
     ],
     // Fifth ring: Merchant Purchases
     [
@@ -238,7 +237,10 @@ export default function ActionProgressChartAchievements() {
         color: SEGMENT_COLOR,
         label: "Good Deals",
         getCount: (state: GameState) => {
-          const count = Number(state.story?.seen?.merchantPurchases) || 0;
+          const count = Math.min(
+            Number(state.story?.seen?.merchantPurchases) || 0,
+            100,
+          );
           return count === 1 ? 1.8 : count;
         },
         reward: 500,
@@ -421,7 +423,8 @@ export default function ActionProgressChartAchievements() {
 
               const handleSegmentClick = () => {
                 if (isInteractive) {
-                  const silverReward = (segment.reward || 0 + BTP * 250) ?? 50 * segment.maxCount;
+                  const silverReward =
+                    (segment.reward || 0 + BTP * 250) ?? 50 * segment.maxCount;
 
                   useGameStore
                     .getState()
