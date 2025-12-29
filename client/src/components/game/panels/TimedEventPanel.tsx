@@ -266,9 +266,9 @@ export default function TimedEventPanel() {
             const costText =
               typeof cost === "function" ? cost(gameState) : cost;
 
-              // Check if player can afford the cost (only for merchant trades)
+              // Check if player can afford the cost (for all timed tab events)
               let canAfford = true;
-              if (costText && isMerchantEvent) {
+              if (costText) {
                 // Extract all resource requirements from cost string
                 const costMatches = costText.matchAll(/(\d+)\s+([a-zA-Z_]+)/g);
                 for (const match of costMatches) {
