@@ -55,7 +55,7 @@ export default function PurchasesTab(props: PurchasesTabProps) {
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="day" />
               <YAxis />
-              <Tooltip />
+              <Tooltip content={<div />} />
               <Area type="monotone" dataKey="purchases" stroke="#82ca9d" fill="#82ca9d" />
             </AreaChart>
           </ResponsiveContainer>

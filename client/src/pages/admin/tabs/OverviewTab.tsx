@@ -428,7 +428,7 @@ export default function OverviewTab(props: OverviewTabProps) {
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="date" />
                 <YAxis />
-                <Tooltip />
+                <Tooltip content={<div />} />
                 <Area type="monotone" dataKey="users" stroke="#8884d8" fill="#8884d8" />
               </AreaChart>
             </ResponsiveContainer>
