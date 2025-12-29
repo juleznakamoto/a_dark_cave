@@ -14,6 +14,13 @@ import { logger } from "@/lib/logger";
 import { isKnowledgeBonusMaxed } from "@/game/rules/eventsMerchant";
 import { calculateMerchantDiscount } from "@/game/rules/effectsStats";
 
+// Stat icon mapping
+const statIcons: Record<string, { icon: string; color: string }> = {
+  luck: { icon: "☆", color: "text-green-300/80" },
+  strength: { icon: "⬡", color: "text-red-300/80" },
+  knowledge: { icon: "✧", color: "text-blue-300/80" },
+};
+
 export default function TimedEventPanel() {
   const {
     timedEventTab,
