@@ -24,13 +24,14 @@ const stripePublishableKey = import.meta.env.PROD
   ? import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY_PROD
   : import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY_DEV;
 
-// Defer Stripe loading by 5 seconds to prioritize initial render
-const stripePromise = new Promise<any>((resolve) => {
-  setTimeout(async () => {
-    const stripe = await loadStripe(stripePublishableKey || "");
-    resolve(stripe);
-  }, 5000);
-});
+// Lazy load Stripe only when needed
+let stripePromise: Promise<any> | null = null;
+const getStripePromise = () => {
+  if (!stripePromise) {
+    stripePromise = loadStripe(stripePublishableKey || "");
+  }
+  return stripePromise;
+};
 
 // EU countries with Euro as main currency
 const EU_EURO_COUNTRIES = [
@@ -438,7 +439,7 @@ export default function FullGamePurchaseDialog({
             </div>
           </div>
         ) : (
-          <Elements stripe={stripePromise} options={{ clientSecret }}>
+          <Elements stripe={getStripePromise()} options={{ clientSecret }}>
             <CheckoutForm
               onSuccess={handlePurchaseSuccess}
               currency={currency}

@@ -52,6 +52,22 @@ const stripePromise = new Promise<any>((resolve) => {
   }, 5000);
 });
 
+// Function to get an initialized Supabase client
+const getSupabaseClient = async () => {
+  // Assuming supabase client is already initialized and ready
+  // If there's a more complex initialization logic (e.g., async setup),
+  // you would handle it here to ensure the client is ready before use.
+  return supabase;
+};
+
+// Lazy-load Stripe instance
+const getStripePromise = () => {
+  if (stripePublishableKey) {
+    return loadStripe(stripePublishableKey);
+  }
+  return Promise.resolve(null);
+};
+
 // EU countries with Euro as main currency
 const EU_EURO_COUNTRIES = [
   "AT",
@@ -92,14 +108,6 @@ async function detectCurrency(): Promise<"EUR" | "USD"> {
   // Default to USD
   return "USD";
 }
-
-// Function to get an initialized Supabase client
-const getSupabaseClient = async () => {
-  // Assuming supabase client is already initialized and ready
-  // If there's a more complex initialization logic (e.g., async setup),
-  // you would handle it here to ensure the client is ready before use.
-  return supabase;
-};
 
 interface CheckoutFormProps {
   itemId: string;
@@ -1242,7 +1250,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
       {/* Payment Dialog - only shown when payment is in progress */}
       {clientSecret && selectedItem && (
         <Dialog open={true} onOpenChange={undefined}>
-          <DialogContent 
+          <DialogContent
             className="max-w-md max-h-[80vh] z-[80] [&>button]:hidden"
             onPointerDownOutside={(e) => e.preventDefault()}
             onInteractOutside={(e) => e.preventDefault()}
@@ -1253,7 +1261,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
               </DialogTitle>
             </DialogHeader>
             <ScrollArea className="max-h-[calc(80vh-120px)]">
-              <Elements stripe={stripePromise} options={{ clientSecret }}>
+              <Elements stripe={getStripePromise()} options={{ clientSecret }}>
                 <CheckoutForm
                   itemId={selectedItem}
                   onSuccess={handlePurchaseSuccess}
