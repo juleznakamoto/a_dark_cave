@@ -404,10 +404,8 @@ export default function TimedEventPanel() {
                       <div className="text-xs whitespace-nowrap">
                         {costText && (
                           <div>
-                            {isMerchantEvent
-                              ? merchantTooltip.getContent(costText)
-                              : eventChoiceCostTooltip.getContent(costText, gameState)
-                            }
+                            {/* Always use merchantTooltip (cost-only) for timed events - never show current amounts */}
+                            {merchantTooltip.getContent(costText)}
                           </div>
                         )}
                         {costText && successPercentage && (
