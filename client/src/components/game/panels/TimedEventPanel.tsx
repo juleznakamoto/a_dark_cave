@@ -336,7 +336,7 @@ export default function TimedEventPanel() {
                   <span>{labelText}</span>
                   <div className="flex items-center">
                     {successPercentage && (
-                      <span className="text-xs text-muted-foreground">
+                      <span className="ml-2 mr-1 text-xs text-muted-foreground">
                         {successPercentage}
                       </span>
                     )}
