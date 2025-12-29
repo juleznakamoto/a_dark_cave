@@ -132,7 +132,7 @@ export default function VillagePanel() {
         { id: "buildFortifiedStorehouse", label: "Fortified Storehouse" },
         { id: "buildVillageWarehouse", label: "Village Warehouse" },
         { id: "buildGrandRepository", label: "Grand Repository" },
-        { id: "buildgreatVault", label: "Great Vault" },
+        { id: "buildGreatVault", label: "Great Vault" },
       ],
     },
   ];
