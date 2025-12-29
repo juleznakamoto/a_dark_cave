@@ -1,5 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { LineChart, Line, BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import { LineChart, Line, BarChart, Bar, CartesianGrid, XAxis, YAxis, Legend, ResponsiveContainer } from "recharts";
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { useMemo } from "react";
 
 interface ClicksTabProps {
@@ -81,7 +82,7 @@ export default function ClicksTab(props: ClicksTabProps) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <ResponsiveContainer width="100%" height={400}>
+          <ChartContainer config={{}} className="h-[400px] w-full">
             <LineChart data={getButtonClicksOverTime()}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
@@ -99,7 +100,7 @@ export default function ClicksTab(props: ClicksTabProps) {
                   position: "insideLeft",
                 }}
               />
-              <Tooltip />
+              <ChartTooltip content={<ChartTooltipContent />} />
               <Legend />
               <Line
                 type="monotone"
@@ -109,7 +110,7 @@ export default function ClicksTab(props: ClicksTabProps) {
                 dot={{ r: 4 }}
               />
             </LineChart>
-          </ResponsiveContainer>
+          </ChartContainer>
         </CardContent>
       </Card>
 
@@ -291,7 +292,7 @@ export default function ClicksTab(props: ClicksTabProps) {
                 </label>
               ))}
           </div>
-          <ResponsiveContainer width="100%" height={400}>
+          <ChartContainer config={{}} className="h-[400px] w-full">
             <LineChart data={getClickTypesByTimestamp()}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
@@ -309,7 +310,7 @@ export default function ClicksTab(props: ClicksTabProps) {
                   position: "insideLeft",
                 }}
               />
-              <Tooltip />
+              <ChartTooltip content={<ChartTooltipContent />} />
               <Legend />
               {(() => {
                 const chartData = getClickTypesByTimestamp();
@@ -334,7 +335,7 @@ export default function ClicksTab(props: ClicksTabProps) {
                 ));
               })()}
             </LineChart>
-          </ResponsiveContainer>
+          </ChartContainer>
         </CardContent>
       </Card>
 
@@ -344,7 +345,7 @@ export default function ClicksTab(props: ClicksTabProps) {
           <CardDescription>Total clicks per button (top 15)</CardDescription>
         </CardHeader>
         <CardContent>
-          <ResponsiveContainer width="100%" height={400}>
+          <ChartContainer config={{}} className="h-[400px] w-full">
             <BarChart data={getTotalClicksByButton()}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
@@ -354,10 +355,10 @@ export default function ClicksTab(props: ClicksTabProps) {
                 height={100}
               />
               <YAxis />
-              <Tooltip />
+              <ChartTooltip content={<ChartTooltipContent />} />
               <Bar dataKey="total" fill="#8884d8" />
             </BarChart>
-          </ResponsiveContainer>
+          </ChartContainer>
         </CardContent>
       </Card>
 
@@ -369,7 +370,7 @@ export default function ClicksTab(props: ClicksTabProps) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <ResponsiveContainer width="100%" height={400}>
+          <ChartContainer config={{}} className="h-[400px] w-full">
             <BarChart data={getAverageClicksByButton()}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
@@ -379,10 +380,10 @@ export default function ClicksTab(props: ClicksTabProps) {
                 height={100}
               />
               <YAxis />
-              <Tooltip />
+              <ChartTooltip content={<ChartTooltipContent />} />
               <Bar dataKey="average" fill="#82ca9d" />
             </BarChart>
-          </ResponsiveContainer>
+          </ChartContainer>
         </CardContent>
       </Card>
     </div>

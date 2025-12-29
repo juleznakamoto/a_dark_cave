@@ -1,6 +1,7 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { AreaChart, Area, BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
+import { AreaChart, Area, BarChart, Bar, CartesianGrid, XAxis, YAxis, ResponsiveContainer } from "recharts";
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 
 interface ReferralsTabProps {
   getTotalReferrals: () => number;
@@ -61,15 +62,15 @@ export default function ReferralsTab(props: ReferralsTabProps) {
           <CardDescription>New referrals over time</CardDescription>
         </CardHeader>
         <CardContent>
-          <ResponsiveContainer width="100%" height={400}>
+          <ChartContainer config={{}} className="h-[400px] w-full">
             <AreaChart data={getDailyReferrals()}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="day" />
               <YAxis />
-              <Tooltip />
+              <ChartTooltip content={<ChartTooltipContent />} />
               <Area type="monotone" dataKey="referrals" stroke="#8884d8" fill="#8884d8" />
             </AreaChart>
-          </ResponsiveContainer>
+          </ChartContainer>
         </CardContent>
       </Card>
 
@@ -79,15 +80,15 @@ export default function ReferralsTab(props: ReferralsTabProps) {
           <CardDescription>Users who referred the most players</CardDescription>
         </CardHeader>
         <CardContent>
-          <ResponsiveContainer width="100%" height={400}>
+          <ChartContainer config={{}} className="h-[400px] w-full">
             <BarChart data={getTopReferrers()}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="userId" />
               <YAxis />
-              <Tooltip />
+              <ChartTooltip content={<ChartTooltipContent />} />
               <Bar dataKey="count" fill="#ffc658" />
             </BarChart>
-          </ResponsiveContainer>
+          </ChartContainer>
         </CardContent>
       </Card>
     </div>

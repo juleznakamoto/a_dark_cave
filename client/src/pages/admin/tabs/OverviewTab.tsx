@@ -1,5 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { AreaChart, Area, BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer, LineChart, Line, Legend, PieChart, Pie, Cell } from "recharts";
+import { AreaChart, Area, BarChart, Bar, CartesianGrid, XAxis, YAxis, ResponsiveContainer, LineChart, Line, Legend, PieChart, Pie, Cell } from "recharts";
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { format, parseISO } from "date-fns";
 
 interface OverviewTabProps {
@@ -422,14 +423,15 @@ export default function OverviewTab(props: OverviewTabProps) {
             <CardDescription>User activity over time</CardDescription>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
+            <ChartContainer config={{}} className="h-[300px] w-full">
               <AreaChart data={formattedDailyActiveUsers}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="date" />
                 <YAxis />
+                <ChartTooltip content={<ChartTooltipContent />} />
                 <Area type="monotone" dataKey="users" stroke="#8884d8" fill="#8884d8" />
               </AreaChart>
-            </ResponsiveContainer>
+            </ChartContainer>
           </CardContent>
         </Card>
 
@@ -439,14 +441,15 @@ export default function OverviewTab(props: OverviewTabProps) {
             <CardDescription>New user registrations</CardDescription>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
+            <ChartContainer config={{}} className="h-[300px] w-full">
               <AreaChart data={getDailySignups()}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="day" />
                 <YAxis />
+                <ChartTooltip content={<ChartTooltipContent />} />
                 <Area type="monotone" dataKey="signups" stroke="#82ca9d" fill="#82ca9d" />
               </AreaChart>
-            </ResponsiveContainer>
+            </ChartContainer>
           </CardContent>
         </Card>
       </div>
@@ -457,15 +460,16 @@ export default function OverviewTab(props: OverviewTabProps) {
           <CardDescription>New user registrations by hour</CardDescription>
         </CardHeader>
         <CardContent>
-          <ResponsiveContainer width="100%" height={300}>
+          <ChartContainer config={{}} className="h-[300px] w-full">
             <LineChart data={getHourlySignups()}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="hour" />
               <YAxis />
+              <ChartTooltip content={<ChartTooltipContent />} />
               <Legend />
               <Line type="monotone" dataKey="signups" stroke="#ffc658" strokeWidth={2} />
             </LineChart>
-          </ResponsiveContainer>
+          </ChartContainer>
         </CardContent>
       </Card>
     </div>

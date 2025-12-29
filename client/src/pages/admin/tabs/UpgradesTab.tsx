@@ -67,7 +67,7 @@ export default function UpgradesTab(props: UpgradesTabProps) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <ResponsiveContainer width="100%" height={400}>
+          <ChartContainer config={{}} className="h-[400px] w-full">
             <LineChart data={buttonUpgradesOverPlaytime}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
@@ -87,7 +87,7 @@ export default function UpgradesTab(props: UpgradesTabProps) {
                 }}
                 domain={[1, 10]}
               />
-              <Tooltip />
+              <ChartTooltip content={<ChartTooltipContent />} />
               <Legend />
               <Line
                 type="monotone"
@@ -98,7 +98,7 @@ export default function UpgradesTab(props: UpgradesTabProps) {
                 name="Cave Exploring"
               />
             </LineChart>
-          </ResponsiveContainer>
+          </ChartContainer>
         </CardContent>
       </Card>
 
@@ -170,7 +170,7 @@ export default function UpgradesTab(props: UpgradesTabProps) {
               ))}
             </div>
           </div>
-          <ResponsiveContainer width="100%" height={400}>
+          <ChartContainer config={{}} className="h-[400px] w-full">
             <LineChart data={buttonUpgradesOverPlaytime}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
@@ -190,7 +190,7 @@ export default function UpgradesTab(props: UpgradesTabProps) {
                 }}
                 domain={[1, 10]}
               />
-              <Tooltip />
+              <ChartTooltip content={<ChartTooltipContent />} />
               <Legend />
               {selectedMiningTypes.has("mineStone") && (
                 <Line
@@ -253,7 +253,7 @@ export default function UpgradesTab(props: UpgradesTabProps) {
                 />
               )}
             </LineChart>
-          </ResponsiveContainer>
+          </ChartContainer>
         </CardContent>
       </Card>
 
@@ -270,7 +270,7 @@ export default function UpgradesTab(props: UpgradesTabProps) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <ResponsiveContainer width="100%" height={400}>
+          <ChartContainer config={{}} className="h-[400px] w-full">
             <LineChart data={buttonUpgradesOverPlaytime}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
@@ -290,7 +290,7 @@ export default function UpgradesTab(props: UpgradesTabProps) {
                 }}
                 domain={[1, 10]}
               />
-              <Tooltip />
+              <ChartTooltip content={<ChartTooltipContent />} />
               <Legend />
               <Line
                 type="monotone"
@@ -301,7 +301,7 @@ export default function UpgradesTab(props: UpgradesTabProps) {
                 name="Hunting"
               />
             </LineChart>
-          </ResponsiveContainer>
+          </ChartContainer>
         </CardContent>
       </Card>
 
@@ -318,7 +318,7 @@ export default function UpgradesTab(props: UpgradesTabProps) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <ResponsiveContainer width="100%" height={400}>
+          <ChartContainer config={{}} className="h-[400px] w-full">
             <LineChart data={buttonUpgradesOverPlaytime}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
@@ -338,7 +338,7 @@ export default function UpgradesTab(props: UpgradesTabProps) {
                 }}
                 domain={[1, 10]}
               />
-              <Tooltip />
+              <ChartTooltip content={<ChartTooltipContent />} />
               <Legend />
               <Line
                 type="monotone"
@@ -349,7 +349,7 @@ export default function UpgradesTab(props: UpgradesTabProps) {
                 name="Woodcutting"
               />
             </LineChart>
-          </ResponsiveContainer>
+          </ChartContainer>
         </CardContent>
       </Card>
 
@@ -366,7 +366,7 @@ export default function UpgradesTab(props: UpgradesTabProps) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <ResponsiveContainer width="100%" height={400}>
+          <ChartContainer config={{}} className="h-[400px] w-full">
             <LineChart data={buttonUpgradesOverPlaytime}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
@@ -386,7 +386,7 @@ export default function UpgradesTab(props: UpgradesTabProps) {
                 }}
                 domain={[1, 10]}
               />
-              <Tooltip />
+              <ChartTooltip content={<ChartTooltipContent />} />
               <Legend />
               <Line
                 type="monotone"
@@ -429,7 +429,7 @@ export default function UpgradesTab(props: UpgradesTabProps) {
                 name="General Cave Explore"
               />
             </LineChart>
-          </ResponsiveContainer>
+          </ChartContainer>
         </CardContent>
       </Card>
     </div>

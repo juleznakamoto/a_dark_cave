@@ -1,6 +1,7 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import { BarChart, Bar, CartesianGrid, XAxis, YAxis, Legend, ResponsiveContainer } from "recharts";
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 
 interface SleepTabProps {
   showCompletedOnly: boolean;
@@ -61,7 +62,7 @@ export default function SleepTab(props: SleepTabProps) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <ResponsiveContainer width="100%" height={400}>
+          <ChartContainer config={{}} className="h-[400px] w-full">
             <BarChart data={getSleepUpgradesDistribution}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
@@ -79,7 +80,7 @@ export default function SleepTab(props: SleepTabProps) {
                   position: "insideLeft",
                 }}
               />
-              <Tooltip />
+              <ChartTooltip content={<ChartTooltipContent />} />
               <Legend />
               <Bar
                 dataKey="lengthUsers"
@@ -92,7 +93,7 @@ export default function SleepTab(props: SleepTabProps) {
                 name="Sleep Intensity Users"
               />
             </BarChart>
-          </ResponsiveContainer>
+          </ChartContainer>
         </CardContent>
       </Card>
 

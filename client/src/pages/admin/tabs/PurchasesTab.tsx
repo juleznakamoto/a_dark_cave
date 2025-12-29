@@ -1,6 +1,7 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { AreaChart, Area, LineChart, Line, BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import { AreaChart, Area, LineChart, Line, BarChart, Bar, CartesianGrid, XAxis, YAxis, Legend, ResponsiveContainer } from "recharts";
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 
 interface PurchasesTabProps {
   purchases: any[];
@@ -50,14 +51,15 @@ export default function PurchasesTab(props: PurchasesTabProps) {
           <CardDescription>Purchase activity over time</CardDescription>
         </CardHeader>
         <CardContent>
-          <ResponsiveContainer width="100%" height={400}>
+          <ChartContainer config={{}} className="h-[400px] w-full">
             <AreaChart data={getDailyPurchases()}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="day" />
               <YAxis />
+              <ChartTooltip content={<ChartTooltipContent />} />
               <Area type="monotone" dataKey="purchases" stroke="#82ca9d" fill="#82ca9d" />
             </AreaChart>
-          </ResponsiveContainer>
+          </ChartContainer>
         </CardContent>
       </Card>
 
@@ -69,7 +71,7 @@ export default function PurchasesTab(props: PurchasesTabProps) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <ResponsiveContainer width="100%" height={400}>
+          <ChartContainer config={{}} className="h-[400px] w-full">
             <LineChart data={getPurchasesByPlaytime()}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
@@ -87,7 +89,7 @@ export default function PurchasesTab(props: PurchasesTabProps) {
                   position: "insideLeft",
                 }}
               />
-              <Tooltip />
+              <ChartTooltip content={<ChartTooltipContent />} />
               <Legend />
               <Line
                 type="monotone"
@@ -97,7 +99,7 @@ export default function PurchasesTab(props: PurchasesTabProps) {
                 dot={{ r: 4 }}
               />
             </LineChart>
-          </ResponsiveContainer>
+          </ChartContainer>
         </CardContent>
       </Card>
 
@@ -106,15 +108,15 @@ export default function PurchasesTab(props: PurchasesTabProps) {
           <CardTitle>Purchases by Item</CardTitle>
         </CardHeader>
         <CardContent>
-          <ResponsiveContainer width="100%" height={400}>
+          <ChartContainer config={{}} className="h-[400px] w-full">
             <BarChart data={getPurchaseStats()}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="name" angle={-45} textAnchor="end" height={100} />
               <YAxis />
-              <Tooltip />
+              <ChartTooltip content={<ChartTooltipContent />} />
               <Bar dataKey="count" fill="#82ca9d" />
             </BarChart>
-          </ResponsiveContainer>
+          </ChartContainer>
         </CardContent>
       </Card>
 
