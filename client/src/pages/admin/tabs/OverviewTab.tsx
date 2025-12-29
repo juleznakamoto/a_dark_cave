@@ -152,7 +152,6 @@ export default function OverviewTab(props: OverviewTabProps) {
                     <Cell fill="#8884d8" />
                     <Cell fill="#82ca9d" />
                   </Pie>
-                  <Tooltip content={<div />} />
                 </PieChart>
               </ResponsiveContainer>
             </div>
@@ -428,7 +427,6 @@ export default function OverviewTab(props: OverviewTabProps) {
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="date" />
                 <YAxis />
-                <Tooltip content={<div />} />
                 <Area type="monotone" dataKey="users" stroke="#8884d8" fill="#8884d8" />
               </AreaChart>
             </ResponsiveContainer>
@@ -446,7 +444,6 @@ export default function OverviewTab(props: OverviewTabProps) {
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="day" />
                 <YAxis />
-                <Tooltip content={<div />} />
                 <Area type="monotone" dataKey="signups" stroke="#82ca9d" fill="#82ca9d" />
               </AreaChart>
             </ResponsiveContainer>
@@ -465,7 +462,6 @@ export default function OverviewTab(props: OverviewTabProps) {
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="hour" />
               <YAxis />
-              <Tooltip content={<div />} />
               <Legend />
               <Line type="monotone" dataKey="signups" stroke="#ffc658" strokeWidth={2} />
             </LineChart>
