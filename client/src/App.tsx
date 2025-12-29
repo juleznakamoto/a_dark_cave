@@ -4,6 +4,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./lib/queryClient";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import AdminDashboard from "@/pages/admin/dashboard";
 
 // Eagerly load only the main game page
 import Game from "@/pages/game";
@@ -21,13 +22,15 @@ const Withdrawal = lazy(() => import("@/pages/withdrawal"));
 const ExplosionTest = lazy(() => import("@/pages/explosion-test"));
 const TabAnimationTest = lazy(() => import("@/pages/tab-animation-test"));
 
-// Lazy load admin dashboard to avoid loading recharts for regular users
-import AdminDashboard from "@/pages/admin/dashboard";
-
-
 function Router() {
   return (
-    <Suspense fallback={<div className="flex items-center justify-center h-screen">Loading...</div>}>
+    <Suspense
+      fallback={
+        <div className="flex items-center justify-center h-screen">
+          Loading...
+        </div>
+      }
+    >
       <Switch>
         <Route path="/" component={Game} />
         <Route path="/game" component={Game} />
@@ -43,8 +46,8 @@ function Router() {
         <Route path="/tab-animation-test" component={TabAnimationTest} />
         <Route path="/button-test" component={ButtonTest} />
         <Route path="/admin/dashboard">
-            <AdminDashboard />
-          </Route>
+          <AdminDashboard />
+        </Route>
         <Route component={NotFound} />
       </Switch>
     </Suspense>
@@ -57,7 +60,7 @@ function App() {
 
     const initPlaylight = async () => {
       // Defer SDK loading by 5 seconds to prioritize initial render
-      await new Promise(resolve => setTimeout(resolve, 5000));
+      await new Promise((resolve) => setTimeout(resolve, 5000));
 
       try {
         const module = await import(
@@ -70,22 +73,22 @@ function App() {
         playlightSDK.init({
           exitIntent: {
             enabled: false,
-            immediate: false
-          }
+            immediate: false,
+          },
         });
 
         // Import game store
-        const { useGameStore } = await import('./game/state');
+        const { useGameStore } = await import("./game/state");
 
         // Set up event listeners for game pause/unpause
-        playlightSDK.onEvent('discoveryOpen', () => {
+        playlightSDK.onEvent("discoveryOpen", () => {
           const state = useGameStore.getState();
           if (!state.isPaused) {
             state.togglePause();
           }
         });
 
-        playlightSDK.onEvent('discoveryClose', () => {
+        playlightSDK.onEvent("discoveryClose", () => {
           const state = useGameStore.getState();
           if (state.isPaused) {
             state.togglePause();
@@ -98,11 +101,10 @@ function App() {
           playlightSDK.setConfig({
             exitIntent: {
               enabled: true,
-              immediate: false
-            }
+              immediate: false,
+            },
           });
         }, TWENTY_MINUTES);
-
       } catch (error) {
         console.error("Error loading the Playlight SDK:", error);
       }
