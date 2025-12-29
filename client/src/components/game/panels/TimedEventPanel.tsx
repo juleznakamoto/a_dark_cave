@@ -300,6 +300,16 @@ export default function TimedEventPanel() {
               const isDisabled =
                 !canAfford || timeRemaining <= 0 || isPurchased;
 
+              // Calculate success percentage if available
+              let successPercentage: string | null = null;
+              if (choice.success_chance && typeof choice.success_chance === "function") {
+                const chance = choice.success_chance(gameState);
+                successPercentage = `${Math.round(chance * 100)}%`;
+              }
+
+              // Check if we have a Scriptorium to show stat icons
+              const hasScriptorium = gameState.buildings.scriptorium >= 1;
+
               const buttonContent = (
                 <Button
                   onClick={
@@ -314,10 +324,34 @@ export default function TimedEventPanel() {
                   size="xs"
                   disabled={isDisabled}
                   button_id={`timedevent-${choice.id}`}
-                  className="gap-1"
+                  className="gap-1 w-full text-left justify-between"
                 >
-                  {labelText}
-                  {isPurchased && <span>✓</span>}
+                  <span>{labelText}</span>
+                  <div className="flex gap-1 items-center ml-2">
+                    {successPercentage && (
+                      <span className="text-xs text-muted-foreground">
+                        {successPercentage}
+                      </span>
+                    )}
+                    {hasScriptorium && choice.relevant_stats && choice.relevant_stats.length > 0 && (
+                      <div className="flex gap-1">
+                        {choice.relevant_stats.map((stat) => {
+                          const statInfo = statIcons[stat.toLowerCase()];
+                          if (!statInfo) return null;
+                          return (
+                            <span
+                              key={stat}
+                              className={`text-xs ${statInfo.color}`}
+                              title={stat}
+                            >
+                              {statInfo.icon}
+                            </span>
+                          );
+                        })}
+                      </div>
+                    )}
+                    {isPurchased && <span>✓</span>}
+                  </div>
                 </Button>
               );
 
@@ -360,11 +394,21 @@ export default function TimedEventPanel() {
                       </div>
                     </TooltipTrigger>
                     <TooltipContent side="top">
-                      <div className="text-xs">
-                        {isMerchantEvent
-                          ? merchantTooltip.getContent(costText)
-                          : eventChoiceCostTooltip.getContent(costText, gameState)
-                        }
+                      <div className="text-xs whitespace-nowrap">
+                        {costText && (
+                          <div>
+                            {isMerchantEvent
+                              ? merchantTooltip.getContent(costText)
+                              : eventChoiceCostTooltip.getContent(costText, gameState)
+                            }
+                          </div>
+                        )}
+                        {costText && successPercentage && (
+                          <div className="border-t border-border my-1" />
+                        )}
+                        {successPercentage && (
+                          <div>Success Chance: {successPercentage}</div>
+                        )}
                       </div>
                     </TooltipContent>
                   </Tooltip>
