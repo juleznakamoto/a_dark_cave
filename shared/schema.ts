@@ -85,6 +85,7 @@ export const gameStateSchema = z.object({
       arbalest_schematic: z.boolean().default(false),
       nightshade_bow_schematic: z.boolean().default(false),
       stormglass_halberd_schematic: z.boolean().default(false),
+      skeleton_key_schematic: z.boolean().default(false),
     })
     .default({}),
   tools: z
@@ -115,6 +116,7 @@ export const gameStateSchema = z.object({
       giant_trap: z.boolean().default(false),
       occultist_map: z.boolean().default(false),
       mastermason_chisel: z.boolean().default(false),
+      skeleton_key: z.boolean().default(false),
     })
     .default({}),
   weapons: z

@@ -39,6 +39,121 @@ export const shopItemEvents: Record<string, GameEvent> = {
     ],
   },
 
+  monasteryMonk: {
+    id: "monasteryMonk",
+    condition: (state: GameState) =>
+      state.story.seen.compassTreasureFound &&
+      state.relics.sealed_chest &&
+      !state.schematics.skeleton_key_schematic,
+    timeProbability: (state: GameState) => {
+      const hasBeenSeen = state.triggeredEvents?.monasteryMonk;
+      return hasBeenSeen ? 20 : 10;
+    },
+    title: "The Mountain Monk",
+    message:
+      "A robed monk descends from the mountain paths, his weathered face calm and knowing. He eyes the sealed chest at your side. 'I know of this chest,' he says quietly. 'The monastery holds ancient knowledge that could help you open it. For a tribute to our order, I will share this secret.'",
+    priority: 4,
+    repeatable: true,
+    showAsTimedTab: true,
+    timedTabDuration: 3 * 60 * 1000, // 3 minutes
+    fallbackChoice: {
+      id: "sendAway",
+      label: "Send away",
+      effect: (state: GameState) => {
+        return {
+          _logMessage:
+            "You decline the monk's offer. He bows respectfully and begins his journey back to the mountains.",
+        };
+      },
+    },
+    choices: [
+      {
+        id: "payTribute",
+        label: "Pay tribute",
+        cost: "5000 wood, 5000 stone, 5000 food, 500 leather, 500 steel",
+        effect: (state: GameState) => {
+          if (
+            state.resources.wood < 5000 ||
+            state.resources.stone < 5000 ||
+            state.resources.food < 5000 ||
+            state.resources.leather < 500 ||
+            state.resources.steel < 500
+          ) {
+            return {
+              _logMessage: "You don't have enough resources for the tribute.",
+            };
+          }
+
+          return {
+            resources: {
+              ...state.resources,
+              wood: state.resources.wood - 5000,
+              stone: state.resources.stone - 5000,
+              food: state.resources.food - 5000,
+              leather: state.resources.leather - 500,
+              steel: state.resources.steel - 500,
+            },
+            schematics: {
+              ...state.schematics,
+              skeleton_key_schematic: true,
+            },
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                monasteryMonkAccepted: true,
+              },
+            },
+            _logMessage:
+              "The monk accepts your tribute with a solemn nod. He draws ancient plans from his robes, revealing the schematic for a skeleton key crafted from bone and steel. 'This knowledge has been kept by the monastery for centuries,' he explains before departing.",
+          };
+        },
+      },
+      {
+        id: "offerGold",
+        label: "Offer gold",
+        cost: "250 gold",
+        effect: (state: GameState) => {
+          if (state.resources.gold < 250) {
+            return {
+              _logMessage: "You don't have enough gold.",
+            };
+          }
+
+          return {
+            resources: {
+              ...state.resources,
+              gold: state.resources.gold - 250,
+            },
+            schematics: {
+              ...state.schematics,
+              skeleton_key_schematic: true,
+            },
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                monasteryMonkAccepted: true,
+              },
+            },
+            _logMessage:
+              "The monk's eyes widen at the sight of gold. 'This will help the monastery greatly,' he says, drawing out ancient plans. He reveals the schematic for a skeleton key made from bone and steel before bowing and departing.",
+          };
+        },
+      },
+      {
+        id: "sendAway",
+        label: "Send away",
+        effect: (state: GameState) => {
+          return {
+            _logMessage:
+              "You decline the monk's offer. He bows respectfully and begins his journey back to the mountains.",
+          };
+        },
+      },
+    ],
+  },
+
   undergroundLakeDiscovery: {
     id: "undergroundLakeDiscovery",
     condition: (state: GameState) =>

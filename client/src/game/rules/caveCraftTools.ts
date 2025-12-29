@@ -3,6 +3,23 @@ import { ActionResult } from "@/game/actions";
 import { applyActionEffects } from "./actionEffects";
 
 export const caveCraftTools: Record<string, Action> = {
+  craftSkeletonKey: {
+    id: "craftSkeletonKey",
+    label: "Skeleton Key",
+    description: "A key forged from bone and steel, said to open any lock.",
+    show_when: {
+      schematics: { skeleton_key_schematic: true },
+      tools: { skeleton_key: false },
+    },
+    cost: {
+      bones: 5000,
+      steel: 500,
+    },
+    effects: {
+      tools: { skeleton_key: true },
+    },
+    cooldown: 3,
+  },
   craftTorch: {
     id: "craftTorch",
     label: "Torch",
