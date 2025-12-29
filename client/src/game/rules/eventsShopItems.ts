@@ -1,8 +1,6 @@
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 
-// add new compass event after compassTreasureFound, timeprobability 10, a monl from a mountain monastery arrives at the  village, offers for a tribute to the monastary to help you open the mysterious chest.
-
 export const shopItemEvents: Record<string, GameEvent> = {
   compassTreasure: {
     id: "compassTreasure",
@@ -51,11 +49,11 @@ export const shopItemEvents: Record<string, GameEvent> = {
     },
     title: "The Mountain Monk",
     message:
-      "A robed monk descends from the mountain paths, his weathered face calm and knowing. He eyes the sealed chest at your side. 'I know of this chest,' he says quietly. 'The monastery holds ancient knowledge that could help you open it. For a tribute to our order, I will share this secret.'",
+      "A monk from a mountain monastery arrives in the village. 'I hear you found a mysterious chest,'' he says softly. 'The monastery knows how to open it. Offer a tribute, and I will share the secret.'",
     priority: 4,
     repeatable: true,
     showAsTimedTab: true,
-    timedTabDuration: 3 * 60 * 1000, // 3 minutes
+    timedTabDuration: 5 * 60 * 1000, // 5 minutes
     fallbackChoice: {
       id: "sendAway",
       label: "Send away",
@@ -105,7 +103,7 @@ export const shopItemEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "The monk accepts your tribute with a solemn nod. He draws ancient plans from his robes, revealing the schematic for a skeleton key crafted from bone and steel. 'This knowledge has been kept by the monastery for centuries,' he explains before departing.",
+              "The monk accepts your tribute with a solemn nod and reveals ancient plans for a skeleton key. “This key is said to open any lock,” he says, before departing.",
           };
         },
       },
@@ -137,7 +135,7 @@ export const shopItemEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "The monk's eyes widen at the sight of gold. 'This will help the monastery greatly,' he says, drawing out ancient plans. He reveals the schematic for a skeleton key made from bone and steel before bowing and departing.",
+              "The monk's eyes widen at the sight of gold. 'This will help the monastery greatly,' he says, drawing out ancient plans for a skeleton key. “This key is said to open any lock,” he says, before departing.",
           };
         },
       },
