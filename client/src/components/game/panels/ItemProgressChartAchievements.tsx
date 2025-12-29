@@ -239,17 +239,23 @@ export default function ItemProgressChart() {
 
     for (const itemKey of segment.itemKeys) {
       // Check all relevant categories for mixed-category segments
-      if (
-        (state.tools && state.tools[itemKey as keyof typeof state.tools]) ||
-        (state.weapons && state.weapons[itemKey as keyof typeof state.weapons]) ||
-        (state.clothing && state.clothing[itemKey as keyof typeof state.clothing]) ||
-        (state.relics && state.relics[itemKey as keyof typeof state.relics]) ||
-        (state.fellowship && state.fellowship[itemKey as keyof typeof state.fellowship])
-      ) {
+      const hasInTools = state.tools && state.tools[itemKey as keyof typeof state.tools];
+      const hasInWeapons = state.weapons && state.weapons[itemKey as keyof typeof state.weapons];
+      const hasInClothing = state.clothing && state.clothing[itemKey as keyof typeof state.clothing];
+      const hasInRelics = state.relics && state.relics[itemKey as keyof typeof state.relics];
+      const hasInFellowship = state.fellowship && state.fellowship[itemKey as keyof typeof state.fellowship];
+      
+      if (hasInTools || hasInWeapons || hasInClothing || hasInRelics || hasInFellowship) {
         count++;
+        
+        // Debug logging for weapons
+        if (segment.itemType === 'swords' || segment.itemType === 'bows') {
+          console.log(`[ACHIEVEMENT] ${segment.label} - ${itemKey}: found=${hasInWeapons}, count now=${count}`);
+        }
       }
     }
 
+    console.log(`[ACHIEVEMENT] ${segment.label} final count: ${count}/${segment.maxCount}`);
     return count;
   };
 
