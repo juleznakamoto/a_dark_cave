@@ -25,10 +25,8 @@ export const caveCraftWeapons: Record<string, Action> = {
     show_when: {
       "buildings.blacksmith": 1,
       "weapons.iron_sword": true,
-      "weapons.crude_bow": true,
       "weapons.huntsman_bow": true,
       "weapons.steel_sword": false,
-      "story.seen.hasSteel": true,
     },
     cost: {
       "resources.steel": 150,
@@ -117,9 +115,7 @@ export const caveCraftWeapons: Record<string, Action> = {
       "buildings.blacksmith": 1,
       "weapons.huntsman_bow": true,
       "weapons.iron_sword": true,
-      "weapons.steel_sword": true,
       "weapons.long_bow": false,
-      "story.seen.hasSteel": true,
     },
     cost: {
       "resources.wood": 1000,
@@ -159,7 +155,6 @@ export const caveCraftWeapons: Record<string, Action> = {
       "buildings.blacksmith": 1,
       "weapons.war_bow": true,
       "weapons.obsidian_sword": true,
-      "weapons.adamant_sword": true,
       "weapons.master_bow": false,
     },
     cost: {
