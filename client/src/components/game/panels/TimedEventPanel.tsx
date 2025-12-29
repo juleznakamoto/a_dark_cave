@@ -331,17 +331,17 @@ export default function TimedEventPanel() {
                   size="xs"
                   disabled={isDisabled}
                   button_id={`timedevent-${choice.id}`}
-                  className="gap-1 w-full text-left justify-between"
+                  className="gap-0 w-full text-left justify-between"
                 >
                   <span>{labelText}</span>
-                  <div className="flex gap-1 items-center ml-2">
+                  <div className="flex items-center">
                     {successPercentage && (
                       <span className="text-xs text-muted-foreground">
                         {successPercentage}
                       </span>
                     )}
                     {hasScriptorium && choice.relevant_stats && choice.relevant_stats.length > 0 && (
-                      <div className="flex gap-1">
+                      <div className="flex">
                         {choice.relevant_stats.map((stat) => {
                           const statInfo = statIcons[stat.toLowerCase()];
                           if (!statInfo) return null;
