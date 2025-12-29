@@ -22,7 +22,7 @@ const ExplosionTest = lazy(() => import("@/pages/explosion-test"));
 const TabAnimationTest = lazy(() => import("@/pages/tab-animation-test"));
 
 // Lazy load admin dashboard to avoid loading recharts for regular users
-const AdminDashboard = lazy(() => import("@/pages/admin/dashboard"));
+import AdminDashboard from "@/pages/admin/dashboard";
 
 
 function Router() {
