@@ -8,7 +8,7 @@ export const loreEvents: Record<string, GameEvent> = {
       state.buildings.stoneHut >= 4 && !state.story.seen.restlessKnightSuccess,
 
     timeProbability: (state: GameState) => {
-      return state.story.seen.restlessKnightFailed ? 60 : 20;
+      return state.story.seen.restlessKnightFailed ? 0.060 : 0.020;
     },
     title: "The Restless Knight",
     message: (state: GameState) =>
