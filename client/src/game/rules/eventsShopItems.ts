@@ -1,6 +1,8 @@
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 
+// add new compass event after compassTreasureFound, timeprobability 10, a monl from a mountain monastery arrives at the  village, offers for a tribute to the monastary to help you open the mysterious chest.
+
 export const shopItemEvents: Record<string, GameEvent> = {
   compassTreasure: {
     id: "compassTreasure",
