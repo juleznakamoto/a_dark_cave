@@ -43,10 +43,8 @@ function Router() {
         <Route path="/tab-animation-test" component={TabAnimationTest} />
         <Route path="/button-test" component={ButtonTest} />
         <Route path="/admin/dashboard">
-          <Suspense fallback={<div className="flex items-center justify-center h-screen">Loading dashboard...</div>}>
             <AdminDashboard />
-          </Suspense>
-        </Route>
+          </Route>
         <Route component={NotFound} />
       </Switch>
     </Suspense>
