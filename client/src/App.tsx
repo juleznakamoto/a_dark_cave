@@ -1,4 +1,3 @@
-
 import { useEffect, lazy, Suspense } from "react";
 import { Switch, Route } from "wouter";
 import { QueryClientProvider } from "@tanstack/react-query";
@@ -20,8 +19,11 @@ const Privacy = lazy(() => import("@/pages/privacy"));
 const Terms = lazy(() => import("@/pages/terms"));
 const Withdrawal = lazy(() => import("@/pages/withdrawal"));
 const ExplosionTest = lazy(() => import("@/pages/explosion-test"));
-const AdminDashboard = lazy(() => import("@/pages/admin/dashboard"));
 const TabAnimationTest = lazy(() => import("@/pages/tab-animation-test"));
+
+// Lazy load admin dashboard to avoid loading recharts for regular users
+const AdminDashboard = lazy(() => import("@/pages/admin/dashboard"));
+
 
 function Router() {
   return (
@@ -40,7 +42,11 @@ function Router() {
         <Route path="/hero-test" component={HeroTest} />
         <Route path="/tab-animation-test" component={TabAnimationTest} />
         <Route path="/button-test" component={ButtonTest} />
-        <Route path="/admin/dashboard" component={AdminDashboard} />
+        <Route path="/admin/dashboard">
+          <Suspense fallback={<div className="flex items-center justify-center h-screen">Loading dashboard...</div>}>
+            <AdminDashboard />
+          </Suspense>
+        </Route>
         <Route component={NotFound} />
       </Switch>
     </Suspense>
@@ -54,7 +60,7 @@ function App() {
     const initPlaylight = async () => {
       // Defer SDK loading by 5 seconds to prioritize initial render
       await new Promise(resolve => setTimeout(resolve, 5000));
-      
+
       try {
         const module = await import(
           /* webpackChunkName: "playlight-sdk" */
