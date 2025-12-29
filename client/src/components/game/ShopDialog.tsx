@@ -44,7 +44,13 @@ const stripePublishableKey = import.meta.env.PROD
   ? import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY_PROD
   : import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY_DEV;
 
-const stripePromise = loadStripe(stripePublishableKey || "");
+// Defer Stripe loading by 5 seconds to prioritize initial render
+const stripePromise = new Promise<any>((resolve) => {
+  setTimeout(async () => {
+    const stripe = await loadStripe(stripePublishableKey || "");
+    resolve(stripe);
+  }, 5000);
+});
 
 // EU countries with Euro as main currency
 const EU_EURO_COUNTRIES = [
