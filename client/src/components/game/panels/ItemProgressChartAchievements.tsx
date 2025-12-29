@@ -246,16 +246,9 @@ export default function ItemProgressChart() {
       const hasInFellowship = state.fellowship && state.fellowship[itemKey as keyof typeof state.fellowship];
       
       if (hasInTools || hasInWeapons || hasInClothing || hasInRelics || hasInFellowship) {
-        count++;
-        
-        // Debug logging for weapons
-        if (segment.itemType === 'swords' || segment.itemType === 'bows') {
-          console.log(`[ACHIEVEMENT] ${segment.label} - ${itemKey}: found=${hasInWeapons}, count now=${count}`);
-        }
+        count++;       
       }
     }
-
-    console.log(`[ACHIEVEMENT] ${segment.label} final count: ${count}/${segment.maxCount}`);
     return count;
   };
 

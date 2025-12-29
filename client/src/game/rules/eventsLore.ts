@@ -5,11 +5,9 @@ export const loreEvents: Record<string, GameEvent> = {
   restlessKnight: {
     id: "restlessKnight",
     condition: (state: GameState) =>
-      state.buildings.stoneHut >= 4,
-      // !state.story.seen.restlessKnightSuccess,
-
+      state.buildings.stoneHut >= 4 && !state.story.seen.restlessKnightSuccess,
     timeProbability: (state: GameState) => {
-      return state.story.seen.restlessKnightFailed ? 0.060 : 0.020;
+      return state.story.seen.restlessKnightFailed ? 20 : 15;
     },
     title: "The Restless Knight",
     message: (state: GameState) =>
@@ -19,7 +17,7 @@ export const loreEvents: Record<string, GameEvent> = {
     priority: 3,
     repeatable: true,
     showAsTimedTab: true,
-    timedTabDuration: 240000,
+    timedTabDuration: 4 * 60 * 1000,
     fallbackChoice: {
       id: "refuse",
       label: "Refuse",
@@ -136,14 +134,14 @@ export const loreEvents: Record<string, GameEvent> = {
       state.story.seen.restlessKnightSuccess &&
       !state.story.seen.restlessKnightMountains,
     timeProbability: (state: GameState) =>
-      state.story.seen.restlessKnightMountainsFailed ? 60 : 20,
+      state.story.seen.restlessKnightMountainsFailed ? 20 : 15,
     title: "Return from the Mountains",
     message:
       "The knight returns, his armor scratched and weathered. 'I found something extraordinary in the mountains,' he says. I will tell you about it, for a price'",
     priority: 3,
     repeatable: true,
     showAsTimedTab: true,
-    timedTabDuration: 240000,
+    timedTabDuration: 4 * 60 * 1000,
     fallbackChoice: {
       id: "refuse",
       label: "Refuse",
@@ -153,7 +151,7 @@ export const loreEvents: Record<string, GameEvent> = {
             ...state.story,
             seen: {
               ...state.story.seen,
-                restlessKnightMountainsFailed: true,
+              restlessKnightMountainsFailed: true,
             },
           },
           _logMessage:
@@ -164,7 +162,7 @@ export const loreEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "payGold",
-        label: "Pay gold",
+        label: "Pay 50 Gold",
         cost: "50 gold",
         effect: (state: GameState) => {
           if (state.resources.gold < 50) {
@@ -192,7 +190,7 @@ export const loreEvents: Record<string, GameEvent> = {
       },
       {
         id: "payFood",
-        label: "Pay food",
+        label: "Pay 2500 Food",
         cost: "2500 food",
         effect: (state: GameState) => {
           if (state.resources.food < 2500) {
@@ -227,7 +225,7 @@ export const loreEvents: Record<string, GameEvent> = {
               ...state.story,
               seen: {
                 ...state.story.seen,
-                  restlessKnightMountainsFailed: true,
+                restlessKnightMountainsFailed: true,
               },
             },
             _logMessage:
@@ -246,14 +244,14 @@ export const loreEvents: Record<string, GameEvent> = {
       !state.story.seen.restlessKnightCoast,
 
     timeProbability: (state: GameState) =>
-      state.story.seen.restlessKnightCoastFailed ? 60 : 20,
+      state.story.seen.restlessKnightCoastFailed ? 20 : 15,
     title: "Tales from the Shore",
     message:
       "The knight appears once more, 'I have traveled to a city on the shore of an ocean,' he says. 'What I found there defies belief. I will share this knowledge, for a price.'",
     priority: 3,
     repeatable: true,
     showAsTimedTab: true,
-    timedTabDuration: 240000,
+    timedTabDuration: 4 * 60 * 1000,
     fallbackChoice: {
       id: "refuse",
       label: "Refuse",
@@ -263,7 +261,7 @@ export const loreEvents: Record<string, GameEvent> = {
             ...state.story,
             seen: {
               ...state.story.seen,
-                restlessKnightCoastFailed: true,
+              restlessKnightCoastFailed: true,
             },
           },
           _logMessage:
@@ -274,7 +272,7 @@ export const loreEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "payGold",
-        label: "Pay gold",
+        label: "Pay 50 Gold",
         cost: "50 gold",
         effect: (state: GameState) => {
           if (state.resources.gold < 50) {
@@ -302,7 +300,7 @@ export const loreEvents: Record<string, GameEvent> = {
       },
       {
         id: "payFood",
-        label: "Pay food",
+        label: "Pay 2500 Food",
         cost: "2500 food",
         effect: (state: GameState) => {
           if (state.resources.food < 2500) {
@@ -380,7 +378,7 @@ export const loreEvents: Record<string, GameEvent> = {
               ...state.story,
               seen: {
                 ...state.story.seen,
-                  restlessKnightCoastFailed: true,
+                restlessKnightCoastFailed: true,
               },
             },
             _logMessage:
@@ -398,16 +396,15 @@ export const loreEvents: Record<string, GameEvent> = {
       state.buildings.darkEstate >= 1 &&
       state.story.seen.restlessKnightCoast &&
       !state.story.seen.restlessKnightDesert,
-
     timeProbability: (state: GameState) =>
-      state.story.seen.restlessKnightDesertFailed ? 60 : 20,
+      state.story.seen.restlessKnightDesertFailed ? 20 : 15,
     title: "The Knight's Final Journey",
     message:
       "The knight returns, 'I traveled far south to a vast desert. There I met a man devoted to recovering the lost technology of the ancients. He showed me devices once embedded in the body, enhancing senses beyond natural limits. The ancients were not merely human.' He pauses, 'I have traveled enough. Your could use a veteran blade. I offer my service in combat, if you accept.'",
     priority: 3,
     repeatable: true,
     showAsTimedTab: true,
-    timedTabDuration: 240000,
+    timedTabDuration: 4 * 60 * 1000,
     fallbackChoice: {
       id: "refuse",
       label: "Refuse",
@@ -428,7 +425,7 @@ export const loreEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "payGold",
-        label: "Pay gold",
+        label: "Pay 250 Gold",
         cost: "250 gold",
         effect: (state: GameState) => {
           if (state.resources.gold < 250) {
@@ -460,7 +457,7 @@ export const loreEvents: Record<string, GameEvent> = {
       },
       {
         id: "paySilver",
-        label: "Pay silver",
+        label: "Pay 1000 Silver",
         cost: "1000 silver",
         effect: (state: GameState) => {
           if (state.resources.silver < 1000) {
