@@ -40,7 +40,7 @@ export const loreEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "payGold",
-        label: "Pay 50 Gold",
+        label: "Pay gold",
         cost: "50 gold",
         effect: (state: GameState) => {
           if (state.resources.gold < 50) {
