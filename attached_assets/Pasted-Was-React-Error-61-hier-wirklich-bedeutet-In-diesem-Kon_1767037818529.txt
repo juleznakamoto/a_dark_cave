@@ -1,0 +1,163 @@
+Was React Error #61 hier wirklich bedeutet
+
+In diesem Kontext heißt #61 fast immer:
+
+Ein Hook wird ausgeführt, während React noch keinen gültigen Dispatcher hat
+
+Und das passiert typischerweise bei:
+
+lazy oder dynamischem Import
+
+Charts (Recharts!)
+
+Komponenten, die conditional gerendert werden
+
+Hydration Timing Unterschiede zwischen dev und prod
+
+Dev Mode ist langsamer, strikter und stabilisiert die Reihenfolge.
+Prod ist schneller, aggressiver, weniger verzeihend.
+
+Warum Recharts der Trigger ist
+
+Recharts nutzt intern:
+
+useLayoutEffect
+
+useRef
+
+Contexts
+
+ResizeObserver
+
+Wenn du Recharts deferred oder conditional lädst und dabei nicht sofort renderst, kann folgendes passieren:
+
+if (!isVisible) return null;
+
+const Chart = lazy(() => import("recharts"));
+
+
+oder
+
+const Chart = condition
+  ? lazy(() => import("recharts"))
+  : null;
+
+
+👉 Hook Order bricht in Prod, Dev kaschiert es.
+
+Der klassische Fehler
+
+Sehr häufig sieht es so aus:
+
+if (typeof window === "undefined") return null;
+
+const Chart = lazy(() => import("recharts"));
+
+
+oder
+
+if (!mounted) {
+  return null;
+}
+
+return <Chart />;
+
+
+Hooks laufen dann nicht konsistent.
+
+Die saubere, produktionssichere Lösung
+Regel 1
+
+lazy() niemals bedingt aufrufen
+
+❌ falsch
+
+if (showChart) {
+  const Chart = lazy(() => import("./Chart"));
+}
+
+
+✅ richtig
+
+const Chart = lazy(() => import("./Chart"));
+
+return showChart ? <Chart /> : null;
+
+Regel 2
+
+Recharts nur in einer eigenen Wrapper Component
+
+Mach einen harten Isolations Layer.
+
+const ChartWrapper = lazy(() => import("./ChartWrapper"));
+
+
+ChartWrapper.tsx
+
+import { ResponsiveContainer, LineChart, Line } from "recharts";
+
+export default function ChartWrapper() {
+  return (
+    <ResponsiveContainer width="100%" height={300}>
+      <LineChart data={data}>
+        <Line dataKey="value" />
+      </LineChart>
+    </ResponsiveContainer>
+  );
+}
+
+
+👉 Keine Bedingungen, keine Fenster Checks, kein Early Return.
+
+Regel 3
+
+Suspense MUSS direkt über dem Chart liegen
+
+<Suspense fallback={<div>Loading chart...</div>}>
+  {showChart && <ChartWrapper />}
+</Suspense>
+
+
+Nicht höher, nicht tiefer.
+
+Warum es nur im Dashboard knallt
+
+Dashboard ist der einzige Ort mit Recharts
+
+Recharts ist hook intensiv
+
+Deferred Loading verschiebt Hook Reihenfolge
+
+Prod optimiert aggressiv
+
+Boom
+
+Schneller Debug Check
+
+Mach testweise:
+
+import ChartWrapper from "./ChartWrapper";
+
+
+ohne lazy.
+
+Wenn der Fehler weg ist, ist der Beweis erbracht.
+
+TL;DR
+
+✔ Dev Mode funktioniert
+✔ Prod Mode crasht
+✔ Recharts + lazy + conditional render
+❌ Hook Order bricht
+
+Fix
+
+lazy immer top level
+
+Chart isolieren
+
+Suspense direkt drüber
+
+Keine Bedingungen im Chart selbst
+
+Wenn du willst, poste den Dashboard Component Code, dann sage ich dir exakt welche Zeile den Crash verursacht.
