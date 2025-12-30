@@ -2,6 +2,9 @@ import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 
 export const shopItemEvents: Record<string, GameEvent> = {
+
+  // Tarnished Compass Events
+  
   compassTreasure: {
     id: "compassTreasure",
     condition: (state: GameState) =>
@@ -151,6 +154,78 @@ export const shopItemEvents: Record<string, GameEvent> = {
       },
     ],
   },
+
+  mysteriousBell: {
+    id: "mysteriousBell",
+    condition: (state: GameState) =>
+      state.relics?.skeleton_key &&
+      state.relics?.sealed_chest &&
+      !state.story.seen.mysteriousChestOpened,
+
+    timeProbability: 0.5,
+    title: "The mysterious Bell",
+    message:
+      "You open the sealed chest with the skeleton key. Inside, resting on faded velvet, lies a golden bell covered in grotesque engravings and strange symbols written across its surface.",
+    priority: 5,
+    repeatable: false,
+    choices: [
+      {
+        id: "ringBell",
+        label: "Ring it",
+        effect: (state: GameState) => {
+          return {
+            relics: {
+              ...state.relics,
+              skeleton_key: false,
+              sealed_chest: false,
+            },
+            blessings: {
+              ...state.blessings,
+              bell_blessing: true,
+            },
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                mysteriousChestOpened: true,
+              },
+            },
+            _logMessage:
+              "The moment you hear the first ring, darkness swallows you whole. You dream of a vast city of glass and steel, filled with strange lights and people who move with purpose you cannot understand. When you awake, the bell has vanished, but a bell-shaped mark burns on your forearm.",
+          };
+        },
+      },
+      {
+        id: "doNotRing",
+        label: "Do not ring it",
+        effect: (state: GameState) => {
+          return {
+            resources: {
+              ...state.resources,
+              gold: state.resources.gold + 500,
+            },
+            relics: {
+              ...state.relics,
+              skeleton_key: false,
+              sealed_chest: false,
+            },
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                mysteriousChestOpened: true,
+              },
+            },
+            _logMessage:
+              "The risk is too great. That same day, a tradesman arrives and offers 500 gold for the bell. You accept immediately, relieved to be rid of the cursed object. The tradesman departs with a knowing smile.",
+          };
+        },
+      },
+    ],
+  },
+
+
+  // Skull Lantern Events
 
   undergroundLakeDiscovery: {
     id: "undergroundLakeDiscovery",

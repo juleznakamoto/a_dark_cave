@@ -222,21 +222,21 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     symbolColor: "text-purple-400",
   },
 
-  // tarnished_compass: {
-  //   id: "tarnished_compass",
-  //   name: "Tarnished Compass",
-  //   description:
-  //     "Relic of the ancient civilization. Unlocks Compass storyline.",
-  //   originalPrice: 499,
-  //   price: 249, // 2.49 €
-  //   rewards: {
-  //     relics: ["tarnished_compass"],
-  //   },
-  //   canPurchaseMultipleTimes: false,
-  //   category: "relic",
-  //   activationMessage:
-  //     "The Tarnished Compass has been added to your inventory! Its ancient magic may grant fortune to your endeavors.",
-  //   symbol: "⛯",
-  //   symbolColor: "text-amber-200/90",
-  // },
+  tarnished_compass: {
+    id: "tarnished_compass",
+    name: "Tarnished Compass",
+    description:
+      "Relic of the ancient civilization. Unlocks Compass storyline.",
+    originalPrice: 499,
+    price: 249, // 2.49 €
+    rewards: {
+      relics: ["tarnished_compass"],
+    },
+    canPurchaseMultipleTimes: false,
+    category: "relic",
+    activationMessage:
+      "The Tarnished Compass has been added to your inventory! Its ancient magic may grant fortune to your endeavors.",
+    symbol: "⛯",
+    symbolColor: "text-amber-200/90",
+  },
 };
