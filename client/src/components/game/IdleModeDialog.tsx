@@ -485,8 +485,8 @@ export default function IdleModeDialog() {
       const MAX_FOCUS = 30;
       let focusToAdd = hoursSlept;
 
-      // Double focus points if golden_bell blessing is active
-      if (state.relics?.golden_bell && focusToAdd > 0) {
+      // Double focus points if bell_blessing is active
+      if (state.blessings?.bell_blessing && focusToAdd > 0) {
         focusToAdd = focusToAdd * 2;
       }
 

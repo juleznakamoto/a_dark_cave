@@ -1711,7 +1711,10 @@ export const choiceEvents: Record<string, GameEvent> = {
               ...state.relics,
               skeleton_key: false,
               sealed_chest: false,
-              golden_bell: true,
+            },
+            blessings: {
+              ...state.blessings,
+              bell_blessing: true,
             },
             story: {
               ...state.story,

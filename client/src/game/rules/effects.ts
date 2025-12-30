@@ -1249,6 +1249,18 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     },
   },
 
+  bell_blessing: {
+    id: "bell_blessing",
+    name: "Bell Blessing",
+    description: "A bell mark on your forearm reminds you of the strange dream. Focus points gained during sleep are doubled.",
+    bonuses: {
+      generalBonuses: {
+        luck: 5,
+        knowledge: 5,
+      },
+    },
+  },
+
   // Enhanced blessings
   dagons_gift_enhanced: {
     id: "dagons_gift_enhanced",
@@ -1340,18 +1352,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     bonuses: {},
   },
 
-  golden_bell: {
-    id: "golden_bell",
-    name: "Golden Bell",
-    description: "A bell mark on your forearm reminds you of the strange dream. Focus points gained during sleep are doubled.",
-    bonuses: {
-      generalBonuses: {
-        luck: 5,
-        knowledge: 5,
-      },
-    },
-  },
-};
+  };
 
 export const bookEffects: Record<string, EffectDefinition> = {
   book_of_ascension: {
