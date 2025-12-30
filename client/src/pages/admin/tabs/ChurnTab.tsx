@@ -726,7 +726,7 @@ export default function ChurnTab(props: ChurnTabProps) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <ResponsiveContainer width="100%" height={400}>
+          <ChartContainer config={{}}>
             <BarChart data={getChurnedPlayersLastClicks()}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
@@ -736,10 +736,10 @@ export default function ChurnTab(props: ChurnTabProps) {
                 height={100}
               />
               <YAxis />
-              <Tooltip />
+              <ChartTooltip content={<ChartTooltipContent />} />
               <Bar dataKey="clicks" fill="#ff8042" />
             </BarChart>
-          </ResponsiveContainer>
+          </ChartContainer>
         </CardContent>
       </Card>
 
@@ -751,7 +751,7 @@ export default function ChurnTab(props: ChurnTabProps) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <ResponsiveContainer width="100%" height={400}>
+          <ChartContainer config={{}}>
             <BarChart data={getChurnedPlayersFirstTimeClicks()}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
@@ -761,10 +761,10 @@ export default function ChurnTab(props: ChurnTabProps) {
                 height={100}
               />
               <YAxis />
-              <Tooltip />
+              <ChartTooltip content={<ChartTooltipContent />} />
               <Bar dataKey="count" fill="#9333ea" />
             </BarChart>
-          </ResponsiveContainer>
+          </ChartContainer>
         </CardContent>
       </Card>
 
@@ -832,7 +832,7 @@ export default function ChurnTab(props: ChurnTabProps) {
               })()}
             </div>
           </div>
-          <ResponsiveContainer width="100%" height={400}>
+          <ChartContainer config={{}}>
             <LineChart data={getCubeEventsOverPlaytime()}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
@@ -850,7 +850,7 @@ export default function ChurnTab(props: ChurnTabProps) {
                   position: "insideLeft",
                 }}
               />
-              <Tooltip />
+              <ChartTooltip content={<ChartTooltipContent />} />
               <Legend />
               {(() => {
                 const chartData = getCubeEventsOverPlaytime();
@@ -874,7 +874,7 @@ export default function ChurnTab(props: ChurnTabProps) {
                   ));
               })()}
             </LineChart>
-          </ResponsiveContainer>
+          </ChartContainer>
         </CardContent>
       </Card>
 
@@ -886,7 +886,7 @@ export default function ChurnTab(props: ChurnTabProps) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <ResponsiveContainer width="100%" height={400}>
+          <ChartContainer config={{}}>
             <LineChart data={getHighestCubeEventDistribution()}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
@@ -904,7 +904,7 @@ export default function ChurnTab(props: ChurnTabProps) {
                   position: "insideLeft",
                 }}
               />
-              <Tooltip />
+              <ChartTooltip content={<ChartTooltipContent />} />
               <Legend />
               <Line
                 type="monotone"
@@ -914,7 +914,7 @@ export default function ChurnTab(props: ChurnTabProps) {
                 dot={{ r: 4 }}
               />
             </LineChart>
-          </ResponsiveContainer>
+          </ChartContainer>
         </CardContent>
       </Card>
 
@@ -926,7 +926,7 @@ export default function ChurnTab(props: ChurnTabProps) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <ResponsiveContainer width="100%" height={400}>
+          <ChartContainer config={{}}>
             <BarChart data={getChurnedPlayersLastCubeEvents()}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
@@ -944,11 +944,11 @@ export default function ChurnTab(props: ChurnTabProps) {
                   position: "insideLeft",
                 }}
               />
-              <Tooltip />
+              <ChartTooltip content={<ChartTooltipContent />} />
               <Legend />
               <Bar dataKey="players" fill="#ffc658" />
             </BarChart>
-          </ResponsiveContainer>
+          </ChartContainer>
         </CardContent>
       </Card>
 
@@ -960,7 +960,7 @@ export default function ChurnTab(props: ChurnTabProps) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <ResponsiveContainer width="100%" height={400}>
+          <ChartContainer config={{}}>
             <LineChart data={getChurnPointDistribution()}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
@@ -978,7 +978,7 @@ export default function ChurnTab(props: ChurnTabProps) {
                   position: "insideLeft",
                 }}
               />
-              <Tooltip />
+              <ChartTooltip content={<ChartTooltipContent />} />
               <Legend />
               <Line
                 type="monotone"
@@ -988,7 +988,7 @@ export default function ChurnTab(props: ChurnTabProps) {
                 dot={{ r: 4 }}
               />
             </LineChart>
-          </ResponsiveContainer>
+          </ChartContainer>
         </CardContent>
       </Card>
 
@@ -1000,7 +1000,7 @@ export default function ChurnTab(props: ChurnTabProps) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <ResponsiveContainer width="100%" height={400}>
+          <ChartContainer config={{}}>
             <LineChart data={getChurnRateOverTime()}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="day" />
@@ -1011,7 +1011,7 @@ export default function ChurnTab(props: ChurnTabProps) {
                   position: "insideLeft",
                 }}
               />
-              <Tooltip />
+              <ChartTooltip content={<ChartTooltipContent />} />
               <Legend />
               <Line
                 type="monotone"
@@ -1022,7 +1022,7 @@ export default function ChurnTab(props: ChurnTabProps) {
                 name="Churn Rate (%)"
               />
             </LineChart>
-          </ResponsiveContainer>
+          </ChartContainer>
         </CardContent>
       </Card>
 
@@ -1034,7 +1034,7 @@ export default function ChurnTab(props: ChurnTabProps) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <ResponsiveContainer width="100%" height={400}>
+          <ChartContainer config={{}}>
             <LineChart data={getCubeEventsOverRealTime()}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
@@ -1052,7 +1052,7 @@ export default function ChurnTab(props: ChurnTabProps) {
                   position: "insideLeft",
                 }}
               />
-              <Tooltip />
+              <ChartTooltip content={<ChartTooltipContent />} />
               <Legend />
               {(() => {
                 const chartData = getCubeEventsOverRealTime();
@@ -1074,7 +1074,7 @@ export default function ChurnTab(props: ChurnTabProps) {
                 ));
               })()}
             </LineChart>
-          </ResponsiveContainer>
+          </ChartContainer>
         </CardContent>
       </Card>
     </div>

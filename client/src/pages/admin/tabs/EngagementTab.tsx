@@ -20,6 +20,8 @@ export default function EngagementTab(props: EngagementTabProps) {
     formatTime,
   } = props;
 
+  const sessionLengthDistribution = getSessionLengthDistribution();
+
   return (
     <div className="space-y-4">
       <Card>
@@ -30,15 +32,15 @@ export default function EngagementTab(props: EngagementTabProps) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <ResponsiveContainer width="100%" height={400}>
-            <BarChart data={getSessionLengthDistribution()}>
+          <ChartContainer config={{}}>
+            <BarChart data={sessionLengthDistribution}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="range" />
               <YAxis />
               <ChartTooltip content={<ChartTooltipContent />} />
               <Bar dataKey="count" fill="#8884d8" />
             </BarChart>
-          </ResponsiveContainer>
+          </ChartContainer>
         </CardContent>
       </Card>
 
