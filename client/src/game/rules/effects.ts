@@ -1252,7 +1252,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   bell_blessing: {
     id: "bell_blessing",
     name: "Bell Blessing",
-    description: "A bell mark on your forearm reminds you of the strange dream. Focus points gained during sleep are doubled.",
+    description: "A mysterious bell mark on your forearm",
     bonuses: {
       generalBonuses: {
         luck: 5,
