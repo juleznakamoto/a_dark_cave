@@ -1029,19 +1029,22 @@ export default function AdminDashboard() {
             </div>
 
             <Tabs defaultValue="overview" className="space-y-4">
-              <TabsList>
-                <TabsTrigger value="overview">Overview</TabsTrigger>
-                <TabsTrigger value="engagement">Engagement</TabsTrigger>
-                <TabsTrigger value="clicks">Button Clicks</TabsTrigger>
-                <TabsTrigger value="completion">Game Progress</TabsTrigger>
-                <TabsTrigger value="purchases">Purchases</TabsTrigger>
-                <TabsTrigger value="referrals">Referrals</TabsTrigger>
-                <TabsTrigger value="churn">Churn</TabsTrigger>
-                <TabsTrigger value="sleep">Sleep Upgrades</TabsTrigger>
-                <TabsTrigger value="resources">Resources</TabsTrigger>
-                <TabsTrigger value="upgrades">Button Upgrades</TabsTrigger>
-                <TabsTrigger value="lookup">User Lookup</TabsTrigger>
-              </TabsList>
+              <ScrollArea className="w-full whitespace-nowrap">
+                <TabsList className="inline-flex w-auto">
+                  <TabsTrigger value="overview">Overview</TabsTrigger>
+                  <TabsTrigger value="engagement">Engagement</TabsTrigger>
+                  <TabsTrigger value="clicks">Button Clicks</TabsTrigger>
+                  <TabsTrigger value="completion">Game Progress</TabsTrigger>
+                  <TabsTrigger value="purchases">Purchases</TabsTrigger>
+                  <TabsTrigger value="referrals">Referrals</TabsTrigger>
+                  <TabsTrigger value="churn">Churn</TabsTrigger>
+                  <TabsTrigger value="sleep">Sleep Upgrades</TabsTrigger>
+                  <TabsTrigger value="resources">Resources</TabsTrigger>
+                  <TabsTrigger value="upgrades">Button Upgrades</TabsTrigger>
+                  <TabsTrigger value="lookup">User Lookup</TabsTrigger>
+                </TabsList>
+                <ScrollBar orientation="horizontal" />
+              </ScrollArea>
 
               <TabsContent value="overview">
                 <OverviewTab
