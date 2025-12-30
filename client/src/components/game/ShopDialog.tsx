@@ -792,6 +792,12 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
       });
     }
 
+    if (item.rewards.relics) {
+      item.rewards.relics.forEach((relic) => {
+        gameState.relics[relic as keyof typeof gameState.relics] = true;
+      });
+    }
+
     gameState.addLogEntry({
       id: `activate-${Date.now()}`,
       message:
@@ -808,6 +814,10 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
         [purchaseId]: true,
       },
       hasMadeNonFreePurchase: state.hasMadeNonFreePurchase || item.price > 0,
+      tools: gameState.tools,
+      weapons: gameState.weapons,
+      blessings: gameState.blessings,
+      relics: gameState.relics,
     }));
   };
 
