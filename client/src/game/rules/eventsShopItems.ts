@@ -49,7 +49,7 @@ export const shopItemEvents: Record<string, GameEvent> = {
     },
     title: "The Mountain Monk",
     message:
-      "A monk from a mountain monastery arrives in the village. 'I hear you found a mysterious chest,'' he says softly. 'The monastery knows how to open it. Offer a tribute, and I will share the secret.'",
+      "A monk from a mountain monastery arrives in the village. 'I hear you found a mysterious chest, he says softly. 'The monastery knows how to open it. Offer a tribute, and I will share the secret.'",
     priority: 4,
     repeatable: true,
     showAsTimedTab: true,
@@ -103,13 +103,13 @@ export const shopItemEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "The monk accepts your tribute with a solemn nod and reveals ancient plans for a skeleton key. “This key is said to open any lock,” he says, before departing.",
+              "The monk accepts your tribute with a solemn nod and reveals detailed plans for a skeleton key. “This key is said to open any lock,” he says, before departing.",
           };
         },
       },
       {
         id: "offerGold",
-        label: "Offer gold",
+        label: "Offer 250 Gold",
         cost: "250 gold",
         effect: (state: GameState) => {
           if (state.resources.gold < 250) {
@@ -135,7 +135,7 @@ export const shopItemEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "The monk's eyes widen at the sight of gold. 'This will help the monastery greatly,' he says, drawing out ancient plans for a skeleton key. “This key is said to open any lock,” he says, before departing.",
+              "The monk's eyes widen at the sight of gold. 'This will help the monastery greatly,' he says, drawing out detailed plans for a skeleton key. “This key is said to open any lock,” he says, before departing.",
           };
         },
       },
