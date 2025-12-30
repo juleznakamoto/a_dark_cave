@@ -189,7 +189,7 @@ export function startGameLoop() {
     );
 
     // Recalculate isDialogOpen from fresh state to ensure accuracy
-    const actualIsDialogOpen = 
+    const actualIsDialogOpen =
       state.eventDialog.isOpen ||
       state.combatDialog.isOpen ||
       state.authDialogOpen ||

@@ -483,12 +483,21 @@ export default function IdleModeDialog() {
     if (hoursSlept > 0) {
       const currentFocus = state.focusState?.points || 0;
       const MAX_FOCUS = 30;
-      const newFocusPoints = Math.min(currentFocus + hoursSlept, MAX_FOCUS);
+      let focusToAdd = hoursSlept;
+
+      // Double focus points if golden_bell blessing is active
+      if (state.relics?.golden_bell && focusToAdd > 0) {
+        focusToAdd = focusToAdd * 2;
+      }
+
+      const newFocusPoints = Math.min(currentFocus + focusToAdd, MAX_FOCUS);
+
 
       logger.log("[IDLE MODE] Awarding Focus:", {
         hoursSlept,
         elapsed,
         currentFocus,
+        focusToAdd,
         newFocusPoints,
         cappedAt: newFocusPoints === MAX_FOCUS,
         currentTotalFocusEarned: state.totalFocusEarned || 0,
