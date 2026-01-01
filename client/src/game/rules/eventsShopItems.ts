@@ -44,8 +44,8 @@ export const shopItemEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.story.seen.compassTreasureFound &&
       state.relics.sealed_chest &&
-      !state.schematics.skeleton_key_schematic &&
-      !state.story.seen.monasteryMonkAccepted,
+      !state.schematics.skeleton_key_schematic,// &&
+      // !state.story.seen.monasteryMonkAccepted,
     timeProbability: (state: GameState) => {
       const hasBeenSeen = state.triggeredEvents?.monasteryMonk;
       return hasBeenSeen ? 0.02 : 0.01;
