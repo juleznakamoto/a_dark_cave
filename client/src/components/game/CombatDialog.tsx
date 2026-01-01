@@ -539,9 +539,9 @@ export default function CombatDialog({
                       </TooltipTrigger>
                       <TooltipContent>
                         <div className="text-xs whitespace-nowrap">
-                          {calculateCriticalStrikeChance(getTotalLuck(gameState)) + getTotalCriticalChance(gameState)}% critical strike chance
-                          {calculateCriticalStrikeChance(getTotalLuck(gameState)) > 0 && ` (${calculateCriticalStrikeChance(getTotalLuck(gameState))}% from Luck${getTotalLuck(gameState) >= 50 ? " max" : ""})`}
-                          {getTotalCriticalChance(gameState) > 0 && ` ${calculateCriticalStrikeChance(getTotalLuck(gameState)) > 0 ? '+' : ''}${getTotalCriticalChance(gameState)}% from equipment`}
+                          {calculateCriticalStrikeChance(getTotalLuck(gameState)) + getTotalCriticalChance(gameState)}% critical strike chance<br></br>
+                          {calculateCriticalStrikeChance(getTotalLuck(gameState)) > 0 && ` ${calculateCriticalStrikeChance(getTotalLuck(gameState))}% from Luck${getTotalLuck(gameState) >= 50 ? " max" : ""}`}<br></br>
+                          {getTotalCriticalChance(gameState) > 0 && ` ${calculateCriticalStrikeChance(getTotalLuck(gameState)) > 0 ? '' : ''}${getTotalCriticalChance(gameState)}% from equipment`}
                         </div>
                       </TooltipContent>
                     </Tooltip>

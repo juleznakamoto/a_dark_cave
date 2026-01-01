@@ -1322,11 +1322,11 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   tarnished_compass: {
     id: "tarnished_compass",
     name: "Tarnished Compass",
-    description: "Ancient relic for those seeking guidance",
+    description: "Ancient relic for those seeking guidance. Gives 10 % chance to double gains from all actions.",
     bonuses: {
       generalBonuses: {
         luck: 5,
-        actionBonusChance: 0.1, // 10% chance to double action gains
+        actionBonusChance: 0.9, // 10% chance to double action gains
       },
       actionBonuses: {
         caveExplore: {

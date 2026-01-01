@@ -814,10 +814,6 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
         [purchaseId]: true,
       },
       hasMadeNonFreePurchase: state.hasMadeNonFreePurchase || item.price > 0,
-      tools: gameState.tools,
-      weapons: gameState.weapons,
-      blessings: gameState.blessings,
-      relics: gameState.relics,
     }));
   };
 

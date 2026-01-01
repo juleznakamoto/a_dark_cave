@@ -33,7 +33,7 @@ export const shopItemEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "You follow the compass deap into the woods, where ou unearth a small chest extraordinarily sturdy construction. You cannot open it, so you cary it back with you.",
+              "You follow the compass deap into the woods, where you unearth a small chest extraordinarily sturdy construction. You cannot open it, so you cary it back with you.",
           };
         },
       },
