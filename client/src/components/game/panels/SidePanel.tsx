@@ -19,8 +19,15 @@ import {
 } from "@/game/rules/effectsCalculation";
 import { bookEffects, fellowshipEffects } from "@/game/rules/effects";
 import { gameStateSchema } from "@shared/schema";
-import { getStorageLimitText, isResourceLimited, getResourceLimit } from "@/game/resourceLimits";
-import { shouldHideBuilding, shouldExcludeFromBuildingsSection } from "@/game/buildingHierarchy";
+import {
+  getStorageLimitText,
+  isResourceLimited,
+  getResourceLimit,
+} from "@/game/resourceLimits";
+import {
+  shouldHideBuilding,
+  shouldExcludeFromBuildingsSection,
+} from "@/game/buildingHierarchy";
 
 // Extract property order from schema by parsing defaults
 const defaultGameState = gameStateSchema.parse({});
@@ -216,25 +223,15 @@ export default function SidePanel() {
     .filter(([key, value]) => {
       if (!value) return false;
 
-      // Hide schematic if weapon is crafted
-      if (key === "arbalest_schematic" && gameState.weapons.arbalest) {
-        return false;
-      }
-      if (
-        key === "nightshade_bow_schematic" &&
-        gameState.weapons.nightshade_bow
-      ) {
-        return false;
-      }
-      if (
-        key === "stormglass_halberd_schematic" &&
-        gameState.weapons.stormglass_halberd
-      ) {
-        return false;
-      }
+      // Hide schematic if item is crafted
+      const k = key.replace("_schematic", "");
 
-      // Hide schematic if tool is crafted
-      if (key === "skeleton_key_schematic" && gameState.tools.skeleton_key) {
+      if (
+        (k in gameState.weapons &&
+          gameState.weapons[k as keyof typeof gameState.weapons]) ||
+        (k in gameState.tools &&
+          gameState.tools[k as keyof typeof gameState.tools])
+      ) {
         return false;
       }
 
