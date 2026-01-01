@@ -295,7 +295,7 @@ export const shopItemEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.story.seen.lakeCreatureLured &&
       !state.story.seen.lakeCreatureFateDecided,
-    timeProbability: 1,
+    timeProbability: 0.2,
     title: "The Creature's Fate",
     message:
       "The massive creature writhes in the trap, its tentacles thrashing against the steel bars. Its ancient eyes regard you with what might be intelligence. What will you do?",

@@ -501,13 +501,13 @@ export const getAllActionBonuses = (
         const existing = actionBonuses[existingHuntIndex];
         existing.multiplier += huntBonus / 100;
         const percentBonus = Math.round((existing.multiplier - 1) * 100);
-        existing.displayValue = `+${percentBonus}%`;
+        existing.displayValue = `${percentBonus}%`;
       } else {
         // Add new hunt bonus
         actionBonuses.push({
           id: "hunt",
           label: "Hunt",
-          displayValue: `+${huntBonus}%`,
+          displayValue: `${huntBonus}%`,
           multiplier: 1 + huntBonus / 100,
           flatBonus: 0,
         });

@@ -170,8 +170,8 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "basic_survival_bundle",
     name: "Fading Wanderer Bundle",
     description: "Basic Bundle with 5000 Gold and 1 Great Feast",
-    originalPrice: 1199, // 11.99 €
-    price: 599, // 5.99 €
+    originalPrice: 1099, // 10.99 €
+    price: 549, // 5.49 €
     rewards: {
       resources: { gold: 5000 },
       feastActivations: 1,
@@ -189,8 +189,8 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "advanced_bundle",
     name: "Pale King's Bundle",
     description: "Powerful Bundle with 20000 Gold and 3 Great Feasts",
-    originalPrice: 2399, // 23.99 €
-    price: 1199, // 11.99 €
+    originalPrice: 2299, // 22.99 €
+    price: 1099, // 10.99 €
     rewards: {
       resources: { gold: 20000 },
       feastActivations: 3,

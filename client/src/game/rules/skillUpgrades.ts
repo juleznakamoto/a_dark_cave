@@ -74,9 +74,9 @@ export const HUNTING_SKILL_UPGRADES = [
   { level: 0, huntBonus: 25, food: 0, fur: 0, bones: 0, cost: 0 },
   { level: 1, huntBonus: 50, food: 5, fur: 0, bones: 0, cost: 250 },
   { level: 2, huntBonus: 75, food: 5, fur: 1, bones: 1, cost: 500 },
-  { level: 3, huntBonus: 100, food: 15, fur: 1, bones: 1, cost: 750 },
-  { level: 4, huntBonus: 125, food: 15, fur: 2, bones: 2, cost: 1000 },
-  { level: 5, huntBonus: 150, food: 20, fur: 2, bones: 2, cost: 1500 },
+  { level: 3, huntBonus: 100, food: 10, fur: 1, bones: 1, cost: 750 },
+  { level: 4, huntBonus: 125, food: 10, fur: 2, bones: 2, cost: 1000 },
+  { level: 5, huntBonus: 150, food: 15, fur: 2, bones: 2, cost: 1500 },
 ];
 
 // Extract bonuses for use in population calculations
