@@ -926,3 +926,12 @@ export function handleCraftBlacksteelArmor(
 
   return result;
 }
+
+export function handleCraftSkeletonKey(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("craftSkeletonKey", state);
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}

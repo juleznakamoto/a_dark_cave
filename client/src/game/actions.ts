@@ -52,7 +52,8 @@ import {
   handleCraftBlacksteelPickaxe,
   handleCraftBlacksteelLantern,
   handleCraftBlacksteelArmor,
-} from "@/game/rules/caveCraftTools";
+  handleCraftSkeletonKey,
+} from "./rules/caveCraftTools";
 
 import {
   handleCraftBoneTotem,
@@ -291,6 +292,8 @@ export function executeGameAction(
       return handleCraftGrenadierBag(state, result);
     case "craftHighpriestRobe":
       return handleCraftHighpriestRobe(state, result);
+    case "craftSkeletonKey":
+      return handleCraftSkeletonKey(state, result);
     case "craftBoneTotem":
       return handleCraftBoneTotem(state, result);
     case "craftBoneTotems2":
