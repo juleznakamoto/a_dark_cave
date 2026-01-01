@@ -233,6 +233,11 @@ export default function SidePanel() {
         return false;
       }
 
+      // Hide schematic if tool is crafted
+      if (key === "skeleton_key_schematic" && gameState.tools.skeleton_key) {
+        return false;
+      }
+
       return true;
     })
     .map(([key, value]) => ({
