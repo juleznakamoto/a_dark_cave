@@ -54,9 +54,9 @@ function createBoneDevourerEvent(config: BoneDevourerConfig): GameEvent {
     message: (state: GameState) => {
       const hasBeenTriggered = state.triggeredEvents?.[eventId];
       if (hasBeenTriggered) {
-        return `The creature returns to the village gates, its hunched form still covered in pale, stretched skin. It speaks in its familiar rasping voice: 'I seek bones. ${boneCost} bones. I pay ${silverReward} silver.'`;
+        return `The creature returns to the village gates, its hunched form still covered in pale, stretched skin. It speaks in its familiar rasping voice: 'I seek bones. I pay silver.'`;
       }
-      return `A deformed creature shuffles to the village gates, its hunched form covered in pale, stretched skin. It speaks in a rasping voice: 'I seek bones. ${boneCost} bones. I pay ${silverReward} silver.'`;
+      return `A deformed creature shuffles to the village gates, its hunched form covered in pale, stretched skin. It speaks in a rasping voice: 'I seek bones. I pay silver.'`;
     },
     priority: 3,
     repeatable: true,
@@ -66,7 +66,7 @@ function createBoneDevourerEvent(config: BoneDevourerConfig): GameEvent {
     choices: [
       {
         id: "sellBones",
-        label: `Sell bones`,
+        label: `Sell ${boneCost} Bones`,
         cost: `${boneCost} bones`,
         effect: (
           state: GameState,
@@ -97,7 +97,7 @@ function createBoneDevourerEvent(config: BoneDevourerConfig): GameEvent {
       },
       {
         id: "refuse",
-        label: "Refuse the trade",
+        label: "Refuse trade",
         effect: (
           state: GameState,
         ): Partial<GameState> & { _logMessage?: string } => {

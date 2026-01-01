@@ -142,7 +142,7 @@ export const ringEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "payGold",
-        label: "Pay 100 gold",
+        label: "Pay 100 Gold",
         cost: "100 gold",
         effect: (state: GameState) => {
           return {
@@ -231,7 +231,7 @@ export const ringEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "payGold",
-        label: "Pay 200 gold",
+        label: "Pay 200 Gold",
         cost: "200 gold",
         effect: (state: GameState) => {
           return {

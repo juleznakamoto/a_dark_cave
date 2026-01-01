@@ -21,7 +21,7 @@ export const fellowshipEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "payGold",
-        label: "Pay gold",
+        label: "Pay 250 Gold",
         cost: "250 gold",
         effect: (state: GameState) => {
           if (state.resources.gold < 250) {

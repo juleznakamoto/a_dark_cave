@@ -170,7 +170,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "buyMirror",
-        label: "Pay 500 iron",
+        label: "Pay 500 Iron",
         cost: "500 iron",
         effect: (state: GameState) => {
           return {
@@ -676,7 +676,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "acceptDeal",
-        label: "Pay him 250 Gold",
+        label: "Pay 250 Gold",
         effect: (state: GameState) => {
           if (state.resources.gold < 250) {
             return {
@@ -1174,7 +1174,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "payGold",
-        label: "Pay gold",
+        label: "Pay 50 Gold",
         cost: "50 gold",
         effect: (state: GameState) => {
           if (state.resources.gold < 50) {
@@ -1563,10 +1563,10 @@ export const choiceEvents: Record<string, GameEvent> = {
       },
       {
         id: "offerGold",
-        label: "Offer gold",
-        cost: "50 gold",
+        label: "Offer 100 Gold",
+        cost: "100 gold",
         effect: (state: GameState) => {
-          if (state.resources.gold < 50) {
+          if (state.resources.gold < 100) {
             return {
               _logMessage: "You don't have enough gold to offer.",
             };
@@ -1576,7 +1576,7 @@ export const choiceEvents: Record<string, GameEvent> = {
           return {
             resources: {
               ...state.resources,
-              gold: state.resources.gold - 50,
+              gold: state.resources.gold - 100,
             },
             miningBoostState: {
               isActive: true,
@@ -1615,7 +1615,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "payGold",
-        label: "Pay gold",
+        label: "Pay 250 Gold",
         cost: "250 gold",
         effect: (state: GameState) => {
           if (state.resources.gold < 250) {
@@ -1644,7 +1644,7 @@ export const choiceEvents: Record<string, GameEvent> = {
       },
       {
         id: "paySilver",
-        label: "Pay silver",
+        label: "Pay 1000 Silver",
         cost: "1000 silver",
         effect: (state: GameState) => {
           if (state.resources.silver < 1000) {

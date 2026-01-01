@@ -103,7 +103,7 @@ function createWoodcutterEvent(config: WoodcutterConfig): GameEvent {
     choices: [
       {
         id: "acceptServices",
-        label: "Pay food",
+        label: `Pay ${foodCost} Food`,
         cost: `${foodCost} food`,
         effect: (state: GameState) => {
           if (state.resources.food < foodCost) {
