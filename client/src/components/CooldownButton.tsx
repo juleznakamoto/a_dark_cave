@@ -135,7 +135,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       console.log('[COMPASS GLOW] ❌ Glow ended for action:', actionId);
       previousCompassGlowRef.current = false;
     }
-  }, [isCompassGlowing, actionId, compassGlowButton, show2xText]);
+  }, [isCompassGlowing, actionId, compassGlowButton]);
 
   const buttonId = testId || `button-${Math.random()}`;
 
