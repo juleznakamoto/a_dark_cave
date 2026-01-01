@@ -272,6 +272,7 @@ const mergeStateUpdates = (
     events: { ...prevState.events, ...stateUpdates.events },
     stats: { ...prevState.stats, ...stateUpdates.stats },
     cooldowns: { ...prevState.cooldowns, ...stateUpdates.cooldowns },
+    schematics: { ...prevState.schematics, ...stateUpdates.schematics },
     attackWaveTimers: {
       ...prevState.attackWaveTimers,
       ...stateUpdates.attackWaveTimers,
