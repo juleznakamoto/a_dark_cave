@@ -1131,11 +1131,12 @@ export default function AdminDashboard() {
                       : "0.00";
                   }}
                   getARPU={() => {
-                    const totalRevenue = rawPurchases
+                    const totalRevenue = purchases
                       .filter((p) => p.price_paid > 0 && !p.bundle_id)
                       .reduce((sum, p) => sum + p.price_paid, 0);
-                    return totalUserCount > 0
-                      ? (totalRevenue / totalUserCount).toFixed(2)
+                    const activeUsersInRange = gameSaves.length;
+                    return activeUsersInRange > 0
+                      ? (totalRevenue / activeUsersInRange).toFixed(2)
                       : "0.00";
                   }}
                   getTotalRevenue={() =>
