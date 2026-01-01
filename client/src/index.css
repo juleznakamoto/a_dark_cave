@@ -369,6 +369,22 @@ body {
   animation: compass-glow 0.5s linear;
 }
 
+@keyframes fade-out-up {
+  0% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-8px);
+  }
+}
+
+.animate-fade-out-up {
+  animation: fade-out-up 1s ease-out forwards;
+}
+
 /* Notification dot pulsating animation */
 @keyframes notification-pulse {
   0% {

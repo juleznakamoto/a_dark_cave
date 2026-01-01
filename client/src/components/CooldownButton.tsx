@@ -51,6 +51,9 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
   const isFirstRenderRef = useRef<boolean>(true);
   const mobileTooltip = useMobileButtonTooltip();
 
+  // Track the visibility of the "2x" text
+  const [show2xText, setShow2xText] = React.useState(false);
+
   // Get the action ID from the test ID or generate one
   const actionId =
     testId
@@ -60,7 +63,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
   // Get current cooldown from game state
   const currentCooldown = cooldowns[actionId] || 0;
   const isCoolingDown = currentCooldown > 0;
-  
+
   // Derive initial cooldown from cooldownMs prop (which comes from action.cooldown * 1000)
   const initialCooldown = cooldownMs / 1000;
 
@@ -108,6 +111,11 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
   useEffect(() => {
     if (isCompassGlowing) {
       console.log('[COMPASS GLOW] Button is glowing for action:', actionId);
+      setShow2xText(true); // Show "2x" text
+      const timer = setTimeout(() => {
+        setShow2xText(false); // Hide "2x" text after 1 second
+      }, 1000);
+      return () => clearTimeout(timer); // Cleanup timer on unmount or re-render
     }
   }, [isCompassGlowing, actionId]);
 
@@ -140,6 +148,13 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
             transition: isFirstRenderRef.current ? "none" : "width 0.3s ease-out",
           }}
         />
+      )}
+
+      {/* "2x" text indicator for compass glow */}
+      {show2xText && (
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-full text-white text-xs font-bold">
+          2x
+        </div>
       )}
     </Button>
   );
