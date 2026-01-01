@@ -187,7 +187,6 @@ export const gameStateSchema = z.object({
       frostglass: z.boolean().default(false),
       tarnished_compass: z.boolean().default(false),
       sealed_chest: z.boolean().default(false),
-      skeleton_key: z.boolean().default(false),
     })
     .default({}),
   fellowship: z

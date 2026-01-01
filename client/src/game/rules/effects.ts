@@ -1326,7 +1326,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     bonuses: {
       generalBonuses: {
         luck: 5,
-        actionBonusChance: 0.9, // 10% chance to double action gains
+        actionBonusChance: 0.1, // 10% chance to double action gains
       },
       actionBonuses: {
         caveExplore: {

@@ -371,18 +371,16 @@ body {
 
 @keyframes fade-out-up {
   0% {
-    opacity: 1;
-    transform: translateX(-50%) translateY(4px);
+    transform: translateY(2px);
   }
   
   100% {
-    opacity: 0;
-    transform: translateX(-50%) translateY(-4px);
+    transform: translateY(-2px);
   }
 }
 
 .animate-fade-out-up {
-  animation: fade-out-up 1s ease-out forwards;
+  animation: fade-out-up 0.5s ease-out forwards;
 }
 
 /* Notification dot pulsating animation */

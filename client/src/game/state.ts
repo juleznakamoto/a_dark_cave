@@ -799,7 +799,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       setTimeout(() => {
         console.log("[COMPASS GLOW] Clearing compass glow");
         get().setCompassGlow(null);
-      }, 3000);
+      }, 500);
     }
 
     // Apply state updates

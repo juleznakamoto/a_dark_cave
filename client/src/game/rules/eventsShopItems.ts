@@ -2,9 +2,8 @@ import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 
 export const shopItemEvents: Record<string, GameEvent> = {
-
   // Tarnished Compass Events
-  
+
   compassTreasure: {
     id: "compassTreasure",
     condition: (state: GameState) =>
@@ -45,10 +44,11 @@ export const shopItemEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.story.seen.compassTreasureFound &&
       state.relics.sealed_chest &&
-      !state.schematics.skeleton_key_schematic,
+      !state.schematics.skeleton_key_schematic &&
+      !state.story.seen.monasteryMonkAccepted,
     timeProbability: (state: GameState) => {
       const hasBeenSeen = state.triggeredEvents?.monasteryMonk;
-      return hasBeenSeen ? 20 : 10;
+      return hasBeenSeen ? 0.02 : 0.01;
     },
     title: "The Mountain Monk",
     message:
@@ -224,7 +224,6 @@ export const shopItemEvents: Record<string, GameEvent> = {
     ],
   },
 
-
   // Skull Lantern Events
 
   undergroundLakeDiscovery: {
@@ -233,7 +232,7 @@ export const shopItemEvents: Record<string, GameEvent> = {
       state.tools.skull_lantern &&
       state.story.seen.descendedFurther &&
       !state.story.seen.undergroundLakeDiscovered,
-    
+
     timeProbability: 3,
     title: "The Underground Lake",
     message:
