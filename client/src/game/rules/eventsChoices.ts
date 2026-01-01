@@ -420,7 +420,6 @@ export const choiceEvents: Record<string, GameEvent> = {
       {
         id: "turnAway",
         label: "Turn away",
-        relevant_stats: ["strength"],
         effect: (state: GameState) => {
           const traps = state.buildings.traps;
           const villagerDeaths = Math.floor(
@@ -1349,7 +1348,6 @@ export const choiceEvents: Record<string, GameEvent> = {
     id: "masterArcher",
     condition: (state: GameState) =>
       state.buildings.stoneHut >= 5 && !state.blessings.sharp_aim,
-
     timeProbability: 30,
     title: "The Master Archer",
     message:
@@ -1369,10 +1367,10 @@ export const choiceEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "acceptArcherHelp",
-        label: "Give food",
-        cost: "2500 food",
+        label: "Give 5000 Food",
+        cost: "5000 food",
         effect: (state: GameState) => {
-          if (state.resources.food < 2500) {
+          if (state.resources.food < 5000) {
             return {
               _logMessage: "You don't have enough food for this offer.",
             };
@@ -1381,7 +1379,7 @@ export const choiceEvents: Record<string, GameEvent> = {
           return {
             resources: {
               ...state.resources,
-              food: state.resources.food - 2500,
+              food: state.resources.food - 5000,
             },
             blessings: {
               ...state.blessings,
@@ -1395,16 +1393,16 @@ export const choiceEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "The master archer takes the payment and begins training your hunters immediately. Their aim becomes noticeably sharper.",
+              "The master archer takes the payment and begins training your hunters immediately.",
           };
         },
       },
       {
         id: "acceptArcherHelpGold",
-        label: "Pay gold",
-        cost: "100 gold",
+        label: "Pay 200 Gold",
+        cost: "200 gold",
         effect: (state: GameState) => {
-          if (state.resources.gold < 100) {
+          if (state.resources.gold < 200) {
             return {
               _logMessage: "You don't have enough gold for this offer.",
             };
@@ -1413,7 +1411,7 @@ export const choiceEvents: Record<string, GameEvent> = {
           return {
             resources: {
               ...state.resources,
-              gold: state.resources.gold - 100,
+              gold: state.resources.gold - 200,
             },
             blessings: {
               ...state.blessings,
@@ -1427,7 +1425,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "The master archer takes the gold with a nod and begins training your hunters immediately. Their aim becomes noticeably sharper.",
+              "The master archer takes the gold with a nod and begins training your hunters immediately.",
           };
         },
       },
