@@ -380,7 +380,7 @@ export default function OverviewTab(props: OverviewTabProps) {
         <Card>
           <CardHeader>
             <CardTitle>ARPU</CardTitle>
-            <CardDescription>Average Revenue Per User (selected time range)</CardDescription>
+            <CardDescription>Average Revenue Per User</CardDescription>
           </CardHeader>
           <CardContent>
             <p className="text-4xl font-bold">€{getARPU()}</p>
