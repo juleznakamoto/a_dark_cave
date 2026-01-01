@@ -372,12 +372,12 @@ body {
 @keyframes fade-out-up {
   0% {
     opacity: 1;
-    transform: translateX(-50%) translateY(0);
+    transform: translateX(-50%) translateY(4px);
   }
   
   100% {
     opacity: 0;
-    transform: translateX(-50%) translateY(-8px);
+    transform: translateX(-50%) translateY(-4px);
   }
 }
 
