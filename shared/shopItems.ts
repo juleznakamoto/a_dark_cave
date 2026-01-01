@@ -226,7 +226,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "tarnished_compass",
     name: "Tarnished Compass",
     description:
-      "Relic of the ancient civilization. Unlocks Compass storyline.",
+      "Artifact of the vanished civilization, its needle points to hidden places. Unlocks the Compass storyline.",
     originalPrice: 499,
     price: 249, // 2.49 €
     rewards: {

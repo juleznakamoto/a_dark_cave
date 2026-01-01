@@ -1,10 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useGameStore } from "@/game/state";
 import { calculateBastionStats } from "@/game/bastionStats";
-import { getTotalKnowledge, getTotalLuck, getTotalCriticalChance } from "@/game/rules/effectsCalculation";
+import {
+  getTotalKnowledge,
+  getTotalLuck,
+  getTotalCriticalChance,
+} from "@/game/rules/effectsCalculation";
 import { combatItemTooltips } from "@/game/rules/tooltips";
 import { calculateCriticalStrikeChance } from "@/game/rules/effectsStats";
-import { BLOODFLAME_SPHERE_UPGRADES, CRUSHING_STRIKE_UPGRADES } from "@/game/rules/skillUpgrades";
+import {
+  BLOODFLAME_SPHERE_UPGRADES,
+  CRUSHING_STRIKE_UPGRADES,
+} from "@/game/rules/skillUpgrades";
 import {
   Dialog,
   DialogContent,
@@ -63,7 +70,6 @@ export default function CombatDialog({
     (state) => state.combatSkills.bloodflameSphereLevel,
   );
   const luckTooltip = useMobileTooltip();
-
 
   const [combatStarted, setCombatStarted] = useState(false);
   const [currentEnemy, setCurrentEnemy] = useState<Enemy | null>(null);
@@ -206,7 +212,10 @@ export default function CombatDialog({
     const config = CRUSHING_STRIKE_UPGRADES[level];
 
     // Deal damage immediately
-    const newEnemyHealth = Math.max(0, (currentEnemy?.currentHealth || 0) - config.damage);
+    const newEnemyHealth = Math.max(
+      0,
+      (currentEnemy?.currentHealth || 0) - config.damage,
+    );
 
     // Set stun duration based on level
     setEnemyStunnedRounds(config.stunRounds);
@@ -236,7 +245,7 @@ export default function CombatDialog({
     const level = bloodflameSphereLevel || 0;
     const config = BLOODFLAME_SPHERE_UPGRADES[level];
 
-    console.log('[BLOODFLAME] Button clicked - applying immediate effects:', {
+    console.log("[BLOODFLAME] Button clicked - applying immediate effects:", {
       baseDamage: config.damage,
       healthCost: config.healthCost,
       burnDamage: config.burnDamage,
@@ -249,7 +258,7 @@ export default function CombatDialog({
     const newIntegrityValue = Math.max(0, currentIntegrity - config.healthCost);
     setCurrentIntegrity(newIntegrityValue);
 
-    console.log('[BLOODFLAME] Integrity consumed:', {
+    console.log("[BLOODFLAME] Integrity consumed:", {
       before: currentIntegrity,
       cost: config.healthCost,
       after: newIntegrityValue,
@@ -269,9 +278,12 @@ export default function CombatDialog({
     }
 
     // Apply immediate base damage
-    const newEnemyHealth = Math.max(0, (currentEnemy?.currentHealth || 0) - config.damage);
+    const newEnemyHealth = Math.max(
+      0,
+      (currentEnemy?.currentHealth || 0) - config.damage,
+    );
 
-    console.log('[BLOODFLAME] Base damage applied:', {
+    console.log("[BLOODFLAME] Base damage applied:", {
       before: currentEnemy?.currentHealth,
       damage: config.damage,
       after: newEnemyHealth,
@@ -300,7 +312,6 @@ export default function CombatDialog({
     }
   };
 
-
   const handleUseItem = (item: CombatItem) => {
     if (!currentEnemy || !item.available) return;
 
@@ -319,7 +330,10 @@ export default function CombatDialog({
       // The icon indication logic will also be in handleFight or a separate effect
     } else {
       // For bombs, apply damage directly
-      const newEnemyHealth = Math.max(0, (currentEnemy?.currentHealth || 0) - finalDamage);
+      const newEnemyHealth = Math.max(
+        0,
+        (currentEnemy?.currentHealth || 0) - finalDamage,
+      );
       setCurrentEnemy((prev) =>
         prev ? { ...prev, currentHealth: newEnemyHealth } : null,
       );
@@ -341,7 +355,6 @@ export default function CombatDialog({
   };
 
   const handleEndFight = () => {
-
     if (combatResult === "victory") {
       const victoryResult = onVictory();
       // Add victory message to log if present
@@ -386,9 +399,10 @@ export default function CombatDialog({
     // Calculate critical strike
     const totalLuck = getTotalLuck(gameState);
     const criticalChanceBonus = getTotalCriticalChance(gameState);
-    const critChance = (calculateCriticalStrikeChance(totalLuck) + criticalChanceBonus) / 100;
+    const critChance =
+      (calculateCriticalStrikeChance(totalLuck) + criticalChanceBonus) / 100;
     const isCritical = Math.random() < critChance;
-    
+
     if (isCritical) {
       playerDamage = Math.floor(playerDamage * 1.5); // 50% extra damage
       setWasCriticalStrike(true);
@@ -407,14 +421,13 @@ export default function CombatDialog({
     // Apply burn damage if active (works for all rounds burn is active)
     if (enemyBurnRounds > 0) {
       burnDamageDealt = enemyBurnDamage;
-      console.log('[BLOODFLAME] Burn damage applied in Fight:', {
+      console.log("[BLOODFLAME] Burn damage applied in Fight:", {
         burnDamage: burnDamageDealt,
         remainingBurnRounds: enemyBurnRounds,
         enemyHealth: currentEnemyHealth,
       });
       setEnemyBurnRounds((prev) => Math.max(0, prev - 1));
     }
-
 
     // Enemy attacks first (only if not stunned)
     if (enemyStunnedRounds > 0) {
@@ -448,7 +461,10 @@ export default function CombatDialog({
     currentEnemyHealth = newHealth;
 
     // Show damage indicator on enemy health bar
-    setEnemyDamageIndicator({ amount: playerDamage + poisonDamageDealt + burnDamageDealt, visible: true });
+    setEnemyDamageIndicator({
+      amount: playerDamage + poisonDamageDealt + burnDamageDealt,
+      visible: true,
+    });
     setTimeout(() => {
       setEnemyDamageIndicator({ amount: 0, visible: false });
       setWasCriticalStrike(false);
@@ -519,19 +535,16 @@ export default function CombatDialog({
                 <DialogTitle className="text-lg font-semibold">
                   Combat - Round {round}
                 </DialogTitle>
-                {(calculateCriticalStrikeChance(getTotalLuck(gameState)) + getTotalCriticalChance(gameState)) > 0 && (
+                {calculateCriticalStrikeChance(getTotalLuck(gameState)) +
+                  getTotalCriticalChance(gameState) >
+                  0 && (
                   <TooltipProvider>
-                    <Tooltip
-                      open={luckTooltip.isTooltipOpen("combat-luck")}
-                    >
+                    <Tooltip open={luckTooltip.isTooltipOpen("combat-luck")}>
                       <TooltipTrigger asChild>
                         <span
                           className="text-green-300/80 cursor-pointer hover:text-green-300 transition-colors inline-block text-xl"
                           onClick={(e) =>
-                            luckTooltip.handleTooltipClick(
-                              "combat-luck",
-                              e,
-                            )
+                            luckTooltip.handleTooltipClick("combat-luck", e)
                           }
                         >
                           ☆
@@ -539,9 +552,17 @@ export default function CombatDialog({
                       </TooltipTrigger>
                       <TooltipContent>
                         <div className="text-xs whitespace-nowrap">
-                          {calculateCriticalStrikeChance(getTotalLuck(gameState)) + getTotalCriticalChance(gameState)}% critical strike chance<br></br>
-                          {calculateCriticalStrikeChance(getTotalLuck(gameState)) > 0 && ` ${calculateCriticalStrikeChance(getTotalLuck(gameState))}% from Luck${getTotalLuck(gameState) >= 50 ? " max" : ""}`}<br></br>
-                          {getTotalCriticalChance(gameState) > 0 && ` ${calculateCriticalStrikeChance(getTotalLuck(gameState)) > 0 ? '' : ''}${getTotalCriticalChance(gameState)}% from equipment`}
+                          {calculateCriticalStrikeChance(
+                            getTotalLuck(gameState),
+                          ) + getTotalCriticalChance(gameState)}
+                          % critical strike chance<br></br>
+                          {calculateCriticalStrikeChance(
+                            getTotalLuck(gameState),
+                          ) > 0 &&
+                            ` ${calculateCriticalStrikeChance(getTotalLuck(gameState))}% from Luck${getTotalLuck(gameState) >= 50 ? " max" : ""}`}
+                          <br></br>
+                          {getTotalCriticalChance(gameState) > 0 &&
+                            ` ${calculateCriticalStrikeChance(getTotalLuck(gameState)) > 0 ? "" : ""}${getTotalCriticalChance(gameState)}% from equipment`}
                         </div>
                       </TooltipContent>
                     </Tooltip>
@@ -555,17 +576,34 @@ export default function CombatDialog({
               <div className="relative">
                 <div className="flex justify-between text-sm">
                   <div className="flex items-center gap-1">
-                    <span className="font-medium">
-                      {currentEnemy?.name}
-                    </span>
-                    {NIGHTSHADE_BOW_OWNED && usedItemsInCombat.includes("poison_arrows") && (
-                      <span className="text-green-600" role="img" aria-label="poison-icon">▲</span>
-                    )}
+                    <span className="font-medium">{currentEnemy?.name}</span>
+                    {NIGHTSHADE_BOW_OWNED &&
+                      usedItemsInCombat.includes("poison_arrows") && (
+                        <span
+                          className="text-green-600"
+                          role="img"
+                          aria-label="poison-icon"
+                        >
+                          ▲
+                        </span>
+                      )}
                     {enemyStunnedRounds > 0 && (
-                      <span className="text-yellow-600" role="img" aria-label="stun-icon">◈</span>
+                      <span
+                        className="text-yellow-600"
+                        role="img"
+                        aria-label="stun-icon"
+                      >
+                        ◈
+                      </span>
                     )}
                     {enemyBurnRounds > 0 && (
-                      <span className="text-orange-600" role="img" aria-label="burn-icon">✵</span>
+                      <span
+                        className="text-orange-600"
+                        role="img"
+                        aria-label="burn-icon"
+                      >
+                        ✵
+                      </span>
                     )}
                   </div>
                   <span>
@@ -626,7 +664,7 @@ export default function CombatDialog({
                   ? gameState.resources[
                       item.id as keyof typeof gameState.resources
                     ] > 0
-                  : item.id === "poison_arrows" && NIGHTSHADE_BOW_OWNED
+                  : item.id === "poison_arrows" && NIGHTSHADE_BOW_OWNED,
               ) && (
                 <div className="pt-3">
                   <div className="text-sm font-medium mb-2">Items</div>
@@ -644,16 +682,19 @@ export default function CombatDialog({
                       })
                       .map((item) => {
                         const tooltipConfig = combatItemTooltips[item.id];
-                        const tooltipContent = tooltipConfig ? tooltipConfig.getContent(gameState) : '';
-                        const availabilityText = item.id === "poison_arrows"
-                          ? `Available: ${poisonArrowsUsedInCombat < 1 ? "1/1" : "0/1"}`
-                          : item.id === "ember_bomb"
-                            ? `Available: ${MAX_EMBER_BOMBS - emberBombsUsed}/${MAX_EMBER_BOMBS}`
-                            : item.id === "ashfire_bomb"
-                              ? `Available: ${MAX_CINDERFLAME_BOMBS - ashfireBombsUsed}/${MAX_CINDERFLAME_BOMBS}`
-                              : item.id === "void_bomb"
-                                ? `Available: ${MAX_VOID_BOMBS - voidBombsUsed}/${MAX_VOID_BOMBS}`
-                                : "";
+                        const tooltipContent = tooltipConfig
+                          ? tooltipConfig.getContent(gameState)
+                          : "";
+                        const availabilityText =
+                          item.id === "poison_arrows"
+                            ? `Available: ${poisonArrowsUsedInCombat < 1 ? "1/1" : "0/1"}`
+                            : item.id === "ember_bomb"
+                              ? `Available: ${MAX_EMBER_BOMBS - emberBombsUsed}/${MAX_EMBER_BOMBS}`
+                              : item.id === "ashfire_bomb"
+                                ? `Available: ${MAX_CINDERFLAME_BOMBS - ashfireBombsUsed}/${MAX_CINDERFLAME_BOMBS}`
+                                : item.id === "void_bomb"
+                                  ? `Available: ${MAX_VOID_BOMBS - voidBombsUsed}/${MAX_VOID_BOMBS}`
+                                  : "";
 
                         return (
                           <TooltipProvider key={item.id}>
@@ -677,7 +718,8 @@ export default function CombatDialog({
                               <TooltipContent>
                                 <div className="text-xs whitespace-pre-line">
                                   {tooltipContent}
-                                  {'\n'}{availabilityText}
+                                  {"\n"}
+                                  {availabilityText}
                                 </div>
                               </TooltipContent>
                             </Tooltip>
@@ -701,8 +743,8 @@ export default function CombatDialog({
                               <Button
                                 onClick={handleUseCrushingStrike}
                                 disabled={
-                                  usedCrushingStrike || 
-                                  isProcessingRound || 
+                                  usedCrushingStrike ||
+                                  isProcessingRound ||
                                   gameState.story?.seen?.restlessKnightWounded
                                 }
                                 variant="outline"
@@ -718,8 +760,7 @@ export default function CombatDialog({
                             <div className="text-xs whitespace-pre-line">
                               {gameState.story?.seen?.restlessKnightWounded
                                 ? "Restless Knight is wounded and cannot fight"
-                                : `${combatItemTooltips.crushing_strike.getContent(gameState)}\nAvailable: ${usedCrushingStrike ? "0/1" : "1/1"}`
-                              }
+                                : `${combatItemTooltips.crushing_strike.getContent(gameState)}\nAvailable: ${usedCrushingStrike ? "0/1" : "1/1"}`}
                             </div>
                           </TooltipContent>
                         </Tooltip>
@@ -733,9 +774,12 @@ export default function CombatDialog({
                               <Button
                                 onClick={handleUseBloodflameSphere}
                                 disabled={
-                                  usedBloodflameSphere || 
-                                  isProcessingRound || 
-                                  currentIntegrity <= BLOODFLAME_SPHERE_UPGRADES[bloodflameSphereLevel].healthCost || 
+                                  usedBloodflameSphere ||
+                                  isProcessingRound ||
+                                  currentIntegrity <=
+                                    BLOODFLAME_SPHERE_UPGRADES[
+                                      bloodflameSphereLevel
+                                    ].healthCost ||
                                   gameState.story?.seen?.elderWizardWounded
                                 }
                                 variant="outline"
@@ -751,8 +795,7 @@ export default function CombatDialog({
                             <div className="text-xs whitespace-pre-line">
                               {gameState.story?.seen?.elderWizardWounded
                                 ? "Elder Wizard is wounded and cannot cast spells"
-                                : `${combatItemTooltips.bloodflame_sphere.getContent(gameState)}\nAvailable: ${usedBloodflameSphere ? "0/1" : "1/1"}`
-                              }
+                                : `${combatItemTooltips.bloodflame_sphere.getContent(gameState)}\nAvailable: ${usedBloodflameSphere ? "0/1" : "1/1"}`}
                             </div>
                           </TooltipContent>
                         </Tooltip>

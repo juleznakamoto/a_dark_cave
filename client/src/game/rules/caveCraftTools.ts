@@ -617,7 +617,6 @@ export const caveCraftTools: Record<string, Action> = {
   craftSkeletonKey: {
     id: "craftSkeletonKey",
     label: "Skeleton Key",
-    description: "A key said to open any lock",
     show_when: {
       "schematics.skeleton_key_schematic": true,
       "tools.skeleton_key": false,

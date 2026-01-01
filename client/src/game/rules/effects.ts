@@ -342,7 +342,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
   skeleton_key: {
     id: "skeleton_key",
     name: "Skeleton Key",
-    description: "A mysterious key that can open any lock",
+    description: "A mysterious key said to open any lock",
     bonuses: {
       actionBonuses: {},
     },

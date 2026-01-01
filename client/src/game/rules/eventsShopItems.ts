@@ -2,6 +2,7 @@ import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 
 export const shopItemEvents: Record<string, GameEvent> = {
+  
   // Tarnished Compass Events
 
   compassTreasure: {
@@ -158,10 +159,9 @@ export const shopItemEvents: Record<string, GameEvent> = {
   mysteriousBell: {
     id: "mysteriousBell",
     condition: (state: GameState) =>
-      state.relics?.skeleton_key &&
+      state.tools.skeleton_key &&
       state.relics?.sealed_chest &&
       !state.story.seen.mysteriousChestOpened,
-
     timeProbability: 0.5,
     title: "The mysterious Bell",
     message:
