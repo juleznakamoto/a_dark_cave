@@ -855,6 +855,19 @@ export const choiceEvents: Record<string, GameEvent> = {
       "A small tribe of nomads approaches the village. Their leader speaks: 'We have traveled far and seek a place to call home. Help us help build fur tents to shelter our people and we will join your community.'",
     priority: 3,
     repeatable: true,
+    showAsTimedTab: true,
+    timedTabDuration: 3 * 60 * 1000, // 3 minutes
+    skipEventLog: true,
+    fallbackChoice: {
+      id: "refuseTribe",
+      label: "Refuse",
+      effect: (state: GameState) => {
+        return {
+          _logMessage:
+            "You decline their offer. The tribe leader nods respectfully and continues their journey into the wilderness.",
+        };
+      },
+    },
     choices: [
       {
         id: "acceptTribe",
@@ -889,16 +902,6 @@ export const choiceEvents: Record<string, GameEvent> = {
             },
             _logMessage:
               "The tribe gratefully accepts your help. They set up their fur tents and join your community.",
-          };
-        },
-      },
-      {
-        id: "refuseTribe",
-        label: "Refuse",
-        effect: (state: GameState) => {
-          return {
-            _logMessage:
-              "You decline their offer. The tribe leader nods respectfully and continues their journey into the wilderness.",
           };
         },
       },
@@ -1511,6 +1514,19 @@ export const choiceEvents: Record<string, GameEvent> = {
       "A man in torn clothes approaches the village, his hands marked from years of hard labor. 'I come from a mining colony,' he says in a rough voice. 'I can work for you to improve your mining yield.'",
     priority: 3,
     repeatable: true,
+    showAsTimedTab: true,
+    timedTabDuration: 3 * 60 * 1000, // 3 minutes
+    skipEventLog: true,
+    fallbackChoice: {
+      id: "sendAway",
+      label: "Send away",
+      effect: (state: GameState) => {
+        return {
+          _logMessage:
+            "You decline the wanderer's offer. He shrugs, adjusts his worn pack, and disappears down the road.",
+        };
+      },
+    },
     choices: [
       {
         id: "offerFood",
@@ -1575,16 +1591,6 @@ export const choiceEvents: Record<string, GameEvent> = {
             },
             _logMessage:
               "The wanderer gives a brief nod and walks off to the mining pit to begin his labor.",
-          };
-        },
-      },
-      {
-        id: "sendAway",
-        label: "Send away",
-        effect: (state: GameState) => {
-          return {
-            _logMessage:
-              "You decline the wanderer's offer. He shrugs, adjusts his worn pack, and disappears down the road.",
           };
         },
       },
