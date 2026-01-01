@@ -339,6 +339,15 @@ export const toolEffects: Record<string, EffectDefinition> = {
     },
   },
 
+  skeleton_key: {
+    id: "skeleton_key",
+    name: "Skeleton Key",
+    description: "A mysterious key that can open any lock",
+    bonuses: {
+      actionBonuses: {},
+    },
+  },
+
   reinforced_rope: {
     id: "reinforced_rope",
     name: "Reinforced Rope",
