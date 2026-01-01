@@ -420,6 +420,7 @@ export const choiceEvents: Record<string, GameEvent> = {
       {
         id: "turnAway",
         label: "Turn away",
+        relevant_stats: ["strength"],
         effect: (state: GameState) => {
           const traps = state.buildings.traps;
           const villagerDeaths = Math.floor(
@@ -1355,6 +1356,16 @@ export const choiceEvents: Record<string, GameEvent> = {
       "A man in a dark red leather coat arrives with a confident grin and sharp eyes. He offers to help your archers, saying he can sharpen their aim and improve their hunting skills. If you accept, he'll stay and get to work.",
     priority: 3,
     repeatable: true,
+    showAsTimedTab: true,
+    timedTabDuration: 3 * 60 * 1000, // 3 minutes
+    fallbackChoice: {
+      id: "doNothing",
+      label: "No Decision Made",
+      effect: (state: GameState) => ({
+        _logMessage:
+          "Your indecision frustrates the archer. He shakes his head and leaves, taking his expertise elsewhere.",
+      }),
+    },
     choices: [
       {
         id: "acceptArcherHelp",
@@ -1362,13 +1373,15 @@ export const choiceEvents: Record<string, GameEvent> = {
         cost: "2500 food",
         effect: (state: GameState) => {
           if (state.resources.food < 2500) {
-            return {};
+            return {
+              _logMessage: "You don't have enough food for this offer.",
+            };
           }
 
-          const result = {
+          return {
             resources: {
               ...state.resources,
-              food: Math.max(0, state.resources.food - 2500),
+              food: state.resources.food - 2500,
             },
             blessings: {
               ...state.blessings,
@@ -1382,16 +1395,8 @@ export const choiceEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "The master archer takes the payment and begins training your hunters immediately.",
+              "The master archer takes the payment and begins training your hunters immediately. Their aim becomes noticeably sharper.",
           };
-
-          console.log("[MASTER ARCHER] Effect returning:", {
-            currentBlessings: state.blessings,
-            resultBlessings: result.blessings,
-            hasSharpAim: result.blessings.sharp_aim,
-          });
-
-          return result;
         },
       },
       {
@@ -1400,13 +1405,15 @@ export const choiceEvents: Record<string, GameEvent> = {
         cost: "100 gold",
         effect: (state: GameState) => {
           if (state.resources.gold < 100) {
-            return {};
+            return {
+              _logMessage: "You don't have enough gold for this offer.",
+            };
           }
 
-          const result = {
+          return {
             resources: {
               ...state.resources,
-              gold: Math.max(0, state.resources.gold - 100),
+              gold: state.resources.gold - 100,
             },
             blessings: {
               ...state.blessings,
@@ -1420,16 +1427,8 @@ export const choiceEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "The master archer takes the gold with a nod and begins training your hunters immediately.",
+              "The master archer takes the gold with a nod and begins training your hunters immediately. Their aim becomes noticeably sharper.",
           };
-
-          console.log("[MASTER ARCHER] Effect returning:", {
-            currentBlessings: state.blessings,
-            resultBlessings: result.blessings,
-            hasSharpAim: result.blessings.sharp_aim,
-          });
-
-          return result;
         },
       },
       {

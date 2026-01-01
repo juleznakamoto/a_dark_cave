@@ -156,7 +156,7 @@ export default function TimedEventPanel() {
     applyEventChoice(choiceId, eventId, event);
 
     // For merchant events, only close on "say_goodbye"
-    // For other timed events (woodcutter, boneDevourer), close after any choice
+    // For other timed events (feast, master archer, etc.), close after any choice
     if (isMerchantEvent) {
       if (choiceId === "say_goodbye") {
         setTimedEventTab(false);
