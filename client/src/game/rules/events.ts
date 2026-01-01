@@ -333,6 +333,13 @@ export class EventManager {
       return {};
     }
 
+    logger.log('[EVENT MANAGER] Found event definition:', {
+      eventId,
+      hasChoices: !!eventDefinition.choices,
+      choicesCount: eventDefinition.choices?.length || 0,
+      hasFallback: !!eventDefinition.fallbackChoice,
+    });
+
     // Handle merchant event specially
     if (eventId === 'merchant') {
       // CRITICAL: state.merchantTrades is the ONLY source of truth for merchant trades
@@ -464,6 +471,10 @@ export class EventManager {
         logger.log('[EVENT MANAGER] Using fallback choice');
         const fallbackChoice = eventDefinition.fallbackChoice;
         const choiceResult = fallbackChoice.effect(state);
+        logger.log('[EVENT MANAGER] Fallback choice result:', {
+          hasLogMessage: !!choiceResult._logMessage,
+          keys: Object.keys(choiceResult),
+        });
         const result = {
           ...choiceResult,
           log: currentLogEntry
@@ -472,7 +483,7 @@ export class EventManager {
         };
         return result;
       }
-      logger.error('[EVENT MANAGER] Choice not found:', { choiceId, eventId });
+      logger.error('[EVENT MANAGER] Choice not found:', { choiceId, eventId, availableChoices: choices.map(c => c.id) });
       return {};
     }
 
@@ -483,6 +494,13 @@ export class EventManager {
     });
 
     const choiceResult = choice.effect(state);
+    
+    logger.log('[EVENT MANAGER] Choice effect result:', {
+      hasLogMessage: !!choiceResult._logMessage,
+      keys: Object.keys(choiceResult),
+      schematics: choiceResult.schematics,
+      story: choiceResult.story,
+    });
 
     const result = {
       ...choiceResult,
@@ -490,6 +508,12 @@ export class EventManager {
         ? state.log.filter((entry) => entry.id !== currentLogEntry.id)
         : state.log,
     };
+
+    logger.log('[EVENT MANAGER] Final result being returned:', {
+      keys: Object.keys(result),
+      hasSchematics: !!result.schematics,
+      hasStory: !!result.story,
+    });
 
     return result;
   }
