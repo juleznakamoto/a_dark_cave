@@ -871,7 +871,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   setCompassGlow: (actionId: string | null) => {
-    console.log("[COMPASS GLOW] Setting compass glow for action:", actionId);
+    console.log('[COMPASS GLOW STATE] Setting compassGlowButton to:', actionId);
     set({ compassGlowButton: actionId });
   },
 
@@ -1475,7 +1475,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     // For merchant events, don't show any dialog - just apply the changes
     const isMerchantEvent = eventId === 'merchant';
-    
+
     // Only create a log message dialog if there's a _logMessage but no combat and it's not a merchant event
     // Note: _logMessage is for dialog feedback only, not for the main log
     if (logMessage && !combatData && !isMerchantEvent) {
@@ -1638,14 +1638,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
     if (isActive && event?.id.includes('merchant')) {
       // CRITICAL: Use the choices that were already generated in EventManager.checkEvents
       const choices = event.choices || [];
-      
+
       logger.log('[MERCHANT TRADES] Setting timed event tab with merchant trades:', {
         eventId: event?.id,
         choicesCount: choices.length,
         duration,
         expiryTime: duration ? Date.now() + duration : 0,
       });
-      
+
       set({
         timedEventTab: {
           isActive,
@@ -1660,7 +1660,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     } else if (!isActive) {
       // If deactivating, clear merchant trades
       logger.log('[MERCHANT TRADES] Clearing merchant trades (deactivating timed tab)');
-      
+
       set({
         timedEventTab: {
           isActive: false,

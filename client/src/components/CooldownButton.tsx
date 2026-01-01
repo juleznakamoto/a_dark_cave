@@ -110,19 +110,32 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
 
   // Log compass glow state changes and show 2x text
   useEffect(() => {
+    console.log('[COMPASS GLOW DEBUG]', {
+      actionId,
+      compassGlowButton,
+      isCompassGlowing,
+      previousGlow: previousCompassGlowRef.current,
+      show2xText,
+    });
+
     // Only trigger when compass glow transitions from false to true
     if (isCompassGlowing && !previousCompassGlowRef.current) {
-      console.log('[COMPASS GLOW] Button is glowing for action:', actionId);
+      console.log('[COMPASS GLOW] ✅ Button is glowing for action:', actionId, '- Showing 2x text');
       setShow2xText(true); // Show "2x" text
       const timer = setTimeout(() => {
+        console.log('[COMPASS GLOW] ⏱️ Hiding 2x text for action:', actionId);
         setShow2xText(false); // Hide "2x" text after 1 second
       }, 1000);
       previousCompassGlowRef.current = true;
-      return () => clearTimeout(timer); // Cleanup timer on unmount or re-render
-    } else if (!isCompassGlowing) {
+      return () => {
+        console.log('[COMPASS GLOW] 🧹 Cleanup timer for action:', actionId);
+        clearTimeout(timer);
+      };
+    } else if (!isCompassGlowing && previousCompassGlowRef.current) {
+      console.log('[COMPASS GLOW] ❌ Glow ended for action:', actionId);
       previousCompassGlowRef.current = false;
     }
-  }, [isCompassGlowing, actionId]);
+  }, [isCompassGlowing, actionId, compassGlowButton, show2xText]);
 
   const buttonId = testId || `button-${Math.random()}`;
 
