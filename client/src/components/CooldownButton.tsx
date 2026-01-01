@@ -54,6 +54,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
   // Track the visibility of the "2x" text
   const [show2xText, setShow2xText] = React.useState(false);
   const previousCompassGlowRef = useRef<boolean>(false);
+  const textTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Get the action ID from the test ID or generate one
   const actionId =
@@ -121,20 +122,37 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
     // Only trigger when compass glow transitions from false to true
     if (isCompassGlowing && !previousCompassGlowRef.current) {
       console.log('[COMPASS GLOW] ✅ Button is glowing for action:', actionId, '- Showing 2x text');
-      setShow2xText(true); // Show "2x" text
-      const timer = setTimeout(() => {
+      
+      // Clear any existing timer
+      if (textTimerRef.current) {
+        clearTimeout(textTimerRef.current);
+      }
+      
+      // Show text immediately
+      setShow2xText(true);
+      
+      // Set timer to hide after 2 seconds (increased from 1s for better visibility)
+      textTimerRef.current = setTimeout(() => {
         console.log('[COMPASS GLOW] ⏱️ Hiding 2x text for action:', actionId);
-        setShow2xText(false); // Hide "2x" text after 1 second
-      }, 1000);
+        setShow2xText(false);
+        textTimerRef.current = null;
+      }, 2000);
+      
       previousCompassGlowRef.current = true;
-      return () => {
-        console.log('[COMPASS GLOW] 🧹 Cleanup timer for action:', actionId);
-        clearTimeout(timer);
-      };
     } else if (!isCompassGlowing && previousCompassGlowRef.current) {
       console.log('[COMPASS GLOW] ❌ Glow ended for action:', actionId);
       previousCompassGlowRef.current = false;
+      // Don't clear the timer here - let it complete naturally
     }
+    
+    // Cleanup on unmount
+    return () => {
+      if (textTimerRef.current) {
+        console.log('[COMPASS GLOW] 🧹 Cleanup timer for action:', actionId);
+        clearTimeout(textTimerRef.current);
+        textTimerRef.current = null;
+      }
+    };
   }, [isCompassGlowing, actionId, compassGlowButton]);
 
   const buttonId = testId || `button-${Math.random()}`;
