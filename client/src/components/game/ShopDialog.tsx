@@ -980,6 +980,18 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                             </span>
                           )}
                           {formatPrice(item.price)}
+                          {item.bundleComponents && item.bundleComponents.length > 0 && (() => {
+                            const componentsCost = item.bundleComponents.reduce((total, componentId) => {
+                              return total + SHOP_ITEMS[componentId].price;
+                            }, 0);
+                            const savings = componentsCost - item.price;
+                            const savingsPercent = Math.round((savings / componentsCost) * 100);
+                            return (
+                              <span className="ml-2 text-green-600 font-semibold">
+                                Save {savingsPercent}%
+                              </span>
+                            );
+                          })()}
                         </CardDescription>
                       </CardHeader>
                       <CardContent className="min-h-16 pl-3 pr-3 md:pl-6 md:pr-6 pb-3 md:pb-4 flex-1">
