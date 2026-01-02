@@ -18,6 +18,26 @@ export const fellowshipEvents: Record<string, GameEvent> = {
         : "The old wizard approaches you, 'I have lived long and seen much,' he says with a weary voice. 'The threat you face is dire. For a fair price, I will join you in the fight against the foes that emerge from the depths.'",
     priority: 3,
     repeatable: true,
+    showAsTimedTab: true,
+    timedTabDuration: 3 * 60 * 1000, // 3 minutes
+    skipEventLog: true,
+    fallbackChoice: {
+      id: "refuse",
+      label: "Time Expired",
+      effect: (state: GameState) => {
+        return {
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              wizardOfferDeclined: true,
+            },
+          },
+          _logMessage:
+            "Your indecision frustrates the wizard. He shakes his head. 'I will remain in my tower, then. Perhaps our paths will cross again when the need is greater,' he says before departing.",
+        };
+      },
+    },
     choices: [
       {
         id: "payGold",
