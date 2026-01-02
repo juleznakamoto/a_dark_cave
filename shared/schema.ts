@@ -502,17 +502,6 @@ export const gameStateSchema = z.object({
       }),
     )
     .default({}), // Track social media follow rewards by platform (e.g., 'instagram', 'twitter', etc.)
-  idleModeState: z
-    .object({
-      isActive: z.boolean().default(false),
-      startTime: z.number().default(0),
-      needsDisplay: z.boolean().default(false),
-    })
-    .default({
-      isActive: false,
-      startTime: 0,
-      needsDisplay: false,
-    }),
   sleepUpgrades: z
     .object({
       lengthLevel: z.number().default(0), // 0-5
