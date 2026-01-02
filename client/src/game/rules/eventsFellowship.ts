@@ -1,4 +1,3 @@
-
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 
@@ -7,7 +6,7 @@ export const fellowshipEvents: Record<string, GameEvent> = {
     id: "wizardOffer",
     condition: (state: GameState) =>
       state.buildings.wizardTower >= 1 && !state.fellowship.elder_wizard,
-    
+
     timeProbability: (state: GameState) => {
       return state.story.seen.wizardOfferDeclined ? 45 : 30;
     },
