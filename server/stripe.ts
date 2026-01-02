@@ -57,6 +57,7 @@ export async function createPaymentIntent(itemId: string, userEmail?: string, us
   // Add customer email if provided - this shows in Stripe dashboard
   if (userEmail) {
     paymentIntentData.receipt_email = userEmail;
+    paymentIntentData.metadata.userEmail = userEmail;
   }
 
   // Add user ID to metadata - this helps connect Stripe payments to your database
