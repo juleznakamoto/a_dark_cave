@@ -987,7 +987,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                             const savings = componentsCost - item.price;
                             const savingsPercent = Math.round((savings / componentsCost) * 100);
                             return (
-                              <span className="ml-2 px-2 py-0.5 text-green-600 font-semibold border-2 border-green-600 rounded">
+                              <span className="ml-2 px-1 py-0.5 text-xs text-green-600 font-semibold border border-green-700 rounded bg-green-950/50">
                                 Save {savingsPercent}%
                               </span>
                             );
