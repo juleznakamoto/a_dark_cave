@@ -252,7 +252,7 @@ describe('Shop Items Configuration', () => {
     it('should have correct pricing for advanced bundle', () => {
       const bundle = SHOP_ITEMS.advanced_bundle;
       expect(bundle.price).toBe(1099); // 10.99 €
-      expect(bundle.originalPrice).toBe(2399); // 23.99 €
+      expect(bundle.originalPrice).toBe(2199); // 21.99 €
     });
 
     it('should have correct rewards for advanced bundle', () => {
