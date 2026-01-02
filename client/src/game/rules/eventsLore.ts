@@ -397,7 +397,7 @@ export const loreEvents: Record<string, GameEvent> = {
       state.story.seen.restlessKnightCoast &&
       !state.story.seen.restlessKnightDesert,
     timeProbability: (state: GameState) =>
-      state.story.seen.restlessKnightDesertFailed ? 20 : 15,
+      state.story.seen.restlessKnightDesertFailed ? 20 : 10,
     title: "The Knight's Final Journey",
     message:
       "The knight returns, 'I traveled far south to a vast desert. There I met a man devoted to recovering the lost technology of the ancients. He showed me devices once embedded in the body, enhancing senses beyond natural limits. The ancients were not merely human.' He pauses, 'I have traveled enough. Your could use a veteran blade. I offer my service in combat, if you accept.'",
