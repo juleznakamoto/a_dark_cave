@@ -254,7 +254,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     category: "tool",
     activationMessage:
       "The Crow Harness has been added to your tools! You can now catch a crow in Blackreach Canyon.",
-    symbol: "⚶",
+    symbol: "⟑",
     symbolColor: "text-slate-400",
   },
 };
