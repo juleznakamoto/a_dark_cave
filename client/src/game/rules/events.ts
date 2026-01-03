@@ -70,6 +70,7 @@ import { fellowshipEvents } from "./eventsFellowship";
 import { riddleEvents } from "./eventsRiddles";
 import { ringEvents } from "./eventsRing";
 import { fullGameUnlockEvents } from "./eventsFullGameUnlock";
+import { crowEvents } from "./eventsCrow";
 import { GAME_CONSTANTS } from "../constants";
 
 export interface GameEvent {
@@ -152,6 +153,7 @@ export const gameEvents: Record<string, GameEvent> = {
   ...riddleEvents,
   ...ringEvents,
   ...fullGameUnlockEvents,
+  ...crowEvents,
 };
 
 export class EventManager {

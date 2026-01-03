@@ -72,6 +72,25 @@ Preferred communication style: Simple, everyday language.
 - **Vite Plugins**: Runtime error overlay and development tools
 - **Font Integration**: Google Fonts (Inter, Crimson Text, Courier New) for typography hierarchy
 
+## Recent Changes
+
+### January 3, 2026 - Crow System & Village Elder Storyline
+- **New Shop Item**: Crow Harness ($3.99) - Tool for catching the One-eyed Crow in Blackreach Canyon
+- **New Fellowship Member**: One-eyed Crow - Can carry messages and provides Crow's Eye skill
+- **New Skill**: Crow's Eye - Upgradeable skill providing 0.5%-15% chance to double gathering resources
+- **New Forest Scout Actions**:
+  - Blackreach Canyon - Use crow harness to catch the one-eyed crow
+  - Hidden Library - Explore monastery's hidden library (unlocked via crow message)
+  - Steel Delivery - Deliver steel to Swamp Tribe (unlocked via crow message)
+- **New Events System**: Village Elder crow messages with branching storyline:
+  - Mountain Monastery path - Leads to Hidden Library and Stonebinder's Codex relic
+  - Swamp Tribe path - Leads to Steel Delivery and Chitin Plates relic
+  - Shore Fishermen path - Grants Fisher's Hand blessing (+5 food per gatherer)
+- **New Relics**: Stonebinder's Codex (5% building cost reduction), Chitin Plates
+- **New Blessing**: Fisher's Hand (gatherers produce +5 food)
+- **New Building**: Chitin Plating (uses Chitin Plates)
+- **Schema Updates**: Added villageElderState, crowsEyeSkills, new fellowship member, relics, and blessings
+
 ## Development Rules
 
 ### Data Management

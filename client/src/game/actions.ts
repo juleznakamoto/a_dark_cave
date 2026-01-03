@@ -146,6 +146,9 @@ import {
   handleSunkenTemple,
   handlecollapsedTower,
   handleForestCave,
+  handleBlackreachCanyon,
+  handleHiddenLibrary,
+  handleSteelDelivery,
 } from "@/game/rules/forestScoutActions";
 
 import {
@@ -476,6 +479,12 @@ export function executeGameAction(
       return handlecollapsedTower(state, result);
     case "forestCave":
       return handleForestCave(state, result);
+    case "blackreachCanyon":
+      return handleBlackreachCanyon(state, result);
+    case "hiddenLibrary":
+      return handleHiddenLibrary(state, result);
+    case "steelDelivery":
+      return handleSteelDelivery(state, result);
 
     // Forest Sacrifice Actions
     case "boneTotems":

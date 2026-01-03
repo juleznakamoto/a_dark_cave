@@ -117,6 +117,7 @@ export const gameStateSchema = z.object({
       occultist_map: z.boolean().default(false),
       mastermason_chisel: z.boolean().default(false),
       skeleton_key: z.boolean().default(false),
+      crow_harness: z.boolean().default(false),
     })
     .default({}),
   weapons: z
@@ -187,6 +188,8 @@ export const gameStateSchema = z.object({
       frostglass: z.boolean().default(false),
       tarnished_compass: z.boolean().default(false),
       sealed_chest: z.boolean().default(false),
+      stonebinders_codex: z.boolean().default(false),
+      chitin_plates: z.boolean().default(false),
     })
     .default({}),
   fellowship: z
@@ -194,6 +197,7 @@ export const gameStateSchema = z.object({
       restless_knight: z.boolean().default(false),
       elder_wizard: z.boolean().default(false),
       ashwraith_huntress: z.boolean().default(false),
+      one_eyed_crow: z.boolean().default(false),
     })
     .default({}),
   blessings: z
@@ -209,6 +213,7 @@ export const gameStateSchema = z.object({
       forests_grace: z.boolean().default(false),
       sharp_aim: z.boolean().default(false),
       bell_blessing: z.boolean().default(false),
+      fishers_hand: z.boolean().default(false),
     })
     .default({}),
   books: z
@@ -269,6 +274,7 @@ export const gameStateSchema = z.object({
       boneTemple: z.number().default(0),
       pillarOfClarity: z.number().default(0),
       darkEstate: z.number().default(0),
+      chitinPlating: z.number().default(0),
     })
     .default({}),
   villagers: z
@@ -527,6 +533,14 @@ export const gameStateSchema = z.object({
   huntingSkills: z.object({
     level: z.number().default(0),
   }).default({ level: 0 }),
+
+  crowsEyeSkills: z.object({
+    level: z.number().default(0),
+  }).default({ level: 0 }),
+
+  villageElderState: z.object({
+    remainingOptions: z.array(z.string()).default(["mountain_monastery", "swamp_tribe", "shore_fishermen"]),
+  }).default({ remainingOptions: ["mountain_monastery", "swamp_tribe", "shore_fishermen"] }),
 
   buttonUpgrades: z
     .object({

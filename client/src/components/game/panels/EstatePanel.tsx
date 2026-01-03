@@ -22,6 +22,7 @@ import {
   HUNTING_SKILL_UPGRADES,
   SLEEP_LENGTH_UPGRADES,
   SLEEP_INTENSITY_UPGRADES,
+  CROWS_EYE_UPGRADES,
 } from "@/game/rules/skillUpgrades";
 import { focusTooltip } from "@/game/rules/tooltips";
 
@@ -32,6 +33,7 @@ export default function EstatePanel() {
     setIdleModeDialog,
     sleepUpgrades,
     huntingSkills,
+    crowsEyeSkills,
     combatSkills,
     fellowship,
     setHighlightedResources,
@@ -200,6 +202,29 @@ export default function EstatePanel() {
         ...state,
         huntingSkills: {
           ...state.huntingSkills,
+          level: currentLevel + 1,
+        },
+        resources: {
+          ...state.resources,
+          gold: state.resources.gold - nextUpgrade.cost,
+        },
+      };
+    });
+  };
+
+  const handleCrowsEyeUpgrade = () => {
+    useGameStore.setState((state) => {
+      const currentLevel = state.crowsEyeSkills.level;
+      if (currentLevel >= 5) return state;
+
+      const nextUpgrade = CROWS_EYE_UPGRADES[currentLevel + 1];
+
+      if (state.resources.gold < nextUpgrade.cost) return state;
+
+      return {
+        ...state,
+        crowsEyeSkills: {
+          ...state.crowsEyeSkills,
           level: currentLevel + 1,
         },
         resources: {
@@ -750,7 +775,8 @@ export default function EstatePanel() {
         {/* Skills Section */}
         {(fellowship.ashwraith_huntress ||
           fellowship.restless_knight ||
-          fellowship.elder_wizard) && (
+          fellowship.elder_wizard ||
+          fellowship.one_eyed_crow) && (
           <div className="space-y-1 pt-2">
             <h3 className="text-xs font-bold text-foreground">Skills</h3>
 
@@ -1451,6 +1477,78 @@ export default function EstatePanel() {
                       ].healthCost
                     }{" "}
                     health cost
+                  </span>
+                </div>
+              </div>
+            )}
+
+            {/* Crow's Eye */}
+            {fellowship.one_eyed_crow && (
+              <div className="w-80 space-y-1 pt-2">
+                <div className="flex items-center justify-between">
+                  <span className="pb-1 text-xs font-medium text-foreground">
+                    Crow's Eye
+                  </span>
+                  {crowsEyeSkills.level < 5 ? (
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <div
+                            className="h-5 inline-block pb-1 text-xs font-medium text-foreground"
+                            onMouseEnter={() => {
+                              setHighlightedResources(["gold"]);
+                            }}
+                            onMouseLeave={() => {
+                              setHighlightedResources([]);
+                            }}
+                          >
+                            <Button
+                              onClick={handleCrowsEyeUpgrade}
+                              disabled={
+                                resources.gold <
+                                CROWS_EYE_UPGRADES[crowsEyeSkills.level + 1].cost
+                              }
+                              variant="outline"
+                              size="sm"
+                              className="h-5 px-2 py-0.5 text-xs text-amber-600 dark:text-amber-400"
+                              data-testid="upgrade-crows-eye-button"
+                            >
+                              Upgrade
+                            </Button>
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <div className="text-xs">
+                            <div className="font-bold pb-1">
+                              Upgrade Crow's Eye to Level {crowsEyeSkills.level + 1}
+                            </div>
+                            <div>
+                              +{CROWS_EYE_UPGRADES[crowsEyeSkills.level + 1].doubleChance - CROWS_EYE_UPGRADES[crowsEyeSkills.level].doubleChance}% double resource chance
+                            </div>
+                            <div className="border-t border-border my-1" />
+                            <div
+                              className={
+                                resources.gold >= CROWS_EYE_UPGRADES[crowsEyeSkills.level + 1].cost
+                                  ? ""
+                                  : "text-muted-foreground"
+                              }
+                            >
+                              -{CROWS_EYE_UPGRADES[crowsEyeSkills.level + 1].cost} Gold
+                            </div>
+                          </div>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  ) : null}
+                </div>
+                <Progress
+                  value={(crowsEyeSkills.level / 5) * 100}
+                  className="h-2"
+                  segments={5}
+                />
+                <div className="flex justify-between text-xs text-muted-foreground">
+                  <span>
+                    {CROWS_EYE_UPGRADES[crowsEyeSkills.level].doubleChance}% chance to double gathering resources
                   </span>
                 </div>
               </div>

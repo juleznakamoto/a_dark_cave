@@ -188,6 +188,48 @@ export const forestScoutActions: Record<string, Action> = {
     relevant_stats: ["strength", "knowledge"],
     cooldown: 30,
   },
+
+  blackreachCanyon: {
+    id: "blackreachCanyon",
+    label: "Blackreach Canyon",
+    show_when: {
+      "tools.crow_harness": true,
+      "!fellowship.one_eyed_crow": true,
+    },
+    cost: {
+      "resources.food": 7500,
+    },
+    effects: {},
+    cooldown: 60,
+  },
+
+  hiddenLibrary: {
+    id: "hiddenLibrary",
+    label: "Hidden Library",
+    show_when: {
+      "story.seen.hiddenLibraryUnlocked": true,
+      "!story.seen.hiddenLibraryExplored": true,
+    },
+    cost: {
+      "resources.food": 2500,
+    },
+    effects: {},
+    cooldown: 60,
+  },
+
+  steelDelivery: {
+    id: "steelDelivery",
+    label: "Steel Delivery",
+    show_when: {
+      "story.seen.steelDeliveryUnlocked": true,
+      "!story.seen.steelDeliveryCompleted": true,
+    },
+    cost: {
+      "resources.steel": 1000,
+    },
+    effects: {},
+    cooldown: 60,
+  },
 };
 
 // Action handlers
@@ -700,6 +742,144 @@ export function handleForestCave(
       },
     });
   }
+
+  return result;
+}
+
+export function handleBlackreachCanyon(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  // Validate the crow harness exists BEFORE applying effects/costs
+  if (!state.tools.crow_harness) {
+    result.logEntries!.push({
+      id: `blackreach-canyon-no-harness-${Date.now()}`,
+      message: "You need a crow harness to catch the one-eyed crow.",
+      timestamp: Date.now(),
+      type: "system",
+    });
+    // Return early without any state changes - no costs deducted
+    return result;
+  }
+
+  const effectUpdates = applyActionEffects("blackreachCanyon", state);
+  Object.assign(result.stateUpdates, effectUpdates);
+
+  // Always succeed - the crow is caught with the harness
+  result.stateUpdates.fellowship = {
+    ...state.fellowship,
+    one_eyed_crow: true,
+  };
+
+  // Remove crow harness from tools (consumed in the process)
+  result.stateUpdates.tools = {
+    ...state.tools,
+    crow_harness: false,
+  };
+
+  // Deduct food cost (overwrites effectUpdates so must be done manually)
+  result.stateUpdates.resources = {
+    ...state.resources,
+    food: (state.resources.food || 0) - 7500,
+  };
+
+  result.logEntries!.push({
+    id: `blackreach-canyon-success-${Date.now()}`,
+    message:
+      "Your expedition ventures deep into Blackreach Canyon. There, perched on an ancient stone pillar, sits a magnificent one-eyed crow. Using the harness, your scouts carefully approach and bond with the creature. The One-eyed Crow has joined your fellowship.",
+    timestamp: Date.now(),
+    type: "system",
+    visualEffect: {
+      type: "glow",
+      duration: 3,
+    },
+  });
+
+  return result;
+}
+
+export function handleHiddenLibrary(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("hiddenLibrary", state);
+  Object.assign(result.stateUpdates, effectUpdates);
+
+  // Deduct food cost (overwrites effectUpdates so must be done manually)
+  result.stateUpdates.resources = {
+    ...state.resources,
+    food: (state.resources.food || 0) - 2500,
+  };
+
+  // Grant the Stonebinder's Codex relic
+  result.stateUpdates.relics = {
+    ...state.relics,
+    stonebinders_codex: true,
+  };
+
+  // Mark as explored
+  result.stateUpdates.story = {
+    ...state.story,
+    seen: {
+      ...state.story.seen,
+      hiddenLibraryExplored: true,
+    },
+  };
+
+  result.logEntries!.push({
+    id: `hidden-library-success-${Date.now()}`,
+    message:
+      "Following the monastery's ancient map, your expedition discovers a hidden chamber deep within the cave. Inside lies a forgotten library, its shelves lined with crumbling tomes. Among them, you find the Stonebinder's Codex - an ancient text that reveals secrets of efficient construction. Buildings now cost 5% less to construct.",
+    timestamp: Date.now(),
+    type: "system",
+    visualEffect: {
+      type: "glow",
+      duration: 3,
+    },
+  });
+
+  return result;
+}
+
+export function handleSteelDelivery(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("steelDelivery", state);
+  Object.assign(result.stateUpdates, effectUpdates);
+
+  // Deduct steel cost (overwrites effectUpdates so must be done manually)
+  result.stateUpdates.resources = {
+    ...state.resources,
+    steel: (state.resources.steel || 0) - 1000,
+  };
+
+  // Grant the Chitin Plates relic
+  result.stateUpdates.relics = {
+    ...state.relics,
+    chitin_plates: true,
+  };
+
+  // Mark as completed
+  result.stateUpdates.story = {
+    ...state.story,
+    seen: {
+      ...state.story.seen,
+      steelDeliveryCompleted: true,
+    },
+  };
+
+  result.logEntries!.push({
+    id: `steel-delivery-success-${Date.now()}`,
+    message:
+      "Your caravan delivers the steel to the Swamp Tribe as promised. In return, the tribe presents you with magnificent Chitin Plates harvested from a giant swamp creature. These can be used to construct powerful fortifications.",
+    timestamp: Date.now(),
+    type: "system",
+    visualEffect: {
+      type: "glow",
+      duration: 3,
+    },
+  });
 
   return result;
 }

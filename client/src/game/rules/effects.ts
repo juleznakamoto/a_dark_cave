@@ -348,6 +348,15 @@ export const toolEffects: Record<string, EffectDefinition> = {
     },
   },
 
+  crow_harness: {
+    id: "crow_harness",
+    name: "Crow Harness",
+    description: "A specially crafted harness for catching crows. Can be used to catch the one-eyed crow in Blackreach Canyon.",
+    bonuses: {
+      actionBonuses: {},
+    },
+  },
+
   reinforced_rope: {
     id: "reinforced_rope",
     name: "Reinforced Rope",
@@ -1270,6 +1279,35 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     },
   },
 
+  fishers_hand: {
+    id: "fishers_hand",
+    name: "Fisher's Hand",
+    description: "Ancient fishing techniques taught by shore fishermen. Your gatherers produce +5 food each.",
+    bonuses: {
+      generalBonuses: {},
+    },
+  },
+
+  stonebinders_codex: {
+    id: "stonebinders_codex",
+    name: "Stonebinder's Codex",
+    description: "An ancient tome revealing secrets of efficient construction. All buildings cost 5% less resources to build.",
+    bonuses: {
+      generalBonuses: {
+        buildingCostReduction: 0.05,
+      },
+    },
+  },
+
+  chitin_plates: {
+    id: "chitin_plates",
+    name: "Chitin Plates",
+    description: "Powerful chitin armor plates from a giant swamp creature. Can be used to construct Chitin Plating fortifications.",
+    bonuses: {
+      generalBonuses: {},
+    },
+  },
+
   // Enhanced blessings
   dagons_gift_enhanced: {
     id: "dagons_gift_enhanced",
@@ -1411,6 +1449,15 @@ export const fellowshipEffects: Record<string, EffectDefinition> = {
     name: "Ashwraith Huntress",
     description:
       "Wildling huntress from a forest tribe bound by blood oath. Unlocks hunting skill upgrades and hunter production upgrades.",
+    bonuses: {
+      generalBonuses: {},
+    },
+  },
+  one_eyed_crow: {
+    id: "one_eyed_crow",
+    name: "One-eyed Crow",
+    description:
+      "A mystical crow with a single piercing eye. Grants the Crow's Eye skill that provides a chance to double resource gains from gathering actions. Can carry messages to distant lands.",
     bonuses: {
       generalBonuses: {},
     },
