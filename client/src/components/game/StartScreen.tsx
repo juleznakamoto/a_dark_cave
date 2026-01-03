@@ -13,12 +13,13 @@ import {
 } from "@/components/ui/tooltip";
 
 export default function StartScreen() {
-  const { executeAction, setBoostMode, boostMode } = useGameStore();
+  const { executeAction, setBoostMode, boostMode, activatedPurchases } = useGameStore();
   const [isAnimationComplete, setIsAnimationComplete] = useState(false);
   const isMobile = useIsMobile();
   const buttonRef = useRef<HTMLButtonElement>(null);
   const mobileTooltip = useMobileTooltip();
   const executedRef = useRef(false);
+  const isCruelMode = activatedPurchases?.['cruel_mode'] || false;
 
   useEffect(() => {
     // Check if we're on the /boost path and set the flag
@@ -175,7 +176,7 @@ export default function StartScreen() {
       <main className="relative z-10 flex-1 flex flex-col items-center justify-center min-h-screen">
         <div className="text-center mb-4">
           <p className="animate-fade-in-text text-lg text-gray-300/90 leading-relaxed">
-            A dark cave.<br></br>The air is cold and damp.<br></br>You barely
+            {isCruelMode ? "A very dark cave." : "A dark cave."}<br></br>The air is cold and damp.<br></br>You barely
             see the shapes around you.
           </p>
         </div>
