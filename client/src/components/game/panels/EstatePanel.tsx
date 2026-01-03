@@ -1491,10 +1491,89 @@ export default function EstatePanel() {
                   </span>
                   {crowsEyeSkills.level < 5 ? (
                     <TooltipProvider>
-                      <Tooltip>
+                      <Tooltip
+                        open={mobileTooltip.isTooltipOpen(
+                          "upgrade-crows-eye-button",
+                        )}
+                      >
                         <TooltipTrigger asChild>
                           <div
                             className="h-5 inline-block pb-1 text-xs font-medium text-foreground"
+                            onClick={
+                              mobileTooltip.isMobile
+                                ? (e) => {
+                                    mobileTooltip.handleWrapperClick(
+                                      "upgrade-crows-eye-button",
+                                      resources.gold <
+                                        CROWS_EYE_UPGRADES[
+                                          crowsEyeSkills.level + 1
+                                        ].cost,
+                                      false,
+                                      e,
+                                    );
+                                  }
+                                : undefined
+                            }
+                            onTouchStart={
+                              mobileTooltip.isMobile
+                                ? (e) => {
+                                    mobileTooltip.handleTouchStart(
+                                      "upgrade-crows-eye-button",
+                                      resources.gold <
+                                        CROWS_EYE_UPGRADES[
+                                          crowsEyeSkills.level + 1
+                                        ].cost,
+                                      false,
+                                      e,
+                                    );
+                                  }
+                                : undefined
+                            }
+                            onTouchEnd={
+                              mobileTooltip.isMobile
+                                ? (e) => {
+                                    mobileTooltip.handleTouchEnd(
+                                      "upgrade-crows-eye-button",
+                                      resources.gold <
+                                        CROWS_EYE_UPGRADES[
+                                          crowsEyeSkills.level + 1
+                                        ].cost,
+                                      handleCrowsEyeUpgrade,
+                                      e,
+                                    );
+                                  }
+                                : undefined
+                            }
+                            onMouseDown={
+                              mobileTooltip.isMobile
+                                ? (e) => {
+                                    mobileTooltip.handleMouseDown(
+                                      "upgrade-crows-eye-button",
+                                      resources.gold <
+                                        CROWS_EYE_UPGRADES[
+                                          crowsEyeSkills.level + 1
+                                        ].cost,
+                                      false,
+                                      e,
+                                    );
+                                  }
+                                : undefined
+                            }
+                            onMouseUp={
+                              mobileTooltip.isMobile
+                                ? (e) => {
+                                    mobileTooltip.handleMouseUp(
+                                      "upgrade-crows-eye-button",
+                                      resources.gold <
+                                        CROWS_EYE_UPGRADES[
+                                          crowsEyeSkills.level + 1
+                                        ].cost,
+                                      handleCrowsEyeUpgrade,
+                                      e,
+                                    );
+                                  }
+                                : undefined
+                            }
                             onMouseEnter={() => {
                               setHighlightedResources(["gold"]);
                             }}
@@ -1503,37 +1582,57 @@ export default function EstatePanel() {
                             }}
                           >
                             <Button
-                              onClick={handleCrowsEyeUpgrade}
+                              onClick={
+                                mobileTooltip.isMobile &&
+                                mobileTooltip.isTooltipOpen(
+                                  "upgrade-crows-eye-button",
+                                )
+                                  ? (e) => {
+                                      e.preventDefault();
+                                      e.stopPropagation();
+                                    }
+                                  : handleCrowsEyeUpgrade
+                              }
                               disabled={
                                 resources.gold <
-                                CROWS_EYE_UPGRADES[crowsEyeSkills.level + 1].cost
+                                CROWS_EYE_UPGRADES[crowsEyeSkills.level + 1]
+                                  .cost
                               }
-                              variant="outline"
-                              size="sm"
-                              className="h-5 px-2 py-0.5 text-xs text-amber-600 dark:text-amber-400"
-                              data-testid="upgrade-crows-eye-button"
+                              size="xs"
+                              variant="ghost"
+                              className="h-5 pb-1  hover:bg-transparent hover:text-foreground"
+                              button_id="upgrade-crows-eye"
                             >
-                              Upgrade
+                              Improve
                             </Button>
                           </div>
                         </TooltipTrigger>
                         <TooltipContent>
-                          <div className="text-xs">
-                            <div className="font-bold pb-1">
-                              Upgrade Crow's Eye to Level {crowsEyeSkills.level + 1}
-                            </div>
+                          <div className="text-xs whitespace-nowrap">
                             <div>
-                              +{CROWS_EYE_UPGRADES[crowsEyeSkills.level + 1].doubleChance - CROWS_EYE_UPGRADES[crowsEyeSkills.level].doubleChance}% double resource chance
+                              +
+                              {CROWS_EYE_UPGRADES[crowsEyeSkills.level + 1]
+                                .doubleChance -
+                                CROWS_EYE_UPGRADES[crowsEyeSkills.level]
+                                  .doubleChance}
+                              % double resource chance
                             </div>
                             <div className="border-t border-border my-1" />
                             <div
                               className={
-                                resources.gold >= CROWS_EYE_UPGRADES[crowsEyeSkills.level + 1].cost
+                                resources.gold >=
+                                CROWS_EYE_UPGRADES[crowsEyeSkills.level + 1]
+                                  .cost
                                   ? ""
                                   : "text-muted-foreground"
                               }
                             >
-                              -{CROWS_EYE_UPGRADES[crowsEyeSkills.level + 1].cost} Gold
+                              -
+                              {
+                                CROWS_EYE_UPGRADES[crowsEyeSkills.level + 1]
+                                  .cost
+                              }{" "}
+                              Gold
                             </div>
                           </div>
                         </TooltipContent>
