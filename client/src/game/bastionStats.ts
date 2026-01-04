@@ -91,6 +91,11 @@ export function calculateBastionStats(state: GameState): BastionStats {
     defense += 5;
   }
 
+  // Chitin Plating
+  if (state.buildings.chitinPlating > 0) {
+    defense += 10;
+  }
+
   // Add strength from stats to attack
   const attackFromStrength = getTotalStrength(state);
   const totalAttack = attackFromFortifications + attackFromStrength;

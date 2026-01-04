@@ -2,7 +2,13 @@
 // Building upgrade chains - each array represents a hierarchy where later buildings replace earlier ones
 export const BUILDING_HIERARCHIES: Record<string, string[]> = {
   // Fortifications (excluded from buildings section)
-  fortifications: ["bastion", "watchtower", "palisades", "fortifiedMoat"],
+  fortifications: [
+    "bastion",
+    "watchtower",
+    "palisades",
+    "fortifiedMoat",
+    "chitinPlating",
+  ],
   
   // Blacksmith chain
   blacksmith: ["blacksmith", "advancedBlacksmith", "grandBlacksmith"],
