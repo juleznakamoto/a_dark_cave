@@ -430,11 +430,14 @@ export class EventManager {
               ...(state.weapons || {}),
               [trade.buyItem]: true,
             };
-          } else if (trade.buyResource && trade.buyAmount !== undefined && !["book", "tool", "schematic", "weapon"].includes(trade.buyResource)) {
+          } else if (trade.buyResource && trade.buyAmount !== undefined) {
             // Regular resource - ensure we don't pollute resources with item IDs
-            const isItemId = ["book_of_trials", "book_of_war", "reinforced_rope", "occultist_map", "giant_trap", "arbalest_schematic", "compound_bow", "stormglass_halberd_schematic", "natharit_pickaxe", "nightshade_bow_schematic", "skull_lantern"].includes(trade.buyResource);
-            
-            if (!isItemId) {
+            // The buyResource for item trades is "book", "tool", etc. but the actual item ID is in buyItem
+            // For regular resources, buyResource is the resource name (e.g. "food", "gold")
+            if (!["book", "tool", "schematic", "weapon"].includes(trade.buyResource)) {
+              if (!stateChanges.resources) {
+                stateChanges.resources = { ...state.resources };
+              }
               stateChanges.resources[trade.buyResource] = (state.resources[trade.buyResource as keyof typeof state.resources] || 0) + trade.buyAmount;
             }
           }
