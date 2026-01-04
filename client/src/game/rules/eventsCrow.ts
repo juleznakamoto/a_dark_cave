@@ -172,7 +172,7 @@ export const crowEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "You pay the monks for their map. It reveals the location of a Hidden Library deep in your cave. You can now explore it.",
+              "You pay the monks for their map. It reveals the location of the Hidden Library deep in the cave.",
           };
         },
       },
@@ -305,7 +305,7 @@ export const crowEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "The fishermen share their ancient techniques. You receive the blessing 'Fisher's Hand' - your gatherers now produce +5 food each.",
+              "The fishermen share their elaborated techniques of building fish traps you.",
           };
         },
       },

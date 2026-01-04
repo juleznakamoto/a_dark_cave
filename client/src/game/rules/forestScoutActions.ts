@@ -194,6 +194,7 @@ export const forestScoutActions: Record<string, Action> = {
     label: "Blackreach Canyon",
     show_when: {
       "tools.crow_harness": true,
+      "buildings.darkEstate": 1,
       "!fellowship.one_eyed_crow": true,
     },
     cost: {
@@ -751,18 +752,6 @@ export function handleBlackreachCanyon(
   state: GameState,
   result: ActionResult,
 ): ActionResult {
-  // Validate the crow harness exists BEFORE applying effects/costs
-  if (!state.tools.crow_harness) {
-    result.logEntries!.push({
-      id: `blackreach-canyon-no-harness-${Date.now()}`,
-      message: "You need a crow harness to catch the one-eyed crow.",
-      timestamp: Date.now(),
-      type: "system",
-    });
-    // Return early without any state changes - no costs deducted
-    return result;
-  }
-
   const effectUpdates = applyActionEffects("blackreachCanyon", state);
   Object.assign(result.stateUpdates, effectUpdates);
 
@@ -787,7 +776,7 @@ export function handleBlackreachCanyon(
   result.logEntries!.push({
     id: `blackreach-canyon-success-${Date.now()}`,
     message:
-      "Your expedition ventures deep into Blackreach Canyon. There, perched on an ancient stone pillar, sits a magnificent one-eyed crow. Using the harness, your scouts carefully approach and bond with the creature. The One-eyed Crow has joined your fellowship.",
+      "You venture deep into Blackreach Canyon. There, perched on a stone pillar, sits a magnificent one-eyed crow. Using the harness, your carefully approach and bond with the creature. The One-eyed Crow has joined your fellowship.",
     timestamp: Date.now(),
     type: "system",
     visualEffect: {

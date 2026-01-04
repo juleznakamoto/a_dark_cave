@@ -227,8 +227,8 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     name: "Tarnished Compass",
     description:
       "Artifact of the vanished civilization, its needle points to hidden places. Unlocks the Compass storyline.",
-    originalPrice: 499,
-    price: 249, // 2.49 €
+    originalPrice: 599,
+    price: 299, // 2.99 €
     rewards: {
       relics: ["tarnished_compass"],
     },
@@ -240,21 +240,21 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     symbolColor: "text-amber-200/90",
   },
 
-  // crow_harness: {
-  //   id: "crow_harness",
-  //   name: "Crow Harness",
-  //   description:
-  //     "A specially crafted harness for catching and taming crows. Scouts report sightings of a one-eyed crow in Blackreach Canyon.",
-  //   originalPrice: 599,
-  //   price: 399, // 3.99 €
-  //   rewards: {
-  //     tools: ["crow_harness"],
-  //   },
-  //   canPurchaseMultipleTimes: false,
-  //   category: "tool",
-  //   activationMessage:
-  //     "The Crow Harness has been added to your tools! You can now catch a crow in Blackreach Canyon.",
-  //   symbol: "⟑",
-  //   symbolColor: "text-slate-400",
-  // },
+  crow_harness: {
+    id: "crow_harness",
+    name: "Crow Harness",
+    description:
+      "A specially crafted harness for messenger crows. Unlocks the Crow storyline. Adds Fellowship Member.",
+    originalPrice: 699,
+    price: 349, // 3.49 €
+    rewards: {
+      tools: ["crow_harness"],
+    },
+    canPurchaseMultipleTimes: false,
+    category: "tool",
+    activationMessage:
+      "The Crow Harness has been added to your tools! Now you must seek out a crow.",
+    symbol: "⟑",
+    symbolColor: "text-slate-400",
+  },
 };

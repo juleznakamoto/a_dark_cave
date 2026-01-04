@@ -48,7 +48,6 @@ export interface EffectDefinition {
 
 // Tool effects
 export const toolEffects: Record<string, EffectDefinition> = {
-
   stone_axe: {
     id: "stone_axe",
     name: "Stone Axe",
@@ -351,7 +350,8 @@ export const toolEffects: Record<string, EffectDefinition> = {
   crow_harness: {
     id: "crow_harness",
     name: "Crow Harness",
-    description: "A specially crafted harness for catching crows. Can be used to catch the one-eyed crow in Blackreach Canyon.",
+    description:
+      "A specially crafted harness for catching crows. Can be used to catch the one-eyed crow in Blackreach Canyon.",
     bonuses: {
       actionBonuses: {},
     },
@@ -369,7 +369,8 @@ export const toolEffects: Record<string, EffectDefinition> = {
   occultist_map: {
     id: "occultist_map",
     name: "Occultist Map",
-    description: "Time-worn map revealing the chamber of an occultist in the cave",
+    description:
+      "Time-worn map revealing the chamber of an accultist in the cave",
     bonuses: {
       actionBonuses: {},
     },
@@ -378,7 +379,8 @@ export const toolEffects: Record<string, EffectDefinition> = {
   hidden_library_map: {
     id: "hidden_library_map",
     name: "Hidden Library Map",
-    description: "Ancient map revealing the location of a hidden library deep in the cave",
+    description:
+      "Map from the monastery revealing the location of a hidden library deep in the cave",
     bonuses: {
       actionBonuses: {},
     },
@@ -981,8 +983,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   ebony_ring: {
     id: "ebony_ring",
     name: "Ebony Ring",
-    description:
-      "Dark ring left as a gift by the forest gods",
+    description: "Dark ring left as a gift by the forest gods",
     bonuses: {
       generalBonuses: {
         luck: 5,
@@ -1278,7 +1279,8 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   bell_blessing: {
     id: "bell_blessing",
     name: "Bell Blessing",
-    description: "A mysterious bell mark on your forearm. Doubles Focus Points gained during Sleep.",
+    description:
+      "A mysterious bell mark on your forearm. Doubles Focus Points gained during Sleep.",
     bonuses: {
       generalBonuses: {
         luck: 5,
@@ -1290,16 +1292,24 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   fishers_hand: {
     id: "fishers_hand",
     name: "Fisher's Hand",
-    description: "Ancient techniques of the shore fishermen to build fish traps. Gatherers produce +5 food each.",
+    description:
+      "Ancient techniques of the shore fishermen to build fish traps",
     bonuses: {
-      generalBonuses: {},
+      actionBonuses: {
+        hunter: {
+          resourceBonus: {
+            food: 5,
+          },
+        },
+      },
     },
   },
 
   stonebinders_codex: {
     id: "stonebinders_codex",
     name: "Stonebinder's Codex",
-    description: "An ancient tome revealing secrets of efficient construction. All buildings cost 5% less resources to build.",
+    description:
+      "Tome from the hidden library revealing secrets of efficient construction",
     bonuses: {
       generalBonuses: {
         buildingCostReduction: 0.05,
@@ -1310,7 +1320,8 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   chitin_plates: {
     id: "chitin_plates",
     name: "Chitin Plates",
-    description: "Powerful chitin plates from giant swamp creatures. Can be used to add Chitin Plating to fortifications.",
+    description:
+      "Powerful chitin plates from giant swamp creatures. Can be used to add Chitin Plating to fortifications.",
     bonuses: {
       generalBonuses: {},
     },
@@ -1377,7 +1388,8 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   tarnished_compass: {
     id: "tarnished_compass",
     name: "Tarnished Compass",
-    description: "Ancient relic for those seeking guidance. Gives 10 % chance to double gains from all actions.",
+    description:
+      "Ancient relic for those seeking guidance. Gives 10 % chance to double gains from all actions.",
     bonuses: {
       generalBonuses: {
         luck: 5,
@@ -1406,8 +1418,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     description: "A very sturdy chest you are not able to open",
     bonuses: {},
   },
-
-  };
+};
 
 export const bookEffects: Record<string, EffectDefinition> = {
   book_of_ascension: {

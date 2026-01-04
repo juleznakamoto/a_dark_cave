@@ -138,6 +138,7 @@ export default function SidePanel() {
       value: 1,
       testId: `tool-${key}`,
       visible: true,
+      tooltip: true,
     }));
 
   // Dynamically generate weapon items from state (only show weapons from displayTools)
@@ -149,6 +150,7 @@ export default function SidePanel() {
       value: 1,
       testId: `weapon-${key}`,
       visible: true,
+      tooltip: true,
     }));
 
   // Check if any resource has hit the limit
@@ -181,6 +183,7 @@ export default function SidePanel() {
       value: 1,
       testId: `clothing-${key}`,
       visible: true,
+      tooltip: true,
     }));
 
   // Dynamically generate relic items from state
@@ -192,6 +195,7 @@ export default function SidePanel() {
       value: 1,
       testId: `relic-${key}`,
       visible: true,
+      tooltip: true,
     }));
 
   // Dynamically generate book items from state
@@ -243,6 +247,7 @@ export default function SidePanel() {
       value: 1,
       testId: `schematic-${key}`,
       visible: true,
+      tooltip: true,
     }));
 
   // Dynamically generate blessing items from state
