@@ -2,10 +2,10 @@ import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 
 export const crowEvents: Record<string, GameEvent> = {
-  villageElderCrowMessage: {
-    id: "villageElderCrowMessage",
+  establishTradeProposal: {
+    id: "establishTradeProposal",
     condition: (state: GameState) => {
-      const hasRemainingOptions = (state.villageElderState?.remainingOptions?.length || 0) > 0;
+      const hasRemainingOptions = (state.tradeEstablishState?.remainingOptions?.length || 0) > 0;
       const noCrowCurrentlySent = 
         !state.story.seen?.crowSentToMonastery &&
         !state.story.seen?.crowSentToSwamp &&
@@ -15,13 +15,13 @@ export const crowEvents: Record<string, GameEvent> = {
     timeProbability: (state: GameState) => {
       return state.story.seen?.villageElderFirstTime ? 20 : 10;
     },
-    title: "The Village Elder's Request",
+    title: "Establishing Trade",
     message: (state: GameState) => {
-      const remaining = state.villageElderState?.remainingOptions || [];
+      const remaining = state.tradeEstablishState?.remainingOptions || [];
       if (remaining.length < 3) {
-        return "The village elder approaches you once more. 'The crow has proven useful. Shall we send another message to establish more connections?'";
+        return "The village elder approaches you once more. 'The crow has proven useful. Shall we send another message?'";
       }
-      return "A village elder approaches you and recommends sending the crow out with a message to establish trade. Decide where to send a message first.";
+      return "A village elder approaches you and recommends sending the crow out with a message to establish trade. Where to send a message first?";
     },
     priority: 4,
     repeatable: true,
@@ -50,14 +50,14 @@ export const crowEvents: Record<string, GameEvent> = {
         id: "mountainMonastery",
         label: "Mountain Monastery",
         effect: (state: GameState) => {
-          const remaining = state.villageElderState?.remainingOptions || [];
+          const remaining = state.tradeEstablishState?.remainingOptions || [];
           if (!remaining.includes("mountain_monastery")) {
             return { _logMessage: "You have already sent a message to the Mountain Monastery." };
           }
           const newRemaining = remaining.filter((o) => o !== "mountain_monastery");
           return {
-            villageElderState: {
-              ...state.villageElderState,
+            tradeEstablishState: {
+              ...state.tradeEstablishState,
               remainingOptions: newRemaining,
             },
             story: {
@@ -77,14 +77,14 @@ export const crowEvents: Record<string, GameEvent> = {
         id: "swampTribe",
         label: "Swamp Tribe",
         effect: (state: GameState) => {
-          const remaining = state.villageElderState?.remainingOptions || [];
+          const remaining = state.tradeEstablishState?.remainingOptions || [];
           if (!remaining.includes("swamp_tribe")) {
             return { _logMessage: "You have already sent a message to the Swamp Tribe." };
           }
           const newRemaining = remaining.filter((o) => o !== "swamp_tribe");
           return {
-            villageElderState: {
-              ...state.villageElderState,
+            tradeEstablishState: {
+              ...state.tradeEstablishState,
               remainingOptions: newRemaining,
             },
             story: {
@@ -104,14 +104,14 @@ export const crowEvents: Record<string, GameEvent> = {
         id: "shoreFishermen",
         label: "Shore Fishermen",
         effect: (state: GameState) => {
-          const remaining = state.villageElderState?.remainingOptions || [];
+          const remaining = state.tradeEstablishState?.remainingOptions || [];
           if (!remaining.includes("shore_fishermen")) {
             return { _logMessage: "You have already sent a message to the Shore Fishermen." };
           }
           const newRemaining = remaining.filter((o) => o !== "shore_fishermen");
           return {
-            villageElderState: {
-              ...state.villageElderState,
+            tradeEstablishState: {
+              ...state.tradeEstablishState,
               remainingOptions: newRemaining,
             },
             story: {
@@ -124,6 +124,23 @@ export const crowEvents: Record<string, GameEvent> = {
             },
             _logMessage:
               "You send the one-eyed crow with a message to the Shore Fishermen. You wait for it to return.",
+          };
+        },
+      },
+      {
+        id: "notNow",
+        label: "Not Now",
+        effect: (state: GameState) => {
+          return {
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                villageElderFirstTime: true,
+              },
+            },
+            _logMessage:
+              "You tell the elder that you are not ready to send the crow yet. He nods and says he will return later.",
           };
         },
       },

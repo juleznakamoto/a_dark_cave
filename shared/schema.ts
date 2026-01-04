@@ -538,7 +538,7 @@ export const gameStateSchema = z.object({
     level: z.number().default(0),
   }).default({ level: 0 }),
 
-  villageElderState: z.object({
+  tradeEstablishState: z.object({
     remainingOptions: z.array(z.string()).default(["mountain_monastery", "swamp_tribe", "shore_fishermen"]),
   }).default({ remainingOptions: ["mountain_monastery", "swamp_tribe", "shore_fishermen"] }),
 
