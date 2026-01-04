@@ -760,18 +760,18 @@ function selectTrades(
 
     if (isBuyTrade) {
       // Buy trade: give is what user receives (buys), costs are what user pays (sells)
-      buyResource = trade.give;
-      buyAmount = trade.giveAmount;
+      buyResource = trade.give || "";
+      buyAmount = trade.giveAmount || 0;
       sellResource = "";
       sellAmount = 0;
-      validOptions = trade.costs.filter((c: any) => c.resource !== trade.give);
+      validOptions = (trade.costs || []).filter((c: any) => c.resource !== trade.give);
     } else {
       // Sell trade: take is what user pays (sells), rewards are what user receives (buys)
-      sellResource = trade.take;
-      sellAmount = trade.takeAmount;
+      sellResource = trade.take || "";
+      sellAmount = trade.takeAmount || 0;
       buyResource = "";
       buyAmount = 0;
-      validOptions = trade.rewards.filter(
+      validOptions = (trade.rewards || []).filter(
         (r: any) => r.resource !== trade.take,
       );
     }
