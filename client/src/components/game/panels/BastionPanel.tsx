@@ -317,38 +317,6 @@ export default function BastionPanel() {
         </div>
       )}
 
-      {/* Fortifications Section */}
-      <div className="space-y-2">
-        <h3 className="text-xs font-bold text-foreground">Fortifications</h3>
-        <div className="flex flex-wrap gap-2">
-          {buildings.bastion > 0 && (
-            <div className="flex items-center gap-2 p-1 border rounded text-xs">
-              <span>Bastion</span>
-            </div>
-          )}
-          {buildings.watchtower > 0 && (
-            <div className="flex items-center gap-2 p-1 border rounded text-xs">
-              <span>{getBuildingLabel("watchtower", buildings.watchtower)}</span>
-            </div>
-          )}
-          {buildings.palisades > 0 && (
-            <div className="flex items-center gap-2 p-1 border rounded text-xs">
-              <span>{getBuildingLabel("palisades", buildings.palisades)}</span>
-            </div>
-          )}
-          {buildings.fortifiedMoat > 0 && (
-            <div className="flex items-center gap-2 p-1 border rounded text-xs">
-              <span>Fortified Moat</span>
-            </div>
-          )}
-          {buildings.chitinPlating > 0 && (
-            <div className="flex items-center gap-2 p-1 border rounded text-xs">
-              <span>Chitin Plating</span>
-            </div>
-          )}
-        </div>
-      </div>
-
       {/* Repair Section - only show if there are damaged buildings */}
       {hasDamagedBuildings && (
         <div className="space-y-2">

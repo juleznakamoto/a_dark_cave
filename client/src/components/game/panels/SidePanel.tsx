@@ -438,7 +438,7 @@ export default function SidePanel() {
     .map(([key, value]) => {
       // Only include fortification buildings
       if (
-        !["bastion", "watchtower", "palisades", "fortifiedMoat"].includes(key)
+        !["bastion", "watchtower", "palisades", "fortifiedMoat", "chitinPlating"].includes(key)
       ) {
         return null;
       }
@@ -610,6 +610,26 @@ export default function SidePanel() {
             )}
             <div>
               <div>+5 Defense</div>
+            </div>
+          </div>
+        );
+      } else if (key === "chitinPlating") {
+        label = "Chitin Plating";
+
+        // Get the action definition to access the description
+        const actionId = `build${key.charAt(0).toUpperCase() + key.slice(1)}`;
+        const buildAction = villageBuildActions[actionId];
+
+        tooltip = (
+          <div>
+            <div className="font-bold">{label}</div>
+            {buildAction?.description && (
+              <div className="text-gray-400 mb-1">
+                {buildAction.description}
+              </div>
+            )}
+            <div>
+              <div>+10 Defense</div>
             </div>
           </div>
         );
