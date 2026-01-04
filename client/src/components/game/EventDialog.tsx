@@ -20,7 +20,6 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useMobileButtonTooltip } from "@/hooks/useMobileTooltip";
-import { getResourceLimit, isResourceLimited } from "@/game/resourceLimits";
 import CubeDialog from "./CubeDialog";
 import { logger } from "@/lib/logger";
 
@@ -269,47 +268,24 @@ export default function EventDialog({
                 // Evaluate cost if it's a function
                 const costText = typeof cost === 'function' ? cost(gameState) : cost;
 
-                // Check if player can afford the cost and if there is space for rewards
+                // Check if player can afford the cost
                 let canAfford = true;
-                let hasSpace = true;
-
                 if (costText) {
                   const resourceKeys = Object.keys(gameState.resources) as Array<keyof typeof gameState.resources>;
                   for (const resourceKey of resourceKeys) {
                     if (costText.includes(resourceKey)) {
                       const match = costText.match(new RegExp(`(\\d+)\\s*${resourceKey}`));
                       if (match) {
-                        const costValue = parseInt(match[1]);
-                        if (gameState.resources[resourceKey] < costValue) {
+                        const cost = parseInt(match[1]);
+                        if (gameState.resources[resourceKey] < cost) {
                           canAfford = false;
+                          isDisabled = true;
                           break;
                         }
                       }
                     }
                   }
                 }
-
-                // Check for resource limits if this is a merchant trade
-                if (event.id.includes("merchant") && choice.id !== "say_goodbye") {
-                  // Find the trade data from SSOT
-                  const merchantTrades = gameState.merchantTrades?.choices;
-                  const trade = merchantTrades?.find((t: any) => t.id === choice.id);
-                  
-                  if (trade && trade.buyResource && trade.buyAmount) {
-                    const resourceName = trade.buyResource;
-                    // Check if resource is limited and if there's space
-                    if (!["book", "tool", "schematic", "weapon"].includes(resourceName) && 
-                        isResourceLimited(resourceName, gameState)) {
-                      const currentAmount = gameState.resources[resourceName as keyof typeof gameState.resources] || 0;
-                      const limit = getResourceLimit(gameState);
-                      if (currentAmount + trade.buyAmount > limit) {
-                        hasSpace = false;
-                      }
-                    }
-                  }
-                }
-
-                isDisabled = isDisabled || !canAfford || !hasSpace;
 
                 // Evaluate label if it's a function
                 const labelText = typeof choice.label === 'function'
@@ -366,7 +342,6 @@ export default function EventDialog({
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <div
-                          className={isDisabled ? "text-muted-foreground" : ""}
                           onClick={(e) => {
                             logger.log(`[EVENT TOOLTIP] Showing cost for choice: ${choice.id}, cost: ${costText}`);
                             mobileTooltip.handleWrapperClick(choice.id, isDisabled, false, e);
@@ -380,7 +355,7 @@ export default function EventDialog({
                         </div>
                       </TooltipTrigger>
                       <TooltipContent side="top">
-                        <div className="text-xs">
+                        <div className={`text-xs ${isDisabled ? "text-muted-foreground" : ""}`}>
                           {eventChoiceCostTooltip.getContent(costText, gameState)}
                         </div>
                       </TooltipContent>
