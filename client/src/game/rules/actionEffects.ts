@@ -28,6 +28,7 @@ const FOCUS_ELIGIBLE_ACTIONS = [
   "chopWood",
 ];
 
+import { CROWS_EYE_UPGRADES } from "./skillUpgrades";
 import { getGameActions } from "./actionsRegistry";
 
 const evaluateCondition = (condition: string, state: GameState): boolean => {
@@ -92,9 +93,10 @@ export function applyActionEffects(
 
     // Check Crow's Eye skill for additional actionBonusChance
     if (state.crowsEyeSkills?.level > 0) {
-      const skillChances = [0, 0.005, 0.015, 0.03, 0.06, 0.1, 0.15];
-      const level = Math.min(state.crowsEyeSkills.level, skillChances.length - 1);
-      totalActionBonusChance += skillChances[level];
+      const upgrade = CROWS_EYE_UPGRADES.find(u => u.level === state.crowsEyeSkills.level);
+      if (upgrade) {
+        totalActionBonusChance += upgrade.doubleChance / 100;
+      }
     }
 
     // Roll for bonus chance
