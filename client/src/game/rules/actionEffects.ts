@@ -1,4 +1,4 @@
-import { Action, GameState } from "@shared/schema";
+import { GameState } from "@shared/schema";
 import {
   getActionBonuses as getActionBonusesCalc,
   getTotalLuck as getTotalLuckCalc,

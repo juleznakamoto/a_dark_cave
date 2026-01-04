@@ -112,19 +112,19 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       variant={variant}
       size={size}
       className={`relative overflow-hidden transition-all duration-200 select-none ${
-        isCoolingDown ? "opacity-60 cursor-not-allowed" : ""
+        isCoolingDown ? "cursor-not-allowed" : ""
       } ${isCompassGlowing ? "compass-glow" : ""} ${className}`}
       data-testid={testId}
       button_id={props.button_id || actionId}
       {...props}
     >
       {/* Button content */}
-      <span className="relative">{children}</span>
+      <span className={`relative transition-opacity duration-200 ${isCoolingDown ? "opacity-60" : ""}`}>{children}</span>
 
       {/* Cooldown progress overlay */}
       {isCoolingDown && (
         <div
-          className="absolute inset-0 bg-white/15"
+          className="absolute inset-0 bg-white/15 transition-opacity duration-200"
           style={{
             width: `${overlayWidth}%`,
             left: 0,
