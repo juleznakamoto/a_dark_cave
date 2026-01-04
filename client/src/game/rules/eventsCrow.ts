@@ -25,26 +25,7 @@ export const crowEvents: Record<string, GameEvent> = {
     },
     priority: 4,
     repeatable: true,
-    showAsTimedTab: true,
-    timedTabDuration: 3 * 60 * 1000,
     skipEventLog: true,
-    fallbackChoice: {
-      id: "wait",
-      label: "Time Expired",
-      effect: (state: GameState) => {
-        return {
-          story: {
-            ...state.story,
-            seen: {
-              ...state.story.seen,
-              villageElderFirstTime: true,
-            },
-          },
-          _logMessage:
-            "The elder waits for your decision, but you remain undecided. He will return later.",
-        };
-      },
-    },
     choices: [
       {
         id: "mountainMonastery",
