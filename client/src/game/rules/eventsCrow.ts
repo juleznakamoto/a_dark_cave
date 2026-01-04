@@ -5,15 +5,17 @@ export const crowEvents: Record<string, GameEvent> = {
   establishTradeProposal: {
     id: "establishTradeProposal",
     condition: (state: GameState) => {
-      const hasRemainingOptions =
-        (state.tradeEstablishState?.remainingOptions?.length || 0) > 0;
+      const allChoicesDone =
+        state.story.seen?.crowSentToMonastery_Done &&
+        state.story.seen?.crowSentToSwamp_Done &&
+        state.story.seen?.crowSentToShore_Done;
       const noCrowCurrentlySent =
         !state.story.seen?.crowSentToMonastery &&
         !state.story.seen?.crowSentToSwamp &&
         !state.story.seen?.crowSentToShore;
       return (
         state.fellowship.one_eyed_crow &&
-        hasRemainingOptions &&
+        !allChoicesDone &&
         noCrowCurrentlySent
       );
     },
@@ -22,8 +24,11 @@ export const crowEvents: Record<string, GameEvent> = {
     },
     title: "Establishing Trade",
     message: (state: GameState) => {
-      const remaining = state.tradeEstablishState?.remainingOptions || [];
-      if (remaining.length < 3) {
+      const count =
+        (state.story.seen?.crowSentToMonastery_Done ? 1 : 0) +
+        (state.story.seen?.crowSentToSwamp_Done ? 1 : 0) +
+        (state.story.seen?.crowSentToShore_Done ? 1 : 0);
+      if (count > 0) {
         return "The village elder approaches you once more. 'The crow has proven useful. Shall we send another message?'";
       }
       return "A village elder approaches you and recommends sending the crow out with a message to establish trade. Where to send a message first?";
@@ -32,33 +37,21 @@ export const crowEvents: Record<string, GameEvent> = {
     repeatable: true,
     skipEventLog: true,
     choices: (state: GameState) => {
-      const remaining = state.tradeEstablishState?.remainingOptions || [];
       const choices = [];
 
-      if (
-        remaining.includes("mountain_monastery") &&
-        !state.story.seen?.crowSentToMonastery
-      ) {
+      if (!state.story.seen?.crowSentToMonastery_Done) {
         choices.push({
           id: "mountainMonastery",
           label: "Mountain Monastery",
           effect: (state: GameState) => {
-            const currentRemaining =
-              state.tradeEstablishState?.remainingOptions || [];
-            const newRemaining = currentRemaining.filter(
-              (o) => o !== "mountain_monastery",
-            );
             return {
-              tradeEstablishState: {
-                ...state.tradeEstablishState,
-                remainingOptions: newRemaining,
-              },
               story: {
                 ...state.story,
                 seen: {
                   ...state.story.seen,
                   villageElderFirstTime: true,
                   crowSentToMonastery: true,
+                  crowSentToMonastery_Done: true,
                 },
               },
               _logMessage:
@@ -68,30 +61,19 @@ export const crowEvents: Record<string, GameEvent> = {
         });
       }
 
-      if (
-        remaining.includes("swamp_tribe") &&
-        !state.story.seen?.crowSentToSwamp
-      ) {
+      if (!state.story.seen?.crowSentToSwamp_Done) {
         choices.push({
           id: "swampTribe",
           label: "Swamp Tribe",
           effect: (state: GameState) => {
-            const currentRemaining =
-              state.tradeEstablishState?.remainingOptions || [];
-            const newRemaining = currentRemaining.filter(
-              (o) => o !== "swamp_tribe",
-            );
             return {
-              tradeEstablishState: {
-                ...state.tradeEstablishState,
-                remainingOptions: newRemaining,
-              },
               story: {
                 ...state.story,
                 seen: {
                   ...state.story.seen,
                   villageElderFirstTime: true,
                   crowSentToSwamp: true,
+                  crowSentToSwamp_Done: true,
                 },
               },
               _logMessage:
@@ -101,30 +83,19 @@ export const crowEvents: Record<string, GameEvent> = {
         });
       }
 
-      if (
-        remaining.includes("shore_fishermen") &&
-        !state.story.seen?.crowSentToShore
-      ) {
+      if (!state.story.seen?.crowSentToShore_Done) {
         choices.push({
           id: "shoreFishermen",
           label: "Shore Fishermen",
           effect: (state: GameState) => {
-            const currentRemaining =
-              state.tradeEstablishState?.remainingOptions || [];
-            const newRemaining = currentRemaining.filter(
-              (o) => o !== "shore_fishermen",
-            );
             return {
-              tradeEstablishState: {
-                ...state.tradeEstablishState,
-                remainingOptions: newRemaining,
-              },
               story: {
                 ...state.story,
                 seen: {
                   ...state.story.seen,
                   villageElderFirstTime: true,
                   crowSentToShore: true,
+                  crowSentToShore_Done: true,
                 },
               },
               _logMessage:
