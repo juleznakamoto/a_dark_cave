@@ -317,7 +317,7 @@ export const caveExploreActions: Record<string, Action> = {
     id: "occultistChamber",
     label: "Occultist Chamber",
     show_when: {
-      "tools.occultist_map": true,
+      "relics.occultist_map": true,
       "story.seen.occultistChamberExplored": false,
     },
     cost: {
@@ -335,6 +335,48 @@ export const caveExploreActions: Record<string, Action> = {
       };
     },
     cooldown: 1,
+  },
+
+  hiddenLibrary: {
+    id: "hiddenLibrary",
+    label: "Hidden Library",
+    show_when: {
+      "relics.hidden_library_map": true,
+      "story.seen.hiddenLibraryExplored": false,
+    },
+    cost: {
+      "resources.food": 1000,
+    },
+    effects: (state: GameState) => {
+      const goldBonus = state.BTP === 1 ? 150 : 0;
+      return {
+        "resources.gold": 150 + goldBonus,
+        "resources.obsidian": 75,
+        "resources.adamant": 50,
+        "resources.moonstone": 25,
+        "story.seen.hiddenLibraryExplored": true,
+      };
+    },
+    cooldown: 1,
+  },
+  
+  handleHiddenLibrary: (state: GameState, result: ActionResult): ActionResult => {
+    const effectUpdates = applyActionEffects("hiddenLibrary", state);
+
+    result.logEntries!.push({
+      id: `hidden-library-explored-${Date.now()}`,
+      message:
+        "The map lead you to a dusty chamber filled with ancient scrolls and books. You salvage what you can.",
+      timestamp: Date.now(),
+      type: "system",
+      visualEffect: {
+        type: "glow",
+        duration: 3,
+      },
+    });
+
+    Object.assign(result.stateUpdates, effectUpdates);
+    return result;
   },
 
   exploreUndergroundLake: {

@@ -5,29 +5,38 @@ export const crowEvents: Record<string, GameEvent> = {
   establishTradeProposal: {
     id: "establishTradeProposal",
     condition: (state: GameState) => {
-      const allChoicesDone =
-        state.story.seen?.crowSentToMonastery_Done &&
-        state.story.seen?.crowSentToSwamp_Done &&
-        state.story.seen?.crowSentToShore_Done;
-      const noCrowCurrentlySent =
-        !state.story.seen?.crowSentToMonastery &&
-        !state.story.seen?.crowSentToSwamp &&
-        !state.story.seen?.crowSentToShore;
-      return (
-        state.fellowship.one_eyed_crow &&
-        !allChoicesDone &&
-        noCrowCurrentlySent
+      const allCrowsSent = !(
+        state.story.seen?.crowSentToMonastery &&
+        state.story.seen?.crowSentToSwamp &&
+        state.story.seen?.crowSentToShore
       );
+      if (state.story.seen?.crowSentToMonastery) {
+        if (!state.story.seen?.monasteryResponse) {
+          return false;
+        }
+      }
+      if (state.story.seen?.crowSentToSwamp) {
+        if (!state.story.seen?.swampTribeResponse) {
+          return false;
+        }
+      }
+      if (state.story.seen?.crowSentToShore) {
+        if (!state.story.seen?.shoreFishermenResponse) {
+          return false;
+        }
+      }
+
+      return state.fellowship.one_eyed_crow && allCrowsSent;
     },
     timeProbability: (state: GameState) => {
-      return state.story.seen?.villageElderFirstTime ? 0.020 : 0.010;
+      return state.story.seen?.villageElderFirstTime ? 0.02 : 0.01;
     },
     title: "Establishing Trade",
     message: (state: GameState) => {
       const count =
-        (state.story.seen?.crowSentToMonastery_Done ? 1 : 0) +
-        (state.story.seen?.crowSentToSwamp_Done ? 1 : 0) +
-        (state.story.seen?.crowSentToShore_Done ? 1 : 0);
+        (state.story.seen?.crowSentToMonastery ? 1 : 0) +
+        (state.story.seen?.crowSentToSwamp ? 1 : 0) +
+        (state.story.seen?.crowSentToShore ? 1 : 0);
       if (count > 0) {
         return "The village elder approaches you once more. 'The crow has proven useful. Shall we send another message?'";
       }
@@ -39,7 +48,7 @@ export const crowEvents: Record<string, GameEvent> = {
     choices: (state: GameState) => {
       const choices = [];
 
-      if (!state.story.seen?.crowSentToMonastery_Done) {
+      if (!state.story.seen?.crowSentToMonastery) {
         choices.push({
           id: "mountainMonastery",
           label: "Mountain Monastery",
@@ -51,7 +60,6 @@ export const crowEvents: Record<string, GameEvent> = {
                   ...state.story.seen,
                   villageElderFirstTime: true,
                   crowSentToMonastery: true,
-                  crowSentToMonastery_Done: true,
                 },
               },
               _logMessage:
@@ -61,7 +69,7 @@ export const crowEvents: Record<string, GameEvent> = {
         });
       }
 
-      if (!state.story.seen?.crowSentToSwamp_Done) {
+      if (!state.story.seen?.crowSentToSwamp) {
         choices.push({
           id: "swampTribe",
           label: "Swamp Tribe",
@@ -73,7 +81,6 @@ export const crowEvents: Record<string, GameEvent> = {
                   ...state.story.seen,
                   villageElderFirstTime: true,
                   crowSentToSwamp: true,
-                  crowSentToSwamp_Done: true,
                 },
               },
               _logMessage:
@@ -83,7 +90,7 @@ export const crowEvents: Record<string, GameEvent> = {
         });
       }
 
-      if (!state.story.seen?.crowSentToShore_Done) {
+      if (!state.story.seen?.crowSentToShore) {
         choices.push({
           id: "shoreFishermen",
           label: "Shore Fishermen",
@@ -95,7 +102,6 @@ export const crowEvents: Record<string, GameEvent> = {
                   ...state.story.seen,
                   villageElderFirstTime: true,
                   crowSentToShore: true,
-                  crowSentToShore_Done: true,
                 },
               },
               _logMessage:
@@ -112,11 +118,12 @@ export const crowEvents: Record<string, GameEvent> = {
   monasteryResponse: {
     id: "monasteryResponse",
     condition: (state: GameState) =>
-      state.story.seen?.crowSentToMonastery === true,
-    timeProbability: 15,
+      state.story.seen?.crowSentToMonastery === true &&
+      !state.story.seen?.monasteryResponse,
+    timeProbability: 0.015,
     title: "Message from the Mountain Monastery",
     message:
-      "The one-eyed crow returns from the Mountain Monastery with a sealed scroll. The monks offer to sell you a map to a hidden library deep within your cave, containing ancient knowledge. They ask for 250 Gold.",
+      "The one-eyed crow returns from the Mountain Monastery with a sealed scroll. The monks offer to sell you a map to a hidden library deep within the cave. They ask for 250 Gold.",
     priority: 5,
     showAsTimedTab: true,
     timedTabDuration: 5 * 60 * 1000,
@@ -130,7 +137,7 @@ export const crowEvents: Record<string, GameEvent> = {
             ...state.story,
             seen: {
               ...state.story.seen,
-              crowSentToMonastery: false,
+              monasteryResponse: true,
             },
           },
           _logMessage: "You took too long to decide. The monks' offer expires.",
@@ -157,7 +164,7 @@ export const crowEvents: Record<string, GameEvent> = {
               ...state.story,
               seen: {
                 ...state.story.seen,
-                crowSentToMonastery: false,
+                monasteryResponse: true,
                 hiddenLibraryUnlocked: true,
               },
             },
@@ -175,7 +182,7 @@ export const crowEvents: Record<string, GameEvent> = {
               ...state.story,
               seen: {
                 ...state.story.seen,
-                crowSentToMonastery: false,
+                monasteryResponse: true,
               },
             },
             _logMessage:
@@ -188,7 +195,7 @@ export const crowEvents: Record<string, GameEvent> = {
 
   swampTribeResponse: {
     id: "swampTribeResponse",
-    condition: (state: GameState) => 
+    condition: (state: GameState) =>
       state.story.seen?.crowSentToSwamp === true &&
       !state.story.seen?.swampTribeResponse,
     timeProbability: 15,
@@ -209,7 +216,6 @@ export const crowEvents: Record<string, GameEvent> = {
               seen: {
                 ...state.story.seen,
                 swampTribeResponse: true,
-                crowSentToSwamp: false,
                 steelDeliveryUnlocked: true,
               },
             },
@@ -227,7 +233,6 @@ export const crowEvents: Record<string, GameEvent> = {
               ...state.story,
               seen: {
                 ...state.story.seen,
-                crowSentToSwamp: false,
                 swampTribeResponse: true,
               },
             },
@@ -241,8 +246,10 @@ export const crowEvents: Record<string, GameEvent> = {
 
   shoreFishermenResponse: {
     id: "shoreFishermenResponse",
-    condition: (state: GameState) => state.story.seen?.crowSentToShore === true,
-    timeProbability: 15,
+    condition: (state: GameState) =>
+      state.story.seen?.crowSentToShore === true &&
+      !state.story.seen?.shoreFishermenResponse,
+    timeProbability: 0.015,
     title: "Message from the Shore Fishermen",
     message:
       "The one-eyed crow returns from the Shore Fishermen with dried fish as a gift. The fishermen offer to teach you the secrets of building powerful fish traps for 250 Gold.",
@@ -259,7 +266,7 @@ export const crowEvents: Record<string, GameEvent> = {
             ...state.story,
             seen: {
               ...state.story.seen,
-              crowSentToShore: false,
+              shoreFishermenResponse: true,
             },
           },
           _logMessage:
@@ -291,7 +298,7 @@ export const crowEvents: Record<string, GameEvent> = {
               ...state.story,
               seen: {
                 ...state.story.seen,
-                crowSentToShore: false,
+                shoreFishermenResponse: true,
               },
             },
             _logMessage:
@@ -308,7 +315,7 @@ export const crowEvents: Record<string, GameEvent> = {
               ...state.story,
               seen: {
                 ...state.story.seen,
-                crowSentToShore: false,
+                shoreFishermenResponse: true,
               },
             },
             _logMessage:
