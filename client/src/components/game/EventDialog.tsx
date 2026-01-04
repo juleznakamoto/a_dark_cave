@@ -337,9 +337,6 @@ export default function EventDialog({
                   </Button>
                 );
 
-                const processing = false; // Placeholder, assuming this state is managed elsewhere
-                const selectedChoice = null; // Placeholder, assuming this state is managed elsewhere
-
                 return costText ? (
                   <TooltipProvider key={choice.id}>
                     <Tooltip>

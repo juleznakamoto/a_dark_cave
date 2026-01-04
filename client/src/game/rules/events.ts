@@ -426,12 +426,15 @@ export class EventManager {
               [trade.buyItem]: true,
             };
           } else if (trade.buyResource === "weapon") {
-             stateChanges.weapons = {
+            stateChanges.weapons = {
               ...(state.weapons || {}),
               [trade.buyItem]: true,
             };
           } else {
             // Regular resource
+            if (!stateChanges.resources) {
+              stateChanges.resources = { ...state.resources };
+            }
             stateChanges.resources[trade.buyResource] = (state.resources[trade.buyResource as keyof typeof state.resources] || 0) + trade.buyAmount;
           }
 

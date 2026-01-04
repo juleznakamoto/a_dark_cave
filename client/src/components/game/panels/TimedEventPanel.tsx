@@ -357,7 +357,7 @@ export default function TimedEventPanel() {
                         })}
                       </div>
                     )}
-                    {isPurchased && <span>✓</span>}
+                    {isPurchased && <span className="ml-1">✓</span>}
                   </div>
                 </Button>
               );
