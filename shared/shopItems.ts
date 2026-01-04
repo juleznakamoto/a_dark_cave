@@ -240,21 +240,21 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     symbolColor: "text-amber-200/90",
   },
 
-  crow_harness: {
-    id: "crow_harness",
-    name: "Crow Harness",
-    description:
-      "A specially crafted harness for catching and taming crows. Scouts report sightings of a one-eyed crow in Blackreach Canyon.",
-    originalPrice: 599,
-    price: 399, // 3.99 €
-    rewards: {
-      tools: ["crow_harness"],
-    },
-    canPurchaseMultipleTimes: false,
-    category: "tool",
-    activationMessage:
-      "The Crow Harness has been added to your tools! You can now catch a crow in Blackreach Canyon.",
-    symbol: "⟑",
-    symbolColor: "text-slate-400",
-  },
+  // crow_harness: {
+  //   id: "crow_harness",
+  //   name: "Crow Harness",
+  //   description:
+  //     "A specially crafted harness for catching and taming crows. Scouts report sightings of a one-eyed crow in Blackreach Canyon.",
+  //   originalPrice: 599,
+  //   price: 399, // 3.99 €
+  //   rewards: {
+  //     tools: ["crow_harness"],
+  //   },
+  //   canPurchaseMultipleTimes: false,
+  //   category: "tool",
+  //   activationMessage:
+  //     "The Crow Harness has been added to your tools! You can now catch a crow in Blackreach Canyon.",
+  //   symbol: "⟑",
+  //   symbolColor: "text-slate-400",
+  // },
 };

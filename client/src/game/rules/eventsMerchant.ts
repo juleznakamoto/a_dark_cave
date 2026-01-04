@@ -976,18 +976,21 @@ export function generateMerchantChoices(state: GameState): MerchantTradeData[] {
 
   const availableToolTrades: MerchantTradeData[] = [];
   if (filteredToolTrades.length > 0) {
-    const trade = filteredToolTrades[Math.floor(Math.random() * filteredToolTrades.length)];
-    
+    const trade =
+      filteredToolTrades[Math.floor(Math.random() * filteredToolTrades.length)];
+
     // Tool trades always cost gold
     const goldCost = trade.costs[0].amounts[0];
-    const discountedCost = roundCost(Math.ceil(goldCost * (1 - discount)), "down");
-    
+    const discountedCost = roundCost(
+      Math.ceil(goldCost * (1 - discount)),
+      "down",
+    );
+
     availableToolTrades.push({
       id: trade.id,
       label: trade.label,
       cost: `${discountedCost} Gold`,
-      buyResource: trade.give,
-      buyItem: trade.giveItem,
+      buyResource: trade.giveItem || trade.give,
       buyAmount: 1,
       sellResource: "gold",
       sellAmount: discountedCost,
@@ -1020,12 +1023,12 @@ export const merchantEvents: Record<string, GameEvent> = {
     id: "merchant",
     condition: (state: GameState) => state.buildings.woodenHut >= 2,
 
-    timeProbability: (state: GameState) => 0,
-      // 10 +
-      // 0.5 * (state.buildings.tradePost || 0) +
-      // 1 * (state.buildings.grandBazaar || 0) +
-      // 1.5 * (state.buildings.merchantsGuild || 0) -
-      // 2.5 * state.BTP,
+    timeProbability: (state: GameState) =>
+      10 +
+      0.5 * (state.buildings.tradePost || 0) +
+      1 * (state.buildings.grandBazaar || 0) +
+      1.5 * (state.buildings.merchantsGuild || 0) -
+      2.5 * state.BTP,
     title: "Traveling Merchant",
     message:
       "A weathered merchant arrives, his cart overflowing with wares. His eyes glint with avarice as he murmurs 'I have rare items for sale'.",
