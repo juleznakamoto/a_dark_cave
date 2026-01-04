@@ -117,6 +117,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       data-testid={testId}
       button_id={props.button_id || actionId}
       {...props}
+      style={{ opacity: 1, ...props.style }}
     >
       {/* Button content */}
       <span className={`relative transition-opacity duration-200 ${isCoolingDown ? "opacity-60" : ""}`}>{children}</span>
@@ -135,8 +136,8 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
 
       {/* "2x" text indicator for compass glow */}
       {isCompassGlowing && (
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div className="bg-yellow-800 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center animate-fade-out-up">
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-[100]">
+          <div className="bg-yellow-800 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center animate-fade-out-up shadow-sm border border-yellow-600/50">
             2x
           </div>
         </div>
