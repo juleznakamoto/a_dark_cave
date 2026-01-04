@@ -1392,11 +1392,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
       choiceId,
       eventId,
       hasCurrentLogEntry: !!logEntry,
-      currentLogEntryChoices: logChoices.map((c: any) => ({
+      currentLogEntryChoices: Array.isArray(logChoices) ? logChoices.map((c: any) => ({
         id: c.id,
         hasEffect: typeof c.effect === 'function',
         effectType: typeof c.effect
-      })),
+      })) : [],
       merchantTradesInState: state.merchantTrades,
       timedEventTabData: state.timedEventTab,
     });

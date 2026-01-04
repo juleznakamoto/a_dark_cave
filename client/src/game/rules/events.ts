@@ -461,8 +461,10 @@ export class EventManager {
     }
 
     // For non-merchant events, use the standard choice execution
-    const choices = eventDefinition.choices || [];
-    const choice = choices.find((c) => c.id === choiceId);
+    const choices = typeof eventDefinition.choices === 'function'
+      ? eventDefinition.choices(state)
+      : eventDefinition.choices || [];
+    const choice = Array.isArray(choices) ? choices.find((c) => c.id === choiceId) : null;
 
     if (!choice) {
       // If not found and this is a fallback choice, use the fallbackChoice directly
