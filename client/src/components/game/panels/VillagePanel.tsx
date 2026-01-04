@@ -127,6 +127,7 @@ export default function VillagePanel() {
         { id: "buildWatchtower", label: "Watchtower" },
         { id: "buildPalisades", label: "Palisades" },
         { id: "buildFortifiedMoat", label: "Fortified Moat" },
+        { id: "buildChitinPlating", label: "Chitin Plating" },
         { id: "buildSupplyHut", label: "Supply Hut" },
         { id: "buildStorehouse", label: "Storehouse" },
         { id: "buildFortifiedStorehouse", label: "Fortified Storehouse" },
