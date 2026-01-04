@@ -161,7 +161,7 @@ export const crowEvents: Record<string, GameEvent> = {
               gold: state.resources.gold - 250,
             },
             relics: {
-              ...state.relics,
+              ...state.tools,
               hidden_library_map: true,
             },
             story: {

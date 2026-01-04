@@ -955,6 +955,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
       // UI state
       activeTab: "cave",
       devMode: import.meta.env.DEV,
+      timedEventTab: {
+        isActive: false,
+        event: null,
+        expiryTime: 0,
+      },
 
       // Recalculate derived state
       effects: calculateTotalEffects({ ...defaultGameState, ...preserved }),

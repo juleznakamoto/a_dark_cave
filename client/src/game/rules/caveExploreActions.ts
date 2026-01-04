@@ -341,7 +341,7 @@ export const caveExploreActions: Record<string, Action> = {
     id: "hiddenLibrary",
     label: "Hidden Library",
     show_when: {
-      "relics.hidden_library_map": true,
+      "tools.hidden_library_map": true,
       "story.seen.hiddenLibraryExplored": false,
     },
     cost: {

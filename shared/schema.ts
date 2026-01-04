@@ -115,6 +115,7 @@ export const gameStateSchema = z.object({
       reinforced_rope: z.boolean().default(false),
       giant_trap: z.boolean().default(false),
       occultist_map: z.boolean().default(false),
+      hidden_library_map: z.boolean().default(false),
       mastermason_chisel: z.boolean().default(false),
       skeleton_key: z.boolean().default(false),
       crow_harness: z.boolean().default(false),
@@ -190,7 +191,6 @@ export const gameStateSchema = z.object({
       sealed_chest: z.boolean().default(false),
       stonebinders_codex: z.boolean().default(false),
       chitin_plates: z.boolean().default(false),
-      hidden_library_map: z.boolean().default(false),
     })
     .default({}),
   fellowship: z
