@@ -1085,7 +1085,7 @@ export function handleBuildChitinPlating(
   constructionResult.logEntries!.push({
     id: `chitin-plating-built-${Date.now()}`,
     message:
-      "The fortifications are reinforced with chitin plating. The village's defense is significantly increased.",
+      "The fortifications are now reinforced with chitin plating. The village's defense is significantly increased.",
     timestamp: Date.now(),
     type: "system",
   });
