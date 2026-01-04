@@ -14,11 +14,11 @@ import {
   handleExploreCitadel,
   handleLowChamber,
   handleoccultistChamber,
-  handleHiddenLibrary,
   handleBlastPortal,
   handleEncounterBeyondPortal,
   handleExploreUndergroundLake,
   handleLureLakeCreature,
+  handleHiddenLibrary,
 } from "@/game/rules/caveExploreActions";
 
 import {
@@ -149,7 +149,6 @@ import {
   handlecollapsedTower,
   handleForestCave,
   handleBlackreachCanyon,
-  handleHiddenLibrary,
   handleSteelDelivery,
 } from "@/game/rules/forestScoutActions";
 

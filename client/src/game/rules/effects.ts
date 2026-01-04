@@ -1458,7 +1458,7 @@ export const fellowshipEffects: Record<string, EffectDefinition> = {
     id: "elder_wizard",
     name: "Elder Wizard",
     description:
-      "Old wizard who mastered arcane fire. Unlocks combat skill Bloodflame Sphere.",
+      "Old wizard in his final days who long ago mastered the arts of arcane fire. Unlocks combat skill Bloodflame Sphere.",
     bonuses: {
       generalBonuses: {},
     },
@@ -1476,7 +1476,7 @@ export const fellowshipEffects: Record<string, EffectDefinition> = {
     id: "one_eyed_crow",
     name: "One-eyed Crow",
     description:
-      "A mystical crow with a single piercing eye. Grants the Crow's Eye skill that provides a chance to double resource gains from gathering actions. Can carry messages to distant lands.",
+      "Mystical crow with a single piercing eye, tamed using the crow harness. Unlocks Crow's Eye skill and sending messages.",
     bonuses: {
       generalBonuses: {},
     },

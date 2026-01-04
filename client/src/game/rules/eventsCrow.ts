@@ -29,7 +29,7 @@ export const crowEvents: Record<string, GameEvent> = {
       return state.fellowship.one_eyed_crow && allCrowsSent;
     },
     timeProbability: (state: GameState) => {
-      return state.story.seen?.villageElderFirstTime ? 0.02 : 0.01;
+      return state.story.seen?.villageElderFirstTime ? 20 : 10;
     },
     title: "Establishing Trade",
     message: (state: GameState) => {
@@ -120,7 +120,7 @@ export const crowEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.story.seen?.crowSentToMonastery === true &&
       !state.story.seen?.monasteryResponse,
-    timeProbability: 0.015,
+    timeProbability: 15,
     title: "Message from the Mountain Monastery",
     message:
       "The one-eyed crow returns from the Mountain Monastery with a sealed scroll. The monks offer to sell you a map to a hidden library deep within the cave. They ask for 250 Gold.",
@@ -160,7 +160,7 @@ export const crowEvents: Record<string, GameEvent> = {
               ...state.resources,
               gold: state.resources.gold - 250,
             },
-            relics: {
+            tools: {
               ...state.tools,
               hidden_library_map: true,
             },
@@ -252,7 +252,7 @@ export const crowEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.story.seen?.crowSentToShore === true &&
       !state.story.seen?.shoreFishermenResponse,
-    timeProbability: 0.015,
+    timeProbability: 15,
     title: "Message from the Shore Fishermen",
     message:
       "The one-eyed crow returns from the Shore Fishermen with dried fish as a gift. The fishermen offer to teach you the secrets of building powerful fish traps for 250 Gold.",

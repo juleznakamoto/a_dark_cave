@@ -32,7 +32,6 @@ export default function ForestPanel() {
         { id: "hillGrave", label: "Hill Grave" },
         { id: "sunkenTemple", label: "Sunken Temple" },
         { id: "blackreachCanyon", label: "Blackreach Canyon" },
-        { id: "hiddenLibrary", label: "Hidden Library" },
         { id: "steelDelivery", label: "Steel Delivery" },
       ],
     },

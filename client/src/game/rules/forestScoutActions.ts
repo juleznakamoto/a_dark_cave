@@ -204,20 +204,6 @@ export const forestScoutActions: Record<string, Action> = {
     cooldown: 60,
   },
 
-  hiddenLibrary: {
-    id: "hiddenLibrary",
-    label: "Hidden Library",
-    show_when: {
-      "story.seen.hiddenLibraryUnlocked": true,
-      "!story.seen.hiddenLibraryExplored": true,
-    },
-    cost: {
-      "resources.food": 2500,
-    },
-    effects: {},
-    cooldown: 60,
-  },
-
   steelDelivery: {
     id: "steelDelivery",
     label: "Steel Delivery",
@@ -777,49 +763,6 @@ export function handleBlackreachCanyon(
     id: `blackreach-canyon-success-${Date.now()}`,
     message:
       "You venture deep into Blackreach Canyon. There, perched on a stone pillar, sits a magnificent one-eyed crow. Using the harness, your carefully approach and bond with the creature. The One-eyed Crow has joined your fellowship.",
-    timestamp: Date.now(),
-    type: "system",
-    visualEffect: {
-      type: "glow",
-      duration: 3,
-    },
-  });
-
-  return result;
-}
-
-export function handleHiddenLibrary(
-  state: GameState,
-  result: ActionResult,
-): ActionResult {
-  const effectUpdates = applyActionEffects("hiddenLibrary", state);
-  Object.assign(result.stateUpdates, effectUpdates);
-
-  // Deduct food cost (overwrites effectUpdates so must be done manually)
-  result.stateUpdates.resources = {
-    ...state.resources,
-    food: (state.resources.food || 0) - 2500,
-  };
-
-  // Grant the Stonebinder's Codex relic
-  result.stateUpdates.relics = {
-    ...state.relics,
-    stonebinders_codex: true,
-  };
-
-  // Mark as explored
-  result.stateUpdates.story = {
-    ...state.story,
-    seen: {
-      ...state.story.seen,
-      hiddenLibraryExplored: true,
-    },
-  };
-
-  result.logEntries!.push({
-    id: `hidden-library-success-${Date.now()}`,
-    message:
-      "Following the monastery's ancient map, your expedition discovers a hidden chamber deep within the cave. Inside lies a forgotten library, its shelves lined with crumbling tomes. Among them, you find the Stonebinder's Codex - an ancient text that reveals secrets of efficient construction. Buildings now cost 5% less to construct.",
     timestamp: Date.now(),
     type: "system",
     visualEffect: {

@@ -345,38 +345,17 @@ export const caveExploreActions: Record<string, Action> = {
       "story.seen.hiddenLibraryExplored": false,
     },
     cost: {
-      "resources.food": 1000,
+      "resources.food": 2500,
     },
     effects: (state: GameState) => {
-      const goldBonus = state.BTP === 1 ? 150 : 0;
+      const goldBonus = state.BTP === 1 ? 100 : 0;
       return {
-        "resources.gold": 150 + goldBonus,
-        "resources.obsidian": 75,
-        "resources.adamant": 50,
-        "resources.moonstone": 25,
+        "resources.gold": 100 + goldBonus,
+        "relics.stonebinders_codex": true,
         "story.seen.hiddenLibraryExplored": true,
       };
     },
     cooldown: 1,
-  },
-  
-  handleHiddenLibrary: (state: GameState, result: ActionResult): ActionResult => {
-    const effectUpdates = applyActionEffects("hiddenLibrary", state);
-
-    result.logEntries!.push({
-      id: `hidden-library-explored-${Date.now()}`,
-      message:
-        "The map lead you to a dusty chamber filled with ancient scrolls and books. You salvage what you can.",
-      timestamp: Date.now(),
-      type: "system",
-      visualEffect: {
-        type: "glow",
-        duration: 3,
-      },
-    });
-
-    Object.assign(result.stateUpdates, effectUpdates);
-    return result;
   },
 
   exploreUndergroundLake: {
@@ -871,6 +850,28 @@ export function handleLureLakeCreature(
     id: `lake-creature-lured-${Date.now()}`,
     message:
       "You set a massive trap at the edge of the underground lake, baited with piles of meat. Hours pass before the black waters erupt, and a titanic, tentacled horror rises from the depths and crawls into the trap.",
+    timestamp: Date.now(),
+    type: "system",
+    visualEffect: {
+      type: "glow",
+      duration: 3,
+    },
+  });
+
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+export function handleHiddenLibrary(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("hiddenLibrary", state);
+
+  result.logEntries!.push({
+    id: `hidden-library-explored-${Date.now()}`,
+    message:
+      "The monastery's map leads you deep into the cave to the hidden library where you find a codex.",
     timestamp: Date.now(),
     type: "system",
     visualEffect: {
