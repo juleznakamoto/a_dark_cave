@@ -35,12 +35,16 @@ export const crowEvents: Record<string, GameEvent> = {
       const remaining = state.tradeEstablishState?.remainingOptions || [];
       const choices = [];
 
-      if (remaining.includes("mountain_monastery") && !state.story.seen?.crowSentToMonastery) {
+      if (
+        remaining.includes("mountain_monastery") &&
+        !state.story.seen?.crowSentToMonastery
+      ) {
         choices.push({
           id: "mountainMonastery",
           label: "Mountain Monastery",
           effect: (state: GameState) => {
-            const currentRemaining = state.tradeEstablishState?.remainingOptions || [];
+            const currentRemaining =
+              state.tradeEstablishState?.remainingOptions || [];
             const newRemaining = currentRemaining.filter(
               (o) => o !== "mountain_monastery",
             );
@@ -64,13 +68,19 @@ export const crowEvents: Record<string, GameEvent> = {
         });
       }
 
-      if (remaining.includes("swamp_tribe") && !state.story.seen?.crowSentToSwamp) {
+      if (
+        remaining.includes("swamp_tribe") &&
+        !state.story.seen?.crowSentToSwamp
+      ) {
         choices.push({
           id: "swampTribe",
           label: "Swamp Tribe",
           effect: (state: GameState) => {
-            const currentRemaining = state.tradeEstablishState?.remainingOptions || [];
-            const newRemaining = currentRemaining.filter((o) => o !== "swamp_tribe");
+            const currentRemaining =
+              state.tradeEstablishState?.remainingOptions || [];
+            const newRemaining = currentRemaining.filter(
+              (o) => o !== "swamp_tribe",
+            );
             return {
               tradeEstablishState: {
                 ...state.tradeEstablishState,
@@ -91,13 +101,19 @@ export const crowEvents: Record<string, GameEvent> = {
         });
       }
 
-      if (remaining.includes("shore_fishermen") && !state.story.seen?.crowSentToShore) {
+      if (
+        remaining.includes("shore_fishermen") &&
+        !state.story.seen?.crowSentToShore
+      ) {
         choices.push({
           id: "shoreFishermen",
           label: "Shore Fishermen",
           effect: (state: GameState) => {
-            const currentRemaining = state.tradeEstablishState?.remainingOptions || [];
-            const newRemaining = currentRemaining.filter((o) => o !== "shore_fishermen");
+            const currentRemaining =
+              state.tradeEstablishState?.remainingOptions || [];
+            const newRemaining = currentRemaining.filter(
+              (o) => o !== "shore_fishermen",
+            );
             return {
               tradeEstablishState: {
                 ...state.tradeEstablishState,
@@ -219,8 +235,10 @@ export const crowEvents: Record<string, GameEvent> = {
 
   swampTribeResponse: {
     id: "swampTribeResponse",
-    condition: (state: GameState) => state.story.seen?.crowSentToSwamp === true,
-    timeProbability: 15,
+    condition: (state: GameState) =>true,
+      // state.story.seen?.crowSentToSwamp === true &&
+      // !state.story.seen?.swampTribeResponse,
+    timeProbability: 0.015,
     title: "Message from the Swamp Tribe",
     message:
       "The one-eyed crow returns from the Swamp Tribe with a crumbling letter. The tribe offers powerful Chitin Plates in exchange for 1000 Steel delivered to their village.",
@@ -236,7 +254,7 @@ export const crowEvents: Record<string, GameEvent> = {
               ...state.story,
               seen: {
                 ...state.story.seen,
-                crowSentToSwamp: false,
+                swampTribeResponse: true,
                 steelDeliveryUnlocked: true,
               },
             },
@@ -254,7 +272,7 @@ export const crowEvents: Record<string, GameEvent> = {
               ...state.story,
               seen: {
                 ...state.story.seen,
-                crowSentToSwamp: false,
+                swampTribeResponse: true,
               },
             },
             _logMessage:

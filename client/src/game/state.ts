@@ -1378,11 +1378,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // Use passed currentLogEntry or fall back to eventDialog.currentEvent
     const logEntry = currentLogEntry || get().eventDialog.currentEvent;
 
+    const logChoices = typeof logEntry?.choices === 'function'
+      ? logEntry.choices(state)
+      : logEntry?.choices || [];
+
     console.log('[STATE] applyEventChoice called:', {
       choiceId,
       eventId,
       hasCurrentLogEntry: !!logEntry,
-      currentLogEntryChoices: logEntry?.choices?.map(c => ({
+      currentLogEntryChoices: logChoices.map((c: any) => ({
         id: c.id,
         hasEffect: typeof c.effect === 'function',
         effectType: typeof c.effect
