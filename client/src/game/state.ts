@@ -1327,13 +1327,19 @@ export const useGameStore = create<GameStore>((set, get) => ({
           // Skip events marked to not appear in log
           if (entry.skipEventLog) {
             // Only show as dialog, don't add to log
-            if (entry.choices && entry.choices.length > 0) {
+            const logChoices = typeof entry.choices === 'function'
+              ? entry.choices(state)
+              : entry.choices || [];
+            if (logChoices && logChoices.length > 0) {
               get().setEventDialog(true, entry);
             }
             return;
           }
 
-          if (entry.choices && entry.choices.length > 0) {
+          const logChoices = typeof entry.choices === 'function'
+            ? entry.choices(state)
+            : entry.choices || [];
+          if (logChoices && logChoices.length > 0) {
             const currentDialog = get().eventDialog;
             const isMerchantEvent = entry.id.includes("merchant");
             const hasActiveMerchantDialog =
