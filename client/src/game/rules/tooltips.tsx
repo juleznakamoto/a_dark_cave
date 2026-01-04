@@ -556,8 +556,11 @@ export const eventChoiceCostTooltip = {
 
     // Add cost information
     resources.forEach(({ resource, amount }, index) => {
+      const currentAmount = gameState ? (gameState.resources[resource as keyof typeof gameState.resources] || 0) : 0;
+      const satisfied = gameState ? (currentAmount >= amount) : true;
+      
       costLines.push(
-        <div key={`cost-${index}`}>
+        <div key={`cost-${index}`} className={satisfied ? "" : "text-muted-foreground"}>
           -{formatNumber(amount)} {capitalizeWords(resource)}
         </div>
       );
