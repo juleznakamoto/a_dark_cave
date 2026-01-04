@@ -18,7 +18,7 @@ export const crowEvents: Record<string, GameEvent> = {
       );
     },
     timeProbability: (state: GameState) => {
-      return state.story.seen?.villageElderFirstTime ? 20 : 10;
+      return state.story.seen?.villageElderFirstTime ? 0.020 : 10;
     },
     title: "Establishing Trade",
     message: (state: GameState) => {
@@ -31,100 +31,94 @@ export const crowEvents: Record<string, GameEvent> = {
     priority: 4,
     repeatable: true,
     skipEventLog: true,
-    choices: [
-      {
-        id: "mountainMonastery",
-        label: "Mountain Monastery",
-        effect: (state: GameState) => {
-          const remaining = state.tradeEstablishState?.remainingOptions || [];
-          if (!remaining.includes("mountain_monastery")) {
+    choices: (state: GameState) => {
+      const remaining = state.tradeEstablishState?.remainingOptions || [];
+      const choices = [];
+
+      if (remaining.includes("mountain_monastery")) {
+        choices.push({
+          id: "mountainMonastery",
+          label: "Mountain Monastery",
+          effect: (state: GameState) => {
+            const currentRemaining = state.tradeEstablishState?.remainingOptions || [];
+            const newRemaining = currentRemaining.filter(
+              (o) => o !== "mountain_monastery",
+            );
             return {
-              _logMessage:
-                "You have already sent a message to the Mountain Monastery.",
-            };
-          }
-          const newRemaining = remaining.filter(
-            (o) => o !== "mountain_monastery",
-          );
-          return {
-            tradeEstablishState: {
-              ...state.tradeEstablishState,
-              remainingOptions: newRemaining,
-            },
-            story: {
-              ...state.story,
-              seen: {
-                ...state.story.seen,
-                villageElderFirstTime: true,
-                crowSentToMonastery: true,
+              tradeEstablishState: {
+                ...state.tradeEstablishState,
+                remainingOptions: newRemaining,
               },
-            },
-            _logMessage:
-              "You send the one-eyed crow with a message to the Mountain Monastery. You wait for it to return.",
-          };
-        },
-      },
-      {
-        id: "swampTribe",
-        label: "Swamp Tribe",
-        effect: (state: GameState) => {
-          const remaining = state.tradeEstablishState?.remainingOptions || [];
-          if (!remaining.includes("swamp_tribe")) {
+              story: {
+                ...state.story,
+                seen: {
+                  ...state.story.seen,
+                  villageElderFirstTime: true,
+                  crowSentToMonastery: true,
+                },
+              },
+              _logMessage:
+                "You send the one-eyed crow with a message to the Mountain Monastery. You wait for it to return.",
+            };
+          },
+        });
+      }
+
+      if (remaining.includes("swamp_tribe")) {
+        choices.push({
+          id: "swampTribe",
+          label: "Swamp Tribe",
+          effect: (state: GameState) => {
+            const currentRemaining = state.tradeEstablishState?.remainingOptions || [];
+            const newRemaining = currentRemaining.filter((o) => o !== "swamp_tribe");
             return {
-              _logMessage:
-                "You have already sent a message to the Swamp Tribe.",
-            };
-          }
-          const newRemaining = remaining.filter((o) => o !== "swamp_tribe");
-          return {
-            tradeEstablishState: {
-              ...state.tradeEstablishState,
-              remainingOptions: newRemaining,
-            },
-            story: {
-              ...state.story,
-              seen: {
-                ...state.story.seen,
-                villageElderFirstTime: true,
-                crowSentToSwamp: true,
+              tradeEstablishState: {
+                ...state.tradeEstablishState,
+                remainingOptions: newRemaining,
               },
-            },
-            _logMessage:
-              "You send the one-eyed crow with a message to the Swamp Tribe. You wait for it to return.",
-          };
-        },
-      },
-      {
-        id: "shoreFishermen",
-        label: "Shore Fishermen",
-        effect: (state: GameState) => {
-          const remaining = state.tradeEstablishState?.remainingOptions || [];
-          if (!remaining.includes("shore_fishermen")) {
+              story: {
+                ...state.story,
+                seen: {
+                  ...state.story.seen,
+                  villageElderFirstTime: true,
+                  crowSentToSwamp: true,
+                },
+              },
+              _logMessage:
+                "You send the one-eyed crow with a message to the Swamp Tribe. You wait for it to return.",
+            };
+          },
+        });
+      }
+
+      if (remaining.includes("shore_fishermen")) {
+        choices.push({
+          id: "shoreFishermen",
+          label: "Shore Fishermen",
+          effect: (state: GameState) => {
+            const currentRemaining = state.tradeEstablishState?.remainingOptions || [];
+            const newRemaining = currentRemaining.filter((o) => o !== "shore_fishermen");
             return {
-              _logMessage:
-                "You have already sent a message to the Shore Fishermen.",
-            };
-          }
-          const newRemaining = remaining.filter((o) => o !== "shore_fishermen");
-          return {
-            tradeEstablishState: {
-              ...state.tradeEstablishState,
-              remainingOptions: newRemaining,
-            },
-            story: {
-              ...state.story,
-              seen: {
-                ...state.story.seen,
-                villageElderFirstTime: true,
-                crowSentToShore: true,
+              tradeEstablishState: {
+                ...state.tradeEstablishState,
+                remainingOptions: newRemaining,
               },
-            },
-            _logMessage:
-              "You send the one-eyed crow with a message to the Shore Fishermen. You wait for it to return.",
-          };
-        },
-      },
-      {
+              story: {
+                ...state.story,
+                seen: {
+                  ...state.story.seen,
+                  villageElderFirstTime: true,
+                  crowSentToShore: true,
+                },
+              },
+              _logMessage:
+                "You send the one-eyed crow with a message to the Shore Fishermen. You wait for it to return.",
+            };
+          },
+        });
+      }
+
+      choices.push({
         id: "notNow",
         label: "Not Now",
         effect: (state: GameState) => {
@@ -140,8 +134,10 @@ export const crowEvents: Record<string, GameEvent> = {
               "You tell the elder that you are not ready to send the crow yet. He nods and says he will return later.",
           };
         },
-      },
-    ],
+      });
+
+      return choices;
+    },
   },
 
   monasteryResponse: {
