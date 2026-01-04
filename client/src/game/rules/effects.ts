@@ -369,8 +369,16 @@ export const toolEffects: Record<string, EffectDefinition> = {
   occultist_map: {
     id: "occultist_map",
     name: "Occultist Map",
-    description:
-      "Time-worn map revealing the chamber of an accultist in the cave",
+    description: "Time-worn map revealing the chamber of an occultist in the cave",
+    bonuses: {
+      actionBonuses: {},
+    },
+  },
+
+  hidden_library_map: {
+    id: "hidden_library_map",
+    name: "Hidden Library Map",
+    description: "Ancient map revealing the location of a hidden library deep in the cave",
     bonuses: {
       actionBonuses: {},
     },
@@ -1282,7 +1290,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   fishers_hand: {
     id: "fishers_hand",
     name: "Fisher's Hand",
-    description: "Ancient fishing techniques taught by shore fishermen. Your gatherers produce +5 food each.",
+    description: "Ancient techniques of the shore fishermen to build fish traps. Gatherers produce +5 food each.",
     bonuses: {
       generalBonuses: {},
     },
