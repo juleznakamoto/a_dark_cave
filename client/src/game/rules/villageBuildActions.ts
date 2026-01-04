@@ -850,6 +850,34 @@ export const villageBuildActions: Record<string, Action> = {
     cooldown: 5,
   },
 
+  buildChitinPlating: {
+    id: "buildChitinPlating",
+    label: "Chitin Plating",
+    description: "Reinforce fortifications with impenetrable chitin plates",
+    tooltipEffects: ["+10 Defense"],
+    building: true,
+    show_when: {
+      1: {
+        "relics.chitin_plates": true,
+        "buildings.watchtower": 1,
+        "buildings.palisades": 1,
+        "buildings.chitinPlating": 0,
+      },
+    },
+    cost: {
+      1: {
+        "resources.steel": 500,
+        "relics.chitin_plates": true,
+      },
+    },
+    effects: {
+      1: {
+        "buildings.chitinPlating": 1,
+      },
+    },
+    cooldown: 60,
+  },
+
   buildShrine: {
     id: "buildShrine",
     label: "Shrine",
