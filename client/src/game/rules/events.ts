@@ -375,7 +375,6 @@ export class EventManager {
         });
 
         if (trade && trade.buyResource && trade.sellResource) {
-          const currentBuyAmount = state.resources[trade.buyResource as keyof typeof state.resources] || 0;
           const currentSellAmount = state.resources[trade.sellResource as keyof typeof state.resources] || 0;
 
           logger.log('[EVENT MANAGER] Executing merchant trade:', {
@@ -384,10 +383,6 @@ export class EventManager {
             buyAmount: trade.buyAmount,
             sellResource: trade.sellResource,
             sellAmount: trade.sellAmount,
-            beforeTrade: {
-              [trade.buyResource]: currentBuyAmount,
-              [trade.sellResource]: currentSellAmount,
-            },
           });
 
           // Check if player can afford
@@ -400,42 +395,46 @@ export class EventManager {
             return {};
           }
 
-          const newBuyAmount = currentBuyAmount + trade.buyAmount;
-          const newSellAmount = currentSellAmount - trade.sellAmount;
-
-          const stateChanges = {
+          const stateChanges: any = {
             resources: {
               ...state.resources,
-              [trade.buyResource]: newBuyAmount,
-              [trade.sellResource]: newSellAmount,
+              [trade.sellResource]: currentSellAmount - trade.sellAmount,
             },
             log: currentLogEntry
               ? state.log.filter((entry) => entry.id !== currentLogEntry.id)
               : state.log,
             merchantTrades: {
               choices: merchantTrades,
-              purchasedIds: [...(merchantTradesState?.purchasedIds || []), choiceId], // Add to purchased AFTER validation
+              purchasedIds: [...(merchantTradesState?.purchasedIds || []), choiceId],
             },
           };
 
-          logger.log('[EVENT MANAGER] Trade state changes being returned:', {
-            choiceId,
-            resourceChanges: {
-              [trade.buyResource]: {
-                before: currentBuyAmount,
-                after: newBuyAmount,
-                change: `+${trade.buyAmount}`,
-              },
-              [trade.sellResource]: {
-                before: currentSellAmount,
-                after: newSellAmount,
-                change: `-${trade.sellAmount}`,
-              },
-            },
-            fullStateChanges: stateChanges,
-          });
+          // Handle special buy types (books, tools, schematics) or regular resources
+          if (trade.buyResource === "book") {
+            stateChanges.books = {
+              ...(state.books || {}),
+              [trade.buyItem]: true,
+            };
+          } else if (trade.buyResource === "tool") {
+            stateChanges.tools = {
+              ...(state.tools || {}),
+              [trade.buyItem]: true,
+            };
+          } else if (trade.buyResource === "schematic") {
+            stateChanges.schematics = {
+              ...(state.schematics || {}),
+              [trade.buyItem]: true,
+            };
+          } else if (trade.buyResource === "weapon") {
+             stateChanges.weapons = {
+              ...(state.weapons || {}),
+              [trade.buyItem]: true,
+            };
+          } else {
+            // Regular resource
+            stateChanges.resources[trade.buyResource] = (state.resources[trade.buyResource as keyof typeof state.resources] || 0) + trade.buyAmount;
+          }
 
-          // Execute the trade - no _logMessage to avoid showing dialog
           return stateChanges;
         }
       }

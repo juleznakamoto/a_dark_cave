@@ -986,7 +986,8 @@ export function generateMerchantChoices(state: GameState): MerchantTradeData[] {
       id: trade.id,
       label: trade.label,
       cost: `${discountedCost} Gold`,
-      buyResource: trade.giveItem || trade.give,
+      buyResource: trade.give,
+      buyItem: trade.giveItem,
       buyAmount: 1,
       sellResource: "gold",
       sellAmount: discountedCost,
@@ -1019,12 +1020,12 @@ export const merchantEvents: Record<string, GameEvent> = {
     id: "merchant",
     condition: (state: GameState) => state.buildings.woodenHut >= 2,
 
-    timeProbability: (state: GameState) =>
-      10 +
-      0.5 * (state.buildings.tradePost || 0) +
-      1 * (state.buildings.grandBazaar || 0) +
-      1.5 * (state.buildings.merchantsGuild || 0) -
-      2.5 * state.BTP,
+    timeProbability: (state: GameState) => 0,
+      // 10 +
+      // 0.5 * (state.buildings.tradePost || 0) +
+      // 1 * (state.buildings.grandBazaar || 0) +
+      // 1.5 * (state.buildings.merchantsGuild || 0) -
+      // 2.5 * state.BTP,
     title: "Traveling Merchant",
     message:
       "A weathered merchant arrives, his cart overflowing with wares. His eyes glint with avarice as he murmurs 'I have rare items for sale'.",
