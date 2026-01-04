@@ -18,7 +18,7 @@ export const crowEvents: Record<string, GameEvent> = {
       );
     },
     timeProbability: (state: GameState) => {
-      return state.story.seen?.villageElderFirstTime ? 0.020 : 10;
+      return state.story.seen?.villageElderFirstTime ? 0.020 : 0.010;
     },
     title: "Establishing Trade",
     message: (state: GameState) => {
@@ -217,7 +217,7 @@ export const crowEvents: Record<string, GameEvent> = {
 
   swampTribeResponse: {
     id: "swampTribeResponse",
-    condition: (state: GameState) =>
+    condition: (state: GameState) => 
       state.story.seen?.crowSentToSwamp === true &&
       !state.story.seen?.swampTribeResponse,
     timeProbability: 15,
@@ -238,6 +238,7 @@ export const crowEvents: Record<string, GameEvent> = {
               seen: {
                 ...state.story.seen,
                 swampTribeResponse: true,
+                crowSentToSwamp: false,
                 steelDeliveryUnlocked: true,
               },
             },
@@ -255,6 +256,7 @@ export const crowEvents: Record<string, GameEvent> = {
               ...state.story,
               seen: {
                 ...state.story.seen,
+                crowSentToSwamp: false,
                 swampTribeResponse: true,
               },
             },
