@@ -895,6 +895,7 @@ export interface MerchantTradeData {
   cost: string;
   buyResource: string;
   buyAmount: number;
+  buyItem?: string; // For special items (tools, books, schematics, weapons) - the specific item ID
   sellResource: string;
   sellAmount: number;
   executed: boolean;
@@ -990,8 +991,9 @@ export function generateMerchantChoices(state: GameState): MerchantTradeData[] {
       id: trade.id,
       label: trade.label,
       cost: `${discountedCost} Gold`,
-      buyResource: trade.giveItem || trade.give,
+      buyResource: trade.give, // Category: "tool", "book", "schematic", or "weapon"
       buyAmount: 1,
+      buyItem: trade.giveItem, // Specific item ID: "skull_lantern", "giant_trap", etc.
       sellResource: "gold",
       sellAmount: discountedCost,
       executed: false,
