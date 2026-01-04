@@ -697,7 +697,8 @@ const toolTrades = [
     give: "schematic",
     giveItem: "stormglass_halberd_schematic",
     condition: (state: GameState) =>
-      state.buildings.stoneHut >= 6 && !state.schematics.stormglass_halberd_schematic,
+      state.buildings.stoneHut >= 6 &&
+      !state.schematics.stormglass_halberd_schematic,
     costs: [{ resource: "gold", amounts: [1000] }],
     message:
       "You purchase the stormglass halberd schematic. The merchant reveals the faded plans: 'With this design, you can forge a halberd of tremendous power.'",
@@ -719,7 +720,8 @@ const toolTrades = [
     give: "schematic",
     giveItem: "nightshade_bow_schematic",
     condition: (state: GameState) =>
-      state.buildings.stoneHut >= 9 && !state.schematics.nightshade_bow_schematic,
+      state.buildings.stoneHut >= 9 &&
+      !state.schematics.nightshade_bow_schematic,
     costs: [{ resource: "gold", amounts: [1500] }],
     message:
       "You purchase the nightshade bow schematic. The merchant grins darkly: 'This bow's design is cruel. Its arrows will poison your enemies.'",
@@ -730,7 +732,9 @@ const toolTrades = [
     give: "tool",
     giveItem: "skull_lantern",
     condition: (state: GameState) =>
-      state.BTP === 1 && state.buildings.stoneHut >= 1 && !state.tools.skull_lantern,
+      state.BTP === 1 &&
+      state.buildings.stoneHut >= 1 &&
+      !state.tools.skull_lantern,
     costs: [{ resource: "gold", amounts: [1500] }],
     message:
       "You purchase the skull lantern. Forged from cursed bone, its eerie light will guide you through the deepest depths.",
@@ -772,7 +776,9 @@ function selectTrades(
       buyAmount = trade.giveAmount || 0;
       sellResource = "";
       sellAmount = 0;
-      validOptions = (trade.costs || []).filter((c: any) => c.resource !== trade.give);
+      validOptions = (trade.costs || []).filter(
+        (c: any) => c.resource !== trade.give,
+      );
     } else {
       // Sell trade: take is what user pays (sells), rewards are what user receives (buys)
       sellResource = trade.take || "";
@@ -1033,12 +1039,12 @@ export const merchantEvents: Record<string, GameEvent> = {
     id: "merchant",
     condition: (state: GameState) => state.buildings.woodenHut >= 2,
 
-    timeProbability: (state: GameState) =>0,
-      // 10 +
-      // 0.5 * (state.buildings.tradePost || 0) +
-      // 1 * (state.buildings.grandBazaar || 0) +
-      // 1.5 * (state.buildings.merchantsGuild || 0) -
-      // 2.5 * state.BTP,
+    timeProbability: (state: GameState) =>
+      10 +
+      0.5 * (state.buildings.tradePost || 0) +
+      1 * (state.buildings.grandBazaar || 0) +
+      1.5 * (state.buildings.merchantsGuild || 0) -
+      2.5 * state.BTP,
     title: "Traveling Merchant",
     message:
       "A weathered merchant arrives, his cart overflowing with wares. His eyes glint with avarice as he murmurs 'I have rare items for sale'.",
