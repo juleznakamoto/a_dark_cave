@@ -1530,7 +1530,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "offerFood",
-        label: "Offer food",
+        label: "Offer 2500 Food",
         cost: "2500 food",
         effect: (state: GameState) => {
           if (state.resources.food < 2500) {

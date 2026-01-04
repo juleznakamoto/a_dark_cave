@@ -1302,7 +1302,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   chitin_plates: {
     id: "chitin_plates",
     name: "Chitin Plates",
-    description: "Powerful chitin armor plates from a giant swamp creature. Can be used to construct Chitin Plating fortifications.",
+    description: "Powerful chitin plates from giant swamp creatures. Can be used to add Chitin Plating to fortifications.",
     bonuses: {
       generalBonuses: {},
     },

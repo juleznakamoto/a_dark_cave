@@ -226,6 +226,7 @@ export const forestScoutActions: Record<string, Action> = {
     },
     cost: {
       "resources.steel": 1000,
+      "resources.food": 2500,
     },
     effects: {},
     cooldown: 60,
@@ -872,7 +873,7 @@ export function handleSteelDelivery(
   result.logEntries!.push({
     id: `steel-delivery-success-${Date.now()}`,
     message:
-      "Your caravan delivers the steel to the Swamp Tribe as promised. In return, the tribe presents you with magnificent Chitin Plates harvested from a giant swamp creature. These can be used to construct powerful fortifications.",
+      "Your caravan delivers the steel to the Swamp Tribe as promised. In return, the tribe presents you with Chitin Plates harvested from swamp creatures. These can be used to construct powerful fortifications.",
     timestamp: Date.now(),
     type: "system",
     visualEffect: {
