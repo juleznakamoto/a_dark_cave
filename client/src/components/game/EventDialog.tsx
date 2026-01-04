@@ -272,24 +272,18 @@ export default function EventDialog({
                 let canAfford = true;
                 if (costText) {
                   const resourceKeys = Object.keys(gameState.resources) as Array<keyof typeof gameState.resources>;
-                  
-                  // Handle "X Resource" format (e.g. "500 Wood")
                   for (const resourceKey of resourceKeys) {
-                    const pattern = new RegExp(`(\\d+)\\s*${resourceKey}`, 'i');
-                    const match = costText.match(pattern);
-                    if (match) {
-                      const cost = parseInt(match[1]);
-                      if (gameState.resources[resourceKey] < cost) {
-                        canAfford = false;
-                        isDisabled = true;
-                        break;
+                    if (costText.includes(resourceKey)) {
+                      const match = costText.match(new RegExp(`(\\d+)\\s*${resourceKey}`));
+                      if (match) {
+                        const cost = parseInt(match[1]);
+                        if (gameState.resources[resourceKey] < cost) {
+                          canAfford = false;
+                          isDisabled = true;
+                          break;
+                        }
                       }
                     }
-                  }
-
-                  // Handle "Free" or other non-numeric costs
-                  if (costText.toLowerCase() === 'free') {
-                    canAfford = true;
                   }
                 }
 

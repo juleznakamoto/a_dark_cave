@@ -134,6 +134,24 @@ export const crowEvents: Record<string, GameEvent> = {
         });
       }
 
+      choices.push({
+        id: "notNow",
+        label: "Not Now",
+        effect: (state: GameState) => {
+          return {
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                villageElderFirstTime: true,
+              },
+            },
+            _logMessage:
+              "You tell the elder that you are not ready to send the crow yet. He nods and says he will return later.",
+          };
+        },
+      });
+
       return choices;
     },
   },
