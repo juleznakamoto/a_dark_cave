@@ -120,7 +120,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       style={{ opacity: 1, ...props.style }}
     >
       {/* Button content */}
-      <span className={`relative transition-opacity duration-200 ${isCoolingDown ? "opacity-60" : ""}`}>{children}</span>
+      <span className={`relative transition-opacity duration-200 ${isCoolingDown || disabled ? "opacity-60" : ""}`}>{children}</span>
 
       {/* Cooldown progress overlay */}
       {isCoolingDown && (
