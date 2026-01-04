@@ -431,11 +431,12 @@ export class EventManager {
               [trade.buyItem]: true,
             };
           } else if (trade.buyResource && trade.buyAmount !== undefined && !["book", "tool", "schematic", "weapon"].includes(trade.buyResource)) {
-            // Regular resource
-            if (!stateChanges.resources) {
-              stateChanges.resources = { ...state.resources };
+            // Regular resource - ensure we don't pollute resources with item IDs
+            const isItemId = ["book_of_trials", "book_of_war", "reinforced_rope", "occultist_map", "giant_trap", "arbalest_schematic", "compound_bow", "stormglass_halberd_schematic", "natharit_pickaxe", "nightshade_bow_schematic", "skull_lantern"].includes(trade.buyResource);
+            
+            if (!isItemId) {
+              stateChanges.resources[trade.buyResource] = (state.resources[trade.buyResource as keyof typeof state.resources] || 0) + trade.buyAmount;
             }
-            stateChanges.resources[trade.buyResource] = (state.resources[trade.buyResource as keyof typeof state.resources] || 0) + trade.buyAmount;
           }
 
           return stateChanges;
