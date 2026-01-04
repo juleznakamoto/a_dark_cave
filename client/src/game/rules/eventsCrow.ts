@@ -235,10 +235,11 @@ export const crowEvents: Record<string, GameEvent> = {
 
   swampTribeResponse: {
     id: "swampTribeResponse",
-    condition: (state: GameState) =>true,
-      // state.story.seen?.crowSentToSwamp === true &&
-      // !state.story.seen?.swampTribeResponse,
-    timeProbability: 0.015,
+    condition: (state: GameState) =>
+      state.story.seen?.crowSentToSwamp === true &&
+      !state.story.seen?.swampTribeResponse,
+    timeProbability: 15,
+    repeatable: true,
     title: "Message from the Swamp Tribe",
     message:
       "The one-eyed crow returns from the Swamp Tribe with a crumbling letter. The tribe offers powerful Chitin Plates in exchange for 1000 Steel delivered to their village.",

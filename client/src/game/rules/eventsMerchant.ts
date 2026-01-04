@@ -969,9 +969,35 @@ export function generateMerchantChoices(state: GameState): MerchantTradeData[] {
     false,
   );
 
+  // Filter tool trades
+  const filteredToolTrades = toolTrades.filter((trade) => {
+    return trade.condition(state);
+  });
+
+  const availableToolTrades: MerchantTradeData[] = [];
+  if (filteredToolTrades.length > 0) {
+    const trade = filteredToolTrades[Math.floor(Math.random() * filteredToolTrades.length)];
+    
+    // Tool trades always cost gold
+    const goldCost = trade.costs[0].amounts[0];
+    const discountedCost = roundCost(Math.ceil(goldCost * (1 - discount)), "down");
+    
+    availableToolTrades.push({
+      id: trade.id,
+      label: trade.label,
+      cost: `${discountedCost} Gold`,
+      buyResource: trade.giveItem || trade.give,
+      buyAmount: 1,
+      sellResource: "gold",
+      sellAmount: discountedCost,
+      executed: false,
+    });
+  }
+
   const finalChoices: MerchantTradeData[] = [
     ...availableBuyTrades,
     ...availableSellTrades,
+    ...availableToolTrades,
   ];
 
   logger.log("[MERCHANT TRADES] Final choices generated:", {
