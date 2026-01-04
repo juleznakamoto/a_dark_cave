@@ -1615,7 +1615,7 @@ export default function EstatePanel() {
                                 .doubleChance -
                                 CROWS_EYE_UPGRADES[crowsEyeSkills.level]
                                   .doubleChance}
-                              % double resource chance
+                              % double gain chance
                             </div>
                             <div className="border-t border-border my-1" />
                             <div
@@ -1647,7 +1647,7 @@ export default function EstatePanel() {
                 />
                 <div className="flex justify-between text-xs text-muted-foreground">
                   <span>
-                    {CROWS_EYE_UPGRADES[crowsEyeSkills.level].doubleChance}% chance to double gathering resources
+                    {CROWS_EYE_UPGRADES[crowsEyeSkills.level].doubleChance}% chance to double gains from actions
                   </span>
                 </div>
               </div>
