@@ -1059,6 +1059,40 @@ export function handleBuildDarkEstate(
   return estateResult;
 }
 
+export function handleBuildChitinPlating(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const constructionResult = handleBuildingConstruction(
+    state,
+    result,
+    "buildChitinPlating",
+    "chitinPlating",
+  );
+
+  // Take away the chitin plates relic
+  if (!constructionResult.stateUpdates) {
+    constructionResult.stateUpdates = {};
+  }
+
+  constructionResult.stateUpdates.relics = {
+    ...state.relics,
+    ...(constructionResult.stateUpdates.relics || {}),
+    chitin_plates: false,
+  };
+
+  // Add completion message
+  constructionResult.logEntries!.push({
+    id: `chitin-plating-built-${Date.now()}`,
+    message:
+      "The fortifications are reinforced with chitin plating. The village's defense is significantly increased.",
+    timestamp: Date.now(),
+    type: "system",
+  });
+
+  return constructionResult;
+}
+
 export function handleBuildPillarOfClarity(
   state: GameState,
   result: ActionResult,
