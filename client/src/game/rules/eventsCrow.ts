@@ -35,7 +35,7 @@ export const crowEvents: Record<string, GameEvent> = {
       const remaining = state.tradeEstablishState?.remainingOptions || [];
       const choices = [];
 
-      if (remaining.includes("mountain_monastery")) {
+      if (remaining.includes("mountain_monastery") && !state.story.seen?.crowSentToMonastery) {
         choices.push({
           id: "mountainMonastery",
           label: "Mountain Monastery",
@@ -64,7 +64,7 @@ export const crowEvents: Record<string, GameEvent> = {
         });
       }
 
-      if (remaining.includes("swamp_tribe")) {
+      if (remaining.includes("swamp_tribe") && !state.story.seen?.crowSentToSwamp) {
         choices.push({
           id: "swampTribe",
           label: "Swamp Tribe",
@@ -91,7 +91,7 @@ export const crowEvents: Record<string, GameEvent> = {
         });
       }
 
-      if (remaining.includes("shore_fishermen")) {
+      if (remaining.includes("shore_fishermen") && !state.story.seen?.crowSentToShore) {
         choices.push({
           id: "shoreFishermen",
           label: "Shore Fishermen",
