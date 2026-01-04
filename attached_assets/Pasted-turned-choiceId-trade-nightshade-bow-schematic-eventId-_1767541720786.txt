@@ -1,0 +1,148 @@
+turned: 
+{choiceId: 'trade_nightshade_bow_schematic', eventId: 'merchant', changes: {…}, hasResources: true, resourceKeys: Array(32)}
+changes
+: 
+log
+: 
+(14) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+merchantTrades
+: 
+{choices: Array(7), purchasedIds: Array(1)}
+resources
+: 
+adamant
+: 
+20971
+ashfire_bomb
+: 
+0
+ashfire_dust
+: 
+0
+black_powder
+: 
+1830
+blacksteel
+: 
+0
+bone_totem
+: 
+0
+bones
+: 
+14500
+book_of_trials
+: 
+4
+coal
+: 
+94110
+compound_bow
+: 
+1
+ember_bomb
+: 
+190
+food
+: 
+82907
+fur
+: 
+18060
+giant_trap
+: 
+5
+gold
+: 
+13000
+iron
+: 
+98470
+leather
+: 
+63679
+leather_totem
+: 
+0
+moonstone
+: 
+3700
+natharit_pickaxe
+: 
+4
+nightshade_bow_schematic
+: 
+4
+obsidian
+: 
+49014
+occultist_map
+: 
+2
+reinforced_rope
+: 
+1
+silver
+: 
+66910
+steel
+: 
+88200
+stone
+: 
+89435
+stormglass_halberd_schematic
+: 
+1
+sulfur
+: 
+42800
+torch
+: 
+11523
+void_bomb
+: 
+0
+wood
+: 
+55962
+[[Prototype]]
+: 
+Object
+[[Prototype]]
+: 
+Object
+choiceId
+: 
+"trade_nightshade_bow_schematic"
+eventId
+: 
+"merchant"
+hasResources
+: 
+true
+resourceKeys
+: 
+(32) ['fur', 'coal', 'food', 'gold', 'iron', 'wood', 'bones', 'steel', 'stone', 'torch', 'silver', 'sulfur', 'adamant', 'leather', 'obsidian', 'moonstone', 'void_bomb', 'blacksteel', 'bone_totem', 'ember_bomb', 'giant_trap', 'ashfire_bomb', 'ashfire_dust', 'black_powder', 'compound_bow', 'leather_totem', 'occultist_map', 'book_of_trials', 'reinforced_rope', 'natharit_pickaxe', 'nightshade_bow_schematic', 'stormglass_halberd_schematic']
+[[Prototype]]
+: 
+Object
+logger.ts:33 v760Z [SAVE CLOUD] 🔍 Playtime overwrite check: 
+{allowPlaytimeOverwrite: false, isNewGame: false, willAllowOverwrite: false, currentPlayTime: 16697326}
+logger.ts:33 v760Z [SAVE CLOUD] Edge Function success: 
+{success: true}
+logger.ts:33 v760Z [SAVE] ✅ Updated lastCloudState after successful cloud save
+logger.ts:33 v760Z [SAVE CLOUD] 📊 Resource snapshot includes stats: 
+{hasStats: true, statsKeys: Array(4), snapshotKeys: Array(37)}
+logger.ts:33 v760Z [SAVE CLOUD] 🔍 Playtime overwrite check: 
+{allowPlaytimeOverwrite: false, isNewGame: false, willAllowOverwrite: false, currentPlayTime: 16712460}
+logger.ts:33 v760Z [SAVE CLOUD] Edge Function success: 
+{success: true}
+logger.ts:33 v760Z [SAVE] ✅ Updated lastCloudState after successful cloud save
+﻿
+
+Press ctrl i to turn on code suggestions. Press ctrl x to disable code suggestions.
+ctrl
+i
+ to turn on code suggestions. Don't show again
+

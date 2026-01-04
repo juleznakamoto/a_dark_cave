@@ -430,7 +430,7 @@ export class EventManager {
               ...(state.weapons || {}),
               [trade.buyItem]: true,
             };
-          } else if (trade.buyResource && trade.buyAmount !== undefined) {
+          } else if (trade.buyResource && trade.buyAmount !== undefined && !["book", "tool", "schematic", "weapon"].includes(trade.buyResource)) {
             // Regular resource
             if (!stateChanges.resources) {
               stateChanges.resources = { ...state.resources };
