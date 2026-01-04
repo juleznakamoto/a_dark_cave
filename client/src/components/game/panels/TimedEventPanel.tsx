@@ -401,7 +401,7 @@ export default function TimedEventPanel() {
                       </div>
                     </TooltipTrigger>
                     <TooltipContent side="top">
-                      <div className="text-xs whitespace-nowrap">
+                      <div className={`text-xs whitespace-nowrap ${isDisabled ? "text-muted-foreground" : ""}`}>
                         {costText && (
                           <div>
                             {/* Always use merchantTooltip (cost-only) for timed events - never show current amounts */}
