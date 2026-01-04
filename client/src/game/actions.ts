@@ -14,6 +14,7 @@ import {
   handleExploreCitadel,
   handleLowChamber,
   handleoccultistChamber,
+  handleHiddenLibrary,
   handleBlastPortal,
   handleEncounterBeyondPortal,
   handleExploreUndergroundLake,

@@ -160,12 +160,15 @@ export const crowEvents: Record<string, GameEvent> = {
               ...state.resources,
               gold: state.resources.gold - 250,
             },
+            relics: {
+              ...state.relics,
+              hidden_library_map: true,
+            },
             story: {
               ...state.story,
               seen: {
                 ...state.story.seen,
                 monasteryResponse: true,
-                hiddenLibraryUnlocked: true,
               },
             },
             _logMessage:
