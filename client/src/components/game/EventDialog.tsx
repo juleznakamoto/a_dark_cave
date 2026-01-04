@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import { useGameStore } from "@/game/state";
 import { LogEntry } from "@/game/rules/events";
 import { getTotalKnowledge } from "@/game/rules/effectsCalculation";
-import { getResourceLimit } from "@/game/resourceLimits";
 import { calculateKnowledgeTimeBonus, isKnowledgeBonusMaxed } from "@/game/rules/effectsStats";
 import { eventChoiceCostTooltip } from "@/game/rules/tooltips";
 import {
@@ -283,27 +282,6 @@ export default function EventDialog({
                           isDisabled = true;
                           break;
                         }
-                      }
-                    }
-                  }
-                }
-
-                // Check if resource being bought is already at max storage
-                const isMerchantEvent = event?.id.includes("merchant");
-                if (isMerchantEvent && choice.id.startsWith("buy_") && !isDisabled) {
-                  const buyMatch = choice.id.match(/buy_([a-z_]+)_\d+/);
-                  if (buyMatch) {
-                    const resourceName = buyMatch[1];
-                    const resourceKey = resourceName as keyof typeof gameState.resources;
-                    
-                    // Only check if it's a known resource in the store
-                    if (resourceKey in gameState.resources) {
-                      const currentAmount = gameState.resources[resourceKey] || 0;
-                      // We need to know the amount being bought, but for simplicity we just check if it's at/over limit
-                      // as the merchant trade amounts are usually significant
-                      const limit = getResourceLimit(gameState);
-                      if (currentAmount >= limit) {
-                        isDisabled = true;
                       }
                     }
                   }
