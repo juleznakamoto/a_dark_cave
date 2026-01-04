@@ -13,7 +13,7 @@ export const crowEvents: Record<string, GameEvent> = {
       return state.fellowship.one_eyed_crow && hasRemainingOptions && noCrowCurrentlySent;
     },
     timeProbability: (state: GameState) => {
-      return state.story.seen?.villageElderFirstTime ? 20 : 10;
+      return state.story.seen?.villageElderFirstTime ? 0.020 : 0.010;
     },
     title: "Establishing Trade",
     message: (state: GameState) => {
@@ -135,28 +135,9 @@ export const crowEvents: Record<string, GameEvent> = {
     timeProbability: 15,
     title: "Message from the Mountain Monastery",
     message:
-      "The one-eyed crow returns from the Mountain Monastery with a sealed scroll. The monks offer to sell you a map to a hidden library deep within your cave, containing ancient knowledge. They ask for 250 gold.",
+      "The one-eyed crow returns from the Mountain Monastery with a sealed scroll. The monks offer to sell you a map to a hidden library deep within your cave, containing ancient knowledge. They ask for 250 Gold.",
     priority: 5,
-    showAsTimedTab: true,
-    timedTabDuration: 5 * 60 * 1000,
     skipEventLog: true,
-    fallbackChoice: {
-      id: "decline",
-      label: "Time Expired",
-      effect: (state: GameState) => {
-        return {
-          story: {
-            ...state.story,
-            seen: {
-              ...state.story.seen,
-              crowSentToMonastery: false,
-            },
-          },
-          _logMessage:
-            "You took too long to decide. The monks' offer expires.",
-        };
-      },
-    },
     choices: [
       {
         id: "accept",
@@ -213,28 +194,9 @@ export const crowEvents: Record<string, GameEvent> = {
     timeProbability: 15,
     title: "Message from the Swamp Tribe",
     message:
-      "The one-eyed crow returns from the Swamp Tribe with a strange token. The tribe offers powerful Chitin Plates in exchange for 1000 steel delivered to their village.",
+      "The one-eyed crow returns from the Swamp Tribe with a letter. The tribe offers powerful Chitin Plates in exchange for 1000 Steel delivered to their village.",
     priority: 5,
-    showAsTimedTab: true,
-    timedTabDuration: 5 * 60 * 1000,
     skipEventLog: true,
-    fallbackChoice: {
-      id: "decline",
-      label: "Time Expired",
-      effect: (state: GameState) => {
-        return {
-          story: {
-            ...state.story,
-            seen: {
-              ...state.story.seen,
-              crowSentToSwamp: false,
-            },
-          },
-          _logMessage:
-            "You took too long to decide. The tribe's offer expires.",
-        };
-      },
-    },
     choices: [
       {
         id: "accept",
@@ -281,28 +243,9 @@ export const crowEvents: Record<string, GameEvent> = {
     timeProbability: 15,
     title: "Message from the Shore Fishermen",
     message:
-      "The one-eyed crow returns from the Shore Fishermen with dried fish as a gift. The fishermen offer to teach you the secrets of building powerful fish traps for 250 gold.",
+      "The one-eyed crow returns from the Shore Fishermen with dried fish as a gift. The fishermen offer to teach you the secrets of building powerful fish traps for 250 Gold.",
     priority: 5,
-    showAsTimedTab: true,
-    timedTabDuration: 5 * 60 * 1000,
     skipEventLog: true,
-    fallbackChoice: {
-      id: "decline",
-      label: "Time Expired",
-      effect: (state: GameState) => {
-        return {
-          story: {
-            ...state.story,
-            seen: {
-              ...state.story.seen,
-              crowSentToShore: false,
-            },
-          },
-          _logMessage:
-            "You took too long to decide. The fishermen's offer expires.",
-        };
-      },
-    },
     choices: [
       {
         id: "accept",
