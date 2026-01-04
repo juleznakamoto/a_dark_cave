@@ -90,6 +90,13 @@ export function applyActionEffects(
       totalActionBonusChance += compassEffect.bonuses.generalBonuses?.actionBonusChance || 0;
     }
 
+    // Check Crow's Eye skill for additional actionBonusChance
+    if (state.crowsEyeSkills?.level > 0) {
+      const skillChances = [0, 0.005, 0.015, 0.03, 0.06, 0.1, 0.15];
+      const level = Math.min(state.crowsEyeSkills.level, skillChances.length - 1);
+      totalActionBonusChance += skillChances[level];
+    }
+
     // Roll for bonus chance
     if (totalActionBonusChance > 0 && Math.random() < totalActionBonusChance) {
       actionBonusChanceTriggered = true;
