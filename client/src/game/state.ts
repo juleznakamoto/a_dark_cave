@@ -1443,12 +1443,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
           ...mergedUpdates,
         };
 
-        // CRITICAL: Explicitly ensure books, tools, schematics are updated if present in updates
-        if (updatedChanges.books) newState.books = { ...prevState.books, ...updatedChanges.books };
-        if (updatedChanges.tools) newState.tools = { ...prevState.tools, ...updatedChanges.tools };
-        if (updatedChanges.schematics) newState.schematics = { ...prevState.schematics, ...updatedChanges.schematics };
-        if (updatedChanges.weapons) newState.weapons = { ...prevState.weapons, ...updatedChanges.weapons };
-
         return newState;
       });
 

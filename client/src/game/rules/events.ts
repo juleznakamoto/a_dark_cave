@@ -438,8 +438,6 @@ export class EventManager {
             stateChanges.resources[trade.buyResource] = (state.resources[trade.buyResource as keyof typeof state.resources] || 0) + trade.buyAmount;
           }
 
-          logger.log('[EVENT MANAGER] Merchant trade changes:', stateChanges);
-
           return stateChanges;
         }
       }
