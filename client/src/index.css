@@ -357,30 +357,34 @@ body {
 
 @keyframes compass-glow {
   0% {
-    box-shadow: 0 0 0px 2px rgba(192, 145, 27, 1.0);
+    box-shadow: 0 0 10px 2px rgba(192, 145, 27, 1.0);
+    border-color: rgba(192, 145, 27, 1.0);
   }
   
   100% {
-    box-shadow: 0 0 0px 0px rgb(192, 145, 27, 0.6);
+    box-shadow: 0 0 0px 0px rgba(192, 145, 27, 0);
+    border-color: transparent;
   }
 }
 
 .compass-glow {
-  animation: compass-glow 0.5s linear;
+  animation: compass-glow 1.5s linear;
 }
 
 @keyframes fade-out-up {
   0% {
     transform: translateY(2px);
+    opacity: 1;
   }
   
   100% {
-    transform: translateY(-2px);
+    transform: translateY(-20px);
+    opacity: 0;
   }
 }
 
 .animate-fade-out-up {
-  animation: fade-out-up 0.5s ease-out forwards;
+  animation: fade-out-up 1.5s ease-out forwards;
 }
 
 /* Notification dot pulsating animation */
