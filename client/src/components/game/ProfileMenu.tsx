@@ -318,7 +318,7 @@ export default function ProfileMenu() {
             align="end"
             side="bottom"
             sideOffset={8}
-            className="text-xs !max-h-none w-auto"
+            className="text-xs !max-h-none w-auto z-[70]"
           >
             {currentUser && (
               <>
