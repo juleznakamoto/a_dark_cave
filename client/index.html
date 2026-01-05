@@ -94,8 +94,9 @@
       rel="stylesheet"
     />
 
-    <!-- Playlight SDK CSS -->
-    <link rel="stylesheet" href="https://sdk.playlight.dev/playlight-sdk.css" />
+    <!-- Playlight SDK CSS - Loaded asynchronously to prevent render blocking -->
+    <link rel="preload" href="https://sdk.playlight.dev/playlight-sdk.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript><link rel="stylesheet" href="https://sdk.playlight.dev/playlight-sdk.css" /></noscript>
 
     <!-- Structured Data (JSON-LD) - WebApplication -->
     <script type="application/ld+json">
