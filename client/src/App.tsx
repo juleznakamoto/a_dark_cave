@@ -63,10 +63,22 @@ function App() {
       await new Promise((resolve) => setTimeout(resolve, 10000));
 
       try {
-        const module = await import(
-          /* webpackChunkName: "playlight-sdk" */
-          "https://sdk.playlight.dev/playlight-sdk.es.js"
-        );
+        const script = document.createElement("script");
+        script.src = "https://sdk.playlight.dev/playlight-sdk.es.js";
+        script.type = "module";
+        script.async = true;
+
+        const loadPromise = new Promise((resolve, reject) => {
+          script.onload = resolve;
+          script.onerror = reject;
+        });
+
+        document.body.appendChild(script);
+        await loadPromise;
+
+        // @ts-ignore - The SDK is loaded globally as a module but we need to access its export
+        // The previous dynamic import was also from the same URL
+        const module = await import("https://sdk.playlight.dev/playlight-sdk.es.js");
         const playlightSDK = module.default;
 
         // Initialize SDK immediately with exit intent disabled
