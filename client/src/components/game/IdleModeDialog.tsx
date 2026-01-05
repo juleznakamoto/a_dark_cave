@@ -15,7 +15,7 @@ import { logger } from "@/lib/logger";
 
 // Sleep upgrade configurations
 const SLEEP_LENGTH_UPGRADES = [
-  { level: 0, hours: 0.004 },
+  { level: 0, hours: 2 },
   { level: 1, hours: 4 },
   { level: 2, hours: 6 },
   { level: 3, hours: 10 },
