@@ -55,7 +55,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 ravenfeather_mantle: true,
               },
               _logMessage:
-                "As the vilalgers near, the figure vanishes. In its place lies a raven-feather mantle, shimmering with otherworldly power.",
+                "As the villagers near, the figure vanishes. In its place lies a raven-feather mantle, shimmering with otherworldly power.",
             };
           } else if (rand < 0.6) {
             return {
