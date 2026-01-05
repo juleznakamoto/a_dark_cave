@@ -36,11 +36,13 @@ export default function Game() {
           logger.log("[GAME PAGE] User authenticated, loading game");
         }
 
-        // Check if URL is /game or /boost to skip start screen
-        const isGamePath = window.location.pathname === '/game' || window.location.pathname === '/boost';
+        // Parse URL query parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        
+        // Check if URL is /boost path or ?game=true param to skip start screen
+        const isGamePath = window.location.pathname === '/boost' || urlParams.get('game') === 'true';
 
         // Check for openShop query parameter only (not /boost path)
-        const urlParams = new URLSearchParams(window.location.search);
         const openShop = urlParams.get('openShop') === 'true';
 
         // Load saved game or initialize with defaults

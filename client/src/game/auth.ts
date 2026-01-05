@@ -181,7 +181,7 @@ export async function signInWithGoogle() {
   const supabase = await getSupabaseClient();
   
   // Determine the correct redirect URL based on environment
-  const redirectTo = window.location.origin + '/game';
+  const redirectTo = window.location.origin + '/?game=true';
   
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',

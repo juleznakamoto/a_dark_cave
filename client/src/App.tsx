@@ -33,7 +33,6 @@ function Router() {
     >
       <Switch>
         <Route path="/" component={Game} />
-        <Route path="/game" component={Game} />
         <Route path="/boost" component={Game} />
         <Route path="/end-screen" component={EndScreenPage} />
         <Route path="/imprint" component={Imprint} />
