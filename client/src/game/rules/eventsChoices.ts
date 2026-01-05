@@ -673,6 +673,19 @@ export const choiceEvents: Record<string, GameEvent> = {
       "One day, a strong man wearing thick furs stands at the gates. He says he comes from the far north and is a skilled builder. For a little gold, he will teach you how to build big houses that can hold many villagers.",
     priority: 4,
     repeatable: true,
+    showAsTimedTab: true,
+    timedTabDuration: 3 * 60 * 1000,
+    skipEventLog: true,
+    fallbackChoice: {
+      id: "sendAway",
+      label: "Send away",
+      effect: (state: GameState) => {
+        return {
+          _logMessage:
+            "The builder waits for a while, but eventually shrugs and disappears into the wilderness, taking his knowledge with him.",
+        };
+      },
+    },
     choices: [
       {
         id: "acceptDeal",
@@ -773,6 +786,30 @@ export const choiceEvents: Record<string, GameEvent> = {
       "The viking builder returns to your village, carrying a magnificent war axe. 'I forged this Nordic War Axe in my homeland. It shall be yours... for a price.'",
     priority: 5,
     repeatable: true,
+    showAsTimedTab: true,
+    timedTabDuration: 3 * 60 * 1000,
+    skipEventLog: true,
+    fallbackChoice: {
+      id: "decline",
+      label: "Decline",
+      effect: (state: GameState) => {
+        const wasForced = state.story.seen.vikingBuilderEventForced;
+        const message = wasForced
+          ? "You ignore the offer. The viking eventually spits on the ground and leaves with his war axe, muttering about your lack of respect."
+          : "You ignore the offer. The viking eventually nods and leaves with his war axe.";
+
+        return {
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              nordicWarAxeEvent: true,
+            },
+          },
+          _logMessage: message,
+        };
+      },
+    },
     choices: [
       {
         id: "buyAxe",
@@ -1612,6 +1649,26 @@ export const choiceEvents: Record<string, GameEvent> = {
       "A hooded figure in stained robes arrives at your village. 'I am a firecrafter,' he says with an echoing voice. 'I can teach you to craft a bomb of extreme power, that tears reality itself. But knowledge has its price.'",
     priority: 4,
     repeatable: true,
+    showAsTimedTab: true,
+    timedTabDuration: 3 * 60 * 1000,
+    skipEventLog: true,
+    fallbackChoice: {
+      id: "sendAway",
+      label: "Send away",
+      effect: (state: GameState) => {
+        return {
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              wanderingFirecrafterEvent: true,
+            },
+          },
+          _logMessage:
+            "The firecrafter eventually sighs, 'Perhaps you are not ready for such power yet,' and disappears into the night.",
+        };
+      },
+    },
     choices: [
       {
         id: "payGold",
