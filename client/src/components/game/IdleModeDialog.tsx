@@ -466,10 +466,9 @@ export default function IdleModeDialog() {
 
   const handleEndIdleMode = () => {
     // Apply accumulated resources to the game state
+    const currentGameState = useGameStore.getState();
     Object.entries(accumulatedResources).forEach(([resource, amount]) => {
-      useGameStore
-        .getState()
-        .updateResource(
+      currentGameState.updateResource(
           resource as keyof typeof state.resources,
           Math.floor(amount),
         );
@@ -480,13 +479,14 @@ export default function IdleModeDialog() {
     const elapsed = now - startTime;
     const hoursSlept = Math.floor(elapsed / (59.99 * 60 * 1000)); // Full hours only
 
+    let focusToAdd = 0;
     if (hoursSlept > 0) {
-      const currentFocus = state.focusState?.points || 0;
+      const currentFocus = currentGameState.focusState?.points || 0;
       const MAX_FOCUS = 30;
-      let focusToAdd = hoursSlept;
+      focusToAdd = hoursSlept;
 
       // Double focus points if bell_blessing is active
-      if (state.blessings?.bell_blessing && focusToAdd > 0) {
+      if (currentGameState.blessings?.bell_blessing && focusToAdd > 0) {
         focusToAdd = focusToAdd * 2;
       }
 
@@ -500,19 +500,19 @@ export default function IdleModeDialog() {
         focusToAdd,
         newFocusPoints,
         cappedAt: newFocusPoints === MAX_FOCUS,
-        currentTotalFocusEarned: state.totalFocusEarned || 0,
+        currentTotalFocusEarned: currentGameState.totalFocusEarned || 0,
       });
 
       // Update focus points in focusState (capped at 30)
-      state.updateFocusState({
-        isActive: state.focusState?.isActive || false,
-        endTime: state.focusState?.endTime || 0,
+      currentGameState.updateFocusState({
+        isActive: currentGameState.focusState?.isActive || false,
+        endTime: currentGameState.focusState?.endTime || 0,
         points: newFocusPoints,
       });
 
       // Increment total focus earned for achievement tracking
       useGameStore.setState({
-        totalFocusEarned: (state.totalFocusEarned || 0) + hoursSlept,
+        totalFocusEarned: (currentGameState.totalFocusEarned || 0) + hoursSlept,
       });
     }
 
@@ -539,7 +539,7 @@ export default function IdleModeDialog() {
     }
 
     if (logMessages.length > 0) {
-      useGameStore.getState().addLogEntry({
+      currentGameState.addLogEntry({
         id: `idle-mode-end-${Date.now()}`,
         message: logMessages.join(" "),
         timestamp: Date.now(),
@@ -559,11 +559,11 @@ export default function IdleModeDialog() {
         startTime: 0, // Reset to 0 only when user closes dialog
         needsDisplay: false,
       },
+      idleModeDialog: { isOpen: false }
     });
 
     // Close dialog and reset local state
     setIsActive(false);
-    setIdleModeDialog(false);
     setAccumulatedResources({});
     setStartTime(0);
     setInitialResources({});
