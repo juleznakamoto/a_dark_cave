@@ -130,6 +130,11 @@ export default function SidePanel() {
         return false;
       }
 
+      // Filter out hidden_library_map after exploring hidden library
+      if (key === "hidden_library_map" && gameState.relics.stonebinders_codex) {
+        return false;
+      }
+
       return true;
     })
     .map(([key, value]) => ({

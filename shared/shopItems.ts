@@ -206,19 +206,19 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
 
   artifact_bundle: {
     id: "artifact_bundle",
-    name: "Ancient Artifacts Bundle",
-    description: "Unlock the mysteries of the past with the Skull Lantern, Tarnished Compass, and Crow Harness.",
-    originalPrice: 1797,
-    price: 899,
+    name: "Dark Artifacts Bundle",
+    description: "Uncover dark forgotten truths with the Skull Lantern, Tarnished Compass, and Crow Harness.",
+    originalPrice: 1499, // 14.99 €
+    price: 749, // 7.49 €
     rewards: {
       tools: ["skull_lantern", "crow_harness"],
       relics: ["tarnished_compass"],
     },
     canPurchaseMultipleTimes: false,
     category: "bundle",
-    activationMessage: "Ancient Artifacts Bundle has been added to your inventory! Multiple storylines have been unlocked.",
-    symbol: "❈",
-    symbolColor: "text-indigo-400",
+    activationMessage: "Dark Artifacts Bundle components have been added to your purchases!",
+    symbol: "🜋",
+    symbolColor: "text-green-600/90",
     bundleComponents: ["skull_lantern", "tarnished_compass", "crow_harness"],
   },
 
