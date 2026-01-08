@@ -1037,7 +1037,7 @@ export function generateMerchantChoices(state: GameState): MerchantTradeData[] {
 export const merchantEvents: Record<string, GameEvent> = {
   merchant: {
     id: "merchant",
-    condition: (state: GameState) => state.buildings.woodenHut >= 2,
+    condition: (state: GameState) => state.buildings.woodenHut >= 3,
 
     timeProbability: (state: GameState) =>
       10 +

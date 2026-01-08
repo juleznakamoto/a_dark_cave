@@ -226,7 +226,7 @@ export default function TimedEventPanel() {
       {/* Choices */}
       <div className="space-y-2 pt-1">
         {isMerchantEvent && (
-          <h3 className="text-xs font-semibold flex items-center justify-between">
+          <h3 className="text-xs font-semibold flex items-center">
             <span>Buy</span>
             {(() => {
               const knowledge = gameState.stats?.knowledge || 0;
@@ -240,7 +240,7 @@ export default function TimedEventPanel() {
                     >
                       <TooltipTrigger asChild>
                         <span
-                          className="text-blue-300/80 cursor-pointer hover:text-blue-300 transition-colors inline-block text-xl"
+                          className="text-blue-300/80 cursor-pointer hover:text-blue-300 transition-colors inline-block text-xl pl-2"
                           onClick={(e) => {
                             e.stopPropagation();
                             discountTooltip.handleTooltipClick(

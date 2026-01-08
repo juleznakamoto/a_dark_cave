@@ -144,7 +144,7 @@ export default function GameFooter() {
                     });
                   }
                 }}
-                className="px-1 py-1 text-xs hover relative"
+                className="px-1 py-1 text-xs hover relative text-neutral-300"
               >
                 Shop
                 {((shopNotificationVisible && !shopNotificationSeen) ||
@@ -168,7 +168,7 @@ export default function GameFooter() {
                   });
                 }
               }}
-              className="px-1 py-1 text-xs hover relative"
+              className="px-1 py-1 text-xs hover relative text-neutral-300"
             >
               Donate
               {story.seen.mysteriousNoteReceived &&
