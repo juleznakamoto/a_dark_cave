@@ -78,7 +78,7 @@ function createFeastEvent(config: FeastConfig): GameEvent {
 
     timeProbability: 20,
     title: "Village Feast",
-    message: `The villagers propose organizing a feast to celebrate and boost work morale.`,
+    message: `The villagers propose organizing a feast. A short comfort to ease their weariness and quiet their minds.`,
     priority: 3,
     repeatable: true,
     showAsTimedTab: true,
@@ -86,7 +86,7 @@ function createFeastEvent(config: FeastConfig): GameEvent {
     choices: [
       {
         id: "makeFeast",
-        label: `Hold feast`,
+        label: `Consume ${foodCost} Food`,
         cost: `${foodCost} food`,
         effect: (
           state: GameState,
@@ -117,19 +117,19 @@ function createFeastEvent(config: FeastConfig): GameEvent {
               ...(state.triggeredEvents || {}),
               [eventId]: true,
             },
-            _logMessage: `The village erupts in celebration! A magnificent feast is held, bringing joy and renewed vigor to all.`,
+            _logMessage: `The village gathers fo a feast! Weariness fades and spirits rise, if only briefly.`,
           };
         },
       },
       {
         id: "noFeast",
-        label: "Hold no feast",
+        label: "Refuse feast",
         effect: (
           state: GameState,
         ): Partial<GameState> & { _logMessage?: string } => {
           return {
             _logMessage:
-              "You decline the feast proposal. The villagers accept your decision, though some look disappointed.",
+              "You decline the feast proposal. The villagers accept your decision, though disappointed.",
           };
         },
       },
