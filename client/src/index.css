@@ -15,33 +15,6 @@ body {
   overflow: hidden;
 }
 
-
-/* Visible scrollbar utility */
-.scrollbar-visible::-webkit-scrollbar {
-  width: 8px;
-  display: block;
-}
-
-.scrollbar-visible::-webkit-scrollbar-track {
-  background: hsl(var(--muted));
-  border-radius: 4px;
-}
-
-.scrollbar-visible::-webkit-scrollbar-thumb {
-  background: hsl(var(--primary) / 0.5);
-  border-radius: 4px;
-  border: 2px solid hsl(var(--muted));
-}
-
-.scrollbar-visible::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--primary));
-}
-
-.scrollbar-visible {
-  scrollbar-width: thin;
-  scrollbar-color: hsl(var(--primary) / 0.5) hsl(var(--muted));
-}
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

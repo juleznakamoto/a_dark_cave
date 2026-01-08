@@ -1280,7 +1280,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                 Complete Purchase: {SHOP_ITEMS[selectedItem]?.name}
               </DialogTitle>
             </DialogHeader>
-            <div className="max-h-[calc(85vh-120px)] overflow-y-auto scrollbar-visible px-6 pb-6">
+            <div className="max-h-[calc(85vh-120px)] overflow-y-auto px-6 pb-6">
               <Elements stripe={getStripePromise()} options={{ clientSecret }}>
                 <CheckoutForm
                   itemId={selectedItem}
