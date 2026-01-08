@@ -60,6 +60,12 @@ setTimeout(() => {
 }, 15000);
 
 // Function to get an initialized Supabase client
+const getSupabaseClient = async () => {
+  // Assuming supabase client is already initialized and ready
+  // If there's a more complex initialization logic (e.g., async setup),
+  // you would handle it here to ensure the client is ready before use.
+  return supabase;
+};
 
 // EU countries with Euro as main currency
 const EU_EURO_COUNTRIES = [
@@ -1274,7 +1280,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                 Complete Purchase: {SHOP_ITEMS[selectedItem]?.name}
               </DialogTitle>
             </DialogHeader>
-            <ScrollArea className="max-h-[calc(80vh-120px)]">
+            <ScrollArea className="max-h-[calc(80vh-120px)] overflow-y-auto">
               <Elements stripe={getStripePromise()} options={{ clientSecret }}>
                 <CheckoutForm
                   itemId={selectedItem}

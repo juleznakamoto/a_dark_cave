@@ -447,13 +447,15 @@ export default function FullGamePurchaseDialog({
             </div>
           </div>
         ) : (
-          <Elements stripe={getStripePromise()} options={{ clientSecret }}>
-            <CheckoutForm
-              onSuccess={handlePurchaseSuccess}
-              currency={currency}
-              onCancel={() => setClientSecret(null)}
-            />
-          </Elements>
+          <div className="max-h-[70vh] overflow-y-auto pr-2 custom-scrollbar">
+            <Elements stripe={getStripePromise()} options={{ clientSecret }}>
+              <CheckoutForm
+                onSuccess={handlePurchaseSuccess}
+                currency={currency}
+                onCancel={() => setClientSecret(null)}
+              />
+            </Elements>
+          </div>
         )}
       </DialogContent>
     </Dialog>
