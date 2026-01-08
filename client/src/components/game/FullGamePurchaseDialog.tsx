@@ -375,7 +375,7 @@ export default function FullGamePurchaseDialog({
         onEscapeKeyDown={(e) => requiresPurchase && e.preventDefault()}
         onPointerDownOutside={(e) => requiresPurchase && e.preventDefault()}
       >
-        <DialogHeader>
+        <DialogHeader className="px-6 pt-6">
           <DialogTitle>
             {!clientSecret ? "The Journey Continues" : "Complete Your Purchase"}
           </DialogTitle>
@@ -386,77 +386,79 @@ export default function FullGamePurchaseDialog({
             </DialogDescription>
           )}
         </DialogHeader>
-        {!clientSecret ? (
-          <div className="space-y-4">
-            <div className="border rounded-lg p-4 bg-muted/50">
+        <div className="max-h-[85vh] overflow-y-auto custom-scrollbar">
+          <div className="px-6 pb-6">
+            {!clientSecret ? (
               <div className="space-y-4">
-                <div>
-                  <h3 className="font-semibold text-lg">{item.name}</h3>
-                  <p className="text-sm text-muted-foreground mt-1 mb-3">
-                    {item.description}
-                  </p>
-                  <div className="text-2xl font-bold">
-                    {item.originalPrice && (
-                      <span className="line-through text-muted-foreground mr-2 text-lg">
-                        {formatPrice(item.originalPrice)}
-                      </span>
-                    )}
-                    {formatPrice(item.price)}
+                <div className="border rounded-lg p-4 bg-muted/50">
+                  <div className="space-y-4">
+                    <div>
+                      <h3 className="font-semibold text-lg">{item.name}</h3>
+                      <p className="text-sm text-muted-foreground mt-1 mb-3">
+                        {item.description}
+                      </p>
+                      <div className="text-2xl font-bold">
+                        {item.originalPrice && (
+                          <span className="line-through text-muted-foreground mr-2 text-lg">
+                            {formatPrice(item.originalPrice)}
+                          </span>
+                        )}
+                        {formatPrice(item.price)}
+                      </div>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        One time purchase. No subscriptions. No microtransactions.
+                      </p>
+                    </div>
+                    <div className="text-sm text-muted-foreground border-t border-border pt-4">
+                      <ul className="space-y-1">
+                        <li>• 14+ hours of gameplay</li>
+                        <li>• 100+ structures</li>
+                        <li>
+                          • 250+ items, fellowship members, books, blessings...
+                        </li>
+                        <li>• 50+ achievements</li>
+                        <li>• Dark and challenging story based on your choices</li>
+                      </ul>
+                    </div>
                   </div>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    One time purchase. No subscriptions. No microtransactions.
+                </div>
+                {!currentUser && (
+                  <div className="bg-red-600/10 border border-red-600/50 rounded-lg p-3">
+                    <p className="text-sm text-red-200">
+                      Please sign in to purchase the Full Game.
+                    </p>
+                  </div>
+                )}
+
+                <div className="flex gap-3 justify-center pt-2">
+                  <Button
+                    onClick={handlePurchaseClick}
+                    disabled={!currentUser}
+                    className="w-full"
+                    button_id="full-game-purchase"
+                  >
+                    Continue the Journey
+                  </Button>
+                </div>
+
+                <div className="bg-gray-600/10 border border-gray-600/50 rounded-lg p-3">
+                  <p className="text-sm text-gray-400">
+                    Your progress is saved. You can return at any time and continue
+                    where you left off.
                   </p>
                 </div>
-                <div className="text-sm text-muted-foreground border-t border-border pt-4">
-                  <ul className="space-y-1">
-                    <li>• 14+ hours of gameplay</li>
-                    <li>• 100+ structures</li>
-                    <li>
-                      • 250+ items, fellowship members, books, blessings...
-                    </li>
-                    <li>• 50+ achievements</li>
-                    <li>• Dark and challenging story based on your choices</li>
-                  </ul>
-                </div>
               </div>
-            </div>
-            {!currentUser && (
-              <div className="bg-red-600/10 border border-red-600/50 rounded-lg p-3">
-                <p className="text-sm text-red-200">
-                  Please sign in to purchase the Full Game.
-                </p>
-              </div>
+            ) : (
+              <Elements stripe={getStripePromise()} options={{ clientSecret }}>
+                <CheckoutForm
+                  onSuccess={handlePurchaseSuccess}
+                  currency={currency}
+                  onCancel={() => setClientSecret(null)}
+                />
+              </Elements>
             )}
-
-            <div className="flex gap-3 justify-center pt-2">
-              <Button
-                onClick={handlePurchaseClick}
-                disabled={!currentUser}
-                className="w-full"
-                button_id="full-game-purchase"
-              >
-                Continue the Journey
-              </Button>
-            </div>
-
-            <div className="bg-gray-600/10 border border-gray-600/50 rounded-lg p-3">
-              <p className="text-sm text-gray-400">
-                Your progress is saved. You can return at any time and continue
-                where you left off.
-              </p>
-            </div>
           </div>
-        ) : (
-          <div className="max-h-[70vh] overflow-y-auto pr-2 custom-scrollbar">
-            <Elements stripe={getStripePromise()} options={{ clientSecret }}>
-              <CheckoutForm
-                onSuccess={handlePurchaseSuccess}
-                currency={currency}
-                onCancel={() => setClientSecret(null)}
-              />
-            </Elements>
-          </div>
-        )}
+        </div>
       </DialogContent>
     </Dialog>
   );

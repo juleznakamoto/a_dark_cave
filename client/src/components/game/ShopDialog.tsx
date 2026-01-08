@@ -1260,7 +1260,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                     </div>
                   </div>
                 )}
-                <ScrollBar orientation="vertical" />
+                <ScrollBar orientation="vertical overflow-auto" />
               </ScrollArea>
             </TabsContent>
           </Tabs>
@@ -1280,7 +1280,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                 Complete Purchase: {SHOP_ITEMS[selectedItem]?.name}
               </DialogTitle>
             </DialogHeader>
-            <ScrollArea className="max-h-[calc(80vh-120px)] overflow-y-auto">
+            <div className="max-h-[calc(85vh-120px)] overflow-y-auto custom-scrollbar px-6 pb-6">
               <Elements stripe={getStripePromise()} options={{ clientSecret }}>
                 <CheckoutForm
                   itemId={selectedItem}
@@ -1289,7 +1289,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                   onCancel={handleCancelPayment}
                 />
               </Elements>
-            </ScrollArea>
+            </div>
           </DialogContent>
         </Dialog>
       )}
