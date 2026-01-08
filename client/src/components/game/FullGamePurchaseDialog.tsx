@@ -386,7 +386,7 @@ export default function FullGamePurchaseDialog({
             </DialogDescription>
           )}
         </DialogHeader>
-        <div className="max-h-[85vh] overflow-y-auto custom-scrollbar">
+        <div className="max-h-[85vh] overflow-y-auto scrollbar-visible">
           <div className="px-6 pb-6">
             {!clientSecret ? (
               <div className="space-y-4">
