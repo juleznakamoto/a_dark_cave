@@ -613,6 +613,7 @@ export default function CombatDialog({
                 <div className="relative">
                   <Progress
                     value={healthPercentage}
+                    hideBorder
                     className="h-3 mt-2 [&>div]:bg-red-900" // Darker red for enemy health
                   />
                   {enemyDamageIndicator.visible && (
@@ -640,6 +641,7 @@ export default function CombatDialog({
                   <div className="relative">
                     <Progress
                       value={integrityPercentage}
+                      hideBorder
                       className="h-3 mt-2 [&>div]:bg-green-900" // Darker green for bastion integrity
                     />
                     {integrityDamageIndicator.visible && (

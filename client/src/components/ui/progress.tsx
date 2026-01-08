@@ -8,12 +8,13 @@ import { cn } from "@/lib/utils"
 
 interface ProgressProps extends React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root> {
   segments?: number;
+  hideBorder?: boolean;
 }
 
 const Progress = React.forwardRef<
   React.ElementRef<typeof ProgressPrimitive.Root>,
   ProgressProps
->(({ className, value, segments = 1, ...props }, ref) => {
+>(({ className, value, segments = 1, hideBorder = false, ...props }, ref) => {
   const [animationKey, setAnimationKey] = React.useState(0);
   const prevValueRef = React.useRef(value || 0);
 
@@ -29,7 +30,7 @@ const Progress = React.forwardRef<
       ref={ref}
       className={cn(
         "relative h-4 w-full overflow-hidden rounded-full bg-neutral-900 transition-all",
-        value === 100 && "border border-red-900",
+        !hideBorder && value === 100 && "border border-red-900",
         className
       )}
       {...props}
