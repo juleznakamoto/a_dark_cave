@@ -91,6 +91,30 @@ function App() {
         // Import game store
         const { useGameStore } = await import("./game/state");
 
+        // Reactively update exit intent based on game state
+        useGameStore.subscribe(
+          (state) => ({
+            isPaused: state.isPaused,
+            isIdleDialogOpen: state.idleModeDialog.isOpen,
+            isLeaderboardDialogOpen: state.leaderboardDialogOpen,
+          }),
+          ({ isPaused, isIdleDialogOpen, isLeaderboardDialogOpen }) => {
+            const isEndScreen = window.location.pathname === "/end-screen";
+            const shouldEnableExitIntent =
+              isPaused || isIdleDialogOpen || isLeaderboardDialogOpen || isEndScreen;
+
+            playlightSDK.setConfig({
+              exitIntent: {
+                enabled: shouldEnableExitIntent,
+                immediate: false,
+              },
+            });
+          },
+          {
+            fireImmediately: true,
+          },
+        );
+
         // Set up event listeners for game pause/unpause
         playlightSDK.onEvent("discoveryOpen", () => {
           const state = useGameStore.getState();
@@ -105,17 +129,6 @@ function App() {
             state.togglePause();
           }
         });
-
-        // Enable exit intent after 20 minutes using setConfig()
-        const TWENTY_MINUTES = 20 * 60 * 1000;
-        exitIntentTimeout = setTimeout(() => {
-          playlightSDK.setConfig({
-            exitIntent: {
-              enabled: true,
-              immediate: false,
-            },
-          });
-        }, TWENTY_MINUTES);
       } catch (error) {
         console.error("Error loading the Playlight SDK:", error);
       }
