@@ -333,7 +333,7 @@ export const feastTooltip: TooltipConfig = {
       return (
         <>
           <div className="font-bold">Great Village Feast</div>
-          <div>Production Bonus: 400%</div>
+          <div>Production Bonus: 300%</div>
           <div>{remainingMinutes} min remaining</div>
         </>
       );
@@ -345,7 +345,7 @@ export const feastTooltip: TooltipConfig = {
       return (
         <>
           <div className="font-bold">Village Feast</div>
-          <div>Production Bonus: 200%</div>
+          <div>Production Bonus: 100%</div>
           <div>{remainingMinutes} min remaining</div>
         </>
       );
@@ -388,7 +388,7 @@ export const miningBoostTooltip: TooltipConfig = {
       return (
         <>
           <div className="font-bold">Mining Boost</div>
-          <div>Mining Production: 200%</div>
+          <div>Mining Bonus: 100%</div>
           <div>{remainingMinutes} min remaining</div>
         </>
       );
