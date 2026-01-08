@@ -24,14 +24,19 @@ const stripePublishableKey = import.meta.env.PROD
   ? import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY_PROD
   : import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY_DEV;
 
-// Lazy load Stripe only when needed
+// Lazy load Stripe: Load when needed OR after 15 seconds
 let stripePromise: Promise<any> | null = null;
 const getStripePromise = () => {
-  if (!stripePromise) {
-    stripePromise = loadStripe(stripePublishableKey || "");
+  if (!stripePromise && stripePublishableKey) {
+    stripePromise = loadStripe(stripePublishableKey);
   }
   return stripePromise;
 };
+
+// Fallback: Load after 15 seconds
+setTimeout(() => {
+  getStripePromise();
+}, 15000);
 
 // EU countries with Euro as main currency
 const EU_EURO_COUNTRIES = [
@@ -235,6 +240,9 @@ export default function FullGamePurchaseDialog({
   useEffect(() => {
     const initializeDialog = async () => {
       if (!isOpen) return;
+
+      // Trigger Stripe loading when dialog is opened
+      getStripePromise();
 
       try {
         const user = await getCurrentUser();

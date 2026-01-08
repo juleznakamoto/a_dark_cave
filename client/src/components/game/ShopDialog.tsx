@@ -44,29 +44,22 @@ const stripePublishableKey = import.meta.env.PROD
   ? import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY_PROD
   : import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY_DEV;
 
-// Defer Stripe loading by 5 seconds to prioritize initial render
-const stripePromise = new Promise<any>((resolve) => {
-  setTimeout(async () => {
-    const stripe = await loadStripe(stripePublishableKey || "");
-    resolve(stripe);
-  }, 5000);
-});
+// Defer Stripe loading: Load when shop is opened OR after 15 seconds
+let stripePromise: Promise<any> | null = null;
+
+const getStripePromise = () => {
+  if (!stripePromise && stripePublishableKey) {
+    stripePromise = loadStripe(stripePublishableKey);
+  }
+  return stripePromise;
+};
+
+// Fallback: Load after 15 seconds even if shop hasn't been opened
+setTimeout(() => {
+  getStripePromise();
+}, 15000);
 
 // Function to get an initialized Supabase client
-const getSupabaseClient = async () => {
-  // Assuming supabase client is already initialized and ready
-  // If there's a more complex initialization logic (e.g., async setup),
-  // you would handle it here to ensure the client is ready before use.
-  return supabase;
-};
-
-// Lazy-load Stripe instance
-const getStripePromise = () => {
-  if (stripePublishableKey) {
-    return loadStripe(stripePublishableKey);
-  }
-  return Promise.resolve(null);
-};
 
 // EU countries with Euro as main currency
 const EU_EURO_COUNTRIES = [
@@ -287,6 +280,9 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
   useEffect(() => {
     const initializeShop = async () => {
       if (!isOpen) return;
+
+      // Trigger Stripe loading when shop is opened
+      getStripePromise();
 
       try {
         const user = await getCurrentUser();
