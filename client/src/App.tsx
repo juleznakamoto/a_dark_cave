@@ -93,15 +93,10 @@ function App() {
 
         // Reactively update exit intent based on game state
         useGameStore.subscribe(
-          (state) => ({
-            isPaused: state.isPaused,
-            isIdleDialogOpen: state.idleModeDialog.isOpen,
-            isLeaderboardDialogOpen: state.leaderboardDialogOpen,
-          }),
-          ({ isPaused, isIdleDialogOpen, isLeaderboardDialogOpen }) => {
+          (state) => {
             const isEndScreen = window.location.pathname === "/end-screen";
             const shouldEnableExitIntent =
-              isPaused || isIdleDialogOpen || isLeaderboardDialogOpen || isEndScreen;
+              state.isPaused || state.idleModeDialog.isOpen || state.leaderboardDialogOpen || isEndScreen;
 
             playlightSDK.setConfig({
               exitIntent: {
@@ -109,10 +104,7 @@ function App() {
                 immediate: false,
               },
             });
-          },
-          {
-            fireImmediately: true,
-          },
+          }
         );
 
         // Set up event listeners for game pause/unpause
