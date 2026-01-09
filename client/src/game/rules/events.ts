@@ -407,6 +407,10 @@ export class EventManager {
               choices: merchantTrades,
               purchasedIds: [...(merchantTradesState?.purchasedIds || []), choiceId],
             },
+            story: {
+              ...state.story,
+              merchantPurchases: (state.story?.merchantPurchases || 0) + 1,
+            },
           };
 
           // Handle special buy types (books, tools, schematics) or regular resources
