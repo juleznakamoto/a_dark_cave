@@ -170,14 +170,14 @@ export default function BuildingProgressChart() {
         relatedBuildings: ["shrine", "temple", "sanctum"],
         reward: 500,
       },
-      {
-        buildingType: "blackMonolith",
-        maxCount: 1,
-        color: SEGMENT_COLOR,
-        label: "Sacrifice",
-        relatedBuildings: ["pillarOfClarity", "boneTemple"],
-        reward: 250,
-      },
+      // {
+      //   buildingType: "blackMonolith",
+      //   maxCount: 1,
+      //   color: SEGMENT_COLOR,
+      //   label: "Sacrifice",
+      //   relatedBuildings: ["pillarOfClarity", "boneTemple"],
+      //   reward: 250,
+      // },
     ],
     // Fifth ring: Fortifications
     [

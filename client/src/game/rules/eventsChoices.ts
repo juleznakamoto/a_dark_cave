@@ -428,21 +428,16 @@ export const choiceEvents: Record<string, GameEvent> = {
               traps * 2 +
               state.CM * 2,
           );
-          const hutDestruction = state.CM * 1;
-
           const deathResult = killVillagers(state, villagerDeaths);
           const actualDeaths = deathResult.villagersKilled || 0;
 
           return {
             ...deathResult,
-            buildings: {
-              ...state.buildings,
-              woodenHut: Math.max(
-                0,
-                state.buildings.woodenHut - hutDestruction,
-              ),
+            relics: {
+              ...state.relics,
+              unnamed_book: true,
             },
-            _logMessage: `You refuse the stranger entry. He leaves screaming curses in his alien tongue, echoing through the night. Before dawn, a barbarian tribe attacks as if summoned by his cries, killing ${actualDeaths} villagers ${hutDestruction > 0 ? " and destroying one wooden hut " : ""}before vanishing into the wilds.`,
+            _logMessage: `You refuse the stranger entry. He leaves screaming curses in an alien tongue. Before dawn, a barbarian tribe attacks as if summoned by his cries, killing ${actualDeaths} villagers. In the morning you find a book on the ground, bound in human skin.`,
           };
         },
       },
