@@ -104,37 +104,48 @@ function CheckoutForm({ onSuccess, currency, onCancel }: CheckoutFormProps) {
     setIsProcessing(true);
     setErrorMessage("");
 
-    const { error, paymentIntent } = await stripe.confirmPayment({
-      elements,
-      redirect: "if_required",
-    });
-
-    if (error) {
-      setErrorMessage(error.message || "Payment failed");
-      setIsProcessing(false);
-    } else if (paymentIntent && paymentIntent.status === "succeeded") {
-      const user = await getCurrentUser();
-      if (!user) {
-        setErrorMessage("User not authenticated");
-        setIsProcessing(false);
-        return;
-      }
-
-      const response = await fetch("/api/payment/verify", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          paymentIntentId: paymentIntent.id,
-          userId: user.id,
-        }),
+    try {
+      const { error, paymentIntent } = await stripe.confirmPayment({
+        elements,
+        redirect: "if_required",
       });
 
-      const result = await response.json();
-      if (result.success) {
-        useGameStore.setState({ hasMadeNonFreePurchase: true });
-        onSuccess();
+      if (error) {
+        setErrorMessage(error.message || "Payment failed");
+        setIsProcessing(false);
+      } else if (paymentIntent && paymentIntent.status === "succeeded") {
+        const user = await getCurrentUser();
+        if (!user) {
+          setErrorMessage("User not authenticated");
+          setIsProcessing(false);
+          return;
+        }
+
+        const response = await fetch("/api/payment/verify", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            paymentIntentId: paymentIntent.id,
+            userId: user.id,
+          }),
+        });
+
+        const result = await response.json();
+        if (result.success) {
+          useGameStore.setState({ hasMadeNonFreePurchase: true });
+          onSuccess();
+        }
+        setIsProcessing(false);
       }
-      setIsProcessing(false);
+    } catch (e: any) {
+      logger.error("Payment submission error:", e);
+      // Don't set isProcessing to false if it's the "Element unmounted" error 
+      // during a legitimate redirect or success cleanup, 
+      // but here we catch actual exceptions.
+      if (e.message?.indexOf("mounted") === -1) {
+        setIsProcessing(false);
+        setErrorMessage(e.message || "An unexpected error occurred");
+      }
     }
   };
 

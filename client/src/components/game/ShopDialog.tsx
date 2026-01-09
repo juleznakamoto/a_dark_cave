@@ -141,44 +141,52 @@ function CheckoutForm({
     setIsProcessing(true);
     setErrorMessage("");
 
-    const { error, paymentIntent } = await stripe.confirmPayment({
-      elements,
-      redirect: "if_required",
-    });
-
-    if (error) {
-      setErrorMessage(error.message || "Payment failed");
-      setIsProcessing(false);
-    } else if (paymentIntent && paymentIntent.status === "succeeded") {
-      // Verify payment on backend - server creates all purchases
-      const user = await getCurrentUser();
-      if (!user) {
-        setErrorMessage("User not authenticated");
-        setIsProcessing(false);
-        return;
-      }
-
-      const response = await fetch("/api/payment/verify", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          paymentIntentId: paymentIntent.id,
-          userId: user.id,
-        }),
+    try {
+      const { error, paymentIntent } = await stripe.confirmPayment({
+        elements,
+        redirect: "if_required",
       });
 
-      const result = await response.json();
-      if (result.success) {
-        const item = SHOP_ITEMS[result.itemId];
-
-        // Set hasMadeNonFreePurchase flag if this is a paid item
-        if (item.price > 0) {
-          useGameStore.setState({ hasMadeNonFreePurchase: true });
+      if (error) {
+        setErrorMessage(error.message || "Payment failed");
+        setIsProcessing(false);
+      } else if (paymentIntent && paymentIntent.status === "succeeded") {
+        // Verify payment on backend - server creates all purchases
+        const user = await getCurrentUser();
+        if (!user) {
+          setErrorMessage("User not authenticated");
+          setIsProcessing(false);
+          return;
         }
 
-        onSuccess();
+        const response = await fetch("/api/payment/verify", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            paymentIntentId: paymentIntent.id,
+            userId: user.id,
+          }),
+        });
+
+        const result = await response.json();
+        if (result.success) {
+          const item = SHOP_ITEMS[result.itemId];
+
+          // Set hasMadeNonFreePurchase flag if this is a paid item
+          if (item.price > 0) {
+            useGameStore.setState({ hasMadeNonFreePurchase: true });
+          }
+
+          onSuccess();
+        }
+        setIsProcessing(false);
       }
-      setIsProcessing(false);
+    } catch (e: any) {
+      logger.error("Payment submission error:", e);
+      if (e.message?.indexOf("mounted") === -1) {
+        setIsProcessing(false);
+        setErrorMessage(e.message || "An unexpected error occurred");
+      }
     }
   };
 
