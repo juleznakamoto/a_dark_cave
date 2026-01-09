@@ -299,8 +299,9 @@ export const gameStateSchema = z.object({
   story: z
     .object({
       seen: z.record(z.union([z.boolean(), z.number()])).default({}),
+      merchantPurchases: z.number().default(0),
     })
-    .default({ seen: {} }),
+    .default({ seen: {}, merchantPurchases: 0 }),
   hoveredTooltips: z.record(z.boolean()).default({}),
   damagedBuildings: z
     .object({

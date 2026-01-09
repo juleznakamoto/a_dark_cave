@@ -238,7 +238,7 @@ export default function ActionProgressChartAchievements() {
         label: "Good Deals",
         getCount: (state: GameState) => {
           const count = Math.min(
-            Number(state.story?.seen?.merchantPurchases) || 0,
+            Number(state.story?.merchantPurchases) || 0,
             100,
           );
           return count === 1 ? 1.8 : count;

@@ -325,6 +325,10 @@ const mergeStateUpdates = (
       ? {
           ...prevState.story,
           seen: { ...prevState.story.seen, ...stateUpdates.story.seen },
+          merchantPurchases:
+            stateUpdates.story.merchantPurchases !== undefined
+              ? stateUpdates.story.merchantPurchases
+              : prevState.story.merchantPurchases,
         }
       : prevState.story,
     effects: stateUpdates.effects || prevState.effects,
@@ -537,6 +541,11 @@ export const createInitialState = (): GameState => ({
   merchantTrades: {
     choices: [],
     purchasedIds: [],
+  },
+
+  story: {
+    seen: {},
+    merchantPurchases: 0,
   },
 
   // Achievements
