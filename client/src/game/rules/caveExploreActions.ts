@@ -317,7 +317,7 @@ export const caveExploreActions: Record<string, Action> = {
     id: "occultistChamber",
     label: "Occultist Chamber",
     show_when: {
-      "relics.occultist_map": true,
+      "tools.occultist_map": true,
       "story.seen.occultistChamberExplored": false,
     },
     cost: {

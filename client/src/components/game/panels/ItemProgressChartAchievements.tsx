@@ -174,11 +174,11 @@ export default function ItemProgressChart() {
     [
       {
         itemType: "books",
-        itemKeys: ["elder_scroll", "occultist_grimoire"],
+        itemKeys: ["unnamed_book", "elder_scroll", "occultist_grimoire"],
         color: SEGMENT_COLOR,
         label: "Ancient Wisdom",
         category: "relics",
-        maxCount: 2,
+        maxCount: 3,
         reward: 250,
       },
       {
