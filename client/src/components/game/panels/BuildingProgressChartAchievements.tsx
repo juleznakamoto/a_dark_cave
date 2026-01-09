@@ -172,7 +172,7 @@ export default function BuildingProgressChart() {
       },
       {
         buildingType: "blackMonolith",
-        maxCount: 2,
+        maxCount: 1,
         color: SEGMENT_COLOR,
         label: "Sacrifice",
         relatedBuildings: ["pillarOfClarity", "boneTemple"],
