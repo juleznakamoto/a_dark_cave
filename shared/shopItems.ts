@@ -65,7 +65,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     canPurchaseMultipleTimes: false,
     category: "blessing",
     activationMessage:
-      "Cruel Mode unlocked! Start a new game to experience the ultimate challenge.",
+      "Cruel Mode has been added to your purchases! Activate and start a new game for the ultimate challenge.",
     symbol: "⛤",
     symbolColor: "text-red-600",
   },
@@ -97,7 +97,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     },
     canPurchaseMultipleTimes: true,
     category: "resource",
-    activationMessage: "100 Gold have been added to your inventory.",
+    activationMessage: "1000 Gold have been added to your inventory.",
     symbol: "◉◉",
     symbolColor: "text-yellow-600",
   },
@@ -226,7 +226,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "skull_lantern",
     name: "Skull Lantern",
     description:
-      "Forged from cursed bone illuminating the deepest depths. Unlocks Lanter storyline.",
+      "Forged from cursed bone illuminating the deepest depths. Unlocks Skull Lantern storyline.",
     originalPrice: 499,
     price: 249, // 2.49 €
     rewards: {
@@ -244,7 +244,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "tarnished_compass",
     name: "Tarnished Compass",
     description:
-      "Artifact of the vanished civilization, its needle points to hidden places. Unlocks the Compass storyline.",
+      "Artifact of the vanished civilization, its needle points to hidden places. Unlocks Compass storyline.",
     originalPrice: 599,
     price: 299, // 2.99 €
     rewards: {
@@ -262,7 +262,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "crow_harness",
     name: "Crow Harness",
     description:
-      "A specially crafted harness for messenger crows. Unlocks the Crow storyline. Adds Fellowship Member.",
+      "A specially crafted harness for messenger crows. Unlocks Crow storyline. Adds Fellowship Member.",
     originalPrice: 699,
     price: 349, // 3.49 €
     rewards: {
@@ -271,7 +271,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     canPurchaseMultipleTimes: false,
     category: "tool",
     activationMessage:
-      "The Crow Harness has been added to your tools! Now you must seek out a crow.",
+      "The Crow Harness has been added to your tools! Now you must seek out a crow to bind to the harness.",
     symbol: "⟑",
     symbolColor: "text-slate-400",
   },
