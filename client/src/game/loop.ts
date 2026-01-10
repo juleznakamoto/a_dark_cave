@@ -172,24 +172,13 @@ export function startGameLoop() {
     // Get fresh state on each tick to avoid stale dialog states
     const state = useGameStore.getState();
 
-    // Check if game is paused
-    const isDialogOpen =
-      state.eventDialog.isOpen ||
-      state.combatDialog.isOpen ||
-      state.authDialogOpen ||
-      state.shopDialogOpen ||
-      state.leaderboardDialogOpen ||
-      state.fullGamePurchaseDialogOpen ||
-      state.idleModeDialog.isOpen ||
-      state.restartGameDialogOpen;
-
     // Force pause if full game purchase is required (villageElderDecision seen and BTP=1)
     const requiresFullGamePurchase = state.story?.seen?.villageElderDecision && state.BTP === 1 && !Object.keys(state.activatedPurchases || {}).some(
       key => (key === 'full_game' || key.startsWith('purchase-full_game-')) && state.activatedPurchases?.[key]
     );
 
-    // Recalculate isDialogOpen from fresh state to ensure accuracy
-    const actualIsDialogOpen =
+    // Calculate isDialogOpen from fresh state to ensure accuracy
+    const IsDialogOpen =
       state.eventDialog.isOpen ||
       state.combatDialog.isOpen ||
       state.authDialogOpen ||
@@ -199,7 +188,7 @@ export function startGameLoop() {
       state.idleModeDialog.isOpen ||
       state.restartGameDialogOpen;
 
-    const isPaused = state.isPaused || actualIsDialogOpen || requiresFullGamePurchase || state.idleModeState?.isActive;
+    const isPaused = state.isPaused || IsDialogOpen || requiresFullGamePurchase || state.idleModeState?.isActive;
 
     if (isPaused) {
       // Stop all sounds when paused (unless already stopped by mute)
@@ -224,7 +213,7 @@ export function startGameLoop() {
       useGameStore.setState({ isPausedPreviously: false });
     }
 
-    if (!actualIsDialogOpen) {
+    if (!IsDialogOpen) {
       // Accumulate time for fixed timestep
       tickAccumulator += deltaTime;
     }
@@ -236,12 +225,12 @@ export function startGameLoop() {
       !state.isPaused &&
       !currentState.idleModeState?.isActive &&
       !isInactive &&
-      !actualIsDialogOpen // Added: Stop playTime when dialogs are open
+      !IsDialogOpen // Added: Stop playTime when dialogs are open
     ) {
       currentState.updatePlayTime(deltaTime);
     }
 
-    if (!actualIsDialogOpen) {
+    if (!IsDialogOpen) {
 
       // Handle cooldowns only when not paused
       if (!isPaused) {
@@ -382,7 +371,7 @@ export function startGameLoop() {
           handleStrangerApproach();
 
           // Check for events (including attack waves) - but NOT when dialogs are open
-          if (!actualIsDialogOpen) {
+          if (!IsDialogOpen) {
             currentState.checkEvents();
           }
         }
