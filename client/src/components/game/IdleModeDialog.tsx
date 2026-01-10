@@ -609,9 +609,9 @@ export default function IdleModeDialog() {
   return (
     <Dialog open={idleModeDialog.isOpen} onOpenChange={() => {}}>
       <DialogContent
-        className="sm:max-w-sm z-[60]"
+        className="sm:max-w-sm z-[100]"
         hideClose={true}
-        hideOverlay={true}
+        hideOverlay={false}
       >
         <DialogHeader>
           <DialogTitle>Sleeping</DialogTitle>
