@@ -38,12 +38,12 @@ function processTriggeredEvents(
           message: typeof eventDef.message === 'string' 
             ? eventDef.message 
             : Array.isArray(eventDef.message) 
-              ? eventDef.message[Math.floor(Math.random() * eventDef.message.length)] 
+              ? eventDef.message[0] 
               : '',
           timestamp: Date.now(),
           type: "event",
           title: eventDef.title,
-          choices: typeof eventDef.choices === 'function' ? eventDef.choices(state) : eventDef.choices,
+          choices: typeof eventDef.choices === 'function' ? undefined : eventDef.choices,
           isTimedChoice: eventDef.isTimedChoice,
           baseDecisionTime: eventDef.baseDecisionTime,
           fallbackChoice: eventDef.fallbackChoice,
@@ -92,7 +92,7 @@ export const forestScoutActions: Record<string, Action> = {
           },
           value: true,
           condition:
-            "!tools.blacksmith_hammer && !triggeredEvents.blacksmithHammerChoice",
+            "!tools.blacksmith_hammer && !story.seen.blacksmithHammerChoice",
           logMessage: "",
           isChoice: true,
           eventId: "blacksmithHammerChoice",
@@ -104,7 +104,7 @@ export const forestScoutActions: Record<string, Action> = {
             return prob;
           },
           value: true,
-          condition: "!clothing.red_mask && !triggeredEvents.redMaskChoice",
+          condition: "!clothing.red_mask && !story.seen.redMaskChoice",
           logMessage: "",
           isChoice: true,
           eventId: "redMaskChoice",

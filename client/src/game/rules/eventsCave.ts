@@ -56,8 +56,8 @@ export const caveEvents: Record<string, GameEvent> = {
       },
     ],
     fallbackChoice: {
-      id: "leaveRing",
-      label: "Leave it",
+      id: "doNothing",
+      label: "Do nothing",
       effect: (state: GameState) => {
         const deathResult = killVillagers(state, 1);
         return {
@@ -128,8 +128,8 @@ export const caveEvents: Record<string, GameEvent> = {
       },
     ],
     fallbackChoice: {
-      id: "leaveFlute",
-      label: "Leave it",
+      id: "doNothing",
+      label: "Do nothing",
       relevant_stats: ["luck"],
        effect: (state: GameState) => {
         const luck = state.stats.luck || 0;
@@ -204,8 +204,8 @@ export const caveEvents: Record<string, GameEvent> = {
       },
     ],
     fallbackChoice: {
-      id: "leaveScepter",
-      label: "Leave it",
+      id: "doNothing",
+      label: "Do nothing",
       effect: (state: GameState) => {
         const luck = state.stats.luck || 0;
         const deaths = Math.floor((1-luck)*Math.random() * 6) + 3;
@@ -232,7 +232,7 @@ export const caveEvents: Record<string, GameEvent> = {
     
     title: "The Bone Dice",
     message:
-      "As you descend further, you find a set of bone dice carved with ancient runes. These dice have seen much fortune... and much tragedy. Do you keep them?",
+      "As you descend further, you find a set of bone dice carved with ancient runes. These dice have seen much fortune and much tragedy. Do you keep them?",
     priority: 5,
     repeatable: false,
     isTimedChoice: true,
@@ -278,8 +278,8 @@ export const caveEvents: Record<string, GameEvent> = {
       },
     ],
     fallbackChoice: {
-      id: "leaveDice",
-      label: "Leave them",
+      id: "doNothing",
+      label: "Do nothing",
       effect: (state: GameState) => {
         return {
           story: {
