@@ -9,7 +9,7 @@ import {
 } from "../buttonUpgrades";
 import { getNextBuildingLevel } from "./villageBuildActions";
 import { calculateAdjustedCost } from "./costCalculation";
-import { clothingEffects } from "./effects";
+import { logger } from "../../lib/logger";
 
 const FOCUS_ELIGIBLE_ACTIONS = [
   "exploreCave",
@@ -384,6 +384,7 @@ export function applyActionEffects(
         effect !== null &&
         "probability" in (effect as object)
       ) {
+        logger.log(`[ACTION EFFECTS] Processing probability effect for path: ${path}`, { effect });
         const probabilityEffect = effect as {
           probability: number | ((state: GameState) => number);
           value:
@@ -427,17 +428,18 @@ export function applyActionEffects(
           baseProbability + baseProbability * luckBonus,
           1.0,
         );
-        const roll = Math.random();
         const shouldTrigger = conditionMet && roll < adjustedProbability;
 
-        logger.log(`[PROBABILITY EFFECT] Path: ${path}`, {
+        logger.log(`[PROBABILITY EFFECT DEBUG] ${actionId} -> ${path}`, {
+          condition: probabilityEffect.condition,
           conditionMet,
-          baseProbability,
-          adjustedProbability,
+          baseProb: baseProbability,
+          luckBonus,
+          adjProb: adjustedProbability,
           roll,
           shouldTrigger,
-          finalKey,
-          isChoice: !!(probabilityEffect.isChoice && probabilityEffect.eventId)
+          isChoice: !!(probabilityEffect.isChoice && probabilityEffect.eventId),
+          eventId: probabilityEffect.eventId
         });
 
         if (shouldTrigger) {
