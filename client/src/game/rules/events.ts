@@ -79,7 +79,7 @@ export interface GameEvent {
   condition: (state: GameState) => boolean;
   title?: string;
   message: string | string[] | ((state: GameState) => string); // Support array of messages for random selection or function
-  choices?: EventChoice[];
+  choices?: EventChoice[] | ((state: GameState) => EventChoice[]);
   triggered?: boolean;
   repeatable?: boolean;
   priority?: number; // Higher priority events check first
@@ -117,7 +117,7 @@ export interface LogEntry {
   timestamp: number;
   type: "event" | "action" | "system";
   title?: string;
-  choices?: EventChoice[];
+  choices?: EventChoice[] | ((state: GameState) => EventChoice[]);
   isTimedChoice?: boolean;
   baseDecisionTime?: number;
   fallbackChoice?: EventChoice;

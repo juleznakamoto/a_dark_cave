@@ -55,10 +55,14 @@ export default function TimedEventPanel() {
 
     logger.log("[TIMED EVENT PANEL] Non-merchant event, using event choices:", {
       eventId: timedEventTab.event.id,
-      choicesCount: timedEventTab.event.choices?.length || 0,
+      choicesCount: typeof timedEventTab.event.choices === 'function' ? 'dynamic' : timedEventTab.event.choices?.length || 0,
     });
-    return Array.isArray(timedEventTab.event.choices) ? timedEventTab.event.choices : [];
-  }, [isMerchantEvent, timedEventTab.event, gameState.merchantTrades]);
+    const choicesRaw = typeof timedEventTab.event.choices === 'function' 
+      ? timedEventTab.event.choices(gameState)
+      : timedEventTab.event.choices;
+    const choices = Array.isArray(choicesRaw) ? choicesRaw : [];
+    return choices;
+  }, [isMerchantEvent, timedEventTab.event, gameState.merchantTrades, gameState]);
 
   useEffect(() => {
     if (
