@@ -97,7 +97,7 @@ const caveItems = {
   exploreCitadel: [
     {
       key: "hollow_king_scepter",
-      probability: 0.99,
+      probability: 0.0325,
       isChoice: true,
       eventId: "hollowKingScepterChoice",
       category: "relics",

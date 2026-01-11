@@ -31,9 +31,10 @@ const FOCUS_ELIGIBLE_ACTIONS = [
 import { CROWS_EYE_UPGRADES } from "./skillUpgrades";
 import { getGameActions } from "./actionsRegistry";
 
-const evaluateCondition = (condition: string, state: GameState): boolean => {
-  const isNegated = condition.startsWith("!");
-  const path = isNegated ? condition.slice(1) : condition;
+const evaluateSingleCondition = (condition: string, state: GameState): boolean => {
+  const trimmed = condition.trim();
+  const isNegated = trimmed.startsWith("!");
+  const path = isNegated ? trimmed.slice(1) : trimmed;
   const pathParts = path.split(".");
   let current: any = state;
 
@@ -47,6 +48,23 @@ const evaluateCondition = (condition: string, state: GameState): boolean => {
   }
 
   return isNegated ? !current : !!current;
+};
+
+const evaluateCondition = (condition: string, state: GameState): boolean => {
+  // Handle compound conditions with && operator
+  if (condition.includes(" && ")) {
+    const parts = condition.split(" && ");
+    return parts.every(part => evaluateSingleCondition(part, state));
+  }
+  
+  // Handle compound conditions with || operator
+  if (condition.includes(" || ")) {
+    const parts = condition.split(" || ");
+    return parts.some(part => evaluateSingleCondition(part, state));
+  }
+  
+  // Simple single condition
+  return evaluateSingleCondition(condition, state);
 };
 
 // Main export: applyActionEffects
