@@ -32,6 +32,14 @@ import { CROWS_EYE_UPGRADES } from "./skillUpgrades";
 import { getGameActions } from "./actionsRegistry";
 
 const evaluateCondition = (condition: string, state: GameState): boolean => {
+  // Handle compound conditions with '&&' or '||'
+  if (condition.includes(" && ")) {
+    return condition.split(" && ").every(cond => evaluateCondition(cond.trim(), state));
+  }
+  if (condition.includes(" || ")) {
+    return condition.split(" || ").some(cond => evaluateCondition(cond.trim(), state));
+  }
+
   const isNegated = condition.startsWith("!");
   const path = isNegated ? condition.slice(1) : condition;
   const pathParts = path.split(".");

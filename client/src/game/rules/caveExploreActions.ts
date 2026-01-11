@@ -37,12 +37,12 @@ function processTriggeredEvents(
           message: typeof eventDef.message === 'string' 
             ? eventDef.message 
             : Array.isArray(eventDef.message) 
-              ? eventDef.message[0] 
+              ? eventDef.message[Math.floor(Math.random() * eventDef.message.length)] 
               : '',
           timestamp: Date.now(),
           type: "event",
           title: eventDef.title,
-          choices: typeof eventDef.choices === 'function' ? undefined : eventDef.choices,
+          choices: typeof eventDef.choices === 'function' ? eventDef.choices(state) : eventDef.choices,
           isTimedChoice: eventDef.isTimedChoice,
           baseDecisionTime: eventDef.baseDecisionTime,
           fallbackChoice: eventDef.fallbackChoice,
@@ -99,7 +99,7 @@ const caveItems = {
   exploreRuins: [
     {
       key: "ring_of_drowned",
-      probability: 0.0225,
+      probability: 0.99,
       isChoice: true,
       eventId: "ringOfDrownedChoice",
       category: "clothing",
@@ -117,7 +117,7 @@ const caveItems = {
   exploreCitadel: [
     {
       key: "hollow_king_scepter",
-      probability: 0.99,
+      probability: 0.0325,
       isChoice: true,
       eventId: "hollowKingScepterChoice",
       category: "relics",
@@ -157,10 +157,7 @@ function getInheritedItems(actionId: string) {
         probability: Math.min(adjustedProbability, 1.0), // Cap at 100%
         value: true,
         condition:
-          `!${category}.${item.key}` +
-          ("eventId" in item && item.eventId
-            ? ` && !story.seen.${item.eventId}`
-            : ""),
+          `!${category}.${item.key} && !triggeredEvents.${item.eventId || 'none'}`,
         ...("isChoice" in item && item.isChoice && { isChoice: item.isChoice }),
         ...("eventId" in item && item.eventId && { eventId: item.eventId }),
         ...("logMessage" in item &&
