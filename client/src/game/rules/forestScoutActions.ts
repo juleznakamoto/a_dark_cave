@@ -2,7 +2,52 @@ import { Action, GameState } from "@shared/schema";
 import { ActionResult } from "@/game/actions";
 import { applyActionEffects } from "./actionEffects";
 import { killVillagers } from "@/game/stateHelpers";
-import { calculateSuccessChance } from "./events";
+import { calculateSuccessChance, gameEvents, LogEntry } from "./events";
+import { logger } from "../../lib/logger";
+
+// Helper function to process triggered events from action effects
+function processTriggeredEvents(
+  effectUpdates: any,
+  result: ActionResult
+): void {
+  if (effectUpdates.triggeredEvents && effectUpdates.triggeredEvents.length > 0) {
+    logger.log(`[FOREST SCOUT] Processing triggered events:`, effectUpdates.triggeredEvents);
+    
+    effectUpdates.triggeredEvents.forEach((eventId: string) => {
+      const eventDef = gameEvents[eventId];
+      if (eventDef) {
+        logger.log(`[FOREST SCOUT] Found event definition for: ${eventId}`, { 
+          title: eventDef.title,
+          hasChoices: !!eventDef.choices
+        });
+        
+        // Create a log entry for the event
+        const logEntry: LogEntry = {
+          id: `${eventId}-${Date.now()}`,
+          message: typeof eventDef.message === 'string' 
+            ? eventDef.message 
+            : Array.isArray(eventDef.message) 
+              ? eventDef.message[0] 
+              : '',
+          timestamp: Date.now(),
+          type: "event",
+          title: eventDef.title,
+          choices: typeof eventDef.choices === 'function' ? undefined : eventDef.choices,
+          isTimedChoice: eventDef.isTimedChoice,
+          baseDecisionTime: eventDef.baseDecisionTime,
+          fallbackChoice: eventDef.fallbackChoice,
+          relevant_stats: eventDef.relevant_stats,
+        };
+        
+        result.logEntries!.push(logEntry);
+      } else {
+        logger.warn(`[FOREST SCOUT] No event definition found for: ${eventId}`);
+      }
+    });
+    
+    delete effectUpdates.triggeredEvents;
+  }
+}
 
 export const forestScoutActions: Record<string, Action> = {
   hunt: {
@@ -226,7 +271,7 @@ export function handleHunt(
   state: GameState,
   result: ActionResult,
 ): ActionResult {
-  const effectUpdates = applyActionEffects("hunt", state);
+  const effectUpdates = applyActionEffects("hunt", state) as any;
 
   // Filter out any log entries that are event dialogs (have choices)
   // These should only appear as dialogs, not in the log
@@ -250,6 +295,9 @@ export function handleHunt(
     });
     delete effectUpdates.logMessages;
   }
+
+  // Process triggered events (hunt choice events like blacksmithHammer, redMask)
+  processTriggeredEvents(effectUpdates, result);
 
   Object.assign(result.stateUpdates, effectUpdates);
 
