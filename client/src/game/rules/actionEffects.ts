@@ -432,7 +432,10 @@ export function applyActionEffects(
 
         if (shouldTrigger) {
           if (probabilityEffect.isChoice && probabilityEffect.eventId) {
-            // Skip applying the item value for choice events
+            // Add the event to triggeredEvents so the UI can display the choice
+            if (!updates.triggeredEvents) updates.triggeredEvents = [];
+            updates.triggeredEvents.push(probabilityEffect.eventId);
+            // Skip applying the item value - will be handled when player makes the choice
             continue;
           }
 

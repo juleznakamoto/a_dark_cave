@@ -1,6 +1,52 @@
 import { Action, GameState } from "@shared/schema";
 import { ActionResult } from "@/game/actions";
 import { applyActionEffects } from "./actionEffects";
+import { gameEvents, LogEntry } from "./events";
+import { logger } from "../../lib/logger";
+
+// Helper function to process triggered events from action effects
+function processTriggeredEvents(
+  effectUpdates: any,
+  result: ActionResult
+): void {
+  if (effectUpdates.triggeredEvents && effectUpdates.triggeredEvents.length > 0) {
+    logger.log(`[CAVE EXPLORE] Processing triggered events:`, effectUpdates.triggeredEvents);
+    
+    effectUpdates.triggeredEvents.forEach((eventId: string) => {
+      const eventDef = gameEvents[eventId];
+      if (eventDef) {
+        logger.log(`[CAVE EXPLORE] Found event definition for: ${eventId}`, { 
+          title: eventDef.title,
+          hasChoices: !!eventDef.choices
+        });
+        
+        // Create a log entry for the event
+        const logEntry: LogEntry = {
+          id: `${eventId}-${Date.now()}`,
+          message: typeof eventDef.message === 'string' 
+            ? eventDef.message 
+            : Array.isArray(eventDef.message) 
+              ? eventDef.message[0] 
+              : '',
+          timestamp: Date.now(),
+          type: "event",
+          title: eventDef.title,
+          choices: typeof eventDef.choices === 'function' ? undefined : eventDef.choices,
+          isTimedChoice: eventDef.isTimedChoice,
+          baseDecisionTime: eventDef.baseDecisionTime,
+          fallbackChoice: eventDef.fallbackChoice,
+          relevant_stats: eventDef.relevant_stats,
+        };
+        
+        result.logEntries!.push(logEntry);
+      } else {
+        logger.warn(`[CAVE EXPLORE] No event definition found for: ${eventId}`);
+      }
+    });
+    
+    delete effectUpdates.triggeredEvents;
+  }
+}
 
 // Base items for each cave exploration stage
 const caveItems = {
@@ -537,6 +583,9 @@ export function handleExploreCave(
     delete effectUpdates.logMessages;
   }
 
+  // Process triggered events (cave choice events)
+  processTriggeredEvents(effectUpdates, result);
+
   // Add a special log message for first time exploring the cave
   if (!state.story.seen.caveExplored) {
     result.logEntries!.push({
@@ -574,6 +623,9 @@ export function handleVentureDeeper(
     });
     delete effectUpdates.logMessages;
   }
+
+  // Process triggered events (cave choice events)
+  processTriggeredEvents(effectUpdates, result);
 
   // Add a special log message for venturing deeper
   if (!state.story.seen.venturedDeeper) {
@@ -613,6 +665,9 @@ export function handleDescendFurther(
     delete effectUpdates.logMessages;
   }
 
+  // Process triggered events (cave choice events)
+  processTriggeredEvents(effectUpdates, result);
+
   // Add a special log message for descending further
   if (!state.story.seen.descendedFurther) {
     result.logEntries!.push({
@@ -650,6 +705,9 @@ export function handleExploreRuins(
     });
     delete effectUpdates.logMessages;
   }
+
+  // Process triggered events (cave choice events)
+  processTriggeredEvents(effectUpdates, result);
 
   // Add a special log message for exploring ruins
   if (!state.story.seen.exploredRuins) {
@@ -689,6 +747,9 @@ export function handleExploreTemple(
     delete effectUpdates.logMessages;
   }
 
+  // Process triggered events (cave choice events)
+  processTriggeredEvents(effectUpdates, result);
+
   // Add a special log message for exploring temple
   if (!state.story.seen.exploredTemple) {
     result.logEntries!.push({
@@ -726,6 +787,9 @@ export function handleExploreCitadel(
     });
     delete effectUpdates.logMessages;
   }
+
+  // Process triggered events (cave choice events)
+  processTriggeredEvents(effectUpdates, result);
 
   // Add a special log message for exploring citadel
   if (!state.story.seen.exploredCitadel) {
