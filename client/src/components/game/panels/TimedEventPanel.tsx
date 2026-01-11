@@ -50,15 +50,15 @@ export default function TimedEventPanel() {
         choicesCount: gameState.merchantTrades?.choices?.length || 0,
         choices: gameState.merchantTrades?.choices,
       });
-      return gameState.merchantTrades?.choices || [];
+      return Array.isArray(gameState.merchantTrades?.choices) ? gameState.merchantTrades.choices : [];
     }
 
     logger.log("[TIMED EVENT PANEL] Non-merchant event, using event choices:", {
       eventId: timedEventTab.event.id,
       choicesCount: timedEventTab.event.choices?.length || 0,
     });
-    return timedEventTab.event.choices || [];
-  }, [isMerchantEvent, timedEventTab.event]);
+    return Array.isArray(timedEventTab.event.choices) ? timedEventTab.event.choices : [];
+  }, [isMerchantEvent, timedEventTab.event, gameState.merchantTrades]);
 
   useEffect(() => {
     if (
@@ -266,7 +266,7 @@ export default function TimedEventPanel() {
           </h3>
         )}
       <div className="flex flex-wrap gap-2 mt-2">
-        {eventChoices
+        {Array.isArray(eventChoices) && eventChoices
           .map((choice) => {
             const cost = choice.cost;
             // Evaluate cost if it's a function
