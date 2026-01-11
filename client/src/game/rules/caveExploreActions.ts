@@ -7,12 +7,19 @@ import { logger } from "../../lib/logger";
 // Helper function to process triggered events from action effects
 function processTriggeredEvents(
   effectUpdates: any,
-  result: ActionResult
+  result: ActionResult,
+  state: GameState
 ): void {
   if (effectUpdates.triggeredEvents && effectUpdates.triggeredEvents.length > 0) {
     logger.log(`[CAVE EXPLORE] Processing triggered events:`, effectUpdates.triggeredEvents);
     
     effectUpdates.triggeredEvents.forEach((eventId: string) => {
+      // Prevent event from happening again if it's already been triggered
+      if (state.triggeredEvents?.[eventId]) {
+        logger.log(`[CAVE EXPLORE] Skipping already triggered event: ${eventId}`);
+        return;
+      }
+
       const eventDef = gameEvents[eventId];
       if (eventDef) {
         logger.log(`[CAVE EXPLORE] Found event definition for: ${eventId}`, { 
@@ -20,6 +27,10 @@ function processTriggeredEvents(
           hasChoices: !!eventDef.choices
         });
         
+        // Mark as triggered in state updates
+        if (!effectUpdates.triggeredEventsState) effectUpdates.triggeredEventsState = {};
+        effectUpdates.triggeredEventsState[eventId] = true;
+
         // Create a log entry for the event
         const logEntry: LogEntry = {
           id: `${eventId}-${Date.now()}`,
@@ -44,7 +55,16 @@ function processTriggeredEvents(
       }
     });
     
-    delete effectUpdates.triggeredEvents;
+    // Merge triggered events state into main state updates
+    if (effectUpdates.triggeredEventsState) {
+      effectUpdates.triggeredEvents = {
+        ...(state.triggeredEvents || {}),
+        ...effectUpdates.triggeredEventsState
+      };
+      delete effectUpdates.triggeredEventsState;
+    } else {
+      delete effectUpdates.triggeredEvents;
+    }
   }
 }
 
@@ -97,7 +117,7 @@ const caveItems = {
   exploreCitadel: [
     {
       key: "hollow_king_scepter",
-      probability: 0.0325,
+      probability: 0.99,
       isChoice: true,
       eventId: "hollowKingScepterChoice",
       category: "relics",
@@ -584,7 +604,7 @@ export function handleExploreCave(
   }
 
   // Process triggered events (cave choice events)
-  processTriggeredEvents(effectUpdates, result);
+  processTriggeredEvents(effectUpdates, result, state);
 
   // Add a special log message for first time exploring the cave
   if (!state.story.seen.caveExplored) {
@@ -625,7 +645,7 @@ export function handleVentureDeeper(
   }
 
   // Process triggered events (cave choice events)
-  processTriggeredEvents(effectUpdates, result);
+  processTriggeredEvents(effectUpdates, result, state);
 
   // Add a special log message for venturing deeper
   if (!state.story.seen.venturedDeeper) {
@@ -666,7 +686,7 @@ export function handleDescendFurther(
   }
 
   // Process triggered events (cave choice events)
-  processTriggeredEvents(effectUpdates, result);
+  processTriggeredEvents(effectUpdates, result, state);
 
   // Add a special log message for descending further
   if (!state.story.seen.descendedFurther) {
@@ -707,7 +727,7 @@ export function handleExploreRuins(
   }
 
   // Process triggered events (cave choice events)
-  processTriggeredEvents(effectUpdates, result);
+  processTriggeredEvents(effectUpdates, result, state);
 
   // Add a special log message for exploring ruins
   if (!state.story.seen.exploredRuins) {
@@ -748,7 +768,7 @@ export function handleExploreTemple(
   }
 
   // Process triggered events (cave choice events)
-  processTriggeredEvents(effectUpdates, result);
+  processTriggeredEvents(effectUpdates, result, state);
 
   // Add a special log message for exploring temple
   if (!state.story.seen.exploredTemple) {
@@ -789,7 +809,7 @@ export function handleExploreCitadel(
   }
 
   // Process triggered events (cave choice events)
-  processTriggeredEvents(effectUpdates, result);
+  processTriggeredEvents(effectUpdates, result, state);
 
   // Add a special log message for exploring citadel
   if (!state.story.seen.exploredCitadel) {

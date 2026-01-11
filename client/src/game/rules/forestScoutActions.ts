@@ -8,12 +8,19 @@ import { logger } from "../../lib/logger";
 // Helper function to process triggered events from action effects
 function processTriggeredEvents(
   effectUpdates: any,
-  result: ActionResult
+  result: ActionResult,
+  state: GameState
 ): void {
   if (effectUpdates.triggeredEvents && effectUpdates.triggeredEvents.length > 0) {
     logger.log(`[FOREST SCOUT] Processing triggered events:`, effectUpdates.triggeredEvents);
     
     effectUpdates.triggeredEvents.forEach((eventId: string) => {
+      // Prevent event from happening again if it's already been triggered
+      if (state.triggeredEvents?.[eventId]) {
+        logger.log(`[FOREST SCOUT] Skipping already triggered event: ${eventId}`);
+        return;
+      }
+
       const eventDef = gameEvents[eventId];
       if (eventDef) {
         logger.log(`[FOREST SCOUT] Found event definition for: ${eventId}`, { 
@@ -21,6 +28,10 @@ function processTriggeredEvents(
           hasChoices: !!eventDef.choices
         });
         
+        // Mark as triggered in state updates
+        if (!effectUpdates.triggeredEventsState) effectUpdates.triggeredEventsState = {};
+        effectUpdates.triggeredEventsState[eventId] = true;
+
         // Create a log entry for the event
         const logEntry: LogEntry = {
           id: `${eventId}-${Date.now()}`,
@@ -45,7 +56,16 @@ function processTriggeredEvents(
       }
     });
     
-    delete effectUpdates.triggeredEvents;
+    // Merge triggered events state into main state updates
+    if (effectUpdates.triggeredEventsState) {
+      effectUpdates.triggeredEvents = {
+        ...(state.triggeredEvents || {}),
+        ...effectUpdates.triggeredEventsState
+      };
+      delete effectUpdates.triggeredEventsState;
+    } else {
+      delete effectUpdates.triggeredEvents;
+    }
   }
 }
 
@@ -297,7 +317,7 @@ export function handleHunt(
   }
 
   // Process triggered events (hunt choice events like blacksmithHammer, redMask)
-  processTriggeredEvents(effectUpdates, result);
+  processTriggeredEvents(effectUpdates, result, state);
 
   Object.assign(result.stateUpdates, effectUpdates);
 
