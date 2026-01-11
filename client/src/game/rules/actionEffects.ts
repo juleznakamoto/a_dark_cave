@@ -9,6 +9,7 @@ import {
 } from "../buttonUpgrades";
 import { getNextBuildingLevel } from "./villageBuildActions";
 import { calculateAdjustedCost } from "./costCalculation";
+import { clothingEffects } from "./effects";
 import { logger } from "../../lib/logger";
 
 const FOCUS_ELIGIBLE_ACTIONS = [
