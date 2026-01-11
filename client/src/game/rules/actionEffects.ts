@@ -381,7 +381,6 @@ export function applyActionEffects(
       } else if (
         typeof effect === "object" &&
         effect !== null &&
-        typeof effect === "object" &&
         "probability" in (effect as object)
       ) {
         const probabilityEffect = effect as {
@@ -432,7 +431,9 @@ export function applyActionEffects(
 
         if (shouldTrigger) {
           if (probabilityEffect.isChoice && probabilityEffect.eventId) {
-            // Skip applying the item value for choice events
+            // Add the event choice to the triggered events list
+            if (!updates.triggeredEvents) updates.triggeredEvents = [];
+            updates.triggeredEvents.push(probabilityEffect.eventId);
             continue;
           }
 

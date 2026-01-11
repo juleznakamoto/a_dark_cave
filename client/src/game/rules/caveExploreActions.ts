@@ -99,7 +99,7 @@ function getInheritedItems(actionId: string) {
         ...("eventId" in item && item.eventId && { eventId: item.eventId }),
         ...("logMessage" in item &&
           item.logMessage && { logMessage: item.logMessage }),
-      };
+      } as any;
     });
   }
 
