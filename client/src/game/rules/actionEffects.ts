@@ -10,7 +10,6 @@ import {
 import { getNextBuildingLevel } from "./villageBuildActions";
 import { calculateAdjustedCost } from "./costCalculation";
 import { clothingEffects } from "./effects";
-import { logger } from "../../lib/logger";
 
 const FOCUS_ELIGIBLE_ACTIONS = [
   "exploreCave",
@@ -55,7 +54,6 @@ export function applyActionEffects(
   actionId: string,
   state: GameState,
 ): Partial<GameState> {
-  logger.log(`[ACTION EFFECTS] Applying effects for action: ${actionId}`);
   const action = getGameActions()[actionId];
   if (!action) return {};
 
@@ -383,9 +381,9 @@ export function applyActionEffects(
       } else if (
         typeof effect === "object" &&
         effect !== null &&
+        typeof effect === "object" &&
         "probability" in (effect as object)
       ) {
-        logger.log(`[ACTION EFFECTS] Processing probability effect for path: ${path}`, { effect });
         const probabilityEffect = effect as {
           probability: number | ((state: GameState) => number);
           value:
@@ -429,25 +427,12 @@ export function applyActionEffects(
           baseProbability + baseProbability * luckBonus,
           1.0,
         );
-        const shouldTrigger = conditionMet && roll < adjustedProbability;
-
-        logger.log(`[PROBABILITY EFFECT DEBUG] ${actionId} -> ${path}`, {
-          condition: probabilityEffect.condition,
-          conditionMet,
-          baseProb: baseProbability,
-          luckBonus,
-          adjProb: adjustedProbability,
-          roll,
-          shouldTrigger,
-          isChoice: !!(probabilityEffect.isChoice && probabilityEffect.eventId),
-          eventId: probabilityEffect.eventId
-        });
+        const shouldTrigger =
+          conditionMet && Math.random() < adjustedProbability;
 
         if (shouldTrigger) {
           if (probabilityEffect.isChoice && probabilityEffect.eventId) {
-            // Add the event choice to the triggered events list
-            if (!updates.triggeredEvents) updates.triggeredEvents = [];
-            updates.triggeredEvents.push(probabilityEffect.eventId);
+            // Skip applying the item value for choice events
             continue;
           }
 

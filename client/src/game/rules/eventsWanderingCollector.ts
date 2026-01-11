@@ -29,7 +29,6 @@ export const wanderingCollectorEvents: Record<string, GameEvent> = {
     message: "A mysterious figure wrapped in tattered robes approaches. They seem interested in the curiosities you've found.",
     timeProbability: 5,
     showAsTimedTab: true,
-    repeatable: true,
     timedTabDuration: 3 * 60 * 1000, // 3 minutes
     choices: (state: GameState): EventChoice[] => {
       const ownedItems = COLLECTOR_ITEMS.filter(
