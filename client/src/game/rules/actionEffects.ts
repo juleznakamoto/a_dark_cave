@@ -54,6 +54,7 @@ export function applyActionEffects(
   actionId: string,
   state: GameState,
 ): Partial<GameState> {
+  logger.log(`[ACTION EFFECTS] Applying effects for action: ${actionId}`);
   const action = getGameActions()[actionId];
   if (!action) return {};
 
@@ -426,8 +427,18 @@ export function applyActionEffects(
           baseProbability + baseProbability * luckBonus,
           1.0,
         );
-        const shouldTrigger =
-          conditionMet && Math.random() < adjustedProbability;
+        const roll = Math.random();
+        const shouldTrigger = conditionMet && roll < adjustedProbability;
+
+        logger.log(`[PROBABILITY EFFECT] Path: ${path}`, {
+          conditionMet,
+          baseProbability,
+          adjustedProbability,
+          roll,
+          shouldTrigger,
+          finalKey,
+          isChoice: !!(probabilityEffect.isChoice && probabilityEffect.eventId)
+        });
 
         if (shouldTrigger) {
           if (probabilityEffect.isChoice && probabilityEffect.eventId) {
