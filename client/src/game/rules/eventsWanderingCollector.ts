@@ -42,7 +42,7 @@ export const wanderingCollectorEvents: Record<string, GameEvent> = {
       const messages = [
         "A figure wrapped in tattered robes approaches. He seems intrigued by what you’ve gathered. 'I sense value among your possessions,' he murmurs. 'Allow me to take one, in exchange for 100 gold.'",
         "The robed figure returns, his steps soundless on the ground. 'More artifacts, more secrets', he whispers. 'Let me claim one again, and your purse will be 100 gold heavier.'",
-        "The collector appears again, eyes glowing within the hood. 'Our dealings near their end, he says softly. 'Sell me one more, and 100 gold shall be yours.'",
+        "The collector appears again, eyes glowing within the hood. 'Our dealings near their end,' he says softly. 'Sell me one more, and 100 gold shall be yours.'",
       ];
       return messages[Math.min(visitCount, 2)];
     },
@@ -104,8 +104,8 @@ export const wanderingCollectorEvents: Record<string, GameEvent> = {
 
           const whispers = [
             "The collector takes the item with a bony hand. 'On my travels I found many items of the ancient civilization. They were very advanced,' he whispers before vanishing.",
-            "He examines the item closely before taking it. 'The great explosion destryoed most of the artifactos of the ancient cilivization. It is hard to find any.' he murmurs.",
-            "A thin finger traces the artifact. 'I learned a lot about the ancient civilization on my travels. Before the great explosion there was no magic in this world. It came with the explsoion.' he whispers while leaving.",
+            "He examines the item closely before taking it. 'The great explosion destroyed most of the artifacts of the ancient civilization. It is hard to find any,' he murmurs.",
+            "A thin finger traces the artifact. 'I learned a lot about the ancient civilization on my travels. Before the great explosion there was no magic in this world. It came with the explosion,' he whispers while leaving.",
           ];
 
           return {
