@@ -41,8 +41,8 @@ export const wanderingCollectorEvents: Record<string, GameEvent> = {
       const visitCount = state.story?.seen?.collectorVisitCount || 0;
       const messages = [
         "A figure wrapped in tattered robes approaches. He seems intrigued by what you’ve gathered. 'I sense value among your possessions,' he murmurs. 'Allow me to take one, in exchange for 100 gold.'",
-        "The robed figure returns, his steps soundless on the stone. 'More artifacts, more secrets', he whispers. 'Let me claim one again, and your purse will be heavier.'",
-        "The collector appears again, eyes glowing within the hood. 'Our dealings near their end, he says softly. 'Show me what remains, and I will buy one final treasure.'"
+        "The robed figure returns, his steps soundless on the stone. 'More artifacts, more secrets', he whispers. 'Let me claim one again, and your purse will be 100 gold heavier.'",
+        "The collector appears again, eyes glowing within the hood. 'Our dealings near their end, he says softly. 'Sell me one more, and 100 gold shall be yours.'"
       ];
       return messages[Math.min(visitCount, 2)];
     },
@@ -51,6 +51,7 @@ export const wanderingCollectorEvents: Record<string, GameEvent> = {
     showAsTimedTab: true,
     timedTabDuration: 1 * 60 * 1000, // 3 minutes
     choices: (state: GameState): EventChoice[] => {
+      // Filter for items the player actually owns
       const ownedItems = COLLECTOR_ITEMS.filter(
         (itemId) => {
           if (state.clothing && (state.clothing as any)[itemId]) return true;
@@ -59,13 +60,24 @@ export const wanderingCollectorEvents: Record<string, GameEvent> = {
         }
       );
 
-      // Randomly select up to 4 items from owned items
-      const shuffled = [...ownedItems].sort(() => 0.5 - Math.random());
-      const selectedItems = shuffled.slice(0, 4);
+      // Deterministic selection based on collectorVisitCount
+      const visitCount = state.story?.seen?.collectorVisitCount || 0;
+      
+      // We use a simple seed-based shuffle or just sort by a stable property
+      // To keep it simple and deterministic for the user:
+      // Sort alphabetically then pick 4 based on visitCount
+      const sortedItems = [...ownedItems].sort();
+      
+      // Use visitCount to shift the selection if there are more than 4
+      const startIndex = (visitCount * 2) % Math.max(1, sortedItems.length);
+      const selectedItems: string[] = [];
+      for (let i = 0; i < 4 && i < sortedItems.length; i++) {
+        selectedItems.push(sortedItems[(startIndex + i) % sortedItems.length]);
+      }
 
       const choices: EventChoice[] = selectedItems.map((itemId) => ({
         id: `sell_${itemId}`,
-        label: `Sell ${capitalizeWords(itemId)}`,
+        label: `Sell ${capitalizeWords(itemId.replace(/_/g, " "))}`,
         effect: (innerState: GameState) => {
           const visitCount = (innerState.story?.seen?.collectorVisitCount || 0) + 1;
           const newState: Partial<GameState> = {

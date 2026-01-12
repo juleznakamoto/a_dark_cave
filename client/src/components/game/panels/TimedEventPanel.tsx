@@ -8,7 +8,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useMobileButtonTooltip, useMobileTooltip } from "@/hooks/useMobileTooltip";
-import { eventChoiceCostTooltip, merchantTooltip } from "@/game/rules/tooltips";
+import { merchantTooltip } from "@/game/rules/tooltips";
 import { EventChoice } from "@/game/rules/events";
 import { logger } from "@/lib/logger";
 import { isKnowledgeBonusMaxed } from "@/game/rules/eventsMerchant";
