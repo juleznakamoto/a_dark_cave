@@ -9,8 +9,12 @@ const COLLECTOR_ITEMS = [
   "cracked_crown",
   "ring_of_drowned",
   "red_mask",
+  "bone_necklace",
   "wooden_figure",
+  "bone_dice",
+  "blackened_mirror",
   "shadow_flute",
+  "hollow_king_scepter",
 ] as const;
 
 export const wanderingCollectorEvents: Record<string, GameEvent> = {
@@ -18,7 +22,10 @@ export const wanderingCollectorEvents: Record<string, GameEvent> = {
     id: "wandering_collector",
     condition: (state: GameState) => {
       const visitCount = state.story?.seen?.collectorVisitCount || 0;
-      if (visitCount >= 3) return false;
+      if (visitCount >= 999999999) return false;
+      // if (visitCount == 0) return state.buildings.woodenHut >= 6;
+      // if (visitCount == 1) return state.buildings.woodenHut >= 10;
+      // if (visitCount == 2) return state.buildings.stoneHut >= 5;
 
       const ownedItems = COLLECTOR_ITEMS.filter(
         (itemId) => {
@@ -33,16 +40,16 @@ export const wanderingCollectorEvents: Record<string, GameEvent> = {
     message: (state: GameState) => {
       const visitCount = state.story?.seen?.collectorVisitCount || 0;
       const messages = [
-        "A mysterious figure wrapped in tattered robes approaches. They seem interested in the curiosities you've found.",
-        "The hooded figure returns, their steps silent on the stone. 'You have more... interesting things,' they whisper.",
-        "The collector appears one last time, their eyes gleaming from within the hood. 'Our time grows short. Show me what remains.'"
+        "A figure wrapped in tattered robes approaches. He seems intrigued by what you’ve gathered. 'I sense value among your possessions,' he murmurs. 'Allow me to take one, in exchange for 100 gold.'",
+        "The robed figure returns, his steps soundless on the stone. 'More artifacts, more secrets', he whispers. 'Let me claim one again, and your purse will be heavier.'",
+        "The collector appears again, eyes glowing within the hood. 'Our dealings near their end, he says softly. 'Show me what remains, and I will buy one final treasure.'"
       ];
       return messages[Math.min(visitCount, 2)];
     },
     timeProbability: 0.05,
     repeatable: true,
     showAsTimedTab: true,
-    timedTabDuration: 3 * 60 * 1000, // 3 minutes
+    timedTabDuration: 1 * 60 * 1000, // 3 minutes
     choices: (state: GameState): EventChoice[] => {
       const ownedItems = COLLECTOR_ITEMS.filter(
         (itemId) => {
@@ -58,7 +65,7 @@ export const wanderingCollectorEvents: Record<string, GameEvent> = {
 
       const choices: EventChoice[] = selectedItems.map((itemId) => ({
         id: `sell_${itemId}`,
-        label: `Sell ${capitalizeWords(itemId.replace(/_/g, " "))} (100 Gold)`,
+        label: `Sell ${capitalizeWords(itemId.replace(/_/g, " "))}`,
         effect: (innerState: GameState) => {
           const visitCount = (innerState.story?.seen?.collectorVisitCount || 0) + 1;
           const newState: Partial<GameState> = {
@@ -83,9 +90,9 @@ export const wanderingCollectorEvents: Record<string, GameEvent> = {
           }
 
           const whispers = [
-            "The collector takes the item with a bony hand. 'I found out that there has not always been magic in this world, but it only appeared after the mysterious explosion,' they whisper before vanishing.",
-            "They examine the item closely. 'The light... it used to be different. Clearer. Before the shadows learned to hunger,' they murmur.",
-            "A thin finger traces the artifact. 'Everything returns to the dark eventually. Even the memories of the before-time,' they sigh and fade away."
+            "The collector takes the item with a bony hand. 'On my travels I found many items of the ancient civilization. They were very advanced,' he whispers before vanishing.",
+            "He examines the item closely before taking it. 'The great explosion destryoed most of the artifactos of the ancient cilivization. It is hard to find any.' he murmurs.",
+            "A thin finger traces the artifact. 'I learned a lot about the ancient civilization on my travels. Before the great explosion there was no magic in this world. It came with the explsoion.' he whispers while leaving."
           ];
 
           return {
@@ -98,14 +105,14 @@ export const wanderingCollectorEvents: Record<string, GameEvent> = {
 
       // Fifth option: Keep items
       choices.push({
-        id: "keep_items",
-        label: "Keep your items",
+        id: "sell_nothing",
+        label: "Sell nothing",
         effect: (innerState: GameState) => {
           const visitCount = (innerState.story?.seen?.collectorVisitCount || 0) + 1;
           const whispers = [
-            "The collector sighs and turns away. 'I found out that there has not always been magic in this world, but it only appeared after the mysterious explosion,' they murmur as they fade into the shadows.",
-            "A low hum comes from the hood. 'Some treasures are merely anchors for the past,' they say, disappearing once more.",
-            "They nod slowly. 'Hold tight to what you can. The void is cold and very, very long,' they whisper for the final time."
+            "The collector sighs and turns away. 'On my travels I found many items of the ancient civilization. They were very advanced,' he whispers before vanishing.",
+            "A low hum comes from the hood. 'The great explosion destryoed most of the artifactos of the ancient cilivization. It is hard to find any.' he murmurs.",
+            "A slight sigh comes from the collector. 'I learned a lot about the ancient civilization on my travels. Before the great explosion there was no magic in this world. It came with the explsoion.' he whispers while leaving."
           ];
           
           return {

@@ -185,6 +185,7 @@ export const gameStateSchema = z.object({
       ravens_orb: z.boolean().default(false),
       occultist_grimoire: z.boolean().default(false),
       shadow_flute: z.boolean().default(false),
+      hollow_king_scepter: z.boolean().default(false),
       bloodstone: z.boolean().default(false),
       frostglass: z.boolean().default(false),
       tarnished_compass: z.boolean().default(false),

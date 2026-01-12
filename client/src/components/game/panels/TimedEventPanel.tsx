@@ -269,7 +269,7 @@ export default function TimedEventPanel() {
             })()}
           </h3>
         )}
-      <div className="space-y-2 mt-2">
+      <div className="flex flex-wrap gap-2 mt-2">
         {Array.isArray(eventChoices) && eventChoices
           .map((choice) => {
             const cost = choice.cost;
