@@ -13,13 +13,13 @@ import {
 } from "@/components/ui/tooltip";
 
 export default function StartScreen() {
-  const { executeAction, setBoostMode, boostMode, activatedPurchases } = useGameStore();
+  const { executeAction, setBoostMode, boostMode, CM } = useGameStore();
   const [isAnimationComplete, setIsAnimationComplete] = useState(false);
   const isMobile = useIsMobile();
   const buttonRef = useRef<HTMLButtonElement>(null);
   const mobileTooltip = useMobileTooltip();
   const executedRef = useRef(false);
-  const isCruelMode = activatedPurchases?.['cruel_mode'] || false;
+  const isCruelMode = CM || false;
 
   useEffect(() => {
     // Check if we're on the /boost path and set the flag
