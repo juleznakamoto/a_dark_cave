@@ -77,7 +77,7 @@ export const wanderingCollectorEvents: Record<string, GameEvent> = {
 
       const choices: EventChoice[] = selectedItems.map((itemId) => ({
         id: `sell_${itemId}`,
-        label: `Sell ${capitalizeWords(itemId.replace(/_/g, " "))}`,
+        label: `Sell ${capitalizeWords(itemId)}`,
         effect: (innerState: GameState) => {
           const visitCount = (innerState.story?.seen?.collectorVisitCount || 0) + 1;
           const newState: Partial<GameState> = {
