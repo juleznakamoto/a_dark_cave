@@ -991,7 +991,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const initialLogEntry: LogEntry = {
       id: "initial-narrative",
       message: preserved.cruelMode
-        ? "A dark cave. The air is freezing and damp. You barely see the shapes around you."
+        ? "A very dark cave. The air is freezing and damp. You barely see anything around you."
         : "A dark cave. The air is cold and damp. You barely see the shapes around you.",
       timestamp: Date.now(),
       type: "system",
@@ -1102,6 +1102,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     // Get current boost mode before loading
     const currentBoostMode = get().boostMode;
+
+    // Preserve cruel mode status if it exists in savedState
+    const cruelMode = savedState?.CM || 0;
 
     if (savedState) {
       // CRITICAL: Extract playTime FIRST before any processing
@@ -1228,9 +1231,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
       const initialLogEntry: LogEntry = {
         id: "initial-narrative",
-        message: currentBoostMode
-          ? "A dark cave. The air is freezing and damp. You barely see the shapes around you. Someone left you a gift."
-          : "A dark cave. The air is cold and damp. You barely see the shapes around you.",
+        message: cruelMode
+        ? "A very dark cave. The air is freezing and damp. You barely see anything around you."
+        : "A dark cave. The air is cold and damp. You barely see the shapes around you.",
         timestamp: Date.now(),
         type: "system",
       };

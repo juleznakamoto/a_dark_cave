@@ -176,8 +176,15 @@ export default function StartScreen() {
       <main className="relative z-10 flex-1 flex flex-col items-center justify-center min-h-screen">
         <div className="text-center mb-4">
           <p className="animate-fade-in-text text-lg text-gray-300/90 leading-relaxed">
-            {isCruelMode ? "A very dark cave." : "A dark cave."}<br></br>The air is cold and damp.<br></br>You barely
-            see the shapes around you.
+            {isCruelMode ? "A very dark cave." : "A dark cave."}
+            <br></br>
+            {isCruelMode
+              ? "The air is freezing and damp."
+              : "The air is cold and damp."}
+            <br></br>
+            {isCruelMode
+              ? "You barely see anything around you."
+              : "You barely see the shapes around you."}
           </p>
         </div>
         <ParticleButton
