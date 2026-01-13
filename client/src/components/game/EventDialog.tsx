@@ -308,6 +308,10 @@ export default function EventDialog({
                     className="w-full text-left justify-between"
                     disabled={isDisabled}
                     button_id={`event-choice-${choice.id}`}
+                    onMouseDown={mobileTooltip.isMobile ? (e) => mobileTooltip.handleMouseDown(choice.id, isDisabled, false, e) : undefined}
+                    onMouseUp={mobileTooltip.isMobile ? (e) => mobileTooltip.handleMouseUp(choice.id, isDisabled, () => handleChoice(choice.id), e) : undefined}
+                    onTouchStart={mobileTooltip.isMobile ? (e) => mobileTooltip.handleTouchStart(choice.id, isDisabled, false, e) : undefined}
+                    onTouchEnd={mobileTooltip.isMobile ? (e) => mobileTooltip.handleTouchEnd(choice.id, isDisabled, () => handleChoice(choice.id), e) : undefined}
                   >
                     <span>{labelText}</span>
                     <div className="flex gap-1 items-center ml-2">
@@ -339,17 +343,13 @@ export default function EventDialog({
 
                 return costText ? (
                   <TooltipProvider key={choice.id}>
-                    <Tooltip>
+                    <Tooltip open={mobileTooltip.isTooltipOpen(choice.id)}>
                       <TooltipTrigger asChild>
                         <div
                           onClick={(e) => {
                             logger.log(`[EVENT TOOLTIP] Showing cost for choice: ${choice.id}, cost: ${costText}`);
                             mobileTooltip.handleWrapperClick(choice.id, isDisabled, false, e);
                           }}
-                          onMouseDown={mobileTooltip.isMobile ? (e) => mobileTooltip.handleMouseDown(choice.id, isDisabled, false, e) : undefined}
-                          onMouseUp={mobileTooltip.isMobile ? (e) => mobileTooltip.handleMouseUp(choice.id, isDisabled, () => handleChoice(choice.id), e) : undefined}
-                          onTouchStart={mobileTooltip.isMobile ? (e) => mobileTooltip.handleTouchStart(choice.id, isDisabled, false, e) : undefined}
-                          onTouchEnd={mobileTooltip.isMobile ? (e) => mobileTooltip.handleTouchEnd(choice.id, isDisabled, () => handleChoice(choice.id), e) : undefined}
                         >
                           {buttonContent}
                         </div>
@@ -362,13 +362,7 @@ export default function EventDialog({
                     </Tooltip>
                   </TooltipProvider>
                 ) : (
-                  <div
-                    key={choice.id}
-                    onMouseDown={mobileTooltip.isMobile ? (e) => mobileTooltip.handleMouseDown(choice.id, isDisabled, false, e) : undefined}
-                    onMouseUp={mobileTooltip.isMobile ? (e) => mobileTooltip.handleMouseUp(choice.id, isDisabled, () => handleChoice(choice.id), e) : undefined}
-                    onTouchStart={mobileTooltip.isMobile ? (e) => mobileTooltip.handleTouchStart(choice.id, isDisabled, false, e) : undefined}
-                    onTouchEnd={mobileTooltip.isMobile ? (e) => mobileTooltip.handleTouchEnd(choice.id, isDisabled, () => handleChoice(choice.id), e) : undefined}
-                  >
+                  <div key={choice.id}>
                     {buttonContent}
                   </div>
                 );

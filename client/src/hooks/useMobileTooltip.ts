@@ -170,7 +170,8 @@ export function useMobileButtonTooltip() {
     
     // If tooltip is already open, close it
     if (openTooltipId === id) {
-      // Don't prevent default, we want the click to close it
+      e.preventDefault();
+      e.stopPropagation();
       setPressingId(null);
       return;
     }
@@ -179,7 +180,7 @@ export function useMobileButtonTooltip() {
     if (pressingId === id) {
       setPressingId(null);
       if (!disabled) {
-        // Execute the click action
+        // Allow the click to proceed normally
         onClick();
       }
     } else {
