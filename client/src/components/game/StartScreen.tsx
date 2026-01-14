@@ -113,6 +113,8 @@ export default function StartScreen() {
             <img
               src="/the_hustle_logo.svg"
               alt="The Hustle"
+              width={116}
+              height={40}
               className="h-8 md:h-10 w-auto opacity-100"
             />
           </div>
