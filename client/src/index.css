@@ -32,35 +32,13 @@ body {
 @font-face {
   font-family: 'Inter';
   font-style: normal;
-  font-weight: 400;
+  font-weight: 400 500;
   font-display: swap;
   src: url('/fonts/inter.woff2') format('woff2');
 }
 
-@font-face {
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 700;
-  font-display: swap;
-  src: url('/fonts/inter-bold.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'Inter';
-  font-style: italic;
-  font-weight: 400;
-  font-display: swap;
-  src: url('/fonts/inter-italic.woff2') format('woff2');
-}
-
 :root {
   font-family: 'Inter', sans-serif;
-}
-
-@supports (font-variation-settings: normal) {
-  :root {
-    font-family: 'Inter var', sans-serif;
-  }
 }
 
 /* Fallback for Crimson Text */
