@@ -35,7 +35,7 @@ export const wanderingCollectorEvents: Record<string, GameEvent> = {
         if (state.relics && (state.relics as any)[itemId]) return true;
         return false;
       });
-      return ownedItems.length >= 0;
+      return ownedItems.length >= 3;
     },
     title: "The Wandering Collector",
     message: (state: GameState) => {
@@ -48,7 +48,7 @@ export const wanderingCollectorEvents: Record<string, GameEvent> = {
       ];
       return messages[Math.min(visitCount, 2)];
     },
-    timeProbability: 0.05,
+    timeProbability: 10,
     repeatable: true,
     showAsTimedTab: true,
     timedTabDuration: 1 * 60 * 1000, // 3 minutes
