@@ -72,13 +72,13 @@ app.use(compression({
 
 // Add caching for static assets (audio, images, icons)
 app.use((req, res, next) => {
-  // Cache audio files for 1 month
+  // Cache audio files for 1 week
   if (req.path.startsWith('/sounds/')) {
-    res.set('Cache-Control', 'public, max-age=2592000, immutable');
+    res.set('Cache-Control', 'public, max-age=604800, immutable');
   }
-  // Cache icons and images for 1 month
+  // Cache icons and images for 1 week
   else if (req.path.match(/\.(png|jpg|jpeg|svg|ico|webp)$/)) {
-    res.set('Cache-Control', 'public, max-age=2592000, immutable');
+    res.set('Cache-Control', 'public, max-age=604800, immutable');
   }
   // Cache manifest and robots for 1 day
   else if (req.path.match(/\.(json|txt|xml)$/) && !req.path.startsWith('/api/')) {
