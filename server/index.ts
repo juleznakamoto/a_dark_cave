@@ -6,6 +6,8 @@ import { createPaymentIntent, verifyPayment } from "./stripe";
 import { processReferral } from "./referral";
 import { Filter } from "bad-words";
 
+
+
 // Supabase config endpoint for production
 const getSupabaseConfig = () => {
   const isDev = process.env.NODE_ENV === "development";
