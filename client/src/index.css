@@ -45,6 +45,16 @@ body {
   src: url('/fonts/inter.ttf') format('truetype');
 }
 
+:root {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+@supports (font-variation-settings: normal) {
+  :root {
+    font-family: 'Inter', sans-serif;
+  }
+}
+
 @keyframes fade-to-black {
   from {
     background-color: rgba(0, 0, 0, 0);
