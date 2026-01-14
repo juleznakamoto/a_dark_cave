@@ -29,6 +29,30 @@ body {
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/inter-v18-latin-regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url('/fonts/inter-v18-latin-800.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Crimson Text';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/crimson-text-v21-latin-regular.woff2') format('woff2');
+}
+
 @keyframes fade-to-black {
   from {
     background-color: rgba(0, 0, 0, 0);
