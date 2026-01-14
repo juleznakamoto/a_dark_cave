@@ -177,7 +177,7 @@ export default function StartScreen() {
       <CloudShader />
       <main className="relative z-10 flex-1 flex flex-col items-center justify-center min-h-screen">
         <div className="text-center mb-4">
-          <p className="animate-fade-in-text text-lg text-gray-300/90 leading-relaxed">
+          <p className="text-lg text-gray-300/90 leading-relaxed">
             {isCruelMode ? "A very dark cave." : "A dark cave."}
             <br></br>
             {isCruelMode
