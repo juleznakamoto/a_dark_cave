@@ -70,10 +70,20 @@ app.use(compression({
   }
 }));
 
-// Add caching for static assets (audio, images, icons)
-app.use((req, res, next) => {
-  // Cache audio files for 1 week
-  if (req.path.startsWith('/sounds/')) {
+  // Add caching for static assets (audio, images, icons)
+  app.use((req, res, next) => {
+    // Explicitly handle fonts before any other matching to prevent HTML fallback
+    if (req.path.startsWith('/fonts/') && req.path.match(/\.(woff2|ttf|otf)$/)) {
+      const fontPath = path.resolve(process.cwd(), "public", req.path.slice(1));
+      if (fs.existsSync(fontPath)) {
+        res.set('Cache-Control', 'public, max-age=31536000, immutable');
+        res.set('Content-Type', req.path.endsWith('.woff2') ? 'font/woff2' : 'font/ttf');
+        return res.sendFile(fontPath);
+      }
+    }
+
+    // Cache audio files for 1 week
+    if (req.path.startsWith('/sounds/')) {
     res.set('Cache-Control', 'public, max-age=604800, immutable');
   }
   // Cache icons and images for 1 week
