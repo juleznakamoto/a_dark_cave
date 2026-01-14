@@ -88,13 +88,13 @@ app.use(compression({
       }
     }
 
-    // Cache audio files for 1 week
+    // Cache audio files for 1 month
     if (req.path.startsWith('/sounds/')) {
-    res.set('Cache-Control', 'public, max-age=604800, immutable');
+    res.set('Cache-Control', 'public, max-age=2592000, immutable');
   }
-  // Cache icons and images for 1 week
+  // Cache icons and images for 1 month
   else if (req.path.match(/\.(png|jpg|jpeg|svg|ico|webp)$/)) {
-    res.set('Cache-Control', 'public, max-age=604800, immutable');
+    res.set('Cache-Control', 'public, max-age=2592000, immutable');
   }
   // Cache fonts for 1 year
   else if (req.path.match(/\.(woff2|ttf|otf)$/)) {
