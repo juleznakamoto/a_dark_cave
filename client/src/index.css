@@ -34,7 +34,7 @@ body {
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('/fonts/inter-v18-latin-regular.woff2') format('woff2');
+  src: url('/fonts/inter-v18-latin-regular.woff2') format('truetype');
 }
 
 @font-face {
@@ -42,7 +42,7 @@ body {
   font-style: normal;
   font-weight: 800;
   font-display: swap;
-  src: url('/fonts/inter-v18-latin-800.woff2') format('woff2');
+  src: url('/fonts/inter-v18-latin-800.woff2') format('truetype');
 }
 
 @font-face {
@@ -50,7 +50,7 @@ body {
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('/fonts/crimson-text-v21-latin-regular.woff2') format('woff2');
+  src: url('/fonts/crimson-text-v21-latin-regular.woff2') format('truetype');
 }
 
 @keyframes fade-to-black {
