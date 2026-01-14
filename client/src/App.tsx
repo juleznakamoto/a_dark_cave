@@ -59,7 +59,7 @@ function App() {
 
     const initPlaylight = async () => {
       // Defer SDK loading by 15 seconds to prioritize initial render
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      await new Promise((resolve) => setTimeout(resolve, 30000));
 
       try {
         const script = document.createElement("script");
