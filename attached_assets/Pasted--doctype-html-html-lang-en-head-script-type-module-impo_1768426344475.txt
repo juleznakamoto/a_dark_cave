@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <script type="module">
+            import {createHotContext} from "/@vite/client";
+            const hot = createHotContext("/__dummy__runtime-error-plugin");
+
+            function sendError(error) {
+                if (!(error instanceof Error)) {
+                    error = new Error("(unknown runtime error)");
+                }
+                const serialized = {
+                    message: error.message,
+                    stack: error.stack,
+                };
+                hot.send("runtime-error-plugin:error", serialized);
+            }
+
+            window.addEventListener("error", (evt) => {
+                sendError(evt.error);
+            }
+            );
+
+            window.addEventListener("unhandledrejection", (evt) => {
+                sendError(evt.reason);
+            }
+            );
+        </script>
+        <script type="module">
+            import RefreshRuntime from "/@react-refresh"
+            RefreshRuntime.injectIntoGlobalHook(window)
+            window.$RefreshReg$ = () => {}
+            window.$RefreshSig$ = () => (type) => type
+            window.__vite_plugin_react_preamble_installed__ = true
+        </script>
+        <script type="module" src="/@vite/client"></script>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5, user-scalable=yes, viewport-fit=cover"/>
+        <meta name="mobile-web-app-capable" content="yes"/>
+        <!-- Primary Meta Tags -->
+        <title>A Dark Cave - Survive the Darkness, Build Your Settlement</title>
+        <meta name="title" content="A Dark Cave - Survive the Darkness, Build Your Settlement"/>
+        <meta name="description" content="A text-based survival and settlement building game. Start with nothing, explore an ancient cave and build your way to survival. Gather resources, craft tools, manage villagers, and uncover dark secrets."/>
+        <meta name="author" content="A Dark Cave"/>
+        <meta name="robots" content="index, follow"/>
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="website"/>
+        <meta property="og:url" content="https://a-dark-cave.com/"/>
+        <meta property="og:title" content="A Dark Cave - Survive the Darkness, Build Your Settlement"/>
+        <meta property="og:description" content="A text-based survival and settlement building game. Start with nothing, explore an ancient cave and build your way to survival."/>
+        <meta property="og:image" content="https://a-dark-cave.com/apple-touch-icon.png"/>
+        <meta property="og:site_name" content="A Dark Cave"/>
+        <!-- Twitter -->
+        <meta name="twitter:card" content="summary_large_image"/>
+        <meta name="twitter:url" content="https://a-dark-cave.com/"/>
+        <meta name="twitter:title" content="A Dark Cave - Survive the Darkness, Build Your Settlement"/>
+        <meta name="twitter:description" content="A text-based survival and settlement building game. Start with nothing in the depths of an ancient cave and build your way to survival."/>
+        <meta name="twitter:image" content="https://a-dark-cave.com/apple-touch-icon.png"/>
+        <!-- Canonical URL -->
+        <link rel="canonical" href="https://a-dark-cave.com/"/>
+        <!-- Theme Color -->

@@ -80,6 +80,11 @@ app.use((req, res, next) => {
   else if (req.path.match(/\.(png|jpg|jpeg|svg|ico|webp)$/)) {
     res.set('Cache-Control', 'public, max-age=604800, immutable');
   }
+  // Cache fonts for 1 year
+  else if (req.path.match(/\.(woff2|ttf|otf)$/)) {
+    res.set('Cache-Control', 'public, max-age=31536000, immutable');
+    res.set('Content-Type', req.path.endsWith('.woff2') ? 'font/woff2' : 'font/ttf');
+  }
   // Cache manifest and robots for 1 day
   else if (req.path.match(/\.(json|txt|xml)$/) && !req.path.startsWith('/api/')) {
     res.set('Cache-Control', 'public, max-age=86400');
