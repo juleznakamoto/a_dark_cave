@@ -157,7 +157,7 @@ export default function StartScreen() {
         }
 
         .animate-fade-in-button {
-          animation: fade-in-button 2s ease-in 3.5s forwards;
+          animation: fade-in-button 5.5s ease-in 0s forwards;
           opacity: 0;
           pointer-events: none;
         }
