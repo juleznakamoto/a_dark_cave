@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useGameStore } from "@/game/state";
+import combatSoundUrl from "@assets/combat_1768391313031.wav";
 import { calculateBastionStats } from "@/game/bastionStats";
 import {
   getTotalKnowledge,
@@ -108,6 +109,25 @@ export default function CombatDialog({
   const HAS_ELDER_WIZARD = gameState.fellowship.elder_wizard || false;
 
   const bastionStats = calculateBastionStats(gameState);
+
+  // Combat audio loop
+  const combatAudioRef = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    if (isOpen) {
+      const audio = new Audio(combatSoundUrl);
+      audio.loop = true;
+      audio.volume = 0.3;
+      combatAudioRef.current = audio;
+      audio.play().catch(() => {});
+
+      return () => {
+        audio.pause();
+        audio.currentTime = 0;
+        combatAudioRef.current = null;
+      };
+    }
+  }, [isOpen]);
 
   // Reset state when dialog opens
   useEffect(() => {
