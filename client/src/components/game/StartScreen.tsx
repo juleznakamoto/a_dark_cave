@@ -113,6 +113,8 @@ export default function StartScreen() {
             <img
               src="/the_hustle_logo.svg"
               alt="The Hustle"
+              width="116"
+              height="40"
               className="h-8 md:h-10 w-auto opacity-100"
             />
           </div>
@@ -152,7 +154,7 @@ export default function StartScreen() {
         }
         
         .animate-fade-in-text {
-          animation: fade-in-text 2.5s ease-in 0s forwards;
+          animation: fade-in-text 0s ease-in 0s forwards;
           opacity: 0;
         }
 
