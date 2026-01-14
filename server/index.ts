@@ -1,7 +1,13 @@
 import express, { type Request, Response, NextFunction } from "express";
 import compression from "compression";
 import rateLimit from "express-rate-limit";
+import path from "path";
+import fs from "fs";
+import { fileURLToPath } from "url";
 import { setupVite, serveStatic, log } from "./vite";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 import { createPaymentIntent, verifyPayment } from "./stripe";
 import { processReferral } from "./referral";
 import { Filter } from "bad-words";
@@ -74,7 +80,7 @@ app.use(compression({
   app.use((req, res, next) => {
     // Explicitly handle fonts before any other matching to prevent HTML fallback
     if (req.path.startsWith('/fonts/') && req.path.match(/\.(woff2|ttf|otf)$/)) {
-      const fontPath = path.resolve(process.cwd(), "public", req.path.slice(1));
+      const fontPath = path.resolve(__dirname, "..", "public", req.path.slice(1));
       if (fs.existsSync(fontPath)) {
         res.set('Cache-Control', 'public, max-age=31536000, immutable');
         res.set('Content-Type', req.path.endsWith('.woff2') ? 'font/woff2' : 'font/ttf');
