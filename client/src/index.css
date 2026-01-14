@@ -31,10 +31,10 @@ body {
 
 @font-face {
   font-family: 'Inter';
+  src: url('/fonts/inter.woff2') format('woff2-variations');
+  font-weight: 100 900;
   font-style: normal;
-  font-weight: 400 500;
   font-display: swap;
-  src: url('/fonts/inter.woff2') format('woff2');
 }
 
 :root {
@@ -44,10 +44,10 @@ body {
 /* Fallback for Crimson Text */
 @font-face {
   font-family: 'Crimson Text';
+  src: url('/fonts/inter.woff2') format('woff2-variations');
+  font-weight: 100 900;
   font-style: normal;
-  font-weight: 400;
   font-display: swap;
-  src: url('/fonts/inter.woff2') format('woff2');
 }
 
 @keyframes fade-to-black {
