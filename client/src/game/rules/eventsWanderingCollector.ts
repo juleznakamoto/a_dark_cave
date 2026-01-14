@@ -17,6 +17,8 @@ const COLLECTOR_ITEMS = [
   "hollow_king_scepter",
 ] as const;
 
+const COLLECTOR_REWARD = 100
+
 export const wanderingCollectorEvents: Record<string, GameEvent> = {
   wandering_collector: {
     id: "wandering_collector",
@@ -40,9 +42,9 @@ export const wanderingCollectorEvents: Record<string, GameEvent> = {
       const visitCountValue = state.story?.seen?.collectorVisitCount;
       const visitCount = typeof visitCountValue === "number" ? visitCountValue : 0;
       const messages = [
-        "A figure wrapped in tattered robes approaches. He seems intrigued by what you’ve gathered. 'I sense value among your possessions,' he murmurs. 'Allow me to take one, in exchange for 100 gold.'",
-        "The robed figure returns, his steps soundless on the ground. 'More artifacts, more secrets', he whispers. 'Let me claim one again, and your purse will be 100 gold heavier.'",
-        "The collector appears again, eyes glowing within the hood. 'Our dealings near their end,' he says softly. 'Sell me one more, and 100 gold shall be yours.'",
+        `A figure wrapped in tattered robes approaches. He seems intrigued by what you’ve gathered. 'I sense value among your possessions,' he murmurs. 'Allow me to take one, in exchange for ${COLLECTOR_REWARD} gold.'`,
+        `The robed figure returns, his steps soundless on the ground. 'More artifacts, more secrets', he whispers. 'Let me claim one again, and your purse will be ${COLLECTOR_REWARD} gold heavier.'`,
+        `The collector appears again, eyes glowing within the hood. 'Our dealings near their end,' he says softly. 'Sell me one more, and ${COLLECTOR_REWARD} gold shall be yours.'`,
       ];
       return messages[Math.min(visitCount, 2)];
     },
@@ -84,7 +86,7 @@ export const wanderingCollectorEvents: Record<string, GameEvent> = {
           const newState: Partial<GameState> = {
             resources: {
               ...innerState.resources,
-              gold: (innerState.resources.gold || 0) + 100,
+              gold: (innerState.resources.gold || 0) + COLLECTOR_REWARD,
             },
             story: {
               ...innerState.story,

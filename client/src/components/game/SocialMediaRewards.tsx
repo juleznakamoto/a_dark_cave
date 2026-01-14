@@ -23,14 +23,6 @@ const SOCIAL_PLATFORMS = [
     url: 'https://www.reddit.com/r/aDarkCave/',
     reward: 100,
   },
-  // Add more platforms here as needed:
-  // {
-  //   id: 'twitter',
-  //   name: 'Twitter/X',
-  //   icon: '/camera.png',
-  //   url: 'https://twitter.com/a_dark_cave',
-  //   reward: 100,
-  // },
 ];
 
 export default function SocialMediaRewards() {
