@@ -105,9 +105,19 @@ export class AudioManager {
       await this.initAudioContext();
       if (!this.audioContext) return;
 
-      const audioBuffer = this.sounds.get(name);
+      let audioBuffer = this.sounds.get(name);
       if (!audioBuffer) {
-        logger.warn(`Sound ${name} not found`);
+        // If sound not loaded yet, try to load it specifically
+        const url = this.soundUrls.get(name);
+        if (url) {
+          logger.log(`Sound ${name} not found in cache, attempting immediate load...`);
+          await this.loadActualSound(name, url);
+          audioBuffer = this.sounds.get(name);
+        }
+      }
+
+      if (!audioBuffer) {
+        logger.warn(`Sound ${name} not found and could not be loaded`);
         return;
       }
 
@@ -148,9 +158,19 @@ export class AudioManager {
       await this.initAudioContext();
       if (!this.audioContext) return;
 
-      const audioBuffer = this.sounds.get(name);
+      let audioBuffer = this.sounds.get(name);
       if (!audioBuffer) {
-        logger.warn(`Sound ${name} not found`);
+        // If sound not loaded yet, try to load it specifically
+        const url = this.soundUrls.get(name);
+        if (url) {
+          logger.log(`Sound ${name} not found in cache, attempting immediate load...`);
+          await this.loadActualSound(name, url);
+          audioBuffer = this.sounds.get(name);
+        }
+      }
+
+      if (!audioBuffer) {
+        logger.warn(`Sound ${name} not found and could not be loaded`);
         return;
       }
 
