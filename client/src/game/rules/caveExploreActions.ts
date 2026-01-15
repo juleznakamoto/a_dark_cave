@@ -33,16 +33,16 @@ function processTriggeredEvents(
 
         // Create a log entry for the event
         const logEntry: LogEntry = {
-          id: `${eventId}-${Date.now()}-${Math.random()}`,
-          message: typeof eventDef.message === 'function'
-            ? eventDef.message(state)
-            : Array.isArray(eventDef.message)
-              ? eventDef.message[Math.floor(Math.random() * eventDef.message.length)]
-              : eventDef.message,
+          id: `${eventId}-${Date.now()}`,
+          message: typeof eventDef.message === 'string' 
+            ? eventDef.message 
+            : Array.isArray(eventDef.message) 
+              ? eventDef.message[0] 
+              : '',
           timestamp: Date.now(),
           type: "event",
           title: eventDef.title,
-          choices: typeof eventDef.choices === 'function' ? eventDef.choices(state) : eventDef.choices,
+          choices: typeof eventDef.choices === 'function' ? undefined : eventDef.choices,
           isTimedChoice: eventDef.isTimedChoice,
           baseDecisionTime: eventDef.baseDecisionTime,
           fallbackChoice: eventDef.fallbackChoice,
