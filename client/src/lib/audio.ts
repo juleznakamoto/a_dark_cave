@@ -1,4 +1,4 @@
-import { logger } from './logger';
+import { logger } from "./logger";
 
 export class AudioManager {
   private static instance: AudioManager;
@@ -22,10 +22,11 @@ export class AudioManager {
 
   private async initAudioContext(): Promise<void> {
     if (!this.audioContext) {
-      this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      this.audioContext = new (window.AudioContext ||
+        (window as any).webkitAudioContext)();
     }
 
-    if (this.audioContext.state === 'suspended') {
+    if (this.audioContext.state === "suspended") {
       await this.audioContext.resume();
     }
   }
@@ -60,12 +61,12 @@ export class AudioManager {
   private async loadAllSounds(): Promise<void> {
     if (this.soundUrls.size === 0) return;
 
-    logger.log('Loading all sounds after user gesture...');
-    const loadPromises = Array.from(this.soundUrls.entries()).map(([name, url]) =>
-      this.loadActualSound(name, url)
+    logger.log("Loading all sounds after user gesture...");
+    const loadPromises = Array.from(this.soundUrls.entries()).map(
+      ([name, url]) => this.loadActualSound(name, url),
     );
     await Promise.all(loadPromises);
-    logger.log('Finished loading all sounds');
+    logger.log("Finished loading all sounds");
   }
 
   private async loadActualSound(name: string, url: string): Promise<void> {
@@ -86,7 +87,11 @@ export class AudioManager {
     }
   }
 
-  async playSound(name: string, volume: number = 1, isMuted: boolean = false): Promise<void> {
+  async playSound(
+    name: string,
+    volume: number = 1,
+    isMuted: boolean = false,
+  ): Promise<void> {
     // Don't play if muted globally or if specific sound is muted
     if (this.isMutedGlobally || isMuted) return;
 
@@ -121,7 +126,12 @@ export class AudioManager {
     }
   }
 
-  async playLoopingSound(name: string, volume: number = 1, isMuted: boolean = false, fadeInDuration: number = 0): Promise<void> {
+  async playLoopingSound(
+    name: string,
+    volume: number = 1,
+    isMuted: boolean = false,
+    fadeInDuration: number = 0,
+  ): Promise<void> {
     // Don't play if muted globally or if specific sound is muted
     if (this.isMutedGlobally || isMuted) return;
 
@@ -155,7 +165,7 @@ export class AudioManager {
         gainNode.gain.value = 0;
         gainNode.gain.linearRampToValueAtTime(
           Math.max(0, Math.min(1, volume)),
-          this.audioContext.currentTime + fadeInDuration
+          this.audioContext.currentTime + fadeInDuration,
         );
       } else {
         gainNode.gain.value = Math.max(0, Math.min(1, volume));
@@ -175,13 +185,16 @@ export class AudioManager {
   stopLoopingSound(name: string, fadeOutDuration: number = 0): void {
     const source = this.loopingSources.get(name);
     const gainNode = this.loopingSources.get(`${name}_gain`) as any as GainNode;
-    
+
     if (source) {
       try {
         if (fadeOutDuration > 0 && gainNode && this.audioContext) {
           // Fade out
-          gainNode.gain.linearRampToValueAtTime(0, this.audioContext.currentTime + fadeOutDuration);
-          
+          gainNode.gain.linearRampToValueAtTime(
+            0,
+            this.audioContext.currentTime + fadeOutDuration,
+          );
+
           // Stop after fade out completes
           setTimeout(() => {
             try {
@@ -224,29 +237,29 @@ export class AudioManager {
   }
 
   async preloadSounds(): Promise<void> {
-    logger.log('Registering sounds for lazy loading...');
+    logger.log("Registering sounds for lazy loading...");
     // Just register the sound URLs, don't load yet
-    this.soundUrls.set('newVillager', '/sounds/new_villager.wav');
-    this.soundUrls.set('event', '/sounds/event.wav');
-    this.soundUrls.set('eventMadness', '/sounds/event_madness.wav');
-    this.soundUrls.set('whisperingCube', '/sounds/whispering_cube.wav');
-    this.soundUrls.set('backgroundMusic', '/sounds/background_music.wav');
-    this.soundUrls.set('explosion', '/sounds/explosion.wav');
-    this.soundUrls.set('wind', '/sounds/wind.wav');
-    this.soundUrls.set('combat', '@assets/combat_1768391313031.wav');
-    logger.log('Sound URLs registered for lazy loading');
+    this.soundUrls.set("newVillager", "/sounds/new_villager.wav");
+    this.soundUrls.set("event", "/sounds/event.wav");
+    this.soundUrls.set("eventMadness", "/sounds/event_madness.wav");
+    this.soundUrls.set("whisperingCube", "/sounds/whispering_cube.wav");
+    this.soundUrls.set("backgroundMusic", "/sounds/background_music.wav");
+    this.soundUrls.set("explosion", "/sounds/explosion.wav");
+    this.soundUrls.set("wind", "/sounds/wind.wav");
+    this.soundUrls.set("combat", "/attached_assets/combat_1768391313031.wav");
+    logger.log("Sound URLs registered for lazy loading");
   }
 
   async startBackgroundMusic(volume: number = 1): Promise<void> {
     this.backgroundMusicVolume = volume;
     this.wasBackgroundMusicPlaying = true;
     // The check for mute state is now handled within playLoopingSound
-    await this.playLoopingSound('backgroundMusic', volume);
+    await this.playLoopingSound("backgroundMusic", volume);
   }
 
   pauseAllSounds(): void {
     // Track if background music was playing
-    this.wasBackgroundMusicPlaying = this.loopingSources.has('backgroundMusic');
+    this.wasBackgroundMusicPlaying = this.loopingSources.has("backgroundMusic");
     // Stop all sounds
     this.stopAllSounds();
   }
@@ -266,8 +279,8 @@ export class AudioManager {
       this.stopAllSounds();
     } else {
       // If unmuting, we might want to resume background music if it was playing
-      this.resumeSounds().catch(error => {
-        logger.warn('Failed to resume sounds after unmuting:', error);
+      this.resumeSounds().catch((error) => {
+        logger.warn("Failed to resume sounds after unmuting:", error);
       });
     }
   }
@@ -275,6 +288,6 @@ export class AudioManager {
 
 // Initialize and preload sounds
 export const audioManager = AudioManager.getInstance();
-audioManager.preloadSounds().catch(error => {
-  logger.warn('Failed to preload some sounds:', error);
+audioManager.preloadSounds().catch((error) => {
+  logger.warn("Failed to preload some sounds:", error);
 });

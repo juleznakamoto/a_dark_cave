@@ -63,7 +63,7 @@ export default function CombatDialog({
   onVictory,
   onDefeat,
 }: CombatDialogProps) {
-  const gameState = useGameStore.getState();
+  const gameState = useGameStore();
   const crushingStrikeLevel = useGameStore(
     (state) => state.combatSkills.crushingStrikeLevel,
   );
