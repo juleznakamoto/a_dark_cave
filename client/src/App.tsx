@@ -11,7 +11,6 @@ import Game from "@/pages/game";
 
 // Lazy load all other pages
 const EndScreenPage = lazy(() => import("@/pages/end-screen"));
-const HeroTest = lazy(() => import("@/pages/hero-test"));
 const ButtonTest = lazy(() => import("@/pages/button-test"));
 const NotFound = lazy(() => import("@/pages/not-found"));
 const ResetPassword = lazy(() => import("@/pages/reset-password"));
@@ -20,7 +19,6 @@ const Privacy = lazy(() => import("@/pages/privacy"));
 const Terms = lazy(() => import("@/pages/terms"));
 const Withdrawal = lazy(() => import("@/pages/withdrawal"));
 const ExplosionTest = lazy(() => import("@/pages/explosion-test"));
-const TabAnimationTest = lazy(() => import("@/pages/tab-animation-test"));
 
 function Router() {
   return (
@@ -41,8 +39,6 @@ function Router() {
         <Route path="/withdrawal" component={Withdrawal} />
         <Route path="/reset-password" component={ResetPassword} />
         <Route path="/explosion-test" component={ExplosionTest} />
-        <Route path="/hero-test" component={HeroTest} />
-        <Route path="/tab-animation-test" component={TabAnimationTest} />
         <Route path="/button-test" component={ButtonTest} />
         <Route path="/admin/dashboard">
           <AdminDashboard />

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useGameStore } from "@/game/state";
-import combatSoundUrl from "@assets/combat_1768391313031.wav";
+import combatSoundUrl from "@assets/combat.wav";
 import { calculateBastionStats } from "@/game/bastionStats";
 import {
   getTotalKnowledge,
