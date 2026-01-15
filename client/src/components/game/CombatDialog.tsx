@@ -112,12 +112,15 @@ export default function CombatDialog({
 
   // Combat audio loop using AudioManager
   useEffect(() => {
-    if (isOpen) {
-      audioManager.playLoopingSound("combat", 0.3, gameState.isMuted).catch(() => {});
-      return () => {
-        audioManager.stopLoopingSound("combat");
-      };
+    if (isOpen && !gameState.isMuted) {
+      audioManager.playLoopingSound("combat", 0.3, false).catch(() => {});
+    } else {
+      audioManager.stopLoopingSound("combat");
     }
+
+    return () => {
+      audioManager.stopLoopingSound("combat");
+    };
   }, [isOpen, gameState.isMuted]);
 
   // Reset state when dialog opens
