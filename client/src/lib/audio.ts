@@ -99,7 +99,7 @@ export class AudioManager {
       // Initialize audio on first play attempt
       if (!this.initialized) {
         this.initialized = true;
-        await this.loadAllSounds();
+        this.loadAllSounds().catch(err => logger.error("Async sound load failed", err));
       }
 
       await this.initAudioContext();
@@ -152,7 +152,7 @@ export class AudioManager {
       // Initialize audio on first play attempt
       if (!this.initialized) {
         this.initialized = true;
-        await this.loadAllSounds();
+        this.loadAllSounds().catch(err => logger.error("Async sound load failed", err));
       }
 
       await this.initAudioContext();
