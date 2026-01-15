@@ -82,14 +82,13 @@
     <meta name="format-detection" content="telephone=no" />
 
     <!-- Fonts - Served locally -->
-    <link
-      rel="preload"
-      href="/fonts/inter.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
+    <link rel="preload" href="/fonts/inter.woff2" as="font" type="font/woff2" crossorigin />
 
+    <!-- Playlight SDK CSS - Loaded asynchronously to prevent render blocking -->
+    <link rel="preload" href="https://sdk.playlight.dev/playlight-sdk.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript><link rel="stylesheet" href="https://sdk.playlight.dev/playlight-sdk.css" /></noscript>
+
+    <!-- Structured Data (JSON-LD) - WebApplication -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -109,8 +108,7 @@
         ],
         "sameAs": [
           "https://adarkroom.doublespeakgames.com/",
-          "https://en.wikipedia.org/wiki/Incremental_game",
-          "https://store.steampowered.com/app/262060/Darkest_Dungeon/",
+          "https://en.wikipedia.org/wiki/Incremental_game", "https://store.steampowered.com/app/262060/Darkest_Dungeon/",
           "https://eldrum.com/",
           "https://store.steampowered.com/app/3072490/The_Ensign/",
           "https://en.wikipedia.org/wiki/Candy_Box!",

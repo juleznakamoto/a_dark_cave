@@ -11,6 +11,7 @@ import Game from "@/pages/game";
 
 // Lazy load all other pages
 const EndScreenPage = lazy(() => import("@/pages/end-screen"));
+const HeroTest = lazy(() => import("@/pages/hero-test"));
 const ButtonTest = lazy(() => import("@/pages/button-test"));
 const NotFound = lazy(() => import("@/pages/not-found"));
 const ResetPassword = lazy(() => import("@/pages/reset-password"));
@@ -19,6 +20,7 @@ const Privacy = lazy(() => import("@/pages/privacy"));
 const Terms = lazy(() => import("@/pages/terms"));
 const Withdrawal = lazy(() => import("@/pages/withdrawal"));
 const ExplosionTest = lazy(() => import("@/pages/explosion-test"));
+const TabAnimationTest = lazy(() => import("@/pages/tab-animation-test"));
 
 function Router() {
   return (
@@ -39,6 +41,8 @@ function Router() {
         <Route path="/withdrawal" component={Withdrawal} />
         <Route path="/reset-password" component={ResetPassword} />
         <Route path="/explosion-test" component={ExplosionTest} />
+        <Route path="/hero-test" component={HeroTest} />
+        <Route path="/tab-animation-test" component={TabAnimationTest} />
         <Route path="/button-test" component={ButtonTest} />
         <Route path="/admin/dashboard">
           <AdminDashboard />
@@ -55,18 +59,7 @@ function App() {
 
     const initPlaylight = async () => {
       try {
-        // Postpone loading by 20 seconds to improve LCP/FCP/INP
-        await new Promise(resolve => setTimeout(resolve, 20000));
-
-        // Use requestIdleCallback to ensure SDK loading doesn't contribute to Total Blocking Time (TBT)
-        const loadSdk = async () => {
-          // Load CSS
-          const link = document.createElement("link");
-          link.rel = "stylesheet";
-          link.href = "https://sdk.playlight.dev/playlight-sdk.css";
-          document.head.appendChild(link);
-
-          const script = document.createElement("script");
+        const script = document.createElement("script");
         script.src = "https://sdk.playlight.dev/playlight-sdk.es.js";
         script.type = "module";
         script.async = true;
@@ -125,14 +118,7 @@ function App() {
             state.togglePause();
           }
         });
-      };
-
-      if ('requestIdleCallback' in window) {
-        window.requestIdleCallback(() => loadSdk());
-      } else {
-        setTimeout(loadSdk, 1);
-      }
-    } catch (error) {
+      } catch (error) {
         console.error("Error loading the Playlight SDK:", error);
       }
     };

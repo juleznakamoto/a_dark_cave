@@ -270,10 +270,6 @@ export function startGameLoop() {
         ticksProcessed++;
       }
 
-      if (ticksProcessed > 0 && import.meta.env.DEV) {
-        logger.debug(`[LOOP] Processed ${ticksProcessed} ticks`);
-      }
-
       // Auto-save logic (skip if inactive or recently loaded)
       const timeSinceLoad = timestamp - lastGameLoadTime;
       const skipAutoSaveAfterLoad = timeSinceLoad > 0 && timeSinceLoad < 30000; // Skip for 30s after load
@@ -365,7 +361,6 @@ export function startGameLoop() {
         // Skip production if idle mode is active
         const currentState = useGameStore.getState();
         if (!currentState.idleModeState?.isActive) {
-          logger.debug("[LOOP] Running production handlers");
           handleGathererProduction();
           handleHunterProduction();
           handleMinerProduction();
@@ -377,7 +372,6 @@ export function startGameLoop() {
 
           // Check for events (including attack waves) - but NOT when dialogs are open
           if (!IsDialogOpen) {
-            logger.debug("[LOOP] Checking events");
             currentState.checkEvents();
           }
         }

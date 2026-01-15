@@ -741,145 +741,135 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   executeAction: (actionId: string) => {
-    logger.log(`[STATE] Executing action: ${actionId}`);
     const state = get();
     const action = gameActions[actionId];
 
-    if (!action || (state.cooldowns[actionId] || 0) > 0) {
-      if (!action) logger.warn(`[STATE] Action ${actionId} not found`);
-      return;
-    }
+    if (!action || (state.cooldowns[actionId] || 0) > 0) return;
     if (
       !shouldShowAction(actionId, state) ||
       !canExecuteAction(actionId, state)
-    ) {
-      logger.debug(`[STATE] Cannot execute action ${actionId}: visible=${shouldShowAction(actionId, state)}, canExecute=${canExecuteAction(actionId, state)}`);
+    )
       return;
-    }
 
-    try {
-      const result = executeGameAction(actionId, state);
+    const result = executeGameAction(actionId, state);
 
-      // Track button usage and check for level up (only if book_of_ascension is owned)
-      const upgradeKey = ACTION_TO_UPGRADE_KEY[actionId];
-      if (upgradeKey && state.books?.book_of_ascension) {
-        const upgradeResult = incrementButtonUsage(upgradeKey, state);
+    // Track button usage and check for level up (only if book_of_ascension is owned)
+    const upgradeKey = ACTION_TO_UPGRADE_KEY[actionId];
+    if (upgradeKey && state.books?.book_of_ascension) {
+      const upgradeResult = incrementButtonUsage(upgradeKey, state);
 
-        // Add button upgrade state update
-        if (!result.stateUpdates.buttonUpgrades) {
-          result.stateUpdates.buttonUpgrades = {} as any;
-        }
-        result.stateUpdates.buttonUpgrades[upgradeKey] =
-          upgradeResult.updatedUpgrade;
-
-        // Add level up log entry if applicable
-        if (upgradeResult.levelUpMessage) {
-          const levelUpLog: LogEntry = {
-            id: `levelup_${upgradeKey}_${Date.now()}`,
-            message: upgradeResult.levelUpMessage,
-            timestamp: Date.now(),
-            type: "system",
-          };
-
-          if (!result.logEntries) {
-            result.logEntries = [];
-          }
-          result.logEntries.push(levelUpLog);
-        }
+      // Add button upgrade state update
+      if (!result.stateUpdates.buttonUpgrades) {
+        result.stateUpdates.buttonUpgrades = {} as any;
       }
+      result.stateUpdates.buttonUpgrades[upgradeKey] =
+        upgradeResult.updatedUpgrade;
 
-      // Apply dev mode cooldown multiplier (0.1x)
-      if (state.devMode && result.stateUpdates.cooldowns) {
-        const updatedCooldowns = { ...result.stateUpdates.cooldowns };
-        for (const key in updatedCooldowns) {
-          updatedCooldowns[key] = updatedCooldowns[key] * 0.1;
-        }
-        result.stateUpdates.cooldowns = updatedCooldowns;
-      }
-
-      // Enforce minimum cooldown of 1 second for all actions
-      if (result.stateUpdates.cooldowns) {
-        const updatedCooldowns = { ...result.stateUpdates.cooldowns };
-        for (const key in updatedCooldowns) {
-          updatedCooldowns[key] = Math.max(1, updatedCooldowns[key]);
-        }
-        result.stateUpdates.cooldowns = updatedCooldowns;
-      }
-
-      // Handle compass bonus glow effect
-      if ((result.stateUpdates as any).compassBonusTriggered) {
-        console.log(
-          "[COMPASS GLOW] Compass bonus triggered for action:",
-          actionId,
-        );
-        get().setCompassGlow(actionId);
-        setTimeout(() => {
-          console.log("[COMPASS GLOW] Clearing compass glow");
-          get().setCompassGlow(null);
-        }, 1500);
-      }
-
-      // Apply state updates
-      set((prevState) => {
-        const mergedUpdates = mergeStateUpdates(prevState, result.stateUpdates);
-
-        return {
-          ...prevState,
-          ...mergedUpdates,
-          log: result.logEntries
-            ? [...prevState.log, ...result.logEntries].slice(
-                -GAME_CONSTANTS.LOG_MAX_ENTRIES,
-              )
-            : prevState.log,
+      // Add level up log entry if applicable
+      if (upgradeResult.levelUpMessage) {
+        const levelUpLog: LogEntry = {
+          id: `levelup_${upgradeKey}_${Date.now()}`,
+          message: upgradeResult.levelUpMessage,
+          timestamp: Date.now(),
+          type: "system",
         };
-      });
 
-      // Schedule updates
-      if (
-        result.stateUpdates.tools ||
-        result.stateUpdates.weapons ||
-        result.stateUpdates.clothing ||
-        result.stateUpdates.relics ||
-        result.stateUpdates.books
-      ) {
-        StateManager.scheduleEffectsUpdate(get);
-      }
-
-      // Update bastion stats when fortification buildings change
-      if (result.stateUpdates.buildings) {
-        const buildingChanges = result.stateUpdates.buildings;
-        if (
-          buildingChanges.bastion !== undefined ||
-          buildingChanges.watchtower !== undefined ||
-          buildingChanges.palisades !== undefined
-        ) {
-          setTimeout(() => get().updateBastionStats(), 0);
+        if (!result.logEntries) {
+          result.logEntries = [];
         }
-
-        // Update population when housing buildings change
-        if (
-          buildingChanges.woodenHut !== undefined ||
-          buildingChanges.stoneHut !== undefined ||
-          buildingChanges.longhouse !== undefined
-        ) {
-          setTimeout(() => get().updatePopulation(), 0);
-        }
+        result.logEntries.push(levelUpLog);
       }
-
-      // Handle event dialogs
-      if (result.logEntries) {
-        result.logEntries.forEach((entry) => {
-          if (entry.choices && entry.choices.length > 0) {
-            setTimeout(() => get().setEventDialog(true, entry), 100);
-          }
-        });
-      }
-
-      // Handle delayed effects
-      StateManager.handleDelayedEffects(result.delayedEffects);
-    } catch (error) {
-      logger.error(`[STATE] Critical error executing action ${actionId}:`, error);
     }
+
+    // Apply dev mode cooldown multiplier (0.1x)
+    if (state.devMode && result.stateUpdates.cooldowns) {
+      const updatedCooldowns = { ...result.stateUpdates.cooldowns };
+      for (const key in updatedCooldowns) {
+        updatedCooldowns[key] = updatedCooldowns[key] * 0.1;
+      }
+      result.stateUpdates.cooldowns = updatedCooldowns;
+    }
+
+    // Enforce minimum cooldown of 1 second for all actions
+    if (result.stateUpdates.cooldowns) {
+      const updatedCooldowns = { ...result.stateUpdates.cooldowns };
+      for (const key in updatedCooldowns) {
+        updatedCooldowns[key] = Math.max(1, updatedCooldowns[key]);
+      }
+      result.stateUpdates.cooldowns = updatedCooldowns;
+    }
+
+    // Handle compass bonus glow effect
+    if ((result.stateUpdates as any).compassBonusTriggered) {
+      console.log(
+        "[COMPASS GLOW] Compass bonus triggered for action:",
+        actionId,
+      );
+      get().setCompassGlow(actionId);
+      setTimeout(() => {
+        console.log("[COMPASS GLOW] Clearing compass glow");
+        get().setCompassGlow(null);
+      }, 1500);
+    }
+
+    // Apply state updates
+    set((prevState) => {
+      const mergedUpdates = mergeStateUpdates(prevState, result.stateUpdates);
+
+      return {
+        ...prevState,
+        ...mergedUpdates,
+        log: result.logEntries
+          ? [...prevState.log, ...result.logEntries].slice(
+              -GAME_CONSTANTS.LOG_MAX_ENTRIES,
+            )
+          : prevState.log,
+      };
+    });
+
+    // Schedule updates
+    if (
+      result.stateUpdates.tools ||
+      result.stateUpdates.weapons ||
+      result.stateUpdates.clothing ||
+      result.stateUpdates.relics ||
+      result.stateUpdates.books
+    ) {
+      StateManager.scheduleEffectsUpdate(get);
+    }
+
+    // Update bastion stats when fortification buildings change
+    if (result.stateUpdates.buildings) {
+      const buildingChanges = result.stateUpdates.buildings;
+      if (
+        buildingChanges.bastion !== undefined ||
+        buildingChanges.watchtower !== undefined ||
+        buildingChanges.palisades !== undefined
+      ) {
+        setTimeout(() => get().updateBastionStats(), 0);
+      }
+
+      // Update population when housing buildings change
+      if (
+        buildingChanges.woodenHut !== undefined ||
+        buildingChanges.stoneHut !== undefined ||
+        buildingChanges.longhouse !== undefined
+      ) {
+        setTimeout(() => get().updatePopulation(), 0);
+      }
+    }
+
+    // Handle event dialogs
+    if (result.logEntries) {
+      result.logEntries.forEach((entry) => {
+        if (entry.choices && entry.choices.length > 0) {
+          setTimeout(() => get().setEventDialog(true, entry), 100);
+        }
+      });
+    }
+
+    // Handle delayed effects
+    StateManager.handleDelayedEffects(result.delayedEffects);
   },
 
   setCooldown: (action: string, duration: number) => {
@@ -1254,11 +1244,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   addLogEntry: (entry: LogEntry) => {
-    logger.log(`[STATE] Adding log entry: ${entry.id} (${entry.type})`);
     if (entry.type === "event") {
-      audioManager.playSound("event", 0.02).catch(err => {
-        logger.error("[STATE] Error playing event sound:", err);
-      });
+      audioManager.playSound("event", 0.02);
     }
 
     set((state) => ({
@@ -1267,7 +1254,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   checkEvents: () => {
-    logger.debug("[STATE] checkEvents triggered");
     const state = get();
     // If the game is paused, do not process events
     if (state.isPaused) return;
@@ -1282,10 +1268,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     const { newLogEntries, stateChanges } =
       EventManager.checkEvents({ ...state, timedEventTab: { isActive: timedTabActive } } as any);
-
-    if (newLogEntries.length > 0) {
-      logger.log(`[STATE] Triggered ${newLogEntries.length} events`);
-    }
 
     // Handle timed tab event if present
     if (stateChanges._timedTabEvent) {

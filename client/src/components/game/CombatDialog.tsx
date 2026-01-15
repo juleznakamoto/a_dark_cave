@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useGameStore } from "@/game/state";
-import { audioManager } from "@/lib/audio";
+import combatSoundUrl from "@assets/combat_1768391313031.wav";
 import { calculateBastionStats } from "@/game/bastionStats";
 import {
   getTotalKnowledge,
@@ -63,7 +63,7 @@ export default function CombatDialog({
   onVictory,
   onDefeat,
 }: CombatDialogProps) {
-  const gameState = useGameStore();
+  const gameState = useGameStore.getState();
   const crushingStrikeLevel = useGameStore(
     (state) => state.combatSkills.crushingStrikeLevel,
   );
@@ -110,26 +110,24 @@ export default function CombatDialog({
 
   const bastionStats = calculateBastionStats(gameState);
 
-  // Combat audio loop using AudioManager
+  // Combat audio loop
+  const combatAudioRef = useRef<HTMLAudioElement | null>(null);
+
   useEffect(() => {
-    let timeoutId: NodeJS.Timeout | null = null;
+    if (isOpen) {
+      const audio = new Audio(combatSoundUrl);
+      audio.loop = true;
+      audio.volume = 0.3;
+      combatAudioRef.current = audio;
+      audio.play().catch(() => {});
 
-    if (isOpen && !gameState.isMuted) {
-      timeoutId = setTimeout(() => {
-        audioManager.playLoopingSound("combat", 0.2, false).catch(() => {});
-      }, 500);
-    } else {
-      audioManager.stopLoopingSound("combat");
+      return () => {
+        audio.pause();
+        audio.currentTime = 0;
+        combatAudioRef.current = null;
+      };
     }
-
-    // Cleanup: always stop the sound when the dialog closes or component unmounts
-    return () => {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
-      audioManager.stopLoopingSound("combat");
-    };
-  }, [isOpen, gameState.isMuted]);
+  }, [isOpen]);
 
   // Reset state when dialog opens
   useEffect(() => {
@@ -377,7 +375,6 @@ export default function CombatDialog({
   };
 
   const handleEndFight = () => {
-    audioManager.stopLoopingSound("combat");
     if (combatResult === "victory") {
       const victoryResult = onVictory();
       // Add victory message to log if present
