@@ -33,7 +33,7 @@ function processTriggeredEvents(
 
         // Create a log entry for the event
         const logEntry: LogEntry = {
-          id: `${eventId}-${Date.now()}`,
+          id: `${eventId}-${Date.now()}-${Math.random()}`,
           message: typeof eventDef.message === 'string' 
             ? eventDef.message 
             : Array.isArray(eventDef.message) 
@@ -62,6 +62,8 @@ function processTriggeredEvents(
         ...effectUpdates.triggeredEventsState
       };
       delete effectUpdates.triggeredEventsState;
+      // CRITICAL: Clear triggeredEvents from effectUpdates to prevent infinite loop in applyActionEffects
+      delete effectUpdates.triggeredEvents;
     } else {
       delete effectUpdates.triggeredEvents;
     }
@@ -152,15 +154,27 @@ function getInheritedItems(actionId: string) {
 
       // Determine the category (relics or clothing) based on the item's category
       const category = item.category || "relics";
+      const itemKey = `${category}.${item.key}`;
 
-      inheritedItems[`${category}.${item.key}`] = {
+      inheritedItems[itemKey] = {
         probability: Math.min(adjustedProbability, 1.0), // Cap at 100%
         value: true,
-        condition:
-          `!${category}.${item.key}` +
-          ("eventId" in item && item.eventId
-            ? ` && !story.seen.${item.eventId}`
-            : ""),
+        condition: (state: GameState) => {
+          // Check if item is already owned
+          const pathParts = itemKey.split(".");
+          let current: any = state;
+          for (const part of pathParts) {
+            current = current?.[part];
+          }
+          if (current) return false;
+
+          // Check if event was already seen
+          if ("eventId" in item && item.eventId && state.story?.seen?.[item.eventId]) {
+            return false;
+          }
+
+          return true;
+        },
         ...("isChoice" in item && item.isChoice && { isChoice: item.isChoice }),
         ...("eventId" in item && item.eventId && { eventId: item.eventId }),
         ...("logMessage" in item &&
