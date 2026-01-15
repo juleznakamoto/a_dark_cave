@@ -80,7 +80,8 @@ export class AudioManager {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
       const arrayBuffer = await response.arrayBuffer();
-      // Use a timeout to prevent decodeAudioData from blocking the main thread if it's very large
+      // decodeAudioData is CPU intensive and blocks the main thread.
+      // We wrap it in a microtask/promise but it's still heavy.
       const audioBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
       this.sounds.set(name, audioBuffer);
       logger.log(`Successfully loaded sound: ${name}`);
@@ -97,7 +98,14 @@ export class AudioManager {
     // Don't play if muted globally or if specific sound is muted
     if (this.isMutedGlobally || isMuted) return;
 
-    // Fire and forget sound playback to avoid blocking the caller
+    // IMPORTANT: Check for sound in cache FIRST before doing any async work
+    const audioBuffer = this.sounds.get(name);
+    if (audioBuffer) {
+      this.playBuffer(audioBuffer, volume);
+      return;
+    }
+
+    // Fire and forget sound loading and playback to avoid blocking the caller
     (async () => {
       try {
         // Initialize audio on first play attempt
@@ -109,36 +117,44 @@ export class AudioManager {
         await this.initAudioContext();
         if (!this.audioContext) return;
 
-        let audioBuffer = this.sounds.get(name);
-        if (!audioBuffer) {
+        let buffer = this.sounds.get(name);
+        if (!buffer) {
           // If sound not loaded yet, try to load it specifically
           const url = this.soundUrls.get(name);
           if (url) {
             logger.log(`Sound ${name} not found in cache, attempting immediate load...`);
             await this.loadActualSound(name, url);
-            audioBuffer = this.sounds.get(name);
+            buffer = this.sounds.get(name);
           }
         }
 
-        if (!audioBuffer) {
+        if (buffer) {
+          this.playBuffer(buffer, volume);
+        } else {
           logger.warn(`Sound ${name} not found and could not be loaded`);
-          return;
         }
-
-        const source = this.audioContext.createBufferSource();
-        const gainNode = this.audioContext.createGain();
-
-        source.buffer = audioBuffer;
-        gainNode.gain.value = Math.max(0, Math.min(1, volume));
-
-        source.connect(gainNode);
-        gainNode.connect(this.audioContext.destination);
-
-        source.start();
       } catch (error) {
         logger.warn(`Failed to play sound ${name}:`, error);
       }
     })();
+  }
+
+  private playBuffer(buffer: AudioBuffer, volume: number): void {
+    if (!this.audioContext) return;
+    try {
+      const source = this.audioContext.createBufferSource();
+      const gainNode = this.audioContext.createGain();
+
+      source.buffer = buffer;
+      gainNode.gain.value = Math.max(0, Math.min(1, volume));
+
+      source.connect(gainNode);
+      gainNode.connect(this.audioContext.destination);
+
+      source.start();
+    } catch (error) {
+      logger.warn("Failed to play audio buffer:", error);
+    }
   }
 
   async playLoopingSound(
@@ -263,7 +279,7 @@ export class AudioManager {
 
   async preloadSounds(): Promise<void> {
     logger.log("Registering sounds for lazy loading...");
-    // Just register the sound URLs, don't load yet
+    // Just register the sound URLs
     this.soundUrls.set("newVillager", "/sounds/new_villager.wav");
     this.soundUrls.set("event", "/sounds/event.wav");
     this.soundUrls.set("eventMadness", "/sounds/event_madness.wav");
@@ -273,6 +289,10 @@ export class AudioManager {
     this.soundUrls.set("wind", "/sounds/wind.wav");
     this.soundUrls.set("combat", "/sounds/combat.wav");
     logger.log("Sound URLs registered for lazy loading");
+
+    // Proactively load critical sounds in the background WITHOUT blocking
+    this.loadActualSound("event", "/sounds/event.wav").catch(() => {});
+    this.loadActualSound("combat", "/sounds/combat.wav").catch(() => {});
   }
 
   async startBackgroundMusic(volume: number = 1): Promise<void> {
