@@ -113,10 +113,7 @@ export default function CombatDialog({
   // Combat audio loop using AudioManager
   useEffect(() => {
     if (isOpen && !gameState.isMuted) {
-      console.log("[COMBAT_AUDIO] playing combat sound");
-      audioManager.playLoopingSound("combat", 0.3, false).catch((err) => {
-        console.error("[COMBAT_AUDIO] play failed:", err);
-      });
+      audioManager.playLoopingSound("combat", 0.3, false).catch(() => {});
     } else {
       audioManager.stopLoopingSound("combat");
     }
