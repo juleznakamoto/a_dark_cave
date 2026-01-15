@@ -114,10 +114,9 @@ export default function CombatDialog({
   useEffect(() => {
     if (isOpen && !gameState.isMuted) {
       audioManager.playLoopingSound("combat", 0.3, false).catch(() => {});
-    } else {
-      audioManager.stopLoopingSound("combat");
     }
 
+    // Cleanup: always stop the sound when the dialog closes or component unmounts
     return () => {
       audioManager.stopLoopingSound("combat");
     };
