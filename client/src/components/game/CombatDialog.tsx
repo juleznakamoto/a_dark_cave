@@ -112,12 +112,21 @@ export default function CombatDialog({
 
   // Combat audio loop using AudioManager
   useEffect(() => {
+    let timeoutId: NodeJS.Timeout | null = null;
+
     if (isOpen && !gameState.isMuted) {
-      audioManager.playLoopingSound("combat", 0.3, false).catch(() => {});
+      timeoutId = setTimeout(() => {
+        audioManager.playLoopingSound("combat", 0.3, false).catch(() => {});
+      }, 500);
+    } else {
+      audioManager.stopLoopingSound("combat");
     }
 
     // Cleanup: always stop the sound when the dialog closes or component unmounts
     return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
       audioManager.stopLoopingSound("combat");
     };
   }, [isOpen, gameState.isMuted]);
@@ -368,6 +377,7 @@ export default function CombatDialog({
   };
 
   const handleEndFight = () => {
+    audioManager.stopLoopingSound("combat");
     if (combatResult === "victory") {
       const victoryResult = onVictory();
       // Add victory message to log if present
