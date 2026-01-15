@@ -43,7 +43,10 @@ export class AudioManager {
       const url = this.soundUrls.get(name);
       if (url) {
         this.loadSound(name, url).then(() => {
-          this.sounds.get(name)?.volume(volume).play();
+          const loadedSound = this.sounds.get(name);
+          if (loadedSound instanceof Howl) {
+            loadedSound.volume(volume).play();
+          }
         });
       } else {
         logger.warn(`Sound ${name} not found and no URL registered`);
@@ -58,7 +61,7 @@ export class AudioManager {
   playLoopingSound(name: string, volume: number = 1, isMuted: boolean = false, fadeInDuration: number = 0): void {
     if (this.isMutedGlobally || isMuted) return;
 
-    let sound = this.sounds.get(name);
+    const sound = this.sounds.get(name);
     if (!sound) {
       const url = this.soundUrls.get(name);
       if (url) {
@@ -127,7 +130,8 @@ export class AudioManager {
   }
 
   pauseAllSounds(): void {
-    this.wasBackgroundMusicPlaying = this.sounds.get('backgroundMusic')?.playing() || false;
+    const bgMusic = this.sounds.get('backgroundMusic');
+    this.wasBackgroundMusicPlaying = bgMusic ? bgMusic.playing() : false;
     this.sounds.forEach(sound => sound.pause());
   }
 
