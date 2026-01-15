@@ -69,6 +69,7 @@ export class AudioManager {
   }
 
   private async loadActualSound(name: string, url: string): Promise<void> {
+    if (this.sounds.has(name)) return;
     try {
       await this.initAudioContext();
       if (!this.audioContext) return;
@@ -100,9 +101,19 @@ export class AudioManager {
       await this.initAudioContext();
       if (!this.audioContext) return;
 
-      const audioBuffer = this.sounds.get(name);
+      let audioBuffer = this.sounds.get(name);
       if (!audioBuffer) {
-        logger.warn(`Sound ${name} not found`);
+        // If sound not loaded yet, try to load it specifically instead of just warning
+        const url = this.soundUrls.get(name);
+        if (url) {
+          logger.log(`Sound ${name} not found, attempting immediate load...`);
+          await this.loadActualSound(name, url);
+          audioBuffer = this.sounds.get(name);
+        }
+      }
+
+      if (!audioBuffer) {
+        logger.warn(`Sound ${name} not found even after attempt to load`);
         return;
       }
 
@@ -138,9 +149,19 @@ export class AudioManager {
       await this.initAudioContext();
       if (!this.audioContext) return;
 
-      const audioBuffer = this.sounds.get(name);
+      let audioBuffer = this.sounds.get(name);
       if (!audioBuffer) {
-        logger.warn(`Sound ${name} not found`);
+        // If sound not loaded yet, try to load it specifically
+        const url = this.soundUrls.get(name);
+        if (url) {
+          logger.log(`Sound ${name} not found, attempting immediate load...`);
+          await this.loadActualSound(name, url);
+          audioBuffer = this.sounds.get(name);
+        }
+      }
+
+      if (!audioBuffer) {
+        logger.warn(`Sound ${name} not found even after attempt to load`);
         return;
       }
 
@@ -233,6 +254,7 @@ export class AudioManager {
     this.soundUrls.set('backgroundMusic', '/sounds/background_music.wav');
     this.soundUrls.set('explosion', '/sounds/explosion.wav');
     this.soundUrls.set('wind', '/sounds/wind.wav');
+    this.soundUrls.set('combat', '/sounds/combat.wav');
     logger.log('Sound URLs registered for lazy loading');
   }
 

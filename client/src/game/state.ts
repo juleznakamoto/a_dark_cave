@@ -1256,7 +1256,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
   addLogEntry: (entry: LogEntry) => {
     logger.log(`[STATE] Adding log entry: ${entry.id} (${entry.type})`);
     if (entry.type === "event") {
-      audioManager.playSound("event", 0.02);
+      audioManager.playSound("event", 0.02).catch(err => {
+        logger.error("[STATE] Error playing event sound:", err);
+      });
     }
 
     set((state) => ({
