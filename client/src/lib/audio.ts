@@ -70,6 +70,7 @@ export class AudioManager {
   }
 
   private async loadActualSound(name: string, url: string): Promise<void> {
+    if (this.sounds.has(name)) return;
     try {
       await this.initAudioContext();
       if (!this.audioContext) return;
@@ -79,6 +80,7 @@ export class AudioManager {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
       const arrayBuffer = await response.arrayBuffer();
+      // Use a timeout to prevent decodeAudioData from blocking the main thread if it's very large
       const audioBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
       this.sounds.set(name, audioBuffer);
       logger.log(`Successfully loaded sound: ${name}`);
@@ -95,45 +97,48 @@ export class AudioManager {
     // Don't play if muted globally or if specific sound is muted
     if (this.isMutedGlobally || isMuted) return;
 
-    try {
-      // Initialize audio on first play attempt
-      if (!this.initialized) {
-        this.initialized = true;
-        this.loadAllSounds().catch(err => logger.error("Async sound load failed", err));
-      }
-
-      await this.initAudioContext();
-      if (!this.audioContext) return;
-
-      let audioBuffer = this.sounds.get(name);
-      if (!audioBuffer) {
-        // If sound not loaded yet, try to load it specifically
-        const url = this.soundUrls.get(name);
-        if (url) {
-          logger.log(`Sound ${name} not found in cache, attempting immediate load...`);
-          await this.loadActualSound(name, url);
-          audioBuffer = this.sounds.get(name);
+    // Fire and forget sound playback to avoid blocking the caller
+    (async () => {
+      try {
+        // Initialize audio on first play attempt
+        if (!this.initialized) {
+          this.initialized = true;
+          this.loadAllSounds().catch(err => logger.error("Async sound load failed", err));
         }
+
+        await this.initAudioContext();
+        if (!this.audioContext) return;
+
+        let audioBuffer = this.sounds.get(name);
+        if (!audioBuffer) {
+          // If sound not loaded yet, try to load it specifically
+          const url = this.soundUrls.get(name);
+          if (url) {
+            logger.log(`Sound ${name} not found in cache, attempting immediate load...`);
+            await this.loadActualSound(name, url);
+            audioBuffer = this.sounds.get(name);
+          }
+        }
+
+        if (!audioBuffer) {
+          logger.warn(`Sound ${name} not found and could not be loaded`);
+          return;
+        }
+
+        const source = this.audioContext.createBufferSource();
+        const gainNode = this.audioContext.createGain();
+
+        source.buffer = audioBuffer;
+        gainNode.gain.value = Math.max(0, Math.min(1, volume));
+
+        source.connect(gainNode);
+        gainNode.connect(this.audioContext.destination);
+
+        source.start();
+      } catch (error) {
+        logger.warn(`Failed to play sound ${name}:`, error);
       }
-
-      if (!audioBuffer) {
-        logger.warn(`Sound ${name} not found and could not be loaded`);
-        return;
-      }
-
-      const source = this.audioContext.createBufferSource();
-      const gainNode = this.audioContext.createGain();
-
-      source.buffer = audioBuffer;
-      gainNode.gain.value = Math.max(0, Math.min(1, volume));
-
-      source.connect(gainNode);
-      gainNode.connect(this.audioContext.destination);
-
-      source.start();
-    } catch (error) {
-      logger.warn(`Failed to play sound ${name}:`, error);
-    }
+    })();
   }
 
   async playLoopingSound(
