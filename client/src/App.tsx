@@ -55,6 +55,15 @@ function App() {
 
     const initPlaylight = async () => {
       try {
+        // Postpone loading by 20 seconds to improve LCP/FCP/INP
+        await new Promise(resolve => setTimeout(resolve, 20000));
+
+        // Load CSS first
+        const link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.href = "https://sdk.playlight.dev/playlight-sdk.css";
+        document.head.appendChild(link);
+
         const script = document.createElement("script");
         script.src = "https://sdk.playlight.dev/playlight-sdk.es.js";
         script.type = "module";
