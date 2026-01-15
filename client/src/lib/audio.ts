@@ -233,7 +233,7 @@ export class AudioManager {
     this.soundUrls.set('backgroundMusic', '/sounds/background_music.wav');
     this.soundUrls.set('explosion', '/sounds/explosion.wav');
     this.soundUrls.set('wind', '/sounds/wind.wav');
-    this.soundUrls.set('combat', '/sounds/combat.wav');
+    this.soundUrls.set('combat', '@assets/combat_1768391313031.wav');
     logger.log('Sound URLs registered for lazy loading');
   }
 

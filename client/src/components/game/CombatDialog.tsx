@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useGameStore } from "@/game/state";
-import combatSoundUrl from "@assets/combat_1768391313031.wav";
+import { audioManager } from "@/lib/audio";
 import { calculateBastionStats } from "@/game/bastionStats";
 import {
   getTotalKnowledge,
@@ -110,24 +110,15 @@ export default function CombatDialog({
 
   const bastionStats = calculateBastionStats(gameState);
 
-  // Combat audio loop
-  const combatAudioRef = useRef<HTMLAudioElement | null>(null);
-
+  // Combat audio loop using AudioManager
   useEffect(() => {
     if (isOpen) {
-      const audio = new Audio(combatSoundUrl);
-      audio.loop = true;
-      audio.volume = 0.3;
-      combatAudioRef.current = audio;
-      audio.play().catch(() => {});
-
+      audioManager.playLoopingSound("combat", 0.3, gameState.isMuted).catch(() => {});
       return () => {
-        audio.pause();
-        audio.currentTime = 0;
-        combatAudioRef.current = null;
+        audioManager.stopLoopingSound("combat");
       };
     }
-  }, [isOpen]);
+  }, [isOpen, gameState.isMuted]);
 
   // Reset state when dialog opens
   useEffect(() => {
