@@ -96,30 +96,24 @@ function App() {
         const { useGameStore } = await import("./game/state");
 
         // Reactively update exit intent based on game state
-        // Use a flag to prevent unnecessary updates
-        let lastExitIntentStatus = false;
         useGameStore.subscribe(
           (state) => {
             const isEndScreen = window.location.pathname === "/end-screen";
             const shouldEnableExitIntent =
               state.isPaused || state.idleModeDialog.isOpen || state.leaderboardDialogOpen || isEndScreen;
 
-            if (shouldEnableExitIntent !== lastExitIntentStatus) {
-              lastExitIntentStatus = shouldEnableExitIntent;
-              playlightSDK.setConfig({
-                exitIntent: {
-                  enabled: shouldEnableExitIntent,
-                  immediate: false,
-                },
-              });
-            }
+            playlightSDK.setConfig({
+              exitIntent: {
+                enabled: shouldEnableExitIntent,
+                immediate: false,
+              },
+            });
           }
         );
 
         // Set up event listeners for game pause/unpause
         playlightSDK.onEvent("discoveryOpen", () => {
           const state = useGameStore.getState();
-          // Use a small delay or check to ensure we don't trigger rapid state changes
           if (!state.isPaused) {
             state.togglePause();
           }
@@ -133,15 +127,11 @@ function App() {
         });
       };
 
-      const handleIdle = () => {
-        if ('requestIdleCallback' in window) {
-          window.requestIdleCallback(() => loadSdk());
-        } else {
-          setTimeout(loadSdk, 1);
-        }
-      };
-
-      handleIdle();
+      if ('requestIdleCallback' in window) {
+        window.requestIdleCallback(() => loadSdk());
+      } else {
+        setTimeout(loadSdk, 1);
+      }
     } catch (error) {
         console.error("Error loading the Playlight SDK:", error);
       }
