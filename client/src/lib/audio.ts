@@ -131,7 +131,7 @@ export class AudioManager {
 
   pauseAllSounds(): void {
     const bgMusic = this.sounds.get('backgroundMusic');
-    this.wasBackgroundMusicPlaying = bgMusic ? bgMusic.playing() : false;
+    this.wasBackgroundMusicPlaying = (bgMusic && typeof bgMusic.playing === 'function') ? bgMusic.playing() : false;
     this.sounds.forEach(sound => sound.pause());
   }
 
