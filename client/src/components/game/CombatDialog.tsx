@@ -116,7 +116,7 @@ export default function CombatDialog({
 
     if (isOpen && !gameState.isMuted) {
       timeoutId = setTimeout(() => {
-        audioManager.playLoopingSound("combat", 0.3, false).catch(() => {});
+        audioManager.playLoopingSound("combat", 0.2, false).catch(() => {});
       }, 500);
     } else {
       audioManager.stopLoopingSound("combat");
