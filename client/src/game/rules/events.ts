@@ -166,6 +166,7 @@ export class EventManager {
     newLogEntries: LogEntry[];
     stateChanges: Partial<GameState>;
   } {
+    logger.debug("[EVENT MANAGER] checkEvents started");
     const newLogEntries: LogEntry[] = [];
     let stateChanges: Partial<GameState> = {};
     const sortedEvents = Object.values(this.allEvents).sort(
