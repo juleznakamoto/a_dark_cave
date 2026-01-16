@@ -29,6 +29,7 @@ export class AudioManager {
   private sounds: Map<string, Howl> = new Map();
   private soundUrls: Map<string, string> = new Map();
   private isMutedGlobally: boolean = false;
+  private isMusicMuted: boolean = false;
   private backgroundMusicVolume: number = 1;
   private wasBackgroundMusicPlaying: boolean = false;
 
@@ -60,6 +61,9 @@ export class AudioManager {
 
   playSound(name: string, volume: number = 1, isMuted: boolean = false): void {
     if (this.isMutedGlobally || isMuted) return;
+
+    // Background music is handled separately for muting
+    if (name === 'backgroundMusic' && this.isMusicMuted) return;
 
     const sound = this.sounds.get(name);
     if (!sound) {
@@ -117,6 +121,9 @@ export class AudioManager {
 
   playLoopingSound(name: string, volume: number = 1, isMuted: boolean = false, fadeInDuration: number = 0): void {
     if (this.isMutedGlobally || isMuted) return;
+
+    // Background music is handled separately for muting
+    if (name === 'backgroundMusic' && this.isMusicMuted) return;
 
     const sound = this.sounds.get(name);
     if (!sound) {
@@ -265,6 +272,15 @@ export class AudioManager {
       this.resumeSounds().catch(error => {
         logger.warn('Failed to resume sounds after unmuting:', error);
       });
+    }
+  }
+
+  musicMute(mute: boolean): void {
+    this.isMusicMuted = mute;
+    if (mute) {
+      this.stopLoopingSound('backgroundMusic', 1);
+    } else {
+      this.playLoopingSound('backgroundMusic', this.backgroundMusicVolume, false, 1);
     }
   }
 }

@@ -73,7 +73,7 @@ export default function GameFooter() {
   const toggleVolume = () => {
     const newMutedState = !isMuted;
     setIsMuted(newMutedState);
-    audioManager.globalMute(newMutedState);
+    audioManager.musicMute(newMutedState);
   };
 
   return (
