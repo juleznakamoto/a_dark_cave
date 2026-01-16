@@ -1627,6 +1627,17 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   setTimedEventTab: async (isActive: boolean, event?: LogEntry | null, duration?: number) => {
+    // Play sound if activating and not muted
+    if (isActive && event) {
+      const state = get();
+      if (!state.isMuted) {
+        const eventId = event.id.split("-")[0];
+        const madnessEventIds = Object.keys(madnessEvents);
+        const isMadnessEvent = madnessEventIds.includes(eventId);
+        audioManager.playSound(isMadnessEvent ? "eventMadness" : "event", 0.02);
+      }
+    }
+
     // If activating merchant event, use the choices already generated and passed in the event
     if (isActive && event?.id.includes('merchant')) {
       // CRITICAL: Use the choices that were already generated in EventManager.checkEvents

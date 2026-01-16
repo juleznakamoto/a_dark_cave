@@ -280,6 +280,7 @@ export class EventManager {
             choices: eventChoices,
             fallbackChoice: event.fallbackChoice,
             timedTabDuration: event.timedTabDuration,
+            _playSound: true, // Signal to play sound
           };
         }
 
