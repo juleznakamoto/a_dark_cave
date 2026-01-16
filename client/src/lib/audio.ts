@@ -101,6 +101,8 @@ export class AudioManager {
       return;
     }
 
+    if (sound.playing()) return;
+    
     try {
       sound.loop(true);
       sound.volume(volume);
@@ -123,7 +125,7 @@ export class AudioManager {
 
     if (fadeOutDuration > 0) {
       try {
-        const currentVolume = typeof sound.volume === 'function' ? (sound.volume() as number) : 0;
+        const currentVolume = typeof sound.volume === 'function' ? (sound.volume() ?? 0) : 0;
         sound.fade(currentVolume, 0, fadeOutDuration * 1000);
         sound.once('fade', () => {
           sound.stop();
@@ -162,9 +164,9 @@ export class AudioManager {
       'combat': '/sounds/combat.wav'
     };
 
-    for (const [name, url] of Object.entries(soundsToRegister)) {
-      await this.loadSound(name, url);
-    }
+    await Promise.all(
+      Object.entries(soundsToRegister).map(([name, url]) => this.loadSound(name, url))
+    );
     logger.log('Sound registration complete');
   }
 
