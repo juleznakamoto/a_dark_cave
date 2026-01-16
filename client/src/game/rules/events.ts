@@ -250,8 +250,8 @@ export class EventManager {
           message = event.message;
         }
 
-        // Only create and add log entry if it's NOT a timed tab event
-        if (!event.showAsTimedTab) {
+        // Only create and add log entry if it's NOT a timed tab event and NOT skipped
+        if (!event.showAsTimedTab && !event.skipEventLog) {
           const logEntry: LogEntry = {
             id: `${event.id}-${Date.now()}`,
             message: message,
@@ -266,10 +266,10 @@ export class EventManager {
             visualEffect: event.visualEffect,
             showAsTimedTab: event.showAsTimedTab,
             timedTabDuration: event.timedTabDuration,
-            skipEventLog: event.skipEventLog || (eventChoices && eventChoices.length > 0),
+            skipEventLog: event.skipEventLog,
           };
           newLogEntries.push(logEntry);
-        } else {
+        } else if (event.showAsTimedTab) {
           // For timed tab events, pass event data directly without creating a LogEntry
           stateChanges._timedTabEvent = {
             id: event.id,
@@ -282,6 +282,26 @@ export class EventManager {
             timedTabDuration: event.timedTabDuration,
             _playSound: true, // Signal to play sound
           };
+        } else if (event.skipEventLog && eventChoices && eventChoices.length > 0) {
+          // Special case: skip log but has choices (likely handled by UI dialogs)
+          // We still need to notify the UI about the event if it has choices
+          const logEntry: LogEntry = {
+            id: `${event.id}-${Date.now()}`,
+            message: message,
+            timestamp: Date.now(),
+            type: "event",
+            title: event.title,
+            choices: eventChoices,
+            isTimedChoice: event.isTimedChoice,
+            baseDecisionTime: event.baseDecisionTime,
+            fallbackChoice: event.fallbackChoice,
+            relevant_stats: event.relevant_stats,
+            visualEffect: event.visualEffect,
+            showAsTimedTab: event.showAsTimedTab,
+            timedTabDuration: event.timedTabDuration,
+            skipEventLog: true,
+          };
+          newLogEntries.push(logEntry);
         }
 
         // Apply effect if it exists

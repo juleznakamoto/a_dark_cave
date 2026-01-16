@@ -99,7 +99,7 @@ const caveItems = {
   exploreRuins: [
     {
       key: "ring_of_drowned",
-      probability: 0.0225,
+      probability: 0.9225,
       isChoice: true,
       eventId: "ringOfDrownedChoice",
       category: "clothing",
