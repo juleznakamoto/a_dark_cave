@@ -1,4 +1,27 @@
 import { Howl } from 'howler';
+// --- Global Howler internal safety patch ---
+(function patchHowlerInternal() {
+  const proto = (Howl as any).prototype;
+  const targets = ['lo', 'co']; // both variants exist in different Howler builds
+
+  targets.forEach(fnName => {
+    if (proto[fnName] && !proto[`_${fnName}Patched`]) {
+      const original = proto[fnName];
+      proto[fnName] = function (event: string, t: any, n: any) {
+        try {
+          const listeners = this['_on' + event];
+          if (!Array.isArray(listeners)) return this; // prevent .length crash
+          return original.call(this, event, t, n);
+        } catch (err) {
+          console.warn(`[HowlerPatch] prevented crash in ${fnName}(${event}):`, err);
+          return this;
+        }
+      };
+      proto[`_${fnName}Patched`] = true;
+      console.log(`[HowlerPatch] Patched Howler.${fnName} globally`);
+    }
+  });
+})();
 import { logger } from './logger';
 
 export class AudioManager {
@@ -108,7 +131,7 @@ export class AudioManager {
       return;
     }
 
-    if (sound.playing()) return;
+    if (sound.playing && sound.playing()) return;
     
     try {
       sound.loop(true);
