@@ -43,7 +43,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     name: "Full Game",
     description:
       "Unlock the full game and continue your journey.",
-    originalPrice: 1599,
+    originalPrice: 1099,
     price: 799, // 7.99 €
     rewards: {},
     canPurchaseMultipleTimes: false,
@@ -59,7 +59,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     name: "Cruel Mode",
     description:
       "A more cruel world, expanded story, more items, more lore, deadlier foes. Endure, or vanish.",
-    originalPrice: 999,
+    originalPrice: 699,
     price: 499, // 4.99 €
     rewards: {},
     canPurchaseMultipleTimes: false,
@@ -74,7 +74,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "gold_250",
     name: "250 Gold",
     description: "A decent amount of gold",
-    originalPrice: 199,
+    originalPrice: 149,
     price: 99, // 0.99 €
     rewards: {
       resources: { gold: 250 },
@@ -90,7 +90,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "gold_1000",
     name: "1000 Gold",
     description: "A substantial treasure",
-    originalPrice: 499,
+    originalPrice: 349,
     price: 249, // 2.99 €
     rewards: {
       resources: { gold: 1000 },
@@ -106,7 +106,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "gold_5000",
     name: "5000 Gold",
     description: "A fortune in gold",
-    originalPrice: 999,
+    originalPrice: 699,
     price: 499, // 4.99 €
     rewards: {
       resources: { gold: 5000 },
@@ -122,7 +122,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "gold_20000",
     name: "20000 Gold",
     description: "Unholy amounts of gold",
-    originalPrice: 1999,
+    originalPrice: 1349,
     price: 999, // 9.99 €
     rewards: {
       resources: { gold: 20000 },
@@ -138,7 +138,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "great_feast_1",
     name: "1 Great Feast",
     description: "Boost village production by 4x for 30 minutes",
-    originalPrice: 299,
+    originalPrice: 199,
     price: 149, // 1.49 €
     rewards: {
       feastActivations: 1,
@@ -154,7 +154,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "great_feast_3",
     name: "3 Great Feasts",
     description: "Boost village production by 4x for 30 minutes (3 times)",
-    originalPrice: 599,
+    originalPrice: 399,
     price: 299, // 2.99 €
     rewards: {
       feastActivations: 3,
@@ -170,7 +170,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "basic_survival_bundle",
     name: "Fading Wanderer Bundle",
     description: "Basic Bundle with 5000 Gold and 1 Great Feast",
-    originalPrice: 1099, // 10.99 €
+    originalPrice: 749, // 10.99 €
     price: 549, // 5.49 €
     rewards: {
       resources: { gold: 5000 },
@@ -189,7 +189,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "advanced_bundle",
     name: "Pale King's Bundle",
     description: "Powerful Bundle with 20000 Gold and 3 Great Feasts",
-    originalPrice: 2199, // 21.99 €
+    originalPrice: 1499, // 21.99 €
     price: 1099, // 10.99 €
     rewards: {
       resources: { gold: 20000 },
@@ -208,7 +208,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "artifact_bundle",
     name: "Dark Artifacts Bundle",
     description: "Uncover dark forgotten truths with the Skull Lantern, Tarnished Compass, and Crow Harness.",
-    originalPrice: 1499, // 14.99 €
+    originalPrice: 999, // 14.99 €
     price: 749, // 7.49 €
     rewards: {
       tools: ["skull_lantern", "crow_harness"],
@@ -227,7 +227,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     name: "Skull Lantern",
     description:
       "Forged from cursed bone illuminating the deepest depths. Unlocks Skull Lantern storyline.",
-    originalPrice: 499,
+    originalPrice: 349,
     price: 249, // 2.49 €
     rewards: {
       tools: ["skull_lantern"],
@@ -245,7 +245,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     name: "Tarnished Compass",
     description:
       "Artifact of the vanished civilization, its needle points to hidden places. Unlocks Compass storyline.",
-    originalPrice: 599,
+    originalPrice: 399,
     price: 299, // 2.99 €
     rewards: {
       relics: ["tarnished_compass"],
@@ -263,7 +263,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     name: "Crow Harness",
     description:
       "A specially crafted harness for messenger crows. Unlocks Crow storyline. Adds Fellowship Member.",
-    originalPrice: 699,
+    originalPrice: 499,
     price: 349, // 3.49 €
     rewards: {
       tools: ["crow_harness"],

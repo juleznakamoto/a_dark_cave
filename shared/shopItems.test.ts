@@ -200,10 +200,10 @@ describe('Shop Items Configuration', () => {
       const bundle = SHOP_ITEMS.basic_survival_bundle;
       const discountPercent = ((bundle.originalPrice! - bundle.price) / bundle.originalPrice!) * 100;
 
-      // Should have at least 40% discount to make bundle attractive
-      expect(discountPercent).toBeGreaterThanOrEqual(40);
-      // But not more than 60% (too generous)
-      expect(discountPercent).toBeLessThanOrEqual(60);
+      // Should have at least 10% discount to make bundle attractive
+      expect(discountPercent).toBeGreaterThanOrEqual(10);
+      // But not more than 50% (too generous)
+      expect(discountPercent).toBeLessThanOrEqual(50);
     });
 
     it('should ensure bundle components exist and are not other bundles', () => {
@@ -252,7 +252,7 @@ describe('Shop Items Configuration', () => {
     it('should have correct pricing for advanced bundle', () => {
       const bundle = SHOP_ITEMS.advanced_bundle;
       expect(bundle.price).toBe(1099); // 10.99 €
-      expect(bundle.originalPrice).toBe(2199); // 21.99 €
+      expect(bundle.originalPrice).toBe(1499); // 14.99 €
     });
 
     it('should have correct rewards for advanced bundle', () => {
@@ -265,8 +265,8 @@ describe('Shop Items Configuration', () => {
       const bundle = SHOP_ITEMS.advanced_bundle;
       const discountPercent = ((bundle.originalPrice! - bundle.price) / bundle.originalPrice!) * 100;
 
-      expect(discountPercent).toBeGreaterThanOrEqual(40);
-      expect(discountPercent).toBeLessThanOrEqual(60);
+      expect(discountPercent).toBeGreaterThanOrEqual(10);
+      expect(discountPercent).toBeLessThanOrEqual(50);
     });
 
     it('should allow advanced bundle to be purchased multiple times', () => {
