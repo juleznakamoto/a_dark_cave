@@ -74,15 +74,19 @@ export class AudioManager {
       return;
     }
 
-    sound.loop(true);
-    sound.volume(volume);
-    
-    if (fadeInDuration > 0) {
-      sound.volume(0);
-      sound.play();
-      sound.fade(0, volume, fadeInDuration * 1000);
-    } else {
-      sound.play();
+    try {
+      sound.loop(true);
+      sound.volume(volume);
+      
+      if (fadeInDuration > 0) {
+        sound.volume(0);
+        sound.play();
+        sound.fade(0, volume, fadeInDuration * 1000);
+      } else {
+        sound.play();
+      }
+    } catch (error) {
+      logger.warn(`Error playing looping sound ${name}:`, error);
     }
   }
 
@@ -91,10 +95,16 @@ export class AudioManager {
     if (!sound) return;
 
     if (fadeOutDuration > 0) {
-      sound.fade(sound.volume(), 0, fadeOutDuration * 1000);
-      sound.once('fade', () => {
+      try {
+        const currentVolume = typeof sound.volume === 'function' ? (sound.volume() as number) : 0;
+        sound.fade(currentVolume, 0, fadeOutDuration * 1000);
+        sound.once('fade', () => {
+          sound.stop();
+        });
+      } catch (error) {
+        logger.warn(`Error fading sound ${name}:`, error);
         sound.stop();
-      });
+      }
     } else {
       sound.stop();
     }
