@@ -73,7 +73,8 @@ export class AudioManager {
           const loadedSound = this.sounds.get(name);
           if (loadedSound instanceof Howl) {
             try {
-              loadedSound.volume(volume).play();
+              sound.volume(volume);
+              sound.play();
             } catch (error) {
               logger.warn(`Error playing loaded sound ${name}:`, error);
             }
@@ -231,6 +232,13 @@ export class AudioManager {
       Object.entries(soundsToRegister).map(([name, url]) => this.loadSound(name, url))
     );
     logger.log('Sound registration complete');
+    
+    // Auto-start music if not muted
+    if (!this.isMusicMuted && !this.isMutedGlobally) {
+      this.startBackgroundMusic(this.backgroundMusicVolume).catch(err => 
+        logger.warn('Failed to start background music after preload:', err)
+      );
+    }
   }
 
   async startBackgroundMusic(volume: number = 1): Promise<void> {
