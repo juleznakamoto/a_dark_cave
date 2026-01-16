@@ -73,8 +73,8 @@ export class AudioManager {
           const loadedSound = this.sounds.get(name);
           if (loadedSound instanceof Howl) {
             try {
-              sound.volume(volume);
-              sound.play();
+              loadedSound.volume(volume);
+              loadedSound.play();
             } catch (error) {
               logger.warn(`Error playing loaded sound ${name}:`, error);
             }
