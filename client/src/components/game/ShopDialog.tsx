@@ -27,7 +27,6 @@ import {
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useGameStore } from "@/game/state";
-import { loadStripe } from "@stripe/stripe-js";
 import {
   Elements,
   PaymentElement,
@@ -47,8 +46,9 @@ const stripePublishableKey = import.meta.env.PROD
 // Defer Stripe loading: Load when shop is opened OR after 60 seconds
 let stripePromise: Promise<any> | null = null;
 
-const getStripePromise = () => {
+const getStripePromise = async () => {
   if (!stripePromise && stripePublishableKey) {
+    const { loadStripe } = await import("@stripe/stripe-js");
     stripePromise = loadStripe(stripePublishableKey);
   }
   return stripePromise;
@@ -1289,14 +1289,20 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
               </DialogTitle>
             </DialogHeader>
             <div className="max-h-[calc(85vh-120px)] overflow-y-auto px-6 pb-6 scrollbar-hide">
-              <Elements stripe={getStripePromise()} options={{ clientSecret }}>
-                <CheckoutForm
-                  itemId={selectedItem}
-                  onSuccess={handlePurchaseSuccess}
-                  currency={currency}
-                  onCancel={handleCancelPayment}
-                />
-              </Elements>
+              {stripePromise ? (
+                <Elements stripe={stripePromise} options={{ clientSecret }}>
+                  <CheckoutForm
+                    itemId={selectedItem}
+                    onSuccess={handlePurchaseSuccess}
+                    currency={currency}
+                    onCancel={handleCancelPayment}
+                  />
+                </Elements>
+              ) : (
+                <div className="flex justify-center py-8">
+                  <div className="text-muted-foreground">Loading payment system...</div>
+                </div>
+              )}
             </div>
           </DialogContent>
         </Dialog>

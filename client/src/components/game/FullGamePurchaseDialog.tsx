@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { loadStripe } from "@stripe/stripe-js";
 import {
   Elements,
   PaymentElement,
@@ -26,8 +25,9 @@ const stripePublishableKey = import.meta.env.PROD
 
 // Lazy load Stripe: Load when needed OR after 60 seconds
 let stripePromise: Promise<any> | null = null;
-const getStripePromise = () => {
+const getStripePromise = async () => {
   if (!stripePromise && stripePublishableKey) {
+    const { loadStripe } = await import("@stripe/stripe-js");
     stripePromise = loadStripe(stripePublishableKey);
   }
   return stripePromise;
@@ -459,14 +459,18 @@ export default function FullGamePurchaseDialog({
                   </p>
                 </div>
               </div>
-            ) : (
-              <Elements stripe={getStripePromise()} options={{ clientSecret }}>
+            ) : stripePromise ? (
+              <Elements stripe={stripePromise} options={{ clientSecret }}>
                 <CheckoutForm
                   onSuccess={handlePurchaseSuccess}
                   currency={currency}
                   onCancel={() => setClientSecret(null)}
                 />
               </Elements>
+            ) : (
+              <div className="flex justify-center py-8">
+                <div className="text-muted-foreground">Loading payment system...</div>
+              </div>
             )}
           </div>
         </div>
