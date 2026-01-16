@@ -62,24 +62,31 @@ export class AudioManager {
       sound.volume(volume);
       sound.play();
       
-      // Monkey patch the internal lo function to be safer
-      if (sound && (sound as any).lo && !(sound as any)._loPatched) {
-        const originalLo = (sound as any).lo;
-        (sound as any).lo = function(e: string, t: any, n: any) {
-          if (!e) return this;
-          const i = this["_on" + e];
-          if (!i || !Array.isArray(i)) {
-            return (typeof this.Yo === 'function') ? this.Yo(e) : this;
-          }
-          try {
-            return originalLo.apply(this, [e, t, n]);
-          } catch (err) {
-            console.warn(`Howler internal lo error for event ${e}:`, err);
-            return this;
-          }
-        };
-        (sound as any)._loPatched = true;
-      }
+      // Monkey patch the internal event handling (lo/co depending on build) to be safer
+      const patchInternalHandler = (handlerName: string) => {
+        if (sound && (sound as any)[handlerName] && !(sound as any)['_' + handlerName + 'Patched']) {
+          const originalHandler = (sound as any)[handlerName];
+          (sound as any)[handlerName] = function(e: string, t: any, n: any) {
+            if (!e) return this;
+            const i = this["_on" + e];
+            if (!i || !Array.isArray(i)) {
+              console.log(`[AudioManager] Prevented ${handlerName} crash for event: ${e}`);
+              return (typeof this.Yo === 'function') ? this.Yo(e) : this;
+            }
+            try {
+              return originalHandler.apply(this, [e, t, n]);
+            } catch (err) {
+              console.warn(`[AudioManager] Howler internal ${handlerName} error for event ${e}:`, err);
+              return this;
+            }
+          };
+          (sound as any)['_' + handlerName + 'Patched'] = true;
+          console.log(`[AudioManager] Patched ${handlerName} for sound: ${name}`);
+        }
+      };
+
+      patchInternalHandler('lo');
+      patchInternalHandler('co');
     } catch (error) {
       logger.warn(`Error playing sound ${name}:`, error);
     }
@@ -106,6 +113,32 @@ export class AudioManager {
     try {
       sound.loop(true);
       sound.volume(volume);
+      
+      // Monkey patch the internal event handling (lo/co depending on build) to be safer
+      const patchInternalHandler = (handlerName: string) => {
+        if (sound && (sound as any)[handlerName] && !(sound as any)['_' + handlerName + 'Patched']) {
+          const originalHandler = (sound as any)[handlerName];
+          (sound as any)[handlerName] = function(e: string, t: any, n: any) {
+            if (!e) return this;
+            const i = this["_on" + e];
+            if (!i || !Array.isArray(i)) {
+              console.log(`[AudioManager] Prevented ${handlerName} crash for event: ${e}`);
+              return (typeof this.Yo === 'function') ? this.Yo(e) : this;
+            }
+            try {
+              return originalHandler.apply(this, [e, t, n]);
+            } catch (err) {
+              console.warn(`[AudioManager] Howler internal ${handlerName} error for event ${e}:`, err);
+              return this;
+            }
+          };
+          (sound as any)['_' + handlerName + 'Patched'] = true;
+          console.log(`[AudioManager] Patched ${handlerName} for sound: ${name}`);
+        }
+      };
+
+      patchInternalHandler('lo');
+      patchInternalHandler('co');
       
       if (fadeInDuration > 0) {
         sound.volume(0);
