@@ -61,6 +61,19 @@ export class AudioManager {
     try {
       sound.volume(volume);
       sound.play();
+      
+      // Monkey patch the internal lo function to be safer
+      if (sound && (sound as any).lo && !(sound as any)._loPatched) {
+        const originalLo = (sound as any).lo;
+        (sound as any).lo = function(e: string, t: any, n: any) {
+          const i = this["_on" + e];
+          if (!i || !Array.isArray(i)) {
+            return this.Yo ? this.Yo(e) : this;
+          }
+          return originalLo.apply(this, [e, t, n]);
+        };
+        (sound as any)._loPatched = true;
+      }
     } catch (error) {
       logger.warn(`Error playing sound ${name}:`, error);
     }
@@ -85,6 +98,19 @@ export class AudioManager {
     try {
       sound.loop(true);
       sound.volume(volume);
+      
+      // Monkey patch the internal lo function to be safer
+      if (sound && (sound as any).lo && !(sound as any)._loPatched) {
+        const originalLo = (sound as any).lo;
+        (sound as any).lo = function(e: string, t: any, n: any) {
+          const i = this["_on" + e];
+          if (!i || !Array.isArray(i)) {
+            return this.Yo ? this.Yo(e) : this;
+          }
+          return originalLo.apply(this, [e, t, n]);
+        };
+        (sound as any)._loPatched = true;
+      }
       
       if (fadeInDuration > 0) {
         sound.volume(0);
