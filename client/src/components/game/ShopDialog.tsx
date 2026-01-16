@@ -44,7 +44,7 @@ const stripePublishableKey = import.meta.env.PROD
   ? import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY_PROD
   : import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY_DEV;
 
-// Defer Stripe loading: Load when shop is opened OR after 15 seconds
+// Defer Stripe loading: Load when shop is opened OR after 60 seconds
 let stripePromise: Promise<any> | null = null;
 
 const getStripePromise = () => {
@@ -54,10 +54,10 @@ const getStripePromise = () => {
   return stripePromise;
 };
 
-// Fallback: Load after 15 seconds even if shop hasn't been opened
+// Fallback: Load after 60 seconds even if shop hasn't been opened
 setTimeout(() => {
   getStripePromise();
-}, 15000);
+}, 60000);
 
 // Function to get an initialized Supabase client
 const getSupabaseClient = async () => {

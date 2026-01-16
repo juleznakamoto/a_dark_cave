@@ -24,7 +24,7 @@ const stripePublishableKey = import.meta.env.PROD
   ? import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY_PROD
   : import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY_DEV;
 
-// Lazy load Stripe: Load when needed OR after 15 seconds
+// Lazy load Stripe: Load when needed OR after 60 seconds
 let stripePromise: Promise<any> | null = null;
 const getStripePromise = () => {
   if (!stripePromise && stripePublishableKey) {
@@ -33,10 +33,10 @@ const getStripePromise = () => {
   return stripePromise;
 };
 
-// Fallback: Load after 15 seconds
+// Fallback: Load after 60 seconds
 setTimeout(() => {
   getStripePromise();
-}, 15000);
+}, 60000);
 
 // EU countries with Euro as main currency
 const EU_EURO_COUNTRIES = [
