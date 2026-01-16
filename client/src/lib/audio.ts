@@ -45,7 +45,11 @@ export class AudioManager {
         this.loadSound(name, url).then(() => {
           const loadedSound = this.sounds.get(name);
           if (loadedSound instanceof Howl) {
-            loadedSound.volume(volume).play();
+            try {
+              loadedSound.volume(volume).play();
+            } catch (error) {
+              logger.warn(`Error playing loaded sound ${name}:`, error);
+            }
           }
         });
       } else {
@@ -54,8 +58,12 @@ export class AudioManager {
       return;
     }
 
-    sound.volume(volume);
-    sound.play();
+    try {
+      sound.volume(volume);
+      sound.play();
+    } catch (error) {
+      logger.warn(`Error playing sound ${name}:`, error);
+    }
   }
 
   playLoopingSound(name: string, volume: number = 1, isMuted: boolean = false, fadeInDuration: number = 0): void {
@@ -111,7 +119,15 @@ export class AudioManager {
   }
 
   stopAllSounds(): void {
-    this.sounds.forEach(sound => sound.stop());
+    this.sounds.forEach(sound => {
+      try {
+        if (sound && typeof sound.stop === 'function') {
+          sound.stop();
+        }
+      } catch (error) {
+        logger.warn('Error stopping sound during stopAllSounds:', error);
+      }
+    });
   }
 
   async preloadSounds(): Promise<void> {
@@ -140,9 +156,22 @@ export class AudioManager {
   }
 
   pauseAllSounds(): void {
-    const bgMusic = this.sounds.get('backgroundMusic');
-    this.wasBackgroundMusicPlaying = (bgMusic && typeof bgMusic.playing === 'function') ? bgMusic.playing() : false;
-    this.sounds.forEach(sound => sound.pause());
+    try {
+      const bgMusic = this.sounds.get('backgroundMusic');
+      this.wasBackgroundMusicPlaying = (bgMusic && typeof bgMusic.playing === 'function') ? bgMusic.playing() : false;
+      
+      this.sounds.forEach(sound => {
+        try {
+          if (sound && typeof sound.pause === 'function') {
+            sound.pause();
+          }
+        } catch (error) {
+          logger.warn('Error pausing sound:', error);
+        }
+      });
+    } catch (error) {
+      logger.warn('Error during pauseAllSounds:', error);
+    }
   }
 
   async resumeSounds(): Promise<void> {
