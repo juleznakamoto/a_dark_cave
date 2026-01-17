@@ -96,6 +96,8 @@ export default function StartScreen() {
           },
         });
         const { useGameStore } = await import("@/game/state");
+        // @ts-ignore
+        window.playlightSDK = playlightSDK;
         useGameStore.subscribe((state) => {
           const isEndScreen = window.location.pathname === "/end-screen";
           const shouldEnableExitIntent =
