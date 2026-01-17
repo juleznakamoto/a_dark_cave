@@ -5,6 +5,8 @@ const EventDialog = lazy(() => import("@/components/game/EventDialog"));
 const CombatDialog = lazy(() => import("@/components/game/CombatDialog"));
 
 import { useGameStore } from "@/game/state";
+import { startGameLoop, stopGameLoop } from "@/game/loop";
+import { loadGame, saveGame } from "@/game/save"; // Import saveGame
 import { logger } from "@/lib/logger";
 import { getCurrentUser } from "@/game/auth";
 
