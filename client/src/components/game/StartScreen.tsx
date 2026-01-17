@@ -201,7 +201,7 @@ export default function StartScreen() {
         }
 
         .animate-fade-in-text {
-          animation: fade-in-text 0s ease-in 0.0s forwards;
+          animation: fade-in-text 1s ease-in 0.5s forwards;
           opacity: 0;
         }
 
@@ -211,7 +211,7 @@ export default function StartScreen() {
         }
 
         .animate-fade-in-featured {
-          animation: fade-in-featured 3s ease-in 7s forwards;
+          animation: fade-in-featured 3s ease-in 6s forwards;
           opacity: 0;
         }
       `}</style>
