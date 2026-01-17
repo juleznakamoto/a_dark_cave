@@ -811,7 +811,7 @@ app.post("/api/leaderboard/update-username", leaderboardUpdateLimiter, async (re
 
 
   // Setup Vite middleware AFTER all API routes to prevent catch-all interference
-  if (app.get("env") === "development") {
+  if (process.env.NODE_ENV !== "production") {
     await setupVite(app, server);
   } else {
     serveStatic(app);
