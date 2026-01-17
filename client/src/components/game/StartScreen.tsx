@@ -72,7 +72,55 @@ export default function StartScreen() {
     executedRef.current = true;
 
     // Immediately stop wind with no fade to prevent overlap
-    audioManager.stopLoopingSound("wind", 2);
+    audioManager.stopLoopingSound("wind", 0);
+
+    // Initialize Playlight SDK only after "Light Fire" is clicked
+    const initPlaylight = async () => {
+      try {
+        const script = document.createElement("script");
+        script.src = "https://sdk.playlight.dev/playlight-sdk.es.js";
+        script.type = "module";
+        script.async = true;
+        const loadPromise = new Promise((resolve, reject) => {
+          script.onload = resolve;
+          script.onerror = reject;
+        });
+        document.body.appendChild(script);
+        await loadPromise;
+        const module = await import("https://sdk.playlight.dev/playlight-sdk.es.js");
+        const playlightSDK = module.default;
+        playlightSDK.init({
+          exitIntent: {
+            enabled: false,
+            immediate: false,
+          },
+        });
+        const { useGameStore } = await import("@/game/state");
+        useGameStore.subscribe((state) => {
+          const isEndScreen = window.location.pathname === "/end-screen";
+          const shouldEnableExitIntent =
+            state.isPaused || state.idleModeDialog.isOpen || state.leaderboardDialogOpen || isEndScreen;
+          playlightSDK.setConfig({
+            exitIntent: {
+              enabled: shouldEnableExitIntent,
+              immediate: false,
+            },
+          });
+        });
+        playlightSDK.onEvent("discoveryOpen", () => {
+          const state = useGameStore.getState();
+          if (!state.isPaused) state.togglePause();
+        });
+        playlightSDK.onEvent("discoveryClose", () => {
+          const state = useGameStore.getState();
+          if (state.isPaused) state.togglePause();
+        });
+      } catch (error) {
+        console.error("Error loading Playlight SDK:", error);
+      }
+    };
+    initPlaylight();
+
     audioManager.loadGameSounds().then(() => {
       audioManager.startBackgroundMusic(0.3);
     });
