@@ -33,7 +33,7 @@ export default function StartScreen() {
     // Note: Most browsers require a user gesture to play audio. 
     // We'll attempt to play it, but it might only start after the first click if blocked.
     const playWind = () => {
-      audioManager.playLoopingSound("wind", 0.2, false, 1).catch(err => console.log("Wind audio blocked"));
+      audioManager.playLoopingSound("wind", 0.2, false, 1);
     };
 
     playWind();
@@ -212,7 +212,7 @@ export default function StartScreen() {
 
       <main className="relative z-10 flex-1 flex flex-col items-center justify-center min-h-screen">
         <div className="text-center mb-4">
-          <p className="animate-fade-in-text text-lg text-white leading-relaxed">
+          <p className="animate-fade-in-text text-lg text-gray-300/90 leading-relaxed">
             {isCruelMode ? "A very dark cave." : "A dark cave."}
             <br />
             {isCruelMode
@@ -228,7 +228,7 @@ export default function StartScreen() {
         <ParticleButton
           ref={buttonRef}
           onClick={handleLightFire}
-          className="animate-fade-in-button bg-white text-black border-none hover:bg-gray-200 text-lg px-8 py-4 fire-hover z-[99999]"
+          className="animate-fade-in-button bg-transparent border-none text-gray-300/90 hover:bg-transparent text-lg px-8 py-4 fire-hover z-[99999]"
           data-testid="button-light-fire"
           button_id="light-fire"
         >
@@ -265,6 +265,12 @@ export default function StartScreen() {
           className="hover:text-foreground transition-colors opacity-40 hover:opacity-100"
         >
           Privacy
+        </a>
+        <a
+          href="/terms"
+          className="hover:text-foreground transition-colors opacity-40 hover:opacity-100"
+        >
+          Terms
         </a>
         <a
           href="/imprint"
