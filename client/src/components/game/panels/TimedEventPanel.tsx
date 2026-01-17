@@ -79,7 +79,7 @@ export default function TimedEventPanel() {
     const event = timedEventTab.event;
     const expiryTime = timedEventTab.expiryTime;
     const startTime = timedEventTab.startTime || Date.now();
-    const safetyEndTime = startTime + 5000;
+    const safetyEndTime = startTime + 1000;
 
     const updateTimer = () => {
       const now = Date.now();
@@ -468,11 +468,6 @@ export default function TimedEventPanel() {
           </div>
         )}
       </div>
-      {safetyTimeRemaining > 0 && timedEventTab.isActive && (
-        <div className="text-[10px] text-orange-400/80 mt-1 animate-pulse">
-          Buttons enabled in {Math.ceil(safetyTimeRemaining / 1000)}s...
-        </div>
-      )}
     </div>
   );
 }
