@@ -248,7 +248,7 @@ export default function CloudShader({ className = "" }: CloudShaderProps) {
         visible ? "opacity-100" : "opacity-0"
       } ${className}`}
       style={{
-        background: "url('/shader-fallback.webp') center/cover no-repeat black",
+        background: "black",
       }}
     />
   );
