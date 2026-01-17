@@ -72,24 +72,34 @@ app.use(compression({
     if (req.headers['x-no-compression']) {
       return false;
     }
+    // Optimization: Compress large text-based assets, but usually skip binary media like MP3s
+    // which are already compressed and only waste CPU to re-compress.
+    const contentType = res.getHeader('Content-Type') as string;
+    if (contentType && (contentType.includes('audio') || contentType.includes('video'))) {
+      return false;
+    }
     return compression.filter(req, res);
   }
 }));
 
-  // Add caching for static assets (audio, images, icons)
-  app.use((req, res, next) => {
-    // Explicitly handle fonts before any other matching to prevent HTML fallback
-    if (req.path.startsWith('/fonts/') && req.path.match(/\.(woff2|ttf|otf)$/)) {
-      const fontPath = path.resolve(__dirname, "..", "public", req.path.slice(1));
-      if (fs.existsSync(fontPath)) {
-        res.set('Cache-Control', 'public, max-age=31536000, immutable');
-        res.set('Content-Type', req.path.endsWith('.woff2') ? 'font/woff2' : 'font/ttf');
-        return res.sendFile(fontPath);
-      }
+// Add caching for static assets (audio, images, icons)
+app.use((req, res, next) => {
+  // Explicitly handle fonts before any other matching to prevent HTML fallback
+  if (req.path.startsWith('/fonts/') && req.path.match(/\.(woff2|ttf|otf)$/)) {
+    const fontPath = path.resolve(__dirname, "..", "public", req.path.slice(1));
+    if (fs.existsSync(fontPath)) {
+      res.set('Cache-Control', 'public, max-age=31536000, immutable');
+      res.set('Content-Type', req.path.endsWith('.woff2') ? 'font/woff2' : 'font/woff2');
+      return res.sendFile(fontPath);
     }
+  }
 
-    // Cache audio files for 1 month
-    if (req.path.startsWith('/sounds/')) {
+  // Cache hashed assets from Vite build for 1 year
+  if (req.path.startsWith('/assets/')) {
+    res.set('Cache-Control', 'public, max-age=31536000, immutable');
+  }
+  // Cache audio files for 1 month
+  else if (req.path.startsWith('/sounds/')) {
     res.set('Cache-Control', 'public, max-age=2592000, immutable');
   }
   // Cache icons and images for 1 month
