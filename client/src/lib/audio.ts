@@ -222,7 +222,6 @@ export class AudioManager {
       'event': '/sounds/event.wav',
       'eventMadness': '/sounds/event_madness.wav',
       'whisperingCube': '/sounds/whispering_cube.wav',
-      'backgroundMusic': '/sounds/background_music.wav',
       'explosion': '/sounds/explosion.wav',
       'wind': '/sounds/wind.wav',
       'combat': '/sounds/combat.wav'
@@ -234,11 +233,11 @@ export class AudioManager {
     logger.log('Sound registration complete');
     
     // Auto-start music if not muted
-    if (!this.isMusicMuted && !this.isMutedGlobally) {
-      this.startBackgroundMusic(this.backgroundMusicVolume).catch(err => 
-        logger.warn('Failed to start background music after preload:', err)
-      );
-    }
+    // if (!this.isMusicMuted && !this.isMutedGlobally) {
+    //   this.startBackgroundMusic(this.backgroundMusicVolume).catch(err => 
+    //     logger.warn('Failed to start background music after preload:', err)
+    //   );
+    // }
   }
 
   async startBackgroundMusic(volume: number = 1): Promise<void> {

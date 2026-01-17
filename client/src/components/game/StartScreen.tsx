@@ -28,10 +28,27 @@ export default function StartScreen() {
     }
 
     // Play wind sound on mount
-    audioManager.playLoopingSound("wind", 0.2, false, 1);
+    // Note: Most browsers require a user gesture to play audio. 
+    // We'll attempt to play it, but it might only start after the first click if blocked.
+    const playWind = () => {
+      audioManager.playLoopingSound("wind", 0.2, false, 1);
+    };
+
+    playWind();
+
+    // Add a one-time listener to ensure it plays if initially blocked
+    const handleInitialGesture = () => {
+      playWind();
+      document.removeEventListener("click", handleInitialGesture);
+      document.removeEventListener("touchstart", handleInitialGesture);
+    };
+    document.addEventListener("click", handleInitialGesture);
+    document.addEventListener("touchstart", handleInitialGesture);
 
     return () => {
       audioManager.stopLoopingSound("wind", 2);
+      document.removeEventListener("click", handleInitialGesture);
+      document.removeEventListener("touchstart", handleInitialGesture);
     };
   }, [setBoostMode]);
 
