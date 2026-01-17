@@ -158,7 +158,7 @@ export default function Game() {
   }, [shouldStartMusic]);
 
   if (!isInitialized) {
-    return <div className="min-h-screen bg-black"></div>; // Black screen while loading
+    return <div className="min-h-screen bg-black flex items-center justify-center text-white">Loading...</div>; // Visible loading state
   }
 
   if (!hasLitFire) {
