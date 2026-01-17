@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import GameContainer from "@/components/game/GameContainer";
+import StartScreen from "@/components/game/StartScreen";
 import { useGameStore } from "@/game/state";
 import { startGameLoop, stopGameLoop } from "@/game/loop";
 import { loadGame, saveGame } from "@/game/save"; // Import saveGame
@@ -10,10 +11,11 @@ import { getCurrentUser } from "@/game/auth";
 
 export default function Game() {
   const initialize = useGameStore((state) => state.initialize);
-  const { eventDialog, setEventDialog, combatDialog, setCombatDialog, setShopDialogOpen } =
+  const { eventDialog, setEventDialog, combatDialog, setCombatDialog, setShopDialogOpen, flags } =
     useGameStore();
   const [isInitialized, setIsInitialized] = useState(false);
   const [shouldStartMusic, setShouldStartMusic] = useState(false);
+  const hasLitFire = flags.hasLitFire;
 
   useEffect(() => {
     logger.log("[GAME PAGE] Initializing game");
@@ -157,6 +159,10 @@ export default function Game() {
 
   if (!isInitialized) {
     return <div className="min-h-screen bg-black"></div>; // Black screen while loading
+  }
+
+  if (!hasLitFire) {
+    return <StartScreen />;
   }
 
   return (

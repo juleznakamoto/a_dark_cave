@@ -255,6 +255,12 @@ export default function StartScreen() {
           Privacy
         </a>
         <a
+          href="/terms"
+          className="hover:text-foreground transition-colors opacity-40 hover:opacity-100"
+        >
+          Terms
+        </a>
+        <a
           href="/imprint"
           className="hover:text-foreground transition-colors opacity-40 hover:opacity-100"
         >
