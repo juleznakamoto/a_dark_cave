@@ -1,31 +1,33 @@
-import GameTabs from "./GameTabs";
-import GameFooter from "./GameFooter";
-import CavePanel from "./panels/CavePanel";
-import VillagePanel from "./panels/VillagePanel";
-import ForestPanel from "./panels/ForestPanel";
-import EstatePanel from "./panels/EstatePanel";
-import BastionPanel from "./panels/BastionPanel";
-import AchievementsPanel from "./panels/AchievementsPanel";
-import TimedEventPanel from "./panels/TimedEventPanel";
-import LogPanel from "./panels/LogPanel";
+import { useState, useEffect, useMemo, useRef, lazy, Suspense } from "react";
 import StartScreen from "./StartScreen";
 import { useGameStore } from "@/game/state";
-import EventDialog from "./EventDialog";
-import CombatDialog from "./CombatDialog";
-import IdleModeDialog from "./IdleModeDialog";
-import CubeDialog from "./CubeDialog";
-import InactivityDialog from "./InactivityDialog";
-import { RestartGameDialog } from "./RestartGameDialog";
-import FullGamePurchaseDialog from "./FullGamePurchaseDialog";
-import { ShopDialog } from "./ShopDialog";
-import LeaderboardDialog from "./LeaderboardDialog";
-import { useState, useEffect, useMemo, useRef } from "react";
 import { LimelightNav, NavItem } from "@/components/ui/limelight-nav";
 import { Mountain, Trees, Castle, Landmark } from "lucide-react";
 import ProfileMenu from "./ProfileMenu"; // Imported ProfileMenu
 import { startVersionCheck, stopVersionCheck } from "@/game/versionCheck";
 import { logger } from "@/lib/logger";
 import { toast } from "@/hooks/use-toast";
+
+// Lazy load heavy game components
+const GameTabs = lazy(() => import("./GameTabs"));
+const GameFooter = lazy(() => import("./GameFooter"));
+const CavePanel = lazy(() => import("./panels/CavePanel"));
+const VillagePanel = lazy(() => import("./panels/VillagePanel"));
+const ForestPanel = lazy(() => import("./panels/ForestPanel"));
+const EstatePanel = lazy(() => import("./panels/EstatePanel"));
+const BastionPanel = lazy(() => import("./panels/BastionPanel"));
+const AchievementsPanel = lazy(() => import("./panels/AchievementsPanel"));
+const TimedEventPanel = lazy(() => import("./panels/TimedEventPanel"));
+const LogPanel = lazy(() => import("./panels/LogPanel"));
+const EventDialog = lazy(() => import("./EventDialog"));
+const CombatDialog = lazy(() => import("./CombatDialog"));
+const IdleModeDialog = lazy(() => import("./IdleModeDialog"));
+const CubeDialog = lazy(() => import("./CubeDialog"));
+const InactivityDialog = lazy(() => import("./InactivityDialog"));
+const RestartGameDialog = lazy(() => import("./RestartGameDialog").then(m => ({ default: m.RestartGameDialog })));
+const FullGamePurchaseDialog = lazy(() => import("./FullGamePurchaseDialog"));
+const ShopDialog = lazy(() => import("./ShopDialog").then(m => ({ default: m.ShopDialog })));
+const LeaderboardDialog = lazy(() => import("./LeaderboardDialog"));
 
 export default function GameContainer() {
   const {
@@ -310,226 +312,228 @@ export default function GameContainer() {
 
   return (
     <div className="fixed inset-0 bg-background text-foreground flex flex-col">
-      {/* Pause Overlay - covers everything except footer and profile menu */}
-      {isPaused && (
-        <div
-          className="fixed inset-0 bg-black/80 z-40 pointer-events-auto overlay-fade-in"
-          style={{ bottom: "45px" }}
-        />
-      )}
+      <Suspense fallback={<div className="min-h-screen bg-black" />}>
+        {/* Pause Overlay - covers everything except footer and profile menu */}
+        {isPaused && (
+          <div
+            className="fixed inset-0 bg-black/80 z-40 pointer-events-auto overlay-fade-in"
+            style={{ bottom: "45px" }}
+          />
+        )}
 
-      {/* Sleep Mode Overlay - covers everything except footer and profile menu */}
-      {idleModeDialog.isOpen && (
-        <div
-          className="fixed inset-0 bg-black/100 z-40 pointer-events-auto overlay-fade-in"
-          style={{ bottom: "45px" }}
-        />
-      )}
+        {/* Sleep Mode Overlay - covers everything except footer and profile menu */}
+        {idleModeDialog.isOpen && (
+          <div
+            className="fixed inset-0 bg-black/100 z-40 pointer-events-auto overlay-fade-in"
+            style={{ bottom: "45px" }}
+          />
+        )}
 
-      {/* Event Log - Fixed Height at Top */}
-      <div className="w-full overflow-hidden pb-0 p-2 flex-shrink-0 pr-12">
-        <LogPanel />
-      </div>
-
-      {/* Main Content Area - Fills remaining space */}
-      <main className="flex-1 pb-0 flex flex-col md:flex-row min-h-0 overflow-hidden">
-        {/* Left Sidebar for Resources - On top for mobile, left for desktop */}
-        <div className="min-h-48 w-full pl-2 pr-2 md:w-[26rem] border-t md:border-r overflow-hidden">
-          <GameTabs />
+        {/* Event Log - Fixed Height at Top */}
+        <div className="w-full overflow-hidden pb-0 p-2 flex-shrink-0 pr-12">
+          <LogPanel />
         </div>
 
-        {/* Right Content Area with Horizontal Tabs and Actions - Below for mobile, right for desktop */}
-        <section className="flex-1 md:pl-0 flex flex-col min-w-0 min-h-0 overflow-hidden">
-          {/* Horizontal Game Tabs */}
-          <nav className="border-t border-border pl-2 md:pl-4 flex-shrink-0">
-            {useLimelightNav ? (
-              // Alternative LimelightNav design
-              <LimelightNav
-                items={limelightNavItems}
-                defaultActiveIndex={limelightNavItems.findIndex(
-                  (item) => item.id === activeTab,
-                )}
-                onTabChange={(index) => {
-                  const selectedTab = limelightNavItems[index];
-                  if (selectedTab && selectedTab.onClick) {
-                    selectedTab.onClick();
-                  }
-                }}
-                className="bg-transparent border-0"
-              />
-            ) : (
-              // Standard button design
-              <div className="flex space-x-4 pl-[3px] ">
-                <button
-                  className={`py-2 text-sm bg-transparent ${
-                    activeTab === "cave"
-                      ? "font-bold opacity-100"
-                      : "opacity-60"
-                  } `}
-                  onClick={() => setActiveTab("cave")}
-                  data-testid="tab-cave"
-                >
-                  Cave
-                </button>
+        {/* Main Content Area - Fills remaining space */}
+        <main className="flex-1 pb-0 flex flex-col md:flex-row min-h-0 overflow-hidden">
+          {/* Left Sidebar for Resources - On top for mobile, left for desktop */}
+          <div className="min-h-48 w-full pl-2 pr-2 md:w-[26rem] border-t md:border-r overflow-hidden">
+            <GameTabs />
+          </div>
 
-                {flags.villageUnlocked && (
+          {/* Right Content Area with Horizontal Tabs and Actions - Below for mobile, right for desktop */}
+          <section className="flex-1 md:pl-0 flex flex-col min-w-0 min-h-0 overflow-hidden">
+            {/* Horizontal Game Tabs */}
+            <nav className="border-t border-border pl-2 md:pl-4 flex-shrink-0">
+              {useLimelightNav ? (
+                // Alternative LimelightNav design
+                <LimelightNav
+                  items={limelightNavItems}
+                  defaultActiveIndex={limelightNavItems.findIndex(
+                    (item) => item.id === activeTab,
+                  )}
+                  onTabChange={(index) => {
+                    const selectedTab = limelightNavItems[index];
+                    if (selectedTab && selectedTab.onClick) {
+                      selectedTab.onClick();
+                    }
+                  }}
+                  className="bg-transparent border-0"
+                />
+              ) : (
+                // Standard button design
+                <div className="flex space-x-4 pl-[3px] ">
                   <button
                     className={`py-2 text-sm bg-transparent ${
-                      animatingTabs.has("village")
-                        ? "tab-fade-in"
-                        : activeTab === "village"
-                          ? "font-bold opacity-100"
-                          : "opacity-60"
-                    }`}
-                    onClick={() => setActiveTab("village")}
-                    data-testid="tab-village"
-                  >
-                    {buildings.stoneHut >= 5 ? "City" : "Village"}
-                  </button>
-                )}
-
-                {/* Estate Tab Button */}
-                {(estateUnlocked || buildings.darkEstate >= 1) && (
-                  <button
-                    className={`py-2 text-sm bg-transparent ${
-                      animatingTabs.has("estate")
-                        ? "tab-fade-in"
-                        : activeTab === "estate"
-                          ? "font-bold opacity-100"
-                          : "opacity-60"
-                    }`}
-                    onClick={() => setActiveTab("estate")}
-                    data-testid="tab-estate"
-                  >
-                    Estate
-                  </button>
-                )}
-
-                {flags.forestUnlocked && (
-                  <button
-                    className={`py-2 text-sm bg-transparent ${
-                      animatingTabs.has("forest")
-                        ? "tab-fade-in"
-                        : activeTab === "forest"
-                          ? "font-bold opacity-100"
-                          : "opacity-60"
-                    }`}
-                    onClick={() => setActiveTab("forest")}
-                    data-testid="tab-forest"
-                  >
-                    Forest
-                  </button>
-                )}
-
-                {flags.bastionUnlocked && (
-                  <button
-                    className={`py-2 text-sm bg-transparent ${
-                      animatingTabs.has("bastion")
-                        ? "tab-fade-in"
-                        : activeTab === "bastion"
-                          ? "font-bold opacity-100"
-                          : "opacity-60"
-                    }`}
-                    onClick={() => setActiveTab("bastion")}
-                    data-testid="tab-bastion"
-                  >
-                    {flags.hasFortress ? "Fortress" : "Bastion"}
-                  </button>
-                )}
-
-                {/* Achievements Tab Button */}
-                {books?.book_of_trials && (
-                  <button
-                    className={`py-2 text-sm bg-transparent ${
-                      animatingTabs.has("achievements")
-                        ? "tab-fade-in"
-                        : activeTab === "achievements"
-                          ? "font-medium opacity-100"
-                          : "opacity-60"
-                    }`}
-                    onClick={() => setActiveTab("achievements")}
-                    data-testid="tab-achievements"
-                  >
-                    ⚜
-                  </button>
-                )}
-
-                {/* Timed Event Tab Button */}
-                {timedEventTab.isActive && (
-                  <button
-                    className={`py-2 text-sm bg-transparent ${
-                      activeTab === "timedevent"
+                      activeTab === "cave"
                         ? "font-bold opacity-100"
                         : "opacity-60"
-                    }`}
-                    onClick={() => setActiveTab("timedevent")}
-                    data-testid="tab-timedevent"
+                    } `}
+                    onClick={() => setActiveTab("cave")}
+                    data-testid="tab-cave"
                   >
-                    <span className="timer-symbol">⊚</span>
+                    Cave
                   </button>
-                )}
-              </div>
-            )}
-          </nav>
 
-          {/* Action Panels */}
-          <div className="flex-1 overflow-auto pl-2 md:pl-4 min-h-0">
-            {activeTab === "cave" && <CavePanel />}
-            {activeTab === "village" && <VillagePanel />}
-            {activeTab === "forest" && <ForestPanel />}
-            {activeTab === "estate" && <EstatePanel />}
-            {activeTab === "bastion" && <BastionPanel />}
-            {activeTab === "achievements" && <AchievementsPanel />}
-            {activeTab === "timedevent" && <TimedEventPanel />}
-          </div>
-        </section>
-      </main>
+                  {flags.villageUnlocked && (
+                    <button
+                      className={`py-2 text-sm bg-transparent ${
+                        animatingTabs.has("village")
+                          ? "tab-fade-in"
+                          : activeTab === "village"
+                            ? "font-bold opacity-100"
+                            : "opacity-60"
+                      }`}
+                      onClick={() => setActiveTab("village")}
+                      data-testid="tab-village"
+                    >
+                      {buildings.stoneHut >= 5 ? "City" : "Village"}
+                    </button>
+                  )}
 
-      {/* Footer - Fixed at Bottom */}
-      <div className="flex-shrink-0">
-        <GameFooter />
-      </div>
+                  {/* Estate Tab Button */}
+                  {(estateUnlocked || buildings.darkEstate >= 1) && (
+                    <button
+                      className={`py-2 text-sm bg-transparent ${
+                        animatingTabs.has("estate")
+                          ? "tab-fade-in"
+                          : activeTab === "estate"
+                            ? "font-bold opacity-100"
+                            : "opacity-60"
+                      }`}
+                      onClick={() => setActiveTab("estate")}
+                      data-testid="tab-estate"
+                    >
+                      Estate
+                    </button>
+                  )}
 
-      {/* Event Dialog */}
-      <EventDialog
-        isOpen={eventDialog.isOpen}
-        onClose={() => setEventDialog(false)}
-        event={eventDialog.currentEvent}
-      />
+                  {flags.forestUnlocked && (
+                    <button
+                      className={`py-2 text-sm bg-transparent ${
+                        animatingTabs.has("forest")
+                          ? "tab-fade-in"
+                          : activeTab === "forest"
+                            ? "font-bold opacity-100"
+                            : "opacity-60"
+                      }`}
+                      onClick={() => setActiveTab("forest")}
+                      data-testid="tab-forest"
+                    >
+                      Forest
+                    </button>
+                  )}
 
-      {/* Combat Dialog */}
-      <CombatDialog
-        isOpen={combatDialog.isOpen}
-        onClose={() => setCombatDialog(false)}
-        combat={combatDialog.currentCombat}
-      />
+                  {flags.bastionUnlocked && (
+                    <button
+                      className={`py-2 text-sm bg-transparent ${
+                        animatingTabs.has("bastion")
+                          ? "tab-fade-in"
+                          : activeTab === "bastion"
+                            ? "font-bold opacity-100"
+                            : "opacity-60"
+                      }`}
+                      onClick={() => setActiveTab("bastion")}
+                      data-testid="tab-bastion"
+                    >
+                      {flags.hasFortress ? "Fortress" : "Bastion"}
+                    </button>
+                  )}
 
-      {/* Idle Mode Dialog */}
-      <IdleModeDialog />
-      <CubeDialog />
-      <ShopDialog
-        isOpen={shopDialogOpen}
-        onClose={() => setShopDialogOpen(false)}
-        onOpen={() => setShopDialogOpen(true)}
-      />
-      <LeaderboardDialog
-        isOpen={leaderboardDialogOpen}
-        onClose={() => setLeaderboardDialogOpen(false)}
-      />
-      <FullGamePurchaseDialog
-        isOpen={fullGamePurchaseDialogOpen}
-        onClose={() => setFullGamePurchaseDialogOpen(false)}
-      />
-      {inactivityDialogOpen && <InactivityDialog />}
+                  {/* Achievements Tab Button */}
+                  {books?.book_of_trials && (
+                    <button
+                      className={`py-2 text-sm bg-transparent ${
+                        animatingTabs.has("achievements")
+                          ? "tab-fade-in"
+                          : activeTab === "achievements"
+                            ? "font-medium opacity-100"
+                            : "opacity-60"
+                      }`}
+                      onClick={() => setActiveTab("achievements")}
+                      data-testid="tab-achievements"
+                    >
+                      ⚜
+                    </button>
+                  )}
 
-      {/* Restart Game Dialog */}
-      <RestartGameDialog
-        isOpen={restartGameDialogOpen}
-        onClose={() => setRestartGameDialogOpen(false)}
-        onRestart={restartGame}
-      />
+                  {/* Timed Event Tab Button */}
+                  {timedEventTab.isActive && (
+                    <button
+                      className={`py-2 text-sm bg-transparent ${
+                        activeTab === "timedevent"
+                          ? "font-bold opacity-100"
+                          : "opacity-60"
+                      }`}
+                      onClick={() => setActiveTab("timedevent")}
+                      data-testid="tab-timedevent"
+                    >
+                      <span className="timer-symbol">⊚</span>
+                    </button>
+                  )}
+                </div>
+              )}
+            </nav>
 
-      <ProfileMenu />
+            {/* Action Panels */}
+            <div className="flex-1 overflow-auto pl-2 md:pl-4 min-h-0">
+              {activeTab === "cave" && <CavePanel />}
+              {activeTab === "village" && <VillagePanel />}
+              {activeTab === "forest" && <ForestPanel />}
+              {activeTab === "estate" && <EstatePanel />}
+              {activeTab === "bastion" && <BastionPanel />}
+              {activeTab === "achievements" && <AchievementsPanel />}
+              {activeTab === "timedevent" && <TimedEventPanel />}
+            </div>
+          </section>
+        </main>
+
+        {/* Footer - Fixed at Bottom */}
+        <div className="flex-shrink-0">
+          <GameFooter />
+        </div>
+
+        {/* Event Dialog */}
+        <EventDialog
+          isOpen={eventDialog.isOpen}
+          onClose={() => setEventDialog(false)}
+          event={eventDialog.currentEvent}
+        />
+
+        {/* Combat Dialog */}
+        <CombatDialog
+          isOpen={combatDialog.isOpen}
+          onClose={() => setCombatDialog(false)}
+          combat={combatDialog.currentCombat}
+        />
+
+        {/* Idle Mode Dialog */}
+        <IdleModeDialog />
+        <CubeDialog />
+        <ShopDialog
+          isOpen={shopDialogOpen}
+          onClose={() => setShopDialogOpen(false)}
+          onOpen={() => setShopDialogOpen(true)}
+        />
+        <LeaderboardDialog
+          isOpen={leaderboardDialogOpen}
+          onClose={() => setLeaderboardDialogOpen(false)}
+        />
+        <FullGamePurchaseDialog
+          isOpen={fullGamePurchaseDialogOpen}
+          onClose={() => setFullGamePurchaseDialogOpen(false)}
+        />
+        {inactivityDialogOpen && <InactivityDialog />}
+
+        {/* Restart Game Dialog */}
+        <RestartGameDialog
+          isOpen={restartGameDialogOpen}
+          onClose={() => setRestartGameDialogOpen(false)}
+          onRestart={restartGame}
+        />
+
+        <ProfileMenu />
+      </Suspense>
     </div>
   );
 }
