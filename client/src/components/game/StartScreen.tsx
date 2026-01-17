@@ -31,13 +31,18 @@ export default function StartScreen() {
     // Note: Most browsers require a user gesture to play audio. 
     // We'll attempt to play it, but it might only start after the first click if blocked.
     const playWind = () => {
+      console.log("[StartScreen] Attempting to play wind sound");
       audioManager.playLoopingSound("wind", 0.2, false, 1);
     };
 
-    playWind();
+    // Ensure sounds are preloaded before playing
+    audioManager.preloadSounds().then(() => {
+      playWind();
+    });
 
     // Add a one-time listener to ensure it plays if initially blocked
     const handleInitialGesture = () => {
+      console.log("[StartScreen] Initial gesture detected");
       if (!executedRef.current) {
         playWind();
       }
@@ -73,6 +78,7 @@ export default function StartScreen() {
 
     // Load font dynamically
     const style = document.createElement('style');
+    style.id = 'dynamic-game-font';
     style.textContent = `
       @font-face {
         font-family: 'Inter';
