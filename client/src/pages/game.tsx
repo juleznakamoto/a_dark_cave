@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import GameContainer from "@/components/game/GameContainer";
-import StartScreen from "@/components/game/StartScreen";
 import { useGameStore } from "@/game/state";
 import { startGameLoop, stopGameLoop } from "@/game/loop";
 import { loadGame, saveGame } from "@/game/save"; // Import saveGame
@@ -11,11 +10,10 @@ import { getCurrentUser } from "@/game/auth";
 
 export default function Game() {
   const initialize = useGameStore((state) => state.initialize);
-  const { eventDialog, setEventDialog, combatDialog, setCombatDialog, setShopDialogOpen, flags } =
+  const { eventDialog, setEventDialog, combatDialog, setCombatDialog, setShopDialogOpen } =
     useGameStore();
   const [isInitialized, setIsInitialized] = useState(false);
   const [shouldStartMusic, setShouldStartMusic] = useState(false);
-  const hasLitFire = flags.hasLitFire;
 
   useEffect(() => {
     logger.log("[GAME PAGE] Initializing game");
@@ -41,8 +39,8 @@ export default function Game() {
         // Parse URL query parameters
         const urlParams = new URLSearchParams(window.location.search);
         
-        // Check if URL is /boost path or ?game=true param to skip start screen
-        const isGamePath = window.location.pathname === '/boost' || urlParams.get('game') === 'true';
+        // Check if URL is /boost path, /game path or ?game=true param to skip start screen
+        const isGamePath = window.location.pathname === '/boost' || window.location.pathname === '/game' || urlParams.get('game') === 'true';
 
         // Check for openShop query parameter only (not /boost path)
         const openShop = urlParams.get('openShop') === 'true';
@@ -158,11 +156,7 @@ export default function Game() {
   }, [shouldStartMusic]);
 
   if (!isInitialized) {
-    return <div className="min-h-screen bg-black"></div>; // Black screen while loading
-  }
-
-  if (!hasLitFire) {
-    return <StartScreen />;
+    return <div className="min-h-screen bg-black flex items-center justify-center text-white">Loading...</div>; // Improved loading state
   }
 
   return (

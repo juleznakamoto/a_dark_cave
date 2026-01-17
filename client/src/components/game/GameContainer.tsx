@@ -8,6 +8,7 @@ import BastionPanel from "./panels/BastionPanel";
 import AchievementsPanel from "./panels/AchievementsPanel";
 import TimedEventPanel from "./panels/TimedEventPanel";
 import LogPanel from "./panels/LogPanel";
+import StartScreen from "./StartScreen";
 import { useGameStore } from "@/game/state";
 import EventDialog from "./EventDialog";
 import CombatDialog from "./CombatDialog";
@@ -302,10 +303,10 @@ export default function GameContainer() {
     timedEventTab.event?.title,
   ]);
 
-  // No longer returning StartScreen here as it's handled at the page level
-  // if (!flags.gameStarted) {
-  //   return <StartScreen />;
-  // }
+  // Show start screen if game hasn't started yet
+  if (!flags.gameStarted) {
+    return <StartScreen />;
+  }
 
   return (
     <div className="fixed inset-0 bg-background text-foreground flex flex-col">
