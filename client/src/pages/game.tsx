@@ -155,6 +155,8 @@ export default function Game() {
     };
   }, [shouldStartMusic]);
 
+  const isGameStarted = useGameStore((state) => state.flags.gameStarted);
+
   if (!isInitialized) {
     return <div className="min-h-screen bg-black"></div>; // Black screen while loading
   }
@@ -163,21 +165,25 @@ export default function Game() {
     <div>
       <GameContainer />
 
-      <EventDialog
-        isOpen={eventDialog.isOpen}
-        onClose={() => setEventDialog(false)}
-        event={eventDialog.currentEvent}
-      />
+      {isGameStarted && (
+        <>
+          <EventDialog
+            isOpen={eventDialog.isOpen}
+            onClose={() => setEventDialog(false)}
+            event={eventDialog.currentEvent}
+          />
 
-      <CombatDialog
-        isOpen={combatDialog.isOpen}
-        onClose={() => setCombatDialog(false)}
-        enemy={combatDialog.enemy}
-        eventTitle={combatDialog.eventTitle}
-        eventMessage={combatDialog.eventMessage}
-        onVictory={combatDialog.onVictory || (() => {})}
-        onDefeat={combatDialog.onDefeat || (() => {})}
-      />
+          <CombatDialog
+            isOpen={combatDialog.isOpen}
+            onClose={() => setCombatDialog(false)}
+            enemy={combatDialog.enemy}
+            eventTitle={combatDialog.eventTitle}
+            eventMessage={combatDialog.eventMessage}
+            onVictory={combatDialog.onVictory || (() => {})}
+            onDefeat={combatDialog.onDefeat || (() => {})}
+          />
+        </>
+      )}
     </div>
   );
 }

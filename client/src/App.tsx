@@ -6,25 +6,23 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import AdminDashboard from "@/pages/admin/dashboard";
 
-// Lazy load game page
-const Game = lazy(() => import("@/pages/game"));
+// Eager load critical pages
+import Imprint from "@/pages/imprint";
+import Privacy from "@/pages/privacy";
+import Terms from "@/pages/terms";
 
-// Lazy load all other pages
+// Lazy load game and other secondary pages
+const Game = lazy(() => import("@/pages/game"));
 const EndScreenPage = lazy(() => import("@/pages/end-screen"));
 const NotFound = lazy(() => import("@/pages/not-found"));
 const ResetPassword = lazy(() => import("@/pages/reset-password"));
-const Imprint = lazy(() => import("@/pages/imprint"));
-const Privacy = lazy(() => import("@/pages/privacy"));
-const Terms = lazy(() => import("@/pages/terms"));
 const Withdrawal = lazy(() => import("@/pages/withdrawal"));
-// const ButtonTest = lazy(() => import("@/pages/button-test"));
-// const ExplosionTest = lazy(() => import("@/pages/explosion-test"));
 
 function Router() {
   return (
     <Suspense
       fallback={
-        <div className="flex items-center justify-center h-screen">
+        <div className="flex items-center justify-center h-screen bg-black text-white">
           Loading...
         </div>
       }
@@ -38,8 +36,6 @@ function Router() {
         <Route path="/terms" component={Terms} />
         <Route path="/withdrawal" component={Withdrawal} />
         <Route path="/reset-password" component={ResetPassword} />
-        {/* <Route path="/button-test" component={ButtonTest} /> */}
-        {/* <Route path="/explosion-test" component={ExplosionTest} /> */}
         <Route path="/admin/dashboard">
           <AdminDashboard />
         </Route>
