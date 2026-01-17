@@ -121,6 +121,7 @@ interface GameStore extends GameState {
     isActive: boolean;
     event: LogEntry | null;
     expiryTime: number;
+    startTime?: number;
   };
 
   // Merchant trades state
@@ -1655,6 +1656,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
           isActive,
           event: event || null, // Don't store choices in event
           expiryTime: duration ? Date.now() + duration : 0,
+          startTime: Date.now(),
         },
         merchantTrades: {
           choices, // SSOT: Use the choices that were already generated
@@ -1670,6 +1672,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
           isActive: false,
           event: null,
           expiryTime: 0,
+          startTime: undefined,
         },
         merchantTrades: {
           choices: [],
@@ -1683,6 +1686,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
           isActive,
           event: event || null,
           expiryTime: isActive && duration ? Date.now() + duration : 0,
+          startTime: isActive ? Date.now() : undefined,
         },
       });
     }

@@ -34,6 +34,7 @@ export default function TimedEventPanel() {
   const mobileTooltip = useMobileButtonTooltip();
   const discountTooltip = useMobileTooltip();
   const [timeRemaining, setTimeRemaining] = useState<number>(0);
+  const [safetyTimeRemaining, setSafetyTimeRemaining] = useState<number>(0);
 
   // Get merchant trades from state (generated once when event starts)
   const isMerchantEvent = timedEventTab.event?.id.split("-")[0] === "merchant";
@@ -71,17 +72,22 @@ export default function TimedEventPanel() {
       !timedEventTab.event
     ) {
       setTimeRemaining(0);
+      setSafetyTimeRemaining(0);
       return;
     }
 
     const event = timedEventTab.event;
     const expiryTime = timedEventTab.expiryTime;
+    const startTime = timedEventTab.startTime || Date.now();
+    const safetyEndTime = startTime + 5000;
 
     const updateTimer = () => {
       const now = Date.now();
       const remaining = Math.max(0, expiryTime - now);
+      const safetyRemaining = Math.max(0, safetyEndTime - now);
 
       setTimeRemaining(remaining);
+      setSafetyTimeRemaining(safetyRemaining);
 
       if (remaining <= 0) {
         // Execute fallback choice when timer expires
@@ -110,6 +116,7 @@ export default function TimedEventPanel() {
         setTimedEventTab(false);
 
         // The useEffect in GameContainer will automatically switch to cave tab
+        // when it detects timedevent tab is active but event is no longer active
         // when it detects timedevent tab is active but event is no longer active
       }
     };
@@ -307,9 +314,9 @@ export default function TimedEventPanel() {
                 isMerchantEvent &&
                 gameState.merchantTrades?.purchasedIds?.includes(choice.id);
 
-              // Disable if can't afford, time is up, or already purchased
+              // Disable if can't afford, time is up, already purchased, or in safety period
               const isDisabled =
-                !canAfford || timeRemaining <= 0 || isPurchased;
+                !canAfford || timeRemaining <= 0 || isPurchased || safetyTimeRemaining > 0;
 
               // Calculate success percentage if available
               let successPercentage: string | null = null;
@@ -453,7 +460,7 @@ export default function TimedEventPanel() {
               }
               variant="outline"
               size="xs"
-              disabled={timeRemaining <= 0}
+              disabled={timeRemaining <= 0 || safetyTimeRemaining > 0}
               button_id="timedevent-say_goodbye"
             >
               Say Goodbye
@@ -461,6 +468,11 @@ export default function TimedEventPanel() {
           </div>
         )}
       </div>
+      {safetyTimeRemaining > 0 && timedEventTab.isActive && (
+        <div className="text-[10px] text-orange-400/80 mt-1 animate-pulse">
+          Buttons enabled in {Math.ceil(safetyTimeRemaining / 1000)}s...
+        </div>
+      )}
     </div>
   );
 }
