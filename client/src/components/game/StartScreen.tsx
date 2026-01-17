@@ -38,7 +38,9 @@ export default function StartScreen() {
 
     // Add a one-time listener to ensure it plays if initially blocked
     const handleInitialGesture = () => {
-      playWind();
+      if (!executedRef.current) {
+        playWind();
+      }
       document.removeEventListener("click", handleInitialGesture);
       document.removeEventListener("touchstart", handleInitialGesture);
     };
