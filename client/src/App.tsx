@@ -1,4 +1,4 @@
-import { useEffect, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 import { Switch, Route } from "wouter";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./lib/queryClient";
@@ -50,73 +50,7 @@ function Router() {
 }
 
 function App() {
-  useEffect(() => {
-    let exitIntentTimeout: NodeJS.Timeout | null = null;
-    const initPlaylight = async () => {
-      try {
-        const script = document.createElement("script");
-        script.src = "https://sdk.playlight.dev/playlight-sdk.es.js";
-        script.type = "module";
-        script.async = true;
-        const loadPromise = new Promise((resolve, reject) => {
-          script.onload = resolve;
-          script.onerror = reject;
-        });
-        document.body.appendChild(script);
-        await loadPromise;
-        // @ts-ignore - The SDK is loaded globally as a module but we need to access its export
-        // The previous dynamic import was also from the same URL
-        const module = await import("https://sdk.playlight.dev/playlight-sdk.es.js");
-        const playlightSDK = module.default;
-        // Initialize SDK immediately with exit intent disabled
-        playlightSDK.init({
-          exitIntent: {
-            enabled: false,
-            immediate: false,
-          },
-        });
-        // Import game store
-        const { useGameStore } = await import("./game/state");
-        // Reactively update exit intent based on game state
-        useGameStore.subscribe(
-          (state) => {
-            const isEndScreen = window.location.pathname === "/end-screen";
-            const shouldEnableExitIntent =
-              state.isPaused || state.idleModeDialog.isOpen || state.leaderboardDialogOpen || isEndScreen;
-            playlightSDK.setConfig({
-              exitIntent: {
-                enabled: shouldEnableExitIntent,
-                immediate: false,
-              },
-            });
-          }
-        );
-        // Set up event listeners for game pause/unpause
-        playlightSDK.onEvent("discoveryOpen", () => {
-          const state = useGameStore.getState();
-          if (!state.isPaused) {
-            state.togglePause();
-          }
-        });
-        playlightSDK.onEvent("discoveryClose", () => {
-          const state = useGameStore.getState();
-          if (state.isPaused) {
-            state.togglePause();
-          }
-        });
-      } catch (error) {
-        console.error("Error loading the Playlight SDK:", error);
-      }
-    };
-    initPlaylight();
-    // Cleanup timeout on unmount
-    return () => {
-      if (exitIntentTimeout) {
-        clearTimeout(exitIntentTimeout);
-      }
-    };
-  }, []);
-
+  // Playlight SDK initialization moved to StartScreen.tsx - loads only after "Light Fire" click
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>

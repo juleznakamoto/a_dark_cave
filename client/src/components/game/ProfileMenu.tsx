@@ -267,6 +267,14 @@ export default function ProfileMenu() {
       let playlightSDK = window.playlightSDK;
       
       if (!playlightSDK) {
+        // Load CSS if not already loaded
+        if (!document.querySelector('link[href*="playlight-sdk.css"]')) {
+          const cssLink = document.createElement("link");
+          cssLink.rel = "stylesheet";
+          cssLink.href = "https://sdk.playlight.dev/playlight-sdk.css";
+          document.head.appendChild(cssLink);
+        }
+        
         const module = await import(
           "https://sdk.playlight.dev/playlight-sdk.es.js"
         );

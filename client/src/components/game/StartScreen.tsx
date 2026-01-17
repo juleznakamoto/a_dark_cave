@@ -77,6 +77,13 @@ export default function StartScreen() {
     // Initialize Playlight SDK only after "Light Fire" is clicked
     const initPlaylight = async () => {
       try {
+        // Load CSS dynamically
+        const cssLink = document.createElement("link");
+        cssLink.rel = "stylesheet";
+        cssLink.href = "https://sdk.playlight.dev/playlight-sdk.css";
+        document.head.appendChild(cssLink);
+
+        // Load JS dynamically
         const script = document.createElement("script");
         script.src = "https://sdk.playlight.dev/playlight-sdk.es.js";
         script.type = "module";
