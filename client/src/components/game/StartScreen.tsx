@@ -71,7 +71,8 @@ export default function StartScreen() {
     if (executedRef.current) return;
     executedRef.current = true;
 
-    audioManager.stopLoopingSound("wind", 2);
+    // Immediately stop wind with no fade to prevent overlap
+    audioManager.stopLoopingSound("wind", 0);
     audioManager.loadGameSounds().then(() => {
       audioManager.startBackgroundMusic(0.3);
     });
