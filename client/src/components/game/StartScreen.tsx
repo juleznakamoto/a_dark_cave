@@ -201,7 +201,7 @@ export default function StartScreen() {
         }
 
         .animate-fade-in-text {
-          animation: fade-in-text 1s ease-in 0.5s forwards;
+          animation: fade-in-text 0s ease-in 0.0s forwards;
           opacity: 0;
         }
 
