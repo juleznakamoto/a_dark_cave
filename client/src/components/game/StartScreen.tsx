@@ -71,6 +71,13 @@ export default function StartScreen() {
     if (executedRef.current) return;
     executedRef.current = true;
 
+    // Load font dynamically
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap';
+    document.head.appendChild(link);
+    document.documentElement.classList.add('font-loaded');
+
     // Immediately stop wind with no fade to prevent overlap
     audioManager.stopLoopingSound("wind", 2);
 
