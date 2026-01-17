@@ -95,15 +95,13 @@ export const storyEvents: Record<string, GameEvent> = {
     id: "mysteriousBook",
     condition: (state: GameState) =>
       state.buildings.darkEstate >= 1 &&
-      !state.story.seen.mysteriousBookReceived &&
       !state.books.book_of_ascension,
-    
     timeProbability: 10,
     title: "A Quiet Knock",
     message:
       "One late evening, you hear a gentle knock on the door of the estate. As you open it, no one is there, only something bound in dark brown leather resting on the doorstep.",
     priority: 5,
-    repeatable: false,
+    repeatable: true,
     choices: [
       {
         id: "unpack_it",
@@ -113,13 +111,6 @@ export const storyEvents: Record<string, GameEvent> = {
             books: {
               ...state.books,
               book_of_ascension: true,
-            },
-            story: {
-              ...state.story,
-              seen: {
-                ...state.story.seen,
-                mysteriousBookReceived: true,
-              },
             },
             _logMessage:
               "Within is a book which age you cannot guess. Its cover is long gone, the pages are torn, yet the perfectly written letters are still sharp. As you carefully turn the pages, you realize it teaches the slow shaping of the self through repetition.",
