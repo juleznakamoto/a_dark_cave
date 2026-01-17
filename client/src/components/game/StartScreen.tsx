@@ -30,17 +30,17 @@ export default function StartScreen() {
     // Play wind sound on mount
     // Note: Most browsers require a user gesture to play audio. 
     // We'll attempt to play it, but it might only start after the first click if blocked.
-    const playWind = () => {
-      audioManager.playLoopingSound("wind", 0.2, false, 1);
-    };
+    // const playWind = () => {
+    //   audioManager.playLoopingSound("wind", 0.2, false, 1);
+    // };
 
-    playWind();
+    // playWind();
 
     // Add a one-time listener to ensure it plays if initially blocked
     const handleInitialGesture = () => {
-      if (!executedRef.current) {
-        playWind();
-      }
+      // if (!executedRef.current) {
+      //   playWind();
+      // }
       document.removeEventListener("click", handleInitialGesture);
       document.removeEventListener("touchstart", handleInitialGesture);
     };
@@ -48,7 +48,7 @@ export default function StartScreen() {
     document.addEventListener("touchstart", handleInitialGesture);
 
     return () => {
-      audioManager.stopLoopingSound("wind", 2);
+      // audioManager.stopLoopingSound("wind", 2);
       document.removeEventListener("click", handleInitialGesture);
       document.removeEventListener("touchstart", handleInitialGesture);
     };
@@ -72,7 +72,7 @@ export default function StartScreen() {
     executedRef.current = true;
 
     // Immediately stop wind with no fade to prevent overlap
-    audioManager.stopLoopingSound("wind", 0);
+    // audioManager.stopLoopingSound("wind", 0);
 
     // Initialize Playlight SDK only after "Light Fire" is clicked
     const initPlaylight = async () => {

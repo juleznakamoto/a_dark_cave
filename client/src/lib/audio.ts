@@ -216,15 +216,15 @@ export class AudioManager {
   }
 
   async preloadSounds(): Promise<void> {
-    logger.log('Registering initial sounds for Howler...');
-    const initialSounds = {
-      'wind': '/sounds/wind.wav',
-    };
+    // logger.log('Registering initial sounds for Howler...');
+    // const initialSounds = {
+    //   'wind': '/sounds/wind.wav',
+    // };
 
-    await Promise.all(
-      Object.entries(initialSounds).map(([name, url]) => this.loadSound(name, url))
-    );
-    logger.log('Initial sound registration complete');
+    // await Promise.all(
+    //   Object.entries(initialSounds).map(([name, url]) => this.loadSound(name, url))
+    // );
+    // logger.log('Initial sound registration complete');
   }
 
   async loadGameSounds(): Promise<void> {
