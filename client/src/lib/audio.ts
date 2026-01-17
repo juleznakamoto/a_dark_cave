@@ -216,28 +216,33 @@ export class AudioManager {
   }
 
   async preloadSounds(): Promise<void> {
-    logger.log('Registering sounds for Howler...');
-    const soundsToRegister = {
+    logger.log('Registering initial sounds for Howler...');
+    const initialSounds = {
+      'wind': '/sounds/wind.wav',
+    };
+
+    await Promise.all(
+      Object.entries(initialSounds).map(([name, url]) => this.loadSound(name, url))
+    );
+    logger.log('Initial sound registration complete');
+  }
+
+  async loadGameSounds(): Promise<void> {
+    logger.log('Loading remaining game sounds...');
+    const gameSounds = {
       'newVillager': '/sounds/new_villager.wav',
       'event': '/sounds/event.wav',
       'eventMadness': '/sounds/event_madness.wav',
       'whisperingCube': '/sounds/whispering_cube.wav',
+      'backgroundMusic': '/sounds/background_music.wav',
       'explosion': '/sounds/explosion.wav',
-      'wind': '/sounds/wind.wav',
       'combat': '/sounds/combat.wav'
     };
 
     await Promise.all(
-      Object.entries(soundsToRegister).map(([name, url]) => this.loadSound(name, url))
+      Object.entries(gameSounds).map(([name, url]) => this.loadSound(name, url))
     );
-    logger.log('Sound registration complete');
-    
-    // Auto-start music if not muted
-    // if (!this.isMusicMuted && !this.isMutedGlobally) {
-    //   this.startBackgroundMusic(this.backgroundMusicVolume).catch(err => 
-    //     logger.warn('Failed to start background music after preload:', err)
-    //   );
-    // }
+    logger.log('Game sounds registration complete');
   }
 
   async startBackgroundMusic(volume: number = 1): Promise<void> {

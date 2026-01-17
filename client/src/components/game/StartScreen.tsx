@@ -70,8 +70,9 @@ export default function StartScreen() {
     executedRef.current = true;
 
     audioManager.stopLoopingSound("wind", 2);
-    audioManager.loadSound("backgroundMusic", "/sounds/background_music.wav");
-    audioManager.startBackgroundMusic(0.3);
+    audioManager.loadGameSounds().then(() => {
+      audioManager.startBackgroundMusic(0.3);
+    });
 
     if (isMobile) {
       if (buttonRef.current) {
