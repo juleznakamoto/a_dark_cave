@@ -1,5 +1,4 @@
 import { useEffect, useRef } from "react";
-import { useLocation } from "wouter";
 import { ParticleButton } from "@/components/ui/particle-button";
 import { useGameStore } from "@/game/state";
 import CloudShader from "@/components/ui/cloud-shader";
@@ -14,7 +13,6 @@ import {
 } from "@/components/ui/tooltip";
 
 export default function StartScreen() {
-  const [, setLocation] = useLocation();
   const { executeAction, setBoostMode, boostMode, CM } = useGameStore();
   const isMobile = useIsMobile();
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -79,12 +77,6 @@ export default function StartScreen() {
     // Initialize Playlight SDK only after "Light Fire" is clicked
     const initPlaylight = async () => {
       try {
-        // Load fonts dynamically
-        const link = document.createElement("link");
-        link.rel = "stylesheet";
-        link.href = "https://fonts.googleapis.com/css2?family=Courier+New&family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap";
-        document.head.appendChild(link);
-
         const script = document.createElement("script");
         script.src = "https://sdk.playlight.dev/playlight-sdk.es.js";
         script.type = "module";
@@ -144,13 +136,9 @@ export default function StartScreen() {
         });
         buttonRef.current.dispatchEvent(mouseEnterEvent);
       }
-      setTimeout(() => {
-        executeAction("lightFire");
-        setLocation("/game");
-      }, 3000);
+      setTimeout(() => executeAction("lightFire"), 3000);
     } else {
       executeAction("lightFire");
-      setLocation("/game");
     }
   };
 
@@ -212,7 +200,7 @@ export default function StartScreen() {
 
       <main className="relative z-10 flex-1 flex flex-col items-center justify-center min-h-screen">
         <div className="text-center mb-4">
-          <p className="animate-fade-in-text text-lg text-white leading-relaxed">
+          <p className="animate-fade-in-text text-lg text-gray-300/90 leading-relaxed">
             {isCruelMode ? "A very dark cave." : "A dark cave."}
             <br />
             {isCruelMode
@@ -228,7 +216,7 @@ export default function StartScreen() {
         <ParticleButton
           ref={buttonRef}
           onClick={handleLightFire}
-          className="animate-fade-in-button bg-white text-black border-none hover:bg-gray-200 text-lg px-8 py-4 fire-hover z-[99999]"
+          className="animate-fade-in-button bg-transparent border-none text-gray-300/90 hover:bg-transparent text-lg px-8 py-4 fire-hover z-[99999]"
           data-testid="button-light-fire"
           button_id="light-fire"
         >
@@ -265,12 +253,6 @@ export default function StartScreen() {
           className="hover:text-foreground transition-colors opacity-40 hover:opacity-100"
         >
           Privacy
-        </a>
-        <a
-          href="/terms"
-          className="hover:text-foreground transition-colors opacity-40 hover:opacity-100"
-        >
-          Terms
         </a>
         <a
           href="/imprint"

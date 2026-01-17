@@ -6,8 +6,8 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import AdminDashboard from "@/pages/admin/dashboard";
 
-// Lazy load game page
-const Game = lazy(() => import("@/pages/game"));
+// Eager load game page
+import Game from "@/pages/game";
 
 // Lazy load all other pages
 const EndScreenPage = lazy(() => import("@/pages/end-screen"));
@@ -25,12 +25,12 @@ function Router() {
     <Suspense
       fallback={
         <div className="flex items-center justify-center h-screen">
+          Loading...
         </div>
       }
     >
       <Switch>
         <Route path="/" component={Game} />
-        <Route path="/game" component={Game} />
         <Route path="/boost" component={Game} />
         <Route path="/end-screen" component={EndScreenPage} />
         <Route path="/imprint" component={Imprint} />
