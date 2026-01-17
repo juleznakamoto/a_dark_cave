@@ -27,9 +27,6 @@ export default function StartScreen() {
       window.history.replaceState({}, "", "/");
     }
 
-    // Preload background music
-    audioManager.loadSound("backgroundMusic", "/sounds/background_music.wav");
-
     // Wait for user gesture before playing wind sound
     let windTimer: NodeJS.Timeout;
     const handleUserGesture = () => {
@@ -74,6 +71,7 @@ export default function StartScreen() {
     executedRef.current = true;
 
     audioManager.stopLoopingSound("wind", 2);
+    audioManager.loadSound("backgroundMusic", "/sounds/background_music.wav");
     audioManager.startBackgroundMusic(0.3);
 
     if (isMobile) {

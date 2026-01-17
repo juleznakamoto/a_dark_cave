@@ -1,8 +1,7 @@
+import { useRef, useEffect, useState } from "react";
+import { logger } from "@/lib/logger";
 
-import { useRef, useEffect } from 'react';
-import { logger } from '@/lib/logger';
-
-// WebGL Renderer class
+// ---------------- WebGL Renderer ----------------
 class WebGLRenderer {
   private canvas: HTMLCanvasElement;
   private gl: WebGL2RenderingContext;
@@ -14,9 +13,9 @@ class WebGLRenderer {
   private shaderSource: string;
 
   private vertexSrc = `#version 300 es
-precision highp float;
-in vec4 position;
-void main(){gl_Position=position;}`;
+    precision highp float;
+    in vec4 position;
+    void main(){gl_Position=position;}`;
 
   private vertices = [-1, 1, -1, -1, 1, 1, 1, -1];
 
@@ -24,10 +23,8 @@ void main(){gl_Position=position;}`;
     this.canvas = canvas;
     this.scale = scale;
     this.shaderSource = shaderSource;
-    const gl = canvas.getContext('webgl2');
-    if (!gl) {
-      throw new Error('WebGL2 context not available');
-    }
+    const gl = canvas.getContext("webgl2");
+    if (!gl) throw new Error("WebGL2 context not available");
     this.gl = gl;
     this.gl.viewport(0, 0, canvas.width * scale, canvas.height * scale);
   }
@@ -36,10 +33,9 @@ void main(){gl_Position=position;}`;
     const gl = this.gl;
     gl.shaderSource(shader, source);
     gl.compileShader(shader);
-
     if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
       const error = gl.getShaderInfoLog(shader);
-      logger.error('Shader compilation error:', error);
+      logger.error("Shader compilation error:", error);
     }
   }
 
@@ -53,7 +49,6 @@ void main(){gl_Position=position;}`;
     gl.attachShader(this.program, this.vs);
     gl.attachShader(this.program, this.fs);
     gl.linkProgram(this.program);
-
     if (!gl.getProgramParameter(this.program, gl.LINK_STATUS)) {
       logger.error(gl.getProgramInfoLog(this.program));
     }
@@ -62,38 +57,43 @@ void main(){gl_Position=position;}`;
   init() {
     const gl = this.gl;
     const program = this.program!;
-
     this.buffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, this.buffer);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.vertices), gl.STATIC_DRAW);
-
-    const position = gl.getAttribLocation(program, 'position');
+    gl.bufferData(
+      gl.ARRAY_BUFFER,
+      new Float32Array(this.vertices),
+      gl.STATIC_DRAW,
+    );
+    const position = gl.getAttribLocation(program, "position");
     gl.enableVertexAttribArray(position);
     gl.vertexAttribPointer(position, 2, gl.FLOAT, false, 0, 0);
-
-    (program as any).resolution = gl.getUniformLocation(program, 'resolution');
-    (program as any).time = gl.getUniformLocation(program, 'time');
+    (program as any).resolution = gl.getUniformLocation(program, "resolution");
+    (program as any).time = gl.getUniformLocation(program, "time");
   }
 
   render(now = 0) {
     const gl = this.gl;
     const program = this.program;
-
     if (!program || gl.getProgramParameter(program, gl.DELETE_STATUS)) return;
-
     gl.clearColor(0, 0, 0, 1);
     gl.clear(gl.COLOR_BUFFER_BIT);
     gl.useProgram(program);
     gl.bindBuffer(gl.ARRAY_BUFFER, this.buffer);
-
-    gl.uniform2f((program as any).resolution, this.canvas.width, this.canvas.height);
+    gl.uniform2f(
+      (program as any).resolution,
+      this.canvas.width,
+      this.canvas.height,
+    );
     gl.uniform1f((program as any).time, now * 1e-3);
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
   }
 
   reset() {
     const gl = this.gl;
-    if (this.program && !gl.getProgramParameter(this.program, gl.DELETE_STATUS)) {
+    if (
+      this.program &&
+      !gl.getProgramParameter(this.program, gl.DELETE_STATUS)
+    ) {
       if (this.vs) {
         gl.detachShader(this.program, this.vs);
         gl.deleteShader(this.vs);
@@ -107,125 +107,133 @@ void main(){gl_Position=position;}`;
   }
 }
 
+// ---------------- Shader Source ----------------
 const shaderSource = `#version 300 es
-precision highp float;
-out vec4 O;
-uniform vec2 resolution;
-uniform float time;
-#define FC gl_FragCoord.xy
-#define T time
-#define R resolution
-#define MN min(R.x,R.y)
+    precision highp float;
+    out vec4 O;
+    uniform vec2 resolution;
+    uniform float time;
+    #define FC gl_FragCoord.xy
+    #define T time
+    #define R resolution
+    #define MN min(R.x,R.y)
 
-#define PRIMARY_COLOR vec3(0.7, 0.7, 0.7)
-#define BACKGROUND_TINT vec3(0.025, 0.025, 0.025)
-#define MAX_COLOR_DEVIATION 1.0
-#define CLOUD_COLOR_DEVIATION 1.2
-#define CLOUD_SPEED 0.04
+    #define PRIMARY_COLOR vec3(0.7, 0.7, 0.7)
+    #define BACKGROUND_TINT vec3(0.025, 0.025, 0.025)
+    #define MAX_COLOR_DEVIATION 1.0
+    #define CLOUD_COLOR_DEVIATION 1.2
+    #define CLOUD_SPEED 0.04
 
-float rnd(vec2 p) {
-  p=fract(p*vec2(12.9898,78.233));
-  p+=dot(p,p+34.56);
-  return fract(p.x*p.y);
-}
+    float rnd(vec2 p) {
+      p=fract(p*vec2(12.9898,78.233));
+      p+=dot(p,p+34.56);
+      return fract(p.x*p.y);
+    }
 
-float noise(in vec2 p) {
-  vec2 i=floor(p), f=fract(p), u=f*f*(3.-2.*f);
-  float
-  a=rnd(i),
-  b=rnd(i+vec2(1,0)),
-  c=rnd(i+vec2(0,1)),
-  d=rnd(i+1.);
-  return mix(mix(a,b,u.x),mix(c,d,u.x),u.y);
-}
+    float noise(in vec2 p) {
+      vec2 i=floor(p), f=fract(p), u=f*f*(3.-2.*f);
+      float
+      a=rnd(i),
+      b=rnd(i+vec2(1,0)),
+      c=rnd(i+vec2(0,1)),
+      d=rnd(i+1.);
+      return mix(mix(a,b,u.x),mix(c,d,u.x),u.y);
+    }
 
-float fbm(vec2 p) {
-  float t=.0, a=1.; mat2 m=mat2(1.,-.5,.2,1.2);
-  for (int i=0; i<5; i++) {
-    t+=a*noise(p);
-    p*=2.*m;
-    a*=.5;
-  }
-  return t;
-}
+    float fbm(vec2 p) {
+      float t=.0, a=1.; mat2 m=mat2(1.,-.5,.2,1.2);
+      for (int i=0; i<5; i++) {
+        t+=a*noise(p);
+        p*=2.*m;
+        a*=.5;
+      }
+      return t;
+    }
 
-float clouds(vec2 p) {
-  float d=1., t=.0;
-  for (float i=.0; i<3.; i++) {
-    float a=d*fbm(i*10.+p.x*.2+.2*(1.+i)*p.y+d+i*i+p);
-    t=mix(t,d,a);
-    d=a;
-    p*=2./(i+1.);
-  }
-  return t;
-}
+    float clouds(vec2 p) {
+      float d=1., t=.0;
+      for (float i=.0; i<3.; i++) {
+        float a=d*fbm(i*10.+p.x*.2+.2*(1.+i)*p.y+d+i*i+p);
+        t=mix(t,d,a);
+        d=a;
+        p*=2./(i+1.);
+      }
+      return t;
+    }
 
-void main(void) {
-  vec2 uv=(FC-.5*R)/MN,st=uv*vec2(2,1);
-  float bg=clouds(vec2(st.x+T*CLOUD_SPEED,-st.y));
-  vec3 cloudColor = BACKGROUND_TINT * (1.0 + (bg - 0.5) * CLOUD_COLOR_DEVIATION);
-  O=vec4(cloudColor,1);
-}`;
+    void main(void) {
+      vec2 uv=(FC-.5*R)/MN,st=uv*vec2(2,1);
+      float bg=clouds(vec2(st.x+T*CLOUD_SPEED,-st.y));
+      vec3 cloudColor = BACKGROUND_TINT * (1.0 + (bg - 0.5) * CLOUD_COLOR_DEVIATION);
+      O=vec4(cloudColor,1);
+    }`;
 
+// ---------------- CloudShader Component ----------------
 interface CloudShaderProps {
   className?: string;
 }
 
-export default function CloudShader({ className = '' }: CloudShaderProps) {
+export default function CloudShader({ className = "" }: CloudShaderProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rendererRef = useRef<WebGLRenderer | null>(null);
   const animationFrameRef = useRef<number>();
+  const [visible, setVisible] = useState(false); // for fade-in
+  const isActiveRef = useRef(true);
 
   useEffect(() => {
     if (!canvasRef.current) return;
 
-    try {
-      const canvas = canvasRef.current;
-      // Reduce DPR further to save memory
-      const dpr = Math.max(1, 0.4 * window.devicePixelRatio);
+    const initRenderer = () => {
+      try {
+        const canvas = canvasRef.current!;
+        const baseScale = window.innerWidth < 600 ? 0.25 : 0.4;
+        const dpr = Math.max(1, baseScale * window.devicePixelRatio);
+        canvas.width = window.innerWidth * dpr;
+        canvas.height = window.innerHeight * dpr;
 
-      canvas.width = window.innerWidth * dpr;
-      canvas.height = window.innerHeight * dpr;
+        const renderer = new WebGLRenderer(canvas, dpr, shaderSource);
+        renderer.setup();
+        renderer.init();
+        rendererRef.current = renderer;
 
-      rendererRef.current = new WebGLRenderer(canvas, dpr, shaderSource);
-      rendererRef.current.setup();
-      rendererRef.current.init();
-    } catch (error) {
-      logger.error('[CloudShader] Failed to initialize WebGL renderer:', error);
-      return;
+        setVisible(true); // fade-in once
+
+        // animation loop
+        let frameCount = 0;
+        const loop = (now: number) => {
+          if (!isActiveRef.current || !rendererRef.current) return;
+          if (frameCount % 2 === 0) rendererRef.current.render(now);
+          frameCount++;
+          animationFrameRef.current = requestAnimationFrame(loop);
+        };
+        animationFrameRef.current = requestAnimationFrame(loop);
+      } catch (err) {
+        logger.error("[CloudShader] WebGL init failed:", err);
+      }
+    };
+
+    if ("requestIdleCallback" in window) {
+      (window as any).requestIdleCallback(initRenderer);
+    } else {
+      setTimeout(initRenderer, 300);
     }
 
-    let isActive = true;
-    let frameCount = 0;
-    const loop = (now: number) => {
-      if (!isActive || !rendererRef.current) return;
-      // Render every other frame to reduce GPU load
-      if (frameCount % 2 === 0) {
-        rendererRef.current.render(now);
-      }
-      frameCount++;
-      animationFrameRef.current = requestAnimationFrame(loop);
-    };
-
-    loop(0);
-
-    const resize = () => {
-      if (!canvasRef.current) return;
+    const handleResize = () => {
+      if (!canvasRef.current || !rendererRef.current) return;
       const canvas = canvasRef.current;
-      const dpr = Math.max(1, 0.4 * window.devicePixelRatio);
+      const baseScale = window.innerWidth < 600 ? 0.25 : 0.4;
+      const dpr = Math.max(1, baseScale * window.devicePixelRatio);
       canvas.width = window.innerWidth * dpr;
       canvas.height = window.innerHeight * dpr;
     };
 
-    window.addEventListener('resize', resize);
+    window.addEventListener("resize", handleResize);
 
     return () => {
-      isActive = false;
-      window.removeEventListener('resize', resize);
-      if (animationFrameRef.current) {
+      isActiveRef.current = false;
+      window.removeEventListener("resize", handleResize);
+      if (animationFrameRef.current)
         cancelAnimationFrame(animationFrameRef.current);
-        animationFrameRef.current = undefined;
-      }
       if (rendererRef.current) {
         rendererRef.current.reset();
         rendererRef.current = null;
@@ -236,8 +244,12 @@ export default function CloudShader({ className = '' }: CloudShaderProps) {
   return (
     <canvas
       ref={canvasRef}
-      className={`absolute inset-0 w-full h-full object-contain ${className}`}
-      style={{ background: 'black' }}
+      className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
+        visible ? "opacity-100" : "opacity-0"
+      } ${className}`}
+      style={{
+        background: "url('/shader-fallback.webp') center/cover no-repeat black",
+      }}
     />
   );
 }
