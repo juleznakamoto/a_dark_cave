@@ -27,29 +27,11 @@ export default function StartScreen() {
       window.history.replaceState({}, "", "/");
     }
 
-    // Wait for user gesture before playing wind sound
-    let windTimer: NodeJS.Timeout;
-    const handleUserGesture = () => {
-      windTimer = setTimeout(() => {
-        audioManager.playLoopingSound("wind", 0.2, false, 1);
-      }, 2000);
-
-      document.removeEventListener("click", handleUserGesture);
-      document.removeEventListener("keydown", handleUserGesture);
-      document.removeEventListener("touchstart", handleUserGesture);
-    };
-
-    document.addEventListener("click", handleUserGesture);
-    document.addEventListener("keydown", handleUserGesture);
-    document.addEventListener("touchstart", handleUserGesture);
+    // Play wind sound on mount
+    audioManager.playLoopingSound("wind", 0.2, false, 1);
 
     return () => {
-      clearTimeout(windTimer);
-      audioManager.stopLoopingSound("wind");
-
-      document.removeEventListener("click", handleUserGesture);
-      document.removeEventListener("keydown", handleUserGesture);
-      document.removeEventListener("touchstart", handleUserGesture);
+      audioManager.stopLoopingSound("wind", 2);
     };
   }, [setBoostMode]);
 
