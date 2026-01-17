@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
-import GameContainer from "@/components/game/GameContainer";
+import { useEffect, useState, lazy, Suspense } from "react";
+
+const GameContainer = lazy(() => import("@/components/game/GameContainer"));
+const EventDialog = lazy(() => import("@/components/game/EventDialog"));
+const CombatDialog = lazy(() => import("@/components/game/CombatDialog"));
+
 import { useGameStore } from "@/game/state";
-import { startGameLoop, stopGameLoop } from "@/game/loop";
-import { loadGame, saveGame } from "@/game/save"; // Import saveGame
-import EventDialog from "@/components/game/EventDialog";
-import CombatDialog from "@/components/game/CombatDialog";
 import { logger } from "@/lib/logger";
 import { getCurrentUser } from "@/game/auth";
 
@@ -160,24 +160,26 @@ export default function Game() {
   }
 
   return (
-    <div>
-      <GameContainer />
+    <Suspense fallback={<div className="min-h-screen bg-black" />}>
+      <div>
+        <GameContainer />
 
-      <EventDialog
-        isOpen={eventDialog.isOpen}
-        onClose={() => setEventDialog(false)}
-        event={eventDialog.currentEvent}
-      />
+        <EventDialog
+          isOpen={eventDialog.isOpen}
+          onClose={() => setEventDialog(false)}
+          event={eventDialog.currentEvent}
+        />
 
-      <CombatDialog
-        isOpen={combatDialog.isOpen}
-        onClose={() => setCombatDialog(false)}
-        enemy={combatDialog.enemy}
-        eventTitle={combatDialog.eventTitle}
-        eventMessage={combatDialog.eventMessage}
-        onVictory={combatDialog.onVictory || (() => {})}
-        onDefeat={combatDialog.onDefeat || (() => {})}
-      />
-    </div>
+        <CombatDialog
+          isOpen={combatDialog.isOpen}
+          onClose={() => setCombatDialog(false)}
+          enemy={combatDialog.enemy}
+          eventTitle={combatDialog.eventTitle}
+          eventMessage={combatDialog.eventMessage}
+          onVictory={combatDialog.onVictory || (() => {})}
+          onDefeat={combatDialog.onDefeat || (() => {})}
+        />
+      </div>
+    </Suspense>
   );
 }
