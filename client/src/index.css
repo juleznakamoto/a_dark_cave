@@ -29,16 +29,19 @@ body {
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
+/* @font-face {
   font-family: 'Inter';
   src: url('/fonts/inter.woff2') format('woff2');
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
-}
+} */
 
 :root {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-serif: Georgia, serif;
+  --font-mono: 'Courier New', monospace;
 }
 
 @layer base {
@@ -52,20 +55,11 @@ body {
 
 .font-loaded :root {
   font-family: 'Inter', sans-serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 .font-loaded body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-}
-
-@keyframes fade-to-black {
-  from {
-    background-color: rgba(0, 0, 0, 0);
-  }
-
-  to {
-    background-color: rgba(0, 0, 0, 0.5);
-  }
 }
 
 .dark {
@@ -101,9 +95,6 @@ body {
   --sidebar-accent-foreground: hsl(0, 87.6033%, 52.5490%);
   --sidebar-border: hsl(0, 15.7895%, 26.0784%);
   --sidebar-ring: hsl(0, 89.1213%, 53.1373%);
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-serif: 'Crimson Text', Georgia, serif;
-  --font-mono: 'Courier New', monospace;
   --radius: 4px;
   --shadow-2xs: 0px 2px 0px 0px hsl(0, 89.1213%, 53.1373%, 0.00);
   --shadow-xs: 0px 2px 0px 0px hsl(0, 89.1213%, 53.1373%, 0.00);

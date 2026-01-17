@@ -72,10 +72,17 @@ export default function StartScreen() {
     executedRef.current = true;
 
     // Load font dynamically
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap';
-    document.head.appendChild(link);
+    const style = document.createElement('style');
+    style.textContent = `
+      @font-face {
+        font-family: 'Inter';
+        src: url('/fonts/inter.woff2') format('woff2');
+        font-weight: 100 900;
+        font-style: normal;
+        font-display: swap;
+      }
+    `;
+    document.head.appendChild(style);
     document.documentElement.classList.add('font-loaded');
 
     // Immediately stop wind with no fade to prevent overlap
