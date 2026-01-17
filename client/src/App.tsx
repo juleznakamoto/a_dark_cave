@@ -6,8 +6,10 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import AdminDashboard from "@/pages/admin/dashboard";
 
-// Lazy load all pages
-const Game = lazy(() => import("@/pages/game"));
+// Eager load game page
+import Game from "@/pages/game";
+
+// Lazy load all other pages
 const EndScreenPage = lazy(() => import("@/pages/end-screen"));
 const NotFound = lazy(() => import("@/pages/not-found"));
 const ResetPassword = lazy(() => import("@/pages/reset-password"));
@@ -48,7 +50,73 @@ function Router() {
 }
 
 function App() {
-  // Playlight initialization moved to handleLightFire in StartScreen.tsx
+  useEffect(() => {
+    let exitIntentTimeout: NodeJS.Timeout | null = null;
+    const initPlaylight = async () => {
+      try {
+        const script = document.createElement("script");
+        script.src = "https://sdk.playlight.dev/playlight-sdk.es.js";
+        script.type = "module";
+        script.async = true;
+        const loadPromise = new Promise((resolve, reject) => {
+          script.onload = resolve;
+          script.onerror = reject;
+        });
+        document.body.appendChild(script);
+        await loadPromise;
+        // @ts-ignore - The SDK is loaded globally as a module but we need to access its export
+        // The previous dynamic import was also from the same URL
+        const module = await import("https://sdk.playlight.dev/playlight-sdk.es.js");
+        const playlightSDK = module.default;
+        // Initialize SDK immediately with exit intent disabled
+        playlightSDK.init({
+          exitIntent: {
+            enabled: false,
+            immediate: false,
+          },
+        });
+        // Import game store
+        const { useGameStore } = await import("./game/state");
+        // Reactively update exit intent based on game state
+        useGameStore.subscribe(
+          (state) => {
+            const isEndScreen = window.location.pathname === "/end-screen";
+            const shouldEnableExitIntent =
+              state.isPaused || state.idleModeDialog.isOpen || state.leaderboardDialogOpen || isEndScreen;
+            playlightSDK.setConfig({
+              exitIntent: {
+                enabled: shouldEnableExitIntent,
+                immediate: false,
+              },
+            });
+          }
+        );
+        // Set up event listeners for game pause/unpause
+        playlightSDK.onEvent("discoveryOpen", () => {
+          const state = useGameStore.getState();
+          if (!state.isPaused) {
+            state.togglePause();
+          }
+        });
+        playlightSDK.onEvent("discoveryClose", () => {
+          const state = useGameStore.getState();
+          if (state.isPaused) {
+            state.togglePause();
+          }
+        });
+      } catch (error) {
+        console.error("Error loading the Playlight SDK:", error);
+      }
+    };
+    initPlaylight();
+    // Cleanup timeout on unmount
+    return () => {
+      if (exitIntentTimeout) {
+        clearTimeout(exitIntentTimeout);
+      }
+    };
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
