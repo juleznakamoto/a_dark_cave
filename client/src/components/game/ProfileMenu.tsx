@@ -262,11 +262,22 @@ export default function ProfileMenu() {
         currentState.togglePause();
       }
 
-      const module = await import(
-        "https://sdk.playlight.dev/playlight-sdk.es.js"
-      );
-      const playlightSDK = module.default;
-      playlightSDK.setDiscovery();
+      // Check if SDK is already loaded on window, otherwise dynamic import
+      // @ts-ignore
+      let playlightSDK = window.playlightSDK;
+      
+      if (!playlightSDK) {
+        const module = await import(
+          "https://sdk.playlight.dev/playlight-sdk.es.js"
+        );
+        playlightSDK = module.default;
+      }
+      
+      if (playlightSDK && typeof playlightSDK.setDiscovery === 'function') {
+        playlightSDK.setDiscovery();
+      } else {
+        console.error("Playlight SDK not available or missing setDiscovery");
+      }
     } catch (error) {
       console.error("Error opening Playlight discovery:", error);
     }
