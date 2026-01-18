@@ -22,7 +22,7 @@ export const fullGameUnlockEvents: Record<string, GameEvent> = {
         state.current_population >= 1 &&
         !state.story.seen.firstElderWarning &&
         !hasFullGamePurchase(state)
-      );
+      ) ? true : false;
     },
     
     timeProbability: 1,
@@ -63,7 +63,7 @@ export const fullGameUnlockEvents: Record<string, GameEvent> = {
         state.story.seen.firstElderWarning &&
         !state.story.seen.villageElderNotice &&
         !hasFullGamePurchase(state)
-      );
+      ) ? true : false;
     },
     
     timeProbability: 2,
@@ -105,7 +105,7 @@ export const fullGameUnlockEvents: Record<string, GameEvent> = {
         state.books.book_of_ascension &&
         !state.story.seen.villageElderDecision &&
         !hasFullGamePurchase(state)
-      );
+      ) ? true : false;
     },
     
     timeProbability: 3,
@@ -135,6 +135,52 @@ export const fullGameUnlockEvents: Record<string, GameEvent> = {
               seen: {
                 ...state.story.seen,
                 villageElderDecision: true,
+              },
+            },
+          };
+        },
+      },
+    ],
+  },
+
+  lakeCreatureDead: {
+    id: "lakeCreatureDead",
+    condition: (state: GameState) => {
+      return (
+        (state.story.flags as any)?.lakeCreatureSpared === true &&
+        !state.story.seen?.lakeCreatureDead &&
+        hasFullGamePurchase(state)
+      ) ? true : false;
+    },
+    timeProbability: 15,
+    title: "End of an Age",
+    message:
+      "Men return from the shores of the underground lake with news. They found the great lake creature washed up on the shore, dead of what seems to be old age. The blacksmith observes the remains with a heavy sigh, but his eyes spark with inspiration. 'Its bones are like nothing I've ever seen,' he says. 'I can forge a mighty greatshield from them.'",
+    priority: 5,
+    visualEffect: {
+      type: "glow",
+      duration: 3,
+    },
+    repeatable: false,
+    choices: [
+      {
+        id: "forge",
+        label: "Forge the Greatshield",
+        effect: (state: GameState) => {
+          return {
+            resources: {
+              ...state.resources,
+              bones: (state.resources.bones || 0) + 5000,
+            },
+            story: {
+              ...state.story,
+              seen: {
+                ...(state.story.seen || {}),
+                lakeCreatureDead: true,
+              },
+              flags: {
+                ...(state.story.flags as any || {}),
+                ashenGreatshieldUnlocked: true,
               },
             },
           };
