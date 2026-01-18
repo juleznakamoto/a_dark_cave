@@ -25,6 +25,9 @@ export default function Game() {
     logger.log("[GAME PAGE] Initializing game");
     const initializeGame = async () => {
       try {
+        // Wait for first paint
+        await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+
         // Handle OAuth callback - check for tokens in URL
         const hashParams = new URLSearchParams(
           window.location.hash.substring(1),

@@ -185,28 +185,34 @@ export default function CloudShader({ className = "" }: CloudShaderProps) {
 
     const initRenderer = () => {
       try {
-        const canvas = canvasRef.current!;
-        const baseScale = window.innerWidth < 600 ? 0.25 : 0.4;
-        const dpr = Math.max(1, baseScale * window.devicePixelRatio);
-        canvas.width = window.innerWidth * dpr;
-        canvas.height = window.innerHeight * dpr;
+        // Wait for first paint
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            const canvas = canvasRef.current!;
+            if (!canvas) return;
+            const baseScale = window.innerWidth < 600 ? 0.25 : 0.4;
+            const dpr = Math.max(1, baseScale * window.devicePixelRatio);
+            canvas.width = window.innerWidth * dpr;
+            canvas.height = window.innerHeight * dpr;
 
-        const renderer = new WebGLRenderer(canvas, dpr, shaderSource);
-        renderer.setup();
-        renderer.init();
-        rendererRef.current = renderer;
+            const renderer = new WebGLRenderer(canvas, dpr, shaderSource);
+            renderer.setup();
+            renderer.init();
+            rendererRef.current = renderer;
 
-        setVisible(true); // fade-in once
+            setVisible(true); // fade-in once
 
-        // animation loop
-        let frameCount = 0;
-        const loop = (now: number) => {
-          if (!isActiveRef.current || !rendererRef.current) return;
-          if (frameCount % 2 === 0) rendererRef.current.render(now);
-          frameCount++;
-          animationFrameRef.current = requestAnimationFrame(loop);
-        };
-        animationFrameRef.current = requestAnimationFrame(loop);
+            // animation loop
+            let frameCount = 0;
+            const loop = (now: number) => {
+              if (!isActiveRef.current || !rendererRef.current) return;
+              if (frameCount % 2 === 0) rendererRef.current.render(now);
+              frameCount++;
+              animationFrameRef.current = requestAnimationFrame(loop);
+            };
+            animationFrameRef.current = requestAnimationFrame(loop);
+          });
+        });
       } catch (err) {
         logger.error("[CloudShader] WebGL init failed:", err);
       }
