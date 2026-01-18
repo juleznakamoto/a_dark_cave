@@ -558,18 +558,18 @@ const defaultGameState: GameState = createInitialState();
 
 // State management utilities
 export class StateManager {
-  private static updateTimer: number | null = null;
+  private static updateTimer: NodeJS.Timeout | null = null;
 
   static scheduleEffectsUpdate(store: () => GameStore) {
-    if (this.updateTimer !== null) return;
+    if (this.updateTimer) return;
 
-    this.updateTimer = window.requestIdleCallback(() => {
+    this.updateTimer = setTimeout(() => {
       const state = store();
       state.updateEffects();
       state.updateBastionStats();
       state.updateStats();
       this.updateTimer = null;
-    }, { timeout: 1000 }) as unknown as number;
+    }, 0);
   }
 
   static clearUpdateTimer() {
