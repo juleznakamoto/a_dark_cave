@@ -2,7 +2,6 @@ import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 
 export const shopItemEvents: Record<string, GameEvent> = {
-  
   // Tarnished Compass Events
 
   compassTreasure: {
@@ -344,6 +343,40 @@ export const shopItemEvents: Record<string, GameEvent> = {
             },
             _logMessage:
               "You open the trap and step back. The creature watches a moment, then dives deep, resurfacing to spit out a small rotten chest. Inside lie gleaming gold coins. It vanishes into the black depths, leaving only ripples.",
+          };
+        },
+      },
+    ],
+  },
+
+  lakeCreatureDead: {
+    id: "lakeCreatureDead",
+    condition: (state: GameState) =>
+      state.story.seen.lakeCreatureSpared && !state.story.seen.lakeCreatureDead,
+    timeProbability: 15,
+    title: "End of an Age",
+    message:
+      "Some men found the lake creature on the shore of the underground lake, dead of what seems to be old age. As the blacksmith observes the remains, he declares 'Its bones are like nothing I've ever seen. I can forge a mighty greatshield from them.'",
+    priority: 4,
+    repeatable: false,
+    choices: [
+      {
+        id: "forge",
+        label: "Nod silently",
+        effect: (state: GameState) => {
+          return {
+            resources: {
+              ...state.resources,
+              bones: (state.resources.bones || 0) + 5000,
+            },
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                lakeCreatureDead: true,
+                ashenGreatshieldUnlocked: true,
+              },
+            },
           };
         },
       },
