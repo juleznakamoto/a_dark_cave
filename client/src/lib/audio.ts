@@ -217,17 +217,24 @@ export class AudioManager {
 
   async preloadSounds(): Promise<void> {
     logger.log('Registering initial sounds for Howler...');
-    // We only register the URL but don't force preload/load here to avoid blocking
-    // critical path if the AudioManager is initialized early.
-    // The sound will be loaded on first play or when loadGameSounds is called.
     const initialSounds = {
       'wind': '/sounds/wind.mp3',
     };
 
     for (const [name, url] of Object.entries(initialSounds)) {
       this.soundUrls.set(name, url);
+      // Directly initialize the Howl object for critical sounds to ensure preloading starts
+      if (!this.sounds.has(name)) {
+        const sound = new Howl({
+          src: [url],
+          preload: true,
+          onload: () => logger.log(`Successfully preloaded critical sound: ${name}`),
+          onloaderror: (id, error) => logger.warn(`Failed to preload critical sound ${name}:`, error)
+        });
+        this.sounds.set(name, sound);
+      }
     }
-    logger.log('Initial sound registration complete (deferred loading)');
+    logger.log('Initial sound registration and preloading complete');
   }
 
   async loadGameSounds(): Promise<void> {
