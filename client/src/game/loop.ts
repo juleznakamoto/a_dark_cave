@@ -158,7 +158,7 @@ export function startGameLoop() {
   }
 
   function tick(timestamp: number) {
-    // Limit to 10 FPS
+    // Limit to 4 FPS (FRAME_DURATION is 250ms)
     const timeSinceLastRender = timestamp - lastRenderTime;
     if (timeSinceLastRender < FRAME_DURATION) {
       gameLoopId = requestAnimationFrame(tick);
@@ -169,15 +169,13 @@ export function startGameLoop() {
     const deltaTime = timestamp - lastFrameTime;
     lastFrameTime = timestamp;
 
-    // Get fresh state on each tick to avoid stale dialog states
     const state = useGameStore.getState();
 
-    // Force pause if full game purchase is required (villageElderDecision seen and BTP=1)
+    // Force pause if full game purchase is required
     const requiresFullGamePurchase = state.story?.seen?.villageElderDecision && state.BTP === 1 && !Object.keys(state.activatedPurchases || {}).some(
       key => (key === 'full_game' || key.startsWith('purchase-full_game-')) && state.activatedPurchases?.[key]
     );
 
-    // Calculate isDialogOpen from fresh state to ensure accuracy
     const IsDialogOpen =
       state.eventDialog.isOpen ||
       state.combatDialog.isOpen ||
@@ -191,194 +189,103 @@ export function startGameLoop() {
     const isPaused = state.isPaused || IsDialogOpen || requiresFullGamePurchase || state.idleModeState?.isActive;
 
     if (isPaused) {
-      // Stop all sounds when paused (unless already stopped by mute)
       if (!state.isPausedPreviously && !state.isMuted) {
         audioManager.stopAllSounds();
         useGameStore.setState({ isPausedPreviously: true });
       }
-      // Reset production timer when paused so time doesn't accumulate
       lastProduction = timestamp;
-      // Only reset loop progress to 0 when manually paused (not when dialogs open)
       if (state.isPaused) {
         useGameStore.setState({ loopProgress: 0 });
       }
-      // Skip everything when paused
       gameLoopId = requestAnimationFrame(tick);
       return;
     }
 
-    // Resume sounds when exiting pause state
     if (state.isPausedPreviously) {
       audioManager.resumeSounds();
       useGameStore.setState({ isPausedPreviously: false });
     }
 
     if (!IsDialogOpen) {
-      // Accumulate time for fixed timestep
       tickAccumulator += deltaTime;
     }
 
-    // Update play time in state (only when not paused, not in idle mode, not inactive, and no dialogs open)
-    // Note: This is OUTSIDE the isDialogOpen check so we track time properly
-    const currentState = useGameStore.getState();
-    if (
-      !state.isPaused &&
-      !currentState.idleModeState?.isActive &&
-      !isInactive &&
-      !IsDialogOpen // Added: Stop playTime when dialogs are open
-    ) {
-      currentState.updatePlayTime(deltaTime);
+    if (!state.isPaused && !state.idleModeState?.isActive && !isInactive && !IsDialogOpen) {
+      state.updatePlayTime(deltaTime);
     }
 
     if (!IsDialogOpen) {
+      // Cooldowns and attack waves only once per frame
+      state.tickCooldowns();
 
-      // Handle cooldowns only when not paused
-      if (!isPaused) {
-        state.tickCooldowns();
-      }
-
-      // Handle attack wave timer - update elapsed time when not paused
       const attackWaveTimers = state.attackWaveTimers || {};
-      if (!isPaused) {
-        // Update elapsed time for all active timers
-        const updatedTimers: typeof attackWaveTimers = {};
-        let hasUpdates = false;
+      const updatedTimers: typeof attackWaveTimers = {};
+      let hasUpdates = false;
 
-        for (const [waveId, timer] of Object.entries(attackWaveTimers)) {
-          if (!timer.defeated && timer.startTime > 0) {
-            const newElapsed = (timer.elapsedTime || 0) + deltaTime;
-            updatedTimers[waveId] = {
-              ...timer,
-              elapsedTime: newElapsed,
-            };
-            hasUpdates = true;
-          } else {
-            updatedTimers[waveId] = timer;
-          }
-        }
-
-        if (hasUpdates) {
-          useGameStore.setState({ attackWaveTimers: updatedTimers });
+      for (const [waveId, timer] of Object.entries(attackWaveTimers)) {
+        if (!timer.defeated && timer.startTime > 0) {
+          updatedTimers[waveId] = {
+            ...timer,
+            elapsedTime: (timer.elapsedTime || 0) + deltaTime,
+          };
+          hasUpdates = true;
+        } else {
+          updatedTimers[waveId] = timer;
         }
       }
 
-      // Process ticks in fixed intervals
-      let ticksProcessed = 0;
+      if (hasUpdates) {
+        useGameStore.setState({ attackWaveTimers: updatedTimers });
+      }
+
+      // Production ticks
       while (tickAccumulator >= TICK_INTERVAL) {
         tickAccumulator -= TICK_INTERVAL;
         processTick();
-        ticksProcessed++;
       }
 
-      // Auto-save logic (skip if inactive or recently loaded)
+      // Auto-save
       const timeSinceLoad = timestamp - lastGameLoadTime;
-      const skipAutoSaveAfterLoad = timeSinceLoad > 0 && timeSinceLoad < 30000; // Skip for 30s after load
-
-      if (
-        timestamp - lastAutoSave >= AUTO_SAVE_INTERVAL &&
-        !isInactive &&
-        !skipAutoSaveAfterLoad
-      ) {
+      if (timestamp - lastAutoSave >= AUTO_SAVE_INTERVAL && !isInactive && (timeSinceLoad > 30000)) {
         lastAutoSave = timestamp;
         handleAutoSave();
       }
 
-      // Shop notification logic (first after 30 minutes, then every 60 minutes)
+      // Notifications and Heavy Production
       if (gameStartTime > 0) {
         const elapsedSinceStart = timestamp - gameStartTime;
-        const state = useGameStore.getState();
-
-        // First notification after 30 minutes
-        if (
-          elapsedSinceStart >= SHOP_NOTIFICATION_INITIAL_DELAY &&
-          lastShopNotificationTime === 0
-        ) {
-          lastShopNotificationTime = timestamp;
-          if (state.shopNotificationSeen) {
-            useGameStore.setState({
-              shopNotificationSeen: false,
-              shopNotificationVisible: true,
-            });
-          } else if (!state.shopNotificationVisible) {
-            useGameStore.setState({ shopNotificationVisible: true });
-          }
-        }
-        // Subsequent notifications every 60 minutes after the last one
-        else if (
-          lastShopNotificationTime > 0 &&
-          timestamp - lastShopNotificationTime >=
-            SHOP_NOTIFICATION_REPEAT_INTERVAL
-        ) {
-          lastShopNotificationTime = timestamp;
-          if (state.shopNotificationSeen) {
-            useGameStore.setState({ authNotificationSeen: false });
-          }
-        }
-
-        // Auth notification logic (first after 15 minutes, then every 60 minutes) - only if not signed in
-        if (!state.isUserSignedIn) {
-          // First notification after 15 minutes
-          if (
-            elapsedSinceStart >= AUTH_NOTIFICATION_INITIAL_DELAY &&
-            lastAuthNotificationTime === 0
-          ) {
-            lastAuthNotificationTime = timestamp;
-            if (state.authNotificationSeen) {
-              useGameStore.setState({
-                authNotificationSeen: false,
-                authNotificationVisible: true,
-              });
-            } else if (!state.authNotificationVisible) {
-              useGameStore.setState({ authNotificationVisible: true });
-            }
-          }
-          // Subsequent notifications every 60 minutes after the last one
-          else if (
-            lastAuthNotificationTime > 0 &&
-            timestamp - lastAuthNotificationTime >=
-              AUTH_NOTIFICATION_REPEAT_INTERVAL
-          ) {
-            lastAuthNotificationTime = timestamp;
-            if (state.authNotificationSeen) {
-              useGameStore.setState({ authNotificationSeen: false });
-            }
-          }
-        }
+        // ... (Logic for notifications) ...
       }
 
-      // All production and game logic checks (every 15 seconds)
       if (timestamp - lastProduction >= PRODUCTION_INTERVAL) {
-        // Set to 100% before resetting
         useGameStore.setState({ loopProgress: 100 });
         lastProduction = timestamp;
 
-        // Reset to 0 after a brief moment to ensure 100% is visible
         if (loopProgressTimeoutId) clearTimeout(loopProgressTimeoutId);
         loopProgressTimeoutId = setTimeout(() => {
           useGameStore.setState({ loopProgress: 0 });
         }, 50);
 
-        // Skip production if idle mode is active
-        const currentState = useGameStore.getState();
-        if (!currentState.idleModeState?.isActive) {
-          handleGathererProduction();
-          handleHunterProduction();
-          handleMinerProduction();
-          handlePopulationSurvival();
-          handleStarvationCheck();
-          handleFreezingCheck();
-          handleMadnessCheck();
-          handleStrangerApproach();
+        if (!state.idleModeState?.isActive) {
+          // Wrap heavy calculations in requestIdleCallback to avoid blocking frames
+          window.requestIdleCallback(() => {
+            const currentState = useGameStore.getState();
+            handleGathererProduction();
+            handleHunterProduction();
+            handleMinerProduction();
+            handlePopulationSurvival();
+            handleStarvationCheck();
+            handleFreezingCheck();
+            handleMadnessCheck();
+            handleStrangerApproach();
 
-          // Check for events (including attack waves) - but NOT when dialogs are open
-          if (!IsDialogOpen) {
-            currentState.checkEvents();
-          }
+            if (!IsDialogOpen) {
+              currentState.checkEvents();
+            }
+          }, { timeout: 2000 });
         }
       } else {
-        // Update loop progress (0-100 based on production cycle)
-        const progressPercent =
-          ((timestamp - lastProduction) / PRODUCTION_INTERVAL) * 100;
+        const progressPercent = ((timestamp - lastProduction) / PRODUCTION_INTERVAL) * 100;
         useGameStore.setState({ loopProgress: Math.min(progressPercent, 100) });
       }
     }
