@@ -67,13 +67,12 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 
-    <!-- Web App Manifest -->
-    <link rel="manifest" href="/manifest.json" />
-
-    <!-- Preload Critical Assets -->
+    <!-- Critical Assets (Preload immediately to break the chain) -->
+    <link rel="preload" href="/sounds/wind.mp3" as="audio" />
     <link rel="modulepreload" href="/src/main.tsx" />
     <link rel="preload" href="/api/config" as="fetch" crossorigin="anonymous" />
-    <link rel="preload" href="/sounds/wind.mp3" as="audio" />
+
+    <!-- Web App Manifest -->
 
     <!-- Application Tags -->
     <meta name="application-name" content="A Dark Cave" />
