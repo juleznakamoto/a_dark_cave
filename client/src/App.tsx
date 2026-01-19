@@ -50,68 +50,73 @@ function Router() {
   );
 }
 
-
 function App() {
   useEffect(() => {
     let exitIntentTimeout: NodeJS.Timeout | null = null;
 
     const initPlaylight = async () => {
       try {
-        // Wait for index.html initialization to finish
-        let attempts = 0;
-        const maxAttempts = 20;
-        
-        const checkSDK = () => {
-          // @ts-ignore
-          if (window.playlightSDK) {
-            // @ts-ignore
-            const playlightSDK = window.playlightSDK;
-            
-            // Import game store
-            import("./game/state").then(({ useGameStore }) => {
-              // Reactively update exit intent based on game state
-              useGameStore.subscribe((state) => {
-                const isEndScreen = window.location.pathname === "/end-screen";
-                const shouldEnableExitIntent =
-                  state.isPaused || state.idleModeDialog.isOpen || state.leaderboardDialogOpen || isEndScreen;
+        const script = document.createElement("script");
+        script.src = "https://sdk.playlight.dev/playlight-sdk.es.js";
+        script.type = "module";
+        script.async = true;
 
-                playlightSDK.setConfig({
-                  exitIntent: {
-                    enabled: shouldEnableExitIntent,
-                    immediate: false,
-                  },
-                });
-              });
+        const loadPromise = new Promise((resolve, reject) => {
+          script.onload = resolve;
+          script.onerror = reject;
+        });
 
-              // Set up event listeners for game pause/unpause
-              playlightSDK.onEvent("discoveryOpen", () => {
-                const state = useGameStore.getState();
-                if (!state.isPaused) {
-                  state.togglePause();
-                }
-              });
+        document.body.appendChild(script);
+        await loadPromise;
 
-              playlightSDK.onEvent("discoveryClose", () => {
-                const state = useGameStore.getState();
-                if (state.isPaused) {
-                  state.togglePause();
-                }
-              });
+        // @ts-ignore - The SDK is loaded globally as a module but we need to access its export
+        // The previous dynamic import was also from the same URL
+        const module = await import("https://sdk.playlight.dev/playlight-sdk.es.js");
+        const playlightSDK = module.default;
+
+        // Initialize SDK immediately with exit intent disabled
+        playlightSDK.init({
+          exitIntent: {
+            enabled: false,
+            immediate: false,
+          },
+        });
+
+        // Import game store
+        const { useGameStore } = await import("./game/state");
+
+        // Reactively update exit intent based on game state
+        useGameStore.subscribe(
+          (state) => {
+            const isEndScreen = window.location.pathname === "/end-screen";
+            const shouldEnableExitIntent =
+              state.isPaused || state.idleModeDialog.isOpen || state.leaderboardDialogOpen || isEndScreen;
+
+            playlightSDK.setConfig({
+              exitIntent: {
+                enabled: shouldEnableExitIntent,
+                immediate: false,
+              },
             });
-            return true;
           }
-          return false;
-        };
+        );
 
-        const interval = setInterval(() => {
-          if (checkSDK() || attempts >= maxAttempts) {
-            clearInterval(interval);
+        // Set up event listeners for game pause/unpause
+        playlightSDK.onEvent("discoveryOpen", () => {
+          const state = useGameStore.getState();
+          if (!state.isPaused) {
+            state.togglePause();
           }
-          attempts++;
-        }, 500);
+        });
 
+        playlightSDK.onEvent("discoveryClose", () => {
+          const state = useGameStore.getState();
+          if (state.isPaused) {
+            state.togglePause();
+          }
+        });
       } catch (error) {
-        console.error("Error connecting to Playlight SDK:", error);
+        console.error("Error loading the Playlight SDK:", error);
       }
     };
 
@@ -136,4 +141,3 @@ function App() {
 }
 
 export default App;
-
