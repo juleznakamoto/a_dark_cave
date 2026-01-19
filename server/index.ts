@@ -814,10 +814,11 @@ app.post("/api/leaderboard/update-username", leaderboardUpdateLimiter, async (re
   // This prevents "application/octet-stream" errors for ES modules
   if (process.env.NODE_ENV === "production") {
     app.use((req, res, next) => {
-      if (req.path.endsWith('.js') || req.path.endsWith('.mjs')) {
-        res.type('application/javascript');
-      } else if (req.path.endsWith('.css')) {
-        res.type('text/css');
+      const url = req.url.split('?')[0];
+      if (url.endsWith('.js') || url.endsWith('.mjs')) {
+        res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
+      } else if (url.endsWith('.css')) {
+        res.setHeader('Content-Type', 'text/css; charset=utf-8');
       }
       next();
     });
