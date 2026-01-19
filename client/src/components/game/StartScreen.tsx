@@ -98,31 +98,24 @@ export default function StartScreen() {
     const initPlaylight = async () => {
       console.log("[Playlight] Starting SDK initialization...");
       try {
-        const script = document.createElement("script");
-        script.src = "https://sdk.playlight.dev/playlight-sdk.es.js";
-        script.type = "module";
-        script.async = true;
-        const loadPromise = new Promise((resolve, reject) => {
-          script.onload = () => {
-            console.log("[Playlight] Script loaded successfully");
-            resolve(null);
-          };
-          script.onerror = (e) => {
-            console.error("[Playlight] Script load error:", e);
-            reject(e);
-          };
-        });
-        document.body.appendChild(script);
-        await loadPromise;
+        // Load CSS first (required by Playlight)
+        if (!document.querySelector('link[href*="playlight-sdk.css"]')) {
+          const cssLink = document.createElement("link");
+          cssLink.rel = "stylesheet";
+          cssLink.href = "https://sdk.playlight.dev/playlight-sdk.css";
+          document.head.appendChild(cssLink);
+          console.log("[Playlight] CSS loaded");
+        }
+        
         console.log("[Playlight] Importing module...");
-        const module = await import("https://sdk.playlight.dev/playlight-sdk.es.js");
+        const module = await import(/* @vite-ignore */ "https://sdk.playlight.dev/playlight-sdk.es.js");
         const playlightSDK = module.default;
         if (!playlightSDK) {
           throw new Error("Playlight SDK module.default is undefined");
         }
         console.log("[Playlight] Initializing SDK...");
+        // Playlight identifies games by domain - no gameId needed
         playlightSDK.init({
-          gameId: "a-dark-cave",
           exitIntent: {
             enabled: false,
             immediate: false,

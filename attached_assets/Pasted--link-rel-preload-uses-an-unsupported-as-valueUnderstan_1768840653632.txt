@@ -1,0 +1,71 @@
+<link rel=preload> uses an unsupported `as` valueUnderstand this warning
+chunk-276SZO74.js?v=8e3bee91:21551 Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+logger.ts:33 v170Z Registering initial sounds for Howler...
+logger.ts:33 v170Z Initial sound registration complete (deferred loading)
+logger.ts:33 v170Z [GAME PAGE] Initializing game
+logger.ts:33 v170Z [GAME PAGE] User authenticated, loading game
+logger.ts:33 v170Z [LOAD] 💾 Local save retrieved: {hasLocalSave: true, timestamp: '2026-01-19T16:35:02.792Z', playTime: 893136.1999999881, playTimeMinutes: 15, hasCooldowns: true, …}
+logger.ts:33 v170Z [LOAD CLOUD] 📊 Loaded from Supabase: {hasData: true, hasReferrals: true, referralsCount: 0, referrals: Array(0), playTime: 893136, …}
+logger.ts:33 v170Z [LOAD] 🔍 Comparing local and cloud saves: {cloudPlayTime: 893136, localPlayTime: 893136, cloudTimestamp: 1768840503920, localTimestamp: 1768840502792}
+logger.ts:33 v170Z [LOAD] ☁️ Cloud save is newer - using cloud save
+logger.ts:33 v170Z [REFERRAL] 🔍 Processing unclaimed referrals... {hasUser: true, hasReferrals: true, referralsCount: 0, referrals: Array(0)}
+logger.ts:33 v170Z [REFERRAL] ⏭️ Skipping - no user or no referrals
+logger.ts:33 v170Z [LOAD] ✅ Cloud save loaded and synced locally
+logger.ts:33 v170Z [GAME] Game loaded from save
+logger.ts:33 v170Z [IDLE MODE INIT] Dialog open check: {dialogOpen: false, isActive: false, idleModeState: {…}}
+logger.ts:33 v170Z [GAME CONTAINER] Full game dialog closed, state: {BTP: 0, isPaused: false, isPausedPreviously: false}
+logger.ts:33 v170Z [VERSION] Initializing version check from GameContainer
+ProfileMenu.tsx:268 [Playlight] Opening discovery. SDK present on window: false
+ProfileMenu.tsx:271 [Playlight] SDK not on window, attempting dynamic load...
+ProfileMenu.tsx:289 [Playlight] Calling setDiscovery()
+api.js:20  POST https://api.playlight.dev/platform/event/open 404 (Not Found)
+makeRequest @ api.js:20
+request @ api.js:61
+trackOpen @ api.js:103
+openDiscovery @ open-discovery.js:9
+setDiscovery @ index.js:43
+handleDiscovery @ ProfileMenu.tsx:291
+await in handleDiscovery
+handleClick @ button.tsx:30
+callCallback2 @ chunk-276SZO74.js?v=8e3bee91:3674
+invokeGuardedCallbackDev @ chunk-276SZO74.js?v=8e3bee91:3699
+invokeGuardedCallback @ chunk-276SZO74.js?v=8e3bee91:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-276SZO74.js?v=8e3bee91:3736
+executeDispatch @ chunk-276SZO74.js?v=8e3bee91:7014
+processDispatchQueueItemsInOrder @ chunk-276SZO74.js?v=8e3bee91:7034
+processDispatchQueue @ chunk-276SZO74.js?v=8e3bee91:7043
+dispatchEventsForPlugins @ chunk-276SZO74.js?v=8e3bee91:7051
+(anonymous) @ chunk-276SZO74.js?v=8e3bee91:7174
+batchedUpdates$1 @ chunk-276SZO74.js?v=8e3bee91:18913
+batchedUpdates @ chunk-276SZO74.js?v=8e3bee91:3579
+dispatchEventForPluginEventSystem @ chunk-276SZO74.js?v=8e3bee91:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-276SZO74.js?v=8e3bee91:5478
+dispatchEvent @ chunk-276SZO74.js?v=8e3bee91:5472
+dispatchDiscreteEvent @ chunk-276SZO74.js?v=8e3bee91:5449Understand this error
+api.js:39 Playlight game not found. This is normal in a test / local environment, but should not appear in production.
+makeRequest @ api.js:39
+await in makeRequest
+request @ api.js:61
+trackOpen @ api.js:103
+openDiscovery @ open-discovery.js:9
+setDiscovery @ index.js:43
+handleDiscovery @ ProfileMenu.tsx:291
+await in handleDiscovery
+handleClick @ button.tsx:30
+callCallback2 @ chunk-276SZO74.js?v=8e3bee91:3674
+invokeGuardedCallbackDev @ chunk-276SZO74.js?v=8e3bee91:3699
+invokeGuardedCallback @ chunk-276SZO74.js?v=8e3bee91:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-276SZO74.js?v=8e3bee91:3736
+executeDispatch @ chunk-276SZO74.js?v=8e3bee91:7014
+processDispatchQueueItemsInOrder @ chunk-276SZO74.js?v=8e3bee91:7034
+processDispatchQueue @ chunk-276SZO74.js?v=8e3bee91:7043
+dispatchEventsForPlugins @ chunk-276SZO74.js?v=8e3bee91:7051
+(anonymous) @ chunk-276SZO74.js?v=8e3bee91:7174
+batchedUpdates$1 @ chunk-276SZO74.js?v=8e3bee91:18913
+batchedUpdates @ chunk-276SZO74.js?v=8e3bee91:3579
+dispatchEventForPluginEventSystem @ chunk-276SZO74.js?v=8e3bee91:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-276SZO74.js?v=8e3bee91:5478
+dispatchEvent @ chunk-276SZO74.js?v=8e3bee91:5472
+dispatchDiscreteEvent @ chunk-276SZO74.js?v=8e3bee91:5449Understand this warning
+(index):1 The resource https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/api/config was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.Understand this warning
+(index):1 The resource https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/api/config was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.

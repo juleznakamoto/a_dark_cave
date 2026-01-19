@@ -278,9 +278,18 @@ export default function ProfileMenu() {
         }
         
         const module = await import(
-          "https://sdk.playlight.dev/playlight-sdk.es.js"
+          /* @vite-ignore */ "https://sdk.playlight.dev/playlight-sdk.es.js"
         );
         playlightSDK = module.default;
+        // Initialize SDK if loading for first time
+        if (playlightSDK && typeof playlightSDK.init === 'function') {
+          playlightSDK.init({
+            exitIntent: {
+              enabled: false,
+              immediate: false,
+            },
+          });
+        }
         // @ts-ignore
         window.playlightSDK = playlightSDK;
       }
