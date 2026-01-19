@@ -72,7 +72,7 @@
 
     <!-- Preload Critical Assets -->
     <link rel="modulepreload" href="/src/main.tsx" />
-    <link rel="preload" href="/api/config" as="fetch" crossorigin="anonymous" />
+    <link rel="preload" href="/api/config" as="fetch" />
     <link rel="preload" href="/sounds/wind.mp3" as="audio" />
 
     <!-- Application Tags -->
@@ -91,10 +91,17 @@
 
     <!-- Playlight SDK -->
     <link rel="stylesheet" href="https://sdk.playlight.dev/playlight-sdk.css">
-    <script type="module">
-      import playlightSDK from "https://sdk.playlight.dev/playlight-sdk.es.js";
-      playlightSDK.init();
-      window.playlightSDK = playlightSDK;
+    <script src="https://sdk.playlight.dev/playlight-sdk.iife.js" defer></script>
+    <script>
+      window.addEventListener('load', () => {
+        try {
+          if (window.playlightSDK) {
+            window.playlightSDK.init();
+          }
+        } catch (e) {
+          console.error("Playlight init error:", e);
+        }
+      });
     </script>
 
     <!-- Structured Data (JSON-LD) - WebApplication -->
