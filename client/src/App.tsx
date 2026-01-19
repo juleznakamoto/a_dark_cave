@@ -1,11 +1,10 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { Switch, Route } from "wouter";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./lib/queryClient";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import AdminDashboard from "@/pages/admin/dashboard";
-import { useEffect } from "react"
 
 // Eager load game page
 import Game from "@/pages/game";
@@ -18,8 +17,6 @@ const Imprint = lazy(() => import("@/pages/imprint"));
 const Privacy = lazy(() => import("@/pages/privacy"));
 const Terms = lazy(() => import("@/pages/terms"));
 const Withdrawal = lazy(() => import("@/pages/withdrawal"));
-// const ButtonTest = lazy(() => import("@/pages/button-test"));
-// const ExplosionTest = lazy(() => import("@/pages/explosion-test"));
 
 function Router() {
   return (
@@ -39,8 +36,6 @@ function Router() {
         <Route path="/terms" component={Terms} />
         <Route path="/withdrawal" component={Withdrawal} />
         <Route path="/reset-password" component={ResetPassword} />
-        {/* <Route path="/button-test" component={ButtonTest} /> */}
-        {/* <Route path="/explosion-test" component={ExplosionTest} /> */}
         <Route path="/admin/dashboard">
           <AdminDashboard />
         </Route>
@@ -52,29 +47,15 @@ function Router() {
 
 function App() {
   useEffect(() => {
-    let exitIntentTimeout: NodeJS.Timeout | null = null;
+    let unsubscribeGameStore: (() => void) | null = null;
 
     const initPlaylight = async () => {
       try {
-        const script = document.createElement("script");
-        script.src = "https://sdk.playlight.dev/playlight-sdk.es.js";
-        script.type = "module";
-        script.async = true;
-
-        const loadPromise = new Promise((resolve, reject) => {
-          script.onload = resolve;
-          script.onerror = reject;
-        });
-
-        document.body.appendChild(script);
-        await loadPromise;
-
-        // @ts-ignore - The SDK is loaded globally as a module but we need to access its export
-        // The previous dynamic import was also from the same URL
+        // Dynamically import Playlight SDK as a module
         const module = await import("https://sdk.playlight.dev/playlight-sdk.es.js");
         const playlightSDK = module.default;
 
-        // Initialize SDK immediately with exit intent disabled
+        // Initialize SDK immediately with exitIntent disabled
         playlightSDK.init({
           exitIntent: {
             enabled: false,
@@ -85,35 +66,29 @@ function App() {
         // Import game store
         const { useGameStore } = await import("./game/state");
 
-        // Reactively update exit intent based on game state
-        useGameStore.subscribe(
-          (state) => {
-            const isEndScreen = window.location.pathname === "/end-screen";
-            const shouldEnableExitIntent =
-              state.isPaused || state.idleModeDialog.isOpen || state.leaderboardDialogOpen || isEndScreen;
+        // Reactively update exitIntent based on game state
+        unsubscribeGameStore = useGameStore.subscribe((state) => {
+          const isEndScreen = window.location.pathname === "/end-screen";
+          const shouldEnableExitIntent =
+            state.isPaused || state.idleModeDialog.isOpen || state.leaderboardDialogOpen || isEndScreen;
 
-            playlightSDK.setConfig({
-              exitIntent: {
-                enabled: shouldEnableExitIntent,
-                immediate: false,
-              },
-            });
-          }
-        );
+          playlightSDK.setConfig({
+            exitIntent: {
+              enabled: shouldEnableExitIntent,
+              immediate: false,
+            },
+          });
+        });
 
         // Set up event listeners for game pause/unpause
         playlightSDK.onEvent("discoveryOpen", () => {
           const state = useGameStore.getState();
-          if (!state.isPaused) {
-            state.togglePause();
-          }
+          if (!state.isPaused) state.togglePause();
         });
 
         playlightSDK.onEvent("discoveryClose", () => {
           const state = useGameStore.getState();
-          if (state.isPaused) {
-            state.togglePause();
-          }
+          if (state.isPaused) state.togglePause();
         });
       } catch (error) {
         console.error("Error loading the Playlight SDK:", error);
@@ -122,11 +97,9 @@ function App() {
 
     initPlaylight();
 
-    // Cleanup timeout on unmount
     return () => {
-      if (exitIntentTimeout) {
-        clearTimeout(exitIntentTimeout);
-      }
+      // Cleanup subscription on unmount
+      if (unsubscribeGameStore) unsubscribeGameStore();
     };
   }, []);
 
