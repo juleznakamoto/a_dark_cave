@@ -122,6 +122,7 @@ export default function StartScreen() {
         }
         console.log("[Playlight] Initializing SDK...");
         playlightSDK.init({
+          gameId: "a-dark-cave",
           exitIntent: {
             enabled: false,
             immediate: false,

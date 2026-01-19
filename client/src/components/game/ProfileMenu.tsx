@@ -287,7 +287,11 @@ export default function ProfileMenu() {
       
       if (playlightSDK && typeof playlightSDK.setDiscovery === 'function') {
         console.log("[Playlight] Calling setDiscovery()");
-        playlightSDK.setDiscovery();
+        try {
+          playlightSDK.setDiscovery();
+        } catch (sdkError) {
+          console.error("[Playlight] Error during setDiscovery:", sdkError);
+        }
       } else {
         console.error("[Playlight] Playlight SDK not available or missing setDiscovery. SDK Object:", playlightSDK);
       }
