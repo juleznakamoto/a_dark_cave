@@ -96,19 +96,31 @@ export default function StartScreen() {
 
     // Initialize Playlight SDK only after "Light Fire" is clicked
     const initPlaylight = async () => {
+      console.log("[Playlight] Starting SDK initialization...");
       try {
         const script = document.createElement("script");
         script.src = "https://sdk.playlight.dev/playlight-sdk.es.js";
         script.type = "module";
         script.async = true;
         const loadPromise = new Promise((resolve, reject) => {
-          script.onload = resolve;
-          script.onerror = reject;
+          script.onload = () => {
+            console.log("[Playlight] Script loaded successfully");
+            resolve(null);
+          };
+          script.onerror = (e) => {
+            console.error("[Playlight] Script load error:", e);
+            reject(e);
+          };
         });
         document.body.appendChild(script);
         await loadPromise;
+        console.log("[Playlight] Importing module...");
         const module = await import("https://sdk.playlight.dev/playlight-sdk.es.js");
         const playlightSDK = module.default;
+        if (!playlightSDK) {
+          throw new Error("Playlight SDK module.default is undefined");
+        }
+        console.log("[Playlight] Initializing SDK...");
         playlightSDK.init({
           exitIntent: {
             enabled: false,
@@ -118,6 +130,7 @@ export default function StartScreen() {
         const { useGameStore } = await import("@/game/state");
         // @ts-ignore
         window.playlightSDK = playlightSDK;
+        console.log("[Playlight] SDK initialized and attached to window");
         useGameStore.subscribe((state) => {
           const isEndScreen = window.location.pathname === "/end-screen";
           const shouldEnableExitIntent =
@@ -130,15 +143,17 @@ export default function StartScreen() {
           });
         });
         playlightSDK.onEvent("discoveryOpen", () => {
+          console.log("[Playlight] Event: discoveryOpen");
           const state = useGameStore.getState();
           if (!state.isPaused) state.togglePause();
         });
         playlightSDK.onEvent("discoveryClose", () => {
+          console.log("[Playlight] Event: discoveryClose");
           const state = useGameStore.getState();
           if (state.isPaused) state.togglePause();
         });
       } catch (error) {
-        console.error("Error loading Playlight SDK:", error);
+        console.error("[Playlight] Error loading Playlight SDK:", error);
       }
     };
     initPlaylight();

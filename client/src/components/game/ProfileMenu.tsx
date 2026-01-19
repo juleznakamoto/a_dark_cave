@@ -265,8 +265,10 @@ export default function ProfileMenu() {
       // Check if SDK is already loaded on window, otherwise dynamic import
       // @ts-ignore
       let playlightSDK = window.playlightSDK;
+      console.log("[Playlight] Opening discovery. SDK present on window:", !!playlightSDK);
       
       if (!playlightSDK) {
+        console.log("[Playlight] SDK not on window, attempting dynamic load...");
         // Load CSS if not already loaded
         if (!document.querySelector('link[href*="playlight-sdk.css"]')) {
           const cssLink = document.createElement("link");
@@ -279,12 +281,15 @@ export default function ProfileMenu() {
           "https://sdk.playlight.dev/playlight-sdk.es.js"
         );
         playlightSDK = module.default;
+        // @ts-ignore
+        window.playlightSDK = playlightSDK;
       }
       
       if (playlightSDK && typeof playlightSDK.setDiscovery === 'function') {
+        console.log("[Playlight] Calling setDiscovery()");
         playlightSDK.setDiscovery();
       } else {
-        console.error("Playlight SDK not available or missing setDiscovery");
+        console.error("[Playlight] Playlight SDK not available or missing setDiscovery. SDK Object:", playlightSDK);
       }
     } catch (error) {
       console.error("Error opening Playlight discovery:", error);
