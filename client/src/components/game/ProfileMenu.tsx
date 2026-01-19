@@ -254,58 +254,11 @@ export default function ProfileMenu() {
     await checkAuth();
   };
 
-  const handleDiscovery = async () => {
-    try {
-      // Pause the game
-      const currentState = useGameStore.getState();
-      if (!currentState.isPaused) {
-        currentState.togglePause();
-      }
-
-      // Check if SDK is already loaded on window, otherwise dynamic import
-      // @ts-ignore
-      let playlightSDK = window.playlightSDK;
-      console.log("[Playlight] Opening discovery. SDK present on window:", !!playlightSDK);
-      
-      if (!playlightSDK) {
-        console.log("[Playlight] SDK not on window, attempting dynamic load...");
-        // Load CSS if not already loaded
-        if (!document.querySelector('link[href*="playlight-sdk.css"]')) {
-          const cssLink = document.createElement("link");
-          cssLink.rel = "stylesheet";
-          cssLink.href = "https://sdk.playlight.dev/playlight-sdk.css";
-          document.head.appendChild(cssLink);
-        }
-        
-        const module = await import(
-          /* @vite-ignore */ "https://sdk.playlight.dev/playlight-sdk.es.js"
-        );
-        playlightSDK = module.default;
-        // Initialize SDK if loading for first time
-        if (playlightSDK && typeof playlightSDK.init === 'function') {
-          playlightSDK.init({
-            exitIntent: {
-              enabled: false,
-              immediate: false,
-            },
-          });
-        }
-        // @ts-ignore
-        window.playlightSDK = playlightSDK;
-      }
-      
-      if (playlightSDK && typeof playlightSDK.setDiscovery === 'function') {
-        console.log("[Playlight] Calling setDiscovery()");
-        try {
-          playlightSDK.setDiscovery();
-        } catch (sdkError) {
-          console.error("[Playlight] Error during setDiscovery:", sdkError);
-        }
-      } else {
-        console.error("[Playlight] Playlight SDK not available or missing setDiscovery. SDK Object:", playlightSDK);
-      }
-    } catch (error) {
-      console.error("Error opening Playlight discovery:", error);
+  const handleDiscovery = () => {
+    // @ts-ignore
+    const playlightSDK = window.playlightSDK;
+    if (playlightSDK && typeof playlightSDK.setDiscovery === 'function') {
+      playlightSDK.setDiscovery();
     }
   };
 

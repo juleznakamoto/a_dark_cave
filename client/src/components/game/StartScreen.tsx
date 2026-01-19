@@ -94,63 +94,6 @@ export default function StartScreen() {
     // Immediately stop wind with no fade to prevent overlap
     audioManager.stopLoopingSound("wind", 2);
 
-    // Initialize Playlight SDK only after "Light Fire" is clicked
-    const initPlaylight = async () => {
-      console.log("[Playlight] Starting SDK initialization...");
-      try {
-        // Load CSS first (required by Playlight)
-        if (!document.querySelector('link[href*="playlight-sdk.css"]')) {
-          const cssLink = document.createElement("link");
-          cssLink.rel = "stylesheet";
-          cssLink.href = "https://sdk.playlight.dev/playlight-sdk.css";
-          document.head.appendChild(cssLink);
-          console.log("[Playlight] CSS loaded");
-        }
-        
-        console.log("[Playlight] Importing module...");
-        const module = await import(/* @vite-ignore */ "https://sdk.playlight.dev/playlight-sdk.es.js");
-        const playlightSDK = module.default;
-        if (!playlightSDK) {
-          throw new Error("Playlight SDK module.default is undefined");
-        }
-        console.log("[Playlight] Initializing SDK...");
-        // Playlight identifies games by domain - no gameId needed
-        playlightSDK.init({
-          exitIntent: {
-            enabled: false,
-            immediate: false,
-          },
-        });
-        const { useGameStore } = await import("@/game/state");
-        // @ts-ignore
-        window.playlightSDK = playlightSDK;
-        console.log("[Playlight] SDK initialized and attached to window");
-        useGameStore.subscribe((state) => {
-          const isEndScreen = window.location.pathname === "/end-screen";
-          const shouldEnableExitIntent =
-            state.isPaused || state.idleModeDialog.isOpen || state.leaderboardDialogOpen || isEndScreen;
-          playlightSDK.setConfig({
-            exitIntent: {
-              enabled: shouldEnableExitIntent,
-              immediate: false,
-            },
-          });
-        });
-        playlightSDK.onEvent("discoveryOpen", () => {
-          console.log("[Playlight] Event: discoveryOpen");
-          const state = useGameStore.getState();
-          if (!state.isPaused) state.togglePause();
-        });
-        playlightSDK.onEvent("discoveryClose", () => {
-          console.log("[Playlight] Event: discoveryClose");
-          const state = useGameStore.getState();
-          if (state.isPaused) state.togglePause();
-        });
-      } catch (error) {
-        console.error("[Playlight] Error loading Playlight SDK:", error);
-      }
-    };
-    initPlaylight();
 
     audioManager.loadGameSounds().then(() => {
       audioManager.startBackgroundMusic(0.3);

@@ -89,7 +89,13 @@
     <!-- Fonts - Served locally -->
     <!-- Preload removed to avoid early loading -->
 
-    <!-- Playlight SDK CSS - Loaded dynamically after game starts via JavaScript -->
+    <!-- Playlight SDK -->
+    <link rel="stylesheet" href="https://sdk.playlight.dev/playlight-sdk.css">
+    <script type="module">
+      import playlightSDK from "https://sdk.playlight.dev/playlight-sdk.es.js";
+      playlightSDK.init();
+      window.playlightSDK = playlightSDK;
+    </script>
 
     <!-- Structured Data (JSON-LD) - WebApplication -->
     <script type="application/ld+json">
