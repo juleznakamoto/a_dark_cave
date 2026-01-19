@@ -115,11 +115,6 @@ app.use((req, res, next) => {
   else if (req.path.match(/\.(json|txt|xml)$/) && !req.path.startsWith('/api/')) {
     res.set('Cache-Control', 'public, max-age=86400');
   }
-
-  // Handle MIME types for JS modules in production
-  if (req.path.endsWith('.js') || req.path.endsWith('.ts') || req.path.endsWith('.tsx')) {
-    res.set('Content-Type', 'application/javascript');
-  }
   next();
 });
 
