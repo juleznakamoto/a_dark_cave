@@ -810,6 +810,19 @@ app.post("/api/leaderboard/update-username", leaderboardUpdateLimiter, async (re
   });
 
 
+  // MIME type fix: Ensure JavaScript files are served with correct Content-Type in production
+  // This prevents "application/octet-stream" errors for ES modules
+  if (process.env.NODE_ENV === "production") {
+    app.use((req, res, next) => {
+      if (req.path.endsWith('.js') || req.path.endsWith('.mjs')) {
+        res.type('application/javascript');
+      } else if (req.path.endsWith('.css')) {
+        res.type('text/css');
+      }
+      next();
+    });
+  }
+
   // Setup Vite middleware AFTER all API routes to prevent catch-all interference
   if (process.env.NODE_ENV !== "production") {
     await setupVite(app, server);
