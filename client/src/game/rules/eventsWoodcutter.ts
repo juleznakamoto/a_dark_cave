@@ -252,10 +252,6 @@ function createWoodcutterEvent(config: WoodcutterConfig): GameEvent {
       id: "denyServices",
       label: "Time Expired",
       effect: (state: GameState) => {
-        console.log(
-          "[WOODCUTTER] Fallback choice (denyServices) triggered - timer expired for level:",
-          level,
-        );
 
         // Special handling for last event
         if (isLastEvent) {

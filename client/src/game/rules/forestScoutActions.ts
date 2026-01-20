@@ -3,17 +3,18 @@ import { ActionResult } from "@/game/actions";
 import { applyActionEffects } from "./actionEffects";
 import { killVillagers } from "@/game/stateHelpers";
 import { calculateSuccessChance, gameEvents, LogEntry } from "./events";
-import { logger } from "../../lib/logger";
+import { logger } from "@/lib/logger";
+import { ActionEffectUpdates } from "@/game/types";
 
 // Helper function to process triggered events from action effects
 function processTriggeredEvents(
-  effectUpdates: any,
+  effectUpdates: ActionEffectUpdates,
   result: ActionResult,
   state: GameState
 ): void {
   if (effectUpdates.triggeredEvents && effectUpdates.triggeredEvents.length > 0) {
     logger.log(`[FOREST SCOUT] Processing triggered events:`, effectUpdates.triggeredEvents);
-    
+
     effectUpdates.triggeredEvents.forEach((eventId: string) => {
       // Prevent event from happening again if it's already been triggered
       if (state.triggeredEvents?.[eventId]) {
@@ -23,11 +24,11 @@ function processTriggeredEvents(
 
       const eventDef = gameEvents[eventId];
       if (eventDef) {
-        logger.log(`[FOREST SCOUT] Found event definition for: ${eventId}`, { 
+        logger.log(`[FOREST SCOUT] Found event definition for: ${eventId}`, {
           title: eventDef.title,
           hasChoices: !!eventDef.choices
         });
-        
+
         // Mark as triggered in state updates
         if (!effectUpdates.triggeredEventsState) effectUpdates.triggeredEventsState = {};
         effectUpdates.triggeredEventsState[eventId] = true;
@@ -35,10 +36,10 @@ function processTriggeredEvents(
         // Create a log entry for the event
         const logEntry: LogEntry = {
           id: `${eventId}-${Date.now()}`,
-          message: typeof eventDef.message === 'string' 
-            ? eventDef.message 
-            : Array.isArray(eventDef.message) 
-              ? eventDef.message[0] 
+          message: typeof eventDef.message === 'string'
+            ? eventDef.message
+            : Array.isArray(eventDef.message)
+              ? eventDef.message[0]
               : '',
           timestamp: Date.now(),
           type: "event",
@@ -49,13 +50,13 @@ function processTriggeredEvents(
           fallbackChoice: eventDef.fallbackChoice,
           relevant_stats: eventDef.relevant_stats,
         };
-        
+
         result.logEntries!.push(logEntry);
       } else {
         logger.warn(`[FOREST SCOUT] No event definition found for: ${eventId}`);
       }
     });
-    
+
     // Merge triggered events state into main state updates
     if (effectUpdates.triggeredEventsState) {
       effectUpdates.triggeredEvents = {

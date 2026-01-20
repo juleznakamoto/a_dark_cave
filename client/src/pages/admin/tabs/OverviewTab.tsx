@@ -50,8 +50,6 @@ export default function OverviewTab(props: OverviewTabProps) {
     dailyActiveUsersData
   } = props;
 
-  console.log('📊 OverviewTab registrationMethodStats:', registrationMethodStats);
-
   const formattedDailyActiveUsers = (dailyActiveUsersData || [])
     .slice()
     .reverse()

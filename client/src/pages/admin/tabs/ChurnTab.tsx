@@ -3,6 +3,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { LineChart, Line, BarChart, Bar, CartesianGrid, XAxis, YAxis, Legend, ResponsiveContainer } from "recharts";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { format, differenceInDays, subDays, startOfDay, endOfDay, isWithinInterval, parseISO } from "date-fns";
+import { logger } from "@/lib/logger";
 
 interface ChurnTabProps {
   churnDays: 1 | 3 | 5 | 7;
@@ -517,27 +518,14 @@ export default function ChurnTab(props: ChurnTabProps) {
   };
 
   const getCubeEventsOverRealTime = () => {
-    console.log('=== getCubeEventsOverRealTime Debug ===');
-    console.log('Total clickData entries:', clickData.length);
-    
     // Extract cube button clicks from the clicks data structure
     // Looking for buttons like "cube-close-cube03-1766078383278"
     // Group by playtime bucket (e.g., "40m", "80m", etc.)
     const cubeClicksByPlaytime = new Map<number, Map<number, Set<string>>>();
     let maxCubeEvent = 0;
     let maxPlaytime = 0;
-    let cubeButtonsFound = 0;
 
-    clickData.forEach((entry, index) => {
-      // Log first entry structure
-      if (index === 0) {
-        console.log('Sample entry structure:', {
-          user_id: entry.user_id,
-          clicks_keys: Object.keys(entry.clicks),
-          sample_playtime_buttons: entry.clicks['40m'] ? Object.keys(entry.clicks['40m']).slice(0, 5) : 'no 40m'
-        });
-      }
-
+    clickData.forEach((entry) => {
       // entry.clicks is structured as: { "40m": { "cube-close-cube03-1766078383278": 1, ... } }
       Object.entries(entry.clicks).forEach(([playtimeKey, buttonClicks]) => {
         const playtimeMinutes = parseInt(playtimeKey.replace('m', ''));
@@ -550,19 +538,8 @@ export default function ChurnTab(props: ChurnTabProps) {
           const cubeMatch = buttonId.match(/cube-close-cube(\d+)-/);
 
           if (cubeMatch) {
-            cubeButtonsFound++;
             const cubeNum = parseInt(cubeMatch[1]);
             maxCubeEvent = Math.max(maxCubeEvent, cubeNum);
-
-            if (cubeButtonsFound <= 5) {
-              console.log('Cube button found:', {
-                buttonId,
-                cubeNum,
-                playtimeKey,
-                playtimeMinutes,
-                user_id: entry.user_id
-              });
-            }
 
             if (!cubeClicksByPlaytime.has(playtimeMinutes)) {
               cubeClicksByPlaytime.set(playtimeMinutes, new Map());
@@ -577,11 +554,6 @@ export default function ChurnTab(props: ChurnTabProps) {
         });
       });
     });
-
-    console.log('Total cube buttons found:', cubeButtonsFound);
-    console.log('Max cube event:', maxCubeEvent);
-    console.log('Max playtime:', maxPlaytime);
-    console.log('Playtime buckets with cube events:', Array.from(cubeClicksByPlaytime.keys()).sort((a, b) => a - b));
 
     // Aggregate 5-minute buckets into hourly buckets
     const hourlyBuckets = new Map<number, Map<number, Set<string>>>();
@@ -624,9 +596,6 @@ export default function ChurnTab(props: ChurnTabProps) {
       result.push(dataPoint);
     }
 
-    console.log('Final result:', result);
-    console.log('=== End Debug ===');
-    
     return result;
   };
 

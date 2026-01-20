@@ -18,8 +18,6 @@ const Imprint = lazy(() => import("@/pages/imprint"));
 const Privacy = lazy(() => import("@/pages/privacy"));
 const Terms = lazy(() => import("@/pages/terms"));
 const Withdrawal = lazy(() => import("@/pages/withdrawal"));
-// const ButtonTest = lazy(() => import("@/pages/button-test"));
-// const ExplosionTest = lazy(() => import("@/pages/explosion-test"));
 
 function Router() {
   return (
@@ -39,8 +37,6 @@ function Router() {
         <Route path="/terms" component={Terms} />
         <Route path="/withdrawal" component={Withdrawal} />
         <Route path="/reset-password" component={ResetPassword} />
-        {/* <Route path="/button-test" component={ButtonTest} /> */}
-        {/* <Route path="/explosion-test" component={ExplosionTest} /> */}
         <Route path="/admin/dashboard">
           <AdminDashboard />
         </Route>

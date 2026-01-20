@@ -60,7 +60,6 @@ export default function EstatePanel() {
         setFocusProgress(0);
         // Clear focus state when timer expires
         if (focusState?.isActive && focusState.endTime <= now) {
-          console.log('[FOCUS] Timer expired, clearing focus state');
           useGameStore.setState({
             focusState: {
               isActive: false,
@@ -88,13 +87,6 @@ export default function EstatePanel() {
   };
 
   React.useEffect(() => {
-    console.log('[FOCUS] Button visibility check:', {
-      hasFocus: focusState?.points > 0,
-      focusAmount: focusState?.points,
-      isActive: focusState?.isActive,
-      shouldShow: focusState?.points > 0 && !focusState?.isActive,
-      allResources: resources, // Log all resources to see if focus is being set
-    });
   }, [focusState?.points, focusState?.isActive]);
 
   // Get all cube events that have been triggered
@@ -445,11 +437,6 @@ export default function EstatePanel() {
                     const now = Date.now();
                     const focusPoints = focusState?.points || 0;
                     const focusDuration = calculateFocusDuration(focusPoints);
-                    console.log('[FOCUS] Activating Focus:', {
-                      focusPoints,
-                      durationMs: focusDuration,
-                      durationMinutes: focusDuration / 60000,
-                    });
                     updateFocusState({
                       isActive: true,
                       endTime: now + focusDuration,
