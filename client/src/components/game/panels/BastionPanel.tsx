@@ -2,13 +2,7 @@ import { useGameStore } from "@/game/state";
 import { gameActions } from "@/game/rules";
 import { getTotalBuildingCostReduction } from "@/game/rules/effectsCalculation";
 import { Button } from "@/components/ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { useMobileTooltip } from "@/hooks/useMobileTooltip";
+import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import AttackWavesChart from "./AttackWavesChart";
 
 // Helper to get building label based on level
@@ -42,7 +36,6 @@ export default function BastionPanel() {
   const { buildings, story, resources, fellowship, setHighlightedResources } =
     useGameStore();
   const state = useGameStore.getState();
-  const mobileTooltip = useMobileTooltip();
 
   const bastionDamaged = story?.seen?.bastionDamaged || false;
   const watchtowerDamaged = story?.seen?.watchtowerDamaged || false;
@@ -117,7 +110,7 @@ export default function BastionPanel() {
           },
         },
       }));
-      
+
       // Then recalculate bastion stats after state has been updated
       setTimeout(() => {
         useGameStore.getState().updateBastionStats();
@@ -141,7 +134,7 @@ export default function BastionPanel() {
           },
         },
       }));
-      
+
       // Then recalculate bastion stats after state has been updated
       setTimeout(() => {
         useGameStore.getState().updateBastionStats();
@@ -165,7 +158,7 @@ export default function BastionPanel() {
           },
         },
       }));
-      
+
       // Then recalculate bastion stats after state has been updated
       setTimeout(() => {
         useGameStore.getState().updateBastionStats();
@@ -207,112 +200,116 @@ export default function BastionPanel() {
           <h3 className="text-xs font-bold text-foreground">Heal</h3>
           <div className="flex flex-wrap gap-2">
             {story?.seen?.restlessKnightWounded && fellowship?.restless_knight && (
-              <TooltipProvider key="restless-knight">
-                <Tooltip open={mobileTooltip.isTooltipOpen("heal-restless-knight")}>
-                  <TooltipTrigger asChild>
-                    <div
-                      onClick={(e) =>
-                        mobileTooltip.handleTooltipClick("heal-restless-knight", e)
-                      }
-                      onMouseEnter={() => {
-                        setHighlightedResources(['food']);
-                      }}
-                      onMouseLeave={() => {
-                        setHighlightedResources([]);
-                      }}
-                    >
-                      <Button
-                        onClick={() => {
-                          if (resources.food >= 1500) {
-                            useGameStore.setState((state) => ({
-                              resources: {
-                                ...state.resources,
-                                food: state.resources.food - 1500,
-                              },
-                              story: {
-                                ...state.story,
-                                seen: {
-                                  ...state.story.seen,
-                                  restlessKnightWounded: false,
-                                },
-                              },
-                            }));
-                          }
-                        }}
-                        disabled={resources.food < 1500}
-                        variant="outline"
-                        size="xs"
-                        className="hover:bg-transparent hover:text-foreground"
-                        button_id="heal-restless-knight"
-                      >
-                        Restless Knight
-                      </Button>
+              <TooltipWrapper
+                key="restless-knight"
+                tooltip={
+                  <div className="text-xs whitespace-nowrap">
+                    <div className={resources.food >= 1500 ? "" : "text-muted-foreground"}>
+                      -1500 Food
                     </div>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <div className="text-xs whitespace-nowrap">
-                      <div className={resources.food >= 1500 ? "" : "text-muted-foreground"}>
-                        -1500 Food
-                      </div>
-                    </div>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
+                  </div>
+                }
+                tooltipId="heal-restless-knight"
+                disabled={resources.food < 1500}
+                onMouseEnter={() => {
+                  setHighlightedResources(['food']);
+                }}
+                onMouseLeave={() => {
+                  setHighlightedResources([]);
+                }}
+              >
+                <Button
+                  onClick={() => {
+                    if (resources.food >= 1500) {
+                      useGameStore.setState((state) => ({
+                        resources: {
+                          ...state.resources,
+                          food: state.resources.food - 1500,
+                        },
+                        story: {
+                          ...state.story,
+                          seen: {
+                            ...state.story.seen,
+                            restlessKnightWounded: false,
+                          },
+                        },
+                      }));
+                    }
+                  }}
+                  disabled={resources.food < 1500}
+                  variant="outline"
+                  size="xs"
+                  className="hover:bg-transparent hover:text-foreground"
+                  button_id="heal-restless-knight"
+                >
+                  Restless Knight
+                </Button>
+              </TooltipWrapper>
             )}
 
             {story?.seen?.elderWizardWounded && fellowship?.elder_wizard && (
-              <TooltipProvider key="elder-wizard">
-                <Tooltip open={mobileTooltip.isTooltipOpen("heal-elder-wizard")}>
-                  <TooltipTrigger asChild>
-                    <div
-                      onClick={(e) =>
-                        mobileTooltip.handleTooltipClick("heal-elder-wizard", e)
-                      }
-                      onMouseEnter={() => {
-                        setHighlightedResources(['food']);
-                      }}
-                      onMouseLeave={() => {
-                        setHighlightedResources([]);
-                      }}
-                    >
-                      <Button
-                        onClick={() => {
-                          // Execute the heal action
-                          if (resources.food >= 1500) {
-                            useGameStore.setState((state) => ({
-                              resources: {
-                                ...state.resources,
-                                food: state.resources.food - 1500,
-                              },
-                              story: {
-                                ...state.story,
-                                seen: {
-                                  ...state.story.seen,
-                                  elderWizardWounded: false,
-                                },
-                              },
-                            }));
-                          }
-                        }}
-                        disabled={resources.food < 1500}
-                        variant="outline"
-                        size="xs"
-                        className="hover:bg-transparent hover:text-foreground"
-                        button_id="heal-elder-wizard"
-                      >
-                        Elder Wizard
-                      </Button>
+              <TooltipWrapper
+                key="elder-wizard"
+                tooltip={
+                  <div className="text-xs whitespace-nowrap">
+                    <div className={resources.food >= 1500 ? "" : "text-muted-foreground"}>
+                      -1500 Food
                     </div>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <div className="text-xs whitespace-nowrap">
-                      <div className={resources.food >= 1500 ? "" : "text-muted-foreground"}>
-                        -1500 Food
-                      </div>
-                    </div>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
+                  </div>
+                }
+                tooltipId="heal-elder-wizard"
+                disabled={resources.food < 1500}
+                onClick={() => {
+                  if (resources.food >= 1500) {
+                    useGameStore.setState((state) => ({
+                      resources: {
+                        ...state.resources,
+                        food: state.resources.food - 1500,
+                      },
+                      story: {
+                        ...state.story,
+                        seen: {
+                          ...state.story.seen,
+                          elderWizardWounded: false,
+                        },
+                      },
+                    }));
+                  }
+                }}
+                onMouseEnter={() => {
+                  setHighlightedResources(['food']);
+                }}
+                onMouseLeave={() => {
+                  setHighlightedResources([]);
+                }}
+              >
+                <Button
+                  onClick={() => {
+                    if (resources.food >= 1500) {
+                      useGameStore.setState((state) => ({
+                        resources: {
+                          ...state.resources,
+                          food: state.resources.food - 1500,
+                        },
+                        story: {
+                          ...state.story,
+                          seen: {
+                            ...state.story.seen,
+                            elderWizardWounded: false,
+                          },
+                        },
+                      }));
+                    }
+                  }}
+                  disabled={resources.food < 1500}
+                  variant="outline"
+                  size="xs"
+                  className="hover:bg-transparent hover:text-foreground"
+                  button_id="heal-elder-wizard"
+                >
+                  Elder Wizard
+                </Button>
+              </TooltipWrapper>
             )}
           </div>
         </div>
@@ -324,171 +321,166 @@ export default function BastionPanel() {
           <h3 className="text-xs font-bold text-foreground">Repair</h3>
           <div className="flex flex-wrap gap-2">
             {bastionDamaged && buildings.bastion > 0 && (
-              <TooltipProvider key="bastion">
-                <Tooltip open={mobileTooltip.isTooltipOpen("repair-bastion")}>
-                  <TooltipTrigger asChild>
-                    <div
-                      onClick={(e) =>
-                        mobileTooltip.handleTooltipClick("repair-bastion", e)
-                      }
-                      onMouseEnter={() => {
-                        const resources = Object.keys(getRepairCost("buildBastion", 1));
-                        setHighlightedResources(resources);
-                      }}
-                      onMouseLeave={() => {
-                        setHighlightedResources([]);
-                      }}
-                    >
-                      <Button
-                        onClick={repairBastion}
-                        disabled={
-                          !canAffordRepair(getRepairCost("buildBastion", 1))
-                        }
-                        variant="outline"
-                        size="xs"
-                        className="hover:bg-transparent hover:text-foreground"
-                        button_id="repair-bastion"
-                      >
-                        Bastion
-                      </Button>
-                    </div>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <div className="text-xs whitespace-nowrap">
-                      {getRepairCostText(getRepairCost("buildBastion", 1)).map(
-                        (cost, index) => (
-                          <div
-                            key={index}
-                            className={
-                              cost.satisfied ? "" : "text-muted-foreground"
-                            }
-                          >
-                            {cost.text}
-                          </div>
-                        ),
-                      )}
-                    </div>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
+              <TooltipWrapper
+                key="bastion"
+                tooltip={
+                  <div className="text-xs whitespace-nowrap">
+                    {getRepairCostText(getRepairCost("buildBastion", 1)).map(
+                      (cost, index) => (
+                        <div
+                          key={index}
+                          className={
+                            cost.satisfied ? "" : "text-muted-foreground"
+                          }
+                        >
+                          {cost.text}
+                        </div>
+                      ),
+                    )}
+                  </div>
+                }
+                tooltipId="repair-bastion"
+                disabled={!canAffordRepair(getRepairCost("buildBastion", 1))}
+                onMouseEnter={() => {
+                  const resources = Object.keys(getRepairCost("buildBastion", 1));
+                  setHighlightedResources(resources);
+                }}
+                onMouseLeave={() => {
+                  setHighlightedResources([]);
+                }}
+              >
+                <Button
+                  onClick={repairBastion}
+                  disabled={
+                    !canAffordRepair(getRepairCost("buildBastion", 1))
+                  }
+                  variant="outline"
+                  size="xs"
+                  className="hover:bg-transparent hover:text-foreground"
+                  button_id="repair-bastion"
+                >
+                  Bastion
+                </Button>
+              </TooltipWrapper>
             )}
 
             {watchtowerDamaged && buildings.watchtower > 0 && (
-              <TooltipProvider key="watchtower">
-                <Tooltip
-                  open={mobileTooltip.isTooltipOpen("repair-watchtower")}
-                >
-                  <TooltipTrigger asChild>
-                    <div
-                      onClick={(e) =>
-                        mobileTooltip.handleTooltipClick("repair-watchtower", e)
-                      }
-                      onMouseEnter={() => {
-                        const resources = Object.keys(getRepairCost("buildWatchtower", buildings.watchtower));
-                        setHighlightedResources(resources);
-                      }}
-                      onMouseLeave={() => {
-                        setHighlightedResources([]);
-                      }}
-                    >
-                      <Button
-                        onClick={repairWatchtower}
-                        disabled={
-                          !canAffordRepair(
-                            getRepairCost(
-                              "buildWatchtower",
-                              buildings.watchtower,
-                            ),
-                          )
+              <TooltipWrapper
+                key="watchtower"
+                tooltip={
+                  <div className="text-xs whitespace-nowrap">
+                    {getRepairCostText(
+                      getRepairCost("buildWatchtower", buildings.watchtower),
+                    ).map((cost, index) => (
+                      <div
+                        key={index}
+                        className={
+                          cost.satisfied ? "" : "text-muted-foreground"
                         }
-                        variant="outline"
-                        size="xs"
-                        className="hover:bg-transparent hover:text-foreground"
-                        button_id="repair-watchtower"
                       >
-                        {getBuildingLabel(
-                          "watchtower",
-                          buildings.watchtower || 0,
-                        )}
-                      </Button>
-                    </div>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <div className="text-xs whitespace-nowrap">
-                      {getRepairCostText(
-                        getRepairCost("buildWatchtower", buildings.watchtower),
-                      ).map((cost, index) => (
-                        <div
-                          key={index}
-                          className={
-                            cost.satisfied ? "" : "text-muted-foreground"
-                          }
-                        >
-                          {cost.text}
-                        </div>
-                      ))}
-                    </div>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
+                        {cost.text}
+                      </div>
+                    ))}
+                  </div>
+                }
+                tooltipId="repair-watchtower"
+                disabled={
+                  !canAffordRepair(
+                    getRepairCost(
+                      "buildWatchtower",
+                      buildings.watchtower,
+                    ),
+                  )
+                }
+                onClick={repairWatchtower}
+                onMouseEnter={() => {
+                  const resources = Object.keys(getRepairCost("buildWatchtower", buildings.watchtower));
+                  setHighlightedResources(resources);
+                }}
+                onMouseLeave={() => {
+                  setHighlightedResources([]);
+                }}
+              >
+                <Button
+                  onClick={repairWatchtower}
+                  disabled={
+                    !canAffordRepair(
+                      getRepairCost(
+                        "buildWatchtower",
+                        buildings.watchtower,
+                      ),
+                    )
+                  }
+                  variant="outline"
+                  size="xs"
+                  className="hover:bg-transparent hover:text-foreground"
+                  button_id="repair-watchtower"
+                >
+                  {getBuildingLabel(
+                    "watchtower",
+                    buildings.watchtower || 0,
+                  )}
+                </Button>
+              </TooltipWrapper>
             )}
 
             {palisadesDamaged && buildings.palisades > 0 && (
-              <TooltipProvider key="palisades">
-                <Tooltip open={mobileTooltip.isTooltipOpen("repair-palisades")}>
-                  <TooltipTrigger asChild>
-                    <div
-                      onClick={(e) =>
-                        mobileTooltip.handleTooltipClick("repair-palisades", e)
-                      }
-                      onMouseEnter={() => {
-                        const resources = Object.keys(getRepairCost("buildPalisades", buildings.palisades));
-                        setHighlightedResources(resources);
-                      }}
-                      onMouseLeave={() => {
-                        setHighlightedResources([]);
-                      }}
-                    >
-                      <Button
-                        onClick={repairPalisades}
-                        disabled={
-                          !canAffordRepair(
-                            getRepairCost(
-                              "buildPalisades",
-                              buildings.palisades,
-                            ),
-                          )
+              <TooltipWrapper
+                key="palisades"
+                tooltip={
+                  <div className="text-xs whitespace-nowrap">
+                    {getRepairCostText(
+                      getRepairCost("buildPalisades", buildings.palisades),
+                    ).map((cost, index) => (
+                      <div
+                        key={index}
+                        className={
+                          cost.satisfied ? "" : "text-muted-foreground"
                         }
-                        variant="outline"
-                        size="xs"
-                        className="hover:bg-transparent hover:text-foreground"
-                        button_id="repair-palisades"
                       >
-                        {getBuildingLabel(
-                          "palisades",
-                          buildings.palisades || 0,
-                        )}
-                      </Button>
-                    </div>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <div className="text-xs whitespace-nowrap">
-                      {getRepairCostText(
-                        getRepairCost("buildPalisades", buildings.palisades),
-                      ).map((cost, index) => (
-                        <div
-                          key={index}
-                          className={
-                            cost.satisfied ? "" : "text-muted-foreground"
-                          }
-                        >
-                          {cost.text}
-                        </div>
-                      ))}
-                    </div>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
+                        {cost.text}
+                      </div>
+                    ))}
+                  </div>
+                }
+                tooltipId="repair-palisades"
+                disabled={
+                  !canAffordRepair(
+                    getRepairCost(
+                      "buildPalisades",
+                      buildings.palisades,
+                    ),
+                  )
+                }
+                onMouseEnter={() => {
+                  const resources = Object.keys(getRepairCost("buildPalisades", buildings.palisades));
+                  setHighlightedResources(resources);
+                }}
+                onMouseLeave={() => {
+                  setHighlightedResources([]);
+                }}
+              >
+                <Button
+                  onClick={repairPalisades}
+                  disabled={
+                    !canAffordRepair(
+                      getRepairCost(
+                        "buildPalisades",
+                        buildings.palisades,
+                      ),
+                    )
+                  }
+                  variant="outline"
+                  size="xs"
+                  className="hover:bg-transparent hover:text-foreground"
+                  button_id="repair-palisades"
+                >
+                  {getBuildingLabel(
+                    "palisades",
+                    buildings.palisades || 0,
+                  )}
+                </Button>
+              </TooltipWrapper>
             )}
           </div>
         </div>

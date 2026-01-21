@@ -22,13 +22,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { useMobileTooltip } from "@/hooks/useMobileTooltip";
+import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { Enemy, CombatItem } from "@/game/types";
 
 interface CombatDialogProps {
@@ -57,7 +51,6 @@ export default function CombatDialog({
   const bloodflameSphereLevel = useGameStore(
     (state) => state.combatSkills.bloodflameSphereLevel,
   );
-  const luckTooltip = useMobileTooltip();
 
   const [combatStarted, setCombatStarted] = useState(false);
   const [currentEnemy, setCurrentEnemy] = useState<Enemy | null>(null);
@@ -511,35 +504,28 @@ export default function CombatDialog({
                 {calculateCriticalStrikeChance(getTotalLuck(gameState)) +
                   getTotalCriticalChance(gameState) >
                   0 && (
-                    <TooltipProvider>
-                      <Tooltip open={luckTooltip.isTooltipOpen("combat-luck")}>
-                        <TooltipTrigger asChild>
-                          <span
-                            className="text-green-300/80 cursor-pointer hover:text-green-300 transition-colors inline-block text-xl"
-                            onClick={(e) =>
-                              luckTooltip.handleTooltipClick("combat-luck", e)
-                            }
-                          >
-                            ☆
-                          </span>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <div className="text-xs whitespace-nowrap">
-                            {calculateCriticalStrikeChance(
-                              getTotalLuck(gameState),
-                            ) + getTotalCriticalChance(gameState)}
-                            % critical strike chance<br></br>
-                            {calculateCriticalStrikeChance(
-                              getTotalLuck(gameState),
-                            ) > 0 &&
-                              ` ${calculateCriticalStrikeChance(getTotalLuck(gameState))}% from Luck${getTotalLuck(gameState) >= 50 ? " max" : ""}`}
-                            <br></br>
-                            {getTotalCriticalChance(gameState) > 0 &&
-                              ` ${calculateCriticalStrikeChance(getTotalLuck(gameState)) > 0 ? "" : ""}${getTotalCriticalChance(gameState)}% from equipment`}
-                          </div>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
+                    <TooltipWrapper
+                      tooltip={
+                        <div className="text-xs whitespace-nowrap">
+                          {calculateCriticalStrikeChance(
+                            getTotalLuck(gameState),
+                          ) + getTotalCriticalChance(gameState)}
+                          % critical strike chance<br></br>
+                          {calculateCriticalStrikeChance(
+                            getTotalLuck(gameState),
+                          ) > 0 &&
+                            ` ${calculateCriticalStrikeChance(getTotalLuck(gameState))}% from Luck${getTotalLuck(gameState) >= 50 ? " max" : ""}`}
+                          <br></br>
+                          {getTotalCriticalChance(gameState) > 0 &&
+                            ` ${calculateCriticalStrikeChance(getTotalLuck(gameState)) > 0 ? "" : ""}${getTotalCriticalChance(gameState)}% from equipment`}
+                        </div>
+                      }
+                      tooltipId="combat-luck"
+                    >
+                      <span className="text-green-300/80 cursor-pointer hover:text-green-300 transition-colors inline-block text-xl">
+                        ☆
+                      </span>
+                    </TooltipWrapper>
                   )}
               </div>
             </DialogHeader>
@@ -672,33 +658,33 @@ export default function CombatDialog({
                                     : "";
 
                           return (
-                            <TooltipProvider key={item.id}>
-                              <Tooltip>
-                                <TooltipTrigger asChild>
-                                  <div className="w-full">
-                                    <Button
-                                      onClick={() => handleUseItem(item)}
-                                      disabled={
-                                        !item.available || isProcessingRound
-                                      }
-                                      variant="outline"
-                                      size="sm"
-                                      className="text-xs w-full"
-                                      button_id={`combat-use-${item.id}`}
-                                    >
-                                      {item.name}
-                                    </Button>
-                                  </div>
-                                </TooltipTrigger>
-                                <TooltipContent>
-                                  <div className="text-xs whitespace-pre-line">
-                                    {tooltipContent}
-                                    {"\n"}
-                                    {availabilityText}
-                                  </div>
-                                </TooltipContent>
-                              </Tooltip>
-                            </TooltipProvider>
+                            <TooltipWrapper
+                              key={item.id}
+                              tooltip={
+                                <div className="text-xs whitespace-pre-line">
+                                  {tooltipContent}
+                                  {"\n"}
+                                  {availabilityText}
+                                </div>
+                              }
+                              tooltipId={`combat-item-${item.id}`}
+                              disabled={!item.available || isProcessingRound}
+                            >
+                              <div className="w-full">
+                                <Button
+                                  onClick={() => handleUseItem(item)}
+                                  disabled={
+                                    !item.available || isProcessingRound
+                                  }
+                                  variant="outline"
+                                  size="sm"
+                                  className="text-xs w-full"
+                                  button_id={`combat-use-${item.id}`}
+                                >
+                                  {item.name}
+                                </Button>
+                              </div>
+                            </TooltipWrapper>
                           );
                         })}
                     </div>
@@ -711,70 +697,81 @@ export default function CombatDialog({
                   <div className="text-sm font-medium mb-2">Combat Skills</div>
                   <div className="grid grid-cols-2 gap-2">
                     {HAS_RESTLESS_KNIGHT && (
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <div className="w-full">
-                              <Button
-                                onClick={handleUseCrushingStrike}
-                                disabled={
-                                  usedCrushingStrike ||
-                                  isProcessingRound ||
-                                  gameState.story?.seen?.restlessKnightWounded
-                                }
-                                variant="outline"
-                                size="sm"
-                                className="text-xs w-full"
-                                button_id="combat-use-crushing-strike"
-                              >
-                                Crushing Strike
-                              </Button>
-                            </div>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <div className="text-xs whitespace-pre-line">
-                              {gameState.story?.seen?.restlessKnightWounded
-                                ? "Restless Knight is wounded and cannot fight"
-                                : `${combatItemTooltips.crushing_strike.getContent(gameState)}\nAvailable: ${usedCrushingStrike ? "0/1" : "1/1"}`}
-                            </div>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
+                      <TooltipWrapper
+                        tooltip={
+                          <div className="text-xs whitespace-pre-line">
+                            {gameState.story?.seen?.restlessKnightWounded
+                              ? "Restless Knight is wounded and cannot fight"
+                              : `${combatItemTooltips.crushing_strike.getContent(gameState)}\nAvailable: ${usedCrushingStrike ? "0/1" : "1/1"}`}
+                          </div>
+                        }
+                        tooltipId="combat-crushing-strike"
+                        disabled={
+                          usedCrushingStrike ||
+                          isProcessingRound ||
+                          gameState.story?.seen?.restlessKnightWounded
+                        }
+                        onClick={handleUseCrushingStrike}
+                      >
+                        <div className="w-full">
+                          <Button
+                            onClick={handleUseCrushingStrike}
+                            disabled={
+                              usedCrushingStrike ||
+                              isProcessingRound ||
+                              gameState.story?.seen?.restlessKnightWounded
+                            }
+                            variant="outline"
+                            size="sm"
+                            className="text-xs w-full"
+                            button_id="combat-use-crushing-strike"
+                          >
+                            Crushing Strike
+                          </Button>
+                        </div>
+                      </TooltipWrapper>
                     )}
                     {HAS_ELDER_WIZARD && (
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <div className="w-full">
-                              <Button
-                                onClick={handleUseBloodflameSphere}
-                                disabled={
-                                  usedBloodflameSphere ||
-                                  isProcessingRound ||
-                                  currentIntegrity <=
-                                  BLOODFLAME_SPHERE_UPGRADES[
-                                    bloodflameSphereLevel
-                                  ].healthCost ||
-                                  gameState.story?.seen?.elderWizardWounded
-                                }
-                                variant="outline"
-                                size="sm"
-                                className="text-xs w-full"
-                                button_id="combat-use-bloodflame-sphere"
-                              >
-                                Bloodflame Sphere
-                              </Button>
-                            </div>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <div className="text-xs whitespace-pre-line">
-                              {gameState.story?.seen?.elderWizardWounded
-                                ? "Elder Wizard is wounded and cannot cast spells"
-                                : `${combatItemTooltips.bloodflame_sphere.getContent(gameState)}\nAvailable: ${usedBloodflameSphere ? "0/1" : "1/1"}`}
-                            </div>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
+                      <TooltipWrapper
+                        tooltip={
+                          <div className="text-xs whitespace-pre-line">
+                            {gameState.story?.seen?.elderWizardWounded
+                              ? "Elder Wizard is wounded and cannot cast spells"
+                              : `${combatItemTooltips.bloodflame_sphere.getContent(gameState)}\nAvailable: ${usedBloodflameSphere ? "0/1" : "1/1"}`}
+                          </div>
+                        }
+                        tooltipId="combat-bloodflame-sphere"
+                        disabled={
+                          usedBloodflameSphere ||
+                          isProcessingRound ||
+                          currentIntegrity <=
+                          BLOODFLAME_SPHERE_UPGRADES[
+                            bloodflameSphereLevel
+                          ].healthCost ||
+                          gameState.story?.seen?.elderWizardWounded
+                        }
+                      >
+                        <div className="w-full">
+                          <Button
+                            onClick={handleUseBloodflameSphere}
+                            disabled={
+                              usedBloodflameSphere ||
+                              isProcessingRound ||
+                              currentIntegrity <=
+                              BLOODFLAME_SPHERE_UPGRADES[
+                                bloodflameSphereLevel
+                              ].healthCost ||
+                              gameState.story?.seen?.elderWizardWounded
+                            }
+                            variant="outline"
+                            size="sm"
+                            className="text-xs w-full"
+                            button_id="combat-use-bloodflame-sphere"
+                          >
+                            Bloodflame Sphere
+                          </Button>
+                        </div>
+                      </TooltipWrapper>
                     )}
                   </div>
                 </div>

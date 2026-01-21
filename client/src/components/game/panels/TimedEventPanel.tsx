@@ -1,13 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useGameStore } from "@/game/state";
 import { Button } from "@/components/ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { useMobileButtonTooltip, useMobileTooltip } from "@/hooks/useMobileTooltip";
+import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { merchantTooltip } from "@/game/rules/tooltips";
 import { EventChoice } from "@/game/rules/events";
 import { logger } from "@/lib/logger";
@@ -31,8 +25,6 @@ export default function TimedEventPanel() {
   const gameState = useGameStore();
 
   // ALL HOOKS MUST BE CALLED BEFORE ANY EARLY RETURNS
-  const mobileTooltip = useMobileButtonTooltip();
-  const discountTooltip = useMobileTooltip();
   const [timeRemaining, setTimeRemaining] = useState<number>(0);
   const [safetyTimeRemaining, setSafetyTimeRemaining] = useState<number>(0);
 
@@ -202,21 +194,6 @@ export default function TimedEventPanel() {
     return null;
   };
 
-  // Helper function to get mobile tooltip handlers
-  const getMobileHandlers = (choiceId: string, isDisabled: boolean, onAction: () => void) => ({
-    onMouseDown: mobileTooltip.isMobile
-      ? (e: React.MouseEvent) => mobileTooltip.handleMouseDown(`timedevent-${choiceId}`, isDisabled, false, e)
-      : undefined,
-    onMouseUp: mobileTooltip.isMobile
-      ? (e: React.MouseEvent) => mobileTooltip.handleMouseUp(`timedevent-${choiceId}`, isDisabled, onAction, e)
-      : undefined,
-    onTouchStart: mobileTooltip.isMobile
-      ? (e: React.TouchEvent) => mobileTooltip.handleTouchStart(`timedevent-${choiceId}`, isDisabled, false, e)
-      : undefined,
-    onTouchEnd: mobileTooltip.isMobile
-      ? (e: React.TouchEvent) => mobileTooltip.handleTouchEnd(`timedevent-${choiceId}`, isDisabled, onAction, e)
-      : undefined,
-  });
 
   return (
     <div className="w-80 space-y-1 mt-2 mb-2 pr-4 pl-[3px]">
@@ -245,31 +222,18 @@ export default function TimedEventPanel() {
 
               if (discount > 0) {
                 return (
-                  <TooltipProvider>
-                    <Tooltip
-                      open={discountTooltip.isTooltipOpen("merchant-discount")}
-                    >
-                      <TooltipTrigger asChild>
-                        <span
-                          className="text-blue-300/80 cursor-pointer hover:text-blue-300 transition-colors inline-block text-xl pl-2"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            discountTooltip.handleTooltipClick(
-                              "merchant-discount",
-                              e,
-                            );
-                          }}
-                        >
-                          ✧
-                        </span>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <div className="text-xs whitespace-nowrap">
-                          {Math.round(discount * 100)}% discount due to Knowledge{isKnowledgeBonusMaxed(knowledge) ? " (max)" : ""}
-                        </div>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
+                  <TooltipWrapper
+                    tooltip={
+                      <div className="text-xs whitespace-nowrap">
+                        {Math.round(discount * 100)}% discount due to Knowledge{isKnowledgeBonusMaxed(knowledge) ? " (max)" : ""}
+                      </div>
+                    }
+                    tooltipId="merchant-discount"
+                  >
+                    <span className="text-blue-300/80 cursor-pointer hover:text-blue-300 transition-colors inline-block text-xl pl-2">
+                      ✧
+                    </span>
+                  </TooltipWrapper>
                 );
               }
               return null;
@@ -330,14 +294,10 @@ export default function TimedEventPanel() {
 
               const buttonContent = (
                 <Button
-                  onClick={
-                    !mobileTooltip.isMobile
-                      ? (e) => {
-                          e.stopPropagation();
-                          handleChoice(choice.id);
-                        }
-                      : undefined
-                  }
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleChoice(choice.id);
+                  }}
                   variant="outline"
                   size="xs"
                   disabled={isDisabled}
@@ -374,65 +334,70 @@ export default function TimedEventPanel() {
               );
 
               return costText ? (
-                <TooltipProvider key={choice.id}>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <div
-                        onClick={(e) => {
-                          mobileTooltip.handleWrapperClick(
-                            `timedevent-${choice.id}`,
-                            isDisabled,
-                            false,
-                            e,
-                          );
-                        }}
-                        {...getMobileHandlers(choice.id, isDisabled, () => handleChoice(choice.id))}
-                        onMouseEnter={() => {
-                          if (costText) {
-                            const costResources = extractResourcesFromCost(costText);
+                <TooltipWrapper
+                  key={choice.id}
+                  tooltip={
+                    <div className={`text-xs whitespace-nowrap ${isDisabled ? "text-muted-foreground" : ""}`}>
+                      {costText && (
+                        <div>
+                          {/* Always use merchantTooltip (cost-only) for timed events - never show current amounts */}
+                          {merchantTooltip.getContent(costText)}
+                        </div>
+                      )}
+                      {costText && successPercentage && (
+                        <div className="border-t border-border my-1" />
+                      )}
+                      {successPercentage && (
+                        <div>Success Chance: {successPercentage}</div>
+                      )}
+                    </div>
+                  }
+                  tooltipId={`timedevent-${choice.id}`}
+                  disabled={isDisabled}
+                  onClick={() => handleChoice(choice.id)}
+                  onMouseEnter={() => {
+                    if (costText) {
+                      const costResources = extractResourcesFromCost(costText);
 
-                            // For merchant trades, always highlight both buy and sell resources
-                            if (isMerchantEvent) {
-                              const buyResource = extractBuyResourceFromLabel(labelText);
-                              const highlightResources = buyResource
-                                ? [...costResources, buyResource]
-                                : costResources;
-                              setHighlightedResources(highlightResources);
-                            } else {
-                              // Standard: only highlight cost resources
-                              setHighlightedResources(costResources);
-                            }
-                          }
-                        }}
-                        onMouseLeave={() => {
-                          setHighlightedResources([]);
-                        }}
-                      >
-                        {buttonContent}
-                      </div>
-                    </TooltipTrigger>
-                    <TooltipContent side="top">
-                      <div className={`text-xs whitespace-nowrap ${isDisabled ? "text-muted-foreground" : ""}`}>
-                        {costText && (
-                          <div>
-                            {/* Always use merchantTooltip (cost-only) for timed events - never show current amounts */}
-                            {merchantTooltip.getContent(costText)}
-                          </div>
-                        )}
-                        {costText && successPercentage && (
-                          <div className="border-t border-border my-1" />
-                        )}
-                        {successPercentage && (
-                          <div>Success Chance: {successPercentage}</div>
-                        )}
-                      </div>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
+                      // For merchant trades, always highlight both buy and sell resources
+                      if (isMerchantEvent) {
+                        const buyResource = extractBuyResourceFromLabel(labelText);
+                        const highlightResources = buyResource
+                          ? [...costResources, buyResource]
+                          : costResources;
+                        setHighlightedResources(highlightResources);
+                      } else {
+                        // Standard: only highlight cost resources
+                        setHighlightedResources(costResources);
+                      }
+                    }
+                  }}
+                  onMouseLeave={() => {
+                    setHighlightedResources([]);
+                  }}
+                >
+                  {buttonContent}
+                </TooltipWrapper>
               ) : (
                 <div
                   key={choice.id}
-                  {...getMobileHandlers(choice.id, isDisabled, () => handleChoice(choice.id))}
+                  onMouseEnter={() => {
+                    if (costText) {
+                      const costResources = extractResourcesFromCost(costText);
+                      if (isMerchantEvent) {
+                        const buyResource = extractBuyResourceFromLabel(labelText);
+                        const highlightResources = buyResource
+                          ? [...costResources, buyResource]
+                          : costResources;
+                        setHighlightedResources(highlightResources);
+                      } else {
+                        setHighlightedResources(costResources);
+                      }
+                    }
+                  }}
+                  onMouseLeave={() => {
+                    setHighlightedResources([]);
+                  }}
                 >
                   {buttonContent}
                 </div>
@@ -442,30 +407,19 @@ export default function TimedEventPanel() {
 
         {/* Say Goodbye button - only for merchant events */}
         {isMerchantEvent && (
-          <div
-            {...getMobileHandlers('say_goodbye', timeRemaining <= 0, () => {
+          <Button
+            onClick={(e) => {
+              e.stopPropagation();
               setHighlightedResources([]);
               setTimedEventTab(false);
-            })}
+            }}
+            variant="outline"
+            size="xs"
+            disabled={timeRemaining <= 0 || safetyTimeRemaining > 0}
+            button_id="timedevent-say_goodbye"
           >
-            <Button
-              onClick={
-                !mobileTooltip.isMobile
-                  ? (e) => {
-                      e.stopPropagation();
-                      setHighlightedResources([]);
-                      setTimedEventTab(false);
-                    }
-                  : undefined
-              }
-              variant="outline"
-              size="xs"
-              disabled={timeRemaining <= 0 || safetyTimeRemaining > 0}
-              button_id="timedevent-say_goodbye"
-            >
-              Say Goodbye
-            </Button>
-          </div>
+            Say Goodbye
+          </Button>
         )}
       </div>
     </div>

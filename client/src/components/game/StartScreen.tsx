@@ -4,19 +4,12 @@ import { useGameStore } from "@/game/state";
 import CloudShader from "@/components/ui/cloud-shader";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { audioManager } from "@/lib/audio";
-import { useMobileTooltip } from "@/hooks/useMobileTooltip";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 
 export default function StartScreen() {
   const { executeAction, setBoostMode, boostMode, CM } = useGameStore();
   const isMobile = useIsMobile();
   const buttonRef = useRef<HTMLButtonElement>(null);
-  const mobileTooltip = useMobileTooltip();
   const executedRef = useRef(false);
   const isCruelMode = CM || false;
 
@@ -74,20 +67,45 @@ export default function StartScreen() {
     if (executedRef.current) return;
     executedRef.current = true;
 
-    // Load font dynamically
-    const style = document.createElement('style');
-    style.id = 'dynamic-game-font';
-    style.textContent = `
-      @font-face {
-        font-family: 'Inter';
-        src: url('/fonts/inter.woff2') format('woff2');
-        font-weight: 100 900;
-        font-style: normal;
-        font-display: swap;
-      }
-    `;
-    document.head.appendChild(style);
-    document.documentElement.classList.add('font-loaded');
+    // Load font dynamically (lazy-loaded for better Lighthouse scores)
+    // Check if font is already loaded
+    if (!document.getElementById('inter-font-face')) {
+      const style = document.createElement('style');
+      style.id = 'inter-font-face';
+      style.textContent = `
+        @font-face {
+          font-family: 'Inter';
+          src: url('/fonts/inter.woff2') format('woff2');
+          font-weight: 100 900;
+          font-style: normal;
+          font-display: swap;
+        }
+      `;
+      document.head.appendChild(style);
+    }
+
+    // Use FontFace API to detect when font is loaded and apply immediately
+    if ('fonts' in document) {
+      const interFont = new FontFace('Inter', 'url(/fonts/inter.woff2) format("woff2")', {
+        weight: '100 900',
+        style: 'normal',
+        display: 'swap',
+      });
+
+      interFont.load().then(() => {
+        document.fonts.add(interFont);
+        // Apply Inter immediately when loaded
+        document.documentElement.classList.add('font-loaded');
+      }).catch(() => {
+        // Fallback: add class anyway after a short delay
+        setTimeout(() => {
+          document.documentElement.classList.add('font-loaded');
+        }, 100);
+      });
+    } else {
+      // Fallback for browsers without FontFace API - add class immediately
+      document.documentElement.classList.add('font-loaded');
+    }
 
     // Immediately stop wind with no fade to prevent overlap
     audioManager.stopLoopingSound("wind", 2);
@@ -195,26 +213,24 @@ export default function StartScreen() {
       </main>
 
       {boostMode && (
-        <TooltipProvider>
-          <Tooltip open={mobileTooltip.isTooltipOpen("boost-indicator")}>
-            <TooltipTrigger asChild>
-              <div
-                className="absolute bottom-4 right-4 z-20 cursor-pointer"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setBoostMode(false);
-                }}
-              >
-                <div className="text-green-600 text-xl">↑</div>
-              </div>
-            </TooltipTrigger>
-            <TooltipContent>
-              <div className="text-xs whitespace-nowrap">
-                Click to deactivate boost
-              </div>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+        <TooltipWrapper
+          tooltip={
+            <div className="text-xs whitespace-nowrap">
+              Click to deactivate boost
+            </div>
+          }
+          tooltipId="boost-indicator"
+        >
+          <div
+            className="absolute bottom-4 right-4 z-20 cursor-pointer"
+            onClick={(e) => {
+              e.preventDefault();
+              setBoostMode(false);
+            }}
+          >
+            <div className="text-green-600 text-xl">↑</div>
+          </div>
+        </TooltipWrapper>
       )}
 
       <div className="absolute bottom-4 right-4 z-10 flex gap-4 text-xs text-muted-foreground">
