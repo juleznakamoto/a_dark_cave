@@ -1,16 +1,10 @@
 import { villageBuildActions } from "@/game/rules/villageBuildActions";
 import { GameState } from "@shared/schema"; // Assuming GameState is defined elsewhere
 import { HUNTING_SKILL_BONUSES } from "@/game/rules/skillUpgrades";
+import type { PopulationJobConfig } from "@/game/types";
 
-export interface PopulationJobConfig {
-  id: string;
-  label: string;
-  production: {
-    resource: string;
-    amount: number;
-    interval: number; // in milliseconds
-  }[];
-}
+// Re-export for convenience
+export type { PopulationJobConfig } from "@/game/types";
 
 export const populationJobs: Record<string, PopulationJobConfig> = {
   gatherer: {

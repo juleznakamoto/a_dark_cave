@@ -1,22 +1,11 @@
 import { getSupabaseClient } from '@/lib/supabase';
-import { GameState } from '@shared/schema';
+import { GameState, SaveData } from '@shared/schema';
 import { logger } from '@/lib/logger';
 import { Json } from '@shared/schema/helpers';
+import type { AuthUser } from '@/game/types';
 
-// Define SaveData interface here to avoid circular dependency if it's in schema
-// If SaveData is already defined elsewhere and accessible, this can be removed.
-// For this example, assuming it needs to be defined or imported.
-// If SaveData is defined in @shared/schema, then it should be imported from there.
-interface SaveData {
-  gameState: GameState;
-  playTime: number;
-  timestamp: number;
-}
-
-export interface AuthUser {
-  id: string;
-  email: string;
-}
+// Re-export AuthUser for convenience
+export type { AuthUser } from '@/game/types';
 
 export async function signUp(email: string, password: string, referralCode?: string) {
   const supabase = await getSupabaseClient();

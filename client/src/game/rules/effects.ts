@@ -1,50 +1,7 @@
-// Define action bonuses interface
-export interface ActionBonuses {
-  resourceBonus: Record<string, number>;
-  resourceMultiplier: number;
-  cooldownReduction: number;
-  probabilityBonus?: Record<string, number>;
-}
+import type { ActionBonuses, EffectDefinition } from "@/game/types";
 
-// Define effects that tools and clothing provide
-export interface EffectDefinition {
-  id: string;
-  name: string;
-  description: string;
-  bonuses: {
-    // Resource gathering bonuses
-    resourceMultipliers?: Record<string, number>;
-    resourceBonuses?: Record<string, number>;
-
-    // Action-specific bonuses
-    actionBonuses?: Record<
-      string,
-      {
-        cooldownReduction?: number; // Percentage reduction (0.1 = 10% reduction)
-        resourceBonus?: Record<string, number>; // Fixed bonus to specific resources
-        resourceMultiplier?: number; // Multiplier for all resources (1.25 = 25% bonus)
-        probabilityBonus?: Record<string, number>; // Probability bonus for specific resources (0.05 = 5% chance)
-      }
-    >;
-
-    // General bonuses
-    generalBonuses?: {
-      luck?: number; // Luck bonus
-      strength?: number; // Strength bonus
-      knowledge?: number; // Knowledge bonus
-      madness?: number; // Madness bonus
-      craftingCostReduction?: number; // Percentage reduction in crafting costs (0.1 = 10% reduction)
-      buildingCostReduction?: number; // Percentage reduction in building costs (0.1 = 10% reduction)
-      MAX_EMBER_BOMBS?: number; // Bonus to max ember bombs capacity
-      MAX_CINDERFLAME_BOMBS?: number; // Bonus to max ashfire bombs
-      MAX_VOID_BOMBS?: number;
-      caveExploreMultiplier?: number; // Multiplier for all cave exploration actions
-      eventDeathReduction?: number; // Percentage reduction in villager deaths from events (0.25 = 25% reduction)
-      criticalDamageBonus?: number; // Percentage bonus to critical hit damage (0.05 = 5% bonus)
-      actionBonusChance?: number; // Chance to double action gains (0.1 = 10% chance)
-    };
-  };
-}
+// Re-export for convenience
+export type { ActionBonuses, EffectDefinition } from "@/game/types";
 
 // Tool effects
 export const toolEffects: Record<string, EffectDefinition> = {

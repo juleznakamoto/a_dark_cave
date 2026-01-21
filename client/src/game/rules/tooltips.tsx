@@ -12,6 +12,7 @@ import {
   BLOODFLAME_SPHERE_UPGRADES,
 } from "./skillUpgrades";
 import { formatNumber } from "@/lib/utils";
+import type { TooltipConfig } from "@/game/types";
 
 const FOCUS_ELIGIBLE_ACTIONS = [
   "exploreCave",
@@ -30,9 +31,8 @@ const FOCUS_ELIGIBLE_ACTIONS = [
   "chopWood",
 ];
 
-export interface TooltipConfig {
-  getContent: (state: GameState) => React.ReactNode | string;
-}
+// Re-export for convenience
+export type { TooltipConfig } from "@/game/types";
 
 // Helper function to calculate resource gains and costs (for tests and tooltips)
 export const calculateResourceGains = (
@@ -46,8 +46,8 @@ export const calculateResourceGains = (
   if (!action) return { gains: [], costs: [] };
 
   // Resolve effects if they are a function
-  const effects = typeof action.effects === 'function' 
-    ? action.effects(state) 
+  const effects = typeof action.effects === 'function'
+    ? action.effects(state)
     : action.effects;
 
   if (!effects) return { gains: [], costs: [] };

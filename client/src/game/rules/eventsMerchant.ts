@@ -3,6 +3,7 @@ import { GameState } from "@shared/schema";
 import { getTotalKnowledge } from "./effectsCalculation";
 import { calculateMerchantDiscount } from "./effectsStats";
 import { logger } from "@/lib/logger";
+import type { MerchantTradeData } from "@/game/types";
 
 // Resource prices in gold per unit
 const PRICES = {
@@ -902,18 +903,8 @@ function selectTrades(
   return selected;
 }
 
-// Merchant trade state structure
-export interface MerchantTradeData {
-  id: string;
-  label: string;
-  cost: string;
-  buyResource: string;
-  buyAmount: number;
-  buyItem?: string; // For special items (tools, books, schematics, weapons) - the specific item ID
-  sellResource: string;
-  sellAmount: number;
-  executed: boolean;
-}
+// Re-export for convenience
+export type { MerchantTradeData } from "@/game/types";
 
 // Helper function to check if knowledge bonus is maxed
 export const isKnowledgeBonusMaxed = (knowledge: number): boolean => {
