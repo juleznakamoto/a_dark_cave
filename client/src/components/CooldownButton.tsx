@@ -42,6 +42,8 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
   ) {
   const { cooldowns, compassGlowButton } = useGameStore();
   const isFirstRenderRef = useRef<boolean>(true);
+  const initialCooldownRef = useRef<number>(0);
+  const previousCooldownRef = useRef<number>(0);
 
   // Get the action ID from the test ID or generate one
   const actionId =
@@ -54,7 +56,39 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
   const isCoolingDown = currentCooldown > 0;
 
   // Derive initial cooldown from cooldownMs prop (which comes from action.cooldown * 1000)
-  const initialCooldown = cooldownMs / 1000;
+  // This is the fallback if we haven't seen the actual cooldown yet
+  const fallbackInitialCooldown = cooldownMs / 1000;
+
+  // Track the actual initial cooldown when it's first set
+  // When cooldown transitions from 0 to a value, capture that value as the initial cooldown
+  // Also track the maximum cooldown value seen to handle cases where the cooldown
+  // might have decreased slightly before the first render
+  useEffect(() => {
+    const previousCooldown = previousCooldownRef.current;
+    
+    // If cooldown just started (transitioned from 0 to a value)
+    if (previousCooldown === 0 && currentCooldown > 0) {
+      // Capture the actual cooldown value as the initial cooldown
+      initialCooldownRef.current = currentCooldown;
+    } else if (currentCooldown > 0 && currentCooldown > initialCooldownRef.current) {
+      // If we see a higher cooldown value (shouldn't happen normally, but handles edge cases),
+      // update the initial cooldown to the maximum seen
+      initialCooldownRef.current = currentCooldown;
+    }
+    
+    // If cooldown is reset to 0, reset the initial cooldown ref
+    if (currentCooldown === 0) {
+      initialCooldownRef.current = 0;
+    }
+    
+    // Update previous cooldown for next render
+    previousCooldownRef.current = currentCooldown;
+  }, [currentCooldown]);
+
+  // Use the actual initial cooldown if available, otherwise fall back to the action's defined cooldown
+  const initialCooldown = initialCooldownRef.current > 0 
+    ? initialCooldownRef.current 
+    : fallbackInitialCooldown;
 
   // Track first render for transition
   useEffect(() => {
