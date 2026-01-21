@@ -539,7 +539,7 @@ export function handleLightFire(
       torch: (state.resources.torch || 0) + 100,
       iron: (state.resources.iron || 0) + 1000,
       steel: (state.resources.steel || 0) + 500,
-      gold: (state.resources.gold || 0) + 5000,
+      gold: (state.resources.gold || 0) + 10000,
     };
   }
 
