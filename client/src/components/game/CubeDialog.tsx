@@ -10,6 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { audioManager } from "@/lib/audio";
 import { useGameStore } from "@/game/state"; // Import useGameStore
+import { logger } from "@/lib/logger";
 
 interface CubeDialogProps {
   isOpen: boolean;
@@ -63,9 +64,8 @@ export default function CubeDialog({
       
       try {
         await saveGame(state, false); // Force save, not autosave
-        console.log('[CUBE] Game state saved before end screen navigation');
       } catch (error) {
-        console.error('[CUBE] Failed to save game state before end screen:', error);
+        logger.error('[CUBE] Failed to save game state before end screen:', error);
       }
       
       // Navigate to end screen page after save completes

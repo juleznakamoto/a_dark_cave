@@ -22,20 +22,8 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { useMobileTooltip } from "@/hooks/useMobileTooltip";
-
-interface Enemy {
-  name: string;
-  attack: number;
-  maxHealth: number;
-  currentHealth: number;
-}
+import { TooltipWrapper } from "@/components/game/TooltipWrapper";
+import { Enemy, CombatItem } from "@/game/types";
 
 interface CombatDialogProps {
   isOpen: boolean;
@@ -45,13 +33,6 @@ interface CombatDialogProps {
   eventMessage: string;
   onVictory: () => void;
   onDefeat: () => void;
-}
-
-interface CombatItem {
-  id: string;
-  name: string;
-  damage: number;
-  available: boolean;
 }
 
 export default function CombatDialog({
@@ -70,7 +51,6 @@ export default function CombatDialog({
   const bloodflameSphereLevel = useGameStore(
     (state) => state.combatSkills.bloodflameSphereLevel,
   );
-  const luckTooltip = useMobileTooltip();
 
   const [combatStarted, setCombatStarted] = useState(false);
   const [currentEnemy, setCurrentEnemy] = useState<Enemy | null>(null);
@@ -257,24 +237,9 @@ export default function CombatDialog({
     const level = bloodflameSphereLevel || 0;
     const config = BLOODFLAME_SPHERE_UPGRADES[level];
 
-    console.log("[BLOODFLAME] Button clicked - applying immediate effects:", {
-      baseDamage: config.damage,
-      healthCost: config.healthCost,
-      burnDamage: config.burnDamage,
-      burnRounds: config.burnRounds,
-      currentEnemyHealth: currentEnemy?.currentHealth,
-      currentIntegrity: currentIntegrity,
-    });
-
     // Consume health cost from integrity
     const newIntegrityValue = Math.max(0, currentIntegrity - config.healthCost);
     setCurrentIntegrity(newIntegrityValue);
-
-    console.log("[BLOODFLAME] Integrity consumed:", {
-      before: currentIntegrity,
-      cost: config.healthCost,
-      after: newIntegrityValue,
-    });
 
     // Show integrity damage indicator
     setIntegrityDamageIndicator({ amount: config.healthCost, visible: true });
@@ -294,12 +259,6 @@ export default function CombatDialog({
       0,
       (currentEnemy?.currentHealth || 0) - config.damage,
     );
-
-    console.log("[BLOODFLAME] Base damage applied:", {
-      before: currentEnemy?.currentHealth,
-      damage: config.damage,
-      after: newEnemyHealth,
-    });
 
     // Set burn effect for subsequent rounds
     setEnemyBurnRounds(config.burnRounds);
@@ -433,11 +392,6 @@ export default function CombatDialog({
     // Apply burn damage if active (works for all rounds burn is active)
     if (enemyBurnRounds > 0) {
       burnDamageDealt = enemyBurnDamage;
-      console.log("[BLOODFLAME] Burn damage applied in Fight:", {
-        burnDamage: burnDamageDealt,
-        remainingBurnRounds: enemyBurnRounds,
-        enemyHealth: currentEnemyHealth,
-      });
       setEnemyBurnRounds((prev) => Math.max(0, prev - 1));
     }
 
@@ -510,7 +464,7 @@ export default function CombatDialog({
     : 0;
 
   return (
-    <Dialog open={isOpen} onOpenChange={() => {}}>
+    <Dialog open={isOpen} onOpenChange={() => { }}>
       <DialogContent
         className="w-[95vw] sm:max-w-md [&>button]:hidden"
         onPointerDownOutside={(e) => e.preventDefault()}
@@ -550,19 +504,8 @@ export default function CombatDialog({
                 {calculateCriticalStrikeChance(getTotalLuck(gameState)) +
                   getTotalCriticalChance(gameState) >
                   0 && (
-                  <TooltipProvider>
-                    <Tooltip open={luckTooltip.isTooltipOpen("combat-luck")}>
-                      <TooltipTrigger asChild>
-                        <span
-                          className="text-green-300/80 cursor-pointer hover:text-green-300 transition-colors inline-block text-xl"
-                          onClick={(e) =>
-                            luckTooltip.handleTooltipClick("combat-luck", e)
-                          }
-                        >
-                          ☆
-                        </span>
-                      </TooltipTrigger>
-                      <TooltipContent>
+                    <TooltipWrapper
+                      tooltip={
                         <div className="text-xs whitespace-nowrap">
                           {calculateCriticalStrikeChance(
                             getTotalLuck(gameState),
@@ -576,10 +519,14 @@ export default function CombatDialog({
                           {getTotalCriticalChance(gameState) > 0 &&
                             ` ${calculateCriticalStrikeChance(getTotalLuck(gameState)) > 0 ? "" : ""}${getTotalCriticalChance(gameState)}% from equipment`}
                         </div>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                )}
+                      }
+                      tooltipId="combat-luck"
+                    >
+                      <span className="text-green-300/80 cursor-pointer hover:text-green-300 transition-colors inline-block text-xl">
+                        ☆
+                      </span>
+                    </TooltipWrapper>
+                  )}
               </div>
             </DialogHeader>
 
@@ -676,73 +623,73 @@ export default function CombatDialog({
               {combatItems.some((item) =>
                 item.id === "ember_bomb" || item.id === "ashfire_bomb"
                   ? gameState.resources[
-                      item.id as keyof typeof gameState.resources
-                    ] > 0
+                  item.id as keyof typeof gameState.resources
+                  ] > 0
                   : item.id === "poison_arrows" && NIGHTSHADE_BOW_OWNED,
               ) && (
-                <div className="pt-3">
-                  <div className="text-sm font-medium mb-2">Items</div>
-                  <div className="grid grid-cols-2 gap-2">
-                    {combatItems
-                      .filter((item) => {
-                        if (item.id === "poison_arrows") {
-                          return NIGHTSHADE_BOW_OWNED;
-                        }
-                        return (
-                          gameState.resources[
+                  <div className="pt-3">
+                    <div className="text-sm font-medium mb-2">Items</div>
+                    <div className="grid grid-cols-2 gap-2">
+                      {combatItems
+                        .filter((item) => {
+                          if (item.id === "poison_arrows") {
+                            return NIGHTSHADE_BOW_OWNED;
+                          }
+                          return (
+                            gameState.resources[
                             item.id as keyof typeof gameState.resources
-                          ] > 0
-                        );
-                      })
-                      .map((item) => {
-                        const tooltipConfig = combatItemTooltips[item.id];
-                        const tooltipContent = tooltipConfig
-                          ? tooltipConfig.getContent(gameState)
-                          : "";
-                        const availabilityText =
-                          item.id === "poison_arrows"
-                            ? `Available: ${poisonArrowsUsedInCombat < 1 ? "1/1" : "0/1"}`
-                            : item.id === "ember_bomb"
-                              ? `Available: ${MAX_EMBER_BOMBS - emberBombsUsed}/${MAX_EMBER_BOMBS}`
-                              : item.id === "ashfire_bomb"
-                                ? `Available: ${MAX_CINDERFLAME_BOMBS - ashfireBombsUsed}/${MAX_CINDERFLAME_BOMBS}`
-                                : item.id === "void_bomb"
-                                  ? `Available: ${MAX_VOID_BOMBS - voidBombsUsed}/${MAX_VOID_BOMBS}`
-                                  : "";
+                            ] > 0
+                          );
+                        })
+                        .map((item) => {
+                          const tooltipConfig = combatItemTooltips[item.id];
+                          const tooltipContent = tooltipConfig
+                            ? tooltipConfig.getContent(gameState)
+                            : "";
+                          const availabilityText =
+                            item.id === "poison_arrows"
+                              ? `Available: ${poisonArrowsUsedInCombat < 1 ? "1/1" : "0/1"}`
+                              : item.id === "ember_bomb"
+                                ? `Available: ${MAX_EMBER_BOMBS - emberBombsUsed}/${MAX_EMBER_BOMBS}`
+                                : item.id === "ashfire_bomb"
+                                  ? `Available: ${MAX_CINDERFLAME_BOMBS - ashfireBombsUsed}/${MAX_CINDERFLAME_BOMBS}`
+                                  : item.id === "void_bomb"
+                                    ? `Available: ${MAX_VOID_BOMBS - voidBombsUsed}/${MAX_VOID_BOMBS}`
+                                    : "";
 
-                        return (
-                          <TooltipProvider key={item.id}>
-                            <Tooltip>
-                              <TooltipTrigger asChild>
-                                <div className="w-full">
-                                  <Button
-                                    onClick={() => handleUseItem(item)}
-                                    disabled={
-                                      !item.available || isProcessingRound
-                                    }
-                                    variant="outline"
-                                    size="sm"
-                                    className="text-xs w-full"
-                                    button_id={`combat-use-${item.id}`}
-                                  >
-                                    {item.name}
-                                  </Button>
-                                </div>
-                              </TooltipTrigger>
-                              <TooltipContent>
+                          return (
+                            <TooltipWrapper
+                              key={item.id}
+                              tooltip={
                                 <div className="text-xs whitespace-pre-line">
                                   {tooltipContent}
                                   {"\n"}
                                   {availabilityText}
                                 </div>
-                              </TooltipContent>
-                            </Tooltip>
-                          </TooltipProvider>
-                        );
-                      })}
+                              }
+                              tooltipId={`combat-item-${item.id}`}
+                              disabled={!item.available || isProcessingRound}
+                            >
+                              <div className="w-full">
+                                <Button
+                                  onClick={() => handleUseItem(item)}
+                                  disabled={
+                                    !item.available || isProcessingRound
+                                  }
+                                  variant="outline"
+                                  size="sm"
+                                  className="text-xs w-full"
+                                  button_id={`combat-use-${item.id}`}
+                                >
+                                  {item.name}
+                                </Button>
+                              </div>
+                            </TooltipWrapper>
+                          );
+                        })}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
 
               {/* Combat Skills Section - only show if any fellowship member is unlocked */}
               {(HAS_RESTLESS_KNIGHT || HAS_ELDER_WIZARD) && (
@@ -750,70 +697,81 @@ export default function CombatDialog({
                   <div className="text-sm font-medium mb-2">Combat Skills</div>
                   <div className="grid grid-cols-2 gap-2">
                     {HAS_RESTLESS_KNIGHT && (
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <div className="w-full">
-                              <Button
-                                onClick={handleUseCrushingStrike}
-                                disabled={
-                                  usedCrushingStrike ||
-                                  isProcessingRound ||
-                                  gameState.story?.seen?.restlessKnightWounded
-                                }
-                                variant="outline"
-                                size="sm"
-                                className="text-xs w-full"
-                                button_id="combat-use-crushing-strike"
-                              >
-                                Crushing Strike
-                              </Button>
-                            </div>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <div className="text-xs whitespace-pre-line">
-                              {gameState.story?.seen?.restlessKnightWounded
-                                ? "Restless Knight is wounded and cannot fight"
-                                : `${combatItemTooltips.crushing_strike.getContent(gameState)}\nAvailable: ${usedCrushingStrike ? "0/1" : "1/1"}`}
-                            </div>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
+                      <TooltipWrapper
+                        tooltip={
+                          <div className="text-xs whitespace-pre-line">
+                            {gameState.story?.seen?.restlessKnightWounded
+                              ? "Restless Knight is wounded and cannot fight"
+                              : `${combatItemTooltips.crushing_strike.getContent(gameState)}\nAvailable: ${usedCrushingStrike ? "0/1" : "1/1"}`}
+                          </div>
+                        }
+                        tooltipId="combat-crushing-strike"
+                        disabled={
+                          usedCrushingStrike ||
+                          isProcessingRound ||
+                          gameState.story?.seen?.restlessKnightWounded
+                        }
+                        onClick={handleUseCrushingStrike}
+                      >
+                        <div className="w-full">
+                          <Button
+                            onClick={handleUseCrushingStrike}
+                            disabled={
+                              usedCrushingStrike ||
+                              isProcessingRound ||
+                              gameState.story?.seen?.restlessKnightWounded
+                            }
+                            variant="outline"
+                            size="sm"
+                            className="text-xs w-full"
+                            button_id="combat-use-crushing-strike"
+                          >
+                            Crushing Strike
+                          </Button>
+                        </div>
+                      </TooltipWrapper>
                     )}
                     {HAS_ELDER_WIZARD && (
-                      <TooltipProvider>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <div className="w-full">
-                              <Button
-                                onClick={handleUseBloodflameSphere}
-                                disabled={
-                                  usedBloodflameSphere ||
-                                  isProcessingRound ||
-                                  currentIntegrity <=
-                                    BLOODFLAME_SPHERE_UPGRADES[
-                                      bloodflameSphereLevel
-                                    ].healthCost ||
-                                  gameState.story?.seen?.elderWizardWounded
-                                }
-                                variant="outline"
-                                size="sm"
-                                className="text-xs w-full"
-                                button_id="combat-use-bloodflame-sphere"
-                              >
-                                Bloodflame Sphere
-                              </Button>
-                            </div>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <div className="text-xs whitespace-pre-line">
-                              {gameState.story?.seen?.elderWizardWounded
-                                ? "Elder Wizard is wounded and cannot cast spells"
-                                : `${combatItemTooltips.bloodflame_sphere.getContent(gameState)}\nAvailable: ${usedBloodflameSphere ? "0/1" : "1/1"}`}
-                            </div>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
+                      <TooltipWrapper
+                        tooltip={
+                          <div className="text-xs whitespace-pre-line">
+                            {gameState.story?.seen?.elderWizardWounded
+                              ? "Elder Wizard is wounded and cannot cast spells"
+                              : `${combatItemTooltips.bloodflame_sphere.getContent(gameState)}\nAvailable: ${usedBloodflameSphere ? "0/1" : "1/1"}`}
+                          </div>
+                        }
+                        tooltipId="combat-bloodflame-sphere"
+                        disabled={
+                          usedBloodflameSphere ||
+                          isProcessingRound ||
+                          currentIntegrity <=
+                          BLOODFLAME_SPHERE_UPGRADES[
+                            bloodflameSphereLevel
+                          ].healthCost ||
+                          gameState.story?.seen?.elderWizardWounded
+                        }
+                      >
+                        <div className="w-full">
+                          <Button
+                            onClick={handleUseBloodflameSphere}
+                            disabled={
+                              usedBloodflameSphere ||
+                              isProcessingRound ||
+                              currentIntegrity <=
+                              BLOODFLAME_SPHERE_UPGRADES[
+                                bloodflameSphereLevel
+                              ].healthCost ||
+                              gameState.story?.seen?.elderWizardWounded
+                            }
+                            variant="outline"
+                            size="sm"
+                            className="text-xs w-full"
+                            button_id="combat-use-bloodflame-sphere"
+                          >
+                            Bloodflame Sphere
+                          </Button>
+                        </div>
+                      </TooltipWrapper>
                     )}
                   </div>
                 </div>

@@ -1,0 +1,153 @@
+# A Dark Cave - Text-Based Browser Game
+
+## Overview
+
+A Dark Cave is a text-based incremental browser game inspired by "A Dark Room". Players begin in a minimal state (lighting a fire) and progressively unlock resources, buildings, villagers, and world exploration. The game features a narrative-driven progression system where actions unlock new content and mechanics, creating an engaging idle/incremental gameplay experience.
+
+The application is built as a single-page React application with persistent game state, real-time game loop mechanics, and a clean, text-focused interface that emphasizes storytelling and gradual feature revelation.
+
+## User Preferences
+
+Preferred communication style: Simple, everyday language.
+
+## System Architecture
+
+### Frontend Architecture
+- **Framework**: React 18 with TypeScript and Vite for fast development and building
+- **State Management**: Zustand for centralized game state management with simple, hook-based API
+- **UI Framework**: Tailwind CSS for utility-first styling with shadcn/ui components for consistent design system
+- **Routing**: Wouter for lightweight client-side routing
+- **Build System**: Vite with Hot Module Replacement for development efficiency
+- **Logging**: For logging use `client/src/lib/logger.ts` - always use this logger instead of console.log/warn/error
+
+### Game Engine Design
+- **Game Loop**: RequestAnimationFrame-based tick system running at 200ms intervals for consistent game progression
+- **State Persistence**: IndexedDB via `idb` library for reliable client-side save/load functionality with automatic saves every 30 seconds
+- **Rule System**: Data-driven game mechanics defined in JSON-like structures for easy content expansion (located in `client/src/game/rules/`)
+- **Progressive Unlocking**: Flag-based system that reveals new content and mechanics as players progress
+
+### Data Architecture
+- **Game State Schema**: Zod-validated TypeScript schemas ensuring type safety across the application (defined in `shared/schema.ts`)
+- **Resource System**: Numeric tracking of materials (wood, food) with overflow protection
+- **Building System**: Count-based structures that provide ongoing benefits
+- **Story System**: Flag tracking for narrative progression and unlocked content
+- **Version Management**: Save file versioning for future migration support
+
+### Component Structure
+- **Modular Design**: Separate panels for different game areas (Cave, Village, World) with conditional rendering
+- **Component Organization**: 
+  - `client/src/components/game/` - Game-specific components
+  - `client/src/components/ui/` - Reusable UI components (shadcn/ui)
+  - `client/src/pages/` - Page-level components
+- **Responsive Layout**: Sidebar navigation with resource/tool displays and main content area
+- **Action System**: Button-based interactions with requirement checking and effect application
+- **Real-time Updates**: Components automatically re-render on state changes via Zustand subscriptions
+
+### Backend Architecture
+- **Server Framework**: Express.js with TypeScript for API endpoints and static file serving (`server/index.ts`)
+- **Database Integration**: Drizzle ORM configured for PostgreSQL with Neon Database serverless connection
+- **Development Setup**: Vite middleware integration for seamless full-stack development
+- **Session Management**: Connect-pg-simple for PostgreSQL-backed session storage
+
+## External Dependencies
+
+### Database Services
+- **Neon Database**: Serverless PostgreSQL database for user data and potentially multiplayer features
+- **Drizzle ORM**: Type-safe database queries with automatic migration support
+
+### UI and Styling
+- **Radix UI**: Headless component primitives for accessible, customizable UI elements
+- **Tailwind CSS**: Utility-first CSS framework for rapid styling
+- **Lucide React**: Consistent icon library for interface elements
+
+### Development Tools
+- **TypeScript**: Full type safety across frontend, backend, and shared schemas
+- **ESBuild**: Fast bundling for production builds
+- **PostCSS**: CSS processing with autoprefixer for browser compatibility
+
+### Game-Specific Libraries
+- **IndexedDB (idb)**: Client-side database for persistent game saves
+- **React Hook Form**: Form handling with validation for potential user inputs
+- **TanStack Query**: Server state management for API interactions
+- **Date-fns**: Date manipulation for time-based game mechanics
+
+### Development Environment
+- **Replit Integration**: Custom Replit plugins for enhanced development experience
+- **Vite Plugins**: Runtime error overlay and development tools
+- **Font Integration**: Google Fonts (Inter, Crimson Text, Courier New) for typography hierarchy
+
+## Project Structure
+
+### Key Directories
+- `client/src/` - Frontend React application
+  - `components/` - React components (game-specific and UI)
+  - `game/` - Game logic, state management, rules, and game loop
+  - `hooks/` - Custom React hooks
+  - `lib/` - Utility libraries (logger, audio, supabase, etc.)
+  - `pages/` - Page-level components and routes
+- `server/` - Backend Express server and API endpoints
+- `shared/` - Shared TypeScript schemas and utilities used by both frontend and backend
+- `supabase/` - Supabase functions and database migrations
+
+### TypeScript Path Aliases
+- `@/*` maps to `./client/src/*`
+- `@shared/*` maps to `./shared/*`
+
+## Recent Changes
+
+### January 3, 2026 - Crow System & Village Elder Storyline
+- **New Shop Item**: Crow Harness ($3.99) - Tool for catching the One-eyed Crow in Blackreach Canyon
+- **New Fellowship Member**: One-eyed Crow - Can carry messages and provides Crow's Eye skill
+- **New Skill**: Crow's Eye - Upgradeable skill providing 0.5%-15% chance to double gathering resources
+- **New Forest Scout Actions**:
+  - Blackreach Canyon - Use crow harness to catch the one-eyed crow
+  - Hidden Library - Explore monastery's hidden library (unlocked via crow message)
+  - Steel Delivery - Deliver steel to Swamp Tribe (unlocked via crow message)
+- **New Events System**: Village Elder crow messages with branching storyline:
+  - Mountain Monastery path - Leads to Hidden Library and Stonebinder's Codex relic
+  - Swamp Tribe path - Leads to Steel Delivery and Chitin Plates relic
+  - Shore Fishermen path - Grants Fisher's Hand blessing (+5 food per gatherer)
+- **New Relics**: Stonebinder's Codex (5% building cost reduction), Chitin Plates
+- **New Blessing**: Fisher's Hand (gatherers produce +5 food)
+- **New Building**: Chitin Plating (uses Chitin Plates)
+- **Schema Updates**: Added villageElderState, crowsEyeSkills, new fellowship member, relics, and blessings
+
+## Development Rules
+
+### Data Management
+- **No Mock or Dummy Data**: Never use hardcoded or mock data in this game. All data must be dynamically generated from the actual game state, rules, and definitions. Always use real game data from the state management system.
+
+### Event System
+- **No Event Creation**: Do not create events, log messages, or narrative elements without explicit instruction from the user. Focus only on mechanical aspects (resources, buildings, villagers) unless specifically asked to work on the event system.
+
+### Dev and Prod Environment
+- There is a dev and a prod environment. Secrets end with either `_DEV` or `_PROD`.
+
+### Coding Standards
+- **DRY**: Consolidate duplicate patterns into reusable functions after the 2nd occurrence
+- **Clean**: Delete dead code immediately (unused imports, functions, variables, commented code)
+- **Leverage**: Use battle-tested packages over custom implementations
+- **Readable**: Maintain comments and clear naming—don't sacrifice clarity for LoC
+- **Fast Refresh**: Adhere to the rules of Fast Refresh (export components as default, keep hooks at top level, etc.)
+- **Mobile Friendly**: Make sure the game is mobile friendly - test responsive layouts and touch interactions
+
+### Logging
+- **Always use logger**: Use `client/src/lib/logger.ts` instead of console.log/warn/error/debug
+- Import: `import { logger } from '@/lib/logger'`
+- Use: `logger.log()`, `logger.warn()`, `logger.error()`, `logger.debug()`
+
+### Type Safety
+- Use TypeScript strictly - leverage Zod schemas for runtime validation
+- Import shared schemas from `@shared/*` when needed
+- Ensure all game state changes go through proper validation
+
+### Testing
+- Test files are located alongside source files with `.test.ts` extension
+- Use Vitest for testing
+- Run tests with `npm test` or `npm run test:ui`
+
+### File Organization
+- Keep game logic in `client/src/game/`
+- Keep UI components in `client/src/components/`
+- Keep shared types/schemas in `shared/`
+- Follow existing patterns and structure

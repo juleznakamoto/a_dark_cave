@@ -13,13 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import {
-  Tooltip,
-  TooltipProvider,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { useMobileButtonTooltip } from "@/hooks/useMobileTooltip";
+import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import CubeDialog from "./CubeDialog";
 import { logger } from "@/lib/logger";
 
@@ -45,7 +39,6 @@ export default function EventDialog({
   const { applyEventChoice } = useGameStore();
   const gameState = useGameStore();
   const hasScriptorium = gameState.buildings.scriptorium > 0;
-  const mobileTooltip = useMobileButtonTooltip();
 
   const [timeRemaining, setTimeRemaining] = useState<number | null>(null);
   const [totalTime, setTotalTime] = useState<number>(0);
@@ -53,8 +46,8 @@ export default function EventDialog({
   const fallbackExecutedRef = useRef(false);
 
   // Derive eventChoices directly from event prop instead of using state
-  const eventChoices = typeof event?.choices === 'function' 
-    ? event.choices(gameState) 
+  const eventChoices = typeof event?.choices === 'function'
+    ? event.choices(gameState)
     : event?.choices || [];
 
   // Reset purchased items when dialog opens
@@ -218,23 +211,18 @@ export default function EventDialog({
                 </DialogTitle>
                 <div className="flex gap-2 items-center flex-shrink-0">
                   {hasScriptorium && event.isTimedChoice && getTotalKnowledge(gameState) > 0 && (
-                    <TooltipProvider>
-                      <Tooltip open={mobileTooltip.isTooltipOpen("event-time-bonus")}>
-                        <TooltipTrigger asChild>
-                          <span
-                            className="text-blue-300/80 cursor-pointer hover:text-blue-300 transition-colors inline-block text-xl"
-                            onClick={(e) => mobileTooltip.handleWrapperClick("event-time-bonus", false, false, e)}
-                          >
-                            ✧
-                          </span>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <div className="text-xs whitespace-nowrap">
-                            +{calculateKnowledgeTimeBonus(getTotalKnowledge(gameState))}s Decision Time due to Knowledge{isKnowledgeBonusMaxed(getTotalKnowledge(gameState)) ? " (max)" : ""}
-                          </div>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
+                    <TooltipWrapper
+                      tooltip={
+                        <div className="text-xs whitespace-nowrap">
+                          +{calculateKnowledgeTimeBonus(getTotalKnowledge(gameState))}s Decision Time due to Knowledge{isKnowledgeBonusMaxed(getTotalKnowledge(gameState)) ? " (max)" : ""}
+                        </div>
+                      }
+                      tooltipId="event-time-bonus"
+                    >
+                      <span className="text-blue-300/80 cursor-pointer hover:text-blue-300 transition-colors inline-block text-xl">
+                        ✧
+                      </span>
+                    </TooltipWrapper>
                   )}
                   {hasScriptorium && event.relevant_stats && event.relevant_stats.length > 0 && (
                     <div className="flex gap-1">
@@ -338,37 +326,20 @@ export default function EventDialog({
                 );
 
                 return costText ? (
-                  <TooltipProvider key={choice.id}>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <div
-                          onClick={(e) => {
-                            logger.log(`[EVENT TOOLTIP] Showing cost for choice: ${choice.id}, cost: ${costText}`);
-                            mobileTooltip.handleWrapperClick(choice.id, isDisabled, false, e);
-                          }}
-                          onMouseDown={mobileTooltip.isMobile ? (e) => mobileTooltip.handleMouseDown(choice.id, isDisabled, false, e) : undefined}
-                          onMouseUp={mobileTooltip.isMobile ? (e) => mobileTooltip.handleMouseUp(choice.id, isDisabled, () => handleChoice(choice.id), e) : undefined}
-                          onTouchStart={mobileTooltip.isMobile ? (e) => mobileTooltip.handleTouchStart(choice.id, isDisabled, false, e) : undefined}
-                          onTouchEnd={mobileTooltip.isMobile ? (e) => mobileTooltip.handleTouchEnd(choice.id, isDisabled, () => handleChoice(choice.id), e) : undefined}
-                        >
-                          {buttonContent}
-                        </div>
-                      </TooltipTrigger>
-                      <TooltipContent side="top">
-                        <div className={`text-xs ${isDisabled ? "text-muted-foreground" : ""}`}>
-                          {eventChoiceCostTooltip.getContent(costText, gameState)}
-                        </div>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                ) : (
-                  <div
+                  <TooltipWrapper
                     key={choice.id}
-                    onMouseDown={mobileTooltip.isMobile ? (e) => mobileTooltip.handleMouseDown(choice.id, isDisabled, false, e) : undefined}
-                    onMouseUp={mobileTooltip.isMobile ? (e) => mobileTooltip.handleMouseUp(choice.id, isDisabled, () => handleChoice(choice.id), e) : undefined}
-                    onTouchStart={mobileTooltip.isMobile ? (e) => mobileTooltip.handleTouchStart(choice.id, isDisabled, false, e) : undefined}
-                    onTouchEnd={mobileTooltip.isMobile ? (e) => mobileTooltip.handleTouchEnd(choice.id, isDisabled, () => handleChoice(choice.id), e) : undefined}
+                    tooltip={
+                      <div className={`text-xs ${isDisabled ? "text-muted-foreground" : ""}`}>
+                        {eventChoiceCostTooltip.getContent(costText, gameState)}
+                      </div>
+                    }
+                    tooltipId={choice.id}
+                    disabled={isDisabled}
                   >
+                    {buttonContent}
+                  </TooltipWrapper>
+                ) : (
+                  <div key={choice.id}>
                     {buttonContent}
                   </div>
                 );

@@ -3,15 +3,8 @@ import { useGameStore } from "@/game/state";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { cubeEvents } from "@/game/rules/eventsCube";
 import { LogEntry } from "@/game/rules/events";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { useMobileTooltip } from "@/hooks/useMobileTooltip";
+import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { Button } from "@/components/ui/button";
-import { useMobileButtonTooltip } from "@/hooks/useMobileTooltip";
 import { getTotalPopulationEffects } from "@/game/population";
 import { Progress } from "@/components/ui/progress";
 import { CircularProgress } from "@/components/ui/circular-progress";
@@ -41,8 +34,6 @@ export default function EstatePanel() {
     updateFocusState,
     updateResource,
   } = useGameStore();
-  const mobileTooltip = useMobileButtonTooltip();
-  const cubeTooltip = useMobileTooltip();
   const state = useGameStore.getState();
 
   // Calculate focus progress based on game loop timing
@@ -60,7 +51,6 @@ export default function EstatePanel() {
         setFocusProgress(0);
         // Clear focus state when timer expires
         if (focusState?.isActive && focusState.endTime <= now) {
-          console.log('[FOCUS] Timer expired, clearing focus state');
           useGameStore.setState({
             focusState: {
               isActive: false,
@@ -88,13 +78,6 @@ export default function EstatePanel() {
   };
 
   React.useEffect(() => {
-    console.log('[FOCUS] Button visibility check:', {
-      hasFocus: focusState?.points > 0,
-      focusAmount: focusState?.points,
-      isActive: focusState?.isActive,
-      shouldShow: focusState?.points > 0 && !focusState?.isActive,
-      allResources: resources, // Log all resources to see if focus is being set
-    });
   }, [focusState?.points, focusState?.isActive]);
 
   // Get all cube events that have been triggered
@@ -307,134 +290,56 @@ export default function EstatePanel() {
             <h3 className="text-xs font-bold text-foreground">Rest</h3>
             {/* Focus Timer */}
             {focusState?.isActive && focusState.endTime > Date.now() && (
-              <TooltipProvider>
-                <Tooltip open={mobileTooltip.isTooltipOpen("focus-progress")}>
-                  <TooltipTrigger asChild>
-                    <div
-                      className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
-                      onClick={(e) =>
-                        mobileTooltip.handleTooltipClick("focus-progress", e)
-                      }
-                    >
-                      <div className="relative inline-flex items-center gap-1 mt-[0px]">
-                        <CircularProgress
-                          value={focusProgress}
-                          size={18}
-                          strokeWidth={2}
-                          className="text-teal-400"
-                        />
-                        <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[10px] -mt-[0px] text-teal-400">
-                          ☩
-                        </span>
-                      </div>
-                    </div>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <div className="text-xs">
-                      {focusTooltip.getContent(state)}
-                    </div>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
+              <TooltipWrapper
+                tooltip={
+                  <div className="text-xs">
+                    {focusTooltip.getContent(state)}
+                  </div>
+                }
+                tooltipId="focus-progress"
+              >
+                <div className="text-xs text-primary flex items-center gap-0.5 cursor-pointer">
+                  <div className="relative inline-flex items-center gap-1 mt-[0px]">
+                    <CircularProgress
+                      value={focusProgress}
+                      size={18}
+                      strokeWidth={2}
+                      className="text-teal-400"
+                    />
+                    <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[10px] -mt-[0px] text-teal-400">
+                      ☩
+                    </span>
+                  </div>
+                </div>
+              </TooltipWrapper>
             )}
           </div>
-          <TooltipProvider>
-            <Tooltip open={mobileTooltip.isTooltipOpen("sleep-button")}>
-              <TooltipTrigger asChild>
-                <div
-                  className="h-5 inline-block pb-1 text-xs font-medium text-foreground"
-                  onClick={
-                    mobileTooltip.isMobile
-                      ? (e) => {
-                          mobileTooltip.handleWrapperClick(
-                            "sleep-button",
-                            !canActivateIdle,
-                            false,
-                            e,
-                          );
-                        }
-                      : undefined
-                  }
-                  onTouchStart={
-                    mobileTooltip.isMobile
-                      ? (e) => {
-                          mobileTooltip.handleTouchStart(
-                            "sleep-button",
-                            !canActivateIdle,
-                            false,
-                            e,
-                          );
-                        }
-                      : undefined
-                  }
-                  onTouchEnd={
-                    mobileTooltip.isMobile
-                      ? (e) => {
-                          mobileTooltip.handleTouchEnd(
-                            "sleep-button",
-                            !canActivateIdle,
-                            handleActivateIdleMode,
-                            e,
-                          );
-                        }
-                      : undefined
-                  }
-                  onMouseDown={
-                    mobileTooltip.isMobile
-                      ? (e) => {
-                          mobileTooltip.handleMouseDown(
-                            "sleep-button",
-                            !canActivateIdle,
-                            false,
-                            e,
-                          );
-                        }
-                      : undefined
-                  }
-                  onMouseUp={
-                    mobileTooltip.isMobile
-                      ? (e) => {
-                          mobileTooltip.handleMouseUp(
-                            "sleep-button",
-                            !canActivateIdle,
-                            handleActivateIdleMode,
-                            e,
-                          );
-                        }
-                      : undefined
-                  }
-                >
-                  <Button
-                    onClick={
-                      mobileTooltip.isMobile &&
-                      mobileTooltip.isTooltipOpen("sleep-button")
-                        ? (e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                          }
-                        : handleActivateIdleMode
-                    }
-                    disabled={!canActivateIdle}
-                    size="xs"
-                    variant="outline"
-                    className="h-7 hover:bg-transparent hover:text-foreground"
-                    button_id="activate-sleep-mode"
-                  >
-                    Sleep
-                  </Button>
-                </div>
-              </TooltipTrigger>
-              <TooltipContent>
-                <div className="text-xs whitespace-nowrap">
-                  {canActivateIdle ? (
-                    <div>Let the world move on in your absence</div>
-                  ) : (
-                    <div>Requires positive wood and food production</div>
-                  )}
-                </div>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <TooltipWrapper
+            tooltip={
+              <div className="text-xs whitespace-nowrap">
+                {canActivateIdle ? (
+                  <div>Let the world move on in your absence</div>
+                ) : (
+                  <div>Requires positive wood and food production</div>
+                )}
+              </div>
+            }
+            tooltipId="sleep-button"
+            disabled={!canActivateIdle}
+          >
+            <div className="h-5 inline-block pb-1 text-xs font-medium text-foreground">
+              <Button
+                onClick={handleActivateIdleMode}
+                disabled={!canActivateIdle}
+                size="xs"
+                variant="outline"
+                className="h-7 hover:bg-transparent hover:text-foreground"
+                button_id="activate-sleep-mode"
+              >
+                Sleep
+              </Button>
+            </div>
+          </TooltipWrapper>
 
           {/* Focus Activation Button */}
           {showFocusButton && (
@@ -445,11 +350,6 @@ export default function EstatePanel() {
                     const now = Date.now();
                     const focusPoints = focusState?.points || 0;
                     const focusDuration = calculateFocusDuration(focusPoints);
-                    console.log('[FOCUS] Activating Focus:', {
-                      focusPoints,
-                      durationMs: focusDuration,
-                      durationMinutes: focusDuration / 60000,
-                    });
                     updateFocusState({
                       isActive: true,
                       endTime: now + focusDuration,
@@ -473,25 +373,23 @@ export default function EstatePanel() {
                   Focus
                 </CooldownButton>
                 {focusState && focusState.points > 0 && (
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <div
-                          className="absolute -top-[7px] right-[-7px] flex items-center justify-center w-4 h-4 bg-teal-950 rounded-full text-[10px] font-medium z-1 cursor-pointer hover:bg-teal-900 transition-colors duration-300"
-                          onClick={(e) => e.stopPropagation()}
-                          onPointerDown={(e) => e.stopPropagation()}
-                        >
-                          {focusState.points}
-                        </div>
-                      </TooltipTrigger>
-                      <TooltipContent side="right">
-                        <div className="text-xs whitespace-nowrap">
-                          {focusState.points} Focus: Get 2x action bonus for{" "}
-                          {focusState.points} minute{focusState.points > 1 ? "s" : ""}
-                        </div>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
+                  <TooltipWrapper
+                    tooltip={
+                      <div className="text-xs whitespace-nowrap">
+                        {focusState.points} Focus: Get 2x action bonus for{" "}
+                        {focusState.points} minute{focusState.points > 1 ? "s" : ""}
+                      </div>
+                    }
+                    tooltipId="focus-points-badge"
+                  >
+                    <div
+                      className="absolute -top-[7px] right-[-7px] flex items-center justify-center w-4 h-4 bg-teal-950 rounded-full text-[10px] font-medium z-1 cursor-pointer hover:bg-teal-900 transition-colors duration-300"
+                      onClick={(e) => e.stopPropagation()}
+                      onPointerDown={(e) => e.stopPropagation()}
+                    >
+                      {focusState.points}
+                    </div>
+                  </TooltipWrapper>
                 )}
               </div>
             </div>
@@ -507,119 +405,49 @@ export default function EstatePanel() {
                 Sleep Length
               </span>
               {sleepUpgrades.lengthLevel < 5 ? (
-                <TooltipProvider>
-                  <Tooltip open={mobileTooltip.isTooltipOpen("upgrade-length-button")}>
-                    <TooltipTrigger asChild>
+                <TooltipWrapper
+                  tooltip={
+                    <div className="text-xs whitespace-nowrap">
+                      <div>
+                        +
+                        {nextLengthUpgrade.hours - currentLengthUpgrade.hours}
+                        h
+                      </div>
+                      <div className="border-t border-border my-1" />
                       <div
-                        className="h-5 inline-block pb-1 text-xs font-medium text-foreground"
-                        onClick={
-                          mobileTooltip.isMobile
-                            ? (e) => {
-                                mobileTooltip.handleWrapperClick(
-                                  "upgrade-length-button",
-                                  !canUpgradeLength,
-                                  false,
-                                  e,
-                                );
-                              }
-                            : undefined
+                        className={
+                          resources.gold >= nextLengthUpgrade.cost
+                            ? ""
+                            : "text-muted-foreground"
                         }
-                        onTouchStart={
-                          mobileTooltip.isMobile
-                            ? (e) => {
-                                mobileTooltip.handleTouchStart(
-                                  "upgrade-length-button",
-                                  !canUpgradeLength,
-                                  false,
-                                  e,
-                                );
-                              }
-                            : undefined
-                        }
-                        onTouchEnd={
-                          mobileTooltip.isMobile
-                            ? (e) => {
-                                mobileTooltip.handleTouchEnd(
-                                  "upgrade-length-button",
-                                  !canUpgradeLength,
-                                  handleSleepLengthUpgrade,
-                                  e,
-                                );
-                              }
-                            : undefined
-                        }
-                        onMouseDown={
-                          mobileTooltip.isMobile
-                            ? (e) => {
-                                mobileTooltip.handleMouseDown(
-                                  "upgrade-length-button",
-                                  !canUpgradeLength,
-                                  false,
-                                  e,
-                                );
-                              }
-                            : undefined
-                        }
-                        onMouseUp={
-                          mobileTooltip.isMobile
-                            ? (e) => {
-                                mobileTooltip.handleMouseUp(
-                                  "upgrade-length-button",
-                                  !canUpgradeLength,
-                                  handleSleepLengthUpgrade,
-                                  e,
-                                );
-                              }
-                            : undefined
-                        }
-                        onMouseEnter={() => {
-                          setHighlightedResources(["gold"]);
-                        }}
-                        onMouseLeave={() => {
-                          setHighlightedResources([]);
-                        }}
                       >
-                        <Button
-                          onClick={
-                            mobileTooltip.isMobile &&
-                            mobileTooltip.isTooltipOpen("upgrade-length-button")
-                              ? (e) => {
-                                  e.preventDefault();
-                                  e.stopPropagation();
-                                }
-                              : handleSleepLengthUpgrade
-                          }
-                          disabled={!canUpgradeLength}
-                          size="xs"
-                          variant="ghost"
-                          className="h-5 pb-1  hover:bg-transparent hover:text-foreground"
-                          button_id="upgrade-sleep-length"
-                        >
-                          Improve
-                        </Button>
+                        -{nextLengthUpgrade.cost} Gold
                       </div>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <div className="text-xs whitespace-nowrap">
-                        <div>
-                          +
-                          {nextLengthUpgrade.hours - currentLengthUpgrade.hours}
-                          h
-                        </div>
-                        <div className="border-t border-border my-1" />
-                        <div
-                          className={
-                            resources.gold >= nextLengthUpgrade.cost
-                              ? ""
-                              : "text-muted-foreground"
-                          }
-                        >
-                          -{nextLengthUpgrade.cost} Gold
-                        </div>
-                      </div>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
+                    </div>
+                  }
+                  tooltipId="upgrade-length-button"
+                  disabled={!canUpgradeLength}
+                  onClick={handleSleepLengthUpgrade}
+                  onMouseEnter={() => {
+                    setHighlightedResources(["gold"]);
+                  }}
+                  onMouseLeave={() => {
+                    setHighlightedResources([]);
+                  }}
+                >
+                  <div className="h-5 inline-block pb-1 text-xs font-medium text-foreground">
+                    <Button
+                      onClick={handleSleepLengthUpgrade}
+                      disabled={!canUpgradeLength}
+                      size="xs"
+                      variant="ghost"
+                      className="h-5 pb-1  hover:bg-transparent hover:text-foreground"
+                      button_id="upgrade-sleep-length"
+                    >
+                      Improve
+                    </Button>
+                  </div>
+                </TooltipWrapper>
               ) : null}
             </div>
             <Progress
@@ -639,126 +467,49 @@ export default function EstatePanel() {
                 Sleep Intensity
               </span>
               {sleepUpgrades.intensityLevel < 5 ? (
-                <TooltipProvider>
-                  <Tooltip
-                    open={mobileTooltip.isTooltipOpen(
-                      "upgrade-intensity-button",
-                    )}
-                  >
-                    <TooltipTrigger asChild>
+                <TooltipWrapper
+                  tooltip={
+                    <div className="text-xs whitespace-nowrap">
+                      <div>
+                        +
+                        {nextIntensityUpgrade.percentage -
+                          currentIntensityUpgrade.percentage}
+                        %
+                      </div>
+                      <div className="border-t border-border my-1" />
                       <div
-                        className="h-5 inline-block pb-1 text-xs font-medium text-foreground"
-                        onClick={
-                          mobileTooltip.isMobile
-                            ? (e) => {
-                                mobileTooltip.handleWrapperClick(
-                                  "upgrade-intensity-button",
-                                  !canUpgradeIntensity,
-                                  false,
-                                  e,
-                                );
-                              }
-                            : undefined
+                        className={
+                          resources.gold >= nextIntensityUpgrade.cost
+                            ? ""
+                            : "text-muted-foreground"
                         }
-                        onTouchStart={
-                          mobileTooltip.isMobile
-                            ? (e) => {
-                                mobileTooltip.handleTouchStart(
-                                  "upgrade-intensity-button",
-                                  !canUpgradeIntensity,
-                                  false,
-                                  e,
-                                );
-                              }
-                            : undefined
-                        }
-                        onTouchEnd={
-                          mobileTooltip.isMobile
-                            ? (e) => {
-                                mobileTooltip.handleTouchEnd(
-                                  "upgrade-intensity-button",
-                                  !canUpgradeIntensity,
-                                  handleSleepIntensityUpgrade,
-                                  e,
-                                );
-                              }
-                            : undefined
-                        }
-                        onMouseDown={
-                          mobileTooltip.isMobile
-                            ? (e) => {
-                                mobileTooltip.handleMouseDown(
-                                  "upgrade-intensity-button",
-                                  !canUpgradeIntensity,
-                                  false,
-                                  e,
-                                );
-                              }
-                            : undefined
-                        }
-                        onMouseUp={
-                          mobileTooltip.isMobile
-                            ? (e) => {
-                                mobileTooltip.handleMouseUp(
-                                  "upgrade-intensity-button",
-                                  !canUpgradeIntensity,
-                                  handleSleepIntensityUpgrade,
-                                  e,
-                                );
-                              }
-                            : undefined
-                        }
-                        onMouseEnter={() => {
-                          setHighlightedResources(["gold"]);
-                        }}
-                        onMouseLeave={() => {
-                          setHighlightedResources([]);
-                        }}
                       >
-                        <Button
-                          onClick={
-                            mobileTooltip.isMobile &&
-                            mobileTooltip.isTooltipOpen(
-                              "upgrade-intensity-button",
-                            )
-                              ? (e) => {
-                                  e.preventDefault();
-                                  e.stopPropagation();
-                                }
-                              : handleSleepIntensityUpgrade
-                          }
-                          disabled={!canUpgradeIntensity}
-                          size="xs"
-                          variant="ghost"
-                          className="h-5 pb-1  hover:bg-transparent hover:text-foreground"
-                          button_id="upgrade-sleep-intensity"
-                        >
-                          Improve
-                        </Button>
+                        -{nextIntensityUpgrade.cost} Gold
                       </div>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <div className="text-xs whitespace-nowrap">
-                        <div>
-                          +
-                          {nextIntensityUpgrade.percentage -
-                            currentIntensityUpgrade.percentage}
-                          %
-                        </div>
-                        <div className="border-t border-border my-1" />
-                        <div
-                          className={
-                            resources.gold >= nextIntensityUpgrade.cost
-                              ? ""
-                              : "text-muted-foreground"
-                          }
-                        >
-                          -{nextIntensityUpgrade.cost} Gold
-                        </div>
-                      </div>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
+                    </div>
+                  }
+                  tooltipId="upgrade-intensity-button"
+                  disabled={!canUpgradeIntensity}
+                  onMouseEnter={() => {
+                    setHighlightedResources(["gold"]);
+                  }}
+                  onMouseLeave={() => {
+                    setHighlightedResources([]);
+                  }}
+                >
+                  <div className="h-5 inline-block pb-1 text-xs font-medium text-foreground">
+                    <Button
+                      onClick={handleSleepIntensityUpgrade}
+                      disabled={!canUpgradeIntensity}
+                      size="xs"
+                      variant="ghost"
+                      className="h-5 pb-1  hover:bg-transparent hover:text-foreground"
+                      button_id="upgrade-sleep-intensity"
+                    >
+                      Improve
+                    </Button>
+                  </div>
+                </TooltipWrapper>
               ) : null}
             </div>
             <Progress
@@ -777,194 +528,78 @@ export default function EstatePanel() {
           fellowship.restless_knight ||
           fellowship.elder_wizard ||
           fellowship.one_eyed_crow) && (
-          <div className="space-y-1 pt-2">
-            <h3 className="text-xs font-bold text-foreground">Skills</h3>
+            <div className="space-y-1 pt-2">
+              <h3 className="text-xs font-bold text-foreground">Skills</h3>
 
-            {/* Huntress Training */}
-            {fellowship.ashwraith_huntress && (
-              <div className="w-80 space-y-1 pt-2">
-                <div className="flex items-center justify-between">
-                  <span className="pb-1 text-xs font-medium text-foreground">
-                    Huntress Training
-                  </span>
-                  {huntingSkills.level < 5 ? (
-                    <TooltipProvider>
-                      <Tooltip
-                        open={mobileTooltip.isTooltipOpen(
-                          "upgrade-hunting-button",
-                        )}
-                      >
-                        <TooltipTrigger asChild>
-                          <div
-                            className="h-5 inline-block pb-1 text-xs font-medium text-foreground"
-                            onClick={
-                              mobileTooltip.isMobile
-                                ? (e) => {
-                                    mobileTooltip.handleWrapperClick(
-                                      "upgrade-hunting-button",
-                                      resources.gold <
-                                        HUNTING_SKILL_UPGRADES[
-                                          huntingSkills.level + 1
-                                        ].cost,
-                                      false,
-                                      e,
-                                    );
-                                  }
-                                : undefined
-                            }
-                            onTouchStart={
-                              mobileTooltip.isMobile
-                                ? (e) => {
-                                    mobileTooltip.handleTouchStart(
-                                      "upgrade-hunting-button",
-                                      resources.gold <
-                                        HUNTING_SKILL_UPGRADES[
-                                          huntingSkills.level + 1
-                                        ].cost,
-                                      false,
-                                      e,
-                                    );
-                                  }
-                                : undefined
-                            }
-                            onTouchEnd={
-                              mobileTooltip.isMobile
-                                ? (e) => {
-                                    mobileTooltip.handleTouchEnd(
-                                      "upgrade-hunting-button",
-                                      resources.gold <
-                                        HUNTING_SKILL_UPGRADES[
-                                          huntingSkills.level + 1
-                                        ].cost,
-                                      handleHuntingSkillUpgrade,
-                                      e,
-                                    );
-                                  }
-                                : undefined
-                            }
-                            onMouseDown={
-                              mobileTooltip.isMobile
-                                ? (e) => {
-                                    mobileTooltip.handleMouseDown(
-                                      "upgrade-hunting-button",
-                                      resources.gold <
-                                        HUNTING_SKILL_UPGRADES[
-                                          huntingSkills.level + 1
-                                        ].cost,
-                                      false,
-                                      e,
-                                    );
-                                  }
-                                : undefined
-                            }
-                            onMouseUp={
-                              mobileTooltip.isMobile
-                                ? (e) => {
-                                    mobileTooltip.handleMouseUp(
-                                      "upgrade-hunting-button",
-                                      resources.gold <
-                                        HUNTING_SKILL_UPGRADES[
-                                          huntingSkills.level + 1
-                                        ].cost,
-                                      handleHuntingSkillUpgrade,
-                                      e,
-                                    );
-                                  }
-                                : undefined
-                            }
-                            onMouseEnter={() => {
-                              setHighlightedResources(["gold"]);
-                            }}
-                            onMouseLeave={() => {
-                              setHighlightedResources([]);
-                            }}
-                          >
-                            <Button
-                              onClick={
-                                mobileTooltip.isMobile &&
-                                mobileTooltip.isTooltipOpen(
-                                  "upgrade-hunting-button",
-                                )
-                                  ? (e) => {
-                                      e.preventDefault();
-                                      e.stopPropagation();
-                                    }
-                                  : handleHuntingSkillUpgrade
-                              }
-                              disabled={
-                                resources.gold <
-                                HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]
-                                  .cost
-                              }
-                              size="xs"
-                              variant="ghost"
-                              className="h-5 pb-1  hover:bg-transparent hover:text-foreground"
-                              button_id="upgrade-hunting-skills"
-                            >
-                              Improve
-                            </Button>
-                          </div>
-                        </TooltipTrigger>
-                        <TooltipContent>
+              {/* Huntress Training */}
+              {fellowship.ashwraith_huntress && (
+                <div className="w-80 space-y-1 pt-2">
+                  <div className="flex items-center justify-between">
+                    <span className="pb-1 text-xs font-medium text-foreground">
+                      Huntress Training
+                    </span>
+                    {huntingSkills.level < 5 ? (
+                      <TooltipWrapper
+                        tooltip={
                           <div className="text-xs whitespace-nowrap">
                             {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]
                               .food >
                               HUNTING_SKILL_UPGRADES[huntingSkills.level]
                                 .food && (
-                              <div>
-                                +
-                                {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]
-                                  .food -
-                                  HUNTING_SKILL_UPGRADES[huntingSkills.level]
-                                    .food}{" "}
-                                Food per Hunter
-                              </div>
-                            )}
+                                <div>
+                                  +
+                                  {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]
+                                    .food -
+                                    HUNTING_SKILL_UPGRADES[huntingSkills.level]
+                                      .food}{" "}
+                                  Food per Hunter
+                                </div>
+                              )}
                             {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]
                               .fur >
                               HUNTING_SKILL_UPGRADES[huntingSkills.level]
                                 .fur && (
-                              <div>
-                                +
-                                {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]
-                                  .fur -
-                                  HUNTING_SKILL_UPGRADES[huntingSkills.level]
-                                    .fur}{" "}
-                                Fur per Hunter
-                              </div>
-                            )}
+                                <div>
+                                  +
+                                  {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]
+                                    .fur -
+                                    HUNTING_SKILL_UPGRADES[huntingSkills.level]
+                                      .fur}{" "}
+                                  Fur per Hunter
+                                </div>
+                              )}
                             {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]
                               .bones >
                               HUNTING_SKILL_UPGRADES[huntingSkills.level]
                                 .bones && (
-                              <div>
-                                +
-                                {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]
-                                  .bones -
-                                  HUNTING_SKILL_UPGRADES[huntingSkills.level]
-                                    .bones}{" "}
-                                Bones per Hunter
-                              </div>
-                            )}
+                                <div>
+                                  +
+                                  {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]
+                                    .bones -
+                                    HUNTING_SKILL_UPGRADES[huntingSkills.level]
+                                      .bones}{" "}
+                                  Bones per Hunter
+                                </div>
+                              )}
                             {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]
                               .huntBonus >
                               HUNTING_SKILL_UPGRADES[huntingSkills.level]
                                 .huntBonus && (
-                              <div>
-                                +
-                                {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]
-                                  .huntBonus -
-                                  HUNTING_SKILL_UPGRADES[huntingSkills.level]
-                                    .huntBonus}
-                                % Hunt bonus
-                              </div>
-                            )}
+                                <div>
+                                  +
+                                  {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]
+                                    .huntBonus -
+                                    HUNTING_SKILL_UPGRADES[huntingSkills.level]
+                                      .huntBonus}
+                                  % Hunt bonus
+                                </div>
+                              )}
                             <div className="border-t border-border my-1" />
                             <div
                               className={
                                 resources.gold >=
-                                HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]
-                                  .cost
+                                  HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]
+                                    .cost
                                   ? ""
                                   : "text-muted-foreground"
                               }
@@ -977,161 +612,73 @@ export default function EstatePanel() {
                               Gold
                             </div>
                           </div>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  ) : null}
-                </div>
-                <Progress
-                  value={(huntingSkills.level / 5) * 100}
-                  className="h-2"
-                  segments={5}
-                />
-                <div className="flex justify-between text-xs text-muted-foreground">
-                  <span>
-                    {[
-                      `+${HUNTING_SKILL_UPGRADES[huntingSkills.level].huntBonus}% hunt bonus`,
-                      HUNTING_SKILL_UPGRADES[huntingSkills.level].food > 0 &&
-                        `hunter: +${HUNTING_SKILL_UPGRADES[huntingSkills.level].food} food`,
-                      HUNTING_SKILL_UPGRADES[huntingSkills.level].fur > 0 &&
-                        `+${HUNTING_SKILL_UPGRADES[huntingSkills.level].fur} fur`,
-                      HUNTING_SKILL_UPGRADES[huntingSkills.level].bones > 0 &&
-                        `+${HUNTING_SKILL_UPGRADES[huntingSkills.level].bones} bones`,
-                    ]
-                      .filter(Boolean)
-                      .join(", ")}
-                  </span>
-                </div>
-              </div>
-            )}
-
-            {/* Crushing Strike */}
-            {fellowship.restless_knight && (
-              <div className="w-80 space-y-1 pt-2">
-                <div className="flex items-center justify-between">
-                  <span className="pb-1 text-xs font-medium text-foreground">
-                    Crushing Strike
-                  </span>
-                  {combatSkills.crushingStrikeLevel < 5 ? (
-                    <TooltipProvider>
-                      <Tooltip
-                        open={mobileTooltip.isTooltipOpen(
-                          "upgrade-crushing-strike-button",
-                        )}
+                        }
+                        tooltipId="upgrade-hunting-button"
+                        disabled={
+                          resources.gold <
+                          HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]
+                            .cost
+                        }
+                        onClick={handleHuntingSkillUpgrade}
+                        onMouseEnter={() => {
+                          setHighlightedResources(["gold"]);
+                        }}
+                        onMouseLeave={() => {
+                          setHighlightedResources([]);
+                        }}
                       >
-                        <TooltipTrigger asChild>
-                          <div
-                            className="h-5 inline-block pb-1 text-xs font-medium text-foreground"
-                            onClick={
-                              mobileTooltip.isMobile
-                                ? (e) => {
-                                    mobileTooltip.handleWrapperClick(
-                                      "upgrade-crushing-strike-button",
-                                      resources.gold <
-                                        CRUSHING_STRIKE_UPGRADES[
-                                          combatSkills.crushingStrikeLevel + 1
-                                        ].cost,
-                                      false,
-                                      e,
-                                    );
-                                  }
-                                : undefined
+                        <div className="h-5 inline-block pb-1 text-xs font-medium text-foreground">
+                          <Button
+                            onClick={handleHuntingSkillUpgrade}
+                            disabled={
+                              resources.gold <
+                              HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]
+                                .cost
                             }
-                            onTouchStart={
-                              mobileTooltip.isMobile
-                                ? (e) => {
-                                    mobileTooltip.handleTouchStart(
-                                      "upgrade-crushing-strike-button",
-                                      resources.gold <
-                                        CRUSHING_STRIKE_UPGRADES[
-                                          combatSkills.crushingStrikeLevel + 1
-                                        ].cost,
-                                      false,
-                                      e,
-                                    );
-                                  }
-                                : undefined
-                            }
-                            onTouchEnd={
-                              mobileTooltip.isMobile
-                                ? (e) => {
-                                    mobileTooltip.handleTouchEnd(
-                                      "upgrade-crushing-strike-button",
-                                      resources.gold <
-                                        CRUSHING_STRIKE_UPGRADES[
-                                          combatSkills.crushingStrikeLevel + 1
-                                        ].cost,
-                                      handleCrushingStrikeUpgrade,
-                                      e,
-                                    );
-                                  }
-                                : undefined
-                            }
-                            onMouseDown={
-                              mobileTooltip.isMobile
-                                ? (e) => {
-                                    mobileTooltip.handleMouseDown(
-                                      "upgrade-crushing-strike-button",
-                                      resources.gold <
-                                        CRUSHING_STRIKE_UPGRADES[
-                                          combatSkills.crushingStrikeLevel + 1
-                                        ].cost,
-                                      false,
-                                      e,
-                                    );
-                                  }
-                                : undefined
-                            }
-                            onMouseUp={
-                              mobileTooltip.isMobile
-                                ? (e) => {
-                                    mobileTooltip.handleMouseUp(
-                                      "upgrade-crushing-strike-button",
-                                      resources.gold <
-                                        CRUSHING_STRIKE_UPGRADES[
-                                          combatSkills.crushingStrikeLevel + 1
-                                        ].cost,
-                                      handleCrushingStrikeUpgrade,
-                                      e,
-                                    );
-                                  }
-                                : undefined
-                            }
-                            onMouseEnter={() => {
-                              setHighlightedResources(["gold"]);
-                            }}
-                            onMouseLeave={() => {
-                              setHighlightedResources([]);
-                            }}
+                            size="xs"
+                            variant="ghost"
+                            className="h-5 pb-1  hover:bg-transparent hover:text-foreground"
+                            button_id="upgrade-hunting-skills"
                           >
-                            <Button
-                              onClick={
-                                mobileTooltip.isMobile &&
-                                mobileTooltip.isTooltipOpen(
-                                  "upgrade-crushing-strike-button",
-                                )
-                                  ? (e) => {
-                                      e.preventDefault();
-                                      e.stopPropagation();
-                                    }
-                                  : handleCrushingStrikeUpgrade
-                              }
-                              disabled={
-                                resources.gold <
-                                CRUSHING_STRIKE_UPGRADES[
-                                  combatSkills.crushingStrikeLevel + 1
-                                ].cost
-                              }
-                              size="xs"
-                              variant="ghost"
-                              className="h-5 pb-1  hover:bg-transparent hover:text-foreground"
-                              button_id="upgrade-crushing-strike"
-                            >
-                              Improve
-                            </Button>
-                          </div>
-                        </TooltipTrigger>
-                        <TooltipContent>
+                            Improve
+                          </Button>
+                        </div>
+                      </TooltipWrapper>
+                    ) : null}
+                  </div>
+                  <Progress
+                    value={(huntingSkills.level / 5) * 100}
+                    className="h-2"
+                    segments={5}
+                  />
+                  <div className="flex justify-between text-xs text-muted-foreground">
+                    <span>
+                      {[
+                        `+${HUNTING_SKILL_UPGRADES[huntingSkills.level].huntBonus}% hunt bonus`,
+                        HUNTING_SKILL_UPGRADES[huntingSkills.level].food > 0 &&
+                        `hunter: +${HUNTING_SKILL_UPGRADES[huntingSkills.level].food} food`,
+                        HUNTING_SKILL_UPGRADES[huntingSkills.level].fur > 0 &&
+                        `+${HUNTING_SKILL_UPGRADES[huntingSkills.level].fur} fur`,
+                        HUNTING_SKILL_UPGRADES[huntingSkills.level].bones > 0 &&
+                        `+${HUNTING_SKILL_UPGRADES[huntingSkills.level].bones} bones`,
+                      ]
+                        .filter(Boolean)
+                        .join(", ")}
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              {/* Crushing Strike */}
+              {fellowship.restless_knight && (
+                <div className="w-80 space-y-1 pt-2">
+                  <div className="flex items-center justify-between">
+                    <span className="pb-1 text-xs font-medium text-foreground">
+                      Crushing Strike
+                    </span>
+                    {combatSkills.crushingStrikeLevel < 5 ? (
+                      <TooltipWrapper
+                        tooltip={
                           <div className="text-xs whitespace-nowrap">
                             {CRUSHING_STRIKE_UPGRADES[
                               combatSkills.crushingStrikeLevel + 1
@@ -1139,41 +686,41 @@ export default function EstatePanel() {
                               CRUSHING_STRIKE_UPGRADES[
                                 combatSkills.crushingStrikeLevel
                               ].damage && (
-                              <div>
-                                +
-                                {CRUSHING_STRIKE_UPGRADES[
-                                  combatSkills.crushingStrikeLevel + 1
-                                ].damage -
-                                  CRUSHING_STRIKE_UPGRADES[
-                                    combatSkills.crushingStrikeLevel
-                                  ].damage}{" "}
-                                damage
-                              </div>
-                            )}
+                                <div>
+                                  +
+                                  {CRUSHING_STRIKE_UPGRADES[
+                                    combatSkills.crushingStrikeLevel + 1
+                                  ].damage -
+                                    CRUSHING_STRIKE_UPGRADES[
+                                      combatSkills.crushingStrikeLevel
+                                    ].damage}{" "}
+                                  damage
+                                </div>
+                              )}
                             {CRUSHING_STRIKE_UPGRADES[
                               combatSkills.crushingStrikeLevel + 1
                             ].stunRounds >
                               CRUSHING_STRIKE_UPGRADES[
                                 combatSkills.crushingStrikeLevel
                               ].stunRounds && (
-                              <div>
-                                +
-                                {CRUSHING_STRIKE_UPGRADES[
-                                  combatSkills.crushingStrikeLevel + 1
-                                ].stunRounds -
-                                  CRUSHING_STRIKE_UPGRADES[
-                                    combatSkills.crushingStrikeLevel
-                                  ].stunRounds}{" "}
-                                stun round
-                              </div>
-                            )}
+                                <div>
+                                  +
+                                  {CRUSHING_STRIKE_UPGRADES[
+                                    combatSkills.crushingStrikeLevel + 1
+                                  ].stunRounds -
+                                    CRUSHING_STRIKE_UPGRADES[
+                                      combatSkills.crushingStrikeLevel
+                                    ].stunRounds}{" "}
+                                  stun round
+                                </div>
+                              )}
                             <div className="border-t border-border my-1" />
                             <div
                               className={
                                 resources.gold >=
-                                CRUSHING_STRIKE_UPGRADES[
-                                  combatSkills.crushingStrikeLevel + 1
-                                ].cost
+                                  CRUSHING_STRIKE_UPGRADES[
+                                    combatSkills.crushingStrikeLevel + 1
+                                  ].cost
                                   ? ""
                                   : "text-muted-foreground"
                               }
@@ -1187,165 +734,78 @@ export default function EstatePanel() {
                               Gold
                             </div>
                           </div>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  ) : null}
-                </div>
-                <Progress
-                  value={(combatSkills.crushingStrikeLevel / 5) * 100}
-                  className="h-2"
-                  segments={5}
-                />
-                <div className="flex justify-between text-xs text-muted-foreground">
-                  <span>
-                    {
-                      CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel]
-                        .damage
-                    }{" "}
-                    damage,{" "}
-                    {
-                      CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel]
-                        .stunRounds
-                    }{" "}
-                    round
-                    {CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel]
-                      .stunRounds > 1
-                      ? "s"
-                      : ""}{" "}
-                    stun
-                  </span>
-                </div>
-              </div>
-            )}
-
-            {/* Bloodflame Sphere */}
-            {fellowship.elder_wizard && (
-              <div className="w-80 space-y-1 pt-2">
-                <div className="flex items-center justify-between">
-                  <span className="pb-1 text-xs font-medium text-foreground">
-                    Bloodflame Sphere
-                  </span>
-                  {combatSkills.bloodflameSphereLevel < 5 ? (
-                    <TooltipProvider>
-                      <Tooltip
-                        open={mobileTooltip.isTooltipOpen(
-                          "upgrade-bloodflame-sphere-button",
-                        )}
+                        }
+                        tooltipId="upgrade-crushing-strike-button"
+                        disabled={
+                          resources.gold <
+                          CRUSHING_STRIKE_UPGRADES[
+                            combatSkills.crushingStrikeLevel + 1
+                          ].cost
+                        }
+                        onMouseEnter={() => {
+                          setHighlightedResources(["gold"]);
+                        }}
+                        onMouseLeave={() => {
+                          setHighlightedResources([]);
+                        }}
                       >
-                        <TooltipTrigger asChild>
-                          <div
-                            className="h-5 inline-block pb-1 text-xs font-medium text-foreground"
-                            onClick={
-                              mobileTooltip.isMobile
-                                ? (e) => {
-                                    mobileTooltip.handleWrapperClick(
-                                      "upgrade-bloodflame-sphere-button",
-                                      resources.gold <
-                                        BLOODFLAME_SPHERE_UPGRADES[
-                                          combatSkills.bloodflameSphereLevel + 1
-                                        ].cost,
-                                      false,
-                                      e,
-                                    );
-                                  }
-                                : undefined
+                        <div className="h-5 inline-block pb-1 text-xs font-medium text-foreground">
+                          <Button
+                            onClick={handleCrushingStrikeUpgrade}
+                            disabled={
+                              resources.gold <
+                              CRUSHING_STRIKE_UPGRADES[
+                                combatSkills.crushingStrikeLevel + 1
+                              ].cost
                             }
-                            onTouchStart={
-                              mobileTooltip.isMobile
-                                ? (e) => {
-                                    mobileTooltip.handleTouchStart(
-                                      "upgrade-bloodflame-sphere-button",
-                                      resources.gold <
-                                        BLOODFLAME_SPHERE_UPGRADES[
-                                          combatSkills.bloodflameSphereLevel + 1
-                                        ].cost,
-                                      false,
-                                      e,
-                                    );
-                                  }
-                                : undefined
-                            }
-                            onTouchEnd={
-                              mobileTooltip.isMobile
-                                ? (e) => {
-                                    mobileTooltip.handleTouchEnd(
-                                      "upgrade-bloodflame-sphere-button",
-                                      resources.gold <
-                                        BLOODFLAME_SPHERE_UPGRADES[
-                                          combatSkills.bloodflameSphereLevel + 1
-                                        ].cost,
-                                      handleBloodflameSphereUpgrade,
-                                      e,
-                                    );
-                                  }
-                                : undefined
-                            }
-                            onMouseDown={
-                              mobileTooltip.isMobile
-                                ? (e) => {
-                                    mobileTooltip.handleMouseDown(
-                                      "upgrade-bloodflame-sphere-button",
-                                      resources.gold <
-                                        BLOODFLAME_SPHERE_UPGRADES[
-                                          combatSkills.bloodflameSphereLevel + 1
-                                        ].cost,
-                                      false,
-                                      e,
-                                    );
-                                  }
-                                : undefined
-                            }
-                            onMouseUp={
-                              mobileTooltip.isMobile
-                                ? (e) => {
-                                    mobileTooltip.handleMouseUp(
-                                      "upgrade-bloodflame-sphere-button",
-                                      resources.gold <
-                                        BLOODFLAME_SPHERE_UPGRADES[
-                                          combatSkills.bloodflameSphereLevel + 1
-                                        ].cost,
-                                      handleBloodflameSphereUpgrade,
-                                      e,
-                                    );
-                                  }
-                                : undefined
-                            }
-                            onMouseEnter={() => {
-                              setHighlightedResources(["gold"]);
-                            }}
-                            onMouseLeave={() => {
-                              setHighlightedResources([]);
-                            }}
+                            size="xs"
+                            variant="ghost"
+                            className="h-5 pb-1  hover:bg-transparent hover:text-foreground"
+                            button_id="upgrade-crushing-strike"
                           >
-                            <Button
-                              onClick={
-                                mobileTooltip.isMobile &&
-                                mobileTooltip.isTooltipOpen(
-                                  "upgrade-bloodflame-sphere-button",
-                                )
-                                  ? (e) => {
-                                      e.preventDefault();
-                                      e.stopPropagation();
-                                    }
-                                  : handleBloodflameSphereUpgrade
-                              }
-                              disabled={
-                                resources.gold <
-                                BLOODFLAME_SPHERE_UPGRADES[
-                                  combatSkills.bloodflameSphereLevel + 1
-                                ].cost
-                              }
-                              size="xs"
-                              variant="ghost"
-                              className="h-5 pb-1  hover:bg-transparent hover:text-foreground"
-                              button_id="upgrade-bloodflame-sphere"
-                            >
-                              Improve
-                            </Button>
-                          </div>
-                        </TooltipTrigger>
-                        <TooltipContent>
+                            Improve
+                          </Button>
+                        </div>
+                      </TooltipWrapper>
+                    ) : null}
+                  </div>
+                  <Progress
+                    value={(combatSkills.crushingStrikeLevel / 5) * 100}
+                    className="h-2"
+                    segments={5}
+                  />
+                  <div className="flex justify-between text-xs text-muted-foreground">
+                    <span>
+                      {
+                        CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel]
+                          .damage
+                      }{" "}
+                      damage,{" "}
+                      {
+                        CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel]
+                          .stunRounds
+                      }{" "}
+                      round
+                      {CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel]
+                        .stunRounds > 1
+                        ? "s"
+                        : ""}{" "}
+                      stun
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              {/* Bloodflame Sphere */}
+              {fellowship.elder_wizard && (
+                <div className="w-80 space-y-1 pt-2">
+                  <div className="flex items-center justify-between">
+                    <span className="pb-1 text-xs font-medium text-foreground">
+                      Bloodflame Sphere
+                    </span>
+                    {combatSkills.bloodflameSphereLevel < 5 ? (
+                      <TooltipWrapper
+                        tooltip={
                           <div className="text-xs whitespace-nowrap">
                             {BLOODFLAME_SPHERE_UPGRADES[
                               combatSkills.bloodflameSphereLevel + 1
@@ -1353,75 +813,75 @@ export default function EstatePanel() {
                               BLOODFLAME_SPHERE_UPGRADES[
                                 combatSkills.bloodflameSphereLevel
                               ].damage && (
-                              <div>
-                                +
-                                {BLOODFLAME_SPHERE_UPGRADES[
-                                  combatSkills.bloodflameSphereLevel + 1
-                                ].damage -
-                                  BLOODFLAME_SPHERE_UPGRADES[
-                                    combatSkills.bloodflameSphereLevel
-                                  ].damage}{" "}
-                                damage
-                              </div>
-                            )}
+                                <div>
+                                  +
+                                  {BLOODFLAME_SPHERE_UPGRADES[
+                                    combatSkills.bloodflameSphereLevel + 1
+                                  ].damage -
+                                    BLOODFLAME_SPHERE_UPGRADES[
+                                      combatSkills.bloodflameSphereLevel
+                                    ].damage}{" "}
+                                  damage
+                                </div>
+                              )}
                             {BLOODFLAME_SPHERE_UPGRADES[
                               combatSkills.bloodflameSphereLevel + 1
                             ].burnDamage >
                               BLOODFLAME_SPHERE_UPGRADES[
                                 combatSkills.bloodflameSphereLevel
                               ].burnDamage && (
-                              <div>
-                                +
-                                {BLOODFLAME_SPHERE_UPGRADES[
-                                  combatSkills.bloodflameSphereLevel + 1
-                                ].burnDamage -
-                                  BLOODFLAME_SPHERE_UPGRADES[
-                                    combatSkills.bloodflameSphereLevel
-                                  ].burnDamage}{" "}
-                                burn damage
-                              </div>
-                            )}
+                                <div>
+                                  +
+                                  {BLOODFLAME_SPHERE_UPGRADES[
+                                    combatSkills.bloodflameSphereLevel + 1
+                                  ].burnDamage -
+                                    BLOODFLAME_SPHERE_UPGRADES[
+                                      combatSkills.bloodflameSphereLevel
+                                    ].burnDamage}{" "}
+                                  burn damage
+                                </div>
+                              )}
                             {BLOODFLAME_SPHERE_UPGRADES[
                               combatSkills.bloodflameSphereLevel + 1
                             ].burnRounds >
                               BLOODFLAME_SPHERE_UPGRADES[
                                 combatSkills.bloodflameSphereLevel
                               ].burnRounds && (
-                              <div>
-                                +
-                                {BLOODFLAME_SPHERE_UPGRADES[
-                                  combatSkills.bloodflameSphereLevel + 1
-                                ].burnRounds -
-                                  BLOODFLAME_SPHERE_UPGRADES[
-                                    combatSkills.bloodflameSphereLevel
-                                  ].burnRounds}{" "}
-                                burn round
-                              </div>
-                            )}
+                                <div>
+                                  +
+                                  {BLOODFLAME_SPHERE_UPGRADES[
+                                    combatSkills.bloodflameSphereLevel + 1
+                                  ].burnRounds -
+                                    BLOODFLAME_SPHERE_UPGRADES[
+                                      combatSkills.bloodflameSphereLevel
+                                    ].burnRounds}{" "}
+                                  burn round
+                                </div>
+                              )}
                             {BLOODFLAME_SPHERE_UPGRADES[
                               combatSkills.bloodflameSphereLevel + 1
                             ].healthCost >
                               BLOODFLAME_SPHERE_UPGRADES[
                                 combatSkills.bloodflameSphereLevel
                               ].healthCost && (
-                              <div>
-                                +
-                                {BLOODFLAME_SPHERE_UPGRADES[
-                                  combatSkills.bloodflameSphereLevel + 1
-                                ].healthCost -
-                                  BLOODFLAME_SPHERE_UPGRADES[
-                                    combatSkills.bloodflameSphereLevel
-                                  ].healthCost}{" "}
-                                health cost
-                              </div>
-                            )}
+                                <div>
+                                  +
+                                  {BLOODFLAME_SPHERE_UPGRADES[
+                                    combatSkills.bloodflameSphereLevel + 1
+                                  ].healthCost -
+                                    BLOODFLAME_SPHERE_UPGRADES[
+                                      combatSkills.bloodflameSphereLevel
+                                    ].healthCost}{" "}
+                                  health cost
+                                </div>
+                              )}
                             <div className="border-t border-border my-1" />
                             <div
                               className={
                                 resources.gold >=
-                                BLOODFLAME_SPHERE_UPGRADES[
-                                  combatSkills.bloodflameSphereLevel + 1
-                                ].cost
+                                  BLOODFLAME_SPHERE_UPGRADES[
+                                    combatSkills.bloodflameSphereLevel + 1
+                                  ].cost
                                   ? ""
                                   : "text-muted-foreground"
                               }
@@ -1435,179 +895,94 @@ export default function EstatePanel() {
                               Gold
                             </div>
                           </div>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  ) : null}
-                </div>
-                <Progress
-                  value={(combatSkills.bloodflameSphereLevel / 5) * 100}
-                  className="h-2"
-                  segments={5}
-                />
-                <div className="flex justify-between text-xs text-muted-foreground">
-                  <span>
-                    {
-                      BLOODFLAME_SPHERE_UPGRADES[
-                        combatSkills.bloodflameSphereLevel
-                      ].damage
-                    }{" "}
-                    damage,{" "}
-                    {
-                      BLOODFLAME_SPHERE_UPGRADES[
-                        combatSkills.bloodflameSphereLevel
-                      ].burnDamage
-                    }{" "}
-                    burn damage x{" "}
-                    {
-                      BLOODFLAME_SPHERE_UPGRADES[
-                        combatSkills.bloodflameSphereLevel
-                      ].burnRounds
-                    }{" "}
-                    round
-                    {BLOODFLAME_SPHERE_UPGRADES[
-                      combatSkills.bloodflameSphereLevel
-                    ].burnRounds > 1
-                      ? "s"
-                      : ""}
-                    ,{" "}
-                    {
-                      BLOODFLAME_SPHERE_UPGRADES[
-                        combatSkills.bloodflameSphereLevel
-                      ].healthCost
-                    }{" "}
-                    health cost
-                  </span>
-                </div>
-              </div>
-            )}
-
-            {/* Crow's Eye */}
-            {fellowship.one_eyed_crow && (
-              <div className="w-80 space-y-1 pt-2">
-                <div className="flex items-center justify-between">
-                  <span className="pb-1 text-xs font-medium text-foreground">
-                    Crow's Eye
-                  </span>
-                  {crowsEyeSkills.level < 5 ? (
-                    <TooltipProvider>
-                      <Tooltip
-                        open={mobileTooltip.isTooltipOpen(
-                          "upgrade-crows-eye-button",
-                        )}
+                        }
+                        tooltipId="upgrade-bloodflame-sphere-button"
+                        disabled={
+                          resources.gold <
+                          BLOODFLAME_SPHERE_UPGRADES[
+                            combatSkills.bloodflameSphereLevel + 1
+                          ].cost
+                        }
+                        onClick={handleBloodflameSphereUpgrade}
+                        onMouseEnter={() => {
+                          setHighlightedResources(["gold"]);
+                        }}
+                        onMouseLeave={() => {
+                          setHighlightedResources([]);
+                        }}
                       >
-                        <TooltipTrigger asChild>
-                          <div
-                            className="h-5 inline-block pb-1 text-xs font-medium text-foreground"
-                            onClick={
-                              mobileTooltip.isMobile
-                                ? (e) => {
-                                    mobileTooltip.handleWrapperClick(
-                                      "upgrade-crows-eye-button",
-                                      resources.gold <
-                                        CROWS_EYE_UPGRADES[
-                                          crowsEyeSkills.level + 1
-                                        ].cost,
-                                      false,
-                                      e,
-                                    );
-                                  }
-                                : undefined
+                        <div className="h-5 inline-block pb-1 text-xs font-medium text-foreground">
+                          <Button
+                            onClick={handleBloodflameSphereUpgrade}
+                            disabled={
+                              resources.gold <
+                              BLOODFLAME_SPHERE_UPGRADES[
+                                combatSkills.bloodflameSphereLevel + 1
+                              ].cost
                             }
-                            onTouchStart={
-                              mobileTooltip.isMobile
-                                ? (e) => {
-                                    mobileTooltip.handleTouchStart(
-                                      "upgrade-crows-eye-button",
-                                      resources.gold <
-                                        CROWS_EYE_UPGRADES[
-                                          crowsEyeSkills.level + 1
-                                        ].cost,
-                                      false,
-                                      e,
-                                    );
-                                  }
-                                : undefined
-                            }
-                            onTouchEnd={
-                              mobileTooltip.isMobile
-                                ? (e) => {
-                                    mobileTooltip.handleTouchEnd(
-                                      "upgrade-crows-eye-button",
-                                      resources.gold <
-                                        CROWS_EYE_UPGRADES[
-                                          crowsEyeSkills.level + 1
-                                        ].cost,
-                                      handleCrowsEyeUpgrade,
-                                      e,
-                                    );
-                                  }
-                                : undefined
-                            }
-                            onMouseDown={
-                              mobileTooltip.isMobile
-                                ? (e) => {
-                                    mobileTooltip.handleMouseDown(
-                                      "upgrade-crows-eye-button",
-                                      resources.gold <
-                                        CROWS_EYE_UPGRADES[
-                                          crowsEyeSkills.level + 1
-                                        ].cost,
-                                      false,
-                                      e,
-                                    );
-                                  }
-                                : undefined
-                            }
-                            onMouseUp={
-                              mobileTooltip.isMobile
-                                ? (e) => {
-                                    mobileTooltip.handleMouseUp(
-                                      "upgrade-crows-eye-button",
-                                      resources.gold <
-                                        CROWS_EYE_UPGRADES[
-                                          crowsEyeSkills.level + 1
-                                        ].cost,
-                                      handleCrowsEyeUpgrade,
-                                      e,
-                                    );
-                                  }
-                                : undefined
-                            }
-                            onMouseEnter={() => {
-                              setHighlightedResources(["gold"]);
-                            }}
-                            onMouseLeave={() => {
-                              setHighlightedResources([]);
-                            }}
+                            size="xs"
+                            variant="ghost"
+                            className="h-5 pb-1  hover:bg-transparent hover:text-foreground"
+                            button_id="upgrade-bloodflame-sphere"
                           >
-                            <Button
-                              onClick={
-                                mobileTooltip.isMobile &&
-                                mobileTooltip.isTooltipOpen(
-                                  "upgrade-crows-eye-button",
-                                )
-                                  ? (e) => {
-                                      e.preventDefault();
-                                      e.stopPropagation();
-                                    }
-                                  : handleCrowsEyeUpgrade
-                              }
-                              disabled={
-                                resources.gold <
-                                CROWS_EYE_UPGRADES[crowsEyeSkills.level + 1]
-                                  .cost
-                              }
-                              size="xs"
-                              variant="ghost"
-                              className="h-5 pb-1  hover:bg-transparent hover:text-foreground"
-                              button_id="upgrade-crows-eye"
-                            >
-                              Improve
-                            </Button>
-                          </div>
-                        </TooltipTrigger>
-                        <TooltipContent>
+                            Improve
+                          </Button>
+                        </div>
+                      </TooltipWrapper>
+                    ) : null}
+                  </div>
+                  <Progress
+                    value={(combatSkills.bloodflameSphereLevel / 5) * 100}
+                    className="h-2"
+                    segments={5}
+                  />
+                  <div className="flex justify-between text-xs text-muted-foreground">
+                    <span>
+                      {
+                        BLOODFLAME_SPHERE_UPGRADES[
+                          combatSkills.bloodflameSphereLevel
+                        ].damage
+                      }{" "}
+                      damage,{" "}
+                      {
+                        BLOODFLAME_SPHERE_UPGRADES[
+                          combatSkills.bloodflameSphereLevel
+                        ].burnDamage
+                      }{" "}
+                      burn damage x{" "}
+                      {
+                        BLOODFLAME_SPHERE_UPGRADES[
+                          combatSkills.bloodflameSphereLevel
+                        ].burnRounds
+                      }{" "}
+                      round
+                      {BLOODFLAME_SPHERE_UPGRADES[
+                        combatSkills.bloodflameSphereLevel
+                      ].burnRounds > 1
+                        ? "s"
+                        : ""}
+                      ,{" "}
+                      {
+                        BLOODFLAME_SPHERE_UPGRADES[
+                          combatSkills.bloodflameSphereLevel
+                        ].healthCost
+                      }{" "}
+                      health cost
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              {/* Crow's Eye */}
+              {fellowship.one_eyed_crow && (
+                <div className="w-80 space-y-1 pt-2">
+                  <div className="flex items-center justify-between">
+                    <span className="pb-1 text-xs font-medium text-foreground">
+                      Crow's Eye
+                    </span>
+                    {crowsEyeSkills.level < 5 ? (
+                      <TooltipWrapper
+                        tooltip={
                           <div className="text-xs whitespace-nowrap">
                             <div>
                               +
@@ -1621,8 +996,8 @@ export default function EstatePanel() {
                             <div
                               className={
                                 resources.gold >=
-                                CROWS_EYE_UPGRADES[crowsEyeSkills.level + 1]
-                                  .cost
+                                  CROWS_EYE_UPGRADES[crowsEyeSkills.level + 1]
+                                    .cost
                                   ? ""
                                   : "text-muted-foreground"
                               }
@@ -1635,25 +1010,53 @@ export default function EstatePanel() {
                               Gold
                             </div>
                           </div>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  ) : null}
+                        }
+                        tooltipId="upgrade-crows-eye-button"
+                        disabled={
+                          resources.gold <
+                          CROWS_EYE_UPGRADES[crowsEyeSkills.level + 1]
+                            .cost
+                        }
+                        onMouseEnter={() => {
+                          setHighlightedResources(["gold"]);
+                        }}
+                        onMouseLeave={() => {
+                          setHighlightedResources([]);
+                        }}
+                      >
+                        <div className="h-5 inline-block pb-1 text-xs font-medium text-foreground">
+                          <Button
+                            onClick={handleCrowsEyeUpgrade}
+                            disabled={
+                              resources.gold <
+                              CROWS_EYE_UPGRADES[crowsEyeSkills.level + 1]
+                                .cost
+                            }
+                            size="xs"
+                            variant="ghost"
+                            className="h-5 pb-1  hover:bg-transparent hover:text-foreground"
+                            button_id="upgrade-crows-eye"
+                          >
+                            Improve
+                          </Button>
+                        </div>
+                      </TooltipWrapper>
+                    ) : null}
+                  </div>
+                  <Progress
+                    value={(crowsEyeSkills.level / 5) * 100}
+                    className="h-2"
+                    segments={5}
+                  />
+                  <div className="flex justify-between text-xs text-muted-foreground">
+                    <span>
+                      {CROWS_EYE_UPGRADES[crowsEyeSkills.level].doubleChance}% chance to double gains from actions
+                    </span>
+                  </div>
                 </div>
-                <Progress
-                  value={(crowsEyeSkills.level / 5) * 100}
-                  className="h-2"
-                  segments={5}
-                />
-                <div className="flex justify-between text-xs text-muted-foreground">
-                  <span>
-                    {CROWS_EYE_UPGRADES[crowsEyeSkills.level].doubleChance}% chance to double gains from actions
-                  </span>
-                </div>
-              </div>
-            )}
-          </div>
-        )}
+              )}
+            </div>
+          )}
 
         {/* Cube Section */}
         <div className="space-y-2 pt-1">
@@ -1661,28 +1064,27 @@ export default function EstatePanel() {
 
           <div className="grid grid-cols-6 gap-5 w-40 h-12 gap-y-3">
             {completedCubeEvents.map((event) => (
-              <TooltipProvider key={event.id}>
-                <Tooltip open={cubeTooltip.isTooltipOpen(`cube-${event.id}`)}>
-                  <TooltipTrigger asChild>
-                    <button
-                      onClick={(e) => {
-                        cubeTooltip.handleTooltipClick(`cube-${event.id}`, e);
-                        useGameStore
-                          .getState()
-                          .trackButtonClick(`cube-${event.id}`);
-                        handleCubeClick(event);
-                      }}
-                      className="w-6 h-6 bg-neutral-900 border border-neutral-800 rounded-md flex items-center justify-center hover:bg-neutral-800 hover:border-neutral-500 transition-all cursor-pointer group relative"
-                    >
-                      <div className="text-md">▣</div>
-                      <div className="absolute inset-0 cube-dialog-glow opacity-0 group-hover:opacity-30 transition-opacity pointer-events-none rounded"></div>
-                    </button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <div className="text-xs">{event.title}</div>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
+              <TooltipWrapper
+                key={event.id}
+                tooltip={
+                  <div className="text-xs">{event.title}</div>
+                }
+                tooltipId={`cube-${event.id}`}
+              >
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    useGameStore
+                      .getState()
+                      .trackButtonClick(`cube-${event.id}`);
+                    handleCubeClick(event);
+                  }}
+                  className="w-6 h-6 bg-neutral-900 border border-neutral-800 rounded-md flex items-center justify-center hover:bg-neutral-800 hover:border-neutral-500 transition-all cursor-pointer group relative"
+                >
+                  <div className="text-md">▣</div>
+                  <div className="absolute inset-0 cube-dialog-glow opacity-0 group-hover:opacity-30 transition-opacity pointer-events-none rounded"></div>
+                </button>
+              </TooltipWrapper>
             ))}
           </div>
         </div>
