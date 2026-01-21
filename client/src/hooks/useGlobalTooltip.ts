@@ -10,6 +10,7 @@ class GlobalTooltipManager {
   private listeners: Set<(id: string | null) => void> = new Set();
   private pressTimers: Map<string, NodeJS.Timeout> = new Map();
   private pressingIds: Set<string> = new Set();
+  private tooltipsOpenedByTimer: Set<string> = new Set();
 
   subscribe(listener: (id: string | null) => void) {
     this.listeners.add(listener);
@@ -18,13 +19,17 @@ class GlobalTooltipManager {
     };
   }
 
-  setOpenTooltip(id: string | null) {
+  setOpenTooltip(id: string | null, openedByTimer: boolean = false) {
     // Clear any existing press timers when opening a new tooltip
     if (id !== this.openTooltipId) {
       this.clearAllPressTimers();
+      this.tooltipsOpenedByTimer.clear();
     }
-
+    
     this.openTooltipId = id;
+    if (openedByTimer && id) {
+      this.tooltipsOpenedByTimer.add(id);
+    }
     this.listeners.forEach((listener) => listener(id));
   }
 
@@ -40,6 +45,14 @@ class GlobalTooltipManager {
     this.pressTimers.forEach((timer) => clearTimeout(timer));
     this.pressTimers.clear();
     this.pressingIds.clear();
+  }
+
+  wasOpenedByTimer(id: string) {
+    return this.tooltipsOpenedByTimer.has(id);
+  }
+
+  clearOpenedByTimer(id: string) {
+    this.tooltipsOpenedByTimer.delete(id);
   }
 
   setPressTimer(id: string, timer: NodeJS.Timeout) {
@@ -126,17 +139,17 @@ export function useGlobalTooltip() {
 
   const handleMouseDown = useCallback((id: string, disabled: boolean, isCoolingDown: boolean, e: React.MouseEvent) => {
     if (!isMobile) return;
-
+    
     // Clear any existing timer before creating a new one
     globalTooltipManager.clearPressTimer(id);
-
+    
     // Don't prevent default to allow button interaction
     // Start timer to show tooltip after 300ms
     const timer = setTimeout(() => {
-      globalTooltipManager.setOpenTooltip(id);
+      globalTooltipManager.setOpenTooltip(id, true); // Mark as opened by timer
       globalTooltipManager.clearPressTimer(id);
     }, 300);
-
+    
     globalTooltipManager.setPressTimer(id, timer);
   }, [isMobile]);
 
@@ -148,8 +161,18 @@ export function useGlobalTooltip() {
     
     // If tooltip is already open, close it
     if (globalTooltipManager.isTooltipOpen(id)) {
+      const wasOpenedByTimer = globalTooltipManager.wasOpenedByTimer(id);
       globalTooltipManager.setOpenTooltip(null);
-      // If button is enabled, allow the click to proceed to the button
+      globalTooltipManager.clearOpenedByTimer(id);
+      
+      // If tooltip was opened by long press timer, prevent click (user was just viewing tooltip)
+      if (wasOpenedByTimer) {
+        e.preventDefault();
+        e.stopPropagation();
+        return;
+      }
+      
+      // If tooltip was already open (not from timer), allow click to proceed
       if (!disabled) {
         // Don't prevent default - let the button's onClick handle it
         return;
@@ -194,8 +217,18 @@ export function useGlobalTooltip() {
     
     // If tooltip is already open, close it
     if (globalTooltipManager.isTooltipOpen(id)) {
+      const wasOpenedByTimer = globalTooltipManager.wasOpenedByTimer(id);
       globalTooltipManager.setOpenTooltip(null);
-      // If button is enabled, allow the click to proceed to the button
+      globalTooltipManager.clearOpenedByTimer(id);
+      
+      // If tooltip was opened by long press timer, prevent click (user was just viewing tooltip)
+      if (wasOpenedByTimer) {
+        e.preventDefault();
+        e.stopPropagation();
+        return;
+      }
+      
+      // If tooltip was already open (not from timer), allow click to proceed
       if (!disabled) {
         // Don't prevent default - let the button's onClick handle it
         return;
