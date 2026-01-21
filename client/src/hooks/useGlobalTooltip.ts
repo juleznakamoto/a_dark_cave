@@ -23,7 +23,7 @@ class GlobalTooltipManager {
     if (id !== this.openTooltipId) {
       this.clearAllPressTimers();
     }
-    
+
     this.openTooltipId = id;
     this.listeners.forEach((listener) => listener(id));
   }
@@ -115,7 +115,7 @@ export function useGlobalTooltip() {
 
   const handleWrapperClick = useCallback((id: string, disabled: boolean, isCoolingDown: boolean, e: React.MouseEvent) => {
     if (!isMobile || isCoolingDown) return;
-    
+
     // On mobile with tooltip, handle inactive buttons specially
     if (disabled) {
       e.stopPropagation();
@@ -126,17 +126,17 @@ export function useGlobalTooltip() {
 
   const handleMouseDown = useCallback((id: string, disabled: boolean, isCoolingDown: boolean, e: React.MouseEvent) => {
     if (!isMobile) return;
-    
+
     // Clear any existing timer before creating a new one
     globalTooltipManager.clearPressTimer(id);
-    
+
     // Don't prevent default to allow button interaction
     // Start timer to show tooltip after 300ms
     const timer = setTimeout(() => {
       globalTooltipManager.setOpenTooltip(id);
       globalTooltipManager.clearPressTimer(id);
     }, 300);
-    
+
     globalTooltipManager.setPressTimer(id, timer);
   }, [isMobile]);
 
@@ -148,6 +148,13 @@ export function useGlobalTooltip() {
     
     // If tooltip is already open, close it
     if (globalTooltipManager.isTooltipOpen(id)) {
+      globalTooltipManager.setOpenTooltip(null);
+      // If button is enabled, allow the click to proceed to the button
+      if (!disabled) {
+        // Don't prevent default - let the button's onClick handle it
+        return;
+      }
+      // If disabled, prevent the click
       e.preventDefault();
       e.stopPropagation();
       return;
@@ -166,16 +173,16 @@ export function useGlobalTooltip() {
 
   const handleTouchStart = useCallback((id: string, disabled: boolean, isCoolingDown: boolean, e: React.TouchEvent) => {
     if (!isMobile) return;
-    
+
     // Clear any existing timer before creating a new one
     globalTooltipManager.clearPressTimer(id);
-    
+
     // Start timer to show tooltip after 300ms
     const timer = setTimeout(() => {
       globalTooltipManager.setOpenTooltip(id);
       globalTooltipManager.clearPressTimer(id);
     }, 300);
-    
+
     globalTooltipManager.setPressTimer(id, timer);
   }, [isMobile]);
 
@@ -187,6 +194,13 @@ export function useGlobalTooltip() {
     
     // If tooltip is already open, close it
     if (globalTooltipManager.isTooltipOpen(id)) {
+      globalTooltipManager.setOpenTooltip(null);
+      // If button is enabled, allow the click to proceed to the button
+      if (!disabled) {
+        // Don't prevent default - let the button's onClick handle it
+        return;
+      }
+      // If disabled, prevent the click
       e.preventDefault();
       e.stopPropagation();
       return;

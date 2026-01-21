@@ -46,8 +46,8 @@ export default function EventDialog({
   const fallbackExecutedRef = useRef(false);
 
   // Derive eventChoices directly from event prop instead of using state
-  const eventChoices = typeof event?.choices === 'function' 
-    ? event.choices(gameState) 
+  const eventChoices = typeof event?.choices === 'function'
+    ? event.choices(gameState)
     : event?.choices || [];
 
   // Reset purchased items when dialog opens

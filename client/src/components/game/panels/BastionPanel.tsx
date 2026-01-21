@@ -110,7 +110,7 @@ export default function BastionPanel() {
           },
         },
       }));
-      
+
       // Then recalculate bastion stats after state has been updated
       setTimeout(() => {
         useGameStore.getState().updateBastionStats();
@@ -134,7 +134,7 @@ export default function BastionPanel() {
           },
         },
       }));
-      
+
       // Then recalculate bastion stats after state has been updated
       setTimeout(() => {
         useGameStore.getState().updateBastionStats();
@@ -158,7 +158,7 @@ export default function BastionPanel() {
           },
         },
       }));
-      
+
       // Then recalculate bastion stats after state has been updated
       setTimeout(() => {
         useGameStore.getState().updateBastionStats();

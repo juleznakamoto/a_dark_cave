@@ -528,535 +528,535 @@ export default function EstatePanel() {
           fellowship.restless_knight ||
           fellowship.elder_wizard ||
           fellowship.one_eyed_crow) && (
-          <div className="space-y-1 pt-2">
-            <h3 className="text-xs font-bold text-foreground">Skills</h3>
+            <div className="space-y-1 pt-2">
+              <h3 className="text-xs font-bold text-foreground">Skills</h3>
 
-            {/* Huntress Training */}
-            {fellowship.ashwraith_huntress && (
-              <div className="w-80 space-y-1 pt-2">
-                <div className="flex items-center justify-between">
-                  <span className="pb-1 text-xs font-medium text-foreground">
-                    Huntress Training
-                  </span>
-                  {huntingSkills.level < 5 ? (
-                    <TooltipWrapper
-                      tooltip={
-                        <div className="text-xs whitespace-nowrap">
-                          {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]
-                            .food >
-                            HUNTING_SKILL_UPGRADES[huntingSkills.level]
-                              .food && (
-                            <div>
-                              +
-                              {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]
-                                .food -
-                                HUNTING_SKILL_UPGRADES[huntingSkills.level]
-                                  .food}{" "}
-                              Food per Hunter
+              {/* Huntress Training */}
+              {fellowship.ashwraith_huntress && (
+                <div className="w-80 space-y-1 pt-2">
+                  <div className="flex items-center justify-between">
+                    <span className="pb-1 text-xs font-medium text-foreground">
+                      Huntress Training
+                    </span>
+                    {huntingSkills.level < 5 ? (
+                      <TooltipWrapper
+                        tooltip={
+                          <div className="text-xs whitespace-nowrap">
+                            {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]
+                              .food >
+                              HUNTING_SKILL_UPGRADES[huntingSkills.level]
+                                .food && (
+                                <div>
+                                  +
+                                  {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]
+                                    .food -
+                                    HUNTING_SKILL_UPGRADES[huntingSkills.level]
+                                      .food}{" "}
+                                  Food per Hunter
+                                </div>
+                              )}
+                            {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]
+                              .fur >
+                              HUNTING_SKILL_UPGRADES[huntingSkills.level]
+                                .fur && (
+                                <div>
+                                  +
+                                  {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]
+                                    .fur -
+                                    HUNTING_SKILL_UPGRADES[huntingSkills.level]
+                                      .fur}{" "}
+                                  Fur per Hunter
+                                </div>
+                              )}
+                            {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]
+                              .bones >
+                              HUNTING_SKILL_UPGRADES[huntingSkills.level]
+                                .bones && (
+                                <div>
+                                  +
+                                  {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]
+                                    .bones -
+                                    HUNTING_SKILL_UPGRADES[huntingSkills.level]
+                                      .bones}{" "}
+                                  Bones per Hunter
+                                </div>
+                              )}
+                            {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]
+                              .huntBonus >
+                              HUNTING_SKILL_UPGRADES[huntingSkills.level]
+                                .huntBonus && (
+                                <div>
+                                  +
+                                  {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]
+                                    .huntBonus -
+                                    HUNTING_SKILL_UPGRADES[huntingSkills.level]
+                                      .huntBonus}
+                                  % Hunt bonus
+                                </div>
+                              )}
+                            <div className="border-t border-border my-1" />
+                            <div
+                              className={
+                                resources.gold >=
+                                  HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]
+                                    .cost
+                                  ? ""
+                                  : "text-muted-foreground"
+                              }
+                            >
+                              -
+                              {
+                                HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]
+                                  .cost
+                              }{" "}
+                              Gold
                             </div>
-                          )}
-                          {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]
-                            .fur >
-                            HUNTING_SKILL_UPGRADES[huntingSkills.level]
-                              .fur && (
-                            <div>
-                              +
-                              {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]
-                                .fur -
-                                HUNTING_SKILL_UPGRADES[huntingSkills.level]
-                                  .fur}{" "}
-                              Fur per Hunter
-                            </div>
-                          )}
-                          {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]
-                            .bones >
-                            HUNTING_SKILL_UPGRADES[huntingSkills.level]
-                              .bones && (
-                            <div>
-                              +
-                              {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]
-                                .bones -
-                                HUNTING_SKILL_UPGRADES[huntingSkills.level]
-                                  .bones}{" "}
-                              Bones per Hunter
-                            </div>
-                          )}
-                          {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]
-                            .huntBonus >
-                            HUNTING_SKILL_UPGRADES[huntingSkills.level]
-                              .huntBonus && (
-                            <div>
-                              +
-                              {HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]
-                                .huntBonus -
-                                HUNTING_SKILL_UPGRADES[huntingSkills.level]
-                                  .huntBonus}
-                              % Hunt bonus
-                            </div>
-                          )}
-                          <div className="border-t border-border my-1" />
-                          <div
-                            className={
-                              resources.gold >=
-                              HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]
-                                .cost
-                                ? ""
-                                : "text-muted-foreground"
-                            }
-                          >
-                            -
-                            {
-                              HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]
-                                .cost
-                            }{" "}
-                            Gold
                           </div>
+                        }
+                        tooltipId="upgrade-hunting-button"
+                        disabled={
+                          resources.gold <
+                          HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]
+                            .cost
+                        }
+                        onClick={handleHuntingSkillUpgrade}
+                        onMouseEnter={() => {
+                          setHighlightedResources(["gold"]);
+                        }}
+                        onMouseLeave={() => {
+                          setHighlightedResources([]);
+                        }}
+                      >
+                        <div className="h-5 inline-block pb-1 text-xs font-medium text-foreground">
+                          <Button
+                            onClick={handleHuntingSkillUpgrade}
+                            disabled={
+                              resources.gold <
+                              HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]
+                                .cost
+                            }
+                            size="xs"
+                            variant="ghost"
+                            className="h-5 pb-1  hover:bg-transparent hover:text-foreground"
+                            button_id="upgrade-hunting-skills"
+                          >
+                            Improve
+                          </Button>
                         </div>
-                      }
-                      tooltipId="upgrade-hunting-button"
-                      disabled={
-                        resources.gold <
-                        HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]
-                          .cost
-                      }
-                      onClick={handleHuntingSkillUpgrade}
-                      onMouseEnter={() => {
-                        setHighlightedResources(["gold"]);
-                      }}
-                      onMouseLeave={() => {
-                        setHighlightedResources([]);
-                      }}
-                    >
-                      <div className="h-5 inline-block pb-1 text-xs font-medium text-foreground">
-                        <Button
-                          onClick={handleHuntingSkillUpgrade}
-                          disabled={
-                            resources.gold <
-                            HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]
-                              .cost
-                          }
-                          size="xs"
-                          variant="ghost"
-                          className="h-5 pb-1  hover:bg-transparent hover:text-foreground"
-                          button_id="upgrade-hunting-skills"
-                        >
-                          Improve
-                        </Button>
-                      </div>
-                    </TooltipWrapper>
-                  ) : null}
-                </div>
-                <Progress
-                  value={(huntingSkills.level / 5) * 100}
-                  className="h-2"
-                  segments={5}
-                />
-                <div className="flex justify-between text-xs text-muted-foreground">
-                  <span>
-                    {[
-                      `+${HUNTING_SKILL_UPGRADES[huntingSkills.level].huntBonus}% hunt bonus`,
-                      HUNTING_SKILL_UPGRADES[huntingSkills.level].food > 0 &&
+                      </TooltipWrapper>
+                    ) : null}
+                  </div>
+                  <Progress
+                    value={(huntingSkills.level / 5) * 100}
+                    className="h-2"
+                    segments={5}
+                  />
+                  <div className="flex justify-between text-xs text-muted-foreground">
+                    <span>
+                      {[
+                        `+${HUNTING_SKILL_UPGRADES[huntingSkills.level].huntBonus}% hunt bonus`,
+                        HUNTING_SKILL_UPGRADES[huntingSkills.level].food > 0 &&
                         `hunter: +${HUNTING_SKILL_UPGRADES[huntingSkills.level].food} food`,
-                      HUNTING_SKILL_UPGRADES[huntingSkills.level].fur > 0 &&
+                        HUNTING_SKILL_UPGRADES[huntingSkills.level].fur > 0 &&
                         `+${HUNTING_SKILL_UPGRADES[huntingSkills.level].fur} fur`,
-                      HUNTING_SKILL_UPGRADES[huntingSkills.level].bones > 0 &&
+                        HUNTING_SKILL_UPGRADES[huntingSkills.level].bones > 0 &&
                         `+${HUNTING_SKILL_UPGRADES[huntingSkills.level].bones} bones`,
-                    ]
-                      .filter(Boolean)
-                      .join(", ")}
-                  </span>
+                      ]
+                        .filter(Boolean)
+                        .join(", ")}
+                    </span>
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
 
-            {/* Crushing Strike */}
-            {fellowship.restless_knight && (
-              <div className="w-80 space-y-1 pt-2">
-                <div className="flex items-center justify-between">
-                  <span className="pb-1 text-xs font-medium text-foreground">
-                    Crushing Strike
-                  </span>
-                  {combatSkills.crushingStrikeLevel < 5 ? (
-                    <TooltipWrapper
-                      tooltip={
-                        <div className="text-xs whitespace-nowrap">
-                          {CRUSHING_STRIKE_UPGRADES[
-                            combatSkills.crushingStrikeLevel + 1
-                          ].damage >
-                            CRUSHING_STRIKE_UPGRADES[
-                              combatSkills.crushingStrikeLevel
-                            ].damage && (
-                            <div>
-                              +
-                              {CRUSHING_STRIKE_UPGRADES[
-                                combatSkills.crushingStrikeLevel + 1
-                              ].damage -
-                                CRUSHING_STRIKE_UPGRADES[
-                                  combatSkills.crushingStrikeLevel
-                                ].damage}{" "}
-                              damage
-                            </div>
-                          )}
-                          {CRUSHING_STRIKE_UPGRADES[
-                            combatSkills.crushingStrikeLevel + 1
-                          ].stunRounds >
-                            CRUSHING_STRIKE_UPGRADES[
-                              combatSkills.crushingStrikeLevel
-                            ].stunRounds && (
-                            <div>
-                              +
-                              {CRUSHING_STRIKE_UPGRADES[
-                                combatSkills.crushingStrikeLevel + 1
-                              ].stunRounds -
-                                CRUSHING_STRIKE_UPGRADES[
-                                  combatSkills.crushingStrikeLevel
-                                ].stunRounds}{" "}
-                              stun round
-                            </div>
-                          )}
-                          <div className="border-t border-border my-1" />
-                          <div
-                            className={
-                              resources.gold >=
-                              CRUSHING_STRIKE_UPGRADES[
-                                combatSkills.crushingStrikeLevel + 1
-                              ].cost
-                                ? ""
-                                : "text-muted-foreground"
-                            }
-                          >
-                            -
-                            {
-                              CRUSHING_STRIKE_UPGRADES[
-                                combatSkills.crushingStrikeLevel + 1
-                              ].cost
-                            }{" "}
-                            Gold
-                          </div>
-                        </div>
-                      }
-                      tooltipId="upgrade-crushing-strike-button"
-                      disabled={
-                        resources.gold <
-                        CRUSHING_STRIKE_UPGRADES[
-                          combatSkills.crushingStrikeLevel + 1
-                        ].cost
-                      }
-                      onMouseEnter={() => {
-                        setHighlightedResources(["gold"]);
-                      }}
-                      onMouseLeave={() => {
-                        setHighlightedResources([]);
-                      }}
-                    >
-                      <div className="h-5 inline-block pb-1 text-xs font-medium text-foreground">
-                        <Button
-                          onClick={handleCrushingStrikeUpgrade}
-                          disabled={
-                            resources.gold <
-                            CRUSHING_STRIKE_UPGRADES[
+              {/* Crushing Strike */}
+              {fellowship.restless_knight && (
+                <div className="w-80 space-y-1 pt-2">
+                  <div className="flex items-center justify-between">
+                    <span className="pb-1 text-xs font-medium text-foreground">
+                      Crushing Strike
+                    </span>
+                    {combatSkills.crushingStrikeLevel < 5 ? (
+                      <TooltipWrapper
+                        tooltip={
+                          <div className="text-xs whitespace-nowrap">
+                            {CRUSHING_STRIKE_UPGRADES[
                               combatSkills.crushingStrikeLevel + 1
-                            ].cost
-                          }
-                          size="xs"
-                          variant="ghost"
-                          className="h-5 pb-1  hover:bg-transparent hover:text-foreground"
-                          button_id="upgrade-crushing-strike"
-                        >
-                          Improve
-                        </Button>
-                      </div>
-                    </TooltipWrapper>
-                  ) : null}
-                </div>
-                <Progress
-                  value={(combatSkills.crushingStrikeLevel / 5) * 100}
-                  className="h-2"
-                  segments={5}
-                />
-                <div className="flex justify-between text-xs text-muted-foreground">
-                  <span>
-                    {
-                      CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel]
-                        .damage
-                    }{" "}
-                    damage,{" "}
-                    {
-                      CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel]
-                        .stunRounds
-                    }{" "}
-                    round
-                    {CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel]
-                      .stunRounds > 1
-                      ? "s"
-                      : ""}{" "}
-                    stun
-                  </span>
-                </div>
-              </div>
-            )}
-
-            {/* Bloodflame Sphere */}
-            {fellowship.elder_wizard && (
-              <div className="w-80 space-y-1 pt-2">
-                <div className="flex items-center justify-between">
-                  <span className="pb-1 text-xs font-medium text-foreground">
-                    Bloodflame Sphere
-                  </span>
-                  {combatSkills.bloodflameSphereLevel < 5 ? (
-                    <TooltipWrapper
-                      tooltip={
-                        <div className="text-xs whitespace-nowrap">
-                          {BLOODFLAME_SPHERE_UPGRADES[
-                            combatSkills.bloodflameSphereLevel + 1
-                          ].damage >
-                            BLOODFLAME_SPHERE_UPGRADES[
-                              combatSkills.bloodflameSphereLevel
-                            ].damage && (
-                            <div>
-                              +
-                              {BLOODFLAME_SPHERE_UPGRADES[
-                                combatSkills.bloodflameSphereLevel + 1
-                              ].damage -
-                                BLOODFLAME_SPHERE_UPGRADES[
-                                  combatSkills.bloodflameSphereLevel
-                                ].damage}{" "}
-                              damage
+                            ].damage >
+                              CRUSHING_STRIKE_UPGRADES[
+                                combatSkills.crushingStrikeLevel
+                              ].damage && (
+                                <div>
+                                  +
+                                  {CRUSHING_STRIKE_UPGRADES[
+                                    combatSkills.crushingStrikeLevel + 1
+                                  ].damage -
+                                    CRUSHING_STRIKE_UPGRADES[
+                                      combatSkills.crushingStrikeLevel
+                                    ].damage}{" "}
+                                  damage
+                                </div>
+                              )}
+                            {CRUSHING_STRIKE_UPGRADES[
+                              combatSkills.crushingStrikeLevel + 1
+                            ].stunRounds >
+                              CRUSHING_STRIKE_UPGRADES[
+                                combatSkills.crushingStrikeLevel
+                              ].stunRounds && (
+                                <div>
+                                  +
+                                  {CRUSHING_STRIKE_UPGRADES[
+                                    combatSkills.crushingStrikeLevel + 1
+                                  ].stunRounds -
+                                    CRUSHING_STRIKE_UPGRADES[
+                                      combatSkills.crushingStrikeLevel
+                                    ].stunRounds}{" "}
+                                  stun round
+                                </div>
+                              )}
+                            <div className="border-t border-border my-1" />
+                            <div
+                              className={
+                                resources.gold >=
+                                  CRUSHING_STRIKE_UPGRADES[
+                                    combatSkills.crushingStrikeLevel + 1
+                                  ].cost
+                                  ? ""
+                                  : "text-muted-foreground"
+                              }
+                            >
+                              -
+                              {
+                                CRUSHING_STRIKE_UPGRADES[
+                                  combatSkills.crushingStrikeLevel + 1
+                                ].cost
+                              }{" "}
+                              Gold
                             </div>
-                          )}
-                          {BLOODFLAME_SPHERE_UPGRADES[
-                            combatSkills.bloodflameSphereLevel + 1
-                          ].burnDamage >
-                            BLOODFLAME_SPHERE_UPGRADES[
-                              combatSkills.bloodflameSphereLevel
-                            ].burnDamage && (
-                            <div>
-                              +
-                              {BLOODFLAME_SPHERE_UPGRADES[
-                                combatSkills.bloodflameSphereLevel + 1
-                              ].burnDamage -
-                                BLOODFLAME_SPHERE_UPGRADES[
-                                  combatSkills.bloodflameSphereLevel
-                                ].burnDamage}{" "}
-                              burn damage
-                            </div>
-                          )}
-                          {BLOODFLAME_SPHERE_UPGRADES[
-                            combatSkills.bloodflameSphereLevel + 1
-                          ].burnRounds >
-                            BLOODFLAME_SPHERE_UPGRADES[
-                              combatSkills.bloodflameSphereLevel
-                            ].burnRounds && (
-                            <div>
-                              +
-                              {BLOODFLAME_SPHERE_UPGRADES[
-                                combatSkills.bloodflameSphereLevel + 1
-                              ].burnRounds -
-                                BLOODFLAME_SPHERE_UPGRADES[
-                                  combatSkills.bloodflameSphereLevel
-                                ].burnRounds}{" "}
-                              burn round
-                            </div>
-                          )}
-                          {BLOODFLAME_SPHERE_UPGRADES[
-                            combatSkills.bloodflameSphereLevel + 1
-                          ].healthCost >
-                            BLOODFLAME_SPHERE_UPGRADES[
-                              combatSkills.bloodflameSphereLevel
-                            ].healthCost && (
-                            <div>
-                              +
-                              {BLOODFLAME_SPHERE_UPGRADES[
-                                combatSkills.bloodflameSphereLevel + 1
-                              ].healthCost -
-                                BLOODFLAME_SPHERE_UPGRADES[
-                                  combatSkills.bloodflameSphereLevel
-                                ].healthCost}{" "}
-                              health cost
-                            </div>
-                          )}
-                          <div className="border-t border-border my-1" />
-                          <div
-                            className={
-                              resources.gold >=
-                              BLOODFLAME_SPHERE_UPGRADES[
-                                combatSkills.bloodflameSphereLevel + 1
-                              ].cost
-                                ? ""
-                                : "text-muted-foreground"
-                            }
-                          >
-                            -
-                            {
-                              BLOODFLAME_SPHERE_UPGRADES[
-                                combatSkills.bloodflameSphereLevel + 1
-                              ].cost
-                            }{" "}
-                            Gold
                           </div>
+                        }
+                        tooltipId="upgrade-crushing-strike-button"
+                        disabled={
+                          resources.gold <
+                          CRUSHING_STRIKE_UPGRADES[
+                            combatSkills.crushingStrikeLevel + 1
+                          ].cost
+                        }
+                        onMouseEnter={() => {
+                          setHighlightedResources(["gold"]);
+                        }}
+                        onMouseLeave={() => {
+                          setHighlightedResources([]);
+                        }}
+                      >
+                        <div className="h-5 inline-block pb-1 text-xs font-medium text-foreground">
+                          <Button
+                            onClick={handleCrushingStrikeUpgrade}
+                            disabled={
+                              resources.gold <
+                              CRUSHING_STRIKE_UPGRADES[
+                                combatSkills.crushingStrikeLevel + 1
+                              ].cost
+                            }
+                            size="xs"
+                            variant="ghost"
+                            className="h-5 pb-1  hover:bg-transparent hover:text-foreground"
+                            button_id="upgrade-crushing-strike"
+                          >
+                            Improve
+                          </Button>
                         </div>
-                      }
-                      tooltipId="upgrade-bloodflame-sphere-button"
-                      disabled={
-                        resources.gold <
-                        BLOODFLAME_SPHERE_UPGRADES[
-                          combatSkills.bloodflameSphereLevel + 1
-                        ].cost
-                      }
-                      onClick={handleBloodflameSphereUpgrade}
-                      onMouseEnter={() => {
-                        setHighlightedResources(["gold"]);
-                      }}
-                      onMouseLeave={() => {
-                        setHighlightedResources([]);
-                      }}
-                    >
-                      <div className="h-5 inline-block pb-1 text-xs font-medium text-foreground">
-                        <Button
-                          onClick={handleBloodflameSphereUpgrade}
-                          disabled={
-                            resources.gold <
-                            BLOODFLAME_SPHERE_UPGRADES[
+                      </TooltipWrapper>
+                    ) : null}
+                  </div>
+                  <Progress
+                    value={(combatSkills.crushingStrikeLevel / 5) * 100}
+                    className="h-2"
+                    segments={5}
+                  />
+                  <div className="flex justify-between text-xs text-muted-foreground">
+                    <span>
+                      {
+                        CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel]
+                          .damage
+                      }{" "}
+                      damage,{" "}
+                      {
+                        CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel]
+                          .stunRounds
+                      }{" "}
+                      round
+                      {CRUSHING_STRIKE_UPGRADES[combatSkills.crushingStrikeLevel]
+                        .stunRounds > 1
+                        ? "s"
+                        : ""}{" "}
+                      stun
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              {/* Bloodflame Sphere */}
+              {fellowship.elder_wizard && (
+                <div className="w-80 space-y-1 pt-2">
+                  <div className="flex items-center justify-between">
+                    <span className="pb-1 text-xs font-medium text-foreground">
+                      Bloodflame Sphere
+                    </span>
+                    {combatSkills.bloodflameSphereLevel < 5 ? (
+                      <TooltipWrapper
+                        tooltip={
+                          <div className="text-xs whitespace-nowrap">
+                            {BLOODFLAME_SPHERE_UPGRADES[
                               combatSkills.bloodflameSphereLevel + 1
-                            ].cost
-                          }
-                          size="xs"
-                          variant="ghost"
-                          className="h-5 pb-1  hover:bg-transparent hover:text-foreground"
-                          button_id="upgrade-bloodflame-sphere"
-                        >
-                          Improve
-                        </Button>
-                      </div>
-                    </TooltipWrapper>
-                  ) : null}
-                </div>
-                <Progress
-                  value={(combatSkills.bloodflameSphereLevel / 5) * 100}
-                  className="h-2"
-                  segments={5}
-                />
-                <div className="flex justify-between text-xs text-muted-foreground">
-                  <span>
-                    {
-                      BLOODFLAME_SPHERE_UPGRADES[
-                        combatSkills.bloodflameSphereLevel
-                      ].damage
-                    }{" "}
-                    damage,{" "}
-                    {
-                      BLOODFLAME_SPHERE_UPGRADES[
-                        combatSkills.bloodflameSphereLevel
-                      ].burnDamage
-                    }{" "}
-                    burn damage x{" "}
-                    {
-                      BLOODFLAME_SPHERE_UPGRADES[
-                        combatSkills.bloodflameSphereLevel
-                      ].burnRounds
-                    }{" "}
-                    round
-                    {BLOODFLAME_SPHERE_UPGRADES[
-                      combatSkills.bloodflameSphereLevel
-                    ].burnRounds > 1
-                      ? "s"
-                      : ""}
-                    ,{" "}
-                    {
-                      BLOODFLAME_SPHERE_UPGRADES[
-                        combatSkills.bloodflameSphereLevel
-                      ].healthCost
-                    }{" "}
-                    health cost
-                  </span>
-                </div>
-              </div>
-            )}
-
-            {/* Crow's Eye */}
-            {fellowship.one_eyed_crow && (
-              <div className="w-80 space-y-1 pt-2">
-                <div className="flex items-center justify-between">
-                  <span className="pb-1 text-xs font-medium text-foreground">
-                    Crow's Eye
-                  </span>
-                  {crowsEyeSkills.level < 5 ? (
-                    <TooltipWrapper
-                      tooltip={
-                        <div className="text-xs whitespace-nowrap">
-                          <div>
-                            +
-                            {CROWS_EYE_UPGRADES[crowsEyeSkills.level + 1]
-                              .doubleChance -
-                              CROWS_EYE_UPGRADES[crowsEyeSkills.level]
-                                .doubleChance}
-                            % double gain chance
+                            ].damage >
+                              BLOODFLAME_SPHERE_UPGRADES[
+                                combatSkills.bloodflameSphereLevel
+                              ].damage && (
+                                <div>
+                                  +
+                                  {BLOODFLAME_SPHERE_UPGRADES[
+                                    combatSkills.bloodflameSphereLevel + 1
+                                  ].damage -
+                                    BLOODFLAME_SPHERE_UPGRADES[
+                                      combatSkills.bloodflameSphereLevel
+                                    ].damage}{" "}
+                                  damage
+                                </div>
+                              )}
+                            {BLOODFLAME_SPHERE_UPGRADES[
+                              combatSkills.bloodflameSphereLevel + 1
+                            ].burnDamage >
+                              BLOODFLAME_SPHERE_UPGRADES[
+                                combatSkills.bloodflameSphereLevel
+                              ].burnDamage && (
+                                <div>
+                                  +
+                                  {BLOODFLAME_SPHERE_UPGRADES[
+                                    combatSkills.bloodflameSphereLevel + 1
+                                  ].burnDamage -
+                                    BLOODFLAME_SPHERE_UPGRADES[
+                                      combatSkills.bloodflameSphereLevel
+                                    ].burnDamage}{" "}
+                                  burn damage
+                                </div>
+                              )}
+                            {BLOODFLAME_SPHERE_UPGRADES[
+                              combatSkills.bloodflameSphereLevel + 1
+                            ].burnRounds >
+                              BLOODFLAME_SPHERE_UPGRADES[
+                                combatSkills.bloodflameSphereLevel
+                              ].burnRounds && (
+                                <div>
+                                  +
+                                  {BLOODFLAME_SPHERE_UPGRADES[
+                                    combatSkills.bloodflameSphereLevel + 1
+                                  ].burnRounds -
+                                    BLOODFLAME_SPHERE_UPGRADES[
+                                      combatSkills.bloodflameSphereLevel
+                                    ].burnRounds}{" "}
+                                  burn round
+                                </div>
+                              )}
+                            {BLOODFLAME_SPHERE_UPGRADES[
+                              combatSkills.bloodflameSphereLevel + 1
+                            ].healthCost >
+                              BLOODFLAME_SPHERE_UPGRADES[
+                                combatSkills.bloodflameSphereLevel
+                              ].healthCost && (
+                                <div>
+                                  +
+                                  {BLOODFLAME_SPHERE_UPGRADES[
+                                    combatSkills.bloodflameSphereLevel + 1
+                                  ].healthCost -
+                                    BLOODFLAME_SPHERE_UPGRADES[
+                                      combatSkills.bloodflameSphereLevel
+                                    ].healthCost}{" "}
+                                  health cost
+                                </div>
+                              )}
+                            <div className="border-t border-border my-1" />
+                            <div
+                              className={
+                                resources.gold >=
+                                  BLOODFLAME_SPHERE_UPGRADES[
+                                    combatSkills.bloodflameSphereLevel + 1
+                                  ].cost
+                                  ? ""
+                                  : "text-muted-foreground"
+                              }
+                            >
+                              -
+                              {
+                                BLOODFLAME_SPHERE_UPGRADES[
+                                  combatSkills.bloodflameSphereLevel + 1
+                                ].cost
+                              }{" "}
+                              Gold
+                            </div>
                           </div>
-                          <div className="border-t border-border my-1" />
-                          <div
-                            className={
-                              resources.gold >=
-                              CROWS_EYE_UPGRADES[crowsEyeSkills.level + 1]
-                                .cost
-                                ? ""
-                                : "text-muted-foreground"
+                        }
+                        tooltipId="upgrade-bloodflame-sphere-button"
+                        disabled={
+                          resources.gold <
+                          BLOODFLAME_SPHERE_UPGRADES[
+                            combatSkills.bloodflameSphereLevel + 1
+                          ].cost
+                        }
+                        onClick={handleBloodflameSphereUpgrade}
+                        onMouseEnter={() => {
+                          setHighlightedResources(["gold"]);
+                        }}
+                        onMouseLeave={() => {
+                          setHighlightedResources([]);
+                        }}
+                      >
+                        <div className="h-5 inline-block pb-1 text-xs font-medium text-foreground">
+                          <Button
+                            onClick={handleBloodflameSphereUpgrade}
+                            disabled={
+                              resources.gold <
+                              BLOODFLAME_SPHERE_UPGRADES[
+                                combatSkills.bloodflameSphereLevel + 1
+                              ].cost
                             }
+                            size="xs"
+                            variant="ghost"
+                            className="h-5 pb-1  hover:bg-transparent hover:text-foreground"
+                            button_id="upgrade-bloodflame-sphere"
                           >
-                            -
-                            {
+                            Improve
+                          </Button>
+                        </div>
+                      </TooltipWrapper>
+                    ) : null}
+                  </div>
+                  <Progress
+                    value={(combatSkills.bloodflameSphereLevel / 5) * 100}
+                    className="h-2"
+                    segments={5}
+                  />
+                  <div className="flex justify-between text-xs text-muted-foreground">
+                    <span>
+                      {
+                        BLOODFLAME_SPHERE_UPGRADES[
+                          combatSkills.bloodflameSphereLevel
+                        ].damage
+                      }{" "}
+                      damage,{" "}
+                      {
+                        BLOODFLAME_SPHERE_UPGRADES[
+                          combatSkills.bloodflameSphereLevel
+                        ].burnDamage
+                      }{" "}
+                      burn damage x{" "}
+                      {
+                        BLOODFLAME_SPHERE_UPGRADES[
+                          combatSkills.bloodflameSphereLevel
+                        ].burnRounds
+                      }{" "}
+                      round
+                      {BLOODFLAME_SPHERE_UPGRADES[
+                        combatSkills.bloodflameSphereLevel
+                      ].burnRounds > 1
+                        ? "s"
+                        : ""}
+                      ,{" "}
+                      {
+                        BLOODFLAME_SPHERE_UPGRADES[
+                          combatSkills.bloodflameSphereLevel
+                        ].healthCost
+                      }{" "}
+                      health cost
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              {/* Crow's Eye */}
+              {fellowship.one_eyed_crow && (
+                <div className="w-80 space-y-1 pt-2">
+                  <div className="flex items-center justify-between">
+                    <span className="pb-1 text-xs font-medium text-foreground">
+                      Crow's Eye
+                    </span>
+                    {crowsEyeSkills.level < 5 ? (
+                      <TooltipWrapper
+                        tooltip={
+                          <div className="text-xs whitespace-nowrap">
+                            <div>
+                              +
+                              {CROWS_EYE_UPGRADES[crowsEyeSkills.level + 1]
+                                .doubleChance -
+                                CROWS_EYE_UPGRADES[crowsEyeSkills.level]
+                                  .doubleChance}
+                              % double gain chance
+                            </div>
+                            <div className="border-t border-border my-1" />
+                            <div
+                              className={
+                                resources.gold >=
+                                  CROWS_EYE_UPGRADES[crowsEyeSkills.level + 1]
+                                    .cost
+                                  ? ""
+                                  : "text-muted-foreground"
+                              }
+                            >
+                              -
+                              {
+                                CROWS_EYE_UPGRADES[crowsEyeSkills.level + 1]
+                                  .cost
+                              }{" "}
+                              Gold
+                            </div>
+                          </div>
+                        }
+                        tooltipId="upgrade-crows-eye-button"
+                        disabled={
+                          resources.gold <
+                          CROWS_EYE_UPGRADES[crowsEyeSkills.level + 1]
+                            .cost
+                        }
+                        onMouseEnter={() => {
+                          setHighlightedResources(["gold"]);
+                        }}
+                        onMouseLeave={() => {
+                          setHighlightedResources([]);
+                        }}
+                      >
+                        <div className="h-5 inline-block pb-1 text-xs font-medium text-foreground">
+                          <Button
+                            onClick={handleCrowsEyeUpgrade}
+                            disabled={
+                              resources.gold <
                               CROWS_EYE_UPGRADES[crowsEyeSkills.level + 1]
                                 .cost
-                            }{" "}
-                            Gold
-                          </div>
+                            }
+                            size="xs"
+                            variant="ghost"
+                            className="h-5 pb-1  hover:bg-transparent hover:text-foreground"
+                            button_id="upgrade-crows-eye"
+                          >
+                            Improve
+                          </Button>
                         </div>
-                      }
-                      tooltipId="upgrade-crows-eye-button"
-                      disabled={
-                        resources.gold <
-                        CROWS_EYE_UPGRADES[crowsEyeSkills.level + 1]
-                          .cost
-                      }
-                      onMouseEnter={() => {
-                        setHighlightedResources(["gold"]);
-                      }}
-                      onMouseLeave={() => {
-                        setHighlightedResources([]);
-                      }}
-                    >
-                      <div className="h-5 inline-block pb-1 text-xs font-medium text-foreground">
-                        <Button
-                          onClick={handleCrowsEyeUpgrade}
-                          disabled={
-                            resources.gold <
-                            CROWS_EYE_UPGRADES[crowsEyeSkills.level + 1]
-                              .cost
-                          }
-                          size="xs"
-                          variant="ghost"
-                          className="h-5 pb-1  hover:bg-transparent hover:text-foreground"
-                          button_id="upgrade-crows-eye"
-                        >
-                          Improve
-                        </Button>
-                      </div>
-                    </TooltipWrapper>
-                  ) : null}
+                      </TooltipWrapper>
+                    ) : null}
+                  </div>
+                  <Progress
+                    value={(crowsEyeSkills.level / 5) * 100}
+                    className="h-2"
+                    segments={5}
+                  />
+                  <div className="flex justify-between text-xs text-muted-foreground">
+                    <span>
+                      {CROWS_EYE_UPGRADES[crowsEyeSkills.level].doubleChance}% chance to double gains from actions
+                    </span>
+                  </div>
                 </div>
-                <Progress
-                  value={(crowsEyeSkills.level / 5) * 100}
-                  className="h-2"
-                  segments={5}
-                />
-                <div className="flex justify-between text-xs text-muted-foreground">
-                  <span>
-                    {CROWS_EYE_UPGRADES[crowsEyeSkills.level].doubleChance}% chance to double gains from actions
-                  </span>
-                </div>
-              </div>
-            )}
-          </div>
-        )}
+              )}
+            </div>
+          )}
 
         {/* Cube Section */}
         <div className="space-y-2 pt-1">
