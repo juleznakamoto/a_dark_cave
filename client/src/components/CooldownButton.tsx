@@ -20,6 +20,7 @@ interface CooldownButtonProps {
   "data-testid"?: string;
   button_id?: string;
   tooltip?: React.ReactNode;
+  containerClassName?: string;
   onMouseEnter?: (e?: React.MouseEvent<HTMLDivElement>) => void;
   onMouseLeave?: (e?: React.MouseEvent<HTMLDivElement>) => void;
 }
@@ -36,6 +37,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       size = "default",
       "data-testid": testId,
       tooltip,
+      containerClassName = "",
       ...props
     },
     ref
@@ -72,7 +74,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
   // Calculate width percentage directly from remaining cooldown
   const overlayWidth =
     isCoolingDown && initialCooldown > 0
-      ? (currentCooldown / initialCooldown) * 100
+      ? Math.min((currentCooldown / initialCooldown) * 100, 100)
       : 0;
 
   const actionExecutedRef = useRef<boolean>(false);
@@ -145,6 +147,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       tooltip={tooltip}
       tooltipId={buttonId}
       disabled={isButtonDisabled}
+      className={containerClassName}
       onMouseEnter={props.onMouseEnter}
       onMouseLeave={props.onMouseLeave}
     >
