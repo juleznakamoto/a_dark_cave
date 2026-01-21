@@ -8,58 +8,71 @@ import { logger } from "../../lib/logger";
 function processTriggeredEvents(
   effectUpdates: any,
   result: ActionResult,
-  state: GameState
+  state: GameState,
 ): void {
-  if (effectUpdates.triggeredEvents && effectUpdates.triggeredEvents.length > 0) {
-    logger.log(`[CAVE EXPLORE] Processing triggered events:`, effectUpdates.triggeredEvents);
-    
+  if (
+    effectUpdates.triggeredEvents &&
+    effectUpdates.triggeredEvents.length > 0
+  ) {
+    logger.log(
+      `[CAVE EXPLORE] Processing triggered events:`,
+      effectUpdates.triggeredEvents,
+    );
+
     effectUpdates.triggeredEvents.forEach((eventId: string) => {
       // Prevent event from happening again if it's already been triggered
       if (state.triggeredEvents?.[eventId]) {
-        logger.log(`[CAVE EXPLORE] Skipping already triggered event: ${eventId}`);
+        logger.log(
+          `[CAVE EXPLORE] Skipping already triggered event: ${eventId}`,
+        );
         return;
       }
 
       const eventDef = gameEvents[eventId];
       if (eventDef) {
-        logger.log(`[CAVE EXPLORE] Found event definition for: ${eventId}`, { 
+        logger.log(`[CAVE EXPLORE] Found event definition for: ${eventId}`, {
           title: eventDef.title,
-          hasChoices: !!eventDef.choices
+          hasChoices: !!eventDef.choices,
         });
-        
+
         // Mark as triggered in state updates
-        if (!effectUpdates.triggeredEventsState) effectUpdates.triggeredEventsState = {};
+        if (!effectUpdates.triggeredEventsState)
+          effectUpdates.triggeredEventsState = {};
         effectUpdates.triggeredEventsState[eventId] = true;
 
         // Create a log entry for the event
         const logEntry: LogEntry = {
           id: `${eventId}-${Date.now()}`,
-          message: typeof eventDef.message === 'string' 
-            ? eventDef.message 
-            : Array.isArray(eventDef.message) 
-              ? eventDef.message[0] 
-              : '',
+          message:
+            typeof eventDef.message === "string"
+              ? eventDef.message
+              : Array.isArray(eventDef.message)
+                ? eventDef.message[0]
+                : "",
           timestamp: Date.now(),
           type: "event",
           title: eventDef.title,
-          choices: typeof eventDef.choices === 'function' ? undefined : eventDef.choices,
+          choices:
+            typeof eventDef.choices === "function"
+              ? undefined
+              : eventDef.choices,
           isTimedChoice: eventDef.isTimedChoice,
           baseDecisionTime: eventDef.baseDecisionTime,
           fallbackChoice: eventDef.fallbackChoice,
           relevant_stats: eventDef.relevant_stats,
         };
-        
+
         result.logEntries!.push(logEntry);
       } else {
         logger.warn(`[CAVE EXPLORE] No event definition found for: ${eventId}`);
       }
     });
-    
+
     // Merge triggered events state into main state updates
     if (effectUpdates.triggeredEventsState) {
       effectUpdates.triggeredEvents = {
         ...(state.triggeredEvents || {}),
-        ...effectUpdates.triggeredEventsState
+        ...effectUpdates.triggeredEventsState,
       };
       delete effectUpdates.triggeredEventsState;
     } else {
@@ -526,7 +539,7 @@ export function handleLightFire(
       torch: (state.resources.torch || 0) + 100,
       iron: (state.resources.iron || 0) + 1000,
       steel: (state.resources.steel || 0) + 500,
-      gold: (state.resources.gold || 0) + 500,
+      gold: (state.resources.gold || 0) + 5000,
     };
   }
 
