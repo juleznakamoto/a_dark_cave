@@ -42,7 +42,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
     },
     ref
   ) {
-  const { cooldowns, compassGlowButton } = useGameStore();
+  const { cooldowns, initialCooldowns, compassGlowButton } = useGameStore();
   const isFirstRenderRef = useRef<boolean>(true);
 
   // Get the action ID from the test ID or generate one
@@ -55,8 +55,8 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
   const currentCooldown = cooldowns[actionId] || 0;
   const isCoolingDown = currentCooldown > 0;
 
-  // Derive initial cooldown from cooldownMs prop (which comes from action.cooldown * 1000)
-  const initialCooldown = cooldownMs / 1000;
+  // Derive initial cooldown from state if available, otherwise fallback to prop
+  const initialCooldown = initialCooldowns[actionId] || cooldownMs / 1000;
 
   // Track first render for transition
   useEffect(() => {

@@ -125,6 +125,7 @@ interface GameStore extends GameState {
 
   // Cooldown management
   cooldowns: Record<string, number>;
+  initialCooldowns: Record<string, number>;
 
   // Compass glow effect
   compassGlowButton: string | null; // Action ID of button to glow
@@ -529,6 +530,7 @@ export const createInitialState = (): GameState => ({
 
   // Initialize cooldown management
   cooldowns: {},
+  initialCooldowns: {},
 
   // Initialize compass glow
   compassGlowButton: null,
@@ -601,6 +603,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   boostMode: false,
   lastSaved: "Never",
   cooldowns: {},
+  initialCooldowns: {},
   log: [],
   eventDialog: {
     isOpen: false,
@@ -786,19 +789,28 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // Apply dev mode cooldown multiplier (0.1x)
     if (state.devMode && result.stateUpdates.cooldowns) {
       const updatedCooldowns = { ...result.stateUpdates.cooldowns };
+      const updatedInitialCooldowns = { ...state.initialCooldowns };
       for (const key in updatedCooldowns) {
-        updatedCooldowns[key] = updatedCooldowns[key] * 0.1;
+        const devCooldown = updatedCooldowns[key] * 0.1;
+        updatedCooldowns[key] = devCooldown;
+        updatedInitialCooldowns[key] = devCooldown;
       }
       result.stateUpdates.cooldowns = updatedCooldowns;
+      result.stateUpdates.initialCooldowns = updatedInitialCooldowns;
     }
 
     // Enforce minimum cooldown of 1 second for all actions
     if (result.stateUpdates.cooldowns) {
       const updatedCooldowns = { ...result.stateUpdates.cooldowns };
+      const updatedInitialCooldowns = { ...result.stateUpdates.initialCooldowns || state.initialCooldowns };
       for (const key in updatedCooldowns) {
-        updatedCooldowns[key] = Math.max(1, updatedCooldowns[key]);
+        if (updatedCooldowns[key] < 1) {
+          updatedCooldowns[key] = 1;
+          updatedInitialCooldowns[key] = Math.max(updatedInitialCooldowns[key] || 0, 1);
+        }
       }
       result.stateUpdates.cooldowns = updatedCooldowns;
+      result.stateUpdates.initialCooldowns = updatedInitialCooldowns;
     }
 
     // Handle compass bonus glow effect
@@ -875,10 +887,16 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   setCooldown: (action: string, duration: number) => {
+    const { devMode } = get();
     // Enforce minimum cooldown of 1 second
-    const finalDuration = Math.max(1, duration);
+    const baseDuration = Math.max(1, duration);
+    const finalDuration = devMode ? baseDuration * 0.1 : baseDuration;
+    // Still need to enforce 1s minimum after dev multiplier if we want consistency with executeAction
+    const finalEnforcedDuration = Math.max(1, finalDuration);
+    
     set((state) => ({
-      cooldowns: { ...state.cooldowns, [action]: finalDuration },
+      cooldowns: { ...state.cooldowns, [action]: finalEnforcedDuration },
+      initialCooldowns: { ...state.initialCooldowns, [action]: finalEnforcedDuration },
     }));
   },
 
