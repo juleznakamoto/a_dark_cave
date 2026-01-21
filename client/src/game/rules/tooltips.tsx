@@ -46,8 +46,8 @@ export const calculateResourceGains = (
   if (!action) return { gains: [], costs: [] };
 
   // Resolve effects if they are a function
-  const effects = typeof action.effects === 'function' 
-    ? action.effects(state) 
+  const effects = typeof action.effects === 'function'
+    ? action.effects(state)
     : action.effects;
 
   if (!effects) return { gains: [], costs: [] };
