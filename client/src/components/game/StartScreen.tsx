@@ -4,19 +4,12 @@ import { useGameStore } from "@/game/state";
 import CloudShader from "@/components/ui/cloud-shader";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { audioManager } from "@/lib/audio";
-import { useMobileTooltip } from "@/hooks/useMobileTooltip";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 
 export default function StartScreen() {
   const { executeAction, setBoostMode, boostMode, CM } = useGameStore();
   const isMobile = useIsMobile();
   const buttonRef = useRef<HTMLButtonElement>(null);
-  const mobileTooltip = useMobileTooltip();
   const executedRef = useRef(false);
   const isCruelMode = CM || false;
 
@@ -195,26 +188,24 @@ export default function StartScreen() {
       </main>
 
       {boostMode && (
-        <TooltipProvider>
-          <Tooltip open={mobileTooltip.isTooltipOpen("boost-indicator")}>
-            <TooltipTrigger asChild>
-              <div
-                className="absolute bottom-4 right-4 z-20 cursor-pointer"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setBoostMode(false);
-                }}
-              >
-                <div className="text-green-600 text-xl">↑</div>
-              </div>
-            </TooltipTrigger>
-            <TooltipContent>
-              <div className="text-xs whitespace-nowrap">
-                Click to deactivate boost
-              </div>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+        <TooltipWrapper
+          tooltip={
+            <div className="text-xs whitespace-nowrap">
+              Click to deactivate boost
+            </div>
+          }
+          tooltipId="boost-indicator"
+        >
+          <div
+            className="absolute bottom-4 right-4 z-20 cursor-pointer"
+            onClick={(e) => {
+              e.preventDefault();
+              setBoostMode(false);
+            }}
+          >
+            <div className="text-green-600 text-xl">↑</div>
+          </div>
+        </TooltipWrapper>
       )}
 
       <div className="absolute bottom-4 right-4 z-10 flex gap-4 text-xs text-muted-foreground">

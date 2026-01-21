@@ -3,7 +3,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { LineChart, Line, BarChart, Bar, CartesianGrid, XAxis, YAxis, Legend, ResponsiveContainer } from "recharts";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { format, differenceInDays, subDays, startOfDay, endOfDay, isWithinInterval, parseISO } from "date-fns";
-import { logger } from "@/lib/logger";
 
 interface ChurnTabProps {
   churnDays: 1 | 3 | 5 | 7;

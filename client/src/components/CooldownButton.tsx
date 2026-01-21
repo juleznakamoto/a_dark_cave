@@ -1,13 +1,7 @@
 import React, { useRef, useEffect, forwardRef } from "react";
 import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/game/state";
-import { useMobileButtonTooltip } from "@/hooks/useMobileTooltip";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 
 interface CooldownButtonProps {
   children: React.ReactNode;
@@ -48,7 +42,6 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
   ) {
   const { cooldowns, compassGlowButton } = useGameStore();
   const isFirstRenderRef = useRef<boolean>(true);
-  const mobileTooltip = useMobileButtonTooltip();
 
   // Get the action ID from the test ID or generate one
   const actionId =
@@ -104,7 +97,8 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
 
   const buttonId = testId || `button-${Math.random()}`;
 
-  const button = (
+  // Create the button content with cooldown overlay
+  const buttonContent = (
     <Button
       ref={ref}
       onClick={handleClick}
@@ -145,80 +139,17 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
     </Button>
   );
 
-  // If no tooltip, return button without tooltip
-  if (!tooltip) {
-    return <div className="relative inline-block">{button}</div>;
-  }
-
-  const tooltipId = buttonId; // Use buttonId for tooltip identification
-
-  const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
-    // Stop propagation to prevent duplicate triggers from nested elements
-    e.stopPropagation();
-    props.onMouseEnter?.(e);
-  };
-
-  const handleMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
-    // Stop propagation to prevent duplicate triggers from nested elements
-    e.stopPropagation();
-    props.onMouseLeave?.(e);
-  };
-
+  // Use TooltipWrapper for consistent tooltip behavior
   return (
-    <div
-      className="relative inline-block"
-      onClick={mobileTooltip.isMobile ? (e) => {
-        // Don't show tooltip if action was just executed
-        if (actionExecutedRef.current) return;
-
-        // Only show tooltip if button is disabled
-        if (isButtonDisabled) {
-          e.stopPropagation();
-          mobileTooltip.handleWrapperClick(tooltipId, isButtonDisabled, isCoolingDown, e);
-        }
-      } : undefined}
-      onMouseDown={mobileTooltip.isMobile ? (e) => {
-        // Start hold timer for tooltip (will show for both active and inactive buttons if held)
-        mobileTooltip.handleMouseDown(tooltipId, isButtonDisabled, isCoolingDown, e);
-      } : undefined}
-      onMouseUp={mobileTooltip.isMobile ? (e) => {
-        // Don't show tooltip if action was just executed
-        if (actionExecutedRef.current) {
-          e.preventDefault();
-          e.stopPropagation();
-          return;
-        }
-
-        mobileTooltip.handleMouseUp(tooltipId, isButtonDisabled, onClick, e);
-      } : undefined}
-      onTouchStart={mobileTooltip.isMobile ? (e) => {
-        // Start hold timer for tooltip (will show for both active and inactive buttons if held)
-        mobileTooltip.handleTouchStart(tooltipId, isButtonDisabled, isCoolingDown, e);
-      } : undefined}
-      onTouchEnd={mobileTooltip.isMobile ? (e) => {
-        // Don't show tooltip if action was just executed
-        if (actionExecutedRef.current) {
-          e.preventDefault();
-          e.stopPropagation();
-          return;
-        }
-
-        mobileTooltip.handleTouchEnd(tooltipId, isButtonDisabled, onClick, e);
-      } : undefined}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+    <TooltipWrapper
+      tooltip={tooltip}
+      tooltipId={buttonId}
+      disabled={isButtonDisabled}
+      onMouseEnter={props.onMouseEnter}
+      onMouseLeave={props.onMouseLeave}
     >
-      <TooltipProvider>
-        <Tooltip open={mobileTooltip.isMobile ? mobileTooltip.isTooltipOpen(tooltipId) : undefined} delayDuration={300}>
-          <TooltipTrigger asChild>
-            <span className="inline-block">
-              {button}
-            </span>
-          </TooltipTrigger>
-          <TooltipContent>{tooltip}</TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
-    </div>
+      {buttonContent}
+    </TooltipWrapper>
   );
 });
 
