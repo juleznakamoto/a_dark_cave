@@ -67,20 +67,45 @@ export default function StartScreen() {
     if (executedRef.current) return;
     executedRef.current = true;
 
-    // Load font dynamically
-    const style = document.createElement('style');
-    style.id = 'dynamic-game-font';
-    style.textContent = `
-      @font-face {
-        font-family: 'Inter';
-        src: url('/fonts/inter.woff2') format('woff2');
-        font-weight: 100 900;
-        font-style: normal;
-        font-display: swap;
-      }
-    `;
-    document.head.appendChild(style);
-    document.documentElement.classList.add('font-loaded');
+    // Load font dynamically (lazy-loaded for better Lighthouse scores)
+    // Check if font is already loaded
+    if (!document.getElementById('inter-font-face')) {
+      const style = document.createElement('style');
+      style.id = 'inter-font-face';
+      style.textContent = `
+        @font-face {
+          font-family: 'Inter';
+          src: url('/fonts/inter.woff2') format('woff2');
+          font-weight: 100 900;
+          font-style: normal;
+          font-display: swap;
+        }
+      `;
+      document.head.appendChild(style);
+    }
+
+    // Use FontFace API to detect when font is loaded and apply immediately
+    if ('fonts' in document) {
+      const interFont = new FontFace('Inter', 'url(/fonts/inter.woff2) format("woff2")', {
+        weight: '100 900',
+        style: 'normal',
+        display: 'swap',
+      });
+
+      interFont.load().then(() => {
+        document.fonts.add(interFont);
+        // Apply Inter immediately when loaded
+        document.documentElement.classList.add('font-loaded');
+      }).catch(() => {
+        // Fallback: add class anyway after a short delay
+        setTimeout(() => {
+          document.documentElement.classList.add('font-loaded');
+        }, 100);
+      });
+    } else {
+      // Fallback for browsers without FontFace API - add class immediately
+      document.documentElement.classList.add('font-loaded');
+    }
 
     // Immediately stop wind with no fade to prevent overlap
     audioManager.stopLoopingSound("wind", 2);
