@@ -1,13 +1,9 @@
 import { GameState } from "@shared/schema";
 import { getTotalStrength } from "./rules/effectsCalculation";
+import type { BastionStats } from "@/game/types";
 
-export interface BastionStats {
-  defense: number;
-  attack: number;
-  attackFromFortifications: number;
-  attackFromStrength: number;
-  integrity: number;
-}
+// Re-export for convenience
+export type { BastionStats } from "@/game/types";
 
 export function calculateBastionStats(state: GameState): BastionStats {
   let defense = 0;

@@ -4,6 +4,19 @@ import { GameState, gameStateSchema, Referral } from "@shared/schema";
 import { gameActions, shouldShowAction, canExecuteAction } from "@/game/rules";
 import { EventManager, LogEntry } from "@/game/rules/events";
 import { executeGameAction } from "@/game/actions";
+import type {
+  GameTab,
+  EventDialogState,
+  CombatDialogState,
+  IdleModeDialogState,
+  IdleModeState,
+  TimedEventTabState,
+  InactivityReason,
+  Currency,
+  FocusState,
+  MerchantTradesState,
+  GameStats,
+} from "@/game/types";
 import {
   updateResource,
   updateFlag,
@@ -108,7 +121,7 @@ interface GameStore extends GameState {
   lastFreeGoldClaim: number; // timestamp of last claim
 
   // Currency detection (persists across game restarts)
-  detectedCurrency: "EUR" | "USD" | null;
+  detectedCurrency: Currency | null;
 
   // Cooldown management
   cooldowns: Record<string, number>;
@@ -131,11 +144,7 @@ interface GameStore extends GameState {
   };
 
   // Focus system
-  focusState: {
-    isActive: boolean;
-    endTime: number;
-    points: number;
-  };
+  focusState: FocusState;
 
   // Population helpers
   current_population: number;
@@ -162,21 +171,13 @@ interface GameStore extends GameState {
   setUsername: (username: string) => void;
 
   // Game completion tracking
-  game_stats: Array<{
-    gameId: string | null;
-    gameMode: string;
-    startTime: number;
-    finishTime: number;
-    playTime: number;
-  }>;
+  game_stats: GameStats[];
   hasWonAnyGame: boolean;
 
   // Actions
   getAndResetResourceAnalytics: () => Record<string, number> | null;
   executeAction: (actionId: string) => void;
-  setActiveTab: (
-    tab: "cave" | "village" | "forest" | "bastion" | "estate" | "achievements",
-  ) => void;
+  setActiveTab: (tab: GameTab) => void;
   setBoostMode: (enabled: boolean) => void;
   setIsMuted: (isMuted: boolean) => void;
   setShopNotificationSeen: (seen: boolean) => void;
@@ -226,7 +227,7 @@ interface GameStore extends GameState {
   updatePlayTime: (deltaTime: number) => void;
   trackButtonClick: (buttonId: string) => void;
   setVersionCheckDialog: (isOpen: boolean) => void;
-  updateFocusState: (state: {
+  updateFocusState: (state: Partial<FocusState> & {
     isActive: boolean;
     endTime: number;
     startTime?: number;

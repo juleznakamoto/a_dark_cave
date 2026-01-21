@@ -265,9 +265,6 @@ export default function BastionPanel() {
                 <Tooltip open={mobileTooltip.isTooltipOpen("heal-elder-wizard")}>
                   <TooltipTrigger asChild>
                     <div
-                      onClick={(e) =>
-                        mobileTooltip.handleTooltipClick("heal-elder-wizard", e)
-                      }
                       onMouseEnter={() => {
                         setHighlightedResources(['food']);
                       }}
@@ -277,6 +274,7 @@ export default function BastionPanel() {
                     >
                       <Button
                         onClick={() => {
+                          // Execute the heal action
                           if (resources.food >= 1500) {
                             useGameStore.setState((state) => ({
                               resources: {

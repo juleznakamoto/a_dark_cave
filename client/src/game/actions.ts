@@ -2,6 +2,7 @@ import { GameState } from "@shared/schema";
 import { LogEntry } from "@/game/rules/events";
 import { gameActions } from "@/game/rules";
 import { logger } from "@/lib/logger";
+import { ActionResult } from "@/game/types";
 // Import all handlers from the modular action files
 import {
   handleLightFire,
@@ -170,13 +171,8 @@ import {
   handleMineAdamant,
 } from "@/game/rules/caveMineActions";
 
-export interface ActionResult {
-  stateUpdates: Partial<GameState> & {
-    _logMessage?: string;
-  };
-  logEntries?: LogEntry[];
-  delayedEffects?: Array<() => void>;
-}
+// Re-export for backward compatibility
+export type { ActionResult } from "@/game/types";
 
 export function executeGameAction(
   actionId: string,

@@ -86,8 +86,6 @@ export default function EstatePanel() {
     return focusPoints * 60 * 1000; // Convert focus points to milliseconds (1 point = 1 minute)
   };
 
-  React.useEffect(() => {
-  }, [focusState?.points, focusState?.isActive]);
 
   // Get all cube events that have been triggered
   const completedCubeEvents = Object.entries(cubeEvents)
