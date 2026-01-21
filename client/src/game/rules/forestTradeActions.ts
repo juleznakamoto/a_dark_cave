@@ -488,9 +488,15 @@ export function handleTradeAction(
   const effectUpdates = applyActionEffects(actionId, state);
   Object.assign(result.stateUpdates, effectUpdates);
 
+  // Get the action's defined cooldown
+  const action = forestTradeActions[actionId];
+  const baseCooldown = action?.cooldown || 30;
+
   const knowledge = getTotalKnowledge(state);
-  const cooldownReduction = Math.min(0.5 * knowledge, 15);
-  const actualCooldown = Math.max(15, 30 - cooldownReduction);
+  // Cap reduction at 50% of base cooldown
+  const maxReduction = baseCooldown * 0.5;
+  const cooldownReduction = Math.min(0.5 * knowledge, maxReduction);
+  const actualCooldown = Math.max(baseCooldown * 0.5, baseCooldown - cooldownReduction);
 
   result.stateUpdates.cooldowns = {
     ...result.stateUpdates.cooldowns,
