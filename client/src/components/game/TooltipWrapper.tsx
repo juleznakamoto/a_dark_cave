@@ -19,8 +19,8 @@ export interface TooltipWrapperProps {
 
 /**
  * Wrapper component that adds consistent tooltip behavior to any element
- * - Desktop: tooltips shown on hover
- * - Mobile: tooltips shown on long press (300ms) or click if disabled
+ * - Desktop: tooltips shown on hover AND long press (300ms)
+ * - Mobile/Tablets: tooltips shown on long press (300ms) or click if disabled
  * - Only one tooltip open at a time globally
  */
 export function TooltipWrapper({
@@ -66,11 +66,11 @@ export function TooltipWrapper({
           globalTooltip.handleWrapperClick(finalTooltipId, disabled, false, e);
         }
       } : undefined}
-      onMouseDown={globalTooltip.isMobile ? (e) => {
-        // Start hold timer for tooltip (will show for both active and inactive elements if held)
+      onMouseDown={(e) => {
+        // Start hold timer for tooltip (works on all devices including tablets)
         globalTooltip.handleMouseDown(finalTooltipId, disabled, false, e);
-      } : undefined}
-      onMouseUp={globalTooltip.isMobile ? (e) => {
+      }}
+      onMouseUp={(e) => {
         // Don't show tooltip if action was just executed
         if (actionExecutedRef.current) {
           e.preventDefault();
@@ -79,12 +79,12 @@ export function TooltipWrapper({
         }
 
         globalTooltip.handleMouseUp(finalTooltipId, disabled, onClick || (() => {}), e);
-      } : undefined}
-      onTouchStart={globalTooltip.isMobile ? (e) => {
-        // Start hold timer for tooltip (will show for both active and inactive elements if held)
+      }}
+      onTouchStart={(e) => {
+        // Start hold timer for tooltip (works on all devices including tablets)
         globalTooltip.handleTouchStart(finalTooltipId, disabled, false, e);
-      } : undefined}
-      onTouchEnd={globalTooltip.isMobile ? (e) => {
+      }}
+      onTouchEnd={(e) => {
         // Don't show tooltip if action was just executed
         if (actionExecutedRef.current) {
           e.preventDefault();
@@ -93,13 +93,13 @@ export function TooltipWrapper({
         }
 
         globalTooltip.handleTouchEnd(finalTooltipId, disabled, onClick || (() => {}), e);
-      } : undefined}
+      }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
       <TooltipProvider>
         <Tooltip 
-          open={globalTooltip.isMobile ? globalTooltip.isTooltipOpen(finalTooltipId) : undefined} 
+          open={globalTooltip.isTooltipOpen(finalTooltipId)} 
           delayDuration={300}
         >
           <TooltipTrigger asChild>

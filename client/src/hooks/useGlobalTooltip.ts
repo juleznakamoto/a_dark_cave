@@ -123,8 +123,9 @@ export function useGlobalTooltip() {
   }, []);
 
   const isTooltipOpen = useCallback((id: string) => {
-    return isMobile ? globalTooltipManager.isTooltipOpen(id) : undefined;
-  }, [isMobile]);
+    // Return tooltip open state for long press tooltips (works on all devices)
+    return globalTooltipManager.isTooltipOpen(id) ? true : undefined;
+  }, []);
 
   const handleWrapperClick = useCallback((id: string, disabled: boolean, isCoolingDown: boolean, e: React.MouseEvent) => {
     if (!isMobile || isCoolingDown) return;
@@ -138,24 +139,20 @@ export function useGlobalTooltip() {
   }, [isMobile]);
 
   const handleMouseDown = useCallback((id: string, disabled: boolean, isCoolingDown: boolean, e: React.MouseEvent) => {
-    if (!isMobile) return;
-    
     // Clear any existing timer before creating a new one
     globalTooltipManager.clearPressTimer(id);
     
     // Don't prevent default to allow button interaction
-    // Start timer to show tooltip after 300ms
+    // Start timer to show tooltip after 300ms (works on all devices including tablets)
     const timer = setTimeout(() => {
       globalTooltipManager.setOpenTooltip(id, true); // Mark as opened by timer
       globalTooltipManager.clearPressTimer(id);
     }, 300);
     
     globalTooltipManager.setPressTimer(id, timer);
-  }, [isMobile]);
+  }, []);
 
   const handleMouseUp = useCallback((id: string, disabled: boolean, onClick: () => void, e: React.MouseEvent) => {
-    if (!isMobile) return;
-    
     // Clear the timer
     globalTooltipManager.clearPressTimer(id);
     
@@ -192,26 +189,22 @@ export function useGlobalTooltip() {
         onClick();
       }
     }
-  }, [isMobile]);
+  }, []);
 
   const handleTouchStart = useCallback((id: string, disabled: boolean, isCoolingDown: boolean, e: React.TouchEvent) => {
-    if (!isMobile) return;
-
     // Clear any existing timer before creating a new one
     globalTooltipManager.clearPressTimer(id);
 
-    // Start timer to show tooltip after 300ms
+    // Start timer to show tooltip after 300ms (works on all devices including tablets)
     const timer = setTimeout(() => {
-      globalTooltipManager.setOpenTooltip(id);
+      globalTooltipManager.setOpenTooltip(id, true); // Mark as opened by timer
       globalTooltipManager.clearPressTimer(id);
     }, 300);
 
     globalTooltipManager.setPressTimer(id, timer);
-  }, [isMobile]);
+  }, []);
 
   const handleTouchEnd = useCallback((id: string, disabled: boolean, onClick: () => void, e: React.TouchEvent) => {
-    if (!isMobile) return;
-    
     // Clear the timer
     globalTooltipManager.clearPressTimer(id);
     
@@ -248,7 +241,7 @@ export function useGlobalTooltip() {
         onClick();
       }
     }
-  }, [isMobile]);
+  }, []);
 
   const closeTooltip = useCallback(() => {
     globalTooltipManager.setOpenTooltip(null);
