@@ -288,8 +288,7 @@ export default function ForestPanel() {
           size="xs"
           disabled={!canExecute}
           variant="outline"
-          className={`hover:bg-transparent hover:text-foreground ${shouldGlow ? "focus-glow" : ""}`}
-          containerClassName={isTradeButton ? "flex-[0_0_calc(25%-0.375rem)]" : ""}
+          className={`hover:bg-transparent hover:text-foreground ${isTradeButton ? "flex-[0_0_calc(25%-0.375rem)]" : ""} ${shouldGlow ? "focus-glow" : ""}`}
           tooltip={tooltipContent}
           onMouseEnter={() => {
             if (state.buildings.inkwardenAcademy > 0) {
@@ -379,8 +378,7 @@ export default function ForestPanel() {
         size="xs"
         disabled={!canExecute}
         variant="outline"
-        className={`hover:bg-transparent hover:text-foreground ${shouldGlow ? "focus-glow" : ""}`}
-        containerClassName={isTradeButton ? "flex-[0_0_calc(25%-0.375rem)]" : ""}
+        className={`hover:bg-transparent hover:text-foreground ${isTradeButton ? "flex-[0_0_calc(25%-0.375rem)]" : ""} ${shouldGlow ? "focus-glow" : ""}`}
         onMouseEnter={() => {
           if (state.buildings.inkwardenAcademy > 0) {
             const resources = getResourcesFromActionCost(actionId, state);

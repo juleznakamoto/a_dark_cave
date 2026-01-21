@@ -20,7 +20,6 @@ interface CooldownButtonProps {
   "data-testid"?: string;
   button_id?: string;
   tooltip?: React.ReactNode;
-  containerClassName?: string;
   onMouseEnter?: (e?: React.MouseEvent<HTMLDivElement>) => void;
   onMouseLeave?: (e?: React.MouseEvent<HTMLDivElement>) => void;
 }
@@ -37,12 +36,11 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       size = "default",
       "data-testid": testId,
       tooltip,
-      containerClassName = "",
       ...props
     },
     ref
   ) {
-  const { cooldowns, initialCooldowns, compassGlowButton } = useGameStore();
+  const { cooldowns, compassGlowButton } = useGameStore();
   const isFirstRenderRef = useRef<boolean>(true);
 
   // Get the action ID from the test ID or generate one
@@ -55,8 +53,8 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
   const currentCooldown = cooldowns[actionId] || 0;
   const isCoolingDown = currentCooldown > 0;
 
-  // Derive initial cooldown from state if available, otherwise fallback to prop
-  const initialCooldown = initialCooldowns[actionId] || cooldownMs / 1000;
+  // Derive initial cooldown from cooldownMs prop (which comes from action.cooldown * 1000)
+  const initialCooldown = cooldownMs / 1000;
 
   // Track first render for transition
   useEffect(() => {
@@ -74,7 +72,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
   // Calculate width percentage directly from remaining cooldown
   const overlayWidth =
     isCoolingDown && initialCooldown > 0
-      ? Math.min((currentCooldown / initialCooldown) * 100, 100)
+      ? (currentCooldown / initialCooldown) * 100
       : 0;
 
   const actionExecutedRef = useRef<boolean>(false);
@@ -147,7 +145,6 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       tooltip={tooltip}
       tooltipId={buttonId}
       disabled={isButtonDisabled}
-      className={containerClassName}
       onMouseEnter={props.onMouseEnter}
       onMouseLeave={props.onMouseLeave}
     >
