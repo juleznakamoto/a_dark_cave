@@ -10,7 +10,7 @@ interface BoneDevourerConfig {
 }
 
 const boneDevourerConfigs: BoneDevourerConfig[] = [
-  { level: 1, woodenHuts: 3, boneCost: 100, silverReward: 25 },
+  { level: 1, woodenHuts: 3, boneCost: 250, silverReward: 25 },
   { level: 2, woodenHuts: 5, boneCost: 500, silverReward: 100 },
   { level: 3, woodenHuts: 8, boneCost: 1000, silverReward: 250 },
   { level: 4, stoneHuts: 1, boneCost: 5000, silverReward: 500 },
