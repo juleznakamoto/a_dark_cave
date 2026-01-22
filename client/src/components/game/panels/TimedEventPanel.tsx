@@ -278,11 +278,6 @@ export default function TimedEventPanel() {
                   ? choice.label(gameState)
                   : choice.label;
 
-              // Remove "Sell " prefix for collector event buttons
-              if (isCollectorEvent && labelText.startsWith("Sell ")) {
-                labelText = labelText.substring(5);
-              }
-
               const isPurchased =
                 isMerchantEvent &&
                 gameState.merchantTrades?.purchasedIds?.includes(choice.id);

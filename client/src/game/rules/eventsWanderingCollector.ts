@@ -48,7 +48,7 @@ export const wanderingCollectorEvents: Record<string, GameEvent> = {
       ];
       return messages[Math.min(visitCount, 2)];
     },
-    timeProbability: 10,
+    timeProbability: 15,
     repeatable: true,
     showAsTimedTab: true,
     timedTabDuration: 1 * 60 * 1000, // 3 minutes
@@ -78,7 +78,7 @@ export const wanderingCollectorEvents: Record<string, GameEvent> = {
 
       const choices: EventChoice[] = selectedItems.map((itemId) => ({
         id: `sell_${itemId}`,
-        label: `Sell ${capitalizeWords(itemId)}`,
+        label: `${capitalizeWords(itemId)}`,
         effect: (innerState: GameState) => {
           const vCountValue = innerState.story?.seen?.collectorVisitCount;
           const vCount = typeof vCountValue === "number" ? vCountValue : 0;
@@ -121,7 +121,7 @@ export const wanderingCollectorEvents: Record<string, GameEvent> = {
       // Fifth option: Keep items
       choices.push({
         id: "sell_nothing",
-        label: "Sell nothing",
+        label: "Nothing",
         effect: (innerState: GameState) => {
           const vCountValue = innerState.story?.seen?.collectorVisitCount;
           const vCount = typeof vCountValue === "number" ? vCountValue : 0;
