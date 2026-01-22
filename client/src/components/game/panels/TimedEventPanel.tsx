@@ -94,9 +94,12 @@ export default function TimedEventPanel() {
             applyEventChoice(event.fallbackChoice.id, timedEventId, event);
           } else {
             // Fallback to looking for "doNothing" choice
-            const fallbackChoice = event.choices?.find(
-              (c) => c.id === "doNothing",
-            );
+            const choices = typeof event.choices === "function"
+              ? event.choices(gameState)
+              : event.choices;
+            const fallbackChoice = Array.isArray(choices)
+              ? choices.find((c) => c.id === "doNothing")
+              : undefined;
             if (fallbackChoice && typeof fallbackChoice.effect === "function") {
               applyEventChoice(fallbackChoice.id, timedEventId, event);
             }

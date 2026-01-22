@@ -437,7 +437,7 @@ export default function GameContainer() {
                   </button>
                 )}
 
-                {/* Achievements Tab Button */}
+                {/* Achievements Tab Button ⚜︎ */}
                 {books?.book_of_trials && (
                   <button
                     className={`py-2 text-sm bg-transparent ${
@@ -450,7 +450,7 @@ export default function GameContainer() {
                     onClick={() => setActiveTab("achievements")}
                     data-testid="tab-achievements"
                   >
-                    ⚜
+                    {"\u269C\uFE0E"}
                   </button>
                 )}
 
