@@ -101,13 +101,16 @@ function App() {
         playlightSDK.onEvent("discoveryOpen", () => {
           const state = useGameStore.getState();
           if (!state.isPaused) {
+            useGameStore.setState({ isPausedPreviously: false });
             state.togglePause();
+          } else {
+            useGameStore.setState({ isPausedPreviously: true });
           }
         });
 
         playlightSDK.onEvent("discoveryClose", () => {
           const state = useGameStore.getState();
-          if (state.isPaused) {
+          if (state.isPaused && !state.isPausedPreviously) {
             state.togglePause();
           }
         });
