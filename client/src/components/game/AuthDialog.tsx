@@ -122,7 +122,7 @@ export default function AuthDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md z-[70]">
         <DialogHeader>
           <DialogTitle>
             {signupSuccess

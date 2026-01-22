@@ -643,7 +643,7 @@ export default function IdleModeDialog() {
           <Button
             onClick={handleEndIdleMode}
             variant="outline"
-            className="text-xs h-10"
+            className="text-xs h-8"
           >
             {isTimeUp ? "Get Up" : "Wake Up"}
           </Button>

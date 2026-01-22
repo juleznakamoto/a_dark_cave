@@ -21,7 +21,7 @@ export function RestartGameDialog({
 }: RestartGameDialogProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md z-[70]">
         <DialogHeader>
           <DialogTitle className="leading-6">Start New Game</DialogTitle>
           <DialogDescription className="py-2 space-y-2">
