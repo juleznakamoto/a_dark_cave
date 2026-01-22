@@ -30,6 +30,7 @@ export default function TimedEventPanel() {
 
   // Get merchant trades from state (generated once when event starts)
   const isMerchantEvent = timedEventTab.event?.id.split("-")[0] === "merchant";
+  const isCollectorEvent = timedEventTab.event?.id.split("-")[0] === "wandering_collector";
   const eventChoices: EventChoice[] = useMemo(() => {
     if (!timedEventTab.event) {
       logger.log("[TIMED EVENT PANEL] No event, returning empty choices");
@@ -216,10 +217,10 @@ export default function TimedEventPanel() {
 
       {/* Choices */}
       <div className="space-y-2 pt-1">
-        {isMerchantEvent && (
+        {(isMerchantEvent || isCollectorEvent) && (
           <h3 className="text-xs font-semibold flex items-center">
-            <span>Buy</span>
-            {(() => {
+            <span>{isMerchantEvent ? "Buy" : "Sell"}</span>
+            {isMerchantEvent && (() => {
               const knowledge = gameState.stats?.knowledge || 0;
               const discount = calculateMerchantDiscount(knowledge);
 
@@ -272,10 +273,15 @@ export default function TimedEventPanel() {
               }
 
               // Evaluate label if it's a function
-              const labelText =
+              let labelText =
                 typeof choice.label === "function"
                   ? choice.label(gameState)
                   : choice.label;
+
+              // Remove "Sell " prefix for collector event buttons
+              if (isCollectorEvent && labelText.startsWith("Sell ")) {
+                labelText = labelText.substring(5);
+              }
 
               const isPurchased =
                 isMerchantEvent &&
