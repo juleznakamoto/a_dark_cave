@@ -279,6 +279,7 @@ export class EventManager {
             title: event.title,
             choices: eventChoices,
             fallbackChoice: event.fallbackChoice,
+            relevant_stats: event.relevant_stats,
             timedTabDuration: event.timedTabDuration,
             _playSound: true, // Signal to play sound
           };

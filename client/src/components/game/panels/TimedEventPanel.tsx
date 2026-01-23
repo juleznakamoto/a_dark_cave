@@ -65,6 +65,18 @@ export default function TimedEventPanel() {
         ? timedEventTab.event.choices(gameState)
         : timedEventTab.event.choices;
     const choices = Array.isArray(choicesRaw) ? choicesRaw : [];
+
+    // Ensure choices have relevant_stats from the event if they are missing
+    // and the event itself has relevant_stats
+    if (timedEventTab.event.relevant_stats && timedEventTab.event.relevant_stats.length > 0) {
+      return choices.map(choice => ({
+        ...choice,
+        relevant_stats: choice.relevant_stats && choice.relevant_stats.length > 0 
+          ? choice.relevant_stats 
+          : timedEventTab.event?.relevant_stats
+      }));
+    }
+
     return choices;
   }, [
     isMerchantEvent,

@@ -132,7 +132,7 @@ interface GameStore extends GameState {
   // Timed event tab (not part of GameState, only UI state)
   timedEventTab: {
     isActive: boolean;
-    event: LogEntry | null;
+    event: LogEntry | (LogEntry & { eventId?: string }) | null;
     expiryTime: number;
     startTime?: number;
   };
