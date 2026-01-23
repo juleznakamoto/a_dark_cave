@@ -139,6 +139,7 @@ import {
   handleBuildVillageWarehouse,
   handleBuildGrandRepository,
   handleBuildGreatVault,
+  handleBuildHeartfire,
 } from "./rules/villageBuildHandlers";
 
 import {
@@ -198,6 +199,33 @@ export function executeGameAction(
 
   // Route to appropriate handler based on action ID
   switch (actionId) {
+    // Special case for Feed Fire
+    case "feedFire": {
+      const currentLevel = state.heartfireState?.level || 0;
+      if (currentLevel >= 5) {
+        return result;
+      }
+
+      const woodCost = 50 * (currentLevel + 1);
+      if (state.resources.wood < woodCost) {
+        return result;
+      }
+
+      const newLevel = currentLevel + 1;
+      result.stateUpdates = {
+        ...result.stateUpdates,
+        resources: {
+          ...state.resources,
+          wood: state.resources.wood - woodCost,
+        },
+        heartfireState: {
+          level: newLevel,
+          lastLevelDecrease: Date.now(),
+        },
+      };
+      return result;
+    }
+
     // Cave Explore Actions
     case "testExplosion":
       // Test button does nothing, just triggers explosion effect
