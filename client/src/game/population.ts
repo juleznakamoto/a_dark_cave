@@ -299,6 +299,18 @@ export const getPopulationProduction = (
     });
   }
 
+  // Apply heartfire multiplier if active
+  const heartfireLevel = state.heartfireState?.level || 0;
+  if (heartfireLevel > 0) {
+    const heartfireBonus = 1 + heartfireLevel * 0.05;
+    baseProduction.forEach((prod) => {
+      // Only apply to positive production (don't increase consumption)
+      if (prod.totalAmount > 0) {
+        prod.totalAmount = Math.ceil(prod.totalAmount * heartfireBonus);
+      }
+    });
+  }
+
   // Apply 10x multiplier in dev mode
   if (state && state.devMode) {
     baseProduction.forEach((prod) => {
