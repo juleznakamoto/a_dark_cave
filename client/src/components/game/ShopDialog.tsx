@@ -871,7 +871,8 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                 {" "}
                 <div className="pb-4 text-muted-foreground text-sm">
                   <p className="text-md font-medium">
-                    25 % storewide discount. Bundles offer additional savings.
+                    All in-game purchases are currently over 25 % off during Beta
+                    phase. Bundles offer additional savings.
                   </p>
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">

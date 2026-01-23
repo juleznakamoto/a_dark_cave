@@ -7,7 +7,7 @@ export const loreEvents: Record<string, GameEvent> = {
     condition: (state: GameState) => true,
       // state.buildings.stoneHut >= 4 && !state.story.seen.restlessKnightSuccess,
     timeProbability: (state: GameState) => {
-      return state.story.seen.restlessKnightFailed ? 0.020 : 0.15;
+      return state.story.seen.restlessKnightFailed ? 0.020 : 0.015;
     },
     title: "The Restless Knight",
     message: (state: GameState) =>
@@ -18,7 +18,6 @@ export const loreEvents: Record<string, GameEvent> = {
     repeatable: true,
     showAsTimedTab: true,
     timedTabDuration: 4 * 60 * 1000,
-    relevant_stats: ["knowledge"],
     fallbackChoice: {
       id: "refuse",
       label: "Refuse",
@@ -36,12 +35,10 @@ export const loreEvents: Record<string, GameEvent> = {
         };
       },
     },
-    relevant_stats: ["knowledge"],
     choices: [
       {
         id: "payGold",
         label: "Pay 50 Gold",
-        relevant_stats: ["knowledge"],
         cost: "50 gold",
         effect: (state: GameState) => {
           if (state.resources.gold < 50) {
@@ -145,7 +142,6 @@ export const loreEvents: Record<string, GameEvent> = {
     repeatable: true,
     showAsTimedTab: true,
     timedTabDuration: 4 * 60 * 1000,
-    relevant_stats: ["knowledge"],
     fallbackChoice: {
       id: "refuse",
       label: "Refuse",
@@ -163,12 +159,10 @@ export const loreEvents: Record<string, GameEvent> = {
         };
       },
     },
-    relevant_stats: ["knowledge"],
     choices: [
       {
         id: "payGold",
         label: "Pay 50 Gold",
-        relevant_stats: ["knowledge"],
         cost: "50 gold",
         effect: (state: GameState) => {
           if (state.resources.gold < 50) {
@@ -257,7 +251,6 @@ export const loreEvents: Record<string, GameEvent> = {
     repeatable: true,
     showAsTimedTab: true,
     timedTabDuration: 4 * 60 * 1000,
-    relevant_stats: ["knowledge"],
     fallbackChoice: {
       id: "refuse",
       label: "Refuse",
@@ -275,12 +268,10 @@ export const loreEvents: Record<string, GameEvent> = {
         };
       },
     },
-    relevant_stats: ["knowledge"],
     choices: [
       {
         id: "payGold",
         label: "Pay 50 Gold",
-        relevant_stats: ["knowledge"],
         cost: "50 gold",
         effect: (state: GameState) => {
           if (state.resources.gold < 50) {
@@ -413,7 +404,6 @@ export const loreEvents: Record<string, GameEvent> = {
     repeatable: true,
     showAsTimedTab: true,
     timedTabDuration: 4 * 60 * 1000,
-    relevant_stats: ["knowledge"],
     fallbackChoice: {
       id: "refuse",
       label: "Refuse",

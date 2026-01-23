@@ -65,34 +65,7 @@ export default function TimedEventPanel() {
         ? timedEventTab.event.choices(gameState)
         : timedEventTab.event.choices;
     const choices = Array.isArray(choicesRaw) ? choicesRaw : [];
-
-    logger.log("[TIMED EVENT PANEL] Debug - event:", timedEventTab.event);
-    logger.log("[TIMED EVENT PANEL] Debug - relevant_stats:", (timedEventTab.event as any)?.relevant_stats);
-    logger.log("[TIMED EVENT PANEL] Debug - choices count:", choices.length);
-
-    // Ensure choices have relevant_stats from the event if they are missing
-    // and the event itself has relevant_stats
-    const eventStats = (timedEventTab.event as any)?.relevant_stats;
-    const mergedChoices = choices.map(choice => {
-      const choiceStats = choice.relevant_stats;
-      // TRICKY: We need to check if choiceStats is actually an array with items
-      const hasChoiceStats = Array.isArray(choiceStats) && choiceStats.length > 0;
-      const hasEventStats = Array.isArray(eventStats) && eventStats.length > 0;
-      
-      const finalStats = hasChoiceStats 
-        ? choiceStats 
-        : (hasEventStats ? eventStats : null);
-        
-      logger.log(`[TIMED EVENT PANEL] Choice ${choice.id} - hasChoiceStats: ${hasChoiceStats}, hasEventStats: ${hasEventStats}, final:`, finalStats);
-      
-      return {
-        ...choice,
-        relevant_stats: finalStats
-      };
-    });
-    
-    logger.log("[TIMED EVENT PANEL] Final choices with stats:", mergedChoices.map(c => ({ id: c.id, stats: c.relevant_stats })));
-    return mergedChoices;
+    return choices;
   }, [
     isMerchantEvent,
     timedEventTab.event,
@@ -346,14 +319,10 @@ export default function TimedEventPanel() {
               ) {
                 const chance = choice.success_chance(gameState);
                 successPercentage = `${Math.round(chance * 100)}%`;
-              } else if (choice.success_chance !== undefined && typeof choice.success_chance === 'number') {
-                successPercentage = `${Math.round(choice.success_chance * 100)}%`;
               }
-
+              
               // Check if we have a Scriptorium to show stat icons
               const hasScriptorium = gameState.buildings.scriptorium >= 1;
-              logger.log(`[TIMED EVENT PANEL] Choice ${choice.id} - relevant_stats:`, choice.relevant_stats)
-
               const buttonContent = (
                 <Button
                   onClick={(e) => {
@@ -366,31 +335,30 @@ export default function TimedEventPanel() {
                   button_id={`timedevent-${choice.id}`}
                   className="gap-0 w-full text-left justify-between"
                 >
-                  <span>{labelText}</span>
-                  <div className="flex items-center">
-                    {hasScriptorium &&
-                      successPercentage &&
-                      choice.relevant_stats &&
-                      choice.relevant_stats.length > 0 && (
-                        <div className="flex">
-                          <span className="ml-2 mr-1 text-xs text-muted-foreground">
-                            {successPercentage}
-                          </span>
-                          {choice.relevant_stats.map((stat) => {
-                            const statInfo = statIcons[stat.toLowerCase()];
-                            if (!statInfo) return null;
-                            return (
-                              <span
-                                key={stat}
-                                className={`text-xs ${statInfo.color}`}
-                                title={stat}
-                              >
-                                {statInfo.icon}
-                              </span>
-                            );
-                          })}
-                        </div>
+                  <div className="flex flex-col">
+                    <span>{labelText}</span>
+                    <div className="flex items-center gap-1">
+                      {hasScriptorium && successPercentage && (
+                        <span className="text-[10px] text-muted-foreground">
+                          {successPercentage}
+                        </span>
                       )}
+                      {hasScriptorium && choice.relevant_stats && choice.relevant_stats.map((stat: string) => {
+                        const statInfo = statIcons[stat.toLowerCase()];
+                        if (!statInfo) return null;
+                        return (
+                          <span
+                            key={stat}
+                            className={`text-[10px] ${statInfo.color}`}
+                            title={stat}
+                          >
+                            {statInfo.icon}
+                          </span>
+                        );
+                      })}
+                    </div>
+                  </div>
+                  <div className="flex items-center">
                     {isPurchased && <span className="ml-1">✓</span>}
                   </div>
                 </Button>

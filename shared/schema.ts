@@ -12,13 +12,6 @@ export const logEntrySchema = z.object({
       duration: z.number(), // in seconds
     })
     .optional(),
-  relevant_stats: z.array(z.string()).optional(),
-  choices: z.any().optional(), // Store choices for timed events
-  isTimedChoice: z.boolean().optional(),
-  baseDecisionTime: z.number().optional(),
-  fallbackChoice: z.any().optional(),
-  showAsTimedTab: z.boolean().optional(),
-  timedTabDuration: z.number().optional(),
 });
 
 // Define AttackWaveTimer schema
@@ -518,18 +511,6 @@ export const gameStateSchema = z.object({
       }),
     )
     .default({}), // Track social media follow rewards by platform (e.g., 'instagram', 'twitter', etc.)
-  timedEventTab: z
-    .object({
-      isActive: z.boolean().default(false),
-      event: logEntrySchema.nullable().default(null),
-      expiryTime: z.number().default(0),
-      startTime: z.number().optional(),
-    })
-    .default({
-      isActive: false,
-      event: null,
-      expiryTime: 0,
-    }),
   sleepUpgrades: z
     .object({
       lengthLevel: z.number().default(0), // 0-5
