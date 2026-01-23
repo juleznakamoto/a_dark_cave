@@ -201,6 +201,17 @@ export default function VillagePanel() {
     },
   ];
 
+  const getHeartfireSymbol = (level: number) => {
+    switch (level) {
+      case 1: return "·";
+      case 2: return ":";
+      case 3: return "∴";
+      case 4: return "⁘";
+      case 5: return "⁙";
+      default: return "";
+    }
+  };
+
   const renderButton = (actionId: string, label: string) => {
     const action = gameActions[actionId];
     if (!action && actionId !== "feedFire") return null;
@@ -235,7 +246,7 @@ export default function VillagePanel() {
           className="hover:bg-transparent hover:text-foreground"
           tooltip={tooltipContent}
         >
-          {label} (Lvl {currentLevel})
+          {label}
         </CooldownButton>
       );
     }
@@ -450,7 +461,6 @@ export default function VillagePanel() {
         {/* Special Top Level Button Group for Feed Fire */}
         {buildings.heartfire > 0 && (
           <div className="space-y-2">
-            <h3 className="text-xs font-semibold text-foreground">Sanctuary</h3>
             <div className="flex flex-wrap gap-2">
               {renderButton("feedFire", "Feed Fire")}
             </div>
@@ -686,7 +696,7 @@ export default function VillagePanel() {
                           </TooltipTrigger>
                           <TooltipContent>
                             <div className="text-xs">
-                              Heartfire Level {state.heartfireState.level}: +{state.heartfireState.level * 5}% Village Production
+                              Heartfire: +{state.heartfireState.level * 5}% Village Production
                             </div>
                           </TooltipContent>
                         </Tooltip>
