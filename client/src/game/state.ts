@@ -1631,6 +1631,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
   setTimedEventTab: async (isActive: boolean, event?: LogEntry | null, duration?: number) => {
     // Play sound if activating and not muted
     if (isActive && event) {
+      logger.log("[STATE] setTimedEventTab active:", { 
+        id: event.id, 
+        has_stats: !!event.relevant_stats,
+        stats: event.relevant_stats 
+      });
       const state = get();
       if (!state.isMuted) {
         const eventId = event.id.split("-")[0];
