@@ -319,7 +319,7 @@ export default function TimedEventPanel() {
               ) {
                 const chance = choice.success_chance(gameState);
                 successPercentage = `${Math.round(chance * 100)}%`;
-              } else if (typeof choice.success_chance === 'number') {
+              } else if (typeof choice.success_chance === "number") {
                 successPercentage = `${Math.round(choice.success_chance * 100)}%`;
               }
 
@@ -333,7 +333,7 @@ export default function TimedEventPanel() {
                 hasScriptorium,
                 successPercentage,
               );
-              
+
               const buttonContent = (
                 <Button
                   onClick={(e) => {
@@ -346,28 +346,31 @@ export default function TimedEventPanel() {
                   button_id={`timedevent-${choice.id}`}
                   className="gap-0 w-full text-left justify-between"
                 >
-                  <div className="flex flex-col">
+                  <div className="flex items-center gap-2">
                     <span>{labelText}</span>
-                    <div className="flex items-center gap-1">
-                      {hasScriptorium && successPercentage && (
-                        <span className="text-[10px] text-muted-foreground">
-                          {successPercentage}
-                        </span>
-                      )}
-                      {hasScriptorium && choice.relevant_stats && choice.relevant_stats.map((stat: string) => {
-                        const statInfo = statIcons[stat.toLowerCase()];
-                        if (!statInfo) return null;
-                        return (
-                          <span
-                            key={stat}
-                            className={`text-[10px] ${statInfo.color}`}
-                            title={stat}
-                          >
-                            {statInfo.icon}
+                    {hasScriptorium &&
+                      successPercentage &&
+                      choice.relevant_stats &&
+                      choice.relevant_stats.length > 0 && (
+                        <div className="flex items-center gap-1">
+                          <span className="text-[10px] text-muted-foreground">
+                            {successPercentage}
                           </span>
-                        );
-                      })}
-                    </div>
+                          {choice.relevant_stats.map((stat) => {
+                            const statInfo = statIcons[stat.toLowerCase()];
+                            if (!statInfo) return null;
+                            return (
+                              <span
+                                key={stat}
+                                className={`text-[10px] ${statInfo.color}`}
+                                title={stat}
+                              >
+                                {statInfo.icon}
+                              </span>
+                            );
+                          })}
+                        </div>
+                      )}
                   </div>
                   <div className="flex items-center">
                     {isPurchased && <span className="ml-1">✓</span>}
