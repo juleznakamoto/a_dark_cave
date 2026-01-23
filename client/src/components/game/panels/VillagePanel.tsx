@@ -85,6 +85,8 @@ export default function VillagePanel() {
     {
       title: "Build",
       actions: [
+        { id: "feedFire", label: "Feed Fire" },
+        { id: "buildHeartfire", label: "Heartfire" },
         { id: "buildWoodenHut", label: "Wooden Hut" },
         { id: "buildStoneHut", label: "Stone Hut" },
         { id: "buildLonghouse", label: "Longhouse" },
@@ -598,6 +600,49 @@ export default function VillagePanel() {
                           <TooltipContent>
                             <div className="text-xs whitespace-pre-line">
                               {miningBoostTooltip.getContent(state)}
+                            </div>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    )}
+
+                    {/* Heartfire Indicator */}
+                    {state.heartfireState?.level > 0 && (
+                      <TooltipProvider>
+                        <Tooltip
+                          open={mobileTooltip.isTooltipOpen("heartfire-progress")}
+                        >
+                          <TooltipTrigger asChild>
+                            <div
+                              className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
+                              onClick={(e) =>
+                                mobileTooltip.handleTooltipClick(
+                                  "heartfire-progress",
+                                  e,
+                                )
+                              }
+                            >
+                              <div className="relative inline-flex items-center gap-1 mt-[0px]">
+                                <CircularProgress
+                                  value={(() => {
+                                    const now = Date.now();
+                                    const lastDecrease = state.heartfireState.lastLevelDecrease || 0;
+                                    const elapsed = now - lastDecrease;
+                                    return Math.min(100, (elapsed / 90000) * 100);
+                                  })()}
+                                  size={18}
+                                  strokeWidth={2}
+                                  className="text-red-500"
+                                />
+                                <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[10px] -mt-[0px] text-red-500">
+                                  {state.heartfireState.level}
+                                </span>
+                              </div>
+                            </div>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <div className="text-xs">
+                              Heartfire Level {state.heartfireState.level}: +{state.heartfireState.level * 5}% Village Production
                             </div>
                           </TooltipContent>
                         </Tooltip>

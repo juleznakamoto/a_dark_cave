@@ -301,6 +301,7 @@ const mergeStateUpdates = (
       stateUpdates.madness !== undefined
         ? stateUpdates.madness
         : prevState.madness,
+    heartfireState: stateUpdates.heartfireState || prevState.heartfireState,
     miningBoostState:
       stateUpdates.miningBoostState || prevState.miningBoostState,
     greatFeastActivations:
@@ -899,7 +900,23 @@ export const useGameStore = create<GameStore>((set, get) => ({
         }
       }
 
-      return { cooldowns: newCooldowns };
+      // Heartfire level decrease logic
+      let newHeartfireState = state.heartfireState;
+      if (state.heartfireState?.level > 0) {
+        const now = Date.now();
+        const lastDecrease = state.heartfireState.lastLevelDecrease || 0;
+        if (now - lastDecrease >= 90000) { // 1.5 minutes
+          newHeartfireState = {
+            level: state.heartfireState.level - 1,
+            lastLevelDecrease: now,
+          };
+        }
+      }
+
+      return { 
+        cooldowns: newCooldowns,
+        heartfireState: newHeartfireState
+      };
     });
   },
 

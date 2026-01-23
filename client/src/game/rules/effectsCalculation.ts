@@ -970,6 +970,17 @@ export const calculateTotalEffects = (state: GameState) => {
     }
   });
 
+  // Add heartfire bonus
+  const heartfireLevel = state.heartfireState?.level || 0;
+  if (heartfireLevel > 0) {
+    const bonus = heartfireLevel * 0.05;
+    // Apply to all resources in multiplier
+    const resources = ["wood", "stone", "food", "bones", "fur", "iron", "coal", "sulfur", "obsidian", "adamant", "steel", "blacksteel", "silver", "gold"];
+    resources.forEach(res => {
+      effects.resource_multiplier[res] = (effects.resource_multiplier[res] || 1) + bonus;
+    });
+  }
+
   return effects;
 };
 

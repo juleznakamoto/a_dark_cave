@@ -1867,4 +1867,29 @@ export const villageBuildActions: Record<string, Action> = {
     buildingCostReduction: 0.05,
     cooldown: 30,
   },
+  buildHeartfire: {
+    id: "buildHeartfire",
+    label: "Heartfire",
+    description: "A sacred fire that boosts village production when fed.",
+    tooltipEffects: ["Unlocks Feed Fire"],
+    building: true,
+    show_when: {
+      1: {
+        "buildings.woodenHut": 4,
+        "buildings.heartfire": 0,
+      },
+    },
+    cost: {
+      1: {
+        "resources.wood": 1000,
+        "resources.stone": 500,
+      },
+    },
+    effects: {
+      1: {
+        "buildings.heartfire": 1,
+      },
+    },
+    cooldown: 30,
+  },
 };

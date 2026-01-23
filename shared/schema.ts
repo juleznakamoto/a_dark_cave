@@ -276,9 +276,17 @@ export const gameStateSchema = z.object({
       boneTemple: z.number().default(0),
       pillarOfClarity: z.number().default(0),
       darkEstate: z.number().default(0),
+      heartfire: z.number().default(0),
       chitinPlating: z.number().default(0),
     })
     .default({}),
+
+  heartfireState: z
+    .object({
+      level: z.number().default(0),
+      lastLevelDecrease: z.number().default(0),
+    })
+    .default({ level: 0, lastLevelDecrease: 0 }),
   villagers: z
     .object({
       free: z.number().min(0).default(0),

@@ -1226,3 +1226,28 @@ export function handleBuildGreatVault(
 
   return greatVaultResult;
 }
+
+export function handleBuildHeartfire(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const heartfireResult = handleBuildingConstruction(
+    state,
+    result,
+    "buildHeartfire",
+    "heartfire",
+  );
+
+  // Add Heartfire completion message
+  if (state.buildings.heartfire === 0) {
+    heartfireResult.logEntries!.push({
+      id: `heartfire-built-${Date.now()}`,
+      message:
+        "The Heartfire is lit. Its warmth and light bring a new sense of purpose to the village.",
+      timestamp: Date.now(),
+      type: "system",
+    });
+  }
+
+  return heartfireResult;
+}
