@@ -231,7 +231,7 @@ export default function VillagePanel() {
       const woodCost = 50 * (currentLevel + 1);
       const canExecute = state.resources.wood >= woodCost && currentLevel < 5;
 
-      const tooltipContent = (
+      const tooltipContent = currentLevel < 5 ? (
         <div className="text-xs whitespace-nowrap">
           <div
             className={
@@ -243,7 +243,7 @@ export default function VillagePanel() {
             {woodCost} Wood
           </div>
         </div>
-      );
+      ) : undefined;
 
       return (
         <CooldownButton
@@ -706,7 +706,7 @@ export default function VillagePanel() {
                                   strokeWidth={2}
                                   className="text-red-500"
                                 />
-                                <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[10px] -mt-[2px] text-red-500">
+                                <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[12px] -mt-[4px] text-red-500">
                                   {getHeartfireSymbol(
                                     state.heartfireState.level,
                                   )}

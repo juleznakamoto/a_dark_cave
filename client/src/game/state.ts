@@ -749,9 +749,16 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     // Manual handling for feedFire which doesn't use standard registry logic
     if (actionId === "feedFire") {
-      if ((state.cooldowns[actionId] || 0) > 0) return;
+      const cooldown = state.cooldowns[actionId] || 0;
+      console.log('[FEED FIRE] Checking cooldown:', cooldown);
+      if (cooldown > 0) {
+        console.log('[FEED FIRE] Blocked by cooldown');
+        return;
+      }
       
       const result = executeGameAction(actionId, state);
+      console.log('[FEED FIRE] Execution result cooldowns:', result.stateUpdates.cooldowns);
+      
       if (result.stateUpdates && Object.keys(result.stateUpdates).length > 0) {
         set((state) => ({
           ...state,
