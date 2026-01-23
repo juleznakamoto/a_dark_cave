@@ -30,7 +30,8 @@ export default function TimedEventPanel() {
 
   // Get merchant trades from state (generated once when event starts)
   const isMerchantEvent = timedEventTab.event?.id.split("-")[0] === "merchant";
-  const isCollectorEvent = timedEventTab.event?.id.split("-")[0] === "wandering_collector";
+  const isCollectorEvent =
+    timedEventTab.event?.id.split("-")[0] === "wandering_collector";
   const eventChoices: EventChoice[] = useMemo(() => {
     if (!timedEventTab.event) {
       logger.log("[TIMED EVENT PANEL] No event, returning empty choices");
@@ -39,24 +40,38 @@ export default function TimedEventPanel() {
 
     if (isMerchantEvent) {
       // CRITICAL: Use state.merchantTrades as the single source of truth
-      logger.log("[TIMED EVENT PANEL] Merchant event, using merchantTrades from state:", {
-        eventId: timedEventTab.event.id,
-        choicesCount: gameState.merchantTrades?.choices?.length || 0,
-        choices: gameState.merchantTrades?.choices,
-      });
-      return Array.isArray(gameState.merchantTrades?.choices) ? gameState.merchantTrades.choices : [];
+      logger.log(
+        "[TIMED EVENT PANEL] Merchant event, using merchantTrades from state:",
+        {
+          eventId: timedEventTab.event.id,
+          choicesCount: gameState.merchantTrades?.choices?.length || 0,
+          choices: gameState.merchantTrades?.choices,
+        },
+      );
+      return Array.isArray(gameState.merchantTrades?.choices)
+        ? gameState.merchantTrades.choices
+        : [];
     }
 
     logger.log("[TIMED EVENT PANEL] Non-merchant event, using event choices:", {
       eventId: timedEventTab.event.id,
-      choicesCount: typeof timedEventTab.event.choices === 'function' ? 'dynamic' : timedEventTab.event.choices?.length || 0,
+      choicesCount:
+        typeof timedEventTab.event.choices === "function"
+          ? "dynamic"
+          : timedEventTab.event.choices?.length || 0,
     });
-    const choicesRaw = typeof timedEventTab.event.choices === 'function' 
-      ? timedEventTab.event.choices(gameState)
-      : timedEventTab.event.choices;
+    const choicesRaw =
+      typeof timedEventTab.event.choices === "function"
+        ? timedEventTab.event.choices(gameState)
+        : timedEventTab.event.choices;
     const choices = Array.isArray(choicesRaw) ? choicesRaw : [];
     return choices;
-  }, [isMerchantEvent, timedEventTab.event, gameState.merchantTrades, gameState]);
+  }, [
+    isMerchantEvent,
+    timedEventTab.event,
+    gameState.merchantTrades,
+    gameState,
+  ]);
 
   useEffect(() => {
     if (
@@ -95,9 +110,10 @@ export default function TimedEventPanel() {
             applyEventChoice(event.fallbackChoice.id, timedEventId, event);
           } else {
             // Fallback to looking for "doNothing" choice
-            const choices = typeof event.choices === "function"
-              ? event.choices(gameState)
-              : event.choices;
+            const choices =
+              typeof event.choices === "function"
+                ? event.choices(gameState)
+                : event.choices;
             const fallbackChoice = Array.isArray(choices)
               ? choices.find((c) => c.id === "doNothing")
               : undefined;
@@ -152,10 +168,13 @@ export default function TimedEventPanel() {
   const handleChoice = (choiceId: string) => {
     setHighlightedResources([]); // Clear highlights before closing
 
-    logger.log('[TIMED EVENT PANEL] handleChoice called:', {
+    logger.log("[TIMED EVENT PANEL] handleChoice called:", {
       choiceId,
       isMerchantEvent,
-      eventChoices: eventChoices.map(c => ({ id: c.id, label: typeof c.label === 'function' ? c.label(gameState) : c.label })),
+      eventChoices: eventChoices.map((c) => ({
+        id: c.id,
+        label: typeof c.label === "function" ? c.label(gameState) : c.label,
+      })),
       merchantTrades: gameState.merchantTrades,
     });
 
@@ -193,11 +212,10 @@ export default function TimedEventPanel() {
     // Match patterns like "250 Food", "100 Wood", etc. (first resource in label)
     const match = labelText.match(/\d+\s+([a-zA-Z\s]+)/);
     if (match) {
-      return match[1].trim().toLowerCase().replace(/\s+/g, '_');
+      return match[1].trim().toLowerCase().replace(/\s+/g, "_");
     }
     return null;
   };
-
 
   return (
     <div className="w-80 space-y-1 mt-2 mb-2 pr-4 pl-[3px]">
@@ -220,37 +238,40 @@ export default function TimedEventPanel() {
         {(isMerchantEvent || isCollectorEvent) && (
           <h3 className="text-xs font-semibold flex items-center">
             <span>{isMerchantEvent ? "Buy" : "Sell"}</span>
-            {isMerchantEvent && (() => {
-              const knowledge = gameState.stats?.knowledge || 0;
-              const discount = calculateMerchantDiscount(knowledge);
+            {isMerchantEvent &&
+              (() => {
+                const knowledge = gameState.stats?.knowledge || 0;
+                const discount = calculateMerchantDiscount(knowledge);
 
-              if (discount > 0) {
-                return (
-                  <TooltipWrapper
-                    tooltip={
-                      <div className="text-xs whitespace-nowrap">
-                        {Math.round(discount * 100)}% discount due to Knowledge{isKnowledgeBonusMaxed(knowledge) ? " (max)" : ""}
-                      </div>
-                    }
-                    tooltipId="merchant-discount"
-                  >
-                    <span className="text-blue-300/80 cursor-pointer hover:text-blue-300 transition-colors inline-block text-xl pl-2">
-                      ✧
-                    </span>
-                  </TooltipWrapper>
-                );
-              }
-              return null;
-            })()}
+                if (discount > 0) {
+                  return (
+                    <TooltipWrapper
+                      tooltip={
+                        <div className="text-xs whitespace-nowrap">
+                          {Math.round(discount * 100)}% discount due to
+                          Knowledge
+                          {isKnowledgeBonusMaxed(knowledge) ? " (max)" : ""}
+                        </div>
+                      }
+                      tooltipId="merchant-discount"
+                    >
+                      <span className="text-blue-300/80 cursor-pointer hover:text-blue-300 transition-colors inline-block text-xl pl-2">
+                        ✧
+                      </span>
+                    </TooltipWrapper>
+                  );
+                }
+                return null;
+              })()}
           </h3>
         )}
-      <div className="flex flex-wrap gap-2 mt-2">
-        {Array.isArray(eventChoices) && eventChoices
-          .map((choice) => {
-            const cost = choice.cost;
-            // Evaluate cost if it's a function
-            const costText =
-              typeof cost === "function" ? cost(gameState) : cost;
+        <div className="flex flex-wrap gap-2 mt-2">
+          {Array.isArray(eventChoices) &&
+            eventChoices.map((choice) => {
+              const cost = choice.cost;
+              // Evaluate cost if it's a function
+              const costText =
+                typeof cost === "function" ? cost(gameState) : cost;
 
               // Check if player can afford the cost (for all timed tab events)
               let canAfford = true;
@@ -262,7 +283,8 @@ export default function TimedEventPanel() {
                   const resourceName = match[2].toLowerCase();
 
                   // Check if this resource exists in gameState.resources
-                  const resourceKey = resourceName as keyof typeof gameState.resources;
+                  const resourceKey =
+                    resourceName as keyof typeof gameState.resources;
                   if (resourceKey in gameState.resources) {
                     if (gameState.resources[resourceKey] < costAmount) {
                       canAfford = false;
@@ -284,11 +306,17 @@ export default function TimedEventPanel() {
 
               // Disable if can't afford, time is up, already purchased, or in safety period
               const isDisabled =
-                !canAfford || timeRemaining <= 0 || isPurchased || safetyTimeRemaining > 0;
+                !canAfford ||
+                timeRemaining <= 0 ||
+                isPurchased ||
+                safetyTimeRemaining > 0;
 
               // Calculate success percentage if available
               let successPercentage: string | null = null;
-              if (choice.success_chance && typeof choice.success_chance === "function") {
+              if (
+                choice.success_chance &&
+                typeof choice.success_chance === "function"
+              ) {
                 const chance = choice.success_chance(gameState);
                 successPercentage = `${Math.round(chance * 100)}%`;
               }
@@ -310,28 +338,29 @@ export default function TimedEventPanel() {
                 >
                   <span>{labelText}</span>
                   <div className="flex items-center">
-                    {successPercentage && (
-                      <span className="ml-2 mr-1 text-xs text-muted-foreground">
-                        {successPercentage}
-                      </span>
-                    )}
-                    {hasScriptorium && choice.relevant_stats && choice.relevant_stats.length > 0 && (
-                      <div className="flex">
-                        {choice.relevant_stats.map((stat) => {
-                          const statInfo = statIcons[stat.toLowerCase()];
-                          if (!statInfo) return null;
-                          return (
-                            <span
-                              key={stat}
-                              className={`text-xs ${statInfo.color}`}
-                              title={stat}
-                            >
-                              {statInfo.icon}
-                            </span>
-                          );
-                        })}
-                      </div>
-                    )}
+                    {hasScriptorium &&
+                      successPercentage &&
+                      choice.relevant_stats &&
+                      choice.relevant_stats.length > 0 && (
+                        <div className="flex">
+                          <span className="ml-2 mr-1 text-xs text-muted-foreground">
+                            {successPercentage}
+                          </span>
+                          {choice.relevant_stats.map((stat) => {
+                            const statInfo = statIcons[stat.toLowerCase()];
+                            if (!statInfo) return null;
+                            return (
+                              <span
+                                key={stat}
+                                className={`text-xs ${statInfo.color}`}
+                                title={stat}
+                              >
+                                {statInfo.icon}
+                              </span>
+                            );
+                          })}
+                        </div>
+                      )}
                     {isPurchased && <span className="ml-1">✓</span>}
                   </div>
                 </Button>
@@ -341,7 +370,9 @@ export default function TimedEventPanel() {
                 <TooltipWrapper
                   key={choice.id}
                   tooltip={
-                    <div className={`text-xs whitespace-nowrap ${isDisabled ? "text-muted-foreground" : ""}`}>
+                    <div
+                      className={`text-xs whitespace-nowrap ${isDisabled ? "text-muted-foreground" : ""}`}
+                    >
                       {costText && (
                         <div>
                           {/* Always use merchantTooltip (cost-only) for timed events - never show current amounts */}
@@ -365,7 +396,8 @@ export default function TimedEventPanel() {
 
                       // For merchant trades, always highlight both buy and sell resources
                       if (isMerchantEvent) {
-                        const buyResource = extractBuyResourceFromLabel(labelText);
+                        const buyResource =
+                          extractBuyResourceFromLabel(labelText);
                         const highlightResources = buyResource
                           ? [...costResources, buyResource]
                           : costResources;
@@ -389,7 +421,8 @@ export default function TimedEventPanel() {
                     if (costText) {
                       const costResources = extractResourcesFromCost(costText);
                       if (isMerchantEvent) {
-                        const buyResource = extractBuyResourceFromLabel(labelText);
+                        const buyResource =
+                          extractBuyResourceFromLabel(labelText);
                         const highlightResources = buyResource
                           ? [...costResources, buyResource]
                           : costResources;

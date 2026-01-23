@@ -4,10 +4,10 @@ import { GameState } from "@shared/schema";
 export const loreEvents: Record<string, GameEvent> = {
   restlessKnight: {
     id: "restlessKnight",
-    condition: (state: GameState) =>
-      state.buildings.stoneHut >= 4 && !state.story.seen.restlessKnightSuccess,
+    condition: (state: GameState) => true,
+      // state.buildings.stoneHut >= 4 && !state.story.seen.restlessKnightSuccess,
     timeProbability: (state: GameState) => {
-      return state.story.seen.restlessKnightFailed ? 20 : 15;
+      return state.story.seen.restlessKnightFailed ? 0.020 : 0.15;
     },
     title: "The Restless Knight",
     message: (state: GameState) =>
@@ -242,7 +242,6 @@ export const loreEvents: Record<string, GameEvent> = {
       state.buildings.stoneHut >= 8 &&
       state.story.seen.restlessKnightMountains &&
       !state.story.seen.restlessKnightCoast,
-
     timeProbability: (state: GameState) =>
       state.story.seen.restlessKnightCoastFailed ? 20 : 15,
     title: "Tales from the Shore",
