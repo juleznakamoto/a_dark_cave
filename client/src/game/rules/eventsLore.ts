@@ -4,7 +4,7 @@ import { GameState } from "@shared/schema";
 export const loreEvents: Record<string, GameEvent> = {
   restlessKnight: {
     id: "restlessKnight",
-    condition: (state: GameState) => true,
+    condition: (state: GameState) =>
       state.buildings.stoneHut >= 4 && !state.story.seen.restlessKnightSuccess,
     timeProbability: (state: GameState) => {
       return state.story.seen.restlessKnightFailed ? 20 : 15;
