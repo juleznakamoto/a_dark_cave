@@ -35,10 +35,12 @@ export const loreEvents: Record<string, GameEvent> = {
         };
       },
     },
+    relevant_stats: ["knowledge"],
     choices: [
       {
         id: "payGold",
         label: "Pay 50 Gold",
+        relevant_stats: ["knowledge"],
         cost: "50 gold",
         effect: (state: GameState) => {
           if (state.resources.gold < 50) {
@@ -159,10 +161,12 @@ export const loreEvents: Record<string, GameEvent> = {
         };
       },
     },
+    relevant_stats: ["knowledge"],
     choices: [
       {
         id: "payGold",
         label: "Pay 50 Gold",
+        relevant_stats: ["knowledge"],
         cost: "50 gold",
         effect: (state: GameState) => {
           if (state.resources.gold < 50) {
@@ -268,10 +272,12 @@ export const loreEvents: Record<string, GameEvent> = {
         };
       },
     },
+    relevant_stats: ["knowledge"],
     choices: [
       {
         id: "payGold",
         label: "Pay 50 Gold",
+        relevant_stats: ["knowledge"],
         cost: "50 gold",
         effect: (state: GameState) => {
           if (state.resources.gold < 50) {

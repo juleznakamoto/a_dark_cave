@@ -19,6 +19,7 @@ export const fellowshipEvents: Record<string, GameEvent> = {
     showAsTimedTab: true,
     timedTabDuration: 3 * 60 * 1000, // 3 minutes
     skipEventLog: true,
+    relevant_stats: ["knowledge"],
     fallbackChoice: {
       id: "refuse",
       label: "Time Expired",
@@ -41,6 +42,7 @@ export const fellowshipEvents: Record<string, GameEvent> = {
         id: "payGold",
         label: "Pay 250 Gold",
         cost: "250 gold",
+        relevant_stats: ["knowledge"],
         effect: (state: GameState) => {
           if (state.resources.gold < 250) {
             return {

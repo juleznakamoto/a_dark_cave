@@ -73,21 +73,26 @@ export default function TimedEventPanel() {
     // Ensure choices have relevant_stats from the event if they are missing
     // and the event itself has relevant_stats
     const eventStats = (timedEventTab.event as any)?.relevant_stats;
-    if (eventStats && eventStats.length > 0) {
-      const mergedChoices = choices.map(choice => {
-        const choiceStats = choice.relevant_stats;
-        return {
-          ...choice,
-          relevant_stats: choiceStats && choiceStats.length > 0 
-            ? choiceStats 
-            : eventStats
-        };
-      });
-      logger.log("[TIMED EVENT PANEL] Merged choices stats:", mergedChoices.map(c => ({ id: c.id, stats: c.relevant_stats })));
-      return mergedChoices;
-    }
-
-    return choices;
+    const mergedChoices = choices.map(choice => {
+      const choiceStats = choice.relevant_stats;
+      // TRICKY: We need to check if choiceStats is actually an array with items
+      const hasChoiceStats = Array.isArray(choiceStats) && choiceStats.length > 0;
+      const hasEventStats = Array.isArray(eventStats) && eventStats.length > 0;
+      
+      const finalStats = hasChoiceStats 
+        ? choiceStats 
+        : (hasEventStats ? eventStats : null);
+        
+      logger.log(`[TIMED EVENT PANEL] Choice ${choice.id} - hasChoiceStats: ${hasChoiceStats}, hasEventStats: ${hasEventStats}, final:`, finalStats);
+      
+      return {
+        ...choice,
+        relevant_stats: finalStats
+      };
+    });
+    
+    logger.log("[TIMED EVENT PANEL] Final choices with stats:", mergedChoices.map(c => ({ id: c.id, stats: c.relevant_stats })));
+    return mergedChoices;
   }, [
     isMerchantEvent,
     timedEventTab.event,
@@ -341,6 +346,8 @@ export default function TimedEventPanel() {
               ) {
                 const chance = choice.success_chance(gameState);
                 successPercentage = `${Math.round(chance * 100)}%`;
+              } else if (choice.success_chance !== undefined && typeof choice.success_chance === 'number') {
+                successPercentage = `${Math.round(choice.success_chance * 100)}%`;
               }
 
               // Check if we have a Scriptorium to show stat icons
