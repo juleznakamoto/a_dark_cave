@@ -87,7 +87,7 @@ export function TooltipWrapper({
       onTouchEnd={(e) => {
         // Don't show tooltip if action was just executed
         if (actionExecutedRef.current) {
-          e.preventDefault();
+          if (e.cancelable) e.preventDefault();
           e.stopPropagation();
           return;
         }

@@ -216,7 +216,7 @@ export function useGlobalTooltip() {
       
       // If tooltip was opened by long press timer, prevent click (user was just viewing tooltip)
       if (wasOpenedByTimer) {
-        e.preventDefault();
+        if (e.cancelable) e.preventDefault();
         e.stopPropagation();
         return;
       }
@@ -227,7 +227,7 @@ export function useGlobalTooltip() {
         return;
       }
       // If disabled, prevent the click
-      e.preventDefault();
+      if (e.cancelable) e.preventDefault();
       e.stopPropagation();
       return;
     }
@@ -236,7 +236,7 @@ export function useGlobalTooltip() {
     if (globalTooltipManager.isPressing(id)) {
       if (!disabled) {
         // Execute the action and prevent the Button's onClick from firing
-        e.preventDefault();
+        if (e.cancelable) e.preventDefault();
         e.stopPropagation();
         onClick();
       }
