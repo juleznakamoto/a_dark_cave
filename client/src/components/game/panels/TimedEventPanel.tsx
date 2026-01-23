@@ -319,10 +319,21 @@ export default function TimedEventPanel() {
               ) {
                 const chance = choice.success_chance(gameState);
                 successPercentage = `${Math.round(chance * 100)}%`;
+              } else if (typeof choice.success_chance === 'number') {
+                successPercentage = `${Math.round(choice.success_chance * 100)}%`;
               }
-              
+
               // Check if we have a Scriptorium to show stat icons
               const hasScriptorium = gameState.buildings.scriptorium >= 1;
+
+              logger.log(
+                "[TIMED EVENT PANEL] Choice:",
+                choice.id,
+                choice.relevant_stats,
+                hasScriptorium,
+                successPercentage,
+              );
+              
               const buttonContent = (
                 <Button
                   onClick={(e) => {

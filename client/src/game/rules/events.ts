@@ -234,10 +234,21 @@ export class EventManager {
       }
 
       if (shouldTrigger) {
-        // Generate fresh choices for merchant events
-        let eventChoices = event.choices;
+        // Generate/evaluate choices
+        let eventChoicesRaw = event.choices;
+        let eventChoices = typeof eventChoicesRaw === 'function' ? eventChoicesRaw(state) : eventChoicesRaw;
         if (event.id === "merchant") {
           eventChoices = generateMerchantChoices(state);
+        }
+
+        // Pre-evaluate dynamic properties of choices for persistence
+        if (Array.isArray(eventChoices)) {
+          eventChoices = eventChoices.map(c => ({
+            ...c,
+            label: typeof c.label === 'function' ? c.label(state) : c.label,
+            cost: typeof c.cost === 'function' ? c.cost(state) : c.cost,
+            success_chance: typeof c.success_chance === 'function' ? c.success_chance(state) : c.success_chance,
+          }));
         }
 
         // Select random message if message is an array, or evaluate if it's a function
