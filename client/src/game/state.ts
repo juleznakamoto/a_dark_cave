@@ -747,6 +747,20 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const state = get();
     const action = gameActions[actionId];
 
+    // Manual handling for feedFire which doesn't use standard registry logic
+    if (actionId === "feedFire") {
+      const result = executeGameAction(actionId, state);
+      if (result.stateUpdates && Object.keys(result.stateUpdates).length > 0) {
+        set((state) => ({
+          ...state,
+          ...result.stateUpdates,
+        }));
+        // Trigger effects update
+        StateManager.scheduleEffectsUpdate(get);
+      }
+      return;
+    }
+
     if (!action || (state.cooldowns[actionId] || 0) > 0) return;
     if (
       !shouldShowAction(actionId, state) ||

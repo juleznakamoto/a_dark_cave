@@ -85,7 +85,6 @@ export default function VillagePanel() {
     {
       title: "Build",
       actions: [
-        { id: "feedFire", label: "Feed Fire" },
         { id: "buildHeartfire", label: "Heartfire" },
         { id: "buildWoodenHut", label: "Wooden Hut" },
         { id: "buildStoneHut", label: "Stone Hut" },
@@ -448,6 +447,16 @@ export default function VillagePanel() {
   return (
     <ScrollArea className="h-full w-96">
       <div className="space-y-4 mt-2 mb-2 pl-[3px] ">
+        {/* Special Top Level Button Group for Feed Fire */}
+        {buildings.heartfire > 0 && (
+          <div className="space-y-2">
+            <h3 className="text-xs font-semibold text-foreground">Sanctuary</h3>
+            <div className="flex flex-wrap gap-2">
+              {renderButton("feedFire", "Feed Fire")}
+            </div>
+          </div>
+        )}
+
         {actionGroups.map((group, groupIndex) => {
           const visibleActions = group.actions.filter((action) =>
             shouldShowAction(action.id, state),
