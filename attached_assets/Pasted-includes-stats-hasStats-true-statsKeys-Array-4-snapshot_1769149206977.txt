@@ -1,0 +1,24 @@
+includes stats: {hasStats: true, statsKeys: Array(4), snapshotKeys: Array(29)}
+logger.ts:33 v160Z [TIMED EVENT PANEL] Non-merchant event, using event choices: {eventId: 'restlessKnight', choicesCount: 3}
+logger.ts:33 v160Z [TIMED EVENT PANEL] Debug - event: {id: 'restlessKnight', title: 'The Restless Knight', choices: Array(3), eventId: 'restlessKnight', message: "A knight in worn armor arrives at the village. 'I …ld, I will share what I have seen in my travels.'", …}choices: (3) [{…}, {…}, {…}]eventId: "restlessKnight"fallbackChoice: {id: 'refuse', label: 'Refuse'}id: "restlessKnight"message: "A knight in worn armor arrives at the village. 'I have seen much of the world,' he says with a hollow voice. 'For some gold, I will share what I have seen in my travels.'"relevant_stats: nulltimedTabDuration: 240000timestamp: 1769148976045title: "The Restless Knight"[[Prototype]]: Object
+logger.ts:33 v160Z [TIMED EVENT PANEL] Debug - relevant_stats: null
+logger.ts:33 v160Z [TIMED EVENT PANEL] Debug - choices count: 3
+logger.ts:33 v160Z [TIMED EVENT PANEL] Choice payGold - hasChoiceStats: false, hasEventStats: false, final: null
+logger.ts:33 v160Z [TIMED EVENT PANEL] Choice convince - hasChoiceStats: true, hasEventStats: false, final: ['knowledge']
+logger.ts:33 v160Z [TIMED EVENT PANEL] Choice refuse - hasChoiceStats: false, hasEventStats: false, final: null
+logger.ts:33 v160Z [TIMED EVENT PANEL] Final choices with stats: (3) [{…}, {…}, {…}]0: {id: 'payGold', stats: null}1: {id: 'convince', stats: Array(1)}2: {id: 'refuse', stats: null}length: 3[[Prototype]]: Array(0)
+logger.ts:33 v160Z [TIMED EVENT PANEL] Choice payGold - relevant_stats: null
+logger.ts:33 v160Z [TIMED EVENT PANEL] Choice convince - relevant_stats: ['knowledge']
+logger.ts:33 v160Z [TIMED EVENT PANEL] Choice refuse - relevant_stats: null
+logger.ts:33 v160Z [SAVE CLOUD] 🔍 Playtime overwrite check: {allowPlaytimeOverwrite: false, isNewGame: false, willAllowOverwrite: false, currentPlayTime: 45590621}
+logger.ts:33 v160Z [TIMED EVENT PANEL] Choice payGold - relevant_stats: null
+logger.ts:33 v160Z [TIMED EVENT PANEL] Choice convince - relevant_stats: ['knowledge']
+logger.ts:33 v160Z [TIMED EVENT PANEL] Choice refuse - relevant_stats: null
+logger.ts:33 v160Z [STATE] checkEvents results: {hasTimedTab: false, timedEventTab: undefined}
+logger.ts:33 v160Z [TIMED EVENT PANEL] Non-merchant event, using event choices: {eventId: 'restlessKnight', choicesCount: 3}
+logger.ts:33 v160Z [TIMED EVENT PANEL] Debug - event: {id: 'restlessKnight', title: 'The Restless Knight', choices: Array(3), eventId: 'restlessKnight', message: "A knight in worn armor arrives at the village. 'I …ld, I will share what I have seen in my travels.'", …}
+logger.ts:33 v160Z [TIMED EVENT PANEL] Debug - relevant_stats: null
+logger.ts:33 v160Z [TIMED EVENT PANEL] Debug - choices count: 3
+logger.ts:33 v160Z [TIMED EVENT PANEL] Choice payGold - hasChoiceStats: false, hasEventStats: false, final: null
+logger.ts:33 v160Z [TIMED EVENT PANEL] Choice convince - hasChoiceStats: true, hasEventStats: false, final: ['knowledge']
+logger.ts:33 v160Z [TIMED EVENT PANEL] Choice refuse - hasChoiceStats: false, hasEventStats: false, fi

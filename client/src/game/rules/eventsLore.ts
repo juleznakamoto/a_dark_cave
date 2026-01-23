@@ -18,6 +18,7 @@ export const loreEvents: Record<string, GameEvent> = {
     repeatable: true,
     showAsTimedTab: true,
     timedTabDuration: 4 * 60 * 1000,
+    relevant_stats: ["knowledge"],
     fallbackChoice: {
       id: "refuse",
       label: "Refuse",
@@ -144,6 +145,7 @@ export const loreEvents: Record<string, GameEvent> = {
     repeatable: true,
     showAsTimedTab: true,
     timedTabDuration: 4 * 60 * 1000,
+    relevant_stats: ["knowledge"],
     fallbackChoice: {
       id: "refuse",
       label: "Refuse",
@@ -255,6 +257,7 @@ export const loreEvents: Record<string, GameEvent> = {
     repeatable: true,
     showAsTimedTab: true,
     timedTabDuration: 4 * 60 * 1000,
+    relevant_stats: ["knowledge"],
     fallbackChoice: {
       id: "refuse",
       label: "Refuse",
@@ -410,6 +413,7 @@ export const loreEvents: Record<string, GameEvent> = {
     repeatable: true,
     showAsTimedTab: true,
     timedTabDuration: 4 * 60 * 1000,
+    relevant_stats: ["knowledge"],
     fallbackChoice: {
       id: "refuse",
       label: "Refuse",

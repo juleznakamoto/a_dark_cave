@@ -352,6 +352,7 @@ export default function TimedEventPanel() {
 
               // Check if we have a Scriptorium to show stat icons
               const hasScriptorium = gameState.buildings.scriptorium >= 1;
+              logger.log(`[TIMED EVENT PANEL] Choice ${choice.id} - relevant_stats:`, choice.relevant_stats)
 
               const buttonContent = (
                 <Button

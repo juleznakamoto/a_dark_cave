@@ -270,6 +270,7 @@ export class EventManager {
           };
           newLogEntries.push(logEntry);
         } else {
+          // For timed tab events, pass event data directly without creating a LogEntry
           stateChanges.timedEventTab = {
             isActive: true,
             event: {
