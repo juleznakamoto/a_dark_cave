@@ -242,7 +242,6 @@ export default function VillagePanel() {
           >
             {woodCost} Wood
           </div>
-          {currentLevel >= 5 && <div className="text-red-500">Max Level</div>}
         </div>
       );
 
@@ -252,7 +251,7 @@ export default function VillagePanel() {
           onClick={() => executeAction(actionId)}
           cooldownMs={30000}
           button_id={actionId}
-          disabled={!canExecute}
+          disabled={!canExecute || (state.cooldowns[actionId] || 0) > 0}
           size="xs"
           variant="outline"
           className="hover:bg-transparent hover:text-foreground"
@@ -707,7 +706,7 @@ export default function VillagePanel() {
                                   strokeWidth={2}
                                   className="text-red-500"
                                 />
-                                <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[10px] -mt-[0px] text-red-500">
+                                <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[10px] -mt-[2px] text-red-500">
                                   {getHeartfireSymbol(
                                     state.heartfireState.level,
                                   )}

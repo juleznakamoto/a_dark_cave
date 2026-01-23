@@ -214,6 +214,10 @@ export function executeGameAction(
       const newLevel = currentLevel + 1;
       result.stateUpdates = {
         ...result.stateUpdates,
+        cooldowns: {
+          ...result.stateUpdates.cooldowns,
+          feedFire: 30, // 30 seconds
+        },
         resources: {
           ...state.resources,
           wood: state.resources.wood - woodCost,
