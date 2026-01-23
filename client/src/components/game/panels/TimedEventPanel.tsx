@@ -326,14 +326,6 @@ export default function TimedEventPanel() {
               // Check if we have a Scriptorium to show stat icons
               const hasScriptorium = gameState.buildings.scriptorium >= 1;
 
-              logger.log(
-                "[TIMED EVENT PANEL] Choice:",
-                choice.id,
-                choice.relevant_stats,
-                hasScriptorium,
-                successPercentage,
-              );
-
               const buttonContent = (
                 <Button
                   onClick={(e) => {
@@ -346,15 +338,15 @@ export default function TimedEventPanel() {
                   button_id={`timedevent-${choice.id}`}
                   className="gap-0 w-full text-left justify-between"
                 >
-                  <div className="flex items-center gap-2 overflow-hidden w-full">
-                    <span className="truncate flex-shrink">{labelText}</span>
+                  <div className="flex flex-col">
+                    <span>{labelText}</span>
                     {hasScriptorium &&
                       successPercentage &&
                       choice.relevant_stats &&
                       choice.relevant_stats.length > 0 && (
-                        <div className="flex items-center gap-1 flex-shrink-0 ml-auto">
-                          <span className="text-[10px] text-muted-foreground whitespace-nowrap">
-                            {successPercentage}
+                        <div className="flex">
+                          <span className="text-xs text-muted-foreground">
+                            {successPercentage}&nbsp;
                           </span>
                           {choice.relevant_stats.map((stat) => {
                             const statInfo = statIcons[stat.toLowerCase()];
@@ -362,7 +354,7 @@ export default function TimedEventPanel() {
                             return (
                               <span
                                 key={stat}
-                                className={`text-[10px] ${statInfo.color}`}
+                                className={`text-xs ${statInfo.color}`}
                                 title={stat}
                               >
                                 {statInfo.icon}
