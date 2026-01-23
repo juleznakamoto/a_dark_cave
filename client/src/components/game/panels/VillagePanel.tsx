@@ -231,6 +231,7 @@ export default function VillagePanel() {
             {woodCost} Wood
           </div>
           {currentLevel >= 5 && <div className="text-red-500">Max Level</div>}
+          <div className="text-blue-400 mt-1">Production Bonus: +{currentLevel * 5}%</div>
         </div>
       );
 
@@ -246,7 +247,7 @@ export default function VillagePanel() {
           className="hover:bg-transparent hover:text-foreground"
           tooltip={tooltipContent}
         >
-          {label}
+          {label} {getHeartfireSymbol(currentLevel)}
         </CooldownButton>
       );
     }
