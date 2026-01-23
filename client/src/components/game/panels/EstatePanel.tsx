@@ -285,7 +285,7 @@ export default function EstatePanel() {
         {/* Sleep Mode Section */}
         <div className="space-y-">
           <div className="flex items-center gap-2 pb-2">
-            <h3 className="text-xs font-bold text-foreground">Rest</h3>
+            <h3 className="text-xs font-medium text-foreground">Rest</h3>
             {/* Focus Timer */}
             {focusState?.isActive && focusState.endTime > Date.now() && (
               <TooltipWrapper
