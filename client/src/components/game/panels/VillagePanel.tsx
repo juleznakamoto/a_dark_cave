@@ -203,12 +203,18 @@ export default function VillagePanel() {
 
   const getHeartfireSymbol = (level: number) => {
     switch (level) {
-      case 1: return "·";
-      case 2: return ":";
-      case 3: return "∴";
-      case 4: return "⁘";
-      case 5: return "⁙";
-      default: return "";
+      case 1:
+        return "·";
+      case 2:
+        return ":";
+      case 3:
+        return "∴";
+      case 4:
+        return "⁘";
+      case 5:
+        return "⁙";
+      default:
+        return "";
     }
   };
 
@@ -224,14 +230,19 @@ export default function VillagePanel() {
       const currentLevel = state.heartfireState?.level || 0;
       const woodCost = 50 * (currentLevel + 1);
       const canExecute = state.resources.wood >= woodCost && currentLevel < 5;
-      
+
       const tooltipContent = (
         <div className="text-xs whitespace-nowrap">
-          <div className={state.resources.wood >= woodCost ? "text-foreground" : "text-muted-foreground"}>
+          <div
+            className={
+              state.resources.wood >= woodCost
+                ? "text-foreground"
+                : "text-muted-foreground"
+            }
+          >
             {woodCost} Wood
           </div>
           {currentLevel >= 5 && <div className="text-red-500">Max Level</div>}
-          <div className="text-blue-400 mt-1">Production Bonus: +{currentLevel * 5}%</div>
         </div>
       );
 
@@ -665,7 +676,9 @@ export default function VillagePanel() {
                     {state.heartfireState?.level > 0 && (
                       <TooltipProvider>
                         <Tooltip
-                          open={mobileTooltip.isTooltipOpen("heartfire-progress")}
+                          open={mobileTooltip.isTooltipOpen(
+                            "heartfire-progress",
+                          )}
                         >
                           <TooltipTrigger asChild>
                             <div
@@ -681,23 +694,31 @@ export default function VillagePanel() {
                                 <CircularProgress
                                   value={(() => {
                                     const now = Date.now();
-                                    const lastDecrease = state.heartfireState.lastLevelDecrease || 0;
+                                    const lastDecrease =
+                                      state.heartfireState.lastLevelDecrease ||
+                                      0;
                                     const elapsed = now - lastDecrease;
-                                    return Math.min(100, (elapsed / 90000) * 100);
+                                    return Math.min(
+                                      100,
+                                      (elapsed / 90000) * 100,
+                                    );
                                   })()}
                                   size={18}
                                   strokeWidth={2}
                                   className="text-red-500"
                                 />
                                 <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[10px] -mt-[0px] text-red-500">
-                                  {state.heartfireState.level}
+                                  {getHeartfireSymbol(
+                                    state.heartfireState.level,
+                                  )}
                                 </span>
                               </div>
                             </div>
                           </TooltipTrigger>
                           <TooltipContent>
                             <div className="text-xs">
-                              Heartfire: +{state.heartfireState.level * 5}% Village Production
+                              Heartfire: +{state.heartfireState.level * 5}%
+                              Village Production
                             </div>
                           </TooltipContent>
                         </Tooltip>
