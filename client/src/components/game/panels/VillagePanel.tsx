@@ -204,7 +204,42 @@ export default function VillagePanel() {
 
   const renderButton = (actionId: string, label: string) => {
     const action = gameActions[actionId];
-    if (!action) return null;
+    if (!action && actionId !== "feedFire") return null;
+
+    // Special case for Feed Fire button
+    if (actionId === "feedFire") {
+      const heartfireBuilt = buildings.heartfire > 0;
+      if (!heartfireBuilt) return null;
+
+      const currentLevel = state.heartfireState?.level || 0;
+      const woodCost = 50 * (currentLevel + 1);
+      const canExecute = state.resources.wood >= woodCost && currentLevel < 5;
+      
+      const tooltipContent = (
+        <div className="text-xs whitespace-nowrap">
+          <div className={state.resources.wood >= woodCost ? "text-foreground" : "text-muted-foreground"}>
+            {woodCost} Wood
+          </div>
+          {currentLevel >= 5 && <div className="text-red-500">Max Level</div>}
+        </div>
+      );
+
+      return (
+        <CooldownButton
+          key={actionId}
+          onClick={() => executeAction(actionId)}
+          cooldownMs={30000}
+          button_id={actionId}
+          disabled={!canExecute}
+          size="xs"
+          variant="outline"
+          className="hover:bg-transparent hover:text-foreground"
+          tooltip={tooltipContent}
+        >
+          {label} (Lvl {currentLevel})
+        </CooldownButton>
+      );
+    }
 
     const canExecute = canExecuteAction(actionId, state);
     const costBreakdown = getActionCostBreakdown(actionId, state);
