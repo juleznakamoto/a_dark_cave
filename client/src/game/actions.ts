@@ -462,6 +462,8 @@ export function executeGameAction(
       return handleBuildGrandRepository(state, result);
     case "buildGreatVault":
       return handleBuildGreatVault(state, result);
+    case "buildHeartfire":
+      return handleBuildHeartfire(state, result);
 
     // Forest Scout Actions
     case "hunt":
