@@ -270,19 +270,24 @@ export class EventManager {
           };
           newLogEntries.push(logEntry);
         } else {
-          // For timed tab events, pass event data directly without creating a LogEntry
-          stateChanges._timedTabEvent = {
-            id: event.id,
-            eventId: event.id,
-            timestamp: Date.now(),
-            message: message,
-            title: event.title,
-            choices: eventChoices,
-            fallbackChoice: event.fallbackChoice,
-            relevant_stats: event.relevant_stats,
-            timedTabDuration: event.timedTabDuration,
-            _playSound: true, // Signal to play sound
+          stateChanges.timedEventTab = {
+            isActive: true,
+            event: {
+              id: event.id,
+              eventId: event.id,
+              timestamp: Date.now(),
+              message: message,
+              title: event.title,
+              choices: eventChoices,
+              fallbackChoice: event.fallbackChoice,
+              relevant_stats: event.relevant_stats,
+              timedTabDuration: event.timedTabDuration,
+            },
+            expiryTime: Date.now() + (event.timedTabDuration || 15000),
+            startTime: Date.now(),
           };
+          // Signal to play sound
+          stateChanges._timedTabEventSound = true;
         }
 
         // Apply effect if it exists

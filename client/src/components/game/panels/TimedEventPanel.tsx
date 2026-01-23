@@ -66,11 +66,13 @@ export default function TimedEventPanel() {
         : timedEventTab.event.choices;
     const choices = Array.isArray(choicesRaw) ? choicesRaw : [];
 
-    logger.log("[TIMED EVENT PANEL] Raw choices:", choices.map(c => ({ id: c.id, has_stats: !!c.relevant_stats, event_stats: timedEventTab.event?.relevant_stats })));
+    logger.log("[TIMED EVENT PANEL] Debug - event:", timedEventTab.event);
+    logger.log("[TIMED EVENT PANEL] Debug - relevant_stats:", (timedEventTab.event as any)?.relevant_stats);
+    logger.log("[TIMED EVENT PANEL] Debug - choices count:", choices.length);
 
     // Ensure choices have relevant_stats from the event if they are missing
     // and the event itself has relevant_stats
-    const eventStats = timedEventTab.event.relevant_stats;
+    const eventStats = (timedEventTab.event as any)?.relevant_stats;
     if (eventStats && eventStats.length > 0) {
       const mergedChoices = choices.map(choice => {
         const choiceStats = choice.relevant_stats;
@@ -81,7 +83,7 @@ export default function TimedEventPanel() {
             : eventStats
         };
       });
-      logger.log("[TIMED EVENT PANEL] Merged choices:", mergedChoices.map(c => ({ id: c.id, stats: c.relevant_stats })));
+      logger.log("[TIMED EVENT PANEL] Merged choices stats:", mergedChoices.map(c => ({ id: c.id, stats: c.relevant_stats })));
       return mergedChoices;
     }
 

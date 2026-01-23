@@ -129,10 +129,10 @@ interface GameStore extends GameState {
   // Compass glow effect
   compassGlowButton: string | null; // Action ID of button to glow
 
-  // Timed event tab (not part of GameState, only UI state)
+  // Timed event tab (now part of GameState for persistence)
   timedEventTab: {
     isActive: boolean;
-    event: LogEntry | (LogEntry & { eventId?: string }) | null;
+    event: LogEntry | null;
     expiryTime: number;
     startTime?: number;
   };
@@ -385,6 +385,7 @@ const mergeStateUpdates = (
         : prevState.hasWonAnyGame,
     // Merchant trades state
     merchantTrades: stateUpdates.merchantTrades || prevState.merchantTrades,
+    timedEventTab: stateUpdates.timedEventTab || prevState.timedEventTab,
   };
 
   if (
@@ -1203,6 +1204,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
           choices: [],
           purchasedIds: [],
         }, // Load merchant trades
+        timedEventTab: savedState.timedEventTab || {
+          isActive: false,
+          event: null,
+          expiryTime: 0,
+        }, // Load timed event tab
       };
 
       logger.log('[MERCHANT TRADES] Loaded merchant trades from state:', {
@@ -1271,12 +1277,23 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const { newLogEntries, stateChanges } =
       EventManager.checkEvents({ ...state, timedEventTab: { isActive: timedTabActive } } as any);
 
-    // Handle timed tab event if present
-    if (stateChanges._timedTabEvent) {
-      const timedTabEntry = stateChanges._timedTabEvent;
-      delete stateChanges._timedTabEvent;
+    logger.log("[STATE] checkEvents results:", { hasTimedTab: !!stateChanges.timedEventTab, timedEventTab: stateChanges.timedEventTab });
 
-      get().setTimedEventTab(true, timedTabEntry, timedTabEntry.timedTabDuration);
+    // Handle timed tab event if present
+    if (stateChanges.timedEventTab) {
+      // Sound is handled via _timedTabEventSound signal
+      if (stateChanges._timedTabEventSound) {
+        const state = get();
+        if (!state.isMuted) {
+          const eventId = stateChanges.timedEventTab.event.id.split("-")[0];
+          const madnessEventIds = Object.keys(madnessEvents);
+          const isMadnessEvent = madnessEventIds.includes(eventId);
+          audioManager.playSound(isMadnessEvent ? "eventMadness" : "event", 0.02);
+        }
+        delete stateChanges._timedTabEventSound;
+      }
+      
+      set(stateChanges);
     }
 
     if (newLogEntries.length > 0) {
