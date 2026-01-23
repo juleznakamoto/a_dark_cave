@@ -346,14 +346,14 @@ export default function TimedEventPanel() {
                   button_id={`timedevent-${choice.id}`}
                   className="gap-0 w-full text-left justify-between"
                 >
-                  <div className="flex items-center gap-2">
-                    <span>{labelText}</span>
+                  <div className="flex items-center gap-2 overflow-hidden w-full">
+                    <span className="truncate flex-shrink">{labelText}</span>
                     {hasScriptorium &&
                       successPercentage &&
                       choice.relevant_stats &&
                       choice.relevant_stats.length > 0 && (
-                        <div className="flex items-center gap-1">
-                          <span className="text-[10px] text-muted-foreground">
+                        <div className="flex items-center gap-1 flex-shrink-0 ml-auto">
+                          <span className="text-[10px] text-muted-foreground whitespace-nowrap">
                             {successPercentage}
                           </span>
                           {choice.relevant_stats.map((stat) => {
