@@ -128,6 +128,11 @@ export const shouldShowAction = (
   actionId: string,
   state: GameState,
 ): boolean => {
+  // Special case for Feed Fire
+  if (actionId === "feedFire") {
+    return (state.buildings.heartfire || 0) > 0;
+  }
+
   const action = getGameActions()[actionId];
   if (!action?.show_when) return false;
 
