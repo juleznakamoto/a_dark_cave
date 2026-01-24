@@ -19,6 +19,7 @@ interface CooldownButtonProps {
   size?: "default" | "sm" | "xs" | "lg" | "icon";
   "data-testid"?: string;
   button_id?: string;
+  actionId?: string;
   tooltip?: React.ReactNode;
   onMouseEnter?: (e?: React.MouseEvent<HTMLDivElement>) => void;
   onMouseLeave?: (e?: React.MouseEvent<HTMLDivElement>) => void;
@@ -46,13 +47,12 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
   const previousCooldownRef = useRef<number>(0);
 
   // Get the action ID from the test ID or generate one
-  const actionId =
-    testId
-      ?.replace("button-", "")
-      .replace(/-([a-z])/g, (_, letter) => letter.toUpperCase()) || "unknown";
+  const actionIdFromProps = props.actionId || props.button_id || testId
+    ?.replace("button-", "")
+    .replace(/-([a-z])/g, (_, letter) => letter.toUpperCase()) || "unknown";
 
   // Get current cooldown from game state
-  const currentCooldown = cooldowns[actionId] || 0;
+  const currentCooldown = cooldowns[actionIdFromProps] || 0;
   const isCoolingDown = currentCooldown > 0;
 
   // Derive initial cooldown from cooldownMs prop (which comes from action.cooldown * 1000)
@@ -127,7 +127,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
   };
 
   const isButtonDisabled = disabled || isCoolingDown;
-  const isCompassGlowing = compassGlowButton === actionId;
+  const isCompassGlowing = compassGlowButton === actionIdFromProps;
 
   const buttonId = testId || `button-${Math.random()}`;
 
@@ -143,7 +143,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
         isCoolingDown ? "cursor-not-allowed" : ""
       } ${isCompassGlowing ? "compass-glow" : ""} ${className}`}
       data-testid={testId}
-      button_id={props.button_id || actionId}
+      button_id={props.button_id || actionIdFromProps}
       {...props}
       style={{ opacity: 1, ...props.style }}
     >

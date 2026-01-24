@@ -231,26 +231,27 @@ export default function VillagePanel() {
       const woodCost = 50 * (currentLevel + 1);
       const canExecute = state.resources.wood >= woodCost && currentLevel < 5;
 
-      const tooltipContent = (
-        <div className="text-xs whitespace-nowrap">
-          <div
-            className={
-              state.resources.wood >= woodCost
-                ? "text-foreground"
-                : "text-muted-foreground"
-            }
-          >
-            {woodCost} Wood
+      const tooltipContent =
+        currentLevel < 5 ? (
+          <div className="text-xs whitespace-nowrap">
+            <div
+              className={
+                state.resources.wood >= woodCost
+                  ? "text-foreground"
+                  : "text-muted-foreground"
+              }
+            >
+              {woodCost} Wood
+            </div>
           </div>
-        </div>
-      );
+        ) : undefined;
 
       return (
         <CooldownButton
           key={actionId}
           onClick={() => executeAction(actionId)}
           cooldownMs={30000}
-          data-testid="button-feed-fire"
+          actionId="feedFire"
           button_id={actionId}
           disabled={!canExecute || (state.cooldowns[actionId] || 0) > 0}
           size="xs"
@@ -489,7 +490,7 @@ export default function VillagePanel() {
           return (
             <div key={groupIndex} className="space-y-2">
               {group.title && (
-                <h3 className="text-xs font-semibold text-foreground ">
+                <h3 className="text-xs font-medium text-foreground ">
                   {group.title}
                 </h3>
               )}
@@ -506,7 +507,7 @@ export default function VillagePanel() {
         {story.seen?.hasVillagers && visiblePopulationJobs.length > 0 && (
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <h3 className="text-xs font-bold text-foreground">Rule</h3>
+              <h3 className="text-xs font-medium text-foreground">Rule</h3>
               {/* Feast Timer */}
               {(() => {
                 const feastState = useGameStore.getState().feastState;
@@ -707,7 +708,7 @@ export default function VillagePanel() {
                                   strokeWidth={2}
                                   className="text-red-500"
                                 />
-                                <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[12px] -mt-[4px] text-red-500">
+                                <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[18px] -mt-[2px] text-red-500">
                                   {getHeartfireSymbol(
                                     state.heartfireState.level,
                                   )}

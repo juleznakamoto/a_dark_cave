@@ -236,7 +236,7 @@ export default function TimedEventPanel() {
       {/* Choices */}
       <div className="space-y-2 pt-1">
         {(isMerchantEvent || isCollectorEvent) && (
-          <h3 className="text-xs font-semibold flex items-center">
+          <h3 className="text-xs font-medium flex items-center">
             <span>{isMerchantEvent ? "Buy" : "Sell"}</span>
             {isMerchantEvent &&
               (() => {

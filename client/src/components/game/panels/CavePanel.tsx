@@ -329,7 +329,7 @@ export default function CavePanel() {
             return (
               <div key={groupIndex} className="space-y-2">
                 {group.title && (
-                  <h3 className="text-xs font-bold text-foreground">
+                  <h3 className="text-xs font-medium text-foreground">
                     {group.title}
                   </h3>
                 )}
@@ -370,7 +370,7 @@ export default function CavePanel() {
           return (
             <div key={groupIndex} className="space-y-2">
               {group.title && (
-                <h3 className="text-xs font-bold text-foreground">
+                <h3 className="text-xs font-medium text-foreground">
                   {group.title}
                 </h3>
               )}

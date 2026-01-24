@@ -197,7 +197,7 @@ export default function BastionPanel() {
       {/* Heal Section - only show if there are wounded fellowship members */}
       {(story?.seen?.restlessKnightWounded || story?.seen?.elderWizardWounded) && (
         <div className="space-y-2">
-          <h3 className="text-xs font-bold text-foreground">Heal</h3>
+          <h3 className="text-xs font-medium text-foreground">Heal</h3>
           <div className="flex flex-wrap gap-2">
             {story?.seen?.restlessKnightWounded && fellowship?.restless_knight && (
               <TooltipWrapper
@@ -318,7 +318,7 @@ export default function BastionPanel() {
       {/* Repair Section - only show if there are damaged buildings */}
       {hasDamagedBuildings && (
         <div className="space-y-2">
-          <h3 className="text-xs font-bold text-foreground">Repair</h3>
+          <h3 className="text-xs font-medium text-foreground">Repair</h3>
           <div className="flex flex-wrap gap-2">
             {bastionDamaged && buildings.bastion > 0 && (
               <TooltipWrapper

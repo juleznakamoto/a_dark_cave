@@ -527,7 +527,7 @@ export default function EstatePanel() {
           fellowship.elder_wizard ||
           fellowship.one_eyed_crow) && (
             <div className="space-y-1 pt-2">
-              <h3 className="text-xs font-bold text-foreground">Skills</h3>
+              <h3 className="text-xs font-medium text-foreground">Skills</h3>
 
               {/* Huntress Training */}
               {fellowship.ashwraith_huntress && (
@@ -1058,7 +1058,7 @@ export default function EstatePanel() {
 
         {/* Cube Section */}
         <div className="space-y-2 pt-1">
-          <h3 className="text-xs font-bold text-foreground">Cube</h3>
+          <h3 className="text-xs font-medium text-foreground">Cube</h3>
 
           <div className="grid grid-cols-6 gap-5 w-40 h-12 gap-y-3">
             {completedCubeEvents.map((event) => (
