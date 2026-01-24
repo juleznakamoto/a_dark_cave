@@ -202,26 +202,61 @@ export default function VillagePanel() {
   ];
 
   const getHeartfireSymbol = (level: number) => {
-    let marginTop = "0px";
-    switch (level) {
-      case 1:
-        marginTop = "-2px";
-        return <span style={{ marginTop }}>·</span>;
-      case 2:
-        marginTop = "-2px";
-        return <span style={{ marginTop }}>:</span>;
-      case 3:
-        marginTop = "-1px";
-        return <span style={{ marginTop }}>∴</span>;
-      case 4:
-        marginTop = "0px";
-        return <span style={{ marginTop }}>⁘</span>;
-      case 5:
-        marginTop = "1px";
-        return <span style={{ marginTop }}>⁙</span>;
-      default:
-        return null;
-    }
+    const config: Record<
+      number,
+      {
+        symbol: string;
+        marginTop: string;
+        textSize: string;
+        fontWeight?: number;
+      }
+    > = {
+      1: {
+        symbol: "·",
+        marginTop: "-1px",
+        textSize: "text-[14px]",
+        fontWeight: 800,
+      },
+      2: {
+        symbol: ":",
+        marginTop: "-4px",
+        textSize: "text-[12px]",
+        fontWeight: 800,
+      },
+      3: {
+        symbol: "∴",
+        marginTop: "-4px",
+        textSize: "text-[12px]",
+        fontWeight: 900,
+      },
+      4: {
+        symbol: "⁘",
+        marginTop: "-7px",
+        textSize: "text-[18px]",
+        fontWeight: 700,
+      },
+      5: {
+        symbol: "⁙",
+        marginTop: "-6px",
+        textSize: "text-[16px]",
+        fontWeight: 700,
+      },
+    };
+
+    const entry = config[level];
+    if (!entry) return null;
+
+    return (
+      <span
+        className={entry.textSize}
+        style={{
+          marginTop: entry.marginTop,
+          fontWeight: entry.fontWeight,
+        }}
+      >
+        {entry.symbol}
+      </span>
+    );
   };
 
   const renderButton = (actionId: string, label: string) => {
@@ -265,12 +300,7 @@ export default function VillagePanel() {
           className="hover:bg-transparent hover:text-foreground"
           tooltip={tooltipContent}
         >
-          <span className="flex items-center gap-1">
-            {label}
-            <span className="inline-flex items-center justify-center font-extrabold text-[18px] text-red-700 h-full">
-              {getHeartfireSymbol(currentLevel)}
-            </span>
-          </span>
+          <span className="flex items-center gap-1">{label}</span>
         </CooldownButton>
       );
     }
@@ -719,7 +749,7 @@ export default function VillagePanel() {
                                   strokeWidth={2}
                                   className="text-red-700"
                                 />
-                                <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[18px] -mt-[2px] text-red-700">
+                                <span className="absolute inset-0 flex items-center justify-center font-extrabold text-red-700">
                                   {getHeartfireSymbol(
                                     state.heartfireState.level,
                                   )}
