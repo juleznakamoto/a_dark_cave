@@ -1870,8 +1870,8 @@ export const villageBuildActions: Record<string, Action> = {
   buildHeartfire: {
     id: "buildHeartfire",
     label: "Heartfire",
-    description: "A sacred fire that boosts village production when fed.",
-    tooltipEffects: ["Unlocks Feed Fire"],
+    description: "Sacred fire offering comfort and a sense of protection",
+    tooltipEffects: ["Unlocks Feed Fire action"],
     building: true,
     show_when: {
       1: {
@@ -1882,7 +1882,7 @@ export const villageBuildActions: Record<string, Action> = {
     cost: {
       1: {
         "resources.wood": 1000,
-        "resources.stone": 500,
+        "resources.stone": 1000,
       },
     },
     effects: {

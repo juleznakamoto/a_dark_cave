@@ -231,7 +231,7 @@ export default function VillagePanel() {
       const woodCost = 50 * (currentLevel + 1);
       const canExecute = state.resources.wood >= woodCost && currentLevel < 5;
 
-      const tooltipContent = currentLevel < 5 ? (
+      const tooltipContent = (
         <div className="text-xs whitespace-nowrap">
           <div
             className={
@@ -243,13 +243,14 @@ export default function VillagePanel() {
             {woodCost} Wood
           </div>
         </div>
-      ) : undefined;
+      );
 
       return (
         <CooldownButton
           key={actionId}
           onClick={() => executeAction(actionId)}
           cooldownMs={30000}
+          data-testid="button-feed-fire"
           button_id={actionId}
           disabled={!canExecute || (state.cooldowns[actionId] || 0) > 0}
           size="xs"
