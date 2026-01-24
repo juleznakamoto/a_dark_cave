@@ -179,7 +179,7 @@ describe('State - Resource Limits Integration', () => {
       }));
 
       // Upgrade to storehouse
-      const storehouseLimit = 5000;
+      const storehouseLimit = 2500;
       useGameStore.setState((state) => ({
         buildings: {
           ...state.buildings,
@@ -209,11 +209,11 @@ describe('State - Resource Limits Integration', () => {
       const tiers = [
         { level: 0, limit: 500, building: null },
         { level: 1, limit: 1000, building: 'supplyHut' },
-        { level: 2, limit: 5000, building: 'storehouse' },
-        { level: 3, limit: 10000, building: 'fortifiedStorehouse' },
-        { level: 4, limit: 25000, building: 'villageWarehouse' },
-        { level: 5, limit: 50000, building: 'grandRepository' },
-        { level: 6, limit: 100000, building: 'greatVault' },
+        { level: 2, limit: 2500, building: 'storehouse' },
+        { level: 3, limit: 5000, building: 'fortifiedStorehouse' },
+        { level: 4, limit: 10000, building: 'villageWarehouse' },
+        { level: 5, limit: 25000, building: 'grandRepository' },
+        { level: 6, limit: 50000, building: 'greatVault' },
       ];
 
       tiers.forEach(({ level, limit, building }) => {

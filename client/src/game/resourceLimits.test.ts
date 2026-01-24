@@ -123,12 +123,12 @@ describe('Resource Limits - Core Functionality', () => {
 
     it('should return formatted number for storage level 3', () => {
       state.buildings.fortifiedStorehouse = 1;
-      expect(getStorageLimitText(state)).toBe('10,000');
+      expect(getStorageLimitText(state)).toBe('5,000');
     });
 
     it('should return formatted number for storage level 6', () => {
       state.buildings.greatVault = 1;
-      expect(getStorageLimitText(state)).toBe('100,000');
+      expect(getStorageLimitText(state)).toBe('50,000');
     });
   });
 
@@ -395,11 +395,11 @@ describe('Resource Limits - Integration with Game Components', () => {
       const tiers = [
         { level: 0, limit: 500, buildings: {} },
         { level: 1, limit: 1000, buildings: { supplyHut: 1 } },
-        { level: 2, limit: 5000, buildings: { storehouse: 1 } },
-        { level: 3, limit: 10000, buildings: { fortifiedStorehouse: 1 } },
-        { level: 4, limit: 25000, buildings: { villageWarehouse: 1 } },
-        { level: 5, limit: 50000, buildings: { grandRepository: 1 } },
-        { level: 6, limit: 100000, buildings: { greatVault: 1 } },
+        { level: 2, limit: 2500, buildings: { storehouse: 1 } },
+        { level: 3, limit: 5000, buildings: { fortifiedStorehouse: 1 } },
+        { level: 4, limit: 10000, buildings: { villageWarehouse: 1 } },
+        { level: 5, limit: 25000, buildings: { grandRepository: 1 } },
+        { level: 6, limit: 50000, buildings: { greatVault: 1 } },
       ];
 
       tiers.forEach(({ buildings, limit }) => {
@@ -449,7 +449,7 @@ describe('Resource Limits - Integration with Game Components', () => {
       state.resources.wood = 0;
       state.buildings.greatVault = 1;
       const updates = updateResource(state, 'wood', 150000);
-      expect(updates.resources?.wood).toBe(100000);
+      expect(updates.resources?.wood).toBe(50000);
     });
   });
 
