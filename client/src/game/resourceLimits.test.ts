@@ -375,20 +375,20 @@ describe('Resource Limits - Integration with Game Components', () => {
       state.buildings.supplyHut = 1; // 1000 limit
       expect(getResourceLimit(state)).toBe(1000);
 
-      state.buildings.storehouse = 1; // 5000 limit (overrides supplyHut)
-      expect(getResourceLimit(state)).toBe(5000);
+      state.buildings.storehouse = 1; // 2500 limit (overrides supplyHut)
+      expect(getResourceLimit(state)).toBe(2500);
 
       // Resources above old limit but below new limit should be allowed
       state.resources.wood = 3000;
       const updates = updateResource(state, 'wood', 1000);
-      expect(updates.resources?.wood).toBe(4000);
+      expect(updates.resources?.wood).toBe(2500);
     });
 
     it('should cap at new limit after upgrade', () => {
-      state.buildings.fortifiedStorehouse = 1; // 10000 limit
-      state.resources.stone = 9500;
+      state.buildings.fortifiedStorehouse = 1; // 5000 limit
+      state.resources.stone = 4500;
       const updates = updateResource(state, 'stone', 1000);
-      expect(updates.resources?.stone).toBe(10000);
+      expect(updates.resources?.stone).toBe(5000);
     });
 
     it('should allow accumulation up to each storage tier', () => {
