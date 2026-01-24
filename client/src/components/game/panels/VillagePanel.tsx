@@ -202,19 +202,25 @@ export default function VillagePanel() {
   ];
 
   const getHeartfireSymbol = (level: number) => {
+    let marginTop = "0px";
     switch (level) {
       case 1:
-        return "·";
+        marginTop = "-2px";
+        return <span style={{ marginTop }}>·</span>;
       case 2:
-        return ":";
+        marginTop = "-2px";
+        return <span style={{ marginTop }}>:</span>;
       case 3:
-        return "∴";
+        marginTop = "-1px";
+        return <span style={{ marginTop }}>∴</span>;
       case 4:
-        return "⁘";
+        marginTop = "0px";
+        return <span style={{ marginTop }}>⁘</span>;
       case 5:
-        return "⁙";
+        marginTop = "1px";
+        return <span style={{ marginTop }}>⁙</span>;
       default:
-        return "";
+        return null;
     }
   };
 
@@ -259,7 +265,12 @@ export default function VillagePanel() {
           className="hover:bg-transparent hover:text-foreground"
           tooltip={tooltipContent}
         >
-          {label} {getHeartfireSymbol(currentLevel)}
+          <span className="flex items-center gap-1">
+            {label}
+            <span className="inline-flex items-center justify-center font-extrabold text-[18px] text-red-700 h-full">
+              {getHeartfireSymbol(currentLevel)}
+            </span>
+          </span>
         </CooldownButton>
       );
     }
@@ -706,9 +717,9 @@ export default function VillagePanel() {
                                   })()}
                                   size={18}
                                   strokeWidth={2}
-                                  className="text-red-500"
+                                  className="text-red-700"
                                 />
-                                <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[18px] -mt-[2px] text-red-500">
+                                <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[18px] -mt-[2px] text-red-700">
                                   {getHeartfireSymbol(
                                     state.heartfireState.level,
                                   )}
