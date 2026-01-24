@@ -29,29 +29,29 @@ describe('Resource Limits - Core Functionality', () => {
       expect(getResourceLimit(state)).toBe(1000);
     });
 
-    it('should return 5000 for Storehouse (level 2)', () => {
+    it('should return 2500 for Storehouse (level 2)', () => {
       state.buildings.storehouse = 1;
+      expect(getResourceLimit(state)).toBe(2500);
+    });
+
+    it('should return 5000 for Fortified Storehouse (level 3)', () => {
+      state.buildings.fortifiedStorehouse = 1;
       expect(getResourceLimit(state)).toBe(5000);
     });
 
-    it('should return 10000 for Fortified Storehouse (level 3)', () => {
-      state.buildings.fortifiedStorehouse = 1;
+    it('should return 10000 for Village Warehouse (level 4)', () => {
+      state.buildings.villageWarehouse = 1;
       expect(getResourceLimit(state)).toBe(10000);
     });
 
-    it('should return 25000 for Village Warehouse (level 4)', () => {
-      state.buildings.villageWarehouse = 1;
+    it('should return 25000 for Grand Repository (level 5)', () => {
+      state.buildings.grandRepository = 1;
       expect(getResourceLimit(state)).toBe(25000);
     });
 
-    it('should return 50000 for Grand Repository (level 5)', () => {
-      state.buildings.grandRepository = 1;
-      expect(getResourceLimit(state)).toBe(50000);
-    });
-
-    it('should return 100000 for Great Vault (level 6)', () => {
+    it('should return 50000 for Great Vault (level 6)', () => {
       state.buildings.greatVault = 1;
-      expect(getResourceLimit(state)).toBe(100000);
+      expect(getResourceLimit(state)).toBe(50000);
     });
 
     it('should return 500 for no storage buildings', () => {

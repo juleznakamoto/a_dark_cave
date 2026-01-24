@@ -19,11 +19,11 @@ export function getResourceLimit(state: GameState): number {
   const limits: Record<number, number> = {
     0: 500,    // Initial cap for new games
     1: 1000,   // Supply Hut
-    2: 5000,   // Storehouse
-    3: 10000,  // Fortified Storehouse
-    4: 25000,  // Village Warehouse
-    5: 50000,  // Grand Repository
-    6: 100000, // Great Vault
+    2: 2500,   // Storehouse
+    3: 5000,  // Fortified Storehouse
+    4: 10000,  // Village Warehouse
+    5: 25000,  // Grand Repository
+    6: 50000, // Great Vault
   };
 
   return limits[storageLevel] || 500;
