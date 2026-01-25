@@ -23,8 +23,11 @@ class WebGLRenderer {
     this.canvas = canvas;
     this.scale = scale;
     this.shaderSource = shaderSource;
-    const gl = canvas.getContext("webgl2");
-    if (!gl) throw new Error("WebGL2 context not available");
+    const gl = canvas.getContext("webgl2", { failIfMajorPerformanceCaveat: true });
+    if (!gl) {
+      logger.warn("WebGL2 context not available, falling back to basic rendering");
+      throw new Error("WebGL2 context not available");
+    }
     this.gl = gl;
     this.gl.viewport(0, 0, canvas.width * scale, canvas.height * scale);
   }

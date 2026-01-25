@@ -929,15 +929,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
         }
       }
 
-      if (!changed) return state;
-
-      return {
+      let newState = changed ? {
         ...state,
         cooldowns: newCooldowns,
         initialCooldowns: newInitialCooldowns,
-      };
-    });
-  },
+      } : state;
+
       let newHeartfireState = state.heartfireState;
       if (state.heartfireState?.level > 0) {
         const now = Date.now();
@@ -951,7 +948,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
       }
 
       return {
+        ...state,
         cooldowns: newCooldowns,
+        initialCooldowns: newInitialCooldowns,
         heartfireState: newHeartfireState
       };
     });
