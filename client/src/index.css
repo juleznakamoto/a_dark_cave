@@ -160,7 +160,8 @@ body {
 }
 
 .fire-hover:hover,
-.fire-hover.text-shadow-glow {
+.fire-hover.text-shadow-glow,
+.fire-active {
   background: linear-gradient(50deg, #ff6347, #ff8c00, #ffa500, #ff4500, #dc143c, #ff4500);
   background-size: 250% 250%;
   -webkit-background-clip: text;
