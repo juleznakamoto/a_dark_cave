@@ -65,54 +65,53 @@ export default function Game() {
         // Check for openShop query parameter only (not /boost path)
         const openShop = urlParams.get("openShop") === "true";
 
+        // Load Inter font immediately when game loads (not conditionally)
+        const loadInterFont = () => {
+          if (!document.getElementById('inter-font-face')) {
+            const style = document.createElement('style');
+            style.id = 'inter-font-face';
+            style.textContent = `
+              @font-face {
+                font-family: 'Inter';
+                src: url('/fonts/inter.woff2') format('woff2');
+                font-weight: 100 900;
+                font-style: normal;
+                font-display: swap;
+              }
+            `;
+            document.head.appendChild(style);
+          }
+
+          // Use FontFace API to detect when font is loaded and apply immediately
+          if ('fonts' in document) {
+            const interFont = new FontFace('Inter', 'url(/fonts/inter.woff2)', {
+              weight: '100 900',
+              style: 'normal',
+              display: 'swap',
+            });
+
+            interFont.load().then(() => {
+              document.fonts.add(interFont);
+              // Apply Inter immediately when loaded
+              document.documentElement.classList.add('font-loaded');
+            }).catch(() => {
+              // Fallback: add class anyway after a short delay
+              setTimeout(() => {
+                document.documentElement.classList.add('font-loaded');
+              }, 100);
+            });
+          } else {
+            // Fallback for browsers without FontFace API - add class immediately
+            document.documentElement.classList.add('font-loaded');
+          }
+        };
+
+        // Load Inter font immediately when game component mounts
+        loadInterFont();
+
         // Load saved game or initialize with defaults
         const savedState = await loadGame();
         if (savedState) {
-          // Load Inter font for returning users who skip start screen
-          const loadInterFont = () => {
-            if (!document.getElementById('inter-font-face')) {
-              const style = document.createElement('style');
-              style.id = 'inter-font-face';
-              style.textContent = `
-                @font-face {
-                  font-family: 'Inter';
-                  src: url('/fonts/inter.woff2') format('woff2');
-                  font-weight: 100 900;
-                  font-style: normal;
-                  font-display: swap;
-                }
-              `;
-              document.head.appendChild(style);
-            }
-
-            // Use FontFace API to detect when font is loaded and apply immediately
-            if ('fonts' in document) {
-              const interFont = new FontFace('Inter', 'url(/fonts/inter.woff2)', {
-                weight: '100 900',
-                style: 'normal',
-                display: 'swap',
-              });
-
-              interFont.load().then(() => {
-                document.fonts.add(interFont);
-                // Apply Inter immediately when loaded
-                document.documentElement.classList.add('font-loaded');
-              }).catch(() => {
-                // Fallback: add class anyway after a short delay
-                setTimeout(() => {
-                  document.documentElement.classList.add('font-loaded');
-                }, 100);
-              });
-            } else {
-              // Fallback for browsers without FontFace API - add class immediately
-              document.documentElement.classList.add('font-loaded');
-            }
-          };
-
-          // Load font if game has already started (returning user)
-          if (savedState.flags.gameStarted || isGamePath) {
-            loadInterFont();
-          }
 
           // Set the loaded state using useGameStore.setState
           useGameStore.setState({
