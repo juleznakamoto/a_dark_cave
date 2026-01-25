@@ -94,10 +94,14 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
   useEffect(() => {
     if (isCoolingDown) {
       isFirstRenderRef.current = true;
-      // Allow transition after initial render (next frame)
-      requestAnimationFrame(() => {
-        isFirstRenderRef.current = false;
+      // Use double requestAnimationFrame to ensure the width: 100% is rendered before starting transition
+      const frame1 = requestAnimationFrame(() => {
+        const frame2 = requestAnimationFrame(() => {
+          isFirstRenderRef.current = false;
+        });
+        return () => cancelAnimationFrame(frame2);
       });
+      return () => cancelAnimationFrame(frame1);
     } else {
       isFirstRenderRef.current = true;
     }
