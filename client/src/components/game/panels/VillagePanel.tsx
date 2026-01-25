@@ -22,7 +22,7 @@ import {
 } from "@/game/population";
 import { CircularProgress } from "@/components/ui/circular-progress";
 import { capitalizeWords } from "@/lib/utils";
-import { useState, useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
 import {
@@ -32,6 +32,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useMobileTooltip } from "@/hooks/useMobileTooltip";
+import { SuccessParticles, useFeedFireParticles } from "@/components/ui/feed-fire-particles";
 
 export default function VillagePanel() {
   const {
@@ -45,6 +46,10 @@ export default function VillagePanel() {
   } = useGameStore();
   const state = useGameStore.getState();
   const mobileTooltip = useMobileTooltip();
+
+  // Particle effect state
+  const feedFireButtonRef = useRef<HTMLButtonElement>(null);
+  const { sparks, spawnParticles } = useFeedFireParticles();
 
   // Get progress from game loop state
   const loopProgress = useGameStore((state) => state.loopProgress);
@@ -290,7 +295,15 @@ export default function VillagePanel() {
       return (
         <CooldownButton
           key={actionId}
-          onClick={() => executeAction(actionId)}
+          ref={feedFireButtonRef}
+          onClick={() => {
+            executeAction(actionId);
+            // Generate 10 * current heartfire level particles
+            const particleCount = 10 * currentLevel;
+            if (particleCount > 0) {
+              spawnParticles(particleCount, feedFireButtonRef);
+            }
+          }}
           cooldownMs={30000}
           actionId="feedFire"
           button_id={actionId}
@@ -510,8 +523,10 @@ export default function VillagePanel() {
   });
 
   return (
-    <ScrollArea className="h-full w-96">
-      <div className="space-y-4 mt-2 mb-2 pl-[3px] ">
+    <>
+      <SuccessParticles buttonRef={feedFireButtonRef} sparks={sparks} />
+      <ScrollArea className="h-full w-96">
+        <div className="space-y-4 mt-2 mb-2 pl-[3px] ">
         {/* Special Top Level Button Group for Feed Fire */}
         {buildings.heartfire > 0 && (
           <div className="space-y-2">
@@ -922,5 +937,6 @@ export default function VillagePanel() {
       </div>
       <ScrollBar orientation="vertical" />
     </ScrollArea>
+    </>
   );
 }
