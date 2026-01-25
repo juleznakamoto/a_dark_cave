@@ -184,9 +184,6 @@ export function executeGameAction(
       cooldowns: {
         [actionId]: getActionCooldown(actionId),
       },
-      initialCooldowns: {
-        [actionId]: getActionCooldown(actionId),
-      },
       story: {
         ...state.story,
         seen: {
@@ -220,10 +217,6 @@ export function executeGameAction(
         cooldowns: {
           ...result.stateUpdates.cooldowns,
           feedFire: 30, // 30 seconds
-        },
-        initialCooldowns: {
-          ...((state as any).initialCooldowns || {}),
-          feedFire: 30,
         },
         resources: {
           ...state.resources,
