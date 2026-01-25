@@ -904,7 +904,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   setCompassGlow: (actionId: string | null) => {
-    console.log('[COMPASS GLOW STATE] Setting compassGlowButton to:', actionId);
     set({ compassGlowButton: actionId });
   },
 

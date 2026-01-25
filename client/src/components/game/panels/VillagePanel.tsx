@@ -863,7 +863,7 @@ export default function VillagePanel() {
                                     strokeWidth={2}
                                     className="text-gray-500"
                                   />
-                                  <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[12px] -mt-[0px] text-gray-500">
+                                  <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[12px] -mt-[1px] text-gray-500">
                                     ≋
                                   </span>
                                 </div>

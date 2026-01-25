@@ -216,7 +216,7 @@ export function executeGameAction(
         ...result.stateUpdates,
         cooldowns: {
           ...result.stateUpdates.cooldowns,
-          feedFire: 30000, // 30000ms (30 seconds)
+          feedFire: 30, // 30 seconds
         },
         resources: {
           ...state.resources,
