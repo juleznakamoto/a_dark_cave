@@ -219,26 +219,26 @@ export default function VillagePanel() {
       },
       2: {
         symbol: ":",
-        marginTop: "-4px",
+        marginTop: "-2px",
         textSize: "text-[12px]",
         fontWeight: 800,
       },
       3: {
         symbol: "∴",
-        marginTop: "-4px",
+        marginTop: "-2px",
         textSize: "text-[12px]",
         fontWeight: 900,
       },
       4: {
         symbol: "⁘",
-        marginTop: "-7px",
-        textSize: "text-[18px]",
+        marginTop: "-4px",
+        textSize: "text-[16px]",
         fontWeight: 700,
       },
       5: {
         symbol: "⁙",
-        marginTop: "-6px",
-        textSize: "text-[16px]",
+        marginTop: "-4px",
+        textSize: "text-[14px]",
         fontWeight: 700,
       },
     };
