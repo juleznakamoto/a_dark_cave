@@ -232,11 +232,6 @@ export function startGameLoop() {
 
     if (!IsDialogOpen) {
 
-      // Handle cooldowns only when not paused
-      if (!isPaused) {
-        state.tickCooldowns();
-      }
-
       // Handle attack wave timer - update elapsed time when not paused
       const attackWaveTimers = state.attackWaveTimers || {};
       if (!isPaused) {
