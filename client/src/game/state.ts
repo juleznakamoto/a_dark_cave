@@ -284,6 +284,10 @@ const mergeStateUpdates = (
       ...prevState.triggeredEvents,
       ...stateUpdates.triggeredEvents,
     },
+    initialCooldowns: {
+      ...prevState.initialCooldowns,
+      ...(stateUpdates as any).initialCooldowns,
+    },
     feastState: stateUpdates.feastState || prevState.feastState,
     boneDevourerState:
       stateUpdates.boneDevourerState || prevState.boneDevourerState,
