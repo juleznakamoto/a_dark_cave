@@ -806,22 +806,36 @@ export const useGameStore = create<GameStore>((set, get) => ({
       }
     }
 
-    // Apply dev mode cooldown multiplier (0.1x)
+    // Apply dev mode cooldown multiplier (0.1x) to both cooldowns and initialCooldowns
     if (state.devMode && result.stateUpdates.cooldowns) {
       const updatedCooldowns = { ...result.stateUpdates.cooldowns };
+      const initialCooldowns = (result.stateUpdates as any).initialCooldowns || {};
+      const updatedInitialCooldowns = { ...initialCooldowns };
+      
       for (const key in updatedCooldowns) {
         updatedCooldowns[key] = updatedCooldowns[key] * 0.1;
+        if (updatedInitialCooldowns[key] !== undefined) {
+          updatedInitialCooldowns[key] = updatedInitialCooldowns[key] * 0.1;
+        }
       }
       result.stateUpdates.cooldowns = updatedCooldowns;
+      (result.stateUpdates as any).initialCooldowns = updatedInitialCooldowns;
     }
 
-    // Enforce minimum cooldown of 1 second for all actions
+    // Enforce minimum cooldown of 1 second for all actions (both cooldowns and initialCooldowns)
     if (result.stateUpdates.cooldowns) {
       const updatedCooldowns = { ...result.stateUpdates.cooldowns };
+      const initialCooldowns = (result.stateUpdates as any).initialCooldowns || {};
+      const updatedInitialCooldowns = { ...initialCooldowns };
+      
       for (const key in updatedCooldowns) {
         updatedCooldowns[key] = Math.max(1, updatedCooldowns[key]);
+        if (updatedInitialCooldowns[key] !== undefined) {
+          updatedInitialCooldowns[key] = Math.max(1, updatedInitialCooldowns[key]);
+        }
       }
       result.stateUpdates.cooldowns = updatedCooldowns;
+      (result.stateUpdates as any).initialCooldowns = updatedInitialCooldowns;
     }
 
     // Handle compass bonus glow effect
