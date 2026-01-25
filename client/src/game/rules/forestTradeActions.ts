@@ -496,6 +496,12 @@ export function handleTradeAction(
     ...result.stateUpdates.cooldowns,
     [actionId]: actualCooldown,
   };
+  
+  // Update initialCooldowns to match the custom cooldown for animation persistence
+  (result.stateUpdates as any).initialCooldowns = {
+    ...(result.stateUpdates as any).initialCooldowns,
+    [actionId]: actualCooldown,
+  };
 
   return result;
 }
