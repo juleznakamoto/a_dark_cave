@@ -125,6 +125,7 @@ interface GameStore extends GameState {
 
   // Cooldown management
   cooldowns: Record<string, number>;
+  initialCooldowns: Record<string, number>;
 
   // Compass glow effect
   compassGlowButton: string | null; // Action ID of button to glow
@@ -530,6 +531,7 @@ export const createInitialState = (): GameState => ({
 
   // Initialize cooldown management
   cooldowns: {},
+  initialCooldowns: {},
 
   // Initialize compass glow
   compassGlowButton: null,
@@ -900,6 +902,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const finalDuration = Math.max(1, duration);
     set((state) => ({
       cooldowns: { ...state.cooldowns, [action]: finalDuration },
+      initialCooldowns: { ...state.initialCooldowns, [action]: finalDuration },
     }));
   },
 
@@ -910,16 +913,31 @@ export const useGameStore = create<GameStore>((set, get) => ({
   tickCooldowns: () => {
     set((state) => {
       const newCooldowns = { ...state.cooldowns };
+      const newInitialCooldowns = { ...state.initialCooldowns };
+      let changed = false;
 
       for (const key in newCooldowns) {
         if (newCooldowns[key] > 0) {
           const newValue = newCooldowns[key] - 0.25;
           // Treat values below 0.001 as zero to avoid floating-point precision issues
           newCooldowns[key] = newValue < 0.001 ? 0 : newValue;
+          
+          if (newCooldowns[key] === 0) {
+            delete newInitialCooldowns[key];
+          }
+          changed = true;
         }
       }
 
-      // Heartfire level decrease logic
+      if (!changed) return state;
+
+      return {
+        ...state,
+        cooldowns: newCooldowns,
+        initialCooldowns: newInitialCooldowns,
+      };
+    });
+  },
       let newHeartfireState = state.heartfireState;
       if (state.heartfireState?.level > 0) {
         const now = Date.now();
