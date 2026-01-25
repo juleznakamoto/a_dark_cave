@@ -282,6 +282,7 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(({
                 className={cn(
                     "relative transition-all duration-300",
                     isGlowing && "text-shadow-glow",
+                    autoStart && "effect-active",
                     className,
                 )}
                 style={{

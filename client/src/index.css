@@ -159,8 +159,11 @@ body {
   }
 }
 
+/* :hover for desktop hover + mobile sticky hover after tap; .effect-active when
+   autoStart (post-click 3s) so the gradient shows on desktop even if :hover is
+   lost to reflow, matching mobile behavior where :hover sticks on tap. */
 .fire-hover:hover,
-.fire-hover.text-shadow-glow {
+.fire-hover.effect-active {
   background: linear-gradient(50deg, #ff6347, #ff8c00, #ffa500, #ff4500, #dc143c, #ff4500);
   background-size: 250% 250%;
   -webkit-background-clip: text;
