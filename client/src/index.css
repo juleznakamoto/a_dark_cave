@@ -464,35 +464,3 @@ body {
 .animate-bubbly-bottom {
   animation: bubbly-bottom .75s ease-in-out forwards;
 }
-
-@keyframes fade-in-button {
-  0% {
-    opacity: 0;
-    filter: blur(10px);
-  }
-  100% {
-    opacity: 1;
-    filter: blur(0px);
-  }
-}
-
-.animate-fade-in-button {
-  animation: fade-in-button 1s ease-in 1.5s forwards;
-  opacity: 0;
-}
-
-.particle-button--glow {
-  text-shadow: 0 0 calc(10 * var(--glow-intensity, 1) * 1px) #ff6347,
-              0 0 calc(20 * var(--glow-intensity, 1) * 1px) #ff4500,
-              0 0 calc(30 * var(--glow-intensity, 1) * 1px) #ff8c00,
-              0 0 calc(40 * var(--glow-intensity, 1) * 1px) #ffa500;
-}
-
-.particle-button-spark {
-  position: fixed;
-  width: 4px;
-  height: 4px;
-  border-radius: 9999px;
-  pointer-events: none;
-  z-index: 9999;
-}

@@ -105,7 +105,7 @@ export default function StartScreen() {
       });
     } else {
       // Fallback for browsers without FontFace API - add class immediately
-      (document as Document).documentElement.classList.add('font-loaded');
+      document.documentElement.classList.add('font-loaded');
     }
 
     // Immediately stop wind with no fade to prevent overlap
@@ -138,6 +138,22 @@ export default function StartScreen() {
       </div>
 
       <style>{`
+        @keyframes fade-in-button {
+          0% {
+            opacity: 0;
+            filter: blur(10px);
+          }
+          100% {
+            opacity: 1;
+            filter: blur(0px);
+          }
+        }
+
+        .animate-fade-in-button {
+          animation: fade-in-button 1s ease-in 1.5s forwards;
+          opacity: 0;
+        }
+
         @keyframes fade-in-text {
           0% { opacity: 0; filter: blur(10px); }
           100% { opacity: 1; filter: blur(0px); }
