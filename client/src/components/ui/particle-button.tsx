@@ -12,6 +12,7 @@ interface ParticleButtonProps extends ButtonProps {
     hoverDelay?: number;
     cruelMode?: boolean;
     autoStart?: boolean;
+    button_id?: string;
 }
 
 interface Spark {

@@ -95,18 +95,18 @@ export default function StartScreen() {
       });
 
       interFont.load().then(() => {
-        document.fonts.add(interFont);
+        (document as any).fonts.add(interFont);
         // Apply Inter immediately when loaded
-        document.documentElement.classList.add('font-loaded');
+        (document.documentElement as HTMLElement).classList.add('font-loaded');
       }).catch(() => {
         // Fallback: add class anyway after a short delay
         setTimeout(() => {
-          document.documentElement.classList.add('font-loaded');
+          (document.documentElement as HTMLElement).classList.add('font-loaded');
         }, 100);
       });
     } else {
       // Fallback for browsers without FontFace API - add class immediately
-      document.documentElement.classList.add('font-loaded');
+      (document.documentElement as HTMLElement).classList.add('font-loaded');
     }
 
     // Immediately stop wind with no fade to prevent overlap
