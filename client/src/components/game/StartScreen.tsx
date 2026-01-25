@@ -86,7 +86,7 @@ export default function StartScreen() {
 
     // Use FontFace API to detect when font is loaded and apply immediately
     if ('fonts' in document) {
-      const interFont = new FontFace('Inter', 'url(/fonts/inter.woff2) format("woff2")', {
+      const interFont = new FontFace('Inter', 'url(/fonts/inter.woff2)', {
         weight: '100 900',
         style: 'normal',
         display: 'swap',
@@ -115,19 +115,16 @@ export default function StartScreen() {
       audioManager.startBackgroundMusic(0.3);
     });
 
-    if (isMobile) {
-      if (buttonRef.current) {
-        const mouseEnterEvent = new MouseEvent("mouseenter", {
-          bubbles: true,
-          cancelable: true,
-          view: window,
-        });
-        buttonRef.current.dispatchEvent(mouseEnterEvent);
-      }
-      setTimeout(() => executeAction("lightFire"), 3000);
-    } else {
-      executeAction("lightFire");
+    // Show button effect for 3 seconds on both mobile and desktop
+    if (isMobile && buttonRef.current) {
+      const mouseEnterEvent = new MouseEvent("mouseenter", {
+        bubbles: true,
+        cancelable: true,
+        view: window,
+      });
+      buttonRef.current.dispatchEvent(mouseEnterEvent);
     }
+    setTimeout(() => executeAction("lightFire"), 3000);
   };
 
   return (

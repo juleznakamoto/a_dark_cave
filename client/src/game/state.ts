@@ -47,13 +47,13 @@ import { madnessEvents } from "@/game/rules/eventsMadness";
 interface GameStore extends GameState {
   // UI state
   activeTab:
-    | "cave"
-    | "village"
-    | "forest"
-    | "bastion"
-    | "estate"
-    | "achievements"
-    | "timedevent";
+  | "cave"
+  | "village"
+  | "forest"
+  | "bastion"
+  | "estate"
+  | "achievements"
+  | "timedevent";
   devMode: boolean;
   boostMode: boolean;
   lastSaved: string;
@@ -310,29 +310,29 @@ const mergeStateUpdates = (
         : prevState.greatFeastActivations,
     buttonUpgrades: stateUpdates.buttonUpgrades
       ? {
-          ...prevState.buttonUpgrades,
-          ...Object.fromEntries(
-            Object.entries(stateUpdates.buttonUpgrades).map(([key, value]) => [
-              key,
-              {
-                ...prevState.buttonUpgrades[
-                  key as keyof typeof prevState.buttonUpgrades
-                ],
-                ...value,
-              },
-            ]),
-          ),
-        }
+        ...prevState.buttonUpgrades,
+        ...Object.fromEntries(
+          Object.entries(stateUpdates.buttonUpgrades).map(([key, value]) => [
+            key,
+            {
+              ...prevState.buttonUpgrades[
+              key as keyof typeof prevState.buttonUpgrades
+              ],
+              ...value,
+            },
+          ]),
+        ),
+      }
       : prevState.buttonUpgrades,
     story: stateUpdates.story
       ? {
-          ...prevState.story,
-          seen: { ...prevState.story.seen, ...stateUpdates.story.seen },
-          merchantPurchases:
-            stateUpdates.story.merchantPurchases !== undefined
-              ? stateUpdates.story.merchantPurchases
-              : prevState.story.merchantPurchases,
-        }
+        ...prevState.story,
+        seen: { ...prevState.story.seen, ...stateUpdates.story.seen },
+        merchantPurchases:
+          stateUpdates.story.merchantPurchases !== undefined
+            ? stateUpdates.story.merchantPurchases
+            : prevState.story.merchantPurchases,
+      }
       : prevState.story,
     effects: stateUpdates.effects || prevState.effects,
     // Merge loop-related states if they are part of stateUpdates
@@ -753,9 +753,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
       if (cooldown > 0) {
         return;
       }
-      
+
       const result = executeGameAction(actionId, state);
-      
+
       if (result.stateUpdates && Object.keys(result.stateUpdates).length > 0) {
         set((state) => ({
           ...state,
@@ -844,8 +844,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
         ...mergedUpdates,
         log: result.logEntries
           ? [...prevState.log, ...result.logEntries].slice(
-              -GAME_CONSTANTS.LOG_MAX_ENTRIES,
-            )
+            -GAME_CONSTANTS.LOG_MAX_ENTRIES,
+          )
           : prevState.log,
       };
     });
@@ -932,7 +932,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         }
       }
 
-      return { 
+      return {
         cooldowns: newCooldowns,
         heartfireState: newHeartfireState
       };
@@ -967,9 +967,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
       // Only preserve cruel_mode activation, reset everything else
       activatedPurchases: cruelModePurchaseKey
         ? {
-            [cruelModePurchaseKey]:
-              state.activatedPurchases?.[cruelModePurchaseKey] || false,
-          }
+          [cruelModePurchaseKey]:
+            state.activatedPurchases?.[cruelModePurchaseKey] || false,
+        }
         : {},
       // Feast activations are reset (cleared) on new game
       feastActivations: {},
@@ -1129,8 +1129,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
       hasPlayTime: savedState ? "playTime" in savedState : false,
       allTimeKeys: savedState
         ? Object.keys(savedState).filter(
-            (k) => k.includes("play") || k.includes("time"),
-          )
+          (k) => k.includes("play") || k.includes("time"),
+        )
         : [],
     });
 
@@ -1270,8 +1270,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const initialLogEntry: LogEntry = {
         id: "initial-narrative",
         message: cruelMode
-        ? "A very dark cave. The air is freezing and damp. You barely see anything around you."
-        : "A dark cave. The air is cold and damp. You barely see the shapes around you.",
+          ? "A very dark cave. The air is freezing and damp. You barely see anything around you."
+          : "A dark cave. The air is cold and damp. You barely see the shapes around you.",
         timestamp: Date.now(),
         type: "system",
       };
@@ -1343,14 +1343,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
               ...victoryResult,
               log: victoryResult._logMessage
                 ? [
-                    ...prevState.log,
-                    {
-                      id: `combat-victory-${Date.now()}`,
-                      message: victoryResult._logMessage,
-                      timestamp: Date.now(),
-                      type: "system",
-                    },
-                  ].slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES)
+                  ...prevState.log,
+                  {
+                    id: `combat-victory-${Date.now()}`,
+                    message: victoryResult._logMessage,
+                    timestamp: Date.now(),
+                    type: "system",
+                  },
+                ].slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES)
                 : prevState.log,
             }));
             get().setCombatDialog(false);
@@ -1363,14 +1363,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
               ...defeatResult,
               log: defeatResult._logMessage
                 ? [
-                    ...prevState.log,
-                    {
-                      id: `combat-defeat-${Date.now()}`,
-                      message: defeatResult._logMessage,
-                      timestamp: Date.now(),
-                      type: "system",
-                    },
-                  ].slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES)
+                  ...prevState.log,
+                  {
+                    id: `combat-defeat-${Date.now()}`,
+                    message: defeatResult._logMessage,
+                    timestamp: Date.now(),
+                    type: "system",
+                  },
+                ].slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES)
                 : prevState.log,
             }));
             get().setCombatDialog(false);
@@ -1547,14 +1547,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
             ...victoryResult,
             log: victoryResult._logMessage
               ? [
-                  ...prevState.log,
-                  {
-                    id: `combat-victory-${Date.now()}`,
-                    message: victoryResult._logMessage,
-                    timestamp: Date.now(),
-                    type: "system",
-                  },
-                ].slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES)
+                ...prevState.log,
+                {
+                  id: `combat-victory-${Date.now()}`,
+                  message: victoryResult._logMessage,
+                  timestamp: Date.now(),
+                  type: "system",
+                },
+              ].slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES)
               : prevState.log,
           }));
           get().setCombatDialog(false);
@@ -1566,14 +1566,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
             ...defeatResult,
             log: defeatResult._logMessage
               ? [
-                  ...prevState.log,
-                  {
-                    id: `combat-defeat-${Date.now()}`,
-                    message: defeatResult._logMessage,
-                    timestamp: Date.now(),
-                    type: "system",
-                  },
-                ].slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES)
+                ...prevState.log,
+                {
+                  id: `combat-defeat-${Date.now()}`,
+                  message: defeatResult._logMessage,
+                  timestamp: Date.now(),
+                  type: "system",
+                },
+              ].slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES)
               : prevState.log,
           }));
           get().setCombatDialog(false);
