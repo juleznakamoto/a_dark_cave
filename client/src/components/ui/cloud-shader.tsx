@@ -198,22 +198,25 @@ export default function CloudShader({ className = "" }: CloudShaderProps) {
             canvas.width = window.innerWidth * dpr;
             canvas.height = window.innerHeight * dpr;
 
-            const renderer = new WebGLRenderer(canvas, dpr, shaderSource);
-            renderer.setup();
-            renderer.init();
-            rendererRef.current = renderer;
+            try {
+              const renderer = new WebGLRenderer(canvas, dpr, shaderSource);
+              renderer.setup();
+              renderer.init();
+              rendererRef.current = renderer;
+              setVisible(true); // fade-in once
 
-            setVisible(true); // fade-in once
-
-            // animation loop
-            let frameCount = 0;
-            const loop = (now: number) => {
-              if (!isActiveRef.current || !rendererRef.current) return;
-              if (frameCount % 2 === 0) rendererRef.current.render(now);
-              frameCount++;
+              // animation loop
+              let frameCount = 0;
+              const loop = (now: number) => {
+                if (!isActiveRef.current || !rendererRef.current) return;
+                if (frameCount % 2 === 0) rendererRef.current.render(now);
+                frameCount++;
+                animationFrameRef.current = requestAnimationFrame(loop);
+              };
               animationFrameRef.current = requestAnimationFrame(loop);
-            };
-            animationFrameRef.current = requestAnimationFrame(loop);
+            } catch (err) {
+              logger.warn("[CloudShader] WebGL execution failed:", err);
+            }
           });
         });
       } catch (err) {
