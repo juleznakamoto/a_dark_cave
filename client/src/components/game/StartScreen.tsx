@@ -196,7 +196,7 @@ export default function StartScreen() {
           ref={buttonRef}
           onClick={handleLightFire}
           autoStart={showParticles}
-          className="animate-fade-in-button bg-transparent border-none text-gray-300/90 hover:bg-transparent text-lg px-8 py-4 fire-hover z-[99999]"
+          className="animate-fade-in-button bg-transparent border-none text-gray-300/90 hover:text-transparent text-lg px-8 py-4 fire-hover z-[99999] hover:bg-transparent focus:bg-transparent active:bg-transparent"
           data-testid="button-light-fire"
           button_id="light-fire"
         >
