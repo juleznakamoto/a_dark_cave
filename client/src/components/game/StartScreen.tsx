@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ParticleButton } from "@/components/ui/particle-button";
 import { useGameStore } from "@/game/state";
 import CloudShader from "@/components/ui/cloud-shader";
@@ -12,6 +12,7 @@ export default function StartScreen() {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const executedRef = useRef(false);
   const isCruelMode = CM || false;
+  const [showParticles, setShowParticles] = useState(false);
 
   useEffect(() => {
     const isBoostPath = window.location.pathname.includes("/boost");
@@ -116,14 +117,7 @@ export default function StartScreen() {
     });
 
     // Show button effect for 3 seconds on both mobile and desktop
-    if (buttonRef.current) {
-      const mouseEnterEvent = new MouseEvent("mouseenter", {
-        bubbles: true,
-        cancelable: true,
-        view: window,
-      });
-      buttonRef.current.dispatchEvent(mouseEnterEvent);
-    }
+    setShowParticles(true);
     setTimeout(() => executeAction("lightFire"), 3000);
   };
 
@@ -201,6 +195,7 @@ export default function StartScreen() {
         <ParticleButton
           ref={buttonRef}
           onClick={handleLightFire}
+          autoStart={showParticles}
           className="animate-fade-in-button bg-transparent border-none text-gray-300/90 hover:bg-transparent text-lg px-8 py-4 fire-hover z-[99999]"
           data-testid="button-light-fire"
           button_id="light-fire"

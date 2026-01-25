@@ -11,6 +11,7 @@ interface ParticleButtonProps extends ButtonProps {
     spawnInterval?: number;
     hoverDelay?: number;
     cruelMode?: boolean;
+    autoStart?: boolean;
 }
 
 interface Spark {
@@ -88,6 +89,7 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(({
     hoverDelay = 100,
     className,
     cruelMode = false,
+    autoStart = false,
     ...props
 }: ParticleButtonProps, ref) => {
     const [sparks, setSparks] = useState<Spark[]>([]);
@@ -171,7 +173,7 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(({
     const handleMouseEnter = () => {
         // Clear any existing timers first
         clearAllTimers();
-        
+
         // start delayed spawn
         delayTimeoutRef.current = setTimeout(() => {
             setIsGlowing(true);
@@ -241,6 +243,15 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(({
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
         if (onClick) onClick(e);
     };
+
+    useEffect(() => {
+        if (autoStart) {
+            handleMouseEnter();
+        }
+        return () => {
+            clearAllTimers();
+        };
+    }, [autoStart]);
 
     useEffect(() => {
         return () => {
