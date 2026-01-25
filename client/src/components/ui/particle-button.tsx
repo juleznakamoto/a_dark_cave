@@ -102,8 +102,13 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(({
     const flickerRef = useRef<NodeJS.Timeout | null>(null);
     const delayTimeoutRef = useRef<NodeJS.Timeout | null>(null);
     const idRef = useRef(0);
-    const spawnCountRef = useRef(cruelMode ? 20 : 2);
+    const spawnCountRef = useRef(cruelMode ? 20 : 4);
     const rampStartRef = useRef<number | null>(null);
+    const autoStartRef = useRef(autoStart);
+
+    useEffect(() => {
+        autoStartRef.current = autoStart;
+    }, [autoStart]);
 
     const colors = ["#ffb347", "#ff9234", "#ffcd94", "#ff6f3c", "#ff4500"]; // ember-like
 
@@ -176,60 +181,18 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(({
 
         const start = () => {
             setIsGlowing(true);
-            setGlowIntensity(0.1); // start with very small glow
-            spawnCountRef.current = cruelMode ? 10 : 2;
+            setGlowIntensity(1.0); // start with full intensity
+            spawnCountRef.current = cruelMode ? 20 : 4;
             rampStartRef.current = Date.now();
 
             spawnSparks(); // spawn immediately
             intervalRef.current = setInterval(spawnSparks, spawnInterval);
 
-            // gradually increase sparks over 10 seconds
-            rampUpRef.current = setInterval(() => {
-                if (rampStartRef.current) {
-                    const elapsed = Date.now() - rampStartRef.current;
-                    const maxParticles = cruelMode ? 100 : 10;
-                    if (elapsed < 10000) {
-                        spawnCountRef.current =
-                            (cruelMode ? 10 : 1) + Math.floor((elapsed / 10000) * maxParticles);
-                    } else {
-                        spawnCountRef.current =
-                            Math.floor(Math.random() * (cruelMode ? 70 : 7)) + (cruelMode ? 60 : 6);
-                        if (rampUpRef.current) {
-                            clearInterval(rampUpRef.current);
-                            rampUpRef.current = null;
-                        }
-                    }
-                }
-            }, Math.random() * 101 + 100);
-
-            // gradually increase glow intensity over 0.5 seconds
-            glowRampRef.current = setInterval(() => {
-                if (rampStartRef.current) {
-                    const elapsed = Date.now() - rampStartRef.current;
-                    if (elapsed < 500) {
-                        const progress = elapsed / 500;
-                        setGlowIntensity(0.1 + progress * 0.9); // from 0.1 to 1.0
-                    } else {
-                        setGlowIntensity(1.0); // max intensity
-                        if (glowRampRef.current) {
-                            clearInterval(glowRampRef.current);
-                            glowRampRef.current = null;
-                        }
-                        glowRampRef.current = setInterval(
-                            () => {
-                                setGlowIntensity(1.0);
-                            },
-                            Math.random() * 50 + 150,
-                        );
-                    }
-                }
-            }, Math.random() * 51 + 50);
-
-            // add flickering effect that continues throughout
+            // flicker effect
             flickerRef.current = setInterval(() => {
-                const flicker = 0.45 + Math.random() * 0.55;
-                setGlowIntensity((prev) => Math.min(2, prev * flicker));
-            }, Math.random() * 150 + 50);
+                const flicker = 0.8 + Math.random() * 0.4;
+                setGlowIntensity(1.0 * flicker);
+            }, 100);
         };
 
         if (immediate) {
@@ -245,7 +208,8 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(({
         // mouseleave so the particle effect runs for the full 3 seconds. On desktop,
         // reflow from font-loading or other post-click side effects can fire mouseleave
         // and would otherwise clear the particles; on mobile there is no mouseleave.
-        if (autoStart) return;
+        // Use ref to get current value, not stale closure value from previous render.
+        if (autoStartRef.current) return;
         clearAllTimers();
         setIsGlowing(false);
         setGlowIntensity(0);
