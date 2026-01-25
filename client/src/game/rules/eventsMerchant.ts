@@ -747,9 +747,9 @@ const toolTrades = [
     giveItem: "tarnished_compass",
     condition: (state: GameState) =>
       state.BTP === 1 &&
-      state.buildings.woodenHut >= 5 &&
+      state.buildings.stoneHut >= 3 &&
       !state.relics.tarnished_compass,
-    costs: [{ resource: "gold", amounts: [500] }],
+    costs: [{ resource: "gold", amounts: [2000] }],
     message:
       "You purchase the tarnished compass. Artifact of the vanished civilization, its needle points to hidden places.",
   },
@@ -760,9 +760,9 @@ const toolTrades = [
     giveItem: "crow_harness",
     condition: (state: GameState) =>
       state.BTP === 1 &&
-      state.buildings.woodenHut >= 10 &&
+      state.buildings.stoneHut >= 5 &&
       !state.tools.crow_harness,
-    costs: [{ resource: "gold", amounts: [750] }],
+    costs: [{ resource: "gold", amounts: [2500] }],
     message:
       "You purchase the crow harness. A specially crafted harness for messenger crows.",
   },
