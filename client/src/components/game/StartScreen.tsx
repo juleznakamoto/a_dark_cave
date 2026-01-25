@@ -5,6 +5,7 @@ import CloudShader from "@/components/ui/cloud-shader";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { audioManager } from "@/lib/audio";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
+import { cn } from "@/lib/utils";
 
 export default function StartScreen() {
   const { executeAction, setBoostMode, boostMode, CM } = useGameStore();
@@ -196,7 +197,10 @@ export default function StartScreen() {
           ref={buttonRef}
           onClick={handleLightFire}
           autoStart={showParticles}
-          className="animate-fade-in-button bg-transparent border-none text-gray-300/90 hover:bg-transparent text-lg px-8 py-4 fire-hover z-[99999]"
+          className={cn(
+            "animate-fade-in-button bg-transparent border-none text-gray-300/90 hover:bg-transparent text-lg px-8 py-4 fire-hover z-[99999]",
+            showParticles && "text-shadow-glow"
+          )}
           data-testid="button-light-fire"
           button_id="light-fire"
         >
