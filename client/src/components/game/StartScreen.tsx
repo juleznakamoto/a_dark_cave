@@ -116,7 +116,7 @@ export default function StartScreen() {
     });
 
     // Show button effect for 3 seconds on both mobile and desktop
-    if (isMobile && buttonRef.current) {
+    if (buttonRef.current) {
       const mouseEnterEvent = new MouseEvent("mouseenter", {
         bubbles: true,
         cancelable: true,
