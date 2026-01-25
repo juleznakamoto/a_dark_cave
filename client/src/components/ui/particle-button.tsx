@@ -104,11 +104,6 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(({
     const idRef = useRef(0);
     const spawnCountRef = useRef(cruelMode ? 20 : 2);
     const rampStartRef = useRef<number | null>(null);
-    const autoStartRef = useRef(autoStart);
-
-    useEffect(() => {
-        autoStartRef.current = autoStart;
-    }, [autoStart]);
 
     const colors = ["#ffb347", "#ff9234", "#ffcd94", "#ff6f3c", "#ff4500"]; // ember-like
 
@@ -175,12 +170,11 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(({
         }
     };
 
-    const handleMouseEnter = () => {
+    const handleMouseEnter = (immediate = false) => {
         // Clear any existing timers first
         clearAllTimers();
 
-        // start delayed spawn
-        delayTimeoutRef.current = setTimeout(() => {
+        const start = () => {
             setIsGlowing(true);
             setGlowIntensity(0.1); // start with very small glow
             spawnCountRef.current = cruelMode ? 10 : 2;
@@ -236,7 +230,14 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(({
                 const flicker = 0.45 + Math.random() * 0.55;
                 setGlowIntensity((prev) => Math.min(2, prev * flicker));
             }, Math.random() * 150 + 50);
-        }, hoverDelay);
+        };
+
+        if (immediate) {
+            start();
+        } else {
+            // start delayed spawn
+            delayTimeoutRef.current = setTimeout(start, hoverDelay);
+        }
     };
 
     const handleMouseLeave = () => {
@@ -244,8 +245,7 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(({
         // mouseleave so the particle effect runs for the full 3 seconds. On desktop,
         // reflow from font-loading or other post-click side effects can fire mouseleave
         // and would otherwise clear the particles; on mobile there is no mouseleave.
-        // Use ref to get current value, not stale closure value from previous render.
-        if (autoStartRef.current) return;
+        if (autoStart) return;
         clearAllTimers();
         setIsGlowing(false);
         setGlowIntensity(0);
@@ -257,7 +257,7 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(({
 
     useEffect(() => {
         if (autoStart) {
-            handleMouseEnter();
+            handleMouseEnter(true);
         }
         return () => {
             clearAllTimers();
@@ -283,7 +283,7 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(({
                     }
                 }}
                 onClick={handleClick}
-                onMouseEnter={handleMouseEnter}
+                onMouseEnter={() => handleMouseEnter()}
                 onMouseLeave={handleMouseLeave}
                 className={cn(
                     "relative transition-all duration-300",

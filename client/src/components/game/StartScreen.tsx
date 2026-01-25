@@ -94,7 +94,7 @@ export default function StartScreen() {
       });
 
       interFont.load().then(() => {
-        (document as any).fonts.add(interFont);
+        document.fonts.add(interFont);
         // Apply Inter immediately when loaded
         document.documentElement.classList.add('font-loaded');
       }).catch(() => {
