@@ -5,6 +5,7 @@ import { useState, useRef, useEffect, forwardRef } from "react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { useIsMobile } from "@/hooks/use-mobile";
 import type { ButtonProps } from "@/components/ui/button";
 
 interface ParticleButtonProps extends ButtonProps {
@@ -12,6 +13,7 @@ interface ParticleButtonProps extends ButtonProps {
     hoverDelay?: number;
     cruelMode?: boolean;
     autoStart?: boolean;
+    button_id?: string;
 }
 
 interface Spark {
@@ -47,7 +49,7 @@ function SuccessParticles({
                 return (
                     <motion.div
                         key={spark.id}
-                        className="fixed rounded-full shadow-md"
+                        className="particle-button-spark shadow-md"
                         style={{
                             width: "4px",
                             height: "4px",
@@ -92,6 +94,7 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(({
     autoStart = false,
     ...props
 }: ParticleButtonProps, ref) => {
+    const isMobile = useIsMobile();
     const [sparks, setSparks] = useState<Spark[]>([]);
     const [isGlowing, setIsGlowing] = useState(false);
     const [glowIntensity, setGlowIntensity] = useState(0);
@@ -171,6 +174,9 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(({
     };
 
     const handleMouseEnter = () => {
+        // On mobile, don't start hover effects
+        if (isMobile) return;
+
         // Clear any existing timers first
         clearAllTimers();
 
@@ -269,11 +275,11 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(({
             <SuccessParticles buttonRef={buttonRef} sparks={sparks} />
             <Button
                 ref={(node) => {
-                    buttonRef.current = node;
+                    (buttonRef as React.MutableRefObject<HTMLButtonElement | null>).current = node;
                     if (typeof ref === 'function') {
                         ref(node);
-                    } else if (ref) {
-                        ref.current = node;
+                    } else if (ref && 'current' in ref) {
+                        (ref as React.MutableRefObject<HTMLButtonElement | null>).current = node;
                     }
                 }}
                 onClick={handleClick}
@@ -281,14 +287,12 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(({
                 onMouseLeave={handleMouseLeave}
                 className={cn(
                     "relative transition-all duration-300",
-                    isGlowing && "text-shadow-glow",
+                    isGlowing && "text-shadow-glow particle-button--glow",
                     className,
                 )}
                 style={{
-                    textShadow: isGlowing
-                        ? `0 0 ${10 * glowIntensity}px #ff6347, 0 0 ${20 * glowIntensity}px #ff4500, 0 0 ${30 * glowIntensity}px #ff8c00, 0 0 ${40 * glowIntensity}px #ffa500`
-                        : "none",
-                }}
+                    ['--glow-intensity' as any]: isGlowing ? glowIntensity : undefined,
+                } as React.CSSProperties}
                 {...props}
             >
                 {children}
