@@ -71,9 +71,13 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       // Capture the actual cooldown value as the initial cooldown
       initialCooldownRef.current = currentCooldown;
     } else if (currentCooldown > 0 && currentCooldown > initialCooldownRef.current) {
-      // If we see a higher cooldown value (shouldn't happen normally, but handles edge cases),
-      // update the initial cooldown to the maximum seen
-      initialCooldownRef.current = currentCooldown;
+      // If we see a higher cooldown value, update the initial cooldown to the maximum seen.
+      // However, if the difference is very small (less than 1s) and we're resuming,
+      // it might just be the first tick after tab switch.
+      // If initialCooldownRef.current is 0, we definitely want to set it.
+      if (initialCooldownRef.current === 0 || currentCooldown > initialCooldownRef.current + 1) {
+        initialCooldownRef.current = currentCooldown;
+      }
     }
     
     // If cooldown is reset to 0, reset the initial cooldown ref
@@ -108,6 +112,25 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
     isCoolingDown && initialCooldown > 0
       ? (currentCooldown / initialCooldown) * 100
       : 0;
+
+  // Use a ref to track if we should animate the width
+  // When resuming from a tab switch, we want to jump to the correct position immediately
+  const skipAnimationRef = useRef(false);
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        skipAnimationRef.current = true;
+        // Re-enable animation after the jump
+        setTimeout(() => {
+          skipAnimationRef.current = false;
+        }, 50);
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, []);
 
   const actionExecutedRef = useRef<boolean>(false);
 
@@ -157,7 +180,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
           style={{
             width: `${overlayWidth}%`,
             left: 0,
-            transition: isFirstRenderRef.current ? "none" : "width 0.3s ease-out",
+            transition: isFirstRenderRef.current || skipAnimationRef.current ? "none" : "width 0.3s ease-out",
           }}
         />
       )}
