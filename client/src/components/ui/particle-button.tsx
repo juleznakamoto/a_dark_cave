@@ -95,7 +95,7 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(({
     const [sparks, setSparks] = useState<Spark[]>([]);
     const [isGlowing, setIsGlowing] = useState(false);
     const [glowIntensity, setGlowIntensity] = useState(0);
-    const buttonRef = useRef<HTMLButtonElement>(null);
+    const buttonRef = useRef<HTMLButtonElement | null>(null);
     const intervalRef = useRef<NodeJS.Timeout | null>(null);
     const rampUpRef = useRef<NodeJS.Timeout | null>(null);
     const glowRampRef = useRef<NodeJS.Timeout | null>(null);
@@ -104,6 +104,11 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(({
     const idRef = useRef(0);
     const spawnCountRef = useRef(cruelMode ? 20 : 2);
     const rampStartRef = useRef<number | null>(null);
+    const autoStartRef = useRef(autoStart);
+
+    useEffect(() => {
+        autoStartRef.current = autoStart;
+    }, [autoStart]);
 
     const colors = ["#ffb347", "#ff9234", "#ffcd94", "#ff6f3c", "#ff4500"]; // ember-like
 
@@ -239,7 +244,8 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(({
         // mouseleave so the particle effect runs for the full 3 seconds. On desktop,
         // reflow from font-loading or other post-click side effects can fire mouseleave
         // and would otherwise clear the particles; on mobile there is no mouseleave.
-        if (autoStart) return;
+        // Use ref to get current value, not stale closure value from previous render.
+        if (autoStartRef.current) return;
         clearAllTimers();
         setIsGlowing(false);
         setGlowIntensity(0);
