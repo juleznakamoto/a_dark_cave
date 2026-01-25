@@ -42,7 +42,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
     ref
   ) {
   const { cooldowns, compassGlowButton } = useGameStore();
-  const isFirstRenderRef = useRef<boolean>(false);
+  const isFirstRenderRef = useRef<boolean>(true);
   const initialCooldownRef = useRef<number>(0);
   const previousCooldownRef = useRef<number>(0);
 
@@ -70,13 +70,6 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
     if (previousCooldown === 0 && currentCooldown > 0) {
       // Capture the actual cooldown value as the initial cooldown
       initialCooldownRef.current = currentCooldown;
-      
-      // If the cooldown just started, we want to skip the transition for the very first frame
-      // to avoid jumping from 0 to current percentage
-      isFirstRenderRef.current = true;
-      requestAnimationFrame(() => {
-        isFirstRenderRef.current = false;
-      });
     } else if (currentCooldown > 0 && currentCooldown > initialCooldownRef.current) {
       // If we see a higher cooldown value (shouldn't happen normally, but handles edge cases),
       // update the initial cooldown to the maximum seen
@@ -97,8 +90,21 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
     ? initialCooldownRef.current 
     : fallbackInitialCooldown;
 
+  // Track first render for transition
+  useEffect(() => {
+    if (isCoolingDown) {
+      isFirstRenderRef.current = true;
+      // Allow transition after initial render (next frame)
+      requestAnimationFrame(() => {
+        isFirstRenderRef.current = false;
+      });
+    } else {
+      isFirstRenderRef.current = true;
+    }
+  }, [isCoolingDown]);
+
   // Calculate width percentage directly from remaining cooldown
-    const overlayWidth =
+  const overlayWidth =
     isCoolingDown && initialCooldown > 0
       ? (currentCooldown / initialCooldown) * 100
       : 0;
