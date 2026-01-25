@@ -12,7 +12,6 @@ interface ParticleButtonProps extends ButtonProps {
     hoverDelay?: number;
     cruelMode?: boolean;
     autoStart?: boolean;
-    button_id?: string;
 }
 
 interface Spark {
@@ -274,11 +273,11 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(({
                     if (typeof ref === 'function') {
                         ref(node);
                     } else if (ref) {
-                        (ref as any).current = node;
+                        ref.current = node;
                     }
                 }}
                 onClick={handleClick}
-                onMouseEnter={() => handleMouseEnter()}
+                onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
                 className={cn(
                     "relative transition-all duration-300",

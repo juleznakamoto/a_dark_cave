@@ -5,7 +5,6 @@ import CloudShader from "@/components/ui/cloud-shader";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { audioManager } from "@/lib/audio";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
-import { cn } from "@/lib/utils";
 
 export default function StartScreen() {
   const { executeAction, setBoostMode, boostMode, CM } = useGameStore();
@@ -95,18 +94,18 @@ export default function StartScreen() {
       });
 
       interFont.load().then(() => {
-        (document as any).fonts.add(interFont);
+        document.fonts.add(interFont);
         // Apply Inter immediately when loaded
-        (document.documentElement as HTMLElement).classList.add('font-loaded');
+        document.documentElement.classList.add('font-loaded');
       }).catch(() => {
         // Fallback: add class anyway after a short delay
         setTimeout(() => {
-          (document.documentElement as HTMLElement).classList.add('font-loaded');
+          document.documentElement.classList.add('font-loaded');
         }, 100);
       });
     } else {
       // Fallback for browsers without FontFace API - add class immediately
-      (document.documentElement as HTMLElement).classList.add('font-loaded');
+      document.documentElement.classList.add('font-loaded');
     }
 
     // Immediately stop wind with no fade to prevent overlap
@@ -197,10 +196,7 @@ export default function StartScreen() {
           ref={buttonRef}
           onClick={handleLightFire}
           autoStart={showParticles}
-          className={cn(
-            "animate-fade-in-button bg-transparent border-none text-gray-300/90 hover:bg-transparent text-lg px-8 py-4 fire-hover z-[99999]",
-            showParticles && "text-shadow-glow"
-          )}
+          className="animate-fade-in-button bg-transparent border-none text-gray-300/90 hover:bg-transparent text-lg px-8 py-4 fire-hover z-[99999]"
           data-testid="button-light-fire"
           button_id="light-fire"
         >
