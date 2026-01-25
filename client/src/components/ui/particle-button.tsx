@@ -235,6 +235,11 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(({
     };
 
     const handleMouseLeave = () => {
+        // When autoStart is true (post-click 3s animation on start screen), ignore
+        // mouseleave so the particle effect runs for the full 3 seconds. On desktop,
+        // reflow from font-loading or other post-click side effects can fire mouseleave
+        // and would otherwise clear the particles; on mobile there is no mouseleave.
+        if (autoStart) return;
         clearAllTimers();
         setIsGlowing(false);
         setGlowIntensity(0);
