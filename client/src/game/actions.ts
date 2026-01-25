@@ -179,10 +179,11 @@ export function executeGameAction(
   actionId: string,
   state: GameState,
 ): ActionResult {
+  const cooldownDuration = getActionCooldown(actionId);
   const result: ActionResult = {
     stateUpdates: {
       cooldowns: {
-        [actionId]: getActionCooldown(actionId),
+        [actionId]: cooldownDuration,
       },
       story: {
         ...state.story,
@@ -195,6 +196,11 @@ export function executeGameAction(
     },
     logEntries: [],
     delayedEffects: [],
+  };
+  
+  // Set initialCooldowns for all actions (needed for cooldown animation persistence)
+  (result.stateUpdates as any).initialCooldowns = {
+    [actionId]: cooldownDuration,
   };
 
   // Route to appropriate handler based on action ID
@@ -226,6 +232,11 @@ export function executeGameAction(
           level: newLevel,
           lastLevelDecrease: Date.now(),
         },
+      };
+      // Update initialCooldowns to match the custom cooldown
+      (result.stateUpdates as any).initialCooldowns = {
+        ...(result.stateUpdates as any).initialCooldowns,
+        feedFire: 30,
       };
       return result;
     }
