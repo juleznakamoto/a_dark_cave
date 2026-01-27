@@ -222,6 +222,7 @@ export class AudioManager {
     // The sound will be loaded on first play or when loadGameSounds is called.
     const initialSounds = {
       'wind': '/sounds/wind.mp3',
+      'event': '/sounds/event.wav',
     };
 
     for (const [name, url] of Object.entries(initialSounds)) {

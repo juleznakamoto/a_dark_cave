@@ -1346,7 +1346,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
       // Play event sound for timed tab events
       if (timedTabEntry._playSound) {
-        audioManager.playSound("event");
+        audioManager.playSound("event", 0.02);
       }
 
       get().setTimedEventTab(true, timedTabEntry, timedTabEntry.timedTabDuration);
