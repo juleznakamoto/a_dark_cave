@@ -12,6 +12,7 @@ export interface TooltipWrapperProps {
   tooltip?: React.ReactNode;
   tooltipId?: string;
   disabled?: boolean;
+  className?: string;
   onMouseEnter?: (e?: React.MouseEvent<HTMLDivElement>) => void;
   onMouseLeave?: (e?: React.MouseEvent<HTMLDivElement>) => void;
   onClick?: () => void;
@@ -28,6 +29,7 @@ export function TooltipWrapper({
   tooltip,
   tooltipId,
   disabled = false,
+  className = "relative inline-block",
   onMouseEnter,
   onMouseLeave,
   onClick,
@@ -50,12 +52,12 @@ export function TooltipWrapper({
 
   // If no tooltip, return children without wrapper
   if (!tooltip) {
-    return <div className="relative inline-block">{children}</div>;
+    return <div className={className}>{children}</div>;
   }
 
   return (
     <div
-      className="relative inline-block"
+      className={className}
       onClick={globalTooltip.isMobile ? (e) => {
         // Don't show tooltip if action was just executed
         if (actionExecutedRef.current) return;
@@ -103,7 +105,7 @@ export function TooltipWrapper({
           delayDuration={300}
         >
           <TooltipTrigger asChild>
-            <span className="inline-block">
+            <span className="block w-full">
               {children}
             </span>
           </TooltipTrigger>

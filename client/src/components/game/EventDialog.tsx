@@ -326,21 +326,20 @@ export default function EventDialog({
                 );
 
                 return costText ? (
-                  <div key={choice.id} className="w-full">
-                    <TooltipWrapper
-                      tooltip={
-                        <div className={`text-xs ${isDisabled ? "text-muted-foreground" : ""}`}>
-                          {eventChoiceCostTooltip.getContent(costText, gameState)}
-                        </div>
-                      }
-                      tooltipId={choice.id}
-                      disabled={isDisabled}
-                    >
-                      {buttonContent}
-                    </TooltipWrapper>
-                  </div>
+                  <TooltipWrapper
+                    key={choice.id}
+                    tooltip={
+                      <div className={`text-xs ${isDisabled ? "text-muted-foreground" : ""}`}>
+                        {eventChoiceCostTooltip.getContent(costText, gameState)}
+                      </div>
+                    }
+                    tooltipId={choice.id}
+                    disabled={isDisabled}
+                  >
+                    {buttonContent}
+                  </TooltipWrapper>
                 ) : (
-                  <div key={choice.id} className="w-full">
+                  <div key={choice.id}>
                     {buttonContent}
                   </div>
                 );
