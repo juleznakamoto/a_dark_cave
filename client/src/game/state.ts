@@ -212,7 +212,34 @@ interface GameStore extends GameState {
   unassignVillager: (job: keyof GameState["villagers"]) => void;
   setEventDialog: (isOpen: boolean, event?: LogEntry | null) => void;
   setCombatDialog: (isOpen: boolean, data?: any) => void;
-  setTimedEventTab: (isActive: boolean, event?: LogEntry | null, duration?: number) => Promise<void>;
+  setTimedEventTab: async (isActive: boolean, event?: LogEntry | null, duration?: number) => {
+    if (!isActive) {
+      set({
+        timedEventTab: {
+          isActive: false,
+          event: null,
+          expiryTime: 0,
+        },
+      });
+      return;
+    }
+
+    if (event) {
+      const expiryTime = Date.now() + (duration || event.timedTabDuration || 30000);
+      set({
+        timedEventTab: {
+          isActive: true,
+          event,
+          expiryTime,
+          startTime: Date.now(),
+        },
+      });
+
+      if (!event.skipSound) {
+        audioManager.playSound("event_triggered");
+      }
+    }
+  },
   setAuthDialogOpen: (isOpen: boolean) => void;
   setShopDialogOpen: (isOpen: boolean) => void;
   setLeaderboardDialogOpen: (isOpen: boolean) => void;
@@ -1038,6 +1065,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         isActive: false,
         event: null,
         expiryTime: 0,
+        startTime: 0,
       },
 
       // Recalculate derived state
@@ -1212,6 +1240,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
         isPaused:
           savedState.isPaused !== undefined ? savedState.isPaused : false, // Ensure isPaused is loaded
         isMuted: savedState.isMuted !== undefined ? savedState.isMuted : false,
+        timedEventTab: savedState.timedEventTab || {
+          isActive: false,
+          event: null,
+          expiryTime: 0,
+        },
         shopNotificationSeen:
           savedState.shopNotificationSeen !== undefined
             ? savedState.shopNotificationSeen
@@ -1340,16 +1373,29 @@ export const useGameStore = create<GameStore>((set, get) => ({
       EventManager.checkEvents({ ...state, timedEventTab: { isActive: timedTabActive } } as any);
 
     // Handle timed tab event if present
-    if (stateChanges._timedTabEvent) {
-      const timedTabEntry = stateChanges._timedTabEvent;
-      delete stateChanges._timedTabEvent;
+    if ((stateChanges as any)._timedTabEvent) {
+      const timedTabEntry = (stateChanges as any)._timedTabEvent;
+      delete (stateChanges as any)._timedTabEvent;
 
       // Play event sound for timed tab events
       if (timedTabEntry._playSound) {
         audioManager.playSound("event");
       }
 
-      get().setTimedEventTab(true, timedTabEntry, timedTabEntry.timedTabDuration);
+      // Use the event data to create a LogEntry for the tab
+      const eventLogEntry: LogEntry = {
+        id: timedTabEntry.id,
+        message: timedTabEntry.message,
+        timestamp: timedTabEntry.timestamp,
+        type: "event",
+        title: timedTabEntry.title,
+        choices: timedTabEntry.choices,
+        fallbackChoice: timedTabEntry.fallbackChoice,
+        showAsTimedTab: true,
+        timedTabDuration: timedTabEntry.timedTabDuration,
+      };
+
+      get().setTimedEventTab(true, eventLogEntry, timedTabEntry.timedTabDuration);
     }
 
     if (newLogEntries.length > 0) {

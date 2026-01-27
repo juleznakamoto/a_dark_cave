@@ -151,7 +151,7 @@ export default function TimedEventPanel() {
   ]);
 
   // Early return AFTER all hooks have been called
-  if (!timedEventTab.event) {
+  if (!timedEventTab.event || !timedEventTab.isActive) {
     return null;
   }
 
