@@ -32,7 +32,10 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useMobileTooltip } from "@/hooks/useMobileTooltip";
-import { SuccessParticles, useFeedFireParticles } from "@/components/ui/feed-fire-particles";
+import {
+  SuccessParticles,
+  useFeedFireParticles,
+} from "@/components/ui/feed-fire-particles";
 import { audioManager } from "@/lib/audio";
 
 export default function VillagePanel() {
@@ -299,9 +302,9 @@ export default function VillagePanel() {
           ref={feedFireButtonRef}
           onClick={() => {
             executeAction(actionId);
-            audioManager.playSound('feedFire');
+            audioManager.playSound("feedFire");
             // Generate 10 * current heartfire level particles
-            const particleCount = 10 * currentLevel;
+            const particleCount = 10 * (currentLevel + 1);
             if (particleCount > 0) {
               spawnParticles(particleCount, feedFireButtonRef);
             }
@@ -529,333 +532,124 @@ export default function VillagePanel() {
       <SuccessParticles buttonRef={feedFireButtonRef} sparks={sparks} />
       <ScrollArea className="h-full w-96">
         <div className="space-y-4 mt-2 mb-2 pl-[3px] ">
-        {/* Special Top Level Button Group for Feed Fire */}
-        {buildings.heartfire > 0 && (
-          <div className="space-y-2">
-            <div className="flex flex-wrap gap-2">
-              {renderButton("feedFire", "Feed Fire")}
-            </div>
-          </div>
-        )}
-
-        {actionGroups.map((group, groupIndex) => {
-          const visibleActions = group.actions.filter((action) =>
-            shouldShowAction(action.id, state),
-          );
-
-          if (visibleActions.length === 0) return null;
-
-          return (
-            <div key={groupIndex} className="space-y-2">
-              {group.title && (
-                <h3 className="text-xs font-medium text-foreground ">
-                  {group.title}
-                </h3>
-              )}
+          {/* Special Top Level Button Group for Feed Fire */}
+          {buildings.heartfire > 0 && (
+            <div className="space-y-2">
               <div className="flex flex-wrap gap-2">
-                {visibleActions.map((action) =>
-                  renderButton(action.id, action.label),
-                )}
+                {renderButton("feedFire", "Feed Fire")}
               </div>
             </div>
-          );
-        })}
+          )}
 
-        {/* Rule Section */}
-        {story.seen?.hasVillagers && visiblePopulationJobs.length > 0 && (
-          <div className="space-y-2">
-            <div className="flex items-center gap-2">
-              <h3 className="text-xs font-medium text-foreground">Rule</h3>
-              {/* Feast Timer */}
-              {(() => {
-                const feastState = useGameStore.getState().feastState;
-                const greatFeastState = useGameStore.getState().greatFeastState;
-                const curseState = useGameStore.getState().curseState;
-                const miningBoostState =
-                  useGameStore.getState().miningBoostState;
-                const frostfallState = useGameStore.getState().frostfallState; // Assume frostfallState exists
-                const isGreatFeast =
-                  greatFeastState?.isActive &&
-                  greatFeastState.endTime > Date.now();
-                const isFeast =
-                  feastState?.isActive && feastState.endTime > Date.now();
-                const isCursed =
-                  curseState?.isActive && curseState.endTime > Date.now();
-                const isMiningBoosted =
-                  miningBoostState?.isActive &&
-                  miningBoostState.endTime > Date.now();
-                const isFrostfall =
-                  frostfallState?.isActive &&
-                  frostfallState.endTime > Date.now();
+          {actionGroups.map((group, groupIndex) => {
+            const visibleActions = group.actions.filter((action) =>
+              shouldShowAction(action.id, state),
+            );
 
-                return (
-                  <>
-                    {/* Feast/Great Feast Indicator */}
-                    {(isGreatFeast || isFeast) && (
-                      <TooltipProvider>
-                        <Tooltip
-                          open={mobileTooltip.isTooltipOpen("feast-progress")}
-                        >
-                          <TooltipTrigger asChild>
-                            <div
-                              className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
-                              onClick={(e) =>
-                                mobileTooltip.handleTooltipClick(
-                                  "feast-progress",
-                                  e,
-                                )
-                              }
-                            >
-                              <div className="relative inline-flex items-center gap-1 mt-[0px]">
-                                <CircularProgress
-                                  value={feastProgress}
-                                  size={18}
-                                  strokeWidth={2}
-                                  className={
-                                    isGreatFeast
-                                      ? "text-orange-600"
-                                      : "text-yellow-600"
-                                  }
-                                />
-                                <span
-                                  className={`absolute inset-0 flex items-center justify-center font-extrabold ${isGreatFeast ? "text-[12px] -mt-[0px] text-orange-600" : "text-[12px] -mt-[1px] text-yellow-600"}`}
-                                >
-                                  {isGreatFeast ? "✦" : "⟡"}
-                                </span>
-                              </div>
-                            </div>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <div className="text-xs">
-                              {feastTooltip.getContent(state)}
-                            </div>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    )}
+            if (visibleActions.length === 0) return null;
 
-                    {/* Curse Indicator */}
-                    {isCursed && (
-                      <TooltipProvider>
-                        <Tooltip
-                          open={mobileTooltip.isTooltipOpen("curse-progress")}
-                        >
-                          <TooltipTrigger asChild>
-                            <div
-                              className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
-                              onClick={(e) =>
-                                mobileTooltip.handleTooltipClick(
-                                  "curse-progress",
-                                  e,
-                                )
-                              }
-                            >
-                              <div className="relative inline-flex items-center gap-1 mt-[0px]">
-                                <CircularProgress
-                                  value={(() => {
-                                    const timeRemaining = Math.max(
-                                      0,
-                                      curseState.endTime - Date.now(),
-                                    );
-                                    const totalDuration =
-                                      (10 + 5 * state.CM) * 60 * 1000;
-                                    const elapsed =
-                                      totalDuration - timeRemaining;
-                                    return Math.min(
-                                      100,
-                                      (elapsed / totalDuration) * 100,
-                                    );
-                                  })()}
-                                  size={18}
-                                  strokeWidth={2}
-                                  className="text-purple-600"
-                                />
-                                <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[12px] -mt-[0px] text-purple-600">
-                                  ✶
-                                </span>
-                              </div>
-                            </div>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <div className="text-xs whitespace-pre-line">
-                              {curseTooltip.getContent(state)}
-                            </div>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    )}
+            return (
+              <div key={groupIndex} className="space-y-2">
+                {group.title && (
+                  <h3 className="text-xs font-medium text-foreground ">
+                    {group.title}
+                  </h3>
+                )}
+                <div className="flex flex-wrap gap-2">
+                  {visibleActions.map((action) =>
+                    renderButton(action.id, action.label),
+                  )}
+                </div>
+              </div>
+            );
+          })}
 
-                    {/* Mining Boost Indicator */}
-                    {isMiningBoosted && (
-                      <TooltipProvider>
-                        <Tooltip
-                          open={mobileTooltip.isTooltipOpen(
-                            "mining-boost-progress",
-                          )}
-                        >
-                          <TooltipTrigger asChild>
-                            <div
-                              className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
-                              onClick={(e) =>
-                                mobileTooltip.handleTooltipClick(
-                                  "mining-boost-progress",
-                                  e,
-                                )
-                              }
-                            >
-                              <div className="relative inline-flex items-center gap-1 mt-[0px]">
-                                <CircularProgress
-                                  value={(() => {
-                                    const boostDuration = 30 * 60 * 1000;
-                                    const boostElapsed =
-                                      boostDuration -
-                                      (miningBoostState.endTime - Date.now());
-                                    return (boostElapsed / boostDuration) * 100;
-                                  })()}
-                                  size={18}
-                                  strokeWidth={2}
-                                  className="text-amber-600"
-                                />
-                                <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[7px] -mt-[0px] text-amber-600">
-                                  ⛰
-                                </span>
-                              </div>
-                            </div>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <div className="text-xs whitespace-pre-line">
-                              {miningBoostTooltip.getContent(state)}
-                            </div>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    )}
+          {/* Rule Section */}
+          {story.seen?.hasVillagers && visiblePopulationJobs.length > 0 && (
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <h3 className="text-xs font-medium text-foreground">Rule</h3>
+                {/* Feast Timer */}
+                {(() => {
+                  const feastState = useGameStore.getState().feastState;
+                  const greatFeastState =
+                    useGameStore.getState().greatFeastState;
+                  const curseState = useGameStore.getState().curseState;
+                  const miningBoostState =
+                    useGameStore.getState().miningBoostState;
+                  const frostfallState = useGameStore.getState().frostfallState; // Assume frostfallState exists
+                  const isGreatFeast =
+                    greatFeastState?.isActive &&
+                    greatFeastState.endTime > Date.now();
+                  const isFeast =
+                    feastState?.isActive && feastState.endTime > Date.now();
+                  const isCursed =
+                    curseState?.isActive && curseState.endTime > Date.now();
+                  const isMiningBoosted =
+                    miningBoostState?.isActive &&
+                    miningBoostState.endTime > Date.now();
+                  const isFrostfall =
+                    frostfallState?.isActive &&
+                    frostfallState.endTime > Date.now();
 
-                    {/* Heartfire Indicator */}
-                    {state.heartfireState?.level > 0 && (
-                      <TooltipProvider>
-                        <Tooltip
-                          open={mobileTooltip.isTooltipOpen(
-                            "heartfire-progress",
-                          )}
-                        >
-                          <TooltipTrigger asChild>
-                            <div
-                              className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
-                              onClick={(e) =>
-                                mobileTooltip.handleTooltipClick(
-                                  "heartfire-progress",
-                                  e,
-                                )
-                              }
-                            >
-                              <div className="relative inline-flex items-center gap-1 mt-[0px]">
-                                <CircularProgress
-                                  value={(() => {
-                                    const now = Date.now();
-                                    const lastDecrease =
-                                      state.heartfireState.lastLevelDecrease ||
-                                      0;
-                                    const elapsed = now - lastDecrease;
-                                    return Math.min(
-                                      100,
-                                      (elapsed / 90000) * 100,
-                                    );
-                                  })()}
-                                  size={18}
-                                  strokeWidth={2}
-                                  className="text-red-700"
-                                />
-                                <span className="absolute inset-0 flex items-center justify-center font-extrabold text-red-700">
-                                  {getHeartfireSymbol(
-                                    state.heartfireState.level,
-                                  )}
-                                </span>
-                              </div>
-                            </div>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <div className="text-xs">
-                              Heartfire: +{state.heartfireState.level * 5}%
-                              Village Production
-                            </div>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    )}
-
-                    {/* Frostfall Indicator */}
-                    {isFrostfall && (
-                      <TooltipProvider>
-                        <Tooltip
-                          open={mobileTooltip.isTooltipOpen(
-                            "frostfall-progress",
-                          )}
-                        >
-                          <TooltipTrigger asChild>
-                            <div
-                              className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
-                              onClick={(e) =>
-                                mobileTooltip.handleTooltipClick(
-                                  "frostfall-progress",
-                                  e,
-                                )
-                              }
-                            >
-                              <div className="relative inline-flex items-center gap-1 mt-[0px]">
-                                <CircularProgress
-                                  value={(() => {
-                                    const frostfallDuration =
-                                      (10 + 5 * state.CM) * 60 * 1000; // Same duration as curse, adjust if needed
-                                    const timeRemaining = Math.max(
-                                      0,
-                                      frostfallState.endTime - Date.now(),
-                                    );
-                                    const elapsed =
-                                      frostfallDuration - timeRemaining;
-                                    return Math.min(
-                                      100,
-                                      (elapsed / frostfallDuration) * 100,
-                                    );
-                                  })()}
-                                  size={18}
-                                  strokeWidth={2}
-                                  className="text-blue-600" // Blue color for frostfall
-                                />
-                                <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[12px] -mt-[0px] text-blue-600">
-                                  ✼
-                                </span>
-                              </div>
-                            </div>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <div className="text-xs">
-                              {frostfallTooltip.getContent(state)}
-                            </div>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    )}
-
-                    {/* Fog Indicator */}
-                    {(() => {
-                      const fogState = useGameStore.getState().fogState;
-                      const isFog =
-                        fogState?.isActive && fogState.endTime > Date.now();
-
-                      if (!isFog) return null;
-
-                      return (
+                  return (
+                    <>
+                      {/* Feast/Great Feast Indicator */}
+                      {(isGreatFeast || isFeast) && (
                         <TooltipProvider>
                           <Tooltip
-                            open={mobileTooltip.isTooltipOpen("fog-progress")}
+                            open={mobileTooltip.isTooltipOpen("feast-progress")}
                           >
                             <TooltipTrigger asChild>
                               <div
                                 className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
                                 onClick={(e) =>
                                   mobileTooltip.handleTooltipClick(
-                                    "fog-progress",
+                                    "feast-progress",
+                                    e,
+                                  )
+                                }
+                              >
+                                <div className="relative inline-flex items-center gap-1 mt-[0px]">
+                                  <CircularProgress
+                                    value={feastProgress}
+                                    size={18}
+                                    strokeWidth={2}
+                                    className={
+                                      isGreatFeast
+                                        ? "text-orange-600"
+                                        : "text-yellow-600"
+                                    }
+                                  />
+                                  <span
+                                    className={`absolute inset-0 flex items-center justify-center font-extrabold ${isGreatFeast ? "text-[12px] -mt-[0px] text-orange-600" : "text-[12px] -mt-[1px] text-yellow-600"}`}
+                                  >
+                                    {isGreatFeast ? "✦" : "⟡"}
+                                  </span>
+                                </div>
+                              </div>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <div className="text-xs">
+                                {feastTooltip.getContent(state)}
+                              </div>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      )}
+
+                      {/* Curse Indicator */}
+                      {isCursed && (
+                        <TooltipProvider>
+                          <Tooltip
+                            open={mobileTooltip.isTooltipOpen("curse-progress")}
+                          >
+                            <TooltipTrigger asChild>
+                              <div
+                                className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
+                                onClick={(e) =>
+                                  mobileTooltip.handleTooltipClick(
+                                    "curse-progress",
                                     e,
                                   )
                                 }
@@ -863,82 +657,296 @@ export default function VillagePanel() {
                                 <div className="relative inline-flex items-center gap-1 mt-[0px]">
                                   <CircularProgress
                                     value={(() => {
-                                      const fogDuration =
-                                        fogState.duration || 5 * 60 * 1000;
                                       const timeRemaining = Math.max(
                                         0,
-                                        fogState.endTime - Date.now(),
+                                        curseState.endTime - Date.now(),
                                       );
+                                      const totalDuration =
+                                        (10 + 5 * state.CM) * 60 * 1000;
                                       const elapsed =
-                                        fogDuration - timeRemaining;
+                                        totalDuration - timeRemaining;
                                       return Math.min(
                                         100,
-                                        (elapsed / fogDuration) * 100,
+                                        (elapsed / totalDuration) * 100,
                                       );
                                     })()}
                                     size={18}
                                     strokeWidth={2}
-                                    className="text-gray-500"
+                                    className="text-purple-600"
                                   />
-                                  <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[12px] -mt-[1px] text-gray-500">
-                                    ≋
+                                  <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[12px] -mt-[0px] text-purple-600">
+                                    ✶
+                                  </span>
+                                </div>
+                              </div>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <div className="text-xs whitespace-pre-line">
+                                {curseTooltip.getContent(state)}
+                              </div>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      )}
+
+                      {/* Mining Boost Indicator */}
+                      {isMiningBoosted && (
+                        <TooltipProvider>
+                          <Tooltip
+                            open={mobileTooltip.isTooltipOpen(
+                              "mining-boost-progress",
+                            )}
+                          >
+                            <TooltipTrigger asChild>
+                              <div
+                                className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
+                                onClick={(e) =>
+                                  mobileTooltip.handleTooltipClick(
+                                    "mining-boost-progress",
+                                    e,
+                                  )
+                                }
+                              >
+                                <div className="relative inline-flex items-center gap-1 mt-[0px]">
+                                  <CircularProgress
+                                    value={(() => {
+                                      const boostDuration = 30 * 60 * 1000;
+                                      const boostElapsed =
+                                        boostDuration -
+                                        (miningBoostState.endTime - Date.now());
+                                      return (
+                                        (boostElapsed / boostDuration) * 100
+                                      );
+                                    })()}
+                                    size={18}
+                                    strokeWidth={2}
+                                    className="text-amber-600"
+                                  />
+                                  <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[7px] -mt-[0px] text-amber-600">
+                                    ⛰
+                                  </span>
+                                </div>
+                              </div>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <div className="text-xs whitespace-pre-line">
+                                {miningBoostTooltip.getContent(state)}
+                              </div>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      )}
+
+                      {/* Heartfire Indicator */}
+                      {state.heartfireState?.level > 0 && (
+                        <TooltipProvider>
+                          <Tooltip
+                            open={mobileTooltip.isTooltipOpen(
+                              "heartfire-progress",
+                            )}
+                          >
+                            <TooltipTrigger asChild>
+                              <div
+                                className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
+                                onClick={(e) =>
+                                  mobileTooltip.handleTooltipClick(
+                                    "heartfire-progress",
+                                    e,
+                                  )
+                                }
+                              >
+                                <div className="relative inline-flex items-center gap-1 mt-[0px]">
+                                  <CircularProgress
+                                    value={(() => {
+                                      const now = Date.now();
+                                      const lastDecrease =
+                                        state.heartfireState
+                                          .lastLevelDecrease || 0;
+                                      const elapsed = now - lastDecrease;
+                                      return Math.min(
+                                        100,
+                                        (elapsed / 90000) * 100,
+                                      );
+                                    })()}
+                                    size={18}
+                                    strokeWidth={2}
+                                    className="text-red-700"
+                                  />
+                                  <span className="absolute inset-0 flex items-center justify-center font-extrabold text-red-700">
+                                    {getHeartfireSymbol(
+                                      state.heartfireState.level,
+                                    )}
                                   </span>
                                 </div>
                               </div>
                             </TooltipTrigger>
                             <TooltipContent>
                               <div className="text-xs">
-                                {fogTooltip.getContent(state)}
+                                Heartfire: +{state.heartfireState.level * 5}%
+                                Village Production
                               </div>
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider>
-                      );
-                    })()}
-                  </>
+                      )}
+
+                      {/* Frostfall Indicator */}
+                      {isFrostfall && (
+                        <TooltipProvider>
+                          <Tooltip
+                            open={mobileTooltip.isTooltipOpen(
+                              "frostfall-progress",
+                            )}
+                          >
+                            <TooltipTrigger asChild>
+                              <div
+                                className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
+                                onClick={(e) =>
+                                  mobileTooltip.handleTooltipClick(
+                                    "frostfall-progress",
+                                    e,
+                                  )
+                                }
+                              >
+                                <div className="relative inline-flex items-center gap-1 mt-[0px]">
+                                  <CircularProgress
+                                    value={(() => {
+                                      const frostfallDuration =
+                                        (10 + 5 * state.CM) * 60 * 1000; // Same duration as curse, adjust if needed
+                                      const timeRemaining = Math.max(
+                                        0,
+                                        frostfallState.endTime - Date.now(),
+                                      );
+                                      const elapsed =
+                                        frostfallDuration - timeRemaining;
+                                      return Math.min(
+                                        100,
+                                        (elapsed / frostfallDuration) * 100,
+                                      );
+                                    })()}
+                                    size={18}
+                                    strokeWidth={2}
+                                    className="text-blue-600" // Blue color for frostfall
+                                  />
+                                  <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[12px] -mt-[0px] text-blue-600">
+                                    ✼
+                                  </span>
+                                </div>
+                              </div>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <div className="text-xs">
+                                {frostfallTooltip.getContent(state)}
+                              </div>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      )}
+
+                      {/* Fog Indicator */}
+                      {(() => {
+                        const fogState = useGameStore.getState().fogState;
+                        const isFog =
+                          fogState?.isActive && fogState.endTime > Date.now();
+
+                        if (!isFog) return null;
+
+                        return (
+                          <TooltipProvider>
+                            <Tooltip
+                              open={mobileTooltip.isTooltipOpen("fog-progress")}
+                            >
+                              <TooltipTrigger asChild>
+                                <div
+                                  className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
+                                  onClick={(e) =>
+                                    mobileTooltip.handleTooltipClick(
+                                      "fog-progress",
+                                      e,
+                                    )
+                                  }
+                                >
+                                  <div className="relative inline-flex items-center gap-1 mt-[0px]">
+                                    <CircularProgress
+                                      value={(() => {
+                                        const fogDuration =
+                                          fogState.duration || 5 * 60 * 1000;
+                                        const timeRemaining = Math.max(
+                                          0,
+                                          fogState.endTime - Date.now(),
+                                        );
+                                        const elapsed =
+                                          fogDuration - timeRemaining;
+                                        return Math.min(
+                                          100,
+                                          (elapsed / fogDuration) * 100,
+                                        );
+                                      })()}
+                                      size={18}
+                                      strokeWidth={2}
+                                      className="text-gray-500"
+                                    />
+                                    <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[12px] -mt-[1px] text-gray-500">
+                                      ≋
+                                    </span>
+                                  </div>
+                                </div>
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <div className="text-xs">
+                                  {fogTooltip.getContent(state)}
+                                </div>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                        );
+                      })()}
+                    </>
+                  );
+                })()}
+              </div>
+              <div className="space-y-1 leading-tight">
+                {visiblePopulationJobs.map((job) =>
+                  renderPopulationControl(job.id, job.label),
+                )}
+              </div>
+
+              {/* Population Effects Summary */}
+              {(() => {
+                const visibleJobIds = visiblePopulationJobs.map(
+                  (job) => job.id,
                 );
+                const totalEffects = getTotalPopulationEffects(
+                  state,
+                  visibleJobIds,
+                );
+
+                const effectsText = Object.entries(totalEffects)
+                  .filter(([resource, amount]) => amount !== 0)
+                  .sort(([, a], [, b]) => b - a) // Sort from positive to negative
+                  .map(
+                    ([resource, amount]) =>
+                      `${amount > 0 ? "+" : ""}${amount} ${capitalizeWords(resource)}`,
+                  )
+                  .join(", ");
+
+                return effectsText && buildings.clerksHut > 0 ? (
+                  <div className="text-xs text-muted-foreground flex items-center gap-3">
+                    <CircularProgress
+                      value={loopProgress} // Use loopProgress for production animation
+                      size={16}
+                      strokeWidth={2}
+                      className="text-gray-400"
+                    />
+                    <span>{effectsText}</span>
+                  </div>
+                ) : null;
               })()}
             </div>
-            <div className="space-y-1 leading-tight">
-              {visiblePopulationJobs.map((job) =>
-                renderPopulationControl(job.id, job.label),
-              )}
-            </div>
-
-            {/* Population Effects Summary */}
-            {(() => {
-              const visibleJobIds = visiblePopulationJobs.map((job) => job.id);
-              const totalEffects = getTotalPopulationEffects(
-                state,
-                visibleJobIds,
-              );
-
-              const effectsText = Object.entries(totalEffects)
-                .filter(([resource, amount]) => amount !== 0)
-                .sort(([, a], [, b]) => b - a) // Sort from positive to negative
-                .map(
-                  ([resource, amount]) =>
-                    `${amount > 0 ? "+" : ""}${amount} ${capitalizeWords(resource)}`,
-                )
-                .join(", ");
-
-              return effectsText && buildings.clerksHut > 0 ? (
-                <div className="text-xs text-muted-foreground flex items-center gap-3">
-                  <CircularProgress
-                    value={loopProgress} // Use loopProgress for production animation
-                    size={16}
-                    strokeWidth={2}
-                    className="text-gray-400"
-                  />
-                  <span>{effectsText}</span>
-                </div>
-              ) : null;
-            })()}
-          </div>
-        )}
-      </div>
-      <ScrollBar orientation="vertical" />
-    </ScrollArea>
+          )}
+        </div>
+        <ScrollBar orientation="vertical" />
+      </ScrollArea>
     </>
   );
 }
