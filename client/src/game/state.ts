@@ -1344,6 +1344,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const timedTabEntry = stateChanges._timedTabEvent;
       delete stateChanges._timedTabEvent;
 
+      // Play event sound for timed tab events
+      if (timedTabEntry._playSound) {
+        audioManager.playSound("event");
+      }
+
       get().setTimedEventTab(true, timedTabEntry, timedTabEntry.timedTabDuration);
     }
 
