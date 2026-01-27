@@ -167,7 +167,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     priority: 3,
     repeatable: true,
     showAsTimedTab: true,
-    timedTabDuration: 30000, // 30 seconds
+    timedTabDuration: 180000, // 3 minutes
     choices: [
       {
         id: "buyMirror",

@@ -812,7 +812,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const updatedCooldowns = { ...result.stateUpdates.cooldowns };
       const initialCooldowns = (result.stateUpdates as any).initialCooldowns || {};
       const updatedInitialCooldowns = { ...initialCooldowns };
-      
+
       for (const key in updatedCooldowns) {
         updatedCooldowns[key] = updatedCooldowns[key] * 0.1;
         if (updatedInitialCooldowns[key] !== undefined) {
@@ -828,7 +828,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const updatedCooldowns = { ...result.stateUpdates.cooldowns };
       const initialCooldowns = (result.stateUpdates as any).initialCooldowns || {};
       const updatedInitialCooldowns = { ...initialCooldowns };
-      
+
       for (const key in updatedCooldowns) {
         updatedCooldowns[key] = Math.max(1, updatedCooldowns[key]);
         if (updatedInitialCooldowns[key] !== undefined) {
@@ -936,7 +936,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
           const newValue = newCooldowns[key] - 0.25;
           // Treat values below 0.001 as zero to avoid floating-point precision issues
           newCooldowns[key] = newValue < 0.001 ? 0 : newValue;
-          
+
           if (newCooldowns[key] === 0) {
             delete newInitialCooldowns[key];
           }
@@ -1349,20 +1349,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         audioManager.playSound("event");
       }
 
-      // Use the event data to create a LogEntry for the tab
-      const eventLogEntry: LogEntry = {
-        id: timedTabEntry.id,
-        message: timedTabEntry.message,
-        timestamp: timedTabEntry.timestamp,
-        type: "event",
-        title: timedTabEntry.title,
-        choices: timedTabEntry.choices,
-        fallbackChoice: timedTabEntry.fallbackChoice,
-        showAsTimedTab: true,
-        timedTabDuration: timedTabEntry.timedTabDuration,
-      };
-
-      get().setTimedEventTab(true, eventLogEntry, timedTabEntry.timedTabDuration);
+      get().setTimedEventTab(true, timedTabEntry, timedTabEntry.timedTabDuration);
     }
 
     if (newLogEntries.length > 0) {
@@ -1722,7 +1709,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         const eventId = event.id.split("-")[0];
         const madnessEventIds = Object.keys(madnessEvents);
         const isMadnessEvent = madnessEventIds.includes(eventId);
-        audioManager.playSound(isMadnessEvent ? "eventMadness" : "event");
+        audioManager.playSound(isMadnessEvent ? "eventMadness" : "event", 0.02);
       }
     }
 
