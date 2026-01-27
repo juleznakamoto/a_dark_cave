@@ -1359,7 +1359,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
         // Use merchant sound for merchant events, otherwise use generic event sound
         const isMerchantEvent = timedTabEntry.id?.startsWith("merchant");
         const soundName = isMerchantEvent ? "merchant" : "event";
-        audioManager.playSound(soundName, 0.02);
+        const soundVolume = isMerchantEvent ? 0.8 : 0.1
+        audioManager.playSound(soundName, soundVolume);
       }
 
       get().setTimedEventTab(true, timedTabEntry, timedTabEntry.timedTabDuration);
