@@ -212,7 +212,7 @@ interface GameStore extends GameState {
   unassignVillager: (job: keyof GameState["villagers"]) => void;
   setEventDialog: (isOpen: boolean, event?: LogEntry | null) => void;
   setCombatDialog: (isOpen: boolean, data?: any) => void;
-  setTimedEventTab: async (isActive: boolean, event?: LogEntry | null, duration?: number) => {
+  setTimedEventTab: (isActive: boolean, event?: LogEntry | null, duration?: number) => {
     if (!isActive) {
       set({
         timedEventTab: {
