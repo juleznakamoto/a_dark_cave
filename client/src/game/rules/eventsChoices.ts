@@ -166,6 +166,8 @@ export const choiceEvents: Record<string, GameEvent> = {
       "A wandering tradesman offers a tall, cracked mirror framed in black iron. It radiates a cold, unnatural aura. He claims it can give glimpses of the future.",
     priority: 3,
     repeatable: true,
+    showAsTimedTab: true,
+    timedTabDuration: 30000, // 30 seconds
     choices: [
       {
         id: "buyMirror",
