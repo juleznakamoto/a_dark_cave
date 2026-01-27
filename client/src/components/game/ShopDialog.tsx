@@ -835,7 +835,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
 
   const isPaymentMode = !!(clientSecret && selectedItem);
 
-  const handleOpenChange = (open: boolean) => {
+  const handleShopDialogOpenChange = (open: boolean) => {
     if (!open) {
       setClientSecret(null);
       setSelectedItem(null);
@@ -843,18 +843,26 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
     }
   };
 
+  const handlePaymentDialogOpenChange = (open: boolean) => {
+    if (!open) {
+      setClientSecret(null);
+      setSelectedItem(null);
+      // Payment dialog closes but shop dialog stays open
+    }
+  };
+
   return (
-    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
-      <DialogContent
-        className={`max-w-4xl max-h-[80vh] z-[70] ${isPaymentMode ? "[&>button]:hidden" : ""}`}
-        onPointerDownOutside={(e) => e.preventDefault()}
-        onInteractOutside={(e) => e.preventDefault()}
-      >
+    <>
+      <Dialog open={isOpen} onOpenChange={handleShopDialogOpenChange}>
         {!isPaymentMode && (
+          <DialogContent
+            className="max-w-4xl max-h-[80vh] z-[70]"
+            onPointerDownOutside={(e) => e.preventDefault()}
+            onInteractOutside={(e) => e.preventDefault()}
+          >
           <DialogHeader>
             <DialogTitle>Shop</DialogTitle>
           </DialogHeader>
-        )}
 
         {isLoading && (
           <div className="flex justify-center py-8">
@@ -871,34 +879,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
         )}
 
         {!isLoading && (
-          <>
-            {/* Show payment form when payment is in progress */}
-            {isPaymentMode ? (
-              <div className="space-y-4">
-                <DialogHeader>
-                  <DialogTitle>
-                    Complete Purchase: {SHOP_ITEMS[selectedItem]?.name}
-                  </DialogTitle>
-                </DialogHeader>
-                <div className="max-h-[calc(75vh-120px)] overflow-y-auto px-2 scrollbar-hide">
-                  {stripePromise ? (
-                    <Elements stripe={stripePromise} options={{ clientSecret }}>
-                      <CheckoutForm
-                        itemId={selectedItem}
-                        onSuccess={handlePurchaseSuccess}
-                        currency={currency}
-                        onCancel={handleCancelPayment}
-                      />
-                    </Elements>
-                  ) : (
-                    <div className="flex justify-center py-8">
-                      <div className="text-muted-foreground">Loading payment system...</div>
-                    </div>
-                  )}
-                </div>
-              </div>
-            ) : (
-              <Tabs defaultValue="shop" className="w-full">
+          <Tabs defaultValue="shop" className="w-full">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="shop">For Sale</TabsTrigger>
               <TabsTrigger value="purchases" disabled={!currentUser}>
@@ -1316,11 +1297,43 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
               </ScrollArea>
             </TabsContent>
               </Tabs>
-            )}
-          </>
         )}
-      </DialogContent>
+        </DialogContent>
+      )}
+      </Dialog>
 
-    </Dialog>
+      {/* Payment Dialog - only shown when payment is in progress */}
+      {clientSecret && selectedItem && (
+        <Dialog open={true} onOpenChange={handlePaymentDialogOpenChange}>
+          <DialogContent
+            className="max-w-md max-h-[80vh] z-[80] [&>button]:hidden"
+            onPointerDownOutside={(e) => e.preventDefault()}
+            onInteractOutside={(e) => e.preventDefault()}
+          >
+            <DialogHeader>
+              <DialogTitle>
+                Complete Purchase: {SHOP_ITEMS[selectedItem]?.name}
+              </DialogTitle>
+            </DialogHeader>
+            <div className="max-h-[calc(85vh-120px)] overflow-y-auto px-6 pb-6 scrollbar-hide">
+              {stripePromise ? (
+                <Elements stripe={stripePromise} options={{ clientSecret }}>
+                  <CheckoutForm
+                    itemId={selectedItem}
+                    onSuccess={handlePurchaseSuccess}
+                    currency={currency}
+                    onCancel={handleCancelPayment}
+                  />
+                </Elements>
+              ) : (
+                <div className="flex justify-center py-8">
+                  <div className="text-muted-foreground">Loading payment system...</div>
+                </div>
+              )}
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
+    </>
   );
 }
