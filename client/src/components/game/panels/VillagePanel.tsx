@@ -22,7 +22,7 @@ import {
 } from "@/game/population";
 import { CircularProgress } from "@/components/ui/circular-progress";
 import { capitalizeWords } from "@/lib/utils";
-import { useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
 import {
