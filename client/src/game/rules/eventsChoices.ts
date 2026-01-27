@@ -157,15 +157,14 @@ export const choiceEvents: Record<string, GameEvent> = {
     id: "blackenedMirror",
     condition: (state: GameState) =>
       state.buildings.woodenHut >= 5 &&
-      state.resources.iron >= 500,
-    // &&
-      // !state.relics.blackened_mirror,
-    timeProbability: 0.035,
+      state.resources.iron >= 500 &&
+      !state.relics.blackened_mirror,
+    timeProbability: 35,
     title: "The Blackened Mirror",
     message:
       "A wandering tradesman offers a tall, cracked mirror framed in black iron. It radiates a cold, unnatural aura. He claims it can give glimpses of the future.",
     priority: 3,
-    repeatable: true,
+    repeatable: false,
     showAsTimedTab: true,
     timedTabDuration: 180000, // 3 minutes
     choices: [
@@ -1931,7 +1930,8 @@ export const choiceEvents: Record<string, GameEvent> = {
       id: "doNothing",
       label: "Do nothing",
       effect: (state: GameState) => {
-        const timesOccurred = (state.story?.seen?.frostfallCount as number) || 0;
+        const timesOccurred =
+          (state.story?.seen?.frostfallCount as number) || 0;
         const frostfallDuration = (10 + 5 * state.CM) * 60 * 1000; // 10/15 minutes
 
         return {
@@ -1956,13 +1956,15 @@ export const choiceEvents: Record<string, GameEvent> = {
         id: "prepareFrostfall",
         label: "Prepare",
         cost: (state: GameState) => {
-          const timesOccurred = (state.story?.seen?.frostfallCount as number) || 0;
+          const timesOccurred =
+            (state.story?.seen?.frostfallCount as number) || 0;
           const woodCost = 1000 * (timesOccurred + 1);
           const foodCost = 1000 * (timesOccurred + 1);
           return `${woodCost} wood, ${foodCost} food`;
         },
         effect: (state: GameState) => {
-          const timesOccurred = (state.story?.seen?.frostfallCount as number) || 0;
+          const timesOccurred =
+            (state.story?.seen?.frostfallCount as number) || 0;
           const woodCost = 1000 * (timesOccurred + 1);
           const foodCost = 1000 * (timesOccurred + 1);
 
@@ -1997,7 +1999,8 @@ export const choiceEvents: Record<string, GameEvent> = {
         id: "doNothing",
         label: "Do nothing",
         effect: (state: GameState) => {
-          const timesOccurred = (state.story?.seen?.frostfallCount as number) || 0;
+          const timesOccurred =
+            (state.story?.seen?.frostfallCount as number) || 0;
           const frostfallDuration = (10 + 5 * state.CM) * 60 * 1000; // 10/15 minutes
 
           return {
