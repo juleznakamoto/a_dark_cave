@@ -165,6 +165,10 @@ export default function Game() {
         // Mark as initialized
         setIsInitialized(true);
 
+        // Load game sounds for users who skip the start screen
+        const { audioManager } = await import("@/lib/audio");
+        await audioManager.loadGameSounds();
+
         // Start game loop
         startGameLoop();
 
