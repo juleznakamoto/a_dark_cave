@@ -240,6 +240,7 @@ export class AudioManager {
       'newVillager': '/sounds/new_villager.wav',
       'event': '/sounds/event.wav',
       'eventMadness': '/sounds/event_madness.wav',
+      'merchant': '/sounds/merchant.wav',
       'whisperingCube': '/sounds/whispering_cube.wav',
       'backgroundMusic': '/sounds/background_music.wav',
       'explosion': '/sounds/explosion.wav',
