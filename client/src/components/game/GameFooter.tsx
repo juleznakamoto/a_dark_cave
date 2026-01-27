@@ -13,6 +13,7 @@ import { useState, useEffect } from "react";
 
 export default function GameFooter() {
   const {
+    setShopDialogOpen,
     isPaused,
     togglePause,
     musicMuted,
