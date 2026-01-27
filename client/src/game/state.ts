@@ -1349,7 +1349,20 @@ export const useGameStore = create<GameStore>((set, get) => ({
         audioManager.playSound("event");
       }
 
-      get().setTimedEventTab(true, timedTabEntry, timedTabEntry.timedTabDuration);
+      // Use the event data to create a LogEntry for the tab
+      const eventLogEntry: LogEntry = {
+        id: timedTabEntry.id,
+        message: timedTabEntry.message,
+        timestamp: timedTabEntry.timestamp,
+        type: "event",
+        title: timedTabEntry.title,
+        choices: timedTabEntry.choices,
+        fallbackChoice: timedTabEntry.fallbackChoice,
+        showAsTimedTab: true,
+        timedTabDuration: timedTabEntry.timedTabDuration,
+      };
+
+      get().setTimedEventTab(true, eventLogEntry, timedTabEntry.timedTabDuration);
     }
 
     if (newLogEntries.length > 0) {
@@ -1709,7 +1722,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         const eventId = event.id.split("-")[0];
         const madnessEventIds = Object.keys(madnessEvents);
         const isMadnessEvent = madnessEventIds.includes(eventId);
-        audioManager.playSound(isMadnessEvent ? "eventMadness" : "event", 0.02);
+        audioManager.playSound(isMadnessEvent ? "eventMadness" : "event");
       }
     }
 

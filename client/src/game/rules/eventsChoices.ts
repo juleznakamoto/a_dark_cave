@@ -119,7 +119,6 @@ export const choiceEvents: Record<string, GameEvent> = {
     id: "whispersBeneathHut",
     condition: (state: GameState) =>
       state.buildings.woodenHut >= 4 && !state.clothing.muttering_amulet,
-
     timeProbability: 25,
     title: "Whispers Beneath the Hut",
     message:
@@ -158,14 +157,17 @@ export const choiceEvents: Record<string, GameEvent> = {
     id: "blackenedMirror",
     condition: (state: GameState) =>
       state.buildings.woodenHut >= 5 &&
-      state.resources.iron >= 500 &&
-      !state.relics.blackened_mirror,
-    timeProbability: 35,
+      state.resources.iron >= 500,
+    // &&
+      // !state.relics.blackened_mirror,
+    timeProbability: 0.035,
     title: "The Blackened Mirror",
     message:
       "A wandering tradesman offers a tall, cracked mirror framed in black iron. It radiates a cold, unnatural aura. He claims it can give glimpses of the future.",
     priority: 3,
-    repeatable: false,
+    repeatable: true,
+    showAsTimedTab: true,
+    timedTabDuration: 30000, // 30 seconds
     choices: [
       {
         id: "buyMirror",
