@@ -196,11 +196,12 @@ export default function Game() {
         const { audioManager } = await import("@/lib/audio");
         const currentState = useGameStore.getState();
 
-        // Set the mute state before starting music
-        audioManager.globalMute(currentState.isMuted);
+        // Sync music and SFX mute state before starting music
+        audioManager.musicMute(currentState.musicMuted);
+        audioManager.sfxMute(currentState.sfxMuted);
 
         // Only start music if not muted
-        if (!currentState.isMuted) {
+        if (!currentState.musicMuted) {
           await audioManager.startBackgroundMusic(0.125);
         }
         setShouldStartMusic(false);

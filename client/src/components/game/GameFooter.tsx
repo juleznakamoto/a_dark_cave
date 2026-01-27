@@ -18,8 +18,10 @@ export default function GameFooter() {
     shopDialogOpen,
     isPaused,
     togglePause,
-    isMuted,
-    setIsMuted,
+    musicMuted,
+    sfxMuted,
+    setMusicMuted,
+    setSfxMuted,
     shopNotificationSeen,
     setShopNotificationSeen,
     shopNotificationVisible,
@@ -70,10 +72,16 @@ export default function GameFooter() {
     window.open("https://www.buymeacoffee.com/julez.b", "_blank");
   };
 
-  const toggleVolume = () => {
-    const newMutedState = !isMuted;
-    setIsMuted(newMutedState);
-    audioManager.musicMute(newMutedState);
+  const toggleMusic = () => {
+    const next = !musicMuted;
+    setMusicMuted(next);
+    audioManager.musicMute(next);
+  };
+
+  const toggleSfx = () => {
+    const next = !sfxMuted;
+    setSfxMuted(next);
+    audioManager.sfxMute(next);
   };
 
   return (
@@ -107,13 +115,29 @@ export default function GameFooter() {
             <Button
               variant="ghost"
               size="xs"
-              onClick={toggleVolume}
-              data-testid="button-toggle-volume"
+              onClick={toggleMusic}
+              data-testid="button-toggle-music"
               className="px-1 py-1 text-xs hover"
+              title={musicMuted ? "Unmute music" : "Mute music"}
             >
               <img
-                src={isMuted ? "/volume_mute.png" : "/volume_up.png"}
-                alt={isMuted ? "Unmute" : "Mute"}
+                src={musicMuted ? "/music_off.png" : "/music_on.png"}
+                alt={musicMuted ? "Unmute music" : "Mute music"}
+                className="w-4 h-4 opacity-60"
+                style={{ filter: "invert(1)" }}
+              />
+            </Button>
+            <Button
+              variant="ghost"
+              size="xs"
+              onClick={toggleSfx}
+              data-testid="button-toggle-sfx"
+              className="px-1 py-1 text-xs hover"
+              title={sfxMuted ? "Unmute sound effects" : "Mute sound effects"}
+            >
+              <img
+                src={sfxMuted ? "/sound_off.png" : "/sound_on.png"}
+                alt={sfxMuted ? "Unmute sound effects" : "Mute sound effects"}
                 className="w-4 h-4 opacity-60"
                 style={{ filter: "invert(1)" }}
               />

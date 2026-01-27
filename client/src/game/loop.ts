@@ -192,7 +192,7 @@ export function startGameLoop() {
 
     if (isPaused) {
       // Stop all sounds when paused (unless already stopped by mute)
-      if (!state.isPausedPreviously && !state.isMuted) {
+      if (!state.isPausedPreviously && (!state.sfxMuted || !state.musicMuted)) {
         audioManager.stopAllSounds();
         useGameStore.setState({ isPausedPreviously: true });
       }

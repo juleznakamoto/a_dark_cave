@@ -155,7 +155,8 @@ interface GameStore extends GameState {
   loopProgress: number; // 0-100 representing progress through the 15s production cycle
   isGameLoopActive: boolean;
   isPaused: boolean; // New state for pause/unpause
-  isMuted: boolean; // Audio mute state
+  musicMuted: boolean; // Background music mute state
+  sfxMuted: boolean; // Sound effects mute state
 
   // Analytics tracking
   clickAnalytics: Record<string, number>;
@@ -180,7 +181,8 @@ interface GameStore extends GameState {
   executeAction: (actionId: string) => void;
   setActiveTab: (tab: GameTab) => void;
   setBoostMode: (enabled: boolean) => void;
-  setIsMuted: (isMuted: boolean) => void;
+  setMusicMuted: (muted: boolean) => void;
+  setSfxMuted: (muted: boolean) => void;
   setShopNotificationSeen: (seen: boolean) => void;
   setShopNotificationVisible: (visible: boolean) => void;
   setAuthNotificationSeen: (seen: boolean) => void;
@@ -508,7 +510,8 @@ export const createInitialState = (): GameState => ({
   loopProgress: 0,
   isGameLoopActive: false,
   isPaused: false,
-  isMuted: false,
+  musicMuted: false,
+  sfxMuted: false,
   // Initialize shop notification state
   shopNotificationSeen: false,
   shopNotificationVisible: false,
@@ -627,7 +630,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
   shopDialogOpen: false,
   leaderboardDialogOpen: false,
   fullGamePurchaseDialogOpen: false,
-  isMuted: false,
+  musicMuted: false,
+  sfxMuted: false,
   idleModeDialog: {
     isOpen: false,
   },
@@ -691,7 +695,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
   ) => set({ activeTab: tab }),
 
   setBoostMode: (enabled: boolean) => set({ boostMode: enabled }),
-  setIsMuted: (isMuted: boolean) => set({ isMuted }),
+  setMusicMuted: (muted: boolean) => set({ musicMuted: muted }),
+  setSfxMuted: (muted: boolean) => set({ sfxMuted: muted }),
   setShopNotificationSeen: (seen: boolean) =>
     set({ shopNotificationSeen: seen }),
   setShopNotificationVisible: (visible: boolean) =>
@@ -1177,6 +1182,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const cruelMode = savedState?.CM || 0;
 
     if (savedState) {
+      const saved = savedState as typeof savedState & {
+        musicMuted?: boolean;
+        sfxMuted?: boolean;
+      };
       // CRITICAL: Extract playTime FIRST before any processing
       const loadedPlayTime =
         savedState.playTime !== undefined ? savedState.playTime : 0;
@@ -1211,7 +1220,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
             : false,
         isPaused:
           savedState.isPaused !== undefined ? savedState.isPaused : false, // Ensure isPaused is loaded
-        isMuted: savedState.isMuted !== undefined ? savedState.isMuted : false,
+        musicMuted: saved.musicMuted ?? false,
+        sfxMuted: saved.sfxMuted ?? false,
         shopNotificationSeen:
           savedState.shopNotificationSeen !== undefined
             ? savedState.shopNotificationSeen
@@ -1702,10 +1712,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   setTimedEventTab: async (isActive: boolean, event?: LogEntry | null, duration?: number) => {
-    // Play sound if activating and not muted
+    // Play sound if activating and SFX not muted
     if (isActive && event) {
       const state = get();
-      if (!state.isMuted) {
+      if (!state.sfxMuted) {
         const eventId = event.id.split("-")[0];
         const madnessEventIds = Object.keys(madnessEvents);
         const isMadnessEvent = madnessEventIds.includes(eventId);

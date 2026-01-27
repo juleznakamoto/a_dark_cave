@@ -121,10 +121,13 @@ export class AudioManager {
   }
 
   playLoopingSound(name: string, volume: number = 1, isMuted: boolean = false, fadeInDuration: number = 0): void {
-    if (this.isMutedGlobally || isMuted) return;
-
-    // Background music is handled separately for muting
-    if (name === 'backgroundMusic' && this.isMusicMuted) return;
+    // Background music is controlled by isMusicMuted, not isMutedGlobally
+    if (name === 'backgroundMusic') {
+      if (this.isMusicMuted || isMuted) return;
+    } else {
+      // Other looping sounds (wind, combat, etc.) are controlled by SFX mute
+      if (this.isMutedGlobally || isMuted) return;
+    }
 
     const sound = this.sounds.get(name);
     if (!sound) {
@@ -280,8 +283,10 @@ export class AudioManager {
     }
   }
 
+  /** @deprecated Use musicMute and sfxMute separately */
   globalMute(mute: boolean): void {
     this.isMutedGlobally = mute;
+    this.isMusicMuted = mute;
     if (mute) {
       this.stopAllSounds();
     } else {
@@ -289,6 +294,11 @@ export class AudioManager {
         logger.warn('Failed to resume sounds after unmuting:', error);
       });
     }
+  }
+
+  sfxMute(mute: boolean): void {
+    this.isMutedGlobally = mute;
+    // Do not stop/resume here — SFX are one-shots; music is controlled by musicMute
   }
 
   musicMute(mute: boolean): void {
