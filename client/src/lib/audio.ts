@@ -243,7 +243,8 @@ export class AudioManager {
       'whisperingCube': '/sounds/whispering_cube.wav',
       'backgroundMusic': '/sounds/background_music.wav',
       'explosion': '/sounds/explosion.wav',
-      'combat': '/sounds/combat.wav'
+      'combat': '/sounds/combat.wav',
+      'feedFire': '/sounds/feed_fire.wav'
     };
 
     await Promise.all(

@@ -33,6 +33,7 @@ import {
 } from "@/components/ui/tooltip";
 import { useMobileTooltip } from "@/hooks/useMobileTooltip";
 import { SuccessParticles, useFeedFireParticles } from "@/components/ui/feed-fire-particles";
+import { audioManager } from "@/lib/audio";
 
 export default function VillagePanel() {
   const {
@@ -298,6 +299,7 @@ export default function VillagePanel() {
           ref={feedFireButtonRef}
           onClick={() => {
             executeAction(actionId);
+            audioManager.playSound('feedFire');
             // Generate 10 * current heartfire level particles
             const particleCount = 10 * currentLevel;
             if (particleCount > 0) {
