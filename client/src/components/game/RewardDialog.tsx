@@ -23,6 +23,7 @@ interface RewardDialogData {
     fellowship?: (keyof GameState["fellowship"])[];
     stats?: Partial<GameState["stats"]>;
   };
+  successLog?: string;
 }
 
 interface RewardDialogProps {
@@ -46,7 +47,7 @@ export default function RewardDialog({
 }: RewardDialogProps) {
   if (!data) return null;
 
-  const { rewards } = data;
+  const { rewards, successLog } = data;
 
   // Helper to render a list of rewards
   const renderRewards = () => {
@@ -184,13 +185,18 @@ export default function RewardDialog({
                   }
                 }
               `}</style>
-      <Dialog open={isOpen} onOpenChange={() => {}}>
+      <Dialog open={isOpen} onOpenChange={() => { }}>
         <DialogContent className="w-[95vw] sm:max-w-sm z-[70] [&>button]:hidden border-2 border-red-800 shadow-2xl">
           <div className="absolute inset-0 -z-10 reward-dialog-glow pointer-events-none"></div>
           <DialogHeader>
             <div className="flex justify-center mb-3">
               <span className="text-4xl text-white">⁂</span>
             </div>
+            {successLog && (
+              <div className="text-sm text-foreground text-center mb-3 px-2">
+                {successLog}
+              </div>
+            )}
             <DialogTitle className="sr-only">You received</DialogTitle>
             <DialogDescription className="text-sm text-gray-400 text-center">
               You received
