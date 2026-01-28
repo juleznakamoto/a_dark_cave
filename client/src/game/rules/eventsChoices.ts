@@ -937,6 +937,16 @@ export const choiceEvents: Record<string, GameEvent> = {
           };
         },
       },
+      {
+        id: "refuseTribeChoice",
+        label: "Do not help",
+        effect: (state: GameState) => {
+          return {
+            _logMessage:
+              "You decline their offer. The tribe leader nods respectfully and continues their journey into the wilderness.",
+          };
+        },
+      },
     ],
   },
 
