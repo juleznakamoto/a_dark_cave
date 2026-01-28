@@ -274,5 +274,6 @@ export default function RewardDialog({
           </DialogFooter>
         </DialogContent>
       </Dialog>
-      );
+    </>
+  );
 }
