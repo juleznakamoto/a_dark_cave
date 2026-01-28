@@ -11,7 +11,6 @@ import {
 import { Button } from "@/components/ui/button";
 
 interface RewardDialogData {
-  title?: string;
   rewards: {
     resources?: Partial<Record<keyof GameState["resources"], number>>;
     tools?: (keyof GameState["tools"])[];
@@ -47,153 +46,127 @@ export default function RewardDialog({
 }: RewardDialogProps) {
   if (!data) return null;
 
-  const { title = "Rewards", rewards } = data;
+  const { rewards } = data;
 
   // Helper to render a list of rewards
   const renderRewards = () => {
-    const sections: JSX.Element[] = [];
+    const rewardItems: JSX.Element[] = [];
 
     // Resources
     if (rewards.resources && Object.keys(rewards.resources).length > 0) {
-      sections.push(
-        <div key="resources" className="space-y-1">
-          <div className="text-sm font-medium text-foreground mb-2">Resources</div>
-          {Object.entries(rewards.resources).map(([resource, amount]) => (
-            <div key={resource} className="text-sm text-green-400">
-              +{amount} {formatName(resource)}
-            </div>
-          ))}
-        </div>
-      );
+      Object.entries(rewards.resources).forEach(([resource, amount]) => {
+        rewardItems.push(
+          <div key={`resource-${resource}`} className="text-sm text-foreground">
+            +{amount} {formatName(resource)}
+          </div>
+        );
+      });
     }
 
     // Tools
     if (rewards.tools && rewards.tools.length > 0) {
-      sections.push(
-        <div key="tools" className="space-y-1">
-          <div className="text-sm font-medium text-foreground mb-2">Tools</div>
-          {rewards.tools.map((tool) => (
-            <div key={tool} className="text-sm text-blue-400">
-              {formatName(tool)} (tool)
-            </div>
-          ))}
-        </div>
-      );
+      rewards.tools.forEach((tool) => {
+        rewardItems.push(
+          <div key={`tool-${tool}`} className="text-sm text-foreground">
+            {formatName(tool)}
+          </div>
+        );
+      });
     }
 
     // Weapons
     if (rewards.weapons && rewards.weapons.length > 0) {
-      sections.push(
-        <div key="weapons" className="space-y-1">
-          <div className="text-sm font-medium text-foreground mb-2">Weapons</div>
-          {rewards.weapons.map((weapon) => (
-            <div key={weapon} className="text-sm text-red-400">
-              {formatName(weapon)} (weapon)
-            </div>
-          ))}
-        </div>
-      );
+      rewards.weapons.forEach((weapon) => {
+        rewardItems.push(
+          <div key={`weapon-${weapon}`} className="text-sm text-foreground">
+            {formatName(weapon)}
+          </div>
+        );
+      });
     }
 
     // Clothing
     if (rewards.clothing && rewards.clothing.length > 0) {
-      sections.push(
-        <div key="clothing" className="space-y-1">
-          <div className="text-sm font-medium text-foreground mb-2">Clothing</div>
-          {rewards.clothing.map((clothing) => (
-            <div key={clothing} className="text-sm text-purple-400">
-              {formatName(clothing)} (clothing)
-            </div>
-          ))}
-        </div>
-      );
+      rewards.clothing.forEach((clothing) => {
+        rewardItems.push(
+          <div key={`clothing-${clothing}`} className="text-sm text-foreground">
+            {formatName(clothing)}
+          </div>
+        );
+      });
     }
 
     // Relics
     if (rewards.relics && rewards.relics.length > 0) {
-      sections.push(
-        <div key="relics" className="space-y-1">
-          <div className="text-sm font-medium text-foreground mb-2">Relics</div>
-          {rewards.relics.map((relic) => (
-            <div key={relic} className="text-sm text-amber-400">
-              {formatName(relic)} (relic)
-            </div>
-          ))}
-        </div>
-      );
+      rewards.relics.forEach((relic) => {
+        rewardItems.push(
+          <div key={`relic-${relic}`} className="text-sm text-foreground">
+            {formatName(relic)}
+          </div>
+        );
+      });
     }
 
     // Blessings
     if (rewards.blessings && rewards.blessings.length > 0) {
-      sections.push(
-        <div key="blessings" className="space-y-1">
-          <div className="text-sm font-medium text-foreground mb-2">Blessings</div>
-          {rewards.blessings.map((blessing) => (
-            <div key={blessing} className="text-sm text-cyan-400">
-              {formatName(blessing)} (blessing)
-            </div>
-          ))}
-        </div>
-      );
+      rewards.blessings.forEach((blessing) => {
+        rewardItems.push(
+          <div key={`blessing-${blessing}`} className="text-sm text-foreground">
+            {formatName(blessing)}
+          </div>
+        );
+      });
     }
 
     // Books
     if (rewards.books && rewards.books.length > 0) {
-      sections.push(
-        <div key="books" className="space-y-1">
-          <div className="text-sm font-medium text-foreground mb-2">Books</div>
-          {rewards.books.map((book) => (
-            <div key={book} className="text-sm text-indigo-400">
-              {formatName(book)} (book)
-            </div>
-          ))}
-        </div>
-      );
+      rewards.books.forEach((book) => {
+        rewardItems.push(
+          <div key={`book-${book}`} className="text-sm text-foreground">
+            {formatName(book)}
+          </div>
+        );
+      });
     }
 
     // Schematics
     if (rewards.schematics && rewards.schematics.length > 0) {
-      sections.push(
-        <div key="schematics" className="space-y-1">
-          <div className="text-sm font-medium text-foreground mb-2">Schematics</div>
-          {rewards.schematics.map((schematic) => (
-            <div key={schematic} className="text-sm text-orange-400">
-              {formatName(schematic)} (schematic)
-            </div>
-          ))}
-        </div>
-      );
+      rewards.schematics.forEach((schematic) => {
+        rewardItems.push(
+          <div key={`schematic-${schematic}`} className="text-sm text-foreground">
+            {formatName(schematic)}
+          </div>
+        );
+      });
     }
 
     // Fellowship
     if (rewards.fellowship && rewards.fellowship.length > 0) {
-      sections.push(
-        <div key="fellowship" className="space-y-1">
-          <div className="text-sm font-medium text-foreground mb-2">Fellowship</div>
-          {rewards.fellowship.map((member) => (
-            <div key={member} className="text-sm text-teal-400">
-              {formatName(member)} (companion)
-            </div>
-          ))}
-        </div>
-      );
+      rewards.fellowship.forEach((member) => {
+        rewardItems.push(
+          <div key={`fellowship-${member}`} className="text-sm text-foreground">
+            {formatName(member)}
+          </div>
+        );
+      });
     }
 
     // Stats
     if (rewards.stats && Object.keys(rewards.stats).length > 0) {
-      sections.push(
-        <div key="stats" className="space-y-1">
-          <div className="text-sm font-medium text-foreground mb-2">Stats</div>
-          {Object.entries(rewards.stats).map(([stat, amount]) => (
-            <div key={stat} className="text-sm text-yellow-400">
-              +{amount} {formatName(stat)}
-            </div>
-          ))}
-        </div>
-      );
+      Object.entries(rewards.stats).forEach(([stat, amount]) => {
+        rewardItems.push(
+          <div key={`stat-${stat}`} className="text-sm text-foreground">
+            +{amount} {formatName(stat)}
+          </div>
+        );
+      });
     }
 
-    return sections;
+    return (
+      <div className="space-y-2">
+        {rewardItems}
+      </div>
+    );
   };
 
   return (
@@ -201,19 +174,16 @@ export default function RewardDialog({
       <DialogContent className="w-[95vw] sm:max-w-md z-[70] [&>button]:hidden">
         <DialogHeader>
           <div className="flex justify-center mb-4">
-            <div className="bg-white/10 border border-white/30 rounded-lg px-4 py-2">
+            <div className="bg-white/10 border border-white/30 rounded-lg px-3 py-1">
               <span className="text-2xl text-white">⁂</span>
             </div>
           </div>
-          <DialogTitle className="text-lg font-semibold">
-            {title}
-          </DialogTitle>
-          <DialogDescription className="text-sm text-gray-400 mt-2">
-            You have received the following rewards:
+          <DialogDescription className="text-sm text-gray-400">
+            You received:
           </DialogDescription>
         </DialogHeader>
 
-        <div className="space-y-4 py-4">
+        <div className="py-4">
           {renderRewards()}
         </div>
 
