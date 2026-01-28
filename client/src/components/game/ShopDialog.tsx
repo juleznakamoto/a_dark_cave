@@ -273,6 +273,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [purchasedItems, setPurchasedItems] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState<"shop" | "purchases">("shop");
   const [currentUser, setCurrentUser] = useState<{
     id: string;
     email: string;
@@ -703,7 +704,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
 
     setClientSecret(null);
     setSelectedItem(null);
-    onClose(); // Close shop dialog after successful purchase to match previous behavior
+    setActiveTab("purchases"); // Switch to purchases tab to show the new purchase
   };
 
   const handleActivatePurchase = (purchaseId: string, itemId: string) => {
@@ -879,7 +880,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
         )}
 
         {!isLoading && (
-          <Tabs defaultValue="shop" className="w-full">
+          <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "shop" | "purchases")} className="w-full">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="shop">For Sale</TabsTrigger>
               <TabsTrigger value="purchases" disabled={!currentUser}>

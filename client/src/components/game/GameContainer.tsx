@@ -26,6 +26,7 @@ import ProfileMenu from "./ProfileMenu"; // Imported ProfileMenu
 import { startVersionCheck, stopVersionCheck } from "@/game/versionCheck";
 import { logger } from "@/lib/logger";
 import { toast } from "@/hooks/use-toast";
+import MistBackground from "@/components/ui/mist-background";
 
 export default function GameContainer() {
   const {
@@ -318,12 +319,14 @@ export default function GameContainer() {
         />
       )}
 
-      {/* Sleep Mode Overlay - covers everything except footer and profile menu */}
+      {/* Sleep Mode Mist Background - covers everything except footer and profile menu */}
       {idleModeDialog.isOpen && (
         <div
-          className="fixed inset-0 bg-black/100 z-40 pointer-events-auto overlay-fade-in"
+          className="fixed inset-0 z-10 pointer-events-none"
           style={{ bottom: "45px" }}
-        />
+        >
+          <MistBackground />
+        </div>
       )}
 
       {/* Event Log - Fixed Height at Top */}
