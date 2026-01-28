@@ -265,14 +265,17 @@ export function startGameLoop() {
         ticksProcessed++;
       }
 
-      // Auto-save logic (skip if inactive or recently loaded)
+      // Auto-save logic (skip if inactive, recently loaded, or in sleep/idle mode)
       const timeSinceLoad = timestamp - lastGameLoadTime;
       const skipAutoSaveAfterLoad = timeSinceLoad > 0 && timeSinceLoad < 30000; // Skip for 30s after load
+      const currentStateForSave = useGameStore.getState();
+      const isInSleepMode = currentStateForSave.idleModeState?.isActive === true;
 
       if (
         timestamp - lastAutoSave >= AUTO_SAVE_INTERVAL &&
         !isInactive &&
-        !skipAutoSaveAfterLoad
+        !skipAutoSaveAfterLoad &&
+        !isInSleepMode
       ) {
         lastAutoSave = timestamp;
         handleAutoSave();
@@ -568,10 +571,11 @@ function processTick() {
   state.checkEvents();
 
   // Trigger save if events changed (for cube events persistence)
+  // Skip save during sleep/idle mode
   const eventsChanged = Object.keys(state.events).some(
     (key) => state.events[key] !== prevEvents[key],
   );
-  if (eventsChanged && import.meta.env.DEV) {
+  if (eventsChanged && import.meta.env.DEV && !state.idleModeState?.isActive) {
     // Manually call autosave to persist events changes
     handleAutoSave();
   }
