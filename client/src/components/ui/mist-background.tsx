@@ -95,7 +95,7 @@ const MistBackground: React.FC = () => {
           float f = fbm(uv + r);
 
           // Deep zinc palette with misty highlights
-          vec3 baseColor = vec3(0.02, 0.028, 0.08);
+          vec3 baseColor = vec3(0.02, 0.028, 0.06);
           vec3 mistColor = vec3(0.16, 0.18, 0.22);
           vec3 accentColor = vec3(0.3, 0.35, 0.45);
 
