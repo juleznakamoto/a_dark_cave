@@ -172,86 +172,25 @@ export default function RewardDialog({
   return (
     <>
       <style>{`
-        .reward-badge {
-          position: relative;
-          width: 20vmin;
-          height: 20vmin;
-          background: linear-gradient(135deg, #1e1e24 10%, #050505 60%);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          user-select: none;
-          animation: gradient-shift 5s ease-in-out infinite;
-          background-size: 200% 200%;
+        .reward-dialog-glow {
+          animation: reward-glow-pulse 5s ease-in-out infinite;
         }
 
-        .reward-badge-content {
-          display: inline-block;
-          vertical-align: baseline;
-          user-select: none;
-          font-size: 5vmin;
-          color: white;
-          background-image: linear-gradient(to right, #626262, #fff);
-          -webkit-text-fill-color: transparent;
-          -webkit-background-clip: text;
-          font-weight: bold;
-        }
-
-        .reward-badge::before,
-        .reward-badge::after {
-          --size: 5px;
-          content: "";
-          position: absolute;
-          top: calc(var(--size) / -2);
-          left: calc(var(--size) / -2);
-          width: calc(100% + var(--size));
-          height: calc(100% + var(--size));
-          background: radial-gradient(circle at 0 0, #ef4444, transparent),
-            radial-gradient(circle at 100% 0, #ef4444, transparent),
-            radial-gradient(circle at 0 100%, #ef4444, transparent),
-            radial-gradient(circle at 100% 100%, #ef4444, transparent);
-        }
-
-        .reward-badge::after {
-          --size: 2px;
-          z-index: -1;
-        }
-
-        .reward-badge::before {
-          --size: 10px;
-          z-index: -2;
-          filter: blur(2vmin);
-          animation: blur-animation 3s ease-in-out alternate infinite;
-        }
-
-        @keyframes blur-animation {
-          to {
-            filter: blur(3vmin);
-            transform: scale(1.05);
-          }
-        }
-
-        @keyframes gradient-shift {
-          0% {
-            background-position: 0% 50%;
+        @keyframes reward-glow-pulse {
+          0%, 100% {
+            box-shadow: 0 0 15px 1px rgba(239, 68, 68, 0.25);
           }
           50% {
-            background-position: 100% 50%;
-          }
-          100% {
-            background-position: 0% 50%;
+            box-shadow: 0 0 5px 1px rgba(239, 68, 68, 0.5);
           }
         }
       `}</style>
       <Dialog open={isOpen} onOpenChange={() => { }}>
-        <DialogContent className="w-[95vw] sm:max-w-sm z-[70] [&>button]:hidden">
+        <DialogContent className="w-[95vw] sm:max-w-sm z-[70] [&>button]:hidden border-2 border-red-500 shadow-2xl">
+          <div className="absolute inset-0 -z-10 reward-dialog-glow pointer-events-none"></div>
           <DialogHeader>
             <div className="flex justify-center mb-3">
-              <div className="reward-badge">
-                <div className="reward-badge-content">
-                  <span className="text-2xl text-white">⁂</span>
-                </div>
-              </div>
+              <span className="text-4xl text-white">⁂</span>
             </div>
             <DialogTitle className="sr-only">You received</DialogTitle>
             <DialogDescription className="text-sm text-gray-400 text-center">
