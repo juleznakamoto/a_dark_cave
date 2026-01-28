@@ -184,7 +184,7 @@ export default function RewardDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <div className="py-4">
+        <div className="pt-2 pb-1">
           {renderRewards()}
         </div>
 

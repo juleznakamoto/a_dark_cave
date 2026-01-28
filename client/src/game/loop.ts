@@ -186,7 +186,8 @@ export function startGameLoop() {
       state.leaderboardDialogOpen ||
       state.fullGamePurchaseDialogOpen ||
       state.idleModeDialog.isOpen ||
-      state.restartGameDialogOpen;
+      state.restartGameDialogOpen ||
+      state.rewardDialog.isOpen;
 
     const isPaused = state.isPaused || IsDialogOpen || requiresFullGamePurchase || state.idleModeState?.isActive;
 
@@ -305,7 +306,7 @@ export function startGameLoop() {
         else if (
           lastShopNotificationTime > 0 &&
           timestamp - lastShopNotificationTime >=
-            SHOP_NOTIFICATION_REPEAT_INTERVAL
+          SHOP_NOTIFICATION_REPEAT_INTERVAL
         ) {
           lastShopNotificationTime = timestamp;
           if (state.shopNotificationSeen) {
@@ -334,7 +335,7 @@ export function startGameLoop() {
           else if (
             lastAuthNotificationTime > 0 &&
             timestamp - lastAuthNotificationTime >=
-              AUTH_NOTIFICATION_REPEAT_INTERVAL
+            AUTH_NOTIFICATION_REPEAT_INTERVAL
           ) {
             lastAuthNotificationTime = timestamp;
             if (state.authNotificationSeen) {
@@ -456,13 +457,13 @@ export function stopGameLoop() {
     "scroll",
     "mousemove",
   ];
-  const handleActivity = () => {}; // Dummy function for removal
+  const handleActivity = () => { }; // Dummy function for removal
   activityEvents.forEach((event) => {
     window.removeEventListener(event, handleActivity);
   });
 
   // Remove visibility listener
-  const handleVisibilityChange = () => {};
+  const handleVisibilityChange = () => { };
   document.removeEventListener("visibilitychange", handleVisibilityChange);
 
   StateManager.clearUpdateTimer();
@@ -646,7 +647,7 @@ function handleMinerProduction() {
         // Consumption - check if we have enough available
         const available =
           availableResources[
-            prod.resource as keyof typeof availableResources
+          prod.resource as keyof typeof availableResources
           ] || 0;
         return available >= Math.abs(prod.totalAmount);
       }
@@ -878,7 +879,7 @@ async function handleAutoSave() {
       lastSaved: timestamp,
       isNewGame: false,
     });
-  } catch (error) {}
+  } catch (error) { }
 }
 
 function handleStrangerApproach() {
