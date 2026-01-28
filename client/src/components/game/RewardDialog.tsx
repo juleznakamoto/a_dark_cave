@@ -173,18 +173,18 @@ export default function RewardDialog({
     <Dialog open={isOpen} onOpenChange={() => { }}>
       <DialogContent className="w-[95vw] sm:max-w-sm z-[70] [&>button]:hidden">
         <DialogHeader>
-          <div className="flex justify-center mb-4">
+          <div className="flex justify-center mb-3">
             <div className="bg-white/10 border border-white/30 rounded-lg px-3 py-1">
               <span className="text-2xl text-white">⁂</span>
             </div>
           </div>
           <DialogTitle className="sr-only">You received</DialogTitle>
-          <DialogDescription className="text-sm text-gray-400">
-            You received:
+          <DialogDescription className="text-sm text-gray-400 text-center">
+            You received
           </DialogDescription>
         </DialogHeader>
 
-        <div className="pt-2 pb-1">
+        <div className="pb-2">
           {renderRewards()}
         </div>
 
