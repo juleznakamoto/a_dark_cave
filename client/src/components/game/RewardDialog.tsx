@@ -172,15 +172,33 @@ export default function RewardDialog({
   return (
     <>
       <style>{`
-        .reward-dialog-content {
+        .reward-badge {
           position: relative;
+          width: 20vmin;
+          height: 20vmin;
           background: linear-gradient(135deg, #1e1e24 10%, #050505 60%);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          user-select: none;
           animation: gradient-shift 5s ease-in-out infinite;
           background-size: 200% 200%;
         }
 
-        .reward-dialog-content::before,
-        .reward-dialog-content::after {
+        .reward-badge-content {
+          display: inline-block;
+          vertical-align: baseline;
+          user-select: none;
+          font-size: 5vmin;
+          color: white;
+          background-image: linear-gradient(to right, #626262, #fff);
+          -webkit-text-fill-color: transparent;
+          -webkit-background-clip: text;
+          font-weight: bold;
+        }
+
+        .reward-badge::before,
+        .reward-badge::after {
           --size: 5px;
           content: "";
           position: absolute;
@@ -192,15 +210,14 @@ export default function RewardDialog({
             radial-gradient(circle at 100% 0, #ef4444, transparent),
             radial-gradient(circle at 0 100%, #ef4444, transparent),
             radial-gradient(circle at 100% 100%, #ef4444, transparent);
-          border-radius: inherit;
         }
 
-        .reward-dialog-content::after {
+        .reward-badge::after {
           --size: 2px;
           z-index: -1;
         }
 
-        .reward-dialog-content::before {
+        .reward-badge::before {
           --size: 10px;
           z-index: -2;
           filter: blur(2vmin);
@@ -210,7 +227,7 @@ export default function RewardDialog({
         @keyframes blur-animation {
           to {
             filter: blur(3vmin);
-            transform: scale(1.02);
+            transform: scale(1.05);
           }
         }
 
@@ -227,10 +244,14 @@ export default function RewardDialog({
         }
       `}</style>
       <Dialog open={isOpen} onOpenChange={() => { }}>
-        <DialogContent className="w-[95vw] sm:max-w-sm z-[70] [&>button]:hidden reward-dialog-content">
+        <DialogContent className="w-[95vw] sm:max-w-sm z-[70] [&>button]:hidden">
           <DialogHeader>
             <div className="flex justify-center mb-3">
-              <span className="text-4xl text-white">⁂</span>
+              <div className="reward-badge">
+                <div className="reward-badge-content">
+                  <span className="text-2xl text-white">⁂</span>
+                </div>
+              </div>
             </div>
             <DialogTitle className="sr-only">You received</DialogTitle>
             <DialogDescription className="text-sm text-gray-400 text-center">
