@@ -176,6 +176,12 @@ interface GameStore extends GameState {
   game_stats: GameStats[];
   hasWonAnyGame: boolean;
 
+  // Reward dialog
+  rewardDialog: {
+    isOpen: boolean;
+    data: any; // RewardDialogData will be imported from the component
+  };
+
   // Actions
   getAndResetResourceAnalytics: () => Record<string, number> | null;
   executeAction: (actionId: string) => void;
@@ -238,6 +244,7 @@ interface GameStore extends GameState {
     points?: number;
   }) => void;
   updateResources: (updates: Partial<GameState["resources"]>) => void;
+  setRewardDialog: (isOpen: boolean, data?: any) => void;
 }
 
 // Helper functions
@@ -560,6 +567,12 @@ export const createInitialState = (): GameState => ({
   // Achievements
   unlockedAchievements: [],
   claimedAchievements: [],
+
+  // Reward dialog
+  rewardDialog: {
+    isOpen: false,
+    data: null,
+  },
 });
 
 const defaultGameState: GameState = createInitialState();
@@ -1909,5 +1922,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
         },
       };
     });
+  },
+
+  setRewardDialog: (isOpen, data) => {
+    set((state) => ({
+      rewardDialog: {
+        isOpen,
+        data: data || null,
+      },
+    }));
   },
 }));
