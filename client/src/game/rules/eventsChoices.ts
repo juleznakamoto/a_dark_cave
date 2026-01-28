@@ -1918,7 +1918,7 @@ export const choiceEvents: Record<string, GameEvent> = {
       );
     },
 
-    timeProbability: 0.080, // 1.33 hours
+    timeProbability: 60, // 1 hour
     title: "Frostfall",
     message:
       "Icy winds howl through the village. The elders warn that a terrible blizzard is approaching. Preparations must be made, or the consequences will be dire.",
