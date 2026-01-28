@@ -3,7 +3,7 @@ import { useGameStore } from "@/game/state";
 import { LogEntry } from "@/game/rules/events";
 import { getTotalKnowledge } from "@/game/rules/effectsCalculation";
 import { calculateKnowledgeTimeBonus, isKnowledgeBonusMaxed } from "@/game/rules/effectsStats";
-import { eventChoiceCostTooltip } from "@/game/rules/tooltips";
+import { getEventChoiceCostBreakdown } from "@/game/rules/index";
 import {
   Dialog,
   DialogContent,
@@ -324,25 +324,22 @@ export default function EventDialog({
                   </Button>
                 );
 
-                return costText ? (
+                // #region agent log
+                // Get cost breakdown with individual satisfaction status for each resource
+                const costBreakdown = getEventChoiceCostBreakdown(cost, gameState);
+                fetch('http://127.0.0.1:7242/ingest/33ba3fb0-527b-48ba-8316-dce19cab51cb',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'EventDialog.tsx:328',message:'costBreakdown computed',data:{choiceId:choice.id,costText,costBreakdown,resources:{wood:gameState.resources.wood,food:gameState.resources.food}},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'A'})}).catch(()=>{});
+                // #endregion
+
+                return costBreakdown.length > 0 ? (
                   <TooltipWrapper
                     key={choice.id}
                     className="relative block w-full"
                     tooltip={
-                      <div className="text-xs whitespace-nowrap [&>*]:block">
+                      <div className="text-xs whitespace-nowrap">
                         {costBreakdown.map((costItem, index) => (
                           <div
                             key={index}
-                            className={
-                              costItem.satisfied
-                                ? "text-foreground"
-                                : "text-muted-foreground"
-                            }
-                            style={{
-                              color: costItem.satisfied
-                                ? 'var(--foreground)'
-                                : 'var(--muted-foreground)'
-                            }}
+                            className={costItem.satisfied ? "text-foreground" : "text-muted-foreground"}
                           >
                             {costItem.text}
                           </div>
