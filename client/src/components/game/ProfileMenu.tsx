@@ -294,7 +294,7 @@ export default function ProfileMenu() {
             <Button
               variant="ghost"
               size="xs"
-              className="px-2 py-1 text-xs hover relative bg-background/80 text-neutral-300 backdrop-blur-sm border border-border"
+              className="px-2 py-1 text-xs hover relative bg-background text-neutral-300 backdrop-blur-sm border border-border"
             >
               Profile
               {authNotificationVisible &&

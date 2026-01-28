@@ -176,7 +176,8 @@ const MistBackground: React.FC = () => {
       className="fixed inset-0 w-full h-full pointer-events-none z-[-1] transition-opacity duration-100 ease-in-out"
       style={{
         background: '#09090b',
-        opacity: opacity
+        opacity: opacity,
+        bottom: '45px'
       }}
     />
   );
