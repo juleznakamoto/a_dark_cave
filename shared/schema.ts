@@ -170,6 +170,7 @@ export const gameStateSchema = z.object({
       unnamed_book: z.boolean().default(false),
       occultist_grimoire: z.boolean().default(false),
       ravens_orb: z.boolean().default(false),
+      devourer_crown: z.boolean().default(false),
     })
     .default({}),
   relics: z
@@ -409,11 +410,13 @@ export const gameStateSchema = z.object({
       endTime: 0,
       lastAcceptedLevel: 0,
     }),
-  boneDevourerState: z.object({
-    lastAcceptedLevel: z.number().default(0),
-  }).default({
-    lastAcceptedLevel: 0,
-  }),
+  boneDevourerState: z
+    .object({
+      lastAcceptedLevel: z.number().default(0),
+    })
+    .default({
+      lastAcceptedLevel: 0,
+    }),
 
   greatFeastState: z
     .object({
@@ -541,17 +544,31 @@ export const gameStateSchema = z.object({
       duration: 0,
     }),
 
-  huntingSkills: z.object({
-    level: z.number().default(0),
-  }).default({ level: 0 }),
+  huntingSkills: z
+    .object({
+      level: z.number().default(0),
+    })
+    .default({ level: 0 }),
 
-  crowsEyeSkills: z.object({
-    level: z.number().default(0),
-  }).default({ level: 0 }),
+  crowsEyeSkills: z
+    .object({
+      level: z.number().default(0),
+    })
+    .default({ level: 0 }),
 
-  tradeEstablishState: z.object({
-    remainingOptions: z.array(z.string()).default(["mountain_monastery", "swamp_tribe", "shore_fishermen"]),
-  }).default({ remainingOptions: ["mountain_monastery", "swamp_tribe", "shore_fishermen"] }),
+  tradeEstablishState: z
+    .object({
+      remainingOptions: z
+        .array(z.string())
+        .default(["mountain_monastery", "swamp_tribe", "shore_fishermen"]),
+    })
+    .default({
+      remainingOptions: [
+        "mountain_monastery",
+        "swamp_tribe",
+        "shore_fishermen",
+      ],
+    }),
 
   buttonUpgrades: z
     .object({
@@ -629,31 +646,35 @@ export const gameStateSchema = z.object({
   username: z.string().optional(), // Player's chosen username for leaderboard
   cooldowns: z.record(z.number()).default({}), // Track current cooldown time remaining for each action
   // Merchant trades state (persisted when merchant is active)
-  merchantTrades: z.array(
-    z.object({
-      id: z.string(),
-      label: z.string(),
-      cost: z.string(),
-      buyResource: z.string(),
-      buyAmount: z.number(),
-      sellResource: z.string(),
-      sellAmount: z.number(),
-      executed: z.boolean(),
-    })
-  ).default([]),
+  merchantTrades: z
+    .array(
+      z.object({
+        id: z.string(),
+        label: z.string(),
+        cost: z.string(),
+        buyResource: z.string(),
+        buyAmount: z.number(),
+        sellResource: z.string(),
+        sellAmount: z.number(),
+        executed: z.boolean(),
+      }),
+    )
+    .default([]),
 
   timedTabDuration: z.number().default(0),
 
   // Idle Mode state
-  idleModeState: z.object({
-    isActive: z.boolean().default(false),
-    startTime: z.number().default(0),
-    needsDisplay: z.boolean().default(false),
-  }).default({
-    isActive: false,
-    startTime: 0,
-    needsDisplay: false,
-  }),
+  idleModeState: z
+    .object({
+      isActive: z.boolean().default(false),
+      startTime: z.number().default(0),
+      needsDisplay: z.boolean().default(false),
+    })
+    .default({
+      isActive: false,
+      startTime: 0,
+      needsDisplay: false,
+    }),
 });
 
 export type GameState = z.infer<typeof gameStateSchema>;
@@ -691,7 +712,10 @@ export const actionSchema = z.object({
   productionEffects: z
     .union([
       z.record(z.string(), z.record(z.string(), z.number())),
-      z.function().args(z.any()).returns(z.record(z.string(), z.record(z.string(), z.number()))),
+      z
+        .function()
+        .args(z.any())
+        .returns(z.record(z.string(), z.record(z.string(), z.number()))),
     ])
     .optional(),
   statsEffects: z.record(z.string(), z.number()).optional(),
@@ -703,12 +727,17 @@ export const actionSchema = z.object({
     .array(z.enum(["strength", "knowledge", "luck", "madness"]))
     .optional(),
   cooldown: z.number().optional(),
-  actionBonuses: z.record(z.string(), z.object({
-    resourceMultiplier: z.number().optional(),
-    resourceBonus: z.record(z.string(), z.number()).optional(),
-    cooldownReduction: z.number().optional(),
-    probabilityBonus: z.record(z.string(), z.number()).optional(),
-  })).optional(),
+  actionBonuses: z
+    .record(
+      z.string(),
+      z.object({
+        resourceMultiplier: z.number().optional(),
+        resourceBonus: z.record(z.string(), z.number()).optional(),
+        cooldownReduction: z.number().optional(),
+        probabilityBonus: z.record(z.string(), z.number()).optional(),
+      }),
+    )
+    .optional(),
   upgrade_key: z.string().optional(),
   canExecute: z.function().args(z.any()).returns(z.boolean()).optional(),
 });

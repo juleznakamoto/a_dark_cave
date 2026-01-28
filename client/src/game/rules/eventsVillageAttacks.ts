@@ -10,7 +10,6 @@ export const villageAttackEvents: Record<string, GameEvent> = {
       state.boneDevourerState.lastAcceptedLevel >= 6 &&
       !state.clothing.devourer_crown &&
       state.current_population > 10,
-    
     timeProbability: 15,
     title: "The Bone Army",
     message:
@@ -47,6 +46,11 @@ export const villageAttackEvents: Record<string, GameEvent> = {
               clothing: {
                 ...state.clothing,
                 devourer_crown: true,
+              },
+              resources: {
+                ...state.resources,
+                bones: state.resources.bones + 5000,
+                silver: state.resources.silver + 500
               },
               _logMessage:
                 "The village defeats the bone army! Bone and silence litter the battlefield. Among the remains, you find the Devourer's Crown.",
@@ -276,6 +280,11 @@ export const villageAttackEvents: Record<string, GameEvent> = {
               clothing: {
                 ...state.clothing,
                 alphas_hide: true,
+              },
+              ressources: {
+                ...state.resources,
+                fur: state.resources.fur + 500,
+                silver: state.resources.silver + 250,
               },
               _logMessage:
                 "The village defeats the wolf pack! You slay the alpha wolf and claim its hide as a trophy. It radiates with primal power.",
