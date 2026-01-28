@@ -247,6 +247,150 @@ interface GameStore extends GameState {
   setRewardDialog: (isOpen: boolean, data?: any) => void;
 }
 
+// Helper function to detect rewards from state updates
+const detectRewards = (stateUpdates: Partial<GameState>, currentState: GameState, actionId: string) => {
+  const rewards: {
+    resources?: Partial<Record<keyof GameState["resources"], number>>;
+    tools?: (keyof GameState["tools"])[];
+    weapons?: (keyof GameState["weapons"])[];
+    clothing?: (keyof GameState["clothing"])[];
+    relics?: (keyof GameState["relics"])[];
+    blessings?: (keyof GameState["blessings"])[];
+    books?: (keyof GameState["books"])[];
+    schematics?: (keyof GameState["schematics"])[];
+    fellowship?: (keyof GameState["fellowship"])[];
+    stats?: Partial<GameState["stats"]>;
+  } = {};
+
+  // Check for new tools
+  if (stateUpdates.tools) {
+    const newTools = Object.keys(stateUpdates.tools).filter(
+      tool => stateUpdates.tools![tool as keyof typeof stateUpdates.tools] &&
+        !currentState.tools[tool as keyof typeof currentState.tools]
+    );
+    if (newTools.length > 0) {
+      rewards.tools = newTools as (keyof GameState["tools"])[];
+    }
+  }
+
+  // Check for new weapons
+  if (stateUpdates.weapons) {
+    const newWeapons = Object.keys(stateUpdates.weapons).filter(
+      weapon => stateUpdates.weapons![weapon as keyof typeof stateUpdates.weapons] &&
+        !currentState.weapons[weapon as keyof typeof currentState.weapons]
+    );
+    if (newWeapons.length > 0) {
+      rewards.weapons = newWeapons as (keyof GameState["weapons"])[];
+    }
+  }
+
+  // Check for new clothing
+  if (stateUpdates.clothing) {
+    const newClothing = Object.keys(stateUpdates.clothing).filter(
+      clothing => stateUpdates.clothing![clothing as keyof typeof stateUpdates.clothing] &&
+        !currentState.clothing[clothing as keyof typeof currentState.clothing]
+    );
+    if (newClothing.length > 0) {
+      rewards.clothing = newClothing as (keyof GameState["clothing"])[];
+    }
+  }
+
+  // Check for new relics
+  if (stateUpdates.relics) {
+    const newRelics = Object.keys(stateUpdates.relics).filter(
+      relic => stateUpdates.relics![relic as keyof typeof stateUpdates.relics] &&
+        !currentState.relics[relic as keyof typeof currentState.relics]
+    );
+    if (newRelics.length > 0) {
+      rewards.relics = newRelics as (keyof GameState["relics"])[];
+    }
+  }
+
+  // Check for new blessings
+  if (stateUpdates.blessings) {
+    const newBlessings = Object.keys(stateUpdates.blessings).filter(
+      blessing => stateUpdates.blessings![blessing as keyof typeof stateUpdates.blessings] &&
+        !currentState.blessings[blessing as keyof typeof currentState.blessings]
+    );
+    if (newBlessings.length > 0) {
+      rewards.blessings = newBlessings as (keyof GameState["blessings"])[];
+    }
+  }
+
+  // Check for new books
+  if (stateUpdates.books) {
+    const newBooks = Object.keys(stateUpdates.books).filter(
+      book => stateUpdates.books![book as keyof typeof stateUpdates.books] &&
+        !currentState.books[book as keyof typeof currentState.books]
+    );
+    if (newBooks.length > 0) {
+      rewards.books = newBooks as (keyof GameState["books"])[];
+    }
+  }
+
+  // Check for new schematics
+  if (stateUpdates.schematics) {
+    const newSchematics = Object.keys(stateUpdates.schematics).filter(
+      schematic => stateUpdates.schematics![schematic as keyof typeof stateUpdates.schematics] &&
+        !currentState.schematics[schematic as keyof typeof currentState.schematics]
+    );
+    if (newSchematics.length > 0) {
+      rewards.schematics = newSchematics as (keyof GameState["schematics"])[];
+    }
+  }
+
+  // Check for new fellowship members
+  if (stateUpdates.fellowship) {
+    const newMembers = Object.keys(stateUpdates.fellowship).filter(
+      member => stateUpdates.fellowship![member as keyof typeof stateUpdates.fellowship] &&
+        !currentState.fellowship[member as keyof typeof currentState.fellowship]
+    );
+    if (newMembers.length > 0) {
+      rewards.fellowship = newMembers as (keyof GameState["fellowship"])[];
+    }
+  }
+
+  // Check for increased resources (positive changes only)
+  if (stateUpdates.resources) {
+    const increasedResources: Record<string, number> = {};
+    Object.entries(stateUpdates.resources).forEach(([resource, amount]) => {
+      if (typeof amount === 'number' && amount > 0) {
+        increasedResources[resource] = amount;
+      }
+    });
+    if (Object.keys(increasedResources).length > 0) {
+      rewards.resources = increasedResources as Partial<Record<keyof GameState["resources"], number>>;
+    }
+  }
+
+  // Check for increased stats (positive changes only)
+  if (stateUpdates.stats) {
+    const increasedStats: Record<string, number> = {};
+    Object.entries(stateUpdates.stats).forEach(([stat, amount]) => {
+      if (typeof amount === 'number' && amount > 0) {
+        increasedStats[stat] = amount;
+      }
+    });
+    if (Object.keys(increasedStats).length > 0) {
+      rewards.stats = increasedStats as Partial<GameState["stats"]>;
+    }
+  }
+
+  return rewards;
+};
+
+// Define which actions should trigger reward dialogs (whitelist)
+const rewardDialogActions = new Set([
+  "layTrap",
+  "castleRuins",
+  "hillGrave",
+  "sunkenTemple",
+  "collapsedTower",
+  "forestCave",
+  "blackreachCanyon",
+  "steelDelivery",
+]);
+
 // Helper functions
 const mergeStateUpdates = (
   prevState: GameState,
@@ -917,15 +1061,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
       }
     }
 
-    // Handle RewardDialog for successful layTrap action
-    if (actionId === "layTrap" && result.stateUpdates.clothing?.black_bear_fur) {
-      setTimeout(() => {
-        get().setRewardDialog(true, {
-          rewards: {
-            clothing: ["black_bear_fur"],
-          },
-        });
-      }, 500); // Small delay to let the log message appear first
+    // Handle RewardDialog for whitelisted actions
+    if (rewardDialogActions.has(actionId)) {
+      const rewards = detectRewards(result.stateUpdates, state, actionId);
+      if (rewards && Object.keys(rewards).length > 0) {
+        setTimeout(() => {
+          get().setRewardDialog(true, { rewards });
+        }, 500); // Small delay to let the log message appear first
+      }
     }
 
     // Handle event dialogs
