@@ -41,12 +41,8 @@ function simulateGathererProduction(
   const gatherer = state.villagers.gatherer;
   if (gatherer > 0) {
     const production = getPopulationProduction("gatherer", gatherer, state);
-    logger.log("[IDLE GATHERER]", { gatherer, production, multiplier });
     production.forEach((prod) => {
       const amount = prod.totalAmount * multiplier;
-      logger.log(
-        `[IDLE GATHERER] ${prod.resource}: ${accumulatedResources[prod.resource] || 0} + ${amount}`,
-      );
       accumulatedResources[prod.resource] =
         (accumulatedResources[prod.resource] || 0) + amount;
     });
@@ -91,15 +87,8 @@ function simulateMinerProduction(
     }
   });
 
-  logger.log(
-    "[IDLE MINER] All production jobs:",
-    allProduction.map((p) => ({ job: p.job, production: p.production })),
-  );
-
   // Track available resources after each job's production/consumption
   const availableResources = { ...accumulatedResources };
-
-  logger.log("[IDLE MINER] Available resources at start:", availableResources);
 
   // Process each job sequentially
   allProduction.forEach(({ job, production }) => {
@@ -109,23 +98,15 @@ function simulateMinerProduction(
         // Consumption - check if we have enough available
         const available = availableResources[prod.resource] || 0;
         const needed = Math.abs(prod.totalAmount * multiplier);
-        logger.log(
-          `[IDLE MINER] ${job} needs ${needed} ${prod.resource}, has ${available}`,
-        );
         return available >= needed;
       }
       return true; // Production is always allowed
     });
 
-    logger.log(`[IDLE MINER] ${job} canProduce:`, canProduce);
-
     // Only apply production if all resources are available
     if (canProduce) {
       production.forEach((prod) => {
         const amount = prod.totalAmount * multiplier;
-        logger.log(
-          `[IDLE MINER] ${job} ${prod.resource}: ${availableResources[prod.resource] || 0} + ${amount}`,
-        );
         // Update both the tracked available resources and accumulated resources
         availableResources[prod.resource] =
           (availableResources[prod.resource] || 0) + amount;
@@ -149,17 +130,11 @@ function simulatePopulationConsumption(
   if (totalPopulation > 0) {
     // Food consumption (1 per villager per 15 seconds)
     const foodConsumption = totalPopulation * multiplier;
-    logger.log(
-      `[IDLE CONSUMPTION] Food: ${accumulatedResources["food"] || 0} - ${foodConsumption} (${totalPopulation} pop * ${multiplier})`,
-    );
     accumulatedResources["food"] =
       (accumulatedResources["food"] || 0) - foodConsumption;
 
     // Wood consumption (1 per villager per 15 seconds)
     const woodConsumption = totalPopulation * multiplier;
-    logger.log(
-      `[IDLE CONSUMPTION] Wood: ${accumulatedResources["wood"] || 0} - ${woodConsumption} (${totalPopulation} pop * ${multiplier})`,
-    );
     accumulatedResources["wood"] =
       (accumulatedResources["wood"] || 0) - woodConsumption;
   }
@@ -191,34 +166,13 @@ export default function IdleModeDialog() {
 
   // Initialize idle mode when dialog opens
   useEffect(() => {
-    logger.log("[IDLE MODE INIT] Dialog open check:", {
-      dialogOpen: idleModeDialog.isOpen,
-      isActive,
-      idleModeState,
-    });
-
     if (idleModeDialog.isOpen && !isActive) {
       const initNow = Date.now();
-
-      logger.log("[IDLE MODE INIT] Checking initialization conditions:", {
-        hasStartTime: !!idleModeState?.startTime,
-        startTimeValue: idleModeState?.startTime,
-        isIdleModeActive: idleModeState?.isActive,
-      });
 
       // Check if there's a persisted idle mode state
       if (idleModeState?.startTime && idleModeState.startTime > 0) {
         const initElapsed = initNow - idleModeState.startTime;
         const remaining = Math.max(0, IDLE_DURATION_MS - initElapsed);
-
-        logger.log("[IDLE MODE] Loading persisted state:", {
-          startTime: idleModeState.startTime,
-          elapsed: initElapsed,
-          remaining,
-          intervals: Math.floor(
-            Math.min(initElapsed, IDLE_DURATION_MS) / 1000 / 15,
-          ),
-        });
 
         setStartTime(idleModeState.startTime);
         setRemainingTime(remaining);
@@ -230,17 +184,12 @@ export default function IdleModeDialog() {
         // Get CURRENT resources state (most recent)
         const currentState = useGameStore.getState();
 
-        logger.log("[IDLE MODE] Starting resources:", currentState.resources);
-
         // Start with CURRENT game resources (most recent state)
         const offlineResources: Record<string, number> = {
           ...currentState.resources,
         };
 
         // Simulate each 15-second interval
-        logger.log(
-          `[IDLE MODE] Simulating ${intervals} intervals while you were away`,
-        );
         for (let i = 0; i < intervals; i++) {
           simulateGathererProduction(
             currentState,
@@ -264,8 +213,6 @@ export default function IdleModeDialog() {
           );
         }
 
-        logger.log("[IDLE MODE] Final simulated resources:", offlineResources);
-
         // Calculate the delta (change) from starting resources
         const resourceDeltas: Record<string, number> = {};
         Object.keys(offlineResources).forEach((resource) => {
@@ -276,8 +223,6 @@ export default function IdleModeDialog() {
             ] || 0);
         });
 
-        logger.log("[IDLE MODE] Resource deltas:", resourceDeltas);
-
         setAccumulatedResources(resourceDeltas);
         // Store the CURRENT resources as initial state (most recent before simulation started)
         setInitialResources({ ...currentState.resources });
@@ -286,10 +231,6 @@ export default function IdleModeDialog() {
       } else if (!idleModeState?.isActive && idleModeState?.startTime === 0) {
         // Only start fresh idle mode if there's no active state AND no previous startTime
         // This prevents starting a new idle mode after one just finished
-        logger.log("[IDLE MODE] Starting fresh idle mode", {
-          idleModeActive: idleModeState?.isActive,
-          startTime: idleModeState?.startTime,
-        });
 
         // Get the CURRENT (most recent) resources state
         const currentState = useGameStore.getState();
@@ -333,17 +274,9 @@ export default function IdleModeDialog() {
 
       if (remaining <= 0) {
         // Time's up - stop active state and resource accumulation
-        logger.log("[IDLE MODE TIMER] Time expired, stopping idle mode", {
-          wasActive: isActive,
-          currentStartTime: startTime,
-        });
-
         setIsActive(false);
 
         // DO NOT CLEAR startTime HERE - only clear when user closes dialog
-        logger.log(
-          "[IDLE MODE TIMER] Setting global state to inactive (keeping startTime)",
-        );
         useGameStore.setState({
           idleModeState: {
             isActive: false,
@@ -387,11 +320,6 @@ export default function IdleModeDialog() {
       }
 
       const currentState = useGameStore.getState();
-
-      logger.log("[IDLE MODE UPDATE] Starting resource update", {
-        initialResources,
-        currentResources: currentState.resources,
-      });
 
       // Accumulate resources using the same production functions as normal mode
       setAccumulatedResources((prev) => {
@@ -492,17 +420,6 @@ export default function IdleModeDialog() {
 
       const newFocusPoints = Math.min(currentFocus + focusToAdd, MAX_FOCUS);
 
-
-      logger.log("[IDLE MODE] Awarding Focus:", {
-        hoursSlept,
-        elapsed,
-        currentFocus,
-        focusToAdd,
-        newFocusPoints,
-        cappedAt: newFocusPoints === MAX_FOCUS,
-        currentTotalFocusEarned: currentGameState.totalFocusEarned || 0,
-      });
-
       // Update focus points in focusState (capped at 30)
       currentGameState.updateFocusState({
         isActive: currentGameState.focusState?.isActive || false,
@@ -548,11 +465,6 @@ export default function IdleModeDialog() {
     }
 
     // Clear persisted idle mode state completely - now reset startTime to 0
-    logger.log("[IDLE MODE] User closing dialog, resetting all state", {
-      wasActive: isActive,
-      hadStartTime: startTime,
-    });
-
     useGameStore.setState({
       idleModeState: {
         isActive: false,
