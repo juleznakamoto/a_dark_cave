@@ -557,14 +557,16 @@ export const eventChoiceCostTooltip = {
     // Add cost information with individual satisfaction checks
     resources.forEach(({ resource, amount }, index) => {
       // Check if player has enough of this specific resource
-      const hasEnough = gameState 
-        ? (gameState.resources[resource as keyof typeof gameState.resources] || 0) >= amount
-        : true;
+      let hasEnough = true;
+      if (gameState) {
+        const resourceValue = gameState.resources[resource as keyof typeof gameState.resources] || 0;
+        hasEnough = resourceValue >= amount;
+      }
       
       costLines.push(
         <div 
           key={`cost-${index}`}
-          className={hasEnough ? "text-foreground" : "text-muted-foreground"}
+          className={hasEnough ? "!text-foreground" : "!text-muted-foreground"}
         >
           -{formatNumber(amount)} {capitalizeWords(resource)}
         </div>
