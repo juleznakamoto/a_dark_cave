@@ -329,7 +329,7 @@ export default function EventDialog({
                     key={choice.id}
                     className="relative block w-full"
                     tooltip={
-                      <div className="text-xs">
+                      <div className="text-xs whitespace-nowrap">
                         {eventChoiceCostTooltip.getContent(costText, gameState)}
                       </div>
                     }
