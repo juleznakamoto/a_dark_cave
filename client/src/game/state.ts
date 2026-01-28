@@ -403,6 +403,13 @@ export const rewardDialogActions = new Set([
   "exploreUndergroundLake",
 ]);
 
+// Define which village attack events should trigger reward dialogs
+export const rewardDialogVillageAttackEvents = new Set([
+  "boneArmyAttack",
+  "wolfAttack",
+  "cannibalRaid",
+]);
+
 // Helper functions
 const mergeStateUpdates = (
   prevState: GameState,
@@ -1741,6 +1748,26 @@ export const useGameStore = create<GameStore>((set, get) => ({
       delete updatedChanges._logMessage;
     }
 
+    // Handle RewardDialog for village attack events BEFORE applying state updates
+    // This allows us to extract and remove success log messages before they're added to the event log
+    const isVillageAttackEvent = rewardDialogVillageAttackEvents.has(eventId);
+    let shouldShowRewardDialog = false;
+    let rewardDialogData: { rewards: any; successLog?: string } | null = null;
+
+    if (isVillageAttackEvent && !combatData) {
+      const rewards = detectRewards(updatedChanges, state, eventId);
+      if (rewards && Object.keys(rewards).length > 0) {
+        // Extract success log message
+        const successLog = logMessage || undefined;
+
+        rewardDialogData = { rewards, successLog };
+        shouldShowRewardDialog = true;
+
+        // Clear logMessage so it doesn't show in event log
+        logMessage = null;
+      }
+    }
+
     // Apply state changes FIRST - this includes relics, resources, schematics, etc.
     if (Object.keys(updatedChanges).length > 0) {
       set((prevState) => {
@@ -1758,12 +1785,22 @@ export const useGameStore = create<GameStore>((set, get) => ({
       StateManager.schedulePopulationUpdate(get);
     }
 
+    // Show reward dialog for village attack events if rewards were detected
+    if (shouldShowRewardDialog && rewardDialogData) {
+      get().setEventDialog(false);
+      setTimeout(() => {
+        get().setRewardDialog(true, rewardDialogData);
+      }, 200);
+      return; // Don't proceed to other dialogs
+    }
+
     // For merchant events, don't show any dialog - just apply the changes
     const isMerchantEvent = eventId === 'merchant';
 
     // Only create a log message dialog if there's a _logMessage but no combat and it's not a merchant event
     // Note: _logMessage is for dialog feedback only, not for the main log
-    if (logMessage && !combatData && !isMerchantEvent) {
+    // Skip if this is a village attack event that already showed reward dialog
+    if (logMessage && !combatData && !isMerchantEvent && !isVillageAttackEvent) {
       get().setEventDialog(false);
       setTimeout(() => {
         const messageEntry: LogEntry = {
