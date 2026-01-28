@@ -368,8 +368,8 @@ export default function GameContainer() {
               <div className="flex space-x-4 pl-[3px] ">
                 <button
                   className={`py-2 text-sm bg-transparent ${activeTab === "cave"
-                      ? "font-bold opacity-100"
-                      : "opacity-60"
+                    ? "font-bold opacity-100"
+                    : "opacity-60"
                     } `}
                   onClick={() => setActiveTab("cave")}
                   data-testid="tab-cave"
@@ -380,10 +380,10 @@ export default function GameContainer() {
                 {flags.villageUnlocked && (
                   <button
                     className={`py-2 text-sm bg-transparent ${animatingTabs.has("village")
-                        ? "tab-fade-in"
-                        : activeTab === "village"
-                          ? "font-bold opacity-100"
-                          : "opacity-60"
+                      ? "tab-fade-in"
+                      : activeTab === "village"
+                        ? "font-bold opacity-100"
+                        : "opacity-60"
                       }`}
                     onClick={() => setActiveTab("village")}
                     data-testid="tab-village"
@@ -396,10 +396,10 @@ export default function GameContainer() {
                 {(estateUnlocked || buildings.darkEstate >= 1) && (
                   <button
                     className={`py-2 text-sm bg-transparent ${animatingTabs.has("estate")
-                        ? "tab-fade-in"
-                        : activeTab === "estate"
-                          ? "font-bold opacity-100"
-                          : "opacity-60"
+                      ? "tab-fade-in"
+                      : activeTab === "estate"
+                        ? "font-bold opacity-100"
+                        : "opacity-60"
                       }`}
                     onClick={() => setActiveTab("estate")}
                     data-testid="tab-estate"
@@ -411,10 +411,10 @@ export default function GameContainer() {
                 {flags.forestUnlocked && (
                   <button
                     className={`py-2 text-sm bg-transparent ${animatingTabs.has("forest")
-                        ? "tab-fade-in"
-                        : activeTab === "forest"
-                          ? "font-bold opacity-100"
-                          : "opacity-60"
+                      ? "tab-fade-in"
+                      : activeTab === "forest"
+                        ? "font-bold opacity-100"
+                        : "opacity-60"
                       }`}
                     onClick={() => setActiveTab("forest")}
                     data-testid="tab-forest"
@@ -426,10 +426,10 @@ export default function GameContainer() {
                 {flags.bastionUnlocked && (
                   <button
                     className={`py-2 text-sm bg-transparent ${animatingTabs.has("bastion")
-                        ? "tab-fade-in"
-                        : activeTab === "bastion"
-                          ? "font-bold opacity-100"
-                          : "opacity-60"
+                      ? "tab-fade-in"
+                      : activeTab === "bastion"
+                        ? "font-bold opacity-100"
+                        : "opacity-60"
                       }`}
                     onClick={() => setActiveTab("bastion")}
                     data-testid="tab-bastion"
@@ -442,10 +442,10 @@ export default function GameContainer() {
                 {books?.book_of_trials && (
                   <button
                     className={`py-2 text-sm bg-transparent ${animatingTabs.has("achievements")
-                        ? "tab-fade-in"
-                        : activeTab === "achievements"
-                          ? "font-medium opacity-100"
-                          : "opacity-60"
+                      ? "tab-fade-in"
+                      : activeTab === "achievements"
+                        ? "font-medium opacity-100"
+                        : "opacity-60"
                       }`}
                     onClick={() => setActiveTab("achievements")}
                     data-testid="tab-achievements"
@@ -458,8 +458,8 @@ export default function GameContainer() {
                 {timedEventTab.isActive && (
                   <button
                     className={`py-2 text-sm bg-transparent ${activeTab === "timedevent"
-                        ? "font-bold opacity-100"
-                        : "opacity-60"
+                      ? "font-bold opacity-100"
+                      : "opacity-60"
                       }`}
                     onClick={() => setActiveTab("timedevent")}
                     data-testid="tab-timedevent"
@@ -532,8 +532,20 @@ export default function GameContainer() {
       <RewardDialog
         isOpen={rewardDialog.isOpen}
         data={rewardDialog.data}
-        onClose={() => setRewardDialog(false)}
+        onClose={() => {
+          console.log("[GAME CONTAINER] RewardDialog onClose called");
+          setRewardDialog(false);
+        }}
       />
+      {rewardDialog.isOpen && (
+        <div style={{ display: 'none' }}>
+          {console.log("[GAME CONTAINER] RewardDialog props:", {
+            isOpen: rewardDialog.isOpen,
+            hasData: !!rewardDialog.data,
+            data: rewardDialog.data ? JSON.stringify(rewardDialog.data, null, 2) : null,
+          })}
+        </div>
+      )}
 
       <ProfileMenu />
     </div>
