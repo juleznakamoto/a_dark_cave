@@ -332,13 +332,20 @@ export default function EventDialog({
                     key={choice.id}
                     className="relative block w-full"
                     tooltip={
-                      <div className="text-xs whitespace-nowrap">
+                      <div className="text-xs whitespace-nowrap [&>*]:block">
                         {costBreakdown.map((costItem, index) => (
                           <div
                             key={index}
-                            className={`${
-                              costItem.satisfied ? "text-foreground" : "text-muted-foreground"
-                            }`}
+                            className={
+                              costItem.satisfied 
+                                ? "text-foreground" 
+                                : "text-muted-foreground"
+                            }
+                            style={{
+                              color: costItem.satisfied 
+                                ? 'var(--foreground)' 
+                                : 'var(--muted-foreground)'
+                            }}
                           >
                             {costItem.text}
                           </div>
