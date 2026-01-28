@@ -176,17 +176,17 @@ export default function RewardDialog({
                   animation: reward-glow-pulse 2.5s ease-in-out infinite;
                 }
 
-                @keyframes reward-glow-pulse {
-                  0%, 100% {
-                    box-shadow: 0 0 15px 4px rgba(239, 68, 68, 0.25);
-                  }
-                  50% {
-                    box-shadow: 0 0 5px 1px rgba(239, 68, 68, 0.5);
-                  }
+              @keyframes reward-glow-pulse {
+                0%, 100% {
+                  box-shadow: 0 0 15px 4px rgba(234, 179, 8, 0.25);
                 }
+                50% {
+                  box-shadow: 0 0 6px 2px rgba(234, 179, 8, 0.5);
+                }
+              }
               `}</style>
-      <Dialog open={isOpen} onOpenChange={() => { }}>
-        <DialogContent className="w-[95vw] sm:max-w-sm z-[70] [&>button]:hidden border-2 border-red-800 shadow-2xl">
+      <Dialog open={isOpen} onOpenChange={() => {}}>
+        <DialogContent className="w-[95vw] sm:max-w-sm z-[70] [&>button]:hidden border-2 border-amber-900 shadow-2xl">
           <div className="absolute inset-0 -z-10 reward-dialog-glow pointer-events-none"></div>
           <DialogHeader>
             <div className="flex justify-center">
