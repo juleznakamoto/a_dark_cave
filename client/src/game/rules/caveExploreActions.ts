@@ -255,7 +255,7 @@ export const caveExploreActions: Record<string, Action> = {
         "resources.coal": "random(4,8)",
         "resources.iron": "random(4,8)",
         "resources.sulfur": "random(4,8)",
-        "resources.silver": `random(1,${5 * multiplier})`,
+        "resources.silver": `random(2,${4 * multiplier})`,
         ...getInheritedItems("ventureDeeper"),
         "story.seen.venturedDeeper": true,
       };
@@ -281,7 +281,7 @@ export const caveExploreActions: Record<string, Action> = {
         "resources.coal": "random(5,10)",
         "resources.iron": "random(5,10)",
         "resources.obsidian": "random(0,2)",
-        "resources.silver": `random(1,${10 * multiplier})`,
+        "resources.silver": `random(2,${6 * multiplier})`,
         ...getInheritedItems("descendFurther"),
         "story.seen.descendedFurther": true,
       };
@@ -305,8 +305,8 @@ export const caveExploreActions: Record<string, Action> = {
       return {
         "resources.obsidian": "random(1,4)",
         "resources.adamant": "random(0,2)",
-        "resources.silver": `random(5,${10 * multiplier})`,
-        "resources.gold": `random(1,${5 * multiplier})`,
+        "resources.silver": `random(2,${8 * multiplier})`,
+        "resources.gold": `random(2,${4 * multiplier})`,
         ...getInheritedItems("exploreRuins"),
         "story.seen.exploredRuins": true,
       };
@@ -331,8 +331,8 @@ export const caveExploreActions: Record<string, Action> = {
         "resources.obsidian": "random(1,6)",
         "resources.adamant": "random(1,4)",
         "resources.moonstone": "random(0,1)",
-        "resources.silver": `random(10,${10 * multiplier})`,
-        "resources.gold": `random(1,${10 * multiplier})`,
+        "resources.silver": `random(2,${10 * multiplier})`,
+        "resources.gold": `random(2,${6 * multiplier})`,
 
         ...getInheritedItems("exploreTemple"),
         "story.seen.exploredTemple": true,
@@ -357,8 +357,8 @@ export const caveExploreActions: Record<string, Action> = {
         "resources.obsidian": "random(1,8)",
         "resources.adamant": "random(1,6)",
         "resources.moonstone": "random(0,2)",
-        "resources.silver": `random(10,${20 * multiplier})`,
-        "resources.gold": `random(5,${10 * multiplier})`,
+        "resources.silver": `random(4,${14 * multiplier})`,
+        "resources.gold": `random(2,${8 * multiplier})`,
         ...getInheritedItems("exploreCitadel"),
         "story.seen.exploredCitadel": true,
       };
