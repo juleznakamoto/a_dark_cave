@@ -189,21 +189,22 @@ export default function RewardDialog({
         <DialogContent className="w-[95vw] sm:max-w-sm z-[70] [&>button]:hidden border-2 border-red-800 shadow-2xl">
           <div className="absolute inset-0 -z-10 reward-dialog-glow pointer-events-none"></div>
           <DialogHeader>
-            <div className="flex justify-center mb-3">
+            <div className="flex justify-center">
               <span className="text-4xl text-white">⁂</span>
             </div>
             {successLog && (
-              <div className="text-sm text-foreground text-center mb-3 px-2">
+              <div className="text-sm text-foreground text-center px-2 pb-3">
                 {successLog}
               </div>
             )}
+            <div className="my-3 h-px w-full bg-white/10" />
             <DialogTitle className="sr-only">You received</DialogTitle>
-            <DialogDescription className="text-sm text-gray-400 text-center">
+            <DialogDescription className="text-sm pt-3 text-gray-400 text-center">
               You received
             </DialogDescription>
           </DialogHeader>
 
-          <div className="pb-2">{renderRewards()}</div>
+          <div className="text-sm pb-2">{renderRewards()}</div>
 
           <DialogFooter>
             <Button
