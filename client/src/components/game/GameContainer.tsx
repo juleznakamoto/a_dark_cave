@@ -322,7 +322,7 @@ export default function GameContainer() {
       {/* Sleep Mode Mist Background - covers everything except footer and profile menu */}
       {idleModeDialog.isOpen && (
         <div
-          className="fixed inset-0 z-[5] pointer-events-none"
+          className="fixed inset-0 z-20 pointer-events-none"
           style={{ bottom: "45px" }}
         >
           <MistBackground />
