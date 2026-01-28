@@ -3,7 +3,7 @@ import { useGameStore } from "@/game/state";
 import { LogEntry } from "@/game/rules/events";
 import { getTotalKnowledge } from "@/game/rules/effectsCalculation";
 import { calculateKnowledgeTimeBonus, isKnowledgeBonusMaxed } from "@/game/rules/effectsStats";
-import { getEventChoiceCostBreakdown } from "@/game/rules/index";
+import { eventChoiceCostTooltip } from "@/game/rules/tooltips";
 import {
   Dialog,
   DialogContent,
@@ -324,25 +324,13 @@ export default function EventDialog({
                   </Button>
                 );
 
-                // Get cost breakdown using the same function as build buttons
-                const costBreakdown = getEventChoiceCostBreakdown(cost, gameState);
-
-                return costBreakdown.length > 0 ? (
+                return costText ? (
                   <TooltipWrapper
                     key={choice.id}
                     className="relative block w-full"
                     tooltip={
                       <div className="text-xs whitespace-nowrap">
-                        {costBreakdown.map((costItem, index) => (
-                          <div
-                            key={index}
-                            className={`${
-                              costItem.satisfied ? "text-foreground" : "text-muted-foreground"
-                            }`}
-                          >
-                            {costItem.text}
-                          </div>
-                        ))}
+                        {eventChoiceCostTooltip.getContent(costText, gameState)}
                       </div>
                     }
                     tooltipId={choice.id}
