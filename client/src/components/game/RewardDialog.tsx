@@ -6,7 +6,6 @@ import {
   DialogHeader,
   DialogTitle,
   DialogDescription,
-  DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 
@@ -185,7 +184,7 @@ export default function RewardDialog({
                 }
               }
               `}</style>
-      <Dialog open={isOpen} onOpenChange={() => {}}>
+      <Dialog open={isOpen} onOpenChange={() => { }}>
         <DialogContent className="w-[95vw] sm:max-w-sm z-[70] [&>button]:hidden border-2 border-amber-900 shadow-2xl">
           <div className="absolute inset-0 -z-10 reward-dialog-glow pointer-events-none"></div>
           <DialogHeader>
@@ -206,15 +205,16 @@ export default function RewardDialog({
 
           <div className="text-sm pb-2">{renderRewards()}</div>
 
-          <DialogFooter>
+          <div className="flex justify-center">
             <Button
               onClick={onClose}
-              className="w-full"
+              variant="outline"
+              className="text-xs h-8"
               button_id="reward-dialog-continue"
             >
               Claim Rewards
             </Button>
-          </DialogFooter>
+          </div>
         </DialogContent>
       </Dialog>
     </>
