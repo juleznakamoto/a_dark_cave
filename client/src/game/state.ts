@@ -248,7 +248,7 @@ interface GameStore extends GameState {
 }
 
 // Helper function to detect rewards from state updates
-const detectRewards = (stateUpdates: Partial<GameState>, currentState: GameState, actionId: string) => {
+export const detectRewards = (stateUpdates: Partial<GameState>, currentState: GameState, actionId: string) => {
   const rewards: {
     resources?: Partial<Record<keyof GameState["resources"], number>>;
     tools?: (keyof GameState["tools"])[];
@@ -380,7 +380,7 @@ const detectRewards = (stateUpdates: Partial<GameState>, currentState: GameState
 };
 
 // Define which actions should trigger reward dialogs (whitelist)
-const rewardDialogActions = new Set([
+export const rewardDialogActions = new Set([
   "layTrap",
   "castleRuins",
   "hillGrave",
@@ -1064,10 +1064,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // Handle RewardDialog for whitelisted actions
     if (rewardDialogActions.has(actionId)) {
       const rewards = detectRewards(result.stateUpdates, state, actionId);
+      logger.log(`[REWARD DIALOG] Action: ${actionId}, Rewards detected:`, rewards);
       if (rewards && Object.keys(rewards).length > 0) {
+        logger.log(`[REWARD DIALOG] Showing dialog for ${actionId}`);
         setTimeout(() => {
           get().setRewardDialog(true, { rewards });
         }, 500); // Small delay to let the log message appear first
+      } else {
+        logger.log(`[REWARD DIALOG] No rewards detected for ${actionId}`);
       }
     }
 
