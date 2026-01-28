@@ -917,6 +917,18 @@ export const useGameStore = create<GameStore>((set, get) => ({
       }
     }
 
+    // Handle RewardDialog for successful layTrap action
+    if (actionId === "layTrap" && result.stateUpdates.clothing?.black_bear_fur) {
+      setTimeout(() => {
+        get().setRewardDialog(true, {
+          title: "Trap Successful!",
+          rewards: {
+            clothing: ["black_bear_fur"],
+          },
+        });
+      }, 500); // Small delay to let the log message appear first
+    }
+
     // Handle event dialogs
     if (result.logEntries) {
       result.logEntries.forEach((entry) => {
