@@ -227,7 +227,7 @@ export default function ActionProgressChartAchievements() {
             Number(state.story?.merchantPurchases) || 0,
             100,
           );
-          return count === 1 ? 1.8 : count;
+          return [1, 2, 3].includes(count) ? 3 : count;
         },
         reward: 500,
       },
@@ -241,7 +241,7 @@ export default function ActionProgressChartAchievements() {
             Number(state.story?.seen?.feedFireUsageCount) || 0,
             100,
           );
-          return count === 1 ? 1.8 : count;
+          return [1, 2, 3].includes(count) ? 3 : count;
         },
         reward: 500,
       },
@@ -252,8 +252,7 @@ export default function ActionProgressChartAchievements() {
         label: "Well Rested",
         getCount: (state: GameState) => {
           const count = Math.min(Number(state.totalFocusEarned) || 0, 20);
-          return count === 1 ? 1.8 : count;
-        },
+        return [1, 2, 3].includes(count) ? 3 : count;        },
         reward: 500,
       },
     ],
