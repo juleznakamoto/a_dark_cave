@@ -360,7 +360,7 @@ export default function EventDialog({
               <div className="mt-1 space-y-1">
                 <div className="flex justify-between text-sm text-muted-foreground">
                 </div>
-                <Progress value={progress} className="h-2 timer-progress" />
+                <Progress value={progress} className="h-2 timer-progress" disableGlow />
               </div>
             )}
           </DialogContent>

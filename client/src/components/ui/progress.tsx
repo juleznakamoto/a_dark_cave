@@ -9,21 +9,22 @@ import { cn } from "@/lib/utils"
 interface ProgressProps extends React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root> {
   segments?: number;
   hideBorder?: boolean;
+  disableGlow?: boolean;
 }
 
 const Progress = React.forwardRef<
   React.ElementRef<typeof ProgressPrimitive.Root>,
   ProgressProps
->(({ className, value, segments = 1, hideBorder = false, ...props }, ref) => {
+>(({ className, value, segments = 1, hideBorder = false, disableGlow = false, ...props }, ref) => {
   const [animationKey, setAnimationKey] = React.useState(0);
   const prevValueRef = React.useRef(value || 0);
 
   React.useEffect(() => {
-    if (value !== undefined && value > prevValueRef.current) {
+    if (!disableGlow && value !== undefined && value > prevValueRef.current) {
       setAnimationKey(prev => prev + 1);
     }
     prevValueRef.current = value || 0;
-  }, [value]);
+  }, [value, disableGlow]);
 
   return (
     <ProgressPrimitive.Root
