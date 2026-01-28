@@ -262,80 +262,88 @@ export const detectRewards = (stateUpdates: Partial<GameState>, currentState: Ga
     stats?: Partial<GameState["stats"]>;
   } = {};
 
-  // Check for new tools (items set to true)
+  // Check for new tools (items set to true that weren't owned before)
   if (stateUpdates.tools) {
     const newTools = Object.keys(stateUpdates.tools).filter(
-      tool => stateUpdates.tools![tool as keyof typeof stateUpdates.tools] === true
+      tool => stateUpdates.tools![tool as keyof typeof stateUpdates.tools] === true &&
+        !currentState.tools[tool as keyof typeof currentState.tools]
     );
     if (newTools.length > 0) {
       rewards.tools = newTools as (keyof GameState["tools"])[];
     }
   }
 
-  // Check for new weapons (items set to true)
+  // Check for new weapons (items set to true that weren't owned before)
   if (stateUpdates.weapons) {
     const newWeapons = Object.keys(stateUpdates.weapons).filter(
-      weapon => stateUpdates.weapons![weapon as keyof typeof stateUpdates.weapons] === true
+      weapon => stateUpdates.weapons![weapon as keyof typeof stateUpdates.weapons] === true &&
+        !currentState.weapons[weapon as keyof typeof currentState.weapons]
     );
     if (newWeapons.length > 0) {
       rewards.weapons = newWeapons as (keyof GameState["weapons"])[];
     }
   }
 
-  // Check for new clothing (items set to true)
+  // Check for new clothing (items set to true that weren't owned before)
   if (stateUpdates.clothing) {
     const newClothing = Object.keys(stateUpdates.clothing).filter(
-      clothing => stateUpdates.clothing![clothing as keyof typeof stateUpdates.clothing] === true
+      clothing => stateUpdates.clothing![clothing as keyof typeof stateUpdates.clothing] === true &&
+        !currentState.clothing[clothing as keyof typeof currentState.clothing]
     );
     if (newClothing.length > 0) {
       rewards.clothing = newClothing as (keyof GameState["clothing"])[];
     }
   }
 
-  // Check for new relics (items set to true)
+  // Check for new relics (items set to true that weren't owned before)
   if (stateUpdates.relics) {
     const newRelics = Object.keys(stateUpdates.relics).filter(
-      relic => stateUpdates.relics![relic as keyof typeof stateUpdates.relics] === true
+      relic => stateUpdates.relics![relic as keyof typeof stateUpdates.relics] === true &&
+        !currentState.relics[relic as keyof typeof currentState.relics]
     );
     if (newRelics.length > 0) {
       rewards.relics = newRelics as (keyof GameState["relics"])[];
     }
   }
 
-  // Check for new blessings (items set to true)
+  // Check for new blessings (items set to true that weren't owned before)
   if (stateUpdates.blessings) {
     const newBlessings = Object.keys(stateUpdates.blessings).filter(
-      blessing => stateUpdates.blessings![blessing as keyof typeof stateUpdates.blessings] === true
+      blessing => stateUpdates.blessings![blessing as keyof typeof stateUpdates.blessings] === true &&
+        !currentState.blessings[blessing as keyof typeof currentState.blessings]
     );
     if (newBlessings.length > 0) {
       rewards.blessings = newBlessings as (keyof GameState["blessings"])[];
     }
   }
 
-  // Check for new books (items set to true)
+  // Check for new books (items set to true that weren't owned before)
   if (stateUpdates.books) {
     const newBooks = Object.keys(stateUpdates.books).filter(
-      book => stateUpdates.books![book as keyof typeof stateUpdates.books] === true
+      book => stateUpdates.books![book as keyof typeof stateUpdates.books] === true &&
+        !currentState.books[book as keyof typeof currentState.books]
     );
     if (newBooks.length > 0) {
       rewards.books = newBooks as (keyof GameState["books"])[];
     }
   }
 
-  // Check for new schematics (items set to true)
+  // Check for new schematics (items set to true that weren't owned before)
   if (stateUpdates.schematics) {
     const newSchematics = Object.keys(stateUpdates.schematics).filter(
-      schematic => stateUpdates.schematics![schematic as keyof typeof stateUpdates.schematics] === true
+      schematic => stateUpdates.schematics![schematic as keyof typeof stateUpdates.schematics] === true &&
+        !currentState.schematics[schematic as keyof typeof currentState.schematics]
     );
     if (newSchematics.length > 0) {
       rewards.schematics = newSchematics as (keyof GameState["schematics"])[];
     }
   }
 
-  // Check for new fellowship members (items set to true)
+  // Check for new fellowship members (items set to true that weren't owned before)
   if (stateUpdates.fellowship) {
     const newMembers = Object.keys(stateUpdates.fellowship).filter(
-      member => stateUpdates.fellowship![member as keyof typeof stateUpdates.fellowship] === true
+      member => stateUpdates.fellowship![member as keyof typeof stateUpdates.fellowship] === true &&
+        !currentState.fellowship[member as keyof typeof currentState.fellowship]
     );
     if (newMembers.length > 0) {
       rewards.fellowship = newMembers as (keyof GameState["fellowship"])[];
