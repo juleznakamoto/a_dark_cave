@@ -329,7 +329,7 @@ export default function EventDialog({
                     key={choice.id}
                     className="relative block w-full"
                     tooltip={
-                      <div className={`text-xs ${isDisabled ? "text-muted-foreground" : ""}`}>
+                      <div className="text-xs">
                         {eventChoiceCostTooltip.getContent(costText, gameState)}
                       </div>
                     }
