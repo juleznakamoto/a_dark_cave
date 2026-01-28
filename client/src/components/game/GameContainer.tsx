@@ -20,7 +20,6 @@ import { RestartGameDialog } from "./RestartGameDialog";
 import FullGamePurchaseDialog from "./FullGamePurchaseDialog";
 import { ShopDialog } from "./ShopDialog";
 import LeaderboardDialog from "./LeaderboardDialog";
-import RewardDialog from "./RewardDialog";
 import { LimelightNav, NavItem } from "@/components/ui/limelight-nav";
 import { Mountain, Trees, Castle, Landmark } from "lucide-react";
 import ProfileMenu from "./ProfileMenu"; // Imported ProfileMenu
@@ -65,8 +64,6 @@ export default function GameContainer() {
   const setFullGamePurchaseDialogOpen = useGameStore(
     (state) => state.setFullGamePurchaseDialogOpen,
   );
-  const rewardDialog = useGameStore((state) => state.rewardDialog);
-  const setRewardDialog = useGameStore((state) => state.setRewardDialog);
 
   // Estate unlocks when Dark Estate is built
   const estateUnlocked = buildings.darkEstate >= 1;
@@ -526,13 +523,6 @@ export default function GameContainer() {
         isOpen={restartGameDialogOpen}
         onClose={() => setRestartGameDialogOpen(false)}
         onRestart={restartGame}
-      />
-
-      {/* Reward Dialog */}
-      <RewardDialog
-        isOpen={rewardDialog.isOpen}
-        data={rewardDialog.data}
-        onClose={() => setRewardDialog(false)}
       />
 
       <ProfileMenu />

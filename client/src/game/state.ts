@@ -1078,9 +1078,16 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const rewards = detectRewards(result.stateUpdates, state, actionId);
       logger.log(`[REWARD DIALOG] Action: ${actionId}, Rewards detected:`, rewards);
       if (rewards && Object.keys(rewards).length > 0) {
-        logger.log(`[REWARD DIALOG] Showing dialog for ${actionId}`);
+        // Extract success message from the last log entry created by the handler
+        let successMessage: string | undefined;
+        if (result.logEntries && result.logEntries.length > 0) {
+          const lastEntry = result.logEntries[result.logEntries.length - 1];
+          successMessage = lastEntry.message;
+        }
+
+        logger.log(`[REWARD DIALOG] Showing dialog for ${actionId} with message:`, successMessage);
         setTimeout(() => {
-          get().setRewardDialog(true, { rewards });
+          get().setRewardDialog(true, { successMessage, rewards });
         }, 500); // Small delay to let the log message appear first
       } else {
         logger.log(`[REWARD DIALOG] No rewards detected for ${actionId}`);
