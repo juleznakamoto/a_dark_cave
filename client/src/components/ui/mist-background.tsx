@@ -12,7 +12,7 @@ const MistBackground: React.FC = () => {
   // Fade in effect over 10 seconds
   useEffect(() => {
     const startTime = Date.now();
-    const duration = 100; // 10 seconds in milliseconds
+    const duration = 10000; // 10 seconds in milliseconds
 
     const fadeIn = () => {
       const elapsed = Date.now() - startTime;
