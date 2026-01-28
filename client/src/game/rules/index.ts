@@ -598,6 +598,80 @@ export function getActionCostBreakdown(
   return breakdown;
 }
 
+/**
+ * Converts an event choice cost (string or function) into the same breakdown format
+ * used by getActionCostBreakdown, so we can reuse the same tooltip rendering logic.
+ */
+export function getEventChoiceCostBreakdown(
+  cost: string | ((state: GameState) => string) | Record<string, number> | undefined,
+  state: GameState,
+): Array<{ text: string; satisfied: boolean }> {
+  if (!cost) return [];
+
+  // Evaluate cost if it's a function
+  const costText = typeof cost === 'function' ? cost(state) : cost;
+  if (!costText) return [];
+
+  const breakdown: Array<{ text: string; satisfied: boolean }> = [];
+  const { resources } = state;
+
+  // Handle object-based costs (like { "resources.wood": 100 })
+  if (typeof costText === 'object' && !Array.isArray(costText)) {
+    Object.entries(costText).forEach(([resource, amount]) => {
+      // Extract the clean resource name from paths like "resources.wood"
+      const resourceName = resource.includes(".")
+        ? resource.split(".").pop()!
+        : resource;
+
+      // Replace underscores with spaces and capitalize each word
+      const resourceNameFormatted = resourceName
+        .split("_")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ");
+
+      const displayCost = amount as number;
+      const satisfied =
+        (resources[resourceName as keyof typeof resources] || 0) >= displayCost;
+
+      breakdown.push({
+        text: `-${displayCost} ${resourceNameFormatted}`,
+        satisfied,
+      });
+    });
+    return breakdown;
+  }
+
+  // Handle string-based costs like "1000 wood, 500 food"
+  if (typeof costText === 'string') {
+    const costParts = costText.split(',').map(part => part.trim());
+
+    for (const part of costParts) {
+      // Match patterns like "250 gold", "+10 Food", "-5 wood"
+      const match = part.match(/[+-]?\s*(\d+)\s+([a-zA-Z_\s]+)/);
+      if (match) {
+        const amount = parseInt(match[1]);
+        const resource = match[2].trim().toLowerCase().replace(/\s+/g, '_');
+
+        // Replace underscores with spaces and capitalize each word
+        const resourceNameFormatted = resource
+          .split("_")
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(" ");
+
+        const satisfied =
+          (resources[resource as keyof typeof resources] || 0) >= amount;
+
+        breakdown.push({
+          text: `-${amount} ${resourceNameFormatted}`,
+          satisfied,
+        });
+      }
+    }
+  }
+
+  return breakdown;
+}
+
 // Combine all event types
 export const allEvents: Record<string, GameEvent> = {
   ...caveEvents,
