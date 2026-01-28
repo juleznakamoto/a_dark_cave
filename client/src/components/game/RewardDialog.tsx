@@ -57,7 +57,7 @@ export default function RewardDialog({
       Object.entries(rewards.resources).forEach(([resource, amount]) => {
         rewardItems.push(
           <div key={`resource-${resource}`} className="text-sm text-foreground">
-            +{amount} {formatName(resource)}
+            {amount} {formatName(resource)}
           </div>
         );
       });
@@ -269,11 +269,10 @@ export default function RewardDialog({
               className="w-full"
               button_id="reward-dialog-continue"
             >
-              Continue
+              Claim Rewards
             </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </>
-  );
+      );
 }
