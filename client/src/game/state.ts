@@ -1026,6 +1026,40 @@ export const useGameStore = create<GameStore>((set, get) => ({
       }, 1500);
     }
 
+    // Handle RewardDialog for whitelisted actions BEFORE applying state updates
+    // This allows us to extract and remove success log entries before they're added to the event log
+    if (rewardDialogActions.has(actionId)) {
+      const rewards = detectRewards(result.stateUpdates, state, actionId);
+      if (rewards && Object.keys(rewards).length > 0) {
+        // Extract success log from either _logMessage in stateUpdates or from logEntries
+        let successLog: string | undefined = (result.stateUpdates as any)._logMessage;
+
+        // If no _logMessage, try to extract from logEntries (actions often add success messages there)
+        if (!successLog && result.logEntries && result.logEntries.length > 0) {
+          // Find the most recent log entry that looks like a success message
+          // Usually it's the last one added for reward dialog actions
+          const lastLogEntry = result.logEntries[result.logEntries.length - 1];
+          if (lastLogEntry && lastLogEntry.message) {
+            successLog = typeof lastLogEntry.message === 'string'
+              ? lastLogEntry.message
+              : JSON.stringify(lastLogEntry.message);
+
+            // Remove this log entry so it doesn't appear in the event log
+            result.logEntries = result.logEntries.filter(entry => entry.id !== lastLogEntry.id);
+          }
+        }
+
+        // Remove _logMessage from stateUpdates so it doesn't get merged into state
+        if ((result.stateUpdates as any)._logMessage) {
+          delete (result.stateUpdates as any)._logMessage;
+        }
+
+        setTimeout(() => {
+          get().setRewardDialog(true, { rewards, successLog });
+        }, 500); // Small delay to let the log message appear first
+      }
+    }
+
     // Apply state updates
     set((prevState) => {
       const mergedUpdates = mergeStateUpdates(prevState, result.stateUpdates);
@@ -1070,63 +1104,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
         buildingChanges.longhouse !== undefined
       ) {
         setTimeout(() => get().updatePopulation(), 0);
-      }
-    }
-
-    // Handle RewardDialog for whitelisted actions
-    if (rewardDialogActions.has(actionId)) {
-      const rewards = detectRewards(result.stateUpdates, state, actionId);
-      logger.log(`[REWARD DIALOG] Action: ${actionId}, Rewards detected:`, rewards);
-      logger.log(`[REWARD DIALOG] Full stateUpdates:`, JSON.stringify(result.stateUpdates, null, 2));
-      logger.log(`[REWARD DIALOG] Has _logMessage:`, !!(result.stateUpdates as any)._logMessage);
-      logger.log(`[REWARD DIALOG] _logMessage value:`, (result.stateUpdates as any)._logMessage);
-      logger.log(`[REWARD DIALOG] logEntries:`, result.logEntries);
-      logger.log(`[REWARD DIALOG] logEntries count:`, result.logEntries?.length || 0);
-
-      if (rewards && Object.keys(rewards).length > 0) {
-        logger.log(`[REWARD DIALOG] Showing dialog for ${actionId}`);
-
-        // Extract success log from either _logMessage in stateUpdates or from logEntries
-        let successLog: string | undefined = (result.stateUpdates as any)._logMessage;
-
-        // If no _logMessage, try to extract from logEntries (actions often add success messages there)
-        if (!successLog && result.logEntries && result.logEntries.length > 0) {
-          // Find the most recent log entry that looks like a success message
-          // Usually it's the last one added for reward dialog actions
-          const lastLogEntry = result.logEntries[result.logEntries.length - 1];
-          if (lastLogEntry && lastLogEntry.message) {
-            successLog = typeof lastLogEntry.message === 'string'
-              ? lastLogEntry.message
-              : JSON.stringify(lastLogEntry.message);
-            logger.log(`[REWARD DIALOG] Extracted successLog from logEntries:`, successLog);
-
-            // Remove this log entry so it doesn't appear in the event log
-            result.logEntries = result.logEntries.filter(entry => entry.id !== lastLogEntry.id);
-            logger.log(`[REWARD DIALOG] Removed log entry from logEntries, remaining count:`, result.logEntries.length);
-          }
-        }
-
-        logger.log(`[REWARD DIALOG] Final extracted successLog:`, successLog);
-
-        // Remove _logMessage from stateUpdates so it doesn't get merged into state
-        if ((result.stateUpdates as any)._logMessage) {
-          delete (result.stateUpdates as any)._logMessage;
-          logger.log(`[REWARD DIALOG] Removed _logMessage from stateUpdates`);
-        }
-
-        const dialogData = { rewards, successLog };
-        logger.log(`[REWARD DIALOG] Dialog data being set:`, JSON.stringify(dialogData, null, 2));
-
-        setTimeout(() => {
-          logger.log(`[REWARD DIALOG] Setting reward dialog with data:`, JSON.stringify(dialogData, null, 2));
-          get().setRewardDialog(true, dialogData);
-
-          // Verify it was set correctly
-          const currentDialog = get().rewardDialog;
-          logger.log(`[REWARD DIALOG] Current reward dialog state:`, JSON.stringify(currentDialog, null, 2));
-        }, 500); // Small delay to let the log message appear first
-      } else {
-        logger.log(`[REWARD DIALOG] No rewards detected for ${actionId}`);
       }
     }
 
@@ -2138,18 +2115,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   setRewardDialog: (isOpen, data) => {
-    logger.log(`[REWARD DIALOG SETTER] Called with:`, {
-      isOpen,
-      hasData: !!data,
-      data: data ? JSON.stringify(data, null, 2) : null,
-    });
     set((state) => ({
       rewardDialog: {
         isOpen,
         data: data || null,
       },
     }));
-    const newState = get().rewardDialog;
-    logger.log(`[REWARD DIALOG SETTER] New state:`, JSON.stringify(newState, null, 2));
   },
 }));

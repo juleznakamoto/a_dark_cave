@@ -45,25 +45,9 @@ export default function RewardDialog({
   data,
   onClose,
 }: RewardDialogProps) {
-  console.log("[REWARD DIALOG COMPONENT] Render called", {
-    isOpen,
-    hasData: !!data,
-    data: data ? JSON.stringify(data, null, 2) : null,
-  });
-
-  if (!data) {
-    console.log("[REWARD DIALOG COMPONENT] No data, returning null");
-    return null;
-  }
+  if (!data) return null;
 
   const { rewards, successLog } = data;
-  console.log("[REWARD DIALOG COMPONENT] Extracted values", {
-    hasRewards: !!rewards,
-    rewardsKeys: rewards ? Object.keys(rewards) : [],
-    successLog,
-    successLogType: typeof successLog,
-    successLogLength: successLog ? successLog.length : 0,
-  });
 
   // Helper to render a list of rewards
   const renderRewards = () => {
@@ -210,15 +194,7 @@ export default function RewardDialog({
             </div>
             {successLog && (
               <div className="text-sm text-foreground text-center mb-3 px-2">
-                {(() => {
-                  console.log("[REWARD DIALOG COMPONENT] Rendering successLog:", successLog);
-                  return successLog;
-                })()}
-              </div>
-            )}
-            {!successLog && (
-              <div style={{ display: 'none' }}>
-                {console.log("[REWARD DIALOG COMPONENT] successLog is falsy, not rendering")}
+                {successLog}
               </div>
             )}
             <DialogTitle className="sr-only">You received</DialogTitle>

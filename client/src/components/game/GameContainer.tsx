@@ -532,20 +532,8 @@ export default function GameContainer() {
       <RewardDialog
         isOpen={rewardDialog.isOpen}
         data={rewardDialog.data}
-        onClose={() => {
-          console.log("[GAME CONTAINER] RewardDialog onClose called");
-          setRewardDialog(false);
-        }}
+        onClose={() => setRewardDialog(false)}
       />
-      {rewardDialog.isOpen && (
-        <div style={{ display: 'none' }}>
-          {console.log("[GAME CONTAINER] RewardDialog props:", {
-            isOpen: rewardDialog.isOpen,
-            hasData: !!rewardDialog.data,
-            data: rewardDialog.data ? JSON.stringify(rewardDialog.data, null, 2) : null,
-          })}
-        </div>
-      )}
 
       <ProfileMenu />
     </div>
