@@ -242,9 +242,19 @@ describe("Reward Dialog System", () => {
         clothing: {
           black_bear_fur: true,
         },
+        resources: {
+          food: 9500, // 10000 - 500 cost = 9500
+        },
       };
 
-      const currentState = initialState;
+      const currentState = {
+        ...initialState,
+        resources: {
+          ...initialState.resources,
+          food: 10000, // initial food before cost
+        },
+      };
+
       const rewards = detectRewards(stateUpdates, currentState, "layTrap");
 
       expect(rewards).toEqual({
@@ -261,12 +271,23 @@ describe("Reward Dialog System", () => {
           ancient_scrolls: true,
         },
         resources: {
-          silver: 100,
-          gold: 50,
+          silver: 100,  // final amount (gained 100)
+          gold: 50,     // final amount (gained 50)
+          food: 7500,   // final amount (lost 2500, so no gain shown)
         },
       };
 
-      const currentState = initialState;
+      // Set up current state with initial values before the action
+      const currentState = {
+        ...initialState,
+        resources: {
+          ...initialState.resources,
+          silver: 0,    // initial silver
+          gold: 0,      // initial gold
+          food: 10000,  // initial food before 2500 cost
+        },
+      };
+
       const rewards = detectRewards(stateUpdates, currentState, "castleRuins");
 
       expect(rewards).toEqual({

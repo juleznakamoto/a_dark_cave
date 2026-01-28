@@ -262,117 +262,117 @@ export const detectRewards = (stateUpdates: Partial<GameState>, currentState: Ga
     stats?: Partial<GameState["stats"]>;
   } = {};
 
-  // Check for new tools
+  // Check for new tools (items set to true)
   if (stateUpdates.tools) {
     const newTools = Object.keys(stateUpdates.tools).filter(
-      tool => stateUpdates.tools![tool as keyof typeof stateUpdates.tools] &&
-        !currentState.tools[tool as keyof typeof currentState.tools]
+      tool => stateUpdates.tools![tool as keyof typeof stateUpdates.tools] === true
     );
     if (newTools.length > 0) {
       rewards.tools = newTools as (keyof GameState["tools"])[];
     }
   }
 
-  // Check for new weapons
+  // Check for new weapons (items set to true)
   if (stateUpdates.weapons) {
     const newWeapons = Object.keys(stateUpdates.weapons).filter(
-      weapon => stateUpdates.weapons![weapon as keyof typeof stateUpdates.weapons] &&
-        !currentState.weapons[weapon as keyof typeof currentState.weapons]
+      weapon => stateUpdates.weapons![weapon as keyof typeof stateUpdates.weapons] === true
     );
     if (newWeapons.length > 0) {
       rewards.weapons = newWeapons as (keyof GameState["weapons"])[];
     }
   }
 
-  // Check for new clothing
+  // Check for new clothing (items set to true)
   if (stateUpdates.clothing) {
     const newClothing = Object.keys(stateUpdates.clothing).filter(
-      clothing => stateUpdates.clothing![clothing as keyof typeof stateUpdates.clothing] &&
-        !currentState.clothing[clothing as keyof typeof currentState.clothing]
+      clothing => stateUpdates.clothing![clothing as keyof typeof stateUpdates.clothing] === true
     );
     if (newClothing.length > 0) {
       rewards.clothing = newClothing as (keyof GameState["clothing"])[];
     }
   }
 
-  // Check for new relics
+  // Check for new relics (items set to true)
   if (stateUpdates.relics) {
     const newRelics = Object.keys(stateUpdates.relics).filter(
-      relic => stateUpdates.relics![relic as keyof typeof stateUpdates.relics] &&
-        !currentState.relics[relic as keyof typeof currentState.relics]
+      relic => stateUpdates.relics![relic as keyof typeof stateUpdates.relics] === true
     );
     if (newRelics.length > 0) {
       rewards.relics = newRelics as (keyof GameState["relics"])[];
     }
   }
 
-  // Check for new blessings
+  // Check for new blessings (items set to true)
   if (stateUpdates.blessings) {
     const newBlessings = Object.keys(stateUpdates.blessings).filter(
-      blessing => stateUpdates.blessings![blessing as keyof typeof stateUpdates.blessings] &&
-        !currentState.blessings[blessing as keyof typeof currentState.blessings]
+      blessing => stateUpdates.blessings![blessing as keyof typeof stateUpdates.blessings] === true
     );
     if (newBlessings.length > 0) {
       rewards.blessings = newBlessings as (keyof GameState["blessings"])[];
     }
   }
 
-  // Check for new books
+  // Check for new books (items set to true)
   if (stateUpdates.books) {
     const newBooks = Object.keys(stateUpdates.books).filter(
-      book => stateUpdates.books![book as keyof typeof stateUpdates.books] &&
-        !currentState.books[book as keyof typeof currentState.books]
+      book => stateUpdates.books![book as keyof typeof stateUpdates.books] === true
     );
     if (newBooks.length > 0) {
       rewards.books = newBooks as (keyof GameState["books"])[];
     }
   }
 
-  // Check for new schematics
+  // Check for new schematics (items set to true)
   if (stateUpdates.schematics) {
     const newSchematics = Object.keys(stateUpdates.schematics).filter(
-      schematic => stateUpdates.schematics![schematic as keyof typeof stateUpdates.schematics] &&
-        !currentState.schematics[schematic as keyof typeof currentState.schematics]
+      schematic => stateUpdates.schematics![schematic as keyof typeof stateUpdates.schematics] === true
     );
     if (newSchematics.length > 0) {
       rewards.schematics = newSchematics as (keyof GameState["schematics"])[];
     }
   }
 
-  // Check for new fellowship members
+  // Check for new fellowship members (items set to true)
   if (stateUpdates.fellowship) {
     const newMembers = Object.keys(stateUpdates.fellowship).filter(
-      member => stateUpdates.fellowship![member as keyof typeof stateUpdates.fellowship] &&
-        !currentState.fellowship[member as keyof typeof currentState.fellowship]
+      member => stateUpdates.fellowship![member as keyof typeof stateUpdates.fellowship] === true
     );
     if (newMembers.length > 0) {
       rewards.fellowship = newMembers as (keyof GameState["fellowship"])[];
     }
   }
 
-  // Check for increased resources (positive changes only)
+  // Check for increased resources (positive values in stateUpdates)
   if (stateUpdates.resources) {
-    const increasedResources: Record<string, number> = {};
-    Object.entries(stateUpdates.resources).forEach(([resource, amount]) => {
-      if (typeof amount === 'number' && amount > 0) {
-        increasedResources[resource] = amount;
+    const rewardResources: Record<string, number> = {};
+    Object.entries(stateUpdates.resources).forEach(([resource, finalAmount]) => {
+      if (typeof finalAmount === 'number') {
+        const originalAmount = currentState.resources[resource as keyof typeof currentState.resources] || 0;
+        const gained = finalAmount - originalAmount;
+        if (gained > 0) {
+          rewardResources[resource] = gained;
+        }
       }
     });
-    if (Object.keys(increasedResources).length > 0) {
-      rewards.resources = increasedResources as Partial<Record<keyof GameState["resources"], number>>;
+    if (Object.keys(rewardResources).length > 0) {
+      rewards.resources = rewardResources as Partial<Record<keyof GameState["resources"], number>>;
     }
   }
 
-  // Check for increased stats (positive changes only)
+  // Check for increased stats (positive values in stateUpdates)
   if (stateUpdates.stats) {
-    const increasedStats: Record<string, number> = {};
-    Object.entries(stateUpdates.stats).forEach(([stat, amount]) => {
-      if (typeof amount === 'number' && amount > 0) {
-        increasedStats[stat] = amount;
+    const rewardStats: Record<string, number> = {};
+    Object.entries(stateUpdates.stats).forEach(([stat, finalAmount]) => {
+      if (typeof finalAmount === 'number') {
+        const originalAmount = currentState.stats[stat as keyof typeof currentState.stats] || 0;
+        const gained = finalAmount - originalAmount;
+        if (gained > 0) {
+          rewardStats[stat] = gained;
+        }
       }
     });
-    if (Object.keys(increasedStats).length > 0) {
-      rewards.stats = increasedStats as Partial<GameState["stats"]>;
+    if (Object.keys(rewardStats).length > 0) {
+      rewards.stats = rewardStats as Partial<GameState["stats"]>;
     }
   }
 
