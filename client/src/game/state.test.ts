@@ -319,6 +319,14 @@ describe("Reward Dialog System", () => {
       expect(rewardDialogActions.has("blackreachCanyon")).toBe(true);
     });
 
+    it("should include all new cave actions in whitelist", () => {
+      // Test that all the new actions are in the whitelist
+      expect(rewardDialogActions.has("lowChamber")).toBe(true);
+      expect(rewardDialogActions.has("occultistChamber")).toBe(true);
+      expect(rewardDialogActions.has("hiddenLibrary")).toBe(true);
+      expect(rewardDialogActions.has("exploreUndergroundLake")).toBe(true);
+    });
+
     it("should trigger reward dialog for blackreachCanyon", () => {
       // Setup: ensure player has crow harness and enough food
       useGameStore.setState({
@@ -338,6 +346,150 @@ describe("Reward Dialog System", () => {
 
       // The dialog should be triggered (we test the setup, not the timeout)
       // In a real scenario, the dialog would appear after 500ms
+    });
+  });
+
+  describe("lowChamber action", () => {
+    it("should detect mastermason chisel and resource rewards", () => {
+      // Test the reward detection logic directly
+      const stateUpdates = {
+        tools: {
+          mastermason_chisel: true,
+        },
+        resources: {
+          silver: 251,  // gained 251 (250 + 1 bonus)
+          gold: 50,     // gained 50
+          obsidian: 50, // gained 50
+          adamant: 50,  // gained 50
+          food: 9000,   // lost 1000 (but we only show gains)
+        },
+      };
+
+      const currentState = {
+        ...initialState,
+        resources: {
+          ...initialState.resources,
+          silver: 0,
+          gold: 0,
+          obsidian: 0,
+          adamant: 0,
+          food: 10000, // initial food before cost
+        },
+      };
+
+      const rewards = detectRewards(stateUpdates, currentState, "lowChamber");
+
+      expect(rewards).toEqual({
+        tools: ["mastermason_chisel"],
+        resources: { silver: 251, gold: 50, obsidian: 50, adamant: 50 },
+      });
+    });
+  });
+
+  describe("occultistChamber action", () => {
+    it("should detect occultist grimoire and resource rewards", () => {
+      // Test the reward detection logic directly
+      const stateUpdates = {
+        relics: {
+          occultist_grimoire: true,
+        },
+        resources: {
+          gold: 150,      // gained 150
+          obsidian: 75,   // gained 75
+          adamant: 50,    // gained 50
+          moonstone: 25,  // gained 25
+          food: 9000,     // lost 1000 (but we only show gains)
+        },
+      };
+
+      const currentState = {
+        ...initialState,
+        resources: {
+          ...initialState.resources,
+          gold: 0,
+          obsidian: 0,
+          adamant: 0,
+          moonstone: 0,
+          food: 10000, // initial food before cost
+        },
+      };
+
+      const rewards = detectRewards(stateUpdates, currentState, "occultistChamber");
+
+      expect(rewards).toEqual({
+        relics: ["occultist_grimoire"],
+        resources: { gold: 150, obsidian: 75, adamant: 50, moonstone: 25 },
+      });
+    });
+  });
+
+  describe("hiddenLibrary action", () => {
+    it("should detect stonebinders codex and gold reward", () => {
+      // Test the reward detection logic directly
+      const stateUpdates = {
+        relics: {
+          stonebinders_codex: true,
+        },
+        resources: {
+          gold: 100,   // gained 100
+          food: 7500,  // lost 2500 (but we only show gains)
+        },
+      };
+
+      const currentState = {
+        ...initialState,
+        resources: {
+          ...initialState.resources,
+          gold: 0,
+          food: 10000, // initial food before cost
+        },
+      };
+
+      const rewards = detectRewards(stateUpdates, currentState, "hiddenLibrary");
+
+      expect(rewards).toEqual({
+        relics: ["stonebinders_codex"],
+        resources: { gold: 100 },
+      });
+    });
+  });
+
+  describe("exploreUndergroundLake action", () => {
+    it("should detect resource rewards", () => {
+      // Test the reward detection logic directly
+      const stateUpdates = {
+        resources: {
+          silver: 500,    // gained 500
+          gold: 100,      // gained 100
+          obsidian: 150,  // gained 150
+          adamant: 100,   // gained 100
+          moonstone: 25,  // gained 25
+          food: 7500,     // lost 2500 (but we only show gains)
+          wood: 5000,     // lost 5000 (but we only show gains)
+          iron: 500,      // lost 500 (but we only show gains)
+        },
+      };
+
+      const currentState = {
+        ...initialState,
+        resources: {
+          ...initialState.resources,
+          silver: 0,
+          gold: 0,
+          obsidian: 0,
+          adamant: 0,
+          moonstone: 0,
+          food: 10000,  // initial food before cost
+          wood: 10000,   // initial wood before cost
+          iron: 1000,    // initial iron before cost
+        },
+      };
+
+      const rewards = detectRewards(stateUpdates, currentState, "exploreUndergroundLake");
+
+      expect(rewards).toEqual({
+        resources: { silver: 500, gold: 100, obsidian: 150, adamant: 100, moonstone: 25 },
+      });
     });
   });
 });

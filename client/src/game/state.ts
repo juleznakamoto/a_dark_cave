@@ -397,6 +397,10 @@ export const rewardDialogActions = new Set([
   "forestCave",
   "blackreachCanyon",
   "steelDelivery",
+  "lowChamber",
+  "occultistChamber",
+  "hiddenLibrary",
+  "exploreUndergroundLake",
 ]);
 
 // Helper functions
