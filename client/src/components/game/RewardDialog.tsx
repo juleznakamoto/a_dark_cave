@@ -177,15 +177,15 @@ export default function RewardDialog({
 
               @keyframes reward-glow-pulse {
                 0%, 100% {
-                  box-shadow: 0 0 15px 4px rgba(234, 179, 8, 0.25);
+                  box-shadow: 0 0 15px 5px rgba(234, 179, 8, 0.25);
                 }
                 50% {
-                  box-shadow: 0 0 6px 2px rgba(234, 179, 8, 0.5);
+                  box-shadow: 0 0 0px 0px rgba(234, 179, 8, 0.5);
                 }
               }
               `}</style>
       <Dialog open={isOpen} onOpenChange={() => { }}>
-        <DialogContent className="w-[95vw] sm:max-w-sm z-[70] [&>button]:hidden border-2 border-amber-900 shadow-2xl">
+        <DialogContent className="w-[95vw] sm:max-w-sm z-[70] [&>button]:hidden border-2 border-amber-600 shadow-2xl">
           <div className="absolute inset-0 -z-10 reward-dialog-glow pointer-events-none"></div>
           <DialogHeader>
             <div className="flex justify-center">
@@ -197,10 +197,7 @@ export default function RewardDialog({
               </div>
             )}
             <div className="my-3 h-px w-full bg-white/10" />
-            <DialogTitle className="sr-only">You received</DialogTitle>
-            <DialogDescription className="text-sm pt-3 text-gray-400 text-center">
-              You received
-            </DialogDescription>
+            <DialogTitle className="sr-only">Action Reward</DialogTitle>
           </DialogHeader>
 
           <div className="text-sm pb-2">{renderRewards()}</div>
