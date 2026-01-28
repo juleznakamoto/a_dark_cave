@@ -878,17 +878,16 @@ export const choiceEvents: Record<string, GameEvent> = {
     id: "wanderingTribe",
     condition: (state: GameState) =>
       state.buildings.stoneHut >= 4 &&
-      state.resources.fur >= 2500 &&
+      state.resources.fur >= 2000 &&
       !state.buildings.furTents,
-
-    timeProbability: 30,
+    timeProbability: 45,
     title: "The Wandering Tribe",
     message:
       "A small tribe of nomads approaches the village. Their leader speaks: 'We have traveled far and seek a place to call home. Help us help build fur tents to shelter our people and we will join your community.'",
     priority: 3,
     repeatable: true,
     showAsTimedTab: true,
-    timedTabDuration: 3 * 60 * 1000, // 3 minutes
+    timedTabDuration: 5 * 60 * 1000, // 5 minutes
     skipEventLog: true,
     fallbackChoice: {
       id: "refuseTribe",
