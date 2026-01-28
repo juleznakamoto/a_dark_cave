@@ -58,7 +58,7 @@ export default function RewardDialog({
         rewardItems.push(
           <div key={`resource-${resource}`} className="text-sm text-foreground">
             {amount} {formatName(resource)}
-          </div>
+          </div>,
         );
       });
     }
@@ -69,7 +69,7 @@ export default function RewardDialog({
         rewardItems.push(
           <div key={`tool-${tool}`} className="text-sm text-foreground">
             {formatName(tool)}
-          </div>
+          </div>,
         );
       });
     }
@@ -80,7 +80,7 @@ export default function RewardDialog({
         rewardItems.push(
           <div key={`weapon-${weapon}`} className="text-sm text-foreground">
             {formatName(weapon)}
-          </div>
+          </div>,
         );
       });
     }
@@ -91,7 +91,7 @@ export default function RewardDialog({
         rewardItems.push(
           <div key={`clothing-${clothing}`} className="text-sm text-foreground">
             {formatName(clothing)}
-          </div>
+          </div>,
         );
       });
     }
@@ -102,7 +102,7 @@ export default function RewardDialog({
         rewardItems.push(
           <div key={`relic-${relic}`} className="text-sm text-foreground">
             {formatName(relic)}
-          </div>
+          </div>,
         );
       });
     }
@@ -113,7 +113,7 @@ export default function RewardDialog({
         rewardItems.push(
           <div key={`blessing-${blessing}`} className="text-sm text-foreground">
             {formatName(blessing)}
-          </div>
+          </div>,
         );
       });
     }
@@ -124,7 +124,7 @@ export default function RewardDialog({
         rewardItems.push(
           <div key={`book-${book}`} className="text-sm text-foreground">
             {formatName(book)}
-          </div>
+          </div>,
         );
       });
     }
@@ -133,9 +133,12 @@ export default function RewardDialog({
     if (rewards.schematics && rewards.schematics.length > 0) {
       rewards.schematics.forEach((schematic) => {
         rewardItems.push(
-          <div key={`schematic-${schematic}`} className="text-sm text-foreground">
+          <div
+            key={`schematic-${schematic}`}
+            className="text-sm text-foreground"
+          >
             {formatName(schematic)}
-          </div>
+          </div>,
         );
       });
     }
@@ -146,7 +149,7 @@ export default function RewardDialog({
         rewardItems.push(
           <div key={`fellowship-${member}`} className="text-sm text-foreground">
             {formatName(member)}
-          </div>
+          </div>,
         );
       });
     }
@@ -157,36 +160,32 @@ export default function RewardDialog({
         rewardItems.push(
           <div key={`stat-${stat}`} className="text-sm text-foreground">
             +{amount} {formatName(stat)}
-          </div>
+          </div>,
         );
       });
     }
 
-    return (
-      <div className="space-y-2">
-        {rewardItems}
-      </div>
-    );
+    return <div className="space-y-2">{rewardItems}</div>;
   };
 
   return (
     <>
       <style>{`
-        .reward-dialog-glow {
-          animation: reward-glow-pulse 2.5s ease-in-out infinite;
-        }
+                .reward-dialog-glow {
+                  animation: reward-glow-pulse 2.5s ease-in-out infinite;
+                }
 
-        @keyframes reward-glow-pulse {
-          0%, 100% {
-            box-shadow: 0 0 15px 4px rgba(239, 68, 68, 0.25);
-          }
-          50% {
-            box-shadow: 0 0 5px 1px rgba(239, 68, 68, 0.5);
-          }
-        }
-      `}</style>
-      <Dialog open={isOpen} onOpenChange={() => { }}>
-        <DialogContent className="w-[95vw] sm:max-w-sm z-[70] [&>button]:hidden border-2 border-red-950 shadow-2xl">
+                @keyframes reward-glow-pulse {
+                  0%, 100% {
+                    box-shadow: 0 0 15px 4px rgba(239, 68, 68, 0.25);
+                  }
+                  50% {
+                    box-shadow: 0 0 5px 1px rgba(239, 68, 68, 0.5);
+                  }
+                }
+              `}</style>
+      <Dialog open={isOpen} onOpenChange={() => {}}>
+        <DialogContent className="w-[95vw] sm:max-w-sm z-[70] [&>button]:hidden border-2 border-red-800 shadow-2xl">
           <div className="absolute inset-0 -z-10 reward-dialog-glow pointer-events-none"></div>
           <DialogHeader>
             <div className="flex justify-center mb-3">
@@ -198,9 +197,7 @@ export default function RewardDialog({
             </DialogDescription>
           </DialogHeader>
 
-          <div className="pb-2">
-            {renderRewards()}
-          </div>
+          <div className="pb-2">{renderRewards()}</div>
 
           <DialogFooter>
             <Button
