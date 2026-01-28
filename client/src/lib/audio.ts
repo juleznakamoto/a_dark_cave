@@ -300,7 +300,13 @@ export class AudioManager {
 
   sfxMute(mute: boolean): void {
     this.isMutedGlobally = mute;
-    // Do not stop/resume here — SFX are one-shots; music is controlled by musicMute
+    if (mute) {
+      // Stop all looping SFX sounds (but not background music which is controlled separately)
+      this.stopLoopingSound('wind');
+      this.stopLoopingSound('combat');
+      this.stopLoopingSound('whisperingCube');
+      // Note: backgroundMusic is controlled by musicMute, not sfxMute
+    }
   }
 
   musicMute(mute: boolean): void {

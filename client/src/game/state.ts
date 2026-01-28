@@ -1716,15 +1716,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   setTimedEventTab: async (isActive: boolean, event?: LogEntry | null, duration?: number) => {
-    // Play sound if activating and SFX not muted
+    // Play sound if activating
     if (isActive && event) {
-      const state = get();
-      if (!state.sfxMuted) {
-        const eventId = event.id.split("-")[0];
-        const madnessEventIds = Object.keys(madnessEvents);
-        const isMadnessEvent = madnessEventIds.includes(eventId);
-        audioManager.playSound(isMadnessEvent ? "eventMadness" : "event", 0.02);
-      }
+      const eventId = event.id.split("-")[0];
+      const madnessEventIds = Object.keys(madnessEvents);
+      const isMadnessEvent = madnessEventIds.includes(eventId);
+      audioManager.playSound(isMadnessEvent ? "eventMadness" : "event", 0.02);
     }
 
     // If activating merchant event, use the choices already generated and passed in the event

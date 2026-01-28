@@ -169,6 +169,11 @@ export default function Game() {
         const { audioManager } = await import("@/lib/audio");
         await audioManager.loadGameSounds();
 
+        // Sync audio mute state immediately (before starting game loop)
+        const currentState = useGameStore.getState();
+        audioManager.musicMute(currentState.musicMuted);
+        audioManager.sfxMute(currentState.sfxMuted);
+
         // Start game loop
         startGameLoop();
 
