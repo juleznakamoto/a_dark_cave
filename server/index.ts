@@ -204,7 +204,6 @@ app.get("/api/admin/data", async (req, res) => {
     const thirtyDaysAgo = new Date(now);
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
     const filterDate = thirtyDaysAgo.toISOString();
-    const sevenDaysDate = sevenDaysAgo.toISOString();
 
     // Get total user count from game_saves table (all time)
     const { count: totalUserCount, error: countError } = await adminClient

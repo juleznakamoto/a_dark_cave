@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 import { useGameStore } from "@/game/state";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { cubeEvents } from "@/game/rules/eventsCube";

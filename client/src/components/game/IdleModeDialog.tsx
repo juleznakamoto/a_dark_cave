@@ -11,7 +11,6 @@ import { useGameStore } from "@/game/state";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
 import { capitalizeWords } from "@/lib/utils";
 import { getPopulationProduction } from "@/game/population";
-import { logger } from "@/lib/logger";
 
 // Sleep upgrade configurations
 const SLEEP_LENGTH_UPGRADES = [

@@ -15,7 +15,6 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import CubeDialog from "./CubeDialog";
-import { logger } from "@/lib/logger";
 
 interface EventDialogProps {
   isOpen: boolean;

@@ -168,8 +168,3 @@ export const supabase = {
     };
   }
 };
-
-export type User = {
-  id: string;
-  email: string;
-};
