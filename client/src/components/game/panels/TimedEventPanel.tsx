@@ -275,6 +275,8 @@ export default function TimedEventPanel() {
 
               // Check if player can afford the cost (for all timed tab events)
               let canAfford = true;
+              let individualAffordance: Record<string, boolean> = {};
+
               if (costText) {
                 // Extract all resource requirements from cost string
                 const costMatches = costText.matchAll(/(\d+)\s+([a-zA-Z_]+)/g);
@@ -285,11 +287,13 @@ export default function TimedEventPanel() {
                   // Check if this resource exists in gameState.resources
                   const resourceKey =
                     resourceName as keyof typeof gameState.resources;
-                  if (resourceKey in gameState.resources) {
-                    if (gameState.resources[resourceKey] < costAmount) {
-                      canAfford = false;
-                      break;
-                    }
+                  const currentAmount = gameState.resources[resourceKey] ?? 0;
+                  const hasEnough = currentAmount >= costAmount;
+                  
+                  individualAffordance[resourceName] = hasEnough;
+                  
+                  if (!hasEnough) {
+                    canAfford = false;
                   }
                 }
               }
@@ -375,12 +379,28 @@ export default function TimedEventPanel() {
                   key={choice.id}
                   tooltip={
                     <div
-                      className={`text-xs whitespace-nowrap ${isDisabled ? "text-muted-foreground" : ""}`}
+                      className="text-xs whitespace-nowrap"
                     >
                       {costText && (
                         <div>
-                          {/* Always use merchantTooltip (cost-only) for timed events - never show current amounts */}
-                          {merchantTooltip.getContent(costText)}
+                          {/* Parse cost segments and apply individual coloring */}
+                          {costText.split(",").map((part, i) => {
+                            const trimmedPart = part.trim();
+                            const match = trimmedPart.match(/(\d+)\s+([a-zA-Z_]+)/);
+                            if (match) {
+                              const resName = match[2].toLowerCase();
+                              const hasEnough = individualAffordance[resName] !== false;
+                              return (
+                                <div 
+                                  key={i} 
+                                  className={hasEnough ? "text-foreground" : "text-muted-foreground"}
+                                >
+                                  -{trimmedPart}
+                                </div>
+                              );
+                            }
+                            return <div key={i}>-{trimmedPart}</div>;
+                          })}
                         </div>
                       )}
                       {costText && successPercentage && (
