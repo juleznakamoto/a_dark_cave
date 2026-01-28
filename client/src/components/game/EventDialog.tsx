@@ -327,9 +327,7 @@ export default function EventDialog({
                 // #region agent log
                 // Get cost breakdown with individual satisfaction status for each resource
                 const costBreakdown = getEventChoiceCostBreakdown(cost, gameState);
-                if (choice.id === 'prepareFrostfall' || (costText && costText.includes('wood') && costText.includes('food'))) {
-                  fetch('http://127.0.0.1:7242/ingest/33ba3fb0-527b-48ba-8316-dce19cab51cb',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'EventDialog.tsx:328',message:'FROSTFALL costBreakdown',data:{choiceId:choice.id,costTextValue:costText,costBreakdownArray:costBreakdown,woodAmount:gameState.resources.wood,foodAmount:gameState.resources.food,breakdownItem0:costBreakdown[0],breakdownItem1:costBreakdown[1]},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'A'})}).catch(()=>{});
-                }
+                fetch('http://127.0.0.1:7242/ingest/33ba3fb0-527b-48ba-8316-dce19cab51cb',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'EventDialog.tsx:328',message:'costBreakdown',data:{eventId:event?.id,choiceId:choice.id,costTextValue:String(costText),costBreakdownLength:costBreakdown.length,costBreakdownArray:costBreakdown,woodAmount:gameState.resources.wood,foodAmount:gameState.resources.food},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'A'})}).catch(()=>{});
                 // #endregion
 
                 return costBreakdown.length > 0 ? (
