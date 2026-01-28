@@ -214,20 +214,6 @@ export default function ActionProgressChartAchievements() {
           Math.min(Number(state.story?.seen?.ashfireBombsCrafted) || 0, 20),
         reward: 500,
       },
-      // {
-      //   segmentType: "voidBombs",
-      //   maxCount: 15,
-      //   color: SEGMENT_COLOR,
-      //   label: "Void Bombs crafted",
-      //   getCount: (state: GameState) =>
-      //     Math.min(
-      //       state.cruelMode
-      //         ? Number(state.story?.seen?.voidBombsCrafted) || 0
-      //         : 0,
-      //       15,
-      //     ),
-      //   reward: 500,
-      // },
     ],
     // Fifth ring: Merchant Purchases
     [
@@ -239,6 +225,20 @@ export default function ActionProgressChartAchievements() {
         getCount: (state: GameState) => {
           const count = Math.min(
             Number(state.story?.merchantPurchases) || 0,
+            100,
+          );
+          return count === 1 ? 1.8 : count;
+        },
+        reward: 500,
+      },
+      {
+        segmentType: "feedFire",
+        maxCount: 100,
+        color: SEGMENT_COLOR,
+        label: "Fire Feeder",
+        getCount: (state: GameState) => {
+          const count = Math.min(
+            Number(state.story?.seen?.feedFireUsageCount) || 0,
             100,
           );
           return count === 1 ? 1.8 : count;

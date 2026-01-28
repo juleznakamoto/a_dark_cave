@@ -232,6 +232,13 @@ export function executeGameAction(
           level: newLevel,
           lastLevelDecrease: Date.now(),
         },
+        story: {
+          ...state.story,
+          seen: {
+            ...state.story?.seen,
+            feedFireUsageCount: ((state.story?.seen?.feedFireUsageCount as number) || 0) + 1,
+          },
+        },
       };
       // Update initialCooldowns to match the custom cooldown
       (result.stateUpdates as any).initialCooldowns = {
