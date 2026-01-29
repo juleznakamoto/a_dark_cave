@@ -912,7 +912,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                         })
                         .map((item) => (
                           <Card key={item.id} className="flex flex-col">
-                            <CardHeader className="leading-snug p-3 md:p-6 pb-2 md:pb-3 relative">
+                            <CardHeader className="leading-snug p-3 md:p-6 pb-1 md:pb-2 relative">
                               {item.symbol && (
                                 <span
                                   className="leading-[0.9] text-lg text-right absolute top-3 right-3 md:top-6 md:right-6"
@@ -1009,9 +1009,9 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                   </TooltipProvider>
                                 )}
                               </CardTitle>
-                              <CardDescription className="text-bold">
+                              <CardDescription className="!m-0 text-bold">
                                 {item.originalPrice && (
-                                  <span className="line-through text-muted-foreground mr-2">
+                                  <span className="text-xs line-through text-muted-foreground mr-1">
                                     {formatPrice(item.originalPrice)}
                                   </span>
                                 )}

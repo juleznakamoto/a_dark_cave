@@ -58,7 +58,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "cruel_mode",
     name: "Cruel Mode",
     description:
-      "A more cruel world, expanded story, more items, more lore, deadlier foes. Endure, or vanish.",
+      "A more cruel world, expanded story, more items, deadlier foes. Endure, or vanish.",
     originalPrice: 699,
     price: 499, // 4.99 €
     rewards: {},
@@ -262,7 +262,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "crow_harness",
     name: "Crow Harness",
     description:
-      "A specially crafted harness for messenger crows. Unlocks Crow storyline. Adds Fellowship Member.",
+      "Specially crafted harness for messenger crows. Unlocks Crow storyline. Adds Fellowship Member.",
     originalPrice: 499,
     price: 349, // 3.49 €
     rewards: {
