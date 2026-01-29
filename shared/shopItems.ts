@@ -25,7 +25,7 @@ export interface ShopItem {
 export const SHOP_ITEMS: Record<string, ShopItem> = {
   gold_100_free: {
     id: "gold_100_free",
-    name: "100 Gold (Free Daily Gift)",
+    name: "100 Gold (Daily Gift)",
     description: "A small daily mercy in a cold world",
     price: 0,
     rewards: {
