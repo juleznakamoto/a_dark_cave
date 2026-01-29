@@ -33,7 +33,7 @@ export class AudioManager {
   private backgroundMusicVolume: number = 1;
   private wasBackgroundMusicPlaying: boolean = false;
 
-  private constructor() {}
+  private constructor() { }
 
   static getInstance(): AudioManager {
     if (!AudioManager.instance) {
@@ -89,12 +89,12 @@ export class AudioManager {
     try {
       sound.volume(volume);
       sound.play();
-      
+
       // Monkey patch the internal event handling (lo/co depending on build) to be safer
       const patchInternalHandler = (handlerName: string) => {
         if (sound && (sound as any)[handlerName] && !(sound as any)['_' + handlerName + 'Patched']) {
           const originalHandler = (sound as any)[handlerName];
-          (sound as any)[handlerName] = function(e: string, t: any, n: any) {
+          (sound as any)[handlerName] = function (e: string, t: any, n: any) {
             if (!e) return this;
             const i = this["_on" + e];
             if (!i || !Array.isArray(i)) {
@@ -143,16 +143,16 @@ export class AudioManager {
     }
 
     if (sound.playing && sound.playing()) return;
-    
+
     try {
       sound.loop(true);
       sound.volume(volume);
-      
+
       // Monkey patch the internal event handling (lo/co depending on build) to be safer
       const patchInternalHandler = (handlerName: string) => {
         if (sound && (sound as any)[handlerName] && !(sound as any)['_' + handlerName + 'Patched']) {
           const originalHandler = (sound as any)[handlerName];
-          (sound as any)[handlerName] = function(e: string, t: any, n: any) {
+          (sound as any)[handlerName] = function (e: string, t: any, n: any) {
             if (!e) return this;
             const i = this["_on" + e];
             if (!i || !Array.isArray(i)) {
@@ -173,7 +173,7 @@ export class AudioManager {
 
       patchInternalHandler('lo');
       patchInternalHandler('co');
-      
+
       if (fadeInDuration > 0) {
         sound.volume(0);
         sound.play();
@@ -245,7 +245,8 @@ export class AudioManager {
       'backgroundMusic': '/sounds/background_music.wav',
       'explosion': '/sounds/explosion.wav',
       'combat': '/sounds/combat.wav',
-      'feedFire': '/sounds/feed_fire.wav'
+      'feedFire': '/sounds/feed_fire.wav',
+      'sleep': '/sounds/sleep.wav'
     };
 
     await Promise.all(
@@ -264,7 +265,7 @@ export class AudioManager {
     try {
       const bgMusic = this.sounds.get('backgroundMusic');
       this.wasBackgroundMusicPlaying = (bgMusic && typeof bgMusic.playing === 'function') ? bgMusic.playing() : false;
-      
+
       this.sounds.forEach(sound => {
         try {
           if (sound && typeof sound.pause === 'function') {

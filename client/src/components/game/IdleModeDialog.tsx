@@ -11,6 +11,7 @@ import { useGameStore } from "@/game/state";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
 import { capitalizeWords } from "@/lib/utils";
 import { getPopulationProduction } from "@/game/population";
+import { audioManager } from "@/lib/audio";
 
 // Sleep upgrade configurations
 const SLEEP_LENGTH_UPGRADES = [
@@ -258,6 +259,9 @@ export default function IdleModeDialog() {
             needsDisplay: true,
           },
         });
+
+        // Play sleep sound when entering sleep mode
+        audioManager.playSound('sleep');
 
         // Immediately save to Supabase so user can close tab
         (async () => {
