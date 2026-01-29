@@ -181,9 +181,8 @@ export default function IdleModeDialog() {
 
   // Initialize idle mode when dialog opens
   useEffect(() => {
-    if (idleModeDialog.isOpen) {
+    if (idleModeDialog.isOpen && !isActive) {
       const initNow = Date.now();
-      console.log("[IdleModeDialog] Dialog opened, checking state", { isActive, startTime, idleModeState });
 
       // Check if there's a persisted idle mode state
       if (idleModeState?.startTime && idleModeState.startTime > 0) {
@@ -247,7 +246,6 @@ export default function IdleModeDialog() {
         setIsActive(stillActive);
 
         if (stillActive) {
-          console.log("[IdleModeDialog] Resuming sleep sound for active persisted state");
           audioManager.playLoopingSound("sleep", 0.2);
         }
       } else if (!idleModeState?.isActive && idleModeState?.startTime === 0) {
@@ -273,7 +271,6 @@ export default function IdleModeDialog() {
         });
 
         // Play sleep sound when entering sleep mode
-        console.log("[IdleModeDialog] Starting sleep sound");
         audioManager.playLoopingSound("sleep", 0.2);
 
         // Immediately save to Supabase so user can close tab
@@ -491,7 +488,6 @@ export default function IdleModeDialog() {
     }
 
     // Stop sleep sound when ending idle mode
-    console.log("[IdleModeDialog] Stopping sleep sound");
     audioManager.stopLoopingSound("sleep", 1);
 
     // Clear persisted idle mode state completely - now reset startTime to 0
