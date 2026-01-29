@@ -226,7 +226,6 @@ export class AudioManager {
     const initialSounds = {
       'event': '/sounds/event.wav',
       'wind': '/sounds/wind.mp3',
-      'sleep': '/sounds/sleep.wav'
     };
 
     for (const [name, url] of Object.entries(initialSounds)) {

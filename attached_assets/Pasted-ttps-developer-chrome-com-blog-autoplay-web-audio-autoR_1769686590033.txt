@@ -1,0 +1,62 @@
+ttps://developer.chrome.com/blog/autoplay/#web_audio
+_autoResume @ howler.js?v=65f4035e:359
+play @ howler.js?v=65f4035e:562
+action @ howler.js?v=65f4035e:550
+_loadQueue @ howler.js?v=65f4035e:1373
+_loadQueue @ howler.js?v=65f4035e:1370
+_emit @ howler.js?v=65f4035e:1355
+volume @ howler.js?v=65f4035e:876
+action @ howler.js?v=65f4035e:855
+_loadQueue @ howler.js?v=65f4035e:1373
+_loadQueue @ howler.js?v=65f4035e:1370
+_emit @ howler.js?v=65f4035e:1355
+volume @ howler.js?v=65f4035e:876
+action @ howler.js?v=65f4035e:855
+_loadQueue @ howler.js?v=65f4035e:1373
+loadSound @ howler.js?v=65f4035e:1761
+success @ howler.js?v=65f4035e:1740
+Promise.then
+decodeAudioData @ howler.js?v=65f4035e:1746
+xhr.onload @ howler.js?v=65f4035e:1712
+XMLHttpRequest.send
+safeXhrSend @ howler.js?v=65f4035e:1728
+loadBuffer @ howler.js?v=65f4035e:1723
+load @ howler.js?v=65f4035e:501
+init @ howler.js?v=65f4035e:445
+(anonymous) @ howler.js?v=65f4035e:1904
+Howl2 @ howler.js?v=65f4035e:382
+loadSound @ audio.ts:50
+(anonymous) @ audio.ts:253
+loadGameSounds @ audio.ts:253
+initializeGame @ game.tsx:170
+await in initializeGame
+(anonymous) @ game.tsx:191
+commitHookEffectListMount @ chunk-276SZO74.js?v=65f4035e:16915
+commitPassiveMountOnFiber @ chunk-276SZO74.js?v=65f4035e:18156
+commitPassiveMountEffects_complete @ chunk-276SZO74.js?v=65f4035e:18129
+commitPassiveMountEffects_begin @ chunk-276SZO74.js?v=65f4035e:18119
+commitPassiveMountEffects @ chunk-276SZO74.js?v=65f4035e:18109
+flushPassiveEffectsImpl @ chunk-276SZO74.js?v=65f4035e:19490
+flushPassiveEffects @ chunk-276SZO74.js?v=65f4035e:19447
+performSyncWorkOnRoot @ chunk-276SZO74.js?v=65f4035e:18868
+flushSyncCallbacks @ chunk-276SZO74.js?v=65f4035e:9119
+commitRootImpl @ chunk-276SZO74.js?v=65f4035e:19432
+commitRoot @ chunk-276SZO74.js?v=65f4035e:19277
+finishConcurrentRender @ chunk-276SZO74.js?v=65f4035e:18805
+performConcurrentWorkOnRoot @ chunk-276SZO74.js?v=65f4035e:18718
+workLoop @ chunk-276SZO74.js?v=65f4035e:197
+flushWork @ chunk-276SZO74.js?v=65f4035e:176
+performWorkUntilDeadline @ chunk-276SZO74.js?v=65f4035e:384Understand this warning
+logger.ts:33 v811Z Successfully loaded sound: backgroundMusic
+IdleModeDialog.tsx:487 [IdleModeDialog] Stopping sleep sound
+logger.ts:33 v811Z [SAVE CLOUD] 📊 Resource snapshot includes stats: {hasStats: true, statsKeys: Array(4), snapshotKeys: Array(29)}
+logger.ts:33 v811Z [SAVE CLOUD] 🔍 Playtime overwrite check: {allowPlaytimeOverwrite: false, isNewGame: false, willAllowOverwrite: false, currentPlayTime: 4289593}
+logger.ts:33 v811Z [SAVE CLOUD] Edge Function success: {success: true}
+logger.ts:33 v811Z [SAVE] ✅ Updated lastCloudState after successful cloud save
+IdleModeDialog.tsx:487 [IdleModeDialog] Stopping sleep sound
+logger.ts:33 v811Z [SAVE CLOUD] 🔍 Playtime overwrite check: {allowPlaytimeOverwrite: false, isNewGame: false, willAllowOverwrite: false, currentPlayTime: 4292644}
+logger.ts:33 v811Z [SAVE CLOUD] Edge Function success: {success: true}
+logger.ts:33 v811Z [SAVE] ✅ Updated lastCloudState after successful cloud save
+IdleModeDialog.tsx:487 [IdleModeDialog] Stopping sleep sound
+logger.ts:33 v811Z [SAVE CLOUD] 🔍 Playtime overwrite check: {allowPlaytimeOverwrite: false, isNewGame: false, willAllowOverwrite: false, currentPlayTime: 4292894}
+logger.ts:33 v811Z [SAVE CLOUD] Edge Function success: {success: true}

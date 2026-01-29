@@ -11,6 +11,7 @@ import { useGameStore } from "@/game/state";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
 import { capitalizeWords } from "@/lib/utils";
 import { getPopulationProduction } from "@/game/population";
+import { audioManager } from "@/lib/audio";
 
 // Sleep upgrade configurations
 const SLEEP_LENGTH_UPGRADES = [
@@ -140,8 +141,13 @@ function simulatePopulationConsumption(
 }
 
 export default function IdleModeDialog() {
-  const { idleModeDialog, setIdleModeDialog, idleModeState, sleepUpgrades, gameId } =
-    useGameStore();
+  const {
+    idleModeDialog,
+    setIdleModeDialog,
+    idleModeState,
+    sleepUpgrades,
+    gameId,
+  } = useGameStore();
   const [accumulatedResources, setAccumulatedResources] = useState<
     Record<string, number>
   >({});
@@ -175,8 +181,9 @@ export default function IdleModeDialog() {
 
   // Initialize idle mode when dialog opens
   useEffect(() => {
-    if (idleModeDialog.isOpen && !isActive) {
+    if (idleModeDialog.isOpen) {
       const initNow = Date.now();
+      console.log("[IdleModeDialog] Dialog opened, checking state", { isActive, startTime, idleModeState });
 
       // Check if there's a persisted idle mode state
       if (idleModeState?.startTime && idleModeState.startTime > 0) {
@@ -236,7 +243,13 @@ export default function IdleModeDialog() {
         // Store the CURRENT resources as initial state (most recent before simulation started)
         setInitialResources({ ...currentState.resources });
         // Only set active if there's time remaining - otherwise just show results
-        setIsActive(remaining > 0);
+        const stillActive = remaining > 0;
+        setIsActive(stillActive);
+
+        if (stillActive) {
+          console.log("[IdleModeDialog] Resuming sleep sound for active persisted state");
+          audioManager.playLoopingSound("sleep", 0.2);
+        }
       } else if (!idleModeState?.isActive && idleModeState?.startTime === 0) {
         // Only start fresh idle mode if there's no active state AND no previous startTime
         // This prevents starting a new idle mode after one just finished
@@ -260,8 +273,8 @@ export default function IdleModeDialog() {
         });
 
         // Play sleep sound when entering sleep mode
-        console.log("[IdleModeDialog] Attempting to play sleep sound");
-        audioManager.playSound('sleep');
+        console.log("[IdleModeDialog] Starting sleep sound");
+        audioManager.playLoopingSound("sleep", 0.2);
 
         // Immediately save to Supabase so user can close tab
         (async () => {
@@ -479,7 +492,7 @@ export default function IdleModeDialog() {
 
     // Stop sleep sound when ending idle mode
     console.log("[IdleModeDialog] Stopping sleep sound");
-    audioManager.stopLoopingSound('sleep', 1);
+    audioManager.stopLoopingSound("sleep", 1);
 
     // Clear persisted idle mode state completely - now reset startTime to 0
     useGameStore.setState({
@@ -488,7 +501,7 @@ export default function IdleModeDialog() {
         startTime: 0, // Reset to 0 only when user closes dialog
         needsDisplay: false,
       },
-      idleModeDialog: { isOpen: false }
+      idleModeDialog: { isOpen: false },
     });
 
     // Close dialog and reset local state
@@ -536,7 +549,7 @@ export default function IdleModeDialog() {
   const isTimeUp = remainingTime <= 0;
 
   return (
-    <Dialog open={idleModeDialog.isOpen} onOpenChange={() => { }} modal={false}>
+    <Dialog open={idleModeDialog.isOpen} onOpenChange={() => {}} modal={false}>
       <DialogContent
         className="w-[95vw] sm:max-w-sm z-[60]"
         hideClose={true}
