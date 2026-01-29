@@ -194,7 +194,7 @@ export default function EventDialog({
     "wrongReflections",
     "villagersStareAtSky"
   ];
-  const isMadnessEvent = event?.id && madnessEventIds.includes(event.id);
+  const isMadnessEvent = event?.id && madnessEventIds.some(id => event.id.startsWith(id));
 
   return (
     <>
