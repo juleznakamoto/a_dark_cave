@@ -137,7 +137,7 @@ export const loreEvents: Record<string, GameEvent> = {
       state.story.seen.restlessKnightMountainsFailed ? 20 : 15,
     title: "Return from the Mountains",
     message:
-      "The knight returns, his armor scratched and weathered. 'I found something extraordinary in the mountains,' he says. I will tell you about it, for a price'",
+      "The knight returns, his armor scratched and battered. 'I found something extraordinary in the mountains,' he says. I will tell you about it, for a price'",
     priority: 3,
     repeatable: true,
     showAsTimedTab: true,
