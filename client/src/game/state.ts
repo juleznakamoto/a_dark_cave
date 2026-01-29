@@ -1254,6 +1254,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       // UI state
       activeTab: "cave",
       devMode: import.meta.env.DEV,
+      idleModeDialog: { isOpen: false }, // Explicitly ensure idle mode dialog is closed
       timedEventTab: {
         isActive: false,
         event: null,

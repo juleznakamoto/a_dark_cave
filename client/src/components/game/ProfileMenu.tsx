@@ -89,7 +89,7 @@ export default function ProfileMenu() {
     const user = await getCurrentUser();
     setCurrentUser(user);
     setIsUserSignedIn(!!user);
-    
+
     // Reset manual save cooldown when user logs in
     if (user) {
       useGameStore.setState((state) => ({
@@ -137,7 +137,7 @@ export default function ProfileMenu() {
   const handleManualSave = async () => {
     const actionId = "manualSave";
     const currentCooldown = cooldowns[actionId] || 0;
-    
+
     if (currentCooldown > 0) {
       return; // Still on cooldown
     }
@@ -537,7 +537,7 @@ export default function ProfileMenu() {
             variant="ghost"
             size="xs"
             onClick={() => setLeaderboardDialogOpen(true)}
-            className="p-0 w-7 h-7 bg-background/70 backdrop-blur-sm border border-border flex items-center justify-center group"
+            className="p-0 w-7 h-7 bg-background backdrop-blur-sm border border-border flex items-center justify-center group"
           >
             <span className="text-lg opacity-60 group-hover:opacity-100 transition-opacity">
               ♕

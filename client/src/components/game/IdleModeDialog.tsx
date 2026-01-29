@@ -140,7 +140,7 @@ function simulatePopulationConsumption(
 }
 
 export default function IdleModeDialog() {
-  const { idleModeDialog, setIdleModeDialog, idleModeState, sleepUpgrades } =
+  const { idleModeDialog, setIdleModeDialog, idleModeState, sleepUpgrades, gameId } =
     useGameStore();
   const [accumulatedResources, setAccumulatedResources] = useState<
     Record<string, number>
@@ -162,6 +162,16 @@ export default function IdleModeDialog() {
     SLEEP_INTENSITY_UPGRADES[sleepUpgrades?.intensityLevel || 0];
   const IDLE_DURATION_MS = sleepLengthConfig.hours * 60 * 60 * 1000;
   const PRODUCTION_SPEED_MULTIPLIER = sleepIntensityConfig.percentage / 100;
+
+  // Reset local state when game changes (new game started)
+  useEffect(() => {
+    setAccumulatedResources({});
+    setRemainingTime(0);
+    setIsActive(false);
+    setStartTime(0);
+    setInitialResources({});
+    setDisplayNow(Date.now());
+  }, [gameId]);
 
   // Initialize idle mode when dialog opens
   useEffect(() => {
