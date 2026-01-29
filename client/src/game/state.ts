@@ -2046,10 +2046,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
         isOpen,
       },
     }));
-
-    if (isOpen) {
-      audioManager.playSound("sleep", 0.02);
-    }
   },
 
   setRestartGameDialogOpen: (isOpen: boolean) => {
