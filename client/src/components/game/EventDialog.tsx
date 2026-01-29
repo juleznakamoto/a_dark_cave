@@ -185,6 +185,17 @@ export default function EventDialog({
 
   const isCubeEvent = event?.id?.startsWith("cube");
 
+  // Check if this is a madness event with choices (dialog)
+  const madnessEventIds = [
+    "villagerStares",
+    "facesInWalls",
+    "skinCrawling",
+    "creatureInHut",
+    "wrongReflections",
+    "villagersStareAtSky"
+  ];
+  const isMadnessEvent = event?.id && madnessEventIds.includes(event.id);
+
   return (
     <>
       {isCubeEvent ? (
@@ -202,7 +213,10 @@ export default function EventDialog({
             // All closing should be handled explicitly through handleChoice
           }}
         >
-          <DialogContent className="w-[95vw] sm:max-w-md [&>button]:hidden">
+          <DialogContent className={`w-[95vw] sm:max-w-md [&>button]:hidden ${isMadnessEvent ? 'border-2 border-red-500 shadow-2xl p-6 flex flex-col overflow-visible z-[100]' : ''}`}>
+            {isMadnessEvent && (
+              <div className="absolute inset-0 -z-10 madness-dialog-glow pointer-events-none"></div>
+            )}
             <DialogHeader>
               <div className="flex items-center justify-between gap-2">
                 <DialogTitle className="text-lg font-semibold">

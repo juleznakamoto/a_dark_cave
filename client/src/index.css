@@ -279,6 +279,21 @@ body {
   animation: cube-glow-pulse 5s ease-in-out infinite;
 }
 
+@keyframes madness-glow-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 15px 1px rgba(220, 38, 38, 0.25);
+  }
+
+  50% {
+    box-shadow: 0 0 5px 1px rgba(220, 38, 38, 0.5);
+  }
+}
+
+.madness-dialog-glow {
+  animation: madness-glow-pulse 1.5s ease-in-out infinite;
+}
+
 @keyframes log-glow {
 
   0%,
