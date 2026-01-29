@@ -728,7 +728,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
         message: isCurrentlyActivated
           ? "Cruel Mode deactivated. New games will use normal difficulty."
           : item.activationMessage ||
-            "Cruel Mode activated! Start a new game to experience the ultimate challenge.",
+          "Cruel Mode activated! Start a new game to experience the ultimate challenge.",
         timestamp: Date.now(),
         type: "system",
       });
@@ -857,450 +857,450 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
       <Dialog open={isOpen} onOpenChange={handleShopDialogOpenChange}>
         {!isPaymentMode && (
           <DialogContent
-            className="max-w-4xl max-h-[80vh] z-[70]"
+            className="w-[95vw] sm:max-w-4xl max-h-[80vh] z-[70]"
             onPointerDownOutside={(e) => e.preventDefault()}
             onInteractOutside={(e) => e.preventDefault()}
           >
-          <DialogHeader>
-            <DialogTitle>Shop</DialogTitle>
-          </DialogHeader>
+            <DialogHeader>
+              <DialogTitle>Shop</DialogTitle>
+            </DialogHeader>
 
-        {isLoading && (
-          <div className="flex justify-center py-8">
-            <div className="text-muted-foreground">Loading...</div>
-          </div>
-        )}
+            {isLoading && (
+              <div className="flex justify-center py-8">
+                <div className="text-muted-foreground">Loading...</div>
+              </div>
+            )}
 
-        {!isLoading && !currentUser && (
-          <div className="bg-red-600/5 border border-red-600/50 rounded-lg p-3 text-center">
-            <p className="text-md font-medium text-red-600">
-              Sign in or create an account to purchase items.
-            </p>
-          </div>
-        )}
+            {!isLoading && !currentUser && (
+              <div className="bg-red-600/5 border border-red-600/50 rounded-lg p-3 text-center">
+                <p className="text-md font-medium text-red-600">
+                  Sign in or create an account to purchase items.
+                </p>
+              </div>
+            )}
 
-        {!isLoading && (
-          <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "shop" | "purchases")} className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="shop">For Sale</TabsTrigger>
-              <TabsTrigger value="purchases" disabled={!currentUser}>
-                Purchases
-              </TabsTrigger>
-            </TabsList>
+            {!isLoading && (
+              <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "shop" | "purchases")} className="w-full">
+                <TabsList className="grid w-full grid-cols-2">
+                  <TabsTrigger value="shop">For Sale</TabsTrigger>
+                  <TabsTrigger value="purchases" disabled={!currentUser}>
+                    Purchases
+                  </TabsTrigger>
+                </TabsList>
 
-            <TabsContent value="shop" className="mt-4">
-              <ScrollArea
-                className={
-                  !currentUser ? "h-[calc(80vh-260px)]" : "h-[calc(80vh-180px)]"
-                }
-              >
-                {" "}
-                <div className="pb-4 text-muted-foreground text-sm">
-                  <p className="text-md font-medium">
-                    All in-game purchases are currently over 25 % off during Beta
-                    phase. Bundles offer additional savings.
-                  </p>
-                </div>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                  {Object.values(SHOP_ITEMS)
-                    .filter((item) => {
-                      // Hide full_game item when BTP=0
-                      if (item.id === 'full_game' && gameState.BTP === 0) {
-                        return false;
-                      }
-                      return true;
-                    })
-                    .map((item) => (
-                    <Card key={item.id} className="flex flex-col">
-                      <CardHeader className="leading-snug p-3 md:p-6 pb-2 md:pb-3 relative">
-                        {item.symbol && (
-                          <span
-                            className="leading-[0.9] text-lg text-right absolute top-3 right-3 md:top-6 md:right-6"
-                            style={{
-                              color: tailwindToHex(
-                                item.symbolColor.replace("text-", ""),
-                              ),
-                              maxWidth: "2.2em",
-                              wordBreak: "break-all",
-                              overflowWrap: "anywhere",
-                            }}
-                          >
-                            {item.symbol}
-                          </span>
-                        )}
-                        <CardTitle className="!m-0 text-md pr-6 flex items-center gap-1">
-                          {item.name}
-                          {item.id === "skull_lantern" && (
-                            <TooltipProvider>
-                              <Tooltip
-                                open={mobileTooltip.isTooltipOpen(
-                                  "skull-lantern-info",
+                <TabsContent value="shop" className="mt-4">
+                  <ScrollArea
+                    className={
+                      !currentUser ? "h-[calc(80vh-260px)]" : "h-[calc(80vh-180px)]"
+                    }
+                  >
+                    {" "}
+                    <div className="pb-4 text-muted-foreground text-sm">
+                      <p className="text-md font-medium">
+                        All in-game purchases are currently over 25 % off during Beta
+                        phase. Bundles offer additional savings.
+                      </p>
+                    </div>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                      {Object.values(SHOP_ITEMS)
+                        .filter((item) => {
+                          // Hide full_game item when BTP=0
+                          if (item.id === 'full_game' && gameState.BTP === 0) {
+                            return false;
+                          }
+                          return true;
+                        })
+                        .map((item) => (
+                          <Card key={item.id} className="flex flex-col">
+                            <CardHeader className="leading-snug p-3 md:p-6 pb-2 md:pb-3 relative">
+                              {item.symbol && (
+                                <span
+                                  className="leading-[0.9] text-lg text-right absolute top-3 right-3 md:top-6 md:right-6"
+                                  style={{
+                                    color: tailwindToHex(
+                                      item.symbolColor.replace("text-", ""),
+                                    ),
+                                    maxWidth: "2.2em",
+                                    wordBreak: "break-all",
+                                    overflowWrap: "anywhere",
+                                  }}
+                                >
+                                  {item.symbol}
+                                </span>
+                              )}
+                              <CardTitle className="!m-0 text-md pr-6 flex items-center gap-1">
+                                {item.name}
+                                {item.id === "skull_lantern" && (
+                                  <TooltipProvider>
+                                    <Tooltip
+                                      open={mobileTooltip.isTooltipOpen(
+                                        "skull-lantern-info",
+                                      )}
+                                    >
+                                      <TooltipTrigger asChild>
+                                        <button
+                                          className="inline-flex items-center justify-center w-4 h-4 rounded-full text-muted-foreground text-sm"
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            if (mobileTooltip.isMobile) {
+                                              mobileTooltip.handleTooltipClick(
+                                                "skull-lantern-info",
+                                                e,
+                                              );
+                                            }
+                                          }}
+                                        >
+                                          ⓘ
+                                        </button>
+                                      </TooltipTrigger>
+                                      <TooltipContent className="max-w-xs">
+                                        <div className="text-xs">
+                                          <div className="font-bold mb-1">
+                                            Skull Lantern
+                                          </div>
+
+                                          <div className="mt-1 space-y-0.5">
+                                            <div>Cave Explore: +200% Bonus</div>
+                                            <div>Cave Explore: -5s Cooldown</div>
+                                            <div>Mining: +200% Bonus</div>
+                                            <div>Mining: -5s Cooldown</div>
+                                          </div>
+                                        </div>
+                                      </TooltipContent>
+                                    </Tooltip>
+                                  </TooltipProvider>
                                 )}
-                              >
-                                <TooltipTrigger asChild>
-                                  <button
-                                    className="inline-flex items-center justify-center w-4 h-4 rounded-full text-muted-foreground text-sm"
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      if (mobileTooltip.isMobile) {
-                                        mobileTooltip.handleTooltipClick(
-                                          "skull-lantern-info",
-                                          e,
+                                {item.id === "tarnished_compass" && (
+                                  <TooltipProvider>
+                                    <Tooltip
+                                      open={mobileTooltip.isTooltipOpen(
+                                        "tarnished-compass-info",
+                                      )}
+                                    >
+                                      <TooltipTrigger asChild>
+                                        <button
+                                          className="inline-flex items-center justify-center w-4 h-4 rounded-full text-muted-foreground text-sm"
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            if (mobileTooltip.isMobile) {
+                                              mobileTooltip.handleTooltipClick(
+                                                "tarnished-compass-info",
+                                                e,
+                                              );
+                                            }
+                                          }}
+                                        >
+                                          ⓘ
+                                        </button>
+                                      </TooltipTrigger>
+                                      <TooltipContent className="max-w-[14rem]">
+                                        <div className="text-xs">
+                                          <div className="font-bold mb-1">
+                                            Tarnished Compass
+                                          </div>
+
+                                          <div className="mt-1 space-y-0.5">
+                                            <div>+5 Luck</div>
+                                            <div>10% chance to double gains from all actions</div>
+                                          </div>
+                                        </div>
+                                      </TooltipContent>
+                                    </Tooltip>
+                                  </TooltipProvider>
+                                )}
+                              </CardTitle>
+                              <CardDescription className="text-bold">
+                                {item.originalPrice && (
+                                  <span className="line-through text-muted-foreground mr-2">
+                                    {formatPrice(item.originalPrice)}
+                                  </span>
+                                )}
+                                {formatPrice(item.price)}
+                                {item.bundleComponents && item.bundleComponents.length > 0 && (() => {
+                                  const componentsCost = item.bundleComponents.reduce((total, componentId) => {
+                                    return total + SHOP_ITEMS[componentId].price;
+                                  }, 0);
+                                  const savings = componentsCost - item.price;
+                                  const savingsPercent = Math.round((savings / componentsCost) * 100);
+                                  return (
+                                    <span className="ml-2 px-1 py-[1px] text-xs text-green-600 font-semibold border border-green-800 rounded bg-green-950/50">
+                                      - {savingsPercent}%
+                                    </span>
+                                  );
+                                })()}
+                              </CardDescription>
+                            </CardHeader>
+                            <CardContent className="min-h-16 pl-3 pr-3 md:pl-6 md:pr-6 pb-3 md:pb-4 flex-1">
+                              <p className="leading-snug text-sm text-muted-foreground">
+                                {item.description}
+                              </p>
+                            </CardContent>
+                            <CardFooter className="pl-3 pr-3 md:pl-6 md:pr-6 pb-4 md:pb-6 flex-col gap-2">
+                              <Button
+                                onClick={() => handlePurchaseClick(item.id)}
+                                disabled={
+                                  !currentUser ||
+                                  (item.id === "gold_100_free" &&
+                                    (Date.now() -
+                                      (gameState.lastFreeGoldClaim || 0)) /
+                                    (1000 * 60 * 60) <
+                                    24) ||
+                                  (item.id !== "gold_100_free" &&
+                                    !item.canPurchaseMultipleTimes &&
+                                    purchasedItems.some((pid) => {
+                                      if (!pid.startsWith("purchase-")) return false;
+                                      const withoutPrefix = pid.substring(
+                                        "purchase-".length,
+                                      );
+                                      if (withoutPrefix.includes("-temp-")) {
+                                        return (
+                                          withoutPrefix.substring(
+                                            0,
+                                            withoutPrefix.indexOf("-temp-"),
+                                          ) === item.id
                                         );
                                       }
-                                    }}
-                                  >
-                                    ⓘ
-                                  </button>
-                                </TooltipTrigger>
-                                <TooltipContent className="max-w-xs">
-                                  <div className="text-xs">
-                                    <div className="font-bold mb-1">
-                                      Skull Lantern
-                                    </div>
-
-                                    <div className="mt-1 space-y-0.5">
-                                      <div>Cave Explore: +200% Bonus</div>
-                                      <div>Cave Explore: -5s Cooldown</div>
-                                      <div>Mining: +200% Bonus</div>
-                                      <div>Mining: -5s Cooldown</div>
-                                    </div>
-                                  </div>
-                                </TooltipContent>
-                              </Tooltip>
-                            </TooltipProvider>
-                          )}
-                          {item.id === "tarnished_compass" && (
-                            <TooltipProvider>
-                              <Tooltip
-                                open={mobileTooltip.isTooltipOpen(
-                                  "tarnished-compass-info",
-                                )}
+                                      const parts = withoutPrefix.split("-");
+                                      return parts.slice(0, -5).join("-") === item.id;
+                                    }))
+                                }
+                                className="h-8 md:h-10 w-full"
+                                button_id={`shop-purchase-${item.id}`}
                               >
-                                <TooltipTrigger asChild>
-                                  <button
-                                    className="inline-flex items-center justify-center w-4 h-4 rounded-full text-muted-foreground text-sm"
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      if (mobileTooltip.isMobile) {
-                                        mobileTooltip.handleTooltipClick(
-                                          "tarnished-compass-info",
-                                          e,
+                                {item.id === "gold_100_free"
+                                  ? (Date.now() -
+                                    (gameState.lastFreeGoldClaim || 0)) /
+                                    (1000 * 60 * 60) <
+                                    24
+                                    ? (() => {
+                                      const hoursRemaining = Math.ceil(
+                                        24 -
+                                        (Date.now() -
+                                          (gameState.lastFreeGoldClaim || 0)) /
+                                        (1000 * 60 * 60),
+                                      );
+                                      return hoursRemaining === 1
+                                        ? "Available in 1 hour"
+                                        : `Available in ${hoursRemaining} hours`;
+                                    })()
+                                    : "Claim"
+                                  : !item.canPurchaseMultipleTimes &&
+                                    purchasedItems.some((pid) => {
+                                      if (!pid.startsWith("purchase-"))
+                                        return false;
+                                      const withoutPrefix = pid.substring(
+                                        "purchase-".length,
+                                      );
+                                      if (withoutPrefix.includes("-temp-")) {
+                                        return (
+                                          withoutPrefix.substring(
+                                            0,
+                                            withoutPrefix.indexOf("-temp-"),
+                                          ) === item.id
                                         );
                                       }
-                                    }}
-                                  >
-                                    ⓘ
-                                  </button>
-                                </TooltipTrigger>
-                                <TooltipContent className="max-w-[14rem]">
-                                  <div className="text-xs">
-                                    <div className="font-bold mb-1">
-                                      Tarnished Compass
-                                    </div>
+                                      const parts = withoutPrefix.split("-");
+                                      return (
+                                        parts.slice(0, -5).join("-") === item.id
+                                      );
+                                    })
+                                    ? item.price === 0
+                                      ? "Already Claimed"
+                                      : "Already Purchased"
+                                    : item.price === 0
+                                      ? "Claim"
+                                      : "Purchase"}
+                              </Button>
+                            </CardFooter>
+                          </Card>
+                        ))}
+                    </div>
+                    <ScrollBar orientation="vertical" />
+                  </ScrollArea>
+                </TabsContent>
 
-                                    <div className="mt-1 space-y-0.5">
-                                      <div>+5 Luck</div>
-                                      <div>10% chance to double gains from all actions</div>
-                                    </div>
-                                  </div>
-                                </TooltipContent>
-                              </Tooltip>
-                            </TooltipProvider>
-                          )}
-                        </CardTitle>
-                        <CardDescription className="text-bold">
-                          {item.originalPrice && (
-                            <span className="line-through text-muted-foreground mr-2">
-                              {formatPrice(item.originalPrice)}
-                            </span>
-                          )}
-                          {formatPrice(item.price)}
-                          {item.bundleComponents && item.bundleComponents.length > 0 && (() => {
-                            const componentsCost = item.bundleComponents.reduce((total, componentId) => {
-                              return total + SHOP_ITEMS[componentId].price;
-                            }, 0);
-                            const savings = componentsCost - item.price;
-                            const savingsPercent = Math.round((savings / componentsCost) * 100);
-                            return (
-                              <span className="ml-2 px-1 py-[1px] text-xs text-green-600 font-semibold border border-green-800 rounded bg-green-950/50">
-                                - {savingsPercent}%
-                              </span>
-                            );
-                          })()}
-                        </CardDescription>
-                      </CardHeader>
-                      <CardContent className="min-h-16 pl-3 pr-3 md:pl-6 md:pr-6 pb-3 md:pb-4 flex-1">
-                        <p className="leading-snug text-sm text-muted-foreground">
-                          {item.description}
+                <TabsContent value="purchases" className="mt-4">
+                  <ScrollArea
+                    className={
+                      !currentUser ? "h-[calc(80vh-250px)]" : "h-[calc(80vh-180px)]"
+                    }
+                  >
+                    {purchasedItems.length === 0 &&
+                      Object.keys(gameState.feastActivations || {}).length === 0 ? ( // Changed feastPurchases to feastActivations
+                      <div className="text-center py-8 text-muted-foreground">
+                        No purchases yet. Visit the For Sale tab to buy items.
+                      </div>
+                    ) : (
+                      <div className="pr-4">
+                        <p className="text-sm text-muted-foreground mb-4">
+                          Activate your purchases to receive rewards. Each purchase
+                          can be activated once per game.
                         </p>
-                      </CardContent>
-                      <CardFooter className="pl-3 pr-3 md:pl-6 md:pr-6 pb-4 md:pb-6 flex-col gap-2">
-                        <Button
-                          onClick={() => handlePurchaseClick(item.id)}
-                          disabled={
-                            !currentUser ||
-                            (item.id === "gold_100_free" &&
-                              (Date.now() -
-                                (gameState.lastFreeGoldClaim || 0)) /
-                                (1000 * 60 * 60) <
-                                24) ||
-                            (item.id !== "gold_100_free" &&
-                              !item.canPurchaseMultipleTimes &&
-                              purchasedItems.some((pid) => {
-                                if (!pid.startsWith("purchase-")) return false;
-                                const withoutPrefix = pid.substring(
+                        <div className="space-y-2">
+                          {Object.entries(gameState.feastActivations || {}).map(
+                            ([purchaseId, activationsRemaining]) => {
+                              let itemId = null;
+                              if (purchaseId.startsWith("purchase-")) {
+                                const withoutPrefix = purchaseId.substring(
                                   "purchase-".length,
                                 );
-                                if (withoutPrefix.includes("-temp-")) {
-                                  return (
-                                    withoutPrefix.substring(
-                                      0,
-                                      withoutPrefix.indexOf("-temp-"),
-                                    ) === item.id
-                                  );
-                                }
                                 const parts = withoutPrefix.split("-");
-                                return parts.slice(0, -5).join("-") === item.id;
-                              }))
-                          }
-                          className="h-8 md:h-10 w-full"
-                          button_id={`shop-purchase-${item.id}`}
-                        >
-                          {item.id === "gold_100_free"
-                            ? (Date.now() -
-                                (gameState.lastFreeGoldClaim || 0)) /
-                                (1000 * 60 * 60) <
-                              24
-                              ? (() => {
-                                  const hoursRemaining = Math.ceil(
-                                    24 -
-                                      (Date.now() -
-                                        (gameState.lastFreeGoldClaim || 0)) /
-                                        (1000 * 60 * 60),
-                                  );
-                                  return hoursRemaining === 1
-                                    ? "Available in 1 hour"
-                                    : `Available in ${hoursRemaining} hours`;
-                                })()
-                              : "Claim"
-                            : !item.canPurchaseMultipleTimes &&
-                                purchasedItems.some((pid) => {
-                                  if (!pid.startsWith("purchase-"))
-                                    return false;
-                                  const withoutPrefix = pid.substring(
-                                    "purchase-".length,
-                                  );
-                                  if (withoutPrefix.includes("-temp-")) {
-                                    return (
-                                      withoutPrefix.substring(
-                                        0,
-                                        withoutPrefix.indexOf("-temp-"),
-                                      ) === item.id
-                                    );
-                                  }
-                                  const parts = withoutPrefix.split("-");
-                                  return (
-                                    parts.slice(0, -5).join("-") === item.id
-                                  );
-                                })
-                              ? item.price === 0
-                                ? "Already Claimed"
-                                : "Already Purchased"
-                              : item.price === 0
-                                ? "Claim"
-                                : "Purchase"}
-                        </Button>
-                      </CardFooter>
-                    </Card>
-                  ))}
-                </div>
-                <ScrollBar orientation="vertical" />
-              </ScrollArea>
-            </TabsContent>
+                                itemId = parts.slice(0, -5).join("-");
+                              }
 
-            <TabsContent value="purchases" className="mt-4">
-              <ScrollArea
-                className={
-                  !currentUser ? "h-[calc(80vh-250px)]" : "h-[calc(80vh-180px)]"
-                }
-              >
-                {purchasedItems.length === 0 &&
-                Object.keys(gameState.feastActivations || {}).length === 0 ? ( // Changed feastPurchases to feastActivations
-                  <div className="text-center py-8 text-muted-foreground">
-                    No purchases yet. Visit the For Sale tab to buy items.
-                  </div>
-                ) : (
-                  <div className="pr-4">
-                    <p className="text-sm text-muted-foreground mb-4">
-                      Activate your purchases to receive rewards. Each purchase
-                      can be activated once per game.
-                    </p>
-                    <div className="space-y-2">
-                      {Object.entries(gameState.feastActivations || {}).map(
-                        ([purchaseId, activationsRemaining]) => {
-                          let itemId = null;
-                          if (purchaseId.startsWith("purchase-")) {
-                            const withoutPrefix = purchaseId.substring(
-                              "purchase-".length,
-                            );
-                            const parts = withoutPrefix.split("-");
-                            itemId = parts.slice(0, -5).join("-");
-                          }
+                              const item = itemId ? SHOP_ITEMS[itemId] : null;
 
-                          const item = itemId ? SHOP_ITEMS[itemId] : null;
+                              if (!item) {
+                                return null;
+                              }
 
-                          if (!item) {
-                            return null;
-                          }
+                              // Skip bundles - only show bundle components
+                              if (item.bundleComponents) {
+                                return null;
+                              }
 
-                          // Skip bundles - only show bundle components
-                          if (item.bundleComponents) {
-                            return null;
-                          }
+                              const isGreatFeastActive =
+                                gameState.greatFeastState?.isActive &&
+                                gameState.greatFeastState.endTime > Date.now();
 
-                          const isGreatFeastActive =
-                            gameState.greatFeastState?.isActive &&
-                            gameState.greatFeastState.endTime > Date.now();
-
-                          return (
-                            <div
-                              key={purchaseId}
-                              className="flex items-center justify-between p-3 border rounded-lg"
-                            >
-                              <div className="flex flex-col">
-                                <span className="text-sm font-medium">
-                                  {item.name} ({activationsRemaining}/
-                                  {item.rewards.feastActivations!} available){" "}
-                                  {/* Display remaining activations */}
-                                </span>
-                                <span className="text-xs text-muted-foreground">
-                                  {item.description}
-                                </span>
-                              </div>
-                              <Button
-                                onClick={() =>
-                                  handleActivatePurchase(
-                                    purchaseId,
-                                    item.id, // Use item.id for the itemId argument
-                                  )
-                                }
-                                disabled={
-                                  activationsRemaining <= 0 || // Check remaining activations
-                                  isGreatFeastActive
-                                }
-                                size="sm"
-                                variant={
-                                  isGreatFeastActive ||
-                                  activationsRemaining <= 0
-                                    ? "outline"
-                                    : "default"
-                                }
-                                className={
-                                  isGreatFeastActive
-                                    ? "bg-green-900/50 text-white border-green-600"
-                                    : ""
-                                }
-                                button_id={`shop-activate-${item.id}`}
-                              >
-                                {isGreatFeastActive
-                                  ? "Active"
-                                  : activationsRemaining <= 0
-                                    ? "Activated"
-                                    : "Activate"}
-                              </Button>
-                            </div>
-                          );
-                        },
-                      )}
-
-                      {/* Show non-feast, non-bundle purchases */}
-                      {purchasedItems
-                        .filter((purchaseId) => {
-                          // Extract itemId from purchaseId (format: purchase-{itemId}-{uuid})
-                          let itemId = purchaseId;
-                          if (purchaseId.startsWith("purchase-")) {
-                            const withoutPrefix = purchaseId.substring(
-                              "purchase-".length,
-                            );
-                            const parts = withoutPrefix.split("-");
-                            // Extract itemId by removing the UUID parts
-                            itemId = parts.slice(0, -5).join("-");
-                          }
-                          const item = SHOP_ITEMS[itemId];
-                          return (
-                            item &&
-                            !item.rewards.feastActivations &&
-                            !item.bundleComponents
-                          );
-                        })
-                        .map((purchaseId) => {
-                          // Extract itemId from purchaseId (format: purchase-{itemId}-{uuid})
-                          let itemId = purchaseId;
-                          if (purchaseId.startsWith("purchase-")) {
-                            const withoutPrefix = purchaseId.substring(
-                              "purchase-".length,
-                            );
-                            const parts = withoutPrefix.split("-");
-                            // Remove the last 5 parts (UUID segments)
-                            itemId = parts.slice(0, -5).join("-");
-                          }
-                          const item = SHOP_ITEMS[itemId];
-
-                          if (!item) return null;
-
-                          const isActivated =
-                            activatedPurchases[purchaseId] || false;
-                          const isCruelModeItem = itemId === "cruel_mode";
-
-                          return (
-                            <div
-                              key={purchaseId}
-                              className="flex items-center justify-between p-3 border rounded-lg"
-                            >
-                              <div className="flex flex-col">
-                                <span className="text-sm font-medium">
-                                  {item.name}
-                                  {isCruelModeItem && (
-                                    <span className="text-md  font-medium ml-2">
-                                      (to play activate and start a new game)
+                              return (
+                                <div
+                                  key={purchaseId}
+                                  className="flex items-center justify-between p-3 border rounded-lg"
+                                >
+                                  <div className="flex flex-col">
+                                    <span className="text-sm font-medium">
+                                      {item.name} ({activationsRemaining}/
+                                      {item.rewards.feastActivations!} available){" "}
+                                      {/* Display remaining activations */}
                                     </span>
-                                  )}
-                                </span>
-                                <span className="text-xs text-muted-foreground">
-                                  {item.description}
-                                </span>
-                              </div>
-                              <Button
-                                onClick={() =>
-                                  handleActivatePurchase(purchaseId, itemId)
-                                }
-                                disabled={!isCruelModeItem && isActivated}
-                                size="sm"
-                                variant={isActivated ? "outline" : "default"}
-                                button_id={`shop-activate-${itemId}`}
-                              >
-                                {isCruelModeItem
-                                  ? isActivated
-                                    ? "Deactivate"
-                                    : "Activate"
-                                  : isActivated
-                                    ? "Activated"
-                                    : "Activate"}
-                              </Button>
-                            </div>
-                          );
-                        })}
-                    </div>
-                  </div>
-                )}
-                <ScrollBar orientation="vertical overflow-auto" />
-              </ScrollArea>
-            </TabsContent>
+                                    <span className="text-xs text-muted-foreground">
+                                      {item.description}
+                                    </span>
+                                  </div>
+                                  <Button
+                                    onClick={() =>
+                                      handleActivatePurchase(
+                                        purchaseId,
+                                        item.id, // Use item.id for the itemId argument
+                                      )
+                                    }
+                                    disabled={
+                                      activationsRemaining <= 0 || // Check remaining activations
+                                      isGreatFeastActive
+                                    }
+                                    size="sm"
+                                    variant={
+                                      isGreatFeastActive ||
+                                        activationsRemaining <= 0
+                                        ? "outline"
+                                        : "default"
+                                    }
+                                    className={
+                                      isGreatFeastActive
+                                        ? "bg-green-900/50 text-white border-green-600"
+                                        : ""
+                                    }
+                                    button_id={`shop-activate-${item.id}`}
+                                  >
+                                    {isGreatFeastActive
+                                      ? "Active"
+                                      : activationsRemaining <= 0
+                                        ? "Activated"
+                                        : "Activate"}
+                                  </Button>
+                                </div>
+                              );
+                            },
+                          )}
+
+                          {/* Show non-feast, non-bundle purchases */}
+                          {purchasedItems
+                            .filter((purchaseId) => {
+                              // Extract itemId from purchaseId (format: purchase-{itemId}-{uuid})
+                              let itemId = purchaseId;
+                              if (purchaseId.startsWith("purchase-")) {
+                                const withoutPrefix = purchaseId.substring(
+                                  "purchase-".length,
+                                );
+                                const parts = withoutPrefix.split("-");
+                                // Extract itemId by removing the UUID parts
+                                itemId = parts.slice(0, -5).join("-");
+                              }
+                              const item = SHOP_ITEMS[itemId];
+                              return (
+                                item &&
+                                !item.rewards.feastActivations &&
+                                !item.bundleComponents
+                              );
+                            })
+                            .map((purchaseId) => {
+                              // Extract itemId from purchaseId (format: purchase-{itemId}-{uuid})
+                              let itemId = purchaseId;
+                              if (purchaseId.startsWith("purchase-")) {
+                                const withoutPrefix = purchaseId.substring(
+                                  "purchase-".length,
+                                );
+                                const parts = withoutPrefix.split("-");
+                                // Remove the last 5 parts (UUID segments)
+                                itemId = parts.slice(0, -5).join("-");
+                              }
+                              const item = SHOP_ITEMS[itemId];
+
+                              if (!item) return null;
+
+                              const isActivated =
+                                activatedPurchases[purchaseId] || false;
+                              const isCruelModeItem = itemId === "cruel_mode";
+
+                              return (
+                                <div
+                                  key={purchaseId}
+                                  className="flex items-center justify-between p-3 border rounded-lg"
+                                >
+                                  <div className="flex flex-col">
+                                    <span className="text-sm font-medium">
+                                      {item.name}
+                                      {isCruelModeItem && (
+                                        <span className="text-md  font-medium ml-2">
+                                          (to play activate and start a new game)
+                                        </span>
+                                      )}
+                                    </span>
+                                    <span className="text-xs text-muted-foreground">
+                                      {item.description}
+                                    </span>
+                                  </div>
+                                  <Button
+                                    onClick={() =>
+                                      handleActivatePurchase(purchaseId, itemId)
+                                    }
+                                    disabled={!isCruelModeItem && isActivated}
+                                    size="sm"
+                                    variant={isActivated ? "outline" : "default"}
+                                    button_id={`shop-activate-${itemId}`}
+                                  >
+                                    {isCruelModeItem
+                                      ? isActivated
+                                        ? "Deactivate"
+                                        : "Activate"
+                                      : isActivated
+                                        ? "Activated"
+                                        : "Activate"}
+                                  </Button>
+                                </div>
+                              );
+                            })}
+                        </div>
+                      </div>
+                    )}
+                    <ScrollBar orientation="vertical overflow-auto" />
+                  </ScrollArea>
+                </TabsContent>
               </Tabs>
+            )}
+          </DialogContent>
         )}
-        </DialogContent>
-      )}
       </Dialog>
 
       {/* Payment Dialog - only shown when payment is in progress */}

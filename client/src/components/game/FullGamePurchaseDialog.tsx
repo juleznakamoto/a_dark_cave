@@ -296,7 +296,7 @@ export default function FullGamePurchaseDialog({
 
   const handlePurchaseSuccess = async () => {
     logger.log('[FULL GAME] Purchase success - setting state before changes');
-    
+
     const stateBefore = useGameStore.getState();
     logger.log('[FULL GAME] State before:', {
       BTP: stateBefore.BTP,
@@ -361,7 +361,7 @@ export default function FullGamePurchaseDialog({
     setClientSecret(null);
     logger.log('[FULL GAME] Closing dialog');
     onClose();
-    
+
     // Log state after dialog close
     setTimeout(() => {
       const finalState = useGameStore.getState();
@@ -382,7 +382,7 @@ export default function FullGamePurchaseDialog({
   return (
     <Dialog open={isOpen} onOpenChange={requiresPurchase ? undefined : onClose}>
       <DialogContent
-        className={`max-w-md ${requiresPurchase ? '[&>button]:hidden' : ''}`}
+        className={`w-[95vw] sm:max-w-md ${requiresPurchase ? '[&>button]:hidden' : ''}`}
         onEscapeKeyDown={(e) => requiresPurchase && e.preventDefault()}
         onPointerDownOutside={(e) => requiresPurchase && e.preventDefault()}
       >

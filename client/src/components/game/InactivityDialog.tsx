@@ -22,8 +22,8 @@ export default function InactivityDialog() {
   const isTimeout = inactivityReason === 'timeout';
 
   return (
-    <Dialog open={true} onOpenChange={() => {}}>
-      <DialogContent className="sm:max-w-md" hideClose={true}>
+    <Dialog open={true} onOpenChange={() => { }}>
+      <DialogContent className="w-[95vw] sm:max-w-md" hideClose={true}>
         <DialogHeader>
           <DialogTitle className="leading-6">
             {isMultiTab && 'Another Login detected'}

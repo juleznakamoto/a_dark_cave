@@ -260,7 +260,7 @@ export default function LeaderboardDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[80vh] flex flex-col z-[70]">
+      <DialogContent className="w-[95vw] sm:max-w-2xl max-h-[80vh] flex flex-col z-[70]">
         <DialogHeader>
           <DialogTitle className="flex items-center justify-between">
             <span>Leaderboard</span>
@@ -352,17 +352,17 @@ export default function LeaderboardDialog({
             <TabsTrigger value="cruel">Cruel Mode</TabsTrigger>
           </TabsList>
           <TabsContent value="normal" className="flex-1 min-h-0 flex flex-col data-[state=inactive]:hidden">
-            <LeaderboardTab 
-              entries={normalLeaderboard} 
-              loading={loading} 
-              lastUpdated={lastUpdated} 
+            <LeaderboardTab
+              entries={normalLeaderboard}
+              loading={loading}
+              lastUpdated={lastUpdated}
             />
           </TabsContent>
           <TabsContent value="cruel" className="flex-1 min-h-0 flex flex-col data-[state=inactive]:hidden">
-            <LeaderboardTab 
-              entries={cruelLeaderboard} 
-              loading={loading} 
-              lastUpdated={lastUpdated} 
+            <LeaderboardTab
+              entries={cruelLeaderboard}
+              loading={loading}
+              lastUpdated={lastUpdated}
             />
           </TabsContent>
         </Tabs>

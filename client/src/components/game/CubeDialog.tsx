@@ -61,13 +61,13 @@ export default function CubeDialog({
       // Save the game state before navigating
       const { saveGame } = await import('@/game/save');
       const state = useGameStore.getState();
-      
+
       try {
         await saveGame(state, false); // Force save, not autosave
       } catch (error) {
         logger.error('[CUBE] Failed to save game state before end screen:', error);
       }
-      
+
       // Navigate to end screen page after save completes
       setTimeout(() => {
         window.location.href = "/end-screen";
@@ -76,8 +76,8 @@ export default function CubeDialog({
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={() => {}}>
-      <DialogContent className="[&>button]:hidden border-2 border-gray-400 shadow-2xl p-6 w-[90vw] h-[19rem] max-w-[20rem] max-h-[19rem] flex flex-col overflow-visible z-[100]">
+    <Dialog open={isOpen} onOpenChange={() => { }}>
+      <DialogContent className="[&>button]:hidden border-2 border-gray-400 shadow-2xl p-6 w-[95vw] h-[19rem] max-w-[20rem] max-h-[19rem] flex flex-col overflow-visible z-[100]">
         <div className="absolute inset-0 -z-10 cube-dialog-glow pointer-events-none"></div>
         <DialogHeader className="flex-shrink-0">
           <DialogTitle className="text-lg font-semibold">
