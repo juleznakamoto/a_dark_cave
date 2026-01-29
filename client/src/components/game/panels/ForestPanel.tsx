@@ -241,7 +241,8 @@ export default function ForestPanel() {
         // Other actions with costs and/or success chance
         const costBreakdown = getActionCostBreakdown(actionId, state);
         tooltipContent = (
-          <div className={`text-xs whitespace-nowrap ${!canExecute ? "text-muted-foreground" : ""}`}>
+          <div className="text-xs whitespace-nowrap">
+
             {costBreakdown.map((costItem, index) => (
               <div
                 key={index}
