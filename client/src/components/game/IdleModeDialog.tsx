@@ -259,6 +259,10 @@ export default function IdleModeDialog() {
           },
         });
 
+        // Play sleep sound when entering sleep mode
+        console.log("[IdleModeDialog] Attempting to play sleep sound");
+        audioManager.playSound('sleep');
+
         // Immediately save to Supabase so user can close tab
         (async () => {
           const { saveGame } = await import("@/game/save");
@@ -472,6 +476,10 @@ export default function IdleModeDialog() {
         type: "system",
       });
     }
+
+    // Stop sleep sound when ending idle mode
+    console.log("[IdleModeDialog] Stopping sleep sound");
+    audioManager.stopLoopingSound('sleep', 1);
 
     // Clear persisted idle mode state completely - now reset startTime to 0
     useGameStore.setState({
