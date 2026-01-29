@@ -68,6 +68,7 @@ export default function ProfileMenu() {
     cooldowns,
     cooldownDurations,
     lastSaved,
+    devMode,
   } = useGameStore();
 
   const mobileTooltip = useMobileTooltip();
@@ -531,7 +532,7 @@ export default function ProfileMenu() {
             </Tooltip>
           </TooltipProvider>
         )}
-        {hasWonAnyGame && (
+        {(hasWonAnyGame || devMode) && (
           <Button
             variant="ghost"
             size="xs"
