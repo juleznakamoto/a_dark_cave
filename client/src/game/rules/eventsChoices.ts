@@ -2040,13 +2040,13 @@ export const choiceEvents: Record<string, GameEvent> = {
     timeProbability: 15,
     title: "The Last Survivor",
     message:
-      "A stranger arrives at your village gates, barely clinging to life. He speaks of his settlement to the north, where food shortages drove villagers to kill each other in desperation. 'I escaped... but at what cost?' he whispers. He asks to stay in your village to recover.",
+      "A stranger arrives at the village, barely clinging to life. He speaks of his settlement to the north, where food shortages drove villagers to kill each other in desperation. He asks to stay in your village to recover.",
     priority: 4,
     repeatable: false,
     choices: [
       {
         id: "letHimStay",
-        label: "Let him stay and help him recover",
+        label: "Let him stay",
         effect: (state: GameState) => {
           return {
             story: {
@@ -2060,7 +2060,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               ...state.blessings,
               survivors_last_words: true,
             },
-            _logMessage: "The survivor is given shelter and care. That night, he calls you to his hut. Though dying, his eyes are clear. 'Thank you for your kindness,' he whispers. 'May fortune favor you always.' With his last breath, you feel a strange warmth fill the air. The survivor's blessing grants you good fortune. (+5 Luck)",
+            _logMessage: "The survivor is given shelter and care. That night, he calls you to his hut. Though dying, his eyes are clear. 'Thank you for your kindness, may fortune favor you always.' he whispers with his last breath.",
           };
         },
       },
@@ -2081,7 +2081,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               isActive: true,
               endTime: Date.now() + duration,
             },
-            _logMessage: `You turn the dying man away. He leaves the village and is found dead in the forest nearby the next day. The villagers are horrified by your cruelty and work with reduced enthusiasm.`,
+            _logMessage: `You turn the dying man away. He leaves the village and is found dead in the forest nearby the next day. The villagers are horrified and disgusted by your cruelty.`,
           };
         },
       },

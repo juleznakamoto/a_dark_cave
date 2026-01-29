@@ -1,4 +1,3 @@
-
 import { GameEvent } from "./rules/events";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
@@ -7,7 +6,6 @@ export const caveEvents: Record<string, GameEvent> = {
   ringOfDrownedChoice: {
     id: "ringOfDrownedChoice",
     condition: (state: GameState) => false, // Only triggered by cave exploration
-    
     title: "Ring of Drowned",
     message:
       "Deep in the forgotten city, you find a strange ring that drips constantly with water. Do you keep it?",
@@ -79,7 +77,6 @@ export const caveEvents: Record<string, GameEvent> = {
   shadowFluteChoice: {
     id: "shadowFluteChoice",
     condition: (state: GameState) => false, // Only triggered by cave exploration
-    
     title: "The Shadow Flute",
     message:
       "Deep in the cave you discover a bone flute of disturbing craftsmanship. As you play it, the shadows around you begin to move in unnatural ways, as if dancing to a melody. Do you keep it?",
@@ -131,7 +128,7 @@ export const caveEvents: Record<string, GameEvent> = {
       id: "doNothing",
       label: "Do nothing",
       relevant_stats: ["luck"],
-       effect: (state: GameState) => {
+      effect: (state: GameState) => {
         const luck = state.stats.luck || 0;
         const devoured = Math.floor((1 - luck) * Math.random() * 9) + 1;
         const deathResult = killVillagers(state, devoured);
@@ -145,8 +142,7 @@ export const caveEvents: Record<string, GameEvent> = {
               shadowFluteChoice: true,
             },
           },
-          _logMessage:
-            `Your hesitation proves costly. The shadows grow hungry and violent, writhing with unnatural life. They surge forward and devour ${actualDevoured} members of your fellowship. Their screams echo briefly before being swallowed by silence.`,
+          _logMessage: `Your hesitation proves costly. The shadows grow hungry and violent, writhing with unnatural life. They surge forward and devour ${actualDevoured} members of your fellowship. Their screams echo briefly before being swallowed by silence.`,
         };
       },
     },
@@ -155,7 +151,6 @@ export const caveEvents: Record<string, GameEvent> = {
   hollowKingScepterChoice: {
     id: "hollowKingScepterChoice",
     condition: (state: GameState) => false, // Only triggered by cave exploration
-    
     title: "The Hollow King Scepter",
     message:
       "In the throne room of the citadel, you find a magnificent scepter of obsidian. It must have belonged to the king of this lost city. Dark knowledge flows from it. Do you keep it?",
@@ -208,7 +203,7 @@ export const caveEvents: Record<string, GameEvent> = {
       label: "Do nothing",
       effect: (state: GameState) => {
         const luck = state.stats.luck || 0;
-        const deaths = Math.floor((1-luck)*Math.random() * 6) + 3;
+        const deaths = Math.floor((1 - luck) * Math.random() * 6) + 3;
         const deathResult = killVillagers(state, deaths);
         const actualDeaths = deathResult.villagersKilled || 0;
         return {
@@ -229,7 +224,6 @@ export const caveEvents: Record<string, GameEvent> = {
   boneDiceChoice: {
     id: "boneDiceChoice",
     condition: (state: GameState) => false, // Only triggered by cave exploration
-    
     title: "The Bone Dice",
     message:
       "As you descend further, you find a set of bone dice carved with ancient runes. These dice have seen much fortune and much tragedy. Do you keep them?",

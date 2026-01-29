@@ -420,7 +420,7 @@ export default function SidePanel() {
         <div className="text-gray-400">Leads thoughts into dangerous paths</div>
         {totalMadness > 0 && (
           <div>
-            <div>{itemMadness} from Items/Buildings</div>
+            <div>{itemMadness} from Items & Buildings</div>
             <div>{eventMadness} from Events</div>
           </div>
         )}
