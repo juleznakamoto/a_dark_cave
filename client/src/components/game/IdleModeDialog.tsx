@@ -260,8 +260,8 @@ export default function IdleModeDialog() {
           },
         });
 
-        // Play sleep sound when entering sleep mode
-        audioManager.playSound('sleep');
+        // Play wind sound when entering sleep mode
+        audioManager.playLoopingSound('wind', 0.2);
 
         // Immediately save to Supabase so user can close tab
         (async () => {
@@ -476,6 +476,9 @@ export default function IdleModeDialog() {
         type: "system",
       });
     }
+
+    // Stop wind sound when ending idle mode
+    audioManager.stopLoopingSound('wind', 1);
 
     // Clear persisted idle mode state completely - now reset startTime to 0
     useGameStore.setState({
