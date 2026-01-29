@@ -13,6 +13,7 @@ import {
   miningBoostTooltip,
   frostfallTooltip,
   fogTooltip,
+  disgustTooltip,
 } from "@/game/rules/tooltips";
 import CooldownButton from "@/components/CooldownButton";
 import { Button } from "@/components/ui/button";
@@ -356,9 +357,8 @@ export default function VillagePanel() {
         {costBreakdown.map((cost, index) => (
           <div
             key={index}
-            className={`${
-              cost.satisfied ? "text-foreground" : "text-muted-foreground"
-            }`}
+            className={`${cost.satisfied ? "text-foreground" : "text-muted-foreground"
+              }`}
           >
             {cost.text}
           </div>
@@ -575,6 +575,7 @@ export default function VillagePanel() {
                   const greatFeastState =
                     useGameStore.getState().greatFeastState;
                   const curseState = useGameStore.getState().curseState;
+                  const disgustState = useGameStore.getState().disgustState;
                   const miningBoostState =
                     useGameStore.getState().miningBoostState;
                   const frostfallState = useGameStore.getState().frostfallState; // Assume frostfallState exists
@@ -585,6 +586,8 @@ export default function VillagePanel() {
                     feastState?.isActive && feastState.endTime > Date.now();
                   const isCursed =
                     curseState?.isActive && curseState.endTime > Date.now();
+                  const isDisgusted =
+                    disgustState?.isActive && disgustState.endTime > Date.now();
                   const isMiningBoosted =
                     miningBoostState?.isActive &&
                     miningBoostState.endTime > Date.now();
@@ -683,6 +686,56 @@ export default function VillagePanel() {
                             <TooltipContent>
                               <div className="text-xs whitespace-pre-line">
                                 {curseTooltip.getContent(state)}
+                              </div>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      )}
+
+                      {/* Disgust Indicator */}
+                      {isDisgusted && (
+                        <TooltipProvider>
+                          <Tooltip
+                            open={mobileTooltip.isTooltipOpen("disgust-progress")}
+                          >
+                            <TooltipTrigger asChild>
+                              <div
+                                className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
+                                onClick={(e) =>
+                                  mobileTooltip.handleTooltipClick(
+                                    "disgust-progress",
+                                    e,
+                                  )
+                                }
+                              >
+                                <div className="relative inline-flex items-center gap-1 mt-[0px]">
+                                  <CircularProgress
+                                    value={(() => {
+                                      const timeRemaining = Math.max(
+                                        0,
+                                        disgustState.endTime - Date.now(),
+                                      );
+                                      const totalDuration = state.cruelMode ? 20 * 60 * 1000 : 10 * 60 * 1000;
+                                      const elapsed =
+                                        totalDuration - timeRemaining;
+                                      return Math.min(
+                                        100,
+                                        (elapsed / totalDuration) * 100,
+                                      );
+                                    })()}
+                                    size={18}
+                                    strokeWidth={2}
+                                    className="text-green-800"
+                                  />
+                                  <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[12px] -mt-[0px] text-green-800">
+                                    ⥉
+                                  </span>
+                                </div>
+                              </div>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <div className="text-xs whitespace-pre-line">
+                                {disgustTooltip.getContent(state)}
                               </div>
                             </TooltipContent>
                           </Tooltip>

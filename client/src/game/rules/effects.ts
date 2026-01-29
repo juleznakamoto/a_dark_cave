@@ -1262,6 +1262,18 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     },
   },
 
+  survivors_last_words: {
+    id: "survivors_last_words",
+    name: "Survivor's Last Words",
+    description: "The final blessing from a dying stranger",
+    bonuses: {
+      generalBonuses: {
+        luck: 5,
+      },
+      actionBonuses: {},
+    },
+  },
+
   stonebinders_codex: {
     id: "stonebinders_codex",
     name: "Stonebinder's Codex",

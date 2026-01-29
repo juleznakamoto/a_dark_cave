@@ -376,6 +376,27 @@ export const curseTooltip: TooltipConfig = {
   },
 };
 
+export const disgustTooltip: TooltipConfig = {
+  getContent: (state: GameState) => {
+    const disgustState = state.disgustState;
+    const isDisgusted = disgustState?.isActive && disgustState.endTime > Date.now();
+
+    if (isDisgusted) {
+      const remainingMs = disgustState.endTime - Date.now();
+      const remainingMinutes = Math.ceil(remainingMs / 60000);
+      return (
+        <>
+          <div className="font-bold">Villager Disgust</div>
+          <div>Production Bonus: -25%</div>
+          <div>{remainingMinutes} min remaining</div>
+        </>
+      );
+    }
+
+    return null;
+  },
+};
+
 export const miningBoostTooltip: TooltipConfig = {
   getContent: (state: GameState) => {
     const miningBoostState = state.miningBoostState;
@@ -562,9 +583,9 @@ export const eventChoiceCostTooltip = {
         const resourceValue = gameState.resources[resource as keyof typeof gameState.resources] || 0;
         hasEnough = resourceValue >= amount;
       }
-      
+
       costLines.push(
-        <div 
+        <div
           key={`cost-${index}`}
           className={hasEnough ? "!text-foreground" : "!text-muted-foreground"}
         >

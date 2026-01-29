@@ -424,9 +424,9 @@ export const choiceEvents: Record<string, GameEvent> = {
           const traps = state.buildings.traps;
           const villagerDeaths = Math.floor(
             Math.random() * state.buildings.woodenHut +
-              2 -
-              traps * 2 +
-              state.CM * 2,
+            2 -
+            traps * 2 +
+            state.CM * 2,
           );
           const deathResult = killVillagers(state, villagerDeaths);
           const actualDeaths = deathResult.villagersKilled || 0;
@@ -2026,6 +2026,62 @@ export const choiceEvents: Record<string, GameEvent> = {
             },
             _logMessage:
               "The blizzard hits with brutal force. All production slows to a crawl as villagers struggle to survive the cold.",
+          };
+        },
+      },
+    ],
+  },
+
+  lastSurvivor: {
+    id: "lastSurvivor",
+    condition: (state: GameState) =>
+      state.buildings.woodenHut >= 6 &&
+      !state.blessings.survivors_last_words,
+    timeProbability: 15,
+    title: "The Last Survivor",
+    message:
+      "A stranger arrives at your village gates, barely clinging to life. He speaks of his settlement to the north, where food shortages drove villagers to kill each other in desperation. 'I escaped... but at what cost?' he whispers. He asks to stay in your village to recover.",
+    priority: 4,
+    repeatable: false,
+    choices: [
+      {
+        id: "letHimStay",
+        label: "Let him stay and help him recover",
+        effect: (state: GameState) => {
+          return {
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                lastSurvivorHelped: true,
+              },
+            },
+            blessings: {
+              ...state.blessings,
+              survivors_last_words: true,
+            },
+            _logMessage: "The survivor is given shelter and care. That night, he calls you to his hut. Though dying, his eyes are clear. 'Thank you for your kindness,' he whispers. 'May fortune favor you always.' With his last breath, you feel a strange warmth fill the air. The survivor's blessing grants you good fortune. (+5 Luck)",
+          };
+        },
+      },
+      {
+        id: "sendHimAway",
+        label: "Send him away",
+        effect: (state: GameState) => {
+          const duration = state.cruelMode ? 20 * 60 * 1000 : 10 * 60 * 1000; // 20 min in cruel mode, 10 min normal
+          return {
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                lastSurvivorRejected: true,
+              },
+            },
+            disgustState: {
+              isActive: true,
+              endTime: Date.now() + duration,
+            },
+            _logMessage: `You turn the dying man away. He leaves the village and is found dead in the forest nearby the next day. The villagers are horrified by your cruelty and work with reduced enthusiasm.`,
           };
         },
       },

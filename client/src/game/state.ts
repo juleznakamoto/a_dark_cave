@@ -465,6 +465,7 @@ const mergeStateUpdates = (
     frostfallState: stateUpdates.frostfallState || prevState.frostfallState,
     woodcutterState: stateUpdates.woodcutterState || prevState.woodcutterState,
     fogState: stateUpdates.fogState || prevState.fogState,
+    disgustState: stateUpdates.disgustState || prevState.disgustState,
     sleepUpgrades: stateUpdates.sleepUpgrades || prevState.sleepUpgrades,
     combatSkills: stateUpdates.combatSkills || prevState.combatSkills,
     clickAnalytics: {
@@ -667,6 +668,10 @@ export const createInitialState = (): GameState => ({
     isActive: false,
     endTime: 0,
     duration: 0,
+  },
+  disgustState: {
+    isActive: false,
+    endTime: 0,
   },
   combatSkills: {
     crushingStrikeLevel: 0,
@@ -1478,6 +1483,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         frostfallState:
           savedState.frostfallState || defaultGameState.frostfallState, // Load frostfallState
         fogState: savedState.fogState || defaultGameState.fogState, // Load fogState
+        disgustState: savedState.disgustState || defaultGameState.disgustState, // Load disgustState
         lastFreeGoldClaim: savedState.lastFreeGoldClaim || 0, // Load lastFreeGoldClaim
         unlockedAchievements: savedState.unlockedAchievements || [], // Load unlocked achievements
         claimedAchievements: savedState.claimedAchievements || [], // Load claimed achievements

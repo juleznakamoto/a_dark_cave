@@ -217,6 +217,7 @@ export const gameStateSchema = z.object({
       sharp_aim: z.boolean().default(false),
       bell_blessing: z.boolean().default(false),
       fishers_hand: z.boolean().default(false),
+      survivors_last_words: z.boolean().default(false),
     })
     .default({}),
   books: z
@@ -489,6 +490,16 @@ export const gameStateSchema = z.object({
       duration: z.number().default(0),
     })
     .default({ isActive: false, endTime: 0, duration: 0 }),
+
+  disgustState: z
+    .object({
+      isActive: z.boolean().default(false),
+      endTime: z.number().default(0),
+    })
+    .default({
+      isActive: false,
+      endTime: 0,
+    }),
   shopNotificationSeen: z.boolean().default(false), // Added new field for shop notification
   authNotificationSeen: z.boolean().default(false), // Added new field for auth notification
   authNotificationVisible: z.boolean().default(false), // Added new field for auth notification visibility

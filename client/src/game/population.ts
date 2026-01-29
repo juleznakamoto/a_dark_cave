@@ -228,6 +228,18 @@ export const getPopulationProduction = (
     });
   }
 
+  // Apply disgust penalty if active (-25% production)
+  const disgustState = state.disgustState;
+  const isDisgusted = disgustState?.isActive && disgustState.endTime > Date.now();
+  if (isDisgusted) {
+    baseProduction.forEach((prod) => {
+      // Only reduce positive production (not consumption)
+      if (prod.totalAmount > 0) {
+        prod.totalAmount = Math.ceil(prod.totalAmount * 0.75);
+      }
+    });
+  }
+
   // Apply mining boost multiplier if active (for mining jobs only)
   const miningBoostState = state.miningBoostState;
   const isMiningJob = jobId.endsWith("_miner");
