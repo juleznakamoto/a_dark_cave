@@ -9,7 +9,6 @@ export const madnessEvents: Record<string, GameEvent> = {
     id: "whisperingVoices",
     condition: (state: GameState) =>
       getTotalMadness(state) >= 10 && !state.events.whisperingVoices,
-    
     timeProbability: 30,
     title: "Whispering Voices",
     message:
@@ -33,7 +32,6 @@ export const madnessEvents: Record<string, GameEvent> = {
     id: "shadowsMove",
     condition: (state: GameState) =>
       getTotalMadness(state) >= 15 && !state.events.shadowsMove,
-    
     timeProbability: 30,
     message:
       "The shadows in the village seem to move wrong. They stretch too long, twist at impossible angles, and sometimes seem to move independently of their sources. You catch glimpses of shapes that shouldn't be there. (+2 Madness)",
@@ -58,7 +56,6 @@ export const madnessEvents: Record<string, GameEvent> = {
       getTotalMadness(state) >= 20 &&
       state.villagers.free > 0 &&
       !state.events.villagerStares,
-    
     timeProbability: 30,
     title: "Hollow Stares",
     message:
@@ -129,7 +126,6 @@ export const madnessEvents: Record<string, GameEvent> = {
     id: "bloodInWater",
     condition: (state: GameState) =>
       getTotalMadness(state) >= 25 && !state.events.bloodInWater,
-    
     timeProbability: 30,
     message:
       "The village water runs red for three days. The villagers don't seem to notice, drinking it as if nothing has changed. You taste copper and iron, but they claim it tastes like the sweetest spring water. (+2 Madness)",
@@ -152,7 +148,7 @@ export const madnessEvents: Record<string, GameEvent> = {
     id: "facesInWalls",
     condition: (state: GameState) =>
       getTotalMadness(state) >= 27 && !state.events.facesInWalls,
-    
+
     timeProbability: 30,
     title: "Faces in the Walls",
     message:
@@ -216,7 +212,6 @@ export const madnessEvents: Record<string, GameEvent> = {
         !state.events.wrongVillagers
       );
     },
-    
     timeProbability: 30,
     message:
       "You count the villagers and there are three more than there should be. The extra ones look exactly like villagers who died months ago. They work, eat, and sleep normally, but their eyes hold depths of ancient malice. (+2 Madness)",
@@ -252,7 +247,6 @@ export const madnessEvents: Record<string, GameEvent> = {
     id: "skinCrawling",
     condition: (state: GameState) =>
       getTotalMadness(state) >= 35 && !state.events.skinCrawling,
-    
     timeProbability: 30,
     title: "Crawling Skin",
     message:
@@ -324,7 +318,6 @@ export const madnessEvents: Record<string, GameEvent> = {
       getTotalMadness(state) >= 35 &&
       state.buildings.woodenHut > 0 &&
       !state.events.creatureInHut,
-    
     timeProbability: 30,
     title: "Something in the Hut",
     message:
@@ -378,7 +371,6 @@ export const madnessEvents: Record<string, GameEvent> = {
     id: "wrongReflections",
     condition: (state: GameState) =>
       getTotalMadness(state) >= 40 && !state.events.wrongReflections,
-    
     timeProbability: 30,
     title: "Wrong Reflections",
     message:
@@ -426,7 +418,6 @@ export const madnessEvents: Record<string, GameEvent> = {
     id: "villagersStareAtSky",
     condition: (state: GameState) =>
       getTotalMadness(state) >= 45 && !state.events.villagersStareAtSky,
-    
     timeProbability: 30,
     title: "Skyward Gaze",
     message:
@@ -500,7 +491,6 @@ export const madnessEvents: Record<string, GameEvent> = {
       getTotalMadness(state) >= 20 &&
       !state.events.monolithDemand &&
       !state.buildings.blackMonolith,
-    
     timeProbability: 5,
     title: "Demand for the Monolith",
     message:
@@ -526,7 +516,7 @@ export const madnessEvents: Record<string, GameEvent> = {
       getTotalMadness(state) >= 25 &&
       !state.events.humanSacrificeDemand &&
       state.buildings.blackMonolith > 0,
-    
+
     timeProbability: 5,
     title: "Dark Hunger",
     message:
