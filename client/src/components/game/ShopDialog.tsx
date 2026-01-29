@@ -928,7 +928,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                   {item.symbol}
                                 </span>
                               )}
-                              <CardTitle className="!m-0 text-md pr-6 flex items-center gap-1">
+                              <CardTitle className="!m-0 text-md pr-6 items-center gap-1">
                                 {item.name}
                                 {item.id === "skull_lantern" && (
                                   <TooltipProvider>
@@ -939,7 +939,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                     >
                                       <TooltipTrigger asChild>
                                         <button
-                                          className="inline-flex items-center justify-center w-4 h-4 rounded-full text-muted-foreground text-sm"
+                                          className="pl-2 inline-flex items-center justify-center w-4 h-4 rounded-full text-muted-foreground text-sm"
                                           onClick={(e) => {
                                             e.stopPropagation();
                                             if (mobileTooltip.isMobile) {
@@ -979,7 +979,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                     >
                                       <TooltipTrigger asChild>
                                         <button
-                                          className="inline-flex items-center justify-center w-4 h-4 rounded-full text-muted-foreground text-sm"
+                                          className="pl-2 inline-flex items-center justify-center w-4 h-4 rounded-full text-muted-foreground text-sm"
                                           onClick={(e) => {
                                             e.stopPropagation();
                                             if (mobileTooltip.isMobile) {
