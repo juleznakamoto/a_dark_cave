@@ -857,7 +857,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
       <Dialog open={isOpen} onOpenChange={handleShopDialogOpenChange}>
         {!isPaymentMode && (
           <DialogContent
-            className="w-[95vw] sm:max-w-4xl max-h-[80vh] z-[70]"
+            className="w-[95vw] sm:max-w-4xl max-h-[80vh] z-[70] p-4 md:p-6"
             onPointerDownOutside={(e) => e.preventDefault()}
             onInteractOutside={(e) => e.preventDefault()}
           >
