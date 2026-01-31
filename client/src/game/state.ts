@@ -123,6 +123,9 @@ interface GameStore extends GameState {
   // Currency detection (persists across game restarts)
   detectedCurrency: Currency | null;
 
+  // Google Ads source tracking (persists across game restarts)
+  googleAdsSource: string | null;
+
   // Cooldown management
   cooldowns: Record<string, number>;
   initialCooldowns: Record<string, number>;
@@ -708,6 +711,9 @@ export const createInitialState = (): GameState => ({
   // Initialize currency detection
   detectedCurrency: null,
 
+  // Initialize Google Ads source tracking
+  googleAdsSource: null,
+
   // Initialize cooldown management
   cooldowns: {},
   initialCooldowns: {},
@@ -1243,6 +1249,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
       // Preserve detected currency across restarts (persists forever)
       detectedCurrency: state.detectedCurrency || null,
+
+      // Preserve Google Ads source across restarts (persists forever)
+      googleAdsSource: state.googleAdsSource || null,
     };
 
     // Reset everything else to default

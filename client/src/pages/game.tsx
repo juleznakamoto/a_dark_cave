@@ -65,6 +65,9 @@ export default function Game() {
         // Check for openShop query parameter only (not /boost path)
         const openShop = urlParams.get("openShop") === "true";
 
+        // Check for Google Ads source parameter (c)
+        const googleAdsSource = urlParams.get("c");
+
         // Load Inter font immediately when game loads (not conditionally)
         const loadInterFont = () => {
           if (!document.getElementById('inter-font-face')) {
@@ -112,10 +115,17 @@ export default function Game() {
         // Load saved game or initialize with defaults
         const savedState = await loadGame();
         if (savedState) {
+          // Track Google Ads source if present in URL and not already saved
+          const stateUpdates: any = {};
+          if (googleAdsSource && !savedState.googleAdsSource) {
+            stateUpdates.googleAdsSource = googleAdsSource;
+            logger.log(`[GAME] Tracking Google Ads source: ${googleAdsSource}`);
+          }
 
           // Set the loaded state using useGameStore.setState
           useGameStore.setState({
             ...savedState,
+            ...stateUpdates,
             activeTab: "cave", // Always start on cave tab
             flags: {
               ...savedState.flags,
@@ -124,6 +134,19 @@ export default function Game() {
             },
           });
           logger.log("[GAME] Game loaded from save");
+
+          // Save Google Ads source if it was set
+          if (stateUpdates.googleAdsSource) {
+            setTimeout(async () => {
+              try {
+                const { saveGame } = await import("@/game/save");
+                await saveGame(useGameStore.getState(), false);
+                logger.log("[GAME] Successfully saved Google Ads source");
+              } catch (error) {
+                logger.error("[GAME] Failed to save Google Ads source:", error);
+              }
+            }, 500);
+          }
 
           // If user is logged in and has claimed referrals, save to cloud
           if (
@@ -148,6 +171,23 @@ export default function Game() {
           // If no saved state, initialize with defaults
           initialize();
 
+          // Track Google Ads source if present in URL
+          if (googleAdsSource) {
+            useGameStore.setState({ googleAdsSource });
+            logger.log(`[GAME] Tracking Google Ads source: ${googleAdsSource}`);
+
+            // Save immediately
+            setTimeout(async () => {
+              try {
+                const { saveGame } = await import("@/game/save");
+                await saveGame(useGameStore.getState(), false);
+                logger.log("[GAME] Successfully saved Google Ads source");
+              } catch (error) {
+                logger.error("[GAME] Failed to save Google Ads source:", error);
+              }
+            }, 500);
+          }
+
           // If accessing /game directly, also set the game as started
           if (isGamePath) {
             useGameStore.setState({
@@ -160,6 +200,18 @@ export default function Game() {
           }
 
           logger.log("[GAME] Game initialized with defaults");
+        }
+
+        // Remove Google Ads source parameter from URL if it was present
+        if (googleAdsSource) {
+          urlParams.delete("c");
+          // Also remove src parameter if present (legacy)
+          urlParams.delete("src");
+          const newUrl = window.location.pathname +
+            (urlParams.toString() ? `?${urlParams.toString()}` : "") +
+            window.location.hash;
+          window.history.replaceState({}, document.title, newUrl);
+          logger.log("[GAME] Removed Google Ads source parameter from URL");
         }
 
         // Mark as initialized
@@ -256,8 +308,8 @@ export default function Game() {
         enemy={combatDialog.enemy}
         eventTitle={combatDialog.eventTitle}
         eventMessage={combatDialog.eventMessage}
-        onVictory={combatDialog.onVictory || (() => {})}
-        onDefeat={combatDialog.onDefeat || (() => {})}
+        onVictory={combatDialog.onVictory || (() => { })}
+        onDefeat={combatDialog.onDefeat || (() => { })}
       />
     </div>
   );
