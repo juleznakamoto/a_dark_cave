@@ -3,6 +3,7 @@ import { create } from "zustand";
 import { GameState, gameStateSchema, Referral } from "@shared/schema";
 import { gameActions, shouldShowAction, canExecuteAction } from "@/game/rules";
 import { EventManager, LogEntry } from "@/game/rules/events";
+import { checkMilestoneLogEntries } from "@/game/rules/eventLogEntries";
 import { executeGameAction } from "@/game/actions";
 import type {
   GameTab,
@@ -1081,15 +1082,23 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // Apply state updates
     set((prevState) => {
       const mergedUpdates = mergeStateUpdates(prevState, result.stateUpdates);
-
-      return {
+      const newStateAfterUpdates = {
         ...prevState,
         ...mergedUpdates,
+      };
+
+      // Check for milestone log entries after state updates
+      const milestoneUpdates = checkMilestoneLogEntries(newStateAfterUpdates);
+
+      // Use milestone-updated log as base, then append action log entries
+      const baseLog = milestoneUpdates.log || newStateAfterUpdates.log;
+
+      return {
+        ...newStateAfterUpdates,
+        ...milestoneUpdates,
         log: result.logEntries
-          ? [...prevState.log, ...result.logEntries].slice(
-            -GAME_CONSTANTS.LOG_MAX_ENTRIES,
-          )
-          : prevState.log,
+          ? [...baseLog, ...result.logEntries].slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES)
+          : baseLog,
       };
     });
 
@@ -1924,6 +1933,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   updatePopulation: () => {
     set((state) => {
       const updates = updatePopulationCounts(state);
+
       return {
         ...state,
         ...updates,
