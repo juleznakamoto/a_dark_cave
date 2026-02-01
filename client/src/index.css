@@ -121,7 +121,7 @@ body {
   }
 
   100% {
-    background: #000;
+    background: transparent;
     backdrop-filter: blur(10px);
   }
 }
