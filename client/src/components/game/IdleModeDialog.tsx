@@ -545,7 +545,7 @@ export default function IdleModeDialog() {
   const isTimeUp = remainingTime <= 0;
 
   return (
-    <Dialog open={idleModeDialog.isOpen} onOpenChange={() => {}} modal={false}>
+    <Dialog open={idleModeDialog.isOpen} onOpenChange={() => { }} modal={true}>
       <DialogContent
         className="w-[95vw] sm:max-w-sm z-[60]"
         hideClose={true}

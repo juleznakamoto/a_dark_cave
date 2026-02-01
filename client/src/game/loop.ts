@@ -189,7 +189,7 @@ export function startGameLoop() {
       state.restartGameDialogOpen ||
       state.rewardDialog.isOpen;
 
-    const isPaused = state.isPaused || IsDialogOpen || requiresFullGamePurchase || state.idleModeState?.isActive;
+    const isPaused = state.isPaused || IsDialogOpen || requiresFullGamePurchase || state.idleModeState?.isActive || state.idleModeDialog.isOpen;
 
     if (isPaused) {
       // Stop all sounds when paused (unless already stopped by mute)

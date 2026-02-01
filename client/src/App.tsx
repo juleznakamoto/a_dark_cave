@@ -61,7 +61,7 @@ function App() {
           script.onload = resolve;
           script.onerror = reject;
         });
-        
+
         document.body.appendChild(script);
         await loadPromise;
 
@@ -100,6 +100,10 @@ function App() {
         // Set up event listeners for game pause/unpause
         playlightSDK.onEvent("discoveryOpen", () => {
           const state = useGameStore.getState();
+          // Don't toggle pause if sleep mode is active
+          if (state.idleModeDialog.isOpen) {
+            return;
+          }
           if (!state.isPaused) {
             useGameStore.setState({ isPausedPreviously: false });
             state.togglePause();
@@ -110,6 +114,10 @@ function App() {
 
         playlightSDK.onEvent("discoveryClose", () => {
           const state = useGameStore.getState();
+          // Don't toggle pause if sleep mode is active
+          if (state.idleModeDialog.isOpen) {
+            return;
+          }
           if (state.isPaused && !state.isPausedPreviously) {
             state.togglePause();
           }
