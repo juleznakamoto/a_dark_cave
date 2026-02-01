@@ -5,7 +5,7 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { logger } from "@/lib/logger";
 import { villageBuildActions } from "@/game/rules/villageBuildActions";
 import { capitalizeWords } from "@/lib/utils";
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { calculateBastionStats } from "@/game/bastionStats";
 import {
   getDisplayTools,
@@ -94,17 +94,57 @@ export default function SidePanel() {
   if (totalKnowledge > 0) seenStatsRef.current.add("knowledge");
   if (totalMadness > 0) seenStatsRef.current.add("madness");
 
-  // Dynamically generate resource items from state (in schema order)
+  // Dynamically generate resource items from state (gold and silver first, then others)
   // Show resource if it has ever been > 0, even if currently 0
-  const resourceItems = resourceOrder
-    .filter((key) => seenResourcesRef.current.has(key))
-    .map((key) => ({
+  const seenResourceKeys = resourceOrder.filter((key) =>
+    seenResourcesRef.current.has(key)
+  );
+
+  // Separate gold and silver from other resources
+  const goldSilverResources = seenResourceKeys.filter((key) =>
+    key === "gold" || key === "silver"
+  );
+  const otherResources = seenResourceKeys.filter((key) =>
+    key !== "gold" && key !== "silver"
+  );
+
+  // Order gold first, then silver
+  const orderedGoldSilver = ["gold", "silver"].filter((key) =>
+    goldSilverResources.includes(key)
+  );
+
+  // Create resource items with special styling for gold and silver
+  const resourceItems = [
+    // Gold and silver with special symbols and colors
+    ...orderedGoldSilver.map((key, index) => ({
+      id: key,
+      label: (
+        <span className="flex items-center gap-1">
+          <span
+            className={
+              key === "gold" ? "text-yellow-400" : "text-gray-300"
+            }
+          >
+            {key === "gold" ? "☉" : "☽"}
+          </span>
+          <span>{capitalizeWords(key)}</span>
+        </span>
+      ),
+      value: resources[key as keyof typeof resources] ?? 0,
+      testId: `resource-${key}`,
+      visible: true,
+      isPrecious: true, // Custom flag for spacing
+      hasSpacingAfter: index === orderedGoldSilver.length - 1 && otherResources.length > 0, // Add spacing after last precious metal if there are other resources
+    })),
+    // Other resources
+    ...otherResources.map((key) => ({
       id: key,
       label: capitalizeWords(key),
       value: resources[key as keyof typeof resources] ?? 0,
       testId: `resource-${key}`,
       visible: true,
-    }));
+    })),
+  ];
 
   // Dynamically generate tool items from state (only show best tools, no weapons)
   const displayTools = getDisplayTools(gameState);

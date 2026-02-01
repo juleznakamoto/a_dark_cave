@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   clothingEffects,
   weaponEffects,
@@ -20,13 +20,16 @@ import { getResourceLimit, isResourceLimited } from "@/game/resourceLimits";
 
 interface SidePanelItem {
   id: string;
-  label: string;
+  label: string | React.ReactNode; // Changed to allow ReactNode
   value: number | string;
   testId?: string;
   visible?: boolean;
   tooltip?: string | React.ReactNode; // Changed to allow ReactNode
   icon?: string;
   iconColor?: string;
+  isPrecious?: boolean; // For special styling of gold/silver
+  isSpacer?: boolean; // For spacing between sections
+  hasSpacingAfter?: boolean; // Add spacing after this item
 }
 
 interface ResourceChange {
@@ -74,8 +77,8 @@ export default function SidePanelSection({
     highlightedResourcesRaw instanceof Set
       ? highlightedResourcesRaw
       : new Set(
-          Array.isArray(highlightedResourcesRaw) ? highlightedResourcesRaw : [],
-        );
+        Array.isArray(highlightedResourcesRaw) ? highlightedResourcesRaw : [],
+      );
   const hoverTimersRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
   const mobileTooltip = useMobileTooltip();
 
@@ -383,15 +386,14 @@ export default function SidePanelSection({
     const itemContent = (
       <div
         data-testid={item.testId}
-        className={`mr-2 flex leading-tight justify-between items-center transition-all duration-300 ${
-          isAnimated
+        className={`mr-2 flex leading-tight justify-between items-center transition-all duration-300 ${isAnimated
             ? "text-green-400"
             : isDecreaseAnimated
               ? "text-red-400"
               : isMaxAnimated
                 ? "text-yellow-400"
                 : ""
-        }`}
+          }`}
       >
         {labelContent}
         {![
@@ -405,19 +407,19 @@ export default function SidePanelSection({
           "Schematics",
           "Fellowship",
         ].includes(title) && (
-          <span
-            className={cn(
-              "font-mono text-gray-300",
-              isAnimated && "text-green-800 font-bold",
-              isDecreaseAnimated && "text-red-800 font-bold",
-              isMaxAnimated && "text-yellow-800 font-bold",
-              isMadness && madnessClasses,
-              isHighlighted && "font-bold !text-gray-100",
-            )}
-          >
-            {displayValue}
-          </span>
-        )}
+            <span
+              className={cn(
+                "font-mono text-gray-300",
+                isAnimated && "text-green-800 font-bold",
+                isDecreaseAnimated && "text-red-800 font-bold",
+                isMaxAnimated && "text-yellow-800 font-bold",
+                isMadness && madnessClasses,
+                isHighlighted && "font-bold !text-gray-100",
+              )}
+            >
+              {displayValue}
+            </span>
+          )}
       </div>
     );
 
@@ -436,15 +438,14 @@ export default function SidePanelSection({
           <Tooltip open={mobileTooltip.isTooltipOpen(item.id)}>
             <div
               data-testid={item.testId}
-              className={`flex leading-tight justify-between items-center transition-all duration-300 ${
-                isAnimated
+              className={`flex leading-tight justify-between items-center transition-all duration-300 ${isAnimated
                   ? "text-green-400"
                   : isDecreaseAnimated
                     ? "text-red-400"
                     : isAtMax
                       ? "text-yellow-400"
                       : "" // Changed to yellow for max resources
-              }`}
+                }`}
             >
               <TooltipTrigger asChild>
                 <span
@@ -463,9 +464,9 @@ export default function SidePanelSection({
                 title === "Weapons"
                   ? "weapon"
                   : title === "Blessings" ||
-                      title === "Clothing" ||
-                      title === "Relics" ||
-                      title === "Schematics"
+                    title === "Clothing" ||
+                    title === "Relics" ||
+                    title === "Schematics"
                     ? "blessing"
                     : "tool",
               )}
@@ -483,15 +484,14 @@ export default function SidePanelSection({
           <Tooltip open={mobileTooltip.isTooltipOpen(item.id)}>
             <div
               data-testid={item.testId}
-              className={`flex leading-tight justify-between items-center transition-all duration-300 ${
-                isAnimated
+              className={`flex leading-tight justify-between items-center transition-all duration-300 ${isAnimated
                   ? "text-green-400"
                   : isDecreaseAnimated
                     ? "text-red-400"
                     : isMaxAnimated
                       ? "text-yellow-400"
                       : ""
-              }`}
+                }`}
             >
               <TooltipTrigger asChild>
                 <span
@@ -519,15 +519,14 @@ export default function SidePanelSection({
           <Tooltip open={mobileTooltip.isTooltipOpen(item.id)}>
             <div
               data-testid={item.testId}
-              className={`flex leading-tight justify-between items-center transition-all duration-300 ${
-                isAnimated
+              className={`flex leading-tight justify-between items-center transition-all duration-300 ${isAnimated
                   ? "text-green-400"
                   : isDecreaseAnimated
                     ? "text-red-400"
                     : isMaxAnimated
                       ? "text-yellow-400"
                       : ""
-              }`}
+                }`}
             >
               <TooltipTrigger asChild>
                 <span
@@ -555,15 +554,14 @@ export default function SidePanelSection({
           <Tooltip open={mobileTooltip.isTooltipOpen(item.id)}>
             <div
               data-testid={item.testId}
-              className={`mr-2 flex leading-tight justify-between items-center transition-all duration-300 ${
-                isAnimated
+              className={`mr-2 flex leading-tight justify-between items-center transition-all duration-300 ${isAnimated
                   ? "text-green-400"
                   : isDecreaseAnimated
                     ? "text-red-400"
                     : isMaxAnimated
                       ? "text-yellow-400"
                       : ""
-              }`}
+                }`}
             >
               <TooltipTrigger asChild>
                 <span
@@ -588,26 +586,24 @@ export default function SidePanelSection({
                 "Fellowship",
                 "Stats",
               ].includes(title) && (
-                <span
-                  className={`font-mono ${
-                    isAnimated
-                      ? "text-green-800 font-bold"
-                      : isDecreaseAnimated
-                        ? "text-red-800 font-bold"
-                        : isMaxAnimated
-                          ? "text-yellow-800 font-bold"
-                          : isMadness
-                            ? madnessClasses
-                            : ""
-                  }`}
-                >
-                  {displayValue}
-                </span>
-              )}
+                  <span
+                    className={`font-mono ${isAnimated
+                        ? "text-green-800 font-bold"
+                        : isDecreaseAnimated
+                          ? "text-red-800 font-bold"
+                          : isMaxAnimated
+                            ? "text-yellow-800 font-bold"
+                            : isMadness
+                              ? madnessClasses
+                              : ""
+                      }`}
+                  >
+                    {displayValue}
+                  </span>
+                )}
               {title === "Stats" && (
                 <span
-                  className={`font-mono ${
-                    isAnimated
+                  className={`font-mono ${isAnimated
                       ? "text-green-800 font-bold"
                       : isDecreaseAnimated
                         ? "text-red-800 font-bold"
@@ -616,7 +612,7 @@ export default function SidePanelSection({
                           : isMadness
                             ? madnessClasses
                             : ""
-                  }`}
+                    }`}
                 >
                   {displayValue}
                 </span>
@@ -687,7 +683,7 @@ export default function SidePanelSection({
       )}
       <div className="text-xs">
         {visibleItems.map((item) => (
-          <div key={item.id} className="relative">
+          <div key={item.id} className={`relative ${item.hasSpacingAfter ? 'mb-2' : ''}`}>
             {renderItemWithTooltip(item)}
             {onResourceChange && ( // Show notifications whenever onResourceChange callback is provided
               <ResourceChangeNotification
