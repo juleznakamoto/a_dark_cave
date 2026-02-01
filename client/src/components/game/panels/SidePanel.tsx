@@ -97,20 +97,20 @@ export default function SidePanel() {
   // Dynamically generate resource items from state (gold and silver first, then others)
   // Show resource if it has ever been > 0, even if currently 0
   const seenResourceKeys = resourceOrder.filter((key) =>
-    seenResourcesRef.current.has(key)
+    seenResourcesRef.current.has(key),
   );
 
   // Separate gold and silver from other resources
-  const goldSilverResources = seenResourceKeys.filter((key) =>
-    key === "gold" || key === "silver"
+  const goldSilverResources = seenResourceKeys.filter(
+    (key) => key === "gold" || key === "silver",
   );
-  const otherResources = seenResourceKeys.filter((key) =>
-    key !== "gold" && key !== "silver"
+  const otherResources = seenResourceKeys.filter(
+    (key) => key !== "gold" && key !== "silver",
   );
 
   // Order gold first, then silver
   const orderedGoldSilver = ["gold", "silver"].filter((key) =>
-    goldSilverResources.includes(key)
+    goldSilverResources.includes(key),
   );
 
   // Create resource items with special styling for gold and silver
@@ -122,10 +122,12 @@ export default function SidePanel() {
         <span className="flex items-center gap-1">
           <span
             className={
-              key === "gold" ? "text-yellow-400" : "text-gray-300"
+              key === "gold"
+                ? "text-yellow-600"
+                : "text-gray-400"
             }
           >
-            {key === "gold" ? "☉" : "☽"}
+            ◉
           </span>
           <span>{capitalizeWords(key)}</span>
         </span>
@@ -134,7 +136,8 @@ export default function SidePanel() {
       testId: `resource-${key}`,
       visible: true,
       isPrecious: true, // Custom flag for spacing
-      hasSpacingAfter: index === orderedGoldSilver.length - 1 && otherResources.length > 0, // Add spacing after last precious metal if there are other resources
+      hasSpacingAfter:
+        index === orderedGoldSilver.length - 1 && otherResources.length > 0, // Add spacing after last precious metal if there are other resources
     })),
     // Other resources
     ...otherResources.map((key) => ({
@@ -488,7 +491,13 @@ export default function SidePanel() {
     .map(([key, value]) => {
       // Only include fortification buildings
       if (
-        !["bastion", "watchtower", "palisades", "fortifiedMoat", "chitinPlating"].includes(key)
+        ![
+          "bastion",
+          "watchtower",
+          "palisades",
+          "fortifiedMoat",
+          "chitinPlating",
+        ].includes(key)
       ) {
         return null;
       }

@@ -683,7 +683,7 @@ export default function SidePanelSection({
       )}
       <div className="text-xs">
         {visibleItems.map((item) => (
-          <div key={item.id} className={`relative ${item.hasSpacingAfter ? 'mb-2' : ''}`}>
+          <div key={item.id} className={`relative ${item.hasSpacingAfter ? 'mb-1' : ''}`}>
             {renderItemWithTooltip(item)}
             {onResourceChange && ( // Show notifications whenever onResourceChange callback is provided
               <ResourceChangeNotification

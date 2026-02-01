@@ -56,9 +56,9 @@ const START_MESSAGES = {
 const ORIGINAL_CHOICES: Record<string, RiddleChoice[]> = {
   whispererInTheDark: [
     { id: "answerFire", label: "Fire", isCorrect: false },
-    { id: "answerTree", label: "Tree", isCorrect: false },
+    { id: "answerWaves", label: "Waves", isCorrect: false },
     { id: "answerWind", label: "Wind", isCorrect: true },
-    { id: "answerBones", label: "Bones", isCorrect: false },
+    { id: "answerDarkness", label: "Darkness", isCorrect: false },
   ],
   riddleOfAges: [
     { id: "answerEarth", label: "Earth", isCorrect: false },
