@@ -246,7 +246,7 @@ export default function IdleModeDialog() {
         setIsActive(stillActive);
 
         if (stillActive) {
-          audioManager.playLoopingSound("sleep", 0.2);
+          audioManager.playLoopingSound("sleep", 0.3);
         }
       } else if (!idleModeState?.isActive && idleModeState?.startTime === 0) {
         // Only start fresh idle mode if there's no active state AND no previous startTime
@@ -271,7 +271,7 @@ export default function IdleModeDialog() {
         });
 
         // Play sleep sound when entering sleep mode
-        audioManager.playLoopingSound("sleep", 0.2);
+        audioManager.playLoopingSound("sleep", 0.3);
 
         // Immediately save to Supabase so user can close tab
         (async () => {
