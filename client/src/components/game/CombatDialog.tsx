@@ -467,9 +467,10 @@ export default function CombatDialog({
   return (
     <>
       {isOpen && <ProceduralGroundBackground />}
-      <Dialog open={isOpen} onOpenChange={() => { }}>
+      <Dialog open={isOpen} onOpenChange={() => { }} modal={false}>
         <DialogContent
-          className="w-[95vw] sm:max-w-md [&>button]:hidden"
+          className="w-[95vw] sm:max-w-md [&>button]:hidden shadow-none border-none bg-transparent"
+          hideOverlay={true}
           onPointerDownOutside={(e) => e.preventDefault()}
           onEscapeKeyDown={(e) => e.preventDefault()}
         >

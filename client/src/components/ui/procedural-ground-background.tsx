@@ -56,7 +56,7 @@ export const ProceduralGroundBackground: React.FC = () => {
         // Color Palette
         vec3 baseColor = vec3(0.04, 0.03, 0.12); // Deep Space
         vec3 accentColor = vec3(0.1, 0.3, 0.8);   // Electric Blue
-        vec3 neonColor = vec3(0.6, 0.2, 1.0);     // Neon Purple
+        vec3 neonColor = vec3(0.1, 0.2, 1.0);     // Neon Purple
         
         // Composite
         vec3 finalColor = mix(baseColor, accentColor, n * 0.6);
