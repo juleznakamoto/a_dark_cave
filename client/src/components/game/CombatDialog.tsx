@@ -24,6 +24,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { Enemy, CombatItem } from "@/game/types";
+import { ProceduralGroundBackground } from "@/components/ui/procedural-ground-background";
 
 interface CombatDialogProps {
   isOpen: boolean;
@@ -464,12 +465,14 @@ export default function CombatDialog({
     : 0;
 
   return (
-    <Dialog open={isOpen} onOpenChange={() => { }}>
-      <DialogContent
-        className="w-[95vw] sm:max-w-md [&>button]:hidden"
-        onPointerDownOutside={(e) => e.preventDefault()}
-        onEscapeKeyDown={(e) => e.preventDefault()}
-      >
+    <>
+      {isOpen && <ProceduralGroundBackground />}
+      <Dialog open={isOpen} onOpenChange={() => { }}>
+        <DialogContent
+          className="w-[95vw] sm:max-w-md [&>button]:hidden"
+          onPointerDownOutside={(e) => e.preventDefault()}
+          onEscapeKeyDown={(e) => e.preventDefault()}
+        >
         {!combatStarted ? (
           // Initial event screen
           <>
@@ -808,5 +811,6 @@ export default function CombatDialog({
         )}
       </DialogContent>
     </Dialog>
+    </>
   );
 }
