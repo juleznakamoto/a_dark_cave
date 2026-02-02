@@ -1093,11 +1093,16 @@ export const useGameStore = create<GameStore>((set, get) => ({
       // Use milestone-updated log as base, then append action log entries
       const baseLog = milestoneUpdates.log || newStateAfterUpdates.log;
 
+      // Filter out entries marked to skip event log (they should only appear in dialogs)
+      const logEntriesToAdd = result.logEntries
+        ? result.logEntries.filter(entry => !entry.skipEventLog)
+        : [];
+
       return {
         ...newStateAfterUpdates,
         ...milestoneUpdates,
-        log: result.logEntries
-          ? [...baseLog, ...result.logEntries].slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES)
+        log: logEntriesToAdd.length > 0
+          ? [...baseLog, ...logEntriesToAdd].slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES)
           : baseLog,
       };
     });
