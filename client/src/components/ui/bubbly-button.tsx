@@ -219,7 +219,7 @@ BubblyButton.displayName = "BubblyButton";
 // Global bubble portal component for lifted state pattern
 export const BubblyButtonGlobalPortal = ({
   bubbles,
-  zIndex = 50,
+  zIndex = -1,
 }: {
   bubbles: Array<{ id: string; x: number; y: number }>;
   zIndex?: number;
@@ -228,7 +228,7 @@ export const BubblyButtonGlobalPortal = ({
     <div className="fixed inset-0 pointer-events-none" style={{ zIndex }}>
       <AnimatePresence>
         {bubbles.map((bubble) => (
-          <div key={bubble.id}>
+          <div key={bubble.id} style={{ position: "absolute", left: 0, top: 0, width: "100%", height: "100%", isolation: "isolate" }}>
             {Array.from({ length: 150 }).map((_, i) => {
               const angle = Math.random() * Math.PI * 2;
               const distance = 40 + Math.random() * 60;
@@ -249,7 +249,7 @@ export const BubblyButtonGlobalPortal = ({
                     backgroundColor: color,
                     left: bubble.x - size / 2,
                     top: bubble.y - size / 2,
-                    zIndex: 9998,
+                    zIndex: -1,
                     boxShadow: `0 0 ${size * 0.5}px ${color}aa, 0 0 ${size * 1}px ${color}55`,
                   }}
                   initial={{ opacity: 1, scale: 1, x: 0, y: 0 }}
