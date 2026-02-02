@@ -34,6 +34,7 @@ function processTriggeredEvents(
         effectUpdates.triggeredEventsState[eventId] = true;
 
         // Create a log entry for the event
+        const eventChoices = typeof eventDef.choices === 'function' ? undefined : eventDef.choices;
         const logEntry: LogEntry = {
           id: `${eventId}-${Date.now()}`,
           message: typeof eventDef.message === 'string'
@@ -44,11 +45,12 @@ function processTriggeredEvents(
           timestamp: Date.now(),
           type: "event",
           title: eventDef.title,
-          choices: typeof eventDef.choices === 'function' ? undefined : eventDef.choices,
+          choices: eventChoices,
           isTimedChoice: eventDef.isTimedChoice,
           baseDecisionTime: eventDef.baseDecisionTime,
           fallbackChoice: eventDef.fallbackChoice,
           relevant_stats: eventDef.relevant_stats,
+          skipEventLog: eventChoices && eventChoices.length > 0, // Don't log events with choices - only show in dialog
         };
 
         result.logEntries!.push(logEntry);
