@@ -1,31 +1,30 @@
+
 import { useState } from "react";
 import { BubblyButton, BubblyButtonGlobalPortal } from "@/components/ui/bubbly-button";
-
-// ============================================================
-// Custom Hook for Bubbly Animation Logic
-// ============================================================
-function useBubblyAnimation() {
-  const [bubbles, setBubbles] = useState<Array<{ id: string; x: number; y: number }>>([]);
-
-  const handleAnimationTrigger = (x: number, y: number) => {
-    const id = `bubble-${Date.now()}`;
-    setBubbles(prev => [...prev, { id, x, y }]);
-
-    // Keep bubbles visible for animation duration (matches internal system)
-    setTimeout(() => {
-      setBubbles(prev => prev.filter(b => b.id !== id));
-    }, 3000);
-  };
-
-  return { bubbles, handleAnimationTrigger };
-}
 
 // ============================================================
 // Build Button - Non-Upgradeable (Disappearing)
 // ============================================================
 function NonUpgradeableBuildButton() {
   const [show, setShow] = useState(true);
-  const { bubbles, handleAnimationTrigger } = useBubblyAnimation();
+  const [bubbles, setBubbles] = useState<Array<{ id: string; x: number; y: number }>>([]);
+
+  const handleAnimationTrigger = (x: number, y: number) => {
+    const id = `bubble-${Date.now()}`;
+    setBubbles(prev => [...prev, { id, x, y }]);
+
+    // Keep bubbles visible for animation duration
+    setTimeout(() => {
+      setBubbles(prev => prev.filter(b => b.id !== id));
+    }, 4000);
+  };
+
+  const handleClick = () => {
+    // Trigger animation
+    setShow(false);
+    // Button stays hidden (no reappearance timeout) - represents completed build
+    // Animation persists via global portal
+  };
 
   return (
     <div className="relative">
@@ -33,11 +32,8 @@ function NonUpgradeableBuildButton() {
         {show && (
           <BubblyButton
             variant="outline"
-            onClick={() => {
-              handleAnimationTrigger(window.innerWidth / 2, window.innerHeight / 2);
-              setShow(false);
-              setTimeout(() => setShow(true), 3000);
-            }}
+            onClick={handleClick}
+            onAnimationTrigger={handleAnimationTrigger}
             className="bg-stone-800 hover:bg-stone-700 border-stone-600"
           >
             Build Stone Hut
@@ -59,14 +55,28 @@ function NonUpgradeableBuildButton() {
 // Build Button - Upgradeable (Persistent)
 // ============================================================
 function UpgradeableBuildButton() {
+  const [bubbles, setBubbles] = useState<Array<{ id: string; x: number; y: number }>>([]);
+
+  const handleAnimationTrigger = (x: number, y: number) => {
+    const id = `bubble-${Date.now()}`;
+    setBubbles(prev => [...prev, { id, x, y }]);
+
+    // Keep bubbles visible for animation duration
+    setTimeout(() => {
+      setBubbles(prev => prev.filter(b => b.id !== id));
+    }, 4000);
+  };
+
   return (
     <div className="relative">
       <BubblyButton
         variant="outline"
+        onAnimationTrigger={handleAnimationTrigger}
         className="bg-amber-800 hover:bg-amber-700 border-amber-600"
       >
         Wooden Hut
       </BubblyButton>
+      <BubblyButtonGlobalPortal bubbles={bubbles} zIndex={10} />
     </div>
   );
 }
