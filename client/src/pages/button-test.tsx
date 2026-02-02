@@ -28,20 +28,17 @@ function NonUpgradeableBuildButton() {
   const [show, setShow] = useState(true);
   const { bubbles, handleAnimationTrigger } = useBubblyAnimation();
 
-  const handleClick = () => {
-    // Trigger animation
-    setShow(false);
-    setTimeout(() => setShow(true), 3000);
-  };
-
   return (
     <div className="relative">
       <div className="relative z-10">
         {show && (
           <BubblyButton
             variant="outline"
-            onClick={handleClick}
-            onAnimationTrigger={handleAnimationTrigger}
+            onClick={() => {
+              handleAnimationTrigger(window.innerWidth / 2, window.innerHeight / 2);
+              setShow(false);
+              setTimeout(() => setShow(true), 3000);
+            }}
             className="bg-stone-800 hover:bg-stone-700 border-stone-600"
           >
             Build Stone Hut
