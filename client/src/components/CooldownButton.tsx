@@ -10,12 +10,12 @@ interface CooldownButtonProps {
   disabled?: boolean;
   className?: string;
   variant?:
-  | "default"
-  | "destructive"
-  | "outline"
-  | "secondary"
-  | "ghost"
-  | "link";
+    | "default"
+    | "destructive"
+    | "outline"
+    | "secondary"
+    | "ghost"
+    | "link";
   size?: "default" | "sm" | "xs" | "lg" | "icon";
   "data-testid"?: string;
   button_id?: string;
@@ -23,7 +23,6 @@ interface CooldownButtonProps {
   tooltip?: React.ReactNode;
   onMouseEnter?: (e?: React.MouseEvent<HTMLDivElement>) => void;
   onMouseLeave?: (e?: React.MouseEvent<HTMLDivElement>) => void;
-  onAnimationTrigger?: (x: number, y: number) => void;
 }
 
 const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
@@ -38,7 +37,6 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       size = "default",
       "data-testid": testId,
       tooltip,
-      onAnimationTrigger,
       ...props
     },
     ref
@@ -57,8 +55,8 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
     const isCoolingDown = currentCooldown > 0;
 
     // Use the stored initial cooldown if available, otherwise fall back to the action's defined cooldown
-    const initialCooldown = storedInitialCooldown > 0
-      ? storedInitialCooldown
+    const initialCooldown = storedInitialCooldown > 0 
+      ? storedInitialCooldown 
       : cooldownMs / 1000;
 
     // Use a ref to track if we should animate the width
@@ -104,12 +102,6 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       if (disabled && !isCoolingDown) return;
       if (!isCoolingDown) {
         actionExecutedRef.current = true;
-
-        // Trigger animation if provided
-        if (onAnimationTrigger) {
-          onAnimationTrigger(e.clientX, e.clientY);
-        }
-
         onClick();
         // Reset the flag after a short delay
         setTimeout(() => {
@@ -131,8 +123,9 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
         disabled={isButtonDisabled}
         variant={variant}
         size={size}
-        className={`relative overflow-hidden transition-all duration-200 select-none ${isCoolingDown ? "cursor-not-allowed" : ""
-          } ${isCompassGlowing ? "compass-glow" : ""} ${className}`}
+        className={`relative overflow-hidden transition-all duration-200 select-none ${
+          isCoolingDown ? "cursor-not-allowed" : ""
+        } ${isCompassGlowing ? "compass-glow" : ""} ${className}`}
         data-testid={testId}
         button_id={props.button_id || actionIdFromProps}
         {...props}
