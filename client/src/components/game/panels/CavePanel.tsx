@@ -138,7 +138,7 @@ export default function CavePanel() {
             { id: "craftBloodstoneStaff", label: "Bloodstone Staff" },
             { id: "craftStormglassHalberd", label: "Stormglass Halberd" },
             { id: "craftAshenGreatshield", label: "Ashen Greatshield" },
-            { id: "craftSkeletonKey", label: "Skeleton Key" }
+            { id: "craftSkeletonKey", label: "Skeleton Key" },
           ],
         },
         {
@@ -344,11 +344,14 @@ export default function CavePanel() {
                   if (visibleActions.length === 0) return null;
 
                   return (
+                    <div className="w-96">
+
                     <div key={subGroupIndex} className="flex flex-wrap gap-2">
                       {visibleActions.map((action) =>
                         renderButton(action.id, action.label),
                       )}
-                    </div>
+                    </div>                    </div>
+
                   );
                 })}
               </div>
@@ -374,11 +377,11 @@ export default function CavePanel() {
                   {group.title}
                 </h3>
               )}
-              <div className="flex flex-wrap gap-2">
-                {visibleActions.map((action) =>
-                  renderButton(action.id, action.label),
-                )}
-              </div>
+                <div className="flex flex-wrap gap-2">
+                  {visibleActions.map((action) =>
+                    renderButton(action.id, action.label),
+                  )}
+                </div>
             </div>
           );
         })}
