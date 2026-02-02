@@ -76,7 +76,7 @@ function UpgradeableBuildButton() {
       >
         Wooden Hut
       </BubblyButton>
-      <BubblyButtonGlobalPortal bubbles={bubbles} />
+      <BubblyButtonGlobalPortal bubbles={bubbles} zIndex={10} />
     </div>
   );
 }

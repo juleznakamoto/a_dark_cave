@@ -219,11 +219,13 @@ BubblyButton.displayName = "BubblyButton";
 // Global bubble portal component for lifted state pattern
 export const BubblyButtonGlobalPortal = ({
   bubbles,
+  zIndex = 50,
 }: {
   bubbles: Array<{ id: string; x: number; y: number }>;
+  zIndex?: number;
 }) => {
   return (
-    <div className="fixed inset-0 pointer-events-none z-[9998]">
+    <div className="fixed inset-0 pointer-events-none" style={{ zIndex }}>
       <AnimatePresence>
         {bubbles.map((bubble) => (
           <div key={bubble.id}>
