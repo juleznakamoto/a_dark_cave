@@ -59,9 +59,11 @@ export default function VillagePanel() {
 
   // Bubbly button animation state
   const [bubbles, setBubbles] = useState<Array<{ id: string; x: number; y: number }>>([]);
+  const bubbleIdCounter = useRef(0);
 
   const handleAnimationTrigger = (x: number, y: number) => {
-    const id = `bubble-${Date.now()}`;
+    // Use a counter to ensure unique IDs even for rapid clicks
+    const id = `bubble-${bubbleIdCounter.current++}-${Date.now()}`;
     setBubbles(prev => [...prev, { id, x, y }]);
 
     // Keep bubbles visible for animation duration
@@ -545,7 +547,7 @@ export default function VillagePanel() {
   return (
     <>
       <SuccessParticles buttonRef={feedFireButtonRef} sparks={sparks} />
-      <BubblyButtonGlobalPortal bubbles={bubbles} />
+      <BubblyButtonGlobalPortal bubbles={bubbles} zIndex={1} />
       <ScrollArea className="h-full w-96">
         <div className="space-y-4 mt-2 mb-2 pl-[3px] ">
           {/* Special Top Level Button Group for Feed Fire */}

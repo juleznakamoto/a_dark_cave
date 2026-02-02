@@ -221,7 +221,7 @@ BubblyButton.displayName = "BubblyButton";
 // Global bubble portal component for lifted state pattern
 export const BubblyButtonGlobalPortal = ({
   bubbles,
-  zIndex = 50,
+  zIndex = 1,
 }: {
   bubbles: Array<{ id: string; x: number; y: number }>;
   zIndex?: number;
@@ -229,45 +229,47 @@ export const BubblyButtonGlobalPortal = ({
   return (
     <div className="fixed inset-0 pointer-events-none" style={{ zIndex }}>
       <AnimatePresence>
-        {bubbles.map((bubble) => (
-          <div key={bubble.id}>
-            {Array.from({ length: 150 }).map((_, i) => {
-              const angle = Math.random() * Math.PI * 2;
-              const distance = 40 + Math.random() * 60;
-              const size = 5 + Math.random() * 20;
-              const color = TONES[Math.floor(Math.random() * TONES.length)];
-              const duration = 2 + Math.random() * 1.0;
-              // Ensure particles move outwards by using positive distance in all directions
-              const endX = Math.cos(angle) * distance;
-              const endY = Math.sin(angle) * distance;
+        {bubbles.map((bubble) => {
+          // Generate particle properties once per bubble to prevent retriggering
+          const particleData = Array.from({ length: 150 }).map(() => {
+            const angle = Math.random() * Math.PI * 2;
+            const distance = 40 + Math.random() * 60;
+            const size = 5 + Math.random() * 20;
+            const color = TONES[Math.floor(Math.random() * TONES.length)];
+            const duration = 2 + Math.random() * 1.0;
+            const endX = Math.cos(angle) * distance;
+            const endY = Math.sin(angle) * distance;
+            return { size, color, duration, endX, endY };
+          });
 
-              return (
+          return (
+            <div key={bubble.id}>
+              {particleData.map((particle, i) => (
                 <motion.div
                   key={`${bubble.id}-${i}`}
                   className="fixed rounded-full"
                   style={{
-                    width: `${size}px`,
-                    height: `${size}px`,
-                    backgroundColor: color,
-                    left: bubble.x - size / 2,
-                    top: bubble.y - size / 2,
-                    zIndex: 9998,
-                    boxShadow: `0 0 ${size * 0.5}px ${color}aa, 0 0 ${size * 1}px ${color}55`,
+                    width: `${particle.size}px`,
+                    height: `${particle.size}px`,
+                    backgroundColor: particle.color,
+                    left: bubble.x - particle.size / 2,
+                    top: bubble.y - particle.size / 2,
+                    boxShadow: `0 0 ${particle.size * 0.5}px ${particle.color}aa, 0 0 ${particle.size * 1}px ${particle.color}55`,
                   }}
                   initial={{ opacity: 1, scale: 1, x: 0, y: 0 }}
                   animate={{
                     opacity: 0.8,
                     scale: 0.0,
-                    x: endX,
-                    y: endY,
+                    x: particle.endX,
+                    y: particle.endY,
                   }}
                   exit={{ opacity: 0.8 }}
-                  transition={{ duration, ease: [0, 0, 0.5, 1] }}
+                  transition={{ duration: particle.duration, ease: [0, 0, 0.5, 1] }}
                 />
-              );
-            })}
-          </div>
-        ))}
+              ))}
+            </div>
+          );
+        })}
       </AnimatePresence>
     </div>
   );
