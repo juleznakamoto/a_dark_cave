@@ -117,7 +117,6 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
         style={{
           position: "relative",
           display: "inline-block",
-          isolation: "isolate",
         }}
       >
         {/* Bubble animations container - behind button */}
@@ -128,7 +127,7 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
             top: 0,
             width: "100%",
             height: "100%",
-            zIndex: -1,
+            zIndex: 0,
           }}
         >
           <AnimatePresence>
@@ -202,7 +201,8 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
                 : undefined,
               transition: "box-shadow 0.15s ease-out",
               filter: isGlowing ? "brightness(1.2)" : undefined,
-              zIndex: 0,
+              position: "relative",
+              zIndex: 1,
             } as React.CSSProperties
           }
           {...props}
