@@ -228,7 +228,7 @@ export const BubblyButtonGlobalPortal = ({
     <div className="fixed inset-0 pointer-events-none" style={{ zIndex }}>
       <AnimatePresence>
         {bubbles.map((bubble) => (
-          <div key={bubble.id} style={{ position: "absolute", left: 0, top: 0, width: "100%", height: "100%", isolation: "isolate" }}>
+          <div key={bubble.id} className="absolute inset-0" style={{ isolation: "isolate" }}>
             {Array.from({ length: 150 }).map((_, i) => {
               const angle = Math.random() * Math.PI * 2;
               const distance = 40 + Math.random() * 60;
