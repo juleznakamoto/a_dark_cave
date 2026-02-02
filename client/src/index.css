@@ -280,6 +280,7 @@ body {
 }
 
 @keyframes madness-glow-pulse {
+
   0%,
   100% {
     box-shadow: 0 0 20px 1px rgba(220, 38, 38, 0.25);
@@ -434,7 +435,8 @@ body {
 }
 
 .overlay-fade-in {
-  animation: overlay-fade-in 2s ease-in;
+  animation: overlay-fade-in 2s ease-in forwards;
+  opacity: 0;
 }
 
 @keyframes bubbly-top {
