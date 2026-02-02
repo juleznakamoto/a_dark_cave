@@ -86,8 +86,8 @@ export const ProceduralGroundBackground: React.FC = () => {
     const buffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
-      -1, -1,  1, -1, -1,  1,
-      -1,  1,  1, -1,  1,  1
+      -1, -1, 1, -1, -1, 1,
+      -1, 1, 1, -1, 1, 1
     ]), gl.STATIC_DRAW);
 
     const posAttrib = gl.getAttribLocation(program, "position");
@@ -120,7 +120,7 @@ export const ProceduralGroundBackground: React.FC = () => {
   }, []);
 
   return (
-    <div className="fixed inset-0 w-full h-full bg-zinc-950 z-40">
+    <div className="fixed inset-0 w-full h-full bg-zinc-950 z-40 overlay-fade-in" style={{ opacity: 0 }}>
       <canvas
         ref={canvasRef}
         className="w-full h-full block touch-none"
