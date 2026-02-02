@@ -227,15 +227,15 @@ export const BubblyButtonGlobalPortal = ({
       <AnimatePresence>
         {bubbles.map((bubble) => (
           <div key={bubble.id}>
-            {Array.from({ length: 150 }).map((_, i) => {
+            {Array.from({ length: 100 }).map((_, i) => {
               const angle = Math.random() * Math.PI * 2;
-              const distance = 40 + Math.random() * 60;
-              const size = 5 + Math.random() * 20;
+              const distanceX = 20 + Math.random() * 120;
+              const distanceY = 20 + Math.random() * 80;
+              const size = 3 + Math.random() * 25;
               const color = TONES[Math.floor(Math.random() * TONES.length)];
-              const duration = 2 + Math.random() * 1.0;
-              // Ensure particles move outwards by using positive distance in all directions
-              const endX = Math.cos(angle) * distance;
-              const endY = Math.sin(angle) * distance;
+              const duration = 2.0 + Math.random() * 1.0;
+              const endX = Math.cos(angle) * distanceX;
+              const endY = Math.sin(angle) * distanceY;
 
               return (
                 <motion.div
