@@ -435,7 +435,7 @@ body {
 }
 
 .overlay-fade-in {
-  animation: overlay-fade-in 4s ease-in forwards;
+  animation: overlay-fade-in 10s ease-in forwards;
   opacity: 0;
 }
 
