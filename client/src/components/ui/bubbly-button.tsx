@@ -223,7 +223,7 @@ export const BubblyButtonGlobalPortal = ({
   bubbles: Array<{ id: string; x: number; y: number }>;
 }) => {
   return (
-    <div className="fixed inset-0 pointer-events-none z-[9998]">
+    <div className="fixed inset-0 pointer-events-none" style={{ zIndex: -1 }}>
       <AnimatePresence>
         {bubbles.map((bubble) => (
           <div key={bubble.id}>
@@ -247,7 +247,6 @@ export const BubblyButtonGlobalPortal = ({
                     backgroundColor: color,
                     left: bubble.x - size / 2,
                     top: bubble.y - size / 2,
-                    zIndex: 9998,
                     boxShadow: `0 0 ${size * 0.5}px ${color}aa, 0 0 ${size * 1}px ${color}55`,
                   }}
                   initial={{ opacity: 1, scale: 1, x: 0, y: 0 }}
