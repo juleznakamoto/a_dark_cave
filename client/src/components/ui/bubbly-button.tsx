@@ -118,6 +118,7 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
           position: "relative",
           display: "inline-block",
           isolation: "isolate",
+          zIndex: 100,
         }}
       >
         {/* Bubble animations container - behind button */}
@@ -223,7 +224,7 @@ export const BubblyButtonGlobalPortal = ({
   bubbles: Array<{ id: string; x: number; y: number }>;
 }) => {
   return (
-    <div className="fixed inset-0 pointer-events-none" style={{ zIndex: -1 }}>
+    <div className="fixed inset-0 pointer-events-none" style={{ zIndex: 50 }}>
       <AnimatePresence>
         {bubbles.map((bubble) => (
           <div key={bubble.id}>
