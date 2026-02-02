@@ -38,7 +38,7 @@ import {
   useFeedFireParticles,
 } from "@/components/ui/feed-fire-particles";
 import { audioManager } from "@/lib/audio";
-import { BubblyButtonGlobalPortal } from "@/components/ui/bubbly-button";
+import { BubblyButtonGlobalPortal, generateParticleData, type BubbleWithParticles } from "@/components/ui/bubbly-button";
 
 export default function VillagePanel() {
   const {
@@ -58,13 +58,15 @@ export default function VillagePanel() {
   const { sparks, spawnParticles } = useFeedFireParticles();
 
   // Bubbly button animation state
-  const [bubbles, setBubbles] = useState<Array<{ id: string; x: number; y: number }>>([]);
+  const [bubbles, setBubbles] = useState<BubbleWithParticles[]>([]);
   const bubbleIdCounter = useRef(0);
 
   const handleAnimationTrigger = (x: number, y: number) => {
     // Use a counter to ensure unique IDs even for rapid clicks
     const id = `bubble-${bubbleIdCounter.current++}-${Date.now()}`;
-    setBubbles(prev => [...prev, { id, x, y }]);
+    // Generate particle data once when bubble is created (prevents random regeneration)
+    const particles = generateParticleData();
+    setBubbles(prev => [...prev, { id, x, y, particles }]);
 
     // Keep bubbles visible for animation duration
     setTimeout(() => {
@@ -547,7 +549,7 @@ export default function VillagePanel() {
   return (
     <>
       <SuccessParticles buttonRef={feedFireButtonRef} sparks={sparks} />
-      <BubblyButtonGlobalPortal bubbles={bubbles} zIndex={1} />
+      <BubblyButtonGlobalPortal bubbles={bubbles} />
       <ScrollArea className="h-full w-96">
         <div className="space-y-4 mt-2 mb-2 pl-[3px] ">
           {/* Special Top Level Button Group for Feed Fire */}

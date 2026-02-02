@@ -218,58 +218,65 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
 
 BubblyButton.displayName = "BubblyButton";
 
+// Helper to generate particle data once
+export function generateParticleData() {
+  return Array.from({ length: 150 }).map(() => {
+    const angle = Math.random() * Math.PI * 2;
+    const distance = 40 + Math.random() * 60;
+    const size = 5 + Math.random() * 20;
+    const color = TONES[Math.floor(Math.random() * TONES.length)];
+    const duration = 2 + Math.random() * 1.0;
+    const endX = Math.cos(angle) * distance;
+    const endY = Math.sin(angle) * distance;
+    return { size, color, duration, endX, endY };
+  });
+}
+
+export interface BubbleWithParticles {
+  id: string;
+  x: number;
+  y: number;
+  particles: ReturnType<typeof generateParticleData>;
+}
+
 // Global bubble portal component for lifted state pattern
 export const BubblyButtonGlobalPortal = ({
   bubbles,
-  zIndex = 1,
+  zIndex = 5,
 }: {
-  bubbles: Array<{ id: string; x: number; y: number }>;
+  bubbles: BubbleWithParticles[];
   zIndex?: number;
 }) => {
   return (
     <div className="fixed inset-0 pointer-events-none" style={{ zIndex }}>
       <AnimatePresence>
-        {bubbles.map((bubble) => {
-          // Generate particle properties once per bubble to prevent retriggering
-          const particleData = Array.from({ length: 150 }).map(() => {
-            const angle = Math.random() * Math.PI * 2;
-            const distance = 40 + Math.random() * 60;
-            const size = 5 + Math.random() * 20;
-            const color = TONES[Math.floor(Math.random() * TONES.length)];
-            const duration = 2 + Math.random() * 1.0;
-            const endX = Math.cos(angle) * distance;
-            const endY = Math.sin(angle) * distance;
-            return { size, color, duration, endX, endY };
-          });
-
-          return (
-            <div key={bubble.id}>
-              {particleData.map((particle, i) => (
-                <motion.div
-                  key={`${bubble.id}-${i}`}
-                  className="fixed rounded-full"
-                  style={{
-                    width: `${particle.size}px`,
-                    height: `${particle.size}px`,
-                    backgroundColor: particle.color,
-                    left: bubble.x - particle.size / 2,
-                    top: bubble.y - particle.size / 2,
-                    boxShadow: `0 0 ${particle.size * 0.5}px ${particle.color}aa, 0 0 ${particle.size * 1}px ${particle.color}55`,
-                  }}
-                  initial={{ opacity: 1, scale: 1, x: 0, y: 0 }}
-                  animate={{
-                    opacity: 0.8,
-                    scale: 0.0,
-                    x: particle.endX,
-                    y: particle.endY,
-                  }}
-                  exit={{ opacity: 0.8 }}
-                  transition={{ duration: particle.duration, ease: [0, 0, 0.5, 1] }}
-                />
-              ))}
-            </div>
-          );
-        })}
+        {bubbles.map((bubble) => (
+          <div key={bubble.id}>
+            {bubble.particles.map((particle, i) => (
+              <motion.div
+                key={`${bubble.id}-${i}`}
+                className="fixed rounded-full"
+                style={{
+                  width: `${particle.size}px`,
+                  height: `${particle.size}px`,
+                  backgroundColor: particle.color,
+                  left: bubble.x - particle.size / 2,
+                  top: bubble.y - particle.size / 2,
+                  boxShadow: `0 0 ${particle.size * 0.5}px ${particle.color}aa, 0 0 ${particle.size * 1}px ${particle.color}55`,
+                }}
+                initial={{ opacity: 1, scale: 1, x: 0, y: 0 }}
+                animate={{
+                  opacity: 0.8,
+                  scale: 0.0,
+                  x: particle.endX,
+                  y: particle.endY,
+                }}
+                exit={{ opacity: 0.8 }}
+                transition={{ duration: particle.duration, ease: [0, 0, 0.5, 1] }}
+              />
+            ))}
+          </div>
+        ))}
       </AnimatePresence>
     </div>
   );

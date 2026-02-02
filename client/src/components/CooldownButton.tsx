@@ -100,14 +100,18 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
 
     const actionExecutedRef = useRef<boolean>(false);
 
-    const handleClick = (e: React.MouseEvent) => {
+    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
       if (disabled && !isCoolingDown) return;
       if (!isCoolingDown) {
         actionExecutedRef.current = true;
 
-        // Trigger animation if provided
+        // Trigger animation if provided - use button center, not click position
         if (onAnimationTrigger) {
-          onAnimationTrigger(e.clientX, e.clientY);
+          const button = e.currentTarget;
+          const rect = button.getBoundingClientRect();
+          const centerX = rect.left + rect.width / 2;
+          const centerY = rect.top + rect.height / 2;
+          onAnimationTrigger(centerX, centerY);
         }
 
         onClick();
@@ -136,7 +140,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
         data-testid={testId}
         button_id={props.button_id || actionIdFromProps}
         {...props}
-        style={{ opacity: 1, ...props.style }}
+        style={{ opacity: 1, position: 'relative', zIndex: 10, ...props.style }}
       >
         {/* Button content */}
         <span className={`relative transition-opacity duration-200 ${isCoolingDown || disabled ? "opacity-60" : ""}`}>{children}</span>
