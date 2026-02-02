@@ -133,21 +133,20 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
         >
           <AnimatePresence>
             {bubbles.map((bubble) => {
-              // Generate 100 bubbles
-              const particleBubbles = Array.from({ length: 100 }).map(() => {
+              // Generate 150 bubbles (matches global portal)
+              const particleBubbles = Array.from({ length: 150 }).map(() => {
                 const angle = Math.random() * Math.PI * 2;
-                const distanceX = 20 + Math.random() * 120;
-                const distanceY = 20 + Math.random() * 80;
-                const size = 3 + Math.random() * 25;
+                const distance = 40 + Math.random() * 60;
+                const size = 5 + Math.random() * 20;
                 const color = TONES[Math.floor(Math.random() * TONES.length)];
-                const duration = 2.0 + Math.random() * 1.0;
+                const duration = 2 + Math.random() * 1.0;
 
-                return { size, angle, distanceX, distanceY, color, duration };
+                return { size, angle, distance, color, duration };
               });
 
               return particleBubbles.map((b, index) => {
-                const endX = Math.cos(b.angle) * b.distanceX;
-                const endY = Math.sin(b.angle) * b.distanceY;
+                const endX = Math.cos(b.angle) * b.distance;
+                const endY = Math.sin(b.angle) * b.distance;
 
                 return (
                   <motion.div
@@ -159,7 +158,7 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
                       backgroundColor: b.color,
                       left: bubble.x - b.size / 2,
                       top: bubble.y - b.size / 2,
-                      boxShadow: `0 0 ${b.size * 0.8}px ${b.color}aa, 0 0 ${b.size * 1.5}px ${b.color}55`,
+                      boxShadow: `0 0 ${b.size * 0.5}px ${b.color}aa, 0 0 ${b.size * 1}px ${b.color}55`,
                       zIndex: -1,
                     }}
                     initial={{
@@ -169,17 +168,17 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
                       y: 0,
                     }}
                     animate={{
-                      opacity: 0.0,
+                      opacity: 0.8,
                       scale: 0.0,
                       x: endX,
                       y: endY,
                     }}
                     exit={{
-                      opacity: 0,
+                      opacity: 0.8,
                     }}
                     transition={{
                       duration: b.duration,
-                      ease: [0.16, 1, 0.3, 1],
+                      ease: [0, 0, 0.5, 1],
                     }}
                   />
                 );
