@@ -7,6 +7,7 @@ import {
   getActionCostBreakdown,
   getResourcesFromActionCost,
 } from "@/game/rules";
+import { getResourcesFromActionCost as getResourcesFromActionCostImport } from "@/game/rules";
 import {
   feastTooltip,
   curseTooltip,
@@ -38,6 +39,8 @@ import {
   useFeedFireParticles,
 } from "@/components/ui/feed-fire-particles";
 import { audioManager } from "@/lib/audio";
+import { BubblyButton, BubblyButtonGlobalPortal } from "@/components/ui/bubbly-button";
+import NonUpgradeableBuildButton from "@/components/ui/non-upgradeable-build-button";
 
 export default function VillagePanel() {
   const {
@@ -55,6 +58,19 @@ export default function VillagePanel() {
   // Particle effect state
   const feedFireButtonRef = useRef<HTMLButtonElement>(null);
   const { sparks, spawnParticles } = useFeedFireParticles();
+
+  // Bubbly button animation state
+  const [bubbles, setBubbles] = useState<Array<{ id: string; x: number; y: number }>>([]);
+
+  const handleAnimationTrigger = (x: number, y: number) => {
+    const id = `bubble-${Date.now()}`;
+    setBubbles(prev => [...prev, { id, x, y }]);
+
+    // Keep bubbles visible for animation duration
+    setTimeout(() => {
+      setBubbles(prev => prev.filter(b => b.id !== id));
+    }, 3000); // Match the 3-second duration used in button-test
+  };
 
   // Get progress from game loop state
   const loopProgress = useGameStore((state) => state.loopProgress);
@@ -367,33 +383,15 @@ export default function VillagePanel() {
     );
 
     return (
-      <CooldownButton
+      <NonUpgradeableBuildButton
         key={actionId}
-        onClick={() => executeAction(actionId)}
-        cooldownMs={action.cooldown * 1000}
-        data-testid={`button-${actionId.replace(/([A-Z])/g, "-$1").toLowerCase()}`}
-        button_id={actionId}
+        actionId={actionId}
+        label={displayLabel}
+        onExecute={() => executeAction(actionId)}
         disabled={!canExecute}
-        size="xs"
-        variant="outline"
-        className="hover:bg-transparent hover:text-foreground"
-        tooltip={tooltipContent}
-        onMouseEnter={() => {
-          // Only highlight resources if Inkwarden Academy is built
-          if (buildings.inkwardenAcademy > 0) {
-            const resources = getResourcesFromActionCost(actionId, state);
-            setHighlightedResources(resources);
-          }
-        }}
-        onMouseLeave={() => {
-          if (buildings.inkwardenAcademy > 0) {
-            setHighlightedResources([]);
-          }
-        }}
-        style={{ pointerEvents: "auto" }}
-      >
-        {displayLabel}
-      </CooldownButton>
+        tooltipContent={costBreakdown}
+        onAnimationTrigger={handleAnimationTrigger}
+      />
     );
   };
 
@@ -530,6 +528,7 @@ export default function VillagePanel() {
   return (
     <>
       <SuccessParticles buttonRef={feedFireButtonRef} sparks={sparks} />
+      <BubblyButtonGlobalPortal bubbles={bubbles} />
       <ScrollArea className="h-full w-96">
         <div className="space-y-4 mt-2 mb-2 pl-[3px] ">
           {/* Special Top Level Button Group for Feed Fire */}
