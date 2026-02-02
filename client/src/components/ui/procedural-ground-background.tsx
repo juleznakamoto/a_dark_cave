@@ -47,23 +47,23 @@ export const ProceduralGroundBackground: React.FC = () => {
         vec2 gridUv = vec2(uv.x * depth, depth + u_time * 0.15);
         
         // Layered Procedural Noise for Terrain
-        float n = noise(gridUv * 3.5);
+        float n = noise(gridUv * 4.5);
         float ripples = sin(gridUv.y * 18.0 + n * 8.0 + u_time * 0.5);
         
         // Neon Topographic Lines
         float topoLine = smoothstep(0.03, 0.0, abs(ripples));
         
         // Color Palette
-        vec3 baseColor = vec3(0.04, 0.03, 0.12); // Deep Space
-        vec3 accentColor = vec3(0.1, 0.3, 0.8);   // Electric Blue
-        vec3 neonColor = vec3(0.6, 0.2, 1.0);     // Neon Purple
+        vec3 baseColor = vec3(0.1, 0.03, 0.03);
+        vec3 accentColor = vec3(0.3, 0.3, 0.3);
+        vec3 neonColor = vec3(0.45, 0.45, 0.45);
         
         // Composite
         vec3 finalColor = mix(baseColor, accentColor, n * 0.6);
         finalColor += topoLine * neonColor * depth * 0.4;
         
         // Horizon Fog / Fade
-        float fade = smoothstep(0.1, -1.0, uv.y);
+        float fade = smoothstep(0.3, -1.0, uv.y);
         finalColor *= (1.0 - length(uv) * 0.45) * (1.0 - fade);
 
         gl_FragColor = vec4(finalColor, 1.0);
@@ -106,7 +106,7 @@ export const ProceduralGroundBackground: React.FC = () => {
         gl.viewport(0, 0, width, height);
       }
 
-      gl.uniform1f(timeLoc, time * 0.001);
+      gl.uniform1f(timeLoc, time * 0.0002);
       gl.uniform2f(resLoc, width, height);
       gl.drawArrays(gl.TRIANGLES, 0, 6);
       animationFrameId = requestAnimationFrame(render);
