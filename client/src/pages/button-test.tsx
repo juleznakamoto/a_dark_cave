@@ -53,30 +53,17 @@ function NonUpgradeableBuildButton() {
 
 // ============================================================
 // Build Button - Upgradeable (Persistent)
+// Uses ONLY the internal animation system (bubbles render behind button)
 // ============================================================
 function UpgradeableBuildButton() {
-  const [bubbles, setBubbles] = useState<Array<{ id: string; x: number; y: number }>>([]);
-
-  const handleAnimationTrigger = (x: number, y: number) => {
-    const id = `bubble-${Date.now()}`;
-    setBubbles(prev => [...prev, { id, x, y }]);
-
-    // Keep bubbles visible for animation duration
-    setTimeout(() => {
-      setBubbles(prev => prev.filter(b => b.id !== id));
-    }, 4000);
-  };
-
   return (
     <div className="relative">
       <BubblyButton
         variant="outline"
-        onAnimationTrigger={handleAnimationTrigger}
         className="bg-amber-800 hover:bg-amber-700 border-amber-600"
       >
         Wooden Hut
       </BubblyButton>
-      <BubblyButtonGlobalPortal bubbles={bubbles} zIndex={10} />
     </div>
   );
 }
