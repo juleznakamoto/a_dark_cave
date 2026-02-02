@@ -40,7 +40,6 @@ import {
 } from "@/components/ui/feed-fire-particles";
 import { audioManager } from "@/lib/audio";
 import { BubblyButton, BubblyButtonGlobalPortal } from "@/components/ui/bubbly-button";
-import NonUpgradeableBuildButton from "@/components/ui/non-upgradeable-build-button";
 
 export default function VillagePanel() {
   const {
@@ -383,15 +382,21 @@ export default function VillagePanel() {
     );
 
     return (
-      <NonUpgradeableBuildButton
+      <CooldownButton
         key={actionId}
+        onClick={() => executeAction(actionId)}
+        cooldownMs={0} // No cooldown for build buttons
         actionId={actionId}
-        label={displayLabel}
-        onExecute={() => executeAction(actionId)}
+        button_id={actionId}
         disabled={!canExecute}
-        tooltipContent={costBreakdown}
+        size="xs"
+        variant="outline"
+        className="bg-stone-800 hover:bg-stone-700 border-stone-600"
+        tooltip={tooltipContent}
         onAnimationTrigger={handleAnimationTrigger}
-      />
+      >
+        {displayLabel}
+      </CooldownButton>
     );
   };
 
