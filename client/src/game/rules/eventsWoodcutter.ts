@@ -32,7 +32,7 @@ const woodcutterConfigs: WoodcutterConfig[] = [
     level: 6,
     woodenHuts: 7,
     foodCost: 250,
-    woodReward: 0,
+    woodReward: 2500,
     betrayalChance: 1.0,
     isLastEvent: true,
   },
@@ -252,7 +252,6 @@ function createWoodcutterEvent(config: WoodcutterConfig): GameEvent {
       id: "denyServices",
       label: "Time Expired",
       effect: (state: GameState) => {
-
         // Special handling for last event
         if (isLastEvent) {
           return {
