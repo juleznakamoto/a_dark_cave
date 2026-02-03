@@ -225,7 +225,7 @@ export function generateParticleData() {
     const distance = 40 + Math.random() * 60;
     const size = 5 + Math.random() * 20;
     const color = TONES[Math.floor(Math.random() * TONES.length)];
-    const duration = 2 + Math.random() * 1.0;
+    const duration = 0.5 + Math.random() * 0.5;
     const endX = Math.cos(angle) * distance;
     const endY = Math.sin(angle) * distance;
     return { size, color, duration, endX, endY };
