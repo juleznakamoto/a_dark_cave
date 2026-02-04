@@ -121,18 +121,27 @@ export class AudioManager {
   }
 
   playLoopingSound(name: string, volume: number = 1, isMuted: boolean = false, fadeInDuration: number = 0): void {
+    console.log(`[AudioManager] playLoopingSound called: ${name}, muted=${this.isMutedGlobally}`);
+
     // Background music is controlled by isMusicMuted, not isMutedGlobally
     if (name === 'backgroundMusic') {
-      if (this.isMusicMuted || isMuted) return;
+      if (this.isMusicMuted || isMuted) {
+        console.log(`[AudioManager] ${name} skipped - music muted`);
+        return;
+      }
     } else {
       // Other looping sounds (wind, combat, etc.) are controlled by SFX mute
-      if (this.isMutedGlobally || isMuted) return;
+      if (this.isMutedGlobally || isMuted) {
+        console.log(`[AudioManager] ${name} skipped - SFX muted`);
+        return;
+      }
     }
 
     const sound = this.sounds.get(name);
     if (!sound) {
       const url = this.soundUrls.get(name);
       if (url) {
+        console.log(`[AudioManager] ${name} not loaded yet, loading from ${url}`);
         this.loadSound(name, url).then(() => {
           this.playLoopingSound(name, volume, isMuted, fadeInDuration);
         });
@@ -146,9 +155,13 @@ export class AudioManager {
       // IMPORTANT: Set loop BEFORE checking if playing, so loop is always enabled
       sound.loop(true);
       sound.volume(volume);
+      console.log(`[AudioManager] ${name} loop set to true, volume=${volume}`);
 
       // If sound is already playing with loop enabled, we're done
-      if (sound.playing && sound.playing()) return;
+      if (sound.playing && sound.playing()) {
+        console.log(`[AudioManager] ${name} already playing, skipping`);
+        return;
+      }
 
       // Monkey patch the internal event handling (lo/co depending on build) to be safer
       const patchInternalHandler = (handlerName: string) => {
@@ -180,8 +193,10 @@ export class AudioManager {
         sound.volume(0);
         sound.play();
         sound.fade(0, volume, fadeInDuration * 1000);
+        console.log(`[AudioManager] ${name} started with fade in`);
       } else {
         sound.play();
+        console.log(`[AudioManager] ${name} started playing (loop=${sound.loop()})`);
       }
     } catch (error) {
       logger.warn(`Error playing looping sound ${name}:`, error);
@@ -189,8 +204,12 @@ export class AudioManager {
   }
 
   stopLoopingSound(name: string, fadeOutDuration: number = 0): void {
+    console.log(`[AudioManager] stopLoopingSound called: ${name}`);
     const sound = this.sounds.get(name);
-    if (!sound) return;
+    if (!sound) {
+      console.log(`[AudioManager] ${name} not found, skipping stop`);
+      return;
+    }
 
     if (fadeOutDuration > 0) {
       try {
