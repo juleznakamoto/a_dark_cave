@@ -91,9 +91,10 @@ export default function CombatDialog({
 
   const bastionStats = calculateBastionStats(gameState);
 
-  // Combat audio loop - play looping combat sound while dialog is open
+  // Combat audio loop - play looping combat sound when combat starts (user clicks "Start Fight")
+  // Starting on user click satisfies browser autoplay policy
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen && combatStarted) {
       audioManager.playLoopingSound("combat", 0.3);
     } else {
       audioManager.stopLoopingSound("combat");
@@ -103,7 +104,7 @@ export default function CombatDialog({
     return () => {
       audioManager.stopLoopingSound("combat");
     };
-  }, [isOpen]);
+  }, [isOpen, combatStarted]);
 
   // Reset state when dialog opens
   useEffect(() => {

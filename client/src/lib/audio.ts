@@ -1,4 +1,4 @@
-import { Howl } from 'howler';
+import { Howl, Howler } from 'howler';
 // --- Global Howler internal safety patch ---
 (function patchHowlerInternal() {
   const proto = (Howl as any).prototype;
@@ -42,6 +42,19 @@ export class AudioManager {
     return AudioManager.instance;
   }
 
+  // Resume AudioContext if it's suspended (required for autoplay policy)
+  private resumeAudioContext(): void {
+    const ctx = Howler.ctx;
+    if (ctx && ctx.state === 'suspended') {
+      console.log('[AudioManager] Resuming suspended AudioContext');
+      ctx.resume().then(() => {
+        console.log('[AudioManager] AudioContext resumed successfully');
+      }).catch((err) => {
+        console.warn('[AudioManager] Failed to resume AudioContext:', err);
+      });
+    }
+  }
+
   async loadSound(name: string, url: string): Promise<void> {
     this.soundUrls.set(name, url);
     if (this.sounds.has(name)) return;
@@ -64,6 +77,9 @@ export class AudioManager {
 
     // Background music is handled separately for muting
     if (name === 'backgroundMusic' && this.isMusicMuted) return;
+
+    // Resume AudioContext if suspended (autoplay policy)
+    this.resumeAudioContext();
 
     const sound = this.sounds.get(name);
     if (!sound) {
@@ -122,6 +138,9 @@ export class AudioManager {
 
   playLoopingSound(name: string, volume: number = 1, isMuted: boolean = false, fadeInDuration: number = 0): void {
     console.log(`[AudioManager] playLoopingSound called: ${name}, muted=${this.isMutedGlobally}`);
+
+    // Resume AudioContext if suspended (autoplay policy)
+    this.resumeAudioContext();
 
     // Background music is controlled by isMusicMuted, not isMutedGlobally
     if (name === 'backgroundMusic') {
