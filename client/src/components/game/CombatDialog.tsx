@@ -94,7 +94,9 @@ export default function CombatDialog({
   // Combat audio loop - play looping combat sound when combat starts (user clicks "Start Fight")
   // Starting on user click satisfies browser autoplay policy
   useEffect(() => {
+    console.log(`[CombatDialog] Audio useEffect: isOpen=${isOpen}, combatStarted=${combatStarted}`);
     if (isOpen && combatStarted) {
+      console.log('[CombatDialog] Starting combat sound loop');
       audioManager.playLoopingSound("combat", 0.3);
     } else {
       audioManager.stopLoopingSound("combat");
