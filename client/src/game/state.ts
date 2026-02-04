@@ -1705,9 +1705,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
             }
           } else {
             // Only add to log if it's not a choice event
-            set((prevState) => ({
-              log: [...prevState.log, entry].slice(-10),
-            }));
+            // Use addLogEntry but prevent double sound for merchant events
+            const isMerchantEvent = entry.id?.startsWith("merchant");
+            if (isMerchantEvent) {
+              set((state) => ({
+                log: [...state.log, entry].slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES),
+              }));
+            } else {
+              get().addLogEntry(entry);
+            }
           }
         });
       }
