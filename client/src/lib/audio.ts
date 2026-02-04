@@ -246,7 +246,8 @@ export class AudioManager {
       'explosion': '/sounds/explosion.wav',
       'combat': '/sounds/combat.wav',
       'feedFire': '/sounds/feed_fire.wav',
-      'sleep': '/sounds/sleep.wav'
+      'sleep': '/sounds/sleep.wav',
+      'buildingComplete': '/sounds/building_complete.wav'
     };
 
     await Promise.all(

@@ -1107,6 +1107,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
       };
     });
 
+    // Play building completion sound for successful build actions
+    if (actionId.startsWith("build") && result.stateUpdates.buildings) {
+      // Import audioManager here to avoid circular dependency
+      import("@/lib/audio").then(({ audioManager }) => {
+        audioManager.playSound("buildingComplete");
+      });
+    }
+
     // Schedule updates
     if (
       result.stateUpdates.tools ||
