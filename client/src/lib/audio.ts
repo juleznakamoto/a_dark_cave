@@ -142,13 +142,9 @@ export class AudioManager {
       return;
     }
 
-    try {
-      // If sound is already playing, stop it first to ensure clean restart with loop
-      if (sound.playing && sound.playing()) {
-        sound.stop();
-      }
+    if (sound.playing && sound.playing()) return;
 
-      // Set loop and volume
+    try {
       sound.loop(true);
       sound.volume(volume);
 
