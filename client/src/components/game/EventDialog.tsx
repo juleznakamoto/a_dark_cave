@@ -306,14 +306,14 @@ export default function EventDialog({
                   <Button
                     onClick={() => handleChoice(choice.id)}
                     variant="outline"
-                    className="w-full text-left justify-between"
+                    className="w-full flex items-center justify-between text-left"
                     disabled={isDisabled}
                     button_id={`event-choice-${choice.id}`}
                   >
-                    <span>{labelText}</span>
-                    <div className="flex gap-1 items-center ml-2">
+                    <span className="whitespace-nowrap">{labelText}</span>
+                    <div className="flex gap-1 items-center ml-2 flex-shrink-0">
                       {successPercentage && (
-                        <span className="text-xs text-muted-foreground">
+                        <span className="text-xs text-muted-foreground whitespace-nowrap">
                           {successPercentage}
                         </span>
                       )}
