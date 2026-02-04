@@ -757,7 +757,7 @@ export function handleForestCave(
       ...state.resources,
       silver: (state.resources.silver || 0) + 250,
       gold: (state.resources.gold || 0) + 100,
-      fur: (state.resources.fur || 0) + 250,
+      fur: (state.resources.fur || 0) + 500,
       food: (state.resources.food || 0) - 1000,
     };
 
