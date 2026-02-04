@@ -319,8 +319,10 @@ export class AudioManager {
   musicMute(mute: boolean): void {
     this.isMusicMuted = mute;
     if (mute) {
+      this.wasBackgroundMusicPlaying = false; // Prevent resumeSounds() from restarting
       this.stopLoopingSound('backgroundMusic', 1);
     } else {
+      this.wasBackgroundMusicPlaying = true; // Track that music should be playing
       this.playLoopingSound('backgroundMusic', this.backgroundMusicVolume, false, 1);
     }
   }
