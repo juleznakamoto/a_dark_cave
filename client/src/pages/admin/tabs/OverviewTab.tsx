@@ -1,6 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { AreaChart, Area, BarChart, Bar, CartesianGrid, XAxis, YAxis, ResponsiveContainer, LineChart, Line, Legend, PieChart, Pie, Cell } from "recharts";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { format, parseISO } from "date-fns";
 
 interface OverviewTabProps {
@@ -24,6 +25,8 @@ interface OverviewTabProps {
   getDailySignups: () => Array<{ day: string; signups: number }>;
   getHourlySignups: () => Array<{ hour: string; signups: number }>;
   dailyActiveUsersData: Array<{ date: string; active_user_count: number }>;
+  chartTimeRange: "1m" | "3m" | "6m" | "1y";
+  setChartTimeRange: (range: "1m" | "3m" | "6m" | "1y") => void;
 }
 
 export default function OverviewTab(props: OverviewTabProps) {
@@ -47,16 +50,66 @@ export default function OverviewTab(props: OverviewTabProps) {
     getUserRetention,
     getDailySignups,
     getHourlySignups,
-    dailyActiveUsersData
+    dailyActiveUsersData,
+    chartTimeRange,
+    setChartTimeRange
   } = props;
 
-  const formattedDailyActiveUsers = (dailyActiveUsersData || [])
-    .slice()
-    .reverse()
-    .map(d => ({
-      date: format(parseISO(d.date), "MMM dd"),
-      users: d.active_user_count,
-    }));
+  // Filter and format DAU data based on chartTimeRange
+  const getFormattedDailyActiveUsers = () => {
+    const now = new Date();
+    let days: number;
+    switch (chartTimeRange) {
+      case "1m":
+        days = 30;
+        break;
+      case "3m":
+        days = 90;
+        break;
+      case "6m":
+        days = 180;
+        break;
+      case "1y":
+        days = 365;
+        break;
+      default:
+        days = 30;
+    }
+
+    const cutoffDate = new Date(now);
+    cutoffDate.setDate(cutoffDate.getDate() - days);
+
+    const filtered = (dailyActiveUsersData || [])
+      .filter(d => {
+        const date = parseISO(d.date);
+        return date >= cutoffDate;
+      })
+      .slice()
+      .reverse()
+      .map(d => ({
+        date: format(parseISO(d.date), days > 90 ? "MMM dd" : "MMM dd"),
+        users: d.active_user_count,
+      }));
+
+    return filtered;
+  };
+
+  const formattedDailyActiveUsers = getFormattedDailyActiveUsers();
+
+  const getTimeRangeLabel = () => {
+    switch (chartTimeRange) {
+      case "1m":
+        return "Last 30 Days";
+      case "3m":
+        return "Last 3 Months";
+      case "6m":
+        return "Last 6 Months";
+      case "1y":
+        return "Last Year";
+      default:
+        return "Last 30 Days";
+    }
+  };
 
   return (
     <div className="space-y-4">
@@ -121,7 +174,7 @@ export default function OverviewTab(props: OverviewTabProps) {
                   : 0}% of registered users
               </p>
             </div>
-            
+
             <div>
               <p className="text-sm text-muted-foreground mb-1">Google OAuth</p>
               <p className="text-3xl font-bold">{registrationMethodStats?.googleRegistrations || 0}</p>
@@ -334,19 +387,19 @@ export default function OverviewTab(props: OverviewTabProps) {
             <p className="text-4xl font-bold">
               {gameSaves.length > 0
                 ? Math.round(
-                    (gameSaves.filter(
-                      (s) =>
-                        s.game_state?.events?.cube15a ||
-                        s.game_state?.events?.cube15b ||
-                        s.game_state?.events?.cube13 ||
-                        s.game_state?.events?.cube14a ||
-                        s.game_state?.events?.cube14b ||
-                        s.game_state?.events?.cube14c ||
-                        s.game_state?.events?.cube14d,
-                    ).length /
-                      gameSaves.length) *
-                      100,
-                  )
+                  (gameSaves.filter(
+                    (s) =>
+                      s.game_state?.events?.cube15a ||
+                      s.game_state?.events?.cube15b ||
+                      s.game_state?.events?.cube13 ||
+                      s.game_state?.events?.cube14a ||
+                      s.game_state?.events?.cube14b ||
+                      s.game_state?.events?.cube14c ||
+                      s.game_state?.events?.cube14d,
+                  ).length /
+                    gameSaves.length) *
+                  100,
+                )
                 : 0}
               %
             </p>
@@ -417,8 +470,23 @@ export default function OverviewTab(props: OverviewTabProps) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Card>
           <CardHeader>
-            <CardTitle>Daily Active Users (Last 30 Days)</CardTitle>
-            <CardDescription>User activity over time</CardDescription>
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle>Daily Active Users ({getTimeRangeLabel()})</CardTitle>
+                <CardDescription>User activity over time</CardDescription>
+              </div>
+              <Select value={chartTimeRange} onValueChange={(value: "1m" | "3m" | "6m" | "1y") => setChartTimeRange(value)}>
+                <SelectTrigger className="w-[140px]">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="1m">1 Month</SelectItem>
+                  <SelectItem value="3m">3 Months</SelectItem>
+                  <SelectItem value="6m">6 Months</SelectItem>
+                  <SelectItem value="1y">1 Year</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </CardHeader>
           <CardContent>
             <ChartContainer config={{}} className="h-[300px] w-full">
@@ -435,8 +503,23 @@ export default function OverviewTab(props: OverviewTabProps) {
 
         <Card>
           <CardHeader>
-            <CardTitle>Daily Sign-ups (Last 30 Days)</CardTitle>
-            <CardDescription>New user registrations</CardDescription>
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle>Daily Sign-ups ({getTimeRangeLabel()})</CardTitle>
+                <CardDescription>New user registrations</CardDescription>
+              </div>
+              <Select value={chartTimeRange} onValueChange={(value: "1m" | "3m" | "6m" | "1y") => setChartTimeRange(value)}>
+                <SelectTrigger className="w-[140px]">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="1m">1 Month</SelectItem>
+                  <SelectItem value="3m">3 Months</SelectItem>
+                  <SelectItem value="6m">6 Months</SelectItem>
+                  <SelectItem value="1y">1 Year</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </CardHeader>
           <CardContent>
             <ChartContainer config={{}} className="h-[300px] w-full">

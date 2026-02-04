@@ -211,6 +211,9 @@ export default function AdminDashboard() {
   // State for selected cube events
   const [selectedCubeEvents, setSelectedCubeEvents] = useState<Set<string>>(new Set());
 
+  // Chart time range state for Daily Active Users and Daily Sign-ups
+  const [chartTimeRange, setChartTimeRange] = useState<"1m" | "3m" | "6m" | "1y">("1m");
+
   // Prefiltered data based on timeRange - MOVED AFTER ALL useState
   const clickData = useMemo(() => filterByTimeRange(rawClickData, "timestamp", timeRange), [rawClickData, timeRange]);
   const gameSaves = useMemo(() => filterByTimeRange(rawGameSaves, "updated_at", timeRange), [rawGameSaves, timeRange]);
@@ -244,17 +247,17 @@ export default function AdminDashboard() {
 
     const filteredByCompletion = showCompletedOnly
       ? filteredClickData.filter((d) => {
-          const save = gameSaves.find((s) => s.user_id === d.user_id);
-          return save && (
-            save.game_state?.events?.cube15a ||
-            save.game_state?.events?.cube15b ||
-            save.game_state?.events?.cube13 ||
-            save.game_state?.events?.cube14a ||
-            save.game_state?.events?.cube14b ||
-            save.game_state?.events?.cube14c ||
-            save.game_state?.events?.cube14d
-          );
-        })
+        const save = gameSaves.find((s) => s.user_id === d.user_id);
+        return save && (
+          save.game_state?.events?.cube15a ||
+          save.game_state?.events?.cube15b ||
+          save.game_state?.events?.cube13 ||
+          save.game_state?.events?.cube14a ||
+          save.game_state?.events?.cube14b ||
+          save.game_state?.events?.cube14c ||
+          save.game_state?.events?.cube14d
+        );
+      })
       : filteredClickData;
 
     if (filteredByCompletion.length === 0) {
@@ -299,9 +302,9 @@ export default function AdminDashboard() {
 
     const filteredByCompletion = showCompletedOnly
       ? filteredClickData.filter((d) => {
-          const save = gameSaves.find((s) => s.user_id === d.user_id);
-          return save?.game_state?.gameComplete;
-        })
+        const save = gameSaves.find((s) => s.user_id === d.user_id);
+        return save?.game_state?.gameComplete;
+      })
       : filteredClickData;
 
     const timeBuckets: Record<string, Record<string, number>> = {};
@@ -349,9 +352,9 @@ export default function AdminDashboard() {
 
     const filteredByCompletion = showCompletedOnly
       ? filteredClickData.filter((d) => {
-          const save = gameSaves.find((s) => s.user_id === d.user_id);
-          return save?.game_state?.gameComplete;
-        })
+        const save = gameSaves.find((s) => s.user_id === d.user_id);
+        return save?.game_state?.gameComplete;
+      })
       : filteredClickData;
 
     const buttonTotals: Record<string, number> = {};
@@ -378,9 +381,9 @@ export default function AdminDashboard() {
 
     const filteredByCompletion = showCompletedOnly
       ? filteredClickData.filter((d) => {
-          const save = gameSaves.find((s) => s.user_id === d.user_id);
-          return save?.game_state?.gameComplete;
-        })
+        const save = gameSaves.find((s) => s.user_id === d.user_id);
+        return save?.game_state?.gameComplete;
+      })
       : filteredClickData;
 
     const buttonStats: Record<string, { total: number; users: Set<string> }> = {};
@@ -427,7 +430,7 @@ export default function AdminDashboard() {
     // Use the resources field from button_clicks table (it contains stats too)
     relevant.forEach((clickEntry) => {
       if (!clickEntry.resources) return;
-      
+
       // clickEntry.resources is structured as: { "10m": { "strength": 4, "luck": 5, ... }, "20m": { ... } }
       Object.entries(clickEntry.resources).forEach(([playtimeKey, resources]) => {
         // playtimeKey is in format like "10m", "20m", etc.
@@ -488,7 +491,7 @@ export default function AdminDashboard() {
     // Use the resources field from button_clicks table
     relevant.forEach((clickEntry) => {
       if (!clickEntry.resources) return;
-      
+
       // clickEntry.resources is structured as: { "10m": { "wood": 722, ... }, "20m": { ... } }
       Object.entries(clickEntry.resources).forEach(([playtimeKey, resources]) => {
         // playtimeKey is in format like "10m", "20m", etc.
@@ -520,7 +523,7 @@ export default function AdminDashboard() {
 
   const getButtonUpgradesOverPlaytime = useMemo(() => {
     const relevant = filterByUser(gameSaves);
-    
+
     if (relevant.length === 0) {
       return Array.from({ length: 24 }, (_, i) => ({
         time: `${i}h`,
@@ -536,14 +539,14 @@ export default function AdminDashboard() {
     // Use game saves to get button upgrade levels at different playtimes
     relevant.forEach((save) => {
       if (!save.game_state?.buttonUpgrades) return;
-      
+
       const playTimeMinutes = save.game_state.playTime ? Math.floor(save.game_state.playTime / 60000) : 0;
       const bucket = Math.floor(playTimeMinutes / 60);
 
       if (bucket >= 0 && bucket < 24) {
         const data = timeMap.get(bucket)!;
         const upgrades = save.game_state.buttonUpgrades;
-        
+
         if (selectedMiningTypes.has('caveExplore') && upgrades.caveExplore) {
           data.caveExplore.push(upgrades.caveExplore.level || 0);
         }
@@ -589,7 +592,7 @@ export default function AdminDashboard() {
         chopWood: levels.chopWood.length > 0 ? levels.chopWood.reduce((a, b) => a + b, 0) / levels.chopWood.length : 0,
       };
     });
-    
+
     return result;
   }, [gameSaves, selectedUser, selectedMiningTypes]);
 
@@ -603,13 +606,13 @@ export default function AdminDashboard() {
 
     relevantSaves.forEach(save => {
       const isCompleted = save.game_state?.events?.cube15a ||
-                          save.game_state?.events?.cube15b ||
-                          save.game_state?.events?.cube13 ||
-                          save.game_state?.events?.cube14a ||
-                          save.game_state?.events?.cube14b ||
-                          save.game_state?.events?.cube14c ||
-                          save.game_state?.events?.cube14d ||
-                          save.game_state?.gameComplete;
+        save.game_state?.events?.cube15b ||
+        save.game_state?.events?.cube13 ||
+        save.game_state?.events?.cube14a ||
+        save.game_state?.events?.cube14b ||
+        save.game_state?.events?.cube14c ||
+        save.game_state?.events?.cube14d ||
+        save.game_state?.gameComplete;
 
       if (isCompleted) {
         completedCount++;
@@ -709,7 +712,7 @@ export default function AdminDashboard() {
         return sum + referrals.filter((ref: any) => {
           const timestamp = ref.timestamp || ref.created_at;
           if (!timestamp) return false;
-          
+
           // Handle both number (milliseconds) and string (ISO date) timestamps
           let refDate: Date;
           try {
@@ -720,7 +723,7 @@ export default function AdminDashboard() {
             } else {
               return false;
             }
-            
+
             return refDate >= dayStart && refDate <= dayEnd;
           } catch {
             return false;
@@ -1132,7 +1135,7 @@ export default function AdminDashboard() {
                       .filter((p) => p.price_paid > 0 && !p.bundle_id)
                       .reduce((sum, p) => sum + p.price_paid, 0);
                     return totalUserCount > 0
-                      ? (totalRevenue / totalUserCount).toFixed(2)
+                      ? (totalRevenue / 100 / totalUserCount).toFixed(2)
                       : "0.00";
                   }}
                   getTotalRevenue={() =>
@@ -1153,7 +1156,26 @@ export default function AdminDashboard() {
                     const data: Array<{ day: string; users: number }> = [];
                     const now = new Date();
 
-                    for (let i = 29; i >= 0; i--) {
+                    // Determine number of days based on chartTimeRange
+                    let days: number;
+                    switch (chartTimeRange) {
+                      case "1m":
+                        days = 30;
+                        break;
+                      case "3m":
+                        days = 90;
+                        break;
+                      case "6m":
+                        days = 180;
+                        break;
+                      case "1y":
+                        days = 365;
+                        break;
+                      default:
+                        days = 30;
+                    }
+
+                    for (let i = days - 1; i >= 0; i--) {
                       const date = subDays(now, i);
                       const dayStart = startOfDay(date);
                       const dayEnd = endOfDay(date);
@@ -1163,8 +1185,10 @@ export default function AdminDashboard() {
                         return activityDate >= dayStart && activityDate <= dayEnd;
                       }).length;
 
+                      // Format date based on time range
+                      const dateFormat = days > 90 ? "MMM dd" : "MMM dd";
                       data.push({
-                        day: format(date, "MMM dd"),
+                        day: format(date, dateFormat),
                         users: activeUsers,
                       });
                     }
@@ -1175,7 +1199,26 @@ export default function AdminDashboard() {
                     const data: Array<{ day: string; signups: number }> = [];
                     const now = new Date();
 
-                    for (let i = 29; i >= 0; i--) {
+                    // Determine number of days based on chartTimeRange
+                    let days: number;
+                    switch (chartTimeRange) {
+                      case "1m":
+                        days = 30;
+                        break;
+                      case "3m":
+                        days = 90;
+                        break;
+                      case "6m":
+                        days = 180;
+                        break;
+                      case "1y":
+                        days = 365;
+                        break;
+                      default:
+                        days = 30;
+                    }
+
+                    for (let i = days - 1; i >= 0; i--) {
                       const date = subDays(now, i);
                       const dayStart = startOfDay(date);
                       const dayEnd = endOfDay(date);
@@ -1185,14 +1228,18 @@ export default function AdminDashboard() {
                         return createdDate >= dayStart && createdDate <= dayEnd;
                       }).length;
 
+                      // Format date based on time range
+                      const dateFormat = days > 90 ? "MMM dd" : "MMM dd";
                       data.push({
-                        day: format(date, "MMM dd"),
+                        day: format(date, dateFormat),
                         signups,
                       });
                     }
 
                     return data;
                   }}
+                  chartTimeRange={chartTimeRange}
+                  setChartTimeRange={setChartTimeRange}
                   getHourlySignups={() => {
                     const data: Array<{ hour: string; signups: number }> = [];
                     const now = new Date();

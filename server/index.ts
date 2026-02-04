@@ -214,9 +214,12 @@ app.get("/api/admin/data", async (req, res) => {
       throw countError;
     }
 
-    // Fetch data with 30-day filter for saves and clicks
+    // Fetch data with 30-day filter for clicks, but 1 year for saves to support chart time ranges
     // Use a high limit to get all results (Supabase default is 1000)
     const QUERY_LIMIT = 10000000;
+    const oneYearAgo = new Date(now);
+    oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+    const oneYearAgoFilter = oneYearAgo.toISOString();
 
     const [clicksResult, savesResult, purchasesResult, dauResult] = await Promise.all([
       adminClient
@@ -228,7 +231,7 @@ app.get("/api/admin/data", async (req, res) => {
       adminClient
         .from("game_saves")
         .select("user_id, game_state, updated_at, created_at")
-        .gte("updated_at", filterDate)
+        .or(`created_at.gte.${oneYearAgoFilter},updated_at.gte.${oneYearAgoFilter}`) // Load 1 year of data for both signups and activity
         .order("updated_at", { ascending: false })
         .limit(QUERY_LIMIT),
       adminClient
@@ -240,7 +243,7 @@ app.get("/api/admin/data", async (req, res) => {
         .from("daily_active_users")
         .select("date, active_user_count")
         .order("date", { ascending: true })
-        .limit(30),
+        .limit(365), // Load 1 year of DAU data
     ]);
 
     if (clicksResult.error) {
@@ -792,13 +795,13 @@ app.post("/api/leaderboard/update-username", leaderboardUpdateLimiter, async (re
       }
 
       // Count unique users (same as cron job: COUNT(DISTINCT user_id))
-      const currentDau = recentActivity 
-        ? new Set(recentActivity.map(save => save.user_id)).size 
+      const currentDau = recentActivity
+        ? new Set(recentActivity.map(save => save.user_id)).size
         : 0;
 
       log(`📊 Current DAU (today ${today}): ${currentDau} unique users`);
 
-      res.json({ 
+      res.json({
         dau: dauData || [],
         currentDau: currentDau
       });
