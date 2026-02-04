@@ -289,9 +289,9 @@ export default function TimedEventPanel() {
                     resourceName as keyof typeof gameState.resources;
                   const currentAmount = gameState.resources[resourceKey] ?? 0;
                   const hasEnough = currentAmount >= costAmount;
-                  
+
                   individualAffordance[resourceName] = hasEnough;
-                  
+
                   if (!hasEnough) {
                     canAfford = false;
                   }
@@ -342,15 +342,15 @@ export default function TimedEventPanel() {
                   button_id={`timedevent-${choice.id}`}
                   className="gap-0 w-full text-left justify-between"
                 >
-                  <div className="flex flex-col">
-                    <span>{labelText}</span>
+                  <div className="flex items-center gap-1 flex-1 min-w-0">
+                    <span className="whitespace-nowrap">{labelText}</span>
                     {hasScriptorium &&
                       successPercentage &&
                       choice.relevant_stats &&
                       choice.relevant_stats.length > 0 && (
-                        <div className="flex">
-                          <span className="text-xs text-muted-foreground">
-                            {successPercentage}&nbsp;
+                        <div className="flex items-center gap-0.5 flex-shrink-0">
+                          <span className="text-xs text-muted-foreground whitespace-nowrap">
+                            {successPercentage}
                           </span>
                           {choice.relevant_stats.map((stat) => {
                             const statInfo = statIcons[stat.toLowerCase()];
@@ -368,7 +368,7 @@ export default function TimedEventPanel() {
                         </div>
                       )}
                   </div>
-                  <div className="flex items-center">
+                  <div className="flex items-center flex-shrink-0">
                     {isPurchased && <span className="ml-1">✓</span>}
                   </div>
                 </Button>
@@ -391,8 +391,8 @@ export default function TimedEventPanel() {
                               const resName = match[2].toLowerCase();
                               const hasEnough = individualAffordance[resName] !== false;
                               return (
-                                <div 
-                                  key={i} 
+                                <div
+                                  key={i}
                                   className={hasEnough ? "text-foreground" : "text-muted-foreground"}
                                 >
                                   -{trimmedPart}
