@@ -207,6 +207,10 @@ export class AudioManager {
   }
 
   stopAllSounds(): void {
+    // Track if background music was playing before stopping
+    const bgMusic = this.sounds.get('backgroundMusic');
+    this.wasBackgroundMusicPlaying = (bgMusic && typeof bgMusic.playing === 'function') ? bgMusic.playing() : false;
+
     this.sounds.forEach(sound => {
       try {
         if (sound && typeof sound.stop === 'function') {
@@ -282,7 +286,8 @@ export class AudioManager {
   }
 
   async resumeSounds(): Promise<void> {
-    if (this.wasBackgroundMusicPlaying) {
+    // Only resume background music if it was playing AND music is not muted
+    if (this.wasBackgroundMusicPlaying && !this.isMusicMuted) {
       this.playLoopingSound('backgroundMusic', this.backgroundMusicVolume);
     }
   }
