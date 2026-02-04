@@ -48,7 +48,7 @@ export function ButtonLevelBadge({ upgradeKey }: ButtonLevelBadgeProps) {
           }}
         >
           <div
-            className="absolute -top-[7px] right-[-7px] flex items-center justify-center w-4 h-4 bg-red-950 rounded-full text-[10px] font-medium cursor-pointer z-1 hover:bg-red-900 transition-colors duration-300 ease-in-out"
+            className="absolute -top-[7px] right-[-7px] flex items-center justify-center w-4 h-4 bg-red-950 rounded-full text-[10px] font-medium cursor-pointer z-[20] hover:bg-red-900 transition-colors duration-300 ease-in-out"
             data-testid={`level-badge-${upgradeKey}`}
           >
             {info.isMaxLevel ? '★' : info.level}
