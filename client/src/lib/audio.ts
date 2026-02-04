@@ -142,11 +142,13 @@ export class AudioManager {
       return;
     }
 
-    if (sound.playing && sound.playing()) return;
-
     try {
+      // IMPORTANT: Set loop BEFORE checking if playing, so loop is always enabled
       sound.loop(true);
       sound.volume(volume);
+
+      // If sound is already playing with loop enabled, we're done
+      if (sound.playing && sound.playing()) return;
 
       // Monkey patch the internal event handling (lo/co depending on build) to be safer
       const patchInternalHandler = (handlerName: string) => {
