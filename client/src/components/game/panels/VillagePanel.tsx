@@ -38,7 +38,11 @@ import {
   useFeedFireParticles,
 } from "@/components/ui/feed-fire-particles";
 import { audioManager } from "@/lib/audio";
-import { BubblyButtonGlobalPortal, generateParticleData, type BubbleWithParticles } from "@/components/ui/bubbly-button";
+import {
+  BubblyButtonGlobalPortal,
+  generateParticleData,
+  type BubbleWithParticles,
+} from "@/components/ui/bubbly-button";
 
 export default function VillagePanel() {
   const {
@@ -66,11 +70,11 @@ export default function VillagePanel() {
     const id = `bubble-${bubbleIdCounter.current++}-${Date.now()}`;
     // Generate particle data once when bubble is created (prevents random regeneration)
     const particles = generateParticleData();
-    setBubbles(prev => [...prev, { id, x, y, particles }]);
+    setBubbles((prev) => [...prev, { id, x, y, particles }]);
 
     // Keep bubbles visible for animation duration
     setTimeout(() => {
-      setBubbles(prev => prev.filter(b => b.id !== id));
+      setBubbles((prev) => prev.filter((b) => b.id !== id));
     }, 3000); // Match the 3-second duration used in button-test
   };
 
@@ -321,7 +325,7 @@ export default function VillagePanel() {
           ref={feedFireButtonRef}
           onClick={() => {
             executeAction(actionId);
-            audioManager.playSound("feedFire");
+            audioManager.playSound("feedFire", 0.4 + 0.05 * currentLevel);
             // Generate 10 * current heartfire level particles
             const particleCount = 10 * (currentLevel + 1);
             if (particleCount > 0) {
@@ -375,8 +379,9 @@ export default function VillagePanel() {
         {costBreakdown.map((cost, index) => (
           <div
             key={index}
-            className={`${cost.satisfied ? "text-foreground" : "text-muted-foreground"
-              }`}
+            className={`${
+              cost.satisfied ? "text-foreground" : "text-muted-foreground"
+            }`}
           >
             {cost.text}
           </div>
@@ -716,7 +721,9 @@ export default function VillagePanel() {
                       {isDisgusted && (
                         <TooltipProvider>
                           <Tooltip
-                            open={mobileTooltip.isTooltipOpen("disgust-progress")}
+                            open={mobileTooltip.isTooltipOpen(
+                              "disgust-progress",
+                            )}
                           >
                             <TooltipTrigger asChild>
                               <div
@@ -735,7 +742,9 @@ export default function VillagePanel() {
                                         0,
                                         disgustState.endTime - Date.now(),
                                       );
-                                      const totalDuration = state.cruelMode ? 20 * 60 * 1000 : 10 * 60 * 1000;
+                                      const totalDuration = state.cruelMode
+                                        ? 20 * 60 * 1000
+                                        : 10 * 60 * 1000;
                                       const elapsed =
                                         totalDuration - timeRemaining;
                                       return Math.min(

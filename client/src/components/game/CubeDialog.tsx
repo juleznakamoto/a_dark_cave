@@ -37,7 +37,7 @@ export default function CubeDialog({
 
     if (isOpen) {
       timeoutId = setTimeout(() => {
-        audioManager.playLoopingSound('whisperingCube', 0.4);
+        audioManager.playLoopingSound('whisperingCube', 0.5);
       }, 500);
     } else {
       audioManager.stopLoopingSound('whisperingCube');

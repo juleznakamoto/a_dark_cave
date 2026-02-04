@@ -1573,7 +1573,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   addLogEntry: (entry: LogEntry) => {
     if (entry.type === "event") {
-      audioManager.playSound("event", 0.04);
+      audioManager.playSound("event", 0.1);
     }
 
     set((state) => ({
@@ -1705,15 +1705,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
             }
           } else {
             // Only add to log if it's not a choice event
-            // Use addLogEntry but prevent double sound for merchant events
-            const isMerchantEvent = entry.id?.startsWith("merchant");
-            if (isMerchantEvent) {
-              set((state) => ({
-                log: [...state.log, entry].slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES),
-              }));
-            } else {
-              get().addLogEntry(entry);
-            }
+            set((prevState) => ({
+              log: [...prevState.log, entry].slice(-10),
+            }));
           }
         });
       }
@@ -1982,7 +1976,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const eventId = currentEvent.id.split("-")[0];
       const madnessEventIds = Object.keys(madnessEvents);
       const isMadnessEvent = madnessEventIds.includes(eventId);
-      audioManager.playSound(isMadnessEvent ? "eventMadness" : "event", 0.02);
+      audioManager.playSound(isMadnessEvent ? "eventMadness" : "event", 0.1);
     }
   },
 
@@ -2006,7 +2000,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const eventId = event.id.split("-")[0];
       const madnessEventIds = Object.keys(madnessEvents);
       const isMadnessEvent = madnessEventIds.includes(eventId);
-      audioManager.playSound(isMadnessEvent ? "eventMadness" : "event", 0.02);
+      audioManager.playSound(isMadnessEvent ? "eventMadness" : "event", 0.1);
     }
 
     // If activating merchant event, use the choices already generated and passed in the event
