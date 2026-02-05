@@ -1838,7 +1838,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // Only create a log message dialog if there's a _logMessage but no combat and it's not a merchant event
     // Note: _logMessage is for dialog feedback only, not for the main log
     // Skip if this is a village attack event that already showed reward dialog
-    if (logMessage && !combatData && !isMerchantEvent && !isVillageAttackEvent) {
+    if (logMessage && !combatData && !isMerchantEvent && !shouldShowRewardDialog) {
       get().setEventDialog(false);
       setTimeout(() => {
         const messageEntry: LogEntry = {
