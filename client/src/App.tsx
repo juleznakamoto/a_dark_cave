@@ -7,8 +7,10 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import AdminDashboard from "@/pages/admin/dashboard";
 import { logger } from "@/lib/logger";
 
-// Lazy load game page (loads after Light Fire click)
+// Lazy load game page (only loads after Light Fire click)
 const Game = lazy(() => import("@/pages/game"));
+// Start screen page - lightweight wrapper that conditionally loads Game
+const StartScreenPage = lazy(() => import("@/pages/start-screen-page"));
 
 // Lazy load all other pages
 const EndScreenPage = lazy(() => import("@/pages/end-screen"));
@@ -28,8 +30,8 @@ function Router() {
       }
     >
       <Switch>
-        <Route path="/" component={Game} />
-        <Route path="/boost" component={Game} />
+        <Route path="/" component={StartScreenPage} />
+        <Route path="/boost" component={StartScreenPage} />
         <Route path="/end-screen" component={EndScreenPage} />
         <Route path="/imprint" component={Imprint} />
         <Route path="/privacy" component={Privacy} />

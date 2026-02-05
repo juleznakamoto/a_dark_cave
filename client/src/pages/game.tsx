@@ -217,14 +217,18 @@ export default function Game() {
         // Mark as initialized
         setIsInitialized(true);
 
-        // Load game sounds for users who skip the start screen
-        const { audioManager } = await import("@/lib/audio");
-        await audioManager.loadGameSounds();
-
         // Sync audio mute state immediately (before starting game loop)
+        // Note: audioManager may already be initialized for start screen wind sound
+        const { audioManager } = await import("@/lib/audio");
         const currentState = useGameStore.getState();
         audioManager.musicMute(currentState.musicMuted);
         audioManager.sfxMute(currentState.sfxMuted);
+
+        // Only load game sounds if the game has actually started (not showing start screen)
+        // This prevents loading large audio files before user interaction
+        if (currentState.flags.gameStarted || isGamePath) {
+          await audioManager.loadGameSounds();
+        }
 
         // Start game loop
         startGameLoop();
