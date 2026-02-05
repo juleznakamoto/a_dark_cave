@@ -369,6 +369,42 @@ export function startGameLoop() {
           handleMadnessCheck();
           handleStrangerApproach();
 
+          // Check for expired timed events and clear them
+          if (currentState.timedEventTab.isActive && currentState.timedEventTab.expiryTime) {
+            const now = Date.now();
+            if (currentState.timedEventTab.expiryTime <= now) {
+              logger.log("[GAME LOOP] Clearing expired timed event tab");
+              // Execute fallback choice if available
+              const event = currentState.timedEventTab.event;
+              if (event) {
+                const timedEventId = event.eventId || event.id.split("-")[0];
+
+                // Use the event's defined fallbackChoice if available
+                if (
+                  event.fallbackChoice &&
+                  typeof event.fallbackChoice.effect === "function"
+                ) {
+                  useGameStore.getState().applyEventChoice(event.fallbackChoice.id, timedEventId, event);
+                } else {
+                  // Fallback to looking for "doNothing" choice
+                  const choices =
+                    typeof event.choices === "function"
+                      ? event.choices(currentState)
+                      : event.choices;
+                  const fallbackChoice = Array.isArray(choices)
+                    ? choices.find((c) => c.id === "doNothing")
+                    : undefined;
+                  if (fallbackChoice && typeof fallbackChoice.effect === "function") {
+                    useGameStore.getState().applyEventChoice(fallbackChoice.id, timedEventId, event);
+                  }
+                }
+              }
+
+              // Clear the timed event tab
+              useGameStore.getState().setTimedEventTab(false);
+            }
+          }
+
           // Check for events (including attack waves) - but NOT when dialogs are open
           if (!IsDialogOpen) {
             currentState.checkEvents();
