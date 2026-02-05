@@ -1763,7 +1763,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     timeProbability: 1,
     title: "The Elder's Demand",
     message:
-      "An elder woman with clouded eyes approaches you, 'We must end the spillng of human blood,' she declares. 'The old gods demand a great monufment in their honor. Only then will the gods grant us their continued favor.'",
+      "An elder woman with clouded eyes approaches you, 'We must end the spillng of human blood,' she declares. 'The old gods demand a great monument in their honor. Only then will the gods grant us their continued favor.'",
     priority: 5,
     repeatable: false,
     choices: [
