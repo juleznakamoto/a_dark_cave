@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { AudioManager } from './audio';
 
-// Mock Howl
+// Mock Howl and Howler
 vi.mock('howler', () => ({
   Howl: vi.fn().mockImplementation(() => ({
     play: vi.fn(),
@@ -13,6 +13,12 @@ vi.mock('howler', () => ({
     once: vi.fn(),
     playing: vi.fn(() => false),
   })),
+  Howler: {
+    ctx: {
+      state: 'running',
+      resume: vi.fn().mockResolvedValue(undefined),
+    },
+  },
 }));
 
 describe('AudioManager', () => {
