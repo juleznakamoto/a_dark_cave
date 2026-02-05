@@ -17,12 +17,9 @@ export default function StartScreenPage() {
   // Check if game has already started (from saved state or /boost path)
   useEffect(() => {
     const checkGameState = async () => {
-      // #region agent log
-      fetch('http://127.0.0.1:7242/ingest/33ba3fb0-527b-48ba-8316-dce19cab51cb',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'start-screen-page.tsx:20',message:'checkGameState start',data:{useGameStoreExists:!!useGameStore,useGameStoreType:typeof useGameStore,hasGetState:useGameStore&&typeof useGameStore.getState==='function'},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'C,E'})}).catch(()=>{});
-      // #endregion
-      const isGamePath = window.location.pathname === "/boost" || 
+      const isGamePath = window.location.pathname === "/boost" ||
                         new URLSearchParams(window.location.search).get("game") === "true";
-      
+
       // If it's a game path, load Game immediately
       if (isGamePath) {
         setShouldLoadGame(true);
@@ -32,9 +29,6 @@ export default function StartScreenPage() {
 
       // Load saved game state to check if game has already started
       try {
-        // #region agent log
-        fetch('http://127.0.0.1:7242/ingest/33ba3fb0-527b-48ba-8316-dce19cab51cb',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'start-screen-page.tsx:34',message:'before loadGame call',data:{},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'C'})}).catch(()=>{});
-        // #endregion
         await useGameStore.getState().loadGame();
         // After loading, check if game has started
         const currentFlags = useGameStore.getState().flags;

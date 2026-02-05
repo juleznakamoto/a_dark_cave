@@ -148,13 +148,7 @@ export default function ProfileMenu() {
     }
 
     try {
-      // #region agent log
-      fetch('http://127.0.0.1:7242/ingest/33ba3fb0-527b-48ba-8316-dce19cab51cb',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'ProfileMenu.tsx:151',message:'handleManualSave - before getState',data:{useGameStoreExists:!!useGameStore,useGameStoreType:typeof useGameStore},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'C'})}).catch(()=>{});
-      // #endregion
       const currentState = useGameStore.getState();
-      // #region agent log
-      fetch('http://127.0.0.1:7242/ingest/33ba3fb0-527b-48ba-8316-dce19cab51cb',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'ProfileMenu.tsx:155',message:'handleManualSave - after getState',data:{hasCurrentState:!!currentState,stateType:typeof currentState},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'C'})}).catch(()=>{});
-      // #endregion
       const gameState = buildGameState(currentState);
       await saveGame(gameState, false);
 

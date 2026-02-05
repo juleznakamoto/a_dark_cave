@@ -1,0 +1,2 @@
+{"location":"start-screen-page.tsx:20","message":"checkGameState start","data":{"useGameStoreExists":true,"useGameStoreType":"function","hasGetState":true},"timestamp":1770305396431,"sessionId":"debug-session","hypothesisId":"C,E"}
+{"location":"start-screen-page.tsx:34","message":"before loadGame call","data":{},"timestamp":1770305396433,"sessionId":"debug-session","hypothesisId":"C"}

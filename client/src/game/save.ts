@@ -93,14 +93,7 @@ async function getDB() {
 async function processUnclaimedReferrals(
   gameState: GameState,
 ): Promise<GameState> {
-  // #region agent log
-  fetch('http://127.0.0.1:7242/ingest/33ba3fb0-527b-48ba-8316-dce19cab51cb',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'save.ts:96',message:'processUnclaimedReferrals - before dynamic import',data:{},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'A'})}).catch(()=>{});
-  // #endregion
-  const stateModule = await import("./state");
-  // #region agent log
-  fetch('http://127.0.0.1:7242/ingest/33ba3fb0-527b-48ba-8316-dce19cab51cb',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'save.ts:100',message:'processUnclaimedReferrals - after import',data:{hasUseGameStore:'useGameStore' in (stateModule||{}),useGameStoreType:typeof stateModule?.useGameStore},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'A'})}).catch(()=>{});
-  // #endregion
-  const { useGameStore } = stateModule;
+  const { useGameStore } = await import("./state");
   const currentUser = await getCurrentUser();
 
   logger.log('[REFERRAL] 🔍 Processing unclaimed referrals...', {
@@ -205,23 +198,7 @@ export async function saveGame(
 ): Promise<void> {
   try {
     // Check if game is inactive - if so, don't save
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/33ba3fb0-527b-48ba-8316-dce19cab51cb',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'save.ts:201',message:'saveGame start - before dynamic import',data:{isAutosave,hasGameState:!!gameState},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'A'})}).catch(()=>{});
-    // #endregion
-    const stateModule = await import("./state");
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/33ba3fb0-527b-48ba-8316-dce19cab51cb',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'save.ts:205',message:'after dynamic import',data:{stateModuleType:typeof stateModule,stateModuleKeys:stateModule?Object.keys(stateModule):[],hasUseGameStore:'useGameStore' in (stateModule||{}),useGameStoreType:typeof stateModule?.useGameStore},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'A,B,D'})}).catch(()=>{});
-    // #endregion
-    const { useGameStore } = stateModule;
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/33ba3fb0-527b-48ba-8316-dce19cab51cb',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'save.ts:209',message:'after destructuring useGameStore',data:{useGameStoreExists:!!useGameStore,useGameStoreType:typeof useGameStore,hasGetState:useGameStore&&typeof useGameStore.getState==='function'},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'A,D'})}).catch(()=>{});
-    // #endregion
-    if (!useGameStore || typeof useGameStore.getState !== 'function') {
-      // #region agent log
-      fetch('http://127.0.0.1:7242/ingest/33ba3fb0-527b-48ba-8316-dce19cab51cb',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'save.ts:213',message:'CRITICAL: useGameStore is undefined or missing getState',data:{useGameStoreValue:String(useGameStore),stateModuleStr:JSON.stringify(Object.keys(stateModule||{}))},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'A,D'})}).catch(()=>{});
-      // #endregion
-      throw new Error('useGameStore is undefined after dynamic import - circular dependency issue');
-    }
+    const { useGameStore } = await import("./state");
     const currentState = useGameStore.getState();
     if (currentState.inactivityDialogOpen) {
       logger.log("[SAVE] ⚠️ Game is inactive - skipping save");
@@ -364,14 +341,8 @@ export async function saveGame(
 
         // Clear the allowPlayTimeOverwrite flag after successful save
         if (gameState.allowPlaytimeOverwrite) {
-          // #region agent log
-          fetch('http://127.0.0.1:7242/ingest/33ba3fb0-527b-48ba-8316-dce19cab51cb',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'save.ts:367',message:'clearing allowPlaytimeOverwrite - before import',data:{},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'A'})}).catch(()=>{});
-          // #endregion
-          const stateModule2 = await import("./state");
-          const { useGameStore } = stateModule2;
-          if (useGameStore && typeof useGameStore.setState === 'function') {
-            useGameStore.setState({ allowPlaytimeOverwrite: false });
-          }
+          const { useGameStore } = await import("./state");
+          useGameStore.setState({ allowPlaytimeOverwrite: false });
           logger.log("[SAVE] 🔓 Cleared allowPlayTimeOverwrite flag after successful cloud save");
         }
       }
@@ -380,9 +351,6 @@ export async function saveGame(
       // Don't throw - local save succeeded
     }
   } catch (error) {
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/33ba3fb0-527b-48ba-8316-dce19cab51cb',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'save.ts:378',message:'saveGame CAUGHT ERROR',data:{errorMessage:error instanceof Error?error.message:String(error),errorStack:error instanceof Error?error.stack:'no stack',errorName:error instanceof Error?error.name:'unknown'},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'A,B,C,D,E'})}).catch(()=>{});
-    // #endregion
     logger.error("[SAVE] ❌ Failed to save game locally:", error);
     throw error;
   }
