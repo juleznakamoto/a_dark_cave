@@ -50,7 +50,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
               resources: {
                 ...state.resources,
                 bones: state.resources.bones + 5000,
-                silver: state.resources.silver + 500
+                silver: state.resources.silver + 500,
               },
               _logMessage:
                 "The village defeats the bone army! Bone and silence litter the battlefield. Among the remains, you find the Devourer's Crown.",
@@ -234,7 +234,6 @@ export const villageAttackEvents: Record<string, GameEvent> = {
       state.buildings.woodenHut >= 3 &&
       !state.clothing.alphas_hide &&
       state.current_population > 10,
-    
     timeProbability: 40,
     title: "Wolf Attack",
     message:
@@ -487,7 +486,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
       state.buildings.woodenHut >= 8 &&
       state.current_population > 10 &&
       !state.story.seen.cannibalRaidVictory,
-    
+
     timeProbability: 40,
     title: "Cannibal Raid",
     message:
