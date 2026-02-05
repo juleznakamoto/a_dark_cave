@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import { useGameStore } from "@/game/state";
 import { Button } from "@/components/ui/button";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
@@ -27,6 +27,7 @@ export default function TimedEventPanel() {
   // ALL HOOKS MUST BE CALLED BEFORE ANY EARLY RETURNS
   const [timeRemaining, setTimeRemaining] = useState<number>(0);
   const [safetyTimeRemaining, setSafetyTimeRemaining] = useState<number>(0);
+  const lastLoggedEventId = useRef<string | null>(null);
 
   // Get merchant trades from state (generated once when event starts)
   const isMerchantEvent = timedEventTab.event?.id.split("-")[0] === "merchant";
@@ -34,43 +35,49 @@ export default function TimedEventPanel() {
     timedEventTab.event?.id.split("-")[0] === "wandering_collector";
   const eventChoices: EventChoice[] = useMemo(() => {
     if (!timedEventTab.event) {
-      logger.log("[TIMED EVENT PANEL] No event, returning empty choices");
+      lastLoggedEventId.current = null;
       return [];
     }
 
+    const eventId = timedEventTab.event.id;
+    const shouldLog = lastLoggedEventId.current !== eventId;
+
     if (isMerchantEvent) {
       // CRITICAL: Use state.merchantTrades as the single source of truth
-      logger.log(
-        "[TIMED EVENT PANEL] Merchant event, using merchantTrades from state:",
-        {
-          eventId: timedEventTab.event.id,
-          choicesCount: gameState.merchantTrades?.choices?.length || 0,
-          choices: gameState.merchantTrades?.choices,
-        },
-      );
+      if (shouldLog) {
+        logger.log(
+          "[TIMED EVENT PANEL] Merchant event, using merchantTrades from state:",
+          {
+            eventId: eventId,
+            choicesCount: gameState.merchantTrades?.choices?.length || 0,
+            choices: gameState.merchantTrades?.choices,
+          },
+        );
+        lastLoggedEventId.current = eventId;
+      }
       return Array.isArray(gameState.merchantTrades?.choices)
         ? gameState.merchantTrades.choices
         : [];
     }
 
-    logger.log("[TIMED EVENT PANEL] Non-merchant event, using event choices:", {
-      eventId: timedEventTab.event.id,
-      choicesCount:
-        typeof timedEventTab.event.choices === "function"
-          ? "dynamic"
-          : timedEventTab.event.choices?.length || 0,
-    });
-    const choicesRaw =
-      typeof timedEventTab.event.choices === "function"
-        ? timedEventTab.event.choices(gameState)
-        : timedEventTab.event.choices;
-    const choices = Array.isArray(choicesRaw) ? choicesRaw : [];
+    // Choices are pre-computed when the event triggers, so they're always an array
+    const choices = Array.isArray(timedEventTab.event.choices)
+      ? timedEventTab.event.choices
+      : [];
+
+    if (shouldLog) {
+      logger.log("[TIMED EVENT PANEL] Non-merchant event, using event choices:", {
+        eventId: eventId,
+        choicesCount: choices.length,
+      });
+      lastLoggedEventId.current = eventId;
+    }
+
     return choices;
   }, [
     isMerchantEvent,
     timedEventTab.event,
     gameState.merchantTrades,
-    gameState,
   ]);
 
   useEffect(() => {
@@ -110,13 +117,9 @@ export default function TimedEventPanel() {
             applyEventChoice(event.fallbackChoice.id, timedEventId, event);
           } else {
             // Fallback to looking for "doNothing" choice
-            const choices =
-              typeof event.choices === "function"
-                ? event.choices(gameState)
-                : event.choices;
-            const fallbackChoice = Array.isArray(choices)
-              ? choices.find((c) => c.id === "doNothing")
-              : undefined;
+            // Choices are pre-computed when event triggers, so they're always an array
+            const choices = Array.isArray(event.choices) ? event.choices : [];
+            const fallbackChoice = choices.find((c) => c.id === "doNothing");
             if (fallbackChoice && typeof fallbackChoice.effect === "function") {
               applyEventChoice(fallbackChoice.id, timedEventId, event);
             }

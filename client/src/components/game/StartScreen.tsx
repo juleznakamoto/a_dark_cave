@@ -5,6 +5,7 @@ import CloudShader from "@/components/ui/cloud-shader";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { audioManager } from "@/lib/audio";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
+import { initPlaylight } from "@/App";
 
 export default function StartScreen() {
   const { executeAction, setBoostMode, boostMode, CM } = useGameStore();
@@ -111,6 +112,11 @@ export default function StartScreen() {
     // Immediately stop wind with no fade to prevent overlap
     audioManager.stopLoopingSound("wind", 2);
 
+    // Load Playlight SDK on user interaction
+    // Errors are already logged in initPlaylight(), so we silently handle them here
+    initPlaylight().catch(() => {
+      // Error already logged in initPlaylight(), no need to handle further
+    });
 
     audioManager.loadGameSounds().then(() => {
       audioManager.startBackgroundMusic(0.3);
