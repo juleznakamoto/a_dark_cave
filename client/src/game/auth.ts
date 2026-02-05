@@ -218,9 +218,8 @@ export async function signOut() {
     logger.error('[AUTH] ⚠️ Failed to stop game loop:', loopError);
   }
 
-  // Reload to start screen
-  logger.log('[AUTH] 🔄 Reloading to start screen...');
-  window.location.href = '/';
+  // Note: No reload needed - the calling component will reset game state
+  logger.log('[AUTH] ✅ Sign out complete - ready for state reset');
 }
 
 export async function getCurrentUser(): Promise<AuthUser | null> {

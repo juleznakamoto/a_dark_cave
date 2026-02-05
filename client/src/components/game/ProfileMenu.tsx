@@ -112,6 +112,16 @@ export default function ProfileMenu() {
       setCurrentUser(null);
       setIsUserSignedIn(false);
       setAccountDropdownOpen(false);
+      
+      // Reset game state to show start screen without reload
+      useGameStore.setState((state) => ({
+        ...state,
+        flags: {
+          ...state.flags,
+          gameStarted: false,
+        },
+      }));
+      
       toast({
         title: "Signed out successfully",
       });

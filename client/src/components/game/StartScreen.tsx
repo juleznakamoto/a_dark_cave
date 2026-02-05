@@ -6,6 +6,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { audioManager } from "@/lib/audio";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { initPlaylight } from "@/App";
+import { startGameLoop } from "@/game/loop";
 
 export default function StartScreen() {
   const { executeAction, setBoostMode, boostMode, CM } = useGameStore();
@@ -124,7 +125,11 @@ export default function StartScreen() {
 
     // Show button effect for 3 seconds on both mobile and desktop
     setShowParticles(true);
-    setTimeout(() => executeAction("lightFire"), 3000);
+    setTimeout(() => {
+      // Ensure game loop is running (may have been stopped by sign out)
+      startGameLoop();
+      executeAction("lightFire");
+    }, 3000);
   };
 
   return (
