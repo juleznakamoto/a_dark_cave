@@ -18,7 +18,7 @@ import { Howl, Howler } from 'howler';
         }
       };
       proto[`_${fnName}Patched`] = true;
-      console.log(`[HowlerPatch] Patched Howler.${fnName} globally`);
+      logger.log(`[HowlerPatch] Patched Howler.${fnName} globally`);
     }
   });
 })();
@@ -102,32 +102,6 @@ export class AudioManager {
     try {
       sound.volume(volume);
       sound.play();
-
-      // Monkey patch the internal event handling (lo/co depending on build) to be safer
-      const patchInternalHandler = (handlerName: string) => {
-        if (sound && (sound as any)[handlerName] && !(sound as any)['_' + handlerName + 'Patched']) {
-          const originalHandler = (sound as any)[handlerName];
-          (sound as any)[handlerName] = function (e: string, t: any, n: any) {
-            if (!e) return this;
-            const i = this["_on" + e];
-            if (!i || !Array.isArray(i)) {
-              console.log(`[AudioManager] Prevented ${handlerName} crash for event: ${e}`);
-              return (typeof this.Yo === 'function') ? this.Yo(e) : this;
-            }
-            try {
-              return originalHandler.apply(this, [e, t, n]);
-            } catch (err) {
-              console.warn(`[AudioManager] Howler internal ${handlerName} error for event ${e}:`, err);
-              return this;
-            }
-          };
-          (sound as any)['_' + handlerName + 'Patched'] = true;
-          console.log(`[AudioManager] Patched ${handlerName} for sound: ${name}`);
-        }
-      };
-
-      patchInternalHandler('lo');
-      patchInternalHandler('co');
     } catch (error) {
       logger.warn(`Error playing sound ${name}:`, error);
     }
@@ -165,32 +139,6 @@ export class AudioManager {
 
       // If sound is already playing with loop enabled, we're done
       if (sound.playing && sound.playing()) return;
-
-      // Monkey patch the internal event handling (lo/co depending on build) to be safer
-      const patchInternalHandler = (handlerName: string) => {
-        if (sound && (sound as any)[handlerName] && !(sound as any)['_' + handlerName + 'Patched']) {
-          const originalHandler = (sound as any)[handlerName];
-          (sound as any)[handlerName] = function (e: string, t: any, n: any) {
-            if (!e) return this;
-            const i = this["_on" + e];
-            if (!i || !Array.isArray(i)) {
-              console.log(`[AudioManager] Prevented ${handlerName} crash for event: ${e}`);
-              return (typeof this.Yo === 'function') ? this.Yo(e) : this;
-            }
-            try {
-              return originalHandler.apply(this, [e, t, n]);
-            } catch (err) {
-              console.warn(`[AudioManager] Howler internal ${handlerName} error for event ${e}:`, err);
-              return this;
-            }
-          };
-          (sound as any)['_' + handlerName + 'Patched'] = true;
-          console.log(`[AudioManager] Patched ${handlerName} for sound: ${name}`);
-        }
-      };
-
-      patchInternalHandler('lo');
-      patchInternalHandler('co');
 
       if (fadeInDuration > 0) {
         sound.volume(0);
@@ -326,11 +274,16 @@ export class AudioManager {
   sfxMute(mute: boolean): void {
     this.isMutedGlobally = mute;
     if (mute) {
-      // Stop all looping SFX sounds (but not background music which is controlled separately)
-      this.stopLoopingSound('wind');
-      this.stopLoopingSound('combat');
-      this.stopLoopingSound('whisperingCube');
-      // Note: backgroundMusic is controlled by musicMute, not sfxMute
+      // Stop all currently playing looping SFX sounds (but not background music which is controlled separately)
+      this.sounds.forEach((sound, name) => {
+        if (sound && name !== 'backgroundMusic' && sound.loop() && typeof sound.stop === 'function') {
+          try {
+            sound.stop();
+          } catch (error) {
+            logger.warn(`Error stopping looping sound ${name}:`, error);
+          }
+        }
+      });
     }
   }
 
