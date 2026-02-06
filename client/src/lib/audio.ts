@@ -1,36 +1,28 @@
 import { Howl, Howler } from 'howler';
 // --- Global Howler internal safety patch ---
+// Patch _emit to guard against undefined _on* event arrays (defense-in-depth).
+// We reference proto._emit directly (not a hardcoded string) so the access
+// stays consistent regardless of minifier settings.
 (function patchHowlerInternal() {
   const proto = (Howl as any).prototype;
   // #region agent log
-  // Hypothesis A: Log all prototype method names to see what _emit was mangled to
   const protoKeys = Object.getOwnPropertyNames(proto).sort().join(',');
-  const hasEmit = '_emit' in proto;
-  fetch('http://127.0.0.1:7242/ingest/33ba3fb0-527b-48ba-8316-dce19cab51cb',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'audio.ts:patch',message:'Howler prototype analysis',data:{protoKeys,hasEmit,patchTargetsLo:'lo' in proto,patchTargetsCo:'co' in proto},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'A'})}).catch(()=>{});
+  fetch('http://127.0.0.1:7242/ingest/33ba3fb0-527b-48ba-8316-dce19cab51cb',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'audio.ts:patch',message:'Howler prototype analysis (post-fix)',data:{protoKeys,hasEmit:'_emit' in proto},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'A',runId:'post-fix'})}).catch(()=>{});
   // #endregion
 
-  // Patch _emit directly by property reference (not hardcoded string) so Terser
-  // transforms both our access and Howler's access consistently.
-  const targets = ['lo', 'co']; // both variants exist in different Howler builds
-
-  targets.forEach(fnName => {
-    if (proto[fnName] && !proto[`_${fnName}Patched`]) {
-      const original = proto[fnName];
-      proto[fnName] = function (event: string, t: any, n: any) {
-        try {
-          const listeners = this['_on' + event];
-          if (!Array.isArray(listeners)) return this; // prevent .length crash
-          return original.call(this, event, t, n);
-        } catch (err) {
-          // #region agent log
-          fetch('http://127.0.0.1:7242/ingest/33ba3fb0-527b-48ba-8316-dce19cab51cb',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'audio.ts:patch-catch',message:'Howler patch caught error',data:{fnName,event,err:String(err)},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'B'})}).catch(()=>{});
-          // #endregion
-          return this;
-        }
-      };
-      proto[`_${fnName}Patched`] = true;
-    }
-  });
+  const originalEmit = proto._emit;
+  if (originalEmit && !proto._emitPatched) {
+    proto._emit = function (event: string, id: any, msg: any) {
+      try {
+        const listeners = this['_on' + event];
+        if (!Array.isArray(listeners)) return this;
+        return originalEmit.call(this, event, id, msg);
+      } catch (err) {
+        return this;
+      }
+    };
+    proto._emitPatched = true;
+  }
 })();
 import { logger } from './logger';
 
