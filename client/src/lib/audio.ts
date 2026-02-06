@@ -121,9 +121,9 @@ export class AudioManager {
   playLoopingSound(name: string, volume: number = 1, isMuted: boolean = false, fadeInDuration: number = 0): void {
     // #region agent log
     // Hypothesis D: Log sound state when attempting to play
-    const sound = this.sounds.get(name);
-    const howlInternals = sound ? { hasOnend: '_onend' in (sound as any), hasOnload: '_onload' in (sound as any), hasSounds: '_sounds' in (sound as any), state: (sound as any)._state, keys: Object.keys(sound as any).slice(0, 15).join(',') } : null;
-    fetch('http://127.0.0.1:7242/ingest/33ba3fb0-527b-48ba-8316-dce19cab51cb',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'audio.ts:playLoopingSound',message:'playLoopingSound called',data:{name,hasSoundInMap:!!sound,howlInternals},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'D'})}).catch(()=>{});
+    const _dbgSound = this.sounds.get(name);
+    const howlInternals = _dbgSound ? { hasOnend: '_onend' in (_dbgSound as any), hasOnload: '_onload' in (_dbgSound as any), hasSounds: '_sounds' in (_dbgSound as any), state: (_dbgSound as any)._state, keys: Object.keys(_dbgSound as any).slice(0, 15).join(',') } : null;
+    fetch('http://127.0.0.1:7242/ingest/33ba3fb0-527b-48ba-8316-dce19cab51cb',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'audio.ts:playLoopingSound',message:'playLoopingSound called',data:{name,hasSoundInMap:!!_dbgSound,howlInternals},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'D'})}).catch(()=>{});
     // #endregion
     // Resume AudioContext if suspended (autoplay policy)
     this.resumeAudioContext();
