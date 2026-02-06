@@ -99,8 +99,6 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(
         const [sparks, setSparks] = useState<Spark[]>([]);
         const [isGlowing, setIsGlowing] = useState(false);
         const [glowIntensity, setGlowIntensity] = useState(0);
-        const [maxGlowIntensity, setMaxGlowIntensity] = useState(1.0);
-        const [hasBeenClicked, setHasBeenClicked] = useState(false);
         const buttonRef = useRef<HTMLButtonElement>(null);
         const intervalRef = useRef<NodeJS.Timeout | null>(null);
         const rampUpRef = useRef<NodeJS.Timeout | null>(null);
@@ -108,6 +106,8 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(
         const flickerRef = useRef<NodeJS.Timeout | null>(null);
         const delayTimeoutRef = useRef<NodeJS.Timeout | null>(null);
         const glowIncreaseIntervalRef = useRef<NodeJS.Timeout | null>(null);
+        const maxGlowIntensityRef = useRef(1.0);
+        const hasBeenClickedRef = useRef(false);
         const idRef = useRef(0);
         const spawnCountRef = useRef(cruelMode ? 20 : 2);
         const rampStartRef = useRef<number | null>(null);
@@ -229,18 +229,19 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(
                     () => {
                         if (rampStartRef.current) {
                             const elapsed = Date.now() - rampStartRef.current;
+                            const maxGlow = maxGlowIntensityRef.current;
                             if (elapsed < 500) {
                                 const progress = elapsed / 500;
-                                setGlowIntensity(0.1 + progress * (maxGlowIntensity - 0.1)); // from 0.1 to maxGlowIntensity
+                                setGlowIntensity(0.1 + progress * (maxGlow - 0.1)); // from 0.1 to maxGlowIntensity
                             } else {
-                                setGlowIntensity(maxGlowIntensity); // max intensity
+                                setGlowIntensity(maxGlow); // max intensity
                                 if (glowRampRef.current) {
                                     clearInterval(glowRampRef.current);
                                     glowRampRef.current = null;
                                 }
                                 glowRampRef.current = setInterval(
                                     () => {
-                                        setGlowIntensity(maxGlowIntensity);
+                                        setGlowIntensity(maxGlowIntensityRef.current);
                                     },
                                     Math.random() * 50 + 150,
                                 );
@@ -254,7 +255,7 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(
                 flickerRef.current = setInterval(
                     () => {
                         const flicker = 0.45 + Math.random() * 0.55;
-                        setGlowIntensity((prev) => Math.min(maxGlowIntensity, prev * flicker));
+                        setGlowIntensity((prev) => Math.min(maxGlowIntensityRef.current, prev * flicker));
                     },
                     Math.random() * 150 + 50,
                 );
@@ -276,10 +277,10 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(
             if (onClick) onClick(e);
 
             // Start increasing max glow intensity after click
-            if (!hasBeenClicked) {
-                setHasBeenClicked(true);
+            if (!hasBeenClickedRef.current) {
+                hasBeenClickedRef.current = true;
                 glowIncreaseIntervalRef.current = setInterval(() => {
-                    setMaxGlowIntensity((prev) => prev + 0.25);
+                    maxGlowIntensityRef.current += 0.25;
                 }, 500);
             }
         };
@@ -292,13 +293,6 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(
                 clearAllTimers();
             };
         }, [autoStart]);
-
-        // Update glow intensity when maxGlowIntensity increases
-        useEffect(() => {
-            if (isGlowing && glowIntensity < maxGlowIntensity) {
-                setGlowIntensity(maxGlowIntensity);
-            }
-        }, [maxGlowIntensity, isGlowing, glowIntensity]);
 
         useEffect(() => {
             return () => {
