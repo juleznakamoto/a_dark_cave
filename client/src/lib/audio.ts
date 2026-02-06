@@ -6,8 +6,7 @@ import { Howl, Howler } from 'howler';
   // Hypothesis A: Log all prototype method names to see what _emit was mangled to
   const protoKeys = Object.getOwnPropertyNames(proto).sort().join(',');
   const hasEmit = '_emit' in proto;
-  const hasOnload = '_onload' in (new Howl({src:['/sounds/wind.mp3'],preload:false}) as any);
-  fetch('http://127.0.0.1:7242/ingest/33ba3fb0-527b-48ba-8316-dce19cab51cb',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'audio.ts:patch',message:'Howler prototype analysis',data:{protoKeys,hasEmit,hasOnload,patchTargetsLo:'lo' in proto,patchTargetsCo:'co' in proto},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'A'})}).catch(()=>{});
+  fetch('http://127.0.0.1:7242/ingest/33ba3fb0-527b-48ba-8316-dce19cab51cb',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'audio.ts:patch',message:'Howler prototype analysis',data:{protoKeys,hasEmit,patchTargetsLo:'lo' in proto,patchTargetsCo:'co' in proto},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'A'})}).catch(()=>{});
   // #endregion
 
   // Patch _emit directly by property reference (not hardcoded string) so Terser
