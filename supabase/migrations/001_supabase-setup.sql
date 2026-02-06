@@ -1,4 +1,12 @@
 
+-- Per-environment configuration, readable from any SQL function.
+-- In dev: INSERT INTO app_config (key, value) VALUES ('environment', 'development');
+-- In prod: leave empty or set to 'production'.
+CREATE TABLE IF NOT EXISTS app_config (
+  key TEXT PRIMARY KEY,
+  value TEXT NOT NULL
+);
+
 -- Create the game_saves table
 CREATE TABLE IF NOT EXISTS game_saves (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
@@ -167,12 +175,9 @@ BEGIN
   -- Validates that resource values in the merged state are within allowed bounds.
   -- Storage limits for limited resources mirror client/src/game/resourceLimits.ts
   -- If you change storage tiers or limits, update BOTH this SQL and resourceLimits.ts.
-  -- Skip validation in development (check Vault secret 'ENVIRONMENT')
+  -- Skip validation in development (see app_config table)
   IF v_existing_state IS NOT NULL AND NOT p_allow_playtime_overwrite
-    AND NOT EXISTS (
-      SELECT 1 FROM vault.decrypted_secrets
-      WHERE name = 'ENVIRONMENT' AND decrypted_secret = 'development'
-    )
+    AND NOT EXISTS (SELECT 1 FROM app_config WHERE key = 'environment' AND value = 'development')
   THEN
     DECLARE
       v_resource_key TEXT;
