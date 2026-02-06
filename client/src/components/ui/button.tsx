@@ -20,9 +20,6 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       // Track analytics if button_id is provided
       const buttonId = (e.currentTarget as HTMLButtonElement).getAttribute('button_id');
       if (buttonId) {
-        // #region agent log
-        fetch('http://127.0.0.1:7242/ingest/33ba3fb0-527b-48ba-8316-dce19cab51cb',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'button.tsx:handleClick',message:'trackButtonClick (post-fix)',data:{buttonId,hasUseGameStore:!!useGameStore,hasGetState:typeof useGameStore?.getState},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'C',runId:'post-fix'})}).catch(()=>{});
-        // #endregion
         try {
           useGameStore.getState().trackButtonClick(buttonId);
         } catch {

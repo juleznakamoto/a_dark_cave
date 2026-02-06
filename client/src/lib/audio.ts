@@ -5,11 +5,6 @@ import { Howl, Howler } from 'howler';
 // stays consistent regardless of minifier settings.
 (function patchHowlerInternal() {
   const proto = (Howl as any).prototype;
-  // #region agent log
-  const protoKeys = Object.getOwnPropertyNames(proto).sort().join(',');
-  fetch('http://127.0.0.1:7242/ingest/33ba3fb0-527b-48ba-8316-dce19cab51cb',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'audio.ts:patch',message:'Howler prototype analysis (post-fix)',data:{protoKeys,hasEmit:'_emit' in proto},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'A',runId:'post-fix'})}).catch(()=>{});
-  // #endregion
-
   const originalEmit = proto._emit;
   if (originalEmit && !proto._emitPatched) {
     proto._emit = function (event: string, id: any, msg: any) {
@@ -110,12 +105,6 @@ export class AudioManager {
   }
 
   playLoopingSound(name: string, volume: number = 1, isMuted: boolean = false, fadeInDuration: number = 0): void {
-    // #region agent log
-    // Hypothesis D: Log sound state when attempting to play
-    const _dbgSound = this.sounds.get(name);
-    const howlInternals = _dbgSound ? { hasOnend: '_onend' in (_dbgSound as any), hasOnload: '_onload' in (_dbgSound as any), hasSounds: '_sounds' in (_dbgSound as any), state: (_dbgSound as any)._state, keys: Object.keys(_dbgSound as any).slice(0, 15).join(',') } : null;
-    fetch('http://127.0.0.1:7242/ingest/33ba3fb0-527b-48ba-8316-dce19cab51cb',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'audio.ts:playLoopingSound',message:'playLoopingSound called',data:{name,hasSoundInMap:!!_dbgSound,howlInternals},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'D'})}).catch(()=>{});
-    // #endregion
     // Resume AudioContext if suspended (autoplay policy)
     this.resumeAudioContext();
 
@@ -163,13 +152,6 @@ export class AudioManager {
   stopLoopingSound(name: string, fadeOutDuration: number = 0): void {
     const sound = this.sounds.get(name);
     if (!sound) return;
-    // #region agent log
-    // Hypothesis A/E: Log sound internal state before stop
-    const howlKeys = Object.keys(sound as any).slice(0, 20).join(',');
-    const hasOnstop = '_onstop' in (sound as any);
-    const hasOnend = '_onend' in (sound as any);
-    fetch('http://127.0.0.1:7242/ingest/33ba3fb0-527b-48ba-8316-dce19cab51cb',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'audio.ts:stopLoopingSound',message:'stopLoopingSound called',data:{name,fadeOutDuration,howlKeys,hasOnstop,hasOnend},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'A'})}).catch(()=>{});
-    // #endregion
 
     if (fadeOutDuration > 0) {
       try {
