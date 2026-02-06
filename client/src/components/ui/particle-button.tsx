@@ -280,7 +280,10 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(
                 setHasBeenClicked(true);
                 glowIncreaseIntervalRef.current = setInterval(() => {
                     setMaxGlowIntensity((prev) => prev + 1);
-                }, 250);
+                }, 100); // Faster growth (was 250ms)
+            } else {
+                // If already clicked, increase even faster on subsequent clicks
+                setMaxGlowIntensity((prev) => prev + 2);
             }
         };
 
