@@ -162,6 +162,79 @@ BEGIN
     v_merged_state := p_game_state_diff;
   END IF;
 
+  -- ========== RESOURCE MANIPULATION PREVENTION ==========
+  -- Validates that resource values in the merged state are within allowed bounds.
+  -- Storage limits for limited resources mirror client/src/game/resourceLimits.ts
+  -- If you change storage tiers or limits, update BOTH this SQL and resourceLimits.ts.
+  IF v_existing_state IS NOT NULL AND NOT p_allow_playtime_overwrite THEN
+    DECLARE
+      v_resource_key TEXT;
+      v_old_res NUMERIC;
+      v_new_res NUMERIC;
+      v_storage_level INTEGER := 0;
+      v_resource_limit NUMERIC;
+      v_gold_delta NUMERIC;
+      v_silver_delta NUMERIC;
+    BEGIN
+      -- Determine storage level from merged state buildings
+      -- (mirrors building hierarchy in client/src/game/resourceLimits.ts getResourceLimit)
+      IF COALESCE((v_merged_state->'buildings'->>'greatVault')::INTEGER, 0) > 0 THEN v_storage_level := 6;
+      ELSIF COALESCE((v_merged_state->'buildings'->>'grandRepository')::INTEGER, 0) > 0 THEN v_storage_level := 5;
+      ELSIF COALESCE((v_merged_state->'buildings'->>'villageWarehouse')::INTEGER, 0) > 0 THEN v_storage_level := 4;
+      ELSIF COALESCE((v_merged_state->'buildings'->>'fortifiedStorehouse')::INTEGER, 0) > 0 THEN v_storage_level := 3;
+      ELSIF COALESCE((v_merged_state->'buildings'->>'storehouse')::INTEGER, 0) > 0 THEN v_storage_level := 2;
+      ELSIF COALESCE((v_merged_state->'buildings'->>'supplyHut')::INTEGER, 0) > 0 THEN v_storage_level := 1;
+      END IF;
+
+      -- Storage limits per level (mirrors client/src/game/resourceLimits.ts)
+      v_resource_limit := CASE v_storage_level
+        WHEN 0 THEN 500
+        WHEN 1 THEN 1000
+        WHEN 2 THEN 2500
+        WHEN 3 THEN 5000
+        WHEN 4 THEN 10000
+        WHEN 5 THEN 25000
+        WHEN 6 THEN 50000
+        ELSE 500
+      END;
+
+      -- Validate limited resources (everything except gold/silver) against storage cap
+      IF v_merged_state ? 'resources' THEN
+        FOR v_resource_key IN SELECT jsonb_object_keys(v_merged_state->'resources') LOOP
+          IF v_resource_key NOT IN ('gold', 'silver') THEN
+            v_new_res := COALESCE((v_merged_state->'resources'->>v_resource_key)::NUMERIC, 0);
+            IF v_new_res > v_resource_limit THEN
+              RAISE EXCEPTION 'Validation failed: % (%) exceeds storage limit (%)',
+                v_resource_key, v_new_res, v_resource_limit;
+            END IF;
+          END IF;
+        END LOOP;
+      END IF;
+
+      -- Validate silver delta: max +5000 per save, unless claimedAchievements changed
+      v_old_res := COALESCE((v_existing_state->'resources'->>'silver')::NUMERIC, 0);
+      v_new_res := COALESCE((v_merged_state->'resources'->>'silver')::NUMERIC, 0);
+      v_silver_delta := v_new_res - v_old_res;
+      IF v_silver_delta > 5000 AND NOT (p_game_state_diff ? 'claimedAchievements') THEN
+        RAISE EXCEPTION 'Validation failed: silver increase (%) exceeds maximum of 5000 per save',
+          v_silver_delta;
+      END IF;
+
+      -- Validate gold delta: max +1500 per save, unless activatedPurchases changed
+      v_old_res := COALESCE((v_existing_state->'resources'->>'gold')::NUMERIC, 0);
+      v_new_res := COALESCE((v_merged_state->'resources'->>'gold')::NUMERIC, 0);
+      v_gold_delta := v_new_res - v_old_res;
+      IF v_gold_delta > 1500 AND NOT (p_game_state_diff ? 'activatedPurchases') THEN
+        RAISE EXCEPTION 'Validation failed: gold increase (%) exceeds maximum of 1500 per save',
+          v_gold_delta;
+      END IF;
+
+      RAISE NOTICE 'Resource validation passed: storage_limit=%, silver_delta=%, gold_delta=%',
+        v_resource_limit, v_silver_delta, v_gold_delta;
+    END;
+  END IF;
+  -- ========== END RESOURCE MANIPULATION PREVENTION ==========
+
   -- Check if game was just completed
   DECLARE
     v_game_completed BOOLEAN := FALSE;

@@ -4,7 +4,10 @@ import { GameState } from "@shared/schema";
 // Resources that are never limited
 const UNLIMITED_RESOURCES = ['silver', 'gold'];
 
-// Get the current resource limit based on storage building level
+// Get the current resource limit based on storage building level.
+// IMPORTANT: Server-side validation mirrors this logic in
+// supabase/migrations/001_supabase-setup.sql (save_game_with_analytics).
+// If you change storage tiers or limits here, update the SQL function too.
 export function getResourceLimit(state: GameState): number {
   // Determine storage level based on highest storage building
   let storageLevel = 0;
