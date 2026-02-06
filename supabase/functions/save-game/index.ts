@@ -197,8 +197,7 @@ serve(async (req) => {
       }
     )
 
-    const isDevMode = Deno.env.get('ENVIRONMENT') === 'development' || Deno.env.get('SUPABASE_URL')?.includes('localhost') || !Deno.env.get('ENVIRONMENT');
-    console.log(`[${requestId}] Environment:`, Deno.env.get('ENVIRONMENT'), 'isDevMode:', isDevMode);
+    const isDevMode = Deno.env.get('ENVIRONMENT') === 'development'
 
     const { error: dbError } = await userScopedClient.rpc('save_game_with_analytics', {
       p_game_state_diff: gameStateDiff,
