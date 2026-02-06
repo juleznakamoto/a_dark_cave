@@ -104,8 +104,7 @@ CREATE OR REPLACE FUNCTION save_game_with_analytics(
   p_click_analytics JSONB DEFAULT NULL,
   p_resource_analytics JSONB DEFAULT NULL,
   p_clear_analytics BOOLEAN DEFAULT FALSE,
-  p_allow_playtime_overwrite BOOLEAN DEFAULT FALSE,
-  p_skip_validation BOOLEAN DEFAULT FALSE
+  p_allow_playtime_overwrite BOOLEAN DEFAULT FALSE
 )
 RETURNS void
 LANGUAGE plpgsql
@@ -168,7 +167,13 @@ BEGIN
   -- Validates that resource values in the merged state are within allowed bounds.
   -- Storage limits for limited resources mirror client/src/game/resourceLimits.ts
   -- If you change storage tiers or limits, update BOTH this SQL and resourceLimits.ts.
-  IF v_existing_state IS NOT NULL AND NOT p_allow_playtime_overwrite AND NOT p_skip_validation THEN
+  -- Skip validation in development (check Vault secret 'ENVIRONMENT')
+  IF v_existing_state IS NOT NULL AND NOT p_allow_playtime_overwrite
+    AND NOT EXISTS (
+      SELECT 1 FROM vault.decrypted_secrets
+      WHERE name = 'ENVIRONMENT' AND decrypted_secret = 'development'
+    )
+  THEN
     DECLARE
       v_resource_key TEXT;
       v_old_res NUMERIC;
@@ -417,5 +422,5 @@ $$;
 
 -- Only service role (Edge Functions) can call this function
 -- Remove public execute permission to prevent direct client access
-REVOKE EXECUTE ON FUNCTION save_game_with_analytics(JSONB, JSONB, JSONB, BOOLEAN, BOOLEAN, BOOLEAN) FROM authenticated;
-REVOKE EXECUTE ON FUNCTION save_game_with_analytics(JSONB, JSONB, JSONB, BOOLEAN, BOOLEAN, BOOLEAN) FROM anon;
+REVOKE EXECUTE ON FUNCTION save_game_with_analytics(JSONB, JSONB, JSONB, BOOLEAN, BOOLEAN) FROM authenticated;
+REVOKE EXECUTE ON FUNCTION save_game_with_analytics(JSONB, JSONB, JSONB, BOOLEAN, BOOLEAN) FROM anon;
