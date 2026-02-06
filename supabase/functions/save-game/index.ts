@@ -197,12 +197,15 @@ serve(async (req) => {
       }
     )
 
+    const isDevMode = Deno.env.get('ENVIRONMENT') === 'development'
+
     const { error: dbError } = await userScopedClient.rpc('save_game_with_analytics', {
       p_game_state_diff: gameStateDiff,
       p_click_analytics: clickAnalytics || null,
       p_resource_analytics: resourceAnalytics || null,
       p_clear_analytics: clearAnalytics || false,
-      p_allow_playtime_overwrite: allowPlaytimeOverwrite || false
+      p_allow_playtime_overwrite: allowPlaytimeOverwrite || false,
+      p_skip_validation: isDevMode
     })
 
     if (dbError) {
