@@ -204,8 +204,7 @@ BEGIN
           IF v_resource_key NOT IN ('gold', 'silver') THEN
             v_new_res := COALESCE((v_merged_state->'resources'->>v_resource_key)::NUMERIC, 0);
             IF v_new_res > v_resource_limit THEN
-              RAISE EXCEPTION 'Validation failed: % (%) exceeds storage limit (%)',
-                v_resource_key, v_new_res, v_resource_limit;
+              RAISE EXCEPTION 'Save rejected';
             END IF;
           END IF;
         END LOOP;
@@ -216,8 +215,7 @@ BEGIN
       v_new_res := COALESCE((v_merged_state->'resources'->>'silver')::NUMERIC, 0);
       v_silver_delta := v_new_res - v_old_res;
       IF v_silver_delta > 5000 AND NOT (p_game_state_diff ? 'claimedAchievements') THEN
-        RAISE EXCEPTION 'Validation failed: silver increase (%) exceeds maximum of 5000 per save',
-          v_silver_delta;
+        RAISE EXCEPTION 'Save rejected';
       END IF;
 
       -- Validate gold delta: max +1500 per save, unless activatedPurchases changed
@@ -225,12 +223,8 @@ BEGIN
       v_new_res := COALESCE((v_merged_state->'resources'->>'gold')::NUMERIC, 0);
       v_gold_delta := v_new_res - v_old_res;
       IF v_gold_delta > 1500 AND NOT (p_game_state_diff ? 'activatedPurchases') THEN
-        RAISE EXCEPTION 'Validation failed: gold increase (%) exceeds maximum of 1500 per save',
-          v_gold_delta;
+        RAISE EXCEPTION 'Save rejected';
       END IF;
-
-      RAISE NOTICE 'Resource validation passed: storage_limit=%, silver_delta=%, gold_delta=%',
-        v_resource_limit, v_silver_delta, v_gold_delta;
     END;
   END IF;
   -- ========== END RESOURCE MANIPULATION PREVENTION ==========
