@@ -99,12 +99,15 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(
         const [sparks, setSparks] = useState<Spark[]>([]);
         const [isGlowing, setIsGlowing] = useState(false);
         const [glowIntensity, setGlowIntensity] = useState(0);
+        const [maxGlowIntensity, setMaxGlowIntensity] = useState(1.0);
+        const [hasBeenClicked, setHasBeenClicked] = useState(false);
         const buttonRef = useRef<HTMLButtonElement>(null);
         const intervalRef = useRef<NodeJS.Timeout | null>(null);
         const rampUpRef = useRef<NodeJS.Timeout | null>(null);
         const glowRampRef = useRef<NodeJS.Timeout | null>(null);
         const flickerRef = useRef<NodeJS.Timeout | null>(null);
         const delayTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+        const glowIncreaseIntervalRef = useRef<NodeJS.Timeout | null>(null);
         const idRef = useRef(0);
         const spawnCountRef = useRef(cruelMode ? 20 : 2);
         const rampStartRef = useRef<number | null>(null);
@@ -174,6 +177,10 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(
                 clearTimeout(delayTimeoutRef.current);
                 delayTimeoutRef.current = null;
             }
+            if (glowIncreaseIntervalRef.current) {
+                clearInterval(glowIncreaseIntervalRef.current);
+                glowIncreaseIntervalRef.current = null;
+            }
         };
 
         const handleMouseEnter = () => {
@@ -224,16 +231,16 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(
                             const elapsed = Date.now() - rampStartRef.current;
                             if (elapsed < 500) {
                                 const progress = elapsed / 500;
-                                setGlowIntensity(0.1 + progress * 0.9); // from 0.1 to 1.0
+                                setGlowIntensity(0.1 + progress * (maxGlowIntensity - 0.1)); // from 0.1 to maxGlowIntensity
                             } else {
-                                setGlowIntensity(1.0); // max intensity
+                                setGlowIntensity(maxGlowIntensity); // max intensity
                                 if (glowRampRef.current) {
                                     clearInterval(glowRampRef.current);
                                     glowRampRef.current = null;
                                 }
                                 glowRampRef.current = setInterval(
                                     () => {
-                                        setGlowIntensity(1.0);
+                                        setGlowIntensity(maxGlowIntensity);
                                     },
                                     Math.random() * 50 + 150,
                                 );
@@ -247,7 +254,7 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(
                 flickerRef.current = setInterval(
                     () => {
                         const flicker = 0.45 + Math.random() * 0.55;
-                        setGlowIntensity((prev) => Math.min(2, prev * flicker));
+                        setGlowIntensity((prev) => Math.min(maxGlowIntensity, prev * flicker));
                     },
                     Math.random() * 150 + 50,
                 );
@@ -267,6 +274,14 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(
 
         const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
             if (onClick) onClick(e);
+
+            // Start increasing max glow intensity after click
+            if (!hasBeenClicked) {
+                setHasBeenClicked(true);
+                glowIncreaseIntervalRef.current = setInterval(() => {
+                    setMaxGlowIntensity((prev) => prev + 0.25);
+                }, 500);
+            }
         };
 
         useEffect(() => {
