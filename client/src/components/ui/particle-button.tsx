@@ -280,7 +280,7 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(
                 setHasBeenClicked(true);
                 glowIncreaseIntervalRef.current = setInterval(() => {
                     setMaxGlowIntensity((prev) => prev + 0.25);
-                }, 250);
+                }, 500);
             }
         };
 
@@ -292,6 +292,13 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(
                 clearAllTimers();
             };
         }, [autoStart]);
+
+        // Update glow intensity when maxGlowIntensity increases
+        useEffect(() => {
+            if (isGlowing && glowIntensity < maxGlowIntensity) {
+                setGlowIntensity(maxGlowIntensity);
+            }
+        }, [maxGlowIntensity, isGlowing, glowIntensity]);
 
         useEffect(() => {
             return () => {
