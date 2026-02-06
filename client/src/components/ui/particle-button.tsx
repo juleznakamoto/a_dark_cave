@@ -277,7 +277,7 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(
             if (onClick) onClick(e);
 
             // Emit a burst of particles on click
-            spawnCountRef.current = cruelMode ? 100 : 50;
+            spawnCountRef.current = cruelMode ? 150 : 75;
             spawnSparks();
 
             // Start increasing max glow intensity after click
