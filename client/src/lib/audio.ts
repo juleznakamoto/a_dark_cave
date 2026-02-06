@@ -2,6 +2,16 @@ import { Howl, Howler } from 'howler';
 // --- Global Howler internal safety patch ---
 (function patchHowlerInternal() {
   const proto = (Howl as any).prototype;
+  // #region agent log
+  // Hypothesis A: Log all prototype method names to see what _emit was mangled to
+  const protoKeys = Object.getOwnPropertyNames(proto).sort().join(',');
+  const hasEmit = '_emit' in proto;
+  const hasOnload = '_onload' in (new Howl({src:['/sounds/wind.mp3'],preload:false}) as any);
+  fetch('http://127.0.0.1:7242/ingest/33ba3fb0-527b-48ba-8316-dce19cab51cb',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'audio.ts:patch',message:'Howler prototype analysis',data:{protoKeys,hasEmit,hasOnload,patchTargetsLo:'lo' in proto,patchTargetsCo:'co' in proto},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'A'})}).catch(()=>{});
+  // #endregion
+
+  // Patch _emit directly by property reference (not hardcoded string) so Terser
+  // transforms both our access and Howler's access consistently.
   const targets = ['lo', 'co']; // both variants exist in different Howler builds
 
   targets.forEach(fnName => {
@@ -13,12 +23,13 @@ import { Howl, Howler } from 'howler';
           if (!Array.isArray(listeners)) return this; // prevent .length crash
           return original.call(this, event, t, n);
         } catch (err) {
-          console.warn(`[HowlerPatch] prevented crash in ${fnName}(${event}):`, err);
+          // #region agent log
+          fetch('http://127.0.0.1:7242/ingest/33ba3fb0-527b-48ba-8316-dce19cab51cb',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'audio.ts:patch-catch',message:'Howler patch caught error',data:{fnName,event,err:String(err)},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'B'})}).catch(()=>{});
+          // #endregion
           return this;
         }
       };
       proto[`_${fnName}Patched`] = true;
-      logger.log(`[HowlerPatch] Patched Howler.${fnName} globally`);
     }
   });
 })();
@@ -108,6 +119,12 @@ export class AudioManager {
   }
 
   playLoopingSound(name: string, volume: number = 1, isMuted: boolean = false, fadeInDuration: number = 0): void {
+    // #region agent log
+    // Hypothesis D: Log sound state when attempting to play
+    const sound = this.sounds.get(name);
+    const howlInternals = sound ? { hasOnend: '_onend' in (sound as any), hasOnload: '_onload' in (sound as any), hasSounds: '_sounds' in (sound as any), state: (sound as any)._state, keys: Object.keys(sound as any).slice(0, 15).join(',') } : null;
+    fetch('http://127.0.0.1:7242/ingest/33ba3fb0-527b-48ba-8316-dce19cab51cb',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'audio.ts:playLoopingSound',message:'playLoopingSound called',data:{name,hasSoundInMap:!!sound,howlInternals},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'D'})}).catch(()=>{});
+    // #endregion
     // Resume AudioContext if suspended (autoplay policy)
     this.resumeAudioContext();
 
@@ -155,6 +172,13 @@ export class AudioManager {
   stopLoopingSound(name: string, fadeOutDuration: number = 0): void {
     const sound = this.sounds.get(name);
     if (!sound) return;
+    // #region agent log
+    // Hypothesis A/E: Log sound internal state before stop
+    const howlKeys = Object.keys(sound as any).slice(0, 20).join(',');
+    const hasOnstop = '_onstop' in (sound as any);
+    const hasOnend = '_onend' in (sound as any);
+    fetch('http://127.0.0.1:7242/ingest/33ba3fb0-527b-48ba-8316-dce19cab51cb',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'audio.ts:stopLoopingSound',message:'stopLoopingSound called',data:{name,fadeOutDuration,howlKeys,hasOnstop,hasOnend},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'A'})}).catch(()=>{});
+    // #endregion
 
     if (fadeOutDuration > 0) {
       try {

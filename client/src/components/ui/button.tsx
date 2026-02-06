@@ -20,8 +20,15 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       const buttonId = (e.currentTarget as HTMLButtonElement).getAttribute('button_id');
       if (buttonId) {
         // Lazy import to avoid circular dependencies
-        import('@/game/state').then(({ useGameStore }) => {
-          useGameStore.getState().trackButtonClick(buttonId);
+        import('@/game/state').then((mod) => {
+          // #region agent log
+          // Hypothesis C: Check if useGameStore is defined from dynamic import
+          fetch('http://127.0.0.1:7242/ingest/33ba3fb0-527b-48ba-8316-dce19cab51cb',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'button.tsx:handleClick',message:'dynamic import resolved',data:{buttonId,moduleKeys:Object.keys(mod).join(','),hasUseGameStore:'useGameStore' in mod,useGameStoreType:typeof mod.useGameStore},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'C'})}).catch(()=>{});
+          // #endregion
+          const { useGameStore } = mod;
+          if (useGameStore && typeof useGameStore.getState === 'function') {
+            useGameStore.getState().trackButtonClick(buttonId);
+          }
         });
       }
       
