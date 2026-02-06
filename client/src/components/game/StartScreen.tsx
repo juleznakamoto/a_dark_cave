@@ -7,6 +7,7 @@ import { audioManager } from "@/lib/audio";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { initPlaylight } from "@/App";
 import { startGameLoop } from "@/game/loop";
+import AuthDialog from "./AuthDialog";
 
 export default function StartScreen() {
   const { executeAction, setBoostMode, boostMode, CM } = useGameStore();
@@ -15,6 +16,7 @@ export default function StartScreen() {
   const executedRef = useRef(false);
   const isCruelMode = CM || false;
   const [showParticles, setShowParticles] = useState(false);
+  const [authDialogOpen, setAuthDialogOpen] = useState(false);
 
   useEffect(() => {
     const isBoostPath = window.location.pathname.includes("/boost");
@@ -189,18 +191,23 @@ export default function StartScreen() {
       <CloudShader />
 
       <main className="relative z-10 flex-1 flex flex-col items-center justify-center min-h-screen">
-        <div className="text-center mb-4">
-          <p className="animate-fade-in-text text-lg text-gray-300/90 leading-relaxed">
-            {isCruelMode ? "A very dark cave." : "A dark cave."}
-            <br />
-            {isCruelMode
-              ? "The air is freezing and damp."
-              : "The air is cold and damp."}
-            <br />
-            {isCruelMode
-              ? "You barely see anything around you."
-              : "You barely see the shapes around you."}
-          </p>
+        <div
+          className="text-center mb-4"
+          onClick={() => setAuthDialogOpen(true)}
+        >
+          <div className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-xs font-medium ring-offset-background transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 select-none cursor-pointer h-8 md:h-10 w-full bg-primary text-primary-foreground hover:bg-primary/90 px-4 py-2">
+            <p className="animate-fade-in-text text-sm md:text-base leading-relaxed m-0">
+              {isCruelMode ? "A very dark cave." : "A dark cave."}
+              <br />
+              {isCruelMode
+                ? "The air is freezing and damp."
+                : "The air is cold and damp."}
+              <br />
+              {isCruelMode
+                ? "You barely see anything around you."
+                : "You barely see the shapes around you."}
+            </p>
+          </div>
         </div>
 
         <ParticleButton
@@ -250,6 +257,12 @@ export default function StartScreen() {
           Imprint
         </a>
       </div>
+
+      <AuthDialog
+        isOpen={authDialogOpen}
+        onClose={() => setAuthDialogOpen(false)}
+        onAuthSuccess={() => {}}
+      />
     </div>
   );
 }
