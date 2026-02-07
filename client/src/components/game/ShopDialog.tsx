@@ -912,7 +912,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                     <div className="pb-4 text-muted-foreground text-sm">
                       <p className="text-md font-medium">
                         All in-game purchases are currently 25 % discounted during Beta
-                        phase. Bundles offer additional savings.
+                        phase. Bundles offer additional savings. Purchases can be reused in every playthrough.
                       </p>
                     </div>
 
