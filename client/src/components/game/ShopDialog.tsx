@@ -293,6 +293,13 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
   const { toast } = useToast();
   const mobileTooltip = useMobileTooltip();
 
+  // Reset filter when dialog closes
+  useEffect(() => {
+    if (!isOpen) {
+      setSelectedFilter(null);
+    }
+  }, [isOpen]);
+
   // Initialize component and load user data
   useEffect(() => {
     const initializeShop = async () => {
@@ -1014,7 +1021,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                     >
                                       <TooltipTrigger asChild>
                                         <button
-                                          className="pl-2 inline-flex items-center justify-center w-4 h-4 rounded-full text-muted-foreground text-sm"
+                                          className="pl-2 inline-flex items-center justify-center w-4 h-4 rounded-full text-muted-foreground text-sm font-bold"
                                           onClick={(e) => {
                                             e.stopPropagation();
                                             if (mobileTooltip.isMobile) {
@@ -1054,7 +1061,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                     >
                                       <TooltipTrigger asChild>
                                         <button
-                                          className="pl-2 inline-flex items-center justify-center w-4 h-4 rounded-full text-muted-foreground text-sm"
+                                          className="pl-2 inline-flex items-center justify-center w-4 h-4 rounded-full text-muted-foreground text-sm font-bold"
                                           onClick={(e) => {
                                             e.stopPropagation();
                                             if (mobileTooltip.isMobile) {
