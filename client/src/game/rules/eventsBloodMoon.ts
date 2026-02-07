@@ -8,13 +8,13 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
     id: "bloodMoonAttack",
     condition: (state: GameState) =>
       state.buildings.woodenHut >= 7 &&
-      !state.bloodMoonState.hasWon,
+      !(state.bloodMoonState?.hasWon ?? false),
     timeProbability: (state: GameState) =>
-      state.bloodMoonState.occurrenceCount === 0 ? 60 : 90,
+      (state.bloodMoonState?.occurrenceCount ?? 0) === 0 ? 60 : 90,
     title: "Blood Moon",
     message: (state: GameState) => {
       const sacrificeAmount = Math.min(
-        (state.cruelMode ? 10 : 5) + (state.bloodMoonState.occurrenceCount * 5),
+        (state.cruelMode ? 10 : 5) + ((state.bloodMoonState?.occurrenceCount ?? 0) * 5),
         30
       );
 
@@ -30,14 +30,14 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
         id: "sacrificeVillagers",
         label: (state: GameState) => {
           const sacrificeAmount = Math.min(
-            (state.cruelMode ? 10 : 5) + (state.bloodMoonState.occurrenceCount * 5),
+            (state.cruelMode ? 10 : 5) + ((state.bloodMoonState?.occurrenceCount ?? 0) * 5),
             30
           );
           return `Sacrifice ${sacrificeAmount} villagers`;
         },
         effect: (state: GameState) => {
           const sacrificeAmount = Math.min(
-            (state.cruelMode ? 10 : 5) + (state.bloodMoonState.occurrenceCount * 5),
+            (state.cruelMode ? 10 : 5) + ((state.bloodMoonState?.occurrenceCount ?? 0) * 5),
             30
           );
 
@@ -47,7 +47,7 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
             ...deathResult,
             bloodMoonState: {
               hasWon: false,
-              occurrenceCount: state.bloodMoonState.occurrenceCount + 1,
+              occurrenceCount: (state.bloodMoonState?.occurrenceCount ?? 0) + 1,
             },
             _logMessage: `The elders conduct the ritual sacrifice. ${sacrificeAmount} villagers are offered to the lycanthropes. The blood moon fades, and peace returns to the village... for now.`,
           };
@@ -68,7 +68,7 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
         },
         effect: (state: GameState) => {
           const sacrificeAmount = Math.min(
-            (state.cruelMode ? 10 : 5) + (state.bloodMoonState.occurrenceCount * 5),
+            (state.cruelMode ? 10 : 5) + ((state.bloodMoonState?.occurrenceCount ?? 0) * 5),
             30
           );
 
@@ -90,7 +90,7 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
               },
               bloodMoonState: {
                 hasWon: true,
-                occurrenceCount: state.bloodMoonState.occurrenceCount,
+                occurrenceCount: state.bloodMoonState?.occurrenceCount ?? 0,
               },
               _logMessage: "The lycanthropes attack, but your preparations hold! You defeat their leader and claim the Moonblood - a vial of blood from the lycanthrope alpha. Its purpose remains mysterious.",
             };
@@ -110,7 +110,7 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
             },
             bloodMoonState: {
               hasWon: false,
-              occurrenceCount: state.bloodMoonState.occurrenceCount + 1,
+              occurrenceCount: (state.bloodMoonState?.occurrenceCount ?? 0) + 1,
             },
             _logMessage: `The lycanthropes overwhelm your defenses! They kill ${villagerLoss} villagers and devour ${foodLoss} food from your stores. The blood moon fades, but the threat grows stronger for next time.`,
           };
@@ -123,7 +123,7 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
       effect: (state: GameState) => {
         // Same logic as prepareForAttack choice
         const sacrificeAmount = Math.min(
-          (state.cruelMode ? 10 : 5) + (state.bloodMoonState.occurrenceCount * 5),
+          (state.cruelMode ? 10 : 5) + ((state.bloodMoonState?.occurrenceCount ?? 0) * 5),
           30
         );
 
@@ -145,7 +145,7 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
             },
             bloodMoonState: {
               hasWon: true,
-              occurrenceCount: state.bloodMoonState.occurrenceCount,
+              occurrenceCount: state.bloodMoonState?.occurrenceCount ?? 0,
             },
             _logMessage: "The lycanthropes attack, but your preparations hold! You defeat their leader and claim the Moonblood - a vial of blood from the lycanthrope alpha. Its purpose remains mysterious.",
           };
@@ -165,7 +165,7 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
           },
           bloodMoonState: {
             hasWon: false,
-            occurrenceCount: state.bloodMoonState.occurrenceCount + 1,
+            occurrenceCount: (state.bloodMoonState?.occurrenceCount ?? 0) + 1,
           },
           _logMessage: `The lycanthropes overwhelm your defenses! They kill ${villagerLoss} villagers and devour ${foodLoss} food from your stores. The blood moon fades, but the threat grows stronger for next time.`,
         };
