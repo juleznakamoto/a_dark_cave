@@ -93,7 +93,7 @@ export default function GameFooter() {
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-0 flex-1">
             {devMode && (
-              <div className="px-2 py-1 text-xs font-mono">{displayTime}</div>
+              <div className="px-1 py-1 text-xs font-mono">{displayTime}</div>
             )}
             <Button
               variant="ghost"
