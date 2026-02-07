@@ -255,7 +255,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     activationMessage:
       "The Tarnished Compass has been added to your inventory! Its ancient magic may grant fortune to your endeavors.",
     symbol: "⛯",
-    symbolColor: "text-amber-200/90",
+    symbolColor: "text-amber-300/90",
   },
 
   crow_harness: {

@@ -910,7 +910,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                     </div>
                     
                     {/* Filter Chips */}
-                    <div className="flex flex-wrap gap-2 mb-3">
+                    <div className="flex flex-wrap gap-1.5 mb-3">
                       <Button
                         variant={selectedFilter === null ? "default" : "outline"}
                         size="xs"
