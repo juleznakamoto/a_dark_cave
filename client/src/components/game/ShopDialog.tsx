@@ -1035,7 +1035,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                           ⓘ
                                         </button>
                                       </TooltipTrigger>
-                                      <TooltipContent className="max-w-xs">
+                                      <TooltipContent className="max-w-xs border-2 border-amber-600">
                                         <div className="text-xs">
                                           <div className="font-bold mb-1">
                                             Skull Lantern
@@ -1075,7 +1075,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                           ⓘ
                                         </button>
                                       </TooltipTrigger>
-                                      <TooltipContent className="max-w-[14rem]">
+                                      <TooltipContent className="max-w-[14rem] border-2 border-amber-600">
                                         <div className="text-xs">
                                           <div className="font-bold mb-1">
                                             Tarnished Compass
