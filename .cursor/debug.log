@@ -1,0 +1,95 @@
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484307448,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484308446,"hypothesisId":"A_B","runId":"run1"}
+{"location":"game.tsx:172","message":"No saved state - calling initialize()","data":{"storeGameStartedBeforeInit":true},"timestamp":1770484312980,"hypothesisId":"A","runId":"post-fix"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484312991,"hypothesisId":"A_B","runId":"run1"}
+{"location":"game.tsx:117","message":"loadGame result in Game component","data":{"hasSavedState":false,"storeGameStarted":true},"timestamp":1770484312980,"hypothesisId":"A_B","runId":"run1"}
+{"location":"game.tsx:203","message":"After initialize() in Game","data":{"storeGameStartedAfterInit":true},"timestamp":1770484312981,"hypothesisId":"A","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484312982,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484312986,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484313000,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484313256,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484313264,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484313505,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484313755,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484314013,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484314263,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484314522,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484314771,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484315021,"hypothesisId":"A_B","runId":"run1"}
+{"location":"start-screen-page.tsx:51","message":"flags.gameStarted effect","data":{"gameStarted":false},"timestamp":1770484319415,"hypothesisId":"all","runId":"run1"}
+{"location":"start-screen-page.tsx:51","message":"flags.gameStarted effect","data":{"gameStarted":true},"timestamp":1770484319427,"hypothesisId":"all","runId":"run1"}
+{"location":"game.tsx:117","message":"loadGame result in Game component","data":{"hasSavedState":true,"savedGameStarted":true,"storeGameStarted":true},"timestamp":1770484321091,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484321092,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484321222,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484321245,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484321256,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484321296,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484321474,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484321730,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484321980,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484322238,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484322488,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484322739,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484322988,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484323238,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484323496,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484323746,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484324005,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484324095,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484324255,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484324504,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484324755,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484325013,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484325264,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484325513,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484325771,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484326021,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484326271,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484326291,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484326521,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484327295,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":false},"timestamp":1770484327311,"hypothesisId":"A_B","runId":"run1"}
+{"location":"start-screen-page.tsx:51","message":"flags.gameStarted effect","data":{"gameStarted":false},"timestamp":1770484327315,"hypothesisId":"all","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":false},"timestamp":1770484327316,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":false},"timestamp":1770484327328,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":false},"timestamp":1770484327539,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":false},"timestamp":1770484327788,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":false},"timestamp":1770484328046,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":false},"timestamp":1770484328297,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":false},"timestamp":1770484328546,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":false},"timestamp":1770484328797,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":false},"timestamp":1770484329055,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":false},"timestamp":1770484329305,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":false},"timestamp":1770484329555,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":false},"timestamp":1770484329805,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":false},"timestamp":1770484330055,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":false},"timestamp":1770484330305,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":false},"timestamp":1770484330554,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":false},"timestamp":1770484330805,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":false},"timestamp":1770484331055,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":false},"timestamp":1770484331305,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":false},"timestamp":1770484331555,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":false},"timestamp":1770484331805,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":false},"timestamp":1770484332055,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":false},"timestamp":1770484332305,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":false},"timestamp":1770484332563,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":false},"timestamp":1770484332821,"hypothesisId":"A_B","runId":"run1"}
+{"location":"start-screen-page.tsx:51","message":"flags.gameStarted effect","data":{"gameStarted":false},"timestamp":1770484341944,"hypothesisId":"all","runId":"run1"}
+{"location":"StartScreen.tsx:131","message":"Before executeAction lightFire","data":{"gameStartedBefore":false},"timestamp":1770484348594,"hypothesisId":"C","runId":"run1"}
+{"location":"StartScreen.tsx:134","message":"After executeAction lightFire","data":{"gameStartedAfter":true},"timestamp":1770484348597,"hypothesisId":"C","runId":"run1"}
+{"location":"start-screen-page.tsx:51","message":"flags.gameStarted effect","data":{"gameStarted":true},"timestamp":1770484348603,"hypothesisId":"all","runId":"run1"}
+{"location":"game.tsx:172","message":"No saved state - calling initialize()","data":{"storeGameStartedBeforeInit":true},"timestamp":1770484350597,"hypothesisId":"A","runId":"post-fix"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484350600,"hypothesisId":"A_B","runId":"run1"}
+{"location":"game.tsx:117","message":"loadGame result in Game component","data":{"hasSavedState":false,"storeGameStarted":true},"timestamp":1770484350597,"hypothesisId":"A_B","runId":"run1"}
+{"location":"game.tsx:203","message":"After initialize() in Game","data":{"storeGameStartedAfterInit":true},"timestamp":1770484350597,"hypothesisId":"A","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484350627,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484350633,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484350640,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484350664,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484350856,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484351105,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484351355,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484351606,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484351855,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484352105,"hypothesisId":"A_B","runId":"run1"}
+{"location":"GameContainer.tsx:318","message":"GameContainer render check","data":{"gameStarted":true},"timestamp":1770484352355,"hypothesisId":"A_B","runId":"run1"}

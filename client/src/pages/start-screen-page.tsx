@@ -48,9 +48,6 @@ export default function StartScreenPage() {
 
   // Also watch for gameStarted flag changes (when Light Fire is clicked)
   useEffect(() => {
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/33ba3fb0-527b-48ba-8316-dce19cab51cb',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'start-screen-page.tsx:51',message:'flags.gameStarted effect',data:{gameStarted:flags.gameStarted},timestamp:Date.now(),hypothesisId:'all',runId:'run1'})}).catch(()=>{});
-    // #endregion
     if (flags.gameStarted) {
       setShouldLoadGame(true);
     }

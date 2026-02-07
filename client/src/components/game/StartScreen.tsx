@@ -70,8 +70,9 @@ export default function StartScreen() {
     if (executedRef.current) return;
     executedRef.current = true;
 
-    // Load font dynamically (lazy-loaded for better Lighthouse scores)
-    // Check if font is already loaded
+    // Preload font dynamically (lazy-loaded for better Lighthouse scores)
+    // Don't apply font-loaded class here - the Game component will apply it
+    // when it mounts, avoiding a jarring font swap on the start screen.
     if (!document.getElementById('inter-font-face')) {
       const style = document.createElement('style');
       style.id = 'inter-font-face';
@@ -87,7 +88,7 @@ export default function StartScreen() {
       document.head.appendChild(style);
     }
 
-    // Use FontFace API to detect when font is loaded and apply immediately
+    // Preload the font so it's cached and ready when the Game component applies it
     if ('fonts' in document) {
       const interFont = new FontFace('Inter', 'url(/fonts/inter.woff2)', {
         weight: '100 900',
@@ -97,17 +98,7 @@ export default function StartScreen() {
 
       interFont.load().then(() => {
         document.fonts.add(interFont);
-        // Apply Inter immediately when loaded
-        document.documentElement.classList.add('font-loaded');
-      }).catch(() => {
-        // Fallback: add class anyway after a short delay
-        setTimeout(() => {
-          document.documentElement.classList.add('font-loaded');
-        }, 100);
-      });
-    } else {
-      // Fallback for browsers without FontFace API - add class immediately
-      document.documentElement.classList.add('font-loaded');
+      }).catch(() => {});
     }
 
     // Immediately stop wind with no fade to prevent overlap
@@ -126,15 +117,9 @@ export default function StartScreen() {
     // Show button effect for 3 seconds on both mobile and desktop
     setShowParticles(true);
     setTimeout(() => {
-      // #region agent log
-      fetch('http://127.0.0.1:7242/ingest/33ba3fb0-527b-48ba-8316-dce19cab51cb',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'StartScreen.tsx:131',message:'Before executeAction lightFire',data:{gameStartedBefore:useGameStore.getState().flags.gameStarted},timestamp:Date.now(),hypothesisId:'C',runId:'run1'})}).catch(()=>{});
-      // #endregion
       // Ensure game loop is running (may have been stopped by sign out)
       startGameLoop();
       executeAction("lightFire");
-      // #region agent log
-      fetch('http://127.0.0.1:7242/ingest/33ba3fb0-527b-48ba-8316-dce19cab51cb',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'StartScreen.tsx:134',message:'After executeAction lightFire',data:{gameStartedAfter:useGameStore.getState().flags.gameStarted},timestamp:Date.now(),hypothesisId:'C',runId:'run1'})}).catch(()=>{});
-      // #endregion
     }, 3000);
   };
 
