@@ -873,18 +873,16 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
             )}
 
             {!isLoading && !currentUser && (
-              <div className="bg-red-600/5 rounded-lg p-3 text-center">
-                <Button
-                  onClick={() => {
-                    setAuthDialogOpen(true);
-                    onClose();
-                  }}
-                  className="h-8 md:h-10 w-full border-0"
-                  button_id="shop-sign-in-button"
-                >
-                  Sign in or create an account to purchase items.
-                </Button>
-              </div>
+              <Button
+                onClick={() => {
+                  setAuthDialogOpen(true);
+                  onClose();
+                }}
+                className="h-8 md:h-10 w-full border-0"
+                button_id="shop-sign-in-button"
+              >
+                Sign in or create an account to purchase items.
+              </Button>
             )}
 
             {!isLoading && (

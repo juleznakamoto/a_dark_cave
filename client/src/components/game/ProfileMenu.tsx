@@ -51,6 +51,7 @@ export default function ProfileMenu() {
   const {
     restartGame,
     setAuthDialogOpen: setGameAuthDialogOpen,
+    authDialogOpen: gameAuthDialogOpen,
     authNotificationSeen,
     setAuthNotificationSeen,
     authNotificationVisible,
@@ -84,6 +85,13 @@ export default function ProfileMenu() {
   useEffect(() => {
     checkAuth();
   }, []);
+
+  // Sync auth dialog state from store (e.g. when opened from ShopDialog)
+  useEffect(() => {
+    if (gameAuthDialogOpen) {
+      setAuthDialogOpen(true);
+    }
+  }, [gameAuthDialogOpen]);
 
   const checkAuth = async () => {
     const user = await getCurrentUser();
