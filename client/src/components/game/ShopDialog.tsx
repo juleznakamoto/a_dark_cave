@@ -917,7 +917,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                           return true;
                         })
                         .map((item) => (
-                          <Card key={item.id} className="flex flex-col">
+                          <Card key={item.id} className="border-neutral-500 flex flex-col">
                             <CardHeader className="leading-snug p-3 md:p-6 pb-1 md:pb-2 relative">
                               {item.symbol && (
                                 <span

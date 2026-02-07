@@ -372,10 +372,10 @@ export default function GameContainer() {
               />
             ) : (
               // Standard button design
-              <div className="flex space-x-4 pl-[3px] ">
+              <div className="flex space-x-3 pl-[3px] ">
                 <button
                   className={`py-2 text-sm bg-transparent ${activeTab === "cave"
-                    ? "font-bold opacity-100"
+                    ? "font-semibold opacity-100"
                     : "opacity-60"
                     } `}
                   onClick={() => setActiveTab("cave")}
@@ -389,7 +389,7 @@ export default function GameContainer() {
                     className={`py-2 text-sm bg-transparent ${animatingTabs.has("village")
                       ? "tab-fade-in"
                       : activeTab === "village"
-                        ? "font-bold opacity-100"
+                        ? "font-semibold opacity-100"
                         : "opacity-60"
                       }`}
                     onClick={() => setActiveTab("village")}
@@ -405,7 +405,7 @@ export default function GameContainer() {
                     className={`py-2 text-sm bg-transparent ${animatingTabs.has("estate")
                       ? "tab-fade-in"
                       : activeTab === "estate"
-                        ? "font-bold opacity-100"
+                        ? "font-semibold opacity-100"
                         : "opacity-60"
                       }`}
                     onClick={() => setActiveTab("estate")}
@@ -420,7 +420,7 @@ export default function GameContainer() {
                     className={`py-2 text-sm bg-transparent ${animatingTabs.has("forest")
                       ? "tab-fade-in"
                       : activeTab === "forest"
-                        ? "font-bold opacity-100"
+                        ? "font-semibold opacity-100"
                         : "opacity-60"
                       }`}
                     onClick={() => setActiveTab("forest")}
@@ -435,7 +435,7 @@ export default function GameContainer() {
                     className={`py-2 text-sm bg-transparent ${animatingTabs.has("bastion")
                       ? "tab-fade-in"
                       : activeTab === "bastion"
-                        ? "font-bold opacity-100"
+                        ? "font-semibold opacity-100"
                         : "opacity-60"
                       }`}
                     onClick={() => setActiveTab("bastion")}
@@ -451,7 +451,7 @@ export default function GameContainer() {
                     className={`py-2 text-sm bg-transparent ${animatingTabs.has("trader")
                       ? "tab-fade-in"
                       : shopDialogOpen
-                        ? "font-bold opacity-100"
+                        ? "opacity-60"
                         : "opacity-60"
                       }`}
                     onClick={() => setShopDialogOpen(true)}
@@ -467,7 +467,7 @@ export default function GameContainer() {
                     className={`py-2 text-sm bg-transparent ${animatingTabs.has("achievements")
                       ? "tab-fade-in"
                       : activeTab === "achievements"
-                        ? "font-medium opacity-100"
+                        ? "font-semibold opacity-100"
                         : "opacity-60"
                       }`}
                     onClick={() => setActiveTab("achievements")}
@@ -481,7 +481,7 @@ export default function GameContainer() {
                 {timedEventTab.isActive && (
                   <button
                     className={`py-2 text-sm bg-transparent ${activeTab === "timedevent"
-                      ? "font-bold opacity-100"
+                      ? "font-semibold opacity-100"
                       : "opacity-60"
                       }`}
                     onClick={() => setActiveTab("timedevent")}
