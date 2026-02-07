@@ -1,9 +1,15 @@
+import { Helmet } from "react-helmet-async";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 export default function Privacy() {
   return (
     <ScrollArea className="h-screen w-full bg-black">
+      <Helmet>
+        <title>Privacy Policy - A Dark Cave</title>
+        <meta name="description" content="Privacy Policy for A Dark Cave. Learn how we handle your data in our text-based survival and settlement building game." />
+        <link rel="canonical" href="https://a-dark-cave.com/privacy" />
+      </Helmet>
       <div className="py-12 px-4">
         <div className="max-w-4xl mx-auto">
           <Card className="bg-gray-900 border-gray-800">

@@ -190,9 +190,10 @@ export default function StartScreen() {
 
       <main className="relative z-10 flex-1 flex flex-col items-center justify-center min-h-screen">
         <div className="text-center mb-4">
-          <p className="animate-fade-in-text text-lg text-gray-300/90 leading-relaxed">
+          <h1 className="animate-fade-in-text text-lg text-gray-300/90 leading-relaxed font-normal">
             {isCruelMode ? "A very dark cave." : "A dark cave."}
-            <br />
+          </h1>
+          <p className="animate-fade-in-text text-lg text-gray-300/90 leading-relaxed">
             {isCruelMode
               ? "The air is freezing and damp."
               : "The air is cold and damp."}

@@ -1,9 +1,15 @@
+import { Helmet } from "react-helmet-async";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 export default function Imprint() {
   return (
     <ScrollArea className="h-screen w-full bg-black">
+      <Helmet>
+        <title>Imprint - A Dark Cave</title>
+        <meta name="description" content="Imprint and legal information for A Dark Cave." />
+        <link rel="canonical" href="https://a-dark-cave.com/imprint" />
+      </Helmet>
       <div className="py-12 px-4">
         <div className="max-w-4xl mx-auto space-y-12">
         <Card className="bg-gray-900 border-gray-800">

@@ -1,9 +1,15 @@
+import { Helmet } from "react-helmet-async";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 export default function Withdrawal() {
   return (
     <ScrollArea className="h-screen w-full bg-black">
+      <Helmet>
+        <title>Right of Withdrawal - A Dark Cave</title>
+        <meta name="description" content="Right of Withdrawal information for A Dark Cave." />
+        <link rel="canonical" href="https://a-dark-cave.com/withdrawal" />
+      </Helmet>
       <div className="py-12 px-4">
         <div className="max-w-4xl mx-auto space-y-8">
         <Card className="bg-gray-900 border-gray-800">

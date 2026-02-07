@@ -1,4 +1,5 @@
 
+import { Helmet } from "react-helmet-async";
 import Hero from "@/components/ui/animated-shader-hero";
 
 export default function EndScreenPage() {
@@ -26,6 +27,10 @@ export default function EndScreenPage() {
 
   return (
     <div className="fixed inset-0 z-[99999]">
+      <Helmet>
+        <title>Journey Complete - A Dark Cave</title>
+        <meta name="robots" content="noindex" />
+      </Helmet>
       <Hero
         trustBadge={{
           text: "Well Done!",

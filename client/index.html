@@ -113,13 +113,14 @@
           "Resource Management"
         ],
         "sameAs": [
-          "https://adarkroom.doublespeakgames.com/",
-          "https://en.wikipedia.org/wiki/Incremental_game",
-          "https://store.steampowered.com/app/262060/Darkest_Dungeon/",
-          "https://eldrum.com/",
-          "https://store.steampowered.com/app/3072490/The_Ensign/",
-          "https://en.wikipedia.org/wiki/Candy_Box!",
-          "https://kittensgame.com/web/"
+          "https://www.reddit.com/r/aDarkCave/",
+          "https://www.youtube.com/channel/UCdQDWTJe_Bno7xyjnO1aC-w",
+          "https://www.indiedb.com/members/a-dark-cave",
+          "https://www.moddb.com/games/a-dark-cave",
+          "https://www.instagram.com/a_dark_cave/",
+          "https://www.incrementaldb.com/game/a-dark-cave",
+          "https://a-dark-cave.itch.io/a-dark-cave",
+          "https://www.facebook.com/people/A-Dark-Cave/61584724119235/"
         ],
         "browserRequirements": "Requires JavaScript. Requires HTML5.",
         "offers": {
@@ -186,7 +187,31 @@
     </script>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!--
+        Static fallback for non-JS crawlers (Bing, DuckDuckGo, social link previews).
+        React's createRoot().render() replaces this entire content on mount.
+        The text starts invisible and only fades in after 3s — by then React has
+        already taken over, so users on normal connections never see this.
+        On very slow connections, it serves as a graceful loading indicator.
+      -->
+      <style>
+        @keyframes seo-fade{0%{opacity:0}100%{opacity:1}}
+        .seo-fallback{opacity:0;animation:seo-fade 1s ease-in 3s forwards;}
+      </style>
+      <main class="seo-fallback" style="background:#000;color:#d4d4d4;font-family:system-ui,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;text-align:center;">
+        <h1 style="font-size:1.125rem;font-weight:400;color:rgba(209,213,219,0.9);margin:0 0 1rem;">A dark cave.</h1>
+        <p style="font-size:1.125rem;color:rgba(209,213,219,0.9);line-height:1.75;margin:0 0 2rem;">
+          The air is cold and damp.<br />
+          You barely see the shapes around you.
+        </p>
+        <p style="font-size:0.875rem;color:rgba(156,163,175,0.7);max-width:32rem;line-height:1.6;margin:0;">
+          A Dark Cave is a text-based survival and settlement building game.
+          Start with nothing in the depths of an ancient cave and build your way to survival.
+          Gather resources, craft tools, manage villagers, and uncover dark secrets.
+        </p>
+      </main>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

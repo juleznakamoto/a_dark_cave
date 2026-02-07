@@ -1,10 +1,16 @@
 
+import { Helmet } from "react-helmet-async";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 export default function Terms() {
   return (
     <ScrollArea className="h-screen w-full bg-black">
+      <Helmet>
+        <title>Terms of Service - A Dark Cave</title>
+        <meta name="description" content="Terms of Service for A Dark Cave. Read the terms and conditions for using our text-based survival game." />
+        <link rel="canonical" href="https://a-dark-cave.com/terms" />
+      </Helmet>
       <div className="py-12 px-4">
         <div className="max-w-4xl mx-auto">
         <Card className="bg-gray-900 border-gray-800">
