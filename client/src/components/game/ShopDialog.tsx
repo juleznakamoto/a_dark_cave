@@ -910,36 +910,36 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                     </div>
                     
                     {/* Filter Chips */}
-                    <div className="flex flex-wrap gap-2 mb-4">
+                    <div className="flex flex-wrap gap-2 mb-3">
                       <Button
                         variant={selectedFilter === null ? "default" : "outline"}
-                        size="sm"
+                        size="xs"
                         onClick={() => setSelectedFilter(null)}
-                        className="h-8 text-xs"
+                        className="h-6 text-xs"
                       >
                         All
                       </Button>
                       <Button
                         variant={selectedFilter === "gold" ? "default" : "outline"}
-                        size="sm"
+                        size="xs"
                         onClick={() => setSelectedFilter("gold")}
-                        className="h-8 text-xs"
+                        className="h-6 text-xs"
                       >
                         Gold
                       </Button>
                       <Button
                         variant={selectedFilter === "artifacts" ? "default" : "outline"}
-                        size="sm"
+                        size="xs"
                         onClick={() => setSelectedFilter("artifacts")}
-                        className="h-8 text-xs"
+                        className="h-6 text-xs"
                       >
                         Artifacts
                       </Button>
                       <Button
                         variant={selectedFilter === "bundles" ? "default" : "outline"}
-                        size="sm"
+                        size="xs"
                         onClick={() => setSelectedFilter("bundles")}
-                        className="h-8 text-xs"
+                        className="h-6 text-xs"
                       >
                         Bundles
                       </Button>
