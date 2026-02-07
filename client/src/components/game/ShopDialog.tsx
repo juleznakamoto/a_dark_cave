@@ -902,14 +902,14 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                   </TabsTrigger>
                 </TabsList>
 
-                <TabsContent value="shop" className="mt-4">
+                <TabsContent value="shop" className="mt-3">
                   <ScrollArea
                     className={
                       !currentUser ? "h-[calc(80vh-260px)]" : "h-[calc(80vh-180px)]"
                     }
                   >
                     {" "}
-                    <div className="pb-4 text-muted-foreground text-sm">
+                    <div className="pb-3 text-muted-foreground text-sm">
                       <p className="text-md font-medium">
                         All in-game purchases are currently 25 % discounted during Beta
                         phase. Bundles offer additional savings. Purchases can be reused in every playthrough.
