@@ -86,11 +86,13 @@ export default function GameContainer() {
   }, [fullGamePurchaseDialogOpen]);
 
   // Track unlocked tabs to trigger fade-in animation
+  const traderUnlocked = buildings.woodenHut >= 6;
   const prevFlagsRef = useRef({
     villageUnlocked: flags.villageUnlocked,
     forestUnlocked: flags.forestUnlocked,
     estateUnlocked: estateUnlocked,
     bastionUnlocked: flags.bastionUnlocked,
+    traderUnlocked: traderUnlocked,
   });
 
   // Track previous timed event state to detect when a new event starts
@@ -165,6 +167,9 @@ export default function GameContainer() {
     if (!prev.bastionUnlocked && flags.bastionUnlocked) {
       newAnimations.add("bastion");
     }
+    if (!prev.traderUnlocked && traderUnlocked) {
+      newAnimations.add("trader");
+    }
 
     if (newAnimations.size > 0) {
       setAnimatingTabs(newAnimations);
@@ -176,12 +181,14 @@ export default function GameContainer() {
       forestUnlocked: flags.forestUnlocked,
       estateUnlocked: estateUnlocked,
       bastionUnlocked: flags.bastionUnlocked,
+      traderUnlocked: traderUnlocked,
     };
   }, [
     flags.villageUnlocked,
     flags.forestUnlocked,
     estateUnlocked,
     flags.bastionUnlocked,
+    traderUnlocked,
   ]);
 
   // Initialize version check
@@ -439,9 +446,14 @@ export default function GameContainer() {
                 )}
 
                 {/* Trader Tab Button */}
-                {buildings.woodenHut >= 6 && (
+                {traderUnlocked && (
                   <button
-                    className="py-2 text-sm bg-transparent opacity-60 hover:opacity-100"
+                    className={`py-2 text-sm bg-transparent ${animatingTabs.has("trader")
+                      ? "tab-fade-in"
+                      : shopDialogOpen
+                        ? "font-bold opacity-100"
+                        : "opacity-60"
+                      }`}
                     onClick={() => setShopDialogOpen(true)}
                     data-testid="tab-trader"
                   >
