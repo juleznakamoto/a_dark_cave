@@ -287,6 +287,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
   );
   const [isDetectingCurrency, setIsDetectingCurrency] = useState(false);
   const gameState = useGameStore();
+  const { setAuthDialogOpen } = useGameStore();
   const activatedPurchases = gameState.activatedPurchases || {};
   const { toast } = useToast();
   const mobileTooltip = useMobileTooltip();
@@ -873,9 +874,16 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
 
             {!isLoading && !currentUser && (
               <div className="bg-red-600/5 border border-red-600/50 rounded-lg p-3 text-center">
-                <p className="text-md font-medium text-red-600">
+                <Button
+                  onClick={() => {
+                    setAuthDialogOpen(true);
+                    onClose();
+                  }}
+                  className="h-8 md:h-10 w-full"
+                  button_id="shop-sign-in-button"
+                >
                   Sign in or create an account to purchase items.
-                </p>
+                </Button>
               </div>
             )}
 
