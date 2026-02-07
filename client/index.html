@@ -196,19 +196,31 @@
         On very slow connections, it serves as a graceful loading indicator.
       -->
       <style>
-        @keyframes seo-fade{0%{opacity:0}100%{opacity:1}}
-        .seo-fallback{opacity:0;animation:seo-fade 1s ease-in 3s forwards;}
+        @keyframes seo-fade {
+          0% {
+            opacity: 0;
+          }
+          100% {
+            opacity: 1;
+          }
+        }
+        .seo-fallback {
+          opacity: 0;
+          animation: seo-fade 1s ease-in 3s forwards;
+        }
       </style>
-      <main class="seo-fallback" style="background:#000;color:#d4d4d4;font-family:system-ui,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;text-align:center;">
-        <h1 style="font-size:1.125rem;font-weight:400;color:rgba(209,213,219,0.9);margin:0 0 1rem;">A dark cave.</h1>
-        <p style="font-size:1.125rem;color:rgba(209,213,219,0.9);line-height:1.75;margin:0 0 2rem;">
-          The air is cold and damp.<br />
-          You barely see the shapes around you.
+      <main class="seo-fallback">
+        <h1>A Dark Cave is a text based survival game</h1>
+
+        <p>
+          A Dark Cave is a minimalist text based survival and settlement building game
+          playable directly in your browser. Start with nothing, gather resources,
+          manage villagers and uncover dark secrets in the depths of an ancient cave.
         </p>
-        <p style="font-size:0.875rem;color:rgba(156,163,175,0.7);max-width:32rem;line-height:1.6;margin:0;">
-          A Dark Cave is a text-based survival and settlement building game.
-          Start with nothing in the depths of an ancient cave and build your way to survival.
-          Gather resources, craft tools, manage villagers, and uncover dark secrets.
+
+        <p>
+          An incremental RPG inspired by A Dark Room, Darkest Dungeon, The Ensign,
+          Candy Box, Kittens Game, Eldrum and Lovecraftian horror.
         </p>
       </main>
     </div>
