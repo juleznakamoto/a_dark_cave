@@ -1021,7 +1021,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                     >
                                       <TooltipTrigger asChild>
                                         <button
-                                          className="pl-2 inline-flex items-center justify-center w-4 h-4 rounded-full text-muted-foreground text-sm font-bold"
+                                          className="pl-2 inline-flex items-center justify-center w-4 h-4 rounded-full text-white-500 text-sm font-bold"
                                           onClick={(e) => {
                                             e.stopPropagation();
                                             if (mobileTooltip.isMobile) {
@@ -1061,7 +1061,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                     >
                                       <TooltipTrigger asChild>
                                         <button
-                                          className="pl-2 inline-flex items-center justify-center w-4 h-4 rounded-full text-muted-foreground text-sm font-bold"
+                                          className="pl-2 inline-flex items-center justify-center w-4 h-4 rounded-full text-white-500 text-sm font-bold"
                                           onClick={(e) => {
                                             e.stopPropagation();
                                             if (mobileTooltip.isMobile) {
