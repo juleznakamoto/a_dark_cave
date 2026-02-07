@@ -274,7 +274,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
   const [purchasedItems, setPurchasedItems] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<"shop" | "purchases">("shop");
-  const [selectedFilter, setSelectedFilter] = useState<"gold" | "artifacts" | "bundles" | null>(null);
+  const [selectedFilter, setSelectedFilter] = useState<"gold" | "artifacts" | "boosts" | "bundles" | null>(null);
   const [currentUser, setCurrentUser] = useState<{
     id: string;
     email: string;
@@ -936,6 +936,14 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                         Artifacts
                       </Button>
                       <Button
+                        variant={selectedFilter === "boosts" ? "default" : "outline"}
+                        size="xs"
+                        onClick={() => setSelectedFilter("boosts")}
+                        className="h-6 text-xs"
+                      >
+                        Boosts
+                      </Button>
+                      <Button
                         variant={selectedFilter === "bundles" ? "default" : "outline"}
                         size="xs"
                         onClick={() => setSelectedFilter("bundles")}
@@ -964,6 +972,10 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                             return item.category === "tool" || 
                                    item.category === "weapon" || 
                                    item.category === "relic";
+                          }
+                          if (selectedFilter === "boosts") {
+                            // Boosts include Great Feasts and other boost items
+                            return item.category === "feast";
                           }
                           if (selectedFilter === "bundles") {
                             // Bundles have bundle category
