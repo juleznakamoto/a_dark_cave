@@ -225,7 +225,7 @@ export default function GameFooter() {
               href="https://www.reddit.com/r/aDarkCave/"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:opacity-100 transition-opacity opacity-35"
+              className="hover:opacity-100 transition-opacity opacity-35 flex items-center justify-center w-4 h-4"
               title="Reddit"
             >
               <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
@@ -236,7 +236,7 @@ export default function GameFooter() {
               href="https://www.instagram.com/a_dark_cave/"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:opacity-100 transition-opacity opacity-35"
+              className="hover:opacity-100 transition-opacity opacity-35 flex items-center justify-center w-4 h-4"
               title="Instagram"
             >
               <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
@@ -247,7 +247,7 @@ export default function GameFooter() {
               href="https://www.incrementaldb.com/game/a-dark-cave"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:opacity-100 transition-opacity opacity-35"
+              className="hover:opacity-100 transition-opacity opacity-35 flex items-center justify-center w-4 h-4"
               title="Incremental DB"
             >
               <svg
@@ -272,7 +272,7 @@ export default function GameFooter() {
             </a>
             <a
               href="mailto:support@a-dark-cave.com"
-              className="hover:opacity-100 transition-opacity opacity-35"
+              className="hover:opacity-100 transition-opacity opacity-35 flex items-center justify-center w-4 h-4"
               title="Contact"
             >
               <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
