@@ -172,10 +172,19 @@ export default function Game() {
           }
         } else {
           // #region agent log
-          fetch('http://127.0.0.1:7242/ingest/33ba3fb0-527b-48ba-8316-dce19cab51cb',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'game.tsx:172',message:'No saved state - calling initialize()',data:{storeGameStartedBeforeInit:useGameStore.getState().flags.gameStarted},timestamp:Date.now(),hypothesisId:'A',runId:'run1'})}).catch(()=>{});
+          fetch('http://127.0.0.1:7242/ingest/33ba3fb0-527b-48ba-8316-dce19cab51cb',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'game.tsx:172',message:'No saved state - calling initialize()',data:{storeGameStartedBeforeInit:useGameStore.getState().flags.gameStarted},timestamp:Date.now(),hypothesisId:'A',runId:'post-fix'})}).catch(()=>{});
           // #endregion
           // If no saved state, initialize with defaults
+          // Preserve flags/story already set by executeAction("lightFire") before Game mounted
+          const preInitFlags = useGameStore.getState().flags;
+          const preInitStory = useGameStore.getState().story;
           initialize();
+          if (preInitFlags.gameStarted) {
+            useGameStore.setState({
+              flags: { ...useGameStore.getState().flags, gameStarted: true, hasLitFire: preInitFlags.hasLitFire },
+              story: preInitStory,
+            });
+          }
 
           // Track Google Ads source if present in URL
           if (googleAdsSource) {
