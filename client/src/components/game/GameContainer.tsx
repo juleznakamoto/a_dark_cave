@@ -314,6 +314,9 @@ export default function GameContainer() {
     timedEventTab.event?.title,
   ]);
 
+  // #region agent log
+  fetch('http://127.0.0.1:7242/ingest/33ba3fb0-527b-48ba-8316-dce19cab51cb',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'GameContainer.tsx:318',message:'GameContainer render check',data:{gameStarted:flags.gameStarted},timestamp:Date.now(),hypothesisId:'A_B',runId:'run1'})}).catch(()=>{});
+  // #endregion
   // Show start screen if game hasn't started yet
   if (!flags.gameStarted) {
     return <StartScreen />;

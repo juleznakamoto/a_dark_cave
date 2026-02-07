@@ -886,7 +886,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                   setAuthDialogOpen(true);
                   onClose();
                 }}
-                className="h-8 md:h-10 w-full border-0"
+                className="text-sm h-8 md:h-10 w-full border-0"
                 button_id="shop-sign-in-button"
               >
                 Sign in or create an account to purchase items
@@ -915,7 +915,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                         phase. Bundles offer additional savings.
                       </p>
                     </div>
-                    
+
                     {/* Filter Chips */}
                     <div className="flex flex-wrap gap-1.5 mb-3">
                       <Button
@@ -967,18 +967,18 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                           if (item.id === 'full_game' && gameState.BTP === 0) {
                             return false;
                           }
-                          
+
                           // Apply filter based on selectedFilter
                           if (selectedFilter === "gold") {
                             // Gold items are resources with gold rewards
-                            return item.category === "resource" && 
-                                   item.rewards.resources?.gold !== undefined;
+                            return item.category === "resource" &&
+                              item.rewards.resources?.gold !== undefined;
                           }
                           if (selectedFilter === "artifacts") {
                             // Artifacts are tools, weapons, or relics
-                            return item.category === "tool" || 
-                                   item.category === "weapon" || 
-                                   item.category === "relic";
+                            return item.category === "tool" ||
+                              item.category === "weapon" ||
+                              item.category === "relic";
                           }
                           if (selectedFilter === "boosts") {
                             // Boosts include Great Feasts and other boost items
@@ -988,7 +988,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                             // Bundles have bundle category
                             return item.category === "bundle";
                           }
-                          
+
                           // Show all if no filter selected
                           return true;
                         })

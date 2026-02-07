@@ -126,9 +126,15 @@ export default function StartScreen() {
     // Show button effect for 3 seconds on both mobile and desktop
     setShowParticles(true);
     setTimeout(() => {
+      // #region agent log
+      fetch('http://127.0.0.1:7242/ingest/33ba3fb0-527b-48ba-8316-dce19cab51cb',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'StartScreen.tsx:131',message:'Before executeAction lightFire',data:{gameStartedBefore:useGameStore.getState().flags.gameStarted},timestamp:Date.now(),hypothesisId:'C',runId:'run1'})}).catch(()=>{});
+      // #endregion
       // Ensure game loop is running (may have been stopped by sign out)
       startGameLoop();
       executeAction("lightFire");
+      // #region agent log
+      fetch('http://127.0.0.1:7242/ingest/33ba3fb0-527b-48ba-8316-dce19cab51cb',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'StartScreen.tsx:134',message:'After executeAction lightFire',data:{gameStartedAfter:useGameStore.getState().flags.gameStarted},timestamp:Date.now(),hypothesisId:'C',runId:'run1'})}).catch(()=>{});
+      // #endregion
     }, 3000);
   };
 
