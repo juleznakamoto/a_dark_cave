@@ -319,8 +319,17 @@ export default function GameContainer() {
     return <StartScreen />;
   }
 
+  // Check if blood moon event is active
+  const isBloodMoonActive = timedEventTab.isActive && timedEventTab.event?.eventId === 'bloodMoonAttack';
+
   return (
-    <div className="fixed inset-0 bg-background text-foreground flex flex-col">
+    <div
+      className="fixed inset-0 bg-background text-foreground flex flex-col"
+      style={{
+        backgroundColor: isBloodMoonActive ? 'hsl(0, 50%, 5%)' : undefined,
+        transition: 'background-color 3s ease-in-out',
+      }}
+    >
       {/* Pause Overlay - covers everything except footer and profile menu */}
       {isPaused && (
         <div

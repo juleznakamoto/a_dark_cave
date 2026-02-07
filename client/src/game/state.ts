@@ -412,6 +412,7 @@ export const rewardDialogVillageAttackEvents = new Set([
   "boneArmyAttack",
   "wolfAttack",
   "cannibalRaid",
+  "bloodMoonAttack",
 ]);
 
 // Helper functions
@@ -465,6 +466,7 @@ const mergeStateUpdates = (
     boneDevourerState:
       stateUpdates.boneDevourerState || prevState.boneDevourerState,
     greatFeastState: stateUpdates.greatFeastState || prevState.greatFeastState,
+    bloodMoonState: stateUpdates.bloodMoonState || prevState.bloodMoonState,
     curseState: stateUpdates.curseState || prevState.curseState,
     frostfallState: stateUpdates.frostfallState || prevState.frostfallState,
     woodcutterState: stateUpdates.woodcutterState || prevState.woodcutterState,
@@ -655,6 +657,10 @@ export const createInitialState = (): GameState => ({
   greatFeastState: {
     isActive: false,
     endTime: 0,
+  },
+  bloodMoonState: {
+    hasWon: false,
+    occurrenceCount: 0,
   },
   curseState: {
     isActive: false,

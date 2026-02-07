@@ -72,6 +72,7 @@ export interface ActionEffectUpdates {
   feastState?: GameState["feastState"];
   boneDevourerState?: GameState["boneDevourerState"];
   greatFeastState?: GameState["greatFeastState"];
+  bloodMoonState?: GameState["bloodMoonState"];
   curseState?: GameState["curseState"];
   frostfallState?: GameState["frostfallState"];
   woodcutterState?: GameState["woodcutterState"];

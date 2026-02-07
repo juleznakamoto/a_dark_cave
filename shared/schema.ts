@@ -193,6 +193,7 @@ export const gameStateSchema = z.object({
       sealed_chest: z.boolean().default(false),
       stonebinders_codex: z.boolean().default(false),
       chitin_plates: z.boolean().default(false),
+      moonblood: z.boolean().default(false),
     })
     .default({}),
   fellowship: z
@@ -427,6 +428,16 @@ export const gameStateSchema = z.object({
     .default({
       isActive: false,
       endTime: 0,
+    }),
+
+  bloodMoonState: z
+    .object({
+      hasWon: z.boolean().default(false),
+      occurrenceCount: z.number().default(0),
+    })
+    .default({
+      hasWon: false,
+      occurrenceCount: 0,
     }),
 
   greatFeastActivations: z.number().default(0),
