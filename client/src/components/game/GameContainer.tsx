@@ -438,6 +438,17 @@ export default function GameContainer() {
                   </button>
                 )}
 
+                {/* Trader Tab Button */}
+                {buildings.woodenHut >= 6 && (
+                  <button
+                    className="py-2 text-sm bg-transparent opacity-60 hover:opacity-100"
+                    onClick={() => setShopDialogOpen(true)}
+                    data-testid="tab-trader"
+                  >
+                    Trader
+                  </button>
+                )}
+
                 {/* Achievements Tab Button ⚜︎ */}
                 {books?.book_of_trials && (
                   <button

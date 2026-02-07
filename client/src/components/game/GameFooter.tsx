@@ -163,7 +163,7 @@ export default function GameFooter() {
                 }}
                 className="px-1 py-1 text-xs hover relative text-neutral-300"
               >
-                Shop
+                Trader
                 {((shopNotificationVisible && !shopNotificationSeen) ||
                   (story.seen.mysteriousNoteReceived &&
                     !mysteriousNoteShopNotificationSeen)) && (

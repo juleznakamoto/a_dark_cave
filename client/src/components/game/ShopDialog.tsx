@@ -863,7 +863,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
             onInteractOutside={(e) => e.preventDefault()}
           >
             <DialogHeader>
-              <DialogTitle>Shop</DialogTitle>
+              <DialogTitle>Trader</DialogTitle>
             </DialogHeader>
 
             {isLoading && (
@@ -881,7 +881,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                 className="h-8 md:h-10 w-full border-0"
                 button_id="shop-sign-in-button"
               >
-                Sign in or create an account to purchase items.
+                Sign in or create an account to purchase items
               </Button>
             )}
 
