@@ -274,6 +274,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
   const [purchasedItems, setPurchasedItems] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<"shop" | "purchases">("shop");
+  const [selectedFilter, setSelectedFilter] = useState<"gold" | "artifacts" | "bundles" | null>(null);
   const [currentUser, setCurrentUser] = useState<{
     id: string;
     email: string;
@@ -907,6 +908,43 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                         phase. Bundles offer additional savings.
                       </p>
                     </div>
+                    
+                    {/* Filter Chips */}
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      <Button
+                        variant={selectedFilter === null ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => setSelectedFilter(null)}
+                        className="h-8 text-xs"
+                      >
+                        All
+                      </Button>
+                      <Button
+                        variant={selectedFilter === "gold" ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => setSelectedFilter("gold")}
+                        className="h-8 text-xs"
+                      >
+                        Gold
+                      </Button>
+                      <Button
+                        variant={selectedFilter === "artifacts" ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => setSelectedFilter("artifacts")}
+                        className="h-8 text-xs"
+                      >
+                        Artifacts
+                      </Button>
+                      <Button
+                        variant={selectedFilter === "bundles" ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => setSelectedFilter("bundles")}
+                        className="h-8 text-xs"
+                      >
+                        Bundles
+                      </Button>
+                    </div>
+
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                       {Object.values(SHOP_ITEMS)
                         .filter((item) => {
@@ -914,6 +952,25 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                           if (item.id === 'full_game' && gameState.BTP === 0) {
                             return false;
                           }
+                          
+                          // Apply filter based on selectedFilter
+                          if (selectedFilter === "gold") {
+                            // Gold items are resources with gold rewards
+                            return item.category === "resource" && 
+                                   item.rewards.resources?.gold !== undefined;
+                          }
+                          if (selectedFilter === "artifacts") {
+                            // Artifacts are tools, weapons, or relics
+                            return item.category === "tool" || 
+                                   item.category === "weapon" || 
+                                   item.category === "relic";
+                          }
+                          if (selectedFilter === "bundles") {
+                            // Bundles have bundle category
+                            return item.category === "bundle";
+                          }
+                          
+                          // Show all if no filter selected
                           return true;
                         })
                         .map((item) => (
