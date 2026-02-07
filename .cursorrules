@@ -93,25 +93,6 @@ Preferred communication style: Simple, everyday language.
 - `@/*` maps to `./client/src/*`
 - `@shared/*` maps to `./shared/*`
 
-## Recent Changes
-
-### January 3, 2026 - Crow System & Village Elder Storyline
-- **New Shop Item**: Crow Harness ($3.99) - Tool for catching the One-eyed Crow in Blackreach Canyon
-- **New Fellowship Member**: One-eyed Crow - Can carry messages and provides Crow's Eye skill
-- **New Skill**: Crow's Eye - Upgradeable skill providing 0.5%-15% chance to double gathering resources
-- **New Forest Scout Actions**:
-  - Blackreach Canyon - Use crow harness to catch the one-eyed crow
-  - Hidden Library - Explore monastery's hidden library (unlocked via crow message)
-  - Steel Delivery - Deliver steel to Swamp Tribe (unlocked via crow message)
-- **New Events System**: Village Elder crow messages with branching storyline:
-  - Mountain Monastery path - Leads to Hidden Library and Stonebinder's Codex relic
-  - Swamp Tribe path - Leads to Steel Delivery and Chitin Plates relic
-  - Shore Fishermen path - Grants Fisher's Hand blessing (+5 food per gatherer)
-- **New Relics**: Stonebinder's Codex (5% building cost reduction), Chitin Plates
-- **New Blessing**: Fisher's Hand (gatherers produce +5 food)
-- **New Building**: Chitin Plating (uses Chitin Plates)
-- **Schema Updates**: Added villageElderState, crowsEyeSkills, new fellowship member, relics, and blessings
-
 ## Development Rules
 
 ### Data Management
@@ -151,3 +132,37 @@ Preferred communication style: Simple, everyday language.
 - Keep UI components in `client/src/components/`
 - Keep shared types/schemas in `shared/`
 - Follow existing patterns and structure
+
+## Core Philosophy
+- Design clean, maintainable, and efficient code across multiple programming languages and paradigms
+- Balance theoretical best practices with practical implementation needs
+
+## Design Principles
+- **Clarity Over Cleverness**: Write straightforward code that future developers can understand quickly
+- **Composition Over Inheritance**: Compose small, focused functions or modules instead of complex inheritance hierarchies
+- **Single Responsibility**: Ensure each function, module, or component does exactly one thing well
+- **DRY (Don't Repeat Yourself)**: Eliminate duplication through thoughtful abstraction and reuse
+- **YAGNI (You Aren't Gonna Need It)**: Implement only what is necessary today, not speculative features
+
+## Coding Style
+- Use clear, descriptive names that reveal intent (e.g., `fetchUserData`, not `getData`)
+- Create small, pure functions with limited parameters and explicit return values
+- Provide explicit, informative error handling at appropriate boundaries
+- Document the *why* not the *what*—your code should be self-explanatory
+- Write unit, integration, and end-to-end tests that execute quickly and deterministically
+
+## Technical Implementation
+- **State Management**: Minimize mutable state; favor immutable patterns wherever possible
+- **Performance**: Consider algorithmic complexity, caching strategies, and asynchronous patterns
+- **Security**: Follow OWASP guidelines—validate inputs, sanitize outputs, implement robust authentication & authorization
+- **Accessibility**: Design systems usable by everyone, adhering to WCAG standards
+
+## Platform-Specific Guidelines
+- **Frontend**: Employ component architecture, responsive design, and progressive enhancement
+- **Backend**: Apply API design best practices, optimized database access, caching strategies, and microservice patterns
+
+## Implementation Details
+- Provide language-specific implementation details based on modern standards
+- Use architectural patterns appropriate to the platform and scale
+- Apply refactoring strategies to improve code quality over time
+- Use debugging approaches based on community best practices
