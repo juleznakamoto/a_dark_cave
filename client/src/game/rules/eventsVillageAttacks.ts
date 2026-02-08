@@ -9,6 +9,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.boneDevourerState.lastAcceptedLevel >= 6 &&
       !state.clothing.devourer_crown &&
+      !state.relics.bone_devourer_blood &&
       state.current_population > 10,
     timeProbability: 15,
     title: "The Bone Army",
@@ -41,11 +42,15 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           );
 
           if (Math.random() < victoryChance) {
-            // Victory! Get Devourer Crown
+            // Victory! Get Bone Devourer Blood and Devourer Crown
             return {
               clothing: {
                 ...state.clothing,
                 devourer_crown: true,
+              },
+              relics: {
+                ...state.relics,
+                bone_devourer_blood: true,
               },
               resources: {
                 ...state.resources,
@@ -53,7 +58,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
                 silver: state.resources.silver + 500,
               },
               _logMessage:
-                "The village defeats the bone army! Bone and silence litter the battlefield. Among the remains, you find the Devourer's Crown.",
+                "The village defeats the bone army! Bone and silence litter the battlefield. You tear the Devourer’s Crown from its remains and drain a vial of its pale, viscous blood.",
             };
           }
 
@@ -123,9 +128,9 @@ export const villageAttackEvents: Record<string, GameEvent> = {
             },
             buildings: hutDestroyed
               ? {
-                  ...state.buildings,
-                  woodenHut: Math.max(0, state.buildings.woodenHut - 1),
-                }
+                ...state.buildings,
+                woodenHut: Math.max(0, state.buildings.woodenHut - 1),
+              }
               : state.buildings,
             _logMessage: message,
           };
@@ -301,8 +306,8 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           let foodLoss = Math.min(
             state.resources.food,
             (state.buildings.woodenHut + Math.floor(Math.random() * 8)) * 25 +
-              25 +
-              state.CM * 100,
+            25 +
+            state.CM * 100,
           );
           let hutDestroyed = false;
 
@@ -361,9 +366,9 @@ export const villageAttackEvents: Record<string, GameEvent> = {
             },
             buildings: hutDestroyed
               ? {
-                  ...state.buildings,
-                  woodenHut: Math.max(0, state.buildings.woodenHut - 1),
-                }
+                ...state.buildings,
+                woodenHut: Math.max(0, state.buildings.woodenHut - 1),
+              }
               : state.buildings,
             story: {
               ...state.story,
@@ -422,9 +427,9 @@ export const villageAttackEvents: Record<string, GameEvent> = {
             foodLoss = Math.min(
               state.resources.food,
               (state.buildings.woodenHut + Math.floor(Math.random() * 16)) *
-                25 +
-                25 +
-                state.CM * 2,
+              25 +
+              25 +
+              state.CM * 2,
             );
 
             // Determine villager casualties
@@ -657,9 +662,9 @@ export const villageAttackEvents: Record<string, GameEvent> = {
             // Fewer potential casualties when hiding
             const maxPotentialCasualties = Math.min(
               4 +
-                Math.floor(state.buildings.woodenHut / 2) -
-                traps * 2 +
-                state.CM * 2,
+              Math.floor(state.buildings.woodenHut / 2) -
+              traps * 2 +
+              state.CM * 2,
               state.current_population,
             );
 

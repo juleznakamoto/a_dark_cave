@@ -952,7 +952,25 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   lycan_blood: {
     id: "lycan_blood",
     name: "Lycan Blood",
-    description: "A vial of dark, pulsing blood from a lycanthrope alpha. Its effects are unknown.",
+    description: "A vial of thick blood from a Lycanthrope alpha. Its effects are unknown.",
+    bonuses: {
+      generalBonuses: {},
+    },
+  },
+
+  necromancer_blood: {
+    id: "necromancer_blood",
+    name: "Necromancer Blood",
+    description: "A vial of dark blood harvested from a Necromancer. Its effects are unknown.",
+    bonuses: {
+      generalBonuses: {},
+    },
+  },
+
+  bone_devourer_blood: {
+    id: "bone_devourer_blood",
+    name: "Bone Devourer Blood",
+    description: "A vial of pale blood harvested from the Bone Devourer. Its effects are unknown.",
     bonuses: {
       generalBonuses: {},
     },

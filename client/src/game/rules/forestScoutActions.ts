@@ -694,6 +694,12 @@ export function handlecollapsedTower(
       bone_saw: true,
     };
 
+    // Grant the necromancer blood relic
+    result.stateUpdates.relics = {
+      ...state.relics,
+      necromancer_blood: true,
+    };
+
     // Set flag to mark tower as explored
     result.stateUpdates.story = {
       ...state.story,
@@ -706,7 +712,7 @@ export function handlecollapsedTower(
     result.logEntries!.push({
       id: `collapsed-tower-success-${Date.now()}`,
       message:
-        "Inside the tower you find a necromancer and his followers, surrounded by vials of blood and crude syringes. He was harvesting the villagers' blood for dark experiments. Your men put an end to his vile work. Among his tools, you find his powerful bone saw. The mysterious deaths will cease now.",
+        "Inside the tower you find a necromancer and his followers, surrounded by vials of liquids and crude syringes. He was harvesting the villagers' blood for dark experiments. Your men put an end to his vile work and take a vial of his blood. Among his tools, you find his powerful bone saw.",
       timestamp: Date.now(),
       type: "system",
       visualEffect: {
