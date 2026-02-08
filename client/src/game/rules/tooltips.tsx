@@ -462,6 +462,24 @@ export const fogTooltip: TooltipConfig = {
   },
 };
 
+export const bloodMoonTooltip: TooltipConfig = {
+  getContent: (state: GameState) => {
+    const isBloodMoon =
+      state.timedEventTab?.isActive && state.timedEventTab?.eventId === "bloodMoonAttack";
+
+    if (isBloodMoon) {
+      return (
+        <>
+          <div className="font-bold">Blood Moon</div>
+          <div>The moon is red. Its effects are unknown.</div>
+        </>
+      );
+    }
+
+    return null;
+  },
+};
+
 export const focusTooltip: TooltipConfig = {
   getContent: (state: GameState) => {
     const focusState = state.focusState;

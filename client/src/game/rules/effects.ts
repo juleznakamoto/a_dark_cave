@@ -949,6 +949,14 @@ export const clothingEffects: Record<string, EffectDefinition> = {
       },
     },
   },
+  blood_moon: {
+    id: "blood_moon",
+    name: "Blood Moon",
+    description: "The moon is red. Its effects are unknown.",
+    bonuses: {
+      generalBonuses: {},
+    },
+  },
 
   red_mask: {
     id: "red_mask",
