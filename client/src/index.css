@@ -446,15 +446,6 @@ body {
   transition: --background 2s ease-in-out;
 }
 
-.log-panel-gradient {
-  background-image: linear-gradient(to top, var(--background), transparent);
-  transition: background-image 2s ease-in-out;
-}
-
-.log-panel-gradient-blood-moon {
-  background-image: linear-gradient(to top, hsl(0, 50%, 5%), transparent) !important;
-}
-
 @keyframes bubbly-top {
   0% {
     top: -75%;
