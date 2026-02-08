@@ -12,6 +12,8 @@ html,
 body {
   height: 100dvh;
   overflow: hidden;
+  background: #0b0b0e;
+  color: #e6e6e6;
 }
 
 .scrollbar-hide::-webkit-scrollbar {

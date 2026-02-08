@@ -65,6 +65,7 @@ import { noChoiceEvents } from "./eventsNoChoices";
 import { feastEvents } from "./eventsFeast";
 import { boneDevourerEvents } from "./eventsBoneDevourer";
 import { villageAttackEvents } from "./eventsVillageAttacks";
+import { bloodMoonEvents } from "./eventsBloodMoon";
 import { loreEvents } from "./eventsLore";
 import { fellowshipEvents } from "./eventsFellowship";
 import { riddleEvents } from "./eventsRiddles";
@@ -149,6 +150,7 @@ export const gameEvents: Record<string, GameEvent> = {
   ...feastEvents,
   ...boneDevourerEvents,
   ...villageAttackEvents,
+  ...bloodMoonEvents,
   ...loreEvents,
   ...fellowshipEvents,
   ...riddleEvents,
