@@ -8,7 +8,7 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.buildings.woodenHut >= 7,
     timeProbability: (state: GameState) =>
-      (state.bloodMoonState?.occurrenceCount ?? 0) === 0 ? 0.06 : 0.09,
+      (state.bloodMoonState?.occurrenceCount ?? 0) === 0 ? 60 : 90,
     title: "Blood Moon",
     message: (state: GameState) => {
       const sacrificeAmount = Math.min(
@@ -106,14 +106,14 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
               resources: {
                 ...state.resources,
                 gold: state.resources.gold + 150,
-                food: state.resources.fur + 500,
+                fur: state.resources.fur + 500,
               },
               bloodMoonState: {
                 hasWon: true,
                 occurrenceCount: state.bloodMoonState?.occurrenceCount ?? 0,
               },
               _logMessage:
-                "The lycanthropes attack, but your defenses hold! You defeat their leader and claim the Lycan Blood - a vial of blood from the lycanthrope alpha.",
+                "The lycanthropes attack, but your defenses hold. Their leader falls, and from its corpse you harvest Lycan Blood, still warm and seething with power.",
             };
           }
 
@@ -186,7 +186,7 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
               occurrenceCount: state.bloodMoonState?.occurrenceCount ?? 0,
             },
             _logMessage:
-            "The lycanthropes attack, but your defenses hold! You defeat their leader and claim the Lycan Blood - a vial of blood from the lycanthrope alpha.",
+            "The lycanthropes attack, but your defenses hold. Their leader falls, and from its corpse you harvest Lycan Blood, still warm and seething with power.",
           };
         }
 
