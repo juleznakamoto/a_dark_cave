@@ -6,7 +6,7 @@ import { GAME_CONSTANTS } from "@/game/constants";
 
 function LogPanel() {
   const { log, timedEventTab } = useGameStore();
-  const isBloodMoon = timedEventTab?.isActive && timedEventTab?.eventId === "bloodMoonAttack";
+  const isBloodMoon = timedEventTab?.isActive && timedEventTab?.event?.title === "Blood Moon";
   const [activeEffects, setActiveEffects] = useState<Set<string>>(new Set());
   const timersRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
   const topRef = useRef<HTMLDivElement>(null);
