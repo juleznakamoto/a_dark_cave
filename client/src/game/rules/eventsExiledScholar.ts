@@ -37,6 +37,12 @@ export const exiledScholarEvents: Record<string, GameEvent> = {
               ...state.resources,
               gold: state.resources.gold - 250,
             },
+            relics: {
+              ...state.relics,
+              lycan_blood: false,
+              necromancer_blood: false,
+              bone_devourer_blood: false,
+            },
             blessings: {
               ...state.blessings,
               blood_baptized: true,
