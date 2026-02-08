@@ -86,7 +86,7 @@ export default function GameContainer() {
   }, [fullGamePurchaseDialogOpen]);
 
   // Track unlocked tabs to trigger fade-in animation
-  const traderUnlocked = buildings.woodenHut >= 6;
+  const traderUnlocked = buildings.tradePost >= 1;
   const prevFlagsRef = useRef({
     villageUnlocked: flags.villageUnlocked,
     forestUnlocked: flags.forestUnlocked,
@@ -229,7 +229,7 @@ export default function GameContainer() {
   }, []);
 
   // Determine whether to use LimelightNav (always call this hook)
-  const useLimelightNav = relics.odd_bracelet;
+  const useLimelightNav = false;
 
   // Build nav items (always call this hook)
   const limelightNavItems = useMemo(() => {
