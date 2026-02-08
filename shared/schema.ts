@@ -193,7 +193,7 @@ export const gameStateSchema = z.object({
       sealed_chest: z.boolean().default(false),
       stonebinders_codex: z.boolean().default(false),
       chitin_plates: z.boolean().default(false),
-      moonblood: z.boolean().default(false),
+      lycan_blood: z.boolean().default(false),
     })
     .default({}),
   fellowship: z

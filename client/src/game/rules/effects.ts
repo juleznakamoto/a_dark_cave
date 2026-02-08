@@ -949,10 +949,10 @@ export const clothingEffects: Record<string, EffectDefinition> = {
       },
     },
   },
-  blood_moon: {
-    id: "blood_moon",
-    name: "Blood Moon",
-    description: "The moon is red. Its effects are unknown.",
+  lycan_blood: {
+    id: "lycan_blood",
+    name: "Lycan Blood",
+    description: "A vial of dark, pulsing blood from a lycanthrope alpha. Its effects are unknown.",
     bonuses: {
       generalBonuses: {},
     },

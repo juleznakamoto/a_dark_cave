@@ -462,16 +462,15 @@ export const fogTooltip: TooltipConfig = {
   },
 };
 
-export const bloodMoonTooltip: TooltipConfig = {
+export const lycanBloodTooltip: TooltipConfig = {
   getContent: (state: GameState) => {
-    const isBloodMoon =
-      state.timedEventTab?.isActive && state.timedEventTab?.eventId === "bloodMoonAttack";
+    const hasLycanBlood = state.relics.lycan_blood;
 
-    if (isBloodMoon) {
+    if (hasLycanBlood) {
       return (
         <>
-          <div className="font-bold">Blood Moon</div>
-          <div>The moon is red. Its effects are unknown.</div>
+          <div className="font-bold">Lycan Blood</div>
+          <div>A vial of dark, pulsing blood from a lycanthrope alpha. Its effects are unknown.</div>
         </>
       );
     }

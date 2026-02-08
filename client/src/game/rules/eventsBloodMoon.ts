@@ -98,11 +98,11 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
           );
 
           if (Math.random() < victoryChance) {
-            // Victory! Get Moonblood relic
+            // Victory! Get Lycan Blood relic
             return {
               relics: {
                 ...state.relics,
-                moonblood: true,
+                lycan_blood: true,
               },
               resources: {
                 ...state.resources,
@@ -114,7 +114,7 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
                 occurrenceCount: state.bloodMoonState?.occurrenceCount ?? 0,
               },
               _logMessage:
-                "The lycanthropes attack, but your preparations hold! You defeat their leader and claim the Moonblood - a vial of blood from the lycanthrope alpha.",
+                "The lycanthropes attack, but your preparations hold! You defeat their leader and claim the Lycan Blood - a vial of blood from the lycanthrope alpha.",
             };
           }
 
@@ -171,11 +171,11 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
         );
 
         if (Math.random() < victoryChance) {
-          // Victory! Get Moonblood relic
+          // Victory! Get Lycan Blood relic
           return {
             relics: {
               ...state.relics,
-              moonblood: true,
+              lycan_blood: true,
             },
             resources: {
               ...state.resources,
@@ -187,7 +187,7 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
               occurrenceCount: state.bloodMoonState?.occurrenceCount ?? 0,
             },
             _logMessage:
-            "The lycanthropes attack, but your preparations hold! You defeat their leader and claim the Moonblood - a vial of blood from the lycanthrope alpha.",
+            "The lycanthropes attack, but your preparations hold! You defeat their leader and claim the Lycan Blood - a vial of blood from the lycanthrope alpha.",
           };
         }
 
