@@ -5,7 +5,8 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { GAME_CONSTANTS } from "@/game/constants";
 
 function LogPanel() {
-  const { log } = useGameStore();
+  const { log, timedEventTab } = useGameStore();
+  const isBloodMoon = timedEventTab?.isActive && timedEventTab?.event?.title === "Blood Moon";
   const [activeEffects, setActiveEffects] = useState<Set<string>>(new Set());
   const timersRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
   const topRef = useRef<HTMLDivElement>(null);
@@ -106,7 +107,7 @@ function LogPanel() {
           </div>
 
         </div >{/* Gradient overlay at bottom of content area */}
-        <div className="absolute bottom-[-1px] left-0 right-0 h-12 pointer-events-none log-panel-gradient"></div>
+        <div className={`absolute bottom-[-1px] left-0 right-0 h-12 pointer-events-none log-panel-gradient ${isBloodMoon ? 'log-panel-gradient-blood-moon' : ''}`}></div>
         <ScrollBar orientation="vertical" />
       </ScrollArea>
     </div>
