@@ -221,6 +221,7 @@ export const gameStateSchema = z.object({
       bell_blessing: z.boolean().default(false),
       fishers_hand: z.boolean().default(false),
       survivors_last_words: z.boolean().default(false),
+      blood_baptized: z.boolean().default(false),
     })
     .default({}),
   books: z
@@ -478,6 +479,13 @@ export const gameStateSchema = z.object({
     .default({
       isActive: false,
       endTime: 0,
+    }),
+  exiledScholarState: z
+    .object({
+      hasPaid: z.boolean().default(false),
+    })
+    .default({
+      hasPaid: false,
     }),
   frostfallState: z
     .object({

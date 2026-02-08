@@ -1407,6 +1407,19 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     },
   },
 
+  blood_baptized: {
+    id: "blood_baptized",
+    name: "Blood Baptized",
+    description: "Received after bathing in the blood of powerful creatures",
+    bonuses: {
+      generalBonuses: {
+        criticalChance: 0.05, // 5% critical hit chance
+        strength: 5,
+        madness: 5,
+      },
+    },
+  },
+
   sealed_chest: {
     id: "sealed_chest",
     name: "Sealed Chest",
@@ -1479,4 +1492,4 @@ export const fellowshipEffects: Record<string, EffectDefinition> = {
 };
 
 // Building effects are derived from villageBuildActions
-export const buildingEffects: Record<string, ItemEffect> = {};
+export const buildingEffects: Record<string, EffectDefinition> = {};

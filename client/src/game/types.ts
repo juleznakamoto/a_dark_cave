@@ -1,4 +1,4 @@
-import { GameState, Referral } from "@shared/schema";
+import { GameState } from "@shared/schema";
 import type { LogEntry } from "./rules/events";
 import type React from "react";
 
@@ -291,7 +291,7 @@ export interface EffectDefinition {
       MAX_VOID_BOMBS?: number;
       caveExploreMultiplier?: number; // Multiplier for all cave exploration actions
       eventDeathReduction?: number; // Percentage reduction in villager deaths from events (0.25 = 25% reduction)
-      criticalDamageBonus?: number; // Percentage bonus to critical hit damage (0.05 = 5% bonus)
+      criticalChance?: number; // Percentage chance for critical hits during combat (0.05 = 5% chance)
       actionBonusChance?: number; // Chance to double action gains (0.1 = 10% chance)
     };
   };
