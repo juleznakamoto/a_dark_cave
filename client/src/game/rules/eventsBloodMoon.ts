@@ -137,7 +137,7 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
               hasWon: false,
               occurrenceCount: (state.bloodMoonState?.occurrenceCount ?? 0) + 1,
             },
-            _logMessage: `The lycanthropes overwhelm your defenses! They kill ${villagerLoss} villagers and devour ${foodLoss} food from your stores. The blood moon fades, but the threat remains.`,
+            _logMessage: `The lycanthropes overwhelm your defenses!${(deathResult.villagersKilled ?? 0) > 0 ? ` They kill ${deathResult.villagersKilled ?? 0} ${(deathResult.villagersKilled ?? 0) === 1 ? 'villager' : 'villagers'} and` : ''} devour ${foodLoss} food from your stores. The blood moon fades, but the threat remains.`,
           };
         },
       },
@@ -210,7 +210,7 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
             hasWon: false,
             occurrenceCount: (state.bloodMoonState?.occurrenceCount ?? 0) + 1,
           },
-          _logMessage: `The lycanthropes overwhelm your defenses! They kill ${villagerLoss} villagers and devour ${foodLoss} food from your stores. The blood moon fades, but the threat remains.`,
+          _logMessage: `The lycanthropes overwhelm your defenses!${(deathResult.villagersKilled ?? 0) > 0 ? ` They kill ${deathResult.villagersKilled ?? 0} ${(deathResult.villagersKilled ?? 0) === 1 ? 'villager' : 'villagers'} and` : ''} devour ${foodLoss} food from your stores. The blood moon fades, but the threat remains.`,
         };
       },
     },
