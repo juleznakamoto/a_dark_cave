@@ -17,7 +17,7 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
         30,
       );
 
-      return `The moon at night turned blood red, village elders speak of lycanthropes. The ancient pacts demand a sacrifice of ${sacrificeAmount} villagers to appease the beasts. If you refuse, they will ensure their hunger is satisfied.`;
+      return `The moon at night turned blood red, village elders speak of lycanthropes. Ancient pacts demand a sacrifice of ${sacrificeAmount} villagers to appease the beasts. If you refuse, they will ensure their hunger is satisfied.`;
     },
     priority: 5,
     repeatable: true,
@@ -50,7 +50,7 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
               hasWon: false,
               occurrenceCount: (state.bloodMoonState?.occurrenceCount ?? 0) + 1,
             },
-            _logMessage: `The elders conduct the ritual sacrifice. ${sacrificeAmount} villagers are offered to the lycanthropes. The blood moon fades, and peace returns to the village... for now.`,
+            _logMessage: `${sacrificeAmount} villagers are offered to the lycanthropes. With the blood moon fading, peace returns to the village… for now.`,
           };
         },
       },
@@ -113,7 +113,7 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
                 occurrenceCount: state.bloodMoonState?.occurrenceCount ?? 0,
               },
               _logMessage:
-                "The lycanthropes attack, but your preparations hold! You defeat their leader and claim the Lycan Blood - a vial of blood from the lycanthrope alpha.",
+                "The lycanthropes attack, but your defenses hold! You defeat their leader and claim the Lycan Blood - a vial of blood from the lycanthrope alpha.",
             };
           }
 
@@ -179,14 +179,14 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
             resources: {
               ...state.resources,
               gold: state.resources.gold + 150,
-              food: state.resources.fur + 500,
+              fur: state.resources.fur + 500,
             },
             bloodMoonState: {
               hasWon: true,
               occurrenceCount: state.bloodMoonState?.occurrenceCount ?? 0,
             },
             _logMessage:
-            "The lycanthropes attack, but your preparations hold! You defeat their leader and claim the Lycan Blood - a vial of blood from the lycanthrope alpha.",
+            "The lycanthropes attack, but your defenses hold! You defeat their leader and claim the Lycan Blood - a vial of blood from the lycanthrope alpha.",
           };
         }
 

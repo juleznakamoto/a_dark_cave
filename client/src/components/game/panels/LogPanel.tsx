@@ -6,7 +6,8 @@ import { GAME_CONSTANTS } from "@/game/constants";
 
 function LogPanel() {
   const { log, timedEventTab } = useGameStore();
-  const isBloodMoon = timedEventTab?.isActive && timedEventTab?.event?.title === "Blood Moon";
+  const isBloodMoon =
+    timedEventTab?.isActive && timedEventTab?.event?.title === "Blood Moon";
   const [activeEffects, setActiveEffects] = useState<Set<string>>(new Set());
   const timersRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
   const topRef = useRef<HTMLDivElement>(null);
@@ -15,13 +16,13 @@ function LogPanel() {
   // Get only the last entries and reverse them so latest is at top
   const recentEntries = useMemo(
     () => log.slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES).reverse(),
-    [log]
+    [log],
   );
 
   // Auto-scroll to top when new entries are added
   useEffect(() => {
     if (log.length > prevLogLengthRef.current && topRef.current) {
-      topRef.current.scrollIntoView({ behavior: 'smooth' });
+      topRef.current.scrollIntoView({ behavior: "smooth" });
     }
     prevLogLengthRef.current = log.length;
   }, [log.length]);
@@ -83,7 +84,9 @@ function LogPanel() {
               // Apply fade-out to stranger entries that are 55+ seconds old
               const currentTime = Date.now();
               const entryAge = currentTime - entry.timestamp;
-              const isFadingOut = entry.id.startsWith('stranger-approaches-') && entryAge >= 55500;
+              const isFadingOut =
+                entry.id.startsWith("stranger-approaches-") &&
+                entryAge >= 55500;
               const fadeOutClass = isFadingOut ? "log-fade-out" : "";
 
               return (
@@ -105,9 +108,16 @@ function LogPanel() {
               );
             })}
           </div>
-
-        </div >{/* Gradient overlay at bottom of content area */}
-        <div className={`absolute bottom-[-1px] left-0 right-0 h-12 pointer-events-none bg-gradient-to-t ${isBloodMoon ? 'from-[#4a0404]' : 'from-background'} to-transparent`}></div>
+        </div>
+        {/* Gradient overlay at bottom of content area */}
+        <div className="absolute bottom-[-1px] left-0 right-0 h-12 pointer-events-none overflow-hidden">
+          <div
+            className={`absolute inset-0 bg-gradient-to-t from-background to-transparent transition-opacity duration-[2000ms] ${isBloodMoon ? "opacity-0" : "opacity-100"}`}
+          ></div>
+          <div
+            className={`absolute inset-0 bg-gradient-to-t from-[hsl(0_50%_5%)] to-transparent transition-opacity duration-[2000ms] ${isBloodMoon ? "opacity-100" : "opacity-0"}`}
+          ></div>
+        </div>
         <ScrollBar orientation="vertical" />
       </ScrollArea>
     </div>

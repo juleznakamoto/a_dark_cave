@@ -443,7 +443,7 @@ body {
 
 .blood-moon-active {
   --background: hsl(0, 50%, 5%);
-  transition: --background 3s ease-in-out;
+  transition: --background 2s ease-in-out;
 }
 
 @keyframes bubbly-top {
