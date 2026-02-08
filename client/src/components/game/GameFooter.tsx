@@ -82,6 +82,9 @@ export default function GameFooter() {
     audioManager.sfxMute(next);
   };
 
+  // Check if gameplay time is less than 30 minutes
+  const isEarlyGameplay = playTime < 30 * 60 * 1000; // 30 minutes in milliseconds
+
   return (
     <>
       <FullGamePurchaseDialog
@@ -161,7 +164,7 @@ export default function GameFooter() {
                     });
                   }
                 }}
-                className="px-1 py-1 text-xs hover relative text-neutral-300"
+                className={`px-1 py-1 text-xs hover relative text-neutral-300 ${isEarlyGameplay ? 'opacity-50' : 'opacity-100'}`}
               >
                 Trader
                 {((shopNotificationVisible && !shopNotificationSeen) ||
@@ -185,7 +188,7 @@ export default function GameFooter() {
                   });
                 }
               }}
-              className="px-1 py-1 text-xs hover relative text-neutral-300"
+              className={`px-1 py-1 text-xs hover relative text-neutral-300 ${isEarlyGameplay ? 'opacity-50' : 'opacity-100'}`}
             >
               Donate
               {story.seen.mysteriousNoteReceived &&

@@ -1325,7 +1325,9 @@ export default function AdminDashboard() {
                     // Calculate 30-day rolling averages
                     for (let i = days - 1; i >= 0; i--) {
                       const date = subDays(now, i);
-                      const startIndex = calculationDays - 1 - i - 29; // Look back 30 days
+                      const daysSinceStart = calculationDays - 1 - i; // How many days of data are available up to this point
+                      const lookbackDays = Math.min(30, daysSinceStart + 1); // Use up to 30 days, but not more than available
+                      const startIndex = calculationDays - 1 - i - lookbackDays + 1; // Start from (current day - lookbackDays + 1)
                       const endIndex = calculationDays - 1 - i;
 
                       let sum = 0;
@@ -1411,7 +1413,9 @@ export default function AdminDashboard() {
                     // Calculate 30-day rolling averages
                     for (let i = days - 1; i >= 0; i--) {
                       const date = subDays(now, i);
-                      const startIndex = calculationDays - 1 - i - 29; // Look back 30 days
+                      const daysSinceStart = calculationDays - 1 - i; // How many days of data are available up to this point
+                      const lookbackDays = Math.min(30, daysSinceStart + 1); // Use up to 30 days, but not more than available
+                      const startIndex = calculationDays - 1 - i - lookbackDays + 1; // Start from (current day - lookbackDays + 1)
                       const endIndex = calculationDays - 1 - i;
 
                       let sum = 0;
