@@ -214,6 +214,9 @@ export default function AdminDashboard() {
   // Chart time range state for Daily Active Users and Daily Sign-ups
   const [chartTimeRange, setChartTimeRange] = useState<"1m" | "3m" | "6m" | "1y">("1m");
 
+  // Chart time range state for Purchases chart
+  const [purchasesChartTimeRange, setPurchasesChartTimeRange] = useState<"1m" | "3m" | "6m" | "12m">("1m");
+
   // Prefiltered data based on timeRange - MOVED AFTER ALL useState
   const clickData = useMemo(() => filterByTimeRange(rawClickData, "timestamp", timeRange), [rawClickData, timeRange]);
   const gameSaves = useMemo(() => filterByTimeRange(rawGameSaves, "updated_at", timeRange), [rawGameSaves, timeRange]);
@@ -631,7 +634,26 @@ export default function AdminDashboard() {
     const data: Array<{ day: string; purchases: number }> = [];
     const now = new Date();
 
-    for (let i = 29; i >= 0; i--) {
+    // Determine number of days based on purchasesChartTimeRange
+    let days: number;
+    switch (purchasesChartTimeRange) {
+      case "1m":
+        days = 30;
+        break;
+      case "3m":
+        days = 90;
+        break;
+      case "6m":
+        days = 180;
+        break;
+      case "12m":
+        days = 365;
+        break;
+      default:
+        days = 30;
+    }
+
+    for (let i = days - 1; i >= 0; i--) {
       const date = subDays(now, i);
       const dayStart = startOfDay(date);
       const dayEnd = endOfDay(date);
@@ -641,14 +663,16 @@ export default function AdminDashboard() {
         return purchaseDate >= dayStart && purchaseDate <= dayEnd && purchase.price_paid > 0 && !purchase.bundle_id;
       }).length;
 
+      // Format date based on time range
+      const dateFormat = days > 90 ? "MMM dd" : "MMM dd";
       data.push({
-        day: format(date, "MMM dd"),
+        day: format(date, dateFormat),
         purchases: dailyPurchases,
       });
     }
 
     return data;
-  }, [purchases]);
+  }, [purchases, purchasesChartTimeRange]);
 
   const getPurchasesByPlaytime = useCallback(() => {
     const playtimeBuckets = new Map<number, number>();
@@ -1562,6 +1586,8 @@ export default function AdminDashboard() {
                   getDailyPurchases={getDailyPurchases}
                   getPurchasesByPlaytime={getPurchasesByPlaytime}
                   getPurchaseStats={getPurchaseStats}
+                  purchasesChartTimeRange={purchasesChartTimeRange}
+                  setPurchasesChartTimeRange={setPurchasesChartTimeRange}
                 />
               </TabsContent>
 

@@ -1,5 +1,6 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { AreaChart, Area, LineChart, Line, BarChart, Bar, CartesianGrid, XAxis, YAxis, Legend, ResponsiveContainer } from "recharts";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 
@@ -9,6 +10,8 @@ interface PurchasesTabProps {
   getDailyPurchases: () => Array<{ day: string; purchases: number }>;
   getPurchasesByPlaytime: () => Array<{ playtime: string; purchases: number }>;
   getPurchaseStats: () => Array<{ name: string; count: number }>;
+  purchasesChartTimeRange: "1m" | "3m" | "6m" | "12m";
+  setPurchasesChartTimeRange: (range: "1m" | "3m" | "6m" | "12m") => void;
 }
 
 export default function PurchasesTab(props: PurchasesTabProps) {
@@ -18,6 +21,8 @@ export default function PurchasesTab(props: PurchasesTabProps) {
     getDailyPurchases,
     getPurchasesByPlaytime,
     getPurchaseStats,
+    purchasesChartTimeRange,
+    setPurchasesChartTimeRange,
   } = props;
 
   return (
@@ -47,8 +52,26 @@ export default function PurchasesTab(props: PurchasesTabProps) {
 
       <Card>
         <CardHeader>
-          <CardTitle>Daily Purchases (Last 30 Days)</CardTitle>
-          <CardDescription>Purchase activity over time</CardDescription>
+          <div className="flex justify-between items-start">
+            <div>
+              <CardTitle>Daily Purchases</CardTitle>
+              <CardDescription>Purchase activity over time</CardDescription>
+            </div>
+            <Select
+              value={purchasesChartTimeRange}
+              onValueChange={(value: "1m" | "3m" | "6m" | "12m") => setPurchasesChartTimeRange(value)}
+            >
+              <SelectTrigger className="w-[140px]">
+                <SelectValue placeholder="Time Range" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="1m">Last Month</SelectItem>
+                <SelectItem value="3m">Last 3 Months</SelectItem>
+                <SelectItem value="6m">Last 6 Months</SelectItem>
+                <SelectItem value="12m">Last 12 Months</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </CardHeader>
         <CardContent>
           <ChartContainer config={{}} className="h-[400px] w-full">
