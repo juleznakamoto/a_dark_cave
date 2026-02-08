@@ -5,9 +5,10 @@ import { calculateSuccessChance, GameEvent } from "./events";
 export const bloodMoonEvents: Record<string, GameEvent> = {
   bloodMoonAttack: {
     id: "bloodMoonAttack",
-    condition: (state: GameState) => state.buildings.woodenHut >= 70, // TODO Change to 7 to activate
+    condition: (state: GameState) =>
+      state.buildings.woodenHut >= 8 && !state.bloodMoonState.hasWon,
     timeProbability: (state: GameState) =>
-      (state.bloodMoonState?.occurrenceCount ?? 0) === 0 ? 60 : 90,
+      (state.bloodMoonState?.occurrenceCount ?? 0) === 0 ? 45 : 75,
     title: "Blood Moon",
     message: (state: GameState) => {
       const sacrificeAmount = Math.min(
