@@ -5,8 +5,7 @@ import { calculateSuccessChance, GameEvent } from "./events";
 export const bloodMoonEvents: Record<string, GameEvent> = {
   bloodMoonAttack: {
     id: "bloodMoonAttack",
-    condition: (state: GameState) =>
-      state.buildings.woodenHut >= 70, // TODO Change to 7 to activate
+    condition: (state: GameState) => state.buildings.woodenHut >= 70, // TODO Change to 7 to activate
     timeProbability: (state: GameState) =>
       (state.bloodMoonState?.occurrenceCount ?? 0) === 0 ? 60 : 90,
     title: "Blood Moon",
@@ -137,7 +136,7 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
               hasWon: false,
               occurrenceCount: (state.bloodMoonState?.occurrenceCount ?? 0) + 1,
             },
-            _logMessage: `The lycanthropes overwhelm your defenses!${(deathResult.villagersKilled ?? 0) > 0 ? ` They kill ${deathResult.villagersKilled ?? 0} ${(deathResult.villagersKilled ?? 0) === 1 ? 'villager' : 'villagers'} and` : ' They'} devour ${foodLoss} food from your stores. The blood moon fades, but the threat remains.`,
+            _logMessage: `The lycanthropes overwhelm your defenses!${(deathResult.villagersKilled ?? 0) > 0 ? ` They kill ${deathResult.villagersKilled ?? 0} ${(deathResult.villagersKilled ?? 0) === 1 ? "villager" : "villagers"} and` : " They"} devour ${foodLoss} food from your stores. The blood moon fades, but the threat remains.`,
           };
         },
       },
@@ -186,7 +185,7 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
               occurrenceCount: state.bloodMoonState?.occurrenceCount ?? 0,
             },
             _logMessage:
-            "The lycanthropes attack, but your defenses hold. Their leader falls, and from its corpse you harvest Lycan Blood, still warm and seething with power.",
+              "The lycanthropes attack, but your defenses hold. Their leader falls, and from its corpse you harvest Lycan Blood, still warm and seething with power.",
           };
         }
 
@@ -210,7 +209,7 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
             hasWon: false,
             occurrenceCount: (state.bloodMoonState?.occurrenceCount ?? 0) + 1,
           },
-          _logMessage: `The lycanthropes overwhelm your defenses!${(deathResult.villagersKilled ?? 0) > 0 ? ` They kill ${deathResult.villagersKilled ?? 0} ${(deathResult.villagersKilled ?? 0) === 1 ? 'villager' : 'villagers'} and` : ' They'} devour ${foodLoss} food from your stores. The blood moon fades, but the threat remains.`,
+          _logMessage: `The lycanthropes overwhelm your defenses!${(deathResult.villagersKilled ?? 0) > 0 ? ` They kill ${deathResult.villagersKilled ?? 0} ${(deathResult.villagersKilled ?? 0) === 1 ? "villager" : "villagers"} and` : " They"} devour ${foodLoss} food from your stores. The blood moon fades, but the threat remains.`,
         };
       },
     },

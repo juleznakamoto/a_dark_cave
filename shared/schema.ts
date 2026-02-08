@@ -194,6 +194,8 @@ export const gameStateSchema = z.object({
       stonebinders_codex: z.boolean().default(false),
       chitin_plates: z.boolean().default(false),
       lycan_blood: z.boolean().default(false),
+      necromancer_blood: z.boolean().default(false),
+      bone_devourer_blood: z.boolean().default(false),
     })
     .default({}),
   fellowship: z
