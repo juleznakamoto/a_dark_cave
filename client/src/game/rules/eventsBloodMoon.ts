@@ -6,8 +6,7 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
   bloodMoonAttack: {
     id: "bloodMoonAttack",
     condition: (state: GameState) =>
-      state.buildings.woodenHut >= 7 &&
-      !(state.bloodMoonState?.hasWon ?? false),
+      state.buildings.woodenHut >= 7,
     timeProbability: (state: GameState) =>
       (state.bloodMoonState?.occurrenceCount ?? 0) === 0 ? 0.06 : 0.09,
     title: "Blood Moon",
