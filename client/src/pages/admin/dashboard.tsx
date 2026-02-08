@@ -1048,7 +1048,7 @@ export default function AdminDashboard() {
 
               <TabsContent value="overview">
                 <OverviewTab
-                  rawGameSaves={rawGameSaves}
+                  gameSaves={gameSaves}
                   dailyActiveUsersData={dauData}
                   registrationMethodStats={registrationMethodStats}
                   getDailyActiveUsers={() => currentDau}
@@ -1067,8 +1067,6 @@ export default function AdminDashboard() {
                     ).length;
                   }}
                   totalUserCount={totalUserCount}
-                  gameSaves={gameSaves}
-                  dauData={dauData}
                   emailConfirmationStats={emailConfirmationStats}
                   formatTime={formatTime}
                   getAveragePlaytime={() => {
@@ -1259,6 +1257,178 @@ export default function AdminDashboard() {
                       data.push({
                         hour: format(hour, "HH:mm"),
                         signups,
+                      });
+                    }
+
+                    return data;
+                  }}
+                  getBuyersPerHundredOverTime={() => {
+                    const data: Array<{ date: string; buyersPerHundred: number }> = [];
+                    const now = new Date();
+
+                    // Determine number of days based on chartTimeRange
+                    let days: number;
+                    switch (chartTimeRange) {
+                      case "1m":
+                        days = 30;
+                        break;
+                      case "3m":
+                        days = 90;
+                        break;
+                      case "6m":
+                        days = 180;
+                        break;
+                      case "1y":
+                        days = 365;
+                        break;
+                      default:
+                        days = 30;
+                    }
+
+                    // Pre-calculate daily metrics for rolling average
+                    const dailyMetrics: Array<{ date: Date; buyersPerHundred: number }> = [];
+
+                    // Calculate metrics for a longer period to ensure we have enough data for rolling averages
+                    const calculationDays = days + 30; // Add 30 days for rolling average calculation
+
+                    for (let i = calculationDays - 1; i >= 0; i--) {
+                      const date = subDays(now, i);
+                      const dayStart = startOfDay(date);
+                      const dayEnd = endOfDay(date);
+
+                      // Count registered users up to this date
+                      const registeredUsers = rawGameSaves.filter((save) => {
+                        const createdDate = parseISO(save.created_at);
+                        return createdDate <= dayEnd;
+                      }).length;
+
+                      // Count unique buyers who made purchases on this specific day
+                      const dailyBuyers = new Set<string>();
+                      rawPurchases
+                        .filter((p) => p.price_paid > 0 && !p.bundle_id)
+                        .filter((purchase) => {
+                          const purchaseDate = parseISO(purchase.purchased_at);
+                          return purchaseDate >= dayStart && purchaseDate <= dayEnd;
+                        })
+                        .forEach((purchase) => dailyBuyers.add(purchase.user_id));
+
+                      const buyersPerHundred = registeredUsers > 0
+                        ? (dailyBuyers.size / registeredUsers) * 100
+                        : 0;
+
+                      dailyMetrics.push({
+                        date,
+                        buyersPerHundred,
+                      });
+                    }
+
+                    // Calculate 30-day rolling averages
+                    for (let i = days - 1; i >= 0; i--) {
+                      const date = subDays(now, i);
+                      const startIndex = calculationDays - 1 - i - 29; // Look back 30 days
+                      const endIndex = calculationDays - 1 - i;
+
+                      let sum = 0;
+                      let count = 0;
+
+                      for (let j = Math.max(0, startIndex); j <= Math.min(dailyMetrics.length - 1, endIndex); j++) {
+                        sum += dailyMetrics[j].buyersPerHundred;
+                        count++;
+                      }
+
+                      const rollingAverage = count > 0 ? sum / count : 0;
+
+                      // Format date based on time range
+                      const dateFormat = days > 90 ? "MMM dd" : "MMM dd";
+                      data.push({
+                        date: format(date, dateFormat),
+                        buyersPerHundred: parseFloat(rollingAverage.toFixed(2)),
+                      });
+                    }
+
+                    return data;
+                  }}
+                  getGainPerHundredOverTime={() => {
+                    const data: Array<{ date: string; gainPerHundred: number }> = [];
+                    const now = new Date();
+
+                    // Determine number of days based on chartTimeRange
+                    let days: number;
+                    switch (chartTimeRange) {
+                      case "1m":
+                        days = 30;
+                        break;
+                      case "3m":
+                        days = 90;
+                        break;
+                      case "6m":
+                        days = 180;
+                        break;
+                      case "1y":
+                        days = 365;
+                        break;
+                      default:
+                        days = 30;
+                    }
+
+                    // Pre-calculate daily metrics for rolling average
+                    const dailyMetrics: Array<{ date: Date; gainPerHundred: number }> = [];
+
+                    // Calculate metrics for a longer period to ensure we have enough data for rolling averages
+                    const calculationDays = days + 30; // Add 30 days for rolling average calculation
+
+                    for (let i = calculationDays - 1; i >= 0; i--) {
+                      const date = subDays(now, i);
+                      const dayStart = startOfDay(date);
+                      const dayEnd = endOfDay(date);
+
+                      // Count registered users up to this date
+                      const registeredUsers = rawGameSaves.filter((save) => {
+                        const createdDate = parseISO(save.created_at);
+                        return createdDate <= dayEnd;
+                      }).length;
+
+                      // Calculate daily revenue
+                      const dailyRevenue = rawPurchases
+                        .filter((p) => p.price_paid > 0 && !p.bundle_id)
+                        .filter((purchase) => {
+                          const purchaseDate = parseISO(purchase.purchased_at);
+                          return purchaseDate >= dayStart && purchaseDate <= dayEnd;
+                        })
+                        .reduce((sum, p) => sum + p.price_paid, 0);
+
+                      // Revenue per 100 users (in cents, so divide by 10000 for euros per 100 users)
+                      const gainPerHundred = registeredUsers > 0
+                        ? (dailyRevenue / 100) / (registeredUsers / 100)
+                        : 0;
+
+                      dailyMetrics.push({
+                        date,
+                        gainPerHundred,
+                      });
+                    }
+
+                    // Calculate 30-day rolling averages
+                    for (let i = days - 1; i >= 0; i--) {
+                      const date = subDays(now, i);
+                      const startIndex = calculationDays - 1 - i - 29; // Look back 30 days
+                      const endIndex = calculationDays - 1 - i;
+
+                      let sum = 0;
+                      let count = 0;
+
+                      for (let j = Math.max(0, startIndex); j <= Math.min(dailyMetrics.length - 1, endIndex); j++) {
+                        sum += dailyMetrics[j].gainPerHundred;
+                        count++;
+                      }
+
+                      const rollingAverage = count > 0 ? sum / count : 0;
+
+                      // Format date based on time range
+                      const dateFormat = days > 90 ? "MMM dd" : "MMM dd";
+                      data.push({
+                        date: format(date, dateFormat),
+                        gainPerHundred: parseFloat(rollingAverage.toFixed(2)),
                       });
                     }
 

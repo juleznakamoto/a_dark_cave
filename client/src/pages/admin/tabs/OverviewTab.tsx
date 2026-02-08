@@ -24,6 +24,8 @@ interface OverviewTabProps {
   getUserRetention: () => Array<{ day: string; users: number }>;
   getDailySignups: () => Array<{ day: string; signups: number }>;
   getHourlySignups: () => Array<{ hour: string; signups: number }>;
+  getBuyersPerHundredOverTime: () => Array<{ date: string; buyersPerHundred: number }>;
+  getGainPerHundredOverTime: () => Array<{ date: string; gainPerHundred: number }>;
   dailyActiveUsersData: Array<{ date: string; active_user_count: number }>;
   chartTimeRange: "1m" | "3m" | "6m" | "1y";
   setChartTimeRange: (range: "1m" | "3m" | "6m" | "1y") => void;
@@ -50,6 +52,8 @@ export default function OverviewTab(props: OverviewTabProps) {
     getUserRetention,
     getDailySignups,
     getHourlySignups,
+    getBuyersPerHundredOverTime,
+    getGainPerHundredOverTime,
     dailyActiveUsersData,
     chartTimeRange,
     setChartTimeRange
@@ -553,6 +557,74 @@ export default function OverviewTab(props: OverviewTabProps) {
           </ChartContainer>
         </CardContent>
       </Card>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Card>
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle>Buyers per 100 Players ({getTimeRangeLabel()})</CardTitle>
+                <CardDescription>30-day rolling average of paying users per 100 registered players</CardDescription>
+              </div>
+              <Select value={chartTimeRange} onValueChange={(value: "1m" | "3m" | "6m" | "1y") => setChartTimeRange(value)}>
+                <SelectTrigger className="w-[140px]">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="1m">1 Month</SelectItem>
+                  <SelectItem value="3m">3 Months</SelectItem>
+                  <SelectItem value="6m">6 Months</SelectItem>
+                  <SelectItem value="1y">1 Year</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <ChartContainer config={{}} className="h-[300px] w-full">
+              <AreaChart data={getBuyersPerHundredOverTime()}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="date" />
+                <YAxis />
+                <ChartTooltip content={<ChartTooltipContent />} />
+                <Area type="monotone" dataKey="buyersPerHundred" stroke="#ff8042" fill="#ff8042" />
+              </AreaChart>
+            </ChartContainer>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle>Gain per 100 ({getTimeRangeLabel()})</CardTitle>
+                <CardDescription>30-day rolling average of daily revenue per 100 users in €</CardDescription>
+              </div>
+              <Select value={chartTimeRange} onValueChange={(value: "1m" | "3m" | "6m" | "1y") => setChartTimeRange(value)}>
+                <SelectTrigger className="w-[140px]">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="1m">1 Month</SelectItem>
+                  <SelectItem value="3m">3 Months</SelectItem>
+                  <SelectItem value="6m">6 Months</SelectItem>
+                  <SelectItem value="1y">1 Year</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <ChartContainer config={{}} className="h-[300px] w-full">
+              <AreaChart data={getGainPerHundredOverTime()}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="date" />
+                <YAxis />
+                <ChartTooltip content={<ChartTooltipContent />} />
+                <Area type="monotone" dataKey="gainPerHundred" stroke="#00C49F" fill="#00C49F" />
+              </AreaChart>
+            </ChartContainer>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }
