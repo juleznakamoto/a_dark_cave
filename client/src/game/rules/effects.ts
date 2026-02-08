@@ -1413,9 +1413,9 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     description: "Received after bathing in the blood of powerful creatures",
     bonuses: {
       generalBonuses: {
-        criticalChance: 0.05, // 5% critical hit chance
         strength: 5,
         madness: 5,
+        criticalChance: 5, // 5% critical hit chance
       },
     },
   },

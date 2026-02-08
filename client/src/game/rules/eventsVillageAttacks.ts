@@ -11,7 +11,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
       !state.clothing.devourer_crown &&
       !state.relics.bone_devourer_blood &&
       state.current_population > 10,
-    timeProbability: 15,
+    timeProbability: 0.015,
     title: "The Bone Army",
     message:
       "The earth trembles as skeletal creatures emerge from the forest. The Bone Devourer has used the bones you traded to forge an unholy legion. With hollow eyes and sharpened bone weapons, they approach the city.",

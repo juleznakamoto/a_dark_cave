@@ -24,7 +24,7 @@ export const exiledScholarEvents: Record<string, GameEvent> = {
       {
         id: "payScholar",
         label: "Pay 250 Gold",
-        cost: "250 gold",
+        cost: "250 Gold",
         effect: (state: GameState) => {
           if (state.resources.gold < 250) {
             return {
