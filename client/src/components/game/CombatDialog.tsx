@@ -470,7 +470,7 @@ export default function CombatDialog({
 
   return (
     <>
-      <Dialog open={isOpen} onOpenChange={() => { }}>
+      <Dialog open={isOpen} onOpenChange={() => {}}>
         <DialogContent
           className="w-[95vw] sm:max-w-md [&>button]:hidden"
           onPointerDownOutside={(e) => e.preventDefault()}
@@ -512,29 +512,40 @@ export default function CombatDialog({
                   {calculateCriticalStrikeChance(getTotalLuck(gameState)) +
                     getTotalCriticalChance(gameState) >
                     0 && (
-                      <TooltipWrapper
-                        tooltip={
-                          <div className="text-xs whitespace-nowrap">
-                            {calculateCriticalStrikeChance(
-                              getTotalLuck(gameState),
-                            ) + getTotalCriticalChance(gameState)}
-                            % critical strike chance<br></br>
+                    <TooltipWrapper
+                      tooltip={
+                        <div className="text-xs whitespace-nowrap">
+                          {/* First line normal */}
+                          {calculateCriticalStrikeChance(
+                            getTotalLuck(gameState),
+                          ) + getTotalCriticalChance(gameState)}
+                          % critical strike chance
+                          <br />
+                          {/* Other lines muted */}
+                          <span className="text-gray-400/70">
                             {calculateCriticalStrikeChance(
                               getTotalLuck(gameState),
                             ) > 0 &&
-                              ` ${calculateCriticalStrikeChance(getTotalLuck(gameState))}% from Luck${getTotalLuck(gameState) >= 50 ? " max" : ""}`}
-                            <br></br>
+                              ` ${calculateCriticalStrikeChance(getTotalLuck(gameState))}% from Luck${
+                                getTotalLuck(gameState) >= 50 ? " max" : ""
+                              }`}
+                          </span>
+                          <br />
+                          <span className="text-gray-400/70">
                             {getTotalCriticalChance(gameState) > 0 &&
-                              ` ${calculateCriticalStrikeChance(getTotalLuck(gameState)) > 0 ? "" : ""}${getTotalCriticalChance(gameState)}% from equipment`}
-                          </div>
-                        }
-                        tooltipId="combat-luck"
-                      >
-                        <span className="text-green-300/80 cursor-pointer hover:text-green-300 transition-colors inline-block text-xl">
-                          ☆
-                        </span>
-                      </TooltipWrapper>
-                    )}
+                              `${calculateCriticalStrikeChance(getTotalLuck(gameState)) > 0 ? "" : ""}${getTotalCriticalChance(
+                                gameState,
+                              )}% from Items`}
+                          </span>
+                        </div>
+                      }
+                      tooltipId="combat-luck"
+                    >
+                      <span className="text-green-300/80 cursor-pointer hover:text-green-300 transition-colors inline-block text-xl">
+                        ☆
+                      </span>
+                    </TooltipWrapper>
+                  )}
                 </div>
               </DialogHeader>
 
@@ -574,7 +585,8 @@ export default function CombatDialog({
                       )}
                     </div>
                     <span>
-                      {currentEnemy?.currentHealth}/{currentEnemy?.maxHealth}{" "}
+                      {currentEnemy?.currentHealth}/
+                      {currentEnemy?.maxHealth}{" "}
                     </span>
                   </div>
                   <div className="relative">
@@ -631,78 +643,80 @@ export default function CombatDialog({
                 {combatItems.some((item) =>
                   item.id === "ember_bomb" || item.id === "ashfire_bomb"
                     ? gameState.resources[
-                    item.id as keyof typeof gameState.resources
-                    ] > 0
+                        item.id as keyof typeof gameState.resources
+                      ] > 0
                     : item.id === "poison_arrows" && NIGHTSHADE_BOW_OWNED,
                 ) && (
-                    <div className="pt-3">
-                      <div className="text-sm font-medium mb-2">Items</div>
-                      <div className="grid grid-cols-2 gap-2">
-                        {combatItems
-                          .filter((item) => {
-                            if (item.id === "poison_arrows") {
-                              return NIGHTSHADE_BOW_OWNED;
-                            }
-                            return (
-                              gameState.resources[
+                  <div className="pt-3">
+                    <div className="text-sm font-medium mb-2">Items</div>
+                    <div className="grid grid-cols-2 gap-2">
+                      {combatItems
+                        .filter((item) => {
+                          if (item.id === "poison_arrows") {
+                            return NIGHTSHADE_BOW_OWNED;
+                          }
+                          return (
+                            gameState.resources[
                               item.id as keyof typeof gameState.resources
-                              ] > 0
-                            );
-                          })
-                          .map((item) => {
-                            const tooltipConfig = combatItemTooltips[item.id];
-                            const tooltipContent = tooltipConfig
-                              ? tooltipConfig.getContent(gameState)
-                              : "";
-                            const availabilityText =
-                              item.id === "poison_arrows"
-                                ? `Available: ${poisonArrowsUsedInCombat < 1 ? "1/1" : "0/1"}`
-                                : item.id === "ember_bomb"
-                                  ? `Available: ${MAX_EMBER_BOMBS - emberBombsUsed}/${MAX_EMBER_BOMBS}`
-                                  : item.id === "ashfire_bomb"
-                                    ? `Available: ${MAX_CINDERFLAME_BOMBS - ashfireBombsUsed}/${MAX_CINDERFLAME_BOMBS}`
-                                    : item.id === "void_bomb"
-                                      ? `Available: ${MAX_VOID_BOMBS - voidBombsUsed}/${MAX_VOID_BOMBS}`
-                                      : "";
+                            ] > 0
+                          );
+                        })
+                        .map((item) => {
+                          const tooltipConfig = combatItemTooltips[item.id];
+                          const tooltipContent = tooltipConfig
+                            ? tooltipConfig.getContent(gameState)
+                            : "";
+                          const availabilityText =
+                            item.id === "poison_arrows"
+                              ? `Available: ${poisonArrowsUsedInCombat < 1 ? "1/1" : "0/1"}`
+                              : item.id === "ember_bomb"
+                                ? `Available: ${MAX_EMBER_BOMBS - emberBombsUsed}/${MAX_EMBER_BOMBS}`
+                                : item.id === "ashfire_bomb"
+                                  ? `Available: ${MAX_CINDERFLAME_BOMBS - ashfireBombsUsed}/${MAX_CINDERFLAME_BOMBS}`
+                                  : item.id === "void_bomb"
+                                    ? `Available: ${MAX_VOID_BOMBS - voidBombsUsed}/${MAX_VOID_BOMBS}`
+                                    : "";
 
-                            return (
-                              <TooltipWrapper
-                                key={item.id}
-                                tooltip={
-                                  <div className="text-xs whitespace-pre-line">
-                                    {tooltipContent}
-                                    {"\n"}
-                                    {availabilityText}
-                                  </div>
-                                }
-                                tooltipId={`combat-item-${item.id}`}
-                                disabled={!item.available || isProcessingRound}
-                              >
-                                <div className="w-full">
-                                  <Button
-                                    onClick={() => handleUseItem(item)}
-                                    disabled={
-                                      !item.available || isProcessingRound
-                                    }
-                                    variant="outline"
-                                    size="sm"
-                                    className="text-xs w-full"
-                                    button_id={`combat-use-${item.id}`}
-                                  >
-                                    {item.name}
-                                  </Button>
+                          return (
+                            <TooltipWrapper
+                              key={item.id}
+                              tooltip={
+                                <div className="text-xs whitespace-pre-line">
+                                  {tooltipContent}
+                                  {"\n"}
+                                  {availabilityText}
                                 </div>
-                              </TooltipWrapper>
-                            );
-                          })}
-                      </div>
+                              }
+                              tooltipId={`combat-item-${item.id}`}
+                              disabled={!item.available || isProcessingRound}
+                            >
+                              <div className="w-full">
+                                <Button
+                                  onClick={() => handleUseItem(item)}
+                                  disabled={
+                                    !item.available || isProcessingRound
+                                  }
+                                  variant="outline"
+                                  size="sm"
+                                  className="text-xs w-full"
+                                  button_id={`combat-use-${item.id}`}
+                                >
+                                  {item.name}
+                                </Button>
+                              </div>
+                            </TooltipWrapper>
+                          );
+                        })}
                     </div>
-                  )}
+                  </div>
+                )}
 
                 {/* Combat Skills Section - only show if any fellowship member is unlocked */}
                 {(HAS_RESTLESS_KNIGHT || HAS_ELDER_WIZARD) && (
                   <div className="pt-3">
-                    <div className="text-sm font-medium mb-2">Combat Skills</div>
+                    <div className="text-sm font-medium mb-2">
+                      Combat Skills
+                    </div>
                     <div className="grid grid-cols-2 gap-2">
                       {HAS_RESTLESS_KNIGHT && (
                         <TooltipWrapper
@@ -753,9 +767,8 @@ export default function CombatDialog({
                             usedBloodflameSphere ||
                             isProcessingRound ||
                             currentIntegrity <=
-                            BLOODFLAME_SPHERE_UPGRADES[
-                              bloodflameSphereLevel
-                            ].healthCost ||
+                              BLOODFLAME_SPHERE_UPGRADES[bloodflameSphereLevel]
+                                .healthCost ||
                             gameState.story?.seen?.elderWizardWounded
                           }
                         >
@@ -766,9 +779,9 @@ export default function CombatDialog({
                                 usedBloodflameSphere ||
                                 isProcessingRound ||
                                 currentIntegrity <=
-                                BLOODFLAME_SPHERE_UPGRADES[
-                                  bloodflameSphereLevel
-                                ].healthCost ||
+                                  BLOODFLAME_SPHERE_UPGRADES[
+                                    bloodflameSphereLevel
+                                  ].healthCost ||
                                 gameState.story?.seen?.elderWizardWounded
                               }
                               variant="outline"
