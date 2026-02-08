@@ -462,23 +462,6 @@ export const fogTooltip: TooltipConfig = {
   },
 };
 
-export const lycanBloodTooltip: TooltipConfig = {
-  getContent: (state: GameState) => {
-    const hasLycanBlood = state.relics.lycan_blood;
-
-    if (hasLycanBlood) {
-      return (
-        <>
-          <div className="font-bold">Lycan Blood</div>
-          <div>A vial of dark, pulsing blood from a lycanthrope alpha. Its effects are unknown.</div>
-        </>
-      );
-    }
-
-    return null;
-  },
-};
-
 export const focusTooltip: TooltipConfig = {
   getContent: (state: GameState) => {
     const focusState = state.focusState;
