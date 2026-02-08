@@ -446,6 +446,11 @@ body {
   transition: --background 2s ease-in-out;
 }
 
+.log-panel-gradient {
+  background-image: linear-gradient(to top, var(--background), transparent);
+  transition: background-image 2s ease-in-out;
+}
+
 @keyframes bubbly-top {
   0% {
     top: -75%;
