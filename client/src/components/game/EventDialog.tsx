@@ -266,6 +266,19 @@ export default function EventDialog({
                 const cost = choice.cost;
                 let isDisabled = (timeRemaining !== null && timeRemaining <= 0) || fallbackExecutedRef.current;
 
+                // Check if this is the sacrifice choice in blood moon event
+                if (choice.id === 'sacrificeVillagers' && event.id === 'bloodMoonAttack') {
+                  const sacrificeAmount = Math.min(
+                    (gameState.cruelMode ? 10 : 5) +
+                      (gameState.bloodMoonState?.occurrenceCount ?? 0) * 5,
+                    30,
+                  );
+                  const totalVillagers = Object.values(gameState.villagers).reduce((sum, count) => sum + count, 0);
+                  if (totalVillagers < sacrificeAmount) {
+                    isDisabled = true;
+                  }
+                }
+
                 // Evaluate cost if it's a function
                 const costText = typeof cost === 'function' ? cost(gameState) : cost;
 
