@@ -311,12 +311,27 @@ export default function TimedEventPanel() {
                 isMerchantEvent &&
                 gameState.merchantTrades?.purchasedIds?.includes(choice.id);
 
-              // Disable if can't afford, time is up, already purchased, or in safety period
+              // Check if this is the sacrifice choice in blood moon event
+              let villagersCheckPassed = true;
+              if (choice.id === 'sacrificeVillagers' && eventId === 'bloodMoonAttack') {
+                const sacrificeAmount = Math.min(
+                  (gameState.cruelMode ? 10 : 5) +
+                    (gameState.bloodMoonState?.occurrenceCount ?? 0) * 5,
+                  30,
+                );
+                const totalVillagers = Object.values(gameState.villagers).reduce((sum, count) => sum + count, 0);
+                if (totalVillagers < sacrificeAmount) {
+                  villagersCheckPassed = false;
+                }
+              }
+
+              // Disable if can't afford, time is up, already purchased, in safety period, or not enough villagers
               const isDisabled =
                 !canAfford ||
                 timeRemaining <= 0 ||
                 isPurchased ||
-                safetyTimeRemaining > 0;
+                safetyTimeRemaining > 0 ||
+                !villagersCheckPassed;
 
               // Calculate success percentage if available
               let successPercentage: string | null = null;
