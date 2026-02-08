@@ -110,16 +110,14 @@ function LogPanel() {
           </div>
         </div>
         {/* Gradient overlay at bottom of content area */}
-        <div className={`absolute bottom-[-1px] left-0 right-0 h-12 pointer-events-none overflow-hidden ${isBloodMoon ? 'blood-moon-active' : ''}`}>
+        <div className="absolute bottom-[-1px] left-0 right-0 h-12 pointer-events-none overflow-hidden">
           <div
-            className={`absolute inset-0 bg-gradient-to-t from-background to-transparent transition-opacity duration-[2000ms] ${isBloodMoon ? "opacity-0" : "opacity-100"}`}
-          ></div>
-          <div
-            className="absolute inset-0 bg-gradient-to-t to-transparent transition-all duration-[2000ms]"
+            className="absolute inset-0 bg-gradient-to-t to-transparent"
             style={{
-              backgroundImage: 'linear-gradient(to top, var(--blood-moon-gradient, hsl(var(--background))), transparent)',
-              opacity: isBloodMoon ? 1 : 0,
-            }}
+              backgroundImage: 'linear-gradient(to top, var(--blood-moon-gradient), transparent)',
+              '--blood-moon-gradient': isBloodMoon ? 'hsl(0, 50%, 5%)' : 'hsl(0, 0%, 5%)',
+              transition: '--blood-moon-gradient 2s ease-in-out',
+            } as React.CSSProperties}
           ></div>
         </div>
         <ScrollBar orientation="vertical" />

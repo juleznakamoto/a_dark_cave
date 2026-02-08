@@ -99,6 +99,7 @@ body {
   --sidebar-accent-foreground: hsl(0, 87.6%, 52.55%);
   --sidebar-border: hsl(0, 15.79%, 26.08%);
   --sidebar-ring: hsl(0, 89.12%, 53.14%);
+  --blood-moon-gradient: hsl(0, 0%, 5%);
   --radius: 4px;
   --shadow-2xs: 0px 2px 0px 0px hsla(0, 89%, 53%, 0);
   --shadow-xs: 0px 2px 0px 0px hsla(0, 89%, 53%, 0);
