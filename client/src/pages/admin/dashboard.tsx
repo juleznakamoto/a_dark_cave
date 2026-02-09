@@ -658,7 +658,7 @@ export default function AdminDashboard() {
       const dayStart = startOfDay(date);
       const dayEnd = endOfDay(date);
 
-      const dailyPurchases = purchases.filter((purchase) => {
+      const dailyPurchases = rawPurchases.filter((purchase) => {
         const purchaseDate = parseISO(purchase.purchased_at);
         return purchaseDate >= dayStart && purchaseDate <= dayEnd && purchase.price_paid > 0 && !purchase.bundle_id;
       }).length;
@@ -672,7 +672,7 @@ export default function AdminDashboard() {
     }
 
     return data;
-  }, [purchases, purchasesChartTimeRange]);
+  }, [rawPurchases, purchasesChartTimeRange]);
 
   const getPurchasesByPlaytime = useCallback(() => {
     const playtimeBuckets = new Map<number, number>();
