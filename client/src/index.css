@@ -483,7 +483,7 @@ body {
   0% {
     width: 6px;
     height: 6px;
-    opacity: 0.8;
+    opacity: 1;
     border-color: rgba(239, 68, 68, 0.9);
   }
 
@@ -527,11 +527,11 @@ body {
   border-radius: 50%;
   border: 2px solid rgba(239, 68, 68, 0.9);
   pointer-events: none;
-  animation: improve-ring-expand 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: improve-ring-expand 0.4s cubic-bezier(0.22, 1.5, 0.36, 1.5) forwards;
 }
 
 .improve-text-flash {
-  animation: improve-text-flash 0.5s ease-out forwards;
+  animation: improve-text-flash 0.35s ease-out forwards;
 }
 
 .animate-bubbly-top {
