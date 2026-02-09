@@ -117,7 +117,7 @@ function createFeastEvent(config: FeastConfig): GameEvent {
               ...(state.triggeredEvents || {}),
               [eventId]: true,
             },
-            _logMessage: `The village gathers fo a feast! Weariness fades and spirits rise, if only briefly.`,
+            _logMessage: `The villagers gather for a feast! Weariness fades and spirits rise, if only briefly.`,
           };
         },
       },

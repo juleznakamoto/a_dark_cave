@@ -58,7 +58,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
                 silver: state.resources.silver + 500,
               },
               _logMessage:
-                "The village defeats the bone army! Bone and silence litter the battlefield. You tear the Devourer’s Crown from its remains and drain a vial of its pale, viscous blood.",
+                "The villagers defeat the bone army! Bone and silence litter the battlefield. You tear the Devourer’s Crown from its remains and drain a vial of its pale, viscous blood.",
             };
           }
 
@@ -101,7 +101,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
 
           // Construct result message
           let message =
-            "The village fights desperately against the bone army. ";
+            "The villagers fight desperately against the bone army. ";
 
           if (actualDeaths === 0) {
             message += "The villagers survive the onslaught.";
@@ -291,7 +291,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
                 silver: state.resources.silver + 250,
               },
               _logMessage:
-                "The village defeats the wolf pack! You slay the alpha wolf and claim its hide as a trophy. It radiates with primal power.",
+                "The villagers defeat the wolf pack! You slay the alpha wolf and claim its hide as a trophy. It radiates with primal power.",
             };
           }
 
@@ -335,7 +335,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           const actualDeaths = deathResult.villagersKilled || 0;
 
           // Construct result message
-          let message = "The village fights desperately against the wolves. ";
+          let message = "The villagers fight desperately against the wolves. ";
 
           if (actualDeaths === 0) {
             message += "The villagers survive the attack.";

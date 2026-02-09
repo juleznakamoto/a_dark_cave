@@ -84,7 +84,7 @@ export const recurringEvents: Record<string, GameEvent> = {
 
     timeProbability: 30,
     message: [
-      "By dawn, a heap of iron lies at the village edge. No tracks remain.",
+      "By dawn, a heap of iron is found. No tracks remain.",
       "A gift of iron gleams at dawn. No one knows its source.",
     ],
     priority: 2,
@@ -199,18 +199,16 @@ export const recurringEvents: Record<string, GameEvent> = {
     condition: (state: GameState) => {
       const fireStormCount = (state.story.seen.fireStormCount as number) || 0;
       const maxOccurrences = state.cruelMode ? 3 : 0;
-
       return (
         state.buildings.woodenHut >= 4 &&
         state.buildings.stoneHut <= 5 &&
         fireStormCount < maxOccurrences
       );
     },
-
     timeProbability: 120,
     repeatable: true,
     message:
-      "A fire sweeps through the village in the night, destroying one wooden hut and its occupants.",
+      "A fire sweeps through the village in the night, destroying one wooden hut and killing its occupants.",
     priority: 2,
     effect: (state: GameState) => {
       // Use the centralized killVillagers function

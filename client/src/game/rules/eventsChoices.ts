@@ -383,7 +383,7 @@ export const choiceEvents: Record<string, GameEvent> = {
 
         return {
           ...deathResult,
-          _logMessage: `Your indecision angers the villagers. ${actualDepartures} villagers, frustrated with your lack of leadership, pack their belongings and leave the village in disgust.`,
+          _logMessage: `Your indecision angers the villagers. ${actualDepartures} villagers, frustrated with your lack of leadership, pack their belongings and leave in disgust.`,
         };
       },
     },
@@ -424,9 +424,9 @@ export const choiceEvents: Record<string, GameEvent> = {
           const traps = state.buildings.traps;
           const villagerDeaths = Math.floor(
             Math.random() * state.buildings.woodenHut +
-            2 -
-            traps * 2 +
-            state.CM * 2,
+              2 -
+              traps * 2 +
+              state.CM * 2,
           );
           const deathResult = killVillagers(state, villagerDeaths);
           const actualDeaths = deathResult.villagersKilled || 0;
@@ -1112,7 +1112,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "You hand over two of the villagers. The trader tosses you a bag of steel and rides off with his new captives. When the remaining villagers see what you've done,  they abandon the village in disgust.",
+              "You hand over two of the villagers. The trader tosses you a bag of steel and rides off with his new captives. When the remaining villagers see what you've done, they abandon the village in disgust.",
           };
         },
       },
@@ -1380,7 +1380,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 },
               },
               _logMessage:
-                "Your threats only anger the witch. She laughs and curses your village with dark magic. When she leaves the villagers start to feel weak, as if their strength was sapped by an unseen force.",
+                "Your threats only anger the witch. She laughs and curses you with dark magic. When she leaves the villagers start to feel weak, as if their strength was sapped by an unseen force.",
             };
           }
         },
@@ -1490,13 +1490,13 @@ export const choiceEvents: Record<string, GameEvent> = {
     id: "mysteriousWoman",
     condition: (state: GameState) =>
       state.buildings.stoneHut >= 3 &&
+      state.buildings.darkEstate >= 1 &&
       state.resources.silver >= 200 + state.CM * 100 &&
       !state.story.seen.mysteriousWomanEvent,
-
     timeProbability: 5,
     title: "The Mysterious Woman",
     message:
-      "An attractive young woman in fine clothes arrives at the village as the sun sets. She smiles warmly at you and asks, 'Might I have shelter in your hut for the night? I've traveled far and have nowhere else to go.'",
+      "An attractive young woman in fine clothes arrives at the estate as the sun sets. She smiles warmly at you and asks, 'Might I have shelter in your hut for the night? I've traveled far and have nowhere else to go.'",
     priority: 3,
     repeatable: false,
     choices: [
@@ -1887,7 +1887,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 youngWomanProtestEvent: true,
               },
             },
-            _logMessage: `Shortly after the sacrifice is carried out at the Black Monolith, ${actualLeavers} horrified villagers pack their belongings and flee the village in disgust.`,
+            _logMessage: `Shortly after the sacrifice is carried out at the Black Monolith, ${actualLeavers} horrified villagers pack their belongings and leave in disgust.`,
           };
         },
       },
@@ -2035,12 +2035,11 @@ export const choiceEvents: Record<string, GameEvent> = {
   lastSurvivor: {
     id: "lastSurvivor",
     condition: (state: GameState) =>
-      state.buildings.woodenHut >= 6 &&
-      !state.blessings.survivors_last_words,
+      state.buildings.woodenHut >= 6 && !state.blessings.survivors_last_words,
     timeProbability: 15,
     title: "The Last Survivor",
     message:
-      "A stranger arrives at the village, barely clinging to life. He speaks of his settlement to the north, where food shortages drove villagers to kill each other in desperation. He asks to stay in your village to recover.",
+      "A stranger arrives at the village, barely clinging to life. He speaks of his settlement to the north, where food shortages drove villagers to kill each other in desperation. He asks to stay for a few nights to recover.",
     priority: 4,
     repeatable: false,
     choices: [
@@ -2060,7 +2059,8 @@ export const choiceEvents: Record<string, GameEvent> = {
               ...state.blessings,
               survivors_last_words: true,
             },
-            _logMessage: "The survivor is given shelter and care. That night, he calls you to his hut. Though dying, his eyes are clear. 'Thank you for your kindness, may fortune favor you always.' he whispers with his last breath.",
+            _logMessage:
+              "The survivor is given shelter and care. That night, he calls you to his hut. Though dying, his eyes are clear. 'Thank you for your kindness, may fortune favor you always.' he whispers with his last breath.",
           };
         },
       },
@@ -2081,7 +2081,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               isActive: true,
               endTime: Date.now() + duration,
             },
-            _logMessage: `You turn the dying man away. He leaves the village and is found dead in the forest nearby the next day. The villagers are horrified and disgusted by your cruelty.`,
+            _logMessage: `You turn the dying man away. He leaves and is found dead in the forest nearby the next day. The villagers are horrified and disgusted by your cruelty.`,
           };
         },
       },
