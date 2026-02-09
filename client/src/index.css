@@ -478,30 +478,60 @@ body {
   }
 }
 
-@keyframes improve-red-pulse {
+/* Improve button: expanding circular pulse ring */
+@keyframes improve-ring-expand {
   0% {
-    color: inherit;
-    text-shadow: 0 0 0 transparent;
-  }
-
-  20% {
-    color: #fca5a5;
-    text-shadow: 0 0 8px rgba(239, 68, 68, 0.9), 0 0 20px rgba(220, 38, 38, 0.5), 0 0 40px rgba(185, 28, 28, 0.25);
+    width: 6px;
+    height: 6px;
+    opacity: 0.8;
+    border-color: rgba(239, 68, 68, 0.9);
   }
 
   50% {
+    opacity: 0.5;
+    border-color: rgba(220, 38, 38, 0.6);
+  }
+
+  100% {
+    width: 50px;
+    height: 50px;
+    opacity: 0;
+    border-color: rgba(185, 28, 28, 0);
+  }
+}
+
+/* Improve button: brief red text flash */
+@keyframes improve-text-flash {
+  0% {
+    color: inherit;
+  }
+
+  25% {
+    color: #fca5a5;
+  }
+
+  60% {
     color: #f87171;
-    text-shadow: 0 0 12px rgba(220, 38, 38, 0.6), 0 0 30px rgba(185, 28, 28, 0.2);
   }
 
   100% {
     color: inherit;
-    text-shadow: 0 0 0 transparent;
   }
 }
 
-.improve-pulse-active {
-  animation: improve-red-pulse 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+.improve-pulse-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 2px solid rgba(239, 68, 68, 0.9);
+  pointer-events: none;
+  animation: improve-ring-expand 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.improve-text-flash {
+  animation: improve-text-flash 0.5s ease-out forwards;
 }
 
 .animate-bubbly-top {
