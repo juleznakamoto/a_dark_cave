@@ -777,7 +777,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
         id: `great-feast-${Date.now()}`,
         message:
           item.activationMessage ||
-          `A Great Feast has begun! The village celebrates with exceptional vigor for the next 60 minutes.`,
+          `A Great Feast has begun! For a while, the villagers manage to set aside the darkness of their minds and celebrate.`,
         timestamp: Date.now(),
         type: "system",
       });
