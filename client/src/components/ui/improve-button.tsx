@@ -34,7 +34,11 @@ export function ImproveButton({
           Improve
         </Button>
         {isPulsing && (
-          <span className="improve-pulse-ring" />
+          <>
+            <span className="improve-pulse-ring improve-pulse-ring-1" />
+            <span className="improve-pulse-ring improve-pulse-ring-2" />
+            <span className="improve-pulse-ring improve-pulse-ring-3" />
+          </>
         )}
       </div>
     </div>
