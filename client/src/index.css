@@ -478,6 +478,39 @@ body {
   }
 }
 
+@keyframes improve-red-pulse {
+  0% {
+    text-shadow: 0 0 0 transparent;
+    box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.8);
+    transform: scale(1);
+  }
+
+  15% {
+    color: #fca5a5;
+    text-shadow: 0 0 10px rgba(239, 68, 68, 1), 0 0 20px rgba(220, 38, 38, 0.6);
+    box-shadow: 0 0 8px 3px rgba(220, 38, 38, 0.6), inset 0 0 4px rgba(239, 68, 68, 0.3);
+    transform: scale(1.15);
+  }
+
+  40% {
+    color: #f87171;
+    text-shadow: 0 0 14px rgba(220, 38, 38, 0.7), 0 0 28px rgba(185, 28, 28, 0.3);
+    box-shadow: 0 0 18px 8px rgba(185, 28, 28, 0.2);
+    transform: scale(1.04);
+  }
+
+  100% {
+    text-shadow: 0 0 0 transparent;
+    box-shadow: 0 0 0 0 transparent;
+    transform: scale(1);
+    color: inherit;
+  }
+}
+
+.improve-pulse-active {
+  animation: improve-red-pulse 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
 .animate-bubbly-top {
   animation: bubbly-top .75s ease-in-out forwards;
 }

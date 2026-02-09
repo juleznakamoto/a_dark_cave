@@ -19,6 +19,41 @@ import {
 } from "@/game/rules/skillUpgrades";
 import { focusTooltip } from "@/game/rules/tooltips";
 
+// Improve button with a rewarding red pulse animation on click
+function ImproveButton({
+  onClick,
+  disabled,
+  button_id,
+}: {
+  onClick: () => void;
+  disabled: boolean;
+  button_id: string;
+}) {
+  const [isPulsing, setIsPulsing] = React.useState(false);
+
+  const handleClick = () => {
+    if (disabled) return;
+    setIsPulsing(true);
+    onClick();
+  };
+
+  return (
+    <div className="h-5 inline-block pb-1 text-xs font-medium text-foreground">
+      <Button
+        onClick={handleClick}
+        disabled={disabled}
+        size="xs"
+        variant="ghost"
+        className={`h-5 pb-1 hover:bg-transparent hover:text-foreground ${isPulsing ? "improve-pulse-active" : ""}`}
+        button_id={button_id}
+        onAnimationEnd={() => setIsPulsing(false)}
+      >
+        Improve
+      </Button>
+    </div>
+  );
+}
+
 export default function EstatePanel() {
   const {
     events,
@@ -433,18 +468,11 @@ export default function EstatePanel() {
                     setHighlightedResources([]);
                   }}
                 >
-                  <div className="h-5 inline-block pb-1 text-xs font-medium text-foreground">
-                    <Button
-                      onClick={handleSleepLengthUpgrade}
-                      disabled={!canUpgradeLength}
-                      size="xs"
-                      variant="ghost"
-                      className="h-5 pb-1  hover:bg-transparent hover:text-foreground"
-                      button_id="upgrade-sleep-length"
-                    >
-                      Improve
-                    </Button>
-                  </div>
+                  <ImproveButton
+                    onClick={handleSleepLengthUpgrade}
+                    disabled={!canUpgradeLength}
+                    button_id="upgrade-sleep-length"
+                  />
                 </TooltipWrapper>
               ) : null}
             </div>
@@ -495,18 +523,11 @@ export default function EstatePanel() {
                     setHighlightedResources([]);
                   }}
                 >
-                  <div className="h-5 inline-block pb-1 text-xs font-medium text-foreground">
-                    <Button
-                      onClick={handleSleepIntensityUpgrade}
-                      disabled={!canUpgradeIntensity}
-                      size="xs"
-                      variant="ghost"
-                      className="h-5 pb-1  hover:bg-transparent hover:text-foreground"
-                      button_id="upgrade-sleep-intensity"
-                    >
-                      Improve
-                    </Button>
-                  </div>
+                  <ImproveButton
+                    onClick={handleSleepIntensityUpgrade}
+                    disabled={!canUpgradeIntensity}
+                    button_id="upgrade-sleep-intensity"
+                  />
                 </TooltipWrapper>
               ) : null}
             </div>
@@ -625,22 +646,15 @@ export default function EstatePanel() {
                           setHighlightedResources([]);
                         }}
                       >
-                        <div className="h-5 inline-block pb-1 text-xs font-medium text-foreground">
-                          <Button
-                            onClick={handleHuntingSkillUpgrade}
-                            disabled={
-                              resources.gold <
-                              HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]
-                                .cost
-                            }
-                            size="xs"
-                            variant="ghost"
-                            className="h-5 pb-1  hover:bg-transparent hover:text-foreground"
-                            button_id="upgrade-hunting-skills"
-                          >
-                            Improve
-                          </Button>
-                        </div>
+                        <ImproveButton
+                          onClick={handleHuntingSkillUpgrade}
+                          disabled={
+                            resources.gold <
+                            HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]
+                              .cost
+                          }
+                          button_id="upgrade-hunting-skills"
+                        />
                       </TooltipWrapper>
                     ) : null}
                   </div>
@@ -747,23 +761,16 @@ export default function EstatePanel() {
                           setHighlightedResources([]);
                         }}
                       >
-                        <div className="h-5 inline-block pb-1 text-xs font-medium text-foreground">
-                          <Button
-                            onClick={handleCrushingStrikeUpgrade}
-                            disabled={
-                              resources.gold <
-                              CRUSHING_STRIKE_UPGRADES[
-                                combatSkills.crushingStrikeLevel + 1
-                              ].cost
-                            }
-                            size="xs"
-                            variant="ghost"
-                            className="h-5 pb-1  hover:bg-transparent hover:text-foreground"
-                            button_id="upgrade-crushing-strike"
-                          >
-                            Improve
-                          </Button>
-                        </div>
+                        <ImproveButton
+                          onClick={handleCrushingStrikeUpgrade}
+                          disabled={
+                            resources.gold <
+                            CRUSHING_STRIKE_UPGRADES[
+                              combatSkills.crushingStrikeLevel + 1
+                            ].cost
+                          }
+                          button_id="upgrade-crushing-strike"
+                        />
                       </TooltipWrapper>
                     ) : null}
                   </div>
@@ -909,23 +916,16 @@ export default function EstatePanel() {
                           setHighlightedResources([]);
                         }}
                       >
-                        <div className="h-5 inline-block pb-1 text-xs font-medium text-foreground">
-                          <Button
-                            onClick={handleBloodflameSphereUpgrade}
-                            disabled={
-                              resources.gold <
-                              BLOODFLAME_SPHERE_UPGRADES[
-                                combatSkills.bloodflameSphereLevel + 1
-                              ].cost
-                            }
-                            size="xs"
-                            variant="ghost"
-                            className="h-5 pb-1  hover:bg-transparent hover:text-foreground"
-                            button_id="upgrade-bloodflame-sphere"
-                          >
-                            Improve
-                          </Button>
-                        </div>
+                        <ImproveButton
+                          onClick={handleBloodflameSphereUpgrade}
+                          disabled={
+                            resources.gold <
+                            BLOODFLAME_SPHERE_UPGRADES[
+                              combatSkills.bloodflameSphereLevel + 1
+                            ].cost
+                          }
+                          button_id="upgrade-bloodflame-sphere"
+                        />
                       </TooltipWrapper>
                     ) : null}
                   </div>
@@ -1022,22 +1022,15 @@ export default function EstatePanel() {
                           setHighlightedResources([]);
                         }}
                       >
-                        <div className="h-5 inline-block pb-1 text-xs font-medium text-foreground">
-                          <Button
-                            onClick={handleCrowsEyeUpgrade}
-                            disabled={
-                              resources.gold <
-                              CROWS_EYE_UPGRADES[crowsEyeSkills.level + 1]
-                                .cost
-                            }
-                            size="xs"
-                            variant="ghost"
-                            className="h-5 pb-1  hover:bg-transparent hover:text-foreground"
-                            button_id="upgrade-crows-eye"
-                          >
-                            Improve
-                          </Button>
-                        </div>
+                        <ImproveButton
+                          onClick={handleCrowsEyeUpgrade}
+                          disabled={
+                            resources.gold <
+                            CROWS_EYE_UPGRADES[crowsEyeSkills.level + 1]
+                              .cost
+                          }
+                          button_id="upgrade-crows-eye"
+                        />
                       </TooltipWrapper>
                     ) : null}
                   </div>
