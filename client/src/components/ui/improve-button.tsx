@@ -6,14 +6,17 @@ export function ImproveButton({
   onClick,
   disabled,
   button_id,
+  variant = "ring",
 }: {
   onClick: () => void;
   disabled: boolean;
   button_id: string;
+  variant?: "ring" | "flash";
 }) {
   const [isPulsing, setIsPulsing] = React.useState(false);
 
-  const handleClick = () => {
+  const handleClick = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent event bubbling
     if (disabled) return;
     setIsPulsing(true);
     onClick();
@@ -33,7 +36,7 @@ export function ImproveButton({
         >
           Improve
         </Button>
-        {isPulsing && (
+        {isPulsing && variant === "ring" && (
           <>
             <span className="improve-pulse-ring improve-pulse-ring-1" />
             <span className="improve-pulse-ring improve-pulse-ring-2" />
