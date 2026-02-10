@@ -863,6 +863,20 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
 
   return (
     <>
+      <style>{`
+                .bundle-card-glow {
+                  animation: bundle-glow-pulse 2.5s ease-in-out infinite;
+                }
+
+              @keyframes bundle-glow-pulse {
+                0%, 100% {
+                  box-shadow: 0 0 15px 5px rgba(234, 179, 8, 0.25);
+                }
+                50% {
+                  box-shadow: 0 0 0px 0px rgba(234, 179, 8, 0.5);
+                }
+              }
+              `}</style>
       <Dialog open={isOpen} onOpenChange={handleShopDialogOpenChange}>
         {!isPaymentMode && (
           <DialogContent
@@ -993,7 +1007,10 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                           return true;
                         })
                         .map((item) => (
-                          <Card key={item.id} className="border-neutral-500 flex flex-col">
+                          <Card
+                            key={item.id}
+                            className={`border-neutral-500 flex flex-col relative ${item.category === "bundle" ? "border-2 border-amber-600" : ""}`}
+                          >
                             <CardHeader className="leading-snug p-3 md:p-6 pb-1 md:pb-2 relative">
                               {item.symbol && (
                                 <span
@@ -1194,6 +1211,9 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                       : "Purchase"}
                               </Button>
                             </CardFooter>
+                            {item.category === "bundle" && (
+                              <div className="absolute inset-0 -z-10 bundle-card-glow pointer-events-none rounded-lg"></div>
+                            )}
                           </Card>
                         ))}
                     </div>
