@@ -865,12 +865,12 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
     <>
       <style>{`
                 .bundle-card-glow {
-                  animation: bundle-glow-pulse 2.5s ease-in-out infinite;
+                  animation: bundle-glow-pulse 3.5s ease-in-out infinite;
                 }
 
               @keyframes bundle-glow-pulse {
                 0%, 100% {
-                  box-shadow: 0 0 15px 5px rgba(234, 179, 8, 0.25);
+                  box-shadow: 0 0 7px 2px rgba(234, 179, 8, 0.25);
                 }
                 50% {
                   box-shadow: 0 0 0px 0px rgba(234, 179, 8, 0.5);
@@ -974,7 +974,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                       </Button>
                     </div>
 
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <div className="ml-1.5 mr-1.5 grid grid-cols-2 md:grid-cols-3 gap-4">
                       {Object.values(SHOP_ITEMS)
                         .filter((item) => {
                           // Hide full_game item when BTP=0
@@ -1009,7 +1009,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                         .map((item) => (
                           <Card
                             key={item.id}
-                            className={`border-neutral-500 flex flex-col relative ${item.category === "bundle" ? "border-2 border-amber-600" : ""}`}
+                            className={`border-neutral-500 flex flex-col relative ${item.category === "bundle" ? "border border-amber-600" : ""}`}
                           >
                             <CardHeader className="leading-snug p-3 md:p-6 pb-1 md:pb-2 relative">
                               {item.symbol && (
