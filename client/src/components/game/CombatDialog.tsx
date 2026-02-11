@@ -704,6 +704,18 @@ export default function CombatDialog({
                                       className="text-xs w-full"
                                       button_id={`combat-use-${item.id}`}
                                     >
+                                      {item.id === "poison_arrows" &&
+                                        usedItemsInCombat.includes(
+                                          "poison_arrows",
+                                        ) && (
+                                          <span
+                                            className="text-green-600 mr-1"
+                                            role="img"
+                                            aria-label="poison-icon"
+                                          >
+                                            ▲
+                                          </span>
+                                        )}
                                       {item.name}
                                     </Button>
                                   </div>
@@ -751,6 +763,15 @@ export default function CombatDialog({
                                 className="text-xs w-full"
                                 button_id="combat-use-crushing-strike"
                               >
+                                {enemyStunnedRounds > 0 && (
+                                  <span
+                                    className="text-yellow-600 mr-1"
+                                    role="img"
+                                    aria-label="stun-icon"
+                                  >
+                                    ◈
+                                  </span>
+                                )}
                                 Crushing Strike
                               </Button>
                             </div>
@@ -792,6 +813,15 @@ export default function CombatDialog({
                                 className="text-xs w-full"
                                 button_id="combat-use-bloodflame-sphere"
                               >
+                                {enemyBurnRounds > 0 && (
+                                  <span
+                                    className="text-orange-600 mr-1"
+                                    role="img"
+                                    aria-label="burn-icon"
+                                  >
+                                    ✵
+                                  </span>
+                                )}
                                 Bloodflame Sphere
                               </Button>
                             </div>
@@ -836,7 +866,7 @@ export default function CombatDialog({
                       className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-black"
                       initial={{ backgroundColor: "rgba(0, 0, 0, 0)" }}
                       animate={{ backgroundColor: "rgba(0, 0, 0, 1)" }}
-                      transition={{ duration: 2, ease: "easeIn" }}
+                      transition={{ duration: 1.5, ease: "easeIn" }}
                     >
                       <motion.span
                         className="font-sans text-red-700 text-xl tracking-[0.25em] uppercase select-none defeat-text-pulse"
