@@ -21,6 +21,7 @@ export default function TimedEventPanel() {
     applyEventChoice,
     setTimedEventTab,
     setHighlightedResources,
+    setShopDialogOpen,
   } = useGameStore();
   const gameState = useGameStore();
 
@@ -183,6 +184,13 @@ export default function TimedEventPanel() {
 
     // Don't pre-emptively mark as purchased - let applyEventChoice handle it atomically
     applyEventChoice(choiceId, eventId, event);
+
+    // For Trader's Gratitude: Accept opens the Shop (real-money) and closes the timed tab
+    if (eventId === "traders_gratitude" && choiceId === "accept_traders_gratitude") {
+      setShopDialogOpen(true);
+      setTimedEventTab(false);
+      return;
+    }
 
     // For merchant events, only close on "say_goodbye"
     // For other timed events (feast, master archer, etc.), close after any choice

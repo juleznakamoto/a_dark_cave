@@ -18,7 +18,14 @@ const stripe = new Stripe(stripeSecretKey || '', {
 export { SHOP_ITEMS };
 export type { ShopItem };
 
-export async function createPaymentIntent(itemId: string, userEmail?: string, userId?: string, clientPrice?: number, currency?: string) {
+export async function createPaymentIntent(
+  itemId: string,
+  userEmail?: string,
+  userId?: string,
+  clientPrice?: number,
+  currency?: string,
+  tradersGratitudeDiscount?: boolean
+) {
   const item = SHOP_ITEMS[itemId];
   if (!item) {
     throw new Error('Invalid item');
@@ -33,24 +40,30 @@ export async function createPaymentIntent(itemId: string, userEmail?: string, us
 
   // CRITICAL: Always use server-side price, never trust client
   // This prevents price manipulation attacks
-  const serverPrice = item.price;
+  let amount = item.price;
+
+  // Trader's Gratitude: 25% discount when requested (price enforced server-side only)
+  if (item.price > 0 && tradersGratitudeDiscount === true) {
+    amount = Math.floor(item.price * 0.75);
+  }
 
   // Optional: Log if client sent a different price (potential attack attempt)
-  if (clientPrice !== undefined && clientPrice !== serverPrice) {
-    logger.warn(`Price manipulation attempt detected for item ${itemId}. Client sent: ${clientPrice}, Server price: ${serverPrice}`);
+  if (clientPrice !== undefined && clientPrice !== item.price) {
+    logger.warn(`Price manipulation attempt detected for item ${itemId}. Client sent: ${clientPrice}, Server price: ${item.price}`);
   }
 
   // Validate currency (only EUR or USD allowed)
   const validCurrency = (currency === 'eur' || currency === 'usd') ? currency : 'usd';
 
   const paymentIntentData: Stripe.PaymentIntentCreateParams = {
-    amount: serverPrice, // Always use server-defined price
+    amount,
     currency: validCurrency,
     metadata: {
       itemId: item.id,
       itemName: item.name,
-      priceInCents: serverPrice.toString(),
+      priceInCents: amount.toString(),
       currency: validCurrency,
+      ...(amount < item.price && { tradersGratitudeDiscountApplied: 'true' }),
     },
   };
 
@@ -79,26 +92,37 @@ export async function verifyPayment(paymentIntentId: string, userId: string, sup
   if (paymentIntent.status === 'succeeded') {
     const itemId = paymentIntent.metadata.itemId;
     const item = SHOP_ITEMS[itemId];
+    const wasDiscounted = paymentIntent.metadata.tradersGratitudeDiscountApplied === 'true';
 
-    // Verify the payment amount matches the server-side price
-    if (item && paymentIntent.amount !== item.price) {
-      logger.error(`Payment amount mismatch for item ${itemId}. Expected: ${item.price}, Got: ${paymentIntent.amount}`);
-      return { 
-        success: false, 
-        error: 'Payment amount verification failed' 
-      };
+    // Verify the payment amount: either full price or valid discounted (25% off)
+    if (item) {
+      const expectedFull = item.price;
+      const expectedDiscounted = Math.floor(item.price * 0.75);
+      const isValidAmount =
+        paymentIntent.amount === expectedFull ||
+        (wasDiscounted && paymentIntent.amount === expectedDiscounted);
+
+      if (!isValidAmount) {
+        logger.error(
+          `Payment amount mismatch for item ${itemId}. Expected: ${expectedFull} or ${expectedDiscounted} (discounted). Got: ${paymentIntent.amount}`
+        );
+        return {
+          success: false,
+          error: 'Payment amount verification failed',
+        };
+      }
     }
 
-    // Save purchase to database
+    // Save purchase to database; use actual amount charged
     const { data: purchaseData, error: purchaseError } = await supabase
       .from('purchases')
       .insert({
         user_id: userId,
         item_id: itemId,
         item_name: item.name,
-        price_paid: item.price,
-        bundle_id: null, // Bundle itself has no parent
-        purchased_at: new Date().toISOString()
+        price_paid: paymentIntent.amount,
+        bundle_id: null,
+        purchased_at: new Date().toISOString(),
       })
       .select()
       .single();

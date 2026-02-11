@@ -106,6 +106,75 @@ describe('Bundle Purchase Security Tests', () => {
     });
   });
 
+  describe('Trader\'s Gratitude discount security', () => {
+    it('should accept valid discounted payment (25% off)', async () => {
+      const mockSupabase = createMockSupabase();
+
+      // advanced_bundle: 1099 -> floor(1099 * 0.75) = 824
+      const mockIntent: Stripe.PaymentIntent = {
+        id: 'pi_test',
+        amount: 824,
+        status: 'succeeded',
+        metadata: {
+          itemId: 'advanced_bundle',
+          tradersGratitudeDiscountApplied: 'true',
+        },
+      } as Stripe.PaymentIntent;
+
+      mockPaymentIntents.retrieve.mockResolvedValue(mockIntent);
+
+      const result = await verifyPayment('pi_test', 'user123', mockSupabase);
+
+      expect(result.success).toBe(true);
+      expect(result.itemId).toBe('advanced_bundle');
+    });
+
+    it('should reject discounted amount without server-set metadata', async () => {
+      const mockSupabase = createMockSupabase();
+
+      // Attacker fakes discounted amount - metadata only set by server at createPaymentIntent
+      const mockIntent: Stripe.PaymentIntent = {
+        id: 'pi_test',
+        amount: 824, // Looks like 25% off
+        status: 'succeeded',
+        metadata: { itemId: 'advanced_bundle' }, // No tradersGratitudeDiscountApplied
+      } as Stripe.PaymentIntent;
+
+      mockPaymentIntents.retrieve.mockResolvedValue(mockIntent);
+
+      const result = await verifyPayment('pi_test', 'user123', mockSupabase);
+
+      expect(result.success).toBe(false);
+      expect(result.error).toBe('Payment amount verification failed');
+    });
+
+    it('should apply only server-defined 25% discount, not client-sent percentage', async () => {
+      mockPaymentIntents.create.mockResolvedValue({
+        client_secret: 'test_secret',
+      } as any);
+
+      // Client sends tradersGratitudeDiscount: true - server applies fixed 25%
+      await createPaymentIntent(
+        'advanced_bundle',
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        true
+      );
+
+      // Must be floor(1099 * 0.75) = 824, not arbitrary
+      expect(mockPaymentIntents.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          amount: 824,
+          metadata: expect.objectContaining({
+            tradersGratitudeDiscountApplied: 'true',
+          }),
+        })
+      );
+    });
+  });
+
   describe('Payment Intent Creation Security', () => {
     it('should always use server-side price for bundles', async () => {
       mockPaymentIntents.create.mockResolvedValue({

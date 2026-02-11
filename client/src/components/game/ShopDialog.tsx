@@ -178,6 +178,12 @@ function CheckoutForm({
           }
 
           onSuccess();
+        } else {
+          // Payment succeeded on Stripe but server verification failed (e.g. DB error).
+          // Do NOT release discount reservation - user was charged; requires manual intervention.
+          setErrorMessage(
+            result.error || "Payment verification failed. Please contact support."
+          );
         }
         setIsProcessing(false);
       }
@@ -585,6 +591,8 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
 
     // For paid items, create payment intent for embedded checkout
     const user = await getCurrentUser();
+    const tradersGratitudeDiscount =
+      gameState.tradersGratitudeState?.accepted === true;
     const response = await fetch("/api/payment/create-intent", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -593,11 +601,12 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
         userEmail: user?.email,
         userId: user?.id,
         currency: currency.toLowerCase(),
+        tradersGratitudeDiscount: tradersGratitudeDiscount || undefined,
       }),
     });
 
-    const { clientSecret } = await response.json();
-    setClientSecret(clientSecret);
+    const { clientSecret: secret } = await response.json();
+    setClientSecret(secret);
     setSelectedItem(itemId);
     // Keep shop dialog open during payment to maintain game pause
   };
@@ -610,6 +619,17 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
 
   const handlePurchaseSuccess = async () => {
     const item = SHOP_ITEMS[selectedItem!];
+
+    // If Trader's Gratitude discount was used, clear it and mark as used
+    if (gameState.tradersGratitudeState?.accepted) {
+      useGameStore.setState((state) => ({
+        tradersGratitudeState: { accepted: false },
+        triggeredEvents: {
+          ...(state.triggeredEvents || {}),
+          traders_gratitude_used: true,
+        },
+      }));
+    }
 
     // Set hasMadeNonFreePurchase flag if this is a paid item
     if (item.price > 0) {
@@ -1108,13 +1128,63 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                   </TooltipProvider>
                                 )}
                               </CardTitle>
-                              <CardDescription className="!m-0 text-bold">
+                              <CardDescription className="!m-0 text-bold flex flex-wrap items-center gap-1">
                                 {item.originalPrice && (
                                   <span className="text-xs line-through text-muted-foreground mr-1">
                                     {formatPrice(item.originalPrice)}
                                   </span>
                                 )}
-                                {formatPrice(item.price)}
+                                {(() => {
+                                  const tradersGratitudeActive =
+                                    gameState.tradersGratitudeState?.accepted === true;
+                                  const displayPrice =
+                                    item.price > 0 && tradersGratitudeActive
+                                      ? Math.floor(item.price * 0.75)
+                                      : item.price;
+                                  const priceClassName =
+                                    item.price > 0 && tradersGratitudeActive
+                                      ? "text-green-400"
+                                      : "";
+                                  return (
+                                    <>
+                                      <span className={priceClassName}>
+                                        {formatPrice(displayPrice)}
+                                      </span>
+                                      {item.price > 0 && tradersGratitudeActive && (
+                                        <TooltipProvider>
+                                          <Tooltip
+                                            open={mobileTooltip.isTooltipOpen(
+                                              `traders-gratitude-${item.id}`,
+                                            )}
+                                          >
+                                            <TooltipTrigger asChild>
+                                              <button
+                                                className="pl-1 inline-flex items-center justify-center w-4 h-4 rounded-full text-muted-foreground text-sm font-bold hover:text-foreground"
+                                                onClick={(e) => {
+                                                  e.stopPropagation();
+                                                  if (mobileTooltip.isMobile) {
+                                                    mobileTooltip.handleTooltipClick(
+                                                      `traders-gratitude-${item.id}`,
+                                                      e,
+                                                    );
+                                                  }
+                                                }}
+                                              >
+                                                ⓘ
+                                              </button>
+                                            </TooltipTrigger>
+                                            <TooltipContent className="max-w-xs border border-amber-600">
+                                              <div className="text-xs">
+                                                25% additional Discount due to
+                                                Trader&apos;s Gratitude Event
+                                              </div>
+                                            </TooltipContent>
+                                          </Tooltip>
+                                        </TooltipProvider>
+                                      )}
+                                    </>
+                                  );
+                                })()}
                                 {item.bundleComponents && item.bundleComponents.length > 0 && (() => {
                                   const componentsCost = item.bundleComponents.reduce((total, componentId) => {
                                     return total + SHOP_ITEMS[componentId].price;
