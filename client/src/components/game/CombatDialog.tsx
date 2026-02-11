@@ -842,7 +842,7 @@ export default function CombatDialog({
                         className="font-sans text-red-700 text-xl tracking-[0.25em] uppercase select-none"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: [0, 1, 0.8] }}
-                        transition={{ duration: 2, delay: 1.5, ease: "easeInOut" }}
+                        transition={{ duration: 2, delay: 2, ease: "easeInOut" }}
                       >
                         You lost the fight
                       </motion.span>
