@@ -424,10 +424,9 @@ export const storyEvents: Record<string, GameEvent> = {
 
   wildlingBloodOath: {
     id: "wildlingBloodOath",
-    condition: (state: GameState) =>
+    condition: (state: GameState) => 
       state.story.seen.forestCaveExplored &&
       !state.story.seen.wildlingBloodOath,
-    
     timeProbability: 2,
     title: "The Blood Oath",
     message:

@@ -300,15 +300,15 @@ body {
 @keyframes defeat-text-pulse {
   0%,
   100% {
-    text-shadow: 0 0 8px rgba(185, 28, 28, 0.4), 0 0 16px rgba(127, 29, 29, 0.3);
+    text-shadow: 0 0 12px rgba(185, 28, 28, 0.7), 0 0 16px rgba(127, 29, 29, 0.6);
   }
   50% {
-    text-shadow: 0 0 16px rgba(220, 38, 38, 0.7), 0 0 32px rgba(185, 28, 28, 0.5);
+    text-shadow: 0 0 24px rgba(220, 38, 38, 0.95), 0 0 32px rgba(185, 28, 28, 0.8);
   }
 }
 
 .defeat-text-pulse {
-  animation: defeat-text-pulse 3s ease-in-out infinite;
+  animation: defeat-text-pulse 2.5s ease-in-out infinite;
 }
 
 @keyframes log-glow {
