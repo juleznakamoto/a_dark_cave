@@ -113,7 +113,7 @@ interface CheckoutFormProps {
   onSuccess: () => void;
   currency: "EUR" | "USD";
   onCancel: () => void;
-  displayPriceCents: number; // Price to show (may include Trader's Gratitude discount)
+  displayPriceCents: number;
 }
 
 function CheckoutForm({
