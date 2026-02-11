@@ -438,6 +438,7 @@ export default function EstatePanel() {
                     onClick={handleSleepLengthUpgrade}
                     disabled={!canUpgradeLength}
                     button_id="upgrade-sleep-length"
+                    variant="flash"
                   />
                 </TooltipWrapper>
               ) : null}
@@ -493,6 +494,7 @@ export default function EstatePanel() {
                     onClick={handleSleepIntensityUpgrade}
                     disabled={!canUpgradeIntensity}
                     button_id="upgrade-sleep-intensity"
+                    variant="flash"
                   />
                 </TooltipWrapper>
               ) : null}
@@ -616,10 +618,10 @@ export default function EstatePanel() {
                           onClick={handleHuntingSkillUpgrade}
                           disabled={
                             resources.gold <
-                            HUNTING_SKILL_UPGRADES[huntingSkills.level + 1]
-                              .cost
+                            HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].cost
                           }
                           button_id="upgrade-hunting-skills"
+                          variant="flash"
                         />
                       </TooltipWrapper>
                     ) : null}
@@ -736,6 +738,7 @@ export default function EstatePanel() {
                             ].cost
                           }
                           button_id="upgrade-crushing-strike"
+                          variant="flash"
                         />
                       </TooltipWrapper>
                     ) : null}
@@ -891,6 +894,7 @@ export default function EstatePanel() {
                             ].cost
                           }
                           button_id="upgrade-bloodflame-sphere"
+                          variant="flash"
                         />
                       </TooltipWrapper>
                     ) : null}
@@ -996,6 +1000,7 @@ export default function EstatePanel() {
                               .cost
                           }
                           button_id="upgrade-crows-eye"
+                          variant="flash"
                         />
                       </TooltipWrapper>
                     ) : null}

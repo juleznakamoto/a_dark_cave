@@ -482,7 +482,7 @@ body {
 @keyframes improve-ring-expand {
   0% {
     width: 6px;
-    height: 6px;
+    height: 4px;
     opacity: 1;
     border-color: rgba(239, 68, 68, 0.9);
   }
@@ -493,8 +493,8 @@ body {
   }
 
   100% {
-    width: 48px;
-    height: 48px;
+    width: 68px;
+    height: 42px;
     opacity: 0;
     border-color: rgba(185, 28, 28, 0);
   }
@@ -504,18 +504,22 @@ body {
 @keyframes improve-text-flash {
   0% {
     color: inherit;
+    text-shadow: 0 0 0px transparent;
   }
 
   25% {
     color: #fca5a5;
+    text-shadow: 0 0 8px rgba(239, 68, 68, 0.6);
   }
 
   60% {
     color: #f87171;
+    text-shadow: 0 0 12px rgba(239, 68, 68, 0.8);
   }
 
   100% {
     color: inherit;
+    text-shadow: 0 0 0px transparent;
   }
 }
 
@@ -530,19 +534,22 @@ body {
   border: 2px solid rgba(239, 68, 68, 0.9);
   pointer-events: none;
   opacity: 0;
-  animation: improve-ring-expand 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: improve-ring-expand 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 .improve-pulse-ring-1 {
   animation-delay: 0s;
+  border: 2px solid rgba(239, 68, 68, 1);
 }
 
 .improve-pulse-ring-2 {
   animation-delay: 0.1s;
+  border: 2px solid rgba(239, 68, 68, 0.8);
 }
 
 .improve-pulse-ring-3 {
   animation-delay: 0.2s;
+  border: 2px solid rgba(239, 68, 68, 0.6);
 
 }
 
