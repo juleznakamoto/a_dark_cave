@@ -295,6 +295,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
   const [isDetectingCurrency, setIsDetectingCurrency] = useState(false);
   const gameState = useGameStore();
   const setAuthDialogOpen = useGameStore((state) => state.setAuthDialogOpen);
+  const setTimedEventTab = useGameStore((state) => state.setTimedEventTab);
   const activatedPurchases = gameState.activatedPurchases || {};
   const { toast } = useToast();
   const mobileTooltip = useMobileTooltip();
@@ -620,7 +621,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
   const handlePurchaseSuccess = async () => {
     const item = SHOP_ITEMS[selectedItem!];
 
-    // If Trader's Gratitude discount was used, clear it and mark as used
+    // If Trader's Gratitude discount was used, clear it, mark as used, and end the event
     if (gameState.tradersGratitudeState?.accepted) {
       useGameStore.setState((state) => ({
         tradersGratitudeState: { accepted: false },
@@ -629,6 +630,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
           traders_gratitude_used: true,
         },
       }));
+      setTimedEventTab(false);
     }
 
     // Set hasMadeNonFreePurchase flag if this is a paid item

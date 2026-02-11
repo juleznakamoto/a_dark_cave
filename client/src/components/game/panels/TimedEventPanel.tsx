@@ -185,10 +185,9 @@ export default function TimedEventPanel() {
     // Don't pre-emptively mark as purchased - let applyEventChoice handle it atomically
     applyEventChoice(choiceId, eventId, event);
 
-    // For Trader's Gratitude: Accept opens the Shop (real-money) and closes the timed tab
+    // For Trader's Gratitude: Accept opens the Shop (real-money) but event continues until time runs out or player declines
     if (eventId === "traders_gratitude" && choiceId === "accept_traders_gratitude") {
       setShopDialogOpen(true);
-      setTimedEventTab(false);
       return;
     }
 
