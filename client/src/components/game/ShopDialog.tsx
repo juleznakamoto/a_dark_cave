@@ -1147,7 +1147,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                       : item.price;
                                   const priceClassName =
                                     item.price > 0 && tradersGratitudeActive
-                                      ? "text-green-400"
+                                      ? "!font-semibold text-green-500"
                                       : "";
                                   return (
                                     <>
