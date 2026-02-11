@@ -551,7 +551,7 @@ export default function CombatDialog({
                 </DialogHeader>
 
                 {/* Enemy Stats */}
-                <div className="space-y-3">
+                <div className="mt-3 space-y-3">
                   <div className="relative">
                     <div className="flex justify-between text-sm">
                       <div className="flex items-center gap-1">
