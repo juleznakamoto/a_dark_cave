@@ -505,7 +505,7 @@ export default function CombatDialog({
           ) : (
             // Combat interface
             <>
-              <div className="relative">
+              <div className="relative -m-6 p-6 min-h-full">
                 <DialogHeader>
                   <div className="flex items-start justify-between">
                     <DialogTitle className="text-lg font-semibold">
@@ -830,46 +830,42 @@ export default function CombatDialog({
                   </div>
                 </div>
 
-                {/* Defeat overlay - Dark Souls style */}
+                {/* Defeat overlay - Dark Souls style, fills entire dialog */}
                 <AnimatePresence>
                   {combatResult === "defeat" && (
                     <motion.div
-                      className="absolute inset-0 z-50 flex items-center justify-center rounded-lg"
+                      className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-black"
                       initial={{ backgroundColor: "rgba(0, 0, 0, 0)" }}
                       animate={{ backgroundColor: "rgba(0, 0, 0, 1)" }}
-                      transition={{ duration: 1.5, ease: "easeIn" }}
+                      transition={{ duration: 2, ease: "easeIn" }}
                     >
                       <motion.span
-                        className="text-red-700 text-3xl font-serif tracking-[0.25em] uppercase select-none"
+                        className="font-sans text-red-700 text-3xl tracking-[0.25em] uppercase select-none"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: [0, 1, 0.8] }}
-                        transition={{ duration: 2.5, delay: 0.8, ease: "easeInOut" }}
+                        transition={{ duration: 2, delay: 1.2, ease: "easeInOut" }}
                       >
                         You lost
                       </motion.span>
+                      <motion.div
+                        className="absolute bottom-6 left-6 right-6"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 3 }}
+                      >
+                        <Button
+                          onClick={handleEndFight}
+                          className="w-full"
+                          variant="outline"
+                          button_id="combat-end-fight"
+                        >
+                          End Fight
+                        </Button>
+                      </motion.div>
                     </motion.div>
                   )}
                 </AnimatePresence>
               </div>
-
-              {/* End Fight button for defeat - sits outside the overlay */}
-              {combatResult === "defeat" && combatEnded && (
-                <motion.div
-                  className="pt-3"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.5, delay: 2.5 }}
-                >
-                  <Button
-                    onClick={handleEndFight}
-                    className="w-full"
-                    variant="outline"
-                    button_id="combat-end-fight"
-                  >
-                    End Fight
-                  </Button>
-                </motion.div>
-              )}
             </>
           )}
         </DialogContent>
