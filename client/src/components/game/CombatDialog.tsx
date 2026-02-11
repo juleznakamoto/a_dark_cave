@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useGameStore } from "@/game/state";
 import { audioManager } from "@/lib/audio";
 import { calculateBastionStats } from "@/game/bastionStats";
@@ -504,329 +505,371 @@ export default function CombatDialog({
           ) : (
             // Combat interface
             <>
-              <DialogHeader>
-                <div className="flex items-start justify-between">
-                  <DialogTitle className="text-lg font-semibold">
-                    Combat - Round {round}
-                  </DialogTitle>
-                  {calculateCriticalStrikeChance(getTotalLuck(gameState)) +
-                    getTotalCriticalChance(gameState) >
-                    0 && (
-                    <TooltipWrapper
-                      tooltip={
-                        <div className="text-xs whitespace-nowrap">
-                          {/* First line normal */}
-                          {calculateCriticalStrikeChance(
-                            getTotalLuck(gameState),
-                          ) + getTotalCriticalChance(gameState)}
-                          % critical strike chance
-                          <br />
-                          {/* Other lines muted */}
-                          <span className="text-gray-400/70">
+              <div className="relative">
+                <DialogHeader>
+                  <div className="flex items-start justify-between">
+                    <DialogTitle className="text-lg font-semibold">
+                      Combat - Round {round}
+                    </DialogTitle>
+                    {calculateCriticalStrikeChance(getTotalLuck(gameState)) +
+                      getTotalCriticalChance(gameState) >
+                      0 && (
+                      <TooltipWrapper
+                        tooltip={
+                          <div className="text-xs whitespace-nowrap">
+                            {/* First line normal */}
                             {calculateCriticalStrikeChance(
                               getTotalLuck(gameState),
-                            ) > 0 &&
-                              ` ${calculateCriticalStrikeChance(getTotalLuck(gameState))}% from Luck${
-                                getTotalLuck(gameState) >= 50 ? " max" : ""
-                              }`}
-                          </span>
-                          <br />
-                          <span className="text-gray-400/70">
-                            {getTotalCriticalChance(gameState) > 0 &&
-                              `${calculateCriticalStrikeChance(getTotalLuck(gameState)) > 0 ? "" : ""}${getTotalCriticalChance(
-                                gameState,
-                              )}% from Items`}
-                          </span>
-                        </div>
-                      }
-                      tooltipId="combat-luck"
-                    >
-                      <span className="text-green-300/80 cursor-pointer hover:text-green-300 transition-colors inline-block text-xl">
-                        ☆
-                      </span>
-                    </TooltipWrapper>
-                  )}
-                </div>
-              </DialogHeader>
-
-              {/* Enemy Stats */}
-              <div className="space-y-3">
-                <div className="relative">
-                  <div className="flex justify-between text-sm">
-                    <div className="flex items-center gap-1">
-                      <span className="font-medium">{currentEnemy?.name}</span>
-                      {NIGHTSHADE_BOW_OWNED &&
-                        usedItemsInCombat.includes("poison_arrows") && (
-                          <span
-                            className="text-green-600"
-                            role="img"
-                            aria-label="poison-icon"
-                          >
-                            ▲
-                          </span>
-                        )}
-                      {enemyStunnedRounds > 0 && (
-                        <span
-                          className="text-yellow-600"
-                          role="img"
-                          aria-label="stun-icon"
-                        >
-                          ◈
+                            ) + getTotalCriticalChance(gameState)}
+                            % critical strike chance
+                            <br />
+                            {/* Other lines muted */}
+                            <span className="text-gray-400/70">
+                              {calculateCriticalStrikeChance(
+                                getTotalLuck(gameState),
+                              ) > 0 &&
+                                ` ${calculateCriticalStrikeChance(getTotalLuck(gameState))}% from Luck${
+                                  getTotalLuck(gameState) >= 50 ? " max" : ""
+                                }`}
+                            </span>
+                            <br />
+                            <span className="text-gray-400/70">
+                              {getTotalCriticalChance(gameState) > 0 &&
+                                `${calculateCriticalStrikeChance(getTotalLuck(gameState)) > 0 ? "" : ""}${getTotalCriticalChance(
+                                  gameState,
+                                )}% from Items`}
+                            </span>
+                          </div>
+                        }
+                        tooltipId="combat-luck"
+                      >
+                        <span className="text-green-300/80 cursor-pointer hover:text-green-300 transition-colors inline-block text-xl">
+                          ☆
                         </span>
-                      )}
-                      {enemyBurnRounds > 0 && (
-                        <span
-                          className="text-orange-600"
-                          role="img"
-                          aria-label="burn-icon"
-                        >
-                          ✵
-                        </span>
-                      )}
-                    </div>
-                    <span>
-                      {currentEnemy?.currentHealth}/
-                      {currentEnemy?.maxHealth}{" "}
-                    </span>
-                  </div>
-                  <div className="relative">
-                    <Progress
-                      value={healthPercentage}
-                      hideBorder
-                      flashOnDecrease
-                      className="h-2 mt-2 [&>div]:bg-red-900" // Darker red for enemy health
-                    />
-                    {enemyDamageIndicator.visible && (
-                      <div className="absolute -translate-y-5 inset-0 flex items-center justify-center text-red-900 font-bold text-sm pointer-events-none">
-                        -{enemyDamageIndicator.amount}
-                        {wasCriticalStrike && " (critical)"}
-                      </div>
+                      </TooltipWrapper>
                     )}
                   </div>
-                  <div className="text-xs mt-2">
-                    Attack: {currentEnemy?.attack}
-                  </div>
-                </div>
+                </DialogHeader>
 
-                {/* Player Stats */}
-                <div className="pt-3">
-                  {/* Bastion Integrity */}
+                {/* Enemy Stats */}
+                <div className="space-y-3">
                   <div className="relative">
                     <div className="flex justify-between text-sm">
-                      <span className="font-medium">Bastion Integrity</span>
+                      <div className="flex items-center gap-1">
+                        <span className="font-medium">{currentEnemy?.name}</span>
+                        {NIGHTSHADE_BOW_OWNED &&
+                          usedItemsInCombat.includes("poison_arrows") && (
+                            <span
+                              className="text-green-600"
+                              role="img"
+                              aria-label="poison-icon"
+                            >
+                              ▲
+                            </span>
+                          )}
+                        {enemyStunnedRounds > 0 && (
+                          <span
+                            className="text-yellow-600"
+                            role="img"
+                            aria-label="stun-icon"
+                          >
+                            ◈
+                          </span>
+                        )}
+                        {enemyBurnRounds > 0 && (
+                          <span
+                            className="text-orange-600"
+                            role="img"
+                            aria-label="burn-icon"
+                          >
+                            ✵
+                          </span>
+                        )}
+                      </div>
                       <span>
-                        {currentIntegrity}/{maxIntegrityForCombat}
+                        {currentEnemy?.currentHealth}/
+                        {currentEnemy?.maxHealth}{" "}
                       </span>
                     </div>
                     <div className="relative">
                       <Progress
-                        value={integrityPercentage}
+                        value={healthPercentage}
                         hideBorder
                         flashOnDecrease
-                        className="h-2 mt-2 [&>div]:bg-green-900" // Darker green for bastion integrity
+                        className="h-2 mt-2 [&>div]:bg-red-900" // Darker red for enemy health
                       />
-                      {integrityDamageIndicator.visible && (
-                        <div className="absolute -translate-y-5 inset-0 flex items-center justify-center text-green-900 font-bold text-sm pointer-events-none">
-                          -{integrityDamageIndicator.amount}
+                      {enemyDamageIndicator.visible && (
+                        <div className="absolute -translate-y-5 inset-0 flex items-center justify-center text-red-900 font-bold text-sm pointer-events-none">
+                          -{enemyDamageIndicator.amount}
+                          {wasCriticalStrike && " (critical)"}
                         </div>
                       )}
                     </div>
-                  </div>
-
-                  <div className="text-xs mt-2">
-                    <div>
-                      Attack: {bastionStats.attack}, Defense:{" "}
-                      {bastionStats.defense}
+                    <div className="text-xs mt-2">
+                      Attack: {currentEnemy?.attack}
                     </div>
                   </div>
-                </div>
 
-                {/* Combat Items */}
-                {combatItems.some((item) =>
-                  item.id === "ember_bomb" || item.id === "ashfire_bomb"
-                    ? gameState.resources[
-                        item.id as keyof typeof gameState.resources
-                      ] > 0
-                    : item.id === "poison_arrows" && NIGHTSHADE_BOW_OWNED,
-                ) && (
+                  {/* Player Stats */}
                   <div className="pt-3">
-                    <div className="text-sm font-medium mb-2">Items</div>
-                    <div className="grid grid-cols-2 gap-2">
-                      {combatItems
-                        .filter((item) => {
-                          if (item.id === "poison_arrows") {
-                            return NIGHTSHADE_BOW_OWNED;
-                          }
-                          return (
-                            gameState.resources[
-                              item.id as keyof typeof gameState.resources
-                            ] > 0
-                          );
-                        })
-                        .map((item) => {
-                          const tooltipConfig = combatItemTooltips[item.id];
-                          const tooltipContent = tooltipConfig
-                            ? tooltipConfig.getContent(gameState)
-                            : "";
-                          const availabilityText =
-                            item.id === "poison_arrows"
-                              ? `Available: ${poisonArrowsUsedInCombat < 1 ? "1/1" : "0/1"}`
-                              : item.id === "ember_bomb"
-                                ? `Available: ${MAX_EMBER_BOMBS - emberBombsUsed}/${MAX_EMBER_BOMBS}`
-                                : item.id === "ashfire_bomb"
-                                  ? `Available: ${MAX_CINDERFLAME_BOMBS - ashfireBombsUsed}/${MAX_CINDERFLAME_BOMBS}`
-                                  : item.id === "void_bomb"
-                                    ? `Available: ${MAX_VOID_BOMBS - voidBombsUsed}/${MAX_VOID_BOMBS}`
-                                    : "";
+                    {/* Bastion Integrity */}
+                    <div className="relative">
+                      <div className="flex justify-between text-sm">
+                        <span className="font-medium">Bastion Integrity</span>
+                        <span>
+                          {currentIntegrity}/{maxIntegrityForCombat}
+                        </span>
+                      </div>
+                      <div className="relative">
+                        <Progress
+                          value={integrityPercentage}
+                          hideBorder
+                          flashOnDecrease
+                          className="h-2 mt-2 [&>div]:bg-green-900" // Darker green for bastion integrity
+                        />
+                        {integrityDamageIndicator.visible && (
+                          <div className="absolute -translate-y-5 inset-0 flex items-center justify-center text-green-900 font-bold text-sm pointer-events-none">
+                            -{integrityDamageIndicator.amount}
+                          </div>
+                        )}
+                      </div>
+                    </div>
 
-                          return (
-                            <TooltipWrapper
-                              key={item.id}
-                              tooltip={
-                                <div className="text-xs whitespace-pre-line">
-                                  {tooltipContent}
-                                  {"\n"}
-                                  {availabilityText}
+                    <div className="text-xs mt-2">
+                      <div>
+                        Attack: {bastionStats.attack}, Defense:{" "}
+                        {bastionStats.defense}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Combat Items */}
+                  {combatItems.some((item) =>
+                    item.id === "ember_bomb" || item.id === "ashfire_bomb"
+                      ? gameState.resources[
+                          item.id as keyof typeof gameState.resources
+                        ] > 0
+                      : item.id === "poison_arrows" && NIGHTSHADE_BOW_OWNED,
+                  ) && (
+                    <div className="pt-3">
+                      <div className="text-sm font-medium mb-2">Items</div>
+                      <div className="grid grid-cols-2 gap-2">
+                        {combatItems
+                          .filter((item) => {
+                            if (item.id === "poison_arrows") {
+                              return NIGHTSHADE_BOW_OWNED;
+                            }
+                            return (
+                              gameState.resources[
+                                item.id as keyof typeof gameState.resources
+                              ] > 0
+                            );
+                          })
+                          .map((item) => {
+                            const tooltipConfig = combatItemTooltips[item.id];
+                            const tooltipContent = tooltipConfig
+                              ? tooltipConfig.getContent(gameState)
+                              : "";
+                            const availabilityText =
+                              item.id === "poison_arrows"
+                                ? `Available: ${poisonArrowsUsedInCombat < 1 ? "1/1" : "0/1"}`
+                                : item.id === "ember_bomb"
+                                  ? `Available: ${MAX_EMBER_BOMBS - emberBombsUsed}/${MAX_EMBER_BOMBS}`
+                                  : item.id === "ashfire_bomb"
+                                    ? `Available: ${MAX_CINDERFLAME_BOMBS - ashfireBombsUsed}/${MAX_CINDERFLAME_BOMBS}`
+                                    : item.id === "void_bomb"
+                                      ? `Available: ${MAX_VOID_BOMBS - voidBombsUsed}/${MAX_VOID_BOMBS}`
+                                      : "";
+
+                            return (
+                              <TooltipWrapper
+                                key={item.id}
+                                tooltip={
+                                  <div className="text-xs whitespace-pre-line">
+                                    {tooltipContent}
+                                    {"\n"}
+                                    {availabilityText}
+                                  </div>
+                                }
+                                tooltipId={`combat-item-${item.id}`}
+                                disabled={!item.available || isProcessingRound}
+                              >
+                                <div className="w-full">
+                                  <Button
+                                    onClick={() => handleUseItem(item)}
+                                    disabled={
+                                      !item.available || isProcessingRound
+                                    }
+                                    variant="outline"
+                                    size="sm"
+                                    className="text-xs w-full"
+                                    button_id={`combat-use-${item.id}`}
+                                  >
+                                    {item.name}
+                                  </Button>
                                 </div>
-                              }
-                              tooltipId={`combat-item-${item.id}`}
-                              disabled={!item.available || isProcessingRound}
-                            >
-                              <div className="w-full">
-                                <Button
-                                  onClick={() => handleUseItem(item)}
-                                  disabled={
-                                    !item.available || isProcessingRound
-                                  }
-                                  variant="outline"
-                                  size="sm"
-                                  className="text-xs w-full"
-                                  button_id={`combat-use-${item.id}`}
-                                >
-                                  {item.name}
-                                </Button>
-                              </div>
-                            </TooltipWrapper>
-                          );
-                        })}
+                              </TooltipWrapper>
+                            );
+                          })}
+                      </div>
                     </div>
-                  </div>
-                )}
-
-                {/* Combat Skills Section - only show if any fellowship member is unlocked */}
-                {(HAS_RESTLESS_KNIGHT || HAS_ELDER_WIZARD) && (
-                  <div className="pt-3">
-                    <div className="text-sm font-medium mb-2">
-                      Combat Skills
-                    </div>
-                    <div className="grid grid-cols-2 gap-2">
-                      {HAS_RESTLESS_KNIGHT && (
-                        <TooltipWrapper
-                          tooltip={
-                            <div className="text-xs whitespace-pre-line">
-                              {gameState.story?.seen?.restlessKnightWounded
-                                ? "Restless Knight is wounded and cannot fight"
-                                : `${combatItemTooltips.crushing_strike.getContent(gameState)}\nAvailable: ${usedCrushingStrike ? "0/1" : "1/1"}`}
-                            </div>
-                          }
-                          tooltipId="combat-crushing-strike"
-                          disabled={
-                            usedCrushingStrike ||
-                            isProcessingRound ||
-                            gameState.story?.seen?.restlessKnightWounded
-                          }
-                          onClick={handleUseCrushingStrike}
-                        >
-                          <div className="w-full">
-                            <Button
-                              onClick={handleUseCrushingStrike}
-                              disabled={
-                                usedCrushingStrike ||
-                                isProcessingRound ||
-                                gameState.story?.seen?.restlessKnightWounded
-                              }
-                              variant="outline"
-                              size="sm"
-                              className="text-xs w-full"
-                              button_id="combat-use-crushing-strike"
-                            >
-                              Crushing Strike
-                            </Button>
-                          </div>
-                        </TooltipWrapper>
-                      )}
-                      {HAS_ELDER_WIZARD && (
-                        <TooltipWrapper
-                          tooltip={
-                            <div className="text-xs whitespace-pre-line">
-                              {gameState.story?.seen?.elderWizardWounded
-                                ? "Elder Wizard is wounded and cannot cast spells"
-                                : `${combatItemTooltips.bloodflame_sphere.getContent(gameState)}\nAvailable: ${usedBloodflameSphere ? "0/1" : "1/1"}`}
-                            </div>
-                          }
-                          tooltipId="combat-bloodflame-sphere"
-                          disabled={
-                            usedBloodflameSphere ||
-                            isProcessingRound ||
-                            currentIntegrity <=
-                              BLOODFLAME_SPHERE_UPGRADES[bloodflameSphereLevel]
-                                .healthCost ||
-                            gameState.story?.seen?.elderWizardWounded
-                          }
-                        >
-                          <div className="w-full">
-                            <Button
-                              onClick={handleUseBloodflameSphere}
-                              disabled={
-                                usedBloodflameSphere ||
-                                isProcessingRound ||
-                                currentIntegrity <=
-                                  BLOODFLAME_SPHERE_UPGRADES[
-                                    bloodflameSphereLevel
-                                  ].healthCost ||
-                                gameState.story?.seen?.elderWizardWounded
-                              }
-                              variant="outline"
-                              size="sm"
-                              className="text-xs w-full"
-                              button_id="combat-use-bloodflame-sphere"
-                            >
-                              Bloodflame Sphere
-                            </Button>
-                          </div>
-                        </TooltipWrapper>
-                      )}
-                    </div>
-                  </div>
-                )}
-
-                {/* Fight Button */}
-                <div className="pt-3">
-                  {combatEnded ? (
-                    <Button
-                      onClick={handleEndFight}
-                      className="w-full"
-                      variant="outline"
-                      button_id="combat-end-fight"
-                    >
-                      End Fight
-                    </Button>
-                  ) : (
-                    <Button
-                      onClick={handleFight}
-                      disabled={
-                        isProcessingRound ||
-                        (currentEnemy?.currentHealth || 0) <= 0
-                      }
-                      className="w-full"
-                      variant="outline"
-                      button_id="combat-fight"
-                    >
-                      {isProcessingRound ? "Fighting..." : "Fight"}
-                    </Button>
                   )}
+
+                  {/* Combat Skills Section - only show if any fellowship member is unlocked */}
+                  {(HAS_RESTLESS_KNIGHT || HAS_ELDER_WIZARD) && (
+                    <div className="pt-3">
+                      <div className="text-sm font-medium mb-2">
+                        Combat Skills
+                      </div>
+                      <div className="grid grid-cols-2 gap-2">
+                        {HAS_RESTLESS_KNIGHT && (
+                          <TooltipWrapper
+                            tooltip={
+                              <div className="text-xs whitespace-pre-line">
+                                {gameState.story?.seen?.restlessKnightWounded
+                                  ? "Restless Knight is wounded and cannot fight"
+                                  : `${combatItemTooltips.crushing_strike.getContent(gameState)}\nAvailable: ${usedCrushingStrike ? "0/1" : "1/1"}`}
+                              </div>
+                            }
+                            tooltipId="combat-crushing-strike"
+                            disabled={
+                              usedCrushingStrike ||
+                              isProcessingRound ||
+                              gameState.story?.seen?.restlessKnightWounded
+                            }
+                            onClick={handleUseCrushingStrike}
+                          >
+                            <div className="w-full">
+                              <Button
+                                onClick={handleUseCrushingStrike}
+                                disabled={
+                                  usedCrushingStrike ||
+                                  isProcessingRound ||
+                                  gameState.story?.seen?.restlessKnightWounded
+                                }
+                                variant="outline"
+                                size="sm"
+                                className="text-xs w-full"
+                                button_id="combat-use-crushing-strike"
+                              >
+                                Crushing Strike
+                              </Button>
+                            </div>
+                          </TooltipWrapper>
+                        )}
+                        {HAS_ELDER_WIZARD && (
+                          <TooltipWrapper
+                            tooltip={
+                              <div className="text-xs whitespace-pre-line">
+                                {gameState.story?.seen?.elderWizardWounded
+                                  ? "Elder Wizard is wounded and cannot cast spells"
+                                  : `${combatItemTooltips.bloodflame_sphere.getContent(gameState)}\nAvailable: ${usedBloodflameSphere ? "0/1" : "1/1"}`}
+                            </div>
+                            }
+                            tooltipId="combat-bloodflame-sphere"
+                            disabled={
+                              usedBloodflameSphere ||
+                              isProcessingRound ||
+                              currentIntegrity <=
+                                BLOODFLAME_SPHERE_UPGRADES[bloodflameSphereLevel]
+                                  .healthCost ||
+                              gameState.story?.seen?.elderWizardWounded
+                            }
+                          >
+                            <div className="w-full">
+                              <Button
+                                onClick={handleUseBloodflameSphere}
+                                disabled={
+                                  usedBloodflameSphere ||
+                                  isProcessingRound ||
+                                  currentIntegrity <=
+                                    BLOODFLAME_SPHERE_UPGRADES[
+                                      bloodflameSphereLevel
+                                    ].healthCost ||
+                                  gameState.story?.seen?.elderWizardWounded
+                                }
+                                variant="outline"
+                                size="sm"
+                                className="text-xs w-full"
+                                button_id="combat-use-bloodflame-sphere"
+                              >
+                                Bloodflame Sphere
+                              </Button>
+                            </div>
+                          </TooltipWrapper>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Fight / End Fight (victory only) Button */}
+                  <div className="pt-3">
+                    {combatEnded && combatResult === "victory" ? (
+                      <Button
+                        onClick={handleEndFight}
+                        className="w-full"
+                        variant="outline"
+                        button_id="combat-end-fight"
+                      >
+                        End Fight
+                      </Button>
+                    ) : !combatEnded ? (
+                      <Button
+                        onClick={handleFight}
+                        disabled={
+                          isProcessingRound ||
+                          (currentEnemy?.currentHealth || 0) <= 0
+                        }
+                        className="w-full"
+                        variant="outline"
+                        button_id="combat-fight"
+                      >
+                        {isProcessingRound ? "Fighting..." : "Fight"}
+                      </Button>
+                    ) : null}
+                  </div>
                 </div>
+
+                {/* Defeat overlay - Dark Souls style */}
+                <AnimatePresence>
+                  {combatResult === "defeat" && (
+                    <motion.div
+                      className="absolute inset-0 z-50 flex items-center justify-center rounded-lg"
+                      initial={{ backgroundColor: "rgba(0, 0, 0, 0)" }}
+                      animate={{ backgroundColor: "rgba(0, 0, 0, 1)" }}
+                      transition={{ duration: 1.5, ease: "easeIn" }}
+                    >
+                      <motion.span
+                        className="text-red-700 text-3xl font-serif tracking-[0.25em] uppercase select-none"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: [0, 1, 0.8] }}
+                        transition={{ duration: 2.5, delay: 0.8, ease: "easeInOut" }}
+                      >
+                        You lost
+                      </motion.span>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
+
+              {/* End Fight button for defeat - sits outside the overlay */}
+              {combatResult === "defeat" && combatEnded && (
+                <motion.div
+                  className="pt-3"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5, delay: 2.5 }}
+                >
+                  <Button
+                    onClick={handleEndFight}
+                    className="w-full"
+                    variant="outline"
+                    button_id="combat-end-fight"
+                  >
+                    End Fight
+                  </Button>
+                </motion.div>
+              )}
             </>
           )}
         </DialogContent>
