@@ -706,7 +706,7 @@ export default function CombatDialog({
                                     >
                                       {item.id === "poison_arrows" && (
                                         <span
-                                          className="text-green-600 mr-1"
+                                          className="text-green-600"
                                           role="img"
                                           aria-label="poison-icon"
                                         >
@@ -761,7 +761,7 @@ export default function CombatDialog({
                                 button_id="combat-use-crushing-strike"
                               >
                                 <span
-                                  className="text-yellow-600 mr-1"
+                                  className="text-yellow-600"
                                   role="img"
                                   aria-label="stun-icon"
                                 >
@@ -809,7 +809,7 @@ export default function CombatDialog({
                                 button_id="combat-use-bloodflame-sphere"
                               >
                                 <span
-                                  className="text-orange-600 mr-1"
+                                  className="text-orange-600"
                                   role="img"
                                   aria-label="burn-icon"
                                 >
