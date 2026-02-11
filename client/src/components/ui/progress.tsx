@@ -10,21 +10,29 @@ interface ProgressProps extends React.ComponentPropsWithoutRef<typeof ProgressPr
   segments?: number;
   hideBorder?: boolean;
   disableGlow?: boolean;
+  /** Flash the bar 3 times when value decreases (e.g. combat health bars) */
+  flashOnDecrease?: boolean;
 }
 
 const Progress = React.forwardRef<
   React.ElementRef<typeof ProgressPrimitive.Root>,
   ProgressProps
->(({ className, value, segments = 1, hideBorder = false, disableGlow = false, ...props }, ref) => {
+>(({ className, value, segments = 1, hideBorder = false, disableGlow = false, flashOnDecrease = false, ...props }, ref) => {
   const [animationKey, setAnimationKey] = React.useState(0);
+  const [flashKey, setFlashKey] = React.useState(0);
   const prevValueRef = React.useRef(value || 0);
 
   React.useEffect(() => {
-    if (!disableGlow && value !== undefined && value > prevValueRef.current) {
-      setAnimationKey(prev => prev + 1);
+    if (value !== undefined) {
+      if (!disableGlow && value > prevValueRef.current) {
+        setAnimationKey(prev => prev + 1);
+      }
+      if (flashOnDecrease && value < prevValueRef.current) {
+        setFlashKey(prev => prev + 1);
+      }
     }
     prevValueRef.current = value || 0;
-  }, [value, disableGlow]);
+  }, [value, disableGlow, flashOnDecrease]);
 
   return (
     <ProgressPrimitive.Root
@@ -50,8 +58,11 @@ const Progress = React.forwardRef<
       
       {/* Progress indicator */}
       <ProgressPrimitive.Indicator
-        className="h-full w-full flex-1 bg-red-950 transition-all relative z-10 overflow-hidden"
-        style={{ transform: `translateX(-${100 - (value || 0)}%)` }}
+        className="h-full w-full flex-1 bg-red-950 relative z-10 overflow-hidden"
+        style={{
+          transform: `translateX(-${100 - (value || 0)}%)`,
+          transition: flashOnDecrease ? "transform 500ms ease-out" : undefined,
+        }}
       >
         {/* Glow effect - animates on every increase */}
         {animationKey > 0 && (
@@ -61,6 +72,16 @@ const Progress = React.forwardRef<
             initial={{ x: "-100%", opacity: 1 }}
             animate={{ x: "100%", opacity: 0 }}
             transition={{ duration: 0.7, ease: "easeOut" }}
+          />
+        )}
+        {/* Flash effect - 3 flashes when value decreases */}
+        {flashKey > 0 && (
+          <motion.div
+            key={flashKey}
+            className="absolute inset-0 bg-white pointer-events-none z-20"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: [0, 0.6, 0, 0.6, 0, 0.6, 0] }}
+            transition={{ duration: 0.6, ease: "easeInOut" }}
           />
         )}
       </ProgressPrimitive.Indicator>
