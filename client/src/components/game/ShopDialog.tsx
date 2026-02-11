@@ -113,6 +113,7 @@ interface CheckoutFormProps {
   onSuccess: () => void;
   currency: "EUR" | "USD";
   onCancel: () => void;
+  displayPriceCents: number; // Price to show (may include Trader's Gratitude discount)
 }
 
 function CheckoutForm({
@@ -120,6 +121,7 @@ function CheckoutForm({
   onSuccess,
   currency,
   onCancel,
+  displayPriceCents,
 }: CheckoutFormProps) {
   const stripe = useStripe();
   const elements = useElements();
@@ -252,7 +254,7 @@ function CheckoutForm({
         >
           {isProcessing
             ? "Processing..."
-            : `Complete Purchase for ${SHOP_ITEMS[itemId]?.price ? formatPrice(SHOP_ITEMS[itemId].price) : ""}`}
+            : `Complete Purchase for ${displayPriceCents > 0 ? formatPrice(displayPriceCents) : ""}`}
         </Button>
         <Button
           variant="outline"
@@ -1498,6 +1500,16 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                     onSuccess={handlePurchaseSuccess}
                     currency={currency}
                     onCancel={handleCancelPayment}
+                    displayPriceCents={
+                      (() => {
+                        const item = SHOP_ITEMS[selectedItem];
+                        const tradersGratitudeActive =
+                          gameState.tradersGratitudeState?.accepted === true;
+                        return item && item.price > 0 && tradersGratitudeActive
+                          ? Math.floor(item.price * 0.75)
+                          : item?.price ?? 0;
+                      })()
+                    }
                   />
                 </Elements>
               ) : (
