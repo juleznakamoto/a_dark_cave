@@ -563,8 +563,8 @@ export default function OverviewTab(props: OverviewTabProps) {
           <CardHeader>
             <div className="flex items-center justify-between">
               <div>
-                <CardTitle>Buyers per 100 Players ({getTimeRangeLabel()})</CardTitle>
-                <CardDescription>30-day rolling average of paying users per 100 registered players</CardDescription>
+                <CardTitle>Buyers per 100 Sign-ups ({getTimeRangeLabel()})</CardTitle>
+                <CardDescription>Rolling 30-day: buyers per 100 sign-ups in that window</CardDescription>
               </div>
               <Select value={chartTimeRange} onValueChange={(value: "1m" | "3m" | "6m" | "1y") => setChartTimeRange(value)}>
                 <SelectTrigger className="w-[140px]">
@@ -596,8 +596,8 @@ export default function OverviewTab(props: OverviewTabProps) {
           <CardHeader>
             <div className="flex items-center justify-between">
               <div>
-                <CardTitle>Gain per 100 ({getTimeRangeLabel()})</CardTitle>
-                <CardDescription>30-day rolling average of daily revenue per 100 users in €</CardDescription>
+                <CardTitle>Gain per 100 Sign-ups ({getTimeRangeLabel()})</CardTitle>
+                <CardDescription>Rolling 30-day: € revenue per 100 sign-ups in that window</CardDescription>
               </div>
               <Select value={chartTimeRange} onValueChange={(value: "1m" | "3m" | "6m" | "1y") => setChartTimeRange(value)}>
                 <SelectTrigger className="w-[140px]">
@@ -617,7 +617,7 @@ export default function OverviewTab(props: OverviewTabProps) {
               <AreaChart data={getGainPerHundredOverTime()}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="date" />
-                <YAxis />
+                <YAxis tickFormatter={(value) => `€${value}`} />
                 <ChartTooltip content={<ChartTooltipContent />} />
                 <Area type="monotone" dataKey="gainPerHundred" stroke="#00C49F" fill="#00C49F" />
               </AreaChart>

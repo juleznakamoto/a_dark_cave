@@ -1309,66 +1309,44 @@ export default function AdminDashboard() {
                         days = 30;
                     }
 
-                    // Pre-calculate daily metrics for rolling average
-                    const dailyMetrics: Array<{ date: Date; buyersPerHundred: number }> = [];
+                    const paidPurchases = rawPurchases.filter(
+                      (p) => p.price_paid > 0 && !p.bundle_id
+                    );
 
-                    // Calculate metrics for a longer period to ensure we have enough data for rolling averages
-                    const calculationDays = days + 30; // Add 30 days for rolling average calculation
-
-                    for (let i = calculationDays - 1; i >= 0; i--) {
-                      const date = subDays(now, i);
-                      const dayStart = startOfDay(date);
-                      const dayEnd = endOfDay(date);
-
-                      // Count registered users up to this date
-                      const registeredUsers = rawGameSaves.filter((save) => {
-                        const createdDate = parseISO(save.created_at);
-                        return createdDate <= dayEnd;
-                      }).length;
-
-                      // Count unique buyers who made purchases on this specific day
-                      const dailyBuyers = new Set<string>();
-                      rawPurchases
-                        .filter((p) => p.price_paid > 0 && !p.bundle_id)
-                        .filter((purchase) => {
-                          const purchaseDate = parseISO(purchase.purchased_at);
-                          return purchaseDate >= dayStart && purchaseDate <= dayEnd;
-                        })
-                        .forEach((purchase) => dailyBuyers.add(purchase.user_id));
-
-                      const buyersPerHundred = registeredUsers > 0
-                        ? (dailyBuyers.size / registeredUsers) * 100
-                        : 0;
-
-                      dailyMetrics.push({
-                        date,
-                        buyersPerHundred,
-                      });
-                    }
-
-                    // Calculate 30-day rolling averages
+                    // Rolling 30-day: for each day X, sign-ups and buyers in the last 30 days ending on X
                     for (let i = days - 1; i >= 0; i--) {
                       const date = subDays(now, i);
-                      const daysSinceStart = calculationDays - 1 - i; // How many days of data are available up to this point
-                      const lookbackDays = Math.min(30, daysSinceStart + 1); // Use up to 30 days, but not more than available
-                      const startIndex = calculationDays - 1 - i - lookbackDays + 1; // Start from (current day - lookbackDays + 1)
-                      const endIndex = calculationDays - 1 - i;
+                      const windowEnd = endOfDay(date);
+                      const windowStart = startOfDay(subDays(date, 29));
 
-                      let sum = 0;
-                      let count = 0;
+                      // Sign-ups in last 30 days (unique users who created in window)
+                      const signUpUserIds = new Set(
+                        rawGameSaves
+                          .filter((save) => {
+                            const createdDate = parseISO(save.created_at);
+                            return createdDate >= windowStart && createdDate <= windowEnd;
+                          })
+                          .map((s) => s.user_id)
+                      );
+                      const signUps = signUpUserIds.size;
 
-                      for (let j = Math.max(0, startIndex); j <= Math.min(dailyMetrics.length - 1, endIndex); j++) {
-                        sum += dailyMetrics[j].buyersPerHundred;
-                        count++;
-                      }
+                      // Unique buyers who purchased in this 30-day window
+                      const windowBuyers = new Set(
+                        paidPurchases
+                          .filter((p) => {
+                            const purchaseDate = parseISO(p.purchased_at);
+                            return purchaseDate >= windowStart && purchaseDate <= windowEnd;
+                          })
+                          .map((p) => p.user_id)
+                      );
 
-                      const rollingAverage = count > 0 ? sum / count : 0;
+                      const buyersPerHundred =
+                        signUps > 0 ? (windowBuyers.size / signUps) * 100 : 0;
 
-                      // Format date based on time range
                       const dateFormat = days > 90 ? "MMM dd" : "MMM dd";
                       data.push({
                         date: format(date, dateFormat),
-                        buyersPerHundred: parseFloat(rollingAverage.toFixed(2)),
+                        buyersPerHundred: parseFloat(buyersPerHundred.toFixed(2)),
                       });
                     }
 
@@ -1397,66 +1375,46 @@ export default function AdminDashboard() {
                         days = 30;
                     }
 
-                    // Pre-calculate daily metrics for rolling average
-                    const dailyMetrics: Array<{ date: Date; gainPerHundred: number }> = [];
+                    const paidPurchases = rawPurchases.filter(
+                      (p) => p.price_paid > 0 && !p.bundle_id
+                    );
 
-                    // Calculate metrics for a longer period to ensure we have enough data for rolling averages
-                    const calculationDays = days + 30; // Add 30 days for rolling average calculation
-
-                    for (let i = calculationDays - 1; i >= 0; i--) {
+                    // Rolling 30-day: for each day X, revenue and sign-ups in the last 30 days ending on X
+                    // Gain per 100 sign-ups = € revenue per 100 sign-ups in that window
+                    for (let i = days - 1; i >= 0; i--) {
                       const date = subDays(now, i);
-                      const dayStart = startOfDay(date);
-                      const dayEnd = endOfDay(date);
+                      const windowEnd = endOfDay(date);
+                      const windowStart = startOfDay(subDays(date, 29));
 
-                      // Count registered users up to this date
-                      const registeredUsers = rawGameSaves.filter((save) => {
-                        const createdDate = parseISO(save.created_at);
-                        return createdDate <= dayEnd;
-                      }).length;
+                      // Sign-ups in last 30 days (unique users who created in window)
+                      const signUpUserIds = new Set(
+                        rawGameSaves
+                          .filter((save) => {
+                            const createdDate = parseISO(save.created_at);
+                            return createdDate >= windowStart && createdDate <= windowEnd;
+                          })
+                          .map((s) => s.user_id)
+                      );
+                      const signUps = signUpUserIds.size;
 
-                      // Calculate daily revenue
-                      const dailyRevenue = rawPurchases
-                        .filter((p) => p.price_paid > 0 && !p.bundle_id)
-                        .filter((purchase) => {
-                          const purchaseDate = parseISO(purchase.purchased_at);
-                          return purchaseDate >= dayStart && purchaseDate <= dayEnd;
+                      // Revenue in this 30-day window (cents)
+                      const windowRevenueCents = paidPurchases
+                        .filter((p) => {
+                          const purchaseDate = parseISO(p.purchased_at);
+                          return purchaseDate >= windowStart && purchaseDate <= windowEnd;
                         })
                         .reduce((sum, p) => sum + p.price_paid, 0);
 
-                      // Revenue per 100 users (in cents, so divide by 10000 for euros per 100 users)
-                      const gainPerHundred = registeredUsers > 0
-                        ? (dailyRevenue / 100) / (registeredUsers / 100)
-                        : 0;
+                      // € per 100 sign-ups
+                      const gainPerHundred =
+                        signUps > 0
+                          ? (windowRevenueCents / 100) / (signUps / 100)
+                          : 0;
 
-                      dailyMetrics.push({
-                        date,
-                        gainPerHundred,
-                      });
-                    }
-
-                    // Calculate 30-day rolling averages
-                    for (let i = days - 1; i >= 0; i--) {
-                      const date = subDays(now, i);
-                      const daysSinceStart = calculationDays - 1 - i; // How many days of data are available up to this point
-                      const lookbackDays = Math.min(30, daysSinceStart + 1); // Use up to 30 days, but not more than available
-                      const startIndex = calculationDays - 1 - i - lookbackDays + 1; // Start from (current day - lookbackDays + 1)
-                      const endIndex = calculationDays - 1 - i;
-
-                      let sum = 0;
-                      let count = 0;
-
-                      for (let j = Math.max(0, startIndex); j <= Math.min(dailyMetrics.length - 1, endIndex); j++) {
-                        sum += dailyMetrics[j].gainPerHundred;
-                        count++;
-                      }
-
-                      const rollingAverage = count > 0 ? sum / count : 0;
-
-                      // Format date based on time range
                       const dateFormat = days > 90 ? "MMM dd" : "MMM dd";
                       data.push({
                         date: format(date, dateFormat),
-                        gainPerHundred: parseFloat(rollingAverage.toFixed(2)),
+                        gainPerHundred: parseFloat(gainPerHundred.toFixed(2)),
                       });
                     }
 
