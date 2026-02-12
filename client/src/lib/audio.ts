@@ -138,6 +138,8 @@ export class AudioManager {
       if (sound.playing && sound.playing()) return;
 
       if (fadeInDuration > 0) {
+        // Clear any stale fade handlers from previous stop operations
+        sound.off('fade');
         sound.volume(0);
         sound.play();
         sound.fade(0, volume, fadeInDuration * 1000);
@@ -155,6 +157,8 @@ export class AudioManager {
 
     if (fadeOutDuration > 0) {
       try {
+        // Clear any stale fade handlers from previous stop/play cycles
+        sound.off('fade');
         const currentVolume = typeof sound.volume === 'function' ? (sound.volume() ?? 0) : 0;
         sound.fade(currentVolume, 0, fadeOutDuration * 1000);
         sound.once('fade', () => {

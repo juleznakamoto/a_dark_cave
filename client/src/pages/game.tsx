@@ -19,8 +19,6 @@ export default function Game() {
     setShopDialogOpen,
   } = useGameStore();
   const [isInitialized, setIsInitialized] = useState(false);
-  const [shouldStartMusic, setShouldStartMusic] = useState(false);
-
   useEffect(() => {
     logger.log("[GAME PAGE] Initializing game");
     const initializeGame = async () => {
@@ -237,6 +235,11 @@ export default function Game() {
         // This prevents loading large audio files before user interaction
         if (currentState.flags.gameStarted || isGamePath) {
           await audioManager.loadGameSounds();
+          // Start background music after sounds are loaded (handles page reload case)
+          // startBackgroundMusic sets the volume and respects the mute state internally
+          if (!currentState.musicMuted) {
+            await audioManager.startBackgroundMusic(0.3);
+          }
         }
 
         // Start game loop
@@ -260,46 +263,6 @@ export default function Game() {
       stopGameLoop();
     };
   }, []); // Empty dependency array - only run once on mount
-
-  // Start background music on first user interaction (required by browser autoplay policies)
-  useEffect(() => {
-    if (!shouldStartMusic) return;
-
-    const handleUserGesture = async () => {
-      try {
-        const { audioManager } = await import("@/lib/audio");
-        const currentState = useGameStore.getState();
-
-        // Sync music and SFX mute state before starting music
-        audioManager.musicMute(currentState.musicMuted);
-        audioManager.sfxMute(currentState.sfxMuted);
-
-        // Only start music if not muted
-        if (!currentState.musicMuted) {
-          await audioManager.startBackgroundMusic(0.125);
-        }
-        setShouldStartMusic(false);
-
-        // Remove listeners after music starts
-        document.removeEventListener("click", handleUserGesture);
-        document.removeEventListener("keydown", handleUserGesture);
-        document.removeEventListener("touchstart", handleUserGesture);
-      } catch (error) {
-        logger.warn("Failed to start background music:", error);
-      }
-    };
-
-    // Listen for various user gestures
-    document.addEventListener("click", handleUserGesture);
-    document.addEventListener("keydown", handleUserGesture);
-    document.addEventListener("touchstart", handleUserGesture);
-
-    return () => {
-      document.removeEventListener("click", handleUserGesture);
-      document.removeEventListener("keydown", handleUserGesture);
-      document.removeEventListener("touchstart", handleUserGesture);
-    };
-  }, [shouldStartMusic]);
 
   if (!isInitialized) {
     return <div className="min-h-screen bg-black"></div>; // Black screen while loading
