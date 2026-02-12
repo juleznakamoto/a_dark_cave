@@ -186,16 +186,24 @@
         ]
       }
     </script>
+    <style>
+      html,
+      body {
+        background-color: #000;
+        color: #888;
+        margin: 0;
+        padding: 0;
+        min-height: 100%;
+      }
+
+      #root {
+        min-height: 100vh;
+        background-color: #000;
+      }
+    </style>
   </head>
   <body>
     <div id="root">
-      <!--
-        Static fallback for non-JS crawlers (Bing, DuckDuckGo, social link previews).
-        React's createRoot().render() replaces this entire content on mount.
-        The text starts invisible and only fades in after 3s — by then React has
-        already taken over, so users on normal connections never see this.
-        On very slow connections, it serves as a graceful loading indicator.
-      -->
       <style>
         @keyframes seo-fade {
           0% {
@@ -210,8 +218,16 @@
           animation: seo-fade 1s ease-in 3s forwards;
         }
       </style>
-      <main class="seo-fallback" style="background-color: #000; color: #888; font-family: monospace; padding: 2rem;">
-        <h1 style="color: #999;">A Dark Cave is a text based survival game</h1>
+      <main
+        class="seo-fallback"
+        style="
+          background-color: #000;
+          color: #888;
+          font-family: monospace;
+          padding: 2rem;
+        "
+      >
+        <h1 style="color: #999">A Dark Cave is a text based survival game</h1>
 
         <p>
           A Dark Cave is a minimalist text based survival and settlement
