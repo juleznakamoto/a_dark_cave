@@ -46,11 +46,10 @@ export interface BubblyButtonHandle {
 const BUILD_TONES = [
   tailwindToHex("neutral-800"),
   tailwindToHex("neutral-900"),
-  tailwindToHex("neutral-950/90"),
   tailwindToHex("neutral-950"),
   tailwindToHex("stone-800"),
+  tailwindToHex("stone-700"),
   tailwindToHex("stone-900"),
-  tailwindToHex("stone-950/90"),
   tailwindToHex("stone-950"),
 ];
 
@@ -58,12 +57,13 @@ const BUILD_TONES = [
 export const CRAFT_TONES = [
   tailwindToHex("amber-900"),
   tailwindToHex("amber-950"),
+  tailwindToHex("yellow-600"),
   tailwindToHex("yellow-900"),
   tailwindToHex("orange-900"),
-  tailwindToHex("orange-950"),
+  tailwindToHex("red-600"),
+  tailwindToHex("red-800"),
   tailwindToHex("red-900"),
   tailwindToHex("red-950"),
-
 ];
 
 const DEFAULT_PARTICLE_CONFIG: Required<ParticleConfig> = {
@@ -72,7 +72,7 @@ const DEFAULT_PARTICLE_CONFIG: Required<ParticleConfig> = {
   durationMin: 0.75,
   durationMax: 1.25,
   distanceMin: 40,
-  distanceMax: 100,
+  distanceMax: 80,
   sizeMin: 5,
   sizeMax: 25,
   glowDuration: 700,
@@ -88,12 +88,13 @@ export const BUILD_PARTICLE_CONFIG: Partial<ParticleConfig> = {
 /** Craft preset - amber/copper tones, snappier/shorter animation */
 export const CRAFT_PARTICLE_CONFIG: Partial<ParticleConfig> = {
   colors: CRAFT_TONES,
-  durationMin: 1,
-  durationMax: 1.8,
-  distanceMin: 30,
-  distanceMax: 70,
-  sizeMin: 4,
-  sizeMax: 18,
+  count: 150,
+  durationMin: 0.5,
+  durationMax: 0.9,
+  distanceMin: 25,
+  distanceMax: 55,
+  sizeMin: 1,
+  sizeMax: 6,
   glowDuration: 500,
   bubbleRemoveDelay: 2500,
 };
