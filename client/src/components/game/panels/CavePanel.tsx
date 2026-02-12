@@ -10,7 +10,13 @@ import { getResourceGainTooltip } from "@/game/rules/tooltips";
 import CooldownButton from "@/components/CooldownButton";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useExplosionEffect } from "@/components/ui/explosion-effect";
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import {
+  BubblyButtonGlobalPortal,
+  generateParticleData,
+  CRAFT_PARTICLE_CONFIG,
+  type BubbleWithParticles,
+} from "@/components/ui/bubbly-button";
 import { ButtonLevelBadge } from "@/components/game/ButtonLevelBadge";
 import { ACTION_TO_UPGRADE_KEY } from "@/game/buttonUpgrades";
 
@@ -21,6 +27,18 @@ export default function CavePanel() {
 
   // Separate refs for each explosion button
   const blastPortalRef = useRef<HTMLButtonElement>(null);
+
+  // Craft button particle animation
+  const [craftBubbles, setCraftBubbles] = useState<BubbleWithParticles[]>([]);
+  const craftBubbleIdCounter = useRef(0);
+  const handleCraftAnimationTrigger = (x: number, y: number) => {
+    const id = `craft-bubble-${craftBubbleIdCounter.current++}-${Date.now()}`;
+    const particles = generateParticleData(CRAFT_PARTICLE_CONFIG);
+    setCraftBubbles((prev) => [...prev, { id, x, y, particles }]);
+    setTimeout(() => {
+      setCraftBubbles((prev) => prev.filter((b) => b.id !== id));
+    }, CRAFT_PARTICLE_CONFIG.bubbleRemoveDelay ?? 2500);
+  };
 
   // Define action groups with their actions
   const actionGroups = [
@@ -242,6 +260,7 @@ export default function CavePanel() {
           variant="outline"
           className={`hover:bg-transparent hover:text-foreground ${shouldGlow ? "focus-glow" : ""}`}
           tooltip={tooltipContent}
+          onAnimationTrigger={isCraftAction ? handleCraftAnimationTrigger : undefined}
           onMouseEnter={() => {
             if (state.buildings.inkwardenAcademy > 0) {
               const resources = getResourcesFromActionCost(actionId, state);
@@ -281,6 +300,7 @@ export default function CavePanel() {
         disabled={!canExecute}
         variant="outline"
         className={`hover:bg-transparent hover:text-foreground ${shouldGlow ? "focus-glow" : ""}`}
+        onAnimationTrigger={isCraftAction ? handleCraftAnimationTrigger : undefined}
         onMouseEnter={() => {
           if (state.buildings.inkwardenAcademy > 0) {
             const resources = getResourcesFromActionCost(actionId, state);
@@ -309,6 +329,7 @@ export default function CavePanel() {
   };
 
   return (
+    <>
     <ScrollArea className="h-full w-full">
       {explosionEffect.ExplosionEffectRenderer()}
       <div className="space-y-4 mt-2 mb-2 pl-[3px]">
@@ -388,5 +409,7 @@ export default function CavePanel() {
       </div>
       <ScrollBar orientation="vertical" />
     </ScrollArea>
+    <BubblyButtonGlobalPortal bubbles={craftBubbles} />
+    </>
   );
 }
