@@ -218,7 +218,8 @@ export class AudioManager {
       'combat': '/sounds/combat.wav',
       'feedFire': '/sounds/feed_fire.wav',
       'sleep': '/sounds/sleep.wav',
-      'buildingComplete': '/sounds/building_complete.wav'
+      'buildingComplete': '/sounds/building_complete.wav',
+      'craft': '/sounds/craft.wav'
     };
 
     await Promise.all(

@@ -1125,6 +1125,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
       });
     }
 
+    // Play craft sound for successful crafting actions
+    if (actionId.startsWith("craft")) {
+      import("@/lib/audio").then(({ audioManager }) => {
+        audioManager.playSound("craft");
+      });
+    }
+
     // Schedule updates
     if (
       result.stateUpdates.tools ||
