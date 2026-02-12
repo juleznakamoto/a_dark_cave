@@ -8,9 +8,27 @@ import { cn } from "@/lib/utils";
 import { tailwindToHex } from "@/lib/tailwindColors";
 import type { ButtonProps } from "@/components/ui/button";
 
+/** Full configuration for particle animation - all params optional with defaults */
+export interface ParticleConfig {
+  colors?: string[];
+  count?: number;
+  durationMin?: number;
+  durationMax?: number;
+  distanceMin?: number;
+  distanceMax?: number;
+  sizeMin?: number;
+  sizeMax?: number;
+  glowDuration?: number;
+  bubbleRemoveDelay?: number;
+  /** Cubic bezier for framer-motion, e.g. [0, 0, 0.5, 1] */
+  ease?: number[];
+}
+
 interface BubblyButtonProps extends ButtonProps {
   bubbleColor?: string;
   bubbleColors?: string[];
+  /** Full particle config - overrides bubbleColors when both provided */
+  particleConfig?: Partial<ParticleConfig>;
   onAnimationTrigger?: (x: number, y: number) => void;
 }
 
@@ -24,8 +42,8 @@ export interface BubblyButtonHandle {
   triggerAnimation: (x: number, y: number) => void;
 }
 
-// 4 gray tones from light to dark using Tailwind colors
-const TONES = [
+// Build/stone tones (neutral, gray)
+const BUILD_TONES = [
   tailwindToHex("neutral-800"),
   tailwindToHex("neutral-900"),
   tailwindToHex("neutral-950/90"),
@@ -36,6 +54,63 @@ const TONES = [
   tailwindToHex("stone-950"),
 ];
 
+// Craft tones (amber, copper, bronze) - for craft action buttons
+export const CRAFT_TONES = [
+  tailwindToHex("amber-700"),
+  tailwindToHex("amber-800"),
+  tailwindToHex("amber-900"),
+  tailwindToHex("amber-950"),
+  tailwindToHex("yellow-700"),
+  tailwindToHex("amber-600"),
+  tailwindToHex("orange-800"),
+  tailwindToHex("orange-900"),
+];
+
+const DEFAULT_PARTICLE_CONFIG: Required<ParticleConfig> = {
+  colors: BUILD_TONES,
+  count: 150,
+  durationMin: 2,
+  durationMax: 3,
+  distanceMin: 40,
+  distanceMax: 100,
+  sizeMin: 5,
+  sizeMax: 25,
+  glowDuration: 700,
+  bubbleRemoveDelay: 3000,
+  ease: [0, 0, 0.5, 1],
+};
+
+/** Build preset - stone/neutral tones, default sizing */
+export const BUILD_PARTICLE_CONFIG: Partial<ParticleConfig> = {
+  colors: BUILD_TONES,
+};
+
+/** Craft preset - amber/copper tones, snappier/shorter animation */
+export const CRAFT_PARTICLE_CONFIG: Partial<ParticleConfig> = {
+  colors: CRAFT_TONES,
+  durationMin: 1,
+  durationMax: 1.8,
+  distanceMin: 30,
+  distanceMax: 70,
+  sizeMin: 4,
+  sizeMax: 18,
+  glowDuration: 500,
+  bubbleRemoveDelay: 2500,
+};
+
+function mergeParticleConfig(
+  base: Partial<ParticleConfig>,
+  override?: Partial<ParticleConfig>
+): Required<ParticleConfig> {
+  if (!override) return { ...DEFAULT_PARTICLE_CONFIG, ...base };
+  return {
+    ...DEFAULT_PARTICLE_CONFIG,
+    ...base,
+    ...override,
+    colors: override.colors ?? base.colors ?? DEFAULT_PARTICLE_CONFIG.colors,
+  };
+}
+
 const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
   (
     {
@@ -44,6 +119,7 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
       children,
       bubbleColor = "#8b7355",
       bubbleColors,
+      particleConfig,
       onAnimationTrigger,
       ...props
     },
@@ -53,6 +129,11 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
     const [isGlowing, setIsGlowing] = useState(false);
     const buttonRef = useRef<HTMLButtonElement>(null);
     const bubbleIdCounter = useRef(0);
+
+    const config = mergeParticleConfig(
+      bubbleColors ? { colors: bubbleColors } : {},
+      particleConfig
+    );
 
     const triggerAnimation = (x: number, y: number) => {
       // Always use center of button for animation
@@ -74,13 +155,12 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
       // Remove bubble after animation completes (longer to account for varied durations)
       setTimeout(() => {
         setBubbles((prev) => prev.filter((b) => b.id !== newBubble.id));
-      }, 3000);
+      }, config.bubbleRemoveDelay);
 
-      // Trigger glow effect for 1 second
       setIsGlowing(true);
       setTimeout(() => {
         setIsGlowing(false);
-      }, 700);
+      }, config.glowDuration);
     };
 
     // Expose triggerAnimation method via ref
@@ -133,13 +213,12 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
         >
           <AnimatePresence>
             {bubbles.map((bubble) => {
-              // Generate 150 bubbles (matches global portal)
-              const particleBubbles = Array.from({ length: 150 }).map(() => {
+              const particleBubbles = Array.from({ length: config.count }).map(() => {
                 const angle = Math.random() * Math.PI * 2;
-                const distance = 40 + Math.random() * 60;
-                const size = 5 + Math.random() * 20;
-                const color = TONES[Math.floor(Math.random() * TONES.length)];
-                const duration = 2 + Math.random() * 1.0;
+                const distance = config.distanceMin + Math.random() * (config.distanceMax - config.distanceMin);
+                const size = config.sizeMin + Math.random() * (config.sizeMax - config.sizeMin);
+                const color = config.colors[Math.floor(Math.random() * config.colors.length)];
+                const duration = config.durationMin + Math.random() * (config.durationMax - config.durationMin);
 
                 return { size, angle, distance, color, duration };
               });
@@ -178,7 +257,7 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
                     }}
                     transition={{
                       duration: b.duration,
-                      ease: [0, 0, 0.5, 1],
+                      ease: config.ease as [number, number, number, number],
                     }}
                   />
                 );
@@ -196,16 +275,19 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
             className,
           )}
           style={
-            {
-              boxShadow: isGlowing
-                ? `0 0 15px ${TONES[2]}99, 0 0 30px ${TONES[3]}66, 0 0 40px ${TONES[4]}33`
-                : undefined,
-              transition: "box-shadow 0.15s ease-out",
-              filter: isGlowing ? "brightness(1.2)" : undefined,
-              position: "relative",
-              zIndex: 10,
-              transform: "translateZ(0)",
-            } as React.CSSProperties
+            (() => {
+              const c = config.colors;
+              return {
+                boxShadow: isGlowing
+                  ? `0 0 15px ${c[2] ?? c[0]}99, 0 0 30px ${c[3] ?? c[1]}66, 0 0 40px ${c[4] ?? c[2]}33`
+                  : undefined,
+                transition: "box-shadow 0.15s ease-out",
+                filter: isGlowing ? "brightness(1.2)" : undefined,
+                position: "relative",
+                zIndex: 10,
+                transform: "translateZ(0)",
+              } as React.CSSProperties;
+            })()
           }
           {...props}
         >
@@ -218,14 +300,19 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
 
 BubblyButton.displayName = "BubblyButton";
 
-// Helper to generate particle data once
-export function generateParticleData() {
-  return Array.from({ length: 150 }).map(() => {
+// Helper to generate particle data for global portal (accepts full config or colors array for legacy)
+export function generateParticleData(
+  configOrColors?: Partial<ParticleConfig> | string[]
+): Array<{ size: number; color: string; duration: number; endX: number; endY: number }> {
+  const config = mergeParticleConfig(
+    Array.isArray(configOrColors) ? { colors: configOrColors } : configOrColors ?? {}
+  );
+  return Array.from({ length: config.count }).map(() => {
     const angle = Math.random() * Math.PI * 2;
-    const distance = 40 + Math.random() * 60;
-    const size = 5 + Math.random() * 20;
-    const color = TONES[Math.floor(Math.random() * TONES.length)];
-    const duration = 0.5 + Math.random() * 0.5;
+    const distance = config.distanceMin + Math.random() * (config.distanceMax - config.distanceMin);
+    const size = config.sizeMin + Math.random() * (config.sizeMax - config.sizeMin);
+    const color = config.colors[Math.floor(Math.random() * config.colors.length)];
+    const duration = config.durationMin + Math.random() * (config.durationMax - config.durationMin);
     const endX = Math.cos(angle) * distance;
     const endY = Math.sin(angle) * distance;
     return { size, color, duration, endX, endY };

@@ -1,6 +1,5 @@
-
 import { useState } from "react";
-import { BubblyButton, BubblyButtonGlobalPortal } from "@/components/ui/bubbly-button";
+import { BubblyButton, BubblyButtonGlobalPortal, CRAFT_PARTICLE_CONFIG } from "@/components/ui/bubbly-button";
 
 // ============================================================
 // Build Button - Non-Upgradeable (Disappearing)
@@ -69,6 +68,24 @@ function UpgradeableBuildButton() {
 }
 
 // ============================================================
+// Craft Button - Adapted from build animation
+// Uses amber/copper tones for craft feel, same structure for reuse in craft actions
+// ============================================================
+function CraftButton() {
+  return (
+    <div className="relative">
+      <BubblyButton
+        variant="outline"
+        particleConfig={CRAFT_PARTICLE_CONFIG}
+        className="bg-amber-900/90 hover:bg-amber-800 border-amber-600/80"
+      >
+        Craft Stone Axe
+      </BubblyButton>
+    </div>
+  );
+}
+
+// ============================================================
 // Main Test Page
 // ============================================================
 export default function ButtonTest() {
@@ -78,7 +95,7 @@ export default function ButtonTest() {
         Build Button Test - Bubbly Animations
       </h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl w-full">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl w-full">
         <div className="border rounded-lg p-6 text-center space-y-4">
           <h3 className="text-sm font-semibold">Non-Upgradeable Building</h3>
           <p className="text-xs text-muted-foreground">
@@ -99,6 +116,17 @@ export default function ButtonTest() {
             (e.g., Wooden Hut - can be upgraded)
           </p>
           <UpgradeableBuildButton />
+        </div>
+
+        <div className="border rounded-lg p-6 text-center space-y-4">
+          <h3 className="text-sm font-semibold">Craft Action (Adapted)</h3>
+          <p className="text-xs text-muted-foreground">
+            Custom particleConfig: colors, duration, distance, size, count, glow, ease
+          </p>
+          <p className="text-xs text-muted-foreground italic">
+            (CRAFT_PARTICLE_CONFIG preset - snappier, shorter range)
+          </p>
+          <CraftButton />
         </div>
       </div>
     </div>
