@@ -1125,8 +1125,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
       });
     }
 
-    // Play craft sound for successful crafting actions
-    if (actionId.startsWith("craft")) {
+    // Play craft sound for successful crafting actions (exclude torches, totems, and bombs)
+    const craftSoundExcluded = ["craftTorch", "craftTorches", "craftTorches3", "craftTorches4", "craftTorches5", "craftTorches10", "craftBoneTotem", "craftLeatherTotem", "craftEmberBomb", "craftAshfireBomb", "craftVoidBomb"];
+    if (actionId.startsWith("craft") && !craftSoundExcluded.includes(actionId)) {
       import("@/lib/audio").then(({ audioManager }) => {
         audioManager.playSound("craft");
       });
