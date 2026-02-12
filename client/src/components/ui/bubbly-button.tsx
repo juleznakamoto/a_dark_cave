@@ -69,8 +69,8 @@ export const CRAFT_TONES = [
 const DEFAULT_PARTICLE_CONFIG: Required<ParticleConfig> = {
   colors: BUILD_TONES,
   count: 150,
-  durationMin: 2,
-  durationMax: 3,
+  durationMin: 0.75,
+  durationMax: 1.25,
   distanceMin: 40,
   distanceMax: 100,
   sizeMin: 5,
