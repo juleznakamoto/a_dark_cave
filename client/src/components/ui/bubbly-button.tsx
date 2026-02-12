@@ -56,14 +56,14 @@ const BUILD_TONES = [
 
 // Craft tones (amber, copper, bronze) - for craft action buttons
 export const CRAFT_TONES = [
-  tailwindToHex("amber-700"),
-  tailwindToHex("amber-800"),
   tailwindToHex("amber-900"),
   tailwindToHex("amber-950"),
-  tailwindToHex("yellow-700"),
-  tailwindToHex("amber-600"),
-  tailwindToHex("orange-800"),
+  tailwindToHex("yellow-900"),
   tailwindToHex("orange-900"),
+  tailwindToHex("orange-950"),
+  tailwindToHex("red-900"),
+  tailwindToHex("red-950"),
+
 ];
 
 const DEFAULT_PARTICLE_CONFIG: Required<ParticleConfig> = {
