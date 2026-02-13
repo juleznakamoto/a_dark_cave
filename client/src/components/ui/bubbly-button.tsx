@@ -11,6 +11,10 @@ import type { ButtonProps } from "@/components/ui/button";
 /** Full configuration for particle animation - all params optional with defaults */
 export interface ParticleConfig {
   colors?: string[];
+  /** Colors only used for particles with size <= smallParticleMaxSize */
+  smallParticleOnlyColors?: string[];
+  /** Max size (inclusive) for smallParticleOnlyColors. Default 2. */
+  smallParticleMaxSize?: number;
   count?: number;
   durationMin?: number;
   durationMax?: number;
@@ -68,6 +72,8 @@ export const CRAFT_TONES = [
 
 const DEFAULT_PARTICLE_CONFIG: Required<ParticleConfig> = {
   colors: BUILD_TONES,
+  smallParticleOnlyColors: [],
+  smallParticleMaxSize: 2,
   count: 150,
   durationMin: 0.75,
   durationMax: 1.25,
@@ -80,14 +86,25 @@ const DEFAULT_PARTICLE_CONFIG: Required<ParticleConfig> = {
   ease: [0, 0, 0.5, 1],
 };
 
+const BUILD_SMALL_PARTICLE_ONLY_COLORS = [tailwindToHex("gray-100")];
+
 /** Build preset - stone/neutral tones, default sizing */
 export const BUILD_PARTICLE_CONFIG: Partial<ParticleConfig> = {
   colors: BUILD_TONES,
+  smallParticleOnlyColors: BUILD_SMALL_PARTICLE_ONLY_COLORS,
+  smallParticleMaxSize: 2,
 };
+
+const CRAFT_SMALL_PARTICLE_ONLY_COLORS = [
+  tailwindToHex("yellow-600"),
+  tailwindToHex("red-600"),
+];
 
 /** Craft preset - amber/copper tones, snappier/shorter animation */
 export const CRAFT_PARTICLE_CONFIG: Partial<ParticleConfig> = {
   colors: CRAFT_TONES,
+  smallParticleOnlyColors: CRAFT_SMALL_PARTICLE_ONLY_COLORS,
+  smallParticleMaxSize: 2,
   count: 150,
   durationMin: 0.5,
   durationMax: 0.9,
@@ -218,7 +235,11 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
                 const angle = Math.random() * Math.PI * 2;
                 const distance = config.distanceMin + Math.random() * (config.distanceMax - config.distanceMin);
                 const size = config.sizeMin + Math.random() * (config.sizeMax - config.sizeMin);
-                const color = config.colors[Math.floor(Math.random() * config.colors.length)];
+                const colorPool =
+                  config.smallParticleOnlyColors?.length && size > config.smallParticleMaxSize
+                    ? config.colors.filter((c) => !config.smallParticleOnlyColors!.includes(c))
+                    : config.colors;
+                const color = colorPool[Math.floor(Math.random() * colorPool.length)] ?? config.colors[0];
                 const duration = config.durationMin + Math.random() * (config.durationMax - config.durationMin);
 
                 return { size, angle, distance, color, duration };
@@ -312,7 +333,11 @@ export function generateParticleData(
     const angle = Math.random() * Math.PI * 2;
     const distance = config.distanceMin + Math.random() * (config.distanceMax - config.distanceMin);
     const size = config.sizeMin + Math.random() * (config.sizeMax - config.sizeMin);
-    const color = config.colors[Math.floor(Math.random() * config.colors.length)];
+    const colorPool =
+      config.smallParticleOnlyColors?.length && size > config.smallParticleMaxSize
+        ? config.colors.filter((c) => !config.smallParticleOnlyColors!.includes(c))
+        : config.colors;
+    const color = colorPool[Math.floor(Math.random() * colorPool.length)] ?? config.colors[0];
     const duration = config.durationMin + Math.random() * (config.durationMax - config.durationMin);
     const endX = Math.cos(angle) * distance;
     const endY = Math.sin(angle) * distance;
