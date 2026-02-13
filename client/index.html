@@ -1,101 +1,70 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=5, user-scalable=yes, viewport-fit=cover"
-    />
-    <meta name="mobile-web-app-capable" content="yes" />
 
-    <!-- Primary Meta Tags -->
-    <title>A Dark Cave - Survive the Darkness, Build Your Settlement</title>
-    <meta
-      name="title"
-      content="A Dark Cave - Survive the Darkness, Build Your Settlement"
-    />
-    <meta
-      name="description"
-      content="A text-based survival and settlement building game. Start with nothing, explore an ancient cave and build your way to survival. Gather resources, craft tools, manage villagers, and uncover dark secrets."
-    />
-    <meta name="author" content="A Dark Cave" />
-    <meta name="robots" content="index, follow" />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=5, user-scalable=yes, viewport-fit=cover" />
+  <meta name="mobile-web-app-capable" content="yes" />
 
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://a-dark-cave.com/" />
-    <meta
-      property="og:title"
-      content="A Dark Cave - Survive the Darkness, Build Your Settlement"
-    />
-    <meta
-      property="og:description"
-      content="A text-based survival and settlement building game. Start with nothing, explore an ancient cave and build your way to survival."
-    />
-    <meta
-      property="og:image"
-      content="https://a-dark-cave.com/apple-touch-icon.png"
-    />
-    <meta property="og:site_name" content="A Dark Cave" />
+  <!-- Primary Meta Tags -->
+  <title>A Dark Cave - Survive the Darkness, Build Your Settlement</title>
+  <meta name="title" content="A Dark Cave - Survive the Darkness, Build Your Settlement" />
+  <meta name="description"
+    content="A text-based survival and settlement building game. Start with nothing, explore an ancient cave and build your way to survival. Gather resources, craft tools, manage villagers, and uncover dark secrets." />
+  <meta name="author" content="A Dark Cave" />
+  <meta name="robots" content="index, follow" />
 
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:url" content="https://a-dark-cave.com/" />
-    <meta
-      name="twitter:title"
-      content="A Dark Cave - Survive the Darkness, Build Your Settlement"
-    />
-    <meta
-      name="twitter:description"
-      content="A text-based survival and settlement building game. Start with nothing in the depths of an ancient cave and build your way to survival."
-    />
-    <meta
-      name="twitter:image"
-      content="https://a-dark-cave.com/apple-touch-icon.png"
-    />
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://a-dark-cave.com/" />
+  <meta property="og:title" content="A Dark Cave - Survive the Darkness, Build Your Settlement" />
+  <meta property="og:description"
+    content="A text-based survival and settlement building game. Start with nothing, explore an ancient cave and build your way to survival." />
+  <meta property="og:image" content="https://a-dark-cave.com/apple-touch-icon.png" />
+  <meta property="og:site_name" content="A Dark Cave" />
 
-    <!-- Canonical URL -->
-    <link rel="canonical" href="https://a-dark-cave.com/" />
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content="https://a-dark-cave.com/" />
+  <meta name="twitter:title" content="A Dark Cave - Survive the Darkness, Build Your Settlement" />
+  <meta name="twitter:description"
+    content="A text-based survival and settlement building game. Start with nothing in the depths of an ancient cave and build your way to survival." />
+  <meta name="twitter:image" content="https://a-dark-cave.com/apple-touch-icon.png" />
 
-    <!-- Theme Color -->
-    <meta name="theme-color" content="#1a1a1a" />
-    <meta name="msapplication-TileColor" content="#1a1a1a" />
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://a-dark-cave.com/" />
 
-    <!-- Favicons -->
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <!-- Theme Color -->
+  <meta name="theme-color" content="#1a1a1a" />
+  <meta name="msapplication-TileColor" content="#1a1a1a" />
 
-    <!-- Web App Manifest -->
-    <link rel="manifest" href="/manifest.json" />
+  <!-- Favicons -->
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 
-    <!-- Application Tags -->
-    <meta name="application-name" content="A Dark Cave" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta
-      name="apple-mobile-web-app-status-bar-style"
-      content="black-translucent"
-    />
-    <meta name="apple-touch-fullscreen" content="yes" />
-    <meta name="apple-mobile-web-app-title" content="A Dark Cave" />
-    <meta name="format-detection" content="telephone=no" />
+  <!-- Web App Manifest -->
+  <link rel="manifest" href="/manifest.json" />
 
-    <!-- Playlight SDK CSS - Loaded asynchronously to prevent render blocking -->
-    <link
-      rel="preload"
-      href="https://sdk.playlight.dev/playlight-sdk.css"
-      as="style"
-      onload="this.onload=null;this.rel='stylesheet'"
-    />
-    <noscript
-      ><link
-        rel="stylesheet"
-        href="https://sdk.playlight.dev/playlight-sdk.css"
-    /></noscript>
+  <!-- Application Tags -->
+  <meta name="application-name" content="A Dark Cave" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-touch-fullscreen" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="A Dark Cave" />
+  <meta name="format-detection" content="telephone=no" />
 
-    <!-- Structured Data (JSON-LD) - WebApplication -->
-    <script type="application/ld+json">
+  <!-- Playlight SDK CSS - Loaded asynchronously to prevent render blocking -->
+  <link rel="preload" href="https://sdk.playlight.dev/playlight-sdk.css" as="style"
+    onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript>
+    <link rel="stylesheet" href="https://sdk.playlight.dev/playlight-sdk.css" />
+  </noscript>
+
+  <!-- Structured Data (JSON-LD) - WebApplication -->
+  <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "WebApplication",
@@ -138,8 +107,8 @@
       }
     </script>
 
-    <!-- Game Structured Data -->
-    <script type="application/ld+json">
+  <!-- Game Structured Data -->
+  <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "VideoGame",
@@ -160,8 +129,8 @@
       }
     </script>
 
-    <!-- Organization Structured Data -->
-    <script type="application/ld+json">
+  <!-- Organization Structured Data -->
+  <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "Organization",
@@ -171,8 +140,8 @@
       }
     </script>
 
-    <!-- Breadcrumb Structured Data -->
-    <script type="application/ld+json">
+  <!-- Breadcrumb Structured Data -->
+  <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
@@ -186,62 +155,104 @@
         ]
       }
     </script>
-    <style>
-      html,
-      body {
-        background-color: #000;
-        color: #888;
-        margin: 0;
-        padding: 0;
-        min-height: 100%;
-      }
+  <style>
+    html,
+    body {
+      background-color: #000;
+      color: #888;
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+    }
 
-      #root {
-        min-height: 100vh;
-        background-color: #000;
-      }
-    </style>
-  </head>
-  <body>
-    <div id="root">
-      <style>
-        @keyframes seo-fade {
-          0% {
-            opacity: 0;
-          }
-          100% {
-            opacity: 1;
-          }
-        }
-        .seo-fallback {
-          opacity: 0;
-          animation: seo-fade 1s ease-in 3s forwards;
-        }
-      </style>
-      <main
-        class="seo-fallback"
-        style="
+    #root {
+      min-height: 100vh;
+      background-color: #000;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="root">
+    <main id="seo-fallback" style="
           background-color: #000;
           color: #888;
           font-family: monospace;
           padding: 2rem;
-        "
-      >
-        <h1 style="color: #999">A Dark Cave is a text based survival game</h1>
+        ">
+      <h1 style="color: #999">
+        A Dark Cave – Text-Based Survival &amp; Incremental Browser Game
+      </h1>
 
-        <p>
-          A Dark Cave is a minimalist text based survival and settlement
-          building game playable directly in your browser. Start with nothing,
-          gather resources, manage villagers and uncover dark secrets in the
-          depths of an ancient cave.
-        </p>
+      <p>
+        A Dark Cave is a free text-based survival game playable in your
+        browser. Explore an ancient cave, find the remains of a lost
+        civilization, and uncover their dark secrets. Gather resources, build
+        a settlement, and manage villagers as you push deeper into a world
+        that doesn't want to be found. No download required.
+      </p>
 
-        <p>
-          An incremental RPG inspired by A Dark Room, Darkest Dungeon, The
-          Ensign, Candy Box, Kittens Game, Eldrum and Lovecraftian horror.
-        </p>
-      </main>
-    </div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+      <h2 style="color: #aaa">An Incremental Survival RPG</h2>
+
+      <p>
+        Inspired by A Dark Room, Candy Box, Kittens Game, and Darkest Dungeon.
+        Incremental idle mechanics meet settlement building, resource management, turn-based combat,
+        and Lovecraftian horror.
+      </p>
+
+      <h2 style="color: #aaa">Gather, Craft, Upgrade</h2>
+
+      <p>
+        Collect resources, craft tools and weapons, upgrade buildings and skills
+        through multiple tiers. Assign villagers to jobs, unlock new schematics,
+        and expand your settlement to survive what lies ahead.
+      </p>
+
+      <h2 style="color: #aaa">Fellowship Companions</h2>
+
+      <p>
+        Recruit companions with their own storylines. A wandering knight, an
+        aging wizard, a wildling huntress bound by blood oath, and many more. Each is earned through choices and changes
+        how you play.
+      </p>
+
+      <h2 style="color: #aaa">Explore a Dark World</h2>
+
+      <p>
+        Venture into ancient forests, forgotten ruins, and hostile lands.
+        Encounter strangers, face attack waves, and confront things that
+        should have stayed buried.
+      </p>
+
+      <h2 style="color: #aaa">Combat &amp; Crafting</h2>
+
+      <p>
+        Fight enemies in turn-based combat with crafted weapons, bombs, and
+        combat skills. Build defenses to protect your settlement from what
+        comes out of the dark.
+      </p>
+
+      <h2 style="color: #aaa">Dark Fantasy Atmosphere</h2>
+
+      <p>
+        The story unfolds through events, choices, and discovery. Build
+        shrines and monuments. Unlock forbidden knowledge. Some choices
+        strengthen your people. Others lead to madness.
+      </p>
+
+      <h2 style="color: #aaa">Play Free in Your Browser</h2>
+
+      <p>
+        Free HTML5 browser game on desktop and mobile. Progress saves locally.
+        Idle mode lets your settlement grow while you are away.
+      </p>
+
+      <p>
+        Enter the cave. Light the first fire. See how far you can survive.
+      </p>
+    </main>
+  </div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+
 </html>
