@@ -171,7 +171,17 @@ function handleTotemSacrifice(
   if (!effectUpdates.story.seen) {
     effectUpdates.story.seen = { ...state.story.seen };
   }
-  (effectUpdates.story.seen as any)[usageCountKey] = usageCount + 1;
+  const newUsageCount = usageCount + 1;
+  // Cap bone totem usage count at 20 until the Pale Cross is built
+  if (
+    usageCountKey === "boneTotemsUsageCount" &&
+    (state.buildings?.paleCross || 0) < 1 &&
+    newUsageCount > 20
+  ) {
+    (effectUpdates.story.seen as any)[usageCountKey] = 20;
+  } else {
+    (effectUpdates.story.seen as any)[usageCountKey] = newUsageCount;
+  }
 
   // Check for item discovery if configured
   if (discoveryConfig && !state.clothing[discoveryConfig.itemKey]) {
