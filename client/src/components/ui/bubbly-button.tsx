@@ -61,11 +61,8 @@ const BUILD_TONES = [
 export const CRAFT_TONES = [
   tailwindToHex("amber-900"),
   tailwindToHex("amber-950"),
-  tailwindToHex("yellow-600"),
   tailwindToHex("yellow-900"),
   tailwindToHex("orange-950"),
-  tailwindToHex("red-600"),
-  tailwindToHex("red-900"),
   tailwindToHex("red-950"),
 ];
 
