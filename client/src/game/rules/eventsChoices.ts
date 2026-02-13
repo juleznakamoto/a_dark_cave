@@ -1058,19 +1058,19 @@ export const choiceEvents: Record<string, GameEvent> = {
     id: "paleCrossProposal",
     condition: (state: GameState) =>
       state.buildings.sanctum >= 1 &&
-      (Number(state.story?.seen?.boneTotemsUsageCount) || 0) >= 25 &&
+      (Number(state.story?.seen?.boneTotemsUsageCount) || 0) >= 20 &&
       !state.story.seen.paleCrossUnlocked &&
       !state.story.seen.paleCrossRefused,
     timeProbability: 5,
     title: "The Pale Cross",
     message:
-      "The blind druid returns, his milky eyes fixed on the bone totems: 'You have offered many. If you build a Pale Cross you will be rewarded even more.'",
+      "The blind druid returns, his milky eyes rest on the bone totems: 'You have offered the gods much. Raise them a symbol to prove your devotion.'",
     priority: 5,
     repeatable: false,
     choices: [
       {
         id: "acceptPaleCross",
-        label: "Yes",
+        label: "Accept proposal",
         effect: (state: GameState) => {
           return {
             story: {
@@ -1081,13 +1081,13 @@ export const choiceEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "The blind druid nods. 'The Pale Cross awaits.'",
+              "The druid bows his head. 'Then let it be raised.'",
           };
         },
       },
       {
         id: "refusePaleCross",
-        label: "No",
+        label: "Deny proposal",
         effect: (state: GameState) => {
           return {
             story: {
