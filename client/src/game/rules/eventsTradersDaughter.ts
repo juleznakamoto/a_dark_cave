@@ -66,7 +66,7 @@ export const tradersDaughterEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.triggeredEvents?.traders_daughter_helped === true &&
       state.triggeredEvents?.traders_gratitude_used !== true,
-    timeProbability: 0.5,
+    timeProbability: 2,
     title: "The Trader's Gratitude",
     message:
       "The trader returns, eyes filled with relief and gratitude. To repay your kindness, he promises a generous discount on your next purchase.",
