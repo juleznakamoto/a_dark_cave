@@ -4,6 +4,8 @@ import {
   BubblyButtonGlobalPortal,
   CRAFT_PARTICLE_CONFIG,
   getExploreParticleConfig,
+  generateParticleData,
+  type BubbleWithParticles,
 } from "@/components/ui/bubbly-button";
 
 const EXPLORE_ACTIONS = [
@@ -20,11 +22,12 @@ const EXPLORE_ACTIONS = [
 // ============================================================
 function NonUpgradeableBuildButton() {
   const [show, setShow] = useState(true);
-  const [bubbles, setBubbles] = useState<Array<{ id: string; x: number; y: number }>>([]);
+  const [bubbles, setBubbles] = useState<BubbleWithParticles[]>([]);
 
   const handleAnimationTrigger = (x: number, y: number) => {
     const id = `bubble-${Date.now()}`;
-    setBubbles(prev => [...prev, { id, x, y }]);
+    const particles = generateParticleData();
+    setBubbles(prev => [...prev, { id, x, y, particles }]);
 
     // Keep bubbles visible for animation duration
     setTimeout(() => {
@@ -47,7 +50,7 @@ function NonUpgradeableBuildButton() {
             variant="outline"
             onClick={handleClick}
             onAnimationTrigger={handleAnimationTrigger}
-            className="bg-stone-800 hover:bg-stone-700 border-stone-600"
+            className="bg-transparent hover:bg-stone-700/20 border-stone-600"
           >
             Build Stone Hut
           </BubblyButton>
@@ -73,7 +76,7 @@ function UpgradeableBuildButton() {
     <div className="relative">
       <BubblyButton
         variant="outline"
-        className="bg-amber-800 hover:bg-amber-700 border-amber-600"
+        className="bg-transparent hover:bg-amber-700/20 border-amber-600"
       >
         Wooden Hut
       </BubblyButton>
@@ -91,7 +94,7 @@ function CraftButton() {
       <BubblyButton
         variant="outline"
         particleConfig={CRAFT_PARTICLE_CONFIG}
-        className="bg-amber-900/90 hover:bg-amber-800 border-amber-600/80"
+        className="bg-transparent hover:bg-amber-800/20 border-amber-600/80"
       >
         Craft Stone Axe
       </BubblyButton>
@@ -110,7 +113,7 @@ function ExploreCaveButtons() {
           key={id}
           variant="outline"
           particleConfig={getExploreParticleConfig(id)}
-          className="bg-stone-800/90 hover:bg-stone-700 border-stone-600/80"
+          className="bg-transparent hover:bg-stone-700/20 border-stone-600/80"
         >
           {label}
         </BubblyButton>
