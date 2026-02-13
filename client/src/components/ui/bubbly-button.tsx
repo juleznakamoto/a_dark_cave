@@ -128,7 +128,7 @@ const MINE_HIGHLIGHT_COLORS: Record<string, string[]> = {
   mineIron: [tailwindToHex("red-900"), tailwindToHex("orange-950")],
   mineCoal: [tailwindToHex("slate-950"), tailwindToHex("gray-950")],
   mineSulfur: [tailwindToHex("yellow-500"), tailwindToHex("amber-400")],
-  mineObsidian: [tailwindToHex("violet-700"), tailwindToHex("purple-800")],
+  mineObsidian: [tailwindToHex("violet-600"), tailwindToHex("purple-600")],
   mineAdamant: [tailwindToHex("indigo-400"), tailwindToHex("blue-400")],
 };
 
@@ -234,18 +234,18 @@ export function getExploreParticleConfig(actionId: string): Partial<ParticleConf
   const highlightColors = EXPLORE_HIGHLIGHT_COLORS[actionId] ?? [];
   const levelIndex = EXPLORE_LEVEL_ORDER_FOR_COUNT.indexOf(actionId);
   const count =
-    actionId === "exploreCitadel" ? 150 : levelIndex >= 0 ? 50 + levelIndex * 15 : 140;
+    actionId === "exploreCitadel" ? 200 : levelIndex >= 0 ? 40 + levelIndex * 20 : 100;
   return {
     colors: EXPLORE_TONES,
     smallParticleOnlyColors: highlightColors,
     smallParticleMaxSize: 3,
     count,
     durationMin: 0.5,
-    durationMax: 0.95,
+    durationMax: 1.2,
     distanceMin: 25,
-    distanceMax: 60,
+    distanceMax: 75,
     sizeMin: 2,
-    sizeMax: 8,
+    sizeMax: 10,
     bubbleRemoveDelay: 2500,
   };
 }
