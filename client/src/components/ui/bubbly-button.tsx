@@ -82,7 +82,7 @@ const DEFAULT_PARTICLE_CONFIG: Required<ParticleConfig> = {
   ease: [0, 0, 0.5, 1],
 };
 
-const BUILD_SMALL_PARTICLE_ONLY_COLORS = [tailwindToHex("gray-100")];
+const BUILD_SMALL_PARTICLE_ONLY_COLORS = [tailwindToHex("gray-200")];
 
 /** Build preset - stone/neutral tones, default sizing */
 export const BUILD_PARTICLE_CONFIG: Partial<ParticleConfig> = {
