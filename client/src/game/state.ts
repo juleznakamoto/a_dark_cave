@@ -1132,6 +1132,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
       });
     }
 
+    // Play mining sound for successful mine actions
+    if (actionId.startsWith("mine")) {
+      import("@/lib/audio").then(({ audioManager }) => {
+        audioManager.playSound("mining");
+      });
+    }
+
     // Schedule updates
     if (
       result.stateUpdates.tools ||
