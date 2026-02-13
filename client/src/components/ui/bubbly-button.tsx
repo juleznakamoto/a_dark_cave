@@ -8,6 +8,9 @@ import { cn } from "@/lib/utils";
 import { tailwindToHex } from "@/lib/tailwindColors";
 import type { ButtonProps } from "@/components/ui/button";
 
+/** Particle shape - circle is default, others use clip-path polygons */
+export type ParticleShape = "circle" | "diamond" | "triangle" | "square" | "hexagon" | "random";
+
 /** Full configuration for particle animation - all params optional with defaults */
 export interface ParticleConfig {
   colors?: string[];
@@ -15,6 +18,8 @@ export interface ParticleConfig {
   smallParticleOnlyColors?: string[];
   /** Max size (inclusive) for smallParticleOnlyColors. Default 2. */
   smallParticleMaxSize?: number;
+  /** Particle shape. "random" picks diamond/triangle/square per particle. */
+  particleShape?: ParticleShape;
   count?: number;
   durationMin?: number;
   durationMax?: number;
@@ -66,10 +71,28 @@ export const CRAFT_TONES = [
   tailwindToHex("red-950"),
 ];
 
+const POLYHEDRON_SHAPES: Exclude<ParticleShape, "circle" | "random">[] = ["diamond", "triangle", "square", "hexagon"];
+
+function getShapeClipPath(shape: Exclude<ParticleShape, "circle" | "random">): string {
+  switch (shape) {
+    case "diamond":
+      return "polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)";
+    case "triangle":
+      return "polygon(50% 0%, 100% 100%, 0% 100%)";
+    case "square":
+      return "polygon(0 0, 100% 0, 100% 100%, 0 100%)";
+    case "hexagon":
+      return "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)";
+    default:
+      return "none";
+  }
+}
+
 const DEFAULT_PARTICLE_CONFIG: Required<ParticleConfig> = {
   colors: BUILD_TONES,
   smallParticleOnlyColors: [],
   smallParticleMaxSize: 2,
+  particleShape: "circle",
   count: 150,
   durationMin: 0.75,
   durationMax: 1.25,
@@ -139,6 +162,7 @@ export function getMineParticleConfig(actionId: string): Partial<ParticleConfig>
     colors: MINE_TONES,
     smallParticleOnlyColors: highlightColors,
     smallParticleMaxSize: 4,
+    particleShape: "random",
     count: 200,
     durationMin: 0.5,
     durationMax: 1,
@@ -266,6 +290,7 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
         >
           <AnimatePresence>
             {bubbles.map((bubble) => {
+              const baseShape = config.particleShape ?? "circle";
               const particleBubbles = Array.from({ length: config.count }).map(() => {
                 const angle = Math.random() * Math.PI * 2;
                 const distance = config.distanceMin + Math.random() * (config.distanceMax - config.distanceMin);
@@ -278,8 +303,12 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
                       : config.colors;
                 const color = colorPool[Math.floor(Math.random() * colorPool.length)] ?? config.colors[0];
                 const duration = config.durationMin + Math.random() * (config.durationMax - config.durationMin);
+                const shape: Exclude<ParticleShape, "random"> =
+                  baseShape === "random"
+                    ? POLYHEDRON_SHAPES[Math.floor(Math.random() * POLYHEDRON_SHAPES.length)]
+                    : baseShape;
 
-                return { size, angle, distance, color, duration };
+                return { size, angle, distance, color, duration, shape };
               });
 
               return particleBubbles.map((b, index) => {
@@ -289,13 +318,14 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
                 return (
                   <motion.div
                     key={`${bubble.id}-${index}`}
-                    className="absolute rounded-full"
+                    className={cn("absolute", b.shape === "circle" && "rounded-full")}
                     style={{
                       width: `${b.size}px`,
                       height: `${b.size}px`,
                       backgroundColor: b.color,
                       left: bubble.x - b.size / 2,
                       top: bubble.y - b.size / 2,
+                      clipPath: b.shape !== "circle" ? getShapeClipPath(b.shape) : undefined,
                       boxShadow: `0 0 ${b.size * 0.5}px ${b.color}aa, 0 0 ${b.size * 1}px ${b.color}55`,
                       zIndex: -1,
                     }}
@@ -359,13 +389,23 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
 
 BubblyButton.displayName = "BubblyButton";
 
+export type ParticleData = {
+  size: number;
+  color: string;
+  duration: number;
+  endX: number;
+  endY: number;
+  shape: Exclude<ParticleShape, "random">;
+};
+
 // Helper to generate particle data for global portal (accepts full config or colors array for legacy)
 export function generateParticleData(
   configOrColors?: Partial<ParticleConfig> | string[]
-): Array<{ size: number; color: string; duration: number; endX: number; endY: number }> {
+): ParticleData[] {
   const config = mergeParticleConfig(
     Array.isArray(configOrColors) ? { colors: configOrColors } : configOrColors ?? {}
   );
+  const baseShape = config.particleShape ?? "circle";
   return Array.from({ length: config.count }).map(() => {
     const angle = Math.random() * Math.PI * 2;
     const distance = config.distanceMin + Math.random() * (config.distanceMax - config.distanceMin);
@@ -380,7 +420,11 @@ export function generateParticleData(
     const duration = config.durationMin + Math.random() * (config.durationMax - config.durationMin);
     const endX = Math.cos(angle) * distance;
     const endY = Math.sin(angle) * distance;
-    return { size, color, duration, endX, endY };
+    const shape: Exclude<ParticleShape, "random"> =
+      baseShape === "random"
+        ? POLYHEDRON_SHAPES[Math.floor(Math.random() * POLYHEDRON_SHAPES.length)]
+        : baseShape;
+    return { size, color, duration, endX, endY, shape };
   });
 }
 
@@ -407,13 +451,14 @@ export const BubblyButtonGlobalPortal = ({
             {bubble.particles.map((particle, i) => (
               <motion.div
                 key={`${bubble.id}-${i}`}
-                className="fixed rounded-full"
+                className={cn("fixed", particle.shape === "circle" && "rounded-full")}
                 style={{
                   width: `${particle.size}px`,
                   height: `${particle.size}px`,
                   backgroundColor: particle.color,
                   left: bubble.x - particle.size / 2,
                   top: bubble.y - particle.size / 2,
+                  clipPath: particle.shape !== "circle" ? getShapeClipPath(particle.shape) : undefined,
                   boxShadow: `0 0 ${particle.size * 0.5}px ${particle.color}aa, 0 0 ${particle.size * 1}px ${particle.color}55`,
                 }}
                 initial={{ opacity: 1, scale: 1, x: 0, y: 0 }}
