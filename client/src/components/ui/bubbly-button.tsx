@@ -227,14 +227,19 @@ const EXPLORE_HIGHLIGHT_COLORS: Record<string, string[]> = {
   ],
 };
 
+const EXPLORE_LEVEL_ORDER_FOR_COUNT = [...EXPLORE_LEVEL_ORDER, "exploreCitadel"];
+
 /** Get cave explore particle config by action id (shared base + per-level highlights) */
 export function getExploreParticleConfig(actionId: string): Partial<ParticleConfig> {
   const highlightColors = EXPLORE_HIGHLIGHT_COLORS[actionId] ?? [];
+  const levelIndex = EXPLORE_LEVEL_ORDER_FOR_COUNT.indexOf(actionId);
+  const count =
+    actionId === "exploreCitadel" ? 150 : levelIndex >= 0 ? 50 + levelIndex * 15 : 140;
   return {
     colors: EXPLORE_TONES,
     smallParticleOnlyColors: highlightColors,
     smallParticleMaxSize: 3,
-    count: 140,
+    count,
     durationMin: 0.5,
     durationMax: 0.95,
     distanceMin: 25,
