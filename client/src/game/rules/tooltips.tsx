@@ -7,6 +7,7 @@ import {
 } from "./effectsCalculation";
 import { gameActions } from "./index";
 import { getTotalMadness } from "./effectsCalculation";
+import { getBoneTotemsCost } from "./forestSacrificeActions";
 import {
   CRUSHING_STRIKE_UPGRADES,
   BLOODFLAME_SPHERE_UPGRADES,
@@ -68,13 +69,16 @@ export const calculateResourceGains = (
     actionId === "boneTotems" || actionId === "leatherTotems";
 
   if (isSacrificeAction) {
-    // Get dynamic cost
+    // Get dynamic cost (uses getBoneTotemsCost for bone totems, which respects Pale Cross)
     const usageCountKey =
       actionId === "boneTotems"
         ? "boneTotemsUsageCount"
         : "leatherTotemsUsageCount";
     const usageCount = Number(state.story?.seen?.[usageCountKey]) || 0;
-    const dynamicCost = Math.min(5 + usageCount, 25);
+    const dynamicCost =
+      actionId === "boneTotems"
+        ? getBoneTotemsCost(state)
+        : Math.min(5 + usageCount, 25);
 
     const costResource =
       actionId === "boneTotems" ? "bone_totem" : "leather_totem";
@@ -84,7 +88,9 @@ export const calculateResourceGains = (
     costs.push({ resource: costResource, amount: dynamicCost, hasEnough });
 
     // Base gains from effects
-    Object.entries(action.effects).forEach(([key, value]) => {
+    const actionEffects =
+      typeof action.effects === "function" ? action.effects(state) : action.effects;
+    Object.entries(actionEffects || {}).forEach(([key, value]) => {
       if (key.startsWith("resources.")) {
         const resource = key.split(".")[1];
 
@@ -94,10 +100,14 @@ export const calculateResourceGains = (
             let min = parseInt(match[1]);
             let max = parseInt(match[2]);
 
-            // Apply fixed +1 bonus per usage, capped at 20 usages
-            const cappedUsageCount = Math.min(usageCount, 20);
-            min = min + cappedUsageCount;
-            max = max + cappedUsageCount;
+            // Apply bonus per usage (Pale Cross: +2/level cap 50, else +1/level cap 20)
+            const hasPaleCross =
+              actionId === "boneTotems" &&
+              (state.buildings?.paleCross || 0) >= 1;
+            const cappedUsageCount = Math.min(usageCount, hasPaleCross ? 50 : 20);
+            const silverBonusPerLevel = hasPaleCross ? 2 : 1;
+            min = min + cappedUsageCount * silverBonusPerLevel;
+            max = max + cappedUsageCount * silverBonusPerLevel;
 
             // Apply bonuses through centralized system (includes Bone Temple + items)
             const totalMultiplier = bonuses.resourceMultiplier;

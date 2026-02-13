@@ -139,6 +139,7 @@ export default function VillagePanel() {
         { id: "buildSanctum", label: "Sanctum" },
         { id: "buildBlackMonolith", label: "Black Monolith" },
         { id: "buildBoneTemple", label: "Bone Temple" },
+        { id: "buildPaleCross", label: "Pale Cross" },
         { id: "buildTimberMill", label: "Timber Mill" },
         { id: "buildQuarry", label: "Quarry" },
         { id: "buildClerksHut", label: "Clerk's Hut" },

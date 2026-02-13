@@ -1054,6 +1054,57 @@ export const choiceEvents: Record<string, GameEvent> = {
     ],
   },
 
+  paleCrossProposal: {
+    id: "paleCrossProposal",
+    condition: (state: GameState) =>
+      state.buildings.sanctum >= 1 &&
+      (Number(state.story?.seen?.boneTotemsUsageCount) || 0) >= 25 &&
+      !state.story.seen.paleCrossUnlocked &&
+      !state.story.seen.paleCrossRefused,
+    timeProbability: 5,
+    title: "The Pale Cross",
+    message:
+      "The blind druid returns, his milky eyes fixed on the bone totems: 'You have offered many. If you build a Pale Cross you will be rewarded even more.'",
+    priority: 5,
+    repeatable: false,
+    choices: [
+      {
+        id: "acceptPaleCross",
+        label: "Yes",
+        effect: (state: GameState) => {
+          return {
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                paleCrossUnlocked: true,
+              },
+            },
+            _logMessage:
+              "The blind druid nods. 'The Pale Cross awaits.'",
+          };
+        },
+      },
+      {
+        id: "refusePaleCross",
+        label: "No",
+        effect: (state: GameState) => {
+          return {
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                paleCrossRefused: true,
+              },
+            },
+            _logMessage:
+              "'Perhaps this was wisdom. Perhaps it was fear,' the druid says before leaving into the forest.",
+          };
+        },
+      },
+    ],
+  },
+
   slaveTrader: {
     id: "slaveTrader",
     condition: (state: GameState) => {

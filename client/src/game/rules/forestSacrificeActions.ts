@@ -8,7 +8,8 @@ import { logger } from "@/lib/logger";
 // Helper function to get dynamic cost for bone totems
 export function getBoneTotemsCost(state: GameState): number {
   const usageCount = Number(state.story?.seen?.boneTotemsUsageCount) || 0;
-  return Math.min(5 + usageCount, 25);
+  const maxCost = (state.buildings?.paleCross || 0) >= 1 ? 50 : 25;
+  return Math.min(5 + usageCount, maxCost);
 }
 
 export function getLeatherTotemsCost(state: GameState): number {
@@ -142,7 +143,12 @@ function handleTotemSacrifice(
 ): ActionResult {
   // Track how many times this action has been used
   const usageCount = Number(state.story?.seen?.[usageCountKey]) || 0;
-  const currentCost = Math.min(5 + usageCount, 25);
+  const maxCost =
+    usageCountKey === "boneTotemsUsageCount" &&
+    (state.buildings?.paleCross || 0) >= 1
+      ? 50
+      : 25;
+  const currentCost = Math.min(5 + usageCount, maxCost);
 
   // Check if player has enough totems for the current price
   if ((state.resources[totemResource] || 0) < currentCost) {

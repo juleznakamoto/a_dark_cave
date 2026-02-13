@@ -741,6 +741,15 @@ export const calculateTotalEffects = (state: GameState) => {
     }
   }
 
+  // Add Pale Cross madness (applies independently; positive value increases madness)
+  if (state.buildings.paleCross > 0) {
+    const buildAction = villageBuildActions.buildPaleCross;
+    if (buildAction?.statsEffects?.madness) {
+      effects.madness_reduction.paleCross_madness =
+        buildAction.statsEffects.madness;
+    }
+  }
+
   // Add Bone Temple madness reduction (applies independently, includes Black Monolith effects)
   if (state.buildings.boneTemple > 0) {
     const buildAction = villageBuildActions.buildBoneTemple;

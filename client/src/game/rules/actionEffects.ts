@@ -300,9 +300,13 @@ export function applyActionEffects(
                 ? "boneTotemsUsageCount"
                 : "leatherTotemsUsageCount";
             const usageCount = Number(state.story?.seen?.[usageCountKey]) || 0;
-            const cappedUsageCount = Math.min(usageCount, 20);
-            min += cappedUsageCount;
-            max += cappedUsageCount;
+            const hasPaleCross =
+              actionId === "boneTotems" &&
+              (state.buildings?.paleCross || 0) >= 1;
+            const cappedUsageCount = Math.min(usageCount, hasPaleCross ? 45 : 20);
+            const silverBonusPerLevel = hasPaleCross ? 2 : 1;
+            min += cappedUsageCount * silverBonusPerLevel;
+            max += cappedUsageCount * silverBonusPerLevel;
 
             const actionBonuses = getActionBonusesCalc(actionId, state);
 
@@ -329,12 +333,12 @@ export function applyActionEffects(
             const actionBonuses = getActionBonusesCalc(actionId, state);
             if (
               actionBonuses?.resourceBonus?.[
-                finalKey as keyof typeof actionBonuses.resourceBonus
+              finalKey as keyof typeof actionBonuses.resourceBonus
               ]
             ) {
               const bonus =
                 actionBonuses.resourceBonus[
-                  finalKey as keyof typeof actionBonuses.resourceBonus
+                finalKey as keyof typeof actionBonuses.resourceBonus
                 ];
               min += bonus;
               max += bonus;
@@ -387,16 +391,16 @@ export function applyActionEffects(
         const probabilityEffect = effect as {
           probability: number | ((state: GameState) => number);
           value:
-            | number
-            | string
-            | boolean
-            | {
-                probability: number;
-                value: number | string | boolean;
-                logMessage?: string;
-                isChoice?: boolean;
-                eventId?: string;
-              };
+          | number
+          | string
+          | boolean
+          | {
+            probability: number;
+            value: number | string | boolean;
+            logMessage?: string;
+            isChoice?: boolean;
+            eventId?: string;
+          };
           logMessage?: string;
           condition?: string;
           triggerEvent?: string;
@@ -453,12 +457,12 @@ export function applyActionEffects(
               const actionBonuses = getActionBonusesCalc(actionId, state);
               if (
                 actionBonuses?.resourceBonus?.[
-                  finalKey as keyof typeof actionBonuses.resourceBonus
+                finalKey as keyof typeof actionBonuses.resourceBonus
                 ]
               ) {
                 const bonus =
                   actionBonuses.resourceBonus[
-                    finalKey as keyof typeof actionBonuses.resourceBonus
+                  finalKey as keyof typeof actionBonuses.resourceBonus
                   ];
                 min += bonus;
                 max += bonus;

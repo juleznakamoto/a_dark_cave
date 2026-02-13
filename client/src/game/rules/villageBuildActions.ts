@@ -1661,6 +1661,37 @@ export const villageBuildActions: Record<string, Action> = {
     cooldown: 120,
   },
 
+  buildPaleCross: {
+    id: "buildPaleCross",
+    label: "Pale Cross",
+    description:
+      "A towering monument of bleached bones amplifying bone totem sacrifices.",
+    tooltipEffects: [
+      "+5 Madness",
+    ],
+    building: true,
+    show_when: {
+      1: {
+        "story.seen.paleCrossUnlocked": true,
+        "buildings.paleCross": 0,
+      },
+    },
+    cost: {
+      1: {
+        "resources.bones": 15000,
+      },
+    },
+    effects: {
+      1: {
+        "buildings.paleCross": 1,
+      },
+    },
+    statsEffects: {
+      madness: 5,
+    },
+    cooldown: 60,
+  },
+
   buildDarkEstate: {
     id: "buildDarkEstate",
     label: "Dark Estate",

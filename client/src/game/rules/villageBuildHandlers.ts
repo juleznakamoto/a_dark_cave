@@ -1143,6 +1143,20 @@ export function handleBuildBoneTemple(
   return boneTempleResult;
 }
 
+export function handleBuildPaleCross(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const paleCrossResult = handleBuildingConstruction(
+    state,
+    result,
+    "buildPaleCross",
+    "paleCross",
+  );
+
+  return paleCrossResult;
+}
+
 export function handleBuildStorageRoom(
   state: GameState,
   result: ActionResult,

@@ -133,6 +133,7 @@ import {
   handleBuildDarkEstate,
   handleBuildPillarOfClarity,
   handleBuildBoneTemple,
+  handleBuildPaleCross,
   handleBuildStorageRoom,
   handleBuildWarehouse,
   handleBuildStockpile,
@@ -500,6 +501,8 @@ export function executeGameAction(
       return handleBuildPillarOfClarity(state, result);
     case "buildBoneTemple":
       return handleBuildBoneTemple(state, result);
+    case "buildPaleCross":
+      return handleBuildPaleCross(state, result);
     case "buildSupplyHut":
       return handleBuildStorageRoom(state, result);
     case "buildStorehouse":
