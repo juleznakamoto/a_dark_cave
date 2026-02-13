@@ -92,8 +92,8 @@ export const BUILD_PARTICLE_CONFIG: Partial<ParticleConfig> = {
 };
 
 const CRAFT_SMALL_PARTICLE_ONLY_COLORS = [
-  tailwindToHex("yellow-600"),
-  tailwindToHex("red-600"),
+  tailwindToHex("yellow-500"),
+  tailwindToHex("red-500"),
 ];
 
 /** Craft preset - amber/copper tones, snappier/shorter animation */
@@ -103,9 +103,9 @@ export const CRAFT_PARTICLE_CONFIG: Partial<ParticleConfig> = {
   smallParticleMaxSize: 2,
   count: 150,
   durationMin: 0.5,
-  durationMax: 0.9,
+  durationMax: 0.85,
   distanceMin: 25,
-  distanceMax: 60,
+  distanceMax: 65,
   sizeMin: 1,
   sizeMax: 6,
   glowDuration: 500,
@@ -120,17 +120,13 @@ const MINE_TONES = [
   tailwindToHex("stone-800"),
   tailwindToHex("stone-900"),
   tailwindToHex("stone-950"),
-  tailwindToHex("gray-800"),
-  tailwindToHex("gray-900"),
-  tailwindToHex("slate-800"),
-  tailwindToHex("slate-900"),
 ];
 
 // Per-resource highlight colors for small particles (size 1-2)
 const MINE_HIGHLIGHT_COLORS: Record<string, string[]> = {
   mineStone: [tailwindToHex("stone-400"), tailwindToHex("gray-400")],
-  mineIron: [tailwindToHex("slate-400"), tailwindToHex("zinc-400")],
-  mineCoal: [tailwindToHex("slate-900"), tailwindToHex("neutral-950")],
+  mineIron: [tailwindToHex("red-950"), tailwindToHex("orange-950")],
+  mineCoal: [tailwindToHex("slate-950"), tailwindToHex("gray-950")],
   mineSulfur: [tailwindToHex("yellow-500"), tailwindToHex("amber-400")],
   mineObsidian: [tailwindToHex("violet-700"), tailwindToHex("purple-800")],
   mineAdamant: [tailwindToHex("indigo-400"), tailwindToHex("blue-400")],
@@ -142,14 +138,14 @@ export function getMineParticleConfig(actionId: string): Partial<ParticleConfig>
   return {
     colors: MINE_TONES,
     smallParticleOnlyColors: highlightColors,
-    smallParticleMaxSize: 2,
-    count: 150,
+    smallParticleMaxSize: 4,
+    count: 200,
     durationMin: 0.5,
-    durationMax: 0.9,
+    durationMax: 1,
     distanceMin: 25,
-    distanceMax: 55,
+    distanceMax: 60,
     sizeMin: 1,
-    sizeMax: 6,
+    sizeMax: 10,
     glowDuration: 500,
     bubbleRemoveDelay: 2500,
   };
