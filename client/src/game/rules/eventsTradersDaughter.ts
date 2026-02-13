@@ -47,7 +47,7 @@ export const tradersDaughterEvents: Record<string, GameEvent> = {
       {
         id: "do_not_help",
         label: "Do not help",
-        effect: () => ({
+        effect: (_state: GameState) => ({
           _logMessage: "You decline. The trader nods sadly and leaves to search on his own.",
         }),
       },
@@ -55,7 +55,7 @@ export const tradersDaughterEvents: Record<string, GameEvent> = {
     fallbackChoice: {
       id: "do_not_help",
       label: "Do not help",
-      effect: () => ({
+      effect: (_state: GameState) => ({
         _logMessage: "You decline. The trader nods sadly and leaves to search on his own.",
       }),
     },

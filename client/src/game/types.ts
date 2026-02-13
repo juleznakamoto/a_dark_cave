@@ -293,6 +293,7 @@ export interface EffectDefinition {
       eventDeathReduction?: number; // Percentage reduction in villager deaths from events (0.25 = 25% reduction)
       criticalChance?: number; // Percentage chance for critical hits during combat (0.05 = 5% chance)
       actionBonusChance?: number; // Chance to double action gains (0.1 = 10% chance)
+      merchantDiscount?: number; // Additional discount at wandering merchant (0.05 = 5% discount)
     };
   };
 }

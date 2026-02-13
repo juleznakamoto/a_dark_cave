@@ -424,9 +424,9 @@ export const choiceEvents: Record<string, GameEvent> = {
           const traps = state.buildings.traps;
           const villagerDeaths = Math.floor(
             Math.random() * state.buildings.woodenHut +
-              2 -
-              traps * 2 +
-              state.CM * 2,
+            2 -
+            traps * 2 +
+            state.CM * 2,
           );
           const deathResult = killVillagers(state, villagerDeaths);
           const actualDeaths = deathResult.villagersKilled || 0;
@@ -2133,6 +2133,107 @@ export const choiceEvents: Record<string, GameEvent> = {
               endTime: Date.now() + duration,
             },
             _logMessage: `You turn the dying man away. He leaves and is found dead in the forest nearby the next day. The villagers are horrified and disgusted by your cruelty.`,
+          };
+        },
+      },
+    ],
+  },
+
+  leatherHarnessRequest: {
+    id: "leatherHarnessRequest",
+    condition: (state: GameState) =>
+      state.flags.villageUnlocked &&
+      state.resources.leather >= 100 &&
+      (Number(state.story?.seen?.leatherTotemsUsageCount) || 0) >= 20 &&
+      !state.story.seen.leatherHarnessRequest,
+    timeProbability: 5,
+    title: "A Village Woman",
+    message:
+      "A woman from the village approaches you, her cheeks faintly flushed. She hesitates before speaking, eyes cast down: 'I was wondering if you might spare some leather. I'd like to craft something... for my partner. A harness. To surprise him with.'",
+    priority: 3,
+    repeatable: false,
+    choices: [
+      {
+        id: "helpWithLeather",
+        label: "Help her",
+        cost: "100 leather",
+        effect: (state: GameState) => {
+          if ((state.resources.leather || 0) < 100) {
+            return {
+              _logMessage: "You don't have enough leather to help her.",
+            };
+          }
+          return {
+            resources: {
+              ...state.resources,
+              leather: (state.resources.leather || 0) - 100,
+            },
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                leatherHarnessRequest: true,
+                leatherHarnessHelped: true,
+              },
+            },
+            _logMessage:
+              "You hand her the leather. She takes it with a grateful smile, her eyes brightening. 'Thank you. He'll be... very surprised.' She hurries off, clutching the hides to her chest.",
+          };
+        },
+      },
+      {
+        id: "refuseLeather",
+        label: "Do not help",
+        effect: (state: GameState) => {
+          return {
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                leatherHarnessRequest: true,
+              },
+            },
+            _logMessage:
+              "You decline. She nods, disappointment flickering across her face, and returns to the village without another word.",
+          };
+        },
+      },
+    ],
+  },
+
+  leatherHarnessGratefulReturn: {
+    id: "leatherHarnessGratefulReturn",
+    condition: (state: GameState) =>
+      state.flags.villageUnlocked &&
+      state.story?.seen?.leatherHarnessRequest === true &&
+      state.story?.seen?.leatherHarnessHelped === true &&
+      !state.story.seen.leatherHarnessGratefulReturn &&
+      !state.clothing.ring_of_obedience,
+    timeProbability: 30,
+    title: "A Grateful Return",
+    message:
+      "The woman from the village approaches you again, her face radiant with gratitude. 'I had to thank you properly,' she says, her voice warm. 'Things went... very well. I made this ring for you.' She hands you a ring with a smaller ring attached to it.",
+    priority: 3,
+    repeatable: false,
+    choices: [
+      {
+        id: "acceptRing",
+        label: "Accept the ring",
+        effect: (state: GameState) => {
+          return {
+            clothing: {
+              ...state.clothing,
+              ring_of_obedience: true,
+            },
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                leatherHarnessGratefulReturn: true,
+              },
+            },
+            _logMessage:
+              "You slip the ring onto your finger. It fits perfectly. The woman smiles and takes her leave, a lightness in her step.",
           };
         },
       },

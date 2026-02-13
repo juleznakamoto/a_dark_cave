@@ -1,3 +1,4 @@
+import type { GameState } from "@shared/schema";
 
 /**
  * Calculate merchant discount based on knowledge
@@ -12,6 +13,19 @@ export function calculateMerchantDiscount(knowledge: number): number {
   if (knowledge >= 40) discount = 0.2;
   if (knowledge >= 50) discount = 0.25;
   return discount;
+}
+
+/**
+ * Calculate total merchant discount from all sources (knowledge + items)
+ * Returns discount as a decimal (0-1)
+ */
+export function getTotalMerchantDiscount(state: GameState): number {
+  const knowledge = state.stats?.knowledge || 0;
+  let discount = calculateMerchantDiscount(knowledge);
+  if (state.clothing?.ring_of_obedience) {
+    discount += 0.05;
+  }
+  return Math.min(discount, 1);
 }
 
 /**

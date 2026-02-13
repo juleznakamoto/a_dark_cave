@@ -1,7 +1,7 @@
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 import { getTotalKnowledge } from "./effectsCalculation";
-import { calculateMerchantDiscount } from "./effectsStats";
+import { getTotalMerchantDiscount } from "./effectsStats";
 import { logger } from "@/lib/logger";
 import type { MerchantTradeData } from "@/game/types";
 
@@ -932,17 +932,12 @@ function selectTrades(
 // Re-export for convenience
 export type { MerchantTradeData } from "@/game/types";
 
-// Helper function to check if knowledge bonus is maxed
-export const isKnowledgeBonusMaxed = (knowledge: number): boolean => {
-  return knowledge >= 25; // Max is 50% discount at 25 knowledge
-};
-
 // Function to generate fresh merchant choices
 export function generateMerchantChoices(state: GameState): MerchantTradeData[] {
   const knowledge = getTotalKnowledge(state);
 
-  // Calculate merchant discount using centralized function
-  const discount = calculateMerchantDiscount(knowledge);
+  // Calculate merchant discount from all sources (knowledge + Ring of Obedience, etc.)
+  const discount = getTotalMerchantDiscount(state);
 
   // Shared resource pair tracking
   const usedResourcePairs = new Set<string>();

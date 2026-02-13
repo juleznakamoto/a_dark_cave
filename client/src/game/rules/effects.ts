@@ -1099,6 +1099,17 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     },
   },
 
+  ring_of_obedience: {
+    id: "ring_of_obedience",
+    name: "Ring of Obedience",
+    description: "Ring with a smaller ring attached gifted by a happy woman",
+    bonuses: {
+      generalBonuses: {
+        merchantDiscount: 0.05,
+      },
+    },
+  },
+
   unnamed_book: {
     id: "unnamed_book",
     name: "Unnamed Book",

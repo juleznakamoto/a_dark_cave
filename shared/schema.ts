@@ -171,6 +171,7 @@ export const gameStateSchema = z.object({
       occultist_grimoire: z.boolean().default(false),
       ravens_orb: z.boolean().default(false),
       devourer_crown: z.boolean().default(false),
+      ring_of_obedience: z.boolean().default(false),
     })
     .default({}),
   relics: z

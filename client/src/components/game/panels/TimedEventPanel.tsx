@@ -5,8 +5,11 @@ import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { merchantTooltip } from "@/game/rules/tooltips";
 import { EventChoice } from "@/game/rules/events";
 import { logger } from "@/lib/logger";
-import { isKnowledgeBonusMaxed } from "@/game/rules/eventsMerchant";
-import { calculateMerchantDiscount } from "@/game/rules/effectsStats";
+import {
+  calculateMerchantDiscount,
+  getTotalMerchantDiscount,
+  isKnowledgeBonusMaxed,
+} from "@/game/rules/effectsStats";
 
 // Stat icon mapping
 const statIcons: Record<string, { icon: string; color: string }> = {
@@ -251,16 +254,38 @@ export default function TimedEventPanel() {
             {isMerchantEvent &&
               (() => {
                 const knowledge = gameState.stats?.knowledge || 0;
-                const discount = calculateMerchantDiscount(knowledge);
+                const totalDiscount = getTotalMerchantDiscount(gameState);
+                const knowledgeDiscount = calculateMerchantDiscount(knowledge);
+                const hasRingOfObedience =
+                  gameState.clothing?.ring_of_obedience ?? false;
 
-                if (discount > 0) {
+                if (totalDiscount > 0) {
                   return (
                     <TooltipWrapper
                       tooltip={
                         <div className="text-xs whitespace-nowrap">
-                          {Math.round(discount * 100)}% discount due to
-                          Knowledge
-                          {isKnowledgeBonusMaxed(knowledge) ? " (max)" : ""}
+                          {Math.round(totalDiscount * 100)}% discount
+                          {(knowledgeDiscount > 0 || hasRingOfObedience) && (
+                            <>
+                              <br />
+                              {knowledgeDiscount > 0 && (
+                                <span className="text-gray-400/70">
+                                  {Math.round(knowledgeDiscount * 100)}% from
+                                  Knowledge
+                                  {isKnowledgeBonusMaxed(knowledge)
+                                    ? " (max)"
+                                    : ""}
+                                </span>
+                              )}
+                              {knowledgeDiscount > 0 &&
+                                hasRingOfObedience && <br />}
+                              {hasRingOfObedience && (
+                                <span className="text-gray-400/70">
+                                  5% from Ring of Obedience
+                                </span>
+                              )}
+                            </>
+                          )}
                         </div>
                       }
                       tooltipId="merchant-discount"

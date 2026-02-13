@@ -196,6 +196,15 @@ export function renderItemTooltip(
               %
             </div>
           )}
+          {effect.bonuses.generalBonuses.merchantDiscount && (
+            <div>
+              Merchant Discount: +
+              {Math.floor(
+                effect.bonuses.generalBonuses.merchantDiscount * 100,
+              )}
+              %
+            </div>
+          )}
           {effect.bonuses.generalBonuses.criticalChance && (
             <div>
               Critical Strike Chance: +
