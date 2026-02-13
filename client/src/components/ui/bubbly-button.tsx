@@ -288,6 +288,42 @@ export const CHOP_WOOD_PARTICLE_CONFIG: Partial<ParticleConfig> = {
   bubbleRemoveDelay: 2500,
 };
 
+// Gold coin - slow gentle emission for hover
+export const GOLD_COIN_PARTICLE_CONFIG: Partial<ParticleConfig> = {
+  colors: [
+    tailwindToHex("yellow-500"),
+    tailwindToHex("yellow-600"),
+    tailwindToHex("amber-500"),
+    tailwindToHex("amber-600"),
+  ],
+  count: 6,
+  durationMin: 1.2,
+  durationMax: 2,
+  distanceMin: 15,
+  distanceMax: 35,
+  sizeMin: 1,
+  sizeMax: 4,
+  bubbleRemoveDelay: 2500,
+};
+
+// Silver coin - slow gentle emission for hover
+export const SILVER_COIN_PARTICLE_CONFIG: Partial<ParticleConfig> = {
+  colors: [
+    tailwindToHex("gray-300"),
+    tailwindToHex("gray-400"),
+    tailwindToHex("slate-300"),
+    tailwindToHex("slate-400"),
+  ],
+  count: 6,
+  durationMin: 1.2,
+  durationMax: 2,
+  distanceMin: 15,
+  distanceMax: 35,
+  sizeMin: 1,
+  sizeMax: 4,
+  bubbleRemoveDelay: 2500,
+};
+
 // Hunt - fur, blood, forest tones
 export const HUNT_PARTICLE_CONFIG: Partial<ParticleConfig> = {
   colors: [

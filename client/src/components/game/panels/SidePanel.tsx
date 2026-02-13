@@ -1,5 +1,6 @@
 import { useGameStore } from "@/game/state";
 import SidePanelSection from "./SidePanelSection";
+import { ResourceCoinIcon } from "@/components/ui/resource-coin-icon";
 import { clothingEffects } from "@/game/rules/effects";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { logger } from "@/lib/logger";
@@ -120,15 +121,14 @@ export default function SidePanel() {
       id: key,
       label: (
         <span className="flex items-center gap-1">
-          <span
+          <ResourceCoinIcon
+            resource={key as "gold" | "silver"}
             className={
               key === "gold"
                 ? "text-yellow-600"
                 : "text-gray-400"
             }
-          >
-            ◉
-          </span>
+          />
           <span>{capitalizeWords(key)}</span>
         </span>
       ),
