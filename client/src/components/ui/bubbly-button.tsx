@@ -102,8 +102,8 @@ export const CRAFT_PARTICLE_CONFIG: Partial<ParticleConfig> = {
   smallParticleOnlyColors: CRAFT_SMALL_PARTICLE_ONLY_COLORS,
   smallParticleMaxSize: 2,
   count: 150,
-  durationMin: 0.5,
-  durationMax: 0.85,
+  durationMin: 0.45,
+  durationMax: 0.7,
   distanceMin: 25,
   distanceMax: 65,
   sizeMin: 1,
@@ -125,7 +125,7 @@ const MINE_TONES = [
 // Per-resource highlight colors for small particles (size 1-2)
 const MINE_HIGHLIGHT_COLORS: Record<string, string[]> = {
   mineStone: [tailwindToHex("stone-400"), tailwindToHex("gray-400")],
-  mineIron: [tailwindToHex("red-900"), tailwindToHex("orange-950")],
+  mineIron: [tailwindToHex("red-800"), tailwindToHex("orange-900")],
   mineCoal: [tailwindToHex("slate-950"), tailwindToHex("gray-950")],
   mineSulfur: [tailwindToHex("yellow-500"), tailwindToHex("amber-400")],
   mineObsidian: [tailwindToHex("violet-600"), tailwindToHex("purple-600")],
@@ -138,7 +138,7 @@ export function getMineParticleConfig(actionId: string): Partial<ParticleConfig>
   return {
     colors: MINE_TONES,
     smallParticleOnlyColors: highlightColors,
-    smallParticleMaxSize: 4,
+    smallParticleMaxSize: 5,
     count: 200,
     durationMin: 0.5,
     durationMax: 1,
@@ -266,7 +266,7 @@ export const CHOP_WOOD_PARTICLE_CONFIG: Partial<ParticleConfig> = {
   distanceMin: 25,
   distanceMax: 65,
   sizeMin: 2,
-  sizeMax: 20,
+  sizeMax: 16,
   bubbleRemoveDelay: 2500,
 };
 
