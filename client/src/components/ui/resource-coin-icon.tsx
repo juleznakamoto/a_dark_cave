@@ -9,7 +9,7 @@ import {
   type BubbleWithParticles,
 } from "@/components/ui/bubbly-button";
 
-const EMIT_INTERVAL_MS = 450;
+const EMIT_INTERVAL_MS = 350;
 const BUBBLE_REMOVE_DELAY = 2500;
 
 interface ResourceCoinIconProps {
