@@ -1,5 +1,19 @@
 import { useState } from "react";
-import { BubblyButton, BubblyButtonGlobalPortal, CRAFT_PARTICLE_CONFIG } from "@/components/ui/bubbly-button";
+import {
+  BubblyButton,
+  BubblyButtonGlobalPortal,
+  CRAFT_PARTICLE_CONFIG,
+  getExploreParticleConfig,
+} from "@/components/ui/bubbly-button";
+
+const EXPLORE_ACTIONS = [
+  { id: "exploreCave", label: "Explore Cave" },
+  { id: "ventureDeeper", label: "Venture Deeper" },
+  { id: "descendFurther", label: "Descend Further" },
+  { id: "exploreRuins", label: "Explore Ruins" },
+  { id: "exploreTemple", label: "Explore Temple" },
+  { id: "exploreCitadel", label: "Explore Citadel" },
+] as const;
 
 // ============================================================
 // Build Button - Non-Upgradeable (Disappearing)
@@ -86,6 +100,26 @@ function CraftButton() {
 }
 
 // ============================================================
+// Explore Cave Buttons - All levels for testing/styling
+// ============================================================
+function ExploreCaveButtons() {
+  return (
+    <div className="flex flex-wrap gap-3 justify-center">
+      {EXPLORE_ACTIONS.map(({ id, label }) => (
+        <BubblyButton
+          key={id}
+          variant="outline"
+          particleConfig={getExploreParticleConfig(id)}
+          className="bg-stone-800/90 hover:bg-stone-700 border-stone-600/80"
+        >
+          {label}
+        </BubblyButton>
+      ))}
+    </div>
+  );
+}
+
+// ============================================================
 // Main Test Page
 // ============================================================
 export default function ButtonTest() {
@@ -128,6 +162,14 @@ export default function ButtonTest() {
           </p>
           <CraftButton />
         </div>
+      </div>
+
+      <div className="border rounded-lg p-6 w-full max-w-4xl space-y-4">
+        <h3 className="text-sm font-semibold">Explore Cave (All Levels)</h3>
+        <p className="text-xs text-muted-foreground">
+          Per-level particle configs for testing and styling
+        </p>
+        <ExploreCaveButtons />
       </div>
     </div>
   );
