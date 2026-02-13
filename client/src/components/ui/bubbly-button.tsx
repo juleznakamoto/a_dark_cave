@@ -105,12 +105,55 @@ export const CRAFT_PARTICLE_CONFIG: Partial<ParticleConfig> = {
   durationMin: 0.5,
   durationMax: 0.9,
   distanceMin: 25,
-  distanceMax: 55,
+  distanceMax: 60,
   sizeMin: 1,
   sizeMax: 6,
   glowDuration: 500,
   bubbleRemoveDelay: 2500,
 };
+
+// Mine tones (grey/black base for all mining)
+const MINE_TONES = [
+  tailwindToHex("neutral-800"),
+  tailwindToHex("neutral-900"),
+  tailwindToHex("neutral-950"),
+  tailwindToHex("stone-800"),
+  tailwindToHex("stone-900"),
+  tailwindToHex("stone-950"),
+  tailwindToHex("gray-800"),
+  tailwindToHex("gray-900"),
+  tailwindToHex("slate-800"),
+  tailwindToHex("slate-900"),
+];
+
+// Per-resource highlight colors for small particles (size 1-2)
+const MINE_HIGHLIGHT_COLORS: Record<string, string[]> = {
+  mineStone: [tailwindToHex("stone-400"), tailwindToHex("gray-400")],
+  mineIron: [tailwindToHex("slate-400"), tailwindToHex("zinc-400")],
+  mineCoal: [tailwindToHex("slate-900"), tailwindToHex("neutral-950")],
+  mineSulfur: [tailwindToHex("yellow-500"), tailwindToHex("amber-400")],
+  mineObsidian: [tailwindToHex("violet-700"), tailwindToHex("purple-800")],
+  mineAdamant: [tailwindToHex("indigo-400"), tailwindToHex("blue-400")],
+};
+
+/** Get mine particle config for a specific mine action (stone, iron, coal, etc.) */
+export function getMineParticleConfig(actionId: string): Partial<ParticleConfig> {
+  const highlightColors = MINE_HIGHLIGHT_COLORS[actionId] ?? [];
+  return {
+    colors: MINE_TONES,
+    smallParticleOnlyColors: highlightColors,
+    smallParticleMaxSize: 2,
+    count: 150,
+    durationMin: 0.5,
+    durationMax: 0.9,
+    distanceMin: 25,
+    distanceMax: 55,
+    sizeMin: 1,
+    sizeMax: 6,
+    glowDuration: 500,
+    bubbleRemoveDelay: 2500,
+  };
+}
 
 function mergeParticleConfig(
   base: Partial<ParticleConfig>,

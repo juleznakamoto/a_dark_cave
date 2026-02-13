@@ -15,6 +15,7 @@ import {
   BubblyButtonGlobalPortal,
   generateParticleData,
   CRAFT_PARTICLE_CONFIG,
+  getMineParticleConfig,
   type BubbleWithParticles,
 } from "@/components/ui/bubbly-button";
 import { ButtonLevelBadge } from "@/components/game/ButtonLevelBadge";
@@ -38,6 +39,19 @@ export default function CavePanel() {
     setTimeout(() => {
       setCraftBubbles((prev) => prev.filter((b) => b.id !== id));
     }, CRAFT_PARTICLE_CONFIG.bubbleRemoveDelay ?? 2500);
+  };
+
+  // Mine button particle animation (per-resource highlight colors)
+  const [mineBubbles, setMineBubbles] = useState<BubbleWithParticles[]>([]);
+  const mineBubbleIdCounter = useRef(0);
+  const handleMineAnimationTrigger = (actionId: string, x: number, y: number) => {
+    const config = getMineParticleConfig(actionId);
+    const id = `mine-bubble-${mineBubbleIdCounter.current++}-${Date.now()}`;
+    const particles = generateParticleData(config);
+    setMineBubbles((prev) => [...prev, { id, x, y, particles }]);
+    setTimeout(() => {
+      setMineBubbles((prev) => prev.filter((b) => b.id !== id));
+    }, config.bubbleRemoveDelay ?? 2500);
   };
 
   // Define action groups with their actions
@@ -260,7 +274,13 @@ export default function CavePanel() {
           variant="outline"
           className={`hover:bg-transparent hover:text-foreground ${shouldGlow ? "focus-glow" : ""}`}
           tooltip={tooltipContent}
-          onAnimationTrigger={isCraftAction ? handleCraftAnimationTrigger : undefined}
+          onAnimationTrigger={
+            isCraftAction
+              ? handleCraftAnimationTrigger
+              : isMineAction
+                ? (x, y) => handleMineAnimationTrigger(actionId, x, y)
+                : undefined
+          }
           onMouseEnter={() => {
             if (state.buildings.inkwardenAcademy > 0) {
               const resources = getResourcesFromActionCost(actionId, state);
@@ -300,7 +320,13 @@ export default function CavePanel() {
         disabled={!canExecute}
         variant="outline"
         className={`hover:bg-transparent hover:text-foreground ${shouldGlow ? "focus-glow" : ""}`}
-        onAnimationTrigger={isCraftAction ? handleCraftAnimationTrigger : undefined}
+        onAnimationTrigger={
+          isCraftAction
+            ? handleCraftAnimationTrigger
+            : isMineAction
+              ? (x, y) => handleMineAnimationTrigger(actionId, x, y)
+              : undefined
+        }
         onMouseEnter={() => {
           if (state.buildings.inkwardenAcademy > 0) {
             const resources = getResourcesFromActionCost(actionId, state);
@@ -409,7 +435,7 @@ export default function CavePanel() {
       </div>
       <ScrollBar orientation="vertical" />
     </ScrollArea>
-    <BubblyButtonGlobalPortal bubbles={craftBubbles} />
+    <BubblyButtonGlobalPortal bubbles={[...craftBubbles, ...mineBubbles]} />
     </>
   );
 }
