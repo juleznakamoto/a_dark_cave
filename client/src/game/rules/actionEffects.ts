@@ -295,18 +295,28 @@ export function applyActionEffects(
             actionId === "boneTotems" || actionId === "leatherTotems";
 
           if (isSacrificeAction) {
-            const usageCountKey =
-              actionId === "boneTotems"
-                ? "boneTotemsUsageCount"
-                : "leatherTotemsUsageCount";
-            const usageCount = Number(state.story?.seen?.[usageCountKey]) || 0;
-            const hasPaleCross =
-              actionId === "boneTotems" &&
-              (state.buildings?.paleCross || 0) >= 1;
-            const cappedUsageCount = Math.min(usageCount, hasPaleCross ? 45 : 20);
-            const silverBonusPerLevel = hasPaleCross ? 2 : 1;
-            min += cappedUsageCount * silverBonusPerLevel;
-            max += cappedUsageCount * silverBonusPerLevel;
+            // Bone totems: usage-based silver bonus (Pale Cross amplifies it)
+            if (actionId === "boneTotems") {
+              const usageCount =
+                Number(state.story?.seen?.boneTotemsUsageCount) || 0;
+              const hasPaleCross =
+                (state.buildings?.paleCross || 0) >= 1;
+              const cappedUsageCount = Math.min(
+                usageCount,
+                hasPaleCross ? 45 : 20,
+              );
+              const silverBonusPerLevel = hasPaleCross ? 4 : 2;
+              min += cappedUsageCount * silverBonusPerLevel;
+              max += cappedUsageCount * silverBonusPerLevel;
+            }
+            // Leather totems: +2 gold per usage, capped at 20
+            else if (actionId === "leatherTotems") {
+              const usageCount =
+                Number(state.story?.seen?.leatherTotemsUsageCount) || 0;
+              const cappedUsageCount = Math.min(usageCount, 20);
+              min += cappedUsageCount * 2;
+              max += cappedUsageCount * 2;
+            }
 
             const actionBonuses = getActionBonusesCalc(actionId, state);
 

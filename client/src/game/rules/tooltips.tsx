@@ -100,14 +100,24 @@ export const calculateResourceGains = (
             let min = parseInt(match[1]);
             let max = parseInt(match[2]);
 
-            // Apply bonus per usage (Pale Cross: +2/level cap 50, else +1/level cap 20)
-            const hasPaleCross =
-              actionId === "boneTotems" &&
-              (state.buildings?.paleCross || 0) >= 1;
-            const cappedUsageCount = Math.min(usageCount, hasPaleCross ? 50 : 20);
-            const silverBonusPerLevel = hasPaleCross ? 2 : 1;
-            min = min + cappedUsageCount * silverBonusPerLevel;
-            max = max + cappedUsageCount * silverBonusPerLevel;
+            // Bone totems: usage-based silver bonus (Pale Cross amplifies it)
+            if (actionId === "boneTotems") {
+              const hasPaleCross =
+                (state.buildings?.paleCross || 0) >= 1;
+              const cappedUsageCount = Math.min(
+                usageCount,
+                hasPaleCross ? 50 : 20,
+              );
+              const silverBonusPerLevel = hasPaleCross ? 4 : 2;
+              min = min + cappedUsageCount * silverBonusPerLevel;
+              max = max + cappedUsageCount * silverBonusPerLevel;
+            }
+            // Leather totems: +2 gold per usage, capped at 20
+            else if (actionId === "leatherTotems") {
+              const cappedUsageCount = Math.min(usageCount, 20);
+              min = min + cappedUsageCount * 2;
+              max = max + cappedUsageCount * 2;
+            }
 
             // Apply bonuses through centralized system (includes Bone Temple + items)
             const totalMultiplier = bonuses.resourceMultiplier;
