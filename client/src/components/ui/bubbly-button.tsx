@@ -234,7 +234,9 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
                 const colorPool =
                   config.smallParticleOnlyColors?.length && size > config.smallParticleMaxSize
                     ? config.colors.filter((c) => !config.smallParticleOnlyColors!.includes(c))
-                    : config.colors;
+                    : config.smallParticleOnlyColors?.length
+                      ? [...config.colors, ...config.smallParticleOnlyColors]
+                      : config.colors;
                 const color = colorPool[Math.floor(Math.random() * colorPool.length)] ?? config.colors[0];
                 const duration = config.durationMin + Math.random() * (config.durationMax - config.durationMin);
 
@@ -332,7 +334,9 @@ export function generateParticleData(
     const colorPool =
       config.smallParticleOnlyColors?.length && size > config.smallParticleMaxSize
         ? config.colors.filter((c) => !config.smallParticleOnlyColors!.includes(c))
-        : config.colors;
+        : config.smallParticleOnlyColors?.length
+          ? [...config.colors, ...config.smallParticleOnlyColors]
+          : config.colors;
     const color = colorPool[Math.floor(Math.random() * colorPool.length)] ?? config.colors[0];
     const duration = config.durationMin + Math.random() * (config.durationMax - config.durationMin);
     const endX = Math.cos(angle) * distance;
