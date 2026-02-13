@@ -220,7 +220,9 @@ export class AudioManager {
       'sleep': '/sounds/sleep.wav',
       'buildingComplete': '/sounds/building_complete.wav',
       'craft': '/sounds/craft.wav',
-      'mining': '/sounds/mining.wav'
+      'mining': '/sounds/mining.wav',
+      'chopWood': '/sounds/chop_wood.wav',
+      'hunt': '/sounds/hunt.wav'
     };
 
     await Promise.all(

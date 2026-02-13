@@ -1139,6 +1139,20 @@ export const useGameStore = create<GameStore>((set, get) => ({
       });
     }
 
+    // Play chop wood sound for Chop Wood button (Forest panel), not for Gather Wood (Cave panel)
+    if (actionId === "chopWood" && get().flags?.forestUnlocked) {
+      import("@/lib/audio").then(({ audioManager }) => {
+        audioManager.playSound("chopWood");
+      });
+    }
+
+    // Play hunt sound for hunt action
+    if (actionId === "hunt") {
+      import("@/lib/audio").then(({ audioManager }) => {
+        audioManager.playSound("hunt");
+      });
+    }
+
     // Schedule updates
     if (
       result.stateUpdates.tools ||
