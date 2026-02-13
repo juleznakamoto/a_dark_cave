@@ -16,6 +16,8 @@ import {
   generateParticleData,
   CRAFT_PARTICLE_CONFIG,
   getMineParticleConfig,
+  getExploreParticleConfig,
+  CHOP_WOOD_PARTICLE_CONFIG,
   type BubbleWithParticles,
 } from "@/components/ui/bubbly-button";
 import { ButtonLevelBadge } from "@/components/game/ButtonLevelBadge";
@@ -51,6 +53,32 @@ export default function CavePanel() {
     setMineBubbles((prev) => [...prev, { id, x, y, particles }]);
     setTimeout(() => {
       setMineBubbles((prev) => prev.filter((b) => b.id !== id));
+    }, config.bubbleRemoveDelay ?? 2500);
+  };
+
+  // Cave explore button particle animation (per-explore-level colors)
+  const [exploreBubbles, setExploreBubbles] = useState<BubbleWithParticles[]>([]);
+  const exploreBubbleIdCounter = useRef(0);
+  const handleExploreAnimationTrigger = (actionId: string, x: number, y: number) => {
+    const config = getExploreParticleConfig(actionId);
+    const id = `explore-bubble-${exploreBubbleIdCounter.current++}-${Date.now()}`;
+    const particles = generateParticleData(config);
+    setExploreBubbles((prev) => [...prev, { id, x, y, particles }]);
+    setTimeout(() => {
+      setExploreBubbles((prev) => prev.filter((b) => b.id !== id));
+    }, config.bubbleRemoveDelay ?? 2500);
+  };
+
+  // Chop wood / Gather wood particle animation
+  const [chopWoodBubbles, setChopWoodBubbles] = useState<BubbleWithParticles[]>([]);
+  const chopWoodBubbleIdCounter = useRef(0);
+  const handleChopWoodAnimationTrigger = (x: number, y: number) => {
+    const config = CHOP_WOOD_PARTICLE_CONFIG;
+    const id = `chop-bubble-${chopWoodBubbleIdCounter.current++}-${Date.now()}`;
+    const particles = generateParticleData(config);
+    setChopWoodBubbles((prev) => [...prev, { id, x, y, particles }]);
+    setTimeout(() => {
+      setChopWoodBubbles((prev) => prev.filter((b) => b.id !== id));
     }, config.bubbleRemoveDelay ?? 2500);
   };
 
@@ -205,6 +233,7 @@ export default function CavePanel() {
       "exploreCitadel",
     ];
     const isCaveExploreAction = caveExploreActions.includes(actionId);
+    const isChopWood = actionId === "chopWood";
     const isCraftAction = actionId.startsWith("craft");
     const resourceGainTooltip =
       isMineAction || isCaveExploreAction || isCraftAction
@@ -279,7 +308,11 @@ export default function CavePanel() {
               ? handleCraftAnimationTrigger
               : isMineAction
                 ? (x, y) => handleMineAnimationTrigger(actionId, x, y)
-                : undefined
+                : isCaveExploreAction
+                  ? (x, y) => handleExploreAnimationTrigger(actionId, x, y)
+                  : isChopWood
+                    ? handleChopWoodAnimationTrigger
+                    : undefined
           }
           onMouseEnter={() => {
             if (state.buildings.inkwardenAcademy > 0) {
@@ -325,7 +358,11 @@ export default function CavePanel() {
             ? handleCraftAnimationTrigger
             : isMineAction
               ? (x, y) => handleMineAnimationTrigger(actionId, x, y)
-              : undefined
+              : isCaveExploreAction
+                ? (x, y) => handleExploreAnimationTrigger(actionId, x, y)
+                : isChopWood
+                  ? handleChopWoodAnimationTrigger
+                  : undefined
         }
         onMouseEnter={() => {
           if (state.buildings.inkwardenAcademy > 0) {
@@ -435,7 +472,7 @@ export default function CavePanel() {
       </div>
       <ScrollBar orientation="vertical" />
     </ScrollArea>
-    <BubblyButtonGlobalPortal bubbles={[...craftBubbles, ...mineBubbles]} />
+    <BubblyButtonGlobalPortal bubbles={[...craftBubbles, ...mineBubbles, ...exploreBubbles, ...chopWoodBubbles]} />
     </>
   );
 }

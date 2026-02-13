@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import { useGameStore } from "@/game/state";
 import {
   gameActions,
@@ -13,10 +13,43 @@ import CooldownButton from "@/components/CooldownButton";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { ButtonLevelBadge } from "@/components/game/ButtonLevelBadge";
 import { ACTION_TO_UPGRADE_KEY } from "@/game/buttonUpgrades";
+import {
+  BubblyButtonGlobalPortal,
+  generateParticleData,
+  CHOP_WOOD_PARTICLE_CONFIG,
+  HUNT_PARTICLE_CONFIG,
+  type BubbleWithParticles,
+} from "@/components/ui/bubbly-button";
 
 export default function ForestPanel() {
   const { executeAction, setHighlightedResources } = useGameStore();
   const state = useGameStore();
+
+  // Chop wood particle animation
+  const [chopWoodBubbles, setChopWoodBubbles] = useState<BubbleWithParticles[]>([]);
+  const chopWoodBubbleIdCounter = useRef(0);
+  const handleChopWoodAnimationTrigger = (x: number, y: number) => {
+    const config = CHOP_WOOD_PARTICLE_CONFIG;
+    const id = `chop-bubble-${chopWoodBubbleIdCounter.current++}-${Date.now()}`;
+    const particles = generateParticleData(config);
+    setChopWoodBubbles((prev) => [...prev, { id, x, y, particles }]);
+    setTimeout(() => {
+      setChopWoodBubbles((prev) => prev.filter((b) => b.id !== id));
+    }, config.bubbleRemoveDelay ?? 2500);
+  };
+
+  // Hunt particle animation
+  const [huntBubbles, setHuntBubbles] = useState<BubbleWithParticles[]>([]);
+  const huntBubbleIdCounter = useRef(0);
+  const handleHuntAnimationTrigger = (x: number, y: number) => {
+    const config = HUNT_PARTICLE_CONFIG;
+    const id = `hunt-bubble-${huntBubbleIdCounter.current++}-${Date.now()}`;
+    const particles = generateParticleData(config);
+    setHuntBubbles((prev) => [...prev, { id, x, y, particles }]);
+    setTimeout(() => {
+      setHuntBubbles((prev) => prev.filter((b) => b.id !== id));
+    }, config.bubbleRemoveDelay ?? 2500);
+  };
 
   // Define action groups with their actions
   const actionGroups = [
@@ -291,6 +324,9 @@ export default function ForestPanel() {
           variant="outline"
           className={`hover:bg-transparent hover:text-foreground ${isTradeButton ? "flex-[0_0_calc(25%-0.375rem)]" : ""} ${shouldGlow ? "focus-glow" : ""}`}
           tooltip={tooltipContent}
+          onAnimationTrigger={
+            isChopWood ? handleChopWoodAnimationTrigger : isHunt ? handleHuntAnimationTrigger : undefined
+          }
           onMouseEnter={() => {
             if (state.buildings.inkwardenAcademy > 0) {
               const resources: string[] = [];
@@ -380,6 +416,9 @@ export default function ForestPanel() {
         disabled={!canExecute}
         variant="outline"
         className={`hover:bg-transparent hover:text-foreground ${isTradeButton ? "flex-[0_0_calc(25%-0.375rem)]" : ""} ${shouldGlow ? "focus-glow" : ""}`}
+        onAnimationTrigger={
+          isChopWood ? handleChopWoodAnimationTrigger : isHunt ? handleHuntAnimationTrigger : undefined
+        }
         onMouseEnter={() => {
           if (state.buildings.inkwardenAcademy > 0) {
             const resources = getResourcesFromActionCost(actionId, state);
@@ -408,6 +447,7 @@ export default function ForestPanel() {
   };
 
   return (
+    <>
     <ScrollArea className="h-full w-full">
       <div className="space-y-4 mt-2 mb-2 pl-[3px] ">
         {actionGroups.map((group, groupIndex) => {
@@ -437,5 +477,7 @@ export default function ForestPanel() {
       </div>
       <ScrollBar orientation="vertical" />
     </ScrollArea>
+    <BubblyButtonGlobalPortal bubbles={[...chopWoodBubbles, ...huntBubbles]} />
+    </>
   );
 }

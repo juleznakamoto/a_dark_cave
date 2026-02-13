@@ -151,6 +151,166 @@ export function getMineParticleConfig(actionId: string): Partial<ParticleConfig>
   };
 }
 
+// Cave explore tones - darker/more mysterious as depth increases
+const EXPLORE_CONFIGS: Record<string, Partial<ParticleConfig>> = {
+  exploreCave: {
+    colors: [
+      tailwindToHex("stone-600"),
+      tailwindToHex("stone-700"),
+      tailwindToHex("neutral-700"),
+      tailwindToHex("amber-950"),
+    ],
+    smallParticleOnlyColors: [tailwindToHex("amber-600"), tailwindToHex("stone-400")],
+    smallParticleMaxSize: 3,
+    count: 120,
+    durationMin: 0.6,
+    durationMax: 1,
+    distanceMin: 30,
+    distanceMax: 65,
+    sizeMin: 2,
+    sizeMax: 8,
+    bubbleRemoveDelay: 2500,
+  },
+  ventureDeeper: {
+    colors: [
+      tailwindToHex("stone-700"),
+      tailwindToHex("stone-800"),
+      tailwindToHex("neutral-800"),
+      tailwindToHex("slate-800"),
+    ],
+    smallParticleOnlyColors: [tailwindToHex("slate-500"), tailwindToHex("stone-500")],
+    smallParticleMaxSize: 3,
+    count: 130,
+    durationMin: 0.55,
+    durationMax: 0.95,
+    distanceMin: 28,
+    distanceMax: 60,
+    sizeMin: 2,
+    sizeMax: 7,
+    bubbleRemoveDelay: 2500,
+  },
+  descendFurther: {
+    colors: [
+      tailwindToHex("stone-800"),
+      tailwindToHex("neutral-900"),
+      tailwindToHex("slate-900"),
+      tailwindToHex("zinc-800"),
+    ],
+    smallParticleOnlyColors: [tailwindToHex("violet-800"), tailwindToHex("slate-600")],
+    smallParticleMaxSize: 3,
+    count: 140,
+    durationMin: 0.5,
+    durationMax: 0.9,
+    distanceMin: 25,
+    distanceMax: 55,
+    sizeMin: 2,
+    sizeMax: 7,
+    bubbleRemoveDelay: 2500,
+  },
+  exploreRuins: {
+    colors: [
+      tailwindToHex("stone-800"),
+      tailwindToHex("stone-900"),
+      tailwindToHex("neutral-950"),
+      tailwindToHex("amber-900"),
+    ],
+    smallParticleOnlyColors: [tailwindToHex("amber-700"), tailwindToHex("yellow-800")],
+    smallParticleMaxSize: 3,
+    count: 150,
+    durationMin: 0.5,
+    durationMax: 0.9,
+    distanceMin: 25,
+    distanceMax: 55,
+    sizeMin: 2,
+    sizeMax: 8,
+    bubbleRemoveDelay: 2500,
+  },
+  exploreTemple: {
+    colors: [
+      tailwindToHex("violet-900"),
+      tailwindToHex("purple-900"),
+      tailwindToHex("stone-900"),
+      tailwindToHex("indigo-950"),
+    ],
+    smallParticleOnlyColors: [tailwindToHex("violet-500"), tailwindToHex("purple-400")],
+    smallParticleMaxSize: 3,
+    count: 150,
+    durationMin: 0.5,
+    durationMax: 0.9,
+    distanceMin: 25,
+    distanceMax: 55,
+    sizeMin: 2,
+    sizeMax: 8,
+    bubbleRemoveDelay: 2500,
+  },
+  exploreCitadel: {
+    colors: [
+      tailwindToHex("violet-950"),
+      tailwindToHex("purple-950"),
+      tailwindToHex("indigo-950"),
+      tailwindToHex("neutral-950"),
+    ],
+    smallParticleOnlyColors: [tailwindToHex("violet-400"), tailwindToHex("indigo-400")],
+    smallParticleMaxSize: 3,
+    count: 160,
+    durationMin: 0.45,
+    durationMax: 0.85,
+    distanceMin: 28,
+    distanceMax: 58,
+    sizeMin: 2,
+    sizeMax: 9,
+    bubbleRemoveDelay: 2500,
+  },
+};
+
+/** Get cave explore particle config by action id */
+export function getExploreParticleConfig(actionId: string): Partial<ParticleConfig> {
+  return EXPLORE_CONFIGS[actionId] ?? EXPLORE_CONFIGS.exploreCave;
+}
+
+// Chop wood / Gather wood - forest tones
+export const CHOP_WOOD_PARTICLE_CONFIG: Partial<ParticleConfig> = {
+  colors: [
+    tailwindToHex("amber-800"),
+    tailwindToHex("amber-900"),
+    tailwindToHex("stone-700"),
+    tailwindToHex("stone-800"),
+    tailwindToHex("lime-900"),
+    tailwindToHex("green-900"),
+  ],
+  smallParticleOnlyColors: [tailwindToHex("lime-500"), tailwindToHex("amber-600")],
+  smallParticleMaxSize: 3,
+  count: 140,
+  durationMin: 0.5,
+  durationMax: 0.9,
+  distanceMin: 25,
+  distanceMax: 55,
+  sizeMin: 2,
+  sizeMax: 8,
+  bubbleRemoveDelay: 2500,
+};
+
+// Hunt - fur, blood, forest tones
+export const HUNT_PARTICLE_CONFIG: Partial<ParticleConfig> = {
+  colors: [
+    tailwindToHex("amber-900"),
+    tailwindToHex("stone-800"),
+    tailwindToHex("red-950"),
+    tailwindToHex("orange-900"),
+    tailwindToHex("neutral-800"),
+  ],
+  smallParticleOnlyColors: [tailwindToHex("red-600"), tailwindToHex("amber-500")],
+  smallParticleMaxSize: 3,
+  count: 140,
+  durationMin: 0.5,
+  durationMax: 0.9,
+  distanceMin: 25,
+  distanceMax: 55,
+  sizeMin: 2,
+  sizeMax: 8,
+  bubbleRemoveDelay: 2500,
+};
+
 function mergeParticleConfig(
   base: Partial<ParticleConfig>,
   override?: Partial<ParticleConfig>

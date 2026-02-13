@@ -521,14 +521,14 @@ body {
     text-shadow: 0 0 0px transparent;
   }
 
-  25% {
-    color: #fca5a5;
-    text-shadow: 0 0 8px rgba(239, 68, 68, 0.6);
+  20% {
+    color: #dc2626;
+    text-shadow: 0 0 10px rgba(239, 68, 68, 0.8);
   }
 
-  60% {
-    color: #f87171;
-    text-shadow: 0 0 12px rgba(239, 68, 68, 0.8);
+  50% {
+    color: #ef4444;
+    text-shadow: 0 0 12px rgba(239, 68, 68, 0.9);
   }
 
   100% {
