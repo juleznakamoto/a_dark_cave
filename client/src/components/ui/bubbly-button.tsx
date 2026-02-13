@@ -165,14 +165,66 @@ const EXPLORE_TONES = [
   tailwindToHex("slate-900"),
 ];
 
-// Per-level highlight colors for small particles (size 1-3)
+// Per-level highlight colors for small particles - based on resources found at each level.
+// Colors accumulate: each level keeps colors from the previous level for resources that still exist,
+// and adds new colors only for newly introduced resources.
+const EXPLORE_LEVEL_ORDER = [
+  "exploreCave",
+  "ventureDeeper",
+  "descendFurther",
+  "exploreRuins",
+  "exploreTemple",
+] as const;
+
+const EXPLORE_RESOURCES_BY_LEVEL: Record<string, string[]> = {
+  exploreCave: ["wood", "stone", "coal", "iron"],
+  ventureDeeper: ["stone", "coal", "iron", "sulfur", "silver"],
+  descendFurther: ["stone", "coal", "iron", "obsidian", "silver"],
+  exploreRuins: ["obsidian", "adamant", "silver", "gold"],
+  exploreTemple: ["obsidian", "adamant", "moonstone", "silver", "gold"],
+};
+
+const RESOURCE_HIGHLIGHT_COLORS: Record<string, string> = {
+  wood: "amber-600",
+  stone: "stone-400",
+  coal: "slate-600",
+  iron: "slate-500",
+  sulfur: "yellow-500",
+  silver: "slate-400",
+  obsidian: "violet-700",
+  adamant: "indigo-400",
+  gold: "amber-500",
+  moonstone: "sky-400",
+};
+
+function buildExploreHighlightColors(): Record<string, string[]> {
+  const result: Record<string, string[]> = {};
+  const resourceToColor: Record<string, string> = {};
+
+  for (const level of EXPLORE_LEVEL_ORDER) {
+    const resources = EXPLORE_RESOURCES_BY_LEVEL[level];
+    const colors: string[] = [];
+    for (const r of resources) {
+      if (!resourceToColor[r]) {
+        resourceToColor[r] = tailwindToHex(RESOURCE_HIGHLIGHT_COLORS[r] ?? "stone-400");
+      }
+      colors.push(resourceToColor[r]);
+    }
+    result[level] = colors;
+  }
+  return result;
+}
+
 const EXPLORE_HIGHLIGHT_COLORS: Record<string, string[]> = {
-  exploreCave: [tailwindToHex("amber-600"), tailwindToHex("stone-400")],
-  ventureDeeper: [tailwindToHex("slate-500"), tailwindToHex("stone-500")],
-  descendFurther: [tailwindToHex("violet-800"), tailwindToHex("slate-600")],
-  exploreRuins: [tailwindToHex("amber-700"), tailwindToHex("yellow-800")],
-  exploreTemple: [tailwindToHex("violet-500"), tailwindToHex("purple-400")],
-  exploreCitadel: [tailwindToHex("violet-400"), tailwindToHex("indigo-400")],
+  ...buildExploreHighlightColors(),
+  // Final stage - defined individually for a distinct look
+  exploreCitadel: [
+    tailwindToHex("violet-400"),
+    tailwindToHex("indigo-400"),
+    tailwindToHex("amber-400"),
+    tailwindToHex("sky-300"),
+    tailwindToHex("slate-300"),
+  ],
 };
 
 /** Get cave explore particle config by action id (shared base + per-level highlights) */
