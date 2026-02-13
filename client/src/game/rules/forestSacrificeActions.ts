@@ -2,8 +2,6 @@ import { Action, GameState } from "@shared/schema";
 import { ActionResult } from '@/game/actions';
 import { applyActionEffects } from "./actionEffects";
 import { killVillagers } from "../stateHelpers";
-import { getActionBonuses } from "./effectsCalculation";
-import { logger } from "@/lib/logger";
 
 // Helper function to get dynamic cost for bone totems
 export function getBoneTotemsCost(state: GameState): number {
