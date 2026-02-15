@@ -10,14 +10,14 @@ Uses [gender-detector](https://github.com/juleznakamoto/gender-detector) to esti
 
 ## Setup
 
-```bash
-cd gender-service
-python -m venv venv
-venv\Scripts\activate   # Windows
-# or: source venv/bin/activate  # Unix
-pip install -r requirements.txt
-python create_db.py     # Create SQLite DB (run once)
-```
+**Automatic:** When the Node server starts with `GENDER_SERVICE_URL` and `GENDER_SERVICE_TOKEN` set, it will:
+1. Install Python deps (`pip install -r requirements.txt`) if needed
+2. Create the SQLite DB (`create_db.py`) if missing
+3. Start the gender service
+
+First run may take 1–2 minutes (download + DB creation).
+
+**Manual:** `cd gender-service && pip install -r requirements.txt && python create_db.py`
 
 Set environment variables (match `GENDER_SERVICE_TOKEN` in your main app's `.env`):
 
@@ -34,6 +34,6 @@ GENDER_SERVICE_TOKEN=your-secret-token
 
 ## Run
 
-**Automatic:** When the Node server starts with `GENDER_SERVICE_URL` and `GENDER_SERVICE_TOKEN` set, it starts the Python service automatically (if `first_names.db` exists).
+**Automatic:** Start the Node server (`npm run dev`). The gender service starts automatically when configured.
 
 **Manual:** Run `python app.py` in a separate terminal. Runs on `http://127.0.0.1:5001`.

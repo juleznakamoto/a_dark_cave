@@ -3,7 +3,7 @@ import compression from "compression";
 import rateLimit from "express-rate-limit";
 import path from "path";
 import fs from "fs";
-import { spawn } from "child_process";
+import { spawn, spawnSync } from "child_process";
 import { fileURLToPath } from "url";
 import { setupVite, serveStatic, log } from "./vite";
 
@@ -766,21 +766,49 @@ app.post("/api/leaderboard/update-username", leaderboardUpdateLimiter, async (re
     const genderServiceDir = path.join(__dirname, "..", "gender-service");
     const appPy = path.join(genderServiceDir, "app.py");
     const dbPath = path.join(genderServiceDir, "first_names.db");
-    if (fs.existsSync(appPy) && fs.existsSync(dbPath)) {
-      const pyCmd = process.platform === "win32" ? "python" : "python3";
-      const py = spawn(pyCmd, ["app.py"], {
-        cwd: genderServiceDir,
-        env: {
-          ...process.env,
-          GENDER_SERVICE_TOKEN: genderServiceToken,
-        },
-        detached: true,
-        stdio: "ignore",
-      });
-      py.unref();
-      log("Gender service started");
-    } else {
-      log("Gender service skipped: run 'cd gender-service && python create_db.py' first");
+    const createDbPy = path.join(genderServiceDir, "create_db.py");
+
+    if (fs.existsSync(appPy)) {
+      if (!fs.existsSync(dbPath) && fs.existsSync(createDbPy)) {
+        const pyCmd = process.platform === "win32" ? "python" : "python3";
+        const requirementsPath = path.join(genderServiceDir, "requirements.txt");
+        if (fs.existsSync(requirementsPath)) {
+          log("Installing gender-service deps (first run)...");
+          spawnSync(pyCmd, ["-m", "pip", "install", "-r", "requirements.txt"], {
+            cwd: genderServiceDir,
+            env: process.env,
+            stdio: "pipe",
+          });
+        }
+        log("Creating gender DB (first run)...");
+        const create = spawnSync(pyCmd, ["create_db.py"], {
+          cwd: genderServiceDir,
+          env: process.env,
+          stdio: "pipe",
+        });
+        if (create.status === 0) {
+          log("Gender DB created");
+        } else {
+          log("Gender DB creation failed:", create.stderr?.toString() || create.error);
+        }
+      }
+
+      if (fs.existsSync(dbPath)) {
+        const pyCmd = process.platform === "win32" ? "python" : "python3";
+        const py = spawn(pyCmd, ["app.py"], {
+          cwd: genderServiceDir,
+          env: {
+            ...process.env,
+            GENDER_SERVICE_TOKEN: genderServiceToken,
+          },
+          detached: true,
+          stdio: "ignore",
+        });
+        py.unref();
+        log("Gender service started");
+      } else {
+        log("Gender service skipped: create_db.py failed or DB missing");
+      }
     }
   }
 
