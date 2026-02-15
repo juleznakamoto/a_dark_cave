@@ -1623,14 +1623,14 @@ export const choiceEvents: Record<string, GameEvent> = {
             };
           }
           const name = state.fn
-            ? ` ${state.fn}... `
+            ? `, ${state.fn}... `
             : "";
           return {
             resources: {
               ...state.resources,
               gold: state.resources.gold - 50,
             },
-            _logMessage: `The seer falls silent. His stare drifts beyond you. "Great challenges await you, ${name}," he says softly. "You believe this world is yours to shape. But you are shaped in turn. When the final truth surfaces, you will see the strings. And by then, it might be too late."`,
+            _logMessage: `The seer falls silent. His stare drifts beyond you. "Great challenges await you${name}," he says softly. "You believe this world is yours to shape. But you are shaped in turn. When the final truth surfaces, you will see the strings. And by then, it might be too late."`,
 
           };
         },
