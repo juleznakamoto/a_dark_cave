@@ -285,11 +285,11 @@ body {
 
   0%,
   100% {
-    box-shadow: 0 0 20px 1px rgba(220, 38, 38, 0.25);
+    box-shadow: 0 0 20px 1px rgba(139, 92, 246, 0.35);
   }
 
   50% {
-    box-shadow: 0 0 5px 0px rgba(220, 38, 38, 0.5);
+    box-shadow: 0 0 5px 0px rgba(139, 92, 246, 0.6);
   }
 }
 
