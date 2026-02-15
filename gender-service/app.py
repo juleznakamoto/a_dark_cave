@@ -20,7 +20,8 @@ def get_db_path() -> Path | None:
 
 
 def predict_gender(name: str | None = None, email: str | None = None) -> tuple[str | None, str | None]:
-    """Returns (g, first_name) or (None, None). g is 'm' or 'f'. Uses SQLite only."""
+    """Returns (g, first_name) or (None, None). g is 'm' or 'f'. Uses SQLite only.
+    Tries name first; if no result and email exists, falls back to email."""
     db_path = get_db_path()
     if not db_path or not db_path.exists():
         return (None, None)
@@ -28,6 +29,8 @@ def predict_gender(name: str | None = None, email: str | None = None) -> tuple[s
     from names_dataset.gender_predictor import predict_gender as _predict
 
     result = _predict(name=name, email=email, db_path=db_path)
+    if result is None and name and email:
+        result = _predict(name=None, email=email, db_path=db_path)
     if not result:
         return (None, None)
     gender = result.get("gender")
