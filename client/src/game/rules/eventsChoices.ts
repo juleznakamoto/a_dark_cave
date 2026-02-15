@@ -1601,6 +1601,55 @@ export const choiceEvents: Record<string, GameEvent> = {
     ],
   },
 
+  veiledSeer: {
+    id: "veiledSeer",
+    condition: (state: GameState) =>
+      state.buildings.darkEstate >= 1 && state.resources.gold >= 50,
+    timeProbability: 45,
+    title: "The Veiled Seer",
+    message:
+      "A hooded figureappears at dusk. His eyes gleam from beneath the veil. 'I have glimpsed what lies ahead,' he rasps. 'Fifty gold, and I shall tell you what awaits.'",
+    priority: 3,
+    repeatable: false,
+    choices: [
+      {
+        id: "accept",
+        label: "Accept",
+        cost: "50 gold",
+        effect: (state: GameState) => {
+          if (state.resources.gold < 50) {
+            return {
+              _logMessage: "You don't have enough gold.",
+            };
+          }
+          const name = state.fn
+            ? ` ${state.fn}... `
+            : "";
+          return {
+            resources: {
+              ...state.resources,
+              gold: state.resources.gold - 50,
+            },
+            _logMessage: `The seer falls silent. His stare drifts beyond you. "Great challenges await you, ${name}," he says softly. "You believe this world is yours to shape. But you are shaped in turn. When the final truth surfaces, you will see the strings. And by then, it might be too late."`,
+
+          };
+        },
+      },
+      {
+        id: "decline",
+        label: "Decline",
+        effect: (state: GameState) => {
+          const farewell = state.fn
+            ? `"Farewell then, ${state.fn}," he says, and disappears into the mist without another word.`
+            : "'Farewell then,' he says, and disappears into the mist without another word.";
+          return {
+            _logMessage: `The seer nods. ${farewell}`,
+          };
+        },
+      },
+    ],
+  },
+
   unnamedWanderer: {
     id: "unnamedWanderer",
     condition: (state: GameState) =>
