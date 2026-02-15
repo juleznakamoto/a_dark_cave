@@ -188,6 +188,64 @@ const getAdminClient = (env: "dev" | "prod" = "dev") => {
   return client;
 };
 
+// Internal gender detection - calls local Python service. Not exposed in public API docs.
+// Requires: GENDER_SERVICE_URL (e.g. http://127.0.0.1:5001), GENDER_SERVICE_TOKEN
+app.post("/api/gender", async (req, res) => {
+  try {
+    const authHeader = req.headers.authorization;
+    if (!authHeader?.startsWith("Bearer ")) {
+      return res.status(401).json({ error: "Authorization required" });
+    }
+    const jwt = authHeader.slice(7);
+
+    const serviceUrl = process.env.GENDER_SERVICE_URL;
+    const serviceToken = process.env.GENDER_SERVICE_TOKEN;
+    if (!serviceUrl || !serviceToken) {
+      return res.status(503).json({ error: "Gender service not configured" });
+    }
+
+    const config = getSupabaseConfig();
+    if (!config.supabaseUrl || !config.supabaseAnonKey) {
+      return res.status(500).json({ error: "Supabase not configured" });
+    }
+
+    const anonClient = createClient(config.supabaseUrl, config.supabaseAnonKey, {
+      auth: { autoRefreshToken: false, persistSession: false },
+    });
+    const { data: { user }, error: authError } = await anonClient.auth.getUser(jwt);
+    if (authError || !user?.email_confirmed_at) {
+      return res.status(401).json({ error: "Invalid or unconfirmed session" });
+    }
+
+    const name = user.user_metadata?.full_name ?? user.user_metadata?.name ?? null;
+    const email = user.email ?? null;
+    if (!name && !email) {
+      return res.status(400).json({ error: "No name or email available" });
+    }
+
+    const response = await fetch(`${serviceUrl.replace(/\/$/, "")}/predict`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Gender-Service-Token": serviceToken,
+      },
+      body: JSON.stringify({ name: name || undefined, email: email || undefined }),
+    });
+
+    if (response.status === 401) {
+      return res.status(500).json({ error: "Gender service auth failed" });
+    }
+    const data = await response.json();
+    if (data.g) {
+      return res.json({ g: data.g });
+    }
+    return res.json({ g: null });
+  } catch (err: any) {
+    log("Gender API error:", err?.message);
+    return res.status(500).json({ error: "Gender detection failed" });
+  }
+});
+
 // API endpoint to fetch admin dashboard data (server-side, bypasses RLS)
 app.get("/api/admin/data", async (req, res) => {
   try {

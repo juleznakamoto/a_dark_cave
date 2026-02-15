@@ -249,6 +249,30 @@ export async function saveGame(
       if (user) {
         const isNewGame = gameState.isNewGame || false;
 
+        // If gender not yet in save, try to detect from signup name/email (internal service)
+        if (!sanitizedState.g) {
+          try {
+            const supabaseClient = await getSupabaseClient();
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            if (session?.access_token) {
+              const res = await fetch("/api/gender", {
+                method: "POST",
+                headers: { Authorization: `Bearer ${session.access_token}` },
+              });
+              if (res.ok) {
+                const { g } = await res.json();
+                if (g === "m" || g === "f") {
+                  sanitizedState.g = g;
+                  const { useGameStore } = await import("./state");
+                  useGameStore.setState({ g });
+                }
+              }
+            }
+          } catch (e) {
+            logger.warn("[SAVE] Gender detection skipped:", e);
+          }
+        }
+
         // Get and reset click analytics
         const clickData = useGameStore.getState().getAndResetClickAnalytics();
 

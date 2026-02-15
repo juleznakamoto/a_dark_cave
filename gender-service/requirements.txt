@@ -1,0 +1,3 @@
+# Uses gender-detector repo: https://github.com/juleznakamoto/gender-detector
+names-dataset @ git+https://github.com/juleznakamoto/gender-detector.git
+flask>=3.0.0
