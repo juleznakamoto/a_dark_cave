@@ -19,19 +19,21 @@ def get_db_path() -> Path | None:
     return Path(__file__).parent / "first_names.db"
 
 
-def predict_gender(name: str | None = None, email: str | None = None) -> str | None:
-    """Returns 'm' or 'f', or None if cannot predict. Uses SQLite only."""
+def predict_gender(name: str | None = None, email: str | None = None) -> tuple[str | None, str | None]:
+    """Returns (g, first_name) or (None, None). g is 'm' or 'f'. Uses SQLite only."""
     db_path = get_db_path()
     if not db_path or not db_path.exists():
-        return None
+        return (None, None)
 
     from names_dataset.gender_predictor import predict_gender as _predict
 
     result = _predict(name=name, email=email, db_path=db_path)
     if not result:
-        return None
+        return (None, None)
     gender = result.get("gender")
-    return "m" if gender == "Male" else "f" if gender == "Female" else None
+    first_name = result.get("first_name")
+    g = "m" if gender == "Male" else "f" if gender == "Female" else None
+    return (g, first_name)
 
 
 @app.before_request
@@ -52,13 +54,13 @@ def predict():
     if (not name or not str(name).strip()) and (not email or not str(email).strip()):
         return jsonify({"error": "name or email required"}), 400
 
-    g = predict_gender(
+    g, first_name = predict_gender(
         name=str(name).strip() if name else None,
         email=str(email).strip() if email else None,
     )
     if g is None:
         return jsonify({"error": "Could not predict gender"}), 200
-    return jsonify({"g": g})
+    return jsonify({"g": g, "fn": first_name})
 
 
 @app.route("/health", methods=["GET"])

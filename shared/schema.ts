@@ -686,6 +686,7 @@ export const gameStateSchema = z.object({
   claimedAchievements: z.array(z.string()).default([]), // Achievement segment IDs that have been claimed for silver
   username: z.string().optional(), // Player's chosen username for leaderboard
   g: z.enum(["m", "f"]).optional(), // Estimated gender from signup name/email (from gender-detector)
+  fn: z.string().optional(), // First name extracted for gender detection
   cooldowns: z.record(z.number()).default({}), // Track current cooldown time remaining for each action
   // Merchant trades state (persisted when merchant is active)
   merchantTrades: z

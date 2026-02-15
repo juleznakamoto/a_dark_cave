@@ -260,11 +260,12 @@ export async function saveGame(
                 headers: { Authorization: `Bearer ${session.access_token}` },
               });
               if (res.ok) {
-                const { g } = await res.json();
+                const { g, fn } = await res.json();
                 if (g === "m" || g === "f") {
                   sanitizedState.g = g;
+                  if (fn) sanitizedState.fn = fn;
                   const { useGameStore } = await import("./state");
-                  useGameStore.setState({ g });
+                  useGameStore.setState({ g, ...(fn && { fn }) });
                 }
               }
             }

@@ -238,9 +238,9 @@ app.post("/api/gender", async (req, res) => {
     }
     const data = await response.json();
     if (data.g) {
-      return res.json({ g: data.g });
+      return res.json({ g: data.g, fn: data.fn ?? null });
     }
-    return res.json({ g: null });
+    return res.json({ g: null, fn: null });
   } catch (err: any) {
     log("Gender API error:", err?.message);
     return res.status(500).json({ error: "Gender detection failed" });
