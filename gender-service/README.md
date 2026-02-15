@@ -34,8 +34,6 @@ GENDER_SERVICE_TOKEN=your-secret-token
 
 ## Run
 
-```bash
-python app.py
-```
+**Automatic:** When the Node server starts with `GENDER_SERVICE_URL` and `GENDER_SERVICE_TOKEN` set, it starts the Python service automatically (if `first_names.db` exists).
 
-Runs on `http://127.0.0.1:5001`. The Node server calls this internally when needed.
+**Manual:** Run `python app.py` in a separate terminal. Runs on `http://127.0.0.1:5001`.

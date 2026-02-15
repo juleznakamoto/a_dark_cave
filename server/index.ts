@@ -3,6 +3,7 @@ import compression from "compression";
 import rateLimit from "express-rate-limit";
 import path from "path";
 import fs from "fs";
+import { spawn } from "child_process";
 import { fileURLToPath } from "url";
 import { setupVite, serveStatic, log } from "./vite";
 
@@ -758,6 +759,31 @@ app.post("/api/leaderboard/update-username", leaderboardUpdateLimiter, async (re
 });
 
 (async () => {
+  // Start gender service automatically if configured (runs alongside Node server)
+  const genderServiceUrl = process.env.GENDER_SERVICE_URL;
+  const genderServiceToken = process.env.GENDER_SERVICE_TOKEN;
+  if (genderServiceUrl && genderServiceToken) {
+    const genderServiceDir = path.join(__dirname, "..", "gender-service");
+    const appPy = path.join(genderServiceDir, "app.py");
+    const dbPath = path.join(genderServiceDir, "first_names.db");
+    if (fs.existsSync(appPy) && fs.existsSync(dbPath)) {
+      const pyCmd = process.platform === "win32" ? "python" : "python3";
+      const py = spawn(pyCmd, ["app.py"], {
+        cwd: genderServiceDir,
+        env: {
+          ...process.env,
+          GENDER_SERVICE_TOKEN: genderServiceToken,
+        },
+        detached: true,
+        stdio: "ignore",
+      });
+      py.unref();
+      log("Gender service started");
+    } else {
+      log("Gender service skipped: run 'cd gender-service && python create_db.py' first");
+    }
+  }
+
   const server = createServer(app);
 
   // CRITICAL: All API routes MUST be defined before Vite middleware
