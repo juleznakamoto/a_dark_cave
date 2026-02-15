@@ -1545,18 +1545,24 @@ export const choiceEvents: Record<string, GameEvent> = {
       state.resources.silver >= 200 + state.CM * 100 &&
       !state.story.seen.mysteriousWomanEvent,
     timeProbability: 5,
-    title: "The Mysterious Woman",
-    message:
-      "An attractive young woman in fine clothes arrives at the estate as the sun sets. She smiles warmly at you and asks, 'Might I have shelter in your hut for the night? I've traveled far and have nowhere else to go.'",
+    // Character is opposite of player: female if player is m, male if player is f or fallback
+    title: (state: GameState) =>
+      state.g === "m" ? "The Mysterious Woman" : "The Mysterious Man",
+    message: (state: GameState) =>
+      state.g === "m"
+        ? "An attractive young woman in fine clothes arrives at the estate as the sun sets. She smiles warmly at you and asks, 'Might I have shelter in your hut for the night? I've traveled far and have nowhere else to go.'"
+        : "An attractive young man in fine clothes arrives at the estate as the sun sets. He smiles warmly at you and asks, 'Might I have shelter in your hut for the night? I've traveled far and have nowhere else to go.'",
     priority: 3,
     repeatable: false,
     choices: [
       {
         id: "allowStay",
-        label: "Let her stay",
+        label: (state: GameState) =>
+          state.g === "m" ? "Let her stay" : "Let him stay",
         effect: (state: GameState) => {
-          // She steals silver
           const silverStolen = 200 + state.CM * 100;
+          const obj = state.g === "m" ? "her" : "him";
+          const subj = state.g === "m" ? "she" : "he";
           return {
             resources: {
               ...state.resources,
@@ -1569,14 +1575,17 @@ export const choiceEvents: Record<string, GameEvent> = {
                 mysteriousWomanEvent: true,
               },
             },
-            _logMessage: `You grant her shelter for the night. By morning, she has vanished without a trace, leaving your bed still warm and ${silverStolen} silver missing.`,
+            _logMessage: `You grant ${obj} shelter for the night. By morning, ${subj} has vanished without a trace, leaving your bed still warm and ${silverStolen} silver missing.`,
           };
         },
       },
       {
         id: "refuseStay",
-        label: "Refuse her",
+        label: (state: GameState) =>
+          state.g === "m" ? "Refuse her" : "Refuse him",
         effect: (state: GameState) => {
+          const poss = state.g === "m" ? "her" : "his";
+          const cap = state.g === "m" ? "She" : "He";
           return {
             story: {
               ...state.story,
@@ -1585,8 +1594,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 mysteriousWomanEvent: true,
               },
             },
-            _logMessage:
-              "You politely refuse her request. She looks disappointed but nods in understanding, disappearing into the evening mist without another word.",
+            _logMessage: `You politely refuse ${poss} request. ${cap} looks disappointed but nods in understanding, disappearing into the evening mist without another word.`,
           };
         },
       },

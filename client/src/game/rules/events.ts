@@ -80,7 +80,7 @@ import { GAME_CONSTANTS } from "../constants";
 export interface GameEvent {
   id: string;
   condition: (state: GameState) => boolean;
-  title?: string;
+  title?: string | ((state: GameState) => string);
   message: string | string[] | ((state: GameState) => string); // Support array of messages for random selection or function
   choices?: EventChoice[] | ((state: GameState) => EventChoice[]);
   triggered?: boolean;
@@ -267,6 +267,9 @@ export class EventManager {
           message = event.message;
         }
 
+        // Resolve title if it's a function
+        const title = typeof event.title === 'function' ? event.title(state) : event.title;
+
         // Only create and add log entry if it's NOT a timed tab event
         if (!event.showAsTimedTab) {
           const logEntry: LogEntry = {
@@ -274,7 +277,7 @@ export class EventManager {
             message: message,
             timestamp: Date.now(),
             type: "event",
-            title: event.title,
+            title,
             choices: eventChoices,
             isTimedChoice: event.isTimedChoice,
             baseDecisionTime: event.baseDecisionTime,
@@ -293,7 +296,7 @@ export class EventManager {
             eventId: event.id,
             timestamp: Date.now(),
             message: message,
-            title: event.title,
+            title,
             choices: eventChoices,
             fallbackChoice: event.fallbackChoice,
             timedTabDuration: event.timedTabDuration,
