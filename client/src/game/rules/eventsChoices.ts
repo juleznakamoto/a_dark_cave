@@ -424,9 +424,9 @@ export const choiceEvents: Record<string, GameEvent> = {
           const traps = state.buildings.traps;
           const villagerDeaths = Math.floor(
             Math.random() * state.buildings.woodenHut +
-            2 -
-            traps * 2 +
-            state.CM * 2,
+              2 -
+              traps * 2 +
+              state.CM * 2,
           );
           const deathResult = killVillagers(state, villagerDeaths);
           const actualDeaths = deathResult.villagersKilled || 0;
@@ -1080,8 +1080,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 paleCrossUnlocked: true,
               },
             },
-            _logMessage:
-              "The druid bows his head. 'Then let it be raised.'",
+            _logMessage: "The druid bows his head. 'Then let it be raised.'",
           };
         },
       },
@@ -1604,7 +1603,7 @@ export const choiceEvents: Record<string, GameEvent> = {
   veiledSeer: {
     id: "veiledSeer",
     condition: (state: GameState) =>
-      state.buildings.darkEstate >= 1 && state.resources.gold >= 50,
+      state.buildings.darkEstate >= 1 && state.resources.gold >= 50000000,
     timeProbability: 45,
     title: "The Veiled Seer",
     message:
@@ -1622,16 +1621,13 @@ export const choiceEvents: Record<string, GameEvent> = {
               _logMessage: "You don't have enough gold.",
             };
           }
-          const name = state.fn
-            ? `, ${state.fn}... `
-            : "";
+          const name = state.fn ? `, ${state.fn}... ` : "";
           return {
             resources: {
               ...state.resources,
               gold: state.resources.gold - 50,
             },
             _logMessage: `The seer falls silent. His stare drifts beyond you. "Great challenges await you${name}," he says softly. "You believe this world is yours to shape. But you are shaped in turn. When the final truth surfaces, you will see the strings. And by then, it might be too late."`,
-
           };
         },
       },
