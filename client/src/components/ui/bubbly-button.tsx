@@ -22,8 +22,6 @@ export interface ParticleConfig {
   distanceMax?: number;
   sizeMin?: number;
   sizeMax?: number;
-  glowDuration?: number;
-  bubbleRemoveDelay?: number;
   /** Cubic bezier for framer-motion, e.g. [0, 0, 0.5, 1] */
   ease?: number[];
 }
@@ -70,15 +68,13 @@ const DEFAULT_PARTICLE_CONFIG: Required<ParticleConfig> = {
   colors: BUILD_TONES,
   smallParticleOnlyColors: [],
   smallParticleMaxSize: 2,
-  count: 150,
+  count: 100,
   durationMin: 0.65,
   durationMax: 1.1,
   distanceMin: 40,
   distanceMax: 80,
   sizeMin: 5,
   sizeMax: 25,
-  glowDuration: 700,
-  bubbleRemoveDelay: 3000,
   ease: [0, 0, 0.5, 1],
 };
 
@@ -101,15 +97,13 @@ export const CRAFT_PARTICLE_CONFIG: Partial<ParticleConfig> = {
   colors: CRAFT_TONES,
   smallParticleOnlyColors: CRAFT_SMALL_PARTICLE_ONLY_COLORS,
   smallParticleMaxSize: 2,
-  count: 150,
+  count: 100,
   durationMin: 0.45,
   durationMax: 0.7,
   distanceMin: 25,
   distanceMax: 65,
   sizeMin: 1,
   sizeMax: 6,
-  glowDuration: 500,
-  bubbleRemoveDelay: 2500,
 };
 
 // Mine tones (grey/black base for all mining)
@@ -139,15 +133,13 @@ export function getMineParticleConfig(actionId: string): Partial<ParticleConfig>
     colors: MINE_TONES,
     smallParticleOnlyColors: highlightColors,
     smallParticleMaxSize: 5,
-    count: 200,
+    count: 100,
     durationMin: 0.5,
     durationMax: 1,
     distanceMin: 25,
     distanceMax: 60,
     sizeMin: 1,
     sizeMax: 10,
-    glowDuration: 500,
-    bubbleRemoveDelay: 2500,
   };
 }
 
@@ -234,7 +226,7 @@ export function getExploreParticleConfig(actionId: string): Partial<ParticleConf
   const highlightColors = EXPLORE_HIGHLIGHT_COLORS[actionId] ?? [];
   const levelIndex = EXPLORE_LEVEL_ORDER_FOR_COUNT.indexOf(actionId);
   const count =
-    actionId === "exploreCitadel" ? 200 : levelIndex >= 0 ? 40 + levelIndex * 20 : 100;
+    actionId === "exploreCitadel" ? 150 : levelIndex >= 0 ? 40 + levelIndex * 15 : 100;
   return {
     colors: EXPLORE_TONES,
     smallParticleOnlyColors: highlightColors,
@@ -246,7 +238,6 @@ export function getExploreParticleConfig(actionId: string): Partial<ParticleConf
     distanceMax: 75,
     sizeMin: 2,
     sizeMax: 10,
-    bubbleRemoveDelay: 2500,
   };
 }
 
@@ -267,7 +258,6 @@ export const CHOP_WOOD_PARTICLE_CONFIG: Partial<ParticleConfig> = {
   distanceMax: 65,
   sizeMin: 2,
   sizeMax: 16,
-  bubbleRemoveDelay: 2500,
 };
 
 // Gold coin - slow gentle emission for hover
@@ -285,7 +275,6 @@ export const GOLD_COIN_PARTICLE_CONFIG: Partial<ParticleConfig> = {
   distanceMax: 25,
   sizeMin: 1,
   sizeMax: 3,
-  bubbleRemoveDelay: 2500,
 };
 
 // Silver coin - slow gentle emission for hover
@@ -304,7 +293,6 @@ export const SILVER_COIN_PARTICLE_CONFIG: Partial<ParticleConfig> = {
   distanceMax: 25,
   sizeMin: 1,
   sizeMax: 3,
-  bubbleRemoveDelay: 2500,
 };
 
 // Hunt - fur, blood, forest tones
@@ -325,20 +313,35 @@ export const HUNT_PARTICLE_CONFIG: Partial<ParticleConfig> = {
   distanceMax: 50,
   sizeMin: 2,
   sizeMax: 10,
-  bubbleRemoveDelay: 2500,
+};
+
+/** Merged config with computed bubbleRemoveDelay (derived from durationMax) */
+export type MergedParticleConfig = Required<Omit<ParticleConfig, 'bubbleRemoveDelay'>> & {
+  bubbleRemoveDelay: number;
 };
 
 function mergeParticleConfig(
   base: Partial<ParticleConfig>,
   override?: Partial<ParticleConfig>
-): Required<ParticleConfig> {
-  if (!override) return { ...DEFAULT_PARTICLE_CONFIG, ...base };
+): MergedParticleConfig {
+  const merged = override
+    ? {
+      ...DEFAULT_PARTICLE_CONFIG,
+      ...base,
+      ...override,
+      colors: override.colors ?? base.colors ?? DEFAULT_PARTICLE_CONFIG.colors,
+    }
+    : { ...DEFAULT_PARTICLE_CONFIG, ...base };
+  // All particles start at once, so we only need durationMax + small buffer for cleanup
   return {
-    ...DEFAULT_PARTICLE_CONFIG,
-    ...base,
-    ...override,
-    colors: override.colors ?? base.colors ?? DEFAULT_PARTICLE_CONFIG.colors,
+    ...merged,
+    bubbleRemoveDelay: Math.ceil(merged.durationMax * 1000) + 100,
   };
+}
+
+/** Get bubble remove delay in ms (derived from durationMax). Use when you have a partial config. */
+export function getBubbleRemoveDelayMs(config: Partial<ParticleConfig>): number {
+  return mergeParticleConfig(config).bubbleRemoveDelay;
 }
 
 const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
@@ -356,7 +359,6 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
     ref,
   ) => {
     const [bubbles, setBubbles] = useState<Bubble[]>([]);
-    const [isGlowing, setIsGlowing] = useState(false);
     const buttonRef = useRef<HTMLButtonElement>(null);
     const bubbleIdCounter = useRef(0);
 
@@ -382,15 +384,10 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
 
       setBubbles((prev) => [...prev, newBubble]);
 
-      // Remove bubble after animation completes (longer to account for varied durations)
+      // Remove bubble after animation completes (all particles start at once, so durationMax is the max)
       setTimeout(() => {
         setBubbles((prev) => prev.filter((b) => b.id !== newBubble.id));
       }, config.bubbleRemoveDelay);
-
-      setIsGlowing(true);
-      setTimeout(() => {
-        setIsGlowing(false);
-      }, config.glowDuration);
     };
 
     // Expose triggerAnimation method via ref
@@ -473,7 +470,8 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
                       backgroundColor: b.color,
                       left: bubble.x - b.size / 2,
                       top: bubble.y - b.size / 2,
-                      boxShadow: `0 0 ${b.size * 0.5}px ${b.color}aa, 0 0 ${b.size * 1}px ${b.color}55`,
+                      willChange: "transform",
+                      transform: "translateZ(0)",
                       zIndex: -1,
                     }}
                     initial={{
@@ -510,21 +508,12 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
             "transition-all duration-100 ease-in overflow-visible",
             className,
           )}
-          style={
-            (() => {
-              const c = config.colors;
-              return {
-                boxShadow: isGlowing
-                  ? `0 0 15px ${c[2] ?? c[0]}99, 0 0 30px ${c[3] ?? c[1]}66, 0 0 40px ${c[4] ?? c[2]}33`
-                  : undefined,
-                transition: "box-shadow 0.15s ease-out",
-                filter: isGlowing ? "brightness(1.2)" : undefined,
-                position: "relative",
-                zIndex: 10,
-                transform: "translateZ(0)",
-              } as React.CSSProperties;
-            })()
-          }
+          style={{
+            position: "relative",
+            zIndex: 10,
+            willChange: "transform",
+            transform: "translateZ(0)",
+          }}
           {...props}
         >
           {children}
@@ -591,7 +580,8 @@ export const BubblyButtonGlobalPortal = ({
                   backgroundColor: particle.color,
                   left: bubble.x - particle.size / 2,
                   top: bubble.y - particle.size / 2,
-                  boxShadow: `0 0 ${particle.size * 0.5}px ${particle.color}aa, 0 0 ${particle.size * 1}px ${particle.color}55`,
+                  willChange: "transform",
+                  transform: "translateZ(0)",
                 }}
                 initial={{ opacity: 1, scale: 1, x: 0, y: 0 }}
                 animate={{

@@ -14,6 +14,7 @@ import { useRef, useState } from "react";
 import {
   BubblyButtonGlobalPortal,
   generateParticleData,
+  getBubbleRemoveDelayMs,
   CRAFT_PARTICLE_CONFIG,
   getMineParticleConfig,
   getExploreParticleConfig,
@@ -40,7 +41,7 @@ export default function CavePanel() {
     setCraftBubbles((prev) => [...prev, { id, x, y, particles }]);
     setTimeout(() => {
       setCraftBubbles((prev) => prev.filter((b) => b.id !== id));
-    }, CRAFT_PARTICLE_CONFIG.bubbleRemoveDelay ?? 2500);
+    }, getBubbleRemoveDelayMs(CRAFT_PARTICLE_CONFIG));
   };
 
   // Mine button particle animation (per-resource highlight colors)
@@ -53,7 +54,7 @@ export default function CavePanel() {
     setMineBubbles((prev) => [...prev, { id, x, y, particles }]);
     setTimeout(() => {
       setMineBubbles((prev) => prev.filter((b) => b.id !== id));
-    }, config.bubbleRemoveDelay ?? 2500);
+    }, getBubbleRemoveDelayMs(config));
   };
 
   // Cave explore button particle animation (per-explore-level colors)
@@ -66,7 +67,7 @@ export default function CavePanel() {
     setExploreBubbles((prev) => [...prev, { id, x, y, particles }]);
     setTimeout(() => {
       setExploreBubbles((prev) => prev.filter((b) => b.id !== id));
-    }, config.bubbleRemoveDelay ?? 2500);
+    }, getBubbleRemoveDelayMs(config));
   };
 
   // Chop wood / Gather wood particle animation
@@ -79,7 +80,7 @@ export default function CavePanel() {
     setChopWoodBubbles((prev) => [...prev, { id, x, y, particles }]);
     setTimeout(() => {
       setChopWoodBubbles((prev) => prev.filter((b) => b.id !== id));
-    }, config.bubbleRemoveDelay ?? 2500);
+    }, getBubbleRemoveDelayMs(config));
   };
 
   // Define action groups with their actions

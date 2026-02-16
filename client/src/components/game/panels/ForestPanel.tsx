@@ -16,6 +16,7 @@ import { ACTION_TO_UPGRADE_KEY } from "@/game/buttonUpgrades";
 import {
   BubblyButtonGlobalPortal,
   generateParticleData,
+  getBubbleRemoveDelayMs,
   CHOP_WOOD_PARTICLE_CONFIG,
   HUNT_PARTICLE_CONFIG,
   type BubbleWithParticles,
@@ -35,7 +36,7 @@ export default function ForestPanel() {
     setChopWoodBubbles((prev) => [...prev, { id, x, y, particles }]);
     setTimeout(() => {
       setChopWoodBubbles((prev) => prev.filter((b) => b.id !== id));
-    }, config.bubbleRemoveDelay ?? 2500);
+    }, getBubbleRemoveDelayMs(config));
   };
 
   // Hunt particle animation
@@ -48,7 +49,7 @@ export default function ForestPanel() {
     setHuntBubbles((prev) => [...prev, { id, x, y, particles }]);
     setTimeout(() => {
       setHuntBubbles((prev) => prev.filter((b) => b.id !== id));
-    }, config.bubbleRemoveDelay ?? 2500);
+    }, getBubbleRemoveDelayMs(config));
   };
 
   // Define action groups with their actions
