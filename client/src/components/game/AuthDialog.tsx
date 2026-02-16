@@ -154,7 +154,7 @@ export default function AuthDialog({
         <DialogHeader>
           <DialogTitle>
             {signupSuccess
-              ? "Account Created successfully"
+              ? "Account created successfully"
               : mode === "signin"
                 ? "Sign In"
                 : mode === "signup"
