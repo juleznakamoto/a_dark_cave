@@ -65,16 +65,24 @@ const leaderboardUpdateLimiter = rateLimit({
 // Apply general rate limiting to all API routes
 app.use('/api/', generalLimiter);
 
-// Enable gzip compression for all responses with optimized settings
+// Enable gzip compression for API/HTML responses. Skip static assets - they are
+// served pre-compressed (Brotli/gzip) by express-static-gzip.
 app.use(compression({
-  level: 6, // Balance between speed and compression ratio
-  threshold: 1024, // Only compress responses larger than 1KB
+  level: 6,
+  threshold: 1024,
   filter: (req, res) => {
     if (req.headers['x-no-compression']) {
       return false;
     }
-    // Optimization: Compress large text-based assets, but usually skip binary media like MP3s
-    // which are already compressed and only waste CPU to re-compress.
+    // Skip static assets - express-static-gzip serves pre-compressed .br/.gz
+    const reqPath = req.path || req.url?.split('?')[0] || '';
+    if (
+      reqPath === '/' ||
+      reqPath.startsWith('/assets/') ||
+      /\.(js|css|html|br|gz|json|xml|svg|ico|png|woff2?)(\?|$)/i.test(reqPath)
+    ) {
+      return false;
+    }
     const contentType = res.getHeader('Content-Type') as string;
     if (contentType && (contentType.includes('audio') || contentType.includes('video'))) {
       return false;

@@ -1,4 +1,5 @@
 import express, { type Express } from "express";
+import expressStaticGzip from "express-static-gzip";
 import fs from "fs";
 import path from "path";
 import { createServer as createViteServer, createLogger } from "vite";
@@ -82,19 +83,24 @@ export function serveStatic(app: Express) {
     );
   }
 
-  // Serve static assets with long cache for hashed files
-  app.use(express.static(distPath, {
-    maxAge: '1y',
-    immutable: true,
-    setHeaders: (res, filepath) => {
-      // Don't cache index.html
-      if (filepath.endsWith('index.html')) {
-        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-        res.setHeader('Pragma', 'no-cache');
-        res.setHeader('Expires', '0');
-      }
-    }
-  }));
+  // Serve static assets with pre-compressed Brotli/gzip (from vite-plugin-compression2)
+  app.use(
+    expressStaticGzip(distPath, {
+      enableBrotli: true,
+      orderPreference: ["br", "gz"],
+      serveStatic: {
+        maxAge: "1y",
+        immutable: true,
+        setHeaders: (res, filepath) => {
+          if (filepath.endsWith("index.html")) {
+            res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+            res.setHeader("Pragma", "no-cache");
+            res.setHeader("Expires", "0");
+          }
+        },
+      },
+    })
+  );
 
   // SPA fallback: serve index.html only for route-like requests (no file extension).
   // NEVER serve HTML for asset requests (/assets/*, *.js, *.css) - return 404 instead.

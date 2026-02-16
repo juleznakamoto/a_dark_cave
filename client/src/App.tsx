@@ -4,8 +4,10 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./lib/queryClient";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import AdminDashboard from "@/pages/admin/dashboard";
 import { logger } from "@/lib/logger";
+
+// Lazy load admin dashboard (recharts, date-fns, 11 tabs - only admins need this)
+const AdminDashboard = lazy(() => import("@/pages/admin/dashboard"));
 
 // Lazy load game page (only loads after Light Fire click)
 const Game = lazy(() => import("@/pages/game"));
@@ -40,9 +42,7 @@ function Router() {
         <Route path="/withdrawal" component={Withdrawal} />
         <Route path="/reset-password" component={ResetPassword} />
         <Route path="/button-test" component={ButtonTest} />
-        <Route path="/admin/dashboard">
-          <AdminDashboard />
-        </Route>
+        <Route path="/admin/dashboard" component={AdminDashboard} />
         <Route component={NotFound} />
       </Switch>
     </Suspense>
