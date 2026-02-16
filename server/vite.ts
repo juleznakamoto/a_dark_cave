@@ -96,11 +96,22 @@ export function serveStatic(app: Express) {
     }
   }));
 
-  // fall through to index.html if the file doesn't exist
-  app.use("*", (_req, res) => {
-    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
+  // SPA fallback: serve index.html only for route-like requests (no file extension).
+  // NEVER serve HTML for asset requests (/assets/*, *.js, *.css) - return 404 instead.
+  // Otherwise missing assets (e.g. old cached HTML after deploy) get HTML → MIME type error.
+  app.use("*", (req, res) => {
+    const reqPath = req.path || req.originalUrl?.split("?")[0] || "";
+    const isAssetRequest =
+      reqPath.startsWith("/assets/") ||
+      /\.[a-f0-9]{8,}\.(js|css|mjs)$/i.test(reqPath) ||
+      /\.(js|css|mjs|woff2?|ttf|otf|png|jpg|svg|ico|webp)$/i.test(reqPath);
+    if (isAssetRequest) {
+      res.status(404).send("Not found");
+      return;
+    }
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    res.setHeader("Pragma", "no-cache");
+    res.setHeader("Expires", "0");
     res.sendFile(path.resolve(distPath, "index.html"));
   });
 }
