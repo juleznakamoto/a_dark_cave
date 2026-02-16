@@ -11,4 +11,3 @@ replit.md
 # Gender service (internal Python microservice)
 gender-service/venv
 gender-service/.env
-gender-service/first_names.db
