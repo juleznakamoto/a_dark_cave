@@ -161,7 +161,7 @@ export default function AttackWavesChart() {
               onClick={() => handleProvoke(activeWave.id)}
               variant="outline"
               size="xs"
-              className="w-19 hover:bg-accent hover:text-accent-foreground"
+              className="w-19 hover:bg-background hover:text-foreground"
               button_id="provoke-attack"
               disabled={attackWaveTimers[activeWave.id]?.provoked || getTimeRemaining(activeWave.id) <= 0}
             >

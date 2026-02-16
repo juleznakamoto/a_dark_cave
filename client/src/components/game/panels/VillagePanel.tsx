@@ -339,7 +339,7 @@ export default function VillagePanel() {
           disabled={!canExecute || (state.cooldowns[actionId] || 0) > 0}
           size="xs"
           variant="outline"
-          className="hover:bg-accent hover:text-accent-foreground"
+          className="hover:bg-background hover:text-foreground"
           tooltip={tooltipContent}
         >
           <span className="flex items-center gap-1">{label}</span>
@@ -400,7 +400,7 @@ export default function VillagePanel() {
         disabled={!canExecute}
         size="xs"
         variant="outline"
-        className="hover:bg-accent hover:text-accent-foreground"
+        className="hover:bg-background hover:text-foreground"
         tooltip={tooltipContent}
         onAnimationTrigger={handleAnimationTrigger}
         onMouseEnter={() => {

@@ -101,7 +101,7 @@ export const CRAFT_PARTICLE_CONFIG: Partial<ParticleConfig> = {
   durationMin: 0.45,
   durationMax: 0.7,
   distanceMin: 25,
-  distanceMax: 65,
+  distanceMax: 70,
   sizeMin: 1,
   sizeMax: 6,
 };
@@ -142,7 +142,7 @@ export function getMineParticleConfig(actionId: string, level = 0): Partial<Part
     durationMin: 0.5,
     durationMax: 1,
     distanceMin: 25,
-    distanceMax: 60,
+    distanceMax: 70,
     sizeMin: 1,
     sizeMax: 10,
   };

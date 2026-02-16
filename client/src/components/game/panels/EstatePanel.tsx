@@ -332,7 +332,7 @@ export default function EstatePanel() {
                 disabled={!canActivateIdle}
                 size="xs"
                 variant="outline"
-                className="h-7 hover:bg-accent hover:text-accent-foreground"
+                className="h-7 hover:bg-background hover:text-foreground"
                 button_id="activate-sleep-mode"
               >
                 Sleep
@@ -360,7 +360,7 @@ export default function EstatePanel() {
                   cooldownMs={0}
                   size="xs"
                   variant="outline"
-                  className="h-7 hover:bg-accent hover:text-accent-foreground"
+                  className="h-7 hover:bg-background hover:text-foreground"
                   button_id="activate-focus"
                   disabled={!focusState?.points || focusState.points === 0 || focusState?.isActive}
                   tooltip={
