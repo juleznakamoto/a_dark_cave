@@ -784,6 +784,7 @@ export const actionSchema = z.object({
     .optional(),
   upgrade_key: z.string().optional(),
   canExecute: z.function().args(z.any()).returns(z.boolean()).optional(),
+  minVillagers: z.number().min(0).optional(),
 });
 
 export type Action = z.infer<typeof actionSchema>;

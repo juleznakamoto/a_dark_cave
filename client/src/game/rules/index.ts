@@ -254,6 +254,12 @@ export function canExecuteAction(actionId: string, state: GameState): boolean {
   const action = getGameActions()[actionId];
   if (!action) return false;
 
+  // Check minVillagers requirement
+  const minVillagers = action.minVillagers ?? 0;
+  if (minVillagers > 0 && (state.current_population ?? 0) < minVillagers) {
+    return false;
+  }
+
   // Handle dynamic totem costs
   if (actionId === "boneTotems") {
     const dynamicCost = getBoneTotemsCost(state);

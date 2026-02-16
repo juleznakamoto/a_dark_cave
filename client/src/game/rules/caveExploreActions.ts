@@ -200,6 +200,7 @@ export const caveExploreActions: Record<string, Action> = {
   chopWood: {
     id: "chopWood",
     label: "Gather Wood",
+    minVillagers: 0,
     show_when: {},
     cost: {},
     effects: (state: GameState) => {

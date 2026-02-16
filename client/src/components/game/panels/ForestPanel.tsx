@@ -160,6 +160,10 @@ export default function ForestPanel() {
       ? `${Math.round(action.success_chance(state) * 100)}%`
       : null;
 
+    // Check if minVillagers requirement is not met
+    const minVillagers = action.minVillagers ?? 0;
+    const villagerRequirementNotMet = minVillagers > 0 && (state.current_population ?? 0) < minVillagers;
+
     // Check if this is chopWood, hunt, or sacrifice action
     const isChopWood = actionId === "chopWood";
     const isHunt = actionId === "hunt";
@@ -240,11 +244,16 @@ export default function ForestPanel() {
       resourceGainTooltip ||
       isAnimalsSacrifice ||
       isHumansSacrifice ||
-      successPercentage
+      successPercentage ||
+      villagerRequirementNotMet
     ) {
       let tooltipContent;
 
-      if (resourceGainTooltip) {
+      const villagerMessage = villagerRequirementNotMet ? (
+        <div>A minimum of ({minVillagers} villagers is needed).</div>
+      ) : null;
+
+      if (resourceGainTooltip && !villagerRequirementNotMet) {
         // chopWood or hunt: show resource gains only
         tooltipContent = resourceGainTooltip;
       } else if (
@@ -276,7 +285,10 @@ export default function ForestPanel() {
         const costBreakdown = getActionCostBreakdown(actionId, state);
         tooltipContent = (
           <div className="text-xs whitespace-nowrap">
-
+            {villagerMessage}
+            {villagerMessage && (costBreakdown.length > 0 || successPercentage) && (
+              <div className="border-t border-border my-1" />
+            )}
             {costBreakdown.map((costItem, index) => (
               <div
                 key={index}
@@ -331,7 +343,7 @@ export default function ForestPanel() {
           onMouseEnter={() => {
             if (state.buildings.inkwardenAcademy > 0) {
               const resources: string[] = [];
-              
+
               // For trade buttons, extract both buy and sell resources
               if (isTradeButton && action.cost && action.effects) {
                 // Determine active tier
@@ -369,7 +381,7 @@ export default function ForestPanel() {
                 if (costResourceKey) {
                   resources.push(costResourceKey.split('.')[1]);
                 }
-                
+
                 // Get effect resource (what you get)
                 const effectKeys = Object.keys(action.effects[activeTier] || {});
                 const effectResourceKey = effectKeys.find(key => key.startsWith('resources.'));
@@ -381,7 +393,7 @@ export default function ForestPanel() {
                 const actionResources = getResourcesFromActionCost(actionId, state);
                 resources.push(...actionResources);
               }
-              
+
               setHighlightedResources(new Set(resources));
             }
           }}
@@ -449,36 +461,36 @@ export default function ForestPanel() {
 
   return (
     <>
-    <ScrollArea className="h-full w-full">
-      <div className="space-y-4 mt-2 mb-2 pl-[3px] ">
-        {actionGroups.map((group, groupIndex) => {
-          const visibleActions = group.actions.filter((action) =>
-            shouldShowAction(action.id, state),
-          );
+      <ScrollArea className="h-full w-full">
+        <div className="space-y-4 mt-2 mb-2 pl-[3px] ">
+          {actionGroups.map((group, groupIndex) => {
+            const visibleActions = group.actions.filter((action) =>
+              shouldShowAction(action.id, state),
+            );
 
-          if (visibleActions.length === 0) return null;
+            if (visibleActions.length === 0) return null;
 
-          return (
-            <div key={groupIndex} className="space-y-2">
-              {group.title && (
-                <h3 className="text-xs font-medium text-foreground">
-                  {group.title}
-                </h3>
-              )}
-              <div className="w-96">
-                <div className="flex flex-wrap gap-2 justify-start">
-                  {visibleActions.map((action) => (
-                    renderButton(action.id, action.label)
-                  ))}
+            return (
+              <div key={groupIndex} className="space-y-2">
+                {group.title && (
+                  <h3 className="text-xs font-medium text-foreground">
+                    {group.title}
+                  </h3>
+                )}
+                <div className="w-96">
+                  <div className="flex flex-wrap gap-2 justify-start">
+                    {visibleActions.map((action) => (
+                      renderButton(action.id, action.label)
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
-      </div>
-      <ScrollBar orientation="vertical" />
-    </ScrollArea>
-    <BubblyButtonGlobalPortal bubbles={[...chopWoodBubbles, ...huntBubbles]} />
+            );
+          })}
+        </div>
+        <ScrollBar orientation="vertical" />
+      </ScrollArea>
+      <BubblyButtonGlobalPortal bubbles={[...chopWoodBubbles, ...huntBubbles]} />
     </>
   );
 }

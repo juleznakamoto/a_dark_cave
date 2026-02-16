@@ -76,6 +76,7 @@ export const forestScoutActions: Record<string, Action> = {
   hunt: {
     id: "hunt",
     label: "Hunt",
+    minVillagers: 0,
     show_when: {
       "flags.forestUnlocked": true,
     },
@@ -120,6 +121,7 @@ export const forestScoutActions: Record<string, Action> = {
   layTrap: {
     id: "layTrap",
     label: "Lay Trap",
+    minVillagers: 0,
     show_when: {
       "tools.giant_trap": true,
       "clothing.black_bear_fur": false,
@@ -143,6 +145,7 @@ export const forestScoutActions: Record<string, Action> = {
   castleRuins: {
     id: "castleRuins",
     label: "Castle Ruins",
+    minVillagers: 6,
     show_when: {
       "story.seen.wizardNecromancerCastle": true,
       "!story.seen.castleRuinsExplored": true,
@@ -166,6 +169,7 @@ export const forestScoutActions: Record<string, Action> = {
   hillGrave: {
     id: "hillGrave",
     label: "Hill Grave",
+    minVillagers: 6,
     show_when: {
       "story.seen.wizardHillGrave": true,
       "!story.seen.hillGraveExplored": true,
@@ -189,6 +193,7 @@ export const forestScoutActions: Record<string, Action> = {
   sunkenTemple: {
     id: "sunkenTemple",
     label: "Sunken Temple",
+    minVillagers: 6,
     show_when: {
       "story.seen.wizardBloodstone": true,
       "!story.seen.sunkenTempleExplored": true,
@@ -214,6 +219,7 @@ export const forestScoutActions: Record<string, Action> = {
   collapsedTower: {
     id: "collapsedTower",
     label: "Collapsed Tower",
+    minVillagers: 6,
     show_when: {
       "story.seen.collapsedTowerUnlocked": true,
       "!story.seen.collapsedTowerExplored": true,
@@ -237,6 +243,7 @@ export const forestScoutActions: Record<string, Action> = {
   forestCave: {
     id: "forestCave",
     label: "Forest Cave",
+    minVillagers: 4,
     show_when: {
       "story.seen.forestTribeHelpAccepted": true,
       "!story.seen.forestCaveExplored": true,
@@ -260,6 +267,7 @@ export const forestScoutActions: Record<string, Action> = {
   blackreachCanyon: {
     id: "blackreachCanyon",
     label: "Blackreach Canyon",
+    minVillagers: 0,
     show_when: {
       "tools.crow_harness": true,
       "buildings.darkEstate": 1,
@@ -275,6 +283,7 @@ export const forestScoutActions: Record<string, Action> = {
   steelDelivery: {
     id: "steelDelivery",
     label: "Steel Delivery",
+    minVillagers: 0,
     show_when: {
       "story.seen.steelDeliveryUnlocked": true,
       "!story.seen.steelDeliveryCompleted": true,
