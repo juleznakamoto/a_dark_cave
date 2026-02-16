@@ -364,6 +364,10 @@ export default function ProfileMenu() {
           >
             {currentUser && (
               <>
+                <div className="px-2 py-1.5 text-xs text-muted-foreground truncate max-w-[200px]">
+                  {currentUser.email}
+                </div>
+                <DropdownMenuSeparator />
                 <TooltipProvider>
                   <Tooltip delayDuration={300}>
                     <TooltipTrigger asChild>

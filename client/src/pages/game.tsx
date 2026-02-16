@@ -6,6 +6,7 @@ import { startGameLoop, stopGameLoop } from "@/game/loop";
 import { loadGame, saveGame } from "@/game/save"; // Import saveGame
 const EventDialog = lazy(() => import("@/components/game/EventDialog"));
 const CombatDialog = lazy(() => import("@/components/game/CombatDialog"));
+const EmailConfirmedDialog = lazy(() => import("@/components/game/EmailConfirmedDialog"));
 import { logger } from "@/lib/logger";
 import { getCurrentUser } from "@/game/auth";
 
@@ -19,6 +20,7 @@ export default function Game() {
     setShopDialogOpen,
   } = useGameStore();
   const [isInitialized, setIsInitialized] = useState(false);
+  const [emailConfirmedDialogOpen, setEmailConfirmedDialogOpen] = useState(false);
   useEffect(() => {
     logger.log("[GAME PAGE] Initializing game");
     const initializeGame = async () => {
@@ -33,6 +35,7 @@ export default function Game() {
         const searchParams = new URLSearchParams(window.location.search);
         const accessToken =
           hashParams.get("access_token") || searchParams.get("access_token");
+        const isEmailConfirmed = searchParams.get("email_confirmed") === "true";
 
         if (accessToken) {
           logger.log(
@@ -44,6 +47,16 @@ export default function Game() {
             document.title,
             window.location.pathname,
           );
+        }
+
+        // Clean up email_confirmed param from URL
+        if (isEmailConfirmed) {
+          logger.log("[GAME PAGE] Email confirmation callback detected");
+          searchParams.delete("email_confirmed");
+          const newUrl = window.location.pathname +
+            (searchParams.toString() ? `?${searchParams.toString()}` : "") +
+            window.location.hash;
+          window.history.replaceState({}, document.title, newUrl);
         }
 
         // Check if user just signed in with OAuth
@@ -251,6 +264,13 @@ export default function Game() {
             setShopDialogOpen(true);
           }, 500);
         }
+
+        // Show email confirmed dialog after game is loaded
+        if (isEmailConfirmed) {
+          setTimeout(() => {
+            setEmailConfirmedDialogOpen(true);
+          }, 500);
+        }
       } catch (error) {
         logger.error("[GAME PAGE] Failed to initialize game:", error);
       }
@@ -286,6 +306,11 @@ export default function Game() {
         eventMessage={combatDialog.eventMessage}
         onVictory={combatDialog.onVictory || (() => { })}
         onDefeat={combatDialog.onDefeat || (() => { })}
+      />
+
+      <EmailConfirmedDialog
+        isOpen={emailConfirmedDialogOpen}
+        onClose={() => setEmailConfirmedDialogOpen(false)}
       />
     </div>
   );

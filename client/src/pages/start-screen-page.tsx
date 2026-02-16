@@ -17,10 +17,12 @@ export default function StartScreenPage() {
   // Check if game has already started (from saved state or /boost path)
   useEffect(() => {
     const checkGameState = async () => {
+      const searchParams = new URLSearchParams(window.location.search);
       const isGamePath = window.location.pathname === "/boost" ||
-                        new URLSearchParams(window.location.search).get("game") === "true";
+                        searchParams.get("game") === "true" ||
+                        searchParams.get("email_confirmed") === "true";
 
-      // If it's a game path, load Game immediately
+      // If it's a game path or email confirmation redirect, load Game immediately
       if (isGamePath) {
         setShouldLoadGame(true);
         setIsChecking(false);

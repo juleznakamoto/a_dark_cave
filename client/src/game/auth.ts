@@ -14,11 +14,14 @@ export async function signUp(email: string, password: string, referralCode?: str
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
-    options: referralCode ? {
-      data: {
-        referral_code: referralCode,
-      }
-    } : undefined,
+    options: {
+      ...(referralCode ? {
+        data: {
+          referral_code: referralCode,
+        }
+      } : {}),
+      emailRedirectTo: window.location.origin + '/?email_confirmed=true',
+    },
   });
 
   if (error) throw error;
