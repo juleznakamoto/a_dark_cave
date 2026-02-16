@@ -188,6 +188,8 @@ const UI_ONLY_PROPERTIES = [
   'idleModeDialog',
   'inactivityDialogOpen',
   'inactivityReason',
+  'signUpPromptDialogOpen',
+  'signUpPromptEligibleForGold',
   'current_population',
   'total_population',
 ] as const;

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { signIn, signUp, signInWithGoogle } from "@/game/auth";
 import { useToast } from "@/hooks/use-toast";
+import { useGameStore } from "@/game/state";
 
 interface AuthDialogProps {
   isOpen: boolean;
@@ -24,16 +25,27 @@ export default function AuthDialog({
   onClose,
   onAuthSuccess,
 }: AuthDialogProps) {
+  const signUpPromptEligibleForGold = useGameStore(
+    (state) => state.signUpPromptEligibleForGold
+  );
+
   // Get referral code from URL
   const getReferralCode = () => {
     const params = new URLSearchParams(window.location.search);
     return params.get("ref");
   };
 
-  // Default to signup if there's a referral code, otherwise signin
+  // Default to signup if there's a referral code or sign-up prompt, otherwise signin
   const [mode, setMode] = useState<"signin" | "signup" | "reset">(
-    getReferralCode() ? "signup" : "signin",
+    getReferralCode() || signUpPromptEligibleForGold ? "signup" : "signin",
   );
+
+  // When opening from sign-up prompt, switch to signup mode
+  useEffect(() => {
+    if (isOpen && signUpPromptEligibleForGold) {
+      setMode("signup");
+    }
+  }, [isOpen, signUpPromptEligibleForGold]);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -83,6 +95,22 @@ export default function AuthDialog({
       } else if (mode === "signup") {
         const referralCode = getReferralCode();
         await signUp(email, password, referralCode || undefined);
+        // Award 100 gold if user signed up after seeing the sign-up prompt dialog
+        const { signUpPromptEligibleForGold: eligible } = useGameStore.getState();
+        if (eligible) {
+          useGameStore.getState().setSignUpPromptEligibleForGold(false);
+          useGameStore.getState().updateResource("gold", 100);
+          useGameStore.getState().addLogEntry({
+            id: `signup-gold-${Date.now()}`,
+            timestamp: Date.now(),
+            message: "You received 100 gold as a welcome bonus for creating an account!",
+            type: "system",
+          });
+          toast({
+            title: "Welcome bonus!",
+            description: "You received 100 gold for signing up.",
+          });
+        }
         setSignupSuccess(true);
       } else if (mode === "reset") {
         const { resetPassword } = await import("@/game/auth");

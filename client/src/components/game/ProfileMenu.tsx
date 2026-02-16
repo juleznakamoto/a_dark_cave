@@ -27,6 +27,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import AuthDialog from "./AuthDialog";
 import LeaderboardDialog from "./LeaderboardDialog";
 import { RestartGameDialog } from "./RestartGameDialog";
+import SignUpPromptDialog from "./SignUpPromptDialog";
 
 // Social media platform configurations
 const SOCIAL_PLATFORMS = [
@@ -55,6 +56,9 @@ export default function ProfileMenu() {
     authNotificationSeen,
     setAuthNotificationSeen,
     authNotificationVisible,
+    signUpPromptDialogOpen,
+    setSignUpPromptDialogOpen,
+    setSignUpPromptEligibleForGold,
     setIsUserSignedIn,
     referralCount,
     updateResource,
@@ -93,6 +97,25 @@ export default function ProfileMenu() {
     }
   }, [gameAuthDialogOpen]);
 
+  // Test trigger: ?testSignUpPrompt=1 in URL shows the sign-up prompt dialog (after auth check)
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("testSignUpPrompt") !== "1") return;
+
+    const timer = setTimeout(() => {
+      if (!currentUser) {
+        setSignUpPromptDialogOpen(true);
+      }
+      // Remove param from URL without reload
+      params.delete("testSignUpPrompt");
+      const newUrl = params.toString()
+        ? `${window.location.pathname}?${params.toString()}`
+        : window.location.pathname;
+      window.history.replaceState({}, "", newUrl);
+    }, 500); // Wait for auth check to complete
+    return () => clearTimeout(timer);
+  }, [currentUser]);
+
   const checkAuth = async () => {
     const user = await getCurrentUser();
     setCurrentUser(user);
@@ -112,6 +135,9 @@ export default function ProfileMenu() {
   const handleSetAuthDialogOpen = (open: boolean) => {
     setAuthDialogOpen(open);
     setGameAuthDialogOpen(open);
+    if (!open) {
+      setSignUpPromptEligibleForGold(false); // Clear when closing without signing up
+    }
   };
 
   const handleSignOut = async () => {
@@ -276,8 +302,20 @@ export default function ProfileMenu() {
     }
   };
 
+  const handleSignUpFromPrompt = () => {
+    setSignUpPromptDialogOpen(false);
+    setSignUpPromptEligibleForGold(true);
+    handleSetAuthDialogOpen(true);
+    setAuthDialogOpen(true);
+  };
+
   return (
     <div className="fixed top-2 right-2 z-50 pointer-events-auto flex flex-col items-end gap-2">
+      <SignUpPromptDialog
+        isOpen={signUpPromptDialogOpen}
+        onClose={() => setSignUpPromptDialogOpen(false)}
+        onSignUpClick={handleSignUpFromPrompt}
+      />
       <AuthDialog
         isOpen={authDialogOpen}
         onClose={() => handleSetAuthDialogOpen(false)}
@@ -378,6 +416,16 @@ export default function ProfileMenu() {
                 >
                   Sign In/Up
                 </DropdownMenuItem>
+                {devMode && (
+                  <DropdownMenuItem
+                    onClick={() => {
+                      setAccountDropdownOpen(false);
+                      setSignUpPromptDialogOpen(true);
+                    }}
+                  >
+                    [Dev] Test Sign Up Prompt
+                  </DropdownMenuItem>
+                )}
                 <DropdownMenuSeparator />
               </>
             )}

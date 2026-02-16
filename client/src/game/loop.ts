@@ -19,6 +19,8 @@ const SHOP_NOTIFICATION_INITIAL_DELAY = 45 * 60 * 1000; // 45 minutes in millise
 const SHOP_NOTIFICATION_REPEAT_INTERVAL = 90 * 60 * 1000; // 90 minutes in milliseconds
 const AUTH_NOTIFICATION_INITIAL_DELAY = 15 * 60 * 1000; // 15 minutes in milliseconds
 const AUTH_NOTIFICATION_REPEAT_INTERVAL = 60 * 60 * 1000; // 60 minutes in milliseconds
+const SIGN_UP_PROMPT_INITIAL_DELAY = 30 * 60 * 1000; // 30 minutes of play time
+const SIGN_UP_PROMPT_REPEAT_INTERVAL = 60 * 60 * 1000; // 60 minutes between prompts
 const INACTIVITY_TIMEOUT = 15 * 60 * 1000; // 15 minute in milliseconds
 const TARGET_FPS = 4;
 const FRAME_DURATION = 1000 / TARGET_FPS; // 250ms per frame at 4 FPS
@@ -187,7 +189,8 @@ export function startGameLoop() {
       state.fullGamePurchaseDialogOpen ||
       state.idleModeDialog.isOpen ||
       state.restartGameDialogOpen ||
-      state.rewardDialog.isOpen;
+      state.rewardDialog.isOpen ||
+      state.signUpPromptDialogOpen;
 
     const isPaused = state.isPaused || IsDialogOpen || requiresFullGamePurchase || state.idleModeState?.isActive || state.idleModeDialog.isOpen;
 
@@ -341,6 +344,30 @@ export function startGameLoop() {
             if (state.authNotificationSeen) {
               useGameStore.setState({ authNotificationSeen: false });
             }
+          }
+        }
+
+        // Sign-up prompt dialog (first after 30 min play time, then every 30 min) - only if not signed in
+        if (!state.isUserSignedIn) {
+          const playTime = state.playTime || 0;
+          const lastShown = state.lastSignUpPromptPlayTime || 0;
+
+          // First prompt after 30 minutes of play time
+          if (playTime >= SIGN_UP_PROMPT_INITIAL_DELAY && lastShown === 0) {
+            useGameStore.setState({
+              signUpPromptDialogOpen: true,
+              lastSignUpPromptPlayTime: playTime,
+            });
+          }
+          // Subsequent prompts every 30 minutes of play time after the last one
+          else if (
+            lastShown > 0 &&
+            playTime >= lastShown + SIGN_UP_PROMPT_REPEAT_INTERVAL
+          ) {
+            useGameStore.setState({
+              signUpPromptDialogOpen: true,
+              lastSignUpPromptPlayTime: playTime,
+            });
           }
         }
       }

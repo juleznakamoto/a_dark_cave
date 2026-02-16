@@ -95,6 +95,11 @@ interface GameStore extends GameState {
   authNotificationSeen: boolean;
   authNotificationVisible: boolean;
 
+  // Sign-up prompt dialog (after 30 min play time for guests)
+  signUpPromptDialogOpen: boolean;
+  signUpPromptEligibleForGold: boolean; // Set when user clicks Sign Up on prompt; cleared after signup or dialog close
+  lastSignUpPromptPlayTime: number; // playTime when we last showed the dialog (for 30 min repeat)
+
   // Notification state for mysterious note
   mysteriousNoteShopNotificationSeen: boolean;
   mysteriousNoteDonateNotificationSeen: boolean;
@@ -197,6 +202,9 @@ interface GameStore extends GameState {
   setShopNotificationVisible: (visible: boolean) => void;
   setAuthNotificationSeen: (seen: boolean) => void;
   setAuthNotificationVisible: (visible: boolean) => void;
+  setSignUpPromptDialogOpen: (isOpen: boolean) => void;
+  setSignUpPromptEligibleForGold: (eligible: boolean) => void;
+  setLastSignUpPromptPlayTime: (playTime: number) => void;
   setMysteriousNoteShopNotificationSeen: (seen: boolean) => void;
   setMysteriousNoteDonateNotificationSeen: (seen: boolean) => void;
   setHighlightedResources: (resources: string[]) => void;
@@ -709,6 +717,11 @@ export const createInitialState = (): GameState => ({
   authNotificationSeen: false,
   authNotificationVisible: false,
 
+  // Sign-up prompt dialog state
+  signUpPromptDialogOpen: false,
+  signUpPromptEligibleForGold: false,
+  lastSignUpPromptPlayTime: 0,
+
   // Initialize mysterious note notification state
   mysteriousNoteShopNotificationSeen: false,
   mysteriousNoteDonateNotificationSeen: false,
@@ -858,6 +871,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
   // Initialize auth notification state
   authNotificationSeen: false,
   authNotificationVisible: false,
+  // Sign-up prompt dialog state
+  signUpPromptDialogOpen: false,
+  signUpPromptEligibleForGold: false,
+  lastSignUpPromptPlayTime: 0,
   // Initialize mysterious note notification state
   mysteriousNoteShopNotificationSeen: false,
   mysteriousNoteDonateNotificationSeen: false,
@@ -903,6 +920,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set({ authNotificationSeen: seen }),
   setAuthNotificationVisible: (visible: boolean) =>
     set({ authNotificationVisible: visible }),
+  setSignUpPromptDialogOpen: (isOpen: boolean) =>
+    set({ signUpPromptDialogOpen: isOpen }),
+  setSignUpPromptEligibleForGold: (eligible: boolean) =>
+    set({ signUpPromptEligibleForGold: eligible }),
+  setLastSignUpPromptPlayTime: (playTime: number) =>
+    set({ lastSignUpPromptPlayTime: playTime }),
   setMysteriousNoteShopNotificationSeen: (seen: boolean) =>
     set({ mysteriousNoteShopNotificationSeen: seen }),
   setMysteriousNoteDonateNotificationSeen: (seen: boolean) =>
@@ -1523,6 +1546,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
           savedState.authNotificationVisible !== undefined
             ? savedState.authNotificationVisible
             : false,
+        lastSignUpPromptPlayTime:
+          savedState.lastSignUpPromptPlayTime !== undefined
+            ? savedState.lastSignUpPromptPlayTime
+            : 0,
         mysteriousNoteShopNotificationSeen:
           savedState.mysteriousNoteShopNotificationSeen !== undefined
             ? savedState.mysteriousNoteShopNotificationSeen
