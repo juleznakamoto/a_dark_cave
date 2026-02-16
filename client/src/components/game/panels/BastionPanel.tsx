@@ -239,7 +239,7 @@ export default function BastionPanel() {
                   disabled={resources.food < 1500}
                   variant="outline"
                   size="xs"
-                  className="hover:bg-transparent hover:text-foreground"
+                  className="hover:bg-accent hover:text-accent-foreground"
                   button_id="heal-restless-knight"
                 >
                   Restless Knight
@@ -304,7 +304,7 @@ export default function BastionPanel() {
                   disabled={resources.food < 1500}
                   variant="outline"
                   size="xs"
-                  className="hover:bg-transparent hover:text-foreground"
+                  className="hover:bg-accent hover:text-accent-foreground"
                   button_id="heal-elder-wizard"
                 >
                   Elder Wizard
@@ -356,7 +356,7 @@ export default function BastionPanel() {
                   }
                   variant="outline"
                   size="xs"
-                  className="hover:bg-transparent hover:text-foreground"
+                  className="hover:bg-accent hover:text-accent-foreground"
                   button_id="repair-bastion"
                 >
                   Bastion
@@ -413,7 +413,7 @@ export default function BastionPanel() {
                   }
                   variant="outline"
                   size="xs"
-                  className="hover:bg-transparent hover:text-foreground"
+                  className="hover:bg-accent hover:text-accent-foreground"
                   button_id="repair-watchtower"
                 >
                   {getBuildingLabel(
@@ -472,7 +472,7 @@ export default function BastionPanel() {
                   }
                   variant="outline"
                   size="xs"
-                  className="hover:bg-transparent hover:text-foreground"
+                  className="hover:bg-accent hover:text-accent-foreground"
                   button_id="repair-palisades"
                 >
                   {getBuildingLabel(

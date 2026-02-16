@@ -18,11 +18,11 @@ import {
   CRAFT_PARTICLE_CONFIG,
   getMineParticleConfig,
   getExploreParticleConfig,
-  CHOP_WOOD_PARTICLE_CONFIG,
+  getChopWoodParticleConfig,
   type BubbleWithParticles,
 } from "@/components/ui/bubbly-button";
 import { ButtonLevelBadge } from "@/components/game/ButtonLevelBadge";
-import { ACTION_TO_UPGRADE_KEY } from "@/game/buttonUpgrades";
+import { ACTION_TO_UPGRADE_KEY, getUpgradeLevel, type UpgradeKey } from "@/game/buttonUpgrades";
 
 export default function CavePanel() {
   const { executeAction, setHighlightedResources } = useGameStore();
@@ -48,7 +48,9 @@ export default function CavePanel() {
   const [mineBubbles, setMineBubbles] = useState<BubbleWithParticles[]>([]);
   const mineBubbleIdCounter = useRef(0);
   const handleMineAnimationTrigger = (actionId: string, x: number, y: number) => {
-    const config = getMineParticleConfig(actionId);
+    const upgradeKey = (ACTION_TO_UPGRADE_KEY[actionId] ?? actionId) as UpgradeKey;
+    const level = getUpgradeLevel(upgradeKey, state);
+    const config = getMineParticleConfig(actionId, level);
     const id = `mine-bubble-${mineBubbleIdCounter.current++}-${Date.now()}`;
     const particles = generateParticleData(config);
     setMineBubbles((prev) => [...prev, { id, x, y, particles }]);
@@ -74,7 +76,8 @@ export default function CavePanel() {
   const [chopWoodBubbles, setChopWoodBubbles] = useState<BubbleWithParticles[]>([]);
   const chopWoodBubbleIdCounter = useRef(0);
   const handleChopWoodAnimationTrigger = (x: number, y: number) => {
-    const config = CHOP_WOOD_PARTICLE_CONFIG;
+    const level = state.buttonUpgrades?.chopWood?.level ?? 0;
+    const config = getChopWoodParticleConfig(level);
     const id = `chop-bubble-${chopWoodBubbleIdCounter.current++}-${Date.now()}`;
     const particles = generateParticleData(config);
     setChopWoodBubbles((prev) => [...prev, { id, x, y, particles }]);
@@ -302,7 +305,7 @@ export default function CavePanel() {
           size="xs"
           disabled={!canExecute}
           variant="outline"
-          className={`hover:bg-transparent hover:text-foreground ${shouldGlow ? "focus-glow" : ""}`}
+          className={`hover:bg-accent hover:text-accent-foreground ${shouldGlow ? "focus-glow" : ""}`}
           tooltip={tooltipContent}
           onAnimationTrigger={
             isCraftAction
@@ -353,7 +356,7 @@ export default function CavePanel() {
         size="xs"
         disabled={!canExecute}
         variant="outline"
-        className={`hover:bg-transparent hover:text-foreground ${shouldGlow ? "focus-glow" : ""}`}
+        className={`hover:bg-accent hover:text-accent-foreground ${shouldGlow ? "focus-glow" : ""}`}
         onAnimationTrigger={
           isCraftAction
             ? handleCraftAnimationTrigger

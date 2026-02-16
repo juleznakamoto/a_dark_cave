@@ -17,8 +17,8 @@ import {
   BubblyButtonGlobalPortal,
   generateParticleData,
   getBubbleRemoveDelayMs,
-  CHOP_WOOD_PARTICLE_CONFIG,
-  HUNT_PARTICLE_CONFIG,
+  getChopWoodParticleConfig,
+  getHuntParticleConfig,
   type BubbleWithParticles,
 } from "@/components/ui/bubbly-button";
 
@@ -30,7 +30,8 @@ export default function ForestPanel() {
   const [chopWoodBubbles, setChopWoodBubbles] = useState<BubbleWithParticles[]>([]);
   const chopWoodBubbleIdCounter = useRef(0);
   const handleChopWoodAnimationTrigger = (x: number, y: number) => {
-    const config = CHOP_WOOD_PARTICLE_CONFIG;
+    const level = state.buttonUpgrades?.chopWood?.level ?? 0;
+    const config = getChopWoodParticleConfig(level);
     const id = `chop-bubble-${chopWoodBubbleIdCounter.current++}-${Date.now()}`;
     const particles = generateParticleData(config);
     setChopWoodBubbles((prev) => [...prev, { id, x, y, particles }]);
@@ -43,7 +44,8 @@ export default function ForestPanel() {
   const [huntBubbles, setHuntBubbles] = useState<BubbleWithParticles[]>([]);
   const huntBubbleIdCounter = useRef(0);
   const handleHuntAnimationTrigger = (x: number, y: number) => {
-    const config = HUNT_PARTICLE_CONFIG;
+    const level = state.buttonUpgrades?.hunt?.level ?? 0;
+    const config = getHuntParticleConfig(level);
     const id = `hunt-bubble-${huntBubbleIdCounter.current++}-${Date.now()}`;
     const particles = generateParticleData(config);
     setHuntBubbles((prev) => [...prev, { id, x, y, particles }]);
@@ -335,7 +337,7 @@ export default function ForestPanel() {
           size="xs"
           disabled={!canExecute}
           variant="outline"
-          className={`hover:bg-transparent hover:text-foreground ${isTradeButton ? "flex-[0_0_calc(25%-0.375rem)]" : ""} ${shouldGlow ? "focus-glow" : ""}`}
+          className={`hover:bg-accent hover:text-accent-foreground ${isTradeButton ? "flex-[0_0_calc(25%-0.375rem)]" : ""} ${shouldGlow ? "focus-glow" : ""}`}
           tooltip={tooltipContent}
           onAnimationTrigger={
             isChopWood ? handleChopWoodAnimationTrigger : isHunt ? handleHuntAnimationTrigger : undefined
@@ -428,7 +430,7 @@ export default function ForestPanel() {
         size="xs"
         disabled={!canExecute}
         variant="outline"
-        className={`hover:bg-transparent hover:text-foreground ${isTradeButton ? "flex-[0_0_calc(25%-0.375rem)]" : ""} ${shouldGlow ? "focus-glow" : ""}`}
+        className={`hover:bg-accent hover:text-accent-foreground ${isTradeButton ? "flex-[0_0_calc(25%-0.375rem)]" : ""} ${shouldGlow ? "focus-glow" : ""}`}
         onAnimationTrigger={
           isChopWood ? handleChopWoodAnimationTrigger : isHunt ? handleHuntAnimationTrigger : undefined
         }

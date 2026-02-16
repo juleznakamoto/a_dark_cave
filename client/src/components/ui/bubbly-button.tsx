@@ -126,14 +126,19 @@ const MINE_HIGHLIGHT_COLORS: Record<string, string[]> = {
   mineAdamant: [tailwindToHex("indigo-400"), tailwindToHex("blue-400")],
 };
 
+/** Particle count: 50 base + 10 per level, max 150 */
+function getParticleCountForLevel(level: number): number {
+  return Math.min(50 + level * 10, 150);
+}
+
 /** Get mine particle config for a specific mine action (stone, iron, coal, etc.) */
-export function getMineParticleConfig(actionId: string): Partial<ParticleConfig> {
+export function getMineParticleConfig(actionId: string, level = 0): Partial<ParticleConfig> {
   const highlightColors = MINE_HIGHLIGHT_COLORS[actionId] ?? [];
   return {
     colors: MINE_TONES,
     smallParticleOnlyColors: highlightColors,
     smallParticleMaxSize: 5,
-    count: 100,
+    count: getParticleCountForLevel(level),
     durationMin: 0.5,
     durationMax: 1,
     distanceMin: 25,
@@ -241,24 +246,26 @@ export function getExploreParticleConfig(actionId: string): Partial<ParticleConf
   };
 }
 
-// Chop wood / Gather wood - forest tones
-export const CHOP_WOOD_PARTICLE_CONFIG: Partial<ParticleConfig> = {
-  colors: [
-    tailwindToHex("amber-950"),
-    tailwindToHex("yellow-950"),
-    tailwindToHex("orange-950"),
-    tailwindToHex("stone-950")
-  ],
-  smallParticleOnlyColors: [tailwindToHex("green-950")],
-  smallParticleMaxSize: 8,
-  count: 100,
-  durationMin: 0.35,
-  durationMax: 0.7,
-  distanceMin: 25,
-  distanceMax: 65,
-  sizeMin: 2,
-  sizeMax: 16,
-};
+// Chop wood / Gather wood - forest tones (count scales with level: 50 + 10*level, max 150)
+export function getChopWoodParticleConfig(level = 0): Partial<ParticleConfig> {
+  return {
+    colors: [
+      tailwindToHex("amber-950"),
+      tailwindToHex("yellow-950"),
+      tailwindToHex("orange-950"),
+      tailwindToHex("stone-950")
+    ],
+    smallParticleOnlyColors: [tailwindToHex("green-950")],
+    smallParticleMaxSize: 8,
+    count: getParticleCountForLevel(level),
+    durationMin: 0.35,
+    durationMax: 0.7,
+    distanceMin: 25,
+    distanceMax: 65,
+    sizeMin: 2,
+    sizeMax: 16,
+  };
+}
 
 // Gold coin - slow gentle emission for hover
 export const GOLD_COIN_PARTICLE_CONFIG: Partial<ParticleConfig> = {
@@ -295,25 +302,27 @@ export const SILVER_COIN_PARTICLE_CONFIG: Partial<ParticleConfig> = {
   sizeMax: 3,
 };
 
-// Hunt - fur, blood, forest tones
-export const HUNT_PARTICLE_CONFIG: Partial<ParticleConfig> = {
-  colors: [
-    tailwindToHex("amber-900"),
-    tailwindToHex("stone-800"),
-    tailwindToHex("red-950"),
-    tailwindToHex("orange-900"),
-    tailwindToHex("neutral-800"),
-  ],
-  smallParticleOnlyColors: [tailwindToHex("red-600")],
-  smallParticleMaxSize: 4,
-  count: 140,
-  durationMin: 0.3,
-  durationMax: 0.65,
-  distanceMin: 25,
-  distanceMax: 50,
-  sizeMin: 2,
-  sizeMax: 10,
-};
+// Hunt - fur, blood, forest tones (count scales with level: 50 + 10*level, max 150)
+export function getHuntParticleConfig(level = 0): Partial<ParticleConfig> {
+  return {
+    colors: [
+      tailwindToHex("amber-900"),
+      tailwindToHex("stone-800"),
+      tailwindToHex("red-950"),
+      tailwindToHex("orange-900"),
+      tailwindToHex("neutral-800"),
+    ],
+    smallParticleOnlyColors: [tailwindToHex("red-600")],
+    smallParticleMaxSize: 4,
+    count: getParticleCountForLevel(level),
+    durationMin: 0.3,
+    durationMax: 0.65,
+    distanceMin: 25,
+    distanceMax: 50,
+    sizeMin: 2,
+    sizeMax: 10,
+  };
+}
 
 /** Merged config with computed bubbleRemoveDelay (derived from durationMax) */
 export type MergedParticleConfig = Required<Omit<ParticleConfig, 'bubbleRemoveDelay'>> & {
