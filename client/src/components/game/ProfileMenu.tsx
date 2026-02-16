@@ -97,25 +97,6 @@ export default function ProfileMenu() {
     }
   }, [gameAuthDialogOpen]);
 
-  // Test trigger: ?testSignUpPrompt=1 in URL shows the sign-up prompt dialog (after auth check)
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    if (params.get("testSignUpPrompt") !== "1") return;
-
-    const timer = setTimeout(() => {
-      if (!currentUser) {
-        setSignUpPromptDialogOpen(true);
-      }
-      // Remove param from URL without reload
-      params.delete("testSignUpPrompt");
-      const newUrl = params.toString()
-        ? `${window.location.pathname}?${params.toString()}`
-        : window.location.pathname;
-      window.history.replaceState({}, "", newUrl);
-    }, 500); // Wait for auth check to complete
-    return () => clearTimeout(timer);
-  }, [currentUser]);
-
   const checkAuth = async () => {
     const user = await getCurrentUser();
     setCurrentUser(user);
@@ -420,16 +401,6 @@ export default function ProfileMenu() {
                 >
                   Sign In/Up
                 </DropdownMenuItem>
-                {devMode && (
-                  <DropdownMenuItem
-                    onClick={() => {
-                      setAccountDropdownOpen(false);
-                      setSignUpPromptDialogOpen(true);
-                    }}
-                  >
-                    [Dev] Test Sign Up Prompt
-                  </DropdownMenuItem>
-                )}
                 <DropdownMenuSeparator />
               </>
             )}
