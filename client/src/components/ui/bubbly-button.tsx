@@ -70,7 +70,7 @@ const DEFAULT_PARTICLE_CONFIG: Required<ParticleConfig> = {
   smallParticleMaxSize: 2,
   count: 100,
   durationMin: 0.65,
-  durationMax: 1.1,
+  durationMax: 1.0,
   distanceMin: 40,
   distanceMax: 80,
   sizeMin: 5,
