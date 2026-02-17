@@ -19,7 +19,8 @@ import CubeDialog from "./CubeDialog";
 interface EventDialogProps {
   isOpen: boolean;
   onClose: () => void;
-  event: LogEntry | null;
+  event: LogEntry
+  | null;
 }
 
 // Stat icon mapping
@@ -213,7 +214,7 @@ export default function EventDialog({
             // All closing should be handled explicitly through handleChoice
           }}
         >
-          <DialogContent className={`w-[95vw] sm:max-w-md [&>button]:hidden ${isMadnessEvent ? 'border-2 border-violet-500 shadow-2xl p-6 h-[19rem] max-h-[19rem] flex flex-col overflow-visible z-[100]' : ''}`}>
+          <DialogContent className={`w-[95vw] sm:max-w-md [&>button]:hidden ${isMadnessEvent ? 'border-2 border-violet-600 shadow-2xl p-6  max-h-[19rem] flex flex-col overflow-visible z-[100]' : ''}`}>
             {isMadnessEvent && (
               <div className="absolute inset-0 -z-10 madness-dialog-glow pointer-events-none"></div>
             )}
@@ -384,7 +385,7 @@ export default function EventDialog({
 
             {/* Timer bar for timed events */}
             {event.isTimedChoice && timeRemaining !== null && (
-              <div className="mt-1 space-y-1">
+              <div className="mt-1 mb-2 space-y-1">
                 <div className="flex justify-between text-sm text-muted-foreground">
                 </div>
                 <Progress value={progress} className="h-2 timer-progress" disableGlow />

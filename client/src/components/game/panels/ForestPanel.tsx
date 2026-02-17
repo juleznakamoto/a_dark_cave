@@ -252,7 +252,7 @@ export default function ForestPanel() {
       let tooltipContent;
 
       const villagerMessage = villagerRequirementNotMet ? (
-        <div>A minimum of ({minVillagers} villagers is needed).</div>
+        <div>A minimum of {minVillagers} villagers is needed</div>
       ) : null;
 
       if (resourceGainTooltip && !villagerRequirementNotMet) {

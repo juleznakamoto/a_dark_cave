@@ -371,7 +371,6 @@ export const storyEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.buildings.darkEstate >= 1 &&
       !state.story.seen.forestTribeHelpAccepted,
-    
     timeProbability: (state: GameState) =>
       state.story.seen.forestTribeHelpRejected ? 60 : 30,
     title: "A Desperate Plea",
