@@ -267,6 +267,9 @@ export async function saveGame(
                   const { useGameStore } = await import("./state");
                   useGameStore.setState({ g, ...(fn && { fn }) });
                 }
+              } else {
+                const errBody = await res.json().catch(() => ({}));
+                logger.warn("[SAVE] Gender detection failed:", res.status, errBody.error ?? errBody.hint ?? res.statusText);
               }
             }
           } catch (e) {

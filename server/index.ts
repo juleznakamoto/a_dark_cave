@@ -210,7 +210,11 @@ app.post("/api/gender", async (req, res) => {
     const serviceUrl = process.env.GENDER_SERVICE_URL;
     const serviceToken = process.env.GENDER_SERVICE_TOKEN;
     if (!serviceUrl || !serviceToken) {
-      return res.status(503).json({ error: "Gender service not configured" });
+      const missing = [!serviceUrl && "GENDER_SERVICE_URL", !serviceToken && "GENDER_SERVICE_TOKEN"].filter(Boolean);
+      return res.status(503).json({
+        error: "Gender service not configured",
+        hint: `Set ${missing.join(" and ")} in environment`,
+      });
     }
 
     const config = getSupabaseConfig();
@@ -242,22 +246,41 @@ app.post("/api/gender", async (req, res) => {
     });
 
     if (response.status === 401) {
-      return res.status(500).json({ error: "Gender service auth failed" });
+      log("Gender API error: auth failed (token mismatch?)");
+      return res.status(500).json({
+        error: "Gender service auth failed",
+        hint: "GENDER_SERVICE_TOKEN must match the Python service",
+      });
     }
     const contentType = response.headers.get("content-type") ?? "";
     if (!contentType.includes("application/json")) {
-      const preview = (await response.text()).slice(0, 80);
-      log("Gender API error: service returned non-JSON (check GENDER_SERVICE_URL points to the Python service, not the main app):", preview);
-      return res.status(503).json({ error: "Gender service unavailable" });
+      const preview = (await response.text()).slice(0, 120);
+      log("Gender API error: service returned non-JSON. GENDER_SERVICE_URL should point to Python service (port 5001), not main app. Preview:", preview);
+      return res.status(503).json({
+        error: "Gender service unavailable",
+        hint: "Check GENDER_SERVICE_URL points to http://127.0.0.1:5001 and the Python service is running",
+      });
     }
     const data = await response.json();
     if (data.g) {
       return res.json({ g: data.g, fn: data.fn ?? null });
     }
+    if (response.status >= 400) {
+      log(`Gender API error: ${response.status} ${data.error ?? ""} ${data.hint ?? data.detail ?? ""}`.trim());
+      return res.status(response.status >= 500 ? 503 : 400).json({
+        error: data.error ?? "Gender service error",
+        hint: data.hint ?? data.detail,
+      });
+    }
     return res.json({ g: null, fn: null });
   } catch (err: any) {
-    log("Gender API error:", err?.message);
-    return res.status(500).json({ error: "Gender detection failed" });
+    const msg = err?.message ?? String(err);
+    log("Gender API error:", msg);
+    const isFetch = msg.includes("fetch") || msg.includes("ECONNREFUSED") || msg.includes("ENOTFOUND");
+    return res.status(500).json({
+      error: "Gender detection failed",
+      hint: isFetch ? "Gender service unreachable - is it running on GENDER_SERVICE_URL?" : msg,
+    });
   }
 });
 
