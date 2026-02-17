@@ -244,6 +244,12 @@ app.post("/api/gender", async (req, res) => {
     if (response.status === 401) {
       return res.status(500).json({ error: "Gender service auth failed" });
     }
+    const contentType = response.headers.get("content-type") ?? "";
+    if (!contentType.includes("application/json")) {
+      const preview = (await response.text()).slice(0, 80);
+      log("Gender API error: service returned non-JSON (check GENDER_SERVICE_URL points to the Python service, not the main app):", preview);
+      return res.status(503).json({ error: "Gender service unavailable" });
+    }
     const data = await response.json();
     if (data.g) {
       return res.json({ g: data.g, fn: data.fn ?? null });
