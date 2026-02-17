@@ -57,10 +57,16 @@ def predict():
     if (not name or not str(name).strip()) and (not email or not str(email).strip()):
         return jsonify({"error": "name or email required"}), 400
 
-    g, first_name = predict_gender(
-        name=str(name).strip() if name else None,
-        email=str(email).strip() if email else None,
-    )
+    try:
+        g, first_name = predict_gender(
+            name=str(name).strip() if name else None,
+            email=str(email).strip() if email else None,
+        )
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return jsonify({"error": "Prediction failed", "detail": str(e)}), 500
+
     if g is None:
         return jsonify({"error": "Could not predict gender"}), 200
     return jsonify({"g": g, "fn": first_name})
