@@ -21,6 +21,7 @@ const AUTH_NOTIFICATION_INITIAL_DELAY = 15 * 60 * 1000; // 15 minutes in millise
 const AUTH_NOTIFICATION_REPEAT_INTERVAL = 60 * 60 * 1000; // 60 minutes in milliseconds
 const SIGN_UP_PROMPT_INITIAL_DELAY = 30 * 60 * 1000; // 30 minutes of play time
 const SIGN_UP_PROMPT_REPEAT_INTERVAL = 60 * 60 * 1000; // 60 minutes between prompts
+const PRODUCT_HUNT_DIALOG_PLAYTIME = 1.5 * 60 * 60 * 1000; // 1.5 hours of play time
 const INACTIVITY_TIMEOUT = 15 * 60 * 1000; // 15 minute in milliseconds
 const TARGET_FPS = 4;
 const FRAME_DURATION = 1000 / TARGET_FPS; // 250ms per frame at 4 FPS
@@ -190,7 +191,8 @@ export function startGameLoop() {
       state.idleModeDialog.isOpen ||
       state.restartGameDialogOpen ||
       state.rewardDialog.isOpen ||
-      state.signUpPromptDialogOpen;
+      state.signUpPromptDialogOpen ||
+      state.productHuntDialogOpen;
 
     const isPaused = state.isPaused || IsDialogOpen || requiresFullGamePurchase || state.idleModeState?.isActive || state.idleModeDialog.isOpen;
 
@@ -369,6 +371,14 @@ export function startGameLoop() {
               lastSignUpPromptPlayTime: playTime,
             });
           }
+        }
+
+        // Product Hunt launch dialog (once after 1.5h play time)
+        if (!state.productHuntDialogShown && (state.playTime || 0) >= PRODUCT_HUNT_DIALOG_PLAYTIME) {
+          useGameStore.setState({
+            productHuntDialogOpen: true,
+            productHuntDialogShown: true,
+          });
         }
       }
 

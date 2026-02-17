@@ -610,6 +610,24 @@ const Hero: React.FC<HeroProps> = ({
               <button
                 onClick={() =>
                   window.open(
+                    "https://www.producthunt.com/products/a-dark-cave?launch=a-dark-cave",
+                    "_blank",
+                    "noopener,noreferrer",
+                  )
+                }
+                className="px-4 py-2 bg-[#da552f] hover:bg-[#c44d2a] text-white rounded-md font-semibold text-base transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-orange-500/25 flex items-center gap-2"
+              >
+                <img
+                  src="https://ph-static.imgix.net/logo_PH.svg"
+                  alt=""
+                  className="h-5 w-5 flex-shrink-0 brightness-0 invert"
+                  aria-hidden
+                />
+                <span>Product Hunt</span>
+              </button>
+              <button
+                onClick={() =>
+                  window.open(
                     "https://www.indiedb.com/games/a-dark-cave",
                     "_blank",
                     "noopener,noreferrer",

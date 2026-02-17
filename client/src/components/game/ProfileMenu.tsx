@@ -28,6 +28,7 @@ import AuthDialog from "./AuthDialog";
 import LeaderboardDialog from "./LeaderboardDialog";
 import { RestartGameDialog } from "./RestartGameDialog";
 import SignUpPromptDialog from "./SignUpPromptDialog";
+import ProductHuntDialog from "./ProductHuntDialog";
 
 // Social media platform configurations
 const SOCIAL_PLATFORMS = [
@@ -58,6 +59,8 @@ export default function ProfileMenu() {
     authNotificationVisible,
     signUpPromptDialogOpen,
     setSignUpPromptDialogOpen,
+    productHuntDialogOpen,
+    setProductHuntDialogOpen,
     setSignUpPromptEligibleForGold,
     setIsUserSignedIn,
     referralCount,
@@ -296,6 +299,10 @@ export default function ProfileMenu() {
         isOpen={signUpPromptDialogOpen}
         onClose={() => setSignUpPromptDialogOpen(false)}
         onSignUpClick={handleSignUpFromPrompt}
+      />
+      <ProductHuntDialog
+        isOpen={productHuntDialogOpen}
+        onClose={() => setProductHuntDialogOpen(false)}
       />
       <AuthDialog
         isOpen={authDialogOpen}

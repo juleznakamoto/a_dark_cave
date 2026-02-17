@@ -190,6 +190,7 @@ const UI_ONLY_PROPERTIES = [
   'inactivityReason',
   'signUpPromptDialogOpen',
   'signUpPromptEligibleForGold',
+  'productHuntDialogOpen',
   'current_population',
   'total_population',
 ] as const;
