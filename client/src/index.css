@@ -294,7 +294,7 @@ body {
 }
 
 .madness-dialog-glow {
-  animation: madness-glow-pulse 1s ease-in-out infinite;
+  animation: madness-glow-pulse 2s ease-in-out infinite;
 }
 
 @keyframes defeat-text-pulse {
