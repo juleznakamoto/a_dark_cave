@@ -3,8 +3,8 @@
 Create SQLite database for minimal-RAM gender prediction.
 Run once before starting the service: python create_db.py
 
-Schema: matches names_dataset.gender_predictor._lookup_sqlite
-- name TEXT PK, male_prob REAL, female_prob REAL, countries TEXT
+Schema: (name TEXT PK, gender TEXT NOT NULL)
+- gender: 'm' or 'f'
 
 Filtering:
 - Multi-word names (2+ words) are excluded.
@@ -127,24 +127,20 @@ def main():
     print(f"  Skipped (ambiguous 40-60%): {skipped_ambiguous:,}")
     print(f"  Skipped (profane): {skipped_profane:,}")
 
-    # Write DB (schema must match names_dataset.gender_predictor._lookup_sqlite)
+    # Write DB
     output.unlink(missing_ok=True)
     conn = sqlite3.connect(str(output))
     conn.execute("""
         CREATE TABLE names (
             name TEXT PRIMARY KEY,
-            male_prob REAL NOT NULL,
-            female_prob REAL NOT NULL,
-            countries TEXT NOT NULL
+            gender TEXT NOT NULL
         )
     """)
 
-    for name, gender_char, male_prob, _ in kept:
-        mp = 1.0 if gender_char == "m" else 0.0
-        fp = 0.0 if gender_char == "m" else 1.0
+    for name, gender_char, _, _ in kept:
         conn.execute(
-            "INSERT INTO names (name, male_prob, female_prob, countries) VALUES (?, ?, ?, ?)",
-            (name, mp, fp, ""),
+            "INSERT INTO names (name, gender) VALUES (?, ?)",
+            (name, gender_char),
         )
 
     conn.execute("CREATE INDEX idx_names_name ON names(name)")
@@ -161,10 +157,9 @@ def main():
     print(f"\nSpot checks:")
     conn = sqlite3.connect(str(output))
     for n in ["John", "Maria", "Anna", "Philippe", "Fabian", "Bauer", "Smith", "Mueller", "Schmidt", "Kim", "Alex"]:
-        row = conn.execute("SELECT male_prob, female_prob FROM names WHERE name = ?", (n,)).fetchone()
+        row = conn.execute("SELECT gender FROM names WHERE name = ?", (n,)).fetchone()
         if row:
-            g = "m" if row[0] >= row[1] else "f"
-            print(f"  {n:12s}  {g}")
+            print(f"  {n:12s}  {row[0]}")
         else:
             print(f"  {n:12s}  FILTERED OUT")
     conn.close()

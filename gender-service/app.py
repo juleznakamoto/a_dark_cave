@@ -1,10 +1,11 @@
 """
-Internal gender detection service using gender-detector (names-dataset).
-SQLite mode only - ~10-50 MB RAM (no full dataset load).
+Internal gender detection service.
+Uses SQLite DB (name, gender) created by create_db.py - ~10-50 MB RAM.
 Binds to 127.0.0.1 only - NOT exposed to the internet.
 Requires X-Gender-Service-Token header - only the Node server knows this secret.
 """
 import os
+import sqlite3
 from pathlib import Path
 
 from flask import Flask, request, jsonify
@@ -19,24 +20,61 @@ def get_db_path() -> Path | None:
     return Path(__file__).parent / "first_names.db"
 
 
+def _extract_first_name(full_name: str | None) -> str | None:
+    """Extract first name from full name (e.g. 'Robert Markowitch' -> 'Robert')."""
+    if not full_name or not full_name.strip():
+        return None
+    first = full_name.strip().split()[0]
+    return first if first else None
+
+
+def _extract_first_name_from_email(email: str | None) -> str | None:
+    """Simple email parsing: take longest alpha part before @."""
+    if not email or "@" not in email:
+        return None
+    prefix = email.split("@")[0]
+    for sep in ".", "_", "-":
+        if sep in prefix:
+            parts = ["".join(c for c in p if c.isalpha()) for p in prefix.split(sep)]
+            parts = [p for p in parts if len(p) > 1]
+            if parts:
+                return max(parts, key=len)
+    cleaned = "".join(c for c in prefix if c.isalpha())
+    return cleaned if len(cleaned) > 1 else None
+
+
+def _lookup(db_path: Path, first_name: str) -> str | None:
+    """Look up gender in DB. Returns 'm', 'f', or None."""
+    if not first_name:
+        return None
+    first_name = first_name.strip().title()
+    conn = sqlite3.connect(str(db_path))
+    row = conn.execute("SELECT gender FROM names WHERE name = ?", (first_name,)).fetchone()
+    conn.close()
+    return row[0] if row and row[0] in ("m", "f") else None
+
+
 def predict_gender(name: str | None = None, email: str | None = None) -> tuple[str | None, str | None]:
-    """Returns (g, first_name) or (None, None). g is 'm' or 'f'. Uses SQLite only.
+    """Returns (g, first_name) or (None, None). g is 'm' or 'f'.
     Tries name first; if no result and email exists, falls back to email."""
     db_path = get_db_path()
     if not db_path or not db_path.exists():
         return (None, None)
 
-    from names_dataset.gender_predictor import predict_gender as _predict
+    first_name = _extract_first_name(name) if name else None
+    if first_name:
+        g = _lookup(db_path, first_name)
+        if g:
+            return (g, first_name.title())
 
-    result = _predict(name=name, email=email, db_path=db_path)
-    if result is None and name and email:
-        result = _predict(name=None, email=email, db_path=db_path)
-    if not result:
-        return (None, None)
-    gender = result.get("gender")
-    first_name = result.get("first_name")
-    g = "m" if gender == "Male" else "f" if gender == "Female" else None
-    return (g, first_name)
+    if email:
+        first_name = _extract_first_name_from_email(email)
+        if first_name:
+            g = _lookup(db_path, first_name)
+            if g:
+                return (g, first_name.title())
+
+    return (None, None)
 
 
 @app.before_request
