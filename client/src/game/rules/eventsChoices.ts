@@ -1621,7 +1621,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               _logMessage: "You don't have enough gold.",
             };
           }
-          const name = state.fn ? `, ${state.fn}... ` : "";
+          const name = state.fn ? `, ${state.fn}` : "";
           return {
             resources: {
               ...state.resources,
