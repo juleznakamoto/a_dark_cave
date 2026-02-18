@@ -1086,9 +1086,12 @@ export default function AdminDashboard() {
                   getMonthlyActiveUsers={() => {
                     const now = new Date();
                     const thirtyDaysAgo = subDays(now, 30);
-                    return gameSaves.filter(
-                      (s) => parseISO(s.updated_at) >= thirtyDaysAgo
-                    ).length;
+                    const activeUserIds = new Set(
+                      gameSaves
+                        .filter((s) => parseISO(s.updated_at) >= thirtyDaysAgo)
+                        .map((s) => s.user_id)
+                    );
+                    return activeUserIds.size;
                   }}
                   totalUserCount={totalUserCount}
                   emailConfirmationStats={emailConfirmationStats}
@@ -1165,15 +1168,6 @@ export default function AdminDashboard() {
                       .filter((p) => p.price_paid > 0 && !p.bundle_id)
                       .reduce((sum, p) => sum + p.price_paid, 0)
                   }
-                  getInstagramFollowers={() => {
-                    return gameSaves.filter((s) => s.game_state?.instagramFollow).length;
-                  }}
-                  getInstagramFollowRate={() => {
-                    const followers = gameSaves.filter((s) => s.game_state?.instagramFollow).length;
-                    return totalUserCount > 0
-                      ? ((followers / totalUserCount) * 100).toFixed(2)
-                      : "0.00";
-                  }}
                   getUserRetention={() => {
                     const data: Array<{ day: string; users: number }> = [];
                     const now = new Date();

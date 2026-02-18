@@ -19,8 +19,6 @@ interface OverviewTabProps {
   getBuyersPerHundred: () => string;
   getARPU: () => string;
   getTotalRevenue: () => number;
-  getInstagramFollowers: () => number;
-  getInstagramFollowRate: () => string;
   getUserRetention: () => Array<{ day: string; users: number }>;
   getDailySignups: () => Array<{ day: string; signups: number }>;
   getHourlySignups: () => Array<{ hour: string; signups: number }>;
@@ -47,8 +45,6 @@ export default function OverviewTab(props: OverviewTabProps) {
     getBuyersPerHundred,
     getARPU,
     getTotalRevenue,
-    getInstagramFollowers,
-    getInstagramFollowRate,
     getUserRetention,
     getDailySignups,
     getHourlySignups,
@@ -452,24 +448,6 @@ export default function OverviewTab(props: OverviewTabProps) {
           </CardContent>
         </Card>
       </div>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Instagram Link Clicks</CardTitle>
-          <CardDescription>Users who clicked the Instagram link</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-2">
-            <div className="flex items-baseline gap-3">
-              <p className="text-4xl font-bold">{getInstagramFollowers()}</p>
-              <p className="text-2xl text-muted-foreground">clicks</p>
-            </div>
-            <div className="text-sm text-muted-foreground">
-              Click Rate: <span className="font-semibold text-foreground">{getInstagramFollowRate()}%</span> of total users
-            </div>
-          </div>
-        </CardContent>
-      </Card>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Card>

@@ -296,14 +296,8 @@ app.get("/api/admin/data", async (req, res) => {
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
     const filterDate = thirtyDaysAgo.toISOString();
 
-    // Get total user count from game_saves table (all time)
-    const { count: totalUserCount, error: countError } = await adminClient
-      .from("game_saves")
-      .select("user_id", { count: "exact", head: true });
-
-    if (countError) {
-      throw countError;
-    }
+    // totalUserCount will be set from auth.users pagination below
+    let totalUserCount = 0;
 
     // Fetch data with 30-day filter for clicks, but 1 year for saves to support chart time ranges
     // Use a high limit to get all results (Supabase default is 1000)
@@ -440,6 +434,7 @@ app.get("/api/admin/data", async (req, res) => {
       }
 
       log("📧 Total auth users found:", allUsers.length);
+      totalUserCount = allUsers.length;
 
       // Calculate stats for all three time periods
       emailConfirmationStats.allTime = calculateEmailStats(allUsers);
