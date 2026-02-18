@@ -32,18 +32,18 @@ def _extract_first_name(full_name: str | None) -> str | None:
 
 
 def _extract_first_name_from_email(email: str | None) -> str | None:
-    """Simple email parsing: take longest alpha part before @."""
+    """Simple email parsing: take longest alpha part before @. Requires at least 4 letters."""
     if not email or "@" not in email:
         return None
     prefix = email.split("@")[0]
     for sep in ".", "_", "-":
         if sep in prefix:
             parts = ["".join(c for c in p if c.isalpha()) for p in prefix.split(sep)]
-            parts = [p for p in parts if len(p) > 1]
+            parts = [p for p in parts if len(p) >= 4]
             if parts:
                 return max(parts, key=len)
     cleaned = "".join(c for c in prefix if c.isalpha())
-    return cleaned if len(cleaned) > 1 else None
+    return cleaned if len(cleaned) >= 4 else None
 
 
 def _lookup(db_path: Path, first_name: str) -> str | None:
