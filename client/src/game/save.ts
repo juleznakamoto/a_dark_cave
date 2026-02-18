@@ -249,8 +249,9 @@ export async function saveGame(
       if (user) {
         const isNewGame = gameState.isNewGame || false;
 
-        // If gender not yet in save, try to detect from signup name/email (internal service)
-        if (!sanitizedState.g) {
+        // If gender not yet detected and not yet attempted, try once via internal service
+        if (!sanitizedState.g && !sanitizedState.g_fn_checked) {
+          sanitizedState.g_fn_checked = true;
           try {
             const supabaseClient = await getSupabaseClient();
             const { data: { session } } = await supabaseClient.auth.getSession();
@@ -265,11 +266,16 @@ export async function saveGame(
                   sanitizedState.g = g;
                   if (fn) sanitizedState.fn = fn;
                   const { useGameStore } = await import("./state");
-                  useGameStore.setState({ g, ...(fn && { fn }) });
+                  useGameStore.setState({ g, ...(fn && { fn }), g_fn_checked: true });
+                } else {
+                  const { useGameStore } = await import("./state");
+                  useGameStore.setState({ g_fn_checked: true });
                 }
               } else {
                 const errBody = await res.json().catch(() => ({}));
                 logger.warn("[SAVE] Gender detection failed:", res.status, errBody.error ?? errBody.hint ?? res.statusText);
+                const { useGameStore } = await import("./state");
+                useGameStore.setState({ g_fn_checked: true });
               }
             }
           } catch (e) {
