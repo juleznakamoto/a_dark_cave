@@ -24,7 +24,9 @@ async function testPredict(name, email) {
 }
 
 async function testHealth() {
-  const res = await fetch(`${url.replace(/\/$/, "")}/health`);
+  const res = await fetch(`${url.replace(/\/$/, "")}/health`, {
+    headers: { "X-Gender-Service-Token": token },
+  });
   const data = await res.json().catch(() => ({}));
   return { status: res.status, data };
 }
