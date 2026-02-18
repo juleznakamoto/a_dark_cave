@@ -6,7 +6,6 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { audioManager } from "@/lib/audio";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { initPlaylight } from "@/App";
-import { startGameLoop } from "@/game/loop";
 
 export default function StartScreen() {
   const { executeAction, setBoostMode, boostMode, CM } = useGameStore();
@@ -23,19 +22,12 @@ export default function StartScreen() {
       window.history.replaceState({}, "", "/");
     }
 
-    // Play wind sound on mount
-    // Note: Most browsers require a user gesture to play audio. 
-    // We'll attempt to play it, but it might only start after the first click if blocked.
+    // Wind sound plays on first user gesture only (browsers block autoplay before interaction).
+    // Deferring to gesture avoids downloading wind.mp3 before it can play.
     const playWind = () => {
       audioManager.playLoopingSound("wind", 0.2, false, 1);
     };
 
-    // Ensure sounds are preloaded before playing
-    audioManager.preloadSounds().then(() => {
-      playWind();
-    });
-
-    // Add a one-time listener to ensure it plays if initially blocked
     const handleInitialGesture = () => {
       if (!executedRef.current) {
         playWind();
@@ -116,8 +108,9 @@ export default function StartScreen() {
 
     // Show button effect for 3 seconds on both mobile and desktop
     setShowParticles(true);
-    setTimeout(() => {
+    setTimeout(async () => {
       // Ensure game loop is running (may have been stopped by sign out)
+      const { startGameLoop } = await import("@/game/loop");
       startGameLoop();
       executeAction("lightFire");
     }, 3000);

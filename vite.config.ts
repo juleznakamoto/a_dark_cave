@@ -43,7 +43,6 @@ export default defineConfig({
       output: {
         manualChunks: {
           "vendor-react": ["react", "react-dom"],
-          "vendor-recharts": ["recharts"],
           "vendor-framer": ["framer-motion"],
           "vendor-radix": [
             "@radix-ui/react-dialog",

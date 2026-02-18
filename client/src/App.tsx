@@ -64,6 +64,15 @@ export async function initPlaylight() {
   // Create and store the initialization promise immediately to prevent race conditions
   initPlaylightPromise = (async () => {
     try {
+      // Inject the Playlight SDK CSS now that the user has interacted
+      if (!document.getElementById('playlight-sdk-css')) {
+        const link = document.createElement("link");
+        link.id = "playlight-sdk-css";
+        link.rel = "stylesheet";
+        link.href = "https://sdk.playlight.dev/playlight-sdk.css";
+        document.head.appendChild(link);
+      }
+
       const script = document.createElement("script");
       script.src = "https://sdk.playlight.dev/playlight-sdk.es.js";
       script.type = "module";
