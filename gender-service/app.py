@@ -12,7 +12,6 @@ from pathlib import Path
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
-logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 logger = logging.getLogger(__name__)
 
 
@@ -32,16 +31,18 @@ def _extract_first_name(full_name: str | None) -> str | None:
 
 
 def _extract_first_name_from_email(email: str | None) -> str | None:
-    """Simple email parsing: take longest alpha part before @. Requires at least 4 letters."""
+    """Extract first name from email. Most emails are firstname_lastname@... or firstname.lastname@...;
+    assume the first part is the first name. Requires at least 3 letters."""
     if not email or "@" not in email:
         return None
     prefix = email.split("@")[0]
     for sep in ".", "_", "-":
         if sep in prefix:
-            parts = ["".join(c for c in p if c.isalpha()) for p in prefix.split(sep)]
-            parts = [p for p in parts if len(p) >= 4]
-            if parts:
-                return max(parts, key=len)
+            parts = ["".join(c for c in p if c.isalpha()) for p in prefix.split(sep)]            # First part is typically first name
+            for p in parts:
+                if len(p) >= 3:
+                    return p
+            return None
     cleaned = "".join(c for c in prefix if c.isalpha())
     return cleaned if len(cleaned) >= 4 else None
 
@@ -109,7 +110,6 @@ def predict():
     data = request.get_json(silent=True) or {}
     name = data.get("name")
     email = data.get("email")
-    logger.info("predict request: name=%r email=%r", name, email)
     if (not name or not str(name).strip()) and (not email or not str(email).strip()):
         return jsonify({
             "error": "name or email required",
@@ -145,12 +145,10 @@ def predict():
         }), 500
 
     if g is None:
-        logger.info("predict result: no match for name=%r email=%r", name, email)
         return jsonify({
             "error": "Could not predict gender",
             "hint": "Name not in database (try different name/email or add to create_db)",
         }), 200
-    logger.info("predict result: g=%r fn=%r", g, first_name)
     return jsonify({"g": g, "fn": first_name})
 
 
