@@ -30,20 +30,35 @@ def _extract_first_name(full_name: str | None) -> str | None:
     return first if first else None
 
 
-def _extract_first_name_from_email(email: str | None) -> str | None:
+def _extract_first_name_from_email(
+    email: str | None, db_path: Path | None = None
+) -> str | None:
     """Extract first name from email. Most emails are firstname_lastname@... or firstname.lastname@...;
-    assume the first part is the first name. Requires at least 3 letters."""
+    assume the first part is the first name. Numbers are ignored (e.g. john123 -> john).
+    When no separator (e.g. justinchang@...), try progressively longer prefixes and use first DB match."""
     if not email or "@" not in email:
         return None
     prefix = email.split("@")[0]
     for sep in ".", "_", "-":
         if sep in prefix:
-            parts = ["".join(c for c in p if c.isalpha()) for p in prefix.split(sep)]            # First part is typically first name
+            parts = ["".join(c for c in p if c.isalpha()) for p in prefix.split(sep)]
             for p in parts:
                 if len(p) >= 3:
                     return p
             return None
     cleaned = "".join(c for c in prefix if c.isalpha())
+    if len(cleaned) < 3:
+        return None
+    # No separator: try prefixes (justinchang -> Justin), then suffixes (awadgeorge -> George)
+    if db_path and db_path.exists():
+        for i in range(4, len(cleaned) + 1):
+            candidate = cleaned[:i].title()
+            if _lookup(db_path, candidate):
+                return candidate
+        for i in range(4, len(cleaned)):
+            candidate = cleaned[-i:].title()
+            if _lookup(db_path, candidate):
+                return candidate
     return cleaned if len(cleaned) >= 4 else None
 
 
@@ -80,7 +95,7 @@ def predict_gender(name: str | None = None, email: str | None = None) -> tuple[s
             return (g, first_name.title())
 
     if email:
-        first_name = _extract_first_name_from_email(email)
+        first_name = _extract_first_name_from_email(email, db_path)
         if first_name:
             g = _lookup(db_path, first_name)
             if g:
