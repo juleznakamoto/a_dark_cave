@@ -11,7 +11,7 @@ Filtering:
 - Multi-word names (2+ words) are excluded.
 - Names with no rank data are excluded.
 - Bottom 20% of names by weighted avg_rank are excluded (top 80% kept).
-- Names with ambiguous gender (40-60% male) are excluded.
+- Names with ambiguous gender (40-60% male) are included; majority gender is assigned.
 - Profane names are excluded (via better-profanity, same approach as leaderboard).
 - Names with digits, symbols, 3+ same character in a row, or single char are excluded.
 
@@ -70,7 +70,6 @@ def _build_base_db(data_path: Path) -> None:
     candidates: list[tuple[str, str, float, float]] = []
     skipped_multiword = 0
     skipped_no_data = 0
-    skipped_ambiguous = 0
     skipped_profane = 0
 
     total_entries = len(full_data)
@@ -119,17 +118,12 @@ def _build_base_db(data_path: Path) -> None:
             continue
         male_prob = m / total
 
-        if 0.4 <= male_prob <= 0.6:
-            skipped_ambiguous += 1
-            continue
-
-        gender_char = 'm' if male_prob > 0.6 else 'f'
+        gender_char = 'm' if male_prob >= 0.5 else 'f'
         candidates.append((name, gender_char, male_prob, avg_rank))
 
     print(f"  Total valid: {len(candidates):,}")
     print(f"  Skipped (multi-word): {skipped_multiword:,}")
     print(f"  Skipped (no gender/rank): {skipped_no_data:,}")
-    print(f"  Skipped (ambiguous 40-60%): {skipped_ambiguous:,}")
     print(f"  Skipped (profane): {skipped_profane:,}")
 
     BASE_DB.unlink(missing_ok=True)
