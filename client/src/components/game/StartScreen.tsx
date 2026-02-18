@@ -22,8 +22,9 @@ export default function StartScreen() {
       window.history.replaceState({}, "", "/");
     }
 
-    // Wind sound plays on first user gesture only (browsers block autoplay before interaction).
-    // Deferring to gesture avoids downloading wind.mp3 before it can play.
+    // Wind plays as soon as the user shows intent (mousemove on desktop, touchstart on mobile).
+    // Both events fire before the click event, so executedRef.current is still false
+    // even when the user's first action is clicking "Light Fire".
     const playWind = () => {
       audioManager.playLoopingSound("wind", 0.2, false, 1);
     };
@@ -32,15 +33,15 @@ export default function StartScreen() {
       if (!executedRef.current) {
         playWind();
       }
-      document.removeEventListener("click", handleInitialGesture);
+      document.removeEventListener("mousemove", handleInitialGesture);
       document.removeEventListener("touchstart", handleInitialGesture);
     };
-    document.addEventListener("click", handleInitialGesture);
-    document.addEventListener("touchstart", handleInitialGesture);
+    document.addEventListener("mousemove", handleInitialGesture, { once: true });
+    document.addEventListener("touchstart", handleInitialGesture, { once: true });
 
     return () => {
       audioManager.stopLoopingSound("wind", 2);
-      document.removeEventListener("click", handleInitialGesture);
+      document.removeEventListener("mousemove", handleInitialGesture);
       document.removeEventListener("touchstart", handleInitialGesture);
     };
   }, [setBoostMode]);
