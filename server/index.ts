@@ -203,6 +203,7 @@ app.post("/api/gender", async (req, res) => {
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader?.startsWith("Bearer ")) {
+      log("[GENDER] Rejected: no Bearer token");
       return res.status(401).json({ error: "Authorization required" });
     }
     const jwt = authHeader.slice(7);
@@ -211,6 +212,7 @@ app.post("/api/gender", async (req, res) => {
     const serviceToken = process.env.GENDER_SERVICE_TOKEN;
     if (!serviceUrl || !serviceToken) {
       const missing = [!serviceUrl && "GENDER_SERVICE_URL", !serviceToken && "GENDER_SERVICE_TOKEN"].filter(Boolean);
+      log("[GENDER] Not configured: missing", missing.join(", "));
       return res.status(503).json({
         error: "Gender service not configured",
         hint: `Set ${missing.join(" and ")} in environment`,
@@ -219,6 +221,7 @@ app.post("/api/gender", async (req, res) => {
 
     const config = getSupabaseConfig();
     if (!config.supabaseUrl || !config.supabaseAnonKey) {
+      log("[GENDER] Supabase not configured");
       return res.status(500).json({ error: "Supabase not configured" });
     }
 
@@ -227,26 +230,32 @@ app.post("/api/gender", async (req, res) => {
     });
     const { data: { user }, error: authError } = await anonClient.auth.getUser(jwt);
     if (authError || !user?.email_confirmed_at) {
+      log("[GENDER] Auth failed:", authError?.message ?? "no user or email not confirmed");
       return res.status(401).json({ error: "Invalid or unconfirmed session" });
     }
 
     const name = user.user_metadata?.full_name ?? user.user_metadata?.name ?? null;
     const email = user.email ?? null;
+    log("[GENDER] User:", { name, email, metadataKeys: user.user_metadata ? Object.keys(user.user_metadata) : [] });
     if (!name && !email) {
+      log("[GENDER] No name or email in user metadata");
       return res.status(400).json({ error: "No name or email available" });
     }
 
-    const response = await fetch(`${serviceUrl.replace(/\/$/, "")}/predict`, {
+    const predictUrl = `${serviceUrl.replace(/\/$/, "")}/predict`;
+    const body = { name: name || undefined, email: email || undefined };
+    log("[GENDER] Calling service:", predictUrl, "body:", body);
+    const response = await fetch(predictUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "X-Gender-Service-Token": serviceToken,
       },
-      body: JSON.stringify({ name: name || undefined, email: email || undefined }),
+      body: JSON.stringify(body),
     });
 
     if (response.status === 401) {
-      log("Gender API error: auth failed (token mismatch?)");
+      log("[GENDER] Service auth failed (token mismatch?)");
       return res.status(500).json({
         error: "Gender service auth failed",
         hint: "GENDER_SERVICE_TOKEN must match the Python service",
@@ -255,27 +264,30 @@ app.post("/api/gender", async (req, res) => {
     const contentType = response.headers.get("content-type") ?? "";
     if (!contentType.includes("application/json")) {
       const preview = (await response.text()).slice(0, 120);
-      log("Gender API error: service returned non-JSON. GENDER_SERVICE_URL should point to Python service (port 5001), not main app. Preview:", preview);
+      log("[GENDER] Service returned non-JSON. Preview:", preview);
       return res.status(503).json({
         error: "Gender service unavailable",
         hint: "Check GENDER_SERVICE_URL points to http://127.0.0.1:5001 and the Python service is running",
       });
     }
     const data = await response.json();
+    log("[GENDER] Service response:", response.status, data);
     if (data.g) {
+      log("[GENDER] Success: g=", data.g, "fn=", data.fn ?? null);
       return res.json({ g: data.g, fn: data.fn ?? null });
     }
     if (response.status >= 400) {
-      log(`Gender API error: ${response.status} ${data.error ?? ""} ${data.hint ?? data.detail ?? ""}`.trim());
+      log("[GENDER] Service error:", response.status, data.error ?? "", data.hint ?? data.detail ?? "");
       return res.status(response.status >= 500 ? 503 : 400).json({
         error: data.error ?? "Gender service error",
         hint: data.hint ?? data.detail,
       });
     }
+    log("[GENDER] No prediction (name not in DB or ambiguous):", data.error ?? data.hint ?? "ok");
     return res.json({ g: null, fn: null });
   } catch (err: any) {
     const msg = err?.message ?? String(err);
-    log("Gender API error:", msg);
+    log("[GENDER] Exception:", msg);
     const isFetch = msg.includes("fetch") || msg.includes("ECONNREFUSED") || msg.includes("ENOTFOUND");
     return res.status(500).json({
       error: "Gender detection failed",

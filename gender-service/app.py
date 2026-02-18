@@ -12,6 +12,7 @@ from pathlib import Path
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
+logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 logger = logging.getLogger(__name__)
 
 
@@ -108,6 +109,7 @@ def predict():
     data = request.get_json(silent=True) or {}
     name = data.get("name")
     email = data.get("email")
+    logger.info("predict request: name=%r email=%r", name, email)
     if (not name or not str(name).strip()) and (not email or not str(email).strip()):
         return jsonify({
             "error": "name or email required",
@@ -143,10 +145,12 @@ def predict():
         }), 500
 
     if g is None:
+        logger.info("predict result: no match for name=%r email=%r", name, email)
         return jsonify({
             "error": "Could not predict gender",
             "hint": "Name not in database (try different name/email or add to create_db)",
         }), 200
+    logger.info("predict result: g=%r fn=%r", g, first_name)
     return jsonify({"g": g, "fn": first_name})
 
 
