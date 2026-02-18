@@ -88,11 +88,12 @@ export const tradersDaughterEvents: Record<string, GameEvent> = {
         id: "decline_traders_gratitude",
         label: "Decline offer",
         effect: (state: GameState) => ({
+          tradersGratitudeState: { accepted: false },
           triggeredEvents: {
             ...(state.triggeredEvents || {}),
             traders_gratitude_used: true,
           },
-          _logMessage: "ou decline the offer. The trader thanks you once more and departs quietly.",
+          _logMessage: "You decline the offer. The trader thanks you once more and departs quietly.",
         }),
       },
     ],
@@ -100,11 +101,12 @@ export const tradersDaughterEvents: Record<string, GameEvent> = {
       id: "decline_traders_gratitude",
       label: "Decline offer",
       effect: (state: GameState) => ({
+        tradersGratitudeState: { accepted: false },
         triggeredEvents: {
           ...(state.triggeredEvents || {}),
           traders_gratitude_used: true,
         },
-        _logMessage: "ou decline the offer. The trader thanks you once more and departs quietly.",
+        _logMessage: "You decline the offer. The trader thanks you once more and departs quietly.",
       }),
     },
   },
