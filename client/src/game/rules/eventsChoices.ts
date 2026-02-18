@@ -1603,7 +1603,7 @@ export const choiceEvents: Record<string, GameEvent> = {
   veiledSeer: {
     id: "veiledSeer",
     condition: (state: GameState) =>
-      state.buildings.darkEstate >= 1 && state.resources.gold >= 50000000,
+      state.buildings.darkEstate >= 1 && state.resources.gold >= 50,
     timeProbability: 45,
     title: "The Veiled Seer",
     message:
