@@ -926,29 +926,40 @@ app.post("/api/leaderboard/update-username", leaderboardUpdateLimiter, async (re
         return res.status(500).json({ error: 'Failed to fetch DAU data' });
       }
 
-      // Calculate real-time DAU (last 24 hours) using same logic as cron job
-      const today = new Date().toISOString().split('T')[0]; // Get current date in YYYY-MM-DD format
+      // Compute DAU/WAU/MAU and signup aggregates via DB functions to avoid the PostgREST max_rows cap
+      const [
+        { data: dauRpc, error: dauRpcError },
+        { data: wauData, error: wauError },
+        { data: mauData, error: mauError },
+        { data: dailySignupsData, error: dailySignupsError },
+        { data: hourlySignupsData, error: hourlySignupsError },
+      ] = await Promise.all([
+        adminClient.rpc('get_daily_active_users'),
+        adminClient.rpc('get_weekly_active_users'),
+        adminClient.rpc('get_monthly_active_users'),
+        adminClient.rpc('get_daily_signups', { days_back: 365 }),
+        adminClient.rpc('get_hourly_signups'),
+      ]);
 
-      const { data: recentActivity, error: activityError } = await adminClient
-        .from('game_saves')
-        .select('user_id', { count: 'exact', head: false })
-        .gte('updated_at', `${today}T00:00:00.000Z`)
-        .lt('updated_at', `${today}T23:59:59.999Z`);
+      if (dauRpcError) log('❌ Error fetching DAU:', dauRpcError);
+      if (wauError) log('❌ Error fetching WAU:', wauError);
+      if (mauError) log('❌ Error fetching MAU:', mauError);
+      if (dailySignupsError) log('❌ Error fetching daily signups:', dailySignupsError);
+      if (hourlySignupsError) log('❌ Error fetching hourly signups:', hourlySignupsError);
 
-      if (activityError) {
-        log('❌ Error fetching recent activity:', activityError);
-      }
+      const currentDau: number = typeof dauRpc === 'number' ? dauRpc : 0;
+      const currentWau: number = typeof wauData === 'number' ? wauData : 0;
+      const currentMau: number = typeof mauData === 'number' ? mauData : 0;
 
-      // Count unique users (same as cron job: COUNT(DISTINCT user_id))
-      const currentDau = recentActivity
-        ? new Set(recentActivity.map(save => save.user_id)).size
-        : 0;
-
-      log(`📊 Current DAU (today ${today}): ${currentDau} unique users`);
+      log(`📊 DAU: ${currentDau}, WAU: ${currentWau}, MAU: ${currentMau}`);
 
       res.json({
         dau: dauData || [],
-        currentDau: currentDau
+        currentDau: currentDau,
+        currentWau: currentWau,
+        currentMau: currentMau,
+        dailySignups: dailySignupsData || [],
+        hourlySignups: hourlySignupsData || [],
       });
     } catch (error: any) {
       log('❌ Error in /api/admin/dau:', error);

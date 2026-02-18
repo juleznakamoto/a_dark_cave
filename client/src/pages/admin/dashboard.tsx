@@ -141,6 +141,10 @@ export default function AdminDashboard() {
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date()); // State to track last data update
   const [dauData, setDauData] = useState<Array<{ date: string; active_user_count: number }>>([]);
   const [currentDau, setCurrentDau] = useState<number>(0);
+  const [currentWau, setCurrentWau] = useState<number>(0);
+  const [currentMau, setCurrentMau] = useState<number>(0);
+  const [dailySignupsData, setDailySignupsData] = useState<Array<{ day: string; signups: number }>>([]);
+  const [hourlySignupsData, setHourlySignupsData] = useState<Array<{ hour_start: string; signups: number }>>([]);
   const [emailConfirmationStats, setEmailConfirmationStats] = useState<any>({
     allTime: {
       totalRegistrations: 0,
@@ -865,6 +869,18 @@ export default function AdminDashboard() {
       if (typeof data.currentDau === 'number') {
         setCurrentDau(data.currentDau);
       }
+      if (typeof data.currentWau === 'number') {
+        setCurrentWau(data.currentWau);
+      }
+      if (typeof data.currentMau === 'number') {
+        setCurrentMau(data.currentMau);
+      }
+      if (Array.isArray(data.dailySignups)) {
+        setDailySignupsData(data.dailySignups);
+      }
+      if (Array.isArray(data.hourlySignups)) {
+        setHourlySignupsData(data.hourlySignups);
+      }
     } catch (error) {
       logger.error("Failed to load DAU data:", error);
     }
@@ -1076,23 +1092,8 @@ export default function AdminDashboard() {
                   dailyActiveUsersData={dauData}
                   registrationMethodStats={registrationMethodStats}
                   getDailyActiveUsers={() => currentDau}
-                  getWeeklyActiveUsers={() => {
-                    const now = new Date();
-                    const sevenDaysAgo = subDays(now, 7);
-                    return gameSaves.filter(
-                      (s) => parseISO(s.updated_at) >= sevenDaysAgo
-                    ).length;
-                  }}
-                  getMonthlyActiveUsers={() => {
-                    const now = new Date();
-                    const thirtyDaysAgo = subDays(now, 30);
-                    const activeUserIds = new Set(
-                      gameSaves
-                        .filter((s) => parseISO(s.updated_at) >= thirtyDaysAgo)
-                        .map((s) => s.user_id)
-                    );
-                    return activeUserIds.size;
-                  }}
+                  getWeeklyActiveUsers={() => currentWau}
+                  getMonthlyActiveUsers={() => currentMau}
                   totalUserCount={totalUserCount}
                   emailConfirmationStats={emailConfirmationStats}
                   formatTime={formatTime}
@@ -1212,73 +1213,53 @@ export default function AdminDashboard() {
                     return data;
                   }}
                   getDailySignups={() => {
-                    const data: Array<{ day: string; signups: number }> = [];
-                    const now = new Date();
-
-                    // Determine number of days based on chartTimeRange
                     let days: number;
                     switch (chartTimeRange) {
-                      case "1m":
-                        days = 30;
-                        break;
-                      case "3m":
-                        days = 90;
-                        break;
-                      case "6m":
-                        days = 180;
-                        break;
-                      case "1y":
-                        days = 365;
-                        break;
-                      default:
-                        days = 30;
+                      case "1m": days = 30; break;
+                      case "3m": days = 90; break;
+                      case "6m": days = 180; break;
+                      case "1y": days = 365; break;
+                      default: days = 30;
                     }
 
-                    for (let i = days - 1; i >= 0; i--) {
-                      const date = subDays(now, i);
-                      const dayStart = startOfDay(date);
-                      const dayEnd = endOfDay(date);
-
-                      const signups = rawGameSaves.filter((save) => { // Use raw for historical accuracy
-                        const createdDate = parseISO(save.created_at);
-                        return createdDate >= dayStart && createdDate <= dayEnd;
-                      }).length;
-
-                      // Format date based on time range
-                      const dateFormat = days > 90 ? "MMM dd" : "MMM dd";
-                      data.push({
-                        day: format(date, dateFormat),
-                        signups,
-                      });
+                    // Server keys are UTC calendar dates (DATE(created_at) in Postgres/UTC).
+                    // Generate our range in UTC too so keys align regardless of the browser's timezone.
+                    const lookup = new Map<string, number>();
+                    for (const entry of dailySignupsData) {
+                      lookup.set(entry.day, entry.signups);
                     }
 
-                    return data;
+                    const now = new Date();
+                    const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+                    return Array.from({ length: days }, (_, i) => {
+                      const d = new Date(Date.UTC(
+                        now.getUTCFullYear(),
+                        now.getUTCMonth(),
+                        now.getUTCDate() - (days - 1 - i),
+                      ));
+                      const key = d.toISOString().slice(0, 10); // "YYYY-MM-DD" UTC
+                      const label = `${monthNames[d.getUTCMonth()]} ${String(d.getUTCDate()).padStart(2, '0')}`;
+                      return { day: label, signups: lookup.get(key) ?? 0 };
+                    });
                   }}
                   chartTimeRange={chartTimeRange}
                   setChartTimeRange={setChartTimeRange}
                   getHourlySignups={() => {
-                    const data: Array<{ hour: string; signups: number }> = [];
                     const now = new Date();
-                    const oneDayAgo = subDays(now, 1);
 
-                    for (let i = 23; i >= 0; i--) { // Corrected loop for 24 hours
-                      const hour = new Date(now);
-                      hour.setHours(now.getHours() - i, 0, 0, 0);
-                      const nextHour = new Date(hour);
-                      nextHour.setHours(hour.getHours() + 1);
-
-                      const signups = rawGameSaves.filter((save) => { // Use raw for historical accuracy
-                        const createdDate = parseISO(save.created_at);
-                        return createdDate >= hour && createdDate < nextHour && createdDate >= oneDayAgo;
-                      }).length;
-
-                      data.push({
-                        hour: format(hour, "HH:mm"),
-                        signups,
-                      });
+                    // Build a lookup from the server data (HH:00 → count)
+                    const lookup = new Map<string, number>();
+                    for (const entry of hourlySignupsData) {
+                      lookup.set(format(parseISO(entry.hour_start), "HH:mm"), entry.signups);
                     }
 
-                    return data;
+                    // Emit one entry per hour for the last 24 hours so the chart has no gaps
+                    return Array.from({ length: 24 }, (_, i) => {
+                      const hour = new Date(now);
+                      hour.setHours(now.getHours() - (23 - i), 0, 0, 0);
+                      const key = format(hour, "HH:mm");
+                      return { hour: key, signups: lookup.get(key) ?? 0 };
+                    });
                   }}
                   getBuyersPerHundredOverTime={() => {
                     const data: Array<{ date: string; buyersPerHundred: number }> = [];
