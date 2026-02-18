@@ -15,7 +15,7 @@ Uses [gender-detector](https://github.com/juleznakamoto/gender-detector) to esti
 2. Create the SQLite DB (`create_db.py`) if missing
 3. Start the gender service
 
-First run may take 1–2 minutes (download + DB creation).
+First run may take 1–2 minutes (download + DB creation). A base DB (`first_names_base.db`) is created once with profanity applied; subsequent runs reuse it. Delete it to force a full rebuild.
 
 **Manual:** `cd gender-service && pip install -r requirements.txt && python create_db.py`
 

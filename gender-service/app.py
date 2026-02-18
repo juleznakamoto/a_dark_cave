@@ -1,6 +1,6 @@
 """
 Internal gender detection service.
-Uses SQLite DB (name, gender) created by create_db.py - ~10-50 MB RAM.
+Uses SQLite DB (name, gender, rank) created by create_db.py - ~10-50 MB RAM.
 Binds to 127.0.0.1 only - NOT exposed to the internet.
 Requires X-Gender-Service-Token header - only the Node server knows this secret.
 """
@@ -35,7 +35,8 @@ def _extract_first_name_from_email(
 ) -> str | None:
     """Extract first name from email. Most emails are firstname_lastname@... or firstname.lastname@...;
     assume the first part is the first name. Numbers are ignored (e.g. john123 -> john).
-    When no separator (e.g. justinchang@...), try progressively longer prefixes and use first DB match."""
+    When no separator (e.g. justinchang@...), try progressively longer prefixes/suffixes and use the
+    first DB match by rank (rank 1 = most popular, then 2, 3, 4, etc.)."""
     if not email or "@" not in email:
         return None
     prefix = email.split("@")[0]
@@ -49,17 +50,49 @@ def _extract_first_name_from_email(
     cleaned = "".join(c for c in prefix if c.isalpha())
     if len(cleaned) < 3:
         return None
-    # No separator: try prefixes (justinchang -> Justin), then suffixes (awadgeorge -> George)
+    # No separator: try prefixes (justinchang -> Justin), then suffixes (awadgeorge -> George).
+    # Among all DB matches, pick the one with best rank (lowest rank = most popular).
     if db_path and db_path.exists():
+        best: tuple[str, float] | None = None
         for i in range(4, len(cleaned) + 1):
             candidate = cleaned[:i].title()
-            if _lookup(db_path, candidate):
-                return candidate
+            rank = _lookup_rank(db_path, candidate)
+            if rank is not None and (best is None or rank < best[1]):
+                best = (candidate, rank)
         for i in range(4, len(cleaned)):
             candidate = cleaned[-i:].title()
-            if _lookup(db_path, candidate):
-                return candidate
+            rank = _lookup_rank(db_path, candidate)
+            if rank is not None and (best is None or rank < best[1]):
+                best = (candidate, rank)
+        if best is not None:
+            return best[0]
     return cleaned if len(cleaned) >= 4 else None
+
+
+def _lookup_rank(db_path: Path, first_name: str) -> float | None:
+    """Look up name in DB. Returns rank if found and gender valid, else None."""
+    if not first_name:
+        return None
+    first_name = first_name.strip().title()
+    try:
+        conn = sqlite3.connect(str(db_path))
+        row = conn.execute(
+            "SELECT gender, rank FROM names WHERE name = ?", (first_name,)
+        ).fetchone()
+        conn.close()
+        if row and row[0] in ("m", "f"):
+            return float(row[1]) if row[1] is not None else float("inf")
+    except sqlite3.OperationalError:
+        # Old schema without rank: fall back to gender-only lookup
+        try:
+            conn = sqlite3.connect(str(db_path))
+            row = conn.execute("SELECT gender FROM names WHERE name = ?", (first_name,)).fetchone()
+            conn.close()
+            if row and row[0] in ("m", "f"):
+                return 0.0  # Treat as best rank when rank column missing
+        except sqlite3.OperationalError:
+            pass
+    return None
 
 
 def _lookup(db_path: Path, first_name: str) -> str | None:
