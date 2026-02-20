@@ -32,6 +32,8 @@ export default function TimedEventPanel() {
   const [timeRemaining, setTimeRemaining] = useState<number>(0);
   const [safetyTimeRemaining, setSafetyTimeRemaining] = useState<number>(0);
   const lastLoggedEventId = useRef<string | null>(null);
+  const pauseStartRef = useRef<number>(0);
+  const totalPausedMsRef = useRef<number>(0);
 
   // Get merchant trades from state (generated once when event starts)
   const isMerchantEvent = timedEventTab.event?.id.split("-")[0] === "merchant";
@@ -99,10 +101,23 @@ export default function TimedEventPanel() {
     const expiryTime = timedEventTab.expiryTime;
     const startTime = timedEventTab.startTime || Date.now();
     const safetyEndTime = startTime + 1000;
+    pauseStartRef.current = 0;
+    totalPausedMsRef.current = 0;
 
     const updateTimer = () => {
+      const isPaused = useGameStore.getState().isPaused;
+      if (isPaused) {
+        if (pauseStartRef.current === 0) {
+          pauseStartRef.current = Date.now();
+        }
+        return;
+      } else if (pauseStartRef.current > 0) {
+        totalPausedMsRef.current += Date.now() - pauseStartRef.current;
+        pauseStartRef.current = 0;
+      }
+
       const now = Date.now();
-      const remaining = Math.max(0, expiryTime - now);
+      const remaining = Math.max(0, expiryTime + totalPausedMsRef.current - now);
       const safetyRemaining = Math.max(0, safetyEndTime - now);
 
       setTimeRemaining(remaining);

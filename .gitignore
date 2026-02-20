@@ -8,6 +8,9 @@ vite.config.ts.*
 *.tar.gz
 replit.md
 
+# Video analysis / private transcripts
+_analysis/
+
 # Gender service (internal Python microservice)
 gender-service/venv
 gender-service/.env

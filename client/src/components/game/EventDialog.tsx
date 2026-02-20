@@ -44,6 +44,8 @@ export default function EventDialog({
   const [totalTime, setTotalTime] = useState<number>(0);
   const startTimeRef = useRef<number>(0);
   const fallbackExecutedRef = useRef(false);
+  const pauseStartRef = useRef<number>(0);
+  const totalPausedMsRef = useRef<number>(0);
 
   // Derive eventChoices directly from event prop instead of using state
   const eventChoices = typeof event?.choices === 'function'
@@ -74,13 +76,26 @@ export default function EventDialog({
     setTimeRemaining(decisionTime);
     startTimeRef.current = Date.now();
     fallbackExecutedRef.current = false;
+    pauseStartRef.current = 0;
+    totalPausedMsRef.current = 0;
 
     const interval = setInterval(() => {
       if (fallbackExecutedRef.current) {
         return;
       }
 
-      const elapsed = (Date.now() - startTimeRef.current) / 1000;
+      const isPaused = useGameStore.getState().isPaused;
+      if (isPaused) {
+        if (pauseStartRef.current === 0) {
+          pauseStartRef.current = Date.now();
+        }
+        return;
+      } else if (pauseStartRef.current > 0) {
+        totalPausedMsRef.current += Date.now() - pauseStartRef.current;
+        pauseStartRef.current = 0;
+      }
+
+      const elapsed = (Date.now() - startTimeRef.current - totalPausedMsRef.current) / 1000;
       const remaining = Math.max(0, decisionTime - elapsed);
 
       setTimeRemaining(remaining);
