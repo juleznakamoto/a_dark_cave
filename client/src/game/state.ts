@@ -100,10 +100,6 @@ interface GameStore extends GameState {
   signUpPromptEligibleForGold: boolean; // Set when user clicks Sign Up on prompt; cleared after signup or dialog close
   lastSignUpPromptPlayTime: number; // playTime when we last showed the dialog (for 30 min repeat)
 
-  // Product Hunt launch dialog (once after 1.5h playtime)
-  productHuntDialogOpen: boolean;
-  productHuntDialogShown: boolean; // Persisted - never show again once shown
-
   // Notification state for mysterious note
   mysteriousNoteShopNotificationSeen: boolean;
   mysteriousNoteDonateNotificationSeen: boolean;
@@ -209,8 +205,6 @@ interface GameStore extends GameState {
   setSignUpPromptDialogOpen: (isOpen: boolean) => void;
   setSignUpPromptEligibleForGold: (eligible: boolean) => void;
   setLastSignUpPromptPlayTime: (playTime: number) => void;
-  setProductHuntDialogOpen: (isOpen: boolean) => void;
-  setProductHuntDialogShown: (shown: boolean) => void;
   setMysteriousNoteShopNotificationSeen: (seen: boolean) => void;
   setMysteriousNoteDonateNotificationSeen: (seen: boolean) => void;
   setHighlightedResources: (resources: string[]) => void;
@@ -728,10 +722,6 @@ export const createInitialState = (): GameState => ({
   signUpPromptEligibleForGold: false,
   lastSignUpPromptPlayTime: 0,
 
-  // Product Hunt launch dialog state
-  productHuntDialogOpen: false,
-  productHuntDialogShown: false,
-
   // Initialize mysterious note notification state
   mysteriousNoteShopNotificationSeen: false,
   mysteriousNoteDonateNotificationSeen: false,
@@ -885,9 +875,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
   signUpPromptDialogOpen: false,
   signUpPromptEligibleForGold: false,
   lastSignUpPromptPlayTime: 0,
-  // Product Hunt launch dialog state
-  productHuntDialogOpen: false,
-  productHuntDialogShown: false,
   // Initialize mysterious note notification state
   mysteriousNoteShopNotificationSeen: false,
   mysteriousNoteDonateNotificationSeen: false,
@@ -939,10 +926,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set({ signUpPromptEligibleForGold: eligible }),
   setLastSignUpPromptPlayTime: (playTime: number) =>
     set({ lastSignUpPromptPlayTime: playTime }),
-  setProductHuntDialogOpen: (isOpen: boolean) =>
-    set({ productHuntDialogOpen: isOpen }),
-  setProductHuntDialogShown: (shown: boolean) =>
-    set({ productHuntDialogShown: shown }),
   setMysteriousNoteShopNotificationSeen: (seen: boolean) =>
     set({ mysteriousNoteShopNotificationSeen: seen }),
   setMysteriousNoteDonateNotificationSeen: (seen: boolean) =>
@@ -1567,10 +1550,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
           savedState.lastSignUpPromptPlayTime !== undefined
             ? savedState.lastSignUpPromptPlayTime
             : 0,
-        productHuntDialogShown:
-          savedState.productHuntDialogShown !== undefined
-            ? savedState.productHuntDialogShown
-            : false,
         mysteriousNoteShopNotificationSeen:
           savedState.mysteriousNoteShopNotificationSeen !== undefined
             ? savedState.mysteriousNoteShopNotificationSeen
