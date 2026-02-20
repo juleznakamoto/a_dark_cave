@@ -80,6 +80,9 @@ export function startGameLoop() {
   const handleVisibilityChange = () => {
     if (!document.hidden) {
       lastUserActivity = Date.now();
+      // Immediately clear any timed event that expired while the tab was hidden,
+      // rather than waiting up to 15 seconds for the next production tick.
+      clearExpiredTimedEventTab();
     }
   };
   document.addEventListener("visibilitychange", handleVisibilityChange);
@@ -388,6 +391,11 @@ export function startGameLoop() {
 
         // Skip production if idle mode is active
         const currentState = useGameStore.getState();
+
+        // Always check for expired timed events regardless of idle mode, so the
+        // tab icon is never left visible after its timer has run out.
+        clearExpiredTimedEventTab();
+
         if (!currentState.idleModeState?.isActive) {
           handleGathererProduction();
           handleHunterProduction();
@@ -397,42 +405,6 @@ export function startGameLoop() {
           handleFreezingCheck();
           handleMadnessCheck();
           handleStrangerApproach();
-
-          // Check for expired timed events and clear them
-          if (currentState.timedEventTab.isActive && currentState.timedEventTab.expiryTime) {
-            const now = Date.now();
-            if (currentState.timedEventTab.expiryTime <= now) {
-              logger.log("[GAME LOOP] Clearing expired timed event tab");
-              // Execute fallback choice if available
-              const event = currentState.timedEventTab.event;
-              if (event) {
-                const timedEventId = event.eventId || event.id.split("-")[0];
-
-                // Use the event's defined fallbackChoice if available
-                if (
-                  event.fallbackChoice &&
-                  typeof event.fallbackChoice.effect === "function"
-                ) {
-                  useGameStore.getState().applyEventChoice(event.fallbackChoice.id, timedEventId, event);
-                } else {
-                  // Fallback to looking for "doNothing" choice
-                  const choices =
-                    typeof event.choices === "function"
-                      ? event.choices(currentState)
-                      : event.choices;
-                  const fallbackChoice = Array.isArray(choices)
-                    ? choices.find((c) => c.id === "doNothing")
-                    : undefined;
-                  if (fallbackChoice && typeof fallbackChoice.effect === "function") {
-                    useGameStore.getState().applyEventChoice(fallbackChoice.id, timedEventId, event);
-                  }
-                }
-              }
-
-              // Clear the timed event tab
-              useGameStore.getState().setTimedEventTab(false);
-            }
-          }
 
           // Check for events (including attack waves) - but NOT when dialogs are open
           if (!IsDialogOpen) {
@@ -451,6 +423,28 @@ export function startGameLoop() {
   }
 
   gameLoopId = requestAnimationFrame(tick);
+}
+
+function clearExpiredTimedEventTab() {
+  const state = useGameStore.getState();
+  if (!state.timedEventTab.isActive || !state.timedEventTab.expiryTime) return;
+  if (state.timedEventTab.expiryTime > Date.now()) return;
+
+  logger.log("[GAME LOOP] Clearing expired timed event tab");
+  const event = state.timedEventTab.event;
+  if (event) {
+    const timedEventId = event.id.split("-")[0];
+    if (event.fallbackChoice && typeof event.fallbackChoice.effect === "function") {
+      useGameStore.getState().applyEventChoice(event.fallbackChoice.id, timedEventId, event);
+    } else {
+      const choices = typeof event.choices === "function" ? event.choices(state) : event.choices;
+      const fallbackChoice = Array.isArray(choices) ? choices.find((c) => c.id === "doNothing") : undefined;
+      if (fallbackChoice && typeof fallbackChoice.effect === "function") {
+        useGameStore.getState().applyEventChoice(fallbackChoice.id, timedEventId, event);
+      }
+    }
+  }
+  useGameStore.getState().setTimedEventTab(false);
 }
 
 function handleInactivity() {
