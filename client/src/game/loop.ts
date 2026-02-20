@@ -46,6 +46,9 @@ export function startGameLoop() {
     return; // Already running
   }
 
+  // Clear any timed event that expired while the game was closed (stale saved state).
+  clearExpiredTimedEventTab();
+
   useGameStore.setState({ isGameLoopActive: true });
   const now = performance.now();
   lastFrameTime = now;
