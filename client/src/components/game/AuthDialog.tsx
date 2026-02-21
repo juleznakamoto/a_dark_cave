@@ -123,9 +123,16 @@ export default function AuthDialog({
         setMode("signin");
       }
     } catch (error: any) {
+      const isNetworkError =
+        error instanceof TypeError &&
+        (error.message === "Failed to fetch" ||
+          error.message.toLowerCase().includes("networkerror") ||
+          error.message.toLowerCase().includes("failed to fetch"));
       toast({
         title: "Error",
-        description: error.message || "Authentication failed",
+        description: isNetworkError
+          ? "Could not reach the sign-in server. If you're using NoScript or a content blocker, you may need to allow connections from this site."
+          : error.message || "Authentication failed",
         variant: "destructive",
       });
     } finally {
@@ -139,9 +146,16 @@ export default function AuthDialog({
       await signInWithGoogle();
       // Supabase will redirect to Google and then back to your app
     } catch (error: any) {
+      const isNetworkError =
+        error instanceof TypeError &&
+        (error.message === "Failed to fetch" ||
+          error.message.toLowerCase().includes("networkerror") ||
+          error.message.toLowerCase().includes("failed to fetch"));
       toast({
         title: "Error",
-        description: error.message || "Google sign-in failed",
+        description: isNetworkError
+          ? "Could not reach the sign-in server. If you're using NoScript or a content blocker, you may need to allow connections from this site."
+          : error.message || "Google sign-in failed",
         variant: "destructive",
       });
       setLoading(false);

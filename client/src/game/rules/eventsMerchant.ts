@@ -656,7 +656,7 @@ const toolTrades = [
       state.buildings.woodenHut >= 6 && !state.tools.occultist_map,
     costs: [{ resource: "gold", amounts: [200] }],
     message:
-      "As you buy the occultists's map the merchant whispers: 'An old occultist hid his secrets in a chamber deep in the cave. This map will guide you.'",
+      "As you buy the occultist's map the merchant whispers: 'An old occultist hid his secrets in a chamber deep in the cave. This map will guide you.'",
   },
   {
     id: "trade_giant_trap",

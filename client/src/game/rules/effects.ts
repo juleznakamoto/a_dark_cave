@@ -327,7 +327,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     id: "occultist_map",
     name: "Occultist Map",
     description:
-      "Time-worn map revealing the chamber of an accultist in the cave",
+      "Time-worn map revealing the chamber of an occultist in the cave",
     bonuses: {
       actionBonuses: {},
     },

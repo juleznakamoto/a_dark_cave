@@ -877,7 +877,7 @@ export default function SidePanel() {
                 </>
               }
               items={populationItems}
-              titleTooltip="Each villager consumes 1 food and 1 wood"
+              titleTooltip="Each villager consumes 1 Food and 1 Wood"
             />
           )}
           {statsItems.length > 0 && shouldShowSection("stats") && (

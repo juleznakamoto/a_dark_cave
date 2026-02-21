@@ -298,17 +298,17 @@ export const gameStateSchema = z.object({
   villagers: z
     .object({
       free: z.number().min(0).default(0),
-      hunter: z.number().min(0).default(0),
       gatherer: z.number().min(0).default(0),
-      tanner: z.number().min(0).default(0),
+      hunter: z.number().min(0).default(0),
       iron_miner: z.number().min(0).default(0),
       coal_miner: z.number().min(0).default(0),
+      steel_forger: z.number().min(0).default(0),
+      blacksteel_forger: z.number().min(0).default(0),
       sulfur_miner: z.number().min(0).default(0),
       obsidian_miner: z.number().min(0).default(0),
       adamant_miner: z.number().min(0).default(0),
       moonstone_miner: z.number().min(0).default(0),
-      steel_forger: z.number().min(0).default(0),
-      blacksteel_forger: z.number().min(0).default(0),
+      tanner: z.number().min(0).default(0),
       powder_maker: z.number().min(0).default(0),
       ashfire_dust_maker: z.number().min(0).default(0),
     })
