@@ -29,8 +29,8 @@ export function ImproveButton({
           onClick={handleClick}
           disabled={disabled}
           size="xs"
-          variant="ghost"
-          className={`h-5 pb-1 hover:bg-transparent hover:text-foreground relative overflow-visible ${isPulsing ? "improve-text-flash" : ""}`}
+          variant="outline"
+          className={`h-5 px-2 pb-1 hover:bg-transparent hover:text-foreground relative overflow-visible border border-border rounded-sm ${isPulsing ? "improve-text-flash" : ""}`}
           button_id={button_id}
           onAnimationEnd={() => setIsPulsing(false)}
         >
