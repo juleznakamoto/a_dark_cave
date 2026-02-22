@@ -161,7 +161,7 @@ export default function GameContainer() {
       Object.values(timers).forEach((timer) => {
         if (!timer.defeated && timer.startTime > 0) {
           const remaining = Math.max(0, (timer.duration || 0) - (timer.elapsedTime || 0));
-          if (remaining > 0 && remaining <= 30000) {
+          if (remaining <= 30000) {
             shouldPulse = true;
           }
         }
