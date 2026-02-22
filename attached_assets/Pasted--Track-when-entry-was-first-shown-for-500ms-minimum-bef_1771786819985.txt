@@ -1,0 +1,50 @@
+ // Track when entry was first shown (for 500ms minimum before hover can dismiss)
+              if (!firstShownRef.current.has(entry.id)) {
+                firstShownRef.current.set(entry.id, Date.now());
+              }
+              const firstShown = firstShownRef.current.get(entry.id) ?? 0;
+              const isUnread = !readEntries.has(entry.id);
+              const showNewIndicator = isUnread;
+
+              const handleMouseEnter = () => {
+                if (Date.now() - firstShown >= 500) {
+                  setReadEntries((prev) => new Set(prev).add(entry.id));
+                }
+              };
+
+              // Log the indicator status to debug
+              if (showNewIndicator) {
+                // console.log("Showing indicator for:", entry.id);
+              }
+
+              return (
+                <div
+                  key={entry.id}
+                  onMouseEnter={handleMouseEnter}
+                  className={`flex items-start gap-2 text-foreground leading-relaxed py-0.5 ${opacity} ${effectClass}`}
+                  style={
+                    hasActiveEffect && entry.visualEffect
+                      ? ({
+                          "--effect-duration": `${entry.visualEffect.duration}s`,
+                        } as React.CSSProperties)
+                      : undefined
+                  }
+                >
+                  {showNewIndicator ? (
+                    <span
+                      className="mt-2 h-1 w-1 shrink-0 rounded-full bg-white animate-pulse"
+                      aria-hidden={true}
+                    />
+                  ) : (
+                    <span className="w-1 shrink-0" aria-hidden={true} />
+                  )}
+                  <span className="flex-1 min-w-0">
+                    {typeof entry.message === "string"
+                      ? entry.message
+                      : JSON.stringify(entry.message)}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
