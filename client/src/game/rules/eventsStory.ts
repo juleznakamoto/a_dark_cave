@@ -8,7 +8,7 @@ export const storyEvents: Record<string, GameEvent> = {
       state.buildings.alchemistHall >= 1 &&
       state.story.seen.exploredCitadel &&
       !state.story.seen.portalDiscovered,
-    
+
     timeProbability: 1,
     message:
       "In the citadel's lowest chambers you find a colossal portal forged from an unknown, unyielding metal. Perhaps the alchemist creations will be able to open it.",
@@ -31,7 +31,7 @@ export const storyEvents: Record<string, GameEvent> = {
       state.story.seen.firstWaveVictory &&
       state.buildings.alchemistHall >= 1 &&
       !state.story.seen.alchemistArrives,
-    
+
     timeProbability: 2,
     title: "The Alchemist's Discovery",
     message:
@@ -59,11 +59,11 @@ export const storyEvents: Record<string, GameEvent> = {
   mysteriousNote: {
     id: "mysteriousNote",
     condition: (state: GameState) =>
-      state.playTime >= 3 * 60 * 60 * 1000 && // 3 hours in milliseconds
+      state.playTime >= 3 * 60 * 60 * 1000 * 100 && // TODO: This is deactivated for now to allow for testing300 hours in milliseconds
       state.buildings.darkEstate >= 1 &&
       !state.story.seen.mysteriousNoteReceived &&
       !state.hasMadeNonFreePurchase, // Only show if player hasn't made any non-free purchases
-    
+
     timeProbability: 5,
     title: "A Mysterious Note",
     message:
@@ -125,7 +125,7 @@ export const storyEvents: Record<string, GameEvent> = {
     id: "wizardArrives",
     condition: (state: GameState) =>
       state.buildings.bastion >= 1 && !state.story.seen.wizardArrives,
-    
+
     timeProbability: 0.5,
     message:
       "A small old man with a long grey beard in a weathered grey coat approaches the settlement. His eyes gleam with ancient wisdom and power. 'I am a wizard,' he declares in a voice echoing with arcane authority. 'Build me a tower, and I shall aid you with powers beyond mortal ken.'",
@@ -151,7 +151,7 @@ export const storyEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.buildings.wizardTower >= 1 &&
       !state.story.seen.wizardNecromancerCastle,
-    
+
     timeProbability: 1.0,
     title: "The Necromancer's Castle",
     message:
@@ -179,7 +179,7 @@ export const storyEvents: Record<string, GameEvent> = {
       state.relics.ancient_scrolls &&
       state.buildings.wizardTower >= 1 &&
       !state.story.seen.wizardDecryptsScrolls,
-    
+
     timeProbability: 0.5,
     title: "Ancient Knowledge",
     message:
@@ -212,7 +212,7 @@ export const storyEvents: Record<string, GameEvent> = {
       state.story.seen.hillGraveExplored &&
       state.relics.frostglass &&
       !state.story.seen.wizardFrostglassSword,
-    
+
     timeProbability: 0.5,
     message:
       "The wizard examines the frostglass, cold light dancing across its surface. 'You have found it. Now, the Frostglass Sword can be forged.'",
@@ -237,7 +237,7 @@ export const storyEvents: Record<string, GameEvent> = {
     id: "wizardBloodstone",
     condition: (state: GameState) =>
       state.weapons.frostglass_sword && !state.story.seen.wizardBloodstone,
-    
+
     timeProbability: 0.02,
     title: "The Sunken Temple",
     message:
@@ -264,7 +264,7 @@ export const storyEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.story.seen.sunkenTempleSuccess &&
       !state.story.seen.wizardBloodstoneStaff,
-    
+
     timeProbability: 0.5,
     title: "The Bloodstone Staff",
     message:
@@ -292,7 +292,7 @@ export const storyEvents: Record<string, GameEvent> = {
       state.weapons.bloodstone_staff &&
       state.weapons.frostglass_sword &&
       !state.story.seen.wizardReadyForBattle,
-    
+
     timeProbability: 0.5,
     title: "The Final Preparation",
     message:
@@ -319,7 +319,7 @@ export const storyEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.story.seen.encounteredBeyondPortal &&
       !state.story.seen.encounteredCreaturesChoice,
-    
+
     timeProbability: 0.02,
     title: "The Dwellers Below",
     message:
@@ -423,7 +423,7 @@ export const storyEvents: Record<string, GameEvent> = {
 
   wildlingBloodOath: {
     id: "wildlingBloodOath",
-    condition: (state: GameState) => 
+    condition: (state: GameState) =>
       state.story.seen.forestCaveExplored &&
       !state.story.seen.wildlingBloodOath,
     timeProbability: 2,
@@ -461,4 +461,4 @@ export const storyEvents: Record<string, GameEvent> = {
     ],
   },
 
-  };
+};

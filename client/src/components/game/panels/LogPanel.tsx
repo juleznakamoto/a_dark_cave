@@ -13,6 +13,7 @@ function LogPanel() {
   const timersRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
   const topRef = useRef<HTMLDivElement>(null);
   const prevLogLengthRef = useRef(log.length);
+  const firstShownRef = useRef<Map<string, number>>(new Map());
 
   // Get only the last entries and reverse them so latest is at top
   const recentEntries = useMemo(
@@ -82,15 +83,25 @@ function LogPanel() {
                   ? `log-${entry.visualEffect.type}`
                   : "";
 
+              // Track when entry was first shown (for 300ms minimum before hover can dismiss)
+              if (!firstShownRef.current.has(entry.id)) {
+                firstShownRef.current.set(entry.id, Date.now());
+              }
+              const firstShown = firstShownRef.current.get(entry.id) ?? 0;
               const isUnread = !readEntries.has(entry.id);
+              const showNewIndicator = isUnread;
+
+              const handleMouseEnter = () => {
+                if (Date.now() - firstShown >= 300) {
+                  setReadEntries((prev) => new Set(prev).add(entry.id));
+                }
+              };
 
               return (
-                <p
+                <div
                   key={entry.id}
-                  onMouseEnter={() =>
-                    setReadEntries((prev) => new Set(prev).add(entry.id))
-                  }
-                  className={`text-foreground leading-relaxed ${opacity} ${effectClass} ${isUnread ? "font-semibold" : ""}`}
+                  onMouseEnter={handleMouseEnter}
+                  className={`flex items-start gap-2 text-foreground leading-relaxed ${opacity} ${effectClass}`}
                   style={
                     hasActiveEffect && entry.visualEffect
                       ? ({
@@ -99,10 +110,20 @@ function LogPanel() {
                       : undefined
                   }
                 >
-                  {typeof entry.message === "string"
-                    ? entry.message
-                    : JSON.stringify(entry.message)}
-                </p>
+                  {showNewIndicator ? (
+                    <span
+                      className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-foreground/70"
+                      aria-hidden={true}
+                    />
+                  ) : (
+                    <span className="w-1.5 shrink-0" aria-hidden={true} />
+                  )}
+                  <span className="flex-1 min-w-0">
+                    {typeof entry.message === "string"
+                      ? entry.message
+                      : JSON.stringify(entry.message)}
+                  </span>
+                </div>
               );
             })}
           </div>
