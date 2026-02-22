@@ -450,7 +450,7 @@ export default function EstatePanel() {
                 }
                 tooltipId={SLEEP_LENGTH_TOOLTIP_ID}
                 className={cn(
-                  "relative inline-block pb-1 text-xs font-medium text-foreground cursor-help",
+                  "relative inline-block pb-1 text-xs font-medium text-foreground",
                   !hoveredTooltips[SLEEP_LENGTH_TOOLTIP_ID] && "new-item-pulse",
                 )}
                 onMouseEnter={() => handleTooltipHover(SLEEP_LENGTH_TOOLTIP_ID)}
@@ -514,12 +514,12 @@ export default function EstatePanel() {
               <TooltipWrapper
                 tooltip={
                   <div className="text-xs whitespace-nowrap">
-                    Production % while sleeping
+                    Village production % while sleeping
                   </div>
                 }
                 tooltipId={SLEEP_INTENSITY_TOOLTIP_ID}
                 className={cn(
-                  "relative inline-block pb-1 text-xs font-medium text-foreground cursor-help",
+                  "relative inline-block pb-1 text-xs font-medium text-foreground",
                   !hoveredTooltips[SLEEP_INTENSITY_TOOLTIP_ID] && "new-item-pulse",
                 )}
                 onMouseEnter={() => handleTooltipHover(SLEEP_INTENSITY_TOOLTIP_ID)}
