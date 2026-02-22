@@ -14,6 +14,7 @@ import {
   frostfallTooltip,
   fogTooltip,
   disgustTooltip,
+  heartfireTooltip,
 } from "@/game/rules/tooltips";
 import CooldownButton from "@/components/CooldownButton";
 import { Button } from "@/components/ui/button";
@@ -865,8 +866,7 @@ export default function VillagePanel() {
                             </TooltipTrigger>
                             <TooltipContent>
                               <div className="text-xs">
-                                Heartfire: +{state.heartfireState.level * 5}%
-                                Village Production
+                                {heartfireTooltip.getContent(state)}
                               </div>
                             </TooltipContent>
                           </Tooltip>

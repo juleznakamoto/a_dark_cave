@@ -9,6 +9,7 @@ function LogPanel() {
   const isBloodMoon =
     timedEventTab?.isActive && timedEventTab?.event?.title === "Blood Moon";
   const [activeEffects, setActiveEffects] = useState<Set<string>>(new Set());
+  const [readEntries, setReadEntries] = useState<Set<string>>(new Set());
   const timersRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
   const topRef = useRef<HTMLDivElement>(null);
   const prevLogLengthRef = useRef(log.length);
@@ -81,18 +82,15 @@ function LogPanel() {
                   ? `log-${entry.visualEffect.type}`
                   : "";
 
-              // Apply fade-out to stranger entries that are 55+ seconds old
-              const currentTime = Date.now();
-              const entryAge = currentTime - entry.timestamp;
-              const isFadingOut =
-                entry.id.startsWith("stranger-approaches-") &&
-                entryAge >= 55500;
-              const fadeOutClass = isFadingOut ? "log-fade-out" : "";
+              const isUnread = !readEntries.has(entry.id);
 
               return (
                 <p
                   key={entry.id}
-                  className={`text-foreground leading-relaxed ${opacity} ${effectClass} ${fadeOutClass}`}
+                  onMouseEnter={() =>
+                    setReadEntries((prev) => new Set(prev).add(entry.id))
+                  }
+                  className={`text-foreground leading-relaxed ${opacity} ${effectClass} ${isUnread ? "font-semibold" : ""}`}
                   style={
                     hasActiveEffect && entry.visualEffect
                       ? ({

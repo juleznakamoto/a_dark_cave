@@ -439,6 +439,31 @@ export const miningBoostTooltip: TooltipConfig = {
   },
 };
 
+export const heartfireTooltip: TooltipConfig = {
+  getContent: (state: GameState) => {
+    const heartfireState = state.heartfireState;
+    if (!heartfireState || heartfireState.level <= 0) return null;
+
+    const now = Date.now();
+    const lastDecrease = heartfireState.lastLevelDecrease || 0;
+    const levelDuration = 90000; // 1.5 minutes per level
+    const remainingMs = Math.max(0, levelDuration - (now - lastDecrease));
+    const remainingSecs = Math.ceil(remainingMs / 1000);
+    const timeLabel =
+      remainingSecs >= 60
+        ? `${Math.ceil(remainingSecs / 60)} min`
+        : `${remainingSecs} sec`;
+
+    return (
+      <>
+        <div className="font-bold">Heartfire</div>
+        <div>Production Bonus: +{heartfireState.level * 5}%</div>
+        <div>{timeLabel} until next level decrease</div>
+      </>
+    );
+  },
+};
+
 export const frostfallTooltip: TooltipConfig = {
   getContent: (state: GameState) => {
     const frostfallState = state.frostfallState;

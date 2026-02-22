@@ -1052,9 +1052,9 @@ export const merchantEvents: Record<string, GameEvent> = {
     condition: (state: GameState) => state.buildings.woodenHut >= 3,
     timeProbability: (state: GameState) =>
       10 +
-      0.5 * (state.buildings.tradePost || 0) +
-      1 * (state.buildings.grandBazaar || 0) +
-      1.5 * (state.buildings.merchantsGuild || 0) -
+      0.25 * (state.buildings.tradePost || 0) +
+      0.5 * (state.buildings.grandBazaar || 0) +
+      0.75 * (state.buildings.merchantsGuild || 0) -
       2.5 * state.BTP,
     title: "Traveling Merchant",
     message:
