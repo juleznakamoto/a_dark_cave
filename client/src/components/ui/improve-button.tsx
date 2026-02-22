@@ -30,7 +30,7 @@ export function ImproveButton({
           disabled={disabled}
           size="xs"
           variant="outline"
-          className={`h-5 px-2 pb-1 hover:bg-transparent hover:text-foreground relative overflow-visible border border-border rounded-sm ${isPulsing ? "improve-text-flash" : ""}`}
+          className={`h-5 px-2 bg-red-950/30 hover:bg-red-950/70 hover:text-foreground relative overflow-visible border border-border border-red-800/50 rounded-xl ${isPulsing ? "improve-text-flash" : ""}`}
           button_id={button_id}
           onAnimationEnd={() => setIsPulsing(false)}
         >
