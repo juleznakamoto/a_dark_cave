@@ -601,8 +601,8 @@ const Hero: React.FC<HeroProps> = ({
                   strokeWidth="1.4"
                 >
                   <g>
-                    <path d="m10.613 2.168 1.11-.865a2.286 2.286 0 0 1 2.871 0l1.145.975M17.804 25.986l-2.946 2.531a2.7 2.7 0 0 1-3.4 0l-2.515-2.156M13.148 15.155v13.587M15.853 27.656l9.532-8.166M10.764 27.917.987 19.66M.987 19.66V7.194M25.385 19.66V7.775M3.625 9.196.987 7.194M22.87 9.603l2.638-1.998" strokeLinejoin="round"/>
-                    <path strokeMiterlimit="10" d="m13.291 6.353 5.204 4.501M13.255 6.389l-5.034 4.213"/>
+                    <path d="m10.613 2.168 1.11-.865a2.286 2.286 0 0 1 2.871 0l1.145.975M17.804 25.986l-2.946 2.531a2.7 2.7 0 0 1-3.4 0l-2.515-2.156M13.148 15.155v13.587M15.853 27.656l9.532-8.166M10.764 27.917.987 19.66M.987 19.66V7.194M25.385 19.66V7.775M3.625 9.196.987 7.194M22.87 9.603l2.638-1.998" strokeLinejoin="round" />
+                    <path strokeMiterlimit="10" d="m13.291 6.353 5.204 4.501M13.255 6.389l-5.034 4.213" />
                   </g>
                 </svg>
                 <span>Incremental DB</span>
@@ -615,7 +615,7 @@ const Hero: React.FC<HeroProps> = ({
                     "noopener,noreferrer",
                   )
                 }
-                className="px-4 py-2 bg-[#da552f] hover:bg-[#c44d2a] text-white rounded-md font-semibold text-base transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-orange-500/25 flex items-center gap-2"
+                className="px-4 py-2 bg-gradient-to-r from-red-800 to-red-700 hover:from-red-700 hover:to-red-600 text-slate-200 rounded-md font-semibold text-base transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25 flex items-center gap-2"
               >
                 <img
                   src="https://ph-static.imgix.net/logo_PH.svg"
@@ -635,9 +635,9 @@ const Hero: React.FC<HeroProps> = ({
                 }
                 className="px-4 py-2 bg-gradient-to-r from-red-800 to-red-700 hover:from-red-700 hover:to-red-600 text-slate-200 rounded-md font-semibold text-base transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25 flex items-center gap-2"
               >
-                <img 
-                  src="/indiedb_logo_black.png" 
-                  alt="IndieDB" 
+                <img
+                  src="/indiedb_logo_black.png"
+                  alt="IndieDB"
                   className="h-5 w-5 object-contain flex-shrink-0 invert"
                 />
                 <span>IndieDB</span>
