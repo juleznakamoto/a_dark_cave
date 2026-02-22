@@ -150,6 +150,39 @@ export default function GameContainer() {
     }
   }, [timedEventTab.isActive, timedEventTab.expiryTime]);
 
+  // Apply pulse animation to Bastion tab when wave countdown is in last 30 seconds
+  useEffect(() => {
+    const tabButton = document.querySelector('[data-testid="tab-bastion"]');
+    if (!tabButton || !flags.bastionUnlocked) return;
+
+    const updatePulse = () => {
+      const timers = useGameStore.getState().attackWaveTimers || {};
+      let shouldPulse = false;
+      Object.values(timers).forEach((timer) => {
+        if (!timer.defeated && timer.startTime > 0) {
+          const remaining = Math.max(0, (timer.duration || 0) - (timer.elapsedTime || 0));
+          if (remaining > 0 && remaining <= 30000) {
+            shouldPulse = true;
+          }
+        }
+      });
+
+      if (shouldPulse) {
+        tabButton.classList.add("timer-tab-pulse");
+      } else {
+        tabButton.classList.remove("timer-tab-pulse");
+      }
+    };
+
+    updatePulse();
+    const interval = setInterval(updatePulse, 1000);
+
+    return () => {
+      clearInterval(interval);
+      tabButton.classList.remove("timer-tab-pulse");
+    };
+  }, [flags.bastionUnlocked]);
+
   // Track when new tabs are unlocked and trigger animations
   useEffect(() => {
     const prev = prevFlagsRef.current;
