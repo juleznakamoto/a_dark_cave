@@ -4,6 +4,15 @@ import { LogEntry } from "@/game/rules/events";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { GAME_CONSTANTS } from "@/game/constants";
 
+// Extended log entry type to support "production" type if it exists in the data
+type ExtendedLogEntry = LogEntry | {
+  message: string;
+  type: "production";
+  id: string;
+  timestamp: number;
+  visualEffect?: { type: "glow" | "pulse"; duration: number; };
+};
+
 function LogPanel() {
   const { log, timedEventTab } = useGameStore();
   const isBloodMoon =
@@ -53,7 +62,10 @@ function LogPanel() {
     return () => {
       timersRef.current.forEach((timerId) => clearTimeout(timerId));
       timersRef.current.clear();
-      if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
+      if (hoverTimerRef.current) {
+        clearTimeout(hoverTimerRef.current);
+        hoverTimerRef.current = null;
+      }
     };
   }, [recentEntries]);
 
@@ -63,7 +75,8 @@ function LogPanel() {
         <div className="px-3 relative ">
           <div ref={topRef} />
           <div className="space-y-1 text-xs">
-            {recentEntries.map((entry: LogEntry, index: number) => {
+            {recentEntries.map((entry: any, index: number) => {
+              const typedEntry = entry as ExtendedLogEntry;
               let opacity = "";
               if (recentEntries.length >= GAME_CONSTANTS.LOG_MAX_ENTRIES) {
                 if (index === recentEntries.length - 1) {
@@ -78,20 +91,20 @@ function LogPanel() {
               }
 
               // Determine if this entry has an active visual effect
-              const hasActiveEffect = activeEffects.has(entry.id);
+              const hasActiveEffect = activeEffects.has(typedEntry.id);
               const effectClass =
-                hasActiveEffect && entry.visualEffect
-                  ? `log-${entry.visualEffect.type}`
+                hasActiveEffect && typedEntry.visualEffect
+                  ? `log-${typedEntry.visualEffect.type}`
                   : "";
 
-              const isUnread = !readEntries.has(entry.id);
+              const isUnread = !readEntries.has(typedEntry.id);
               const showNewIndicator = isUnread;
 
               const handleMouseEnter = () => {
-                if (readEntries.has(entry.id)) return;
+                if (readEntries.has(typedEntry.id)) return;
                 if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
                 hoverTimerRef.current = setTimeout(() => {
-                  setReadEntries((prev) => new Set(prev).add(entry.id));
+                  setReadEntries((prev) => new Set(prev).add(typedEntry.id));
                 }, 500);
               };
 
@@ -104,14 +117,14 @@ function LogPanel() {
 
               return (
                 <div
-                  key={entry.id}
+                  key={typedEntry.id}
                   onMouseEnter={handleMouseEnter}
                   onMouseLeave={handleMouseLeave}
                   className={`flex items-start gap-2 text-foreground leading-relaxed py-0.5 ${opacity} ${effectClass}`}
                   style={
-                    hasActiveEffect && entry.visualEffect
+                    hasActiveEffect && typedEntry.visualEffect
                       ? ({
-                          "--effect-duration": `${entry.visualEffect.duration}s`,
+                          "--effect-duration": `${typedEntry.visualEffect.duration}s`,
                         } as React.CSSProperties)
                       : undefined
                   }
@@ -125,9 +138,9 @@ function LogPanel() {
                     <span className="w-1 shrink-0" aria-hidden={true} />
                   )}
                   <span className="flex-1 min-w-0">
-                    {typeof entry.message === "string"
-                      ? entry.message
-                      : JSON.stringify(entry.message)}
+                    {typeof typedEntry.message === "string"
+                      ? typedEntry.message
+                      : JSON.stringify(typedEntry.message)}
                   </span>
                 </div>
               );
