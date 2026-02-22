@@ -97,11 +97,16 @@ function LogPanel() {
                 }
               };
 
+              // Log the indicator status to debug
+              if (showNewIndicator) {
+                // console.log("Showing indicator for:", entry.id);
+              }
+
               return (
                 <div
                   key={entry.id}
                   onMouseEnter={handleMouseEnter}
-                  className={`flex items-start gap-2 text-foreground leading-relaxed ${opacity} ${effectClass}`}
+                  className={`flex items-start gap-2 text-foreground leading-relaxed py-0.5 ${opacity} ${effectClass}`}
                   style={
                     hasActiveEffect && entry.visualEffect
                       ? ({
@@ -112,7 +117,7 @@ function LogPanel() {
                 >
                   {showNewIndicator ? (
                     <span
-                      className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-foreground/70"
+                      className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary animate-pulse"
                       aria-hidden={true}
                     />
                   ) : (
