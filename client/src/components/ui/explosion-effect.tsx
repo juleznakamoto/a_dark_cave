@@ -59,30 +59,31 @@ function FireParticles({
               pointerEvents: "none",
             }}
             initial={{
-              backgroundColor: "hsl(60, 100%, 100%)",
+              backgroundColor: "hsl(40, 70%, 50%)",
               scale: 1,
             }}
             animate={{
               backgroundColor: [
-                "hsl(60, 100%, 100%)",
-                "hsl(60, 100%, 80%)",
-                "hsl(40, 100%, 60%)",
-                "hsl(20, 100%, 40%)",
-                "hsl(0, 0%, 20%)",
+                "hsl(50, 80%, 45%)", // dimmed warm light
+                "hsl(55, 100%, 55%)", // deeper yellow glow
+                "hsl(38, 100%, 38%)", // rich golden orange
+                "hsl(18, 100%, 22%)", // darker ember red
+                "hsl(0, 0%, 6%)",     // almost black smoke
               ],
+
               scale: [1, 4, 7, 7, 0],
               x: [
                 0,
-                (endX - particle.startX) * 0.25,
-                (endX - particle.startX) * 0.5,
-                (endX - particle.startX) * 0.75,
+                endX - particle.startX,
+                endX - particle.startX,
+                endX - particle.startX,
                 endX - particle.startX,
               ],
               y: [
                 0,
-                (endY - particle.startY) * 0.25,
-                (endY - particle.startY) * 0.5,
-                (endY - particle.startY) * 0.75,
+                endY - particle.startY,
+                endY - particle.startY,
+                endY - particle.startY,
                 endY - particle.startY,
               ],
             }}
@@ -129,7 +130,7 @@ function ExplosionParticles({
               top: startY,
               zIndex: 9999,
               pointerEvents: "none",
-              boxShadow: `0 0 ${particle.size * 0.5}px ${"#FFFFFF"}`,
+              boxShadow: `0 0 ${particle.size * 0.25}px ${"#FFFFFF"}`,
             }}
             initial={{
               opacity: 1,
@@ -161,16 +162,17 @@ export function useExplosionEffect() {
   const fireIdRef = useRef(0);
 
   const colors = [
-    "#8B0000",
-    "#B22222",
-    "#DC143C",
-    "#FF4500",
-    "#FF6347",
-    "#D2691E",
-    "#8B4513",
-    "#A0522D",
-    "#CD853F",
-    "#DAA520",
+    "#4B0000", // very dark crimson
+    "#660000", // deep blood red
+    "#800000", // dark maroon
+    "#A52A2A", // warm brown-red glow
+    "#8B2500", // dark ember orange
+    "#5A1E00", // charred orange-brown
+    "#3D1A0B", // burnt umber core
+    "#5C2E0C", // scorched brown
+    "#704214", // dark bronze tone
+    "#8B6508", // muted gold reflection
+    "#FF0000", // bright red flash (highlight)
   ];
 
   const triggerExplosion = (providedX?: number, providedY?: number) => {
@@ -216,8 +218,8 @@ export function useExplosionEffect() {
       const y = (Math.random() * 2 - 1) * yBound;
 
       const angle = Math.atan2(-1, 0);
-      const distance = (Math.random() * 4 + 1) * 10;
-      const duration = Math.random() * 800 + 1000;
+      const distance = Math.random() * 40;
+      const duration = Math.random() * 200 + 400;
 
       return {
         id: fireIdRef.current++,
@@ -232,7 +234,7 @@ export function useExplosionEffect() {
     });
 
     // Generate explosion particles
-    const particleCount = 300;
+    const particleCount = 350;
     const newParticles: Particle[] = Array.from({ length: particleCount }).map(
       () => ({
         id: idRef.current++,
@@ -240,7 +242,7 @@ export function useExplosionEffect() {
         distance: Math.random() * 1200 + 200,
         color: colors[Math.floor(Math.random() * colors.length)],
         lifetime: 1.5 + Math.random() * 4,
-        size: Math.random() * 6 + 1,
+        size: Math.random() * 5,
         createdAt: Date.now(),
       }),
     );
