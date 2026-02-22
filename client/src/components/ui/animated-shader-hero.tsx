@@ -531,13 +531,13 @@ const Hero: React.FC<HeroProps> = ({
 
           {/* Subtitle with Animation */}
           <div className="max-w-3xl mx-auto animate-fade-in-up animation-delay-2400">
-            <p className="mt-4 text-lg md:text-lg lg:text-xl text-orange-100/90 font-medium leading-relaxed">
+            <p className="mt-4 text-lg md:text-lg lg:text-xl text-grey-200 font-medium leading-relaxed">
               {subtitle1}
             </p>
-            <p className="text-lg md:text-lg lg:text-xl text-orange-100/90 font-medium leading-relaxed">
+            <p className="text-lg md:text-lg lg:text-xl text-grey-200 font-medium leading-relaxed">
               {subtitle2}
             </p>
-            <p className="mb-6 text-lg md:text-lg lg:text-xl text-orange-100/90 font-medium leading-relaxed">
+            <p className="mb-6 text-lg md:text-lg lg:text-xl text-grey-200 font-medium leading-relaxed">
               {subtitle3}
             </p>
           </div>
@@ -557,7 +557,7 @@ const Hero: React.FC<HeroProps> = ({
 
           {/* Support Section */}
           <div className="py-3 flex flex-col items-center gap-3 mt-14 animate-fade-in-up animation-delay-4000">
-            <p className="text-md font-medium text-gray-300 text-center max-w-md px-4">
+            <p className="text-md font-medium text-gray-200 text-center max-w-md px-4">
               If you enjoyed the game, I would be very happy if you support me so I can continue
               to develop it.
             </p>
@@ -578,7 +578,7 @@ const Hero: React.FC<HeroProps> = ({
 
           {/* Incremental DB & IndieDB Vote Section */}
           <div className="py-3 flex flex-col items-center gap-3 mt-8 animate-fade-in-up animation-delay-4500">
-            <p className="text-md font-medium text-gray-300 text-center max-w-md px-4">
+            <p className="text-md font-medium text-gray-200 text-center max-w-md px-4">
               You can support the game for free by leaving a vote or review. It makes a huge difference. Thank you! ♡
             </p>
             <div className="flex gap-3 flex-wrap justify-center">
@@ -773,9 +773,9 @@ void main(void) {
 		uv+=.1*cos(i*vec2(.1+.01*i, .8)+i*i+T*.5+.1*uv.x);
 		vec2 p=uv;
 		float d=length(p);
-		col+=.0015/d*(cos(sin(i))+1.);
-		float b=noise(i+p+bg*2.8);
-		col+=.002*MAX_COLOR_DEVIATION*b/length(max(p,vec2(b*p.x*.02,p.y)));
+		col+=.0012/d*(cos(sin(i))+1.0);
+		float b=noise(i+p+bg*2.5);
+		col+=.0007*MAX_COLOR_DEVIATION*b/length(max(p,vec2(b*p.x*.02,p.y)));
 		vec3 cloudColor = BACKGROUND_TINT * (1.0 + (bg - 0.5) * CLOUD_COLOR_DEVIATION);
 		col=mix(col,cloudColor,d);
 	}
