@@ -83,7 +83,7 @@ export function ButtonPriorBadge({ actionId }: ButtonPriorBadgeProps) {
               overflow: "hidden",
               cursor: atCapacity ? "default" : "pointer",
               zIndex: 20,
-              transition: "background 600ms, box-shadow 600ms",
+              transition: "background 700ms, box-shadow 800ms",
             }}
           >
             <div
