@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/tooltip";
 
 const BADGE_SIZE = 12;
+const FILL_SIZE = BADGE_SIZE * 2.2;
 
 interface ButtonPriorBadgeProps {
   actionId: string;
@@ -42,19 +43,23 @@ export function ButtonPriorBadge({ actionId }: ButtonPriorBadgeProps) {
       ? "Click to remove Disgraced Prior from this action"
       : "Click to assign Disgraced Prior to this action";
 
-  // Background fill of the circle
-  const bg = isAssigned
-    ? "rgba(255,255,255,1)"
-    : atCapacity
-      ? "rgba(255,255,255,0.12)"
-      : hovered ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.65)";
+  // Base background: provides the always-visible dim fill (inactive/locked).
+  // When active, the animated fill div slides over it.
+  const bg = atCapacity
+    ? "rgba(255,255,255,0.12)"
+    : hovered && !isAssigned ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.65)";
 
-  // active: fill + dark gap + bright outer ring; inactive: fill + subtle ring; locked: dim everything
+  // active: dark gap + bright outer ring; inactive/locked: simple ring
   const shadow = isAssigned
     ? `0 0 0 2px #252525, 0 0 0 3.5px ${hovered ? "rgba(255,255,255,1)" : "rgba(255,255,255,0.95)"}`
     : atCapacity
       ? "0 0 0 1px rgba(255,255,255,0.15)"
       : `0 0 0 1px ${hovered ? "rgba(255,255,255,0.8)" : "rgba(255,255,255,0.5)"}`;
+
+  // Animated fill div slides in from top-left when assigned
+  const fillOffset = isAssigned
+    ? `-${Math.round(BADGE_SIZE * 0.3)}px`
+    : `-${FILL_SIZE + 2}px`;
 
   return (
     <TooltipProvider delayDuration={400}>
@@ -75,11 +80,24 @@ export function ButtonPriorBadge({ actionId }: ButtonPriorBadgeProps) {
               borderRadius: "50%",
               background: bg,
               boxShadow: shadow,
+              overflow: "hidden",
               cursor: atCapacity ? "default" : "pointer",
               zIndex: 20,
               transition: "background 150ms, box-shadow 150ms",
             }}
           >
+            <div
+              style={{
+                width: `${FILL_SIZE}px`,
+                height: `${FILL_SIZE}px`,
+                background: "rgba(255,255,255,1)",
+                position: "absolute",
+                top: fillOffset,
+                left: fillOffset,
+                transform: "rotateZ(45deg)",
+                transition: "top 300ms ease, left 300ms ease",
+              }}
+            />
           </div>
         </TooltipTrigger>
         <TooltipContent
