@@ -234,7 +234,7 @@ export default function SidePanel() {
       tooltip: true,
     }));
 
-  // Dynamically generate relic items from state
+  // Dynamically generate relic items from state (whispering_cube always first)
   const relicItems = Object.entries(gameState.relics || {})
     .filter(([key, value]) => value === true)
     .map(([key, value]) => ({
@@ -244,7 +244,12 @@ export default function SidePanel() {
       testId: `relic-${key}`,
       visible: true,
       tooltip: true,
-    }));
+    }))
+    .sort((a, b) => {
+      if (a.id === "whispering_cube") return -1;
+      if (b.id === "whispering_cube") return 1;
+      return 0;
+    });
 
   // Dynamically generate book items from state
   const bookItems = Object.entries(gameState.books || {})

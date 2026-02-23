@@ -240,11 +240,13 @@ export const getActionBonuses = (
   resourceMultiplier: number;
   resourceBonus: Record<string, number>;
   cooldownReduction: number;
+  executionTimeReduction: number;
   caveExploreMultiplier: number;
 } => {
   const activeEffects = getActiveEffects(state);
   let resourceMultiplier = 1;
   let cooldownReduction = 0;
+  let executionTimeReduction = 0;
   let caveExploreMultiplier = 1;
   const resourceBonus: Record<string, number> = {};
 
@@ -303,8 +305,8 @@ export const getActionBonuses = (
           // Only add to caveExploreMultiplier, not resourceMultiplier (to avoid double-counting)
           caveExploreMultiplier += caveBonus.resourceMultiplier - 1;
         }
-        if (caveBonus.cooldownReduction) {
-          cooldownReduction += caveBonus.cooldownReduction;
+        if (caveBonus.executionTimeReduction) {
+          executionTimeReduction += caveBonus.executionTimeReduction;
         }
         if (caveBonus.resourceBonus) {
           Object.entries(caveBonus.resourceBonus).forEach(
@@ -351,6 +353,7 @@ export const getActionBonuses = (
     resourceMultiplier,
     resourceBonus,
     cooldownReduction,
+    executionTimeReduction,
     caveExploreMultiplier,
   };
 };

@@ -383,7 +383,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
         },
         caveExplore: {
           resourceMultiplier: 3.0, // +200% = 3x total
-          cooldownReduction: 5,
+          executionTimeReduction: 5,
         },
       },
     },
@@ -1069,7 +1069,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         caveExplore: {
-          cooldownReduction: 4,
+          executionTimeReduction: 4,
         },
         mining: {
           cooldownReduction: 3,

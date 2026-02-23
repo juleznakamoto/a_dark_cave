@@ -234,8 +234,8 @@ export const caveExploreActions: Record<string, Action> = {
       "story.seen.hasStone": true,
       "story.seen.caveExplored": true,
     },
-    cooldown: 10,
-    executionTime: 5, // 5 + 0*5 (exploreCave is first/level 0)
+    cooldown: 0,
+    executionTime: 10, // 5 + 0*5 (exploreCave is first/level 0)
     upgrade_key: "exploreCave",
   },
 
@@ -262,8 +262,8 @@ export const caveExploreActions: Record<string, Action> = {
         "story.seen.venturedDeeper": true,
       };
     },
-    cooldown: 15,
-    executionTime: 10, // 5 + 1*5 (ventureDeeper is second/level 1)
+    cooldown: 0,
+    executionTime: 15, // 5 + 1*5 (ventureDeeper is second/level 1)
     upgrade_key: "ventureDeeper",
   },
 
@@ -289,8 +289,8 @@ export const caveExploreActions: Record<string, Action> = {
         "story.seen.descendedFurther": true,
       };
     },
-    cooldown: 20,
-    executionTime: 15, // 5 + 2*5 (descendFurther is third/level 2)
+    cooldown: 0,
+    executionTime: 20, // 5 + 2*5 (descendFurther is third/level 2)
     upgrade_key: "descendFurther",
   },
 
@@ -315,8 +315,8 @@ export const caveExploreActions: Record<string, Action> = {
         "story.seen.exploredRuins": true,
       };
     },
-    cooldown: 25,
-    executionTime: 20, // 5 + 3*5 (exploreRuins is fourth/level 3)
+    cooldown: 0,
+    executionTime: 25, // 5 + 3*5 (exploreRuins is fourth/level 3)
     upgrade_key: "exploreRuins",
   },
 
@@ -343,8 +343,8 @@ export const caveExploreActions: Record<string, Action> = {
         "story.seen.exploredTemple": true,
       };
     },
-    cooldown: 30,
-    executionTime: 25, // 5 + 4*5 (exploreTemple is fifth/level 4)
+    cooldown: 0,
+    executionTime: 30, // 5 + 4*5 (exploreTemple is fifth/level 4)
     upgrade_key: "exploreTemple",
   },
 
@@ -369,8 +369,8 @@ export const caveExploreActions: Record<string, Action> = {
         "story.seen.exploredCitadel": true,
       };
     },
-    cooldown: 35,
-    executionTime: 30, // 5 + 5*5 (exploreCitadel is sixth/level 5)
+    cooldown: 0,
+    executionTime: 35, // 5 + 5*5 (exploreCitadel is sixth/level 5)
     upgrade_key: "exploreCitadel",
   },
 

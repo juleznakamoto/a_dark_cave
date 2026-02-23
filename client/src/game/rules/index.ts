@@ -10,6 +10,7 @@ import {
   getHumansCost,
 } from "./forestSacrificeActions";
 import { calculateAdjustedCost } from "./costCalculation";
+import { getActionBonuses } from "./effectsCalculation";
 
 // Import action modules
 import { caveCraftResources } from "./caveCraftResources";
@@ -61,8 +62,13 @@ export const gameActions = getGameActions();
 export function getExecutionTime(actionId: string, state: GameState): number {
   const action = gameActions[actionId];
   if (!action?.executionTime) return 0;
-  if (typeof action.executionTime === "number") return action.executionTime;
-  return action.executionTime(state);
+  const baseTime =
+    typeof action.executionTime === "number"
+      ? action.executionTime
+      : action.executionTime(state);
+
+  const { executionTimeReduction } = getActionBonuses(actionId, state);
+  return Math.max(1, baseTime - executionTimeReduction);
 }
 
 // Helper function to check if requirements are met for both building and non-building actions

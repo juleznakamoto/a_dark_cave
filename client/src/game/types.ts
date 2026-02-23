@@ -272,6 +272,7 @@ export interface EffectDefinition {
       string,
       {
         cooldownReduction?: number; // Percentage reduction (0.1 = 10% reduction)
+        executionTimeReduction?: number; // Seconds reduction for actions with execution time (e.g. cave explore)
         resourceBonus?: Record<string, number>; // Fixed bonus to specific resources
         resourceMultiplier?: number; // Multiplier for all resources (1.25 = 25% bonus)
         probabilityBonus?: Record<string, number>; // Probability bonus for specific resources (0.05 = 5% chance)
