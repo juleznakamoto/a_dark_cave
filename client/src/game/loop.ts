@@ -576,20 +576,20 @@ export function stopGameLoop() {
 
 function processTick() {
   const state = useGameStore.getState();
-  const prevCooldowns = { ...state.cooldowns };
 
   // Tick down cooldowns
   state.tickCooldowns();
 
-  // Disgraced Prior: auto-execute assigned actions whose cooldown just hit 0.
+  // Disgraced Prior: auto-execute assigned actions when cooldown is 0 and conditions are met.
+  // We check isReadyNow (not just the transition from >0 to 0) so that actions blocked by
+  // a full storage cap resume automatically once storage frees up.
   // Note: processTick is not called during events (eventDialog.isOpen) or sleep
   // (idleModeState?.isActive) — the outer loop returns early in those cases.
   const freshState = useGameStore.getState();
   if (freshState.fellowship?.disgraced_prior) {
     for (const actionId of freshState.priorAssignedActions ?? []) {
-      const wasCoolingDown = (prevCooldowns[actionId] ?? 0) > 0;
       const isReadyNow = (freshState.cooldowns[actionId] ?? 0) === 0;
-      if (wasCoolingDown && isReadyNow && canPriorExecute(actionId, freshState)) {
+      if (isReadyNow && canPriorExecute(actionId, freshState as unknown as GameState)) {
         priorLastExecuted.set(actionId, Date.now());
         freshState.executeAction(actionId);
       }
