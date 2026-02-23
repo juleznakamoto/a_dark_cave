@@ -8,7 +8,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-const BADGE_SIZE = 12;
+const BADGE_SIZE = 10;
 const FILL_SIZE = BADGE_SIZE * 2.2;
 
 interface ButtonPriorBadgeProps {
@@ -47,14 +47,14 @@ export function ButtonPriorBadge({ actionId }: ButtonPriorBadgeProps) {
   // When active, the animated fill div slides over it.
   const bg = atCapacity
     ? "rgba(255,255,255,0.12)"
-    : hovered && !isAssigned ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.65)";
+    : hovered && !isAssigned ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.6)";
 
   // active: dark gap + bright outer ring; inactive/locked: simple ring
   const shadow = isAssigned
-    ? `0 0 0 2px #252525, 0 0 0 3.5px ${hovered ? "rgba(255,255,255,1)" : "rgba(255,255,255,0.95)"}`
+    ? `0 0 0 1.5px #252525, 0 0 0 2px ${hovered ? "rgba(255,255,255,1)" : "rgba(255,255,255,0.95)"}`
     : atCapacity
-      ? "0 0 0 1px rgba(255,255,255,0.15)"
-      : `0 0 0 1px ${hovered ? "rgba(255,255,255,0.8)" : "rgba(255,255,255,0.5)"}`;
+      ? "0 0 0 0.5px rgba(255,255,255,0.15)"
+      : `0 0 0 0.5px ${hovered ? "rgba(255,255,255,0.8)" : "rgba(255,255,255,0.7)"}`;
 
   // Animated fill div slides in from top-left when assigned
   const fillOffset = isAssigned
@@ -73,8 +73,8 @@ export function ButtonPriorBadge({ actionId }: ButtonPriorBadgeProps) {
             data-testid={`prior-badge-${actionId}`}
             style={{
               position: "absolute",
-              bottom: "-5px",
-              right: "-5px",
+              bottom: "-4px",
+              right: "-4px",
               width: `${BADGE_SIZE}px`,
               height: `${BADGE_SIZE}px`,
               borderRadius: "50%",
@@ -83,7 +83,7 @@ export function ButtonPriorBadge({ actionId }: ButtonPriorBadgeProps) {
               overflow: "hidden",
               cursor: atCapacity ? "default" : "pointer",
               zIndex: 20,
-              transition: "background 150ms, box-shadow 150ms",
+              transition: "background 600ms, box-shadow 600ms",
             }}
           >
             <div
@@ -95,7 +95,7 @@ export function ButtonPriorBadge({ actionId }: ButtonPriorBadgeProps) {
                 top: fillOffset,
                 left: fillOffset,
                 transform: "rotateZ(45deg)",
-                transition: "top 300ms ease, left 300ms ease",
+                transition: "top 600ms ease, left 600ms ease",
               }}
             />
           </div>
