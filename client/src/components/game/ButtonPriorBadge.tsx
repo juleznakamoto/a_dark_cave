@@ -51,7 +51,7 @@ export function ButtonPriorBadge({ actionId }: ButtonPriorBadgeProps) {
 
   // active: dark gap + bright outer ring; inactive/locked: simple ring
   const shadow = isAssigned
-    ? `0 0 0 1.5px #252525, 0 0 0 2px ${hovered ? "rgba(255,255,255,1)" : "rgba(255,255,255,0.95)"}`
+    ? `0 0 0 1.5px #252525, 0 0 0 2.5px ${hovered ? "rgba(255,255,255,1)" : "rgba(255,255,255,0.95)"}`
     : atCapacity
       ? "0 0 0 0.5px rgba(255,255,255,0.15)"
       : `0 0 0 0.5px ${hovered ? "rgba(255,255,255,0.8)" : "rgba(255,255,255,0.7)"}`;
