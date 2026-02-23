@@ -75,6 +75,7 @@ import { crowEvents } from "./eventsCrow";
 import { wanderingCollectorEvents } from "./eventsWanderingCollector";
 import { exiledScholarEvents } from "./eventsExiledScholar";
 import { tradersDaughterEvents } from "./eventsTradersDaughter";
+import { disgracedPriorEvents } from "./eventsDisgracedPrior";
 import { GAME_CONSTANTS } from "../constants";
 
 export interface GameEvent {
@@ -162,6 +163,7 @@ export const gameEvents: Record<string, GameEvent> = {
   ...wanderingCollectorEvents,
   ...exiledScholarEvents,
   ...tradersDaughterEvents,
+  ...disgracedPriorEvents,
 };
 
 export class EventManager {

@@ -122,6 +122,36 @@ export const UPGRADE_LABELS: Record<UpgradeKey, string> = {
   caveExplore: "Cave Exploring",
 };
 
+// Actions the Disgraced Prior can be assigned to auto-execute
+export const PRIOR_ELIGIBLE_ACTIONS = new Set<string>([
+  "hunt",
+  "chopWood",
+  "exploreCave",
+  "ventureDeeper",
+  "descendFurther",
+  "exploreRuins",
+  "exploreTemple",
+  "exploreCitadel",
+  "mineStone",
+  "mineIron",
+  "mineCoal",
+  "mineSulfur",
+  "mineObsidian",
+  "mineAdamant",
+  "craftTorch",
+  "craftTorches",
+  "craftTorches3",
+  "craftTorches4",
+  "craftTorches5",
+  "craftTorches10",
+  "craftBoneTotem",
+  "craftBoneTotems2",
+  "craftBoneTotems3",
+  "craftBoneTotems5",
+  "craftLeatherTotem",
+  "craftLeatherTotems5",
+]);
+
 // Map action IDs to upgrade keys
 // All cave explore actions share the same "caveExplore" key to carry over progress
 export const ACTION_TO_UPGRADE_KEY: Record<string, UpgradeKey | undefined> = {

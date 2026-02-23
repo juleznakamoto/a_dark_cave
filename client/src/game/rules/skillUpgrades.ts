@@ -107,6 +107,16 @@ export const SLEEP_INTENSITY_UPGRADES = [
   { level: 5, percentage: 25, cost: 2000, currency: "gold" },
 ];
 
+// Disgraced Prior upgrade configurations (fellowship member who auto-executes assigned actions)
+export const DISGRACED_PRIOR_UPGRADES = [
+  { level: 0, maxActions: 1, cost: 0, currency: null },
+  { level: 1, maxActions: 2, cost: 250, currency: "gold" },
+  { level: 2, maxActions: 3, cost: 500, currency: "gold" },
+  { level: 3, maxActions: 4, cost: 750, currency: "gold" },
+  { level: 4, maxActions: 5, cost: 1000, currency: "gold" },
+  { level: 5, maxActions: 6, cost: 1250, currency: "gold" },
+];
+
 // Crow's Eye skill upgrade configurations (from One-eyed Crow fellowship member)
 // Provides chance to double resources from all gathering actions
 export const CROWS_EYE_UPGRADES = [

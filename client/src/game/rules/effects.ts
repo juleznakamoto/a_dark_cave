@@ -1500,6 +1500,15 @@ export const fellowshipEffects: Record<string, EffectDefinition> = {
       generalBonuses: {},
     },
   },
+  disgraced_prior: {
+    id: "disgraced_prior",
+    name: "Disgraced Prior",
+    description:
+      "Former prior cast out of his order. Redeems himself through endless labor. Can be assigned to automatically repeat actions.",
+    bonuses: {
+      generalBonuses: {},
+    },
+  },
 };
 
 // Building effects are derived from villageBuildActions

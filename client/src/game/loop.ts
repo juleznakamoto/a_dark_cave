@@ -533,9 +533,22 @@ export function stopGameLoop() {
 
 function processTick() {
   const state = useGameStore.getState();
+  const prevCooldowns = { ...state.cooldowns };
 
   // Tick down cooldowns
   state.tickCooldowns();
+
+  // Disgraced Prior: auto-execute assigned actions whose cooldown just hit 0
+  const freshState = useGameStore.getState();
+  if (freshState.fellowship?.disgraced_prior) {
+    for (const actionId of freshState.priorAssignedActions ?? []) {
+      const wasCoolingDown = (prevCooldowns[actionId] ?? 0) > 0;
+      const isReadyNow = (freshState.cooldowns[actionId] ?? 0) === 0;
+      if (wasCoolingDown && isReadyNow) {
+        freshState.executeAction(actionId);
+      }
+    }
+  }
 
   // Check if feast has expired
   if (state.feastState?.isActive && state.feastState.endTime <= Date.now()) {

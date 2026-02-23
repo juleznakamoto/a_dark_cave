@@ -22,7 +22,13 @@ import {
   type BubbleWithParticles,
 } from "@/components/ui/bubbly-button";
 import { ButtonLevelBadge } from "@/components/game/ButtonLevelBadge";
-import { ACTION_TO_UPGRADE_KEY, getUpgradeLevel, type UpgradeKey } from "@/game/buttonUpgrades";
+import { ButtonPriorBadge } from "@/components/game/ButtonPriorBadge";
+import {
+  ACTION_TO_UPGRADE_KEY,
+  PRIOR_ELIGIBLE_ACTIONS,
+  getUpgradeLevel,
+  type UpgradeKey,
+} from "@/game/buttonUpgrades";
 
 export default function CavePanel() {
   const { executeAction, setHighlightedResources } = useGameStore();
@@ -335,10 +341,13 @@ export default function CavePanel() {
         </CooldownButton>
       );
 
-      return upgradeKey ? (
+      const isPriorEligible = PRIOR_ELIGIBLE_ACTIONS.has(actionId);
+      const needsWrapper = upgradeKey || isPriorEligible;
+      return needsWrapper ? (
         <div key={actionId} className="relative inline-block">
           {button}
-          <ButtonLevelBadge upgradeKey={upgradeKey} />
+          {upgradeKey && <ButtonLevelBadge upgradeKey={upgradeKey} />}
+          {isPriorEligible && <ButtonPriorBadge actionId={actionId} />}
         </div>
       ) : (
         button
@@ -385,10 +394,13 @@ export default function CavePanel() {
       </CooldownButton>
     );
 
-    return upgradeKey ? (
+    const isPriorEligible = PRIOR_ELIGIBLE_ACTIONS.has(actionId);
+    const needsWrapper = upgradeKey || isPriorEligible;
+    return needsWrapper ? (
       <div key={actionId} className="relative inline-block">
         {button}
-        <ButtonLevelBadge upgradeKey={upgradeKey} />
+        {upgradeKey && <ButtonLevelBadge upgradeKey={upgradeKey} />}
+        {isPriorEligible && <ButtonPriorBadge actionId={actionId} />}
       </div>
     ) : (
       button

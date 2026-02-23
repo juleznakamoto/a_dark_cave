@@ -205,6 +205,7 @@ export const gameStateSchema = z.object({
       elder_wizard: z.boolean().default(false),
       ashwraith_huntress: z.boolean().default(false),
       one_eyed_crow: z.boolean().default(false),
+      disgraced_prior: z.boolean().default(false),
     })
     .default({}),
   blessings: z
@@ -597,6 +598,14 @@ export const gameStateSchema = z.object({
       level: z.number().default(0),
     })
     .default({ level: 0 }),
+
+  disgracedPriorSkills: z
+    .object({
+      level: z.number().default(0),
+    })
+    .default({ level: 0 }),
+
+  priorAssignedActions: z.array(z.string()).default([]),
 
   tradeEstablishState: z
     .object({

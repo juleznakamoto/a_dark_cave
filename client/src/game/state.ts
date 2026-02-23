@@ -43,6 +43,7 @@ import {
 } from "@/game/buttonUpgrades";
 import { logger } from "@/lib/logger";
 import { madnessEvents } from "@/game/rules/eventsMadness";
+import { DISGRACED_PRIOR_UPGRADES } from "@/game/rules/skillUpgrades";
 
 // Types
 interface GameStore extends GameState {
@@ -224,6 +225,7 @@ interface GameStore extends GameState {
   updatePopulation: () => void;
   setCooldown: (action: string, duration: number) => void;
   tickCooldowns: () => void;
+  togglePriorAction: (actionId: string) => void;
   setCompassGlow: (actionId: string | null) => void;
   addLogEntry: (entry: LogEntry) => void;
   checkEvents: () => void;
@@ -1233,6 +1235,27 @@ export const useGameStore = create<GameStore>((set, get) => ({
   setCompassGlow: (actionId: string | null) => {
     set({ compassGlowButton: actionId });
   },
+
+  togglePriorAction: (actionId: string) => {
+    set((state) => {
+      const assigned = state.priorAssignedActions ?? [];
+      const level = state.disgracedPriorSkills?.level ?? 0;
+      const maxActions = DISGRACED_PRIOR_UPGRADES[level]?.maxActions ?? 1;
+      if (assigned.includes(actionId)) {
+        return { priorAssignedActions: assigned.filter((id) => id !== actionId) };
+      }
+      if (assigned.length >= maxActions) return {};
+      return { priorAssignedActions: [...assigned, actionId] };
+    });
+    const fresh = get();
+    if (
+      (fresh.cooldowns[actionId] ?? 0) === 0 &&
+      fresh.priorAssignedActions?.includes(actionId)
+    ) {
+      get().executeAction(actionId);
+    }
+  },
+
 
   tickCooldowns: () => {
     set((state) => {

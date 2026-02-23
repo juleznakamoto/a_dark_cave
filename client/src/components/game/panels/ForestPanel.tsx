@@ -12,7 +12,8 @@ import { getResourceLimit, isResourceLimited } from "@/game/resourceLimits";
 import CooldownButton from "@/components/CooldownButton";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { ButtonLevelBadge } from "@/components/game/ButtonLevelBadge";
-import { ACTION_TO_UPGRADE_KEY } from "@/game/buttonUpgrades";
+import { ButtonPriorBadge } from "@/components/game/ButtonPriorBadge";
+import { ACTION_TO_UPGRADE_KEY, PRIOR_ELIGIBLE_ACTIONS } from "@/game/buttonUpgrades";
 import {
   BubblyButtonGlobalPortal,
   generateParticleData,
@@ -410,10 +411,13 @@ export default function ForestPanel() {
         </CooldownButton>
       );
 
-      return upgradeKey ? (
+      const isPriorEligible = PRIOR_ELIGIBLE_ACTIONS.has(actionId);
+      const needsWrapper = upgradeKey || isPriorEligible;
+      return needsWrapper ? (
         <div key={actionId} className="relative inline-block">
           {button}
-          <ButtonLevelBadge upgradeKey={upgradeKey} />
+          {upgradeKey && <ButtonLevelBadge upgradeKey={upgradeKey} />}
+          {isPriorEligible && <ButtonPriorBadge actionId={actionId} />}
         </div>
       ) : (
         button
@@ -451,10 +455,13 @@ export default function ForestPanel() {
       </CooldownButton>
     );
 
-    return upgradeKey ? (
+    const isPriorEligible = PRIOR_ELIGIBLE_ACTIONS.has(actionId);
+    const needsWrapper = upgradeKey || isPriorEligible;
+    return needsWrapper ? (
       <div key={actionId} className="relative inline-block">
         {button}
-        <ButtonLevelBadge upgradeKey={upgradeKey} />
+        {upgradeKey && <ButtonLevelBadge upgradeKey={upgradeKey} />}
+        {isPriorEligible && <ButtonPriorBadge actionId={actionId} />}
       </div>
     ) : (
       button
