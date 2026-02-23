@@ -216,7 +216,7 @@ export const shopItemEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "The risk is too great. That same day, a tradesman arrives and offers 500 gold for the bell. You accept immediately, relieved to be rid of the cursed object. The tradesman departs with a knowing smile.",
+              "The risk is too great. That same day, a tradesman arrives and offers 500 Gold for the bell. You accept immediately, relieved to be rid of the cursed object. The tradesman departs with a knowing smile.",
           };
         },
       },

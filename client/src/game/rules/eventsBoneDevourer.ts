@@ -54,9 +54,9 @@ function createBoneDevourerEvent(config: BoneDevourerConfig): GameEvent {
     message: (state: GameState) => {
       const hasBeenTriggered = state.triggeredEvents?.[eventId];
       if (hasBeenTriggered) {
-        return `The creature returns to the gates, its hunched form still covered in pale, stretched skin. It speaks in its familiar rasping voice: 'I seek bones. I pay ${silverReward} silver.'`;
+        return `The creature returns to the gates, its hunched form still covered in pale, stretched skin. It speaks in its familiar rasping voice: 'I seek bones. I pay ${silverReward} Silver.'`;
       }
-      return `A deformed creature shuffles to the gates, its hunched form covered in pale, stretched skin. It speaks in a rasping voice: 'I seek bones. I pay ${silverReward} silver.'`;
+      return `A deformed creature shuffles to the gates, its hunched form covered in pale, stretched skin. It speaks in a rasping voice: 'I seek bones. I pay ${silverReward} Silver.'`;
     },
     priority: 3,
     repeatable: true,
@@ -91,7 +91,7 @@ function createBoneDevourerEvent(config: BoneDevourerConfig): GameEvent {
               [eventId]: true,
               [`${eventId}_seen`]: true,
             },
-            _logMessage: `The creature takes the bones with its gnarled hands, as if attempting to count them. It places a pouch with ${silverReward} silver at your feet and disappears into the darkness.`,
+            _logMessage: `The creature takes the bones with its gnarled hands, as if attempting to count them. It places a pouch with ${silverReward} Silver at your feet and disappears into the darkness.`,
           };
         },
       },

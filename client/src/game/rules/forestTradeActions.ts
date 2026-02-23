@@ -42,7 +42,6 @@ export const forestTradeActions: Record<string, Action> = {
         "resources.food": 1000,
       },
     },
-    cooldown: 90,
   },
 
   tradeGoldForWood: {
@@ -83,7 +82,6 @@ export const forestTradeActions: Record<string, Action> = {
         "resources.wood": 1000,
       },
     },
-    cooldown: 90,
   },
 
   tradeGoldForStone: {
@@ -124,7 +122,6 @@ export const forestTradeActions: Record<string, Action> = {
         "resources.stone": 1000,
       },
     },
-    cooldown: 90,
   },
 
   tradeGoldForLeather: {
@@ -165,7 +162,6 @@ export const forestTradeActions: Record<string, Action> = {
         "resources.leather": 150,
       },
     },
-    cooldown: 90,
   },
 
   tradeGoldForSteel: {
@@ -208,7 +204,6 @@ export const forestTradeActions: Record<string, Action> = {
         "resources.steel": 500,
       },
     },
-    cooldown: 90,
   },
 
   tradeGoldForObsidian: {
@@ -251,7 +246,6 @@ export const forestTradeActions: Record<string, Action> = {
         "resources.obsidian": 250,
       },
     },
-    cooldown: 90,
   },
 
   tradeGoldForAdamant: {
@@ -294,7 +288,6 @@ export const forestTradeActions: Record<string, Action> = {
         "resources.adamant": 250,
       },
     },
-    cooldown: 90,
   },
 
   tradeGoldForBlacksteel: {
@@ -369,7 +362,6 @@ export const forestTradeActions: Record<string, Action> = {
         "resources.torch": 250,
       },
     },
-    cooldown: 60,
   },
 
   tradeSilverForGold: {
@@ -410,7 +402,6 @@ export const forestTradeActions: Record<string, Action> = {
         "resources.gold": 50,
       }
     },
-    cooldown: 15,
   },
 
   tradeGoldForEmberBomb: {
@@ -432,7 +423,6 @@ export const forestTradeActions: Record<string, Action> = {
         "resources.ember_bomb": 1,
       },
     },
-    cooldown: 15,
   },
 
   tradeGoldForAshfireBomb: {
@@ -454,7 +444,6 @@ export const forestTradeActions: Record<string, Action> = {
         "resources.ashfire_bomb": 1,
       },
     },
-    cooldown: 15,
   },
   tradeGoldForVoidBomb: {
     id: "tradeGoldForVoidBomb",
@@ -475,7 +464,6 @@ export const forestTradeActions: Record<string, Action> = {
         "resources.void_bomb": 1,
       },
     },
-    cooldown: 15,
   },
 };
 
@@ -488,9 +476,14 @@ export function handleTradeAction(
   const effectUpdates = applyActionEffects(actionId, state);
   Object.assign(result.stateUpdates, effectUpdates);
 
-  const knowledge = getTotalKnowledge(state);
-  const cooldownReduction = Math.min(0.5 * knowledge, 15);
-  const actualCooldown = Math.max(15, 30 - cooldownReduction);
+  let actualCooldown: number;
+  if (actionId === "tradeSilverForGold") {
+    actualCooldown = 5;
+  } else {
+    const knowledge = getTotalKnowledge(state);
+    const cooldownReduction = Math.min(0.5 * knowledge, 15);
+    actualCooldown = Math.max(15, 30 - cooldownReduction);
+  }
 
   result.stateUpdates.cooldowns = {
     ...result.stateUpdates.cooldowns,

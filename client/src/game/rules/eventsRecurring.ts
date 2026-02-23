@@ -106,7 +106,7 @@ export const recurringEvents: Record<string, GameEvent> = {
 
     timeProbability: 2,
     message:
-      "Close to the cave's entrance you find a small leather sack containing 50 silver.",
+      "Close to the cave's entrance you find a small leather sack containing 50 Silver.",
     priority: 3,
     repeatable: false,
     effect: (state: GameState) => {

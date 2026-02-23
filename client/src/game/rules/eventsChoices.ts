@@ -1125,7 +1125,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     timeProbability: 25,
     title: "The Slave Trader",
     message:
-      "A man on a cart drawn by two horses approaches the village. An iron cage on the cart holds two miserable souls. The trader grins wickedly: 'I'll pay you 100 steel for two of your villagers. What do you say?'",
+      "A man on a cart drawn by two horses approaches the village. An iron cage on the cart holds two miserable souls. The trader grins wickedly: 'I'll pay you 100 Steel for two of your villagers. What do you say?'",
     priority: 3,
     repeatable: false,
     choices: [
@@ -1259,7 +1259,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     timeProbability: 45,
     title: "The Witch's Curse",
     message:
-      "A hunched old woman in tattered robes arrives at the gates. With malice in her voice she demands, 'Pay me 50 gold, or I shall curse you with misfortune.'",
+      "A hunched old woman in tattered robes arrives at the gates. With malice in her voice she demands, 'Pay me 50 Gold, or I shall curse you with misfortune.'",
     priority: 4,
     repeatable: false,
     choices: [
@@ -1574,7 +1574,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 mysteriousWomanEvent: true,
               },
             },
-            _logMessage: `You grant ${obj} shelter for the night. By morning, ${subj} has vanished without a trace, leaving your bed still warm and ${silverStolen} silver missing.`,
+            _logMessage: `You grant ${obj} shelter for the night. By morning, ${subj} has vanished without a trace, leaving your bed still warm and ${silverStolen} Silver missing.`,
           };
         },
       },
