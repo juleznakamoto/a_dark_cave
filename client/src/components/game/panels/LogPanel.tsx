@@ -5,13 +5,15 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { GAME_CONSTANTS } from "@/game/constants";
 
 // Extended log entry type to support "production" type if it exists in the data
-type ExtendedLogEntry = LogEntry | {
-  message: string;
-  type: "production";
-  id: string;
-  timestamp: number;
-  visualEffect?: { type: "glow" | "pulse"; duration: number; };
-};
+type ExtendedLogEntry =
+  | LogEntry
+  | {
+      message: string;
+      type: "production";
+      id: string;
+      timestamp: number;
+      visualEffect?: { type: "glow" | "pulse"; duration: number };
+    };
 
 function LogPanel() {
   const { log, timedEventTab } = useGameStore();
@@ -105,7 +107,7 @@ function LogPanel() {
                 if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
                 hoverTimerRef.current = setTimeout(() => {
                   setReadEntries((prev) => new Set(prev).add(typedEntry.id));
-                }, 500);
+                }, 300);
               };
 
               const handleMouseLeave = () => {
@@ -149,7 +151,9 @@ function LogPanel() {
         </div>
         {/* Gradient overlay at bottom of content area */}
         <div className="absolute bottom-[-1px] left-0 right-0 h-12 pointer-events-none overflow-hidden">
-          <div className={`absolute inset-0 bg-gradient-to-t to-transparent ${isBloodMoon ? 'from-[hsl(0_50%_5%)]' : 'from-background'}`}></div>
+          <div
+            className={`absolute inset-0 bg-gradient-to-t to-transparent ${isBloodMoon ? "from-[hsl(0_50%_5%)]" : "from-background"}`}
+          ></div>
         </div>
         <ScrollBar orientation="vertical" />
       </ScrollArea>
