@@ -8,7 +8,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-const BADGE_SIZE = 16;
+const BADGE_SIZE = 12;
 const FILL_SIZE = BADGE_SIZE * 2.1;
 
 interface ButtonPriorBadgeProps {
@@ -50,11 +50,11 @@ export function ButtonPriorBadge({ actionId }: ButtonPriorBadgeProps) {
   const tooltipText = atCapacity
     ? "Upgrade Disgraced Prior to assign more actions"
     : isAssigned
-      ? "Disgraced Prior — active on this action (click to remove)"
-      : "Disgraced Prior — click to assign to this action";
+      ? "Click to remove Disgraced Prior from this action"
+      : "Click to assign Disgraced Prior to this action";
 
   return (
-    <TooltipProvider>
+    <TooltipProvider delayDuration={400}>
       <Tooltip>
         <TooltipTrigger asChild>
           <div
@@ -63,12 +63,12 @@ export function ButtonPriorBadge({ actionId }: ButtonPriorBadgeProps) {
             data-testid={`prior-badge-${actionId}`}
             style={{
               position: "absolute",
-              bottom: "-7px",
-              right: "-7px",
+              bottom: "-5px",
+              right: "-5px",
               width: `${BADGE_SIZE}px`,
               height: `${BADGE_SIZE}px`,
               borderRadius: "50%",
-              boxShadow: `0 0 0 2px ${ringColor}`,
+              boxShadow: `0 0 0 1px ${ringColor}`,
               overflow: "hidden",
               cursor: atCapacity ? "not-allowed" : "pointer",
               zIndex: 20,

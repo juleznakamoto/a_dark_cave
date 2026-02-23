@@ -8,10 +8,10 @@ export const disgracedPriorEvents: Record<string, GameEvent> = {
       state.buildings.stoneHut >= 6 &&
       !state.fellowship.disgraced_prior &&
       !state.story?.seen?.disgracedPriorJoined,
-    timeProbability: 20,
+    timeProbability: 0.020,
     title: "A Silent Repairman",
     message:
-      "Your villagers report a gaunt man in tattered robes quietly repairing the walls of stone huts. He works without speaking, without rest, asking for nothing. When approached, he only says he has much to atone for.",
+      "Your villagers report a gaunt man in tattered robes quietly repairing the walls of stone huts. He works without speaking, without rest, asking for nothing. When approached, he only says he has much to make amends for.",
     priority: 10,
     repeatable: false,
     choices: [
@@ -33,7 +33,7 @@ export const disgracedPriorEvents: Record<string, GameEvent> = {
             },
           },
           _logMessage:
-            "The prior nods once and follows your villager back to camp. He sets to work immediately, as if he has been waiting for exactly this moment. Disgraced Prior has joined your fellowship.",
+            "He accepts your offer without a word and resumes his toil. His eyes hold the quiet torment of a man who has seen his faith crumble. Once he preached of virtue, until the day he committed a great sin. The Disgraced Prior has joined your fellowship.",
         }),
       },
     ],
