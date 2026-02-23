@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useGameStore } from "@/game/state";
 import { DISGRACED_PRIOR_UPGRADES } from "@/game/rules/skillUpgrades";
 import {
@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/tooltip";
 
 const BADGE_SIZE = 12;
-const FILL_SIZE = BADGE_SIZE * 2.1;
 
 interface ButtonPriorBadgeProps {
   actionId: string;
@@ -20,24 +19,14 @@ export function ButtonPriorBadge({ actionId }: ButtonPriorBadgeProps) {
   const priorAssignedActions = useGameStore((s) => s.priorAssignedActions);
   const disgracedPriorSkills = useGameStore((s) => s.disgracedPriorSkills);
   const togglePriorAction = useGameStore((s) => s.togglePriorAction);
+  const [hovered, setHovered] = useState(false);
 
   if (!fellowship?.disgraced_prior) return null;
 
   const level = disgracedPriorSkills?.level ?? 0;
   const maxActions = DISGRACED_PRIOR_UPGRADES[level]?.maxActions ?? 1;
   const isAssigned = priorAssignedActions?.includes(actionId) ?? false;
-  const atCapacity =
-    !isAssigned && (priorAssignedActions?.length ?? 0) >= maxActions;
-
-  const ringColor = isAssigned
-    ? "rgba(255,255,255,0.9)"
-    : atCapacity
-      ? "rgba(255,255,255,0.15)"
-      : "rgba(255,255,255,0.35)";
-
-  const fillOffset = isAssigned
-    ? `-${Math.round(BADGE_SIZE * 0.3)}px`
-    : `-${FILL_SIZE + 2}px`;
+  const atCapacity = !isAssigned && (priorAssignedActions?.length ?? 0) >= maxActions;
 
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -53,6 +42,20 @@ export function ButtonPriorBadge({ actionId }: ButtonPriorBadgeProps) {
       ? "Click to remove Disgraced Prior from this action"
       : "Click to assign Disgraced Prior to this action";
 
+  // Background fill of the circle
+  const bg = isAssigned
+    ? "rgba(255,255,255,1)"
+    : atCapacity
+      ? "rgba(255,255,255,0.12)"
+      : hovered ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.65)";
+
+  // active: fill + dark gap + bright outer ring; inactive: fill + subtle ring; locked: dim everything
+  const shadow = isAssigned
+    ? `0 0 0 2px #252525, 0 0 0 3.5px ${hovered ? "rgba(255,255,255,1)" : "rgba(255,255,255,0.95)"}`
+    : atCapacity
+      ? "0 0 0 1px rgba(255,255,255,0.15)"
+      : `0 0 0 1px ${hovered ? "rgba(255,255,255,0.8)" : "rgba(255,255,255,0.5)"}`;
+
   return (
     <TooltipProvider delayDuration={400}>
       <Tooltip>
@@ -60,6 +63,8 @@ export function ButtonPriorBadge({ actionId }: ButtonPriorBadgeProps) {
           <div
             onClick={handleClick}
             onPointerDown={(e) => e.stopPropagation()}
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
             data-testid={`prior-badge-${actionId}`}
             style={{
               position: "absolute",
@@ -68,69 +73,13 @@ export function ButtonPriorBadge({ actionId }: ButtonPriorBadgeProps) {
               width: `${BADGE_SIZE}px`,
               height: `${BADGE_SIZE}px`,
               borderRadius: "50%",
-              boxShadow: `0 0 0 1px ${ringColor}`,
-              overflow: "hidden",
-              cursor: atCapacity ? "" : "pointer",
+              background: bg,
+              boxShadow: shadow,
+              cursor: atCapacity ? "default" : "pointer",
               zIndex: 20,
-              transition: "box-shadow 200ms",
+              transition: "background 150ms, box-shadow 150ms",
             }}
           >
-            <input
-              type="checkbox"
-              checked={isAssigned}
-              readOnly
-              style={{
-                position: "absolute",
-                left: "50px",
-                visibility: "hidden",
-              }}
-            />
-            <div
-              style={{
-                width: `${FILL_SIZE}px`,
-                height: `${FILL_SIZE}px`,
-                background: "rgba(255,255,255,0.82)",
-                position: "absolute",
-                top: fillOffset,
-                left: fillOffset,
-                transform: "rotateZ(45deg)",
-                transition: "top 300ms ease, left 300ms ease",
-              }}
-            />
-            {atCapacity && (
-              <div
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <svg
-                  width="8"
-                  height="8"
-                  viewBox="0 0 10 12"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <rect
-                    x="1"
-                    y="5"
-                    width="8"
-                    height="7"
-                    rx="1"
-                    fill="rgba(255,255,255,0.35)"
-                  />
-                  <path
-                    d="M3 5V3.5a2 2 0 0 1 4 0V5"
-                    stroke="rgba(255,255,255,0.35)"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                  />
-                </svg>
-              </div>
-            )}
           </div>
         </TooltipTrigger>
         <TooltipContent
