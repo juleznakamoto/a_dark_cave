@@ -9,9 +9,50 @@ import { GAME_CONSTANTS } from "./constants";
 import { logger } from "@/lib/logger";
 import { startVersionCheck, stopVersionCheck } from "./versionCheck";
 import { formatSaveTimestamp } from "@/lib/utils";
+import { gameActions, canExecuteAction } from "./rules";
+import { getResourceLimit, isResourceLimited } from "./resourceLimits";
 
 let gameLoopId: number | null = null;
 let lastFrameTime = 0;
+
+// Tracks the last time the Disgraced Prior executed each action (ms timestamp)
+const priorLastExecuted = new Map<string, number>();
+
+/**
+ * Returns true if the Prior should auto-execute this action right now:
+ * - At least 1 second has passed since the last Prior execution of this action
+ * - Resource costs are affordable
+ * - At least one output resource has room below the storage cap
+ */
+function canPriorExecute(actionId: string, state: GameState): boolean {
+  const now = Date.now();
+  if (now - (priorLastExecuted.get(actionId) ?? 0) < 1000) return false;
+
+  if (!canExecuteAction(actionId, state)) return false;
+
+  const action = gameActions[actionId];
+  if (action?.effects) {
+    const effectResult = action.effects(state);
+    const resourceLimit = getResourceLimit(state);
+    const limitedOutputs = Object.entries(effectResult).filter(([key, value]) => {
+      if (!key.startsWith("resources.")) return false;
+      if (typeof value === "number" && value <= 0) return false;
+      const rk = key.slice("resources.".length);
+      return isResourceLimited(rk, state);
+    });
+    if (
+      limitedOutputs.length > 0 &&
+      limitedOutputs.every(([key]) => {
+        const rk = key.slice("resources.".length);
+        return ((state.resources as Record<string, number>)[rk] ?? 0) >= resourceLimit;
+      })
+    ) {
+      return false;
+    }
+  }
+
+  return true;
+}
 const TICK_INTERVAL = GAME_CONSTANTS.TICK_INTERVAL;
 const AUTO_SAVE_INTERVAL = 60 * 1000; // Auto-save every 1 minute
 const PRODUCTION_INTERVAL = 15000; // All production and checks happen every 15 seconds
@@ -544,7 +585,8 @@ function processTick() {
     for (const actionId of freshState.priorAssignedActions ?? []) {
       const wasCoolingDown = (prevCooldowns[actionId] ?? 0) > 0;
       const isReadyNow = (freshState.cooldowns[actionId] ?? 0) === 0;
-      if (wasCoolingDown && isReadyNow) {
+      if (wasCoolingDown && isReadyNow && canPriorExecute(actionId, freshState)) {
+        priorLastExecuted.set(actionId, Date.now());
         freshState.executeAction(actionId);
       }
     }
