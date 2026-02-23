@@ -786,6 +786,12 @@ export const actionSchema = z.object({
     .array(z.enum(["strength", "knowledge", "luck", "madness"]))
     .optional(),
   cooldown: z.number().optional(),
+  executionTime: z
+    .union([
+      z.number(),
+      z.function().args(z.any()).returns(z.number()),
+    ])
+    .optional(),
   actionBonuses: z
     .record(
       z.string(),

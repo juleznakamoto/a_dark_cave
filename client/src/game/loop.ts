@@ -580,6 +580,17 @@ function processTick() {
   // Tick down cooldowns
   state.tickCooldowns();
 
+  // Complete any actions that have finished their execution time
+  const { executionStartTimes, executionDurations, completeActionExecution } = state;
+  const now = Date.now();
+  for (const actionId of Object.keys(executionStartTimes || {})) {
+    const startTime = executionStartTimes[actionId];
+    const durationSec = executionDurations?.[actionId];
+    if (startTime && durationSec && (now - startTime) / 1000 >= durationSec) {
+      completeActionExecution(actionId);
+    }
+  }
+
   // Disgraced Prior: auto-execute assigned actions when cooldown is 0 and conditions are met.
   // We check isReadyNow (not just the transition from >0 to 0) so that actions blocked by
   // a full storage cap resume automatically once storage frees up.

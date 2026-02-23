@@ -57,6 +57,14 @@ registerActions({
 // Export the registry getter for external use
 export const gameActions = getGameActions();
 
+/** Get execution time in seconds for an action (0 = no execution time, instant) */
+export function getExecutionTime(actionId: string, state: GameState): number {
+  const action = gameActions[actionId];
+  if (!action?.executionTime) return 0;
+  if (typeof action.executionTime === "number") return action.executionTime;
+  return action.executionTime(state);
+}
+
 // Helper function to check if requirements are met for both building and non-building actions
 const checkRequirements = (
   requirements: Record<string, any>,
@@ -289,6 +297,12 @@ export function canExecuteAction(actionId: string, state: GameState): boolean {
 
   // Check cooldown first
   if (state.cooldowns[actionId] && state.cooldowns[actionId] > 0) {
+    return false;
+  }
+
+  // Check if action is currently executing (has execution time)
+  const executionStartTimes = (state as any).executionStartTimes;
+  if (executionStartTimes?.[actionId]) {
     return false;
   }
 

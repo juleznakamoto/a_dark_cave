@@ -41,6 +41,7 @@ import {
   ACTION_TO_UPGRADE_KEY,
   incrementButtonUsage,
 } from "@/game/buttonUpgrades";
+import { getExecutionTime } from "@/game/rules";
 import { logger } from "@/lib/logger";
 import { madnessEvents } from "@/game/rules/eventsMadness";
 import { DISGRACED_PRIOR_UPGRADES } from "@/game/rules/skillUpgrades";
@@ -137,6 +138,11 @@ interface GameStore extends GameState {
   cooldowns: Record<string, number>;
   initialCooldowns: Record<string, number>;
 
+  // Execution time (reverse cooldown - action takes time to complete)
+  executionStartTimes: Record<string, number>;
+  executionDurations: Record<string, number>;
+  _completingExecution?: string; // Internal: when set, executeAction skips execution-time check
+
   // Compass glow effect
   compassGlowButton: string | null; // Action ID of button to glow
 
@@ -225,6 +231,8 @@ interface GameStore extends GameState {
   updatePopulation: () => void;
   setCooldown: (action: string, duration: number) => void;
   tickCooldowns: () => void;
+  startActionExecution: (actionId: string) => void;
+  completeActionExecution: (actionId: string) => void;
   togglePriorAction: (actionId: string) => void;
   setCompassGlow: (actionId: string | null) => void;
   addLogEntry: (entry: LogEntry) => void;
@@ -743,6 +751,8 @@ export const createInitialState = (): GameState => ({
   // Initialize cooldown management
   cooldowns: {},
   initialCooldowns: {},
+  executionStartTimes: {},
+  executionDurations: {},
 
   // Initialize compass glow
   compassGlowButton: null,
@@ -821,6 +831,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
   boostMode: false,
   lastSaved: "Never",
   cooldowns: {},
+  executionStartTimes: {},
+  executionDurations: {},
   log: [],
   eventDialog: {
     isOpen: false,
@@ -978,6 +990,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const state = get();
     const action = gameActions[actionId];
 
+    // If action has execution time and we're not completing one, start execution
+    const executionTime = getExecutionTime(actionId, state);
+    if (executionTime > 0 && (state as any)._completingExecution !== actionId) {
+      if (!state.executionStartTimes?.[actionId]) {
+        get().startActionExecution(actionId);
+        return;
+      }
+    }
+
     // Manual handling for feedFire which doesn't use standard registry logic
     if (actionId === "feedFire") {
       const cooldown = state.cooldowns[actionId] || 0;
@@ -1051,16 +1072,18 @@ export const useGameStore = create<GameStore>((set, get) => ({
       (result.stateUpdates as any).initialCooldowns = updatedInitialCooldowns;
     }
 
-    // Enforce minimum cooldown of 1 second for all actions (both cooldowns and initialCooldowns)
+    // Enforce minimum cooldown of 1 second for actions that have cooldown (skip for cooldown: 0)
     if (result.stateUpdates.cooldowns) {
       const updatedCooldowns = { ...result.stateUpdates.cooldowns };
       const initialCooldowns = (result.stateUpdates as any).initialCooldowns || {};
       const updatedInitialCooldowns = { ...initialCooldowns };
 
       for (const key in updatedCooldowns) {
-        updatedCooldowns[key] = Math.max(1, updatedCooldowns[key]);
+        const actionCooldown = gameActions[key]?.cooldown ?? 1;
+        const minCooldown = actionCooldown === 0 ? 0 : 1;
+        updatedCooldowns[key] = Math.max(minCooldown, updatedCooldowns[key]);
         if (updatedInitialCooldowns[key] !== undefined) {
-          updatedInitialCooldowns[key] = Math.max(1, updatedInitialCooldowns[key]);
+          updatedInitialCooldowns[key] = Math.max(minCooldown, updatedInitialCooldowns[key]);
         }
       }
       result.stateUpdates.cooldowns = updatedCooldowns;
@@ -1256,6 +1279,37 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }
   },
 
+
+  startActionExecution: (actionId: string) => {
+    const state = get();
+    const duration = getExecutionTime(actionId, state);
+    if (duration <= 0) return;
+    const now = Date.now();
+    set({
+      executionStartTimes: { ...state.executionStartTimes, [actionId]: now },
+      executionDurations: { ...state.executionDurations, [actionId]: duration },
+    });
+  },
+
+  completeActionExecution: (actionId: string) => {
+    const state = get();
+    const { executionStartTimes, executionDurations } = state;
+    if (!executionStartTimes[actionId] || !executionDurations[actionId]) return;
+
+    const newStartTimes = { ...executionStartTimes };
+    const newDurations = { ...executionDurations };
+    delete newStartTimes[actionId];
+    delete newDurations[actionId];
+    set({
+      executionStartTimes: newStartTimes,
+      executionDurations: newDurations,
+      _completingExecution: actionId,
+    });
+
+    // Execute the actual action (bypasses execution-time check via _completingExecution)
+    get().executeAction(actionId);
+    set({ _completingExecution: undefined });
+  },
 
   tickCooldowns: () => {
     set((state) => {
@@ -1530,6 +1584,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
         ...savedState,
         activeTab: "cave",
         cooldowns: savedState.cooldowns || {},
+        executionStartTimes: {},
+        executionDurations: {},
         attackWaveTimers: savedState.attackWaveTimers || {},
         log: savedState.log || [],
         events: savedState.events || defaultGameState.events,
@@ -1633,6 +1689,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
         ...defaultGameState,
         activeTab: "cave",
         cooldowns: {},
+        executionStartTimes: {},
+        executionDurations: {},
         log: [],
         devMode: import.meta.env.DEV,
         boostMode: currentBoostMode, // Preserve boost mode flag

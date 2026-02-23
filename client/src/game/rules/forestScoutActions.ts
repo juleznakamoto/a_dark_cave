@@ -139,7 +139,8 @@ export const forestScoutActions: Record<string, Action> = {
       });
     },
     relevant_stats: ["luck"],
-    cooldown: 30,
+    executionTime: 30,
+    cooldown: 0,
   },
 
   castleRuins: {
@@ -163,7 +164,8 @@ export const forestScoutActions: Record<string, Action> = {
       );
     },
     relevant_stats: ["strength", "knowledge"],
-    cooldown: 45,
+    executionTime: 30,
+    cooldown: 0,
   },
 
   hillGrave: {
@@ -187,7 +189,8 @@ export const forestScoutActions: Record<string, Action> = {
       );
     },
     relevant_stats: ["strength", "knowledge"],
-    cooldown: 45,
+    executionTime: 45,
+    cooldown: 0,
   },
 
   sunkenTemple: {
@@ -213,7 +216,8 @@ export const forestScoutActions: Record<string, Action> = {
       );
     },
     relevant_stats: ["strength", "knowledge"],
-    cooldown: 45,
+    executionTime: 60,
+    cooldown: 0,
   },
 
   collapsedTower: {
@@ -237,7 +241,8 @@ export const forestScoutActions: Record<string, Action> = {
       );
     },
     relevant_stats: ["strength", "knowledge"],
-    cooldown: 90,
+    executionTime: 60,
+    cooldown: 0,
   },
 
   forestCave: {
@@ -261,7 +266,8 @@ export const forestScoutActions: Record<string, Action> = {
       );
     },
     relevant_stats: ["strength", "knowledge"],
-    cooldown: 30,
+    executionTime: 45,
+    cooldown: 0,
   },
 
   blackreachCanyon: {
@@ -277,7 +283,8 @@ export const forestScoutActions: Record<string, Action> = {
       "resources.food": 7500,
     },
     effects: {},
-    cooldown: 60,
+    executionTime: 60,
+    cooldown: 0,
   },
 
   steelDelivery: {
@@ -293,7 +300,8 @@ export const forestScoutActions: Record<string, Action> = {
       "resources.food": 2500,
     },
     effects: {},
-    cooldown: 60,
+    executionTime: 90,
+    cooldown: 0,
   },
 };
 

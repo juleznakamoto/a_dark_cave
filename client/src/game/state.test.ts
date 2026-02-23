@@ -226,8 +226,10 @@ describe("Reward Dialog System", () => {
       // Mock Math.random to ensure success (layTrap success chance calculation)
       const mockRandom = vi.spyOn(Math, 'random').mockReturnValue(0.1); // Low value = success
 
-      // Execute the action
+      // Execute the action (starts 30s execution time)
       useGameStore.getState().executeAction("layTrap");
+      // Complete the execution (layTrap has executionTime, so we need to complete it)
+      useGameStore.getState().completeActionExecution("layTrap");
 
       // Check that reward dialog was triggered (we can't easily test the timeout, but we can check state setup)
       // The dialog state should be set after the timeout

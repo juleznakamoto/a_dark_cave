@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, forwardRef } from "react";
+import React, { useRef, useEffect, useState, forwardRef } from "react";
 import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/game/state";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
@@ -43,18 +43,34 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
     },
     ref
   ) {
-    const { cooldowns, initialCooldowns, compassGlowButton } = useGameStore();
+    const { cooldowns, initialCooldowns, executionStartTimes, executionDurations, compassGlowButton } = useGameStore();
     const isFirstRenderRef = useRef<boolean>(true);
+    const [, forceUpdate] = useState(0);
 
     // Get the action ID from the test ID or generate one
     const actionIdFromProps = props.actionId || props.button_id || testId
       ?.replace("button-", "")
       .replace(/-([a-z])/g, (_, letter) => letter.toUpperCase()) || "unknown";
 
+    // Force re-renders during execution so progress bar updates
+    const isExecutingCheck = !!(executionStartTimes && executionStartTimes[actionIdFromProps]);
+    useEffect(() => {
+      if (!isExecutingCheck) return;
+      const id = setInterval(() => forceUpdate((n) => n + 1), 100);
+      return () => clearInterval(id);
+    }, [isExecutingCheck, actionIdFromProps]);
+
     // Get current and initial cooldown from game state
     const currentCooldown = cooldowns[actionIdFromProps] || 0;
     const storedInitialCooldown = initialCooldowns[actionIdFromProps] || 0;
     const isCoolingDown = currentCooldown > 0;
+
+    // Execution state (reverse cooldown - fills as time passes)
+    const executionStart = executionStartTimes?.[actionIdFromProps] || 0;
+    const executionDurationSec = executionDurations?.[actionIdFromProps] || 0;
+    const isExecuting = executionStart > 0 && executionDurationSec > 0;
+    const executionElapsed = isExecuting ? (Date.now() - executionStart) / 1000 : 0;
+    const executionProgress = executionDurationSec > 0 ? Math.min(1, executionElapsed / executionDurationSec) : 0;
 
     // Use the stored initial cooldown if available, otherwise fall back to the action's defined cooldown
     const initialCooldown = storedInitialCooldown > 0
@@ -81,7 +97,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
 
     // Track first render for transition
     useEffect(() => {
-      if (isCoolingDown) {
+      if (isCoolingDown || isExecuting) {
         isFirstRenderRef.current = true;
         // Allow transition after initial render (next frame)
         requestAnimationFrame(() => {
@@ -90,19 +106,20 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       } else {
         isFirstRenderRef.current = true;
       }
-    }, [isCoolingDown]);
+    }, [isCoolingDown, isExecuting]);
 
-    // Calculate width percentage directly from remaining cooldown
-    const overlayWidth =
-      isCoolingDown && initialCooldown > 0
+    // Calculate width percentage: cooldown = shrinks 100→0, execution = grows 0→100
+    const overlayWidth = isExecuting
+      ? executionProgress * 100
+      : isCoolingDown && initialCooldown > 0
         ? (currentCooldown / initialCooldown) * 100
         : 0;
 
     const actionExecutedRef = useRef<boolean>(false);
 
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-      if (disabled && !isCoolingDown) return;
-      if (!isCoolingDown) {
+      if (disabled && !isCoolingDown && !isExecuting) return;
+      if (!isCoolingDown && !isExecuting) {
         actionExecutedRef.current = true;
 
         // Trigger animation if provided - use button center, not click position
@@ -122,7 +139,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       }
     };
 
-    const isButtonDisabled = disabled || isCoolingDown;
+    const isButtonDisabled = disabled || isCoolingDown || isExecuting;
     const isCompassGlowing = compassGlowButton === actionIdFromProps;
 
     const buttonId = testId || `button-${Math.random()}`;
@@ -143,12 +160,12 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
         style={{ opacity: 1, position: 'relative', zIndex: 10, ...props.style }}
       >
         {/* Button content */}
-        <span className={`relative transition-opacity duration-200 ${isCoolingDown || disabled ? "opacity-60" : ""}`}>{children}</span>
+        <span className={`relative transition-opacity duration-200 ${isCoolingDown || isExecuting || disabled ? "opacity-60" : ""}`}>{children}</span>
 
-        {/* Cooldown progress overlay */}
-        {isCoolingDown && (
+        {/* Cooldown or execution progress overlay */}
+        {(isCoolingDown || isExecuting) && (
           <div
-            className="absolute inset-0 bg-white/15 transition-opacity duration-200"
+            className={`absolute inset-0 transition-opacity duration-200 ${isExecuting ? "bg-amber-500/30" : "bg-white/15"}`}
             style={{
               width: `${overlayWidth}%`,
               left: 0,
