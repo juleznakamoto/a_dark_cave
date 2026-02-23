@@ -19,7 +19,7 @@ import {
   getTotalBuildingCostReduction,
 } from "@/game/rules/effectsCalculation";
 import { bookEffects, fellowshipEffects } from "@/game/rules/effects";
-import { gameStateSchema } from "@shared/schema";
+import { gameStateSchema, FELLOWSHIP_MEMBER_ORDER } from "@shared/schema";
 import {
   getStorageLimitText,
   isResourceLimited,
@@ -258,10 +258,15 @@ export default function SidePanel() {
       tooltip: true, // Tooltip will be generated in itemTooltips.tsx
     }));
 
-  // Dynamically generate fellowship items from state
+  // Dynamically generate fellowship items from state, sorted by schema-defined order
   const fellowshipItems = Object.entries(gameState.fellowship || {})
     .filter(([key, value]) => value === true)
-    .map(([key, value]) => ({
+    .sort(([a], [b]) => {
+      const ai = FELLOWSHIP_MEMBER_ORDER.indexOf(a as any);
+      const bi = FELLOWSHIP_MEMBER_ORDER.indexOf(b as any);
+      return (ai === -1 ? Infinity : ai) - (bi === -1 ? Infinity : bi);
+    })
+    .map(([key]) => ({
       id: key,
       label: fellowshipEffects[key]?.name || capitalizeWords(key),
       value: 1,

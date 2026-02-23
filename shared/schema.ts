@@ -24,6 +24,19 @@ const attackWaveTimerSchema = z.object({
   elapsedTime: z.number().default(0), // Accumulated elapsed time (only increments when not paused)
 });
 
+// Fellowship member shape — defined separately so the key order can be exported
+// as the canonical display order used across the UI.
+const fellowshipShape = {
+  ashwraith_huntress: z.boolean().default(false),
+  restless_knight: z.boolean().default(false),
+  elder_wizard: z.boolean().default(false),
+  one_eyed_crow: z.boolean().default(false),
+  disgraced_prior: z.boolean().default(false),
+};
+
+/** Canonical order of fellowship members for UI display. */
+export const FELLOWSHIP_MEMBER_ORDER = Object.keys(fellowshipShape) as (keyof typeof fellowshipShape)[];
+
 // Game state schema for A Dark Cave
 export const gameStateSchema = z.object({
   gameId: z.string().optional(), // Unique identifier for this game playthrough
@@ -199,15 +212,7 @@ export const gameStateSchema = z.object({
       bone_devourer_blood: z.boolean().default(false),
     })
     .default({}),
-  fellowship: z
-    .object({
-      restless_knight: z.boolean().default(false),
-      elder_wizard: z.boolean().default(false),
-      ashwraith_huntress: z.boolean().default(false),
-      one_eyed_crow: z.boolean().default(false),
-      disgraced_prior: z.boolean().default(false),
-    })
-    .default({}),
+  fellowship: z.object(fellowshipShape).default({}),
   blessings: z
     .object({
       dagons_gift: z.boolean().default(false),

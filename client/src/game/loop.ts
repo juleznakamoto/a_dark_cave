@@ -581,7 +581,9 @@ function processTick() {
   // Tick down cooldowns
   state.tickCooldowns();
 
-  // Disgraced Prior: auto-execute assigned actions whose cooldown just hit 0
+  // Disgraced Prior: auto-execute assigned actions whose cooldown just hit 0.
+  // Note: processTick is not called during events (eventDialog.isOpen) or sleep
+  // (idleModeState?.isActive) — the outer loop returns early in those cases.
   const freshState = useGameStore.getState();
   if (freshState.fellowship?.disgraced_prior) {
     for (const actionId of freshState.priorAssignedActions ?? []) {
