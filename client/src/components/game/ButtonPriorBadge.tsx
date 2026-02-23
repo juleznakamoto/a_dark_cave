@@ -70,7 +70,7 @@ export function ButtonPriorBadge({ actionId }: ButtonPriorBadgeProps) {
               borderRadius: "50%",
               boxShadow: `0 0 0 1px ${ringColor}`,
               overflow: "hidden",
-              cursor: atCapacity ? "not-allowed" : "pointer",
+              cursor: atCapacity ? "" : "pointer",
               zIndex: 20,
               transition: "box-shadow 200ms",
             }}
