@@ -46,15 +46,15 @@ export function ButtonPriorBadge({ actionId }: ButtonPriorBadgeProps) {
   // Base background: provides the always-visible dim fill (inactive/locked).
   // When active, the animated fill div slides over it.
   const bg = atCapacity
-    ? "rgba(255,255,255,0.12)"
-    : hovered && !isAssigned ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.6)";
+    ? "rgba(235,235,235,0.12)"
+    : hovered && !isAssigned ? "rgba(235,235,235,0.9)" : "rgba(235,235,235,0.6)";
 
   // active: dark gap + bright outer ring; inactive/locked: simple ring
   const shadow = isAssigned
-    ? `0 0 0 1.5px #252525, 0 0 0 2.5px ${hovered ? "rgba(255,255,255,1)" : "rgba(255,255,255,0.95)"}`
+    ? `0 0 0 1.5px #252525, 0 0 0 2.5px ${hovered ? "rgba(235,235,235,1)" : "rgba(235,235,235,0.95)"}`
     : atCapacity
-      ? "0 0 0 0.5px rgba(255,255,255,0.15)"
-      : `0 0 0 0.5px ${hovered ? "rgba(255,255,255,0.8)" : "rgba(255,255,255,0.7)"}`;
+      ? "0 0 0 0.5px rgba(235,235,235,0.15)"
+      : `0 0 0 0.5px ${hovered ? "rgba(235,235,235,0.8)" : "rgba(235,235,235,0.7)"}`;
 
   // Animated fill div slides in from top-left when assigned
   const fillOffset = isAssigned
@@ -90,7 +90,7 @@ export function ButtonPriorBadge({ actionId }: ButtonPriorBadgeProps) {
               style={{
                 width: `${FILL_SIZE}px`,
                 height: `${FILL_SIZE}px`,
-                background: "rgba(255,255,255,1)",
+                background: "rgba(235,235,235,1)",
                 position: "absolute",
                 top: fillOffset,
                 left: fillOffset,
