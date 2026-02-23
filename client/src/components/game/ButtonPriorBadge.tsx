@@ -47,7 +47,7 @@ export function ButtonPriorBadge({ actionId }: ButtonPriorBadgeProps) {
   // When active, the animated fill div slides over it.
   const bg = atCapacity
     ? "rgba(235,235,235,0.12)"
-    : hovered && !isAssigned ? "rgba(235,235,235,0.9)" : "rgba(235,235,235,0.6)";
+    : hovered && !isAssigned ? "rgba(235,235,235,0.9)" : "rgba(235,235,235,0.5)";
 
   // active: dark gap + bright outer ring; inactive/locked: simple ring
   const shadow = isAssigned
