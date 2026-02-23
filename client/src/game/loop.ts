@@ -32,7 +32,9 @@ function canPriorExecute(actionId: string, state: GameState): boolean {
 
   const action = gameActions[actionId];
   if (action?.effects) {
-    const effectResult = action.effects(state);
+    const effectResult = typeof action.effects === "function"
+      ? action.effects(state)
+      : action.effects;
     const resourceLimit = getResourceLimit(state);
     const limitedOutputs = Object.entries(effectResult).filter(([key, value]) => {
       if (!key.startsWith("resources.")) return false;
