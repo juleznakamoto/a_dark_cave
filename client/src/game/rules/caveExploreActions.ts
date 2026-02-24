@@ -95,8 +95,8 @@ const caveItems = {
     {
       key: "bloodstained_belt",
       probability: 0.0125,
-      logMessage:
-        "In the cave you find a leather belt stained with ancient blood.",
+      isChoice: true,
+      eventId: "bloodstainedBeltChoice",
       category: "clothing",
     },
   ],

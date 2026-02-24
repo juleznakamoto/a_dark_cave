@@ -221,6 +221,77 @@ export const caveEvents: Record<string, GameEvent> = {
     },
   },
 
+  bloodstainedBeltChoice: {
+    id: "bloodstainedBeltChoice",
+    condition: (state: GameState) => false, // Only triggered by cave exploration
+    title: "Bloodstained Belt",
+    message:
+      "Hanging from a rusted spike in the cave wall you find a thick leather belt, dark with old bloodstains. Do you take it?",
+    priority: 5,
+    repeatable: false,
+    isTimedChoice: true,
+    baseDecisionTime: 15,
+    choices: [
+      {
+        id: "takeBelt",
+        label: "Take it",
+        effect: (state: GameState) => {
+          return {
+            clothing: {
+              ...state.clothing,
+              bloodstained_belt: true,
+            },
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                bloodstainedBeltChoice: true,
+              },
+            },
+            _logMessage:
+              "You buckle the belt around your waist. A faint whisper seems to curl at the edge of your thoughts.",
+          };
+        },
+      },
+      {
+        id: "leaveBelt",
+        label: "Leave it",
+        effect: (state: GameState) => {
+          return {
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                bloodstainedBeltChoice: true,
+              },
+            },
+            _logMessage:
+              "You leave the belt where it hangs. Whatever blood soaked into it, you would rather not carry that history with you.",
+          };
+        },
+      },
+    ],
+    fallbackChoice: {
+      id: "doNothing",
+      label: "Do nothing",
+      effect: (state: GameState) => {
+        const deathResult = killVillagers(state, 1);
+        return {
+          ...deathResult,
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              bloodstainedBeltChoice: true,
+            },
+          },
+          _logMessage:
+            "One of your men buckles it on before you can stop him. He laughs, then gasps as the belt tightens. His hands scrabble at the leather, but there's no give. By the time you reach him, it's too late.",
+        };
+      },
+    },
+  },
+
   boneDiceChoice: {
     id: "boneDiceChoice",
     condition: (state: GameState) => false, // Only triggered by cave exploration
