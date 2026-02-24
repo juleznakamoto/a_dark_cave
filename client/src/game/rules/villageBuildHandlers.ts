@@ -26,8 +26,9 @@ function handleBuildingConstruction(
     result.stateUpdates = {};
   }
 
-  // Apply resource costs (negative changes)
-  if (actionCosts) {
+  // Apply resource costs (negative changes) - skip if costs already consumed at execution start
+  const isCompletingExecution = (state as any)._completingExecution === actionId;
+  if (actionCosts && !isCompletingExecution) {
     const newResources = { ...state.resources };
 
     for (const [path, cost] of Object.entries(actionCosts) as [
@@ -114,13 +115,14 @@ export function handleBuildWoodenHut(
     return result;
   }
 
-  // Apply resource costs (negative changes)
-  if (actionCosts) {
+  // Apply resource costs (negative changes) - skip if costs already consumed at execution start
+  const isCompletingExecution = (state as any)._completingExecution === "buildWoodenHut";
+  if (actionCosts && !isCompletingExecution) {
     const newResources = { ...state.resources };
     for (const [path, cost] of Object.entries(actionCosts)) {
       if (path.startsWith("resources.")) {
         const resource = path.split(".")[1] as keyof typeof newResources;
-        newResources[resource] -= cost; // Subtract the cost
+        newResources[resource] -= cost;
       }
     }
     result.stateUpdates.resources = newResources;

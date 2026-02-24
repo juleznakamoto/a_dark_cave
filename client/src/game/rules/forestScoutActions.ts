@@ -471,11 +471,13 @@ export function handleCastleRuins(
       },
     };
 
+    // Food cost already consumed at execution start; only apply rewards here
+    const isCompletingExecution = (state as any)._completingExecution === "castleRuins";
     result.stateUpdates.resources = {
       ...state.resources,
       silver: (state.resources.silver || 0) + 100,
       gold: (state.resources.gold || 0) + 50,
-      food: (state.resources.food || 0) - 2500,
+      ...(isCompletingExecution ? {} : { food: (state.resources.food || 0) - 2500 }),
     };
 
     result.logEntries!.push({
@@ -553,11 +555,13 @@ export function handleHillGrave(
 
   if (rand < successChance) {
     // Success: Find frostglass
+    // Food cost already consumed at execution start; only apply rewards here
+    const isCompletingExecution = (state as any)._completingExecution === "hillGrave";
     result.stateUpdates.resources = {
       ...state.resources,
       silver: (state.resources.silver || 0) + 200,
       gold: (state.resources.gold || 0) + 100,
-      food: (state.resources.food || 0) - 5000,
+      ...(isCompletingExecution ? {} : { food: (state.resources.food || 0) - 5000 }),
     };
 
     result.stateUpdates.relics = {
@@ -625,12 +629,13 @@ export function handleSunkenTemple(
 
   if (rand < successChance) {
     // Success: Find bloodstone
-    // Deduct cost and add rewards
+    // Food cost already consumed at execution start; only apply rewards here
+    const isCompletingExecution = (state as any)._completingExecution === "sunkenTemple";
     result.stateUpdates.resources = {
       ...state.resources,
       silver: (state.resources.silver || 0) + 500,
       gold: (state.resources.gold || 0) + 250,
-      food: (state.resources.food || 0) - 5000,
+      ...(isCompletingExecution ? {} : { food: (state.resources.food || 0) - 5000 }),
     };
 
     result.stateUpdates.relics = {
@@ -699,11 +704,13 @@ export function handlecollapsedTower(
 
   if (rand < successChance) {
     // Success: Discover the necromancer's plot
+    // Food cost already consumed at execution start; only apply rewards here
+    const isCompletingExecution = (state as any)._completingExecution === "collapsedTower";
     result.stateUpdates.resources = {
       ...state.resources,
       silver: (state.resources.silver || 0) + 500,
       gold: (state.resources.gold || 0) + 250,
-      food: (state.resources.food || 0) - 2500,
+      ...(isCompletingExecution ? {} : { food: (state.resources.food || 0) - 2500 }),
     };
 
     // Give the bone saw tool
@@ -777,12 +784,14 @@ export function handleForestCave(
 
   if (rand < successChance) {
     // Success: Defeat the hounds
+    // Food cost already consumed at execution start; only apply rewards here
+    const isCompletingExecution = (state as any)._completingExecution === "forestCave";
     result.stateUpdates.resources = {
       ...state.resources,
       silver: (state.resources.silver || 0) + 250,
       gold: (state.resources.gold || 0) + 100,
       fur: (state.resources.fur || 0) + 500,
-      food: (state.resources.food || 0) - 1000,
+      ...(isCompletingExecution ? {} : { food: (state.resources.food || 0) - 1000 }),
     };
 
     // Set flag to mark cave as explored
@@ -848,11 +857,14 @@ export function handleBlackreachCanyon(
     crow_harness: false,
   };
 
-  // Deduct food cost (overwrites effectUpdates so must be done manually)
-  result.stateUpdates.resources = {
-    ...state.resources,
-    food: (state.resources.food || 0) - 7500,
-  };
+  // Food cost already consumed at execution start; skip re-deduction on completion
+  const isCompletingExecution = (state as any)._completingExecution === "blackreachCanyon";
+  if (!isCompletingExecution) {
+    result.stateUpdates.resources = {
+      ...state.resources,
+      food: (state.resources.food || 0) - 7500,
+    };
+  }
 
   result.logEntries!.push({
     id: `blackreach-canyon-success-${Date.now()}`,
@@ -876,11 +888,14 @@ export function handleSteelDelivery(
   const effectUpdates = applyActionEffects("steelDelivery", state);
   Object.assign(result.stateUpdates, effectUpdates);
 
-  // Deduct steel cost (overwrites effectUpdates so must be done manually)
-  result.stateUpdates.resources = {
-    ...state.resources,
-    steel: (state.resources.steel || 0) - 1000,
-  };
+  // Steel and food costs already consumed at execution start; skip re-deduction on completion
+  const isCompletingExecution = (state as any)._completingExecution === "steelDelivery";
+  if (!isCompletingExecution) {
+    result.stateUpdates.resources = {
+      ...state.resources,
+      steel: (state.resources.steel || 0) - 1000,
+    };
+  }
 
   // Grant the Chitin Plates relic
   result.stateUpdates.relics = {
