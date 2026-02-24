@@ -125,7 +125,8 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.woodenHut": 1,
       },
     },
-    cooldown: 90,
+    executionTime: 30,
+    cooldown: 0,
   },
 
   buildCabin: {
@@ -151,7 +152,8 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.cabin": 1,
       },
     },
-    cooldown: 15,
+    executionTime: 30,
+    cooldown: 0,
   },
 
   buildBlacksmith: {
@@ -180,7 +182,8 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.blacksmith": 1,
       },
     },
-    cooldown: 5,
+    executionTime: 30,
+    cooldown: 0,
   },
 
   buildAdvancedBlacksmith: {
@@ -209,7 +212,8 @@ export const villageBuildActions: Record<string, Action> = {
       },
     },
     craftingCostReduction: 0.025,
-    cooldown: 60,
+    executionTime: 60,
+    cooldown: 0,
   },
 
   buildGrandBlacksmith: {
@@ -243,7 +247,8 @@ export const villageBuildActions: Record<string, Action> = {
       },
     },
     craftingCostReduction: 0.05,
-    cooldown: 120,
+    executionTime: 120,
+    cooldown: 0,
   },
 
   buildShallowPit: {
@@ -272,7 +277,8 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.shallowPit": 1,
       },
     },
-    cooldown: 30,
+    executionTime: 30,
+    cooldown: 0,
   },
 
   buildDeepeningPit: {
@@ -304,7 +310,8 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.deepeningPit": 1,
       },
     },
-    cooldown: 30,
+    executionTime: 45,
+    cooldown: 0,
   },
 
   buildDeepPit: {
@@ -337,7 +344,8 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.deepPit": 1,
       },
     },
-    cooldown: 30,
+    executionTime: 60,
+    cooldown: 0,
   },
 
   buildBottomlessPit: {
@@ -372,7 +380,8 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.bottomlessPit": 1,
       },
     },
-    cooldown: 30,
+    executionTime: 75,
+    cooldown: 0,
   },
 
   buildFoundry: {
@@ -399,7 +408,8 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.foundry": 1,
       },
     },
-    cooldown: 20,
+    executionTime: 30,
+    cooldown: 0,
   },
 
   buildPrimeFoundry: {
@@ -437,7 +447,8 @@ export const villageBuildActions: Record<string, Action> = {
         },
       };
     },
-    cooldown: 40,
+    executionTime: 60,
+    cooldown: 0,
   },
 
   buildMasterworkFoundry: {
@@ -479,7 +490,8 @@ export const villageBuildActions: Record<string, Action> = {
         },
       };
     },
-    cooldown: 60,
+    executionTime: 90,
+    cooldown: 0,
   },
 
   buildGreatCabin: {
@@ -518,7 +530,8 @@ export const villageBuildActions: Record<string, Action> = {
         bones: 1,
       },
     },
-    cooldown: 30,
+    executionTime: 60,
+    cooldown: 0,
   },
 
   buildGrandHunterLodge: {
@@ -558,7 +571,8 @@ export const villageBuildActions: Record<string, Action> = {
         bones: 2,
       },
     },
-    cooldown: 40,
+    executionTime: 90,
+    cooldown: 0,
   },
 
   buildTimberMill: {
@@ -590,7 +604,8 @@ export const villageBuildActions: Record<string, Action> = {
         wood: 5,
       },
     },
-    cooldown: 30,
+    executionTime: 45,
+    cooldown: 0,
   },
 
   buildQuarry: {
@@ -621,7 +636,8 @@ export const villageBuildActions: Record<string, Action> = {
         stone: 5,
       },
     },
-    cooldown: 30,
+    executionTime: 45,
+    cooldown: 0,
   },
 
   buildClerksHut: {
@@ -650,7 +666,8 @@ export const villageBuildActions: Record<string, Action> = {
     statsEffects: {
       knowledge: 2,
     },
-    cooldown: 30,
+    executionTime: 30,
+    cooldown: 0,
   },
 
   buildScriptorium: {
@@ -681,7 +698,8 @@ export const villageBuildActions: Record<string, Action> = {
     statsEffects: {
       knowledge: 5,
     },
-    cooldown: 40,
+    executionTime: 60,
+    cooldown: 0,
   },
 
   buildInkwardenAcademy: {
@@ -713,7 +731,8 @@ export const villageBuildActions: Record<string, Action> = {
     statsEffects: {
       knowledge: 10,
     },
-    cooldown: 60,
+    executionTime: 90,
+    cooldown: 0,
   },
 
   buildTannery: {
@@ -739,7 +758,8 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.tannery": 1,
       },
     },
-    cooldown: 20,
+    executionTime: 30,
+    cooldown: 0,
   },
 
   buildMasterTannery: {
@@ -777,7 +797,8 @@ export const villageBuildActions: Record<string, Action> = {
         },
       };
     },
-    cooldown: 40,
+    executionTime: 60,
+    cooldown: 0,
   },
 
   buildHighTannery: {
@@ -815,7 +836,8 @@ export const villageBuildActions: Record<string, Action> = {
         },
       };
     },
-    cooldown: 50,
+    executionTime: 90,
+    cooldown: 0,
   },
 
   buildAltar: {
@@ -847,7 +869,8 @@ export const villageBuildActions: Record<string, Action> = {
     statsEffects: {
       madness: -2,
     },
-    cooldown: 5,
+    executionTime: 30,
+    cooldown: 0,
   },
 
   buildChitinPlating: {
@@ -875,7 +898,8 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.chitinPlating": 1,
       },
     },
-    cooldown: 60,
+    executionTime: 45,
+    cooldown: 0,
   },
 
   buildShrine: {
@@ -907,7 +931,8 @@ export const villageBuildActions: Record<string, Action> = {
     statsEffects: {
       madness: -5,
     },
-    cooldown: 40,
+    executionTime: 45,
+    cooldown: 0,
   },
 
   buildTemple: {
@@ -938,7 +963,8 @@ export const villageBuildActions: Record<string, Action> = {
     statsEffects: {
       madness: -8,
     },
-    cooldown: 60,
+    executionTime: 60,
+    cooldown: 0,
   },
 
   buildSanctum: {
@@ -971,7 +997,8 @@ export const villageBuildActions: Record<string, Action> = {
     statsEffects: {
       madness: -12,
     },
-    cooldown: 80,
+    executionTime: 90,
+    cooldown: 0,
   },
 
   buildAlchemistHall: {
@@ -998,7 +1025,8 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.alchemistHall": 1,
       },
     },
-    cooldown: 30,
+    executionTime: 90,
+    cooldown: 0,
   },
 
   buildTradePost: {
@@ -1024,7 +1052,8 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.tradePost": 1,
       },
     },
-    cooldown: 40,
+    executionTime: 30,
+    cooldown: 0,
   },
 
   buildGrandBazaar: {
@@ -1054,7 +1083,8 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.grandBazaar": 1,
       },
     },
-    cooldown: 30,
+    executionTime: 45,
+    cooldown: 0,
   },
 
   buildMerchantsGuild: {
@@ -1084,7 +1114,8 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.merchantsGuild": 1,
       },
     },
-    cooldown: 40,
+    executionTime: 60,
+    cooldown: 0,
   },
 
   buildBastion: {
@@ -1111,7 +1142,8 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.bastion": 1,
       },
     },
-    cooldown: 60,
+    executionTime: 90,
+    cooldown: 0,
   },
 
   buildWatchtower: {
@@ -1175,7 +1207,8 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.watchtower": 1,
       },
     },
-    cooldown: 60,
+    executionTime: 60,
+    cooldown: 0,
   },
 
   buildPalisades: {
@@ -1231,7 +1264,8 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.palisades": 1,
       },
     },
-    cooldown: 50,
+    executionTime: 60,
+    cooldown: 0,
   },
 
   buildStoneHut: {
@@ -1346,7 +1380,8 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.stoneHut": 1,
       },
     },
-    cooldown: 120,
+    executionTime: 90,
+    cooldown: 0,
   },
 
   buildFortifiedMoat: {
@@ -1371,7 +1406,8 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.fortifiedMoat": 1,
       },
     },
-    cooldown: 60,
+    executionTime: 60,
+    cooldown: 0,
   },
 
   buildWizardTower: {
@@ -1400,7 +1436,8 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.wizardTower": 1,
       },
     },
-    cooldown: 120,
+    executionTime: 120,
+    cooldown: 0,
   },
 
   buildLonghouse: {
@@ -1477,7 +1514,8 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.longhouse": 1,
       },
     },
-    cooldown: 120,
+    executionTime: 120,
+    cooldown: 0,
   },
 
   buildFurTents: {
@@ -1516,7 +1554,8 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.traps": 1,
       },
     },
-    cooldown: 30,
+    executionTime: 30,
+    cooldown: 0,
   },
 
   buildBlackMonolith: {
@@ -1572,7 +1611,8 @@ export const villageBuildActions: Record<string, Action> = {
     statsEffects: {
       madness: -5,
     },
-    cooldown: 60,
+    executionTime: 90,
+    cooldown: 0,
   },
 
   buildPillarOfClarity: {
@@ -1599,7 +1639,8 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.blackMonolith": 0,
       },
     },
-    cooldown: 60,
+    executionTime: 90,
+    cooldown: 0,
   },
 
   buildBoneTemple: {
@@ -1663,7 +1704,8 @@ export const villageBuildActions: Record<string, Action> = {
     statsEffects: {
       madness: -10,
     },
-    cooldown: 120,
+    executionTime: 120,
+    cooldown: 0,
   },
 
   buildPaleCross: {
@@ -1694,7 +1736,8 @@ export const villageBuildActions: Record<string, Action> = {
     statsEffects: {
       madness: 5,
     },
-    cooldown: 60,
+    executionTime: 90,
+    cooldown: 0,
   },
 
   buildDarkEstate: {
@@ -1720,7 +1763,8 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.darkEstate": 1,
       },
     },
-    cooldown: 60,
+    executionTime: 60,
+    cooldown: 0,
   },
 
   buildSupplyHut: {
@@ -1745,7 +1789,8 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.supplyHut": 1,
       },
     },
-    cooldown: 30,
+    executionTime: 30,
+    cooldown: 0,
   },
 
   buildStorehouse: {
@@ -1772,7 +1817,8 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.storehouse": 1,
       },
     },
-    cooldown: 30,
+    executionTime: 45,
+    cooldown: 0,
   },
 
   buildFortifiedStorehouse: {
@@ -1800,7 +1846,8 @@ export const villageBuildActions: Record<string, Action> = {
       },
     },
     craftingCostReduction: 0.025,
-    cooldown: 30,
+    executionTime: 60,
+    cooldown: 0,
   },
 
   buildVillageWarehouse: {
@@ -1834,7 +1881,8 @@ export const villageBuildActions: Record<string, Action> = {
     },
     craftingCostReduction: 0.025,
     buildingCostReduction: 0.025,
-    cooldown: 30,
+    executionTime: 75,
+    cooldown: 0,
   },
 
   buildGrandRepository: {
@@ -1868,7 +1916,8 @@ export const villageBuildActions: Record<string, Action> = {
     },
     craftingCostReduction: 0.05,
     buildingCostReduction: 0.025,
-    cooldown: 30,
+    executionTime: 90,
+    cooldown: 0,
   },
 
   buildGreatVault: {
@@ -1901,7 +1950,8 @@ export const villageBuildActions: Record<string, Action> = {
     },
     craftingCostReduction: 0.05,
     buildingCostReduction: 0.05,
-    cooldown: 30,
+    executionTime: 120,
+    cooldown: 0,
   },
   buildHeartfire: {
     id: "buildHeartfire",
@@ -1926,6 +1976,7 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.heartfire": 1,
       },
     },
-    cooldown: 30,
+    executionTime: 30,
+    cooldown: 0,
   },
 };

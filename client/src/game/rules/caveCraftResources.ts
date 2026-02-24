@@ -17,7 +17,8 @@ export const caveCraftResources: Record<string, Action> = {
       "resources.bone_totem": 1,
       "story.seen.hasBoneTotem": true,
     },
-    cooldown: 20,
+    executionTime: 20,
+    cooldown: 0,
   },
   craftBoneTotems2: {
     id: "craftBoneTotems2",
@@ -33,7 +34,8 @@ export const caveCraftResources: Record<string, Action> = {
       "resources.bone_totem": 2,
       "story.seen.hasBoneTotem": true,
     },
-    cooldown: 20,
+    executionTime: 20,
+    cooldown: 0,
   },
   craftBoneTotems3: {
     id: "craftBoneTotems3",
@@ -49,7 +51,8 @@ export const caveCraftResources: Record<string, Action> = {
       "resources.bone_totem": 3,
       "story.seen.hasBoneTotem": true,
     },
-    cooldown: 20,
+    executionTime: 20,
+    cooldown: 0,
   },
   craftBoneTotems5: {
     id: "craftBoneTotems5",
@@ -64,7 +67,8 @@ export const caveCraftResources: Record<string, Action> = {
       "resources.bone_totem": 5,
       "story.seen.hasBoneTotem": true,
     },
-    cooldown: 20,
+    executionTime: 20,
+    cooldown: 0,
   },
 
   craftLeatherTotem: {
@@ -81,7 +85,8 @@ export const caveCraftResources: Record<string, Action> = {
       "resources.leather_totem": 1,
       "story.seen.hasLeatherTotem": true,
     },
-    cooldown: 20,
+    executionTime: 20,
+    cooldown: 0,
   },
 
   craftLeatherTotems5: {
@@ -97,7 +102,8 @@ export const caveCraftResources: Record<string, Action> = {
       "resources.leather_totem": 5,
       "story.seen.hasLeatherTotem": true,
     },
-    cooldown: 20,
+    executionTime: 20,
+    cooldown: 0,
   },
 
   craftEmberBomb: {
@@ -119,7 +125,8 @@ export const caveCraftResources: Record<string, Action> = {
         return current + 1;
       },
     },
-    cooldown: 20,
+    executionTime: 20,
+    cooldown: 0,
   },
 
   craftAshfireBomb: {
@@ -141,7 +148,8 @@ export const caveCraftResources: Record<string, Action> = {
         return current + 1;
       },
     },
-    cooldown: 30,
+    executionTime: 30,
+    cooldown: 0,
   },
 
   craftVoidBomb: {
@@ -164,7 +172,8 @@ export const caveCraftResources: Record<string, Action> = {
         return current + 1;
       },
     },
-    cooldown: 45,
+    executionTime: 45,
+    cooldown: 0,
   },
 };
 

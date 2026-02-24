@@ -16,7 +16,8 @@ export const caveCraftWeapons: Record<string, Action> = {
     effects: {
       "weapons.iron_sword": true,
     },
-    cooldown: 15,
+    executionTime: 15,
+    cooldown: 0,
   },
 
   craftSteelSword: {
@@ -34,7 +35,8 @@ export const caveCraftWeapons: Record<string, Action> = {
     effects: {
       "weapons.steel_sword": true,
     },
-    cooldown: 20,
+    executionTime: 20,
+    cooldown: 0,
   },
 
   craftObsidianSword: {
@@ -52,7 +54,8 @@ export const caveCraftWeapons: Record<string, Action> = {
     effects: {
       "weapons.obsidian_sword": true,
     },
-    cooldown: 25,
+    executionTime: 25,
+    cooldown: 0,
   },
 
   craftAdamantSword: {
@@ -70,7 +73,8 @@ export const caveCraftWeapons: Record<string, Action> = {
     effects: {
       "weapons.adamant_sword": true,
     },
-    cooldown: 30,
+    executionTime: 30,
+    cooldown: 0,
   },
 
   craftCrudeBow: {
@@ -87,7 +91,8 @@ export const caveCraftWeapons: Record<string, Action> = {
       "weapons.crude_bow": true,
       "flags.forestUnlocked": true,
     },
-    cooldown: 10,
+    executionTime: 10,
+    cooldown: 0,
   },
 
   craftHuntsmanBow: {
@@ -105,7 +110,8 @@ export const caveCraftWeapons: Record<string, Action> = {
     effects: {
       "weapons.huntsman_bow": true,
     },
-    cooldown: 15,
+    executionTime: 15,
+    cooldown: 0,
   },
 
   craftLongBow: {
@@ -124,7 +130,8 @@ export const caveCraftWeapons: Record<string, Action> = {
     effects: {
       "weapons.long_bow": true,
     },
-    cooldown: 20,
+    executionTime: 20,
+    cooldown: 0,
   },
 
   craftWarBow: {
@@ -145,7 +152,8 @@ export const caveCraftWeapons: Record<string, Action> = {
       "story.seen.hasWarBow": true,
       "story.seen.actionCraftWarBow": true,
     },
-    cooldown: 25,
+    executionTime: 25,
+    cooldown: 0,
   },
 
   craftMasterBow: {
@@ -166,7 +174,8 @@ export const caveCraftWeapons: Record<string, Action> = {
       "story.seen.hasMasterBow": true,
       "story.seen.actionCraftMasterBow": true,
     },
-    cooldown: 30,
+    executionTime: 30,
+    cooldown: 0,
   },
 
   craftArbalest: {
@@ -185,7 +194,8 @@ export const caveCraftWeapons: Record<string, Action> = {
     effects: {
       "weapons.arbalest": true,
     },
-    cooldown: 40,
+    executionTime: 40,
+    cooldown: 0,
   },
 
   craftNightshadeBow: {
@@ -203,7 +213,8 @@ export const caveCraftWeapons: Record<string, Action> = {
     effects: {
       "weapons.nightshade_bow": true,
     },
-    cooldown: 45,
+    executionTime: 45,
+    cooldown: 0,
   },
 
   craftStormglassHalberd: {
@@ -222,7 +233,8 @@ export const caveCraftWeapons: Record<string, Action> = {
     effects: {
       "weapons.stormglass_halberd": true,
     },
-    cooldown: 60,
+    executionTime: 60,
+    cooldown: 0,
   },
 
   craftFrostglassSword: {
@@ -241,7 +253,8 @@ export const caveCraftWeapons: Record<string, Action> = {
       "weapons.frostglass_sword": true,
       "story.seen.hasFrostglassSword": true,
     },
-    cooldown: 60,
+    executionTime: 60,
+    cooldown: 0,
   },
 
   craftBlacksteelSword: {
@@ -260,7 +273,8 @@ export const caveCraftWeapons: Record<string, Action> = {
       "story.seen.hasBlacksteelSword": true,
       "story.seen.actionCraftBlacksteelSword": true,
     },
-    cooldown: 30,
+    executionTime: 30,
+    cooldown: 0,
   },
 
   craftBlacksteelBow: {
@@ -279,7 +293,8 @@ export const caveCraftWeapons: Record<string, Action> = {
       "story.seen.hasBlacksteelBow": true,
       "story.seen.actionCraftBlacksteelBow": true,
     },
-    cooldown: 30,
+    executionTime: 30,
+    cooldown: 0,
   },
 
   craftBloodstoneStaff: {
@@ -297,7 +312,8 @@ export const caveCraftWeapons: Record<string, Action> = {
       "weapons.bloodstone_staff": true,
       "story.seen.hasBloodstoneStaff": true,
     },
-    cooldown: 60,
+    executionTime: 60,
+    cooldown: 0,
   },
 
   craftAshenGreatshield: {
@@ -315,7 +331,8 @@ export const caveCraftWeapons: Record<string, Action> = {
     effects: {
       "weapons.ashen_greatshield": true,
     },
-    cooldown: 60,
+    executionTime: 60,
+    cooldown: 0,
   },
 };
 

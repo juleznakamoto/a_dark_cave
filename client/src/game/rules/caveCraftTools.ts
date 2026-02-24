@@ -18,7 +18,8 @@ export const caveCraftTools: Record<string, Action> = {
       "story.seen.actionCraftTorch": true,
     },
     unlocks: ["exploreDeeper"],
-    cooldown: 2,
+    executionTime: 2,
+    cooldown: 0,
   },
 
   craftTorches: {
@@ -35,7 +36,8 @@ export const caveCraftTools: Record<string, Action> = {
       "resources.torch": "random(2,2)",
       "story.seen.actionCraftTorches": true,
     },
-    cooldown: 3.0,
+    executionTime: 3.0,
+    cooldown: 0,
   },
 
   craftTorches3: {
@@ -52,7 +54,8 @@ export const caveCraftTools: Record<string, Action> = {
       "resources.torch": "random(3,3)",
       "story.seen.actionCraftTorches3": true,
     },
-    cooldown: 3.5,
+    executionTime: 3.5,
+    cooldown: 0,
   },
 
   craftTorches4: {
@@ -69,7 +72,8 @@ export const caveCraftTools: Record<string, Action> = {
       "resources.torch": "random(4,4)",
       "story.seen.actionCraftTorches4": true,
     },
-    cooldown: 4,
+    executionTime: 4,
+    cooldown: 0,
   },
 
   craftTorches5: {
@@ -86,7 +90,8 @@ export const caveCraftTools: Record<string, Action> = {
       "resources.torch": "random(5,5)",
       "story.seen.actionCraftTorches5": true,
     },
-    cooldown: 4.5,
+    executionTime: 4.5,
+    cooldown: 0,
   },
 
   craftTorches10: {
@@ -102,7 +107,8 @@ export const caveCraftTools: Record<string, Action> = {
       "resources.torch": "random(10,10)",
       "story.seen.actionCraftTorches10": true,
     },
-    cooldown: 5.0,
+    executionTime: 5.0,
+    cooldown: 0,
   },
 
   craftStoneAxe: {
@@ -122,7 +128,8 @@ export const caveCraftTools: Record<string, Action> = {
       "story.seen.hasStoneAxe": true,
       "story.seen.actionCraftStoneAxe": true,
     },
-    cooldown: 1,
+    executionTime: 1,
+    cooldown: 0,
   },
 
   craftStonePickaxe: {
@@ -142,7 +149,8 @@ export const caveCraftTools: Record<string, Action> = {
       "story.seen.hasStonePickaxe": true,
       "story.seen.actionCraftStonePickaxe": true,
     },
-    cooldown: 5,
+    executionTime: 5,
+    cooldown: 0,
   },
 
   craftIronAxe: {
@@ -162,7 +170,8 @@ export const caveCraftTools: Record<string, Action> = {
       "story.seen.hasIronAxe": true,
       "story.seen.actionCraftIronAxe": true,
     },
-    cooldown: 10,
+    executionTime: 10,
+    cooldown: 0,
   },
 
   craftIronPickaxe: {
@@ -182,7 +191,8 @@ export const caveCraftTools: Record<string, Action> = {
       "story.seen.hasIronPickaxe": true,
       "story.seen.actionCraftIronPickaxe": true,
     },
-    cooldown: 10,
+    executionTime: 10,
+    cooldown: 0,
   },
 
   craftSteelAxe: {
@@ -205,7 +215,8 @@ export const caveCraftTools: Record<string, Action> = {
       "story.seen.hasSteelAxe": true,
       "story.seen.actionCraftSteelAxe": true,
     },
-    cooldown: 15,
+    executionTime: 15,
+    cooldown: 0,
   },
 
   craftSteelPickaxe: {
@@ -228,7 +239,8 @@ export const caveCraftTools: Record<string, Action> = {
       "story.seen.hasSteelPickaxe": true,
       "story.seen.actionCraftSteelPickaxe": true,
     },
-    cooldown: 15,
+    executionTime: 15,
+    cooldown: 0,
   },
 
   craftObsidianAxe: {
@@ -250,7 +262,8 @@ export const caveCraftTools: Record<string, Action> = {
       "story.seen.hasObsidianAxe": true,
       "story.seen.actionCraftObsidianAxe": true,
     },
-    cooldown: 20,
+    executionTime: 20,
+    cooldown: 0,
   },
 
   craftObsidianPickaxe: {
@@ -272,7 +285,8 @@ export const caveCraftTools: Record<string, Action> = {
       "story.seen.hasObsidianPickaxe": true,
       "story.seen.actionCraftObsidianPickaxe": true,
     },
-    cooldown: 20,
+    executionTime: 20,
+    cooldown: 0,
   },
 
   craftAdamantAxe: {
@@ -294,7 +308,8 @@ export const caveCraftTools: Record<string, Action> = {
       "story.seen.hasAdamantAxe": true,
       "story.seen.actionCraftAdamantAxe": true,
     },
-    cooldown: 25,
+    executionTime: 25,
+    cooldown: 0,
   },
 
   craftAdamantPickaxe: {
@@ -316,7 +331,8 @@ export const caveCraftTools: Record<string, Action> = {
       "story.seen.hasAdamantPickaxe": true,
       "story.seen.actionCraftAdamantPickaxe": true,
     },
-    cooldown: 25,
+    executionTime: 25,
+    cooldown: 0,
   },
 
   craftIronLantern: {
@@ -336,7 +352,8 @@ export const caveCraftTools: Record<string, Action> = {
       "story.seen.hasIronLantern": true,
       "story.seen.actionCraftIronLantern": true,
     },
-    cooldown: 15,
+    executionTime: 15,
+    cooldown: 0,
   },
 
   craftSteelLantern: {
@@ -360,7 +377,8 @@ export const caveCraftTools: Record<string, Action> = {
       "story.seen.hasSteelLantern": true,
       "story.seen.actionCraftSteelLantern": true,
     },
-    cooldown: 20,
+    executionTime: 20,
+    cooldown: 0,
   },
 
   craftObsidianLantern: {
@@ -383,7 +401,8 @@ export const caveCraftTools: Record<string, Action> = {
       "story.seen.hasObsidianLantern": true,
       "story.seen.actionCraftObsidianLantern": true,
     },
-    cooldown: 25,
+    executionTime: 25,
+    cooldown: 0,
   },
 
   craftAdamantLantern: {
@@ -406,7 +425,8 @@ export const caveCraftTools: Record<string, Action> = {
       "story.seen.hasAdamantLantern": true,
       "story.seen.actionCraftAdamantLantern": true,
     },
-    cooldown: 30,
+    executionTime: 30,
+    cooldown: 0,
   },
 
   craftBlacksteelAxe: {
@@ -425,7 +445,8 @@ export const caveCraftTools: Record<string, Action> = {
       "story.seen.hasBlacksteelAxe": true,
       "story.seen.actionCraftBlacksteelAxe": true,
     },
-    cooldown: 30,
+    executionTime: 30,
+    cooldown: 0,
   },
 
   craftBlacksteelPickaxe: {
@@ -444,7 +465,8 @@ export const caveCraftTools: Record<string, Action> = {
       "story.seen.hasBlacksteelPickaxe": true,
       "story.seen.actionCraftBlacksteelPickaxe": true,
     },
-    cooldown: 30,
+    executionTime: 30,
+    cooldown: 0,
   },
 
   craftBlacksteelLantern: {
@@ -463,7 +485,8 @@ export const caveCraftTools: Record<string, Action> = {
       "story.seen.hasBlacksteelLantern": true,
       "story.seen.actionCraftBlacksteelLantern": true,
     },
-    cooldown: 30,
+    executionTime: 30,
+    cooldown: 0,
   },
 
   craftBlacksteelArmor: {
@@ -482,7 +505,8 @@ export const caveCraftTools: Record<string, Action> = {
       "story.seen.hasBlacksteelArmor": true,
       "story.seen.actionCraftBlacksteelArmor": true,
     },
-    cooldown: 30,
+    executionTime: 30,
+    cooldown: 0,
   },
 
   craftExplorerPack: {
@@ -500,7 +524,8 @@ export const caveCraftTools: Record<string, Action> = {
       "story.seen.hasExplorerPack": true,
       "story.seen.actionCraftExplorerPack": true,
     },
-    cooldown: 20,
+    executionTime: 20,
+    cooldown: 0,
   },
 
   craftHunterCloak: {
@@ -518,7 +543,8 @@ export const caveCraftTools: Record<string, Action> = {
       "story.seen.hasHunterCloak": true,
       "story.seen.actionCraftHunterCloak": true,
     },
-    cooldown: 25,
+    executionTime: 25,
+    cooldown: 0,
   },
 
   craftGrenadierBag: {
@@ -536,7 +562,8 @@ export const caveCraftTools: Record<string, Action> = {
       "story.seen.hasGrenadierBag": true,
       "story.seen.actionCraftGrenadierBag": true,
     },
-    cooldown: 30,
+    executionTime: 30,
+    cooldown: 0,
   },
 
   craftHighpriestRobe: {
@@ -555,7 +582,8 @@ export const caveCraftTools: Record<string, Action> = {
       "story.seen.hasHighpriestRobe": true,
       "story.seen.actionCraftHighpriestRobe": true,
     },
-    cooldown: 40,
+    executionTime: 40,
+    cooldown: 0,
   },
 
   craftLoggersGloves: {
@@ -573,7 +601,8 @@ export const caveCraftTools: Record<string, Action> = {
       "story.seen.hasLoggersGloves": true,
       "story.seen.actionCraftLoggersGloves": true,
     },
-    cooldown: 15,
+    executionTime: 15,
+    cooldown: 0,
   },
 
   craftSacrificialTunic: {
@@ -592,7 +621,8 @@ export const caveCraftTools: Record<string, Action> = {
       "story.seen.hasSacrificialTunic": true,
       "story.seen.actionCraftSacrificialTunic": true,
     },
-    cooldown: 60,
+    executionTime: 60,
+    cooldown: 0,
   },
 
   craftShadowBoots: {
@@ -611,7 +641,8 @@ export const caveCraftTools: Record<string, Action> = {
       "story.seen.hasShadowBoots": true,
       "story.seen.actionCraftShadowBoots": true,
     },
-    cooldown: 40,
+    executionTime: 40,
+    cooldown: 0,
   },
 
   craftSkeletonKey: {
@@ -629,7 +660,8 @@ export const caveCraftTools: Record<string, Action> = {
     effects: {
       "tools.skeleton_key": true,
     },
-    cooldown: 3,
+    executionTime: 3,
+    cooldown: 0,
   },
 };
 

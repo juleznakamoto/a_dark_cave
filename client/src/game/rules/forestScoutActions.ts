@@ -115,7 +115,8 @@ export const forestScoutActions: Record<string, Action> = {
         },
       };
     },
-    cooldown: 8,
+    executionTime: 8,
+    cooldown: 0,
   },
 
   layTrap: {

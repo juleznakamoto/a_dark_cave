@@ -271,6 +271,12 @@ export function renderItemTooltip(
                   Cooldown
                 </div>
               )}
+              {bonus.executionTimeReduction && bonus.executionTimeReduction !== 0 && (
+                <div>
+                  {capitalizeWords(actionId)}: -{bonus.executionTimeReduction}s
+                  Haste
+                </div>
+              )}
             </div>
           ),
         )}

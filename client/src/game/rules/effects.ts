@@ -13,7 +13,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         chopWood: {
           resourceMultiplier: 1.5,
-          cooldownReduction: 0.25,
+          executionTimeReduction: 0.25,
         },
       },
     },
@@ -27,7 +27,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         mining: {
           resourceMultiplier: 1.25,
-          cooldownReduction: 1,
+          executionTimeReduction: 1,
         },
       },
     },
@@ -41,7 +41,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         chopWood: {
           resourceMultiplier: 2,
-          cooldownReduction: 0.5,
+          executionTimeReduction: 0.5,
         },
       },
     },
@@ -55,7 +55,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         mining: {
           resourceMultiplier: 1.5,
-          cooldownReduction: 1,
+          executionTimeReduction: 1,
         },
       },
     },
@@ -69,7 +69,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         chopWood: {
           resourceMultiplier: 2.5,
-          cooldownReduction: 0.75,
+          executionTimeReduction: 0.75,
         },
       },
     },
@@ -83,7 +83,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         mining: {
           resourceMultiplier: 1.75,
-          cooldownReduction: 1.5,
+          executionTimeReduction: 1.5,
         },
       },
     },
@@ -97,7 +97,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         chopWood: {
           resourceMultiplier: 3,
-          cooldownReduction: 1,
+          executionTimeReduction: 1,
         },
       },
     },
@@ -111,7 +111,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         mining: {
           resourceMultiplier: 2.0,
-          cooldownReduction: 2.5,
+          executionTimeReduction: 2.5,
         },
       },
     },
@@ -125,7 +125,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         chopWood: {
           resourceMultiplier: 4.0,
-          cooldownReduction: 1.5,
+          executionTimeReduction: 1.5,
         },
       },
     },
@@ -139,7 +139,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         mining: {
           resourceMultiplier: 2.5,
-          cooldownReduction: 4,
+          executionTimeReduction: 4,
         },
       },
     },
@@ -170,7 +170,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         mining: {
           resourceMultiplier: 1.25,
-          cooldownReduction: 1,
+          executionTimeReduction: 1,
         },
         caveExplore: {
           resourceMultiplier: 1.25,
@@ -187,7 +187,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         mining: {
           resourceMultiplier: 1.5,
-          cooldownReduction: 1.5,
+          executionTimeReduction: 1.5,
         },
         caveExplore: {
           resourceMultiplier: 1.5,
@@ -204,7 +204,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         mining: {
           resourceMultiplier: 1.75,
-          cooldownReduction: 2.5,
+          executionTimeReduction: 2.5,
         },
         caveExplore: {
           resourceMultiplier: 1.75,
@@ -221,7 +221,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         mining: {
           resourceMultiplier: 2.0,
-          cooldownReduction: 4,
+          executionTimeReduction: 4,
         },
         caveExplore: {
           resourceMultiplier: 2.0,
@@ -237,7 +237,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         chopWood: {
           resourceMultiplier: 5.5,
-          cooldownReduction: 2,
+          executionTimeReduction: 2,
         },
       },
     },
@@ -250,7 +250,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         mining: {
           resourceMultiplier: 3.5,
-          cooldownReduction: 6,
+          executionTimeReduction: 6,
         },
       },
     },
@@ -263,7 +263,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         mining: {
           resourceMultiplier: 2.5,
-          cooldownReduction: 5.5,
+          executionTimeReduction: 5.5,
         },
         caveExplore: {
           resourceMultiplier: 2.5,
@@ -379,7 +379,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         mining: {
           resourceMultiplier: 3.0, // +200% = 3x total
-          cooldownReduction: 5,
+          executionTimeReduction: 5,
         },
         caveExplore: {
           resourceMultiplier: 3.0, // +200% = 3x total
@@ -400,7 +400,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         hunt: {
           resourceMultiplier: 1.25,
-          cooldownReduction: 0.5,
+          executionTimeReduction: 0.5,
         },
       },
       generalBonuses: {
@@ -417,7 +417,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         hunt: {
           resourceMultiplier: 1.5,
-          cooldownReduction: 1.0,
+          executionTimeReduction: 1.0,
         },
       },
       generalBonuses: {
@@ -434,7 +434,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         hunt: {
           resourceMultiplier: 2,
-          cooldownReduction: 1.5,
+          executionTimeReduction: 1.5,
         },
       },
       generalBonuses: {
@@ -451,7 +451,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         hunt: {
           resourceMultiplier: 2.75,
-          cooldownReduction: 2.0,
+          executionTimeReduction: 2.0,
         },
       },
       generalBonuses: {
@@ -468,7 +468,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         hunt: {
           resourceMultiplier: 4,
-          cooldownReduction: 2.5,
+          executionTimeReduction: 2.5,
         },
       },
       generalBonuses: {
@@ -652,7 +652,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         hunt: {
           resourceMultiplier: 5.5,
-          cooldownReduction: 3,
+          executionTimeReduction: 3,
         },
       },
       generalBonuses: {
@@ -1072,13 +1072,13 @@ export const clothingEffects: Record<string, EffectDefinition> = {
           executionTimeReduction: 4,
         },
         mining: {
-          cooldownReduction: 3,
+          executionTimeReduction: 3,
         },
         hunt: {
-          cooldownReduction: 2,
+          executionTimeReduction: 2,
         },
         chopWood: {
-          cooldownReduction: 1,
+          executionTimeReduction: 1,
         },
       },
     },

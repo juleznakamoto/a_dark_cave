@@ -44,7 +44,8 @@ export const forestSacrificeActions: Record<string, Action> = {
       "resources.silver": "random(10,25)",
       "story.seen.actionBoneTotems": true,
     },
-    cooldown: 30,
+    executionTime: 30,
+    cooldown: 0,
   },
 
   leatherTotems: {
@@ -61,7 +62,8 @@ export const forestSacrificeActions: Record<string, Action> = {
       "resources.gold": "random(10,25)",
       "story.seen.actionLeatherTotems": true,
     },
-    cooldown: 30,
+    executionTime: 30,
+    cooldown: 0,
   },
 
   animals: {
@@ -82,7 +84,8 @@ export const forestSacrificeActions: Record<string, Action> = {
       // This will be dynamically applied
       madness: -1,
     },
-    cooldown: 90,
+    executionTime: 90,
+    cooldown: 0,
   },
 
   humans: {
@@ -120,7 +123,8 @@ export const forestSacrificeActions: Record<string, Action> = {
       // This will be dynamically applied
       madness: -2,
     },
-    cooldown: 90,
+    executionTime: 90,
+    cooldown: 0,
   },
 };
 

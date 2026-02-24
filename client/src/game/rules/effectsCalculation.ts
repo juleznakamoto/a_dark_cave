@@ -261,6 +261,9 @@ export const getActionBonuses = (
       if (bonus.cooldownReduction) {
         cooldownReduction += bonus.cooldownReduction;
       }
+      if (bonus.executionTimeReduction) {
+        executionTimeReduction += bonus.executionTimeReduction;
+      }
       if (bonus.resourceBonus) {
         Object.entries(bonus.resourceBonus).forEach(([resource, amount]) => {
           resourceBonus[resource] = (resourceBonus[resource] || 0) + amount;
@@ -276,8 +279,8 @@ export const getActionBonuses = (
           // Additive: sum the bonus percentages
           resourceMultiplier += mineBonus.resourceMultiplier - 1;
         }
-        if (mineBonus.cooldownReduction) {
-          cooldownReduction += mineBonus.cooldownReduction;
+        if (mineBonus.executionTimeReduction) {
+          executionTimeReduction += mineBonus.executionTimeReduction;
         }
         if (mineBonus.resourceBonus) {
           Object.entries(mineBonus.resourceBonus).forEach(
@@ -860,6 +863,13 @@ export const calculateTotalEffects = (state: GameState) => {
               (effects.cooldown_reduction[actionId] || 0) +
               actionBonus.cooldownReduction;
           }
+          // Execution time reductions
+          if (actionBonus.executionTimeReduction) {
+            effects.execution_time_reduction = effects.execution_time_reduction || {};
+            effects.execution_time_reduction[actionId] =
+              (effects.execution_time_reduction[actionId] || 0) +
+              actionBonus.executionTimeReduction;
+          }
         },
       );
     }
@@ -960,6 +970,13 @@ export const calculateTotalEffects = (state: GameState) => {
               effects.cooldown_reduction[actionId] =
                 (effects.cooldown_reduction[actionId] || 0) +
                 actionBonus.cooldownReduction;
+            }
+            // Execution time reductions
+            if (actionBonus.executionTimeReduction) {
+              effects.execution_time_reduction = effects.execution_time_reduction || {};
+              effects.execution_time_reduction[actionId] =
+                (effects.execution_time_reduction[actionId] || 0) +
+                actionBonus.executionTimeReduction;
             }
           },
         );

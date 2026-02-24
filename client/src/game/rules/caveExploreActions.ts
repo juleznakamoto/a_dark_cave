@@ -211,7 +211,8 @@ export const caveExploreActions: Record<string, Action> = {
         "story.seen.firstWoodGathered": true,
       };
     },
-    cooldown: 4,
+    executionTime: 4,
+    cooldown: 0,
     upgrade_key: "chopWood",
   },
 
@@ -397,7 +398,7 @@ export const caveExploreActions: Record<string, Action> = {
       };
     },
     executionTime: 60,
-    cooldown: 1,
+    cooldown: 0,
   },
 
   occultistChamber: {
@@ -422,7 +423,7 @@ export const caveExploreActions: Record<string, Action> = {
       };
     },
     executionTime: 60,
-    cooldown: 1,
+    cooldown: 0,
   },
 
   hiddenLibrary: {
@@ -444,7 +445,7 @@ export const caveExploreActions: Record<string, Action> = {
       };
     },
     executionTime: 60,
-    cooldown: 1,
+    cooldown: 0,
   },
 
   exploreUndergroundLake: {
@@ -471,7 +472,7 @@ export const caveExploreActions: Record<string, Action> = {
       };
     },
     executionTime: 60,
-    cooldown: 1,
+    cooldown: 0,
   },
 
   lureLakeCreature: {
@@ -490,7 +491,7 @@ export const caveExploreActions: Record<string, Action> = {
       "story.seen.lakeCreatureLured": true,
     },
     executionTime: 60,
-    cooldown: 1,
+    cooldown: 0,
   },
 
   blastPortal: {
@@ -507,7 +508,8 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.ember_bomb": -10,
       "story.seen.portalBlasted": true,
     },
-    cooldown: 1,
+    executionTime: 1,
+    cooldown: 0,
   },
 
   encounterBeyondPortal: {
@@ -524,7 +526,7 @@ export const caveExploreActions: Record<string, Action> = {
       "story.seen.encounteredBeyondPortal": true,
     },
     executionTime: 60,
-    cooldown: 1,
+    cooldown: 0,
   },
 };
 

@@ -321,7 +321,6 @@ export const forestTradeActions: Record<string, Action> = {
         "resources.blacksteel": 50,
       },
     },
-    cooldown: 90,
   },
 
   tradeGoldForTorch: {
@@ -489,7 +488,7 @@ export function handleTradeAction(
     ...result.stateUpdates.cooldowns,
     [actionId]: actualCooldown,
   };
-  
+
   // Update initialCooldowns to match the custom cooldown for animation persistence
   (result.stateUpdates as any).initialCooldowns = {
     ...(result.stateUpdates as any).initialCooldowns,
