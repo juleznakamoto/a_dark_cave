@@ -62,6 +62,12 @@ const leaderboardUpdateLimiter = rateLimit({
   message: "Too many username update attempts, please slow down.",
 });
 
+const sessionPingLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 10,
+  message: "Too many requests",
+});
+
 // Apply general rate limiting to all API routes
 app.use('/api/', generalLimiter);
 
@@ -906,6 +912,29 @@ app.post("/api/leaderboard/update-username", leaderboardUpdateLimiter, async (re
     }
   });
 
+  // Anonymous session duration tracking (no auth, no personal data)
+  app.post("/api/session/ping", sessionPingLimiter, async (req, res) => {
+    try {
+      const { sid, dur } = req.body;
+      if (!sid || typeof sid !== "string" || sid.length > 64) {
+        return res.status(400).json({ error: "Invalid session" });
+      }
+      const durationSeconds = Math.max(0, Math.min(86400, Math.floor(Number(dur) || 0)));
+
+      const env = process.env.NODE_ENV === "production" ? "prod" : "dev";
+      const adminClient = getAdminClient(env);
+
+      await adminClient.rpc("upsert_session_ping", {
+        p_session_id: sid,
+        p_duration: durationSeconds,
+      });
+
+      res.status(204).end();
+    } catch {
+      res.status(500).end();
+    }
+  });
+
   // Add endpoint to fetch daily_active_users data from Supabase
   app.get("/api/admin/dau", async (req, res) => {
     try {
@@ -967,6 +996,27 @@ app.post("/api/leaderboard/update-username", leaderboardUpdateLimiter, async (re
     }
   });
 
+  // Session duration stats for admin dashboard
+  app.get("/api/admin/sessions", async (req, res) => {
+    try {
+      const env = (req.query.env as "dev" | "prod") || "dev";
+      const daysBack = Math.min(365, Math.max(1, parseInt(req.query.days as string) || 90));
+      const adminClient = getAdminClient(env);
+
+      const { data, error } = await adminClient.rpc("get_session_duration_stats", { days_back: daysBack });
+
+      if (error) {
+        log("❌ Session stats error:", error);
+        return res.status(500).json({ error: error.message });
+      }
+
+      res.set("Cache-Control", "public, max-age=300");
+      res.json(data || []);
+    } catch (error: any) {
+      log("❌ Session stats failed:", error);
+      res.status(500).json({ error: error.message });
+    }
+  });
 
   // Setup Vite middleware AFTER all API routes to prevent catch-all interference
   if (process.env.NODE_ENV !== "production") {

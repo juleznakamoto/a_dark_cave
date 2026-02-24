@@ -9,6 +9,7 @@ const CombatDialog = lazy(() => import("@/components/game/CombatDialog"));
 const EmailConfirmedDialog = lazy(() => import("@/components/game/EmailConfirmedDialog"));
 import { logger } from "@/lib/logger";
 import { getCurrentUser } from "@/game/auth";
+import { initSessionTracker } from "@/lib/sessionTracker";
 
 export default function Game() {
   const initialize = useGameStore((state) => state.initialize);
@@ -23,6 +24,7 @@ export default function Game() {
   const [emailConfirmedDialogOpen, setEmailConfirmedDialogOpen] = useState(false);
   useEffect(() => {
     logger.log("[GAME PAGE] Initializing game");
+    initSessionTracker();
     const initializeGame = async () => {
       try {
         // Wait for first paint

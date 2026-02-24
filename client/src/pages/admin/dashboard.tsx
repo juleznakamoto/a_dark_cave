@@ -41,6 +41,7 @@ import SleepTab from "./tabs/SleepTab";
 import ResourcesTab from "./tabs/ResourcesTab";
 import UpgradesTab from "./tabs/UpgradesTab";
 import LookupTab from "./tabs/LookupTab";
+import SessionsTab from "./tabs/SessionsTab";
 
 interface ButtonClickData {
   user_id: string;
@@ -1081,6 +1082,7 @@ export default function AdminDashboard() {
                   <TabsTrigger value="sleep">Sleep Upgrades</TabsTrigger>
                   <TabsTrigger value="resources">Resources</TabsTrigger>
                   <TabsTrigger value="upgrades">Button Upgrades</TabsTrigger>
+                  <TabsTrigger value="sessions">Sessions</TabsTrigger>
                   <TabsTrigger value="lookup">User Lookup</TabsTrigger>
                 </TabsList>
                 <ScrollBar orientation="horizontal" />
@@ -1582,6 +1584,10 @@ export default function AdminDashboard() {
                   buttonUpgradesOverPlaytime={getButtonUpgradesOverPlaytime}
                   COLORS={COLORS}
                 />
+              </TabsContent>
+
+              <TabsContent value="sessions">
+                <SessionsTab environment={environment} />
               </TabsContent>
 
               <TabsContent value="lookup">
