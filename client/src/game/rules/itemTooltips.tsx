@@ -274,7 +274,7 @@ export function renderItemTooltip(
               {bonus.executionTimeReduction && bonus.executionTimeReduction !== 0 && (
                 <div>
                   {capitalizeWords(actionId)}: -{bonus.executionTimeReduction}s
-                  Haste
+                  Duration
                 </div>
               )}
             </div>
