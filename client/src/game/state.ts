@@ -4,7 +4,7 @@ import { GameState, gameStateSchema, Referral } from "@shared/schema";
 import { gameActions, shouldShowAction, canExecuteAction } from "@/game/rules";
 import { EventManager, LogEntry } from "@/game/rules/events";
 import { checkMilestoneLogEntries } from "@/game/rules/eventLogEntries";
-import { executeGameAction } from "@/game/actions";
+import { executeGameAction, deductActionCosts } from "@/game/actions";
 import type {
   GameTab,
   EventDialogState,
@@ -1020,9 +1020,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }
 
     if (!action || (state.cooldowns[actionId] || 0) > 0) return;
+    // Skip canExecuteAction when completing execution (costs already consumed at execution start)
+    const isCompletingExecution = (state as any)._completingExecution === actionId;
     if (
       !shouldShowAction(actionId, state) ||
-      !canExecuteAction(actionId, state)
+      (!isCompletingExecution && !canExecuteAction(actionId, state))
     )
       return;
 
@@ -1285,7 +1287,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const duration = getExecutionTime(actionId, state);
     if (duration <= 0) return;
     const now = Date.now();
+
+    // Deduct costs immediately on click (resources are consumed when the action begins)
+    const costUpdates = deductActionCosts(actionId, state);
+
     set({
+      ...costUpdates,
       executionStartTimes: { ...state.executionStartTimes, [actionId]: now },
       executionDurations: { ...state.executionDurations, [actionId]: duration },
     });

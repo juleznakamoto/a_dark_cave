@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { GameState } from '@shared/schema';
 import { createInitialState } from '../state';
 
-import { applyActionEffects } from './actionEffects';
+import { applyActionEffects, applyActionCostsOnly } from './actionEffects';
 import { getGameActions } from './actionsRegistry';
 
 // Import index to register all actions
@@ -27,6 +27,117 @@ function createMockState(overrides?: Partial<GameState>): GameState {
 function executeActionEffects(actionName: string, state: GameState): Partial<GameState> {
   return applyActionEffects(actionName, state);
 }
+
+describe('Execution Split - costs on click, gains on completion', () => {
+  // Import index to ensure actions are registered
+  beforeEach(() => {
+    // runs after ./index import above
+  });
+
+  describe('applyActionCostsOnly', () => {
+    it('deducts resources but does NOT apply effects gains', () => {
+      const state = createInitialState();
+      const woodCost = (gameActions.craftTorch.cost as any)["resources.wood"];
+      state.resources.wood = woodCost * 2;
+      state.story.seen.hasWood = true;
+      state.tools.stone_axe = false;
+
+      const updates = applyActionCostsOnly('craftTorch', state);
+
+      // Cost: wood deducted
+      expect(updates.resources!.wood).toBe(woodCost); // woodCost*2 - woodCost
+      // No effects: torch should NOT be gained (stays at original value, not increased)
+      const originalTorch = state.resources.torch || 0;
+      expect(updates.resources!.torch).toBe(originalTorch);
+    });
+
+    it('returns empty object for actions with no cost', () => {
+      const state = createInitialState();
+      const updates = applyActionCostsOnly('chopWood', state);
+      // chopWood has cost: {} - no cost resources to modify
+      expect(updates.resources).toBeUndefined();
+    });
+
+    it('applies adjusted cost (discount) correctly', () => {
+      const baseCost = (gameActions.craftIronAxe.cost as any)["resources.iron"];
+      const state = createInitialState();
+      state.resources.iron = baseCost;
+      state.buildings.blacksmith = 1;
+      state.tools.blacksmith_hammer = true; // 5% crafting discount
+
+      const updates = applyActionCostsOnly('craftIronAxe', state);
+
+      // blacksmith_hammer gives 5% discount: floor(50 * 0.95) = 47 cost, 3 remaining
+      const expectedCost = Math.floor(baseCost * 0.95);
+      expect(updates.resources!.iron).toBe(baseCost - expectedCost);
+    });
+
+    it('handles tiered trade action costs (tradeGoldForFood)', () => {
+      const state = createInitialState();
+      state.buildings.merchantsGuild = 1;
+      state.resources.gold = 1000;
+      const originalFood = state.resources.food || 0;
+
+      const updates = applyActionCostsOnly('tradeGoldForFood', state);
+
+      // Tier 3 cost: 40 gold
+      expect(updates.resources!.gold).toBe(1000 - 40);
+      // No food gained: stays at original value
+      expect(updates.resources!.food).toBe(originalFood);
+    });
+  });
+
+  describe('applyActionEffects - skips costs when _completingExecution is set', () => {
+    it('skips cost deduction when completing execution, applies only effects', () => {
+      const state = createInitialState();
+      const woodCost = (gameActions.craftTorch.cost as any)["resources.wood"];
+      state.resources.wood = woodCost * 2;
+      state.story.seen.hasWood = true;
+      state.tools.stone_axe = false;
+      // Simulate completing execution: costs were already consumed
+      (state as any)._completingExecution = 'craftTorch';
+
+      const updates = applyActionEffects('craftTorch', state);
+
+      // Wood should NOT be deducted (already consumed at execution start)
+      // It should remain at woodCost*2 (unchanged) or be absent from updates
+      const woodAfter = updates.resources?.wood;
+      expect(woodAfter === undefined || woodAfter === woodCost * 2).toBe(true);
+      // Torch SHOULD be gained
+      expect(updates.resources!.torch).toBeGreaterThanOrEqual(1);
+    });
+
+    it('normally applies both costs AND effects when not completing execution', () => {
+      const state = createInitialState();
+      const woodCost = (gameActions.craftTorch.cost as any)["resources.wood"];
+      state.resources.wood = woodCost * 2;
+      state.story.seen.hasWood = true;
+      state.tools.stone_axe = false;
+      // _completingExecution not set
+
+      const updates = applyActionEffects('craftTorch', state);
+
+      // Both cost and effect applied
+      expect(updates.resources!.wood).toBe(woodCost);   // woodCost*2 - woodCost
+      expect(updates.resources!.torch).toBeGreaterThanOrEqual(1);
+    });
+
+    it('completing execution on a different action does NOT skip costs', () => {
+      const state = createInitialState();
+      const woodCost = (gameActions.craftTorch.cost as any)["resources.wood"];
+      state.resources.wood = woodCost * 2;
+      state.story.seen.hasWood = true;
+      state.tools.stone_axe = false;
+      // Set _completingExecution for a DIFFERENT action
+      (state as any)._completingExecution = 'craftIronSword';
+
+      const updates = applyActionEffects('craftTorch', state);
+
+      // Costs should still be applied since this action is not the one completing
+      expect(updates.resources!.wood).toBe(woodCost);
+    });
+  });
+});
 
 describe('actionEffects - circular dependency fix', () => {
   let state: GameState;

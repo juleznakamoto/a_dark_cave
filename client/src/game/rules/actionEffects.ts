@@ -49,6 +49,103 @@ const evaluateCondition = (condition: string, state: GameState): boolean => {
   return isNegated ? !current : !!current;
 };
 
+/**
+ * Applies only the cost portion of an action (without effects).
+ * Used to deduct resources immediately when execution starts.
+ */
+export function applyActionCostsOnly(actionId: string, state: GameState): Partial<GameState> {
+  const action = getGameActions()[actionId];
+  if (!action?.cost) return {};
+
+  const updates: Partial<GameState> = {};
+  let costs = action.cost;
+
+  if (action.building) {
+    const level = getNextBuildingLevel(actionId, state);
+    costs = action.cost[level];
+  }
+
+  const costKeys = Object.keys(costs);
+  const hasTieredCost = costKeys.length > 0 && costKeys.every((key) => !isNaN(Number(key)));
+
+  if (hasTieredCost) {
+    const showWhenKeys = Object.keys(action.show_when || {});
+    let activeTier = 1;
+
+    for (const tierKey of showWhenKeys) {
+      const tierConditions = action.show_when?.[tierKey as any];
+      if (!tierConditions) continue;
+
+      const tierSatisfied = Object.entries(tierConditions).every(([key, value]) => {
+        const pathParts = key.split(".");
+        let current: any = state;
+        for (const part of pathParts) {
+          current = current?.[part];
+        }
+        if (key.startsWith("buildings.")) {
+          if (value === 0) return (current || 0) === 0;
+          else return (current || 0) >= value;
+        }
+        return (current || 0) >= value;
+      });
+
+      if (tierSatisfied) activeTier = Number(tierKey);
+    }
+
+    costs = costs[activeTier];
+  }
+
+  if (costs) {
+    Object.entries(costs).forEach(([path, cost]) => {
+      if (typeof cost === "number") {
+        const pathParts = path.split(".");
+        let current: any = updates;
+
+        for (let i = 0; i < pathParts.length - 1; i++) {
+          const part = pathParts[i];
+          if (!current[part]) {
+            current[part] =
+              pathParts[i] === "resources"
+                ? { ...state.resources }
+                : pathParts[i] === "flags"
+                  ? { ...state.flags }
+                  : pathParts[i] === "tools"
+                    ? { ...state.tools }
+                    : pathParts[i] === "buildings"
+                      ? { ...state.buildings }
+                      : pathParts[i] === "story"
+                        ? { ...state.story, seen: { ...state.story.seen } }
+                        : pathParts[i] === "relics"
+                          ? { ...state.relics }
+                          : {};
+          }
+          current = current[part];
+        }
+
+        const finalKey = pathParts[pathParts.length - 1];
+        const gameActionsRef = getGameActions();
+        const actionDef = gameActionsRef[actionId];
+
+        const adjustedCost = calculateAdjustedCost(
+          actionId,
+          cost,
+          path.startsWith("resources."),
+          state,
+          actionDef?.category as "crafting" | "building" | undefined,
+        );
+
+        const stateAmount = path.startsWith("resources.")
+          ? (state.resources[finalKey as keyof typeof state.resources] || 0)
+          : (state[pathParts[0] as keyof typeof state]?.[finalKey as any] || 0);
+
+        current[finalKey] = stateAmount - adjustedCost;
+      }
+    });
+  }
+
+  return updates;
+}
+
 // Main export: applyActionEffects
 export function applyActionEffects(
   actionId: string,
@@ -105,107 +202,13 @@ export function applyActionEffects(
     }
   }
 
-  // Apply costs (as negative effects)
-  if (action.cost) {
-    let costs = action.cost;
-
-    if (action.building) {
-      const level = getNextBuildingLevel(actionId, state);
-      costs = action.cost[level];
-    }
-
-    const costKeys = Object.keys(costs);
-    const hasTieredCost =
-      costKeys.length > 0 && costKeys.every((key) => !isNaN(Number(key)));
-
-    if (hasTieredCost) {
-      const showWhenKeys = Object.keys(action.show_when || {});
-      let activeTier = 1;
-
-      for (const tierKey of showWhenKeys) {
-        const tierConditions = action.show_when?.[tierKey as any];
-        if (!tierConditions) continue;
-
-        const tierSatisfied = Object.entries(tierConditions).every(
-          ([key, value]) => {
-            const pathParts = key.split(".");
-            let current: any = state;
-            for (const part of pathParts) {
-              current = current?.[part];
-            }
-
-            if (key.startsWith("buildings.")) {
-              if (value === 0) {
-                return (current || 0) === 0;
-              } else {
-                return (current || 0) >= value;
-              }
-            }
-
-            return (current || 0) >= value;
-          },
-        );
-
-        if (tierSatisfied) {
-          activeTier = Number(tierKey);
-        }
-      }
-
-      costs = costs[activeTier];
-    }
-
-    if (costs) {
-      Object.entries(costs).forEach(([path, cost]) => {
-        if (typeof cost === "number") {
-          const pathParts = path.split(".");
-          let current: any = updates;
-
-          for (let i = 0; i < pathParts.length - 1; i++) {
-            const part = pathParts[i];
-            if (!current[part]) {
-              current[part] =
-                pathParts[i] === "resources"
-                  ? { ...state.resources }
-                  : pathParts[i] === "flags"
-                    ? { ...state.flags }
-                    : pathParts[i] === "tools"
-                      ? { ...state.tools }
-                      : pathParts[i] === "buildings"
-                        ? { ...state.buildings }
-                        : pathParts[i] === "story"
-                          ? { ...state.story, seen: { ...state.story.seen } }
-                          : pathParts[i] === "relics"
-                            ? { ...state.relics }
-                            : {};
-            }
-            current = current[part];
-          }
-
-          const finalKey = pathParts[pathParts.length - 1];
-
-          // Get gameActions reference
-          const gameActions = getGameActions();
-          const actionDef = gameActions[actionId];
-
-          // Use centralized cost adjustment function (same as tooltip for both buildings and crafting)
-          const adjustedCost = calculateAdjustedCost(
-            actionId,
-            cost,
-            path.startsWith("resources."),
-            state,
-            actionDef?.category as "crafting" | "building" | undefined,
-          );
-
-          // Get the current amount from state and subtract the adjusted cost
-          const stateAmount = path.startsWith("resources.")
-            ? (state.resources[finalKey as keyof typeof state.resources] || 0)
-            : (state[pathParts[0] as keyof typeof state]?.[finalKey as any] || 0);
-
-          // Set the new value after applying the cost
-          current[finalKey] = stateAmount - adjustedCost;
-        }
-      });
-    }
+  // Apply costs (as negative effects) - skip if costs already consumed at execution start
+  const isCompletingExecution = (state as any)._completingExecution === actionId;
+  if (!isCompletingExecution) {
+    const costUpdates = applyActionCostsOnly(actionId, state);
+    Object.keys(costUpdates).forEach((key) => {
+      (updates as any)[key] = (costUpdates as any)[key];
+    });
   }
 
   // Apply effects

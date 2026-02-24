@@ -3,6 +3,14 @@ import { LogEntry } from "@/game/rules/events";
 import { gameActions } from "@/game/rules";
 import { logger } from "@/lib/logger";
 import { ActionResult } from "@/game/types";
+import { applyActionCostsOnly } from "@/game/rules/actionEffects";
+import {
+  getBoneTotemsCost,
+  getLeatherTotemsCost,
+  getAnimalsCost,
+  getHumansCost,
+} from "@/game/rules/forestSacrificeActions";
+import { killVillagers } from "@/game/stateHelpers";
 // Import all handlers from the modular action files
 import {
   handleLightFire,
@@ -175,6 +183,37 @@ import {
 
 // Re-export for backward compatibility
 export type { ActionResult } from "@/game/types";
+
+/**
+ * Deducts the costs for an action immediately (used when execution starts).
+ * Handles both standard actions (via applyActionCostsOnly) and special cases
+ * with dynamic costs (sacrifice actions).
+ */
+export function deductActionCosts(actionId: string, state: GameState): Partial<GameState> {
+  if (actionId === "boneTotems") {
+    const cost = getBoneTotemsCost(state);
+    return {
+      resources: { ...state.resources, bone_totem: (state.resources.bone_totem || 0) - cost },
+    };
+  }
+  if (actionId === "leatherTotems") {
+    const cost = getLeatherTotemsCost(state);
+    return {
+      resources: { ...state.resources, leather_totem: (state.resources.leather_totem || 0) - cost },
+    };
+  }
+  if (actionId === "animals") {
+    const cost = getAnimalsCost(state);
+    return {
+      resources: { ...state.resources, food: (state.resources.food || 0) - cost },
+    };
+  }
+  if (actionId === "humans") {
+    const cost = getHumansCost(state);
+    return killVillagers(state, cost);
+  }
+  return applyActionCostsOnly(actionId, state);
+}
 
 export function executeGameAction(
   actionId: string,

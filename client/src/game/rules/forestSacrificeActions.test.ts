@@ -6,8 +6,9 @@
  */
 import { describe, it, expect } from "vitest";
 import { GameState } from "@shared/schema";
-import { executeGameAction } from "@/game/actions";
+import { executeGameAction, deductActionCosts } from "@/game/actions";
 import { getTotalMadness } from "./effectsCalculation";
+import { getBoneTotemsCost, getLeatherTotemsCost, getAnimalsCost, getHumansCost } from "./forestSacrificeActions";
 
 // Minimal state factory - merge with createTestState pattern from resourceGains.test
 const createBaseState = (overrides?: Partial<GameState>): GameState => {
@@ -151,6 +152,103 @@ const applyResult = (state: GameState, result: { stateUpdates: Partial<GameState
       : state.villagers,
   } as GameState;
 };
+
+describe("deductActionCosts - Sacrifice Actions (costs consumed on click)", () => {
+  it("boneTotems: deducts dynamic bone_totem cost immediately", () => {
+    const state = createBaseState({
+      buildings: { ...createBaseState().buildings, altar: 1 },
+      resources: { ...createBaseState().resources, bone_totem: 100 },
+      story: { seen: { boneTotemsUsageCount: 3 } },
+    });
+
+    const expectedCost = getBoneTotemsCost(state); // 5 + 3 = 8
+    const updates = deductActionCosts("boneTotems", state);
+
+    expect(updates.resources!.bone_totem).toBe(100 - expectedCost);
+    // Silver stays unchanged (no effects applied, just cost deduction)
+    expect(updates.resources!.silver).toBe(state.resources.silver);
+  });
+
+  it("leatherTotems: deducts dynamic leather_totem cost immediately", () => {
+    const state = createBaseState({
+      buildings: { ...createBaseState().buildings, temple: 1 },
+      resources: { ...createBaseState().resources, leather_totem: 50 },
+      story: { seen: { leatherTotemsUsageCount: 2 } },
+    });
+
+    const expectedCost = getLeatherTotemsCost(state); // 5 + 2 = 7
+    const updates = deductActionCosts("leatherTotems", state);
+
+    expect(updates.resources!.leather_totem).toBe(50 - expectedCost);
+    // Gold stays unchanged (no effects applied, just cost deduction)
+    expect(updates.resources!.gold).toBe(state.resources.gold);
+  });
+
+  it("animals: deducts dynamic food cost immediately", () => {
+    const state = createBaseState({
+      buildings: { ...createBaseState().buildings, blackMonolith: 1 },
+      resources: { ...createBaseState().resources, food: 5000 },
+      story: { seen: { animalsSacrificeLevel: 1 } },
+    });
+
+    const expectedCost = getAnimalsCost(state); // 250 * (1 + 1) = 500
+    const updates = deductActionCosts("animals", state);
+
+    expect(updates.resources!.food).toBe(5000 - expectedCost);
+  });
+
+  it("humans: kills villagers immediately via killVillagers", () => {
+    const state = createBaseState({
+      buildings: { ...createBaseState().buildings, blackMonolith: 1 },
+      flags: { ...createBaseState().flags, humanSacrificeUnlocked: true },
+      villagers: { ...createBaseState().villagers, free: 10 },
+      story: { seen: { humansSacrificeLevel: 0 } },
+    });
+
+    const expectedCost = getHumansCost(state); // level 0 → 1 villager
+    const updates = deductActionCosts("humans", state);
+
+    // Total villagers should have decreased by cost
+    const totalAfter = Object.values(updates.villagers || {}).reduce(
+      (sum: number, count) => sum + ((count as number) || 0), 0
+    );
+    expect(totalAfter).toBe(10 - expectedCost);
+  });
+
+  it("boneTotems completing execution: applyActionEffects skips costs, applies silver gain", () => {
+    const state = createBaseState({
+      buildings: { ...createBaseState().buildings, altar: 1 },
+      resources: { ...createBaseState().resources, bone_totem: 100, silver: 0 },
+      story: { seen: {} },
+    });
+    // Simulate completing execution
+    (state as any)._completingExecution = "boneTotems";
+
+    const result = executeGameAction("boneTotems", state);
+
+    // Bone totems should NOT be deducted (already consumed at start)
+    const boneTotemChange = (result.stateUpdates?.resources?.bone_totem ?? 100) - 100;
+    expect(boneTotemChange).toBe(0);
+    // Silver SHOULD be gained
+    expect(result.stateUpdates?.resources?.silver).toBeGreaterThan(0);
+  });
+
+  it("animals completing execution: applyActionEffects skips food cost, updates story", () => {
+    const state = createBaseState({
+      buildings: { ...createBaseState().buildings, blackMonolith: 1 },
+      resources: { ...createBaseState().resources, food: 5000 },
+      story: { seen: {} },
+    });
+    (state as any)._completingExecution = "animals";
+
+    const result = executeGameAction("animals", state);
+
+    // Food should NOT be deducted
+    expect(result.stateUpdates?.resources?.food).toBeUndefined();
+    // Story level should still increment
+    expect(result.stateUpdates?.story?.seen?.animalsSacrificeLevel).toBe(1);
+  });
+});
 
 describe("Forest Sacrifice Actions - Madness", () => {
   describe("Animal sacrifice (reduces madness)", () => {

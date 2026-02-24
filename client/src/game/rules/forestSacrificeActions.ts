@@ -152,21 +152,25 @@ function handleTotemSacrifice(
       : 25;
   const currentCost = Math.min(5 + usageCount, maxCost);
 
-  // Check if player has enough totems for the current price
-  if ((state.resources[totemResource] || 0) < currentCost) {
+  const isCompletingExecution = (state as any)._completingExecution === actionId;
+
+  // Check if player has enough totems for the current price (skip when completing execution - already consumed)
+  if (!isCompletingExecution && (state.resources[totemResource] || 0) < currentCost) {
     return result; // Not enough resources
   }
 
   // Apply the dynamic cost
   const effectUpdates = applyActionEffects(actionId, state);
 
-  if (!effectUpdates.resources) {
-    effectUpdates.resources = { ...state.resources };
-  }
+  if (!isCompletingExecution) {
+    if (!effectUpdates.resources) {
+      effectUpdates.resources = { ...state.resources };
+    }
 
-  // Override the cost with dynamic pricing
-  effectUpdates.resources[totemResource] =
-    (state.resources[totemResource] || 0) - currentCost;
+    // Override the cost with dynamic pricing
+    effectUpdates.resources[totemResource] =
+      (state.resources[totemResource] || 0) - currentCost;
+  }
 
   // Track usage count for next time
   if (!effectUpdates.story) {
@@ -276,20 +280,23 @@ export function handleAnimals(
   }
 
   const currentCost = getAnimalsCost(state);
+  const isCompletingExecution = (state as any)._completingExecution === "animals";
 
-  // Check if player has enough food for the current cost
-  if ((state.resources.food || 0) < currentCost) {
+  // Check if player has enough food (skip when completing execution - already consumed)
+  if (!isCompletingExecution && (state.resources.food || 0) < currentCost) {
     return result; // Not enough resources
   }
 
   // Apply effects
   const effectUpdates: Partial<GameState> = {};
 
-  // Update resources
-  if (!effectUpdates.resources) {
-    effectUpdates.resources = { ...state.resources };
+  // Update resources (only deduct food if not completing execution)
+  if (!isCompletingExecution) {
+    if (!effectUpdates.resources) {
+      effectUpdates.resources = { ...state.resources };
+    }
+    effectUpdates.resources.food = (state.resources.food || 0) - currentCost;
   }
-  effectUpdates.resources.food = (state.resources.food || 0) - currentCost;
 
   // Update story for next level and track usage
   if (!effectUpdates.story) {
@@ -323,6 +330,7 @@ export function handleHumans(
   }
 
   const currentCost = getHumansCost(state);
+  const isCompletingExecution = (state as any)._completingExecution === "humans";
 
   // Calculate total villagers
   const totalVillagers = Object.values(state.villagers).reduce(
@@ -330,17 +338,19 @@ export function handleHumans(
     0,
   );
 
-  // Check if player has enough villagers for the current cost
-  if (totalVillagers < currentCost) {
+  // Check if player has enough villagers (skip when completing execution - already consumed)
+  if (!isCompletingExecution && totalVillagers < currentCost) {
     return result; // Not enough villagers
   }
 
   // Apply effects
   const effectUpdates: Partial<GameState> = {};
 
-  // Use killVillagers helper to kill the required number
-  const deathResult = killVillagers(state, currentCost);
-  Object.assign(effectUpdates, deathResult);
+  // Kill villagers only if not completing execution (already done at execution start)
+  if (!isCompletingExecution) {
+    const deathResult = killVillagers(state, currentCost);
+    Object.assign(effectUpdates, deathResult);
+  }
 
   // Update story for next level and track usage
   if (!effectUpdates.story) {

@@ -165,7 +165,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
         {/* Cooldown or execution progress overlay */}
         {(isCoolingDown || isExecuting) && (
           <div
-            className={`absolute inset-0 transition-opacity duration-200 ${isExecuting ? "bg-amber-500/30" : "bg-white/15"}`}
+            className={`absolute inset-0 transition-opacity duration-200 bg-white/15`}
             style={{
               width: `${overlayWidth}%`,
               left: 0,
