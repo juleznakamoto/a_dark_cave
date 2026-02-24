@@ -187,11 +187,13 @@ body {
 
   0%,
   100% {
-    text-shadow: 0 0 2px rgba(255, 255, 255, .4), 0 0 4px rgba(255, 255, 255, .2);
+    text-shadow: 0 0 1px rgba(255, 255, 255, .2), 0 0 2px rgba(255, 255, 255, .1);
+    color: inherit;
   }
 
   50% {
-    text-shadow: 0 0 6px rgba(255, 255, 255, .8), 0 0 10px rgba(255, 255, 255, .4);
+    text-shadow: 0 0 3px rgba(255, 255, 255, .4), 0 0 5px rgba(255, 255, 255, .2);
+    color: white;
   }
 }
 
