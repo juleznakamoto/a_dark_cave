@@ -73,6 +73,7 @@ const SESSION_CHECK_INTERVAL = 5 * 60 * 1000; // Check session every 5 minutes
 let tickAccumulator = 0;
 let lastAutoSave = 0;
 let lastProduction = 0;
+let productionPauseStartedAt: number | null = null;
 let gameStartTime = 0;
 let lastShopNotificationTime = 0;
 let lastAuthNotificationTime = 0;
@@ -97,6 +98,7 @@ export function startGameLoop() {
   lastFrameTime = now;
   lastRenderTime = now;
   lastProduction = now; // Reset production interval to start fresh
+  productionPauseStartedAt = null;
   tickAccumulator = 0;
   if (gameStartTime === 0) {
     gameStartTime = now; // Set game start time only once
@@ -250,15 +252,20 @@ export function startGameLoop() {
         audioManager.stopAllSounds();
         useGameStore.setState({ isPausedPreviously: true });
       }
-      // Reset production timer when paused so time doesn't accumulate
-      lastProduction = timestamp;
-      // Only reset loop progress to 0 when manually paused (not when dialogs open)
-      if (state.isPaused) {
-        useGameStore.setState({ loopProgress: 0 });
+      // Freeze production timer while paused so it can resume from remaining time.
+      if (productionPauseStartedAt === null) {
+        productionPauseStartedAt = timestamp;
       }
       // Skip everything when paused
       gameLoopId = requestAnimationFrame(tick);
       return;
+    }
+
+    // Resume production timer from where it left off before pause.
+    if (productionPauseStartedAt !== null) {
+      const pausedDuration = timestamp - productionPauseStartedAt;
+      lastProduction += pausedDuration;
+      productionPauseStartedAt = null;
     }
 
     // Resume sounds when exiting pause state
@@ -538,6 +545,7 @@ export function stopGameLoop() {
     clearTimeout(loopProgressTimeoutId);
     loopProgressTimeoutId = null;
   }
+  productionPauseStartedAt = null;
 
   // Clean up inactivity checker
   if (inactivityCheckInterval) {
