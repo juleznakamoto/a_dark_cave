@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/tooltip";
 
 const BADGE_SIZE = 10;
+const BADGE_SIZE_ASSIGNED = 8;
 const FILL_SIZE = BADGE_SIZE * 2.2;
 
 interface ButtonPriorBadgeProps {
@@ -27,7 +28,8 @@ export function ButtonPriorBadge({ actionId }: ButtonPriorBadgeProps) {
   const level = disgracedPriorSkills?.level ?? 0;
   const maxActions = DISGRACED_PRIOR_UPGRADES[level]?.maxActions ?? 1;
   const isAssigned = priorAssignedActions?.includes(actionId) ?? false;
-  const atCapacity = !isAssigned && (priorAssignedActions?.length ?? 0) >= maxActions;
+  const atCapacity =
+    !isAssigned && (priorAssignedActions?.length ?? 0) >= maxActions;
 
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -47,7 +49,9 @@ export function ButtonPriorBadge({ actionId }: ButtonPriorBadgeProps) {
   // When active, the animated fill div slides over it.
   const bg = atCapacity
     ? "rgba(235,235,235,0.12)"
-    : hovered && !isAssigned ? "rgba(235,235,235,0.9)" : "rgba(235,235,235,0.5)";
+    : hovered && !isAssigned
+      ? "rgba(235,235,235,0.9)"
+      : "rgba(235,235,235,0.5)";
 
   // active: dark gap + bright outer ring; inactive/locked: simple ring
   const shadow = isAssigned
@@ -73,10 +77,14 @@ export function ButtonPriorBadge({ actionId }: ButtonPriorBadgeProps) {
             data-testid={`prior-badge-${actionId}`}
             style={{
               position: "absolute",
-              bottom: "-4px",
-              right: "-4px",
-              width: `${BADGE_SIZE}px`,
-              height: `${BADGE_SIZE}px`,
+              bottom: isAssigned ? "-3px" : "-4px",
+              right: isAssigned ? "-3px" : "-4px",
+              width: isAssigned
+                ? `${BADGE_SIZE_ASSIGNED}px`
+                : `${BADGE_SIZE}px`,
+              height: isAssigned
+                ? `${BADGE_SIZE_ASSIGNED}px`
+                : `${BADGE_SIZE}px`,
               borderRadius: "50%",
               background: bg,
               boxShadow: shadow,
