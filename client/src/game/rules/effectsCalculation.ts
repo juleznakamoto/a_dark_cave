@@ -9,7 +9,7 @@ import {
 } from "./effects";
 import { villageBuildActions } from "./villageBuildActions";
 import { ACTION_TO_UPGRADE_KEY, getUpgradeBonus } from "../buttonUpgrades";
-import { HUNT_BONUSES } from "./skillUpgrades";
+import { HUNT_BONUSES, DISGRACED_PRIOR_UPGRADES } from "./skillUpgrades";
 
 // Tool hierarchy definitions
 const AXE_HIERARCHY = [
@@ -329,6 +329,15 @@ export const getActionBonuses = (
     if (bonus > 0) {
       // Button upgrades are percentage bonuses, convert to multiplier
       resourceMultiplier += bonus / 100;
+    }
+  }
+
+  // Add Disgraced Prior bonus for actions assigned to him
+  if (state.fellowship?.disgraced_prior && (state.priorAssignedActions ?? []).includes(actionId)) {
+    const priorLevel = state.disgracedPriorSkills?.level ?? 0;
+    const priorMultiplier = DISGRACED_PRIOR_UPGRADES[priorLevel]?.rewardMultiplier ?? 1;
+    if (priorMultiplier > 1) {
+      resourceMultiplier += priorMultiplier - 1;
     }
   }
 

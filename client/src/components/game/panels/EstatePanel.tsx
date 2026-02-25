@@ -716,7 +716,17 @@ export default function EstatePanel() {
                 const lvl = disgracedPriorSkills?.level ?? 0;
                 const cur = DISGRACED_PRIOR_UPGRADES[lvl];
                 const nxt = DISGRACED_PRIOR_UPGRADES[lvl + 1];
-                const delta = nxt ? nxt.maxActions - cur.maxActions : 0;
+                const actionDelta = nxt ? nxt.maxActions - cur.maxActions : 0;
+                const bonusPercent = nxt ? (nxt.rewardMultiplier - 1) * 100 : 0;
+                const tooltipContent = nxt ? (
+                  actionDelta > 0
+                    ? <div>+{actionDelta} concurrent action{actionDelta > 1 ? "s" : ""}</div>
+                    : <div>+{bonusPercent}% bonus on assigned actions</div>
+                ) : <div>Max level</div>;
+                const curBonusPercent = (cur.rewardMultiplier - 1) * 100;
+                const description = curBonusPercent > 0
+                  ? `${cur.maxActions} action${cur.maxActions > 1 ? "s" : ""} · +${curBonusPercent}% bonus`
+                  : `${cur.maxActions} concurrent action${cur.maxActions > 1 ? "s" : ""}`;
                 return (
                   <SkillUpgradeRow
                     title="Disgraced Prior"
@@ -726,8 +736,8 @@ export default function EstatePanel() {
                     tooltipId="upgrade-disgraced-prior-button"
                     buttonId="upgrade-disgraced-prior"
                     onUpgrade={handleDgracedPriorUpgrade}
-                    tooltipContent={<div>+{delta} concurrent action{delta > 1 ? "s" : ""}</div>}
-                    description={`${cur.maxActions} concurrent action${cur.maxActions > 1 ? "s" : ""}`}
+                    tooltipContent={tooltipContent}
+                    description={description}
                   />
                 );
               })()}
