@@ -25,6 +25,8 @@ AS $$
 $$;
 
 -- Aggregate helper: returns daily session counts in exclusive duration buckets
+DROP FUNCTION IF EXISTS get_session_duration_stats(INTEGER);
+
 CREATE OR REPLACE FUNCTION get_session_duration_stats(days_back INTEGER DEFAULT 90)
 RETURNS TABLE (
   visit_date DATE,
