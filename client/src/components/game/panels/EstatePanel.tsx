@@ -725,7 +725,7 @@ export default function EstatePanel() {
                 ) : <div>Max level</div>;
                 const curBonusPercent = (cur.rewardMultiplier - 1) * 100;
                 const description = curBonusPercent > 0
-                  ? `${cur.maxActions} action${cur.maxActions > 1 ? "s" : ""} · +${curBonusPercent}% bonus`
+                  ? `${cur.maxActions} action${cur.maxActions > 1 ? "s" : ""}, +${curBonusPercent}% bonus`
                   : `${cur.maxActions} concurrent action${cur.maxActions > 1 ? "s" : ""}`;
                 return (
                   <SkillUpgradeRow
