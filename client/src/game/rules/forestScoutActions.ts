@@ -85,8 +85,8 @@ export const forestScoutActions: Record<string, Action> = {
       const isBTP = state.BTP === 1;
       return {
         "resources.food": isBTP ? "random(6,14)" : "random(6,12)",
-        "resources.fur": isBTP ? "random(4,7)" : "random(3,6)",
-        "resources.bones": isBTP ? "random(4,7)" : "random(3,6)",
+        "resources.fur": isBTP ? "random(3,6)" : "random(2,5)",
+        "resources.bones": isBTP ? "random(3,6)" : "random(2,5)",
         "story.seen.hasHunted": true,
         "tools.blacksmith_hammer": {
           probability: (state: any) => {
