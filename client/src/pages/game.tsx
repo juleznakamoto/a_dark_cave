@@ -125,6 +125,29 @@ export default function Game() {
         // Load Inter font immediately when game component mounts
         loadInterFont();
 
+        // Load symbol fallback font (covers game UI glyphs not in Inter).
+        // Only add to CSS font stack once confirmed loaded to avoid FOUT.
+        if (!document.getElementById('noto-symbols-font')) {
+          const preconnect1 = document.createElement('link');
+          preconnect1.rel = 'preconnect';
+          preconnect1.href = 'https://fonts.googleapis.com';
+          document.head.appendChild(preconnect1);
+
+          const preconnect2 = document.createElement('link');
+          preconnect2.rel = 'preconnect';
+          preconnect2.href = 'https://fonts.gstatic.com';
+          preconnect2.crossOrigin = 'anonymous';
+          document.head.appendChild(preconnect2);
+
+          const link = document.createElement('link');
+          link.id = 'noto-symbols-font';
+          link.rel = 'stylesheet';
+          link.href = 'https://fonts.googleapis.com/css2?family=Noto+Sans+Symbols+2&display=swap';
+          link.onload = () => document.documentElement.classList.add('symbols-font-loaded');
+          link.onerror = () => { /* silent: symbols fall back to system fonts */ };
+          document.head.appendChild(link);
+        }
+
         // Load saved game or initialize with defaults
         const savedState = await loadGame();
         if (savedState) {

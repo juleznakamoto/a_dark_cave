@@ -40,6 +40,19 @@ body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
+/* Apply symbol fallback font only once confirmed loaded — avoids FOUT */
+:root.symbols-font-loaded {
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Noto Sans Symbols 2", sans-serif;
+}
+
+:root.font-loaded.symbols-font-loaded {
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Noto Sans Symbols 2", sans-serif;
+}
+
+:root.font-loaded.symbols-font-loaded body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Noto Sans Symbols 2", sans-serif;
+}
+
 @layer base {
   * {
     @apply border-border select-none;
