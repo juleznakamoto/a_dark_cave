@@ -1580,7 +1580,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     timeProbability: 45,
     title: "The Veiled Seer",
     message:
-      "A hooded figureappears at dusk. His eyes gleam from beneath the veil. 'I have glimpsed what lies ahead,' he rasps. 'Fifty gold, and I shall tell you what awaits.'",
+      "A hooded figureappears at dusk. His eyes gleam from beneath the veil. 'I have glimpsed what lies ahead,' he rasps. '50 Gold, and I shall tell you what awaits.'",
     priority: 3,
     repeatable: false,
     choices: [
