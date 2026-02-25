@@ -450,7 +450,6 @@ export const choiceEvents: Record<string, GameEvent> = {
       state.flags.forestUnlocked &&
       state.buildings.woodenHut >= 4 &&
       !state.clothing.cracked_crown,
-
     timeProbability: 40,
     title: "The Hidden Lake",
     message:
