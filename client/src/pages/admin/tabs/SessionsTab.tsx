@@ -7,13 +7,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
   BarChart,
   Bar,
   LineChart,
@@ -32,15 +25,14 @@ import { format, parseISO } from "date-fns";
 
 interface SessionStats {
   visit_date: string;
-  total_sessions: number;
-  lt_15m: number;
-  gte_15m: number;
-  lt_30m: number;
-  lt_1h: number;
-  lt_2h: number;
-  lt_3h: number;
-  lt_4h: number;
-  gte_4h: number;
+  total: number;
+  b_0_15m: number;
+  b_15_30m: number;
+  b_30m_1h: number;
+  b_1h_2h: number;
+  b_2h_3h: number;
+  b_3h_4h: number;
+  b_4h_plus: number;
 }
 
 interface SessionsTabProps {
@@ -48,129 +40,83 @@ interface SessionsTabProps {
 }
 
 const BUCKET_COLORS: Record<string, string> = {
-  lt_15m: "#ef4444",
-  "15m-30m": "#f97316",
-  "30m-1h": "#eab308",
-  "1h-2h": "#22c55e",
-  "2h-3h": "#3b82f6",
-  "3h-4h": "#8b5cf6",
+  "0–15m": "#ef4444",
+  "15–30m": "#f97316",
+  "30m–1h": "#eab308",
+  "1–2h": "#22c55e",
+  "2–3h": "#3b82f6",
+  "3–4h": "#8b5cf6",
   "4h+": "#ec4899",
 };
+
+const BUCKETS = [
+  { key: "b_0_15m", label: "0–15m", color: BUCKET_COLORS["0–15m"] },
+  { key: "b_15_30m", label: "15–30m", color: BUCKET_COLORS["15–30m"] },
+  { key: "b_30m_1h", label: "30m–1h", color: BUCKET_COLORS["30m–1h"] },
+  { key: "b_1h_2h", label: "1–2h", color: BUCKET_COLORS["1–2h"] },
+  { key: "b_2h_3h", label: "2–3h", color: BUCKET_COLORS["2–3h"] },
+  { key: "b_3h_4h", label: "3–4h", color: BUCKET_COLORS["3–4h"] },
+  { key: "b_4h_plus", label: "4h+", color: BUCKET_COLORS["4h+"] },
+] as const;
 
 export default function SessionsTab({ environment }: SessionsTabProps) {
   const [data, setData] = useState<SessionStats[]>([]);
   const [loading, setLoading] = useState(true);
-  const [range, setRange] = useState<"30" | "90" | "365">("30");
 
   useEffect(() => {
     setLoading(true);
-    fetch(`/api/admin/sessions?env=${environment}&days=${range}`)
+    fetch(`/api/admin/sessions?env=${environment}&days=365`)
       .then((r) => r.json())
       .then((d) => setData(d))
       .catch(() => setData([]))
       .finally(() => setLoading(false));
-  }, [environment, range]);
+  }, [environment]);
 
   const chartData = useMemo(
     () =>
       data.map((d) => ({
         date: format(parseISO(d.visit_date), "MMM dd"),
-        "< 15m": d.lt_15m,
-        "> 15m": d.gte_15m,
-        "< 30m": d.lt_30m,
-        "< 1h": d.lt_1h,
-        "< 2h": d.lt_2h,
-        "< 3h": d.lt_3h,
-        "< 4h": d.lt_4h,
-        total: d.total_sessions,
+        "0–15m": d.b_0_15m,
+        "15–30m": d.b_15_30m,
+        "30m–1h": d.b_30m_1h,
+        "1–2h": d.b_1h_2h,
+        "2–3h": d.b_2h_3h,
+        "3–4h": d.b_3h_4h,
+        "4h+": d.b_4h_plus,
       })),
     [data],
   );
 
-  const stackedData = useMemo(
-    () =>
-      data.map((d) => {
-        const b15_30 = d.lt_30m - d.lt_15m;
-        const b30_1h = d.lt_1h - d.lt_30m;
-        const b1h_2h = d.lt_2h - d.lt_1h;
-        const b2h_3h = d.lt_3h - d.lt_2h;
-        const b3h_4h = d.lt_4h - d.lt_3h;
-        return {
-          date: format(parseISO(d.visit_date), "MMM dd"),
-          "< 15m": d.lt_15m,
-          "15m-30m": Math.max(0, b15_30),
-          "30m-1h": Math.max(0, b30_1h),
-          "1h-2h": Math.max(0, b1h_2h),
-          "2h-3h": Math.max(0, b2h_3h),
-          "3h-4h": Math.max(0, b3h_4h),
-          "4h+": d.gte_4h,
-        };
-      }),
-    [data],
-  );
-
   const totals = useMemo(() => {
-    if (data.length === 0)
-      return {
-        total: 0,
-        lt_15m: 0,
-        gte_15m: 0,
-        lt_30m: 0,
-        lt_1h: 0,
-        lt_2h: 0,
-        lt_3h: 0,
-        lt_4h: 0,
-        gte_4h: 0,
-      };
+    const zero = { total: 0, b_0_15m: 0, b_15_30m: 0, b_30m_1h: 0, b_1h_2h: 0, b_2h_3h: 0, b_3h_4h: 0, b_4h_plus: 0 };
+    if (data.length === 0) return zero;
     return data.reduce(
       (acc, d) => ({
-        total: acc.total + d.total_sessions,
-        lt_15m: acc.lt_15m + d.lt_15m,
-        gte_15m: acc.gte_15m + d.gte_15m,
-        lt_30m: acc.lt_30m + d.lt_30m,
-        lt_1h: acc.lt_1h + d.lt_1h,
-        lt_2h: acc.lt_2h + d.lt_2h,
-        lt_3h: acc.lt_3h + d.lt_3h,
-        lt_4h: acc.lt_4h + d.lt_4h,
-        gte_4h: acc.gte_4h + d.gte_4h,
+        total: acc.total + d.total,
+        b_0_15m: acc.b_0_15m + d.b_0_15m,
+        b_15_30m: acc.b_15_30m + d.b_15_30m,
+        b_30m_1h: acc.b_30m_1h + d.b_30m_1h,
+        b_1h_2h: acc.b_1h_2h + d.b_1h_2h,
+        b_2h_3h: acc.b_2h_3h + d.b_2h_3h,
+        b_3h_4h: acc.b_3h_4h + d.b_3h_4h,
+        b_4h_plus: acc.b_4h_plus + d.b_4h_plus,
       }),
-      {
-        total: 0,
-        lt_15m: 0,
-        gte_15m: 0,
-        lt_30m: 0,
-        lt_1h: 0,
-        lt_2h: 0,
-        lt_3h: 0,
-        lt_4h: 0,
-        gte_4h: 0,
-      },
+      zero,
     );
   }, [data]);
 
+  const gt15m = totals.total - totals.b_0_15m;
+
   const pct = (n: number) =>
-    totals.total > 0 ? ((n / totals.total) * 100).toFixed(1) + "%" : "0%";
+    totals.total > 0 ? ((n / totals.total) * 100).toFixed(1) + "%" : "—";
 
   if (loading) {
-    return <div className="text-muted-foreground p-4">Loading session data...</div>;
+    return <div className="text-muted-foreground p-4">Loading session data…</div>;
   }
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-end">
-        <Select value={range} onValueChange={(v) => setRange(v as "30" | "90" | "365")}>
-          <SelectTrigger className="w-[140px]">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="30">Last 30 days</SelectItem>
-            <SelectItem value="90">Last 90 days</SelectItem>
-            <SelectItem value="365">Last year</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-
-      {/* Summary cards */}
+      {/* Top-level stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <Card>
           <CardHeader className="pb-2">
@@ -185,8 +131,8 @@ export default function SessionsTab({ environment }: SessionsTabProps) {
             <CardDescription>&lt; 15 min</CardDescription>
           </CardHeader>
           <CardContent>
-            <p className="text-3xl font-bold">{totals.lt_15m.toLocaleString()}</p>
-            <p className="text-sm text-muted-foreground">{pct(totals.lt_15m)}</p>
+            <p className="text-3xl font-bold">{totals.b_0_15m.toLocaleString()}</p>
+            <p className="text-sm text-muted-foreground">{pct(totals.b_0_15m)}</p>
           </CardContent>
         </Card>
         <Card>
@@ -194,8 +140,8 @@ export default function SessionsTab({ environment }: SessionsTabProps) {
             <CardDescription>&gt; 15 min</CardDescription>
           </CardHeader>
           <CardContent>
-            <p className="text-3xl font-bold">{totals.gte_15m.toLocaleString()}</p>
-            <p className="text-sm text-muted-foreground">{pct(totals.gte_15m)}</p>
+            <p className="text-3xl font-bold">{gt15m.toLocaleString()}</p>
+            <p className="text-sm text-muted-foreground">{pct(gt15m)}</p>
           </CardContent>
         </Card>
         <Card>
@@ -210,69 +156,72 @@ export default function SessionsTab({ environment }: SessionsTabProps) {
         </Card>
       </div>
 
-      {/* Bucket breakdown */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-        {[
-          { label: "< 30 min", value: totals.lt_30m },
-          { label: "< 1 hour", value: totals.lt_1h },
-          { label: "< 2 hours", value: totals.lt_2h },
-          { label: "< 3 hours", value: totals.lt_3h },
-          { label: "< 4 hours", value: totals.lt_4h },
-        ].map(({ label, value }) => (
-          <Card key={label}>
-            <CardHeader className="pb-2">
-              <CardDescription>{label}</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-2xl font-bold">{value.toLocaleString()}</p>
-              <p className="text-sm text-muted-foreground">{pct(value)}</p>
-            </CardContent>
-          </Card>
-        ))}
+      {/* Per-bucket breakdown */}
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
+        {BUCKETS.map(({ key, label, color }) => {
+          const value = totals[key as keyof typeof totals];
+          return (
+            <Card key={key}>
+              <CardHeader className="pb-2">
+                <CardDescription>
+                  <span className="inline-block w-2.5 h-2.5 rounded-sm mr-1.5" style={{ backgroundColor: color }} />
+                  {label}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-2xl font-bold">{value.toLocaleString()}</p>
+                <p className="text-sm text-muted-foreground">{pct(value)}</p>
+              </CardContent>
+            </Card>
+          );
+        })}
       </div>
 
-      {/* Stacked bar chart: session duration distribution over time */}
+      {/* Stacked bar chart */}
       <Card>
         <CardHeader>
           <CardTitle>Session Duration Distribution</CardTitle>
-          <CardDescription>Daily breakdown by duration bucket</CardDescription>
+          <CardDescription>Daily breakdown by duration</CardDescription>
         </CardHeader>
         <CardContent>
           <ChartContainer config={{}}>
-            <BarChart data={stackedData}>
+            <BarChart data={chartData}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="date" />
               <YAxis />
               <ChartTooltip content={<ChartTooltipContent />} />
               <Legend />
-              <Bar dataKey="< 15m" stackId="a" fill={BUCKET_COLORS["lt_15m"]} />
-              <Bar dataKey="15m-30m" stackId="a" fill={BUCKET_COLORS["15m-30m"]} />
-              <Bar dataKey="30m-1h" stackId="a" fill={BUCKET_COLORS["30m-1h"]} />
-              <Bar dataKey="1h-2h" stackId="a" fill={BUCKET_COLORS["1h-2h"]} />
-              <Bar dataKey="2h-3h" stackId="a" fill={BUCKET_COLORS["2h-3h"]} />
-              <Bar dataKey="3h-4h" stackId="a" fill={BUCKET_COLORS["3h-4h"]} />
-              <Bar dataKey="4h+" stackId="a" fill={BUCKET_COLORS["4h+"]} />
+              {BUCKETS.map(({ label, color }) => (
+                <Bar key={label} dataKey={label} stackId="a" fill={color} />
+              ))}
             </BarChart>
           </ChartContainer>
         </CardContent>
       </Card>
 
-      {/* Line chart: daily totals + key thresholds */}
+      {/* Daily total line chart */}
       <Card>
         <CardHeader>
           <CardTitle>Daily Sessions</CardTitle>
-          <CardDescription>Total sessions and key thresholds over time</CardDescription>
+          <CardDescription>Total sessions per day</CardDescription>
         </CardHeader>
         <CardContent>
           <ChartContainer config={{}}>
-            <LineChart data={chartData}>
+            <LineChart
+              data={data.map((d) => ({
+                date: format(parseISO(d.visit_date), "MMM dd"),
+                total: d.total,
+                "< 15m": d.b_0_15m,
+                "> 15m": d.total - d.b_0_15m,
+              }))}
+            >
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="date" />
               <YAxis />
               <ChartTooltip content={<ChartTooltipContent />} />
               <Legend />
               <Line type="monotone" dataKey="total" stroke="#ffffff" strokeWidth={2} dot={false} />
-              <Line type="monotone" dataKey="< 15m" stroke={BUCKET_COLORS["lt_15m"]} strokeWidth={1.5} dot={false} />
+              <Line type="monotone" dataKey="< 15m" stroke="#ef4444" strokeWidth={1.5} dot={false} />
               <Line type="monotone" dataKey="> 15m" stroke="#10b981" strokeWidth={1.5} dot={false} />
             </LineChart>
           </ChartContainer>

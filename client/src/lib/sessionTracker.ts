@@ -1,5 +1,6 @@
 const SID_KEY = "st_sid";
 const START_KEY = "st_start";
+const PING_INTERVAL_MS = 5 * 60 * 1000;
 
 function generateId(): string {
   return crypto.randomUUID?.() ??
@@ -43,9 +44,11 @@ export function initSessionTracker() {
 
   getSession();
 
+  // Primary: ping every 5 minutes so data survives crashes / killed tabs
+  setInterval(sendPing, PING_INTERVAL_MS);
+
+  // Supplementary: capture the moment the user leaves (best-effort)
   document.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "hidden") sendPing();
   });
-
-  window.addEventListener("beforeunload", sendPing);
 }
