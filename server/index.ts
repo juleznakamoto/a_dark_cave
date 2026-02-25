@@ -163,6 +163,25 @@ function maskEmail(email: string | null): string {
   return `${local.substring(0, 2)}***${local.substring(local.length - 2)}`;
 }
 
+function summarizeResponseBody(body: unknown): string {
+  if (body === null || body === undefined) {
+    return "body:null";
+  }
+  if (Array.isArray(body)) {
+    return `body:array(len=${body.length})`;
+  }
+  if (typeof body === "string") {
+    return `body:string(len=${body.length})`;
+  }
+  if (typeof body === "object") {
+    const keys = Object.keys(body as Record<string, unknown>);
+    const shownKeys = keys.slice(0, 5).join(",");
+    const suffix = keys.length > 5 ? ",..." : "";
+    return `body:object(keys=${keys.length}${shownKeys ? `:${shownKeys}${suffix}` : ""})`;
+  }
+  return `body:${typeof body}`;
+}
+
 // Cache admin clients to reuse connections
 const adminClients = new Map<string, any>();
 
@@ -406,61 +425,16 @@ app.get("/api/admin/data", async (req, res) => {
       },
     };
 
-    try {
-      log("📧 Fetching auth users for email confirmation stats...");
-
-      // Paginate through all users
-      let allUsers: any[] = [];
-      let page = 1;
-      const perPage = 1000; // Max per page
-
-      while (true) {
-        const { data: authData, error: authError } = await adminClient.auth.admin.listUsers({
-          page,
-          perPage,
-        });
-
-        if (authError) {
-          log("❌ Error fetching auth users:", authError);
-          break;
-        }
-
-        if (!authData || authData.users.length === 0) {
-          break;
-        }
-
-        allUsers = allUsers.concat(authData.users);
-
-        // If we got fewer users than perPage, we've reached the end
-        if (authData.users.length < perPage) {
-          break;
-        }
-
-        page++;
-      }
-
-      log("📧 Total auth users found:", allUsers.length);
-      totalUserCount = allUsers.length;
-
-      // Calculate stats for all three time periods
-      emailConfirmationStats.allTime = calculateEmailStats(allUsers);
-      emailConfirmationStats.last30Days = calculateEmailStats(allUsers, thirtyDaysAgo);
-      emailConfirmationStats.last7Days = calculateEmailStats(allUsers, sevenDaysAgo);
-
-      log("📧 Stats calculated for all time periods");
-    } catch (error: any) {
-      log("❌ Error processing email confirmation stats:", error);
-    }
-
-    // Calculate registration method stats
     let registrationMethodStats = {
       emailRegistrations: 0,
       googleRegistrations: 0,
     };
 
     try {
-      // Paginate through all users again for registration method
-      let allUsersForMethod: any[] = [];
+      log("📧 Fetching auth users for email and registration stats...");
+
+      // Paginate through all users once and reuse data for all stats
+      let allUsers: any[] = [];
       let page = 1;
       const perPage = 1000;
 
@@ -479,7 +453,7 @@ app.get("/api/admin/data", async (req, res) => {
           break;
         }
 
-        allUsersForMethod = allUsersForMethod.concat(authData.users);
+        allUsers = allUsers.concat(authData.users);
 
         if (authData.users.length < perPage) {
           break;
@@ -488,8 +462,16 @@ app.get("/api/admin/data", async (req, res) => {
         page++;
       }
 
+      log(`📧 Total auth users found: ${allUsers.length}`);
+      totalUserCount = allUsers.length;
+
+      // Calculate email confirmation stats for all three time periods
+      emailConfirmationStats.allTime = calculateEmailStats(allUsers);
+      emailConfirmationStats.last30Days = calculateEmailStats(allUsers, thirtyDaysAgo);
+      emailConfirmationStats.last7Days = calculateEmailStats(allUsers, sevenDaysAgo);
+
       // Count registration methods
-      allUsersForMethod.forEach((user: any) => {
+      allUsers.forEach((user: any) => {
         const provider = user.app_metadata?.provider;
         const providers = user.app_metadata?.providers || [];
         const hasGoogleProvider = provider === 'google' || providers.includes('google');
@@ -500,8 +482,9 @@ app.get("/api/admin/data", async (req, res) => {
           registrationMethodStats.emailRegistrations++;
         }
       });
+      log("📧 Stats calculated for all time periods and registration methods");
     } catch (error: any) {
-      log("❌ Error calculating registration method stats:", error);
+      log("❌ Error processing auth-derived stats:", error);
     }
 
     res.json({
@@ -547,7 +530,7 @@ app.get("/api/admin/user-lookup", async (req, res) => {
           .json({ error: "Failed to lookup user by email" });
       }
 
-      const matchingUser = authUser.users.find((u) => u.email === email);
+      const matchingUser = authUser.users.find((u: any) => u.email === email);
 
       if (!matchingUser) {
         return res.status(404).json({ error: "No user found with this email" });
@@ -589,11 +572,11 @@ app.get("/api/admin/user-lookup", async (req, res) => {
 app.use((req, res, next) => {
   const start = Date.now();
   const path = req.path;
-  let capturedJsonResponse: Record<string, any> | undefined = undefined;
+  let responseSummary: string | undefined = undefined;
 
   const originalResJson = res.json;
   res.json = function (bodyJson, ...args) {
-    capturedJsonResponse = bodyJson;
+    responseSummary = summarizeResponseBody(bodyJson);
     return originalResJson.apply(res, [bodyJson, ...args]);
   };
 
@@ -601,8 +584,8 @@ app.use((req, res, next) => {
     const duration = Date.now() - start;
     if (path.startsWith("/api")) {
       let logLine = `${req.method} ${path} ${res.statusCode} in ${duration}ms`;
-      if (capturedJsonResponse) {
-        logLine += ` :: ${JSON.stringify(capturedJsonResponse)}`;
+      if (responseSummary) {
+        logLine += ` :: ${responseSummary}`;
       }
 
       if (logLine.length > 80) {
@@ -638,11 +621,11 @@ app.get("/api/leaderboard/metadata", async (req, res) => {
       throw error;
     }
 
-    log(`📊 Metadata result:`, { data, hasValue: !!data?.value });
+    log(`📊 Metadata result: hasValue=${!!data?.value}`);
 
     // If no metadata exists yet, return null
     const result = { lastUpdated: data?.value || null };
-    log(`📊 Returning metadata:`, result);
+    log(`📊 Returning metadata: lastUpdated=${result.lastUpdated ? "set" : "null"}`);
 
     // Set proper content type and cache appropriately
     res.setHeader('Content-Type', 'application/json');
@@ -682,7 +665,7 @@ app.get("/api/leaderboard/:mode", async (req, res) => {
     );
 
     // Mask emails server-side
-    const maskedData = data.map((entry) => ({
+    const maskedData = data.map((entry: any) => ({
       id: entry.id,
       username: entry.username,
       displayName: entry.username || maskEmail(entry.email),
@@ -822,7 +805,7 @@ app.post("/api/leaderboard/update-username", leaderboardUpdateLimiter, async (re
         if (create.status === 0) {
           log("Gender DB created");
         } else {
-          log("Gender DB creation failed:", create.stderr?.toString() || create.error);
+          log(`Gender DB creation failed: ${create.stderr?.toString() || String(create.error)}`);
         }
       }
 

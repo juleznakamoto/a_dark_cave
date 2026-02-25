@@ -29,7 +29,9 @@ CREATE OR REPLACE FUNCTION get_session_duration_stats(days_back INTEGER DEFAULT 
 RETURNS TABLE (
   visit_date DATE,
   total      BIGINT,
-  b_0_15m    BIGINT,
+  b_0_1m     BIGINT,
+  b_1_5m     BIGINT,
+  b_5_15m    BIGINT,
   b_15_30m   BIGINT,
   b_30m_1h   BIGINT,
   b_1h_2h    BIGINT,
@@ -44,7 +46,9 @@ AS $$
   SELECT
     sv.visit_date,
     COUNT(*)                                                                    AS total,
-    COUNT(*) FILTER (WHERE duration_seconds < 900)                              AS b_0_15m,
+    COUNT(*) FILTER (WHERE duration_seconds < 60)                               AS b_0_1m,
+    COUNT(*) FILTER (WHERE duration_seconds >= 60    AND duration_seconds < 300) AS b_1_5m,
+    COUNT(*) FILTER (WHERE duration_seconds >= 300   AND duration_seconds < 900) AS b_5_15m,
     COUNT(*) FILTER (WHERE duration_seconds >= 900  AND duration_seconds < 1800) AS b_15_30m,
     COUNT(*) FILTER (WHERE duration_seconds >= 1800 AND duration_seconds < 3600) AS b_30m_1h,
     COUNT(*) FILTER (WHERE duration_seconds >= 3600 AND duration_seconds < 7200) AS b_1h_2h,

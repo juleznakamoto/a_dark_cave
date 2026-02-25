@@ -26,7 +26,9 @@ import { format, parseISO } from "date-fns";
 interface SessionStats {
   visit_date: string;
   total: number;
-  b_0_15m: number;
+  b_0_1m: number;
+  b_1_5m: number;
+  b_5_15m: number;
   b_15_30m: number;
   b_30m_1h: number;
   b_1h_2h: number;
@@ -40,9 +42,11 @@ interface SessionsTabProps {
 }
 
 const BUCKET_COLORS: Record<string, string> = {
-  "0–15m": "#ef4444",
-  "15–30m": "#f97316",
-  "30m–1h": "#eab308",
+  "0–1m": "#ef4444",
+  "1–5m": "#f97316",
+  "5–15m": "#f59e0b",
+  "15–30m": "#eab308",
+  "30m–1h": "#84cc16",
   "1–2h": "#22c55e",
   "2–3h": "#3b82f6",
   "3–4h": "#8b5cf6",
@@ -50,7 +54,9 @@ const BUCKET_COLORS: Record<string, string> = {
 };
 
 const BUCKETS = [
-  { key: "b_0_15m", label: "0–15m", color: BUCKET_COLORS["0–15m"] },
+  { key: "b_0_1m", label: "0–1m", color: BUCKET_COLORS["0–1m"] },
+  { key: "b_1_5m", label: "1–5m", color: BUCKET_COLORS["1–5m"] },
+  { key: "b_5_15m", label: "5–15m", color: BUCKET_COLORS["5–15m"] },
   { key: "b_15_30m", label: "15–30m", color: BUCKET_COLORS["15–30m"] },
   { key: "b_30m_1h", label: "30m–1h", color: BUCKET_COLORS["30m–1h"] },
   { key: "b_1h_2h", label: "1–2h", color: BUCKET_COLORS["1–2h"] },
@@ -76,7 +82,9 @@ export default function SessionsTab({ environment }: SessionsTabProps) {
     () =>
       data.map((d) => ({
         date: format(parseISO(d.visit_date), "MMM dd"),
-        "0–15m": d.b_0_15m,
+        "0–1m": d.b_0_1m,
+        "1–5m": d.b_1_5m,
+        "5–15m": d.b_5_15m,
         "15–30m": d.b_15_30m,
         "30m–1h": d.b_30m_1h,
         "1–2h": d.b_1h_2h,
@@ -88,12 +96,25 @@ export default function SessionsTab({ environment }: SessionsTabProps) {
   );
 
   const totals = useMemo(() => {
-    const zero = { total: 0, b_0_15m: 0, b_15_30m: 0, b_30m_1h: 0, b_1h_2h: 0, b_2h_3h: 0, b_3h_4h: 0, b_4h_plus: 0 };
+    const zero = {
+      total: 0,
+      b_0_1m: 0,
+      b_1_5m: 0,
+      b_5_15m: 0,
+      b_15_30m: 0,
+      b_30m_1h: 0,
+      b_1h_2h: 0,
+      b_2h_3h: 0,
+      b_3h_4h: 0,
+      b_4h_plus: 0,
+    };
     if (data.length === 0) return zero;
     return data.reduce(
       (acc, d) => ({
         total: acc.total + d.total,
-        b_0_15m: acc.b_0_15m + d.b_0_15m,
+        b_0_1m: acc.b_0_1m + d.b_0_1m,
+        b_1_5m: acc.b_1_5m + d.b_1_5m,
+        b_5_15m: acc.b_5_15m + d.b_5_15m,
         b_15_30m: acc.b_15_30m + d.b_15_30m,
         b_30m_1h: acc.b_30m_1h + d.b_30m_1h,
         b_1h_2h: acc.b_1h_2h + d.b_1h_2h,
@@ -105,7 +126,10 @@ export default function SessionsTab({ environment }: SessionsTabProps) {
     );
   }, [data]);
 
-  const gt15m = totals.total - totals.b_0_15m;
+  const lt1m = totals.b_0_1m;
+  const lt5m = totals.b_0_1m + totals.b_1_5m;
+  const lt15m = lt5m + totals.b_5_15m;
+  const gt15m = totals.total - lt15m;
 
   const pct = (n: number) =>
     totals.total > 0 ? ((n / totals.total) * 100).toFixed(1) + "%" : "—";
@@ -117,7 +141,7 @@ export default function SessionsTab({ environment }: SessionsTabProps) {
   return (
     <div className="space-y-4">
       {/* Top-level stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4">
         <Card>
           <CardHeader className="pb-2">
             <CardDescription>Total Sessions</CardDescription>
@@ -128,11 +152,29 @@ export default function SessionsTab({ environment }: SessionsTabProps) {
         </Card>
         <Card>
           <CardHeader className="pb-2">
+            <CardDescription>&lt; 1 min</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p className="text-3xl font-bold">{lt1m.toLocaleString()}</p>
+            <p className="text-sm text-muted-foreground">{pct(lt1m)}</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="pb-2">
+            <CardDescription>&lt; 5 min</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p className="text-3xl font-bold">{lt5m.toLocaleString()}</p>
+            <p className="text-sm text-muted-foreground">{pct(lt5m)}</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="pb-2">
             <CardDescription>&lt; 15 min</CardDescription>
           </CardHeader>
           <CardContent>
-            <p className="text-3xl font-bold">{totals.b_0_15m.toLocaleString()}</p>
-            <p className="text-sm text-muted-foreground">{pct(totals.b_0_15m)}</p>
+            <p className="text-3xl font-bold">{lt15m.toLocaleString()}</p>
+            <p className="text-sm text-muted-foreground">{pct(lt15m)}</p>
           </CardContent>
         </Card>
         <Card>
@@ -157,7 +199,7 @@ export default function SessionsTab({ environment }: SessionsTabProps) {
       </div>
 
       {/* Per-bucket breakdown */}
-      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-4">
         {BUCKETS.map(({ key, label, color }) => {
           const value = totals[key as keyof typeof totals];
           return (
@@ -211,8 +253,10 @@ export default function SessionsTab({ environment }: SessionsTabProps) {
               data={data.map((d) => ({
                 date: format(parseISO(d.visit_date), "MMM dd"),
                 total: d.total,
-                "< 15m": d.b_0_15m,
-                "> 15m": d.total - d.b_0_15m,
+                "< 1m": d.b_0_1m,
+                "< 5m": d.b_0_1m + d.b_1_5m,
+                "< 15m": d.b_0_1m + d.b_1_5m + d.b_5_15m,
+                "> 15m": d.total - (d.b_0_1m + d.b_1_5m + d.b_5_15m),
               }))}
             >
               <CartesianGrid strokeDasharray="3 3" />
@@ -221,7 +265,9 @@ export default function SessionsTab({ environment }: SessionsTabProps) {
               <ChartTooltip content={<ChartTooltipContent />} />
               <Legend />
               <Line type="monotone" dataKey="total" stroke="#ffffff" strokeWidth={2} dot={false} />
-              <Line type="monotone" dataKey="< 15m" stroke="#ef4444" strokeWidth={1.5} dot={false} />
+              <Line type="monotone" dataKey="< 1m" stroke="#ef4444" strokeWidth={1.5} dot={false} />
+              <Line type="monotone" dataKey="< 5m" stroke="#f97316" strokeWidth={1.5} dot={false} />
+              <Line type="monotone" dataKey="< 15m" stroke="#f59e0b" strokeWidth={1.5} dot={false} />
               <Line type="monotone" dataKey="> 15m" stroke="#10b981" strokeWidth={1.5} dot={false} />
             </LineChart>
           </ChartContainer>
