@@ -675,6 +675,30 @@ export function handleBuildLonghouse(
   return longhouseResult;
 }
 
+export function handleBuildFurTents(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const furTentResult = handleBuildingConstruction(
+    state,
+    result,
+    "buildFurTents",
+    "furTents",
+  );
+
+  if (state.buildings.furTents === 0) {
+    furTentResult.logEntries!.push({
+      id: `fur-tents-built-${Date.now()}`,
+      message:
+        "The first fur tents are raised at the village edge, giving more people warm shelter.",
+      timestamp: Date.now(),
+      type: "system",
+    });
+  }
+
+  return furTentResult;
+}
+
 export function handleBuildShrine(
   state: GameState,
   result: ActionResult,

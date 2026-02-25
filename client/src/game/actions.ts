@@ -132,6 +132,7 @@ import {
   handleBuildPalisades,
   handleBuildWizardTower,
   handleBuildLonghouse,
+  handleBuildFurTents,
   handleBuildGrandBlacksmith,
   handleBuildFortifiedMoat,
   handleBuildChitinPlating,
@@ -526,6 +527,8 @@ export function executeGameAction(
       return handleBuildGrandBlacksmith(state, result);
     case "buildLonghouse":
       return handleBuildLonghouse(state, result);
+    case "buildFurTents":
+      return handleBuildFurTents(state, result);
     case "buildFortifiedMoat":
       return handleBuildFortifiedMoat(state, result);
     case "buildChitinPlating":

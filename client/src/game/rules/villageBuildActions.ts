@@ -1520,13 +1520,69 @@ export const villageBuildActions: Record<string, Action> = {
 
   buildFurTents: {
     id: "buildFurTents",
-    label: "Fur Tents",
-    description: "Small camp of fur tents housing several families",
-    tooltipEffects: ["+10 Max Population"],
+    label: "Fur Tent",
+    description: "Warm fur shelter learned from the wandering tribe",
+    tooltipEffects: (state: GameState) => {
+      const count = state.buildings.furTents || 0;
+      const totalPopulation = count * 4;
+      return count > 0
+        ? [`+${totalPopulation} Max Population`]
+        : ["+4 Max Population"];
+    },
     building: true,
-    // No show_when - cannot be built directly, obtained through events/other means
-    cost: {},
-    effects: {},
+    show_when: {
+      1: {
+        "story.seen.furTentsUnlocked": true,
+      },
+      2: {
+        "buildings.furTents": 1,
+      },
+      3: {
+        "buildings.furTents": 2,
+      },
+      4: {
+        "buildings.furTents": 3,
+      },
+      5: {
+        "buildings.furTents": 4,
+      },
+    },
+    cost: {
+      1: {
+        "resources.fur": 2500,
+      },
+      2: {
+        "resources.fur": 5000,
+      },
+      3: {
+        "resources.fur": 7500,
+      },
+      4: {
+        "resources.fur": 10000,
+      },
+      5: {
+        "resources.fur": 15000,
+      },
+    },
+    effects: {
+      1: {
+        "buildings.furTents": 1,
+      },
+      2: {
+        "buildings.furTents": 1,
+      },
+      3: {
+        "buildings.furTents": 1,
+      },
+      4: {
+        "buildings.furTents": 1,
+      },
+      5: {
+        "buildings.furTents": 1,
+      },
+    },
+    executionTime: 75,
+    cooldown: 0,
   },
 
   buildTraps: {

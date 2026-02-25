@@ -384,7 +384,7 @@ export function getMaxPopulation(state: GameState): number {
   const woodenHutCapacity = (state.buildings.woodenHut || 0) * 2;
   const stoneHutCapacity = (state.buildings.stoneHut || 0) * 4;
   const longhouseCapacity = (state.buildings.longhouse || 0) * 8;
-  const furTentsCapacity = (state.buildings.furTents || 0) * 10;
+  const furTentsCapacity = (state.buildings.furTents || 0) * 4;
 
   // Temple dedication bonuses
   let templeBonus = 0;

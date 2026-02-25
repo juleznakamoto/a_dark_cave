@@ -122,6 +122,7 @@ export default function VillagePanel() {
         { id: "buildWoodenHut", label: "Wooden Hut" },
         { id: "buildStoneHut", label: "Stone Hut" },
         { id: "buildLonghouse", label: "Longhouse" },
+        { id: "buildFurTents", label: "Fur Tent" },
         { id: "buildCabin", label: "Cabin" },
         { id: "buildGreatCabin", label: "Great Cabin" },
         { id: "buildGrandHunterLodge", label: "Grand Hunter Lodge" },

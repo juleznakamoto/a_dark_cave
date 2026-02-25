@@ -424,9 +424,9 @@ export const choiceEvents: Record<string, GameEvent> = {
           const traps = state.buildings.traps;
           const villagerDeaths = Math.floor(
             Math.random() * state.buildings.woodenHut +
-              2 -
-              traps * 2 +
-              state.CM * 2,
+            2 -
+            traps * 2 +
+            state.CM * 2,
           );
           const deathResult = killVillagers(state, villagerDeaths);
           const actualDeaths = deathResult.villagersKilled || 0;
@@ -877,62 +877,31 @@ export const choiceEvents: Record<string, GameEvent> = {
   wanderingTribe: {
     id: "wanderingTribe",
     condition: (state: GameState) =>
-      state.buildings.stoneHut >= 4 &&
-      state.resources.fur >= 2000 &&
-      !state.buildings.furTents,
-    timeProbability: 45,
+      state.buildings.stoneHut >= 3 &&
+      !state.buildings.furTents &&
+      !state.story.seen.furTentsUnlocked,
+    timeProbability: 60,
     title: "The Wandering Tribe",
     message:
-      "A small tribe of nomads approaches the village. Their leader speaks: 'We have traveled far and seek a place to call home. Help us help build fur tents to shelter our people and we will join your community.'",
+      "A small tribe of nomads approaches the village. Their leader speaks: 'We have traveled far and seek a place to call home. Help us settle and we will teach your people how to raise fur tents.'",
     priority: 3,
     repeatable: true,
-    showAsTimedTab: true,
-    timedTabDuration: 5 * 60 * 1000, // 5 minutes
     skipEventLog: true,
-    fallbackChoice: {
-      id: "refuseTribe",
-      label: "Refuse",
-      effect: (state: GameState) => {
-        return {
-          _logMessage:
-            "You decline their offer. The tribe leader nods respectfully and continues their journey into the wilderness.",
-        };
-      },
-    },
     choices: [
       {
         id: "acceptTribe",
         label: "Help them",
-        cost: "2500 fur",
         effect: (state: GameState) => {
-          if (state.resources.fur < 2500) {
-            return {
-              _logMessage: "You don't have enough fur to help them.",
-            };
-          }
-
-          const currentPop = Object.values(state.villagers).reduce(
-            (sum, count) => sum + (count || 0),
-            0,
-          );
-          const maxPop = getMaxPopulation(state);
-          const canAdd = Math.min(10, maxPop + 10 - currentPop);
-
           return {
-            resources: {
-              ...state.resources,
-              fur: state.resources.fur - 2500,
-            },
-            buildings: {
-              ...state.buildings,
-              furTents: (state.buildings.furTents || 0) + 1,
-            },
-            villagers: {
-              ...state.villagers,
-              free: (state.villagers.free || 0) + canAdd,
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                furTentsUnlocked: true,
+              },
             },
             _logMessage:
-              "The tribe gratefully accepts your help. They set up their fur tents and join your community.",
+              "You welcome the nomads and offer support. In return, they teach your people how to build fur tents.",
           };
         },
       },
@@ -942,7 +911,7 @@ export const choiceEvents: Record<string, GameEvent> = {
         effect: (state: GameState) => {
           return {
             _logMessage:
-              "You decline their offer. The tribe leader nods respectfully and continues their journey into the wilderness.",
+              "You decline to help. The tribe leader nods respectfully and leads their people back into the wilderness.",
           };
         },
       },
