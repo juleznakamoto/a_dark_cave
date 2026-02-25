@@ -46,10 +46,7 @@ function createBoneDevourerEvent(config: BoneDevourerConfig): GameEvent {
       return false;
     },
 
-    timeProbability: (state: GameState) => {
-      const hasBeenSeen = state.triggeredEvents?.[`${eventId}_seen`];
-      return hasBeenSeen ? 35 : 10;
-    },
+    timeProbability: 35,
     title: "The Bone Devourer",
     message: (state: GameState) => {
       const hasBeenTriggered = state.triggeredEvents?.[eventId];

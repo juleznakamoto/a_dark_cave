@@ -478,6 +478,11 @@ export const choiceEvents: Record<string, GameEvent> = {
 
           if (rand < successChance) {
             return {
+              resources: {
+                ...state.resources,
+                silver: state.resources.silver + 250,
+                bones: state.resources.bones + 1000,
+              },
               clothing: {
                 ...state.clothing,
                 cracked_crown: true,

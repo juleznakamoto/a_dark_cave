@@ -431,6 +431,7 @@ export const rewardDialogVillageAttackEvents = new Set([
   "wolfAttack",
   "cannibalRaid",
   "bloodMoonAttack",
+  "hiddenLake",
 ]);
 
 // Helper functions

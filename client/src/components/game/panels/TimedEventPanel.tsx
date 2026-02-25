@@ -453,14 +453,22 @@ export default function TimedEventPanel() {
                             const trimmedPart = part.trim();
                             const match = trimmedPart.match(/(\d+)\s+([a-zA-Z_]+)/);
                             if (match) {
+                              const amount = match[1];
                               const resName = match[2].toLowerCase();
+                              const formattedResourceName = resName
+                                .split("_")
+                                .map(
+                                  (word) =>
+                                    word.charAt(0).toUpperCase() + word.slice(1),
+                                )
+                                .join(" ");
                               const hasEnough = individualAffordance[resName] !== false;
                               return (
                                 <div
                                   key={i}
                                   className={hasEnough ? "text-foreground" : "text-muted-foreground"}
                                 >
-                                  -{trimmedPart}
+                                  -{amount} {formattedResourceName}
                                 </div>
                               );
                             }
