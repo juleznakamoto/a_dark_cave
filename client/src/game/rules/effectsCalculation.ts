@@ -575,7 +575,10 @@ export const getTotalMadness = (state: GameState): number => {
     madnessReduction += reduction; // Already negative values
   });
 
-  const finalMadness = Math.max(0, effectMadness + madnessReduction);
+  // Add madness from events (e.g. whispering voices, shadows move)
+  const madnessFromEvents = state.stats?.madnessFromEvents || 0;
+
+  const finalMadness = Math.max(0, effectMadness + madnessReduction + madnessFromEvents);
   return finalMadness;
 };
 
