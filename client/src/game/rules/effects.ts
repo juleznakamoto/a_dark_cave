@@ -292,6 +292,11 @@ export const toolEffects: Record<string, EffectDefinition> = {
       generalBonuses: {
         buildingCostReduction: 0.05,
       },
+      actionBonuses: {
+        building: {
+          executionTimeReduction: 5,
+        },
+      },
     },
   },
 
@@ -1319,6 +1324,11 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     bonuses: {
       generalBonuses: {
         buildingCostReduction: 0.05,
+      },
+      actionBonuses: {
+        building: {
+          executionTimeReduction: 5,
+        },
       },
     },
   },

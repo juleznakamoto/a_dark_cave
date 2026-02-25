@@ -86,6 +86,21 @@ export default function CombatDialog({
   const [enemyBurnRounds, setEnemyBurnRounds] = useState(0);
   const [enemyBurnDamage, setEnemyBurnDamage] = useState(0);
   const [wasCriticalStrike, setWasCriticalStrike] = useState(false);
+  const integrityDamageIndicatorTimeoutRef = useRef<
+    ReturnType<typeof setTimeout> | null
+  >(null);
+
+  const showIntegrityDamage = (amount: number) => {
+    if (integrityDamageIndicatorTimeoutRef.current) {
+      clearTimeout(integrityDamageIndicatorTimeoutRef.current);
+      integrityDamageIndicatorTimeoutRef.current = null;
+    }
+    setIntegrityDamageIndicator({ amount, visible: true });
+    integrityDamageIndicatorTimeoutRef.current = setTimeout(() => {
+      setIntegrityDamageIndicator({ amount: 0, visible: false });
+      integrityDamageIndicatorTimeoutRef.current = null;
+    }, 3000);
+  };
 
   const HAS_RESTLESS_KNIGHT = gameState.fellowship.restless_knight || false;
   const HAS_ELDER_WIZARD = gameState.fellowship.elder_wizard || false;
@@ -107,6 +122,15 @@ export default function CombatDialog({
     };
   }, [isOpen, combatStarted]);
 
+  // Clear integrity damage timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (integrityDamageIndicatorTimeoutRef.current) {
+        clearTimeout(integrityDamageIndicatorTimeoutRef.current);
+      }
+    };
+  }, []);
+
   // Reset state when dialog opens
   useEffect(() => {
     if (isOpen && enemy) {
@@ -120,6 +144,10 @@ export default function CombatDialog({
       setCombatResult(null);
       setEnemyDamageIndicator({ amount: 0, visible: false });
       setPlayerDamageIndicator({ amount: 0, visible: false });
+      if (integrityDamageIndicatorTimeoutRef.current) {
+        clearTimeout(integrityDamageIndicatorTimeoutRef.current);
+        integrityDamageIndicatorTimeoutRef.current = null;
+      }
       setIntegrityDamageIndicator({ amount: 0, visible: false });
       setUsedCrushingStrike(false);
       setUsedBloodflameSphere(false);
@@ -248,10 +276,7 @@ export default function CombatDialog({
     setCurrentIntegrity(newIntegrityValue);
 
     // Show integrity damage indicator
-    setIntegrityDamageIndicator({ amount: config.healthCost, visible: true });
-    setTimeout(() => {
-      setIntegrityDamageIndicator({ amount: 0, visible: false });
-    }, 3000);
+    showIntegrityDamage(config.healthCost);
 
     // Check if integrity is depleted
     if (newIntegrityValue <= 0) {
@@ -322,6 +347,19 @@ export default function CombatDialog({
       setTimeout(() => {
         setEnemyDamageIndicator({ amount: 0, visible: false });
       }, 3000);
+
+      // 5% chance for bomb to backfire: hurt player with 100% of its damage
+      const backfire = Math.random() < 0.05;
+      if (backfire) {
+        const newIntegrityValue = Math.max(0, currentIntegrity - finalDamage);
+        setCurrentIntegrity(newIntegrityValue);
+        showIntegrityDamage(finalDamage);
+        if (newIntegrityValue <= 0) {
+          setCombatEnded(true);
+          setCombatResult("defeat");
+          return;
+        }
+      }
 
       // Check if enemy is defeated by bombs
       if (newEnemyHealth <= 0) {
@@ -411,10 +449,7 @@ export default function CombatDialog({
       setCurrentIntegrity(newIntegrityValue);
 
       // Show damage indicator on integrity bar
-      setIntegrityDamageIndicator({ amount: integrityDamage, visible: true });
-      setTimeout(() => {
-        setIntegrityDamageIndicator({ amount: 0, visible: false });
-      }, 3000);
+      showIntegrityDamage(integrityDamage);
 
       // Check if integrity is depleted
       if (newIntegrityValue <= 0) {

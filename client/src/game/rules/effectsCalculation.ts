@@ -292,6 +292,16 @@ export const getActionBonuses = (
       }
     }
 
+    // Add general building bonuses for build actions
+    if (actionId.startsWith("build")) {
+      if (effect.bonuses.actionBonuses?.building) {
+        const buildBonus = effect.bonuses.actionBonuses.building;
+        if (buildBonus.executionTimeReduction) {
+          executionTimeReduction += buildBonus.executionTimeReduction;
+        }
+      }
+    }
+
     // Add general cave explore bonuses for cave explore actions
     const caveExploreActions = [
       "exploreCave",
@@ -585,7 +595,7 @@ export const getTotalCraftingCostReduction = (state: GameState): number => {
   // Priority: greatVault > grandRepository > villageWarehouse > fortifiedStorehouse > storehouse
   const storagePriority = [
     'greatVault',
-    'grandRepository', 
+    'grandRepository',
     'villageWarehouse',
     'fortifiedStorehouse',
     'storehouse'
@@ -606,7 +616,7 @@ export const getTotalCraftingCostReduction = (state: GameState): number => {
   // Add crafting cost reduction from blacksmith buildings (only highest tier)
   // Priority: grandBlacksmith > advancedBlacksmith
   const blacksmithPriority = ['grandBlacksmith', 'advancedBlacksmith'];
-  
+
   for (const buildingKey of blacksmithPriority) {
     if (state.buildings[buildingKey as keyof typeof state.buildings] > 0) {
       const actionId = `build${buildingKey.charAt(0).toUpperCase() + buildingKey.slice(1)}`;
@@ -638,7 +648,7 @@ export const getTotalBuildingCostReduction = (state: GameState): number => {
   const storagePriorityForBuilding = [
     'greatVault',
     'grandRepository',
-    'villageWarehouse', 
+    'villageWarehouse',
     'fortifiedStorehouse',
     'storehouse'
   ];

@@ -536,7 +536,7 @@ export const combatItemTooltips: Record<string, TooltipConfig> = {
       const knowledge = getTotalKnowledge(state) || 0;
       const baseDamage = 10;
       const knowledgeBonus = Math.floor(knowledge / 5);
-      return `Base Damage: ${baseDamage}\n${knowledge >= 5 ? `Knowledge Bonus: +${knowledgeBonus}\n` : ""}Total Damage: ${baseDamage + knowledgeBonus}`;
+      return `Base Damage: ${baseDamage}\n${knowledge >= 5 ? `Knowledge Bonus: +${knowledgeBonus}\n` : ""}Total Damage: ${baseDamage + knowledgeBonus}\n5% chance to deal damage to yourself`;
     },
   },
   ashfire_bomb: {
@@ -544,7 +544,7 @@ export const combatItemTooltips: Record<string, TooltipConfig> = {
       const knowledge = getTotalKnowledge(state) || 0;
       const baseDamage = 25;
       const knowledgeBonus = Math.floor(knowledge / 5);
-      return `Base Damage: ${baseDamage}\n${knowledge >= 5 ? `Knowledge Bonus: +${knowledgeBonus}\n` : ""}Total Damage: ${baseDamage + knowledgeBonus}`;
+      return `Base Damage: ${baseDamage}\n${knowledge >= 5 ? `Knowledge Bonus: +${knowledgeBonus}\n` : ""}Total Damage: ${baseDamage + knowledgeBonus}\n5% chance to deal damage to yourself`;
     },
   },
   void_bomb: {
@@ -552,7 +552,7 @@ export const combatItemTooltips: Record<string, TooltipConfig> = {
       const knowledge = getTotalKnowledge(state) || 0;
       const baseDamage = 40;
       const knowledgeBonus = Math.floor(knowledge / 5);
-      return `Base Damage: ${baseDamage}\n${knowledge >= 5 ? `Knowledge Bonus: +${knowledgeBonus}\n` : ""}Total Damage: ${baseDamage + knowledgeBonus}`;
+      return `Base Damage: ${baseDamage}\n${knowledge >= 5 ? `Knowledge Bonus: +${knowledgeBonus}\n` : ""}Total Damage: ${baseDamage + knowledgeBonus}\n5% chance to deal damage to yourself`;
     },
   },
   poison_arrows: {

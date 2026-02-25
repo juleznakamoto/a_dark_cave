@@ -644,7 +644,7 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildClerksHut",
     label: "Clerk's Hut",
     description: "Hut where clerks track resources of the village",
-    tooltipEffects: ["+2 Knowledge", "Resource tracking"],
+    tooltipEffects: ["+2 Knowledge", "Resource change hints"],
     building: true,
     show_when: {
       1: {
@@ -675,7 +675,7 @@ export const villageBuildActions: Record<string, Action> = {
     label: "Scriptorium",
     description:
       "Library of knowledge providing detailed tracking of resources",
-    tooltipEffects: ["+5 Knowledge", "Improved resource tracking"],
+    tooltipEffects: ["+5 Knowledge", "Improved resource change hints"],
     building: true,
     show_when: {
       1: {
@@ -707,7 +707,7 @@ export const villageBuildActions: Record<string, Action> = {
     label: "Inkwarden Academy",
     description:
       "Grand academy of scholars providing supreme knowledge and resource tracking",
-    tooltipEffects: ["+10 Knowledge", "Greatly improved resource tracking"],
+    tooltipEffects: ["+10 Knowledge", "Improved resource change hints", "Resource highlighting"],
     building: true,
     show_when: {
       1: {
