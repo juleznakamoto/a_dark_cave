@@ -462,6 +462,10 @@ const mergeStateUpdates = (
     buildings: { ...prevState.buildings, ...stateUpdates.buildings },
     flags: { ...prevState.flags, ...stateUpdates.flags },
     villagers: { ...prevState.villagers, ...stateUpdates.villagers },
+    expeditionVillagers: {
+      ...prevState.expeditionVillagers,
+      ...stateUpdates.expeditionVillagers,
+    },
     clothing: { ...prevState.clothing, ...stateUpdates.clothing },
     relics: { ...prevState.relics, ...stateUpdates.relics },
     books: { ...prevState.books, ...stateUpdates.books },
@@ -753,6 +757,7 @@ export const createInitialState = (): GameState => ({
   initialCooldowns: {},
   executionStartTimes: {},
   executionDurations: {},
+  expeditionVillagers: {},
 
   // Initialize compass glow
   compassGlowButton: null,
@@ -833,6 +838,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   cooldowns: {},
   executionStartTimes: {},
   executionDurations: {},
+  expeditionVillagers: {},
   log: [],
   eventDialog: {
     isOpen: false,
@@ -1284,6 +1290,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   startActionExecution: (actionId: string) => {
     const state = get();
+    const action = gameActions[actionId];
     const duration = getExecutionTime(actionId, state);
     if (duration <= 0) return;
     const now = Date.now();
@@ -1291,8 +1298,32 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // Deduct costs immediately on click (resources are consumed when the action begins)
     const costUpdates = deductActionCosts(actionId, state);
 
+    const expeditionRequired = action?.expeditionVillagersRequired
+      ? action.expeditionVillagersRequired(state)
+      : 0;
+    const hasExpeditionRequirement = expeditionRequired > 0;
+    const baseVillagers = { ...(costUpdates.villagers ?? state.villagers) };
+    const baseExpeditionVillagers = {
+      ...state.expeditionVillagers,
+      ...(costUpdates.expeditionVillagers ?? {}),
+    };
+
+    if (
+      hasExpeditionRequirement &&
+      (baseVillagers.free ?? 0) < expeditionRequired
+    ) {
+      return;
+    }
+
+    if (hasExpeditionRequirement) {
+      baseVillagers.free = (baseVillagers.free ?? 0) - expeditionRequired;
+      baseExpeditionVillagers[actionId] = expeditionRequired;
+    }
+
     set({
       ...costUpdates,
+      villagers: baseVillagers,
+      expeditionVillagers: baseExpeditionVillagers,
       executionStartTimes: { ...state.executionStartTimes, [actionId]: now },
       executionDurations: { ...state.executionDurations, [actionId]: duration },
     });
@@ -1307,9 +1338,20 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const newDurations = { ...executionDurations };
     delete newStartTimes[actionId];
     delete newDurations[actionId];
+    const releasedVillagers = state.expeditionVillagers?.[actionId] ?? 0;
+    const updatedExpeditionVillagers = { ...state.expeditionVillagers };
+    if (releasedVillagers > 0) {
+      delete updatedExpeditionVillagers[actionId];
+    }
+
     set({
       executionStartTimes: newStartTimes,
       executionDurations: newDurations,
+      villagers: {
+        ...state.villagers,
+        free: (state.villagers.free || 0) + releasedVillagers,
+      },
+      expeditionVillagers: updatedExpeditionVillagers,
       _completingExecution: actionId,
     });
 
@@ -1593,6 +1635,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         cooldowns: savedState.cooldowns || {},
         executionStartTimes: {},
         executionDurations: {},
+        expeditionVillagers: {},
         attackWaveTimers: savedState.attackWaveTimers || {},
         log: savedState.log || [],
         events: savedState.events || defaultGameState.events,
@@ -1682,6 +1725,18 @@ export const useGameStore = create<GameStore>((set, get) => ({
         }, // Load merchant trades
       };
 
+      const savedExpeditionVillagers = savedState.expeditionVillagers || {};
+      const strandedExpeditionVillagers = Object.values(
+        savedExpeditionVillagers,
+      ).reduce((sum, count) => sum + (count || 0), 0);
+      if (strandedExpeditionVillagers > 0) {
+        loadedState.villagers = {
+          ...loadedState.villagers,
+          free:
+            (loadedState.villagers?.free || 0) + strandedExpeditionVillagers,
+        };
+      }
+
       logger.log('[MERCHANT TRADES] Loaded merchant trades from state:', {
         hasChoices: !!savedState.merchantTrades?.choices?.length,
         choicesCount: savedState.merchantTrades?.choices?.length || 0,
@@ -1698,6 +1753,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         cooldowns: {},
         executionStartTimes: {},
         executionDurations: {},
+        expeditionVillagers: {},
         log: [],
         devMode: import.meta.env.DEV,
         boostMode: currentBoostMode, // Preserve boost mode flag
@@ -2110,9 +2166,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
   // Computed getter for current population
   get current_population() {
     const state = get();
-    return Object.values(state.villagers).reduce(
+    const assignedToExpeditions = Object.values(
+      state.expeditionVillagers || {},
+    ).reduce((sum, count) => sum + (count || 0), 0);
+    return (
+      Object.values(state.villagers).reduce(
       (sum, count) => sum + (count || 0),
       0,
+      ) + assignedToExpeditions
     );
   },
 

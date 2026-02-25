@@ -242,10 +242,20 @@ export default function CavePanel() {
       "exploreRuins",
       "exploreTemple",
       "exploreCitadel",
+      "lowChamber",
+      "occultistChamber",
+      "hiddenLibrary",
+      "exploreUndergroundLake",
+      "lureLakeCreature",
+      "encounterBeyondPortal",
     ];
     const isCaveExploreAction = caveExploreActions.includes(actionId);
     const isChopWood = actionId === "chopWood";
     const isCraftAction = actionId.startsWith("craft");
+    const expeditionVillagersRequired = action.expeditionVillagersRequired
+      ? action.expeditionVillagersRequired(state)
+      : 0;
+    const hasExpeditionRequirement = expeditionVillagersRequired > 0;
     const resourceGainTooltip =
       isMineAction || isCaveExploreAction || isCraftAction
         ? getResourceGainTooltip(actionId, state)
@@ -274,20 +284,36 @@ export default function CavePanel() {
     // Check if this action has upgrade tracking
     const upgradeKey = ACTION_TO_UPGRADE_KEY[actionId];
 
-    if (showCost || resourceGainTooltip) {
+    if (showCost || resourceGainTooltip || hasExpeditionRequirement) {
       let tooltipContent;
+      const villagerRequirementLine = hasExpeditionRequirement ? (
+        <div>Requires {expeditionVillagersRequired} free villagers</div>
+      ) : null;
 
       if (resourceGainTooltip) {
-        // Mine actions: show gains and costs (getResourceGainTooltip handles both)
-        tooltipContent = resourceGainTooltip;
-      } else if (showCost) {
-        // Other actions with costs
+        // Mine/craft/explore actions: show gains/costs and optional villager requirement
+        tooltipContent = villagerRequirementLine ? (
+          <div className="text-xs whitespace-nowrap">
+            {villagerRequirementLine}
+            <div className="border-t border-border my-1" />
+            {resourceGainTooltip}
+          </div>
+        ) : (
+          resourceGainTooltip
+        );
+      } else if (showCost || villagerRequirementLine) {
+        // Other actions with costs and/or villager requirement
         const costBreakdown = getActionCostBreakdown(actionId, state);
         const bonuses = state.activeEffects?.actionBonuses?.[actionId];
         const cooldownReduction = bonuses?.cooldownReduction || 0;
 
         tooltipContent = (
           <div className="text-xs whitespace-nowrap">
+            {villagerRequirementLine}
+            {villagerRequirementLine &&
+              (costBreakdown.length > 0 || cooldownReduction > 0) && (
+                <div className="border-t border-border my-1" />
+              )}
             {costBreakdown.map((costItem, index) => (
               <div
                 key={index}

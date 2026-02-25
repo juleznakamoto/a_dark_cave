@@ -319,6 +319,7 @@ export const gameStateSchema = z.object({
       ashfire_dust_maker: z.number().min(0).default(0),
     })
     .default({}),
+  expeditionVillagers: z.record(z.string(), z.number()).default({}),
   story: z
     .object({
       seen: z.record(z.union([z.boolean(), z.number()])).default({}),
@@ -806,6 +807,11 @@ export const actionSchema = z.object({
   upgrade_key: z.string().optional(),
   canExecute: z.function().args(z.any()).returns(z.boolean()).optional(),
   minVillagers: z.number().min(0).optional(),
+  expeditionVillagersRequired: z
+    .function()
+    .args(z.any())
+    .returns(z.number().min(0))
+    .optional(),
 });
 
 export type Action = z.infer<typeof actionSchema>;

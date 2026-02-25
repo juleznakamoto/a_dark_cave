@@ -41,6 +41,7 @@ export default function SidePanel() {
     resources,
     buildings,
     villagers,
+    expeditionVillagers,
     current_population,
     total_population,
     activeTab,
@@ -405,6 +406,27 @@ export default function SidePanel() {
       testId: `population-${key}`,
       visible: true,
     }));
+
+  const onExpeditionCount = Object.values(expeditionVillagers || {}).reduce(
+    (sum, count) => sum + (count || 0),
+    0,
+  );
+  if (onExpeditionCount > 0) {
+    const expeditionItem = {
+      id: "on_expedition",
+      label: "On Expedition",
+      value: onExpeditionCount,
+      testId: "population-on-expedition",
+      visible: true,
+    };
+
+    const freeVillagerIndex = populationItems.findIndex((item) => item.id === "free");
+    if (freeVillagerIndex >= 0) {
+      populationItems.splice(freeVillagerIndex + 1, 0, expeditionItem);
+    } else {
+      populationItems.unshift(expeditionItem);
+    }
+  }
 
   // Build stats items with total values
   const statsItems = [];

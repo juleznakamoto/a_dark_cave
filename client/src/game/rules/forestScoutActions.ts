@@ -148,6 +148,7 @@ export const forestScoutActions: Record<string, Action> = {
     id: "castleRuins",
     label: "Castle Ruins",
     minVillagers: 6,
+    expeditionVillagersRequired: (state: GameState) => 10 + (state.CM ?? 0) * 4,
     show_when: {
       "story.seen.wizardNecromancerCastle": true,
       "!story.seen.castleRuinsExplored": true,
@@ -173,6 +174,7 @@ export const forestScoutActions: Record<string, Action> = {
     id: "hillGrave",
     label: "Hill Grave",
     minVillagers: 6,
+    expeditionVillagersRequired: (state: GameState) => 13 + (state.CM ?? 0) * 4,
     show_when: {
       "story.seen.wizardHillGrave": true,
       "!story.seen.hillGraveExplored": true,
@@ -198,6 +200,7 @@ export const forestScoutActions: Record<string, Action> = {
     id: "sunkenTemple",
     label: "Sunken Temple",
     minVillagers: 6,
+    expeditionVillagersRequired: (state: GameState) => 16 + (state.CM ?? 0) * 4,
     show_when: {
       "story.seen.wizardBloodstone": true,
       "!story.seen.sunkenTempleExplored": true,
@@ -225,6 +228,7 @@ export const forestScoutActions: Record<string, Action> = {
     id: "collapsedTower",
     label: "Collapsed Tower",
     minVillagers: 6,
+    expeditionVillagersRequired: (state: GameState) => 10 + (state.CM ?? 0) * 4,
     show_when: {
       "story.seen.collapsedTowerUnlocked": true,
       "!story.seen.collapsedTowerExplored": true,
@@ -250,6 +254,7 @@ export const forestScoutActions: Record<string, Action> = {
     id: "forestCave",
     label: "Forest Cave",
     minVillagers: 4,
+    expeditionVillagersRequired: (state: GameState) => 9 + (state.CM ?? 0) * 3,
     show_when: {
       "story.seen.forestTribeHelpAccepted": true,
       "!story.seen.forestCaveExplored": true,

@@ -274,6 +274,14 @@ export function canExecuteAction(actionId: string, state: GameState): boolean {
     return false;
   }
 
+  // Check expedition villager requirement (locks free villagers during execution)
+  const expeditionRequired = action.expeditionVillagersRequired
+    ? action.expeditionVillagersRequired(state)
+    : 0;
+  if (expeditionRequired > 0 && (state.villagers?.free ?? 0) < expeditionRequired) {
+    return false;
+  }
+
   // Handle dynamic totem costs
   if (actionId === "boneTotems") {
     const dynamicCost = getBoneTotemsCost(state);

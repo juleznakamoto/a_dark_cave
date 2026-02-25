@@ -163,9 +163,14 @@ export default function ForestPanel() {
       ? `${Math.round(action.success_chance(state) * 100)}%`
       : null;
 
-    // Check if minVillagers requirement is not met
-    const minVillagers = action.minVillagers ?? 0;
-    const villagerRequirementNotMet = minVillagers > 0 && (state.current_population ?? 0) < minVillagers;
+    // Expedition actions require free villagers during execution
+    const expeditionVillagersRequired = action.expeditionVillagersRequired
+      ? action.expeditionVillagersRequired(state)
+      : 0;
+    const hasExpeditionRequirement = expeditionVillagersRequired > 0;
+    const villagerRequirementNotMet =
+      hasExpeditionRequirement &&
+      (state.villagers?.free ?? 0) < expeditionVillagersRequired;
 
     // Check if this is chopWood, hunt, or sacrifice action
     const isChopWood = actionId === "chopWood";
@@ -248,12 +253,14 @@ export default function ForestPanel() {
       isAnimalsSacrifice ||
       isHumansSacrifice ||
       successPercentage ||
-      villagerRequirementNotMet
+      hasExpeditionRequirement
     ) {
       let tooltipContent;
 
-      const villagerMessage = villagerRequirementNotMet ? (
-        <div>A minimum of {minVillagers} villagers is needed</div>
+      const villagerMessage = hasExpeditionRequirement ? (
+        <div className={villagerRequirementNotMet ? "text-muted-foreground" : ""}>
+          Requires {expeditionVillagersRequired} free villagers
+        </div>
       ) : null;
 
       if (resourceGainTooltip && !villagerRequirementNotMet) {

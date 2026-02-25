@@ -271,6 +271,7 @@ export const caveExploreActions: Record<string, Action> = {
   descendFurther: {
     id: "descendFurther",
     label: "Descend Further",
+    expeditionVillagersRequired: () => 2,
     show_when: {
       "tools.iron_lantern": true,
       "tools.steel_lantern": false,
@@ -298,6 +299,7 @@ export const caveExploreActions: Record<string, Action> = {
   exploreRuins: {
     id: "exploreRuins",
     label: "Explore Ruins",
+    expeditionVillagersRequired: () => 3,
     show_when: {
       "tools.steel_lantern": true,
       "tools.obsidian_lantern": false,
@@ -324,6 +326,7 @@ export const caveExploreActions: Record<string, Action> = {
   exploreTemple: {
     id: "exploreTemple",
     label: "Explore Temple",
+    expeditionVillagersRequired: () => 4,
     show_when: {
       "tools.obsidian_lantern": true,
       "tools.adamant_lantern": false,
@@ -352,6 +355,7 @@ export const caveExploreActions: Record<string, Action> = {
   exploreCitadel: {
     id: "exploreCitadel",
     label: "Explore Citadel",
+    expeditionVillagersRequired: () => 5,
     show_when: {
       "tools.adamant_lantern": true,
     },
@@ -378,6 +382,7 @@ export const caveExploreActions: Record<string, Action> = {
   lowChamber: {
     id: "lowChamber",
     label: "Low Chamber",
+    expeditionVillagersRequired: () => 6,
     show_when: {
       "tools.reinforced_rope": true,
       "story.seen.lowChamberExplored": false,
@@ -404,6 +409,7 @@ export const caveExploreActions: Record<string, Action> = {
   occultistChamber: {
     id: "occultistChamber",
     label: "Occultist Chamber",
+    expeditionVillagersRequired: () => 6,
     show_when: {
       "tools.occultist_map": true,
       "story.seen.occultistChamberExplored": false,
@@ -429,6 +435,7 @@ export const caveExploreActions: Record<string, Action> = {
   hiddenLibrary: {
     id: "hiddenLibrary",
     label: "Hidden Library",
+    expeditionVillagersRequired: () => 6,
     show_when: {
       "tools.hidden_library_map": true,
       "story.seen.hiddenLibraryExplored": false,
@@ -451,6 +458,7 @@ export const caveExploreActions: Record<string, Action> = {
   exploreUndergroundLake: {
     id: "exploreUndergroundLake",
     label: "Underground Lake",
+    expeditionVillagersRequired: () => 6,
     show_when: {
       "story.seen.undergroundLakeDiscovered": true,
       "story.seen.undergroundLakeExplored": false,
@@ -478,6 +486,7 @@ export const caveExploreActions: Record<string, Action> = {
   lureLakeCreature: {
     id: "lureLakeCreature",
     label: "Place Trap",
+    expeditionVillagersRequired: () => 6,
     show_when: {
       "story.seen.undergroundLakeCreatureDiscovered": true,
       "story.seen.lakeCreatureLured": false,
@@ -515,6 +524,7 @@ export const caveExploreActions: Record<string, Action> = {
   encounterBeyondPortal: {
     id: "encounterBeyondPortal",
     label: "Venture beyond Portal",
+    expeditionVillagersRequired: () => 6,
     show_when: {
       "story.seen.sixthWaveVictory": true,
       "story.seen.encounteredBeyondPortal": false,
