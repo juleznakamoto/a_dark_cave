@@ -156,6 +156,40 @@ export const PRIOR_ELIGIBLE_ACTIONS = new Set<string>([
   "craftVoidBomb",
 ]);
 
+/**
+ * Upgrade chains for Prior-eligible actions.
+ * When a Prior-assigned action becomes hidden (superseded by a tool/building upgrade),
+ * the assignment is automatically transferred to the next visible action in the same chain.
+ * Each inner array is ordered from earliest to latest tier.
+ */
+export const PRIOR_ACTION_UPGRADE_CHAINS: readonly string[][] = [
+  ["craftTorch", "craftTorches", "craftTorches3", "craftTorches4", "craftTorches5", "craftTorches10"],
+  ["craftBoneTotem", "craftBoneTotems2", "craftBoneTotems3", "craftBoneTotems5"],
+  ["craftLeatherTotem", "craftLeatherTotems5"],
+  ["exploreCave", "ventureDeeper", "descendFurther", "exploreRuins", "exploreTemple", "exploreCitadel"],
+];
+
+/** Returns the successor action ID in its chain that is currently visible, or null if none. */
+export function getPriorActionSuccessor(
+  actionId: string,
+  isVisible: (id: string) => boolean,
+): string | null {
+  for (const chain of PRIOR_ACTION_UPGRADE_CHAINS) {
+    const idx = chain.indexOf(actionId);
+    if (idx === -1) continue;
+    // Search forward and backward for a visible member of the same chain.
+    // Prefer forward (upgrade) first, then fall back to backward (downgrade).
+    for (let i = idx + 1; i < chain.length; i++) {
+      if (isVisible(chain[i])) return chain[i];
+    }
+    for (let i = idx - 1; i >= 0; i--) {
+      if (isVisible(chain[i])) return chain[i];
+    }
+    return null;
+  }
+  return null;
+}
+
 // Map action IDs to upgrade keys
 // All cave explore actions share the same "caveExplore" key to carry over progress
 export const ACTION_TO_UPGRADE_KEY: Record<string, UpgradeKey | undefined> = {

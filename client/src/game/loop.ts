@@ -11,6 +11,8 @@ import { startVersionCheck, stopVersionCheck } from "./versionCheck";
 import { formatSaveTimestamp } from "@/lib/utils";
 import { gameActions, canExecuteAction, shouldShowAction } from "./rules";
 import { getResourceLimit, isResourceLimited } from "./resourceLimits";
+import { getPriorActionSuccessor } from "./buttonUpgrades";
+import { DISGRACED_PRIOR_UPGRADES } from "./rules/skillUpgrades";
 
 let gameLoopId: number | null = null;
 let lastFrameTime = 0;
@@ -623,20 +625,31 @@ function processTick() {
   if (freshState.fellowship?.disgraced_prior) {
     const assigned = freshState.priorAssignedActions ?? [];
 
-    // Drop any assigned actions whose show_when conditions are no longer met
-    // (e.g. craftTorch after acquiring a stone_axe that supersedes it).
-    // This restores the Prior slot and prevents silent resource drain.
-    const staleActions = assigned.filter(
-      (id) => id !== "feedFire" && !shouldShowAction(id, freshState as unknown as GameState)
-    );
+    // When an assigned action's show_when conditions are no longer met (e.g. craftTorch
+    // after acquiring a stone_axe), automatically transfer the assignment to the next
+    // visible action in the same upgrade chain, or simply drop it if no successor exists.
+    const isVisible = (id: string) => id === "feedFire" || shouldShowAction(id, freshState as unknown as GameState);
+    const staleActions = assigned.filter((id) => !isVisible(id));
+
+    // The list we'll actually execute this tick — starts as the non-stale assignments
+    // and is extended with any successors found for stale ones so they execute immediately.
+    let toExecute = assigned.filter((id) => !staleActions.includes(id));
+
     if (staleActions.length > 0) {
-      useGameStore.setState({
-        priorAssignedActions: assigned.filter((id) => !staleActions.includes(id)),
-      });
+      const level = freshState.disgracedPriorSkills?.level ?? 0;
+      const maxActions = DISGRACED_PRIOR_UPGRADES[level]?.maxActions ?? 1;
+
+      for (const staleId of staleActions) {
+        const successor = getPriorActionSuccessor(staleId, isVisible);
+        if (successor && !toExecute.includes(successor) && toExecute.length < maxActions) {
+          toExecute = [...toExecute, successor];
+        }
+      }
+
+      useGameStore.setState({ priorAssignedActions: toExecute });
     }
 
-    for (const actionId of assigned) {
-      if (staleActions.includes(actionId)) continue;
+    for (const actionId of toExecute) {
       const isReadyNow = (freshState.cooldowns[actionId] ?? 0) === 0;
       if (isReadyNow && canPriorExecute(actionId, freshState as unknown as GameState)) {
         priorLastExecuted.set(actionId, Date.now());

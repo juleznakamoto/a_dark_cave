@@ -95,6 +95,23 @@ export default function SessionsTab({ environment }: SessionsTabProps) {
     [data],
   );
 
+  const percentageChartData = useMemo(
+    () =>
+      data.map((d) => ({
+        date: format(parseISO(d.visit_date), "MMM dd"),
+        "0–1m": d.total > 0 ? (d.b_0_1m / d.total) * 100 : 0,
+        "1–5m": d.total > 0 ? (d.b_1_5m / d.total) * 100 : 0,
+        "5–15m": d.total > 0 ? (d.b_5_15m / d.total) * 100 : 0,
+        "15–30m": d.total > 0 ? (d.b_15_30m / d.total) * 100 : 0,
+        "30m–1h": d.total > 0 ? (d.b_30m_1h / d.total) * 100 : 0,
+        "1–2h": d.total > 0 ? (d.b_1h_2h / d.total) * 100 : 0,
+        "2–3h": d.total > 0 ? (d.b_2h_3h / d.total) * 100 : 0,
+        "3–4h": d.total > 0 ? (d.b_3h_4h / d.total) * 100 : 0,
+        "4h+": d.total > 0 ? (d.b_4h_plus / d.total) * 100 : 0,
+      })),
+    [data],
+  );
+
   const totals = useMemo(() => {
     const zero = {
       total: 0,
@@ -270,6 +287,46 @@ export default function SessionsTab({ environment }: SessionsTabProps) {
               <Line type="monotone" dataKey="< 15m" stroke="#f59e0b" strokeWidth={1.5} dot={false} />
               <Line type="monotone" dataKey="> 15m" stroke="#10b981" strokeWidth={1.5} dot={false} />
             </LineChart>
+          </ChartContainer>
+        </CardContent>
+      </Card>
+
+      {/* Added stacked percentage chart */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Session Duration Mix Over Time</CardTitle>
+          <CardDescription>
+            Daily percentage split by duration bucket (100% stacked)
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <ChartContainer config={{}}>
+            <BarChart data={percentageChartData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="date" />
+              <YAxis
+                domain={[0, 100]}
+                tickFormatter={(value) => `${value}%`}
+              />
+              <ChartTooltip
+                content={
+                  <ChartTooltipContent
+                    formatter={(value, name) => (
+                      <>
+                        <span className="text-muted-foreground">{name}</span>
+                        <span className="font-mono font-medium tabular-nums text-foreground">
+                          {typeof value === "number" ? value.toFixed(1) : value}%
+                        </span>
+                      </>
+                    )}
+                  />
+                }
+              />
+              <Legend />
+              {BUCKETS.map(({ label, color }) => (
+                <Bar key={label} dataKey={label} stackId="a" fill={color} />
+              ))}
+            </BarChart>
           </ChartContainer>
         </CardContent>
       </Card>
