@@ -775,40 +775,40 @@ export default function SidePanel() {
 
       const symbolLabelByStat: Record<string, React.ReactNode> = {
         attack: (
-          <span className="inline-flex items-center gap-1">
-            <TooltipWrapper
-              tooltip="Attack"
-              tooltipId="sidebar-bastion-attack-symbol"
-              className="inline-block"
-            >
-              <span className="text-red-500">⟐</span>
+          <TooltipWrapper
+            tooltip="Attack"
+            tooltipId="sidebar-bastion-attack-symbol"
+            className="inline-block"
+          >
+            <span className="inline-flex items-center gap-1">
+              <span className="text-red-600">⟐</span>
               <span>Attack</span>
-            </TooltipWrapper>
-          </span>
+            </span>
+          </TooltipWrapper>
         ),
         defense: (
-          <span className="inline-flex items-center gap-1">
-            <TooltipWrapper
-              tooltip="Defense"
-              tooltipId="sidebar-bastion-defense-symbol"
-              className="inline-block"
-            >
-              <span className="text-blue-500">⧈</span>
+          <TooltipWrapper
+            tooltip="Defense"
+            tooltipId="sidebar-bastion-defense-symbol"
+            className="inline-block"
+          >
+            <span className="inline-flex items-center gap-1">
+              <span className="text-blue-600">⧈</span>
               <span>Defense</span>
-            </TooltipWrapper>
-          </span>
+            </span>
+          </TooltipWrapper>
         ),
         integrity: (
-          <span className="inline-flex items-center gap-1">
-            <TooltipWrapper
-              tooltip="Integrity"
-              tooltipId="sidebar-bastion-integrity-symbol"
-              className="inline-block"
-            >
-              <span className="text-green-500">✚</span>
+          <TooltipWrapper
+            tooltip="Integrity"
+            tooltipId="sidebar-bastion-integrity-symbol"
+            className="inline-block"
+          >
+            <span className="inline-flex items-center gap-1">
+              <span className="text-green-600">✚</span>
               <span>Integrity</span>
-            </TooltipWrapper>
-          </span>
+            </span>
+          </TooltipWrapper>
         ),
       };
 
