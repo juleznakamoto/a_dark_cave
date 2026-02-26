@@ -6,13 +6,14 @@ export const tradersDaughterEvents: Record<string, GameEvent> = {
     id: "traders_daughter",
     condition: (state: GameState) =>
       (state.resources.food ?? 0) > 500 &&
-      (state.buildings.tradePost ?? 0) >= 1,
+      (state.buildings.tradePost ?? 0) >= 1 &&
+      !state.triggeredEvents.traders_daughter_helped,
     timeProbability: 30,
     title: "The Trader's Daughter",
     message:
       "One evening, the trader approaches you in distress. His youngest daughter has gone missing near the forest’s edge, and he begs for your help.",
     priority: 3,
-    repeatable: false,
+    repeatable: true,
     showAsTimedTab: true,
     timedTabDuration: 6 * 60 * 1000, // 6 minutes
     choices: [
