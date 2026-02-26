@@ -362,6 +362,7 @@ export const gameStateSchema = z.object({
       cube09: z.boolean().default(false),
       cube10: z.boolean().default(false),
       cube11: z.boolean().default(false),
+      cube12: z.boolean().default(false),
       cube13: z.boolean().default(false),
       cube14a: z.boolean().default(false),
       cube14b: z.boolean().default(false),
