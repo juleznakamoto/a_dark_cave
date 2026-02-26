@@ -1080,22 +1080,19 @@ export const choiceEvents: Record<string, GameEvent> = {
   slaveTrader: {
     id: "slaveTrader",
     condition: (state: GameState) => {
-      const currentPopulation = Object.values(state.villagers).reduce(
-        (sum, count) => sum + (count || 0),
-        0,
-      );
+      const currentPopulation = state.current_population;
       const maxPopulation = getMaxPopulation(state);
       const hasRoomForTwo = maxPopulation - currentPopulation >= 2;
 
       return (
         state.buildings.woodenHut >= 3 &&
         currentPopulation > 2 &&
-        hasRoomForTwo &&
-        !state.story.seen.slaveTraderEvent
+        hasRoomForTwo 
+        // !state.story.seen.slaveTraderEvent
       );
     },
 
-    timeProbability: 25,
+    timeProbability: 0.025,
     title: "The Slave Trader",
     message:
       "A man on a cart drawn by two horses approaches the village. An iron cage on the cart holds two miserable souls. The trader grins wickedly: 'I'll pay you 100 Steel for two of your villagers. What do you say?'",
