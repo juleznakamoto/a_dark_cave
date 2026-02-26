@@ -160,6 +160,9 @@ export default function RewardDialog({
     // Stats
     if (rewards.stats && Object.keys(rewards.stats).length > 0) {
       Object.entries(rewards.stats).forEach(([stat, amount]) => {
+        if (stat === "madness") {
+          return;
+        }
         rewardItems.push(
           <div key={`stat-${stat}`} className="text-sm text-foreground">
             +{amount} {formatName(stat)}
@@ -233,9 +236,9 @@ export default function RewardDialog({
           <div className="text-sm pb-2">{renderRewards()}</div>
 
           {madnessChange !== 0 && (
-            <div className="pt-2">
-              <div className="my-2 h-px w-full bg-white/10" />
-              <div className="text-sm text-center text-violet-300">
+            <div className="pt-4 mt-1">
+              <div className="my-3 h-px w-full bg-white/10" />
+              <div className="text-sm text-center text-violet-300 mt-3">
                 {madnessChange > 0 ? "+" : "-"} {Math.abs(madnessChange)} Madness
               </div>
             </div>
