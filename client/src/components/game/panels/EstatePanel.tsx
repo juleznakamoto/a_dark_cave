@@ -23,6 +23,8 @@ import { focusTooltip } from "@/game/rules/tooltips";
 import { useGlobalTooltip } from "@/hooks/useGlobalTooltip";
 import cn from "clsx";
 
+const ESTATE_BAR_GROW_ANIMATION_MS = 1000;
+
 interface SkillUpgradeRowProps {
   title: string;
   level: number;
@@ -78,7 +80,12 @@ function SkillUpgradeRow({
           </TooltipWrapper>
         ) : null}
       </div>
-      <Progress value={(level / maxLevel) * 100} className="h-2" segments={maxLevel} />
+      <Progress
+        value={(level / maxLevel) * 100}
+        className="h-2"
+        segments={maxLevel}
+        growAnimationMs={ESTATE_BAR_GROW_ANIMATION_MS}
+      />
       <div className="flex justify-between text-xs text-muted-foreground">
         <span>{description}</span>
       </div>
@@ -526,6 +533,7 @@ export default function EstatePanel() {
               value={(sleepUpgrades.lengthLevel / 5) * 100}
               className="h-2"
               segments={5}
+              growAnimationMs={ESTATE_BAR_GROW_ANIMATION_MS}
             />
             <div className="flex justify-between text-xs text-muted-foreground">
               <span>{currentLengthUpgrade.hours}h</span>
@@ -595,6 +603,7 @@ export default function EstatePanel() {
               value={(sleepUpgrades.intensityLevel / 5) * 100}
               className="h-2"
               segments={5}
+              growAnimationMs={ESTATE_BAR_GROW_ANIMATION_MS}
             />
             <div className="flex justify-between text-xs text-muted-foreground">
               <span>{currentIntensityUpgrade.percentage}%</span>

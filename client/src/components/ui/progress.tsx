@@ -12,15 +12,18 @@ interface ProgressProps extends React.ComponentPropsWithoutRef<typeof ProgressPr
   disableGlow?: boolean;
   /** Flash the bar 3 times when value decreases (e.g. combat health bars) */
   flashOnDecrease?: boolean;
+  /** Animate growth when value increases (milliseconds) */
+  growAnimationMs?: number;
 }
 
 const Progress = React.forwardRef<
   React.ElementRef<typeof ProgressPrimitive.Root>,
   ProgressProps
->(({ className, value, segments = 1, hideBorder = false, disableGlow = false, flashOnDecrease = false, ...props }, ref) => {
+>(({ className, value, segments = 1, hideBorder = false, disableGlow = false, flashOnDecrease = false, growAnimationMs = 0, ...props }, ref) => {
   const [animationKey, setAnimationKey] = React.useState(0);
   const [flashKey, setFlashKey] = React.useState(0);
   const prevValueRef = React.useRef(value || 0);
+  const isGrowing = (value || 0) > prevValueRef.current;
 
   React.useEffect(() => {
     if (value !== undefined) {
@@ -61,7 +64,11 @@ const Progress = React.forwardRef<
         className="h-full w-full flex-1 bg-red-950 relative z-10 overflow-hidden"
         style={{
           transform: `translateX(-${100 - (value || 0)}%)`,
-          transition: flashOnDecrease ? "transform 500ms ease-out" : undefined,
+          transition: flashOnDecrease
+            ? "transform 500ms ease-out"
+            : isGrowing && growAnimationMs > 0
+              ? `transform ${growAnimationMs}ms ease-out`
+              : undefined,
         }}
       >
         {/* Glow effect - animates on every increase */}
