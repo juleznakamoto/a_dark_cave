@@ -19,7 +19,6 @@ export const choiceEvents: Record<string, GameEvent> = {
       state.buildings.woodenHut >= 2 &&
       !state.clothing.ravenfeather_mantle &&
       state.current_population >= 4,
-
     timeProbability: 35,
     title: "The Pale Figure",
     message:
@@ -206,7 +205,6 @@ export const choiceEvents: Record<string, GameEvent> = {
       state.buildings.woodenHut >= 4 &&
       !state.relics.wooden_figure &&
       !state.story.seen.cthulhuFigureChoice,
-
     timeProbability: 45,
     title: "A Strange Wooden Figure",
     message:
@@ -261,7 +259,6 @@ export const choiceEvents: Record<string, GameEvent> = {
       state.current_population >= 10 &&
       !state.clothing.ebony_ring &&
       state.buildings.altar == 1,
-
     timeProbability: 35,
     title: "Offer to the Forest Gods",
     message:
@@ -395,7 +392,6 @@ export const choiceEvents: Record<string, GameEvent> = {
       state.buildings.woodenHut >= 7 &&
       state.current_population > 12 &&
       !state.relics.unnamed_book,
-
     timeProbability: 35,
     title: "The Mad Beduine",
     message:
@@ -547,7 +543,6 @@ export const choiceEvents: Record<string, GameEvent> = {
     id: "templeDedication",
     condition: (state: GameState) =>
       state.buildings.temple >= 1 && !state.story.seen.templeDedicated,
-
     timeProbability: 1,
     title: "The Blind Druid returns",
     message:
@@ -665,7 +660,6 @@ export const choiceEvents: Record<string, GameEvent> = {
     id: "vikingBuilder",
     condition: (state: GameState) =>
       state.buildings.stoneHut >= 9 && !state.story.seen.vikingBuilderEvent,
-
     timeProbability: 15,
     title: "The Viking Builder",
     message:
@@ -778,7 +772,6 @@ export const choiceEvents: Record<string, GameEvent> = {
       state.cruelMode &&
       !state.weapons.nordic_war_axe &&
       !state.story.seen.nordicWarAxeEvent,
-
     timeProbability: 15,
     title: "The Viking Returns",
     message:
@@ -929,7 +922,6 @@ export const choiceEvents: Record<string, GameEvent> = {
       state.buildings.bastion >= 1 &&
       state.story.seen.templeDedicated &&
       !state.story.seen.sanctumDedicated,
-
     timeProbability: 3,
     title: "The Dedication of the Sanctum",
     message:
@@ -1125,7 +1117,7 @@ export const choiceEvents: Record<string, GameEvent> = {
             },
             stats: {
               ...state.stats,
-              madnessFromEvents: (state.stats.madnessFromEvents || 0) + 1,
+              madness: state.stats.madness + 1,
             },
             story: {
               ...state.story,
@@ -1174,10 +1166,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               },
               stats: {
                 ...state.stats,
-                madnessFromEvents: Math.max(
-                  0,
-                  (state.stats.madnessFromEvents || 0) - 1,
-                ),
+                madness: Math.max(0, state.stats.madness - 1),
               },
               story: {
                 ...state.story,
@@ -1199,10 +1188,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               ...deathResult,
               stats: {
                 ...state.stats,
-                madnessFromEvents: Math.max(
-                  0,
-                  (state.stats.madnessFromEvents || 0) - 1,
-                ),
+                madness: Math.max(0, state.stats.madness - 1),
               },
               story: {
                 ...state.story,
@@ -1639,7 +1625,6 @@ export const choiceEvents: Record<string, GameEvent> = {
       state.buildings.deepPit >= 1 &&
       !state.miningBoostState?.isActive &&
       !state.story.seen.unnamedWandererAccepted,
-
     timeProbability: 60,
     title: "The Unnamed Wanderer",
     message:
@@ -1737,7 +1722,6 @@ export const choiceEvents: Record<string, GameEvent> = {
       state.buildings.alchemistHall >= 1 &&
       state.story.seen.alchemistArrives &&
       !state.story.seen.wanderingFirecrafterEvent,
-
     timeProbability: 20,
     title: "The Wandering Firecrafter",
     message:
@@ -1850,7 +1834,6 @@ export const choiceEvents: Record<string, GameEvent> = {
       !state.story?.seen?.boneTempleProposalEvent &&
       state.buildings.blackMonolith >= 1 &&
       (state.buildings.boneTemple || 0) === 0,
-
     timeProbability: 1,
     title: "The Elder's Demand",
     message:
@@ -1936,7 +1919,6 @@ export const choiceEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       (state.story?.seen?.humansSacrificeLevel || 0) >= 5 &&
       !state.story?.seen?.youngWomanProtestEvent,
-
     timeProbability: 2,
     title: "The Young Woman's Plea",
     message:
@@ -2017,7 +1999,6 @@ export const choiceEvents: Record<string, GameEvent> = {
         timesOccurred < 5
       );
     },
-
     timeProbability: 60, // 1 hour
     title: "Frostfall",
     message:
