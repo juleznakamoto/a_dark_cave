@@ -627,7 +627,7 @@ export default function CombatDialog({
                         className="inline-block"
                       >
                         <span className="flex items-center gap-1">
-                          <span className="inline-flex w-4 justify-center text-green-700/70">
+                          <span className="inline-flex w-4 justify-center text-green-500/70">
                             ✚
                           </span>
                           <span>
@@ -656,7 +656,7 @@ export default function CombatDialog({
                       className="inline-block"
                     >
                       <div className="text-xs mt-2 flex items-center gap-1">
-                        <span className="inline-flex w-4 justify-center text-red-700/70">
+                        <span className="inline-flex w-4 justify-center text-red-500/70">
                           ⟐
                         </span>
                         <span>{currentEnemy?.attack}</span>
@@ -678,7 +678,7 @@ export default function CombatDialog({
                           className="inline-block"
                         >
                           <span className="flex items-center gap-1">
-                            <span className="inline-flex w-4 justify-center text-green-700/70">
+                            <span className="inline-flex w-4 justify-center text-green-500/70">
                               ✚
                             </span>
                             <span>
@@ -709,7 +709,7 @@ export default function CombatDialog({
                         className="inline-block"
                       >
                         <div className="flex items-center gap-1">
-                          <span className="inline-flex w-4 justify-center text-red-700/70">
+                          <span className="inline-flex w-4 justify-center text-red-500/70">
                             ⟐
                           </span>
                           <span>{bastionStats.attack}</span>
@@ -721,7 +721,7 @@ export default function CombatDialog({
                         className="inline-block"
                       >
                         <div className="flex items-center gap-1">
-                          <span className="inline-flex w-4 justify-center text-blue-700/70">
+                          <span className="inline-flex w-4 justify-center text-blue-500/70">
                             ⧈
                           </span>
                           <span>{bastionStats.defense}</span>
