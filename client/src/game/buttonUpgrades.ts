@@ -124,6 +124,7 @@ export const UPGRADE_LABELS: Record<UpgradeKey, string> = {
 
 // Actions the Disgraced Prior can be assigned to auto-execute
 export const PRIOR_ELIGIBLE_ACTIONS = new Set<string>([
+  "feedFire",
   "hunt",
   "chopWood",
   "exploreCave",

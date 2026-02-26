@@ -44,6 +44,8 @@ import {
   generateParticleData,
   type BubbleWithParticles,
 } from "@/components/ui/bubbly-button";
+import { ButtonPriorBadge } from "@/components/game/ButtonPriorBadge";
+import { PRIOR_ELIGIBLE_ACTIONS } from "@/game/buttonUpgrades";
 
 export default function VillagePanel() {
   const {
@@ -322,7 +324,7 @@ export default function VillagePanel() {
           </div>
         ) : undefined;
 
-      return (
+      const button = (
         <CooldownButton
           key={actionId}
           ref={feedFireButtonRef}
@@ -346,6 +348,16 @@ export default function VillagePanel() {
         >
           <span className="flex items-center gap-1">{label}</span>
         </CooldownButton>
+      );
+
+      const isPriorEligible = PRIOR_ELIGIBLE_ACTIONS.has(actionId);
+      return isPriorEligible ? (
+        <div key={`${actionId}-wrapper`} className="relative inline-block">
+          {button}
+          <ButtonPriorBadge actionId={actionId} />
+        </div>
+      ) : (
+        button
       );
     }
 

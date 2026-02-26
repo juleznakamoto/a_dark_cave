@@ -1600,6 +1600,13 @@ export const choiceEvents: Record<string, GameEvent> = {
               ...state.resources,
               gold: state.resources.gold - 50,
             },
+            stats: {
+              ...state.stats,
+              madnessFromEvents: Math.max(
+                0,
+                (state.stats.madnessFromEvents || 0) - 1,
+              ),
+            },
             _logMessage: `The seer falls silent. His stare drifts beyond you. "Great challenges await you${name}," he says softly. "You believe this world is yours to shape. But you are shaped in turn. When the final truth surfaces, you will see the strings. And by then, it might be too late."`,
           };
         },
@@ -1934,6 +1941,10 @@ export const choiceEvents: Record<string, GameEvent> = {
           const actualLeavers = deathResult.villagersKilled || 0;
           return {
             ...deathResult,
+            stats: {
+              ...state.stats,
+              madnessFromEvents: (state.stats.madnessFromEvents || 0) + 1,
+            },
             story: {
               ...state.story,
               seen: {
@@ -1953,6 +1964,10 @@ export const choiceEvents: Record<string, GameEvent> = {
           const actualLeavers = deathResult.villagersKilled || 0;
           return {
             ...deathResult,
+            stats: {
+              ...state.stats,
+              madnessFromEvents: (state.stats.madnessFromEvents || 0) + 2,
+            },
             story: {
               ...state.story,
               seen: {
@@ -1972,6 +1987,13 @@ export const choiceEvents: Record<string, GameEvent> = {
             flags: {
               ...state.flags,
               humanSacrificeUnlocked: false,
+            },
+            stats: {
+              ...state.stats,
+              madnessFromEvents: Math.max(
+                0,
+                (state.stats.madnessFromEvents || 0) - 1,
+              ),
             },
             story: {
               ...state.story,
@@ -2120,6 +2142,13 @@ export const choiceEvents: Record<string, GameEvent> = {
         label: "Let him stay",
         effect: (state: GameState) => {
           return {
+            stats: {
+              ...state.stats,
+              madnessFromEvents: Math.max(
+                0,
+                (state.stats.madnessFromEvents || 0) - 1,
+              ),
+            },
             story: {
               ...state.story,
               seen: {
@@ -2142,6 +2171,10 @@ export const choiceEvents: Record<string, GameEvent> = {
         effect: (state: GameState) => {
           const duration = state.cruelMode ? 20 * 60 * 1000 : 10 * 60 * 1000; // 20 min in cruel mode, 10 min normal
           return {
+            stats: {
+              ...state.stats,
+              madnessFromEvents: (state.stats.madnessFromEvents || 0) + 1,
+            },
             story: {
               ...state.story,
               seen: {
@@ -2188,6 +2221,13 @@ export const choiceEvents: Record<string, GameEvent> = {
             resources: {
               ...state.resources,
               leather: (state.resources.leather || 0) - 100,
+            },
+            stats: {
+              ...state.stats,
+              madnessFromEvents: Math.max(
+                0,
+                (state.stats.madnessFromEvents || 0) - 1,
+              ),
             },
             story: {
               ...state.story,
