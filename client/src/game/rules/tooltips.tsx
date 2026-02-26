@@ -458,7 +458,7 @@ export const heartfireTooltip: TooltipConfig = {
       <>
         <div className="font-bold">Heartfire</div>
         <div>Production Bonus: +{heartfireState.level * 5}%</div>
-        <div>{timeLabel} until next level decrease</div>
+        <div>{timeLabel} until level decrease</div>
       </>
     );
   },
