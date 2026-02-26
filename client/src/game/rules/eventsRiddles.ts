@@ -137,15 +137,15 @@ const VARIANT_CHOICES: Record<string, RiddleChoice[]> = {
 // Success messages
 const SUCCESS_MESSAGES = {
   first: (gold: number) =>
-    `The figure nods its head slightly before fading into the darkness. By morning, a small bag with ${gold} gold rests upon the estate's doorstep.`,
+    `The figure nods its head slightly before fading into the darkness. By morning, a small bag with ${gold} Gold rests upon the estate's doorstep.`,
   second: (gold: number) =>
-    `The figure gives a faint nod and vanishes into the night. At dawn, a weathered leather pouch with ${gold} gold lies where it stood.`,
+    `The figure gives a faint nod and vanishes into the night. At dawn, a weathered leather pouch with ${gold} Gold lies where it stood.`,
   third: (gold: number) =>
-    `The figure tilts its head in quiet acknowledgment before stepping back into the dim. When morning comes, a worn coin purse with ${gold} gold is found outside the door.`,
+    `The figure tilts its head in quiet acknowledgment before stepping back into the dim. When morning comes, a worn coin purse with ${gold} Gold is found outside the door.`,
   fourth: (gold: number) =>
-    `The figure lowers its hooded head for a moment before dissolving into the shadows. A small sack containing ${gold} gold remains behind on the cold ground.`,
+    `The figure lowers its hooded head for a moment before dissolving into the shadows. A small sack containing ${gold} Gold remains behind on the cold ground.`,
   fifth: (gold: number) =>
-    `The figure bows its head in silent reverence before fading completely. A big sack filled with ${gold} lays on the ground where it stood.`,
+    `The figure bows its head in silent reverence before fading completely. A big sack filled with ${gold} Gold lays on the ground where it stood.`,
 } as const;
 
 // Wrong answer messages
@@ -285,7 +285,7 @@ function createRiddleEvent(
         // Add +100 gold bonus if BTP mode is active
         const btpBonus = state.BTP === 1 ? 100 : 0;
         const totalReward = reward + btpBonus;
-        
+
         return {
           resources: {
             ...state.resources,
@@ -340,7 +340,7 @@ function createRiddleEvent(
       // Check base precondition
       return config.precondition(state);
     },
-    
+
     timeProbability: level === "first" ? 30 : 45,
     title: config.title,
     message,
@@ -379,7 +379,7 @@ export const riddleEvents: Record<string, GameEvent> = {
       state.events.riddleOfTears_correct === true &&
       state.events.riddleOfEternal_correct === true &&
       !state.events.whisperersReward,
-    
+
     timeProbability: 5,
     title: "The Whisperer's Gift",
     message:

@@ -409,6 +409,17 @@ export const detectRewards = (stateUpdates: Partial<GameState>, currentState: Ga
   return rewards;
 };
 
+const detectMadnessChange = (
+  stateUpdates: Partial<GameState>,
+  currentState: GameState,
+): number => {
+  if (typeof stateUpdates.stats?.madness !== "number") {
+    return 0;
+  }
+
+  return stateUpdates.stats.madness - (currentState.stats.madness || 0);
+};
+
 // Define which actions should trigger reward dialogs (whitelist)
 export const rewardDialogActions = new Set([
   "layTrap",
@@ -1996,14 +2007,20 @@ export const useGameStore = create<GameStore>((set, get) => ({
       delete updatedChanges._logMessage;
     }
 
-    // Handle RewardDialog for village attack events BEFORE applying state updates
-    // This allows us to extract and remove success log messages before they're added to the event log
+    // Handle reward-style dialog for event outcomes BEFORE applying state updates.
+    // This allows us to extract and remove success log messages before they're added to the event log.
     const isVillageAttackEvent = rewardDialogVillageAttackEvents.has(eventId);
+    const madnessChange = detectMadnessChange(updatedChanges, state);
     let shouldShowRewardDialog = false;
-    let rewardDialogData: { rewards: any; successLog?: string } | null = null;
+    let rewardDialogData: {
+      rewards: any;
+      successLog?: string;
+      madnessChange?: number;
+    } | null = null;
+    let rewards: ReturnType<typeof detectRewards> = {};
 
-    if (isVillageAttackEvent && !combatData) {
-      const rewards = detectRewards(updatedChanges, state, eventId);
+    if ((isVillageAttackEvent || madnessChange !== 0) && !combatData) {
+      rewards = detectRewards(updatedChanges, state, eventId);
       if (rewards && Object.keys(rewards).length > 0) {
         // Extract success log message
         const successLog = logMessage || undefined;
@@ -2012,6 +2029,17 @@ export const useGameStore = create<GameStore>((set, get) => ({
         shouldShowRewardDialog = true;
 
         // Clear logMessage so it doesn't show in event log
+        logMessage = null;
+      }
+
+      if (madnessChange !== 0) {
+        const successLog = logMessage || undefined;
+        rewardDialogData = {
+          rewards: rewardDialogData?.rewards || rewards || {},
+          successLog: rewardDialogData?.successLog || successLog,
+          madnessChange,
+        };
+        shouldShowRewardDialog = true;
         logMessage = null;
       }
     }

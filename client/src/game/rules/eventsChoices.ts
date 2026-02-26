@@ -1127,6 +1127,10 @@ export const choiceEvents: Record<string, GameEvent> = {
               ...state.resources,
               steel: state.resources.steel + 100,
             },
+            stats: {
+              ...state.stats,
+              madness: state.stats.madness + 1,
+            },
             story: {
               ...state.story,
               seen: {
@@ -1172,6 +1176,10 @@ export const choiceEvents: Record<string, GameEvent> = {
                 ...state.resources,
                 steel: state.resources.steel + 100,
               },
+              stats: {
+                ...state.stats,
+                madness: Math.max(0, state.stats.madness - 1),
+              },
               story: {
                 ...state.story,
                 seen: {
@@ -1190,6 +1198,10 @@ export const choiceEvents: Record<string, GameEvent> = {
 
             return {
               ...deathResult,
+              stats: {
+                ...state.stats,
+                madness: Math.max(0, state.stats.madness - 1),
+              },
               story: {
                 ...state.story,
                 seen: {

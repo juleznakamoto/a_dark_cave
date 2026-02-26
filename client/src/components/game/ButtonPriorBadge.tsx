@@ -42,8 +42,8 @@ export function ButtonPriorBadge({ actionId }: ButtonPriorBadgeProps) {
   const tooltipText = atCapacity
     ? "Upgrade Disgraced Prior to assign more actions"
     : isAssigned
-      ? "Click to remove Disgraced Prior from this action"
-      : "Click to assign Disgraced Prior to this action";
+      ? "Click to remove Disgraced Prior"
+      : "Click to assign Disgraced Prior";
 
   // Base background: provides the always-visible dim fill (inactive/locked).
   // When active, the animated fill div slides over it.

@@ -23,6 +23,7 @@ interface RewardDialogData {
     stats?: Partial<GameState["stats"]>;
   };
   successLog?: string;
+  madnessChange?: number;
 }
 
 interface RewardDialogProps {
@@ -47,6 +48,8 @@ export default function RewardDialog({
   if (!data) return null;
 
   const { rewards, successLog } = data;
+  const madnessChange = data.madnessChange || 0;
+  const isMadnessDialog = madnessChange !== 0;
 
   // Helper to render a list of rewards
   const renderRewards = () => {
@@ -174,6 +177,9 @@ export default function RewardDialog({
                 .reward-dialog-glow {
                   animation: reward-glow-pulse 2.5s ease-in-out infinite;
                 }
+                .madness-dialog-glow {
+                  animation: madness-glow-pulse 2.5s ease-in-out infinite;
+                }
 
               @keyframes reward-glow-pulse {
                 0%, 100% {
@@ -183,13 +189,35 @@ export default function RewardDialog({
                   box-shadow: 0 0 0px 0px rgba(234, 179, 8, 0.5);
                 }
               }
+              @keyframes madness-glow-pulse {
+                0%, 100% {
+                  box-shadow: 0 0 15px 5px rgba(124, 58, 237, 0.25);
+                }
+                50% {
+                  box-shadow: 0 0 0px 0px rgba(124, 58, 237, 0.5);
+                }
+              }
               `}</style>
       <Dialog open={isOpen} onOpenChange={() => { }}>
-        <DialogContent className="w-[95vw] sm:max-w-sm z-[70] [&>button]:hidden border-2 border-amber-600 shadow-2xl">
-          <div className="absolute inset-0 -z-10 reward-dialog-glow pointer-events-none"></div>
+        <DialogContent
+          className={`w-[95vw] sm:max-w-sm z-[70] [&>button]:hidden border-2 shadow-2xl ${
+            isMadnessDialog ? "border-violet-600" : "border-amber-600"
+          }`}
+        >
+          <div
+            className={`absolute inset-0 -z-10 pointer-events-none ${
+              isMadnessDialog ? "madness-dialog-glow" : "reward-dialog-glow"
+            }`}
+          ></div>
           <DialogHeader>
             <div className="flex justify-center">
-              <span className="text-4xl text-white">⁂</span>
+              <span
+                className={`text-4xl ${
+                  isMadnessDialog ? "text-violet-300/90" : "text-white"
+                }`}
+              >
+                {isMadnessDialog ? "✺" : "⁂"}
+              </span>
             </div>
             {successLog && (
               <div className="text-sm text-foreground text-center px-2 pb-3">
@@ -197,10 +225,21 @@ export default function RewardDialog({
               </div>
             )}
             <div className="my-3 h-px w-full bg-white/10" />
-            <DialogTitle className="sr-only">Action Reward</DialogTitle>
+            <DialogTitle className="sr-only">
+              {isMadnessDialog ? "Madness Event" : "Action Reward"}
+            </DialogTitle>
           </DialogHeader>
 
           <div className="text-sm pb-2">{renderRewards()}</div>
+
+          {madnessChange !== 0 && (
+            <div className="pt-2">
+              <div className="my-2 h-px w-full bg-white/10" />
+              <div className="text-sm text-center text-violet-300">
+                {madnessChange > 0 ? "+" : "-"} {Math.abs(madnessChange)} Madness
+              </div>
+            </div>
+          )}
 
           <div className="flex justify-center">
             <Button
