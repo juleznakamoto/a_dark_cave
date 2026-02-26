@@ -1058,7 +1058,8 @@ export default function VillagePanel() {
                         </TooltipTrigger>
                         <TooltipContent>
                           <div className="text-xs whitespace-pre-line">
-                            {`Production Cycle\nNext production in ${productionSecondsRemaining} seconds`}
+                            <span className="font-semibold">Production Cycle</span>
+                            {`\nNext production in ${productionSecondsRemaining} seconds`}
                           </div>
                         </TooltipContent>
                       </Tooltip>
