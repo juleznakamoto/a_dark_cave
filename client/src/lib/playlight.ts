@@ -11,9 +11,6 @@ export async function initPlaylight() {
   if (initPlaylightPromise) {
     return initPlaylightPromise;
   }
-  if (playlightSDKInstance) {
-    return Promise.resolve();
-  }
 
   // Create and store the initialization promise immediately to prevent race conditions
   initPlaylightPromise = (async () => {
@@ -27,27 +24,18 @@ export async function initPlaylight() {
         document.head.appendChild(link);
       }
 
-      const scriptId = "playlight-sdk-script";
-      let script = document.getElementById(scriptId) as HTMLScriptElement | null;
-      if (!script) {
-        script = document.createElement("script");
-        script.id = scriptId;
-        script.src = "https://sdk.playlight.dev/playlight-sdk.es.js";
-        script.type = "module";
-        script.async = true;
-        document.body.appendChild(script);
-      }
+      const script = document.createElement("script");
+      script.src = "https://sdk.playlight.dev/playlight-sdk.es.js";
+      script.type = "module";
+      script.async = true;
 
-      if (script.getAttribute("data-loaded") !== "true") {
-        const loadPromise = new Promise((resolve, reject) => {
-          script!.onload = () => {
-            script!.setAttribute("data-loaded", "true");
-            resolve(undefined);
-          };
-          script!.onerror = reject;
-        });
-        await loadPromise;
-      }
+      const loadPromise = new Promise((resolve, reject) => {
+        script.onload = resolve;
+        script.onerror = reject;
+      });
+
+      document.body.appendChild(script);
+      await loadPromise;
 
       // @ts-ignore - The SDK is loaded globally as a module but we need to access its export
       // The previous dynamic import was also from the same URL
@@ -64,7 +52,8 @@ export async function initPlaylight() {
       });
 
       // Import game store
-      const { useGameStore } = await import("@/game/state");
+      const { useGameStore } = await import("../game/state");
+      (window as any).playlightSDK = playlightSDK;
 
       // Clean up previous subscription if it exists (shouldn't happen, but defensive)
       if (gameStoreUnsubscribe) {

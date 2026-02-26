@@ -28,6 +28,7 @@ import AuthDialog from "./AuthDialog";
 import LeaderboardDialog from "./LeaderboardDialog";
 import { RestartGameDialog } from "./RestartGameDialog";
 import SignUpPromptDialog from "./SignUpPromptDialog";
+import { initPlaylight } from "@/lib/playlight";
 
 
 // Social media platform configurations
@@ -276,10 +277,19 @@ export default function ProfileMenu() {
     await checkAuth();
   };
 
-  const handleDiscovery = () => {
+  const handleDiscovery = async () => {
     // @ts-ignore
-    const playlightSDK = window.playlightSDK;
-    if (playlightSDK && typeof playlightSDK.setDiscovery === 'function') {
+    let playlightSDK = window.playlightSDK;
+    if (!playlightSDK) {
+      try {
+        await initPlaylight();
+        // @ts-ignore
+        playlightSDK = window.playlightSDK;
+      } catch {
+        return;
+      }
+    }
+    if (playlightSDK && typeof playlightSDK.setDiscovery === "function") {
       playlightSDK.setDiscovery();
     }
   };
