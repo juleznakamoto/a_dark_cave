@@ -781,7 +781,7 @@ export default function SidePanel() {
             className="inline-block"
           >
             <span className="inline-flex items-center gap-1.5">
-              <span className="inline-flex w-4 justify-center text-red-700">
+              <span className="inline-flex w-3 justify-center text-red-700/70">
                 ⟐
               </span>
               <span>Attack</span>
@@ -795,7 +795,7 @@ export default function SidePanel() {
             className="inline-block"
           >
             <span className="inline-flex items-center gap-1.5">
-              <span className="inline-flex w-4 justify-center text-blue-700">
+              <span className="inline-flex w-3 justify-center text-blue-700/70">
                 ⧈
               </span>
               <span>Defense</span>
@@ -809,7 +809,7 @@ export default function SidePanel() {
             className="inline-block"
           >
             <span className="inline-flex items-center gap-1.5">
-              <span className="inline-flex w-4 justify-center text-green-700">
+              <span className="inline-flex w-3 justify-center text-green-700/70">
                 ✚
               </span>
               <span>Integrity</span>
