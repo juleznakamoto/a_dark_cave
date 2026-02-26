@@ -780,7 +780,7 @@ export default function SidePanel() {
             tooltipId="sidebar-bastion-attack-symbol"
             className="inline-block"
           >
-            <span className="inline-flex items-center gap-1">
+            <span className="inline-flex items-center gap-1.5">
               <span className="text-red-600">⟐</span>
               <span>Attack</span>
             </span>
@@ -792,7 +792,7 @@ export default function SidePanel() {
             tooltipId="sidebar-bastion-defense-symbol"
             className="inline-block"
           >
-            <span className="inline-flex items-center gap-1">
+            <span className="inline-flex items-center gap-1.5">
               <span className="text-blue-600">⧈</span>
               <span>Defense</span>
             </span>
@@ -804,7 +804,7 @@ export default function SidePanel() {
             tooltipId="sidebar-bastion-integrity-symbol"
             className="inline-block"
           >
-            <span className="inline-flex items-center gap-1">
+            <span className="inline-flex items-center gap-1.5">
               <span className="text-green-600">✚</span>
               <span>Integrity</span>
             </span>

@@ -703,7 +703,7 @@ export default function CombatDialog({
                           tooltipId="combat-player-attack-symbol"
                           className="inline-block"
                         >
-                          <span className="text-red-500 cursor-help">⟐</span>
+                          <span className="text-red-500">⟐</span>
                         </TooltipWrapper>
                         <span>{bastionStats.attack}</span>
                       </div>
@@ -713,7 +713,7 @@ export default function CombatDialog({
                           tooltipId="combat-player-defense-symbol"
                           className="inline-block"
                         >
-                          <span className="text-blue-500 cursor-help">⧈</span>
+                          <span className="text-blue-500">⧈</span>
                         </TooltipWrapper>
                         <span>{bastionStats.defense}</span>
                       </div>
