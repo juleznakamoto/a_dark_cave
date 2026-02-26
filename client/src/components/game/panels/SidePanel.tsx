@@ -772,7 +772,7 @@ export default function SidePanel() {
       }
 
       return {
-        id: key,
+        id: `bastion-${key}`,
         label: capitalizeWords(key),
         value: value ?? 0,
         testId: `bastion-stat-${key}`,
