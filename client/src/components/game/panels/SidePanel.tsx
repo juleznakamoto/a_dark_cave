@@ -581,7 +581,7 @@ export default function SidePanel() {
                 {buildAction.description}
               </div>
             )}
-            <div className="text-muted-foreground">
+            <div className="text-gray-400">
               <div>+{attack} Attack</div>
               <div>+{defense} Defense</div>
               <div>+{integrity} Integrity</div>
@@ -625,7 +625,7 @@ export default function SidePanel() {
                 {buildAction.description}
               </div>
             )}
-            <div className="text-muted-foreground">
+            <div className="text-gray-400">
               <div>+{attack} Attack</div>
               <div>+{defense} Defense</div>
               <div>+{integrity} Integrity</div>
@@ -675,7 +675,7 @@ export default function SidePanel() {
                 {buildAction.description}
               </div>
             )}
-            <div className="text-muted-foreground">
+            <div className="text-gray-400">
               <div>+{defense} Defense</div>
               <div>+{integrity} Integrity</div>
             </div>
@@ -701,7 +701,7 @@ export default function SidePanel() {
                 {buildAction.description}
               </div>
             )}
-            <div className="text-muted-foreground">
+            <div className="text-gray-400">
               <div>+5 Defense</div>
             </div>
           </div>
@@ -721,7 +721,7 @@ export default function SidePanel() {
                 {buildAction.description}
               </div>
             )}
-            <div className="text-muted-foreground">
+            <div className="text-gray-400">
               <div>+10 Defense</div>
             </div>
           </div>
@@ -750,7 +750,7 @@ export default function SidePanel() {
 
       if (key === "defense") {
         tooltip = (
-          <span className="text-muted-foreground">
+          <span className="text-gray-400">
             Reduces incoming damage
           </span>
         );
@@ -758,7 +758,7 @@ export default function SidePanel() {
 
       if (key === "integrity") {
         tooltip = (
-          <span className="text-muted-foreground">
+          <span className="text-gray-400">
             If integrity reaches 0, you lose the battle
           </span>
         );
@@ -770,7 +770,7 @@ export default function SidePanel() {
         const strengthAttack = bastion_stats.attackFromStrength || 0;
         tooltip = (
           <div>
-            <div className="mb-1 text-muted-foreground">
+            <div className="mb-1 text-gray-400">
               Damage you deal to enemies each combat round
             </div>
             <div>{fortAttack} from Fortifications</div>
@@ -782,7 +782,7 @@ export default function SidePanel() {
       const symbolLabelByStat: Record<string, React.ReactNode> = {
         attack: (
           <TooltipWrapper
-            tooltip={<span className="text-muted-foreground">Attack</span>}
+            tooltip={<span className="text-gray-400">Attack</span>}
             tooltipId="sidebar-bastion-attack-symbol"
             className="inline-block"
           >
@@ -796,7 +796,7 @@ export default function SidePanel() {
         ),
         defense: (
           <TooltipWrapper
-            tooltip={<span className="text-muted-foreground">Defense</span>}
+            tooltip={<span className="text-gray-400">Defense</span>}
             tooltipId="sidebar-bastion-defense-symbol"
             className="inline-block"
           >
@@ -810,7 +810,7 @@ export default function SidePanel() {
         ),
         integrity: (
           <TooltipWrapper
-            tooltip={<span className="text-muted-foreground">Integrity</span>}
+            tooltip={<span className="text-gray-400">Integrity</span>}
             tooltipId="sidebar-bastion-integrity-symbol"
             className="inline-block"
           >
