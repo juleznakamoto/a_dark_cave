@@ -92,6 +92,11 @@ export const madnessEvents: Record<string, GameEvent> = {
                 ...state.events,
                 villagerStares: true,
               },
+              stats: {
+                ...state.stats,
+                madness: (state.stats.madness || 0) + 3,
+                madnessFromEvents: (state.stats.madnessFromEvents || 0) + 3,
+              },
               _logMessage:
                 "As you approach, the villager's smile widens impossibly. They collapse, black fluid pouring from their eyes and mouth. You realize they've been dead for hours. (+3 Madness)",
             };
@@ -407,6 +412,15 @@ export const madnessEvents: Record<string, GameEvent> = {
 
           return {
             ...deathResult,
+            events: {
+              ...state.events,
+              wrongReflections: true,
+            },
+            stats: {
+              ...state.stats,
+              madness: (state.stats.madness || 0) + 1,
+              madnessFromEvents: (state.stats.madnessFromEvents || 0) + 1,
+            },
             _logMessage: `You board up the well with wooden planks, forbidding all access to the unholy water. Building a new well takes too long to finish, and ${thirstDeaths} of the weaker villagers perish of thirst. (+1 Madness)`,
           };
         },
