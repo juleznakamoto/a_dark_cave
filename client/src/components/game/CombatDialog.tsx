@@ -53,6 +53,7 @@ export default function CombatDialog({
   const bloodflameSphereLevel = useGameStore(
     (state) => state.combatSkills.bloodflameSphereLevel,
   );
+  const hasFortress = useGameStore((state) => state.flags.hasFortress);
 
   const [combatStarted, setCombatStarted] = useState(false);
   const [currentEnemy, setCurrentEnemy] = useState<Enemy | null>(null);
@@ -620,9 +621,17 @@ export default function CombatDialog({
                           </span>
                         )}
                       </div>
-                      <span>
-                        {currentEnemy?.currentHealth}/
-                        {currentEnemy?.maxHealth}{" "}
+                      <span className="flex items-center gap-1">
+                        <TooltipWrapper
+                          tooltip="Integrity"
+                          tooltipId="combat-enemy-integrity-symbol"
+                          className="inline-block"
+                        >
+                          <span className="text-green-500">✚</span>
+                        </TooltipWrapper>
+                        <span>
+                          {currentEnemy?.currentHealth}/{currentEnemy?.maxHealth}
+                        </span>
                       </span>
                     </div>
                     <div className="relative">
@@ -639,8 +648,15 @@ export default function CombatDialog({
                         </div>
                       )}
                     </div>
-                    <div className="text-xs mt-2">
-                      Attack: {currentEnemy?.attack}
+                    <div className="text-xs mt-2 flex items-center gap-1">
+                      <TooltipWrapper
+                        tooltip="Attack"
+                        tooltipId="combat-enemy-attack-symbol"
+                        className="inline-block"
+                      >
+                        <span className="text-red-500">⟐</span>
+                      </TooltipWrapper>
+                      <span>{currentEnemy?.attack}</span>
                     </div>
                   </div>
 
@@ -649,9 +665,20 @@ export default function CombatDialog({
                     {/* Bastion Integrity */}
                     <div className="relative">
                       <div className="flex justify-between text-sm">
-                        <span className="font-medium">Bastion Integrity</span>
-                        <span>
-                          {currentIntegrity}/{maxIntegrityForCombat}
+                        <span className="font-medium">
+                          {hasFortress ? "Fortress" : "Bastion"}
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <TooltipWrapper
+                            tooltip="Integrity"
+                            tooltipId="combat-player-integrity-symbol"
+                            className="inline-block"
+                          >
+                            <span className="text-green-500">✚</span>
+                          </TooltipWrapper>
+                          <span>
+                            {currentIntegrity}/{maxIntegrityForCombat}
+                          </span>
                         </span>
                       </div>
                       <div className="relative">
@@ -669,10 +696,26 @@ export default function CombatDialog({
                       </div>
                     </div>
 
-                    <div className="text-xs mt-2">
-                      <div>
-                        Attack: {bastionStats.attack}, Defense:{" "}
-                        {bastionStats.defense}
+                    <div className="text-xs mt-2 flex items-center gap-3">
+                      <div className="flex items-center gap-1">
+                        <TooltipWrapper
+                          tooltip="Attack"
+                          tooltipId="combat-player-attack-symbol"
+                          className="inline-block"
+                        >
+                          <span className="text-red-500 cursor-help">⟐</span>
+                        </TooltipWrapper>
+                        <span>{bastionStats.attack}</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <TooltipWrapper
+                          tooltip="Defense"
+                          tooltipId="combat-player-defense-symbol"
+                          className="inline-block"
+                        >
+                          <span className="text-blue-500 cursor-help">⧈</span>
+                        </TooltipWrapper>
+                        <span>{bastionStats.defense}</span>
                       </div>
                     </div>
                   </div>

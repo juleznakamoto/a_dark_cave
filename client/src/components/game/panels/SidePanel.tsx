@@ -8,6 +8,7 @@ import { villageBuildActions } from "@/game/rules/villageBuildActions";
 import { capitalizeWords } from "@/lib/utils";
 import React, { useState, useEffect, useRef } from "react";
 import { calculateBastionStats } from "@/game/bastionStats";
+import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import {
   getDisplayTools,
   getTotalLuck,
@@ -47,6 +48,7 @@ export default function SidePanel() {
     activeTab,
     bastion_stats, // Added bastion_stats
     story,
+    flags,
   } = useGameStore();
 
   // Track resource changes for notifications with a max size limit
@@ -771,9 +773,39 @@ export default function SidePanel() {
         );
       }
 
+      const symbolLabelByStat: Record<string, React.ReactNode> = {
+        attack: (
+          <TooltipWrapper
+            tooltip="Attack"
+            tooltipId="sidebar-bastion-attack-symbol"
+            className="inline-block"
+          >
+            <span className="text-red-500">⟐</span>
+          </TooltipWrapper>
+        ),
+        defense: (
+          <TooltipWrapper
+            tooltip="Defense"
+            tooltipId="sidebar-bastion-defense-symbol"
+            className="inline-block"
+          >
+            <span className="text-blue-500">⧈</span>
+          </TooltipWrapper>
+        ),
+        integrity: (
+          <TooltipWrapper
+            tooltip="Integrity"
+            tooltipId="sidebar-bastion-integrity-symbol"
+            className="inline-block"
+          >
+            <span className="text-green-500">✚</span>
+          </TooltipWrapper>
+        ),
+      };
+
       return {
         id: `bastion-${key}`,
-        label: capitalizeWords(key),
+        label: symbolLabelByStat[key] ?? capitalizeWords(key),
         value: value ?? 0,
         testId: `bastion-stat-${key}`,
         visible: true, // Always show bastion stats when bastion exists
@@ -934,21 +966,10 @@ export default function SidePanel() {
               />
             )}
           {bastionStatsItems.length > 0 && shouldShowSection("bastion") && (
-            <SidePanelSection title="Bastion" items={bastionStatsItems}>
-              {bastion_stats && (
-                <div className="text-xs text-gray-400">
-                  <div>
-                    Attack: {bastion_stats.attack} | Defense:{" "}
-                    {bastion_stats.defense}
-                  </div>
-                  {bastion_stats.integrity > 0 && (
-                    <div className="mt-1">
-                      Integrity: {bastion_stats.integrity}
-                    </div>
-                  )}
-                </div>
-              )}
-            </SidePanelSection>
+            <SidePanelSection
+              title={flags.hasFortress ? "Fortress" : "Bastion"}
+              items={bastionStatsItems}
+            />
           )}
           {bonusItems.length > 0 && shouldShowSection("bonuses") && (
             <SidePanelSection title="Bonuses" items={bonusItems} />
