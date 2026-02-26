@@ -424,9 +424,9 @@ export const choiceEvents: Record<string, GameEvent> = {
           const traps = state.buildings.traps;
           const villagerDeaths = Math.floor(
             Math.random() * state.buildings.woodenHut +
-            2 -
-            traps * 2 +
-            state.CM * 2,
+              2 -
+              traps * 2 +
+              state.CM * 2,
           );
           const deathResult = killVillagers(state, villagerDeaths);
           const actualDeaths = deathResult.villagersKilled || 0;
@@ -1087,17 +1087,16 @@ export const choiceEvents: Record<string, GameEvent> = {
       return (
         state.buildings.woodenHut >= 3 &&
         currentPopulation > 2 &&
-        hasRoomForTwo 
-        // !state.story.seen.slaveTraderEvent
+        hasRoomForTwo &&
+        !state.story.seen.slaveTraderEvent
       );
     },
-
-    timeProbability: 0.025,
+    timeProbability: 25,
     title: "The Slave Trader",
     message:
       "A man on a cart drawn by two horses approaches the village. An iron cage on the cart holds two miserable souls. The trader grins wickedly: 'I'll pay you 100 Steel for two of your villagers. What do you say?'",
     priority: 3,
-    repeatable: false,
+    repeatable: true,
     choices: [
       {
         id: "sellVillagers",
