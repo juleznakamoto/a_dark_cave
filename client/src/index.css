@@ -205,7 +205,7 @@ body {
   }
 
   50% {
-    text-shadow: 0 0 4px rgba(255, 255, 255, .4), 0 0 65px rgba(255, 255, 255, .2);
+    text-shadow: 0 0 4px rgba(255, 255, 255, .4), 0 0 6px rgba(255, 255, 255, .2);
     color: white;
   }
 }
@@ -313,10 +313,12 @@ body {
 }
 
 @keyframes defeat-text-pulse {
+
   0%,
   100% {
     text-shadow: 0 0 12px rgba(185, 28, 28, 0.7), 0 0 16px rgba(127, 29, 29, 0.6);
   }
+
   50% {
     text-shadow: 0 0 24px rgba(220, 38, 38, 0.95), 0 0 32px rgba(185, 28, 28, 0.8);
   }

@@ -23,7 +23,7 @@ import { focusTooltip } from "@/game/rules/tooltips";
 import { useGlobalTooltip } from "@/hooks/useGlobalTooltip";
 import cn from "clsx";
 
-const ESTATE_BAR_GROW_ANIMATION_MS = 1000;
+const ESTATE_BAR_GROW_ANIMATION_MS = 500;
 
 interface SkillUpgradeRowProps {
   title: string;
