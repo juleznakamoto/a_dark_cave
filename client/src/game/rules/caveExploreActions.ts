@@ -505,7 +505,7 @@ export const caveExploreActions: Record<string, Action> = {
 
   blastPortal: {
     id: "blastPortal",
-    label: "Blast Portal",
+    label: "Blast Gate",
     show_when: {
       "story.seen.portalDiscovered": true,
       "story.seen.portalBlasted": false,
@@ -523,7 +523,7 @@ export const caveExploreActions: Record<string, Action> = {
 
   encounterBeyondPortal: {
     id: "encounterBeyondPortal",
-    label: "Venture beyond Portal",
+    label: "Venture beyond Gate",
     expeditionVillagersRequired: () => 6,
     show_when: {
       "story.seen.sixthWaveVictory": true,
@@ -917,7 +917,7 @@ export function handleBlastPortal(
   result.logEntries!.push({
     id: `portal-blasted-${Date.now()}`,
     message:
-      "The ember bombs detonate in a bright flash of fire and light. The ancient portal cracks and crumbles. Whatever could have been sealed within has been released... We have to get ready for whatever comes out of there.",
+      "The ember bombs detonate in a bright flash of fire and light. The ancient gate cracks and crumbles. Whatever could have been sealed within has been released... We have to get ready for whatever comes out of there.",
     timestamp: Date.now(),
     type: "system",
     visualEffect: {

@@ -39,7 +39,7 @@ function NonUpgradeableBuildButton() {
     // Trigger animation
     setShow(false);
     // Button stays hidden (no reappearance timeout) - represents completed build
-    // Animation persists via global portal
+    // Animation persists via global layer
   };
 
   return (

@@ -28,6 +28,15 @@ function canPriorExecute(actionId: string, state: GameState): boolean {
   const now = Date.now();
   if (now - (priorLastExecuted.get(actionId) ?? 0) < 1000) return false;
 
+  // Feed Fire is not part of the standard action registry checks.
+  // Prior needs explicit affordability/availability logic for it.
+  if (actionId === "feedFire") {
+    const heartfireBuilt = (state.buildings?.heartfire ?? 0) > 0;
+    const currentLevel = state.heartfireState?.level ?? 0;
+    const woodCost = 50 * (currentLevel + 1);
+    return heartfireBuilt && currentLevel < 5 && (state.resources?.wood ?? 0) >= woodCost;
+  }
+
   if (!canExecuteAction(actionId, state)) return false;
 
   const action = gameActions[actionId];
@@ -242,6 +251,7 @@ export function startGameLoop() {
       state.idleModeDialog.isOpen ||
       state.restartGameDialogOpen ||
       state.rewardDialog.isOpen ||
+      state.madnessDialog.isOpen ||
       state.signUpPromptDialogOpen;
 
     const isPaused = state.isPaused || IsDialogOpen || requiresFullGamePurchase || state.idleModeState?.isActive || state.idleModeDialog.isOpen;

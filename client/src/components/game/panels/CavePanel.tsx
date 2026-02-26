@@ -118,8 +118,8 @@ export default function CavePanel() {
             { id: "lowChamber", label: "Low Chamber" },
             { id: "occultistChamber", label: "Occultist Chamber" },
             { id: "hiddenLibrary", label: "Hidden Library" },
-            { id: "blastPortal", label: "Blast Portal" },
-            { id: "encounterBeyondPortal", label: "Venture Beyond Portal" },
+            { id: "blastPortal", label: "Blast Gate" },
+            { id: "encounterBeyondPortal", label: "Venture Beyond Gate" },
             { id: "exploreUndergroundLake", label: "Underground Lake" },
             { id: "lureLakeCreature", label: "Lure Lake Creature" },
           ],
@@ -265,7 +265,7 @@ export default function CavePanel() {
     const isFocusAffected = isMineAction || isCaveExploreAction;
     const shouldGlow = isFocusAffected && state.focusState?.isActive;
 
-    // Special handling for blastPortal button
+    // Special handling for Blast Gate button
     const isBlastPortal = actionId === "blastPortal";
     const handleClick = () => {
       if (isBlastPortal) {

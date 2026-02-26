@@ -153,9 +153,9 @@ export const cubeEvents: Record<string, GameEvent> = {
       !state.events.cube05,
     
     timeProbability: 1,
-    title: "The sealed portal",
+    title: "The sealed gate",
     message:
-      "'Long after the inhabitants of the underground city perished, the object of their devotion remained: a colossal, impenetrable portal, crafted with long-forgotten technology, hidden deep within the city’s lowest chambers'",
+      "'Long after the inhabitants of the underground city perished, the object of their devotion remained: a colossal, impenetrable gate, crafted with long-forgotten technology, hidden deep within the city’s lowest chambers'",
     priority: 3,
     repeatable: true,
     choices: [
@@ -182,9 +182,9 @@ export const cubeEvents: Record<string, GameEvent> = {
       !state.events.cube06,
     
     timeProbability: 1,
-    title: "The portal opens",
+    title: "The gate opens",
     message:
-      "As the portal is shatters, the cube trembles in your hands, growing warm. A soft, but urgent whisper escapes it: 'I have gained new insights.'",
+      "As the gate is shatters, the cube trembles in your hands, growing warm. A soft, but urgent whisper escapes it: 'I have gained new insights.'",
     priority: 3,
     repeatable: true,
     choices: [
@@ -213,7 +213,7 @@ export const cubeEvents: Record<string, GameEvent> = {
     timeProbability: 1,
     title: "Ancient technology",
     message:
-      "'The ancient civilization that forged the portal possessed knowledge and technology far beyond the current age. They even crafted devices designed to be implanted within their skulls, enhancing both mind and body'",
+      "'The ancient civilization that forged the gate possessed knowledge and technology far beyond the current age. They even crafted devices designed to be implanted within their skulls, enhancing both mind and body'",
     priority: 3,
     repeatable: true,
     choices: [
@@ -388,7 +388,7 @@ export const cubeEvents: Record<string, GameEvent> = {
     timeProbability: 0.02,
     title: "The resistance",
     message:
-      "'When the resistance opposed the skull devices, they were exiled into the mountain’s depths, sealed away behind the portal. With no path back, they dug ever deeper. In isolation and darkness, their minds eroded and they descended into madness and degeneration.'",
+      "'When the resistance opposed the skull devices, they were exiled into the mountain’s depths, sealed away behind the gate. With no path back, they dug ever deeper. In isolation and darkness, their minds eroded and they descended into madness and degeneration.'",
     priority: 3,
     repeatable: true,
     choices: [
@@ -415,7 +415,7 @@ export const cubeEvents: Record<string, GameEvent> = {
     timeProbability: 0.02,
     title: "The unknown ore",
     message:
-      "'One day, deep in the earth, they found a monolith of unknown ore. From it they forged an explosive to destroy the portal. But the bomb failed to breach the portal, instead unleashed an electro-magnetic pulse spanning the whole planet destroying all devices, ending civilization.'",
+      "'One day, deep in the earth, they found a monolith of unknown ore. From it they forged an explosive to destroy the gate. But the bomb failed to breach the gate, instead unleashed an electro-magnetic pulse spanning the whole planet destroying all devices, ending civilization.'",
     priority: 3,
     repeatable: true,
     choices: [
@@ -467,9 +467,9 @@ export const cubeEvents: Record<string, GameEvent> = {
       state.events.cube14c && !state.events.cube14d,
     
     timeProbability: 0.02,
-    title: "Through the portal",
+    title: "Through the gate",
     message:
-      "'Desperate, the survivors theorized the ore could help them pass through the portal. With its last fragments, they built a smaller bomb and positioned their sanest man with it before the portal. Right after the blast, he turned ghostly, translucent, and then vanished through the portal.'",
+      "'Desperate, the survivors theorized the ore could help them pass through the gate. With its last fragments, they built a smaller bomb and positioned their sanest man with it before the gate. Right after the blast, he turned ghostly, translucent, and then vanished through the gate.'",
     priority: 3,
     repeatable: true,
     choices: [
@@ -498,7 +498,7 @@ export const cubeEvents: Record<string, GameEvent> = {
     timeProbability: 0.02,
     title: "Recognition",
     message:
-      "That was when you recognize that the creatures did not attack as they recognized you as one of their own. You are the man who vanished through the portal.",
+      "That was when you recognize that the creatures did not attack as they recognized you as one of their own. You are the man who vanished through the gate.",
     priority: 3,
     repeatable: true,
     choices: [
@@ -527,7 +527,7 @@ export const cubeEvents: Record<string, GameEvent> = {
     timeProbability: 0.02,
     title: "Recognition",
     message:
-      "After finishing their story one of the survivors steps forward, pointing at you: 'You are the man who vanished through the portal. You are one of us.",
+      "After finishing their story one of the survivors steps forward, pointing at you: 'You are the man who vanished through the gate. You are one of us.",
     priority: 3,
     repeatable: true,
     choices: [

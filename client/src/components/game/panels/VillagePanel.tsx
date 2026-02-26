@@ -83,6 +83,10 @@ export default function VillagePanel() {
 
   // Get progress from game loop state
   const loopProgress = useGameStore((state) => state.loopProgress);
+  const productionSecondsRemaining = Math.max(
+    0,
+    Math.ceil(((100 - loopProgress) / 100) * 15),
+  );
   const feastState = useGameStore((state) => state.feastState);
   const greatFeastState = useGameStore((state) => state.greatFeastState);
 
@@ -1028,12 +1032,37 @@ export default function VillagePanel() {
 
                 return effectsText && buildings.clerksHut > 0 ? (
                   <div className="text-xs text-muted-foreground flex items-center gap-3">
-                    <CircularProgress
-                      value={loopProgress} // Use loopProgress for production animation
-                      size={16}
-                      strokeWidth={2}
-                      className="text-gray-400"
-                    />
+                    <TooltipProvider>
+                      <Tooltip
+                        open={mobileTooltip.isTooltipOpen(
+                          "production-cycle-progress",
+                        )}
+                      >
+                        <TooltipTrigger asChild>
+                          <div
+                            className="cursor-pointer"
+                            onClick={(e) =>
+                              mobileTooltip.handleTooltipClick(
+                                "production-cycle-progress",
+                                e,
+                              )
+                            }
+                          >
+                            <CircularProgress
+                              value={loopProgress} // Use loopProgress for production animation
+                              size={16}
+                              strokeWidth={2}
+                              className="text-gray-400"
+                            />
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <div className="text-xs whitespace-pre-line">
+                            {`Production Cycle\nNext production in ${productionSecondsRemaining} seconds`}
+                          </div>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
                     <span>{effectsText}</span>
                   </div>
                 ) : null;

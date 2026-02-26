@@ -20,7 +20,7 @@ export default function ExplosionTest() {
       {explosionEffect.ExplosionEffectRenderer()}
 
       <div className="text-center mb-12">
-        <h1 className="text-3xl font-bold mb-2">Portal Blast — Effect Test</h1>
+        <h1 className="text-3xl font-bold mb-2">Gate Blast — Effect Test</h1>
         <p className="text-muted-foreground text-sm">
           Tweak <code className="text-xs bg-muted px-1 py-0.5 rounded">explosion-effect.tsx</code> and click to preview
         </p>
@@ -33,7 +33,7 @@ export default function ExplosionTest() {
         size="lg"
         className="text-base px-8"
       >
-        💥 Blast Portal
+        💥 Blast Gate
       </Button>
     </div>
   );

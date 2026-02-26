@@ -11,7 +11,7 @@ export const storyEvents: Record<string, GameEvent> = {
 
     timeProbability: 1,
     message:
-      "In the citadel's lowest chambers you find a colossal portal forged from an unknown, unyielding metal. Perhaps the alchemist creations will be able to open it.",
+      "In the citadel's lowest chambers you find a colossal gate forged from an unknown, unyielding metal. Perhaps the alchemist creations will be able to open it.",
     priority: 5,
     repeatable: false,
     effect: (state: GameState) => ({
@@ -323,7 +323,7 @@ export const storyEvents: Record<string, GameEvent> = {
     timeProbability: 0.02,
     title: "The Dwellers Below",
     message:
-      "In the depths beyond the shattered portal, you find some creatures that don't attack. Their forms are vaguely human, twisted by generations in darkness. They gesture, attempting to communicate through broken words and signs.",
+      "In the depths beyond the shattered gate, you find some creatures that don't attack. Their forms are vaguely human, twisted by generations in darkness. They gesture, attempting to communicate through broken words and signs.",
     priority: 5,
     repeatable: true,
     choices: [

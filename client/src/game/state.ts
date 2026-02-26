@@ -197,6 +197,10 @@ interface GameStore extends GameState {
     isOpen: boolean;
     data: any; // RewardDialogData will be imported from the component
   };
+  madnessDialog: {
+    isOpen: boolean;
+    data: any;
+  };
 
   // Actions
   getAndResetResourceAnalytics: () => Record<string, number> | null;
@@ -267,6 +271,7 @@ interface GameStore extends GameState {
   }) => void;
   updateResources: (updates: Partial<GameState["resources"]>) => void;
   setRewardDialog: (isOpen: boolean, data?: any) => void;
+  setMadnessDialog: (isOpen: boolean, data?: any) => void;
 }
 
 // Helper function to detect rewards from state updates
@@ -809,6 +814,10 @@ export const createInitialState = (): GameState => ({
 
   // Reward dialog
   rewardDialog: {
+    isOpen: false,
+    data: null,
+  },
+  madnessDialog: {
     isOpen: false,
     data: null,
   },
@@ -2019,39 +2028,39 @@ export const useGameStore = create<GameStore>((set, get) => ({
       delete updatedChanges._logMessage;
     }
 
-    // Handle reward-style dialog for event outcomes BEFORE applying state updates.
-    // This allows us to extract and remove success log messages before they're added to the event log.
+    // Prepare outcome dialogs BEFORE applying state updates, so success logs can be
+    // displayed in dialogs without duplicating them in the event log.
     const isVillageAttackEvent = rewardDialogVillageAttackEvents.has(eventId);
     const madnessChange = detectMadnessChange(updatedChanges, state);
     let shouldShowRewardDialog = false;
-    let rewardDialogData: {
-      rewards: any;
+    let rewardDialogData: { rewards: any; successLog?: string } | null = null;
+    let shouldShowMadnessDialog = false;
+    let madnessDialogData: {
+      rewards?: any;
       successLog?: string;
-      madnessChange?: number;
+      madnessChange: number;
     } | null = null;
-    let rewards: ReturnType<typeof detectRewards> = {};
 
     if ((isVillageAttackEvent || madnessChange !== 0) && !combatData) {
-      rewards = detectRewards(updatedChanges, state, eventId);
-      if (rewards && Object.keys(rewards).length > 0) {
-        // Extract success log message
-        const successLog = logMessage || undefined;
+      const rewards = detectRewards(updatedChanges, state, eventId);
+      const hasRewards = rewards && Object.keys(rewards).length > 0;
+      const successLog = logMessage || undefined;
 
+      if (isVillageAttackEvent && hasRewards) {
         rewardDialogData = { rewards, successLog };
         shouldShowRewardDialog = true;
-
-        // Clear logMessage so it doesn't show in event log
-        logMessage = null;
       }
 
       if (madnessChange !== 0) {
-        const successLog = logMessage || undefined;
-        rewardDialogData = {
-          rewards: rewardDialogData?.rewards || rewards || {},
-          successLog: rewardDialogData?.successLog || successLog,
+        madnessDialogData = {
+          rewards: hasRewards ? rewards : undefined,
+          successLog,
           madnessChange,
         };
-        shouldShowRewardDialog = true;
+        shouldShowMadnessDialog = true;
+      }
+
+      if (hasRewards || madnessChange !== 0) {
         logMessage = null;
       }
     }
@@ -2073,13 +2082,22 @@ export const useGameStore = create<GameStore>((set, get) => ({
       StateManager.schedulePopulationUpdate(get);
     }
 
+    // Show madness dialog first when madness changed in this outcome.
+    if (shouldShowMadnessDialog && madnessDialogData) {
+      get().setEventDialog(false);
+      setTimeout(() => {
+        get().setMadnessDialog(true, madnessDialogData);
+      }, 200);
+      return;
+    }
+
     // Show reward dialog for village attack events if rewards were detected
     if (shouldShowRewardDialog && rewardDialogData) {
       get().setEventDialog(false);
       setTimeout(() => {
         get().setRewardDialog(true, rewardDialogData);
       }, 200);
-      return; // Don't proceed to other dialogs
+      return;
     }
 
     // For merchant events, don't show any dialog - just apply the changes
@@ -2088,7 +2106,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // Only create a log message dialog if there's a _logMessage but no combat and it's not a merchant event
     // Note: _logMessage is for dialog feedback only, not for the main log
     // Skip if this is a village attack event that already showed reward dialog
-    if (logMessage && !combatData && !isMerchantEvent && !shouldShowRewardDialog) {
+    if (
+      logMessage &&
+      !combatData &&
+      !isMerchantEvent &&
+      !shouldShowRewardDialog &&
+      !shouldShowMadnessDialog
+    ) {
       get().setEventDialog(false);
       setTimeout(() => {
         const messageEntry: LogEntry = {
@@ -2448,6 +2472,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
   setRewardDialog: (isOpen, data) => {
     set((state) => ({
       rewardDialog: {
+        isOpen,
+        data: data || null,
+      },
+    }));
+  },
+  setMadnessDialog: (isOpen, data) => {
+    set(() => ({
+      madnessDialog: {
         isOpen,
         data: data || null,
       },

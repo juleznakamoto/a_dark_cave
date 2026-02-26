@@ -170,7 +170,7 @@ const VICTORY_MESSAGE = (silverReward: number) =>
   `The defenses hold! The pale creatures crash against the walls but cannot break through. You claim ${silverReward} silver from the fallen creatures.`;
 
 const SIXTH_WAVE_VICTORY_MESSAGE = (silverReward: number) =>
-  `The final wave has been defeated! The path beyond the shattered portal now lies open. You can venture deeper into the depths to discover what lies beyond. You claim ${silverReward} silver from the fallen creatures.`;
+  `The final wave has been defeated! The path beyond the shattered gate now lies open. You can venture deeper into the depths to discover what lies beyond. You claim ${silverReward} silver from the fallen creatures.`;
 
 function createDefeatMessage(
   casualties: number,

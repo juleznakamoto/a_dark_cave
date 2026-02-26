@@ -534,7 +534,7 @@ const BubblyButton = forwardRef<BubblyButtonHandle, BubblyButtonProps>(
 
 BubblyButton.displayName = "BubblyButton";
 
-// Helper to generate particle data for global portal (accepts full config or colors array for legacy)
+// Helper to generate particle data for global layer (accepts full config or colors array for legacy)
 export function generateParticleData(
   configOrColors?: Partial<ParticleConfig> | string[]
 ): Array<{ size: number; color: string; duration: number; endX: number; endY: number }> {
@@ -566,7 +566,7 @@ export interface BubbleWithParticles {
   particles: ReturnType<typeof generateParticleData>;
 }
 
-// Global bubble portal component for lifted state pattern
+// Global bubble layer component for lifted state pattern
 export const BubblyButtonGlobalPortal = ({
   bubbles,
   zIndex = 5,
