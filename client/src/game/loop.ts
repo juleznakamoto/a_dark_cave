@@ -9,7 +9,7 @@ import { GAME_CONSTANTS } from "./constants";
 import { logger } from "@/lib/logger";
 import { startVersionCheck, stopVersionCheck } from "./versionCheck";
 import { formatSaveTimestamp } from "@/lib/utils";
-import { gameActions, canExecuteAction } from "./rules";
+import { gameActions, canExecuteAction, shouldShowAction } from "./rules";
 import { getResourceLimit, isResourceLimited } from "./resourceLimits";
 
 let gameLoopId: number | null = null;
@@ -27,6 +27,11 @@ const priorLastExecuted = new Map<string, number>();
 function canPriorExecute(actionId: string, state: GameState): boolean {
   const now = Date.now();
   if (now - (priorLastExecuted.get(actionId) ?? 0) < 1000) return false;
+
+  // Don't execute actions that are no longer visible (e.g. superseded by a tool upgrade).
+  // Without this check, the Prior drains resources for a hidden action indefinitely because
+  // canExecuteAction does not verify shouldShowAction.
+  if (actionId !== "feedFire" && !shouldShowAction(actionId, state as any)) return false;
 
   // Feed Fire is not part of the standard action registry checks.
   // Prior needs explicit affordability/availability logic for it.
@@ -616,7 +621,22 @@ function processTick() {
   // (idleModeState?.isActive) — the outer loop returns early in those cases.
   const freshState = useGameStore.getState();
   if (freshState.fellowship?.disgraced_prior) {
-    for (const actionId of freshState.priorAssignedActions ?? []) {
+    const assigned = freshState.priorAssignedActions ?? [];
+
+    // Drop any assigned actions whose show_when conditions are no longer met
+    // (e.g. craftTorch after acquiring a stone_axe that supersedes it).
+    // This restores the Prior slot and prevents silent resource drain.
+    const staleActions = assigned.filter(
+      (id) => id !== "feedFire" && !shouldShowAction(id, freshState as unknown as GameState)
+    );
+    if (staleActions.length > 0) {
+      useGameStore.setState({
+        priorAssignedActions: assigned.filter((id) => !staleActions.includes(id)),
+      });
+    }
+
+    for (const actionId of assigned) {
+      if (staleActions.includes(actionId)) continue;
       const isReadyNow = (freshState.cooldowns[actionId] ?? 0) === 0;
       if (isReadyNow && canPriorExecute(actionId, freshState as unknown as GameState)) {
         priorLastExecuted.set(actionId, Date.now());

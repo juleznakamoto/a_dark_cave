@@ -1033,6 +1033,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const executionTime = getExecutionTime(actionId, state);
     if (executionTime > 0 && (state as any)._completingExecution !== actionId) {
       if (!state.executionStartTimes?.[actionId]) {
+        // Guard: don't deduct costs for an action that is no longer visible.
+        // This prevents the Prior (or any caller) from draining resources for
+        // an action whose show_when conditions are no longer satisfied.
+        if (!shouldShowAction(actionId, state as any)) return;
         get().startActionExecution(actionId);
         return;
       }
