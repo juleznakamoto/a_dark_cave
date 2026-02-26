@@ -580,8 +580,8 @@ export default function SidePanel() {
               </div>
             )}
             <div>
-              <div>+{defense} Defense</div>
               <div>+{attack} Attack</div>
+              <div>+{defense} Defense</div>
               <div>+{integrity} Integrity</div>
             </div>
           </div>
@@ -624,8 +624,8 @@ export default function SidePanel() {
               </div>
             )}
             <div>
-              <div>+{defense} Defense</div>
               <div>+{attack} Attack</div>
+              <div>+{defense} Defense</div>
               <div>+{integrity} Integrity</div>
             </div>
           </div>
@@ -938,8 +938,8 @@ export default function SidePanel() {
               {bastion_stats && (
                 <div className="text-xs text-gray-400">
                   <div>
-                    Defense: {bastion_stats.defense} | Attack:{" "}
-                    {bastion_stats.attack}
+                    Attack: {bastion_stats.attack} | Defense:{" "}
+                    {bastion_stats.defense}
                   </div>
                   {bastion_stats.integrity > 0 && (
                     <div className="mt-1">
