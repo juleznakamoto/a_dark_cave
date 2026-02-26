@@ -305,7 +305,7 @@ export default function TimedEventPanel() {
                       }
                       tooltipId="merchant-discount"
                     >
-                      <span className="text-blue-300/80 cursor-pointer hover:text-blue-300 transition-colors inline-block text-xl pl-2">
+                      <span className="text-blue-300/80 cursor-pointer hover:text-blue-300 transition-colors inline-block text-lg pl-2">
                         ✧
                       </span>
                     </TooltipWrapper>

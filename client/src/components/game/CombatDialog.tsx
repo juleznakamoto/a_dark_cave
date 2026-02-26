@@ -621,24 +621,20 @@ export default function CombatDialog({
                           </span>
                         )}
                       </div>
-                      <span className="flex items-center gap-1.5">
-                        <TooltipWrapper
-                          tooltip={
-                            <span className="text-gray-400">
-                              Integrity
-                            </span>
-                          }
-                          tooltipId="combat-enemy-integrity-symbol"
-                          className="inline-block"
-                        >
+                      <TooltipWrapper
+                        tooltip={<span className="text-gray-400">Integrity</span>}
+                        tooltipId="combat-enemy-integrity-symbol"
+                        className="inline-block"
+                      >
+                        <span className="flex items-center gap-1">
                           <span className="inline-flex w-4 justify-center text-green-700/70">
                             ✚
                           </span>
-                        </TooltipWrapper>
-                        <span>
-                          {currentEnemy?.currentHealth}/{currentEnemy?.maxHealth}
+                          <span>
+                            {currentEnemy?.currentHealth}/{currentEnemy?.maxHealth}
+                          </span>
                         </span>
-                      </span>
+                      </TooltipWrapper>
                     </div>
                     <div className="relative">
                       <Progress
@@ -654,20 +650,18 @@ export default function CombatDialog({
                         </div>
                       )}
                     </div>
-                    <div className="text-xs mt-2 flex items-center gap-1.5">
-                      <TooltipWrapper
-                        tooltip={
-                          <span className="text-gray-400">Attack</span>
-                        }
-                        tooltipId="combat-enemy-attack-symbol"
-                        className="inline-block"
-                      >
+                    <TooltipWrapper
+                      tooltip={<span className="text-gray-400">Attack</span>}
+                      tooltipId="combat-enemy-attack-symbol"
+                      className="inline-block"
+                    >
+                      <div className="text-xs mt-2 flex items-center gap-1">
                         <span className="inline-flex w-4 justify-center text-red-700/70">
                           ⟐
                         </span>
-                      </TooltipWrapper>
-                      <span>{currentEnemy?.attack}</span>
-                    </div>
+                        <span>{currentEnemy?.attack}</span>
+                      </div>
+                    </TooltipWrapper>
                   </div>
 
                   {/* Player Stats */}
@@ -678,24 +672,20 @@ export default function CombatDialog({
                         <span className="font-medium">
                           {hasFortress ? "Fortress" : "Bastion"}
                         </span>
-                        <span className="flex items-center gap-1.5">
-                          <TooltipWrapper
-                            tooltip={
-                              <span className="text-gray-400">
-                                Integrity
-                              </span>
-                            }
-                            tooltipId="combat-player-integrity-symbol"
-                            className="inline-block"
-                          >
+                        <TooltipWrapper
+                          tooltip={<span className="text-gray-400">Integrity</span>}
+                          tooltipId="combat-player-integrity-symbol"
+                          className="inline-block"
+                        >
+                          <span className="flex items-center gap-1">
                             <span className="inline-flex w-4 justify-center text-green-700/70">
                               ✚
                             </span>
-                          </TooltipWrapper>
-                          <span>
-                            {currentIntegrity}/{maxIntegrityForCombat}
+                            <span>
+                              {currentIntegrity}/{maxIntegrityForCombat}
+                            </span>
                           </span>
-                        </span>
+                        </TooltipWrapper>
                       </div>
                       <div className="relative">
                         <Progress
@@ -713,38 +703,30 @@ export default function CombatDialog({
                     </div>
 
                     <div className="text-xs mt-2 flex items-center gap-3">
-                      <div className="flex items-center gap-1.5">
-                        <TooltipWrapper
-                          tooltip={
-                            <span className="text-gray-400">
-                              Attack
-                            </span>
-                          }
-                          tooltipId="combat-player-attack-symbol"
-                          className="inline-block"
-                        >
+                      <TooltipWrapper
+                        tooltip={<span className="text-gray-400">Attack</span>}
+                        tooltipId="combat-player-attack-symbol"
+                        className="inline-block"
+                      >
+                        <div className="flex items-center gap-1">
                           <span className="inline-flex w-4 justify-center text-red-700/70">
                             ⟐
                           </span>
-                        </TooltipWrapper>
-                        <span>{bastionStats.attack}</span>
-                      </div>
-                      <div className="flex items-center gap-1.5">
-                        <TooltipWrapper
-                          tooltip={
-                            <span className="text-gray-400">
-                              Defense
-                            </span>
-                          }
-                          tooltipId="combat-player-defense-symbol"
-                          className="inline-block"
-                        >
+                          <span>{bastionStats.attack}</span>
+                        </div>
+                      </TooltipWrapper>
+                      <TooltipWrapper
+                        tooltip={<span className="text-gray-400">Defense</span>}
+                        tooltipId="combat-player-defense-symbol"
+                        className="inline-block"
+                      >
+                        <div className="flex items-center gap-1">
                           <span className="inline-flex w-4 justify-center text-blue-700/70">
                             ⧈
                           </span>
-                        </TooltipWrapper>
-                        <span>{bastionStats.defense}</span>
-                      </div>
+                          <span>{bastionStats.defense}</span>
+                        </div>
+                      </TooltipWrapper>
                     </div>
                   </div>
 
