@@ -373,7 +373,8 @@ export default function SidePanelSection({
           <span
             className={cn(
               "mr-1",
-              title === "Stats" && "inline-flex w-4 justify-center",
+              title === "Stats" &&
+                "mr-1.5 inline-flex w-4 items-center justify-center",
               item.iconColor,
             )}
           >

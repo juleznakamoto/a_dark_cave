@@ -581,7 +581,7 @@ export default function SidePanel() {
                 {buildAction.description}
               </div>
             )}
-            <div>
+            <div className="text-muted-foreground">
               <div>+{attack} Attack</div>
               <div>+{defense} Defense</div>
               <div>+{integrity} Integrity</div>
@@ -625,7 +625,7 @@ export default function SidePanel() {
                 {buildAction.description}
               </div>
             )}
-            <div>
+            <div className="text-muted-foreground">
               <div>+{attack} Attack</div>
               <div>+{defense} Defense</div>
               <div>+{integrity} Integrity</div>
@@ -675,7 +675,7 @@ export default function SidePanel() {
                 {buildAction.description}
               </div>
             )}
-            <div>
+            <div className="text-muted-foreground">
               <div>+{defense} Defense</div>
               <div>+{integrity} Integrity</div>
             </div>
@@ -701,7 +701,7 @@ export default function SidePanel() {
                 {buildAction.description}
               </div>
             )}
-            <div>
+            <div className="text-muted-foreground">
               <div>+5 Defense</div>
             </div>
           </div>
@@ -721,7 +721,7 @@ export default function SidePanel() {
                 {buildAction.description}
               </div>
             )}
-            <div>
+            <div className="text-muted-foreground">
               <div>+10 Defense</div>
             </div>
           </div>
@@ -749,13 +749,19 @@ export default function SidePanel() {
       let tooltip = undefined;
 
       if (key === "defense") {
-        tooltip =
-          "Reduces incoming damage before it is applied to integrity.";
+        tooltip = (
+          <span className="text-muted-foreground">
+            Reduces incoming damage
+          </span>
+        );
       }
 
       if (key === "integrity") {
-        tooltip =
-          "If integrity reaches 0, you lose the battle.";
+        tooltip = (
+          <span className="text-muted-foreground">
+            If integrity reaches 0, you lose the battle
+          </span>
+        );
       }
 
       // Add detailed tooltip for attack showing breakdown
@@ -763,20 +769,20 @@ export default function SidePanel() {
         const fortAttack = bastion_stats.attackFromFortifications || 0;
         const strengthAttack = bastion_stats.attackFromStrength || 0;
         tooltip = (
-          <>
-            <div className="mb-1">
-              Damage you deal to enemies each combat round.
+          <div>
+            <div className="mb-1 text-muted-foreground">
+              Damage you deal to enemies each combat round
             </div>
             <div>{fortAttack} from Fortifications</div>
             <div>{strengthAttack} from Strength (50 %)</div>
-          </>
+          </div>
         );
       }
 
       const symbolLabelByStat: Record<string, React.ReactNode> = {
         attack: (
           <TooltipWrapper
-            tooltip="Attack"
+            tooltip={<span className="text-muted-foreground">Attack</span>}
             tooltipId="sidebar-bastion-attack-symbol"
             className="inline-block"
           >
@@ -790,7 +796,7 @@ export default function SidePanel() {
         ),
         defense: (
           <TooltipWrapper
-            tooltip="Defense"
+            tooltip={<span className="text-muted-foreground">Defense</span>}
             tooltipId="sidebar-bastion-defense-symbol"
             className="inline-block"
           >
@@ -804,7 +810,7 @@ export default function SidePanel() {
         ),
         integrity: (
           <TooltipWrapper
-            tooltip="Integrity"
+            tooltip={<span className="text-muted-foreground">Integrity</span>}
             tooltipId="sidebar-bastion-integrity-symbol"
             className="inline-block"
           >
