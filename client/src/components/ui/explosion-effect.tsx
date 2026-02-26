@@ -64,11 +64,12 @@ function FireParticles({
             }}
             animate={{
               backgroundColor: [
-                "hsl(50, 80%, 45%)", // dimmed warm light
-                "hsl(55, 100%, 55%)", // deeper yellow glow
-                "hsl(38, 100%, 38%)", // rich golden orange
-                "hsl(18, 100%, 22%)", // darker ember red
-                "hsl(0, 0%, 6%)",     // almost black smoke
+                "hsl(0, 0%, 13%)", // almost pure black
+                "hsl(270, 70%, 14%)", // dark violet glow
+                "hsl(255, 75%, 11%)", // deeper violet-blue
+                "hsl(230, 75%, 10%)", // dark blue
+                "hsl(220, 65%, 8%)", // very dark blue
+                "hsl(0, 0%, 5%)", // almost pure black
               ],
 
               scale: [1, 4, 7, 7, 0],
@@ -209,17 +210,17 @@ export function useExplosionEffect() {
     const newFireParticles: FireParticle[] = Array.from({
       length: fireCount,
     }).map(() => {
-      const r = Math.random() * 0.25 + 0.05;
+      const r = Math.random() * 0.15 + 0.05;
       const diameter = r * 2;
       const xBound = rect.width / 2 - r * 16;
       const yBound = rect.height / 2 - r * 16;
 
-      const x = (Math.random() * 2 - 1) * xBound;
-      const y = (Math.random() * 2 - 1) * yBound;
+      const x = (Math.random() * 2.5 - 1.25) * xBound;
+      const y = (Math.random() * 2.5 - 1.25) * yBound;
 
       const angle = Math.atan2(-1, 0);
       const distance = Math.random() * 40;
-      const duration = Math.random() * 200 + 400;
+      const duration = Math.random() * 400 + 100;
 
       return {
         id: fireIdRef.current++,
@@ -241,7 +242,7 @@ export function useExplosionEffect() {
         angle: Math.random() * Math.PI * 2,
         distance: Math.random() * 1200 + 200,
         color: colors[Math.floor(Math.random() * colors.length)],
-        lifetime: 1.5 + Math.random() * 4,
+        lifetime: 1 + Math.random() * 4,
         size: Math.random() * 5,
         createdAt: Date.now(),
       }),
