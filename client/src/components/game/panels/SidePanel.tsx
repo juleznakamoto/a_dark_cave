@@ -781,7 +781,9 @@ export default function SidePanel() {
             className="inline-block"
           >
             <span className="inline-flex items-center gap-1.5">
-              <span className="text-red-600">⟐</span>
+              <span className="inline-flex w-4 justify-center text-red-700">
+                ⟐
+              </span>
               <span>Attack</span>
             </span>
           </TooltipWrapper>
@@ -793,7 +795,9 @@ export default function SidePanel() {
             className="inline-block"
           >
             <span className="inline-flex items-center gap-1.5">
-              <span className="text-blue-600">⧈</span>
+              <span className="inline-flex w-4 justify-center text-blue-700">
+                ⧈
+              </span>
               <span>Defense</span>
             </span>
           </TooltipWrapper>
@@ -805,7 +809,9 @@ export default function SidePanel() {
             className="inline-block"
           >
             <span className="inline-flex items-center gap-1.5">
-              <span className="text-green-600">✚</span>
+              <span className="inline-flex w-4 justify-center text-green-700">
+                ✚
+              </span>
               <span>Integrity</span>
             </span>
           </TooltipWrapper>

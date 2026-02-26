@@ -370,7 +370,15 @@ export default function SidePanelSection({
         )}
       >
         {item.icon !== undefined && (
-          <span className={cn("mr-1", item.iconColor)}>{item.icon}</span>
+          <span
+            className={cn(
+              "mr-1",
+              title === "Stats" && "inline-flex w-4 justify-center",
+              item.iconColor,
+            )}
+          >
+            {item.icon}
+          </span>
         )}
         {typeof item.label === "string" && item.label.includes("↓") ? (
           <>
