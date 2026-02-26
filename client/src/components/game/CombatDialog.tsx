@@ -624,7 +624,7 @@ export default function CombatDialog({
                       <span className="flex items-center gap-1.5">
                         <TooltipWrapper
                           tooltip={
-                            <span className="text-muted-foreground">
+                            <span className="text-gray-400">
                               Integrity
                             </span>
                           }
@@ -657,7 +657,7 @@ export default function CombatDialog({
                     <div className="text-xs mt-2 flex items-center gap-1.5">
                       <TooltipWrapper
                         tooltip={
-                          <span className="text-muted-foreground">Attack</span>
+                          <span className="text-gray-400">Attack</span>
                         }
                         tooltipId="combat-enemy-attack-symbol"
                         className="inline-block"
@@ -681,7 +681,7 @@ export default function CombatDialog({
                         <span className="flex items-center gap-1.5">
                           <TooltipWrapper
                             tooltip={
-                              <span className="text-muted-foreground">
+                              <span className="text-gray-400">
                                 Integrity
                               </span>
                             }
@@ -716,7 +716,7 @@ export default function CombatDialog({
                       <div className="flex items-center gap-1.5">
                         <TooltipWrapper
                           tooltip={
-                            <span className="text-muted-foreground">
+                            <span className="text-gray-400">
                               Attack
                             </span>
                           }
@@ -732,7 +732,7 @@ export default function CombatDialog({
                       <div className="flex items-center gap-1.5">
                         <TooltipWrapper
                           tooltip={
-                            <span className="text-muted-foreground">
+                            <span className="text-gray-400">
                               Defense
                             </span>
                           }
