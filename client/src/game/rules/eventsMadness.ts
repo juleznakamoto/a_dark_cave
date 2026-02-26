@@ -1,8 +1,11 @@
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
-import { getTotalMadness } from "./effectsCalculation";
+import { getTotalMadness, getTotalLuck } from "./effectsCalculation";
 import { getMaxPopulation } from "../population";
+
+const withCruelMadnessBonus = (state: GameState, baseMadnessGain: number): number =>
+  baseMadnessGain + (state.CM ? 1 : 0);
 
 export const madnessEvents: Record<string, GameEvent> = {
   whisperingVoices: {
@@ -12,7 +15,7 @@ export const madnessEvents: Record<string, GameEvent> = {
     timeProbability: 30,
     title: "Whispering Voices",
     message:
-      "You hear faint whispers in the wind, speaking words in no language you recognize, but somehow you understand them. They speak of ancient things buried beneath the earth. The voices grow clearer until in the evening they are suddenly gone. (+1 Madness)",
+      "You hear faint whispers in the wind, speaking words in no language you recognize, but somehow you understand them. They speak of ancient things buried beneath the earth. The voices grow clearer until in the evening they are suddenly gone.",
     priority: 2,
     repeatable: false,
     effect: (state: GameState) => ({
@@ -22,8 +25,9 @@ export const madnessEvents: Record<string, GameEvent> = {
       },
       stats: {
         ...state.stats,
-        madness: (state.stats.madness || 0) + 1,
-        madnessFromEvents: (state.stats.madnessFromEvents || 0) + 1,
+        madnessFromEvents:
+          (state.stats.madnessFromEvents || 0) +
+          withCruelMadnessBonus(state, 1),
       },
     }),
   },
@@ -34,7 +38,7 @@ export const madnessEvents: Record<string, GameEvent> = {
       getTotalMadness(state) >= 15 && !state.events.shadowsMove,
     timeProbability: 30,
     message:
-      "The shadows in the village seem to move wrong. They stretch too long, twist at impossible angles, and sometimes seem to move independently of their sources. You catch glimpses of shapes that shouldn't be there. (+2 Madness)",
+      "The shadows in the village seem to move wrong. They stretch too long, twist at impossible angles, and sometimes seem to move independently of their sources. You catch glimpses of shapes that shouldn't be there.",
     priority: 1,
     repeatable: false,
     effect: (state: GameState) => ({
@@ -44,8 +48,9 @@ export const madnessEvents: Record<string, GameEvent> = {
       },
       stats: {
         ...state.stats,
-        madness: (state.stats.madness || 0) + 2,
-        madnessFromEvents: (state.stats.madnessFromEvents || 0) + 2,
+        madnessFromEvents:
+          (state.stats.madnessFromEvents || 0) +
+          withCruelMadnessBonus(state, 2),
       },
     }),
   },
@@ -78,11 +83,12 @@ export const madnessEvents: Record<string, GameEvent> = {
               },
               stats: {
                 ...state.stats,
-                madness: (state.stats.madness || 0) + 2,
-                madnessFromEvents: (state.stats.madnessFromEvents || 0) + 2,
+                madnessFromEvents:
+                  (state.stats.madnessFromEvents || 0) +
+                  withCruelMadnessBonus(state, 2),
               },
               _logMessage:
-                "You confront the villager. They turn to you with that black-eyed smile and whisper something that makes your mind reel. The words echo in your head for days.  (+2 Madness)",
+                "You confront the villager. They turn to you with that black-eyed smile and whisper something that makes your mind reel. The words echo in your head for days.",
             };
           } else {
             const deathResult = killVillagers(state, 1);
@@ -94,11 +100,12 @@ export const madnessEvents: Record<string, GameEvent> = {
               },
               stats: {
                 ...state.stats,
-                madness: (state.stats.madness || 0) + 3,
-                madnessFromEvents: (state.stats.madnessFromEvents || 0) + 3,
+                madnessFromEvents:
+                  (state.stats.madnessFromEvents || 0) +
+                  withCruelMadnessBonus(state, 3),
               },
               _logMessage:
-                "As you approach, the villager's smile widens impossibly. They collapse, black fluid pouring from their eyes and mouth. You realize they've been dead for hours. (+3 Madness)",
+                "As you approach, the villager's smile widens impossibly. They collapse, black fluid pouring from their eyes and mouth. You realize they've been dead for hours.",
             };
           }
         },
@@ -116,11 +123,12 @@ export const madnessEvents: Record<string, GameEvent> = {
             },
             stats: {
               ...state.stats,
-              madness: (state.stats.madness || 0) + 2,
-              madnessFromEvents: (state.stats.madnessFromEvents || 0) + 2,
+              madnessFromEvents:
+                (state.stats.madnessFromEvents || 0) +
+                withCruelMadnessBonus(state, 2),
             },
             _logMessage:
-              "You avoid the villager, but you feel their hollow gaze following you wherever you go. Sleep becomes difficult. After a few nights, the villager is found dead in his bed, his clothes soaked through with a black, reeking slime. (+2 Madness)",
+              "You avoid the villager, but you feel their hollow gaze following you wherever you go. Sleep becomes difficult. After a few nights, the villager is found dead in his bed, his clothes soaked through with a black, reeking slime.",
           };
         },
       },
@@ -133,7 +141,7 @@ export const madnessEvents: Record<string, GameEvent> = {
       getTotalMadness(state) >= 25 && !state.events.bloodInWater,
     timeProbability: 30,
     message:
-      "The village water runs red for three days. The villagers don't seem to notice, drinking it as if nothing has changed. You taste copper and iron, but they claim it tastes like the sweetest spring water. (+2 Madness)",
+      "The village water runs red for three days. The villagers don't seem to notice, drinking it as if nothing has changed. You taste copper and iron, but they claim it tastes like the sweetest spring water.",
     priority: 2,
     repeatable: false,
     effect: (state: GameState) => ({
@@ -143,8 +151,9 @@ export const madnessEvents: Record<string, GameEvent> = {
       },
       stats: {
         ...state.stats,
-        madness: (state.stats.madness || 0) + 2,
-        madnessFromEvents: (state.stats.madnessFromEvents || 0) + 2,
+        madnessFromEvents:
+          (state.stats.madnessFromEvents || 0) +
+          withCruelMadnessBonus(state, 2),
       },
     }),
   },
@@ -173,11 +182,12 @@ export const madnessEvents: Record<string, GameEvent> = {
           },
           stats: {
             ...state.stats,
-            madness: (state.stats.madness || 0) + 3,
-            madnessFromEvents: (state.stats.madnessFromEvents || 0) + 5,
+            madnessFromEvents:
+              (state.stats.madnessFromEvents || 0) +
+              withCruelMadnessBonus(state, 5),
           },
           _logMessage:
-            "You lean close to one of the faces. Its eyes snap open and it whispers your name. You recognize the face as someone who died years ago. (+3 Madness)",
+            "You lean close to one of the faces. Its eyes snap open and it whispers your name. You recognize the face as someone who died years ago.",
         }),
       },
       {
@@ -190,11 +200,12 @@ export const madnessEvents: Record<string, GameEvent> = {
           },
           stats: {
             ...state.stats,
-            madness: (state.stats.madness || 0) + 2,
-            madnessFromEvents: (state.stats.madnessFromEvents || 0) + 3,
+            madnessFromEvents:
+              (state.stats.madnessFromEvents || 0) +
+              withCruelMadnessBonus(state, 3),
           },
           _logMessage:
-            "You try to ignore the faces, but they multiply. Soon every wooden surface in the village bears the mark of tortured souls. One morning they are all gone, as they were never there. (+2 Madness)",
+            "You try to ignore the faces, but they multiply. Soon every wooden surface in the village bears the mark of tortured souls. One morning they are all gone, as they were never there.",
         }),
       },
     ],
@@ -219,7 +230,7 @@ export const madnessEvents: Record<string, GameEvent> = {
     },
     timeProbability: 30,
     message:
-      "You count the villagers and there are three more than there should be. The extra ones look exactly like villagers who died months ago. They work, eat, and sleep normally, but their eyes hold depths of ancient malice. (+2 Madness)",
+      "You count the villagers and there are three more than there should be. The extra ones look exactly like villagers who died months ago. They work, eat, and sleep normally, but their eyes hold depths of ancient malice.",
     priority: 2,
     repeatable: false,
     effect: (state: GameState) => {
@@ -241,8 +252,9 @@ export const madnessEvents: Record<string, GameEvent> = {
         },
         stats: {
           ...state.stats,
-          madness: (state.stats.madness || 0) + 2,
-          madnessFromEvents: (state.stats.madnessFromEvents || 0) + 2,
+          madnessFromEvents:
+            (state.stats.madnessFromEvents || 0) +
+            withCruelMadnessBonus(state, 2),
         },
       };
     },
@@ -265,12 +277,21 @@ export const madnessEvents: Record<string, GameEvent> = {
         id: "calm_down",
         label: "Try to calm down",
         effect: (state: GameState) => {
+          const luck = getTotalLuck(state);
+          const successChance = Math.min(0.9, 0.5 + luck * 0.005 - state.CM * 0.1);
           const rand = Math.random();
-          if (rand < 0.5 - state.CM * 0.1) {
+          if (rand < successChance) {
             return {
               events: {
                 ...state.events,
                 skinCrawling: true,
+              },
+              stats: {
+                ...state.stats,
+                madnessFromEvents: Math.max(
+                  0,
+                  (state.stats.madnessFromEvents || 0) - 1,
+                ),
               },
               _logMessage:
                 "You take deep breaths and force yourself to remain still. The crawling sensation gradually fades, and your skin returns to normal. You have conquered this horror through sheer willpower.",
@@ -283,11 +304,12 @@ export const madnessEvents: Record<string, GameEvent> = {
               },
               stats: {
                 ...state.stats,
-                madness: (state.stats.madness || 0) + 2,
-                madnessFromEvents: (state.stats.madnessFromEvents || 0) + 2,
+                madnessFromEvents:
+                  (state.stats.madnessFromEvents || 0) +
+                  withCruelMadnessBonus(state, 2),
               },
               _logMessage:
-                "You try to calm yourself, but the sensation intensifies. Your vision blurs and you collapse. In your fevered dreams, ancient things whisper your true name. When you awaken, the crawling has stopped, but the memory lingers. (+2 Madness)",
+                "You try to calm yourself, but the sensation intensifies. Your vision blurs and you collapse. In your fevered dreams, ancient things whisper your true name. When you awaken, the crawling has stopped, but the memory lingers.",
             };
           }
         },
@@ -307,10 +329,11 @@ export const madnessEvents: Record<string, GameEvent> = {
             },
             stats: {
               ...state.stats,
-              madness: (state.stats.madness || 0) + 2,
-              madnessFromEvents: (state.stats.madnessFromEvents || 0) + 2,
+              madnessFromEvents:
+                (state.stats.madnessFromEvents || 0) +
+                withCruelMadnessBonus(state, 2),
             },
-            _logMessage: `You claw frantically at your skin, drawing blood. The villagers rush to stop you, grabbing your arms. In your maddened rage, you lash out violently, killing ${killedVillagers} villagers before collapsing from exhaustion. When you awaken, the crawling has stopped, but blood stains your hands. (+2 Madness)`,
+            _logMessage: `You claw frantically at your skin, drawing blood. The villagers rush to stop you, grabbing your arms. In your maddened rage, you lash out violently, killing ${killedVillagers} villagers before collapsing from exhaustion. When you awaken, the crawling has stopped, but blood stains your hands.`,
           };
         },
       },
@@ -342,11 +365,12 @@ export const madnessEvents: Record<string, GameEvent> = {
           },
           stats: {
             ...state.stats,
-            madness: (state.stats.madness || 0) + 3,
-            madnessFromEvents: (state.stats.madnessFromEvents || 0) + 3,
+            madnessFromEvents:
+              (state.stats.madnessFromEvents || 0) +
+              withCruelMadnessBonus(state, 3),
           },
           _logMessage:
-            "You turn away and try to forget what you saw. But in your dreams, the creature visits you. It whispers your name with a voice like grinding stone, and shows you visions of what lies beneath the earth. (+3 Madness)",
+            "You turn away and try to forget what you saw. But in your dreams, the creature visits you. It whispers your name with a voice like grinding stone, and shows you visions of what lies beneath the earth.",
         }),
       },
       {
@@ -363,6 +387,12 @@ export const madnessEvents: Record<string, GameEvent> = {
             buildings: {
               ...state.buildings,
               woodenHut: Math.max(0, state.buildings.woodenHut - 1),
+            },
+            stats: {
+              ...state.stats,
+              madnessFromEvents:
+                (state.stats.madnessFromEvents || 0) +
+                withCruelMadnessBonus(state, 1),
             },
             _logMessage:
               "You set the hut ablaze. The flames consume everything - including the two villagers sleeping inside. In the morning, you find only ash and the lingering smell of something that was never meant to burn.",
@@ -395,11 +425,12 @@ export const madnessEvents: Record<string, GameEvent> = {
           },
           stats: {
             ...state.stats,
-            madness: (state.stats.madness || 0) + 3,
-            madnessFromEvents: (state.stats.madnessFromEvents || 0) + 5,
+            madnessFromEvents:
+              (state.stats.madnessFromEvents || 0) +
+              withCruelMadnessBonus(state, 5),
           },
           _logMessage:
-            "You lean over the well's edge. Your reflection grins back with too many teeth and whispers secrets about what was once built where the village stands now. You pull back, but the knowledge remains, burning in your mind. (+3 Madness)",
+            "You lean over the well's edge. Your reflection grins back with too many teeth and whispers secrets about what was once built where the village stands now. You pull back, but the knowledge remains, burning in your mind.",
         }),
       },
       {
@@ -418,10 +449,9 @@ export const madnessEvents: Record<string, GameEvent> = {
             },
             stats: {
               ...state.stats,
-              madness: (state.stats.madness || 0) + 1,
-              madnessFromEvents: (state.stats.madnessFromEvents || 0) + 1,
+              madnessFromEvents: Math.max(0, (state.stats.madnessFromEvents || 0) - 1),
             },
-            _logMessage: `You board up the well with wooden planks, forbidding all access to the unholy water. Building a new well takes too long to finish, and ${thirstDeaths} of the weaker villagers perish of thirst. (+1 Madness)`,
+            _logMessage: `You board up the well with wooden planks, forbidding all access to the unholy water. Building a new well takes too long to finish, and ${thirstDeaths} of the weaker villagers perish of thirst.`,
           };
         },
       },
@@ -454,11 +484,12 @@ export const madnessEvents: Record<string, GameEvent> = {
               },
               stats: {
                 ...state.stats,
-                madness: (state.stats.madness || 0) + 2,
-                madnessFromEvents: (state.stats.madnessFromEvents || 0) + 2,
+                madnessFromEvents:
+                  (state.stats.madnessFromEvents || 0) +
+                  withCruelMadnessBonus(state, 2),
               },
               _logMessage:
-                "You grab the nearest villager and shake them. They blink once and return to normal, but whisper 'It's coming' before resuming their work. The others slowly follow suit. (+2 Madness)",
+                "You grab the nearest villager and shake them. They blink once and return to normal, but whisper 'It's coming' before resuming their work. The others slowly follow suit.",
             };
           } else {
             const deathResult = killVillagers(state, 1);
@@ -470,11 +501,12 @@ export const madnessEvents: Record<string, GameEvent> = {
               },
               stats: {
                 ...state.stats,
-                madness: (state.stats.madness || 0) + 3,
-                madnessFromEvents: (state.stats.madnessFromEvents || 0) + 3,
+                madnessFromEvents:
+                  (state.stats.madnessFromEvents || 0) +
+                  withCruelMadnessBonus(state, 3),
               },
               _logMessage:
-                "When you touch one villager, they crumble to dust. The others snap out of their trance and scream, pointing at the sky. For just a moment, you see it too, something vast and hungry watching from above. (+3 Madness)",
+                "When you touch one villager, they crumble to dust. The others snap out of their trance and scream, pointing at the sky. For just a moment, you see it too, something vast and hungry watching from above.",
             };
           }
         },
@@ -489,11 +521,12 @@ export const madnessEvents: Record<string, GameEvent> = {
           },
           stats: {
             ...state.stats,
-            madness: (state.stats.madness || 0) + 4,
-            madnessFromEvents: (state.stats.madnessFromEvents || 0) + 4,
+            madnessFromEvents:
+              (state.stats.madnessFromEvents || 0) +
+              withCruelMadnessBonus(state, 4),
           },
           _logMessage:
-            "You crane your neck skyward and suddenly see it, something immense and impossible that exists between the clouds. Your mind rejects what it witnesses, but the image burns itself into your memory forever. (+4 Madness)",
+            "You crane your neck skyward and suddenly see it, something immense and impossible that exists between the clouds. Your mind rejects what it witnesses, but the image burns itself into your memory forever.",
         }),
       },
     ],

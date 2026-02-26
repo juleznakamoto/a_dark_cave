@@ -413,11 +413,23 @@ const detectMadnessChange = (
   stateUpdates: Partial<GameState>,
   currentState: GameState,
 ): number => {
-  if (typeof stateUpdates.stats?.madness !== "number") {
+  if (!stateUpdates.stats) {
     return 0;
   }
 
-  return stateUpdates.stats.madness - (currentState.stats.madness || 0);
+  // Prefer event-source madness tracking when available.
+  if (typeof stateUpdates.stats.madnessFromEvents === "number") {
+    return (
+      stateUpdates.stats.madnessFromEvents -
+      (currentState.stats.madnessFromEvents || 0)
+    );
+  }
+
+  if (typeof stateUpdates.stats.madness === "number") {
+    return stateUpdates.stats.madness - (currentState.stats.madness || 0);
+  }
+
+  return 0;
 };
 
 // Define which actions should trigger reward dialogs (whitelist)

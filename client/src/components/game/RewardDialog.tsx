@@ -160,7 +160,7 @@ export default function RewardDialog({
     // Stats
     if (rewards.stats && Object.keys(rewards.stats).length > 0) {
       Object.entries(rewards.stats).forEach(([stat, amount]) => {
-        if (stat === "madness") {
+        if (stat === "madness" || stat === "madnessFromEvents") {
           return;
         }
         rewardItems.push(
