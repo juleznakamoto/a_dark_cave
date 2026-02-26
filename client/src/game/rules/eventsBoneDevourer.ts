@@ -1,5 +1,6 @@
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
+import { formatNumber } from "@/lib/utils";
 
 interface BoneDevourerConfig {
   level: number;
@@ -21,6 +22,7 @@ const boneDevourerConfigs: BoneDevourerConfig[] = [
 function createBoneDevourerEvent(config: BoneDevourerConfig): GameEvent {
   const { level, woodenHuts, stoneHuts, boneCost, silverReward } = config;
   const eventId = `boneDevourer${level}`;
+  const formattedBoneCost = formatNumber(boneCost);
 
   return {
     id: eventId,
@@ -63,7 +65,7 @@ function createBoneDevourerEvent(config: BoneDevourerConfig): GameEvent {
     choices: [
       {
         id: "sellBones",
-        label: `Sell ${boneCost} Bones`,
+        label: `Sell ${formattedBoneCost} Bones`,
         cost: `${boneCost} bones`,
         effect: (
           state: GameState,
