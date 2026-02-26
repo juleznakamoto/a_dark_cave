@@ -746,18 +746,29 @@ export default function SidePanel() {
     .map(([key, value]) => {
       let tooltip = undefined;
 
+      if (key === "defense") {
+        tooltip =
+          "Reduces incoming damage before it is applied to integrity.";
+      }
+
+      if (key === "integrity") {
+        tooltip =
+          "If integrity reaches 0, you lose the battle.";
+      }
+
       // Add detailed tooltip for attack showing breakdown
       if (key === "attack" && bastion_stats) {
         const fortAttack = bastion_stats.attackFromFortifications || 0;
         const strengthAttack = bastion_stats.attackFromStrength || 0;
-        if (fortAttack > 0 || strengthAttack > 0) {
-          tooltip = (
-            <>
-              <div>{fortAttack} from Fortifications</div>
-              <div>{strengthAttack} from Strength</div>
-            </>
-          );
-        }
+        tooltip = (
+          <>
+            <div className="mb-1">
+              Damage you deal to enemies each combat round.
+            </div>
+            <div>{fortAttack} from Fortifications</div>
+            <div>{strengthAttack} from Strength (50 %)</div>
+          </>
+        );
       }
 
       return {
