@@ -775,31 +775,40 @@ export default function SidePanel() {
 
       const symbolLabelByStat: Record<string, React.ReactNode> = {
         attack: (
-          <TooltipWrapper
-            tooltip="Attack"
-            tooltipId="sidebar-bastion-attack-symbol"
-            className="inline-block"
-          >
-            <span className="text-red-500">⟐</span>
-          </TooltipWrapper>
+          <span className="inline-flex items-center gap-1">
+            <TooltipWrapper
+              tooltip="Attack"
+              tooltipId="sidebar-bastion-attack-symbol"
+              className="inline-block"
+            >
+              <span className="text-red-500">⟐</span>
+              <span>Attack</span>
+            </TooltipWrapper>
+          </span>
         ),
         defense: (
-          <TooltipWrapper
-            tooltip="Defense"
-            tooltipId="sidebar-bastion-defense-symbol"
-            className="inline-block"
-          >
-            <span className="text-blue-500">⧈</span>
-          </TooltipWrapper>
+          <span className="inline-flex items-center gap-1">
+            <TooltipWrapper
+              tooltip="Defense"
+              tooltipId="sidebar-bastion-defense-symbol"
+              className="inline-block"
+            >
+              <span className="text-blue-500">⧈</span>
+              <span>Defense</span>
+            </TooltipWrapper>
+          </span>
         ),
         integrity: (
-          <TooltipWrapper
-            tooltip="Integrity"
-            tooltipId="sidebar-bastion-integrity-symbol"
-            className="inline-block"
-          >
-            <span className="text-green-500">✚</span>
-          </TooltipWrapper>
+          <span className="inline-flex items-center gap-1">
+            <TooltipWrapper
+              tooltip="Integrity"
+              tooltipId="sidebar-bastion-integrity-symbol"
+              className="inline-block"
+            >
+              <span className="text-green-500">✚</span>
+              <span>Integrity</span>
+            </TooltipWrapper>
+          </span>
         ),
       };
 
