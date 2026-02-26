@@ -86,7 +86,7 @@ function createFeastEvent(config: FeastConfig): GameEvent {
     choices: [
       {
         id: "makeFeast",
-        label: `Consume ${foodCost} Food`,
+        label: `Spend ${foodCost} Food`,
         cost: `${foodCost} food`,
         effect: (
           state: GameState,
