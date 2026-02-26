@@ -1,4 +1,3 @@
-
 // Centralized skill upgrade configurations
 
 // Crushing Strike upgrade configurations (Combat skill from Restless Knight)
@@ -114,8 +113,20 @@ export const DISGRACED_PRIOR_UPGRADES = [
   { level: 1, maxActions: 2, rewardMultiplier: 1, cost: 250, currency: "gold" },
   { level: 2, maxActions: 2, rewardMultiplier: 2, cost: 500, currency: "gold" },
   { level: 3, maxActions: 3, rewardMultiplier: 2, cost: 750, currency: "gold" },
-  { level: 4, maxActions: 3, rewardMultiplier: 3, cost: 1000, currency: "gold" },
-  { level: 5, maxActions: 4, rewardMultiplier: 3, cost: 1250, currency: "gold" },
+  {
+    level: 4,
+    maxActions: 3,
+    rewardMultiplier: 3,
+    cost: 1000,
+    currency: "gold",
+  },
+  {
+    level: 5,
+    maxActions: 4,
+    rewardMultiplier: 3,
+    cost: 1500,
+    currency: "gold",
+  },
 ];
 
 // Crow's Eye skill upgrade configurations (from One-eyed Crow fellowship member)
