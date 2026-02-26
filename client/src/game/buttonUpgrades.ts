@@ -151,6 +151,9 @@ export const PRIOR_ELIGIBLE_ACTIONS = new Set<string>([
   "craftBoneTotems5",
   "craftLeatherTotem",
   "craftLeatherTotems5",
+  "craftEmberBomb",
+  "craftAshfireBomb",
+  "craftVoidBomb",
 ]);
 
 // Map action IDs to upgrade keys
