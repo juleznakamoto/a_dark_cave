@@ -11,6 +11,8 @@ import {
   Bar,
   LineChart,
   Line,
+  AreaChart,
+  Area,
   CartesianGrid,
   XAxis,
   YAxis,
@@ -296,12 +298,12 @@ export default function SessionsTab({ environment }: SessionsTabProps) {
         <CardHeader>
           <CardTitle>Session Duration Mix Over Time</CardTitle>
           <CardDescription>
-            Daily percentage split by duration bucket (100% stacked)
+            Daily percentage split by duration bucket (100% stacked filled lines)
           </CardDescription>
         </CardHeader>
         <CardContent>
           <ChartContainer config={{}}>
-            <BarChart data={percentageChartData}>
+            <AreaChart data={percentageChartData}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="date" />
               <YAxis
@@ -324,9 +326,18 @@ export default function SessionsTab({ environment }: SessionsTabProps) {
               />
               <Legend />
               {BUCKETS.map(({ label, color }) => (
-                <Bar key={label} dataKey={label} stackId="a" fill={color} />
+                <Area
+                  key={label}
+                  type="monotone"
+                  dataKey={label}
+                  stackId="a"
+                  stroke={color}
+                  fill={color}
+                  fillOpacity={0.45}
+                  dot={false}
+                />
               ))}
-            </BarChart>
+            </AreaChart>
           </ChartContainer>
         </CardContent>
       </Card>
