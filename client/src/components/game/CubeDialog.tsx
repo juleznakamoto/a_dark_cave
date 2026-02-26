@@ -58,6 +58,24 @@ export default function CubeDialog({
 
     // Check if this is one of the final cube events (cube15a or cube15b)
     if (event?.id?.includes('cube15a') || event?.id?.includes('cube15b')) {
+      const completionLogId = "game-finished";
+      const completionMessage =
+        "You have finished this journey. Stay here or start a new game. Maybe in Cruel Mode, if you dare.";
+
+      const currentState = useGameStore.getState();
+      const hasCompletionLog = currentState.log.some(
+        (entry) => entry.id === completionLogId,
+      );
+
+      if (!hasCompletionLog) {
+        currentState.addLogEntry({
+          id: completionLogId,
+          message: completionMessage,
+          timestamp: Date.now(),
+          type: "system",
+        });
+      }
+
       // Save the game state before navigating
       const { saveGame } = await import('@/game/save');
       const state = useGameStore.getState();
