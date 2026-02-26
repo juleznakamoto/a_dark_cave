@@ -5,7 +5,7 @@ const CUBE_EVENT_TEXT: Record<string, { title: string; message: string }> = {
   cubeDiscovery: {
     title: "The Whispering Cube",
     message:
-      "Near the cave’s entrance, you discover a perfectly polished metal cube. At first it seems still, but then you feel a faint vibration like a slow, rhythmic pulse, almost like a heartbeat.",
+      "Near the cave's entrance, you discover a perfectly polished metal cube. At first it seems still, but then you feel a faint vibration like a slow, rhythmic pulse, almost like a heartbeat.",
   },
   cube01: {
     title: "The Cube Awakens",
@@ -25,12 +25,12 @@ const CUBE_EVENT_TEXT: Record<string, { title: string; message: string }> = {
   cube04: {
     title: "The Sacred Oath",
     message:
-      "'Though memory of what they protected has faded into legend, their vigilance endured. For generations the warriors have kept their sacred oath, watching over what lies at the city’s deepest point.'",
+      "'Though memory of what they protected has faded into legend, their vigilance endured. For generations the warriors have kept their sacred oath, watching over what lies at the city's deepest point.'",
   },
   cube05: {
     title: "The Sealed Gate",
     message:
-      "'Long after the inhabitants of the underground city perished, the object of their devotion remained: a colossal, impenetrable gate, crafted with long-forgotten technology, hidden deep within the city’s lowest chambers'",
+      "'Long after the inhabitants of the underground city perished, the object of their devotion remained: a colossal, impenetrable gate, crafted with long-forgotten technology, hidden deep within the city's lowest chambers'",
   },
   cube06: {
     title: "The Gate Opens",
@@ -75,7 +75,7 @@ const CUBE_EVENT_TEXT: Record<string, { title: string; message: string }> = {
   cube14a: {
     title: "The Resistance",
     message:
-      "'When the resistance opposed the skull devices, they were exiled into the mountain’s depths, sealed away behind the gate. With no path back, they dug ever deeper. In isolation and darkness, their minds eroded and they descended into madness and degeneration.'",
+      "'When the resistance opposed the skull devices, they were exiled into the mountain's depths, sealed away behind the gate. With no path back, they dug ever deeper. In isolation and darkness, their minds eroded and they descended into madness and degeneration.'",
   },
   cube14b: {
     title: "The Unknown Ore",
