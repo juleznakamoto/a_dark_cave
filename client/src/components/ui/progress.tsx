@@ -58,14 +58,14 @@ const Progress = React.forwardRef<
           ))}
         </div>
       )}
-      
+
       {/* Progress indicator */}
       <ProgressPrimitive.Indicator
         className="h-full w-full flex-1 bg-red-950 relative z-10 overflow-hidden"
         style={{
           transform: `translateX(-${100 - (value || 0)}%)`,
           transition: flashOnDecrease
-            ? "transform 500ms ease-out"
+            ? "transform 400ms ease-out"
             : isGrowing && growAnimationMs > 0
               ? `transform ${growAnimationMs}ms ease-out`
               : undefined,

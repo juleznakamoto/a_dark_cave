@@ -545,7 +545,7 @@ export default function CombatDialog({
                 <DialogHeader>
                   <div className="flex items-start justify-between">
                     <DialogTitle className="text-lg font-semibold">
-                      Combat - Round {round}
+                      Combat
                     </DialogTitle>
                     {calculateCriticalStrikeChance(getTotalLuck(gameState)) +
                       getTotalCriticalChance(gameState) >
