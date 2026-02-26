@@ -2,11 +2,13 @@ import { useState } from "react";
 import {
   BubblyButton,
   BubblyButtonGlobalPortal,
+} from "@/components/ui/bubbly-button";
+import {
   CRAFT_PARTICLE_CONFIG,
   getExploreParticleConfig,
   generateParticleData,
   type BubbleWithParticles,
-} from "@/components/ui/bubbly-button";
+} from "@/components/ui/bubbly-button.particles";
 
 const EXPLORE_ACTIONS = [
   { id: "exploreCave", label: "Explore Cave" },

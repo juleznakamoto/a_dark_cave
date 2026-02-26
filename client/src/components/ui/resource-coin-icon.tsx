@@ -3,11 +3,13 @@
 import React, { useState, useRef, useCallback, useEffect } from "react";
 import {
   BubblyButtonGlobalPortal,
+} from "@/components/ui/bubbly-button";
+import {
   generateParticleData,
   GOLD_COIN_PARTICLE_CONFIG,
   SILVER_COIN_PARTICLE_CONFIG,
   type BubbleWithParticles,
-} from "@/components/ui/bubbly-button";
+} from "@/components/ui/bubbly-button.particles";
 
 const EMIT_INTERVAL_MS = 350;
 const BUBBLE_REMOVE_DELAY = 2500;

@@ -41,9 +41,11 @@ import {
 import { audioManager } from "@/lib/audio";
 import {
   BubblyButtonGlobalPortal,
+} from "@/components/ui/bubbly-button";
+import {
   generateParticleData,
   type BubbleWithParticles,
-} from "@/components/ui/bubbly-button";
+} from "@/components/ui/bubbly-button.particles";
 import { ButtonPriorBadge } from "@/components/game/ButtonPriorBadge";
 import { PRIOR_ELIGIBLE_ACTIONS } from "@/game/buttonUpgrades";
 

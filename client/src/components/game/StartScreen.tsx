@@ -5,7 +5,7 @@ import CloudShader from "@/components/ui/cloud-shader";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { audioManager } from "@/lib/audio";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
-import { initPlaylight } from "@/App";
+import { initPlaylight } from "@/lib/playlight";
 
 export default function StartScreen() {
   const { executeAction, setBoostMode, boostMode, CM } = useGameStore();

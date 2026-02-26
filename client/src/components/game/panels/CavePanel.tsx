@@ -14,6 +14,8 @@ import { useExplosionEffect } from "@/components/ui/explosion-effect";
 import { useRef, useState } from "react";
 import {
   BubblyButtonGlobalPortal,
+} from "@/components/ui/bubbly-button";
+import {
   generateParticleData,
   getBubbleRemoveDelayMs,
   CRAFT_PARTICLE_CONFIG,
@@ -21,7 +23,7 @@ import {
   getExploreParticleConfig,
   getChopWoodParticleConfig,
   type BubbleWithParticles,
-} from "@/components/ui/bubbly-button";
+} from "@/components/ui/bubbly-button.particles";
 import { ButtonLevelBadge } from "@/components/game/ButtonLevelBadge";
 import { ButtonPriorBadge } from "@/components/game/ButtonPriorBadge";
 import {

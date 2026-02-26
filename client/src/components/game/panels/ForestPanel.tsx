@@ -16,12 +16,14 @@ import { ButtonPriorBadge } from "@/components/game/ButtonPriorBadge";
 import { ACTION_TO_UPGRADE_KEY, PRIOR_ELIGIBLE_ACTIONS } from "@/game/buttonUpgrades";
 import {
   BubblyButtonGlobalPortal,
+} from "@/components/ui/bubbly-button";
+import {
   generateParticleData,
   getBubbleRemoveDelayMs,
   getChopWoodParticleConfig,
   getHuntParticleConfig,
   type BubbleWithParticles,
-} from "@/components/ui/bubbly-button";
+} from "@/components/ui/bubbly-button.particles";
 
 export default function ForestPanel() {
   const { executeAction, setHighlightedResources } = useGameStore();
