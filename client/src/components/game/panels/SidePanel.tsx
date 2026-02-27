@@ -580,7 +580,7 @@ export default function SidePanel() {
                 {buildAction.description}
               </div>
             )}
-            <div className="text-gray-400">
+            <div className="text-foreground">
               <div>+{attack} Attack</div>
               <div>+{defense} Defense</div>
               <div>+{integrity} Integrity</div>
@@ -624,7 +624,7 @@ export default function SidePanel() {
                 {buildAction.description}
               </div>
             )}
-            <div className="text-gray-400">
+            <div className="text-foreground">
               <div>+{attack} Attack</div>
               <div>+{defense} Defense</div>
               <div>+{integrity} Integrity</div>
@@ -674,7 +674,7 @@ export default function SidePanel() {
                 {buildAction.description}
               </div>
             )}
-            <div className="text-gray-400">
+            <div className="text-foreground">
               <div>+{defense} Defense</div>
               <div>+{integrity} Integrity</div>
             </div>
@@ -700,7 +700,7 @@ export default function SidePanel() {
                 {buildAction.description}
               </div>
             )}
-            <div className="text-gray-400">
+            <div className="text-foreground">
               <div>+5 Defense</div>
             </div>
           </div>
@@ -720,7 +720,7 @@ export default function SidePanel() {
                 {buildAction.description}
               </div>
             )}
-            <div className="text-gray-400">
+            <div className="text-foreground">
               <div>+10 Defense</div>
             </div>
           </div>
