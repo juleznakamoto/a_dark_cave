@@ -1063,10 +1063,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }
 
     if (!action || (state.cooldowns[actionId] || 0) > 0) return;
-    // Skip canExecuteAction when completing execution (costs already consumed at execution start)
+    // Skip shouldShowAction and canExecuteAction when completing execution
+    // (costs and requirements were already validated at execution start)
     const isCompletingExecution = (state as any)._completingExecution === actionId;
     if (
-      !shouldShowAction(actionId, state) ||
+      (!isCompletingExecution && !shouldShowAction(actionId, state)) ||
       (!isCompletingExecution && !canExecuteAction(actionId, state))
     )
       return;

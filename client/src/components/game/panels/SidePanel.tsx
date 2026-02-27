@@ -303,7 +303,7 @@ export default function SidePanel() {
     })
     .map(([key, value]) => ({
       id: key,
-      label: clothingEffects[key]?.name || capitalizeWords(key),
+      label: clothingEffects[key]?.name || capitalizeWords(key.replace("_schematic", "")),
       value: 1,
       testId: `schematic-${key}`,
       visible: true,
