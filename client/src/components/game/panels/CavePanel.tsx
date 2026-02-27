@@ -449,7 +449,7 @@ export default function CavePanel() {
                 if (action.showWhen !== undefined) {
                   return action.showWhen;
                 }
-                return shouldShowAction(action.id, state);
+                return shouldShowAction(action.id, state) || !!state.executionStartTimes?.[action.id];
               }),
             );
 
@@ -467,7 +467,7 @@ export default function CavePanel() {
                     if (action.showWhen !== undefined) {
                       return action.showWhen;
                     }
-                    return shouldShowAction(action.id, state);
+                    return shouldShowAction(action.id, state) || !!state.executionStartTimes?.[action.id];
                   });
 
                   if (visibleActions.length === 0) return null;
@@ -493,8 +493,8 @@ export default function CavePanel() {
             if (action.showWhen !== undefined) {
               return action.showWhen;
             }
-            // Use standard shouldShowAction for others
-            return shouldShowAction(action.id, state);
+            // Use standard shouldShowAction for others, or keep visible if executing
+            return shouldShowAction(action.id, state) || !!state.executionStartTimes?.[action.id];
           });
 
           if (visibleActions.length === 0) return null;

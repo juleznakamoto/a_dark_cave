@@ -483,7 +483,7 @@ export default function ForestPanel() {
         <div className="space-y-4 mt-2 mb-2 pl-[3px] ">
           {actionGroups.map((group, groupIndex) => {
             const visibleActions = group.actions.filter((action) =>
-              shouldShowAction(action.id, state),
+              shouldShowAction(action.id, state) || !!state.executionStartTimes?.[action.id],
             );
 
             if (visibleActions.length === 0) return null;

@@ -589,7 +589,7 @@ export default function VillagePanel() {
 
           {actionGroups.map((group, groupIndex) => {
             const visibleActions = group.actions.filter((action) =>
-              shouldShowAction(action.id, state),
+              shouldShowAction(action.id, state) || !!state.executionStartTimes?.[action.id],
             );
 
             if (visibleActions.length === 0) return null;
