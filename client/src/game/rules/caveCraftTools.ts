@@ -653,6 +653,7 @@ export const caveCraftTools: Record<string, Action> = {
       "tools.skeleton_key": false,
     },
     cost: {
+      "schematics.skeleton_key_schematic": true,
       "resources.bones": 5000,
       "resources.steel": 500,
       "resources.silver": 250,

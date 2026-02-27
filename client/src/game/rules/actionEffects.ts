@@ -139,6 +139,28 @@ export function applyActionCostsOnly(actionId: string, state: GameState): Partia
           : (state[pathParts[0] as keyof typeof state]?.[finalKey as any] || 0);
 
         current[finalKey] = stateAmount - adjustedCost;
+      } else if (cost === true) {
+        // Boolean cost: consume the item by setting it to false (e.g. schematics, relics)
+        const pathParts = path.split(".");
+        let current: any = updates;
+
+        for (let i = 0; i < pathParts.length - 1; i++) {
+          const part = pathParts[i];
+          if (!current[part]) {
+            current[part] =
+              pathParts[i] === "schematics"
+                ? { ...state.schematics }
+                : pathParts[i] === "relics"
+                  ? { ...state.relics }
+                  : pathParts[i] === "resources"
+                    ? { ...state.resources }
+                    : {};
+          }
+          current = current[part];
+        }
+
+        const finalKey = pathParts[pathParts.length - 1];
+        current[finalKey] = false;
       }
     });
   }
