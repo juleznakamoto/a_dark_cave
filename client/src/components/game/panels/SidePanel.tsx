@@ -8,7 +8,6 @@ import { villageBuildActions } from "@/game/rules/villageBuildActions";
 import { capitalizeWords } from "@/lib/utils";
 import React, { useState, useEffect, useRef } from "react";
 import { calculateBastionStats } from "@/game/bastionStats";
-import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import {
   getDisplayTools,
   getTotalLuck,
@@ -779,57 +778,26 @@ export default function SidePanel() {
         );
       }
 
-      const symbolLabelByStat: Record<string, React.ReactNode> = {
-        attack: (
-          <TooltipWrapper
-            tooltip={<span className="text-gray-400">Attack</span>}
-            tooltipId="sidebar-bastion-attack-symbol"
-            className="inline-block"
-          >
-            <span className="inline-flex items-center gap-1.5">
-              <span className="inline-flex w-3 justify-center text-red-500/70">
-                ⟐
-              </span>
-              <span>Attack</span>
-            </span>
-          </TooltipWrapper>
-        ),
-        defense: (
-          <TooltipWrapper
-            tooltip={<span className="text-gray-400">Defense</span>}
-            tooltipId="sidebar-bastion-defense-symbol"
-            className="inline-block"
-          >
-            <span className="inline-flex items-center gap-1.5">
-              <span className="inline-flex w-3 justify-center text-blue-500/70">
-                ⧈
-              </span>
-              <span>Defense</span>
-            </span>
-          </TooltipWrapper>
-        ),
-        integrity: (
-          <TooltipWrapper
-            tooltip={<span className="text-gray-400">Integrity</span>}
-            tooltipId="sidebar-bastion-integrity-symbol"
-            className="inline-block"
-          >
-            <span className="inline-flex items-center gap-1.5">
-              <span className="inline-flex w-3 justify-center text-green-500/70">
-                ✚
-              </span>
-              <span>Integrity</span>
-            </span>
-          </TooltipWrapper>
-        ),
+      const iconByStat: Record<string, string> = {
+        attack: "⟐",
+        defense: "⧈",
+        integrity: "✚",
+      };
+
+      const iconColorByStat: Record<string, string> = {
+        attack: "text-red-400/60",
+        defense: "text-blue-400/60",
+        integrity: "text-green-400/60",
       };
 
       return {
         id: `bastion-${key}`,
-        label: symbolLabelByStat[key] ?? capitalizeWords(key),
+        label: capitalizeWords(key),
+        icon: iconByStat[key],
+        iconColor: iconColorByStat[key],
         value: value ?? 0,
         testId: `bastion-stat-${key}`,
-        visible: true, // Always show bastion stats when bastion exists
+        visible: true,
         tooltip,
       };
     });
