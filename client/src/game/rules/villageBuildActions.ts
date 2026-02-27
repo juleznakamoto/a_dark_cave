@@ -1768,7 +1768,7 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildPaleCross",
     label: "Pale Cross",
     description:
-      "A towering monument of bleached bones amplifying bone totem sacrifices.",
+      "Towering monument of bleached bones amplifying bone totem sacrifices.",
     tooltipEffects: [
       "+5 Madness",
     ],
@@ -1777,6 +1777,7 @@ export const villageBuildActions: Record<string, Action> = {
       1: {
         "story.seen.paleCrossUnlocked": true,
         "buildings.paleCross": 0,
+        "buildings.consecratedPaleCross": 0,
       },
     },
     cost: {
@@ -1793,6 +1794,36 @@ export const villageBuildActions: Record<string, Action> = {
       madness: 5,
     },
     executionTime: 90,
+    cooldown: 0,
+  },
+
+  buildConsecratedPaleCross: {
+    id: "buildConsecratedPaleCross",
+    label: "Consecrated Pale Cross",
+    description:
+      "Towering monument of bleached bones geatly amplifying bone totem sacrifices.",
+    tooltipEffects: [
+      "+10 Madness",
+      "Bone Totem Sacrifice Bonus: 50-100 Gold",
+    ],
+    building: true,
+    show_when: {
+      1: {
+        "buildings.consecratedPaleCross": 0,
+      },
+    },
+    cost: {
+      1: {},
+    },
+    effects: {
+      1: {
+        "buildings.consecratedPaleCross": 1,
+      },
+    },
+    statsEffects: {
+      madness: 10,
+    },
+    executionTime: 1,
     cooldown: 0,
   },
 

@@ -27,6 +27,9 @@ export const BUILDING_HIERARCHIES: Record<string, string[]> = {
   
   // Dark buildings chain
   dark: ["blackMonolith", "pillarOfClarity", "boneTemple"],
+
+  // Pale Cross chain
+  paleCross: ["paleCross", "consecratedPaleCross"],
   
   // Storage chain
   storage: [

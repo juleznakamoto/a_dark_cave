@@ -325,7 +325,8 @@ export function applyActionEffects(
               const usageCount =
                 Number(state.story?.seen?.boneTotemsUsageCount) || 0;
               const hasPaleCross =
-                (state.buildings?.paleCross || 0) >= 1;
+                (state.buildings?.paleCross || 0) >= 1 ||
+                (state.buildings?.consecratedPaleCross || 0) >= 1;
               const cappedUsageCount = Math.min(
                 usageCount,
                 hasPaleCross ? 45 : 20,
@@ -364,6 +365,20 @@ export function applyActionEffects(
             const originalAmount =
               state.resources[finalKey as keyof typeof state.resources] || 0;
             current[finalKey] = originalAmount + baseAmount;
+
+            // Consecrated Pale Cross: bone totem sacrifices also grant gold.
+            if (
+              actionId === "boneTotems" &&
+              finalKey === "silver" &&
+              (state.buildings?.consecratedPaleCross || 0) >= 1
+            ) {
+              const goldBonus = Math.floor(Math.random() * 51) + 50; // 50-100
+              const existingGold =
+                typeof current.gold === "number"
+                  ? current.gold
+                  : (state.resources.gold || 0);
+              current.gold = existingGold + goldBonus;
+            }
           } else if (!isSacrificeAction) {
             const actionBonuses = getActionBonusesCalc(actionId, state);
             if (

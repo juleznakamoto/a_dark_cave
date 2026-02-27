@@ -6,7 +6,10 @@ import { killVillagers } from "../stateHelpers";
 // Helper function to get dynamic cost for bone totems
 export function getBoneTotemsCost(state: GameState): number {
   const usageCount = Number(state.story?.seen?.boneTotemsUsageCount) || 0;
-  const maxCost = (state.buildings?.paleCross || 0) >= 1 ? 50 : 25;
+  const hasCrossBuilding =
+    (state.buildings?.paleCross || 0) >= 1 ||
+    (state.buildings?.consecratedPaleCross || 0) >= 1;
+  const maxCost = hasCrossBuilding ? 50 : 25;
   return Math.min(5 + usageCount, maxCost);
 }
 
@@ -147,7 +150,8 @@ function handleTotemSacrifice(
   const usageCount = Number(state.story?.seen?.[usageCountKey]) || 0;
   const maxCost =
     usageCountKey === "boneTotemsUsageCount" &&
-    (state.buildings?.paleCross || 0) >= 1
+    ((state.buildings?.paleCross || 0) >= 1 ||
+      (state.buildings?.consecratedPaleCross || 0) >= 1)
       ? 50
       : 25;
   const currentCost = Math.min(5 + usageCount, maxCost);
@@ -184,6 +188,7 @@ function handleTotemSacrifice(
   if (
     usageCountKey === "boneTotemsUsageCount" &&
     (state.buildings?.paleCross || 0) < 1 &&
+    (state.buildings?.consecratedPaleCross || 0) < 1 &&
     newUsageCount > 20
   ) {
     (effectUpdates.story.seen as any)[usageCountKey] = 20;

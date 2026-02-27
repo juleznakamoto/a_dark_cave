@@ -1069,6 +1069,133 @@ export const choiceEvents: Record<string, GameEvent> = {
     ],
   },
 
+  paleCrossCrucifixion: {
+    id: "paleCrossCrucifixion",
+    condition: (state: GameState) =>
+      state.buildings.paleCross >= 1 &&
+      !state.story.seen.paleCrossCrucifixionEvent,
+    timeProbability: 45,
+    title: "The Pale Cross at Dawn",
+    message:
+      "One morning, villagers make a cruel discovery: a young man hangs crucified on the Pale Cross.",
+    priority: 5,
+    repeatable: false,
+    showAsTimedTab: true,
+    timedTabDuration: 5 * 60 * 1000, // 5 minutes
+    fallbackChoice: {
+      id: "doNothing",
+      label: "Do nothing",
+      effect: (state: GameState) => {
+        const duration = 10 * 60 * 1000;
+        return {
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              paleCrossCrucifixionEvent: true,
+            },
+          },
+          disgustState: {
+            isActive: true,
+            endTime: Date.now() + duration,
+          },
+          _logMessage:
+            "You give no order. Rumors spread, fear curdles into disgust, and village work falters.",
+        };
+      },
+    },
+    choices: [
+      {
+        id: "holdFuneral",
+        label: "Hold funeral",
+        cost: "1000 food",
+        effect: (state: GameState) => {
+          if ((state.resources.food || 0) < 1000) {
+            return {
+              _logMessage: "You don't have enough food to hold a proper funeral.",
+            };
+          }
+
+          return {
+            resources: {
+              ...state.resources,
+              food: (state.resources.food || 0) - 1000,
+            },
+            stats: {
+              ...state.stats,
+              madnessFromEvents: Math.max(
+                0,
+                (state.stats.madnessFromEvents || 0) - 2,
+              ),
+            },
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                paleCrossCrucifixionEvent: true,
+              },
+            },
+            _logMessage:
+              "You order funeral rites and feed the mourners. Grief remains, but the village steadies.",
+          };
+        },
+      },
+      {
+        id: "investigateKillers",
+        label: "Investigate",
+        effect: (state: GameState) => {
+          const executionResult = killVillagers(state, 3);
+          return {
+            ...executionResult,
+            stats: {
+              ...state.stats,
+              madnessFromEvents: Math.max(
+                0,
+                (state.stats.madnessFromEvents || 0) - 1,
+              ),
+            },
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                paleCrossCrucifixionEvent: true,
+              },
+            },
+            _logMessage:
+              "You uncover a group of conspirators and order their execution. Justice is swift, and fear recedes.",
+          };
+        },
+      },
+      {
+        id: "consecrateToCross",
+        label: "Consecrate to cross",
+        effect: (state: GameState) => {
+          const duration = 10 * 60 * 1000;
+          return {
+            buildings: {
+              ...state.buildings,
+              paleCross: 0,
+              consecratedPaleCross: 1,
+            },
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                paleCrossCrucifixionEvent: true,
+              },
+            },
+            disgustState: {
+              isActive: true,
+              endTime: Date.now() + duration,
+            },
+            _logMessage:
+              "You consecrate the body to the cross. The villagers recoil in disgust, but the power of the cross seems to have grown.",
+          };
+        },
+      },
+    ],
+  },
+
   slaveTrader: {
     id: "slaveTrader",
     condition: (state: GameState) => {

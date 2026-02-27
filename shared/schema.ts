@@ -288,6 +288,7 @@ export const gameStateSchema = z.object({
       blackMonolith: z.number().default(0),
       boneTemple: z.number().default(0),
       paleCross: z.number().default(0),
+      consecratedPaleCross: z.number().default(0),
       pillarOfClarity: z.number().default(0),
       darkEstate: z.number().default(0),
       heartfire: z.number().default(0),

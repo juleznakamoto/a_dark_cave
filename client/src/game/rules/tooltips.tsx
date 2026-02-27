@@ -103,7 +103,8 @@ export const calculateResourceGains = (
             // Bone totems: usage-based silver bonus (Pale Cross amplifies it)
             if (actionId === "boneTotems") {
               const hasPaleCross =
-                (state.buildings?.paleCross || 0) >= 1;
+                (state.buildings?.paleCross || 0) >= 1 ||
+                (state.buildings?.consecratedPaleCross || 0) >= 1;
               const cappedUsageCount = Math.min(
                 usageCount,
                 hasPaleCross ? 50 : 20,
@@ -136,6 +137,13 @@ export const calculateResourceGains = (
             }
 
             gains.push({ resource, min, max });
+
+            if (
+              actionId === "boneTotems" &&
+              (state.buildings?.consecratedPaleCross || 0) >= 1
+            ) {
+              gains.push({ resource: "gold", min: 50, max: 100 });
+            }
           }
         }
       }
