@@ -216,8 +216,6 @@ export default function ItemProgressChart() {
         reward: 250,
       },
     ],
-    // Sixth ring: Fellowship
-    [],
   ];
 
   // Calculate ring configurations with radius values
