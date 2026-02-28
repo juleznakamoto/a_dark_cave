@@ -4,6 +4,8 @@ import { logger } from "@/lib/logger";
 let playlightSDKInstance: any = null;
 let gameStoreUnsubscribe: (() => void) | null = null;
 let initPlaylightPromise: Promise<void> | null = null;
+// Tracks whether Playlight itself triggered the pause (vs. the player already being paused)
+let playlightCausedPause = false;
 
 // Export Playlight SDK initialization function to be called on user interaction
 export async function initPlaylight() {
@@ -87,10 +89,10 @@ export async function initPlaylight() {
           return;
         }
         if (!state.isPaused) {
-          useGameStore.setState({ isPausedPreviously: false });
+          playlightCausedPause = true;
           state.togglePause();
         } else {
-          useGameStore.setState({ isPausedPreviously: true });
+          playlightCausedPause = false;
         }
       });
 
@@ -100,7 +102,8 @@ export async function initPlaylight() {
         if (state.idleModeDialog.isOpen) {
           return;
         }
-        if (state.isPaused && !state.isPausedPreviously) {
+        if (playlightCausedPause && state.isPaused) {
+          playlightCausedPause = false;
           state.togglePause();
         }
       });
