@@ -1471,6 +1471,13 @@ export const bookEffects: Record<string, EffectDefinition> = {
       "Book about navigating life’s challenges. Unlocks rewards for those who prove themselves through achievements.",
     bonuses: {},
   },
+  book_of_craftsmanship: {
+    id: "book_of_craftsmanship",
+    name: "Book of Craftsmanship",
+    description:
+      "Ancient tome of a master craftsman. Reveals subtle hints about crafting items and constructing buildings.",
+    bonuses: {},
+  },
 };
 
 export const fellowshipEffects: Record<string, EffectDefinition> = {

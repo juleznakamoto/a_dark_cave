@@ -612,6 +612,17 @@ const sellTrades = [
 
 const toolTrades = [
   {
+    id: "trade_book_of_craftsmanship",
+    label: "Book of Craftsmanship",
+    give: "book",
+    giveItem: "book_of_craftsmanship",
+    condition: (state: GameState) =>
+      state.buildings.woodenHut >= 3 && !state.books.book_of_craftsmanship,
+    costs: [{ resource: "gold", amounts: [250] }],
+    message:
+      "You purchase the Book of Craftsmanship. The merchant nods approvingly: 'A craftsman's tome, worn but full of wisdom. It will whisper secrets to those who build.'",
+  },
+  {
     id: "trade_book_of_trials",
     label: "Book of Trials",
     give: "book",

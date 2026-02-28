@@ -236,6 +236,7 @@ export const gameStateSchema = z.object({
       book_of_ascension: z.boolean().default(false),
       book_of_war: z.boolean().default(false),
       book_of_trials: z.boolean().default(false),
+      book_of_craftsmanship: z.boolean().default(false),
     })
     .default({}),
   buildings: z

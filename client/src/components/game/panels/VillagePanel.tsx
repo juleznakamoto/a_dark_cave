@@ -395,6 +395,7 @@ export default function VillagePanel() {
       displayLabel = palisadesLabels[palisadesLevel] || "Wooden Palisades";
     }
 
+    const buildingHint = state.books?.book_of_craftsmanship ? action.description : undefined;
     const tooltipContent = (
       <div className="text-xs whitespace-nowrap">
         {costBreakdown.map((cost, index) => (
@@ -407,6 +408,9 @@ export default function VillagePanel() {
             {cost.text}
           </div>
         ))}
+        {buildingHint && (
+          <div className="mt-1 text-muted-foreground">{buildingHint}</div>
+        )}
       </div>
     );
 
