@@ -337,7 +337,7 @@ export default function CavePanel() {
       })();
       if (craftingHint && tooltipContent) {
         tooltipContent = (
-          <div className="text-xs whitespace-nowrap" style={{ width: 'min-content' }}>
+          <div className="text-xs whitespace-nowrap" style={{ maxWidth: '12rem' }}>
             {tooltipContent}
             <div className="border-t border-border my-1 pt-1 text-muted-foreground whitespace-normal">
               {craftingHint}
@@ -346,7 +346,7 @@ export default function CavePanel() {
         );
       } else if (craftingHint) {
         tooltipContent = (
-          <div className="text-xs whitespace-nowrap" style={{ width: 'min-content' }}>
+          <div className="text-xs whitespace-nowrap" style={{ maxWidth: '12rem' }}>
             <div className="border-t border-border my-1 pt-1 text-muted-foreground whitespace-normal">
               {craftingHint}
             </div>
