@@ -154,22 +154,28 @@ export default function MadnessDialog({ isOpen, data, onClose }: MadnessDialogPr
         }
       `}</style>
       <Dialog open={isOpen} onOpenChange={() => {}}>
-        <DialogContent className="w-[95vw] sm:max-w-sm z-[70] [&>button]:hidden border-2 border-violet-600 shadow-2xl">
+        <DialogContent
+          className={`w-[95vw] sm:max-w-sm z-[70] [&>button]:hidden border-2 border-violet-600 shadow-2xl ${hasRewardItems ? "gap-4" : "gap-2"}`}
+        >
           <div className="absolute inset-0 -z-10 pointer-events-none madness-dialog-glow"></div>
           <DialogHeader>
             <div className="flex justify-center">
               <span className="text-4xl text-violet-300/90">✺</span>
             </div>
-            {successLog && <div className="text-sm text-foreground text-center px-2 pb-3">{successLog}</div>}
+            {successLog && (
+              <div className={`text-sm text-foreground text-center px-2 ${hasRewardItems ? "pb-3" : "pb-1"}`}>
+                {successLog}
+              </div>
+            )}
             {hasRewardItems && <div className="my-3 h-px w-full bg-white/10" />}
             <DialogTitle className="sr-only">Madness Event</DialogTitle>
           </DialogHeader>
 
           {hasRewardItems && <div className="text-sm pb-2 space-y-2">{rewardItems}</div>}
 
-          <div className="pt-2 mt-1">
+          <div className={hasRewardItems ? "pt-2 mt-1" : "pt-0 mt-0"}>
             {hasRewardItems && <div className="my-3 h-px w-full bg-white/10" />}
-            <div className="text-sm text-center text-violet-300 mt-3">
+            <div className={`text-sm text-center text-violet-300 ${hasRewardItems ? "mt-3" : "mt-1"}`}>
               {madnessChange > 0 ? "+" : "-"} {Math.abs(madnessChange)} Madness
             </div>
           </div>
