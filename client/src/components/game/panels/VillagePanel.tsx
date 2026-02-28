@@ -325,7 +325,7 @@ export default function VillagePanel() {
                   : "text-muted-foreground"
               }
             >
-              {woodCost} Wood
+              -{woodCost} Wood
             </div>
           </div>
         ) : undefined;
