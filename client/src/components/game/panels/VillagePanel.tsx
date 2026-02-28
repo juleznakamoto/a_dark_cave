@@ -397,7 +397,7 @@ export default function VillagePanel() {
 
     const buildingHint = state.books?.book_of_craftsmanship ? action.description : undefined;
     const tooltipContent = (
-      <div className="text-xs whitespace-nowrap">
+      <div className="inline-block text-xs whitespace-nowrap">
         {costBreakdown.map((cost, index) => (
           <div
             key={index}
@@ -409,7 +409,7 @@ export default function VillagePanel() {
           </div>
         ))}
         {buildingHint && (
-          <div className="border-t border-border my-1 pt-1 text-muted-foreground whitespace-normal break-words max-w-56">
+          <div className="border-t border-border my-1 pt-1 text-muted-foreground whitespace-normal break-words">
             {buildingHint}
           </div>
         )}
