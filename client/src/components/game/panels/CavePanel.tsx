@@ -337,7 +337,7 @@ export default function CavePanel() {
       })();
       if (craftingHint && tooltipContent) {
         tooltipContent = (
-          <div className="text-xs">
+          <div className="inline-block text-xs">
             {tooltipContent}
             <div className="border-t border-border my-1 pt-1 text-muted-foreground max-w-40">
               {craftingHint}
@@ -346,7 +346,7 @@ export default function CavePanel() {
         );
       } else if (craftingHint) {
         tooltipContent = (
-          <div className="text-xs">
+          <div className="inline-block text-xs">
             <div className="border-t border-border my-1 pt-1 text-muted-foreground max-w-40">
               {craftingHint}
             </div>

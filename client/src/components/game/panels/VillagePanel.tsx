@@ -397,7 +397,7 @@ export default function VillagePanel() {
 
     const buildingHint = state.books?.book_of_craftsmanship ? action.description : undefined;
     const tooltipContent = (
-      <div className="text-xs">
+      <div className="inline-block text-xs">
         {costBreakdown.map((cost, index) => (
           <div
             key={index}
