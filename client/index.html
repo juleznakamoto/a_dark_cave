@@ -195,16 +195,12 @@
   </head>
 
   <body>
-    <div id="root">
-      <main
-        id="seo-fallback"
-        style="
-          background-color: #000;
-          color: #444444;
-          font-family: monospace;
-          padding: 2rem;
-        "
-      >
+    <div id="root"></div>
+    <main
+      id="seo-fallback"
+      aria-hidden="true"
+      style="display: none"
+    >
         <h1 style="color: #444444">
           A Dark Cave – Text-Based Survival &amp; Incremental Browser Game
         </h1>
@@ -275,8 +271,7 @@
         <p>
           Enter the cave. Light the first fire. See how far you can survive.
         </p>
-      </main>
-    </div>
+    </main>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
