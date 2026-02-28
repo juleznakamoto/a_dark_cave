@@ -409,7 +409,9 @@ export default function VillagePanel() {
           </div>
         ))}
         {buildingHint && (
-          <div className="mt-1 text-muted-foreground">{buildingHint}</div>
+          <div className="border-t border-border my-1 pt-1 text-muted-foreground whitespace-normal break-words">
+            {buildingHint}
+          </div>
         )}
       </div>
     );
