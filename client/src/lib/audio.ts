@@ -195,8 +195,8 @@ export class AudioManager {
     // critical path if the AudioManager is initialized early.
     // The sound will be loaded on first play or when loadGameSounds is called.
     const initialSounds = {
-      'event': '/sounds/event.wav',
       'wind': '/sounds/wind.mp3',
+      'lightFire': '/sounds/light_fire.wav',
     };
 
     for (const [name, url] of Object.entries(initialSounds)) {

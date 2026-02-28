@@ -97,6 +97,8 @@ export default function StartScreen() {
     // Immediately stop wind with no fade to prevent overlap
     audioManager.stopLoopingSound("wind", 2);
 
+    audioManager.playSound("lightFire", 0.8);
+
     // Load Playlight SDK on user interaction
     // Errors are already logged in initPlaylight(), so we silently handle them here
     initPlaylight().catch(() => {
