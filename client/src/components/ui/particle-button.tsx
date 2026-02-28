@@ -12,6 +12,7 @@ interface ParticleButtonProps extends ButtonProps {
     hoverDelay?: number;
     cruelMode?: boolean;
     autoStart?: boolean;
+    hoverEnabled?: boolean;
 }
 
 interface Spark {
@@ -28,7 +29,7 @@ function SuccessParticles({
     buttonRef,
     sparks,
 }: {
-    buttonRef: React.RefObject<HTMLButtonElement>;
+    buttonRef: React.RefObject<HTMLButtonElement | null>;
     sparks: Spark[];
 }) {
     const rect = buttonRef.current?.getBoundingClientRect();
@@ -92,6 +93,7 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(
             className,
             cruelMode = false,
             autoStart = false,
+            hoverEnabled = true,
             ...props
         }: ParticleButtonProps,
         ref,
@@ -99,7 +101,7 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(
         const [sparks, setSparks] = useState<Spark[]>([]);
         const [isGlowing, setIsGlowing] = useState(false);
         const [glowIntensity, setGlowIntensity] = useState(0);
-        const buttonRef = useRef<HTMLButtonElement>(null);
+        const buttonRef = useRef<HTMLButtonElement | null>(null);
         const intervalRef = useRef<NodeJS.Timeout | null>(null);
         const rampUpRef = useRef<NodeJS.Timeout | null>(null);
         const glowRampRef = useRef<NodeJS.Timeout | null>(null);
@@ -184,6 +186,7 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(
         };
 
         const handleMouseEnter = () => {
+            if (!hoverEnabled && !autoStart) return;
             // Clear any existing timers first
             clearAllTimers();
 
@@ -313,7 +316,7 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(
                         if (typeof ref === "function") {
                             ref(node);
                         } else if (ref) {
-                            ref.current = node;
+                            (ref as React.MutableRefObject<HTMLButtonElement | null>).current = node;
                         }
                     }}
                     onClick={handleClick}

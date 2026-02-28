@@ -197,6 +197,7 @@ export default function StartScreen() {
           ref={buttonRef}
           onClick={handleLightFire}
           autoStart={showParticles}
+          hoverEnabled={isButtonReadyForHoverEffect}
           className={`bg-transparent border-none text-gray-300/90 hover:bg-transparent text-lg px-8 py-4 z-[99999] ${isButtonReadyForHoverEffect ? "fire-hover" : ""} ${showParticles ? "fire-active" : "animate-fade-in-button"}`}
           data-testid="button-light-fire"
           button_id="light-fire"
