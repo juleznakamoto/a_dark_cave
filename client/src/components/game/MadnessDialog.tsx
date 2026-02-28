@@ -140,6 +140,8 @@ export default function MadnessDialog({ isOpen, data, onClose }: MadnessDialogPr
     });
   }
 
+  const hasRewardItems = rewardItems.length > 0;
+
   return (
     <>
       <style>{`
@@ -159,14 +161,14 @@ export default function MadnessDialog({ isOpen, data, onClose }: MadnessDialogPr
               <span className="text-4xl text-violet-300/90">✺</span>
             </div>
             {successLog && <div className="text-sm text-foreground text-center px-2 pb-3">{successLog}</div>}
-            <div className="my-3 h-px w-full bg-white/10" />
+            {hasRewardItems && <div className="my-3 h-px w-full bg-white/10" />}
             <DialogTitle className="sr-only">Madness Event</DialogTitle>
           </DialogHeader>
 
-          {rewardItems.length > 0 && <div className="text-sm pb-2 space-y-2">{rewardItems}</div>}
+          {hasRewardItems && <div className="text-sm pb-2 space-y-2">{rewardItems}</div>}
 
           <div className="pt-2 mt-1">
-            <div className="my-3 h-px w-full bg-white/10" />
+            {hasRewardItems && <div className="my-3 h-px w-full bg-white/10" />}
             <div className="text-sm text-center text-violet-300 mt-3">
               {madnessChange > 0 ? "+" : "-"} {Math.abs(madnessChange)} Madness
             </div>
