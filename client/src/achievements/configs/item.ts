@@ -3,11 +3,9 @@ import { tailwindToHex } from "@/lib/tailwindColors";
 import { AchievementChartConfig } from "../AchievementRingChart";
 import type { GameState } from "@shared/schema";
 
-// Segment colors for item achievements
 const COMPLETED_COLOR = tailwindToHex("red-800");
 const COMPLETED_STROKE_COLOR = tailwindToHex("red-900");
 
-// Refactored getItemCount to be module-level, used by config
 function getItemCount(itemKeys: string[]): number {
   const state = useGameStore.getState();
   let count = 0;
@@ -24,79 +22,113 @@ function getItemCount(itemKeys: string[]): number {
   return count;
 }
 
-// Item achievement chart configuration
 export const itemChartConfig: AchievementChartConfig = {
   idPrefix: "item",
   completedColor: COMPLETED_COLOR,
   completedStrokeColor: COMPLETED_STROKE_COLOR,
   centerSymbol: "❖",
   rings: [
-    // First ring: Basic tools and weapons
+    // First ring: Tools
     [
       {
-        segmentId: "0-basicTools",
-        maxCount: 6,
-        label: "Basic Tools",
-        reward: 500,
-        getCount: (state: GameState) => getItemCount(["flintAxe", "flintKnife", "flintPick", "boneClub", "boneSpear", "boneBow"]),
-      },
-      {
-        segmentId: "0-basicWeapons",
-        maxCount: 6,
-        label: "Basic Weapons",
-        reward: 500,
-        getCount: (state: GameState) => getItemCount(["stoneSword", "stoneMace", "stoneSpear", "stoneAxe", "stoneBow", "leatherArmor"]),
-      },
-    ],
-    // Second ring: Advanced tools and weapons
-    [
-      {
-        segmentId: "1-advancedTools",
-        maxCount: 4,
-        label: "Advanced Tools",
-        reward: 500,
-        getCount: (state: GameState) => getItemCount(["ironAxe", "ironKnife", "ironPick", "steelAxe"]),
-      },
-      {
-        segmentId: "1-advancedWeapons",
+        segmentId: "0-axes",
         maxCount: 5,
-        label: "Advanced Weapons",
+        label: "Chop",
         reward: 500,
-        getCount: (state: GameState) => getItemCount(["ironSword", "ironMace", "ironSpear", "ironBow", "ironArmor"]),
-      },
-    ],
-    // Third ring: Specialized equipment
-    [
-      {
-        segmentId: "2-specializedTools",
-        maxCount: 3,
-        label: "Specialized Tools",
-        reward: 500,
-        getCount: (state: GameState) => getItemCount(["obsidianKnife", "adamantAxe", "adamantPick"]),
+        getCount: (_state: GameState) =>
+          getItemCount(["stone_axe", "iron_axe", "steel_axe", "obsidian_axe", "adamant_axe"]),
       },
       {
-        segmentId: "2-specializedWeapons",
+        segmentId: "0-pickaxes",
+        maxCount: 5,
+        label: "Dig",
+        reward: 500,
+        getCount: (_state: GameState) =>
+          getItemCount(["stone_pickaxe", "iron_pickaxe", "steel_pickaxe", "obsidian_pickaxe", "adamant_pickaxe"]),
+      },
+      {
+        segmentId: "0-lanterns",
         maxCount: 4,
-        label: "Specialized Weapons",
+        label: "Illuminate",
         reward: 500,
-        getCount: (state: GameState) => getItemCount(["steelSword", "steelMace", "steelSpear", "steelArmor"]),
+        getCount: (_state: GameState) =>
+          getItemCount(["iron_lantern", "steel_lantern", "obsidian_lantern", "adamant_lantern"]),
       },
     ],
-    // Fourth ring: Legendary items
+    // Second ring: Weapons
     [
       {
-        segmentId: "3-legendaryTools",
-        maxCount: 2,
-        label: "Legendary Tools",
+        segmentId: "1-swords",
+        maxCount: 4,
+        label: "Strike",
         reward: 500,
-        getCount: (state: GameState) => getItemCount(["adamantKnife", "obsidianPick"]),
+        getCount: (_state: GameState) =>
+          getItemCount(["iron_sword", "steel_sword", "obsidian_sword", "adamant_sword"]),
       },
       {
-        segmentId: "3-legendaryWeapons",
-        maxCount: 3,
-        label: "Legendary Weapons",
+        segmentId: "1-bows",
+        maxCount: 5,
+        label: "Shoot",
         reward: 500,
-        getCount: (state: GameState) => getItemCount(["adamantSword", "adamantMace", "adamantArmor"]),
+        getCount: (_state: GameState) =>
+          getItemCount(["crude_bow", "huntsman_bow", "long_bow", "war_bow", "master_bow"]),
+      },
+    ],
+    // Third ring: Clothing & Schematic Weapons
+    [
+      {
+        segmentId: "2-explorer_pack",
+        maxCount: 6,
+        label: "Leather Crafter",
+        reward: 500,
+        getCount: (_state: GameState) =>
+          getItemCount(["explorer_pack", "hunter_cloak", "grenadier_bag", "highpriest_robe", "loggers_gloves", "shadow_boots"]),
+      },
+      {
+        segmentId: "2-schematic_weapons",
+        maxCount: 3,
+        label: "Schematic Crafter",
+        reward: 250,
+        getCount: (_state: GameState) =>
+          getItemCount(["arbalest", "nightshade_bow", "stormglass_halberd"]),
+      },
+    ],
+    // Fourth ring: Ancient Books & Fellowship
+    [
+      {
+        segmentId: "3-books",
+        maxCount: 3,
+        label: "Ancient Wisdom",
+        reward: 250,
+        getCount: (_state: GameState) =>
+          getItemCount(["unnamed_book", "elder_scroll", "occultist_grimoire"]),
+      },
+      {
+        segmentId: "3-fellowship",
+        maxCount: 3,
+        label: "Good Company",
+        reward: 250,
+        getCount: (_state: GameState) =>
+          getItemCount(["elder_wizard", "restless_knight", "ashwraith_huntress"]),
+      },
+    ],
+    // Fifth ring: Blacksteel
+    [
+      {
+        segmentId: "4-blacksteel_tools",
+        maxCount: 3,
+        label: "Dark Tools",
+        reward: 250,
+        getCount: (_state: GameState) =>
+          getItemCount(["blacksteel_axe", "blacksteel_pickaxe", "blacksteel_lantern"]),
+      },
+      {
+        segmentId: "4-blacksteel_equipment",
+        maxCount: 3,
+        label: "Dark War Equipment",
+        reward: 250,
+        getCount: (_state: GameState) =>
+          getItemCount(["blacksteel_sword", "blacksteel_bow", "blacksteel_armor"]),
       },
     ],
   ],

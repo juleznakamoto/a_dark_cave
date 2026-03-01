@@ -2,9 +2,11 @@ import { useGameStore } from "@/game/state";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { GameState } from "@shared/schema";
 import { useState, useRef } from "react";
+import { tailwindToHex } from "@/lib/tailwindColors";
 
-const BACKGROUND_COLOR = "hsl(var(--neutral-800))";
-const BORDER_COLOR = "hsl(var(--neutral-400))";
+const SEGMENT_COLOR = tailwindToHex("gray-400/70");
+const BACKGROUND_COLOR = tailwindToHex("neutral-800");
+const BORDER_COLOR = tailwindToHex("neutral-400");
 
 export interface AchievementSegment {
   segmentId: string;           // unique within chart, e.g. "0-2", "1-axes"
@@ -130,27 +132,28 @@ export default function AchievementRingChart({ config }: Props) {
         const currentCount = seg.getCount(state);
         const segmentDegrees = (totalDegrees * seg.maxCount) / totalMaxCount;
 
-        const segmentStartAngle = currentEndAngle;
-        const segmentEndAngle = segmentStartAngle - segmentDegrees;
-        currentEndAngle = segmentEndAngle;
-
-        const progress = seg.maxCount > 0 ? currentCount / seg.maxCount : 0;
-        const progressDegrees = segmentDegrees * progress;
+        const segmentAngles = calculateSegment(
+          currentCount,
+          seg.maxCount,
+          currentEndAngle,
+          segmentDegrees,
+        );
+        currentEndAngle = segmentAngles.endAngle;
 
         const adjustedStartAngle =
           index === 0
-            ? segmentStartAngle
-            : segmentStartAngle - paddingAngle * index;
+            ? segmentAngles.startAngle
+            : segmentAngles.startAngle - paddingAngle * index;
         const adjustedProgressAngle =
           index === 0
-            ? segmentStartAngle - progressDegrees
-            : segmentStartAngle - progressDegrees - paddingAngle * index;
+            ? segmentAngles.progressAngle
+            : segmentAngles.progressAngle - paddingAngle * index;
 
         const isFull = currentCount >= seg.maxCount;
 
         return {
           name: seg.label,
-          fill: "hsl(var(--gray-400)/70%)",
+          fill: SEGMENT_COLOR,
           startAngle: adjustedStartAngle,
           endAngle: adjustedProgressAngle,
           isFull: isFull,
