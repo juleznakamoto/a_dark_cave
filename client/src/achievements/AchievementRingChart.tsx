@@ -256,7 +256,7 @@ export default function AchievementRingChart({ config }: Props) {
                       ...state.log,
                       {
                         id: `achievement-${achievementId}-${Date.now()}`,
-                        message: `${segment.name} Achievement complete: +${silverReward} silver`,
+                        message: `${segment.name} Achievement complete: +${silverReward} Silver`,
                         timestamp: Date.now(),
                         type: "event" as const,
                       },
