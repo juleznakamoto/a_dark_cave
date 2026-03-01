@@ -1,0 +1,215 @@
+import { useGameStore } from "@/game/state";
+import { tailwindToHex } from "@/lib/tailwindColors";
+import { AchievementChartConfig } from "../AchievementRingChart";
+import type { GameState } from "@shared/schema";
+
+// Segment colors for action achievements
+const COMPLETED_COLOR = tailwindToHex("green-800");
+const COMPLETED_STROKE_COLOR = tailwindToHex("green-900");
+
+// Action achievement chart configuration
+export const actionChartConfig: AchievementChartConfig = {
+  idPrefix: "action",
+  completedColor: COMPLETED_COLOR,
+  completedStrokeColor: COMPLETED_STROKE_COLOR,
+  centerSymbol: "⧗",
+  rings: [
+    // First ring: Well Rested (outermost ring)
+    [
+      {
+        segmentId: "0-exploreCave",
+        maxCount: 10,
+        label: "Cave Explore",
+        reward: 500,
+        getCount: (state: GameState) => {
+          const count = state.buttonUpgrades?.caveExplore?.level || 0;
+          return count === 1 ? 1.3 : count;
+        },
+      },
+      {
+        segmentId: "0-chopWood",
+        maxCount: 10,
+        label: "Chop Wood",
+        reward: 500,
+        getCount: (state: GameState) => {
+          const count = state.buttonUpgrades?.chopWood?.level || 0;
+          return count === 1 ? 1.3 : count;
+        },
+      },
+      {
+        segmentId: "0-hunt",
+        maxCount: 10,
+        label: "Hunt",
+        reward: 500,
+        getCount: (state: GameState) => {
+          const count = state.buttonUpgrades?.hunt?.level || 0;
+          return count === 1 ? 1.3 : count;
+        },
+      },
+    ],
+    // Second ring: Cave & Gathering Actions
+    [
+      {
+        segmentId: "1-mineStone",
+        maxCount: 10,
+        label: "Mine Stone",
+        reward: 500,
+        getCount: (state: GameState) => {
+          const count = state.buttonUpgrades?.mineStone?.level || 0;
+          return count === 1 ? 1.8 : count;
+        },
+      },
+      {
+        segmentId: "1-mineIron",
+        maxCount: 10,
+        label: "Mine Iron",
+        reward: 500,
+        getCount: (state: GameState) => {
+          const count = state.buttonUpgrades?.mineIron?.level || 0;
+          return count === 1 ? 1.8 : count;
+        },
+      },
+      {
+        segmentId: "1-mineCoal",
+        maxCount: 10,
+        label: "Mine Coal",
+        reward: 500,
+        getCount: (state: GameState) => {
+          const count = state.buttonUpgrades?.mineCoal?.level || 0;
+          return count === 1 ? 1.8 : count;
+        },
+      },
+      {
+        segmentId: "1-mineSulfur",
+        maxCount: 10,
+        label: "Mine Sulfur",
+        reward: 500,
+        getCount: (state: GameState) => {
+          const count = state.buttonUpgrades?.mineSulfur?.level || 0;
+          return count === 1 ? 1.8 : count;
+        },
+      },
+      {
+        segmentId: "1-mineObsidian",
+        maxCount: 10,
+        label: "Mine Obsidian",
+        reward: 500,
+        getCount: (state: GameState) => {
+          const count = state.buttonUpgrades?.mineObsidian?.level || 0;
+          return count === 1 ? 1.8 : count;
+        },
+      },
+      {
+        segmentId: "1-mineAdamant",
+        maxCount: 10,
+        label: "Mine Adamant",
+        reward: 500,
+        getCount: (state: GameState) => {
+          const count = state.buttonUpgrades?.mineAdamant?.level || 0;
+          return count === 1 ? 1.8 : count;
+        },
+      },
+    ],
+    // Third ring: Mining Actions
+    [
+      {
+        segmentId: "2-boneTotems",
+        maxCount: 20,
+        label: "Bone Totem Sacrifices",
+        reward: 500,
+        getCount: (state: GameState) =>
+          Math.min(Number(state.story?.seen?.boneTotemsUsageCount) || 0, 20),
+      },
+      {
+        segmentId: "2-leatherTotems",
+        maxCount: 20,
+        label: "Leather Totem Sacrifices",
+        reward: 500,
+        getCount: (state: GameState) =>
+          Math.min(Number(state.story?.seen?.leatherTotemsUsageCount) || 0, 20),
+      },
+      {
+        segmentId: "2-animals",
+        maxCount: 10,
+        label: "Animal Sacrifices",
+        reward: 500,
+        getCount: (state: GameState) =>
+          Math.min(Number(state.story?.seen?.animalsSacrificeLevel) || 0, 10),
+      },
+    ],
+    // Fourth ring: Bomb Crafting
+    [
+      {
+        segmentId: "3-emberBombs",
+        maxCount: 25,
+        label: "Ember Bombs crafted",
+        reward: 500,
+        getCount: (state: GameState) =>
+          Math.min(Number(state.story?.seen?.emberBombsCrafted) || 0, 25),
+      },
+      {
+        segmentId: "3-ashfireBombs",
+        maxCount: 20,
+        label: "Ashfire Bombs crafted",
+        reward: 500,
+        getCount: (state: GameState) =>
+          Math.min(Number(state.story?.seen?.ashfireBombsCrafted) || 0, 20),
+      },
+    ],
+    // Fifth ring: Merchant Purchases
+    [
+      {
+        segmentId: "4-merchantPurchases",
+        maxCount: 100,
+        label: "Good Deals",
+        reward: 500,
+        getCount: (state: GameState) => {
+          const count = Math.min(
+            Number(state.story?.merchantPurchases) || 0,
+            100
+          );
+          return [1, 2, 3].includes(count) ? 3 : count;
+        },
+      },
+      {
+        segmentId: "4-feedFire",
+        maxCount: 100,
+        label: "Fire Feeder",
+        reward: 500,
+        getCount: (state: GameState) => {
+          const count = Math.min(
+            Number(state.story?.seen?.feedFireUsageCount) || 0,
+            100
+          );
+          return [1, 2, 3].includes(count) ? 3 : count;
+        },
+      },
+      {
+        segmentId: "4-wellRested",
+        maxCount: 20,
+        label: "Well Rested",
+        reward: 500,
+        getCount: (state: GameState) => {
+          const count = Math.min(Number(state.totalFocusEarned) || 0, 20);
+          return [1, 2, 3].includes(count) ? 3 : count;
+        },
+      },
+    ],
+  ],
+};
+
+/** Returns IDs of action achievements that are full but not yet claimed. */
+export function getUnclaimedActionIds(): string[] {
+  const state = useGameStore.getState();
+  const claimedAchievements = state.claimedAchievements || [];
+  const result: string[] = [];
+  actionChartConfig.rings.forEach((segments) => {
+    segments.forEach((seg) => {
+      const count = seg.getCount(state);
+      if (count >= seg.maxCount && !claimedAchievements.includes(`${actionChartConfig.idPrefix}-${seg.segmentId}`)) {
+        result.push(`${actionChartConfig.idPrefix}-${seg.segmentId}`);
+      }
+    });
+  });
+  return result;
+}

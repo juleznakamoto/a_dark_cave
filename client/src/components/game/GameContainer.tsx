@@ -29,6 +29,7 @@ import { startVersionCheck, stopVersionCheck } from "@/game/versionCheck";
 import { logger } from "@/lib/logger";
 import { toast } from "@/hooks/use-toast";
 import MistBackground from "@/components/ui/mist-background";
+import { getUnclaimedAchievementIds } from "@/achievements";
 
 export default function GameContainer() {
   const {
@@ -75,6 +76,31 @@ export default function GameContainer() {
   const estateUnlocked = buildings.darkEstate >= 1;
 
   const [animatingTabs, setAnimatingTabs] = useState<Set<string>>(new Set());
+  const [lastViewedUnclaimedAchievementIds, setLastViewedUnclaimedAchievementIds] =
+    useState<string[]>([]);
+
+  // Compute unclaimed achievements for tab blink.
+  // Subscribe to the specific slices that affect achievement progress so the memo re-runs.
+  const _achBuildings = useGameStore((s) => s.buildings);
+  const _achClaimed = useGameStore((s) => s.claimedAchievements);
+  const _achTools = useGameStore((s) => s.tools);
+  const _achWeapons = useGameStore((s) => s.weapons);
+  const _achClothing = useGameStore((s) => s.clothing);
+  const _achRelics = useGameStore((s) => s.relics);
+  const _achFellowship = useGameStore((s) => s.fellowship);
+  const _achUpgrades = useGameStore((s) => s.buttonUpgrades);
+  const _achStory = useGameStore((s) => s.story);
+  const _achFocus = useGameStore((s) => s.totalFocusEarned);
+  const unclaimedAchievementIds = useMemo(
+    () => getUnclaimedAchievementIds(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [_achBuildings, _achClaimed, _achTools, _achWeapons, _achClothing, _achRelics, _achFellowship, _achUpgrades, _achStory, _achFocus],
+  );
+  const hasUnviewedAchievement =
+    unclaimedAchievementIds.length > 0 &&
+    unclaimedAchievementIds.some(
+      (id) => !lastViewedUnclaimedAchievementIds.includes(id),
+    );
 
   // Debug: Log when full game dialog state changes
   useEffect(() => {
@@ -152,6 +178,22 @@ export default function GameContainer() {
       tabButton.classList.remove("timer-tab-pulse");
     }
   }, [timedEventTab.isActive, timedEventTab.expiryTime]);
+
+  // Apply pulse animation to achievement tab when there are unviewed achievements
+  useEffect(() => {
+    const tabButton = document.querySelector('[data-testid="tab-achievements"]');
+    if (!tabButton) return;
+
+    if (hasUnviewedAchievement) {
+      tabButton.classList.add("timer-tab-pulse");
+    } else {
+      tabButton.classList.remove("timer-tab-pulse");
+    }
+
+    return () => {
+      tabButton.classList.remove("timer-tab-pulse");
+    };
+  }, [hasUnviewedAchievement]);
 
   // Apply pulse animation to Bastion tab when wave countdown is in last 30 seconds
   useEffect(() => {
@@ -515,7 +557,10 @@ export default function GameContainer() {
                         ? "font-semibold opacity-100"
                         : "opacity-60"
                       }`}
-                    onClick={() => setActiveTab("achievements")}
+                    onClick={() => {
+                      setLastViewedUnclaimedAchievementIds(unclaimedAchievementIds);
+                      setActiveTab("achievements");
+                    }}
                     data-testid="tab-achievements"
                   >
                     {"\u269C\uFE0E"}
