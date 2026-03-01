@@ -23,7 +23,12 @@ export default function InactivityDialog() {
 
   return (
     <Dialog open={true} onOpenChange={() => { }}>
-      <DialogContent className="w-[95vw] sm:max-w-md" hideClose={true}>
+      <DialogContent
+        className="w-[95vw] sm:max-w-md z-[210]"
+        hideClose={true}
+        hideOverlay={true}
+        customBackground={<div className="fixed inset-0 z-[200] bg-black/50 backdrop-blur-sm animate-fade-in" />}
+      >
         <DialogHeader>
           <DialogTitle className="leading-6">
             {isMultiTab && 'Another Login detected'}
