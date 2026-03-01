@@ -82,3 +82,14 @@ export function shouldHideBuilding(
 export function shouldExcludeFromBuildingsSection(buildingKey: string): boolean {
   return BUILDING_HIERARCHIES.fortifications.includes(buildingKey);
 }
+
+/**
+ * Check if a building is an upgrade of another building (i.e. not the first in its chain)
+ */
+export function isBuildingUpgrade(buildingKey: string): boolean {
+  for (const hierarchy of Object.values(BUILDING_HIERARCHIES)) {
+    const index = hierarchy.indexOf(buildingKey);
+    if (index > 0) return true;
+  }
+  return false;
+}

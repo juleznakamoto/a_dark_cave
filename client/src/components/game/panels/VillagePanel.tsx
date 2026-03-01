@@ -48,6 +48,7 @@ import {
 } from "@/components/ui/bubbly-button.particles";
 import { ButtonPriorBadge } from "@/components/game/ButtonPriorBadge";
 import { PRIOR_ELIGIBLE_ACTIONS } from "@/game/buttonUpgrades";
+import { isBuildingUpgrade } from "@/game/buildingHierarchy";
 
 export default function VillagePanel() {
   const {
@@ -396,8 +397,15 @@ export default function VillagePanel() {
     }
 
     const buildingHint = state.books?.book_of_craftsmanship ? action.description : undefined;
+    const buildingKey = actionId.startsWith("build")
+      ? actionId.slice(5, 6).toLowerCase() + actionId.slice(6)
+      : null;
+    const isUpgrade = buildingKey ? isBuildingUpgrade(buildingKey) : false;
     const tooltipContent = (
-      <div className="text-xs whitespace-nowrap" style={buildingHint ? { width: '12rem' } : undefined}>
+      <div className="text-xs whitespace-nowrap relative" style={buildingHint ? { width: '12rem' } : undefined}>
+        {isUpgrade && (
+          <span className="absolute top-0 right-0 text-muted-foreground leading-none">↑</span>
+        )}
         {costBreakdown.map((cost, index) => (
           <div
             key={index}
