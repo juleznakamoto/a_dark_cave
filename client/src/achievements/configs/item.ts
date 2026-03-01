@@ -11,7 +11,7 @@ const COMPLETED_STROKE_COLOR = tailwindToHex("red-900");
 function getItemCount(itemKeys: string[]): number {
   const state = useGameStore.getState();
   let count = 0;
-  for (const itemKey of segment.itemKeys) {
+  for (const itemKey of itemKeys) {
     const hasInTools = state.tools && state.tools[itemKey as keyof typeof state.tools];
     const hasInWeapons = state.weapons && state.weapons[itemKey as keyof typeof state.weapons];
     const hasInClothing = state.clothing && state.clothing[itemKey as keyof typeof state.clothing];
