@@ -162,7 +162,7 @@ export default function ForestPanel() {
 
     // Check if action has success chance (for forest scout actions)
     const successPercentage = action.success_chance && state.books?.book_of_war
-      ? `${Math.round(action.success_chance(state) * 100)}%`
+      ? `${Math.round(Math.min(1, Math.max(0, action.success_chance(state))) * 100)}%`
       : null;
 
     // Expedition actions require free villagers during execution

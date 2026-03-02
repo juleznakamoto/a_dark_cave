@@ -325,9 +325,10 @@ export default function EventDialog({
                 // Calculate success percentage if available and book_of_war is owned
                 let successPercentage: string | null = null;
                 if (choice.success_chance !== undefined && gameState.books?.book_of_war) {
-                  const successChance = typeof choice.success_chance === 'function'
+                  const rawChance = typeof choice.success_chance === 'function'
                     ? choice.success_chance(gameState)
                     : choice.success_chance;
+                  const successChance = Math.min(1, Math.max(0, rawChance));
                   successPercentage = `${Math.round(successChance * 100)}%`;
                 }
 

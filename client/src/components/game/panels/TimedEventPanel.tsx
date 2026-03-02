@@ -386,10 +386,10 @@ export default function TimedEventPanel() {
                 choice.success_chance &&
                 typeof choice.success_chance === "function"
               ) {
-                const chance = choice.success_chance(gameState);
+                const chance = Math.min(1, Math.max(0, choice.success_chance(gameState)));
                 successPercentage = `${Math.round(chance * 100)}%`;
               } else if (typeof choice.success_chance === "number") {
-                successPercentage = `${Math.round(choice.success_chance * 100)}%`;
+                successPercentage = `${Math.round(Math.min(1, Math.max(0, choice.success_chance)) * 100)}%`;
               }
 
               // Check if we have a Scriptorium to show stat icons
