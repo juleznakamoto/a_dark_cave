@@ -404,7 +404,7 @@ export default function VillagePanel() {
     const tooltipContent = (
       <div className="text-xs whitespace-nowrap relative" style={buildingHint ? { width: '12rem' } : undefined}>
         {isUpgrade && (
-          <span className="absolute top-0 right-0 text-muted-foreground leading-none">↑</span>
+          <span className="absolute top-0 right-0 text-green-700 leading-none">↑</span>
         )}
         {costBreakdown.map((cost, index) => (
           <div
