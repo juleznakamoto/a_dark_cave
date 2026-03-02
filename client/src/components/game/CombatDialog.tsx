@@ -91,6 +91,7 @@ export default function CombatDialog({
   const integrityDamageIndicatorTimeoutRef = useRef<
     ReturnType<typeof setTimeout> | null
   >(null);
+  const consequencesAppliedRef = useRef(false);
 
   const showIntegrityDamage = (amount: number) => {
     if (integrityDamageIndicatorTimeoutRef.current) {
@@ -145,6 +146,7 @@ export default function CombatDialog({
       setCombatEnded(false);
       setCombatResult(null);
       setCombatSummary(null);
+      consequencesAppliedRef.current = false;
       setEnemyDamageIndicator({ amount: 0, visible: false });
       setPlayerDamageIndicator({ amount: 0, visible: false });
       if (integrityDamageIndicatorTimeoutRef.current) {
@@ -372,23 +374,22 @@ export default function CombatDialog({
     }
   };
 
+  // Auto-apply consequences as soon as combat ends, so results appear without extra clicks
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    if ((combatResult === "victory" || combatResult === "defeat") && !consequencesAppliedRef.current) {
+      consequencesAppliedRef.current = true;
+      gameState.updateBastionStats();
+      if (combatResult === "victory") {
+        setCombatSummary(onVictory() || {});
+      } else {
+        setCombatSummary(onDefeat() || {});
+      }
+    }
+  }, [combatResult]); // intentionally omitting onVictory/onDefeat to prevent re-runs
+
   const handleEndFight = () => {
-    if (combatSummary !== null) {
-      // Second click — user has read the result summary, close the dialog
-      onClose();
-      return;
-    }
-
-    // First click — apply consequences and show summary in the overlay
-    gameState.updateBastionStats();
-
-    if (combatResult === "victory") {
-      const summary = onVictory();
-      setCombatSummary(summary || {});
-    } else if (combatResult === "defeat") {
-      const summary = onDefeat();
-      setCombatSummary(summary || {});
-    }
+    onClose();
   };
 
   const handleFight = () => {
@@ -939,50 +940,52 @@ export default function CombatDialog({
                       animate={{ backgroundColor: "rgba(0, 0, 0, 1)" }}
                       transition={{ duration: 1.5, ease: "easeIn" }}
                     >
-                      <motion.span
-                        className="font-sans text-red-700 text-xl tracking-[0.25em] uppercase select-none defeat-text-pulse"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: [0, 1, 0.8] }}
-                        transition={{ duration: 2, delay: 1.5, ease: "easeInOut" }}
-                      >
-                        You lost
-                      </motion.span>
+                      <div className="-mt-16 flex flex-col items-center">
+                        <motion.span
+                          className="font-sans text-red-700 text-xl tracking-[0.25em] uppercase select-none defeat-text-pulse"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: [0, 1, 0.8] }}
+                          transition={{ duration: 2, delay: 1.5, ease: "easeInOut" }}
+                        >
+                          You lost
+                        </motion.span>
 
-                      {/* Defeat consequence details */}
-                      <AnimatePresence>
-                        {combatSummary !== null && (
-                          <motion.div
-                            className="mt-6 flex flex-col items-center gap-1 text-center"
-                            initial={{ opacity: 0, y: 8 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, ease: "easeOut" }}
-                          >
-                            <p className="text-gray-400 text-sm">
-                              {(combatSummary.casualties ?? 0) === 0
-                                ? "No villagers died."
-                                : combatSummary.casualties === 1
-                                  ? "1 villager died."
-                                  : `${combatSummary.casualties} villagers died.`}
-                            </p>
-                            {(combatSummary.woundedFellows ?? []).map((fellow) => (
-                              <p key={fellow} className="text-gray-400 text-sm">
-                                {fellow} was wounded.
+                        {/* Defeat consequence details — auto-populated, staggered after title */}
+                        <motion.div
+                          className="mt-5 flex flex-col items-center gap-1 text-center"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: combatSummary !== null ? 1 : 0 }}
+                          transition={{ duration: 0.6, delay: 3.6, ease: "easeOut" }}
+                        >
+                          {combatSummary !== null && (
+                            <>
+                              <p className="text-gray-400 text-sm">
+                                {(combatSummary.casualties ?? 0) === 0
+                                  ? "No villagers died."
+                                  : combatSummary.casualties === 1
+                                    ? "1 villager died."
+                                    : `${combatSummary.casualties} villagers died.`}
                               </p>
-                            ))}
-                            {(combatSummary.damagedBuildings ?? []).map((building) => (
-                              <p key={building} className="text-gray-400 text-sm capitalize">
-                                The {building} was damaged.
-                              </p>
-                            ))}
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
+                              {(combatSummary.woundedFellows ?? []).map((fellow) => (
+                                <p key={fellow} className="text-gray-400 text-sm">
+                                  {fellow} got injured.
+                                </p>
+                              ))}
+                              {(combatSummary.damagedBuildings ?? []).map((building) => (
+                                <p key={building} className="text-gray-400 text-sm capitalize">
+                                  {building} got damaged.
+                                </p>
+                              ))}
+                            </>
+                          )}
+                        </motion.div>
+                      </div>
 
                       <motion.div
                         className="absolute bottom-6 left-6 right-6"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        transition={{ duration: 0.5, delay: combatSummary !== null ? 0 : 3.5 }}
+                        transition={{ duration: 0.5, delay: 4.8 }}
                       >
                         <Button
                           onClick={handleEndFight}
@@ -990,7 +993,7 @@ export default function CombatDialog({
                           variant="outline"
                           button_id="combat-end-fight"
                         >
-                          {combatSummary !== null ? "Continue" : "End Fight"}
+                          Continue
                         </Button>
                       </motion.div>
                     </motion.div>
@@ -1006,31 +1009,35 @@ export default function CombatDialog({
                       animate={{ opacity: 1 }}
                       transition={{ duration: 0.8, ease: "easeIn" }}
                     >
-                      <motion.span
-                        className="font-sans text-slate-200 text-xl tracking-[0.25em] uppercase select-none"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 1.2, delay: 0.3, ease: "easeInOut" }}
-                      >
-                        You win
-                      </motion.span>
-
-                      {combatSummary.silverReward !== undefined && (
-                        <motion.p
-                          className="mt-6 text-amber-400 text-sm"
-                          initial={{ opacity: 0, y: 8 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ duration: 0.6, delay: 0.9, ease: "easeOut" }}
+                      <div className="-mt-16 flex flex-col items-center">
+                        <motion.span
+                          className="font-sans text-slate-200 text-xl tracking-[0.25em] uppercase select-none"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ duration: 1.2, delay: 0.3, ease: "easeInOut" }}
                         >
-                          +{combatSummary.silverReward} silver claimed.
-                        </motion.p>
-                      )}
+                          You win
+                        </motion.span>
+
+                        <motion.div
+                          className="mt-5 flex flex-col items-center gap-1 text-center"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ duration: 0.6, delay: 1.8, ease: "easeOut" }}
+                        >
+                          {combatSummary.silverReward !== undefined && (
+                            <p className="text-amber-400 text-sm">
+                              +{combatSummary.silverReward} silver claimed.
+                            </p>
+                          )}
+                        </motion.div>
+                      </div>
 
                       <motion.div
                         className="absolute bottom-6 left-6 right-6"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        transition={{ duration: 0.5, delay: 1.5 }}
+                        transition={{ duration: 0.5, delay: 3 }}
                       >
                         <Button
                           onClick={handleEndFight}
