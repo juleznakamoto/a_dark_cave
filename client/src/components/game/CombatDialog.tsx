@@ -164,13 +164,8 @@ export default function CombatDialog({
       setMaxIntegrityForCombat(maxIntegrity);
       setCurrentIntegrity(maxIntegrity);
     }
-  }, [
-    isOpen,
-    enemy,
-    bastionStats.defense,
-    bastionStats.attackFromFortifications,
-    bastionStats.integrity, // Added integrity to dependency array
-  ]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen, enemy]); // Only reset when the dialog opens, not when bastion stats recalculate mid-combat
 
   // Available combat items with max limits
   const MAX_EMBER_BOMBS = gameState.clothing.grenadier_bag ? 4 : 3;
@@ -374,12 +369,13 @@ export default function CombatDialog({
     }
   };
 
-  // Auto-apply consequences as soon as combat ends, so results appear without extra clicks
+  // Auto-apply consequences as soon as combat ends, so results appear without extra clicks.
+  // updateBastionStats is intentionally deferred to handleEndFight — calling it here would
+  // change bastionStats.integrity and re-trigger the dialog-open useEffect, resetting combat.
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if ((combatResult === "victory" || combatResult === "defeat") && !consequencesAppliedRef.current) {
       consequencesAppliedRef.current = true;
-      gameState.updateBastionStats();
       if (combatResult === "victory") {
         setCombatSummary(onVictory() || {});
       } else {
@@ -389,6 +385,7 @@ export default function CombatDialog({
   }, [combatResult]); // intentionally omitting onVictory/onDefeat to prevent re-runs
 
   const handleEndFight = () => {
+    gameState.updateBastionStats();
     onClose();
   };
 
