@@ -116,6 +116,16 @@ export interface EventDialogState {
 }
 
 /**
+ * Structured summary of a combat result shown in the dialog
+ */
+export interface CombatResultSummary {
+  casualties?: number;
+  damagedBuildings?: string[];
+  woundedFellows?: string[];
+  silverReward?: number;
+}
+
+/**
  * Combat dialog state
  */
 export interface CombatDialogState {
@@ -123,8 +133,8 @@ export interface CombatDialogState {
   enemy: Enemy | null;
   eventTitle: string;
   eventMessage: string;
-  onVictory: (() => Partial<GameState>) | null;
-  onDefeat: (() => Partial<GameState>) | null;
+  onVictory: (() => CombatResultSummary) | null;
+  onDefeat: (() => CombatResultSummary) | null;
 }
 
 /**

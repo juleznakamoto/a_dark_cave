@@ -1899,27 +1899,18 @@ export const useGameStore = create<GameStore>((set, get) => ({
                 ].slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES)
                 : prevState.log,
             }));
-            get().setCombatDialog(false);
+            // Return summary for CombatDialog to display before closing
+            return victoryResult._combatSummary || {};
           },
           onDefeat: () => {
             const defeatResult = combatData.onDefeat();
-            // Apply defeat state changes
+            // Apply defeat state changes (no log entry — shown in dialog instead)
             set((prevState) => ({
               ...prevState,
               ...defeatResult,
-              log: defeatResult._logMessage
-                ? [
-                  ...prevState.log,
-                  {
-                    id: `combat-defeat-${Date.now()}`,
-                    message: defeatResult._logMessage,
-                    timestamp: Date.now(),
-                    type: "system",
-                  },
-                ].slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES)
-                : prevState.log,
             }));
-            get().setCombatDialog(false);
+            // Return summary for CombatDialog to display before closing
+            return defeatResult._combatSummary || {};
           },
         });
       } else {

@@ -24,7 +24,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
-import { Enemy, CombatItem } from "@/game/types";
+import { Enemy, CombatItem, CombatResultSummary } from "@/game/types";
 import { ProceduralGroundBackground } from "@/components/ui/procedural-ground-background";
 
 interface CombatDialogProps {
@@ -33,8 +33,8 @@ interface CombatDialogProps {
   enemy: Enemy | null;
   eventTitle: string;
   eventMessage: string;
-  onVictory: () => void;
-  onDefeat: () => void;
+  onVictory: () => CombatResultSummary;
+  onDefeat: () => CombatResultSummary;
 }
 
 export default function CombatDialog({
@@ -67,6 +67,7 @@ export default function CombatDialog({
   const [combatResult, setCombatResult] = useState<"victory" | "defeat" | null>(
     null,
   );
+  const [combatSummary, setCombatSummary] = useState<CombatResultSummary | null>(null);
   const [currentIntegrity, setCurrentIntegrity] = useState(0);
   const [maxIntegrityForCombat, setMaxIntegrityForCombat] = useState(0);
   const [enemyDamageIndicator, setEnemyDamageIndicator] = useState<{
@@ -143,6 +144,7 @@ export default function CombatDialog({
       setIsProcessingRound(false);
       setCombatEnded(false);
       setCombatResult(null);
+      setCombatSummary(null);
       setEnemyDamageIndicator({ amount: 0, visible: false });
       setPlayerDamageIndicator({ amount: 0, visible: false });
       if (integrityDamageIndicatorTimeoutRef.current) {
@@ -371,34 +373,22 @@ export default function CombatDialog({
   };
 
   const handleEndFight = () => {
-    if (combatResult === "victory") {
-      const victoryResult = onVictory();
-      // Add victory message to log if present
-      if (victoryResult && victoryResult._logMessage) {
-        gameState.addLogEntry({
-          id: `combat-victory-${Date.now()}`,
-          message: victoryResult._logMessage,
-          timestamp: Date.now(),
-          type: "system",
-        });
-      }
-    } else if (combatResult === "defeat") {
-      const defeatResult = onDefeat();
-      // Add defeat message to log if present
-      if (defeatResult && defeatResult._logMessage) {
-        gameState.addLogEntry({
-          id: `combat-defeat-${Date.now()}`,
-          message: defeatResult._logMessage,
-          timestamp: Date.now(),
-          type: "system",
-        });
-      }
+    if (combatSummary !== null) {
+      // Second click — user has read the result summary, close the dialog
+      onClose();
+      return;
     }
 
-    // Update bastion stats after combat to reflect any building damage
+    // First click — apply consequences and show summary in the overlay
     gameState.updateBastionStats();
 
-    onClose();
+    if (combatResult === "victory") {
+      const summary = onVictory();
+      setCombatSummary(summary || {});
+    } else if (combatResult === "defeat") {
+      const summary = onDefeat();
+      setCombatSummary(summary || {});
+    }
   };
 
   const handleFight = () => {
@@ -944,7 +934,7 @@ export default function CombatDialog({
                 <AnimatePresence>
                   {combatResult === "defeat" && (
                     <motion.div
-                      className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-black"
+                      className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-black px-6"
                       initial={{ backgroundColor: "rgba(0, 0, 0, 0)" }}
                       animate={{ backgroundColor: "rgba(0, 0, 0, 1)" }}
                       transition={{ duration: 1.5, ease: "easeIn" }}
@@ -957,11 +947,42 @@ export default function CombatDialog({
                       >
                         You lost
                       </motion.span>
+
+                      {/* Defeat consequence details */}
+                      <AnimatePresence>
+                        {combatSummary !== null && (
+                          <motion.div
+                            className="mt-6 flex flex-col items-center gap-1 text-center"
+                            initial={{ opacity: 0, y: 8 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6, ease: "easeOut" }}
+                          >
+                            <p className="text-gray-400 text-sm">
+                              {(combatSummary.casualties ?? 0) === 0
+                                ? "No villagers died."
+                                : combatSummary.casualties === 1
+                                  ? "1 villager died."
+                                  : `${combatSummary.casualties} villagers died.`}
+                            </p>
+                            {(combatSummary.woundedFellows ?? []).map((fellow) => (
+                              <p key={fellow} className="text-gray-400 text-sm">
+                                {fellow} was wounded.
+                              </p>
+                            ))}
+                            {(combatSummary.damagedBuildings ?? []).map((building) => (
+                              <p key={building} className="text-gray-400 text-sm capitalize">
+                                The {building} was damaged.
+                              </p>
+                            ))}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+
                       <motion.div
                         className="absolute bottom-6 left-6 right-6"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        transition={{ duration: 0.5, delay: 3.5 }}
+                        transition={{ duration: 0.5, delay: combatSummary !== null ? 0 : 3.5 }}
                       >
                         <Button
                           onClick={handleEndFight}
@@ -969,7 +990,55 @@ export default function CombatDialog({
                           variant="outline"
                           button_id="combat-end-fight"
                         >
-                          End Fight
+                          {combatSummary !== null ? "Continue" : "End Fight"}
+                        </Button>
+                      </motion.div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                {/* Victory overlay */}
+                <AnimatePresence>
+                  {combatResult === "victory" && combatSummary !== null && (
+                    <motion.div
+                      className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-black px-6"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.8, ease: "easeIn" }}
+                    >
+                      <motion.span
+                        className="font-sans text-slate-200 text-xl tracking-[0.25em] uppercase select-none"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 1.2, delay: 0.3, ease: "easeInOut" }}
+                      >
+                        You win
+                      </motion.span>
+
+                      {combatSummary.silverReward !== undefined && (
+                        <motion.p
+                          className="mt-6 text-amber-400 text-sm"
+                          initial={{ opacity: 0, y: 8 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.6, delay: 0.9, ease: "easeOut" }}
+                        >
+                          +{combatSummary.silverReward} silver claimed.
+                        </motion.p>
+                      )}
+
+                      <motion.div
+                        className="absolute bottom-6 left-6 right-6"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 1.5 }}
+                      >
+                        <Button
+                          onClick={handleEndFight}
+                          className="w-full"
+                          variant="outline"
+                          button_id="combat-end-fight"
+                        >
+                          Continue
                         </Button>
                       </motion.div>
                     </motion.div>

@@ -329,8 +329,8 @@ export default function Game() {
         enemy={combatDialog.enemy}
         eventTitle={combatDialog.eventTitle}
         eventMessage={combatDialog.eventMessage}
-        onVictory={combatDialog.onVictory || (() => { })}
-        onDefeat={combatDialog.onDefeat || (() => { })}
+        onVictory={combatDialog.onVictory || (() => ({}))}
+        onDefeat={combatDialog.onDefeat || (() => ({}))}
       />
 
       <EmailConfirmedDialog

@@ -300,6 +300,11 @@ function handleDefeat(
       damagedBuildings,
       woundedFellows,
     ),
+    _combatSummary: {
+      casualties: actualCasualties,
+      damagedBuildings,
+      woundedFellows,
+    },
   };
 }
 
@@ -428,6 +433,9 @@ function createAttackWaveEvent(waveId: keyof typeof WAVE_PARAMS): GameEvent {
               waveId === "sixthWave"
                 ? SIXTH_WAVE_VICTORY_MESSAGE(params.silverReward)
                 : VICTORY_MESSAGE(params.silverReward),
+            _combatSummary: {
+              silverReward: params.silverReward,
+            },
           }),
           onDefeat: () => {
             const defeatResult = handleDefeat(
