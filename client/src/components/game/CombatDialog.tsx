@@ -493,6 +493,46 @@ export default function CombatDialog({
     ? (currentIntegrity / maxIntegrityForCombat) * 100
     : 0;
 
+  // Pre-compute result lines so both the staggered list and the button delay share the same data
+  const DEFEAT_LINES_START = 3.4;
+  const DEFEAT_LINE_STAGGER = 0.3;
+  const defeatResultLines: { key: string; text: string; className: string }[] = combatSummary
+    ? [
+        {
+          key: "casualties",
+          text:
+            (combatSummary.casualties ?? 0) === 0
+              ? "No villagers died."
+              : combatSummary.casualties === 1
+                ? "1 villager died."
+                : `${combatSummary.casualties} villagers died.`,
+          className: "text-gray-400 text-sm",
+        },
+        ...(combatSummary.woundedFellows ?? []).map((f) => ({
+          key: `fellow-${f}`,
+          text: `${f} got injured.`,
+          className: "text-gray-400 text-sm",
+        })),
+        ...(combatSummary.damagedBuildings ?? []).map((b) => ({
+          key: `building-${b}`,
+          text: `${b} got damaged.`,
+          className: "text-gray-400 text-sm capitalize",
+        })),
+      ]
+    : [];
+  const defeatButtonDelay = DEFEAT_LINES_START + defeatResultLines.length * DEFEAT_LINE_STAGGER + 0.7;
+
+  const VICTORY_LINES_START = 1.8;
+  const VICTORY_LINE_STAGGER = 0.3;
+  const victoryResultLines: { key: string; text: string; className: string }[] = combatSummary
+    ? [
+        ...(combatSummary.silverReward !== undefined
+          ? [{ key: "silver", text: `+${combatSummary.silverReward} silver claimed.`, className: "text-amber-400 text-sm" }]
+          : []),
+      ]
+    : [];
+  const victoryButtonDelay = VICTORY_LINES_START + victoryResultLines.length * VICTORY_LINE_STAGGER + 0.7;
+
   return (
     <>
       <Dialog open={isOpen} onOpenChange={() => { }}>
@@ -947,42 +987,31 @@ export default function CombatDialog({
                           You lost
                         </motion.span>
 
-                        {/* Defeat consequence details — auto-populated, staggered after title */}
-                        <motion.div
-                          className="mt-5 flex flex-col items-center gap-1 text-center"
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: combatSummary !== null ? 1 : 0 }}
-                          transition={{ duration: 0.6, delay: 3.6, ease: "easeOut" }}
-                        >
-                          {combatSummary !== null && (
-                            <>
-                              <p className="text-gray-400 text-sm">
-                                {(combatSummary.casualties ?? 0) === 0
-                                  ? "No villagers died."
-                                  : combatSummary.casualties === 1
-                                    ? "1 villager died."
-                                    : `${combatSummary.casualties} villagers died.`}
-                              </p>
-                              {(combatSummary.woundedFellows ?? []).map((fellow) => (
-                                <p key={fellow} className="text-gray-400 text-sm">
-                                  {fellow} got injured.
-                                </p>
-                              ))}
-                              {(combatSummary.damagedBuildings ?? []).map((building) => (
-                                <p key={building} className="text-gray-400 text-sm capitalize">
-                                  {building} got damaged.
-                                </p>
-                              ))}
-                            </>
-                          )}
-                        </motion.div>
+                        {/* Defeat consequence details — each line staggered in individually */}
+                        <div className="mt-5 flex flex-col items-center gap-1 text-center">
+                          {defeatResultLines.map((line, i) => (
+                            <motion.p
+                              key={line.key}
+                              className={line.className}
+                              initial={{ opacity: 0, y: 5 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{
+                                duration: 0.45,
+                                delay: DEFEAT_LINES_START + i * DEFEAT_LINE_STAGGER,
+                                ease: "easeOut",
+                              }}
+                            >
+                              {line.text}
+                            </motion.p>
+                          ))}
+                        </div>
                       </div>
 
                       <motion.div
                         className="absolute bottom-6 left-6 right-6"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        transition={{ duration: 0.5, delay: 4.8 }}
+                        transition={{ duration: 0.5, delay: defeatButtonDelay }}
                       >
                         <Button
                           onClick={handleEndFight}
@@ -1016,25 +1045,31 @@ export default function CombatDialog({
                           You win
                         </motion.span>
 
-                        <motion.div
-                          className="mt-5 flex flex-col items-center gap-1 text-center"
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          transition={{ duration: 0.6, delay: 1.8, ease: "easeOut" }}
-                        >
-                          {combatSummary.silverReward !== undefined && (
-                            <p className="text-amber-400 text-sm">
-                              +{combatSummary.silverReward} silver claimed.
-                            </p>
-                          )}
-                        </motion.div>
+                        {/* Victory result lines — staggered in individually */}
+                        <div className="mt-5 flex flex-col items-center gap-1 text-center">
+                          {victoryResultLines.map((line, i) => (
+                            <motion.p
+                              key={line.key}
+                              className={line.className}
+                              initial={{ opacity: 0, y: 5 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{
+                                duration: 0.45,
+                                delay: VICTORY_LINES_START + i * VICTORY_LINE_STAGGER,
+                                ease: "easeOut",
+                              }}
+                            >
+                              {line.text}
+                            </motion.p>
+                          ))}
+                        </div>
                       </div>
 
                       <motion.div
                         className="absolute bottom-6 left-6 right-6"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        transition={{ duration: 0.5, delay: 3 }}
+                        transition={{ duration: 0.5, delay: victoryButtonDelay }}
                       >
                         <Button
                           onClick={handleEndFight}
