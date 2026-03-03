@@ -236,6 +236,17 @@ export default function GameFooter() {
               </svg>
             </a>
             <a
+              href="https://a-dark-cave.fandom.com/wiki/A_Dark_Cave_Wiki"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:opacity-100 transition-opacity opacity-35 flex items-center justify-center w-4 h-4"
+              title="Fandom Wiki"
+            >
+              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12.014 0C6.694 0 2.38 4.314 2.38 9.634c0 3.388 1.755 6.37 4.397 8.104L5.72 24h12.588l-1.057-6.262C19.893 16.004 21.648 13.022 21.648 9.634 21.648 4.314 17.333 0 12.014 0zM9.663 17.812H7.757L8.45 13.8c-1.648-.878-2.768-2.618-2.768-4.614 0-2.895 2.347-5.243 5.243-5.243h.038l-1.3 5.243h2.374L9.663 17.812zm4.674 0h-1.906l2.374-8.626h2.374l-2.842 8.626zm2.374-8.626h-2.374L15.64 3.943h.038c2.895 0 5.243 2.348 5.243 5.243 0 1.996-1.12 3.736-2.768 4.614l-.442-4.614z" />
+              </svg>
+            </a>
+            <a
               href="https://www.instagram.com/a_dark_cave/"
               target="_blank"
               rel="noopener noreferrer"
