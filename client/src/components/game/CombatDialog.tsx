@@ -164,7 +164,7 @@ export default function CombatDialog({
       setMaxIntegrityForCombat(maxIntegrity);
       setCurrentIntegrity(maxIntegrity);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen, enemy]); // Only reset when the dialog opens, not when bastion stats recalculate mid-combat
 
   // Available combat items with max limits
@@ -495,30 +495,30 @@ export default function CombatDialog({
 
   // Pre-compute result lines so both the staggered list and the button delay share the same data
   const DEFEAT_LINES_START = 3.4;
-  const DEFEAT_LINE_STAGGER = 0.6;
+  const DEFEAT_LINE_STAGGER = 1.0;
   const defeatResultLines: { key: string; text: string; className: string }[] = combatSummary
     ? [
-        {
-          key: "casualties",
-          text:
-            (combatSummary.casualties ?? 0) === 0
-              ? "No villagers died."
-              : combatSummary.casualties === 1
-                ? "1 villager died."
-                : `${combatSummary.casualties} villagers died.`,
-          className: "text-gray-400 text-sm",
-        },
-        ...(combatSummary.woundedFellows ?? []).map((f) => ({
-          key: `fellow-${f}`,
-          text: `${f} got injured.`,
-          className: "text-gray-400 text-sm",
-        })),
-        ...(combatSummary.damagedBuildings ?? []).map((b) => ({
-          key: `building-${b}`,
-          text: `${b} got damaged.`,
-          className: "text-gray-400 text-sm capitalize",
-        })),
-      ]
+      {
+        key: "casualties",
+        text:
+          (combatSummary.casualties ?? 0) === 0
+            ? "No villagers died."
+            : combatSummary.casualties === 1
+              ? "1 villager died."
+              : `${combatSummary.casualties} villagers died.`,
+        className: "text-gray-400 text-sm",
+      },
+      ...(combatSummary.woundedFellows ?? []).map((f) => ({
+        key: `fellow-${f}`,
+        text: `${f} got injured.`,
+        className: "text-gray-400 text-sm",
+      })),
+      ...(combatSummary.damagedBuildings ?? []).map((b) => ({
+        key: `building-${b}`,
+        text: `${b} got damaged.`,
+        className: "text-gray-400 text-sm capitalize",
+      })),
+    ]
     : [];
   const defeatButtonDelay = DEFEAT_LINES_START + defeatResultLines.length * DEFEAT_LINE_STAGGER + 0.7;
 
@@ -526,10 +526,10 @@ export default function CombatDialog({
   const VICTORY_LINE_STAGGER = 0.3;
   const victoryResultLines: { key: string; text: string; className: string }[] = combatSummary
     ? [
-        ...(combatSummary.silverReward !== undefined
-          ? [{ key: "silver", text: `+${combatSummary.silverReward} silver claimed.`, className: "text-amber-400 text-sm" }]
-          : []),
-      ]
+      ...(combatSummary.silverReward !== undefined
+        ? [{ key: "silver", text: `+${combatSummary.silverReward} silver claimed.`, className: "text-amber-400 text-sm" }]
+        : []),
+    ]
     : [];
   const victoryButtonDelay = VICTORY_LINES_START + victoryResultLines.length * VICTORY_LINE_STAGGER + 0.7;
 
