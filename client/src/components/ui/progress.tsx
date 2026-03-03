@@ -14,12 +14,14 @@ interface ProgressProps extends React.ComponentPropsWithoutRef<typeof ProgressPr
   flashOnDecrease?: boolean;
   /** Animate growth when value increases (milliseconds) */
   growAnimationMs?: number;
+  /** Override the indicator fill color class (default: bg-red-950) */
+  indicatorClassName?: string;
 }
 
 const Progress = React.forwardRef<
   React.ElementRef<typeof ProgressPrimitive.Root>,
   ProgressProps
->(({ className, value, segments = 1, hideBorder = false, disableGlow = false, flashOnDecrease = false, growAnimationMs = 0, ...props }, ref) => {
+>(({ className, value, segments = 1, hideBorder = false, disableGlow = false, flashOnDecrease = false, growAnimationMs = 0, indicatorClassName, ...props }, ref) => {
   const [animationKey, setAnimationKey] = React.useState(0);
   const [flashKey, setFlashKey] = React.useState(0);
   const prevValueRef = React.useRef(value || 0);
@@ -61,7 +63,7 @@ const Progress = React.forwardRef<
 
       {/* Progress indicator */}
       <ProgressPrimitive.Indicator
-        className="h-full w-full flex-1 bg-red-950 relative z-10 overflow-hidden"
+        className={cn("h-full w-full flex-1 bg-red-950 relative z-10 overflow-hidden", indicatorClassName)}
         style={{
           transform: `translateX(-${100 - (value || 0)}%)`,
           transition: flashOnDecrease
@@ -75,7 +77,7 @@ const Progress = React.forwardRef<
         {animationKey > 0 && (
           <motion.div
             key={animationKey}
-            className="absolute inset-0 bg-gradient-to-r from-transparent via-red-500/100 to-transparent pointer-events-none"
+            className={cn("absolute inset-0 bg-gradient-to-r from-transparent to-transparent pointer-events-none", indicatorClassName ? "via-orange-400/80" : "via-red-500/100")}
             initial={{ x: "-100%", opacity: 1 }}
             animate={{ x: "100%", opacity: 0 }}
             transition={{ duration: 0.7, ease: "easeOut" }}

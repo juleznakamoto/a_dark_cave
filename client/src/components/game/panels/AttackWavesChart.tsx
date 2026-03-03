@@ -142,6 +142,7 @@ export default function AttackWavesChart() {
         value={currentWavePercentage}
         className="h-2"
         segments={6}
+        indicatorClassName="bg-orange-800"
       />
 
       {activeWave ? (
