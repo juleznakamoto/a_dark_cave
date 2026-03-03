@@ -495,7 +495,7 @@ export default function CombatDialog({
 
   // Pre-compute result lines so both the staggered list and the button delay share the same data
   const DEFEAT_LINES_START = 3.4;
-  const DEFEAT_LINE_STAGGER = 0.3;
+  const DEFEAT_LINE_STAGGER = 0.6;
   const defeatResultLines: { key: string; text: string; className: string }[] = combatSummary
     ? [
         {
@@ -993,12 +993,11 @@ export default function CombatDialog({
                             <motion.p
                               key={line.key}
                               className={line.className}
-                              initial={{ opacity: 0, y: 5 }}
-                              animate={{ opacity: 1, y: 0 }}
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
                               transition={{
-                                duration: 0.45,
+                                duration: 0.4,
                                 delay: DEFEAT_LINES_START + i * DEFEAT_LINE_STAGGER,
-                                ease: "easeOut",
                               }}
                             >
                               {line.text}
@@ -1051,12 +1050,11 @@ export default function CombatDialog({
                             <motion.p
                               key={line.key}
                               className={line.className}
-                              initial={{ opacity: 0, y: 5 }}
-                              animate={{ opacity: 1, y: 0 }}
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
                               transition={{
-                                duration: 0.45,
+                                duration: 0.4,
                                 delay: VICTORY_LINES_START + i * VICTORY_LINE_STAGGER,
-                                ease: "easeOut",
                               }}
                             >
                               {line.text}
