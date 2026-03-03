@@ -520,7 +520,7 @@ export default function CombatDialog({
       })),
     ]
     : [];
-  const defeatButtonDelay = DEFEAT_LINES_START + defeatResultLines.length * DEFEAT_LINE_STAGGER + 0.7;
+  const defeatButtonDelay = DEFEAT_LINES_START + Math.max(0, defeatResultLines.length - 1) * DEFEAT_LINE_STAGGER + 0.4 + 0.5;
 
   const VICTORY_LINES_START = 1.8;
   const VICTORY_LINE_STAGGER = 0.3;
@@ -531,7 +531,7 @@ export default function CombatDialog({
         : []),
     ]
     : [];
-  const victoryButtonDelay = VICTORY_LINES_START + victoryResultLines.length * VICTORY_LINE_STAGGER + 0.7;
+  const victoryButtonDelay = VICTORY_LINES_START + Math.max(0, victoryResultLines.length - 1) * VICTORY_LINE_STAGGER + 0.4 + 0.5;
 
   return (
     <>
