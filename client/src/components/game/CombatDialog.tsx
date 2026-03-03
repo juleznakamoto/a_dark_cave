@@ -1006,21 +1006,24 @@ export default function CombatDialog({
                         </div>
                       </div>
 
-                      <motion.div
-                        className="absolute bottom-6 left-6 right-6"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.5, delay: defeatButtonDelay }}
-                      >
-                        <Button
-                          onClick={handleEndFight}
-                          className="w-full"
-                          variant="outline"
-                          button_id="combat-end-fight"
+                      {/* Only mount once combatSummary is known so defeatButtonDelay is accurate */}
+                      {combatSummary !== null && (
+                        <motion.div
+                          className="absolute bottom-6 left-6 right-6"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ duration: 0.5, delay: defeatButtonDelay }}
                         >
-                          Continue
-                        </Button>
-                      </motion.div>
+                          <Button
+                            onClick={handleEndFight}
+                            className="w-full"
+                            variant="outline"
+                            button_id="combat-end-fight"
+                          >
+                            Continue
+                          </Button>
+                        </motion.div>
+                      )}
                     </motion.div>
                   )}
                 </AnimatePresence>
