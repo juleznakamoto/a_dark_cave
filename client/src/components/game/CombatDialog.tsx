@@ -527,7 +527,7 @@ export default function CombatDialog({
   const victoryResultLines: { key: string; text: string; className: string }[] = combatSummary
     ? [
       ...(combatSummary.silverReward !== undefined
-        ? [{ key: "silver", text: `+${combatSummary.silverReward} silver claimed.`, className: "text-amber-400 text-sm" }]
+        ? [{ key: "silver", text: `+${combatSummary.silverReward} silver claimed.`, className: "text-slate-300 text-sm" }]
         : []),
     ]
     : [];
@@ -1039,7 +1039,7 @@ export default function CombatDialog({
                     >
                       <div className="-mt-16 flex flex-col items-center">
                         <motion.span
-                          className="font-sans text-slate-200 text-xl tracking-[0.25em] uppercase select-none"
+                          className="font-sans text-white text-xl tracking-[0.25em] uppercase select-none"
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           transition={{ duration: 1.2, delay: 0.3, ease: "easeInOut" }}
