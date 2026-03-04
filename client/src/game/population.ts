@@ -1,6 +1,7 @@
 import { villageBuildActions } from "@/game/rules/villageBuildActions";
 import { GameState } from "@shared/schema"; // Assuming GameState is defined elsewhere
 import { HUNTING_SKILL_BONUSES } from "@/game/rules/skillUpgrades";
+import { getTotalMadness } from "@/game/rules/effectsCalculation";
 import type { PopulationJobConfig } from "@/game/types";
 
 // Re-export for convenience
@@ -236,6 +237,23 @@ export const getPopulationProduction = (
       // Only reduce positive production (not consumption)
       if (prod.totalAmount > 0) {
         prod.totalAmount = Math.ceil(prod.totalAmount * 0.75);
+      }
+    });
+  }
+
+  // Apply madness penalty if active (scales with madness level)
+  const totalMadness = state ? getTotalMadness(state) : 0;
+  if (totalMadness >= 10) {
+    const madnessMultiplier =
+      totalMadness >= 50 ? 0.5
+      : totalMadness >= 40 ? 0.6
+      : totalMadness >= 30 ? 0.7
+      : totalMadness >= 20 ? 0.8
+      : 0.9; // madness >= 10
+    baseProduction.forEach((prod) => {
+      // Only reduce positive production (not consumption)
+      if (prod.totalAmount > 0) {
+        prod.totalAmount = Math.ceil(prod.totalAmount * madnessMultiplier);
       }
     });
   }

@@ -346,6 +346,29 @@ export const madnessTooltip: TooltipConfig = {
   },
 };
 
+// Madness production effect tooltip (for village panel)
+export const madnessProductionTooltip: TooltipConfig = {
+  getContent: (state: GameState) => {
+    const totalMadness = getTotalMadness(state);
+    if (totalMadness < 10) return null;
+
+    const penalty =
+      totalMadness >= 50 ? 50
+      : totalMadness >= 40 ? 40
+      : totalMadness >= 30 ? 30
+      : totalMadness >= 20 ? 20
+      : 10;
+
+    return (
+      <>
+        <div className="font-bold">Madness</div>
+        <div>Production Bonus: -{penalty}%</div>
+        <div>Madness: {totalMadness}</div>
+      </>
+    );
+  },
+};
+
 // Feast and Curse Tooltips
 export const feastTooltip: TooltipConfig = {
   getContent: (state: GameState) => {

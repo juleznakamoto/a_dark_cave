@@ -15,7 +15,9 @@ import {
   fogTooltip,
   disgustTooltip,
   heartfireTooltip,
+  madnessProductionTooltip,
 } from "@/game/rules/tooltips";
+import { getTotalMadness } from "@/game/rules/effectsCalculation";
 import CooldownButton from "@/components/CooldownButton";
 import { Button } from "@/components/ui/button";
 import {
@@ -1011,6 +1013,56 @@ export default function VillagePanel() {
                               <TooltipContent>
                                 <div className="text-xs">
                                   {fogTooltip.getContent(state)}
+                                </div>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                        );
+                      })()}
+
+                      {/* Madness Production Effect Indicator */}
+                      {(() => {
+                        const totalMadness = getTotalMadness(state);
+                        if (totalMadness < 10) return null;
+
+                        const madnessProgress = Math.min(
+                          100,
+                          ((totalMadness - 10) / 40) * 100,
+                        );
+
+                        return (
+                          <TooltipProvider>
+                            <Tooltip
+                              open={mobileTooltip.isTooltipOpen(
+                                "madness-production",
+                              )}
+                            >
+                              <TooltipTrigger asChild>
+                                <div
+                                  className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
+                                  onClick={(e) =>
+                                    mobileTooltip.handleTooltipClick(
+                                      "madness-production",
+                                      e,
+                                    )
+                                  }
+                                >
+                                  <div className="relative inline-flex items-center gap-1 mt-[0px]">
+                                    <CircularProgress
+                                      value={madnessProgress}
+                                      size={18}
+                                      strokeWidth={2}
+                                      className="text-violet-600"
+                                    />
+                                    <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[12px] -mt-[0px] text-violet-600">
+                                      ✺
+                                    </span>
+                                  </div>
+                                </div>
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <div className="text-xs">
+                                  {madnessProductionTooltip.getContent(state)}
                                 </div>
                               </TooltipContent>
                             </Tooltip>
