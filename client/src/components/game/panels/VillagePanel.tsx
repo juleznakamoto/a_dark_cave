@@ -1024,12 +1024,6 @@ export default function VillagePanel() {
                       {(() => {
                         const totalMadness = getTotalMadness(state);
                         if (totalMadness < 10) return null;
-
-                        const madnessProgress = Math.min(
-                          100,
-                          ((totalMadness - 10) / 40) * 100,
-                        );
-
                         return (
                           <TooltipProvider>
                             <Tooltip
@@ -1049,12 +1043,12 @@ export default function VillagePanel() {
                                 >
                                   <div className="relative inline-flex items-center gap-1 mt-[0px]">
                                     <CircularProgress
-                                      value={madnessProgress}
+                                      value={100}
                                       size={18}
                                       strokeWidth={2}
                                       className="text-violet-600"
                                     />
-                                    <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[12px] -mt-[0px] text-violet-600">
+                                    <span className="absolute inset-0 flex items-center justify-center font-normal text-[12px] -mt-[0px] text-violet-600">
                                       ✺
                                     </span>
                                   </div>
