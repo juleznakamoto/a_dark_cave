@@ -34,7 +34,7 @@ export default function SignUpPromptDialog({
               Create a free account to save your game progress and sync across devices. Without an account, your progress may be lost.
             </p>
             <p className="font-medium text-foreground">
-              Sign up now and receive <strong>100 Gold</strong> as a bonus!
+              Sign up now and receive <strong>250 Gold</strong> as a bonus!
             </p>
           </DialogDescription>
         </DialogHeader>

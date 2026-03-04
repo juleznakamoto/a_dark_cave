@@ -95,20 +95,20 @@ export default function AuthDialog({
       } else if (mode === "signup") {
         const referralCode = getReferralCode();
         await signUp(email, password, referralCode || undefined);
-        // Award 100 gold if user signed up after seeing the sign-up prompt dialog
+        // Award 250 gold if user signed up after seeing the sign-up prompt dialog
         const { signUpPromptEligibleForGold: eligible } = useGameStore.getState();
         if (eligible) {
           useGameStore.getState().setSignUpPromptEligibleForGold(false);
-          useGameStore.getState().updateResource("gold", 100);
+          useGameStore.getState().updateResource("gold", 250);
           useGameStore.getState().addLogEntry({
             id: `signup-gold-${Date.now()}`,
             timestamp: Date.now(),
-            message: "You received 100 gold as a welcome bonus for creating an account!",
+            message: "You received 250 Gold as a welcome bonus for creating an account!",
             type: "system",
           });
           toast({
             title: "Welcome bonus!",
-            description: "You received 100 gold for signing up.",
+            description: "You received 250 Gold for signing up.",
           });
         }
         setSignupSuccess(true);
