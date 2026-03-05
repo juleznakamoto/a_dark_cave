@@ -1133,15 +1133,15 @@ function handleStrangerApproach() {
       }
 
       if (state.buildings.stoneHut >= 10) {
-        multiStrangerMultiplier += 0.25;
+        multiStrangerMultiplier += 0.2;
       }
 
-      if (state.buildings.longhouse >= 2) {
-        multiStrangerMultiplier += 0.15;
+      if (state.buildings.longhouse >= 5) {
+        multiStrangerMultiplier += 0.1;
       }
 
-      if (state.buildings.furTents >= 1) {
-        multiStrangerMultiplier += 0.15;
+      if (state.buildings.furTents >= 5) {
+        multiStrangerMultiplier += 0.1;
       }
 
       if (state.CM === 1) {
@@ -1177,18 +1177,18 @@ function handleStrangerApproach() {
       "A traveler arrives and decides to stay.",
       "A wanderer appears and becomes part of the community.",
       "Someone approaches the village and settles in.",
-      "A stranger joins the community, bringing skills and hope.",
+      "A stranger joins the community.",
       "A newcomer arrives and makes themselves at home.",
     ];
 
     // Adjust message if multiple strangers arrive
     if (strangersCount > 1) {
       messages.push(
-        `${strangersCount} strangers approach and join the village.`,
+        `${strangersCount} strangers join the village.`,
       );
       messages.push(`${strangersCount} travelers arrive and decide to stay.`);
       messages.push(
-        `${strangersCount} wanderers arrive and become part of the community.`,
+        `${strangersCount} wanderers arrive and join the community.`,
       );
     }
 
