@@ -19,7 +19,7 @@ function calculateEnemyStats(
   // Use options array to select attack value
   const attack =
     params.attack.options[
-      Math.floor(Math.random() * params.attack.options.length)
+    Math.floor(Math.random() * params.attack.options.length)
     ] +
     state.CM * params.attack.cmBonus;
 
@@ -83,7 +83,7 @@ const WAVE_PARAMS = {
     fellowshipWoundedMultiplier: 0.3,
   },
   sixthWave: {
-    attack: { options: [80, 85, 90, 95], cmBonus: 25 },
+    attack: { options: [85, 90, 95, 100], cmBonus: 25 },
     health: { base: 800, cmBonus: 250 },
     silverReward: 2000,
     initialDuration: 10 * 60 * 1000,
@@ -380,7 +380,7 @@ function createAttackWaveEvent(waveId: keyof typeof WAVE_PARAMS): GameEvent {
       const shouldTrigger = elapsed >= timer.duration || timer.provoked;
       return shouldTrigger;
     },
-    
+
     timeProbability: 0.25,
     title: config.title,
     message: config.message,
@@ -391,14 +391,14 @@ function createAttackWaveEvent(waveId: keyof typeof WAVE_PARAMS): GameEvent {
 
       const storyUpdate = config.triggeredFlag
         ? {
-            story: {
-              ...state.story,
-              seen: {
-                ...state.story.seen,
-                [config.triggeredFlag]: true,
-              },
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              [config.triggeredFlag]: true,
             },
-          }
+          },
+        }
         : {};
 
       return {
@@ -458,9 +458,9 @@ function createAttackWaveEvent(waveId: keyof typeof WAVE_PARAMS): GameEvent {
               events:
                 waveId === "firstWave"
                   ? {
-                      ...state.events,
-                      firstWave: false, // Reset event triggered state
-                    }
+                    ...state.events,
+                    firstWave: false, // Reset event triggered state
+                  }
                   : state.events,
             };
           },

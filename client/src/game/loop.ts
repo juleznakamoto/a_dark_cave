@@ -17,18 +17,23 @@ import { DISGRACED_PRIOR_UPGRADES } from "./rules/skillUpgrades";
 let gameLoopId: number | null = null;
 let lastFrameTime = 0;
 
-// Tracks the last time the Disgraced Prior executed each action (ms timestamp)
-const priorLastExecuted = new Map<string, number>();
+const PRIOR_EXECUTION_GAP_MS = 1000;
+// Tracks the last time the Disgraced Prior finished each action (ms timestamp)
+const priorLastCompleted = new Map<string, number>();
+// Tracks action executions currently in-flight that were started by the Prior
+const priorInFlightExecutions = new Set<string>();
 
 /**
  * Returns true if the Prior should auto-execute this action right now:
- * - At least 1 second has passed since the last Prior execution of this action
+ * - At least 1 second has passed since the last Prior completion for this action
  * - Resource costs are affordable
  * - At least one output resource has room below the storage cap
  */
 function canPriorExecute(actionId: string, state: GameState): boolean {
   const now = Date.now();
-  if (now - (priorLastExecuted.get(actionId) ?? 0) < 1000) return false;
+  if (now - (priorLastCompleted.get(actionId) ?? 0) < PRIOR_EXECUTION_GAP_MS) return false;
+  // Never re-trigger while this action is still executing.
+  if ((state as any).executionStartTimes?.[actionId]) return false;
 
   // Don't execute actions that are no longer visible (e.g. superseded by a tool upgrade).
   // Without this check, the Prior drains resources for a hidden action indefinitely because
@@ -613,6 +618,10 @@ function processTick() {
     const durationSec = executionDurations?.[actionId];
     if (startTime && durationSec && (now - startTime) / 1000 >= durationSec) {
       completeActionExecution(actionId);
+      if (priorInFlightExecutions.has(actionId)) {
+        priorInFlightExecutions.delete(actionId);
+        priorLastCompleted.set(actionId, Date.now());
+      }
     }
   }
 
@@ -652,8 +661,13 @@ function processTick() {
     for (const actionId of toExecute) {
       const isReadyNow = (freshState.cooldowns[actionId] ?? 0) === 0;
       if (isReadyNow && canPriorExecute(actionId, freshState as unknown as GameState)) {
-        priorLastExecuted.set(actionId, Date.now());
         freshState.executeAction(actionId);
+        const afterExecution = useGameStore.getState();
+        if (afterExecution.executionStartTimes?.[actionId]) {
+          priorInFlightExecutions.add(actionId);
+        } else {
+          priorLastCompleted.set(actionId, Date.now());
+        }
       }
     }
   }
