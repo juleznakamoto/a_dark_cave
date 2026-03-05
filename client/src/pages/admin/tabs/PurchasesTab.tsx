@@ -1,8 +1,13 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { AreaChart, Area, LineChart, Line, BarChart, Bar, CartesianGrid, XAxis, YAxis, Legend, ResponsiveContainer } from "recharts";
+import { AreaChart, Area, LineChart, Line, BarChart, Bar, CartesianGrid, XAxis, YAxis, Legend, Tooltip, Cell } from "recharts";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+
+const COUNTRY_COLORS = [
+  "#8884d8", "#82ca9d", "#ffc658", "#ff7f7f", "#a4de6c",
+  "#d0ed57", "#83a6ed", "#8dd1e1", "#f794a4", "#ffb347",
+];
 
 interface PurchasesTabProps {
   purchases: any[];
@@ -10,6 +15,7 @@ interface PurchasesTabProps {
   getDailyPurchases: () => Array<{ day: string; purchases: number }>;
   getPurchasesByPlaytime: () => Array<{ playtime: string; purchases: number }>;
   getPurchaseStats: () => Array<{ name: string; count: number }>;
+  getPurchasesByCountry: () => Array<{ country: string; count: number; revenue: number }>;
   purchasesChartTimeRange: "1m" | "3m" | "6m" | "12m";
   setPurchasesChartTimeRange: (range: "1m" | "3m" | "6m" | "12m") => void;
 }
@@ -21,6 +27,7 @@ export default function PurchasesTab(props: PurchasesTabProps) {
     getDailyPurchases,
     getPurchasesByPlaytime,
     getPurchaseStats,
+    getPurchasesByCountry,
     purchasesChartTimeRange,
     setPurchasesChartTimeRange,
   } = props;
@@ -140,6 +147,50 @@ export default function PurchasesTab(props: PurchasesTabProps) {
               <Bar dataKey="count" fill="#82ca9d" />
             </BarChart>
           </ChartContainer>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Sales by Country</CardTitle>
+          <CardDescription>Revenue and purchase count by billing country (paid purchases only)</CardDescription>
+        </CardHeader>
+        <CardContent>
+          {(() => {
+            const data = getPurchasesByCountry();
+            if (data.length === 0) {
+              return (
+                <p className="text-muted-foreground text-sm">
+                  No country data available yet. Country is captured from the billing address on new purchases.
+                </p>
+              );
+            }
+            return (
+              <ChartContainer config={{}} className="h-[400px] w-full">
+                <BarChart data={data} layout="vertical" margin={{ left: 16, right: 32 }}>
+                  <CartesianGrid strokeDasharray="3 3" horizontal={false} />
+                  <XAxis
+                    type="number"
+                    tickFormatter={(v) => `€${(v / 100).toFixed(0)}`}
+                  />
+                  <YAxis type="category" dataKey="country" width={80} />
+                  <Tooltip
+                    formatter={(value: number, name: string) =>
+                      name === "revenue"
+                        ? [`€${(value / 100).toFixed(2)}`, "Revenue"]
+                        : [value, "Purchases"]
+                    }
+                  />
+                  <Legend />
+                  <Bar dataKey="revenue" name="Revenue" radius={[0, 4, 4, 0]}>
+                    {data.map((_entry, index) => (
+                      <Cell key={index} fill={COUNTRY_COLORS[index % COUNTRY_COLORS.length]} />
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ChartContainer>
+            );
+          })()}
         </CardContent>
       </Card>
 

@@ -11,6 +11,8 @@ CREATE TABLE IF NOT EXISTS session_visits (
 CREATE INDEX IF NOT EXISTS idx_session_visits_date ON session_visits(visit_date);
 
 ALTER TABLE session_visits ENABLE ROW LEVEL SECURITY;
+ALTER TABLE purchases ADD COLUMN IF NOT EXISTS country TEXT;
+
 
 -- Upsert helper: preserves the original visit_date on conflict
 CREATE OR REPLACE FUNCTION upsert_session_ping(p_session_id TEXT, p_duration INTEGER)

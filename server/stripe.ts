@@ -87,7 +87,9 @@ export async function createPaymentIntent(
 }
 
 export async function verifyPayment(paymentIntentId: string, userId: string, supabase: any) {
-  const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+  const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId, {
+    expand: ['latest_charge'],
+  });
 
   if (paymentIntent.status === 'succeeded') {
     const itemId = paymentIntent.metadata.itemId;
@@ -113,6 +115,8 @@ export async function verifyPayment(paymentIntentId: string, userId: string, sup
       }
     }
 
+    const billingCountry = (paymentIntent.latest_charge as any)?.billing_details?.address?.country ?? null;
+
     // Save purchase to database; use actual amount charged
     const { data: purchaseData, error: purchaseError } = await supabase
       .from('purchases')
@@ -123,6 +127,7 @@ export async function verifyPayment(paymentIntentId: string, userId: string, sup
         price_paid: paymentIntent.amount,
         bundle_id: null,
         purchased_at: new Date().toISOString(),
+        country: billingCountry,
       })
       .select()
       .single();

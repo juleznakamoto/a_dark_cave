@@ -64,7 +64,8 @@ interface PurchaseData {
   item_name: string;
   price_paid: number;
   purchased_at: string;
-  bundle_id?: string; // Added bundle_id field
+  bundle_id?: string;
+  country?: string;
 }
 
 // Admin emails from environment variable (comma-separated)
@@ -719,6 +720,25 @@ export default function AdminDashboard() {
     return Array.from(itemCounts.entries())
       .map(([name, count]) => ({ name, count }))
       .sort((a, b) => b.count - a.count);
+  }, [purchases]);
+
+  const getPurchasesByCountry = useCallback(() => {
+    const countryRevenue = new Map<string, { count: number; revenue: number }>();
+
+    purchases
+      .filter((p) => p.price_paid > 0 && !p.bundle_id)
+      .forEach((purchase) => {
+        const key = purchase.country || "Unknown";
+        const existing = countryRevenue.get(key) ?? { count: 0, revenue: 0 };
+        countryRevenue.set(key, {
+          count: existing.count + 1,
+          revenue: existing.revenue + purchase.price_paid,
+        });
+      });
+
+    return Array.from(countryRevenue.entries())
+      .map(([country, { count, revenue }]) => ({ country, count, revenue }))
+      .sort((a, b) => b.revenue - a.revenue);
   }, [purchases]);
 
   const getTotalReferrals = useCallback(() => {
@@ -1521,6 +1541,7 @@ export default function AdminDashboard() {
                   getDailyPurchases={getDailyPurchases}
                   getPurchasesByPlaytime={getPurchasesByPlaytime}
                   getPurchaseStats={getPurchaseStats}
+                  getPurchasesByCountry={getPurchasesByCountry}
                   purchasesChartTimeRange={purchasesChartTimeRange}
                   setPurchasesChartTimeRange={setPurchasesChartTimeRange}
                 />
