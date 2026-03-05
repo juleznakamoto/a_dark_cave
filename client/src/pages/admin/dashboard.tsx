@@ -1110,6 +1110,7 @@ export default function AdminDashboard() {
 
               <TabsContent value="overview">
                 <OverviewTab
+                  environment={environment}
                   gameSaves={gameSaves}
                   dailyActiveUsersData={dauData}
                   registrationMethodStats={registrationMethodStats}

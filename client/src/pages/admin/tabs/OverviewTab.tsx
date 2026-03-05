@@ -1,10 +1,26 @@
+import { useState, useEffect, useMemo } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { AreaChart, Area, BarChart, Bar, CartesianGrid, XAxis, YAxis, ResponsiveContainer, LineChart, Line, Legend, PieChart, Pie, Cell } from "recharts";
+import { AreaChart, Area, BarChart, Bar, CartesianGrid, XAxis, YAxis, ResponsiveContainer, LineChart, Line, Legend, PieChart, Pie, Cell, Tooltip } from "recharts";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { format, parseISO } from "date-fns";
+import { format, parseISO, subDays, startOfDay } from "date-fns";
+
+interface SessionStats {
+  visit_date: string;
+  total: number;
+}
+
+type ConversionRange = "1m" | "3m" | "6m" | "12m";
+
+const CONVERSION_RANGE_DAYS: Record<ConversionRange, number> = {
+  "1m": 30,
+  "3m": 90,
+  "6m": 180,
+  "12m": 365,
+};
 
 interface OverviewTabProps {
+  environment: "dev" | "prod";
   getDailyActiveUsers: () => number;
   getWeeklyActiveUsers: () => number;
   getMonthlyActiveUsers: () => number;
@@ -31,6 +47,7 @@ interface OverviewTabProps {
 
 export default function OverviewTab(props: OverviewTabProps) {
   const {
+    environment,
     getDailyActiveUsers,
     getWeeklyActiveUsers,
     getMonthlyActiveUsers,
@@ -54,6 +71,72 @@ export default function OverviewTab(props: OverviewTabProps) {
     chartTimeRange,
     setChartTimeRange
   } = props;
+
+  const [sessionData, setSessionData] = useState<SessionStats[]>([]);
+  const [conversionRange, setConversionRange] = useState<ConversionRange>("1m");
+
+  useEffect(() => {
+    fetch(`/api/admin/sessions?env=${environment}&days=365`)
+      .then((r) => r.json())
+      .then((d: SessionStats[]) => setSessionData(d))
+      .catch(() => setSessionData([]));
+  }, [environment]);
+
+  // conversion = signups / (sessions - (DAU - signups))
+  //            = signups / (sessions - DAU + signups)
+  // Denominator represents estimated "new / anonymous" sessions.
+  const conversionChartData = useMemo(() => {
+    const days = CONVERSION_RANGE_DAYS[conversionRange];
+    const now = new Date();
+    const start = startOfDay(subDays(now, days - 1));
+
+    const signupLookup = new Map<string, number>();
+    const dailySignups = getDailySignups();
+    // getDailySignups() returns "MMM DD" labels — we need raw dates.
+    // Rebuild from dailyActiveUsersData date keys instead.
+    // Use the raw prop dailyActiveUsersData for DAU and session data for sessions,
+    // and re-derive signups from the same UTC date keys.
+
+    // Build DAU lookup by YYYY-MM-DD
+    const dauLookup = new Map<string, number>();
+    for (const entry of dailyActiveUsersData) {
+      dauLookup.set(entry.date.slice(0, 10), entry.active_user_count);
+    }
+
+    // Build sessions lookup by YYYY-MM-DD
+    const sessionsLookup = new Map<string, number>();
+    for (const entry of sessionData) {
+      sessionsLookup.set(entry.visit_date.slice(0, 10), entry.total);
+    }
+
+    // getDailySignups() gives labelled data aligned to our range — use index mapping
+    // Instead, rebuild signups from dailySignups output by position
+    const signupsArr = dailySignups; // Array<{ day: "MMM DD", signups: number }>, length=days
+
+    const result: Array<{ date: string; conversion: number | null; signups: number; dau: number; sessions: number }> = [];
+
+    for (let i = 0; i < days; i++) {
+      const d = new Date(Date.UTC(
+        now.getUTCFullYear(),
+        now.getUTCMonth(),
+        now.getUTCDate() - (days - 1 - i),
+      ));
+      const key = d.toISOString().slice(0, 10);
+      const label = signupsArr[i]?.day ?? key;
+
+      const signups = signupsArr[i]?.signups ?? 0;
+      const dau = dauLookup.get(key) ?? 0;
+      const sessions = sessionsLookup.get(key) ?? 0;
+
+      // denominator = sessions - DAU + signups
+      const denom = sessions - dau + signups;
+      const conversion = denom > 0 ? parseFloat(((signups / denom) * 100).toFixed(1)) : null;
+
+      result.push({ date: label, conversion, signups, dau, sessions });
+    }
+
+    return result;
+  }, [conversionRange, dailyActiveUsersData, sessionData, getDailySignups]);
 
   // Filter and format DAU data based on chartTimeRange
   const getFormattedDailyActiveUsers = () => {
@@ -516,6 +599,65 @@ export default function OverviewTab(props: OverviewTabProps) {
           </CardContent>
         </Card>
       </div>
+
+      <Card>
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle>Customer Conversion Rate</CardTitle>
+              <CardDescription>
+                Sign-ups ÷ (sessions − returning users) — what % of new-visitor sessions convert to a registration
+              </CardDescription>
+            </div>
+            <Select value={conversionRange} onValueChange={(v) => setConversionRange(v as ConversionRange)}>
+              <SelectTrigger className="w-[140px]">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="1m">Last Month</SelectItem>
+                <SelectItem value="3m">Last 3 Months</SelectItem>
+                <SelectItem value="6m">Last 6 Months</SelectItem>
+                <SelectItem value="12m">Last 12 Months</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <ChartContainer config={{}} className="h-[300px] w-full">
+            <LineChart data={conversionChartData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis
+                dataKey="date"
+                interval={conversionRange === "1m" ? 6 : conversionRange === "3m" ? 13 : conversionRange === "6m" ? 29 : 60}
+                tick={{ fontSize: 11 }}
+              />
+              <YAxis
+                tickFormatter={(v) => `${v}%`}
+                domain={[0, "auto"]}
+              />
+              <Tooltip
+                formatter={(value: number | null) =>
+                  value == null ? ["—", "Conversion"] : [`${value}%`, "Conversion"]
+                }
+                labelFormatter={(label) => label}
+              />
+              <Line
+                type="monotone"
+                dataKey="conversion"
+                stroke="#ffc658"
+                strokeWidth={2}
+                dot={false}
+                connectNulls={false}
+              />
+            </LineChart>
+          </ChartContainer>
+          {sessionData.length === 0 && (
+            <p className="text-xs text-muted-foreground mt-2">
+              Session data not yet loaded — make sure the sessions endpoint is reachable.
+            </p>
+          )}
+        </CardContent>
+      </Card>
 
       <Card>
         <CardHeader>

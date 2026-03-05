@@ -1,13 +1,26 @@
 
+import { useState, useMemo } from "react";
+import { parseISO, startOfDay, addDays, subDays, format } from "date-fns";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { AreaChart, Area, LineChart, Line, BarChart, Bar, CartesianGrid, XAxis, YAxis, Legend, Tooltip, Cell } from "recharts";
+import { AreaChart, Area, LineChart, Line, BarChart, Bar, CartesianGrid, XAxis, YAxis, Legend, Tooltip } from "recharts";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+
+type TimeRange = "1m" | "3m" | "6m" | "12m";
+
+const TIME_RANGE_DAYS: Record<TimeRange, number> = {
+  "1m": 30,
+  "3m": 90,
+  "6m": 180,
+  "12m": 365,
+};
 
 const COUNTRY_COLORS = [
   "#8884d8", "#82ca9d", "#ffc658", "#ff7f7f", "#a4de6c",
-  "#d0ed57", "#83a6ed", "#8dd1e1", "#f794a4", "#ffb347",
+  "#83a6ed", "#8dd1e1", "#f794a4", "#ffb347", "#d0ed57",
 ];
+
+const TOP_N_COUNTRIES = 8;
 
 interface PurchasesTabProps {
   purchases: any[];
@@ -16,8 +29,69 @@ interface PurchasesTabProps {
   getPurchasesByPlaytime: () => Array<{ playtime: string; purchases: number }>;
   getPurchaseStats: () => Array<{ name: string; count: number }>;
   getPurchasesByCountry: () => Array<{ country: string; count: number; revenue: number }>;
-  purchasesChartTimeRange: "1m" | "3m" | "6m" | "12m";
-  setPurchasesChartTimeRange: (range: "1m" | "3m" | "6m" | "12m") => void;
+  purchasesChartTimeRange: TimeRange;
+  setPurchasesChartTimeRange: (range: TimeRange) => void;
+}
+
+function buildDailyCountryData(
+  purchases: any[],
+  days: number,
+  mode: "count" | "revenue",
+) {
+  const now = new Date();
+  const start = startOfDay(subDays(now, days - 1));
+
+  const relevant = purchases.filter((p) => {
+    if (p.price_paid <= 0 || p.bundle_id) return false;
+    return parseISO(p.purchased_at) >= start;
+  });
+
+  // Find top N countries by total for this period
+  const totals = new Map<string, number>();
+  relevant.forEach((p) => {
+    const c = p.country || "Unknown";
+    totals.set(c, (totals.get(c) ?? 0) + (mode === "count" ? 1 : p.price_paid));
+  });
+
+  const topCountries = Array.from(totals.entries())
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, TOP_N_COUNTRIES)
+    .map(([c]) => c);
+
+  // Build one row per day
+  const rows: Record<string, any>[] = Array.from({ length: days }, (_, i) => {
+    const row: Record<string, any> = { day: format(addDays(start, i), days > 90 ? "MMM d" : "MMM d") };
+    topCountries.forEach((c) => (row[c] = 0));
+    return row;
+  });
+
+  relevant.forEach((p) => {
+    const c = p.country || "Unknown";
+    if (!topCountries.includes(c)) return;
+    const d = startOfDay(parseISO(p.purchased_at));
+    const idx = Math.round((d.getTime() - start.getTime()) / 86400000);
+    if (idx >= 0 && idx < rows.length) {
+      rows[idx][c] = (rows[idx][c] ?? 0) + (mode === "count" ? 1 : p.price_paid);
+    }
+  });
+
+  return { data: rows, countries: topCountries };
+}
+
+function TimeRangeSelect({ value, onChange }: { value: TimeRange; onChange: (v: TimeRange) => void }) {
+  return (
+    <Select value={value} onValueChange={(v) => onChange(v as TimeRange)}>
+      <SelectTrigger className="w-[140px]">
+        <SelectValue placeholder="Time Range" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="1m">Last Month</SelectItem>
+        <SelectItem value="3m">Last 3 Months</SelectItem>
+        <SelectItem value="6m">Last 6 Months</SelectItem>
+        <SelectItem value="12m">Last 12 Months</SelectItem>
+      </SelectContent>
+    </Select>
+  );
 }
 
 export default function PurchasesTab(props: PurchasesTabProps) {
@@ -27,10 +101,29 @@ export default function PurchasesTab(props: PurchasesTabProps) {
     getDailyPurchases,
     getPurchasesByPlaytime,
     getPurchaseStats,
-    getPurchasesByCountry,
     purchasesChartTimeRange,
     setPurchasesChartTimeRange,
   } = props;
+
+  const [countryCountRange, setCountryCountRange] = useState<TimeRange>("1m");
+  const [countryRevenueRange, setCountryRevenueRange] = useState<TimeRange>("1m");
+
+  const { data: countryCountData, countries: countryCountList } = useMemo(
+    () => buildDailyCountryData(purchases, TIME_RANGE_DAYS[countryCountRange], "count"),
+    [purchases, countryCountRange],
+  );
+
+  const { data: countryRevenueData, countries: countryRevenueList } = useMemo(
+    () => buildDailyCountryData(purchases, TIME_RANGE_DAYS[countryRevenueRange], "revenue"),
+    [purchases, countryRevenueRange],
+  );
+
+  const xAxisInterval = (days: number) => {
+    if (days <= 30) return 6;
+    if (days <= 90) return 13;
+    if (days <= 180) return 29;
+    return 60;
+  };
 
   return (
     <div className="space-y-4">
@@ -64,20 +157,7 @@ export default function PurchasesTab(props: PurchasesTabProps) {
               <CardTitle>Daily Purchases</CardTitle>
               <CardDescription>Purchase activity over time</CardDescription>
             </div>
-            <Select
-              value={purchasesChartTimeRange}
-              onValueChange={(value: "1m" | "3m" | "6m" | "12m") => setPurchasesChartTimeRange(value)}
-            >
-              <SelectTrigger className="w-[140px]">
-                <SelectValue placeholder="Time Range" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="1m">Last Month</SelectItem>
-                <SelectItem value="3m">Last 3 Months</SelectItem>
-                <SelectItem value="6m">Last 6 Months</SelectItem>
-                <SelectItem value="12m">Last 12 Months</SelectItem>
-              </SelectContent>
-            </Select>
+            <TimeRangeSelect value={purchasesChartTimeRange} onChange={setPurchasesChartTimeRange} />
           </div>
         </CardHeader>
         <CardContent>
@@ -90,6 +170,97 @@ export default function PurchasesTab(props: PurchasesTabProps) {
               <Area type="monotone" dataKey="purchases" stroke="#82ca9d" fill="#82ca9d" />
             </AreaChart>
           </ChartContainer>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <div className="flex justify-between items-start">
+            <div>
+              <CardTitle>Daily Sales by Country</CardTitle>
+              <CardDescription>Number of purchases per day, top {TOP_N_COUNTRIES} countries (paid only)</CardDescription>
+            </div>
+            <TimeRangeSelect value={countryCountRange} onChange={setCountryCountRange} />
+          </div>
+        </CardHeader>
+        <CardContent>
+          {countryCountList.length === 0 ? (
+            <p className="text-muted-foreground text-sm py-4">
+              No country data yet. Country is captured from billing address on new purchases.
+            </p>
+          ) : (
+            <ChartContainer config={{}} className="h-[400px] w-full">
+              <LineChart data={countryCountData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis
+                  dataKey="day"
+                  interval={xAxisInterval(TIME_RANGE_DAYS[countryCountRange])}
+                  tick={{ fontSize: 11 }}
+                />
+                <YAxis allowDecimals={false} />
+                <Tooltip />
+                <Legend />
+                {countryCountList.map((country, i) => (
+                  <Line
+                    key={country}
+                    type="monotone"
+                    dataKey={country}
+                    stroke={COUNTRY_COLORS[i % COUNTRY_COLORS.length]}
+                    strokeWidth={2}
+                    dot={false}
+                  />
+                ))}
+              </LineChart>
+            </ChartContainer>
+          )}
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <div className="flex justify-between items-start">
+            <div>
+              <CardTitle>Daily Revenue by Country</CardTitle>
+              <CardDescription>€ revenue per day, top {TOP_N_COUNTRIES} countries (paid only)</CardDescription>
+            </div>
+            <TimeRangeSelect value={countryRevenueRange} onChange={setCountryRevenueRange} />
+          </div>
+        </CardHeader>
+        <CardContent>
+          {countryRevenueList.length === 0 ? (
+            <p className="text-muted-foreground text-sm py-4">
+              No country data yet. Country is captured from billing address on new purchases.
+            </p>
+          ) : (
+            <ChartContainer config={{}} className="h-[400px] w-full">
+              <LineChart data={countryRevenueData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis
+                  dataKey="day"
+                  interval={xAxisInterval(TIME_RANGE_DAYS[countryRevenueRange])}
+                  tick={{ fontSize: 11 }}
+                />
+                <YAxis tickFormatter={(v) => `€${(v / 100).toFixed(0)}`} />
+                <Tooltip
+                  formatter={(value: number, name: string) => [
+                    `€${(value / 100).toFixed(2)}`,
+                    name,
+                  ]}
+                />
+                <Legend />
+                {countryRevenueList.map((country, i) => (
+                  <Line
+                    key={country}
+                    type="monotone"
+                    dataKey={country}
+                    stroke={COUNTRY_COLORS[i % COUNTRY_COLORS.length]}
+                    strokeWidth={2}
+                    dot={false}
+                  />
+                ))}
+              </LineChart>
+            </ChartContainer>
+          )}
         </CardContent>
       </Card>
 
@@ -147,50 +318,6 @@ export default function PurchasesTab(props: PurchasesTabProps) {
               <Bar dataKey="count" fill="#82ca9d" />
             </BarChart>
           </ChartContainer>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Sales by Country</CardTitle>
-          <CardDescription>Revenue and purchase count by billing country (paid purchases only)</CardDescription>
-        </CardHeader>
-        <CardContent>
-          {(() => {
-            const data = getPurchasesByCountry();
-            if (data.length === 0) {
-              return (
-                <p className="text-muted-foreground text-sm">
-                  No country data available yet. Country is captured from the billing address on new purchases.
-                </p>
-              );
-            }
-            return (
-              <ChartContainer config={{}} className="h-[400px] w-full">
-                <BarChart data={data} layout="vertical" margin={{ left: 16, right: 32 }}>
-                  <CartesianGrid strokeDasharray="3 3" horizontal={false} />
-                  <XAxis
-                    type="number"
-                    tickFormatter={(v) => `€${(v / 100).toFixed(0)}`}
-                  />
-                  <YAxis type="category" dataKey="country" width={80} />
-                  <Tooltip
-                    formatter={(value: number, name: string) =>
-                      name === "revenue"
-                        ? [`€${(value / 100).toFixed(2)}`, "Revenue"]
-                        : [value, "Purchases"]
-                    }
-                  />
-                  <Legend />
-                  <Bar dataKey="revenue" name="Revenue" radius={[0, 4, 4, 0]}>
-                    {data.map((_entry, index) => (
-                      <Cell key={index} fill={COUNTRY_COLORS[index % COUNTRY_COLORS.length]} />
-                    ))}
-                  </Bar>
-                </BarChart>
-              </ChartContainer>
-            );
-          })()}
         </CardContent>
       </Card>
 
