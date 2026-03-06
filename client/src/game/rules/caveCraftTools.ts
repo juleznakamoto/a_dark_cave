@@ -42,7 +42,7 @@ export const caveCraftTools: Record<string, Action> = {
       const amount = Math.floor(baseAmount * mult);
       return {
         "resources.torch": `random(${amount},${amount})` as any,
-        "story.seen.actionCraftTorches": true,
+        "story.seen.actionCraftTorch": true,
       };
     },
     unlocks: ["exploreDeeper"],

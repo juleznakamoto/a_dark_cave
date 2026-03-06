@@ -33,6 +33,7 @@ import {
   getUpgradeLevel,
   type UpgradeKey,
 } from "@/game/buttonUpgrades";
+import { getCraftProduceAmount } from "@/game/craftUpgradeUtils";
 
 export default function CavePanel() {
   const { executeAction, setHighlightedResources } = useGameStore();
@@ -220,9 +221,23 @@ export default function CavePanel() {
     },
   ];
 
+  const CRAFT_BUTTON_LABELS: Record<string, { singular: string; plural: string }> = {
+    craftTorches: { singular: "Torch", plural: "Torches" },
+    craftBoneTotems: { singular: "Bone Totem", plural: "Bone Totems" },
+    craftLeatherTotems: { singular: "Leather Totem", plural: "Leather Totems" },
+  };
+
   const renderButton = (actionId: string, label: string) => {
     const action = gameActions[actionId];
     if (!action) return null;
+
+    // Use singular/plural for craft upgrade buttons based on produce amount
+    let displayLabel = label;
+    const craftLabels = CRAFT_BUTTON_LABELS[actionId];
+    if (craftLabels) {
+      const produceAmount = getCraftProduceAmount(actionId, state);
+      displayLabel = produceAmount === 1 ? craftLabels.singular : craftLabels.plural;
+    }
 
     const canExecute = canExecuteAction(actionId, state);
     const showCost =
@@ -385,7 +400,7 @@ export default function CavePanel() {
           }}
           style={{ pointerEvents: "auto" }}
         >
-          {label}
+          {displayLabel}
         </CooldownButton>
       );
 
@@ -438,7 +453,7 @@ export default function CavePanel() {
         }}
         style={{ pointerEvents: "auto" }}
       >
-        {label}
+        {displayLabel}
       </CooldownButton>
     );
 
