@@ -37,10 +37,6 @@ export const storyEvents: Record<string, GameEvent> = {
     message:
       "The alchemist emerges from his hall: 'I have been conducting experiments day and night,' holding a vial of shimmering dust. 'I've created something extraordinary and terribly dangerous.'",
     priority: 5,
-    visualEffect: {
-      type: "glow",
-      duration: 3,
-    },
     repeatable: true,
     effect: (state: GameState) => ({
       story: {
@@ -130,10 +126,6 @@ export const storyEvents: Record<string, GameEvent> = {
     message:
       "A small old man with a long grey beard in a weathered grey coat approaches the settlement. His eyes gleam with ancient wisdom and power. 'I am a wizard,' he declares in a voice echoing with arcane authority. 'Build me a tower, and I shall aid you with powers beyond mortal ken.'",
     priority: 5,
-    visualEffect: {
-      type: "glow",
-      duration: 3,
-    },
     repeatable: true,
     effect: (state: GameState) => ({
       story: {
@@ -157,10 +149,6 @@ export const storyEvents: Record<string, GameEvent> = {
     message:
       "The wizard calls you to his tower: 'I have learned of a castle deep in the wilderness, the former domain of a long-dead necromancer. Within its walls lie ancient scrolls that speak of how we can defeat what dwells in the depths of the cave.'",
     priority: 5,
-    visualEffect: {
-      type: "glow",
-      duration: 3,
-    },
     repeatable: true,
     effect: (state: GameState) => ({
       story: {
@@ -185,10 +173,6 @@ export const storyEvents: Record<string, GameEvent> = {
     message:
       "The wizard steps from his tower, 'I have decrypted the ancient scrolls,' he says. 'The creatures below can only be slain with weapons of great power: a sword of frostglass and a staff crowned with bloodstone. 'Deep in the forest lies the grave of an ancient king which treasures may hold the frostglass we need.'",
     priority: 5,
-    visualEffect: {
-      type: "glow",
-      duration: 3,
-    },
     repeatable: true,
     effect: (state: GameState) => ({
       relics: {
@@ -217,10 +201,6 @@ export const storyEvents: Record<string, GameEvent> = {
     message:
       "The wizard examines the frostglass, cold light dancing across its surface. 'You have found it. Now, the Frostglass Sword can be forged.'",
     priority: 5,
-    visualEffect: {
-      type: "glow",
-      duration: 3,
-    },
     repeatable: true,
     effect: (state: GameState) => ({
       story: {
@@ -243,10 +223,6 @@ export const storyEvents: Record<string, GameEvent> = {
     message:
       "The wizard returns from a journey into the forest. 'I have consulted with an old friend, a hermit wizard who dwells deep in the woods,' he says gravely. 'He spoke of the bloodstone we need. It lies within the Sunken Temple, an ancient shrine now half-drowned in the swamps of the forest.'",
     priority: 5,
-    visualEffect: {
-      type: "glow",
-      duration: 3,
-    },
     repeatable: true,
     effect: (state: GameState) => ({
       story: {
@@ -270,10 +246,6 @@ export const storyEvents: Record<string, GameEvent> = {
     message:
       "The wizard examines the bloodstone gems you've retrieved from the Sunken Temple. 'With these bloodstones, we now have everything we need. Now we can craft the Bloodstone Staff. Together with the Frostglass Sword, we will have the means to face the darkness that lurks below.'",
     priority: 5,
-    visualEffect: {
-      type: "glow",
-      duration: 3,
-    },
     repeatable: true,
     effect: (state: GameState) => ({
       story: {
@@ -298,10 +270,6 @@ export const storyEvents: Record<string, GameEvent> = {
     message:
       "The wizard stands at the entrance to his tower, 'The weapons are forged. We now possess what we need to stand against the creatures of the depths of the cave. The darkness below will soon learn that this village will not fall without a fight. We are ready.'",
     priority: 5,
-    visualEffect: {
-      type: "glow",
-      duration: 3,
-    },
     repeatable: true,
     effect: (state: GameState) => ({
       story: {
@@ -377,10 +345,6 @@ export const storyEvents: Record<string, GameEvent> = {
     message:
       "A wildling emerges from the forest, her pale body covered in tribal markings and scars. 'I come from a tribe in the woods,' she says urgently. 'Brutal beasts living in a cave in the woods attack us relentlessly. We face extinction. Please, help us survive.'",
     priority: 5,
-    visualEffect: {
-      type: "glow",
-      duration: 3,
-    },
     repeatable: true,
     choices: [
       {
@@ -431,10 +395,6 @@ export const storyEvents: Record<string, GameEvent> = {
     message:
       "The wildling huntress returns from the forest. 'You saved my tribe from extinction,' she says, drawing a bone knife across her palm. Blood drips to the earth. 'By the old ways of my people, I offer you a blood oath. I will stand in your debt forever.'",
     priority: 5,
-    visualEffect: {
-      type: "glow",
-      duration: 3,
-    },
     repeatable: false,
     choices: [
       {

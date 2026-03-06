@@ -83,10 +83,6 @@ export default function SocialMediaRewards() {
       message: `You received ${reward} Gold for (maybe) following us on ${platformName}!`,
       timestamp: Date.now(),
       type: "system",
-      visualEffect: {
-        type: "glow",
-        duration: 3,
-      },
     };
     addLogEntry(rewardLog);
 

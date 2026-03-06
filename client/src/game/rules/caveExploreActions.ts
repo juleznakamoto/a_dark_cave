@@ -876,10 +876,6 @@ export function handleLowChamber(
       "Using the reinforced rope, you descend into the low chamber. Amongst the treasures you find a mastermason's chisel, a tool of legendary craftsmanship.",
     timestamp: Date.now(),
     type: "system",
-    visualEffect: {
-      type: "glow",
-      duration: 3,
-    },
   });
 
   Object.assign(result.stateUpdates, effectUpdates);
@@ -898,10 +894,6 @@ export function handleoccultistChamber(
       "Following the occultist's map, you find the chamber containing his treasures. Amongst them is his grimoire, filled with forbidden knowledge and arcane secrets.",
     timestamp: Date.now(),
     type: "system",
-    visualEffect: {
-      type: "glow",
-      duration: 3,
-    },
   });
 
   Object.assign(result.stateUpdates, effectUpdates);
@@ -920,10 +912,6 @@ export function handleBlastPortal(
       "The ember bombs detonate in a bright flash of fire and light. The ancient gate cracks and crumbles. Whatever could have been sealed within has been released... We have to get ready for whatever comes out of there.",
     timestamp: Date.now(),
     type: "system",
-    visualEffect: {
-      type: "glow",
-      duration: 3,
-    },
   });
 
   Object.assign(result.stateUpdates, effectUpdates);
@@ -952,10 +940,6 @@ export function handleExploreUndergroundLake(
       "Using the skull lantern's grim glow, you descend to the underground lake and build a small boat. On a tiny island in the middle of the dark lake, forgotten treasures lie in shadow, untouched for ages.",
     timestamp: Date.now(),
     type: "system",
-    visualEffect: {
-      type: "glow",
-      duration: 3,
-    },
   });
 
   Object.assign(result.stateUpdates, effectUpdates);
@@ -974,10 +958,6 @@ export function handleLureLakeCreature(
       "You set a massive trap at the edge of the underground lake, baited with piles of meat. Hours pass before the black waters erupt, and a titanic, tentacled horror rises from the depths and crawls into the trap.",
     timestamp: Date.now(),
     type: "system",
-    visualEffect: {
-      type: "glow",
-      duration: 3,
-    },
   });
 
   Object.assign(result.stateUpdates, effectUpdates);
@@ -996,10 +976,6 @@ export function handleHiddenLibrary(
       "The monastery's map leads you deep into the cave to the hidden library where you find a codex.",
     timestamp: Date.now(),
     type: "system",
-    visualEffect: {
-      type: "glow",
-      duration: 3,
-    },
   });
 
   Object.assign(result.stateUpdates, effectUpdates);

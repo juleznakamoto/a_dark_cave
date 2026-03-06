@@ -94,11 +94,6 @@ export interface GameEvent {
   baseDecisionTime?: number; // Base decision time in seconds
   fallbackChoice?: EventChoice; // Choice to execute if time runs out
   relevant_stats?: ("strength" | "knowledge" | "luck" | "madness")[]; // Stats relevant to event odds
-  // Visual effect properties
-  visualEffect?: {
-    type: 'glow' | 'pulse';
-    duration: number; // in seconds
-  };
   // Timed tab properties
   showAsTimedTab?: boolean;
   timedTabDuration?: number; // Duration in milliseconds
@@ -128,11 +123,6 @@ export interface LogEntry {
   skipSound?: boolean; // Skip playing sound for this event
   skipEventLog?: boolean; // Skip adding to visible event log
   relevant_stats?: ("strength" | "knowledge" | "luck" | "madness")[]; // Stats relevant to event odds
-  // Visual effect properties
-  visualEffect?: {
-    type: 'glow' | 'pulse';
-    duration: number; // in seconds
-  };
   // Timed tab properties
   showAsTimedTab?: boolean;
   timedTabDuration?: number; // Duration in milliseconds
@@ -285,7 +275,6 @@ export class EventManager {
             baseDecisionTime: event.baseDecisionTime,
             fallbackChoice: event.fallbackChoice,
             relevant_stats: event.relevant_stats,
-            visualEffect: event.visualEffect,
             showAsTimedTab: event.showAsTimedTab,
             timedTabDuration: event.timedTabDuration,
             skipEventLog: event.skipEventLog || (eventChoices && eventChoices.length > 0),

@@ -1887,17 +1887,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
             set((prevState) => ({
               ...prevState,
               ...victoryResult,
-              log: victoryResult._logMessage
-                ? [
-                  ...prevState.log,
-                  {
-                    id: `combat-victory-${Date.now()}`,
-                    message: victoryResult._logMessage,
-                    timestamp: Date.now(),
-                    type: "system",
-                  },
-                ].slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES)
-                : prevState.log,
+              log: prevState.log,
             }));
             // Return summary for CombatDialog to display before closing
             return victoryResult._combatSummary || {};
@@ -2144,17 +2134,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
           set((prevState) => ({
             ...prevState,
             ...victoryResult,
-            log: victoryResult._logMessage
-              ? [
-                ...prevState.log,
-                {
-                  id: `combat-victory-${Date.now()}`,
-                  message: victoryResult._logMessage,
-                  timestamp: Date.now(),
-                  type: "system",
-                },
-              ].slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES)
-              : prevState.log,
+            log: prevState.log,
           }));
           get().setCombatDialog(false);
         },

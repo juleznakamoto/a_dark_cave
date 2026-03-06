@@ -21,10 +21,6 @@ export const noChoiceEvents: Record<string, GameEvent> = {
       }
     },
     priority: 4,
-    visualEffect: {
-      type: "glow",
-      duration: 3,
-    },
     repeatable: true,
     effect: (state: GameState) => {
       const isFirstTime = !state.story.seen.bloodDrainedVillagersFirstTime;
@@ -101,10 +97,6 @@ export const noChoiceEvents: Record<string, GameEvent> = {
     message:
       "During the night as you pass a narrow path, something moves at the edge of your vision, like a shadow fleeing the firelight. You follow it, and there, upon the cold stones, lies an ancient scroll.",
     priority: 5,
-    visualEffect: {
-      type: "glow",
-      duration: 3,
-    },
     repeatable: false,
     effect: (state: GameState) => ({
       relics: {
@@ -130,10 +122,6 @@ export const noChoiceEvents: Record<string, GameEvent> = {
     message:
       "A blind druid emerges from the forest. He approaches the shrine and nods approvingly. 'The gods of the forest are pleased with your devotion, they grant you their blessing'.",
     priority: 5,
-    visualEffect: {
-      type: "glow",
-      duration: 3,
-    },
     repeatable: false,
     effect: (state: GameState) => ({
       blessings: {

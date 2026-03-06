@@ -328,40 +328,6 @@ body {
   animation: defeat-text-pulse 2.5s ease-in-out infinite;
 }
 
-@keyframes log-glow {
-
-  0%,
-  100% {
-    text-shadow: 0 0 4px rgba(255, 255, 255, .6), 0 0 6px rgba(254, 57, 57, .5);
-  }
-
-  50% {
-    text-shadow: 0 0 12px rgba(255, 255, 255, .8), 0 0 15px rgba(254, 57, 57, .8);
-  }
-}
-
-@keyframes log-pulse {
-
-  0%,
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-
-  50% {
-    opacity: .8;
-    transform: scale(1.05);
-  }
-}
-
-.log-glow {
-  animation: log-glow var(--effect-duration, 3s) ease-in-out;
-}
-
-.log-pulse {
-  animation: log-pulse var(--effect-duration, 3s) ease-in-out;
-}
-
 @keyframes log-fade-out {
   0% {
     opacity: 1;

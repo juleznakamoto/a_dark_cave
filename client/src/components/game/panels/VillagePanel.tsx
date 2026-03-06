@@ -630,7 +630,7 @@ export default function VillagePanel() {
           {story.seen?.hasVillagers && visiblePopulationJobs.length > 0 && (
             <div className="space-y-2">
               <div className="flex items-center gap-2">
-                <h3 className="text-xs font-medium text-foreground">Rule</h3>
+                <h3 className="text-xs font-medium text-foreground">Produce</h3>
                 {/* Feast Timer */}
                 {(() => {
                   const feastState = useGameStore.getState().feastState;
@@ -1092,7 +1092,7 @@ export default function VillagePanel() {
                   )
                   .join(", ");
 
-                return effectsText && buildings.clerksHut > 0 ? (
+                return effectsText ? (
                   <div className="text-xs text-muted-foreground flex items-center gap-3">
                     <TooltipProvider>
                       <Tooltip

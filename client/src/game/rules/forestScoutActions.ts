@@ -401,10 +401,6 @@ export function handleLayTrap(
           "The giant trap works perfectly! A massive black bear with glowing red eyes is caught. Your villagers slay the supernatural beast and claim its cursed black fur as a trophy.",
         timestamp: Date.now(),
         type: "system",
-        visualEffect: {
-          type: "glow",
-          duration: 3,
-        },
       });
     } else if (actualDeaths <= 2) {
       result.logEntries!.push({
@@ -412,10 +408,6 @@ export function handleLayTrap(
         message: `The giant trap snares a colossal black bear with burning red eyes! ${actualDeaths} brave villager${actualDeaths > 1 ? "s" : ""} fall${actualDeaths === 1 ? "s" : ""} to its supernatural claws before the beast is finally slain. You claim its cursed black fur as a hard-won trophy.`,
         timestamp: Date.now(),
         type: "system",
-        visualEffect: {
-          type: "glow",
-          duration: 3,
-        },
       });
     } else {
       result.logEntries!.push({
@@ -423,10 +415,6 @@ export function handleLayTrap(
         message: `The giant trap snares a colossal black bear with eyes like burning coals. ${actualDeaths} villagers fall to its supernatural fury before the beast is finally overwhelmed. You claim its cursed black fur.`,
         timestamp: Date.now(),
         type: "system",
-        visualEffect: {
-          type: "glow",
-          duration: 3,
-        },
       });
     }
   } else {
@@ -437,10 +425,6 @@ export function handleLayTrap(
         "The giant trap is set, but when checked only giant claw marks are found next to it. Whatever prowls these forests is too cunning for your trap... this time.",
       timestamp: Date.now(),
       type: "system",
-      visualEffect: {
-        type: "glow",
-        duration: 3,
-      },
     });
   }
 
@@ -491,10 +475,6 @@ export function handleCastleRuins(
         "The expedition to the dead necromancer's castle ruins proves successful! Deep within the you find the ancient scrolls wrapped in dark silk, revealing cryptic knowledge about how to defeat what was locked deep in the cave.",
       timestamp: Date.now(),
       type: "system",
-      visualEffect: {
-        type: "glow",
-        duration: 3,
-      },
     });
   } else {
     // Failure: Undead attack scenarios
@@ -514,10 +494,6 @@ export function handleCastleRuins(
         message: `Your expedition is ambushed by grotesque undead experiments left behind by the necromancer. ${actualDeaths} villager${actualDeaths > 1 ? "s" : ""} fall${actualDeaths === 1 ? "s" : ""} to the undead before the survivors manage to retreat.`,
         timestamp: Date.now(),
         type: "system",
-        visualEffect: {
-          type: "glow",
-          duration: 3,
-        },
       });
     } else {
       const villagerDeaths = Math.min(
@@ -533,10 +509,6 @@ export function handleCastleRuins(
         message: `Shortly after your expedition enters the cursed castle ruins dozens of undead creatures pour from hidden chambers. In the desperate battle that follows, ${actualDeaths} villagers are overwhelmed by the supernatural horde. The survivors flee in terror.`,
         timestamp: Date.now(),
         type: "system",
-        visualEffect: {
-          type: "glow",
-          duration: 3,
-        },
       });
     }
   }
@@ -589,10 +561,6 @@ export function handleHillGrave(
         "Your expedition carefully navigates the treacherous traps of the hill grave. Your villagers disarm the ancient mechanisms and reach the burial chamber. Among the king's treasures, you discover pure frostglass, cold as the void itself.",
       timestamp: Date.now(),
       type: "system",
-      visualEffect: {
-        type: "glow",
-        duration: 3,
-      },
     });
   } else {
     const villagerDeaths = Math.min(
@@ -608,10 +576,6 @@ export function handleHillGrave(
       message: `Your expedition enters the hill grave but lacks the skill to navigate its deadly traps. ${actualDeaths} villagers fall to the king's final defenses before the survivors retreat in horror, leaving their companions' bodies in the cursed tomb.`,
       timestamp: Date.now(),
       type: "system",
-      visualEffect: {
-        type: "glow",
-        duration: 3,
-      },
     });
   }
 
@@ -664,10 +628,6 @@ export function handleSunkenTemple(
         "Your expedition wades through the swamp waters to reach the ancient half-sunken temple. Despite the dangers lurking in the dark waters, the villagers navigate carefully through the submerged halls and find the bloodstone gems in the temple's inner sanctum.",
       timestamp: Date.now(),
       type: "system",
-      visualEffect: {
-        type: "glow",
-        duration: 3,
-      },
     });
   } else {
     const villagerDeaths = Math.min(
@@ -683,10 +643,6 @@ export function handleSunkenTemple(
       message: `Your expedition ventures into the swamp, seeking the sunken temple. The murky waters hide unspeakable horrors. Abominable creatures born of ancient magic rise from the depths and drag ${actualDeaths} villagers beneath the surface before the survivors flee.`,
       timestamp: Date.now(),
       type: "system",
-      visualEffect: {
-        type: "glow",
-        duration: 3,
-      },
     });
   }
 
@@ -745,10 +701,6 @@ export function handlecollapsedTower(
         "Inside the tower you find a necromancer and his followers, surrounded by vials of liquids and crude syringes. He was harvesting the villagers' blood for dark experiments. Your men put an end to his vile work and take a vial of his blood. Among his tools, you find his powerful bone saw.",
       timestamp: Date.now(),
       type: "system",
-      visualEffect: {
-        type: "glow",
-        duration: 3,
-      },
     });
   } else {
     const villagerDeaths = Math.min(
@@ -764,10 +716,6 @@ export function handlecollapsedTower(
       message: `Your expedition reaches the Collapsed Tower, but you are attacked by hooded figures outside. A tall man in a dark robe stands among them, commanding an aura of menace. ${actualDeaths} villagers fall before the rest flee to safety.`,
       timestamp: Date.now(),
       type: "system",
-      visualEffect: {
-        type: "glow",
-        duration: 3,
-      },
     });
   }
   return result;
@@ -814,10 +762,6 @@ export function handleForestCave(
         "As the villagers descend the cave, savage hounds erupt from darkness in relentless packs. Screams echo as claws tear and teeth snap. When the last creature falls, all villagers survive, but hollowed by what they’ve endured.",
       timestamp: Date.now(),
       type: "system",
-      visualEffect: {
-        type: "glow",
-        duration: 3,
-      },
     });
   } else {
     const villagerDeaths = Math.min(
@@ -833,10 +777,6 @@ export function handleForestCave(
       message: `As the expedition enters the cave it is overwhelmed by a pack of brutal hounds. ${actualDeaths} villagers are torn apart by savage jaws before the survivors manage to retreat.`,
       timestamp: Date.now(),
       type: "system",
-      visualEffect: {
-        type: "glow",
-        duration: 3,
-      },
     });
   }
 
@@ -877,10 +817,6 @@ export function handleBlackreachCanyon(
       "You venture deep into Blackreach Canyon. There, perched on a stone pillar, sits a magnificent one-eyed crow. Using the harness, your carefully approach and bond with the creature. The One-eyed Crow has joined your fellowship.",
     timestamp: Date.now(),
     type: "system",
-    visualEffect: {
-      type: "glow",
-      duration: 3,
-    },
   });
 
   return result;
@@ -923,10 +859,6 @@ export function handleSteelDelivery(
       "Your caravan delivers the steel to the Swamp Tribe as promised. In return, the tribe presents you with Chitin Plates harvested from swamp creatures. These can be used to construct powerful fortifications.",
     timestamp: Date.now(),
     type: "system",
-    visualEffect: {
-      type: "glow",
-      duration: 3,
-    },
   });
 
   return result;

@@ -12,19 +12,20 @@ type ExtendedLogEntry =
       type: "production";
       id: string;
       timestamp: number;
-      visualEffect?: { type: "glow" | "pulse"; duration: number };
     };
+
+const LOG_ENTRY_PULSE_MS = 10000;
 
 function LogPanel() {
   const { log, timedEventTab } = useGameStore();
   const isBloodMoon =
     timedEventTab?.isActive && timedEventTab?.event?.title === "Blood Moon";
-  const [activeEffects, setActiveEffects] = useState<Set<string>>(new Set());
-  const [readEntries, setReadEntries] = useState<Set<string>>(new Set());
-  const timersRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
+  const [readEntries, setReadEntries] = useState<Set<string>>(
+    () => new Set(log.map((entry) => entry.id)),
+  );
+  const pulseTimersRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
   const topRef = useRef<HTMLDivElement>(null);
   const prevLogLengthRef = useRef(log.length);
-  const hoverTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Get only the last entries and reverse them so latest is at top
   const recentEntries = useMemo(
@@ -41,35 +42,40 @@ function LogPanel() {
   }, [log.length]);
 
   useEffect(() => {
-    // Check for new entries with visual effects
+    const visibleEntryIds = new Set(recentEntries.map((entry) => entry.id));
+
+    // Start auto-read timers for new, unread entries.
     recentEntries.forEach((entry) => {
-      if (entry.visualEffect && !activeEffects.has(entry.id)) {
-        setActiveEffects((prev) => new Set(prev).add(entry.id));
-
-        // Remove effect after duration
+      if (!readEntries.has(entry.id) && !pulseTimersRef.current.has(entry.id)) {
         const timerId = setTimeout(() => {
-          setActiveEffects((prev) => {
-            const newSet = new Set(prev);
-            newSet.delete(entry.id);
-            return newSet;
+          setReadEntries((prev) => {
+            const next = new Set(prev);
+            next.add(entry.id);
+            return next;
           });
-          timersRef.current.delete(entry.id);
-        }, 0);
+          pulseTimersRef.current.delete(entry.id);
+        }, LOG_ENTRY_PULSE_MS);
 
-        timersRef.current.set(entry.id, timerId);
+        pulseTimersRef.current.set(entry.id, timerId);
       }
     });
 
-    // Cleanup
-    return () => {
-      timersRef.current.forEach((timerId) => clearTimeout(timerId));
-      timersRef.current.clear();
-      if (hoverTimerRef.current) {
-        clearTimeout(hoverTimerRef.current);
-        hoverTimerRef.current = null;
+    // Clear timers for entries no longer visible.
+    pulseTimersRef.current.forEach((timerId, entryId) => {
+      if (!visibleEntryIds.has(entryId)) {
+        clearTimeout(timerId);
+        pulseTimersRef.current.delete(entryId);
       }
+    });
+  }, [recentEntries, readEntries]);
+
+  // Cleanup timers on unmount.
+  useEffect(() => {
+    return () => {
+      pulseTimersRef.current.forEach((timerId) => clearTimeout(timerId));
+      pulseTimersRef.current.clear();
     };
-  }, [recentEntries]);
+  }, []);
 
   return (
     <div className="h-[18vh] min-h-[6rem] pt-2 overflow-hidden">
@@ -92,28 +98,18 @@ function LogPanel() {
                 }
               }
 
-              // Determine if this entry has an active visual effect
-              const hasActiveEffect = activeEffects.has(typedEntry.id);
-              const effectClass =
-                hasActiveEffect && typedEntry.visualEffect
-                  ? `log-${typedEntry.visualEffect.type}`
-                  : "";
-
               const isUnread = !readEntries.has(typedEntry.id);
               const showNewIndicator = isUnread;
+              const pulseClass = isUnread ? "animate-pulse" : "";
 
               const handleMouseEnter = () => {
-                if (readEntries.has(typedEntry.id)) return;
-                if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
-                hoverTimerRef.current = setTimeout(() => {
+                if (isUnread) {
+                  const timerId = pulseTimersRef.current.get(typedEntry.id);
+                  if (timerId) {
+                    clearTimeout(timerId);
+                    pulseTimersRef.current.delete(typedEntry.id);
+                  }
                   setReadEntries((prev) => new Set(prev).add(typedEntry.id));
-                }, 300);
-              };
-
-              const handleMouseLeave = () => {
-                if (hoverTimerRef.current) {
-                  clearTimeout(hoverTimerRef.current);
-                  hoverTimerRef.current = null;
                 }
               };
 
@@ -121,15 +117,7 @@ function LogPanel() {
                 <div
                   key={typedEntry.id}
                   onMouseEnter={handleMouseEnter}
-                  onMouseLeave={handleMouseLeave}
-                  className={`flex items-start gap-2 text-foreground leading-relaxed py-0.5 ${opacity} ${effectClass}`}
-                  style={
-                    hasActiveEffect && typedEntry.visualEffect
-                      ? ({
-                          "--effect-duration": `${typedEntry.visualEffect.duration}s`,
-                        } as React.CSSProperties)
-                      : undefined
-                  }
+                  className={`flex items-start gap-2 text-foreground leading-relaxed py-0.5 ${opacity} ${pulseClass}`}
                 >
                   {showNewIndicator ? (
                     <span

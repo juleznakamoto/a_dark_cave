@@ -30,10 +30,6 @@ export const fullGameUnlockEvents: Record<string, GameEvent> = {
     message:
       "An older villager approaches you, his eyes heavy with knowledge. 'You have taken your first steps in this cruel world,' he says quietly. 'Soon, you will have to decide whether you are willing to face what lies ahead.'",
     priority: 5,
-    visualEffect: {
-      type: "glow",
-      duration: 3,
-    },
     repeatable: false,
     choices: [
       {
@@ -71,10 +67,6 @@ export const fullGameUnlockEvents: Record<string, GameEvent> = {
     message:
       "A village elder approaches you. He speaks quietly. 'You stand at the beginning of a long path filled with trials. Very soon, you must choose whether you will continue this journey.'",
     priority: 5,
-    visualEffect: {
-      type: "glow",
-      duration: 3,
-    },
     repeatable: false,
     choices: [
       {
@@ -113,10 +105,6 @@ export const fullGameUnlockEvents: Record<string, GameEvent> = {
     message:
       "The village elder returns, his expression grave. 'The time has come,' he says. 'You have taken your first steps on a long and unforgiving path. What lies ahead is deeper, darker, and more demanding. Decide now whether you will continue this journey.'",
     priority: 5,
-    visualEffect: {
-      type: "glow",
-      duration: 3,
-    },
     repeatable: false,
     choices: [
       {

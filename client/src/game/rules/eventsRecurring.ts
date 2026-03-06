@@ -25,7 +25,7 @@ export const recurringEvents: Record<string, GameEvent> = {
           Math.min(
             state.resources.food,
             Math.ceil(Math.random() * state.buildings.woodenHut) * 25 +
-              state.CM * 100,
+            state.CM * 100,
           ),
       },
     }),
@@ -85,7 +85,7 @@ export const recurringEvents: Record<string, GameEvent> = {
     timeProbability: 30,
     message: [
       "By dawn, a heap of iron is found. No tracks remain.",
-      "A gift of iron gleams at dawn. No one knows its source.",
+      "A pile has been found at dawn. No one knows its source.",
     ],
     priority: 2,
     effect: (state: GameState) => {
@@ -103,7 +103,6 @@ export const recurringEvents: Record<string, GameEvent> = {
     id: "silverSackDiscovery",
     condition: (state: GameState) =>
       state.tools?.stone_axe && !state.story?.seen?.silverSackFound,
-
     timeProbability: 2,
     message:
       "Close to the cave's entrance you find a small leather sack containing 50 Silver.",

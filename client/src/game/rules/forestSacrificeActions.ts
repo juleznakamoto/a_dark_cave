@@ -216,10 +216,6 @@ function handleTotemSacrifice(
         message: discoveryConfig.discoveryMessage,
         timestamp: Date.now(),
         type: "system",
-        visualEffect: {
-          type: "glow",
-          duration: 3,
-        },
       });
     }
   }

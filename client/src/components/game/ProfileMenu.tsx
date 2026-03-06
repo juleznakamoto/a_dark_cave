@@ -250,10 +250,6 @@ export default function ProfileMenu() {
       message: `You received ${reward} Gold for following us on ${platformName}!`,
       timestamp: Date.now(),
       type: "system",
-      visualEffect: {
-        type: "glow",
-        duration: 3,
-      },
     };
     addLogEntry(rewardLog);
 
