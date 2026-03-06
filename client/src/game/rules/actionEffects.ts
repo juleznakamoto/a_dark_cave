@@ -58,14 +58,15 @@ export function applyActionCostsOnly(actionId: string, state: GameState): Partia
   if (!action?.cost) return {};
 
   const updates: Partial<GameState> = {};
-  let costs = action.cost;
+  let costs: Record<string, any> =
+    typeof action.cost === "function" ? action.cost(state) : action.cost;
 
-  if (action.building) {
+  if (action.building && typeof action.cost !== "function") {
     const level = getNextBuildingLevel(actionId, state);
-    costs = action.cost[level];
+    costs = (action.cost as Record<number, Record<string, any>>)[level];
   }
 
-  const costKeys = Object.keys(costs);
+  const costKeys = Object.keys(costs || {});
   const hasTieredCost = costKeys.length > 0 && costKeys.every((key) => !isNaN(Number(key)));
 
   if (hasTieredCost) {

@@ -1,113 +1,52 @@
 import { Action, GameState } from "@shared/schema";
 import { ActionResult } from "@/game/actions";
+import { getUpgradeLevel } from "@/game/buttonUpgrades";
 import { applyActionEffects } from "./actionEffects";
 
-export const caveCraftTools: Record<string, Action> = {
-  craftTorch: {
-    id: "craftTorch",
-    label: "Torch",
-    show_when: {
-      "story.seen.hasWood": true,
-      "tools.stone_axe": false,
-    },
-    cost: {
-      "resources.wood": 10,
-    },
-    effects: {
-      "resources.torch": "random(1,1)",
-      "story.seen.actionCraftTorch": true,
-    },
-    unlocks: ["exploreDeeper"],
-    executionTime: 2,
-    cooldown: 0,
-  },
+export function getTorchTier(state: GameState): number {
+  if (state.tools?.adamant_axe) return 6;
+  if (state.tools?.obsidian_axe) return 5;
+  if (state.tools?.steel_axe) return 4;
+  if (state.tools?.iron_axe) return 3;
+  if (state.tools?.stone_axe) return 2;
+  return 1;
+}
 
+const TORCH_TIER_COSTS = [10, 20, 30, 40, 50, 100] as const;
+const TORCH_TIER_AMOUNTS = [1, 2, 3, 4, 5, 10] as const;
+const CRAFT_TORCHES_BASE_EXECUTION = 3;
+
+function getCraftTorchesUpgradeMultiplier(state: GameState): number {
+  if (!state.books?.book_of_ascension) return 1;
+  const level = getUpgradeLevel("craftTorches", state);
+  return 1 + level;
+}
+
+export const caveCraftTools: Record<string, Action> = {
   craftTorches: {
     id: "craftTorches",
     label: "Torches",
     show_when: {
-      "tools.stone_axe": true,
-      "tools.iron_axe": false,
+      "story.seen.hasWood": true,
     },
-    cost: {
-      "resources.wood": 20,
+    cost: (state: GameState) => {
+      const tier = getTorchTier(state);
+      const baseCost = TORCH_TIER_COSTS[tier - 1];
+      const mult = getCraftTorchesUpgradeMultiplier(state);
+      return { "resources.wood": Math.floor(baseCost * mult) };
     },
-    effects: {
-      "resources.torch": "random(2,2)",
-      "story.seen.actionCraftTorches": true,
+    effects: (state: GameState) => {
+      const tier = getTorchTier(state);
+      const baseAmount = TORCH_TIER_AMOUNTS[tier - 1];
+      const mult = getCraftTorchesUpgradeMultiplier(state);
+      const amount = Math.floor(baseAmount * mult);
+      return {
+        "resources.torch": `random(${amount},${amount})` as any,
+        "story.seen.actionCraftTorches": true,
+      };
     },
-    executionTime: 3.0,
-    cooldown: 0,
-  },
-
-  craftTorches3: {
-    id: "craftTorches3",
-    label: "Torches",
-    show_when: {
-      "tools.iron_axe": true,
-      "tools.steel_axe": false,
-    },
-    cost: {
-      "resources.wood": 30,
-    },
-    effects: {
-      "resources.torch": "random(3,3)",
-      "story.seen.actionCraftTorches3": true,
-    },
-    executionTime: 3.5,
-    cooldown: 0,
-  },
-
-  craftTorches4: {
-    id: "craftTorches4",
-    label: "Torches",
-    show_when: {
-      "tools.steel_axe": true,
-      "tools.obsidian_axe": false,
-    },
-    cost: {
-      "resources.wood": 40,
-    },
-    effects: {
-      "resources.torch": "random(4,4)",
-      "story.seen.actionCraftTorches4": true,
-    },
-    executionTime: 4,
-    cooldown: 0,
-  },
-
-  craftTorches5: {
-    id: "craftTorches5",
-    label: "Torches",
-    show_when: {
-      "tools.obsidian_axe": true,
-      "tools.adamant_axe": false,
-    },
-    cost: {
-      "resources.wood": 50,
-    },
-    effects: {
-      "resources.torch": "random(5,5)",
-      "story.seen.actionCraftTorches5": true,
-    },
-    executionTime: 4.5,
-    cooldown: 0,
-  },
-
-  craftTorches10: {
-    id: "craftTorches10",
-    label: "Torches",
-    show_when: {
-      "tools.adamant_axe": true,
-    },
-    cost: {
-      "resources.wood": 100,
-    },
-    effects: {
-      "resources.torch": "random(10,10)",
-      "story.seen.actionCraftTorches10": true,
-    },
-    executionTime: 5.0,
+    unlocks: ["exploreDeeper"],
+    executionTime: CRAFT_TORCHES_BASE_EXECUTION,
     cooldown: 0,
   },
 
@@ -667,56 +606,11 @@ export const caveCraftTools: Record<string, Action> = {
 };
 
 // Action handlers
-export function handleCraftTorch(
-  state: GameState,
-  result: ActionResult,
-): ActionResult {
-  const effectUpdates = applyActionEffects("craftTorch", state);
-  Object.assign(result.stateUpdates, effectUpdates);
-  return result;
-}
-
 export function handleCraftTorches(
   state: GameState,
   result: ActionResult,
 ): ActionResult {
   const effectUpdates = applyActionEffects("craftTorches", state);
-  Object.assign(result.stateUpdates, effectUpdates);
-  return result;
-}
-
-export function handleCraftTorches3(
-  state: GameState,
-  result: ActionResult,
-): ActionResult {
-  const effectUpdates = applyActionEffects("craftTorches3", state);
-  Object.assign(result.stateUpdates, effectUpdates);
-  return result;
-}
-
-export function handleCraftTorches4(
-  state: GameState,
-  result: ActionResult,
-): ActionResult {
-  const effectUpdates = applyActionEffects("craftTorches4", state);
-  Object.assign(result.stateUpdates, effectUpdates);
-  return result;
-}
-
-export function handleCraftTorches5(
-  state: GameState,
-  result: ActionResult,
-): ActionResult {
-  const effectUpdates = applyActionEffects("craftTorches5", state);
-  Object.assign(result.stateUpdates, effectUpdates);
-  return result;
-}
-
-export function handleCraftTorches10(
-  state: GameState,
-  result: ActionResult,
-): ActionResult {
-  const effectUpdates = applyActionEffects("craftTorches10", state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }

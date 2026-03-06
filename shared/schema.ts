@@ -759,6 +759,7 @@ export const actionSchema = z.object({
     .union([
       z.record(z.string(), z.any()),
       z.record(z.number(), z.record(z.string(), z.any())),
+      z.function().args(z.any()).returns(z.record(z.string(), z.any())),
     ])
     .optional(),
   effects: z.union([

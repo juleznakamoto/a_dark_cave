@@ -1,106 +1,80 @@
 import { Action, GameState } from "@shared/schema";
 import { ActionResult } from '@/game/actions';
+import { getUpgradeLevel } from "@/game/buttonUpgrades";
 import { applyActionEffects } from "./actionEffects";
 
+export function getBoneTotemTier(state: GameState): number {
+  if ((state.buildings?.sanctum || 0) >= 1) return 4;
+  if ((state.buildings?.temple || 0) >= 1) return 3;
+  if ((state.buildings?.shrine || 0) >= 1) return 2;
+  return 1;
+}
+
+export function getLeatherTotemTier(state: GameState): number {
+  if ((state.buildings?.sanctum || 0) >= 1) return 2;
+  return 1;
+}
+
+const BONE_TOTEM_TIER_COSTS = [100, 200, 300, 500] as const;
+const BONE_TOTEM_TIER_AMOUNTS = [1, 2, 3, 5] as const;
+
+const LEATHER_TOTEM_TIER_COSTS = [30, 150] as const;
+const LEATHER_TOTEM_TIER_AMOUNTS = [1, 5] as const;
+
+function getCraftTotemUpgradeMultiplier(state: GameState, key: "craftBoneTotems" | "craftLeatherTotems"): number {
+  if (!state.books?.book_of_ascension) return 1;
+  const level = getUpgradeLevel(key, state);
+  return 1 + level;
+}
+
 export const caveCraftResources: Record<string, Action> = {
-  craftBoneTotem: {
-    id: "craftBoneTotem",
-    label: "Bone Totem",
+  craftBoneTotems: {
+    id: "craftBoneTotems",
+    label: "Bone Totems",
     show_when: {
       "buildings.altar": 1,
-      "buildings.shrine": 0,
     },
-    cost: {
-      "resources.bones": 100,
+    cost: (state: GameState) => {
+      const tier = getBoneTotemTier(state);
+      const baseCost = BONE_TOTEM_TIER_COSTS[tier - 1];
+      const mult = getCraftTotemUpgradeMultiplier(state, "craftBoneTotems");
+      return { "resources.bones": Math.floor(baseCost * mult) };
     },
-    effects: {
-      "resources.bone_totem": 1,
-      "story.seen.hasBoneTotem": true,
-    },
-    executionTime: 20,
-    cooldown: 0,
-  },
-  craftBoneTotems2: {
-    id: "craftBoneTotems2",
-    label: "Bone Totems",
-    show_when: {
-      "buildings.shrine": 1,
-      "buildings.temple": 0,
-    },
-    cost: {
-      "resources.bones": 200,
-    },
-    effects: {
-      "resources.bone_totem": 2,
-      "story.seen.hasBoneTotem": true,
-    },
-    executionTime: 20,
-    cooldown: 0,
-  },
-  craftBoneTotems3: {
-    id: "craftBoneTotems3",
-    label: "Bone Totems",
-    show_when: {
-      "buildings.temple": 1,
-      "buildings.sanctum": 0,
-    },
-    cost: {
-      "resources.bones": 300,
-    },
-    effects: {
-      "resources.bone_totem": 3,
-      "story.seen.hasBoneTotem": true,
-    },
-    executionTime: 20,
-    cooldown: 0,
-  },
-  craftBoneTotems5: {
-    id: "craftBoneTotems5",
-    label: "Bone Totems",
-    show_when: {
-      "buildings.sanctum": 1,
-    },
-    cost: {
-      "resources.bones": 500,
-    },
-    effects: {
-      "resources.bone_totem": 5,
-      "story.seen.hasBoneTotem": true,
+    effects: (state: GameState) => {
+      const tier = getBoneTotemTier(state);
+      const baseAmount = BONE_TOTEM_TIER_AMOUNTS[tier - 1];
+      const mult = getCraftTotemUpgradeMultiplier(state, "craftBoneTotems");
+      const amount = Math.floor(baseAmount * mult);
+      return {
+        "resources.bone_totem": amount,
+        "story.seen.hasBoneTotem": true,
+      };
     },
     executionTime: 20,
     cooldown: 0,
   },
 
-  craftLeatherTotem: {
-    id: "craftLeatherTotem",
-    label: "Leather Totem",
-    show_when: {
-      "buildings.temple": 1,
-      "buildings.sanctum": 0,
-    },
-    cost: {
-      "resources.leather": 30,
-    },
-    effects: {
-      "resources.leather_totem": 1,
-      "story.seen.hasLeatherTotem": true,
-    },
-    executionTime: 20,
-    cooldown: 0,
-  },
-
-  craftLeatherTotems5: {
-    id: "craftLeatherTotems5",
+  craftLeatherTotems: {
+    id: "craftLeatherTotems",
     label: "Leather Totems",
     show_when: {
-      "buildings.sanctum": 1,
+      "buildings.temple": 1,
     },
-    cost: {
-      "resources.leather": 150,
+    cost: (state: GameState) => {
+      const tier = getLeatherTotemTier(state);
+      const baseCost = LEATHER_TOTEM_TIER_COSTS[tier - 1];
+      const mult = getCraftTotemUpgradeMultiplier(state, "craftLeatherTotems");
+      return { "resources.leather": Math.floor(baseCost * mult) };
     },
-    effects: {
-      "resources.leather_totem": 5,
-      "story.seen.hasLeatherTotem": true,
+    effects: (state: GameState) => {
+      const tier = getLeatherTotemTier(state);
+      const baseAmount = LEATHER_TOTEM_TIER_AMOUNTS[tier - 1];
+      const mult = getCraftTotemUpgradeMultiplier(state, "craftLeatherTotems");
+      const amount = Math.floor(baseAmount * mult);
+      return {
+        "resources.leather_totem": amount,
+        "story.seen.hasLeatherTotem": true,
+      };
     },
     executionTime: 20,
     cooldown: 0,
@@ -178,38 +152,14 @@ export const caveCraftResources: Record<string, Action> = {
 };
 
 // Action handlers
-export function handleCraftBoneTotem(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects("craftBoneTotem", state);
+export function handleCraftBoneTotems(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects("craftBoneTotems", state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
 
-export function handleCraftBoneTotems2(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects("craftBoneTotems2", state);
-  Object.assign(result.stateUpdates, effectUpdates);
-  return result;
-}
-
-export function handleCraftBoneTotems3(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects("craftBoneTotems3", state);
-  Object.assign(result.stateUpdates, effectUpdates);
-  return result;
-}
-
-export function handleCraftLeatherTotem(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects("craftLeatherTotem", state);
-  Object.assign(result.stateUpdates, effectUpdates);
-  return result;
-}
-
-export function handleCraftLeatherTotems5(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects("craftLeatherTotems5", state);
-  Object.assign(result.stateUpdates, effectUpdates);
-  return result;
-}
-
-export function handleCraftBoneTotems5(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects("craftBoneTotems5", state);
+export function handleCraftLeatherTotems(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects("craftLeatherTotems", state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }

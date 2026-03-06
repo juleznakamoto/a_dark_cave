@@ -11,6 +11,9 @@ import { villageBuildActions } from "./villageBuildActions";
 import { ACTION_TO_UPGRADE_KEY, getUpgradeBonus } from "../buttonUpgrades";
 import { HUNT_BONUSES, DISGRACED_PRIOR_UPGRADES } from "./skillUpgrades";
 
+// Craft actions handle their own cost/gain scaling; exclude from generic upgrade multiplier
+const CRAFT_UPGRADE_ACTIONS = ["craftTorches", "craftBoneTotems", "craftLeatherTotems"];
+
 // Tool hierarchy definitions
 const AXE_HIERARCHY = [
   "stone_axe",
@@ -332,9 +335,9 @@ export const getActionBonuses = (
     }
   });
 
-  // Add button upgrade bonuses
+  // Add button upgrade bonuses (craft actions handle scaling in their cost/effects)
   const upgradeKey = ACTION_TO_UPGRADE_KEY[actionId];
-  if (upgradeKey) {
+  if (upgradeKey && !CRAFT_UPGRADE_ACTIONS.includes(actionId)) {
     const bonus = getUpgradeBonus(upgradeKey, state);
     if (bonus > 0) {
       // Button upgrades are percentage bonuses, convert to multiplier
@@ -432,9 +435,10 @@ export const getAllActionBonuses = (
   });
 
   // Add button upgrade bonuses (only if book_of_ascension is owned)
+  // Craft actions handle their own cost/gain scaling in the action definitions
   if (state.books?.book_of_ascension) {
     Object.entries(ACTION_TO_UPGRADE_KEY).forEach(([actionId, upgradeKey]) => {
-      if (upgradeKey) {
+      if (upgradeKey && !CRAFT_UPGRADE_ACTIONS.includes(actionId)) {
         const bonus = getUpgradeBonus(upgradeKey, state);
         if (bonus > 0) {
           const existing = bonusMap.get(actionId) || {

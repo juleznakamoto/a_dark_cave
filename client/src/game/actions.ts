@@ -31,12 +31,7 @@ import {
 } from "@/game/rules/caveExploreActions";
 
 import {
-  handleCraftTorch,
   handleCraftTorches,
-  handleCraftTorches3,
-  handleCraftTorches4,
-  handleCraftTorches5,
-  handleCraftTorches10,
   handleCraftStoneAxe,
   handleCraftStonePickaxe,
   handleCraftIronAxe,
@@ -66,12 +61,8 @@ import {
 } from "./rules/caveCraftTools";
 
 import {
-  handleCraftBoneTotem,
-  handleCraftBoneTotems2,
-  handleCraftBoneTotems3,
-  handleCraftBoneTotems5,
-  handleCraftLeatherTotem,
-  handleCraftLeatherTotems5,
+  handleCraftBoneTotems,
+  handleCraftLeatherTotems,
   handleCraftEmberBomb,
   handleCraftAshfireBomb,
   handleCraftVoidBomb,
@@ -323,18 +314,8 @@ export function executeGameAction(
       return handleLureLakeCreature(state, result);
 
     // Cave Craft Actions
-    case "craftTorch":
-      return handleCraftTorch(state, result);
     case "craftTorches":
       return handleCraftTorches(state, result);
-    case "craftTorches3":
-      return handleCraftTorches3(state, result);
-    case "craftTorches4":
-      return handleCraftTorches4(state, result);
-    case "craftTorches5":
-      return handleCraftTorches5(state, result);
-    case "craftTorches10":
-      return handleCraftTorches10(state, result);
     case "craftStoneAxe":
       return handleCraftStoneAxe(state, result);
     case "craftStonePickaxe":
@@ -385,18 +366,10 @@ export function executeGameAction(
       return handleCraftHighpriestRobe(state, result);
     case "craftSkeletonKey":
       return handleCraftSkeletonKey(state, result);
-    case "craftBoneTotem":
-      return handleCraftBoneTotem(state, result);
-    case "craftBoneTotems2":
-      return handleCraftBoneTotems2(state, result);
-    case "craftBoneTotems3":
-      return handleCraftBoneTotems3(state, result);
-    case "craftBoneTotems5":
-      return handleCraftBoneTotems5(state, result);
-    case "craftLeatherTotem":
-      return handleCraftLeatherTotem(state, result);
-    case "craftLeatherTotems5":
-      return handleCraftLeatherTotems5(state, result);
+    case "craftBoneTotems":
+      return handleCraftBoneTotems(state, result);
+    case "craftLeatherTotems":
+      return handleCraftLeatherTotems(state, result);
     case "craftEmberBomb":
       return handleCraftEmberBomb(state, result);
     case "craftAshfireBomb":

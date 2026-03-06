@@ -1461,40 +1461,52 @@ describe('Resource Gain Tests', () => {
   });
 
   describe('Craft Actions', () => {
-    it('craftBoneTotem produces correct amount', () => {
+    it('craftBoneTotems (tier 1) produces correct amount', () => {
       const state = createTestState({
         buildings: { altar: 1 },
       });
-      const effectUpdates = applyActionEffects('craftBoneTotem', state);
+      const effectUpdates = applyActionEffects('craftBoneTotems', state);
 
       expect(effectUpdates.resources?.bone_totem).toBe((state.resources.bone_totem || 0) + 1);
     });
 
-    it('craftBoneTotems5 produces correct amount', () => {
+    it('craftBoneTotems (tier 4) produces correct amount', () => {
       const state = createTestState({
         buildings: { sanctum: 1 },
       });
-      const effectUpdates = applyActionEffects('craftBoneTotems5', state);
+      const effectUpdates = applyActionEffects('craftBoneTotems', state);
 
       expect(effectUpdates.resources?.bone_totem).toBe((state.resources.bone_totem || 0) + 5);
     });
 
-    it('craftLeatherTotem produces correct amount', () => {
+    it('craftLeatherTotems (tier 1) produces correct amount', () => {
       const state = createTestState({
         buildings: { temple: 1 },
       });
-      const effectUpdates = applyActionEffects('craftLeatherTotem', state);
+      const effectUpdates = applyActionEffects('craftLeatherTotems', state);
 
       expect(effectUpdates.resources?.leather_totem).toBe((state.resources.leather_totem || 0) + 1);
     });
 
-    it('craftLeatherTotems5 produces correct amount', () => {
+    it('craftLeatherTotems (tier 2) produces correct amount', () => {
       const state = createTestState({
         buildings: { sanctum: 1 },
       });
-      const effectUpdates = applyActionEffects('craftLeatherTotems5', state);
+      const effectUpdates = applyActionEffects('craftLeatherTotems', state);
 
       expect(effectUpdates.resources?.leather_totem).toBe((state.resources.leather_totem || 0) + 5);
+    });
+
+    it('craftBoneTotems with upgrade level 3 produces 3x amount when book_of_ascension', () => {
+      const state = createTestState({
+        buildings: { altar: 1 },
+        books: { book_of_ascension: true },
+        buttonUpgrades: { craftBoneTotems: { clicks: 30, level: 3 } },
+      });
+      const effectUpdates = applyActionEffects('craftBoneTotems', state);
+
+      // Base 1 * (1+3) = 4
+      expect(effectUpdates.resources?.bone_totem).toBe((state.resources.bone_totem || 0) + 4);
     });
   });
 

@@ -15,7 +15,10 @@ export type UpgradeKey =
   | "mineAdamant"
   | "hunt"
   | "chopWood"
-  | "caveExplore";
+  | "caveExplore"
+  | "craftTorches"
+  | "craftBoneTotems"
+  | "craftLeatherTotems";
 
 export interface UpgradeLevel {
   level: number;
@@ -86,6 +89,36 @@ export const CAVE_EXPLORE_UPGRADE_LEVELS: UpgradeLevel[] = [
   { level: 10, clicksRequired: 190, bonus: 100},
 ];
 
+// Craft torches upgrade levels (cost/gain scale by 1+level; level 10 halves execution time)
+export const CRAFT_TORCHES_UPGRADE_LEVELS: UpgradeLevel[] = [
+  { level: 0, clicksRequired: 0, bonus: 0 },
+  { level: 1, clicksRequired: 10, bonus: 100 },
+  { level: 2, clicksRequired: 25, bonus: 200 },
+  { level: 3, clicksRequired: 45, bonus: 300 },
+  { level: 4, clicksRequired: 75, bonus: 400 },
+  { level: 5, clicksRequired: 110, bonus: 500 },
+  { level: 6, clicksRequired: 150, bonus: 600 },
+  { level: 7, clicksRequired: 195, bonus: 700 },
+  { level: 8, clicksRequired: 245, bonus: 800 },
+  { level: 9, clicksRequired: 300, bonus: 900 },
+  { level: 10, clicksRequired: 360, bonus: 900 },
+];
+
+// Craft totem upgrade levels (shared by bone and leather)
+export const CRAFT_TOTEM_UPGRADE_LEVELS: UpgradeLevel[] = [
+  { level: 0, clicksRequired: 0, bonus: 0 },
+  { level: 1, clicksRequired: 5, bonus: 100 },
+  { level: 2, clicksRequired: 15, bonus: 200 },
+  { level: 3, clicksRequired: 30, bonus: 300 },
+  { level: 4, clicksRequired: 50, bonus: 400 },
+  { level: 5, clicksRequired: 75, bonus: 500 },
+  { level: 6, clicksRequired: 105, bonus: 600 },
+  { level: 7, clicksRequired: 140, bonus: 700 },
+  { level: 8, clicksRequired: 180, bonus: 800 },
+  { level: 9, clicksRequired: 225, bonus: 900 },
+  { level: 10, clicksRequired: 275, bonus: 900 },
+];
+
 // Get the appropriate upgrade levels for a given key
 export function getUpgradeLevelsForKey(key: UpgradeKey): UpgradeLevel[] {
   const mineKeys: UpgradeKey[] = ["mineStone", "mineIron", "mineCoal", "mineSulfur", "mineObsidian", "mineAdamant"];
@@ -101,6 +134,12 @@ export function getUpgradeLevelsForKey(key: UpgradeKey): UpgradeLevel[] {
   }
   if (key === "caveExplore") {
     return CAVE_EXPLORE_UPGRADE_LEVELS;
+  }
+  if (key === "craftTorches") {
+    return CRAFT_TORCHES_UPGRADE_LEVELS;
+  }
+  if (key === "craftBoneTotems" || key === "craftLeatherTotems") {
+    return CRAFT_TOTEM_UPGRADE_LEVELS;
   }
 }
 
@@ -120,6 +159,9 @@ export const UPGRADE_LABELS: Record<UpgradeKey, string> = {
   hunt: "Hunting",
   chopWood: "Woodcutting",
   caveExplore: "Cave Exploring",
+  craftTorches: "Torch Crafting",
+  craftBoneTotems: "Bone Totem Crafting",
+  craftLeatherTotems: "Leather Totem Crafting",
 };
 
 // Actions the Disgraced Prior can be assigned to auto-execute
@@ -139,18 +181,9 @@ export const PRIOR_ELIGIBLE_ACTIONS = new Set<string>([
   "mineSulfur",
   "mineObsidian",
   "mineAdamant",
-  "craftTorch",
   "craftTorches",
-  "craftTorches3",
-  "craftTorches4",
-  "craftTorches5",
-  "craftTorches10",
-  "craftBoneTotem",
-  "craftBoneTotems2",
-  "craftBoneTotems3",
-  "craftBoneTotems5",
-  "craftLeatherTotem",
-  "craftLeatherTotems5",
+  "craftBoneTotems",
+  "craftLeatherTotems",
   "craftEmberBomb",
   "craftAshfireBomb",
   "craftVoidBomb",
@@ -163,9 +196,9 @@ export const PRIOR_ELIGIBLE_ACTIONS = new Set<string>([
  * Each inner array is ordered from earliest to latest tier.
  */
 export const PRIOR_ACTION_UPGRADE_CHAINS: readonly string[][] = [
-  ["craftTorch", "craftTorches", "craftTorches3", "craftTorches4", "craftTorches5", "craftTorches10"],
-  ["craftBoneTotem", "craftBoneTotems2", "craftBoneTotems3", "craftBoneTotems5"],
-  ["craftLeatherTotem", "craftLeatherTotems5"],
+  ["craftTorches"],
+  ["craftBoneTotems"],
+  ["craftLeatherTotems"],
   ["exploreCave", "ventureDeeper", "descendFurther", "exploreRuins", "exploreTemple", "exploreCitadel"],
 ];
 
@@ -208,6 +241,9 @@ export const ACTION_TO_UPGRADE_KEY: Record<string, UpgradeKey | undefined> = {
   hunt: "hunt",
   chopWood: "chopWood",
   caveExplore: "caveExplore",
+  craftTorches: "craftTorches",
+  craftBoneTotems: "craftBoneTotems",
+  craftLeatherTotems: "craftLeatherTotems",
 };
 
 /**

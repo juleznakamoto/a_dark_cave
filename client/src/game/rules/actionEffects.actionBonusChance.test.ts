@@ -209,7 +209,7 @@ describe('Tarnished Compass - actionBonusChance', () => {
 
   describe('Non-Eligible Actions', () => {
     const nonEligibleActions = [
-      'craftTorch',
+      'craftTorches',
       'craftIronSword',
       'buildCabin',
       'boneTotems',

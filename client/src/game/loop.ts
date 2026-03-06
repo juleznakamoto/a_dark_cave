@@ -634,9 +634,8 @@ function processTick() {
   if (freshState.fellowship?.disgraced_prior) {
     const assigned = freshState.priorAssignedActions ?? [];
 
-    // When an assigned action's show_when conditions are no longer met (e.g. craftTorch
-    // after acquiring a stone_axe), automatically transfer the assignment to the next
-    // visible action in the same upgrade chain, or simply drop it if no successor exists.
+    // When an assigned action's show_when conditions are no longer met, automatically
+    // transfer the assignment to the next visible action in the same upgrade chain, or drop it if no successor exists.
     const isVisible = (id: string) => id === "feedFire" || shouldShowAction(id, freshState as unknown as GameState);
     const staleActions = assigned.filter((id) => !isVisible(id));
 

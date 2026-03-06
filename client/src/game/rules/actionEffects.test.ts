@@ -7,6 +7,7 @@ import { getGameActions } from './actionsRegistry';
 
 // Import index to register all actions
 import './index';
+import { getExecutionTime } from './index';
 
 const gameActions = getGameActions();
 import { getTotalCraftingCostReduction, getTotalBuildingCostReduction } from './effectsCalculation';
@@ -37,12 +38,12 @@ describe('Execution Split - costs on click, gains on completion', () => {
   describe('applyActionCostsOnly', () => {
     it('deducts resources but does NOT apply effects gains', () => {
       const state = createInitialState();
-      const woodCost = (gameActions.craftTorch.cost as any)["resources.wood"];
+      const woodCost = 10; // craftTorches tier 1
       state.resources.wood = woodCost * 2;
       state.story.seen.hasWood = true;
       state.tools.stone_axe = false;
 
-      const updates = applyActionCostsOnly('craftTorch', state);
+      const updates = applyActionCostsOnly('craftTorches', state);
 
       // Cost: wood deducted
       expect(updates.resources!.wood).toBe(woodCost); // woodCost*2 - woodCost
@@ -90,14 +91,14 @@ describe('Execution Split - costs on click, gains on completion', () => {
   describe('applyActionEffects - skips costs when _completingExecution is set', () => {
     it('skips cost deduction when completing execution, applies only effects', () => {
       const state = createInitialState();
-      const woodCost = (gameActions.craftTorch.cost as any)["resources.wood"];
+      const woodCost = 10; // craftTorches tier 1
       state.resources.wood = woodCost * 2;
       state.story.seen.hasWood = true;
       state.tools.stone_axe = false;
       // Simulate completing execution: costs were already consumed
-      (state as any)._completingExecution = 'craftTorch';
+      (state as any)._completingExecution = 'craftTorches';
 
-      const updates = applyActionEffects('craftTorch', state);
+      const updates = applyActionEffects('craftTorches', state);
 
       // Wood should NOT be deducted (already consumed at execution start)
       // It should remain at woodCost*2 (unchanged) or be absent from updates
@@ -109,13 +110,13 @@ describe('Execution Split - costs on click, gains on completion', () => {
 
     it('normally applies both costs AND effects when not completing execution', () => {
       const state = createInitialState();
-      const woodCost = (gameActions.craftTorch.cost as any)["resources.wood"];
+      const woodCost = 10; // craftTorches tier 1
       state.resources.wood = woodCost * 2;
       state.story.seen.hasWood = true;
       state.tools.stone_axe = false;
       // _completingExecution not set
 
-      const updates = applyActionEffects('craftTorch', state);
+      const updates = applyActionEffects('craftTorches', state);
 
       // Both cost and effect applied
       expect(updates.resources!.wood).toBe(woodCost);   // woodCost*2 - woodCost
@@ -124,14 +125,14 @@ describe('Execution Split - costs on click, gains on completion', () => {
 
     it('completing execution on a different action does NOT skip costs', () => {
       const state = createInitialState();
-      const woodCost = (gameActions.craftTorch.cost as any)["resources.wood"];
+      const woodCost = 10; // craftTorches tier 1
       state.resources.wood = woodCost * 2;
       state.story.seen.hasWood = true;
       state.tools.stone_axe = false;
       // Set _completingExecution for a DIFFERENT action
       (state as any)._completingExecution = 'craftIronSword';
 
-      const updates = applyActionEffects('craftTorch', state);
+      const updates = applyActionEffects('craftTorches', state);
 
       // Costs should still be applied since this action is not the one completing
       expect(updates.resources!.wood).toBe(woodCost);
@@ -151,14 +152,14 @@ describe('actionEffects - circular dependency fix', () => {
     expect(typeof applyActionEffects).toBe('function');
   });
 
-  it('should apply effects for craftBoneTotem action', () => {
-    // Set up state to have required resources
-    const boneCost = (gameActions.craftBoneTotem.cost as any)["resources.bones"];
+  it('should apply effects for craftBoneTotems action', () => {
+    // Set up state for tier 1 (altar): 100 bones, 1 bone_totem
+    const boneCost = 100;
     state.resources.bones = boneCost;
     state.buildings.altar = 1;
     state.buildings.shrine = 0;
 
-    const updates = applyActionEffects('craftBoneTotem', state);
+    const updates = applyActionEffects('craftBoneTotems', state);
 
     expect(updates).toBeDefined();
     expect(updates.resources).toBeDefined();
@@ -166,18 +167,57 @@ describe('actionEffects - circular dependency fix', () => {
     expect(updates.resources!.bone_totem).toBe(1);
   });
 
-  it('should apply effects for craftTorch action', () => {
-    const woodCost = (gameActions.craftTorch.cost as any)["resources.wood"];
+  it('should apply effects for craftTorches action', () => {
+    const woodCost = 10; // tier 1
     state.resources.wood = woodCost * 2; // Ensure enough resources
     state.story.seen.hasWood = true;
     state.tools.stone_axe = false;
 
-    const updates = applyActionEffects('craftTorch', state);
+    const updates = applyActionEffects('craftTorches', state);
 
     expect(updates).toBeDefined();
     expect(updates.resources).toBeDefined();
     expect(updates.resources!.wood).toBe(woodCost); // woodCost * 2 - woodCost
     expect(updates.resources!.torch).toBeGreaterThanOrEqual(1);
+  });
+
+  it('should scale craftBoneTotems cost and gain with upgrade level when book_of_ascension', () => {
+    state.resources.bones = 600; // 100 * 6 for level 5
+    state.buildings.altar = 1;
+    state.books = { book_of_ascension: true };
+    state.buttonUpgrades = { craftBoneTotems: { clicks: 75, level: 5 } };
+
+    const updates = applyActionEffects('craftBoneTotems', state);
+
+    // Level 5: multiplier 6, base cost 100, base amount 1
+    expect(updates.resources!.bones).toBe(0); // 600 - 600
+    expect(updates.resources!.bone_totem).toBe(6); // 1 * 6
+  });
+
+  it('should scale craftTorches cost and gain with upgrade level when book_of_ascension', () => {
+    state.resources.wood = 60; // 10 * 6 for level 5
+    state.story.seen.hasWood = true;
+    state.tools.stone_axe = false;
+    state.books = { book_of_ascension: true };
+    state.buttonUpgrades = { craftTorches: { clicks: 110, level: 5 } };
+
+    const updates = applyActionEffects('craftTorches', state);
+
+    // Level 5: multiplier 6, base cost 10, base amount 1
+    expect(updates.resources!.wood).toBe(0); // 60 - 60
+    expect(updates.resources!.torch).toBe(6); // 1 * 6
+  });
+
+  it('craftTorches execution time is 3s without upgrade', () => {
+    state.story.seen.hasWood = true;
+    expect(getExecutionTime('craftTorches', state)).toBe(3);
+  });
+
+  it('craftTorches execution time is halved at upgrade level 10 with book_of_ascension', () => {
+    state.story.seen.hasWood = true;
+    state.books = { book_of_ascension: true };
+    state.buttonUpgrades = { craftTorches: { clicks: 360, level: 10 } };
+    expect(getExecutionTime('craftTorches', state)).toBe(1.5);
   });
 
   it('should apply effects for craftIronSword action', () => {

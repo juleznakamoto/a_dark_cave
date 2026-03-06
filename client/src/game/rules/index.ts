@@ -9,6 +9,7 @@ import {
   getAnimalsCost,
   getHumansCost,
 } from "./forestSacrificeActions";
+import { ACTION_TO_UPGRADE_KEY, getUpgradeLevel } from "@/game/buttonUpgrades";
 import { calculateAdjustedCost } from "./costCalculation";
 import { getActionBonuses } from "./effectsCalculation";
 import { formatNumber } from "@/lib/utils";
@@ -59,14 +60,27 @@ registerActions({
 // Export the registry getter for external use
 export const gameActions = getGameActions();
 
+const CRAFT_UPGRADE_ACTIONS = ["craftTorches", "craftBoneTotems", "craftLeatherTotems"];
+
 /** Get execution time in seconds for an action (0 = no execution time, instant) */
 export function getExecutionTime(actionId: string, state: GameState): number {
   const action = gameActions[actionId];
   if (!action?.executionTime) return 0;
-  const baseTime =
+  let baseTime =
     typeof action.executionTime === "number"
       ? action.executionTime
       : action.executionTime(state);
+
+  // Craft actions: at upgrade level 10 with book_of_ascension, execution time is halved
+  if (
+    CRAFT_UPGRADE_ACTIONS.includes(actionId) &&
+    state.books?.book_of_ascension
+  ) {
+    const upgradeKey = ACTION_TO_UPGRADE_KEY[actionId];
+    if (upgradeKey && getUpgradeLevel(upgradeKey, state) === 10) {
+      return Math.max(1, baseTime * 0.5);
+    }
+  }
 
   const { executionTimeReduction } = getActionBonuses(actionId, state);
   return Math.max(1, baseTime - executionTimeReduction);
@@ -227,11 +241,12 @@ export function getResourcesFromActionCost(
   if (!action?.cost) return [];
 
   const resources: string[] = [];
+  const cost = typeof action.cost === "function" ? action.cost(state) : action.cost;
 
   // Handle different cost structures
-  if (typeof action.cost === "object" && !Array.isArray(action.cost)) {
+  if (cost && typeof cost === "object" && !Array.isArray(cost)) {
     // Check if it's a tiered cost structure (has numeric keys)
-    const keys = Object.keys(action.cost);
+    const keys = Object.keys(cost);
     const firstKey = keys[0];
 
     if (firstKey && !isNaN(Number(firstKey))) {
@@ -241,7 +256,7 @@ export function getResourcesFromActionCost(
         level = getNextBuildingLevel(actionId, state);
       }
 
-      const levelCost = action.cost[level];
+      const levelCost = (cost as Record<number, Record<string, any>>)[level];
       if (levelCost) {
         Object.keys(levelCost).forEach((key) => {
           if (key.startsWith("resources.")) {
@@ -252,7 +267,7 @@ export function getResourcesFromActionCost(
       }
     } else {
       // Simple cost structure
-      Object.keys(action.cost).forEach((key) => {
+      Object.keys(cost).forEach((key) => {
         if (key.startsWith("resources.")) {
           const resourceName = key.split(".")[1];
           resources.push(resourceName);
@@ -326,10 +341,11 @@ export function canExecuteAction(actionId: string, state: GameState): boolean {
     return false;
   }
 
-  let costs = action.cost;
+  let costs: Record<string, any> =
+    typeof action.cost === "function" ? action.cost(state) : action.cost;
 
   // For building actions, get the cost for the next level
-  if (action.building) {
+  if (action.building && typeof action.cost !== "function") {
     const level = getNextBuildingLevel(actionId, state);
     costs = action.cost[level];
   }
@@ -440,10 +456,11 @@ export function getActionCostDisplay(
   const action = getGameActions()[actionId];
   if (!action?.cost) return "";
 
-  let costs = action.cost;
+  let costs: Record<string, any> =
+    typeof action.cost === "function" ? action.cost(state) : action.cost;
 
   // For building actions, get the cost for the next level
-  if (action.building && state) {
+  if (action.building && state && typeof action.cost !== "function") {
     const level = getNextBuildingLevel(actionId, state);
     costs = action.cost[level];
   }
@@ -534,10 +551,11 @@ export function getActionCostBreakdown(
   const action = getGameActions()[actionId];
   if (!action?.cost) return [];
 
-  let costs = action.cost;
+  let costs: Record<string, any> =
+    typeof action.cost === "function" ? action.cost(state) : action.cost;
 
   // For building actions, get the cost for the next level
-  if (action.building) {
+  if (action.building && typeof action.cost !== "function") {
     const level = getNextBuildingLevel(actionId, state);
     costs = action.cost[level];
   }

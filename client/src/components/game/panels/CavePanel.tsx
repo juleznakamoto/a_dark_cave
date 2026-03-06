@@ -145,18 +145,9 @@ export default function CavePanel() {
       subGroups: [
         {
           actions: [
-            { id: "craftTorch", label: "Torch" },
             { id: "craftTorches", label: "Torches" },
-            { id: "craftTorches3", label: "Torches" },
-            { id: "craftTorches4", label: "Torches" },
-            { id: "craftTorches5", label: "Torches" },
-            { id: "craftTorches10", label: "Torches" },
-            { id: "craftBoneTotem", label: "Bone Totem" },
-            { id: "craftBoneTotems2", label: "Bone Totems" },
-            { id: "craftBoneTotems3", label: "Bone Totems" },
-            { id: "craftBoneTotems5", label: "Bone Totems" },
-            { id: "craftLeatherTotem", label: "Leather Totem" },
-            { id: "craftLeatherTotems5", label: "Leather Totems" },
+            { id: "craftBoneTotems", label: "Bone Totems" },
+            { id: "craftLeatherTotems", label: "Leather Totems" },
             { id: "craftIronLantern", label: "Iron Lantern" },
             { id: "craftSteelLantern", label: "Steel Lantern" },
             { id: "craftObsidianLantern", label: "Obsidian Lantern" },
@@ -234,7 +225,10 @@ export default function CavePanel() {
     if (!action) return null;
 
     const canExecute = canExecuteAction(actionId, state);
-    const showCost = action.cost && Object.keys(action.cost).length > 0;
+    const showCost =
+      action.cost &&
+      (typeof action.cost === "function" ||
+        Object.keys(action.cost as object).length > 0);
 
     // Check if this is a mine action or cave exploration action or craft action
     const isMineAction = actionId.startsWith("mine");
