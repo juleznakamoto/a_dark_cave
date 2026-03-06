@@ -68,62 +68,51 @@ export function ButtonLevelBadge({ upgradeKey }: ButtonLevelBadgeProps) {
         >
           <div className="space-y-1.5">
             <div className="">
-              {isCraftUpgrade && produceAmount !== undefined ? (
+              {!info.isMaxLevel && info.nextLevel ? (
                 <>
-                  <div className="text-xs">
-                    Produce <span className="font-medium">{produceAmount}</span> at a time
-                  </div>
-                  {!info.isMaxLevel && info.nextLevel && (
-                    <div className="flex items-center gap-2 mt-1">
+                  <div className="flex items-center gap-2">
+                    <div className="pt-1 relative">
                       <CircularProgress
                         value={progressPercent}
                         size={24}
                         strokeWidth={2}
                       />
-                      <div className="text-xs">
-                        Level {info.level} → {info.level + 1}
+                      <div className="absolute mb-[0px] inset-0 flex items-center justify-center text-xs font-medium">
+                        {info.level}
                       </div>
                     </div>
-                  )}
-                  {info.isMaxLevel && (
-                    <div className="mt-1 pt-1 border-t">max level</div>
-                  )}
+                    <div className="flex flex-col gap-0.5">
+                      <div className="text-xs">
+                        Bonus:{" "}
+                        <span className="font-medium">
+                          {isCraftUpgrade && produceAmount !== undefined
+                            ? `Craft x${produceAmount}`
+                            : `+${info.bonus}%`}
+                        </span>
+                      </div>
+                      <div className="text-xs">
+                        Next Bonus:{" "}
+                        <span className="font-medium">
+                          {isCraftUpgrade && produceAmount !== undefined && info.nextLevel
+                            ? `Craft x${Math.floor(1 * (1 + (info.nextLevel.bonus || 0) / 100))}`
+                            : `+${info.nextLevel.bonus}%`}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
                 </>
               ) : (
-                <>
-                  {!info.isMaxLevel && info.nextLevel ? (
-                    <>
-                      <div className="flex items-center gap-2">
-                        <div className="pt-1 relative">
-                          <CircularProgress
-                            value={progressPercent}
-                            size={24}
-                            strokeWidth={2}
-                          />
-                          <div className="absolute mb-[0px] inset-0 flex items-center justify-center text-xs font-medium">
-                            {info.level}
-                          </div>
-                        </div>
-                        <div className="flex flex-col gap-0.5">
-                          <div className="text-xs">
-                            Bonus: <span className="font-medium">+{info.bonus}%</span>
-                          </div>
-                          <div className="text-xs">
-                            Next bonus: <span className="font-medium">+{info.nextLevel.bonus}%</span>
-                          </div>
-                        </div>
-                      </div>
-                    </>
-                  ) : (
-                    <div className="flex justify-between gap-1">
-                      <span>Bonus:</span>
-                      <span>+{info.bonus}%</span>
-                    </div>
-                  )}
-                  {info.isMaxLevel && (
-                    <div className="mt-1 pt-1 border-t">max level</div>
-                  )}
-                </>
+                <div className="flex justify-between gap-1">
+                  <span>Bonus:</span>
+                  <span>
+                    {isCraftUpgrade && produceAmount !== undefined
+                      ? `Craft x${produceAmount}`
+                      : `+${info.bonus}%`}
+                  </span>
+                </div>
+              )}
+              {info.isMaxLevel && (
+                <div className="mt-1 pt-1 border-t">max level</div>
               )}
             </div>
           </div>
