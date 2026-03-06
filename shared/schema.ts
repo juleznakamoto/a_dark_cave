@@ -680,6 +680,24 @@ export const gameStateSchema = z.object({
           level: z.number().default(0),
         })
         .default({ clicks: 0, level: 0 }),
+      craftTorches: z
+        .object({
+          clicks: z.number().default(0),
+          level: z.number().default(0),
+        })
+        .default({ clicks: 0, level: 0 }),
+      craftBoneTotems: z
+        .object({
+          clicks: z.number().default(0),
+          level: z.number().default(0),
+        })
+        .default({ clicks: 0, level: 0 }),
+      craftLeatherTotems: z
+        .object({
+          clicks: z.number().default(0),
+          level: z.number().default(0),
+        })
+        .default({ clicks: 0, level: 0 }),
     })
     .default({
       caveExplore: { clicks: 0, level: 0 },
@@ -691,6 +709,9 @@ export const gameStateSchema = z.object({
       mineAdamant: { clicks: 0, level: 0 },
       hunt: { clicks: 0, level: 0 },
       chopWood: { clicks: 0, level: 0 },
+      craftTorches: { clicks: 0, level: 0 },
+      craftBoneTotems: { clicks: 0, level: 0 },
+      craftLeatherTotems: { clicks: 0, level: 0 },
     }),
   // Analytics: Track button clicks since last save (not persisted to local storage)
   clickAnalytics: z.record(z.number()).default({}), // Track button clicks by button ID

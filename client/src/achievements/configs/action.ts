@@ -46,6 +46,16 @@ export const actionChartConfig: AchievementChartConfig = {
           return count === 1 ? 1.3 : count;
         },
       },
+      {
+        segmentId: "0-craftTorches",
+        maxCount: 10,
+        label: "Torches",
+        reward: 500,
+        getCount: (state: GameState) => {
+          const count = state.buttonUpgrades?.["craftTorches"]?.level || 0;
+          return count === 1 ? 1.3 : count;
+        },
+      },
     ],
     // Second ring: Cave & Gathering Actions
     [
@@ -135,6 +145,26 @@ export const actionChartConfig: AchievementChartConfig = {
         reward: 500,
         getCount: (state: GameState) =>
           Math.min(Number(state.story?.seen?.animalsSacrificeLevel) || 0, 10),
+      },
+      {
+        segmentId: "2-craftBoneTotems",
+        maxCount: 10,
+        label: "Bone Totem Craft",
+        reward: 500,
+        getCount: (state: GameState) => {
+          const count = state.buttonUpgrades?.["craftBoneTotems"]?.level || 0;
+          return count === 1 ? 1.8 : count;
+        },
+      },
+      {
+        segmentId: "2-craftLeatherTotems",
+        maxCount: 10,
+        label: "Leather Totem Craft",
+        reward: 500,
+        getCount: (state: GameState) => {
+          const count = state.buttonUpgrades?.["craftLeatherTotems"]?.level || 0;
+          return count === 1 ? 1.8 : count;
+        },
       },
     ],
     // Fourth ring: Bomb Crafting
