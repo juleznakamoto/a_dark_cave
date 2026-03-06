@@ -175,7 +175,7 @@ export default function MadnessDialog({ isOpen, data, onClose }: MadnessDialogPr
 
           <div className={hasRewardItems ? "pt-2 mt-1" : "pt-0 mt-0"}>
             {hasRewardItems && <div className="my-3 h-px w-full bg-white/10" />}
-            <div className={`text-sm mb-2 text-center text-violet-300 ${hasRewardItems ? "mt-3" : "mt-1"}`}>
+            <div className={`text-sm mb-3 text-center text-violet-300 ${hasRewardItems ? "mt-3" : "mt-0"}`}>
               {madnessChange > 0 ? "+" : "-"} {Math.abs(madnessChange)} Madness
             </div>
           </div>
