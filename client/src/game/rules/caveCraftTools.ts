@@ -728,6 +728,15 @@ export function handleCraftStoneAxe(
   const effectUpdates = applyActionEffects("craftStoneAxe", state);
   Object.assign(result.stateUpdates, effectUpdates);
 
+  if (effectUpdates.tools?.stone_axe && !state.tools.stone_axe) {
+    result.logEntries!.push({
+      id: `stone-axe-unlocked-${Date.now()}`,
+      message: "An axe could help gather wood.",
+      timestamp: Date.now(),
+      type: "system",
+    });
+  }
+
   // Add village unlocked message when stone axe is crafted
   if (!state.flags.villageUnlocked) {
     result.logEntries!.push({
@@ -748,6 +757,16 @@ export function handleCraftStonePickaxe(
 ): ActionResult {
   const effectUpdates = applyActionEffects("craftStonePickaxe", state);
   Object.assign(result.stateUpdates, effectUpdates);
+
+  if (effectUpdates.tools?.stone_pickaxe && !state.tools.stone_pickaxe) {
+    result.logEntries!.push({
+      id: `stone-pickaxe-unlocked-${Date.now()}`,
+      message: "A pickaxe could help mine minerals.",
+      timestamp: Date.now(),
+      type: "system",
+    });
+  }
+
   return result;
 }
 

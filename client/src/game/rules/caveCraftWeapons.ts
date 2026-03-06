@@ -383,6 +383,15 @@ export function handleCraftCrudeBow(
   const effectUpdates = applyActionEffects("craftCrudeBow", state);
   Object.assign(result.stateUpdates, effectUpdates);
 
+  if (effectUpdates.weapons?.crude_bow && !state.weapons.crude_bow) {
+    result.logEntries!.push({
+      id: `crude-bow-unlocked-${Date.now()}`,
+      message: "A bow could help hunt animals.",
+      timestamp: Date.now(),
+      type: "system",
+    });
+  }
+
   // Add forest unlock message when crude bow is crafted
   if (
     effectUpdates.flags &&
