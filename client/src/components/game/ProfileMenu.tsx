@@ -129,11 +129,11 @@ export default function ProfileMenu() {
       setCurrentUser(null);
       setIsUserSignedIn(false);
       setAccountDropdownOpen(false);
-      
+
       // Reset game state to fresh start (shows start screen)
       // Pass empty object to reset to defaultGameState
       useGameStore.getState().initialize({} as any);
-      
+
       toast({
         title: "Signed out successfully",
       });
@@ -570,7 +570,8 @@ export default function ProfileMenu() {
                 </div>
               </TooltipTrigger>
               <TooltipContent>
-                <p className="text-xs">Sign in to save your game progress</p>
+                <p className="text-xs">Game progress is auto-saved locally</p>
+                <p className="text-xs">Sign in to save game progress in the cloud</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
