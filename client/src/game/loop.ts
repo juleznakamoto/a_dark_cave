@@ -704,7 +704,7 @@ function processTick() {
     });
   }
 
-  // Check if frostfall has expired
+  // Check if frostfall has expired (surviving frostfall gives -1 madness)
   if (
     state.frostfallState?.isActive &&
     state.frostfallState.endTime <= Date.now()
@@ -714,6 +714,17 @@ function processTick() {
         ...state.frostfallState,
         isActive: false,
       },
+      stats: {
+        ...state.stats,
+        madnessFromEvents: Math.max(
+          0,
+          (state.stats.madnessFromEvents || 0) - 1,
+        ),
+      },
+    });
+    state.setMadnessDialog(true, {
+      successLog: "The blizzard passes. The villagers survived the frostfall.",
+      madnessChange: -1,
     });
   }
 
