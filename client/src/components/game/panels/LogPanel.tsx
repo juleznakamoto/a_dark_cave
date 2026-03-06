@@ -14,7 +14,7 @@ type ExtendedLogEntry =
       timestamp: number;
     };
 
-const LOG_ENTRY_PULSE_MS = 10000;
+const LOG_ENTRY_PULSE_MS = 30000;
 
 function LogPanel() {
   const { log, timedEventTab } = useGameStore();
