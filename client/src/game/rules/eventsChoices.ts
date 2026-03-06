@@ -2214,6 +2214,13 @@ export const choiceEvents: Record<string, GameEvent> = {
               wood: state.resources.wood - woodCost,
               food: state.resources.food - foodCost,
             },
+            stats: {
+              ...state.stats,
+              madnessFromEvents: Math.max(
+                0,
+                (state.stats.madnessFromEvents || 0) - 1,
+              ),
+            },
             story: {
               ...state.story,
               seen: {
