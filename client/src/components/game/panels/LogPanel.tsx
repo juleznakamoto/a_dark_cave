@@ -45,27 +45,27 @@ function LogPanel() {
   useEffect(() => {
     const visibleEntryIds = new Set(recentEntries.map((entry) => entry.id));
 
-    // Start pulse timers for new, unread entries.
-    recentEntries.forEach((entry) => {
-      if (!readEntries.has(entry.id) && !pulseTimersRef.current.has(entry.id)) {
+    // Only pulse the most recently added entry (first in reversed list = newest).
+    const newestEntry = recentEntries[0];
+    // Only add newest to pulse; do not stop previous pulses - let them finish.
+    if (newestEntry && !readEntries.has(newestEntry.id) && !pulseTimersRef.current.has(newestEntry.id)) {
+      setPulsingEntries((prev) => {
+        const next = new Set(prev);
+        next.add(newestEntry.id);
+        return next;
+      });
+
+      const timerId = setTimeout(() => {
         setPulsingEntries((prev) => {
           const next = new Set(prev);
-          next.add(entry.id);
+          next.delete(newestEntry.id);
           return next;
         });
+        pulseTimersRef.current.delete(newestEntry.id);
+      }, LOG_ENTRY_PULSE_MS);
 
-        const timerId = setTimeout(() => {
-          setPulsingEntries((prev) => {
-            const next = new Set(prev);
-            next.delete(entry.id);
-            return next;
-          });
-          pulseTimersRef.current.delete(entry.id);
-        }, LOG_ENTRY_PULSE_MS);
-
-        pulseTimersRef.current.set(entry.id, timerId);
-      }
-    });
+      pulseTimersRef.current.set(newestEntry.id, timerId);
+    }
 
     // Clear timers for entries no longer visible.
     pulseTimersRef.current.forEach((timerId, entryId) => {

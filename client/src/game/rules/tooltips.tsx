@@ -237,8 +237,9 @@ export const calculateResourceGains = (
     });
 
     // Parse costs for mine and craft actions
-    if (action.cost) {
-      Object.entries(action.cost).forEach(([key, value]) => {
+    const resolvedCost = typeof action.cost === "function" ? action.cost(state) : action.cost;
+    if (resolvedCost) {
+      Object.entries(resolvedCost).forEach(([key, value]) => {
         if (key.startsWith("resources.")) {
           const resource = key.split(".")[1];
           if (typeof value === "number") {
