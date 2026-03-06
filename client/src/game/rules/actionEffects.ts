@@ -579,9 +579,13 @@ export function applyActionEffects(
         }
       } else if (typeof effect === "number") {
         if (pathParts[0] === "resources") {
+          // Apply resource multiplier (e.g. Disgraced Prior) for resource gains
+          const actionBonuses = getActionBonusesCalc(actionId, state);
+          const mult = actionBonuses?.resourceMultiplier ?? 1;
+          const adjustedEffect = Math.floor(effect * mult);
           current[finalKey] =
             (state.resources[finalKey as keyof typeof state.resources] || 0) +
-            effect;
+            adjustedEffect;
         } else if (path === "madness") {
           current[finalKey] = (state.madness || 0) + effect;
         } else {

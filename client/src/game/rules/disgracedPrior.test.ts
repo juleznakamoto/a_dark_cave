@@ -204,4 +204,80 @@ describe("applyActionEffects — Prior multiplier applied to resource output", (
     expect(gained).toBeGreaterThanOrEqual(4);
     expect(gained).toBeLessThanOrEqual(8);
   });
+
+  it("craftTorches assigned to Prior at level 2 yields 2× torches (base 1 → 2)", () => {
+    const state = priorState(2, ["craftTorches"]);
+    state.resources.wood = 100;
+    state.story.seen.hasWood = true;
+    state.books = undefined; // No book_of_ascension - base 1 torch
+
+    const result = applyActionEffects("craftTorches", state);
+    const gained = result.resources?.torch ?? 0;
+    // Base 1 torch × Prior 2 = 2 torches
+    expect(gained).toBe(2);
+  });
+
+  it("craftBoneTotems assigned to Prior at level 4 yields 3× totems (base 1 → 3)", () => {
+    const state = priorState(4, ["craftBoneTotems"]);
+    state.resources.bones = 500;
+    state.buildings.altar = 1;
+    state.books = undefined; // No book_of_ascension - base 1 totem
+
+    const result = applyActionEffects("craftBoneTotems", state);
+    const gained = result.resources?.bone_totem ?? 0;
+    // Base 1 totem × Prior 3 = 3 totems
+    expect(gained).toBe(3);
+  });
+
+  it("craftTorches NOT assigned to Prior is unaffected by Prior level", () => {
+    const state = priorState(4, ["chopWood"]);
+    state.resources.wood = 100;
+    state.story.seen.hasWood = true;
+    state.books = undefined; // No book - base 1 torch
+
+    const result = applyActionEffects("craftTorches", state);
+    const gained = result.resources?.torch ?? 0;
+    // Should stay at base 1 torch
+    expect(gained).toBe(1);
+  });
+
+  it("hunt assigned to Prior at level 2 yields at least 2× the base minimum", () => {
+    const state = priorState(2, ["hunt"]);
+    state.resources.food = 0;
+    state.resources.fur = 0;
+    state.resources.bones = 0;
+    state.flags.forestUnlocked = true;
+    (state as any).BTP = 0;
+
+    const result = applyActionEffects("hunt", state);
+    const foodGained = result.resources?.food ?? 0;
+    // Base 6–12 food, ×2 = 12–24
+    expect(foodGained).toBeGreaterThanOrEqual(12);
+    expect(foodGained).toBeLessThanOrEqual(24);
+  });
+
+  it("craftEmberBomb assigned to Prior at level 2 yields 2× bombs (base 1 → 2)", () => {
+    const state = priorState(2, ["craftEmberBomb"]);
+    state.resources.iron = 200;
+    state.resources.black_powder = 100;
+    state.buildings.alchemistHall = 1;
+    (state as any).story = { seen: { portalDiscovered: true } };
+
+    const result = applyActionEffects("craftEmberBomb", state);
+    const gained = result.resources?.ember_bomb ?? 0;
+    // Base 1 bomb × Prior 2 = 2 bombs
+    expect(gained).toBe(2);
+  });
+
+  it("exploreCave assigned to Prior at level 4 yields at least 3× the base minimum", () => {
+    const state = priorState(4, ["exploreCave"]);
+    state.resources.stone = 0;
+    state.story.seen.hasWood = true;
+    (state as any).tools = {};
+
+    const result = applyActionEffects("exploreCave", state);
+    const stoneGained = result.resources?.stone ?? 0;
+    // Base range ~4–8, ×3 = 12–24
+    expect(stoneGained).toBeGreaterThanOrEqual(12);
+  });
 });
