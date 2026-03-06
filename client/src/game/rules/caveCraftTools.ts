@@ -1,25 +1,15 @@
 import { Action, GameState } from "@shared/schema";
 import { ActionResult } from "@/game/actions";
-import { getUpgradeLevel } from "@/game/buttonUpgrades";
+import { getUpgradeBonusMultiplier } from "@/game/buttonUpgrades";
 import { applyActionEffects } from "./actionEffects";
 
-export function getTorchTier(state: GameState): number {
-  if (state.tools?.adamant_axe) return 6;
-  if (state.tools?.obsidian_axe) return 5;
-  if (state.tools?.steel_axe) return 4;
-  if (state.tools?.iron_axe) return 3;
-  if (state.tools?.stone_axe) return 2;
-  return 1;
-}
-
-const TORCH_TIER_COSTS = [10, 20, 30, 40, 50, 100] as const;
-const TORCH_TIER_AMOUNTS = [1, 2, 3, 4, 5, 10] as const;
+const CRAFT_TORCHES_BASE_COST = 10;
+const CRAFT_TORCHES_BASE_AMOUNT = 1;
 const CRAFT_TORCHES_BASE_EXECUTION = 3;
 
 function getCraftTorchesUpgradeMultiplier(state: GameState): number {
   if (!state.books?.book_of_ascension) return 1;
-  const level = getUpgradeLevel("craftTorches", state);
-  return 1 + level;
+  return getUpgradeBonusMultiplier("craftTorches", state);
 }
 
 export const caveCraftTools: Record<string, Action> = {
@@ -30,16 +20,12 @@ export const caveCraftTools: Record<string, Action> = {
       "story.seen.hasWood": true,
     },
     cost: (state: GameState) => {
-      const tier = getTorchTier(state);
-      const baseCost = TORCH_TIER_COSTS[tier - 1];
       const mult = getCraftTorchesUpgradeMultiplier(state);
-      return { "resources.wood": Math.floor(baseCost * mult) };
+      return { "resources.wood": Math.floor(CRAFT_TORCHES_BASE_COST * mult) };
     },
     effects: (state: GameState) => {
-      const tier = getTorchTier(state);
-      const baseAmount = TORCH_TIER_AMOUNTS[tier - 1];
       const mult = getCraftTorchesUpgradeMultiplier(state);
-      const amount = Math.floor(baseAmount * mult);
+      const amount = Math.floor(CRAFT_TORCHES_BASE_AMOUNT * mult);
       return {
         "resources.torch": `random(${amount},${amount})` as any,
         "story.seen.actionCraftTorch": true,
@@ -622,14 +608,6 @@ export function handleCraftStoneAxe(
   const effectUpdates = applyActionEffects("craftStoneAxe", state);
   Object.assign(result.stateUpdates, effectUpdates);
 
-  if (effectUpdates.tools?.stone_axe && !state.tools.stone_axe) {
-    result.logEntries!.push({
-      id: `stone-axe-unlocked-${Date.now()}`,
-      message: "An axe could help gather wood.",
-      timestamp: Date.now(),
-      type: "system",
-    });
-  }
 
   // Add village unlocked message when stone axe is crafted
   if (!state.flags.villageUnlocked) {
@@ -652,14 +630,6 @@ export function handleCraftStonePickaxe(
   const effectUpdates = applyActionEffects("craftStonePickaxe", state);
   Object.assign(result.stateUpdates, effectUpdates);
 
-  if (effectUpdates.tools?.stone_pickaxe && !state.tools.stone_pickaxe) {
-    result.logEntries!.push({
-      id: `stone-pickaxe-unlocked-${Date.now()}`,
-      message: "A pickaxe could help mine minerals.",
-      timestamp: Date.now(),
-      type: "system",
-    });
-  }
 
   return result;
 }

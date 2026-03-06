@@ -1461,7 +1461,7 @@ describe('Resource Gain Tests', () => {
   });
 
   describe('Craft Actions', () => {
-    it('craftBoneTotems (tier 1) produces correct amount', () => {
+    it('craftBoneTotems produces correct amount (usage-based)', () => {
       const state = createTestState({
         buildings: { altar: 1 },
       });
@@ -1470,16 +1470,7 @@ describe('Resource Gain Tests', () => {
       expect(effectUpdates.resources?.bone_totem).toBe((state.resources.bone_totem || 0) + 1);
     });
 
-    it('craftBoneTotems (tier 4) produces correct amount', () => {
-      const state = createTestState({
-        buildings: { sanctum: 1 },
-      });
-      const effectUpdates = applyActionEffects('craftBoneTotems', state);
-
-      expect(effectUpdates.resources?.bone_totem).toBe((state.resources.bone_totem || 0) + 5);
-    });
-
-    it('craftLeatherTotems (tier 1) produces correct amount', () => {
+    it('craftLeatherTotems produces correct amount (usage-based)', () => {
       const state = createTestState({
         buildings: { temple: 1 },
       });
@@ -1488,16 +1479,7 @@ describe('Resource Gain Tests', () => {
       expect(effectUpdates.resources?.leather_totem).toBe((state.resources.leather_totem || 0) + 1);
     });
 
-    it('craftLeatherTotems (tier 2) produces correct amount', () => {
-      const state = createTestState({
-        buildings: { sanctum: 1 },
-      });
-      const effectUpdates = applyActionEffects('craftLeatherTotems', state);
-
-      expect(effectUpdates.resources?.leather_totem).toBe((state.resources.leather_totem || 0) + 5);
-    });
-
-    it('craftBoneTotems with upgrade level 3 produces 3x amount when book_of_ascension', () => {
+    it('craftBoneTotems with upgrade level 3 produces 4x amount when book_of_ascension', () => {
       const state = createTestState({
         buildings: { altar: 1 },
         books: { book_of_ascension: true },

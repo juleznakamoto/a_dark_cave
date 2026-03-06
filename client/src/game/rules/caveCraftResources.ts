@@ -1,30 +1,17 @@
 import { Action, GameState } from "@shared/schema";
 import { ActionResult } from '@/game/actions';
-import { getUpgradeLevel } from "@/game/buttonUpgrades";
+import { getUpgradeBonusMultiplier } from "@/game/buttonUpgrades";
 import { applyActionEffects } from "./actionEffects";
 
-export function getBoneTotemTier(state: GameState): number {
-  if ((state.buildings?.sanctum || 0) >= 1) return 4;
-  if ((state.buildings?.temple || 0) >= 1) return 3;
-  if ((state.buildings?.shrine || 0) >= 1) return 2;
-  return 1;
-}
+const BONE_TOTEM_BASE_COST = 100;
+const BONE_TOTEM_BASE_AMOUNT = 1;
 
-export function getLeatherTotemTier(state: GameState): number {
-  if ((state.buildings?.sanctum || 0) >= 1) return 2;
-  return 1;
-}
-
-const BONE_TOTEM_TIER_COSTS = [100, 200, 300, 500] as const;
-const BONE_TOTEM_TIER_AMOUNTS = [1, 2, 3, 5] as const;
-
-const LEATHER_TOTEM_TIER_COSTS = [30, 150] as const;
-const LEATHER_TOTEM_TIER_AMOUNTS = [1, 5] as const;
+const LEATHER_TOTEM_BASE_COST = 30;
+const LEATHER_TOTEM_BASE_AMOUNT = 1;
 
 function getCraftTotemUpgradeMultiplier(state: GameState, key: "craftBoneTotems" | "craftLeatherTotems"): number {
   if (!state.books?.book_of_ascension) return 1;
-  const level = getUpgradeLevel(key, state);
-  return 1 + level;
+  return getUpgradeBonusMultiplier(key, state);
 }
 
 export const caveCraftResources: Record<string, Action> = {
@@ -35,16 +22,12 @@ export const caveCraftResources: Record<string, Action> = {
       "buildings.altar": 1,
     },
     cost: (state: GameState) => {
-      const tier = getBoneTotemTier(state);
-      const baseCost = BONE_TOTEM_TIER_COSTS[tier - 1];
       const mult = getCraftTotemUpgradeMultiplier(state, "craftBoneTotems");
-      return { "resources.bones": Math.floor(baseCost * mult) };
+      return { "resources.bones": Math.floor(BONE_TOTEM_BASE_COST * mult) };
     },
     effects: (state: GameState) => {
-      const tier = getBoneTotemTier(state);
-      const baseAmount = BONE_TOTEM_TIER_AMOUNTS[tier - 1];
       const mult = getCraftTotemUpgradeMultiplier(state, "craftBoneTotems");
-      const amount = Math.floor(baseAmount * mult);
+      const amount = Math.floor(BONE_TOTEM_BASE_AMOUNT * mult);
       return {
         "resources.bone_totem": amount,
         "story.seen.hasBoneTotem": true,
@@ -61,16 +44,12 @@ export const caveCraftResources: Record<string, Action> = {
       "buildings.temple": 1,
     },
     cost: (state: GameState) => {
-      const tier = getLeatherTotemTier(state);
-      const baseCost = LEATHER_TOTEM_TIER_COSTS[tier - 1];
       const mult = getCraftTotemUpgradeMultiplier(state, "craftLeatherTotems");
-      return { "resources.leather": Math.floor(baseCost * mult) };
+      return { "resources.leather": Math.floor(LEATHER_TOTEM_BASE_COST * mult) };
     },
     effects: (state: GameState) => {
-      const tier = getLeatherTotemTier(state);
-      const baseAmount = LEATHER_TOTEM_TIER_AMOUNTS[tier - 1];
       const mult = getCraftTotemUpgradeMultiplier(state, "craftLeatherTotems");
-      const amount = Math.floor(baseAmount * mult);
+      const amount = Math.floor(LEATHER_TOTEM_BASE_AMOUNT * mult);
       return {
         "resources.leather_totem": amount,
         "story.seen.hasLeatherTotem": true,
