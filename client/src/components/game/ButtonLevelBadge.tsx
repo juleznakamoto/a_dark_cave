@@ -24,11 +24,12 @@ export function ButtonLevelBadge({ upgradeKey }: ButtonLevelBadgeProps) {
   const hasBook = useGameStore((state) => state.books?.book_of_ascension);
   const [isOpen, setIsOpen] = useState(false);
 
-  if (!hasBook || !buttonUpgrade || buttonUpgrade.level === 0) {
+  if (!hasBook) {
     return null;
   }
 
-  const info = getButtonUpgradeInfo(upgradeKey, buttonUpgrade);
+  const upgrade = buttonUpgrade ?? { clicks: 0, level: 0 };
+  const info = getButtonUpgradeInfo(upgradeKey, upgrade);
   const isCraftUpgrade = CRAFT_UPGRADE_KEYS.includes(upgradeKey);
   const produceAmount = isCraftUpgrade ? getCraftProduceAmount(upgradeKey, state) : undefined;
 
