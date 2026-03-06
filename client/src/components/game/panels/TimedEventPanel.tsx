@@ -5,6 +5,7 @@ import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { merchantTooltip } from "@/game/rules/tooltips";
 import { EventChoice } from "@/game/rules/events";
 import { logger } from "@/lib/logger";
+import { formatNumber } from "@/lib/utils";
 import {
   calculateMerchantDiscount,
   getTotalMerchantDiscount,
@@ -225,7 +226,7 @@ export default function TimedEventPanel() {
   const extractResourcesFromCost = (costText: string): string[] => {
     const resources: string[] = [];
     // Match patterns like "25 food", "100 wood", etc.
-    const matches = costText.matchAll(/(\d+)\s+([a-zA-Z_]+)/g);
+    const matches = costText.matchAll(/([\d']+)\s+([a-zA-Z_]+)/g);
 
     for (const match of matches) {
       const resourceName = match[2].toLowerCase();
@@ -329,9 +330,9 @@ export default function TimedEventPanel() {
 
               if (costText) {
                 // Extract all resource requirements from cost string
-                const costMatches = costText.matchAll(/(\d+)\s+([a-zA-Z_]+)/g);
+                const costMatches = costText.matchAll(/([\d']+)\s+([a-zA-Z_]+)/g);
                 for (const match of costMatches) {
-                  const costAmount = parseInt(match[1]);
+                  const costAmount = parseInt(match[1].replace(/'/g, ""), 10);
                   const resourceName = match[2].toLowerCase();
 
                   // Check if this resource exists in gameState.resources
@@ -451,9 +452,9 @@ export default function TimedEventPanel() {
                           {/* Parse cost segments and apply individual coloring */}
                           {costText.split(",").map((part, i) => {
                             const trimmedPart = part.trim();
-                            const match = trimmedPart.match(/(\d+)\s+([a-zA-Z_]+)/);
+                            const match = trimmedPart.match(/([\d']+)\s+([a-zA-Z_]+)/);
                             if (match) {
-                              const amount = match[1];
+                              const amount = parseInt(match[1].replace(/'/g, ""), 10);
                               const resName = match[2].toLowerCase();
                               const formattedResourceName = resName
                                 .split("_")
@@ -468,7 +469,7 @@ export default function TimedEventPanel() {
                                   key={i}
                                   className={hasEnough ? "text-foreground" : "text-muted-foreground"}
                                 >
-                                  -{amount} {formattedResourceName}
+                                  -{formatNumber(amount)} {formattedResourceName}
                                 </div>
                               );
                             }

@@ -11,6 +11,7 @@ import {
 } from "./forestSacrificeActions";
 import { calculateAdjustedCost } from "./costCalculation";
 import { getActionBonuses } from "./effectsCalculation";
+import { formatNumber } from "@/lib/utils";
 
 // Import action modules
 import { caveCraftResources } from "./caveCraftResources";
@@ -420,20 +421,20 @@ export function getActionCostDisplay(
   // Handle dynamic cost for bone totems
   if (actionId === "boneTotems") {
     const dynamicCost = getBoneTotemsCost(state);
-    return `-${dynamicCost} Bone Totem${dynamicCost !== 1 ? "s" : ""}`;
+    return `-${formatNumber(dynamicCost)} Bone Totem${dynamicCost !== 1 ? "s" : ""}`;
   }
 
   // Handle dynamic cost for leather totems
   if (actionId === "leatherTotems") {
     const dynamicCost = getLeatherTotemsCost(state);
-    return `-${dynamicCost} Leather Totem${dynamicCost !== 1 ? "s" : ""}`;
+    return `-${formatNumber(dynamicCost)} Leather Totem${dynamicCost !== 1 ? "s" : ""}`;
   }
 
   // Handle dynamic cost for animals sacrifice
   if (actionId === "animals") {
     const currentStep = state.sacrifices?.forest?.animals?.step || 1;
     const foodCost = 500 + (currentStep - 1) * 500; // 500, 1000, 1500...
-    return `-${foodCost} Food`;
+    return `-${formatNumber(foodCost)} Food`;
   }
 
   const action = getGameActions()[actionId];
@@ -470,7 +471,7 @@ export function getActionCostDisplay(
         .split("_")
         .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
         .join(" ");
-      return `-${adjustedAmount} ${formattedName}`;
+      return `-${formatNumber(adjustedAmount)} ${formattedName}`;
     })
     .join(", ");
 
@@ -487,7 +488,7 @@ export function getActionCostBreakdown(
     const dynamicCost = getBoneTotemsCost(state);
     return [
       {
-        text: `-${dynamicCost} Bone Totem${dynamicCost !== 1 ? "s" : ""}`,
+        text: `-${formatNumber(dynamicCost)} Bone Totem${dynamicCost !== 1 ? "s" : ""}`,
         satisfied: (state.resources.bone_totem || 0) >= dynamicCost,
       },
     ];
@@ -498,7 +499,7 @@ export function getActionCostBreakdown(
     const dynamicCost = getLeatherTotemsCost(state);
     return [
       {
-        text: `-${dynamicCost} Leather Totem${dynamicCost !== 1 ? "s" : ""}`,
+        text: `-${formatNumber(dynamicCost)} Leather Totem${dynamicCost !== 1 ? "s" : ""}`,
         satisfied: (state.resources.leather_totem || 0) >= dynamicCost,
       },
     ];
@@ -513,7 +514,7 @@ export function getActionCostBreakdown(
     );
     return [
       {
-        text: `-${dynamicCost} Villager${dynamicCost !== 1 ? "s" : ""}`,
+        text: `-${formatNumber(dynamicCost)} Villager${dynamicCost !== 1 ? "s" : ""}`,
         satisfied: totalVillagers >= dynamicCost,
       },
     ];
@@ -524,7 +525,7 @@ export function getActionCostBreakdown(
     const dynamicCost = getAnimalsCost(state);
     return [
       {
-        text: `-${dynamicCost} Food`,
+        text: `-${formatNumber(dynamicCost)} Food`,
         satisfied: (state.resources.food || 0) >= dynamicCost,
       },
     ];
@@ -625,7 +626,7 @@ export function getActionCostBreakdown(
     }
 
     breakdown.push({
-      text: `-${displayCost} ${resourceNameFormatted}`,
+      text: `-${formatNumber(displayCost)} ${resourceNameFormatted}`,
       satisfied,
     });
   });
@@ -669,7 +670,7 @@ export function getEventChoiceCostBreakdown(
         (resources[resourceName as keyof typeof resources] || 0) >= displayCost;
 
       breakdown.push({
-        text: `-${displayCost} ${resourceNameFormatted}`,
+        text: `-${formatNumber(displayCost)} ${resourceNameFormatted}`,
         satisfied,
       });
     });
@@ -697,7 +698,7 @@ export function getEventChoiceCostBreakdown(
           (resources[resource as keyof typeof resources] || 0) >= amount;
 
         breakdown.push({
-          text: `-${amount} ${resourceNameFormatted}`,
+          text: `-${formatNumber(amount)} ${resourceNameFormatted}`,
           satisfied,
         });
       }

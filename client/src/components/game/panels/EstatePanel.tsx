@@ -21,6 +21,7 @@ import {
 } from "@/game/rules/skillUpgrades";
 import { focusTooltip } from "@/game/rules/tooltips";
 import { useGlobalTooltip } from "@/hooks/useGlobalTooltip";
+import { formatNumber } from "@/lib/utils";
 import cn from "clsx";
 
 const ESTATE_BAR_GROW_ANIMATION_MS = 500;
@@ -62,7 +63,7 @@ function SkillUpgradeRow({
                 {tooltipContent}
                 <div className="border-t border-border my-1" />
                 <div className={canAfford ? "" : "text-muted-foreground"}>
-                  -{upgradeCost} Gold
+                  -{formatNumber(upgradeCost)} Gold
                 </div>
               </div>
             }
@@ -506,7 +507,7 @@ export default function EstatePanel() {
                             : "text-muted-foreground"
                         }
                       >
-                        -{nextLengthUpgrade.cost} Gold
+                        -{formatNumber(nextLengthUpgrade.cost)} Gold
                       </div>
                     </div>
                   }
@@ -577,7 +578,7 @@ export default function EstatePanel() {
                             : "text-muted-foreground"
                         }
                       >
-                        -{nextIntensityUpgrade.cost} Gold
+                        -{formatNumber(nextIntensityUpgrade.cost)} Gold
                       </div>
                     </div>
                   }

@@ -23,6 +23,7 @@ function LogPanel() {
   const [readEntries, setReadEntries] = useState<Set<string>>(
     () => new Set(log.map((entry) => entry.id)),
   );
+  const [pulsingEntries, setPulsingEntries] = useState<Set<string>>(new Set());
   const pulseTimersRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
   const topRef = useRef<HTMLDivElement>(null);
   const prevLogLengthRef = useRef(log.length);
@@ -44,13 +45,19 @@ function LogPanel() {
   useEffect(() => {
     const visibleEntryIds = new Set(recentEntries.map((entry) => entry.id));
 
-    // Start auto-read timers for new, unread entries.
+    // Start pulse timers for new, unread entries.
     recentEntries.forEach((entry) => {
       if (!readEntries.has(entry.id) && !pulseTimersRef.current.has(entry.id)) {
+        setPulsingEntries((prev) => {
+          const next = new Set(prev);
+          next.add(entry.id);
+          return next;
+        });
+
         const timerId = setTimeout(() => {
-          setReadEntries((prev) => {
+          setPulsingEntries((prev) => {
             const next = new Set(prev);
-            next.add(entry.id);
+            next.delete(entry.id);
             return next;
           });
           pulseTimersRef.current.delete(entry.id);
@@ -100,7 +107,8 @@ function LogPanel() {
 
               const isUnread = !readEntries.has(typedEntry.id);
               const showNewIndicator = isUnread;
-              const pulseClass = isUnread ? "animate-pulse" : "";
+              const isPulsing = pulsingEntries.has(typedEntry.id);
+              const pulseClass = isPulsing ? "animate-pulse" : "";
 
               const handleMouseEnter = () => {
                 if (isUnread) {
@@ -109,6 +117,11 @@ function LogPanel() {
                     clearTimeout(timerId);
                     pulseTimersRef.current.delete(typedEntry.id);
                   }
+                  setPulsingEntries((prev) => {
+                    const next = new Set(prev);
+                    next.delete(typedEntry.id);
+                    return next;
+                  });
                   setReadEntries((prev) => new Set(prev).add(typedEntry.id));
                 }
               };
@@ -121,7 +134,7 @@ function LogPanel() {
                 >
                   {showNewIndicator ? (
                     <span
-                      className="mt-2 h-1 w-1 shrink-0 rounded-full bg-white animate-pulse"
+                      className={`mt-2 h-1 w-1 shrink-0 rounded-full bg-white ${isPulsing ? "animate-pulse" : ""}`}
                       aria-hidden={true}
                     />
                   ) : (
