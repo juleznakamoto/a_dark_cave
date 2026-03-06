@@ -404,24 +404,26 @@ export default function VillagePanel() {
       : null;
     const isUpgrade = buildingKey ? isBuildingUpgrade(buildingKey) : false;
     const tooltipContent = (
-      <div className="text-xs whitespace-nowrap relative" style={buildingHint ? { width: '12rem' } : undefined}>
+      <div className="text-xs flex items-start gap-2" style={buildingHint ? { width: '12rem' } : undefined}>
+        <div className="flex-1 min-w-0 whitespace-nowrap">
+          {costBreakdown.map((cost, index) => (
+            <div
+              key={index}
+              className={
+                cost.satisfied ? "text-foreground" : "text-muted-foreground"
+              }
+            >
+              {cost.text}
+            </div>
+          ))}
+          {buildingHint && (
+            <div className="border-t border-border my-1 pt-1 text-muted-foreground whitespace-normal">
+              {buildingHint}
+            </div>
+          )}
+        </div>
         {isUpgrade && (
-          <span className="absolute top-0 right-0 text-green-700 leading-none">↑</span>
-        )}
-        {costBreakdown.map((cost, index) => (
-          <div
-            key={index}
-            className={
-              cost.satisfied ? "text-foreground" : "text-muted-foreground"
-            }
-          >
-            {cost.text}
-          </div>
-        ))}
-        {buildingHint && (
-          <div className="border-t border-border my-1 pt-1 text-muted-foreground whitespace-normal">
-            {buildingHint}
-          </div>
+          <span className="text-green-700 leading-none shrink-0">↑</span>
         )}
       </div>
     );
