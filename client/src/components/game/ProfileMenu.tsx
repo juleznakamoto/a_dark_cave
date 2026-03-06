@@ -570,8 +570,8 @@ export default function ProfileMenu() {
                 </div>
               </TooltipTrigger>
               <TooltipContent>
-                <p className="text-xs">Game progress is auto-saved locally</p>
-                <p className="text-xs">Sign in to save game progress in the cloud</p>
+                <p className="text-xs">Game progress is auto-saved locally.</p>
+                <p className="text-xs">Sign in to save in the cloud.</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
