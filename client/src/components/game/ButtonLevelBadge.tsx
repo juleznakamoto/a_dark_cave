@@ -102,13 +102,20 @@ export function ButtonLevelBadge({ upgradeKey }: ButtonLevelBadgeProps) {
                   </div>
                 </>
               ) : (
-                <div className="flex justify-between gap-1">
-                  <span>Bonus:</span>
-                  <span>
-                    {isCraftUpgrade && produceAmount !== undefined
-                      ? `Craft x${produceAmount}`
-                      : `+${info.bonus}%`}
-                  </span>
+                <div className="flex flex-col gap-0.5">
+                  <div className="flex justify-between gap-1">
+                    <span>Bonus:</span>
+                    <span>
+                      {isCraftUpgrade && produceAmount !== undefined
+                        ? `Craft x${produceAmount}`
+                        : `+${info.bonus}%`}
+                    </span>
+                  </div>
+                  {isCraftUpgrade && info.isMaxLevel && (
+                    <div className="text-xs text-muted-foreground">
+                      -50% execution time
+                    </div>
+                  )}
                 </div>
               )}
               {info.isMaxLevel && (
