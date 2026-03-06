@@ -37,33 +37,5 @@ export function checkMilestoneLogEntries(state: GameState): Partial<GameState> {
     };
   }
 
-  // Check if village reaches 8 villagers for the first time AND blacksmith exists
-  const hasShown8VillagerMilestone = state.story?.seen?.village8VillagersMilestone;
-  const hasBlacksmith = state.buildings?.blacksmith >= 1;
-
-  if (currentPopulation >= 8 && hasBlacksmith && !hasShown8VillagerMilestone) {
-    // Add the milestone log entry
-    const milestoneEntry: LogEntry = {
-      id: "village-8-villagers-milestone",
-      message: "The world is dangerous. Weapons could prove useful to withstand those who want to bring harm to the village.",
-      timestamp: Date.now(),
-      type: "system",
-    };
-
-    // Update the log and mark the milestone as seen
-    modifiedUpdates.log = [
-      ...(state.log || []),
-      milestoneEntry
-    ].slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES);
-
-    modifiedUpdates.story = {
-      ...state.story,
-      seen: {
-        ...state.story?.seen,
-        village8VillagersMilestone: true,
-      },
-    };
-  }
-
   return modifiedUpdates;
 }
