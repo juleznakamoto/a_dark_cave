@@ -1077,7 +1077,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     timeProbability: 45,
     title: "The Pale Cross at Dawn",
     message:
-      "One morning, villagers make a cruel discovery: a young man hangs crucified on the Pale Cross.",
+      "One morning, villagers make a cruel discovery. A young man hangs crucified on the Pale Cross, his head bowed and his body swaying faintly in the cold morning wind",
     priority: 5,
     repeatable: false,
     showAsTimedTab: true,
@@ -1112,7 +1112,8 @@ export const choiceEvents: Record<string, GameEvent> = {
         effect: (state: GameState) => {
           if ((state.resources.food || 0) < 1000) {
             return {
-              _logMessage: "You don't have enough food to hold a proper funeral.",
+              _logMessage:
+                "You don't have enough food to hold a proper funeral.",
             };
           }
 
