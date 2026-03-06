@@ -427,7 +427,7 @@ export default function GameContainer() {
       )}
 
       {/* Event Log - Fixed Height at Top */}
-      <div className="w-full overflow-hidden pb-0 p-2 flex-shrink-0 pr-12">
+      <div className="w-full overflow-hidden pb-0 p-2 flex-shrink-0 pr-14">
         <LogPanel />
       </div>
 
