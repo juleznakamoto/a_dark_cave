@@ -777,6 +777,35 @@ const toolTrades = [
     message:
       "You purchase the crow harness. A specially crafted harness for messenger crows.",
   },
+  {
+    id: "trade_clarity_elixir",
+    label: "Clarity Elixir",
+    give: "consumable",
+    giveItem: "clarity_elixir",
+    condition: (state: GameState) => {
+      const purchases =
+        (state.story?.seen?.clarityElixirPurchases as number) ?? 0;
+      if (purchases >= 5) return false;
+      if (purchases === 0) return state.buildings.woodenHut >= 4;
+      if (purchases === 1) return state.buildings.woodenHut >= 7;
+      if (purchases === 2) return state.buildings.woodenHut >= 10;
+      if (purchases === 3) return state.buildings.stoneHut >= 4;
+      if (purchases === 4) return state.buildings.stoneHut >= 8;
+      return false;
+    },
+    costs: [{ resource: "gold", amounts: [50] }],
+    costFn: (state: GameState) => {
+      const purchases =
+        (state.story?.seen?.clarityElixirPurchases as number) ?? 0;
+      if (purchases === 0) return 50;
+      if (purchases === 1) return 100;
+      if (purchases === 2) return 150;
+      if (purchases === 3) return 200;
+      if (purchases === 4) return 250;
+      return 50;
+    },
+    message: "You drink the Clarity Elixir. Your mind feels clearer.",
+  },
 ];
 
 // Helper function to select trades (used for both buy and sell)
@@ -1017,8 +1046,11 @@ export function generateMerchantChoices(state: GameState): MerchantTradeData[] {
     const trade =
       filteredToolTrades[Math.floor(Math.random() * filteredToolTrades.length)];
 
-    // Tool trades always cost gold
-    const goldCost = trade.costs[0].amounts[0];
+    // Tool trades always cost gold; use costFn when present for dynamic pricing
+    const goldCost =
+      typeof trade.costFn === "function"
+        ? trade.costFn(state)
+        : trade.costs[0].amounts[0];
     const discountedCost = roundCost(
       Math.ceil(goldCost * (1 - discount)),
       "down",

@@ -427,8 +427,27 @@ export class EventManager {
             },
           };
 
-          // Handle special buy types (books, tools, schematics) or regular resources
-          if (trade.buyResource === "book") {
+          // Handle special buy types (books, tools, schematics, consumables) or regular resources
+          if (trade.buyItem === "clarity_elixir") {
+            const currentPurchases =
+              (state.story?.seen?.clarityElixirPurchases as number) ?? 0;
+            stateChanges.stats = {
+              ...state.stats,
+              madnessFromEvents: Math.max(
+                0,
+                (state.stats.madnessFromEvents || 0) - 2,
+              ),
+            };
+            stateChanges.story = {
+              ...stateChanges.story,
+              seen: {
+                ...state.story.seen,
+                clarityElixirPurchases: currentPurchases + 1,
+              },
+            };
+            stateChanges._logMessage =
+              "As you drink the Clarity Elixir, the darkness in your mind recedes a little.";
+          } else if (trade.buyResource === "book") {
             stateChanges.books = {
               ...(state.books || {}),
               [trade.buyItem]: true,
@@ -452,7 +471,7 @@ export class EventManager {
             // Regular resource - ensure we don't pollute resources with item IDs
             // The buyResource for item trades is "book", "tool", etc. but the actual item ID is in buyItem
             // For regular resources, buyResource is the resource name (e.g. "food", "gold")
-            if (!["book", "tool", "schematic", "weapon"].includes(trade.buyResource)) {
+            if (!["book", "tool", "schematic", "weapon", "consumable"].includes(trade.buyResource)) {
               if (!stateChanges.resources) {
                 stateChanges.resources = { ...state.resources };
               }
