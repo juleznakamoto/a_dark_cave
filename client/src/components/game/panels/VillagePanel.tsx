@@ -57,10 +57,14 @@ export default function VillagePanel() {
     villagers,
     buildings,
     story,
+    timedEventTab,
+    playTime,
+    resources,
     executeAction,
     assignVillager,
     unassignVillager,
     setHighlightedResources,
+    callMerchant,
   } = useGameStore();
   const state = useGameStore.getState();
   const mobileTooltip = useMobileTooltip();
@@ -460,6 +464,65 @@ export default function VillagePanel() {
     );
   };
 
+  const renderCallMerchantButton = () => {
+    const callMerchantLastEndPlayTime = story?.seen?.callMerchantLastEndPlayTime as number | undefined;
+    const usageCount = (story?.seen?.callMerchantUsageCount as number) || 0;
+    const price = 50 + 50 * usageCount;
+    const isMerchantActive =
+      timedEventTab?.isActive && timedEventTab?.event?.id?.includes?.("merchant");
+
+    if (callMerchantLastEndPlayTime == null) return null;
+    if (usageCount >= 10) return null;
+    if (buildings.woodenHut < 3) return null;
+    if (isMerchantActive) return null;
+
+    const cooldownEndPlayTime = callMerchantLastEndPlayTime + 5 * 60 * 1000;
+    const currentPlayTime = playTime ?? 0;
+    const isOnCooldown = currentPlayTime < cooldownEndPlayTime;
+    const remainingMs = Math.max(0, cooldownEndPlayTime - currentPlayTime);
+    const canAfford = (resources?.gold ?? 0) >= price;
+
+    const formatRemaining = (ms: number) => {
+      const totalSeconds = Math.ceil(ms / 1000);
+      const minutes = Math.floor(totalSeconds / 60);
+      const seconds = totalSeconds % 60;
+      return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+    };
+
+    const tooltipContent = isOnCooldown ? (
+      <div className="text-xs whitespace-nowrap">
+        Available in {formatRemaining(remainingMs)}
+      </div>
+    ) : (
+      <div className="text-xs whitespace-nowrap">
+        <div
+          className={
+            canAfford ? "text-foreground" : "text-muted-foreground"
+          }
+        >
+          -{formatNumber(price)} Gold
+        </div>
+      </div>
+    );
+
+    return (
+      <CooldownButton
+        key="callMerchant"
+        onClick={() => callMerchant()}
+        cooldownMs={0}
+        actionId="callMerchant"
+        button_id="callMerchant"
+        disabled={isOnCooldown || !canAfford}
+        size="xs"
+        variant="outline"
+        className="hover:bg-background hover:text-foreground"
+        tooltip={tooltipContent}
+      >
+        <span className="flex items-center gap-1">Call Merchant</span>
+      </CooldownButton>
+    );
+  };
+
   // Hold-to-repeat state management (moved outside to avoid conditional hooks)
   const [holdState, setHoldState] = useState<{
     interval: NodeJS.Timeout | null;
@@ -596,11 +659,19 @@ export default function VillagePanel() {
       <BubblyButtonGlobalPortal bubbles={bubbles} />
       <ScrollArea className="h-full w-full">
         <div className="space-y-4 mt-2 mb-2 pl-[3px] ">
-          {/* Special Top Level Button Group for Feed Fire */}
-          {buildings.heartfire > 0 && (
+          {/* Special Top Level Button Group for Feed Fire and Call Merchant */}
+          {(buildings.heartfire > 0 ||
+            ((story?.seen?.callMerchantLastEndPlayTime != null) &&
+              (story?.seen?.callMerchantUsageCount as number) < 10 &&
+              buildings.woodenHut >= 3 &&
+              !(
+                timedEventTab?.isActive &&
+                timedEventTab?.event?.id?.includes?.("merchant")
+              ))) && (
             <div className="space-y-2">
               <div className="flex flex-wrap gap-2">
                 {renderButton("feedFire", "Feed Fire")}
+                {renderCallMerchantButton()}
               </div>
             </div>
           )}

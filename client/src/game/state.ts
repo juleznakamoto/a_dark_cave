@@ -45,6 +45,10 @@ import { getExecutionTime } from "@/game/rules";
 import { logger } from "@/lib/logger";
 import { madnessEvents } from "@/game/rules/eventsMadness";
 import { DISGRACED_PRIOR_UPGRADES } from "@/game/rules/skillUpgrades";
+import {
+  generateMerchantChoices,
+  merchantEvents,
+} from "@/game/rules/eventsMerchant";
 
 // Types
 interface GameStore extends GameState {
@@ -247,6 +251,7 @@ interface GameStore extends GameState {
   setEventDialog: (isOpen: boolean, event?: LogEntry | null) => void;
   setCombatDialog: (isOpen: boolean, data?: any) => void;
   setTimedEventTab: (isActive: boolean, event?: LogEntry | null, duration?: number) => Promise<void>;
+  callMerchant: () => void;
   setAuthDialogOpen: (isOpen: boolean) => void;
   setShopDialogOpen: (isOpen: boolean) => void;
   setLeaderboardDialogOpen: (isOpen: boolean) => void;
@@ -2283,20 +2288,34 @@ export const useGameStore = create<GameStore>((set, get) => ({
         },
       });
     } else if (!isActive) {
-      // If deactivating, clear merchant trades
+      // If deactivating, clear merchant trades and record when merchant ended (for Call Merchant button)
       logger.log('[MERCHANT TRADES] Clearing merchant trades (deactivating timed tab)');
 
-      set({
-        timedEventTab: {
-          isActive: false,
-          event: null,
-          expiryTime: 0,
-          startTime: undefined,
-        },
-        merchantTrades: {
-          choices: [],
-          purchasedIds: [],
-        },
+      set((state) => {
+        const currentEvent = state.timedEventTab?.event;
+        const wasMerchant = currentEvent?.id?.includes?.("merchant");
+        return {
+          ...state,
+          timedEventTab: {
+            isActive: false,
+            event: null,
+            expiryTime: 0,
+            startTime: undefined,
+          },
+          merchantTrades: {
+            choices: [],
+            purchasedIds: [],
+          },
+          ...(wasMerchant && {
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                callMerchantLastEndPlayTime: state.playTime ?? 0,
+              },
+            },
+          }),
+        };
       });
     } else {
       // Normal activation without merchant
@@ -2309,6 +2328,49 @@ export const useGameStore = create<GameStore>((set, get) => ({
         },
       });
     }
+  },
+
+  callMerchant: () => {
+    const state = get();
+    const usageCount =
+      (state.story?.seen?.callMerchantUsageCount as number) || 0;
+    const price = 50 + 50 * usageCount;
+
+    if (usageCount >= 10) return;
+    if ((state.resources?.gold ?? 0) < price) return;
+    if (state.timedEventTab?.isActive && state.timedEventTab?.event?.id?.includes?.("merchant")) return;
+
+    const choices = generateMerchantChoices(state);
+    const merchantEvent = merchantEvents.merchant;
+    const eventData: LogEntry = {
+      id: "merchant",
+      message:
+        typeof merchantEvent.message === "string"
+          ? merchantEvent.message
+          : merchantEvent.message[0] ?? "",
+      timestamp: Date.now(),
+      type: "event",
+      title: typeof merchantEvent.title === "string" ? merchantEvent.title : merchantEvent.title?.(state) ?? "Traveling Merchant",
+      choices,
+    };
+
+    set((s) => ({
+      ...s,
+      resources: {
+        ...s.resources,
+        gold: (s.resources?.gold ?? 0) - price,
+      },
+      story: {
+        ...s.story,
+        seen: {
+          ...s.story.seen,
+          callMerchantUsageCount: usageCount + 1,
+        },
+      },
+    }));
+
+    audioManager.playSound("merchant", 0.8);
+    get().setTimedEventTab(true, eventData, 4 * 60 * 1000);
   },
 
   setAuthDialogOpen: (isOpen: boolean) => {
