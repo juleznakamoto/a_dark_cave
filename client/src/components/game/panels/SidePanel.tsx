@@ -489,8 +489,8 @@ export default function SidePanel() {
   // Build combined madness tooltip
   let madnessTooltipContent: React.ReactNode = undefined;
   if (hasClerksHut) {
-    const itemMadness = totalMadness - (gameState.stats.madnessFromEvents || 0);
-    const eventMadness = gameState.stats.madnessFromEvents || 0;
+    const eventMadness = Math.max(0, gameState.stats.madnessFromEvents || 0);
+    const itemMadness = totalMadness - eventMadness;
     madnessTooltipContent = (
       <>
         <div className="text-gray-400">Leads thoughts into dangerous paths</div>

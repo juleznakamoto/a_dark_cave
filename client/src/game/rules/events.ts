@@ -433,10 +433,7 @@ export class EventManager {
               (state.story?.seen?.clarityElixirPurchases as number) ?? 0;
             stateChanges.stats = {
               ...state.stats,
-              madnessFromEvents: Math.max(
-                0,
-                (state.stats.madnessFromEvents || 0) - 2,
-              ),
+              madnessFromEvents: (state.stats.madnessFromEvents || 0) - 2,
             };
             stateChanges.story = {
               ...stateChanges.story,

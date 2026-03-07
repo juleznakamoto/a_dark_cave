@@ -1124,10 +1124,7 @@ export const choiceEvents: Record<string, GameEvent> = {
             },
             stats: {
               ...state.stats,
-              madnessFromEvents: Math.max(
-                0,
-                (state.stats.madnessFromEvents || 0) - 2,
-              ),
+              madnessFromEvents: (state.stats.madnessFromEvents || 0) - 2,
             },
             story: {
               ...state.story,
@@ -1150,10 +1147,7 @@ export const choiceEvents: Record<string, GameEvent> = {
             ...executionResult,
             stats: {
               ...state.stats,
-              madnessFromEvents: Math.max(
-                0,
-                (state.stats.madnessFromEvents || 0) - 1,
-              ),
+              madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
             },
             story: {
               ...state.story,
@@ -1730,10 +1724,7 @@ export const choiceEvents: Record<string, GameEvent> = {
             },
             stats: {
               ...state.stats,
-              madnessFromEvents: Math.max(
-                0,
-                (state.stats.madnessFromEvents || 0) - 1,
-              ),
+              madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
             },
             _logMessage: `The seer falls silent. His stare drifts beyond you. "Great challenges await you${name}," he says softly. "You believe this world is yours to shape. But you are shaped in turn. When the final truth surfaces, you will see the strings. And by then, it might be too late."`,
           };
@@ -2118,10 +2109,7 @@ export const choiceEvents: Record<string, GameEvent> = {
             },
             stats: {
               ...state.stats,
-              madnessFromEvents: Math.max(
-                0,
-                (state.stats.madnessFromEvents || 0) - 1,
-              ),
+              madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
             },
             story: {
               ...state.story,
@@ -2216,10 +2204,7 @@ export const choiceEvents: Record<string, GameEvent> = {
             },
             stats: {
               ...state.stats,
-              madnessFromEvents: Math.max(
-                0,
-                (state.stats.madnessFromEvents || 0) - 1,
-              ),
+              madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
             },
             story: {
               ...state.story,
@@ -2279,10 +2264,7 @@ export const choiceEvents: Record<string, GameEvent> = {
           return {
             stats: {
               ...state.stats,
-              madnessFromEvents: Math.max(
-                0,
-                (state.stats.madnessFromEvents || 0) - 1,
-              ),
+              madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
             },
             story: {
               ...state.story,
@@ -2359,10 +2341,7 @@ export const choiceEvents: Record<string, GameEvent> = {
             },
             stats: {
               ...state.stats,
-              madnessFromEvents: Math.max(
-                0,
-                (state.stats.madnessFromEvents || 0) - 1,
-              ),
+              madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
             },
             story: {
               ...state.story,

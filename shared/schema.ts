@@ -68,7 +68,7 @@ export const gameStateSchema = z.object({
       knowledge: z.number().min(0).default(0),
       luck: z.number().min(0).default(0),
       madness: z.number().min(0).default(0),
-      madnessFromEvents: z.number().min(0).default(0),
+      madnessFromEvents: z.number().default(0), // Can go negative; display clamped to >=0
     })
     .default({}),
   boostMode: z.boolean().default(false),

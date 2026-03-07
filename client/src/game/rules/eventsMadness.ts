@@ -288,10 +288,7 @@ export const madnessEvents: Record<string, GameEvent> = {
               },
               stats: {
                 ...state.stats,
-                madnessFromEvents: Math.max(
-                  0,
-                  (state.stats.madnessFromEvents || 0) - 1,
-                ),
+                madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
               },
               _logMessage:
                 "You take deep breaths and force yourself to remain still. The crawling sensation gradually fades, and your skin returns to normal. You have conquered this horror through sheer willpower.",
@@ -449,7 +446,7 @@ export const madnessEvents: Record<string, GameEvent> = {
             },
             stats: {
               ...state.stats,
-              madnessFromEvents: Math.max(0, (state.stats.madnessFromEvents || 0) - 1),
+              madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
             },
             _logMessage: `You board up the well with wooden planks, forbidding all access to the unholy water. Building a new well takes too long to finish, and ${thirstDeaths} of the weaker villagers perish of thirst.`,
           };

@@ -338,8 +338,8 @@ export const buildingTooltips: Record<string, TooltipConfig> = {
 export const madnessTooltip: TooltipConfig = {
   getContent: (state) => {
     const totalMadness = getTotalMadness(state);
-    const itemMadness = totalMadness - (state.stats.madnessFromEvents || 0);
-    const eventMadness = state.stats.madnessFromEvents || 0;
+    const eventMadness = Math.max(0, state.stats.madnessFromEvents || 0);
+    const itemMadness = totalMadness - eventMadness;
     if (totalMadness > 0) {
       return `${itemMadness} from Items/Buildings\n${eventMadness} from Events`;
     }
