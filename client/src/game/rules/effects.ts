@@ -782,6 +782,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
         MAX_EMBER_BOMBS: 1,
         MAX_CINDERFLAME_BOMBS: 1,
         MAX_VOID_BOMBS: 1,
+        MAX_BOMB_STORAGE: 10, // Base 10 + 10 = 20 bombs per type
       },
     },
   },

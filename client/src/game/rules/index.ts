@@ -9,6 +9,7 @@ import {
   getAnimalsCost,
   getHumansCost,
 } from "./forestSacrificeActions";
+import { isBombAtLimit } from "@/game/resourceLimits";
 import { ACTION_TO_UPGRADE_KEY, getUpgradeLevel } from "@/game/buttonUpgrades";
 import { calculateAdjustedCost } from "./costCalculation";
 import { getActionBonuses } from "./effectsCalculation";
@@ -338,6 +339,20 @@ export function canExecuteAction(actionId: string, state: GameState): boolean {
 
   // Check action's custom canExecute function if it exists
   if (action.canExecute && !action.canExecute(state)) {
+    return false;
+  }
+
+  // Bomb craft/trade: block if at max capacity (10 base, 20 with Grenadier's Bag)
+  const BOMB_ACTIONS: Record<string, string> = {
+    craftEmberBomb: "ember_bomb",
+    craftAshfireBomb: "ashfire_bomb",
+    craftVoidBomb: "void_bomb",
+    tradeGoldForEmberBomb: "ember_bomb",
+    tradeGoldForAshfireBomb: "ashfire_bomb",
+    tradeGoldForVoidBomb: "void_bomb",
+  };
+  const bombResource = BOMB_ACTIONS[actionId];
+  if (bombResource && isBombAtLimit(bombResource, state)) {
     return false;
   }
 

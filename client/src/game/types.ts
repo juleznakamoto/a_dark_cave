@@ -297,9 +297,10 @@ export interface EffectDefinition {
       madness?: number; // Madness bonus
       craftingCostReduction?: number; // Percentage reduction in crafting costs (0.1 = 10% reduction)
       buildingCostReduction?: number; // Percentage reduction in building costs (0.1 = 10% reduction)
-      MAX_EMBER_BOMBS?: number; // Bonus to max ember bombs capacity
-      MAX_CINDERFLAME_BOMBS?: number; // Bonus to max ashfire bombs
+      MAX_EMBER_BOMBS?: number; // Bonus to max ember bombs capacity (combat)
+      MAX_CINDERFLAME_BOMBS?: number; // Bonus to max ashfire bombs (combat)
       MAX_VOID_BOMBS?: number;
+      MAX_BOMB_STORAGE?: number; // Bonus to max bombs owned (base 10, +10 with Grenadier's Bag = 20)
       caveExploreMultiplier?: number; // Multiplier for all cave exploration actions
       eventDeathReduction?: number; // Percentage reduction in villager deaths from events (0.25 = 25% reduction)
       criticalChance?: number; // Percentage chance for critical hits during combat (0.05 = 5% chance)

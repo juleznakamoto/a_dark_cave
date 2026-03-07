@@ -1,6 +1,27 @@
 
 import { GameState } from "@shared/schema";
 
+// Bomb resource keys (stored in resources but displayed in weapons section)
+export const BOMB_RESOURCES = ["ember_bomb", "ashfire_bomb", "void_bomb"] as const;
+
+// Max bombs per type: 10 base, 20 with Grenadier's Bag (leather item for combat capacity)
+export function getMaxBombLimit(state: GameState): number {
+  return state.clothing?.grenadier_bag ? 20 : 10;
+}
+
+export function isBombResource(key: string): boolean {
+  return BOMB_RESOURCES.includes(key as (typeof BOMB_RESOURCES)[number]);
+}
+
+export function isBombAtLimit(
+  bombKey: string,
+  state: GameState,
+): boolean {
+  if (!isBombResource(bombKey)) return false;
+  const current = state.resources[bombKey as keyof typeof state.resources] ?? 0;
+  return current >= getMaxBombLimit(state);
+}
+
 // Resources that are never limited
 const UNLIMITED_RESOURCES = ['silver', 'gold'];
 

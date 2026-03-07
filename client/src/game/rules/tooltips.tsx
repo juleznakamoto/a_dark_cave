@@ -14,6 +14,10 @@ import {
 } from "./skillUpgrades";
 import { formatNumber } from "@/lib/utils";
 import type { TooltipConfig } from "@/game/types";
+import {
+  getMaxBombLimit,
+  isBombAtLimit,
+} from "@/game/resourceLimits";
 
 const FOCUS_ELIGIBLE_ACTIONS = [
   "exploreCave",
@@ -268,6 +272,15 @@ export const calculateResourceGains = (
   return { gains, costs };
 };
 
+const BOMB_ACTIONS: Record<string, string> = {
+  craftEmberBomb: "ember_bomb",
+  craftAshfireBomb: "ashfire_bomb",
+  craftVoidBomb: "void_bomb",
+  tradeGoldForEmberBomb: "ember_bomb",
+  tradeGoldForAshfireBomb: "ashfire_bomb",
+  tradeGoldForVoidBomb: "void_bomb",
+};
+
 // Helper function to get resource gain range tooltip
 export const getResourceGainTooltip = (
   actionId: string,
@@ -280,7 +293,10 @@ export const getResourceGainTooltip = (
 
   const { gains, costs } = calculateResourceGains(actionId, state);
 
-  if (gains.length === 0 && costs.length === 0) {
+  const bombResource = BOMB_ACTIONS[actionId];
+  const isBombAtMax = bombResource && isBombAtLimit(bombResource, state);
+
+  if (gains.length === 0 && costs.length === 0 && !isBombAtMax) {
     return null;
   }
 
@@ -293,6 +309,14 @@ export const getResourceGainTooltip = (
 
   return (
     <div className="text-xs">
+      {isBombAtMax && (
+        <div className="text-muted-foreground mb-1">
+          Max bombs reached ({getMaxBombLimit(state)} per type)
+        </div>
+      )}
+      {isBombAtMax && (gains.length > 0 || costs.length > 0) && (
+        <div className="border-t border-border my-1" />
+      )}
       {gains.map((gain, index) => (
         <div key={`gain-${index}`}>
           {gain.min === gain.max

@@ -1,5 +1,10 @@
 import { GameState } from "@shared/schema";
 import {
+  getMaxBombLimit,
+  isBombResource,
+  BOMB_RESOURCES,
+} from "@/game/resourceLimits";
+import {
   getActionBonuses as getActionBonusesCalc,
   getTotalLuck as getTotalLuckCalc,
 } from "./effectsCalculation";
@@ -583,9 +588,14 @@ export function applyActionEffects(
           const actionBonuses = getActionBonusesCalc(actionId, state);
           const mult = actionBonuses?.resourceMultiplier ?? 1;
           const adjustedEffect = Math.floor(effect * mult);
-          current[finalKey] =
+          let newValue =
             (state.resources[finalKey as keyof typeof state.resources] || 0) +
             adjustedEffect;
+          // Cap bombs to max (10 base, 20 with Grenadier's Bag)
+          if (isBombResource(finalKey)) {
+            newValue = Math.min(newValue, getMaxBombLimit(state));
+          }
+          current[finalKey] = newValue;
         } else if (path === "madness") {
           current[finalKey] = (state.madness || 0) + effect;
         } else {
@@ -646,6 +656,19 @@ export function applyActionEffects(
         if (addedAmount > 0) {
           updates.resources[resource] = currentAmount + addedAmount * 100;
         }
+      }
+    }
+  }
+
+  // Cap bomb resources to max (10 base, 20 with Grenadier's Bag)
+  if (updates.resources) {
+    const maxBombs = getMaxBombLimit(state);
+    for (const bombKey of BOMB_RESOURCES) {
+      if (
+        updates.resources[bombKey] !== undefined &&
+        updates.resources[bombKey] > maxBombs
+      ) {
+        updates.resources[bombKey] = maxBombs;
       }
     }
   }

@@ -24,6 +24,7 @@ import {
   getStorageLimitText,
   isResourceLimited,
   getResourceLimit,
+  BOMB_RESOURCES,
 } from "@/game/resourceLimits";
 import {
   shouldHideBuilding,
@@ -103,12 +104,15 @@ export default function SidePanel() {
     seenResourcesRef.current.has(key),
   );
 
-  // Separate gold and silver from other resources
+  // Separate gold and silver from other resources; exclude bombs (shown in weapons)
   const goldSilverResources = seenResourceKeys.filter(
     (key) => key === "gold" || key === "silver",
   );
   const otherResources = seenResourceKeys.filter(
-    (key) => key !== "gold" && key !== "silver",
+    (key) =>
+      key !== "gold" &&
+      key !== "silver" &&
+      !BOMB_RESOURCES.includes(key as (typeof BOMB_RESOURCES)[number]),
   );
 
   // Order gold first, then silver
@@ -192,7 +196,7 @@ export default function SidePanel() {
     }));
 
   // Dynamically generate weapon items from state (only show weapons from displayTools)
-  const weaponItems = Object.entries(displayTools)
+  const weaponItemsFromTools = Object.entries(displayTools)
     .filter(([key, value]) => Object.keys(gameState.weapons).includes(key))
     .map(([key, value]) => ({
       id: key,
@@ -202,6 +206,34 @@ export default function SidePanel() {
       visible: true,
       tooltip: true,
     }));
+
+  // Add bombs at the end of weapons section (amount in parentheses, like wooden hut)
+  const bombItems = BOMB_RESOURCES.filter(
+    (key) => seenResourcesRef.current.has(key),
+  ).map((key) => {
+    const value = resources[key as keyof typeof resources] ?? 0;
+    const labelMap: Record<string, string> = {
+      ember_bomb: "Ember Bomb",
+      ashfire_bomb: "Ashfire Bomb",
+      void_bomb: "Void Bomb",
+    };
+    const label = labelMap[key] ?? capitalizeWords(key);
+    return {
+      id: key,
+      label: (
+        <>
+          {label}{" "}
+          <span className="text-muted-foreground">({value})</span>
+        </>
+      ),
+      value,
+      testId: `weapon-${key}`,
+      visible: true,
+      tooltip: true,
+    };
+  });
+
+  const weaponItems = [...weaponItemsFromTools, ...bombItems];
 
   // Check if any resource has hit the limit
   const limit = getResourceLimit(gameState);

@@ -5,6 +5,11 @@ import {
   bookEffects,
   fellowshipEffects,
 } from "./effects";
+import { combatItemTooltips } from "./tooltips";
+import {
+  BOMB_RESOURCES,
+  getMaxBombLimit,
+} from "@/game/resourceLimits";
 import { villageBuildActions } from "./villageBuildActions";
 import { capitalizeWords } from "@/lib/utils";
 import { useGameStore } from "../state";
@@ -121,6 +126,34 @@ export function renderItemTooltip(
     return null;
   }
 
+  // Bombs use combat tooltips (damage info)
+  if (
+    itemType === "weapon" &&
+    BOMB_RESOURCES.includes(itemId as (typeof BOMB_RESOURCES)[number])
+  ) {
+    const tooltipConfig = combatItemTooltips[itemId];
+    if (tooltipConfig?.getContent) {
+      const gameState = useGameStore.getState();
+      const content = tooltipConfig.getContent(gameState);
+      const maxBombs = getMaxBombLimit(gameState);
+      return (
+        <div className="text-xs">
+          <div className="font-bold">
+            {itemId === "ember_bomb"
+              ? "Ember Bomb"
+              : itemId === "ashfire_bomb"
+                ? "Ashfire Bomb"
+                : "Void Bomb"}
+          </div>
+          <pre className="whitespace-pre-wrap text-gray-400 font-sans text-xs">
+            {content}
+          </pre>
+          <div className="text-gray-500 mt-1">Max: {maxBombs}</div>
+        </div>
+      );
+    }
+  }
+
   const effect =
     itemType === "weapon"
       ? weaponEffects[itemId]
@@ -234,7 +267,13 @@ export function renderItemTooltip(
           {(effect.bonuses.generalBonuses.MAX_EMBER_BOMBS ||
             effect.bonuses.generalBonuses.MAX_CINDERFLAME_BOMBS ||
             effect.bonuses.generalBonuses.MAX_VOID_BOMBS) && (
-            <div>+1 Capacity for all bombs</div>
+            <div>+1 Capacity for all bombs (combat)</div>
+          )}
+          {effect.bonuses.generalBonuses.MAX_BOMB_STORAGE && (
+            <div>
+              Max {10 + effect.bonuses.generalBonuses.MAX_BOMB_STORAGE} bombs
+              per type
+            </div>
           )}
         </div>
       )}

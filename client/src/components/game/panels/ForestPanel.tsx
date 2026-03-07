@@ -175,15 +175,20 @@ export default function ForestPanel() {
       hasExpeditionRequirement &&
       (state.villagers?.free ?? 0) < expeditionVillagersRequired;
 
-    // Check if this is chopWood, hunt, or sacrifice action
+    // Check if this is chopWood, hunt, sacrifice, or bomb trade action
     const isChopWood = actionId === "chopWood";
     const isHunt = actionId === "hunt";
     const isSacrificeAction =
       actionId === "boneTotems" || actionId === "leatherTotems";
     const isAnimalsSacrifice = actionId === "animals";
     const isHumansSacrifice = actionId === "humans";
+    const isBombTradeAction = [
+      "tradeGoldForEmberBomb",
+      "tradeGoldForAshfireBomb",
+      "tradeGoldForVoidBomb",
+    ].includes(actionId);
     const resourceGainTooltip =
-      isChopWood || isHunt || isSacrificeAction
+      isChopWood || isHunt || isSacrificeAction || isBombTradeAction
         ? getResourceGainTooltip(actionId, state)
         : null;
 
