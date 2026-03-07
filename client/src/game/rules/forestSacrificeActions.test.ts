@@ -9,6 +9,7 @@ import { GameState } from "@shared/schema";
 import { executeGameAction, deductActionCosts } from "@/game/actions";
 import { getTotalMadness } from "./effectsCalculation";
 import { getBoneTotemsCost, getLeatherTotemsCost, getAnimalsCost, getHumansCost } from "./forestSacrificeActions";
+import { applyActionEffects } from "./actionEffects";
 
 // Minimal state factory - merge with createTestState pattern from resourceGains.test
 const createBaseState = (overrides?: Partial<GameState>): GameState => {
@@ -80,6 +81,7 @@ const createBaseState = (overrides?: Partial<GameState>): GameState => {
       pillarOfClarity: 0,
       boneTemple: 0,
       paleCross: 0,
+      consecratedPaleCross: 0,
       scriptorium: 0,
       inkwardenAcademy: 0,
     } as GameState["buildings"],
@@ -406,6 +408,297 @@ describe("Forest Sacrifice Actions - Madness", () => {
       expect(result.stateUpdates?.story?.seen?.leatherTotemsUsageCount).toBe(1);
       expect(result.stateUpdates?.story?.seen?.animalsSacrificeLevel).toBeUndefined();
       expect(result.stateUpdates?.story?.seen?.humansSacrificeLevel).toBeUndefined();
+    });
+  });
+});
+
+// Helper: run sacrifice action N times via applyActionEffects (completing execution) and collect gains
+function runTotemSacrificeSamples(
+  actionId: "boneTotems" | "leatherTotems",
+  state: GameState,
+  samples: number = 50
+): number[] {
+  const resourceKey = actionId === "boneTotems" ? "silver" : "gold";
+  const results: number[] = [];
+  let runningState = { ...state };
+  for (let i = 0; i < samples; i++) {
+    (runningState as any)._completingExecution = actionId;
+    const updates = applyActionEffects(actionId, runningState);
+    const gained = (updates.resources?.[resourceKey] ?? 0) - (runningState.resources[resourceKey] ?? 0);
+    results.push(gained);
+    // Update story for next iteration (usage count affects gains)
+    runningState = {
+      ...runningState,
+      resources: { ...runningState.resources, ...updates.resources },
+      story: updates.story
+        ? { ...runningState.story, seen: { ...runningState.story?.seen, ...updates.story?.seen } }
+        : runningState.story,
+    } as GameState;
+  }
+  return results;
+}
+
+describe("Bone and Leather Totem Sacrifices - Buildings and Items", () => {
+  describe("Bone totem sacrifice modifiers", () => {
+    it("boneTotems with boneTemple gives ~25% more silver", () => {
+      const stateBase = createBaseState({
+        buildings: { ...createBaseState().buildings, altar: 1 },
+        resources: { ...createBaseState().resources, bone_totem: 500, silver: 0 },
+        story: { seen: {} },
+      });
+      const stateWithTemple = createBaseState({
+        buildings: { ...createBaseState().buildings, altar: 1, boneTemple: 1 },
+        resources: { ...createBaseState().resources, bone_totem: 500, silver: 0 },
+        story: { seen: {} },
+      });
+
+      const gainsBase = runTotemSacrificeSamples("boneTotems", stateBase, 100);
+      const gainsWithTemple = runTotemSacrificeSamples("boneTotems", stateWithTemple, 100);
+
+      const avgBase = gainsBase.reduce((a, b) => a + b, 0) / gainsBase.length;
+      const avgWithTemple = gainsWithTemple.reduce((a, b) => a + b, 0) / gainsWithTemple.length;
+
+      expect(avgWithTemple).toBeGreaterThanOrEqual(avgBase * 1.1);
+    });
+
+    it("boneTotems with sacrificial_tunic gives ~25% more silver", () => {
+      const stateBase = createBaseState({
+        buildings: { ...createBaseState().buildings, altar: 1 },
+        resources: { ...createBaseState().resources, bone_totem: 500, silver: 0 },
+        clothing: {},
+        story: { seen: {} },
+      });
+      const stateWithTunic = createBaseState({
+        buildings: { ...createBaseState().buildings, altar: 1 },
+        resources: { ...createBaseState().resources, bone_totem: 500, silver: 0 },
+        clothing: { sacrificial_tunic: true },
+        story: { seen: {} },
+      });
+
+      const gainsBase = runTotemSacrificeSamples("boneTotems", stateBase, 100);
+      const gainsWithTunic = runTotemSacrificeSamples("boneTotems", stateWithTunic, 100);
+
+      const avgBase = gainsBase.reduce((a, b) => a + b, 0) / gainsBase.length;
+      const avgWithTunic = gainsWithTunic.reduce((a, b) => a + b, 0) / gainsWithTunic.length;
+
+      expect(avgWithTunic).toBeGreaterThanOrEqual(avgBase * 1.1);
+    });
+
+    it("boneTotems with devourer_crown gives +20 silver per sacrifice", () => {
+      const stateBase = createBaseState({
+        buildings: { ...createBaseState().buildings, altar: 1 },
+        resources: { ...createBaseState().resources, bone_totem: 500, silver: 0 },
+        clothing: {},
+        story: { seen: {} },
+      });
+      const stateWithCrown = createBaseState({
+        buildings: { ...createBaseState().buildings, altar: 1 },
+        resources: { ...createBaseState().resources, bone_totem: 500, silver: 0 },
+        clothing: { devourer_crown: true },
+        story: { seen: {} },
+      });
+
+      const gainsBase = runTotemSacrificeSamples("boneTotems", stateBase);
+      const gainsWithCrown = runTotemSacrificeSamples("boneTotems", stateWithCrown);
+
+      const avgBase = gainsBase.reduce((a, b) => a + b, 0) / gainsBase.length;
+      const avgWithCrown = gainsWithCrown.reduce((a, b) => a + b, 0) / gainsWithCrown.length;
+
+      expect(avgWithCrown).toBeGreaterThanOrEqual(avgBase + 18);
+    });
+
+    it("boneTotems with Pale Cross gives higher silver (usage scaling)", () => {
+      const stateNoCross = createBaseState({
+        buildings: { ...createBaseState().buildings, altar: 1 },
+        resources: { ...createBaseState().resources, bone_totem: 500, silver: 0 },
+        story: { seen: { boneTotemsUsageCount: 10 } },
+      });
+      const stateWithCross = createBaseState({
+        buildings: { ...createBaseState().buildings, altar: 1, paleCross: 1 },
+        resources: { ...createBaseState().resources, bone_totem: 500, silver: 0 },
+        story: { seen: { boneTotemsUsageCount: 10 } },
+      });
+
+      const gainsNoCross = runTotemSacrificeSamples("boneTotems", stateNoCross, 20);
+      const gainsWithCross = runTotemSacrificeSamples("boneTotems", stateWithCross, 20);
+
+      const avgNoCross = gainsNoCross.reduce((a, b) => a + b, 0) / gainsNoCross.length;
+      const avgWithCross = gainsWithCross.reduce((a, b) => a + b, 0) / gainsWithCross.length;
+
+      expect(avgWithCross).toBeGreaterThan(avgNoCross);
+    });
+
+    it("boneTotems with Consecrated Pale Cross also grants gold", () => {
+      const state = createBaseState({
+        buildings: { ...createBaseState().buildings, altar: 1, consecratedPaleCross: 1 },
+        resources: { ...createBaseState().resources, bone_totem: 100, silver: 0, gold: 0 },
+        story: { seen: {} },
+      });
+
+      (state as any)._completingExecution = "boneTotems";
+      const updates = applyActionEffects("boneTotems", state);
+
+      expect(updates.resources?.silver).toBeGreaterThan(0);
+      expect(updates.resources?.gold).toBeGreaterThanOrEqual(50);
+    });
+
+    it("boneTotems with boneTemple and sacrificial_tunic stacks additively (~50% total)", () => {
+      const stateBase = createBaseState({
+        buildings: { ...createBaseState().buildings, altar: 1 },
+        resources: { ...createBaseState().resources, bone_totem: 500, silver: 0 },
+        clothing: {},
+        story: { seen: {} },
+      });
+      const stateWithBoth = createBaseState({
+        buildings: { ...createBaseState().buildings, altar: 1, boneTemple: 1 },
+        resources: { ...createBaseState().resources, bone_totem: 500, silver: 0 },
+        clothing: { sacrificial_tunic: true },
+        story: { seen: {} },
+      });
+
+      const gainsBase = runTotemSacrificeSamples("boneTotems", stateBase);
+      const gainsWithBoth = runTotemSacrificeSamples("boneTotems", stateWithBoth);
+
+      const avgBase = gainsBase.reduce((a, b) => a + b, 0) / gainsBase.length;
+      const avgWithBoth = gainsWithBoth.reduce((a, b) => a + b, 0) / gainsWithBoth.length;
+
+      expect(avgWithBoth).toBeGreaterThanOrEqual(avgBase * 1.4);
+    });
+  });
+
+  describe("Leather totem sacrifice modifiers", () => {
+    it("leatherTotems with boneTemple gives ~25% more gold", () => {
+      const stateBase = createBaseState({
+        buildings: { ...createBaseState().buildings, temple: 1 },
+        resources: { ...createBaseState().resources, leather_totem: 500, gold: 0 },
+        story: { seen: {} },
+      });
+      const stateWithTemple = createBaseState({
+        buildings: { ...createBaseState().buildings, temple: 1, boneTemple: 1 },
+        resources: { ...createBaseState().resources, leather_totem: 500, gold: 0 },
+        story: { seen: {} },
+      });
+
+      const gainsBase = runTotemSacrificeSamples("leatherTotems", stateBase, 100);
+      const gainsWithTemple = runTotemSacrificeSamples("leatherTotems", stateWithTemple, 100);
+
+      const avgBase = gainsBase.reduce((a, b) => a + b, 0) / gainsBase.length;
+      const avgWithTemple = gainsWithTemple.reduce((a, b) => a + b, 0) / gainsWithTemple.length;
+
+      expect(avgWithTemple).toBeGreaterThanOrEqual(avgBase * 1.1);
+    });
+
+    it("leatherTotems with sacrificial_tunic gives ~25% more gold", () => {
+      const stateBase = createBaseState({
+        buildings: { ...createBaseState().buildings, temple: 1 },
+        resources: { ...createBaseState().resources, leather_totem: 500, gold: 0 },
+        clothing: {},
+        story: { seen: {} },
+      });
+      const stateWithTunic = createBaseState({
+        buildings: { ...createBaseState().buildings, temple: 1 },
+        resources: { ...createBaseState().resources, leather_totem: 500, gold: 0 },
+        clothing: { sacrificial_tunic: true },
+        story: { seen: {} },
+      });
+
+      const gainsBase = runTotemSacrificeSamples("leatherTotems", stateBase);
+      const gainsWithTunic = runTotemSacrificeSamples("leatherTotems", stateWithTunic);
+
+      const avgBase = gainsBase.reduce((a, b) => a + b, 0) / gainsBase.length;
+      const avgWithTunic = gainsWithTunic.reduce((a, b) => a + b, 0) / gainsWithTunic.length;
+
+      expect(avgWithTunic).toBeGreaterThanOrEqual(avgBase * 1.2);
+    });
+
+    it("leatherTotems with boneTemple and sacrificial_tunic stacks additively (~50% total)", () => {
+      const stateBase = createBaseState({
+        buildings: { ...createBaseState().buildings, temple: 1 },
+        resources: { ...createBaseState().resources, leather_totem: 500, gold: 0 },
+        clothing: {},
+        story: { seen: {} },
+      });
+      const stateWithBoth = createBaseState({
+        buildings: { ...createBaseState().buildings, temple: 1, boneTemple: 1 },
+        resources: { ...createBaseState().resources, leather_totem: 500, gold: 0 },
+        clothing: { sacrificial_tunic: true },
+        story: { seen: {} },
+      });
+
+      const gainsBase = runTotemSacrificeSamples("leatherTotems", stateBase);
+      const gainsWithBoth = runTotemSacrificeSamples("leatherTotems", stateWithBoth);
+
+      const avgBase = gainsBase.reduce((a, b) => a + b, 0) / gainsBase.length;
+      const avgWithBoth = gainsWithBoth.reduce((a, b) => a + b, 0) / gainsWithBoth.length;
+
+      expect(avgWithBoth).toBeGreaterThanOrEqual(avgBase * 1.4);
+    });
+  });
+
+  describe("Totems at max cost with high silver/gold (30k-50k) - regression for player report", () => {
+    it("boneTotems at max cost (25) with 30k silver still gives silver", () => {
+      const state = createBaseState({
+        buildings: { ...createBaseState().buildings, altar: 1 },
+        resources: { ...createBaseState().resources, bone_totem: 100, silver: 30000 },
+        story: { seen: { boneTotemsUsageCount: 20 } },
+      });
+      expect(getBoneTotemsCost(state)).toBe(25);
+
+      const gains = runTotemSacrificeSamples("boneTotems", state, 20);
+      const avgGain = gains.reduce((a, b) => a + b, 0) / gains.length;
+      expect(avgGain).toBeGreaterThan(0);
+    });
+
+    it("boneTotems at max cost (25) with 50k silver still gives silver", () => {
+      const state = createBaseState({
+        buildings: { ...createBaseState().buildings, altar: 1 },
+        resources: { ...createBaseState().resources, bone_totem: 100, silver: 50000 },
+        story: { seen: { boneTotemsUsageCount: 20 } },
+      });
+      expect(getBoneTotemsCost(state)).toBe(25);
+
+      const gains = runTotemSacrificeSamples("boneTotems", state, 20);
+      const avgGain = gains.reduce((a, b) => a + b, 0) / gains.length;
+      expect(avgGain).toBeGreaterThan(0);
+    });
+
+    it("boneTotems with Pale Cross at max cost (50) with 30k silver still gives silver", () => {
+      const state = createBaseState({
+        buildings: { ...createBaseState().buildings, altar: 1, paleCross: 1 },
+        resources: { ...createBaseState().resources, bone_totem: 100, silver: 30000 },
+        story: { seen: { boneTotemsUsageCount: 45 } },
+      });
+      expect(getBoneTotemsCost(state)).toBe(50);
+
+      const gains = runTotemSacrificeSamples("boneTotems", state, 20);
+      const avgGain = gains.reduce((a, b) => a + b, 0) / gains.length;
+      expect(avgGain).toBeGreaterThan(0);
+    });
+
+    it("leatherTotems at max cost (25) with 30k gold still gives gold", () => {
+      const state = createBaseState({
+        buildings: { ...createBaseState().buildings, temple: 1 },
+        resources: { ...createBaseState().resources, leather_totem: 100, gold: 30000 },
+        story: { seen: { leatherTotemsUsageCount: 20 } },
+      });
+      expect(getLeatherTotemsCost(state)).toBe(25);
+
+      const gains = runTotemSacrificeSamples("leatherTotems", state, 20);
+      const avgGain = gains.reduce((a, b) => a + b, 0) / gains.length;
+      expect(avgGain).toBeGreaterThan(0);
+    });
+
+    it("leatherTotems at max cost (25) with 50k gold still gives gold", () => {
+      const state = createBaseState({
+        buildings: { ...createBaseState().buildings, temple: 1 },
+        resources: { ...createBaseState().resources, leather_totem: 100, gold: 50000 },
+        story: { seen: { leatherTotemsUsageCount: 20 } },
+      });
+      expect(getLeatherTotemsCost(state)).toBe(25);
+
+      const gains = runTotemSacrificeSamples("leatherTotems", state, 20);
+      const avgGain = gains.reduce((a, b) => a + b, 0) / gains.length;
+      expect(avgGain).toBeGreaterThan(0);
     });
   });
 });
