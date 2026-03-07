@@ -446,7 +446,7 @@ export class EventManager {
               },
             };
             stateChanges._logMessage =
-              "As you drink the Clarity Elixir, the darkness in your mind recedes a little.";
+              "As you drink the Elixir of Clarity, the darkness in your mind recedes a little.";
           } else if (trade.buyResource === "book") {
             stateChanges.books = {
               ...(state.books || {}),
