@@ -25,8 +25,12 @@ export default function EndScreenPage() {
     window.open("https://www.reddit.com/r/aDarkCave/", "_blank", "noopener,noreferrer");
   };
 
+  const handleFandomWiki = () => {
+    window.open("https://a-dark-cave.fandom.com/wiki/A_Dark_Cave_Wiki", "_blank", "noopener,noreferrer");
+  };
+
   return (
-    <div className="fixed inset-0 z-[10000]">
+    <div className="fixed inset-0 z-[10000] overflow-x-hidden">
       <Helmet>
         <title>Journey Complete - A Dark Cave</title>
         <meta name="robots" content="noindex" />
@@ -54,7 +58,7 @@ export default function EndScreenPage() {
             buttonId: "end-screen-feedback",
           },
           secondary: {
-            text: "Close",
+            text: "Continue Playing",
             onClick: handleMainMenu,
             buttonId: "end-screen-close",
           },
@@ -65,6 +69,9 @@ export default function EndScreenPage() {
           },
           reddit: {
             onClick: handleReddit,
+          },
+          fandomWiki: {
+            onClick: handleFandomWiki,
           },
         }}
       />

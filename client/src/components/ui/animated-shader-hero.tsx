@@ -39,6 +39,9 @@ interface HeroProps {
     reddit?: {
       onClick?: () => void;
     };
+    fandomWiki?: {
+      onClick?: () => void;
+    };
   };
   className?: string;
 }
@@ -388,7 +391,7 @@ const Hero: React.FC<HeroProps> = ({
 
   return (
     <div
-      className={`relative w-full h-screen overflow-hidden bg-black ${className}`}
+      className={`relative w-full min-h-screen h-screen overflow-y-auto overflow-x-hidden bg-black ${className}`}
     >
       <style>{`
         @keyframes fade-in-down {
@@ -499,7 +502,7 @@ const Hero: React.FC<HeroProps> = ({
       />
 
       {/* Hero Content Overlay */}
-      <div className="absolute inset-0 z-10 flex flex-col items-center justify-center text-white">
+      <div className="absolute inset-0 z-10 flex flex-col items-center justify-center text-white w-full min-w-0 overflow-x-hidden">
         {/* Trust Badge */}
         {/* {trustBadge && (
           <div className="mb-8 animate-fade-in-down">
@@ -518,37 +521,37 @@ const Hero: React.FC<HeroProps> = ({
           </div>
         )} */}
 
-        <div className="text-center space-y-4 max-w-5xl mx-auto px-4">
+        <div className="text-center space-y-4 w-full max-w-[min(100vw,64rem)] mx-auto px-6 sm:px-8 min-w-0 box-border py-6 sm:py-0">
           {/* Main Heading with Animation */}
-          <div className="space-y-2">
-            <h1 className="pb-2 text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-red-800 via-red-700 to-orange-600 bg-clip-text text-transparent animate-fade-in-up animation-delay-600">
+          <div className="space-y-2 min-w-0">
+            <h1 className="pb-2 text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-red-800 via-red-700 to-orange-600 bg-clip-text text-transparent animate-fade-in-up animation-delay-600 break-words">
               {headline.line1}
             </h1>
-            <h1 className="pb-2 text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-yellow-700 via-red-600 to-orange-700 bg-clip-text text-transparent animate-fade-in-up animation-delay-800">
+            <h1 className="pb-2 text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-yellow-700 via-red-600 to-orange-700 bg-clip-text text-transparent animate-fade-in-up animation-delay-800 break-words">
               {headline.line2}
             </h1>
           </div>
 
           {/* Subtitle with Animation */}
-          <div className="max-w-3xl mx-auto animate-fade-in-up animation-delay-2400">
-            <p className="mt-4 text-lg md:text-lg lg:text-xl text-grey-200 font-medium leading-relaxed">
+          <div className="w-full max-w-3xl mx-auto animate-fade-in-up animation-delay-2400 min-w-0">
+            <p className="mt-4 text-base sm:text-lg lg:text-xl text-grey-200 font-medium leading-relaxed break-words">
               {subtitle1}
             </p>
-            <p className="text-lg md:text-lg lg:text-xl text-grey-200 font-medium leading-relaxed">
+            <p className="text-base sm:text-lg lg:text-xl text-grey-200 font-medium leading-relaxed break-words">
               {subtitle2}
             </p>
-            <p className="mb-6 text-lg md:text-lg lg:text-xl text-grey-200 font-medium leading-relaxed">
+            <p className="mb-6 text-base sm:text-lg lg:text-xl text-grey-200 font-medium leading-relaxed break-words">
               {subtitle3}
             </p>
           </div>
 
           {/* CTA Buttons with Animation */}
           {buttons && buttons.primary && (
-            <div className="flex-row flex-col space-x-4 gap-4 justify-center mt-10 animate-fade-in-up animation-delay-3000">
+            <div className="flex flex-wrap justify-center gap-4 mt-10 animate-fade-in-up animation-delay-3000">
               <button
                 onClick={buttons.primary.onClick}
                 button_id={buttons.primary.buttonId}
-                className="px-5 py-3 bg-gradient-to-r from-red-800 to-red-700 hover:from-red-700 hover:to-red-600 text-slate-200 rounded-md font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25"
+                className="px-4 sm:px-5 py-2.5 sm:py-3 bg-gradient-to-r from-red-800 to-red-700 hover:from-red-700 hover:to-red-600 text-slate-200 rounded-md font-semibold text-base sm:text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25 whitespace-nowrap"
               >
                 {buttons.primary.text}
               </button>
@@ -556,8 +559,8 @@ const Hero: React.FC<HeroProps> = ({
           )}
 
           {/* Support Section */}
-          <div className="py-3 flex flex-col items-center gap-3 mt-14 animate-fade-in-up animation-delay-4000">
-            <p className="text-md font-medium text-gray-200 text-center max-w-md px-4">
+          <div className="py-3 flex flex-col items-center gap-3 mt-14 animate-fade-in-up animation-delay-4000 w-full min-w-0">
+            <p className="text-sm sm:text-base font-medium text-gray-200 text-center max-w-md px-2 sm:px-4 break-words">
               If you enjoyed the game, I would be very happy if you support me so I can continue
               to develop it.
             </p>
@@ -569,7 +572,7 @@ const Hero: React.FC<HeroProps> = ({
                   "noopener,noreferrer",
                 )
               }
-              className="px-5 py-3 bg-gradient-to-r from-red-800 to-red-700 hover:from-red-700 hover:to-red-600 text-slate-200 rounded-md font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25"
+              className="px-4 sm:px-5 py-2.5 sm:py-3 bg-gradient-to-r from-red-800 to-red-700 hover:from-red-700 hover:to-red-600 text-slate-200 rounded-md font-semibold text-base sm:text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25 whitespace-nowrap"
             >
               <span>☕ </span>
               <span>Buy Me a Coffee</span>
@@ -577,11 +580,11 @@ const Hero: React.FC<HeroProps> = ({
           </div>
 
           {/* Incremental DB & IndieDB Vote Section */}
-          <div className="py-3 flex flex-col items-center gap-3 mt-8 animate-fade-in-up animation-delay-4500">
-            <p className="text-md font-medium text-gray-200 text-center max-w-md px-4">
+          <div className="py-3 flex flex-col items-center gap-3 mt-8 animate-fade-in-up animation-delay-4500 w-full min-w-0">
+            <p className="text-sm sm:text-base font-medium text-gray-200 text-center max-w-md px-2 sm:px-4 break-words">
               You can support the game for free by leaving a vote or review. It makes a huge difference. Thank you! ♡
             </p>
-            <div className="flex gap-3 flex-wrap justify-center">
+            <div className="flex gap-2 sm:gap-3 flex-wrap justify-center px-2">
               <button
                 onClick={() =>
                   window.open(
@@ -590,7 +593,7 @@ const Hero: React.FC<HeroProps> = ({
                     "noopener,noreferrer",
                   )
                 }
-                className="px-4 py-2 bg-gradient-to-r from-red-800 to-red-700 hover:from-red-700 hover:to-red-600 text-slate-200 rounded-md font-semibold text-base transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25 flex items-center gap-2"
+                className="px-3 sm:px-4 py-2 bg-gradient-to-r from-red-800 to-red-700 hover:from-red-700 hover:to-red-600 text-slate-200 rounded-md font-semibold text-sm sm:text-base transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25 flex items-center gap-1.5 sm:gap-2 min-w-0"
               >
                 <svg
                   className="h-5 w-5 flex-shrink-0"
@@ -615,7 +618,7 @@ const Hero: React.FC<HeroProps> = ({
                     "noopener,noreferrer",
                   )
                 }
-                className="px-4 py-2 bg-gradient-to-r from-red-800 to-red-700 hover:from-red-700 hover:to-red-600 text-slate-200 rounded-md font-semibold text-base transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25 flex items-center gap-2"
+                className="px-3 sm:px-4 py-2 bg-gradient-to-r from-red-800 to-red-700 hover:from-red-700 hover:to-red-600 text-slate-200 rounded-md font-semibold text-sm sm:text-base transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25 flex items-center gap-1.5 sm:gap-2 min-w-0"
               >
                 <img
                   src="https://ph-static.imgix.net/logo_PH.svg"
@@ -633,7 +636,7 @@ const Hero: React.FC<HeroProps> = ({
                     "noopener,noreferrer",
                   )
                 }
-                className="px-4 py-2 bg-gradient-to-r from-red-800 to-red-700 hover:from-red-700 hover:to-red-600 text-slate-200 rounded-md font-semibold text-base transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25 flex items-center gap-2"
+                className="px-3 sm:px-4 py-2 bg-gradient-to-r from-red-800 to-red-700 hover:from-red-700 hover:to-red-600 text-slate-200 rounded-md font-semibold text-sm sm:text-base transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25 flex items-center gap-1.5 sm:gap-2 min-w-0"
               >
                 <img
                   src="/indiedb_logo_black.png"
@@ -645,48 +648,63 @@ const Hero: React.FC<HeroProps> = ({
             </div>
           </div>
 
-          {/* Social, Feedback and Close Buttons */}
-          {(socialButtons?.instagram || socialButtons?.reddit || buttons?.feedback || buttons?.secondary) && (
-            <div className="flex justify-center gap-4 animate-fade-in-up animation-delay-4500">
-              {socialButtons?.instagram && (
-                <button
-                  onClick={socialButtons.instagram.onClick}
-                  className="px-4 py-2 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-normal text-md transition-all duration-300 hover:scale-105 backdrop-blur-sm flex items-center gap-2"
-                >
-                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
-                  </svg>
-                  <span>Instagram</span>
-                </button>
-              )}
-              {socialButtons?.reddit && (
-                <button
-                  onClick={socialButtons.reddit.onClick}
-                  className="px-4 py-2 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-normal text-md transition-all duration-300 hover:scale-105 backdrop-blur-sm flex items-center gap-2"
-                >
-                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z" />
-                  </svg>
-                  <span>Reddit</span>
-                </button>
-              )}
-              {buttons?.feedback && (
-                <button
+          {/* Social, Feedback and Continue Playing Buttons */}
+          {(socialButtons?.instagram || socialButtons?.reddit || socialButtons?.fandomWiki || buttons?.feedback || buttons?.secondary) && (
+            <div className="flex flex-col items-center gap-4 animate-fade-in-up animation-delay-4500 px-2">
+              <div className="flex flex-wrap justify-center gap-2 sm:gap-4">
+                {socialButtons?.instagram && (
+                  <button
+                    onClick={socialButtons.instagram.onClick}
+                    className="px-3 sm:px-4 py-2 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-normal text-sm sm:text-base transition-all duration-300 hover:scale-105 backdrop-blur-sm flex items-center gap-1.5 sm:gap-2 min-w-0"
+                  >
+                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                    </svg>
+                    <span>Instagram</span>
+                  </button>
+                )}
+                {socialButtons?.reddit && (
+                  <button
+                    onClick={socialButtons.reddit.onClick}
+                    className="px-3 sm:px-4 py-2 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-normal text-sm sm:text-base transition-all duration-300 hover:scale-105 backdrop-blur-sm flex items-center gap-1.5 sm:gap-2 min-w-0"
+                  >
+                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z" />
+                    </svg>
+                    <span>Reddit</span>
+                  </button>
+                )}
+                {socialButtons?.fandomWiki && (
+                  <button
+                    onClick={socialButtons.fandomWiki.onClick}
+                    className="px-3 sm:px-4 py-2 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-normal text-sm sm:text-base transition-all duration-300 hover:scale-105 backdrop-blur-sm flex items-center gap-1.5 sm:gap-2 min-w-0"
+                  >
+                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
+                    </svg>
+                    <span>Fandom Wiki</span>
+                  </button>
+                )}
+                {buttons?.feedback && (
+                  <button
                   onClick={buttons.feedback.onClick}
                   button_id={buttons.feedback.buttonId}
-                  className="px-4 py-2 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-normal text-md transition-all duration-300 hover:scale-105 backdrop-blur-sm"
+                  className="px-3 sm:px-4 py-2 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-normal text-sm sm:text-base transition-all duration-300 hover:scale-105 backdrop-blur-sm"
                 >
                   {buttons.feedback.text}
-                </button>
-              )}
+                  </button>
+                )}
+              </div>
               {buttons?.secondary && (
-                <button
-                  onClick={buttons.secondary.onClick}
-                  button_id={buttons.secondary.buttonId}
-                  className="px-4 py-2 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-normal text-md transition-all duration-300 hover:scale-105 backdrop-blur-sm"
-                >
-                  {buttons.secondary.text}
-                </button>
+                <div className="w-full flex justify-center">
+                  <button
+                    onClick={buttons.secondary.onClick}
+                    button_id={buttons.secondary.buttonId}
+                    className="px-4 sm:px-6 py-2.5 sm:py-3 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-normal text-sm sm:text-base transition-all duration-300 hover:scale-105 backdrop-blur-sm"
+                  >
+                    {buttons.secondary.text}
+                  </button>
+                </div>
               )}
             </div>
           )}
