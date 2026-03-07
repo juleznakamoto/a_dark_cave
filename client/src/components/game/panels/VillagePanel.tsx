@@ -493,7 +493,7 @@ export default function VillagePanel() {
     };
 
     const tooltipContent = isOtherEventActive ? (
-      <div className="text-xs whitespace-nowrap">
+      <div className="text-xs">
         Merchant cannot be called while another event is active
       </div>
     ) : isOnCooldown ? (
