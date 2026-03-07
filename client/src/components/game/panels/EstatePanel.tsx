@@ -416,9 +416,8 @@ export default function EstatePanel() {
 
           {/* Focus Activation Button */}
           {showFocusButton && (
-            <div className="h-5 inline-block pb-1 text-xs font-medium text-foreground ml-2">
-              <div className="relative">
-                <CooldownButton
+            <div className="relative inline-block pb-1 text-xs font-medium text-foreground ml-2">
+              <CooldownButton
                   onClick={() => {
                     const now = Date.now();
                     const focusPoints = focusState?.points || 0;
@@ -439,32 +438,30 @@ export default function EstatePanel() {
                   disabled={!focusState?.points || focusState.points === 0 || focusState?.isActive}
                   tooltip={
                     <div className="text-xs whitespace-nowrap">
-                      Earn 1 Focus per hour of sleep
+                      Get 100 % bonus on actions for {focusState?.points || 0} minute{(focusState?.points || 0) !== 1 ? "s" : ""}
                     </div>
                   }
                 >
                   Focus
                 </CooldownButton>
-                {focusState && focusState.points > 0 && (
-                  <TooltipWrapper
-                    tooltip={
-                      <div className="text-xs whitespace-nowrap">
-                        {focusState.points} Focus: Get 2x action bonus for{" "}
-                        {focusState.points} minute{focusState.points > 1 ? "s" : ""}
-                      </div>
-                    }
-                    tooltipId="focus-points-badge"
-                  >
-                    <div
-                      className="absolute -top-[7px] right-[-7px] flex items-center justify-center w-4 h-4 bg-teal-950 rounded-full text-[10px] font-medium z-[20] cursor-pointer hover:bg-teal-900 transition-colors duration-300"
-                      onClick={(e) => e.stopPropagation()}
-                      onPointerDown={(e) => e.stopPropagation()}
-                    >
-                      {focusState.points}
+              {focusState && focusState.points > 0 && (
+                <TooltipWrapper
+                  tooltip={
+                    <div className="text-xs whitespace-nowrap">
+                      Earn 1 Focus Point per hour of sleep
                     </div>
-                  </TooltipWrapper>
-                )}
-              </div>
+                  }
+                  tooltipId="focus-points-badge"
+                >
+                  <div
+                    className="absolute -top-[7px] right-[-7px] flex items-center justify-center w-4 h-4 bg-teal-950 rounded-full text-[10px] font-medium z-[20] cursor-pointer hover:bg-teal-900 transition-colors duration-300"
+                    onClick={(e) => e.stopPropagation()}
+                    onPointerDown={(e) => e.stopPropagation()}
+                  >
+                    {focusState.points}
+                  </div>
+                </TooltipWrapper>
+              )}
             </div>
           )}
         </div>
