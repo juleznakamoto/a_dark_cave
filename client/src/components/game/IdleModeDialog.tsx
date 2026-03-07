@@ -147,6 +147,7 @@ export default function IdleModeDialog() {
     idleModeState,
     sleepUpgrades,
     gameId,
+    devMode,
   } = useGameStore();
   const [accumulatedResources, setAccumulatedResources] = useState<
     Record<string, number>
@@ -425,10 +426,11 @@ export default function IdleModeDialog() {
       );
     });
 
-    // Calculate Focus points gained (1 per almost 1 hour slept)
+    // Calculate Focus points gained (1 per almost 1 hour slept, or 1 per 5 seconds in dev mode)
     const now = Date.now();
     const elapsed = now - startTime;
-    const hoursSlept = Math.floor(elapsed / (59.99 * 60 * 1000)); // Full hours only
+    const focusIntervalMs = devMode ? 5 * 1000 : 59.99 * 60 * 1000;
+    const hoursSlept = Math.floor(elapsed / focusIntervalMs);
 
     let focusToAdd = 0;
     if (hoursSlept > 0) {
@@ -522,8 +524,9 @@ export default function IdleModeDialog() {
   // Show resources only after at least 15 seconds have elapsed from idle mode start
   const hasCompletedFirstInterval = displaySecondsElapsed >= 15;
 
-  // Calculate Focus points (1 per almost 1 hour slept)
-  const focusPoints = Math.floor(displayElapsed / (59.99 * 60 * 1000));
+  // Calculate Focus points (1 per almost 1 hour slept, or 1 per 5 seconds in dev mode)
+  const focusIntervalMs = devMode ? 5 * 1000 : 59.99 * 60 * 1000;
+  const focusPoints = Math.floor(displayElapsed / focusIntervalMs);
 
   // Get all resources that have changed (only positive)
   const otherResources = Object.keys(accumulatedResources)
