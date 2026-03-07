@@ -14,6 +14,7 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { ButtonLevelBadge } from "@/components/game/ButtonLevelBadge";
 import { ButtonPriorBadge } from "@/components/game/ButtonPriorBadge";
 import { ACTION_TO_UPGRADE_KEY, PRIOR_ELIGIBLE_ACTIONS } from "@/game/buttonUpgrades";
+import { FOCUS_ELIGIBLE_ACTIONS } from "@/game/rules/actionEffects";
 import {
   BubblyButtonGlobalPortal,
 } from "@/components/ui/bubbly-button";
@@ -186,8 +187,8 @@ export default function ForestPanel() {
         ? getResourceGainTooltip(actionId, state)
         : null;
 
-    // Check if this action is affected by focus mode
-    const isFocusAffected = isChopWood || isHunt;
+    // Check if this action is affected by focus mode (only actions that get 2x bonus)
+    const isFocusAffected = FOCUS_ELIGIBLE_ACTIONS.includes(actionId);
     const shouldGlow = isFocusAffected && state.focusState?.isActive;
 
     // Get dynamic label for trade buttons based on the amount

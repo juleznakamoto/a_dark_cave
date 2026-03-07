@@ -11,7 +11,7 @@ import { getNextBuildingLevel } from "./villageBuildActions";
 import { calculateAdjustedCost } from "./costCalculation";
 import { clothingEffects } from "./effects";
 
-const FOCUS_ELIGIBLE_ACTIONS = [
+export const FOCUS_ELIGIBLE_ACTIONS = [
   "exploreCave",
   "ventureDeeper",
   "descendFurther",

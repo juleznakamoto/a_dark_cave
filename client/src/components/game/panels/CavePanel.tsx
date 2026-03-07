@@ -34,6 +34,7 @@ import {
   type UpgradeKey,
 } from "@/game/buttonUpgrades";
 import { getCraftProduceAmount } from "@/game/craftUpgradeUtils";
+import { FOCUS_ELIGIBLE_ACTIONS } from "@/game/rules/actionEffects";
 
 export default function CavePanel() {
   const { executeAction, setHighlightedResources } = useGameStore();
@@ -273,8 +274,8 @@ export default function CavePanel() {
         ? getResourceGainTooltip(actionId, state)
         : null;
 
-    // Check if this action is affected by focus mode
-    const isFocusAffected = isMineAction || isCaveExploreAction;
+    // Check if this action is affected by focus mode (only actions that get 2x bonus)
+    const isFocusAffected = FOCUS_ELIGIBLE_ACTIONS.includes(actionId);
     const shouldGlow = isFocusAffected && state.focusState?.isActive;
 
     // Special handling for Blast Gate button

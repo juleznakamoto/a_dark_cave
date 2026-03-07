@@ -424,32 +424,32 @@ export default function EstatePanel() {
           {showFocusButton && (
             <div className="relative inline-block pb-1 text-xs font-medium text-foreground ml-2">
               <CooldownButton
-                  onClick={() => {
-                    const now = Date.now();
-                    const focusPoints = focusState?.points || 0;
-                    const focusDuration = calculateFocusDuration(focusPoints);
-                    updateFocusState({
-                      isActive: true,
-                      endTime: now + focusDuration,
-                      startTime: now,
-                      duration: focusDuration,
-                      points: 0,
-                    });
-                  }}
-                  cooldownMs={0}
-                  size="xs"
-                  variant="outline"
-                  className="h-7 hover:bg-background hover:text-foreground"
-                  button_id="activate-focus"
-                  disabled={!focusState?.points || focusState.points === 0 || focusState?.isActive}
-                  tooltip={
-                    <div className="text-xs whitespace-nowrap">
-                      Get 100 % bonus on actions for {focusState?.points || 0} minute{(focusState?.points || 0) !== 1 ? "s" : ""}
-                    </div>
-                  }
-                >
-                  Focus
-                </CooldownButton>
+                onClick={() => {
+                  const now = Date.now();
+                  const focusPoints = focusState?.points || 0;
+                  const focusDuration = calculateFocusDuration(focusPoints);
+                  updateFocusState({
+                    isActive: true,
+                    endTime: now + focusDuration,
+                    startTime: now,
+                    duration: focusDuration,
+                    points: 0,
+                  });
+                }}
+                cooldownMs={0}
+                size="xs"
+                variant="outline"
+                className="h-7 hover:bg-background hover:text-foreground"
+                button_id="activate-focus"
+                disabled={!focusState?.points || focusState.points === 0 || focusState?.isActive}
+                tooltip={
+                  <div className="text-xs whitespace-nowrap">
+                    Get 2x rewards on actions for {focusState?.points || 0} minute{(focusState?.points || 0) !== 1 ? "s" : ""}
+                  </div>
+                }
+              >
+                Focus
+              </CooldownButton>
               {focusState && focusState.points > 0 && (
                 <TooltipProvider>
                   <Tooltip>
