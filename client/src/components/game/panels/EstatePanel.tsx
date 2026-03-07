@@ -11,6 +11,12 @@ import { Progress } from "@/components/ui/progress";
 import { CircularProgress } from "@/components/ui/circular-progress";
 import CooldownButton from "@/components/CooldownButton";
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import {
   CRUSHING_STRIKE_UPGRADES,
   BLOODFLAME_SPHERE_UPGRADES,
   HUNTING_SKILL_UPGRADES,
@@ -445,22 +451,25 @@ export default function EstatePanel() {
                   Focus
                 </CooldownButton>
               {focusState && focusState.points > 0 && (
-                <TooltipWrapper
-                  tooltip={
-                    <div className="text-xs whitespace-nowrap">
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div
+                        className="absolute -top-[7px] right-[-7px] flex items-center justify-center w-4 h-4 bg-teal-950 rounded-full text-[10px] font-medium z-[20] cursor-pointer hover:bg-teal-900 transition-colors duration-300"
+                        onClick={(e) => e.stopPropagation()}
+                        onPointerDown={(e) => e.stopPropagation()}
+                      >
+                        {focusState.points}
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent
+                      side="right"
+                      className="max-w-xs bg-popover text-white border text-xs whitespace-nowrap"
+                    >
                       Earn 1 Focus Point per hour of sleep
-                    </div>
-                  }
-                  tooltipId="focus-points-badge"
-                >
-                  <div
-                    className="absolute -top-[7px] right-[-7px] flex items-center justify-center w-4 h-4 bg-teal-950 rounded-full text-[10px] font-medium z-[20] cursor-pointer hover:bg-teal-900 transition-colors duration-300"
-                    onClick={(e) => e.stopPropagation()}
-                    onPointerDown={(e) => e.stopPropagation()}
-                  >
-                    {focusState.points}
-                  </div>
-                </TooltipWrapper>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               )}
             </div>
           )}
