@@ -202,6 +202,14 @@ export const actionChartConfig: AchievementChartConfig = {
         },
       },
       {
+        segmentId: "0-callMerchant",
+        maxCount: 10,
+        label: "Frequent Customer",
+        reward: 500,
+        getCount: (state: GameState) =>
+          Math.min(Number(state.story?.seen?.callMerchantUsageCount) || 0, 10),
+      },
+      {
         segmentId: "4-feedFire",
         maxCount: 100,
         label: "Fire Feeder",

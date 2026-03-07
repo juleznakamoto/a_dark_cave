@@ -349,7 +349,7 @@ export const storyEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "accept_help",
-        label: "Accept to help",
+        label: "Offer help",
         effect: (state: GameState) => {
           return {
             story: {
@@ -362,23 +362,6 @@ export const storyEvents: Record<string, GameEvent> = {
             },
             _logMessage:
               "The wildling's eyes light up with hope. 'You are our only chance,' she says. 'The cave of the beasts lies deep in the forest. May the gods protect you.'",
-          };
-        },
-      },
-      {
-        id: "reject_help",
-        label: "Reject",
-        effect: (state: GameState) => {
-          return {
-            story: {
-              ...state.story,
-              seen: {
-                ...state.story.seen,
-                forestTribeHelpRejected: true,
-              },
-            },
-            _logMessage:
-              "The wild man's face falls in despair. He turns away silently and disappears back into the forest.",
           };
         },
       },
