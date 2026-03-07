@@ -470,6 +470,8 @@ export default function VillagePanel() {
     const price = 50 + 50 * usageCount;
     const isMerchantActive =
       timedEventTab?.isActive && timedEventTab?.event?.id?.includes?.("merchant");
+    const isOtherEventActive =
+      timedEventTab?.isActive && !isMerchantActive;
 
     if (callMerchantLastEndPlayTime == null) return null;
     if (usageCount >= 10) return null;
@@ -481,6 +483,7 @@ export default function VillagePanel() {
     const isOnCooldown = currentPlayTime < cooldownEndPlayTime;
     const remainingMs = Math.max(0, cooldownEndPlayTime - currentPlayTime);
     const canAfford = (resources?.gold ?? 0) >= price;
+    const isDisabled = isOtherEventActive || isOnCooldown || !canAfford;
 
     const formatRemaining = (ms: number) => {
       const totalSeconds = Math.ceil(ms / 1000);
@@ -489,7 +492,11 @@ export default function VillagePanel() {
       return `${minutes}:${seconds.toString().padStart(2, "0")}`;
     };
 
-    const tooltipContent = isOnCooldown ? (
+    const tooltipContent = isOtherEventActive ? (
+      <div className="text-xs whitespace-nowrap">
+        Merchant cannot be called while another event is active
+      </div>
+    ) : isOnCooldown ? (
       <div className="text-xs whitespace-nowrap">
         Available in {formatRemaining(remainingMs)}
       </div>
@@ -512,7 +519,7 @@ export default function VillagePanel() {
         cooldownMs={0}
         actionId="callMerchant"
         button_id="callMerchant"
-        disabled={isOnCooldown || !canAfford}
+        disabled={isDisabled}
         size="xs"
         variant="outline"
         className="hover:bg-background hover:text-foreground"
