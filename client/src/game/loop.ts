@@ -56,8 +56,21 @@ function canPriorExecute(actionId: string, state: GameState): boolean {
     const effectResult = typeof action.effects === "function"
       ? action.effects(state)
       : action.effects;
+    // Resolve tiered effects
+    const effects = typeof effectResult === "object" && effectResult !== null && !Array.isArray(effectResult)
+      ? effectResult
+      : {};
     const resourceLimit = getResourceLimit(state);
-    const limitedOutputs = Object.entries(effectResult).filter(([key, value]) => {
+
+    // Never block actions that give silver or gold - they have no cap
+    const hasUnlimitedOutput = Object.entries(effects).some(([key]) => {
+      if (!key.startsWith("resources.")) return false;
+      const rk = key.slice("resources.".length);
+      return rk === "silver" || rk === "gold";
+    });
+    if (hasUnlimitedOutput) return true;
+
+    const limitedOutputs = Object.entries(effects).filter(([key, value]) => {
       if (!key.startsWith("resources.")) return false;
       if (typeof value === "number" && value <= 0) return false;
       const rk = key.slice("resources.".length);
