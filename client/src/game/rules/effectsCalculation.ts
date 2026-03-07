@@ -498,13 +498,10 @@ export const getAllActionBonuses = (
               .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
               .join(" ");
 
-      // Build value string
+      // Build value string (flat bonus not displayed - only boneTotems has one, and it's omitted)
       let valueStr = "";
       if (percentBonus > 0) {
         valueStr = `${percentBonus}%`;
-      }
-      if (bonus.flatBonus > 0) {
-        valueStr += valueStr ? ` / ${bonus.flatBonus}` : ` ${bonus.flatBonus}`;
       }
 
       return {
