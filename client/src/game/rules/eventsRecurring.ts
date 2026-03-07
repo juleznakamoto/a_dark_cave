@@ -3,32 +3,6 @@ import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
 
 export const recurringEvents: Record<string, GameEvent> = {
-  silverSackDiscovery: {
-    id: "silverSackDiscovery",
-    condition: (state: GameState) =>
-      state.tools?.stone_axe && !state.story?.seen?.silverSackFound,
-    timeProbability: 2,
-    message:
-      "You find a small leather sack containing 50 Silver.",
-    priority: 3,
-    repeatable: false,
-    effect: (state: GameState) => {
-      return {
-        resources: {
-          ...state.resources,
-          silver: state.resources.silver + 50,
-        },
-        story: {
-          ...state.story,
-          seen: {
-            ...state.story.seen,
-            silverSackFound: true,
-          },
-        },
-      };
-    },
-  },
-
   fireStorm: {
     id: "fireStorm",
     condition: (state: GameState) => {

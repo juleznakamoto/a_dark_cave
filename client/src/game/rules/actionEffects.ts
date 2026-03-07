@@ -462,6 +462,8 @@ export function applyActionEffects(
           triggerEvent?: string;
           isChoice?: boolean;
           eventId?: string;
+          alsoSet?: Record<string, boolean | number>;
+          addTo?: string;
         };
 
         let conditionMet = true;
@@ -561,9 +563,14 @@ export function applyActionEffects(
               }
             }
           } else if (typeof probabilityEffect.value === "number") {
-            if (pathParts[0] === "resources") {
-              current[finalKey] =
-                (state.resources[finalKey as keyof typeof state.resources] ||
+            const targetPath = probabilityEffect.addTo || path;
+            const targetParts = targetPath.split(".");
+            const targetKey = targetParts[targetParts.length - 1];
+            if (targetParts[0] === "resources") {
+              if (!updates.resources) updates.resources = { ...state.resources };
+              updates.resources[targetKey as keyof typeof updates.resources] =
+                (updates.resources[targetKey as keyof typeof updates.resources] ??
+                  state.resources[targetKey as keyof typeof state.resources] ??
                   0) + probabilityEffect.value;
             } else {
               current[finalKey] = probabilityEffect.value;
@@ -576,6 +583,33 @@ export function applyActionEffects(
         if (shouldTrigger && probabilityEffect.logMessage) {
           if (!updates.logMessages) updates.logMessages = [];
           updates.logMessages.push(probabilityEffect.logMessage);
+        }
+
+        if (shouldTrigger && probabilityEffect.alsoSet) {
+          Object.entries(probabilityEffect.alsoSet).forEach(
+            ([alsoPath, alsoValue]) => {
+              const alsoParts = alsoPath.split(".");
+              if (alsoPath.startsWith("story.seen.")) {
+                const key = alsoPath.replace("story.seen.", "");
+                updates.story = {
+                  ...state.story,
+                  seen: {
+                    ...state.story?.seen,
+                    ...updates.story?.seen,
+                    [key]: alsoValue,
+                  },
+                };
+              } else {
+                let target: any = updates;
+                for (let i = 0; i < alsoParts.length - 1; i++) {
+                  const part = alsoParts[i];
+                  if (!target[part]) target[part] = {};
+                  target = target[part];
+                }
+                target[alsoParts[alsoParts.length - 1]] = alsoValue;
+              }
+            },
+          );
         }
 
         if (shouldTrigger && probabilityEffect.triggerEvent) {

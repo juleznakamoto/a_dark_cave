@@ -363,6 +363,7 @@ describe('Resource Gain Tests', () => {
     it('ventureDeeper gains match tooltip', () => {
       const state = createTestState({
         buildings: { blacksmith: 1, clerksHut: 1 },
+        story: { seen: { silverSackFound: true } }, // Exclude 15% silver sack bonus from range check
       });
       const { expectedGains, actualGains } = testActionGains('ventureDeeper', state);
 

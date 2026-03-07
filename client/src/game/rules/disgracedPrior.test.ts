@@ -277,7 +277,7 @@ describe("applyActionEffects — Prior multiplier applied to resource output", (
 
     const result = applyActionEffects("exploreCave", state);
     const stoneGained = result.resources?.stone ?? 0;
-    // Base range ~4–8, ×3 = 12–24
-    expect(stoneGained).toBeGreaterThanOrEqual(12);
+    // Base range random(3,7), ×3 = 9–21
+    expect(stoneGained).toBeGreaterThanOrEqual(9);
   });
 });

@@ -84,7 +84,16 @@ function processTriggeredEvents(
 
 // Base items for each cave exploration stage
 const caveItems = {
-  exploreCave: [],
+  exploreCave: [
+    {
+      key: "torch",
+      probability: 0.15,
+      value: 20,
+      logMessage: "You find a bag with torches, +20 torch.",
+      category: "resources",
+      stageOnly: true, // Only on Explore Cave, not inherited to later stages
+    },
+  ],
   ventureDeeper: [
     {
       key: "tarnished_amulet",
@@ -99,6 +108,16 @@ const caveItems = {
       isChoice: true,
       eventId: "bloodstainedBeltChoice",
       category: "clothing",
+    },
+    {
+      key: "silver",
+      probability: 0.15,
+      value: 50,
+      logMessage: "You find a small leather sack containing 50 Silver.",
+      category: "resources",
+      condition: "!story.seen.silverSackFound",
+      alsoSet: { "story.seen.silverSackFound": true },
+      stageOnly: true, // Only on Venture Deeper, not inherited to later stages
     },
   ],
   descendFurther: [
@@ -159,27 +178,42 @@ function getInheritedItems(actionId: string) {
     const items = caveItems[stageId as keyof typeof caveItems];
 
     items.forEach((item) => {
+      // stageOnly items (e.g. torch bag, silver sack) only apply on their own stage
+      if ("stageOnly" in item && item.stageOnly && i !== currentIndex) return;
       const adjustedProbability =
         i === currentIndex
           ? item.probability
           : item.probability + 0.005 * (currentIndex - i);
 
-      // Determine the category (relics or clothing) based on the item's category
+      // Determine the category (relics, clothing, or resources)
       const category = item.category || "relics";
 
-      inheritedItems[`${category}.${item.key}`] = {
-        probability: Math.min(adjustedProbability, 1.0), // Cap at 100%
-        value: true,
-        condition:
-          `!${category}.${item.key}` +
-          ("eventId" in item && item.eventId
-            ? ` && !story.seen.${item.eventId}`
-            : ""),
-        ...("isChoice" in item && item.isChoice && { isChoice: item.isChoice }),
-        ...("eventId" in item && item.eventId && { eventId: item.eventId }),
-        ...("logMessage" in item &&
-          item.logMessage && { logMessage: item.logMessage }),
-      };
+      if (category === "resources") {
+        // Resource bonus: add to resources (e.g. silver sack, torch bag)
+        inheritedItems[`_resource_${item.key}`] = {
+          probability: Math.min(adjustedProbability, 1.0),
+          value: item.value,
+          addTo: `resources.${item.key}`,
+          logMessage: item.logMessage,
+          ...(item.condition && { condition: item.condition }),
+          ...(item.alsoSet && { alsoSet: item.alsoSet }),
+        };
+      } else {
+        // Clothing/relic: boolean item
+        inheritedItems[`${category}.${item.key}`] = {
+          probability: Math.min(adjustedProbability, 1.0),
+          value: true,
+          condition:
+            `!${category}.${item.key}` +
+            ("eventId" in item && item.eventId
+              ? ` && !story.seen.${item.eventId}`
+              : ""),
+          ...("isChoice" in item && item.isChoice && { isChoice: item.isChoice }),
+          ...("eventId" in item && item.eventId && { eventId: item.eventId }),
+          ...("logMessage" in item &&
+            item.logMessage && { logMessage: item.logMessage }),
+        };
+      }
     });
   }
 
