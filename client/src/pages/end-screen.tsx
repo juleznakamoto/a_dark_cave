@@ -26,7 +26,7 @@ export default function EndScreenPage() {
   };
 
   return (
-    <div className="fixed inset-0 z-[99999]">
+    <div className="fixed inset-0 z-[10000]">
       <Helmet>
         <title>Journey Complete - A Dark Cave</title>
         <meta name="robots" content="noindex" />

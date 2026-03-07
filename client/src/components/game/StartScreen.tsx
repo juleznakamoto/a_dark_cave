@@ -106,7 +106,9 @@ export default function StartScreen() {
     });
 
     audioManager.loadGameSounds().then(() => {
-      audioManager.startBackgroundMusic(0.3);
+      if (!useGameStore.getState().musicMuted) {
+        audioManager.startBackgroundMusic(0.3);
+      }
     });
 
     // Show button effect for 3 seconds on both mobile and desktop
@@ -196,7 +198,7 @@ export default function StartScreen() {
           ref={buttonRef}
           onClick={handleLightFire}
           autoStart={showParticles}
-          className={`bg-transparent border-none text-gray-300/90 hover:bg-transparent text-lg px-8 py-4 fire-hover z-[99999] ${showParticles ? 'fire-active' : 'animate-fade-in-button'}`}
+          className={`bg-transparent border-none text-gray-300/90 hover:bg-transparent text-lg px-8 py-4 fire-hover z-[10000] ${showParticles ? "fire-active" : "animate-fade-in-button"}`}
           data-testid="button-light-fire"
           button_id="light-fire"
         >

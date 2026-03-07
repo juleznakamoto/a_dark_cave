@@ -54,12 +54,33 @@ export class AudioManager {
     if (this.sounds.has(name)) return;
 
     try {
-      const sound = new Howl({
+      const config: Record<string, unknown> = {
         src: [url],
         preload: true,
         onload: () => logger.log(`Successfully loaded sound: ${name}`),
-        onloaderror: (id, error) => logger.warn(`Failed to load sound ${name} from ${url}:`, error)
-      });
+        onloaderror: (id: number, error: unknown) =>
+          logger.warn(`Failed to load sound ${name} from ${url}:`, error),
+      };
+
+      // Howler best practice: on playerror (autoplay blocked), wait for unlock then retry
+      if (name === 'backgroundMusic') {
+        const self = this;
+        config.onplayerror = function () {
+          const snd = self.sounds.get('backgroundMusic');
+          if (snd && !self.isMusicMuted) {
+            snd.once('unlock', function () {
+              if (!self.isMusicMuted) {
+                snd.loop(true);
+                snd.volume(0);
+                snd.play();
+                snd.fade(0, self.backgroundMusicVolume, 1000);
+              }
+            });
+          }
+        };
+      }
+
+      const sound = new Howl(config as Parameters<typeof Howl>[0]);
       this.sounds.set(name, sound);
     } catch (error) {
       logger.warn(`Error initializing sound ${name}:`, error);

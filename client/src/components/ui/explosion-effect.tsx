@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { audioManager } from "@/lib/audio";
+import { Z_INDEX } from "@/lib/z-index";
 
 interface Particle {
   id: number;
@@ -55,7 +56,7 @@ function FireParticles({
               height: `${particle.size}px`,
               left: centerX + particle.startX - particle.size / 2,
               top: centerY + particle.startY - particle.size / 2,
-              zIndex: 9998,
+              zIndex: Z_INDEX.particles,
               pointerEvents: "none",
             }}
             initial={{
@@ -129,7 +130,7 @@ function ExplosionParticles({
               backgroundColor: particle.color,
               left: startX,
               top: startY,
-              zIndex: 9999,
+              zIndex: Z_INDEX.particlesForeground,
               pointerEvents: "none",
               boxShadow: `0 0 ${particle.size * 0.25}px ${"#FFFFFF"}`,
             }}

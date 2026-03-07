@@ -5,6 +5,7 @@ import { useState, useRef, useEffect, forwardRef } from "react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { Z_INDEX } from "@/lib/z-index";
 import type { ButtonProps } from "@/components/ui/button";
 
 interface ParticleButtonProps extends ButtonProps {
@@ -54,7 +55,7 @@ function SuccessParticles({
                             backgroundColor: spark.color,
                             left: startX,
                             top: startY,
-                            zIndex: 9999,
+                            zIndex: Z_INDEX.particles,
                             pointerEvents: "none",
                             boxShadow: `0 0 ${Math.random() * 8 + 3}px ${spark.color}`,
                         }}

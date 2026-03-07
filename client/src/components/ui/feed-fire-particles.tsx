@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { Z_INDEX } from "@/lib/z-index";
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 
@@ -46,7 +47,7 @@ export function SuccessParticles({
               backgroundColor: spark.color,
               left: startX,
               top: startY,
-              zIndex: 9999,
+              zIndex: Z_INDEX.particles,
               pointerEvents: "none",
               boxShadow: `0 0 ${Math.random() * 8 + 3}px ${spark.color}`,
             }}

@@ -176,7 +176,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
 
         {/* "2x" text indicator for compass glow */}
         {isCompassGlowing && (
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-[100]">
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
             <div className="bg-yellow-800 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center animate-fade-out-up shadow-sm border border-yellow-600/50">
               2x
             </div>
