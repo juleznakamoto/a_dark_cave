@@ -910,6 +910,9 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
           >
             <DialogHeader>
               <DialogTitle>Trader</DialogTitle>
+              <DialogDescription className="sr-only">
+                Shop for gold, artifacts, boosts, and bundles
+              </DialogDescription>
             </DialogHeader>
 
             {isLoading && (
@@ -1491,6 +1494,9 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
               <DialogTitle>
                 Complete Purchase: {SHOP_ITEMS[selectedItem]?.name}
               </DialogTitle>
+              <DialogDescription className="sr-only">
+                Complete your payment for {SHOP_ITEMS[selectedItem]?.name}
+              </DialogDescription>
             </DialogHeader>
             <div className="max-h-[calc(85vh-120px)] overflow-y-auto px-6 pb-6 scrollbar-hide">
               {stripePromise ? (
