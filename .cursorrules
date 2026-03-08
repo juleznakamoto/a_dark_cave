@@ -105,6 +105,7 @@ Preferred communication style: Simple, everyday language.
 - There is a dev and a prod environment. Secrets end with either `_DEV` or `_PROD`.
 
 ### Coding Standards
+- **CooldownButton tooltips**: Always add `data-testid` (e.g. `button-call-merchant`) to CooldownButton—without it, tooltips break on mobile
 - **DRY**: Consolidate duplicate patterns into reusable functions after the 2nd occurrence
 - **Clean**: Delete dead code immediately (unused imports, functions, variables, commented code)
 - **Leverage**: Use battle-tested packages over custom implementations

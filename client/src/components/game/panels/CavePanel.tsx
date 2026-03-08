@@ -35,7 +35,6 @@ import {
 } from "@/game/buttonUpgrades";
 import { getCraftProduceAmount } from "@/game/craftUpgradeUtils";
 import { FOCUS_ELIGIBLE_ACTIONS } from "@/game/rules/actionEffects";
-import { formatNumber } from "@/lib/utils";
 
 export default function CavePanel() {
   const {
@@ -121,16 +120,6 @@ export default function CavePanel() {
               showWhen: !state.flags.forestUnlocked,
             },
             { id: "exploreCave", label: "Explore Cave" },
-            {
-              id: "callMerchant",
-              label: "Call Merchant",
-              showWhen: () =>
-                (buildings?.tradePost ?? 0) >= 1 &&
-                !(
-                  timedEventTab?.isActive &&
-                  timedEventTab?.event?.id?.includes?.("merchant")
-                ),
-            },
             { id: "ventureDeeper", label: "Venture Deeper" },
             { id: "descendFurther", label: "Descend Further" },
             { id: "exploreRuins", label: "Explore Ruins" },
@@ -250,76 +239,6 @@ export default function CavePanel() {
 
   const renderButton = (actionId: string, label: string) => {
     const action = gameActions[actionId];
-
-    // Call Merchant (same CooldownButton structure as other actions - for testing tooltip in Cave tab)
-    if (actionId === "callMerchant") {
-      const callMerchantLastEndPlayTime = story?.seen
-        ?.callMerchantLastEndPlayTime as number | undefined;
-      const usageCount = (story?.seen?.callMerchantUsageCount as number) || 0;
-      const price = Math.min(50 + 50 * usageCount, 250);
-      const isMerchantActive =
-        timedEventTab?.isActive &&
-        timedEventTab?.event?.id?.includes?.("merchant");
-      const isOtherEventActive =
-        timedEventTab?.isActive && !isMerchantActive;
-
-      const cooldownEndPlayTime =
-        (callMerchantLastEndPlayTime ?? 0) + 5 * 60 * 1000;
-      const currentPlayTime = playTime ?? 0;
-      const isOnCooldown =
-        callMerchantLastEndPlayTime != null &&
-        currentPlayTime < cooldownEndPlayTime;
-      const remainingMs = Math.max(0, cooldownEndPlayTime - currentPlayTime);
-      const canAfford = (resources?.gold ?? 0) >= price;
-      const isDisabled = isOtherEventActive || isOnCooldown || !canAfford;
-
-      const formatRemaining = (ms: number) => {
-        const totalSeconds = Math.ceil(ms / 1000);
-        const minutes = Math.floor(totalSeconds / 60);
-        const seconds = totalSeconds % 60;
-        return `${minutes}:${seconds.toString().padStart(2, "0")}`;
-      };
-
-      const tooltipContent = isOtherEventActive ? (
-        <div className="text-xs">
-          Merchant cannot be called while another event is active
-        </div>
-      ) : isOnCooldown ? (
-        <div className="text-xs whitespace-nowrap">
-          Available in {formatRemaining(remainingMs)}
-        </div>
-      ) : (
-        <div className="text-xs whitespace-nowrap">
-          <div
-            className={
-              canAfford ? "text-foreground" : "text-muted-foreground"
-            }
-          >
-            -{formatNumber(price)} Gold
-          </div>
-        </div>
-      );
-
-      return (
-        <CooldownButton
-          key="callMerchant"
-          onClick={() => callMerchant()}
-          cooldownMs={0}
-          data-testid="button-call-merchant"
-          actionId="callMerchant"
-          button_id="callMerchant"
-          disabled={isDisabled}
-          size="xs"
-          variant="outline"
-          className="hover:bg-background hover:text-foreground"
-          tooltip={tooltipContent}
-          style={{ pointerEvents: "auto" }}
-        >
-          <span className="flex items-center gap-1">{label}</span>
-        </CooldownButton>
-      );
-    }
-
     if (!action) return null;
 
     // Use singular/plural for craft upgrade buttons based on produce amount
