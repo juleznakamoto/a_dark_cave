@@ -128,8 +128,28 @@ export default function VillagePanel() {
     return () => clearInterval(interval);
   }, [feastState, greatFeastState]);
 
-  // Define action groups with their actions
+  // Define action groups with their actions (same structure as CavePanel)
   const actionGroups = [
+    {
+      title: "",
+      actions: [
+        {
+          id: "feedFire",
+          label: "Feed Fire",
+          showWhen: () => buildings.heartfire > 0,
+        },
+        {
+          id: "callMerchant",
+          label: "Call Merchant",
+          showWhen: () =>
+            (buildings?.tradePost ?? 0) >= 1 &&
+            !(
+              timedEventTab?.isActive &&
+              timedEventTab?.event?.id?.includes?.("merchant")
+            ),
+        },
+      ],
+    },
     {
       title: "Build",
       actions: [
@@ -311,7 +331,76 @@ export default function VillagePanel() {
 
   const renderButton = (actionId: string, label: string) => {
     const action = gameActions[actionId];
-    if (!action && actionId !== "feedFire") return null;
+    if (!action && actionId !== "feedFire" && actionId !== "callMerchant")
+      return null;
+
+    // Special case for Call Merchant button (same CooldownButton structure as other actions)
+    if (actionId === "callMerchant") {
+      const callMerchantLastEndPlayTime = story?.seen
+        ?.callMerchantLastEndPlayTime as number | undefined;
+      const usageCount = (story?.seen?.callMerchantUsageCount as number) || 0;
+      const price = Math.min(50 + 50 * usageCount, 250);
+      const isMerchantActive =
+        timedEventTab?.isActive &&
+        timedEventTab?.event?.id?.includes?.("merchant");
+      const isOtherEventActive =
+        timedEventTab?.isActive && !isMerchantActive;
+
+      const cooldownEndPlayTime =
+        (callMerchantLastEndPlayTime ?? 0) + 5 * 60 * 1000;
+      const currentPlayTime = playTime ?? 0;
+      const isOnCooldown =
+        callMerchantLastEndPlayTime != null &&
+        currentPlayTime < cooldownEndPlayTime;
+      const remainingMs = Math.max(0, cooldownEndPlayTime - currentPlayTime);
+      const canAfford = (resources?.gold ?? 0) >= price;
+      const isDisabled = isOtherEventActive || isOnCooldown || !canAfford;
+
+      const formatRemaining = (ms: number) => {
+        const totalSeconds = Math.ceil(ms / 1000);
+        const minutes = Math.floor(totalSeconds / 60);
+        const seconds = totalSeconds % 60;
+        return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+      };
+
+      const tooltipContent = isOtherEventActive ? (
+        <div className="text-xs">
+          Merchant cannot be called while another event is active
+        </div>
+      ) : isOnCooldown ? (
+        <div className="text-xs whitespace-nowrap">
+          Available in {formatRemaining(remainingMs)}
+        </div>
+      ) : (
+        <div className="text-xs whitespace-nowrap">
+          <div
+            className={
+              canAfford ? "text-foreground" : "text-muted-foreground"
+            }
+          >
+            -{formatNumber(price)} Gold
+          </div>
+        </div>
+      );
+
+      return (
+        <CooldownButton
+          key="callMerchant"
+          onClick={() => callMerchant()}
+          cooldownMs={0}
+          actionId="callMerchant"
+          button_id="callMerchant"
+          disabled={isDisabled}
+          size="xs"
+          variant="outline"
+          className="hover:bg-background hover:text-foreground"
+          tooltip={tooltipContent}
+          style={{ pointerEvents: "auto" }}
+        >
+          <span className="flex items-center gap-1">{label}</span>
+        </CooldownButton>
+      );
+    }
 
     // Special case for Feed Fire button
     if (actionId === "feedFire") {
@@ -465,71 +554,6 @@ export default function VillagePanel() {
     );
   };
 
-  const renderCallMerchantButton = () => {
-    const callMerchantLastEndPlayTime = story?.seen?.callMerchantLastEndPlayTime as number | undefined;
-    const usageCount = (story?.seen?.callMerchantUsageCount as number) || 0;
-    const price = Math.min(50 + 50 * usageCount, 250);
-    const isMerchantActive =
-      timedEventTab?.isActive && timedEventTab?.event?.id?.includes?.("merchant");
-    const isOtherEventActive =
-      timedEventTab?.isActive && !isMerchantActive;
-
-    if ((buildings?.tradePost ?? 0) < 1) return null;
-    if (isMerchantActive) return null;
-
-    const cooldownEndPlayTime = (callMerchantLastEndPlayTime ?? 0) + 5 * 60 * 1000;
-    const currentPlayTime = playTime ?? 0;
-    const isOnCooldown = callMerchantLastEndPlayTime != null && currentPlayTime < cooldownEndPlayTime;
-    const remainingMs = Math.max(0, cooldownEndPlayTime - currentPlayTime);
-    const canAfford = (resources?.gold ?? 0) >= price;
-    const isDisabled = isOtherEventActive || isOnCooldown || !canAfford;
-
-    const formatRemaining = (ms: number) => {
-      const totalSeconds = Math.ceil(ms / 1000);
-      const minutes = Math.floor(totalSeconds / 60);
-      const seconds = totalSeconds % 60;
-      return `${minutes}:${seconds.toString().padStart(2, "0")}`;
-    };
-
-    const tooltipContent = isOtherEventActive ? (
-      <div className="text-xs">
-        Merchant cannot be called while another event is active
-      </div>
-    ) : isOnCooldown ? (
-      <div className="text-xs whitespace-nowrap">
-        Available in {formatRemaining(remainingMs)}
-      </div>
-    ) : (
-      <div className="text-xs whitespace-nowrap">
-        <div
-          className={
-            canAfford ? "text-foreground" : "text-muted-foreground"
-          }
-        >
-          -{formatNumber(price)} Gold
-        </div>
-      </div>
-    );
-
-    return (
-      <CooldownButton
-        key="callMerchant"
-        onClick={() => callMerchant()}
-        cooldownMs={0}
-        actionId="callMerchant"
-        button_id="callMerchant"
-        disabled={isDisabled}
-        size="xs"
-        variant="outline"
-        className="hover:bg-background hover:text-foreground"
-        tooltip={tooltipContent}
-        style={{ pointerEvents: "auto" }}
-      >
-        <span className="flex items-center gap-1">Call Merchant</span>
-      </CooldownButton>
-    );
-  };
-
   // Hold-to-repeat state management (moved outside to avoid conditional hooks)
   const [holdState, setHoldState] = useState<{
     interval: NodeJS.Timeout | null;
@@ -674,29 +698,25 @@ export default function VillagePanel() {
 
   return (
     <>
+      <SuccessParticles buttonRef={feedFireButtonRef} sparks={sparks} />
+      <BubblyButtonGlobalPortal bubbles={bubbles} />
       <ScrollArea className="h-full w-full">
-        <SuccessParticles buttonRef={feedFireButtonRef} sparks={sparks} />
-        <BubblyButtonGlobalPortal bubbles={bubbles} />
         <div className="space-y-4 mt-2 mb-2 pl-[3px] ">
-          {/* Special Top Level Button Group for Feed Fire and Call Merchant */}
-          {(buildings.heartfire > 0 ||
-            ((buildings?.tradePost ?? 0) >= 1 &&
-              !(
-                timedEventTab?.isActive &&
-                timedEventTab?.event?.id?.includes?.("merchant")
-              ))) && (
-            <div className="space-y-2">
-              <div className="flex flex-wrap gap-2">
-                {renderButton("feedFire", "Feed Fire")}
-                {renderCallMerchantButton()}
-              </div>
-            </div>
-          )}
-
           {actionGroups.map((group, groupIndex) => {
-            const visibleActions = group.actions.filter((action) =>
-              shouldShowAction(action.id, state) || !!state.executionStartTimes?.[action.id],
-            );
+            const visibleActions = group.actions.filter((action) => {
+              const actionWithShow = action as {
+                id: string;
+                label: string;
+                showWhen?: () => boolean;
+              };
+              if (actionWithShow.showWhen !== undefined) {
+                return actionWithShow.showWhen();
+              }
+              return (
+                shouldShowAction(action.id, state) ||
+                !!state.executionStartTimes?.[action.id]
+              );
+            });
 
             if (visibleActions.length === 0) return null;
 
