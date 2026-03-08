@@ -23,16 +23,21 @@ function TestTooltipButton({
   const globalTooltip = useGlobalTooltip();
 
   return (
-    <div
-      onTouchStart={(e) =>
-        globalTooltip.handleTouchStart(id, disabled, false, e)
-      }
-      onTouchEnd={(e) =>
-        globalTooltip.handleTouchEnd(id, disabled, onAction, e)
-      }
-    >
-      <button data-testid={`trigger-${id}`}>Button</button>
-    </div>
+    <>
+      <div
+        onTouchStart={(e) =>
+          globalTooltip.handleTouchStart(id, disabled, false, e)
+        }
+        onTouchEnd={(e) =>
+          globalTooltip.handleTouchEnd(id, disabled, onAction, e)
+        }
+      >
+        <button data-testid={`trigger-${id}`}>Button</button>
+      </div>
+      <div data-testid={`open-${id}`}>
+        {globalTooltip.isTooltipOpen(id) ? "open" : "closed"}
+      </div>
+    </>
   );
 }
 
@@ -95,5 +100,25 @@ describe("useGlobalTooltip - mobile long-press behavior", () => {
     });
 
     expect(onAction).toHaveBeenCalledTimes(1);
+  });
+
+  it("opens tooltip on short tap for disabled buttons", async () => {
+    const onAction = vi.fn();
+    render(
+      <TestTooltipButton id="disabled-test" disabled={true} onAction={onAction} />
+    );
+
+    const trigger = screen.getByTestId("trigger-disabled-test");
+    const state = screen.getByTestId("open-disabled-test");
+
+    expect(state.textContent).toBe("closed");
+
+    await act(async () => {
+      fireEvent.touchStart(trigger);
+      fireEvent.touchEnd(trigger);
+    });
+
+    expect(onAction).not.toHaveBeenCalled();
+    expect(state.textContent).toBe("open");
   });
 });

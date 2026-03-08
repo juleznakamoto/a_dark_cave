@@ -186,8 +186,17 @@ export function useGlobalTooltip() {
       return;
     }
     
-    // If we were pressing and didn't show tooltip yet, execute the action (only if not disabled)
+    // On mobile, short taps on disabled controls should open the tooltip directly.
+    // Relying on a later click is unreliable because disabled buttons may not emit one.
     if (wasPressing && !tooltipWasOpen) {
+      if (disabled && isMobile) {
+        e.preventDefault();
+        e.stopPropagation();
+        const currentOpen = globalTooltipManager.getOpenTooltip();
+        globalTooltipManager.setOpenTooltip(currentOpen === id ? null : id);
+        return;
+      }
+
       if (!disabled) {
         // Execute the action and prevent the Button's onClick from firing
         e.preventDefault();
@@ -195,7 +204,7 @@ export function useGlobalTooltip() {
         onClick();
       }
     }
-  }, []);
+  }, [isMobile]);
 
   const handleTouchStart = useCallback((id: string, disabled: boolean, isCoolingDown: boolean, e: React.TouchEvent) => {
     // Clear any existing timer before creating a new one
@@ -238,8 +247,17 @@ export function useGlobalTooltip() {
       return;
     }
     
-    // If we were pressing and didn't show tooltip yet, execute the action (only if not disabled)
+    // On mobile, short taps on disabled controls should open the tooltip directly.
+    // Relying on a later click is unreliable because disabled buttons may not emit one.
     if (wasPressing && !tooltipWasOpen) {
+      if (disabled) {
+        if (e.cancelable) e.preventDefault();
+        e.stopPropagation();
+        const currentOpen = globalTooltipManager.getOpenTooltip();
+        globalTooltipManager.setOpenTooltip(currentOpen === id ? null : id);
+        return;
+      }
+
       if (!disabled) {
         // Execute the action and prevent the Button's onClick from firing
         if (e.cancelable) e.preventDefault();
