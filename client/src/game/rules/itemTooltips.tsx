@@ -126,25 +126,23 @@ export function renderItemTooltip(
     return null;
   }
 
-  // Bombs use combat tooltips (damage info)
+  // Bombs use combat tooltips (damage info) + name/description from effects
   if (
     itemType === "weapon" &&
     BOMB_RESOURCES.includes(itemId as (typeof BOMB_RESOURCES)[number])
   ) {
     const tooltipConfig = combatItemTooltips[itemId];
+    const effect = weaponEffects[itemId];
     if (tooltipConfig?.getContent) {
       const gameState = useGameStore.getState();
       const content = tooltipConfig.getContent(gameState);
       const maxBombs = getMaxBombLimit(gameState);
       return (
         <div className="text-xs">
-          <div className="font-bold">
-            {itemId === "ember_bomb"
-              ? "Ember Bomb"
-              : itemId === "ashfire_bomb"
-                ? "Ashfire Bomb"
-                : "Void Bomb"}
-          </div>
+          <div className="font-bold">{effect?.name ?? itemId}</div>
+          {effect?.description && (
+            <div className="text-gray-400 mb-0.5">{effect.description}</div>
+          )}
           <pre className="whitespace-pre-wrap text-gray-400 font-sans text-xs">
             {content}
           </pre>

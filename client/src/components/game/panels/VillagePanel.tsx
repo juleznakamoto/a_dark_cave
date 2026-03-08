@@ -608,10 +608,16 @@ export default function VillagePanel() {
             }
             onMouseUp={() => stopHold(false)}
             onMouseLeave={() => stopHold(false)}
-            onTouchStart={() =>
-              currentCount > 0 && startHold(() => unassignVillager(jobId), true)
-            }
-            onTouchEnd={() => stopHold(true)}
+            onTouchStart={(e) => {
+              if (currentCount > 0) {
+                e.preventDefault(); // Prevent ghost click - synthetic mouse events cause unwanted assign on nearby +
+                startHold(() => unassignVillager(jobId), true);
+              }
+            }}
+            onTouchEnd={(e) => {
+              if (e.cancelable) e.preventDefault();
+              stopHold(true);
+            }}
             disabled={currentCount === 0}
             variant="ghost"
             size="xs"
@@ -630,10 +636,16 @@ export default function VillagePanel() {
             }
             onMouseUp={() => stopHold(false)}
             onMouseLeave={() => stopHold(false)}
-            onTouchStart={() =>
-              villagers.free > 0 && startHold(() => assignVillager(jobId), true)
-            }
-            onTouchEnd={() => stopHold(true)}
+            onTouchStart={(e) => {
+              if (villagers.free > 0) {
+                e.preventDefault(); // Prevent ghost click - synthetic mouse events cause unwanted actions
+                startHold(() => assignVillager(jobId), true);
+              }
+            }}
+            onTouchEnd={(e) => {
+              if (e.cancelable) e.preventDefault();
+              stopHold(true);
+            }}
             disabled={villagers.free === 0}
             variant="ghost"
             size="xs"

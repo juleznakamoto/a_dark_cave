@@ -101,20 +101,28 @@ export function useGlobalTooltip() {
     return unsubscribe;
   }, []);
 
-  // Effect to handle click outside of tooltip on mobile
+  // Effect to handle click/tap outside of tooltip - closes when user taps elsewhere
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (openTooltipId && !event.target?.closest('[role="tooltip"]')) {
+    const isOutsideTooltip = (target: EventTarget | null) =>
+      openTooltipId && target && !(target as Element).closest?.('[role="tooltip"]');
+
+    const handleOutside = (event: MouseEvent | TouchEvent) => {
+      const target = "touches" in event ? (event as TouchEvent).target : (event as MouseEvent).target;
+      if (isOutsideTooltip(target)) {
         globalTooltipManager.setOpenTooltip(null);
       }
     };
 
-    if (isMobile && openTooltipId) {
-      document.addEventListener("click", handleClickOutside, true);
+    if (openTooltipId) {
+      document.addEventListener("click", handleOutside, true);
+      if (isMobile) {
+        document.addEventListener("touchstart", handleOutside, true);
+      }
     }
 
     return () => {
-      document.removeEventListener("click", handleClickOutside, true);
+      document.removeEventListener("click", handleOutside, true);
+      document.removeEventListener("touchstart", handleOutside, true);
     };
   }, [openTooltipId, isMobile]);
 
@@ -153,35 +161,33 @@ export function useGlobalTooltip() {
   }, []);
 
   const handleMouseUp = useCallback((id: string, disabled: boolean, onClick: () => void, e: React.MouseEvent) => {
-    // Clear the timer
+    const wasPressing = globalTooltipManager.isPressing(id);
+    const tooltipWasOpen = globalTooltipManager.isTooltipOpen(id);
     globalTooltipManager.clearPressTimer(id);
     
-    // If tooltip is already open, close it
-    if (globalTooltipManager.isTooltipOpen(id)) {
+    // If tooltip is already open
+    if (tooltipWasOpen) {
       const wasOpenedByTimer = globalTooltipManager.wasOpenedByTimer(id);
-      globalTooltipManager.setOpenTooltip(null);
-      globalTooltipManager.clearOpenedByTimer(id);
       
-      // If tooltip was opened by long press timer, prevent click (user was just viewing tooltip)
+      // If tooltip was opened by long press: keep it open, prevent action. User clicks elsewhere to close.
       if (wasOpenedByTimer) {
         e.preventDefault();
         e.stopPropagation();
+        globalTooltipManager.clearOpenedByTimer(id);
         return;
       }
       
-      // If tooltip was already open (not from timer), allow click to proceed
-      if (!disabled) {
-        // Don't prevent default - let the button's onClick handle it
-        return;
-      }
-      // If disabled, prevent the click
+      // If tooltip was already open (not from timer), close on release and allow click to proceed
+      globalTooltipManager.setOpenTooltip(null);
+      globalTooltipManager.clearOpenedByTimer(id);
+      if (!disabled) return;
       e.preventDefault();
       e.stopPropagation();
       return;
     }
     
     // If we were pressing and didn't show tooltip yet, execute the action (only if not disabled)
-    if (globalTooltipManager.isPressing(id)) {
+    if (wasPressing && !tooltipWasOpen) {
       if (!disabled) {
         // Execute the action and prevent the Button's onClick from firing
         e.preventDefault();
@@ -195,45 +201,45 @@ export function useGlobalTooltip() {
     // Clear any existing timer before creating a new one
     globalTooltipManager.clearPressTimer(id);
 
-    // Start timer to show tooltip after 300ms (works on all devices including tablets)
+    // Start timer to show tooltip (250ms on mobile for faster feedback, 300ms on desktop)
+    const delay = isMobile ? 250 : 300;
     const timer = setTimeout(() => {
       globalTooltipManager.setOpenTooltip(id, true); // Mark as opened by timer
       globalTooltipManager.clearPressTimer(id);
-    }, 300);
+    }, delay);
 
     globalTooltipManager.setPressTimer(id, timer);
-  }, []);
+  }, [isMobile]);
 
   const handleTouchEnd = useCallback((id: string, disabled: boolean, onClick: () => void, e: React.TouchEvent) => {
-    // Clear the timer
+    // Capture state before clearing (clearPressTimer removes from pressingIds)
+    const wasPressing = globalTooltipManager.isPressing(id);
+    const tooltipWasOpen = globalTooltipManager.isTooltipOpen(id);
     globalTooltipManager.clearPressTimer(id);
     
-    // If tooltip is already open, close it
-    if (globalTooltipManager.isTooltipOpen(id)) {
+    // If tooltip is already open
+    if (tooltipWasOpen) {
       const wasOpenedByTimer = globalTooltipManager.wasOpenedByTimer(id);
-      globalTooltipManager.setOpenTooltip(null);
-      globalTooltipManager.clearOpenedByTimer(id);
       
-      // If tooltip was opened by long press timer, prevent click (user was just viewing tooltip)
+      // If tooltip was opened by long press: keep it open, prevent action. User taps elsewhere to close.
       if (wasOpenedByTimer) {
         if (e.cancelable) e.preventDefault();
         e.stopPropagation();
+        globalTooltipManager.clearOpenedByTimer(id);
         return;
       }
       
-      // If tooltip was already open (not from timer), allow click to proceed
-      if (!disabled) {
-        // Don't prevent default - let the button's onClick handle it
-        return;
-      }
-      // If disabled, prevent the click
+      // If tooltip was already open (not from timer), close on release and allow click to proceed
+      globalTooltipManager.setOpenTooltip(null);
+      globalTooltipManager.clearOpenedByTimer(id);
+      if (!disabled) return;
       if (e.cancelable) e.preventDefault();
       e.stopPropagation();
       return;
     }
     
     // If we were pressing and didn't show tooltip yet, execute the action (only if not disabled)
-    if (globalTooltipManager.isPressing(id)) {
+    if (wasPressing && !tooltipWasOpen) {
       if (!disabled) {
         // Execute the action and prevent the Button's onClick from firing
         if (e.cancelable) e.preventDefault();
@@ -241,7 +247,7 @@ export function useGlobalTooltip() {
         onClick();
       }
     }
-  }, []);
+  }, [isMobile]);
 
   const closeTooltip = useCallback(() => {
     globalTooltipManager.setOpenTooltip(null);

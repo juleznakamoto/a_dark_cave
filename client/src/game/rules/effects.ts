@@ -665,6 +665,28 @@ export const weaponEffects: Record<string, EffectDefinition> = {
       },
     },
   },
+
+  ember_bomb: {
+    id: "ember_bomb",
+    name: "Ember Bomb",
+    description:
+      "Powerful bomb with a glowing core creating intense heat",
+    bonuses: { actionBonuses: {} },
+  },
+  ashfire_bomb: {
+    id: "ashfire_bomb",
+    name: "Ashfire Bomb",
+    description:
+      "Devastating bomb glowing with otherworldly fire",
+    bonuses: { actionBonuses: {} },
+  },
+  void_bomb: {
+    id: "void_bomb",
+    name: "Void Bomb",
+    description:
+      "Terrifying bomb seeming to distort space around it",
+    bonuses: { actionBonuses: {} },
+  },
 };
 
 // Relic effects

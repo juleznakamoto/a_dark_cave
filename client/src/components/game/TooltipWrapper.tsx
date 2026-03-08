@@ -21,7 +21,8 @@ export interface TooltipWrapperProps {
 /**
  * Wrapper component that adds consistent tooltip behavior to any element
  * - Desktop: tooltips shown on hover AND long press (300ms)
- * - Mobile/Tablets: tooltips shown on long press (300ms) or click if disabled
+ * - Mobile/Tablets: tooltips shown on long press (250ms) or click if disabled
+ * - Long-press tooltips stay open until user clicks/taps elsewhere
  * - Only one tooltip open at a time globally
  */
 export function TooltipWrapper({
@@ -58,6 +59,7 @@ export function TooltipWrapper({
   return (
     <div
       className={className}
+      style={{ touchAction: "manipulation" }}
       onClick={globalTooltip.isMobile ? (e) => {
         // Don't show tooltip if action was just executed
         if (actionExecutedRef.current) return;
