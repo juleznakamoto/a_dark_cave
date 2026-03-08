@@ -1,15 +1,37 @@
-
+/**
+ * @vitest-environment jsdom
+ */
+import React from 'react';
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { ShopDialog } from './ShopDialog';
 import { useGameStore } from '@/game/state';
 import { getCurrentUser } from '@/game/auth';
-import { supabase } from '@/lib/supabase';
+
+// Use vi.hoisted so mock is available when vi.mock factory runs
+const { mockSupabaseClient } = vi.hoisted(() => {
+  const from = vi.fn(() => ({
+    select: vi.fn(() => ({
+      eq: vi.fn(() => ({ data: [], error: null })),
+    })),
+    insert: vi.fn(() => ({ data: null, error: null })),
+  }));
+  return {
+    mockSupabaseClient: {
+      from,
+      auth: { getSession: vi.fn(() => Promise.resolve({ data: { session: null } })) },
+    },
+  };
+});
 
 // Mock dependencies
 vi.mock('@/game/auth');
-vi.mock('@/lib/supabase');
+vi.mock('@/lib/supabase', () => ({
+  supabase: mockSupabaseClient,
+  getSupabaseClient: vi.fn(() => Promise.resolve(mockSupabaseClient)),
+  getCachedAuthUser: vi.fn(() => null),
+  isAuthStateReady: vi.fn(() => true),
+}));
 vi.mock('@stripe/stripe-js');
 vi.mock('@stripe/react-stripe-js', () => ({
   Elements: ({ children }: any) => <div>{children}</div>,
@@ -20,21 +42,6 @@ vi.mock('@stripe/react-stripe-js', () => ({
   useElements: () => ({}),
 }));
 
-const mockSupabaseClient = {
-  from: vi.fn(() => ({
-    select: vi.fn(() => ({
-      eq: vi.fn(() => ({
-        data: [],
-        error: null,
-      })),
-    })),
-    insert: vi.fn(() => ({
-      data: null,
-      error: null,
-    })),
-  })),
-};
-
 describe('ShopDialog Currency Detection', () => {
   const mockUser = {
     id: 'test-user-123',
@@ -42,6 +49,21 @@ describe('ShopDialog Currency Detection', () => {
   };
 
   beforeEach(() => {
+    // jsdom doesn't implement matchMedia - required by use-mobile hook
+    Object.defineProperty(window, "matchMedia", {
+      writable: true,
+      value: vi.fn().mockImplementation((query: string) => ({
+        matches: false,
+        media: query,
+        onchange: null,
+        addListener: vi.fn(),
+        removeListener: vi.fn(),
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+        dispatchEvent: vi.fn(),
+      })),
+    });
+
     // Reset game store
     useGameStore.setState({
       resources: { gold: 10000 },
@@ -57,7 +79,6 @@ describe('ShopDialog Currency Detection', () => {
     });
 
     vi.mocked(getCurrentUser).mockResolvedValue(mockUser);
-    vi.mocked(supabase).mockReturnValue(mockSupabaseClient as any);
 
     // Reset fetch mock
     global.fetch = vi.fn();
@@ -307,7 +328,6 @@ describe('ShopDialog Currency Detection', () => {
         return Promise.reject(new Error('Unknown URL'));
       });
 
-      const user = userEvent.setup();
       const onClose = vi.fn();
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
@@ -316,7 +336,7 @@ describe('ShopDialog Currency Detection', () => {
       });
 
       const purchaseButton = screen.getAllByRole('button', { name: /purchase/i })[0];
-      await user.click(purchaseButton);
+      fireEvent.click(purchaseButton);
 
       await waitFor(() => {
         expect(global.fetch).toHaveBeenCalledWith(
@@ -344,7 +364,6 @@ describe('ShopDialog Currency Detection', () => {
         return Promise.reject(new Error('Unknown URL'));
       });
 
-      const user = userEvent.setup();
       const onClose = vi.fn();
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
@@ -353,7 +372,7 @@ describe('ShopDialog Currency Detection', () => {
       });
 
       const purchaseButton = screen.getAllByRole('button', { name: /purchase/i })[0];
-      await user.click(purchaseButton);
+      fireEvent.click(purchaseButton);
 
       await waitFor(() => {
         expect(global.fetch).toHaveBeenCalledWith(

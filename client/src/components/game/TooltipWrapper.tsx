@@ -82,7 +82,16 @@ export function TooltipWrapper({
           return;
         }
 
-        globalTooltip.handleMouseUp(finalTooltipId, disabled, onClick || (() => {}), e);
+        const wrappedOnClick = onClick
+          ? () => {
+              actionExecutedRef.current = true;
+              onClick();
+              setTimeout(() => {
+                actionExecutedRef.current = false;
+              }, 100);
+            }
+          : () => {};
+        globalTooltip.handleMouseUp(finalTooltipId, disabled, wrappedOnClick, e);
       }}
       onTouchStart={(e) => {
         // Start hold timer for tooltip (works on all devices including tablets)
@@ -96,7 +105,16 @@ export function TooltipWrapper({
           return;
         }
 
-        globalTooltip.handleTouchEnd(finalTooltipId, disabled, onClick || (() => {}), e);
+        const wrappedOnClick = onClick
+          ? () => {
+              actionExecutedRef.current = true;
+              onClick();
+              setTimeout(() => {
+                actionExecutedRef.current = false;
+              }, 100);
+            }
+          : () => {};
+        globalTooltip.handleTouchEnd(finalTooltipId, disabled, wrappedOnClick, e);
       }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}

@@ -2332,11 +2332,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   callMerchant: () => {
     const state = get();
+    if ((state.buildings?.tradePost ?? 0) < 1) return;
+
     const usageCount =
       (state.story?.seen?.callMerchantUsageCount as number) || 0;
-    const price = 50 + 50 * usageCount;
+    const price = Math.min(50 + 50 * usageCount, 250);
 
-    if (usageCount >= 10) return;
     if ((state.resources?.gold ?? 0) < price) return;
     if (state.timedEventTab?.isActive && state.timedEventTab?.event?.id?.includes?.("merchant")) return;
 

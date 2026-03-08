@@ -467,20 +467,18 @@ export default function VillagePanel() {
   const renderCallMerchantButton = () => {
     const callMerchantLastEndPlayTime = story?.seen?.callMerchantLastEndPlayTime as number | undefined;
     const usageCount = (story?.seen?.callMerchantUsageCount as number) || 0;
-    const price = 50 + 50 * usageCount;
+    const price = Math.min(50 + 50 * usageCount, 250);
     const isMerchantActive =
       timedEventTab?.isActive && timedEventTab?.event?.id?.includes?.("merchant");
     const isOtherEventActive =
       timedEventTab?.isActive && !isMerchantActive;
 
-    if (callMerchantLastEndPlayTime == null) return null;
-    if (usageCount >= 10) return null;
-    if (buildings.woodenHut < 3) return null;
+    if ((buildings?.tradePost ?? 0) < 1) return null;
     if (isMerchantActive) return null;
 
-    const cooldownEndPlayTime = callMerchantLastEndPlayTime + 5 * 60 * 1000;
+    const cooldownEndPlayTime = (callMerchantLastEndPlayTime ?? 0) + 5 * 60 * 1000;
     const currentPlayTime = playTime ?? 0;
-    const isOnCooldown = currentPlayTime < cooldownEndPlayTime;
+    const isOnCooldown = callMerchantLastEndPlayTime != null && currentPlayTime < cooldownEndPlayTime;
     const remainingMs = Math.max(0, cooldownEndPlayTime - currentPlayTime);
     const canAfford = (resources?.gold ?? 0) >= price;
     const isDisabled = isOtherEventActive || isOnCooldown || !canAfford;
@@ -680,9 +678,7 @@ export default function VillagePanel() {
         <div className="space-y-4 mt-2 mb-2 pl-[3px] ">
           {/* Special Top Level Button Group for Feed Fire and Call Merchant */}
           {(buildings.heartfire > 0 ||
-            ((story?.seen?.callMerchantLastEndPlayTime != null) &&
-              (story?.seen?.callMerchantUsageCount as number) < 10 &&
-              buildings.woodenHut >= 3 &&
+            ((buildings?.tradePost ?? 0) >= 1 &&
               !(
                 timedEventTab?.isActive &&
                 timedEventTab?.event?.id?.includes?.("merchant")

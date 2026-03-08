@@ -1033,7 +1033,7 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildTradePost",
     label: "Trade Post",
     description: "Trading post attracting merchants selling goods",
-    tooltipEffects: ["Higher Trade Amounts", "+1 Trade at Travelling Merchant"],
+    tooltipEffects: ["Higher Trade Amounts", "+1 Trade at Travelling Merchant", "Unlocks Call Merchant"],
     building: true,
     show_when: {
       1: {

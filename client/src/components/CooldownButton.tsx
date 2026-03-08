@@ -185,11 +185,28 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       </Button>
     );
 
+    // Pass onClick to TooltipWrapper so mobile touch events can execute the action.
+    // TooltipWrapper's touch handlers call this when user taps (short press); without it,
+    // mobile taps do nothing because we preventDefault/stopPropagation and the Button's
+    // onClick never fires.
+    const executeAction = () => {
+      if (isButtonDisabled) return;
+      if (onAnimationTrigger && ref && typeof ref !== "function") {
+        const button = ref.current;
+        if (button) {
+          const rect = button.getBoundingClientRect();
+          onAnimationTrigger(rect.left + rect.width / 2, rect.top + rect.height / 2);
+        }
+      }
+      onClick();
+    };
+
     return (
       <TooltipWrapper
         tooltip={tooltip}
         tooltipId={buttonId}
         disabled={isButtonDisabled}
+        onClick={executeAction}
         onMouseEnter={props.onMouseEnter}
         onMouseLeave={props.onMouseLeave}
       >

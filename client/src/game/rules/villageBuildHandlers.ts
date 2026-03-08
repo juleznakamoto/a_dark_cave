@@ -810,7 +810,7 @@ export function handleBuildTradePost(
     "tradePost",
   );
 
-  // Add trade post completion message
+  // Add trade post completion message and enable Call Merchant button
   if (state.buildings.tradePost === 0) {
     tradePostResult.logEntries!.push({
       id: `trade-post-built-${Date.now()}`,
@@ -819,6 +819,20 @@ export function handleBuildTradePost(
       timestamp: Date.now(),
       type: "system",
     });
+    // Enable Call Merchant button (negative timestamp = cooldown already expired)
+    if (!tradePostResult.stateUpdates.story) {
+      tradePostResult.stateUpdates.story = {
+        ...state.story,
+        seen: { ...state.story.seen },
+      };
+    }
+    if (!tradePostResult.stateUpdates.story!.seen) {
+      tradePostResult.stateUpdates.story!.seen = { ...state.story.seen };
+    }
+    // Use playTime - 5min - 1 so cooldown ends in the past. Do NOT clamp with Math.max:
+    // negative values are intentional (cooldown expired before game start).
+    (tradePostResult.stateUpdates.story!.seen as Record<string, unknown>).callMerchantLastEndPlayTime =
+      (state.playTime ?? 0) - 5 * 60 * 1000 - 1;
   }
 
   return tradePostResult;
