@@ -535,7 +535,7 @@ function clearExpiredTimedEventTab() {
   useGameStore.getState().setTimedEventTab(false);
 }
 
-function handleInactivity() {
+async function handleInactivity() {
   isInactive = true;
 
   // Stop the game loop
@@ -558,6 +558,16 @@ function handleInactivity() {
 
   // Stop version check
   stopVersionCheck();
+
+  // Save game before showing dialog (must happen before setting inactivityDialogOpen,
+  // since saveGame skips when inactivityDialogOpen is true)
+  try {
+    const state = useGameStore.getState();
+    await saveGame(state, false);
+    logger.log("[GAME LOOP] Game saved before inactivity dialog");
+  } catch (saveError) {
+    logger.error("[GAME LOOP] Failed to save before inactivity dialog:", saveError);
+  }
 
   // Set game loop to inactive
   useGameStore.setState({

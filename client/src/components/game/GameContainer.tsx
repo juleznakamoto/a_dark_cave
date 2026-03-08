@@ -276,14 +276,17 @@ export default function GameContainer() {
     // Capture toast in closure to ensure it's available when callback fires
     const showUpdateToast = toast;
 
-    startVersionCheck(() => {
+    startVersionCheck(async () => {
       logger.log("[VERSION] Version check callback fired!");
       try {
-        logger.log("[VERSION] Calling toast() to notify user...");
+        const { saveGame } = await import("@/game/save");
+        const state = useGameStore.getState();
+        await saveGame(state, false);
+        logger.log("[VERSION] Game saved before update notification");
         showUpdateToast({
           title: "New Version Available",
           description:
-            "A new version of the game is available. Please refresh to get the latest updates.",
+            "A new version of the game is available. Your game has been saved. Please refresh to get the latest updates.",
           variant: "default",
           duration: 30000, // 30 seconds
           action: {

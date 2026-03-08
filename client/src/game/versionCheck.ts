@@ -73,7 +73,7 @@ export function startVersionCheck(onNewVersionDetected: () => void) {
 
         if (typeof versionCheckCallback === "function") {
           try {
-            versionCheckCallback();
+            await versionCheckCallback();
           } catch (callbackError) {
             logger.error("Error calling version callback:", callbackError);
           }

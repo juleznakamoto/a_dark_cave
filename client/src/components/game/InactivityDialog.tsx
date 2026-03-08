@@ -43,7 +43,7 @@ export default function InactivityDialog() {
             )}
             {isTimeout && (
               <>
-                <p>You have been inactive for 15 minutes. To prevent bad events from happening the game has been stopped and your progress has been saved.</p>
+                <p>You have been inactive for 15 minutes. To prevent bad events from happening the game has been stopped. Your game has been saved.</p>
                 <p className="font-semibold">Please reload the page to continue playing.</p>
               </>
             )}
