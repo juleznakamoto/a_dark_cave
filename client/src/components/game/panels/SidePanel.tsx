@@ -30,6 +30,7 @@ import {
   shouldHideBuilding,
   shouldExcludeFromBuildingsSection,
 } from "@/game/buildingHierarchy";
+import { getTotalPopulationEffects } from "@/game/population";
 
 // Extract property order from schema by parsing defaults
 const defaultGameState = gameStateSchema.parse({});
@@ -120,6 +121,17 @@ export default function SidePanel() {
     goldSilverResources.includes(key),
   );
 
+  // Net production per resource when village tab is active (for sidepanel delta column)
+  const productionDeltas: Record<string, number> =
+    activeTab === "village"
+      ? getTotalPopulationEffects(
+          gameState,
+          Object.keys(gameState.villagers).filter(
+            (id) => (gameState.villagers[id as keyof typeof gameState.villagers] ?? 0) > 0,
+          ),
+        )
+      : {};
+
   // Create resource items with special styling for gold and silver
   const resourceItems = [
     // Gold and silver with special symbols and colors
@@ -139,6 +151,7 @@ export default function SidePanel() {
         </span>
       ),
       value: resources[key as keyof typeof resources] ?? 0,
+      productionDelta: productionDeltas[key] ?? undefined,
       testId: `resource-${key}`,
       visible: true,
       isPrecious: true, // Custom flag for spacing
@@ -150,6 +163,7 @@ export default function SidePanel() {
       id: key,
       label: capitalizeWords(key),
       value: resources[key as keyof typeof resources] ?? 0,
+      productionDelta: productionDeltas[key] ?? undefined,
       testId: `resource-${key}`,
       visible: true,
     })),

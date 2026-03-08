@@ -30,6 +30,7 @@ interface SidePanelItem {
   isPrecious?: boolean; // For special styling of gold/silver
   isSpacer?: boolean; // For spacing between sections
   hasSpacingAfter?: boolean; // Add spacing after this item
+  productionDelta?: number; // Net production per cycle for Resources section
 }
 
 interface ResourceChange {
@@ -394,6 +395,23 @@ export default function SidePanelSection({
       </span>
     );
 
+    const showValue = ![
+      "Relics",
+      "Tools",
+      "Weapons",
+      "Clothing",
+      "Buildings",
+      "Fortifications",
+      "Blessings",
+      "Schematics",
+      "Fellowship",
+    ].includes(title);
+
+    const showProductionDelta =
+      title === "Resources" &&
+      item.productionDelta !== undefined &&
+      item.productionDelta !== 0;
+
     const itemContent = (
       <div
         data-testid={item.testId}
@@ -408,28 +426,33 @@ export default function SidePanelSection({
         }`}
       >
         {labelContent}
-        {![
-          "Relics",
-          "Tools",
-          "Weapons",
-          "Clothing",
-          "Buildings",
-          "Fortifications",
-          "Blessings",
-          "Schematics",
-          "Fellowship",
-        ].includes(title) && (
-          <span
-            className={cn(
-              "font-mono text-gray-300",
-              isAnimated && "text-green-800 font-bold",
-              isDecreaseAnimated && "text-red-800 font-bold",
-              isMaxAnimated && "text-yellow-800 font-bold",
-              isMadness && madnessClasses,
-              isHighlighted && "font-bold !text-gray-100",
+        {(showValue || showProductionDelta) && (
+          <span className="flex items-center gap-2 font-mono text-gray-300">
+            {showValue && (
+              <span
+                className={cn(
+                  isAnimated && "text-green-800 font-bold",
+                  isDecreaseAnimated && "text-red-800 font-bold",
+                  isMaxAnimated && "text-yellow-800 font-bold",
+                  isMadness && madnessClasses,
+                  isHighlighted && "font-bold !text-gray-100",
+                )}
+              >
+                {displayValue}
+              </span>
             )}
-          >
-            {displayValue}
+            {showProductionDelta && (
+              <span
+                className={cn(
+                  "text-muted-foreground text-[10px]",
+                  (item.productionDelta ?? 0) > 0 && "text-green-500",
+                  (item.productionDelta ?? 0) < 0 && "text-red-500",
+                )}
+              >
+                {(item.productionDelta ?? 0) > 0 ? "+" : ""}
+                {item.productionDelta}
+              </span>
+            )}
           </span>
         )}
       </div>

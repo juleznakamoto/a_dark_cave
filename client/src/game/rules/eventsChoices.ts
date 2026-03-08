@@ -60,7 +60,7 @@ export const choiceEvents: Record<string, GameEvent> = {
             return {
               ...killVillagers(state, 1),
               _logMessage:
-                "The investigation goes wrong. One man screams in the mist and is never seen again. The others flee in terror.",
+                "The investigation goes wrong. One of the villagers screams in the mist and is never seen again. The others flee in terror.",
             };
           } else {
             let deaths;
@@ -420,9 +420,9 @@ export const choiceEvents: Record<string, GameEvent> = {
           const traps = state.buildings.traps;
           const villagerDeaths = Math.floor(
             Math.random() * state.buildings.woodenHut +
-              2 -
-              traps * 2 +
-              state.CM * 2,
+            2 -
+            traps * 2 +
+            state.CM * 2,
           );
           const deathResult = killVillagers(state, villagerDeaths);
           const actualDeaths = deathResult.villagersKilled || 0;

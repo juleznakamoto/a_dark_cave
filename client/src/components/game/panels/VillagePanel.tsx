@@ -22,7 +22,6 @@ import CooldownButton from "@/components/CooldownButton";
 import { Button } from "@/components/ui/button";
 import {
   getPopulationProduction,
-  getTotalPopulationEffects,
 } from "@/game/population";
 import { CircularProgress } from "@/components/ui/circular-progress";
 import { capitalizeWords, formatNumber } from "@/lib/utils";
@@ -743,7 +742,40 @@ export default function VillagePanel() {
             <div className="space-y-2">
               <div className="flex items-center gap-2">
                 <h3 className="text-xs font-medium text-foreground">Produce</h3>
-                {/* Feast Timer */}
+                {/* Production Cycle */}
+                <TooltipProvider>
+                  <Tooltip
+                    open={mobileTooltip.isTooltipOpen(
+                      "production-cycle-progress",
+                    )}
+                  >
+                    <TooltipTrigger asChild>
+                      <div
+                        className="cursor-pointer"
+                        onClick={(e) =>
+                          mobileTooltip.handleTooltipClick(
+                            "production-cycle-progress",
+                            e,
+                          )
+                        }
+                      >
+                        <CircularProgress
+                          value={loopProgress}
+                          size={16}
+                          strokeWidth={2}
+                          className="text-gray-400"
+                        />
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <div className="text-xs whitespace-pre-line">
+                        <span className="font-semibold">Production Cycle</span>
+                        {`\nNext production in ${productionSecondsRemaining} seconds`}
+                      </div>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+                {/* Feast Timer and other production effects */}
                 {(() => {
                   const feastState = useGameStore.getState().feastState;
                   const greatFeastState =
@@ -1184,64 +1216,6 @@ export default function VillagePanel() {
                   renderPopulationControl(job.id, job.label),
                 )}
               </div>
-
-              {/* Population Effects Summary */}
-              {(() => {
-                const visibleJobIds = visiblePopulationJobs.map(
-                  (job) => job.id,
-                );
-                const totalEffects = getTotalPopulationEffects(
-                  state,
-                  visibleJobIds,
-                );
-
-                const effectsText = Object.entries(totalEffects)
-                  .filter(([resource, amount]) => amount !== 0)
-                  .sort(([, a], [, b]) => b - a) // Sort from positive to negative
-                  .map(
-                    ([resource, amount]) =>
-                      `${amount > 0 ? "+" : ""}${amount} ${capitalizeWords(resource)}`,
-                  )
-                  .join(", ");
-
-                return effectsText ? (
-                  <div className="text-xs text-muted-foreground flex items-center gap-3">
-                    <TooltipProvider>
-                      <Tooltip
-                        open={mobileTooltip.isTooltipOpen(
-                          "production-cycle-progress",
-                        )}
-                      >
-                        <TooltipTrigger asChild>
-                          <div
-                            className="cursor-pointer"
-                            onClick={(e) =>
-                              mobileTooltip.handleTooltipClick(
-                                "production-cycle-progress",
-                                e,
-                              )
-                            }
-                          >
-                            <CircularProgress
-                              value={loopProgress} // Use loopProgress for production animation
-                              size={16}
-                              strokeWidth={2}
-                              className="text-gray-400"
-                            />
-                          </div>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <div className="text-xs whitespace-pre-line">
-                            <span className="font-semibold">Production Cycle</span>
-                            {`\nNext production in ${productionSecondsRemaining} seconds`}
-                          </div>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                    <span>{effectsText}</span>
-                  </div>
-                ) : null;
-              })()}
             </div>
           )}
         </div>
