@@ -80,8 +80,8 @@ export default function SidePanelSection({
     highlightedResourcesRaw instanceof Set
       ? highlightedResourcesRaw
       : new Set(
-          Array.isArray(highlightedResourcesRaw) ? highlightedResourcesRaw : [],
-        );
+        Array.isArray(highlightedResourcesRaw) ? highlightedResourcesRaw : [],
+      );
   const hoverTimersRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
   const mobileTooltip = useMobileTooltip();
 
@@ -379,7 +379,7 @@ export default function SidePanelSection({
               (title === "Stats" ||
                 title === "Bastion" ||
                 title === "Fortress") &&
-                "mr-1 inline-flex w-3 items-center justify-center",
+              "mr-1 inline-flex w-3 items-center justify-center",
               item.iconColor,
             )}
           >
@@ -438,11 +438,11 @@ export default function SidePanelSection({
                 "min-w-[3rem] text-right",
                 activeTab !== "village" && "text-muted-foreground",
                 activeTab === "village" &&
-                  (item.productionDelta ?? 0) > 0 &&
-                  "text-green-500",
+                (item.productionDelta ?? 0) > 0 &&
+                "text-green-600",
                 activeTab === "village" &&
-                  (item.productionDelta ?? 0) < 0 &&
-                  "text-red-500",
+                (item.productionDelta ?? 0) < 0 &&
+                "text-red-600",
               )}
             >
               {(item.productionDelta ?? 0) > 0 ? "+" : ""}
@@ -450,7 +450,7 @@ export default function SidePanelSection({
             </span>
           ) : (
             isResourcesSection &&
-              showValue && <span className="min-w-[3rem]" aria-hidden />
+            showValue && <span className="min-w-[3rem]" aria-hidden />
           )}
         </span>
       ) : null;
@@ -458,15 +458,14 @@ export default function SidePanelSection({
     const itemContent = (
       <div
         data-testid={item.testId}
-        className={`mr-2 flex leading-tight justify-between items-center transition-all duration-300 ${
-          isAnimated
+        className={`mr-2 flex leading-tight justify-between items-center transition-all duration-300 ${isAnimated
             ? "text-green-400"
             : isDecreaseAnimated
               ? "text-red-400"
               : isMaxAnimated
                 ? "text-yellow-400"
                 : ""
-        }`}
+          }`}
       >
         {labelContent}
         {rightContent}
@@ -488,15 +487,14 @@ export default function SidePanelSection({
           <Tooltip open={mobileTooltip.isTooltipOpen(item.id)}>
             <div
               data-testid={item.testId}
-              className={`flex leading-tight justify-between items-center transition-all duration-300 ${
-                isAnimated
+              className={`flex leading-tight justify-between items-center transition-all duration-300 ${isAnimated
                   ? "text-green-400"
                   : isDecreaseAnimated
                     ? "text-red-400"
                     : isAtMax
                       ? "text-yellow-400"
                       : "" // Changed to yellow for max resources
-              }`}
+                }`}
             >
               <TooltipTrigger asChild>
                 <span
@@ -515,9 +513,9 @@ export default function SidePanelSection({
                 title === "Weapons"
                   ? "weapon"
                   : title === "Blessings" ||
-                      title === "Clothing" ||
-                      title === "Relics" ||
-                      title === "Schematics"
+                    title === "Clothing" ||
+                    title === "Relics" ||
+                    title === "Schematics"
                     ? "blessing"
                     : "tool",
               )}
@@ -535,15 +533,14 @@ export default function SidePanelSection({
           <Tooltip open={mobileTooltip.isTooltipOpen(item.id)}>
             <div
               data-testid={item.testId}
-              className={`flex leading-tight justify-between items-center transition-all duration-300 ${
-                isAnimated
+              className={`flex leading-tight justify-between items-center transition-all duration-300 ${isAnimated
                   ? "text-green-400"
                   : isDecreaseAnimated
                     ? "text-red-400"
                     : isMaxAnimated
                       ? "text-yellow-400"
                       : ""
-              }`}
+                }`}
             >
               <TooltipTrigger asChild>
                 <span
@@ -571,15 +568,14 @@ export default function SidePanelSection({
           <Tooltip open={mobileTooltip.isTooltipOpen(item.id)}>
             <div
               data-testid={item.testId}
-              className={`flex leading-tight justify-between items-center transition-all duration-300 ${
-                isAnimated
+              className={`flex leading-tight justify-between items-center transition-all duration-300 ${isAnimated
                   ? "text-green-400"
                   : isDecreaseAnimated
                     ? "text-red-400"
                     : isMaxAnimated
                       ? "text-yellow-400"
                       : ""
-              }`}
+                }`}
             >
               <TooltipTrigger asChild>
                 <span
@@ -607,15 +603,14 @@ export default function SidePanelSection({
           <Tooltip open={mobileTooltip.isTooltipOpen(item.id)}>
             <div
               data-testid={item.testId}
-              className={`mr-2 flex leading-tight justify-between items-center transition-all duration-300 ${
-                isAnimated
+              className={`mr-2 flex leading-tight justify-between items-center transition-all duration-300 ${isAnimated
                   ? "text-green-400"
                   : isDecreaseAnimated
                     ? "text-red-400"
                     : isMaxAnimated
                       ? "text-yellow-400"
                       : ""
-              }`}
+                }`}
             >
               <TooltipTrigger asChild>
                 <span
@@ -640,26 +635,24 @@ export default function SidePanelSection({
                 "Fellowship",
                 "Stats",
               ].includes(title) && (
-                <span
-                  className={`font-mono ${
-                    isAnimated
-                      ? "text-green-800 font-bold"
-                      : isDecreaseAnimated
-                        ? "text-red-800 font-bold"
-                        : isMaxAnimated
-                          ? "text-yellow-800 font-bold"
-                          : isMadness
-                            ? madnessClasses
-                            : ""
-                  }`}
-                >
-                  {displayValue}
-                </span>
-              )}
+                  <span
+                    className={`font-mono ${isAnimated
+                        ? "text-green-800 font-bold"
+                        : isDecreaseAnimated
+                          ? "text-red-800 font-bold"
+                          : isMaxAnimated
+                            ? "text-yellow-800 font-bold"
+                            : isMadness
+                              ? madnessClasses
+                              : ""
+                      }`}
+                  >
+                    {displayValue}
+                  </span>
+                )}
               {title === "Stats" && (
                 <span
-                  className={`font-mono ${
-                    isAnimated
+                  className={`font-mono ${isAnimated
                       ? "text-green-800 font-bold"
                       : isDecreaseAnimated
                         ? "text-red-800 font-bold"
@@ -668,7 +661,7 @@ export default function SidePanelSection({
                           : isMadness
                             ? madnessClasses
                             : ""
-                  }`}
+                    }`}
                 >
                   {displayValue}
                 </span>

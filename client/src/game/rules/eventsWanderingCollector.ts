@@ -23,6 +23,13 @@ export const wanderingCollectorEvents: Record<string, GameEvent> = {
   wandering_collector: {
     id: "wandering_collector",
     condition: (state: GameState) => {
+      const ownedItems = COLLECTOR_ITEMS.filter((itemId) => {
+        if (state.clothing && (state.clothing as any)[itemId]) return true;
+        if (state.relics && (state.relics as any)[itemId]) return true;
+        return false;
+      });
+      if (ownedItems.length === 0) return false;
+
       const visitCountValue = state.story?.seen?.collectorVisitCount;
       const visitCount = typeof visitCountValue === "number" ? visitCountValue : 0;
       if (visitCount >= 3) return false;
@@ -30,11 +37,6 @@ export const wanderingCollectorEvents: Record<string, GameEvent> = {
       if (visitCount == 1) return state.buildings.woodenHut >= 10;
       if (visitCount == 2) return state.buildings.stoneHut >= 5;
 
-      const ownedItems = COLLECTOR_ITEMS.filter((itemId) => {
-        if (state.clothing && (state.clothing as any)[itemId]) return true;
-        if (state.relics && (state.relics as any)[itemId]) return true;
-        return false;
-      });
       return ownedItems.length >= 3;
     },
     title: "The Wandering Collector",
