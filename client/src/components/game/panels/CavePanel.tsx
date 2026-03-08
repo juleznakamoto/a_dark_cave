@@ -305,6 +305,7 @@ export default function CavePanel() {
           key="callMerchant"
           onClick={() => callMerchant()}
           cooldownMs={0}
+          data-testid="button-call-merchant"
           actionId="callMerchant"
           button_id="callMerchant"
           disabled={isDisabled}

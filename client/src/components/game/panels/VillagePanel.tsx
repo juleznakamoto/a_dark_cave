@@ -388,6 +388,7 @@ export default function VillagePanel() {
           key="callMerchant"
           onClick={() => callMerchant()}
           cooldownMs={0}
+          data-testid="button-call-merchant"
           actionId="callMerchant"
           button_id="callMerchant"
           disabled={isDisabled}
@@ -440,6 +441,7 @@ export default function VillagePanel() {
             }
           }}
           cooldownMs={30000}
+          data-testid="button-feed-fire"
           actionId="feedFire"
           button_id={actionId}
           disabled={!canExecute || (state.cooldowns[actionId] || 0) > 0}
