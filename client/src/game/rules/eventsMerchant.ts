@@ -1036,12 +1036,9 @@ export function generateMerchantChoices(state: GameState): MerchantTradeData[] {
     const trade =
       filteredToolTrades[Math.floor(Math.random() * filteredToolTrades.length)];
 
-    // Tool trades always cost gold
+    // Tool trades always cost gold (no 1.1 markup - use exact discounted price)
     const goldCost = trade.costs[0].amounts[0];
-    const discountedCost = roundCost(
-      Math.ceil(goldCost * (1 - discount)),
-      "down",
-    );
+    const discountedCost = Math.ceil(goldCost * (1 - discount));
 
     availableToolTrades.push({
       id: trade.id,

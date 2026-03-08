@@ -431,15 +431,18 @@ export default function SidePanelSection({
             </span>
           )}
           {showProductionDelta ? (
-            <span
-              className={cn(
-                "min-w-[3.5rem] text-right text-muted-foreground",
-                (item.productionDelta ?? 0) > 0 && "text-green-500",
-                (item.productionDelta ?? 0) < 0 && "text-red-500",
+            <span className="min-w-[3.5rem] text-right">
+              {(item.productionDelta ?? 0) > 0 ? (
+                <>
+                  <span className="text-green-500">+</span>
+                  {item.productionDelta}
+                </>
+              ) : (
+                <>
+                  <span className="text-red-500">-</span>
+                  {Math.abs(item.productionDelta ?? 0)}
+                </>
               )}
-            >
-              {(item.productionDelta ?? 0) > 0 ? "+" : ""}
-              {item.productionDelta}
             </span>
           ) : (
             isResourcesSection &&
