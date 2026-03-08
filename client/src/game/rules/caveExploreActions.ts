@@ -88,9 +88,9 @@ const caveItems = {
   exploreCave: [
     {
       key: "torch",
-      probability: 0.25,
-      value: 20,
-      logMessage: "You find a bag with 20 Torches.",
+      probability: 0.35,
+      value: 25,
+      logMessage: "You find a bag with 25 Torches.",
       category: "resources",
       stageOnly: true, // Only on Explore Cave, not inherited to later stages
     },
@@ -112,7 +112,7 @@ const caveItems = {
     },
     {
       key: "silver",
-      probability: 0.15,
+      probability: 0.25,
       value: 50,
       logMessage: "You find a small leather sack containing 50 Silver.",
       category: "resources",
