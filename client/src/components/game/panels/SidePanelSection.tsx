@@ -407,10 +407,46 @@ export default function SidePanelSection({
       "Fellowship",
     ].includes(title);
 
+    const isResourcesSection = title === "Resources";
     const showProductionDelta =
-      title === "Resources" &&
+      isResourcesSection &&
       item.productionDelta !== undefined &&
       item.productionDelta !== 0;
+
+    const rightContent =
+      showValue ? (
+        <span className="flex items-center gap-2 font-mono text-gray-300">
+          {showValue && (
+            <span
+              className={cn(
+                isResourcesSection && "min-w-[4.5rem]",
+                isAnimated && "text-green-800 font-bold",
+                isDecreaseAnimated && "text-red-800 font-bold",
+                isMaxAnimated && "text-yellow-800 font-bold",
+                isMadness && madnessClasses,
+                isHighlighted && "font-bold !text-gray-100",
+              )}
+            >
+              {displayValue}
+            </span>
+          )}
+          {showProductionDelta ? (
+            <span
+              className={cn(
+                "text-muted-foreground",
+                (item.productionDelta ?? 0) > 0 && "text-green-500",
+                (item.productionDelta ?? 0) < 0 && "text-red-500",
+              )}
+            >
+              {(item.productionDelta ?? 0) > 0 ? "+" : ""}
+              {item.productionDelta}
+            </span>
+          ) : (
+            isResourcesSection &&
+              showValue && <span className="min-w-[3.5rem]" aria-hidden />
+          )}
+        </span>
+      ) : null;
 
     const itemContent = (
       <div
@@ -426,35 +462,7 @@ export default function SidePanelSection({
         }`}
       >
         {labelContent}
-        {(showValue || showProductionDelta) && (
-          <span className="flex items-center gap-2 font-mono text-gray-300">
-            {showValue && (
-              <span
-                className={cn(
-                  isAnimated && "text-green-800 font-bold",
-                  isDecreaseAnimated && "text-red-800 font-bold",
-                  isMaxAnimated && "text-yellow-800 font-bold",
-                  isMadness && madnessClasses,
-                  isHighlighted && "font-bold !text-gray-100",
-                )}
-              >
-                {displayValue}
-              </span>
-            )}
-            {showProductionDelta && (
-              <span
-                className={cn(
-                  "text-muted-foreground text-[10px]",
-                  (item.productionDelta ?? 0) > 0 && "text-green-500",
-                  (item.productionDelta ?? 0) < 0 && "text-red-500",
-                )}
-              >
-                {(item.productionDelta ?? 0) > 0 ? "+" : ""}
-                {item.productionDelta}
-              </span>
-            )}
-          </span>
-        )}
+        {rightContent}
       </div>
     );
 
