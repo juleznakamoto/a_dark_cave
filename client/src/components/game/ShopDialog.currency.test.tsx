@@ -37,7 +37,9 @@ vi.mock('@/lib/supabase', () => ({
   getCachedAuthUser: vi.fn(() => null),
   isAuthStateReady: vi.fn(() => true),
 }));
-vi.mock('@stripe/stripe-js');
+vi.mock('@stripe/stripe-js', () => ({
+  loadStripe: vi.fn(() => Promise.resolve({})),
+}));
 vi.mock('@stripe/react-stripe-js', () => ({
   Elements: ({ children }: any) => <div>{children}</div>,
   PaymentElement: () => <div>Payment Element</div>,
