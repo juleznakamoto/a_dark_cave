@@ -49,6 +49,7 @@ interface SidePanelSectionProps {
   forceNotifications?: boolean; // Added prop
   onResourceChange?: (change: ResourceChange) => void;
   titleTooltip?: string;
+  activeTab?: string;
 }
 import { logger } from "@/lib/logger";
 import { formatNumber } from "@/lib/utils";
@@ -60,6 +61,7 @@ export default function SidePanelSection({
   resourceChanges = [],
   onResourceChange,
   titleTooltip,
+  activeTab,
 }: SidePanelSectionProps) {
   const visibleItems = (items || []).filter((item) => item.visible !== false);
   const [animatedItems, setAnimatedItems] = useState<Set<string>>(new Set());
@@ -419,7 +421,7 @@ export default function SidePanelSection({
           {showValue && (
             <span
               className={cn(
-                isResourcesSection && "min-w-[4.5rem] text-right",
+                isResourcesSection && "min-w-[5rem] text-right",
                 isAnimated && "text-green-800 font-bold",
                 isDecreaseAnimated && "text-red-800 font-bold",
                 isMaxAnimated && "text-yellow-800 font-bold",
@@ -431,22 +433,39 @@ export default function SidePanelSection({
             </span>
           )}
           {showProductionDelta ? (
-            <span className="min-w-[3.5rem] text-right">
+            <span
+              className={cn(
+                "min-w-[3rem] text-right",
+                activeTab !== "village" && "text-muted-foreground",
+              )}
+            >
               {(item.productionDelta ?? 0) > 0 ? (
                 <>
-                  <span className="text-green-500">+</span>
+                  <span
+                    className={
+                      activeTab === "village" ? "text-green-500" : undefined
+                    }
+                  >
+                    +
+                  </span>
                   {item.productionDelta}
                 </>
               ) : (
                 <>
-                  <span className="text-red-500">-</span>
+                  <span
+                    className={
+                      activeTab === "village" ? "text-red-500" : undefined
+                    }
+                  >
+                    -
+                  </span>
                   {Math.abs(item.productionDelta ?? 0)}
                 </>
               )}
             </span>
           ) : (
             isResourcesSection &&
-              showValue && <span className="min-w-[3.5rem]" aria-hidden />
+              showValue && <span className="min-w-[3rem]" aria-hidden />
           )}
         </span>
       ) : null;

@@ -924,6 +924,7 @@ export default function SidePanel() {
           {resourceItems.length > 0 && shouldShowSection("resources") && (
             <SidePanelSection
               title="Resources"
+              activeTab={activeTab}
               titleTooltip={
                 showResourceLimit
                   ? `Max ${resourceLimitText} (no limit for Silver and Gold)`
