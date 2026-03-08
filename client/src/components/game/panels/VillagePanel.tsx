@@ -674,9 +674,9 @@ export default function VillagePanel() {
 
   return (
     <>
-      <SuccessParticles buttonRef={feedFireButtonRef} sparks={sparks} />
-      <BubblyButtonGlobalPortal bubbles={bubbles} />
       <ScrollArea className="h-full w-full">
+        <SuccessParticles buttonRef={feedFireButtonRef} sparks={sparks} />
+        <BubblyButtonGlobalPortal bubbles={bubbles} />
         <div className="space-y-4 mt-2 mb-2 pl-[3px] ">
           {/* Special Top Level Button Group for Feed Fire and Call Merchant */}
           {(buildings.heartfire > 0 ||
