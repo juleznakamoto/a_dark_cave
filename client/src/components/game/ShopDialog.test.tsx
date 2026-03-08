@@ -4,30 +4,40 @@
 import React from 'react';
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
+
+/** Wait for dialog to finish loading, then return the Purchases tab */
+async function waitForPurchasesTab() {
+  return screen.findByRole('tab', { name: /purchases/i }, { timeout: 5000 });
+}
 import userEvent from '@testing-library/user-event';
 import { ShopDialog } from './ShopDialog';
 import { useGameStore } from '@/game/state';
-import { getCurrentUser } from '@/game/auth';
 import { SHOP_ITEMS } from '@shared/shopItems';
 
 // Use vi.hoisted so mock is available when vi.mock factory runs
-const { mockSupabaseClient } = vi.hoisted(() => {
+const { mockSupabaseClient, mockGetCurrentUser } = vi.hoisted(() => {
   const from = vi.fn(() => ({
     select: vi.fn(() => ({
-      eq: vi.fn(() => ({ data: [], error: null })),
+      eq: vi.fn(() => Promise.resolve({ data: [], error: null })),
     })),
-    insert: vi.fn(() => ({ data: null, error: null })),
+    insert: vi.fn(() => Promise.resolve({ data: null, error: null })),
   }));
+  const mockGetCurrentUser = vi.fn(() =>
+    Promise.resolve({ id: "test-user-123", email: "test@example.com" })
+  );
   return {
     mockSupabaseClient: {
       from,
       auth: { getSession: vi.fn(() => Promise.resolve({ data: { session: null } })) },
     },
+    mockGetCurrentUser,
   };
 });
 
-// Mock dependencies
-vi.mock('@/game/auth');
+// Mock dependencies - use explicit factory so getCurrentUser resolves before isLoading clears
+vi.mock("@/game/auth", () => ({
+  getCurrentUser: (...args: unknown[]) => mockGetCurrentUser(...args),
+}));
 vi.mock('@/lib/supabase', () => ({
   supabase: mockSupabaseClient,
   getSupabaseClient: vi.fn(() => Promise.resolve(mockSupabaseClient)),
@@ -80,11 +90,13 @@ describe('ShopDialog', () => {
       updateResource: vi.fn(),
     });
 
-    vi.mocked(getCurrentUser).mockResolvedValue(mockUser);
+    mockGetCurrentUser.mockResolvedValue(mockUser);
   });
 
   afterEach(() => {
     vi.clearAllMocks();
+    // Re-apply mock - clearAllMocks can reset implementation in some setups
+    mockGetCurrentUser.mockResolvedValue(mockUser);
   });
 
   describe('Free Items', () => {
@@ -491,7 +503,7 @@ describe('ShopDialog', () => {
 
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
-      const purchasesTab = screen.getByRole('tab', { name: /purchases/i });
+      const purchasesTab = await waitForPurchasesTab();
       await user.click(purchasesTab);
 
       await waitFor(() => {
@@ -519,7 +531,7 @@ describe('ShopDialog', () => {
 
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
-      const purchasesTab = screen.getByRole('tab', { name: /purchases/i });
+      const purchasesTab = await waitForPurchasesTab();
       await user.click(purchasesTab);
 
       await waitFor(() => {
@@ -557,7 +569,7 @@ describe('ShopDialog', () => {
 
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
-      const purchasesTab = screen.getByRole('tab', { name: /purchases/i });
+      const purchasesTab = await waitForPurchasesTab();
       await user.click(purchasesTab);
 
       await waitFor(() => {
@@ -583,7 +595,7 @@ describe('ShopDialog', () => {
 
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
-      const purchasesTab = screen.getByRole('tab', { name: /purchases/i });
+      const purchasesTab = await waitForPurchasesTab();
       await user.click(purchasesTab);
 
       await waitFor(() => {
@@ -595,7 +607,7 @@ describe('ShopDialog', () => {
 
   describe('Authentication', () => {
     it('should show sign-in message when not authenticated', async () => {
-      vi.mocked(getCurrentUser).mockResolvedValue(null);
+      mockGetCurrentUser.mockResolvedValue(null);
 
       const onClose = vi.fn();
       render(<ShopDialog isOpen={true} onClose={onClose} />);
@@ -606,7 +618,7 @@ describe('ShopDialog', () => {
     });
 
     it('should disable purchase buttons when not authenticated', async () => {
-      vi.mocked(getCurrentUser).mockResolvedValue(null);
+      mockGetCurrentUser.mockResolvedValue(null);
 
       const onClose = vi.fn();
       render(<ShopDialog isOpen={true} onClose={onClose} />);
@@ -717,7 +729,7 @@ describe('ShopDialog', () => {
 
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
-      const purchasesTab = screen.getByRole('tab', { name: /purchases/i });
+      const purchasesTab = await waitForPurchasesTab();
       await user.click(purchasesTab);
 
       await waitFor(() => {
@@ -894,7 +906,7 @@ describe('ShopDialog', () => {
 
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
-      const purchasesTab = screen.getByRole('tab', { name: /purchases/i });
+      const purchasesTab = await waitForPurchasesTab();
       await user.click(purchasesTab);
 
       await waitFor(() => {
@@ -942,7 +954,7 @@ describe('ShopDialog', () => {
 
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
-      const purchasesTab = screen.getByRole('tab', { name: /purchases/i });
+      const purchasesTab = await waitForPurchasesTab();
       await user.click(purchasesTab);
 
       await waitFor(() => {
@@ -990,7 +1002,7 @@ describe('ShopDialog', () => {
 
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
-      const purchasesTab = screen.getByRole('tab', { name: /purchases/i });
+      const purchasesTab = await waitForPurchasesTab();
       await user.click(purchasesTab);
 
       await waitFor(() => {
@@ -1185,7 +1197,7 @@ describe('ShopDialog', () => {
 
     render(<ShopDialog isOpen={true} onClose={onClose} />);
 
-    const purchasesTab = screen.getByRole('tab', { name: /purchases/i });
+    const purchasesTab = await waitForPurchasesTab();
     await user.click(purchasesTab);
 
     await waitFor(() => {
@@ -1228,7 +1240,7 @@ describe('ShopDialog', () => {
 
     render(<ShopDialog isOpen={true} onClose={onClose} />);
 
-    const purchasesTab = screen.getByRole('tab', { name: /purchases/i });
+    const purchasesTab = await waitForPurchasesTab();
     await user.click(purchasesTab);
 
     await waitFor(() => {
@@ -1304,7 +1316,7 @@ describe('ShopDialog', () => {
 
     render(<ShopDialog isOpen={true} onClose={onClose} />);
 
-    const purchasesTab = screen.getByRole('tab', { name: /purchases/i });
+    const purchasesTab = await waitForPurchasesTab();
     await user.click(purchasesTab);
 
     await waitFor(() => {
@@ -1352,7 +1364,7 @@ describe('ShopDialog', () => {
 
     render(<ShopDialog isOpen={true} onClose={onClose} />);
 
-    const purchasesTab = screen.getByRole('tab', { name: /purchases/i });
+    const purchasesTab = await waitForPurchasesTab();
     await user.click(purchasesTab);
 
     await waitFor(() => {
@@ -1399,7 +1411,7 @@ describe('ShopDialog', () => {
 
     render(<ShopDialog isOpen={true} onClose={onClose} />);
 
-    const purchasesTab = screen.getByRole('tab', { name: /purchases/i });
+    const purchasesTab = await waitForPurchasesTab();
     await user.click(purchasesTab);
 
     await waitFor(() => {
@@ -1453,7 +1465,7 @@ describe('ShopDialog', () => {
 
     render(<ShopDialog isOpen={true} onClose={onClose} />);
 
-    const purchasesTab = screen.getByRole('tab', { name: /purchases/i });
+    const purchasesTab = await waitForPurchasesTab();
     await user.click(purchasesTab);
 
     await waitFor(() => {
@@ -1495,7 +1507,7 @@ describe('ShopDialog', () => {
 
     render(<ShopDialog isOpen={true} onClose={onClose} />);
 
-    const purchasesTab = screen.getByRole('tab', { name: /purchases/i });
+    const purchasesTab = await waitForPurchasesTab();
     await user.click(purchasesTab);
 
     await waitFor(() => {
@@ -1514,7 +1526,7 @@ describe('ShopDialog', () => {
 
   describe('Edge Cases and Error Handling', () => {
     it('should handle missing user gracefully', async () => {
-      vi.mocked(getCurrentUser).mockResolvedValue(null);
+      mockGetCurrentUser.mockResolvedValue(null);
       const onClose = vi.fn();
 
       render(<ShopDialog isOpen={true} onClose={onClose} />);
@@ -1592,7 +1604,7 @@ describe('ShopDialog', () => {
 
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
-      const purchasesTab = screen.getByRole('tab', { name: /purchases/i });
+      const purchasesTab = await waitForPurchasesTab();
       await userEvent.setup().click(purchasesTab);
 
       // Should not crash or show invalid items
@@ -1627,7 +1639,7 @@ describe('ShopDialog', () => {
 
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
-      const purchasesTab = screen.getByRole('tab', { name: /purchases/i });
+      const purchasesTab = await waitForPurchasesTab();
       await user.click(purchasesTab);
 
       // Activate first feast
@@ -1671,7 +1683,7 @@ describe('ShopDialog', () => {
 
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
-      const purchasesTab = screen.getByRole('tab', { name: /purchases/i });
+      const purchasesTab = await waitForPurchasesTab();
       await userEvent.setup().click(purchasesTab);
 
       await waitFor(() => {

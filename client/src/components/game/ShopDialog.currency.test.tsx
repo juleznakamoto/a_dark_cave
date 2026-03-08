@@ -6,26 +6,31 @@ import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { ShopDialog } from './ShopDialog';
 import { useGameStore } from '@/game/state';
-import { getCurrentUser } from '@/game/auth';
 
 // Use vi.hoisted so mock is available when vi.mock factory runs
-const { mockSupabaseClient } = vi.hoisted(() => {
+const { mockSupabaseClient, mockGetCurrentUser } = vi.hoisted(() => {
   const from = vi.fn(() => ({
     select: vi.fn(() => ({
-      eq: vi.fn(() => ({ data: [], error: null })),
+      eq: vi.fn(() => Promise.resolve({ data: [], error: null })),
     })),
-    insert: vi.fn(() => ({ data: null, error: null })),
+    insert: vi.fn(() => Promise.resolve({ data: null, error: null })),
   }));
+  const mockGetCurrentUser = vi.fn(() =>
+    Promise.resolve({ id: "test-user-123", email: "test@example.com" })
+  );
   return {
     mockSupabaseClient: {
       from,
       auth: { getSession: vi.fn(() => Promise.resolve({ data: { session: null } })) },
     },
+    mockGetCurrentUser,
   };
 });
 
-// Mock dependencies
-vi.mock('@/game/auth');
+// Mock dependencies - use explicit factory so getCurrentUser resolves before isLoading clears
+vi.mock("@/game/auth", () => ({
+  getCurrentUser: (...args: unknown[]) => mockGetCurrentUser(...args),
+}));
 vi.mock('@/lib/supabase', () => ({
   supabase: mockSupabaseClient,
   getSupabaseClient: vi.fn(() => Promise.resolve(mockSupabaseClient)),
@@ -78,7 +83,7 @@ describe('ShopDialog Currency Detection', () => {
       updateResource: vi.fn(),
     });
 
-    vi.mocked(getCurrentUser).mockResolvedValue(mockUser);
+    mockGetCurrentUser.mockResolvedValue(mockUser);
 
     // Reset fetch mock
     global.fetch = vi.fn();
@@ -86,6 +91,7 @@ describe('ShopDialog Currency Detection', () => {
 
   afterEach(() => {
     vi.clearAllMocks();
+    mockGetCurrentUser.mockResolvedValue(mockUser);
   });
 
   describe('Currency Detection', () => {
