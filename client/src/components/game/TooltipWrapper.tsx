@@ -59,6 +59,7 @@ export function TooltipWrapper({
   return (
     <div
       className={className}
+      data-tooltip-trigger-id={finalTooltipId}
       style={{ touchAction: "manipulation" }}
       onClick={globalTooltip.isMobile ? (e) => {
         // Don't show tooltip if action was just executed

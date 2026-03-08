@@ -9,6 +9,7 @@ interface CooldownButtonProps {
   cooldownMs: number;
   disabled?: boolean;
   className?: string;
+  style?: React.CSSProperties;
   variant?:
   | "default"
   | "destructive"

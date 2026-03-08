@@ -358,6 +358,7 @@ export default function VillagePanel() {
           variant="outline"
           className="hover:bg-background hover:text-foreground"
           tooltip={tooltipContent}
+          style={{ pointerEvents: "auto" }}
         >
           <span className="flex items-center gap-1">{label}</span>
         </CooldownButton>
@@ -522,6 +523,7 @@ export default function VillagePanel() {
         variant="outline"
         className="hover:bg-background hover:text-foreground"
         tooltip={tooltipContent}
+        style={{ pointerEvents: "auto" }}
       >
         <span className="flex items-center gap-1">Call Merchant</span>
       </CooldownButton>

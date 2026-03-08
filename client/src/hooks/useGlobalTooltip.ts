@@ -103,12 +103,19 @@ export function useGlobalTooltip() {
 
   // Effect to handle click/tap outside of tooltip - closes when user taps elsewhere
   useEffect(() => {
-    const isOutsideTooltip = (target: EventTarget | null) =>
-      openTooltipId && target && !(target as Element).closest?.('[role="tooltip"]');
+    const shouldClose = (target: EventTarget | null) => {
+      if (!openTooltipId || !target) return false;
+      const el = target as Element;
+      // Don't close if clicking inside the tooltip content
+      if (el.closest?.('[role="tooltip"]')) return false;
+      // Don't close if clicking on the trigger that opened this tooltip (prevents flash from synthetic click)
+      if (el.closest?.(`[data-tooltip-trigger-id="${openTooltipId}"]`)) return false;
+      return true;
+    };
 
     const handleOutside = (event: MouseEvent | TouchEvent) => {
       const target = "touches" in event ? (event as TouchEvent).target : (event as MouseEvent).target;
-      if (isOutsideTooltip(target)) {
+      if (shouldClose(target)) {
         globalTooltipManager.setOpenTooltip(null);
       }
     };
