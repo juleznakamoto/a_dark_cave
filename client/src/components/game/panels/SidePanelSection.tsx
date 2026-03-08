@@ -419,7 +419,7 @@ export default function SidePanelSection({
           {showValue && (
             <span
               className={cn(
-                isResourcesSection && "min-w-[4.5rem]",
+                isResourcesSection && "min-w-[4.5rem] text-right",
                 isAnimated && "text-green-800 font-bold",
                 isDecreaseAnimated && "text-red-800 font-bold",
                 isMaxAnimated && "text-yellow-800 font-bold",
@@ -433,7 +433,7 @@ export default function SidePanelSection({
           {showProductionDelta ? (
             <span
               className={cn(
-                "text-muted-foreground",
+                "min-w-[3.5rem] text-right text-muted-foreground",
                 (item.productionDelta ?? 0) > 0 && "text-green-500",
                 (item.productionDelta ?? 0) < 0 && "text-red-500",
               )}
