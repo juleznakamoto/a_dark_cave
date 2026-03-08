@@ -67,6 +67,26 @@ const getSupabaseClient = async () => {
   return supabase;
 };
 
+/**
+ * Extract itemId from purchaseId.
+ * Format: purchase-{itemId}-{suffix} where suffix is numeric (e.g. 1) or UUID (8-4-4-4-12).
+ */
+function purchaseIdToItemId(purchaseId: string): string | null {
+  if (!purchaseId.startsWith("purchase-")) return null;
+  const withoutPrefix = purchaseId.substring("purchase-".length);
+  if (withoutPrefix.includes("-temp-")) {
+    return withoutPrefix.substring(0, withoutPrefix.indexOf("-temp-"));
+  }
+  const parts = withoutPrefix.split("-");
+  // UUID suffix: 5 segments (8-4-4-4-12). When 6+ parts, always strip last 5
+  // (valid UUID or malformed) to avoid incorrect extraction from generic fallback.
+  if (parts.length >= 6) {
+    return parts.slice(0, -5).join("-") || null;
+  }
+  // Numeric or other: single suffix segment
+  return parts.slice(0, -1).join("-") || null;
+}
+
 // EU countries with Euro as main currency
 const EU_EURO_COUNTRIES = [
   "AT",
@@ -366,10 +386,11 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
 
           // If this item has feast activations and doesn't already have them set up in state
           // BUT skip bundles - only track activations for bundle components
+          // Use 'in' to preserve explicit 0 (exhausted) values
           if (
             item?.rewards.feastActivations &&
             !item.bundleComponents &&
-            !currentFeastActivations[purchaseId]
+            !(purchaseId in currentFeastActivations)
           ) {
             newFeastActivations[purchaseId] = item.rewards.feastActivations;
             hasNewActivations = true;
@@ -464,22 +485,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
         // For other free items (non-daily gold), check if already purchased
         if (!item.canPurchaseMultipleTimes) {
           const alreadyPurchased = purchasedItems.some((pid) => {
-            // Extract item ID from purchase ID
-            // Format: purchase-{itemId}-{uuid} or purchase-{itemId}-temp-{timestamp}
-            if (!pid.startsWith("purchase-")) return false;
-
-            const withoutPrefix = pid.substring("purchase-".length);
-            // Check if it's a temp ID
-            if (withoutPrefix.includes("-temp-")) {
-              return (
-                withoutPrefix.substring(0, withoutPrefix.indexOf("-temp-")) ===
-                itemId
-              );
-            }
-            // For real IDs with UUID, remove the last 5 dash-separated segments (UUID)
-            const parts = withoutPrefix.split("-");
-            const purchasedItemId = parts.slice(0, -5).join("-");
-            return purchasedItemId === itemId;
+            return purchaseIdToItemId(pid) === itemId;
           });
 
           if (alreadyPurchased) {
@@ -671,12 +677,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
     if (item.rewards.feastActivations && !item.bundleComponents) {
       // Get the latest purchase for this item (the one just created)
       const latestPurchaseId = updatedPurchasedItems
-        .filter((pid) => {
-          const itemId = pid.startsWith("purchase-")
-            ? pid.substring("purchase-".length, pid.lastIndexOf("-"))
-            : pid;
-          return itemId === selectedItem;
-        })
+        .filter((pid) => purchaseIdToItemId(pid) === selectedItem)
         .pop(); // Get the last one (newest)
 
       if (latestPurchaseId) {
@@ -697,12 +698,9 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
 
         if (componentItem?.rewards.feastActivations) {
           // Find the latest purchase for this component
-          const allMatchingPurchases = updatedPurchasedItems.filter((pid) => {
-            const itemId = pid.startsWith("purchase-")
-              ? pid.substring("purchase-".length, pid.lastIndexOf("-"))
-              : pid;
-            return itemId === componentId;
-          });
+          const allMatchingPurchases = updatedPurchasedItems.filter(
+            (pid) => purchaseIdToItemId(pid) === componentId
+          );
 
           const componentPurchaseId = allMatchingPurchases.pop();
 
@@ -1223,22 +1221,9 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                     24) ||
                                   (item.id !== "gold_100_free" &&
                                     !item.canPurchaseMultipleTimes &&
-                                    purchasedItems.some((pid) => {
-                                      if (!pid.startsWith("purchase-")) return false;
-                                      const withoutPrefix = pid.substring(
-                                        "purchase-".length,
-                                      );
-                                      if (withoutPrefix.includes("-temp-")) {
-                                        return (
-                                          withoutPrefix.substring(
-                                            0,
-                                            withoutPrefix.indexOf("-temp-"),
-                                          ) === item.id
-                                        );
-                                      }
-                                      const parts = withoutPrefix.split("-");
-                                      return parts.slice(0, -5).join("-") === item.id;
-                                    }))
+                                    purchasedItems.some(
+                                      (pid) => purchaseIdToItemId(pid) === item.id
+                                    ))
                                 }
                                 className="h-8 md:h-10 w-full"
                                 button_id={`shop-purchase-${item.id}`}
@@ -1261,25 +1246,9 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                     })()
                                     : "Claim"
                                   : !item.canPurchaseMultipleTimes &&
-                                    purchasedItems.some((pid) => {
-                                      if (!pid.startsWith("purchase-"))
-                                        return false;
-                                      const withoutPrefix = pid.substring(
-                                        "purchase-".length,
-                                      );
-                                      if (withoutPrefix.includes("-temp-")) {
-                                        return (
-                                          withoutPrefix.substring(
-                                            0,
-                                            withoutPrefix.indexOf("-temp-"),
-                                          ) === item.id
-                                        );
-                                      }
-                                      const parts = withoutPrefix.split("-");
-                                      return (
-                                        parts.slice(0, -5).join("-") === item.id
-                                      );
-                                    })
+                                    purchasedItems.some(
+                                      (pid) => purchaseIdToItemId(pid) === item.id
+                                    )
                                     ? item.price === 0
                                       ? "Already Claimed"
                                       : "Already Purchased"
@@ -1318,14 +1287,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                         <div className="space-y-2">
                           {Object.entries(gameState.feastActivations || {}).map(
                             ([purchaseId, activationsRemaining]) => {
-                              let itemId = null;
-                              if (purchaseId.startsWith("purchase-")) {
-                                const withoutPrefix = purchaseId.substring(
-                                  "purchase-".length,
-                                );
-                                const parts = withoutPrefix.split("-");
-                                itemId = parts.slice(0, -5).join("-");
-                              }
+                              const itemId = purchaseIdToItemId(purchaseId);
 
                               const item = itemId ? SHOP_ITEMS[itemId] : null;
 
@@ -1396,17 +1358,8 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                           {/* Show non-feast, non-bundle purchases */}
                           {purchasedItems
                             .filter((purchaseId) => {
-                              // Extract itemId from purchaseId (format: purchase-{itemId}-{uuid})
-                              let itemId = purchaseId;
-                              if (purchaseId.startsWith("purchase-")) {
-                                const withoutPrefix = purchaseId.substring(
-                                  "purchase-".length,
-                                );
-                                const parts = withoutPrefix.split("-");
-                                // Extract itemId by removing the UUID parts
-                                itemId = parts.slice(0, -5).join("-");
-                              }
-                              const item = SHOP_ITEMS[itemId];
+                              const itemId = purchaseIdToItemId(purchaseId);
+                              const item = itemId ? SHOP_ITEMS[itemId] : null;
                               return (
                                 item &&
                                 !item.rewards.feastActivations &&
@@ -1414,17 +1367,8 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                               );
                             })
                             .map((purchaseId) => {
-                              // Extract itemId from purchaseId (format: purchase-{itemId}-{uuid})
-                              let itemId = purchaseId;
-                              if (purchaseId.startsWith("purchase-")) {
-                                const withoutPrefix = purchaseId.substring(
-                                  "purchase-".length,
-                                );
-                                const parts = withoutPrefix.split("-");
-                                // Remove the last 5 parts (UUID segments)
-                                itemId = parts.slice(0, -5).join("-");
-                              }
-                              const item = SHOP_ITEMS[itemId];
+                              const itemId = purchaseIdToItemId(purchaseId);
+                              const item = itemId ? SHOP_ITEMS[itemId] : null;
 
                               if (!item) return null;
 

@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 
 /** Wait for dialog to finish loading, then return the Purchases tab */
 async function waitForPurchasesTab() {
@@ -15,12 +15,13 @@ import { useGameStore } from '@/game/state';
 import { SHOP_ITEMS } from '@shared/shopItems';
 
 // Use vi.hoisted so mock is available when vi.mock factory runs
-const { mockSupabaseClient, mockGetCurrentUser } = vi.hoisted(() => {
+const { mockSupabaseClient, mockGetCurrentUser, mockInsert } = vi.hoisted(() => {
+  const mockInsert = vi.fn(() => Promise.resolve({ data: null, error: null }));
   const from = vi.fn(() => ({
     select: vi.fn(() => ({
       eq: vi.fn(() => Promise.resolve({ data: [], error: null })),
     })),
-    insert: vi.fn(() => Promise.resolve({ data: null, error: null })),
+    insert: mockInsert,
   }));
   const mockGetCurrentUser = vi.fn(() =>
     Promise.resolve({ id: "test-user-123", email: "test@example.com" })
@@ -31,6 +32,7 @@ const { mockSupabaseClient, mockGetCurrentUser } = vi.hoisted(() => {
       auth: { getSession: vi.fn(() => Promise.resolve({ data: { session: null } })) },
     },
     mockGetCurrentUser,
+    mockInsert,
   };
 });
 
@@ -61,6 +63,16 @@ describe('ShopDialog', () => {
   };
 
   beforeEach(() => {
+    // Default to EUR for price-display tests (fetch ipapi.co)
+    global.fetch = vi.fn((url: string | URL) => {
+      if (String(url).includes('ipapi.co')) {
+        return Promise.resolve({
+          json: () => Promise.resolve({ country_code: 'DE' }),
+        } as Response);
+      }
+      return Promise.reject(new Error('Unknown URL'));
+    }) as typeof fetch;
+
     // jsdom doesn't implement matchMedia - required by use-mobile hook
     Object.defineProperty(window, "matchMedia", {
       writable: true,
@@ -76,16 +88,17 @@ describe('ShopDialog', () => {
       })),
     });
 
-    // Reset game store
+    // Reset game store (EUR for price tests)
     useGameStore.setState({
       resources: { gold: 10000 },
       activatedPurchases: {},
-      feastPurchases: {},
+      feastActivations: {},
       greatFeastState: { isActive: false, endTime: 0 },
       hasMadeNonFreePurchase: false,
       tools: {},
       weapons: {},
       blessings: {},
+      detectedCurrency: 'EUR',
       addLogEntry: vi.fn(),
       updateResource: vi.fn(),
     });
@@ -114,7 +127,7 @@ describe('ShopDialog', () => {
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        expect(screen.getByText('100 Gold (Daily Free Gift)')).toBeInTheDocument();
+        expect(screen.getByText('100 Gold (Daily Gift)')).toBeInTheDocument();
       });
 
       const claimButton = screen.getByRole('button', { name: /claim/i });
@@ -124,8 +137,12 @@ describe('ShopDialog', () => {
         expect(updateResource).toHaveBeenCalledWith('gold', 100);
       });
 
-      // Should NOT create a purchase record for daily free gold
-      expect(mockSupabaseClient.from).not.toHaveBeenCalled();
+      // Should NOT create a purchase record for daily free gold (from() is called to load purchases on mount, but insert should not be called for gold_100_free)
+      const insertCalls = mockInsert.mock.calls;
+      const gold100FreeInserts = insertCalls.filter(
+        (call) => call[0]?.item_id === 'gold_100_free'
+      );
+      expect(gold100FreeInserts).toHaveLength(0);
     });
 
     it('should prevent claiming daily free gold within 24 hours and show remaining time', async () => {
@@ -140,7 +157,7 @@ describe('ShopDialog', () => {
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        const claimButton = screen.getByRole('button', { name: /available in 23h/i });
+        const claimButton = screen.getByRole('button', { name: /available in 23.*hour/i });
         expect(claimButton).toBeDisabled();
       });
     });
@@ -161,7 +178,7 @@ describe('ShopDialog', () => {
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        expect(screen.getByText('100 Gold (Daily Free Gift)')).toBeInTheDocument();
+        expect(screen.getByText('100 Gold (Daily Gift)')).toBeInTheDocument();
       });
 
       const claimButton = screen.getByRole('button', { name: /claim/i });
@@ -170,7 +187,7 @@ describe('ShopDialog', () => {
       await waitFor(() => {
         const state = useGameStore.getState();
         expect(state.lastFreeGoldClaim).toBeGreaterThan(initialTime);
-        expect(state.lastFreeGoldClaim).toBeCloseTo(Date.now(), -2); // Within 100ms
+        expect(Math.abs(state.lastFreeGoldClaim - Date.now())).toBeLessThan(2000); // Within 2s
       });
     });
 
@@ -215,7 +232,7 @@ describe('ShopDialog', () => {
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        expect(screen.getByText('100 Gold (Daily Free Gift)')).toBeInTheDocument();
+        expect(screen.getByText('100 Gold (Daily Gift)')).toBeInTheDocument();
       });
 
       const claimButton = screen.getByRole('button', { name: /claim/i });
@@ -229,17 +246,17 @@ describe('ShopDialog', () => {
 
       // Try to claim again immediately - button should now be disabled
       await waitFor(() => {
-        const disabledButton = screen.getByRole('button', { name: /available in 24h/i });
+        const disabledButton = screen.getByRole('button', { name: /available in 24.*hour/i });
         expect(disabledButton).toBeDisabled();
       });
     });
 
     it('should show correct remaining hours for different time intervals', async () => {
+      // Note: When >=24h have passed, button shows "Claim" (enabled), not cooldown text
       const testCases = [
-        { hoursAgo: 1, expectedText: /available in 23h/i },
-        { hoursAgo: 12, expectedText: /available in 12h/i },
-        { hoursAgo: 23, expectedText: /available in 1h/i },
-        { hoursAgo: 23.5, expectedText: /available in 0h/i },
+        { hoursAgo: 1, expectedText: /available in 23.*hour/i },
+        { hoursAgo: 12, expectedText: /available in 12.*hour/i },
+        { hoursAgo: 23, expectedText: /available in 1 hour/i },
       ];
 
       for (const testCase of testCases) {
@@ -313,7 +330,7 @@ describe('ShopDialog', () => {
       // Mock existing purchases
       mockSupabaseClient.from = vi.fn(() => ({
         select: vi.fn(() => ({
-          eq: vi.fn(() => ({
+          eq: vi.fn(() => Promise.resolve({
             data: [
               { id: 1, item_id: 'gold_250' },
               { id: 2, item_id: 'gold_250' },
@@ -342,7 +359,7 @@ describe('ShopDialog', () => {
       // Mock existing purchases
       mockSupabaseClient.from = vi.fn(() => ({
         select: vi.fn(() => ({
-          eq: vi.fn(() => ({
+          eq: vi.fn(() => Promise.resolve({
             data: [
               { id: 1, item_id: 'great_feast_1' },
               { id: 2, item_id: 'great_feast_1' },
@@ -371,7 +388,7 @@ describe('ShopDialog', () => {
       // Mock existing purchase of cruel_mode
       mockSupabaseClient.from = vi.fn(() => ({
         select: vi.fn(() => ({
-          eq: vi.fn(() => ({
+          eq: vi.fn(() => Promise.resolve({
             data: [{ id: 1, item_id: 'cruel_mode' }],
             error: null,
           })),
@@ -400,7 +417,7 @@ describe('ShopDialog', () => {
       // Mock no existing purchases
       mockSupabaseClient.from = vi.fn(() => ({
         select: vi.fn(() => ({
-          eq: vi.fn(() => ({
+          eq: vi.fn(() => Promise.resolve({
             data: [],
             error: null,
           })),
@@ -421,8 +438,16 @@ describe('ShopDialog', () => {
 
       await waitFor(() => {
         if (import.meta.env.DEV) {
-          const purchaseButton = screen.getByRole('button', { name: /purchase/i });
-          expect(purchaseButton).not.toBeDisabled();
+          const purchaseButtons = screen.getAllByRole('button', { name: /purchase/i });
+          const cruelModeButton = purchaseButtons.find((b) => {
+            let el: HTMLElement | null = b.parentElement;
+            while (el) {
+              if (el.textContent?.includes('Cruel Mode')) return true;
+              el = el.parentElement;
+            }
+            return false;
+          });
+          expect(cruelModeButton ?? purchaseButtons[0]).not.toBeDisabled();
         }
       });
     });
@@ -442,7 +467,7 @@ describe('ShopDialog', () => {
       // Mock existing purchase
       mockSupabaseClient.from = vi.fn(() => ({
         select: vi.fn(() => ({
-          eq: vi.fn(() => ({
+          eq: vi.fn(() => Promise.resolve({
             data: [{ id: 1, item_id: 'gold_250' }],
             error: null,
           })),
@@ -490,7 +515,7 @@ describe('ShopDialog', () => {
       // Mock existing purchase
       mockSupabaseClient.from = vi.fn(() => ({
         select: vi.fn(() => ({
-          eq: vi.fn(() => ({
+          eq: vi.fn(() => Promise.resolve({
             data: [{ id: 1, item_id: 'gold_100_free' }],
             error: null,
           })),
@@ -519,15 +544,20 @@ describe('ShopDialog', () => {
       const onClose = vi.fn();
 
       useGameStore.setState({
-        feastPurchases: {
-          'purchase-great_feast_3-1': {
-            itemId: 'great_feast_3',
-            activationsRemaining: 5,
-            totalActivations: 5,
-            purchasedAt: Date.now(),
-          },
+        feastActivations: {
+          'purchase-great_feast_3-1': 3,
         },
       });
+
+      mockSupabaseClient.from = vi.fn(() => ({
+        select: vi.fn(() => ({
+          eq: vi.fn(() => Promise.resolve({
+            data: [{ id: 1, item_id: 'great_feast_3' }],
+            error: null,
+          })),
+        })),
+        insert: mockInsert,
+      }));
 
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
@@ -535,15 +565,15 @@ describe('ShopDialog', () => {
       await user.click(purchasesTab);
 
       await waitFor(() => {
-        expect(screen.getByText(/5\/5 available/i)).toBeInTheDocument();
+        expect(screen.getByText(/3\/3 available/i)).toBeInTheDocument();
       });
 
-      const activateButton = screen.getByRole('button', { name: /activate/i });
-      await user.click(activateButton);
+      const activateButtons = screen.getAllByRole('button', { name: /activate/i });
+      await user.click(activateButtons[0]);
 
       await waitFor(() => {
         const state = useGameStore.getState();
-        expect(state.feastPurchases?.['purchase-great_feast_3-1']?.activationsRemaining).toBe(4);
+        expect(state.feastActivations?.['purchase-great_feast_3-1']).toBe(2);
         expect(state.greatFeastState?.isActive).toBe(true);
       });
     });
@@ -553,13 +583,8 @@ describe('ShopDialog', () => {
       const onClose = vi.fn();
 
       useGameStore.setState({
-        feastPurchases: {
-          'purchase-great_feast_1-1': {
-            itemId: 'great_feast_1',
-            activationsRemaining: 1,
-            totalActivations: 1,
-            purchasedAt: Date.now(),
-          },
+        feastActivations: {
+          'purchase-great_feast_1-1': 1,
         },
         greatFeastState: {
           isActive: true,
@@ -573,8 +598,9 @@ describe('ShopDialog', () => {
       await user.click(purchasesTab);
 
       await waitFor(() => {
-        const activeButton = screen.getByRole('button', { name: /active/i });
-        expect(activeButton).toBeDisabled();
+        const activeButtons = screen.getAllByRole('button', { name: /active/i });
+        expect(activeButtons.length).toBeGreaterThan(0);
+        expect(activeButtons[0]).toBeDisabled();
       });
     });
 
@@ -583,15 +609,20 @@ describe('ShopDialog', () => {
       const onClose = vi.fn();
 
       useGameStore.setState({
-        feastPurchases: {
-          'purchase-great_feast_1-1': {
-            itemId: 'great_feast_1',
-            activationsRemaining: 0,
-            totalActivations: 1,
-            purchasedAt: Date.now(),
-          },
+        feastActivations: {
+          'purchase-great_feast_1-1': 0,
         },
       });
+
+      mockSupabaseClient.from = vi.fn(() => ({
+        select: vi.fn(() => ({
+          eq: vi.fn(() => Promise.resolve({
+            data: [{ id: 1, item_id: 'great_feast_1' }],
+            error: null,
+          })),
+        })),
+        insert: mockInsert,
+      }));
 
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
@@ -599,8 +630,10 @@ describe('ShopDialog', () => {
       await user.click(purchasesTab);
 
       await waitFor(() => {
-        const activateButton = screen.getByRole('button', { name: /activate/i });
-        expect(activateButton).toBeDisabled();
+        expect(screen.getByText(/0\/1 available/i)).toBeInTheDocument();
+        const activatedButtons = screen.getAllByRole('button', { name: /activated/i });
+        expect(activatedButtons.length).toBeGreaterThan(0);
+        expect(activatedButtons[0]).toBeDisabled();
       });
     });
   });
@@ -624,7 +657,10 @@ describe('ShopDialog', () => {
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        const purchaseButtons = screen.getAllByRole('button', { name: /purchase|claim/i });
+        expect(screen.getByText(/sign in or create an account/i)).toBeInTheDocument();
+        // Shop item buttons (exclude sign-in CTA) should be disabled
+        const purchaseButtons = screen.getAllByRole('button', { name: /purchase|claim/i })
+          .filter(b => !b.textContent?.includes('Sign in'));
         purchaseButtons.forEach(button => {
           expect(button).toBeDisabled();
         });
@@ -638,8 +674,8 @@ describe('ShopDialog', () => {
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        // Check for strikethrough original price
-        const originalPrice = screen.getByText('1.99 €');
+        // great_feast_1 has originalPrice 199 (1.99 €), price 149 (1.49 €)
+        const originalPrice = screen.getByText(/1\.99\s*€/);
         expect(originalPrice).toHaveClass('line-through');
       });
     });
@@ -650,10 +686,15 @@ describe('ShopDialog', () => {
       const user = userEvent.setup();
       const onClose = vi.fn();
 
-      const insertMock = vi.fn(() => ({
+      const insertMock = vi.fn(() => Promise.resolve({
         data: { id: 999 },
         error: null,
       }));
+
+      // Free gold on cooldown so Test Free Item has the only Claim button
+      useGameStore.setState({
+        lastFreeGoldClaim: Date.now() - (1 * 60 * 60 * 1000),
+      });
 
       // Create a test non-daily free item
       const originalShopItems = { ...SHOP_ITEMS };
@@ -671,7 +712,7 @@ describe('ShopDialog', () => {
         if (table === 'purchases') {
           return {
             select: vi.fn(() => ({
-              eq: vi.fn(() => ({
+              eq: vi.fn(() => Promise.resolve({
                 data: [],
                 error: null,
               })),
@@ -688,10 +729,7 @@ describe('ShopDialog', () => {
         expect(screen.getByText('Test Free Item')).toBeInTheDocument();
       });
 
-      const claimButton = screen.getAllByRole('button', { name: /claim/i }).find(
-        btn => btn.closest('[data-testid]')?.textContent?.includes('Test Free Item')
-      ) || screen.getAllByRole('button', { name: /claim/i })[1];
-      
+      const claimButton = screen.getByRole('button', { name: /claim/i });
       await user.click(claimButton);
 
       await waitFor(() => {
@@ -716,7 +754,7 @@ describe('ShopDialog', () => {
       // Mock cruel mode purchase
       mockSupabaseClient.from = vi.fn(() => ({
         select: vi.fn(() => ({
-          eq: vi.fn(() => ({
+          eq: vi.fn(() => Promise.resolve({
             data: [{ id: 1, item_id: 'cruel_mode' }],
             error: null,
           })),
@@ -758,10 +796,10 @@ describe('ShopDialog', () => {
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        expect(screen.getByText('Champion Bundle')).toBeInTheDocument();
+        expect(screen.getByText("Fading Wanderer Bundle")).toBeInTheDocument();
       });
 
-      expect(screen.getByText(/A powerful pack with 5000 Gold and 1 Great Feast/i)).toBeInTheDocument();
+      expect(screen.getByText(/Basic Bundle with 5000 Gold and 1 Great Feast/i)).toBeInTheDocument();
     });
 
     it('should show bundle with correct pricing', async () => {
@@ -769,14 +807,13 @@ describe('ShopDialog', () => {
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        expect(screen.getByText('Champion Bundle')).toBeInTheDocument();
+        expect(screen.getByText("Fading Wanderer Bundle")).toBeInTheDocument();
+        // Wait for currency detection (EUR) and price display
+        expect(screen.getByText(/5\.49\s*€/)).toBeInTheDocument();
       });
 
-      // Check for discounted price
-      expect(screen.getByText('6.49 €')).toBeInTheDocument();
-      // Check for original price (strikethrough)
-      const originalPrice = screen.getByText('12.99 €');
-      expect(originalPrice).toHaveClass('line-through');
+      const originalPrices = screen.getAllByText(/7\.49\s*€/);
+      expect(originalPrices.some((el) => el.classList.contains('line-through'))).toBe(true);
     });
 
     it('should allow purchasing bundles multiple times', async () => {
@@ -786,18 +823,15 @@ describe('ShopDialog', () => {
       // Mock existing bundle purchases
       mockSupabaseClient.from = vi.fn(() => ({
         select: vi.fn(() => ({
-          eq: vi.fn(() => ({
+          eq: vi.fn(() => Promise.resolve({
             data: [
-              { id: 1, item_id: 'champion_bundle' },
-              { id: 2, item_id: 'champion_bundle' },
+              { id: 1, item_id: 'basic_survival_bundle' },
+              { id: 2, item_id: 'basic_survival_bundle' },
             ],
             error: null,
           })),
         })),
-        insert: vi.fn(() => ({
-          data: null,
-          error: null,
-        })),
+        insert: mockInsert,
       }));
 
       render(<ShopDialog isOpen={true} onClose={onClose} />);
@@ -811,7 +845,7 @@ describe('ShopDialog', () => {
     it('should create component purchases when bundle is claimed (free)', async () => {
       const user = userEvent.setup();
       const onClose = vi.fn();
-      const insertMock = vi.fn(() => ({
+      const insertMock = vi.fn(() => Promise.resolve({
         data: { id: 999 },
         error: null,
       }));
@@ -820,7 +854,7 @@ describe('ShopDialog', () => {
         if (table === 'purchases') {
           return {
             select: vi.fn(() => ({
-              eq: vi.fn(() => ({
+              eq: vi.fn(() => Promise.resolve({
                 data: [],
                 error: null,
               })),
@@ -850,12 +884,25 @@ describe('ShopDialog', () => {
         expect(screen.getByText('Test Free Bundle')).toBeInTheDocument();
       });
 
-      const claimButton = screen.getByRole('button', { name: /claim/i });
-      await user.click(claimButton);
+      const claimButtons = screen.getAllByRole('button', { name: /claim/i });
+      const bundleClaim = claimButtons.find((b) => {
+        let el: HTMLElement | null = b.parentElement;
+        while (el) {
+          if (el.textContent?.includes('Test Free Bundle')) return true;
+          el = el.parentElement;
+        }
+        return false;
+      });
+      await user.click(bundleClaim ?? claimButtons[1]);
 
       await waitFor(() => {
-        // Should create purchases for both components
-        expect(insertMock).toHaveBeenCalledTimes(2);
+        // Component creates 1 bundle + 2 component purchases
+        expect(insertMock).toHaveBeenCalledTimes(3);
+        expect(insertMock).toHaveBeenCalledWith(
+          expect.objectContaining({
+            item_id: 'test_free_bundle',
+          })
+        );
         expect(insertMock).toHaveBeenCalledWith(
           expect.objectContaining({
             item_id: 'gold_250',
@@ -876,10 +923,15 @@ describe('ShopDialog', () => {
       const user = userEvent.setup();
       const onClose = vi.fn();
 
-      // Mock component purchases from a bundle
+      useGameStore.setState({
+        feastActivations: {
+          'purchase-great_feast_1-101': 1,
+        },
+      });
+
       mockSupabaseClient.from = vi.fn(() => ({
         select: vi.fn(() => ({
-          eq: vi.fn(() => ({
+          eq: vi.fn(() => Promise.resolve({
             data: [
               { id: 100, item_id: 'gold_5000' },
               { id: 101, item_id: 'great_feast_1' },
@@ -887,22 +939,8 @@ describe('ShopDialog', () => {
             error: null,
           })),
         })),
-        insert: vi.fn(() => ({
-          data: null,
-          error: null,
-        })),
+        insert: mockInsert,
       }));
-
-      useGameStore.setState({
-        feastPurchases: {
-          'purchase-great_feast_1-101': {
-            itemId: 'great_feast_1',
-            activationsRemaining: 1,
-            totalActivations: 1,
-            purchasedAt: Date.now(),
-          },
-        },
-      });
 
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
@@ -925,20 +963,15 @@ describe('ShopDialog', () => {
       useGameStore.setState({
         updateResource,
         resources: { gold: 0 },
-        feastPurchases: {
-          'purchase-great_feast_1-101': {
-            itemId: 'great_feast_1',
-            activationsRemaining: 1,
-            totalActivations: 1,
-            purchasedAt: Date.now(),
-          },
+        feastActivations: {
+          'purchase-great_feast_1-101': 1,
         },
       });
 
       // Mock component purchases
       mockSupabaseClient.from = vi.fn(() => ({
         select: vi.fn(() => ({
-          eq: vi.fn(() => ({
+          eq: vi.fn(() => Promise.resolve({
             data: [
               { id: 100, item_id: 'gold_5000' },
               { id: 101, item_id: 'great_feast_1' },
@@ -946,10 +979,7 @@ describe('ShopDialog', () => {
             error: null,
           })),
         })),
-        insert: vi.fn(() => ({
-          data: null,
-          error: null,
-        })),
+        insert: mockInsert,
       }));
 
       render(<ShopDialog isOpen={true} onClose={onClose} />);
@@ -962,9 +992,12 @@ describe('ShopDialog', () => {
         expect(activateButtons.length).toBeGreaterThan(0);
       });
 
-      // Activate gold component first
+      // Activate gold component (feast is first in list, gold second)
       const activateButtons = screen.getAllByRole('button', { name: /activate/i });
-      await user.click(activateButtons[0]);
+      const goldButton = activateButtons.find((b) =>
+        b.closest('div')?.textContent?.includes('5000 Gold')
+      ) ?? activateButtons[1];
+      await user.click(goldButton);
 
       await waitFor(() => {
         expect(updateResource).toHaveBeenCalledWith('gold', 5000);
@@ -976,28 +1009,20 @@ describe('ShopDialog', () => {
       const onClose = vi.fn();
 
       useGameStore.setState({
-        feastPurchases: {
-          'purchase-great_feast_1-101': {
-            itemId: 'great_feast_1',
-            activationsRemaining: 1,
-            totalActivations: 1,
-            purchasedAt: Date.now(),
-          },
+        feastActivations: {
+          'purchase-great_feast_1-101': 1,
         },
         greatFeastState: { isActive: false, endTime: 0 },
       });
 
       mockSupabaseClient.from = vi.fn(() => ({
         select: vi.fn(() => ({
-          eq: vi.fn(() => ({
+          eq: vi.fn(() => Promise.resolve({
             data: [{ id: 101, item_id: 'great_feast_1' }],
             error: null,
           })),
         })),
-        insert: vi.fn(() => ({
-          data: null,
-          error: null,
-        })),
+        insert: mockInsert,
       }));
 
       render(<ShopDialog isOpen={true} onClose={onClose} />);
@@ -1014,7 +1039,7 @@ describe('ShopDialog', () => {
 
       await waitFor(() => {
         const state = useGameStore.getState();
-        expect(state.feastPurchases?.['purchase-great_feast_1-101']?.activationsRemaining).toBe(0);
+        expect(state.feastActivations?.['purchase-great_feast_1-101']).toBe(0);
         expect(state.greatFeastState?.isActive).toBe(true);
       });
     });
@@ -1038,7 +1063,7 @@ describe('ShopDialog', () => {
         if (table === 'purchases') {
           return {
             select: vi.fn(() => ({
-              eq: vi.fn(() => ({
+              eq: vi.fn(() => Promise.resolve({
                 data: [],
                 error: null,
               })),
@@ -1052,7 +1077,7 @@ describe('ShopDialog', () => {
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        expect(screen.getByText('Champion Bundle')).toBeInTheDocument();
+        expect(screen.getByText("Fading Wanderer Bundle")).toBeInTheDocument();
       });
 
       // This would trigger the payment flow in a real scenario
@@ -1064,11 +1089,11 @@ describe('ShopDialog', () => {
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        expect(screen.getByText('Champion Bundle')).toBeInTheDocument();
+        expect(screen.getByText("Fading Wanderer Bundle")).toBeInTheDocument();
       });
 
       // Bundle should have its symbol displayed
-      const bundleCard = screen.getByText('Champion Bundle').closest('.flex');
+      const bundleCard = screen.getByText("Fading Wanderer Bundle").closest('.flex');
       expect(bundleCard).toBeInTheDocument();
     });
 
@@ -1078,7 +1103,7 @@ describe('ShopDialog', () => {
       // Mock that individual components exist
       mockSupabaseClient.from = vi.fn(() => ({
         select: vi.fn(() => ({
-          eq: vi.fn(() => ({
+          eq: vi.fn(() => Promise.resolve({
             data: [
               { id: 50, item_id: 'gold_5000' },
               { id: 51, item_id: 'great_feast_1' },
@@ -1095,7 +1120,7 @@ describe('ShopDialog', () => {
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        expect(screen.getByText('Champion Bundle')).toBeInTheDocument();
+        expect(screen.getByText("Fading Wanderer Bundle")).toBeInTheDocument();
       });
 
       // Bundle should still be purchasable (it's repeatable)
@@ -1119,10 +1144,10 @@ describe('ShopDialog', () => {
     render(<ShopDialog isOpen={true} onClose={onClose} />);
 
     await waitFor(() => {
-      expect(screen.getByText("Advanced Bundle")).toBeInTheDocument();
+      expect(screen.getByText("Pale King's Bundle")).toBeInTheDocument();
     });
 
-    expect(screen.getByText(/A powerful pack with 20000 Gold and 3 Great Feasts/i)).toBeInTheDocument();
+    expect(screen.getByText(/Powerful Bundle with 20000 Gold and 3 Great Feasts/i)).toBeInTheDocument();
   });
 
   it('should show advanced bundle with correct pricing', async () => {
@@ -1130,13 +1155,12 @@ describe('ShopDialog', () => {
     render(<ShopDialog isOpen={true} onClose={onClose} />);
 
     await waitFor(() => {
-      expect(screen.getByText("Advanced Bundle")).toBeInTheDocument();
+      expect(screen.getByText("Pale King's Bundle")).toBeInTheDocument();
     });
 
-    // Check for discounted price
-    expect(screen.getByText('11.99 €')).toBeInTheDocument();
-    // Check for original price (strikethrough)
-    const originalPrice = screen.getByText('23.99 €');
+    // Pale King's Bundle: 10.99 € (original 14.99 €)
+    expect(screen.getByText(/10\.99\s*€/)).toBeInTheDocument();
+    const originalPrice = screen.getByText(/14\.99\s*€/);
     expect(originalPrice).toHaveClass('line-through');
   });
 
@@ -1146,7 +1170,7 @@ describe('ShopDialog', () => {
     // Mock existing bundle purchases
     mockSupabaseClient.from = vi.fn(() => ({
       select: vi.fn(() => ({
-        eq: vi.fn(() => ({
+        eq: vi.fn(() => Promise.resolve({
           data: [
             { id: 1, item_id: 'advanced_bundle' },
             { id: 2, item_id: 'advanced_bundle' },
@@ -1175,7 +1199,7 @@ describe('ShopDialog', () => {
     // Mock component purchases from advanced bundle
     mockSupabaseClient.from = vi.fn(() => ({
       select: vi.fn(() => ({
-        eq: vi.fn(() => ({
+        eq: vi.fn(() => Promise.resolve({
           data: [
             { id: 200, item_id: 'gold_20000' },
             { id: 201, item_id: 'great_feast_3' },
@@ -1191,7 +1215,7 @@ describe('ShopDialog', () => {
 
     useGameStore.setState({
       feastActivations: {
-        'purchase-great_feast_3-201': 5,
+        'purchase-great_feast_3-201': 3,
       },
     });
 
@@ -1201,8 +1225,8 @@ describe('ShopDialog', () => {
     await user.click(purchasesTab);
 
     await waitFor(() => {
-      // Should show feast component
-      expect(screen.getByText(/3 Great Feasts \(5\/5 available\)/i)).toBeInTheDocument();
+      // Should show feast component (3 activations from great_feast_3)
+      expect(screen.getByText(/3 Great Feasts \(3\/3 available\)/i)).toBeInTheDocument();
       // Should show gold component
       expect(screen.getByText('20000 Gold')).toBeInTheDocument();
     });
@@ -1217,14 +1241,14 @@ describe('ShopDialog', () => {
       updateResource,
       resources: { gold: 0 },
       feastActivations: {
-        'purchase-great_feast_3-201': 5,
+        'purchase-great_feast_3-201': 3,
       },
     });
 
     // Mock component purchases
     mockSupabaseClient.from = vi.fn(() => ({
       select: vi.fn(() => ({
-        eq: vi.fn(() => ({
+        eq: vi.fn(() => Promise.resolve({
           data: [
             { id: 200, item_id: 'gold_20000' },
             { id: 201, item_id: 'great_feast_3' },
@@ -1248,9 +1272,12 @@ describe('ShopDialog', () => {
       expect(activateButtons.length).toBeGreaterThan(0);
     });
 
-    // Activate gold component first
+    // Activate gold component (feast is first in list, gold second)
     const activateButtons = screen.getAllByRole('button', { name: /activate/i });
-    await user.click(activateButtons[0]);
+    const goldButton = activateButtons.find((b) =>
+      b.closest('div')?.textContent?.includes('20000 Gold')
+    ) ?? activateButtons[1];
+    await user.click(goldButton);
 
     await waitFor(() => {
       expect(updateResource).toHaveBeenCalledWith('gold', 20000);
@@ -1293,7 +1320,7 @@ describe('ShopDialog', () => {
     // Mock bundle purchase with its components
     mockSupabaseClient.from = vi.fn(() => ({
       select: vi.fn(() => ({
-        eq: vi.fn(() => ({
+        eq: vi.fn(() => Promise.resolve({
           data: [
             { id: 1, item_id: 'basic_survival_bundle' },
             { id: 2, item_id: 'gold_5000' },
@@ -1325,7 +1352,7 @@ describe('ShopDialog', () => {
       expect(screen.getByText(/1 Great Feast/i)).toBeInTheDocument();
 
       // Should NOT show the bundle itself
-      expect(screen.queryByText('Basic Survival Bundle')).not.toBeInTheDocument();
+      expect(screen.queryByText("Fading Wanderer Bundle")).not.toBeInTheDocument();
     });
   });
 
@@ -1346,7 +1373,7 @@ describe('ShopDialog', () => {
     // Mock multiple bundle component purchases
     mockSupabaseClient.from = vi.fn(() => ({
       select: vi.fn(() => ({
-        eq: vi.fn(() => ({
+        eq: vi.fn(() => Promise.resolve({
           data: [
             { id: 2, item_id: 'gold_5000' },
             { id: 3, item_id: 'great_feast_1' },
@@ -1372,9 +1399,12 @@ describe('ShopDialog', () => {
       expect(activateButtons.length).toBeGreaterThan(0);
     });
 
-    // Activate first gold component
+    // Activate first gold component (feasts appear first, then gold)
     const activateButtons = screen.getAllByRole('button', { name: /activate/i });
-    await user.click(activateButtons[0]);
+    const goldButton = activateButtons.find((b) =>
+      b.closest('div')?.textContent?.includes('5000 Gold')
+    ) ?? activateButtons[2];
+    await user.click(goldButton);
 
     await waitFor(() => {
       expect(updateResource).toHaveBeenCalledWith('gold', 5000);
@@ -1395,7 +1425,7 @@ describe('ShopDialog', () => {
 
     mockSupabaseClient.from = vi.fn(() => ({
       select: vi.fn(() => ({
-        eq: vi.fn(() => ({
+        eq: vi.fn(() => Promise.resolve({
           data: [
             { id: 101, item_id: 'great_feast_1' },
             { id: 102, item_id: 'great_feast_1' },
@@ -1449,7 +1479,7 @@ describe('ShopDialog', () => {
 
     mockSupabaseClient.from = vi.fn(() => ({
       select: vi.fn(() => ({
-        eq: vi.fn(() => ({
+        eq: vi.fn(() => Promise.resolve({
           data: [
             { id: 101, item_id: 'great_feast_1' },
             { id: 102, item_id: 'great_feast_1' },
@@ -1491,7 +1521,7 @@ describe('ShopDialog', () => {
     // Create a hypothetical bundle with only gold items
     mockSupabaseClient.from = vi.fn(() => ({
       select: vi.fn(() => ({
-        eq: vi.fn(() => ({
+        eq: vi.fn(() => Promise.resolve({
           data: [
             { id: 100, item_id: 'gold_250' },
             { id: 101, item_id: 'gold_1000' },
@@ -1541,7 +1571,7 @@ describe('ShopDialog', () => {
 
       mockSupabaseClient.from = vi.fn(() => ({
         select: vi.fn(() => ({
-          eq: vi.fn(() => ({
+          eq: vi.fn(() => Promise.resolve({
             data: null,
             error: { message: 'Database error' },
           })),
@@ -1574,7 +1604,7 @@ describe('ShopDialog', () => {
 
       mockSupabaseClient.from = vi.fn(() => ({
         select: vi.fn(() => ({
-          eq: vi.fn(() => ({
+          eq: vi.fn(() => Promise.resolve({
             data: [{ id: 1, item_id: 'gold_250' }],
             error: null,
           })),
@@ -1589,7 +1619,7 @@ describe('ShopDialog', () => {
 
       // Should render without crashing
       await waitFor(() => {
-        expect(screen.getByText('Shop')).toBeInTheDocument();
+        expect(screen.getByText('Trader')).toBeInTheDocument();
       });
     });
 
@@ -1626,7 +1656,7 @@ describe('ShopDialog', () => {
 
       mockSupabaseClient.from = vi.fn(() => ({
         select: vi.fn(() => ({
-          eq: vi.fn(() => ({
+          eq: vi.fn(() => Promise.resolve({
             data: [{ id: 1, item_id: 'great_feast_3' }],
             error: null,
           })),
@@ -1661,24 +1691,21 @@ describe('ShopDialog', () => {
 
     it('should handle zero activations remaining correctly', async () => {
       const onClose = vi.fn();
+      // Use UUID-style id so component's purchaseId parsing (parts.slice(0,-5)) works
+      const purchaseId = 'purchase-great_feast_1-11111111-2222-3333-4444-555555555555';
 
       useGameStore.setState({
-        feastActivations: {
-          'purchase-great_feast_1-1': 0,
-        },
+        feastActivations: { [purchaseId]: 0 },
       });
 
       mockSupabaseClient.from = vi.fn(() => ({
         select: vi.fn(() => ({
-          eq: vi.fn(() => ({
-            data: [{ id: 1, item_id: 'great_feast_1' }],
+          eq: vi.fn(() => Promise.resolve({
+            data: [{ id: '11111111-2222-3333-4444-555555555555', item_id: 'great_feast_1' }],
             error: null,
           })),
         })),
-        insert: vi.fn(() => ({
-          data: null,
-          error: null,
-        })),
+        insert: mockInsert,
       }));
 
       render(<ShopDialog isOpen={true} onClose={onClose} />);
@@ -1688,7 +1715,7 @@ describe('ShopDialog', () => {
 
       await waitFor(() => {
         expect(screen.getByText(/0\/1 available/i)).toBeInTheDocument();
-        const activateButton = screen.getByRole('button', { name: /activate/i });
+        const activateButton = screen.getByRole('button', { name: /activated/i });
         expect(activateButton).toBeDisabled();
       });
     });

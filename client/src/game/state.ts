@@ -1690,7 +1690,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
           savedState.cruelMode !== undefined ? savedState.cruelMode : false,
         CM: savedState.CM !== undefined ? savedState.CM : 0,
         activatedPurchases: savedState.activatedPurchases || {},
-        feastPurchases: savedState.feastPurchases || {},
+        feastActivations: savedState.feastActivations || {},
         // Ensure loop state is loaded correctly
         loopProgress:
           savedState.loopProgress !== undefined ? savedState.loopProgress : 0,

@@ -49,7 +49,8 @@ describe('Logout/Login Save Behavior Tests', () => {
 
   const createMockGameState = (overrides: Partial<GameState> = {}): GameState => ({
     resources: { wood: 100, stone: 50, gold: 200, food: 75 },
-    population: { current: 10, max: 20, workers: { woodcutter: 2, miner: 3, farmer: 5 } },
+    current_population: 10,
+    total_population: 20,
     buildings: {},
     items: {},
     cooldowns: {},
@@ -68,7 +69,7 @@ describe('Logout/Login Save Behavior Tests', () => {
     cruelMode: false,
     CM: 0,
     activatedPurchases: {},
-    feastPurchases: {},
+    feastActivations: {},
     loopProgress: 0,
     isGameLoopActive: true,
     isPaused: false,

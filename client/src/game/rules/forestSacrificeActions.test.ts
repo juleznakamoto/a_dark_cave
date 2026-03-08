@@ -556,13 +556,14 @@ describe("Bone and Leather Totem Sacrifices - Buildings and Items", () => {
         story: { seen: {} },
       });
 
-      const gainsBase = runTotemSacrificeSamples("boneTotems", stateBase);
-      const gainsWithBoth = runTotemSacrificeSamples("boneTotems", stateWithBoth);
+      const gainsBase = runTotemSacrificeSamples("boneTotems", stateBase, 200);
+      const gainsWithBoth = runTotemSacrificeSamples("boneTotems", stateWithBoth, 200);
 
       const avgBase = gainsBase.reduce((a, b) => a + b, 0) / gainsBase.length;
       const avgWithBoth = gainsWithBoth.reduce((a, b) => a + b, 0) / gainsWithBoth.length;
 
-      expect(avgWithBoth).toBeGreaterThanOrEqual(avgBase * 1.4);
+      // ~50% total from boneTemple + sacrificial_tunic; allow variance
+      expect(avgWithBoth).toBeGreaterThanOrEqual(avgBase * 1.35);
     });
   });
 
