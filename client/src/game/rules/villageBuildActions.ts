@@ -125,7 +125,7 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.woodenHut": 1,
       },
     },
-    executionTime: 30,
+    executionTime: 15,
     cooldown: 0,
   },
 
