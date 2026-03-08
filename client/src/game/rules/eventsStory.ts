@@ -92,7 +92,7 @@ export const storyEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.buildings.darkEstate >= 1 &&
       !state.books.book_of_ascension,
-    timeProbability: 10,
+    timeProbability: 3,
     title: "A Quiet Knock",
     message:
       "One late evening, you hear a gentle knock on the door of the estate. As you open it, no one is there, only something bound in dark brown leather resting on the doorstep.",

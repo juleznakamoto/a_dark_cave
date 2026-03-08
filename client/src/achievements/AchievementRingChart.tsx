@@ -95,14 +95,6 @@ export default function AchievementRingChart({ config }: Props) {
     .map((ringConfig, ringIndex) => {
       const { segments, innerRadius, outerRadius } = ringConfig;
 
-      // Check if this ring has any progress
-      const hasAnyProgress = segments.some((seg) => seg.getCount(state) > 0);
-
-      // Skip this ring if no progress
-      if (!hasAnyProgress) {
-        return null;
-      }
-
       const paddingAngle = getPaddingAngle(ringIndex);
       const startAngle = getStartAngle(paddingAngle);
       const totalDegrees = 360 - segments.length * paddingAngle;

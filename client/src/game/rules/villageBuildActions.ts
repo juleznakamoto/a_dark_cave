@@ -69,16 +69,16 @@ export const villageBuildActions: Record<string, Action> = {
         "resources.wood": 100,
       },
       3: {
-        "resources.wood": 250,
+        "resources.wood": 150,
       },
       4: {
-        "resources.wood": 500,
+        "resources.wood": 250,
       },
       5: {
-        "resources.wood": 1000,
+        "resources.wood": 500,
       },
       6: {
-        "resources.wood": 1500,
+        "resources.wood": 1000,
       },
       7: {
         "resources.wood": 2000,
@@ -1838,13 +1838,13 @@ export const villageBuildActions: Record<string, Action> = {
     show_when: {
       1: {
         "buildings.darkEstate": 0,
-        "buildings.woodenHut": 4,
+        "buildings.woodenHut": 3,
       },
     },
     cost: {
       1: {
-        "resources.wood": 1500,
-        "resources.stone": 1500,
+        "resources.wood": 500,
+        "resources.stone": 500,
       },
     },
     effects: {
@@ -1852,7 +1852,7 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.darkEstate": 1,
       },
     },
-    executionTime: 60,
+    executionTime: 45,
     cooldown: 0,
   },
 

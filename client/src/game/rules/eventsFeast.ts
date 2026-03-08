@@ -36,6 +36,11 @@ function createFeastEvent(config: FeastConfig): GameEvent {
   return {
     id: eventId,
     condition: (state: GameState) => {
+      // Village feast can only happen after forest is unlocked
+      if (!state.flags?.forestUnlocked) {
+        return false;
+      }
+
       // No feast events can trigger while a feast is active
       if (state.feastState?.isActive && state.feastState.endTime > Date.now()) {
         return false;
