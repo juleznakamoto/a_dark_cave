@@ -162,6 +162,20 @@ body {
   animation: tab-fade-in 3s ease-out forwards;
 }
 
+@keyframes tab-blink-new {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.tab-blink-new {
+  animation: tab-blink-new 1.2s ease-in-out infinite;
+}
+
 @keyframes flame-text {
 
   0%,

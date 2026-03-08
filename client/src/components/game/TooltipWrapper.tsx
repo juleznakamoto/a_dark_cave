@@ -15,7 +15,7 @@ export interface TooltipWrapperProps {
   className?: string;
   onMouseEnter?: (e?: React.MouseEvent<HTMLDivElement>) => void;
   onMouseLeave?: (e?: React.MouseEvent<HTMLDivElement>) => void;
-  onClick?: () => void;
+  onClick?: (e?: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => void;
 }
 
 /**
@@ -86,7 +86,7 @@ export function TooltipWrapper({
         const wrappedOnClick = onClick
           ? () => {
               actionExecutedRef.current = true;
-              onClick();
+              onClick(e);
               setTimeout(() => {
                 actionExecutedRef.current = false;
               }, 100);
@@ -109,7 +109,7 @@ export function TooltipWrapper({
         const wrappedOnClick = onClick
           ? () => {
               actionExecutedRef.current = true;
-              onClick();
+              onClick(e);
               setTimeout(() => {
                 actionExecutedRef.current = false;
               }, 100);
