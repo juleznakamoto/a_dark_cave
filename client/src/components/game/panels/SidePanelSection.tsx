@@ -437,31 +437,16 @@ export default function SidePanelSection({
               className={cn(
                 "min-w-[3rem] text-right",
                 activeTab !== "village" && "text-muted-foreground",
+                activeTab === "village" &&
+                  (item.productionDelta ?? 0) > 0 &&
+                  "text-green-500",
+                activeTab === "village" &&
+                  (item.productionDelta ?? 0) < 0 &&
+                  "text-red-500",
               )}
             >
-              {(item.productionDelta ?? 0) > 0 ? (
-                <>
-                  <span
-                    className={
-                      activeTab === "village" ? "text-green-500" : undefined
-                    }
-                  >
-                    +
-                  </span>
-                  {item.productionDelta}
-                </>
-              ) : (
-                <>
-                  <span
-                    className={
-                      activeTab === "village" ? "text-red-500" : undefined
-                    }
-                  >
-                    -
-                  </span>
-                  {Math.abs(item.productionDelta ?? 0)}
-                </>
-              )}
+              {(item.productionDelta ?? 0) > 0 ? "+" : ""}
+              {item.productionDelta}
             </span>
           ) : (
             isResourcesSection &&
