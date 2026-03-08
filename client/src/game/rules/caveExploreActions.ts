@@ -60,7 +60,8 @@ function processTriggeredEvents(
           fallbackChoice: eventDef.fallbackChoice,
           relevant_stats: eventDef.relevant_stats,
           skipEventLog:
-            eventDef.skipEventLog || (!!eventChoices && eventChoices.length > 0),
+            eventDef.skipEventLog ||
+            (!!eventChoices && eventChoices.length > 0),
         };
 
         result.logEntries!.push(logEntry);
@@ -87,9 +88,9 @@ const caveItems = {
   exploreCave: [
     {
       key: "torch",
-      probability: 0.15,
+      probability: 0.25,
       value: 20,
-      logMessage: "You find a bag with torches, +20 torch.",
+      logMessage: "You find a bag with 20 Torches.",
       category: "resources",
       stageOnly: true, // Only on Explore Cave, not inherited to later stages
     },
@@ -99,7 +100,7 @@ const caveItems = {
       key: "tarnished_amulet",
       probability: 0.0075,
       logMessage:
-        "In the cave's shadows, something glints. You find a tarnished amulet.",
+        "In the cave's shadows, something glints. You find a Tarnished Amulet.",
       category: "clothing",
     },
     {
@@ -208,7 +209,8 @@ function getInheritedItems(actionId: string) {
             ("eventId" in item && item.eventId
               ? ` && !story.seen.${item.eventId}`
               : ""),
-          ...("isChoice" in item && item.isChoice && { isChoice: item.isChoice }),
+          ...("isChoice" in item &&
+            item.isChoice && { isChoice: item.isChoice }),
           ...("eventId" in item && item.eventId && { eventId: item.eventId }),
           ...("logMessage" in item &&
             item.logMessage && { logMessage: item.logMessage }),
