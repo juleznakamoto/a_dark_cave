@@ -143,7 +143,7 @@ export function renderItemTooltip(
           {effect?.description && (
             <div className="text-gray-400 mb-0.5">{effect.description}</div>
           )}
-          <pre className="whitespace-pre-wrap text-gray-400 font-sans text-xs">
+          <pre className="whitespace-pre-wrap font-sans text-xs text-foreground">
             {content}
           </pre>
           <div className="text-gray-500 mt-1">Max: {maxBombs}</div>
