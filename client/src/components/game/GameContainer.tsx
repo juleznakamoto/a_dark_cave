@@ -127,6 +127,20 @@ export default function GameContainer() {
     achievementsUnlocked: achievementsUnlocked,
   });
 
+  // Initialize prevFlagsRef to current state on mount so we don't re-trigger
+  // tab blink for already-unlocked tabs after page refresh
+  useEffect(() => {
+    prevFlagsRef.current = {
+      villageUnlocked: flags.villageUnlocked,
+      forestUnlocked: flags.forestUnlocked,
+      estateUnlocked: estateUnlocked,
+      bastionUnlocked: flags.bastionUnlocked,
+      traderUnlocked: traderUnlocked,
+      achievementsUnlocked: achievementsUnlocked,
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // Track previous timed event state to detect when a new event starts
   const prevTimedEventActiveRef = useRef(timedEventTab.isActive);
 

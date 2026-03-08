@@ -121,16 +121,14 @@ export default function SidePanel() {
     goldSilverResources.includes(key),
   );
 
-  // Net production per resource when village tab is active (for sidepanel delta column)
+  // Net production per resource (for sidepanel delta column)
   const productionDeltas: Record<string, number> =
-    activeTab === "village"
-      ? getTotalPopulationEffects(
-          gameState,
-          Object.keys(gameState.villagers).filter(
-            (id) => (gameState.villagers[id as keyof typeof gameState.villagers] ?? 0) > 0,
-          ),
-        )
-      : {};
+    getTotalPopulationEffects(
+      gameState,
+      Object.keys(gameState.villagers).filter(
+        (id) => (gameState.villagers[id as keyof typeof gameState.villagers] ?? 0) > 0,
+      ),
+    );
 
   // Create resource items with special styling for gold and silver
   const resourceItems = [

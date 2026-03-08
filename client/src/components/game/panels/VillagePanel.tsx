@@ -751,7 +751,7 @@ export default function VillagePanel() {
                   >
                     <TooltipTrigger asChild>
                       <div
-                        className="cursor-pointer"
+                        className="text-xs flex items-center cursor-pointer"
                         onClick={(e) =>
                           mobileTooltip.handleTooltipClick(
                             "production-cycle-progress",
@@ -759,12 +759,14 @@ export default function VillagePanel() {
                           )
                         }
                       >
-                        <CircularProgress
-                          value={loopProgress}
-                          size={16}
-                          strokeWidth={2}
-                          className="text-gray-400"
-                        />
+                        <div className="relative inline-flex items-center">
+                          <CircularProgress
+                            value={loopProgress}
+                            size={18}
+                            strokeWidth={2}
+                            className="text-gray-400"
+                          />
+                        </div>
                       </div>
                     </TooltipTrigger>
                     <TooltipContent>
