@@ -47,7 +47,7 @@ export default function AchievementRingChart({ config }: Props) {
   const startRadius = 32;
   const ringSize = 8;
   const spaceBetweenRings = 10;
-  const labelOffset = 14;
+  const labelOffset = 20;
 
   // Max label radius for outermost ring (building config has 5 rings)
   const maxLabelRadius =
@@ -57,7 +57,7 @@ export default function AchievementRingChart({ config }: Props) {
     labelOffset;
 
   // ViewBox must extend beyond center to fit curved labels (text extends above/below baseline)
-  const viewBoxPad = maxLabelRadius + 14;
+  const viewBoxPad = maxLabelRadius + 18;
   const viewBoxMinX = 104 - viewBoxPad;
   const viewBoxMinY = 120 - viewBoxPad;
   const viewBoxSize = viewBoxPad * 2;
@@ -211,7 +211,7 @@ export default function AchievementRingChart({ config }: Props) {
   return (
     <div
       ref={containerRef}
-      className="w-52 h-60 flex flex-col items-center justify-center relative min-w-0"
+      className="w-64 h-72 flex flex-col items-center justify-center relative min-w-0"
       style={{ touchAction: "manipulation" }}
     >
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
@@ -370,12 +370,18 @@ export default function AchievementRingChart({ config }: Props) {
                 const cy = 120;
                 const reverse =
                   segment.midAngle > 90 && segment.midAngle < 270;
+                // Use a sub-arc (85% of segment) centered at midpoint to reduce crowding
+                const segmentSpan =
+                  segment.geometricStart - segment.geometricEnd;
+                const subSpan = segmentSpan * 0.85;
+                const subStart = segment.midAngle + subSpan / 2;
+                const subEnd = segment.midAngle - subSpan / 2;
                 const d = describeArc(
                   cx,
                   cy,
                   labelRadius,
-                  segment.geometricStart,
-                  segment.geometricEnd,
+                  subStart,
+                  subEnd,
                   reverse
                 );
                 return (
