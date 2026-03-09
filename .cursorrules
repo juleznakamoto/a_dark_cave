@@ -97,6 +97,7 @@ Preferred communication style: Simple, everyday language.
 
 ### Data Management
 - **No Mock or Dummy Data**: Never use hardcoded or mock data in this game. All data must be dynamically generated from the actual game state, rules, and definitions. Always use real game data from the state management system.
+- **Backward Compatibility**: When changing persisted data (schema, IDs, configs), preserve compatibility with existing saves when possible. Use defaults for new fields (`z.default()`), handle missing/legacy values with `|| []` or similar fallbacks, and avoid renaming IDs that are stored (e.g. achievement segment IDs). If breaking changes are unavoidable, document them clearly.
 
 ### Event System
 - **No Event Creation**: Do not create events, log messages, or narrative elements without explicit instruction from the user. Focus only on mechanical aspects (resources, buildings, villagers) unless specifically asked to work on the event system.
