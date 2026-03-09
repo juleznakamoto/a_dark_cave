@@ -10,6 +10,8 @@ interface ScrollAreaWithIndicatorProps
   extends React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Root> {
   /** Scroll indicator only shows when true (e.g. entry count >= 8 for event log) */
   showIndicatorWhen?: boolean;
+  /** If true, indicator stays visible when scrolling (for testing) */
+  persistIndicator?: boolean;
 }
 
 const ScrollAreaWithIndicator = React.forwardRef<
@@ -21,6 +23,7 @@ const ScrollAreaWithIndicator = React.forwardRef<
       className,
       children,
       showIndicatorWhen = true,
+      persistIndicator = false,
       ...props
     },
     ref
@@ -34,10 +37,10 @@ const ScrollAreaWithIndicator = React.forwardRef<
       if (!el) return;
       const canScroll = el.scrollHeight > el.clientHeight;
       setIsScrollable(canScroll);
-      if (el.scrollTop > 8) {
+      if (!persistIndicator && el.scrollTop > 8) {
         setShowIndicator(false);
       }
-    }, []);
+    }, [persistIndicator]);
 
     React.useEffect(() => {
       const el = viewportRef.current;
