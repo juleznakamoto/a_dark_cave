@@ -90,7 +90,7 @@ function AchievementRowComponent({
       </div>
       <Progress
         value={(row.currentCount / row.maxCount) * 100}
-        className="h-2 bg-neutral-300"
+        className="h-2 bg-neutral-700"
         segments={row.maxCount}
         indicatorClassName={row.isFull ? indicatorClassComplete : indicatorClassIncomplete}
         hideBorder

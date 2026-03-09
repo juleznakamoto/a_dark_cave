@@ -153,7 +153,7 @@ function LogPanel() {
         {/* Gradient overlay at bottom of content area */}
         <div className="absolute bottom-[-1px] left-0 right-0 h-12 pointer-events-none overflow-hidden">
           <div
-            className={`absolute inset-0 bg-gradient-to-t to-transparent ${isBloodMoon ? "from-[hsl(0_50%_5%)]" : "from-background"}`}
+            className={`absolute inset-0 bg-gradient-to-t to-transparent opacity-50 ${isBloodMoon ? "from-[hsl(0_50%_5%)]" : "from-background"}`}
           ></div>
         </div>
         <ScrollBar orientation="vertical" />
