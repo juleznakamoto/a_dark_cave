@@ -18,21 +18,21 @@ export const buildingChartConfig: AchievementChartConfig = {
       {
         segmentId: "0-1",
         maxCount: 10,
-        label: "Advanced Shelter",
+        label: "Sturdy Shelter",
         reward: 500,
         getCount: (state: GameState) => state.buildings.stoneHut || 0,
       },
       {
         segmentId: "0-2",
         maxCount: 5,
-        label: "Nordic Housing",
+        label: "Nordic Shelter",
         reward: 250,
         getCount: (state: GameState) => state.buildings.longhouse || 0,
       },
       {
         segmentId: "0-3",
         maxCount: 5,
-        label: "Fur Tents",
+        label: "Nomadic Shelter",
         reward: 250,
         getCount: (state: GameState) => state.buildings.furTents || 0,
       },
@@ -42,45 +42,53 @@ export const buildingChartConfig: AchievementChartConfig = {
       {
         segmentId: "1-0",
         maxCount: 3,
-        label: "Hunting",
+        label: "Huntsmen",
         reward: 250,
         getCount: (state: GameState) => {
-          return (state.buildings.cabin || 0) +
+          return (
+            (state.buildings.cabin || 0) +
             (state.buildings.greatCabin || 0) +
-            (state.buildings.grandHunterLodge || 0);
+            (state.buildings.grandHunterLodge || 0)
+          );
         },
       },
       {
         segmentId: "1-1",
         maxCount: 3,
-        label: "Forging",
+        label: "Forgers",
         reward: 250,
         getCount: (state: GameState) => {
-          return (state.buildings.blacksmith || 0) +
+          return (
+            (state.buildings.blacksmith || 0) +
             (state.buildings.advancedBlacksmith || 0) +
-            (state.buildings.grandBlacksmith || 0);
+            (state.buildings.grandBlacksmith || 0)
+          );
         },
       },
       {
         segmentId: "1-2",
         maxCount: 3,
-        label: "Smelting",
+        label: "Smelters",
         reward: 250,
         getCount: (state: GameState) => {
-          return (state.buildings.foundry || 0) +
+          return (
+            (state.buildings.foundry || 0) +
             (state.buildings.primeFoundry || 0) +
-            (state.buildings.masterworkFoundry || 0);
+            (state.buildings.masterworkFoundry || 0)
+          );
         },
       },
       {
         segmentId: "1-3",
         maxCount: 3,
-        label: "Hidework",
+        label: "Hideworkers",
         reward: 250,
         getCount: (state: GameState) => {
-          return (state.buildings.tannery || 0) +
+          return (
+            (state.buildings.tannery || 0) +
             (state.buildings.masterTannery || 0) +
-            (state.buildings.highTannery || 0);
+            (state.buildings.highTannery || 0)
+          );
         },
       },
     ],
@@ -89,13 +97,15 @@ export const buildingChartConfig: AchievementChartConfig = {
       {
         segmentId: "2-0",
         maxCount: 4,
-        label: "Mining",
+        label: "Miners",
         reward: 500,
         getCount: (state: GameState) => {
-          return (state.buildings.shallowPit || 0) +
+          return (
+            (state.buildings.shallowPit || 0) +
             (state.buildings.deepeningPit || 0) +
             (state.buildings.deepPit || 0) +
-            (state.buildings.bottomlessPit || 0);
+            (state.buildings.bottomlessPit || 0)
+          );
         },
       },
     ],
@@ -104,49 +114,57 @@ export const buildingChartConfig: AchievementChartConfig = {
       {
         segmentId: "3-0",
         maxCount: 3,
-        label: "Trade",
+        label: "Traders",
         reward: 250,
         getCount: (state: GameState) => {
-          return (state.buildings.tradePost || 0) +
+          return (
+            (state.buildings.tradePost || 0) +
             (state.buildings.grandBazaar || 0) +
-            (state.buildings.merchantsGuild || 0);
+            (state.buildings.merchantsGuild || 0)
+          );
         },
       },
       {
         segmentId: "3-1",
         maxCount: 6,
-        label: "Storage",
+        label: "Provisioners",
         reward: 500,
         getCount: (state: GameState) => {
-          return (state.buildings.supplyHut || 0) +
+          return (
+            (state.buildings.supplyHut || 0) +
             (state.buildings.storehouse || 0) +
             (state.buildings.fortifiedStorehouse || 0) +
             (state.buildings.villageWarehouse || 0) +
             (state.buildings.grandRepository || 0) +
-            (state.buildings.greatVault || 0);
+            (state.buildings.greatVault || 0)
+          );
         },
       },
       {
         segmentId: "3-2",
         maxCount: 3,
-        label: "Wisdom",
+        label: "Scholars",
         reward: 250,
         getCount: (state: GameState) => {
-          return (state.buildings.clerksHut || 0) +
+          return (
+            (state.buildings.clerksHut || 0) +
             (state.buildings.scriptorium || 0) +
-            (state.buildings.inkwardenAcademy || 0);
+            (state.buildings.inkwardenAcademy || 0)
+          );
         },
       },
       {
         segmentId: "3-3",
         maxCount: 4,
-        label: "Devotion",
+        label: "Priests",
         reward: 500,
         getCount: (state: GameState) => {
-          return (state.buildings.altar || 0) +
+          return (
+            (state.buildings.altar || 0) +
             (state.buildings.shrine || 0) +
             (state.buildings.temple || 0) +
-            (state.buildings.sanctum || 0);
+            (state.buildings.sanctum || 0)
+          );
         },
       },
     ],
@@ -155,7 +173,7 @@ export const buildingChartConfig: AchievementChartConfig = {
       {
         segmentId: "4-0",
         maxCount: 4,
-        label: "Walls",
+        label: "Keep Walls",
         reward: 500,
         getCount: (state: GameState) => state.buildings.palisades || 0,
       },
@@ -178,7 +196,12 @@ export function getUnclaimedBuildingIds(): string[] {
   buildingChartConfig.rings.forEach((segments) => {
     segments.forEach((seg) => {
       const count = seg.getCount(state);
-      if (count >= seg.maxCount && !claimedAchievements.includes(`${buildingChartConfig.idPrefix}-${seg.segmentId}`)) {
+      if (
+        count >= seg.maxCount &&
+        !claimedAchievements.includes(
+          `${buildingChartConfig.idPrefix}-${seg.segmentId}`,
+        )
+      ) {
         result.push(`${buildingChartConfig.idPrefix}-${seg.segmentId}`);
       }
     });

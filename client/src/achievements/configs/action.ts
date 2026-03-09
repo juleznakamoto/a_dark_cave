@@ -11,7 +11,7 @@ export const actionChartConfig: AchievementChartConfig = {
       {
         segmentId: "0-exploreCave",
         maxCount: 10,
-        label: "Cave Explore",
+        label: "Cave Explorer",
         reward: 500,
         getCount: (state: GameState) => {
           const count = state.buttonUpgrades?.caveExplore?.level || 0;
@@ -21,7 +21,7 @@ export const actionChartConfig: AchievementChartConfig = {
       {
         segmentId: "0-chopWood",
         maxCount: 10,
-        label: "Chop Wood",
+        label: "Wood Chopper",
         reward: 500,
         getCount: (state: GameState) => {
           const count = state.buttonUpgrades?.chopWood?.level || 0;
@@ -31,7 +31,7 @@ export const actionChartConfig: AchievementChartConfig = {
       {
         segmentId: "0-hunt",
         maxCount: 10,
-        label: "Hunt",
+        label: "Hunter",
         reward: 500,
         getCount: (state: GameState) => {
           const count = state.buttonUpgrades?.hunt?.level || 0;
@@ -41,7 +41,7 @@ export const actionChartConfig: AchievementChartConfig = {
       {
         segmentId: "0-craftTorches",
         maxCount: 10,
-        label: "Torches",
+        label: "Torch Crafter",
         reward: 500,
         getCount: (state: GameState) => {
           const count = state.buttonUpgrades?.["craftTorches"]?.level || 0;
@@ -54,7 +54,7 @@ export const actionChartConfig: AchievementChartConfig = {
       {
         segmentId: "1-mineStone",
         maxCount: 10,
-        label: "Mine Stone",
+        label: "Stone Miner",
         reward: 500,
         getCount: (state: GameState) => {
           const count = state.buttonUpgrades?.mineStone?.level || 0;
@@ -64,7 +64,7 @@ export const actionChartConfig: AchievementChartConfig = {
       {
         segmentId: "1-mineIron",
         maxCount: 10,
-        label: "Mine Iron",
+        label: "Iron Miner",
         reward: 500,
         getCount: (state: GameState) => {
           const count = state.buttonUpgrades?.mineIron?.level || 0;
@@ -74,7 +74,7 @@ export const actionChartConfig: AchievementChartConfig = {
       {
         segmentId: "1-mineCoal",
         maxCount: 10,
-        label: "Mine Coal",
+        label: "Coal Miner",
         reward: 500,
         getCount: (state: GameState) => {
           const count = state.buttonUpgrades?.mineCoal?.level || 0;
@@ -84,7 +84,7 @@ export const actionChartConfig: AchievementChartConfig = {
       {
         segmentId: "1-mineSulfur",
         maxCount: 10,
-        label: "Mine Sulfur",
+        label: "Sulfur Miner",
         reward: 500,
         getCount: (state: GameState) => {
           const count = state.buttonUpgrades?.mineSulfur?.level || 0;
@@ -94,7 +94,7 @@ export const actionChartConfig: AchievementChartConfig = {
       {
         segmentId: "1-mineObsidian",
         maxCount: 10,
-        label: "Mine Obsidian",
+        label: "Obsidian Miner",
         reward: 500,
         getCount: (state: GameState) => {
           const count = state.buttonUpgrades?.mineObsidian?.level || 0;
@@ -104,7 +104,7 @@ export const actionChartConfig: AchievementChartConfig = {
       {
         segmentId: "1-mineAdamant",
         maxCount: 10,
-        label: "Mine Adamant",
+        label: "Adamant Miner",
         reward: 500,
         getCount: (state: GameState) => {
           const count = state.buttonUpgrades?.mineAdamant?.level || 0;
@@ -117,7 +117,7 @@ export const actionChartConfig: AchievementChartConfig = {
       {
         segmentId: "2-boneTotems",
         maxCount: 20,
-        label: "Bone Totem Sacrifices",
+        label: "Bone Sacrificer",
         reward: 500,
         getCount: (state: GameState) =>
           Math.min(Number(state.story?.seen?.boneTotemsUsageCount) || 0, 20),
@@ -125,7 +125,7 @@ export const actionChartConfig: AchievementChartConfig = {
       {
         segmentId: "2-leatherTotems",
         maxCount: 20,
-        label: "Leather Totem Sacrifices",
+        label: "Leather Sacrificer",
         reward: 500,
         getCount: (state: GameState) =>
           Math.min(Number(state.story?.seen?.leatherTotemsUsageCount) || 0, 20),
@@ -133,7 +133,7 @@ export const actionChartConfig: AchievementChartConfig = {
       {
         segmentId: "2-animals",
         maxCount: 10,
-        label: "Animal Sacrifices",
+        label: "Animal Sacrificer",
         reward: 500,
         getCount: (state: GameState) =>
           Math.min(Number(state.story?.seen?.animalsSacrificeLevel) || 0, 10),
@@ -154,7 +154,8 @@ export const actionChartConfig: AchievementChartConfig = {
         label: "Leather Totem Crafter",
         reward: 500,
         getCount: (state: GameState) => {
-          const count = state.buttonUpgrades?.["craftLeatherTotems"]?.level || 0;
+          const count =
+            state.buttonUpgrades?.["craftLeatherTotems"]?.level || 0;
           return count === 1 ? 1.8 : count;
         },
       },
@@ -183,12 +184,12 @@ export const actionChartConfig: AchievementChartConfig = {
       {
         segmentId: "4-merchantPurchases",
         maxCount: 100,
-        label: "Good Deals",
+        label: "Deal Maker",
         reward: 500,
         getCount: (state: GameState) => {
           const count = Math.min(
             Number(state.story?.merchantPurchases) || 0,
-            100
+            100,
           );
           return [1, 2, 3].includes(count) ? 3 : count;
         },
@@ -196,10 +197,13 @@ export const actionChartConfig: AchievementChartConfig = {
       {
         segmentId: "0-callMerchant",
         maxCount: 10,
-        label: "Frequent Customer",
+        label: "Loyal Customer",
         reward: 500,
         getCount: (state: GameState) => {
-          const count = Math.min(Number(state.story?.seen?.callMerchantUsageCount) || 0, 10);
+          const count = Math.min(
+            Number(state.story?.seen?.callMerchantUsageCount) || 0,
+            10,
+          );
           return [1, 2].includes(count) ? 2 : count;
         },
       },
@@ -211,7 +215,7 @@ export const actionChartConfig: AchievementChartConfig = {
         getCount: (state: GameState) => {
           const count = Math.min(
             Number(state.story?.seen?.feedFireUsageCount) || 0,
-            100
+            100,
           );
           return [1, 2, 3].includes(count) ? 3 : count;
         },
@@ -219,7 +223,7 @@ export const actionChartConfig: AchievementChartConfig = {
       {
         segmentId: "4-wellRested",
         maxCount: 20,
-        label: "Well Rested",
+        label: "Heavy Sleeper",
         reward: 500,
         getCount: (state: GameState) => {
           const count = Math.min(Number(state.totalFocusEarned) || 0, 20);
@@ -238,7 +242,12 @@ export function getUnclaimedActionIds(): string[] {
   actionChartConfig.rings.forEach((segments) => {
     segments.forEach((seg) => {
       const count = seg.getCount(state);
-      if (count >= seg.maxCount && !claimedAchievements.includes(`${actionChartConfig.idPrefix}-${seg.segmentId}`)) {
+      if (
+        count >= seg.maxCount &&
+        !claimedAchievements.includes(
+          `${actionChartConfig.idPrefix}-${seg.segmentId}`,
+        )
+      ) {
         result.push(`${actionChartConfig.idPrefix}-${seg.segmentId}`);
       }
     });
