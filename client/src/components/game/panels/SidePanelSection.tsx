@@ -435,7 +435,7 @@ export default function SidePanelSection({
           {showProductionDelta ? (
             <span
               className={cn(
-                "min-w-[3rem] text-right",
+                "min-w-[2.5rem] text-right",
                 activeTab !== "village" && "text-muted-foreground",
                 activeTab === "village" &&
                 (item.productionDelta ?? 0) > 0 &&
@@ -450,7 +450,7 @@ export default function SidePanelSection({
             </span>
           ) : (
             isResourcesSection &&
-            showValue && <span className="min-w-[3rem]" aria-hidden />
+            showValue && <span className="min-w-[2.5rem]" aria-hidden />
           )}
         </span>
       ) : null;
