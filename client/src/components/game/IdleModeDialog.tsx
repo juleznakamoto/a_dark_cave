@@ -32,6 +32,9 @@ const SLEEP_INTENSITY_UPGRADES = [
   { level: 5, percentage: 25 },
 ];
 
+// Simulate production during sleep - no temporary bonuses (feast, curse, etc.) are active
+const SLEEP_PRODUCTION_OPTIONS = { excludeTemporaryBonuses: true };
+
 // Simulate production functions from loop.ts
 function simulateGathererProduction(
   state: any,
@@ -40,7 +43,12 @@ function simulateGathererProduction(
 ) {
   const gatherer = state.villagers.gatherer;
   if (gatherer > 0) {
-    const production = getPopulationProduction("gatherer", gatherer, state);
+    const production = getPopulationProduction(
+      "gatherer",
+      gatherer,
+      state,
+      SLEEP_PRODUCTION_OPTIONS,
+    );
     production.forEach((prod) => {
       const amount = prod.totalAmount * multiplier;
       accumulatedResources[prod.resource] =
@@ -56,7 +64,12 @@ function simulateHunterProduction(
 ) {
   const hunter = state.villagers.hunter;
   if (hunter > 0) {
-    const production = getPopulationProduction("hunter", hunter, state);
+    const production = getPopulationProduction(
+      "hunter",
+      hunter,
+      state,
+      SLEEP_PRODUCTION_OPTIONS,
+    );
     production.forEach((prod) => {
       const amount = prod.totalAmount * multiplier;
       accumulatedResources[prod.resource] =
@@ -82,7 +95,12 @@ function simulateMinerProduction(
         job === "powder_maker" ||
         job === "ashfire_dust_maker")
     ) {
-      const production = getPopulationProduction(job, count as number, state);
+      const production = getPopulationProduction(
+        job,
+        count as number,
+        state,
+        SLEEP_PRODUCTION_OPTIONS,
+      );
       allProduction.push({ job, production });
     }
   });
@@ -138,6 +156,42 @@ function simulatePopulationConsumption(
     accumulatedResources["wood"] =
       (accumulatedResources["wood"] || 0) - woodConsumption;
   }
+}
+
+/** Compute production per 15-second interval for each resource during sleep */
+function getProductionPerInterval(
+  state: any,
+  initialResources: Record<string, number>,
+  accumulatedResources: Record<string, number>,
+  multiplier: number,
+): Record<string, number> {
+  const allKeys = new Set([
+    ...Object.keys(initialResources),
+    ...Object.keys(accumulatedResources),
+  ]);
+  const simulatedResources: Record<string, number> = {};
+  allKeys.forEach((resource) => {
+    simulatedResources[resource] =
+      (initialResources[resource] || 0) + (accumulatedResources[resource] || 0);
+  });
+  const before = { ...simulatedResources };
+  simulateGathererProduction(state, multiplier, simulatedResources);
+  simulateHunterProduction(state, multiplier, simulatedResources);
+  simulateMinerProduction(state, multiplier, simulatedResources);
+  simulatePopulationConsumption(state, multiplier, simulatedResources);
+  const productionPerInterval: Record<string, number> = {};
+  const allResources = new Set([
+    ...Object.keys(before),
+    ...Object.keys(simulatedResources),
+  ]);
+  allResources.forEach((resource) => {
+    const delta =
+      (simulatedResources[resource] || 0) - (before[resource] || 0);
+    if (delta !== 0) {
+      productionPerInterval[resource] = delta;
+    }
+  });
+  return productionPerInterval;
 }
 
 export default function IdleModeDialog() {
@@ -521,36 +575,39 @@ export default function IdleModeDialog() {
   const displayElapsed = displayNow - startTime;
   const displaySecondsElapsed = Math.floor(displayElapsed / 1000);
 
-  // Show resources only after at least 15 seconds have elapsed from idle mode start
-  const hasCompletedFirstInterval = displaySecondsElapsed >= 15;
-
   // Calculate Focus points (1 per almost 1 hour slept, or 1 per 5 seconds in dev mode)
   const focusIntervalMs = devMode ? 5 * 1000 : 59.99 * 60 * 1000;
   const focusPoints = Math.floor(displayElapsed / focusIntervalMs);
 
-  // Get all resources that have changed (only positive)
-  const otherResources = Object.keys(accumulatedResources)
-    .map((resource) => {
-      const amount = hasCompletedFirstInterval
-        ? accumulatedResources[resource] || 0
-        : 0;
-      return [resource, amount] as [string, number];
-    })
-    .filter(([_, amount]) => Math.floor(amount) > 0) // Only show positive resource changes
-    .sort(([a], [b]) => a.localeCompare(b));
+  // Get production per 15-second interval for each resource
+  const productionPerInterval = getProductionPerInterval(
+    state,
+    initialResources,
+    accumulatedResources,
+    PRODUCTION_SPEED_MULTIPLIER,
+  );
 
-  // Add Focus at the start if it's greater than 0
-  const producedResources: [string, number][] =
-    focusPoints > 0
-      ? [["Focus", focusPoints] as [string, number], ...otherResources]
-      : otherResources;
+  // Build list of resources that have any production (positive or negative)
+  const resourcesWithProduction = new Set<string>(
+    Object.keys(productionPerInterval).filter(
+      (r) => productionPerInterval[r] !== 0,
+    ),
+  );
+  Object.keys(accumulatedResources).forEach((r) =>
+    resourcesWithProduction.add(r),
+  );
+  if (focusPoints > 0) resourcesWithProduction.add("Focus");
+
+  const displayResources = [...resourcesWithProduction].sort((a, b) =>
+    a.localeCompare(b),
+  );
 
   const isTimeUp = remainingTime <= 0;
 
   return (
     <Dialog open={idleModeDialog.isOpen} onOpenChange={() => { }} modal={true}>
       <DialogContent
-        className="w-[95vw] sm:max-w-sm z-[60]"
+        className="w-[95vw] sm:max-w-md z-[60]"
         hideClose={true}
         hideOverlay={true}
       >
@@ -567,16 +624,50 @@ export default function IdleModeDialog() {
 
         <div className="py-1">
           <div className="space-y-1">
-            {producedResources.map(([resource, amount]) => (
-              <div key={resource} className="flex justify-between items-center">
-                <span className="text-sm font-medium">
-                  {capitalizeWords(resource)}:
-                </span>
-                <span className="text-sm tabular-nums">
-                  <AnimatedCounter value={Math.floor(amount)} />
-                </span>
+            {displayResources.length > 0 && (
+              <div className="grid grid-cols-[1fr_auto_auto] gap-2 items-center text-xs text-muted-foreground pb-0.5 border-b">
+                <span>Resource</span>
+                <span>Rate/15s</span>
+                <span>Total</span>
               </div>
-            ))}
+            )}
+            {displayResources.map((resource) => {
+              const isFocus = resource === "Focus";
+              const currentAmount = isFocus
+                ? focusPoints
+                : Math.floor(
+                    (initialResources[resource] || 0) +
+                      (accumulatedResources[resource] || 0),
+                  );
+              const productionRate = isFocus
+                ? 15 / (focusIntervalMs / 1000)
+                : productionPerInterval[resource] ?? 0;
+              const totalSinceStart = isFocus
+                ? focusPoints
+                : Math.floor(accumulatedResources[resource] || 0);
+              return (
+                <div
+                  key={resource}
+                  className="grid grid-cols-[1fr_auto_auto] gap-2 items-center text-sm"
+                >
+                  <span className="font-medium truncate">
+                    {capitalizeWords(resource)}:{" "}
+                    <span className="tabular-nums inline-flex">
+                      {currentAmount < 0 && "-"}
+                      <AnimatedCounter value={Math.abs(currentAmount)} />
+                    </span>
+                  </span>
+                  <span className="tabular-nums text-muted-foreground">
+                    {productionRate >= 0 ? "+" : ""}
+                    {productionRate.toFixed(1)}/15s
+                  </span>
+                  <span className="tabular-nums min-w-[3ch] inline-flex">
+                    {totalSinceStart >= 0 ? "+" : "-"}
+                    <AnimatedCounter value={Math.abs(totalSinceStart)} />
+                  </span>
+                </div>
+              );
+            })}
           </div>
         </div>
 

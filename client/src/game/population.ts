@@ -138,11 +138,18 @@ export const populationJobs: Record<string, PopulationJobConfig> = {
   },
 };
 
+export interface GetPopulationProductionOptions {
+  /** When true, excludes temporary bonuses (feast, curse, frostfall, fog, disgust, mining boost). Use for sleep check since no bonuses are active during sleep. */
+  excludeTemporaryBonuses?: boolean;
+}
+
 export const getPopulationProduction = (
   jobId: string,
   count: number,
   state?: GameState,
+  options?: GetPopulationProductionOptions,
 ) => {
+  const excludeTemporary = options?.excludeTemporaryBonuses ?? false;
   const job = populationJobs[jobId];
   if (!job) return [];
 
@@ -192,9 +199,9 @@ export const getPopulationProduction = (
     greatFeastState?.isActive && greatFeastState.endTime > Date.now();
   const isFeast = feastState?.isActive && feastState.endTime > Date.now();
 
-  // Apply curse multiplier if active (0.5x, rounded up)
+  // Apply curse multiplier if active (0.5x, rounded up) - temporary, inactive during sleep
   const curseState = state.curseState;
-  const isCursed = curseState?.isActive && curseState.endTime > Date.now();
+  const isCursed = !excludeTemporary && curseState?.isActive && curseState.endTime > Date.now();
   if (isCursed) {
     baseProduction.forEach((prod) => {
       // Only reduce positive production (not consumption)
@@ -204,10 +211,12 @@ export const getPopulationProduction = (
     });
   }
 
-  // Apply frostfall penalty if active (0.75x for positive production only)
+  // Apply frostfall penalty if active (0.75x for positive production only) - temporary, inactive during sleep
   const frostfallState = state.frostfallState;
   const isFrostfall =
-    frostfallState?.isActive && frostfallState.endTime > Date.now();
+    !excludeTemporary &&
+    frostfallState?.isActive &&
+    frostfallState.endTime > Date.now();
   if (isFrostfall) {
     baseProduction.forEach((prod) => {
       // Only reduce positive production (not consumption)
@@ -217,9 +226,9 @@ export const getPopulationProduction = (
     });
   }
 
-  // Apply fog penalty if active (0.5x, same as curse)
+  // Apply fog penalty if active (0.5x, same as curse) - temporary, inactive during sleep
   const fogState = state.fogState;
-  const isFog = fogState?.isActive && fogState.endTime > Date.now();
+  const isFog = !excludeTemporary && fogState?.isActive && fogState.endTime > Date.now();
   if (isFog) {
     baseProduction.forEach((prod) => {
       // Only reduce positive production (not consumption)
@@ -229,9 +238,12 @@ export const getPopulationProduction = (
     });
   }
 
-  // Apply disgust penalty if active (-25% production)
+  // Apply disgust penalty if active (-25% production) - temporary, inactive during sleep
   const disgustState = state.disgustState;
-  const isDisgusted = disgustState?.isActive && disgustState.endTime > Date.now();
+  const isDisgusted =
+    !excludeTemporary &&
+    disgustState?.isActive &&
+    disgustState.endTime > Date.now();
   if (isDisgusted) {
     baseProduction.forEach((prod) => {
       // Only reduce positive production (not consumption)
@@ -258,11 +270,12 @@ export const getPopulationProduction = (
     });
   }
 
-  // Apply mining boost multiplier if active (for mining jobs only)
+  // Apply mining boost multiplier if active (for mining jobs only) - temporary, inactive during sleep
   const miningBoostState = state.miningBoostState;
   const isMiningJob = jobId.endsWith("_miner");
 
   if (
+    !excludeTemporary &&
     isMiningJob &&
     miningBoostState?.isActive &&
     miningBoostState.endTime > Date.now()
@@ -319,14 +332,17 @@ export const getPopulationProduction = (
     });
   }
 
-  if (isGreatFeast) {
-    baseProduction.forEach((prod) => {
-      prod.totalAmount = Math.ceil(prod.totalAmount * 4.0);
-    });
-  } else if (isFeast) {
-    baseProduction.forEach((prod) => {
-      prod.totalAmount = Math.ceil(prod.totalAmount * 2.0);
-    });
+  // Feast multipliers - temporary, inactive during sleep
+  if (!excludeTemporary) {
+    if (isGreatFeast) {
+      baseProduction.forEach((prod) => {
+        prod.totalAmount = Math.ceil(prod.totalAmount * 4.0);
+      });
+    } else if (isFeast) {
+      baseProduction.forEach((prod) => {
+        prod.totalAmount = Math.ceil(prod.totalAmount * 2.0);
+      });
+    }
   }
 
   // Apply heartfire multiplier if active
@@ -354,6 +370,7 @@ export const getPopulationProduction = (
 export const getTotalPopulationEffects = (
   state: GameState,
   visibleJobIds: string[],
+  options?: GetPopulationProductionOptions,
 ): Record<string, number> => {
   const totalEffects: Record<string, number> = {};
 
@@ -374,7 +391,12 @@ export const getTotalPopulationEffects = (
     const currentCount =
       state.villagers[jobId as keyof typeof state.villagers] || 0;
     if (currentCount > 0) {
-      const production = getPopulationProduction(jobId, currentCount, state);
+      const production = getPopulationProduction(
+        jobId,
+        currentCount,
+        state,
+        options,
+      );
       production.forEach((prod) => {
         totalEffects[prod.resource] =
           (totalEffects[prod.resource] || 0) + prod.totalAmount;

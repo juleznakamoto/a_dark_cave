@@ -226,10 +226,12 @@ export default function EstatePanel() {
     setEventDialog(true, logEntry);
   };
 
-  // Check if idle mode can be activated
+  // Check if idle mode can be activated (use production without temporary bonuses,
+  // since feast/curse/frostfall/etc. are inactive during sleep)
   const totalEffects = getTotalPopulationEffects(
     state,
     Object.keys(state.villagers),
+    { excludeTemporaryBonuses: true },
   );
   const woodProduction = totalEffects.wood || 0;
   const foodProduction = totalEffects.food || 0;
