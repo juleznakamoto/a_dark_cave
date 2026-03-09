@@ -56,14 +56,42 @@ export default function AchievementRingChart({ config }: Props) {
     ringSize +
     labelOffset;
 
-  // ViewBox must extend beyond center to fit labels; center stays at (104, 120)
-  const viewBoxPad = maxLabelRadius + 8; // +8 for text width margin
+  // ViewBox must extend beyond center to fit curved labels (text extends above/below baseline)
+  const viewBoxPad = maxLabelRadius + 14;
   const viewBoxMinX = 104 - viewBoxPad;
   const viewBoxMinY = 120 - viewBoxPad;
   const viewBoxSize = viewBoxPad * 2;
 
   const getPaddingAngle = (ringIndex: number) => Math.max(2, 14 - ringIndex * 2);
   const getStartAngle = (paddingAngle: number) => 90 - paddingAngle / 2;
+
+  // SVG arc path for textPath: 0° = right, 90° = top, angles CCW
+  const polarToCartesian = (
+    cx: number,
+    cy: number,
+    r: number,
+    angleDeg: number
+  ) => ({
+    x: cx + r * Math.cos((angleDeg * Math.PI) / 180),
+    y: cy - r * Math.sin((angleDeg * Math.PI) / 180),
+  });
+
+  const describeArc = (
+    cx: number,
+    cy: number,
+    r: number,
+    startDeg: number,
+    endDeg: number,
+    reverse: boolean
+  ) => {
+    const start = polarToCartesian(cx, cy, r, reverse ? endDeg : startDeg);
+    const end = polarToCartesian(cx, cy, r, reverse ? startDeg : endDeg);
+    const span = Math.abs(endDeg - startDeg);
+    const largeArc = span > 180 ? 1 : 0;
+    // sweep-flag: 0 = CW, 1 = CCW. Our segments go CCW (startAngle > endAngle)
+    const sweep = reverse ? 0 : 1;
+    return `M ${start.x} ${start.y} A ${r} ${r} 0 ${largeArc} ${sweep} ${end.x} ${end.y}`;
+  };
 
   // Calculate ring configurations with radius values
   const ringConfigs: RingConfig[] = config.rings.map((segments, index) => {
@@ -147,8 +175,7 @@ export default function AchievementRingChart({ config }: Props) {
         const isFull = currentCount >= seg.maxCount;
         const geometricEnd =
           segmentAngles.endAngle - (index > 0 ? paddingAngle * index : 0);
-        const midAngle =
-          (adjustedStartAngle + geometricEnd) / 2;
+        const midAngle = (adjustedStartAngle + geometricEnd) / 2;
 
         return {
           name: seg.label,
@@ -161,6 +188,8 @@ export default function AchievementRingChart({ config }: Props) {
           segmentId: seg.segmentId,
           reward: seg.reward,
           midAngle,
+          geometricStart: adjustedStartAngle,
+          geometricEnd,
         };
       });
 
@@ -326,39 +355,56 @@ export default function AchievementRingChart({ config }: Props) {
         </PieChart>
       </ResponsiveContainer>
 
-      {/* Outward circular labels for each segment */}
+      {/* Curved arc labels for each segment */}
       <div className="absolute inset-0 pointer-events-none z-10 flex items-center justify-center">
         <svg
           className="w-full h-full"
           viewBox={`${viewBoxMinX} ${viewBoxMinY} ${viewBoxSize} ${viewBoxSize}`}
           preserveAspectRatio="xMidYMid meet"
         >
+          <defs>
+            {processedRings.map((ring, ringIndex) =>
+              ring.progressSegments.map((segment, segIndex) => {
+                const labelRadius = ring.outerRadius + labelOffset;
+                const cx = 104;
+                const cy = 120;
+                const reverse =
+                  segment.midAngle > 90 && segment.midAngle < 270;
+                const d = describeArc(
+                  cx,
+                  cy,
+                  labelRadius,
+                  segment.geometricStart,
+                  segment.geometricEnd,
+                  reverse
+                );
+                return (
+                  <path
+                    key={`path-${ringIndex}-${segIndex}`}
+                    id={`arc-label-${config.idPrefix}-${ringIndex}-${segIndex}`}
+                    d={d}
+                    fill="none"
+                  />
+                );
+              })
+            )}
+          </defs>
           {processedRings.map((ring, ringIndex) =>
-            ring.progressSegments.map((segment, segIndex) => {
-              const labelRadius = ring.outerRadius + labelOffset;
-              const angleRad = (segment.midAngle * Math.PI) / 180;
-              const cx = 104;
-              const cy = 120;
-              const x = cx + labelRadius * Math.cos(angleRad);
-              const y = cy - labelRadius * Math.sin(angleRad);
-              const rot = segment.midAngle;
-              const rotation =
-                rot > 90 && rot < 270 ? rot + 180 : rot;
-              return (
-                <text
-                  key={`label-${ringIndex}-${segIndex}`}
-                  x={x}
-                  y={y}
+            ring.progressSegments.map((segment, segIndex) => (
+              <text
+                key={`label-${ringIndex}-${segIndex}`}
+                className="fill-neutral-300 text-[10px] font-medium"
+                style={{ fontSize: 10 }}
+              >
+                <textPath
+                  href={`#arc-label-${config.idPrefix}-${ringIndex}-${segIndex}`}
+                  startOffset="50%"
                   textAnchor="middle"
-                  dominantBaseline="central"
-                  transform={`rotate(${rotation} ${x} ${y})`}
-                  className="fill-neutral-300 text-[10px] font-medium"
-                  style={{ fontSize: 10 }}
                 >
                   {segment.name}
-                </text>
-              );
-            })
+                </textPath>
+              </text>
+            ))
           )}
         </svg>
       </div>
