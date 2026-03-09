@@ -69,13 +69,13 @@ function AchievementRowComponent({
     <div className="space-y-1 py-2">
       <div className="flex items-center justify-between gap-2">
         <span className="text-xs font-medium text-foreground truncate">
-          {row.isFull ? row.label : "❔"}
+          {row.currentCount >= 1 ? row.label : "❔"}
         </span>
         {canClaim && (
           <Button
             variant="outline"
-            size="sm"
-            className="shrink-0 text-xs h-6 px-2"
+            size="xs"
+            className="shrink-0 h-5 px-2 bg-red-950/30 hover:bg-red-950/70 hover:text-foreground border border-border border-red-800/50 rounded-xl"
             onClick={handleClaim}
           >
             Claim
