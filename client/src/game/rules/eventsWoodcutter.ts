@@ -123,16 +123,16 @@ function createWoodcutterEvent(config: WoodcutterConfig): GameEvent {
     },
     message:
       level === 1
-        ? `A muscular man with a large axe approaches the village. He flexes his arms 'I can cut trees like no other,' he boasts. 'Give me ${foodCost} food, and I'll bring ${woodReward} wood.'`
+        ? `A muscular man with a large axe approaches the village. He flexes his arms 'I can cut trees like no other,' he boasts. 'Give me ${foodCost} Food, and I'll bring ${woodReward} Wood.'`
         : level === 2
-          ? `The woodcutter returns, his axe gleaming in the sun. 'Your village grows well,' he observes. 'I can bring you ${woodReward} wood. You give me ${foodCost} food. What do you say?'`
+          ? `The woodcutter returns, his axe gleaming in the sun. 'Your village grows well,' he observes. 'I can bring you ${woodReward} Wood. You give me ${foodCost} Food. What do you say?'`
           : level === 3
-            ? `The woodcutter approaches again 'I see your village continues to thrive,' he says with a grin. 'I can bring you ${woodReward} wood if you pay ${foodCost} food for it.'`
+            ? `The woodcutter approaches again 'I see your village continues to thrive,' he says with a grin. 'I can bring you ${woodReward} Wood if you pay ${foodCost} Food for it.'`
             : level === 4
-              ? `The woodcutter arrives once more, 'Do you want to use my services once more? ${woodReward} wood for ${foodCost} food,' he asks.'`
+              ? `The woodcutter arrives once more, 'Do you want to use my services once more? ${woodReward} Wood for ${foodCost} Food,' he asks.'`
               : level === 5
-                ? `The woodcutter appears with a confident smile. 'How about we make one more deal? ${woodReward} wood for ${foodCost} food.'`
-                : `The woodcutter returns to the village, 'Do you want to use my services once more? I offer ${woodReward} wood for ${foodCost} food.' he says.`,
+                ? `The woodcutter appears with a confident smile. 'How about we make one more deal? ${woodReward} Wood for ${foodCost} Food.'`
+                : `The woodcutter returns to the village, 'Do you want to use my services once more? I offer ${woodReward} Wood for ${foodCost} Food.' he says.`,
     priority: 3,
     repeatable: true,
     showAsTimedTab: true,
@@ -146,7 +146,7 @@ function createWoodcutterEvent(config: WoodcutterConfig): GameEvent {
         effect: (state: GameState) => {
           if (state.resources.food < foodCost) {
             return {
-              _logMessage: "You don't have enough food for this deal.",
+              _logMessage: "You don't have enough Food for this deal.",
             };
           }
 
@@ -199,14 +199,14 @@ function createWoodcutterEvent(config: WoodcutterConfig): GameEvent {
             },
             _logMessage:
               level === 1
-                ? `The woodcutter takes the food and heads into the forest. By evening, he returns with the promised ${woodReward} wood stacked neatly at the village's edge.`
+                ? `The woodcutter takes the food and heads into the forest. By evening, he returns with the promised ${woodReward} Wood stacked neatly at the village's edge.`
                 : level === 2
-                  ? `The woodcutter takes the food and disappears into the forest. By nightfall, he returns with a large pile of ${woodReward} wood.`
+                  ? `The woodcutter takes the food and disappears into the forest. By nightfall, he returns with a large pile of ${woodReward} Wood.`
                   : level === 3
                     ? `The woodcutter takes the food and ventures deep into the forest. He returns with an impressive haul of ${woodReward} wood.`
                     : level === 4
-                      ? `The woodcutter takes the food and spends the afternoon in the forest. He returns with an enormous pile of ${woodReward} wood.`
-                      : `The woodcutter takes the food and within the same day he delivers a massive stockpile of ${woodReward} wood to the village.`,
+                      ? `The woodcutter takes the food and spends the afternoon in the forest. He returns with an enormous pile of ${woodReward} Wood.`
+                      : `The woodcutter takes the food and within the same day he delivers a massive stockpile of ${woodReward} Wood to the village.`,
           };
         },
       },
