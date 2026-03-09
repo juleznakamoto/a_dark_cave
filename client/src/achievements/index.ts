@@ -19,3 +19,13 @@ export { default as AchievementRingChart } from "./AchievementRingChart";
 
 // Re-export types
 export type { AchievementChartConfig, AchievementSegment } from "./AchievementRingChart";
+
+// Re-export achievement colors (SSoT for circle + bar charts)
+export {
+  INDICATOR_CLASS_INCOMPLETE,
+  INDICATOR_CLASS_COMPLETE,
+  INCOMPLETE_COLOR,
+  COMPLETE_COLOR,
+  BACKGROUND_COLOR_HEX,
+  PROGRESS_BAR_BG_CLASS,
+} from "./achievementColors";

@@ -3,9 +3,9 @@ import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { GameState } from "@shared/schema";
 import { useRef } from "react";
 import { tailwindToHex } from "@/lib/tailwindColors";
+import { BACKGROUND_COLOR_HEX } from "./achievementColors";
 
 const SEGMENT_COLOR = tailwindToHex("gray-400/70");
-const BACKGROUND_COLOR = tailwindToHex("neutral-800");
 const BORDER_COLOR = tailwindToHex("neutral-400");
 
 export interface AchievementSegment {
@@ -144,7 +144,7 @@ export default function AchievementRingChart({ config }: Props) {
       const backgroundSegments = segments.map((seg) => ({
         name: seg.label,
         value: seg.maxCount,
-        fill: BACKGROUND_COLOR,
+        fill: BACKGROUND_COLOR_HEX,
       }));
 
       // Create foreground segments (borders only, no fill)

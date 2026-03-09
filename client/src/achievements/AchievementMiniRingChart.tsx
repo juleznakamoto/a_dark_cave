@@ -2,19 +2,7 @@ import { useGameStore } from "@/game/state";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { tailwindToHex } from "@/lib/tailwindColors";
 import type { AchievementChartConfig } from "./AchievementRingChart";
-
-const BACKGROUND_COLOR = tailwindToHex("neutral-800");
-
-const INCOMPLETE_COLOR: Record<string, string> = {
-  building: tailwindToHex("blue-700/60"),
-  item: tailwindToHex("red-700/60"),
-  action: tailwindToHex("green-700/60"),
-};
-const COMPLETE_COLOR: Record<string, string> = {
-  building: tailwindToHex("blue-700"),
-  item: tailwindToHex("red-700"),
-  action: tailwindToHex("green-700"),
-};
+import { INCOMPLETE_COLOR, COMPLETE_COLOR, BACKGROUND_COLOR_HEX } from "./achievementColors";
 
 interface Props {
   config: AchievementChartConfig;
@@ -58,7 +46,7 @@ export default function AchievementMiniRingChart({ config, isActive = false }: P
 
             const backgroundSegments = ring.segments.map((s) => ({
               value: s.maxCount,
-              fill: BACKGROUND_COLOR,
+              fill: BACKGROUND_COLOR_HEX,
             }));
 
             let currentStartAngle = startAngle;
@@ -105,7 +93,7 @@ export default function AchievementMiniRingChart({ config, isActive = false }: P
                 isAnimationActive={false}
               >
                 {backgroundSegments.map((_, i) => (
-                  <Cell key={i} fill={BACKGROUND_COLOR} />
+                  <Cell key={i} fill={BACKGROUND_COLOR_HEX} />
                 ))}
               </Pie>,
               ...progressSegments.map((seg, segIndex) => (

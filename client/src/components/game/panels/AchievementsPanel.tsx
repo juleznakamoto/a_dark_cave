@@ -10,6 +10,11 @@ import {
   actionChartConfig,
 } from "@/achievements";
 import { getAchievementRows, claimAchievement } from "@/achievements/achievementHelpers";
+import {
+  INDICATOR_CLASS_INCOMPLETE,
+  INDICATOR_CLASS_COMPLETE,
+  PROGRESS_BAR_BG_CLASS,
+} from "@/achievements/achievementColors";
 import type { AchievementRow } from "@/achievements/achievementHelpers";
 import type { AchievementChartConfig } from "@/achievements";
 import AchievementMiniRingChart from "@/achievements/AchievementMiniRingChart";
@@ -38,17 +43,6 @@ class ChartErrorBoundary extends Component<
     return this.props.children;
   }
 }
-
-const INDICATOR_CLASS_INCOMPLETE: Record<string, string> = {
-  building: "bg-blue-700/60",
-  item: "bg-red-700/60",
-  action: "bg-green-700/60",
-};
-const INDICATOR_CLASS_COMPLETE: Record<string, string> = {
-  building: "bg-blue-700",
-  item: "bg-red-700",
-  action: "bg-green-700",
-};
 
 function AchievementRowComponent({
   row,
@@ -90,7 +84,7 @@ function AchievementRowComponent({
       </div>
       <Progress
         value={(row.currentCount / row.maxCount) * 100}
-        className="h-2 bg-neutral-700"
+        className={`h-2 ${PROGRESS_BAR_BG_CLASS}`}
         segments={row.maxCount}
         indicatorClassName={row.isFull ? indicatorClassComplete : indicatorClassIncomplete}
         hideBorder
