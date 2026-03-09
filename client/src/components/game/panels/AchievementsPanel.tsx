@@ -39,7 +39,12 @@ class ChartErrorBoundary extends Component<
   }
 }
 
-const INDICATOR_CLASS: Record<string, string> = {
+const INDICATOR_CLASS_INCOMPLETE: Record<string, string> = {
+  building: "bg-blue-500/60",
+  item: "bg-red-500/60",
+  action: "bg-green-500/60",
+};
+const INDICATOR_CLASS_COMPLETE: Record<string, string> = {
   building: "bg-blue-800",
   item: "bg-red-800",
   action: "bg-green-800",
@@ -83,10 +88,10 @@ function AchievementRowComponent({
       </div>
       <Progress
         value={(row.currentCount / row.maxCount) * 100}
-        className="h-2"
+        className="h-2 bg-neutral-300"
         segments={row.maxCount}
-        indicatorClassName={indicatorClass}
-        hideBorder={!row.isFull}
+        indicatorClassName={row.isFull ? indicatorClassComplete : indicatorClassIncomplete}
+        hideBorder
       />
     </div>
   );
@@ -106,7 +111,8 @@ function AchievementTabContent({
     state,
     claimedAchievements
   );
-  const indicatorClass = INDICATOR_CLASS[config.idPrefix] ?? "bg-red-800";
+  const indicatorClassIncomplete = INDICATOR_CLASS_INCOMPLETE[config.idPrefix] ?? "bg-red-500/60";
+  const indicatorClassComplete = INDICATOR_CLASS_COMPLETE[config.idPrefix] ?? "bg-red-800";
 
   return (
     <ScrollArea className="flex-1 min-h-0">
@@ -115,7 +121,8 @@ function AchievementTabContent({
           <AchievementRowComponent
             key={row.achievementId}
             row={row}
-            indicatorClass={indicatorClass}
+            indicatorClassIncomplete={indicatorClassIncomplete}
+            indicatorClassComplete={indicatorClassComplete}
           />
         ))}
       </div>
@@ -127,18 +134,18 @@ export default function AchievementsPanel() {
   return (
     <div className="mt-0 pr-4 flex flex-col min-h-0">
       <Tabs defaultValue="building" className="flex flex-col flex-1 min-h-0">
-        <TabsList className="grid w-full grid-cols-3 mb-2 shrink-0">
-          <TabsTrigger value="building" className="flex items-center justify-center gap-1.5 px-2 py-1.5">
+        <TabsList className="grid w-full grid-cols-3 mb-2 shrink-0 overflow-visible">
+          <TabsTrigger value="building" className="flex items-center justify-center gap-1.5 px-2 py-1.5 cursor-pointer overflow-visible">
             <ChartErrorBoundary>
               <AchievementMiniRingChart config={buildingChartConfig} />
             </ChartErrorBoundary>
           </TabsTrigger>
-          <TabsTrigger value="item" className="flex items-center justify-center gap-1.5 px-2 py-1.5">
+          <TabsTrigger value="item" className="flex items-center justify-center gap-1.5 px-2 py-1.5 cursor-pointer overflow-visible">
             <ChartErrorBoundary>
               <AchievementMiniRingChart config={itemChartConfig} />
             </ChartErrorBoundary>
           </TabsTrigger>
-          <TabsTrigger value="action" className="flex items-center justify-center gap-1.5 px-2 py-1.5">
+          <TabsTrigger value="action" className="flex items-center justify-center gap-1.5 px-2 py-1.5 cursor-pointer overflow-visible">
             <ChartErrorBoundary>
               <AchievementMiniRingChart config={actionChartConfig} />
             </ChartErrorBoundary>

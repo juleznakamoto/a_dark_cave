@@ -3,7 +3,7 @@ import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { tailwindToHex } from "@/lib/tailwindColors";
 import type { AchievementChartConfig } from "./AchievementRingChart";
 
-const SEGMENT_COLOR = tailwindToHex("gray-400/70");
+const SEGMENT_COLOR = tailwindToHex("gray-400/50");
 const BACKGROUND_COLOR = tailwindToHex("neutral-800");
 
 interface Props {
@@ -17,10 +17,10 @@ export default function AchievementMiniRingChart({ config }: Props) {
     (s) => s.claimedAchievements || []
   );
 
-  const size = 28;
-  const startRadius = 4;
-  const ringSize = 2;
-  const spaceBetweenRings = 2;
+  const size = 40;
+  const startRadius = 2;
+  const ringSize = 1.5;
+  const spaceBetweenRings = 1.5;
 
   const ringConfigs = config.rings.map((segments, index) => {
     const innerRadius = startRadius + index * (ringSize + spaceBetweenRings);
@@ -33,11 +33,11 @@ export default function AchievementMiniRingChart({ config }: Props) {
 
   return (
     <div
-      className="flex items-center justify-center shrink-0"
-      style={{ width: size, height: size }}
+      className="flex items-center justify-center shrink-0 overflow-visible p-1 pointer-events-none select-none"
+      style={{ width: size, height: size, minWidth: size }}
     >
       <ResponsiveContainer width="100%" height="100%">
-        <PieChart>
+        <PieChart margin={{ top: 2, right: 2, bottom: 2, left: 2 }}>
           {ringConfigs.map((ring, ringIndex) => {
             const totalMaxCount = ring.segments.reduce(
               (sum, s) => sum + s.maxCount,
