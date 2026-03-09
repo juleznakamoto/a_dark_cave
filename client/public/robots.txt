@@ -3,5 +3,24 @@
 User-agent: *
 Allow: /
 
-# Sitemap location
+# AI crawlers - explicitly allowed for GEO (AI search visibility)
+User-agent: GPTBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Cohere-ai
+Allow: /
+
+# Sitemap and llms.txt (AI discovery)
 Sitemap: https://a-dark-cave.com/sitemap.xml

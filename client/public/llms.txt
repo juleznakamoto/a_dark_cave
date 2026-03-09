@@ -1,0 +1,34 @@
+# A Dark Cave
+
+> A free text-based survival and settlement building game. Start with nothing in an ancient cave, gather resources, craft tools, manage villagers, and uncover dark secrets. Play in your browser on desktop or mobile.
+
+## Docs
+
+- [A Dark Cave](https://a-dark-cave.com): Main game. Text-based incremental survival with settlement building, resource management, turn-based combat, and Lovecraftian atmosphere. Inspired by A Dark Room, Candy Box, Kittens Game, and Darkest Dungeon.
+- [Privacy Policy](https://a-dark-cave.com/privacy): Privacy policy and data handling practices for A Dark Cave.
+- [Terms of Service](https://a-dark-cave.com/terms): Terms of service and usage conditions for the game.
+- [Imprint](https://a-dark-cave.com/imprint): Legal imprint and publisher information.
+- [Withdrawal](https://a-dark-cave.com/withdrawal): Right of withdrawal and refund policy for purchases.
+
+## Resources
+
+- [A Dark Cave Wiki](https://a-dark-cave.fandom.com/wiki/A_Dark_Cave_Wiki): Community wiki with game guides, mechanics, and lore.
+- [Reddit r/aDarkCave](https://www.reddit.com/r/aDarkCave/): Community discussion and updates.
+- [itch.io](https://a-dark-cave.itch.io/a-dark-cave): Game page on itch.io.
+- [YouTube Channel](https://www.youtube.com/channel/UCdQDWTJe_Bno7xyjnO1aC-w): Official YouTube channel for A Dark Cave.
+
+## Key Facts
+
+- Genre: Incremental, Idle, Strategy, Survival, Settlement Builder, Resource Management
+- Platform: Web browser (HTML5), desktop and mobile
+- Price: Free to play
+- Play mode: Single player
+- Features: Text-based narrative, crafting, villager management, world exploration, turn-based combat, idle mode, persistent local save
+- Inspired by: A Dark Room, Candy Box, Kittens Game, Darkest Dungeon
+
+## Contact
+
+- Website: https://a-dark-cave.com
+- Reddit: https://www.reddit.com/r/aDarkCave/
+- itch.io: https://a-dark-cave.itch.io/a-dark-cave
+- Buy Me a Coffee: https://buymeacoffee.com/julez.b
