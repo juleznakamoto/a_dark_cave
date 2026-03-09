@@ -138,18 +138,18 @@ export default function AchievementsPanel() {
   return (
     <div className="mt-0 pr-4 flex flex-col min-h-0">
       <Tabs defaultValue="building" className="flex flex-col flex-1 min-h-0">
-        <TabsList className="grid w-full grid-cols-3 mb-2 shrink-0 overflow-visible">
-          <TabsTrigger value="building" className="flex items-center justify-center gap-1.5 px-2 py-1.5 cursor-pointer overflow-visible">
+        <TabsList className="grid w-full max-w-7xl grid-cols-3 mb-2 shrink-0 overflow-visible h-auto min-h-12 py-1">
+          <TabsTrigger value="building" className="flex items-center justify-center gap-1.5 px-2 py-1 cursor-pointer overflow-visible min-h-[3rem]">
             <ChartErrorBoundary>
               <AchievementMiniRingChart config={buildingChartConfig} />
             </ChartErrorBoundary>
           </TabsTrigger>
-          <TabsTrigger value="item" className="flex items-center justify-center gap-1.5 px-2 py-1.5 cursor-pointer overflow-visible">
+          <TabsTrigger value="item" className="flex items-center justify-center gap-1.5 px-2 py-1 cursor-pointer overflow-visible min-h-[3rem]">
             <ChartErrorBoundary>
               <AchievementMiniRingChart config={itemChartConfig} />
             </ChartErrorBoundary>
           </TabsTrigger>
-          <TabsTrigger value="action" className="flex items-center justify-center gap-1.5 px-2 py-1.5 cursor-pointer overflow-visible">
+          <TabsTrigger value="action" className="flex items-center justify-center gap-1.5 px-2 py-1 cursor-pointer overflow-visible min-h-[3rem]">
             <ChartErrorBoundary>
               <AchievementMiniRingChart config={actionChartConfig} />
             </ChartErrorBoundary>
