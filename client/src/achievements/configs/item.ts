@@ -6,12 +6,24 @@ function getItemCount(itemKeys: string[]): number {
   const state = useGameStore.getState();
   let count = 0;
   for (const itemKey of itemKeys) {
-    const hasInTools = state.tools && state.tools[itemKey as keyof typeof state.tools];
-    const hasInWeapons = state.weapons && state.weapons[itemKey as keyof typeof state.weapons];
-    const hasInClothing = state.clothing && state.clothing[itemKey as keyof typeof state.clothing];
-    const hasInRelics = state.relics && state.relics[itemKey as keyof typeof state.relics];
-    const hasInFellowship = state.fellowship && state.fellowship[itemKey as keyof typeof state.fellowship];
-    if (hasInTools || hasInWeapons || hasInClothing || hasInRelics || hasInFellowship) {
+    const hasInTools =
+      state.tools && state.tools[itemKey as keyof typeof state.tools];
+    const hasInWeapons =
+      state.weapons && state.weapons[itemKey as keyof typeof state.weapons];
+    const hasInClothing =
+      state.clothing && state.clothing[itemKey as keyof typeof state.clothing];
+    const hasInRelics =
+      state.relics && state.relics[itemKey as keyof typeof state.relics];
+    const hasInFellowship =
+      state.fellowship &&
+      state.fellowship[itemKey as keyof typeof state.fellowship];
+    if (
+      hasInTools ||
+      hasInWeapons ||
+      hasInClothing ||
+      hasInRelics ||
+      hasInFellowship
+    ) {
       count++;
     }
   }
@@ -30,7 +42,13 @@ export const itemChartConfig: AchievementChartConfig = {
         label: "Axes",
         reward: 500,
         getCount: (_state: GameState) =>
-          getItemCount(["stone_axe", "iron_axe", "steel_axe", "obsidian_axe", "adamant_axe"]),
+          getItemCount([
+            "stone_axe",
+            "iron_axe",
+            "steel_axe",
+            "obsidian_axe",
+            "adamant_axe",
+          ]),
       },
       {
         segmentId: "0-pickaxes",
@@ -38,7 +56,13 @@ export const itemChartConfig: AchievementChartConfig = {
         label: "Pickaxes",
         reward: 500,
         getCount: (_state: GameState) =>
-          getItemCount(["stone_pickaxe", "iron_pickaxe", "steel_pickaxe", "obsidian_pickaxe", "adamant_pickaxe"]),
+          getItemCount([
+            "stone_pickaxe",
+            "iron_pickaxe",
+            "steel_pickaxe",
+            "obsidian_pickaxe",
+            "adamant_pickaxe",
+          ]),
       },
       {
         segmentId: "0-lanterns",
@@ -46,7 +70,12 @@ export const itemChartConfig: AchievementChartConfig = {
         label: "Lanterns",
         reward: 500,
         getCount: (_state: GameState) =>
-          getItemCount(["iron_lantern", "steel_lantern", "obsidian_lantern", "adamant_lantern"]),
+          getItemCount([
+            "iron_lantern",
+            "steel_lantern",
+            "obsidian_lantern",
+            "adamant_lantern",
+          ]),
       },
     ],
     // Second ring: Weapons
@@ -57,7 +86,12 @@ export const itemChartConfig: AchievementChartConfig = {
         label: "Swords",
         reward: 500,
         getCount: (_state: GameState) =>
-          getItemCount(["iron_sword", "steel_sword", "obsidian_sword", "adamant_sword"]),
+          getItemCount([
+            "iron_sword",
+            "steel_sword",
+            "obsidian_sword",
+            "adamant_sword",
+          ]),
       },
       {
         segmentId: "1-bows",
@@ -65,7 +99,13 @@ export const itemChartConfig: AchievementChartConfig = {
         label: "Bows",
         reward: 500,
         getCount: (_state: GameState) =>
-          getItemCount(["crude_bow", "huntsman_bow", "long_bow", "war_bow", "master_bow"]),
+          getItemCount([
+            "crude_bow",
+            "huntsman_bow",
+            "long_bow",
+            "war_bow",
+            "master_bow",
+          ]),
       },
     ],
     // Third ring: Clothing & Schematic Weapons
@@ -76,7 +116,14 @@ export const itemChartConfig: AchievementChartConfig = {
         label: "Leatherworks",
         reward: 500,
         getCount: (_state: GameState) =>
-          getItemCount(["explorer_pack", "hunter_cloak", "grenadier_bag", "highpriest_robe", "loggers_gloves", "shadow_boots"]),
+          getItemCount([
+            "explorer_pack",
+            "hunter_cloak",
+            "grenadier_bag",
+            "highpriest_robe",
+            "loggers_gloves",
+            "shadow_boots",
+          ]),
       },
       {
         segmentId: "2-schematic_weapons",
@@ -90,20 +137,17 @@ export const itemChartConfig: AchievementChartConfig = {
     // Fourth ring: Ancient Books & Fellowship
     [
       {
-        segmentId: "3-books",
+        segmentId: "3-ancient_books",
         maxCount: 4,
         label: "Ancient Wisdom",
         reward: 250,
         getCount: (_state: GameState) =>
-          getItemCount(["book_of_ascension", "book_of_war", "book_of_trials", "book_of_craftsmanship"]),
-      },
-      {
-        segmentId: "3-relic-books",
-        maxCount: 3,
-        label: "Forbidden Lore",
-        reward: 250,
-        getCount: (_state: GameState) =>
-          getItemCount(["unnamed_book", "elder_scroll", "occultist_grimoire"]),
+          getItemCount([
+            "book_of_ascension",
+            "book_of_war",
+            "book_of_trials",
+            "book_of_craftsmanship",
+          ]),
       },
       {
         segmentId: "3-fellowship",
@@ -111,7 +155,12 @@ export const itemChartConfig: AchievementChartConfig = {
         label: "Good Company",
         reward: 250,
         getCount: (_state: GameState) =>
-          getItemCount(["elder_wizard", "restless_knight", "ashwraith_huntress", "disgraced_prior"]),
+          getItemCount([
+            "elder_wizard",
+            "restless_knight",
+            "ashwraith_huntress",
+            "disgraced_prior",
+          ]),
       },
     ],
     // Fifth ring: Blacksteel
@@ -122,7 +171,11 @@ export const itemChartConfig: AchievementChartConfig = {
         label: "Dark Tools",
         reward: 250,
         getCount: (_state: GameState) =>
-          getItemCount(["blacksteel_axe", "blacksteel_pickaxe", "blacksteel_lantern"]),
+          getItemCount([
+            "blacksteel_axe",
+            "blacksteel_pickaxe",
+            "blacksteel_lantern",
+          ]),
       },
       {
         segmentId: "4-blacksteel_equipment",
@@ -130,7 +183,11 @@ export const itemChartConfig: AchievementChartConfig = {
         label: "Dark War Equipment",
         reward: 250,
         getCount: (_state: GameState) =>
-          getItemCount(["blacksteel_sword", "blacksteel_bow", "blacksteel_armor"]),
+          getItemCount([
+            "blacksteel_sword",
+            "blacksteel_bow",
+            "blacksteel_armor",
+          ]),
       },
     ],
   ],
@@ -144,7 +201,12 @@ export function getUnclaimedItemIds(): string[] {
   itemChartConfig.rings.forEach((segments) => {
     segments.forEach((seg) => {
       const count = seg.getCount(state);
-      if (count >= seg.maxCount && !claimedAchievements.includes(`${itemChartConfig.idPrefix}-${seg.segmentId}`)) {
+      if (
+        count >= seg.maxCount &&
+        !claimedAchievements.includes(
+          `${itemChartConfig.idPrefix}-${seg.segmentId}`,
+        )
+      ) {
         result.push(`${itemChartConfig.idPrefix}-${seg.segmentId}`);
       }
     });
