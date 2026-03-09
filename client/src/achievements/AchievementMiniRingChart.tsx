@@ -29,12 +29,12 @@ export default function AchievementMiniRingChart({ config, isActive = false }: P
   );
 
   const size = 52;
-  const startRadius = 3;
-  const ringSize = 2;
-  const spaceBetweenRings = 2;
+  const centerHoleRadius = 10; // Space for icon in center, rings start outside
+  const ringSize = 1.5;
+  const spaceBetweenRings = 1.5;
 
   const ringConfigs = config.rings.map((segments, index) => {
-    const innerRadius = startRadius + index * (ringSize + spaceBetweenRings);
+    const innerRadius = centerHoleRadius + index * (ringSize + spaceBetweenRings);
     const outerRadius = innerRadius + ringSize;
     return { segments, innerRadius, outerRadius };
   });
@@ -131,8 +131,8 @@ export default function AchievementMiniRingChart({ config, isActive = false }: P
         </PieChart>
       </ResponsiveContainer>
       <span
-        className="absolute inset-0 flex items-center justify-center text-foreground text-xl font-medium"
-        style={{ opacity: isActive ? 1 : 0 }}
+        className="absolute inset-0 flex items-center justify-center text-foreground text-base font-medium"
+        style={{ opacity: isActive ? 1 : 0.5 }}
       >
         {config.centerSymbol}
       </span>
