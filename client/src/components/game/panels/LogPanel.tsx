@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef, useMemo } from "react";
 import { useGameStore } from "@/game/state";
 import { LogEntry } from "@/game/rules/events";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { ScrollAreaWithIndicator } from "@/components/ui/scroll-area-with-indicator";
 import { GAME_CONSTANTS } from "@/game/constants";
 
 // Extended log entry type to support "production" type if it exists in the data
@@ -86,7 +86,10 @@ function LogPanel() {
 
   return (
     <div className="h-[18vh] min-h-[6rem] pt-2 overflow-hidden">
-      <ScrollArea className="h-full w-full">
+      <ScrollAreaWithIndicator
+        className="h-full w-full"
+        showIndicatorWhen={recentEntries.length >= 8}
+      >
         <div className="px-3 relative ">
           <div ref={topRef} />
           <div className="space-y-1 text-xs">
@@ -156,8 +159,7 @@ function LogPanel() {
             className={`absolute inset-0 bg-gradient-to-t to-transparent opacity-50 ${isBloodMoon ? "from-[hsl(0_50%_5%)]" : "from-background"}`}
           ></div>
         </div>
-        <ScrollBar orientation="vertical" />
-      </ScrollArea>
+      </ScrollAreaWithIndicator>
     </div>
   );
 }

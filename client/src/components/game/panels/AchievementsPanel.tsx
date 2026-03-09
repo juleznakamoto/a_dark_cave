@@ -1,6 +1,6 @@
 import { Component, type ReactNode } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { ScrollAreaWithIndicator } from "@/components/ui/scroll-area-with-indicator";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/game/state";
@@ -117,7 +117,7 @@ function AchievementTabContent({
 
   return (
     <div className="flex-1 min-h-0 overflow-hidden flex flex-col w-96">
-      <ScrollArea className="h-full w-full">
+      <ScrollAreaWithIndicator className="h-full w-full">
         <div className="pr-2 space-y-0">
           {rows.map((row) => (
             <AchievementRowComponent
@@ -128,8 +128,7 @@ function AchievementTabContent({
             />
           ))}
         </div>
-        <ScrollBar orientation="vertical" />
-      </ScrollArea>
+      </ScrollAreaWithIndicator>
     </div>
   );
 }
