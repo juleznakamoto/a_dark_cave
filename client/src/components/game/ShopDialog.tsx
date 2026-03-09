@@ -17,7 +17,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { ScrollAreaWithIndicator } from "@/components/ui/scroll-area-with-indicator";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useGameStore } from "@/game/state";
@@ -934,7 +934,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                 </TabsList>
 
                 <TabsContent value="shop" className="mt-3">
-                  <ScrollArea
+                  <ScrollAreaWithIndicator
                     className={
                       !currentUser ? "h-[calc(80vh-260px)]" : "h-[calc(80vh-180px)]"
                     }
@@ -1205,12 +1205,11 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                           </Card>
                         ))}
                     </div>
-                    <ScrollBar orientation="vertical" />
-                  </ScrollArea>
+                  </ScrollAreaWithIndicator>
                 </TabsContent>
 
                 <TabsContent value="purchases" className="mt-4">
-                  <ScrollArea
+                  <ScrollAreaWithIndicator
                     className={
                       !currentUser ? "h-[calc(80vh-250px)]" : "h-[calc(80vh-180px)]"
                     }
@@ -1359,8 +1358,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                         </div>
                       </div>
                     )}
-                    <ScrollBar orientation="vertical overflow-auto" />
-                  </ScrollArea>
+                  </ScrollAreaWithIndicator>
                 </TabsContent>
               </Tabs>
             )}
