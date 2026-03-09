@@ -49,12 +49,16 @@ export default function AchievementRingChart({ config }: Props) {
   const spaceBetweenRings = 12;
   const labelOffset = 22;
 
+  // Per-ring radius increment so labels on adjacent rings don't overlap when text overflows
+  const labelRadiusIncrement = 8;
+
   // Max label radius for outermost ring (building config has 5 rings)
   const maxLabelRadius =
     startRadius +
     (config.rings.length - 1) * (ringSize + spaceBetweenRings) +
     ringSize +
-    labelOffset;
+    labelOffset +
+    (config.rings.length - 1) * labelRadiusIncrement;
 
   // ViewBox must extend beyond center to fit curved labels (text extends above/below baseline)
   const viewBoxPad = maxLabelRadius + 18;
@@ -62,7 +66,7 @@ export default function AchievementRingChart({ config }: Props) {
   const viewBoxMinY = 120 - viewBoxPad;
   const viewBoxSize = viewBoxPad * 2;
 
-  const getPaddingAngle = (ringIndex: number) => Math.max(4, 20 - ringIndex * 2);
+  const getPaddingAngle = (ringIndex: number) => Math.max(4, 18 - ringIndex * 2);
   const getStartAngle = (paddingAngle: number) => 90 - paddingAngle / 2;
 
   // SVG arc path for textPath: 0° = right, 90° = top, angles CCW
@@ -365,15 +369,18 @@ export default function AchievementRingChart({ config }: Props) {
           <defs>
             {processedRings.map((ring, ringIndex) =>
               ring.progressSegments.map((segment, segIndex) => {
-                const labelRadius = ring.outerRadius + labelOffset;
+                const labelRadius =
+                  ring.outerRadius +
+                  labelOffset +
+                  ringIndex * labelRadiusIncrement;
                 const cx = 104;
                 const cy = 120;
                 const reverse =
                   segment.midAngle > 90 && segment.midAngle < 270;
-                // Use a sub-arc (70% of segment) centered at midpoint to reduce overlap
+                // Use 92% of segment arc to give long labels room while leaving padding
                 const segmentSpan =
                   segment.geometricStart - segment.geometricEnd;
-                const subSpan = segmentSpan * 0.7;
+                const subSpan = segmentSpan * 0.92;
                 const subStart = segment.midAngle + subSpan / 2;
                 const subEnd = segment.midAngle - subSpan / 2;
                 const d = describeArc(
@@ -400,7 +407,7 @@ export default function AchievementRingChart({ config }: Props) {
               <text
                 key={`label-${ringIndex}-${segIndex}`}
                 className="fill-neutral-300 font-medium"
-                style={{ fontSize: 9 }}
+                style={{ fontSize: 8 }}
               >
                 <textPath
                   href={`#arc-label-${config.idPrefix}-${ringIndex}-${segIndex}`}
