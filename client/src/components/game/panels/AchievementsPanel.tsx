@@ -117,19 +117,21 @@ function AchievementTabContent({
   const indicatorClassComplete = INDICATOR_CLASS_COMPLETE[config.idPrefix] ?? "bg-red-800";
 
   return (
-    <ScrollArea className="flex-1 min-h-0">
-      <div className="pr-2 space-y-0">
-        {rows.map((row) => (
-          <AchievementRowComponent
-            key={row.achievementId}
-            row={row}
-            indicatorClassIncomplete={indicatorClassIncomplete}
-            indicatorClassComplete={indicatorClassComplete}
-          />
-        ))}
-      </div>
-      <ScrollBar orientation="vertical" />
-    </ScrollArea>
+    <div className="flex-1 min-h-0 overflow-hidden flex flex-col">
+      <ScrollArea className="h-full w-full">
+        <div className="pr-2 space-y-0">
+          {rows.map((row) => (
+            <AchievementRowComponent
+              key={row.achievementId}
+              row={row}
+              indicatorClassIncomplete={indicatorClassIncomplete}
+              indicatorClassComplete={indicatorClassComplete}
+            />
+          ))}
+        </div>
+        <ScrollBar orientation="vertical" />
+      </ScrollArea>
+    </div>
   );
 }
 
