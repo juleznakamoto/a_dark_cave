@@ -16,9 +16,9 @@ const ACHIEVEMENT_COLORS: Record<
   AchievementCategoryId,
   { incomplete: string; complete: string }
 > = {
-  building: { incomplete: "bg-blue-700/60", complete: "bg-blue-700" },
-  item: { incomplete: "bg-red-700/60", complete: "bg-red-700" },
-  action: { incomplete: "bg-green-700/60", complete: "bg-green-700" },
+  building: { incomplete: "bg-blue-800/50", complete: "bg-blue-800" },
+  item: { incomplete: "bg-red-800/50", complete: "bg-red-800" },
+  action: { incomplete: "bg-green-800/50", complete: "bg-green-800" },
 };
 
 /** Tailwind classes for Progress bar indicators (incomplete state). */
@@ -38,7 +38,9 @@ export const INDICATOR_CLASS_COMPLETE: Record<string, string> = {
 /** Hex/rgba colors for Recharts (circle charts). Derived from ACHIEVEMENT_COLORS. */
 const tailwindColor = (tw: string) => tw.replace(/^bg-/, "");
 export const INCOMPLETE_COLOR: Record<string, string> = {
-  building: tailwindToHex(tailwindColor(ACHIEVEMENT_COLORS.building.incomplete)),
+  building: tailwindToHex(
+    tailwindColor(ACHIEVEMENT_COLORS.building.incomplete),
+  ),
   item: tailwindToHex(tailwindColor(ACHIEVEMENT_COLORS.item.incomplete)),
   action: tailwindToHex(tailwindColor(ACHIEVEMENT_COLORS.action.incomplete)),
 };
