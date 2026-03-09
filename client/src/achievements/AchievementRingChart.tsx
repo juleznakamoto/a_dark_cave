@@ -1,8 +1,9 @@
 import { useGameStore } from "@/game/state";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { GameState } from "@shared/schema";
-import { useState, useRef } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { tailwindToHex } from "@/lib/tailwindColors";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const SEGMENT_COLOR = tailwindToHex("gray-400/70");
 const BACKGROUND_COLOR = tailwindToHex("neutral-800");
@@ -53,6 +54,9 @@ export default function AchievementRingChart({ config }: Props) {
   } | null>(null);
   const [clickedSegment, setClickedSegment] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const holdTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const tooltipOpenedByHoldRef = useRef(false);
+  const isMobile = useIsMobile();
 
   // Ring sizing parameters
   const startRadius = 20;
@@ -171,10 +175,119 @@ export default function AchievementRingChart({ config }: Props) {
     })
     .filter((ring) => ring !== null);
 
+  // Find which segment contains a point (for touch hold-to-show)
+  const findSegmentAtPosition = useCallback(
+    (clientX: number, clientY: number) => {
+      const rect = containerRef.current?.getBoundingClientRect();
+      if (!rect) return null;
+      const cx = rect.width / 2;
+      const cy = rect.height / 2;
+      const x = clientX - rect.left - cx;
+      const y = clientY - rect.top - cy;
+      const radius = Math.sqrt(x * x + y * y);
+      // Recharts: 0° = right, 90° = top (CCW). Screen y is down, so angle = atan2(-y, x)
+      const angleDeg =
+        (Math.atan2(-y, x) * 180) / Math.PI;
+      const normalizedAngle = angleDeg < 0 ? angleDeg + 360 : angleDeg;
+
+      for (const ring of processedRings) {
+        for (const segment of ring.progressSegments) {
+          const { startAngle, endAngle } = segment;
+          const inRadius =
+            radius >= ring.innerRadius - 2 && radius <= ring.outerRadius + 2;
+          const inAngle =
+            startAngle >= endAngle
+              ? normalizedAngle >= endAngle && normalizedAngle <= startAngle
+              : normalizedAngle >= endAngle || normalizedAngle <= startAngle;
+          if (inRadius && inAngle) {
+            return {
+              id: segment.segmentId,
+              name: segment.name,
+              currentCount: segment.currentCount,
+              maxCount: segment.maxCount,
+              x: clientX - rect.left,
+              y: clientY - rect.top,
+            };
+          }
+        }
+      }
+      return null;
+    },
+    [processedRings]
+  );
+
+  const handleTouchStart = useCallback(
+    (e: React.TouchEvent) => {
+      if (!isMobile) return;
+      const touch = e.touches[0];
+      if (!touch) return;
+      if (holdTimerRef.current) clearTimeout(holdTimerRef.current);
+      holdTimerRef.current = setTimeout(() => {
+        holdTimerRef.current = null;
+        const seg = findSegmentAtPosition(touch.clientX, touch.clientY);
+        if (seg) {
+          tooltipOpenedByHoldRef.current = true;
+          setHoveredSegment({
+            id: seg.id,
+            name: seg.name,
+            currentCount: seg.currentCount,
+            maxCount: seg.maxCount,
+          });
+          setMousePosition({ x: seg.x, y: seg.y });
+        }
+      }, 250);
+    },
+    [isMobile, findSegmentAtPosition]
+  );
+
+  const handleTouchEnd = useCallback(
+    (e: React.TouchEvent) => {
+      if (!isMobile) return;
+      if (holdTimerRef.current) {
+        clearTimeout(holdTimerRef.current);
+        holdTimerRef.current = null;
+      }
+      if (tooltipOpenedByHoldRef.current) {
+        e.preventDefault();
+        tooltipOpenedByHoldRef.current = false;
+      }
+    },
+    [isMobile]
+  );
+
+  const handleTouchCancel = useCallback(() => {
+    if (holdTimerRef.current) {
+      clearTimeout(holdTimerRef.current);
+      holdTimerRef.current = null;
+    }
+  }, []);
+
+  // Close tooltip when user taps elsewhere (matches centralized tooltip behavior)
+  useEffect(() => {
+    if (!hoveredSegment || !isMobile) return;
+    const handleOutside = (e: TouchEvent | MouseEvent) => {
+      const target = e.target as Node;
+      if (containerRef.current && !containerRef.current.contains(target)) {
+        setHoveredSegment(null);
+        setMousePosition(null);
+      }
+    };
+    document.addEventListener("touchstart", handleOutside, true);
+    document.addEventListener("click", handleOutside, true);
+    return () => {
+      document.removeEventListener("touchstart", handleOutside, true);
+      document.removeEventListener("click", handleOutside, true);
+    };
+  }, [hoveredSegment, isMobile]);
+
   return (
     <div
       ref={containerRef}
       className="w-40 h-48 flex flex-col items-center justify-center relative"
+      style={{ touchAction: "manipulation" }}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+      onTouchCancel={handleTouchCancel}
       onMouseMove={(e) => {
         if (hoveredSegment) {
           const rect = containerRef.current?.getBoundingClientRect();
