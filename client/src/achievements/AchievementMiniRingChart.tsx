@@ -3,8 +3,13 @@ import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { tailwindToHex } from "@/lib/tailwindColors";
 import type { AchievementChartConfig } from "./AchievementRingChart";
 
-const SEGMENT_COLOR = tailwindToHex("gray-400/50");
 const BACKGROUND_COLOR = tailwindToHex("neutral-800");
+
+const INCOMPLETE_COLOR: Record<string, string> = {
+  building: tailwindToHex("blue-500/60"),
+  item: tailwindToHex("red-500/60"),
+  action: tailwindToHex("green-500/60"),
+};
 
 interface Props {
   config: AchievementChartConfig;
@@ -67,7 +72,7 @@ export default function AchievementMiniRingChart({ config }: Props) {
               const isFull = currentCount >= seg.maxCount;
               const fill = isFull
                 ? config.completedColor
-                : SEGMENT_COLOR;
+                : (INCOMPLETE_COLOR[config.idPrefix] ?? tailwindToHex("gray-400/50"));
 
               return {
                 startAngle: startA,
