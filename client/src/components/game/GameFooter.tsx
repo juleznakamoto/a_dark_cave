@@ -1,13 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/game/state";
 import { audioManager } from "@/lib/audio";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { useMobileTooltip } from "@/hooks/useMobileTooltip";
+import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import FullGamePurchaseDialog from "./FullGamePurchaseDialog";
 import { useState, useEffect } from "react";
 
@@ -34,7 +28,6 @@ export default function GameFooter() {
     fullGamePurchaseDialogOpen,
     BTP,
   } = useGameStore();
-  const mobileTooltip = useMobileTooltip();
   const [glowingButton, setGlowingButton] = useState<string | null>(null);
   const [displayTime, setDisplayTime] = useState("");
 
@@ -197,30 +190,18 @@ export default function GameFooter() {
                 )}
             </Button>
             {cruelMode && (
-              <TooltipProvider>
-                <Tooltip
-                  open={mobileTooltip.isTooltipOpen("cruel-mode-indicator")}
-                >
-                  <TooltipTrigger asChild>
-                    <div
-                      className="px-1 py-1 cursor-pointer opacity-60 hover:opacity-100 transition-opacity flex items-center"
-                      onClick={(e) =>
-                        mobileTooltip.handleTooltipClick(
-                          "cruel-mode-indicator",
-                          e,
-                        )
-                      }
-                    >
-                      <span className="text-red-600 text-xs font-bold">⛤</span>
-                    </div>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <div className="text-xs whitespace-nowrap">
-                      Cruel Mode activated
-                    </div>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
+              <TooltipWrapper
+                tooltip={
+                  <div className="text-xs whitespace-nowrap">
+                    Cruel Mode activated
+                  </div>
+                }
+                tooltipId="cruel-mode-indicator"
+                disabled
+                className="px-1 py-1 cursor-pointer opacity-60 hover:opacity-100 transition-opacity flex items-center"
+              >
+                <span className="text-red-600 text-xs font-bold">⛤</span>
+              </TooltipWrapper>
             )}
           </div>
           <div className="flex-1 flex justify-end gap-2 items-center">

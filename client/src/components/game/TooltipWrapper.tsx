@@ -13,6 +13,7 @@ export interface TooltipWrapperProps {
   tooltipId?: string;
   disabled?: boolean;
   className?: string;
+  tooltipContentClassName?: string;
   onMouseEnter?: (e?: React.MouseEvent<HTMLDivElement>) => void;
   onMouseLeave?: (e?: React.MouseEvent<HTMLDivElement>) => void;
   onClick?: (e?: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => void;
@@ -31,6 +32,7 @@ export function TooltipWrapper({
   tooltipId,
   disabled = false,
   className = "relative inline-block",
+  tooltipContentClassName,
   onMouseEnter,
   onMouseLeave,
   onClick,
@@ -137,7 +139,7 @@ export function TooltipWrapper({
               {children}
             </span>
           </TooltipTrigger>
-          <TooltipContent>{tooltip}</TooltipContent>
+          <TooltipContent className={tooltipContentClassName}>{tooltip}</TooltipContent>
         </Tooltip>
       </TooltipProvider>
     </div>

@@ -105,6 +105,8 @@ Preferred communication style: Simple, everyday language.
 - There is a dev and a prod environment. Secrets end with either `_DEV` or `_PROD`.
 
 ### Coding Standards
+- **Tooltips**: Always use the centralized tooltip system (`TooltipWrapper` from `@/components/game/TooltipWrapper` with `useGlobalTooltip`). Do not use `TooltipProvider` + `TooltipTrigger` + `TooltipContent` directly or `useMobileTooltip`—the centralized system provides consistent tap-and-hold behavior on mobile and single-tooltip-at-a-time globally.
+- **Tooltips in DropdownMenu**: Use `DropdownMenuItemWithTooltip` from `@/components/game/DropdownMenuItemWithTooltip` for menu items that need tooltips—it uses `useGlobalTooltip` internally (same centralized system as TooltipWrapper) but cannot use TooltipWrapper because its wrapper div breaks Radix's expected DOM structure.
 - **CooldownButton tooltips**: Always add `data-testid` (e.g. `button-call-merchant`) to CooldownButton—without it, tooltips break on mobile
 - **DRY**: Consolidate duplicate patterns into reusable functions after the 2nd occurrence
 - **Clean**: Delete dead code immediately (unused imports, functions, variables, commented code)

@@ -6,15 +6,10 @@ import {
 } from "@/game/rules/effects";
 import { madnessTooltip } from "@/game/rules/tooltips";
 import { renderItemTooltip } from "@/game/rules/itemTooltips";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import ResourceChangeNotification from "./ResourceChangeNotification";
 import { useGameStore } from "@/game/state";
-import { useMobileTooltip } from "@/hooks/useMobileTooltip";
+import { useGlobalTooltip } from "@/hooks/useGlobalTooltip";
 import cn from "clsx";
 import { getResourceLimit, isResourceLimited } from "@/game/resourceLimits";
 
@@ -83,10 +78,10 @@ export default function SidePanelSection({
         Array.isArray(highlightedResourcesRaw) ? highlightedResourcesRaw : [],
       );
   const hoverTimersRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
-  const mobileTooltip = useMobileTooltip();
+  const globalTooltip = useGlobalTooltip();
 
   const handleTooltipHover = (itemId: string) => {
-    if (mobileTooltip.isMobile) return;
+    if (globalTooltip.isMobile) return;
 
     const existingTimer = hoverTimersRef.current.get(itemId);
     if (existingTimer) {
@@ -102,7 +97,7 @@ export default function SidePanelSection({
   };
 
   const handleTooltipLeave = (itemId: string) => {
-    if (mobileTooltip.isMobile) return;
+    if (globalTooltip.isMobile) return;
 
     const timer = hoverTimersRef.current.get(itemId);
     if (timer) {
@@ -118,6 +113,16 @@ export default function SidePanelSection({
       hoverTimersRef.current.clear();
     };
   }, []);
+
+  // Mark as hovered when tooltip opens via hold (stops pulse animation)
+  useEffect(() => {
+    if (
+      globalTooltip.openTooltipId &&
+      !hoveredTooltips[globalTooltip.openTooltipId]
+    ) {
+      setHoveredTooltip(globalTooltip.openTooltipId, true);
+    }
+  }, [globalTooltip.openTooltipId, hoveredTooltips, setHoveredTooltip]);
 
   const [maxAnimatedItems, setMaxAnimatedItems] = useState<Set<string>>(
     new Set(),
@@ -291,22 +296,6 @@ export default function SidePanelSection({
       limit !== null &&
       typeof item.value === "number" &&
       item.value === limit;
-
-    // Handle mobile tooltip click - also mark as hovered to stop pulse
-    const handleMobileTooltipClick = (id: string, e: React.MouseEvent) => {
-      mobileTooltip.handleTooltipClick(id, e);
-      if (!hoveredTooltips[id]) {
-        setHoveredTooltip(id, true);
-      }
-    };
-
-    // Handle tap-and-hold on mobile (contextmenu fires on long-press)
-    const handleMobileTooltipContextMenu = (id: string, e: React.MouseEvent) => {
-      if (mobileTooltip.isMobile) {
-        e.preventDefault();
-        handleMobileTooltipClick(id, e);
-      }
-    };
 
     // Check if this is a relic, weapon, tool, blessing, or schematic that has effect information
     const relicEffect = clothingEffects[item.id];
@@ -491,46 +480,39 @@ export default function SidePanelSection({
         title === "Blessings")
     ) {
       return (
-        <TooltipProvider key={item.id}>
-          <Tooltip open={mobileTooltip.isTooltipOpen(item.id)}>
-            <div
-              data-testid={item.testId}
-              className={`flex leading-tight justify-between items-center transition-all duration-300 ${isAnimated
-                  ? "text-green-400"
-                  : isDecreaseAnimated
-                    ? "text-red-400"
-                    : isAtMax
-                      ? "text-yellow-400"
-                      : "" // Changed to yellow for max resources
-                }`}
-            >
-              <TooltipTrigger asChild>
-                <span
-                  onClick={(e) => handleMobileTooltipClick(item.id, e)}
-                  onContextMenu={(e) => handleMobileTooltipContextMenu(item.id, e)}
-                  onMouseEnter={() => handleTooltipHover(item.id)}
-                  onMouseLeave={() => handleTooltipLeave(item.id)}
-                  className={mobileTooltip.isMobile ? "cursor-pointer" : ""}
-                >
-                  {labelContent}
-                </span>
-              </TooltipTrigger>
-            </div>
-            <TooltipContent className="max-w-xs">
-              {renderItemTooltip(
-                item.id,
-                title === "Weapons"
-                  ? "weapon"
-                  : title === "Blessings" ||
-                    title === "Clothing" ||
-                    title === "Relics" ||
-                    title === "Schematics"
-                    ? "blessing"
-                    : "tool",
-              )}
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+        <div
+          key={item.id}
+          data-testid={item.testId}
+          className={`flex leading-tight justify-between items-center transition-all duration-300 ${isAnimated
+              ? "text-green-400"
+              : isDecreaseAnimated
+                ? "text-red-400"
+                : isAtMax
+                  ? "text-yellow-400"
+                  : ""}`}
+        >
+          <TooltipWrapper
+            tooltip={renderItemTooltip(
+              item.id,
+              title === "Weapons"
+                ? "weapon"
+                : title === "Blessings" ||
+                  title === "Clothing" ||
+                  title === "Relics" ||
+                  title === "Schematics"
+                  ? "blessing"
+                  : "tool",
+            )}
+            tooltipId={item.id}
+            disabled
+            tooltipContentClassName="max-w-xs"
+            onMouseEnter={() => handleTooltipHover(item.id)}
+            onMouseLeave={() => handleTooltipLeave(item.id)}
+            className={globalTooltip.isMobile ? "cursor-pointer inline-block" : "inline-block"}
+          >
+            {labelContent}
+          </TooltipWrapper>
+        </div>
       );
     }
 
@@ -538,163 +520,140 @@ export default function SidePanelSection({
     if (item.tooltip && (title === "Fellowship" || title === "Books")) {
       const itemType = title === "Fellowship" ? "fellowship" : "book";
       return (
-        <TooltipProvider key={item.id}>
-          <Tooltip open={mobileTooltip.isTooltipOpen(item.id)}>
-            <div
-              data-testid={item.testId}
-              className={`flex leading-tight justify-between items-center transition-all duration-300 ${isAnimated
-                  ? "text-green-400"
-                  : isDecreaseAnimated
-                    ? "text-red-400"
-                    : isMaxAnimated
-                      ? "text-yellow-400"
-                      : ""
-                }`}
-            >
-              <TooltipTrigger asChild>
-                <span
-                  onClick={(e) => handleMobileTooltipClick(item.id, e)}
-                  onContextMenu={(e) => handleMobileTooltipContextMenu(item.id, e)}
-                  onMouseEnter={() => handleTooltipHover(item.id)}
-                  onMouseLeave={() => handleTooltipLeave(item.id)}
-                  className={mobileTooltip.isMobile ? "cursor-pointer" : ""}
-                >
-                  {labelContent}
-                </span>
-              </TooltipTrigger>
-            </div>
-            <TooltipContent className="max-w-xs">
-              {renderItemTooltip(item.id, itemType)}
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+        <div
+          key={item.id}
+          data-testid={item.testId}
+          className={`flex leading-tight justify-between items-center transition-all duration-300 ${isAnimated
+              ? "text-green-400"
+              : isDecreaseAnimated
+                ? "text-red-400"
+                : isMaxAnimated
+                  ? "text-yellow-400"
+                  : ""}`}
+        >
+          <TooltipWrapper
+            tooltip={renderItemTooltip(item.id, itemType)}
+            tooltipId={item.id}
+            disabled
+            tooltipContentClassName="max-w-xs"
+            onMouseEnter={() => handleTooltipHover(item.id)}
+            onMouseLeave={() => handleTooltipLeave(item.id)}
+            className={globalTooltip.isMobile ? "cursor-pointer inline-block" : "inline-block"}
+          >
+            {labelContent}
+          </TooltipWrapper>
+        </div>
       );
     }
 
     // If this item is a building (not fortification) with a tooltip, use renderItemTooltip
     if (item.tooltip && title === "Buildings") {
       return (
-        <TooltipProvider key={item.id}>
-          <Tooltip open={mobileTooltip.isTooltipOpen(item.id)}>
-            <div
-              data-testid={item.testId}
-              className={`flex leading-tight justify-between items-center transition-all duration-300 ${isAnimated
-                  ? "text-green-400"
-                  : isDecreaseAnimated
-                    ? "text-red-400"
-                    : isMaxAnimated
-                      ? "text-yellow-400"
-                      : ""
-                }`}
-            >
-              <TooltipTrigger asChild>
-                <span
-                  onClick={(e) => handleMobileTooltipClick(item.id, e)}
-                  onContextMenu={(e) => handleMobileTooltipContextMenu(item.id, e)}
-                  onMouseEnter={() => handleTooltipHover(item.id)}
-                  onMouseLeave={() => handleTooltipLeave(item.id)}
-                  className={mobileTooltip.isMobile ? "cursor-pointer" : ""}
-                >
-                  {labelContent}
-                </span>
-              </TooltipTrigger>
-            </div>
-            <TooltipContent className="max-w-xs">
-              {renderItemTooltip(item.id, "building")}
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+        <div
+          key={item.id}
+          data-testid={item.testId}
+          className={`flex leading-tight justify-between items-center transition-all duration-300 ${isAnimated
+              ? "text-green-400"
+              : isDecreaseAnimated
+                ? "text-red-400"
+                : isMaxAnimated
+                  ? "text-yellow-400"
+                  : ""}`}
+        >
+          <TooltipWrapper
+            tooltip={renderItemTooltip(item.id, "building")}
+            tooltipId={item.id}
+            disabled
+            tooltipContentClassName="max-w-xs"
+            onMouseEnter={() => handleTooltipHover(item.id)}
+            onMouseLeave={() => handleTooltipLeave(item.id)}
+            className={globalTooltip.isMobile ? "cursor-pointer inline-block" : "inline-block"}
+          >
+            {labelContent}
+          </TooltipWrapper>
+        </div>
       );
     }
 
     // If this item has a tooltip, render with tooltip
     if (item.tooltip) {
+      const tooltipContent =
+        typeof item.tooltip === "string" ? (
+          <>
+            {isMadnessTooltip && (
+              <p className="whitespace-pre-line">{madnessTooltipContent}</p>
+            )}
+            {item.tooltip}
+          </>
+        ) : (
+          item.tooltip
+        );
       return (
-        <TooltipProvider key={item.id}>
-          <Tooltip open={mobileTooltip.isTooltipOpen(item.id)}>
-            <div
-              data-testid={item.testId}
-              className={`mr-2 flex leading-tight justify-between items-center transition-all duration-300 ${isAnimated
-                  ? "text-green-400"
+        <div
+          key={item.id}
+          data-testid={item.testId}
+          className={`mr-2 flex leading-tight justify-between items-center transition-all duration-300 ${isAnimated
+              ? "text-green-400"
+              : isDecreaseAnimated
+                ? "text-red-400"
+                : isMaxAnimated
+                  ? "text-yellow-400"
+                  : ""}`}
+        >
+          <TooltipWrapper
+            tooltip={tooltipContent}
+            tooltipId={item.id}
+            disabled
+            tooltipContentClassName="max-w-xs"
+            onMouseEnter={() => handleTooltipHover(item.id)}
+            onMouseLeave={() => handleTooltipLeave(item.id)}
+            className={globalTooltip.isMobile ? "cursor-pointer inline-block" : "inline-block"}
+          >
+            {labelContent}
+          </TooltipWrapper>
+          {![
+            "Relics",
+            "Tools",
+            "Weapons",
+            "Clothing",
+            "Buildings",
+            "Fortifications",
+            "Blessings",
+            "Schematics",
+            "Books",
+            "Fellowship",
+            "Stats",
+          ].includes(title) && (
+            <span
+              className={`font-mono ${isAnimated
+                  ? "text-green-800 font-bold"
                   : isDecreaseAnimated
-                    ? "text-red-400"
+                    ? "text-red-800 font-bold"
                     : isMaxAnimated
-                      ? "text-yellow-400"
-                      : ""
-                }`}
+                      ? "text-yellow-800 font-bold"
+                      : isMadness
+                        ? madnessClasses
+                        : ""}`}
             >
-              <TooltipTrigger asChild>
-                <span
-                  onClick={(e) => handleMobileTooltipClick(item.id, e)}
-                  onContextMenu={(e) => handleMobileTooltipContextMenu(item.id, e)}
-                  onMouseEnter={() => handleTooltipHover(item.id)}
-                  onMouseLeave={() => handleTooltipLeave(item.id)}
-                  className={mobileTooltip.isMobile ? "cursor-pointer" : ""}
-                >
-                  {labelContent}
-                </span>
-              </TooltipTrigger>
-              {![
-                "Relics",
-                "Tools",
-                "Weapons",
-                "Clothing",
-                "Buildings",
-                "Fortifications",
-                "Blessings",
-                "Schematics",
-                "Books",
-                "Fellowship",
-                "Stats",
-              ].includes(title) && (
-                  <span
-                    className={`font-mono ${isAnimated
-                        ? "text-green-800 font-bold"
-                        : isDecreaseAnimated
-                          ? "text-red-800 font-bold"
-                          : isMaxAnimated
-                            ? "text-yellow-800 font-bold"
-                            : isMadness
-                              ? madnessClasses
-                              : ""
-                      }`}
-                  >
-                    {displayValue}
-                  </span>
-                )}
-              {title === "Stats" && (
-                <span
-                  className={`font-mono ${isAnimated
-                      ? "text-green-800 font-bold"
-                      : isDecreaseAnimated
-                        ? "text-red-800 font-bold"
-                        : isMaxAnimated
-                          ? "text-yellow-800 font-bold"
-                          : isMadness
-                            ? madnessClasses
-                            : ""
-                    }`}
-                >
-                  {displayValue}
-                </span>
-              )}
-            </div>
-            <TooltipContent className="max-w-xs">
-              {typeof item.tooltip === "string" ? (
-                <>
-                  {isMadnessTooltip && (
-                    <p className="whitespace-pre-line">
-                      {madnessTooltipContent}
-                    </p>
-                  )}
-                  {item.tooltip}
-                </>
-              ) : (
-                item.tooltip
-              )}
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+              {displayValue}
+            </span>
+          )}
+          {title === "Stats" && (
+            <span
+              className={`font-mono ${isAnimated
+                  ? "text-green-800 font-bold"
+                  : isDecreaseAnimated
+                    ? "text-red-800 font-bold"
+                    : isMaxAnimated
+                      ? "text-yellow-800 font-bold"
+                      : isMadness
+                        ? madnessClasses
+                        : ""}`}
+            >
+              {displayValue}
+            </span>
+          )}
+        </div>
       );
     }
 
@@ -710,44 +669,23 @@ export default function SidePanelSection({
   return (
     <div className={`py-1.5 border-border ${className}`}>
       {titleTooltip ? (
-        <TooltipProvider>
-          <Tooltip open={mobileTooltip.isTooltipOpen(tooltipKey)}>
-            <TooltipTrigger asChild>
-              <h3
-                className={cn(
-                  "text-xs font-medium tracking-wide mb-0.5",
-                  mobileTooltip.isMobile ? "cursor-pointer" : "",
-                  !hoveredTooltips[tooltipKey] && "new-item-pulse",
-                )}
-                onClick={(e) => {
-                  mobileTooltip.handleTooltipClick(tooltipKey, e);
-                  if (!hoveredTooltips[tooltipKey]) {
-                    setHoveredTooltip(tooltipKey, true);
-                  }
-                }}
-                onContextMenu={(e) => {
-                  if (mobileTooltip.isMobile) {
-                    e.preventDefault();
-                    mobileTooltip.handleTooltipClick(tooltipKey, e);
-                    if (!hoveredTooltips[tooltipKey]) {
-                      setHoveredTooltip(tooltipKey, true);
-                    }
-                  }
-                }}
-                onMouseEnter={() => {
-                  if (!hoveredTooltips[tooltipKey]) {
-                    setHoveredTooltip(tooltipKey, true);
-                  }
-                }}
-              >
-                {title}
-              </h3>
-            </TooltipTrigger>
-            <TooltipContent>
-              <div className="text-xs">{titleTooltip}</div>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+        <TooltipWrapper
+          tooltip={<div className="text-xs">{titleTooltip}</div>}
+          tooltipId={tooltipKey}
+          disabled
+          onMouseEnter={() => {
+            if (!hoveredTooltips[tooltipKey]) {
+              setHoveredTooltip(tooltipKey, true);
+            }
+          }}
+          className={cn(
+            "inline-block",
+            globalTooltip.isMobile ? "cursor-pointer" : "",
+            !hoveredTooltips[tooltipKey] && "new-item-pulse",
+          )}
+        >
+          <h3 className="text-xs font-medium tracking-wide mb-0.5">{title}</h3>
+        </TooltipWrapper>
       ) : (
         <h3 className="text-xs font-medium tracking-wide mb-0.5">{title}</h3>
       )}

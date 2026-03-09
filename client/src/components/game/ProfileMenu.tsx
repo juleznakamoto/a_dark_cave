@@ -9,12 +9,8 @@ import { buildGameState } from "@/game/stateHelpers";
 import { logger } from "@/lib/logger";
 import { LogEntry } from "@/game/rules/events";
 import { formatSaveTimestamp } from "@/lib/utils";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { TooltipWrapper } from "@/components/game/TooltipWrapper";
+import { DropdownMenuItemWithTooltip } from "@/components/game/DropdownMenuItemWithTooltip";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,8 +18,6 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import { useMobileTooltip } from "@/hooks/useMobileTooltip";
-import { useIsMobile } from "@/hooks/use-mobile";
 import AuthDialog from "./AuthDialog";
 import LeaderboardDialog from "./LeaderboardDialog";
 import { RestartGameDialog } from "./RestartGameDialog";
@@ -78,8 +72,6 @@ export default function ProfileMenu() {
     devMode,
   } = useGameStore();
 
-  const mobileTooltip = useMobileTooltip();
-  const isMobile = useIsMobile();
   const [accountDropdownOpen, setAccountDropdownOpen] = useState(false);
   const [authDialogOpen, setAuthDialogOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState<{
@@ -356,33 +348,29 @@ export default function ProfileMenu() {
                   {currentUser.email}
                 </div>
                 <DropdownMenuSeparator />
-                <TooltipProvider>
-                  <Tooltip delayDuration={300}>
-                    <TooltipTrigger asChild>
-                      <div>
-                        <DropdownMenuItem
-                          onClick={handleManualSave}
-                          disabled={cooldowns["manualSave"] > 0}
-                          className={
-                            cooldowns["manualSave"] > 0
-                              ? "opacity-50 cursor-not-allowed"
-                              : ""
-                          }
-                        >
-                          Save
-                        </DropdownMenuItem>
-                      </div>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <div className="text-xs">
-                        <p>Game auto-saves every minute</p>
-                        {lastSaved && (
-                          <p className="mt-1">Last Save: {lastSaved}</p>
-                        )}
-                      </div>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
+                <DropdownMenuItemWithTooltip
+                  tooltip={
+                    <div className="text-xs">
+                      <p>Game auto-saves every minute</p>
+                      {lastSaved && (
+                        <p className="mt-1">Last Save: {lastSaved}</p>
+                      )}
+                    </div>
+                  }
+                  tooltipId="manual-save-info"
+                  disabled={cooldowns["manualSave"] > 0}
+                  onTooltipAction={() => {
+                    handleManualSave();
+                    setAccountDropdownOpen(false);
+                  }}
+                  className={
+                    cooldowns["manualSave"] > 0
+                      ? "opacity-50 cursor-not-allowed"
+                      : ""
+                  }
+                >
+                  Save
+                </DropdownMenuItemWithTooltip>
                 <DropdownMenuSeparator />
               </>
             )}
@@ -412,61 +400,46 @@ export default function ProfileMenu() {
               </>
             )}
 
-            <TooltipProvider>
-              <Tooltip
-                open={
-                  isMobile
-                    ? mobileTooltip.isTooltipOpen("referral-info")
-                    : undefined
-                }
-              >
-                <TooltipTrigger asChild>
-                  <div
-                    onClick={(e) => {
-                      if (isMobile) {
-                        mobileTooltip.handleTooltipClick("referral-info", e);
-                      }
-                    }}
-                  >
-                    <DropdownMenuItem
-                      onClick={handleCopyInviteLink}
-                      disabled={!currentUser || (referralCount || 0) >= 10}
-                      className={
-                        !currentUser || (referralCount || 0) >= 10
-                          ? "opacity-50 cursor-not-allowed"
-                          : ""
-                      }
-                    >
-                      <div className="flex items-center justify-between w-full">
-                        <div className="flex items-center gap-1">
-                          <span>Invite&nbsp;</span>
-                          <img
-                            src="/person-add.png"
-                            alt=""
-                            className="w-4 h-4 opacity-90"
-                          />
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <span className="font-semibold">&nbsp;+250 Gold</span>
-                          {(referralCount || 0) >= 10 && (
-                            <span className="text-xs text-muted-foreground">
-                              ✓
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    </DropdownMenuItem>
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent className="max-w-xs">
-                  <p className="text-xs">
-                    Invite your friends and both of you will receive 250 gold.
-                    You can invite up to 10 friends. ({referralCount || 0}/10
-                    invited).
-                  </p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            <DropdownMenuItemWithTooltip
+              tooltip={
+                <p className="text-xs">
+                  Invite your friends and both of you will receive 250 gold.
+                  You can invite up to 10 friends. ({referralCount || 0}/10
+                  invited).
+                </p>
+              }
+              tooltipId="referral-info"
+              disabled={!currentUser || (referralCount || 0) >= 10}
+              onTooltipAction={() => {
+                handleCopyInviteLink();
+                setAccountDropdownOpen(false);
+              }}
+              tooltipContentClassName="max-w-xs"
+              className={
+                !currentUser || (referralCount || 0) >= 10
+                  ? "opacity-50 cursor-not-allowed"
+                  : ""
+              }
+            >
+              <div className="flex items-center justify-between w-full">
+                <div className="flex items-center gap-1">
+                  <span>Invite&nbsp;</span>
+                  <img
+                    src="/person-add.png"
+                    alt=""
+                    className="w-4 h-4 opacity-90"
+                  />
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="font-semibold">&nbsp;+250 Gold</span>
+                  {(referralCount || 0) >= 10 && (
+                    <span className="text-xs text-muted-foreground">
+                      ✓
+                    </span>
+                  )}
+                </div>
+              </div>
+            </DropdownMenuItemWithTooltip>
             <DropdownMenuSeparator />
             {SOCIAL_PLATFORMS.map((platform, index) => {
               const isClaimed =
@@ -547,34 +520,23 @@ export default function ProfileMenu() {
       </div>
       <div className="flex-wrap justify-end max-w-[54px] flex items-center gap-1">
         {!currentUser && (
-          <TooltipProvider>
-            <Tooltip
-              open={
-                isMobile
-                  ? mobileTooltip.isTooltipOpen("login-reminder")
-                  : undefined
-              }
-            >
-              <TooltipTrigger asChild>
-                <div
-                  className="w-5 h-5 rounded-full border border-orange-500 flex items-center justify-center cursor-pointer opacity-80 hover:opacity-100 transition-opacity"
-                  onClick={(e) => {
-                    if (isMobile) {
-                      mobileTooltip.handleTooltipClick("login-reminder", e);
-                    }
-                    setAccountDropdownOpen(true);
-                    setAuthNotificationSeen(true);
-                  }}
-                >
-                  <span className="text-orange-500 text-xs font-bold">!</span>
-                </div>
-              </TooltipTrigger>
-              <TooltipContent>
+          <TooltipWrapper
+            tooltip={
+              <>
                 <p className="text-xs">Game progress is auto-saved locally.</p>
                 <p className="text-xs">Sign in to save in the cloud.</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+              </>
+            }
+            tooltipId="login-reminder"
+            disabled={false}
+            onClick={() => {
+              setAccountDropdownOpen(true);
+              setAuthNotificationSeen(true);
+            }}
+            className="w-5 h-5 rounded-full border border-orange-500 flex items-center justify-center cursor-pointer opacity-80 hover:opacity-100 transition-opacity"
+          >
+            <span className="text-orange-500 text-xs font-bold">!</span>
+          </TooltipWrapper>
         )}
         {(hasWonAnyGame || devMode) && (
           <Button

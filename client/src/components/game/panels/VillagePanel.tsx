@@ -28,13 +28,7 @@ import { capitalizeWords, formatNumber } from "@/lib/utils";
 import { useState, useEffect, useRef } from "react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { useMobileTooltip } from "@/hooks/useMobileTooltip";
+import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import {
   SuccessParticles,
   useFeedFireParticles,
@@ -66,7 +60,6 @@ export default function VillagePanel() {
     callMerchant,
   } = useGameStore();
   const state = useGameStore.getState();
-  const mobileTooltip = useMobileTooltip();
 
   // Particle effect state
   const feedFireButtonRef = useRef<HTMLButtonElement>(null);
@@ -743,40 +736,26 @@ export default function VillagePanel() {
               <div className="flex items-center gap-2">
                 <h3 className="text-xs font-medium text-foreground">Produce</h3>
                 {/* Production Cycle */}
-                <TooltipProvider>
-                  <Tooltip
-                    open={mobileTooltip.isTooltipOpen(
-                      "production-cycle-progress",
-                    )}
-                  >
-                    <TooltipTrigger asChild>
-                      <div
-                        className="text-xs flex items-center cursor-pointer"
-                        onClick={(e) =>
-                          mobileTooltip.handleTooltipClick(
-                            "production-cycle-progress",
-                            e,
-                          )
-                        }
-                      >
-                        <div className="relative inline-flex items-center">
-                          <CircularProgress
-                            value={loopProgress}
-                            size={18}
-                            strokeWidth={2}
-                            className="text-gray-400"
-                          />
-                        </div>
-                      </div>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <div className="text-xs whitespace-pre-line">
-                        <span className="font-semibold">Production Cycle</span>
-                        {`\nNext production in ${productionSecondsRemaining} seconds`}
-                      </div>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
+                <TooltipWrapper
+                  tooltip={
+                    <div className="text-xs whitespace-pre-line">
+                      <span className="font-semibold">Production Cycle</span>
+                      {`\nNext production in ${productionSecondsRemaining} seconds`}
+                    </div>
+                  }
+                  tooltipId="production-cycle-progress"
+                  disabled
+                  className="text-xs flex items-center cursor-pointer"
+                >
+                  <div className="relative inline-flex items-center">
+                    <CircularProgress
+                      value={loopProgress}
+                      size={18}
+                      strokeWidth={2}
+                      className="text-gray-400"
+                    />
+                  </div>
+                </TooltipWrapper>
                 {/* Feast Timer and other production effects */}
                 {(() => {
                   const feastState = useGameStore.getState().feastState;
@@ -807,304 +786,224 @@ export default function VillagePanel() {
                     <>
                       {/* Feast/Great Feast Indicator */}
                       {(isGreatFeast || isFeast) && (
-                        <TooltipProvider>
-                          <Tooltip
-                            open={mobileTooltip.isTooltipOpen("feast-progress")}
-                          >
-                            <TooltipTrigger asChild>
-                              <div
-                                className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
-                                onClick={(e) =>
-                                  mobileTooltip.handleTooltipClick(
-                                    "feast-progress",
-                                    e,
-                                  )
-                                }
-                              >
-                                <div className="relative inline-flex items-center gap-1 mt-[0px]">
-                                  <CircularProgress
-                                    value={feastProgress}
-                                    size={18}
-                                    strokeWidth={2}
-                                    className={
-                                      isGreatFeast
-                                        ? "text-orange-600"
-                                        : "text-yellow-600"
-                                    }
-                                  />
-                                  <span
-                                    className={`absolute inset-0 flex items-center justify-center font-extrabold ${isGreatFeast ? "text-[12px] -mt-[0px] text-orange-600" : "text-[12px] -mt-[1px] text-yellow-600"}`}
-                                  >
-                                    {isGreatFeast ? "✦" : "⟡"}
-                                  </span>
-                                </div>
-                              </div>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <div className="text-xs">
-                                {feastTooltip.getContent(state)}
-                              </div>
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
+                        <TooltipWrapper
+                          tooltip={
+                            <div className="text-xs">
+                              {feastTooltip.getContent(state)}
+                            </div>
+                          }
+                          tooltipId="feast-progress"
+                          disabled
+                          className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
+                        >
+                          <div className="relative inline-flex items-center gap-1 mt-[0px]">
+                            <CircularProgress
+                              value={feastProgress}
+                              size={18}
+                              strokeWidth={2}
+                              className={
+                                isGreatFeast
+                                  ? "text-orange-600"
+                                  : "text-yellow-600"
+                              }
+                            />
+                            <span
+                              className={`absolute inset-0 flex items-center justify-center font-extrabold ${isGreatFeast ? "text-[12px] -mt-[0px] text-orange-600" : "text-[12px] -mt-[1px] text-yellow-600"}`}
+                            >
+                              {isGreatFeast ? "✦" : "⟡"}
+                            </span>
+                          </div>
+                        </TooltipWrapper>
                       )}
 
                       {/* Curse Indicator */}
                       {isCursed && (
-                        <TooltipProvider>
-                          <Tooltip
-                            open={mobileTooltip.isTooltipOpen("curse-progress")}
-                          >
-                            <TooltipTrigger asChild>
-                              <div
-                                className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
-                                onClick={(e) =>
-                                  mobileTooltip.handleTooltipClick(
-                                    "curse-progress",
-                                    e,
-                                  )
-                                }
-                              >
-                                <div className="relative inline-flex items-center gap-1 mt-[0px]">
-                                  <CircularProgress
-                                    value={(() => {
-                                      const timeRemaining = Math.max(
-                                        0,
-                                        curseState.endTime - Date.now(),
-                                      );
-                                      const totalDuration =
-                                        (10 + 5 * state.CM) * 60 * 1000;
-                                      const elapsed =
-                                        totalDuration - timeRemaining;
-                                      return Math.min(
-                                        100,
-                                        (elapsed / totalDuration) * 100,
-                                      );
-                                    })()}
-                                    size={18}
-                                    strokeWidth={2}
-                                    className="text-purple-600"
-                                  />
-                                  <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[12px] -mt-[0px] text-purple-600">
-                                    ✶
-                                  </span>
-                                </div>
-                              </div>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <div className="text-xs whitespace-pre-line">
-                                {curseTooltip.getContent(state)}
-                              </div>
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
+                        <TooltipWrapper
+                          tooltip={
+                            <div className="text-xs whitespace-pre-line">
+                              {curseTooltip.getContent(state)}
+                            </div>
+                          }
+                          tooltipId="curse-progress"
+                          disabled
+                          className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
+                        >
+                          <div className="relative inline-flex items-center gap-1 mt-[0px]">
+                            <CircularProgress
+                              value={(() => {
+                                const timeRemaining = Math.max(
+                                  0,
+                                  curseState.endTime - Date.now(),
+                                );
+                                const totalDuration =
+                                  (10 + 5 * state.CM) * 60 * 1000;
+                                const elapsed =
+                                  totalDuration - timeRemaining;
+                                return Math.min(
+                                  100,
+                                  (elapsed / totalDuration) * 100,
+                                );
+                              })()}
+                              size={18}
+                              strokeWidth={2}
+                              className="text-purple-600"
+                            />
+                            <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[12px] -mt-[0px] text-purple-600">
+                              ✶
+                            </span>
+                          </div>
+                        </TooltipWrapper>
                       )}
 
                       {/* Disgust Indicator */}
                       {isDisgusted && (
-                        <TooltipProvider>
-                          <Tooltip
-                            open={mobileTooltip.isTooltipOpen(
-                              "disgust-progress",
-                            )}
-                          >
-                            <TooltipTrigger asChild>
-                              <div
-                                className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
-                                onClick={(e) =>
-                                  mobileTooltip.handleTooltipClick(
-                                    "disgust-progress",
-                                    e,
-                                  )
-                                }
-                              >
-                                <div className="relative inline-flex items-center gap-1 mt-[0px]">
-                                  <CircularProgress
-                                    value={(() => {
-                                      const timeRemaining = Math.max(
-                                        0,
-                                        disgustState.endTime - Date.now(),
-                                      );
-                                      const totalDuration = state.cruelMode
-                                        ? 20 * 60 * 1000
-                                        : 10 * 60 * 1000;
-                                      const elapsed =
-                                        totalDuration - timeRemaining;
-                                      return Math.min(
-                                        100,
-                                        (elapsed / totalDuration) * 100,
-                                      );
-                                    })()}
-                                    size={18}
-                                    strokeWidth={2}
-                                    className="text-green-800"
-                                  />
-                                  <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[12px] -mt-[0px] text-green-800">
-                                    ⥉
-                                  </span>
-                                </div>
-                              </div>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <div className="text-xs whitespace-pre-line">
-                                {disgustTooltip.getContent(state)}
-                              </div>
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
+                        <TooltipWrapper
+                          tooltip={
+                            <div className="text-xs whitespace-pre-line">
+                              {disgustTooltip.getContent(state)}
+                            </div>
+                          }
+                          tooltipId="disgust-progress"
+                          disabled
+                          className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
+                        >
+                          <div className="relative inline-flex items-center gap-1 mt-[0px]">
+                            <CircularProgress
+                              value={(() => {
+                                const timeRemaining = Math.max(
+                                  0,
+                                  disgustState.endTime - Date.now(),
+                                );
+                                const totalDuration = state.cruelMode
+                                  ? 20 * 60 * 1000
+                                  : 10 * 60 * 1000;
+                                const elapsed =
+                                  totalDuration - timeRemaining;
+                                return Math.min(
+                                  100,
+                                  (elapsed / totalDuration) * 100,
+                                );
+                              })()}
+                              size={18}
+                              strokeWidth={2}
+                              className="text-green-800"
+                            />
+                            <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[12px] -mt-[0px] text-green-800">
+                              ⥉
+                            </span>
+                          </div>
+                        </TooltipWrapper>
                       )}
 
                       {/* Mining Boost Indicator */}
                       {isMiningBoosted && (
-                        <TooltipProvider>
-                          <Tooltip
-                            open={mobileTooltip.isTooltipOpen(
-                              "mining-boost-progress",
-                            )}
-                          >
-                            <TooltipTrigger asChild>
-                              <div
-                                className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
-                                onClick={(e) =>
-                                  mobileTooltip.handleTooltipClick(
-                                    "mining-boost-progress",
-                                    e,
-                                  )
-                                }
-                              >
-                                <div className="relative inline-flex items-center gap-1 mt-[0px]">
-                                  <CircularProgress
-                                    value={(() => {
-                                      const boostDuration = 30 * 60 * 1000;
-                                      const boostElapsed =
-                                        boostDuration -
-                                        (miningBoostState.endTime - Date.now());
-                                      return (
-                                        (boostElapsed / boostDuration) * 100
-                                      );
-                                    })()}
-                                    size={18}
-                                    strokeWidth={2}
-                                    className="text-amber-600"
-                                  />
-                                  <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[7px] -mt-[0px] text-amber-600">
-                                    ⛰
-                                  </span>
-                                </div>
-                              </div>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <div className="text-xs whitespace-pre-line">
-                                {miningBoostTooltip.getContent(state)}
-                              </div>
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
+                        <TooltipWrapper
+                          tooltip={
+                            <div className="text-xs whitespace-pre-line">
+                              {miningBoostTooltip.getContent(state)}
+                            </div>
+                          }
+                          tooltipId="mining-boost-progress"
+                          disabled
+                          className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
+                        >
+                          <div className="relative inline-flex items-center gap-1 mt-[0px]">
+                            <CircularProgress
+                              value={(() => {
+                                const boostDuration = 30 * 60 * 1000;
+                                const boostElapsed =
+                                  boostDuration -
+                                  (miningBoostState.endTime - Date.now());
+                                return (
+                                  (boostElapsed / boostDuration) * 100
+                                );
+                              })()}
+                              size={18}
+                              strokeWidth={2}
+                              className="text-amber-600"
+                            />
+                            <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[7px] -mt-[0px] text-amber-600">
+                              ⛰
+                            </span>
+                          </div>
+                        </TooltipWrapper>
                       )}
 
                       {/* Heartfire Indicator */}
                       {state.heartfireState?.level > 0 && (
-                        <TooltipProvider>
-                          <Tooltip
-                            open={mobileTooltip.isTooltipOpen(
-                              "heartfire-progress",
-                            )}
-                          >
-                            <TooltipTrigger asChild>
-                              <div
-                                className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
-                                onClick={(e) =>
-                                  mobileTooltip.handleTooltipClick(
-                                    "heartfire-progress",
-                                    e,
-                                  )
-                                }
-                              >
-                                <div className="relative inline-flex items-center gap-1 mt-[0px]">
-                                  <CircularProgress
-                                    value={(() => {
-                                      const now = Date.now();
-                                      const lastDecrease =
-                                        state.heartfireState
-                                          .lastLevelDecrease || 0;
-                                      const elapsed = now - lastDecrease;
-                                      return Math.min(
-                                        100,
-                                        (elapsed / 90000) * 100,
-                                      );
-                                    })()}
-                                    size={18}
-                                    strokeWidth={2}
-                                    className="text-red-700"
-                                  />
-                                  <span className="absolute inset-0 flex items-center justify-center font-extrabold text-red-700">
-                                    {getHeartfireSymbol(
-                                      state.heartfireState.level,
-                                    )}
-                                  </span>
-                                </div>
-                              </div>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <div className="text-xs">
-                                {heartfireTooltip.getContent(state)}
-                              </div>
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
+                        <TooltipWrapper
+                          tooltip={
+                            <div className="text-xs">
+                              {heartfireTooltip.getContent(state)}
+                            </div>
+                          }
+                          tooltipId="heartfire-progress"
+                          disabled
+                          className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
+                        >
+                          <div className="relative inline-flex items-center gap-1 mt-[0px]">
+                            <CircularProgress
+                              value={(() => {
+                                const now = Date.now();
+                                const lastDecrease =
+                                  state.heartfireState
+                                    .lastLevelDecrease || 0;
+                                const elapsed = now - lastDecrease;
+                                return Math.min(
+                                  100,
+                                  (elapsed / 90000) * 100,
+                                );
+                              })()}
+                              size={18}
+                              strokeWidth={2}
+                              className="text-red-700"
+                            />
+                            <span className="absolute inset-0 flex items-center justify-center font-extrabold text-red-700">
+                              {getHeartfireSymbol(
+                                state.heartfireState.level,
+                              )}
+                            </span>
+                          </div>
+                        </TooltipWrapper>
                       )}
 
                       {/* Frostfall Indicator */}
                       {isFrostfall && (
-                        <TooltipProvider>
-                          <Tooltip
-                            open={mobileTooltip.isTooltipOpen(
-                              "frostfall-progress",
-                            )}
-                          >
-                            <TooltipTrigger asChild>
-                              <div
-                                className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
-                                onClick={(e) =>
-                                  mobileTooltip.handleTooltipClick(
-                                    "frostfall-progress",
-                                    e,
-                                  )
-                                }
-                              >
-                                <div className="relative inline-flex items-center gap-1 mt-[0px]">
-                                  <CircularProgress
-                                    value={(() => {
-                                      const frostfallDuration =
-                                        (10 + 5 * state.CM) * 60 * 1000; // Same duration as curse, adjust if needed
-                                      const timeRemaining = Math.max(
-                                        0,
-                                        frostfallState.endTime - Date.now(),
-                                      );
-                                      const elapsed =
-                                        frostfallDuration - timeRemaining;
-                                      return Math.min(
-                                        100,
-                                        (elapsed / frostfallDuration) * 100,
-                                      );
-                                    })()}
-                                    size={18}
-                                    strokeWidth={2}
-                                    className="text-blue-600" // Blue color for frostfall
-                                  />
-                                  <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[12px] -mt-[0px] text-blue-600">
-                                    ✼
-                                  </span>
-                                </div>
-                              </div>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <div className="text-xs">
-                                {frostfallTooltip.getContent(state)}
-                              </div>
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
+                        <TooltipWrapper
+                          tooltip={
+                            <div className="text-xs">
+                              {frostfallTooltip.getContent(state)}
+                            </div>
+                          }
+                          tooltipId="frostfall-progress"
+                          disabled
+                          className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
+                        >
+                          <div className="relative inline-flex items-center gap-1 mt-[0px]">
+                            <CircularProgress
+                              value={(() => {
+                                const frostfallDuration =
+                                  (10 + 5 * state.CM) * 60 * 1000;
+                                const timeRemaining = Math.max(
+                                  0,
+                                  frostfallState.endTime - Date.now(),
+                                );
+                                const elapsed =
+                                  frostfallDuration - timeRemaining;
+                                return Math.min(
+                                  100,
+                                  (elapsed / frostfallDuration) * 100,
+                                );
+                              })()}
+                              size={18}
+                              strokeWidth={2}
+                              className="text-blue-600"
+                            />
+                            <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[12px] -mt-[0px] text-blue-600">
+                              ✼
+                            </span>
+                          </div>
+                        </TooltipWrapper>
                       )}
 
                       {/* Fog Indicator */}
@@ -1116,53 +1015,41 @@ export default function VillagePanel() {
                         if (!isFog) return null;
 
                         return (
-                          <TooltipProvider>
-                            <Tooltip
-                              open={mobileTooltip.isTooltipOpen("fog-progress")}
-                            >
-                              <TooltipTrigger asChild>
-                                <div
-                                  className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
-                                  onClick={(e) =>
-                                    mobileTooltip.handleTooltipClick(
-                                      "fog-progress",
-                                      e,
-                                    )
-                                  }
-                                >
-                                  <div className="relative inline-flex items-center gap-1 mt-[0px]">
-                                    <CircularProgress
-                                      value={(() => {
-                                        const fogDuration =
-                                          fogState.duration || 5 * 60 * 1000;
-                                        const timeRemaining = Math.max(
-                                          0,
-                                          fogState.endTime - Date.now(),
-                                        );
-                                        const elapsed =
-                                          fogDuration - timeRemaining;
-                                        return Math.min(
-                                          100,
-                                          (elapsed / fogDuration) * 100,
-                                        );
-                                      })()}
-                                      size={18}
-                                      strokeWidth={2}
-                                      className="text-gray-500"
-                                    />
-                                    <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[12px] -mt-[1px] text-gray-500">
-                                      ≋
-                                    </span>
-                                  </div>
-                                </div>
-                              </TooltipTrigger>
-                              <TooltipContent>
-                                <div className="text-xs">
-                                  {fogTooltip.getContent(state)}
-                                </div>
-                              </TooltipContent>
-                            </Tooltip>
-                          </TooltipProvider>
+                          <TooltipWrapper
+                            tooltip={
+                              <div className="text-xs">
+                                {fogTooltip.getContent(state)}
+                              </div>
+                            }
+                            tooltipId="fog-progress"
+                            disabled
+                            className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
+                          >
+                            <div className="relative inline-flex items-center gap-1 mt-[0px]">
+                              <CircularProgress
+                                value={(() => {
+                                  const fogDuration =
+                                    fogState.duration || 5 * 60 * 1000;
+                                  const timeRemaining = Math.max(
+                                    0,
+                                    fogState.endTime - Date.now(),
+                                  );
+                                  const elapsed =
+                                    fogDuration - timeRemaining;
+                                  return Math.min(
+                                    100,
+                                    (elapsed / fogDuration) * 100,
+                                  );
+                                })()}
+                                size={18}
+                                strokeWidth={2}
+                                className="text-gray-500"
+                              />
+                              <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[12px] -mt-[1px] text-gray-500">
+                                ≋
+                              </span>
+                            </div>
+                          </TooltipWrapper>
                         );
                       })()}
 
@@ -1171,42 +1058,28 @@ export default function VillagePanel() {
                         const totalMadness = getTotalMadness(state);
                         if (totalMadness < 10) return null;
                         return (
-                          <TooltipProvider>
-                            <Tooltip
-                              open={mobileTooltip.isTooltipOpen(
-                                "madness-production",
-                              )}
-                            >
-                              <TooltipTrigger asChild>
-                                <div
-                                  className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
-                                  onClick={(e) =>
-                                    mobileTooltip.handleTooltipClick(
-                                      "madness-production",
-                                      e,
-                                    )
-                                  }
-                                >
-                                  <div className="relative inline-flex items-center gap-1 mt-[0px]">
-                                    <CircularProgress
-                                      value={100}
-                                      size={18}
-                                      strokeWidth={2}
-                                      className="text-violet-600"
-                                    />
-                                    <span className="absolute inset-0 flex items-center justify-center font-normal text-[12px] -mt-[0px] text-violet-600">
-                                      ✺
-                                    </span>
-                                  </div>
-                                </div>
-                              </TooltipTrigger>
-                              <TooltipContent>
-                                <div className="text-xs">
-                                  {madnessProductionTooltip.getContent(state)}
-                                </div>
-                              </TooltipContent>
-                            </Tooltip>
-                          </TooltipProvider>
+                          <TooltipWrapper
+                            tooltip={
+                              <div className="text-xs">
+                                {madnessProductionTooltip.getContent(state)}
+                              </div>
+                            }
+                            tooltipId="madness-production"
+                            disabled
+                            className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
+                          >
+                            <div className="relative inline-flex items-center gap-1 mt-[0px]">
+                              <CircularProgress
+                                value={100}
+                                size={18}
+                                strokeWidth={2}
+                                className="text-violet-600"
+                              />
+                              <span className="absolute inset-0 flex items-center justify-center font-normal text-[12px] -mt-[0px] text-violet-600">
+                                ✺
+                              </span>
+                            </div>
+                          </TooltipWrapper>
                         );
                       })()}
                     </>

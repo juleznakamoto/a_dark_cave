@@ -1,5 +1,5 @@
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useIsMobile } from "./use-mobile";
 
 export function useMobileTooltip() {
@@ -25,7 +25,7 @@ export function useMobileTooltip() {
 
   const handleTooltipClick = (id: string, e: React.MouseEvent) => {
     if (!isMobile) return;
-    
+
     e.stopPropagation();
     setOpenTooltipId(openTooltipId === id ? null : id);
   };

@@ -18,13 +18,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-
+import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useGameStore } from "@/game/state";
 import {
@@ -37,7 +31,6 @@ import { supabase } from "@/lib/supabase";
 import { getCurrentUser } from "@/game/auth";
 import { SHOP_ITEMS } from "../../../../shared/shopItems";
 import { tailwindToHex } from "@/lib/tailwindColors";
-import { useMobileTooltip } from "@/hooks/useMobileTooltip";
 
 const stripePublishableKey = import.meta.env.PROD
   ? import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY_PROD
@@ -320,7 +313,6 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
   const setTimedEventTab = useGameStore((state) => state.setTimedEventTab);
   const activatedPurchases = gameState.activatedPurchases || {};
   const { toast } = useToast();
-  const mobileTooltip = useMobileTooltip();
 
   // Reset filter when dialog closes
   useEffect(() => {
@@ -1055,82 +1047,48 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                               <CardTitle className="!m-0 text-md pr-6 items-center gap-1">
                                 {item.name}
                                 {item.id === "skull_lantern" && (
-                                  <TooltipProvider>
-                                    <Tooltip
-                                      open={mobileTooltip.isTooltipOpen(
-                                        "skull-lantern-info",
-                                      )}
-                                    >
-                                      <TooltipTrigger asChild>
-                                        <button
-                                          className="pl-2 inline-flex items-center justify-center w-4 h-4 rounded-full text-white-500 text-sm font-bold"
-                                          onClick={(e) => {
-                                            e.stopPropagation();
-                                            if (mobileTooltip.isMobile) {
-                                              mobileTooltip.handleTooltipClick(
-                                                "skull-lantern-info",
-                                                e,
-                                              );
-                                            }
-                                          }}
-                                        >
-                                          ⓘ
-                                        </button>
-                                      </TooltipTrigger>
-                                      <TooltipContent className="max-w-xs border border-amber-600">
-                                        <div className="text-xs">
-                                          <div className="font-bold mb-1">
-                                            Skull Lantern
-                                          </div>
-
-                                          <div className="mt-1 space-y-0.5">
-                                            <div>Cave Explore: +200% Bonus</div>
-                                            <div>Cave Explore: -5s Cooldown</div>
-                                            <div>Mining: +200% Bonus</div>
-                                            <div>Mining: -5s Cooldown</div>
-                                          </div>
+                                  <TooltipWrapper
+                                    tooltip={
+                                      <div className="text-xs">
+                                        <div className="font-bold mb-1">
+                                          Skull Lantern
                                         </div>
-                                      </TooltipContent>
-                                    </Tooltip>
-                                  </TooltipProvider>
+                                        <div className="mt-1 space-y-0.5">
+                                          <div>Cave Explore: +200% Bonus</div>
+                                          <div>Cave Explore: -5s Cooldown</div>
+                                          <div>Mining: +200% Bonus</div>
+                                          <div>Mining: -5s Cooldown</div>
+                                        </div>
+                                      </div>
+                                    }
+                                    tooltipId="skull-lantern-info"
+                                    disabled
+                                    tooltipContentClassName="max-w-xs border border-amber-600"
+                                    className="pl-2 inline-flex items-center justify-center w-4 h-4 rounded-full text-white-500 text-sm font-bold cursor-pointer"
+                                  >
+                                    <span>ⓘ</span>
+                                  </TooltipWrapper>
                                 )}
                                 {item.id === "tarnished_compass" && (
-                                  <TooltipProvider>
-                                    <Tooltip
-                                      open={mobileTooltip.isTooltipOpen(
-                                        "tarnished-compass-info",
-                                      )}
-                                    >
-                                      <TooltipTrigger asChild>
-                                        <button
-                                          className="pl-2 inline-flex items-center justify-center w-4 h-4 rounded-full text-white-500 text-sm font-bold"
-                                          onClick={(e) => {
-                                            e.stopPropagation();
-                                            if (mobileTooltip.isMobile) {
-                                              mobileTooltip.handleTooltipClick(
-                                                "tarnished-compass-info",
-                                                e,
-                                              );
-                                            }
-                                          }}
-                                        >
-                                          ⓘ
-                                        </button>
-                                      </TooltipTrigger>
-                                      <TooltipContent className="max-w-[14rem] border border-amber-600">
-                                        <div className="text-xs">
-                                          <div className="font-bold mb-1">
-                                            Tarnished Compass
-                                          </div>
-
-                                          <div className="mt-1 space-y-0.5">
-                                            <div>+5 Luck</div>
-                                            <div>10% chance to double gains from all actions</div>
-                                          </div>
+                                  <TooltipWrapper
+                                    tooltip={
+                                      <div className="text-xs">
+                                        <div className="font-bold mb-1">
+                                          Tarnished Compass
                                         </div>
-                                      </TooltipContent>
-                                    </Tooltip>
-                                  </TooltipProvider>
+                                        <div className="mt-1 space-y-0.5">
+                                          <div>+5 Luck</div>
+                                          <div>10% chance to double gains from all actions</div>
+                                        </div>
+                                      </div>
+                                    }
+                                    tooltipId="tarnished-compass-info"
+                                    disabled
+                                    tooltipContentClassName="max-w-[14rem] border border-amber-600"
+                                    className="pl-2 inline-flex items-center justify-center w-4 h-4 rounded-full text-white-500 text-sm font-bold cursor-pointer"
+                                  >
+                                    <span>ⓘ</span>
+                                  </TooltipWrapper>
                                 )}
                               </CardTitle>
                               <CardDescription className="!m-0 text-bold flex flex-wrap items-center gap-1">
@@ -1156,36 +1114,20 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                         {formatPrice(displayPrice)}
                                       </span>
                                       {item.price > 0 && tradersGratitudeActive && (
-                                        <TooltipProvider>
-                                          <Tooltip
-                                            open={mobileTooltip.isTooltipOpen(
-                                              `traders-gratitude-${item.id}`,
-                                            )}
-                                          >
-                                            <TooltipTrigger asChild>
-                                              <button
-                                                className="pl-1 inline-flex items-center justify-center w-4 h-4 rounded-full text-muted-foreground text-sm font-bold hover:text-foreground"
-                                                onClick={(e) => {
-                                                  e.stopPropagation();
-                                                  if (mobileTooltip.isMobile) {
-                                                    mobileTooltip.handleTooltipClick(
-                                                      `traders-gratitude-${item.id}`,
-                                                      e,
-                                                    );
-                                                  }
-                                                }}
-                                              >
-                                                ⓘ
-                                              </button>
-                                            </TooltipTrigger>
-                                            <TooltipContent className="max-w-xs border border-amber-600">
-                                              <div className="text-xs">
-                                                25% additional Discount due to
-                                                Trader&apos;s Gratitude Event
-                                              </div>
-                                            </TooltipContent>
-                                          </Tooltip>
-                                        </TooltipProvider>
+                                        <TooltipWrapper
+                                          tooltip={
+                                            <div className="text-xs">
+                                              25% additional Discount due to
+                                              Trader&apos;s Gratitude Event
+                                            </div>
+                                          }
+                                          tooltipId={`traders-gratitude-${item.id}`}
+                                          disabled
+                                          tooltipContentClassName="max-w-xs border border-amber-600"
+                                          className="pl-1 inline-flex items-center justify-center w-4 h-4 rounded-full text-muted-foreground text-sm font-bold hover:text-foreground cursor-pointer"
+                                        >
+                                          <span>ⓘ</span>
+                                        </TooltipWrapper>
                                       )}
                                     </>
                                   );
