@@ -14,11 +14,8 @@ export function getUnclaimedAchievementIds(): string[] {
 // Re-export chart configs for convenience
 export { buildingChartConfig, itemChartConfig, actionChartConfig };
 
-// Re-export chart component
-export { default as AchievementRingChart } from "./AchievementRingChart";
-
 // Re-export types
-export type { AchievementChartConfig, AchievementSegment } from "./AchievementRingChart";
+export type { AchievementChartConfig, AchievementSegment } from "./achievementTypes";
 
 // Re-export achievement colors (SSoT for circle + bar charts)
 export {

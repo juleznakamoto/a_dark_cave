@@ -1,5 +1,5 @@
 import { useGameStore } from "@/game/state";
-import type { AchievementChartConfig } from "./AchievementRingChart";
+import type { AchievementChartConfig } from "./achievementTypes";
 
 export interface AchievementRow {
   segmentId: string;

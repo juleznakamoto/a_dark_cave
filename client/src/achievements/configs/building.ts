@@ -1,17 +1,9 @@
 import { useGameStore } from "@/game/state";
-import { tailwindToHex } from "@/lib/tailwindColors";
-import { AchievementChartConfig } from "../AchievementRingChart";
+import type { AchievementChartConfig } from "../achievementTypes";
 import type { GameState } from "@shared/schema";
 
-// Segment colors for building achievements
-const COMPLETED_COLOR = tailwindToHex("blue-800");
-const COMPLETED_STROKE_COLOR = tailwindToHex("blue-900");
-
-// Building achievement chart configuration
 export const buildingChartConfig: AchievementChartConfig = {
   idPrefix: "building",
-  completedColor: COMPLETED_COLOR,
-  completedStrokeColor: COMPLETED_STROKE_COLOR,
   centerSymbol: "▨",
   rings: [
     // First ring: Huts

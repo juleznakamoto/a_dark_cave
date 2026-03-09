@@ -1,10 +1,6 @@
 import { useGameStore } from "@/game/state";
-import { tailwindToHex } from "@/lib/tailwindColors";
-import { AchievementChartConfig } from "../AchievementRingChart";
+import type { AchievementChartConfig } from "../achievementTypes";
 import type { GameState } from "@shared/schema";
-
-const COMPLETED_COLOR = tailwindToHex("red-800");
-const COMPLETED_STROKE_COLOR = tailwindToHex("red-900");
 
 function getItemCount(itemKeys: string[]): number {
   const state = useGameStore.getState();
@@ -24,8 +20,6 @@ function getItemCount(itemKeys: string[]): number {
 
 export const itemChartConfig: AchievementChartConfig = {
   idPrefix: "item",
-  completedColor: COMPLETED_COLOR,
-  completedStrokeColor: COMPLETED_STROKE_COLOR,
   centerSymbol: "❖",
   rings: [
     // First ring: Tools

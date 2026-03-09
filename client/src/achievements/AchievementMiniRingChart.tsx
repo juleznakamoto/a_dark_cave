@@ -1,7 +1,7 @@
 import { useGameStore } from "@/game/state";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { tailwindToHex } from "@/lib/tailwindColors";
-import type { AchievementChartConfig } from "./AchievementRingChart";
+import type { AchievementChartConfig } from "./achievementTypes";
 import { INCOMPLETE_COLOR, COMPLETE_COLOR, BACKGROUND_COLOR_HEX } from "./achievementColors";
 
 interface Props {
@@ -65,7 +65,7 @@ export default function AchievementMiniRingChart({ config, isActive = false }: P
               const isClaimed = claimedAchievements.includes(achievementId);
               const isFull = currentCount >= seg.maxCount;
               const fill = isFull
-                ? (COMPLETE_COLOR[config.idPrefix] ?? config.completedColor)
+                ? (COMPLETE_COLOR[config.idPrefix] ?? tailwindToHex("gray-400/50"))
                 : (INCOMPLETE_COLOR[config.idPrefix] ?? tailwindToHex("gray-400/50"));
 
               return {
