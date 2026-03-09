@@ -1,9 +1,8 @@
 import { useGameStore } from "@/game/state";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { GameState } from "@shared/schema";
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useRef } from "react";
 import { tailwindToHex } from "@/lib/tailwindColors";
-import { useIsMobile } from "@/hooks/use-mobile";
 
 const SEGMENT_COLOR = tailwindToHex("gray-400/70");
 const BACKGROUND_COLOR = tailwindToHex("neutral-800");
@@ -42,26 +41,26 @@ export default function AchievementRingChart({ config }: Props) {
   );
   const BTP = useGameStore((state) => state.BTP || 0);
 
-  const [hoveredSegment, setHoveredSegment] = useState<{
-    id: string;
-    name: string;
-    currentCount: number;
-    maxCount: number;
-  } | null>(null);
-  const [mousePosition, setMousePosition] = useState<{
-    x: number;
-    y: number;
-  } | null>(null);
-  const [clickedSegment, setClickedSegment] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const holdTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const tooltipOpenedByHoldRef = useRef(false);
-  const isMobile = useIsMobile();
 
-  // Ring sizing parameters
-  const startRadius = 20;
-  const ringSize = 5;
-  const spaceBetweenRings = 7;
+  // Ring sizing parameters (enlarged for outward labels)
+  const startRadius = 32;
+  const ringSize = 8;
+  const spaceBetweenRings = 10;
+  const labelOffset = 14;
+
+  // Max label radius for outermost ring (building config has 5 rings)
+  const maxLabelRadius =
+    startRadius +
+    (config.rings.length - 1) * (ringSize + spaceBetweenRings) +
+    ringSize +
+    labelOffset;
+
+  // ViewBox must extend beyond center to fit labels; center stays at (104, 120)
+  const viewBoxPad = maxLabelRadius + 8; // +8 for text width margin
+  const viewBoxMinX = 104 - viewBoxPad;
+  const viewBoxMinY = 120 - viewBoxPad;
+  const viewBoxSize = viewBoxPad * 2;
 
   const getPaddingAngle = (ringIndex: number) => Math.max(2, 14 - ringIndex * 2);
   const getStartAngle = (paddingAngle: number) => 90 - paddingAngle / 2;
@@ -146,6 +145,10 @@ export default function AchievementRingChart({ config }: Props) {
             : segmentAngles.progressAngle - paddingAngle * index;
 
         const isFull = currentCount >= seg.maxCount;
+        const geometricEnd =
+          segmentAngles.endAngle - (index > 0 ? paddingAngle * index : 0);
+        const midAngle =
+          (adjustedStartAngle + geometricEnd) / 2;
 
         return {
           name: seg.label,
@@ -157,6 +160,7 @@ export default function AchievementRingChart({ config }: Props) {
           maxCount: seg.maxCount,
           segmentId: seg.segmentId,
           reward: seg.reward,
+          midAngle,
         };
       });
 
@@ -175,134 +179,11 @@ export default function AchievementRingChart({ config }: Props) {
     })
     .filter((ring) => ring !== null);
 
-  // Find which segment contains a point (for touch hold-to-show)
-  const findSegmentAtPosition = useCallback(
-    (clientX: number, clientY: number) => {
-      const rect = containerRef.current?.getBoundingClientRect();
-      if (!rect) return null;
-      const cx = rect.width / 2;
-      const cy = rect.height / 2;
-      const x = clientX - rect.left - cx;
-      const y = clientY - rect.top - cy;
-      const radius = Math.sqrt(x * x + y * y);
-      // Recharts: 0° = right, 90° = top (CCW). Screen y is down, so angle = atan2(-y, x)
-      const angleDeg =
-        (Math.atan2(-y, x) * 180) / Math.PI;
-      const normalizedAngle = angleDeg < 0 ? angleDeg + 360 : angleDeg;
-
-      for (const ring of processedRings) {
-        for (const segment of ring.progressSegments) {
-          const { startAngle, endAngle } = segment;
-          const inRadius =
-            radius >= ring.innerRadius - 2 && radius <= ring.outerRadius + 2;
-          const inAngle =
-            startAngle >= endAngle
-              ? normalizedAngle >= endAngle && normalizedAngle <= startAngle
-              : normalizedAngle >= endAngle || normalizedAngle <= startAngle;
-          if (inRadius && inAngle) {
-            return {
-              id: segment.segmentId,
-              name: segment.name,
-              currentCount: segment.currentCount,
-              maxCount: segment.maxCount,
-              x: clientX - rect.left,
-              y: clientY - rect.top,
-            };
-          }
-        }
-      }
-      return null;
-    },
-    [processedRings]
-  );
-
-  const handleTouchStart = useCallback(
-    (e: React.TouchEvent) => {
-      if (!isMobile) return;
-      const touch = e.touches[0];
-      if (!touch) return;
-      if (holdTimerRef.current) clearTimeout(holdTimerRef.current);
-      holdTimerRef.current = setTimeout(() => {
-        holdTimerRef.current = null;
-        const seg = findSegmentAtPosition(touch.clientX, touch.clientY);
-        if (seg) {
-          tooltipOpenedByHoldRef.current = true;
-          setHoveredSegment({
-            id: seg.id,
-            name: seg.name,
-            currentCount: seg.currentCount,
-            maxCount: seg.maxCount,
-          });
-          setMousePosition({ x: seg.x, y: seg.y });
-        }
-      }, 250);
-    },
-    [isMobile, findSegmentAtPosition]
-  );
-
-  const handleTouchEnd = useCallback(
-    (e: React.TouchEvent) => {
-      if (!isMobile) return;
-      if (holdTimerRef.current) {
-        clearTimeout(holdTimerRef.current);
-        holdTimerRef.current = null;
-      }
-      if (tooltipOpenedByHoldRef.current) {
-        e.preventDefault();
-        tooltipOpenedByHoldRef.current = false;
-      }
-    },
-    [isMobile]
-  );
-
-  const handleTouchCancel = useCallback(() => {
-    if (holdTimerRef.current) {
-      clearTimeout(holdTimerRef.current);
-      holdTimerRef.current = null;
-    }
-  }, []);
-
-  // Close tooltip when user taps elsewhere (matches centralized tooltip behavior)
-  useEffect(() => {
-    if (!hoveredSegment || !isMobile) return;
-    const handleOutside = (e: TouchEvent | MouseEvent) => {
-      const target = e.target as Node;
-      if (containerRef.current && !containerRef.current.contains(target)) {
-        setHoveredSegment(null);
-        setMousePosition(null);
-      }
-    };
-    document.addEventListener("touchstart", handleOutside, true);
-    document.addEventListener("click", handleOutside, true);
-    return () => {
-      document.removeEventListener("touchstart", handleOutside, true);
-      document.removeEventListener("click", handleOutside, true);
-    };
-  }, [hoveredSegment, isMobile]);
-
   return (
     <div
       ref={containerRef}
-      className="w-40 h-48 flex flex-col items-center justify-center relative"
+      className="w-52 h-60 flex flex-col items-center justify-center relative min-w-0"
       style={{ touchAction: "manipulation" }}
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
-      onTouchCancel={handleTouchCancel}
-      onMouseMove={(e) => {
-        if (hoveredSegment) {
-          const rect = containerRef.current?.getBoundingClientRect();
-          if (rect) {
-            setMousePosition({
-              x: e.clientX - rect.left,
-              y: e.clientY - rect.top,
-            });
-          }
-        }
-      }}
-      onMouseLeave={() => {
-        setHoveredSegment(null);
-        setMousePosition(null);
-      }}
     >
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
         <span className="text-xl text-neutral-400">{config.centerSymbol}</span>
@@ -345,7 +226,6 @@ export default function AchievementRingChart({ config }: Props) {
               const achievementId = `${config.idPrefix}-${segment.segmentId}`;
               const isClaimed = claimedAchievements.includes(achievementId);
               const isInteractive = segment.isFull && !isClaimed;
-              const showTooltip = true;
 
               const handleSegmentClick = () => {
                 if (isInteractive) {
@@ -371,9 +251,6 @@ export default function AchievementRingChart({ config }: Props) {
                       achievementId,
                     ],
                   }));
-
-                  setHoveredSegment(null);
-                  setClickedSegment(null);
                 }
               };
 
@@ -394,32 +271,8 @@ export default function AchievementRingChart({ config }: Props) {
                   isAnimationActive={false}
                   style={{
                     outline: "none",
-                    pointerEvents: showTooltip ? "auto" : "none",
+                    pointerEvents: "auto",
                     cursor: isInteractive ? "pointer" : "default",
-                  }}
-                  onMouseEnter={(e: any) => {
-                    if (showTooltip) {
-                      const rect =
-                        containerRef.current?.getBoundingClientRect();
-                      if (rect) {
-                        setHoveredSegment({
-                          id: segment.segmentId,
-                          name: segment.name,
-                          currentCount: segment.currentCount,
-                          maxCount: segment.maxCount,
-                        });
-                        setMousePosition({
-                          x: e.clientX - rect.left,
-                          y: e.clientY - rect.top,
-                        });
-                      }
-                    }
-                  }}
-                  onMouseLeave={() => {
-                    if (showTooltip && clickedSegment !== segment.segmentId) {
-                      setHoveredSegment(null);
-                      setMousePosition(null);
-                    }
                   }}
                   onClick={handleSegmentClick}
                 >
@@ -473,19 +326,42 @@ export default function AchievementRingChart({ config }: Props) {
         </PieChart>
       </ResponsiveContainer>
 
-      {/* Tooltip display for hovered segment */}
-      {hoveredSegment && mousePosition && (
-        <div
-          className="absolute bg-popover border rounded-md px-2 py-1 text-xs shadow-md z-50 pointer-events-none whitespace-nowrap"
-          style={{
-            left: `${mousePosition.x}px`,
-            top: `${mousePosition.y}px`,
-            transform: "translate(-50%, calc(-100% - 5px))",
-          }}
+      {/* Outward circular labels for each segment */}
+      <div className="absolute inset-0 pointer-events-none z-10 flex items-center justify-center">
+        <svg
+          className="w-full h-full"
+          viewBox={`${viewBoxMinX} ${viewBoxMinY} ${viewBoxSize} ${viewBoxSize}`}
+          preserveAspectRatio="xMidYMid meet"
         >
-          <div>{hoveredSegment.name}</div>
-        </div>
-      )}
+          {processedRings.map((ring, ringIndex) =>
+            ring.progressSegments.map((segment, segIndex) => {
+              const labelRadius = ring.outerRadius + labelOffset;
+              const angleRad = (segment.midAngle * Math.PI) / 180;
+              const cx = 104;
+              const cy = 120;
+              const x = cx + labelRadius * Math.cos(angleRad);
+              const y = cy - labelRadius * Math.sin(angleRad);
+              const rot = segment.midAngle;
+              const rotation =
+                rot > 90 && rot < 270 ? rot + 180 : rot;
+              return (
+                <text
+                  key={`label-${ringIndex}-${segIndex}`}
+                  x={x}
+                  y={y}
+                  textAnchor="middle"
+                  dominantBaseline="central"
+                  transform={`rotate(${rotation} ${x} ${y})`}
+                  className="fill-neutral-300 text-[10px] font-medium"
+                  style={{ fontSize: 10 }}
+                >
+                  {segment.name}
+                </text>
+              );
+            })
+          )}
+        </svg>
+      </div>
     </div>
   );
 }

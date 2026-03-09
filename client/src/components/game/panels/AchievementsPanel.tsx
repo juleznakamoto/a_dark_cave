@@ -20,7 +20,7 @@ class ChartErrorBoundary extends Component<
   render() {
     if (this.state.hasError) {
       return (
-        <div className="w-40 h-48 flex items-center justify-center text-xs text-neutral-500 text-center px-2">
+        <div className="w-52 h-60 flex items-center justify-center text-xs text-neutral-500 text-center px-2">
           Chart unavailable
         </div>
       );
@@ -31,8 +31,8 @@ class ChartErrorBoundary extends Component<
 
 export default function AchievementsPanel() {
   return (
-    <div className="mt-0 pr-4 overflow-hidden">
-      <div className="flex items-start flex-wrap gap-x-4 gap-y-0 overflow-hidden">
+    <div className="mt-0 pr-4 overflow-x-auto overflow-y-visible">
+      <div className="flex items-start flex-wrap gap-x-4 gap-y-4 overflow-visible">
         <ChartErrorBoundary>
           <div className="flex flex-col items-center">
             <BuildingProgressChart />
