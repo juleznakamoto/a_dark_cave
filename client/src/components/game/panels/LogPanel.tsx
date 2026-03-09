@@ -8,11 +8,11 @@ import { GAME_CONSTANTS } from "@/game/constants";
 type ExtendedLogEntry =
   | LogEntry
   | {
-      message: string;
-      type: "production";
-      id: string;
-      timestamp: number;
-    };
+    message: string;
+    type: "production";
+    id: string;
+    timestamp: number;
+  };
 
 const LOG_ENTRY_PULSE_MS = 30000;
 
@@ -95,13 +95,13 @@ function LogPanel() {
               let opacity = "";
               if (recentEntries.length >= GAME_CONSTANTS.LOG_MAX_ENTRIES) {
                 if (index === recentEntries.length - 1) {
-                  opacity = "opacity-20";
-                } else if (index === recentEntries.length - 2) {
-                  opacity = "opacity-40";
-                } else if (index === recentEntries.length - 3) {
                   opacity = "opacity-60";
-                } else if (index === recentEntries.length - 4) {
+                } else if (index === recentEntries.length - 2) {
+                  opacity = "opacity-70";
+                } else if (index === recentEntries.length - 3) {
                   opacity = "opacity-80";
+                } else if (index === recentEntries.length - 4) {
+                  opacity = "opacity-90";
                 }
               }
 

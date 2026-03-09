@@ -47,7 +47,7 @@ export default function AchievementRingChart({ config }: Props) {
   const startRadius = 32;
   const ringSize = 6;
   const spaceBetweenRings = 12;
-  const labelOffset = 22;
+  const labelOffset = 38;
 
   // Per-ring radius increment so labels on adjacent rings don't overlap when text overflows
   const labelRadiusIncrement = 8;
@@ -66,7 +66,7 @@ export default function AchievementRingChart({ config }: Props) {
   const viewBoxMinY = 120 - viewBoxPad;
   const viewBoxSize = viewBoxPad * 2;
 
-  const getPaddingAngle = (ringIndex: number) => Math.max(6, 30 - ringIndex * 2);
+  const getPaddingAngle = (ringIndex: number) => Math.max(6, 38 - ringIndex * 2);
   const getStartAngle = (paddingAngle: number) => 90 - paddingAngle / 2;
 
   // SVG arc path for textPath: 0° = right, 90° = top, angles CCW
@@ -377,10 +377,10 @@ export default function AchievementRingChart({ config }: Props) {
                 const cy = 120;
                 const reverse =
                   segment.midAngle > 90 && segment.midAngle < 270;
-                // Use 92% of segment arc to give long labels room while leaving padding
+                // Use full segment arc so long labels (e.g. "Advanced Shelter") fit
                 const segmentSpan =
                   segment.geometricStart - segment.geometricEnd;
-                const subSpan = segmentSpan * 0.92;
+                const subSpan = segmentSpan * 1.0;
                 const subStart = segment.midAngle + subSpan / 2;
                 const subEnd = segment.midAngle - subSpan / 2;
                 const d = describeArc(
