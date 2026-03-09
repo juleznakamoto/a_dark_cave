@@ -89,6 +89,7 @@ function LogPanel() {
       <ScrollAreaWithIndicator
         className="h-full w-full"
         showIndicatorWhen={recentEntries.length >= 8}
+        scrollAreaId="event-log"
       >
         <div className="px-3 relative ">
           <div ref={topRef} />

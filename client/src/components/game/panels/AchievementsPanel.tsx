@@ -101,8 +101,10 @@ function AchievementRowComponent({
 
 function AchievementTabContent({
   config,
+  tabId,
 }: {
   config: AchievementChartConfig;
+  tabId: string;
 }) {
   const claimedAchievements = useGameStore(
     (s) => s.claimedAchievements || []
@@ -117,7 +119,7 @@ function AchievementTabContent({
 
   return (
     <div className="flex-1 min-h-0 overflow-hidden flex flex-col w-96">
-      <ScrollAreaWithIndicator className="h-full w-full">
+      <ScrollAreaWithIndicator className="h-full w-full" scrollAreaId={`achievements-${tabId}`}>
         <div className="pr-5 pb-6 space-y-0">
           {rows.map((row) => (
             <AchievementRowComponent
@@ -160,13 +162,13 @@ export default function AchievementsPanel() {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="building" className="mt-0 flex-1 min-h-0 data-[state=inactive]:hidden flex flex-col overflow-hidden">
-          {activeTab === "building" && <AchievementTabContent config={buildingChartConfig} />}
+          {activeTab === "building" && <AchievementTabContent config={buildingChartConfig} tabId="building" />}
         </TabsContent>
         <TabsContent value="item" className="mt-0 flex-1 min-h-0 data-[state=inactive]:hidden flex flex-col overflow-hidden">
-          {activeTab === "item" && <AchievementTabContent config={itemChartConfig} />}
+          {activeTab === "item" && <AchievementTabContent config={itemChartConfig} tabId="item" />}
         </TabsContent>
         <TabsContent value="action" className="mt-0 flex-1 min-h-0 data-[state=inactive]:hidden flex flex-col overflow-hidden">
-          {activeTab === "action" && <AchievementTabContent config={actionChartConfig} />}
+          {activeTab === "action" && <AchievementTabContent config={actionChartConfig} tabId="action" />}
         </TabsContent>
       </Tabs>
     </div>

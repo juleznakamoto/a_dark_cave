@@ -8,6 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { ScrollAreaWithIndicator } from "@/components/ui/scroll-area-with-indicator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -34,6 +35,7 @@ interface LeaderboardTabProps {
   entries: LeaderboardEntry[];
   loading: boolean;
   lastUpdated: string | null;
+  tabId: string;
 }
 
 const formatTime = (ms: number) => {
@@ -43,7 +45,7 @@ const formatTime = (ms: number) => {
   return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`;
 };
 
-function LeaderboardTab({ entries, loading, lastUpdated }: LeaderboardTabProps) {
+function LeaderboardTab({ entries, loading, lastUpdated, tabId }: LeaderboardTabProps) {
 
   const getCrown = (index: number) => {
     if (index === 0)
@@ -64,11 +66,11 @@ function LeaderboardTab({ entries, loading, lastUpdated }: LeaderboardTabProps) 
         </div>
         <span className="font-semibold text-sm">Completion Time</span>
       </div>
-      <div
-        className="h-[400px] pr-4 flex-1 overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] overscroll-contain"
-        style={{ WebkitOverflowScrolling: "touch" }}
+      <ScrollAreaWithIndicator
+        className="h-[400px] flex-1"
+        scrollAreaId={`leaderboard-${tabId}`}
       >
-        <div className="space-y-2 pt-2">
+        <div className="space-y-2 pt-2 pr-4 pb-4">
           {loading ? (
             <div className="text-center py-8 text-muted-foreground">Loading...</div>
           ) : entries.length === 0 ? (
@@ -99,7 +101,7 @@ function LeaderboardTab({ entries, loading, lastUpdated }: LeaderboardTabProps) 
             })
           )}
         </div>
-      </div>
+      </ScrollAreaWithIndicator>
       {lastUpdated && (
         <div className="text-xs text-muted-foreground text-center pt-2 opacity-50">
           Last updated: {new Date(lastUpdated).toLocaleString()}
@@ -356,6 +358,7 @@ export default function LeaderboardDialog({
               entries={normalLeaderboard}
               loading={loading}
               lastUpdated={lastUpdated}
+              tabId="normal"
             />
           </TabsContent>
           <TabsContent value="cruel" className="flex-1 min-h-0 flex flex-col data-[state=inactive]:hidden">
@@ -363,6 +366,7 @@ export default function LeaderboardDialog({
               entries={cruelLeaderboard}
               loading={loading}
               lastUpdated={lastUpdated}
+              tabId="cruel"
             />
           </TabsContent>
         </Tabs>

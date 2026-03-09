@@ -231,6 +231,7 @@ interface GameStore extends GameState {
   ) => void;
   setFlag: (flag: keyof GameState["flags"], value: boolean) => void;
   setHoveredTooltip: (tooltipId: string, value: boolean) => void;
+  setScrollIndicatorSeen: (scrollAreaId: string) => void;
   initialize: (state: GameState) => void;
   restartGame: () => void;
   loadGame: () => Promise<void>;
@@ -1017,6 +1018,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
       hoveredTooltips: {
         ...state.hoveredTooltips,
         [tooltipId]: value,
+      },
+    }));
+  },
+
+  setScrollIndicatorSeen: (scrollAreaId: string) => {
+    set((state) => ({
+      scrollIndicatorSeen: {
+        ...(state.scrollIndicatorSeen || {}),
+        [scrollAreaId]: true,
       },
     }));
   },

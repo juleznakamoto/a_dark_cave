@@ -938,6 +938,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                     className={
                       !currentUser ? "h-[calc(80vh-260px)]" : "h-[calc(80vh-180px)]"
                     }
+                    scrollAreaId="shop-for-sale"
                   >
                     {" "}
                     <div className="pb-3 text-muted-foreground text-sm">
@@ -1213,6 +1214,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                     className={
                       !currentUser ? "h-[calc(80vh-250px)]" : "h-[calc(80vh-180px)]"
                     }
+                    scrollAreaId="shop-purchases"
                   >
                     {purchasedItems.length === 0 &&
                       Object.keys(gameState.feastActivations || {}).length === 0 ? ( // Changed feastPurchases to feastActivations

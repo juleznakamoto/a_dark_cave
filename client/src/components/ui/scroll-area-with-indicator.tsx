@@ -5,6 +5,7 @@ import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area";
 import { cn } from "@/lib/utils";
 import { ChevronDown } from "lucide-react";
 import { ScrollBar } from "./scroll-area";
+import { useGameStore } from "@/game/state";
 
 interface ScrollAreaWithIndicatorProps
   extends React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Root> {
@@ -12,6 +13,8 @@ interface ScrollAreaWithIndicatorProps
   showIndicatorWhen?: boolean;
   /** If true, indicator stays visible when scrolling (for testing) */
   persistIndicator?: boolean;
+  /** Unique ID for this scroll area - when provided, indicator is hidden permanently after first scroll (persisted) */
+  scrollAreaId?: string;
 }
 
 const ScrollAreaWithIndicator = React.forwardRef<
@@ -24,6 +27,7 @@ const ScrollAreaWithIndicator = React.forwardRef<
       children,
       showIndicatorWhen = true,
       persistIndicator = false,
+      scrollAreaId,
       ...props
     },
     ref
@@ -32,15 +36,24 @@ const ScrollAreaWithIndicator = React.forwardRef<
     const [showIndicator, setShowIndicator] = React.useState(true);
     const [isScrollable, setIsScrollable] = React.useState(false);
 
+    const scrollIndicatorSeen = useGameStore(
+      (s) => (s.scrollIndicatorSeen || {})[scrollAreaId ?? ""]
+    );
+    const setScrollIndicatorSeen = useGameStore((s) => s.setScrollIndicatorSeen);
+
     const checkScroll = React.useCallback(() => {
       const el = viewportRef.current;
       if (!el) return;
       const canScroll = el.scrollHeight > el.clientHeight;
       setIsScrollable(canScroll);
-      if (!persistIndicator && el.scrollTop > 8) {
-        setShowIndicator(false);
+      if (el.scrollTop > 8) {
+        if (scrollAreaId) {
+          setScrollIndicatorSeen(scrollAreaId);
+        } else if (!persistIndicator) {
+          setShowIndicator(false);
+        }
       }
-    }, [persistIndicator]);
+    }, [persistIndicator, scrollAreaId, setScrollIndicatorSeen]);
 
     React.useEffect(() => {
       const el = viewportRef.current;
@@ -55,8 +68,9 @@ const ScrollAreaWithIndicator = React.forwardRef<
       };
     }, [checkScroll]);
 
+    const hasBeenSeen = scrollAreaId ? scrollIndicatorSeen : !showIndicator;
     const shouldShow =
-      showIndicatorWhen && showIndicator && isScrollable;
+      showIndicatorWhen && !hasBeenSeen && isScrollable;
 
     return (
       <ScrollAreaPrimitive.Root
