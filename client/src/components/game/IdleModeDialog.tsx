@@ -632,7 +632,6 @@ export default function IdleModeDialog() {
             const productionRate = isFocus
               ? null
               : productionPerInterval[resource] ?? 0;
-            const focusProductionLabel = devMode ? "1/5s" : "1/hour";
             const totalSinceStart = isFocus
               ? focusPoints
               : Math.floor(accumulatedResources[resource] || 0);
@@ -656,12 +655,10 @@ export default function IdleModeDialog() {
                   <AnimatedCounter value={Math.abs(currentAmount)} />
                 </div>
                 <div className="text-right font-mono text-gray-300 tabular-nums flex justify-end">
-                  {isFocus ? (
-                    `+${focusProductionLabel}`
-                  ) : (
+                  {!isFocus && (
                     <>
                       {(productionRate ?? 0) >= 0 ? "+" : ""}
-                      {(productionRate ?? 0).toFixed(1)}/15s
+                      {(productionRate ?? 0).toFixed(1)}
                     </>
                   )}
                 </div>
