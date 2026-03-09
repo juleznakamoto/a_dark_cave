@@ -2,7 +2,11 @@ import { useGameStore } from "@/game/state";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { tailwindToHex } from "@/lib/tailwindColors";
 import type { AchievementChartConfig } from "./achievementTypes";
-import { INCOMPLETE_COLOR, COMPLETE_COLOR, BACKGROUND_COLOR_HEX } from "./achievementColors";
+import {
+  INCOMPLETE_COLOR,
+  COMPLETE_COLOR,
+  BACKGROUND_COLOR_HEX,
+} from "./achievementColors";
 
 interface Props {
   config: AchievementChartConfig;
@@ -10,19 +14,21 @@ interface Props {
 }
 
 /** Compact label-free ring chart for tab triggers. */
-export default function AchievementMiniRingChart({ config, isActive = false }: Props) {
+export default function AchievementMiniRingChart({
+  config,
+  isActive = false,
+}: Props) {
   const state = useGameStore.getState();
-  const claimedAchievements = useGameStore(
-    (s) => s.claimedAchievements || []
-  );
+  const claimedAchievements = useGameStore((s) => s.claimedAchievements || []);
 
-  const size = 54;
+  const size = 58;
   const centerHoleRadius = 10; // Space for icon in center, rings start outside
-  const ringSize = 1.4;
-  const spaceBetweenRings = 1.5;
+  const ringSize = 1.5;
+  const spaceBetweenRings = 1.7;
 
   const ringConfigs = config.rings.map((segments, index) => {
-    const innerRadius = centerHoleRadius + index * (ringSize + spaceBetweenRings);
+    const innerRadius =
+      centerHoleRadius + index * (ringSize + spaceBetweenRings);
     const outerRadius = innerRadius + ringSize;
     return { segments, innerRadius, outerRadius };
   });
@@ -40,7 +46,7 @@ export default function AchievementMiniRingChart({ config, isActive = false }: P
           {ringConfigs.map((ring, ringIndex) => {
             const totalMaxCount = ring.segments.reduce(
               (sum, s) => sum + s.maxCount,
-              0
+              0,
             );
             const totalDegrees = 360 - ring.segments.length * paddingAngle;
 
@@ -56,7 +62,9 @@ export default function AchievementMiniRingChart({ config, isActive = false }: P
                 (totalDegrees * seg.maxCount) / totalMaxCount;
               const adjustedCount = currentCount === 1 ? 1.3 : currentCount;
               const progress =
-                seg.maxCount > 0 ? Math.min(adjustedCount / seg.maxCount, 1) : 0;
+                seg.maxCount > 0
+                  ? Math.min(adjustedCount / seg.maxCount, 1)
+                  : 0;
               const startA = currentStartAngle;
               const progressEndAngle = startA - segmentDegrees * progress;
               currentStartAngle = startA - segmentDegrees - paddingAngle;
@@ -65,8 +73,10 @@ export default function AchievementMiniRingChart({ config, isActive = false }: P
               const isClaimed = claimedAchievements.includes(achievementId);
               const isFull = currentCount >= seg.maxCount;
               const fill = isFull
-                ? (COMPLETE_COLOR[config.idPrefix] ?? tailwindToHex("gray-400/50"))
-                : (INCOMPLETE_COLOR[config.idPrefix] ?? tailwindToHex("gray-400/50"));
+                ? (COMPLETE_COLOR[config.idPrefix] ??
+                  tailwindToHex("gray-400/50"))
+                : (INCOMPLETE_COLOR[config.idPrefix] ??
+                  tailwindToHex("gray-400/50"));
 
               return {
                 startAngle: startA,
