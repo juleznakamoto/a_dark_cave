@@ -10,8 +10,10 @@ import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/game/state";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
 import { capitalizeWords } from "@/lib/utils";
+import cn from "clsx";
 import { getPopulationProduction } from "@/game/population";
 import { audioManager } from "@/lib/audio";
+import { BOMB_RESOURCES } from "@/game/resourceLimits";
 
 // Sleep upgrade configurations
 const SLEEP_LENGTH_UPGRADES = [
@@ -587,20 +589,16 @@ export default function IdleModeDialog() {
     PRODUCTION_SPEED_MULTIPLIER,
   );
 
-  // Build list of resources that have any production (positive or negative)
-  const resourcesWithProduction = new Set<string>(
-    Object.keys(productionPerInterval).filter(
-      (r) => productionPerInterval[r] !== 0,
-    ),
+  // Build list of resources that have production !== 0 (exclude bombs - they're not resources here)
+  const resourceKeys = Object.keys(productionPerInterval).filter(
+    (r) =>
+      productionPerInterval[r] !== 0 &&
+      !BOMB_RESOURCES.includes(r as (typeof BOMB_RESOURCES)[number]),
   );
-  Object.keys(accumulatedResources).forEach((r) =>
-    resourcesWithProduction.add(r),
-  );
-  if (focusPoints > 0) resourcesWithProduction.add("Focus");
-
-  const displayResources = [...resourcesWithProduction].sort((a, b) =>
+  const displayResources = [...resourceKeys].sort((a, b) =>
     a.localeCompare(b),
   );
+  if (focusPoints > 0) displayResources.push("Focus");
 
   const isTimeUp = remainingTime <= 0;
 
@@ -622,53 +620,56 @@ export default function IdleModeDialog() {
           </DialogDescription>
         </DialogHeader>
 
-        <div className="py-1">
-          <div className="space-y-1">
-            {displayResources.length > 0 && (
-              <div className="grid grid-cols-[1fr_auto_auto] gap-2 items-center text-xs text-muted-foreground pb-0.5 border-b">
-                <span>Resource</span>
-                <span>Rate/15s</span>
-                <span>Total</span>
-              </div>
-            )}
-            {displayResources.map((resource) => {
-              const isFocus = resource === "Focus";
-              const currentAmount = isFocus
-                ? focusPoints
-                : Math.floor(
-                    (initialResources[resource] || 0) +
-                      (accumulatedResources[resource] || 0),
-                  );
-              const productionRate = isFocus
-                ? 15 / (focusIntervalMs / 1000)
-                : productionPerInterval[resource] ?? 0;
-              const totalSinceStart = isFocus
-                ? focusPoints
-                : Math.floor(accumulatedResources[resource] || 0);
-              return (
-                <div
-                  key={resource}
-                  className="grid grid-cols-[1fr_auto_auto] gap-2 items-center text-sm"
-                >
-                  <span className="font-medium truncate">
-                    {capitalizeWords(resource)}:{" "}
-                    <span className="tabular-nums inline-flex">
-                      {currentAmount < 0 && "-"}
-                      <AnimatedCounter value={Math.abs(currentAmount)} />
-                    </span>
+        <div className="py-1.5 border-border text-xs">
+          {displayResources.map((resource) => {
+            const isFocus = resource === "Focus";
+            const currentAmount = isFocus
+              ? focusPoints
+              : Math.floor(
+                  (initialResources[resource] || 0) +
+                    (accumulatedResources[resource] || 0),
+                );
+            const productionRate = isFocus
+              ? 15 / (focusIntervalMs / 1000)
+              : productionPerInterval[resource] ?? 0;
+            const totalSinceStart = isFocus
+              ? focusPoints
+              : Math.floor(accumulatedResources[resource] || 0);
+            return (
+              <div
+                key={resource}
+                className={cn(
+                  "mr-2 flex leading-tight justify-between items-center",
+                  isFocus && "mt-1.5",
+                )}
+              >
+                <span className="text-gray-400 flex items-center gap-1">
+                  {capitalizeWords(resource)}
+                </span>
+                <span className="flex items-center gap-2 font-mono text-gray-300">
+                  <span className="min-w-[5rem] text-right inline-flex">
+                    {currentAmount < 0 && "-"}
+                    <AnimatedCounter value={Math.abs(currentAmount)} />
                   </span>
-                  <span className="tabular-nums text-muted-foreground">
+                  <span
+                    className={cn(
+                      "min-w-[3rem] text-right",
+                      productionRate > 0 && "text-green-600",
+                      productionRate < 0 && "text-red-600",
+                      productionRate === 0 && "text-muted-foreground",
+                    )}
+                  >
                     {productionRate >= 0 ? "+" : ""}
                     {productionRate.toFixed(1)}/15s
                   </span>
-                  <span className="tabular-nums min-w-[3ch] inline-flex">
+                  <span className="min-w-[3rem] text-right inline-flex">
                     {totalSinceStart >= 0 ? "+" : "-"}
                     <AnimatedCounter value={Math.abs(totalSinceStart)} />
                   </span>
-                </div>
-              );
-            })}
-          </div>
+                </span>
+              </div>
+            );
+          })}
         </div>
 
         <div className="flex justify-center">

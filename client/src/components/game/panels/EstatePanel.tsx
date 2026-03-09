@@ -407,6 +407,7 @@ export default function EstatePanel() {
             }
             tooltipId="sleep-button"
             disabled={!canActivateIdle}
+            onClick={canActivateIdle ? handleActivateIdleMode : undefined}
           >
             <div className="h-5 inline-block pb-1 text-xs font-medium text-foreground">
               <Button
