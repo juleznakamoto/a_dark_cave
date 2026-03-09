@@ -40,14 +40,14 @@ class ChartErrorBoundary extends Component<
 }
 
 const INDICATOR_CLASS_INCOMPLETE: Record<string, string> = {
-  building: "bg-blue-500/60",
-  item: "bg-red-500/60",
-  action: "bg-green-500/60",
+  building: "bg-blue-700/60",
+  item: "bg-red-700/60",
+  action: "bg-green-700/60",
 };
 const INDICATOR_CLASS_COMPLETE: Record<string, string> = {
-  building: "bg-blue-800",
-  item: "bg-red-800",
-  action: "bg-green-800",
+  building: "bg-blue-700",
+  item: "bg-red-700",
+  action: "bg-green-700",
 };
 
 function AchievementRowComponent({
