@@ -1,4 +1,4 @@
-import { Component, type ReactNode } from "react";
+import { Component, type ReactNode, useState } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ScrollAreaWithIndicator } from "@/components/ui/scroll-area-with-indicator";
 import { Progress } from "@/components/ui/progress";
@@ -134,9 +134,10 @@ function AchievementTabContent({
 }
 
 export default function AchievementsPanel() {
+  const [activeTab, setActiveTab] = useState("building");
   return (
     <div className="mt-0 pr-4 flex flex-col min-h-0 w-96">
-      <Tabs defaultValue="building" className="flex flex-col flex-1 min-h-0">
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="flex flex-col flex-1 min-h-0">
         <TabsList className="sticky top-0 z-10 bg-muted grid w-full grid-cols-3 mb-2 shrink-0 overflow-visible h-auto min-h-12 py-1">
           <TabsTrigger value="building" className="flex items-center justify-center gap-1.5 px-2 py-1 cursor-pointer overflow-visible min-h-[3rem]">
             <ChartErrorBoundary>
@@ -154,23 +155,14 @@ export default function AchievementsPanel() {
             </ChartErrorBoundary>
           </TabsTrigger>
         </TabsList>
-        <TabsContent
-          value="building"
-          className="flex-1 min-h-0 data-[state=inactive]:hidden flex flex-col"
-        >
-          <AchievementTabContent config={buildingChartConfig} />
+        <TabsContent value="building" className="flex-1 min-h-0 data-[state=inactive]:hidden flex flex-col">
+          {activeTab === "building" && <AchievementTabContent config={buildingChartConfig} />}
         </TabsContent>
-        <TabsContent
-          value="item"
-          className="flex-1 min-h-0 data-[state=inactive]:hidden flex flex-col"
-        >
-          <AchievementTabContent config={itemChartConfig} />
+        <TabsContent value="item" className="flex-1 min-h-0 data-[state=inactive]:hidden flex flex-col">
+          {activeTab === "item" && <AchievementTabContent config={itemChartConfig} />}
         </TabsContent>
-        <TabsContent
-          value="action"
-          className="flex-1 min-h-0 data-[state=inactive]:hidden flex flex-col"
-        >
-          <AchievementTabContent config={actionChartConfig} />
+        <TabsContent value="action" className="flex-1 min-h-0 data-[state=inactive]:hidden flex flex-col">
+          {activeTab === "action" && <AchievementTabContent config={actionChartConfig} />}
         </TabsContent>
       </Tabs>
     </div>
