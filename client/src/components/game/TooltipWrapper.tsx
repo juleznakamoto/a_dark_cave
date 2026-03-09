@@ -61,6 +61,13 @@ export function TooltipWrapper({
       className={className}
       data-tooltip-trigger-id={finalTooltipId}
       style={{ touchAction: "manipulation" }}
+      onClickCapture={(e) => {
+        // Prevent double execution: if we already ran the action via mouseup/touchend, block the click from reaching the child
+        if (actionExecutedRef.current) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      }}
       onClick={globalTooltip.isMobile ? (e) => {
         // Don't show tooltip if action was just executed
         if (actionExecutedRef.current) return;

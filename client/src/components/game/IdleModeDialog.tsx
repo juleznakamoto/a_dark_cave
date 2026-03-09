@@ -620,7 +620,7 @@ export default function IdleModeDialog() {
           </DialogDescription>
         </DialogHeader>
 
-        <div className="py-1.5 border-border text-xs">
+        <div className="py-1.5 border-border text-xs space-y-0.5">
           {displayResources.map((resource) => {
             const isFocus = resource === "Focus";
             const currentAmount = isFocus
@@ -630,8 +630,9 @@ export default function IdleModeDialog() {
                     (accumulatedResources[resource] || 0),
                 );
             const productionRate = isFocus
-              ? 15 / (focusIntervalMs / 1000)
+              ? null
               : productionPerInterval[resource] ?? 0;
+            const focusProductionLabel = devMode ? "1/5s" : "1/hour";
             const totalSinceStart = isFocus
               ? focusPoints
               : Math.floor(accumulatedResources[resource] || 0);
@@ -639,34 +640,41 @@ export default function IdleModeDialog() {
               <div
                 key={resource}
                 className={cn(
-                  "mr-2 flex leading-tight justify-between items-center",
+                  "grid gap-x-4 items-center",
                   isFocus && "mt-1.5",
                 )}
+                style={{
+                  gridTemplateColumns:
+                    "minmax(0,1fr) minmax(4rem,1fr) minmax(4rem,1fr) minmax(5rem,1.5fr)",
+                }}
               >
-                <span className="text-gray-400 flex items-center gap-1">
+                <div className="text-gray-400 truncate">
                   {capitalizeWords(resource)}
-                </span>
-                <span className="flex items-center gap-2 font-mono text-gray-300">
-                  <span className="min-w-[5rem] text-right inline-flex">
-                    {currentAmount < 0 && "-"}
-                    <AnimatedCounter value={Math.abs(currentAmount)} />
-                  </span>
-                  <span
-                    className={cn(
-                      "min-w-[3rem] text-right",
-                      productionRate > 0 && "text-green-600",
-                      productionRate < 0 && "text-red-600",
-                      productionRate === 0 && "text-muted-foreground",
-                    )}
-                  >
-                    {productionRate >= 0 ? "+" : ""}
-                    {productionRate.toFixed(1)}/15s
-                  </span>
-                  <span className="min-w-[3rem] text-right inline-flex">
-                    {totalSinceStart >= 0 ? "+" : "-"}
-                    <AnimatedCounter value={Math.abs(totalSinceStart)} />
-                  </span>
-                </span>
+                </div>
+                <div className="text-right font-mono text-gray-300 tabular-nums flex justify-end">
+                  {currentAmount < 0 && "-"}
+                  <AnimatedCounter value={Math.abs(currentAmount)} />
+                </div>
+                <div className="text-right font-mono text-gray-300 tabular-nums flex justify-end">
+                  {isFocus ? (
+                    `+${focusProductionLabel}`
+                  ) : (
+                    <>
+                      {(productionRate ?? 0) >= 0 ? "+" : ""}
+                      {(productionRate ?? 0).toFixed(1)}/15s
+                    </>
+                  )}
+                </div>
+                <div
+                  className={cn(
+                    "text-right font-mono tabular-nums flex justify-end",
+                    totalSinceStart > 0 && "text-green-600",
+                    totalSinceStart < 0 && "text-red-600",
+                  )}
+                >
+                  {totalSinceStart >= 0 ? "+" : "-"}
+                  <AnimatedCounter value={Math.abs(totalSinceStart)} />
+                </div>
               </div>
             );
           })}
