@@ -1,5 +1,6 @@
 import { Component, type ReactNode } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/game/state";
@@ -116,8 +117,8 @@ function AchievementTabContent({
   const indicatorClassComplete = INDICATOR_CLASS_COMPLETE[config.idPrefix] ?? "bg-red-800";
 
   return (
-    <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden scrollbar-hide pr-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-      <div className="space-y-0">
+    <ScrollArea className="flex-1 min-h-0">
+      <div className="pr-2 space-y-0">
         {rows.map((row) => (
           <AchievementRowComponent
             key={row.achievementId}
@@ -127,7 +128,8 @@ function AchievementTabContent({
           />
         ))}
       </div>
-    </div>
+      <ScrollBar orientation="vertical" />
+    </ScrollArea>
   );
 }
 

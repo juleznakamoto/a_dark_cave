@@ -82,7 +82,7 @@ export default function AchievementMiniRingChart({ config }: Props) {
               return {
                 startAngle: startA,
                 endAngle: progressEndAngle,
-                fill: isClaimed ? `${fill}4D` : fill,
+                fill,
                 key: achievementId,
               };
             });
