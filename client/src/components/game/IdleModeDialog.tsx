@@ -13,6 +13,7 @@ import { capitalizeWords } from "@/lib/utils";
 import cn from "clsx";
 import { getPopulationProduction } from "@/game/population";
 import { audioManager } from "@/lib/audio";
+import { resetProductionCycle } from "@/game/loop";
 import { BOMB_RESOURCES } from "@/game/resourceLimits";
 
 // Sleep upgrade configurations
@@ -547,6 +548,9 @@ export default function IdleModeDialog() {
 
     // Stop sleep sound when ending idle mode
     audioManager.stopLoopingSound("sleep", 1);
+
+    // Reset production cycle so the next tick starts a fresh 15-second interval
+    resetProductionCycle();
 
     // Clear persisted idle mode state completely - now reset startTime to 0
     useGameStore.setState({

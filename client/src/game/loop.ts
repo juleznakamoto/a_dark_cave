@@ -581,6 +581,12 @@ export function setLastGameLoadTime(time: number) {
   lastGameLoadTime = time;
 }
 
+/** Reset the production cycle so the next tick starts a fresh 15-second interval. Called when waking from sleep. */
+export function resetProductionCycle() {
+  lastProduction = performance.now();
+  productionPauseStartedAt = null;
+}
+
 export function stopGameLoop() {
   if (gameLoopId) {
     cancelAnimationFrame(gameLoopId);
