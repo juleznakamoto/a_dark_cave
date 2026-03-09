@@ -34,8 +34,15 @@ export const buildingChartConfig: AchievementChartConfig = {
         segmentId: "0-2",
         maxCount: 5,
         label: "Nordic Housing",
-        reward: 500,
+        reward: 250,
         getCount: (state: GameState) => state.buildings.longhouse || 0,
+      },
+      {
+        segmentId: "0-3",
+        maxCount: 5,
+        label: "Fur Tents",
+        reward: 250,
+        getCount: (state: GameState) => state.buildings.furTents || 0,
       },
     ],
     // Second ring: Basic crafting and trade buildings
@@ -47,8 +54,8 @@ export const buildingChartConfig: AchievementChartConfig = {
         reward: 250,
         getCount: (state: GameState) => {
           return (state.buildings.cabin || 0) +
-                 (state.buildings.greatCabin || 0) +
-                 (state.buildings.grandHunterLodge || 0);
+            (state.buildings.greatCabin || 0) +
+            (state.buildings.grandHunterLodge || 0);
         },
       },
       {
@@ -58,8 +65,8 @@ export const buildingChartConfig: AchievementChartConfig = {
         reward: 250,
         getCount: (state: GameState) => {
           return (state.buildings.blacksmith || 0) +
-                 (state.buildings.advancedBlacksmith || 0) +
-                 (state.buildings.grandBlacksmith || 0);
+            (state.buildings.advancedBlacksmith || 0) +
+            (state.buildings.grandBlacksmith || 0);
         },
       },
       {
@@ -69,8 +76,8 @@ export const buildingChartConfig: AchievementChartConfig = {
         reward: 250,
         getCount: (state: GameState) => {
           return (state.buildings.foundry || 0) +
-                 (state.buildings.primeFoundry || 0) +
-                 (state.buildings.masterworkFoundry || 0);
+            (state.buildings.primeFoundry || 0) +
+            (state.buildings.masterworkFoundry || 0);
         },
       },
       {
@@ -80,8 +87,8 @@ export const buildingChartConfig: AchievementChartConfig = {
         reward: 250,
         getCount: (state: GameState) => {
           return (state.buildings.tannery || 0) +
-                 (state.buildings.masterTannery || 0) +
-                 (state.buildings.highTannery || 0);
+            (state.buildings.masterTannery || 0) +
+            (state.buildings.highTannery || 0);
         },
       },
     ],
@@ -94,9 +101,9 @@ export const buildingChartConfig: AchievementChartConfig = {
         reward: 500,
         getCount: (state: GameState) => {
           return (state.buildings.shallowPit || 0) +
-                 (state.buildings.deepeningPit || 0) +
-                 (state.buildings.deepPit || 0) +
-                 (state.buildings.bottomlessPit || 0);
+            (state.buildings.deepeningPit || 0) +
+            (state.buildings.deepPit || 0) +
+            (state.buildings.bottomlessPit || 0);
         },
       },
     ],
@@ -109,8 +116,8 @@ export const buildingChartConfig: AchievementChartConfig = {
         reward: 250,
         getCount: (state: GameState) => {
           return (state.buildings.tradePost || 0) +
-                 (state.buildings.grandBazaar || 0) +
-                 (state.buildings.merchantsGuild || 0);
+            (state.buildings.grandBazaar || 0) +
+            (state.buildings.merchantsGuild || 0);
         },
       },
       {
@@ -120,11 +127,11 @@ export const buildingChartConfig: AchievementChartConfig = {
         reward: 500,
         getCount: (state: GameState) => {
           return (state.buildings.supplyHut || 0) +
-                 (state.buildings.storehouse || 0) +
-                 (state.buildings.fortifiedStorehouse || 0) +
-                 (state.buildings.villageWarehouse || 0) +
-                 (state.buildings.grandRepository || 0) +
-                 (state.buildings.greatVault || 0);
+            (state.buildings.storehouse || 0) +
+            (state.buildings.fortifiedStorehouse || 0) +
+            (state.buildings.villageWarehouse || 0) +
+            (state.buildings.grandRepository || 0) +
+            (state.buildings.greatVault || 0);
         },
       },
       {
@@ -134,8 +141,8 @@ export const buildingChartConfig: AchievementChartConfig = {
         reward: 250,
         getCount: (state: GameState) => {
           return (state.buildings.clerksHut || 0) +
-                 (state.buildings.scriptorium || 0) +
-                 (state.buildings.inkwardenAcademy || 0);
+            (state.buildings.scriptorium || 0) +
+            (state.buildings.inkwardenAcademy || 0);
         },
       },
       {
@@ -145,9 +152,9 @@ export const buildingChartConfig: AchievementChartConfig = {
         reward: 500,
         getCount: (state: GameState) => {
           return (state.buildings.altar || 0) +
-                 (state.buildings.shrine || 0) +
-                 (state.buildings.temple || 0) +
-                 (state.buildings.sanctum || 0);
+            (state.buildings.shrine || 0) +
+            (state.buildings.temple || 0) +
+            (state.buildings.sanctum || 0);
         },
       },
     ],
