@@ -300,6 +300,14 @@ export default function SidePanelSection({
       }
     };
 
+    // Handle tap-and-hold on mobile (contextmenu fires on long-press)
+    const handleMobileTooltipContextMenu = (id: string, e: React.MouseEvent) => {
+      if (mobileTooltip.isMobile) {
+        e.preventDefault();
+        handleMobileTooltipClick(id, e);
+      }
+    };
+
     // Check if this is a relic, weapon, tool, blessing, or schematic that has effect information
     const relicEffect = clothingEffects[item.id];
     const weaponEffect = weaponEffects[item.id];
@@ -499,6 +507,7 @@ export default function SidePanelSection({
               <TooltipTrigger asChild>
                 <span
                   onClick={(e) => handleMobileTooltipClick(item.id, e)}
+                  onContextMenu={(e) => handleMobileTooltipContextMenu(item.id, e)}
                   onMouseEnter={() => handleTooltipHover(item.id)}
                   onMouseLeave={() => handleTooltipLeave(item.id)}
                   className={mobileTooltip.isMobile ? "cursor-pointer" : ""}
@@ -545,6 +554,7 @@ export default function SidePanelSection({
               <TooltipTrigger asChild>
                 <span
                   onClick={(e) => handleMobileTooltipClick(item.id, e)}
+                  onContextMenu={(e) => handleMobileTooltipContextMenu(item.id, e)}
                   onMouseEnter={() => handleTooltipHover(item.id)}
                   onMouseLeave={() => handleTooltipLeave(item.id)}
                   className={mobileTooltip.isMobile ? "cursor-pointer" : ""}
@@ -580,6 +590,7 @@ export default function SidePanelSection({
               <TooltipTrigger asChild>
                 <span
                   onClick={(e) => handleMobileTooltipClick(item.id, e)}
+                  onContextMenu={(e) => handleMobileTooltipContextMenu(item.id, e)}
                   onMouseEnter={() => handleTooltipHover(item.id)}
                   onMouseLeave={() => handleTooltipLeave(item.id)}
                   className={mobileTooltip.isMobile ? "cursor-pointer" : ""}
@@ -615,6 +626,7 @@ export default function SidePanelSection({
               <TooltipTrigger asChild>
                 <span
                   onClick={(e) => handleMobileTooltipClick(item.id, e)}
+                  onContextMenu={(e) => handleMobileTooltipContextMenu(item.id, e)}
                   onMouseEnter={() => handleTooltipHover(item.id)}
                   onMouseLeave={() => handleTooltipLeave(item.id)}
                   className={mobileTooltip.isMobile ? "cursor-pointer" : ""}
@@ -711,6 +723,15 @@ export default function SidePanelSection({
                   mobileTooltip.handleTooltipClick(tooltipKey, e);
                   if (!hoveredTooltips[tooltipKey]) {
                     setHoveredTooltip(tooltipKey, true);
+                  }
+                }}
+                onContextMenu={(e) => {
+                  if (mobileTooltip.isMobile) {
+                    e.preventDefault();
+                    mobileTooltip.handleTooltipClick(tooltipKey, e);
+                    if (!hoveredTooltips[tooltipKey]) {
+                      setHoveredTooltip(tooltipKey, true);
+                    }
                   }
                 }}
                 onMouseEnter={() => {
