@@ -66,7 +66,7 @@ export default function AchievementRingChart({ config }: Props) {
   const viewBoxMinY = 120 - viewBoxPad;
   const viewBoxSize = viewBoxPad * 2;
 
-  const getPaddingAngle = (ringIndex: number) => Math.max(4, 18 - ringIndex * 2);
+  const getPaddingAngle = (ringIndex: number) => Math.max(5, 24 - ringIndex * 2);
   const getStartAngle = (paddingAngle: number) => 90 - paddingAngle / 2;
 
   // SVG arc path for textPath: 0° = right, 90° = top, angles CCW
@@ -407,7 +407,7 @@ export default function AchievementRingChart({ config }: Props) {
               <text
                 key={`label-${ringIndex}-${segIndex}`}
                 className="fill-neutral-300 font-medium"
-                style={{ fontSize: 8 }}
+                style={{ fontSize: 11 }}
               >
                 <textPath
                   href={`#arc-label-${config.idPrefix}-${ringIndex}-${segIndex}`}
