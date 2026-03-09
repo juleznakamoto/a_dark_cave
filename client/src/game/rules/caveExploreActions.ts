@@ -93,6 +93,8 @@ const caveItems = {
       logMessage: "You find a bag with 25 Torches.",
       category: "resources",
       stageOnly: true, // Only on Explore Cave, not inherited to later stages
+      condition: "!story.seen.torchBagFound",
+      alsoSet: { "story.seen.torchBagFound": true },
     },
   ],
   ventureDeeper: [
