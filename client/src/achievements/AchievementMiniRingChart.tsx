@@ -18,19 +18,20 @@ const COMPLETE_COLOR: Record<string, string> = {
 
 interface Props {
   config: AchievementChartConfig;
+  isActive?: boolean;
 }
 
 /** Compact label-free ring chart for tab triggers. */
-export default function AchievementMiniRingChart({ config }: Props) {
+export default function AchievementMiniRingChart({ config, isActive = false }: Props) {
   const state = useGameStore.getState();
   const claimedAchievements = useGameStore(
     (s) => s.claimedAchievements || []
   );
 
-  const size = 40;
-  const startRadius = 2;
-  const ringSize = 1.5;
-  const spaceBetweenRings = 1.5;
+  const size = 52;
+  const startRadius = 3;
+  const ringSize = 2;
+  const spaceBetweenRings = 2;
 
   const ringConfigs = config.rings.map((segments, index) => {
     const innerRadius = startRadius + index * (ringSize + spaceBetweenRings);
@@ -43,7 +44,7 @@ export default function AchievementMiniRingChart({ config }: Props) {
 
   return (
     <div
-      className="flex items-center justify-center shrink-0 overflow-visible p-1 pointer-events-none select-none"
+      className="relative flex items-center justify-center shrink-0 overflow-visible p-1 pointer-events-none select-none"
       style={{ width: size, height: size, minWidth: size }}
     >
       <ResponsiveContainer width="100%" height="100%">
@@ -129,6 +130,12 @@ export default function AchievementMiniRingChart({ config }: Props) {
           })}
         </PieChart>
       </ResponsiveContainer>
+      <span
+        className="absolute inset-0 flex items-center justify-center text-foreground text-xl font-medium"
+        style={{ opacity: isActive ? 1 : 0 }}
+      >
+        {config.centerSymbol}
+      </span>
     </div>
   );
 }

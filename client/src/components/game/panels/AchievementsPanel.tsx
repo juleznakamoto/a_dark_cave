@@ -144,20 +144,20 @@ export default function AchievementsPanel() {
         onValueChange={setActiveTab}
         className="flex h-full flex-col flex-1 min-h-0 overflow-hidden"
       >
-        <TabsList className="sticky top-0 z-10 bg-muted grid w-full grid-cols-3 mb-2 shrink-0 overflow-visible h-auto min-h-12 py-1">
-          <TabsTrigger value="building" className="flex items-center justify-center gap-1.5 px-2 py-1 cursor-pointer overflow-visible min-h-[3rem]">
+        <TabsList className="sticky top-0 z-10 bg-background grid w-full grid-cols-3 mb-2 shrink-0 overflow-visible h-auto min-h-12 py-1">
+          <TabsTrigger value="building" className="flex items-center justify-center gap-1.5 px-2 py-1 cursor-pointer overflow-visible min-h-[3rem] data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:text-foreground">
             <ChartErrorBoundary>
-              <AchievementMiniRingChart config={buildingChartConfig} />
+              <AchievementMiniRingChart config={buildingChartConfig} isActive={activeTab === "building"} />
             </ChartErrorBoundary>
           </TabsTrigger>
-          <TabsTrigger value="item" className="flex items-center justify-center gap-1.5 px-2 py-1 cursor-pointer overflow-visible min-h-[3rem]">
+          <TabsTrigger value="item" className="flex items-center justify-center gap-1.5 px-2 py-1 cursor-pointer overflow-visible min-h-[3rem] data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:text-foreground">
             <ChartErrorBoundary>
-              <AchievementMiniRingChart config={itemChartConfig} />
+              <AchievementMiniRingChart config={itemChartConfig} isActive={activeTab === "item"} />
             </ChartErrorBoundary>
           </TabsTrigger>
-          <TabsTrigger value="action" className="flex items-center justify-center gap-1.5 px-2 py-1 cursor-pointer overflow-visible min-h-[3rem]">
+          <TabsTrigger value="action" className="flex items-center justify-center gap-1.5 px-2 py-1 cursor-pointer overflow-visible min-h-[3rem] data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:text-foreground">
             <ChartErrorBoundary>
-              <AchievementMiniRingChart config={actionChartConfig} />
+              <AchievementMiniRingChart config={actionChartConfig} isActive={activeTab === "action"} />
             </ChartErrorBoundary>
           </TabsTrigger>
         </TabsList>
