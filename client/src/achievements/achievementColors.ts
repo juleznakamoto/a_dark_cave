@@ -6,7 +6,7 @@ export type AchievementCategoryId = "building" | "item" | "action";
 /** Background: circle charts (Recharts) use hex, bar charts use Tailwind. */
 const BACKGROUND_TAILWIND = "neutral-800";
 export const BACKGROUND_COLOR_HEX = tailwindToHex(BACKGROUND_TAILWIND);
-export const PROGRESS_BAR_BG_CLASS = "bg-neutral-700";
+export const PROGRESS_BAR_BG_CLASS = "bg-neutral-900";
 
 /**
  * Single source of truth for achievement category colors.

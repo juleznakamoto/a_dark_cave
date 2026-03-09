@@ -16,10 +16,10 @@ export default function AchievementMiniRingChart({ config, isActive = false }: P
     (s) => s.claimedAchievements || []
   );
 
-  const size = 50;
-  const centerHoleRadius = 8; // Space for icon in center, rings start outside
-  const ringSize = 1.3;
-  const spaceBetweenRings = 1.2;
+  const size = 54;
+  const centerHoleRadius = 10; // Space for icon in center, rings start outside
+  const ringSize = 1.4;
+  const spaceBetweenRings = 1.4;
 
   const ringConfigs = config.rings.map((segments, index) => {
     const innerRadius = centerHoleRadius + index * (ringSize + spaceBetweenRings);
