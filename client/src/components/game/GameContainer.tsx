@@ -698,7 +698,12 @@ export default function GameContainer() {
           </nav>
 
           {/* Action Panels */}
-          <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-hide pl-2 md:pl-4 min-h-0">
+          <div
+            className={`flex-1 overflow-x-hidden pl-2 md:pl-4 min-h-0 ${activeTab === "achievements"
+              ? "overflow-hidden"
+              : "overflow-y-auto scrollbar-hide"
+              }`}
+          >
             {activeTab === "cave" && <CavePanel />}
             {activeTab === "village" && <VillagePanel />}
             {activeTab === "forest" && <ForestPanel />}
