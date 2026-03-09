@@ -6,9 +6,14 @@ import type { AchievementChartConfig } from "./AchievementRingChart";
 const BACKGROUND_COLOR = tailwindToHex("neutral-800");
 
 const INCOMPLETE_COLOR: Record<string, string> = {
-  building: tailwindToHex("blue-500/60"),
-  item: tailwindToHex("red-500/60"),
-  action: tailwindToHex("green-500/60"),
+  building: tailwindToHex("blue-700/60"),
+  item: tailwindToHex("red-700/60"),
+  action: tailwindToHex("green-700/60"),
+};
+const COMPLETE_COLOR: Record<string, string> = {
+  building: tailwindToHex("blue-700"),
+  item: tailwindToHex("red-700"),
+  action: tailwindToHex("green-700"),
 };
 
 interface Props {
@@ -71,7 +76,7 @@ export default function AchievementMiniRingChart({ config }: Props) {
               const isClaimed = claimedAchievements.includes(achievementId);
               const isFull = currentCount >= seg.maxCount;
               const fill = isFull
-                ? config.completedColor
+                ? (COMPLETE_COLOR[config.idPrefix] ?? config.completedColor)
                 : (INCOMPLETE_COLOR[config.idPrefix] ?? tailwindToHex("gray-400/50"));
 
               return {

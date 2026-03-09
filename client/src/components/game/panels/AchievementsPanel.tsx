@@ -116,7 +116,7 @@ function AchievementTabContent({
   const indicatorClassComplete = INDICATOR_CLASS_COMPLETE[config.idPrefix] ?? "bg-red-800";
 
   return (
-    <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden scrollbar-hide pr-2">
+    <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden scrollbar-hide pr-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
       <div className="space-y-0">
         {rows.map((row) => (
           <AchievementRowComponent
