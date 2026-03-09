@@ -52,10 +52,12 @@ const INDICATOR_CLASS_COMPLETE: Record<string, string> = {
 
 function AchievementRowComponent({
   row,
-  indicatorClass,
+  indicatorClassIncomplete,
+  indicatorClassComplete,
 }: {
   row: AchievementRow;
-  indicatorClass: string;
+  indicatorClassIncomplete: string;
+  indicatorClassComplete: string;
 }) {
   const canClaim = row.isFull && !row.isClaimed;
 
