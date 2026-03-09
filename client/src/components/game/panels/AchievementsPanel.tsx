@@ -117,8 +117,8 @@ function AchievementTabContent({
 
   return (
     <div className="flex-1 min-h-0 overflow-hidden flex flex-col w-96">
-      <ScrollAreaWithIndicator className="h-full w-full" persistIndicator>
-        <div className="pr-2 space-y-0">
+      <ScrollAreaWithIndicator className="h-full w-full">
+        <div className="pr-2 pb-6 space-y-0">
           {rows.map((row) => (
             <AchievementRowComponent
               key={row.achievementId}
