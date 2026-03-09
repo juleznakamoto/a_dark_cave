@@ -69,7 +69,7 @@ function AchievementRowComponent({
     <div className="space-y-1 py-2">
       <div className="flex items-center justify-between gap-2">
         <span className="text-xs font-medium text-foreground truncate">
-          {row.label}
+          {row.isFull ? row.label : "❔"}
         </span>
         {canClaim && (
           <Button
@@ -112,7 +112,7 @@ function AchievementTabContent({
   const indicatorClassComplete = INDICATOR_CLASS_COMPLETE[config.idPrefix] ?? "bg-red-800";
 
   return (
-    <div className="flex-1 min-h-0 overflow-hidden flex flex-col w-96">
+    <div className="flex-1 min-h-0 overflow-hidden flex flex-col w-full md:w-96">
       <ScrollAreaWithIndicator className="h-full w-full" scrollAreaId={`achievements-${tabId}`}>
         <div className="pr-5 pb-6 space-y-0">
           {rows.map((row) => (
@@ -132,7 +132,7 @@ function AchievementTabContent({
 export default function AchievementsPanel() {
   const [activeTab, setActiveTab] = useState("building");
   return (
-    <div className="mt-0 pr-4 flex h-full flex-col min-h-0 overflow-hidden w-96">
+    <div className="mt-0 pr-2 md:pr-4 flex h-full flex-col min-h-0 overflow-hidden w-full md:w-96">
       <Tabs
         value={activeTab}
         onValueChange={setActiveTab}

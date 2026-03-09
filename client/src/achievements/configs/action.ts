@@ -141,7 +141,7 @@ export const actionChartConfig: AchievementChartConfig = {
       {
         segmentId: "2-craftBoneTotems",
         maxCount: 10,
-        label: "Bone Totem Craft",
+        label: "Bone Totem Crafter",
         reward: 500,
         getCount: (state: GameState) => {
           const count = state.buttonUpgrades?.["craftBoneTotems"]?.level || 0;
@@ -151,7 +151,7 @@ export const actionChartConfig: AchievementChartConfig = {
       {
         segmentId: "2-craftLeatherTotems",
         maxCount: 10,
-        label: "Leather Totem Craft",
+        label: "Leather Totem Crafter",
         reward: 500,
         getCount: (state: GameState) => {
           const count = state.buttonUpgrades?.["craftLeatherTotems"]?.level || 0;
@@ -164,7 +164,7 @@ export const actionChartConfig: AchievementChartConfig = {
       {
         segmentId: "3-emberBombs",
         maxCount: 25,
-        label: "Ember Bombs crafted",
+        label: "Ember Bombs Crafter",
         reward: 500,
         getCount: (state: GameState) =>
           Math.min(Number(state.story?.seen?.emberBombsCrafted) || 0, 25),
@@ -172,7 +172,7 @@ export const actionChartConfig: AchievementChartConfig = {
       {
         segmentId: "3-ashfireBombs",
         maxCount: 20,
-        label: "Ashfire Bombs crafted",
+        label: "Ashfire Bombs Crafter",
         reward: 500,
         getCount: (state: GameState) =>
           Math.min(Number(state.story?.seen?.ashfireBombsCrafted) || 0, 20),
