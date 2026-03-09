@@ -19,7 +19,7 @@ export default function AchievementMiniRingChart({ config, isActive = false }: P
   const size = 54;
   const centerHoleRadius = 10; // Space for icon in center, rings start outside
   const ringSize = 1.4;
-  const spaceBetweenRings = 1.4;
+  const spaceBetweenRings = 1.5;
 
   const ringConfigs = config.rings.map((segments, index) => {
     const innerRadius = centerHoleRadius + index * (ringSize + spaceBetweenRings);
