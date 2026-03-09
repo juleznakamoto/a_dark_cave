@@ -43,11 +43,11 @@ export default function AchievementRingChart({ config }: Props) {
 
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Ring sizing parameters (enlarged for outward labels)
+  // Ring sizing parameters: thinner segments, more space for labels
   const startRadius = 32;
-  const ringSize = 8;
-  const spaceBetweenRings = 10;
-  const labelOffset = 20;
+  const ringSize = 6;
+  const spaceBetweenRings = 12;
+  const labelOffset = 22;
 
   // Max label radius for outermost ring (building config has 5 rings)
   const maxLabelRadius =
@@ -62,7 +62,7 @@ export default function AchievementRingChart({ config }: Props) {
   const viewBoxMinY = 120 - viewBoxPad;
   const viewBoxSize = viewBoxPad * 2;
 
-  const getPaddingAngle = (ringIndex: number) => Math.max(2, 14 - ringIndex * 2);
+  const getPaddingAngle = (ringIndex: number) => Math.max(4, 20 - ringIndex * 2);
   const getStartAngle = (paddingAngle: number) => 90 - paddingAngle / 2;
 
   // SVG arc path for textPath: 0° = right, 90° = top, angles CCW
@@ -370,10 +370,10 @@ export default function AchievementRingChart({ config }: Props) {
                 const cy = 120;
                 const reverse =
                   segment.midAngle > 90 && segment.midAngle < 270;
-                // Use a sub-arc (85% of segment) centered at midpoint to reduce crowding
+                // Use a sub-arc (70% of segment) centered at midpoint to reduce overlap
                 const segmentSpan =
                   segment.geometricStart - segment.geometricEnd;
-                const subSpan = segmentSpan * 0.85;
+                const subSpan = segmentSpan * 0.7;
                 const subStart = segment.midAngle + subSpan / 2;
                 const subEnd = segment.midAngle - subSpan / 2;
                 const d = describeArc(
@@ -399,8 +399,8 @@ export default function AchievementRingChart({ config }: Props) {
             ring.progressSegments.map((segment, segIndex) => (
               <text
                 key={`label-${ringIndex}-${segIndex}`}
-                className="fill-neutral-300 text-[10px] font-medium"
-                style={{ fontSize: 10 }}
+                className="fill-neutral-300 font-medium"
+                style={{ fontSize: 9 }}
               >
                 <textPath
                   href={`#arc-label-${config.idPrefix}-${ringIndex}-${segIndex}`}
