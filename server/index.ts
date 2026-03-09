@@ -133,6 +133,24 @@ app.use((req, res, next) => {
   next();
 });
 
+// GEO: Serve llms.txt and llms-full.txt explicitly (before SPA fallback)
+// Ensures AI crawlers get plain text, not HTML, regardless of static middleware order
+const publicDir = fs.existsSync(path.resolve(__dirname, "public", "llms.txt"))
+  ? path.resolve(__dirname, "public")
+  : path.resolve(__dirname, "..", "client", "public");
+["llms.txt", "llms-full.txt"].forEach((file) => {
+  app.get(`/${file}`, (req, res) => {
+    const filePath = path.join(publicDir, file);
+    if (fs.existsSync(filePath)) {
+      res.set("Content-Type", "text/plain; charset=utf-8");
+      res.set("Cache-Control", "public, max-age=86400");
+      res.sendFile(filePath);
+    } else {
+      res.status(404).send("Not found");
+    }
+  });
+});
+
 app.get("/api/config", (req, res) => {
   const config = getSupabaseConfig();
   if (!config.supabaseUrl || !config.supabaseAnonKey) {

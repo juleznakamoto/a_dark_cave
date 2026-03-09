@@ -1,0 +1,45 @@
+# A Dark Cave
+
+> A free text-based survival and settlement building game. Start with nothing in an ancient cave, gather resources, craft tools, manage villagers, and uncover dark secrets. Play in your browser on desktop or mobile.
+
+## Docs
+
+- [A Dark Cave](https://a-dark-cave.com): Main game. Text-based incremental survival with settlement building, resource management, turn-based combat, and Lovecraftian atmosphere. Inspired by A Dark Room, Candy Box, Kittens Game, and Darkest Dungeon. Features idle mode, persistent local save, and companions with storylines.
+- [Privacy Policy](https://a-dark-cave.com/privacy): Privacy policy and data handling practices for A Dark Cave. Covers data collection, storage, and user rights under applicable privacy regulations.
+- [Terms of Service](https://a-dark-cave.com/terms): Terms of service and usage conditions for the game. Includes acceptable use, intellectual property, and liability provisions.
+- [Imprint](https://a-dark-cave.com/imprint): Legal imprint and publisher information. Required for German and EU compliance.
+- [Withdrawal](https://a-dark-cave.com/withdrawal): Right of withdrawal and refund policy for in-game purchases and full game unlock.
+
+## Resources
+
+- [A Dark Cave Wiki](https://a-dark-cave.fandom.com/wiki/A_Dark_Cave_Wiki): Community wiki with game guides, mechanics, lore, and walkthroughs. Covers crafting recipes, companion quests, and exploration areas.
+- [Reddit r/aDarkCave](https://www.reddit.com/r/aDarkCave/): Community discussion, updates, tips, and player experiences. Active community for incremental game fans.
+- [itch.io](https://a-dark-cave.itch.io/a-dark-cave): Game page on itch.io. Download-free browser play, ratings, and community feedback.
+- [YouTube Channel](https://www.youtube.com/channel/UCdQDWTJe_Bno7xyjnO1aC-w): Official YouTube channel for A Dark Cave. Trailers, gameplay, and developer updates.
+- [IncrementalDB](https://www.incrementaldb.com/game/a-dark-cave): Game listing on IncrementalDB with genre tags and community ratings.
+- [Product Hunt](https://www.producthunt.com/products/a-dark-cave): Product Hunt launch page for A Dark Cave.
+
+## Gameplay
+
+- [Core Loop](https://a-dark-cave.com): Start in darkness, light a fire, gather wood and food. Progress through the cave phase, village phase, and world exploration. Unlock crafting, buildings, villagers, and companions.
+- [Combat](https://a-dark-cave.com): Turn-based combat with crafted weapons (arbalest, nightshade bow, stormglass halberd), bombs, and combat skills. Defend the settlement from attack waves.
+- [Companions](https://a-dark-cave.com): Recruit companions with storylines—wandering knight, aging wizard, wildling huntress, and more. Each earned through choices and changes gameplay.
+
+## Key Facts
+
+- Genre: Incremental, Idle, Strategy, Survival, Settlement Builder, Resource Management
+- Platform: Web browser (HTML5), desktop and mobile
+- Price: Free to play with optional full game unlock
+- Play mode: Single player
+- Features: Text-based narrative, crafting, villager management, world exploration, turn-based combat, idle mode, persistent local save, companion storylines
+- Inspired by: A Dark Room, Candy Box, Kittens Game, Darkest Dungeon
+- Technical: No download required, progress saves in browser, works offline after load
+
+## Contact
+
+- Website: https://a-dark-cave.com
+- Reddit: https://www.reddit.com/r/aDarkCave/
+- itch.io: https://a-dark-cave.itch.io/a-dark-cave
+- Buy Me a Coffee: https://buymeacoffee.com/julez.b
+- Facebook: https://www.facebook.com/people/A-Dark-Cave/61584724119235/
+- Instagram: https://www.instagram.com/a_dark_cave/
