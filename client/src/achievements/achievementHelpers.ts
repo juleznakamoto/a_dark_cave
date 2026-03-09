@@ -1,5 +1,4 @@
 import { useGameStore } from "@/game/state";
-import type { GameState } from "@shared/schema";
 import type { AchievementChartConfig } from "./AchievementRingChart";
 
 export interface AchievementRow {
@@ -16,7 +15,7 @@ export interface AchievementRow {
 /** Flattens a category config's rings into per-achievement row data. */
 export function getAchievementRows(
   config: AchievementChartConfig,
-  state: GameState,
+  state: ReturnType<typeof useGameStore.getState>,
   claimedAchievements: string[]
 ): AchievementRow[] {
   const rows: AchievementRow[] = [];
