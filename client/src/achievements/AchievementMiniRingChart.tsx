@@ -6,6 +6,7 @@ import {
   INCOMPLETE_COLOR,
   COMPLETE_COLOR,
   BACKGROUND_COLOR_HEX,
+  BACKGROUND_SELECTED_COLOR_HEX,
 } from "./achievementColors";
 
 interface Props {
@@ -50,9 +51,10 @@ export default function AchievementMiniRingChart({
             );
             const totalDegrees = 360 - ring.segments.length * paddingAngle;
 
+            const bgColor = isActive ? BACKGROUND_SELECTED_COLOR_HEX : BACKGROUND_COLOR_HEX;
             const backgroundSegments = ring.segments.map((s) => ({
               value: s.maxCount,
-              fill: BACKGROUND_COLOR_HEX,
+              fill: bgColor,
             }));
 
             let currentStartAngle = startAngle;
@@ -103,7 +105,7 @@ export default function AchievementMiniRingChart({
                 isAnimationActive={false}
               >
                 {backgroundSegments.map((_, i) => (
-                  <Cell key={i} fill={BACKGROUND_COLOR_HEX} />
+                  <Cell key={i} fill={bgColor} />
                 ))}
               </Pie>,
               ...progressSegments.map((seg, segIndex) => (
