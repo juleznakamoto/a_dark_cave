@@ -10,10 +10,12 @@ export interface AchievementSegment {
   /** Resource keys (e.g. silver, gold) to amounts. Overrides reward when present. */
   rewards?: Record<string, number>;
   getCount: (state: GameState) => number;
+  /** Progress bar segment dividers (e.g. 10 for 500/50). Defaults to maxCount. */
+  segments?: number;
 }
 
 export interface AchievementChartConfig {
-  idPrefix: "building" | "item" | "action";
+  idPrefix: "building" | "item" | "action" | "basic";
   centerSymbol: string;
   rings: AchievementSegment[][];
 }

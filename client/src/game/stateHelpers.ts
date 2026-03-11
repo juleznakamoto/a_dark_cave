@@ -53,10 +53,21 @@ export const updatePopulationCounts = (
   );
 
   const total = getMaxPopulation(state);
+  const prevMax = Number(state.story?.seen?.maxPopulationReached) || 0;
+  const newMax = Math.max(prevMax, current);
 
   return {
     current_population: current,
     total_population: total,
+    ...(newMax > prevMax && {
+      story: {
+        ...state.story,
+        seen: {
+          ...state.story?.seen,
+          maxPopulationReached: newMax,
+        },
+      },
+    }),
   };
 };
 

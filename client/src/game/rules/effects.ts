@@ -1182,6 +1182,14 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     bonuses: {},
   },
 
+  survivors_notes: {
+    id: "survivors_notes",
+    name: "Survivor's Notes",
+    description:
+      "Timeworn scroll filled with practical advice left by one who had lived here long ago. Unlocks basic achievements.",
+    bonuses: {},
+  },
+
   ancient_scrolls: {
     id: "ancient_scrolls",
     name: "Ancient Scrolls",

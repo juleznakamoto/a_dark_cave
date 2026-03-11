@@ -29,6 +29,8 @@ export const caveCraftTools: Record<string, Action> = {
       return {
         "resources.torch": `random(${amount},${amount})` as any,
         "story.seen.actionCraftTorch": true,
+        "story.seen.torchesCraftedTotal": (state: GameState) =>
+          (Number(state.story?.seen?.torchesCraftedTotal) || 0) + amount,
       };
     },
     unlocks: ["exploreDeeper"],

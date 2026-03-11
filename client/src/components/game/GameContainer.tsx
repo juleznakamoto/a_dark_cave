@@ -117,7 +117,7 @@ export default function GameContainer() {
 
   // Track unlocked tabs to trigger blink until clicked
   const traderUnlocked = buildings.tradePost >= 1;
-  const achievementsUnlocked = !!books?.book_of_trials;
+  const achievementsUnlocked = !!relics?.survivors_notes;
   const prevFlagsRef = useRef({
     villageUnlocked: flags.villageUnlocked,
     forestUnlocked: flags.forestUnlocked,
@@ -390,8 +390,8 @@ export default function GameContainer() {
       });
     }
 
-    // Add Achievements tab if Book of Trials is owned
-    if (books?.book_of_trials) {
+    // Add Achievements tab if Survivor's Notes is found
+    if (relics?.survivors_notes) {
       tabs.push({
         id: "achievements",
         icon: <Castle />,
@@ -420,7 +420,7 @@ export default function GameContainer() {
     flags.bastionUnlocked,
     buildings.stoneHut,
     setActiveTab,
-    books?.book_of_trials,
+    relics?.survivors_notes,
     timedEventTab.isActive,
     timedEventTab.event?.title,
   ]);
@@ -650,7 +650,7 @@ export default function GameContainer() {
                 )}
 
                 {/* Achievements Tab Button ⚜︎ */}
-                {books?.book_of_trials && (
+                {relics?.survivors_notes && (
                   <button
                     className={`py-2 text-sm bg-transparent ${animatingTabs.has("achievements")
                       ? fadePhaseTabs.has("achievements")

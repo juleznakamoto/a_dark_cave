@@ -204,6 +204,7 @@ export const gameStateSchema = z.object({
       lycan_blood: z.boolean().default(false),
       necromancer_blood: z.boolean().default(false),
       bone_devourer_blood: z.boolean().default(false),
+      survivors_notes: z.boolean().default(false),
     })
     .default({}),
   fellowship: z.object(fellowshipShape).default({}),

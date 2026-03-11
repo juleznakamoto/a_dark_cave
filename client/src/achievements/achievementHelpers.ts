@@ -13,6 +13,8 @@ export interface AchievementRow {
   rewards: Record<string, number>;
   isFull: boolean;
   isClaimed: boolean;
+  /** Progress bar segment dividers. Defaults to maxCount. */
+  segments?: number;
 }
 
 /** Computes silver reward for an achievement (matches legacy ring chart logic). */
@@ -77,6 +79,7 @@ export function getAchievementRows(
         rewards,
         isFull,
         isClaimed,
+        segments: seg.segments,
       });
     });
   });

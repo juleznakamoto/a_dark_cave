@@ -87,6 +87,13 @@ function processTriggeredEvents(
 const caveItems = {
   exploreCave: [
     {
+      key: "survivors_notes",
+      probability: 0.2,
+      logMessage:
+        "Among the debris you uncover a timeworn scroll containing wisdom for enduring this unforgiving world.",
+      category: "relics",
+    },
+    {
       key: "torch",
       probability: 0.35,
       value: 25,
@@ -694,6 +701,17 @@ export function handleExploreCave(
     });
   }
 
+  // Increment cave explore count for basic achievements
+  effectUpdates.story = {
+    ...state.story,
+    ...effectUpdates.story,
+    seen: {
+      ...state.story?.seen,
+      ...(effectUpdates.story as { seen?: Record<string, unknown> })?.seen,
+      caveExploreCount: (Number(state.story?.seen?.caveExploreCount) || 0) + 1,
+    },
+  };
+
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
@@ -734,6 +752,17 @@ export function handleVentureDeeper(
       type: "system",
     });
   }
+
+  // Increment cave explore count for basic achievements
+  effectUpdates.story = {
+    ...state.story,
+    ...effectUpdates.story,
+    seen: {
+      ...state.story?.seen,
+      ...(effectUpdates.story as { seen?: Record<string, unknown> })?.seen,
+      caveExploreCount: (Number(state.story?.seen?.caveExploreCount) || 0) + 1,
+    },
+  };
 
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
@@ -776,6 +805,17 @@ export function handleDescendFurther(
     });
   }
 
+  // Increment cave explore count for basic achievements
+  effectUpdates.story = {
+    ...state.story,
+    ...effectUpdates.story,
+    seen: {
+      ...state.story?.seen,
+      ...(effectUpdates.story as { seen?: Record<string, unknown> })?.seen,
+      caveExploreCount: (Number(state.story?.seen?.caveExploreCount) || 0) + 1,
+    },
+  };
+
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
@@ -816,6 +856,17 @@ export function handleExploreRuins(
       type: "system",
     });
   }
+
+  // Increment cave explore count for basic achievements
+  effectUpdates.story = {
+    ...state.story,
+    ...effectUpdates.story,
+    seen: {
+      ...state.story?.seen,
+      ...(effectUpdates.story as { seen?: Record<string, unknown> })?.seen,
+      caveExploreCount: (Number(state.story?.seen?.caveExploreCount) || 0) + 1,
+    },
+  };
 
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
@@ -858,6 +909,17 @@ export function handleExploreTemple(
     });
   }
 
+  // Increment cave explore count for basic achievements
+  effectUpdates.story = {
+    ...state.story,
+    ...effectUpdates.story,
+    seen: {
+      ...state.story?.seen,
+      ...(effectUpdates.story as { seen?: Record<string, unknown> })?.seen,
+      caveExploreCount: (Number(state.story?.seen?.caveExploreCount) || 0) + 1,
+    },
+  };
+
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
@@ -898,6 +960,17 @@ export function handleExploreCitadel(
       type: "system",
     });
   }
+
+  // Increment cave explore count for basic achievements
+  effectUpdates.story = {
+    ...state.story,
+    ...effectUpdates.story,
+    seen: {
+      ...state.story?.seen,
+      ...(effectUpdates.story as { seen?: Record<string, unknown> })?.seen,
+      caveExploreCount: (Number(state.story?.seen?.caveExploreCount) || 0) + 1,
+    },
+  };
 
   Object.assign(result.stateUpdates, effectUpdates);
   return result;

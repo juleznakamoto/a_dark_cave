@@ -681,6 +681,41 @@ export function applyActionEffects(
     (updates as any).compassBonusTriggered = true;
   }
 
+  // Accumulate resource gains for basic achievements (totalWoodGathered, etc.)
+  const RESOURCE_ACCUMULATOR_KEYS: Record<string, string> = {
+    wood: "totalWoodGathered",
+    stone: "totalStoneGathered",
+    iron: "totalIronGathered",
+    coal: "totalCoalGathered",
+    food: "totalFoodGathered",
+  };
+  if (updates.resources) {
+    const storySeenUpdates: Record<string, number> = {};
+    for (const [resource, seenKey] of Object.entries(RESOURCE_ACCUMULATOR_KEYS)) {
+      const newVal =
+        (updates.resources as Record<string, number>)[resource] ??
+        state.resources[resource as keyof typeof state.resources] ??
+        0;
+      const oldVal =
+        state.resources[resource as keyof typeof state.resources] ?? 0;
+      const delta = Math.max(0, newVal - oldVal);
+      if (delta > 0) {
+        const prev = Number(state.story?.seen?.[seenKey]) || 0;
+        storySeenUpdates[seenKey] = prev + delta;
+      }
+    }
+    if (Object.keys(storySeenUpdates).length > 0) {
+      updates.story = {
+        ...state.story,
+        seen: {
+          ...state.story?.seen,
+          ...(updates.story as { seen?: Record<string, unknown> })?.seen,
+          ...storySeenUpdates,
+        },
+      };
+    }
+  }
+
   if (state.devMode && updates.resources) {
     for (const [resource, amount] of Object.entries(updates.resources)) {
       if (typeof amount === "number") {
