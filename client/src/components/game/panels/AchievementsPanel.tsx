@@ -73,7 +73,7 @@ function AchievementRowComponent({
   };
 
   return (
-    <div className="space-y-1 py-2">
+    <div className="space-y-2 py-2">
       <div className="flex items-center justify-between gap-2 h-5">
 
         <span className="text-xs font-medium text-foreground truncate">
