@@ -93,7 +93,7 @@ function LogPanel() {
       >
         <div className="px-3 relative ">
           <div ref={topRef} />
-          <div className="space-y-1 text-xs">
+          <div className="space-y-1 text-xs pb-1">
             {recentEntries.map((entry: any, index: number) => {
               const typedEntry = entry as ExtendedLogEntry;
               let opacity = "";
