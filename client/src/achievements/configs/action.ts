@@ -56,10 +56,8 @@ export const actionChartConfig: AchievementChartConfig = {
         maxCount: 10,
         label: "Stone Miner",
         reward: 500,
-        getCount: (state: GameState) => {
-          const count = state.buttonUpgrades?.mineStone?.level || 0;
-          return count === 1 ? 1.8 : count;
-        },
+        getCount: (state: GameState) =>
+          Math.floor(state.buttonUpgrades?.mineStone?.level || 0),
       },
       {
         segmentId: "1-mineIron",
@@ -186,6 +184,7 @@ export const actionChartConfig: AchievementChartConfig = {
         maxCount: 100,
         label: "Deal Maker",
         reward: 500,
+        segments: 20,
         getCount: (state: GameState) => {
           const count = Math.min(
             Number(state.story?.merchantPurchases) || 0,
@@ -212,6 +211,7 @@ export const actionChartConfig: AchievementChartConfig = {
         maxCount: 100,
         label: "Fire Feeder",
         reward: 500,
+        segments: 20,
         getCount: (state: GameState) => {
           const count = Math.min(
             Number(state.story?.seen?.feedFireUsageCount) || 0,

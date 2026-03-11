@@ -95,12 +95,12 @@ function AchievementRowComponent({
         )}
       </div>
       <TooltipWrapper
-        tooltip={`${row.currentCount}/${row.maxCount}`}
+        tooltip={`${Math.floor(row.currentCount)}/${row.maxCount}`}
         tooltipId={`achievement-progress-${row.achievementId}`}
         className="w-full"
       >
         <Progress
-          value={(row.currentCount / row.maxCount) * 100}
+          value={(Math.floor(row.currentCount) / row.maxCount) * 100}
           className={`h-2 ${PROGRESS_BAR_BG_CLASS}`}
           segments={row.segments ?? row.maxCount}
           indicatorClassName={row.isFull ? indicatorClassComplete : indicatorClassIncomplete}

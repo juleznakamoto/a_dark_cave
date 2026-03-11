@@ -32,7 +32,7 @@ export const basicChartConfig: AchievementChartConfig = {
       {
         segmentId: "0-woodGatherer",
         maxCount: 500,
-        label: "Wood Gatherer",
+        label: "Gather Wood",
         rewards: { food: 250 },
         getCount: (state: GameState) =>
           Number(state.story?.seen?.totalWoodGathered) || 0,
@@ -41,7 +41,7 @@ export const basicChartConfig: AchievementChartConfig = {
       {
         segmentId: "0-stoneMiner",
         maxCount: 500,
-        label: "Stone Miner",
+        label: "Gather Stone",
         rewards: { food: 250 },
         getCount: (state: GameState) =>
           Number(state.story?.seen?.totalStoneGathered) || 0,
@@ -50,7 +50,7 @@ export const basicChartConfig: AchievementChartConfig = {
       {
         segmentId: "0-ironMiner",
         maxCount: 500,
-        label: "Iron Miner",
+        label: "Gather Iron",
         rewards: { torch: 50 },
         getCount: (state: GameState) =>
           Number(state.story?.seen?.totalIronGathered) || 0,
@@ -59,7 +59,7 @@ export const basicChartConfig: AchievementChartConfig = {
       {
         segmentId: "0-coalMiner",
         maxCount: 500,
-        label: "Coal Miner",
+        label: "Gather Coal",
         rewards: { torch: 100 },
         getCount: (state: GameState) =>
           Number(state.story?.seen?.totalCoalGathered) || 0,
@@ -79,7 +79,7 @@ export const basicChartConfig: AchievementChartConfig = {
       {
         segmentId: "1-explorer",
         maxCount: 20,
-        label: "Explorer",
+        label: "Explore Cave",
         rewards: { silver: 50 },
         getCount: (state: GameState) =>
           Number(state.story?.seen?.caveExploreCount) || 0,
@@ -87,7 +87,7 @@ export const basicChartConfig: AchievementChartConfig = {
       {
         segmentId: "1-torchCrafter",
         maxCount: 50,
-        label: "Torch Crafter",
+        label: "Craft Torches",
         rewards: { steel: 50 },
         getCount: (state: GameState) =>
           Number(state.story?.seen?.torchesCraftedTotal) || 0,
@@ -96,7 +96,7 @@ export const basicChartConfig: AchievementChartConfig = {
       {
         segmentId: "1-toolCrafter",
         maxCount: 5,
-        label: "Tool Crafter",
+        label: "Craft Tools",
         rewards: { leather: 100 },
         getCount: (state: GameState) => {
           const tools = state.tools || {};
@@ -108,7 +108,7 @@ export const basicChartConfig: AchievementChartConfig = {
       {
         segmentId: "1-builder",
         maxCount: 5,
-        label: "Builder",
+        label: "Construct Buildings",
         rewards: { steel: 100 },
         getCount: (state: GameState) =>
           Object.values(state.buildings || {}).reduce(
@@ -119,7 +119,7 @@ export const basicChartConfig: AchievementChartConfig = {
       {
         segmentId: "1-communityBuilder",
         maxCount: 10,
-        label: "Community Builder",
+        label: "Build Community",
         rewards: { gold: 50 },
         getCount: (state: GameState) =>
           Number(state.story?.seen?.maxPopulationReached) || 0,
