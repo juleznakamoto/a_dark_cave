@@ -168,6 +168,27 @@ const caveItems = {
   ],
 };
 
+/** Items only drop when user has explored the cave before (not on first click). */
+function requireCaveExplored(
+  baseCondition: string | ((s: GameState) => boolean) | undefined,
+): (state: GameState) => boolean {
+  return (state: GameState) => {
+    if (!state.story?.seen?.caveExplored) return false;
+    if (!baseCondition) return true;
+    if (typeof baseCondition === "function") return baseCondition(state);
+    // Simple path check: !path means path must be falsy
+    const isNegated = baseCondition.startsWith("!");
+    const path = isNegated ? baseCondition.slice(1) : baseCondition;
+    const parts = path.split(".");
+    let cur: unknown = state;
+    for (const p of parts) {
+      cur = (cur as Record<string, unknown>)?.[p];
+      if (cur === undefined) return isNegated;
+    }
+    return isNegated ? !cur : !!cur;
+  };
+}
+
 // Helper function to get inherited items with 10% probability bonus
 function getInheritedItems(actionId: string) {
   const stageOrder = [
@@ -181,6 +202,7 @@ function getInheritedItems(actionId: string) {
   const currentIndex = stageOrder.indexOf(actionId);
 
   const inheritedItems: any = {};
+  const isExploreCaveStage = actionId === "exploreCave";
 
   // Add items from all previous stages with 0.5% probability bonus
   for (let i = 0; i <= currentIndex; i++) {
@@ -200,24 +222,33 @@ function getInheritedItems(actionId: string) {
 
       if (category === "resources") {
         // Resource bonus: add to resources (e.g. silver sack, torch bag)
+        const baseCondition =
+          "condition" in item && typeof item.condition === "string"
+            ? item.condition
+            : undefined;
         inheritedItems[`_resource_${item.key}`] = {
           probability: Math.min(adjustedProbability, 1.0),
-          value: item.value,
+          value: (item as { value?: number }).value,
           addTo: `resources.${item.key}`,
-          logMessage: item.logMessage,
-          ...(item.condition && { condition: item.condition }),
-          ...(item.alsoSet && { alsoSet: item.alsoSet }),
+          logMessage: (item as { logMessage?: string }).logMessage,
+          ...(isExploreCaveStage
+            ? { condition: requireCaveExplored(baseCondition) }
+            : baseCondition && { condition: baseCondition }),
+          ...("alsoSet" in item && item.alsoSet && { alsoSet: item.alsoSet }),
         };
       } else {
         // Clothing/relic: boolean item
+        const baseCondition =
+          `!${category}.${item.key}` +
+          ("eventId" in item && item.eventId
+            ? ` && !story.seen.${item.eventId}`
+            : "");
         inheritedItems[`${category}.${item.key}`] = {
           probability: Math.min(adjustedProbability, 1.0),
           value: true,
-          condition:
-            `!${category}.${item.key}` +
-            ("eventId" in item && item.eventId
-              ? ` && !story.seen.${item.eventId}`
-              : ""),
+          condition: isExploreCaveStage
+            ? requireCaveExplored(baseCondition)
+            : baseCondition,
           ...("isChoice" in item &&
             item.isChoice && { isChoice: item.isChoice }),
           ...("eventId" in item && item.eventId && { eventId: item.eventId }),

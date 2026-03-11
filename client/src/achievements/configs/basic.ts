@@ -91,6 +91,7 @@ export const basicChartConfig: AchievementChartConfig = {
         rewards: { steel: 50 },
         getCount: (state: GameState) =>
           Number(state.story?.seen?.torchesCraftedTotal) || 0,
+        segments: 10,
       },
       {
         segmentId: "1-toolCrafter",

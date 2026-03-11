@@ -91,13 +91,19 @@ function AchievementRowComponent({
           </GameButton>
         )}
       </div>
-      <Progress
-        value={(row.currentCount / row.maxCount) * 100}
-        className={`h-2 ${PROGRESS_BAR_BG_CLASS}`}
-        segments={row.segments ?? row.maxCount}
-        indicatorClassName={row.isFull ? indicatorClassComplete : indicatorClassIncomplete}
-        hideBorder
-      />
+      <TooltipWrapper
+        tooltip={`${row.currentCount}/${row.maxCount}`}
+        tooltipId={`achievement-progress-${row.achievementId}`}
+        className="w-full"
+      >
+        <Progress
+          value={(row.currentCount / row.maxCount) * 100}
+          className={`h-2 ${PROGRESS_BAR_BG_CLASS}`}
+          segments={row.segments ?? row.maxCount}
+          indicatorClassName={row.isFull ? indicatorClassComplete : indicatorClassIncomplete}
+          hideBorder
+        />
+      </TooltipWrapper>
     </div>
   );
 }
@@ -160,7 +166,11 @@ function TabTriggerWithTooltipWhenLocked({
     <TabsTrigger
       value={value}
       disabled={disabled}
-      className={TAB_TRIGGER_CLASS}
+      className={
+        disabled
+          ? `${TAB_TRIGGER_CLASS} disabled:!cursor-default`
+          : TAB_TRIGGER_CLASS
+      }
     >
       <ChartErrorBoundary>
         <AchievementMiniRingChart config={config} isActive={isActive} />
@@ -173,7 +183,7 @@ function TabTriggerWithTooltipWhenLocked({
         tooltip={lockedTooltip}
         disabled={true}
         tooltipId={`achievement-tab-locked-${value}`}
-        className="flex items-center justify-center min-h-[3rem] cursor-not-allowed"
+        className="flex items-center justify-center min-h-[3rem] cursor-default"
       >
         {trigger}
       </TooltipWrapper>
