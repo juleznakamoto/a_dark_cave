@@ -12,12 +12,15 @@ import {
 interface Props {
   config: AchievementChartConfig;
   isActive?: boolean;
+  /** When true, hide progress (show empty rings). Used for locked tabs. */
+  hideProgress?: boolean;
 }
 
 /** Compact label-free ring chart for tab triggers. */
 export default function AchievementMiniRingChart({
   config,
   isActive = false,
+  hideProgress = false,
 }: Props) {
   const state = useGameStore.getState();
   const claimedAchievements = useGameStore((s) => s.claimedAchievements || []);
@@ -59,7 +62,7 @@ export default function AchievementMiniRingChart({
 
             let currentStartAngle = startAngle;
             const progressSegments = ring.segments.map((seg) => {
-              const currentCount = seg.getCount(state);
+              const currentCount = hideProgress ? 0 : seg.getCount(state);
               const segmentDegrees =
                 (totalDegrees * seg.maxCount) / totalMaxCount;
               const adjustedCount = currentCount === 1 ? 1.3 : currentCount;

@@ -173,7 +173,7 @@ function TabTriggerWithTooltipWhenLocked({
       }
     >
       <ChartErrorBoundary>
-        <AchievementMiniRingChart config={config} isActive={isActive} />
+        <AchievementMiniRingChart config={config} isActive={isActive} hideProgress={disabled} />
       </ChartErrorBoundary>
     </TabsTrigger>
   );
