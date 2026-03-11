@@ -67,7 +67,7 @@ function LeaderboardTab({ entries, loading, lastUpdated, tabId }: LeaderboardTab
         <span className="font-semibold text-sm">Completion Time</span>
       </div>
       <ScrollAreaWithIndicator
-        className="h-[400px] flex-1"
+        className="flex-1 min-h-0"
         scrollAreaId={`leaderboard-${tabId}`}
       >
         <div className="space-y-2 pt-2 pr-4 pb-4">
@@ -262,7 +262,7 @@ export default function LeaderboardDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="w-[95vw] sm:max-w-2xl max-h-[80vh] flex flex-col z-[70]">
+      <DialogContent className="w-[95vw] sm:max-w-2xl max-h-[80vh] flex flex-col overflow-hidden z-[70]">
         <DialogHeader>
           <DialogTitle className="flex items-center justify-between">
             <span>Leaderboard</span>
@@ -348,12 +348,12 @@ export default function LeaderboardDialog({
           </div>
         </div>
 
-        <Tabs defaultValue="normal" className="flex-1 flex flex-col min-h-0">
+        <Tabs defaultValue="normal" className="flex-1 flex flex-col min-h-0 overflow-hidden">
           <TabsList className="grid w-full grid-cols-2 mb-1">
             <TabsTrigger value="normal">Normal Mode</TabsTrigger>
             <TabsTrigger value="cruel">Cruel Mode</TabsTrigger>
           </TabsList>
-          <TabsContent value="normal" className="flex-1 min-h-0 flex flex-col data-[state=inactive]:hidden">
+          <TabsContent value="normal" className="flex-1 min-h-0 flex flex-col overflow-hidden data-[state=inactive]:hidden">
             <LeaderboardTab
               entries={normalLeaderboard}
               loading={loading}
@@ -361,7 +361,7 @@ export default function LeaderboardDialog({
               tabId="normal"
             />
           </TabsContent>
-          <TabsContent value="cruel" className="flex-1 min-h-0 flex flex-col data-[state=inactive]:hidden">
+          <TabsContent value="cruel" className="flex-1 min-h-0 flex flex-col overflow-hidden data-[state=inactive]:hidden">
             <LeaderboardTab
               entries={cruelLeaderboard}
               loading={loading}
