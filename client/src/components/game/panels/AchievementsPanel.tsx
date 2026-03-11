@@ -74,22 +74,24 @@ function AchievementRowComponent({
 
   return (
     <div className="space-y-1 py-2">
-      <div className="flex items-center justify-between gap-2 min-h-5">
+      <div className="flex items-center justify-between gap-2 h-5">
 
         <span className="text-xs font-medium text-foreground truncate">
           {row.currentCount >= 1 ? row.label : "❔"}
         </span>
         {canClaim && (
-          <GameButton
-            variant="outline"
-            size="xs"
-            className={`shrink-0 h-5 px-2 ${claimButtonClass}`}
-            onClick={handleClaim}
-            tooltip={tooltipText}
-            tooltipId={`achievement-claim-${row.achievementId}`}
-          >
-            Claim
-          </GameButton>
+          <div className="h-5 flex items-center shrink-0">
+            <GameButton
+              variant="outline"
+              size="xs"
+              className={`h-5 px-2 ${claimButtonClass}`}
+              onClick={handleClaim}
+              tooltip={tooltipText}
+              tooltipId={`achievement-claim-${row.achievementId}`}
+            >
+              Claim
+            </GameButton>
+          </div>
         )}
       </div>
       <TooltipWrapper
