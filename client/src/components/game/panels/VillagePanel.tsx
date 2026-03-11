@@ -44,6 +44,7 @@ import {
 import { ButtonPriorBadge } from "@/components/game/ButtonPriorBadge";
 import { PRIOR_ELIGIBLE_ACTIONS } from "@/game/buttonUpgrades";
 import { isBuildingUpgrade } from "@/game/buildingHierarchy";
+import cn from "clsx";
 
 export default function VillagePanel() {
   const {
@@ -721,7 +722,12 @@ export default function VillagePanel() {
                     {group.title}
                   </h3>
                 )}
-                <div className="flex flex-wrap gap-2">
+                <div
+                  className={cn(
+                    "flex flex-wrap gap-2",
+                    group.title === "Build" && "max-w-96",
+                  )}
+                >
                   {visibleActions.map((action) =>
                     renderButton(action.id, action.label),
                   )}
