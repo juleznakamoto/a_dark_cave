@@ -364,7 +364,7 @@ export default function SidePanelSection({
     const labelContent = (
       <span
         className={cn(
-          "text-xs text-gray-400 flex items-center gap-1",
+          "text-xs text-gray-400 flex items-center gap-1 whitespace-nowrap",
           newItemPulseClass,
           isHighlighted && "!text-gray-100",
         )}
@@ -418,7 +418,7 @@ export default function SidePanelSection({
           {showValue && (
             <span
               className={cn(
-                isResourcesSection && "min-w-[5rem] text-right",
+                isResourcesSection && "min-w-[3.5rem] text-right",
                 isAnimated && "text-green-800 font-bold",
                 isDecreaseAnimated && "text-red-800 font-bold",
                 isMaxAnimated && "text-yellow-800 font-bold",
@@ -432,7 +432,7 @@ export default function SidePanelSection({
           {showProductionDelta ? (
             <span
               className={cn(
-                "min-w-[2.5rem] text-right",
+                "min-w-[2rem] text-right",
                 activeTab !== "village" && "text-muted-foreground",
                 activeTab === "village" &&
                 (item.productionDelta ?? 0) > 0 &&
@@ -447,7 +447,7 @@ export default function SidePanelSection({
             </span>
           ) : (
             isResourcesSection &&
-            showValue && <span className="min-w-[2.5rem]" aria-hidden />
+            showValue && <span className="min-w-[2rem]" aria-hidden />
           )}
         </span>
       ) : null;
