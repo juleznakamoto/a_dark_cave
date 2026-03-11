@@ -74,7 +74,7 @@ function AchievementRowComponent({
 
   return (
     <div className="space-y-1 py-2">
-      <div className="flex items-center justify-between gap-2">
+      <div className="flex items-center justify-between gap-2 min-h-5">
         <span className="text-xs font-medium text-foreground truncate">
           {row.currentCount >= 1 ? row.label : "❔"}
         </span>
