@@ -725,7 +725,7 @@ export default function VillagePanel() {
                 <div
                   className={cn(
                     "flex flex-wrap gap-2",
-                    group.title === "Build" && "max-w-96",
+                    group.title === "Build" && "max-w-full md:max-w-96",
                   )}
                 >
                   {visibleActions.map((action) =>

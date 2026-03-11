@@ -59,7 +59,7 @@ function SkillUpgradeRow({
 }: SkillUpgradeRowProps) {
   const setHighlightedResources = useGameStore((s) => s.setHighlightedResources);
   return (
-    <div className="w-80 space-y-1 pt-2">
+    <div className="w-full md:max-w-96 space-y-1 pt-2">
       <div className="flex items-center justify-between">
         <span className="pb-1 text-xs font-medium text-foreground">{title}</span>
         {level < maxLevel ? (
@@ -479,7 +479,7 @@ export default function EstatePanel() {
         </div>
 
         {/* Sleep Upgrades Section */}
-        <div className="w-80 space-y-1 pt-2">
+        <div className="w-full md:max-w-96 space-y-1 pt-2">
           {/* Sleep Length Upgrade */}
           <div className="space-y-1">
             <div className="flex items-center justify-between">

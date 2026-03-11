@@ -501,7 +501,7 @@ export default function ForestPanel() {
                     {group.title}
                   </h3>
                 )}
-                <div className="w-96">
+                <div className="w-full md:max-w-96">
                   <div className="flex flex-wrap gap-2 justify-start">
                     {visibleActions.map((action) => (
                       renderButton(action.id, action.label)

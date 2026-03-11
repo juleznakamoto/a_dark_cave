@@ -112,7 +112,7 @@ function AchievementTabContent({
   const indicatorClassComplete = INDICATOR_CLASS_COMPLETE[config.idPrefix] ?? "bg-red-800";
 
   return (
-    <div className="flex-1 min-h-0 overflow-hidden flex flex-col w-full md:w-96">
+    <div className="flex-1 min-h-0 overflow-hidden flex flex-col w-full md:max-w-96">
       <ScrollAreaWithIndicator className="h-full w-full" scrollAreaId={`achievements-${tabId}`}>
         <div className="pb-6 space-y-0 md:pr-5">
           {rows.map((row) => (
@@ -132,7 +132,7 @@ function AchievementTabContent({
 export default function AchievementsPanel() {
   const [activeTab, setActiveTab] = useState("building");
   return (
-    <div className="mt-0 pr-2 md:pr-4 flex h-full flex-col min-h-0 overflow-hidden w-full md:w-96">
+    <div className="mt-0 pr-2 md:pr-4 flex h-full flex-col min-h-0 overflow-hidden w-full md:max-w-96">
       <Tabs
         value={activeTab}
         onValueChange={setActiveTab}

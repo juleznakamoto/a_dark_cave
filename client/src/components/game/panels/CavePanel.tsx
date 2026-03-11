@@ -517,7 +517,7 @@ export default function CavePanel() {
                   if (visibleActions.length === 0) return null;
 
                   return (
-                    <div className="w-96">
+                    <div className="w-full md:max-w-96">
 
                     <div key={subGroupIndex} className="flex flex-wrap gap-2">
                       {visibleActions.map((action) =>
