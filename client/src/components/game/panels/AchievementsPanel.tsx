@@ -132,7 +132,7 @@ function AchievementTabContent({
 export default function AchievementsPanel() {
   const [activeTab, setActiveTab] = useState("building");
   return (
-    <div className="mt-0 pr-2 md:pr-4 flex h-full flex-col min-h-0 overflow-hidden w-full md:max-w-96">
+    <div className="mt-0 flex h-full flex-col min-h-0 overflow-hidden w-full md:max-w-96">
       <Tabs
         value={activeTab}
         onValueChange={setActiveTab}
