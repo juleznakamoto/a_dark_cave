@@ -418,7 +418,7 @@ export default function SidePanelSection({
           {showValue && (
             <span
               className={cn(
-                isResourcesSection && "min-w-[3.5rem] text-right",
+                isResourcesSection && "min-w-[4rem] text-right",
                 isAnimated && "text-green-800 font-bold",
                 isDecreaseAnimated && "text-red-800 font-bold",
                 isMaxAnimated && "text-yellow-800 font-bold",
