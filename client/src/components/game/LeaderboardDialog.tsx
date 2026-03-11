@@ -67,7 +67,7 @@ function LeaderboardTab({ entries, loading, lastUpdated, tabId }: LeaderboardTab
         <span className="font-semibold text-sm">Completion Time</span>
       </div>
       <ScrollAreaWithIndicator
-        className="flex-1 min-h-0"
+        className="h-[calc(80vh-240px)]"
         scrollAreaId={`leaderboard-${tabId}`}
       >
         <div className="space-y-2 pt-2 pr-4 pb-4">
