@@ -917,12 +917,13 @@ export default function SidePanel() {
   };
 
   return (
-    <ScrollArea className="h-full max-h-[36vh] md:max-h-full px-3 py-1.5 pr-2">
+    <ScrollArea className="h-full max-h-[36vh] md:max-h-full px-3 pt-2 pb-1.5 pr-2">
       <div className="pb-1 flex gap-12 items-start">
         {/* First column - Resources */}
         <div className="flex-[0.9]">
           {resourceItems.length > 0 && shouldShowSection("resources") && (
             <SidePanelSection
+              className="pt-0"
               title="Resources"
               activeTab={activeTab}
               titleTooltip={
@@ -955,7 +956,7 @@ export default function SidePanel() {
         {/* Second column - Everything else */}
         <div className="flex-1">
           {toolItems.length > 0 && shouldShowSection("tools") && (
-            <SidePanelSection title="Tools" items={toolItems} />
+            <SidePanelSection className="pt-0" title="Tools" items={toolItems} />
           )}
           {weaponItems.length > 0 && shouldShowSection("weapons") && (
             <SidePanelSection title="Weapons" items={weaponItems} />

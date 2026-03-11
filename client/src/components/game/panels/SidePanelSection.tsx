@@ -679,7 +679,7 @@ export default function SidePanelSection({
             }
           }}
           className={cn(
-            "inline-block",
+            "block",
             globalTooltip.isMobile ? "cursor-pointer" : "",
             !hoveredTooltips[tooltipKey] && "new-item-pulse",
           )}
