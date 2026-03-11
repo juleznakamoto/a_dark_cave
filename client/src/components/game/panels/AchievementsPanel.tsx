@@ -194,53 +194,62 @@ function TabTriggerWithTooltipWhenLocked({
 
 export default function AchievementsPanel() {
   const bookOfTrials = useGameStore((s) => s.books?.book_of_trials);
-  const [activeTab, setActiveTab] = useState("basic");
+  const survivorsNotes = useGameStore((s) => s.relics?.survivors_notes);
+  const hasBasicTab = !!survivorsNotes;
+  const [activeTab, setActiveTab] = useState(hasBasicTab ? "basic" : "building");
+  const effectiveTab = hasBasicTab ? activeTab : (activeTab === "basic" ? "building" : activeTab);
   return (
     <div className="mt-0 flex h-full flex-col min-h-0 overflow-hidden w-full md:max-w-96">
       <Tabs
-        value={activeTab}
+        value={effectiveTab}
         onValueChange={setActiveTab}
         className="flex h-full flex-col flex-1 min-h-0 overflow-hidden"
       >
-        <TabsList className="sticky top-0 z-10 bg-background grid w-full grid-cols-4 mb-2 shrink-0 overflow-visible h-auto min-h-12 py-1">
-          <TabsTrigger value="basic" className={TAB_TRIGGER_CLASS}>
-            <ChartErrorBoundary>
-              <AchievementMiniRingChart config={basicChartConfig} isActive={activeTab === "basic"} />
-            </ChartErrorBoundary>
-          </TabsTrigger>
+        <TabsList
+          className={`sticky top-0 z-10 bg-background grid w-full mb-2 shrink-0 overflow-visible h-auto min-h-12 py-1 ${hasBasicTab ? "grid-cols-4" : "grid-cols-3"}`}
+        >
+          {hasBasicTab && (
+            <TabsTrigger value="basic" className={TAB_TRIGGER_CLASS}>
+              <ChartErrorBoundary>
+                <AchievementMiniRingChart config={basicChartConfig} isActive={effectiveTab === "basic"} />
+              </ChartErrorBoundary>
+            </TabsTrigger>
+          )}
           <TabTriggerWithTooltipWhenLocked
             value="building"
             config={buildingChartConfig}
-            isActive={activeTab === "building"}
+            isActive={effectiveTab === "building"}
             disabled={!bookOfTrials}
             lockedTooltip="Not yet unlocked."
           />
           <TabTriggerWithTooltipWhenLocked
             value="item"
             config={itemChartConfig}
-            isActive={activeTab === "item"}
+            isActive={effectiveTab === "item"}
             disabled={!bookOfTrials}
             lockedTooltip="Not yet unlocked."
           />
           <TabTriggerWithTooltipWhenLocked
             value="action"
             config={actionChartConfig}
-            isActive={activeTab === "action"}
+            isActive={effectiveTab === "action"}
             disabled={!bookOfTrials}
             lockedTooltip="Not yet unlocked."
           />
         </TabsList>
-        <TabsContent value="basic" className="mt-0 flex-1 min-h-0 data-[state=inactive]:hidden flex flex-col overflow-hidden">
-          {activeTab === "basic" && <AchievementTabContent config={basicChartConfig} tabId="basic" />}
-        </TabsContent>
+        {hasBasicTab && (
+          <TabsContent value="basic" className="mt-0 flex-1 min-h-0 data-[state=inactive]:hidden flex flex-col overflow-hidden">
+            {effectiveTab === "basic" && <AchievementTabContent config={basicChartConfig} tabId="basic" />}
+          </TabsContent>
+        )}
         <TabsContent value="building" className="mt-0 flex-1 min-h-0 data-[state=inactive]:hidden flex flex-col overflow-hidden">
-          {activeTab === "building" && <AchievementTabContent config={buildingChartConfig} tabId="building" />}
+          {effectiveTab === "building" && <AchievementTabContent config={buildingChartConfig} tabId="building" />}
         </TabsContent>
         <TabsContent value="item" className="mt-0 flex-1 min-h-0 data-[state=inactive]:hidden flex flex-col overflow-hidden">
-          {activeTab === "item" && <AchievementTabContent config={itemChartConfig} tabId="item" />}
+          {effectiveTab === "item" && <AchievementTabContent config={itemChartConfig} tabId="item" />}
         </TabsContent>
         <TabsContent value="action" className="mt-0 flex-1 min-h-0 data-[state=inactive]:hidden flex flex-col overflow-hidden">
-          {activeTab === "action" && <AchievementTabContent config={actionChartConfig} tabId="action" />}
+          {effectiveTab === "action" && <AchievementTabContent config={actionChartConfig} tabId="action" />}
         </TabsContent>
       </Tabs>
     </div>

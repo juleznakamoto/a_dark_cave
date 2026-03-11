@@ -92,6 +92,7 @@ const caveItems = {
       logMessage:
         "Among the debris you uncover a timeworn scroll containing wisdom for enduring this unforgiving world.",
       category: "relics",
+      condition: "!books.book_of_trials",
     },
     {
       key: "torch",
@@ -238,11 +239,32 @@ function getInheritedItems(actionId: string) {
         };
       } else {
         // Clothing/relic: boolean item
-        const baseCondition =
-          `!${category}.${item.key}` +
-          ("eventId" in item && item.eventId
+        const basePath = `!${category}.${item.key}`;
+        const eventPart =
+          "eventId" in item && item.eventId
             ? ` && !story.seen.${item.eventId}`
-            : "");
+            : "";
+        const itemCondition =
+          "condition" in item && typeof (item as { condition?: string }).condition === "string"
+            ? (item as { condition: string }).condition
+            : undefined;
+        const baseCondition =
+          itemCondition != null
+            ? (state: GameState) => {
+                const cat = (state as Record<string, unknown>)[category];
+                if (cat && typeof cat === "object" && (cat as Record<string, unknown>)[item.key]) return false;
+                if ("eventId" in item && item.eventId && state.story?.seen?.[item.eventId]) return false;
+                const isNegated = itemCondition.startsWith("!");
+                const path = isNegated ? itemCondition.slice(1) : itemCondition;
+                const parts = path.split(".");
+                let cur: unknown = state;
+                for (const p of parts) {
+                  cur = (cur as Record<string, unknown>)?.[p];
+                  if (cur === undefined) return isNegated;
+                }
+                return isNegated ? !cur : !!cur;
+              }
+            : basePath + eventPart;
         inheritedItems[`${category}.${item.key}`] = {
           probability: Math.min(adjustedProbability, 1.0),
           value: true,

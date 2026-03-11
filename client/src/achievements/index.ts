@@ -4,13 +4,11 @@ import { getUnclaimedActionIds, actionChartConfig } from "./configs/action";
 import { getUnclaimedBasicIds, basicChartConfig } from "./configs/basic";
 
 /** Returns IDs of achievements that are full (claimable) but not yet claimed. */
-export function getUnclaimedAchievementIds(): string[] {
-  return [
-    ...getUnclaimedBasicIds(),
-    ...getUnclaimedBuildingIds(),
-    ...getUnclaimedItemIds(),
-    ...getUnclaimedActionIds(),
-  ];
+export function getUnclaimedAchievementIds(includeBasic = true): string[] {
+  const ids: string[] = [];
+  if (includeBasic) ids.push(...getUnclaimedBasicIds());
+  ids.push(...getUnclaimedBuildingIds(), ...getUnclaimedItemIds(), ...getUnclaimedActionIds());
+  return ids;
 }
 
 // Re-export chart configs for convenience

@@ -93,9 +93,9 @@ export default function GameContainer() {
   const _achStory = useGameStore((s) => s.story);
   const _achFocus = useGameStore((s) => s.totalFocusEarned);
   const unclaimedAchievementIds = useMemo(
-    () => getUnclaimedAchievementIds(),
+    () => getUnclaimedAchievementIds(!!relics?.survivors_notes),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [_achBuildings, _achClaimed, _achTools, _achWeapons, _achClothing, _achRelics, _achFellowship, _achUpgrades, _achStory, _achFocus],
+    [_achBuildings, _achClaimed, _achTools, _achWeapons, _achClothing, _achRelics, _achFellowship, _achUpgrades, _achStory, _achFocus, relics?.survivors_notes],
   );
   const hasUnviewedAchievement =
     unclaimedAchievementIds.length > 0 &&
@@ -117,7 +117,7 @@ export default function GameContainer() {
 
   // Track unlocked tabs to trigger blink until clicked
   const traderUnlocked = buildings.tradePost >= 1;
-  const achievementsUnlocked = !!relics?.survivors_notes;
+  const achievementsUnlocked = !!relics?.survivors_notes || !!books?.book_of_trials;
   const prevFlagsRef = useRef({
     villageUnlocked: flags.villageUnlocked,
     forestUnlocked: flags.forestUnlocked,
@@ -390,8 +390,8 @@ export default function GameContainer() {
       });
     }
 
-    // Add Achievements tab if Survivor's Notes is found
-    if (relics?.survivors_notes) {
+    // Add Achievements tab if Survivor's Notes or Book of Trials (backwards compat)
+    if (relics?.survivors_notes || books?.book_of_trials) {
       tabs.push({
         id: "achievements",
         icon: <Castle />,
@@ -421,6 +421,7 @@ export default function GameContainer() {
     buildings.stoneHut,
     setActiveTab,
     relics?.survivors_notes,
+    books?.book_of_trials,
     timedEventTab.isActive,
     timedEventTab.event?.title,
   ]);
@@ -650,7 +651,7 @@ export default function GameContainer() {
                 )}
 
                 {/* Achievements Tab Button ⚜︎ */}
-                {relics?.survivors_notes && (
+                {(relics?.survivors_notes || books?.book_of_trials) && (
                   <button
                     className={`py-2 text-sm bg-transparent ${animatingTabs.has("achievements")
                       ? fadePhaseTabs.has("achievements")
