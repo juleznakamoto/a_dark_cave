@@ -2,14 +2,14 @@ import { Component, type ReactNode, useState } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ScrollAreaWithIndicator } from "@/components/ui/scroll-area-with-indicator";
 import { Progress } from "@/components/ui/progress";
-import { Button } from "@/components/ui/button";
+import GameButton from "@/components/game/GameButton";
 import { useGameStore } from "@/game/state";
 import {
   buildingChartConfig,
   itemChartConfig,
   actionChartConfig,
 } from "@/achievements";
-import { getAchievementRows, claimAchievement } from "@/achievements/achievementHelpers";
+import { getAchievementRows, claimAchievement, formatRewardsTooltip } from "@/achievements/achievementHelpers";
 import {
   INDICATOR_CLASS_INCOMPLETE,
   INDICATOR_CLASS_COMPLETE,
@@ -54,12 +54,14 @@ function AchievementRowComponent({
   indicatorClassComplete: string;
 }) {
   const canClaim = row.isFull && !row.isClaimed;
+  const tooltipText = canClaim ? formatRewardsTooltip(row.rewards) : "";
 
   const handleClaim = () => {
     if (canClaim) {
       claimAchievement(row.achievementId, {
         name: row.label,
         reward: row.reward,
+        rewards: row.rewards,
         maxCount: row.maxCount,
       });
     }
@@ -72,14 +74,16 @@ function AchievementRowComponent({
           {row.currentCount >= 1 ? row.label : "❔"}
         </span>
         {canClaim && (
-          <Button
+          <GameButton
             variant="outline"
             size="xs"
             className="shrink-0 h-5 px-2 bg-red-950/30 hover:bg-red-950/70 hover:text-foreground border border-border border-red-800/50 rounded-xl"
             onClick={handleClaim}
+            tooltip={tooltipText}
+            tooltipId={`achievement-claim-${row.achievementId}`}
           >
             Claim
-          </Button>
+          </GameButton>
         )}
       </div>
       <Progress
