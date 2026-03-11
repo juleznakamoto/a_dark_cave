@@ -73,7 +73,7 @@ function AchievementRowComponent({
   };
 
   return (
-    <div className="space-y-1 py-2">
+    <div className="space-y-2 py-2">
       <div className="flex items-center justify-between gap-2">
         <span className="text-xs font-medium text-foreground truncate">
           {row.currentCount >= 1 ? row.label : "❔"}
@@ -130,7 +130,7 @@ function AchievementTabContent({
   return (
     <div className="flex-1 min-h-0 overflow-hidden flex flex-col w-full md:max-w-96">
       <ScrollAreaWithIndicator className="h-full w-full" scrollAreaId={`achievements-${tabId}`}>
-        <div className="pb-6 space-y-3">
+        <div className="pb-6 space-y-1">
           {rows.map((row) => (
             <AchievementRowComponent
               key={row.achievementId}
