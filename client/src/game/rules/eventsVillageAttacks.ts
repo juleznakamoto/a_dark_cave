@@ -108,7 +108,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           } else if (actualDeaths === 1) {
             message += "One villager falls to the skeletal warriors.";
           } else {
-            message += "Villagers fall to the skeletal warriors.";
+            message += "Several villagers fall to the skeletal warriors.";
           }
 
           if (steelLoss > 0) {
@@ -339,7 +339,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           } else if (actualDeaths === 1) {
             message += "One villager falls to the wolves' supernatural fury.";
           } else {
-            message += "Villagers fall to the wolves' supernatural fury.";
+            message += "THe villagers fall to the wolves' supernatural fury.";
           }
 
           if (foodLoss > 0) {
@@ -458,7 +458,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
               "One villager who ventured out is found torn apart at sunrise.";
           } else {
             message +=
-              "Villagers are dragged from their huts, their screams echoing through the night.";
+              "Several villagers are dragged from their huts, their screams echoing through the night.";
           }
 
           if (foodLoss > 0) {
@@ -550,7 +550,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
               _logMessage:
                 actualDeaths === 1
                   ? "The villagers drive back the cannibals! One villager falls in the battle, but the tribe retreats in defeat. Among the bodies, you find a primitive necklace made of human bones."
-                  : "The villagers fight valiantly and repel the cannibals! Villagers fall in the battle, but the tribe is forced to retreat. Among the bodies, you find a primitive necklace made of human bones.",
+                  : "The villagers fight valiantly and repel the cannibals! Multiple illagers fall in the battle, but the tribe is forced to retreat. Among the bodies, you find a primitive necklace made of human bones.",
             };
           }
 
@@ -597,7 +597,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           } else if (actualLost === 1) {
             message += "One villager is abducted by the cannibals.";
           } else {
-            message += "Villagers are killed or abducted by the cannibals.";
+            message += "Several villagers are killed or abducted by the cannibals.";
           }
 
           if (silverLoss > 0 || foodLoss > 0) {
@@ -690,7 +690,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           } else if (totalLost === 1) {
             message += "One villager gets abducted.";
           } else {
-            message += "Villagers are killed or abducted.";
+            message += "Several villagers are killed or abducted.";
           }
 
           if (silverLoss > 0 || foodLoss > 0) {
