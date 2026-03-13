@@ -155,7 +155,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
         mining: {
           resourceMultiplier: 2.0,
           probabilityBonus: {
-            silver: 0.05, // 5% chance to find silver
+            silver: 0.025, // 2.5% chance to find silver
           },
         },
       },

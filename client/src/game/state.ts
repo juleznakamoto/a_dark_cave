@@ -284,6 +284,7 @@ interface GameStore extends GameState {
 export const detectRewards = (stateUpdates: Partial<GameState>, currentState: GameState, actionId: string) => {
   const rewards: {
     resources?: Partial<Record<keyof GameState["resources"], number>>;
+    resourceLosses?: Partial<Record<keyof GameState["resources"], number>>;
     tools?: (keyof GameState["tools"])[];
     weapons?: (keyof GameState["weapons"])[];
     clothing?: (keyof GameState["clothing"])[];
@@ -386,17 +387,26 @@ export const detectRewards = (stateUpdates: Partial<GameState>, currentState: Ga
   // Check for increased resources (positive values in stateUpdates)
   if (stateUpdates.resources) {
     const rewardResources: Record<string, number> = {};
+    const resourceLosses: Record<string, number> = {};
+    const shouldTrackResourceLosses = rewardDialogVillageAttackEvents.has(actionId);
+
     Object.entries(stateUpdates.resources).forEach(([resource, finalAmount]) => {
       if (typeof finalAmount === 'number') {
         const originalAmount = currentState.resources[resource as keyof typeof currentState.resources] || 0;
-        const gained = finalAmount - originalAmount;
-        if (gained > 0) {
-          rewardResources[resource] = gained;
+        const delta = finalAmount - originalAmount;
+        if (delta > 0) {
+          rewardResources[resource] = delta;
+        } else if (shouldTrackResourceLosses && delta < 0) {
+          resourceLosses[resource] = Math.abs(delta);
         }
       }
     });
+
     if (Object.keys(rewardResources).length > 0) {
       rewards.resources = rewardResources as Partial<Record<keyof GameState["resources"], number>>;
+    }
+    if (Object.keys(resourceLosses).length > 0) {
+      rewards.resourceLosses = resourceLosses as Partial<Record<keyof GameState["resources"], number>>;
     }
   }
 
@@ -2034,7 +2044,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const isVillageAttackEvent = rewardDialogVillageAttackEvents.has(eventId);
     const madnessChange = detectMadnessChange(updatedChanges, state);
     let shouldShowRewardDialog = false;
-    let rewardDialogData: { rewards: any; successLog?: string } | null = null;
+    let rewardDialogData: {
+      rewards: any;
+      successLog?: string;
+      variant: "success" | "loss";
+    } | null = null;
     let shouldShowMadnessDialog = false;
     let madnessDialogData: {
       rewards?: any;
@@ -2044,11 +2058,27 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     if ((isVillageAttackEvent || madnessChange !== 0) && !combatData) {
       const rewards = detectRewards(updatedChanges, state, eventId);
-      const hasRewards = rewards && Object.keys(rewards).length > 0;
+      const hasResourceLosses =
+        !!rewards.resourceLosses &&
+        Object.keys(rewards.resourceLosses).length > 0;
+      const hasRewards = Object.entries(rewards).some(([key, value]) => {
+        if (key === "resourceLosses" || !value) {
+          return false;
+        }
+        if (Array.isArray(value)) {
+          return value.length > 0;
+        }
+        return typeof value === "object" && Object.keys(value).length > 0;
+      });
       const successLog = logMessage || undefined;
+      const hasAnyOutcomeResources = hasRewards || hasResourceLosses;
 
-      if (isVillageAttackEvent && hasRewards) {
-        rewardDialogData = { rewards, successLog };
+      if (isVillageAttackEvent && hasAnyOutcomeResources) {
+        rewardDialogData = {
+          rewards,
+          successLog,
+          variant: hasRewards ? "success" : "loss",
+        };
         shouldShowRewardDialog = true;
       }
 
@@ -2061,7 +2091,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         shouldShowMadnessDialog = true;
       }
 
-      if (hasRewards || madnessChange !== 0) {
+      if (hasAnyOutcomeResources || madnessChange !== 0) {
         logMessage = null;
       }
     }

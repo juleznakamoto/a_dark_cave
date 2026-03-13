@@ -112,7 +112,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           }
 
           if (steelLoss > 0) {
-            message += ` The bone army steals ${steelLoss} Steel from the stores.`;
+            message += " The bone army ransacks the stores before leaving.";
           }
 
           if (hutDestroyed) {
@@ -212,11 +212,8 @@ export const villageAttackEvents: Record<string, GameEvent> = {
             message += `${actualDeaths} villagers are killed by the bone creatures.`;
           }
 
-          if (steelLoss > 0) {
-            message += ` The army ransacks your supplies, stealing ${steelLoss} Steel.`;
-          }
-          if (ironLoss > 0) {
-            message += ` The army ransacks your supplies, stealing ${ironLoss} Iron.`;
+          if (steelLoss > 0 || ironLoss > 0) {
+            message += " The army ransacks your supplies before disappearing into the dark.";
           }
 
           return {
@@ -285,7 +282,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
                 ...state.clothing,
                 alphas_hide: true,
               },
-              ressources: {
+              resources: {
                 ...state.resources,
                 fur: state.resources.fur + 500,
                 silver: state.resources.silver + 250,
@@ -346,7 +343,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           }
 
           if (foodLoss > 0) {
-            message += ` The wolves also devour ${foodLoss} Food from the stores.`;
+            message += " In the chaos, the wolves ravage your stores.";
           }
 
           if (hutDestroyed) {
@@ -463,7 +460,9 @@ export const villageAttackEvents: Record<string, GameEvent> = {
             message += `${actualDeaths} villagers are dragged from their huts, their screams echoing through the night.`;
           }
 
-          message += ` The wolves ransack your supplies, consuming ${foodLoss} Food.`;
+          if (foodLoss > 0) {
+            message += " The wolves ransack your supplies before vanishing at dawn.";
+          }
 
           return {
             ...deathResult,
@@ -549,8 +548,8 @@ export const villageAttackEvents: Record<string, GameEvent> = {
               },
               _logMessage:
                 actualDeaths === 1
-                  ? `The villagers drive back the cannibals! One villager falls in the battle, but the tribe retreats in defeat. Among the bodies, you find a primitive necklace made of human bones and 500 Silver.`
-                  : `The villagers fight valiantly and repel the cannibals! ${actualDeaths} villagers fall in the battle, but the tribe is forced to retreat. Among the bodies, you find a primitive necklace made of human bones and 500 Silver.`,
+                  ? "The villagers drive back the cannibals! One villager falls in the battle, but the tribe retreats in defeat. Among the bodies, you find a primitive necklace made of human bones."
+                  : `The villagers fight valiantly and repel the cannibals! ${actualDeaths} villagers fall in the battle, but the tribe is forced to retreat. Among the bodies, you find a primitive necklace made of human bones.`,
             };
           }
 
@@ -601,15 +600,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           }
 
           if (silverLoss > 0 || foodLoss > 0) {
-            message += " The cannibals ransack your stores";
-            if (silverLoss > 0 && foodLoss > 0) {
-              message += `, stealing ${silverLoss} Silver and ${foodLoss} Food`;
-            } else if (silverLoss > 0) {
-              message += `, stealing ${silverLoss} Silver`;
-            } else {
-              message += `, stealing ${foodLoss} Food`;
-            }
-            message += ".";
+            message += " The cannibals ransack your stores before retreating to the wilds.";
           }
 
           return {
@@ -701,7 +692,9 @@ export const villageAttackEvents: Record<string, GameEvent> = {
             message += `${totalLost} villagers are killed or abducted.`;
           }
 
-          message += ` The cannibals plunder your stores freely, taking ${silverLoss} Silver and ${foodLoss} Food.`;
+          if (silverLoss > 0 || foodLoss > 0) {
+            message += " The cannibals plunder your stores freely before slipping away.";
+          }
 
           return {
             ...deathResult,

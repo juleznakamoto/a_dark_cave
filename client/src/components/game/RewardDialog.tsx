@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 interface RewardDialogData {
   rewards: {
     resources?: Partial<Record<keyof GameState["resources"], number>>;
+    resourceLosses?: Partial<Record<keyof GameState["resources"], number>>;
     tools?: (keyof GameState["tools"])[];
     weapons?: (keyof GameState["weapons"])[];
     clothing?: (keyof GameState["clothing"])[];
@@ -23,6 +24,7 @@ interface RewardDialogData {
     stats?: Partial<GameState["stats"]>;
   };
   successLog?: string;
+  variant?: "success" | "loss";
 }
 
 interface RewardDialogProps {
@@ -46,7 +48,8 @@ export default function RewardDialog({
 }: RewardDialogProps) {
   if (!data) return null;
 
-  const { rewards, successLog } = data;
+  const { rewards, successLog, variant = "success" } = data;
+  const isLossVariant = variant === "loss";
   // Helper to render a list of rewards
   const renderRewards = () => {
     const rewardItems: JSX.Element[] = [];
@@ -170,26 +173,71 @@ export default function RewardDialog({
     return <div className="space-y-2">{rewardItems}</div>;
   };
 
+  const renderResourceLosses = () => {
+    if (!rewards.resourceLosses || Object.keys(rewards.resourceLosses).length === 0) {
+      return null;
+    }
+
+    const lossItems = Object.entries(rewards.resourceLosses).map(([resource, amount]) => (
+      <div key={`resource-loss-${resource}`} className="text-sm text-foreground">
+        -{amount} {formatName(resource)}
+      </div>
+    ));
+
+    return <div className="space-y-2">{lossItems}</div>;
+  };
+
+  const hasRewardItems =
+    (!!rewards.resources && Object.keys(rewards.resources).length > 0) ||
+    !!rewards.tools?.length ||
+    !!rewards.weapons?.length ||
+    !!rewards.clothing?.length ||
+    !!rewards.relics?.length ||
+    !!rewards.blessings?.length ||
+    !!rewards.books?.length ||
+    !!rewards.schematics?.length ||
+    !!rewards.fellowship?.length ||
+    (!!rewards.stats && Object.keys(rewards.stats).length > 0);
+  const hasResourceLosses =
+    !!rewards.resourceLosses && Object.keys(rewards.resourceLosses).length > 0;
+
   return (
     <>
       <style>{`
-                .reward-dialog-glow {
-                  animation: reward-glow-pulse 2.5s ease-in-out infinite;
-                }
-              @keyframes reward-glow-pulse {
-                0%, 100% {
-                  box-shadow: 0 0 15px 5px rgba(234, 179, 8, 0.25);
-                }
-                50% {
-                  box-shadow: 0 0 0px 0px rgba(234, 179, 8, 0.5);
-                }
-              }
-              `}</style>
+        .reward-dialog-glow-success {
+          animation: reward-glow-pulse-success 2.5s ease-in-out infinite;
+        }
+        .reward-dialog-glow-loss {
+          animation: reward-glow-pulse-loss 2.5s ease-in-out infinite;
+        }
+        @keyframes reward-glow-pulse-success {
+          0%, 100% {
+            box-shadow: 0 0 15px 5px rgba(234, 179, 8, 0.25);
+          }
+          50% {
+            box-shadow: 0 0 0px 0px rgba(234, 179, 8, 0.5);
+          }
+        }
+        @keyframes reward-glow-pulse-loss {
+          0%, 100% {
+            box-shadow: 0 0 15px 5px rgba(146, 64, 14, 0.35);
+          }
+          50% {
+            box-shadow: 0 0 0px 0px rgba(146, 64, 14, 0.6);
+          }
+        }
+      `}</style>
       <Dialog open={isOpen} onOpenChange={() => { }}>
         <DialogContent
-          className="w-[95vw] sm:max-w-sm z-[70] [&>button]:hidden border-2 border-amber-600 shadow-2xl"
+          className={`w-[95vw] sm:max-w-sm z-[70] [&>button]:hidden border-2 shadow-2xl ${
+            isLossVariant ? "border-orange-800" : "border-amber-600"
+          }`}
         >
-          <div className="absolute inset-0 -z-10 pointer-events-none reward-dialog-glow"></div>
+          <div
+            className={`absolute inset-0 -z-10 pointer-events-none ${
+              isLossVariant ? "reward-dialog-glow-loss" : "reward-dialog-glow-success"
+            }`}
+          ></div>
           <DialogHeader>
             <div className="flex justify-center">
               <span className="text-4xl text-white">⁂</span>
@@ -203,7 +251,24 @@ export default function RewardDialog({
             <DialogTitle className="sr-only">Action Reward</DialogTitle>
           </DialogHeader>
 
-          <div className="text-sm pb-2">{renderRewards()}</div>
+          <div className="text-sm pb-2 space-y-4">
+            {hasRewardItems && (
+              <div>
+                <div className="text-xs uppercase tracking-wide text-muted-foreground pb-2">
+                  Rewards
+                </div>
+                {renderRewards()}
+              </div>
+            )}
+            {hasResourceLosses && (
+              <div>
+                <div className="text-xs uppercase tracking-wide text-muted-foreground pb-2">
+                  Losses
+                </div>
+                {renderResourceLosses()}
+              </div>
+            )}
+          </div>
 
           <div className="flex justify-center">
             <Button
@@ -212,7 +277,7 @@ export default function RewardDialog({
               className="text-xs h-8"
               button_id="reward-dialog-continue"
             >
-              Claim Rewards
+              {isLossVariant ? "Continue" : "Claim Rewards"}
             </Button>
           </div>
         </DialogContent>

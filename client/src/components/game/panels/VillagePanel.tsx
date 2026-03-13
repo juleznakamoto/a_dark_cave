@@ -550,7 +550,8 @@ export default function VillagePanel() {
   };
 
   // Hold-to-repeat state management (moved outside to avoid conditional hooks)
-  const [holdState, setHoldState] = useState<{
+  // Use refs so we can clear from anywhere (e.g. when Merchant dialog opens and mouseup never fires)
+  const holdRef = useRef<{
     interval: NodeJS.Timeout | null;
     timeout: NodeJS.Timeout | null;
   }>({ interval: null, timeout: null });
@@ -569,6 +570,11 @@ export default function VillagePanel() {
       touchActiveRef.current = true;
     }
 
+    // Clear any existing hold before starting new one
+    if (holdRef.current.timeout) clearTimeout(holdRef.current.timeout);
+    if (holdRef.current.interval) clearInterval(holdRef.current.interval);
+    holdRef.current = { interval: null, timeout: null };
+
     // Execute immediately
     action();
 
@@ -576,20 +582,19 @@ export default function VillagePanel() {
     const timeout = setTimeout(() => {
       // Then repeat every 100ms
       const interval = setInterval(action, 100);
-      setHoldState((prev) => ({ ...prev, interval }));
+      holdRef.current.interval = interval;
     }, 500);
-
-    setHoldState((prev) => ({ ...prev, timeout }));
+    holdRef.current.timeout = timeout;
   };
 
   const stopHold = (isTouch: boolean = false) => {
-    if (holdState.timeout) {
-      clearTimeout(holdState.timeout);
+    if (holdRef.current.timeout) {
+      clearTimeout(holdRef.current.timeout);
     }
-    if (holdState.interval) {
-      clearInterval(holdState.interval);
+    if (holdRef.current.interval) {
+      clearInterval(holdRef.current.interval);
     }
-    setHoldState({ interval: null, timeout: null });
+    holdRef.current = { interval: null, timeout: null };
 
     // Reset touch flag after a delay to allow mouse event to be skipped
     if (isTouch) {
@@ -598,6 +603,17 @@ export default function VillagePanel() {
       }, 100);
     }
   };
+
+  // When the tab switches away (e.g. Merchant pops up and auto-switches to timedevent tab),
+  // VillagePanel unmounts but the hold interval keeps running. Clear on unmount.
+  useEffect(() => {
+    return () => {
+      if (holdRef.current.timeout) clearTimeout(holdRef.current.timeout);
+      if (holdRef.current.interval) clearInterval(holdRef.current.interval);
+      holdRef.current = { interval: null, timeout: null };
+      touchActiveRef.current = false;
+    };
+  }, []);
 
   const renderPopulationControl = (jobId: string, label: string) => {
     const currentCount = villagers[jobId as keyof typeof villagers] || 0;
