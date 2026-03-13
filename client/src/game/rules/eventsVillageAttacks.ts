@@ -108,7 +108,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           } else if (actualDeaths === 1) {
             message += "One villager falls to the skeletal warriors.";
           } else {
-            message += `${actualDeaths} villagers are slain by the bone creatures.`;
+            message += "Villagers fall to the skeletal warriors.";
           }
 
           if (steelLoss > 0) {
@@ -158,7 +158,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           let villagerDeaths = 0;
           let steelLoss = 0;
           let ironLoss = 0;
-          let deathResult = {};
+          let deathResult: ReturnType<typeof killVillagers> = { villagersKilled: 0 };
 
           if (Math.random() < success_chance) {
             // Success - bone army passes without finding anyone
@@ -209,7 +209,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           } else if (actualDeaths === 1) {
             message += "One villager who tried to flee is killed.";
           } else {
-            message += `${actualDeaths} villagers are killed by the bone creatures.`;
+            message += "The villagers who tried to flee are killed by the bone creatures.";
           }
 
           if (steelLoss > 0 || ironLoss > 0) {
@@ -339,7 +339,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           } else if (actualDeaths === 1) {
             message += "One villager falls to the wolves' supernatural fury.";
           } else {
-            message += `${actualDeaths} villagers are claimed by the wolves' unnatural hunger.`;
+            message += "Villagers fall to the wolves' supernatural fury.";
           }
 
           if (foodLoss > 0) {
@@ -399,7 +399,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
 
           let villagerDeaths = 0;
           let foodLoss = 0;
-          let deathResult = {};
+          let deathResult: ReturnType<typeof killVillagers> = { villagersKilled: 0 };
 
           if (Math.random() < success_chance) {
             // Success - wolves leave without causing damage
@@ -457,7 +457,8 @@ export const villageAttackEvents: Record<string, GameEvent> = {
             message +=
               "One villager who ventured out is found torn apart at sunrise.";
           } else {
-            message += `${actualDeaths} villagers are dragged from their huts, their screams echoing through the night.`;
+            message +=
+              "Villagers are dragged from their huts, their screams echoing through the night.";
           }
 
           if (foodLoss > 0) {
@@ -549,7 +550,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
               _logMessage:
                 actualDeaths === 1
                   ? "The villagers drive back the cannibals! One villager falls in the battle, but the tribe retreats in defeat. Among the bodies, you find a primitive necklace made of human bones."
-                  : `The villagers fight valiantly and repel the cannibals! ${actualDeaths} villagers fall in the battle, but the tribe is forced to retreat. Among the bodies, you find a primitive necklace made of human bones.`,
+                  : "The villagers fight valiantly and repel the cannibals! Villagers fall in the battle, but the tribe is forced to retreat. Among the bodies, you find a primitive necklace made of human bones.",
             };
           }
 
@@ -596,7 +597,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           } else if (actualLost === 1) {
             message += "One villager is abducted by the cannibals.";
           } else {
-            message += `${actualLost} villagers are killed or abducted by the cannibals.`;
+            message += "Villagers are killed or abducted by the cannibals.";
           }
 
           if (silverLoss > 0 || foodLoss > 0) {
@@ -636,7 +637,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           let totalLost = 0;
           let silverLoss = 0;
           let foodLoss = 0;
-          let deathResult = {};
+          let deathResult: ReturnType<typeof killVillagers> = { villagersKilled: 0 };
 
           if (Math.random() < success_chance) {
             // Success - cannibals leave without causing major damage
@@ -689,7 +690,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           } else if (totalLost === 1) {
             message += "One villager gets abducted.";
           } else {
-            message += `${totalLost} villagers are killed or abducted.`;
+            message += "Villagers are killed or abducted.";
           }
 
           if (silverLoss > 0 || foodLoss > 0) {

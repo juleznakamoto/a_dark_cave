@@ -285,6 +285,7 @@ export const detectRewards = (stateUpdates: Partial<GameState>, currentState: Ga
   const rewards: {
     resources?: Partial<Record<keyof GameState["resources"], number>>;
     resourceLosses?: Partial<Record<keyof GameState["resources"], number>>;
+    villagersLost?: number;
     tools?: (keyof GameState["tools"])[];
     weapons?: (keyof GameState["weapons"])[];
     clothing?: (keyof GameState["clothing"])[];
@@ -407,6 +408,14 @@ export const detectRewards = (stateUpdates: Partial<GameState>, currentState: Ga
     }
     if (Object.keys(resourceLosses).length > 0) {
       rewards.resourceLosses = resourceLosses as Partial<Record<keyof GameState["resources"], number>>;
+    }
+  }
+
+  // Check for villager deaths (from killVillagers) for village attack events
+  if (rewardDialogVillageAttackEvents.has(actionId)) {
+    const villagersKilled = (stateUpdates as { villagersKilled?: number }).villagersKilled;
+    if (typeof villagersKilled === "number" && villagersKilled > 0) {
+      rewards.villagersLost = villagersKilled;
     }
   }
 
@@ -2061,8 +2070,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const hasResourceLosses =
         !!rewards.resourceLosses &&
         Object.keys(rewards.resourceLosses).length > 0;
+      const hasVillagersLost =
+        typeof rewards.villagersLost === "number" && rewards.villagersLost > 0;
       const hasRewards = Object.entries(rewards).some(([key, value]) => {
-        if (key === "resourceLosses" || !value) {
+        if (key === "resourceLosses" || key === "villagersLost" || !value) {
           return false;
         }
         if (Array.isArray(value)) {
@@ -2071,7 +2082,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
         return typeof value === "object" && Object.keys(value).length > 0;
       });
       const successLog = logMessage || undefined;
-      const hasAnyOutcomeResources = hasRewards || hasResourceLosses;
+      const hasAnyOutcomeResources =
+        hasRewards || hasResourceLosses || hasVillagersLost;
 
       if (isVillageAttackEvent && hasAnyOutcomeResources) {
         rewardDialogData = {

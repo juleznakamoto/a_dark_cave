@@ -13,6 +13,7 @@ interface RewardDialogData {
   rewards: {
     resources?: Partial<Record<keyof GameState["resources"], number>>;
     resourceLosses?: Partial<Record<keyof GameState["resources"], number>>;
+    villagersLost?: number;
     tools?: (keyof GameState["tools"])[];
     weapons?: (keyof GameState["weapons"])[];
     clothing?: (keyof GameState["clothing"])[];
@@ -173,17 +174,30 @@ export default function RewardDialog({
     return <div className="space-y-2">{rewardItems}</div>;
   };
 
-  const renderResourceLosses = () => {
-    if (!rewards.resourceLosses || Object.keys(rewards.resourceLosses).length === 0) {
-      return null;
+  const renderLosses = () => {
+    const lossItems: JSX.Element[] = [];
+
+    // Villagers lost always first
+    if (typeof rewards.villagersLost === "number" && rewards.villagersLost > 0) {
+      lossItems.push(
+        <div key="villagers-lost" className="text-sm text-foreground">
+          -{rewards.villagersLost} {rewards.villagersLost === 1 ? "Villager" : "Villagers"}
+        </div>
+      );
     }
 
-    const lossItems = Object.entries(rewards.resourceLosses).map(([resource, amount]) => (
-      <div key={`resource-loss-${resource}`} className="text-sm text-foreground">
-        -{amount} {formatName(resource)}
-      </div>
-    ));
+    // Resource losses
+    if (rewards.resourceLosses && Object.keys(rewards.resourceLosses).length > 0) {
+      Object.entries(rewards.resourceLosses).forEach(([resource, amount]) => {
+        lossItems.push(
+          <div key={`resource-loss-${resource}`} className="text-sm text-foreground">
+            -{amount} {formatName(resource)}
+          </div>
+        );
+      });
+    }
 
+    if (lossItems.length === 0) return null;
     return <div className="space-y-2">{lossItems}</div>;
   };
 
@@ -198,8 +212,9 @@ export default function RewardDialog({
     !!rewards.schematics?.length ||
     !!rewards.fellowship?.length ||
     (!!rewards.stats && Object.keys(rewards.stats).length > 0);
-  const hasResourceLosses =
-    !!rewards.resourceLosses && Object.keys(rewards.resourceLosses).length > 0;
+  const hasLosses =
+    (typeof rewards.villagersLost === "number" && rewards.villagersLost > 0) ||
+    (!!rewards.resourceLosses && Object.keys(rewards.resourceLosses).length > 0);
 
   return (
     <>
@@ -253,20 +268,10 @@ export default function RewardDialog({
 
           <div className="text-sm pb-2 space-y-4">
             {hasRewardItems && (
-              <div>
-                <div className="text-xs uppercase tracking-wide text-muted-foreground pb-2">
-                  Rewards
-                </div>
-                {renderRewards()}
-              </div>
+              <div>{renderRewards()}</div>
             )}
-            {hasResourceLosses && (
-              <div>
-                <div className="text-xs uppercase tracking-wide text-muted-foreground pb-2">
-                  Losses
-                </div>
-                {renderResourceLosses()}
-              </div>
+            {hasLosses && (
+              <div>{renderLosses()}</div>
             )}
           </div>
 

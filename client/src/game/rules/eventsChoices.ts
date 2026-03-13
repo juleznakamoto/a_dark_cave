@@ -498,7 +498,9 @@ export const choiceEvents: Record<string, GameEvent> = {
 
             return {
               ...deathResult,
-              _logMessage: `The creature rises like a nightmare, beauty masking deadly intent. With unnatural strength, she drags ${actualDrowned} villager${actualDrowned > 1 ? "s" : ""} beneath the waters. Only ripples and faint screams remain as the rest flee in terror.`,
+              _logMessage: actualDrowned === 1
+                ? "The creature rises like a nightmare, beauty masking deadly intent. With unnatural strength, she drags a villager beneath the waters. Only ripples and faint screams remain as the rest flee in terror."
+                : "The creature rises like a nightmare, beauty masking deadly intent. With unnatural strength, she drags the villagers beneath the waters. Only ripples and faint screams remain as the rest flee in terror.",
             };
           }
         },

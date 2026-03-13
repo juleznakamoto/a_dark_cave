@@ -13,7 +13,7 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
     message: (state: GameState) => {
       const sacrificeAmount = Math.min(
         (state.cruelMode ? 10 : 5) +
-          (state.bloodMoonState?.occurrenceCount ?? 0) * 5,
+        (state.bloodMoonState?.occurrenceCount ?? 0) * 5,
         30,
       );
 
@@ -30,7 +30,7 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
         label: (state: GameState) => {
           const sacrificeAmount = Math.min(
             (state.cruelMode ? 10 : 5) +
-              (state.bloodMoonState?.occurrenceCount ?? 0) * 5,
+            (state.bloodMoonState?.occurrenceCount ?? 0) * 5,
             30,
           );
           return `Sacrifice ${sacrificeAmount} villagers`;
@@ -38,7 +38,7 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
         effect: (state: GameState) => {
           const sacrificeAmount = Math.min(
             (state.cruelMode ? 10 : 5) +
-              (state.bloodMoonState?.occurrenceCount ?? 0) * 5,
+            (state.bloodMoonState?.occurrenceCount ?? 0) * 5,
             30,
           );
 
@@ -50,7 +50,7 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
               hasWon: false,
               occurrenceCount: (state.bloodMoonState?.occurrenceCount ?? 0) + 1,
             },
-            _logMessage: `${sacrificeAmount} villagers are offered to the lycanthropes. With the blood moon fading, peace returns to the village… for now.`,
+            _logMessage: "The villagers are offered to the lycanthropes. With the blood moon fading, peace returns to the village. At least for now.",
           };
         },
       },
@@ -77,7 +77,7 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
           const traps = state.buildings.traps;
           const sacrificeAmount = Math.min(
             (state.cruelMode ? 10 : 5) +
-              (state.bloodMoonState?.occurrenceCount ?? 0) * 5,
+            (state.bloodMoonState?.occurrenceCount ?? 0) * 5,
             30,
           );
 
@@ -137,7 +137,7 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
               hasWon: false,
               occurrenceCount: (state.bloodMoonState?.occurrenceCount ?? 0) + 1,
             },
-            _logMessage: `The lycanthropes overwhelm your defenses!${(deathResult.villagersKilled ?? 0) > 0 ? ` They kill ${deathResult.villagersKilled ?? 0} ${(deathResult.villagersKilled ?? 0) === 1 ? "villager" : "villagers"} and` : " They"} devour ${foodLoss} Food from your stores. The blood moon fades, but the threat remains.`,
+            _logMessage: "The lycanthropes overwhelm your defenses and overrun the settlement! The blood moon fades, but the threat remains.",
           };
         },
       },
@@ -150,7 +150,7 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
         const traps = state.buildings.traps;
         const sacrificeAmount = Math.min(
           (state.cruelMode ? 10 : 5) +
-            (state.bloodMoonState?.occurrenceCount ?? 0) * 5,
+          (state.bloodMoonState?.occurrenceCount ?? 0) * 5,
           30,
         );
 
@@ -210,7 +210,7 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
             hasWon: false,
             occurrenceCount: (state.bloodMoonState?.occurrenceCount ?? 0) + 1,
           },
-          _logMessage: `The lycanthropes overwhelm your defenses!${(deathResult.villagersKilled ?? 0) > 0 ? ` They kill ${deathResult.villagersKilled ?? 0} ${(deathResult.villagersKilled ?? 0) === 1 ? "villager" : "villagers"} and` : " They"} devour ${foodLoss} Food from your stores. The blood moon fades, but the threat remains.`,
+          _logMessage: "The lycanthropes overwhelm your defenses and overrun the settlement! The blood moon fades, but the threat remains.",
         };
       },
     },
