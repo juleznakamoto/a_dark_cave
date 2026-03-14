@@ -90,7 +90,7 @@ function createBoneDevourerEvent(config: BoneDevourerConfig): GameEvent {
               [eventId]: true,
               [`${eventId}_seen`]: true,
             },
-            _logMessage: `The creature takes the bones with its gnarled hands, as if attempting to count them. It places a pouch with ${silverReward} Silver at your feet and disappears into the darkness.`,
+            _logMessage: "The creature takes the bones with its gnarled hands, as if attempting to count them. It places a pouch of silver at your feet and disappears into the darkness.",
           };
         },
       },

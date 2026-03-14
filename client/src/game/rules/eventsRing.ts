@@ -11,7 +11,7 @@ export const ringEvents: Record<string, GameEvent> = {
       state.buildings.darkEstate >= 1 &&
       state.buildings.stoneHut >= 4 &&
       !state.clothing.feeding_ring,
-    
+
     timeProbability: 15,
     title: "The Night Terror",
     message:
@@ -56,7 +56,7 @@ export const ringEvents: Record<string, GameEvent> = {
       state.buildings.darkEstate >= 1 &&
       state.buildings.stoneHut >= 5 &&
       state.clothing.feeding_ring,
-    
+
     timeProbability: 20,
     title: "Bloodied Awakening",
     message:
@@ -100,7 +100,7 @@ export const ringEvents: Record<string, GameEvent> = {
       state.buildings.darkEstate >= 1 &&
       state.clothing.feeding_ring &&
       state.events.bloodiedAwakening,
-    
+
     timeProbability: 5,
     title: "No Escape",
     message:
@@ -132,7 +132,7 @@ export const ringEvents: Record<string, GameEvent> = {
       state.buildings.stoneHut >= 6 &&
       !state.clothing.feeding_ring &&
       (state.events.bloodiedAwakening || state.events.desperateAmputation),
-    
+
     timeProbability: 60,
     title: "The Mercenary",
     message:
@@ -221,7 +221,7 @@ export const ringEvents: Record<string, GameEvent> = {
       state.buildings.darkEstate >= 1 &&
       state.events.mercenaryDemand &&
       state.story.seen.mercenaryDemand_payGold,
-    
+
     timeProbability: 30,
     title: "The Mercenary Returns",
     message:
@@ -303,11 +303,11 @@ export const ringEvents: Record<string, GameEvent> = {
       state.buildings.darkEstate >= 1 &&
       state.events.mercenaryDemand &&
       state.story.seen.mercenaryDemand_giveRing,
-    
+
     timeProbability: 5,
     title: "The Massacre",
     message:
-      "A pale villager rushes to you, breathless with terror. 'The mercenary camp... everyone's dead. They killed each other in the night. We found 500 Silver among the corpses.'",
+      "A pale villager rushes to you, breathless with terror. 'The mercenary camp... everyone's dead. They killed each other in the night. We found some silver among the corpses.'",
     priority: 4,
     repeatable: false,
     choices: [

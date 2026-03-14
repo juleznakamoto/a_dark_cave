@@ -208,16 +208,16 @@ describe('actionEffects - circular dependency fix', () => {
     expect(updates.resources!.torch).toBe(6); // 1 * 6
   });
 
-  it('craftTorches execution time is 3s without upgrade', () => {
+  it('craftTorches execution time is 2.5s without upgrade', () => {
     state.story.seen.hasWood = true;
-    expect(getExecutionTime('craftTorches', state)).toBe(3);
+    expect(getExecutionTime('craftTorches', state)).toBe(2.5);
   });
 
   it('craftTorches execution time is halved at upgrade level 10 with book_of_ascension', () => {
     state.story.seen.hasWood = true;
     state.books = { book_of_ascension: true };
     state.buttonUpgrades = { craftTorches: { clicks: 360, level: 10 } };
-    expect(getExecutionTime('craftTorches', state)).toBe(1.5);
+    expect(getExecutionTime('craftTorches', state)).toBe(1.25);
   });
 
   it('should apply effects for craftIronSword action', () => {

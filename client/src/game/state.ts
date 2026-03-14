@@ -281,7 +281,13 @@ interface GameStore extends GameState {
 }
 
 // Helper function to detect rewards from state updates
-export const detectRewards = (stateUpdates: Partial<GameState>, currentState: GameState, actionId: string) => {
+export const detectRewards = (
+  stateUpdates: Partial<GameState>,
+  currentState: GameState,
+  actionId: string,
+  options?: { trackLosses?: boolean }
+) => {
+  const trackLosses = options?.trackLosses ?? rewardDialogVillageAttackEvents.has(actionId);
   const rewards: {
     resources?: Partial<Record<keyof GameState["resources"], number>>;
     resourceLosses?: Partial<Record<keyof GameState["resources"], number>>;
@@ -389,7 +395,7 @@ export const detectRewards = (stateUpdates: Partial<GameState>, currentState: Ga
   if (stateUpdates.resources) {
     const rewardResources: Record<string, number> = {};
     const resourceLosses: Record<string, number> = {};
-    const shouldTrackResourceLosses = rewardDialogVillageAttackEvents.has(actionId);
+    const shouldTrackResourceLosses = trackLosses;
 
     Object.entries(stateUpdates.resources).forEach(([resource, finalAmount]) => {
       if (typeof finalAmount === 'number') {
@@ -411,8 +417,8 @@ export const detectRewards = (stateUpdates: Partial<GameState>, currentState: Ga
     }
   }
 
-  // Check for villager deaths (from killVillagers) for village attack events
-  if (rewardDialogVillageAttackEvents.has(actionId)) {
+  // Check for villager deaths (from killVillagers) when tracking losses
+  if (trackLosses) {
     const villagersKilled = (stateUpdates as { villagersKilled?: number }).villagersKilled;
     if (typeof villagersKilled === "number" && villagersKilled > 0) {
       rewards.villagersLost = villagersKilled;
@@ -2050,7 +2056,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     // Prepare outcome dialogs BEFORE applying state updates, so success logs can be
     // displayed in dialogs without duplicating them in the event log.
-    const isVillageAttackEvent = rewardDialogVillageAttackEvents.has(eventId);
     const madnessChange = detectMadnessChange(updatedChanges, state);
     let shouldShowRewardDialog = false;
     let rewardDialogData: {
@@ -2065,13 +2070,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
       madnessChange: number;
     } | null = null;
 
-    if ((isVillageAttackEvent || madnessChange !== 0) && !combatData) {
-      const rewards = detectRewards(updatedChanges, state, eventId);
+    if (!combatData) {
+      const rewards = detectRewards(updatedChanges, state, eventId, { trackLosses: true });
       const hasResourceLosses =
         !!rewards.resourceLosses &&
         Object.keys(rewards.resourceLosses).length > 0;
       const hasVillagersLost =
         typeof rewards.villagersLost === "number" && rewards.villagersLost > 0;
+      const hasLosses = hasResourceLosses || hasVillagersLost;
       const hasRewards = Object.entries(rewards).some(([key, value]) => {
         if (key === "resourceLosses" || key === "villagersLost" || !value) {
           return false;
@@ -2082,10 +2088,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
         return typeof value === "object" && Object.keys(value).length > 0;
       });
       const successLog = logMessage || undefined;
-      const hasAnyOutcomeResources =
-        hasRewards || hasResourceLosses || hasVillagersLost;
+      const hasAnyOutcome = hasRewards || hasLosses;
+      const isMerchantEvent = eventId === "merchant" || eventId?.startsWith?.("merchant-");
 
-      if (isVillageAttackEvent && hasAnyOutcomeResources) {
+      if (hasAnyOutcome && !isMerchantEvent) {
         rewardDialogData = {
           rewards,
           successLog,
@@ -2103,7 +2109,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         shouldShowMadnessDialog = true;
       }
 
-      if (hasAnyOutcomeResources || madnessChange !== 0) {
+      if (hasAnyOutcome || madnessChange !== 0) {
         logMessage = null;
       }
     }
@@ -2269,8 +2275,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
     ).reduce((sum, count) => sum + (count || 0), 0);
     return (
       Object.values(state.villagers).reduce(
-      (sum, count) => sum + (count || 0),
-      0,
+        (sum, count) => sum + (count || 0),
+        0,
       ) + assignedToExpeditions
     );
   },

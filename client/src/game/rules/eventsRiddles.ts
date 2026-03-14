@@ -134,18 +134,18 @@ const VARIANT_CHOICES: Record<string, RiddleChoice[]> = {
   ],
 };
 
-// Success messages
+// Success messages (amounts shown in reward dialog)
 const SUCCESS_MESSAGES = {
-  first: (gold: number) =>
-    `The figure nods its head slightly before fading into the darkness. By morning, a small bag with ${gold} Gold rests upon the estate's doorstep.`,
-  second: (gold: number) =>
-    `The figure gives a faint nod and vanishes into the night. At dawn, a weathered leather pouch with ${gold} Gold lies where it stood.`,
-  third: (gold: number) =>
-    `The figure tilts its head in quiet acknowledgment before stepping back into the dim. When morning comes, a worn coin purse with ${gold} Gold is found outside the door.`,
-  fourth: (gold: number) =>
-    `The figure lowers its hooded head for a moment before dissolving into the shadows. A small sack containing ${gold} Gold remains behind on the cold ground.`,
-  fifth: (gold: number) =>
-    `The figure bows its head in silent reverence before fading completely. A big sack filled with ${gold} Gold lays on the ground where it stood.`,
+  first: () =>
+    "The figure nods its head slightly before fading into the darkness. By morning, a small bag of gold rests upon the estate's doorstep.",
+  second: () =>
+    "The figure gives a faint nod and vanishes into the night. At dawn, a weathered leather pouch of gold lies where it stood.",
+  third: () =>
+    "The figure tilts its head in quiet acknowledgment before stepping back into the dim. When morning comes, a worn coin purse of gold is found outside the door.",
+  fourth: () =>
+    "The figure lowers its hooded head for a moment before dissolving into the shadows. A small sack of gold remains behind on the cold ground.",
+  fifth: () =>
+    "The figure bows its head in silent reverence before fading completely. A big sack of gold lays on the ground where it stood.",
 } as const;
 
 // Wrong answer messages
@@ -298,7 +298,7 @@ function createRiddleEvent(
             [eventId]: true,
             [oppositeEventId]: true, // Block the opposite variant
           } as any,
-          _logMessage: SUCCESS_MESSAGES[level](totalReward),
+          _logMessage: SUCCESS_MESSAGES[level](),
         };
       };
     }

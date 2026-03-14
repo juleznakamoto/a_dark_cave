@@ -199,14 +199,14 @@ function createWoodcutterEvent(config: WoodcutterConfig): GameEvent {
             },
             _logMessage:
               level === 1
-                ? `The woodcutter takes the food and heads into the forest. By evening, he returns with the promised ${woodReward} Wood stacked neatly at the village's edge.`
+                ? "The woodcutter takes the food and heads into the forest. By evening, he returns with the promised wood stacked neatly at the village's edge."
                 : level === 2
-                  ? `The woodcutter takes the food and disappears into the forest. By nightfall, he returns with a large pile of ${woodReward} Wood.`
+                  ? "The woodcutter takes the food and disappears into the forest. By nightfall, he returns with a large pile of wood."
                   : level === 3
-                    ? `The woodcutter takes the food and ventures deep into the forest. He returns with an impressive haul of ${woodReward} wood.`
+                    ? "The woodcutter takes the food and ventures deep into the forest. He returns with an impressive haul of wood."
                     : level === 4
-                      ? `The woodcutter takes the food and spends the afternoon in the forest. He returns with an enormous pile of ${woodReward} Wood.`
-                      : `The woodcutter takes the food and within the same day he delivers a massive stockpile of ${woodReward} Wood to the village.`,
+                      ? "The woodcutter takes the food and spends the afternoon in the forest. He returns with an enormous pile of wood."
+                      : "The woodcutter takes the food and within the same day he delivers a massive stockpile of wood to the village.",
           };
         },
       },

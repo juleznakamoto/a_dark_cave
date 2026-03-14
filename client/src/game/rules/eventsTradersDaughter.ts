@@ -41,7 +41,7 @@ export const tradersDaughterEvents: Record<string, GameEvent> = {
               traders_daughter_helped: true,
             },
             _logMessage:
-              "The search party finds the girl unharmed. She had discovered a small cave strewn with silver trinkets and was quietly playing among them. You find 250 Silver in the cave.",
+              "The search party finds the girl unharmed. She had discovered a small cave strewn with silver trinkets and coins, and was quietly playing among them.",
           };
         },
       },

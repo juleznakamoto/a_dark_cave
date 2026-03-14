@@ -42,6 +42,17 @@ const formatName = (name: string) => {
     .join(" ");
 };
 
+// Sort resource keys: gold first, silver second, then rest alphabetically
+const sortResourceKeys = (keys: string[]) => {
+  return [...keys].sort((a, b) => {
+    if (a === "gold") return -1;
+    if (b === "gold") return 1;
+    if (a === "silver") return -1;
+    if (b === "silver") return 1;
+    return a.localeCompare(b);
+  });
+};
+
 export default function RewardDialog({
   isOpen,
   data,
@@ -51,22 +62,36 @@ export default function RewardDialog({
 
   const { rewards, successLog, variant = "success" } = data;
   const isLossVariant = variant === "loss";
-  // Helper to render a list of rewards
+  // Helper to render a list of rewards (order: Stats, Fellowship, Items, Resources)
   const renderRewards = () => {
     const rewardItems: JSX.Element[] = [];
 
-    // Resources
-    if (rewards.resources && Object.keys(rewards.resources).length > 0) {
-      Object.entries(rewards.resources).forEach(([resource, amount]) => {
+    // 1. Stats (first)
+    if (rewards.stats && Object.keys(rewards.stats).length > 0) {
+      Object.entries(rewards.stats).forEach(([stat, amount]) => {
+        if (stat === "madness" || stat === "madnessFromEvents") {
+          return;
+        }
         rewardItems.push(
-          <div key={`resource-${resource}`} className="text-sm text-foreground">
-            {amount} {formatName(resource)}
+          <div key={`stat-${stat}`} className="text-sm text-foreground">
+            +{amount} {formatName(stat)}
           </div>,
         );
       });
     }
 
-    // Tools
+    // 2. Fellowship
+    if (rewards.fellowship && rewards.fellowship.length > 0) {
+      rewards.fellowship.forEach((member) => {
+        rewardItems.push(
+          <div key={`fellowship-${member}`} className="text-sm text-foreground">
+            {formatName(member)}
+          </div>,
+        );
+      });
+    }
+
+    // 3. Items (tools, weapons, clothing, relics, blessings, books, schematics)
     if (rewards.tools && rewards.tools.length > 0) {
       rewards.tools.forEach((tool) => {
         rewardItems.push(
@@ -76,8 +101,6 @@ export default function RewardDialog({
         );
       });
     }
-
-    // Weapons
     if (rewards.weapons && rewards.weapons.length > 0) {
       rewards.weapons.forEach((weapon) => {
         rewardItems.push(
@@ -87,8 +110,6 @@ export default function RewardDialog({
         );
       });
     }
-
-    // Clothing
     if (rewards.clothing && rewards.clothing.length > 0) {
       rewards.clothing.forEach((clothing) => {
         rewardItems.push(
@@ -98,8 +119,6 @@ export default function RewardDialog({
         );
       });
     }
-
-    // Relics
     if (rewards.relics && rewards.relics.length > 0) {
       rewards.relics.forEach((relic) => {
         rewardItems.push(
@@ -109,8 +128,6 @@ export default function RewardDialog({
         );
       });
     }
-
-    // Blessings
     if (rewards.blessings && rewards.blessings.length > 0) {
       rewards.blessings.forEach((blessing) => {
         rewardItems.push(
@@ -120,8 +137,6 @@ export default function RewardDialog({
         );
       });
     }
-
-    // Books
     if (rewards.books && rewards.books.length > 0) {
       rewards.books.forEach((book) => {
         rewardItems.push(
@@ -131,8 +146,6 @@ export default function RewardDialog({
         );
       });
     }
-
-    // Schematics
     if (rewards.schematics && rewards.schematics.length > 0) {
       rewards.schematics.forEach((schematic) => {
         rewardItems.push(
@@ -146,26 +159,14 @@ export default function RewardDialog({
       });
     }
 
-    // Fellowship
-    if (rewards.fellowship && rewards.fellowship.length > 0) {
-      rewards.fellowship.forEach((member) => {
+    // 4. Resources (gold first, silver second, then rest)
+    if (rewards.resources && Object.keys(rewards.resources).length > 0) {
+      const sortedKeys = sortResourceKeys(Object.keys(rewards.resources));
+      sortedKeys.forEach((resource) => {
+        const amount = rewards.resources![resource as keyof typeof rewards.resources];
         rewardItems.push(
-          <div key={`fellowship-${member}`} className="text-sm text-foreground">
-            {formatName(member)}
-          </div>,
-        );
-      });
-    }
-
-    // Stats
-    if (rewards.stats && Object.keys(rewards.stats).length > 0) {
-      Object.entries(rewards.stats).forEach(([stat, amount]) => {
-        if (stat === "madness" || stat === "madnessFromEvents") {
-          return;
-        }
-        rewardItems.push(
-          <div key={`stat-${stat}`} className="text-sm text-foreground">
-            +{amount} {formatName(stat)}
+          <div key={`resource-${resource}`} className="text-sm text-foreground">
+            {amount} {formatName(resource)}
           </div>,
         );
       });
@@ -186,9 +187,11 @@ export default function RewardDialog({
       );
     }
 
-    // Resource losses
+    // Resource losses (gold first, silver second, then rest)
     if (rewards.resourceLosses && Object.keys(rewards.resourceLosses).length > 0) {
-      Object.entries(rewards.resourceLosses).forEach(([resource, amount]) => {
+      const sortedKeys = sortResourceKeys(Object.keys(rewards.resourceLosses));
+      sortedKeys.forEach((resource) => {
+        const amount = rewards.resourceLosses![resource as keyof typeof rewards.resourceLosses];
         lossItems.push(
           <div key={`resource-loss-${resource}`} className="text-sm text-foreground">
             -{amount} {formatName(resource)}
