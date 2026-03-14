@@ -98,7 +98,7 @@ const caveItems = {
       key: "torch",
       probability: 0.35,
       value: 25,
-      logMessage: "You find a bag with 25 Torches.",
+      logMessage: "You find an old, dusty bag with 25 Torches in the cave.",
       category: "resources",
       stageOnly: true, // Only on Explore Cave, not inherited to later stages
       condition: "!story.seen.torchBagFound",
@@ -251,19 +251,19 @@ function getInheritedItems(actionId: string) {
         const baseCondition =
           itemCondition != null
             ? (state: GameState) => {
-                const cat = (state as Record<string, unknown>)[category];
-                if (cat && typeof cat === "object" && (cat as Record<string, unknown>)[item.key]) return false;
-                if ("eventId" in item && item.eventId && state.story?.seen?.[item.eventId]) return false;
-                const isNegated = itemCondition.startsWith("!");
-                const path = isNegated ? itemCondition.slice(1) : itemCondition;
-                const parts = path.split(".");
-                let cur: unknown = state;
-                for (const p of parts) {
-                  cur = (cur as Record<string, unknown>)?.[p];
-                  if (cur === undefined) return isNegated;
-                }
-                return isNegated ? !cur : !!cur;
+              const cat = (state as Record<string, unknown>)[category];
+              if (cat && typeof cat === "object" && (cat as Record<string, unknown>)[item.key]) return false;
+              if ("eventId" in item && item.eventId && state.story?.seen?.[item.eventId]) return false;
+              const isNegated = itemCondition.startsWith("!");
+              const path = isNegated ? itemCondition.slice(1) : itemCondition;
+              const parts = path.split(".");
+              let cur: unknown = state;
+              for (const p of parts) {
+                cur = (cur as Record<string, unknown>)?.[p];
+                if (cur === undefined) return isNegated;
               }
+              return isNegated ? !cur : !!cur;
+            }
             : basePath + eventPart;
         inheritedItems[`${category}.${item.key}`] = {
           probability: Math.min(adjustedProbability, 1.0),
@@ -335,7 +335,7 @@ export const caveExploreActions: Record<string, Action> = {
       "story.seen.caveExplored": true,
     },
     cooldown: 0,
-    executionTime: 10, // 5 + 0*5 (exploreCave is first/level 0)
+    executionTime: 7.5, // 5 + 0*5 (exploreCave is first/level 0)
     upgrade_key: "exploreCave",
   },
 

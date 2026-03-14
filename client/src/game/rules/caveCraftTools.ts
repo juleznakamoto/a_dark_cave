@@ -5,7 +5,7 @@ import { applyActionEffects } from "./actionEffects";
 
 const CRAFT_TORCHES_BASE_COST = 10;
 const CRAFT_TORCHES_BASE_AMOUNT = 1;
-const CRAFT_TORCHES_BASE_EXECUTION = 3;
+const CRAFT_TORCHES_BASE_EXECUTION = 2.5;
 
 function getCraftTorchesUpgradeMultiplier(state: GameState): number {
   if (!state.books?.book_of_ascension) return 1;
