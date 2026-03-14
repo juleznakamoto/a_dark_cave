@@ -112,7 +112,7 @@ const createSellTrade = (
 // Define tier conditions once
 const TIER_CONDITIONS = {
   veryEarly: (state: GameState) =>
-    state.buildings.woodenHut >= 3 && state.buildings.woodenHut <= 6,
+    state.buildings.woodenHut >= 2 && state.buildings.woodenHut <= 6,
   early: (state: GameState) =>
     state.buildings.woodenHut >= 5 && state.buildings.woodenHut <= 9,
   mid1: (state: GameState) =>
@@ -153,6 +153,18 @@ const buyTrades = [
     TIER_CONDITIONS.veryEarly,
     ["wood", "stone", "food", "steel", "silver", "gold"],
   ),
+  createBuyTrade("buy_torch_25_very_early", "torch", 25, TIER_CONDITIONS.veryEarly, [
+    "wood",
+    "stone",
+    "silver",
+    "gold",
+  ]),
+  createBuyTrade("buy_torch_50_very_early", "torch", 50, TIER_CONDITIONS.veryEarly, [
+    "wood",
+    "stone",
+    "silver",
+    "gold",
+  ]),
 
   // Early tier
   createBuyTrade("buy_food_500_early", "food", 500, TIER_CONDITIONS.early, [
@@ -185,6 +197,12 @@ const buyTrades = [
     "stone",
     "food",
     "leather",
+    "silver",
+    "gold",
+  ]),
+  createBuyTrade("buy_torch_100_early", "torch", 100, TIER_CONDITIONS.early, [
+    "wood",
+    "stone",
     "silver",
     "gold",
   ]),
@@ -1078,11 +1096,11 @@ export const merchantEvents: Record<string, GameEvent> = {
     id: "merchant",
     condition: (state: GameState) => state.buildings.woodenHut >= 3,
     timeProbability: (state: GameState) =>
-      10 +
-      0.25 * (state.buildings.tradePost || 0) +
-      0.5 * (state.buildings.grandBazaar || 0) +
-      0.75 * (state.buildings.merchantsGuild || 0) -
-      2.5 * state.BTP,
+      12 +
+      0.5 * (state.buildings.tradePost || 0) +
+      1 * (state.buildings.grandBazaar || 0) +
+      1.5 * (state.buildings.merchantsGuild || 0) -
+      3 * state.BTP,
     title: "Traveling Merchant",
     message:
       "A weathered merchant arrives, his cart overflowing with wares. His eyes glint with avarice as he murmurs 'I have rare items for sale'.",
