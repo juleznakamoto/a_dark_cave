@@ -1,42 +1,9 @@
 
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
-import { killVillagers } from "@/game/stateHelpers";
 
-// Riddle rewards (gold amounts)
-const RIDDLE_REWARDS = {
-  first: 150,
-  second: 150,
-  third: 150,
-  fourth: 150,
-  fifth: 150,
-} as const;
-
-// Riddle penalties
-const RIDDLE_PENALTIES = {
-  first: {
-    deaths: 12,
-    cmMultiplier: 6,
-  },
-  second: {
-    fogDuration: 10 * 60 * 1000,
-    fogDurationCM: 5 * 60 * 1000,
-  },
-  third: {
-    deaths: 18,
-    cmMultiplier: 6,
-  },
-  fourth: {
-    fogDuration: 15 * 60 * 1000,
-    fogDurationCM: 5 * 60 * 1000,
-  },
-  fifth: {
-    fogDuration: 15 * 60 * 1000,
-    fogDurationCM: 5 * 60 * 1000,
-    deaths: 24,
-    cmMultiplier: 6,
-  },
-} as const;
+const RIDDLE_REWARD = 150;
+const FOG_DURATION_MS = 10 * 60 * 1000; // Base 10 min, cruel mode 20 min
 
 // Questions
 const START_MESSAGES = {
@@ -148,22 +115,8 @@ const SUCCESS_MESSAGES = {
     "The figure bows its head in silent reverence before fading completely. A big sack of gold lays on the ground where it stood.",
 } as const;
 
-// Wrong answer messages
-const WRONG_ANSWER_MESSAGES = {
-  first: (deaths: number) =>
-    `The figure slowly shakes its head before vanishing into the night. By morning, ${deaths} villagers are found in their beds with slit throats.`,
-  second: () =>
-    "The figure turns its hooded head side to side, then disappears without a sound. The next day, a dense fog creeps into the village. Villagers claim to see shifting shapes within it, many are too fearful to leave their huts.",
-  third: (deaths: number) =>
-    `The figure gives a slow, disapproving shake of the head before fading away. When dawn breaks, ${deaths} villagers are found dead, mouths frozen in silent screams.`,
-  fourth: () =>
-    "The figure shakes its head faintly, then fades from sight. The following day, a heavy fog engulfs the village. Shadows seemt to move within the mist, many villagers are too scared to leave their huts.",
-  fifth: (deaths: number) =>
-    `The figure slowly shakes its head in rejection, then dissolves into the dark. The next day, a fog descends upon the village. ${deaths} villagers perish as the suffocating mist blankets the land.`,
-} as const;
-
-// Timeout messages
-const TIMEOUT_MESSAGES = WRONG_ANSWER_MESSAGES;
+const WRONG_ANSWER_MESSAGE =
+  "The figure shakes its head before vanishing. The next day, a dense fog creeps into the village. Villagers claim to see shifting shapes within it, many are too fearful to leave their huts.";
 
 // Riddle configurations
 interface RiddleChoice {
@@ -225,43 +178,27 @@ const RIDDLE_CONFIGS: RiddleConfig[] = [
   },
 ];
 
-// Helper function to apply penalties
 function applyPenalty(
   state: GameState,
   eventId: string,
-  penalties: (typeof RIDDLE_PENALTIES)[keyof typeof RIDDLE_PENALTIES],
-  level: keyof typeof RIDDLE_PENALTIES,
-  messageGetter: typeof WRONG_ANSWER_MESSAGES | typeof TIMEOUT_MESSAGES,
-) {
-  const hasFog = "fogDuration" in penalties;
-  const hasDeaths = "deaths" in penalties;
-
-  let result: Partial<GameState> & { _logMessage?: string } = {
+  baseEventId: string,
+  oppositeEventId: string,
+): Partial<GameState> & { _logMessage?: string } {
+  const fogDuration = FOG_DURATION_MS + FOG_DURATION_MS * state.CM;
+  return {
     events: {
       ...state.events,
       [eventId]: true,
+      [baseEventId]: true,
+      [oppositeEventId]: true,
     } as any,
-  };
-
-  let deaths = 0;
-
-  if (hasDeaths) {
-    deaths = penalties.deaths + penalties.cmMultiplier * state.CM;
-    result = { ...result, ...killVillagers(state, deaths) };
-  }
-
-  if (hasFog) {
-    const fogDuration =
-      penalties.fogDuration + penalties.fogDurationCM * state.CM;
-    result.fogState = {
+    fogState: {
       isActive: true,
       endTime: Date.now() + fogDuration,
       duration: fogDuration,
-    };
-  }
-
-  result._logMessage = messageGetter[level](deaths);
-  return result;
+    },
+    _logMessage: WRONG_ANSWER_MESSAGE,
+  };
 }
 
 function createRiddleEvent(
@@ -276,70 +213,33 @@ function createRiddleEvent(
     ? VARIANT_CHOICES[config.eventId]
     : ORIGINAL_CHOICES[config.eventId];
   const level = config.level;
-  const penalties = RIDDLE_PENALTIES[level];
-  const reward = RIDDLE_REWARDS[level];
 
   const createChoiceEffect = (choice: RiddleChoice) => {
     if (choice.isCorrect) {
-      return (state: GameState) => {
-        // Add +100 gold bonus if BTP mode is active
-        const btpBonus = state.BTP === 1 ? 100 : 0;
-        const totalReward = reward + btpBonus;
-
-        return {
-          resources: {
-            ...state.resources,
-            gold: state.resources.gold + totalReward,
-          },
-          events: {
-            ...state.events,
-            [baseEventId]: true,
-            [`${baseEventId}_correct`]: true,
-            [eventId]: true,
-            [oppositeEventId]: true, // Block the opposite variant
-          } as any,
-          _logMessage: SUCCESS_MESSAGES[level](),
-        };
-      };
+      return (state: GameState) => ({
+        resources: {
+          ...state.resources,
+          gold: state.resources.gold + RIDDLE_REWARD + (state.BTP === 1 ? 100 : 0),
+        },
+        events: {
+          ...state.events,
+          [baseEventId]: true,
+          [`${baseEventId}_correct`]: true,
+          [eventId]: true,
+          [oppositeEventId]: true,
+        } as any,
+        _logMessage: SUCCESS_MESSAGES[level](),
+      });
     }
-
-    return (state: GameState) => {
-      const penaltyResult = applyPenalty(state, eventId, penalties, level, WRONG_ANSWER_MESSAGES);
-      return {
-        ...penaltyResult,
-        events: {
-          ...penaltyResult.events,
-          [baseEventId]: true,
-          [oppositeEventId]: true, // Block the opposite variant
-        } as any,
-      };
-    };
-  };
-
-  const createFallbackEffect = () => {
-    return (state: GameState) => {
-      const penaltyResult = applyPenalty(state, eventId, penalties, level, TIMEOUT_MESSAGES);
-      return {
-        ...penaltyResult,
-        events: {
-          ...penaltyResult.events,
-          [baseEventId]: true,
-          [oppositeEventId]: true, // Block the opposite variant
-        } as any,
-      };
-    };
+    return (state: GameState) => applyPenalty(state, eventId, baseEventId, oppositeEventId);
   };
 
   return {
     id: eventId,
-    condition: (state: GameState) => {
-      // Block if the opposite variant has already triggered
-      if ((state.events as any)[oppositeEventId]) return false;
-      // Block if this event has already triggered
-      if ((state.events as any)[eventId]) return false;
-      // Check base precondition
-      return config.precondition(state);
-    },
+    condition: (state: GameState) =>
+      !(state.events as any)[oppositeEventId] &&
+      !(state.events as any)[eventId] &&
+      config.precondition(state),
 
     timeProbability: level === "first" ? 30 : 45,
     title: config.title,
@@ -356,7 +256,7 @@ function createRiddleEvent(
     fallbackChoice: {
       id: "timeout",
       label: "No answer given",
-      effect: createFallbackEffect(),
+      effect: (state: GameState) => applyPenalty(state, eventId, baseEventId, oppositeEventId),
     },
   };
 }
@@ -390,20 +290,12 @@ export const riddleEvents: Record<string, GameEvent> = {
       {
         id: "accept",
         label: "Accept gift",
-        effect: (state: GameState) => {
-          return {
-            blessings: {
-              ...state.blessings,
-              whisperers_mark: true,
-            },
-            events: {
-              ...state.events,
-              whisperersReward: true,
-            },
-            _logMessage:
-              "As the figure fades into the dark, a faint euphoria washes over you, quiet and fleeting, like a half-remembered memory of a better time.",
-          };
-        },
+        effect: (state: GameState) => ({
+          blessings: { ...state.blessings, whisperers_mark: true },
+          events: { ...state.events, whisperersReward: true },
+          _logMessage:
+            "As the figure fades into the dark, a faint euphoria washes over you, quiet and fleeting, like a half-remembered memory of a better time.",
+        }),
       },
     ],
   },

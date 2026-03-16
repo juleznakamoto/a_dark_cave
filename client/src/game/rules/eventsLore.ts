@@ -59,6 +59,10 @@ export const loreEvents: Record<string, GameEvent> = {
                 restlessKnightSuccess: true,
               },
             },
+            stats: {
+              ...state.stats,
+              madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
+            },
             _logMessage:
               "The knight speaks: 'Beyond the eastern mountains lies a dead city of giant stone towers, almost touching the clouds. Empty windows stare across the land like countless eyes. Nature has climbed every wall and filled the streets with roots. No one has lived there for ages.'",
           };
@@ -88,6 +92,10 @@ export const loreEvents: Record<string, GameEvent> = {
                   ...state.story.seen,
                   restlessKnightSuccess: true,
                 },
+              },
+              stats: {
+                ...state.stats,
+                madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
               },
               _logMessage:
                 "Your words intrigue the knight, he speaks: 'Beyond the eastern mountains lies a dead city of giant stone towers, almost touching the clouds. Empty windows stare across the land like countless eyes. Nature has climbed every wall and filled the streets with roots. No one has lived there for ages.'",
@@ -183,6 +191,10 @@ export const loreEvents: Record<string, GameEvent> = {
                 restlessKnightMountains: true,
               },
             },
+            stats: {
+              ...state.stats,
+              madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
+            },
             _logMessage:
               "The knight shares his discovery: 'High in the mountains lies a monastery carved into the cliffs. Scholars who gathered there to study the past tell of an advanced civilization far beyond our understanding. Yet something brought their world to ruin.'",
           };
@@ -210,6 +222,10 @@ export const loreEvents: Record<string, GameEvent> = {
                 ...state.story.seen,
                 restlessKnightMountains: true,
               },
+            },
+            stats: {
+              ...state.stats,
+              madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
             },
             _logMessage:
               "Grateful for the meal, the knight shares his discovery: 'High in the mountains lies a monastery carved into the cliffs. The scholars there who study the past speak of a civilization far beyond our understanding. Their craft was so advanced it would seem like magic to us. Yet something brought their world to ruin.'",
@@ -292,6 +308,10 @@ export const loreEvents: Record<string, GameEvent> = {
                 restlessKnightCoast: true,
               },
             },
+            stats: {
+              ...state.stats,
+              madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
+            },
             _logMessage:
               "The knight shares: 'On the ocean shore I found a dead city, half-claimed by the waves. Among its ruins lie vast metal vessels, their rusted hulls still defying time. The ancients once ruled the seas with these giants, now stranded and silent on the sand.'",
           };
@@ -319,6 +339,10 @@ export const loreEvents: Record<string, GameEvent> = {
                 ...state.story.seen,
                 restlessKnightCoast: true,
               },
+            },
+            stats: {
+              ...state.stats,
+              madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
             },
             _logMessage:
               "Content for the meal, the knight shares: 'On the ocean shore I found a dead city, half-claimed by the waves. Among its ruins lie vast metal vessels, their rusted hulls still defying time. The ancients once ruled the seas with these giants, now stranded and silent on the sand.'",
@@ -349,6 +373,10 @@ export const loreEvents: Record<string, GameEvent> = {
                   ...state.story.seen,
                   restlessKnightCoast: true,
                 },
+              },
+              stats: {
+                ...state.stats,
+                madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
               },
               _logMessage:
                 "Your words move the knight. He speaks: 'On the ocean shore I found a dead city, half-claimed by the waves. Among its ruins lie vast metal vessels, their rusted hulls still defying time. The ancients once ruled the seas with these giants, now stranded and silent on the sand.'",
@@ -449,6 +477,10 @@ export const loreEvents: Record<string, GameEvent> = {
               ...state.fellowship,
               restless_knight: true,
             },
+            stats: {
+              ...state.stats,
+              madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
+            },
             _logMessage:
               "The knight nods with satisfaction. 'A fair price. I shall defend your people with my life.' He removes his weathered helm, revealing a scarred but determined face. The restless knight has joined your fellowship.",
           };
@@ -480,6 +512,10 @@ export const loreEvents: Record<string, GameEvent> = {
             fellowship: {
               ...state.fellowship,
               restless_knight: true,
+            },
+            stats: {
+              ...state.stats,
+              madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
             },
             _logMessage:
               "The knight accepts the silver with a solemn bow. 'I shall defend your people with my life.' He removes his weathered helm, revealing a scarred but determined face. The restless knight has joined your fellowship.",
@@ -514,6 +550,10 @@ export const loreEvents: Record<string, GameEvent> = {
               fellowship: {
                 ...state.fellowship,
                 restless_knight: true,
+              },
+              stats: {
+                ...state.stats,
+                madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
               },
               _logMessage:
                 "'Your purpose seems noble, the knight’s eyes brighten. 'I would be honored to stand with you.' He removes his weathered helm, revealing a scarred but determined face. The restless knight has joined your fellowship.",
