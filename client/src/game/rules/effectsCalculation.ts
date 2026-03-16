@@ -571,16 +571,7 @@ export function getStrangerApproachProbability(state: GameState): {
     0,
   );
   const maxPopulation = getMaxPopulation(state);
-
-  if (currentPopulation >= maxPopulation) {
-    return {
-      probability: 0,
-      lowPopulationBonus: 0,
-      fromBuildings: 0,
-      fromBlessings: 0,
-      fromEvents: 0,
-    };
-  }
+  const atCapacity = currentPopulation >= maxPopulation;
 
   const lowPopulationBonus =
     currentPopulation <= 4
@@ -617,10 +608,12 @@ export function getStrangerApproachProbability(state: GameState): {
     state.solsticeState.endTime > Date.now();
   const fromEvents = isSolsticeActive ? 0.5 : 0;
 
-  const probability = Math.min(
-    1,
-    lowPopulationBonus + fromBuildings + fromBlessings + fromEvents,
-  );
+  const probability = atCapacity
+    ? 0
+    : Math.min(
+      1,
+      lowPopulationBonus + fromBuildings + fromBlessings + fromEvents,
+    );
 
   return {
     probability,

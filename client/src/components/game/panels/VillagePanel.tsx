@@ -807,7 +807,7 @@ export default function VillagePanel() {
                           </div>
                           <div className="border-t border-gray-600 my-1" />
                           <div>
-                            Chance of new villager/s: {chancePct}%
+                            New Villager Chance: {chancePct}%
                           </div>
                           {lowPopulationBonus > 0 && (
                             <div className="text-gray-400/70">

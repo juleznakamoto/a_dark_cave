@@ -28,7 +28,7 @@ export const villageBuildActions: Record<string, Action> = {
         count > 0
           ? [`+${totalPopulation} Max Population`]
           : ["+2 Max Population"];
-      if (count > 0) effects.push(`+${count}% Stranger Chance`);
+      if (count > 0) effects.push(`+${count}% New Villager Chance`);
       return effects;
     },
     strangerApproachBonus: 0.01,
@@ -1283,7 +1283,7 @@ export const villageBuildActions: Record<string, Action> = {
         count > 0
           ? [`+${totalPopulation} Max Population`]
           : ["+4 Max Population"];
-      if (count > 0) effects.push(`+${count}% Stranger Chance`);
+      if (count > 0) effects.push(`+${count}% New Villager Chance`);
       return effects;
     },
     strangerApproachBonus: 0.01,
@@ -1459,7 +1459,7 @@ export const villageBuildActions: Record<string, Action> = {
         count > 0
           ? [`+${totalPopulation} Max Population`]
           : ["+8 Max Population"];
-      if (count > 0) effects.push(`+${Math.round(count * 0.5)}% Stranger Chance`);
+      if (count > 0) effects.push(`+${Math.round(count * 0.5)}% New Villager Chance`);
       return effects;
     },
     strangerApproachBonus: 0.005,
@@ -1541,7 +1541,7 @@ export const villageBuildActions: Record<string, Action> = {
         count > 0
           ? [`+${totalPopulation} Max Population`]
           : ["+4 Max Population"];
-      if (count > 0) effects.push(`+${Math.round(count * 0.5)}% Stranger Chance`);
+      if (count > 0) effects.push(`+${Math.round(count * 0.5)}% New Villager Chance`);
       return effects;
     },
     strangerApproachBonus: 0.005,

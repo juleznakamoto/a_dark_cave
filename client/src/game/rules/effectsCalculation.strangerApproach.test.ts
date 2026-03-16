@@ -142,15 +142,14 @@ describe("getStrangerApproachProbability", () => {
     expect(result.probability).toBeLessThanOrEqual(1);
   });
 
-  it("should return 0 probability when at max population", () => {
+  it("should return 0 probability when at max population but still show breakdown", () => {
     const state = createMockState({
       buildings: { ...createInitialState().buildings, woodenHut: 1 },
       villagers: { ...createInitialState().villagers, free: 2 },
     });
     const result = getStrangerApproachProbability(state);
     expect(result.probability).toBe(0);
-    expect(result.lowPopulationBonus).toBe(0);
-    expect(result.fromBuildings).toBe(0);
+    expect(result.fromBuildings).toBe(0.01); // 1 hut still shown in breakdown
   });
 
   it("should have breakdown sum equal pre-cap probability", () => {

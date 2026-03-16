@@ -239,7 +239,7 @@ export function renderItemTooltip(
           {effect.bonuses.generalBonuses.strangerApproachBonus != null &&
             effect.bonuses.generalBonuses.strangerApproachBonus > 0 && (
               <div>
-                Stranger Chance: +
+                New Villager Chance: +
                 {Math.round(
                   effect.bonuses.generalBonuses.strangerApproachBonus * 100,
                 )}
