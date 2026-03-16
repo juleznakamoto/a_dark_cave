@@ -557,7 +557,7 @@ export default function VillagePanel() {
   }>({ interval: null, timeout: null });
 
   // Track if a touch event occurred to prevent duplicate mouse events
-  const touchActiveRef = useState({ current: false })[0];
+  const touchActiveRef = useRef(false);
 
   const startHold = (action: () => void, isTouch: boolean = false) => {
     // If this is a mouse event but touch is active, skip it
@@ -653,10 +653,12 @@ export default function VillagePanel() {
               if (e.cancelable) e.preventDefault();
               stopHold(true);
             }}
+            onTouchCancel={() => stopHold(true)}
             disabled={currentCount === 0}
             variant="ghost"
             size="xs"
             className="h-5 w-5 flex items-center justify-center no-hover text-lg text-center"
+            style={{ touchAction: "manipulation" }}
             button_id={`unassign-${jobId}`}
           >
             -
@@ -681,10 +683,12 @@ export default function VillagePanel() {
               if (e.cancelable) e.preventDefault();
               stopHold(true);
             }}
+            onTouchCancel={() => stopHold(true)}
             disabled={villagers.free === 0}
             variant="ghost"
             size="xs"
             className="h-5 w-5 flex items-center justify-center no-hover text-lg text-center"
+            style={{ touchAction: "manipulation" }}
             button_id={`assign-${jobId}`}
           >
             +
