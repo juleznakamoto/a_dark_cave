@@ -879,14 +879,15 @@ app.post("/api/leaderboard/update-username", leaderboardUpdateLimiter, async (re
   // Payment endpoints
   app.post('/api/payment/create-intent', paymentLimiter, async (req, res) => {
     try {
-      const { itemId, userEmail, userId, currency, tradersGratitudeDiscount } = req.body;
+      const { itemId, userEmail, userId, currency, tradersGratitudeDiscount, cruelMode } = req.body;
       const { clientSecret, item } = await createPaymentIntent(
         itemId,
         userEmail,
         userId,
         undefined,
         currency,
-        tradersGratitudeDiscount === true ? true : undefined
+        tradersGratitudeDiscount === true ? true : undefined,
+        cruelMode === true ? true : cruelMode === false ? false : undefined
       );
 
       res.json({ clientSecret, item });

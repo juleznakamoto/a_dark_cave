@@ -24,7 +24,8 @@ export async function createPaymentIntent(
   userId?: string,
   clientPrice?: number,
   currency?: string,
-  tradersGratitudeDiscount?: boolean
+  tradersGratitudeDiscount?: boolean,
+  cruelMode?: boolean
 ) {
   const item = SHOP_ITEMS[itemId];
   if (!item) {
@@ -78,6 +79,11 @@ export async function createPaymentIntent(
     paymentIntentData.metadata.userId = userId;
   }
 
+  // Track whether purchase was made during cruel mode (for stats)
+  if (cruelMode !== undefined) {
+    paymentIntentData.metadata.cruelMode = cruelMode ? 'true' : 'false';
+  }
+
   const paymentIntent = await stripe.paymentIntents.create(paymentIntentData);
 
   return {
@@ -116,6 +122,12 @@ export async function verifyPayment(paymentIntentId: string, userId: string, sup
     }
 
     const billingCountry = (paymentIntent.latest_charge as any)?.billing_details?.address?.country ?? null;
+    const cruelMode =
+      paymentIntent.metadata.cruelMode === 'true'
+        ? true
+        : paymentIntent.metadata.cruelMode === 'false'
+          ? false
+          : null;
 
     // Save purchase to database; use actual amount charged
     const { data: purchaseData, error: purchaseError } = await supabase
@@ -128,6 +140,7 @@ export async function verifyPayment(paymentIntentId: string, userId: string, sup
         bundle_id: null,
         purchased_at: new Date().toISOString(),
         country: billingCountry,
+        cruel_mode: cruelMode,
       })
       .select()
       .single();
@@ -154,7 +167,8 @@ export async function verifyPayment(paymentIntentId: string, userId: string, sup
               item_name: componentItem.name,
               price_paid: 0, // Components from bundle are "free"
               bundle_id: itemId, // Reference to parent bundle
-              purchased_at: new Date().toISOString()
+              purchased_at: new Date().toISOString(),
+              cruel_mode: cruelMode,
             });
 
           if (componentError) {

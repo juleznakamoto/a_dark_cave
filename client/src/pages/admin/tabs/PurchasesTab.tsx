@@ -323,6 +323,37 @@ export default function PurchasesTab(props: PurchasesTabProps) {
 
       <Card>
         <CardHeader>
+          <CardTitle>Purchases by Mode</CardTitle>
+          <CardDescription>
+            Normal vs Cruel mode (paid items only, excludes bundle components)
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex gap-4">
+            <div>
+              <p className="text-2xl font-bold">
+                {purchases.filter((p) => p.price_paid > 0 && !p.bundle_id && p.cruel_mode === false).length}
+              </p>
+              <p className="text-sm text-muted-foreground">Normal Mode</p>
+            </div>
+            <div>
+              <p className="text-2xl font-bold">
+                {purchases.filter((p) => p.price_paid > 0 && !p.bundle_id && p.cruel_mode === true).length}
+              </p>
+              <p className="text-sm text-muted-foreground">Cruel Mode</p>
+            </div>
+            <div>
+              <p className="text-2xl font-bold">
+                {purchases.filter((p) => p.price_paid > 0 && !p.bundle_id && (p.cruel_mode === null || p.cruel_mode === undefined)).length}
+              </p>
+              <p className="text-sm text-muted-foreground">Unknown (legacy)</p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
           <CardTitle>Recent Purchases</CardTitle>
         </CardHeader>
         <CardContent>
@@ -336,6 +367,12 @@ export default function PurchasesTab(props: PurchasesTabProps) {
                     <p className="font-medium">{purchase.item_name}</p>
                     <p className="text-sm text-muted-foreground">
                       {new Date(purchase.purchased_at).toLocaleString()}
+                      {purchase.cruel_mode === true && (
+                        <span className="ml-2 text-red-600">Cruel</span>
+                      )}
+                      {purchase.cruel_mode === false && (
+                        <span className="ml-2 text-muted-foreground">Normal</span>
+                      )}
                     </p>
                   </div>
                   <p className="font-bold">€{(purchase.price_paid / 100).toFixed(2)}</p>

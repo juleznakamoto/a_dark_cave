@@ -511,6 +511,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                   price_paid: item.price,
                   bundle_id: null, // Bundle itself has no parent bundle
                   purchased_at: new Date().toISOString(),
+                  cruel_mode: gameState.cruelMode ?? false,
                 });
 
               if (bundleError) {
@@ -531,6 +532,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                     price_paid: 0, // Components from bundle are "free"
                     bundle_id: itemId, // Reference to parent bundle
                     purchased_at: new Date().toISOString(),
+                    cruel_mode: gameState.cruelMode ?? false,
                   });
 
                   if (error) {
@@ -553,6 +555,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
             item_name: item.name,
             price_paid: item.price,
             purchased_at: new Date().toISOString(),
+            cruel_mode: gameState.cruelMode ?? false,
           });
 
           if (error) throw error;
@@ -603,6 +606,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
         userId: user?.id,
         currency: currency.toLowerCase(),
         tradersGratitudeDiscount: tradersGratitudeDiscount || undefined,
+        cruelMode: gameState.cruelMode ?? false,
       }),
     });
 

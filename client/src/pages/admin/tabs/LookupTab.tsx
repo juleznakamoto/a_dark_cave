@@ -181,6 +181,12 @@ export default function LookupTab(props: LookupTabProps) {
                             </p>
                             <p className="text-sm text-muted-foreground">
                               {new Date(purchase.purchased_at).toLocaleString()}
+                              {purchase.cruel_mode === true && (
+                                <span className="ml-2 text-red-600">Cruel</span>
+                              )}
+                              {purchase.cruel_mode === false && (
+                                <span className="ml-2 text-muted-foreground">Normal</span>
+                              )}
                             </p>
                             <p className="text-xs text-muted-foreground">
                               Item ID: {purchase.item_id}

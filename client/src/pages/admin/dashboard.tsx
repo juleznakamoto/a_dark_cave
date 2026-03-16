@@ -66,6 +66,7 @@ interface PurchaseData {
   purchased_at: string;
   bundle_id?: string;
   country?: string;
+  cruel_mode?: boolean | null;
 }
 
 // Admin emails from environment variable (comma-separated)
