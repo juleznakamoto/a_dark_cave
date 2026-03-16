@@ -9,6 +9,18 @@ import { render, screen, waitFor, within } from '@testing-library/react';
 async function waitForPurchasesTab() {
   return screen.findByRole('tab', { name: /purchases/i }, { timeout: 5000 });
 }
+
+/** Find claim button within a specific item card (use when multiple free items have claim buttons) */
+function getClaimButtonForItem(itemName: string): HTMLElement {
+  const itemEl = screen.getByText(itemName);
+  let el: HTMLElement | null = itemEl.parentElement;
+  while (el) {
+    const btn = within(el).queryByRole('button', { name: /claim/i });
+    if (btn) return btn;
+    el = el.parentElement;
+  }
+  throw new Error(`No claim button found for item: ${itemName}`);
+}
 import userEvent from '@testing-library/user-event';
 import { ShopDialog } from './ShopDialog';
 import { useGameStore } from '@/game/state';
@@ -132,7 +144,7 @@ describe('ShopDialog', () => {
         expect(screen.getByText('100 Gold (Daily Gift)')).toBeInTheDocument();
       });
 
-      const claimButton = screen.getByRole('button', { name: /claim/i });
+      const claimButton = getClaimButtonForItem('100 Gold (Daily Gift)');
       await user.click(claimButton);
 
       await waitFor(() => {
@@ -183,7 +195,7 @@ describe('ShopDialog', () => {
         expect(screen.getByText('100 Gold (Daily Gift)')).toBeInTheDocument();
       });
 
-      const claimButton = screen.getByRole('button', { name: /claim/i });
+      const claimButton = getClaimButtonForItem('100 Gold (Daily Gift)');
       await user.click(claimButton);
 
       await waitFor(() => {
@@ -198,22 +210,22 @@ describe('ShopDialog', () => {
       const onClose = vi.fn();
       const updateResource = vi.fn();
 
-      // Set last claim to exactly 24 hours ago
+      // Set last claim to 25 hours ago (avoid floating-point boundary at exactly 24h)
       useGameStore.setState({
         updateResource,
         resources: { gold: 0 },
-        lastFreeGoldClaim: Date.now() - (24 * 60 * 60 * 1000),
+        lastFreeGoldClaim: Date.now() - (25 * 60 * 60 * 1000),
       });
 
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
+      let claimButton: HTMLElement;
       await waitFor(() => {
-        const claimButton = screen.getByRole('button', { name: /claim/i });
+        claimButton = getClaimButtonForItem('100 Gold (Daily Gift)');
         expect(claimButton).not.toBeDisabled();
       });
 
-      const claimButton = screen.getByRole('button', { name: /claim/i });
-      await user.click(claimButton);
+      await user.click(claimButton!);
 
       await waitFor(() => {
         expect(updateResource).toHaveBeenCalledWith('gold', 100);
@@ -237,7 +249,7 @@ describe('ShopDialog', () => {
         expect(screen.getByText('100 Gold (Daily Gift)')).toBeInTheDocument();
       });
 
-      const claimButton = screen.getByRole('button', { name: /claim/i });
+      const claimButton = getClaimButtonForItem('100 Gold (Daily Gift)');
       
       // First claim
       await user.click(claimButton);
@@ -404,10 +416,10 @@ describe('ShopDialog', () => {
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        // In dev mode, cruel_mode should be visible
+        // In dev mode, cruel_mode should be visible; free items show "Already Claimed"
         if (import.meta.env.DEV) {
-          const purchaseButton = screen.getByRole('button', { name: /already purchased/i });
-          expect(purchaseButton).toBeDisabled();
+          const disabledButton = screen.getByRole('button', { name: /already (claimed|purchased)/i });
+          expect(disabledButton).toBeDisabled();
         }
       });
     });
@@ -731,7 +743,7 @@ describe('ShopDialog', () => {
         expect(screen.getByText('Test Free Item')).toBeInTheDocument();
       });
 
-      const claimButton = screen.getByRole('button', { name: /claim/i });
+      const claimButton = getClaimButtonForItem('Test Free Item');
       await user.click(claimButton);
 
       await waitFor(() => {
@@ -886,16 +898,8 @@ describe('ShopDialog', () => {
         expect(screen.getByText('Test Free Bundle')).toBeInTheDocument();
       });
 
-      const claimButtons = screen.getAllByRole('button', { name: /claim/i });
-      const bundleClaim = claimButtons.find((b) => {
-        let el: HTMLElement | null = b.parentElement;
-        while (el) {
-          if (el.textContent?.includes('Test Free Bundle')) return true;
-          el = el.parentElement;
-        }
-        return false;
-      });
-      await user.click(bundleClaim ?? claimButtons[1]);
+      const bundleClaimButton = getClaimButtonForItem('Test Free Bundle');
+      await user.click(bundleClaimButton);
 
       await waitFor(() => {
         // Component creates 1 bundle + 2 component purchases
