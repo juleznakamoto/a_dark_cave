@@ -32,6 +32,7 @@ import { huntEvents } from "./eventsHunt";
 import { choiceEvents } from "./eventsChoices";
 import { cubeEvents } from "./eventsCube";
 import { feastEvents } from "./eventsFeast";
+import { solsticeGatheringEvents } from "./eventsSolsticeGathering";
 import { loreEvents } from "./eventsLore";
 import { madnessEvents } from "./eventsMadness";
 import { merchantEvents } from "./eventsMerchant";
@@ -757,6 +758,7 @@ export const allEvents: Record<string, GameEvent> = {
   ...choiceEvents,
   ...cubeEvents,
   ...feastEvents,
+  ...solsticeGatheringEvents,
   ...merchantEvents,
   ...fellowshipEvents,
   ...riddleEvents,

@@ -69,6 +69,11 @@ interface PurchaseData {
   cruel_mode?: boolean | null;
 }
 
+interface AuthSignupData {
+  id: string;
+  created_at: string;
+}
+
 // Admin emails from environment variable (comma-separated)
 const getAdminEmails = (): string[] => {
   const adminEmailsEnv = import.meta.env.VITE_ADMIN_EMAILS || "";
@@ -139,6 +144,7 @@ export default function AdminDashboard() {
   const [rawClickData, setRawClickData] = useState<ButtonClickData[]>([]);
   const [rawGameSaves, setRawGameSaves] = useState<GameSaveData[]>([]);
   const [rawPurchases, setRawPurchases] = useState<PurchaseData[]>([]);
+  const [rawAuthSignups, setRawAuthSignups] = useState<AuthSignupData[]>([]);
   const [users, setUsers] = useState<Array<{ id: string; email: string }>>([]);
   const [totalUserCount, setTotalUserCount] = useState<number>(0);
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date()); // State to track last data update
@@ -931,6 +937,9 @@ export default function AdminDashboard() {
       if (data.purchases) {
         setRawPurchases(data.purchases);
       }
+      if (data.authSignups) {
+        setRawAuthSignups(data.authSignups);
+      }
       if (typeof data.totalUserCount === 'number') {
         setTotalUserCount(data.totalUserCount);
       }
@@ -1318,14 +1327,14 @@ export default function AdminDashboard() {
                       const windowEnd = endOfDay(date);
                       const windowStart = startOfDay(subDays(date, 29));
 
-                      // Sign-ups in last 30 days (unique users who created in window)
+                      // Sign-ups in last 30 days (auth account creation)
                       const signUpUserIds = new Set(
-                        rawGameSaves
-                          .filter((save) => {
-                            const createdDate = parseISO(save.created_at);
+                        rawAuthSignups
+                          .filter((u) => {
+                            const createdDate = parseISO(u.created_at);
                             return createdDate >= windowStart && createdDate <= windowEnd;
                           })
-                          .map((s) => s.user_id)
+                          .map((u) => u.id)
                       );
                       const signUps = signUpUserIds.size;
 
@@ -1385,14 +1394,14 @@ export default function AdminDashboard() {
                       const windowEnd = endOfDay(date);
                       const windowStart = startOfDay(subDays(date, 29));
 
-                      // Sign-ups in last 30 days (unique users who created in window)
+                      // Sign-ups in last 30 days (auth account creation)
                       const signUpUserIds = new Set(
-                        rawGameSaves
-                          .filter((save) => {
-                            const createdDate = parseISO(save.created_at);
+                        rawAuthSignups
+                          .filter((u) => {
+                            const createdDate = parseISO(u.created_at);
                             return createdDate >= windowStart && createdDate <= windowEnd;
                           })
-                          .map((s) => s.user_id)
+                          .map((u) => u.id)
                       );
                       const signUps = signUpUserIds.size;
 

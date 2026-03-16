@@ -431,6 +431,28 @@ export const feastTooltip: TooltipConfig = {
   },
 };
 
+export const solsticeTooltip: TooltipConfig = {
+  getContent: (state: GameState) => {
+    const solsticeState = state.solsticeState;
+    const isSolstice =
+      solsticeState?.isActive && solsticeState.endTime > Date.now();
+
+    if (isSolstice) {
+      const remainingMs = solsticeState.endTime - Date.now();
+      const remainingMinutes = Math.ceil(remainingMs / 60000);
+      return (
+        <>
+          <div className="font-bold">Solstice Gathering</div>
+          <div>Stranger approach +50%</div>
+          <div>{remainingMinutes} min remaining</div>
+        </>
+      );
+    }
+
+    return null;
+  },
+};
+
 export const curseTooltip: TooltipConfig = {
   getContent: (state: GameState) => {
     const curseState = state.curseState;

@@ -723,6 +723,19 @@ function processTick() {
     });
   }
 
+  // Check if Solstice Gathering has expired
+  if (
+    state.solsticeState?.isActive &&
+    state.solsticeState.endTime <= Date.now()
+  ) {
+    useGameStore.setState({
+      solsticeState: {
+        ...state.solsticeState,
+        isActive: false,
+      },
+    });
+  }
+
   // Check if curse has expired
   if (state.curseState?.isActive && state.curseState.endTime <= Date.now()) {
     useGameStore.setState({
@@ -1132,6 +1145,14 @@ function handleStrangerApproach() {
     probability = Math.max(0.7 - 0.1 * state.CM, probability);
   } else if (currentPopulation <= 4) {
     probability = Math.max(0.45 - 0.05 * state.CM, probability);
+  }
+
+  // Solstice Gathering: +50% stranger approach probability
+  if (
+    state.solsticeState?.isActive &&
+    state.solsticeState.endTime > Date.now()
+  ) {
+    probability *= 1.5;
   }
 
   // Check if stranger(s) approach based on probability

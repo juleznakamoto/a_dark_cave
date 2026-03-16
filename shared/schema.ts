@@ -441,6 +441,20 @@ export const gameStateSchema = z.object({
       endTime: 0,
     }),
 
+  solsticeState: z
+    .object({
+      isActive: z.boolean().default(false),
+      endTime: z.number().default(0),
+      tier: z.number().default(1),
+      activationsCount: z.number().default(0),
+    })
+    .default({
+      isActive: false,
+      endTime: 0,
+      tier: 1,
+      activationsCount: 0,
+    }),
+
   bloodMoonState: z
     .object({
       hasWon: z.boolean().default(false),

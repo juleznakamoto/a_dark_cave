@@ -566,6 +566,7 @@ const mergeStateUpdates = (
     boneDevourerState:
       stateUpdates.boneDevourerState || prevState.boneDevourerState,
     greatFeastState: stateUpdates.greatFeastState || prevState.greatFeastState,
+    solsticeState: stateUpdates.solsticeState || prevState.solsticeState,
     bloodMoonState: stateUpdates.bloodMoonState || prevState.bloodMoonState,
     curseState: stateUpdates.curseState || prevState.curseState,
     frostfallState: stateUpdates.frostfallState || prevState.frostfallState,
@@ -758,6 +759,12 @@ export const createInitialState = (): GameState => ({
   greatFeastState: {
     isActive: false,
     endTime: 0,
+  },
+  solsticeState: {
+    isActive: false,
+    endTime: 0,
+    tier: 1,
+    activationsCount: 0,
   },
   bloodMoonState: {
     hasWon: false,
@@ -1806,6 +1813,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
           savedState.frostfallState || defaultGameState.frostfallState, // Load frostfallState
         fogState: savedState.fogState || defaultGameState.fogState, // Load fogState
         disgustState: savedState.disgustState || defaultGameState.disgustState, // Load disgustState
+        solsticeState: savedState.solsticeState || defaultGameState.solsticeState, // Load solsticeState
         lastFreeGoldClaim: savedState.lastFreeGoldClaim || 0, // Load lastFreeGoldClaim
         unlockedAchievements: savedState.unlockedAchievements || [], // Load unlocked achievements
         claimedAchievements: savedState.claimedAchievements || [], // Load claimed achievements
@@ -2131,7 +2139,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
         shouldShowMadnessDialog = true;
       }
 
-      if (hasAnyOutcome || madnessChange !== 0) {
+      // Only clear logMessage when it will be shown in reward or madness dialog.
+      // For events that suppress the reward dialog (cubeDiscovery, merchant)
+      // but have hasAnyOutcome, we must keep logMessage so the narrative dialog can show it.
+      if (shouldShowRewardDialog || shouldShowMadnessDialog) {
         logMessage = null;
       }
     }

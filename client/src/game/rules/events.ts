@@ -63,6 +63,7 @@ import { cubeEvents } from "./eventsCube";
 import { recurringEvents } from "./eventsRecurring";
 import { noChoiceEvents } from "./eventsNoChoices";
 import { feastEvents } from "./eventsFeast";
+import { solsticeGatheringEvents } from "./eventsSolsticeGathering";
 import { boneDevourerEvents } from "./eventsBoneDevourer";
 import { villageAttackEvents } from "./eventsVillageAttacks";
 import { bloodMoonEvents } from "./eventsBloodMoon";
@@ -88,6 +89,7 @@ export interface GameEvent {
   repeatable?: boolean;
   priority?: number; // Higher priority events check first
   timeProbability?: number | ((state: GameState) => number); // Average minutes between triggers
+  cooldownPercent?: number; // Cooldown as fraction of timeProbability (e.g. 0.25 = 25%). Default: 0.25
   effect?: (state: GameState) => Partial<GameState>;
   // New timed choice properties
   isTimedChoice?: boolean;
@@ -141,6 +143,7 @@ export const gameEvents: Record<string, GameEvent> = {
   ...recurringEvents,
   ...noChoiceEvents,
   ...feastEvents,
+  ...solsticeGatheringEvents,
   ...boneDevourerEvents,
   ...villageAttackEvents,
   ...bloodMoonEvents,
@@ -188,14 +191,15 @@ export class EventManager {
       // Skip timed tab events if another timed tab event is already active
       if (event.showAsTimedTab && isTimedTabActive) continue;
 
-      // Check if event is on cooldown (25% of its time probability must pass)
+      // Check if event is on cooldown (cooldownPercent of its time probability must pass)
       if (event.timeProbability && eventCooldowns[event.id]) {
         const timeProbability =
           typeof event.timeProbability === "function"
             ? event.timeProbability(state)
             : event.timeProbability;
 
-        const cooldownPeriod = timeProbability * 0.25 * 60 * 1000; // 25% in milliseconds
+        const cooldownFraction = event.cooldownPercent ?? 0.25;
+        const cooldownPeriod = timeProbability * cooldownFraction * 60 * 1000; // in milliseconds
         const timeSinceLastTrigger = currentTime - eventCooldowns[event.id];
 
         if (timeSinceLastTrigger < cooldownPeriod) {

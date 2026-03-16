@@ -9,6 +9,7 @@ import {
 } from "@/game/rules";
 import {
   feastTooltip,
+  solsticeTooltip,
   curseTooltip,
   miningBoostTooltip,
   frostfallTooltip,
@@ -91,9 +92,11 @@ export default function VillagePanel() {
   );
   const feastState = useGameStore((state) => state.feastState);
   const greatFeastState = useGameStore((state) => state.greatFeastState);
+  const solsticeState = useGameStore((state) => state.solsticeState);
 
   // Calculate feast progress based on game loop timing
   const [feastProgress, setFeastProgress] = React.useState(0);
+  const [solsticeProgress, setSolsticeProgress] = React.useState(0);
 
   React.useEffect(() => {
     const updateFeastProgress = () => {
@@ -120,6 +123,25 @@ export default function VillagePanel() {
 
     return () => clearInterval(interval);
   }, [feastState, greatFeastState]);
+
+  React.useEffect(() => {
+    const updateSolsticeProgress = () => {
+      const now = Date.now();
+      if (solsticeState?.isActive && solsticeState.endTime > now) {
+        const solsticeDuration = 10 * 60 * 1000; // 10 minutes
+        const solsticeElapsed =
+          solsticeDuration - (solsticeState.endTime - now);
+        setSolsticeProgress((solsticeElapsed / solsticeDuration) * 100);
+      } else {
+        setSolsticeProgress(0);
+      }
+    };
+
+    updateSolsticeProgress();
+    const interval = setInterval(updateSolsticeProgress, 1000);
+
+    return () => clearInterval(interval);
+  }, [solsticeState]);
 
   // Define action groups with their actions (same structure as CavePanel)
   const actionGroups = [
@@ -787,6 +809,8 @@ export default function VillagePanel() {
                   const feastState = useGameStore.getState().feastState;
                   const greatFeastState =
                     useGameStore.getState().greatFeastState;
+                  const solsticeState =
+                    useGameStore.getState().solsticeState;
                   const curseState = useGameStore.getState().curseState;
                   const disgustState = useGameStore.getState().disgustState;
                   const miningBoostState =
@@ -807,6 +831,9 @@ export default function VillagePanel() {
                   const isFrostfall =
                     frostfallState?.isActive &&
                     frostfallState.endTime > Date.now();
+                  const isSolstice =
+                    solsticeState?.isActive &&
+                    solsticeState.endTime > Date.now();
 
                   return (
                     <>
@@ -837,6 +864,32 @@ export default function VillagePanel() {
                               className={`absolute inset-0 flex items-center justify-center font-extrabold ${isGreatFeast ? "text-[12px] -mt-[0px] text-orange-600" : "text-[12px] -mt-[1px] text-yellow-600"}`}
                             >
                               {isGreatFeast ? "✦" : "⟡"}
+                            </span>
+                          </div>
+                        </TooltipWrapper>
+                      )}
+
+                      {/* Solstice Gathering Indicator */}
+                      {isSolstice && (
+                        <TooltipWrapper
+                          tooltip={
+                            <div className="text-xs">
+                              {solsticeTooltip.getContent(state)}
+                            </div>
+                          }
+                          tooltipId="solstice-progress"
+                          disabled
+                          className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
+                        >
+                          <div className="relative inline-flex items-center gap-1 mt-[0px]">
+                            <CircularProgress
+                              value={solsticeProgress}
+                              size={18}
+                              strokeWidth={2}
+                              className="text-orange-500"
+                            />
+                            <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[12px] -mt-[0px] text-orange-500">
+                              ☼
                             </span>
                           </div>
                         </TooltipWrapper>

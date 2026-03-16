@@ -448,6 +448,8 @@ app.get("/api/admin/data", async (req, res) => {
       googleRegistrations: 0,
     };
 
+    let authSignups: Array<{ id: string; created_at: string }> = [];
+
     try {
       log("📧 Fetching auth users for email and registration stats...");
 
@@ -483,6 +485,13 @@ app.get("/api/admin/data", async (req, res) => {
       log(`📧 Total auth users found: ${allUsers.length}`);
       totalUserCount = allUsers.length;
 
+      // Build auth sign-ups for charts (id + created_at, last 2 years for 1y chart support)
+      const twoYearsAgo = new Date(now);
+      twoYearsAgo.setFullYear(twoYearsAgo.getFullYear() - 2);
+      authSignups = allUsers
+        .filter((u: any) => new Date(u.created_at) >= twoYearsAgo)
+        .map((u: any) => ({ id: u.id, created_at: u.created_at }));
+
       // Calculate email confirmation stats for all three time periods
       emailConfirmationStats.allTime = calculateEmailStats(allUsers);
       emailConfirmationStats.last30Days = calculateEmailStats(allUsers, thirtyDaysAgo);
@@ -513,6 +522,7 @@ app.get("/api/admin/data", async (req, res) => {
       totalUserCount: totalUserCount || 0,
       emailConfirmationStats: emailConfirmationStats,
       registrationMethodStats: registrationMethodStats,
+      authSignups,
     });
   } catch (error: any) {
     log("❌ Admin data fetch failed:", error);

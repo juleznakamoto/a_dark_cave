@@ -230,6 +230,14 @@ export const actionChartConfig: AchievementChartConfig = {
           return [1, 2, 3].includes(count) ? 3 : count;
         },
       },
+      {
+        segmentId: "4-solsticeGatherings",
+        maxCount: 10,
+        label: "Solstice Celebrant",
+        reward: 500,
+        getCount: (state: GameState) =>
+          Math.min(Number(state.solsticeState?.activationsCount) || 0, 10),
+      },
     ],
   ],
 };
