@@ -286,11 +286,6 @@ export const getResourceGainTooltip = (
   actionId: string,
   state: GameState,
 ): React.ReactNode | null => {
-  // Only show if clerks hut is built
-  if (!state.buildings.clerksHut) {
-    return null;
-  }
-
   const { gains, costs } = calculateResourceGains(actionId, state);
 
   const bombResource = BOMB_ACTIONS[actionId];
@@ -307,6 +302,8 @@ export const getResourceGainTooltip = (
       .join(" ");
   };
 
+  const showExactGains = !!state.buildings.clerksHut;
+
   return (
     <div className="text-xs">
       {isBombAtMax && (
@@ -319,9 +316,11 @@ export const getResourceGainTooltip = (
       )}
       {gains.map((gain, index) => (
         <div key={`gain-${index}`}>
-          {gain.min === gain.max
-            ? `+${formatNumber(gain.min)} ${formatResourceName(gain.resource)}`
-            : `+${formatNumber(gain.min)}-${formatNumber(gain.max)} ${formatResourceName(gain.resource)}`}
+          {showExactGains
+            ? gain.min === gain.max
+              ? `+${formatNumber(gain.min)} ${formatResourceName(gain.resource)}`
+              : `+${formatNumber(gain.min)}-${formatNumber(gain.max)} ${formatResourceName(gain.resource)}`
+            : `+? ${formatResourceName(gain.resource)}`}
         </div>
       ))}
       {gains.length > 0 && costs.length > 0 && (
