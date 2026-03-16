@@ -302,7 +302,8 @@ export const getResourceGainTooltip = (
       .join(" ");
   };
 
-  const showExactGains = !!state.buildings.clerksHut;
+  const isCraftAction = actionId.startsWith("craft");
+  const showExactGains = !!state.buildings.clerksHut || isCraftAction;
 
   return (
     <div className="text-xs">

@@ -279,7 +279,7 @@ export default function CavePanel() {
       : 0;
     const hasExpeditionRequirement = expeditionVillagersRequired > 0;
     const resourceGainTooltip =
-      isMineAction || isCaveExploreAction || isCraftAction
+      isChopWood || isMineAction || isCaveExploreAction || isCraftAction
         ? getResourceGainTooltip(actionId, state)
         : null;
 
