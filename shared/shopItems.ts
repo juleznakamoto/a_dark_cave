@@ -60,7 +60,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     description:
       "A more cruel world, expanded story, more items, deadlier foes. Endure, or vanish.",
     originalPrice: 699,
-    price: 499, // 4.99 €
+    price: 0, // Free
     rewards: {},
     canPurchaseMultipleTimes: false,
     category: "blessing",

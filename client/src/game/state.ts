@@ -2111,8 +2111,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const successLog = logMessage || undefined;
       const hasAnyOutcome = hasRewards || hasLosses;
       const isMerchantEvent = eventId === "merchant" || eventId?.startsWith?.("merchant-");
+      const isCubeDiscoveryEvent = eventId === "cubeDiscovery";
 
-      if (hasAnyOutcome && !isMerchantEvent) {
+      if (hasAnyOutcome && !isMerchantEvent && !isCubeDiscoveryEvent) {
         rewardDialogData = {
           rewards,
           successLog,
