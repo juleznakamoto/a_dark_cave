@@ -4,7 +4,10 @@ import { GameState } from "@shared/schema";
 import { getPopulationProduction, getMaxPopulation } from "./population";
 import { killVillagers, buildGameState } from "@/game/stateHelpers";
 import { audioManager } from "@/lib/audio";
-import { getTotalMadness } from "./rules/effectsCalculation";
+import {
+  getTotalMadness,
+  getStrangerApproachProbability,
+} from "./rules/effectsCalculation";
 import { GAME_CONSTANTS } from "./constants";
 import { logger } from "@/lib/logger";
 import { startVersionCheck, stopVersionCheck } from "./versionCheck";
@@ -1119,41 +1122,7 @@ function handleStrangerApproach() {
   // Only trigger if there's room for more villagers
   if (currentPopulation >= maxPopulation) return;
 
-  // Calculate probability based on your specifications
-  let probability = 0.1 - state.CM * 0.05; // 10% base probability
-
-  // +1% for each wooden hut -> 10 %
-  probability += state.buildings.woodenHut * 0.01;
-  // +1% for each stone hut -> 10%
-  probability += state.buildings.stoneHut * 0.01;
-  // +0.5% for each longhouse -> 2.5%
-  probability += state.buildings.longhouse * 0.005;
-  // +0.5% for each fur tent -> 2.5%
-  probability += state.buildings.furTents * 0.005;
-
-  // Raven's Mark blessing: +15% stranger approach probability
-  if (state.blessings?.ravens_mark) {
-    probability += 0.1;
-  }
-
-  // Raven's Mark Enhanced blessing: 10% + 20% stranger approach probability
-  if (state.blessings?.ravens_mark_enhanced) {
-    probability += 0.2;
-  }
-
-  if (currentPopulation === 0) {
-    probability = Math.max(0.7 - 0.1 * state.CM, probability);
-  } else if (currentPopulation <= 4) {
-    probability = Math.max(0.45 - 0.05 * state.CM, probability);
-  }
-
-  // Solstice Gathering: +50% stranger approach probability
-  if (
-    state.solsticeState?.isActive &&
-    state.solsticeState.endTime > Date.now()
-  ) {
-    probability *= 1.5;
-  }
+  const { probability } = getStrangerApproachProbability(state);
 
   // Check if stranger(s) approach based on probability
   if (Math.random() < probability) {

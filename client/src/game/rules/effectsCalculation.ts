@@ -8,6 +8,7 @@ import {
   EffectDefinition,
 } from "./effects";
 import { villageBuildActions } from "./villageBuildActions";
+import { getMaxPopulation } from "../population";
 import { ACTION_TO_UPGRADE_KEY, getUpgradeBonus } from "../buttonUpgrades";
 import { HUNT_BONUSES, DISGRACED_PRIOR_UPGRADES } from "./skillUpgrades";
 
@@ -551,6 +552,85 @@ export const getTotalLuck = (state: GameState): number => {
   return effects.statBonuses?.luck || 0;
 };
 
+const STRANGER_APPROACH_BUILDINGS = [
+  "buildWoodenHut",
+  "buildStoneHut",
+  "buildLonghouse",
+  "buildFurTents",
+] as const;
+
+export function getStrangerApproachProbability(state: GameState): {
+  probability: number;
+  lowPopulationBonus: number;
+  fromBuildings: number;
+  fromBlessings: number;
+  fromEvents: number;
+} {
+  const currentPopulation = Object.values(state.villagers).reduce(
+    (sum, count) => sum + (count || 0),
+    0,
+  );
+  const maxPopulation = getMaxPopulation(state);
+
+  if (currentPopulation >= maxPopulation) {
+    return {
+      probability: 0,
+      lowPopulationBonus: 0,
+      fromBuildings: 0,
+      fromBlessings: 0,
+      fromEvents: 0,
+    };
+  }
+
+  const lowPopulationBonus =
+    currentPopulation <= 4
+      ? state.CM === 1
+        ? 0.25
+        : 0.5
+      : 0;
+
+  let fromBuildings = 0;
+  for (const actionId of STRANGER_APPROACH_BUILDINGS) {
+    const buildAction = villageBuildActions[actionId];
+    const bonus = buildAction?.strangerApproachBonus;
+    if (bonus) {
+      const buildingKey = actionId.slice(5);
+      const key =
+        buildingKey.charAt(0).toLowerCase() + buildingKey.slice(1);
+      const count = state.buildings[key as keyof typeof state.buildings] || 0;
+      fromBuildings += count * bonus;
+    }
+  }
+
+  let fromBlessings = 0;
+  if (state.blessings?.ravens_mark) {
+    const effect = clothingEffects.ravens_mark;
+    fromBlessings += effect?.bonuses?.generalBonuses?.strangerApproachBonus ?? 0.1;
+  }
+  if (state.blessings?.ravens_mark_enhanced) {
+    const effect = clothingEffects.ravens_mark_enhanced;
+    fromBlessings += effect?.bonuses?.generalBonuses?.strangerApproachBonus ?? 0.2;
+  }
+
+  const isSolsticeActive =
+    state.solsticeState?.isActive &&
+    state.solsticeState.endTime > Date.now();
+  const fromEvents = isSolsticeActive ? 0.5 : 0;
+
+  const probability = Math.min(
+    1,
+    lowPopulationBonus + fromBuildings + fromBlessings + fromEvents,
+  );
+
+  return {
+    probability,
+    lowPopulationBonus,
+    fromBuildings,
+    fromBlessings,
+    fromEvents,
+  };
+}
+
 // Helper function to calculate total strength
 export const getTotalStrength = (state: GameState): number => {
   const effects = calculateTotalEffects(state);
@@ -937,10 +1017,6 @@ export const calculateTotalEffects = (state: GameState) => {
   }
   if (state.blessings?.flames_touch) {
     effects.resource_bonus.steel = (effects.resource_bonus.steel || 0) + 1; // +1 steel from forging
-  }
-  if (state.blessings?.ravens_mark) {
-    effects.probability_bonus.newVillager =
-      (effects.probability_bonus.newVillager || 0) + 0.2; // +20% new villager chance
   }
   if (state.blessings?.ashen_embrace) {
     effects.resource_multiplier.mine =

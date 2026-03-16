@@ -18,7 +18,10 @@ import {
   heartfireTooltip,
   madnessProductionTooltip,
 } from "@/game/rules/tooltips";
-import { getTotalMadness } from "@/game/rules/effectsCalculation";
+import {
+  getTotalMadness,
+  getStrangerApproachProbability,
+} from "@/game/rules/effectsCalculation";
 import CooldownButton from "@/components/CooldownButton";
 import { Button } from "@/components/ui/button";
 import {
@@ -786,10 +789,50 @@ export default function VillagePanel() {
                 {/* Production Cycle */}
                 <TooltipWrapper
                   tooltip={
-                    <div className="text-xs whitespace-pre-line">
-                      <span className="font-semibold">Production Cycle</span>
-                      {`\nNext production in ${productionSecondsRemaining} seconds`}
-                    </div>
+                    (() => {
+                      const state = useGameStore.getState();
+                      const {
+                        probability,
+                        lowPopulationBonus,
+                        fromBuildings,
+                        fromBlessings,
+                        fromEvents,
+                      } = getStrangerApproachProbability(state);
+                      const chancePct = Math.round(probability * 100);
+                      return (
+                        <div className="text-xs">
+                          <div className="font-semibold">Cycle</div>
+                          <div>
+                            Next cycle in {productionSecondsRemaining} seconds
+                          </div>
+                          <div className="border-t border-gray-600 my-1" />
+                          <div>
+                            Chance of new villager/s: {chancePct}%
+                          </div>
+                          {lowPopulationBonus > 0 && (
+                            <div className="text-gray-400/70">
+                              {Math.round(lowPopulationBonus * 100)} % low
+                              population bonus
+                            </div>
+                          )}
+                          {fromBuildings > 0 && (
+                            <div className="text-gray-400/70">
+                              {Math.round(fromBuildings * 100)} % from buildings
+                            </div>
+                          )}
+                          {fromBlessings > 0 && (
+                            <div className="text-gray-400/70">
+                              {Math.round(fromBlessings * 100)} % from Blessings
+                            </div>
+                          )}
+                          {fromEvents > 0 && (
+                            <div className="text-gray-400/70">
+                              {Math.round(fromEvents * 100)} % from Events
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })()
                   }
                   tooltipId="production-cycle-progress"
                   disabled

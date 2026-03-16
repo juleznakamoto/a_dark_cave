@@ -1275,7 +1275,11 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     id: "ravens_mark",
     name: "Raven's Mark",
     description: "Strangers approach the village more often",
-    bonuses: {},
+    bonuses: {
+      generalBonuses: {
+        strangerApproachBonus: 0.1,
+      },
+    },
   },
 
   ashen_embrace: {
@@ -1403,7 +1407,11 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     id: "ravens_mark_enhanced",
     name: "Raven's Great Mark",
     description: "Strangers approach the village much more often",
-    bonuses: {},
+    bonuses: {
+      generalBonuses: {
+        strangerApproachBonus: 0.2,
+      },
+    },
   },
 
   ashen_embrace_enhanced: {

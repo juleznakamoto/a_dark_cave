@@ -236,6 +236,16 @@ export function renderItemTooltip(
               %
             </div>
           )}
+          {effect.bonuses.generalBonuses.strangerApproachBonus != null &&
+            effect.bonuses.generalBonuses.strangerApproachBonus > 0 && (
+              <div>
+                Stranger Chance: +
+                {Math.round(
+                  effect.bonuses.generalBonuses.strangerApproachBonus * 100,
+                )}
+                %
+              </div>
+            )}
           {effect.bonuses.generalBonuses.criticalChance && (
             <div>
               Critical Strike Chance: +

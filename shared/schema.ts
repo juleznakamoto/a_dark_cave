@@ -847,6 +847,7 @@ export const actionSchema = z.object({
     .args(z.any())
     .returns(z.number().min(0))
     .optional(),
+  strangerApproachBonus: z.number().optional(),
 });
 
 export type Action = z.infer<typeof actionSchema>;

@@ -307,6 +307,7 @@ export interface EffectDefinition {
       criticalChance?: number; // Percentage chance for critical hits during combat (0.05 = 5% chance)
       actionBonusChance?: number; // Chance to double action gains (0.1 = 10% chance)
       merchantDiscount?: number; // Additional discount at wandering merchant (0.05 = 5% discount)
+      strangerApproachBonus?: number; // Bonus to stranger approach probability (0.1 = 10%)
     };
   };
 }

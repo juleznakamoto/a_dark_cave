@@ -24,10 +24,14 @@ export const villageBuildActions: Record<string, Action> = {
     tooltipEffects: (state: GameState) => {
       const count = state.buildings.woodenHut || 0;
       const totalPopulation = count * 2;
-      return count > 0
-        ? [`+${totalPopulation} Max Population`]
-        : ["+2 Max Population"];
+      const effects =
+        count > 0
+          ? [`+${totalPopulation} Max Population`]
+          : ["+2 Max Population"];
+      if (count > 0) effects.push(`+${count}% Stranger Chance`);
+      return effects;
     },
+    strangerApproachBonus: 0.01,
     building: true,
     show_when: {
       1: {
@@ -1275,10 +1279,14 @@ export const villageBuildActions: Record<string, Action> = {
     tooltipEffects: (state: GameState) => {
       const count = state.buildings.stoneHut || 0;
       const totalPopulation = count * 4;
-      return count > 0
-        ? [`+${totalPopulation} Max Population`]
-        : ["+4 Max Population"];
+      const effects =
+        count > 0
+          ? [`+${totalPopulation} Max Population`]
+          : ["+4 Max Population"];
+      if (count > 0) effects.push(`+${count}% Stranger Chance`);
+      return effects;
     },
+    strangerApproachBonus: 0.01,
     building: true,
     show_when: {
       1: {
@@ -1447,10 +1455,14 @@ export const villageBuildActions: Record<string, Action> = {
     tooltipEffects: (state: GameState) => {
       const count = state.buildings.longhouse || 0;
       const totalPopulation = count * 8;
-      return count > 0
-        ? [`+${totalPopulation} Max Population`]
-        : ["+8 Max Population"];
+      const effects =
+        count > 0
+          ? [`+${totalPopulation} Max Population`]
+          : ["+8 Max Population"];
+      if (count > 0) effects.push(`+${Math.round(count * 0.5)}% Stranger Chance`);
+      return effects;
     },
+    strangerApproachBonus: 0.005,
     building: true,
     show_when: {
       1: {
@@ -1525,10 +1537,14 @@ export const villageBuildActions: Record<string, Action> = {
     tooltipEffects: (state: GameState) => {
       const count = state.buildings.furTents || 0;
       const totalPopulation = count * 4;
-      return count > 0
-        ? [`+${totalPopulation} Max Population`]
-        : ["+4 Max Population"];
+      const effects =
+        count > 0
+          ? [`+${totalPopulation} Max Population`]
+          : ["+4 Max Population"];
+      if (count > 0) effects.push(`+${Math.round(count * 0.5)}% Stranger Chance`);
+      return effects;
     },
+    strangerApproachBonus: 0.005,
     building: true,
     show_when: {
       1: {
