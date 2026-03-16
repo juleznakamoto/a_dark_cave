@@ -292,6 +292,7 @@ export const detectRewards = (
     resources?: Partial<Record<keyof GameState["resources"], number>>;
     resourceLosses?: Partial<Record<keyof GameState["resources"], number>>;
     villagersLost?: number;
+    populationGained?: number;
     tools?: (keyof GameState["tools"])[];
     weapons?: (keyof GameState["weapons"])[];
     clothing?: (keyof GameState["clothing"])[];
@@ -422,6 +423,23 @@ export const detectRewards = (
     const villagersKilled = (stateUpdates as { villagersKilled?: number }).villagersKilled;
     if (typeof villagersKilled === "number" && villagersKilled > 0) {
       rewards.villagersLost = villagersKilled;
+    }
+  }
+
+  // Check for population gain (villagers added)
+  if (stateUpdates.villagers) {
+    const currentTotal = Object.values(currentState.villagers || {}).reduce(
+      (sum, count) => sum + (count || 0),
+      0,
+    );
+    const mergedVillagers = { ...currentState.villagers, ...stateUpdates.villagers };
+    const newTotal = Object.values(mergedVillagers).reduce(
+      (sum, count) => sum + (count || 0),
+      0,
+    );
+    const gained = newTotal - currentTotal;
+    if (gained > 0) {
+      rewards.populationGained = gained;
     }
   }
 
@@ -2081,6 +2099,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const hasRewards = Object.entries(rewards).some(([key, value]) => {
         if (key === "resourceLosses" || key === "villagersLost" || !value) {
           return false;
+        }
+        if (typeof value === "number" && value > 0) {
+          return true;
         }
         if (Array.isArray(value)) {
           return value.length > 0;

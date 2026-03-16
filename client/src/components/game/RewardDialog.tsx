@@ -14,6 +14,7 @@ interface RewardDialogData {
     resources?: Partial<Record<keyof GameState["resources"], number>>;
     resourceLosses?: Partial<Record<keyof GameState["resources"], number>>;
     villagersLost?: number;
+    populationGained?: number;
     tools?: (keyof GameState["tools"])[];
     weapons?: (keyof GameState["weapons"])[];
     clothing?: (keyof GameState["clothing"])[];
@@ -62,7 +63,7 @@ export default function RewardDialog({
 
   const { rewards, successLog, variant = "success" } = data;
   const isLossVariant = variant === "loss";
-  // Helper to render a list of rewards (order: Stats, Fellowship, Items, Resources)
+  // Helper to render a list of rewards (order: Stats, Population, Fellowship, Items, Resources)
   const renderRewards = () => {
     const rewardItems: JSX.Element[] = [];
 
@@ -80,7 +81,16 @@ export default function RewardDialog({
       });
     }
 
-    // 2. Fellowship
+    // 2. Population gain (after stats)
+    if (typeof rewards.populationGained === "number" && rewards.populationGained > 0) {
+      rewardItems.push(
+        <div key="population-gained" className="text-sm text-foreground">
+          +{rewards.populationGained} {rewards.populationGained === 1 ? "Villager" : "Villagers"}
+        </div>,
+      );
+    }
+
+    // 3. Fellowship
     if (rewards.fellowship && rewards.fellowship.length > 0) {
       rewards.fellowship.forEach((member) => {
         rewardItems.push(
@@ -91,7 +101,7 @@ export default function RewardDialog({
       });
     }
 
-    // 3. Items (tools, weapons, clothing, relics, blessings, books, schematics)
+    // 4. Items (tools, weapons, clothing, relics, blessings, books, schematics)
     if (rewards.tools && rewards.tools.length > 0) {
       rewards.tools.forEach((tool) => {
         rewardItems.push(
@@ -159,7 +169,7 @@ export default function RewardDialog({
       });
     }
 
-    // 4. Resources (gold first, silver second, then rest)
+    // 5. Resources (gold first, silver second, then rest)
     if (rewards.resources && Object.keys(rewards.resources).length > 0) {
       const sortedKeys = sortResourceKeys(Object.keys(rewards.resources));
       sortedKeys.forEach((resource) => {
@@ -214,6 +224,7 @@ export default function RewardDialog({
     !!rewards.books?.length ||
     !!rewards.schematics?.length ||
     !!rewards.fellowship?.length ||
+    (typeof rewards.populationGained === "number" && rewards.populationGained > 0) ||
     (!!rewards.stats && Object.keys(rewards.stats).length > 0);
   const hasLosses =
     (typeof rewards.villagersLost === "number" && rewards.villagersLost > 0) ||
