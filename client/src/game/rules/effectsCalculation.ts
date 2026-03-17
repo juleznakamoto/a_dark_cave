@@ -561,6 +561,8 @@ const STRANGER_APPROACH_BUILDINGS = [
 
 export function getStrangerApproachProbability(state: GameState): {
   probability: number;
+  rawChance: number;
+  atCapacity: boolean;
   lowPopulationBonus: number;
   fromBuildings: number;
   fromBlessings: number;
@@ -608,19 +610,20 @@ export function getStrangerApproachProbability(state: GameState): {
     state.solsticeState.endTime > Date.now();
   const fromEvents = isSolsticeActive ? 0.5 : 0;
 
-  const probability = atCapacity
-    ? 0
-    : Math.min(
-      1,
-      lowPopulationBonus + fromBuildings + fromBlessings + fromEvents,
-    );
+  const rawChance = Math.min(
+    1,
+    lowPopulationBonus + fromBuildings + fromBlessings + fromEvents,
+  );
+  const probability = atCapacity ? 0 : rawChance;
 
   return {
     probability,
+    rawChance,
     lowPopulationBonus,
     fromBuildings,
     fromBlessings,
     fromEvents,
+    atCapacity,
   };
 }
 

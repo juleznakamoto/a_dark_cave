@@ -142,14 +142,21 @@ describe("getStrangerApproachProbability", () => {
     expect(result.probability).toBeLessThanOrEqual(1);
   });
 
-  it("should return 0 probability when at max population but still show breakdown", () => {
+  it("should return 0 probability when at max population but rawChance matches breakdown sum", () => {
     const state = createMockState({
       buildings: { ...createInitialState().buildings, woodenHut: 1 },
       villagers: { ...createInitialState().villagers, free: 2 },
     });
     const result = getStrangerApproachProbability(state);
     expect(result.probability).toBe(0);
-    expect(result.fromBuildings).toBe(0.01); // 1 hut still shown in breakdown
+    expect(result.atCapacity).toBe(true);
+    const breakdownSum =
+      result.lowPopulationBonus +
+      result.fromBuildings +
+      result.fromBlessings +
+      result.fromEvents;
+    expect(result.rawChance).toBe(breakdownSum); // tooltip main number matches breakdown
+    expect(result.fromBuildings).toBe(0.01);
   });
 
   it("should have breakdown sum equal pre-cap probability", () => {
