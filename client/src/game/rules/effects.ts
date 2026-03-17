@@ -1409,7 +1409,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     description: "Strangers approach the village much more often",
     bonuses: {
       generalBonuses: {
-        strangerApproachBonus: 0.2,
+        strangerApproachBonus: 0.15,
       },
     },
   },

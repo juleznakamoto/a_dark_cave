@@ -559,6 +559,22 @@ const STRANGER_APPROACH_BUILDINGS = [
   "buildFurTents",
 ] as const;
 
+/**
+ * New Villager Chance (stranger approach probability) per production cycle.
+ *
+ * Sources:
+ * - Buildings: Wooden Hut +1.5% each (max 10), Stone Hut +1% each (max 10),
+ *   Longhouse +0.5% each (max 5), Fur Tent +0.5% each (max 5).
+ *   Max from buildings: 30%.
+ * - Blessings: ravens_mark +10%, ravens_mark_enhanced +15%. Both stack: 25%.
+ * - Low population (pop ≤ 4): +50% (normal) or +25% (Cruel Mode).
+ * - Events: Solstice active +50%.
+ *
+ * Total = lowPopulationBonus + fromBuildings + fromBlessings + fromEvents.
+ * Capped at 100%. Effective probability is 0 when at max population.
+ *
+ * Absolute maximum: 50 + 30 + 25 + 50 = 155% → 100% (cap).
+ */
 export function getStrangerApproachProbability(state: GameState): {
   probability: number;
   rawChance: number;

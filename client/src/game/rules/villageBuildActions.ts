@@ -31,7 +31,7 @@ export const villageBuildActions: Record<string, Action> = {
       if (count > 0) effects.push(`+${count}% New Villager Chance`);
       return effects;
     },
-    strangerApproachBonus: 0.01,
+    strangerApproachBonus: 0.015,
     building: true,
     show_when: {
       1: {
