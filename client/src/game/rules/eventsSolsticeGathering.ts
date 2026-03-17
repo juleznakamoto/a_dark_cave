@@ -29,7 +29,7 @@ export const solsticeGatheringEvent: GameEvent = {
     return (state.buildings.woodenHut || 0) >= 3;
   },
 
-  timeProbability: 45,
+  timeProbability: 0.045,
   cooldownPercent: 0.75,
   title: "Solstice Gathering",
   message:

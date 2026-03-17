@@ -24,9 +24,7 @@ import {
 } from "@/game/rules/effectsCalculation";
 import CooldownButton from "@/components/CooldownButton";
 import { Button } from "@/components/ui/button";
-import {
-  getPopulationProduction,
-} from "@/game/population";
+import { getPopulationProduction } from "@/game/population";
 import { CircularProgress } from "@/components/ui/circular-progress";
 import { capitalizeWords, formatNumber } from "@/lib/utils";
 import { useState, useEffect, useRef } from "react";
@@ -38,9 +36,7 @@ import {
   useFeedFireParticles,
 } from "@/components/ui/feed-fire-particles";
 import { audioManager } from "@/lib/audio";
-import {
-  BubblyButtonGlobalPortal,
-} from "@/components/ui/bubbly-button";
+import { BubblyButtonGlobalPortal } from "@/components/ui/bubbly-button";
 import {
   generateParticleData,
   type BubbleWithParticles,
@@ -361,8 +357,7 @@ export default function VillagePanel() {
       const isMerchantActive =
         timedEventTab?.isActive &&
         timedEventTab?.event?.id?.includes?.("merchant");
-      const isOtherEventActive =
-        timedEventTab?.isActive && !isMerchantActive;
+      const isOtherEventActive = timedEventTab?.isActive && !isMerchantActive;
 
       const cooldownEndPlayTime =
         (callMerchantLastEndPlayTime ?? 0) + 5 * 60 * 1000;
@@ -392,9 +387,7 @@ export default function VillagePanel() {
       ) : (
         <div className="text-xs whitespace-nowrap">
           <div
-            className={
-              canAfford ? "text-foreground" : "text-muted-foreground"
-            }
+            className={canAfford ? "text-foreground" : "text-muted-foreground"}
           >
             -{formatNumber(price)} Gold
           </div>
@@ -512,13 +505,18 @@ export default function VillagePanel() {
       displayLabel = palisadesLabels[palisadesLevel] || "Wooden Palisades";
     }
 
-    const buildingHint = state.books?.book_of_craftsmanship ? action.description : undefined;
+    const buildingHint = state.books?.book_of_craftsmanship
+      ? action.description
+      : undefined;
     const buildingKey = actionId.startsWith("build")
       ? actionId.slice(5, 6).toLowerCase() + actionId.slice(6)
       : null;
     const isUpgrade = buildingKey ? isBuildingUpgrade(buildingKey) : false;
     const tooltipContent = (
-      <div className="text-xs flex items-start gap-2" style={buildingHint ? { width: '12rem' } : undefined}>
+      <div
+        className="text-xs flex items-start gap-2"
+        style={buildingHint ? { width: "12rem" } : undefined}
+      >
         <div className="flex-1 min-w-0 whitespace-nowrap">
           {costBreakdown.map((cost, index) => (
             <div
@@ -788,52 +786,48 @@ export default function VillagePanel() {
                 <h3 className="text-xs font-medium text-foreground">Produce</h3>
                 {/* Production Cycle */}
                 <TooltipWrapper
-                  tooltip={
-                    (() => {
-                      const state = useGameStore.getState();
-                      const {
-                        rawChance,
-                        lowPopulationBonus,
-                        fromBuildings,
-                        fromBlessings,
-                        fromEvents,
-                      } = getStrangerApproachProbability(state);
-                      const chancePct = Math.round(rawChance * 100);
-                      return (
-                        <div className="text-xs">
-                          <div className="font-semibold">Cycle</div>
-                          <div>
-                            Next cycle in {productionSecondsRemaining} seconds
-                          </div>
-                          <div className="border-t border-gray-600 my-1" />
-                          <div>
-                            New Villager Chance: {chancePct}%
-                          </div>
-                          {lowPopulationBonus > 0 && (
-                            <div className="text-gray-400/70">
-                              {Math.round(lowPopulationBonus * 100)} % low
-                              population bonus
-                            </div>
-                          )}
-                          {fromBuildings > 0 && (
-                            <div className="text-gray-400/70">
-                              {Math.round(fromBuildings * 100)} % from buildings
-                            </div>
-                          )}
-                          {fromBlessings > 0 && (
-                            <div className="text-gray-400/70">
-                              {Math.round(fromBlessings * 100)} % from Blessings
-                            </div>
-                          )}
-                          {fromEvents > 0 && (
-                            <div className="text-gray-400/70">
-                              {Math.round(fromEvents * 100)} % from Events
-                            </div>
-                          )}
+                  tooltip={(() => {
+                    const state = useGameStore.getState();
+                    const {
+                      rawChance,
+                      lowPopulationBonus,
+                      fromBuildings,
+                      fromBlessings,
+                      fromEvents,
+                    } = getStrangerApproachProbability(state);
+                    const chancePct = Math.round(rawChance * 100);
+                    return (
+                      <div className="text-xs">
+                        <div className="font-semibold">Cycle</div>
+                        <div>
+                          Next cycle in {productionSecondsRemaining} seconds
                         </div>
-                      );
-                    })()
-                  }
+                        <div className="border-t border-gray-600 my-1" />
+                        <div>New Villager Chance: {chancePct}%</div>
+                        {lowPopulationBonus > 0 && (
+                          <div className="text-gray-400/70">
+                            {Math.round(lowPopulationBonus * 100)} % low
+                            population bonus
+                          </div>
+                        )}
+                        {fromBuildings > 0 && (
+                          <div className="text-gray-400/70">
+                            {Math.round(fromBuildings * 100)} % from buildings
+                          </div>
+                        )}
+                        {fromBlessings > 0 && (
+                          <div className="text-gray-400/70">
+                            {Math.round(fromBlessings * 100)} % from Blessings
+                          </div>
+                        )}
+                        {fromEvents > 0 && (
+                          <div className="text-gray-400/70">
+                            {Math.round(fromEvents * 100)} % from Events
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })()}
                   tooltipId="production-cycle-progress"
                   disabled
                   className="text-xs flex items-center cursor-pointer"
@@ -852,8 +846,7 @@ export default function VillagePanel() {
                   const feastState = useGameStore.getState().feastState;
                   const greatFeastState =
                     useGameStore.getState().greatFeastState;
-                  const solsticeState =
-                    useGameStore.getState().solsticeState;
+                  const solsticeState = useGameStore.getState().solsticeState;
                   const curseState = useGameStore.getState().curseState;
                   const disgustState = useGameStore.getState().disgustState;
                   const miningBoostState =
@@ -931,7 +924,7 @@ export default function VillagePanel() {
                               strokeWidth={2}
                               className="text-orange-500"
                             />
-                            <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[12px] -mt-[0px] text-orange-500">
+                            <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[10px] -mt-[0px] text-orange-500">
                               ☼
                             </span>
                           </div>
@@ -959,8 +952,7 @@ export default function VillagePanel() {
                                 );
                                 const totalDuration =
                                   (10 + 5 * state.CM) * 60 * 1000;
-                                const elapsed =
-                                  totalDuration - timeRemaining;
+                                const elapsed = totalDuration - timeRemaining;
                                 return Math.min(
                                   100,
                                   (elapsed / totalDuration) * 100,
@@ -999,8 +991,7 @@ export default function VillagePanel() {
                                 const totalDuration = state.cruelMode
                                   ? 20 * 60 * 1000
                                   : 10 * 60 * 1000;
-                                const elapsed =
-                                  totalDuration - timeRemaining;
+                                const elapsed = totalDuration - timeRemaining;
                                 return Math.min(
                                   100,
                                   (elapsed / totalDuration) * 100,
@@ -1036,9 +1027,7 @@ export default function VillagePanel() {
                                 const boostElapsed =
                                   boostDuration -
                                   (miningBoostState.endTime - Date.now());
-                                return (
-                                  (boostElapsed / boostDuration) * 100
-                                );
+                                return (boostElapsed / boostDuration) * 100;
                               })()}
                               size={18}
                               strokeWidth={2}
@@ -1068,22 +1057,16 @@ export default function VillagePanel() {
                               value={(() => {
                                 const now = Date.now();
                                 const lastDecrease =
-                                  state.heartfireState
-                                    .lastLevelDecrease || 0;
+                                  state.heartfireState.lastLevelDecrease || 0;
                                 const elapsed = now - lastDecrease;
-                                return Math.min(
-                                  100,
-                                  (elapsed / 90000) * 100,
-                                );
+                                return Math.min(100, (elapsed / 90000) * 100);
                               })()}
                               size={18}
                               strokeWidth={2}
                               className="text-red-700"
                             />
                             <span className="absolute inset-0 flex items-center justify-center font-extrabold text-red-700">
-                              {getHeartfireSymbol(
-                                state.heartfireState.level,
-                              )}
+                              {getHeartfireSymbol(state.heartfireState.level)}
                             </span>
                           </div>
                         </TooltipWrapper>
@@ -1156,8 +1139,7 @@ export default function VillagePanel() {
                                     0,
                                     fogState.endTime - Date.now(),
                                   );
-                                  const elapsed =
-                                    fogDuration - timeRemaining;
+                                  const elapsed = fogDuration - timeRemaining;
                                   return Math.min(
                                     100,
                                     (elapsed / fogDuration) * 100,

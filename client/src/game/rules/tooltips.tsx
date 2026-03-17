@@ -14,10 +14,7 @@ import {
 } from "./skillUpgrades";
 import { formatNumber } from "@/lib/utils";
 import type { TooltipConfig } from "@/game/types";
-import {
-  getMaxBombLimit,
-  isBombAtLimit,
-} from "@/game/resourceLimits";
+import { getMaxBombLimit, isBombAtLimit } from "@/game/resourceLimits";
 
 const FOCUS_ELIGIBLE_ACTIONS = [
   "exploreCave",
@@ -51,9 +48,10 @@ export const calculateResourceGains = (
   if (!action) return { gains: [], costs: [] };
 
   // Resolve effects if they are a function
-  const effects = typeof action.effects === 'function'
-    ? action.effects(state)
-    : action.effects;
+  const effects =
+    typeof action.effects === "function"
+      ? action.effects(state)
+      : action.effects;
 
   if (!effects) return { gains: [], costs: [] };
 
@@ -93,7 +91,9 @@ export const calculateResourceGains = (
 
     // Base gains from effects
     const actionEffects =
-      typeof action.effects === "function" ? action.effects(state) : action.effects;
+      typeof action.effects === "function"
+        ? action.effects(state)
+        : action.effects;
     Object.entries(actionEffects || {}).forEach(([key, value]) => {
       if (key.startsWith("resources.")) {
         const resource = key.split(".")[1];
@@ -241,7 +241,8 @@ export const calculateResourceGains = (
     });
 
     // Parse costs for mine and craft actions
-    const resolvedCost = typeof action.cost === "function" ? action.cost(state) : action.cost;
+    const resolvedCost =
+      typeof action.cost === "function" ? action.cost(state) : action.cost;
     if (resolvedCost) {
       Object.entries(resolvedCost).forEach(([key, value]) => {
         if (key.startsWith("resources.")) {
@@ -253,8 +254,8 @@ export const calculateResourceGains = (
               : value;
 
             const hasEnough =
-              (state.resources[resource as keyof typeof state.resources] || 0) >=
-              finalCost;
+              (state.resources[resource as keyof typeof state.resources] ||
+                0) >= finalCost;
             costs.push({ resource, amount: finalCost, hasEnough });
           }
         } else if (key.startsWith("relics.")) {
@@ -378,11 +379,15 @@ export const madnessProductionTooltip: TooltipConfig = {
     if (totalMadness < 10) return null;
 
     const penalty =
-      totalMadness >= 50 ? 50
-      : totalMadness >= 40 ? 40
-      : totalMadness >= 30 ? 30
-      : totalMadness >= 20 ? 20
-      : 10;
+      totalMadness >= 50
+        ? 50
+        : totalMadness >= 40
+          ? 40
+          : totalMadness >= 30
+            ? 30
+            : totalMadness >= 20
+              ? 20
+              : 10;
 
     return (
       <>
@@ -443,7 +448,7 @@ export const solsticeTooltip: TooltipConfig = {
       return (
         <>
           <div className="font-bold">Solstice Gathering</div>
-          <div>Stranger approach +50%</div>
+          <div>New Villager Chance +50%</div>
           <div>{remainingMinutes} min remaining</div>
         </>
       );
@@ -477,7 +482,8 @@ export const curseTooltip: TooltipConfig = {
 export const disgustTooltip: TooltipConfig = {
   getContent: (state: GameState) => {
     const disgustState = state.disgustState;
-    const isDisgusted = disgustState?.isActive && disgustState.endTime > Date.now();
+    const isDisgusted =
+      disgustState?.isActive && disgustState.endTime > Date.now();
 
     if (isDisgusted) {
       const remainingMs = disgustState.endTime - Date.now();
@@ -659,7 +665,10 @@ export const combatItemTooltips: Record<string, TooltipConfig> = {
 
 // Event choice cost tooltip - formats cost string with current amounts
 export const eventChoiceCostTooltip = {
-  getContent: (cost: string | Record<string, number> | undefined, gameState?: GameState): React.ReactNode => {
+  getContent: (
+    cost: string | Record<string, number> | undefined,
+    gameState?: GameState,
+  ): React.ReactNode => {
     if (!cost) return null;
 
     // Extract resources from cost
@@ -667,7 +676,7 @@ export const eventChoiceCostTooltip = {
 
     if (typeof cost === "string") {
       // Handle comma-separated costs like "1000 wood, 500 food"
-      const costParts = cost.split(',').map(part => part.trim());
+      const costParts = cost.split(",").map((part) => part.trim());
 
       for (const part of costParts) {
         const parsed = parseResourceText(part);
@@ -688,12 +697,14 @@ export const eventChoiceCostTooltip = {
     // Add current amounts if gameState is provided
     if (gameState && resources.length > 0) {
       resources.forEach(({ resource }, index) => {
-        const currentAmount = gameState.resources[resource as keyof typeof gameState.resources] || 0;
+        const currentAmount =
+          gameState.resources[resource as keyof typeof gameState.resources] ||
+          0;
         currentAmounts.push(
           <div key={`current-${index}`} className="flex justify-between gap-2">
             <span>{capitalizeWords(resource)}:</span>
             <span>{formatNumber(currentAmount)}</span>
-          </div>
+          </div>,
         );
       });
     }
@@ -703,7 +714,9 @@ export const eventChoiceCostTooltip = {
       // Check if player has enough of this specific resource
       let hasEnough = true;
       if (gameState) {
-        const resourceValue = gameState.resources[resource as keyof typeof gameState.resources] || 0;
+        const resourceValue =
+          gameState.resources[resource as keyof typeof gameState.resources] ||
+          0;
         hasEnough = resourceValue >= amount;
       }
 
@@ -713,7 +726,7 @@ export const eventChoiceCostTooltip = {
           className={hasEnough ? "!text-foreground" : "!text-muted-foreground"}
         >
           -{formatNumber(amount)} {capitalizeWords(resource)}
-        </div>
+        </div>,
       );
     });
 
@@ -741,12 +754,14 @@ function capitalizeWords(str: string): string {
 }
 
 // Helper function to extract resource name and amount from text
-function parseResourceText(text: string): { resource: string; amount: number } | null {
+function parseResourceText(
+  text: string,
+): { resource: string; amount: number } | null {
   // Match patterns like "250 gold", "+10 Food", "-5 wood"
   const match = text.match(/[+-]?\s*(\d+)\s+([a-zA-Z_\s]+)/);
   if (match) {
     const amount = parseInt(match[1]);
-    const resource = match[2].trim().toLowerCase().replace(/\s+/g, '_');
+    const resource = match[2].trim().toLowerCase().replace(/\s+/g, "_");
     return { resource, amount };
   }
   return null;
@@ -761,10 +776,11 @@ export const getCurrentResourceAmount = {
     if (!parsed) return "";
 
     const { resource } = parsed;
-    const currentAmount = gameState.resources[resource as keyof typeof gameState.resources] || 0;
+    const currentAmount =
+      gameState.resources[resource as keyof typeof gameState.resources] || 0;
 
     return `Current: ${currentAmount} ${capitalizeWords(resource)}`;
-  }
+  },
 };
 
 // Merchant-specific tooltip that only shows cost (no current amounts)
@@ -775,7 +791,7 @@ export const merchantTooltip = {
     const resources: Array<{ resource: string; amount: number }> = [];
 
     // Handle comma-separated costs like "1000 wood, 500 food"
-    const costParts = costText.split(',').map(part => part.trim());
+    const costParts = costText.split(",").map((part) => part.trim());
 
     for (const part of costParts) {
       const parsed = parseResourceText(part);
@@ -791,10 +807,10 @@ export const merchantTooltip = {
       costLines.push(
         <div key={`cost-${index}`}>
           -{formatNumber(amount)} {capitalizeWords(resource)}
-        </div>
+        </div>,
       );
     });
 
     return <>{costLines}</>;
-  }
+  },
 };
