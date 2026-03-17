@@ -793,7 +793,6 @@ export default function VillagePanel() {
                       const state = useGameStore.getState();
                       const {
                         rawChance,
-                        atCapacity,
                         lowPopulationBonus,
                         fromBuildings,
                         fromBlessings,
@@ -810,11 +809,6 @@ export default function VillagePanel() {
                           <div>
                             New Villager Chance: {chancePct}%
                           </div>
-                          {atCapacity && (
-                            <div className="text-gray-400/70">
-                              Population limit reached
-                            </div>
-                          )}
                           {lowPopulationBonus > 0 && (
                             <div className="text-gray-400/70">
                               {Math.round(lowPopulationBonus * 100)} % low
