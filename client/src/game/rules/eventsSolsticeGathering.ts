@@ -41,12 +41,7 @@ export const solsticeGatheringEvent: GameEvent = {
   choices: [
     {
       id: "hostSolstice",
-      label: (state: GameState) => {
-        const tier = state.solsticeState?.tier ?? 1;
-        const goldCost = getGoldCost(tier);
-        const foodCost = getFoodCost(tier);
-        return `Spend ${goldCost} Gold and ${foodCost} Food`;
-      },
+      label: "Host gathering",
       cost: (state: GameState) => {
         const tier = state.solsticeState?.tier ?? 1;
         const goldCost = getGoldCost(tier);
