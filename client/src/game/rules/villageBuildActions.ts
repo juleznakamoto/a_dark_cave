@@ -28,10 +28,10 @@ export const villageBuildActions: Record<string, Action> = {
         count > 0
           ? [`+${totalPopulation} Max Population`]
           : ["+2 Max Population"];
-      if (count > 0) effects.push(`+${count}% New Villager Chance`);
+      if (count > 0) effects.push(`+${count * 2}% New Villager Chance`);
       return effects;
     },
-    strangerApproachBonus: 0.015,
+    strangerApproachBonus: 0.02,
     building: true,
     show_when: {
       1: {
