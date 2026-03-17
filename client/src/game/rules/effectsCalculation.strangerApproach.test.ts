@@ -58,7 +58,7 @@ describe("getStrangerApproachProbability", () => {
       buildings: { ...createInitialState().buildings, woodenHut: 5 },
     });
     const result = getStrangerApproachProbability(state);
-    expect(result.fromBuildings).toBe(0.05); // 5 * 0.01
+    expect(result.fromBuildings).toBe(0.1); // 5 * 0.02 (wooden hut +2% each)
   });
 
   it("should aggregate fromBuildings from all housing types", () => {
@@ -73,8 +73,8 @@ describe("getStrangerApproachProbability", () => {
       },
     });
     const result = getStrangerApproachProbability(state);
-    // 2*0.01 + 3*0.01 + 2*0.005 + 2*0.005 = 0.02 + 0.03 + 0.01 + 0.01 = 0.07
-    expect(result.fromBuildings).toBe(0.07);
+    // 2*0.02 + 3*0.01 + 2*0.005 + 2*0.005 = 0.04 + 0.03 + 0.01 + 0.01 = 0.09
+    expect(result.fromBuildings).toBe(0.09);
   });
 
   it("should add fromBlessings for ravens_mark", () => {
@@ -94,7 +94,7 @@ describe("getStrangerApproachProbability", () => {
       blessings: { ravens_mark_enhanced: true },
     });
     const result = getStrangerApproachProbability(state);
-    expect(result.fromBlessings).toBe(0.2);
+    expect(result.fromBlessings).toBe(0.15); // ravens_mark_enhanced +15%
   });
 
   it("should add fromBlessings when both blessings present", () => {
@@ -104,7 +104,7 @@ describe("getStrangerApproachProbability", () => {
       blessings: { ravens_mark: true, ravens_mark_enhanced: true },
     });
     const result = getStrangerApproachProbability(state);
-    expect(result.fromBlessings).toBeCloseTo(0.3);
+    expect(result.fromBlessings).toBeCloseTo(0.25); // ravens_mark 10% + ravens_mark_enhanced 15%
   });
 
   it("should add fromEvents when Solstice is active", () => {
@@ -156,7 +156,7 @@ describe("getStrangerApproachProbability", () => {
       result.fromBlessings +
       result.fromEvents;
     expect(result.rawChance).toBe(breakdownSum); // tooltip main number matches breakdown
-    expect(result.fromBuildings).toBe(0.01);
+    expect(result.fromBuildings).toBe(0.02); // 1 wooden hut +2%
   });
 
   it("should have breakdown sum equal pre-cap probability", () => {
