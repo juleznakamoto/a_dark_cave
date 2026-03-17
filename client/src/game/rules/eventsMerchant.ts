@@ -1,6 +1,6 @@
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
-import { getTotalKnowledge } from "./effectsCalculation";
+import { getTotalKnowledge, getTotalMadness } from "./effectsCalculation";
 import { getTotalMerchantDiscount } from "./effectsStats";
 import { logger } from "@/lib/logger";
 import type { MerchantTradeData } from "@/game/types";
@@ -801,6 +801,7 @@ const toolTrades = [
     give: "consumable",
     giveItem: "clarity_elixir",
     condition: (state: GameState) => {
+      if (getTotalMadness(state) < 1) return false;
       const purchases =
         (state.story?.seen?.clarityElixirPurchases as number) ?? 0;
       if (purchases >= 5) return false;
