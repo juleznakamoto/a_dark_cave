@@ -17,12 +17,15 @@ function getItemCount(itemKeys: string[]): number {
     const hasInFellowship =
       state.fellowship &&
       state.fellowship[itemKey as keyof typeof state.fellowship];
+    const hasInBooks =
+      state.books && state.books[itemKey as keyof typeof state.books];
     if (
       hasInTools ||
       hasInWeapons ||
       hasInClothing ||
       hasInRelics ||
-      hasInFellowship
+      hasInFellowship ||
+      hasInBooks
     ) {
       count++;
     }
