@@ -20,7 +20,7 @@ import { DISGRACED_PRIOR_UPGRADES } from "./rules/skillUpgrades";
 let gameLoopId: number | null = null;
 let lastFrameTime = 0;
 
-const PRIOR_EXECUTION_GAP_MS = 1000;
+const PRIOR_EXECUTION_GAP_MS = 500;
 // Tracks the last time the Disgraced Prior finished each action (ms timestamp)
 const priorLastCompleted = new Map<string, number>();
 // Tracks action executions currently in-flight that were started by the Prior
@@ -28,7 +28,7 @@ const priorInFlightExecutions = new Set<string>();
 
 /**
  * Returns true if the Prior should auto-execute this action right now:
- * - At least 1 second has passed since the last Prior completion for this action
+ * - At least 0.5 seconds has passed since the last Prior completion for this action
  * - Resource costs are affordable
  * - At least one output resource has room below the storage cap
  */

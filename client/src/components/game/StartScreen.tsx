@@ -5,8 +5,6 @@ import CloudShader from "@/components/ui/cloud-shader";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { audioManager } from "@/lib/audio";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
-import { initPlaylight } from "@/lib/playlight";
-
 export default function StartScreen() {
   const { executeAction, setBoostMode, boostMode, CM } = useGameStore();
   const isMobile = useIsMobile();
@@ -91,19 +89,13 @@ export default function StartScreen() {
 
       interFont.load().then(() => {
         document.fonts.add(interFont);
-      }).catch(() => {});
+      }).catch(() => { });
     }
 
     // Immediately stop wind with no fade to prevent overlap
     audioManager.stopLoopingSound("wind", 2);
 
     audioManager.playSound("lightFire", 0.8);
-
-    // Load Playlight SDK on user interaction
-    // Errors are already logged in initPlaylight(), so we silently handle them here
-    initPlaylight().catch(() => {
-      // Error already logged in initPlaylight(), no need to handle further
-    });
 
     audioManager.loadGameSounds().then(() => {
       if (!useGameStore.getState().musicMuted) {

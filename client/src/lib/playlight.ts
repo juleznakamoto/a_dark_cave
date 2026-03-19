@@ -7,7 +7,7 @@ let initPlaylightPromise: Promise<void> | null = null;
 // Tracks whether Playlight itself triggered the pause (vs. the player already being paused)
 let playlightCausedPause = false;
 
-// Export Playlight SDK initialization function to be called on user interaction
+// Export Playlight SDK initialization function - call after main component mounts
 export async function initPlaylight() {
   // If initialization is already in progress or completed, return the existing promise
   if (initPlaylightPromise) {
@@ -17,40 +17,20 @@ export async function initPlaylight() {
   // Create and store the initialization promise immediately to prevent race conditions
   initPlaylightPromise = (async () => {
     try {
-      // Inject the Playlight SDK CSS now that the user has interacted
-      if (!document.getElementById("playlight-sdk-css")) {
-        const link = document.createElement("link");
-        link.id = "playlight-sdk-css";
-        link.rel = "stylesheet";
-        link.href = "https://sdk.playlight.dev/playlight-sdk.css";
-        document.head.appendChild(link);
-      }
-
-      const script = document.createElement("script");
-      script.src = "https://sdk.playlight.dev/playlight-sdk.es.js";
-      script.type = "module";
-      script.async = true;
-
-      const loadPromise = new Promise((resolve, reject) => {
-        script.onload = resolve;
-        script.onerror = reject;
-      });
-
-      document.body.appendChild(script);
-      await loadPromise;
-
-      // @ts-ignore - The SDK is loaded globally as a module but we need to access its export
-      // The previous dynamic import was also from the same URL
       const module = await import("https://sdk.playlight.dev/playlight-sdk.es.js");
       const playlightSDK = module.default;
       playlightSDKInstance = playlightSDK;
 
-      // Initialize SDK immediately with exit intent disabled
+      const params = new URLSearchParams(window.location.search);
+      const fromPlaylight = params.get("utm_source") === "playlight";
+
+      // Initialize SDK with exit intent disabled; force sidebar visible for Playlight traffic
       playlightSDK.init({
         exitIntent: {
           enabled: false,
           immediate: false,
         },
+        ...(fromPlaylight && { sidebar: { forceVisible: true } }),
       });
 
       // Import game store
