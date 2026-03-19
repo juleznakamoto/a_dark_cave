@@ -533,9 +533,11 @@ export default function ProfileMenu() {
               setAccountDropdownOpen(true);
               setAuthNotificationSeen(true);
             }}
-            className="w-5 h-5 rounded-full border border-orange-500 flex items-center justify-center cursor-pointer opacity-80 hover:opacity-100 transition-opacity"
+            className="w-5 h-5 rounded-full border border-orange-500 flex items-center justify-center cursor-pointer opacity-80 hover:opacity-100 transition-opacity relative"
           >
-            <span className="text-orange-500 text-xs font-bold">!</span>
+            <span className="absolute inset-0 flex items-center justify-center text-orange-500 text-xs font-bold">
+              !
+            </span>
           </TooltipWrapper>
         )}
         {(hasWonAnyGame || devMode) && (

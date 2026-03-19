@@ -794,6 +794,7 @@ export default function VillagePanel() {
                       fromBuildings,
                       fromBlessings,
                       fromEvents,
+                      fromHeartfire,
                     } = getStrangerApproachProbability(state);
                     const chancePct = Math.round(rawChance * 100);
                     return (
@@ -823,6 +824,11 @@ export default function VillagePanel() {
                         {fromEvents > 0 && (
                           <div className="text-gray-400/70">
                             {Math.round(fromEvents * 100)} % from Events
+                          </div>
+                        )}
+                        {fromHeartfire > 0 && (
+                          <div className="text-gray-400/70">
+                            {Math.round(fromHeartfire * 100)} % from Heartfire
                           </div>
                         )}
                       </div>

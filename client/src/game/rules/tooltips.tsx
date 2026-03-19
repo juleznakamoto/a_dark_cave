@@ -538,10 +538,12 @@ export const heartfireTooltip: TooltipConfig = {
         ? `${Math.ceil(remainingSecs / 60)} min`
         : `${remainingSecs} sec`;
 
+    const villagerBonus = [0, 1, 2.5, 5, 7.5, 10][heartfireState.level] ?? 0;
     return (
       <>
         <div className="font-bold">Heartfire</div>
         <div>Production Bonus: +{heartfireState.level * 5}%</div>
+        <div>New Villager Chance: +{villagerBonus}%</div>
         <div>{timeLabel} until level decrease</div>
       </>
     );
