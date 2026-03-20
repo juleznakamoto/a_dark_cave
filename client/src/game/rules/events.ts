@@ -5,6 +5,7 @@ import {
   getTotalKnowledge,
 } from "./effectsCalculation";
 import { logger } from "../../lib/logger";
+import { CRUEL_MODE, cruelModeScale } from "../cruelMode";
 
 /**
  * Helper function to calculate success chance for event choices
@@ -12,7 +13,7 @@ import { logger } from "../../lib/logger";
  * @param baseChance - Base success probability (0-1)
  * @param stat0 - First stat type and its multiplier (e.g., { type: 'strength', multiplier: 0.01 })
  * @param stat1 - Second stat type and its multiplier (optional)
- * @param cmMultiplier - Cruel mode multiplier (default: -0.05)
+ * @param cmMultiplier - Cruel mode multiplier (see CRUEL_MODE.successChance.defaultCruelPenalty)
  * @returns Calculated success chance (0-1)
  */
 export function calculateSuccessChance(
@@ -20,7 +21,7 @@ export function calculateSuccessChance(
   baseChance: number,
   stat0?: { type: 'strength' | 'knowledge' | 'luck'; multiplier: number },
   stat1?: { type: 'strength' | 'knowledge' | 'luck'; multiplier: number },
-  cmMultiplier: number = -0.05
+  cmMultiplier: number = CRUEL_MODE.successChance.defaultCruelPenalty
 ): number {
   let chance = baseChance;
 
@@ -29,8 +30,8 @@ export function calculateSuccessChance(
     const statValue = stat0.type === 'strength'
       ? getTotalStrength(state)
       : stat0.type === 'knowledge'
-      ? getTotalKnowledge(state)
-      : getTotalLuck(state);
+        ? getTotalKnowledge(state)
+        : getTotalLuck(state);
     chance += statValue * stat0.multiplier;
   }
 
@@ -39,13 +40,13 @@ export function calculateSuccessChance(
     const statValue = stat1.type === 'strength'
       ? getTotalStrength(state)
       : stat1.type === 'knowledge'
-      ? getTotalKnowledge(state)
-      : getTotalLuck(state);
+        ? getTotalKnowledge(state)
+        : getTotalLuck(state);
     chance += statValue * stat1.multiplier;
   }
 
   // Apply cruel mode modifier
-  chance += state.CM * cmMultiplier;
+  chance += cruelModeScale(state) * cmMultiplier;
 
   // Cap at 100% (1.0)
   return Math.min(chance, 1.0);
@@ -497,7 +498,7 @@ export class EventManager {
         };
       }
 
-      logger.log('[EVENT MANAGER] Merchant trade not found:', { 
+      logger.log('[EVENT MANAGER] Merchant trade not found:', {
         choiceId,
         availableTrades: merchantTrades?.map((t: any) => t.id) || [],
       });
@@ -542,7 +543,7 @@ export class EventManager {
     });
 
     const choiceResult = choice.effect(state);
-    
+
     logger.log('[EVENT MANAGER] Choice effect result:', {
       hasLogMessage: !!choiceResult._logMessage,
       keys: Object.keys(choiceResult),

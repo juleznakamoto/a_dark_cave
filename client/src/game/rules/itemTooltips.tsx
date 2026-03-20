@@ -13,6 +13,7 @@ import {
 import { villageBuildActions } from "./villageBuildActions";
 import { capitalizeWords } from "@/lib/utils";
 import { useGameStore } from "../state";
+import { CRUEL_MODE } from "../cruelMode";
 
 export function renderItemTooltip(
   itemId: string,
@@ -182,8 +183,12 @@ export function renderItemTooltip(
 
   // Calculate madness value with cruel mode bonus
   let madnessValue = effect.bonuses?.generalBonuses?.madness;
-  if (madnessValue && cruelMode && madnessValue >= 4) {
-    madnessValue += 1;
+  if (
+    madnessValue &&
+    cruelMode &&
+    madnessValue >= CRUEL_MODE.itemMadness.highMadnessThreshold
+  ) {
+    madnessValue += CRUEL_MODE.itemMadness.highMadnessExtra;
   }
 
   return (
@@ -267,7 +272,7 @@ export function renderItemTooltip(
                 Cave Explore: +
                 {Math.round(
                   (effect.bonuses.generalBonuses.caveExploreMultiplier - 1) *
-                    100,
+                  100,
                 )}
                 % Bonus
               </div>
@@ -275,8 +280,8 @@ export function renderItemTooltip(
           {(effect.bonuses.generalBonuses.MAX_EMBER_BOMBS ||
             effect.bonuses.generalBonuses.MAX_CINDERFLAME_BOMBS ||
             effect.bonuses.generalBonuses.MAX_VOID_BOMBS) && (
-            <div>+1 Capacity for all bombs (combat)</div>
-          )}
+              <div>+1 Capacity for all bombs (combat)</div>
+            )}
           {effect.bonuses.generalBonuses.MAX_BOMB_STORAGE && (
             <div>
               Max {10 + effect.bonuses.generalBonuses.MAX_BOMB_STORAGE} bombs

@@ -7,6 +7,12 @@ import { woodcutterEvents } from "./eventsWoodcutter";
 import { loreEvents } from "./eventsLore";
 import { shopItemEvents } from "./eventsShopItems";
 import { fullGameUnlockEvents } from "./eventsFullGameUnlock";
+import {
+  CRUEL_MODE,
+  curseLikeDurationMs,
+  disgustDurationMs,
+  cruelModeScale,
+} from "../cruelMode";
 
 export const choiceEvents: Record<string, GameEvent> = {
   ...woodcutterEvents,
@@ -67,7 +73,7 @@ export const choiceEvents: Record<string, GameEvent> = {
             deaths =
               2 +
               Math.floor(Math.random() * state.buildings.woodenHut * 0.5) +
-              state.CM * 2;
+              cruelModeScale(state) * CRUEL_MODE.paleFigure.failureDeathScaleWhenCruel;
 
             const deathResult = killVillagers(state, deaths);
             const actualDeaths = deathResult.villagersKilled || 0;
@@ -270,7 +276,11 @@ export const choiceEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "sacrifice",
-        label: (state: GameState) => `Sacrifice ${state.CM ? 8 : 4} villagers`,
+        label: (state: GameState) =>
+          `Sacrifice ${state.cruelMode
+            ? CRUEL_MODE.offerForestGods.sacrificeLabel.cruel
+            : CRUEL_MODE.offerForestGods.sacrificeLabel.normal
+          } villagers`,
         relevant_stats: ["knowledge"],
         success_chance: (state: GameState) => {
           return calculateSuccessChance(state, 0.3, {
@@ -286,7 +296,11 @@ export const choiceEvents: Record<string, GameEvent> = {
           const rand = Math.random();
 
           // Kill 4 villagers first
-          const deathResult = killVillagers(state, 4 + state.CM * 4);
+          const deathResult = killVillagers(
+            state,
+            CRUEL_MODE.offerForestGods.initialKill.base +
+            cruelModeScale(state) * CRUEL_MODE.offerForestGods.initialKill.whenCruel,
+          );
 
           if (rand < successChance) {
             // Success: event resolved, get ebony ring
@@ -302,7 +316,11 @@ export const choiceEvents: Record<string, GameEvent> = {
           } else {
             // Failure: additional suicides
             const additionalDeaths =
-              Math.floor(Math.random() * 5) + 2 + state.CM * 2; // 2-6 additional deaths
+              Math.floor(
+                Math.random() * CRUEL_MODE.offerForestGods.failAdditionalDeaths.randMax,
+              ) +
+              CRUEL_MODE.offerForestGods.failAdditionalDeaths.base +
+              cruelModeScale(state) * CRUEL_MODE.offerForestGods.failAdditionalDeaths.whenCruel;
             const totalDeathResult = killVillagers(
               {
                 ...state,
@@ -334,9 +352,11 @@ export const choiceEvents: Record<string, GameEvent> = {
             0.1,
             { type: "luck", multiplier: 0.01 },
             undefined,
-            -0.025,
+            CRUEL_MODE.successChance.refuseForestGodsCruelMultiplier,
           );
-          const nothingChance = 0.4 - state.CM * 0.05;
+          const nothingChance =
+            CRUEL_MODE.offerForestGods.refuseNothingChance.base -
+            cruelModeScale(state) * CRUEL_MODE.offerForestGods.refuseNothingChance.whenCruel;
           const rand = Math.random();
 
           if (rand < successChance) {
@@ -358,7 +378,12 @@ export const choiceEvents: Record<string, GameEvent> = {
           } else {
             // Villagers disappear
             const disappearances =
-              Math.floor(Math.random() * 3) + 1 + state.CM * 2;
+              Math.floor(
+                Math.random() *
+                CRUEL_MODE.offerForestGods.refuseDisappearances.randMax,
+              ) +
+              CRUEL_MODE.offerForestGods.refuseDisappearances.base +
+              cruelModeScale(state) * CRUEL_MODE.offerForestGods.refuseDisappearances.whenCruel;
             const deathResult = killVillagers(state, disappearances);
             const actualDisappearances = deathResult.villagersKilled || 0;
 
@@ -374,7 +399,12 @@ export const choiceEvents: Record<string, GameEvent> = {
       id: "noDecision",
       label: "No Decision Made",
       effect: (state: GameState) => {
-        const departures = Math.floor(Math.random() * 4) + 2 + state.CM * 2;
+        const departures =
+          Math.floor(
+            Math.random() * CRUEL_MODE.offerForestGods.fallbackDepartures.randMax,
+          ) +
+          CRUEL_MODE.offerForestGods.fallbackDepartures.base +
+          cruelModeScale(state) * CRUEL_MODE.offerForestGods.fallbackDepartures.whenCruel;
         const deathResult = killVillagers(state, departures);
         const actualDepartures = deathResult.villagersKilled || 0;
 
@@ -422,7 +452,7 @@ export const choiceEvents: Record<string, GameEvent> = {
             Math.random() * state.buildings.woodenHut +
             2 -
             traps * 2 +
-            state.CM * 2,
+            cruelModeScale(state) * CRUEL_MODE.madBeduine.turnAwayDeathsExtraWhenCruel,
           );
           const deathResult = killVillagers(state, villagerDeaths);
           const actualDeaths = deathResult.villagersKilled || 0;
@@ -468,7 +498,9 @@ export const choiceEvents: Record<string, GameEvent> = {
             type: "strength",
             multiplier: 0.01,
           });
-          const fleeChance = 0.2 - state.CM * 0.05;
+          const fleeChance =
+            CRUEL_MODE.hiddenLake.fleeChance.base -
+            cruelModeScale(state) * CRUEL_MODE.hiddenLake.fleeChance.whenCruel;
           const rand = Math.random();
 
           if (rand < successChance) {
@@ -492,7 +524,11 @@ export const choiceEvents: Record<string, GameEvent> = {
             };
           } else {
             const drownedCount =
-              Math.floor(Math.random() * 4) + 1 + state.CM * 2;
+              Math.floor(
+                Math.random() * CRUEL_MODE.hiddenLake.drownedCount.randMax,
+              ) +
+              CRUEL_MODE.hiddenLake.drownedCount.base +
+              cruelModeScale(state) * CRUEL_MODE.hiddenLake.drownedCount.whenCruel;
             const deathResult = killVillagers(state, drownedCount);
             const actualDrowned = deathResult.villagersKilled || 0;
 
@@ -743,7 +779,12 @@ export const choiceEvents: Record<string, GameEvent> = {
             };
           } else {
             // Failure: he escapes and villagers are killed
-            const casualties = Math.floor(Math.random() * 5) + 1 + state.CM * 3;
+            const casualties =
+              Math.floor(
+                Math.random() * CRUEL_MODE.vikingBuilder.failureCasualties.randMax,
+              ) +
+              CRUEL_MODE.vikingBuilder.failureCasualties.base +
+              cruelModeScale(state) * CRUEL_MODE.vikingBuilder.failureCasualties.whenCruel;
             const deathResult = killVillagers(state, casualties);
             const actualCasualties = deathResult.villagersKilled || 0;
 
@@ -1261,11 +1302,18 @@ export const choiceEvents: Record<string, GameEvent> = {
         relevant_stats: ["strength"],
         success_chance: (state: GameState) => {
           const strength = getTotalStrength(state);
-          return 0.5 + 0.01 * strength - state.CM * 0.1;
+          return (
+            CRUEL_MODE.slaveTrader.freeSlavesSuccess.base +
+            CRUEL_MODE.slaveTrader.freeSlavesSuccess.perStrength * strength -
+            cruelModeScale(state) * CRUEL_MODE.slaveTrader.freeSlavesSuccess.whenCruel
+          );
         },
         effect: (state: GameState) => {
           const strength = getTotalStrength(state);
-          const successChance = 0.5 + strength * 0.01 - state.CM * 0.1;
+          const successChance =
+            CRUEL_MODE.slaveTrader.freeSlavesSuccess.base +
+            strength * CRUEL_MODE.slaveTrader.freeSlavesSuccess.perStrength -
+            cruelModeScale(state) * CRUEL_MODE.slaveTrader.freeSlavesSuccess.whenCruel;
 
           if (Math.random() < successChance) {
             // Success: free the captives and take the steel
@@ -1304,7 +1352,12 @@ export const choiceEvents: Record<string, GameEvent> = {
             };
           } else {
             // Failure: 1-2 villagers die
-            const deaths = Math.floor(Math.random() * 2) + 1 + state.CM * 1;
+            const deaths =
+              Math.floor(
+                Math.random() * CRUEL_MODE.slaveTrader.failDeaths.randMax,
+              ) +
+              CRUEL_MODE.slaveTrader.failDeaths.base +
+              cruelModeScale(state) * CRUEL_MODE.slaveTrader.failDeaths.whenCruel;
             const deathResult = killVillagers(state, deaths);
             const actualDeaths = deathResult.villagersKilled || 0;
 
@@ -1417,7 +1470,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 "You refuse to pay. The witch spits and curses, but nothing happens. She hobbles away, muttering threats into the wind. It seems you got lucky.",
             };
           } else {
-            const curseDuration = (10 + 5 * state.CM) * 60 * 1000; // 10/15 minutes
+            const curseDuration = curseLikeDurationMs(cruelModeScale(state));
             return {
               curseState: {
                 isActive: true,
@@ -1465,7 +1518,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 "The villagers strike her down before she can finish her curse. Before the witch falls her body dissolves into black smoke, leaving only a foul stench.",
             };
           } else {
-            const curseDuration = (10 + 5 * state.CM) * 60 * 1000; // 10/15 minutes
+            const curseDuration = curseLikeDurationMs(cruelModeScale(state));
             return {
               curseState: {
                 isActive: true,
@@ -1513,7 +1566,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 "You speak ancient words of power, learned from old texts. The witch recoils in fear and flees, her curse broken before it could take hold.",
             };
           } else {
-            const curseDuration = (10 + 5 * state.CM) * 60 * 1000; // 10/15 minutes
+            const curseDuration = curseLikeDurationMs(cruelModeScale(state));
             return {
               curseState: {
                 isActive: true,
@@ -1638,7 +1691,9 @@ export const choiceEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.buildings.stoneHut >= 3 &&
       state.buildings.darkEstate >= 1 &&
-      state.resources.silver >= 200 + state.CM * 100 &&
+      state.resources.silver >=
+      CRUEL_MODE.mysteriousWoman.silverMin.base +
+      cruelModeScale(state) * CRUEL_MODE.mysteriousWoman.silverMin.whenCruel &&
       !state.story.seen.mysteriousWomanEvent,
     timeProbability: 5,
     // Character is opposite of player: female if player is m, male if player is f or fallback
@@ -1656,7 +1711,9 @@ export const choiceEvents: Record<string, GameEvent> = {
         label: (state: GameState) =>
           state.g === "m" ? "Let her stay" : "Let him stay",
         effect: (state: GameState) => {
-          const silverStolen = 200 + state.CM * 100;
+          const silverStolen =
+            CRUEL_MODE.mysteriousWoman.silverMin.base +
+            cruelModeScale(state) * CRUEL_MODE.mysteriousWoman.silverMin.whenCruel;
           const obj = state.g === "m" ? "her" : "him";
           const subj = state.g === "m" ? "she" : "he";
           return {
@@ -2058,7 +2115,11 @@ export const choiceEvents: Record<string, GameEvent> = {
         id: "banishHer",
         label: "Banish her",
         effect: (state: GameState) => {
-          const deathResult = killVillagers(state, 10 + 5 * state.CM);
+          const deathResult = killVillagers(
+            state,
+            CRUEL_MODE.youngWomanProtest.banishLeavers.base +
+            cruelModeScale(state) * CRUEL_MODE.youngWomanProtest.banishLeavers.whenCruel,
+          );
           const actualLeavers = deathResult.villagersKilled || 0;
           return {
             ...deathResult,
@@ -2081,7 +2142,11 @@ export const choiceEvents: Record<string, GameEvent> = {
         id: "sacrificeHer",
         label: "Sacrifice her",
         effect: (state: GameState) => {
-          const deathResult = killVillagers(state, 21 + 10 * state.CM); // 1 for her + 20/30 who leave
+          const deathResult = killVillagers(
+            state,
+            CRUEL_MODE.youngWomanProtest.sacrificeLeavers.base +
+            cruelModeScale(state) * CRUEL_MODE.youngWomanProtest.sacrificeLeavers.whenCruel,
+          );
           const actualLeavers = deathResult.villagersKilled || 0;
           return {
             ...deathResult,
@@ -2153,7 +2218,7 @@ export const choiceEvents: Record<string, GameEvent> = {
       effect: (state: GameState) => {
         const timesOccurred =
           (state.story?.seen?.frostfallCount as number) || 0;
-        const frostfallDuration = (10 + 5 * state.CM) * 60 * 1000; // 10/15 minutes
+        const frostfallDuration = curseLikeDurationMs(cruelModeScale(state));
 
         return {
           frostfallState: {
@@ -2226,7 +2291,7 @@ export const choiceEvents: Record<string, GameEvent> = {
         effect: (state: GameState) => {
           const timesOccurred =
             (state.story?.seen?.frostfallCount as number) || 0;
-          const frostfallDuration = (10 + 5 * state.CM) * 60 * 1000; // 10/15 minutes
+          const frostfallDuration = curseLikeDurationMs(cruelModeScale(state));
 
           return {
             frostfallState: {
@@ -2288,7 +2353,7 @@ export const choiceEvents: Record<string, GameEvent> = {
         id: "sendHimAway",
         label: "Send him away",
         effect: (state: GameState) => {
-          const duration = state.cruelMode ? 20 * 60 * 1000 : 10 * 60 * 1000; // 20 min in cruel mode, 10 min normal
+          const duration = disgustDurationMs(state.cruelMode);
           return {
             stats: {
               ...state.stats,

@@ -2,6 +2,7 @@ import { GameEvent, calculateSuccessChance } from "./events";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
 import { getTotalStrength, getTotalLuck } from "./effectsCalculation";
+import { CRUEL_MODE, cruelModeScale } from "../cruelMode";
 
 export const villageAttackEvents: Record<string, GameEvent> = {
   boneArmyAttack: {
@@ -67,19 +68,21 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           const casualtyChance =
             Math.max(0.25, 0.75 - strength * 0.005) -
             traps * 0.1 +
-            state.CM * 0.05;
+            cruelModeScale(state) * CRUEL_MODE.villageAttacks.boneArmy.defendCasualtyWhenCruel;
 
           let villagerDeaths = 0;
+          const ba = CRUEL_MODE.villageAttacks.boneArmy.defeatSteelLoss;
           let steelLoss = Math.min(
             state.resources.steel,
-            Math.floor(Math.random() * 10) * 25 + 50 + state.CM * 100,
+            Math.floor(Math.random() * ba.randMax) * ba.step + ba.base + cruelModeScale(state) * ba.whenCruel,
           );
           let hutDestroyed = false;
 
           // Determine villager casualties
           // Traps reduce max deaths by 3
+          const mdd = CRUEL_MODE.villageAttacks.boneArmy.maxDeathsDefend;
           const maxPotentialDeaths = Math.min(
-            Math.floor(Math.random() * 20) + 10 + state.CM * 8,
+            Math.floor(Math.random() * mdd.randMax) + mdd.base + cruelModeScale(state) * mdd.whenCruel,
             state.current_population,
           );
           for (let i = 0; i < maxPotentialDeaths; i++) {
@@ -90,7 +93,8 @@ export const villageAttackEvents: Record<string, GameEvent> = {
 
           // If 3+ villagers die and there's a hut
           if (villagerDeaths >= 3 && state.buildings.woodenHut > 0) {
-            if (Math.random() < state.CM * 0.45 - traps * 0.05) {
+            const hdc = CRUEL_MODE.villageAttacks.boneArmy.hutDestroyChance;
+            if (Math.random() < cruelModeScale(state) * hdc.whenCruel - traps * hdc.trapPenalty) {
               hutDestroyed = true;
             }
           }
@@ -171,20 +175,27 @@ export const villageAttackEvents: Record<string, GameEvent> = {
             const casualtyChance =
               Math.max(0.15, 0.4 - luck * 0.02) -
               traps * 0.05 +
-              state.CM * 0.05;
+              cruelModeScale(state) * CRUEL_MODE.villageAttacks.boneArmyHide.casualtyWhenCruel;
 
+            const bh = CRUEL_MODE.villageAttacks.boneArmyHide;
             steelLoss = Math.min(
               state.resources.steel,
-              Math.floor(Math.random() * 20) * 25 + 100 + state.CM * 100,
+              Math.floor(Math.random() * bh.steelLoss.randMax) * bh.steelLoss.step +
+              bh.steelLoss.base +
+              cruelModeScale(state) * bh.steelLoss.whenCruel,
             );
             ironLoss = Math.min(
               state.resources.iron,
-              Math.floor(Math.random() * 20) * 25 + 200 + state.CM * 200,
+              Math.floor(Math.random() * bh.ironLoss.randMax) * bh.ironLoss.step +
+              bh.ironLoss.base +
+              cruelModeScale(state) * bh.ironLoss.whenCruel,
             );
 
             // Determine villager casualties
             const maxPotentialDeaths = Math.min(
-              Math.floor(Math.random() * 15) + 5 + state.CM * 8,
+              Math.floor(Math.random() * bh.maxDeaths.randMax) +
+              bh.maxDeaths.base +
+              cruelModeScale(state) * bh.maxDeaths.whenCruel,
               state.current_population,
             );
             for (let i = 0; i < maxPotentialDeaths; i++) {
@@ -297,21 +308,25 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           const casualtyChance =
             Math.max(0.2, 0.6 - strength * 0.02) -
             traps * 0.1 +
-            state.CM * 0.05;
+            cruelModeScale(state) * CRUEL_MODE.villageAttacks.wolf.defendCasualtyWhenCruel;
 
           let villagerDeaths = 0;
           let foodLoss = Math.min(
             state.resources.food,
             (state.buildings.woodenHut + Math.floor(Math.random() * 8)) * 25 +
             25 +
-            state.CM * 100,
+            cruelModeScale(state) * CRUEL_MODE.villageAttacks.wolf.foodLossTail.whenCruel,
           );
           let hutDestroyed = false;
 
           // Determine villager casualties
           // Traps reduce max deaths by 3
+          const wmd = CRUEL_MODE.villageAttacks.wolf.maxDeathsDefend;
           const maxPotentialDeaths = Math.min(
-            4 + state.buildings.woodenHut + state.CM * 2 - traps * 3,
+            wmd.base +
+            state.buildings.woodenHut * wmd.perHut +
+            cruelModeScale(state) * wmd.whenCruel -
+            traps * wmd.trapMult,
             state.current_population,
           );
           for (let i = 0; i < maxPotentialDeaths; i++) {
@@ -322,7 +337,8 @@ export const villageAttackEvents: Record<string, GameEvent> = {
 
           // If 2+ villagers die and there's a hut, 25% chance to destroy it
           if (villagerDeaths >= 2 && state.buildings.woodenHut > 0) {
-            if (Math.random() < state.CM * 0.25 - traps * 0.05) {
+            const wh = CRUEL_MODE.villageAttacks.wolf.hutDestroyChance;
+            if (Math.random() < cruelModeScale(state) * wh.whenCruel - traps * wh.trapPenalty) {
               hutDestroyed = true;
             }
           }
@@ -419,19 +435,23 @@ export const villageAttackEvents: Record<string, GameEvent> = {
             const casualtyChance =
               Math.max(0.1, 0.35 - luck * 0.02) -
               traps * 0.05 +
-              state.CM * 0.05;
+              cruelModeScale(state) * CRUEL_MODE.villageAttacks.wolfHide.casualtyWhenCruel;
 
             foodLoss = Math.min(
               state.resources.food,
               (state.buildings.woodenHut + Math.floor(Math.random() * 16)) *
               25 +
               25 +
-              state.CM * 2,
+              cruelModeScale(state) * CRUEL_MODE.villageAttacks.wolfHide.foodLossTail.whenCruel,
             );
 
             // Determine villager casualties
+            const whd = CRUEL_MODE.villageAttacks.wolfHide.maxDeaths;
             const maxPotentialDeaths = Math.min(
-              2 + state.buildings.woodenHut / 2 - traps * 1 + state.CM * 2,
+              whd.base +
+              state.buildings.woodenHut * whd.perHutHalf -
+              traps * whd.trapMult +
+              cruelModeScale(state) * whd.whenCruel,
               state.current_population,
             );
             for (let i = 0; i < maxPotentialDeaths; i++) {
@@ -523,8 +543,9 @@ export const villageAttackEvents: Record<string, GameEvent> = {
 
           if (Math.random() < victoryChance) {
             // Victory - minimal losses
+            const vm = CRUEL_MODE.villageAttacks.cannibal.victoryMinimalDeaths;
             const minimalDeaths = Math.min(
-              Math.floor(Math.random() * 2) + state.CM * 1,
+              Math.floor(Math.random() * vm.randMax) + cruelModeScale(state) * vm.whenCruel,
               state.current_population,
             );
             const deathResult = killVillagers(state, minimalDeaths);
@@ -559,13 +580,17 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           const casualtyChance =
             Math.max(0.15, 0.5 - strength * 0.01) -
             traps * 0.1 +
-            state.CM * 0.1;
+            cruelModeScale(state) * CRUEL_MODE.villageAttacks.cannibal.defeatCasualtyWhenCruel;
 
           let totalLost = 0;
 
           // Determine casualties
+          const cmd = CRUEL_MODE.villageAttacks.cannibal.maxCasualtiesDefeat;
           const maxPotentialCasualties = Math.min(
-            4 + state.buildings.woodenHut - traps * 3 + state.CM * 2,
+            cmd.base +
+            state.buildings.woodenHut * cmd.perHut -
+            traps * cmd.trapMult +
+            cruelModeScale(state) * cmd.whenCruel,
             state.current_population,
           );
 
@@ -576,13 +601,18 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           }
 
           // Calculate resource losses
+          const cl = CRUEL_MODE.villageAttacks.cannibal;
           const silverLoss = Math.min(
             state.resources.silver,
-            Math.floor(Math.random() * 4) * 25 + 25 + state.CM * 100,
+            Math.floor(Math.random() * cl.silverLoss.randMax) * cl.silverLoss.step +
+            cl.silverLoss.base +
+            cruelModeScale(state) * cl.silverLoss.whenCruel,
           );
           const foodLoss = Math.min(
             state.resources.food,
-            Math.floor(Math.random() * 6) * 50 + 50 + state.CM * 250,
+            Math.floor(Math.random() * cl.foodLoss.randMax) * cl.foodLoss.step +
+            cl.foodLoss.base +
+            cruelModeScale(state) * cl.foodLoss.whenCruel,
           );
 
           // Apply deaths to villagers
@@ -649,14 +679,17 @@ export const villageAttackEvents: Record<string, GameEvent> = {
             const luck = getTotalLuck(state);
             // Base 30% casualty chance, reduced by 1% per luck point, minimum 10%
             const casualtyChance =
-              Math.max(0.1, 0.3 - luck * 0.01) - traps * 0.05 + state.CM * 0.05;
+              Math.max(0.1, 0.3 - luck * 0.01) -
+              traps * 0.05 +
+              cruelModeScale(state) * CRUEL_MODE.villageAttacks.cannibalHide.casualtyWhenCruel;
 
             // Fewer potential casualties when hiding
+            const ch = CRUEL_MODE.villageAttacks.cannibalHide;
             const maxPotentialCasualties = Math.min(
-              4 +
-              Math.floor(state.buildings.woodenHut / 2) -
-              traps * 2 +
-              state.CM * 2,
+              ch.maxCasualties.base +
+              Math.floor(state.buildings.woodenHut * ch.maxCasualties.perHutHalf) -
+              traps * ch.maxCasualties.trapMult +
+              cruelModeScale(state) * ch.maxCasualties.whenCruel,
               state.current_population,
             );
 
@@ -669,11 +702,15 @@ export const villageAttackEvents: Record<string, GameEvent> = {
             // Higher resource losses when not defending
             silverLoss = Math.min(
               state.resources.silver,
-              Math.floor(Math.random() * 4) * 50 + 50 + state.CM * 200,
+              Math.floor(Math.random() * ch.silverLoss.randMax) * ch.silverLoss.step +
+              ch.silverLoss.base +
+              cruelModeScale(state) * ch.silverLoss.whenCruel,
             );
             foodLoss = Math.min(
               state.resources.food,
-              Math.floor(Math.random() * 6) * 100 + 100 + state.CM * 500,
+              Math.floor(Math.random() * ch.foodLoss.randMax) * ch.foodLoss.step +
+              ch.foodLoss.base +
+              cruelModeScale(state) * ch.foodLoss.whenCruel,
             );
 
             // Apply deaths to villagers

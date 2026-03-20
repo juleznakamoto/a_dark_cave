@@ -123,7 +123,6 @@ const createBaseState = (overrides?: Partial<GameState>): GameState => {
     devMode: false,
     boostMode: false,
     cruelMode: false,
-    CM: 0,
     feastState: { isActive: false, endTime: 0, lastAcceptedLevel: 0 },
     greatFeastState: { isActive: false, endTime: 0 },
     curseState: { isActive: false, endTime: 0 },

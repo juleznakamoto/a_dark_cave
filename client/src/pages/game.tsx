@@ -7,6 +7,7 @@ import { loadGame, saveGame } from "@/game/save"; // Import saveGame
 const EventDialog = lazy(() => import("@/components/game/EventDialog"));
 const CombatDialog = lazy(() => import("@/components/game/CombatDialog"));
 const EmailConfirmedDialog = lazy(() => import("@/components/game/EmailConfirmedDialog"));
+const PlaylightWelcomeDialog = lazy(() => import("@/components/game/PlaylightWelcomeDialog"));
 import { logger } from "@/lib/logger";
 import { getCurrentUser } from "@/game/auth";
 import { initSessionTracker } from "@/lib/sessionTracker";
@@ -337,6 +338,8 @@ export default function Game() {
         isOpen={emailConfirmedDialogOpen}
         onClose={() => setEmailConfirmedDialogOpen(false)}
       />
+
+      <PlaylightWelcomeDialog />
     </div>
   );
 }

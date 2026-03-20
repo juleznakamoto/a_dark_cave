@@ -3,6 +3,7 @@ import { ActionResult } from "@/game/actions";
 import { applyActionEffects } from "./actionEffects";
 import { gameEvents, LogEntry } from "./events";
 import { logger } from "../../lib/logger";
+import { isPlaylightReferralUrl } from "@/lib/playlight";
 
 // Helper function to process triggered events from action effects
 function processTriggeredEvents(
@@ -649,6 +650,7 @@ export function handleLightFire(
     ...state.story,
     seen: {
       ...state.story.seen,
+      ...(result.stateUpdates.story?.seen || {}),
       fireLit: true,
     },
   };
@@ -665,6 +667,41 @@ export function handleLightFire(
       steel: (state.resources.steel || 0) + 500,
       gold: (state.resources.gold || 0) + 10000,
     };
+  }
+
+  const playlightNewMember =
+    isPlaylightReferralUrl() && state.story.seen.playlightMemberGoldGranted !== true;
+
+  if (playlightNewMember) {
+    const mergedRes = result.stateUpdates.resources
+      ? { ...state.resources, ...result.stateUpdates.resources }
+      : { ...state.resources };
+
+    result.stateUpdates.resources = {
+      ...mergedRes,
+      gold: (mergedRes.gold ?? 0) + 100,
+    };
+
+    const seenExtra: Record<string, boolean | number> = {
+      playlightMemberGoldGranted: true,
+    };
+    if (!state.hasMadeNonFreePurchase) {
+      seenExtra.playlightFirstPurchaseDiscountActive = true;
+    }
+
+    result.stateUpdates.story = {
+      ...(result.stateUpdates.story || state.story),
+      seen: {
+        ...(result.stateUpdates.story?.seen || {}),
+        ...seenExtra,
+      },
+    };
+
+    result.delayedEffects!.push(() => {
+      void import("@/game/state").then(({ useGameStore }) => {
+        useGameStore.setState({ playlightWelcomeDialogOpen: true });
+      });
+    });
   }
 
   result.logEntries!.push({

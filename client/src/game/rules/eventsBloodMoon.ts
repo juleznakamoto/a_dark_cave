@@ -1,6 +1,7 @@
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
 import { calculateSuccessChance, GameEvent } from "./events";
+import { bloodMoonSacrificeAmount } from "../cruelMode";
 
 export const bloodMoonEvents: Record<string, GameEvent> = {
   bloodMoonAttack: {
@@ -11,10 +12,9 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
       (state.bloodMoonState?.occurrenceCount ?? 0) === 0 ? 45 : 75,
     title: "Blood Moon",
     message: (state: GameState) => {
-      const sacrificeAmount = Math.min(
-        (state.cruelMode ? 10 : 5) +
-        (state.bloodMoonState?.occurrenceCount ?? 0) * 5,
-        30,
+      const sacrificeAmount = bloodMoonSacrificeAmount(
+        state.cruelMode,
+        state.bloodMoonState?.occurrenceCount ?? 0,
       );
 
       return `The moon at night turned blood red, village elders speak of lycanthropes. Ancient pacts demand a sacrifice of ${sacrificeAmount} villagers to appease the beasts. If you refuse, they will ensure their hunger is satisfied.`;
@@ -28,18 +28,16 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
       {
         id: "sacrificeVillagers",
         label: (state: GameState) => {
-          const sacrificeAmount = Math.min(
-            (state.cruelMode ? 10 : 5) +
-            (state.bloodMoonState?.occurrenceCount ?? 0) * 5,
-            30,
+          const sacrificeAmount = bloodMoonSacrificeAmount(
+            state.cruelMode,
+            state.bloodMoonState?.occurrenceCount ?? 0,
           );
           return `Sacrifice ${sacrificeAmount} villagers`;
         },
         effect: (state: GameState) => {
-          const sacrificeAmount = Math.min(
-            (state.cruelMode ? 10 : 5) +
-            (state.bloodMoonState?.occurrenceCount ?? 0) * 5,
-            30,
+          const sacrificeAmount = bloodMoonSacrificeAmount(
+            state.cruelMode,
+            state.bloodMoonState?.occurrenceCount ?? 0,
           );
 
           const deathResult = killVillagers(state, sacrificeAmount);
@@ -75,10 +73,9 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
         },
         effect: (state: GameState) => {
           const traps = state.buildings.traps;
-          const sacrificeAmount = Math.min(
-            (state.cruelMode ? 10 : 5) +
-            (state.bloodMoonState?.occurrenceCount ?? 0) * 5,
-            30,
+          const sacrificeAmount = bloodMoonSacrificeAmount(
+            state.cruelMode,
+            state.bloodMoonState?.occurrenceCount ?? 0,
           );
 
           // Check for victory using combined strength and knowledge
@@ -148,10 +145,9 @@ export const bloodMoonEvents: Record<string, GameEvent> = {
       effect: (state: GameState) => {
         // Same logic as prepareForAttack choice
         const traps = state.buildings.traps;
-        const sacrificeAmount = Math.min(
-          (state.cruelMode ? 10 : 5) +
-          (state.bloodMoonState?.occurrenceCount ?? 0) * 5,
-          30,
+        const sacrificeAmount = bloodMoonSacrificeAmount(
+          state.cruelMode,
+          state.bloodMoonState?.occurrenceCount ?? 0,
         );
 
         // Check for victory using combined strength and knowledge

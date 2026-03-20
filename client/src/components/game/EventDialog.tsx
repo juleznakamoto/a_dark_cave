@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import CubeDialog from "./CubeDialog";
+import { bloodMoonSacrificeAmount } from "@/game/cruelMode";
 
 interface EventDialogProps {
   isOpen: boolean;
@@ -284,10 +285,9 @@ export default function EventDialog({
 
                 // Check if this is the sacrifice choice in blood moon event
                 if (choice.id === 'sacrificeVillagers' && event.id === 'bloodMoonAttack') {
-                  const sacrificeAmount = Math.min(
-                    (gameState.cruelMode ? 10 : 5) +
-                      (gameState.bloodMoonState?.occurrenceCount ?? 0) * 5,
-                    30,
+                  const sacrificeAmount = bloodMoonSacrificeAmount(
+                    gameState.cruelMode,
+                    gameState.bloodMoonState?.occurrenceCount ?? 0,
                   );
                   const totalVillagers = Object.values(gameState.villagers).reduce((sum, count) => sum + count, 0);
                   if (totalVillagers < sacrificeAmount) {

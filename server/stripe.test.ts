@@ -203,6 +203,64 @@ describe('Stripe Shop Integration', () => {
         );
       });
     });
+
+    describe('Playlight first-purchase discount', () => {
+      it('should apply 10% when playlightFirstPurchaseDiscount is true', async () => {
+        mockPaymentIntents.create.mockResolvedValue({
+          client_secret: 'test_secret',
+        } as any);
+
+        await createPaymentIntent(
+          'gold_250',
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          false,
+          undefined,
+          true,
+        );
+
+        // 99 * 0.9 = 89.1 -> 89
+        expect(mockPaymentIntents.create).toHaveBeenCalledWith(
+          expect.objectContaining({
+            amount: 89,
+            metadata: expect.objectContaining({
+              playlightFirstPurchaseDiscountApplied: 'true',
+            }),
+          }),
+        );
+      });
+
+      it('should apply only Trader discount when both flags are set (no stacking)', async () => {
+        mockPaymentIntents.create.mockResolvedValue({
+          client_secret: 'test_secret',
+        } as any);
+
+        await createPaymentIntent(
+          'gold_250',
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          true,
+          undefined,
+          true,
+        );
+
+        // 25% only — not 10% then 25%
+        expect(mockPaymentIntents.create).toHaveBeenCalledWith(
+          expect.objectContaining({
+            amount: 74,
+            metadata: expect.objectContaining({
+              tradersGratitudeDiscountApplied: 'true',
+            }),
+          }),
+        );
+        const call = mockPaymentIntents.create.mock.calls[0][0];
+        expect(call.metadata.playlightFirstPurchaseDiscountApplied).toBeUndefined();
+      });
+    });
   });
 
   describe('verifyPayment', () => {
@@ -272,6 +330,25 @@ describe('Stripe Shop Integration', () => {
       expect(result.success).toBe(true);
       expect(result.itemId).toBe('gold_250');
       expect(mockSupabase.from).toHaveBeenCalledWith('purchases');
+    });
+
+    it('should accept Playlight-only discounted payment when metadata is set', async () => {
+      const mockIntent: Stripe.PaymentIntent = {
+        id: 'pi_test',
+        amount: 89,
+        status: 'succeeded',
+        metadata: {
+          itemId: 'gold_250',
+          playlightFirstPurchaseDiscountApplied: 'true',
+        },
+      } as Stripe.PaymentIntent;
+
+      mockPaymentIntents.retrieve.mockResolvedValue(mockIntent);
+
+      const result = await verifyPayment('pi_test', 'user123', mockSupabase);
+
+      expect(result.success).toBe(true);
+      expect(result.itemId).toBe('gold_250');
     });
 
     it('should reject discounted amount without tradersGratitudeDiscountApplied metadata', async () => {
@@ -375,7 +452,7 @@ describe('Purchase Restrictions', () => {
     // Try to verify 3 times (as seen in screenshot)
     for (let i = 0; i < 3; i++) {
       const result = await verifyPayment('pi_exploit_058cbb69', '058cbb69-e1d5-473e-b99b-cddd0f2ff43e', mockSupabase);
-      
+
       // Should REJECT every time
       expect(result.success).toBe(false);
       expect(result.error).toBe('Payment amount verification failed');

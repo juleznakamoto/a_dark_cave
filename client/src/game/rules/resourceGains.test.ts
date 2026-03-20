@@ -230,7 +230,6 @@ const createTestState = (overrides?: Partial<GameState>): GameState => {
     devMode: false,
     boostMode: false,
     cruelMode: false,
-    CM: 0,
     feastState: { isActive: false, endTime: 0, lastAcceptedLevel: 0 },
     greatFeastState: { isActive: false, endTime: 0 },
     curseState: { isActive: false, endTime: 0 },
@@ -288,23 +287,23 @@ const parseTooltipGains = (tooltipContent: React.ReactNode): Record<string, { mi
 
 // Helper to run action multiple times and check if actual gains fall within tooltip range
 const testActionGains = (actionId: string, state: GameState, iterations: number = 100) => {
-    const actualGains: Record<string, number[]> = {};
+  const actualGains: Record<string, number[]> = {};
 
-    for (let i = 0; i < iterations; i++) {
-      const result = executeAction(actionId, state);
+  for (let i = 0; i < iterations; i++) {
+    const result = executeAction(actionId, state);
 
-      Object.entries(result.stateUpdates.resources || {}).forEach(([resource, newValue]) => {
-        const oldValue = state.resources[resource as keyof typeof state.resources] || 0;
-        const gain = newValue - oldValue;
+    Object.entries(result.stateUpdates.resources || {}).forEach(([resource, newValue]) => {
+      const oldValue = state.resources[resource as keyof typeof state.resources] || 0;
+      const gain = newValue - oldValue;
 
-        if (gain > 0) {
-          if (!actualGains[resource]) {
-            actualGains[resource] = [];
-          }
-          actualGains[resource].push(gain);
+      if (gain > 0) {
+        if (!actualGains[resource]) {
+          actualGains[resource] = [];
         }
-      });
-    }
+        actualGains[resource].push(gain);
+      }
+    });
+  }
   // Get expected range from calculation
   const { gains } = calculateResourceGains(actionId, state);
 
@@ -318,7 +317,7 @@ const testActionGains = (actionId: string, state: GameState, iterations: number 
 
 
   // Return expected gains and sampled actual gains - extract all resources from gains
-  const expectedGains: Record<string, {min: number, max: number}> = {};
+  const expectedGains: Record<string, { min: number, max: number }> = {};
   gains.forEach(gain => {
     expectedGains[gain.resource] = { min: gain.min, max: gain.max };
   });

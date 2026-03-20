@@ -4,6 +4,7 @@ import { getTotalBuildingCostReduction } from "@/game/rules/effectsCalculation";
 import { Button } from "@/components/ui/button";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import AttackWavesChart from "./AttackWavesChart";
+import { CRUEL_MODE } from "@/game/cruelMode";
 
 // Helper to get building label based on level
 const getBuildingLabel = (
@@ -58,7 +59,7 @@ export default function BastionPanel() {
         const resource = path.split(".")[1];
         // Apply building cost reduction to repair cost
         const reducedCost = Math.floor(
-          cost * (0.25 + state.CM * 0.05) * (1 - buildingCostReduction),
+          cost * CRUEL_MODE.bastion.repairCostFactor * (1 - buildingCostReduction),
         );
         repairCost[resource] = reducedCost;
       }
@@ -179,7 +180,7 @@ export default function BastionPanel() {
         const resource = path.split(".")[1];
         // Apply building cost reduction to highlight cost (as it would be paid)
         const effectiveCost = Math.floor(
-          amount * (0.25 + state.CM * 0.05) * (1 - buildingCostReduction),
+          amount * CRUEL_MODE.bastion.repairCostFactor * (1 - buildingCostReduction),
         );
         if (effectiveCost > 0) {
           resources.push(resource);

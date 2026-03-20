@@ -6,11 +6,11 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { audioManager, SOUND_VOLUME } from "@/lib/audio";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 export default function StartScreen() {
-  const { executeAction, setBoostMode, boostMode, CM } = useGameStore();
+  const { executeAction, setBoostMode, boostMode, cruelMode } = useGameStore();
   const isMobile = useIsMobile();
   const buttonRef = useRef<HTMLButtonElement>(null);
   const executedRef = useRef(false);
-  const isCruelMode = CM || false;
+  const isCruelMode = cruelMode;
   const [showParticles, setShowParticles] = useState(false);
 
   useEffect(() => {

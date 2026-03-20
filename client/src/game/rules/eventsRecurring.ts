@@ -1,13 +1,16 @@
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
+import { CRUEL_MODE } from "../cruelMode";
 
 export const recurringEvents: Record<string, GameEvent> = {
   fireStorm: {
     id: "fireStorm",
     condition: (state: GameState) => {
       const fireStormCount = (state.story.seen.fireStormCount as number) || 0;
-      const maxOccurrences = state.cruelMode ? 3 : 0;
+      const maxOccurrences = state.cruelMode
+        ? CRUEL_MODE.fireStorm.maxOccurrencesCruel
+        : 0;
       return (
         state.buildings.woodenHut >= 4 &&
         state.buildings.stoneHut <= 5 &&

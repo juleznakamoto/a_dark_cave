@@ -43,6 +43,11 @@ import {
 } from "@/components/ui/bubbly-button.particles";
 import { ButtonPriorBadge } from "@/components/game/ButtonPriorBadge";
 import { PRIOR_ELIGIBLE_ACTIONS } from "@/game/buttonUpgrades";
+import {
+  curseLikeDurationMs,
+  disgustDurationMs,
+  cruelModeScale,
+} from "@/game/cruelMode";
 import { isBuildingUpgrade } from "@/game/buildingHierarchy";
 import cn from "clsx";
 
@@ -959,8 +964,9 @@ export default function VillagePanel() {
                                   0,
                                   curseState.endTime - Date.now(),
                                 );
-                                const totalDuration =
-                                  (10 + 5 * state.CM) * 60 * 1000;
+                                const totalDuration = curseLikeDurationMs(
+                                  cruelModeScale(state),
+                                );
                                 const elapsed = totalDuration - timeRemaining;
                                 return Math.min(
                                   100,
@@ -997,9 +1003,9 @@ export default function VillagePanel() {
                                   0,
                                   disgustState.endTime - Date.now(),
                                 );
-                                const totalDuration = state.cruelMode
-                                  ? 20 * 60 * 1000
-                                  : 10 * 60 * 1000;
+                                const totalDuration = disgustDurationMs(
+                                  state.cruelMode,
+                                );
                                 const elapsed = totalDuration - timeRemaining;
                                 return Math.min(
                                   100,
@@ -1096,8 +1102,9 @@ export default function VillagePanel() {
                           <div className="relative inline-flex items-center gap-1 mt-[0px]">
                             <CircularProgress
                               value={(() => {
-                                const frostfallDuration =
-                                  (10 + 5 * state.CM) * 60 * 1000;
+                                const frostfallDuration = curseLikeDurationMs(
+                                  cruelModeScale(state),
+                                );
                                 const timeRemaining = Math.max(
                                   0,
                                   frostfallState.endTime - Date.now(),

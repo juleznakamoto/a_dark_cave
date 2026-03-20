@@ -9,9 +9,9 @@ describe('Ashen Greatshield Event Death Reduction', () => {
 
   beforeEach(() => {
     mockState = {
-      resources: { 
-        wood: 100, 
-        food: 100, 
+      resources: {
+        wood: 100,
+        food: 100,
         stone: 50,
         iron: 0,
         steel: 0,
@@ -24,7 +24,7 @@ describe('Ashen Greatshield Event Death Reduction', () => {
         bone: 0,
         ember: 0,
       },
-      buildings: { 
+      buildings: {
         woodenHut: 3,
         stoneHut: 0,
         cabin: 0,
@@ -53,13 +53,13 @@ describe('Ashen Greatshield Event Death Reduction', () => {
         scriptorium: 0,
         inkwardenAcademy: 0,
       },
-      flags: { 
+      flags: {
         villageUnlocked: true,
         hasHitResourceLimit: false,
       },
-      villagers: { 
-        free: 20, 
-        gatherer: 0, 
+      villagers: {
+        free: 20,
+        gatherer: 0,
         hunter: 0,
         iron_miner: 0,
         steel_forger: 0,
@@ -69,8 +69,8 @@ describe('Ashen Greatshield Event Death Reduction', () => {
       total_population: 20,
       events: {},
       log: [],
-      story: { 
-        seen: {} 
+      story: {
+        seen: {}
       },
       relics: {},
       weapons: {
@@ -107,16 +107,15 @@ describe('Ashen Greatshield Event Death Reduction', () => {
         maxPopulationReached: 20,
         maxMadnessReached: 0,
       },
-      feastState: { 
-        isActive: false, 
-        endTime: 0, 
-        lastAcceptedLevel: 0 
+      feastState: {
+        isActive: false,
+        endTime: 0,
+        lastAcceptedLevel: 0
       },
-      greatFeastState: { 
-        isActive: false, 
-        endTime: 0 
+      greatFeastState: {
+        isActive: false,
+        endTime: 0
       },
-      CM: 0,
       cruelMode: false,
       isPaused: false,
       buttonUpgrades: {},
@@ -144,7 +143,7 @@ describe('Ashen Greatshield Event Death Reduction', () => {
     it('should not reduce deaths when shield is not equipped', () => {
       const deathCount = 10;
       const result = killVillagers(mockState, deathCount);
-      
+
       expect(result.villagersKilled).toBe(10);
     });
 
@@ -152,18 +151,18 @@ describe('Ashen Greatshield Event Death Reduction', () => {
       mockState.weapons.ashen_greatshield = true;
       const deathCount = 10;
       const result = killVillagers(mockState, deathCount);
-      
+
       // 10 * 0.75 = 7.5, ceil(7.5) = 8
       expect(result.villagersKilled).toBe(8);
     });
 
     it('should round up partial deaths after reduction', () => {
       mockState.weapons.ashen_greatshield = true;
-      
+
       // Test with 9 deaths: 9 * 0.75 = 6.75, ceil(6.75) = 7
       let result = killVillagers(mockState, 9);
       expect(result.villagersKilled).toBe(7);
-      
+
       // Test with 7 deaths: 7 * 0.75 = 5.25, ceil(5.25) = 6
       result = killVillagers(mockState, 7);
       expect(result.villagersKilled).toBe(6);
@@ -172,7 +171,7 @@ describe('Ashen Greatshield Event Death Reduction', () => {
     it('should handle edge case of 1 death', () => {
       mockState.weapons.ashen_greatshield = true;
       const result = killVillagers(mockState, 1);
-      
+
       // 1 * 0.75 = 0.75, ceil(0.75) = 1
       expect(result.villagersKilled).toBe(1);
     });
@@ -180,7 +179,7 @@ describe('Ashen Greatshield Event Death Reduction', () => {
     it('should handle edge case of 2 deaths', () => {
       mockState.weapons.ashen_greatshield = true;
       const result = killVillagers(mockState, 2);
-      
+
       // 2 * 0.75 = 1.5, ceil(1.5) = 2
       expect(result.villagersKilled).toBe(2);
     });
@@ -188,7 +187,7 @@ describe('Ashen Greatshield Event Death Reduction', () => {
     it('should handle edge case of 4 deaths', () => {
       mockState.weapons.ashen_greatshield = true;
       const result = killVillagers(mockState, 4);
-      
+
       // 4 * 0.75 = 3, ceil(3) = 3
       expect(result.villagersKilled).toBe(3);
     });
@@ -196,7 +195,7 @@ describe('Ashen Greatshield Event Death Reduction', () => {
     it('should save exactly 2 villagers on 8 deaths', () => {
       mockState.weapons.ashen_greatshield = true;
       const result = killVillagers(mockState, 8);
-      
+
       // 8 * 0.75 = 6, ceil(6) = 6 (saves 2 lives)
       expect(result.villagersKilled).toBe(6);
     });
@@ -204,7 +203,7 @@ describe('Ashen Greatshield Event Death Reduction', () => {
     it('should save exactly 5 villagers on 20 deaths', () => {
       mockState.weapons.ashen_greatshield = true;
       const result = killVillagers(mockState, 20);
-      
+
       // 20 * 0.75 = 15, ceil(15) = 15 (saves 5 lives)
       expect(result.villagersKilled).toBe(15);
     });
@@ -214,12 +213,12 @@ describe('Ashen Greatshield Event Death Reduction', () => {
       mockState.villagers.free = 10;
       mockState.villagers.gatherer = 5;
       mockState.villagers.hunter = 3;
-      
+
       const result = killVillagers(mockState, 10);
-      
+
       // 10 * 0.75 = 7.5, ceil(7.5) = 8 deaths
       expect(result.villagersKilled).toBe(8);
-      
+
       // Should kill all 10 free villagers first, but only need to kill 8 total
       expect(result.villagers?.free).toBe(2);
       expect(result.villagers?.gatherer).toBe(5);
@@ -231,12 +230,12 @@ describe('Ashen Greatshield Event Death Reduction', () => {
       mockState.villagers.free = 5;
       mockState.villagers.gatherer = 10;
       mockState.villagers.hunter = 5;
-      
+
       const result = killVillagers(mockState, 12);
-      
+
       // 12 * 0.75 = 9, ceil(9) = 9 deaths
       expect(result.villagersKilled).toBe(9);
-      
+
       // Should kill all 5 free villagers, then 4 more from gatherer/hunter
       expect(result.villagers?.free).toBe(0);
       const totalRemaining = (result.villagers?.gatherer || 0) + (result.villagers?.hunter || 0);

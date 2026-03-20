@@ -1,5 +1,11 @@
 import { logger } from "@/lib/logger";
 
+/** True when the player landed with the Playlight campaign URL (`?utm_source=playlight`). */
+export function isPlaylightReferralUrl(): boolean {
+  if (typeof window === "undefined") return false;
+  return new URLSearchParams(window.location.search).get("utm_source") === "playlight";
+}
+
 // Track Playlight SDK initialization state to prevent duplicate subscriptions
 let playlightSDKInstance: any = null;
 let gameStoreUnsubscribe: (() => void) | null = null;

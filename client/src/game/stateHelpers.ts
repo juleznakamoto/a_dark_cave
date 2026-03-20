@@ -200,6 +200,7 @@ const UI_ONLY_PROPERTIES = [
   'inactivityDialogOpen',
   'inactivityReason',
   'signUpPromptDialogOpen',
+  'playlightWelcomeDialogOpen',
   'signUpPromptEligibleForGold',
   'current_population',
   'total_population',

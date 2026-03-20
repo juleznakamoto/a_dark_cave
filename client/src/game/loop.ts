@@ -16,6 +16,7 @@ import { gameActions, canExecuteAction, shouldShowAction } from "./rules";
 import { getResourceLimit, isResourceLimited } from "./resourceLimits";
 import { getPriorActionSuccessor } from "./buttonUpgrades";
 import { DISGRACED_PRIOR_UPGRADES } from "./rules/skillUpgrades";
+import { CRUEL_MODE, cruelModeScale } from "./cruelMode";
 
 let gameLoopId: number | null = null;
 let lastFrameTime = 0;
@@ -280,7 +281,8 @@ export function startGameLoop() {
       state.restartGameDialogOpen ||
       state.rewardDialog.isOpen ||
       state.madnessDialog.isOpen ||
-      state.signUpPromptDialogOpen;
+      state.signUpPromptDialogOpen ||
+      state.playlightWelcomeDialogOpen;
 
     const isPaused = state.isPaused || IsDialogOpen || requiresFullGamePurchase || state.idleModeState?.isActive || state.idleModeDialog.isOpen;
 
@@ -948,7 +950,11 @@ function handleStarvationCheck() {
     // 5% chance for each villager to die from starvation
     let starvationDeaths = 0;
     for (let i = 0; i < totalPopulation; i++) {
-      if (Math.random() < 0.05 + state.CM * 0.025) {
+      if (
+        Math.random() <
+        CRUEL_MODE.loop.starvationDeathPerVillager.base +
+        cruelModeScale(state) * CRUEL_MODE.loop.starvationDeathPerVillager.whenCruel
+      ) {
         starvationDeaths++;
       }
     }
@@ -988,7 +994,11 @@ function handleFreezingCheck() {
     // 5% chance for each villager to die from cold
     let freezingDeaths = 0;
     for (let i = 0; i < totalPopulation; i++) {
-      if (Math.random() < 0.05 + state.CM * 0.025) {
+      if (
+        Math.random() <
+        CRUEL_MODE.loop.freezingDeathPerVillager.base +
+        cruelModeScale(state) * CRUEL_MODE.loop.freezingDeathPerVillager.whenCruel
+      ) {
         freezingDeaths++;
       }
     }
@@ -1031,25 +1041,26 @@ function handleMadnessCheck() {
   if (totalMadness <= 0) return;
 
   // Determine probability and possible death counts based on madness level
+  const md = CRUEL_MODE.loop.madnessDeath;
   let probability = 0;
   if (totalMadness <= 5) {
     probability += 0.0;
   } else if (totalMadness <= 10) {
-    probability += 0.0 + state.CM * 0.005;
+    probability += md.tier2.base + cruelModeScale(state) * md.tier2.whenCruel;
   } else if (totalMadness <= 20) {
-    probability += 0.005 + state.CM * 0.01;
+    probability += md.tier3.base + cruelModeScale(state) * md.tier3.whenCruel;
   } else if (totalMadness <= 30) {
-    probability += 0.01 + state.CM * 0.01;
+    probability += md.tier4.base + cruelModeScale(state) * md.tier4.whenCruel;
   } else if (totalMadness <= 40) {
-    probability += 0.015 + state.CM * 0.01;
+    probability += md.tier5.base + cruelModeScale(state) * md.tier5.whenCruel;
   } else {
-    probability += 0.02 + state.CM * 0.01;
+    probability += md.tier6.base + cruelModeScale(state) * md.tier6.whenCruel;
   }
 
   // Check if a madness death event occurs
   if (Math.random() < probability) {
     // Determine number of deaths: 0, 1, 2, or 4 villagers
-    const rand = Math.random() + state.CM * 0.1;
+    const rand = Math.random() + cruelModeScale(state) * md.deathRollBiasWhenCruel;
     let madnessDeaths = 0;
 
     if (rand < 0.6) {
@@ -1162,8 +1173,8 @@ function handleStrangerApproach() {
         multiStrangerMultiplier += 0.1;
       }
 
-      if (state.CM === 1) {
-        multiStrangerMultiplier -= 0.25;
+      if (state.cruelMode) {
+        multiStrangerMultiplier -= CRUEL_MODE.loop.multiStrangerCruelPenalty;
       }
 
       let moreStrangersProbability = Math.random();

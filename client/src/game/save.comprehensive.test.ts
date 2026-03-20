@@ -66,7 +66,6 @@ describe('Save Game System - Comprehensive Tests', () => {
     effects: {},
     bastion_stats: { armor: 0, damage: 0 },
     cruelMode: false,
-    CM: 0,
     activatedPurchases: {},
     feastActivations: {},
     loopProgress: 0,
@@ -150,7 +149,7 @@ describe('Save Game System - Comprehensive Tests', () => {
       getAndResetClickAnalytics: vi.fn().mockReturnValue(null),
       getAndResetResourceAnalytics: vi.fn().mockReturnValue(null),
     } as any);
-    vi.mocked(state.useGameStore.setState).mockImplementation(() => {});
+    vi.mocked(state.useGameStore.setState).mockImplementation(() => { });
   });
 
   describe('1. Cloud Sync Failures', () => {
@@ -223,7 +222,7 @@ describe('Save Game System - Comprehensive Tests', () => {
     // Approach 1: Direct cloud save with explicit local mock
     it('v1: should detect when cloud save is newer than local save - direct cloud priority', async () => {
       const auth = await import('./auth');
-      
+
       const localState = createMockGameState({ playTime: 1000, resources: { wood: 100, stone: 50, gold: 200, food: 75 } });
       const cloudState = createMockGameState({ playTime: 2000, resources: { wood: 200, stone: 50, gold: 200, food: 75 } });
 
@@ -238,7 +237,7 @@ describe('Save Game System - Comprehensive Tests', () => {
       mockGet.mockResolvedValue(null);
 
       const loaded = await loadGame();
-      
+
       expect(loaded).toBeDefined();
       expect(loaded?.playTime).toBe(2000);
       expect(loaded?.resources.wood).toBe(200);
@@ -247,7 +246,7 @@ describe('Save Game System - Comprehensive Tests', () => {
     // Approach 2: Mock both saves, verify cloud wins
     it('v2: should detect when cloud save is newer - both saves present', async () => {
       const auth = await import('./auth');
-      
+
       const localState = createMockGameState({ playTime: 1000 });
       const cloudState = createMockGameState({ playTime: 2000 });
 
@@ -259,7 +258,7 @@ describe('Save Game System - Comprehensive Tests', () => {
       });
 
       const loaded = await loadGame();
-      
+
       expect(loaded).not.toBeNull();
       expect(loaded?.playTime).toBe(2000);
     });
@@ -267,7 +266,7 @@ describe('Save Game System - Comprehensive Tests', () => {
     // Approach 3: Verify cloud state is written to local after load
     it('v3: should detect newer cloud save and sync locally', async () => {
       const auth = await import('./auth');
-      
+
       const cloudState = createMockGameState({ playTime: 2000 });
 
       vi.mocked(auth.getCurrentUser).mockResolvedValue({ id: 'user-1', email: 'test@example.com' });
@@ -278,7 +277,7 @@ describe('Save Game System - Comprehensive Tests', () => {
       });
 
       const loaded = await loadGame();
-      
+
       expect(loaded).toBeDefined();
       expect(loaded?.playTime).toBe(2000);
       // Verify it was saved locally
@@ -292,7 +291,7 @@ describe('Save Game System - Comprehensive Tests', () => {
     // Approach 4: Test with timestamp comparison
     it('v4: should use cloud save when timestamps indicate it is newer', async () => {
       const auth = await import('./auth');
-      
+
       const now = Date.now();
       const cloudState = createMockGameState({ playTime: 2000 });
 
@@ -304,7 +303,7 @@ describe('Save Game System - Comprehensive Tests', () => {
       });
 
       const result = await loadGame();
-      
+
       expect(result).toBeTruthy();
       expect(result?.playTime).toBe(2000);
     });
@@ -312,8 +311,8 @@ describe('Save Game System - Comprehensive Tests', () => {
     // Approach 5: Verify referral processing with cloud state
     it('v5: should detect newer cloud save and process referrals', async () => {
       const auth = await import('./auth');
-      
-      const cloudState = createMockGameState({ 
+
+      const cloudState = createMockGameState({
         playTime: 2000,
         referrals: []
       });
@@ -326,7 +325,7 @@ describe('Save Game System - Comprehensive Tests', () => {
       });
 
       const loaded = await loadGame();
-      
+
       expect(loaded).not.toBeNull();
       expect(loaded?.playTime).toBe(2000);
       expect(loaded?.referrals).toBeDefined();
@@ -381,7 +380,7 @@ describe('Save Game System - Comprehensive Tests', () => {
       vi.mocked(auth.loadGameFromSupabase).mockResolvedValue(null);
 
       const loaded = await loadGame();
-      
+
       expect(loaded).toBeDefined();
       expect(loaded?.playTime).toBe(5000);
     });
@@ -394,7 +393,7 @@ describe('Save Game System - Comprehensive Tests', () => {
       // Start offline
       vi.mocked(auth.getCurrentUser).mockResolvedValue(null);
       vi.mocked(auth.loadGameFromSupabase).mockResolvedValue(null);
-      
+
       await saveGame(offlineState, true);
 
       // Login - no cloud save exists
@@ -402,7 +401,7 @@ describe('Save Game System - Comprehensive Tests', () => {
       vi.mocked(auth.loadGameFromSupabase).mockResolvedValue(null);
 
       const loaded = await loadGame();
-      
+
       expect(loaded).not.toBeNull();
       expect(loaded?.playTime).toBe(5000);
     });
@@ -413,7 +412,7 @@ describe('Save Game System - Comprehensive Tests', () => {
       const offlineState = createMockGameState({ playTime: 5000 });
 
       vi.mocked(auth.getCurrentUser).mockResolvedValue(null);
-      
+
       await saveGame(offlineState, true);
 
       // Verify it's in mock stores
@@ -425,7 +424,7 @@ describe('Save Game System - Comprehensive Tests', () => {
       vi.mocked(auth.loadGameFromSupabase).mockResolvedValue(null);
 
       const loaded = await loadGame();
-      
+
       expect(loaded?.playTime).toBe(5000);
     });
 
@@ -437,7 +436,7 @@ describe('Save Game System - Comprehensive Tests', () => {
       // Offline session
       vi.mocked(auth.getCurrentUser).mockResolvedValue(null);
       vi.mocked(auth.loadGameFromSupabase).mockResolvedValue(null);
-      
+
       await saveGame(offlineState, true);
 
       // User logs in - cloud is empty
@@ -446,7 +445,7 @@ describe('Save Game System - Comprehensive Tests', () => {
       vi.mocked(auth.saveGameToSupabase).mockResolvedValue(undefined);
 
       const loaded = await loadGame();
-      
+
       expect(loaded).toBeTruthy();
       expect(loaded?.playTime).toBe(5000);
     });
@@ -464,7 +463,7 @@ describe('Save Game System - Comprehensive Tests', () => {
       vi.mocked(auth.saveGameToSupabase).mockResolvedValue(undefined);
 
       const loaded = await loadGame();
-      
+
       expect(loaded?.playTime).toBe(5000);
       // Verify upload was attempted (or OCC error is acceptable)
       expect(vi.mocked(auth.saveGameToSupabase).mock.calls.length).toBeGreaterThanOrEqual(0);
@@ -498,7 +497,7 @@ describe('Save Game System - Comprehensive Tests', () => {
       const offlineState = createMockGameState({ playTime: 3000 });
 
       vi.mocked(auth.getCurrentUser).mockResolvedValue(null);
-      
+
       await saveGame(offlineState, true);
 
       // Verify store has the data
@@ -508,7 +507,7 @@ describe('Save Game System - Comprehensive Tests', () => {
       vi.mocked(auth.getCurrentUser).mockResolvedValue(null);
 
       const loaded = await loadGame();
-      
+
       expect(loaded?.playTime).toBe(3000);
     });
 
@@ -519,7 +518,7 @@ describe('Save Game System - Comprehensive Tests', () => {
 
       vi.mocked(auth.getCurrentUser).mockResolvedValue(null);
       vi.mocked(auth.loadGameFromSupabase).mockResolvedValue(null);
-      
+
       await saveGame(offlineState, true);
 
       // Simulate browser session end/start
@@ -527,7 +526,7 @@ describe('Save Game System - Comprehensive Tests', () => {
       vi.mocked(auth.loadGameFromSupabase).mockResolvedValue(null);
 
       const loaded = await loadGame();
-      
+
       expect(loaded).not.toBeNull();
       expect(loaded?.playTime).toBe(3000);
     });
@@ -535,7 +534,7 @@ describe('Save Game System - Comprehensive Tests', () => {
     // Approach 3: Test with cooldowns
     it('v3: should preserve offline data with cooldowns across sessions', async () => {
       const auth = await import('./auth');
-      const offlineState = createMockGameState({ 
+      const offlineState = createMockGameState({
         playTime: 3000,
         cooldownDurations: { gatherWood: 5 }
       });
@@ -546,7 +545,7 @@ describe('Save Game System - Comprehensive Tests', () => {
       vi.mocked(auth.getCurrentUser).mockResolvedValue(null);
 
       const loaded = await loadGame();
-      
+
       expect(loaded?.playTime).toBe(3000);
       expect(loaded?.cooldownDurations).toBeDefined();
     });
@@ -556,7 +555,7 @@ describe('Save Game System - Comprehensive Tests', () => {
       const auth = await import('./auth');
 
       vi.mocked(auth.getCurrentUser).mockResolvedValue(null);
-      
+
       await saveGame(createMockGameState({ playTime: 3000 }), true);
       let loaded = await loadGame();
       expect(loaded?.playTime).toBe(3000);
@@ -573,7 +572,7 @@ describe('Save Game System - Comprehensive Tests', () => {
 
       vi.mocked(auth.getCurrentUser).mockResolvedValue(null);
       vi.mocked(auth.loadGameFromSupabase).mockResolvedValue(null);
-      
+
       await saveGame(offlineState, true);
 
       // Check mock store directly
@@ -607,7 +606,7 @@ describe('Save Game System - Comprehensive Tests', () => {
       vi.mocked(auth.getCurrentUser).mockResolvedValue(null);
 
       const loaded = await loadGame();
-      
+
       expect(loaded).toBeDefined();
       expect(loaded?.cooldownDurations).toBeDefined();
       expect(typeof loaded?.cooldownDurations).toBe('object');
@@ -630,7 +629,7 @@ describe('Save Game System - Comprehensive Tests', () => {
       vi.mocked(auth.getCurrentUser).mockResolvedValue(null);
 
       const loaded = await loadGame();
-      
+
       expect(loaded?.cooldownDurations).toBeDefined();
     });
 
@@ -651,7 +650,7 @@ describe('Save Game System - Comprehensive Tests', () => {
       vi.mocked(auth.getCurrentUser).mockResolvedValue(null);
 
       const loaded = await loadGame();
-      
+
       expect(loaded).not.toBeNull();
       expect(loaded?.cooldownDurations).toBeDefined();
     });
@@ -673,7 +672,7 @@ describe('Save Game System - Comprehensive Tests', () => {
       });
 
       const loaded = await loadGame();
-      
+
       // Should still load even with missing fields
       expect(loaded).not.toBeNull();
       if (loaded) {
@@ -696,7 +695,7 @@ describe('Save Game System - Comprehensive Tests', () => {
       });
 
       const loaded = await loadGame();
-      
+
       expect(loaded).toBeTruthy();
       if (loaded) {
         expect(loaded.cooldownDurations).toBeDefined();
@@ -720,7 +719,7 @@ describe('Save Game System - Comprehensive Tests', () => {
       });
 
       const loaded = await loadGame();
-      
+
       expect(loaded).not.toBeNull();
       // Should have saved to local IndexedDB with defaults applied
       expect(mockPut).toHaveBeenCalled();
@@ -744,7 +743,7 @@ describe('Save Game System - Comprehensive Tests', () => {
       });
 
       const loaded = await loadGame();
-      
+
       // Should handle minimal state gracefully
       expect(loaded).toBeDefined();
       if (loaded) {
@@ -770,7 +769,7 @@ describe('Save Game System - Comprehensive Tests', () => {
       });
 
       const loaded = await loadGame();
-      
+
       expect(loaded).not.toBeNull();
       // Should have fixed the undefined value
       if (loaded) {
@@ -797,7 +796,7 @@ describe('Save Game System - Comprehensive Tests', () => {
       vi.mocked(auth.getCurrentUser).mockResolvedValue(null);
 
       const loaded = await loadGame();
-      
+
       expect(loaded).toBeDefined();
       if (loaded) {
         expect(loaded.cooldownDurations).toBeDefined();
@@ -922,7 +921,7 @@ describe('Save Game System - Comprehensive Tests', () => {
       });
 
       const loaded = await loadGame();
-      
+
       expect(loaded).toBeDefined();
       expect(loaded?.resources.gold).toBe(100);
       expect(loaded?.referrals[0].claimed).toBe(true);
@@ -937,7 +936,7 @@ describe('Save Game System - Comprehensive Tests', () => {
       });
 
       vi.mocked(auth.getCurrentUser).mockResolvedValue(null);
-      
+
       mockGet.mockResolvedValueOnce({
         gameState: stateWithClaimedReferrals,
         timestamp: Date.now(),
@@ -945,7 +944,7 @@ describe('Save Game System - Comprehensive Tests', () => {
       });
 
       const loaded = await loadGame();
-      
+
       expect(loaded?.resources.gold).toBe(100);
     });
 
@@ -965,7 +964,7 @@ describe('Save Game System - Comprehensive Tests', () => {
       });
 
       const loaded = await loadGame();
-      
+
       expect(loaded?.resources.gold).toBe(100);
       // Should not have called saveGameToSupabase for referral processing
       const saveCallsForReferrals = vi.mocked(auth.saveGameToSupabase).mock.calls.filter(
@@ -993,7 +992,7 @@ describe('Save Game System - Comprehensive Tests', () => {
       });
 
       const loaded = await loadGame();
-      
+
       expect(loaded?.resources.gold).toBe(100);
       expect(loaded?.referrals.length).toBe(2);
     });
@@ -1014,7 +1013,7 @@ describe('Save Game System - Comprehensive Tests', () => {
       });
 
       const loaded = await loadGame();
-      
+
       expect(loaded?.resources.gold).toBe(100);
     });
   });
@@ -1030,7 +1029,7 @@ describe('Save Game System - Comprehensive Tests', () => {
       await saveGame(gameState, true);
 
       const loaded = await loadGame();
-      
+
       expect(loaded).toBeDefined();
       expect(loaded?.playTime).toBe(12345);
     });
@@ -1048,7 +1047,7 @@ describe('Save Game System - Comprehensive Tests', () => {
       });
 
       const loaded = await loadGame();
-      
+
       expect(loaded?.playTime).toBe(12345);
     });
 
@@ -1066,7 +1065,7 @@ describe('Save Game System - Comprehensive Tests', () => {
       expect(mockStores.saves.mainSave.playTime).toBe(12345);
 
       const loaded = await loadGame();
-      
+
       expect(loaded?.playTime).toBe(12345);
     });
 
@@ -1099,7 +1098,7 @@ describe('Save Game System - Comprehensive Tests', () => {
       vi.mocked(auth.loadGameFromSupabase).mockResolvedValue(null);
 
       const loaded = await loadGame();
-      
+
       expect(loaded?.playTime).toBe(12345);
     });
 

@@ -11,6 +11,7 @@ import { villageBuildActions } from "./villageBuildActions";
 import { getMaxPopulation } from "../population";
 import { ACTION_TO_UPGRADE_KEY, getUpgradeBonus } from "../buttonUpgrades";
 import { HUNT_BONUSES, DISGRACED_PRIOR_UPGRADES } from "./skillUpgrades";
+import { CRUEL_MODE } from "../cruelMode";
 
 // Craft actions handle their own cost/gain scaling; exclude from generic upgrade multiplier
 const CRAFT_UPGRADE_ACTIONS = ["craftTorches", "craftBoneTotems", "craftLeatherTotems"];
@@ -567,7 +568,7 @@ const STRANGER_APPROACH_BUILDINGS = [
  *   Longhouse +0.5% each (max 5), Fur Tent +0.5% each (max 5).
  *   Max from buildings: 35%.
  * - Blessings: ravens_mark +10%, ravens_mark_enhanced +15%. Both stack: 25%.
- * - Low population (pop ≤ 4): +50% (normal) or +25% (Cruel Mode).
+ * - Low population (pop ≤ 4): see CRUEL_MODE.strangerApproach.lowPopBonusWhenPopLte4.
  * - Events: Solstice active +50%.
  * - Heartfire: Level 1 +1%, 2 +2.5%, 3 +5%, 4 +7.5%, 5 +10%.
  *
@@ -603,9 +604,9 @@ export function getStrangerApproachProbability(state: GameState): {
 
   const lowPopulationBonus =
     currentPopulation <= 4
-      ? state.CM === 1
-        ? 0.25
-        : 0.5
+      ? state.cruelMode
+        ? CRUEL_MODE.strangerApproach.lowPopBonusWhenPopLte4.cruel
+        : CRUEL_MODE.strangerApproach.lowPopBonusWhenPopLte4.normal
       : 0;
 
   let fromBuildings = 0;
@@ -947,9 +948,11 @@ export const calculateTotalEffects = (state: GameState) => {
     // Process madness bonuses from general bonuses (items that ADD madness)
     if (effect.bonuses?.generalBonuses?.madness) {
       let madnessValue = effect.bonuses.generalBonuses.madness;
-      // In cruel mode, items with >=4 madness get +1 additional madness
-      if (state.cruelMode && madnessValue >= 4) {
-        madnessValue += 1;
+      if (
+        state.cruelMode &&
+        madnessValue >= CRUEL_MODE.itemMadness.highMadnessThreshold
+      ) {
+        madnessValue += CRUEL_MODE.itemMadness.highMadnessExtra;
       }
       effects.statBonuses.madness += madnessValue;
     }

@@ -3,6 +3,7 @@
 import { GameEvent, calculateSuccessChance } from "./events";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
+import { cruelModeScale } from "../cruelMode";
 
 export const ringEvents: Record<string, GameEvent> = {
   feedingRing: {
@@ -181,7 +182,7 @@ export const ringEvents: Record<string, GameEvent> = {
                 "The mercenary signals his men to attack. The battle is fierce, but your the villagers prevails. The mercenaries flee into the forest, leaving behind their weapons and wounded.",
             };
           } else {
-            const deaths = 18 + 6 * state.CM;
+            const deaths = 18 + 6 * cruelModeScale(state);
             const deathResult = killVillagers(state, deaths);
             return {
               ...deathResult,
@@ -267,7 +268,7 @@ export const ringEvents: Record<string, GameEvent> = {
                 "You refuse. The mercenaries attack, but this time you're ready. After a brutal fight, they scatter into the wilderness, leaving their dead behind.",
             };
           } else {
-            const deaths = 24 + 6 * state.CM;
+            const deaths = 24 + 6 * cruelModeScale(state);
             const deathResult = killVillagers(state, deaths);
             return {
               ...deathResult,

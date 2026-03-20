@@ -2,6 +2,7 @@ import { Action, GameState } from "@shared/schema";
 import { ActionResult } from '@/game/actions';
 import { applyActionEffects } from "./actionEffects";
 import { killVillagers } from "../stateHelpers";
+import { CRUEL_MODE, cruelModeScale } from "../cruelMode";
 
 // Helper function to get dynamic cost for bone totems
 export function getBoneTotemsCost(state: GameState): number {
@@ -150,8 +151,8 @@ function handleTotemSacrifice(
   const usageCount = Number(state.story?.seen?.[usageCountKey]) || 0;
   const maxCost =
     usageCountKey === "boneTotemsUsageCount" &&
-    ((state.buildings?.paleCross || 0) >= 1 ||
-      (state.buildings?.consecratedPaleCross || 0) >= 1)
+      ((state.buildings?.paleCross || 0) >= 1 ||
+        (state.buildings?.consecratedPaleCross || 0) >= 1)
       ? 50
       : 25;
   const currentCost = Math.min(5 + usageCount, maxCost);
@@ -241,8 +242,12 @@ export function handleBoneTotems(
       itemName: "Ring of Clarity",
       discoveryMessage:
         "Among the sacrifice offerings, you discover a crystal-clear ring.",
-      baseProbability: 0.02 - state.CM * 0.01, // 2%
-      bonusPerUse: 0.01 - state.CM * 0.005, // 1%
+      baseProbability:
+        CRUEL_MODE.forestTotems.discovery.baseProbability -
+        cruelModeScale(state) * CRUEL_MODE.forestTotems.discovery.probabilitySubtractWhenCruel,
+      bonusPerUse:
+        CRUEL_MODE.forestTotems.discovery.bonusPerUse -
+        cruelModeScale(state) * CRUEL_MODE.forestTotems.discovery.bonusPerUseSubtractWhenCruel,
     },
   );
 }
@@ -262,8 +267,12 @@ export function handleLeatherTotems(
       itemName: "Moon Bracelet",
       discoveryMessage:
         "Among the sacrifice offerings, you discover a white stone bracelet.",
-      baseProbability: 0.02 - state.CM * 0.01, // 2%
-      bonusPerUse: 0.01 - state.CM * 0.005, // 1%
+      baseProbability:
+        CRUEL_MODE.forestTotems.discovery.baseProbability -
+        cruelModeScale(state) * CRUEL_MODE.forestTotems.discovery.probabilitySubtractWhenCruel,
+      bonusPerUse:
+        CRUEL_MODE.forestTotems.discovery.bonusPerUse -
+        cruelModeScale(state) * CRUEL_MODE.forestTotems.discovery.bonusPerUseSubtractWhenCruel,
     },
   );
 }

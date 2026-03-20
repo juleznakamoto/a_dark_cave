@@ -16,6 +16,7 @@ import {
 } from "@stripe/react-stripe-js";
 import { getCurrentUser } from "@/game/auth";
 import { SHOP_ITEMS } from "../../../../shared/shopItems";
+import { getDiscountedShopPriceCents } from "../../../../shared/shopCheckoutPrice";
 import { logger } from "@/lib/logger";
 import { useGameStore } from "@/game/state";
 
@@ -80,9 +81,15 @@ interface CheckoutFormProps {
   onSuccess: () => void;
   currency: "EUR" | "USD";
   onCancel: () => void;
+  chargeAmountCents: number;
 }
 
-function CheckoutForm({ onSuccess, currency, onCancel }: CheckoutFormProps) {
+function CheckoutForm({
+  onSuccess,
+  currency,
+  onCancel,
+  chargeAmountCents,
+}: CheckoutFormProps) {
   const stripe = useStripe();
   const elements = useElements();
   const [isProcessing, setIsProcessing] = useState(false);
@@ -132,7 +139,16 @@ function CheckoutForm({ onSuccess, currency, onCancel }: CheckoutFormProps) {
 
         const result = await response.json();
         if (result.success) {
-          useGameStore.setState({ hasMadeNonFreePurchase: true });
+          useGameStore.setState((s) => ({
+            hasMadeNonFreePurchase: true,
+            story: {
+              ...s.story,
+              seen: {
+                ...s.story.seen,
+                playlightFirstPurchaseDiscountActive: false,
+              },
+            },
+          }));
           onSuccess();
         }
         setIsProcessing(false);
@@ -205,7 +221,7 @@ function CheckoutForm({ onSuccess, currency, onCancel }: CheckoutFormProps) {
         >
           {isProcessing
             ? "Processing..."
-            : `Complete Purchase for ${item?.price ? formatPrice(item.price) : ""}`}
+            : `Complete Purchase for ${chargeAmountCents ? formatPrice(chargeAmountCents) : ""}`}
         </Button>
         <Button
           variant="outline"
@@ -247,6 +263,16 @@ export default function FullGamePurchaseDialog({
   const { toast } = useToast();
 
   const item = SHOP_ITEMS.full_game;
+  const playlightFirstPurchaseEligible =
+    gameState.story?.seen?.playlightFirstPurchaseDiscountActive === true &&
+    !gameState.hasMadeNonFreePurchase;
+  const tradersGratitudeActive =
+    gameState.tradersGratitudeState?.accepted === true;
+  const fullGameChargeCents = getDiscountedShopPriceCents(item.price, {
+    playlightFirstPurchase:
+      playlightFirstPurchaseEligible && item.price > 0,
+    tradersGratitude: tradersGratitudeActive && item.price > 0,
+  });
 
   useEffect(() => {
     const initializeDialog = async () => {
@@ -279,6 +305,13 @@ export default function FullGamePurchaseDialog({
 
   const handlePurchaseClick = async () => {
     const user = await getCurrentUser();
+    const state = useGameStore.getState();
+    const playlightDiscount =
+      state.story?.seen?.playlightFirstPurchaseDiscountActive === true &&
+      !state.hasMadeNonFreePurchase;
+    const tradersGratitudeDiscount =
+      state.tradersGratitudeState?.accepted === true;
+
     const response = await fetch("/api/payment/create-intent", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -287,6 +320,9 @@ export default function FullGamePurchaseDialog({
         userEmail: user?.email,
         userId: user?.id,
         currency: currency.toLowerCase(),
+        tradersGratitudeDiscount: tradersGratitudeDiscount || undefined,
+        cruelMode: state.cruelMode ?? false,
+        playlightFirstPurchaseDiscount: playlightDiscount ? true : undefined,
       }),
     });
 
@@ -305,12 +341,32 @@ export default function FullGamePurchaseDialog({
       fullGamePurchaseDialogOpen: stateBefore.fullGamePurchaseDialogOpen,
     });
 
-    useGameStore.setState({
+    const hadTradersGratitude = stateBefore.tradersGratitudeState?.accepted === true;
+
+    useGameStore.setState((s) => ({
       hasMadeNonFreePurchase: true,
       BTP: 0, // Deactivate BTP mode
       isPaused: false, // Explicitly unpause the game
       isPausedPreviously: false, // Clear previous pause state to resume playTime
-    });
+      story: {
+        ...s.story,
+        seen: {
+          ...s.story.seen,
+          playlightFirstPurchaseDiscountActive: false,
+        },
+      },
+      ...(hadTradersGratitude && {
+        tradersGratitudeState: { accepted: false },
+        triggeredEvents: {
+          ...(s.triggeredEvents || {}),
+          traders_gratitude_used: true,
+        },
+      }),
+    }));
+
+    if (hadTradersGratitude) {
+      void useGameStore.getState().setTimedEventTab(false);
+    }
 
     logger.log('[FULL GAME] State updated, BTP=0, isPaused=false');
 
@@ -414,7 +470,12 @@ export default function FullGamePurchaseDialog({
                             {formatPrice(item.originalPrice)}
                           </span>
                         )}
-                        {formatPrice(item.price)}
+                        {fullGameChargeCents < item.price ? (
+                          <span className="line-through text-muted-foreground mr-2 text-lg">
+                            {formatPrice(item.price)}
+                          </span>
+                        ) : null}
+                        {formatPrice(fullGameChargeCents)}
                       </div>
                       <p className="text-xs text-muted-foreground mt-1">
                         One time purchase. No subscriptions. No microtransactions.
@@ -465,6 +526,7 @@ export default function FullGamePurchaseDialog({
                   onSuccess={handlePurchaseSuccess}
                   currency={currency}
                   onCancel={() => setClientSecret(null)}
+                  chargeAmountCents={fullGameChargeCents}
                 />
               </Elements>
             ) : (

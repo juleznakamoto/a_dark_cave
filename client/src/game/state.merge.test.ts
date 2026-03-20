@@ -47,20 +47,20 @@ const mergeStateUpdatesOld = (
     greatFeastActivations: stateUpdates.greatFeastActivations !== undefined ? stateUpdates.greatFeastActivations : prevState.greatFeastActivations,
     buttonUpgrades: stateUpdates.buttonUpgrades
       ? {
-          ...prevState.buttonUpgrades,
-          ...Object.fromEntries(
-            Object.entries(stateUpdates.buttonUpgrades).map(([key, value]) => [
-              key,
-              { ...prevState.buttonUpgrades[key as keyof typeof prevState.buttonUpgrades], ...value }
-            ])
-          )
-        }
+        ...prevState.buttonUpgrades,
+        ...Object.fromEntries(
+          Object.entries(stateUpdates.buttonUpgrades).map(([key, value]) => [
+            key,
+            { ...prevState.buttonUpgrades[key as keyof typeof prevState.buttonUpgrades], ...value }
+          ])
+        )
+      }
       : prevState.buttonUpgrades,
     story: stateUpdates.story
       ? {
-          ...prevState.story,
-          seen: { ...prevState.story.seen, ...stateUpdates.story.seen },
-        }
+        ...prevState.story,
+        seen: { ...prevState.story.seen, ...stateUpdates.story.seen },
+      }
       : prevState.story,
     effects: stateUpdates.effects || prevState.effects,
     loopProgress: stateUpdates.loopProgress !== undefined ? stateUpdates.loopProgress : prevState.loopProgress,
@@ -195,7 +195,6 @@ const createMockGameState = (): GameState => ({
   activatedPurchases: {},
   feastActivations: {},
   cruelMode: false,
-  CM: 0,
   musicMuted: false,
   sfxMuted: false,
   shopNotificationSeen: false,

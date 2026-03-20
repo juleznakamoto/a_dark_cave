@@ -92,6 +92,7 @@ interface GameStore extends GameState {
   inactivityReason: "timeout" | "multitab" | null;
   versionCheckDialogOpen: boolean; // Added for version check dialog
   restartGameDialogOpen: boolean;
+  playlightWelcomeDialogOpen: boolean;
 
   // Notification state for shop
   shopNotificationSeen: boolean;
@@ -801,7 +802,6 @@ export const createInitialState = (): GameState => ({
   activatedPurchases: {},
   feastActivations: {},
   cruelMode: false,
-  CM: 0,
   attackWaveTimers: {},
   loopProgress: 0,
   isGameLoopActive: false,
@@ -964,6 +964,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   inactivityReason: null,
   versionCheckDialogOpen: false, // Initialize version check dialog state
   restartGameDialogOpen: false,
+  playlightWelcomeDialogOpen: false,
   sleepUpgrades: {
     lengthLevel: 0,
     intensityLevel: 0,
@@ -1554,7 +1555,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
       // Cruel mode status
       cruelMode: isCruelModeActive,
-      CM: isCruelModeActive ? 1 : 0,
 
       // Preserve hasWonAnyGame across restarts
       hasWonAnyGame: state.hasWonAnyGame || false,
@@ -1715,9 +1715,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // Get current boost mode before loading
     const currentBoostMode = get().boostMode;
 
-    // Preserve cruel mode status if it exists in savedState
-    const cruelMode = savedState?.CM || 0;
-
     if (savedState) {
       const saved = savedState as typeof savedState & {
         musicMuted?: boolean;
@@ -1747,8 +1744,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
         effects: calculateTotalEffects(savedState),
         bastion_stats: calculateBastionStats(savedState),
         cruelMode:
-          savedState.cruelMode !== undefined ? savedState.cruelMode : false,
-        CM: savedState.CM !== undefined ? savedState.CM : 0,
+          savedState.cruelMode !== undefined
+            ? savedState.cruelMode
+            : Boolean((savedState as { CM?: number }).CM),
         activatedPurchases: savedState.activatedPurchases || {},
         feastActivations: savedState.feastActivations || {},
         // Ensure loop state is loaded correctly
@@ -1872,7 +1870,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
       const initialLogEntry: LogEntry = {
         id: "initial-narrative",
-        message: cruelMode
+        message: get().cruelMode
           ? "A very dark cave. The air is freezing and damp. You barely see anything around you."
           : "A dark cave. The air is cold and damp. You barely see the shapes around you.",
         timestamp: Date.now(),

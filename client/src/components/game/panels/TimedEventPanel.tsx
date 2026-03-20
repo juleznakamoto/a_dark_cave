@@ -11,6 +11,7 @@ import {
   getTotalMerchantDiscount,
   isKnowledgeBonusMaxed,
 } from "@/game/rules/effectsStats";
+import { bloodMoonSacrificeAmount } from "@/game/cruelMode";
 
 // Stat icon mapping
 const statIcons: Record<string, { icon: string; color: string }> = {
@@ -362,10 +363,9 @@ export default function TimedEventPanel() {
               // Check if this is the sacrifice choice in blood moon event
               let villagersCheckPassed = true;
               if (choice.id === 'sacrificeVillagers' && eventId === 'bloodMoonAttack') {
-                const sacrificeAmount = Math.min(
-                  (gameState.cruelMode ? 10 : 5) +
-                    (gameState.bloodMoonState?.occurrenceCount ?? 0) * 5,
-                  30,
+                const sacrificeAmount = bloodMoonSacrificeAmount(
+                  gameState.cruelMode,
+                  gameState.bloodMoonState?.occurrenceCount ?? 0,
                 );
                 const totalVillagers = Object.values(gameState.villagers).reduce((sum, count) => sum + count, 0);
                 if (totalVillagers < sacrificeAmount) {

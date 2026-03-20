@@ -3,9 +3,11 @@ import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
 import { getTotalMadness, getTotalLuck } from "./effectsCalculation";
 import { getMaxPopulation } from "../population";
+import { CRUEL_MODE, cruelModeScale } from "../cruelMode";
 
 const withCruelMadnessBonus = (state: GameState, baseMadnessGain: number): number =>
-  baseMadnessGain + (state.CM ? 1 : 0);
+  baseMadnessGain +
+  (state.cruelMode ? CRUEL_MODE.madnessFromEvents.flatBonusWhenCruel : 0);
 
 export const madnessEvents: Record<string, GameEvent> = {
   whisperingVoices: {
@@ -75,7 +77,11 @@ export const madnessEvents: Record<string, GameEvent> = {
         label: "Confront villager",
         effect: (state: GameState) => {
           const rand = Math.random();
-          if (rand < 0.3 - state.CM * 0.05) {
+          if (
+            rand <
+            CRUEL_MODE.madnessEvents.hollowStaresConfront.baseChance -
+            cruelModeScale(state) * CRUEL_MODE.madnessEvents.hollowStaresConfront.whenCruel
+          ) {
             return {
               events: {
                 ...state.events,
@@ -278,7 +284,12 @@ export const madnessEvents: Record<string, GameEvent> = {
         label: "Try to calm down",
         effect: (state: GameState) => {
           const luck = getTotalLuck(state);
-          const successChance = Math.min(0.9, 0.5 + luck * 0.005 - state.CM * 0.1);
+          const successChance = Math.min(
+            0.9,
+            CRUEL_MODE.madnessEvents.skinCrawlingCalm.luckBase +
+            luck * CRUEL_MODE.madnessEvents.skinCrawlingCalm.luckPer -
+            cruelModeScale(state) * CRUEL_MODE.madnessEvents.skinCrawlingCalm.whenCruel,
+          );
           const rand = Math.random();
           if (rand < successChance) {
             return {
@@ -316,7 +327,11 @@ export const madnessEvents: Record<string, GameEvent> = {
         label: "Keep scratching",
         effect: (state: GameState) => {
           const killedVillagers =
-            Math.floor(Math.random() * 4) + 3 + state.CM * 2; // 3-6 villagers
+            Math.floor(
+              Math.random() * CRUEL_MODE.madnessEvents.skinCrawlingScratchDeaths.randMax,
+            ) +
+            CRUEL_MODE.madnessEvents.skinCrawlingScratchDeaths.base +
+            cruelModeScale(state) * CRUEL_MODE.madnessEvents.skinCrawlingScratchDeaths.whenCruel;
           const deathResult = killVillagers(state, killedVillagers);
           return {
             ...deathResult,
@@ -435,7 +450,12 @@ export const madnessEvents: Record<string, GameEvent> = {
         label: "Cover well with planks",
         effect: (state: GameState) => {
           // Kill 4-8 older villagers from thirst
-          const thirstDeaths = Math.floor(Math.random() * 5) + 6 + state.CM * 2; // 6-10 deaths
+          const thirstDeaths =
+            Math.floor(
+              Math.random() * CRUEL_MODE.madnessEvents.wrongReflectionsThirst.randMax,
+            ) +
+            CRUEL_MODE.madnessEvents.wrongReflectionsThirst.base +
+            cruelModeScale(state) * CRUEL_MODE.madnessEvents.wrongReflectionsThirst.whenCruel;
           const deathResult = killVillagers(state, thirstDeaths);
 
           return {
@@ -473,7 +493,11 @@ export const madnessEvents: Record<string, GameEvent> = {
         label: "Wake them",
         effect: (state: GameState) => {
           const rand = Math.random();
-          if (rand < 0.6 - state.CM * 0.15) {
+          if (
+            rand <
+            CRUEL_MODE.madnessEvents.villagersStareWake.baseChance -
+            cruelModeScale(state) * CRUEL_MODE.madnessEvents.villagersStareWake.whenCruel
+          ) {
             return {
               events: {
                 ...state.events,

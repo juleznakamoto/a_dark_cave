@@ -30,6 +30,7 @@ import {
 import { supabase } from "@/lib/supabase";
 import { getCurrentUser } from "@/game/auth";
 import { SHOP_ITEMS } from "../../../../shared/shopItems";
+import { getDiscountedShopPriceCents } from "../../../../shared/shopCheckoutPrice";
 import { tailwindToHex } from "@/lib/tailwindColors";
 
 const stripePublishableKey = import.meta.env.PROD
@@ -59,6 +60,19 @@ const getSupabaseClient = async () => {
   // you would handle it here to ensure the client is ready before use.
   return supabase;
 };
+
+function completePaidShopPurchaseInStore() {
+  useGameStore.setState((s) => ({
+    hasMadeNonFreePurchase: true,
+    story: {
+      ...s.story,
+      seen: {
+        ...s.story.seen,
+        playlightFirstPurchaseDiscountActive: false,
+      },
+    },
+  }));
+}
 
 /**
  * Extract itemId from purchaseId.
@@ -189,7 +203,7 @@ function CheckoutForm({
 
           // Set hasMadeNonFreePurchase flag if this is a paid item
           if (item.price > 0) {
-            useGameStore.setState({ hasMadeNonFreePurchase: true });
+            completePaidShopPurchaseInStore();
           }
 
           onSuccess();
@@ -566,7 +580,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
 
         // Set hasMadeNonFreePurchase flag if this is a paid item (even if price is 0, we don't set it)
         if (item.price > 0) {
-          useGameStore.setState({ hasMadeNonFreePurchase: true });
+          completePaidShopPurchaseInStore();
         }
 
         // Show success message
@@ -597,6 +611,9 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
     const user = await getCurrentUser();
     const tradersGratitudeDiscount =
       gameState.tradersGratitudeState?.accepted === true;
+    const playlightFirstPurchaseDiscount =
+      gameState.story?.seen?.playlightFirstPurchaseDiscountActive === true &&
+      !gameState.hasMadeNonFreePurchase;
     const response = await fetch("/api/payment/create-intent", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -607,6 +624,9 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
         currency: currency.toLowerCase(),
         tradersGratitudeDiscount: tradersGratitudeDiscount || undefined,
         cruelMode: gameState.cruelMode ?? false,
+        playlightFirstPurchaseDiscount: playlightFirstPurchaseDiscount
+          ? true
+          : undefined,
       }),
     });
 
@@ -639,7 +659,7 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
 
     // Set hasMadeNonFreePurchase flag if this is a paid item
     if (item.price > 0) {
-      useGameStore.setState({ hasMadeNonFreePurchase: true });
+      completePaidShopPurchaseInStore();
     }
 
     // NOTE: Bundle purchases are already created by the server in the payment verification
@@ -1401,9 +1421,22 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                         const item = SHOP_ITEMS[selectedItem];
                         const tradersGratitudeActive =
                           gameState.tradersGratitudeState?.accepted === true;
-                        return item && item.price > 0 && tradersGratitudeActive
-                          ? Math.floor(item.price * 0.75)
-                          : item?.price ?? 0;
+                        const playlightActive =
+                          gameState.story?.seen
+                            ?.playlightFirstPurchaseDiscountActive === true &&
+                          !gameState.hasMadeNonFreePurchase;
+                        return getDiscountedShopPriceCents(item?.price ?? 0, {
+                          playlightFirstPurchase: !!(
+                            item &&
+                            item.price > 0 &&
+                            playlightActive
+                          ),
+                          tradersGratitude: !!(
+                            item &&
+                            item.price > 0 &&
+                            tradersGratitudeActive
+                          ),
+                        });
                       })()
                     }
                   />

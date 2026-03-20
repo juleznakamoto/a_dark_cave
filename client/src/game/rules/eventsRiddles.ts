@@ -1,9 +1,9 @@
 
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
+import { riddleFogDurationMs, cruelModeScale } from "../cruelMode";
 
 const RIDDLE_REWARD = 150;
-const FOG_DURATION_MS = 10 * 60 * 1000; // Base 10 min, cruel mode 20 min
 
 // Questions
 const START_MESSAGES = {
@@ -184,7 +184,7 @@ function applyPenalty(
   baseEventId: string,
   oppositeEventId: string,
 ): Partial<GameState> & { _logMessage?: string } {
-  const fogDuration = FOG_DURATION_MS + FOG_DURATION_MS * state.CM;
+  const fogDuration = riddleFogDurationMs(cruelModeScale(state));
   return {
     events: {
       ...state.events,

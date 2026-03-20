@@ -67,7 +67,6 @@ describe('Logout/Login Save Behavior Tests', () => {
     effects: {},
     bastion_stats: { armor: 0, damage: 0 },
     cruelMode: false,
-    CM: 0,
     activatedPurchases: {},
     feastActivations: {},
     loopProgress: 0,
@@ -143,7 +142,7 @@ describe('Logout/Login Save Behavior Tests', () => {
       getAndResetClickAnalytics: vi.fn().mockReturnValue(null),
       getAndResetResourceAnalytics: vi.fn().mockReturnValue(null),
     } as any);
-    vi.mocked(state.useGameStore.setState).mockImplementation(() => {});
+    vi.mocked(state.useGameStore.setState).mockImplementation(() => { });
   });
 
   describe('User Reported Bug: Logout -> Offline Play -> Login', () => {
@@ -162,7 +161,7 @@ describe('Logout/Login Save Behavior Tests', () => {
 
       // Step 2: User gets logged out (session expires, or they logout)
       vi.mocked(auth.getCurrentUser).mockResolvedValue(null);
-      
+
       // Clear lastCloudState (simulating logout behavior)
       await mockDB.delete('lastCloudState', 'lastCloudState');
 
@@ -180,7 +179,7 @@ describe('Logout/Login Save Behavior Tests', () => {
 
       // Step 4: User logs back in
       vi.mocked(auth.getCurrentUser).mockResolvedValue({ id: 'user-1', email: 'test@example.com' });
-      
+
       // Cloud still has old state from before logout
       vi.mocked(auth.loadGameFromSupabase).mockResolvedValue({
         gameState: initialState,
@@ -282,7 +281,7 @@ describe('Logout/Login Save Behavior Tests', () => {
       vi.mocked(auth.getCurrentUser).mockResolvedValue({ id: 'user-1', email: 'test@example.com' });
       const state1 = createMockGameState({ playTime: 2000 });
       await saveGame(state1, false);
-      
+
       vi.mocked(auth.getCurrentUser).mockResolvedValue(null);
       await mockDB.delete('lastCloudState', 'lastCloudState');
 
@@ -309,12 +308,12 @@ describe('Logout/Login Save Behavior Tests', () => {
       const auth = await import('./auth');
 
       vi.mocked(auth.getCurrentUser).mockResolvedValue({ id: 'user-1', email: 'test@example.com' });
-      
+
       // Set corrupted lastCloudState
       mockStores.lastCloudState.lastCloudState = { corrupted: 'data' };
 
       const state = createMockGameState({ playTime: 5000 });
-      
+
       // Should not throw
       await expect(saveGame(state, false)).resolves.not.toThrow();
     });
@@ -358,7 +357,7 @@ describe('Logout/Login Save Behavior Tests', () => {
       const state = await import('./state');
 
       vi.mocked(auth.getCurrentUser).mockResolvedValue({ id: 'user-1', email: 'test@example.com' });
-      
+
       const gameState = createMockGameState({ playTime: 5000 });
       vi.mocked(state.useGameStore.getState).mockReturnValue({
         ...gameState,

@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Z_INDEX } from "@/lib/z-index";
+import { CRUEL_MODE } from "@/game/cruelMode";
 import type { ButtonProps } from "@/components/ui/button";
 
 interface ParticleButtonProps extends ButtonProps {
@@ -110,7 +111,11 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(
         const maxGlowIntensityRef = useRef(1.0);
         const hasBeenClickedRef = useRef(false);
         const idRef = useRef(0);
-        const spawnCountRef = useRef(cruelMode ? 20 : 2);
+        const spawnCountRef = useRef(
+            cruelMode
+                ? CRUEL_MODE.particles.initialSpawn.cruel
+                : CRUEL_MODE.particles.initialSpawn.normal,
+        );
         const rampStartRef = useRef<number | null>(null);
 
         const colors = ["#ffb347", "#ff9234", "#ffcd94", "#ff6f3c", "#ff4500"]; // ember-like
@@ -192,7 +197,9 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(
             delayTimeoutRef.current = setTimeout(() => {
                 setIsGlowing(true);
                 setGlowIntensity(0.1); // start with very small glow
-                spawnCountRef.current = cruelMode ? 10 : 2;
+                spawnCountRef.current = cruelMode
+                    ? CRUEL_MODE.particles.hoverSpawn.cruel
+                    : CRUEL_MODE.particles.hoverSpawn.normal;
                 rampStartRef.current = Date.now();
 
                 spawnSparks(); // spawn immediately
@@ -203,18 +210,32 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(
                     () => {
                         if (rampStartRef.current) {
                             const elapsed = Date.now() - rampStartRef.current;
-                            const maxParticles = cruelMode ? 100 : 10;
+                            const maxParticles = cruelMode
+                                ? CRUEL_MODE.particles.rampMax.cruel
+                                : CRUEL_MODE.particles.rampMax.normal;
                             if (elapsed < 10000) {
                                 spawnCountRef.current =
-                                    (cruelMode ? 10 : 1) +
+                                    (cruelMode
+                                        ? CRUEL_MODE.particles.rampFloor.cruel
+                                        : CRUEL_MODE.particles.rampFloor.normal) +
                                     Math.floor(
                                         (elapsed / 10000) * maxParticles,
                                     );
                             } else {
                                 spawnCountRef.current =
                                     Math.floor(
-                                        Math.random() * (cruelMode ? 70 : 7),
-                                    ) + (cruelMode ? 60 : 6);
+                                        Math.random() *
+                                        (cruelMode
+                                            ? CRUEL_MODE.particles
+                                                .rampRandomRange.cruel
+                                            : CRUEL_MODE.particles
+                                                .rampRandomRange.normal),
+                                    ) +
+                                    (cruelMode
+                                        ? CRUEL_MODE.particles.rampPostPlateau
+                                            .cruel
+                                        : CRUEL_MODE.particles.rampPostPlateau
+                                            .normal);
                                 if (rampUpRef.current) {
                                     clearInterval(rampUpRef.current);
                                     rampUpRef.current = null;
@@ -278,7 +299,9 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(
             if (onClick) onClick(e);
 
             // Emit a burst of particles on click
-            spawnCountRef.current = cruelMode ? 200 : 100;
+            spawnCountRef.current = cruelMode
+                ? CRUEL_MODE.particles.clickBurst.cruel
+                : CRUEL_MODE.particles.clickBurst.normal;
             spawnSparks();
 
             // Start increasing max glow intensity after click

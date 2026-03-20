@@ -38,7 +38,7 @@ describe("getStrangerApproachProbability", () => {
     const state = createMockState({
       buildings: { ...createInitialState().buildings, woodenHut: 5 },
       villagers: { ...createInitialState().villagers, free: 2 },
-      CM: 1,
+      cruelMode: true,
     });
     const result = getStrangerApproachProbability(state);
     expect(result.lowPopulationBonus).toBe(0.25);

@@ -2,26 +2,27 @@ import type { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
 import { useGameStore } from "@/game/state";
+import { CRUEL_MODE, cruelModeScale } from "../cruelMode";
 
 // Helper function to calculate enemy stats
 function calculateEnemyStats(
   params: {
     attack: {
-      cmBonus: number;
+      cruelBonus: number;
       options: number[];
     };
-    health: { base: number; cmBonus: number };
+    health: { base: number; cruelBonus: number };
   },
   state: GameState,
 ) {
-  const health = params.health.base + state.CM * params.health.cmBonus;
+  const health = params.health.base + cruelModeScale(state) * params.health.cruelBonus;
 
   // Use options array to select attack value
   const attack =
     params.attack.options[
     Math.floor(Math.random() * params.attack.options.length)
     ] +
-    state.CM * params.attack.cmBonus;
+    cruelModeScale(state) * params.attack.cruelBonus;
 
   return {
     attack,
@@ -33,8 +34,8 @@ function calculateEnemyStats(
 // Attack Wave Parameters
 const WAVE_PARAMS = {
   firstWave: {
-    attack: { options: [25, 30, 35], cmBonus: 5 },
-    health: { base: 300, cmBonus: 50 },
+    attack: { options: [25, 30, 35], cruelBonus: 5 },
+    health: { base: 300, cruelBonus: 50 },
     silverReward: 250,
     initialDuration: 10 * 60 * 1000, // 10 minutes
     defeatDuration: 20 * 60 * 1000, // 20 minutes
@@ -43,8 +44,8 @@ const WAVE_PARAMS = {
     fellowshipWoundedMultiplier: 0.1,
   },
   secondWave: {
-    attack: { options: [35, 40, 45], cmBonus: 5 },
-    health: { base: 400, cmBonus: 50 },
+    attack: { options: [35, 40, 45], cruelBonus: 5 },
+    health: { base: 400, cruelBonus: 50 },
     silverReward: 500,
     initialDuration: 10 * 60 * 1000,
     defeatDuration: 20 * 60 * 1000,
@@ -53,8 +54,8 @@ const WAVE_PARAMS = {
     fellowshipWoundedMultiplier: 0.15,
   },
   thirdWave: {
-    attack: { options: [45, 50, 55], cmBonus: 10 },
-    health: { base: 500, cmBonus: 100 },
+    attack: { options: [45, 50, 55], cruelBonus: 10 },
+    health: { base: 500, cruelBonus: 100 },
     silverReward: 750,
     initialDuration: 10 * 60 * 1000,
     defeatDuration: 20 * 60 * 1000,
@@ -63,8 +64,8 @@ const WAVE_PARAMS = {
     fellowshipWoundedMultiplier: 0.2,
   },
   fourthWave: {
-    attack: { options: [55, 60, 65], cmBonus: 15 },
-    health: { base: 600, cmBonus: 150 },
+    attack: { options: [55, 60, 65], cruelBonus: 15 },
+    health: { base: 600, cruelBonus: 150 },
     silverReward: 1000,
     initialDuration: 10 * 60 * 1000,
     defeatDuration: 20 * 60 * 1000,
@@ -73,8 +74,8 @@ const WAVE_PARAMS = {
     fellowshipWoundedMultiplier: 0.25,
   },
   fifthWave: {
-    attack: { options: [70, 75, 80, 85], cmBonus: 20 },
-    health: { base: 700, cmBonus: 200 },
+    attack: { options: [70, 75, 80, 85], cruelBonus: 20 },
+    health: { base: 700, cruelBonus: 200 },
     silverReward: 1500,
     initialDuration: 10 * 60 * 1000,
     defeatDuration: 20 * 60 * 1000,
@@ -83,8 +84,8 @@ const WAVE_PARAMS = {
     fellowshipWoundedMultiplier: 0.3,
   },
   sixthWave: {
-    attack: { options: [85, 90, 95, 100], cmBonus: 25 },
-    health: { base: 800, cmBonus: 250 },
+    attack: { options: [85, 90, 95, 100], cruelBonus: 25 },
+    health: { base: 800, cruelBonus: 250 },
     silverReward: 2000,
     initialDuration: 10 * 60 * 1000,
     defeatDuration: 20 * 60 * 1000,
@@ -211,7 +212,9 @@ function handleDefeat(
     0,
   );
   const minCasualities = Math.ceil(
-    Math.random() * 0.8 * maxCasualties + 0.2 * maxCasualties + state.CM * 5,
+    Math.random() * 0.8 * maxCasualties +
+    0.2 * maxCasualties +
+    cruelModeScale(state) * CRUEL_MODE.attackWaveDefeat.extraCasualtiesWhenCruel,
   );
   const casualties = Math.min(minCasualities, currentPopulation);
   const deathResult = killVillagers(state, casualties);
@@ -222,7 +225,8 @@ function handleDefeat(
 
   // Probability increases with multiplier (from 10% to 90%)
   const baseChance = Math.min(
-    DamageBuildingMultiplier * 0.1 + state.CM * 0.1,
+    DamageBuildingMultiplier * 0.1 +
+    cruelModeScale(state) * CRUEL_MODE.attackWaveDefeat.buildingDamageChanceCruelAdd,
     0.9,
   );
 
@@ -233,7 +237,8 @@ function handleDefeat(
   let fellowshipWounded = {};
   const woundedFellows: string[] = [];
   const fellowshipChance = Math.min(
-    fellowshipWoundedMultiplier + state.CM * 0.1,
+    fellowshipWoundedMultiplier +
+    cruelModeScale(state) * CRUEL_MODE.attackWaveDefeat.fellowshipWoundChanceCruelAdd,
     0.9,
   );
 
