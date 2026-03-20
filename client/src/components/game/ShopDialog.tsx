@@ -1125,20 +1125,35 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                 {(() => {
                                   const tradersGratitudeActive =
                                     gameState.tradersGratitudeState?.accepted === true;
+                                  const playlightFirstPurchaseActive =
+                                    gameState.story?.seen
+                                      ?.playlightFirstPurchaseDiscountActive === true &&
+                                    !gameState.hasMadeNonFreePurchase;
                                   const displayPrice =
-                                    item.price > 0 && tradersGratitudeActive
-                                      ? Math.floor(item.price * 0.75)
+                                    item.price > 0
+                                      ? getDiscountedShopPriceCents(item.price, {
+                                        playlightFirstPurchase:
+                                          playlightFirstPurchaseActive,
+                                        tradersGratitude: tradersGratitudeActive,
+                                      })
                                       : item.price;
-                                  const priceClassName =
-                                    item.price > 0 && tradersGratitudeActive
-                                      ? "!font-semibold text-green-500"
-                                      : "";
+                                  const discounted =
+                                    item.price > 0 && displayPrice < item.price;
+                                  const priceClassName = discounted
+                                    ? "!font-semibold text-green-500"
+                                    : "";
+                                  const showTradersGratitudeInfo =
+                                    item.price > 0 &&
+                                    tradersGratitudeActive &&
+                                    !playlightFirstPurchaseActive;
+                                  const showPlaylightInfo =
+                                    item.price > 0 && playlightFirstPurchaseActive;
                                   return (
                                     <>
                                       <span className={priceClassName}>
                                         {formatPrice(displayPrice)}
                                       </span>
-                                      {item.price > 0 && tradersGratitudeActive && (
+                                      {showTradersGratitudeInfo && (
                                         <TooltipWrapper
                                           tooltip={
                                             <div className="text-xs">
@@ -1147,6 +1162,23 @@ export function ShopDialog({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                             </div>
                                           }
                                           tooltipId={`traders-gratitude-${item.id}`}
+                                          disabled
+                                          tooltipContentClassName="max-w-xs border border-amber-600"
+                                          className="pl-1 inline-flex items-center justify-center w-4 h-4 rounded-full text-muted-foreground text-sm font-bold hover:text-foreground cursor-pointer"
+                                        >
+                                          <span>ⓘ</span>
+                                        </TooltipWrapper>
+                                      )}
+                                      {showPlaylightInfo && (
+                                        <TooltipWrapper
+                                          tooltip={
+                                            <div className="text-xs">
+                                              35% off: Beta discount (25%) plus an extra
+                                              10% for your first real-money purchase as a
+                                              Playlight player.
+                                            </div>
+                                          }
+                                          tooltipId={`playlight-discount-${item.id}`}
                                           disabled
                                           tooltipContentClassName="max-w-xs border border-amber-600"
                                           className="pl-1 inline-flex items-center justify-center w-4 h-4 rounded-full text-muted-foreground text-sm font-bold hover:text-foreground cursor-pointer"

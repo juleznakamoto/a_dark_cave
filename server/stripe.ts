@@ -50,9 +50,8 @@ export async function createPaymentIntent(
     playlightFirstPurchase: playlightRequested,
     tradersGratitude: tradersRequested,
   });
-  // Gratitude is exclusive with Playlight: only one metadata flag reflects the applied discount
   const tradersApplied = tradersRequested;
-  const playlightApplied = playlightRequested && !tradersRequested;
+  const playlightApplied = playlightRequested;
 
   // Optional: Log if client sent a different price (potential attack attempt)
   if (clientPrice !== undefined && clientPrice !== item.price) {

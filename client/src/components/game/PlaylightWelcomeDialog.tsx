@@ -30,19 +30,19 @@ export default function PlaylightWelcomeDialog() {
           <DialogDescription asChild>
             <div className="py-2 space-y-3 text-sm text-muted-foreground">
               <p>
-                Thanks for coming from Playlight.{" "}
+                Thanks for using Playlight.{" "}
                 <span className="text-foreground font-medium">
                   100 Gold
                 </span>{" "}
-                has been added to your cave as a welcome gift.
+                has been added to your inventory as a welcome gift.
               </p>
               {discountLine ? (
                 <p>
                   You also get{" "}
                   <span className="text-foreground font-medium">
-                    10% off your first real-money purchase
+                    10% off your first purchase
                   </span>{" "}
-                  in the shop—it applies automatically at checkout.
+                  in the shop. It applies automatically at checkout.
                 </p>
               ) : null}
             </div>

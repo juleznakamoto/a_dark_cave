@@ -205,7 +205,7 @@ describe('Stripe Shop Integration', () => {
     });
 
     describe('Playlight first-purchase discount', () => {
-      it('should apply 10% when playlightFirstPurchaseDiscount is true', async () => {
+      it('should apply Beta + Playlight (35% off) when playlightFirstPurchaseDiscount is true', async () => {
         mockPaymentIntents.create.mockResolvedValue({
           client_secret: 'test_secret',
         } as any);
@@ -221,10 +221,10 @@ describe('Stripe Shop Integration', () => {
           true,
         );
 
-        // 99 * 0.9 = 89.1 -> 89
+        // 99 * (1 - 0.25 - 0.1) = 64.35 -> 64
         expect(mockPaymentIntents.create).toHaveBeenCalledWith(
           expect.objectContaining({
-            amount: 89,
+            amount: 64,
             metadata: expect.objectContaining({
               playlightFirstPurchaseDiscountApplied: 'true',
             }),
@@ -232,7 +232,7 @@ describe('Stripe Shop Integration', () => {
         );
       });
 
-      it('should apply only Trader discount when both flags are set (no stacking)', async () => {
+      it('should use Playlight price when both Trader and Playlight flags are set', async () => {
         mockPaymentIntents.create.mockResolvedValue({
           client_secret: 'test_secret',
         } as any);
@@ -248,17 +248,16 @@ describe('Stripe Shop Integration', () => {
           true,
         );
 
-        // 25% only — not 10% then 25%
+        // Playlight path (35% off) beats Trader-only (25% off)
         expect(mockPaymentIntents.create).toHaveBeenCalledWith(
           expect.objectContaining({
-            amount: 74,
+            amount: 64,
             metadata: expect.objectContaining({
               tradersGratitudeDiscountApplied: 'true',
+              playlightFirstPurchaseDiscountApplied: 'true',
             }),
           }),
         );
-        const call = mockPaymentIntents.create.mock.calls[0][0];
-        expect(call.metadata.playlightFirstPurchaseDiscountApplied).toBeUndefined();
       });
     });
   });
@@ -335,7 +334,7 @@ describe('Stripe Shop Integration', () => {
     it('should accept Playlight-only discounted payment when metadata is set', async () => {
       const mockIntent: Stripe.PaymentIntent = {
         id: 'pi_test',
-        amount: 89,
+        amount: 64,
         status: 'succeeded',
         metadata: {
           itemId: 'gold_250',
