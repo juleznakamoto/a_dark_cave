@@ -8,7 +8,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { audioManager } from "@/lib/audio";
+import { audioManager, SOUND_VOLUME } from "@/lib/audio";
 import { useGameStore } from "@/game/state"; // Import useGameStore
 import { logger } from "@/lib/logger";
 
@@ -37,7 +37,7 @@ export default function CubeDialog({
 
     if (isOpen) {
       timeoutId = setTimeout(() => {
-        audioManager.playLoopingSound('whisperingCube', 0.5);
+        audioManager.playLoopingSound('whisperingCube', SOUND_VOLUME.whisperingCube);
       }, 500);
     } else {
       audioManager.stopLoopingSound('whisperingCube');

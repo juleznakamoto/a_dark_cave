@@ -35,7 +35,7 @@ import {
 } from "@/game/rules/effectsCalculation";
 import { calculateBastionStats } from "@/game/bastionStats";
 import { getMaxPopulation } from "@/game/population";
-import { audioManager } from "@/lib/audio";
+import { audioManager, SOUND_VOLUME } from "@/lib/audio";
 import { GAME_CONSTANTS } from "@/game/constants";
 import {
   ACTION_TO_UPGRADE_KEY,
@@ -1280,35 +1280,35 @@ export const useGameStore = create<GameStore>((set, get) => ({
     if (actionId.startsWith("build") && result.stateUpdates.buildings) {
       // Import audioManager here to avoid circular dependency
       import("@/lib/audio").then(({ audioManager }) => {
-        audioManager.playSound("buildingComplete");
+        audioManager.playSound("buildingComplete", SOUND_VOLUME.buildingComplete);
       });
     }
 
     // Play craft sound for successful crafting actions
     if (actionId.startsWith("craft")) {
       import("@/lib/audio").then(({ audioManager }) => {
-        audioManager.playSound("craft", 0.05);
+        audioManager.playSound("craft", SOUND_VOLUME.craft);
       });
     }
 
     // Play mining sound for successful mine actions
     if (actionId.startsWith("mine")) {
       import("@/lib/audio").then(({ audioManager }) => {
-        audioManager.playSound("mining", 0.6);
+        audioManager.playSound("mining", SOUND_VOLUME.mining);
       });
     }
 
     // Play chop wood sound for Chop Wood button (Forest panel), not for Gather Wood (Cave panel)
     if (actionId === "chopWood" && get().flags?.forestUnlocked) {
       import("@/lib/audio").then(({ audioManager }) => {
-        audioManager.playSound("chopWood");
+        audioManager.playSound("chopWood", SOUND_VOLUME.chopWood);
       });
     }
 
     // Play hunt sound for hunt action
     if (actionId === "hunt") {
       import("@/lib/audio").then(({ audioManager }) => {
-        audioManager.playSound("hunt");
+        audioManager.playSound("hunt", SOUND_VOLUME.hunt);
       });
     }
 
@@ -1886,7 +1886,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   addLogEntry: (entry: LogEntry) => {
     if (entry.type === "event") {
-      audioManager.playSound("event", 0.1);
+      audioManager.playSound("event", SOUND_VOLUME.eventUi);
     }
 
     set((state) => ({
@@ -1920,7 +1920,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
         // Use merchant sound for merchant events, otherwise use generic event sound
         const isMerchantEvent = timedTabEntry.id?.startsWith("merchant");
         const soundName = isMerchantEvent ? "merchant" : "event";
-        const soundVolume = isMerchantEvent ? 0.8 : 0.1
+        const soundVolume = isMerchantEvent
+          ? SOUND_VOLUME.merchant
+          : SOUND_VOLUME.eventUi;
         audioManager.playSound(soundName, soundVolume);
       }
 
@@ -2018,7 +2020,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
         audioManager.playSound(
           hasMadnessEvent ? "eventMadness" : "event",
-          0.02,
+          SOUND_VOLUME.eventCheckEvents,
         );
       }
     }
@@ -2327,7 +2329,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const eventId = currentEvent.id.split("-")[0];
       const madnessEventIds = Object.keys(madnessEvents);
       const isMadnessEvent = madnessEventIds.includes(eventId);
-      audioManager.playSound(isMadnessEvent ? "eventMadness" : "event", 0.1);
+      audioManager.playSound(
+        isMadnessEvent ? "eventMadness" : "event",
+        SOUND_VOLUME.eventUi,
+      );
     }
   },
 
@@ -2351,7 +2356,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const eventId = event.id.split("-")[0];
       const madnessEventIds = Object.keys(madnessEvents);
       const isMadnessEvent = madnessEventIds.includes(eventId);
-      audioManager.playSound(isMadnessEvent ? "eventMadness" : "event", 0.1);
+      audioManager.playSound(
+        isMadnessEvent ? "eventMadness" : "event",
+        SOUND_VOLUME.eventUi,
+      );
     }
 
     // If activating merchant event, use the choices already generated and passed in the event
@@ -2461,7 +2469,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       },
     }));
 
-    audioManager.playSound("merchant", 0.8);
+    audioManager.playSound("merchant", SOUND_VOLUME.merchant);
     get().setTimedEventTab(true, eventData, 4 * 60 * 1000);
   },
 

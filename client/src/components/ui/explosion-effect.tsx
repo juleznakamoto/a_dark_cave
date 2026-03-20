@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { motion } from "framer-motion";
-import { audioManager } from "@/lib/audio";
+import { audioManager, SOUND_VOLUME } from "@/lib/audio";
 import { Z_INDEX } from "@/lib/z-index";
 
 interface Particle {
@@ -185,7 +185,7 @@ export function useExplosionEffect() {
       return;
 
     // Play explosion sound
-    audioManager.playSound("explosion", 0.5);
+    audioManager.playSound("explosion", SOUND_VOLUME.explosion);
 
     let centerX: number, centerY: number;
     let rect: DOMRect;

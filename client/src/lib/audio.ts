@@ -20,6 +20,9 @@ import { Howl, Howler } from 'howler';
   }
 })();
 import { logger } from './logger';
+import { SOUND_VOLUME } from './soundVolumes';
+
+export { SOUND_VOLUME, feedFireVolume } from './soundVolumes';
 
 export class AudioManager {
   private static instance: AudioManager;
@@ -252,7 +255,7 @@ export class AudioManager {
     logger.log('Game sounds registration complete');
   }
 
-  async startBackgroundMusic(volume: number = 1): Promise<void> {
+  async startBackgroundMusic(volume: number = SOUND_VOLUME.backgroundMusic): Promise<void> {
     this.backgroundMusicVolume = volume;
     this.wasBackgroundMusicPlaying = true;
     this.playLoopingSound('backgroundMusic', volume);

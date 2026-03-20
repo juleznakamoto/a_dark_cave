@@ -3,7 +3,7 @@ import { saveGame } from "./save";
 import { GameState } from "@shared/schema";
 import { getPopulationProduction, getMaxPopulation } from "./population";
 import { killVillagers, buildGameState } from "@/game/stateHelpers";
-import { audioManager } from "@/lib/audio";
+import { audioManager, SOUND_VOLUME } from "@/lib/audio";
 import {
   getTotalMadness,
   getStrangerApproachProbability,
@@ -1242,7 +1242,7 @@ function handleStrangerApproach() {
     });
 
     // Play new villager sound
-    audioManager.playSound("newVillager", 0.02);
+    audioManager.playSound("newVillager", SOUND_VOLUME.newVillager);
   }
 }
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useGameStore } from "@/game/state";
-import { audioManager } from "@/lib/audio";
+import { audioManager, SOUND_VOLUME } from "@/lib/audio";
 import { calculateBastionStats } from "@/game/bastionStats";
 import {
   getTotalKnowledge,
@@ -114,7 +114,7 @@ export default function CombatDialog({
   // Starting on user click satisfies browser autoplay policy
   useEffect(() => {
     if (isOpen && combatStarted) {
-      audioManager.playLoopingSound("combat", 0.3);
+      audioManager.playLoopingSound("combat", SOUND_VOLUME.combat);
     } else {
       audioManager.stopLoopingSound("combat");
     }

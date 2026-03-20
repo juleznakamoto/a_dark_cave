@@ -276,7 +276,7 @@ export default function Game() {
           // Start background music after sounds are loaded (handles page reload case)
           // startBackgroundMusic sets the volume and respects the mute state internally
           if (!currentState.musicMuted) {
-            await audioManager.startBackgroundMusic(0.3);
+            await audioManager.startBackgroundMusic();
           }
         }
 

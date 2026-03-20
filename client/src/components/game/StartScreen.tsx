@@ -3,7 +3,7 @@ import { ParticleButton } from "@/components/ui/particle-button";
 import { useGameStore } from "@/game/state";
 import CloudShader from "@/components/ui/cloud-shader";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { audioManager } from "@/lib/audio";
+import { audioManager, SOUND_VOLUME } from "@/lib/audio";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 export default function StartScreen() {
   const { executeAction, setBoostMode, boostMode, CM } = useGameStore();
@@ -24,7 +24,7 @@ export default function StartScreen() {
     // Both events fire before the click event, so executedRef.current is still false
     // even when the user's first action is clicking "Light Fire".
     const playWind = () => {
-      audioManager.playLoopingSound("wind", 0.2, false, 1);
+      audioManager.playLoopingSound("wind", SOUND_VOLUME.wind, false, 1);
     };
 
     const handleInitialGesture = () => {
@@ -95,11 +95,11 @@ export default function StartScreen() {
     // Immediately stop wind with no fade to prevent overlap
     audioManager.stopLoopingSound("wind", 2);
 
-    audioManager.playSound("lightFire", 0.8);
+    audioManager.playSound("lightFire", SOUND_VOLUME.lightFire);
 
     audioManager.loadGameSounds().then(() => {
       if (!useGameStore.getState().musicMuted) {
-        audioManager.startBackgroundMusic(0.3);
+        audioManager.startBackgroundMusic();
       }
     });
 

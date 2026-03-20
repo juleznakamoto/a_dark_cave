@@ -12,7 +12,7 @@ import { AnimatedCounter } from "@/components/ui/animated-counter";
 import { capitalizeWords } from "@/lib/utils";
 import cn from "clsx";
 import { getPopulationProduction } from "@/game/population";
-import { audioManager } from "@/lib/audio";
+import { audioManager, SOUND_VOLUME } from "@/lib/audio";
 import { resetProductionCycle } from "@/game/loop";
 import { BOMB_RESOURCES } from "@/game/resourceLimits";
 
@@ -304,7 +304,7 @@ export default function IdleModeDialog() {
         setIsActive(stillActive);
 
         if (stillActive) {
-          audioManager.playSound("sleep", 0.3);
+          audioManager.playSound("sleep", SOUND_VOLUME.sleep);
         }
       } else if (!idleModeState?.isActive && idleModeState?.startTime === 0) {
         // Only start fresh idle mode if there's no active state AND no previous startTime
@@ -329,7 +329,7 @@ export default function IdleModeDialog() {
         });
 
         // Play sleep sound when entering sleep mode
-        audioManager.playSound("sleep", 0.3);
+        audioManager.playSound("sleep", SOUND_VOLUME.sleep);
 
         // Immediately save to Supabase so user can close tab
         (async () => {
@@ -630,9 +630,9 @@ export default function IdleModeDialog() {
             const currentAmount = isFocus
               ? focusPoints
               : Math.floor(
-                  (initialResources[resource] || 0) +
-                    (accumulatedResources[resource] || 0),
-                );
+                (initialResources[resource] || 0) +
+                (accumulatedResources[resource] || 0),
+              );
             const productionRate = isFocus
               ? null
               : productionPerInterval[resource] ?? 0;

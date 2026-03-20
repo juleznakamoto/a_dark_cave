@@ -35,7 +35,7 @@ import {
   SuccessParticles,
   useFeedFireParticles,
 } from "@/components/ui/feed-fire-particles";
-import { audioManager } from "@/lib/audio";
+import { audioManager, feedFireVolume } from "@/lib/audio";
 import { BubblyButtonGlobalPortal } from "@/components/ui/bubbly-button";
 import {
   generateParticleData,
@@ -444,7 +444,7 @@ export default function VillagePanel() {
           ref={feedFireButtonRef}
           onClick={() => {
             executeAction(actionId);
-            audioManager.playSound("feedFire", 0.4 + 0.05 * currentLevel);
+            audioManager.playSound("feedFire", feedFireVolume(currentLevel));
             // Generate 10 * current heartfire level particles
             const particleCount = 10 * (currentLevel + 1);
             if (particleCount > 0) {
