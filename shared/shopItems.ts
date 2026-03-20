@@ -65,7 +65,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     canPurchaseMultipleTimes: false,
     category: "blessing",
     activationMessage:
-      "Cruel Mode has been added to your purchases! Activate and start a new game for the ultimate challenge.",
+      "Cruel Mode activated! Start a new game to experience the ultimate challenge.",
     symbol: "⛤",
     symbolColor: "text-red-600",
   },
