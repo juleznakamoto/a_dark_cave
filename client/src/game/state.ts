@@ -1287,14 +1287,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // Play craft sound for successful crafting actions
     if (actionId.startsWith("craft")) {
       import("@/lib/audio").then(({ audioManager }) => {
-        audioManager.playSound("craft");
+        audioManager.playSound("craft", 0.05);
       });
     }
 
     // Play mining sound for successful mine actions
     if (actionId.startsWith("mine")) {
       import("@/lib/audio").then(({ audioManager }) => {
-        audioManager.playSound("mining");
+        audioManager.playSound("mining", 0.6);
       });
     }
 
