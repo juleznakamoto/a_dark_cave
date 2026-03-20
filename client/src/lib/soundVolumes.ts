@@ -7,15 +7,15 @@ export const SOUND_VOLUME = {
   backgroundMusic: 0.3,
   whisperingCube: 0.5,
   feedFire: {
-    base: 0.4,
+    base: 0.3,
     perHeartfireLevel: 0.05,
   },
   newVillager: 0.02,
-  buildingComplete: 1,
+  buildingComplete: 0.5,
   craft: 0.05,
-  mining: 0.6,
-  chopWood: 1,
-  hunt: 1,
+  mining: 0.5,
+  chopWood: 0.8,
+  hunt: 0.3,
   /** Log line, dialog open, timed tab, and timed-tab check (non-merchant) */
   eventUi: 0.1,
   /** When checkEvents queues new entries (quieter than UI cues) */
