@@ -15,7 +15,7 @@ export const SOUND_VOLUME = {
   craft: 0.05,
   mining: 0.5,
   chopWood: 0.8,
-  hunt: 0.3,
+  hunt: 0.2,
   /** Log line, dialog open, timed tab, and timed-tab check (non-merchant) */
   eventUi: 0.1,
   /** When checkEvents queues new entries (quieter than UI cues) */
