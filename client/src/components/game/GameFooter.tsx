@@ -96,6 +96,7 @@ export default function GameFooter() {
               size="xs"
               onClick={togglePause}
               data-testid="button-pause-game"
+              data-pause-help="pause"
               disabled={idleModeDialog.isOpen}
               className={`px-1 py-1 text-xs hover ${idleModeDialog.isOpen ? "opacity-30 cursor-not-allowed" : ""} ${isPaused ? "text-red-600 hover:text-red-500" : ""} ${isPaused && !idleModeDialog.isOpen ? "continue-pause-flash" : ""}`}
             >
@@ -106,6 +107,7 @@ export default function GameFooter() {
               size="xs"
               onClick={toggleMusic}
               data-testid="button-toggle-music"
+              data-pause-help="music"
               className="px-1 py-1 text-xs hover"
               title={musicMuted ? "Unmute music" : "Mute music"}
             >
@@ -121,6 +123,7 @@ export default function GameFooter() {
               size="xs"
               onClick={toggleSfx}
               data-testid="button-toggle-sfx"
+              data-pause-help="sfx"
               className="px-1 py-1 text-xs hover"
               title={sfxMuted ? "Unmute sound effects" : "Mute sound effects"}
             >
@@ -137,6 +140,7 @@ export default function GameFooter() {
                 variant="ghost"
                 size="xs"
                 onClick={() => setFullGamePurchaseDialogOpen(true)}
+                data-pause-help="fullgame"
                 className="px-1 py-1 text-xs hover"
               >
                 Full Game
@@ -157,6 +161,7 @@ export default function GameFooter() {
                     });
                   }
                 }}
+                data-pause-help="trader"
                 className={`px-1 py-1 text-xs hover relative text-neutral-300 ${isEarlyGameplay ? 'opacity-50' : 'opacity-100'} hover:!opacity-100`}
               >
                 Trader
@@ -181,6 +186,7 @@ export default function GameFooter() {
                   });
                 }
               }}
+              data-pause-help="donate"
               className={`px-1 py-1 text-xs hover relative text-neutral-300 ${isEarlyGameplay ? 'opacity-50' : 'opacity-100'} hover:!opacity-100`}
             >
               Donate
@@ -204,7 +210,7 @@ export default function GameFooter() {
               </TooltipWrapper>
             )}
           </div>
-          <div className="flex-1 flex justify-end gap-2 items-center">
+          <div className="flex-1 flex justify-end gap-2 items-center" data-pause-help="community">
             <a
               href="https://www.reddit.com/r/aDarkCave/"
               target="_blank"
