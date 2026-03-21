@@ -416,9 +416,10 @@ function createAttackWaveEvent(waveId: keyof typeof WAVE_PARAMS): GameEvent {
           eventTitle: config.title,
           eventMessage: config.message,
           onVictory: () => ({
+            // Silver delta only — merged onto live resources in state.mergeCombatVictoryState so
+            // bombs and other resources spent during combat are not reverted on victory.
             resources: {
-              ...state.resources,
-              silver: state.resources.silver + params.silverReward,
+              silver: params.silverReward,
             },
             story: {
               ...state.story,

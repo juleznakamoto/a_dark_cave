@@ -24,6 +24,7 @@ import {
   updatePopulationCounts,
   assignVillagerToJob,
   unassignVillagerFromJob,
+  mergeCombatVictoryState,
 } from "@/game/stateHelpers";
 import { capResourceToLimit } from "@/game/resourceLimits";
 import {
@@ -1949,10 +1950,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
           eventMessage: combatData.eventMessage,
           onVictory: () => {
             const victoryResult = combatData.onVictory();
-            // Apply victory state changes
+            // Apply victory state changes (merge resources onto live state — see mergeCombatVictoryState)
             set((prevState) => ({
-              ...prevState,
-              ...victoryResult,
+              ...mergeCombatVictoryState(prevState, victoryResult),
               log: prevState.log,
             }));
             // Return summary for CombatDialog to display before closing
@@ -2228,8 +2228,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         onVictory: () => {
           const victoryResult = combatData.onVictory();
           set((prevState) => ({
-            ...prevState,
-            ...victoryResult,
+            ...mergeCombatVictoryState(prevState, victoryResult),
             log: prevState.log,
           }));
           get().setCombatDialog(false);

@@ -3,6 +3,30 @@ import { getMaxPopulation } from "./population";
 import { isResourceLimited, getResourceLimit } from "./resourceLimits";
 import { getTotalEventDeathReduction } from "./rules/effectsCalculation";
 
+/**
+ * Merge combat victory updates onto live `prevState`. Attack wave `onVictory` used to return
+ * `resources: { ...state.resources, silver: ... }` with `state` from when the event fired, which
+ * overwrote bomb (and any other) deductions made during combat. Silver in `victoryResult.resources`
+ * is treated as a **delta** to add to `prevState.resources.silver`.
+ */
+export function mergeCombatVictoryState(
+  prevState: GameState,
+  victoryResult: Partial<GameState> & { _combatSummary?: unknown },
+): Partial<GameState> {
+  const { resources: vr, ...rest } = victoryResult;
+  if (vr === undefined) {
+    return { ...prevState, ...victoryResult };
+  }
+  return {
+    ...prevState,
+    ...rest,
+    resources: {
+      ...prevState.resources,
+      silver: (prevState.resources.silver ?? 0) + (vr.silver ?? 0),
+    },
+  };
+}
+
 export function updateResource(
   state: GameState,
   resource: keyof GameState['resources'],
@@ -116,7 +140,7 @@ export function unassignVillagerFromJob(
 ): Partial<GameState> {
   // Initialize job count to 0 if undefined (for backwards compatibility with old saves)
   const currentJobCount = state.villagers[job] ?? 0;
-  
+
   if (job === 'free' || currentJobCount <= 0) return {};
 
   return {
