@@ -210,11 +210,12 @@ export default function GameFooter() {
               </TooltipWrapper>
             )}
           </div>
-          <div className="flex-1 flex justify-end gap-2 items-center" data-pause-help="community">
+          <div className="flex-1 flex justify-end gap-2 items-center">
             <a
               href="https://www.reddit.com/r/aDarkCave/"
               target="_blank"
               rel="noopener noreferrer"
+              data-pause-help="reddit"
               className="hover:opacity-100 transition-opacity opacity-35 flex items-center justify-center w-4 h-4"
               title="Reddit"
             >
@@ -226,6 +227,7 @@ export default function GameFooter() {
               href="https://a-dark-cave.fandom.com/wiki/A_Dark_Cave_Wiki"
               target="_blank"
               rel="noopener noreferrer"
+              data-pause-help="wiki"
               className="hover:opacity-100 transition-opacity opacity-35 flex items-center justify-center w-4 h-4"
               title="Fandom Wiki"
             >
@@ -237,6 +239,7 @@ export default function GameFooter() {
               href="https://www.instagram.com/a_dark_cave/"
               target="_blank"
               rel="noopener noreferrer"
+              data-pause-help="instagram"
               className="hover:opacity-100 transition-opacity opacity-35 flex items-center justify-center w-4 h-4"
               title="Instagram"
             >
@@ -248,6 +251,7 @@ export default function GameFooter() {
               href="https://www.incrementaldb.com/game/a-dark-cave"
               target="_blank"
               rel="noopener noreferrer"
+              data-pause-help="incrementaldb"
               className="hover:opacity-100 transition-opacity opacity-35 flex items-center justify-center w-4 h-4"
               title="Incremental DB"
             >
@@ -273,6 +277,7 @@ export default function GameFooter() {
             </a>
             <a
               href="mailto:support@a-dark-cave.com"
+              data-pause-help="contact"
               className="hover:opacity-100 transition-opacity opacity-35 flex items-center justify-center w-4 h-4"
               title="Contact"
             >

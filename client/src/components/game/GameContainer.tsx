@@ -759,7 +759,7 @@ export default function GameContainer() {
       <RestartGameDialog
         isOpen={restartGameDialogOpen}
         onClose={() => setRestartGameDialogOpen(false)}
-        onRestart={restartGame}
+        onConfirm={restartGame}
       />
 
       {/* Reward Dialog */}
