@@ -41,6 +41,7 @@ export async function initPlaylight() {
 
       // Import game store
       const { useGameStore } = await import("../game/state");
+      type StoreState = ReturnType<typeof useGameStore.getState>;
       (window as any).playlightSDK = playlightSDK;
 
       // Clean up previous subscription if it exists (shouldn't happen, but defensive)
@@ -49,14 +50,12 @@ export async function initPlaylight() {
         gameStoreUnsubscribe = null;
       }
 
-      // Reactively update exit intent based on game state
-      // Store unsubscribe function to prevent memory leaks
-      gameStoreUnsubscribe = useGameStore.subscribe((state) => {
+      const syncExitIntent = (state: StoreState) => {
         const isEndScreen = window.location.pathname === "/end-screen";
         const shouldEnableExitIntent =
           state.isPaused ||
-          state.idleModeDialog.isOpen ||
           state.leaderboardDialogOpen ||
+          state.idleModeDialog.isOpen ||
           isEndScreen;
 
         playlightSDK.setConfig({
@@ -65,7 +64,12 @@ export async function initPlaylight() {
             immediate: false,
           },
         });
-      });
+      };
+
+      syncExitIntent(useGameStore.getState());
+
+      // Reactively update exit intent based on game state
+      gameStoreUnsubscribe = useGameStore.subscribe(syncExitIntent);
 
       // Set up event listeners for game pause/unpause
       playlightSDK.onEvent("discoveryOpen", () => {
