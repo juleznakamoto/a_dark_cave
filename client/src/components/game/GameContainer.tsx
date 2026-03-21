@@ -25,7 +25,6 @@ import MadnessDialog from "./MadnessDialog";
 import { LimelightNav, NavItem } from "@/components/ui/limelight-nav";
 import { Mountain, Trees, Castle, Landmark } from "lucide-react";
 import ProfileMenu from "./ProfileMenu";
-import PauseChromeHelpOverlay from "./PauseChromeHelpOverlay";
 import { startVersionCheck, stopVersionCheck } from "@/game/versionCheck";
 import { logger } from "@/lib/logger";
 import { toast } from "@/hooks/use-toast";
@@ -450,7 +449,6 @@ export default function GameContainer() {
           style={{ bottom: "45px" }}
         />
       )}
-      <PauseChromeHelpOverlay />
 
       {/* Sleep Mode Mist Background - covers everything except footer and profile menu */}
       {idleModeDialog.isOpen && (

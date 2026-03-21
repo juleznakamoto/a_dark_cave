@@ -326,7 +326,6 @@ export default function ProfileMenu() {
             <Button
               variant="ghost"
               size="xs"
-              data-pause-help="profile"
               className="px-2 py-1 text-xs hover relative bg-background text-neutral-300 backdrop-blur-sm border border-border"
             >
               Profile
@@ -521,34 +520,31 @@ export default function ProfileMenu() {
       </div>
       <div className="flex-wrap justify-end max-w-[54px] flex items-center gap-1">
         {!currentUser && (
-          <div data-pause-help="login">
-            <TooltipWrapper
-              tooltip={
-                <>
-                  <p className="text-xs">Game progress is auto-saved locally.</p>
-                  <p className="text-xs">Sign in to save in the cloud.</p>
-                </>
-              }
-              tooltipId="login-reminder"
-              disabled={false}
-              onClick={() => {
-                setAccountDropdownOpen(true);
-                setAuthNotificationSeen(true);
-              }}
-              className="w-5 h-5 rounded-full border border-orange-500 flex items-center justify-center cursor-pointer opacity-80 hover:opacity-100 transition-opacity relative"
-            >
-              <span className="absolute inset-0 flex items-center justify-center text-orange-500 text-xs font-bold">
-                !
-              </span>
-            </TooltipWrapper>
-          </div>
+          <TooltipWrapper
+            tooltip={
+              <>
+                <p className="text-xs">Game progress is auto-saved locally.</p>
+                <p className="text-xs">Sign in to save in the cloud.</p>
+              </>
+            }
+            tooltipId="login-reminder"
+            disabled={false}
+            onClick={() => {
+              setAccountDropdownOpen(true);
+              setAuthNotificationSeen(true);
+            }}
+            className="w-5 h-5 rounded-full border border-orange-500 flex items-center justify-center cursor-pointer opacity-80 hover:opacity-100 transition-opacity relative"
+          >
+            <span className="absolute inset-0 flex items-center justify-center text-orange-500 text-xs font-bold">
+              !
+            </span>
+          </TooltipWrapper>
         )}
         {(hasWonAnyGame || devMode) && (
           <Button
             variant="ghost"
             size="xs"
             onClick={() => setLeaderboardDialogOpen(true)}
-            data-pause-help="leaderboard"
             className="p-0 w-7 h-7 bg-background backdrop-blur-sm border border-border flex items-center justify-center group"
           >
             <span className="text-lg opacity-60 group-hover:opacity-100 transition-opacity">
@@ -560,7 +556,6 @@ export default function ProfileMenu() {
           variant="ghost"
           size="xs"
           onClick={handleDiscovery}
-          data-pause-help="discovery"
           className="p-0 w-7 h-7 bg-background/70 backdrop-blur-sm border border-border flex items-center justify-center group"
         >
           <img

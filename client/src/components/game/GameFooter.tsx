@@ -27,6 +27,7 @@ export default function GameFooter() {
     setFullGamePurchaseDialogOpen,
     fullGamePurchaseDialogOpen,
     BTP,
+    leaderboardDialogOpen,
   } = useGameStore();
   const [glowingButton, setGlowingButton] = useState<string | null>(null);
   const [displayTime, setDisplayTime] = useState("");
@@ -78,6 +79,11 @@ export default function GameFooter() {
   // Check if gameplay time is less than 30 minutes
   const isEarlyGameplay = playTime < 30 * 60 * 1000; // 30 minutes in milliseconds
 
+  const emphasizeFooterSocialIcons =
+    isPaused || idleModeDialog.isOpen || leaderboardDialogOpen;
+  const socialIconClass = `hover:opacity-100 transition-opacity duration-[2000ms] ease-in-out flex items-center justify-center w-4 h-4 ${emphasizeFooterSocialIcons ? "opacity-90" : "opacity-35"
+    }`;
+
   return (
     <>
       <FullGamePurchaseDialog
@@ -96,7 +102,6 @@ export default function GameFooter() {
               size="xs"
               onClick={togglePause}
               data-testid="button-pause-game"
-              data-pause-help="pause"
               disabled={idleModeDialog.isOpen}
               className={`px-1 py-1 text-xs hover ${idleModeDialog.isOpen ? "opacity-30 cursor-not-allowed" : ""} ${isPaused ? "text-red-600 hover:text-red-500" : ""} ${isPaused && !idleModeDialog.isOpen ? "continue-pause-flash" : ""}`}
             >
@@ -107,7 +112,6 @@ export default function GameFooter() {
               size="xs"
               onClick={toggleMusic}
               data-testid="button-toggle-music"
-              data-pause-help="music"
               className="px-1 py-1 text-xs hover"
               title={musicMuted ? "Unmute music" : "Mute music"}
             >
@@ -123,7 +127,6 @@ export default function GameFooter() {
               size="xs"
               onClick={toggleSfx}
               data-testid="button-toggle-sfx"
-              data-pause-help="sfx"
               className="px-1 py-1 text-xs hover"
               title={sfxMuted ? "Unmute sound effects" : "Mute sound effects"}
             >
@@ -140,7 +143,6 @@ export default function GameFooter() {
                 variant="ghost"
                 size="xs"
                 onClick={() => setFullGamePurchaseDialogOpen(true)}
-                data-pause-help="fullgame"
                 className="px-1 py-1 text-xs hover"
               >
                 Full Game
@@ -161,7 +163,6 @@ export default function GameFooter() {
                     });
                   }
                 }}
-                data-pause-help="trader"
                 className={`px-1 py-1 text-xs hover relative text-neutral-300 ${isEarlyGameplay ? 'opacity-50' : 'opacity-100'} hover:!opacity-100`}
               >
                 Trader
@@ -186,7 +187,6 @@ export default function GameFooter() {
                   });
                 }
               }}
-              data-pause-help="donate"
               className={`px-1 py-1 text-xs hover relative text-neutral-300 ${isEarlyGameplay ? 'opacity-50' : 'opacity-100'} hover:!opacity-100`}
             >
               Donate
@@ -215,8 +215,7 @@ export default function GameFooter() {
               href="https://www.reddit.com/r/aDarkCave/"
               target="_blank"
               rel="noopener noreferrer"
-              data-pause-help="reddit"
-              className="hover:opacity-100 transition-opacity opacity-35 flex items-center justify-center w-4 h-4"
+              className={socialIconClass}
               title="Reddit"
             >
               <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
@@ -227,8 +226,7 @@ export default function GameFooter() {
               href="https://a-dark-cave.fandom.com/wiki/A_Dark_Cave_Wiki"
               target="_blank"
               rel="noopener noreferrer"
-              data-pause-help="wiki"
-              className="hover:opacity-100 transition-opacity opacity-35 flex items-center justify-center w-4 h-4"
+              className={socialIconClass}
               title="Fandom Wiki"
             >
               <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
@@ -239,8 +237,7 @@ export default function GameFooter() {
               href="https://www.instagram.com/a_dark_cave/"
               target="_blank"
               rel="noopener noreferrer"
-              data-pause-help="instagram"
-              className="hover:opacity-100 transition-opacity opacity-35 flex items-center justify-center w-4 h-4"
+              className={socialIconClass}
               title="Instagram"
             >
               <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
@@ -251,8 +248,7 @@ export default function GameFooter() {
               href="https://www.incrementaldb.com/game/a-dark-cave"
               target="_blank"
               rel="noopener noreferrer"
-              data-pause-help="incrementaldb"
-              className="hover:opacity-100 transition-opacity opacity-35 flex items-center justify-center w-4 h-4"
+              className={socialIconClass}
               title="Incremental DB"
             >
               <svg
@@ -277,8 +273,7 @@ export default function GameFooter() {
             </a>
             <a
               href="mailto:support@a-dark-cave.com"
-              data-pause-help="contact"
-              className="hover:opacity-100 transition-opacity opacity-35 flex items-center justify-center w-4 h-4"
+              className={socialIconClass}
               title="Contact"
             >
               <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
