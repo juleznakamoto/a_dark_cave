@@ -163,10 +163,12 @@ body {
 }
 
 @keyframes tab-blink-new {
+
   0%,
   100% {
     opacity: 0.6;
   }
+
   50% {
     opacity: 1;
   }
@@ -398,6 +400,24 @@ body {
 
 .notification-pulse {
   animation: notification-pulse .8s ease-in-out infinite;
+}
+
+@keyframes continue-pause-flash {
+
+  0%,
+  100% {
+    opacity: 1;
+    text-shadow: none;
+  }
+
+  50% {
+    opacity: 0.4;
+    text-shadow: 0 0 12px rgba(220, 38, 38, 0.95);
+  }
+}
+
+.continue-pause-flash {
+  animation: continue-pause-flash 0.85s ease-in-out infinite;
 }
 
 @keyframes focus-glow {
