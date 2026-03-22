@@ -62,9 +62,9 @@ export const CRUEL_MODE = {
     madnessDeath: {
       tier2: { base: 0, whenCruel: 0.005 },
       tier3: { base: 0.005, whenCruel: 0.01 },
-      tier4: { base: 0.01, whenCruel: 0.01 },
-      tier5: { base: 0.015, whenCruel: 0.01 },
-      tier6: { base: 0.02, whenCruel: 0.01 },
+      tier4: { base: 0.01, whenCruel: 0.0125 },
+      tier5: { base: 0.015, whenCruel: 0.015 },
+      tier6: { base: 0.02, whenCruel: 0.02 },
       deathRollBiasWhenCruel: 0.1,
     },
   },
