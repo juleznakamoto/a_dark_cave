@@ -100,7 +100,7 @@ describe("GamblerDiceDialog", () => {
     render(
       <GamblerDiceDialog
         isOpen={true}
-        onComplete={vi.fn()}
+        onOutcomeResolved={vi.fn()}
         onClose={vi.fn()}
         hasBoneDice={false}
         playerGold={100}
@@ -115,12 +115,12 @@ describe("GamblerDiceDialog", () => {
 
     act(() => {
       fireEvent.click(screen.getByRole("button", { name: /^roll$/i }));
-      vi.advanceTimersByTime(400);
+      vi.advanceTimersByTime(600);
     });
 
     act(() => {
       fireEvent.click(screen.getByRole("button", { name: /^roll$/i }));
-      vi.advanceTimersByTime(400);
+      vi.advanceTimersByTime(600);
     });
 
     act(() => {
@@ -129,7 +129,7 @@ describe("GamblerDiceDialog", () => {
 
     for (let i = 0; i < 4; i += 1) {
       act(() => {
-        vi.advanceTimersByTime(800);
+        vi.advanceTimersByTime(600);
       });
     }
 

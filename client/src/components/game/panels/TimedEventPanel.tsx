@@ -111,6 +111,8 @@ export default function TimedEventPanel() {
     const safetyEndTime = startTime + 1000;
     pauseStartRef.current = 0;
     totalPausedMsRef.current = 0;
+    /** Interval keeps firing at 0:00; expiry side-effects must run only once per event. */
+    let expiryHandled = false;
 
     const updateTimer = () => {
       const isPaused = useGameStore.getState().isPaused;
@@ -132,8 +134,15 @@ export default function TimedEventPanel() {
       setSafetyTimeRemaining(safetyRemaining);
 
       if (remaining <= 0) {
+        if (expiryHandled) return;
+        expiryHandled = true;
+
         const currentState = useGameStore.getState();
-        if (event.id.split("-")[0] === "gambler" && currentState.gamblerGame) {
+        const gamblerPrefix = event.id.split("-")[0] === "gambler";
+        const gg = currentState.gamblerGame;
+
+        // Mid-round forfeit only: resolved games already applied payouts in the store.
+        if (gamblerPrefix && gg && gg.outcome == null) {
           setGamblerDialogOpen(false);
           useGameStore.setState((state) => ({
             gamblerGame: null,
@@ -147,14 +156,21 @@ export default function TimedEventPanel() {
               },
             ],
           }));
+        } else if (gamblerPrefix && gg?.outcome != null) {
+          // Timer ran out on the outcome screen — close UI, clear marker (economics already done).
+          setGamblerDialogOpen(false);
+          useGameStore.setState({ gamblerGame: null });
         }
 
         // Execute fallback choice when timer expires
         if (event) {
           const timedEventId = event.eventId || event.id.split("-")[0];
+          const skipGamblerFallback =
+            gamblerPrefix && gg != null && gg.outcome != null;
 
           // Use the event's defined fallbackChoice if available
           if (
+            !skipGamblerFallback &&
             event.fallbackChoice &&
             typeof event.fallbackChoice.effect === "function"
           ) {
@@ -164,7 +180,11 @@ export default function TimedEventPanel() {
             // Choices are pre-computed when event triggers, so they're always an array
             const choices = Array.isArray(event.choices) ? event.choices : [];
             const fallbackChoice = choices.find((c) => c.id === "doNothing");
-            if (fallbackChoice && typeof fallbackChoice.effect === "function") {
+            if (
+              !skipGamblerFallback &&
+              fallbackChoice &&
+              typeof fallbackChoice.effect === "function"
+            ) {
               applyEventChoice(fallbackChoice.id, timedEventId, event);
             }
           }
@@ -608,12 +628,11 @@ export default function TimedEventPanel() {
               gamblerGame: { wager },
             }));
           }}
-          onComplete={(outcome, wager) => {
-            setGamblerDialogOpen(false);
+          onOutcomeResolved={(outcome, wager) => {
             if (outcome === "win") {
               useGameStore.setState((s) => ({
                 resources: { ...s.resources, gold: (s.resources?.gold ?? 0) + wager * 2 },
-                gamblerGame: null,
+                gamblerGame: { wager, outcome: "win" },
                 log: [
                   ...s.log,
                   {
@@ -626,7 +645,7 @@ export default function TimedEventPanel() {
               }));
             } else {
               useGameStore.setState((s) => ({
-                gamblerGame: null,
+                gamblerGame: { wager, outcome: "lose" },
                 log: [
                   ...s.log,
                   {
@@ -641,6 +660,9 @@ export default function TimedEventPanel() {
           }}
           onClose={() => {
             setGamblerDialogOpen(false);
+            useGameStore.setState((s) =>
+              s.gamblerGame ? { gamblerGame: null } : {},
+            );
           }}
         />
       )}

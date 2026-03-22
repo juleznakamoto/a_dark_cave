@@ -167,7 +167,7 @@ interface GameStore extends GameState {
   };
 
   // Active gambler dice game (persisted for refresh protection)
-  gamblerGame: { wager: number } | null;
+  gamblerGame: { wager: number; outcome?: "win" | "lose" } | null;
 
   // Focus system
   focusState: FocusState;
@@ -1840,7 +1840,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
       // Handle gambler game forfeit on reload
       const savedGamblerGame = savedState.gamblerGame;
-      if (savedGamblerGame) {
+      if (savedGamblerGame && savedGamblerGame.outcome == null) {
         logger.log('[GAMBLER] Game interrupted mid-play, treating as forfeit:', {
           wager: savedGamblerGame.wager,
         });

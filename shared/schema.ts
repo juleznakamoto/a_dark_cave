@@ -757,6 +757,8 @@ export const gameStateSchema = z.object({
   gamblerGame: z
     .object({
       wager: z.number(),
+      /** Set once payouts are applied; timer/forfeit logic ignores resolved games. */
+      outcome: z.enum(["win", "lose"]).optional(),
     })
     .nullable()
     .default(null),

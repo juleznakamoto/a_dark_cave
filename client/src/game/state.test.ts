@@ -540,4 +540,29 @@ describe("Gambler refresh protection", () => {
       "The gambler took your silence as forfeit.",
     );
   });
+
+  it("does not log forfeit when save had an already-resolved gambler outcome", async () => {
+    const savedState = {
+      ...createInitialState(),
+      resources: {
+        ...createInitialState().resources,
+        gold: 160,
+      },
+      gamblerGame: { wager: 50, outcome: "win" as const },
+      log: [],
+    } as ReturnType<typeof createInitialState> & {
+      gamblerGame: { wager: number; outcome: "win" };
+    };
+
+    mockLoadGame.mockResolvedValue(savedState);
+
+    await useGameStore.getState().loadGame();
+
+    expect(useGameStore.getState().gamblerGame).toBeNull();
+    expect(
+      useGameStore
+        .getState()
+        .log.some((e) => e.message.includes("silence as forfeit")),
+    ).toBe(false);
+  });
 });

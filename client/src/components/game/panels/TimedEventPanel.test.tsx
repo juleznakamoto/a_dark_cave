@@ -174,4 +174,47 @@ describe("TimedEventPanel gambler coverage", () => {
       "false",
     );
   });
+
+  it("does not forfeit a gambler round that already resolved when the timer expires", () => {
+    const applyEventChoice = vi.fn();
+    const setTimedEventTab = vi.fn();
+    const setHighlightedResources = vi.fn();
+
+    useGameStore.setState((state) => ({
+      ...state,
+      applyEventChoice: applyEventChoice as typeof state.applyEventChoice,
+      setTimedEventTab: setTimedEventTab as typeof state.setTimedEventTab,
+      setHighlightedResources:
+        setHighlightedResources as typeof state.setHighlightedResources,
+      resources: {
+        ...state.resources,
+        gold: 150,
+      },
+      gamblerGame: { wager: 50, outcome: "win" },
+      timedEventTab: {
+        isActive: true,
+        event: makeGamblerEvent(),
+        expiryTime: Date.now() + 200,
+        startTime: Date.now() - 2_000,
+      },
+    }));
+
+    act(() => {
+      render(<TimedEventPanel />);
+    });
+
+    act(() => {
+      vi.advanceTimersByTime(300);
+    });
+
+    expect(
+      useGameStore
+        .getState()
+        .log.some((e) => e.message.includes("silence as forfeit")),
+    ).toBe(false);
+    expect(useGameStore.getState().gamblerGame).toBeNull();
+    expect(applyEventChoice).not.toHaveBeenCalled();
+    expect(setTimedEventTab).toHaveBeenCalledWith(false);
+    expect(setHighlightedResources).toHaveBeenCalledWith([]);
+  });
 });
