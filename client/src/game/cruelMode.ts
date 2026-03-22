@@ -13,7 +13,7 @@ export function cruelModeScale(state: { cruelMode: boolean }): 0 | 1 {
 export const CRUEL_MODE = {
   successChance: {
     /** Default subtracted in calculateSuccessChance when cruel mode is on */
-    defaultCruelPenalty: -0.05,
+    defaultCruelPenalty: -0.10,
     /** Used when refusing the forest gods sacrifice (narrower cruel effect) */
     refuseForestGodsCruelMultiplier: -0.025,
   },

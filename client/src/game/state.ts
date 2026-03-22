@@ -166,6 +166,9 @@ interface GameStore extends GameState {
     purchasedIds: string[];
   };
 
+  // Active gambler dice game (persisted for refresh protection)
+  gamblerGame: { wager: number } | null;
+
   // Focus system
   focusState: FocusState;
 
@@ -860,6 +863,9 @@ export const createInitialState = (): GameState => ({
     purchasedIds: [],
   },
 
+  // Initialize gambler game state
+  gamblerGame: null,
+
   story: {
     seen: {},
     merchantPurchases: 0,
@@ -1001,6 +1007,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
     choices: [],
     purchasedIds: [],
   },
+
+  // Gambler game state
+  gamblerGame: null,
 
   // Achievements
   unlockedAchievements: [],
@@ -1826,7 +1835,26 @@ export const useGameStore = create<GameStore>((set, get) => ({
           choices: [],
           purchasedIds: [],
         }, // Load merchant trades
+        gamblerGame: null, // Always clear — interrupted game is a forfeit
       };
+
+      // Handle gambler game forfeit on reload
+      const savedGamblerGame = savedState.gamblerGame;
+      if (savedGamblerGame) {
+        logger.log('[GAMBLER] Game interrupted mid-play, treating as forfeit:', {
+          wager: savedGamblerGame.wager,
+        });
+        // Gold was already deducted when wager was placed; nothing to refund.
+        loadedState.log = [
+          ...(loadedState.log || []),
+          {
+            id: `gambler-forfeit-${Date.now()}`,
+            message: "The gambler took your silence as forfeit.",
+            timestamp: Date.now(),
+            type: "system" as const,
+          },
+        ];
+      }
 
       const savedExpeditionVillagers = savedState.expeditionVillagers || {};
       const strandedExpeditionVillagers = Object.values(

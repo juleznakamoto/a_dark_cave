@@ -12,6 +12,8 @@ import {
   isKnowledgeBonusMaxed,
 } from "@/game/rules/effectsStats";
 import { bloodMoonSacrificeAmount } from "@/game/cruelMode";
+import GamblerDiceDialog from "@/components/game/GamblerDiceDialog";
+import { getTotalLuck } from "@/game/rules/effectsCalculation";
 
 // Stat icon mapping
 const statIcons: Record<string, { icon: string; color: string }> = {
@@ -37,10 +39,14 @@ export default function TimedEventPanel() {
   const pauseStartRef = useRef<number>(0);
   const totalPausedMsRef = useRef<number>(0);
 
+  // Gambler dialog state
+  const [gamblerDialogOpen, setGamblerDialogOpen] = useState(false);
+
   // Get merchant trades from state (generated once when event starts)
   const isMerchantEvent = timedEventTab.event?.id.split("-")[0] === "merchant";
   const isCollectorEvent =
     timedEventTab.event?.id.split("-")[0] === "wandering_collector";
+  const isGamblerEvent = timedEventTab.event?.id.split("-")[0] === "gambler";
   const eventChoices: EventChoice[] = useMemo(() => {
     if (!timedEventTab.event) {
       lastLoggedEventId.current = null;
@@ -126,6 +132,23 @@ export default function TimedEventPanel() {
       setSafetyTimeRemaining(safetyRemaining);
 
       if (remaining <= 0) {
+        const currentState = useGameStore.getState();
+        if (event.id.split("-")[0] === "gambler" && currentState.gamblerGame) {
+          setGamblerDialogOpen(false);
+          useGameStore.setState((state) => ({
+            gamblerGame: null,
+            log: [
+              ...state.log,
+              {
+                id: `gambler-forfeit-${Date.now()}`,
+                message: "The gambler took your silence as forfeit.",
+                timestamp: Date.now(),
+                type: "system" as const,
+              },
+            ],
+          }));
+        }
+
         // Execute fallback choice when timer expires
         if (event) {
           const timedEventId = event.eventId || event.id.split("-")[0];
@@ -190,6 +213,10 @@ export default function TimedEventPanel() {
   };
 
   const handleChoice = (choiceId: string) => {
+    if (gameState.isPaused) {
+      return;
+    }
+
     setHighlightedResources([]); // Clear highlights before closing
 
     logger.log("[TIMED EVENT PANEL] handleChoice called:", {
@@ -208,6 +235,16 @@ export default function TimedEventPanel() {
     // For Trader's Gratitude: Accept opens the Shop (real-money) but event continues until time runs out or player declines
     if (eventId === "traders_gratitude" && choiceId === "accept_traders_gratitude") {
       setShopDialogOpen(true);
+      return;
+    }
+
+    // For gambler events: accept opens the dialog, decline closes tab
+    if (isGamblerEvent) {
+      if (choiceId === "accept") {
+        setGamblerDialogOpen(true);
+      } else {
+        setTimedEventTab(false);
+      }
       return;
     }
 
@@ -557,6 +594,56 @@ export default function TimedEventPanel() {
           </Button>
         )}
       </div>
+
+      {/* Gambler dice dialog */}
+      {isGamblerEvent && (
+        <GamblerDiceDialog
+          isOpen={gamblerDialogOpen}
+          hasBoneDice={!!gameState.relics?.bone_dice}
+          playerGold={gameState.resources?.gold ?? 0}
+          playerLuck={getTotalLuck(gameState)}
+          onWagerSelected={(wager) => {
+            useGameStore.setState((s) => ({
+              resources: { ...s.resources, gold: (s.resources?.gold ?? 0) - wager },
+              gamblerGame: { wager },
+            }));
+          }}
+          onComplete={(outcome, wager) => {
+            setGamblerDialogOpen(false);
+            if (outcome === "win") {
+              useGameStore.setState((s) => ({
+                resources: { ...s.resources, gold: (s.resources?.gold ?? 0) + wager * 2 },
+                gamblerGame: null,
+                log: [
+                  ...s.log,
+                  {
+                    id: `gambler-win-${Date.now()}`,
+                    message: `You won ${wager} gold from the gambler.`,
+                    timestamp: Date.now(),
+                    type: "system" as const,
+                  },
+                ],
+              }));
+            } else {
+              useGameStore.setState((s) => ({
+                gamblerGame: null,
+                log: [
+                  ...s.log,
+                  {
+                    id: `gambler-lose-${Date.now()}`,
+                    message: `You lost ${wager} gold to the gambler.`,
+                    timestamp: Date.now(),
+                    type: "system" as const,
+                  },
+                ],
+              }));
+            }
+          }}
+          onClose={() => {
+            setGamblerDialogOpen(false);
+          }}
+        />
+      )}
     </div>
   );
 }

@@ -2,6 +2,19 @@ import { describe, it, expect, beforeEach, vi } from "vitest";
 import { createInitialState, useGameStore, detectRewards, rewardDialogActions } from "./state";
 import { GameState } from "@shared/schema";
 
+const { mockLoadGame, mockSetLastGameLoadTime } = vi.hoisted(() => ({
+  mockLoadGame: vi.fn(),
+  mockSetLastGameLoadTime: vi.fn(),
+}));
+
+vi.mock("@/game/save", () => ({
+  loadGame: (...args: unknown[]) => mockLoadGame(...args),
+}));
+
+vi.mock("@/game/loop", () => ({
+  setLastGameLoadTime: (...args: unknown[]) => mockSetLastGameLoadTime(...args),
+}));
+
 describe("Focus State Management", () => {
   beforeEach(() => {
     useGameStore.getState().initialize();
@@ -493,5 +506,38 @@ describe("Reward Dialog System", () => {
         resources: { silver: 500, gold: 100, obsidian: 150, adamant: 100, moonstone: 25 },
       });
     });
+  });
+});
+
+describe("Gambler refresh protection", () => {
+  beforeEach(() => {
+    useGameStore.getState().initialize();
+    mockLoadGame.mockReset();
+    mockSetLastGameLoadTime.mockReset();
+  });
+
+  it("treats an interrupted gambler game as a forfeit on load", async () => {
+    const savedState = {
+      ...createInitialState(),
+      resources: {
+        ...createInitialState().resources,
+        gold: 50,
+      },
+      gamblerGame: { wager: 50 },
+      log: [],
+    } as ReturnType<typeof createInitialState> & {
+      gamblerGame: { wager: number };
+    };
+
+    mockLoadGame.mockResolvedValue(savedState);
+
+    await useGameStore.getState().loadGame();
+
+    expect(mockSetLastGameLoadTime).toHaveBeenCalled();
+    expect(useGameStore.getState().gamblerGame).toBeNull();
+    expect(useGameStore.getState().resources.gold).toBe(50);
+    expect(useGameStore.getState().log.at(-1)?.message).toBe(
+      "The gambler took your silence as forfeit.",
+    );
   });
 });

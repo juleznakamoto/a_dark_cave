@@ -45,6 +45,7 @@ import { woodcutterEvents } from "./eventsWoodcutter";
 import { fellowshipEvents } from "./eventsFellowship";
 import { attackWaveEvents } from "./eventsAttackWaves";
 import { riddleEvents } from "./eventsRiddles";
+import { gamblerEvents } from "./eventsGambler";
 
 // Register all actions with the central registry
 registerActions({
@@ -488,11 +489,11 @@ export function getActionCostDisplay(
       // Apply cost reductions using single source of truth
       const adjustedAmount = state
         ? getAdjustedCost(
-            actionId,
-            amount,
-            resource.startsWith("resources."),
-            state,
-          )
+          actionId,
+          amount,
+          resource.startsWith("resources."),
+          state,
+        )
         : amount;
 
       // Extract the clean resource name from paths like "resources.wood"
@@ -762,4 +763,5 @@ export const allEvents: Record<string, GameEvent> = {
   ...merchantEvents,
   ...fellowshipEvents,
   ...riddleEvents,
+  ...gamblerEvents,
 };

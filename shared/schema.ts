@@ -754,6 +754,13 @@ export const gameStateSchema = z.object({
     )
     .default([]),
 
+  gamblerGame: z
+    .object({
+      wager: z.number(),
+    })
+    .nullable()
+    .default(null),
+
   timedTabDuration: z.number().default(0),
 
   // Idle Mode state
