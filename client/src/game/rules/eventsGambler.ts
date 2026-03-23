@@ -9,7 +9,7 @@ export const gamblerEvents: Record<string, GameEvent> = {
     cooldownPercent: 0.5,
     title: "The Obsessed Gambler",
     message:
-      "A hooded figure sits cross-legged by the fire, eyes fixed on the dice as if the rest of the world has gone quiet. 'Place your bet,' he breathes with a crooked grin, 'and let's find out who the better player is.'",
+      "The gambler sits cross-legged by the fire, eyes fixed on the dice as if the rest of the world has gone quiet. 'Place your bet,' he breathes with a crooked grin, 'and let's find out who the better player is.'",
     priority: 2,
     repeatable: true,
     showAsTimedTab: true,
