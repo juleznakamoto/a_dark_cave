@@ -194,17 +194,13 @@ export const actionChartConfig: AchievementChartConfig = {
         },
       },
       {
-        segmentId: "0-callMerchant",
+        segmentId: "0-gamblerWins",
         maxCount: 10,
-        label: "Loyal Customer",
-        reward: 500,
-        getCount: (state: GameState) => {
-          const count = Math.min(
-            Number(state.story?.seen?.callMerchantUsageCount) || 0,
-            10,
-          );
-          return [1, 2].includes(count) ? 2 : count;
-        },
+        label: "The Better Player",
+        rewards: { gold: 50 },
+        getCount: (state: GameState) =>
+          Number(state.story?.seen?.gamblerWinsTotal) || 0,
+        segments: 10,
       },
       {
         segmentId: "4-feedFire",
