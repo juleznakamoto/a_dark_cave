@@ -124,6 +124,15 @@ export const basicChartConfig: AchievementChartConfig = {
         getCount: (state: GameState) =>
           Number(state.story?.seen?.maxPopulationReached) || 0,
       },
+      {
+        segmentId: "1-experiencedPlayer",
+        maxCount: 10,
+        label: "Experienced Player",
+        rewards: { gold: 50 },
+        getCount: (state: GameState) =>
+          Number(state.story?.seen?.gamblerWinsTotal) || 0,
+        segments: 10,
+      },
     ],
   ],
 };

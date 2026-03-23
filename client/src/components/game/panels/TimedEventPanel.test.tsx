@@ -151,8 +151,11 @@ describe("TimedEventPanel gambler coverage", () => {
     act(() => {
       fireEvent.click(screen.getByRole("button", { name: "Mock Wager" }));
     });
-    expect(useGameStore.getState().gamblerGame).toEqual({ wager: 50 });
-    expect(useGameStore.getState().resources.gold).toBe(50);
+    expect(useGameStore.getState().gamblerGame).toEqual({
+      wager: 50,
+      stakeNotYetDeducted: true,
+    });
+    expect(useGameStore.getState().resources.gold).toBe(100);
 
     act(() => {
       vi.advanceTimersByTime(300);

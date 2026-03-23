@@ -25,6 +25,8 @@ const SPIN_FACES = ["⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
 const ROLL_SPIN_MS_MIN = 400;
 const ROLL_SPIN_MS_MAX = 1000;
 const SPIN_INTERVAL = 60;
+/** Pause after the player's die settles before the gambler acts (not applied after Stop). */
+const PAUSE_MS_AFTER_PLAYER_ROLL = 500;
 
 function randomRollSpinDurationMs(): number {
   return (
@@ -134,6 +136,7 @@ export default function GamblerDiceDialog({
   const tieTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const totalsRef = useRef({ playerTotal: 0, npcTotal: 0, goal: INITIAL_GOAL });
   const npcTurnNonceRef = useRef(0);
+  const pauseAfterPlayerRollRef = useRef(false);
 
   const clearTimeoutRef = (timeoutRef: React.MutableRefObject<ReturnType<typeof setTimeout> | null>) => {
     if (timeoutRef.current) {
@@ -164,6 +167,7 @@ export default function GamblerDiceDialog({
     setNpcSpinning(false);
     outcomeReportedRef.current = false;
     setLockedDialogSize(null);
+    pauseAfterPlayerRollRef.current = false;
   }, [clearPendingTimeouts, hasBoneDice]);
 
   useEffect(() => {
@@ -223,11 +227,13 @@ export default function GamblerDiceDialog({
       setSpinning(false);
 
       if (result.status === "win") {
+        pauseAfterPlayerRollRef.current = true;
         setPhase("npcTurn");
       } else if (result.status === "bust") {
         setOutcome("lose");
         setPhase("outcome");
       } else {
+        pauseAfterPlayerRollRef.current = true;
         setPhase("npcTurn");
       }
       playerTimeoutRef.current = null;
@@ -253,11 +259,13 @@ export default function GamblerDiceDialog({
       setSpinning(false);
 
       if (result.status === "win") {
+        pauseAfterPlayerRollRef.current = true;
         setPhase("npcTurn");
       } else if (result.status === "bust") {
         setOutcome("lose");
         setPhase("outcome");
       } else {
+        pauseAfterPlayerRollRef.current = true;
         setPhase("npcTurn");
       }
       playerTimeoutRef.current = null;
@@ -266,6 +274,7 @@ export default function GamblerDiceDialog({
 
   const handleStand = () => {
     if (phase !== "playerTurn") return;
+    pauseAfterPlayerRollRef.current = false;
     setPhase("npcTurn");
   };
 
@@ -274,6 +283,8 @@ export default function GamblerDiceDialog({
 
     const myNonce = ++npcTurnNonceRef.current;
     let cancelled = false;
+    const delayMs = pauseAfterPlayerRollRef.current ? PAUSE_MS_AFTER_PLAYER_ROLL : 0;
+    pauseAfterPlayerRollRef.current = false;
 
     const t = setTimeout(() => {
       if (cancelled || !isOpenRef.current || myNonce !== npcTurnNonceRef.current) return;
@@ -377,19 +388,6 @@ export default function GamblerDiceDialog({
             <RulesInfoButton hasBoneDice={hasBoneDice} />
           </DialogTitle>
           <DialogDescription className="sr-only">Dice game against the obsessed gambler</DialogDescription>
-          {(phase === "playerTurn" || phase === "npcTurn" || phase === "tieEscalation") && (
-            <p className="text-[11px] text-muted-foreground font-medium pt-0.5" aria-live="polite">
-              {phase === "npcTurn"
-                ? npcSpinning
-                  ? "Obsessed Gambler rolls…"
-                  : "Obsessed Gambler's turn"
-                : phase === "tieEscalation"
-                  ? "Tie — next round"
-                  : spinning
-                    ? "Your roll…"
-                    : "Your turn"}
-            </p>
-          )}
         </DialogHeader>
 
         <div className="flex flex-1 flex-col min-h-0 overflow-y-auto">
@@ -455,14 +453,14 @@ export default function GamblerDiceDialog({
 
           {(phase === "playerTurn" || phase === "npcTurn" || phase === "tieEscalation") && (
             <div className="space-y-4 flex flex-col flex-1 min-h-0">
-              <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs text-muted-foreground shrink-0">
-                <span className="min-w-0 truncate">
+              <div className="flex flex-col gap-1 text-xs text-muted-foreground shrink-0">
+                <span>
                   Bet:{" "}
                   <span className="font-semibold text-foreground tabular-nums">
                     {wager} Gold
                   </span>
                 </span>
-                <span className="min-w-0 truncate text-right">
+                <span>
                   Points Goal:{" "}
                   <span className="font-semibold text-foreground tabular-nums">{goal}</span>
                 </span>
@@ -482,11 +480,7 @@ export default function GamblerDiceDialog({
                 </div>
               </div>
               <div className="text-center space-y-1">
-                <div className="text-xs text-muted-foreground leading-tight">
-                  Obsessed
-                  <br />
-                  Gambler
-                </div>
+                <div className="text-xs text-muted-foreground">Gambler</div>
                 <div
                   className="text-2xl font-bold tabular-nums"
                   data-testid="gambler-running-total"
@@ -559,14 +553,14 @@ export default function GamblerDiceDialog({
 
           {phase === "outcome" && outcome && (
             <div className="space-y-4 flex flex-col flex-1 min-h-0">
-              <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs text-muted-foreground">
-                <span className="min-w-0 truncate">
+              <div className="flex flex-col gap-1 text-xs text-muted-foreground">
+                <span>
                   Bet:{" "}
                   <span className="font-semibold text-foreground tabular-nums">
                     {wager} Gold
                   </span>
                 </span>
-                <span className="min-w-0 truncate text-right">
+                <span>
                   Points Goal:{" "}
                   <span className="font-semibold text-foreground tabular-nums">{goal}</span>
                 </span>
@@ -580,11 +574,7 @@ export default function GamblerDiceDialog({
                   </div>
                 </div>
                 <div className="text-center space-y-1">
-                  <div className="text-xs text-muted-foreground leading-tight">
-                    Obsessed
-                    <br />
-                    Gambler
-                  </div>
+                  <div className="text-xs text-muted-foreground">Gambler</div>
                   <div className={`text-2xl font-bold ${npcTotal > goal ? "text-red-400" : ""}`}>
                     {npcTotal}
                   </div>
@@ -603,9 +593,9 @@ export default function GamblerDiceDialog({
                 )}
               </div>
 
-              <div className="space-y-2 shrink-0">
+              <div className="shrink-0">
                 <div className="h-px w-full bg-white/10" />
-                <div className="text-center text-xs text-muted-foreground">
+                <div className="text-center text-xs text-foreground pt-4">
                   {outcome === "win" ? `+${wager} Gold` : `-${wager} Gold`}
                 </div>
               </div>

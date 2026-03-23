@@ -541,6 +541,30 @@ describe("Gambler refresh protection", () => {
     );
   });
 
+  it("deducts stake on load forfeit when wager was not yet taken from gold", async () => {
+    const savedState = {
+      ...createInitialState(),
+      resources: {
+        ...createInitialState().resources,
+        gold: 100,
+      },
+      gamblerGame: { wager: 50, stakeNotYetDeducted: true as const },
+      log: [],
+    } as ReturnType<typeof createInitialState> & {
+      gamblerGame: { wager: number; stakeNotYetDeducted: boolean };
+    };
+
+    mockLoadGame.mockResolvedValue(savedState);
+
+    await useGameStore.getState().loadGame();
+
+    expect(useGameStore.getState().gamblerGame).toBeNull();
+    expect(useGameStore.getState().resources.gold).toBe(50);
+    expect(useGameStore.getState().log.at(-1)?.message).toBe(
+      "The obsessed gambler took your silence as forfeit.",
+    );
+  });
+
   it("does not log forfeit when save had an already-resolved gambler outcome", async () => {
     const savedState = {
       ...createInitialState(),

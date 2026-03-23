@@ -759,6 +759,11 @@ export const gameStateSchema = z.object({
       wager: z.number(),
       /** Set once payouts are applied; timer/forfeit logic ignores resolved games. */
       outcome: z.enum(["win", "lose"]).optional(),
+      /**
+       * True when the wager was not yet taken from gold at bet time (current rules).
+       * Omitted/undefined = legacy saves where stake was deducted at wager; forfeit must not deduct again.
+       */
+      stakeNotYetDeducted: z.boolean().optional(),
     })
     .nullable()
     .default(null),

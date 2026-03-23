@@ -169,7 +169,11 @@ interface GameStore extends GameState {
   };
 
   // Active gambler dice game (persisted for refresh protection)
-  gamblerGame: { wager: number; outcome?: "win" | "lose" } | null;
+  gamblerGame: {
+    wager: number;
+    outcome?: "win" | "lose";
+    stakeNotYetDeducted?: boolean;
+  } | null;
 
   // Focus system
   focusState: FocusState;
@@ -1849,7 +1853,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
         logger.log('[GAMBLER] Game interrupted mid-play, treating as forfeit:', {
           wager: savedGamblerGame.wager,
         });
-        // Gold was already deducted when wager was placed; nothing to refund.
+        if (savedGamblerGame.stakeNotYetDeducted === true) {
+          const w = savedGamblerGame.wager;
+          loadedState.resources = {
+            ...loadedState.resources,
+            gold: Math.max(0, (loadedState.resources?.gold ?? 0) - w),
+          };
+        }
         loadedState.log = [
           ...(loadedState.log || []),
           {

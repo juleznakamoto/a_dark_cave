@@ -150,18 +150,26 @@ export default function TimedEventPanel() {
         // Mid-round forfeit only: resolved games already applied payouts in the store.
         if (gamblerPrefix && gg && gg.outcome == null) {
           setGamblerDialogOpen(false);
-          useGameStore.setState((state) => ({
-            gamblerGame: null,
-            log: [
-              ...state.log,
-              {
-                id: `gambler-forfeit-${Date.now()}`,
-                message: "The obsessed gambler took your silence as forfeit.",
-                timestamp: Date.now(),
-                type: "system" as const,
-              },
-            ],
-          }));
+          useGameStore.setState((state) => {
+            const takeStake = gg.stakeNotYetDeducted === true;
+            const w = gg.wager ?? 0;
+            const gold = state.resources?.gold ?? 0;
+            return {
+              gamblerGame: null,
+              resources: takeStake
+                ? { ...state.resources, gold: Math.max(0, gold - w) }
+                : state.resources,
+              log: [
+                ...state.log,
+                {
+                  id: `gambler-forfeit-${Date.now()}`,
+                  message: "The obsessed gambler took your silence as forfeit.",
+                  timestamp: Date.now(),
+                  type: "system" as const,
+                },
+              ],
+            };
+          });
         } else if (gamblerPrefix && gg?.outcome != null) {
           // Timer ran out on the outcome screen — close UI, clear marker (economics already done).
           setGamblerDialogOpen(false);
@@ -630,38 +638,59 @@ export default function TimedEventPanel() {
           playerLuck={getTotalLuck(gameState)}
           onWagerSelected={(wager) => {
             useGameStore.setState((s) => ({
-              resources: { ...s.resources, gold: (s.resources?.gold ?? 0) - wager },
-              gamblerGame: { wager },
+              gamblerGame: { wager, stakeNotYetDeducted: true },
             }));
           }}
           onOutcomeResolved={(outcome, wager) => {
             if (outcome === "win") {
-              useGameStore.setState((s) => ({
-                resources: { ...s.resources, gold: (s.resources?.gold ?? 0) + wager * 2 },
-                gamblerGame: { wager, outcome: "win" },
-                log: [
-                  ...s.log,
-                  {
-                    id: `gambler-win-${Date.now()}`,
-                    message: `You won ${wager} gold from the obsessed gambler.`,
-                    timestamp: Date.now(),
-                    type: "system" as const,
+              useGameStore.setState((s) => {
+                const gamblerWinsTotal =
+                  (Number(s.story?.seen?.gamblerWinsTotal) || 0) + 1;
+                return {
+                  resources: {
+                    ...s.resources,
+                    gold: (s.resources?.gold ?? 0) + wager,
                   },
-                ],
-              }));
+                  gamblerGame: { wager, outcome: "win" },
+                  story: {
+                    ...s.story,
+                    seen: {
+                      ...s.story?.seen,
+                      gamblerWinsTotal,
+                    },
+                  },
+                  log: [
+                    ...s.log,
+                    {
+                      id: `gambler-win-${Date.now()}`,
+                      message: `You won ${wager} gold from the obsessed gambler.`,
+                      timestamp: Date.now(),
+                      type: "system" as const,
+                    },
+                  ],
+                };
+              });
             } else {
-              useGameStore.setState((s) => ({
-                gamblerGame: { wager, outcome: "lose" },
-                log: [
-                  ...s.log,
-                  {
-                    id: `gambler-lose-${Date.now()}`,
-                    message: `You lost ${wager} gold to the obsessed gambler.`,
-                    timestamp: Date.now(),
-                    type: "system" as const,
+              useGameStore.setState((s) => {
+                const takeStake = s.gamblerGame?.stakeNotYetDeducted === true;
+                const gold = s.resources?.gold ?? 0;
+                return {
+                  resources: {
+                    ...s.resources,
+                    gold: takeStake ? Math.max(0, gold - wager) : gold,
                   },
-                ],
-              }));
+                  gamblerGame: { wager, outcome: "lose" },
+                  log: [
+                    ...s.log,
+                    {
+                      id: `gambler-lose-${Date.now()}`,
+                      message: `You lost ${wager} gold to the obsessed gambler.`,
+                      timestamp: Date.now(),
+                      type: "system" as const,
+                    },
+                  ],
+                };
+              });
             }
           }}
           onClose={() => {
