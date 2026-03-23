@@ -537,7 +537,7 @@ describe("Gambler refresh protection", () => {
     expect(useGameStore.getState().gamblerGame).toBeNull();
     expect(useGameStore.getState().resources.gold).toBe(50);
     expect(useGameStore.getState().log.at(-1)?.message).toBe(
-      "The gambler took your silence as forfeit.",
+      "The obsessed gambler took your silence as forfeit.",
     );
   });
 

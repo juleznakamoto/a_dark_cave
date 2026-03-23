@@ -3,7 +3,7 @@ import {
   rollDie,
   resolveRoll,
   shouldNpcRoll,
-  runNpcTurn,
+  npcRollOrStand,
   resolveShowdown,
   INITIAL_GOAL,
   GOAL_INCREMENT,
@@ -37,9 +37,9 @@ describe("resolveRoll", () => {
     expect(resolveRoll(12, 5, 15)).toEqual({ newTotal: 17, status: "bust" });
   });
 
-  it("works with escalated goal of 20", () => {
-    expect(resolveRoll(14, 6, 20)).toEqual({ newTotal: 20, status: "win" });
-    expect(resolveRoll(18, 5, 20)).toEqual({ newTotal: 23, status: "bust" });
+  it("works with escalated goal of 25", () => {
+    expect(resolveRoll(19, 6, 25)).toEqual({ newTotal: 25, status: "win" });
+    expect(resolveRoll(20, 6, 25)).toEqual({ newTotal: 26, status: "bust" });
   });
 });
 
@@ -57,40 +57,50 @@ describe("shouldNpcRoll", () => {
   });
 });
 
-describe("runNpcTurn", () => {
-  it("NPC stands immediately when already ahead", () => {
-    const result = runNpcTurn(13, 12, 15, makeRng([]));
-    expect(result.rolls).toEqual([]);
-    expect(result.finalTotal).toBe(13);
-    expect(result.status).toBe("playing");
+describe("npcRollOrStand", () => {
+  it("stands when already ahead or tied (no RNG)", () => {
+    expect(npcRollOrStand(13, 12, 15, makeRng([]))).toEqual({ kind: "stand" });
+    expect(npcRollOrStand(12, 12, 15, makeRng([]))).toEqual({ kind: "stand" });
   });
 
-  it("NPC rolls to catch up and stops when ahead", () => {
-    const result = runNpcTurn(5, 12, 15, makeRng([4, 4]));
-    expect(result.rolls).toEqual([4, 4]);
-    expect(result.finalTotal).toBe(13);
-    expect(result.status).toBe("playing");
+  it("rolls one die when behind", () => {
+    const step = npcRollOrStand(5, 12, 15, makeRng([4]));
+    expect(step).toMatchObject({
+      kind: "roll",
+      roll: 4,
+      newTotal: 9,
+      status: "playing",
+    });
   });
 
-  it("NPC hits goal exactly and wins", () => {
-    const result = runNpcTurn(10, 12, 15, makeRng([5]));
-    expect(result.rolls).toEqual([5]);
-    expect(result.finalTotal).toBe(15);
-    expect(result.status).toBe("win");
+  it("hits goal exactly and wins", () => {
+    const step = npcRollOrStand(10, 12, 15, makeRng([5]));
+    expect(step).toMatchObject({
+      kind: "roll",
+      roll: 5,
+      newTotal: 15,
+      status: "win",
+    });
   });
 
-  it("NPC busts while catching up", () => {
-    const result = runNpcTurn(11, 14, 15, makeRng([6]));
-    expect(result.rolls).toEqual([6]);
-    expect(result.finalTotal).toBe(17);
-    expect(result.status).toBe("bust");
+  it("busts on one roll", () => {
+    const step = npcRollOrStand(11, 14, 15, makeRng([6]));
+    expect(step).toMatchObject({
+      kind: "roll",
+      roll: 6,
+      newTotal: 17,
+      status: "bust",
+    });
   });
 
-  it("NPC stands on tie with player", () => {
-    const result = runNpcTurn(12, 12, 15, makeRng([]));
-    expect(result.rolls).toEqual([]);
-    expect(result.finalTotal).toBe(12);
-    expect(result.status).toBe("playing");
+  it("with escalated goal, rolls a single die", () => {
+    const step = npcRollOrStand(12, 18, 25, makeRng([3]));
+    expect(step).toMatchObject({
+      kind: "roll",
+      roll: 3,
+      newTotal: 15,
+      status: "playing",
+    });
   });
 });
 
@@ -109,30 +119,23 @@ describe("resolveShowdown", () => {
 });
 
 describe("tie escalation", () => {
-  it("goal increases by 5 on tie", () => {
+  it("goal increases by 10 on tie", () => {
     const goal = INITIAL_GOAL;
     const result = resolveShowdown(12, 12, goal);
     expect(result).toBe("tie");
     const newGoal = goal + GOAL_INCREMENT;
-    expect(newGoal).toBe(20);
+    expect(newGoal).toBe(25);
   });
 
-  it("multi-tie escalation works (15 -> 20 -> 25)", () => {
+  it("multi-tie escalation works (15 -> 25 -> 35)", () => {
     let goal = INITIAL_GOAL;
 
     goal += GOAL_INCREMENT;
-    expect(goal).toBe(20);
-    expect(resolveRoll(18, 2, goal)).toEqual({ newTotal: 20, status: "win" });
+    expect(goal).toBe(25);
+    expect(resolveRoll(23, 2, goal)).toEqual({ newTotal: 25, status: "win" });
 
     goal += GOAL_INCREMENT;
-    expect(goal).toBe(25);
-    expect(resolveRoll(22, 4, goal)).toEqual({ newTotal: 26, status: "bust" });
-  });
-
-  it("NPC plays correctly with escalated goal", () => {
-    const result = runNpcTurn(12, 18, 20, makeRng([3, 4]));
-    expect(result.rolls).toEqual([3, 4]);
-    expect(result.finalTotal).toBe(19);
-    expect(result.status).toBe("playing");
+    expect(goal).toBe(35);
+    expect(resolveRoll(31, 5, goal)).toEqual({ newTotal: 36, status: "bust" });
   });
 });

@@ -11,7 +11,7 @@ export const WAGER_LUCK_THRESHOLDS: Record<WagerTier, number> = {
 };
 
 export const INITIAL_GOAL = 15;
-export const GOAL_INCREMENT = 5;
+export const GOAL_INCREMENT = 10;
 
 export type RollStatus = "playing" | "win" | "bust";
 export type ShowdownResult = "playerWin" | "npcWin" | "tie";
@@ -44,37 +44,25 @@ export function shouldNpcRoll(
   return npcTotal < playerTotal;
 }
 
-export interface NpcTurnResult {
-  rolls: number[];
-  finalTotal: number;
-  status: RollStatus;
-}
+/** One NPC decision per turn: roll a single die, or stand (no roll). */
+export type NpcTurnStep =
+  | { kind: "stand" }
+  | { kind: "roll"; roll: number; newTotal: number; status: RollStatus };
 
-export function runNpcTurn(
-  npcStartTotal: number,
+export function npcRollOrStand(
+  npcTotal: number,
   playerTotal: number,
   goal: number,
   rng: RngFn = defaultRng,
-): NpcTurnResult {
-  const rolls: number[] = [];
-  let total = npcStartTotal;
-  let status: RollStatus = "playing";
-
-  while (shouldNpcRoll(total, playerTotal, goal)) {
-    const roll = rollDie(rng);
-    rolls.push(roll);
-    const result = resolveRoll(total, roll, goal);
-    total = result.newTotal;
-    status = result.status;
-    if (status !== "playing") break;
+): NpcTurnStep {
+  if (!shouldNpcRoll(npcTotal, playerTotal, goal)) {
+    return { kind: "stand" };
   }
-
-  if (status === "playing" && total === goal) {
-    status = "win";
-  }
-
-  return { rolls, finalTotal: total, status };
+  const roll = rollDie(rng);
+  const { newTotal, status } = resolveRoll(npcTotal, roll, goal);
+  return { kind: "roll", roll, newTotal, status };
 }
+
 
 export function resolveShowdown(
   playerTotal: number,

@@ -41,7 +41,7 @@ function makeGamblerEvent(overrides: Record<string, unknown> = {}) {
   return {
     id: "gambler-123",
     eventId: "gambler",
-    title: "The Gambler",
+    title: "The Obsessed Gambler",
     message: "Try your luck.",
     choices: [
       { id: "accept", label: "Accept", effect: () => ({}) },
@@ -167,7 +167,7 @@ describe("TimedEventPanel gambler coverage", () => {
     expect(setHighlightedResources).toHaveBeenCalledWith([]);
     expect(useGameStore.getState().gamblerGame).toBeNull();
     expect(useGameStore.getState().log.at(-1)?.message).toBe(
-      "The gambler took your silence as forfeit.",
+      "The obsessed gambler took your silence as forfeit.",
     );
     expect(screen.getByTestId("gambler-dialog")).toHaveAttribute(
       "data-open",

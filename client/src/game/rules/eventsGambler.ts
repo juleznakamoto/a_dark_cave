@@ -7,9 +7,9 @@ export const gamblerEvents: Record<string, GameEvent> = {
     condition: (state: GameState) => state.buildings.woodenHut >= 4,
     timeProbability: 50,
     cooldownPercent: 0.5,
-    title: "The Gambler",
+    title: "The Obsessed Gambler",
     message:
-      "A hooded figure sits cross-legged by the fire, rattling a cup of dice. 'Care for a game of chance?' he asks with a crooked grin.",
+      "A hooded figure sits cross-legged by the fire, eyes fixed on the dice as if the rest of the world has gone quiet. 'Place your bet,' he breathes with a crooked grin, 'and let's find out who the better player is.'",
     priority: 2,
     repeatable: true,
     showAsTimedTab: true,
@@ -20,7 +20,7 @@ export const gamblerEvents: Record<string, GameEvent> = {
       effect: () =>
         ({
           _logMessage:
-            "The gambler shrugs, pockets his dice, and disappears into the night.",
+            "The obsessed gambler shrugs, pockets his dice, and slips into the dark without another word.",
         }) as any,
     },
     choices: [
@@ -35,7 +35,7 @@ export const gamblerEvents: Record<string, GameEvent> = {
         effect: () =>
           ({
             _logMessage:
-              "The gambler shrugs, pockets his dice, and disappears into the night.",
+              "The obsessed gambler shrugs, pockets his dice, and slips into the dark without another word.",
           }) as any,
       },
     ],

@@ -275,6 +275,7 @@ export function startGameLoop() {
       state.combatDialog.isOpen ||
       state.authDialogOpen ||
       state.shopDialogOpen ||
+      state.gamblerDiceDialogOpen ||
       state.leaderboardDialogOpen ||
       state.fullGamePurchaseDialogOpen ||
       state.idleModeDialog.isOpen ||

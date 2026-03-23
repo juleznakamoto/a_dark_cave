@@ -79,6 +79,8 @@ interface GameStore extends GameState {
   };
   authDialogOpen: boolean;
   shopDialogOpen: boolean;
+  /** True while the obsessed gambler dice minigame UI is open (freezes production like other modal dialogs). */
+  gamblerDiceDialogOpen: boolean;
   leaderboardDialogOpen: boolean;
   fullGamePurchaseDialogOpen: boolean;
   idleModeDialog: {
@@ -260,6 +262,7 @@ interface GameStore extends GameState {
   callMerchant: () => void;
   setAuthDialogOpen: (isOpen: boolean) => void;
   setShopDialogOpen: (isOpen: boolean) => void;
+  setGamblerDiceDialogOpen: (isOpen: boolean) => void;
   setLeaderboardDialogOpen: (isOpen: boolean) => void;
   setFullGamePurchaseDialogOpen: (isOpen: boolean) => void;
   setIdleModeDialog: (isOpen: boolean) => void;
@@ -955,6 +958,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
   authDialogOpen: false,
   shopDialogOpen: false,
+  gamblerDiceDialogOpen: false,
   leaderboardDialogOpen: false,
   fullGamePurchaseDialogOpen: false,
   musicMuted: false,
@@ -1591,6 +1595,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         event: null,
         expiryTime: 0,
       },
+      gamblerDiceDialogOpen: false,
 
       // Recalculate derived state
       effects: calculateTotalEffects({ ...defaultGameState, ...preserved }),
@@ -1849,7 +1854,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
           ...(loadedState.log || []),
           {
             id: `gambler-forfeit-${Date.now()}`,
-            message: "The gambler took your silence as forfeit.",
+            message: "The obsessed gambler took your silence as forfeit.",
             timestamp: Date.now(),
             type: "system" as const,
           },
@@ -2504,6 +2509,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   setShopDialogOpen: (isOpen: boolean) => {
     set({ shopDialogOpen: isOpen });
+  },
+
+  setGamblerDiceDialogOpen: (isOpen: boolean) => {
+    set({ gamblerDiceDialogOpen: isOpen });
   },
 
   setLeaderboardDialogOpen: (isOpen: boolean) => {

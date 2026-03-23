@@ -5,24 +5,6 @@ import React from "react";
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import { beforeEach, afterEach, describe, expect, it, vi } from "vitest";
 
-const { mockRollDie, mockRunNpcTurn } = vi.hoisted(() => ({
-  mockRollDie: vi.fn(),
-  mockRunNpcTurn: vi.fn(),
-}));
-
-vi.mock("@/game/diceFifteenGame", async () => {
-  const actual =
-    await vi.importActual<typeof import("@/game/diceFifteenGame")>(
-      "@/game/diceFifteenGame",
-    );
-
-  return {
-    ...actual,
-    rollDie: (...args: unknown[]) => mockRollDie(...args),
-    runNpcTurn: (...args: unknown[]) => mockRunNpcTurn(...args),
-  };
-});
-
 vi.mock("@/components/game/TooltipWrapper", () => ({
   TooltipWrapper: ({ children }: { children: React.ReactElement }) => children,
 }));
@@ -35,17 +17,26 @@ vi.mock("@/components/ui/dialog", () => ({
     open: boolean;
     children: React.ReactNode;
   }) => (open ? <div>{children}</div> : null),
-  DialogContent: ({
-    children,
-    onPointerDownOutside: _onPointerDownOutside,
-    onEscapeKeyDown: _onEscapeKeyDown,
-    ...props
-  }: {
-    children: React.ReactNode;
-    onPointerDownOutside?: unknown;
-    onEscapeKeyDown?: unknown;
-    [key: string]: unknown;
-  }) => <div {...props}>{children}</div>,
+  DialogContent: React.forwardRef(function DialogContentMock(
+    {
+      children,
+      onPointerDownOutside: _onPointerDownOutside,
+      onEscapeKeyDown: _onEscapeKeyDown,
+      ...props
+    }: {
+      children: React.ReactNode;
+      onPointerDownOutside?: unknown;
+      onEscapeKeyDown?: unknown;
+      [key: string]: unknown;
+    },
+    ref: React.Ref<HTMLDivElement>,
+  ) {
+    return (
+      <div ref={ref} {...props}>
+        {children}
+      </div>
+    );
+  }),
   DialogHeader: ({ children }: { children: React.ReactNode }) => (
     <div>{children}</div>
   ),
@@ -77,8 +68,7 @@ describe("GamblerDiceDialog", () => {
       })),
     });
 
-    mockRollDie.mockReset();
-    mockRunNpcTurn.mockReset();
+    vi.restoreAllMocks();
   });
 
   afterEach(() => {
@@ -86,17 +76,7 @@ describe("GamblerDiceDialog", () => {
     vi.useRealTimers();
   });
 
-  it("does not double-count prior NPC rolls during animated turns", async () => {
-    mockRollDie
-      .mockReturnValueOnce(6)
-      .mockReturnValueOnce(6);
-
-    mockRunNpcTurn.mockReturnValue({
-      rolls: [4, 4, 4, 1],
-      finalTotal: 13,
-      status: "playing",
-    });
-
+  it("alternates one player roll then one NPC roll (single die on NPC turn)", () => {
     render(
       <GamblerDiceDialog
         isOpen={true}
@@ -115,34 +95,24 @@ describe("GamblerDiceDialog", () => {
 
     act(() => {
       fireEvent.click(screen.getByRole("button", { name: /^roll$/i }));
-      vi.advanceTimersByTime(600);
-    });
-
-    act(() => {
-      fireEvent.click(screen.getByRole("button", { name: /^roll$/i }));
-      vi.advanceTimersByTime(600);
-    });
-
-    act(() => {
-      fireEvent.click(screen.getByRole("button", { name: /stand/i }));
-    });
-
-    for (let i = 0; i < 4; i += 1) {
-      act(() => {
-        vi.advanceTimersByTime(600);
-      });
-    }
-
-    act(() => {
-      vi.advanceTimersByTime(400);
+      vi.advanceTimersByTime(1000);
     });
 
     act(() => {
       vi.runOnlyPendingTimers();
     });
+    act(() => {
+      vi.advanceTimersByTime(1000);
+    });
 
-    expect(screen.getByText(/you lose\./i)).toBeInTheDocument();
-    expect(screen.getByText("13")).toBeInTheDocument();
-    expect(screen.queryByText("24")).not.toBeInTheDocument();
+    const playerRunning = Number(
+      screen.getByTestId("player-running-total").textContent,
+    );
+    const npcRunning = Number(screen.getByTestId("gambler-running-total").textContent);
+    expect(playerRunning).toBeGreaterThanOrEqual(1);
+    expect(playerRunning).toBeLessThanOrEqual(6);
+    expect(npcRunning).toBeGreaterThanOrEqual(1);
+    expect(npcRunning).toBeLessThanOrEqual(6);
+    expect(screen.getByRole("button", { name: /^roll$/i })).toBeInTheDocument();
   });
 });

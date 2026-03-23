@@ -29,6 +29,7 @@ export default function TimedEventPanel() {
     setTimedEventTab,
     setHighlightedResources,
     setShopDialogOpen,
+    setGamblerDiceDialogOpen,
   } = useGameStore();
   const gameState = useGameStore();
 
@@ -41,6 +42,11 @@ export default function TimedEventPanel() {
 
   // Gambler dialog state
   const [gamblerDialogOpen, setGamblerDialogOpen] = useState(false);
+
+  useEffect(() => {
+    setGamblerDiceDialogOpen(gamblerDialogOpen);
+    return () => setGamblerDiceDialogOpen(false);
+  }, [gamblerDialogOpen, setGamblerDiceDialogOpen]);
 
   // Get merchant trades from state (generated once when event starts)
   const isMerchantEvent = timedEventTab.event?.id.split("-")[0] === "merchant";
@@ -150,7 +156,7 @@ export default function TimedEventPanel() {
               ...state.log,
               {
                 id: `gambler-forfeit-${Date.now()}`,
-                message: "The gambler took your silence as forfeit.",
+                message: "The obsessed gambler took your silence as forfeit.",
                 timestamp: Date.now(),
                 type: "system" as const,
               },
@@ -637,7 +643,7 @@ export default function TimedEventPanel() {
                   ...s.log,
                   {
                     id: `gambler-win-${Date.now()}`,
-                    message: `You won ${wager} gold from the gambler.`,
+                    message: `You won ${wager} gold from the obsessed gambler.`,
                     timestamp: Date.now(),
                     type: "system" as const,
                   },
@@ -650,7 +656,7 @@ export default function TimedEventPanel() {
                   ...s.log,
                   {
                     id: `gambler-lose-${Date.now()}`,
-                    message: `You lost ${wager} gold to the gambler.`,
+                    message: `You lost ${wager} gold to the obsessed gambler.`,
                     timestamp: Date.now(),
                     type: "system" as const,
                   },
