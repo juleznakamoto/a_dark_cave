@@ -347,213 +347,213 @@ export default function GamblerDiceDialog({
         </DialogHeader>
 
         <div className="flex flex-1 flex-col min-h-0 overflow-y-auto">
-        {phase === "wager" && (
-          <div className="space-y-3">
-            <p className="text-xs text-muted-foreground">
-              Place your wager. The goal starts at {INITIAL_GOAL}, ties raise it by {GOAL_INCREMENT}, and going over loses the round.
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {WAGER_TIERS.map((tier) => {
-                const requiredLuck = WAGER_LUCK_THRESHOLDS[tier];
-                const isUnlocked = playerLuck >= requiredLuck;
-                const canAfford = playerGold >= tier;
-                const isDisabled = !isUnlocked || !canAfford;
+          {phase === "wager" && (
+            <div className="space-y-3">
+              <p className="text-xs text-muted-foreground">
+                Place your wager. The goal starts at {INITIAL_GOAL}, ties raise it by {GOAL_INCREMENT}, and going over loses the round.
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {WAGER_TIERS.map((tier) => {
+                  const requiredLuck = WAGER_LUCK_THRESHOLDS[tier];
+                  const isUnlocked = playerLuck >= requiredLuck;
+                  const canAfford = playerGold >= tier;
+                  const isDisabled = !isUnlocked || !canAfford;
 
-                const button = (
-                  <Button
-                    key={tier}
-                    variant="outline"
-                    size="xs"
-                    disabled={isDisabled}
-                    onClick={() => handleWager(tier)}
-                    className={`text-xs ${!isUnlocked ? "opacity-40" : ""}`}
-                    button_id={`gambler-wager-${tier}`}
-                  >
-                    {tier} gold
-                  </Button>
-                );
-
-                if (!isUnlocked) {
-                  return (
-                    <TooltipWrapper
+                  const button = (
+                    <Button
                       key={tier}
-                      tooltip={
-                        <div className="text-xs">
-                          Requires {requiredLuck} Luck to unlock
-                        </div>
-                      }
-                      tooltipId={`gambler-wager-lock-${tier}`}
-                      disabled={true}
+                      variant="outline"
+                      size="xs"
+                      disabled={isDisabled}
+                      onClick={() => handleWager(tier)}
+                      className={`text-xs ${!isUnlocked ? "opacity-40" : ""}`}
+                      button_id={`gambler-wager-${tier}`}
                     >
-                      {button}
-                    </TooltipWrapper>
+                      {tier} gold
+                    </Button>
                   );
-                }
 
-                return button;
-              })}
-            </div>
-            <div className="flex justify-end">
-              <Button
-                variant="outline"
-                size="xs"
-                onClick={onClose}
-                className="text-xs font-medium text-foreground border-amber-900/50 hover:bg-amber-950/30 hover:text-foreground"
-                button_id="gambler-close-wager"
-              >
-                Close
-              </Button>
-            </div>
-          </div>
-        )}
+                  if (!isUnlocked) {
+                    return (
+                      <TooltipWrapper
+                        key={tier}
+                        tooltip={
+                          <div className="text-xs">
+                            Requires {requiredLuck} Luck to unlock
+                          </div>
+                        }
+                        tooltipId={`gambler-wager-lock-${tier}`}
+                        disabled={true}
+                      >
+                        {button}
+                      </TooltipWrapper>
+                    );
+                  }
 
-        {(phase === "playerTurn" || phase === "npcTurn" || phase === "tieEscalation") && (
-          <div className="space-y-4 flex flex-col flex-1 min-h-0">
-            <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs text-muted-foreground shrink-0">
-              <span className="min-w-0 truncate">
-                Gold to win:{" "}
-                <span className="font-medium text-foreground tabular-nums">{wager}</span>{" "}
-                gold
-              </span>
-              <span className="min-w-0 truncate text-right">
-                Points Goal:{" "}
-                <span className="font-medium text-foreground tabular-nums">{goal}</span>
-              </span>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4 min-h-[9.5rem] content-start">
-              <div className="text-center space-y-1">
-                <div className="text-xs text-muted-foreground">You</div>
-                <div className="text-2xl font-bold tabular-nums">{playerTotal}</div>
-                <div className="h-10 flex items-center justify-center">
-                  <DiceFace value={playerLastRoll} spinning={spinning} />
-                </div>
+                  return button;
+                })}
               </div>
-              <div className="text-center space-y-1">
-                <div className="text-xs text-muted-foreground">Gambler</div>
-                <div className="text-2xl font-bold tabular-nums">{npcTotal}</div>
-                <div className="h-10 flex items-center justify-center">
-                  <DiceFace value={npcLastRoll} spinning={npcSpinning} />
-                </div>
-              </div>
-            </div>
-
-            {phase === "tieEscalation" && (
-              <div className="text-center text-xs text-amber-300/80">
-                Tie! Points goal raised to {goal + GOAL_INCREMENT}...
-              </div>
-            )}
-
-            {phase === "playerTurn" && !spinning && (
-              <div className="flex gap-2 justify-center">
+              <div className="flex justify-end">
                 <Button
                   variant="outline"
                   size="xs"
-                  onClick={handlePlayerRoll}
-                  className="text-xs"
-                  button_id="gambler-roll"
+                  onClick={onClose}
+                  className="text-xs font-medium text-foreground border-amber-900/50 hover:bg-amber-950/30 hover:text-foreground"
+                  button_id="gambler-close-wager"
                 >
-                  Roll
+                  Close
                 </Button>
-                {hasRolledOnce && (
+              </div>
+            </div>
+          )}
+
+          {(phase === "playerTurn" || phase === "npcTurn" || phase === "tieEscalation") && (
+            <div className="space-y-4 flex flex-col flex-1 min-h-0">
+              <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs text-muted-foreground shrink-0">
+                <span className="min-w-0 truncate">
+                  Gold to win:{" "}
+                  <span className="font-medium text-foreground tabular-nums">{wager}</span>{" "}
+                  gold
+                </span>
+                <span className="min-w-0 truncate text-right">
+                  Points Goal:{" "}
+                  <span className="font-medium text-foreground tabular-nums">{goal}</span>
+                </span>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4 min-h-[9.5rem] content-start">
+                <div className="text-center space-y-1">
+                  <div className="text-xs text-muted-foreground">You</div>
+                  <div className="text-2xl font-bold tabular-nums">{playerTotal}</div>
+                  <div className="h-10 flex items-center justify-center">
+                    <DiceFace value={playerLastRoll} spinning={spinning} />
+                  </div>
+                </div>
+                <div className="text-center space-y-1">
+                  <div className="text-xs text-muted-foreground">Gambler</div>
+                  <div className="text-2xl font-bold tabular-nums">{npcTotal}</div>
+                  <div className="h-10 flex items-center justify-center">
+                    <DiceFace value={npcLastRoll} spinning={npcSpinning} />
+                  </div>
+                </div>
+              </div>
+
+              {phase === "tieEscalation" && (
+                <div className="text-center text-xs text-amber-300/80">
+                  Tie! Points goal raised to {goal + GOAL_INCREMENT}...
+                </div>
+              )}
+
+              {phase === "playerTurn" && !spinning && (
+                <div className="flex gap-2 justify-center">
                   <Button
                     variant="outline"
                     size="xs"
-                    onClick={handleStand}
+                    onClick={handlePlayerRoll}
                     className="text-xs"
-                    button_id="gambler-stand"
+                    button_id="gambler-roll"
                   >
-                    Stand
+                    Roll
                   </Button>
-                )}
-                {hasReroll && playerLastRoll !== null && (
-                  <Button
-                    variant="outline"
-                    size="xs"
-                    onClick={handleReroll}
-                    className="text-xs text-amber-300/80 border-amber-900/50"
-                    button_id="gambler-reroll"
-                  >
-                    Re-roll
-                  </Button>
-                )}
-              </div>
-            )}
-
-            {phase === "npcTurn" && (
-              <div className="text-center text-xs text-muted-foreground">
-                Gambler rolls one die at a time.
-              </div>
-            )}
-
-            {hasBoneDice && (
-              <div className="text-center text-xs text-muted-foreground">
-                {hasReroll ? (
-                  <span className="text-amber-300/60">Bone dice: 1 re-roll available</span>
-                ) : (
-                  <span className="text-muted-foreground/40">Bone dice: used</span>
-                )}
-              </div>
-            )}
-          </div>
-        )}
-
-        {phase === "outcome" && outcome && (
-          <div className="space-y-4 flex flex-col flex-1 min-h-0">
-            <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs text-muted-foreground">
-              <span className="min-w-0 truncate">
-                Gold to win:{" "}
-                <span className="font-medium text-foreground tabular-nums">{wager}</span>{" "}
-                gold
-              </span>
-              <span className="min-w-0 truncate text-right">
-                Points Goal:{" "}
-                <span className="font-medium text-foreground tabular-nums">{goal}</span>
-              </span>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div className="text-center space-y-1">
-                <div className="text-xs text-muted-foreground">You</div>
-                <div className={`text-2xl font-bold ${playerTotal > goal ? "text-red-400" : ""}`}>
-                  {playerTotal}
+                  {hasRolledOnce && (
+                    <Button
+                      variant="outline"
+                      size="xs"
+                      onClick={handleStand}
+                      className="text-xs"
+                      button_id="gambler-stand"
+                    >
+                      Stand
+                    </Button>
+                  )}
+                  {hasReroll && playerLastRoll !== null && (
+                    <Button
+                      variant="outline"
+                      size="xs"
+                      onClick={handleReroll}
+                      className="text-xs text-amber-300/80 border-amber-900/50"
+                      button_id="gambler-reroll"
+                    >
+                      Re-roll
+                    </Button>
+                  )}
                 </div>
-              </div>
-              <div className="text-center space-y-1">
-                <div className="text-xs text-muted-foreground">Gambler</div>
-                <div className={`text-2xl font-bold ${npcTotal > goal ? "text-red-400" : ""}`}>
-                  {npcTotal}
-                </div>
-              </div>
-            </div>
+              )}
 
-            <div className="text-center space-y-1">
-              {outcome === "win" ? (
-                <>
-                  <div className="text-sm text-amber-300">You win!</div>
-                  <div className="text-xs text-muted-foreground">+{wager} gold</div>
-                </>
-              ) : (
-                <>
-                  <div className="text-sm text-red-400">You lose.</div>
-                  <div className="text-xs text-muted-foreground">-{wager} gold</div>
-                </>
+              {phase === "npcTurn" && (
+                <div className="text-center text-xs text-muted-foreground">
+                  Gambler rolls one die at a time.
+                </div>
+              )}
+
+              {hasBoneDice && (
+                <div className="text-center text-xs text-muted-foreground">
+                  {hasReroll ? (
+                    <span className="text-amber-300/60">Bone dice: 1 re-roll available</span>
+                  ) : (
+                    <span className="text-muted-foreground/40">Bone dice: used</span>
+                  )}
+                </div>
               )}
             </div>
+          )}
 
-            <div className="flex justify-center">
-              <Button
-                variant="outline"
-                size="xs"
-                onClick={handleOutcomeClose}
-                className="text-xs"
-                button_id="gambler-outcome-close"
-              >
-                Close
-              </Button>
+          {phase === "outcome" && outcome && (
+            <div className="space-y-4 flex flex-col flex-1 min-h-0">
+              <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs text-muted-foreground">
+                <span className="min-w-0 truncate">
+                  Gold to win:{" "}
+                  <span className="font-medium text-foreground tabular-nums">{wager}</span>{" "}
+                  gold
+                </span>
+                <span className="min-w-0 truncate text-right">
+                  Points Goal:{" "}
+                  <span className="font-medium text-foreground tabular-nums">{goal}</span>
+                </span>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="text-center space-y-1">
+                  <div className="text-xs text-muted-foreground">You</div>
+                  <div className={`text-2xl font-bold ${playerTotal > goal ? "text-red-400" : ""}`}>
+                    {playerTotal}
+                  </div>
+                </div>
+                <div className="text-center space-y-1">
+                  <div className="text-xs text-muted-foreground">Gambler</div>
+                  <div className={`text-2xl font-bold ${npcTotal > goal ? "text-red-400" : ""}`}>
+                    {npcTotal}
+                  </div>
+                </div>
+              </div>
+
+              <div className="text-center space-y-1">
+                {outcome === "win" ? (
+                  <>
+                    <div className="text-sm text-amber-300">You win!</div>
+                    <div className="text-xs text-muted-foreground">+{wager} gold</div>
+                  </>
+                ) : (
+                  <>
+                    <div className="text-sm text-red-400">You lose.</div>
+                    <div className="text-xs text-muted-foreground">-{wager} gold</div>
+                  </>
+                )}
+              </div>
+
+              <div className="flex justify-center">
+                <Button
+                  variant="outline"
+                  size="xs"
+                  onClick={handleOutcomeClose}
+                  className="text-xs"
+                  button_id="gambler-outcome-close"
+                >
+                  Close
+                </Button>
+              </div>
             </div>
-          </div>
-        )}
+          )}
         </div>
       </DialogContent>
     </Dialog>
