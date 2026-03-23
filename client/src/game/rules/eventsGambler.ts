@@ -20,7 +20,7 @@ export const gamblerEvents: Record<string, GameEvent> = {
       effect: () =>
         ({
           _logMessage:
-            "The obsessed gambler shrugs, pockets his dice, and slips into the dark without another word.",
+            "The gambler shrugs, pockets his dice, and slips into the dark without another word.",
         }) as any,
     },
     choices: [
@@ -35,7 +35,7 @@ export const gamblerEvents: Record<string, GameEvent> = {
         effect: () =>
           ({
             _logMessage:
-              "The obsessed gambler shrugs, pockets his dice, and slips into the dark without another word.",
+              "The gambler shrugs, pockets his dice, and slips into the dark without another word.",
           }) as any,
       },
     ],

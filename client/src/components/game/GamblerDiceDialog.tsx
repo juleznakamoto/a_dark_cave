@@ -69,7 +69,9 @@ function DiceFace({
     return <span className="text-3xl opacity-30">⚀</span>;
   }
 
-  const face = spinning ? SPIN_FACES[displayFace] : DICE_FACES[(value ?? 1) - 1];
+  const face = spinning
+    ? SPIN_FACES[displayFace]
+    : DICE_FACES[(value ?? 1) - 1];
   return <span className="text-3xl">{face}</span>;
 }
 
@@ -78,15 +80,27 @@ function RulesInfoButton({ hasBoneDice }: { hasBoneDice: boolean }) {
     <TooltipWrapper
       tooltip={
         <div className="text-xs space-y-1 max-w-[200px]">
-          <p>Roll dice to reach the <strong>current goal</strong> without going over.</p>
-          <p>The goal starts at <strong>15</strong>.</p>
+          <p>
+            Roll dice to reach the <strong>current goal</strong> without going
+            over.
+          </p>
+          <p>
+            The goal starts at <strong>15</strong>.
+          </p>
           <p>Exceed the goal and you lose.</p>
-          <p>Hit the goal exactly to lock your total — the obsessed gambler still gets a turn (matching the goal ties and raises it).</p>
-          <p>You and he take turns rolling <strong>one die</strong> each.</p>
+          <p>
+            Hit the goal exactly to lock your total — the obsessed gambler still
+            gets a turn (matching the goal ties and raises it).
+          </p>
+          <p>
+            You and he take turns rolling <strong>one die</strong> each.
+          </p>
           <p>If both stand, the higher total wins.</p>
           <p>On a tie, the goal raises by {GOAL_INCREMENT}.</p>
           {hasBoneDice && (
-            <p className="text-amber-300/80">Bone Dice: re-roll once per game.</p>
+            <p className="text-amber-300/80">
+              Bone Dice: re-roll once per game.
+            </p>
           )}
         </div>
       }
@@ -138,7 +152,9 @@ export default function GamblerDiceDialog({
   const npcTurnNonceRef = useRef(0);
   const pauseAfterPlayerRollRef = useRef(false);
 
-  const clearTimeoutRef = (timeoutRef: React.MutableRefObject<ReturnType<typeof setTimeout> | null>) => {
+  const clearTimeoutRef = (
+    timeoutRef: React.MutableRefObject<ReturnType<typeof setTimeout> | null>,
+  ) => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
       timeoutRef.current = null;
@@ -241,7 +257,13 @@ export default function GamblerDiceDialog({
   };
 
   const handleReroll = () => {
-    if (!hasReroll || playerLastRoll === null || spinning || phase !== "playerTurn") return;
+    if (
+      !hasReroll ||
+      playerLastRoll === null ||
+      spinning ||
+      phase !== "playerTurn"
+    )
+      return;
     setHasReroll(false);
     setPlayerTotal(prevTotal);
     setPlayerLastRoll(null);
@@ -283,11 +305,18 @@ export default function GamblerDiceDialog({
 
     const myNonce = ++npcTurnNonceRef.current;
     let cancelled = false;
-    const delayMs = pauseAfterPlayerRollRef.current ? PAUSE_MS_AFTER_PLAYER_ROLL : 0;
+    const delayMs = pauseAfterPlayerRollRef.current
+      ? PAUSE_MS_AFTER_PLAYER_ROLL
+      : 0;
     pauseAfterPlayerRollRef.current = false;
 
     const t = setTimeout(() => {
-      if (cancelled || !isOpenRef.current || myNonce !== npcTurnNonceRef.current) return;
+      if (
+        cancelled ||
+        !isOpenRef.current ||
+        myNonce !== npcTurnNonceRef.current
+      )
+        return;
 
       const { playerTotal: p, npcTotal: n, goal: g } = totalsRef.current;
       const step = npcRollOrStand(n, p, g);
@@ -319,7 +348,12 @@ export default function GamblerDiceDialog({
       clearTimeoutRef(npcTimeoutRef);
       const spinMs = randomRollSpinDurationMs();
       npcTimeoutRef.current = setTimeout(() => {
-        if (cancelled || !isOpenRef.current || myNonce !== npcTurnNonceRef.current) return;
+        if (
+          cancelled ||
+          !isOpenRef.current ||
+          myNonce !== npcTurnNonceRef.current
+        )
+          return;
         setNpcSpinning(false);
         setNpcLastRoll(step.roll);
         setNpcTotal(step.newTotal);
@@ -363,7 +397,7 @@ export default function GamblerDiceDialog({
   const dialogLocked = lockedDialogSize != null;
 
   return (
-    <Dialog open={isOpen} onOpenChange={() => { }}>
+    <Dialog open={isOpen} onOpenChange={() => {}}>
       <DialogContent
         ref={dialogContentRef}
         className={
@@ -387,15 +421,15 @@ export default function GamblerDiceDialog({
             The Obsessed Gambler
             <RulesInfoButton hasBoneDice={hasBoneDice} />
           </DialogTitle>
-          <DialogDescription className="sr-only">Dice game against the obsessed gambler</DialogDescription>
+          <DialogDescription className="sr-only">
+            Dice game against the obsessed gambler
+          </DialogDescription>
         </DialogHeader>
 
         <div className="flex flex-1 flex-col min-h-0 overflow-y-auto">
           {phase === "wager" && (
             <div className="space-y-3">
-              <p className="text-xs text-muted-foreground">
-                Place your wager. The goal starts at {INITIAL_GOAL}, ties raise it by {GOAL_INCREMENT}, and going over loses the round.
-              </p>
+              <p className="text-xs text-muted-foreground">Place your bet.</p>
               <div className="flex flex-wrap gap-2">
                 {WAGER_TIERS.map((tier) => {
                   const requiredLuck = WAGER_LUCK_THRESHOLDS[tier];
@@ -451,7 +485,9 @@ export default function GamblerDiceDialog({
             </div>
           )}
 
-          {(phase === "playerTurn" || phase === "npcTurn" || phase === "tieEscalation") && (
+          {(phase === "playerTurn" ||
+            phase === "npcTurn" ||
+            phase === "tieEscalation") && (
             <div className="space-y-4 flex flex-col flex-1 min-h-0">
               <div className="flex flex-col gap-1 text-xs text-muted-foreground shrink-0">
                 <span>
@@ -462,38 +498,40 @@ export default function GamblerDiceDialog({
                 </span>
                 <span>
                   Points Goal:{" "}
-                  <span className="font-semibold text-foreground tabular-nums">{goal}</span>
+                  <span className="font-semibold text-foreground tabular-nums">
+                    {goal}
+                  </span>
                 </span>
               </div>
 
               <div className="grid grid-cols-2 gap-4 min-h-[9.5rem] content-start">
                 <div className="text-center space-y-1">
-                <div className="text-xs text-muted-foreground">You</div>
-                <div
-                  className="text-2xl font-bold tabular-nums"
-                  data-testid="player-running-total"
-                >
-                  {playerTotal}
+                  <div className="text-xs text-muted-foreground">You</div>
+                  <div
+                    className="text-2xl font-bold tabular-nums"
+                    data-testid="player-running-total"
+                  >
+                    {playerTotal}
+                  </div>
+                  <div className="h-10 flex items-center justify-center">
+                    <DiceFace value={playerLastRoll} spinning={spinning} />
+                  </div>
                 </div>
-                <div className="h-10 flex items-center justify-center">
-                  <DiceFace value={playerLastRoll} spinning={spinning} />
+                <div className="text-center space-y-1">
+                  <div className="text-xs text-muted-foreground">Gambler</div>
+                  <div
+                    className="text-2xl font-bold tabular-nums"
+                    data-testid="gambler-running-total"
+                  >
+                    {npcTotal}
+                  </div>
+                  <div className="h-10 flex items-center justify-center">
+                    <DiceFace value={npcLastRoll} spinning={npcSpinning} />
+                  </div>
                 </div>
               </div>
-              <div className="text-center space-y-1">
-                <div className="text-xs text-muted-foreground">Gambler</div>
-                <div
-                  className="text-2xl font-bold tabular-nums"
-                  data-testid="gambler-running-total"
-                >
-                  {npcTotal}
-                </div>
-                <div className="h-10 flex items-center justify-center">
-                  <DiceFace value={npcLastRoll} spinning={npcSpinning} />
-                </div>
-              </div>
-            </div>
 
-            {phase === "tieEscalation" && (
+              {phase === "tieEscalation" && (
                 <div className="text-center text-xs text-amber-300/80">
                   Tie! Points goal raised to {goal + GOAL_INCREMENT}...
                 </div>
@@ -542,9 +580,13 @@ export default function GamblerDiceDialog({
               {hasBoneDice && (
                 <div className="text-center text-xs text-muted-foreground">
                   {hasReroll ? (
-                    <span className="text-amber-300/60">Bone dice: 1 re-roll available</span>
+                    <span className="text-amber-300/60">
+                      Bone dice: 1 re-roll available
+                    </span>
                   ) : (
-                    <span className="text-muted-foreground/40">Bone dice: used</span>
+                    <span className="text-muted-foreground/40">
+                      Bone dice: used
+                    </span>
                   )}
                 </div>
               )}
@@ -562,20 +604,26 @@ export default function GamblerDiceDialog({
                 </span>
                 <span>
                   Points Goal:{" "}
-                  <span className="font-semibold text-foreground tabular-nums">{goal}</span>
+                  <span className="font-semibold text-foreground tabular-nums">
+                    {goal}
+                  </span>
                 </span>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="text-center space-y-1">
                   <div className="text-xs text-muted-foreground">You</div>
-                  <div className={`text-2xl font-bold ${playerTotal > goal ? "text-red-400" : ""}`}>
+                  <div
+                    className={`text-2xl font-bold ${playerTotal > goal ? "text-red-400" : ""}`}
+                  >
                     {playerTotal}
                   </div>
                 </div>
                 <div className="text-center space-y-1">
                   <div className="text-xs text-muted-foreground">Gambler</div>
-                  <div className={`text-2xl font-bold ${npcTotal > goal ? "text-red-400" : ""}`}>
+                  <div
+                    className={`text-2xl font-bold ${npcTotal > goal ? "text-red-400" : ""}`}
+                  >
                     {npcTotal}
                   </div>
                 </div>
