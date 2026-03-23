@@ -392,9 +392,9 @@ export default function GamblerDiceDialog({
         style={
           dialogLocked
             ? {
-                width: lockedDialogSize.width,
-                minHeight: lockedDialogSize.height,
-              }
+              width: lockedDialogSize.width,
+              minHeight: lockedDialogSize.height,
+            }
             : undefined
         }
         onPointerDownOutside={(e) => e.preventDefault()}
@@ -486,30 +486,30 @@ export default function GamblerDiceDialog({
 
               <div className="grid grid-cols-2 gap-4 min-h-[9.5rem] content-start">
                 <div className="text-center space-y-1">
-                <div className="text-xs text-muted-foreground">You</div>
-                <div
-                  className="text-2xl font-bold tabular-nums"
-                  data-testid="player-running-total"
-                >
-                  {playerTotal}
+                  <div className="text-xs text-muted-foreground">You</div>
+                  <div
+                    className="text-2xl font-bold tabular-nums"
+                    data-testid="player-running-total"
+                  >
+                    {playerTotal}
+                  </div>
+                  <div className="h-10 flex items-center justify-center">
+                    <DiceFace value={playerLastRoll} spinning={spinning} />
+                  </div>
                 </div>
-                <div className="h-10 flex items-center justify-center">
-                  <DiceFace value={playerLastRoll} spinning={spinning} />
+                <div className="text-center space-y-1">
+                  <div className="text-xs text-muted-foreground">Gambler</div>
+                  <div
+                    className="text-2xl font-bold tabular-nums"
+                    data-testid="gambler-running-total"
+                  >
+                    {npcTotal}
+                  </div>
+                  <div className="h-10 flex items-center justify-center">
+                    <DiceFace value={npcLastRoll} spinning={npcSpinning} />
+                  </div>
                 </div>
               </div>
-              <div className="text-center space-y-1">
-                <div className="text-xs text-muted-foreground">Gambler</div>
-                <div
-                  className="text-2xl font-bold tabular-nums"
-                  data-testid="gambler-running-total"
-                >
-                  {npcTotal}
-                </div>
-                <div className="h-10 flex items-center justify-center">
-                  <DiceFace value={npcLastRoll} spinning={npcSpinning} />
-                </div>
-              </div>
-            </div>
 
               {phase === "playerTurn" && !spinning && (
                 <div className="flex gap-2 justify-center">
