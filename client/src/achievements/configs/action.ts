@@ -196,7 +196,7 @@ export const actionChartConfig: AchievementChartConfig = {
       {
         segmentId: "0-gamblerWins",
         maxCount: 10,
-        label: "The Better Player",
+        label: "Experienced Gambler",
         rewards: { gold: 50 },
         getCount: (state: GameState) =>
           Number(state.story?.seen?.gamblerWinsTotal) || 0,

@@ -768,6 +768,12 @@ export const gameStateSchema = z.object({
     .nullable()
     .default(null),
 
+  /** Session-only notice after refresh forfeit; stripped before save. */
+  gamblerForfeitNotice: z
+    .object({ wager: z.number() })
+    .nullable()
+    .default(null),
+
   timedTabDuration: z.number().default(0),
 
   // Idle Mode state

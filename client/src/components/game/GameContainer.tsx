@@ -30,6 +30,7 @@ import { logger } from "@/lib/logger";
 import { toast } from "@/hooks/use-toast";
 import MistBackground from "@/components/ui/mist-background";
 import { getUnclaimedAchievementIds } from "@/achievements";
+import GamblerForfeitNoticeDialog from "@/components/game/GamblerForfeitNoticeDialog";
 
 export default function GameContainer() {
   const {
@@ -771,6 +772,8 @@ export default function GameContainer() {
         data={madnessDialog.data}
         onClose={() => setMadnessDialog(false)}
       />
+
+      <GamblerForfeitNoticeDialog />
 
       <ProfileMenu />
     </div>

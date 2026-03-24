@@ -220,6 +220,9 @@ export async function saveGame(
       sanitizedState = { ...gameState };
     }
 
+    // Session-only UI flag; never persist (would re-show forfeit dialog on next load)
+    delete sanitizedState.gamblerForfeitNotice;
+
     // Ensure cooldownDurations is always present
     if (!sanitizedState.cooldownDurations) {
       sanitizedState.cooldownDurations = {};

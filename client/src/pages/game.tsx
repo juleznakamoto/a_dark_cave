@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { lazy } from "react";
 import GameContainer from "@/components/game/GameContainer";
-import { useGameStore } from "@/game/state";
+import { getGamblerLoadPatches, useGameStore } from "@/game/state";
 import { startGameLoop, stopGameLoop } from "@/game/loop";
 import { loadGame, saveGame } from "@/game/save"; // Import saveGame
 const EventDialog = lazy(() => import("@/components/game/EventDialog"));
@@ -159,9 +159,12 @@ export default function Game() {
             logger.log(`[GAME] Tracking Google Ads source: ${googleAdsSource}`);
           }
 
+          const gamblerPatches = getGamblerLoadPatches(savedState);
+
           // Set the loaded state using useGameStore.setState
           useGameStore.setState({
             ...savedState,
+            ...gamblerPatches,
             ...stateUpdates,
             activeTab: "cave", // Always start on cave tab
             flags: {

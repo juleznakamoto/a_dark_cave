@@ -13,6 +13,20 @@ export const WAGER_LUCK_THRESHOLDS: Record<WagerTier, number> = {
 export const INITIAL_GOAL = 15;
 export const GOAL_INCREMENT = 10;
 
+/** When tied, Stop is disabled if both are strictly more than this many points under the goal. */
+export const TIED_STOP_MAX_GOAL_DISTANCE = 6;
+
+export function isStopBlockedTiedFarUnderGoal(
+  playerTotal: number,
+  npcTotal: number,
+  goal: number,
+): boolean {
+  return (
+    playerTotal === npcTotal &&
+    goal - playerTotal > TIED_STOP_MAX_GOAL_DISTANCE
+  );
+}
+
 export type RollStatus = "playing" | "win" | "bust";
 export type ShowdownResult = "playerWin" | "npcWin" | "tie";
 export type GameOutcome = "win" | "lose";

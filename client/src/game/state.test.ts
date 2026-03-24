@@ -535,6 +535,9 @@ describe("Gambler refresh protection", () => {
 
     expect(mockSetLastGameLoadTime).toHaveBeenCalled();
     expect(useGameStore.getState().gamblerGame).toBeNull();
+    expect(useGameStore.getState().gamblerForfeitNotice).toEqual({
+      wager: 50,
+    });
     expect(useGameStore.getState().resources.gold).toBe(50);
     expect(useGameStore.getState().log.at(-1)?.message).toBe(
       "The obsessed gambler took your silence as forfeit.",
@@ -559,6 +562,9 @@ describe("Gambler refresh protection", () => {
     await useGameStore.getState().loadGame();
 
     expect(useGameStore.getState().gamblerGame).toBeNull();
+    expect(useGameStore.getState().gamblerForfeitNotice).toEqual({
+      wager: 50,
+    });
     expect(useGameStore.getState().resources.gold).toBe(50);
     expect(useGameStore.getState().log.at(-1)?.message).toBe(
       "The obsessed gambler took your silence as forfeit.",
@@ -583,6 +589,7 @@ describe("Gambler refresh protection", () => {
     await useGameStore.getState().loadGame();
 
     expect(useGameStore.getState().gamblerGame).toBeNull();
+    expect(useGameStore.getState().gamblerForfeitNotice).toBeNull();
     expect(
       useGameStore
         .getState()

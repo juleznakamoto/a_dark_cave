@@ -5,6 +5,7 @@ import {
   shouldNpcRoll,
   npcRollOrStand,
   resolveShowdown,
+  isStopBlockedTiedFarUnderGoal,
   INITIAL_GOAL,
   GOAL_INCREMENT,
   RngFn,
@@ -115,6 +116,28 @@ describe("resolveShowdown", () => {
 
   it("tie when equal", () => {
     expect(resolveShowdown(12, 12, 15)).toBe("tie");
+  });
+});
+
+describe("isStopBlockedTiedFarUnderGoal", () => {
+  it("blocks when tied and strictly more than 6 under goal", () => {
+    expect(isStopBlockedTiedFarUnderGoal(4, 4, 15)).toBe(true);
+    expect(isStopBlockedTiedFarUnderGoal(8, 8, 15)).toBe(true);
+  });
+
+  it("allows when tied at 6 or fewer points under goal", () => {
+    expect(isStopBlockedTiedFarUnderGoal(9, 9, 15)).toBe(false);
+    expect(isStopBlockedTiedFarUnderGoal(10, 10, 15)).toBe(false);
+  });
+
+  it("allows when not tied", () => {
+    expect(isStopBlockedTiedFarUnderGoal(8, 9, 15)).toBe(false);
+  });
+
+  it("respects escalated goal", () => {
+    expect(isStopBlockedTiedFarUnderGoal(10, 10, 25)).toBe(true);
+    expect(isStopBlockedTiedFarUnderGoal(17, 17, 25)).toBe(true);
+    expect(isStopBlockedTiedFarUnderGoal(19, 19, 25)).toBe(false);
   });
 });
 

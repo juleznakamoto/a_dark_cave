@@ -51,6 +51,49 @@ import {
   merchantEvents,
 } from "@/game/rules/eventsMerchant";
 
+/**
+ * When loading a save: clear in-flight gambler; if the round was interrupted, forfeit + UI notice.
+ * Used by `loadGame` and by `game.tsx` (raw save path).
+ */
+export function getGamblerLoadPatches(
+  savedState: Pick<GameState, "gamblerGame" | "resources" | "log">,
+): Partial<
+  Pick<GameState, "gamblerGame" | "gamblerForfeitNotice" | "resources" | "log">
+> {
+  const gg = savedState.gamblerGame;
+  if (!gg || gg.outcome != null) {
+    return { gamblerGame: null, gamblerForfeitNotice: null };
+  }
+
+  logger.log("[GAMBLER] Game interrupted mid-play, treating as forfeit:", {
+    wager: gg.wager,
+  });
+
+  let resources = savedState.resources;
+  if (gg.stakeNotYetDeducted === true) {
+    const w = gg.wager;
+    resources = {
+      ...resources,
+      gold: Math.max(0, (resources?.gold ?? 0) - w),
+    };
+  }
+
+  return {
+    gamblerGame: null,
+    gamblerForfeitNotice: { wager: gg.wager },
+    resources,
+    log: [
+      ...(savedState.log || []),
+      {
+        id: `gambler-forfeit-${Date.now()}`,
+        message: "The obsessed gambler took your silence as forfeit.",
+        timestamp: Date.now(),
+        type: "system" as const,
+      },
+    ],
+  };
+}
+
 // Types
 interface GameStore extends GameState {
   // UI state
@@ -267,6 +310,7 @@ interface GameStore extends GameState {
   setAuthDialogOpen: (isOpen: boolean) => void;
   setShopDialogOpen: (isOpen: boolean) => void;
   setGamblerDiceDialogOpen: (isOpen: boolean) => void;
+  clearGamblerForfeitNotice: () => void;
   setLeaderboardDialogOpen: (isOpen: boolean) => void;
   setFullGamePurchaseDialogOpen: (isOpen: boolean) => void;
   setIdleModeDialog: (isOpen: boolean) => void;
@@ -1018,6 +1062,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   // Gambler game state
   gamblerGame: null,
+  gamblerForfeitNotice: null,
 
   // Achievements
   unlockedAchievements: [],
@@ -1844,32 +1889,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
           choices: [],
           purchasedIds: [],
         }, // Load merchant trades
-        gamblerGame: null, // Always clear — interrupted game is a forfeit
+        gamblerGame: null, // Cleared; merged with forfeit patches below
       };
 
-      // Handle gambler game forfeit on reload
-      const savedGamblerGame = savedState.gamblerGame;
-      if (savedGamblerGame && savedGamblerGame.outcome == null) {
-        logger.log('[GAMBLER] Game interrupted mid-play, treating as forfeit:', {
-          wager: savedGamblerGame.wager,
-        });
-        if (savedGamblerGame.stakeNotYetDeducted === true) {
-          const w = savedGamblerGame.wager;
-          loadedState.resources = {
-            ...loadedState.resources,
-            gold: Math.max(0, (loadedState.resources?.gold ?? 0) - w),
-          };
-        }
-        loadedState.log = [
-          ...(loadedState.log || []),
-          {
-            id: `gambler-forfeit-${Date.now()}`,
-            message: "The obsessed gambler took your silence as forfeit.",
-            timestamp: Date.now(),
-            type: "system" as const,
-          },
-        ];
-      }
+      Object.assign(loadedState, getGamblerLoadPatches(savedState));
 
       const savedExpeditionVillagers = savedState.expeditionVillagers || {};
       const strandedExpeditionVillagers = Object.values(
@@ -2523,6 +2546,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   setGamblerDiceDialogOpen: (isOpen: boolean) => {
     set({ gamblerDiceDialogOpen: isOpen });
+  },
+  clearGamblerForfeitNotice: () => {
+    set({ gamblerForfeitNotice: null });
   },
 
   setLeaderboardDialogOpen: (isOpen: boolean) => {
