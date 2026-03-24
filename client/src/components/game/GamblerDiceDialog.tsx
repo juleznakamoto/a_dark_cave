@@ -69,7 +69,9 @@ function DiceFace({
     return <span className="text-3xl opacity-30">⚀</span>;
   }
 
-  const face = spinning ? SPIN_FACES[displayFace] : DICE_FACES[(value ?? 1) - 1];
+  const face = spinning
+    ? SPIN_FACES[displayFace]
+    : DICE_FACES[(value ?? 1) - 1];
   return <span className="text-3xl">{face}</span>;
 }
 
@@ -78,15 +80,23 @@ function RulesInfoButton({ hasBoneDice }: { hasBoneDice: boolean }) {
     <TooltipWrapper
       tooltip={
         <div className="text-xs space-y-1 max-w-[200px]">
-          <p>Roll dice to reach the <strong>current goal</strong> without going over.</p>
-          <p>The goal starts at <strong>15</strong>.</p>
+          <p>
+            Roll dice to reach the <strong>current goal</strong> without going
+            over.
+          </p>
+          <p>
+            The goal starts at <strong>15</strong>.
+          </p>
           <p>Exceed the goal and you lose.</p>
           <p>Hit the goal exactly to lock your total — the obsessed gambler keeps rolling until the round resolves.</p>
           <p>You and he take turns rolling <strong>one die</strong> each.</p>
           <p>After both stand: higher total wins. If tied <strong>under</strong> the goal, the goal goes up by {GOAL_INCREMENT}.</p>
           <p>If both hit the goal exactly, you win the round.</p>
+
           {hasBoneDice && (
-            <p className="text-amber-300/80">Bone Dice: re-roll once per game.</p>
+            <p className="text-amber-300/80">
+              Bone Dice: re-roll once per game.
+            </p>
           )}
         </div>
       }
@@ -127,6 +137,8 @@ export default function GamblerDiceDialog({
   const [hasRolledThisRound, setHasRolledThisRound] = useState(false);
   /** Bumps while phase stays `npcTurn` so the NPC can roll again when the player is locked on the goal. */
   const [npcTurnChain, setNpcTurnChain] = useState(0);
+  /** Incremented when tie escalation raises the goal so the Points Goal value replays the blink animation. */
+  const [goalRaisedBlinkKey, setGoalRaisedBlinkKey] = useState(0);
   /** Snapshot of dialog size from the wager screen; game phases keep this box. */
   const [lockedDialogSize, setLockedDialogSize] = useState<{
     width: number;
@@ -141,8 +153,12 @@ export default function GamblerDiceDialog({
   const totalsRef = useRef({ playerTotal: 0, npcTotal: 0, goal: INITIAL_GOAL });
   const npcTurnNonceRef = useRef(0);
   const pauseAfterPlayerRollRef = useRef(false);
+  /** True only after the player clicks Stop; showdown / tie escalation run only then. */
+  const playerStoppedRef = useRef(false);
 
-  const clearTimeoutRef = (timeoutRef: React.MutableRefObject<ReturnType<typeof setTimeout> | null>) => {
+  const clearTimeoutRef = (
+    timeoutRef: React.MutableRefObject<ReturnType<typeof setTimeout> | null>,
+  ) => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
       timeoutRef.current = null;
@@ -171,6 +187,7 @@ export default function GamblerDiceDialog({
     setNpcSpinning(false);
     setHasRolledThisRound(false);
     setNpcTurnChain(0);
+    setGoalRaisedBlinkKey(0);
     outcomeReportedRef.current = false;
     setLockedDialogSize(null);
     pauseAfterPlayerRollRef.current = false;
@@ -234,6 +251,7 @@ export default function GamblerDiceDialog({
       setHasRolledThisRound(true);
 
       if (result.status === "win") {
+        playerStoppedRef.current = false;
         pauseAfterPlayerRollRef.current = true;
         setNpcTurnChain(0);
         setPhase("npcTurn");
@@ -241,6 +259,7 @@ export default function GamblerDiceDialog({
         setOutcome("lose");
         setPhase("outcome");
       } else {
+        playerStoppedRef.current = false;
         pauseAfterPlayerRollRef.current = true;
         setNpcTurnChain(0);
         setPhase("npcTurn");
@@ -250,7 +269,13 @@ export default function GamblerDiceDialog({
   };
 
   const handleReroll = () => {
-    if (!hasReroll || playerLastRoll === null || spinning || phase !== "playerTurn") return;
+    if (
+      !hasReroll ||
+      playerLastRoll === null ||
+      spinning ||
+      phase !== "playerTurn"
+    )
+      return;
     setHasReroll(false);
     setPlayerTotal(prevTotal);
     setPlayerLastRoll(null);
@@ -276,6 +301,7 @@ export default function GamblerDiceDialog({
         setOutcome("lose");
         setPhase("outcome");
       } else {
+        playerStoppedRef.current = false;
         pauseAfterPlayerRollRef.current = true;
         setNpcTurnChain(0);
         setPhase("npcTurn");
@@ -286,6 +312,7 @@ export default function GamblerDiceDialog({
 
   const handleStand = () => {
     if (phase !== "playerTurn" || !hasRolledThisRound) return;
+    playerStoppedRef.current = true;
     pauseAfterPlayerRollRef.current = false;
     setNpcTurnChain(0);
     setPhase("npcTurn");
@@ -296,16 +323,30 @@ export default function GamblerDiceDialog({
 
     const myNonce = ++npcTurnNonceRef.current;
     let cancelled = false;
-    const delayMs = pauseAfterPlayerRollRef.current ? PAUSE_MS_AFTER_PLAYER_ROLL : 0;
+    const delayMs = pauseAfterPlayerRollRef.current
+      ? PAUSE_MS_AFTER_PLAYER_ROLL
+      : 0;
     pauseAfterPlayerRollRef.current = false;
 
     const t = setTimeout(() => {
-      if (cancelled || !isOpenRef.current || myNonce !== npcTurnNonceRef.current) return;
+      if (
+        cancelled ||
+        !isOpenRef.current ||
+        myNonce !== npcTurnNonceRef.current
+      )
+        return;
 
       const { playerTotal: p, npcTotal: n, goal: g } = totalsRef.current;
       const step = npcRollOrStand(n, p, g);
 
       if (step.kind === "stand") {
+        const playerLocked =
+          playerStoppedRef.current || p === g;
+        if (!playerLocked) {
+          setNpcTurnChain(0);
+          setPhase("playerTurn");
+          return;
+        }
         const showdown = resolveShowdown(p, n, g);
         if (showdown === "playerWin") {
           setOutcome("win");
@@ -321,9 +362,11 @@ export default function GamblerDiceDialog({
             tieTimeoutRef.current = setTimeout(() => {
               if (!isOpenRef.current) return;
               setGoal((prev) => prev + GOAL_INCREMENT);
+              setGoalRaisedBlinkKey((k) => k + 1);
               setPlayerLastRoll(null);
               setNpcLastRoll(null);
               setHasRolledThisRound(false);
+              playerStoppedRef.current = false;
               setNpcTurnChain(0);
               setPhase("playerTurn");
               tieTimeoutRef.current = null;
@@ -340,7 +383,12 @@ export default function GamblerDiceDialog({
       clearTimeoutRef(npcTimeoutRef);
       const spinMs = randomRollSpinDurationMs();
       npcTimeoutRef.current = setTimeout(() => {
-        if (cancelled || !isOpenRef.current || myNonce !== npcTurnNonceRef.current) return;
+        if (
+          cancelled ||
+          !isOpenRef.current ||
+          myNonce !== npcTurnNonceRef.current
+        )
+          return;
         setNpcSpinning(false);
         setNpcLastRoll(step.roll);
         setNpcTotal(step.newTotal);
@@ -405,15 +453,15 @@ export default function GamblerDiceDialog({
             The Obsessed Gambler
             <RulesInfoButton hasBoneDice={hasBoneDice} />
           </DialogTitle>
-          <DialogDescription className="sr-only">Dice game against the obsessed gambler</DialogDescription>
+          <DialogDescription className="sr-only">
+            Dice game against the obsessed gambler
+          </DialogDescription>
         </DialogHeader>
 
         <div className="flex flex-1 flex-col min-h-0 overflow-y-auto">
           {phase === "wager" && (
             <div className="space-y-3">
-              <p className="text-xs text-muted-foreground">
-                Place your wager. The goal starts at {INITIAL_GOAL}, ties raise it by {GOAL_INCREMENT}, and going over loses the round.
-              </p>
+              <p className="text-xs text-muted-foreground">Place your bet.</p>
               <div className="flex flex-wrap gap-2">
                 {WAGER_TIERS.map((tier) => {
                   const requiredLuck = WAGER_LUCK_THRESHOLDS[tier];
@@ -573,20 +621,26 @@ export default function GamblerDiceDialog({
                 </span>
                 <span>
                   Points Goal:{" "}
-                  <span className="font-semibold text-foreground tabular-nums">{goal}</span>
+                  <span className="font-semibold text-foreground tabular-nums">
+                    {goal}
+                  </span>
                 </span>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="text-center space-y-1">
                   <div className="text-xs text-muted-foreground">You</div>
-                  <div className={`text-2xl font-bold ${playerTotal > goal ? "text-red-400" : ""}`}>
+                  <div
+                    className={`text-2xl font-bold ${playerTotal > goal ? "text-red-400" : ""}`}
+                  >
                     {playerTotal}
                   </div>
                 </div>
                 <div className="text-center space-y-1">
                   <div className="text-xs text-muted-foreground">Gambler</div>
-                  <div className={`text-2xl font-bold ${npcTotal > goal ? "text-red-400" : ""}`}>
+                  <div
+                    className={`text-2xl font-bold ${npcTotal > goal ? "text-red-400" : ""}`}
+                  >
                     {npcTotal}
                   </div>
                 </div>
