@@ -528,7 +528,12 @@ export default function GamblerDiceDialog({
                 </span>
                 <span>
                   Points Goal:{" "}
-                  <span className="font-semibold text-foreground tabular-nums">{goal}</span>
+                  <span
+                    key={goalRaisedBlinkKey}
+                    className={`font-semibold text-foreground tabular-nums ${goalRaisedBlinkKey > 0 ? "gambler-goal-blink-3" : ""}`}
+                  >
+                    {goal}
+                  </span>
                 </span>
               </div>
 
@@ -559,44 +564,52 @@ export default function GamblerDiceDialog({
                 </div>
               </div>
 
-              {phase === "playerTurn" && (
-                <div className="flex gap-2 justify-center min-h-[1.75rem] items-center">
-                  {playerTotal < goal && (
+              {(phase === "playerTurn" ||
+                phase === "npcTurn" ||
+                phase === "tieEscalation") && (
+                  <div className="flex gap-2 justify-center min-h-[1.75rem] items-center">
                     <Button
                       variant="outline"
                       size="xs"
                       onClick={handlePlayerRoll}
-                      disabled={spinning}
+                      disabled={
+                        phase !== "playerTurn" ||
+                        spinning ||
+                        playerTotal >= goal
+                      }
                       className="text-xs"
                       button_id="gambler-roll"
                     >
                       Roll
                     </Button>
-                  )}
-                  <Button
-                    variant="outline"
-                    size="xs"
-                    onClick={handleStand}
-                    disabled={!hasRolledThisRound || spinning}
-                    className="text-xs"
-                    button_id="gambler-stand"
-                  >
-                    Stop
-                  </Button>
-                  {playerTotal < goal && hasReroll && playerLastRoll !== null && (
                     <Button
                       variant="outline"
                       size="xs"
-                      onClick={handleReroll}
-                      disabled={spinning}
-                      className="text-xs text-amber-300/80 border-amber-900/50"
-                      button_id="gambler-reroll"
+                      onClick={handleStand}
+                      disabled={
+                        phase !== "playerTurn" ||
+                        !hasRolledThisRound ||
+                        spinning
+                      }
+                      className="text-xs"
+                      button_id="gambler-stand"
                     >
-                      Re-roll
+                      Stop
                     </Button>
-                  )}
-                </div>
-              )}
+                    {playerTotal < goal && hasReroll && playerLastRoll !== null && (
+                      <Button
+                        variant="outline"
+                        size="xs"
+                        onClick={handleReroll}
+                        disabled={phase !== "playerTurn" || spinning}
+                        className="text-xs text-amber-300/80 border-amber-900/50"
+                        button_id="gambler-reroll"
+                      >
+                        Re-roll
+                      </Button>
+                    )}
+                  </div>
+                )}
 
               {hasBoneDice && (
                 <div className="text-center text-xs text-muted-foreground">
