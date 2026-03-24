@@ -6,6 +6,7 @@ import {
   npcRollOrStand,
   resolveShowdown,
   isStopBlockedTiedFarUnderGoal,
+  canPlayerChooseNoRoll,
   INITIAL_GOAL,
   GOAL_INCREMENT,
   RngFn,
@@ -138,6 +139,19 @@ describe("isStopBlockedTiedFarUnderGoal", () => {
     expect(isStopBlockedTiedFarUnderGoal(10, 10, 25)).toBe(true);
     expect(isStopBlockedTiedFarUnderGoal(17, 17, 25)).toBe(true);
     expect(isStopBlockedTiedFarUnderGoal(19, 19, 25)).toBe(false);
+  });
+});
+
+describe("canPlayerChooseNoRoll", () => {
+  it("is true only when player is strictly ahead", () => {
+    expect(canPlayerChooseNoRoll(13, 12)).toBe(true);
+    expect(canPlayerChooseNoRoll(15, 10)).toBe(true);
+  });
+
+  it("is false when tied or behind", () => {
+    expect(canPlayerChooseNoRoll(12, 12)).toBe(false);
+    expect(canPlayerChooseNoRoll(11, 13)).toBe(false);
+    expect(canPlayerChooseNoRoll(0, 0)).toBe(false);
   });
 });
 

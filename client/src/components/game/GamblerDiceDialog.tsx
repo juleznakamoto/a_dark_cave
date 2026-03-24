@@ -15,6 +15,7 @@ import {
   GOAL_INCREMENT,
   TIED_STOP_MAX_GOAL_DISTANCE,
   isStopBlockedTiedFarUnderGoal,
+  canPlayerChooseNoRoll,
   rollDie,
   resolveRoll,
   npcRollOrStand,
@@ -92,11 +93,15 @@ function RulesInfoButton({ hasBoneDice }: { hasBoneDice: boolean }) {
           <p>Exceed the goal and you lose.</p>
           <p>Hit the goal exactly to lock your total — the obsessed gambler keeps rolling until the round resolves.</p>
           <p>You and he take turns rolling <strong>one die</strong> each.</p>
+          <p>
+            <strong>No Roll</strong> (pass your turn) is only available when you
+            have <strong>more</strong> points than the gambler.
+          </p>
           <p>After both stand: higher total wins. If tied <strong>under</strong> the goal, the goal goes up by {GOAL_INCREMENT}.</p>
           <p>
             If you and the gambler are tied and more than{" "}
             {TIED_STOP_MAX_GOAL_DISTANCE} under the goal, you must roll —{" "}
-            <strong>Stop</strong> is disabled.
+            <strong>No Roll</strong> is disabled.
           </p>
           <p>
             If you both reach the goal on rolls, the goal goes up by{" "}
@@ -147,7 +152,7 @@ export default function GamblerDiceDialog({
   const [outcome, setOutcome] = useState<"win" | "lose" | null>(null);
   const [spinning, setSpinning] = useState(false);
   const [npcSpinning, setNpcSpinning] = useState(false);
-  /** True after the player has rolled at least once this round (Stop / showdown require this). */
+  /** True after the player has rolled at least once this round (No Roll / showdown require this). */
   const [hasRolledThisRound, setHasRolledThisRound] = useState(false);
   /** Bumps while phase stays `npcTurn` so the NPC can roll again when the player is locked on the goal. */
   const [npcTurnChain, setNpcTurnChain] = useState(0);
@@ -167,7 +172,7 @@ export default function GamblerDiceDialog({
   const totalsRef = useRef({ playerTotal: 0, npcTotal: 0, goal: INITIAL_GOAL });
   const npcTurnNonceRef = useRef(0);
   const pauseAfterPlayerRollRef = useRef(false);
-  /** True only after the player clicks Stop; showdown / tie escalation run only then. */
+  /** True only after the player chooses No Roll; showdown / tie escalation run only then. */
   const playerStoppedRef = useRef(false);
 
   const clearTimeoutRef = (
@@ -344,6 +349,7 @@ export default function GamblerDiceDialog({
 
   const handleStand = () => {
     if (phase !== "playerTurn" || !hasRolledThisRound) return;
+    if (!canPlayerChooseNoRoll(playerTotal, npcTotal)) return;
     if (isStopBlockedTiedFarUnderGoal(playerTotal, npcTotal, goal)) return;
     playerStoppedRef.current = true;
     pauseAfterPlayerRollRef.current = false;
@@ -609,6 +615,7 @@ export default function GamblerDiceDialog({
                           phase !== "playerTurn" ||
                           !hasRolledThisRound ||
                           spinning ||
+                          !canPlayerChooseNoRoll(playerTotal, npcTotal) ||
                           isStopBlockedTiedFarUnderGoal(
                             playerTotal,
                             npcTotal,
@@ -618,7 +625,7 @@ export default function GamblerDiceDialog({
                         className="text-xs"
                         button_id="gambler-stand"
                       >
-                        Stop
+                        No Roll
                       </Button>
                       {playerTotal < goal && hasReroll && playerLastRoll !== null && (
                         <Button
