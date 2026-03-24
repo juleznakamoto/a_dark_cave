@@ -15,6 +15,7 @@ import {
   GOAL_INCREMENT,
   TIED_STOP_MAX_GOAL_DISTANCE,
   isStopBlockedTiedFarUnderGoal,
+  canPlayerChooseNoRoll,
   rollDie,
   resolveRoll,
   npcRollOrStand,
@@ -27,7 +28,7 @@ const SPIN_FACES = ["⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
 const ROLL_SPIN_MS_MIN = 400;
 const ROLL_SPIN_MS_MAX = 1000;
 const SPIN_INTERVAL = 60;
-/** Pause after the player's die settles before the gambler acts (not applied after Stop). */
+/** Pause after the player's die settles before the gambler acts (not applied after No Roll). */
 const PAUSE_MS_AFTER_PLAYER_ROLL = 500;
 
 function randomRollSpinDurationMs(): number {
@@ -82,19 +83,16 @@ function RulesInfoButton({ hasBoneDice }: { hasBoneDice: boolean }) {
     <TooltipWrapper
       tooltip={
         <div className="text-xs space-y-1 max-w-[200px]">
-          <p>
-            You and the gambler take turns rolling a dice.
-          </p>
-          <p>
-            The points of each player's rolls are added up.
-          </p>
+          <p>You and the gambler take turns rolling a dice.</p>
+          <p>The points of each player's rolls are added up.</p>
           <p>The first player to exceed the goal loses.</p>
           <p>
             The goal starts at <strong>15</strong>.
           </p>
           <p>In case of a tie the goal is raised by 10.</p>
           <p>
-            If you have more points than the gambler you can decide to not role in this round.
+            If you have more points than the gambler you can decide to not role
+            in this round.
           </p>
           {hasBoneDice && (
             <p className="text-amber-300/80">
@@ -136,7 +134,7 @@ export default function GamblerDiceDialog({
   const [outcome, setOutcome] = useState<"win" | "lose" | null>(null);
   const [spinning, setSpinning] = useState(false);
   const [npcSpinning, setNpcSpinning] = useState(false);
-  /** True after the player has rolled at least once this round (Stop / showdown require this). */
+  /** True after the player has rolled at least once this round (No Roll / showdown require this). */
   const [hasRolledThisRound, setHasRolledThisRound] = useState(false);
   /** Bumps while phase stays `npcTurn` so the NPC can roll again when the player is locked on the goal. */
   const [npcTurnChain, setNpcTurnChain] = useState(0);
@@ -156,7 +154,7 @@ export default function GamblerDiceDialog({
   const totalsRef = useRef({ playerTotal: 0, npcTotal: 0, goal: INITIAL_GOAL });
   const npcTurnNonceRef = useRef(0);
   const pauseAfterPlayerRollRef = useRef(false);
-  /** True only after the player clicks Stop; showdown / tie escalation run only then. */
+  /** True only after the player chooses No Roll; showdown / tie escalation run only then. */
   const playerStoppedRef = useRef(false);
 
   const clearTimeoutRef = (
@@ -333,6 +331,7 @@ export default function GamblerDiceDialog({
 
   const handleStand = () => {
     if (phase !== "playerTurn" || !hasRolledThisRound) return;
+    if (!canPlayerChooseNoRoll(playerTotal, npcTotal)) return;
     if (isStopBlockedTiedFarUnderGoal(playerTotal, npcTotal, goal)) return;
     playerStoppedRef.current = true;
     pauseAfterPlayerRollRef.current = false;
@@ -362,8 +361,7 @@ export default function GamblerDiceDialog({
       const step = npcRollOrStand(n, p, g);
 
       if (step.kind === "stand") {
-        const playerLocked =
-          playerStoppedRef.current || p === g;
+        const playerLocked = playerStoppedRef.current || p === g;
         if (!playerLocked) {
           setNpcTurnChain(0);
           setPhase("playerTurn");
@@ -436,7 +434,7 @@ export default function GamblerDiceDialog({
   const dialogLocked = lockedDialogSize != null;
 
   return (
-    <Dialog open={isOpen} onOpenChange={() => { }}>
+    <Dialog open={isOpen} onOpenChange={() => {}}>
       <DialogContent
         ref={dialogContentRef}
         className={
@@ -447,9 +445,9 @@ export default function GamblerDiceDialog({
         style={
           dialogLocked
             ? {
-              width: lockedDialogSize.width,
-              minHeight: lockedDialogSize.height,
-            }
+                width: lockedDialogSize.width,
+                minHeight: lockedDialogSize.height,
+              }
             : undefined
         }
         onPointerDownOutside={(e) => e.preventDefault()}
@@ -524,7 +522,9 @@ export default function GamblerDiceDialog({
             </div>
           )}
 
-          {(phase === "playerTurn" || phase === "npcTurn" || phase === "tieEscalation") && (
+          {(phase === "playerTurn" ||
+            phase === "npcTurn" ||
+            phase === "tieEscalation") && (
             <div className="space-y-3 flex flex-col flex-1 min-h-0">
               <div className="flex flex-col gap-1 text-xs text-muted-foreground shrink-0">
                 <span>
@@ -575,41 +575,44 @@ export default function GamblerDiceDialog({
                 {(phase === "playerTurn" ||
                   phase === "npcTurn" ||
                   phase === "tieEscalation") && (
-                    <div className="flex gap-2 justify-center min-h-[1.75rem] items-center">
-                      <Button
-                        variant="outline"
-                        size="xs"
-                        onClick={handlePlayerRoll}
-                        disabled={
-                          phase !== "playerTurn" ||
-                          spinning ||
-                          playerTotal >= goal
-                        }
-                        className="text-xs"
-                        button_id="gambler-roll"
-                      >
-                        Roll
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="xs"
-                        onClick={handleStand}
-                        disabled={
-                          phase !== "playerTurn" ||
-                          !hasRolledThisRound ||
-                          spinning ||
-                          isStopBlockedTiedFarUnderGoal(
-                            playerTotal,
-                            npcTotal,
-                            goal,
-                          )
-                        }
-                        className="text-xs"
-                        button_id="gambler-stand"
-                      >
-                        Stop
-                      </Button>
-                      {playerTotal < goal && hasReroll && playerLastRoll !== null && (
+                  <div className="flex gap-2 justify-center min-h-[1.75rem] items-center">
+                    <Button
+                      variant="outline"
+                      size="xs"
+                      onClick={handlePlayerRoll}
+                      disabled={
+                        phase !== "playerTurn" ||
+                        spinning ||
+                        playerTotal >= goal
+                      }
+                      className="text-xs"
+                      button_id="gambler-roll"
+                    >
+                      Roll
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="xs"
+                      onClick={handleStand}
+                      disabled={
+                        phase !== "playerTurn" ||
+                        !hasRolledThisRound ||
+                        spinning ||
+                        !canPlayerChooseNoRoll(playerTotal, npcTotal) ||
+                        isStopBlockedTiedFarUnderGoal(
+                          playerTotal,
+                          npcTotal,
+                          goal,
+                        )
+                      }
+                      className="text-xs"
+                      button_id="gambler-stand"
+                    >
+                      No Roll
+                    </Button>
+                    {playerTotal < goal &&
+                      hasReroll &&
+                      playerLastRoll !== null && (
                         <Button
                           variant="outline"
                           size="xs"
@@ -621,16 +624,20 @@ export default function GamblerDiceDialog({
                           Re-roll
                         </Button>
                       )}
-                    </div>
-                  )}
+                  </div>
+                )}
               </div>
 
               {hasBoneDice && (
                 <div className="text-center text-xs text-muted-foreground">
                   {hasReroll ? (
-                    <span className="text-amber-300/60">Bone dice: 1 re-roll available</span>
+                    <span className="text-amber-300/60">
+                      Bone dice: 1 re-roll available
+                    </span>
                   ) : (
-                    <span className="text-muted-foreground/40">Bone dice: used</span>
+                    <span className="text-muted-foreground/40">
+                      Bone dice: used
+                    </span>
                   )}
                 </div>
               )}

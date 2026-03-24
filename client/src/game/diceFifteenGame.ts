@@ -13,7 +13,7 @@ export const WAGER_LUCK_THRESHOLDS: Record<WagerTier, number> = {
 export const INITIAL_GOAL = 15;
 export const GOAL_INCREMENT = 10;
 
-/** When tied, Stop is disabled if both are strictly more than this many points under the goal. */
+/** When tied, No Roll is disabled if both are strictly more than this many points under the goal. */
 export const TIED_STOP_MAX_GOAL_DISTANCE = 6;
 
 export function isStopBlockedTiedFarUnderGoal(
@@ -25,6 +25,14 @@ export function isStopBlockedTiedFarUnderGoal(
     playerTotal === npcTotal &&
     goal - playerTotal > TIED_STOP_MAX_GOAL_DISTANCE
   );
+}
+
+/** No Roll is only allowed when the player is strictly ahead of the gambler. */
+export function canPlayerChooseNoRoll(
+  playerTotal: number,
+  npcTotal: number,
+): boolean {
+  return playerTotal > npcTotal;
 }
 
 export type RollStatus = "playing" | "win" | "bust";
