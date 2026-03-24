@@ -83,30 +83,19 @@ function RulesInfoButton({ hasBoneDice }: { hasBoneDice: boolean }) {
       tooltip={
         <div className="text-xs space-y-1 max-w-[200px]">
           <p>
-            Roll dice to reach the <strong>current goal</strong> without going
-            over.
+            You and the gambler take turns rolling a dice.
           </p>
+          <p>
+            The points of each player's rolls are added up.
+          </p>
+          <p>The first player to exceed the goal loses.</p>
           <p>
             The goal starts at <strong>15</strong>.
           </p>
-          <p>Exceed the goal and you lose.</p>
-          <p>Hit the goal exactly to lock your total — the obsessed gambler keeps rolling until the round resolves.</p>
-          <p>You and he take turns rolling <strong>one die</strong> each.</p>
-          <p>After both stand: higher total wins. If tied <strong>under</strong> the goal, the goal goes up by {GOAL_INCREMENT}.</p>
+          <p>In case of a tie the goal is raised by 10.</p>
           <p>
-            If you and the gambler are tied and more than{" "}
-            {TIED_STOP_MAX_GOAL_DISTANCE} under the goal, you must roll —{" "}
-            <strong>Stop</strong> is disabled.
+            If you have more points than the gambler you can decide to not role in this round.
           </p>
-          <p>
-            If you both reach the goal on rolls, the goal goes up by{" "}
-            {GOAL_INCREMENT} and play continues.
-          </p>
-          <p>
-            If you both stand tied <strong>at</strong> the goal, you win the
-            round.
-          </p>
-
           {hasBoneDice && (
             <p className="text-amber-300/80">
               Bone Dice: re-roll once per game.
