@@ -90,7 +90,7 @@ describe("GamblerDiceDialog", () => {
     );
 
     act(() => {
-      fireEvent.click(screen.getByRole("button", { name: /10 gold/i }));
+      fireEvent.click(screen.getByRole("button", { name: /10 Gold/i }));
     });
 
     act(() => {
