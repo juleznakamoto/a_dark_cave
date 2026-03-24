@@ -28,7 +28,7 @@ const SPIN_FACES = ["⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
 const ROLL_SPIN_MS_MIN = 400;
 const ROLL_SPIN_MS_MAX = 1000;
 const SPIN_INTERVAL = 60;
-/** Pause after the player's die settles before the gambler acts (not applied after Stop). */
+/** Pause after the player's die settles before the gambler acts (not applied after No Roll). */
 const PAUSE_MS_AFTER_PLAYER_ROLL = 500;
 
 function randomRollSpinDurationMs(): number {
