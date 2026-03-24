@@ -73,6 +73,22 @@ describe('Execution Split - costs on click, gains on completion', () => {
       expect(updates.resources!.iron).toBe(baseCost - expectedCost);
     });
 
+    it('does not consume weapon schematics when legendary weapon crafting starts', () => {
+      const state = createInitialState();
+      state.buildings.advancedBlacksmith = 1;
+      state.schematics.stormglass_halberd_schematic = true;
+      state.resources.steel = 500;
+      state.resources.adamant = 1000;
+      state.resources.silver = 250;
+
+      const updates = applyActionCostsOnly('craftStormglassHalberd', state);
+
+      expect(updates.resources!.steel).toBeLessThan(state.resources.steel);
+      expect(updates.resources!.adamant).toBeLessThan(state.resources.adamant);
+      expect(updates.resources!.silver).toBeLessThan(state.resources.silver);
+      expect(updates.schematics).toBeUndefined();
+    });
+
     it('handles tiered trade action costs (tradeGoldForFood)', () => {
       const state = createInitialState();
       state.buildings.merchantsGuild = 1;

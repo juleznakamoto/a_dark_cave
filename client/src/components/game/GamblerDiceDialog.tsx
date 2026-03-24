@@ -511,13 +511,14 @@ export default function GamblerDiceDialog({
                 </div>
               </div>
 
-              {phase === "playerTurn" && !spinning && (
-                <div className="flex gap-2 justify-center">
+              {phase === "playerTurn" && (
+                <div className="flex gap-2 justify-center min-h-[1.75rem] items-center">
                   {playerTotal < goal && (
                     <Button
                       variant="outline"
                       size="xs"
                       onClick={handlePlayerRoll}
+                      disabled={spinning}
                       className="text-xs"
                       button_id="gambler-roll"
                     >
@@ -528,7 +529,7 @@ export default function GamblerDiceDialog({
                     variant="outline"
                     size="xs"
                     onClick={handleStand}
-                    disabled={!hasRolledThisRound}
+                    disabled={!hasRolledThisRound || spinning}
                     className="text-xs"
                     button_id="gambler-stand"
                   >
@@ -539,6 +540,7 @@ export default function GamblerDiceDialog({
                       variant="outline"
                       size="xs"
                       onClick={handleReroll}
+                      disabled={spinning}
                       className="text-xs text-amber-300/80 border-amber-900/50"
                       button_id="gambler-reroll"
                     >

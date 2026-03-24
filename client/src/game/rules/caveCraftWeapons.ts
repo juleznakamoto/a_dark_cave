@@ -187,7 +187,6 @@ export const caveCraftWeapons: Record<string, Action> = {
       "weapons.arbalest": false,
     },
     cost: {
-      "schematics.arbalest_schematic": true,
       "resources.wood": 2500,
       "resources.steel": 500,
       "resources.silver": 250,
@@ -208,7 +207,6 @@ export const caveCraftWeapons: Record<string, Action> = {
       "weapons.nightshade_bow": false,
     },
     cost: {
-      "schematics.nightshade_bow_schematic": true,
       "resources.wood": 5000,
       "resources.silver": 500,
     },
@@ -228,7 +226,6 @@ export const caveCraftWeapons: Record<string, Action> = {
       "weapons.stormglass_halberd": false,
     },
     cost: {
-      "schematics.stormglass_halberd_schematic": true,
       "resources.steel": 500,
       "resources.adamant": 1000,
       "resources.silver": 250,

@@ -978,6 +978,16 @@ function selectTrades(
   return selected;
 }
 
+const allMerchantTrades = [...buyTrades, ...sellTrades, ...toolTrades];
+
+export function isMerchantTradeCurrentlyAvailable(
+  tradeId: string,
+  state: GameState,
+): boolean {
+  const trade = allMerchantTrades.find((candidate) => candidate.id === tradeId);
+  return trade ? trade.condition(state) : false;
+}
+
 // Re-export for convenience
 export type { MerchantTradeData } from "@/game/types";
 

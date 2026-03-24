@@ -55,7 +55,11 @@ export function calculateSuccessChance(
 
 import { storyEvents } from "./eventsStory";
 import { choiceEvents } from "./eventsChoices";
-import { merchantEvents, generateMerchantChoices } from "./eventsMerchant";
+import {
+  merchantEvents,
+  generateMerchantChoices,
+  isMerchantTradeCurrentlyAvailable,
+} from "./eventsMerchant";
 import { madnessEvents } from "./eventsMadness";
 import { caveEvents } from "./eventsCave";
 import { huntEvents } from "./eventsHunt";
@@ -405,6 +409,20 @@ export class EventManager {
             sellResource: trade.sellResource,
             sellAmount: trade.sellAmount,
           });
+
+          if (!isMerchantTradeCurrentlyAvailable(choiceId, state)) {
+            logger.log('[EVENT MANAGER] Trade is no longer available:', {
+              choiceId,
+              currentState: {
+                schematics: state.schematics,
+                tools: state.tools,
+                weapons: state.weapons,
+                books: state.books,
+                relics: state.relics,
+              },
+            });
+            return {};
+          }
 
           // Check if player can afford
           if (currentSellAmount < trade.sellAmount) {

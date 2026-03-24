@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { EventManager } from './events';
 import { GameState } from '@shared/schema';
+import { createInitialState } from '../state';
 
 describe('Event System', () => {
   let mockState: Partial<GameState>;
@@ -73,5 +74,36 @@ describe('Event System', () => {
     const changes = choice?.effect(mockState as GameState);
 
     expect(changes?.resources?.wood).toBe(initialWood + 50);
+  });
+
+  it('does not allow stale merchant schematic offers to charge gold', () => {
+    const state = createInitialState();
+    state.resources.gold = 5000;
+    state.buildings.stoneHut = 6;
+    state.schematics.stormglass_halberd_schematic = true;
+    state.merchantTrades = {
+      choices: [
+        {
+          id: 'trade_stormglass_halberd_schematic',
+          label: 'Stormglass Halberd Schematic',
+          cost: '1000 Gold',
+          buyResource: 'schematic',
+          buyAmount: 1,
+          buyItem: 'stormglass_halberd_schematic',
+          sellResource: 'gold',
+          sellAmount: 1000,
+          executed: false,
+        },
+      ],
+      purchasedIds: [],
+    };
+
+    const changes = EventManager.applyEventChoice(
+      state,
+      'trade_stormglass_halberd_schematic',
+      'merchant',
+    );
+
+    expect(changes).toEqual({});
   });
 });
