@@ -178,6 +178,22 @@ body {
   animation: tab-blink-new 1.2s ease-in-out infinite;
 }
 
+@keyframes gambler-goal-blink {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.2;
+  }
+}
+
+.gambler-goal-blink-3 {
+  animation: gambler-goal-blink 0.36s ease-in-out 3;
+}
+
 @keyframes flame-text {
 
   0%,
