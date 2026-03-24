@@ -564,7 +564,11 @@ export default function GamblerDiceDialog({
               <div className="flex flex-col gap-2">
                 <div className="grid grid-cols-2 gap-4 content-start">
                   <div className="text-center space-y-1">
-                    <div className="text-xs text-muted-foreground">You</div>
+                    <div
+                      className={`text-xs ${phase === "playerTurn" ? "font-semibold text-foreground" : "text-muted-foreground"}`}
+                    >
+                      You
+                    </div>
                     <div
                       className="text-2xl font-bold tabular-nums"
                       data-testid="player-running-total"
@@ -576,7 +580,11 @@ export default function GamblerDiceDialog({
                     </div>
                   </div>
                   <div className="text-center space-y-1">
-                    <div className="text-xs text-muted-foreground">Gambler</div>
+                    <div
+                      className={`text-xs ${phase === "npcTurn" ? "font-semibold text-foreground" : "text-muted-foreground"}`}
+                    >
+                      Gambler
+                    </div>
                     <div
                       className="text-2xl font-bold tabular-nums"
                       data-testid="gambler-running-total"
