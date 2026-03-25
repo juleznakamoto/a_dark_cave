@@ -300,6 +300,7 @@ describe("TimedEventPanel gambler coverage", () => {
         event: makeGamblerEvent(),
         expiryTime: Date.now() + 60_000,
         startTime: Date.now() - 2_000,
+        gamblerRoundsRemaining: 2,
       },
     }));
 
@@ -337,11 +338,41 @@ describe("TimedEventPanel gambler coverage", () => {
       wager: 0,
       roundsRemainingThisEvent: 1,
     });
+    expect(useGameStore.getState().timedEventTab.gamblerRoundsRemaining).toBe(
+      1,
+    );
     expect(setTimedEventTab).not.toHaveBeenCalled();
     expect(setHighlightedResources).not.toHaveBeenCalled();
     expect(screen.getByTestId("gambler-dialog")).toHaveAttribute(
       "data-open",
       "true",
+    );
+  });
+
+  it("does not reopen the gambler dialog on Accept when visit rounds are exhausted", () => {
+    useGameStore.setState((state) => ({
+      ...state,
+      resources: { ...state.resources, gold: 100 },
+      timedEventTab: {
+        isActive: true,
+        event: makeGamblerEvent(),
+        expiryTime: Date.now() + 60_000,
+        startTime: Date.now() - 2_000,
+        gamblerRoundsRemaining: 0,
+      },
+    }));
+
+    act(() => {
+      render(<TimedEventPanel />);
+    });
+
+    act(() => {
+      fireEvent.click(screen.getByRole("button", { name: "Accept" }));
+    });
+
+    expect(screen.getByTestId("gambler-dialog")).toHaveAttribute(
+      "data-open",
+      "false",
     );
   });
 });

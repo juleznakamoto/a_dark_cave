@@ -297,6 +297,9 @@ export default function TimedEventPanel() {
     // For gambler events: accept opens the dialog, decline closes tab
     if (isGamblerEvent) {
       if (choiceId === "accept") {
+        if (gameState.timedEventTab?.gamblerRoundsRemaining === 0) {
+          return;
+        }
         setGamblerDialogOpen(true);
       } else {
         setTimedEventTab(false);
@@ -661,13 +664,34 @@ export default function TimedEventPanel() {
           onWagerSelected={(wager) => {
             useGameStore.setState((s) => {
               const prev = s.gamblerGame;
-              const roundsRemainingThisEvent =
-                prev?.roundsRemainingThisEvent != null
-                  ? prev.roundsRemainingThisEvent
-                  : s.relics?.bone_dice
-                    ? 2
-                    : 1;
+              const isGamblerTab =
+                s.timedEventTab?.event?.id?.split("-")[0] === "gambler";
+
+              let roundsRemainingThisEvent: number;
+              if (prev?.roundsRemainingThisEvent != null) {
+                roundsRemainingThisEvent = prev.roundsRemainingThisEvent;
+              } else {
+                const tr = s.timedEventTab?.gamblerRoundsRemaining;
+                if (tr != null && tr >= 1) {
+                  roundsRemainingThisEvent = tr;
+                } else {
+                  roundsRemainingThisEvent = s.relics?.bone_dice ? 2 : 1;
+                }
+              }
+
+              const lazyInitTab =
+                isGamblerTab &&
+                s.timedEventTab.gamblerRoundsRemaining == null
+                  ? {
+                      timedEventTab: {
+                        ...s.timedEventTab,
+                        gamblerRoundsRemaining: roundsRemainingThisEvent,
+                      },
+                    }
+                  : {};
+
               return {
+                ...lazyInitTab,
                 gamblerGame: {
                   wager,
                   stakeNotYetDeducted: true,
@@ -744,18 +768,29 @@ export default function TimedEventPanel() {
             }
           }}
           onClose={() => {
-            const gg = useGameStore.getState().gamblerGame;
+            const st = useGameStore.getState();
+            const gg = st.gamblerGame;
             const resolved = gg?.outcome != null;
             if (resolved) {
-              const rem = gg.roundsRemainingThisEvent ?? 1;
+              const rem =
+                gg.roundsRemainingThisEvent ??
+                st.timedEventTab.gamblerRoundsRemaining ??
+                1;
               const next = rem - 1;
               if (next > 0) {
-                useGameStore.setState({
+                useGameStore.setState((s) => ({
                   gamblerGame: {
                     wager: 0,
                     roundsRemainingThisEvent: next,
                   },
-                });
+                  timedEventTab:
+                    s.timedEventTab.event?.id?.split("-")[0] === "gambler"
+                      ? {
+                          ...s.timedEventTab,
+                          gamblerRoundsRemaining: next,
+                        }
+                      : s.timedEventTab,
+                }));
                 setGamblerDialogRoundKey((k) => k + 1);
                 return;
               }

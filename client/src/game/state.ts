@@ -161,6 +161,8 @@ interface GameStore extends GameState {
     event: LogEntry | null;
     expiryTime: number;
     startTime?: number;
+    /** Gambler only: plays left this visit; set when tab opens, decremented on resolved dismiss. Stops Accept from re-granting bone-dice quota after gamblerGame is cleared. */
+    gamblerRoundsRemaining?: number;
   };
 
   // Merchant trades state
@@ -2449,13 +2451,23 @@ export const useGameStore = create<GameStore>((set, get) => ({
       });
     } else {
       // Normal activation without merchant
-      set({
-        timedEventTab: {
-          isActive,
-          event: event || null,
-          expiryTime: isActive && duration ? Date.now() + duration : 0,
-          startTime: isActive ? Date.now() : undefined,
-        },
+      set((state) => {
+        const isGambler =
+          !!(isActive && event && event.id.split("-")[0] === "gambler");
+        const gamblerRoundsRemaining = isGambler
+          ? state.relics?.bone_dice
+            ? 2
+            : 1
+          : undefined;
+        return {
+          timedEventTab: {
+            isActive,
+            event: event || null,
+            expiryTime: isActive && duration ? Date.now() + duration : 0,
+            startTime: isActive ? Date.now() : undefined,
+            ...(gamblerRoundsRemaining != null && { gamblerRoundsRemaining }),
+          },
+        };
       });
     }
   },
