@@ -26,10 +26,15 @@ export function gamblerDiceResumeOnLoad(input: {
     tab.isActive &&
     !!tab.event?.id &&
     String(tab.event.id).split("-")[0] === "gambler";
+  const hasRoundCredits =
+    gg?.roundsRemainingThisEvent != null && gg.roundsRemainingThisEvent > 0;
   const resume =
     isGamblerEvent &&
     gg != null &&
-    (gg.outcome != null || gg.wager > 0 || gg.session != null);
+    (gg.outcome != null ||
+      gg.wager > 0 ||
+      gg.session != null ||
+      hasRoundCredits);
   return {
     activeTab: resume ? "timedevent" : "cave",
     gamblerDiceDialogOpen: resume,
@@ -42,7 +47,6 @@ export type GamblerDiceSession = NonNullable<
 >;
 
 export function createDefaultGamblerSession(
-  hasBoneDice: boolean,
   phase: GamblerDiceSession["phase"] = "wager",
 ): GamblerDiceSession {
   return {
@@ -52,7 +56,6 @@ export function createDefaultGamblerSession(
     goal: INITIAL_GOAL,
     playerLastRoll: null,
     npcLastRoll: null,
-    hasReroll: hasBoneDice,
     hasRolledThisRound: false,
     npcTurnChain: 0,
     goalRaisedBlinkKey: 0,
@@ -64,8 +67,11 @@ export function createDefaultGamblerSession(
 /** Legacy saves: only wager + stake flag, no session — treat as start of round after wager. */
 export function resolveGamblerSessionForHydrate(
   gg: NonNullable<GameState["gamblerGame"]>,
-  hasBoneDice: boolean,
 ): GamblerDiceSession {
-  if (gg.session) return { ...gg.session };
-  return createDefaultGamblerSession(hasBoneDice, "playerTurn");
+  if (gg.session) {
+    const s = gg.session as GamblerDiceSession & { hasReroll?: boolean };
+    const { hasReroll: _legacyReroll, ...rest } = s;
+    return rest;
+  }
+  return createDefaultGamblerSession("playerTurn");
 }

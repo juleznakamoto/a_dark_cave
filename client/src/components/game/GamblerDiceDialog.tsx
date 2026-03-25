@@ -76,7 +76,6 @@ interface GamblerDiceDialogProps {
     snapshot: { playerTotal: number; npcTotal: number; goal: number },
   ) => void;
   onClose: () => void;
-  hasBoneDice: boolean;
   playerGold: number;
   playerLuck: number;
   onWagerSelected: (wager: number) => void;
@@ -109,7 +108,7 @@ function DiceFace({
   return <span className="text-3xl">{face}</span>;
 }
 
-function RulesInfoButton({ hasBoneDice }: { hasBoneDice: boolean }) {
+function RulesInfoButton() {
   return (
     <TooltipWrapper
       tooltip={
@@ -125,11 +124,6 @@ function RulesInfoButton({ hasBoneDice }: { hasBoneDice: boolean }) {
             If you have more points than the gambler you can decide to not role
             in this round.
           </p>
-          {hasBoneDice && (
-            <p className="text-amber-300/80">
-              Bone Dice: re-roll once per game.
-            </p>
-          )}
         </div>
       }
       tooltipId="gambler-rules"
@@ -148,7 +142,6 @@ export default function GamblerDiceDialog({
   isOpen,
   onOutcomeResolved,
   onClose,
-  hasBoneDice,
   playerGold,
   playerLuck,
   onWagerSelected,
@@ -160,8 +153,6 @@ export default function GamblerDiceDialog({
   const [goal, setGoal] = useState(INITIAL_GOAL);
   const [playerLastRoll, setPlayerLastRoll] = useState<number | null>(null);
   const [npcLastRoll, setNpcLastRoll] = useState<number | null>(null);
-  const [hasReroll, setHasReroll] = useState(hasBoneDice);
-  const [prevTotal, setPrevTotal] = useState(0);
   const [outcome, setOutcome] = useState<"win" | "lose" | null>(null);
   const [spinning, setSpinning] = useState(false);
   const [npcSpinning, setNpcSpinning] = useState(false);
@@ -245,8 +236,6 @@ export default function GamblerDiceDialog({
     setGoal(INITIAL_GOAL);
     setPlayerLastRoll(null);
     setNpcLastRoll(null);
-    setHasReroll(hasBoneDice);
-    setPrevTotal(0);
     setOutcome(null);
     setSpinning(false);
     setNpcSpinning(false);
@@ -257,7 +246,7 @@ export default function GamblerDiceDialog({
     setLockedDialogSize(null);
     pauseAfterPlayerRollRef.current = false;
     playerStoppedRef.current = false;
-  }, [clearPendingTimeouts, hasBoneDice]);
+  }, [clearPendingTimeouts]);
 
   useLayoutEffect(() => {
     if (!isOpen) {
@@ -293,7 +282,7 @@ export default function GamblerDiceDialog({
       gg && !gg.outcome && (gg.session != null || gg.wager > 0);
 
     if (canResume && gg) {
-      const s = resolveGamblerSessionForHydrate(gg, hasBoneDice);
+      const s = resolveGamblerSessionForHydrate(gg);
       setWager(gg.wager);
       setPhase(s.phase);
       setPlayerTotal(s.playerTotal);
@@ -301,7 +290,6 @@ export default function GamblerDiceDialog({
       setGoal(s.goal);
       setPlayerLastRoll(s.playerLastRoll);
       setNpcLastRoll(s.npcLastRoll);
-      setHasReroll(s.hasReroll);
       setHasRolledThisRound(s.hasRolledThisRound);
       setNpcTurnChain(s.npcTurnChain);
       setGoalRaisedBlinkKey(s.goalRaisedBlinkKey);
@@ -310,10 +298,6 @@ export default function GamblerDiceDialog({
       setOutcome(null);
       setSpinning(false);
       setNpcSpinning(false);
-      // Total before the current player roll (reroll reverts to this, then applies a new die).
-      setPrevTotal(
-        Math.max(0, s.playerTotal - (s.playerLastRoll ?? 0)),
-      );
       outcomeReportedRef.current = false;
       tieResumeRequestedRef.current = s.phase === "tieEscalation";
       // Do not use a synthetic min height here. Normal play locks size from the wager layout's
@@ -325,7 +309,7 @@ export default function GamblerDiceDialog({
 
     resetGame();
     tieResumeRequestedRef.current = false;
-  }, [isOpen, hasBoneDice, resetGame]);
+  }, [isOpen, resetGame]);
 
   // Do not list `phase` in deps: the hydrate effect batches setPhase("tieEscalation") with
   // tieResumeRequestedRef; a follow-up render would re-run this effect, whose cleanup would
@@ -350,7 +334,6 @@ export default function GamblerDiceDialog({
       goal,
       playerLastRoll,
       npcLastRoll,
-      hasReroll,
       hasRolledThisRound,
       npcTurnChain,
       goalRaisedBlinkKey,
@@ -368,7 +351,6 @@ export default function GamblerDiceDialog({
       prev.goal === session.goal &&
       prev.playerLastRoll === session.playerLastRoll &&
       prev.npcLastRoll === session.npcLastRoll &&
-      prev.hasReroll === session.hasReroll &&
       prev.hasRolledThisRound === session.hasRolledThisRound &&
       prev.npcTurnChain === session.npcTurnChain &&
       prev.goalRaisedBlinkKey === session.goalRaisedBlinkKey &&
@@ -386,7 +368,6 @@ export default function GamblerDiceDialog({
     goal,
     playerLastRoll,
     npcLastRoll,
-    hasReroll,
     hasRolledThisRound,
     npcTurnChain,
     goalRaisedBlinkKey,
@@ -443,45 +424,6 @@ export default function GamblerDiceDialog({
       if (!isOpenRef.current) return;
       const roll = rollDie();
       const result = resolveRoll(playerTotal, roll, goal);
-      setPrevTotal(playerTotal);
-      setPlayerLastRoll(roll);
-      setPlayerTotal(result.newTotal);
-      setSpinning(false);
-      setHasRolledThisRound(true);
-
-      if (result.status === "bust") {
-        setOutcome("lose");
-        setPhase("outcome");
-      } else {
-        playerStoppedRef.current = false;
-        pauseAfterPlayerRollRef.current = true;
-        setNpcTurnChain(0);
-        setPhase("npcTurn");
-      }
-      playerTimeoutRef.current = null;
-    }, spinMs);
-  };
-
-  const handleReroll = () => {
-    if (
-      !hasReroll ||
-      playerLastRoll === null ||
-      spinning ||
-      phase !== "playerTurn"
-    )
-      return;
-    setHasReroll(false);
-    setPlayerTotal(prevTotal);
-    setPlayerLastRoll(null);
-
-    setSpinning(true);
-    clearTimeoutRef(playerTimeoutRef);
-    const spinMs = randomRollSpinDurationMs();
-    playerTimeoutRef.current = setTimeout(() => {
-      if (!isOpenRef.current) return;
-      const roll = rollDie();
-      const result = resolveRoll(prevTotal, roll, goal);
-      setPrevTotal(prevTotal);
       setPlayerLastRoll(roll);
       setPlayerTotal(result.newTotal);
       setSpinning(false);
@@ -617,7 +559,7 @@ export default function GamblerDiceDialog({
         <DialogHeader className="shrink-0 space-y-2 pb-3.5 mb-0.5">
           <DialogTitle className="text-sm flex items-center gap-2 leading-snug">
             The Obsessed Gambler
-            <RulesInfoButton hasBoneDice={hasBoneDice} />
+            <RulesInfoButton />
           </DialogTitle>
           <DialogDescription className="sr-only">
             Dice game against the obsessed gambler
@@ -779,38 +721,11 @@ export default function GamblerDiceDialog({
                         >
                           No Roll
                         </Button>
-                        {playerTotal < goal &&
-                          hasReroll &&
-                          playerLastRoll !== null && (
-                            <Button
-                              variant="outline"
-                              size="xs"
-                              onClick={handleReroll}
-                              disabled={phase !== "playerTurn" || spinning}
-                              className="text-xs text-amber-300/80 border-amber-900/50"
-                              button_id="gambler-reroll"
-                            >
-                              Re-roll
-                            </Button>
-                          )}
                       </div>
                     )}
                 </div>
 
-                {hasBoneDice && (
-                  <div className="text-center text-xs text-muted-foreground">
-                    {hasReroll ? (
-                      <span className="text-amber-300/60">
-                        Bone dice: 1 re-roll available
-                      </span>
-                    ) : (
-                      <span className="text-muted-foreground/40">
-                        Bone dice: used
-                      </span>
-                    )}
-                  </div>
-                )}
-              </div>
+                </div>
             )}
 
           {phase === "outcome" && outcome && (

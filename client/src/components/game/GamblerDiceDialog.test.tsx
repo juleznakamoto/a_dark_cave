@@ -82,7 +82,6 @@ describe("GamblerDiceDialog", () => {
         isOpen={true}
         onOutcomeResolved={vi.fn()}
         onClose={vi.fn()}
-        hasBoneDice={false}
         playerGold={100}
         playerLuck={50}
         onWagerSelected={vi.fn()}

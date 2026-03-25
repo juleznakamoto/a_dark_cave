@@ -653,20 +653,26 @@ export default function TimedEventPanel() {
       {isGamblerEvent && (
         <GamblerDiceDialog
           isOpen={gamblerDialogOpen}
-          hasBoneDice={!!gameState.relics?.bone_dice}
           playerGold={gameState.resources?.gold ?? 0}
           playerLuck={getTotalLuck(gameState)}
           onWagerSelected={(wager) => {
-            useGameStore.setState((s) => ({
-              gamblerGame: {
-                wager,
-                stakeNotYetDeducted: true,
-                session: createDefaultGamblerSession(
-                  !!s.relics?.bone_dice,
-                  "playerTurn",
-                ),
-              },
-            }));
+            useGameStore.setState((s) => {
+              const prev = s.gamblerGame;
+              const roundsRemainingThisEvent =
+                prev?.roundsRemainingThisEvent != null
+                  ? prev.roundsRemainingThisEvent
+                  : s.relics?.bone_dice
+                    ? 2
+                    : 1;
+              return {
+                gamblerGame: {
+                  wager,
+                  stakeNotYetDeducted: true,
+                  roundsRemainingThisEvent,
+                  session: createDefaultGamblerSession("playerTurn"),
+                },
+              };
+            });
           }}
           onOutcomeResolved={(outcome, wager, snapshot) => {
             if (outcome === "win") {
@@ -683,6 +689,8 @@ export default function TimedEventPanel() {
                     outcome: "win",
                     outcomeSnapshot: snapshot,
                     stakeNotYetDeducted: s.gamblerGame?.stakeNotYetDeducted,
+                    roundsRemainingThisEvent:
+                      s.gamblerGame?.roundsRemainingThisEvent,
                   },
                   story: {
                     ...s.story,
@@ -716,6 +724,8 @@ export default function TimedEventPanel() {
                     outcome: "lose",
                     outcomeSnapshot: snapshot,
                     stakeNotYetDeducted: takeStake ? false : s.gamblerGame?.stakeNotYetDeducted,
+                    roundsRemainingThisEvent:
+                      s.gamblerGame?.roundsRemainingThisEvent,
                   },
                   log: [
                     ...s.log,
@@ -731,12 +741,23 @@ export default function TimedEventPanel() {
             }
           }}
           onClose={() => {
-            const resolved = useGameStore.getState().gamblerGame?.outcome != null;
+            const gg = useGameStore.getState().gamblerGame;
+            const resolved = gg?.outcome != null;
+            if (resolved) {
+              const rem = gg.roundsRemainingThisEvent ?? 1;
+              const next = rem - 1;
+              if (next > 0) {
+                useGameStore.setState({
+                  gamblerGame: { roundsRemainingThisEvent: next },
+                });
+                setGamblerDialogOpen(true);
+                return;
+              }
+            }
             setGamblerDialogOpen(false);
             useGameStore.setState((s) =>
               s.gamblerGame ? { gamblerGame: null } : {},
             );
-            // Round finished: gambler leaves — same as waiting for the tab timer to hit 0.
             if (resolved && isGamblerEvent) {
               setHighlightedResources([]);
               setTimedEventTab(false);

@@ -291,7 +291,7 @@ export function renderItemTooltip(
         </div>
       )}
       {itemId === "bone_dice" && (
-        <div>One re-roll per dice game</div>
+        <div>Two gambler rounds per timed visit</div>
       )}
       {effect.bonuses?.actionBonuses &&
         Object.entries(effect.bonuses.actionBonuses).map(

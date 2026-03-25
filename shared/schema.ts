@@ -773,6 +773,11 @@ export const gameStateSchema = z.object({
        */
       stakeNotYetDeducted: z.boolean().optional(),
       /**
+       * With Bone Dice relic: 2 rounds per gambler visit; otherwise 1. Decremented when the player
+       * dismisses the outcome screen (not on wager). Omitted in legacy saves (treat as 1).
+       */
+      roundsRemainingThisEvent: z.number().int().min(1).max(2).optional(),
+      /**
        * In-progress dice round (persisted for resume-on-refresh). Omitted once `outcome` is set.
        */
       session: z
@@ -788,7 +793,6 @@ export const gameStateSchema = z.object({
           goal: z.number(),
           playerLastRoll: z.number().nullable(),
           npcLastRoll: z.number().nullable(),
-          hasReroll: z.boolean(),
           hasRolledThisRound: z.boolean(),
           npcTurnChain: z.number(),
           goalRaisedBlinkKey: z.number(),

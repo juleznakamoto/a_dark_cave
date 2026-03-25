@@ -890,7 +890,8 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   bone_dice: {
     id: "bone_dice",
     name: "Bone Dice",
-    description: "Six-sided dice carved from ancient bones",
+    description:
+      "Six-sided dice carved from ancient bones. When the obsessed gambler visits, you may play two full rounds instead of one.",
     bonuses: {
       generalBonuses: {
         luck: 4,

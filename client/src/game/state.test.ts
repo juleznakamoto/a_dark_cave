@@ -524,7 +524,6 @@ describe("Gambler resume on load", () => {
       goal: 15,
       playerLastRoll: 4,
       npcLastRoll: null as number | null,
-      hasReroll: false,
       hasRolledThisRound: true,
       npcTurnChain: 0,
       goalRaisedBlinkKey: 0,

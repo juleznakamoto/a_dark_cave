@@ -320,7 +320,7 @@ export const caveEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "You pocket the bone dice. They feel warm in your hand, and you sense that fortune will favor you more often, though at what cost remains to be seen.",
+              "You pocket the bone dice. They feel warm in your hand.",
           };
         },
       },
