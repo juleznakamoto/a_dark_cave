@@ -58,12 +58,16 @@ export function resolveRoll(
   return { newTotal, status: "playing" };
 }
 
-/** NPC rolls when behind or tied; only stands when strictly ahead (mirrors player: no stand while tied). */
+/**
+ * NPC rolls when behind or tied and still below the goal; stands when ahead or already at the goal
+ * (any positive die from exactly the goal would bust — e.g. both at 15/15/15 must go to tie escalation).
+ */
 export function shouldNpcRoll(
   npcTotal: number,
   playerTotal: number,
-  _goal: number,
+  goal: number,
 ): boolean {
+  if (npcTotal >= goal) return false;
   return npcTotal <= playerTotal;
 }
 

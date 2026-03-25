@@ -546,13 +546,8 @@ export default function GamblerDiceDialog({
           setOutcome("lose");
           setPhase("outcome");
         } else {
-          // Tie: raise goal only if both stood under the cap (same score, neither hit the goal).
-          if (p < g) {
-            scheduleGoalRaiseAfterTie();
-          } else {
-            setOutcome("win");
-            setPhase("outcome");
-          }
+          // Tie (same total): raise goal whether both are under the cap or both sit exactly on it.
+          scheduleGoalRaiseAfterTie();
         }
         return;
       }

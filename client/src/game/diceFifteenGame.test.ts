@@ -57,11 +57,21 @@ describe("shouldNpcRoll", () => {
   it("stands when ahead of the player", () => {
     expect(shouldNpcRoll(13, 12, 15)).toBe(false);
   });
+
+  it("stands when already at the goal (rolling would always bust)", () => {
+    expect(shouldNpcRoll(15, 10, 15)).toBe(false);
+    expect(shouldNpcRoll(15, 15, 15)).toBe(false);
+    expect(shouldNpcRoll(25, 25, 25)).toBe(false);
+  });
 });
 
 describe("npcRollOrStand", () => {
   it("stands when already ahead (no RNG)", () => {
     expect(npcRollOrStand(13, 12, 15, makeRng([]))).toEqual({ kind: "stand" });
+  });
+
+  it("stands when at goal even if tied with player (both 15/15/15)", () => {
+    expect(npcRollOrStand(15, 15, 15, makeRng([]))).toEqual({ kind: "stand" });
   });
 
   it("rolls one die when tied", () => {
