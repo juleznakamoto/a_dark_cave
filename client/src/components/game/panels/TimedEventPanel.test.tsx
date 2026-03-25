@@ -283,4 +283,65 @@ describe("TimedEventPanel gambler coverage", () => {
     expect(setTimedEventTab).toHaveBeenCalledWith(false);
     expect(setHighlightedResources).toHaveBeenCalledWith([]);
   });
+
+  it("after round 1 close with bone dice, keeps timed tab open and only round credits in store (remount key for round 2)", () => {
+    const setTimedEventTab = vi.fn();
+    const setHighlightedResources = vi.fn();
+
+    useGameStore.setState((state) => ({
+      ...state,
+      setTimedEventTab: setTimedEventTab as typeof state.setTimedEventTab,
+      setHighlightedResources:
+        setHighlightedResources as typeof state.setHighlightedResources,
+      relics: { ...state.relics, bone_dice: true },
+      resources: { ...state.resources, gold: 100 },
+      timedEventTab: {
+        isActive: true,
+        event: makeGamblerEvent(),
+        expiryTime: Date.now() + 60_000,
+        startTime: Date.now() - 2_000,
+      },
+    }));
+
+    act(() => {
+      render(<TimedEventPanel />);
+    });
+
+    act(() => {
+      fireEvent.click(screen.getByRole("button", { name: "Accept" }));
+    });
+
+    setTimedEventTab.mockClear();
+    setHighlightedResources.mockClear();
+
+    act(() => {
+      useGameStore.setState({
+        gamblerGame: {
+          wager: 50,
+          outcome: "win" as const,
+          roundsRemainingThisEvent: 2,
+          outcomeSnapshot: {
+            playerTotal: 12,
+            npcTotal: 10,
+            goal: 15,
+          },
+        },
+      });
+    });
+
+    act(() => {
+      fireEvent.click(screen.getByRole("button", { name: "Mock Close" }));
+    });
+
+    expect(useGameStore.getState().gamblerGame).toEqual({
+      wager: 0,
+      roundsRemainingThisEvent: 1,
+    });
+    expect(setTimedEventTab).not.toHaveBeenCalled();
+    expect(setHighlightedResources).not.toHaveBeenCalled();
+    expect(screen.getByTestId("gambler-dialog")).toHaveAttribute(
+      "data-open",
+      "true",
+    );
+  });
 });

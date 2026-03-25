@@ -43,6 +43,8 @@ export default function TimedEventPanel() {
 
   // Gambler dialog state
   const [gamblerDialogOpen, setGamblerDialogOpen] = useState(false);
+  /** Bumped when bone dice advances to the next round while the dialog stays open — remounts dialog so hydrate effect runs (isOpen alone does not change). */
+  const [gamblerDialogRoundKey, setGamblerDialogRoundKey] = useState(0);
 
   useEffect(() => {
     setGamblerDiceDialogOpen(gamblerDialogOpen);
@@ -652,6 +654,7 @@ export default function TimedEventPanel() {
       {/* Gambler dice dialog */}
       {isGamblerEvent && (
         <GamblerDiceDialog
+          key={gamblerDialogRoundKey}
           isOpen={gamblerDialogOpen}
           playerGold={gameState.resources?.gold ?? 0}
           playerLuck={getTotalLuck(gameState)}
@@ -748,9 +751,12 @@ export default function TimedEventPanel() {
               const next = rem - 1;
               if (next > 0) {
                 useGameStore.setState({
-                  gamblerGame: { roundsRemainingThisEvent: next },
+                  gamblerGame: {
+                    wager: 0,
+                    roundsRemainingThisEvent: next,
+                  },
                 });
-                setGamblerDialogOpen(true);
+                setGamblerDialogRoundKey((k) => k + 1);
                 return;
               }
             }
