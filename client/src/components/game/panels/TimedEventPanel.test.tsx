@@ -15,15 +15,22 @@ vi.mock("@/components/game/GamblerDiceDialog", () => ({
   default: ({
     isOpen,
     onWagerSelected,
+    onClose,
   }: {
     isOpen: boolean;
     onWagerSelected: (wager: number) => void;
+    onClose?: () => void;
   }) => (
     <div data-testid="gambler-dialog" data-open={isOpen ? "true" : "false"}>
       {isOpen && (
-        <button onClick={() => onWagerSelected(50)} type="button">
-          Mock Wager
-        </button>
+        <>
+          <button onClick={() => onWagerSelected(50)} type="button">
+            Mock Wager
+          </button>
+          <button onClick={() => onClose?.()} type="button">
+            Mock Close
+          </button>
+        </>
       )}
     </div>
   ),
@@ -218,6 +225,61 @@ describe("TimedEventPanel gambler coverage", () => {
     ).toBe(false);
     expect(useGameStore.getState().gamblerGame).toBeNull();
     expect(applyEventChoice).not.toHaveBeenCalled();
+    expect(setTimedEventTab).toHaveBeenCalledWith(false);
+    expect(setHighlightedResources).toHaveBeenCalledWith([]);
+  });
+
+  it("closes the gambler timed tab when the dice dialog closes after a resolved round", () => {
+    const setTimedEventTab = vi.fn();
+    const setHighlightedResources = vi.fn();
+
+    useGameStore.setState((state) => ({
+      ...state,
+      setTimedEventTab: setTimedEventTab as typeof state.setTimedEventTab,
+      setHighlightedResources:
+        setHighlightedResources as typeof state.setHighlightedResources,
+      resources: { ...state.resources, gold: 100 },
+      timedEventTab: {
+        isActive: true,
+        event: makeGamblerEvent(),
+        expiryTime: Date.now() + 60_000,
+        startTime: Date.now() - 2_000,
+      },
+    }));
+
+    act(() => {
+      render(<TimedEventPanel />);
+    });
+
+    act(() => {
+      fireEvent.click(screen.getByRole("button", { name: "Accept" }));
+    });
+    act(() => {
+      fireEvent.click(screen.getByRole("button", { name: "Mock Wager" }));
+    });
+
+    setTimedEventTab.mockClear();
+    setHighlightedResources.mockClear();
+
+    act(() => {
+      useGameStore.setState({
+        gamblerGame: {
+          wager: 50,
+          outcome: "lose" as const,
+          outcomeSnapshot: {
+            playerTotal: 10,
+            npcTotal: 12,
+            goal: 15,
+          },
+        },
+      });
+    });
+
+    act(() => {
+      fireEvent.click(screen.getByRole("button", { name: "Mock Close" }));
+    });
+
+    expect(useGameStore.getState().gamblerGame).toBeNull();
     expect(setTimedEventTab).toHaveBeenCalledWith(false);
     expect(setHighlightedResources).toHaveBeenCalledWith([]);
   });

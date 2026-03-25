@@ -310,19 +310,16 @@ export default function GamblerDiceDialog({
       setOutcome(null);
       setSpinning(false);
       setNpcSpinning(false);
-      setPrevTotal(s.playerTotal);
+      // Total before the current player roll (reroll reverts to this, then applies a new die).
+      setPrevTotal(
+        Math.max(0, s.playerTotal - (s.playerLastRoll ?? 0)),
+      );
       outcomeReportedRef.current = false;
       tieResumeRequestedRef.current = s.phase === "tieEscalation";
-      if (s.phase !== "wager" && typeof window !== "undefined") {
-        const maxW = Math.floor(window.innerWidth * 0.95);
-        const maxH = Math.floor(window.innerHeight * 0.85);
-        setLockedDialogSize({
-          width: Math.min(400, maxW),
-          height: Math.min(520, maxH),
-        });
-      } else {
-        setLockedDialogSize(null);
-      }
+      // Do not use a synthetic min height here. Normal play locks size from the wager layout's
+      // measured offsetHeight in handleWager; a fixed ~520px minHeight after refresh stretched
+      // flex-1 content and left a tall empty band. Resume with unlocked sizing (content height).
+      setLockedDialogSize(null);
       return;
     }
 
@@ -330,12 +327,15 @@ export default function GamblerDiceDialog({
     tieResumeRequestedRef.current = false;
   }, [isOpen, hasBoneDice, resetGame]);
 
+  // Do not list `phase` in deps: the hydrate effect batches setPhase("tieEscalation") with
+  // tieResumeRequestedRef; a follow-up render would re-run this effect, whose cleanup would
+  // clear tieTimeoutRef before tieResumeRequestedRef is true again — locking tieEscalation.
   useLayoutEffect(() => {
     if (!isOpen || !tieResumeRequestedRef.current) return;
     tieResumeRequestedRef.current = false;
     resumeTieEscalationCountdown();
     return () => clearTimeoutRef(tieTimeoutRef);
-  }, [isOpen, phase, resumeTieEscalationCountdown]);
+  }, [isOpen, resumeTieEscalationCountdown]);
 
   useEffect(() => {
     if (!isOpen) return;

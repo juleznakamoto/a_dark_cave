@@ -731,10 +731,16 @@ export default function TimedEventPanel() {
             }
           }}
           onClose={() => {
+            const resolved = useGameStore.getState().gamblerGame?.outcome != null;
             setGamblerDialogOpen(false);
             useGameStore.setState((s) =>
               s.gamblerGame ? { gamblerGame: null } : {},
             );
+            // Round finished: gambler leaves — same as waiting for the tab timer to hit 0.
+            if (resolved && isGamblerEvent) {
+              setHighlightedResources([]);
+              setTimedEventTab(false);
+            }
           }}
         />
       )}
