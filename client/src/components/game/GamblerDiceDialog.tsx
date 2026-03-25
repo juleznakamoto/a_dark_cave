@@ -128,7 +128,7 @@ function RulesInfoButton() {
       }
       tooltipId="gambler-rules"
       disabled
-      tooltipContentClassName="max-w-xs border border-amber-600"
+      tooltipContentClassName="max-w-xs"
       className="inline-flex items-center justify-center w-4 h-4 shrink-0 rounded-full text-muted-foreground text-sm font-bold hover:text-foreground cursor-pointer"
     >
       <span className="leading-none" aria-label="Dice game rules">
@@ -146,6 +146,7 @@ export default function GamblerDiceDialog({
   playerLuck,
   onWagerSelected,
 }: GamblerDiceDialogProps) {
+  const hasBoneDice = useGameStore((s) => !!s.relics?.bone_dice);
   const [phase, setPhase] = useState<Phase>("wager");
   const [wager, setWager] = useState<number>(0);
   const [playerTotal, setPlayerTotal] = useState(0);
@@ -569,7 +570,11 @@ export default function GamblerDiceDialog({
         <div className="flex flex-1 flex-col min-h-0 overflow-y-auto">
           {phase === "wager" && (
             <div className="space-y-3">
-              <p className="text-xs text-muted-foreground">Place your bet.</p>
+              <p className="text-xs text-muted-foreground">
+                {hasBoneDice
+                  ? "Place your bet. Because you own Bone Dice you can play two times against the Gambler."
+                  : "Place your bet."}
+              </p>
               <div className="flex flex-wrap gap-2">
                 {WAGER_TIERS.map((tier) => {
                   const requiredLuck = WAGER_LUCK_THRESHOLDS[tier];
@@ -725,7 +730,7 @@ export default function GamblerDiceDialog({
                     )}
                 </div>
 
-                </div>
+              </div>
             )}
 
           {phase === "outcome" && outcome && (
