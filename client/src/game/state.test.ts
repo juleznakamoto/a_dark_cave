@@ -537,6 +537,16 @@ describe("Gambler resume on load", () => {
         ...createInitialState().resources,
         gold: 100,
       },
+      timedEventTab: {
+        isActive: true,
+        event: {
+          id: "gambler-state-test",
+          message: "",
+          timestamp: Date.now(),
+          type: "event" as const,
+        },
+        expiryTime: Date.now() + 600_000,
+      },
       gamblerGame: {
         wager: 50,
         stakeNotYetDeducted: true as const,
@@ -551,6 +561,8 @@ describe("Gambler resume on load", () => {
     await useGameStore.getState().loadGame();
 
     expect(mockSetLastGameLoadTime).toHaveBeenCalled();
+    expect(useGameStore.getState().activeTab).toBe("timedevent");
+    expect(useGameStore.getState().gamblerDiceDialogOpen).toBe(true);
     expect(useGameStore.getState().gamblerGame).toMatchObject({
       wager: 50,
       stakeNotYetDeducted: true,
@@ -571,6 +583,16 @@ describe("Gambler resume on load", () => {
         ...createInitialState().resources,
         gold: 160,
       },
+      timedEventTab: {
+        isActive: true,
+        event: {
+          id: "gambler-outcome-test",
+          message: "",
+          timestamp: Date.now(),
+          type: "event" as const,
+        },
+        expiryTime: Date.now() + 600_000,
+      },
       gamblerGame: {
         wager: 50,
         outcome: "win" as const,
@@ -587,6 +609,8 @@ describe("Gambler resume on load", () => {
 
     await useGameStore.getState().loadGame();
 
+    expect(useGameStore.getState().activeTab).toBe("timedevent");
+    expect(useGameStore.getState().gamblerDiceDialogOpen).toBe(true);
     expect(useGameStore.getState().gamblerGame).toMatchObject({
       wager: 50,
       outcome: "win",

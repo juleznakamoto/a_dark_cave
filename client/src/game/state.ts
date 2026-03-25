@@ -43,6 +43,7 @@ import {
   incrementButtonUsage,
 } from "@/game/buttonUpgrades";
 import { getExecutionTime } from "@/game/rules";
+import { gamblerDiceResumeOnLoad } from "@/game/gamblerSession";
 import { logger } from "@/lib/logger";
 import { madnessEvents } from "@/game/rules/eventsMadness";
 import { DISGRACED_PRIOR_UPGRADES } from "@/game/rules/skillUpgrades";
@@ -1744,9 +1745,27 @@ export const useGameStore = create<GameStore>((set, get) => ({
         savedState.gameId ??
         `game-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
 
+      const timedEventTab =
+        (savedState as { timedEventTab?: GameStore["timedEventTab"] })
+          .timedEventTab ?? {
+          isActive: false,
+          event: null,
+          expiryTime: 0,
+        };
+      const gamblerGameForResume =
+        savedState.gamblerGame !== undefined
+          ? savedState.gamblerGame
+          : defaultGameState.gamblerGame;
+      const { activeTab, gamblerDiceDialogOpen } = gamblerDiceResumeOnLoad({
+        timedEventTab,
+        gamblerGame: gamblerGameForResume,
+      });
+
       const loadedState = {
         ...savedState,
-        activeTab: "cave",
+        activeTab,
+        gamblerDiceDialogOpen,
+        timedEventTab,
         cooldowns: savedState.cooldowns || {},
         executionStartTimes: {},
         executionDurations: {},
@@ -1840,10 +1859,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
           choices: [],
           purchasedIds: [],
         }, // Load merchant trades
-        gamblerGame:
-          savedState.gamblerGame !== undefined
-            ? savedState.gamblerGame
-            : defaultGameState.gamblerGame,
+        gamblerGame: gamblerGameForResume,
       };
 
       const savedExpeditionVillagers = savedState.expeditionVillagers || {};

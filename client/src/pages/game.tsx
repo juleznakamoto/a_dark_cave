@@ -11,6 +11,8 @@ const PlaylightWelcomeDialog = lazy(() => import("@/components/game/PlaylightWel
 import { logger } from "@/lib/logger";
 import { getCurrentUser } from "@/game/auth";
 import { initSessionTracker } from "@/lib/sessionTracker";
+import { gamblerDiceResumeOnLoad } from "@/game/gamblerSession";
+import type { TimedEventTabState } from "@/game/types";
 
 export default function Game() {
   const initialize = useGameStore((state) => state.initialize);
@@ -159,11 +161,24 @@ export default function Game() {
             logger.log(`[GAME] Tracking Google Ads source: ${googleAdsSource}`);
           }
 
+          const timedEventTab =
+            (savedState as { timedEventTab?: TimedEventTabState })
+              .timedEventTab ?? {
+              isActive: false,
+              event: null,
+              expiryTime: 0,
+            };
+          const resumeUi = gamblerDiceResumeOnLoad({
+            timedEventTab,
+            gamblerGame: savedState.gamblerGame,
+          });
+
           // Gambler in-progress state is persisted in save data and resumed on load.
           useGameStore.setState({
             ...savedState,
+            timedEventTab,
             ...stateUpdates,
-            activeTab: "cave", // Always start on cave tab
+            ...resumeUi,
             flags: {
               ...savedState.flags,
               gameStarted: isGamePath ? true : savedState.flags.gameStarted, // Force game started if /game path

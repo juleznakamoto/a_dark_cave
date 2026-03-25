@@ -49,6 +49,22 @@ function randomRollSpinDurationMs(): number {
   );
 }
 
+/** Persist gambler + game state after each roll (and other session writes); `setTimeout(0)` runs after React commits. */
+function schedulePersistGamblerDiceState() {
+  setTimeout(() => {
+    void (async () => {
+      try {
+        const { saveGame } = await import("@/game/save");
+        const { useGameStore } = await import("@/game/state");
+        const { buildGameState } = await import("@/game/stateHelpers");
+        await saveGame(buildGameState(useGameStore.getState()), false);
+      } catch {
+        /* best-effort */
+      }
+    })();
+  }, 0);
+}
+
 type Phase = "wager" | "playerTurn" | "npcTurn" | "outcome" | "tieEscalation";
 
 interface GamblerDiceDialogProps {
@@ -342,29 +358,26 @@ export default function GamblerDiceDialog({
       pauseAfterNextPlayerRoll: pauseAfterPlayerRollRef.current,
     };
 
-    useGameStore.setState((s) => {
-      const cur = s.gamblerGame;
-      if (!cur || cur.outcome != null) return {};
-      const prev = cur.session;
-      if (
-        prev &&
-        prev.phase === session.phase &&
-        prev.playerTotal === session.playerTotal &&
-        prev.npcTotal === session.npcTotal &&
-        prev.goal === session.goal &&
-        prev.playerLastRoll === session.playerLastRoll &&
-        prev.npcLastRoll === session.npcLastRoll &&
-        prev.hasReroll === session.hasReroll &&
-        prev.hasRolledThisRound === session.hasRolledThisRound &&
-        prev.npcTurnChain === session.npcTurnChain &&
-        prev.goalRaisedBlinkKey === session.goalRaisedBlinkKey &&
-        prev.playerStopped === session.playerStopped &&
-        prev.pauseAfterNextPlayerRoll === session.pauseAfterNextPlayerRoll
-      ) {
-        return {};
-      }
-      return { gamblerGame: { ...cur, session } };
-    });
+    const cur = gg;
+    const prev = cur.session;
+    const unchanged =
+      prev &&
+      prev.phase === session.phase &&
+      prev.playerTotal === session.playerTotal &&
+      prev.npcTotal === session.npcTotal &&
+      prev.goal === session.goal &&
+      prev.playerLastRoll === session.playerLastRoll &&
+      prev.npcLastRoll === session.npcLastRoll &&
+      prev.hasReroll === session.hasReroll &&
+      prev.hasRolledThisRound === session.hasRolledThisRound &&
+      prev.npcTurnChain === session.npcTurnChain &&
+      prev.goalRaisedBlinkKey === session.goalRaisedBlinkKey &&
+      prev.playerStopped === session.playerStopped &&
+      prev.pauseAfterNextPlayerRoll === session.pauseAfterNextPlayerRoll;
+    if (unchanged) return;
+
+    useGameStore.setState({ gamblerGame: { ...cur, session } });
+    schedulePersistGamblerDiceState();
   }, [
     isOpen,
     phase,
@@ -388,6 +401,7 @@ export default function GamblerDiceDialog({
       npcTotal,
       goal,
     });
+    schedulePersistGamblerDiceState();
   }, [
     isOpen,
     phase,
