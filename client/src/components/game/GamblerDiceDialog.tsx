@@ -605,8 +605,8 @@ export default function GamblerDiceDialog({
         ref={dialogContentRef}
         className={
           dialogLocked
-            ? "z-[70] flex max-h-[85vh] flex-col gap-0 overflow-hidden border-2 border-amber-900/50 shadow-2xl [&>button]:hidden max-w-[95vw]"
-            : "z-[70] flex w-[95vw] flex-col gap-0 overflow-hidden border-2 border-amber-900/50 shadow-2xl [&>button]:hidden max-h-[85vh] sm:max-w-sm"
+            ? "z-[70] flex max-h-[85vh] flex-col gap-0 overflow-hidden border-2 border-amber-900/50 shadow-2xl [&>button]:hidden max-w-[min(24rem,95vw)] duration-0 data-[state=open]:animate-none data-[state=closed]:animate-none"
+            : "z-[70] flex w-full max-w-[min(24rem,95vw)] flex-col gap-0 overflow-hidden border-2 border-amber-900/50 shadow-2xl [&>button]:hidden max-h-[85vh] duration-0 data-[state=open]:animate-none data-[state=closed]:animate-none"
         }
         style={
           dialogLocked
