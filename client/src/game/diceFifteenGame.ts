@@ -35,7 +35,8 @@ export function canPlayerChooseNoRoll(
   return playerTotal > npcTotal;
 }
 
-export type RollStatus = "playing" | "win" | "bust";
+/** `bust` only when total exceeds the goal; exactly at goal is still `playing`. */
+export type RollStatus = "playing" | "bust";
 export type ShowdownResult = "playerWin" | "npcWin" | "tie";
 export type GameOutcome = "win" | "lose";
 
@@ -54,16 +55,16 @@ export function resolveRoll(
 ): { newTotal: number; status: RollStatus } {
   const newTotal = currentTotal + roll;
   if (newTotal > goal) return { newTotal, status: "bust" };
-  if (newTotal === goal) return { newTotal, status: "win" };
   return { newTotal, status: "playing" };
 }
 
+/** NPC rolls when behind or tied; only stands when strictly ahead (mirrors player: no stand while tied). */
 export function shouldNpcRoll(
   npcTotal: number,
   playerTotal: number,
   _goal: number,
 ): boolean {
-  return npcTotal < playerTotal;
+  return npcTotal <= playerTotal;
 }
 
 /** One NPC decision per turn: roll a single die, or stand (no roll). */

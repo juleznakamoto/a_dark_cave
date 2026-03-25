@@ -31,8 +31,8 @@ describe("resolveRoll", () => {
     expect(resolveRoll(8, 3, 15)).toEqual({ newTotal: 11, status: "playing" });
   });
 
-  it("returns win when total equals goal", () => {
-    expect(resolveRoll(10, 5, 15)).toEqual({ newTotal: 15, status: "win" });
+  it("returns playing when total equals goal (only bust ends the round)", () => {
+    expect(resolveRoll(10, 5, 15)).toEqual({ newTotal: 15, status: "playing" });
   });
 
   it("returns bust when total exceeds goal", () => {
@@ -40,7 +40,7 @@ describe("resolveRoll", () => {
   });
 
   it("works with escalated goal of 25", () => {
-    expect(resolveRoll(19, 6, 25)).toEqual({ newTotal: 25, status: "win" });
+    expect(resolveRoll(19, 6, 25)).toEqual({ newTotal: 25, status: "playing" });
     expect(resolveRoll(20, 6, 25)).toEqual({ newTotal: 26, status: "bust" });
   });
 });
@@ -50,8 +50,8 @@ describe("shouldNpcRoll", () => {
     expect(shouldNpcRoll(8, 12, 15)).toBe(true);
   });
 
-  it("stands when equal to the player", () => {
-    expect(shouldNpcRoll(12, 12, 15)).toBe(false);
+  it("rolls when tied with the player", () => {
+    expect(shouldNpcRoll(12, 12, 15)).toBe(true);
   });
 
   it("stands when ahead of the player", () => {
@@ -60,9 +60,18 @@ describe("shouldNpcRoll", () => {
 });
 
 describe("npcRollOrStand", () => {
-  it("stands when already ahead or tied (no RNG)", () => {
+  it("stands when already ahead (no RNG)", () => {
     expect(npcRollOrStand(13, 12, 15, makeRng([]))).toEqual({ kind: "stand" });
-    expect(npcRollOrStand(12, 12, 15, makeRng([]))).toEqual({ kind: "stand" });
+  });
+
+  it("rolls one die when tied", () => {
+    const step = npcRollOrStand(12, 12, 15, makeRng([3]));
+    expect(step).toMatchObject({
+      kind: "roll",
+      roll: 3,
+      newTotal: 15,
+      status: "playing",
+    });
   });
 
   it("rolls one die when behind", () => {
@@ -75,13 +84,13 @@ describe("npcRollOrStand", () => {
     });
   });
 
-  it("hits goal exactly and wins", () => {
+  it("hits goal exactly and stays playing", () => {
     const step = npcRollOrStand(10, 12, 15, makeRng([5]));
     expect(step).toMatchObject({
       kind: "roll",
       roll: 5,
       newTotal: 15,
-      status: "win",
+      status: "playing",
     });
   });
 
@@ -169,7 +178,7 @@ describe("tie escalation", () => {
 
     goal += GOAL_INCREMENT;
     expect(goal).toBe(25);
-    expect(resolveRoll(23, 2, goal)).toEqual({ newTotal: 25, status: "win" });
+    expect(resolveRoll(23, 2, goal)).toEqual({ newTotal: 25, status: "playing" });
 
     goal += GOAL_INCREMENT;
     expect(goal).toBe(35);

@@ -113,7 +113,7 @@ describe("TimedEventPanel gambler coverage", () => {
     );
   });
 
-  it("treats an active wager as a forfeit when the timed event expires", () => {
+  it("freezes the timed event countdown while the gambler dice dialog is open", () => {
     const applyEventChoice = vi.fn();
     const setTimedEventTab = vi.fn();
     const setHighlightedResources = vi.fn();
@@ -151,30 +151,31 @@ describe("TimedEventPanel gambler coverage", () => {
     act(() => {
       fireEvent.click(screen.getByRole("button", { name: "Mock Wager" }));
     });
-    expect(useGameStore.getState().gamblerGame).toEqual({
+    expect(useGameStore.getState().gamblerGame).toMatchObject({
       wager: 50,
       stakeNotYetDeducted: true,
+      session: expect.objectContaining({ phase: "playerTurn" }),
     });
     expect(useGameStore.getState().resources.gold).toBe(100);
+
+    applyEventChoice.mockClear();
+    setTimedEventTab.mockClear();
+    setHighlightedResources.mockClear();
 
     act(() => {
       vi.advanceTimersByTime(300);
     });
 
-    expect(applyEventChoice).toHaveBeenCalledWith(
-      "decline",
-      "gambler",
-      expect.objectContaining({ id: "gambler-123" }),
-    );
-    expect(setTimedEventTab).toHaveBeenCalledWith(false);
-    expect(setHighlightedResources).toHaveBeenCalledWith([]);
-    expect(useGameStore.getState().gamblerGame).toBeNull();
-    expect(useGameStore.getState().log.at(-1)?.message).toBe(
-      "The obsessed gambler took your silence as forfeit.",
-    );
+    expect(applyEventChoice).not.toHaveBeenCalled();
+    expect(setTimedEventTab).not.toHaveBeenCalled();
+    expect(setHighlightedResources).not.toHaveBeenCalled();
+    expect(useGameStore.getState().gamblerGame).toMatchObject({
+      wager: 50,
+      stakeNotYetDeducted: true,
+    });
     expect(screen.getByTestId("gambler-dialog")).toHaveAttribute(
       "data-open",
-      "false",
+      "true",
     );
   });
 

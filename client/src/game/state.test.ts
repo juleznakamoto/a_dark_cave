@@ -509,24 +509,41 @@ describe("Reward Dialog System", () => {
   });
 });
 
-describe("Gambler refresh protection", () => {
+describe("Gambler resume on load", () => {
   beforeEach(() => {
     useGameStore.getState().initialize();
     mockLoadGame.mockReset();
     mockSetLastGameLoadTime.mockReset();
   });
 
-  it("treats an interrupted gambler game as a forfeit on load", async () => {
+  it("preserves in-progress gambler session from save", async () => {
+    const session = {
+      phase: "playerTurn" as const,
+      playerTotal: 10,
+      npcTotal: 8,
+      goal: 15,
+      playerLastRoll: 4,
+      npcLastRoll: null as number | null,
+      hasReroll: false,
+      hasRolledThisRound: true,
+      npcTurnChain: 0,
+      goalRaisedBlinkKey: 0,
+      playerStopped: false,
+      pauseAfterNextPlayerRoll: false,
+    };
     const savedState = {
       ...createInitialState(),
       resources: {
         ...createInitialState().resources,
-        gold: 50,
+        gold: 100,
       },
-      gamblerGame: { wager: 50 },
+      gamblerGame: {
+        wager: 50,
+        stakeNotYetDeducted: true as const,
+        session,
+      },
+      gamblerDiceDialogOpen: true,
       log: [],
-    } as ReturnType<typeof createInitialState> & {
-      gamblerGame: { wager: number };
     };
 
     mockLoadGame.mockResolvedValue(savedState);
@@ -534,62 +551,47 @@ describe("Gambler refresh protection", () => {
     await useGameStore.getState().loadGame();
 
     expect(mockSetLastGameLoadTime).toHaveBeenCalled();
-    expect(useGameStore.getState().gamblerGame).toBeNull();
-    expect(useGameStore.getState().gamblerForfeitNotice).toEqual({
+    expect(useGameStore.getState().gamblerGame).toMatchObject({
       wager: 50,
+      stakeNotYetDeducted: true,
+      session: expect.objectContaining({ playerTotal: 10, npcTotal: 8 }),
     });
-    expect(useGameStore.getState().resources.gold).toBe(50);
-    expect(useGameStore.getState().log.at(-1)?.message).toBe(
-      "The obsessed gambler took your silence as forfeit.",
-    );
+    expect(useGameStore.getState().resources.gold).toBe(100);
+    expect(
+      useGameStore
+        .getState()
+        .log.some((e) => e.message.includes("silence as forfeit")),
+    ).toBe(false);
   });
 
-  it("deducts stake on load forfeit when wager was not yet taken from gold", async () => {
-    const savedState = {
-      ...createInitialState(),
-      resources: {
-        ...createInitialState().resources,
-        gold: 100,
-      },
-      gamblerGame: { wager: 50, stakeNotYetDeducted: true as const },
-      log: [],
-    } as ReturnType<typeof createInitialState> & {
-      gamblerGame: { wager: number; stakeNotYetDeducted: boolean };
-    };
-
-    mockLoadGame.mockResolvedValue(savedState);
-
-    await useGameStore.getState().loadGame();
-
-    expect(useGameStore.getState().gamblerGame).toBeNull();
-    expect(useGameStore.getState().gamblerForfeitNotice).toEqual({
-      wager: 50,
-    });
-    expect(useGameStore.getState().resources.gold).toBe(50);
-    expect(useGameStore.getState().log.at(-1)?.message).toBe(
-      "The obsessed gambler took your silence as forfeit.",
-    );
-  });
-
-  it("does not log forfeit when save had an already-resolved gambler outcome", async () => {
+  it("preserves resolved gambler outcome and snapshot from save", async () => {
     const savedState = {
       ...createInitialState(),
       resources: {
         ...createInitialState().resources,
         gold: 160,
       },
-      gamblerGame: { wager: 50, outcome: "win" as const },
+      gamblerGame: {
+        wager: 50,
+        outcome: "win" as const,
+        outcomeSnapshot: {
+          playerTotal: 12,
+          npcTotal: 10,
+          goal: 15,
+        },
+      },
       log: [],
-    } as ReturnType<typeof createInitialState> & {
-      gamblerGame: { wager: number; outcome: "win" };
     };
 
     mockLoadGame.mockResolvedValue(savedState);
 
     await useGameStore.getState().loadGame();
 
-    expect(useGameStore.getState().gamblerGame).toBeNull();
-    expect(useGameStore.getState().gamblerForfeitNotice).toBeNull();
+    expect(useGameStore.getState().gamblerGame).toMatchObject({
+      wager: 50,
+      outcome: "win",
+      outcomeSnapshot: { playerTotal: 12, npcTotal: 10, goal: 15 },
+    });
     expect(
       useGameStore
         .getState()

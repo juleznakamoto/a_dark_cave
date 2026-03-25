@@ -759,18 +759,44 @@ export const gameStateSchema = z.object({
       wager: z.number(),
       /** Set once payouts are applied; timer/forfeit logic ignores resolved games. */
       outcome: z.enum(["win", "lose"]).optional(),
+      /** Totals shown on outcome screen (persisted for refresh before dialog close). */
+      outcomeSnapshot: z
+        .object({
+          playerTotal: z.number(),
+          npcTotal: z.number(),
+          goal: z.number(),
+        })
+        .optional(),
       /**
        * True when the wager was not yet taken from gold at bet time (current rules).
        * Omitted/undefined = legacy saves where stake was deducted at wager; forfeit must not deduct again.
        */
       stakeNotYetDeducted: z.boolean().optional(),
+      /**
+       * In-progress dice round (persisted for resume-on-refresh). Omitted once `outcome` is set.
+       */
+      session: z
+        .object({
+          phase: z.enum([
+            "wager",
+            "playerTurn",
+            "npcTurn",
+            "tieEscalation",
+          ]),
+          playerTotal: z.number(),
+          npcTotal: z.number(),
+          goal: z.number(),
+          playerLastRoll: z.number().nullable(),
+          npcLastRoll: z.number().nullable(),
+          hasReroll: z.boolean(),
+          hasRolledThisRound: z.boolean(),
+          npcTurnChain: z.number(),
+          goalRaisedBlinkKey: z.number(),
+          playerStopped: z.boolean(),
+          pauseAfterNextPlayerRoll: z.boolean(),
+        })
+        .optional(),
     })
-    .nullable()
-    .default(null),
-
-  /** Session-only notice after refresh forfeit; stripped before save. */
-  gamblerForfeitNotice: z
-    .object({ wager: z.number() })
     .nullable()
     .default(null),
 

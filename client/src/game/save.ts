@@ -220,9 +220,6 @@ export async function saveGame(
       sanitizedState = { ...gameState };
     }
 
-    // Session-only UI flag; never persist (would re-show forfeit dialog on next load)
-    delete sanitizedState.gamblerForfeitNotice;
-
     // Ensure cooldownDurations is always present
     if (!sanitizedState.cooldownDurations) {
       sanitizedState.cooldownDurations = {};
@@ -297,12 +294,12 @@ export async function saveGame(
 
         // Log snapshot to verify stats are included
         if (resourceData) {
-          const hasStats = Object.keys(resourceData).some(key => 
+          const hasStats = Object.keys(resourceData).some(key =>
             ['luck', 'strength', 'knowledge', 'madness'].includes(key)
           );
           logger.log('[SAVE CLOUD] 📊 Resource snapshot includes stats:', {
             hasStats,
-            statsKeys: Object.keys(resourceData).filter(key => 
+            statsKeys: Object.keys(resourceData).filter(key =>
               ['luck', 'strength', 'knowledge', 'madness'].includes(key)
             ),
             snapshotKeys: Object.keys(resourceData),
@@ -486,8 +483,8 @@ export async function loadGame(): Promise<GameState | null> {
               ...loadedState,
               cooldownDurations: loadedState.cooldownDurations || {},
               // Format lastSaved if it's a timestamp
-              lastSaved: loadedState.lastSaved && typeof loadedState.lastSaved === 'number' 
-                ? formatSaveTimestamp() 
+              lastSaved: loadedState.lastSaved && typeof loadedState.lastSaved === 'number'
+                ? formatSaveTimestamp()
                 : loadedState.lastSaved,
             };
 
@@ -523,8 +520,8 @@ export async function loadGame(): Promise<GameState | null> {
             ...loadedState,
             cooldownDurations: loadedState.cooldownDurations || {},
             // Format lastSaved if it's a timestamp
-            lastSaved: loadedState.lastSaved && typeof loadedState.lastSaved === 'number' 
-              ? formatSaveTimestamp() 
+            lastSaved: loadedState.lastSaved && typeof loadedState.lastSaved === 'number'
+              ? formatSaveTimestamp()
               : loadedState.lastSaved,
           };
 

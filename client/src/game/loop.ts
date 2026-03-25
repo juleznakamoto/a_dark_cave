@@ -276,7 +276,6 @@ export function startGameLoop() {
       state.authDialogOpen ||
       state.shopDialogOpen ||
       state.gamblerDiceDialogOpen ||
-      state.gamblerForfeitNotice != null ||
       state.leaderboardDialogOpen ||
       state.fullGamePurchaseDialogOpen ||
       state.idleModeDialog.isOpen ||
@@ -520,10 +519,18 @@ export function startGameLoop() {
   gameLoopId = requestAnimationFrame(tick);
 }
 
-function clearExpiredTimedEventTab() {
+export function clearExpiredTimedEventTab() {
   const state = useGameStore.getState();
   if (!state.timedEventTab.isActive || !state.timedEventTab.expiryTime) return;
   if (state.timedEventTab.expiryTime > Date.now()) return;
+
+  const ev = state.timedEventTab.event;
+  /** Keep the timed tab while the dice UI is open — including the outcome screen after `outcome` is set — so the panel/dialog stay mounted until the player closes and `onClose` clears `gamblerGame`. */
+  const gamblerDiceDialogKeepsTimedTab =
+    ev?.id?.split("-")[0] === "gambler" &&
+    state.gamblerDiceDialogOpen &&
+    state.gamblerGame != null;
+  if (gamblerDiceDialogKeepsTimedTab) return;
 
   logger.log("[GAME LOOP] Clearing expired timed event tab");
   const event = state.timedEventTab.event;

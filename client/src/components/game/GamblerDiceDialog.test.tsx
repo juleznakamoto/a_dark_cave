@@ -95,14 +95,14 @@ describe("GamblerDiceDialog", () => {
 
     act(() => {
       fireEvent.click(screen.getByRole("button", { name: /^roll$/i }));
-      vi.advanceTimersByTime(1000);
+      vi.advanceTimersByTime(1200);
     });
 
     act(() => {
       vi.runOnlyPendingTimers();
     });
     act(() => {
-      vi.advanceTimersByTime(1000);
+      vi.advanceTimersByTime(500 + 1200);
     });
 
     const playerRunning = Number(

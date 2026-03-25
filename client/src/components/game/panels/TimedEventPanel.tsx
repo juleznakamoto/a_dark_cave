@@ -14,6 +14,7 @@ import {
 import { bloodMoonSacrificeAmount } from "@/game/cruelMode";
 import GamblerDiceDialog from "@/components/game/GamblerDiceDialog";
 import { getTotalLuck } from "@/game/rules/effectsCalculation";
+import { createDefaultGamblerSession } from "@/game/gamblerSession";
 
 // Stat icon mapping
 const statIcons: Record<string, { icon: string; color: string }> = {
@@ -53,6 +54,14 @@ export default function TimedEventPanel() {
   const isCollectorEvent =
     timedEventTab.event?.id.split("-")[0] === "wandering_collector";
   const isGamblerEvent = timedEventTab.event?.id.split("-")[0] === "gambler";
+
+  /** After refresh, reopen gambler modal when save restored `gamblerDiceDialogOpen`. */
+  useEffect(() => {
+    if (!isGamblerEvent || !timedEventTab.isActive) return;
+    if (gameState.gamblerDiceDialogOpen) {
+      setGamblerDialogOpen(true);
+    }
+  }, [isGamblerEvent, timedEventTab.isActive, gameState.gamblerDiceDialogOpen]);
   const eventChoices: EventChoice[] = useMemo(() => {
     if (!timedEventTab.event) {
       lastLoggedEventId.current = null;
@@ -121,7 +130,10 @@ export default function TimedEventPanel() {
     let expiryHandled = false;
 
     const updateTimer = () => {
-      const isPaused = useGameStore.getState().isPaused;
+      const st = useGameStore.getState();
+      const gamblerDialogPausesTimer =
+        event.id.split("-")[0] === "gambler" && st.gamblerDiceDialogOpen;
+      const isPaused = st.isPaused || gamblerDialogPausesTimer;
       if (isPaused) {
         if (pauseStartRef.current === 0) {
           pauseStartRef.current = Date.now();
@@ -146,9 +158,16 @@ export default function TimedEventPanel() {
         const currentState = useGameStore.getState();
         const gamblerPrefix = event.id.split("-")[0] === "gambler";
         const gg = currentState.gamblerGame;
+        let gamblerMidRoundForfeitHandled = false;
 
-        // Mid-round forfeit only: resolved games already applied payouts in the store.
-        if (gamblerPrefix && gg && gg.outcome == null) {
+        // Mid-round forfeit only when the dice dialog is not open (timer is frozen while open).
+        if (
+          gamblerPrefix &&
+          gg &&
+          gg.outcome == null &&
+          !currentState.gamblerDiceDialogOpen
+        ) {
+          gamblerMidRoundForfeitHandled = true;
           setGamblerDialogOpen(false);
           useGameStore.setState((state) => {
             const takeStake = gg.stakeNotYetDeducted === true;
@@ -180,7 +199,8 @@ export default function TimedEventPanel() {
         if (event) {
           const timedEventId = event.eventId || event.id.split("-")[0];
           const skipGamblerFallback =
-            gamblerPrefix && gg != null && gg.outcome != null;
+            gamblerMidRoundForfeitHandled ||
+            (gamblerPrefix && gg != null && gg.outcome != null);
 
           // Use the event's defined fallbackChoice if available
           if (
@@ -638,10 +658,17 @@ export default function TimedEventPanel() {
           playerLuck={getTotalLuck(gameState)}
           onWagerSelected={(wager) => {
             useGameStore.setState((s) => ({
-              gamblerGame: { wager, stakeNotYetDeducted: true },
+              gamblerGame: {
+                wager,
+                stakeNotYetDeducted: true,
+                session: createDefaultGamblerSession(
+                  !!s.relics?.bone_dice,
+                  "playerTurn",
+                ),
+              },
             }));
           }}
-          onOutcomeResolved={(outcome, wager) => {
+          onOutcomeResolved={(outcome, wager, snapshot) => {
             if (outcome === "win") {
               useGameStore.setState((s) => {
                 const gamblerWinsTotal =
@@ -651,7 +678,12 @@ export default function TimedEventPanel() {
                     ...s.resources,
                     gold: (s.resources?.gold ?? 0) + wager,
                   },
-                  gamblerGame: { wager, outcome: "win" },
+                  gamblerGame: {
+                    wager,
+                    outcome: "win",
+                    outcomeSnapshot: snapshot,
+                    stakeNotYetDeducted: s.gamblerGame?.stakeNotYetDeducted,
+                  },
                   story: {
                     ...s.story,
                     seen: {
@@ -679,7 +711,12 @@ export default function TimedEventPanel() {
                     ...s.resources,
                     gold: takeStake ? Math.max(0, gold - wager) : gold,
                   },
-                  gamblerGame: { wager, outcome: "lose" },
+                  gamblerGame: {
+                    wager,
+                    outcome: "lose",
+                    outcomeSnapshot: snapshot,
+                    stakeNotYetDeducted: takeStake ? false : s.gamblerGame?.stakeNotYetDeducted,
+                  },
                   log: [
                     ...s.log,
                     {

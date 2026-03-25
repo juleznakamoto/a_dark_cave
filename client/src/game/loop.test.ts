@@ -1,6 +1,6 @@
-
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { useGameStore } from './state';
+import { describe, it, expect, beforeEach, vi } from "vitest";
+import { useGameStore } from "./state";
+import { clearExpiredTimedEventTab } from "./loop";
 
 describe('Game Loop Production', () => {
   beforeEach(() => {
@@ -105,5 +105,34 @@ describe('Game Loop Production', () => {
     expect(finalState.timedEventTab.isActive).toBe(false);
     expect(finalState.timedEventTab.event).toBe(null);
     expect(finalState.timedEventTab.expiryTime).toBe(0);
+  });
+
+  it("does not clear gambler timed tab while dice dialog is open after outcome is resolved", () => {
+    const gamblerEvent = {
+      id: "gambler-test",
+      eventId: "gambler",
+      message: "Roll",
+      title: "Gambler",
+      type: "event" as const,
+      choices: [{ id: "accept", label: "Accept", effect: () => ({}) }],
+    };
+
+    useGameStore.setState({
+      timedEventTab: {
+        isActive: true,
+        event: gamblerEvent,
+        expiryTime: Date.now() - 5000,
+        startTime: Date.now() - 10_000,
+      },
+      gamblerDiceDialogOpen: true,
+      gamblerGame: { wager: 10, outcome: "lose" as const },
+    });
+
+    clearExpiredTimedEventTab();
+
+    const s = useGameStore.getState();
+    expect(s.timedEventTab.isActive).toBe(true);
+    expect(s.timedEventTab.event).toEqual(gamblerEvent);
+    expect(s.gamblerGame?.outcome).toBe("lose");
   });
 });
