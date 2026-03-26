@@ -13,7 +13,6 @@ export const WAGER_LUCK_THRESHOLDS: Record<WagerTier, number> = {
 };
 
 export const INITIAL_GOAL = 15;
-export const GOAL_INCREMENT = 10;
 
 /** When tied, No Roll is disabled if both are strictly more than this many points under the goal. */
 export const TIED_STOP_MAX_GOAL_DISTANCE = 6;
@@ -37,9 +36,9 @@ export function canPlayerChooseNoRoll(
   return playerTotal > npcTotal;
 }
 
-/** `bust` only when total exceeds the goal; exactly at goal is still `playing`. */
-export type RollStatus = "playing" | "bust";
-export type ShowdownResult = "playerWin" | "npcWin" | "tie";
+/** `bust` when total exceeds the goal; `exactGoal` when it lands on the goal (immediate win for the roller); otherwise still `playing`. */
+export type RollStatus = "playing" | "bust" | "exactGoal";
+export type ShowdownResult = "playerWin" | "npcWin";
 export type GameOutcome = "win" | "lose";
 
 export type RngFn = () => number;
@@ -57,12 +56,13 @@ export function resolveRoll(
 ): { newTotal: number; status: RollStatus } {
   const newTotal = currentTotal + roll;
   if (newTotal > goal) return { newTotal, status: "bust" };
+  if (newTotal === goal) return { newTotal, status: "exactGoal" };
   return { newTotal, status: "playing" };
 }
 
 /**
  * NPC rolls when behind or tied and still below the goal; stands when ahead or already at the goal
- * (any positive die from exactly the goal would bust — e.g. both at 15/15/15 must go to tie escalation).
+ * (at the cap they would only bust or repeat exact-goal resolution).
  */
 export function shouldNpcRoll(
   npcTotal: number,
@@ -100,5 +100,7 @@ export function resolveShowdown(
 ): ShowdownResult {
   if (playerTotal > npcTotal) return "playerWin";
   if (npcTotal > playerTotal) return "npcWin";
-  return "tie";
+  throw new Error(
+    "resolveShowdown: equal totals cannot occur under gambler rules (active roller must break ties)",
+  );
 }

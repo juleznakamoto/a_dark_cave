@@ -8,7 +8,6 @@ import {
   isStopBlockedTiedFarUnderGoal,
   canPlayerChooseNoRoll,
   INITIAL_GOAL,
-  GOAL_INCREMENT,
   RngFn,
 } from "./diceFifteenGame";
 
@@ -31,8 +30,8 @@ describe("resolveRoll", () => {
     expect(resolveRoll(8, 3, 15)).toEqual({ newTotal: 11, status: "playing" });
   });
 
-  it("returns playing when total equals goal (only bust ends the round)", () => {
-    expect(resolveRoll(10, 5, 15)).toEqual({ newTotal: 15, status: "playing" });
+  it("returns exactGoal when total equals goal", () => {
+    expect(resolveRoll(10, 5, 15)).toEqual({ newTotal: 15, status: "exactGoal" });
   });
 
   it("returns bust when total exceeds goal", () => {
@@ -40,7 +39,7 @@ describe("resolveRoll", () => {
   });
 
   it("works with escalated goal of 25", () => {
-    expect(resolveRoll(19, 6, 25)).toEqual({ newTotal: 25, status: "playing" });
+    expect(resolveRoll(19, 6, 25)).toEqual({ newTotal: 25, status: "exactGoal" });
     expect(resolveRoll(20, 6, 25)).toEqual({ newTotal: 26, status: "bust" });
   });
 });
@@ -80,7 +79,7 @@ describe("npcRollOrStand", () => {
       kind: "roll",
       roll: 3,
       newTotal: 15,
-      status: "playing",
+      status: "exactGoal",
     });
   });
 
@@ -94,13 +93,13 @@ describe("npcRollOrStand", () => {
     });
   });
 
-  it("hits goal exactly and stays playing", () => {
+  it("hits goal exactly (exactGoal status for dialog to resolve win/lose)", () => {
     const step = npcRollOrStand(10, 12, 15, makeRng([5]));
     expect(step).toMatchObject({
       kind: "roll",
       roll: 5,
       newTotal: 15,
-      status: "playing",
+      status: "exactGoal",
     });
   });
 
@@ -134,8 +133,8 @@ describe("resolveShowdown", () => {
     expect(resolveShowdown(10, 13, 15)).toBe("npcWin");
   });
 
-  it("tie when equal", () => {
-    expect(resolveShowdown(12, 12, 15)).toBe("tie");
+  it("throws when equal (unreachable in play)", () => {
+    expect(() => resolveShowdown(12, 12, 15)).toThrow();
   });
 });
 
@@ -174,24 +173,3 @@ describe("canPlayerChooseNoRoll", () => {
   });
 });
 
-describe("tie escalation", () => {
-  it("goal increases by 10 on tie", () => {
-    const goal = INITIAL_GOAL;
-    const result = resolveShowdown(12, 12, goal);
-    expect(result).toBe("tie");
-    const newGoal = goal + GOAL_INCREMENT;
-    expect(newGoal).toBe(25);
-  });
-
-  it("multi-tie escalation works (15 -> 25 -> 35)", () => {
-    let goal = INITIAL_GOAL;
-
-    goal += GOAL_INCREMENT;
-    expect(goal).toBe(25);
-    expect(resolveRoll(23, 2, goal)).toEqual({ newTotal: 25, status: "playing" });
-
-    goal += GOAL_INCREMENT;
-    expect(goal).toBe(35);
-    expect(resolveRoll(31, 5, goal)).toEqual({ newTotal: 36, status: "bust" });
-  });
-});

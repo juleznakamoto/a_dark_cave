@@ -767,15 +767,11 @@ export const gameStateSchema = z.object({
           goal: z.number(),
         })
         .optional(),
+      /** True until a losing outcome applies the stake deduction (stake is not taken at bet time). */
+      stakeNotYetDeducted: z.boolean().default(true),
       /**
-       * True when the wager was not yet taken from gold at bet time (current rules).
-       * Omitted/undefined = legacy saves where stake was deducted at wager; forfeit must not deduct again.
-       */
-      stakeNotYetDeducted: z.boolean().optional(),
-      /**
-       * Up to 3 during first-visit practice (Bone Dice–style multi-round). Otherwise: 2 with Bone
-       * Dice, 1 without. Decremented when the player dismisses the outcome screen (not on wager).
-       * Omitted in legacy saves (treat as 1).
+       * Up to 3 during first-visit practice; otherwise 2 with Bone Dice, 1 without. Decremented when
+       * the player dismisses the outcome screen (not on wager).
        */
       roundsRemainingThisEvent: z.number().int().min(1).max(3).optional(),
       /**
@@ -783,20 +779,13 @@ export const gameStateSchema = z.object({
        */
       session: z
         .object({
-          phase: z.enum([
-            "wager",
-            "playerTurn",
-            "npcTurn",
-            "tieEscalation",
-          ]),
+          phase: z.enum(["wager", "playerTurn", "npcTurn"]),
           playerTotal: z.number(),
           npcTotal: z.number(),
           goal: z.number(),
           playerLastRoll: z.number().nullable(),
           npcLastRoll: z.number().nullable(),
           hasRolledThisRound: z.boolean(),
-          npcTurnChain: z.number(),
-          goalRaisedBlinkKey: z.number(),
           playerStopped: z.boolean(),
           pauseAfterNextPlayerRoll: z.boolean(),
         })

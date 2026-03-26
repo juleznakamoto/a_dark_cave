@@ -176,14 +176,14 @@ export default function TimedEventPanel() {
           gamblerMidRoundForfeitHandled = true;
           setGamblerDialogOpen(false);
           useGameStore.setState((state) => {
-            const takeStake = gg.stakeNotYetDeducted === true;
             const w = gg.wager ?? 0;
             const gold = state.resources?.gold ?? 0;
             return {
               gamblerGame: null,
-              resources: takeStake
-                ? { ...state.resources, gold: Math.max(0, gold - w) }
-                : state.resources,
+              resources:
+                w > 0
+                  ? { ...state.resources, gold: Math.max(0, gold - w) }
+                  : state.resources,
               log: [
                 ...state.log,
                 {
@@ -743,7 +743,7 @@ export default function TimedEventPanel() {
                     wager,
                     outcome: "win",
                     outcomeSnapshot: snapshot,
-                    stakeNotYetDeducted: s.gamblerGame?.stakeNotYetDeducted,
+                    stakeNotYetDeducted: false,
                     roundsRemainingThisEvent:
                       s.gamblerGame?.roundsRemainingThisEvent,
                   },
@@ -763,8 +763,7 @@ export default function TimedEventPanel() {
               });
             } else {
               useGameStore.setState((s) => {
-                const takeStake =
-                  !practice && s.gamblerGame?.stakeNotYetDeducted === true;
+                const takeStake = !practice;
                 const gold = s.resources?.gold ?? 0;
                 return {
                   resources: {
@@ -775,7 +774,7 @@ export default function TimedEventPanel() {
                     wager,
                     outcome: "lose",
                     outcomeSnapshot: snapshot,
-                    stakeNotYetDeducted: takeStake ? false : s.gamblerGame?.stakeNotYetDeducted,
+                    stakeNotYetDeducted: false,
                     roundsRemainingThisEvent:
                       s.gamblerGame?.roundsRemainingThisEvent,
                   },

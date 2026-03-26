@@ -101,7 +101,7 @@ describe("gamblerSession", () => {
     expect(resolveGamblerSessionForHydrate(gg).playerTotal).toBe(11);
   });
 
-  it("resolveGamblerSessionForHydrate defaults legacy wager-only saves to playerTurn", () => {
+  it("resolveGamblerSessionForHydrate defaults missing session to playerTurn", () => {
     const gg = {
       wager: 50,
       stakeNotYetDeducted: true,
@@ -109,19 +109,5 @@ describe("gamblerSession", () => {
     const s = resolveGamblerSessionForHydrate(gg);
     expect(s.phase).toBe("playerTurn");
     expect(s.playerTotal).toBe(0);
-  });
-
-  it("resolveGamblerSessionForHydrate strips legacy hasReroll from session", () => {
-    const session = {
-      ...createDefaultGamblerSession("playerTurn"),
-      hasReroll: true,
-    } as NonNullable<GameState["gamblerGame"]>["session"] & { hasReroll: boolean };
-    const gg = {
-      wager: 10,
-      stakeNotYetDeducted: true,
-      session,
-    } as NonNullable<GameState["gamblerGame"]>;
-    const s = resolveGamblerSessionForHydrate(gg);
-    expect("hasReroll" in s).toBe(false);
   });
 });

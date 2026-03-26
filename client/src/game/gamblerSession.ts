@@ -7,7 +7,7 @@ export const GAMBLER_TUTORIAL_PLAYS = 3;
 export const GAMBLER_TUTORIAL_PLAYS_REMAINING_SEEN_KEY =
   "gamblerTutorialPlaysRemaining" as const;
 
-/** Legacy saves omit this — treat as tutorial complete (0). New games set `GAMBLER_TUTORIAL_PLAYS`. */
+/** Missing or invalid values count as no tutorial plays remaining. New games set `GAMBLER_TUTORIAL_PLAYS`. */
 export function getGamblerTutorialPlaysRemaining(
   seen: GameState["story"]["seen"] | undefined,
 ): number {
@@ -73,21 +73,14 @@ export function createDefaultGamblerSession(
     playerLastRoll: null,
     npcLastRoll: null,
     hasRolledThisRound: false,
-    npcTurnChain: 0,
-    goalRaisedBlinkKey: 0,
     playerStopped: false,
     pauseAfterNextPlayerRoll: false,
   };
 }
 
-/** Legacy saves: only wager + stake flag, no session — treat as start of round after wager. */
+/** Uses stored `session` when present; otherwise a fresh `playerTurn` session (e.g. between rounds). */
 export function resolveGamblerSessionForHydrate(
   gg: NonNullable<GameState["gamblerGame"]>,
 ): GamblerDiceSession {
-  if (gg.session) {
-    const s = gg.session as GamblerDiceSession & { hasReroll?: boolean };
-    const { hasReroll: _legacyReroll, ...rest } = s;
-    return rest;
-  }
-  return createDefaultGamblerSession("playerTurn");
+  return gg.session ?? createDefaultGamblerSession("playerTurn");
 }
